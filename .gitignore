@@ -4,4 +4,8 @@ src/scripts/
 src/styles/
 desktop.ini
 *.lnk
-
+-*
+@*
+$*
+*.tmp
+*.log
