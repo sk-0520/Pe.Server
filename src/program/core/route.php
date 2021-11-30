@@ -20,7 +20,9 @@ class Route
 
 		$this->path = $path;
 		$this->className = $className;
-		$this->actions[''] = 'index';
+		if(mb_substr($this->className, 0 , 3) != 'api') {
+			$this->actions[''] = 'index';
+		}
 	}
 
 	public function action(string $actionName, ?string $methodName = null): Route

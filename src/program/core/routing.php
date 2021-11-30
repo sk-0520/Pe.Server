@@ -23,11 +23,14 @@ class Routing
 		return $paths;
 	}
 
-	private function executeAction($controllerName, $methodName) {
-		$file = $this->controllerBaseDirectory . '/' . $controllerName . '.php';
+	private function executeAction($rawControllerName, $methodName) {
+		$file = $this->controllerBaseDirectory . '/' . $rawControllerName . '.php';
 		require_once($file);
 
 		$ci = new ControllerInput();
+
+		$splitNames = explode('/', $rawControllerName);
+		$controllerName = $splitNames[count($splitNames) - 1];
 
 		$controller = new $controllerName($ci);
 		$controller->$methodName();
