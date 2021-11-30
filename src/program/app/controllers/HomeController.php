@@ -5,6 +5,6 @@ class HomeController extends ControllerBase
 {
 	public function index()
 	{
-		echo "hello!";
+		return $this->view('index');
 	}
 }
