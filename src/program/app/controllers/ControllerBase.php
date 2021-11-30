@@ -7,17 +7,22 @@ abstract class ControllerBase
 	public function __construct(ControllerInput $input)
 	{ }
 
-	public function view(string $action, ?array $parameters = null) {
-		$className = get_class($this);
-		$baseName = mb_substr($className, 0, mb_strlen($className) - mb_strlen('Controller'));
-
+	public function viewWithController(string $controllerBaseName, string $action, ?array $parameters = null)
+	{
 		$smarty = new Smarty();
-		$smarty->addTemplateDir("program/app/views/$baseName/");
+		$smarty->addTemplateDir("program/app/views/$controllerBaseName/");
 		$smarty->addTemplateDir("program/app/views/");
-		$smarty->compile_dir  = "program/temp/views/c/$baseName/";
-		$smarty->cache_dir    = "program/temp/views/t/$baseName/";
+		$smarty->compile_dir  = "program/temp/views/c/$controllerBaseName/";
+		$smarty->cache_dir    = "program/temp/views/t/$controllerBaseName/";
 
 		$smarty->assign($parameters);
 		$smarty->display("$action.tpl");
+	}
+
+	public function view(string $action, ?array $parameters = null) {
+		$className = get_class($this);
+		$controllerBaseName = mb_substr($className, 0, mb_strlen($className) - mb_strlen('Controller'));
+
+		$this->viewWithController($controllerBaseName, $action, $parameters);
 	}
 }
