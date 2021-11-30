@@ -1,5 +1,6 @@
 import * as path from 'path';
-import * as webpack from 'webpack';
+import webpack from 'webpack';
+
 //import * as MiniCssExtractPlugin from 'mini-css-extract-plugin';
 //import * as FixStyleOnlyEntriesPlugin from 'webpack-fix-style-only-entries';
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
