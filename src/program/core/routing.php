@@ -26,7 +26,10 @@ class Routing
 	private function executeAction($controllerName, $methodName) {
 		$file = $this->controllerBaseDirectory . '/' . $controllerName . '.php';
 		require_once($file);
-		$controller = new $controllerName;
+
+		$ci = new ControllerInput();
+
+		$controller = new $controllerName($ci);
 		$controller->$methodName();
 	}
 
