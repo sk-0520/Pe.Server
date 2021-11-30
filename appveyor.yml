@@ -1,0 +1,21 @@
+version: '{build}'
+image: Ubuntu2004
+skip_tags: true
+branches:
+  only:
+    - master
+install:
+  - sh: nvm install  15.14.0
+  - sh: npm -g install npm@7.7.6
+  - sh: npm install
+before_build:
+  - sh: git submodule init
+  - sh: git submodule update
+build_script:
+  - sh: npm run build
+test_script:
+  - sh: npm run test
+artifacts:
+  - path: src
+cache:
+  - 'node_modules'
