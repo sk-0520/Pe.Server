@@ -17,8 +17,9 @@ abstract class ControllerBase
 		return $smarty;
 	}
 
-	public function viewWithController(string $controllerBaseName, string $action, ?array $parameters = null)
+	public function viewWithController(string $controllerName, string $action, ?array $parameters = null)
 	{
+		$controllerBaseName = mb_substr($controllerName, 0, mb_strlen($controllerName) - mb_strlen('Controller'));
 		$smarty = $this->createTemplate($controllerBaseName);
 
 		$smarty->assign($parameters);
@@ -27,8 +28,7 @@ abstract class ControllerBase
 
 	public function view(string $action, ?array $parameters = null) {
 		$className = get_class($this);
-		$controllerBaseName = mb_substr($className, 0, mb_strlen($className) - mb_strlen('Controller'));
 
-		$this->viewWithController($controllerBaseName, $action, $parameters);
+		$this->viewWithController($className, $action, $parameters);
 	}
 }
