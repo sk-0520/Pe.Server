@@ -9,6 +9,7 @@ class StringUtilityTest extends TestClass
 		$tests = [
 			new Data(true, null),
 			new Data(true, ''),
+			new Data(false, ' '),
 			new Data(false, '0'),
 			new Data(false, 'abc'),
 		];
@@ -22,4 +23,22 @@ class StringUtilityTest extends TestClass
 		}
 	}
 
+	public function test_isNullOrWhiteSpace()
+	{
+		$tests = [
+			new Data(true, null),
+			new Data(true, ''),
+			new Data(true, ' '),
+			new Data(false, '0'),
+			new Data(false, 'abc'),
+		];
+		foreach($tests as $test) {
+			$actual = StringUtility::isNullOrWhiteSpace(...$test->args);
+			if($test->expected) {
+				$this->assertTrue($actual);
+			} else {
+				$this->assertFalse($actual);
+			}
+		}
+	}
 }

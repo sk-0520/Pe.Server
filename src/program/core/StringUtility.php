@@ -14,4 +14,13 @@ class StringUtility
 
 		return empty($s);
 	}
+
+	public static function isNullOrWhiteSpace(?string $s): bool
+	{
+		if(self::isNullOrEmpty($s)) {
+			return true;
+		}
+
+		return strlen(trim($s)) === 0;
+	}
 }
