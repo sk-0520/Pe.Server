@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 require_once('program/lib/smarty/libs/Smarty.class.php');
 require_once('program/core/controller-input.php');
 
