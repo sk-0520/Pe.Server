@@ -1,5 +1,8 @@
-{include file="header.tpl" title="💩💩"}
+{extends file='default.layout.tpl'}
+{block name=TITLE}🌞{/block}
+{block name=BODY}
 
 💩
 
-{include file="footer.tpl"}
+{/block}
+
