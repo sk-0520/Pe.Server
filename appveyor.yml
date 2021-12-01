@@ -26,5 +26,7 @@ test_script:
   - sh: cd test; php phpunit --testdox .
 artifacts:
   - path: src
+  - path: -script-coverage
+    name: script-coverage
 cache:
   - 'node_modules'
