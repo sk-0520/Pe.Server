@@ -1,6 +1,6 @@
 <?php
 require_once('program/config/route-map.php');
-require_once('program/core/routing.php');
+require_once('program/core/Routing.php');
 
 $routeMap = getRouteMap();
 $routing = new Routing($routeMap, 'program/app/controllers');

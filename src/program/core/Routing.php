@@ -1,5 +1,5 @@
 <?php declare(strict_types=1);
-require_once('program/core/request.php');
+require_once('program/core/Request.php');
 require_once('program/core/route.php');
 
 class Routing
