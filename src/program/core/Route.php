@@ -1,27 +1,7 @@
 <?php declare(strict_types=1);
-
-class HttpMethod
-{
-	const ALL = '';
-
-	const GET = 'GET';
-	const POST = 'POST';
-	const PUT = 'PUT';
-	const DELETE = 'DELETE';
-}
-
-class Action
-{
-	public $httpMethod;
-	public $callMethod;
-
-	public function __construct(string $httpMethod, string $callMethod)
-	{
-		$this->httpMethod = $httpMethod;
-		$this->callMethod = $callMethod;
-	}
-
-}
+require_once('program/core/Action.php');
+require_once('program/core/ActionRequest.php');
+require_once('program/core/HttpMethod.php');
 
 class Route
 {

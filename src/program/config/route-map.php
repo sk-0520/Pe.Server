@@ -1,5 +1,5 @@
 <?php declare(strict_types=1);
-require_once('program/core/route.php');
+require_once('program/core/Route.php');
 
 function getRouteMap(): array {
 	$result = [

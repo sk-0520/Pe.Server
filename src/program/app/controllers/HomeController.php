@@ -4,9 +4,9 @@ require_once('program/app/models/Home/HomeIndex.php');
 
 class HomeController extends ControllerBase
 {
-	public function __construct(ControllerInput $input)
+	public function __construct(ControllerArguments $arguments)
 	{
-		parent::__construct($input);
+		parent::__construct($arguments);
 	}
 
 	public function index()

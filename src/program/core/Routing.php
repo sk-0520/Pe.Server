@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
-require_once('program/core/Request.php');
-require_once('program/core/route.php');
+require_once('program/core/ControllerArguments.php');
+require_once('program/core/ActionRequest.php');
+require_once('program/core/Route.php');
 
 class Routing
 {
@@ -32,10 +33,10 @@ class Routing
 		$splitNames = explode('/', $rawControllerName);
 		$controllerName = $splitNames[count($splitNames) - 1];
 
-		$ci = new ControllerInput();
-		$req = new Request();
+		$controllerArguments = new ControllerArguments();
+		$req = new ActionRequest();
 
-		$controller = new $controllerName($ci);
+		$controller = new $controllerName($controllerArguments);
 		$controller->$methodName($req);
 	}
 

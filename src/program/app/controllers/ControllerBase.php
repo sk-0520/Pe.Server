@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 require_once('program/lib/smarty/libs/Smarty.class.php');
-require_once('program/core/ControllerInput.php');
+require_once('program/core/ControllerArguments.php');
 
 abstract class ControllerBase
 {
-	public function __construct(ControllerInput $input)
+	public function __construct(ControllerArguments $arguments)
 	{ }
 
 	protected function createTemplate(string $baseName): Smarty {
