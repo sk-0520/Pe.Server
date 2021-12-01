@@ -15,6 +15,7 @@ build_script:
   - sh: npm run build
 test_script:
   - sh: npm run test
+  - sh: php --version
 artifacts:
   - path: src
 cache:
