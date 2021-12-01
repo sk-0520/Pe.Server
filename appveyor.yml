@@ -23,7 +23,7 @@ build_script:
   - sh: npm run build
 test_script:
   - sh: npm run test
-  - sh: cd test; php phpunit .
+  - sh: cd test; php phpunit --testdox .
 artifacts:
   - path: src
 cache:
