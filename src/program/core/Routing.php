@@ -17,7 +17,6 @@ class Routing
 	private function splitPaths(string $requestUri)
 	{
 		$reqs = explode('?', $requestUri, 2);
-		var_dump($reqs);
 
 		$rawPaths = explode('/', $reqs[0]);
 		$paths = array_slice($rawPaths, 1);
@@ -50,9 +49,6 @@ class Routing
 				$this->executeAction($action['class'], $action['method']);
 			}
 		}
-
-		var_dump($paths);
-		echo $requestUri;
 	}
 }
 
