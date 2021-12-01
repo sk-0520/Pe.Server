@@ -15,11 +15,7 @@ class StringUtilityTest extends TestClass
 		];
 		foreach($tests as $test) {
 			$actual = StringUtility::isNullOrEmpty(...$test->args);
-			if($test->expected) {
-				$this->assertTrue($actual);
-			} else {
-				$this->assertFalse($actual);
-			}
+			$this->assertBoolean($test->expected, $actual);
 		}
 	}
 
@@ -34,11 +30,7 @@ class StringUtilityTest extends TestClass
 		];
 		foreach($tests as $test) {
 			$actual = StringUtility::isNullOrWhiteSpace(...$test->args);
-			if($test->expected) {
-				$this->assertTrue($actual);
-			} else {
-				$this->assertFalse($actual);
-			}
+			$this->assertBoolean($test->expected, $actual);
 		}
 	}
 }
