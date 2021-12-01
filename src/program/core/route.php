@@ -1,5 +1,28 @@
 <?php
 
+class HttpMethod
+{
+	const ALL = '';
+
+	const GET = 'GET';
+	const POST = 'POST';
+	const PUT = 'PUT';
+	const DELETE = 'DELETE';
+}
+
+class Action
+{
+	public $httpMethod;
+	public $callMethod;
+
+	public function __construct(string $httpMethod, string $callMethod)
+	{
+		$this->httpMethod = $httpMethod;
+		$this->callMethod = $callMethod;
+	}
+
+}
+
 class Route
 {
 	private $path;
@@ -21,36 +44,42 @@ class Route
 		$this->path = $path;
 		$this->className = $className;
 		if(mb_substr($this->className, 0 , 3) != 'api') {
-			$this->actions[''] = 'index';
+			$this->actions[''] = new Action(HttpMethod::ALL, 'index');
 		}
 	}
 
-	public function action(string $actionName, ?string $methodName = null): Route
+	public function action(string $httpMethod, string $actionName, ?string $methodName = null): Route
 	{
-		$actions[$actionName] = $methodName != null ? $methodName: $actionName;
+		$actions[$actionName] = new Action(
+			$httpMethod,
+			$methodName != null ? $methodName: $actionName
+		);
 		return $this;
 	}
 
-	public function getAction(array $paths) {
+	public function getAction(string $httpMethod, array $paths) {
 		$path = implode('/', $paths);
 
 		if($this->path != mb_substr($path, 0, mb_strlen($this->path))) {
 			return null;
 		}
 
-		$action = mb_substr($path, mb_strlen($this->path));
+		$actionPath = mb_substr($path, mb_strlen($this->path));
 
-		if(stripos($action, '/') !== false) {
+		if(stripos($actionPath, '/') !== false) {
 			return null;
 		}
 
-		if(!isset($this->actions[$action])) {
+		if(!isset($this->actions[$actionPath])) {
 			return null;
 		}
+
+		$action = $this->actions[$actionPath];
+		//TODO: メソッド判定
 
 		return [
 			'class' => $this->className,
-			'method' => $this->actions[$action],
+			'method' => $action->callMethod,
 		];
 	}
 }

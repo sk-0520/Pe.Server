@@ -1,4 +1,5 @@
 <?php
+require_once('program/core/request.php');
 require_once('program/core/route.php');
 
 class Routing
@@ -27,21 +28,23 @@ class Routing
 		$file = $this->controllerBaseDirectory . '/' . $rawControllerName . '.php';
 		require_once($file);
 
-		$ci = new ControllerInput();
 
 		$splitNames = explode('/', $rawControllerName);
 		$controllerName = $splitNames[count($splitNames) - 1];
 
+		$ci = new ControllerInput();
+		$req = new Request();
+
 		$controller = new $controllerName($ci);
-		$controller->$methodName();
+		$controller->$methodName($req);
 	}
 
-	public function execute(string $requestUri)
+	public function execute(string $requestMethod, string $requestUri)
 	{
 		$paths = $this->splitPaths($requestUri);
 
 		foreach($this->routeMap as $route) {
-			$action = $route->getAction($paths);
+			$action = $route->getAction($requestMethod, $paths);
 			if($action) {
 				$this->executeAction($action['class'], $action['method']);
 			}
