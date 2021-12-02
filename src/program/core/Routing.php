@@ -24,7 +24,7 @@ class Routing
 		return $paths;
 	}
 
-	private function executeAction($rawControllerName, $methodName) {
+	private function executeAction($rawControllerName, $methodName, array $pathParameters) {
 		$file = $this->controllerBaseDirectory . '/' . $rawControllerName . '.php';
 		require_once($file);
 
@@ -42,11 +42,14 @@ class Routing
 	public function execute(string $requestMethod, string $requestUri)
 	{
 		$paths = $this->splitPaths($requestUri);
+		$requestPaths = $paths;
+		//TODO: パス中のパラメータ(/区切りのID的な)
+		$pathParameters = $paths;
 
 		foreach($this->routeMap as $route) {
-			$action = $route->getAction($requestMethod, $paths);
+			$action = $route->getAction($requestMethod, $requestPaths);
 			if($action) {
-				$this->executeAction($action['class'], $action['method']);
+				$this->executeAction($action['class'], $action['method'], $pathParameters);
 			}
 		}
 	}
