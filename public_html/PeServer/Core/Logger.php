@@ -1,5 +1,5 @@
 <?php declare(strict_types=1);
-require_once('program/core/ILogger.php');
+require_once('PeServer/Core/ILogger.php');
 
 class Logger implements ILogger
 {

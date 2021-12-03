@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
-require_once('program/app/controllers/ControllerBase.php');
-require_once('program/app/models/Home/HomeIndex.php');
+require_once('PeServer/App/Controllers/ControllerBase.php');
+require_once('PeServer/App/Models/Home/HomeIndex.php');
 
 class HomeController extends ControllerBase
 {

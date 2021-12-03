@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
-require_once('program/lib/smarty/libs/Smarty.class.php');
-require_once('program/core/ControllerArguments.php');
+require_once('PeServer/Libs/smarty/libs/Smarty.class.php');
+require_once('PeServer/Core/ControllerArguments.php');
 
 abstract class ControllerBase
 {
@@ -9,10 +9,10 @@ abstract class ControllerBase
 
 	protected function createTemplate(string $baseName): Smarty {
 		$smarty = new Smarty();
-		$smarty->addTemplateDir("program/app/views/$baseName/");
-		$smarty->addTemplateDir("program/app/views/");
-		$smarty->compile_dir  = "program/temp/views/c/$baseName/";
-		$smarty->cache_dir    = "program/temp/views/t/$baseName/";
+		$smarty->addTemplateDir("PeServer/App/Views/$baseName/");
+		$smarty->addTemplateDir("PeServer/App/Views/");
+		$smarty->compile_dir  = "PeServer/temp/views/c/$baseName/";
+		$smarty->cache_dir    = "PeServer/temp/views/t/$baseName/";
 
 		return $smarty;
 	}

@@ -1,7 +1,14 @@
 {
 	"folders": [
 		{
-			"path": "."
+			"path": ".",
+			"name": "ROOT"
+		},
+		{
+			"path": "public_html/PeServer"
+		},
+		{
+			"path": "TEST"
 		}
 	],
 	"settings": {

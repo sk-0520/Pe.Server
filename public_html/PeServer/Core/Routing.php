@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
-require_once('program/core/ControllerArguments.php');
-require_once('program/core/ActionRequest.php');
-require_once('program/core/Route.php');
+require_once('PeServer/Core/ControllerArguments.php');
+require_once('PeServer/Core/ActionRequest.php');
+require_once('PeServer/Core/Route.php');
 
 class Routing
 {

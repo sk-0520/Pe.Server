@@ -25,7 +25,7 @@ test_script:
   - sh: npm run test
   - sh: cd test; php phpunit --testdox .
 artifacts:
-  - path: src
+  - path: public_html
   - path: -script-coverage
     name: script-coverage
 cache:

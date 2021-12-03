@@ -17,7 +17,7 @@ class Data
 
 class TestClass extends TestCase
 {
-	const SRC = __DIR__ . '../../src/';
+	const SRC = __DIR__ . '../../public_html/';
 
 	protected function assertBoolean(bool $expected, bool $actual)
 	{

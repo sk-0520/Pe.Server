@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 require_once('test.php');
-require_once(TestClass::SRC . 'program/core/StringUtility.php');
+require_once(TestClass::SRC . 'PeServer/Core/StringUtility.php');
 
 class StringUtilityTest extends TestClass
 {
