@@ -1,4 +1,6 @@
 <?php declare(strict_types=1);
+namespace PeServer\Core;
+
 require_once('PeServer/Core/ControllerArguments.php');
 require_once('PeServer/Core/ActionRequest.php');
 require_once('PeServer/Core/Route.php');
@@ -25,10 +27,6 @@ class Routing
 	}
 
 	private function executeAction($rawControllerName, $methodName, array $pathParameters) {
-		$file = $this->controllerBaseDirectory . '/' . $rawControllerName . '.php';
-		require_once($file);
-
-
 		$splitNames = explode('/', $rawControllerName);
 		$controllerName = $splitNames[count($splitNames) - 1];
 

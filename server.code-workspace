@@ -31,6 +31,9 @@
 			"**/bin/**": true,
 			"**/obj/**": true,
 			"*.lnk": true,
-		}
+		},
+		"cSpell.words": [
+			"phpunit"
+		]
 	}
 }

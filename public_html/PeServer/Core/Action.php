@@ -1,4 +1,6 @@
 <?php declare(strict_types=1);
+namespace PeServer\Core;
+
 require_once('PeServer/Core/HttpMethod.php');
 
 class Action

@@ -1,6 +1,7 @@
 <?php
-require_once('PeServer/App/Controllers/Api/ApiControllerBase.php');
-require_once('PeServer/App/Models/Api/Hello/HelloIndex.php');
+namespace PeServer\App\Controllers\Api;
+
+use \PeServer\Core\ControllerArguments;
 
 class HelloController extends ApiControllerBase
 {

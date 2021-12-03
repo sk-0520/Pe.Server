@@ -1,6 +1,9 @@
 <?php declare(strict_types=1);
-require_once('test.php');
-require_once(TestClass::SRC . 'PeServer/Core/StringUtility.php');
+namespace PeServerTest\Core;
+
+use \PeServerTest\Data;
+use \PeServerTest\TestClass;
+use \PeServer\Core\StringUtility;
 
 class StringUtilityTest extends TestClass
 {

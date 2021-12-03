@@ -1,5 +1,14 @@
 <?php declare(strict_types=1);
-require_once('phpunit');
+namespace PeServerTest;
+
+require_once(__DIR__ . '/phpunit');
+require_once(__DIR__ . '/../public_html/PeServer/Core/AutoLoader.php');
+
+\PeServer\Core\registerAutoLoader([
+	__DIR__,
+	__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'public_html',
+]);
+
 
 use PHPUnit\Framework\TestCase;
 
@@ -17,8 +26,6 @@ class Data
 
 class TestClass extends TestCase
 {
-	const SRC = __DIR__ . '../../public_html/';
-
 	protected function assertBoolean(bool $expected, bool $actual)
 	{
 		if($expected) {

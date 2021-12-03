@@ -1,13 +1,13 @@
 # ルーティング用
 <IfModule mod_rewrite.c>
     RewriteEngine On
-    RewriteCond %{REQUEST_URI} !\.css$
-    RewriteCond %{REQUEST_URI} !\.js$
-    RewriteCond %{REQUEST_URI} !\.jpe?g$
-    RewriteCond %{REQUEST_URI} !\.gif$
-    RewriteCond %{REQUEST_URI} !\.png$
-    RewriteCond %{REQUEST_URI} !\.json$
-    RewriteCond %{REQUEST_URI} !\.xml$
+    RewriteCond %{REQUEST_URI} !\.css(\?.*)?$
+    RewriteCond %{REQUEST_URI} !\.js(\?.*)?$
+    RewriteCond %{REQUEST_URI} !\.jpe?g(\?.*)?$
+    RewriteCond %{REQUEST_URI} !\.gif(\?.*)?$
+    RewriteCond %{REQUEST_URI} !\.png(\?.*)?$
+    RewriteCond %{REQUEST_URI} !\.json(\?.*)?$
+    RewriteCond %{REQUEST_URI} !\.xml(\?.*)?$
     RewriteRule ^.*$ index.php
 </IfModule>
 

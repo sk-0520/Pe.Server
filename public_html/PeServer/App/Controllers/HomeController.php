@@ -1,6 +1,8 @@
 <?php declare(strict_types=1);
-require_once('PeServer/App/Controllers/ControllerBase.php');
-require_once('PeServer/App/Models/Home/HomeIndex.php');
+namespace PeServer\App\Controllers;
+
+use \PeServer\Core\ControllerArguments;
+use \PeServer\App\Controllers\ControllerBase;
 
 class HomeController extends ControllerBase
 {

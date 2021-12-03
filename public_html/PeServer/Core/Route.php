@@ -1,4 +1,6 @@
 <?php declare(strict_types=1);
+namespace PeServer\Core;
+
 require_once('PeServer/Core/Action.php');
 require_once('PeServer/Core/ActionRequest.php');
 require_once('PeServer/Core/HttpMethod.php');
@@ -23,7 +25,7 @@ class Route
 
 		$this->path = $path;
 		$this->className = $className;
-		if(mb_substr($this->className, 0 , 3) != 'api') {
+		if(mb_substr($this->path, 0 , 3) != 'api') {
 			$this->actions[''] = new Action(HttpMethod::ALL, 'index');
 		}
 	}
