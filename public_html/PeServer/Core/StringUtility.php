@@ -1,15 +1,18 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 namespace PeServer\Core;
 
 class StringUtility
 {
 	public static function isNullOrEmpty(?string $s): bool
 	{
-		if(is_null($s)) {
+		if (is_null($s)) {
 			return true;
 		}
 
-		if($s === '0') {
+		if ($s === '0') {
 			return false;
 		}
 
@@ -18,7 +21,7 @@ class StringUtility
 
 	public static function isNullOrWhiteSpace(?string $s): bool
 	{
-		if(self::isNullOrEmpty($s)) {
+		if (self::isNullOrEmpty($s)) {
 			return true;
 		}
 

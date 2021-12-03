@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 namespace PeServer\Core;
 
 require_once('PeServer/Core/ILogger.php');

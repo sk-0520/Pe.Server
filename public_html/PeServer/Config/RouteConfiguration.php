@@ -1,8 +1,8 @@
-<?php declare(strict_types=1);
-namespace PeServer\Config;
+<?php
 
-require_once('PeServer/Core/Route.php');
-require_once('PeServer/Core/ConfigurationBase.php');
+declare(strict_types=1);
+
+namespace PeServer\Config;
 
 use \PeServer\Core\ConfigurationBase;
 use \PeServer\Core\Route;
@@ -11,15 +11,11 @@ use \PeServer\App\Controllers\Api\HelloController;
 
 final class RouteConfiguration extends ConfigurationBase
 {
-	function get(): array {
-		$result = [
-			new Route('', HomeController::class)
-			,
-			new Route('api/hello', HelloController::class)
-			,
+	function get(): array
+	{
+		return [
+			new Route('', HomeController::class),
+			new Route('api/hello', HelloController::class),
 		];
-
-		return $result;
 	}
 }
-

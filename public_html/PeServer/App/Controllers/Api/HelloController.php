@@ -1,4 +1,5 @@
 <?php
+
 namespace PeServer\App\Controllers\Api;
 
 use \PeServer\Core\ControllerArguments;

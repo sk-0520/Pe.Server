@@ -3,6 +3,7 @@ temp/
 node_modules/
 public_html/scripts/
 public_html/styles/
+public_html/PeServer/Config/RouteConfiguration.php
 desktop.ini
 *.lnk
 -*

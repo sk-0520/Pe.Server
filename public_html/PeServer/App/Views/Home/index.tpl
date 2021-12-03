@@ -1,4 +1,4 @@
-{extends file='default.layout.tpl'}
+{extends file='default.tpl'}
 {block name=TITLE}🌞{/block}
 {block name=BODY}
 

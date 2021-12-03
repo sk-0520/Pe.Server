@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 namespace PeServer\Core;
 
 require_once('PeServer/Core/ControllerArguments.php');
@@ -26,7 +29,8 @@ class Routing
 		return $paths;
 	}
 
-	private function executeAction($rawControllerName, $methodName, array $pathParameters) {
+	private function executeAction($rawControllerName, $methodName, array $pathParameters)
+	{
 		$splitNames = explode('/', $rawControllerName);
 		$controllerName = $splitNames[count($splitNames) - 1];
 
@@ -44,12 +48,11 @@ class Routing
 		//TODO: パス中のパラメータ(/区切りのID的な)
 		$pathParameters = $paths;
 
-		foreach($this->routeMap as $route) {
+		foreach ($this->routeMap as $route) {
 			$action = $route->getAction($requestMethod, $requestPaths);
-			if($action) {
+			if ($action) {
 				$this->executeAction($action['class'], $action['method'], $pathParameters);
 			}
 		}
 	}
 }
-

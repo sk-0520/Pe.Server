@@ -1,18 +1,20 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 namespace PeServer\App\Controllers;
 
 use \Smarty;
 use \PeServer\Core\ControllerArguments;
 
-require_once('PeServer/Libs/smarty/libs/Smarty.class.php');
-require_once('PeServer/Core/ControllerArguments.php');
-
 abstract class ControllerBase
 {
 	public function __construct(ControllerArguments $arguments)
-	{ }
+	{
+	}
 
-	protected function createTemplate(string $baseName): Smarty {
+	protected function createTemplate(string $baseName): Smarty
+	{
 		$smarty = new Smarty();
 		$smarty->addTemplateDir("PeServer/App/Views/$baseName/");
 		$smarty->addTemplateDir("PeServer/App/Views/");
@@ -36,7 +38,8 @@ abstract class ControllerBase
 		$smarty->display("$action.tpl");
 	}
 
-	public function view(string $action, ?array $parameters = null) {
+	public function view(string $action, ?array $parameters = null)
+	{
 		$className = get_class($this);
 
 		$this->viewWithController($className, $action, $parameters);

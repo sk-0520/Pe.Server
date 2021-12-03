@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 namespace PeServer\Core;
 
 require_once('PeServer/Core/Action.php');
@@ -19,13 +22,13 @@ class Route
 		// if(str_ends_with($path, '/')) {
 		// 	die();
 		// }
-		if(mb_substr($path, 0, 1 ) == '/') {
+		if (mb_substr($path, 0, 1) == '/') {
 			die();
 		}
 
 		$this->path = $path;
 		$this->className = $className;
-		if(mb_substr($this->path, 0 , 3) != 'api') {
+		if (mb_substr($this->path, 0, 3) != 'api') {
 			$this->actions[''] = new Action(HttpMethod::ALL, 'index');
 		}
 	}
@@ -34,25 +37,26 @@ class Route
 	{
 		$actions[$actionName] = new Action(
 			$httpMethod,
-			$methodName != null ? $methodName: $actionName
+			$methodName != null ? $methodName : $actionName
 		);
 		return $this;
 	}
 
-	public function getAction(string $httpMethod, array $paths) {
+	public function getAction(string $httpMethod, array $paths)
+	{
 		$path = implode('/', $paths);
 
-		if($this->path != mb_substr($path, 0, mb_strlen($this->path))) {
+		if ($this->path != mb_substr($path, 0, mb_strlen($this->path))) {
 			return null;
 		}
 
 		$actionPath = mb_substr($path, mb_strlen($this->path));
 
-		if(stripos($actionPath, '/') !== false) {
+		if (stripos($actionPath, '/') !== false) {
 			return null;
 		}
 
-		if(!isset($this->actions[$actionPath])) {
+		if (!isset($this->actions[$actionPath])) {
 			return null;
 		}
 
@@ -65,5 +69,3 @@ class Route
 		];
 	}
 }
-
-
