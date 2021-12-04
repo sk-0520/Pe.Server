@@ -2,16 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Config;
+namespace PeServer\App\Models;
 
-use \PeServer\Core\ConfigurationBase;
 use \PeServer\Core\Route;
 use \PeServer\App\Controllers\HomeController;
 use \PeServer\App\Controllers\Api\HelloController;
 
-final class RouteConfiguration extends ConfigurationBase
+class RouteConfiguration
 {
-	function get(): array
+	public static function get(): array
 	{
 		return [
 			new Route('', HomeController::class),

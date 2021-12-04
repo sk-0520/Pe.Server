@@ -5,7 +5,6 @@ require_once(__DIR__ . '/phpunit');
 require_once(__DIR__ . '/../public_html/PeServer/Core/AutoLoader.php');
 
 use \PeServer\App\Models\Initializer;
-use \PHPUnit\Framework\TestCase;
 
 \PeServer\Core\registerAutoLoader([
 	__DIR__,
@@ -26,8 +25,12 @@ class Data
 	}
 }
 
-class TestClass extends TestCase
+class TestClass extends \PHPUnit\Framework\TestCase
 {
+	protected static function s($s): string {
+		return $s;
+	}
+
 	protected function assertBoolean(bool $expected, bool $actual)
 	{
 		if($expected) {

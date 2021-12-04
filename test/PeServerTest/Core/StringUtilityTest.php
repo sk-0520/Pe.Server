@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 namespace PeServerTest\Core;
 
 use \PeServerTest\Data;
@@ -16,7 +19,7 @@ class StringUtilityTest extends TestClass
 			new Data(false, '0'),
 			new Data(false, 'abc'),
 		];
-		foreach($tests as $test) {
+		foreach ($tests as $test) {
 			$actual = StringUtility::isNullOrEmpty(...$test->args);
 			$this->assertBoolean($test->expected, $actual);
 		}
@@ -31,7 +34,7 @@ class StringUtilityTest extends TestClass
 			new Data(false, '0'),
 			new Data(false, 'abc'),
 		];
-		foreach($tests as $test) {
+		foreach ($tests as $test) {
 			$actual = StringUtility::isNullOrWhiteSpace(...$test->args);
 			$this->assertBoolean($test->expected, $actual);
 		}

@@ -6,7 +6,7 @@ require_once('PeServer/Core/AutoLoader.php');
 use function \PeServer\Core\registerAutoLoader;
 
 use \PeServer\Core\Routing;
-use \PeServer\Config\RouteConfiguration;
+use \PeServer\App\Models\RouteConfiguration;
 use \PeServer\App\Models\Initializer;
 
 registerAutoLoader([ __DIR__ ]);

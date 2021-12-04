@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\App\Controllers;
 
+require_once('PeServer/Libs/smarty/libs/Smarty.class.php');
+
 use \Smarty;
 use \PeServer\Core\ControllerArguments;
 
