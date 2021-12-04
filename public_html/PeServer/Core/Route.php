@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
-require_once('PeServer/Core/Action.php');
-require_once('PeServer/Core/ActionRequest.php');
-require_once('PeServer/Core/HttpMethod.php');
-
 class Route
 {
 	private $path;

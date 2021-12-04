@@ -4,13 +4,15 @@ namespace PeServerTest;
 require_once(__DIR__ . '/phpunit');
 require_once(__DIR__ . '/../public_html/PeServer/Core/AutoLoader.php');
 
+use \PeServer\App\Models\Initializer;
+use \PHPUnit\Framework\TestCase;
+
 \PeServer\Core\registerAutoLoader([
 	__DIR__,
 	__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'public_html',
 ]);
 
-
-use PHPUnit\Framework\TestCase;
+Initializer::initialize(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'public_html', 'test');
 
 class Data
 {
