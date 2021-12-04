@@ -2,6 +2,7 @@
 namespace PeServer;
 
 require_once('PeServer/Core/AutoLoader.php');
+require_once('PeServer/Libs/smarty/libs/Smarty.class.php');
 
 use function \PeServer\Core\registerAutoLoader;
 
@@ -16,4 +17,3 @@ $routeConfiguration = new RouteConfiguration();
 $routing = new Routing($routeConfiguration->get(), 'PeServer/App/Controllers');
 $routing->execute($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
 ?>
-

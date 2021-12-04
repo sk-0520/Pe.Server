@@ -6,7 +6,7 @@ namespace PeServer\Core;
 
 use \PeServer\Core\Logging;
 
-class Logger implements ILogger
+abstract class LoggerBase implements ILogger
 {
 	protected $traceIndex = 2;
 
@@ -19,11 +19,15 @@ class Logger implements ILogger
 		$this->level = $level;
 	}
 
-	private function log(int $level, int $traceIndex, string $message, ?array $parameters = null)
+	protected abstract function logImpl(int $level, int $traceIndex, string $message, ?array $parameters = null);
+
+	public function log(int $level, int $traceIndex, string $message, ?array $parameters = null): void
 	{
 		if($this->level < $level) {
 			return;
 		}
+
+		$this->logImpl($level, $traceIndex, $message, $parameters);
 	}
 
 	public function trace(string $message, ?array $parameters = null): void

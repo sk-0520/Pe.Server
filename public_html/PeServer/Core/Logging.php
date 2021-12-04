@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core;
 
 use \PeServer\Core\ILogger;
-use \PeServer\Core\Logger;
+use \PeServer\Core\FileLogger;
 
 /**
  * ロガー生成処理。
@@ -27,6 +27,9 @@ class Logging
 
 	public static function create(string $header): ILogger
 	{
-		return new Logger($header, self::$level);
+		$loggers = [
+			new FileLogger($header, self::$level),
+		];
+		return new MultiLogger($header, self::$level, $loggers);
 	}
 }
