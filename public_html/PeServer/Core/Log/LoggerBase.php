@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core;
+namespace PeServer\Core\Log;
 
-use \PeServer\Core\Logging;
+use \PeServer\Core\ILogger;
+use \PeServer\Core\Log\Logging;
 
 abstract class LoggerBase implements ILogger
 {

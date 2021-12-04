@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core;
+namespace PeServer\Core\Log;
 
-use \PeServer\Core\LoggerBase;
+use \PeServer\Core\Log\LoggerBase;
 
 class FileLogger extends LoggerBase
 {

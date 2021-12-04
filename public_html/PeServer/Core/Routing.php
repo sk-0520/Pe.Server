@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
+use PeServer\Core\Log\Logging;
+
+
 class Routing
 {
 	private $routeMap;
@@ -30,7 +33,9 @@ class Routing
 		$splitNames = explode('/', $rawControllerName);
 		$controllerName = $splitNames[count($splitNames) - 1];
 
-		$controllerArguments = new ControllerArguments();
+		$logger = Logging::create($controllerName);
+
+		$controllerArguments = new ControllerArguments($logger);
 		$req = new ActionRequest();
 
 		$controller = new $controllerName($controllerArguments);

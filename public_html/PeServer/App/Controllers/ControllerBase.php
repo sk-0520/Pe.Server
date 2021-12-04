@@ -9,7 +9,6 @@ require_once('PeServer/Libs/smarty/libs/Smarty.class.php');
 use \Smarty;
 use \PeServer\Core\ControllerArguments;
 use \PeServer\Core\ILogger;
-use \PeServer\Core\Logging;
 use \PeServer\App\Models\Template;
 
 abstract class ControllerBase
@@ -18,7 +17,7 @@ abstract class ControllerBase
 
 	public function __construct(ControllerArguments $arguments)
 	{
-		$this->logger = Logging::create(self::class);
+		$this->logger = $arguments->logger;
 		$this->logger->trace('create');
 	}
 

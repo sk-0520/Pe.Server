@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core;
+namespace PeServer\Core\Log;
 
 use \PeServer\Core\ILogger;
-use \PeServer\Core\FileLogger;
+use \PeServer\Core\Log\FileLogger;
+use \PeServer\Core\Log\MultiLogger;
 
 /**
  * ロガー生成処理。

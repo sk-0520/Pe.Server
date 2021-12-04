@@ -6,7 +6,7 @@ namespace PeServer\App\Models;
 
 use Error;
 use PeServer\Core\FileUtility;
-use PeServer\Core\Logging;
+use PeServer\Core\Log\Logging;
 use PeServer\Core\Database;
 
 class AppConfiguration
