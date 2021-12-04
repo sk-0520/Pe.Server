@@ -8,8 +8,9 @@ require_once('PeServer/Libs/smarty/libs/Smarty.class.php');
 
 use \Smarty;
 use \PeServer\Core\ControllerArguments;
-use PeServer\Core\ILogger;
-use PeServer\Core\Logging;
+use \PeServer\Core\ILogger;
+use \PeServer\Core\Logging;
+use \PeServer\App\Models\Template;
 
 abstract class ControllerBase
 {
@@ -23,13 +24,7 @@ abstract class ControllerBase
 
 	protected function createTemplate(string $baseName): Smarty
 	{
-		$smarty = new Smarty();
-		$smarty->addTemplateDir("PeServer/App/Views/$baseName/");
-		$smarty->addTemplateDir("PeServer/App/Views/");
-		$smarty->compile_dir  = "PeServer/temp/views/c/$baseName/";
-		$smarty->cache_dir    = "PeServer/temp/views/t/$baseName/";
-
-		return $smarty;
+		return Template::createTemplate($baseName);
 	}
 
 	public function viewWithController(string $controllerName, string $action, ?array $parameters = null)
