@@ -4,22 +4,24 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
+use \PeServer\Core\Logging;
+
 class Logger implements ILogger
 {
 	protected $traceIndex = 2;
 
 	protected $header;
-	protected $loggingConfiguration;
+	protected $level;
 
-	public function __construct(string $header, array $loggingConfiguration)
+	public function __construct(string $header, int $level)
 	{
 		$this->header = $header;
-		$this->loggingConfiguration = $loggingConfiguration;
+		$this->level = $level;
 	}
 
 	private function log(int $level, int $traceIndex, string $message, ?array $parameters = null)
 	{
-		if($this->loggingConfiguration['level'] < $level) {
+		if($this->level < $level) {
 			return;
 		}
 	}

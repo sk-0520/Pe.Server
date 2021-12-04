@@ -16,8 +16,17 @@ class Logging
 {
 	private static $loggingConfiguration;
 
+	public static $level;
+
 	public static function initialize(array $loggingConfiguration)
 	{
 		self::$loggingConfiguration = $loggingConfiguration;
+
+		self::$level = self::$loggingConfiguration['level'];
+	}
+
+	public static function create(string $header): ILogger
+	{
+		return new Logger($header, self::$level);
 	}
 }

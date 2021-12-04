@@ -8,11 +8,17 @@ require_once('PeServer/Libs/smarty/libs/Smarty.class.php');
 
 use \Smarty;
 use \PeServer\Core\ControllerArguments;
+use PeServer\Core\ILogger;
+use PeServer\Core\Logging;
 
 abstract class ControllerBase
 {
+	protected $logger;
+
 	public function __construct(ControllerArguments $arguments)
 	{
+		$this->logger = Logging::create(self::class);
+		$this->logger->trace('create');
 	}
 
 	protected function createTemplate(string $baseName): Smarty
