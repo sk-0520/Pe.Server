@@ -11,7 +11,7 @@ use \PeServer\App\Models\Initializer;
 	__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'public_html',
 ]);
 
-Initializer::initialize(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'public_html', 'test');
+Initializer::initialize(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'public_html' . DIRECTORY_SEPARATOR . 'PeServer', __DIR__ . DIRECTORY_SEPARATOR . 'test', 'test');
 
 class Data
 {

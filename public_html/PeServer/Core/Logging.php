@@ -16,7 +16,7 @@ class Logging
 {
 	private static $loggingConfiguration;
 
-	public static function setup(array $loggingConfiguration)
+	public static function initialize(array $loggingConfiguration)
 	{
 		self::$loggingConfiguration = $loggingConfiguration;
 	}

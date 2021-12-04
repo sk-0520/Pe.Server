@@ -9,10 +9,9 @@ use \PeServer\App\Models\AppConfiguration;
 
 class Initializer
 {
-	public static function initialize(string $baseDirectoryPath, string $environment)
+	public static function initialize(string $appDirectoryPath, string $baseDirectoryPath, string $environment)
 	{
-		$settingFilePath = FileUtility::join($baseDirectoryPath, 'PeServer', 'config', "setting.{$environment}.conf");
-		AppConfiguration::initialize($baseDirectoryPath, $settingFilePath);
+		AppConfiguration::initialize($appDirectoryPath, $baseDirectoryPath, $environment);
 	}
 }
 
