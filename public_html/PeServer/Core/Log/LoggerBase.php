@@ -20,15 +20,15 @@ abstract class LoggerBase implements ILogger
 		$this->level = $level;
 	}
 
-	protected abstract function logImpl(int $level, int $traceIndex, string $message, ?array $parameters = null);
+	protected abstract function logImpl(int $level, int $traceIndex, string $formattedMessage, string $message, ?array $parameters = null);
 
 	public function log(int $level, int $traceIndex, string $message, ?array $parameters = null): void
 	{
 		if($this->level < $level) {
 			return;
 		}
-
-		$this->logImpl($level, $traceIndex, $message, $parameters);
+		$formattedMessage = $message;
+		$this->logImpl($level, $traceIndex, /*TODO:*/$formattedMessage, $message, $parameters);
 	}
 
 	public function trace(string $message, ?array $parameters = null): void

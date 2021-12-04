@@ -13,7 +13,7 @@ class FileLogger extends LoggerBase
 		parent::__construct($header, $level);
 	}
 
-	protected function logImpl(int $level, int $traceIndex, string $message, ?array $parameters = null)
+	protected function logImpl(int $level, int $traceIndex, string $formattedMessage, string $message, ?array $parameters = null)
 	{
 
 	}

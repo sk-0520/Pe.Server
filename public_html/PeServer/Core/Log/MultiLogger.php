@@ -16,7 +16,7 @@ final class MultiLogger extends LoggerBase
 		$this->loggers = $loggers;
 	}
 
-	protected function logImpl(int $level, int $traceIndex, string $message, ?array $parameters = null)
+	protected function logImpl(int $level, int $traceIndex, string $formattedMessage, string $message, ?array $parameters = null)
 	{
 		foreach($this->loggers as $logger) {
 			$logger->log($level, $traceIndex, $message, $parameters);
