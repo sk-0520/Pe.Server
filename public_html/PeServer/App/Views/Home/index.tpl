@@ -1,5 +1,5 @@
 {extends file='default.tpl'}
-{block name=TITLE}🌞{/block}
+{block name=TITLE}Peサーバー{/block}
 {block name=BODY}
 
 💩
