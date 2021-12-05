@@ -1,6 +1,7 @@
 .vscode/
 temp/
 node_modules/
+coverage/
 public_html/scripts/
 public_html/styles/
 public_html/PeServer/Config/RouteConfiguration.php

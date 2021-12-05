@@ -40,7 +40,7 @@
 			"**/scripts-test/**/*"
 		],
 		"collectCoverage": true,
-		"coverageDirectory": "-script-coverage"
+		"coverageDirectory": "coverage/script"
 	},
 	"browserslist": [
 		"ie >= 11",

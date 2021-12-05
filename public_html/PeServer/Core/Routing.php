@@ -10,12 +10,10 @@ use PeServer\Core\Log\Logging;
 class Routing
 {
 	private $routeMap;
-	private $controllerBaseDirectory;
 
-	public function __construct(array $routeMap, string $controllerBaseDirectory)
+	public function __construct(array $routeMap)
 	{
 		$this->routeMap = $routeMap;
-		$this->controllerBaseDirectory = $controllerBaseDirectory;
 	}
 
 	private function splitPaths(string $requestUri)

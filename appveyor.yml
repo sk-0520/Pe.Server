@@ -1,9 +1,9 @@
 version: '{build}'
 image: Ubuntu2004
 skip_tags: true
-branches:
-  only:
-    - master
+# branches:
+#   only:
+#     - master
 environment:
   PHP_VER: 7.1
 install:
@@ -24,9 +24,40 @@ build_script:
 test_script:
   - sh: npm run test
   - sh: cd test; php phpunit --bootstrap ./bootstrap.php --testdox .
+
 artifacts:
   - path: public_html
-  - path: -script-coverage
-    name: script-coverage
+    name: public_html
+  - path: coverage
+    name: coverage
+
+# deploy:
+#   provider: FTP
+#   protocol: ftp
+#   host: $FTP_HOST
+#   username: $FTP_USER
+#   password: $FTP_PASSWD
+# #   username:
+# #     secure: RQZ2cuCwHoM2UiM/CPowqcm+lRS1qUl6nyfmxti8ZEU=
+# #   password:
+# #     secure: drLe5anlZHy3VPcn3Xv5uq5WvsMTyxTdn3JtaC7xWM0=
+#   folder: /
+#   artifact: public_html
+
+# before_deploy:
+# #   - sh: sudo apt --yes install openvpn
+# #   - sh: curl -o vpn.csv http://www.vpngate.net/api/iphone/
+#   - sh: docker run --rm --cap-add=NET_ADMIN --device=/dev/net/tun --dns=1.1.1.1 --dns=8.8.8.8 --dns=9.9.9.9 -p 8118:8118 tantantanuki/ja-vpngate-proxy &
+#   - sh: sleep 30
+# deploy_script: |
+#   lftp <<END
+#   debug 5
+#   set ftp:proxy http://localhost:8118
+#   open ${FTP_USER}:${FTP_PASSWD}@${FTP_HOST}
+#   ls
+#   lcd public_html
+#   mput *.php
+#   END
+
 cache:
   - 'node_modules'
