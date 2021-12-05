@@ -5,30 +5,37 @@ declare(strict_types=1);
 namespace PeServer\Core\Log;
 
 use \PeServer\Core\ILogger;
-use \PeServer\Core\Log\Logging;
 
 abstract class LoggerBase implements ILogger
 {
-	protected $traceIndex = 2;
+	protected $traceIndex = 4;
 
 	protected $header;
 	protected $level;
+	protected $formatter;
 
-	public function __construct(string $header, int $level)
+	public function __construct(string $header, int $level, ?callable $formatter)
 	{
 		$this->header = $header;
 		$this->level = $level;
+		$this->formatter = $formatter;
 	}
 
-	protected abstract function logImpl(int $level, int $traceIndex, string $formattedMessage, string $message, ?array $parameters = null);
+	protected abstract function logImpl(int $level, int $traceIndex, string $formattedMessage, string $message, ?array $parameters = null): void;
 
-	public function log(int $level, int $traceIndex, string $message, ?array $parameters = null): void
+	public final function format(int $level, int $traceIndex, string $message, ?array $parameters = null): string
+	{
+		return call_user_func($this->formatter, $level, $traceIndex, $message, $parameters);
+	}
+
+	public final function log(int $level, int $traceIndex, string $message, ?array $parameters = null): void
 	{
 		if($this->level < $level) {
 			return;
 		}
-		$formattedMessage = $message;
-		$this->logImpl($level, $traceIndex, /*TODO:*/$formattedMessage, $message, $parameters);
+
+		$formattedMessage = is_null($this->formatter) ? '': $this->format($level, $traceIndex, $message, $parameters);
+		$this->logImpl($level, $traceIndex, $formattedMessage, $message, $parameters);
 	}
 
 	public function trace(string $message, ?array $parameters = null): void

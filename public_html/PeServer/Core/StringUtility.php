@@ -27,4 +27,22 @@ class StringUtility
 
 		return strlen(trim($s)) === 0;
 	}
+
+	public static function replaceMap(string $source, array $map, string $head = '{', string $tail = '}'): string
+	{
+		$escHead = preg_quote($head);
+		$escTail = preg_quote($tail);
+		$pattern = "/$escHead(.+?)$escTail/";
+
+		return preg_replace_callback(
+			$pattern,
+			function ($matches) use($map) {
+				if(isset($map[$matches[1]])) {
+					return $map[$matches[1]];
+				}
+				return '';
+			},
+			$source
+		);
+	}
 }

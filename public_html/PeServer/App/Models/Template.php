@@ -22,8 +22,8 @@ class Template
 		$smarty = new Smarty();
 		$smarty->addTemplateDir(self::$appDirectoryPath . "/App/Views/$baseName/");
 		$smarty->addTemplateDir(self::$appDirectoryPath . "/App/Views/");
-		$smarty->compile_dir  = self::$appDirectoryPath . "/temp/views/c/$baseName/";
-		$smarty->cache_dir    = self::$appDirectoryPath . "/temp/views/t/$baseName/";
+		$smarty->compile_dir  = self::$appDirectoryPath . "/data/temp/views/c/$baseName/";
+		$smarty->cache_dir    = self::$appDirectoryPath . "/data/temp/views/t/$baseName/";
 
 		return $smarty;
 	}

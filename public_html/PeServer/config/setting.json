@@ -7,9 +7,11 @@
 	},
 	"logging": {
 		"level": 3,
+		"format": "{TIMESTAMP} {METHOD} {REQUEST} {IP} {UA} {SESSION} {FILE} {LINE} {FUNCTION} {ARGS} {MESSAGE}",
 		"file": {
 			"dir": "<BASE>/data/logs",
-			"file": "log.log"
+			"file": "log.log",
+			"count": 10
 		}
 	}
 }

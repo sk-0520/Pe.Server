@@ -19,4 +19,17 @@ class FileUtility
 		$content = file_get_contents($path);
 		return json_decode($content, $associative);
 	}
+
+	public static function createDirectoryIfNotExists($directoryPath)
+	{
+		if (!file_exists($directoryPath)) {
+			mkdir($directoryPath, 0777, true);
+		}
+	}
+
+	public static function createParentDirectoryIfNotExists(string $path)
+	{
+		self::createDirectoryIfNotExists(dirname($path));
+	}
+
 }
