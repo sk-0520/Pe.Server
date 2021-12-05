@@ -4,7 +4,9 @@ node_modules/
 coverage/
 public_html/scripts/
 public_html/styles/
-public_html/PeServer/Config/RouteConfiguration.php
+public_html/PeServer/data/
+public_html/PeServer/config/setting.production.json
+public_html/PeServer/config/setting.development.json
 desktop.ini
 *.lnk
 -*

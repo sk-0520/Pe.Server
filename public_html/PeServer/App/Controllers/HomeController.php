@@ -6,6 +6,8 @@ namespace PeServer\App\Controllers;
 
 use \PeServer\Core\ControllerArguments;
 use \PeServer\App\Controllers\ControllerBase;
+use \PeServer\App\Models\Domains\LogicMode;
+use \PeServer\App\Models\Domains\Home\HomeIndexLogic;
 
 class HomeController extends ControllerBase
 {
@@ -16,6 +18,9 @@ class HomeController extends ControllerBase
 
 	public function index()
 	{
-		return $this->view('index');
+		$logic = $this->createLogic(HomeIndexLogic::class);
+		$logic->run(LogicMode::INITIALIZE);
+
+		return $this->view('index', $logic->getData());
 	}
 }

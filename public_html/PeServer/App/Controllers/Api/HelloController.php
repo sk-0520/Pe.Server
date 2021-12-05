@@ -2,7 +2,7 @@
 
 namespace PeServer\App\Controllers\Api;
 
-use \PeServer\App\Models\ControllerArguments;
+use \PeServer\Core\ControllerArguments;
 use \PeServer\App\Controllers\Api\ApiControllerBase;
 
 class HelloController extends ApiControllerBase
