@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core;
+namespace PeServer\App\Models\Domains;
 
 use \PeServer\Core\ILogger;
 
-class ControllerArguments
+class LogicParameter
 {
 	public $logger;
 

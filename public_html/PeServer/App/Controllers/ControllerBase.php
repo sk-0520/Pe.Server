@@ -8,7 +8,6 @@ require_once('PeServer/Libs/smarty/libs/Smarty.class.php');
 
 use \Smarty;
 use \PeServer\Core\ControllerArguments;
-use \PeServer\Core\ILogger;
 use \PeServer\App\Models\Template;
 
 abstract class ControllerBase

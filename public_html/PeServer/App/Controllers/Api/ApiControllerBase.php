@@ -2,7 +2,7 @@
 
 namespace PeServer\App\Controllers\Api;
 
-use \PeServer\Core\ControllerArguments;
+use \PeServer\App\Models\ControllerArguments;
 use \PeServer\App\Controllers\ControllerBase;
 
 abstract class ApiControllerBase extends ControllerBase
