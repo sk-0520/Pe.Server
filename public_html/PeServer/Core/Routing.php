@@ -34,10 +34,10 @@ class Routing
 		$logger = Logging::create($controllerName);
 
 		$controllerArguments = new ControllerArguments($logger);
-		$req = new ActionRequest();
+		$request = new ActionRequest($pathParameters);
 
 		$controller = new $controllerName($controllerArguments);
-		$controller->$methodName($req);
+		$controller->$methodName($request);
 	}
 
 	public function execute(string $requestMethod, string $requestUri)
@@ -45,7 +45,7 @@ class Routing
 		$paths = $this->splitPaths($requestUri);
 		$requestPaths = $paths;
 		//TODO: パス中のパラメータ(/区切りのID的な)
-		$pathParameters = $paths;
+		$pathParameters = array();
 
 		foreach ($this->routeMap as $route) {
 			$action = $route->getAction($requestMethod, $requestPaths);

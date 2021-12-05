@@ -5,21 +5,31 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Domains;
 
 use \Exception;
+use \PeServer\Core\ActionRequest;
 use \PeServer\App\Models\Domains\LogicParameter;
 
 abstract class LogicBase
 {
 	protected $logger;
+	private $request;
 
-	protected $inputs = array();
-	protected $errors = array();
-	protected $values = array();
+	private $errors = array();
+	private $values = array();
 
 	protected function __construct(LogicParameter $parameter)
 	{
+		$parameter->request;
 		$this->logger = $parameter->logger;
 
 		$this->logger->trace('LOGIC');
+	}
+
+	protected function getRequest(string $key, mixed $default = null): mixed
+	{
+		if (!$this->request->exists($key)) {
+			return $default;
+		}
+		return $this->request->get($key);
 	}
 
 	public function hasError()

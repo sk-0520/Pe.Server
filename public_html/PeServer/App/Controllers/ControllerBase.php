@@ -7,6 +7,7 @@ namespace PeServer\App\Controllers;
 require_once('PeServer/Libs/smarty/libs/Smarty.class.php');
 
 use \Smarty;
+use \PeServer\Core\ActionRequest;
 use \PeServer\Core\ControllerArguments;
 use \PeServer\Core\Log\Logging;
 use \PeServer\App\Models\Template;
@@ -24,16 +25,17 @@ abstract class ControllerBase
 		$this->logger->trace('CONTROLLER');
 	}
 
-	protected function createParameter(string $logicName): LogicParameter
+	protected function createParameter(string $logicName, ActionRequest $request): LogicParameter
 	{
 		return new LogicParameter(
+			$request,
 			Logging::create($logicName)
 		);
 	}
 
-	protected function createLogic($logicClass): LogicBase
+	protected function createLogic($logicClass, ActionRequest $request): LogicBase
 	{
-		$parameter = $this->createParameter($logicClass);
+		$parameter = $this->createParameter($logicClass, $request);
 		return new $logicClass($parameter);
 	}
 
