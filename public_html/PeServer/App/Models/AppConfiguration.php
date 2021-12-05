@@ -12,6 +12,7 @@ use PeServer\Core\StringUtility;
 
 class AppConfiguration
 {
+	public static $environment;
 	public static $json;
 
 	private static function replaceArray(array $array, string $appDirectoryPath, string $baseDirectoryPath, string $environment): array
@@ -64,6 +65,7 @@ class AppConfiguration
 		Logging::initialize($json['logging']);
 		Database::initialize($json['persistence']);
 
+		self::$environment = $environment;
 		self::$json = $json;
 	}
 }
