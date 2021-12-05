@@ -1,1 +1,2 @@
-<script src="/scripts/script.js" />
+<script src="/scripts/script.js"></script>
+{block name=SCRIPTS}{/block}
