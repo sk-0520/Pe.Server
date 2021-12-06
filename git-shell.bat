@@ -1,6 +1,6 @@
 cd /d %~dp0
 
-set V2SHELL=%PROGRAMFILES%\Git\bin\sh.exe 
+set V2SHELL=%PROGRAMFILES%\Git\bin\sh.exe
 if exist "%V2SHELL%" (
 	"%V2SHELL%" %*
 ) else (
