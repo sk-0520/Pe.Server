@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Log;
 
+define('REQUEST_ID', bin2hex(openssl_random_pseudo_bytes(6)));
+
 use \PeServer\Core\ILogger;
 use \PeServer\Core\Log\FileLogger;
 use \PeServer\Core\Log\MultiLogger;
@@ -35,13 +37,13 @@ class Logging
 		$backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
 		$trace = $backtrace[$traceIndex + 1];
 
-		//"{TIMESTAMP} {METHOD} {REQUEST} {IP} {UA} {SESSION} {FILE} {LINE} {FUNCTION} {ARGS} {MESSAGE}",
 		$map = [
-			'TIMESTAMP' => date('Y-m-d\TH:i:s.vP'),
+			'TIMESTAMP' => date('c'),
+			'IP' => @$_SERVER['REMOTE_ADDR'] ?: '',
+			'REQUEST_ID' => REQUEST_ID,
+			'UA' => @$_SERVER['HTTP_USER_AGENT'] ?: '',
 			'METHOD' => @$_SERVER['REQUEST_METHOD'] ?: '',
 			'REQUEST' => @$_SERVER['REQUEST_URI'] ?: '',
-			'IP' => @$_SERVER['REMOTE_ADDR'] ?: '',
-			'UA' => @$_SERVER['HTTP_USER_AGENT'] ?: '',
 			'SESSION' => session_id(),
 			//-------------------
 			'FILE' => @$trace['file'] ?: '',
