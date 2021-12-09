@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PeServer\App\Models;
+namespace PeServer\Core;
 
+require_once('PeServer/Libs/smarty/libs/Smarty.class.php');
 
 use \Smarty;
-
 
 class Template
 {

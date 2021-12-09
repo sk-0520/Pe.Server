@@ -9,7 +9,7 @@ use \PeServer\Core\Log\LoggerBase;
 
 class FileLogger extends LoggerBase
 {
-	private $fileLoggingConfiguration;
+	//private $fileLoggingConfiguration;
 
 	private $directoryPath;
 	private $baseFileName;

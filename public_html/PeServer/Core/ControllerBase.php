@@ -2,21 +2,20 @@
 
 declare(strict_types=1);
 
-namespace PeServer\App\Controllers;
-
-require_once('PeServer/Libs/smarty/libs/Smarty.class.php');
+namespace PeServer\Core;
 
 use \Smarty;
 use \PeServer\Core\ActionRequest;
 use \PeServer\Core\ControllerArguments;
+use \PeServer\Core\Template;
+use \PeServer\Core\LogicBase;
+use \PeServer\Core\LogicParameter;
 use \PeServer\Core\Log\Logging;
-use \PeServer\App\Models\Template;
-use \PeServer\App\Models\Domains\LogicBase;
-use \PeServer\App\Models\Domains\LogicParameter;
 
 abstract class ControllerBase
 {
 	protected $logger;
+	protected $skipBaseName = 'PeServer\\App\\Controllers';
 
 	public function __construct(ControllerArguments $arguments)
 	{
@@ -47,8 +46,7 @@ abstract class ControllerBase
 	public function viewWithController(string $controllerName, string $action, ?array $parameters = null)
 	{
 		$lastWord = 'Controller';
-		$skipBaseName = 'PeServer\\App\\Controllers';
-		$controllerClassName = mb_substr($controllerName, mb_strpos($controllerName, $skipBaseName) + mb_strlen($skipBaseName) + 1);
+		$controllerClassName = mb_substr($controllerName, mb_strpos($controllerName, $this->skipBaseName) + mb_strlen($this->skipBaseName) + 1);
 		$controllerBaseName = mb_substr($controllerClassName, 0, mb_strlen($controllerClassName) - mb_strlen($lastWord));
 
 		$templateDirPath = str_replace('\\', DIRECTORY_SEPARATOR, $controllerBaseName);

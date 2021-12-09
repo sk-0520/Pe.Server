@@ -6,8 +6,8 @@ namespace PeServer\App\Controllers;
 
 use \PeServer\Core\ActionRequest;
 use \PeServer\Core\ControllerArguments;
-use \PeServer\App\Controllers\ControllerBase;
-use \PeServer\App\Models\Domains\LogicMode;
+use \PeServer\Core\ControllerBase;
+use \PeServer\Core\LogicMode;
 use \PeServer\App\Models\Domains\Home\HomeIndexLogic;
 
 class HomeController extends ControllerBase

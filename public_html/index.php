@@ -16,4 +16,3 @@ Initializer::initialize(__DIR__ . DIRECTORY_SEPARATOR . 'PeServer', __DIR__ . DI
 $routeConfiguration = new RouteConfiguration();
 $routing = new Routing($routeConfiguration->get());
 $routing->execute($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
-?>

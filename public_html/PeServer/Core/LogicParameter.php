@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\App\Models\Domains;
+namespace PeServer\Core;
 
 use \PeServer\Core\ILogger;
 use \PeServer\Core\ActionRequest;

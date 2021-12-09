@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domains\Home;
 
-use \PeServer\App\Models\Domains\LogicMode;
-use \PeServer\App\Models\Domains\LogicBase;
-use \PeServer\App\Models\Domains\LogicParameter;
+use \PeServer\Core\LogicMode;
+use \PeServer\Core\LogicBase;
+use \PeServer\Core\LogicParameter;
 
 class HomeIndexLogic extends LogicBase
 {

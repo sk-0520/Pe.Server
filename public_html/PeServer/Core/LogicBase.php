@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PeServer\App\Models\Domains;
+namespace PeServer\Core;
 
 use \Exception;
-use \PeServer\Core\ActionRequest;
-use \PeServer\App\Models\Domains\LogicParameter;
+use \PeServer\Core\LogicParameter;
 
 abstract class LogicBase
 {
