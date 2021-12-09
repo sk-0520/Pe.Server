@@ -8,54 +8,51 @@ use \PeServer\Core\ILogger;
 
 abstract class LoggerBase implements ILogger
 {
-	protected $traceIndex = 4;
-
 	protected $header;
 	protected $level;
-	protected $formatter;
+	protected $baseTraceIndex;
 
-	public function __construct(string $header, int $level, ?callable $formatter)
+	public function __construct(string $header, int $level, int $baseTraceIndex)
 	{
 		$this->header = $header;
 		$this->level = $level;
-		$this->formatter = $formatter;
+		$this->baseTraceIndex = $baseTraceIndex;
 	}
 
-	protected abstract function logImpl(int $level, int $traceIndex, string $formattedMessage, string $message, ?array $parameters = null): void;
+	protected abstract function logImpl(int $level, int $traceIndex, $message, string ...$parameters): void;
 
-	public final function format(int $level, int $traceIndex, string $message, ?array $parameters = null): string
+	protected function format(int $level, int $traceIndex, $message, string ...$parameters): string
 	{
-		return call_user_func($this->formatter, $level, $traceIndex, $message, $parameters);
+		return Logging::format($level, $traceIndex + 1, $message, ...$parameters);
 	}
 
-	public final function log(int $level, int $traceIndex, string $message, ?array $parameters = null): void
+	function log(int $level, int $traceIndex, $message, string ...$parameters): void
 	{
-		if($this->level < $level) {
+		if ($this->level < $level) {
 			return;
 		}
 
-		$formattedMessage = is_null($this->formatter) ? '': $this->format($level, $traceIndex, $message, $parameters);
-		$this->logImpl($level, $traceIndex, $formattedMessage, $message, $parameters);
+		$this->logImpl($level, $traceIndex + 1, $message, ...$parameters);
 	}
 
-	public function trace(string $message, ?array $parameters = null): void
+	public function trace($message, string ...$parameters): void
 	{
-		$this->log(self::LEVEL_TRACE, $this->traceIndex, $message, $parameters);
+		$this->log(self::LEVEL_TRACE, $this->baseTraceIndex + 1, $message, ...$parameters);
 	}
-	public function debug(string $message, ?array $parameters = null): void
+	public function debug($message, string ...$parameters): void
 	{
-		$this->log(self::LEVEL_DEBUG, $this->traceIndex, $message, $parameters);
+		$this->log(self::LEVEL_DEBUG, $this->baseTraceIndex + 1, $message, ...$parameters);
 	}
-	public function info(string $message, ?array $parameters = null): void
+	public function info($message, string ...$parameters): void
 	{
-		$this->log(self::LEVEL_INFO, $this->traceIndex, $message, $parameters);
+		$this->log(self::LEVEL_INFO, $this->baseTraceIndex + 1, $message, ...$parameters);
 	}
-	public function warn(string $message, ?array $parameters = null): void
+	public function warn($message, string ...$parameters): void
 	{
-		$this->log(self::LEVEL_WARN, $this->traceIndex, $message, $parameters);
+		$this->log(self::LEVEL_WARN, $this->baseTraceIndex + 1, $message, ...$parameters);
 	}
-	public function error(string $message, ?array $parameters = null): void
+	public function error($message, string ...$parameters): void
 	{
-		$this->log(self::LEVEL_ERROR, $this->traceIndex, $message, $parameters);
+		$this->log(self::LEVEL_ERROR, $this->baseTraceIndex + 1, $message, ...$parameters);
 	}
 }

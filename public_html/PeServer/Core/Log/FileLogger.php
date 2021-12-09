@@ -14,9 +14,9 @@ class FileLogger extends LoggerBase
 	private $directoryPath;
 	private $baseFileName;
 
-	public function __construct(string $header, int $level, ?callable $formatter, array $fileLoggingConfiguration)
+	public function __construct(string $header, int $level,int $baseTraceIndex, array $fileLoggingConfiguration)
 	{
-		parent::__construct($header, $level, $formatter);
+		parent::__construct($header, $level, $baseTraceIndex);
 
 		$this->directoryPath = $fileLoggingConfiguration['dir'];
 		$this->baseFileName = $fileLoggingConfiguration['file'];
@@ -34,11 +34,11 @@ class FileLogger extends LoggerBase
 		return FileUtility::join($this->directoryPath, $this->baseFileName);
 	}
 
-	protected function logImpl(int $level, int $traceIndex, string $formattedMessage, string $message, ?array $parameters = null): void
+	protected function logImpl(int $level, int $traceIndex, $message, string ...$parameters): void
 	{
 		FileUtility::createDirectoryIfNotExists($this->directoryPath);
 
-		$logMessage = is_null($this->formatter) ? $formattedMessage: $this->format($level, $traceIndex, $message, $parameters);
+		$logMessage = $this->format($level, $traceIndex + 1, $message, ...$parameters);
 
 		$filePath = $this->getLogFilePath();
 		file_put_contents($filePath, $logMessage . PHP_EOL, FILE_APPEND | LOCK_EX);

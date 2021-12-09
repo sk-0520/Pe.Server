@@ -10,16 +10,16 @@ final class MultiLogger extends LoggerBase
 {
 	private $loggers;
 
-	public function __construct(string $header, int $level, ?callable $formatter, array $loggers)
+	public function __construct(string $header, int $level, int $baseTraceIndex, array $loggers)
 	{
-		parent::__construct($header, $level, $formatter);
+		parent::__construct($header, $level, $baseTraceIndex);
 		$this->loggers = $loggers;
 	}
 
-	protected function logImpl(int $level, int $traceIndex, string $formattedMessage, string $message, ?array $parameters = null): void
+	protected function logImpl(int $level, int $traceIndex, $message, string ...$parameters): void
 	{
 		foreach ($this->loggers as $logger) {
-			$logger->logImpl($level, $traceIndex, $formattedMessage, $message, $parameters);
+			$logger->log($level, $traceIndex + 1, $message, ...$parameters);
 		}
 	}
 }

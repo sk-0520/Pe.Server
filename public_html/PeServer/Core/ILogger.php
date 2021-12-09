@@ -12,10 +12,10 @@ interface ILogger
 	const LEVEL_WARN = 4;
 	const LEVEL_ERROR = 5;
 
-	function log(int $level, int $traceIndex, string $message, ?array $parameters = null): void;
-	function trace(string $message, ?array $parameters = null): void;
-	function debug(string $message, ?array $parameters = null): void;
-	function info(string $message, ?array $parameters = null): void;
-	function warn(string $message, ?array $parameters = null): void;
-	function error(string $message, ?array $parameters = null): void;
+	function log(int $level, int $traceIndex, $message, string ...$parameters): void;
+	function trace($message, string ...$parameters): void;
+	function debug($message, string ...$parameters): void;
+	function info($message, string ...$parameters): void;
+	function warn($message, string ...$parameters): void;
+	function error($message, string ...$parameters): void;
 }

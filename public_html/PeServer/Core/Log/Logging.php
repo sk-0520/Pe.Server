@@ -31,11 +31,17 @@ class Logging
 		self::$format = self::$loggingConfiguration['format'];
 	}
 
-	public static function format(int $level, int $traceIndex, string $message, ?array $parameters = null)
+	private static function createMessage($message, string ...$parameters): string
+	{
+		return '';
+	}
+
+	public static function format(int $level, int $traceIndex, $message, string ...$parameters): string
 	{
 		//DEBUG_BACKTRACE_PROVIDE_OBJECT
 		$backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
-		$trace = $backtrace[$traceIndex + 1];
+		$traceCaller = $backtrace[$traceIndex];
+		$traceMethod = $backtrace[$traceIndex + 1];
 
 		$map = [
 			'TIMESTAMP' => date('c'),
@@ -46,11 +52,12 @@ class Logging
 			'REQUEST' => @$_SERVER['REQUEST_URI'] ?: '',
 			'SESSION' => session_id(),
 			//-------------------
-			'FILE' => @$trace['file'] ?: '',
-			'LINE' => @$trace['line'] ?: '',
-			'FUNCTION' => @$trace['function'] ?: '',
-			'ARGS' => @$trace['args'] ?: '',
+			'FILE' => @$traceCaller['file'] ?: '',
+			'LINE' => @$traceCaller['line'] ?: '',
+			'FUNCTION' => @$traceMethod['function'] ?: '',
+			'ARGS' => @$traceMethod['args'] ?: '',
 			//-------------------
+			'LEVEL' => $level,
 			'MESSAGE' => $message,
 		];
 
@@ -60,8 +67,8 @@ class Logging
 	public static function create(string $header): ILogger
 	{
 		$loggers = [
-			new FileLogger($header, self::$level, NULL, self::$loggingConfiguration['file']),
+			new FileLogger($header, self::$level, 1, self::$loggingConfiguration['file']),
 		];
-		return new MultiLogger($header, self::$level, self::class . '::format', $loggers);
+		return new MultiLogger($header, self::$level, 0, $loggers);
 	}
 }
