@@ -30,6 +30,17 @@ class Data
 		$this->expected = $expected;
 		$this->args = $args;
 	}
+
+	public function str(): string
+	{
+		return $this->__toString();
+	}
+
+	public function __toString(): string
+	{
+		$s = var_export($this->args, true);
+		return is_null($s) ? '': $s;
+	}
 }
 
 class TestClass extends \PHPUnit\Framework\TestCase
@@ -38,12 +49,12 @@ class TestClass extends \PHPUnit\Framework\TestCase
 		return $s;
 	}
 
-	protected function assertBoolean(bool $expected, bool $actual)
+	protected function assertBoolean(bool $expected, bool $actual, string $message = '')
 	{
 		if($expected) {
-			$this->assertTrue($actual);
+			$this->assertTrue($actual, $message);
 		} else {
-			$this->assertFalse($actual);
+			$this->assertFalse($actual, $message);
 		}
 	}
 }

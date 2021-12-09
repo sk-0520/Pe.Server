@@ -6,10 +6,11 @@ namespace PeServer\Core\Log;
 
 define('REQUEST_ID', bin2hex(openssl_random_pseudo_bytes(6)));
 
+use \PeServer\Core\ArrayUtility;
 use \PeServer\Core\ILogger;
 use \PeServer\Core\Log\FileLogger;
 use \PeServer\Core\Log\MultiLogger;
-use PeServer\Core\StringUtility;
+use \PeServer\Core\StringUtility;
 
 /**
  * ロガー生成処理。
@@ -33,7 +34,23 @@ class Logging
 
 	private static function createMessage($message, string ...$parameters): string
 	{
-		return '';
+		if (is_null($message)) {
+			if (ArrayUtility::isNullOrEmpty($parameters)) {
+				return '';
+			}
+			return var_export($parameters, true);
+		}
+
+		if (is_string($message) && !ArrayUtility::isNullOrEmpty($parameters)) {
+			return StringUtility::replaceMap($message, $parameters);
+		} else {
+			if (ArrayUtility::isNullOrEmpty($parameters)) {
+				return var_export($message, true);
+			}
+			return var_export(['message' => $message, 'parameters' => $parameters], true);
+		}
+
+		return $message;
 	}
 
 	public static function format(int $level, int $traceIndex, $message, string ...$parameters): string
@@ -54,11 +71,12 @@ class Logging
 			//-------------------
 			'FILE' => @$traceCaller['file'] ?: '',
 			'LINE' => @$traceCaller['line'] ?: '',
+			//'CLASS' => @$traceMethod['class'] ?: '',
 			'FUNCTION' => @$traceMethod['function'] ?: '',
 			'ARGS' => @$traceMethod['args'] ?: '',
 			//-------------------
 			'LEVEL' => $level,
-			'MESSAGE' => $message,
+			'MESSAGE' => self::createMessage($message, ...$parameters),
 		];
 
 		return StringUtility::replaceMap(self::$format, $map);

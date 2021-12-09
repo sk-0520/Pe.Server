@@ -19,14 +19,23 @@ abstract class LoggerBase implements ILogger
 		$this->baseTraceIndex = $baseTraceIndex;
 	}
 
-	protected abstract function logImpl(int $level, int $traceIndex, $message, string ...$parameters): void;
-
 	protected function format(int $level, int $traceIndex, $message, string ...$parameters): string
 	{
 		return Logging::format($level, $traceIndex + 1, $message, ...$parameters);
 	}
 
-	function log(int $level, int $traceIndex, $message, string ...$parameters): void
+	/**
+	 * ログ出力。
+	 *
+	 * @param integer $level ログレベル。
+	 * @param integer $traceIndex 現在フレーム数。
+	 * @param mixed $message　メッセージ。
+	 * @param string ...$parameters パラメータ（可変個）。
+	 * @return void
+	 */
+	protected abstract function logImpl(int $level, int $traceIndex, $message, string ...$parameters): void;
+
+	public final function log(int $level, int $traceIndex, $message, string ...$parameters): void
 	{
 		if ($this->level < $level) {
 			return;
@@ -35,23 +44,23 @@ abstract class LoggerBase implements ILogger
 		$this->logImpl($level, $traceIndex + 1, $message, ...$parameters);
 	}
 
-	public function trace($message, string ...$parameters): void
+	public final function trace($message, string ...$parameters): void
 	{
 		$this->log(self::LEVEL_TRACE, $this->baseTraceIndex + 1, $message, ...$parameters);
 	}
-	public function debug($message, string ...$parameters): void
+	public final function debug($message, string ...$parameters): void
 	{
 		$this->log(self::LEVEL_DEBUG, $this->baseTraceIndex + 1, $message, ...$parameters);
 	}
-	public function info($message, string ...$parameters): void
+	public final function info($message, string ...$parameters): void
 	{
 		$this->log(self::LEVEL_INFO, $this->baseTraceIndex + 1, $message, ...$parameters);
 	}
-	public function warn($message, string ...$parameters): void
+	public final function warn($message, string ...$parameters): void
 	{
 		$this->log(self::LEVEL_WARN, $this->baseTraceIndex + 1, $message, ...$parameters);
 	}
-	public function error($message, string ...$parameters): void
+	public final function error($message, string ...$parameters): void
 	{
 		$this->log(self::LEVEL_ERROR, $this->baseTraceIndex + 1, $message, ...$parameters);
 	}

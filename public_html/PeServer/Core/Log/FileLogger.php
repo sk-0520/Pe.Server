@@ -14,7 +14,7 @@ class FileLogger extends LoggerBase
 	private $directoryPath;
 	private $baseFileName;
 
-	public function __construct(string $header, int $level,int $baseTraceIndex, array $fileLoggingConfiguration)
+	public function __construct(string $header, int $level, int $baseTraceIndex, array $fileLoggingConfiguration)
 	{
 		parent::__construct($header, $level, $baseTraceIndex);
 
@@ -29,7 +29,8 @@ class FileLogger extends LoggerBase
 		//TODO: 掃除
 	}
 
-	private function getLogFilePath(): string {
+	private function getLogFilePath(): string
+	{
 		//TODO: 日付系
 		return FileUtility::join($this->directoryPath, $this->baseFileName);
 	}
