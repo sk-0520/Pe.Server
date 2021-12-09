@@ -2,16 +2,22 @@
 
 declare(strict_types=1);
 
-function before_update($scriptArgument)
+require __DIR__ . '/php-deploy-receiver.php';
+
+
+function before_update(ScriptArgument $scriptArgument)
 {
+	$scriptArgument->log('before script');
+
 	//TODO: キャッシュの破棄
 	$removeDirs = [
-		//joinPath($scriptArgument->publicDirectoryPath, 'data', 'temp', 'views', 'c'),
+		$scriptArgument->joinPath($scriptArgument->publicDirectoryPath, 'data', 'temp', 'views', 'c'),
 	];
 }
 
 
-function after_update($scriptArgument)
+function after_update(ScriptArgument $scriptArgument)
 {
+	$scriptArgument->log('after script');
 	//TODO: DBのマイグレーション処理
 }
