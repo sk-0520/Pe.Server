@@ -31,10 +31,15 @@ artifacts:
   - path: coverage
     name: coverage
 
-deploy_script:
-  - sh: cd $APPVEYOR_BUILD_FOLDER/public_html
-  - sh: zip -r public_html.zip .
-  - sh: $APPVEYOR_BUILD_FOLDER/cd/send.sh
+for:
+  -
+    branches:
+      only:
+        - master
+    deploy_script:
+      - sh: cd $APPVEYOR_BUILD_FOLDER/public_html
+      - sh: zip -r public_html.zip .
+      - sh: $APPVEYOR_BUILD_FOLDER/cd/send.sh
 
 cache:
   - 'node_modules'

@@ -10,3 +10,11 @@ indent_size = 4
 
 [*.bat]
 end_of_line = crlf
+charset = shift-jis
+
+[*.bat]
+end_of_line = crlf
+
+[*.yml]
+indent_style = space
+indent_size = 2
