@@ -361,6 +361,19 @@ function sequencePrepare(array $config, array $runningData)
 {
 	outputLog('SEQUENCE_PREPARE');
 
+	//TODO: ハッシュ突合確認
+	if(!isset($_POST[PARAM_ALGORITHM])) {
+		exitAppWithMessage(HTTP_STATUS_SERVER_ERROR, 'アルゴリズム未指定');
+	}
+	$algorithm = $_POST[PARAM_ALGORITHM];
+	outputLog('algorithm: ' . $algorithm);
+
+	if(!isset($_POST[PARAM_HASH])) {
+		exitAppWithMessage(HTTP_STATUS_SERVER_ERROR, 'ハッシュ値未指定');
+	}
+	$hashValue = $_POST[PARAM_HASH];
+	outputLog('hashValue: ' . $hashValue);
+
 	outputLog('受信ファイル結合');
 
 	$recvDirPath = getReceiveDirectoryPath();
@@ -378,6 +391,14 @@ function sequencePrepare(array $config, array $runningData)
 
 	outputLog('name: ' . $archiveFilePath);
 	outputLog('size: ' . filesize($archiveFilePath));
+	outputLog('size: ' . filesize($archiveFilePath));
+
+	$fileHashValue = hash_file($algorithm, $archiveFilePath);
+	outputLog('hash: ' . $fileHashValue);
+
+	if(strcasecmp($hashValue, $fileHashValue)) {
+		exitAppWithMessage(HTTP_STATUS_SERVER_ERROR, 'ハッシュ値が合わない');
+	}
 
 	outputLog('アーカイブ展開');
 
@@ -397,6 +418,18 @@ function sequencePrepare(array $config, array $runningData)
 function sequenceUpdate(array $config, array $runningData)
 {
 	outputLog('SEQUENCE_UPDATE');
+
+	if (!isset($_POST[PARAM_KEY])) {
+		exitAppWithMessage(HTTP_STATUS_SERVER_ERROR, 'アクセスキー未指定');
+	}
+	$encAccessKey = $_POST[PARAM_KEY];
+
+	initializeOpenSsl($config['OPENSSL']);
+	$rawAccessKey = decryptPrivateKey($runningData['KEYS']['SELF_PRIVATE'], $encAccessKey);
+
+	if ($config['ACCESS_KEY'] != $rawAccessKey) {
+		exitAppWithMessage(HTTP_STATUS_SERVER_ERROR, 'アクセスキー不正');
+	}
 
 	$expandDirPath = getExpandDirectoryPath();
 	$expandFilePaths = getChildrenFiles($expandDirPath, true);
