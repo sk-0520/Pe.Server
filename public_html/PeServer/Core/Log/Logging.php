@@ -32,7 +32,7 @@ class Logging
 		self::$format = self::$loggingConfiguration['format'];
 	}
 
-	private static function createMessage($message, string ...$parameters): string
+	private static function createMessage($message, ...$parameters): string
 	{
 		if (is_null($message)) {
 			if (ArrayUtility::isNullOrEmpty($parameters)) {
@@ -42,7 +42,12 @@ class Logging
 		}
 
 		if (is_string($message) && !ArrayUtility::isNullOrEmpty($parameters)) {
-			return StringUtility::replaceMap($message, $parameters);
+			return StringUtility::replaceMap($message, array_map(function ($value) {
+				if(is_string($value)) {
+					return $value;
+				}
+				return strval($value);
+			}, $parameters));
 		} else {
 			if (ArrayUtility::isNullOrEmpty($parameters)) {
 				return var_export($message, true);
@@ -53,7 +58,7 @@ class Logging
 		return $message;
 	}
 
-	public static function format(int $level, int $traceIndex, $message, string ...$parameters): string
+	public static function format(int $level, int $traceIndex, $message, ...$parameters): string
 	{
 		//DEBUG_BACKTRACE_PROVIDE_OBJECT
 		$backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);

@@ -21,48 +21,48 @@ interface ILogger
 	 * @param integer $level ログレベル。
 	 * @param integer $traceIndex 現在フレーム数。
 	 * @param mixed $message　メッセージ。
-	 * @param string ...$parameters パラメータ（可変個）。
+	 * @param mixed ...$parameters パラメータ（可変個）。
 	 * @return void
 	 */
-	function log(int $level, int $traceIndex, $message, string ...$parameters): void;
+	function log(int $level, int $traceIndex, $message, ...$parameters): void;
 	/**
 	 * トレース
 	 *
 	 * @param mixed $message メッセージ。
-	 * @param string ...$parameters パラメータ（可変個）。
+	 * @param mixed ...$parameters パラメータ（可変個）。
 	 * @return void
 	 */
-	function trace($message, string ...$parameters): void;
+	function trace($message, ...$parameters): void;
 	/**
 	 * デバッグ
 	 *
 	 * @param mixed $message メッセージ。
-	 * @param string ...$parameters パラメータ（可変個）。
+	 * @param mixed ...$parameters パラメータ（可変個）。
 	 * @return void
 	 */
-	function debug($message, string ...$parameters): void;
+	function debug($message, ...$parameters): void;
 	/**
 	 * 情報
 	 *
 	 * @param mixed $message メッセージ。
-	 * @param string ...$parameters パラメータ（可変個）。
+	 * @param mixed ...$parameters パラメータ（可変個）。
 	 * @return void
 	 */
-	function info($message, string ...$parameters): void;
+	function info($message, ...$parameters): void;
 	/**
 	 * 警告
 	 *
 	 * @param mixed $message メッセージ。
-	 * @param string ...$parameters パラメータ（可変個）。
+	 * @param mixed ...$parameters パラメータ（可変個）。
 	 * @return void
 	 */
-	function warn($message, string ...$parameters): void;
+	function warn($message, ...$parameters): void;
 	/**
 	 * エラー
 	 *
 	 * @param mixed $message メッセージ。
-	 * @param string ...$parameters パラメータ（可変個）。
+	 * @param mixed ...$parameters パラメータ（可変個）。
 	 * @return void
 	 */
-	function error($message, string ...$parameters): void;
+	function error($message, ...$parameters): void;
 }

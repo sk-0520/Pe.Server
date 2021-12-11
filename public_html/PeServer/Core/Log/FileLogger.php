@@ -35,7 +35,7 @@ class FileLogger extends LoggerBase
 		return FileUtility::join($this->directoryPath, $this->baseFileName);
 	}
 
-	protected function logImpl(int $level, int $traceIndex, $message, string ...$parameters): void
+	protected function logImpl(int $level, int $traceIndex, $message, ...$parameters): void
 	{
 		FileUtility::createDirectoryIfNotExists($this->directoryPath);
 
