@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 namespace PeServerTest;
 
 set_include_path(__DIR__ . ':' .  __DIR__ . '/../public_html');
@@ -39,23 +42,23 @@ class Data
 	public function __toString(): string
 	{
 		$s = var_export($this->args, true);
-		return is_null($s) ? '': $s;
+		return is_null($s) ? '' : $s;
 	}
 }
 
 class TestClass extends \PHPUnit\Framework\TestCase
 {
-	protected static function s($s): string {
+	protected static function s($s): string
+	{
 		return $s;
 	}
 
 	protected function assertBoolean(bool $expected, bool $actual, string $message = '')
 	{
-		if($expected) {
+		if ($expected) {
 			$this->assertTrue($actual, $message);
 		} else {
 			$this->assertFalse($actual, $message);
 		}
 	}
 }
-

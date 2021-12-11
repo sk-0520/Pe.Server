@@ -3,10 +3,16 @@
 class Deploy
 {
 	private $scriptArgument;
+	private $fileTimestampName = date("Y-m-d_His");
 
 	public function __construct(ScriptArgument $scriptArgument)
 	{
 		$this->scriptArgument = $scriptArgument;
+	}
+
+	private function getAppDirectoryPath(): string
+	{
+		return $this->scriptArgument->joinPath($this->scriptArgument->publicDirectoryPath, 'PeServer');
 	}
 
 	public function before(): void
@@ -15,7 +21,7 @@ class Deploy
 
 		// キャッシュの破棄
 		$removeDirs = [
-			$this->scriptArgument->joinPath($this->scriptArgument->publicDirectoryPath, 'data', 'temp', 'views', 'c'),
+			$this->scriptArgument->joinPath($this->getAppDirectoryPath(), 'data', 'temp', 'views', 'c'),
 		];
 
 		foreach ($removeDirs as $removeDir) {
@@ -23,7 +29,17 @@ class Deploy
 			$this->scriptArgument->cleanupDirectory($removeDir);
 		}
 
-		// DBバックアップ
+		$backupDirectoryPath = $this->scriptArgument->joinPath($this->getAppDirectoryPath(), 'data', 'backups');
+		if(!file_exists($backupDirectoryPath)) {
+			mkdir($backupDirectoryPath, 077, true);
+		}
+		$backupArchiveFilePath = $this->scriptArgument->joinPath($backupDirectoryPath, $this->fileTimestampName + '.zip');
+
+		// バックアップ
+		$srcBackupPaths = [
+			$this->scriptArgument->joinPath('PeServer', 'data', 'data.sqlite3'),
+		];
+		$this->scriptArgument->backupFiles($backupArchiveFilePath, $srcBackupPaths);
 	}
 
 	public function after(): void
