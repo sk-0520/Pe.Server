@@ -57,4 +57,43 @@ class StringUtility
 			$source
 		);
 	}
+
+	public static function startsWith(string $haystack, string $needle, bool $ignoreCase): bool
+	{
+		//PHP8
+		//str_starts_with($haystack, $needle);
+		if (self::isNullOrEmpty($needle)) {
+			return true;
+		}
+		if (strlen($haystack) < strlen($needle)) {
+			return false;
+		}
+
+		$word = mb_substr($haystack, 0, mb_strlen($needle));
+
+		if ($ignoreCase) {
+			return !strcasecmp($needle, $word);
+		}
+		return $needle === $word;
+	}
+
+	public static function endsWith(string $haystack, string $needle, bool $ignoreCase): bool
+	{
+		//PHP8
+		//str_starts_with($haystack, $needle);
+		if (self::isNullOrEmpty($needle)) {
+			return true;
+		}
+		if (strlen($haystack) < strlen($needle)) {
+			return false;
+		}
+
+		$word = mb_substr($haystack, mb_strlen($haystack) - mb_strlen($needle));
+
+		if ($ignoreCase) {
+			return !strcasecmp($needle, $word);
+		}
+		return $needle === $word;
+	}
+
 }

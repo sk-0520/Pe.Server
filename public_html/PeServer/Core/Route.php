@@ -4,12 +4,23 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
+use LogicException;
+
+/**
+ * ルーティング情報
+ */
 class Route
 {
-	private $path;
+	private $basePath;
 	private $className;
 	private $actions = array();
 
+	/**
+	 * ルーティングにコントローラを登録
+	 *
+	 * @param string $path URLとしてのパス。先頭が api 以外の場合に index アクションが自動登録される
+	 * @param string $className 使用されるクラス名
+	 */
 	public function __construct(string $path, string $className)
 	{
 		// if(str_starts_with($path, '/')) {
@@ -18,46 +29,56 @@ class Route
 		// if(str_ends_with($path, '/')) {
 		// 	die();
 		// }
-		if (mb_substr($path, 0, 1) == '/') {
-			die();
+
+		if (StringUtility::isNullOrEmpty($path)) {
+			$this->basePath = $path;
+		} else {
+			$trimPath = trim($path);
+			if ($trimPath !== trim($trimPath, '/')) {
+				throw new LogicException('path start or end -> /');
+			}
+			$this->basePath = $trimPath;
 		}
 
-		$this->path = $path;
 		$this->className = $className;
-		if (mb_substr($this->path, 0, 3) != 'api') {
+		if (mb_substr($this->basePath, 0, 3) != 'api') {
 			$this->actions[''] = new Action(HttpMethod::ALL, 'index');
 		}
 	}
 
+	/**
+	 * アクション設定
+	 *
+	 * @param string $httpMethod 使用するHTTPメソッド: HttpMethod を参照
+	 * @param string $actionName URLとして使用されるパス
+	 * @param string|null $methodName 呼び出されるコントローラメソッド。未指定なら $actionName が使用される
+	 * @return Route
+	 */
 	public function action(string $httpMethod, string $actionName, ?string $methodName = null): Route
 	{
-		$actions[$actionName] = new Action(
+		$this->actions[$actionName] = new Action(
 			$httpMethod,
-			$methodName != null ? $methodName : $actionName
+			StringUtility::isNullOrWhiteSpace($methodName) ? $actionName : $methodName
 		);
 		return $this;
 	}
 
-	public function getAction(string $httpMethod, array $paths)
+	public function getAction(string $httpMethod, array $requestPaths)
 	{
-		$path = implode('/', $paths);
+		$requestPath = implode('/', $requestPaths);
 
-		if ($this->path != mb_substr($path, 0, mb_strlen($this->path))) {
+		if (!StringUtility::startsWith($requestPath, $this->basePath, false)) {
 			return null;
 		}
 
-		$actionPath = mb_substr($path, mb_strlen($this->path));
-
-		if (stripos($actionPath, '/') !== false) {
-			return null;
-		}
+		$actionPath = $requestPaths[count($requestPaths) - 1];
 
 		if (!isset($this->actions[$actionPath])) {
 			return null;
 		}
 
 		$action = $this->actions[$actionPath];
-		//TODO: メソッド判定
+		//TODO: HTTPメソッド判定
 
 		return [
 			'class' => $this->className,

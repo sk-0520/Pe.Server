@@ -40,7 +40,7 @@ for:
     deploy_script:
       - sh: cd $APPVEYOR_BUILD_FOLDER/public_html
       - sh: zip -r public_html.zip .
-      - sh: $APPVEYOR_BUILD_FOLDER/cd/send.sh
+      - sh: $APPVEYOR_BUILD_FOLDER/dev/send.sh
 
 cache:
   - 'node_modules'
