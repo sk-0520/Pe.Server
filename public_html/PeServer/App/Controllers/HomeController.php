@@ -9,6 +9,7 @@ use \PeServer\Core\ControllerArguments;
 use \PeServer\Core\ControllerBase;
 use \PeServer\Core\LogicMode;
 use \PeServer\App\Models\Domains\Home\HomeIndexLogic;
+use PeServer\Core\HttpStatusCode;
 
 class HomeController extends ControllerBase
 {
@@ -22,6 +23,6 @@ class HomeController extends ControllerBase
 		$logic = $this->createLogic(HomeIndexLogic::class, $request);
 		$logic->run(LogicMode::INITIALIZE);
 
-		return $this->view('index', $logic->getData());
+		return $this->view('index', $logic->getViewData());
 	}
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
+use \LogicException;
 use \Smarty;
 use \PeServer\Core\ActionRequest;
 use \PeServer\Core\ControllerArguments;
@@ -43,7 +44,7 @@ abstract class ControllerBase
 		return Template::createTemplate($baseName);
 	}
 
-	public function viewWithController(string $controllerName, string $action, ?array $parameters = null)
+	public function viewWithController(string $controllerName, string $action, int $httpStatusCode, ?array $parameters = null)
 	{
 		$lastWord = 'Controller';
 		$controllerClassName = mb_substr($controllerName, mb_strpos($controllerName, $this->skipBaseName) + mb_strlen($this->skipBaseName) + 1);
@@ -60,6 +61,24 @@ abstract class ControllerBase
 	{
 		$className = get_class($this);
 
-		$this->viewWithController($className, $action, $parameters);
+		$httpStatusCode = ArrayUtility::getOr($parameters, 'status', HttpStatusCode::OK);
+
+		$this->viewWithController($className, $action, $httpStatusCode, $parameters);
+	}
+
+
+	public function data(ActionResponse $response)
+	{
+		header('Content-Type: ' . $response->mime);
+		if ($response->chunked) {
+			header("Transfer-encoding: chunked");
+		}
+
+		if(is_null($response->callback)) {
+			$converter = new ResponseOutput();
+			$converter->output($response->mime, $response->chunked, $response->data);
+		} else {
+			call_user_func_array($this->callback, [$response->mime, $response->chunked, $response->data]);
+		}
 	}
 }

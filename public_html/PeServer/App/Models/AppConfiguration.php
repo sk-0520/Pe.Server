@@ -20,7 +20,7 @@ class AppConfiguration
 	 */
 	private static $initializeChecker;
 
-	public static $environment;
+	private static $environment;
 	public static $json;
 
 	private static function replaceArray(array $array, string $appDirectoryPath, string $baseDirectoryPath, string $environment): array
@@ -58,7 +58,7 @@ class AppConfiguration
 			if (is_null($envSettingJson)) {
 				throw new Error($envSettingFilePath);
 			}
-			$json = array_replace_recursive ($baseSettingJson, $envSettingJson);
+			$json = array_replace_recursive($baseSettingJson, $envSettingJson);
 		} else {
 			$json = $baseSettingJson;
 		}
@@ -80,5 +80,25 @@ class AppConfiguration
 
 		self::$environment = $environment;
 		self::$json = $json;
+	}
+
+	public static function isEnvironment(string $environment): bool
+	{
+		self::$initializeChecker->throwIfNotInitialize();
+
+		return self::$environment === $environment;
+	}
+
+	public static function isProductionEnvironment(): bool
+	{
+		return self::isEnvironment('production');
+	}
+	public static function isDevelopmentEnvironment(): bool
+	{
+		return self::isEnvironment('development');
+	}
+	public static function isTestEnvironment(): bool
+	{
+		return self::isEnvironment('test');
 	}
 }

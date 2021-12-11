@@ -15,18 +15,18 @@ class ArrayUtility
 		return count($array) === 0;
 	}
 
-	public static function getOr(array $array, $key, $defaultValue)
+	public static function getOr(?array $array, $key, $defaultValue)
 	{
-		if (isset($array[$key])) {
+		if (!is_null($array) && isset($array[$key])) {
 			return $array[$key];
 		}
 
 		return $defaultValue;
 	}
 
-	public static function tryGet(array $array, $key, &$result): bool
+	public static function tryGet(?array $array, $key, &$result): bool
 	{
-		if (isset($array[$key])) {
+		if (!is_null($array) && isset($array[$key])) {
 			$result = $array[$key];
 			return true;
 		}

@@ -19,5 +19,7 @@ class DevelopmentController extends ApiControllerBase
 	{
 		$logic = $this->createLogic(DevelopmentInitializeLogic::class, $request);
 		$logic->run(LogicMode::SUBMIT);
+
+		$this->data($logic->getResponse());
 	}
 }
