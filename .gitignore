@@ -14,4 +14,4 @@ desktop.ini
 $*
 *.tmp
 *.log
-public_html/php-deploy-receiver/
+public_html/deploy/
