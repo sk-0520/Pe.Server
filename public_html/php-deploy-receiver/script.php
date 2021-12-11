@@ -2,7 +2,7 @@
 
 function before_update($scriptArgument)
 {
-	// $scriptArgument->log('before script');
+	$scriptArgument->log('before script');
 
 	// //TODO: キャッシュの破棄
 	// $removeDirs = [
@@ -13,6 +13,6 @@ function before_update($scriptArgument)
 
 function after_update($scriptArgument)
 {
-	// $scriptArgument->log('after script');
+	$scriptArgument->log('after script');
 	// //TODO: DBのマイグレーション処理
 }
