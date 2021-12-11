@@ -8,6 +8,7 @@ define('REQUEST_ID', bin2hex(openssl_random_pseudo_bytes(6)));
 
 use \PeServer\Core\ArrayUtility;
 use \PeServer\Core\ILogger;
+use \PeServer\Core\InitializeChecker;
 use \PeServer\Core\Log\FileLogger;
 use \PeServer\Core\Log\MultiLogger;
 use \PeServer\Core\StringUtility;
@@ -19,6 +20,13 @@ use \PeServer\Core\StringUtility;
  */
 class Logging
 {
+	/**
+	 * 初期化チェック
+	 *
+	 * @var InitializeChecker
+	 */
+	private static $initializeChecker;
+
 	private static $loggingConfiguration;
 
 	private static $level;
@@ -26,6 +34,11 @@ class Logging
 
 	public static function initialize(array $loggingConfiguration)
 	{
+		if (is_null(self::$initializeChecker)) {
+			self::$initializeChecker = new InitializeChecker();
+		}
+		self::$initializeChecker->initialize();
+
 		self::$loggingConfiguration = $loggingConfiguration;
 
 		self::$level = self::$loggingConfiguration['level'];
@@ -43,7 +56,7 @@ class Logging
 
 		if (is_string($message) && !ArrayUtility::isNullOrEmpty($parameters)) {
 			return StringUtility::replaceMap($message, array_map(function ($value) {
-				if(is_string($value)) {
+				if (is_string($value)) {
 					return $value;
 				}
 				return strval($value);
@@ -60,6 +73,8 @@ class Logging
 
 	public static function format(int $level, int $traceIndex, $message, ...$parameters): string
 	{
+		self::$initializeChecker->throwIfNotInitialize();
+
 		//DEBUG_BACKTRACE_PROVIDE_OBJECT
 		$backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
 		$traceCaller = $backtrace[$traceIndex];
@@ -67,18 +82,18 @@ class Logging
 
 		$map = [
 			'TIMESTAMP' => date('c'),
-			'IP' => @$_SERVER['REMOTE_ADDR'] ?: '',
+			'IP' => ArrayUtility::getOr($_SERVER, 'REMOTE_ADDR', ''),
 			'REQUEST_ID' => REQUEST_ID,
-			'UA' => @$_SERVER['HTTP_USER_AGENT'] ?: '',
-			'METHOD' => @$_SERVER['REQUEST_METHOD'] ?: '',
-			'REQUEST' => @$_SERVER['REQUEST_URI'] ?: '',
+			'UA' => ArrayUtility::getOr($_SERVER, 'HTTP_USER_AGENT', ''),
+			'METHOD' => ArrayUtility::getOr($_SERVER, 'REQUEST_METHOD', ''),
+			'REQUEST' => ArrayUtility::getOr($_SERVER, 'REQUEST_URI', ''),
 			'SESSION' => session_id(),
 			//-------------------
-			'FILE' => @$traceCaller['file'] ?: '',
-			'LINE' => @$traceCaller['line'] ?: '',
-			//'CLASS' => @$traceMethod['class'] ?: '',
-			'FUNCTION' => @$traceMethod['function'] ?: '',
-			'ARGS' => @$traceMethod['args'] ?: '',
+			'FILE' => ArrayUtility::getOr($traceCaller, 'file', ''),
+			'LINE' => ArrayUtility::getOr($traceCaller, 'line', ''),
+			//'CLASS' => ArrayUtility::getOr($traceMethod, 'class', ''),
+			'FUNCTION' => ArrayUtility::getOr($traceMethod, 'function', ''),
+			//'ARGS' => ArrayUtility::getOr($traceMethod, 'args', ''),
 			//-------------------
 			'LEVEL' => $level,
 			'MESSAGE' => self::createMessage($message, ...$parameters),
@@ -89,6 +104,8 @@ class Logging
 
 	public static function create(string $header): ILogger
 	{
+		self::$initializeChecker->throwIfNotInitialize();
+
 		$loggers = [
 			new FileLogger($header, self::$level, 1, self::$loggingConfiguration['file']),
 		];

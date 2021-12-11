@@ -46,6 +46,7 @@ class StringUtilityTest extends TestClass
 			new Data('abc', '{A}{B}{C}', [ 'A' => 'a', 'B' => 'b', 'C' => 'c',]),
 			new Data('', '{x}{y}{z}', [ 'A' => 'a', 'B' => 'b', 'C' => 'c',]),
 			new Data('a!?', '{A}{a}{!}', [ 'A' => 'a', 'a' => '!', '!' => '?',]),
+			new Data('(a)[a]<a>', '({A})[{A}]<{A}>', [ 'A' => 'a',]),
 		];
 		foreach ($tests as $test) {
 			$actual = StringUtility::replaceMap(...$test->args);

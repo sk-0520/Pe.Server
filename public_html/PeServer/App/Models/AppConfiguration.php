@@ -5,22 +5,30 @@ declare(strict_types=1);
 namespace PeServer\App\Models;
 
 use Error;
-use PeServer\Core\FileUtility;
-use PeServer\Core\Log\Logging;
-use PeServer\Core\Database;
-use PeServer\Core\StringUtility;
+use \PeServer\Core\FileUtility;
+use \PeServer\Core\Log\Logging;
+use \PeServer\Core\Database;
+use \PeServer\Core\InitializeChecker;
+use \PeServer\Core\StringUtility;
 
 class AppConfiguration
 {
+	/**
+	 * 初期化チェック
+	 *
+	 * @var InitializeChecker
+	 */
+	private static $initializeChecker;
+
 	public static $environment;
 	public static $json;
 
 	private static function replaceArray(array $array, string $appDirectoryPath, string $baseDirectoryPath, string $environment): array
 	{
-		foreach($array as $key => $value) {
-			if(is_array($value)) {
+		foreach ($array as $key => $value) {
+			if (is_array($value)) {
 				$array[$key] = self::replaceArray($value, $appDirectoryPath, $baseDirectoryPath, $environment);
-			} else if(is_string($value)) {
+			} else if (is_string($value)) {
 				$array[$key] = StringUtility::replaceMap($value, [
 					'APP' => $appDirectoryPath,
 					'BASE' => $baseDirectoryPath,
@@ -34,9 +42,9 @@ class AppConfiguration
 
 	private static function load(string $appDirectoryPath, string $baseDirectoryPath, string $environment)
 	{
-		$settingDirPath = FileUtility::join($appDirectoryPath, 'config');
+		$settingDirPath = FileUtility::joinPath($appDirectoryPath, 'config');
 
-		$baseSettingFilePath = FileUtility::join($settingDirPath, 'setting.json');
+		$baseSettingFilePath = FileUtility::joinPath($settingDirPath, 'setting.json');
 		$baseSettingJson = FileUtility::readJsonFile($baseSettingFilePath);
 		if (is_null($baseSettingJson)) {
 			throw new Error($baseSettingFilePath);
@@ -44,7 +52,7 @@ class AppConfiguration
 
 		$json = array();
 
-		$envSettingFilePath = FileUtility::join($settingDirPath, "setting.$environment.json");
+		$envSettingFilePath = FileUtility::joinPath($settingDirPath, "setting.$environment.json");
 		if (file_exists($envSettingFilePath)) {
 			$envSettingJson = FileUtility::readJsonFile($envSettingFilePath);
 			if (is_null($envSettingJson)) {
@@ -60,6 +68,11 @@ class AppConfiguration
 
 	public static function initialize(string $appDirectoryPath, string $baseDirectoryPath, string $environment)
 	{
+		if (is_null(self::$initializeChecker)) {
+			self::$initializeChecker = new InitializeChecker();
+		}
+		self::$initializeChecker->initialize();
+
 		$json = self::load($appDirectoryPath, $baseDirectoryPath, $environment);
 
 		Logging::initialize($json['logging']);

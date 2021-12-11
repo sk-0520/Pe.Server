@@ -6,13 +6,20 @@ namespace PeServer\Core;
 
 /**
  * ログ出力基盤。
+ *
+ * !!注意!! PSR-3 には準拠していない。
  */
 interface ILogger
 {
+	/** レベル: トレース */
 	const LEVEL_TRACE = 1;
+	/** レベル: デバッグ */
 	const LEVEL_DEBUG = 2;
+	/** レベル: 情報 */
 	const LEVEL_INFO = 3;
+	/** レベル: 警告 */
 	const LEVEL_WARN = 4;
+	/** レベル: エラー */
 	const LEVEL_ERROR = 5;
 
 	/**

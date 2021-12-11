@@ -30,7 +30,7 @@ class FileUtility
 		return $result;
 	}
 
-	public static function join(string $basePath, string ...$addPaths): string
+	public static function joinPath(string $basePath, string ...$addPaths): string
 	{
 		$paths = array_merge([$basePath], array_map(function ($s) {
 			return trim($s, '/\\');

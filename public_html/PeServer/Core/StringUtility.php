@@ -6,6 +6,12 @@ namespace PeServer\Core;
 
 class StringUtility
 {
+	/**
+	 * 文字列がnullか空か
+	 *
+	 * @param string|null $s
+	 * @return boolean
+	 */
 	public static function isNullOrEmpty(?string $s): bool
 	{
 		if (is_null($s)) {
@@ -19,6 +25,12 @@ class StringUtility
 		return empty($s);
 	}
 
+	/**
+	 * 文字列がnullかホワイトスペースのみで構築されているか
+	 *
+	 * @param string|null $s
+	 * @return boolean
+	 */
 	public static function isNullOrWhiteSpace(?string $s): bool
 	{
 		if (self::isNullOrEmpty($s)) {
@@ -36,8 +48,8 @@ class StringUtility
 
 		return preg_replace_callback(
 			$pattern,
-			function ($matches) use($map) {
-				if(isset($map[$matches[1]])) {
+			function ($matches) use ($map) {
+				if (isset($map[$matches[1]])) {
 					return $map[$matches[1]];
 				}
 				return '';

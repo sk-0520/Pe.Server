@@ -32,7 +32,7 @@ class FileLogger extends LoggerBase
 	private function getLogFilePath(): string
 	{
 		//TODO: 日付系
-		return FileUtility::join($this->directoryPath, $this->baseFileName);
+		return FileUtility::joinPath($this->directoryPath, $this->baseFileName);
 	}
 
 	protected function logImpl(int $level, int $traceIndex, $message, ...$parameters): void
