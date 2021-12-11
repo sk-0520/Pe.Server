@@ -10,7 +10,7 @@
 		"format": "{TIMESTAMP} |{LEVEL}| [{IP}] {REQUEST_ID} {SESSION} {UA} {METHOD} {REQUEST} {FILE}({LINE}) {FUNCTION} -> {MESSAGE}",
 		"file": {
 			"dir": "<BASE>/data/logs",
-			"file": "log.log",
+			"name": "log_{DATE}.log",
 			"count": 10
 		}
 	}

@@ -21,7 +21,7 @@ abstract class LoggerBase implements ILogger
 
 	protected function format(int $level, int $traceIndex, $message, ...$parameters): string
 	{
-		return Logging::format($level, $traceIndex + 1, $message, ...$parameters);
+		return Logging::format($level, $traceIndex + 1, $this->header, $message, ...$parameters);
 	}
 
 	/**
@@ -29,15 +29,15 @@ abstract class LoggerBase implements ILogger
 	 *
 	 * @param integer $level ログレベル。
 	 * @param integer $traceIndex 現在フレーム数。
-	 * @param mixed $message　メッセージ。
-	 * @param mixed ...$parameters パラメータ（可変個）。
+	 * @param mixed $message メッセージかオブジェクト。
+	 * @param mixed ...$parameters パラメータ（可変個）。$messageが文字列の場合はプレースホルダー {\d} に対して置き換え処理が行われるがその場合は所謂0始まり・抜けなしの配列を想定している。
 	 * @return void
 	 */
 	protected abstract function logImpl(int $level, int $traceIndex, $message, ...$parameters): void;
 
 	public final function log(int $level, int $traceIndex, $message, ...$parameters): void
 	{
-		if ($this->level < $level) {
+		if ($level < $this->level) {
 			return;
 		}
 
@@ -54,11 +54,11 @@ abstract class LoggerBase implements ILogger
 	}
 	public final function info($message, ...$parameters): void
 	{
-		$this->log(self::LEVEL_INFO, $this->baseTraceIndex + 1, $message, ...$parameters);
+		$this->log(self::LEVEL_INFORMATION, $this->baseTraceIndex + 1, $message, ...$parameters);
 	}
 	public final function warn($message, ...$parameters): void
 	{
-		$this->log(self::LEVEL_WARN, $this->baseTraceIndex + 1, $message, ...$parameters);
+		$this->log(self::LEVEL_WARNING, $this->baseTraceIndex + 1, $message, ...$parameters);
 	}
 	public final function error($message, ...$parameters): void
 	{

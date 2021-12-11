@@ -58,7 +58,7 @@ class AppConfiguration
 			if (is_null($envSettingJson)) {
 				throw new Error($envSettingFilePath);
 			}
-			$json = array_merge($baseSettingJson, $envSettingJson);
+			$json = array_replace_recursive ($baseSettingJson, $envSettingJson);
 		} else {
 			$json = $baseSettingJson;
 		}

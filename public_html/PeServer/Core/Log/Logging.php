@@ -6,6 +6,7 @@ namespace PeServer\Core\Log;
 
 define('REQUEST_ID', bin2hex(openssl_random_pseudo_bytes(6)));
 
+use \LogicException;
 use \PeServer\Core\ArrayUtility;
 use \PeServer\Core\ILogger;
 use \PeServer\Core\InitializeChecker;
@@ -45,7 +46,25 @@ class Logging
 		self::$format = self::$loggingConfiguration['format'];
 	}
 
-	private static function createMessage($message, ...$parameters): string
+	private static function formatLevel(int $level): string
+	{
+		switch ($level) {
+			case ILogger::LEVEL_TRACE:
+				return 'TRACE';
+			case ILogger::LEVEL_DEBUG:
+				return 'DEBUG';
+			case ILogger::LEVEL_INFORMATION:
+				return 'INFO ';
+			case ILogger::LEVEL_WARNING:
+				return 'WARN ';
+			case ILogger::LEVEL_ERROR:
+				return 'ERROR';
+		}
+
+		throw new LogicException("log level: $level");
+	}
+
+	private static function formatMessage($message, ...$parameters): string
 	{
 		if (is_null($message)) {
 			if (ArrayUtility::isNullOrEmpty($parameters)) {
@@ -71,7 +90,7 @@ class Logging
 		return $message;
 	}
 
-	public static function format(int $level, int $traceIndex, $message, ...$parameters): string
+	public static function format(int $level, int $traceIndex, string $header, $message, ...$parameters): string
 	{
 		self::$initializeChecker->throwIfNotInitialize();
 
@@ -95,8 +114,9 @@ class Logging
 			'FUNCTION' => ArrayUtility::getOr($traceMethod, 'function', ''),
 			//'ARGS' => ArrayUtility::getOr($traceMethod, 'args', ''),
 			//-------------------
-			'LEVEL' => $level,
-			'MESSAGE' => self::createMessage($message, ...$parameters),
+			'LEVEL' => self::formatLevel($level),
+			'HEADER' => $header,
+			'MESSAGE' => self::formatMessage($message, ...$parameters),
 		];
 
 		return StringUtility::replaceMap(self::$format, $map);
