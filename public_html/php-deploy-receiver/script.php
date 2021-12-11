@@ -3,11 +3,12 @@
 class Deploy
 {
 	private $scriptArgument;
-	private $fileTimestampName = date("Y-m-d_His");
+	private $fileTimestampName;
 
 	public function __construct(ScriptArgument $scriptArgument)
 	{
 		$this->scriptArgument = $scriptArgument;
+		$this->fileTimestampName = date("Y-m-d_His");
 	}
 
 	private function getAppDirectoryPath(): string
@@ -33,7 +34,7 @@ class Deploy
 		if(!file_exists($backupDirectoryPath)) {
 			mkdir($backupDirectoryPath, 077, true);
 		}
-		$backupArchiveFilePath = $this->scriptArgument->joinPath($backupDirectoryPath, $this->fileTimestampName + '.zip');
+		$backupArchiveFilePath = $this->scriptArgument->joinPath($backupDirectoryPath, $this->fileTimestampName . '.zip');
 
 		// バックアップ
 		$srcBackupPaths = [
