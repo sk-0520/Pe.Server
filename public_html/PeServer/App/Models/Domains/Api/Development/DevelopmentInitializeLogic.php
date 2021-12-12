@@ -58,9 +58,7 @@ class DevelopmentInitializeLogic extends LogicBase
 		};
 
 		$deployScript = new \DeployScript($scriptArgument);
-		$deployScript->migrate([
-			AppConfiguration::$json['persistence']
-		]);
+		$deployScript->migrate(AppConfiguration::$json['persistence']);
 
 
 		$response = ActionResponse::json([

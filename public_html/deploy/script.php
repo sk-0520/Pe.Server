@@ -68,12 +68,66 @@ class DeployScript
 		$this->db_migrate($databaseSetting);
 	}
 
+	private function createConnection(array $databaseSetting): PDO
+	{
+		$pdo = new PDO('sqlite:' . $databaseSetting['connection']);
+		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		return $pdo;
+	}
+
 	/**
 	 * @param {driver:string,connection:string,user:string,password:string} $databaseSetting
 	 */
 	private function db_migrate(array $databaseSetting)
 	{
 		$this->scriptArgument->log('!!!!!!!!!!db_migrate!!!!!!!!!!');
+
+		// SQLite を使うのは決定事項である！
+		$filePath = $databaseSetting['connection'];
+		$dbVersion = 0;
+		if (file_exists($filePath)) {
+			$checkPdo = $this->createConnection($databaseSetting);
+			$checkCountStatement = $checkPdo->query("select COUNT(*) from sqlite_master where sqlite_master.type='table' and sqlite_master.name='database_version'");
+			if (0 < $checkCountStatement->fetchColumn()) {
+				$versionStatement = $checkPdo->query("select version from database_version");
+				$dbVersion = $versionStatement->fetchColumn();
+			}
+		}
+
+		$db_migrates = [
+			'db_migrates_0',
+		];
+
+		$pdo = $this->createConnection($databaseSetting);
+		for ($i = $dbVersion; $i < count($db_migrates); $i++) {
+			$this->scriptArgument->log('DB: ' . $db_migrates[$i]);
+			call_user_func(array($this, $db_migrates[$i]), $pdo);
+		}
+	}
+
+	private function db_migrates_0(PDO $pdo)
+	{
+		//TODO: 全削除処理
+
+		$pdo->exec(
+			<<<SQL
+			create table
+				[database_version]
+				(
+					[version] integer not null
+				)
+			;
+
+			create table [users] (
+				[user_id]    text not null,
+				[user_name]  text not null,
+				[user_mail_address] text not null,
+				[user_website] text not null,
+				[user_note] text not null,
+				primary key([user_id])
+			);
+SQL
+		);
 	}
 }
 
