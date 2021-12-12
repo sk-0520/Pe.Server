@@ -24,7 +24,7 @@ class RouteConfiguration
 		return [
 			(new Route('', HomeController::class)),
 			(new Route('api/development', DevelopmentController::class))
-				->action(HttpMethod::POST, 'initialize')
+				->addAction(HttpMethod::POST, 'initialize')
 			,
 		];
 	}

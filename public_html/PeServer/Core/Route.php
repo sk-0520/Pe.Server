@@ -50,11 +50,11 @@ class Route
 	 * アクション設定
 	 *
 	 * @param string $httpMethod 使用するHTTPメソッド: HttpMethod を参照
-	 * @param string $actionName URLとして使用されるパス
+	 * @param string $actionName URLとして使用されるパス, パス先頭が : でURLパラメータとなる
 	 * @param string|null $methodName 呼び出されるコントローラメソッド。未指定なら $actionName が使用される
 	 * @return Route
 	 */
-	public function action(string $httpMethod, string $actionName, ?string $methodName = null): Route
+	public function addAction(string $httpMethod, string $actionName, ?string $methodName = null): Route
 	{
 		$this->actions[$actionName] = new Action(
 			$httpMethod,

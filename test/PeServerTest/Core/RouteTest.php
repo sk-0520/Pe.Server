@@ -63,7 +63,7 @@ class RouteTest extends TestClass
 		foreach ($tests as $test) {
 			$route = new Route(...$test['route']);
 			foreach ($test['actions'] as $action) {
-				$route->action(...$action);
+				$route->addAction(...$action);
 			}
 			foreach ($test['request'] as $request) {
 				$actual = $route->getAction(...$request['input']);
