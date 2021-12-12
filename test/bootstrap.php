@@ -6,7 +6,7 @@ namespace PeServerTest;
 
 set_include_path(__DIR__ . ':' .  __DIR__ . '/../public_html');
 
-require_once(__DIR__ . '/phpunit');
+require_once(__DIR__ . '/phpunit.phar');
 require_once(__DIR__ . '/../public_html/PeServer/Core/AutoLoader.php');
 require_once(__DIR__ . '/../public_html/PeServer/Libs/smarty/libs/Smarty.class.php');
 
