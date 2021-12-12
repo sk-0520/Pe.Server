@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
+/**
+ * HTTPステータスコード。
+ */
 class HttpStatusCode
 {
 	const OK = 200;

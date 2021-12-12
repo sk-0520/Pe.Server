@@ -16,10 +16,10 @@ class Route
 	private $actions = array();
 
 	/**
-	 * ルーティングにコントローラを登録
+	 * ルーティング情報にコントローラを登録
 	 *
 	 * @param string $path URLとしてのパス。先頭が api 以外の場合に index アクションが自動登録される
-	 * @param string $className 使用されるクラス名
+	 * @param string $className 使用されるクラス完全名
 	 */
 	public function __construct(string $path, string $className)
 	{
@@ -63,6 +63,13 @@ class Route
 		return $this;
 	}
 
+	/**
+	 * メソッド・リクエストパスから登録されているアクションを取得。
+	 *
+	 * @param string $httpMethod HttpMethod を参照のこと
+	 * @param string[] $requestPaths リクエストパス。URLパラメータは含まない
+	 * @return array{class:string,method:string}|null 存在する場合にクラス・メソッドのペア。存在しない場合は null
+	 */
 	public function getAction(string $httpMethod, array $requestPaths)
 	{
 		$requestPath = implode('/', $requestPaths);

@@ -7,10 +7,23 @@ namespace PeServer\Core;
 use PeServer\Core\Log\Logging;
 
 
+/**
+ * ルーティング。
+ */
 class Routing
 {
+	/**
+	 * ルーティング情報。
+	 *
+	 * @var Route[]
+	 */
 	private $routeMap;
 
+	/**
+	 * 生成。
+	 *
+	 * @param Route[] $routeMap ルーティング情報
+	 */
 	public function __construct(array $routeMap)
 	{
 		$this->routeMap = $routeMap;
@@ -40,6 +53,15 @@ class Routing
 		$controller->$methodName($request);
 	}
 
+	/**
+	 * メソッド・パスから登録されている処理を実行。
+	 *
+	 * 失敗時の云々が甘いというかまだなんも考えてない。
+	 *
+	 * @param string $requestMethod HttpMethod を参照。
+	 * @param string $requestUri リクエストURL。
+	 * @return void
+	 */
 	public function execute(string $requestMethod, string $requestUri)
 	{
 		$paths = $this->splitPaths($requestUri);

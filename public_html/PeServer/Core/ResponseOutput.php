@@ -6,6 +6,9 @@ namespace PeServer\Core;
 
 use \LogicException;
 
+/**
+ * 応答データ出力。
+ */
 class ResponseOutput
 {
 	protected function outputPlainText(string $mime, bool $chunked, $data)

@@ -24,13 +24,11 @@ class DevelopmentInitializeLogic extends LogicBase
 		if (AppConfiguration::isProductionEnvironment()) {
 			throw new Exception('dev or test only');
 		}
-		//NONE
 	}
 
 	protected function executeImpl(int $logicMode): void
 	{
-		//NONE
-		$response = new ActionResponse(HttpStatusCode::OK, Mime::JSON, [
+		$response = ActionResponse::json([
 			'success' => true
 		]);
 		$this->setResponse($response);

@@ -13,9 +13,23 @@ use \PeServer\Core\LogicBase;
 use \PeServer\Core\LogicParameter;
 use \PeServer\Core\Log\Logging;
 
+/**
+ * コントローラ基底処理。
+ */
 abstract class ControllerBase
 {
+	/**
+	 * ロガー。
+	 *
+	 * @var ILogger
+	 */
 	protected $logger;
+	/**
+	 * コントローラ完全名からコントローラベース名を取得する際にスキップする文言(文字列長が使用される)
+	 * このアプリケーション内に閉じる場合は基本的に変更不要だが、別アプリケーションに持ち運ぶ場合などはここを変更する必要あり(継承側で書き換える想定)。
+	 *
+	 * @var string
+	 */
 	protected $skipBaseName = 'PeServer\\App\\Controllers';
 
 	public function __construct(ControllerArguments $arguments)
@@ -25,6 +39,13 @@ abstract class ControllerBase
 		$this->logger->trace('CONTROLLER');
 	}
 
+	/**
+	 * ロジック用パラメータ生成処理。
+	 *
+	 * @param string $logicName ロジック名
+	 * @param ActionRequest $request リクエストデータ
+	 * @return LogicParameter
+	 */
 	protected function createParameter(string $logicName, ActionRequest $request): LogicParameter
 	{
 		return new LogicParameter(
@@ -33,17 +54,39 @@ abstract class ControllerBase
 		);
 	}
 
-	protected function createLogic($logicClass, ActionRequest $request): LogicBase
+	/**
+	 * ロジック生成処理。
+	 *
+	 * @param string $logicClass ロジック完全名。
+	 * @param ActionRequest $request リクエストデータ
+	 * @return LogicBase
+	 */
+	protected function createLogic(string $logicClass, ActionRequest $request): LogicBase
 	{
 		$parameter = $this->createParameter($logicClass, $request);
 		return new $logicClass($parameter);
 	}
 
+	/**
+	 * テンプレート生成。
+	 *
+	 * @param string $baseName コントローラ名。
+	 * @return Smarty 本処理では Smarty を使用するが将来変わる可能性あり。
+	 */
 	protected function createTemplate(string $baseName): Smarty
 	{
 		return Template::createTemplate($baseName);
 	}
 
+	/**
+	 * Viewを表示。
+	 *
+	 * @param string $controllerName コントローラ完全名。
+	 * @param string $action アクション名。
+	 * @param integer $httpStatusCode HTTPステータスコード。
+	 * @param array|null $parameters View連携データ。
+	 * @return void
+	 */
 	public function viewWithController(string $controllerName, string $action, int $httpStatusCode, ?array $parameters = null)
 	{
 		$lastWord = 'Controller';
@@ -57,6 +100,13 @@ abstract class ControllerBase
 		$smarty->display("$action.tpl");
 	}
 
+	/**
+	 * Viewを表示
+	 *
+	 * @param string $action アクション名
+	 * @param array|null $parameters View連携データ。
+	 * @return void
+	 */
 	public function view(string $action, ?array $parameters = null)
 	{
 		$className = get_class($this);
@@ -66,7 +116,12 @@ abstract class ControllerBase
 		$this->viewWithController($className, $action, $httpStatusCode, $parameters);
 	}
 
-
+	/**
+	 * データ応答。
+	 *
+	 * @param ActionResponse $response 応答データ。
+	 * @return void
+	 */
 	public function data(ActionResponse $response)
 	{
 		header('Content-Type: ' . $response->mime);
@@ -74,7 +129,7 @@ abstract class ControllerBase
 			header("Transfer-encoding: chunked");
 		}
 
-		if(is_null($response->callback)) {
+		if (is_null($response->callback)) {
 			$converter = new ResponseOutput();
 			$converter->output($response->mime, $response->chunked, $response->data);
 		} else {

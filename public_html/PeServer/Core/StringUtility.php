@@ -40,6 +40,15 @@ class StringUtility
 		return strlen(trim($s)) === 0;
 	}
 
+	/**
+	 * プレースホルダー文字列置き換え処理
+	 *
+	 * @param string $source 元文字列
+	 * @param array<string,string> $map 置き換え対象辞書
+	 * @param string $head
+	 * @param string $tail
+	 * @return string 置き換え後文字列
+	 */
 	public static function replaceMap(string $source, array $map, string $head = '{', string $tail = '}'): string
 	{
 		$escHead = preg_quote($head);
@@ -80,7 +89,7 @@ class StringUtility
 	public static function endsWith(string $haystack, string $needle, bool $ignoreCase): bool
 	{
 		//PHP8
-		//str_starts_with($haystack, $needle);
+		//str_ends_with($haystack, $needle);
 		if (self::isNullOrEmpty($needle)) {
 			return true;
 		}
@@ -95,5 +104,4 @@ class StringUtility
 		}
 		return $needle === $word;
 	}
-
 }
