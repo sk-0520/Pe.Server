@@ -11,7 +11,7 @@ use \LogicException;
  */
 class ResponseOutput
 {
-	protected function outputPlainText(string $mime, bool $chunked, $data)
+	protected function outputText(string $mime, bool $chunked, $data)
 	{
 		echo strval($data);
 	}
@@ -29,8 +29,8 @@ class ResponseOutput
 	protected function outputDefault(string $mime, bool $chunked, $data)
 	{
 		switch ($mime) {
-			case Mime::TEXT_PLAIN:
-				$this->outputPlainText($mime, $chunked, $data);
+			case Mime::TEXT:
+				$this->outputText($mime, $chunked, $data);
 				break;
 
 			case Mime::JSON:

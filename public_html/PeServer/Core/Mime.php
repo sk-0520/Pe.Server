@@ -9,7 +9,7 @@ namespace PeServer\Core;
  */
 class Mime
 {
-	const TEXT_PLAIN = 'text/plain';
+	const TEXT = 'text/plain';
 	const JSON = 'application/json';
 	const STREAM = 'application/octet-stream';
 }

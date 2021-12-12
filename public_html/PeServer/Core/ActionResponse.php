@@ -74,7 +74,7 @@ class ActionResponse
 	 */
 	public static function text(string $data, int $httpStatusCode = HttpStatusCode::OK): ActionResponse
 	{
-		return new ActionResponse($httpStatusCode, Mime::TEXT_PLAIN, $data);
+		return new ActionResponse($httpStatusCode, Mime::TEXT, $data);
 	}
 
 	/**

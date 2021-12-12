@@ -12,7 +12,7 @@ class FileUtility
 	 * @param string $path パス。
 	 * @return string 絶対パス。
 	 */
-	public static function toAbsolutePath(string $path): string
+	public static function toCanonicalize(string $path): string
 	{
 		$targetPath = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path);
 		$parts = array_filter(explode(DIRECTORY_SEPARATOR, $targetPath), 'mb_strlen');
@@ -54,7 +54,7 @@ class FileUtility
 
 
 		$joinedPath = implode(DIRECTORY_SEPARATOR, $paths);
-		return self::toAbsolutePath($joinedPath);
+		return self::toCanonicalize($joinedPath);
 	}
 
 	/**
