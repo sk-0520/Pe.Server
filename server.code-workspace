@@ -29,9 +29,9 @@
 		"cSpell.words": [
 			"phpunit"
 		],
-		"intelephense.files.associations": [
-			"*.php",
-			"phpunit"
-		]
+		"files.associations": {
+			"phpunit": "php",
+			"*.phar": "php"
+		}
 	}
 }
