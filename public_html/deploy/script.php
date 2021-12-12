@@ -1,11 +1,11 @@
 <?php
 
-class Deploy
+class DeployScript
 {
 	private $scriptArgument;
 	private $fileTimestampName;
 
-	public function __construct(ScriptArgument $scriptArgument)
+	public function __construct(\Deploy\ScriptArgument $scriptArgument)
 	{
 		$this->scriptArgument = $scriptArgument;
 		$this->fileTimestampName = date("Y-m-d_His");
@@ -31,7 +31,7 @@ class Deploy
 		}
 
 		$backupDirectoryPath = $this->scriptArgument->joinPath($this->getAppDirectoryPath(), 'data', 'backups');
-		if(!file_exists($backupDirectoryPath)) {
+		if (!file_exists($backupDirectoryPath)) {
 			mkdir($backupDirectoryPath, 077, true);
 		}
 		$backupArchiveFilePath = $this->scriptArgument->joinPath($backupDirectoryPath, $this->fileTimestampName . '.zip');
@@ -46,19 +46,46 @@ class Deploy
 	public function after(): void
 	{
 		$this->scriptArgument->log('after script');
-		//TODO: DBのマイグレーション処理
+
+		// 設定のマージとかしんどいので直接書いとく。
+		$this->migrate([
+			'driver' => 'sqlite3',
+			'connection' => $this->scriptArgument->joinPath($this->getAppDirectoryPath(), 'data/data.sqlite3'),
+			'user' => '',
+			'passwd' => '',
+		]);
+	}
+
+	/**
+	 * マイグレーション
+	 * PeServerからも使用される
+	 *
+	 * @param {driver:string,connection:string,user:string,password:string} $databaseSetting
+	 * @return void
+	 */
+	public function migrate(array $databaseSetting)
+	{
+		$this->db_migrate($databaseSetting);
+	}
+
+	/**
+	 * @param {driver:string,connection:string,user:string,password:string} $databaseSetting
+	 */
+	private function db_migrate(array $databaseSetting)
+	{
+		$this->scriptArgument->log('!!!!!!!!!!db_migrate!!!!!!!!!!');
 	}
 }
 
-function before_update(ScriptArgument $scriptArgument)
+function before_update(\Deploy\ScriptArgument $scriptArgument)
 {
-	$deploy = new Deploy($scriptArgument);
+	$deploy = new DeployScript($scriptArgument);
 	$deploy->before();
 }
 
 
-function after_update(ScriptArgument $scriptArgument)
+function after_update(\Deploy\ScriptArgument $scriptArgument)
 {
-	$deploy = new Deploy($scriptArgument);
+	$deploy = new DeployScript($scriptArgument);
 	$deploy->after();
 }

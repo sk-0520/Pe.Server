@@ -2,29 +2,36 @@
 
 declare(strict_types=1);
 
+namespace Deploy;
+
+use \DateTime;
+use \DateInterval;
+use \Exception;
+use \ZipArchive;
+
 require __DIR__ . '/config.php';
 
-define('HTTP_STATUS_NOT_FOUND', 404);
-define('HTTP_STATUS_SERVER_ERROR', 500);
-define('HTTP_STATUS_SERVICE_UNAVAIL', 503);
+const HTTP_STATUS_NOT_FOUND = 404;
+const HTTP_STATUS_SERVER_ERROR = 500;
+const HTTP_STATUS_SERVICE_UNAVAIL = 503;
 
-define('SEQUENCE_HELLO', 10);
-define('SEQUENCE_INITIALIZE', 20);
-define('SEQUENCE_RECEIVE', 30);
-define('SEQUENCE_PREPARE', 40);
-define('SEQUENCE_UPDATE', 50);
+const SEQUENCE_HELLO = 10;
+const SEQUENCE_INITIALIZE = 20;
+const SEQUENCE_RECEIVE = 30;
+const SEQUENCE_PREPARE = 40;
+const SEQUENCE_UPDATE = 50;
 
 // 長いと暗号化時に死ぬけどチェックしないかんね
-define('ACCESS_TOKEN_LENGTH', 48);
-define('REQUEST_ID', bin2hex(openssl_random_pseudo_bytes(6)));
+const ACCESS_TOKEN_LENGTH = 48;
+define('DEPLOY_REQUEST_ID', bin2hex(openssl_random_pseudo_bytes(6)));
 
-define('PARAM_SEQ', 'seq');
-define('PARAM_KEY', 'key');
-define('PARAM_PUBLIC_KEY', 'pub');
-define('PARAM_UPLOAD_FILE', 'file');
-define('PARAM_UPLOAD_NUMBER', 'number');
-define('PARAM_ALGORITHM', 'algorithm');
-define('PARAM_HASH', 'hash');
+const PARAM_SEQ = 'seq';
+const PARAM_KEY = 'key';
+const PARAM_PUBLIC_KEY = 'pub';
+const PARAM_UPLOAD_FILE = 'file';
+const PARAM_UPLOAD_NUMBER = 'number';
+const PARAM_ALGORITHM = 'algorithm';
+const PARAM_HASH = 'hash';
 
 //###########################################################################
 // 共通関数 -------------------------------
@@ -146,7 +153,7 @@ function outputLog($message)
 	}
 
 	$path = getLogFilePath();
-	$logItem = sprintf('%s [%s] <%s> %s %s (%d) %s', date('c'), $_SERVER['REMOTE_ADDR'], REQUEST_ID, $_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI'], $backtrace['line'], $value);
+	$logItem = sprintf('%s [%s] <%s> %s %s (%d) %s', date('c'), $_SERVER['REMOTE_ADDR'], DEPLOY_REQUEST_ID, $_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI'], $backtrace['line'], $value);
 	file_put_contents($path, $logItem . PHP_EOL, FILE_APPEND | LOCK_EX);
 }
 
@@ -328,12 +335,17 @@ class ScriptArgument
 	 * @var string
 	 */
 	public $expandDirectoryPath;
+	/**
+	 * 設定
+	 */
+	public $config;
 
-	public function __construct(string $rootDirectoryPath, string $publicDirectoryPath, string $expandDirectoryPath)
+	public function __construct(string $rootDirectoryPath, string $publicDirectoryPath, string $expandDirectoryPath, array $config)
 	{
 		$this->rootDirectoryPath = $rootDirectoryPath;
 		$this->publicDirectoryPath = $publicDirectoryPath;
 		$this->expandDirectoryPath = $expandDirectoryPath;
+		$this->config = $config;
 	}
 
 	/**
@@ -384,7 +396,7 @@ class ScriptArgument
 	public function backupFiles(string $archiveFilePath, array $paths)
 	{
 		$zip = new ZipArchive();
-		$zip->open($archiveFilePath, ZipArchive::CREATE| ZipArchive::OVERWRITE);
+		$zip->open($archiveFilePath, ZipArchive::CREATE | ZipArchive::OVERWRITE);
 		try {
 			foreach ($paths as $path) {
 				$sourcePath = $this->joinPath($this->rootDirectoryPath, $path);
@@ -588,7 +600,7 @@ function sequenceUpdate(array $config, array $runningData)
 		}, $expandFilePaths);
 
 		// ユーザースクリプト用データ
-		$scriptArgument = new ScriptArgument($config['ROOT_DIR_PATH'], joinPath($config['ROOT_DIR_PATH'], $config['PUBLIC_DIR']), getExpandDirectoryPath());
+		$scriptArgument = new ScriptArgument($config['ROOT_DIR_PATH'], joinPath($config['ROOT_DIR_PATH'], $config['PUBLIC_DIR']), getExpandDirectoryPath(), $config);
 		// 前処理スクリプトの実施
 		$beforeScriptPath = joinPath(getExpandDirectoryPath(), $config['BEFORE_SCRIPT']);
 		if (is_file($beforeScriptPath)) {
@@ -734,4 +746,6 @@ function main()
 	}
 }
 
-main();
+if(!defined('NO_DEPLOY_START')) {
+	main();
+}

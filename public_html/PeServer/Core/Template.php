@@ -21,16 +21,18 @@ class Template
 	 * @var InitializeChecker
 	 */
 	private static $initializeChecker;
-	private static $appDirectoryPath;
+	private static $rootDirectoryPath;
+	private static $baseDirectoryPath;
 
-	public static function initialize(string $appDirectoryPath, string $baseDirectoryPath, string $environment)
+	public static function initialize(string $rootDirectoryPath, string $baseDirectoryPath, string $environment)
 	{
 		if (is_null(self::$initializeChecker)) {
 			self::$initializeChecker = new InitializeChecker();
 		}
 		self::$initializeChecker->initialize();
 
-		self::$appDirectoryPath = $appDirectoryPath;
+		self::$rootDirectoryPath = $rootDirectoryPath;
+		self::$baseDirectoryPath = $baseDirectoryPath;
 	}
 
 	public static function createTemplate(string $baseName): Smarty
@@ -38,10 +40,10 @@ class Template
 		self::$initializeChecker->throwIfNotInitialize();
 
 		$smarty = new Smarty();
-		$smarty->addTemplateDir(self::$appDirectoryPath . "/App/Views/$baseName/");
-		$smarty->addTemplateDir(self::$appDirectoryPath . "/App/Views/");
-		$smarty->compile_dir  = self::$appDirectoryPath . "/data/temp/views/c/$baseName/";
-		$smarty->cache_dir    = self::$appDirectoryPath . "/data/temp/views/t/$baseName/";
+		$smarty->addTemplateDir(self::$baseDirectoryPath . "/App/Views/$baseName/");
+		$smarty->addTemplateDir(self::$baseDirectoryPath . "/App/Views/");
+		$smarty->compile_dir  = self::$baseDirectoryPath . "/data/temp/views/c/$baseName/";
+		$smarty->cache_dir    = self::$baseDirectoryPath . "/data/temp/views/t/$baseName/";
 
 		return $smarty;
 	}

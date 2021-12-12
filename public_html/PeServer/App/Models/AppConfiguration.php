@@ -23,14 +23,17 @@ class AppConfiguration
 	private static $environment;
 	public static $json;
 
-	private static function replaceArray(array $array, string $appDirectoryPath, string $baseDirectoryPath, string $environment): array
+	public static $rootDirectoryPath;
+	public static $baseDirectoryPath;
+
+	private static function replaceArray(array $array, string $rootDirectoryPath, string $baseDirectoryPath, string $environment): array
 	{
 		foreach ($array as $key => $value) {
 			if (is_array($value)) {
-				$array[$key] = self::replaceArray($value, $appDirectoryPath, $baseDirectoryPath, $environment);
+				$array[$key] = self::replaceArray($value, $rootDirectoryPath, $baseDirectoryPath, $environment);
 			} else if (is_string($value)) {
 				$array[$key] = StringUtility::replaceMap($value, [
-					'APP' => $appDirectoryPath,
+					'ROOT' => $rootDirectoryPath,
 					'BASE' => $baseDirectoryPath,
 					'ENV' => $environment
 				], '<', '>');
@@ -40,9 +43,9 @@ class AppConfiguration
 		return $array;
 	}
 
-	private static function load(string $appDirectoryPath, string $baseDirectoryPath, string $environment)
+	private static function load(string $rootDirectoryPath, string $baseDirectoryPath, string $environment)
 	{
-		$settingDirPath = FileUtility::joinPath($appDirectoryPath, 'config');
+		$settingDirPath = FileUtility::joinPath($baseDirectoryPath, 'config');
 
 		$baseSettingFilePath = FileUtility::joinPath($settingDirPath, 'setting.json');
 		$baseSettingJson = FileUtility::readJsonFile($baseSettingFilePath);
@@ -63,23 +66,26 @@ class AppConfiguration
 			$json = $baseSettingJson;
 		}
 
-		return self::replaceArray($json, $appDirectoryPath, $baseDirectoryPath, $environment);
+		return self::replaceArray($json, $rootDirectoryPath, $baseDirectoryPath, $environment);
 	}
 
-	public static function initialize(string $appDirectoryPath, string $baseDirectoryPath, string $environment)
+	public static function initialize(string $rootDirectoryPath, string $baseDirectoryPath, string $environment)
 	{
 		if (is_null(self::$initializeChecker)) {
 			self::$initializeChecker = new InitializeChecker();
 		}
 		self::$initializeChecker->initialize();
 
-		$json = self::load($appDirectoryPath, $baseDirectoryPath, $environment);
+		$json = self::load($rootDirectoryPath, $baseDirectoryPath, $environment);
 
 		Logging::initialize($json['logging']);
 		Database::initialize($json['persistence']);
 
 		self::$environment = $environment;
 		self::$json = $json;
+		self::$rootDirectoryPath = $rootDirectoryPath;
+		self::$baseDirectoryPath = $baseDirectoryPath;
+
 	}
 
 	public static function isEnvironment(string $environment): bool

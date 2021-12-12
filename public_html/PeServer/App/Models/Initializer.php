@@ -18,14 +18,14 @@ class Initializer
 	 */
 	private static $initializeChecker;
 
-	public static function initialize(string $appDirectoryPath, string $baseDirectoryPath, string $environment)
+	public static function initialize(string $rootDirectoryPath, string $baseDirectoryPath, string $environment)
 	{
 		if (is_null(self::$initializeChecker)) {
 			self::$initializeChecker = new InitializeChecker();
 		}
 		self::$initializeChecker->initialize();
 
-		AppConfiguration::initialize($appDirectoryPath, $baseDirectoryPath, $environment);
-		Template::initialize($appDirectoryPath, $baseDirectoryPath, $environment);
+		AppConfiguration::initialize($rootDirectoryPath, $baseDirectoryPath, $environment);
+		Template::initialize($rootDirectoryPath, $baseDirectoryPath, $environment);
 	}
 }
