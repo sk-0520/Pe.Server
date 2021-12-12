@@ -70,7 +70,9 @@ class DeployScript
 
 	private function createConnection(array $databaseSetting): PDO
 	{
-		$pdo = new PDO('sqlite:' . $databaseSetting['connection']);
+		$pdo = new PDO('sqlite:' . $databaseSetting['connection']/*, null, null, [
+			PDO::ATTR_PERSISTENT => true,
+		]*/);
 		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		return $pdo;
 	}
@@ -90,8 +92,14 @@ class DeployScript
 			$checkCountStatement = $checkPdo->query("select COUNT(*) from sqlite_master where sqlite_master.type='table' and sqlite_master.name='database_version'");
 			if (0 < $checkCountStatement->fetchColumn()) {
 				$versionStatement = $checkPdo->query("select version from database_version");
-				$dbVersion = $versionStatement->fetchColumn();
+				$versionNumber = $versionStatement->fetchColumn();
+				if ($versionNumber !== false) {
+					$dbVersion = $versionNumber;
+				}
+				$versionStatement = null;
 			}
+			$checkCountStatement = null;
+			$checkPdo = null;
 		}
 
 		$db_migrates = [
@@ -108,6 +116,16 @@ class DeployScript
 	private function db_migrates_0(PDO $pdo)
 	{
 		//TODO: 全削除処理
+		$tablesStatement = $pdo->query("select sqlite_master.name from sqlite_master where sqlite_master.type='table'");
+		$tableNameRows = $tablesStatement->fetchAll();
+
+		foreach ($tableNameRows as $tableNameRow) {
+			$tableName = $tableNameRow[0];
+			$pdo->exec("drop table $tableName");
+		}
+		$tableNameRows = null;
+		$tablesStatement = null;
+
 
 		$pdo->exec(
 			<<<SQL
