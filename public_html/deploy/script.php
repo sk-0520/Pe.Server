@@ -107,16 +107,19 @@ class DeployScript
 		];
 
 		$pdo = $this->createConnection($databaseSetting);
+		$pdo->exec( 'PRAGMA foreign_keys = OFF;' );
 		for ($i = $dbVersion; $i < count($db_migrates); $i++) {
 			$this->scriptArgument->log('DB: ' . $db_migrates[$i]);
 			call_user_func(array($this, $db_migrates[$i]), $pdo);
 		}
+		$pdo->exec( 'PRAGMA foreign_keys = ON;' );
 	}
 
+	// 管理ユーザー admin/admin が作られるので公開時は速やかに破棄 or 変更すること
 	private function db_migrates_0(PDO $pdo)
 	{
 		//TODO: 全削除処理
-		$tablesStatement = $pdo->query("select sqlite_master.name from sqlite_master where sqlite_master.type='table'");
+		$tablesStatement = $pdo->query("select sqlite_master.name from sqlite_master where sqlite_master.type='table' and sqlite_master.name <> 'sqlite_sequence'");
 		$tableNameRows = $tablesStatement->fetchAll();
 
 		foreach ($tableNameRows as $tableNameRow) {
@@ -126,6 +129,10 @@ class DeployScript
 		$tableNameRows = null;
 		$tablesStatement = null;
 
+		//TODO: 暗号化とかとか
+		$userId = '00000000-0000-4000-0000-000000000000';
+		$loginId = 'admin';
+		$password = 'admin';
 
 		$pdo->exec(
 			<<<SQL
@@ -136,14 +143,86 @@ class DeployScript
 				)
 			;
 
-			create table [users] (
-				[user_id]    text not null,
-				[user_name]  text not null,
-				[user_mail_address] text not null,
-				[user_website] text not null,
-				[user_note] text not null,
-				primary key([user_id])
-			);
+			create table
+				[users]
+				(
+					[user_id] text not null,
+					[login_id] text not null unique,
+					[level] text not null,
+					[state] text not null,
+					[name] text not null,
+					[mail_address] text not null,
+					[website] text not null,
+					[note] text not null,
+					primary key([user_id])
+				)
+			;
+
+			create table
+				[user_authentications]
+				(
+					[user_id] text not null,
+					[default_password] text not null,
+					[current_password] text not null,
+					primary key([user_id]),
+					foreign key ([user_id]) references users([user_id])
+				)
+			;
+
+			create table
+				[user_audit_logs]
+				(
+					[sequence] integer not null,
+					[user_id] text not null,
+					[timestamp] datetime not null,
+					[event] text not null,
+					[ip_address] text not null,
+					[user_agent] text not null,
+					primary key([sequence] autoincrement),
+					foreign key ([user_id]) references users([user_id])
+				)
+			;
+
+			insert into
+				[users]
+				(
+					[user_id],
+					[login_id],
+					[level],
+					[state],
+					[name],
+					[mail_address],
+					[website],
+					[note]
+				)
+				values
+				(
+					'$userId',
+					'$loginId',
+					'admin',
+					'enabled', --'pending',
+					'admin',
+					'admin@localhost',
+					'localhost',
+					''
+				)
+			;
+
+			insert into
+				[user_authentications]
+				(
+					[user_id],
+					[default_password],
+					[current_password]
+				)
+				values
+				(
+					'$userId',
+					'',
+					'$password'
+				)
+			;
+
 SQL
 		);
 	}
