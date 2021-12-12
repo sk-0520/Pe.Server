@@ -28,7 +28,7 @@ class FileLogger extends LoggerBase
 		}
 	}
 
-	private function getSafeNameHeader(): string
+	private function toFileSafeNameHeader(): string
 	{
 		$trimHeader = trim($this->header, '/\\');
 		return str_replace(['/', '\\', '*', '|', '<', '>', '?'], '_', $trimHeader);
@@ -39,7 +39,7 @@ class FileLogger extends LoggerBase
 		$filePattern = StringUtility::replaceMap(
 			$this->baseFileName,
 			[
-				'HEADER' => $this->getSafeNameHeader(),
+				'HEADER' => $this->toFileSafeNameHeader(),
 				'DATE' => '*',
 			]
 		);
@@ -60,7 +60,7 @@ class FileLogger extends LoggerBase
 		$fileName = StringUtility::replaceMap(
 			$this->baseFileName,
 			[
-				'HEADER' => $this->getSafeNameHeader(),
+				'HEADER' => $this->toFileSafeNameHeader(),
 				'DATE' => date('Ymd'),
 			]
 		);
@@ -75,6 +75,7 @@ class FileLogger extends LoggerBase
 		$logMessage = $this->format($level, $traceIndex + 1, $message, ...$parameters);
 
 		$filePath = $this->getLogFilePath();
+		//error_logが制限されている場合はこっちを使用する→: file_put_contents($filePath, $logMessage . PHP_EOL, FILE_APPEND | LOCK_EX);
 		error_log($logMessage . PHP_EOL, 3, $filePath);
 	}
 }

@@ -8,8 +8,25 @@ use \PeServer\Core\ILogger;
 
 abstract class LoggerBase implements ILogger
 {
+	/**
+	 * ヘッダ。
+	 *
+	 * 使用用途により意味合いは変わるので実装側でルール決めして使用すること。
+	 *
+	 * @var string
+	 */
 	protected $header;
+	/**
+	 * 有効レベル。
+	 *
+	 * @var int
+	 */
 	protected $level;
+	/**
+	 * 基準トレース位置。
+	 *
+	 * @var int
+	 */
 	protected $baseTraceIndex;
 
 	public function __construct(string $header, int $level, int $baseTraceIndex)

@@ -95,8 +95,11 @@ class Logging
 		self::$initializeChecker->throwIfNotInitialize();
 
 		//DEBUG_BACKTRACE_PROVIDE_OBJECT
+		/** @var array[] */
 		$backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+		/** @var array<string,mixed> */
 		$traceCaller = $backtrace[$traceIndex];
+		/** @var array<string,mixed> */
 		$traceMethod = $backtrace[$traceIndex + 1];
 
 		$map = [
@@ -122,13 +125,13 @@ class Logging
 		return StringUtility::replaceMap(self::$format, $map);
 	}
 
-	public static function create(string $header): ILogger
+	public static function create(string $header, int $baseTraceIndex = 0): ILogger
 	{
 		self::$initializeChecker->throwIfNotInitialize();
 
 		$loggers = [
-			new FileLogger($header, self::$level, 1, self::$loggingConfiguration['file']),
+			new FileLogger($header, self::$level, $baseTraceIndex + 1, self::$loggingConfiguration['file']),
 		];
-		return new MultiLogger($header, self::$level, 0, $loggers);
+		return new MultiLogger($header, self::$level, $baseTraceIndex, $loggers);
 	}
 }
