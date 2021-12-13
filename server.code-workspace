@@ -13,8 +13,7 @@
 			".vscode": true,
 			"dist/": true,
 			"Output": true,
-			"*.lnk": true,
-			"**/PHPUnit/**": true,
+			"*.lnk": true
 		},
 		"files.watcherExclude": {
 			"**/.git/objects/**": true,
@@ -26,7 +25,7 @@
 			"**/bin/**": true,
 			"**/obj/**": true,
 			"*.lnk": true,
-			"**/PHPUnit/**": true,
+			"**/PHPUnit/**": true
 		},
 		"cSpell.words": [
 			"phpunit"

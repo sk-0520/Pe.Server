@@ -15,5 +15,5 @@ $*
 *.tmp
 *.log
 /public_html/deploy/
-/test/PHPUnit
+/dev/PHPUnit
 /dev/phpstan.phar
