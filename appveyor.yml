@@ -23,7 +23,7 @@ build_script:
   - sh: npm run build
 test_script:
   - sh: npm run test
-  - sh: find . -name '*.php' -exec php --syntax-check {} \;
+  - sh: ./dev/phpstan.sh
   - sh: ./dev/test.sh
 
 artifacts:

@@ -28,6 +28,7 @@
 			"**/PHPUnit/**": true
 		},
 		"cSpell.words": [
+			"phpstan",
 			"phpunit"
 		]
 	}
