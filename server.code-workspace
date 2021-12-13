@@ -14,6 +14,7 @@
 			"dist/": true,
 			"Output": true,
 			"*.lnk": true,
+			"**/PHPUnit/**": true,
 		},
 		"files.watcherExclude": {
 			"**/.git/objects/**": true,
@@ -25,13 +26,10 @@
 			"**/bin/**": true,
 			"**/obj/**": true,
 			"*.lnk": true,
+			"**/PHPUnit/**": true,
 		},
 		"cSpell.words": [
 			"phpunit"
-		],
-		"files.associations": {
-			"phpunit": "php",
-			"*.phar": "php"
-		}
+		]
 	}
 }
