@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
-use \Exception;
+use \LogicException;
 
 /**
  * アクションに対するリクエストデータ。
@@ -66,8 +66,8 @@ class ActionRequest
 	 * ファイルは取得できない。
 	 *
 	 * @param string $key
-	 * @return void
-	 * @throws Exception キーに対する値が存在しない。
+	 * @return string
+	 * @throws LogicException キーに対する値が存在しない。
 	 */
 	public function getValue(string $key): string
 	{
@@ -81,7 +81,7 @@ class ActionRequest
 			return $_POST[$key];
 		}
 
-		throw new Exception("parameter not found: $key");
+		throw new LogicException("parameter not found: $key");
 	}
 
 	// public function gets($key): array

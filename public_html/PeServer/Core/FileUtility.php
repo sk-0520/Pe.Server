@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
+use \PeServer\Core\FileNotFoundException;
+
 class FileUtility
 {
 	/**
@@ -62,12 +64,21 @@ class FileUtility
 	 *
 	 * @param string $path パス
 	 * @param boolean $associative 連想配列として扱うか
-	 * @return array|stdClass|null 応答JSON
+	 * @return array|\stdClass 応答JSON
 	 */
 	public static function readJsonFile(string $path, bool $associative = true)
 	{
 		$content = file_get_contents($path);
-		return json_decode($content, $associative);
+		if ($content === false) {
+			throw new FileNotFoundException($path);
+		}
+		$json = json_decode($content, $associative);
+
+		if (is_null($json)) {
+			throw new ParseException($path);
+		}
+
+		return $json;
 	}
 
 	/**

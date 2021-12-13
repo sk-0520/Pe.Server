@@ -6,7 +6,7 @@ namespace PeServer\Core\Log;
 
 use \PeServer\Core\FileUtility;
 use \PeServer\Core\Log\LoggerBase;
-use PeServer\Core\StringUtility;
+use \PeServer\Core\StringUtility;
 
 class FileLogger extends LoggerBase
 {

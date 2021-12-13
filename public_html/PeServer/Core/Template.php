@@ -43,10 +43,10 @@ class Template
 
 		// @phpstan-ignore-next-line
 		$smarty = new Smarty();
-		$smarty->addTemplateDir(self::$baseDirectoryPath . "/App/Views/$baseName/");
-		$smarty->addTemplateDir(self::$baseDirectoryPath . "/App/Views/");
-		$smarty->compile_dir  = self::$baseDirectoryPath . "/data/temp/views/c/$baseName/";
-		$smarty->cache_dir    = self::$baseDirectoryPath . "/data/temp/views/t/$baseName/";
+		$smarty->addTemplateDir(self::$baseDirectoryPath . "/App/Views/$baseName/"); // @phpstan-ignore-line
+		$smarty->addTemplateDir(self::$baseDirectoryPath . "/App/Views/"); // @phpstan-ignore-line
+		$smarty->compile_dir  = self::$baseDirectoryPath . "/data/temp/views/c/$baseName/"; // @phpstan-ignore-line
+		$smarty->cache_dir    = self::$baseDirectoryPath . "/data/temp/views/t/$baseName/"; // @phpstan-ignore-line
 
 		return $smarty;
 	}

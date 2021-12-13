@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core;
 
 use \Exception;
-use LogicException;
+use \LogicException;
 
 /**
  * アクション応答。
@@ -44,9 +44,9 @@ class ActionResponse
 	 * $data を実際に応答データに変換する処理。
 	 * null 設定時は標準処理が使用される。
 	 *
-	 * @var callback|null
+	 * @var \callback|null
 	 */
-	public $callback;
+	public $callback; // @phpstan-ignore-line
 
 	/**
 	 * 分割応答を行うか。

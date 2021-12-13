@@ -96,8 +96,8 @@ abstract class ControllerBase
 		$templateDirPath = str_replace('\\', DIRECTORY_SEPARATOR, $controllerBaseName);
 		$smarty = $this->createTemplate($templateDirPath);
 
-		$smarty->assign($parameters);
-		$smarty->display("$action.tpl");
+		$smarty->assign($parameters); // @phpstan-ignore-line
+		$smarty->display("$action.tpl"); // @phpstan-ignore-line
 	}
 
 	/**

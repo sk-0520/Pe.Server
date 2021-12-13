@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
-use \Exception;
+use \LogicException;
 
 /**
  * 初期化状態チェック処理。
@@ -22,12 +22,12 @@ final class InitializeChecker
 	 *
 	 * @return void
 	 *
-	 * @throws Exception 既に初期化されている。
+	 * @throws LogicException 既に初期化されている。
 	 */
 	public function initialize()
 	{
 		if ($this->isInitialized) {
-			throw new Exception('initialized');
+			throw new LogicException('initialized');
 		}
 
 		$this->isInitialized = true;
@@ -38,12 +38,12 @@ final class InitializeChecker
 	 *
 	 * @return void
 	 *
-	 * @throws Exception 初期化されていない。
+	 * @throws LogicException 初期化されていない。
 	 */
 	public function throwIfNotInitialize()
 	{
 		if (!$this->isInitialized) {
-			throw new Exception('not initialize');
+			throw new LogicException('not initialize');
 		}
 	}
 }
