@@ -24,7 +24,7 @@ build_script:
 test_script:
   - sh: npm run test
   - sh: find . -name '*.php' -exec php --syntax-check {} \;
-  - sh: cd test; php phpunit.phar --bootstrap ./bootstrap.php --testdox .
+  - sh: ./dev/test.sh
 
 artifacts:
   - path: public_html
