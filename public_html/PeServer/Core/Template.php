@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
+// require_once('PeServer/Libs/smarty/libs/Smarty.class.php');
+
 use \Exception;
 use \Smarty;
 use \PeServer\Core\InitializeChecker;
@@ -35,10 +37,11 @@ class Template
 		self::$baseDirectoryPath = $baseDirectoryPath;
 	}
 
-	public static function createTemplate(string $baseName): Smarty
+	public static function createTemplate(string $baseName): Smarty // @phpstan-ignore-line
 	{
 		self::$initializeChecker->throwIfNotInitialize();
 
+		// @phpstan-ignore-next-line
 		$smarty = new Smarty();
 		$smarty->addTemplateDir(self::$baseDirectoryPath . "/App/Views/$baseName/");
 		$smarty->addTemplateDir(self::$baseDirectoryPath . "/App/Views/");

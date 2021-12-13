@@ -35,7 +35,7 @@ class DevelopmentInitializeLogic extends LogicBase
 	protected function executeImpl(int $logicMode): void
 	{
 		// 結構なぐっだぐだ
-		$scriptArgument = new class() extends ScriptArgument
+		$scriptArgument = new class() extends ScriptArgument // @phpstan-ignore-line
 		{
 			/**
 			 * @var ILogger
@@ -44,7 +44,7 @@ class DevelopmentInitializeLogic extends LogicBase
 			public function __construct()
 			{
 				$this->logger = Logging::create('script');
-				parent::__construct(
+				parent::__construct(  // @phpstan-ignore-line
 					AppConfiguration::$rootDirectoryPath,
 					'',
 					'',
@@ -57,7 +57,7 @@ class DevelopmentInitializeLogic extends LogicBase
 			}
 		};
 
-		$deployScript = new \DeployScript($scriptArgument);
+		$deployScript = new \DeployScript($scriptArgument);  // @phpstan-ignore-line
 		$deployScript->migrate(AppConfiguration::$json['persistence']);
 
 

@@ -73,7 +73,7 @@ abstract class ControllerBase
 	 * @param string $baseName コントローラ名。
 	 * @return Smarty 本処理では Smarty を使用するが将来変わる可能性あり。
 	 */
-	protected function createTemplate(string $baseName): Smarty
+	protected function createTemplate(string $baseName): Smarty // @phpstan-ignore-line
 	{
 		return Template::createTemplate($baseName);
 	}
@@ -107,7 +107,7 @@ abstract class ControllerBase
 	 * @param array|null $parameters View連携データ。
 	 * @return void
 	 */
-	public function view(string $action, ?array $parameters = null)
+	public function view(string $action, ?array $parameters = null): void
 	{
 		$className = get_class($this);
 
@@ -133,7 +133,7 @@ abstract class ControllerBase
 			$converter = new ResponseOutput();
 			$converter->output($response->mime, $response->chunked, $response->data);
 		} else {
-			call_user_func_array($this->callback, [$response->mime, $response->chunked, $response->data]);
+			call_user_func_array($response->callback, [$response->mime, $response->chunked, $response->data]);
 		}
 	}
 }

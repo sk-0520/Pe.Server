@@ -28,6 +28,8 @@
 			"**/PHPUnit/**": true
 		},
 		"cSpell.words": [
+			"autoload",
+			"ondrej",
 			"phpstan",
 			"phpunit"
 		]

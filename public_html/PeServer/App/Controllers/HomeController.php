@@ -23,6 +23,6 @@ class HomeController extends ControllerBase
 		$logic = $this->createLogic(HomeIndexLogic::class, $request);
 		$logic->run(LogicMode::INITIALIZE);
 
-		return $this->view('index', $logic->getViewData());
+		$this->view('index', $logic->getViewData());
 	}
 }

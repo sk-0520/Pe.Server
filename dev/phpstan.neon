@@ -5,3 +5,5 @@ parameters:
   excludePaths:
     - ../public_html/PeServer/data
     - ../public_html/PeServer/Libs
+    - ../public_html/deploy
+    - ../public_html/PeServer/App/Models/Domains/Api/Development/DevelopmentInitializeLogic.php
