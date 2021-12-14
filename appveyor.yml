@@ -31,8 +31,6 @@ artifacts:
     name: public_html
   - path: coverage
     name: coverage
-  - path: dev/phpstan.phar
-    name: phpstan.phar
 
 for:
   -
@@ -46,3 +44,4 @@ for:
 
 cache:
   - 'node_modules'
+  - 'dev/phpstan.phar'
