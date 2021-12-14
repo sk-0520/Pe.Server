@@ -13,9 +13,14 @@ class Database
 	 */
 	private static $initializeChecker;
 
+	/**
+	 * DB接続設定
+	 *
+	 * @var array
+	 */
 	private static $databaseConfiguration; // @phpstan-ignore-line
 
-	public static function initialize(array $databaseConfiguration)
+	public static function initialize(array $databaseConfiguration): void // @phpstan-ignore-line
 	{
 		if (is_null(self::$initializeChecker)) {
 			self::$initializeChecker = new InitializeChecker();

@@ -20,13 +20,33 @@ class AppConfiguration
 	 */
 	private static $initializeChecker;
 
+	/**
+	 * 環境情報。
+	 *
+	 * @var string
+	 */
 	private static $environment;
-	public static $json;
+	/**
+	 * 設定データ。
+	 *
+	 * @var array
+	 */
+	public static $json; // @phpstan-ignore-line
 
+	/**
+	 * ルートディレクトリ。
+	 *
+	 * @var string
+	 */
 	public static $rootDirectoryPath;
+	/**
+	 * ベースディレクトリ。
+	 *
+	 * @var string
+	 */
 	public static $baseDirectoryPath;
 
-	private static function replaceArray(array $array, string $rootDirectoryPath, string $baseDirectoryPath, string $environment): array
+	private static function replaceArray(array $array, string $rootDirectoryPath, string $baseDirectoryPath, string $environment): array // @phpstan-ignore-line
 	{
 		foreach ($array as $key => $value) {
 			if (is_array($value)) {
@@ -43,7 +63,7 @@ class AppConfiguration
 		return $array;
 	}
 
-	private static function load(string $rootDirectoryPath, string $baseDirectoryPath, string $environment)
+	private static function load(string $rootDirectoryPath, string $baseDirectoryPath, string $environment): array // @phpstan-ignore-line
 	{
 		$settingDirPath = FileUtility::joinPath($baseDirectoryPath, 'config');
 
@@ -63,7 +83,7 @@ class AppConfiguration
 		return self::replaceArray($json, $rootDirectoryPath, $baseDirectoryPath, $environment);
 	}
 
-	public static function initialize(string $rootDirectoryPath, string $baseDirectoryPath, string $environment)
+	public static function initialize(string $rootDirectoryPath, string $baseDirectoryPath, string $environment): void
 	{
 		if (is_null(self::$initializeChecker)) {
 			self::$initializeChecker = new InitializeChecker();

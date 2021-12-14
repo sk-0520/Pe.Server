@@ -66,7 +66,7 @@ class FileUtility
 	 * @param boolean $associative 連想配列として扱うか
 	 * @return array|\stdClass 応答JSON
 	 */
-	public static function readJsonFile(string $path, bool $associative = true)
+	public static function readJsonFile(string $path, bool $associative = true) // @phpstan-ignore-line
 	{
 		$content = file_get_contents($path);
 		if ($content === false) {

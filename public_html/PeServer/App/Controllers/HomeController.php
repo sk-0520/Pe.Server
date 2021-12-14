@@ -18,7 +18,7 @@ class HomeController extends ControllerBase
 		parent::__construct($arguments);
 	}
 
-	public function index(ActionRequest $request)
+	public function index(ActionRequest $request): void
 	{
 		$logic = $this->createLogic(HomeIndexLogic::class, $request);
 		$logic->run(LogicMode::INITIALIZE);

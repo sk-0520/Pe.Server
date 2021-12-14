@@ -57,6 +57,14 @@ class ActionResponse
 	 */
 	public $chunked = false;
 
+	/**
+	 * 生成。
+	 *
+	 * @param integer $httpStatusCode
+	 * @param string $mime
+	 * @param mixed $data
+	 * @param callable|null $callback
+	 */
 	public function __construct(int $httpStatusCode, string $mime, $data, ?callable $callback = null)
 	{
 		$this->httpStatusCode = $httpStatusCode;
@@ -84,7 +92,7 @@ class ActionResponse
 	 * @param int $httpStatusCode
 	 * @return ActionResponse
 	 */
-	public static function json(array $data, int $httpStatusCode = HttpStatusCode::OK): ActionResponse
+	public static function json(array $data, int $httpStatusCode = HttpStatusCode::OK): ActionResponse // @phpstan-ignore-line
 	{
 		return new ActionResponse($httpStatusCode, Mime::JSON, $data);
 	}

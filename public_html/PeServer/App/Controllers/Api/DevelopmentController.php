@@ -15,7 +15,7 @@ class DevelopmentController extends ApiControllerBase
 		parent::__construct($arguments);
 	}
 
-	public function initialize(ActionRequest $request)
+	public function initialize(ActionRequest $request): void
 	{
 		// @phpstan-ignore-next-line
 		$logic = $this->createLogic(DevelopmentInitializeLogic::class, $request);

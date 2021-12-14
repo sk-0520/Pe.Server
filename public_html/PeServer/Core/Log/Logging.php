@@ -22,18 +22,33 @@ use \PeServer\Core\StringUtility;
 class Logging
 {
 	/**
-	 * 初期化チェック
+	 * 初期化チェック。
 	 *
 	 * @var InitializeChecker|null
 	 */
 	private static $initializeChecker;
 
-	private static $loggingConfiguration;
+	/**
+	 * ログ設定。
+	 *
+	 * @var array
+	 */
+	private static $loggingConfiguration; // @phpstan-ignore-line
 
+	/**
+	 * ログレベル。
+	 *
+	 * @var int
+	 */
 	private static $level;
+	/**
+	 * 書式設定。
+	 *
+	 * @var string
+	 */
 	private static $format;
 
-	public static function initialize(array $loggingConfiguration)
+	public static function initialize(array $loggingConfiguration) // @phpstan-ignore-line
 	{
 		if (is_null(self::$initializeChecker)) {
 			self::$initializeChecker = new InitializeChecker();
@@ -64,6 +79,13 @@ class Logging
 		throw new LogicException("log level: $level");
 	}
 
+	/**
+	 * メッセージ書式適用。
+	 *
+	 * @param mixed $message
+	 * @param mixed ...$parameters
+	 * @return string
+	 */
 	private static function formatMessage($message, ...$parameters): string
 	{
 		if (is_null($message)) {
@@ -85,7 +107,7 @@ class Logging
 				return strval($value);
 			}, $parameters);
 
-			/** @var array(string,string) */
+			/** @var array<string,string> */
 			$map = [];
 			foreach ($values as $key => $value) {
 				$map[strval($key)] = $value;
@@ -104,13 +126,23 @@ class Logging
 		return var_export(['message' => $message, 'parameters' => $parameters], true);
 	}
 
+	/**
+	 * ログ書式適用。
+	 *
+	 * @param integer $level
+	 * @param integer $traceIndex
+	 * @param string $header
+	 * @param mixed $message
+	 * @param mixed ...$parameters
+	 * @return string
+	 */
 	public static function format(int $level, int $traceIndex, string $header, $message, ...$parameters): string
 	{
 		self::$initializeChecker->throwIfNotInitialize();
 
 		//DEBUG_BACKTRACE_PROVIDE_OBJECT
 		/** @var array[] */
-		$backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+		$backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS); // @phpstan-ignore-line
 		/** @var array<string,mixed> */
 		$traceCaller = $backtrace[$traceIndex];
 		/** @var array<string,mixed> */

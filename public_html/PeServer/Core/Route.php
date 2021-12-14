@@ -11,8 +11,23 @@ use \LogicException;
  */
 class Route
 {
+	/**
+	 * ベースパス。
+	 *
+	 * @var string
+	 */
 	private $basePath;
+	/**
+	 * クラス完全名。
+	 *
+	 * @var string
+	 */
 	private $className;
+	/**
+	 * アクション一覧。
+	 *
+	 * @var Action[]
+	 */
 	private $actions = array();
 
 	/**
@@ -72,7 +87,7 @@ class Route
 	 * @param string[] $requestPaths リクエストパス。URLパラメータは含まない
 	 * @return array{class:string,method:string}|null 存在する場合にクラス・メソッドのペア。存在しない場合は null
 	 */
-	public function getAction(string $httpMethod, array $requestPaths)
+	public function getAction(string $httpMethod, array $requestPaths): ?array
 	{
 		$requestPath = implode('/', $requestPaths);
 

@@ -29,7 +29,13 @@ class Routing
 		$this->routeMap = $routeMap;
 	}
 
-	private function splitPaths(string $requestUri)
+	/**
+	 * パス分割。
+	 *
+	 * @param string $requestUri
+	 * @return string[]
+	 */
+	private function splitPaths(string $requestUri): array
 	{
 		$reqs = explode('?', $requestUri, 2);
 
@@ -39,7 +45,15 @@ class Routing
 		return $paths;
 	}
 
-	private function executeAction($rawControllerName, $methodName, array $pathParameters)
+	/**
+	 * アクション実行。
+	 *
+	 * @param string $rawControllerName
+	 * @param string $methodName
+	 * @param string[] $pathParameters
+	 * @return void
+	 */
+	private function executeAction(string $rawControllerName, string $methodName, array $pathParameters): void
 	{
 		$splitNames = explode('/', $rawControllerName);
 		$controllerName = $splitNames[count($splitNames) - 1];
@@ -62,7 +76,7 @@ class Routing
 	 * @param string $requestUri リクエストURL。
 	 * @return void
 	 */
-	public function execute(string $requestMethod, string $requestUri)
+	public function execute(string $requestMethod, string $requestUri): void
 	{
 		$paths = $this->splitPaths($requestUri);
 		$requestPaths = $paths;

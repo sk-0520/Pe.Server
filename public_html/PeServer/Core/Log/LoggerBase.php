@@ -36,13 +36,22 @@ abstract class LoggerBase implements ILogger
 		$this->baseTraceIndex = $baseTraceIndex;
 	}
 
+	/**
+	 * ログ書式適用。
+	 *
+	 * @param integer $level
+	 * @param integer $traceIndex
+	 * @param mixed $message
+	 * @param mixed ...$parameters
+	 * @return string
+	 */
 	protected function format(int $level, int $traceIndex, $message, ...$parameters): string
 	{
 		return Logging::format($level, $traceIndex + 1, $this->header, $message, ...$parameters);
 	}
 
 	/**
-	 * ログ出力。
+	 * ログ出力実装。
 	 *
 	 * @param integer $level ログレベル。
 	 * @param integer $traceIndex 現在フレーム数。

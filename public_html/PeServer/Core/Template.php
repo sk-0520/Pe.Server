@@ -23,10 +23,20 @@ class Template
 	 * @var InitializeChecker|null
 	 */
 	private static $initializeChecker;
+	/**
+	 * ルートディレクトリ。
+	 *
+	 * @var string
+	 */
 	private static $rootDirectoryPath; // @phpstan-ignore-line
+	/**
+	 * ベースディレクトリ。
+	 *
+	 * @var string
+	 */
 	private static $baseDirectoryPath;
 
-	public static function initialize(string $rootDirectoryPath, string $baseDirectoryPath, string $environment)
+	public static function initialize(string $rootDirectoryPath, string $baseDirectoryPath, string $environment): void
 	{
 		if (is_null(self::$initializeChecker)) {
 			self::$initializeChecker = new InitializeChecker();

@@ -87,7 +87,7 @@ abstract class ControllerBase
 	 * @param array|null $parameters View連携データ。
 	 * @return void
 	 */
-	public function viewWithController(string $controllerName, string $action, int $httpStatusCode, ?array $parameters = null)
+	public function viewWithController(string $controllerName, string $action, int $httpStatusCode, ?array $parameters = null) // @phpstan-ignore-line
 	{
 		$lastWord = 'Controller';
 		$controllerClassName = mb_substr($controllerName, mb_strpos($controllerName, $this->skipBaseName) + mb_strlen($this->skipBaseName) + 1);
@@ -107,7 +107,7 @@ abstract class ControllerBase
 	 * @param array|null $parameters View連携データ。
 	 * @return void
 	 */
-	public function view(string $action, ?array $parameters = null): void
+	public function view(string $action, ?array $parameters = null): void // @phpstan-ignore-line
 	{
 		$className = get_class($this);
 
@@ -122,7 +122,7 @@ abstract class ControllerBase
 	 * @param ActionResponse $response 応答データ。
 	 * @return void
 	 */
-	public function data(ActionResponse $response)
+	public function data(ActionResponse $response): void
 	{
 		header('Content-Type: ' . $response->mime);
 		if ($response->chunked) {

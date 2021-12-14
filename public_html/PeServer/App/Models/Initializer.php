@@ -18,7 +18,7 @@ class Initializer
 	 */
 	private static $initializeChecker;
 
-	public static function initialize(string $rootDirectoryPath, string $baseDirectoryPath, string $environment)
+	public static function initialize(string $rootDirectoryPath, string $baseDirectoryPath, string $environment): void
 	{
 		if (is_null(self::$initializeChecker)) {
 			self::$initializeChecker = new InitializeChecker();

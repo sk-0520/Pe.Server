@@ -10,12 +10,27 @@ use \PeServer\Core\StringUtility;
 
 class FileLogger extends LoggerBase
 {
+	/**
+	 * 出力ディレクトリパス。
+	 *
+	 * @var string
+	 */
 	private $directoryPath;
+	/**
+	 * ファイル書式名
+	 *
+	 * @var string
+	 */
 	private $baseFileName;
 
+	/**
+	 * 破棄済みヘッダ名。
+	 *
+	 * @var string[]
+	 */
 	private static $cleanupHeaders = array();
 
-	public function __construct(string $header, int $level, int $baseTraceIndex, array $fileLoggingConfiguration)
+	public function __construct(string $header, int $level, int $baseTraceIndex, array $fileLoggingConfiguration) // @phpstan-ignore-line
 	{
 		parent::__construct($header, $level, $baseTraceIndex);
 

@@ -13,6 +13,11 @@ use \LogicException;
  */
 final class InitializeChecker
 {
+	/**
+	 * 初期化済みか。
+	 *
+	 * @var boolean
+	 */
 	private $isInitialized  = false;
 
 	/**
@@ -24,7 +29,7 @@ final class InitializeChecker
 	 *
 	 * @throws LogicException 既に初期化されている。
 	 */
-	public function initialize()
+	public function initialize(): void
 	{
 		if ($this->isInitialized) {
 			throw new LogicException('initialized');
@@ -40,7 +45,7 @@ final class InitializeChecker
 	 *
 	 * @throws LogicException 初期化されていない。
 	 */
-	public function throwIfNotInitialize()
+	public function throwIfNotInitialize(): void
 	{
 		if (!$this->isInitialized) {
 			throw new LogicException('not initialize');

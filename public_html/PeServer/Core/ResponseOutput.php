@@ -11,22 +11,54 @@ use \LogicException;
  */
 class ResponseOutput
 {
-	protected function outputText(string $mime, bool $chunked, $data)
+	/**
+	 * テキスト出力 標準実装。
+	 *
+	 * @param string $mime
+	 * @param boolean $chunked
+	 * @param mixed $data
+	 * @return void
+	 */
+	protected function outputText(string $mime, bool $chunked, $data): void
 	{
 		echo strval($data);
 	}
 
-	protected function outputJson(string $mime, bool $chunked, $data)
+	/**
+	 * JSON出力 標準実装。
+	 *
+	 * @param string $mime
+	 * @param boolean $chunked
+	 * @param mixed $data
+	 * @return void
+	 */
+	protected function outputJson(string $mime, bool $chunked, $data): void
 	{
 		echo json_encode($data);
 	}
 
-	protected function outputStream(string $mime, bool $chunked, $data)
+	/**
+	 * ストリーム出力 標準実装。
+	 *
+	 * @param string $mime
+	 * @param boolean $chunked
+	 * @param mixed $data
+	 * @return void
+	 */
+	protected function outputStream(string $mime, bool $chunked, $data): void
 	{
 		echo $data;
 	}
 
-	protected function outputDefault(string $mime, bool $chunked, $data)
+	/**
+	 * HTTP応答 標準実装。
+	 *
+	 * @param string $mime
+	 * @param boolean $chunked
+	 * @param mixed $data
+	 * @return void
+	 */
+	protected function outputDefault(string $mime, bool $chunked, $data): void
 	{
 		switch ($mime) {
 			case Mime::TEXT:
@@ -46,7 +78,15 @@ class ResponseOutput
 		}
 	}
 
-	public function output(string $mime, bool $chunked, $data)
+	/**
+	 * HTTP応答。
+	 *
+	 * @param string $mime
+	 * @param boolean $chunked
+	 * @param mixed $data
+	 * @return void
+	 */
+	public function output(string $mime, bool $chunked, $data): void
 	{
 		$this->outputDefault($mime, $chunked, $data);
 	}

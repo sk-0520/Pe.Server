@@ -43,7 +43,7 @@ abstract class LogicBase
 	 *
 	 * @var array<string,string|array>
 	 */
-	private $values = array();
+	private $values = array(); // @phpstan-ignore-line
 
 	/**
 	 * 応答データ。
@@ -85,7 +85,7 @@ abstract class LogicBase
 		return 0 < count($this->errors);
 	}
 
-	protected function addError(string $key, string $message)
+	protected function addError(string $key, string $message): void
 	{
 		if (isset($this->errors[$key])) {
 			$this->errors[$key] = [$message];
@@ -109,12 +109,12 @@ abstract class LogicBase
 	 */
 	protected abstract function executeImpl(int $logicMode): void;
 
-	private function validate(int $logicMode)
+	private function validate(int $logicMode): void
 	{
 		$this->validateImpl($logicMode);
 	}
 
-	private function execute(int $logicMode)
+	private function execute(int $logicMode): void
 	{
 		$this->executeImpl($logicMode);
 	}
@@ -134,7 +134,6 @@ abstract class LogicBase
 
 		$this->execute($logicMode);
 
-		// @phpstan-ignore-next-line
 		if ($this->hasError()) {
 			return false;
 		}
@@ -145,9 +144,9 @@ abstract class LogicBase
 	/**
 	 * View表示用データの取得。
 	 *
-	 * @return array
+	 * @return array{status:int,errors:array<string,string[]>,values:array<string,string|array>}
 	 */
-	public function getViewData(): array
+	public function getViewData(): array // @phpstan-ignore-line
 	{
 		return [
 			'status' => $this->statusCode,
