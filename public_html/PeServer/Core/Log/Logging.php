@@ -73,13 +73,25 @@ class Logging
 			return var_export($parameters, true);
 		}
 
-		if (is_string($message) && !ArrayUtility::isNullOrEmpty($parameters)) {
-			return StringUtility::replaceMap($message, array_map(function ($value) {
+		if (is_string($message) && !ArrayUtility::isNullOrEmpty($parameters) && array_keys($parameters)[0] === 0) {
+			$values = array_map(function ($value) {
 				if (is_string($value)) {
 					return $value;
 				}
+				if(is_object($value) || is_array($value)) {
+					return var_export($value, true);
+				}
+
 				return strval($value);
-			}, $parameters));
+			}, $parameters);
+
+			/** @var array(string,string) */
+			$map = [];
+			foreach ($values as $key => $value) {
+				$map[strval($key)] = $value;
+			}
+
+			return StringUtility::replaceMap($message, $map);
 		}
 
 		if (ArrayUtility::isNullOrEmpty($parameters)) {
