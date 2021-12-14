@@ -16,7 +16,7 @@ class AppConfiguration
 	/**
 	 * 初期化チェック
 	 *
-	 * @var InitializeChecker
+	 * @var InitializeChecker|null
 	 */
 	private static $initializeChecker;
 
@@ -49,18 +49,12 @@ class AppConfiguration
 
 		$baseSettingFilePath = FileUtility::joinPath($settingDirPath, 'setting.json');
 		$baseSettingJson = FileUtility::readJsonFile($baseSettingFilePath);
-		if (is_null($baseSettingJson)) {
-			throw new Error($baseSettingFilePath);
-		}
 
 		$json = array();
 
 		$envSettingFilePath = FileUtility::joinPath($settingDirPath, "setting.$environment.json");
 		if (file_exists($envSettingFilePath)) {
 			$envSettingJson = FileUtility::readJsonFile($envSettingFilePath);
-			if (is_null($envSettingJson)) {
-				throw new Error($envSettingFilePath);
-			}
 			$json = array_replace_recursive($baseSettingJson, $envSettingJson);
 		} else {
 			$json = $baseSettingJson;

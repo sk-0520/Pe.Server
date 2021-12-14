@@ -18,7 +18,7 @@ class ActionRequest
 	 *
 	 * @var array<string,string>
 	 */
-	private $urlRequests;
+	private $urlRequests; // @phpstan-ignore-line
 
 	/**
 	 * リクエストデータ構築

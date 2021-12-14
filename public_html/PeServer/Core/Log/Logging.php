@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Log;
 
-define('REQUEST_ID', bin2hex(openssl_random_pseudo_bytes(6)));
+define('LOG_REQUEST_ID', bin2hex(openssl_random_pseudo_bytes(6)));
 
 use \LogicException;
 use \PeServer\Core\ArrayUtility;
@@ -24,7 +24,7 @@ class Logging
 	/**
 	 * 初期化チェック
 	 *
-	 * @var InitializeChecker
+	 * @var InitializeChecker|null
 	 */
 	private static $initializeChecker;
 
@@ -80,14 +80,16 @@ class Logging
 				}
 				return strval($value);
 			}, $parameters));
-		} else {
-			if (ArrayUtility::isNullOrEmpty($parameters)) {
-				return var_export($message, true);
-			}
-			return var_export(['message' => $message, 'parameters' => $parameters], true);
 		}
 
-		return $message;
+		if (ArrayUtility::isNullOrEmpty($parameters)) {
+			if (is_string($message)) {
+				return $message;
+			}
+
+			return var_export($message, true);
+		}
+		return var_export(['message' => $message, 'parameters' => $parameters], true);
 	}
 
 	public static function format(int $level, int $traceIndex, string $header, $message, ...$parameters): string
@@ -105,7 +107,7 @@ class Logging
 		$map = [
 			'TIMESTAMP' => date('c'),
 			'IP' => ArrayUtility::getOr($_SERVER, 'REMOTE_ADDR', ''),
-			'REQUEST_ID' => REQUEST_ID,
+			'REQUEST_ID' => LOG_REQUEST_ID,
 			'UA' => ArrayUtility::getOr($_SERVER, 'HTTP_USER_AGENT', ''),
 			'METHOD' => ArrayUtility::getOr($_SERVER, 'REQUEST_METHOD', ''),
 			'REQUEST' => ArrayUtility::getOr($_SERVER, 'REQUEST_URI', ''),

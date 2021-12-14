@@ -35,7 +35,7 @@ abstract class LogicBase
 	/**
 	 * 検証エラー。
 	 *
-	 * @var array<string,string|array>
+	 * @var array<string,string[]>
 	 */
 	private $errors = array();
 	/**
@@ -85,6 +85,15 @@ abstract class LogicBase
 		return 0 < count($this->errors);
 	}
 
+	protected function addError(string $key, string $message)
+	{
+		if (isset($this->errors[$key])) {
+			$this->errors[$key] = [$message];
+		} else {
+			$this->errors[$key][] = $message;
+		}
+	}
+
 	/**
 	 * 検証ロジック実装。
 	 *
@@ -124,6 +133,8 @@ abstract class LogicBase
 		}
 
 		$this->execute($logicMode);
+
+		// @phpstan-ignore-next-line
 		if ($this->hasError()) {
 			return false;
 		}

@@ -14,7 +14,7 @@ class Initializer
 	/**
 	 * 初期化チェック
 	 *
-	 * @var InitializeChecker
+	 * @var InitializeChecker|null
 	 */
 	private static $initializeChecker;
 

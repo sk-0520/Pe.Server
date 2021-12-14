@@ -20,10 +20,10 @@ class Template
 	/**
 	 * 初期化チェック
 	 *
-	 * @var InitializeChecker
+	 * @var InitializeChecker|null
 	 */
 	private static $initializeChecker;
-	private static $rootDirectoryPath;
+	private static $rootDirectoryPath; // @phpstan-ignore-line
 	private static $baseDirectoryPath;
 
 	public static function initialize(string $rootDirectoryPath, string $baseDirectoryPath, string $environment)

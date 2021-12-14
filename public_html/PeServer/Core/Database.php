@@ -9,11 +9,11 @@ class Database
 	/**
 	 * 初期化チェック
 	 *
-	 * @var InitializeChecker
+	 * @var InitializeChecker|null
 	 */
 	private static $initializeChecker;
 
-	private static $databaseConfiguration;
+	private static $databaseConfiguration; // @phpstan-ignore-line
 
 	public static function initialize(array $databaseConfiguration)
 	{
