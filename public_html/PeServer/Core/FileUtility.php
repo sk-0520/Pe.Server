@@ -218,4 +218,19 @@ class FileUtility
 		}
 		mkdir($directoryPath, 0777, true);
 	}
+
+	/**
+	 * バックアップ。
+	 *
+	 * !!未実装!!
+	 *
+	 * @param string $backupItem 対象ディレクトリ。
+	 * @param string $baseDirectoryPath 対象ディレクトリ。
+	 * @param string[] $targetPaths 対象ディレクトリ。
+	 *
+	*/
+	public static function backupItems(string $backupItem, string $baseDirectoryPath, array $targetPaths): void
+	{
+		// NONE
+	}
 }
