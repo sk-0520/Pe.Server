@@ -64,6 +64,7 @@ abstract class ControllerBase
 	protected function createLogic(string $logicClass, ActionRequest $request): LogicBase
 	{
 		$parameter = $this->createParameter($logicClass, $request);
+		// @phpstan-ignore-next-line
 		return new $logicClass($parameter);
 	}
 

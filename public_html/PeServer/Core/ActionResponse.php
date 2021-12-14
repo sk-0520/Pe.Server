@@ -44,9 +44,9 @@ class ActionResponse
 	 * $data を実際に応答データに変換する処理。
 	 * null 設定時は標準処理が使用される。
 	 *
-	 * @var \callback|null
+	 * @var callable|null
 	 */
-	public $callback; // @phpstan-ignore-line
+	public $callback;
 
 	/**
 	 * 分割応答を行うか。

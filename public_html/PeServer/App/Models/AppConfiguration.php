@@ -68,13 +68,15 @@ class AppConfiguration
 		$settingDirPath = FileUtility::joinPath($baseDirectoryPath, 'config');
 
 		$baseSettingFilePath = FileUtility::joinPath($settingDirPath, 'setting.json');
-		$baseSettingJson = FileUtility::readJsonFile($baseSettingFilePath);
+		/** @var array */
+		$baseSettingJson = FileUtility::readJsonFile($baseSettingFilePath); // @phpstan-ignore-line
 
 		$json = array();
 
 		$envSettingFilePath = FileUtility::joinPath($settingDirPath, "setting.$environment.json");
 		if (file_exists($envSettingFilePath)) {
-			$envSettingJson = FileUtility::readJsonFile($envSettingFilePath);
+			/** @var array */
+			$envSettingJson = FileUtility::readJsonFile($envSettingFilePath); // @phpstan-ignore-line
 			$json = array_replace_recursive($baseSettingJson, $envSettingJson);
 		} else {
 			$json = $baseSettingJson;
@@ -99,7 +101,6 @@ class AppConfiguration
 		self::$json = $json;
 		self::$rootDirectoryPath = $rootDirectoryPath;
 		self::$baseDirectoryPath = $baseDirectoryPath;
-
 	}
 
 	public static function isEnvironment(string $environment): bool

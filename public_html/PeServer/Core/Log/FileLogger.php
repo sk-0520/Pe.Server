@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Log;
 
+use \Error;
+use \Exception;
 use \PeServer\Core\FileUtility;
 use \PeServer\Core\Log\LoggerBase;
 use \PeServer\Core\StringUtility;
@@ -59,6 +61,9 @@ class FileLogger extends LoggerBase
 			]
 		);
 		$logFiles = glob(FileUtility::joinPath($this->directoryPath, $filePattern));
+		if($logFiles === false) {
+			throw new Error('glob error: ' . FileUtility::joinPath($this->directoryPath, $filePattern));
+		}
 		$logCount = count($logFiles);
 		if ($logCount <= $maxCount) {
 			return;

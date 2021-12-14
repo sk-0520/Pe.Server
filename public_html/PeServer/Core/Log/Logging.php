@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Log;
 
+// @phpstan-ignore-next-line
 define('LOG_REQUEST_ID', bin2hex(openssl_random_pseudo_bytes(6)));
 
 use \LogicException;
@@ -96,6 +97,7 @@ class Logging
 		}
 
 		if (is_string($message) && !ArrayUtility::isNullOrEmpty($parameters) && array_keys($parameters)[0] === 0) {
+			/** @var string[] */
 			$values = array_map(function ($value) {
 				if (is_string($value)) {
 					return $value;
@@ -108,7 +110,7 @@ class Logging
 			}, $parameters);
 
 			/** @var array<string,string> */
-			$map = [];
+			$map = array();
 			foreach ($values as $key => $value) {
 				$map[strval($key)] = $value;
 			}
@@ -148,6 +150,7 @@ class Logging
 		/** @var array<string,mixed> */
 		$traceMethod = $backtrace[$traceIndex + 1];
 
+		/** @var array<string,string> */
 		$map = [
 			'TIMESTAMP' => date('c'),
 			'IP' => ArrayUtility::getOr($_SERVER, 'REMOTE_ADDR', ''),
