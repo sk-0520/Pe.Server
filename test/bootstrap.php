@@ -12,10 +12,13 @@ require_once(__DIR__ . '/../public_html/PeServer/Libs/smarty/libs/Smarty.class.p
 
 use \PeServer\App\Models\Initializer;
 
-\PeServer\Core\registerAutoLoader([
-	__DIR__,
-	__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'public_html',
-]);
+\PeServer\Core\AutoLoader::initialize(
+	[
+		__DIR__,
+		__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'public_html',
+	],
+	'/^PeServer/'
+);
 
 Initializer::initialize(
 	__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'public_html',

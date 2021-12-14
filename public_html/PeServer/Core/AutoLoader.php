@@ -4,10 +4,46 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
-function registerAutoLoader(array $baseDirectoryPaths)
+/**
+ * オートローダー。
+ */
+abstract class AutoLoader
 {
-	spl_autoload_register(function (string $className) use ($baseDirectoryPaths) {
-		foreach ($baseDirectoryPaths as $baseDirectoryPath) {
+	/**
+	 * 読み込みベースパス。
+	 *
+	 * @var string[]
+	 */
+	private static $baseDirectoryPaths;
+
+	/**
+	 * 読み込みベースパス。
+	 *
+	 * @var string
+	 */
+	private static $includePattern;
+
+	/**
+	 * 初期化。
+	 *
+	 * @param string[] $baseDirectoryPaths
+	 * @return void
+	 */
+	public static function initialize(array $baseDirectoryPaths, string $includePattern)
+	{
+		self::$baseDirectoryPaths = $baseDirectoryPaths;
+		self::$includePattern = $includePattern;
+
+		spl_autoload_register([__CLASS__, 'load']);
+	}
+
+	private static function load(string $className)
+	{
+		if (!preg_match(self::$includePattern, $className)) {
+			return;
+		}
+
+		foreach (self::$baseDirectoryPaths as $baseDirectoryPath) {
 			$fileBasePath = str_replace('\\', DIRECTORY_SEPARATOR, $className);
 			$filePath = $baseDirectoryPath . DIRECTORY_SEPARATOR . $fileBasePath . '.php';
 
@@ -15,5 +51,5 @@ function registerAutoLoader(array $baseDirectoryPaths)
 				require_once $filePath;
 			}
 		}
-	});
+	}
 }
