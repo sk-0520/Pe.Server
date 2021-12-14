@@ -105,4 +105,37 @@ class StringUtilityTest extends TestClass
 			$this->assertBoolean($test->expected, $actual, $test->str());
 		}
 	}
+
+	public function test_contains()
+	{
+		$tests = [
+			new Data(true, 'abc', '', false),
+			new Data(true, 'abc', 'b', false),
+			new Data(true, 'abc', 'ab', false),
+			new Data(true, 'abc', 'bc', false),
+			new Data(true, 'abc', 'abc', false),
+			new Data(false, 'abc', 'x', false),
+			new Data(false, 'abc', 'abcd', false),
+
+			new Data(true, 'abc', '', false),
+			new Data(false, 'abc', 'B', false),
+			new Data(false, 'abc', 'AB', false),
+			new Data(false, 'abc', 'BC', false),
+			new Data(false, 'abc', 'ABC', false),
+			new Data(false, 'abc', 'X', false),
+			new Data(false, 'abc', 'ABCD', false),
+
+			new Data(true, 'abc', '', true),
+			new Data(true, 'abc', 'B', true),
+			new Data(true, 'abc', 'AB', true),
+			new Data(true, 'abc', 'BC', true),
+			new Data(true, 'abc', 'ABC', true),
+			new Data(false, 'abc', 'X', true),
+			new Data(false, 'abc', 'ABCD', true),
+		];
+		foreach ($tests as $test) {
+			$actual = StringUtility::contains(...$test->args);
+			$this->assertBoolean($test->expected, $actual, $test->str());
+		}
+	}
 }

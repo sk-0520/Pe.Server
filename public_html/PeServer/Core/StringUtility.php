@@ -104,4 +104,22 @@ class StringUtility
 		}
 		return $needle === $word;
 	}
+
+	public static function contains(string $haystack, string $needle, bool $ignoreCase): bool
+	{
+		//PHP8
+		//str_contains
+		if (self::isNullOrEmpty($needle)) {
+			return true;
+		}
+		if (strlen($haystack) < strlen($needle)) {
+			return false;
+		}
+
+		if ($ignoreCase) {
+			return stripos($haystack, $needle) !== false;
+		}
+
+		return strpos($haystack, $needle) !== false;
+	}
 }
