@@ -108,4 +108,65 @@ class FileUtility
 	{
 		self::createDirectoryIfNotExists(dirname($path));
 	}
+
+	/**
+	 * ファイル一覧を取得する。
+	 *
+	 * @param string $directoryPath ディレクトリパス。
+	 * @param boolean $recursive 再帰的に取得するか。
+	 * @return string[] ファイル一覧。
+	 */
+	public static function getFiles(string $directoryPath, bool $recursive): array
+	{
+		$files = [];
+		$items = scandir($directoryPath);
+		foreach ($items as $item) {
+			if ($item === '.' || $item === '..') {
+				continue;
+			}
+			$path = self::joinPath($directoryPath, $item);
+
+			if ($recursive && is_dir($path)) {
+				$files = array_merge($files, self::getFiles($path, $recursive));
+			} else {
+				$files[] = self::joinPath($directoryPath, $item);
+			}
+		}
+
+		return $files;
+	}
+
+	/**
+	 * ディレクトリを削除する。
+	 * ファイル・ディレクトリはすべて破棄される。
+	 *
+	 * @param string $directoryPath 削除ディレクトリ。
+	 * @return void
+	 */
+	public static function removeDirectory(string $directoryPath): void
+	{
+		$files = self::getFiles($directoryPath, false);
+		foreach ($files as $file) {
+			if (is_dir($file)) {
+				self::removeDirectory($file);
+			} else {
+				unlink($file);
+			}
+		}
+		rmdir($directoryPath);
+	}
+
+	/**
+	 * ディレクトリを破棄・作成する
+	 *
+	 * @param string $directoryPath 対象ディレクトリ。
+	 * @return void
+	 */
+	public static function cleanupDirectory(string $directoryPath): void
+	{
+		if (is_dir($directoryPath)) {
+			self::removeDirectory($directoryPath);
+		}
+		mkdir($directoryPath, 0777, true);
+	}
 }
