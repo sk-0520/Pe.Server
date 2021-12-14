@@ -31,6 +31,8 @@ artifacts:
     name: public_html
   - path: coverage
     name: coverage
+  - path: dev/phpstan.phar
+    name: phpstan.phar
 
 for:
   -
