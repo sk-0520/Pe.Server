@@ -6,8 +6,10 @@ namespace Deploy;
 
 use \DateTime;
 use \DateInterval;
-use \Exception;
 use \ZipArchive;
+use \Exception;
+use \Error;
+use \Throwable;
 
 require __DIR__ . '/config.php';
 
@@ -756,3 +758,12 @@ function main()
 if (!defined('NO_DEPLOY_START')) {
 	main();
 }
+
+//AUTO-GEN-SETTING:FILE:PeServer/Core/Throws/CoreError.php
+//AUTO-GEN-SETTING:FILE:PeServer/Core/Throws/CoreException.php
+//AUTO-GEN-SETTING:FILE:PeServer/Core/Throws/FileNotFoundException.php
+//AUTO-GEN-SETTING:FILE:PeServer/Core/Throws/ParseException.php
+//AUTO-GEN-SETTING:FILE:PeServer/Core/StringUtility.php
+//AUTO-GEN-SETTING:FILE:PeServer/Core/FileUtility.php
+//AUTO-GEN-CODE
+
