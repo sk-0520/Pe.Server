@@ -85,7 +85,7 @@ class Routing
 
 		foreach ($this->routeMap as $route) {
 			$action = $route->getAction($requestMethod, $requestPaths);
-			if ($action) {
+			if ($action['code'] === HttpStatusCode::DO_EXECUTE) {
 				$this->executeAction($action['class'], $action['method'], $pathParameters);
 			}
 		}

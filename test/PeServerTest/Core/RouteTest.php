@@ -37,7 +37,7 @@ class RouteTest extends TestClass
 			[
 				'route' => ['path', 'Controller'],
 				'actions' => [
-					[HttpMethod::GET, 'action']
+					['action', HttpMethod::get()]
 				],
 				'request' => [
 					[
@@ -49,7 +49,7 @@ class RouteTest extends TestClass
 			[
 				'route' => ['api/test', 'TestController'],
 				'actions' => [
-					[HttpMethod::POST, 'list']
+					['list', HttpMethod::post()]
 				],
 				'request' => [
 					[

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
+use \PeServer\Core\HttpMethod;
+
 /**
  * HTTPメソッドとコントローラメソッドを紐づける。
  * リクエストパスとコントローラクラス自体の紐づけは Route を参照のこと。
@@ -11,27 +13,40 @@ namespace PeServer\Core;
 class Action
 {
 	/**
-	 * HTTPメソッド。
+	 * 紐づけ。
 	 *
-	 * @var string
-	 */
-	public $httpMethod;
-	/**
-	 * コントローラメソッド。
+	 * HTTPメソッドとコントローラメソッドがペアになる。
+	 * 後入れ優先。
 	 *
-	 * @var string
+	 * @var array<string,string>
 	 */
-	public $callMethod;
+	private $map = array();
 
 	/**
-	 * Undocumented function
+	 * 追加。
 	 *
-	 * @param string $httpMethod HTTPメソッド
+	 * @param HttpMethod $httpMethod HTTPメソッド
 	 * @param string $callMethod コントローラメソッド。
 	 */
-	public function __construct(string $httpMethod, string $callMethod)
+	public function add(HttpMethod $httpMethod, string $callMethod): void
 	{
-		$this->httpMethod = $httpMethod;
-		$this->callMethod = $callMethod;
+		foreach($httpMethod->values() as $value) {
+			$this->map[$value] = $callMethod;
+		}
+	}
+
+	/**
+	 * 取得。
+	 *
+	 * @param string $httpMethod HTTPメソッド
+	 * @return string|null あった場合はクラスメソッド、なければ null
+	 */
+	public function get(string $httpMethod): ?string
+	{
+		if (ArrayUtility::tryGet($this->map, $httpMethod, $result)) {
+			return $result;
+		}
+
+		return null;
 	}
 }
