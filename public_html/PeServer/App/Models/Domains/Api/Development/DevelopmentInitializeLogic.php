@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domains\Api\Development;
 
-use \Exception;
+use \PeServer\Core\Throws\CoreException;
 use \PeServer\Core\ActionResponse;
 use \PeServer\Core\HttpStatusCode;
 use \PeServer\Core\LogicBase;
@@ -12,7 +12,7 @@ use \PeServer\Core\LogicParameter;
 use \PeServer\Core\Mime;
 use \PeServer\App\Models\AppConfiguration;
 use \Deploy\ScriptArgument;
-use PeServer\Core\Log\Logging;
+use \PeServer\Core\Log\Logging;
 
 define('NO_DEPLOY_START', '💩');
 require_once 'deploy/php-deploy-receiver.php';
@@ -28,7 +28,7 @@ class DevelopmentInitializeLogic extends LogicBase
 	protected function validateImpl(int $logicMode): void
 	{
 		if (AppConfiguration::isProductionEnvironment()) {
-			throw new Exception('dev or test only');
+			throw new CoreException('dev or test only');
 		}
 	}
 

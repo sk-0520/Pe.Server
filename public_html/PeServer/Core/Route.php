@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace PeServer\Core;
 
 use \LogicException;
-use Prophecy\Util\StringUtil;
 
 /**
  * ルーティング情報

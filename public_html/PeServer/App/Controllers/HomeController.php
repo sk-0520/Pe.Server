@@ -9,7 +9,7 @@ use \PeServer\Core\ControllerArguments;
 use \PeServer\Core\ControllerBase;
 use \PeServer\Core\LogicMode;
 use \PeServer\App\Models\Domains\Home\HomeIndexLogic;
-use PeServer\Core\HttpStatusCode;
+use \PeServer\Core\HttpStatusCode;
 
 class HomeController extends ControllerBase
 {

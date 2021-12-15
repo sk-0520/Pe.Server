@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
-use \Exception;
-use \LogicException;
+use \PeServer\Core\Throws\InvalidOperationException;
 use \PeServer\Core\LogicParameter;
 
 /**
@@ -170,12 +169,12 @@ abstract class LogicBase
 	 * 応答データ取得。
 	 *
 	 * @return ActionResponse
-	 * @throws LogicException 応答データ未設定
+	 * @throws InvalidOperationException 応答データ未設定
 	 */
 	public function getResponse(): ActionResponse
 	{
 		if (is_null($this->response)) {
-			throw new LogicException('not impl');
+			throw new InvalidOperationException('not impl');
 		}
 
 		return $this->response;

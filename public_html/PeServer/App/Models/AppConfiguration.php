@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models;
 
-use Error;
+use \Error;
 use \PeServer\Core\FileUtility;
 use \PeServer\Core\Log\Logging;
 use \PeServer\Core\Database;
