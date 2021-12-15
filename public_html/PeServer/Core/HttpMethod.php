@@ -81,6 +81,7 @@ class _HttpMethod_Invisible extends HttpMethod
 	 */
 	public function __construct(string ...$methods)
 	{
+		//TODO: 検証
 		$this->methods = $methods;
 	}
 

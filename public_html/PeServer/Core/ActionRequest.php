@@ -13,6 +13,12 @@ use \LogicException;
  */
 class ActionRequest
 {
+	public const REQUEST_NONE = 'none';
+	public const REQUEST_URL = 'url';
+	public const REQUEST_GET = 'get';
+	public const REQUEST_POST = 'post';
+	public const REQUEST_FILE = 'file';
+
 	/**
 	 * Undocumented variable
 	 *
@@ -41,18 +47,18 @@ class ActionRequest
 		//TODO: $urlRequests
 
 		if (isset($_GET[$key])) {
-			return ['exists' => true, 'type' => 'get'];
+			return ['exists' => true, 'type' => self::REQUEST_GET];
 		}
 
 		if (isset($_POST[$key])) {
-			return ['exists' => true, 'type' => 'post'];
+			return ['exists' => true, 'type' => self::REQUEST_POST];
 		}
 
 		if (isset($_FILES[$key])) {
-			return ['exists' => true, 'type' => 'file'];
+			return ['exists' => true, 'type' => self::REQUEST_FILE];
 		}
 
-		return ['exists' => false, 'type' => 'none'];
+		return ['exists' => false, 'type' => self::REQUEST_NONE];
 	}
 
 	// public function isMulti(string $key): bool
