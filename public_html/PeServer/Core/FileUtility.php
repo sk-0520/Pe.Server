@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
-use \PeServer\Core\FileNotFoundException;
+use \PeServer\Core\Throws\FileNotFoundException;
+use \PeServer\Core\Throws\ParseException;
 
 class FileUtility
 {

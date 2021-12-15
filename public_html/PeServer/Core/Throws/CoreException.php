@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core;
+namespace PeServer\Core\Throws;
 
 use \Throwable;
 use \Exception;
+use \PeServer\Core\Throws;
 
 class CoreException extends Exception
 {

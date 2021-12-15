@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core;
+namespace PeServer\Core\Throws;
 
 use \Throwable;
-use \PeServer\Core;
+use \PeServer\Core\Throws;
 
 class ExceptionInInitializerError extends CoreError
 {

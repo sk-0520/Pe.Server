@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace PeServer\Core\Throws;
 
 use \Throwable;
-use \Error;
 use \PeServer\Core\Throws;
 
-class CoreError extends Error
+class ArgumentNullException extends ArgumentException
 {
 	public function __construct(string $message = "", int $code = 0, ?Throwable $previous = null)
 	{
