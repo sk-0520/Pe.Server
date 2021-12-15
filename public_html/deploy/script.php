@@ -131,8 +131,8 @@ class DeployScript
 
 		//TODO: 暗号化とかとか
 		$userId = '00000000-0000-4000-0000-000000000000';
-		$loginId = 'admin';
-		$password = 'admin';
+		$loginId = 'init';
+		$password = 'init';
 
 		$pdo->exec(
 			<<<SQL
@@ -199,11 +199,11 @@ class DeployScript
 				(
 					'$userId',
 					'$loginId',
-					'admin',
-					'enabled', --'pending',
-					'admin',
-					'admin@localhost',
-					'localhost',
+					'init',
+					'enabled',
+					'initial-user',
+					'init@localhost',
+					'http://localhost',
 					''
 				)
 			;
