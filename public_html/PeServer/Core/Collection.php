@@ -87,4 +87,25 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 
 		return false;
 	}
+
+	/**
+	 * Undocumented function
+	 *
+	 * @param callable $callback
+	 * @return boolean
+	 */
+	public function all(callable $callback): bool
+	{
+		if (count($this->items) === 0) {
+			return true;
+		}
+
+		foreach ($this->items as $item) {
+			if (!$callback($item)) {
+				return false;
+			}
+		}
+
+		return true;
+	}
 }

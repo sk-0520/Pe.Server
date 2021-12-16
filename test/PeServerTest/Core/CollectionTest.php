@@ -37,4 +37,14 @@ class CollectionTest extends TestClass
 			return 6 < $i;
 		}));
 	}
+
+	public function test_all()
+	{
+		$this->assertTrue(Collection::from(self::$array)->all(function ($i) {
+			return $i <= 6;
+		}));
+		$this->assertFalse(Collection::from(self::$array)->all(function ($i) {
+			return $i < 6;
+		}));
+	}
 }
