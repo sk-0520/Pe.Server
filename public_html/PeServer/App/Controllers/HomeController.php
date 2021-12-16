@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace PeServer\App\Controllers;
 
 use \PeServer\Core\ActionRequest;
-use \PeServer\Core\ControllerArguments;
-use \PeServer\Core\ControllerBase;
-use \PeServer\Core\LogicMode;
-use \PeServer\App\Models\Domains\Home\HomeIndexLogic;
 use \PeServer\Core\HttpStatusCode;
+use \PeServer\Core\Mvc\ControllerArguments;
+use \PeServer\Core\Mvc\ControllerBase;
+use \PeServer\Core\Mvc\LogicMode;
+use \PeServer\App\Models\Domains\Home\HomeIndexLogic;
 
 class HomeController extends ControllerBase
 {

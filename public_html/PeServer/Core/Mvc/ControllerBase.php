@@ -2,15 +2,20 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core;
+namespace PeServer\Core\Mvc;
 
 use \LogicException;
 use \Smarty;
+use \PeServer\Core\ILogger;
 use \PeServer\Core\ActionRequest;
-use \PeServer\Core\ControllerArguments;
-use \PeServer\Core\Template;
-use \PeServer\Core\LogicBase;
-use \PeServer\Core\LogicParameter;
+use \PeServer\Core\ActionResponse;
+use \PeServer\Core\ResponseOutput;
+use \PeServer\Core\HttpStatusCode;
+use \PeServer\Core\ArrayUtility;
+use \PeServer\Core\Mvc\ControllerArguments;
+use \PeServer\Core\Mvc\Template;
+use \PeServer\Core\Mvc\LogicBase;
+use \PeServer\Core\Mvc\LogicParameter;
 use \PeServer\Core\Log\Logging;
 
 /**

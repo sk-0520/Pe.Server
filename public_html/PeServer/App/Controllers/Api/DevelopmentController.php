@@ -2,9 +2,9 @@
 
 namespace PeServer\App\Controllers\Api;
 
-use \PeServer\Core\ControllerArguments;
 use \PeServer\Core\ActionRequest;
-use \PeServer\Core\LogicMode;
+use \PeServer\Core\Mvc\LogicMode;
+use \PeServer\Core\Mvc\ControllerArguments;
 use \PeServer\App\Controllers\Api\ApiControllerBase;
 use \PeServer\App\Models\Domains\Api\Development\DevelopmentInitializeLogic;
 

@@ -2,10 +2,14 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core;
+namespace PeServer\Core\Mvc;
 
+use \PeServer\Core\ILogger;
+use \PeServer\Core\ActionRequest;
+use \PeServer\Core\ActionResponse;
+use \PeServer\Core\HttpStatusCode;
+use \PeServer\Core\Mvc\LogicParameter;
 use \PeServer\Core\Throws\InvalidOperationException;
-use \PeServer\Core\LogicParameter;
 
 /**
  * コントローラから呼び出されるロジック基底処理。

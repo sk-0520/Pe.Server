@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace PeServer\App\Models;
 
 use \PeServer\Core\FileUtility;
-use \PeServer\Core\Template;
 use \PeServer\Core\InitializeChecker;
+use \PeServer\Core\Mvc\Template;
 use \PeServer\App\Models\AppConfiguration;
 
 abstract class Initializer
