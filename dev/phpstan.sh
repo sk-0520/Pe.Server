@@ -9,7 +9,7 @@ if [ ! -f ${PHPSTAN_FILE} ] ; then
 	curl --output ${PHPSTAN_FILE} --location ${PHPSTAN_URL}
 fi
 
-if [ -z "$IGNORE_SYNTAX_CHECK" ] ; then
+if [ ! -v IGNORE_SYNTAX_CHECK ] ; then
 	pushd ../public_html
 		find . -name '*.php' -not -path './PeServer/Libs/*' -not -path './PeServer/data/*' -exec php --syntax-check {} \;
 	popd
