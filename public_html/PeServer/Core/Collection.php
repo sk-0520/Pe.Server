@@ -31,7 +31,7 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 		return new ArrayIterator($this->items);
 	}
 
-	public function toArray()
+	public function toArray(): array // @phpstan-ignore-line
 	{
 		return array_values($this->items);
 	}
