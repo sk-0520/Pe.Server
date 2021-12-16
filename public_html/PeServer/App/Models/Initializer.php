@@ -9,7 +9,7 @@ use \PeServer\Core\Template;
 use \PeServer\Core\InitializeChecker;
 use \PeServer\App\Models\AppConfiguration;
 
-class Initializer
+abstract class Initializer
 {
 	/**
 	 * 初期化チェック

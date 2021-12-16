@@ -20,7 +20,7 @@ use \PeServer\Core\StringUtility;
  *
  * DIコンテナとか無いのでこいつを静的に使用してログがんばる。
  */
-class Logging
+abstract class Logging
 {
 	/**
 	 * 初期化チェック。
@@ -102,7 +102,7 @@ class Logging
 				if (is_string($value)) {
 					return $value;
 				}
-				if(is_object($value) || is_array($value)) {
+				if (is_object($value) || is_array($value)) {
 					return var_export($value, true);
 				}
 

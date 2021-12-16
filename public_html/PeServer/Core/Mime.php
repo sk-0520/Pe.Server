@@ -7,7 +7,7 @@ namespace PeServer\Core;
 /**
  * まいむ。
  */
-class Mime
+abstract class Mime
 {
 	const TEXT = 'text/plain';
 	const JSON = 'application/json';

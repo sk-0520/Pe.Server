@@ -7,7 +7,7 @@ namespace PeServer\Core;
 /**
  * ロジック呼び出し。
  */
-class LogicMode
+abstract class LogicMode
 {
 	/**
 	 * 初期化。

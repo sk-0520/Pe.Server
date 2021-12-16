@@ -12,7 +12,7 @@ use \PeServer\Core\HttpMethod;
 /**
  * ルーティング情報設定。
  */
-class RouteConfiguration
+abstract class RouteConfiguration
 {
 	/**
 	 * ルーティング情報設定取得

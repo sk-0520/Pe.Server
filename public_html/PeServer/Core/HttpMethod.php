@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
+use PeServer\Core\Throws\ArgumentException;
+
 /**
  * HTTPメソッド。
  */
@@ -63,7 +65,7 @@ abstract class HttpMethod
 	 *
 	 * @return string[]
 	 */
-	public abstract function values(): array;
+	public abstract function methods(): array;
 }
 
 /**
@@ -72,7 +74,7 @@ abstract class HttpMethod
 class _HttpMethod_Invisible extends HttpMethod
 {
 	/** @var string[] */
-	private $methods;
+	private $_methods;
 
 	/**
 	 * 生成。
@@ -81,12 +83,25 @@ class _HttpMethod_Invisible extends HttpMethod
 	 */
 	public function __construct(string ...$methods)
 	{
-		//TODO: 検証
-		$this->methods = $methods;
+		$safeMethods = Collection::from([
+			self::GET,
+			self::POST,
+			self::PUT,
+			self::DELETE,
+		]);
+		foreach ($methods as $method) {
+			if (!$safeMethods->any(function ($i) use ($method) {
+				return $i === $method;
+			})) {
+				throw new ArgumentException("HTTP METHOD: $method");
+			}
+		}
+
+		$this->_methods = $methods;
 	}
 
-	public function values(): array
+	public function methods(): array
 	{
-		return $this->methods;
+		return $this->_methods;
 	}
 }

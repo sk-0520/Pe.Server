@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
-class StringUtility
+abstract class StringUtility
 {
 	/**
 	 * 文字列がnullか空か

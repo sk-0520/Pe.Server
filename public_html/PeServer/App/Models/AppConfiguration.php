@@ -11,7 +11,7 @@ use \PeServer\Core\Database;
 use \PeServer\Core\InitializeChecker;
 use \PeServer\Core\StringUtility;
 
-class AppConfiguration
+abstract class AppConfiguration
 {
 	/**
 	 * 初期化チェック

@@ -7,7 +7,7 @@ namespace PeServer\Core;
 use \PeServer\Core\Throws\FileNotFoundException;
 use \PeServer\Core\Throws\ParseException;
 
-class FileUtility
+abstract class FileUtility
 {
 	/**
 	 * 絶対パスへ変換。

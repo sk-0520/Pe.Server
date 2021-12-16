@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
-class Database
+abstract class Database
 {
 	/**
 	 * 初期化チェック

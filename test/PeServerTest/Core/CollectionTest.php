@@ -18,9 +18,23 @@ class CollectionTest extends TestClass
 	{
 		$expected1 = [2, 4, 6];
 		$actual1 = Collection::from(self::$array)
-			->where(function($i) { return $i % 2 == 0; })
-			->toArray()
-		;
+			->where(function ($i) {
+				return $i % 2 == 0;
+			})
+			->toArray();
 		$this->assertSame($expected1, $actual1);
+	}
+
+	public function test_any()
+	{
+		$this->assertTrue(Collection::from(self::$array)->any());
+		$this->assertFalse(Collection::from([])->any());
+
+		$this->assertTrue(Collection::from(self::$array)->any(function ($i) {
+			return 6 <= $i;
+		}));
+		$this->assertFalse(Collection::from(self::$array)->any(function ($i) {
+			return 6 < $i;
+		}));
 	}
 }

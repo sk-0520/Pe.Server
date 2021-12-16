@@ -30,8 +30,8 @@ class Action
 	 */
 	public function add(HttpMethod $httpMethod, string $callMethod): void
 	{
-		foreach($httpMethod->values() as $value) {
-			$this->map[$value] = $callMethod;
+		foreach ($httpMethod->methods() as $method) {
+			$this->map[$method] = $callMethod;
 		}
 	}
 

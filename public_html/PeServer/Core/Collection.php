@@ -31,6 +31,11 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 		return new ArrayIterator($this->items);
 	}
 
+	/**
+	 * 配列生成。
+	 *
+	 * @return array
+	 */
 	public function toArray(): array // @phpstan-ignore-line
 	{
 		return array_values($this->items);
@@ -60,5 +65,26 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 	function where(callable $callback): Collection // @phpstan-ignore-line
 	{
 		return self::from(array_filter($this->items, $callback));
+	}
+
+	/**
+	 * Undocumented function
+	 *
+	 * @param callable|null $callback
+	 * @return boolean
+	 */
+	public function any(?callable $callback = null): bool
+	{
+		if (is_null($callback)) {
+			return 0 < count($this->items);
+		}
+
+		foreach ($this->items as $item) {
+			if ($callback($item)) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 }
