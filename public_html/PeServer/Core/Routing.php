@@ -39,8 +39,11 @@ class Routing
 	{
 		$reqs = explode('?', $requestUri, 2);
 
-		$rawPaths = explode('/', $reqs[0]);
-		$paths = array_slice($rawPaths, 1);
+		// $rawPaths = array_filter(explode('/', $reqs[0]), function($i) {
+		// 	return !StringUtility::isNullOrEmpty($i);
+		// });
+		$rawPaths = explode('/', rtrim($reqs[0], '/'));
+		$paths = count($rawPaths) === 1 ? [$rawPaths[0]] : array_slice($rawPaths, 1);
 
 		return $paths;
 	}

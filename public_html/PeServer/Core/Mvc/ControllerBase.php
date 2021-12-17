@@ -35,7 +35,7 @@ abstract class ControllerBase
 	 *
 	 * @var string
 	 */
-	protected $skipBaseName = 'PeServer\\App\\Controllers';
+	protected $skipBaseName = 'PeServer\\App\\Controllers\\Page';
 
 	public function __construct(ControllerArguments $arguments)
 	{

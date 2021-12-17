@@ -1,10 +1,10 @@
 {extends file='default.tpl'}
-{block name=TITLE}Peサーバー{/block}
+{block name=TITLE}トップ{/block}
 {block name=BODY}
 
-💩
-<br />
-💩
+<p>
+	Pe のサーバーが必要な処理。
+</p>
 
 {/block}
 

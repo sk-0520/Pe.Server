@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace PeServer\App\Controllers;
+namespace PeServer\App\Controllers\Page;
 
 use \PeServer\Core\ActionRequest;
 use \PeServer\Core\HttpStatusCode;
 use \PeServer\Core\Mvc\ControllerArguments;
 use \PeServer\Core\Mvc\ControllerBase;
 use \PeServer\Core\Mvc\LogicCallMode;
-use \PeServer\App\Models\Domains\Home\HomeIndexLogic;
+use \PeServer\App\Models\Domains\Page\Home\HomeIndexLogic;
 
 class HomeController extends ControllerBase
 {

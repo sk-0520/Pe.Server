@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace PeServer\App\Models\Domains\Home;
+namespace PeServer\App\Models\Domains\Page\Account;
 
 use \PeServer\Core\Mvc\LogicCallMode;
 use \PeServer\Core\Mvc\LogicBase;
 use \PeServer\Core\Mvc\LogicParameter;
 
-class HomeIndexLogic extends LogicBase
+class AccountLoginLogic extends LogicBase
 {
 	public function __construct(LogicParameter $parameter)
 	{
