@@ -10,6 +10,7 @@ use \PeServer\Core\ActionResponse;
 use \PeServer\Core\HttpStatusCode;
 use \PeServer\Core\Mvc\LogicParameter;
 use \PeServer\Core\Mvc\IValidationReceiver;
+use \PeServer\Core\Mvc\Validations;
 use \PeServer\Core\Throws\InvalidOperationException;
 use \PeServer\Core\Throws\NotImplementedException;
 
@@ -50,6 +51,14 @@ abstract class LogicBase implements IValidationReceiver
 	 */
 	private $values = array(); // @phpstan-ignore-line
 
+
+	/**
+	 * Undocumented variable
+	 *
+	 * @var Validations
+	 */
+	protected $validation;
+
 	/**
 	 * 応答データ。
 	 *
@@ -63,6 +72,10 @@ abstract class LogicBase implements IValidationReceiver
 		$this->logger = $parameter->logger;
 
 		$this->logger->trace('LOGIC');
+
+		if (is_null($this->validation)) { // @phpstan-ignore-line
+			$this->validation = new Validations($this);
+		}
 	}
 
 	/**
@@ -114,6 +127,14 @@ abstract class LogicBase implements IValidationReceiver
 	public function receiveError(string $key, int $kind, array $parameters): void
 	{
 		switch ($kind) {
+			case Validations::KIND_EMPTY:
+				$this->addError($key, var_export($parameters, true));
+				break;
+
+			case Validations::KIND_WHITE_SPACE:
+				$this->addError($key, var_export($parameters, true));
+				break;
+
 			case Validations::KIND_LENGTH:
 				$this->addError($key, var_export($parameters, true));
 				break;

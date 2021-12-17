@@ -17,7 +17,8 @@ class AccountLoginLogic extends LogicBase
 
 	protected function validateImpl(LogicCallMode $callMode): void
 	{
-		//NONE
+		$loginId = $this->getRequest('login-id');
+		$this->validation->isNotWhiteSpace('login-id', $loginId);
 	}
 
 	protected function executeImpl(LogicCallMode $callMode): void
