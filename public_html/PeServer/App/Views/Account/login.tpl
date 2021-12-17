@@ -5,10 +5,10 @@
 <form class="page-login" action="login" method="post">
 	<dl class="input">
 		<dt>id</dt>
-		<dd><input type="text" value="" /></dd>
+		<dd><input class="edit" name="account-login-loginid" type="text" value="" /></dd>
 
 		<dt>password</dt>
-		<dd><input type="password" value="" /></dd>
+		<dd><input class="edit" name="account-login-password" type="password" value="" /></dd>
 
 		<dl class="action"></dl>
 		<dd>
