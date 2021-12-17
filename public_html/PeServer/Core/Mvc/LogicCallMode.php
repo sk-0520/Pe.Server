@@ -7,7 +7,7 @@ namespace PeServer\Core\Mvc;
 /**
  * ロジック呼び出し。
  */
-abstract class LogicMode
+abstract class LogicCallMode
 {
 	/**
 	 * 初期化。

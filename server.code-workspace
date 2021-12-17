@@ -10,7 +10,6 @@
 			"**/bin": true,
 			"**/obj": true,
 			".vs": true,
-			".vscode": true,
 			"dist/": true,
 			"Output": true,
 			"*.lnk": true

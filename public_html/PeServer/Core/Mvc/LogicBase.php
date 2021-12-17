@@ -100,42 +100,42 @@ abstract class LogicBase
 	/**
 	 * 検証ロジック実装。
 	 *
-	 * @param integer $logicMode LogicMode 参照のこと
+	 * @param integer $callMode LogicCallMode 参照のこと
 	 * @return void
 	 */
 	protected abstract function validateImpl(int $logicMode): void;
 	/**
 	 * 実行ロジック実装。
 	 *
-	 * @param integer $logicMode LogicMode 参照のこと
+	 * @param integer $callMode LogicCallMode 参照のこと
 	 * @return void
 	 */
-	protected abstract function executeImpl(int $logicMode): void;
+	protected abstract function executeImpl(int $callMode): void;
 
-	private function validate(int $logicMode): void
+	private function validate(int $callMode): void
 	{
-		$this->validateImpl($logicMode);
+		$this->validateImpl($callMode);
 	}
 
-	private function execute(int $logicMode): void
+	private function execute(int $callMode): void
 	{
-		$this->executeImpl($logicMode);
+		$this->executeImpl($callMode);
 	}
 
 	/**
 	 * ロジック処理。
 	 *
-	 * @param integer $logicMode LogicMode 参照のこと
+	 * @param integer $callMode LogicMode 参照のこと
 	 * @return boolean
 	 */
-	public function run(int $logicMode): bool
+	public function run(int $callMode): bool
 	{
-		$this->validate($logicMode);
+		$this->validate($callMode);
 		if ($this->hasError()) {
 			return false;
 		}
 
-		$this->execute($logicMode);
+		$this->execute($callMode);
 
 		if ($this->hasError()) {
 			return false;
