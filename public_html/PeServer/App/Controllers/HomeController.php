@@ -21,7 +21,7 @@ class HomeController extends ControllerBase
 	public function index(ActionRequest $request): void
 	{
 		$logic = $this->createLogic(HomeIndexLogic::class, $request);
-		$logic->run(LogicCallMode::INITIALIZE);
+		$logic->run(LogicCallMode::initialize());
 
 		$this->view('index', $logic->getViewData());
 	}

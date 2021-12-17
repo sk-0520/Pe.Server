@@ -19,7 +19,7 @@ class DevelopmentController extends ApiControllerBase
 	{
 		// @phpstan-ignore-next-line
 		$logic = $this->createLogic(DevelopmentInitializeLogic::class, $request);
-		$logic->run(LogicCallMode::SUBMIT);
+		$logic->run(LogicCallMode::submit());
 
 		$this->data($logic->getResponse());
 	}

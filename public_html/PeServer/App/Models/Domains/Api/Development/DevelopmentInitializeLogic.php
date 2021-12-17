@@ -7,8 +7,9 @@ namespace PeServer\App\Models\Domains\Api\Development;
 use \PeServer\Core\Throws\CoreException;
 use \PeServer\Core\ActionResponse;
 use \PeServer\Core\HttpStatusCode;
-use \PeServer\Core\LogicBase;
-use \PeServer\Core\LogicParameter;
+use \PeServer\Core\Mvc\LogicBase;
+use \PeServer\Core\Mvc\LogicParameter;
+use \PeServer\Core\Mvc\LogicCallMode;
 use \PeServer\Core\Mime;
 use \PeServer\App\Models\AppConfiguration;
 use \Deploy\ScriptArgument;
@@ -25,14 +26,14 @@ class DevelopmentInitializeLogic extends LogicBase
 		parent::__construct($parameter);
 	}
 
-	protected function validateImpl(int $logicMode): void
+	protected function validateImpl(LogicCallMode $callMode): void
 	{
 		if (AppConfiguration::isProductionEnvironment()) {
 			throw new CoreException('dev or test only');
 		}
 	}
 
-	protected function executeImpl(int $logicMode): void
+	protected function executeImpl(LogicCallMode $callMode): void
 	{
 		// 結構なぐっだぐだ
 		$scriptArgument = new class() extends ScriptArgument // @phpstan-ignore-line

@@ -100,24 +100,37 @@ abstract class LogicBase
 	/**
 	 * 検証ロジック実装。
 	 *
-	 * @param integer $callMode LogicCallMode 参照のこと
+	 * @param LogicCallMode $callMode 呼び出し。
 	 * @return void
 	 */
-	protected abstract function validateImpl(int $logicMode): void;
+	protected abstract function validateImpl(LogicCallMode $callMode): void;
+
 	/**
 	 * 実行ロジック実装。
 	 *
-	 * @param integer $callMode LogicCallMode 参照のこと
+	 * @param LogicCallMode $callMode 呼び出し。
 	 * @return void
 	 */
-	protected abstract function executeImpl(int $callMode): void;
+	protected abstract function executeImpl(LogicCallMode $callMode): void;
 
-	private function validate(int $callMode): void
+	/**
+	 * 検証ロジック実装。
+	 *
+	 * @param LogicCallMode $callMode 呼び出し。
+	 * @return void
+	 */
+	private function validate(LogicCallMode $callMode): void
 	{
 		$this->validateImpl($callMode);
 	}
 
-	private function execute(int $callMode): void
+	/**
+	 * 実行ロジック。
+	 *
+	 * @param LogicCallMode $callMode 呼び出し。
+	 * @return void
+	 */
+	private function execute(LogicCallMode $callMode): void
 	{
 		$this->executeImpl($callMode);
 	}
@@ -125,10 +138,10 @@ abstract class LogicBase
 	/**
 	 * ロジック処理。
 	 *
-	 * @param integer $callMode LogicMode 参照のこと
+	 * @param LogicCallMode $callMode 呼び出し。
 	 * @return boolean
 	 */
-	public function run(int $callMode): bool
+	public function run(LogicCallMode $callMode): bool
 	{
 		$this->validate($callMode);
 		if ($this->hasError()) {
