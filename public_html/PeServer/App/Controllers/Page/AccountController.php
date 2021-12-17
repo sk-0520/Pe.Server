@@ -19,13 +19,23 @@ class AccountController extends ControllerBase
 
 	public function index(ActionRequest $request): void
 	{
-		$this->login($request);
+		$this->login_get($request);
 	}
 
-	public function login(ActionRequest $request): void
+	public function login_get(ActionRequest $request): void
 	{
 		$logic = $this->createLogic(AccountLoginLogic::class, $request);
 		$logic->run(LogicCallMode::initialize());
+
+		$this->view('login', $logic->getViewData());
+	}
+
+	public function login_post(ActionRequest $request): void
+	{
+		$logic = $this->createLogic(AccountLoginLogic::class, $request);
+		if ($logic->run(LogicCallMode::submit())) {
+			$this->redirectPath('/');
+		}
 
 		$this->view('login', $logic->getViewData());
 	}

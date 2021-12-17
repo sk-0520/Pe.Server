@@ -9,12 +9,14 @@ use \PeServer\Core\ActionRequest;
 use \PeServer\Core\ActionResponse;
 use \PeServer\Core\HttpStatusCode;
 use \PeServer\Core\Mvc\LogicParameter;
+use \PeServer\Core\Mvc\IValidationReceiver;
 use \PeServer\Core\Throws\InvalidOperationException;
+use \PeServer\Core\Throws\NotImplementedException;
 
 /**
  * コントローラから呼び出されるロジック基底処理。
  */
-abstract class LogicBase
+abstract class LogicBase implements IValidationReceiver
 {
 	/**
 	 * ロガー。
@@ -83,9 +85,21 @@ abstract class LogicBase
 	 *
 	 * @return boolean
 	 */
-	public function hasError(): bool
+	protected function hasError(): bool
 	{
 		return 0 < count($this->errors);
+	}
+
+	protected function clearErrors(): void
+	{
+		$this->errors = array();
+	}
+
+	protected function removeError(string $key): void
+	{
+		if (isset($this->errors[$key])) {
+			unset($this->errors[$key]);
+		}
 	}
 
 	protected function addError(string $key, string $message): void
@@ -94,6 +108,18 @@ abstract class LogicBase
 			$this->errors[$key] = [$message];
 		} else {
 			$this->errors[$key][] = $message;
+		}
+	}
+
+	public function receiveError(string $key, int $kind, array $parameters): void
+	{
+		switch ($kind) {
+			case Validations::KIND_LENGTH:
+				$this->addError($key, var_export($parameters, true));
+				break;
+
+			default:
+				throw new NotImplementedException(var_export($parameters)); // @phpstan-ignore-line
 		}
 	}
 

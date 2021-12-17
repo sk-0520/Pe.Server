@@ -17,6 +17,7 @@ use \PeServer\Core\Mvc\Template;
 use \PeServer\Core\Mvc\LogicBase;
 use \PeServer\Core\Mvc\LogicParameter;
 use \PeServer\Core\Log\Logging;
+use PeServer\Core\StringUtility;
 
 /**
  * コントローラ基底処理。
@@ -42,6 +43,27 @@ abstract class ControllerBase
 		$this->logger = $arguments->logger;
 
 		$this->logger->trace('CONTROLLER');
+	}
+
+	public function redirectUrl(string $url): void
+	{
+		$this->logger->info('リダイレクト: {0}', $url);
+		header("Location: $url");
+		exit;
+	}
+
+	/**
+	 * ドメイン内でリダイレクト。
+	 *
+	 * @param string $path
+	 * @param array<string,string>|null $query
+	 * @return void
+	 */
+	public function redirectPath(string $path, ?array $query = null): void
+	{
+		$httpProtocol = StringUtility::isNullOrEmpty($_SERVER['HTTPS']) ? 'http://' : 'https://';
+		$this->redirectUrl($httpProtocol . $_SERVER['SERVER_NAME'] . '/' .  ltrim($path, '/'));
+		exit;
 	}
 
 	/**

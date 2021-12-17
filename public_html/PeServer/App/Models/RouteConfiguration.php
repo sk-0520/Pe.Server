@@ -25,8 +25,8 @@ abstract class RouteConfiguration
 		return [
 			(new Route('', HomeController::class)),
 			(new Route('account', AccountController::class))
-				->addAction('login', HttpMethod::get())
-				->addAction('login', HttpMethod::post())
+				->addAction('login', HttpMethod::get(), 'login_get')
+				->addAction('login', HttpMethod::post(), 'login_post')
 			,
 			(new Route('api/development', DevelopmentController::class))
 				->addAction('initialize', HttpMethod::post())
