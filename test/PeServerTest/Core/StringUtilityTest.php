@@ -21,7 +21,7 @@ class StringUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = StringUtility::isNullOrEmpty(...$test->args);
-			$this->assertBoolean($test->expected, $actual);
+			$this->assertBoolean($test->expected, $actual, $test->str());
 		}
 	}
 
@@ -36,7 +36,22 @@ class StringUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = StringUtility::isNullOrWhiteSpace(...$test->args);
-			$this->assertBoolean($test->expected, $actual);
+			$this->assertBoolean($test->expected, $actual, $test->str());
+		}
+	}
+
+	public function test_getLength()
+	{
+		$tests = [
+			new Data(0, ''),
+			new Data(1, 'a'),
+			new Data(1, 'あ'),
+			new Data(1, '☃'),
+			new Data(1, '⛄'),
+		];
+		foreach ($tests as $test) {
+			$actual = StringUtility::getLength(...$test->args);
+			$this->assertEquals($test->expected, $actual, $test->str());
 		}
 	}
 
@@ -50,7 +65,26 @@ class StringUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = StringUtility::replaceMap(...$test->args);
-			$this->assertEquals($test->expected, $actual);
+			$this->assertEquals($test->expected, $actual, $test->str());
+		}
+	}
+
+	public function test_getPosition()
+	{
+		$tests = [
+			new Data(0, 'abcあいう☃⛄', 'a'),
+			new Data(3, 'abcあいう☃⛄', 'あ'),
+			new Data(6, 'abcあいう☃⛄', '☃'),
+			new Data(7, 'abcあいう☃⛄', '⛄'),
+			new Data(-1, 'abcあいう☃⛄', '🐡'),
+
+			new Data(3, 'abcあいう☃⛄', 'あ', 3),
+			new Data(-1, 'abcあいう☃⛄', '☃', -1),
+			new Data(6, 'abcあいう☃⛄', '☃', -2),
+		];
+		foreach ($tests as $test) {
+			$actual = StringUtility::getPosition(...$test->args);
+			$this->assertEquals($test->expected, $actual, $test->str());
 		}
 	}
 

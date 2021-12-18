@@ -41,6 +41,17 @@ abstract class StringUtility
 	}
 
 	/**
+	 * 文字列長を取得。
+	 *
+	 * @param string $value
+	 * @return integer
+	 */
+	public static function getLength(string $value): int
+	{
+		return mb_strlen($value);
+	}
+
+	/**
 	 * プレースホルダー文字列置き換え処理
 	 *
 	 * @param string $source 元文字列
@@ -65,6 +76,25 @@ abstract class StringUtility
 			},
 			$source
 		);
+	}
+
+
+	/**
+	 * 文字列位置を取得。
+	 *
+	 * @param string $haystack 対象文字列。
+	 * @param string $needle 検索文字列。
+	 * @param integer $offset 開始文字数目。負数の場合は後ろから。
+	 * @return integer 見つかった文字位置。見つかんない場合は -1
+	 */
+	public static function getPosition(string $haystack, string $needle, int $offset = 0): int
+	{
+		$result =  mb_strpos($haystack, $needle, $offset);
+		if ($result === false) {
+			return -1;
+		}
+
+		return $result;
 	}
 
 	/**
@@ -151,12 +181,12 @@ abstract class StringUtility
 	 * 文字列部分切り出し。
 	 *
 	 * @param string $value 対象文字列。
-	 * @param integer $start 開始文字数目。負数の場合は後ろから。
-	 * @param integer $length 抜き出す長さ。負数の場合は最後まで($startが負数の場合は最初まで)
+	 * @param integer $offset 開始文字数目。負数の場合は後ろから。
+	 * @param integer $length 抜き出す長さ。負数の場合は最後まで($offset)
 	 * @return string 切り抜き後文字列。
 	 */
-	public static function substring(string $value, int $start, int $length = -1): string
+	public static function substring(string $value, int $offset, int $length = -1): string
 	{
-		return mb_substr($value, $start, 0 <= $length ? $length : null);
+		return mb_substr($value, $offset, 0 <= $length ? $length : null);
 	}
 }
