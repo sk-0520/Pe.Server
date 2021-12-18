@@ -15,26 +15,26 @@ use \PeServer\Core\InitializeChecker;
  *
  * 初期化の呼び出しが必須。
  */
-class Template
+abstract class Template
 {
 	/**
 	 * 初期化チェック
 	 *
 	 * @var InitializeChecker|null
 	 */
-	private static $initializeChecker;
+	protected static $initializeChecker;
 	/**
 	 * ルートディレクトリ。
 	 *
 	 * @var string
 	 */
-	private static $rootDirectoryPath; // @phpstan-ignore-line
+	protected static $rootDirectoryPath;
 	/**
 	 * ベースディレクトリ。
 	 *
 	 * @var string
 	 */
-	private static $baseDirectoryPath;
+	protected static $baseDirectoryPath;
 
 	public static function initialize(string $rootDirectoryPath, string $baseDirectoryPath, string $environment): void
 	{
@@ -47,17 +47,47 @@ class Template
 		self::$baseDirectoryPath = $baseDirectoryPath;
 	}
 
-	public static function createTemplate(string $baseName): Smarty // @phpstan-ignore-line
+	public static function create(string $baseName): Template
 	{
 		self::$initializeChecker->throwIfNotInitialize();
 
-		// @phpstan-ignore-next-line
-		$smarty = new Smarty();
-		$smarty->addTemplateDir(self::$baseDirectoryPath . "/App/Views/$baseName/"); // @phpstan-ignore-line
-		$smarty->addTemplateDir(self::$baseDirectoryPath . "/App/Views/"); // @phpstan-ignore-line
-		$smarty->compile_dir  = self::$baseDirectoryPath . "/data/temp/views/c/$baseName/"; // @phpstan-ignore-line
-		$smarty->cache_dir    = self::$baseDirectoryPath . "/data/temp/views/t/$baseName/"; // @phpstan-ignore-line
+		return new _Template_Invisible($baseName);
+	}
 
-		return $smarty;
+	/**
+	 * View描画処理。
+	 *
+	 * @param string $templateName テンプレート名。
+	 * @param mixed $parameters パラメータ。
+	 * @param array $options オプション。
+	 * @return void no-return?
+	 */
+	public abstract function show(string $templateName, $parameters, array $options = array()): void; // @phpstan-ignore-line
+}
+
+class _Template_Invisible extends Template
+{
+	/**
+	 * Undocumented variable
+	 *
+	 * @var Smarty
+	 */
+	private $engine;
+
+	public function __construct(string $baseName)
+	{
+		self::$initializeChecker->throwIfNotInitialize();
+
+		$this->engine = new Smarty();
+		$this->engine->addTemplateDir(self::$baseDirectoryPath . "/App/Views/$baseName/");
+		$this->engine->addTemplateDir(self::$baseDirectoryPath . "/App/Views/");
+		$this->engine->setCompileDir(self::$baseDirectoryPath . "/data/temp/views/c/$baseName/");
+		$this->engine->setCacheDir(self::$baseDirectoryPath . "/data/temp/views/t/$baseName/");
+	}
+
+	public function show(string $templateName, $parameters, array $options = array()): void // @phpstan-ignore-line
+	{
+		$this->engine->assign($parameters); // @phpstan-ignore-line
+		$this->engine->display($templateName); // @phpstan-ignore-line
 	}
 }

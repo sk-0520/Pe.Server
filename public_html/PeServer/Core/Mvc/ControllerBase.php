@@ -101,17 +101,6 @@ abstract class ControllerBase
 	}
 
 	/**
-	 * テンプレート生成。
-	 *
-	 * @param string $baseName コントローラ名。
-	 * @return Smarty 本処理では Smarty を使用するが将来変わる可能性あり。
-	 */
-	protected function createTemplate(string $baseName): Smarty // @phpstan-ignore-line
-	{
-		return Template::createTemplate($baseName);
-	}
-
-	/**
 	 * Viewを表示。
 	 *
 	 * @param string $controllerName コントローラ完全名。
@@ -127,10 +116,10 @@ abstract class ControllerBase
 		$controllerBaseName = mb_substr($controllerClassName, 0, mb_strlen($controllerClassName) - mb_strlen($lastWord));
 
 		$templateDirPath = str_replace('\\', DIRECTORY_SEPARATOR, $controllerBaseName);
-		$smarty = $this->createTemplate($templateDirPath);
 
-		$smarty->assign($parameters); // @phpstan-ignore-line
-		$smarty->display("$action.tpl"); // @phpstan-ignore-line
+		$template = Template::create($templateDirPath);
+
+		$template->show("$action.tpl", $parameters);
 	}
 
 	/**
