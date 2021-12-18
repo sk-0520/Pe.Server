@@ -37,12 +37,17 @@ class RouteTest extends TestClass
 			[
 				'route' => ['path', 'Controller'],
 				'actions' => [
-					['action', HttpMethod::get()]
+					['action', HttpMethod::get(), "1"],
+					['action/action', HttpMethod::get(), "2"],
 				],
 				'request' => [
 					[
-						'expected' => ['Controller', 'action'],
+						'expected' => ['Controller', '1'],
 						'input' => [HttpMethod::GET, ['path', 'action']]
+					],
+					[
+						'expected' => ['Controller', '2'],
+						'input' => [HttpMethod::GET, ['path', 'action', 'action']]
 					]
 				]
 			],

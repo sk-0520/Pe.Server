@@ -17,7 +17,7 @@ class Routing
 	 *
 	 * @var Route[]
 	 */
-	private $routeMap;
+	private $_routeMap;
 
 	/**
 	 * 生成。
@@ -26,24 +26,20 @@ class Routing
 	 */
 	public function __construct(array $routeMap)
 	{
-		$this->routeMap = $routeMap;
+		$this->_routeMap = $routeMap;
 	}
 
 	/**
-	 * パス分割。
+	 * パス部分を取得。
 	 *
 	 * @param string $requestUri
-	 * @return string[]
+	 * @return string[] クエリを含まないパス一覧。
 	 */
-	private function splitPaths(string $requestUri): array
+	private function getPathValues(string $requestUri): array
 	{
 		$reqs = explode('?', $requestUri, 2);
 
-		// $rawPaths = array_filter(explode('/', $reqs[0]), function($i) {
-		// 	return !StringUtility::isNullOrEmpty($i);
-		// });
-		$rawPaths = explode('/', rtrim($reqs[0], '/'));
-		$paths = count($rawPaths) === 1 ? [$rawPaths[0]] : array_slice($rawPaths, 1);
+		$paths = explode('/', trim($reqs[0], '/'));
 
 		return $paths;
 	}
@@ -81,12 +77,12 @@ class Routing
 	 */
 	public function execute(string $requestMethod, string $requestUri): void
 	{
-		$paths = $this->splitPaths($requestUri);
+		$paths = $this->getPathValues($requestUri);
 		$requestPaths = $paths;
 		//TODO: パス中のパラメータ(/区切りのID的な)
 		$pathParameters = array();
 
-		foreach ($this->routeMap as $route) {
+		foreach ($this->_routeMap as $route) {
 			$action = $route->getAction($requestMethod, $requestPaths);
 			if ($action['code'] === HttpStatusCode::DO_EXECUTE) {
 				$this->executeAction($action['class'], $action['method'], $pathParameters);

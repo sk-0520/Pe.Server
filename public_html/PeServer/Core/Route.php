@@ -103,7 +103,8 @@ class Route
 			];
 		}
 
-		$actionPath = $requestPaths[count($requestPaths) - 1];
+		//$actionPath = $requestPaths[count($requestPaths) - 1];
+		$actionPath = ltrim(mb_substr($requestPath, mb_strlen($this->basePath)), '/');
 
 		if (!isset($this->actions[$actionPath])) {
 			return [
