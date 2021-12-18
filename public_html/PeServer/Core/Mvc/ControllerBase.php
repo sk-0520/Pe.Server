@@ -45,6 +45,12 @@ abstract class ControllerBase
 		$this->logger->trace('CONTROLLER');
 	}
 
+	/**
+	 * Undocumented function
+	 *
+	 * @param string $url
+	 * @return no-return
+	 */
 	public function redirectUrl(string $url): void
 	{
 		$this->logger->info('リダイレクト: {0}', $url);
@@ -57,13 +63,12 @@ abstract class ControllerBase
 	 *
 	 * @param string $path
 	 * @param array<string,string>|null $query
-	 * @return void
+	 * @return no-return
 	 */
 	public function redirectPath(string $path, ?array $query = null): void
 	{
 		$httpProtocol = StringUtility::isNullOrEmpty($_SERVER['HTTPS']) ? 'http://' : 'https://';
 		$this->redirectUrl($httpProtocol . $_SERVER['SERVER_NAME'] . '/' .  ltrim($path, '/'));
-		exit;
 	}
 
 	/**
