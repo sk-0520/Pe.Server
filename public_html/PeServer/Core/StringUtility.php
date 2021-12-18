@@ -113,7 +113,7 @@ abstract class StringUtility
 			return false;
 		}
 
-		$word = mb_substr($haystack, mb_strlen($haystack) - mb_strlen($needle));
+		$word = mb_substr($haystack, -mb_strlen($needle));
 
 		if ($ignoreCase) {
 			return !strcasecmp($needle, $word);
@@ -145,5 +145,18 @@ abstract class StringUtility
 		}
 
 		return strpos($haystack, $needle) !== false;
+	}
+
+	/**
+	 * 文字列部分切り出し。
+	 *
+	 * @param string $value 対象文字列。
+	 * @param integer $start 開始文字数目。負数の場合は後ろから。
+	 * @param integer $length 抜き出す長さ。負数の場合は最後まで($startが負数の場合は最初まで)
+	 * @return string 切り抜き後文字列。
+	 */
+	public static function substring(string $value, int $start, int $length = -1): string
+	{
+		return mb_substr($value, $start, 0 <= $length ? $length : null);
 	}
 }

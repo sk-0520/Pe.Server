@@ -138,4 +138,21 @@ class StringUtilityTest extends TestClass
 			$this->assertBoolean($test->expected, $actual, $test->str());
 		}
 	}
+
+	public function test_substring(): void
+	{
+		$tests = [
+			new Data('abc', 'abcxyz', 0, 3),
+			new Data('xyz', 'abcxyz', 3, 3),
+			new Data('xyz', 'abcxyz', 3),
+			new Data('xy', 'abcxyz', -3, 2),
+			new Data('xyz', 'abcxyz', -3),
+			new Data('感☃🐎', 'あ感☃🐎', 1),
+			new Data('🐎', 'あ感☃🐎', 3),
+		];
+		foreach ($tests as $test) {
+			$actual = StringUtility::substring(...$test->args);
+			$this->assertEquals($test->expected, $actual, $test->str());
+		}
+	}
 }

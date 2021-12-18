@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models;
 
+use \PeServer\Core\CoreInitializer;
 use \PeServer\Core\FileUtility;
 use \PeServer\Core\InitializeChecker;
 use \PeServer\Core\Mvc\Template;
@@ -25,6 +26,7 @@ abstract class Initializer
 		}
 		self::$initializeChecker->initialize();
 
+		CoreInitializer::initialize();
 		AppConfiguration::initialize($rootDirectoryPath, $baseDirectoryPath, $environment);
 		Template::initialize($rootDirectoryPath, $baseDirectoryPath, $environment);
 	}
