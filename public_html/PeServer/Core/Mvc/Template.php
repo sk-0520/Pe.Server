@@ -43,6 +43,12 @@ abstract class Template
 	 */
 	protected static $baseDirectoryPath;
 
+	/**
+	 * Undocumented variable
+	 *
+	 * @var string
+	 */
+	protected static $environment;
 
 	/**
 	 * キャッシュバスター用のあれ。
@@ -60,6 +66,7 @@ abstract class Template
 
 		self::$rootDirectoryPath = $rootDirectoryPath;
 		self::$baseDirectoryPath = $baseDirectoryPath;
+		self::$environment = $environment;
 		self::$revision = $revision;
 	}
 
@@ -208,30 +215,41 @@ class _Template_Invisible extends Template
 			return '';
 		}
 
-		$ignorePatterns = [
-			StringUtility::startsWith($sourcePath, 'https://', false),
-			StringUtility::startsWith($sourcePath, 'http://', false),
-		];
-		$cachebuster = '';
-		if (Collection::from($ignorePatterns)->any()) {
-			$cachebuster = self::$revision;
+		$extension = StringUtility::toLower(pathinfo($sourcePath, PATHINFO_EXTENSION));
+
+		$ignoreAsset =
+			StringUtility::startsWith($sourcePath, 'https://', false)
+			||
+			StringUtility::startsWith($sourcePath, 'http://', false)
+		;
+
+		$resourcePath = $sourcePath;
+		if (!$ignoreAsset) {
+			if(self::$environment === 'production') {
+				$dir = pathinfo($sourcePath, PATHINFO_DIRNAME);
+				$file = pathinfo($sourcePath, PATHINFO_FILENAME);
+
+				$resourcePath = $dir . '/' . $file . '.min.' . $extension;
+			}
+
+			$resourcePath .= '?' . self::$revision;
 		}
 
-		$ext = StringUtility::toLower(pathinfo($sourcePath, PATHINFO_EXTENSION));
-		switch ($ext) {
+
+		switch ($extension) {
 			case 'css':
-				return "<link href=\"$sourcePath?$cachebuster\" rel=\"stylesheet\" />";
+				return "<link href=\"$resourcePath\" rel=\"stylesheet\" />";
 
 			case 'js':
-				return "<script src=\"$sourcePath?$cachebuster\" />";
+				return "<script src=\"$resourcePath\"></script>";
 
 			case 'png':
 			case 'jpeg':
 			case 'jpg':
-				return "<img src=\"$sourcePath?$cachebuster\" />";
+				return "<img src=\"$resourcePath\" />";
 
 			default:
-				throw new CoreException($sourcePath);
+				throw new CoreException($resourcePath);
 		}
 	}
 }
