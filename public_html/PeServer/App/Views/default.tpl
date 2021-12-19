@@ -6,8 +6,9 @@
 	<body>
 		<main id="main">
 			<h1>{block name=TITLE}{/block}</h1>
+			{show_error_messages key=''}
 			{if count($errors)}
-				<ul class="common-error errors">
+				<ul class="errors common-error">
 					{foreach from=$errors item=item}
 						{foreach from=$item item=error}
 							<li class="error">{$error}</li>

@@ -9,3 +9,5 @@ parameters:
     - ../public_html/PeServer/App/Models/Domains/Api/Development/DevelopmentInitializeLogic.php
   scanFiles:
     - ../public_html/PeServer/Libs/smarty/libs/Smarty.class.php
+    - ../public_html/PeServer/Libs/smarty/libs/sysplugins/smarty_internal_template.php
+    - ../public_html/PeServer/Libs/smarty/libs/sysplugins/smarty_internal_data.php

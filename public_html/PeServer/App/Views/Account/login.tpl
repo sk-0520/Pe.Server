@@ -2,7 +2,7 @@
 {block name=TITLE}ログイン{/block}
 {block name=BODY}
 
-<form class="page-login" action="login" method="post">
+<form class="page-login" action="/account/login" method="post">
 	<dl class="input">
 		<dt>id</dt>
 		<dd><input class="edit" name="account-login-loginid" type="text" value="" /></dd>

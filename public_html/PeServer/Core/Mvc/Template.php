@@ -7,7 +7,9 @@ namespace PeServer\Core\Mvc;
 // require_once('PeServer/Libs/smarty/libs/Smarty.class.php');
 
 use \Exception;
+use PeServer\Core\ArrayUtility;
 use \Smarty;
+use \Smarty_Internal_Template;
 use \PeServer\Core\InitializeChecker;
 
 /**
@@ -83,11 +85,42 @@ class _Template_Invisible extends Template
 		$this->engine->addTemplateDir(self::$baseDirectoryPath . "/App/Views/");
 		$this->engine->setCompileDir(self::$baseDirectoryPath . "/data/temp/views/c/$baseName/");
 		$this->engine->setCacheDir(self::$baseDirectoryPath . "/data/temp/views/t/$baseName/");
+
+		$this->registerFunctions();
 	}
 
 	public function show(string $templateName, $parameters, array $options = array()): void // @phpstan-ignore-line
 	{
 		$this->engine->assign($parameters); // @phpstan-ignore-line
 		$this->engine->display($templateName); // @phpstan-ignore-line
+	}
+
+	private function registerFunctions(): void
+	{
+		// @phpstan-ignore-next-line
+		$this->engine->registerPlugin('function', 'show_error_messages', array($this, 'showErrorMessages'));
+	}
+
+	/**
+	 * エラー表示
+	 *
+	 * @param array{string,string} $params
+	 * @param Smarty_Internal_Template $smarty
+	 * @return string HTML
+	 */
+	public function showErrorMessages(array $params, Smarty_Internal_Template $smarty): string
+	{
+		// @phpstan-ignore-next-line
+		if (!isset($smarty->tpl_vars['errors'])) {
+			return '';
+		}
+
+		/** @var array<string,string[]> */
+		$errors = $smarty->tpl_vars['errors']->value;
+		if (ArrayUtility::isNullOrEmpty($errors)) {
+			return '';
+		}
+
+		return "<b>ERROR</b>";
 	}
 }
