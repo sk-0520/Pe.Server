@@ -66,7 +66,7 @@ class Route
 	 *
 	 * TODO: メソッド違う同一パスが対応できていない
 	 *
-	 * @param string $actionName URLとして使用されるパス, パス先頭が : でURLパラメータとなる
+	 * @param string $actionName URLとして使用されるパス, パス先頭が : でURLパラメータとなり、パラメータ名の @ 以降は一致正規表現となる
 	 * @param HttpMethod $httpMethod 使用するHTTPメソッド
 	 * @param string|null $methodName 呼び出されるコントローラメソッド。未指定なら $actionName が使用される
 	 * @return Route
@@ -85,11 +85,40 @@ class Route
 	}
 
 	/**
+	 * Undocumented function
+	 *
+	 * @param string $httpMethod
+	 * @param Action $action
+	 * @param array<string,string> $urlParameters
+	 * @return array{code:int,class:string,method:string,params:array<string,string>}
+	 */
+	private function getActionCore(string $httpMethod, Action $action, array $urlParameters): array
+	{
+		$callMethod = $action->get($httpMethod);
+		if (StringUtility::isNullOrEmpty($callMethod)) {
+			return [
+				'code' => HttpStatusCode::METHOD_NOT_ALLOWED,
+				'class' => $this->className,
+				'method' => '',
+				'params' => $urlParameters,
+			];
+		}
+
+		// @phpstan-ignore-next-line
+		return [
+			'code' => HttpStatusCode::DO_EXECUTE,
+			'class' => $this->className,
+			'method' => $callMethod,
+			'params' => $urlParameters,
+		];
+	}
+
+	/**
 	 * メソッド・リクエストパスから登録されているアクションを取得。
 	 *
 	 * @param string $httpMethod HttpMethod を参照のこと
 	 * @param string[] $requestPaths リクエストパス。URLパラメータは含まない
-	 * @return array{code:int,class:string,method:string} 存在する場合にクラス・メソッドのペア。存在しない場合は null
+	 * @return array{code:int,class:string,method:string,params:array<string,string>} 存在する場合にクラス・メソッドのペア。存在しない場合は null
 	 */
 	public function getAction(string $httpMethod, array $requestPaths): ?array
 	{
@@ -100,35 +129,90 @@ class Route
 				'code' => HttpStatusCode::NOT_FOUND,
 				'class' => $this->className,
 				'method' => '',
+				'params' => [],
 			];
 		}
 
 		//$actionPath = $requestPaths[count($requestPaths) - 1];
 		$actionPath = ltrim(mb_substr($requestPath, mb_strlen($this->basePath)), '/');
+		$actionPaths = explode('/', $actionPath);
 
 		if (!isset($this->actions[$actionPath])) {
+			// URLパラメータチェック
+			foreach ($this->actions as $key => $action) {
+				// 定義内にURLパラメータが無ければ破棄
+				if (!StringUtility::contains($key, ':', false)) {
+					continue;
+				}
+
+				$keyPaths = explode('/', $key);
+				if (count($keyPaths) !== count($actionPaths)) {
+					continue;
+				}
+
+				$calcPaths = array_filter(array_map(function ($i, $value) use ($actionPaths) {
+					$length = StringUtility::getLength($value);
+					if ($length === 0 || $value[0] !== ':') {
+						return ['key' => $value, 'name' => '', 'value' => $actionPaths[$i]];
+					}
+					$splitPaths = explode('@', $value, 2);
+					$requestKey = StringUtility::substring($splitPaths[0], 1);
+					$isRegex = 1 < count($splitPaths);
+					if ($isRegex) {
+						$pattern = "/$splitPaths[1]/";
+						if (preg_match($pattern, $actionPaths[$i])) {
+							return ['key' => $value, 'name' => $requestKey, 'value' => $actionPaths[$i]];
+						}
+						return null;
+					} else {
+						return ['key' => $value, 'name' => $requestKey, 'value' => $actionPaths[$i]];
+					}
+				}, array_keys($keyPaths), array_values($keyPaths)), function ($i) {
+					return !is_null($i);
+				});
+
+				// 非URLパラメータ項目は一致するか
+				if (count($calcPaths) !== count($actionPaths)) {
+					continue;
+				}
+				$success = true;
+				for ($i = 0; $i < count($calcPaths) && $success; $i++) {
+					$calcPath = $calcPaths[$i];
+					if (StringUtility::isNullOrEmpty($calcPath['name'])) {
+						$success = $calcPath['key'] === $actionPaths[$i];
+					}
+				}
+				if (!$success) {
+					continue;
+				}
+
+				$calcKey = implode('/', array_column($calcPaths, 'key'));
+				if ($key !== $calcKey) {
+					continue;
+				}
+
+				$calcParameters = array_filter($calcPaths, function ($i) {
+					return !StringUtility::isNullOrEmpty($i['name']);
+				});
+				$flatParameters = [];
+				foreach ($calcParameters as $calcParameter) {
+					$flatParameters[$calcParameter['name']] = $calcParameter['value'];
+				}
+
+				$result = $this->getActionCore($httpMethod, $action, $flatParameters);
+				if ($result['code'] === HttpStatusCode::DO_EXECUTE) {
+					return $result;
+				}
+			}
+
 			return [
 				'code' => HttpStatusCode::NOT_FOUND,
 				'class' => $this->className,
 				'method' => '',
+				'params' => [],
 			];
 		}
 
-		$action = $this->actions[$actionPath];
-		$callMethod = $action->get($httpMethod);
-		if (StringUtility::isNullOrEmpty($callMethod)) {
-			return [
-				'code' => HttpStatusCode::METHOD_NOT_ALLOWED,
-				'class' => $this->className,
-				'method' => '',
-			];
-		}
-
-		// @phpstan-ignore-next-line
-		return [
-			'code' => HttpStatusCode::DO_EXECUTE,
-			'class' => $this->className,
-			'method' => $callMethod,
-		];
+		return $this->getActionCore($httpMethod, $this->actions[$actionPath], []);
 	}
 }

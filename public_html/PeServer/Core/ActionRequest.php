@@ -20,20 +20,20 @@ class ActionRequest
 	public const REQUEST_FILE = 'file';
 
 	/**
-	 * Undocumented variable
+	 * URLパラメータ。
 	 *
 	 * @var array<string,string>
 	 */
-	private $urlRequests; // @phpstan-ignore-line
+	private $urlParameters;
 
 	/**
 	 * リクエストデータ構築
 	 *
-	 * @param array<string,string> $urlRequests URLパラメータ
+	 * @param array<string,string> $urlParameters URLパラメータ
 	 */
-	public function __construct(array $urlRequests)
+	public function __construct(array $urlParameters)
 	{
-		$this->urlRequests  = $urlRequests;
+		$this->urlParameters = $urlParameters;
 	}
 
 	/**
@@ -44,7 +44,9 @@ class ActionRequest
 	 */
 	public function exists(string $key): array
 	{
-		//TODO: $urlRequests
+		if (isset($this->urlParameters[$key])) {
+			return ['exists' => true, 'type' => self::REQUEST_URL];
+		}
 
 		if (isset($_GET[$key])) {
 			return ['exists' => true, 'type' => self::REQUEST_GET];
@@ -77,7 +79,9 @@ class ActionRequest
 	 */
 	public function getValue(string $key): string
 	{
-		//TODO: $urlRequests
+		if (isset($this->urlParameters[$key])) {
+			return $this->urlParameters[$key];
+		}
 
 		if (isset($_GET[$key])) {
 			return $_GET[$key];

@@ -49,10 +49,10 @@ class Routing
 	 *
 	 * @param string $rawControllerName
 	 * @param string $methodName
-	 * @param string[] $pathParameters
+	 * @param string[] $urlParameters
 	 * @return void
 	 */
-	private function executeAction(string $rawControllerName, string $methodName, array $pathParameters): void
+	private function executeAction(string $rawControllerName, string $methodName, array $urlParameters): void
 	{
 		$splitNames = explode('/', $rawControllerName);
 		$controllerName = $splitNames[count($splitNames) - 1];
@@ -60,7 +60,7 @@ class Routing
 		$logger = Logging::create($controllerName);
 
 		$controllerArguments = new ControllerArguments($logger);
-		$request = new ActionRequest($pathParameters);
+		$request = new ActionRequest($urlParameters);
 
 		$controller = new $controllerName($controllerArguments);
 		$controller->$methodName($request);
@@ -79,13 +79,11 @@ class Routing
 	{
 		$paths = $this->getPathValues($requestUri);
 		$requestPaths = $paths;
-		//TODO: パス中のパラメータ(/区切りのID的な)
-		$pathParameters = array();
 
 		foreach ($this->_routeMap as $route) {
 			$action = $route->getAction($requestMethod, $requestPaths);
 			if ($action['code'] === HttpStatusCode::DO_EXECUTE) {
-				$this->executeAction($action['class'], $action['method'], $pathParameters);
+				$this->executeAction($action['class'], $action['method'], $action['params']);
 			}
 		}
 	}
