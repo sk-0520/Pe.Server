@@ -21,6 +21,7 @@ before_test:
   - sh: sudo update-alternatives --set php /usr/bin/php$PHP_VER
 build_script:
   - sh: npm run build
+  - sh: ./dev/update-config.sh $APPVEYOR_REPO_COMMIT
 test_script:
   - sh: npm run test
   - sh: ./dev/phpstan.sh
