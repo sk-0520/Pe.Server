@@ -32,7 +32,9 @@
 			"loginid",
 			"ondrej",
 			"phpstan",
-			"phpunit"
+			"phpunit",
+			"ATTR_ERRMODE",
+			"ERRMODE_EXCEPTION"
 		]
 	}
 }

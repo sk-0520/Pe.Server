@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
+use \PDO;
+use \PDOStatement;
+
+use \PeServer\Core\Throws\SqlException;
+
 abstract class Database
 {
 	/**
@@ -11,7 +16,7 @@ abstract class Database
 	 *
 	 * @var InitializeChecker|null
 	 */
-	private static $initializeChecker;
+	protected static $initializeChecker;
 
 	/**
 	 * DB接続設定
@@ -28,5 +33,99 @@ abstract class Database
 		self::$initializeChecker->initialize();
 
 		self::$databaseConfiguration = $databaseConfiguration;
+	}
+
+	public static function create(): Database
+	{
+		self::$initializeChecker->throwIfNotInitialize();
+
+		return new _Database_Invisible(self::$databaseConfiguration);
+	}
+
+	/**
+	 * Undocumented function
+	 *
+	 * @param string $statement
+	 * @param array<string|int,string|int> $parameters
+	 * @return mixed[]
+	 */
+	public abstract function query(string $statement, array $parameters = array()): array;
+
+	/**
+	 * Undocumented function
+	 *
+	 * @param string $statement
+	 * @param array<string|int,string|int> $parameters
+	 * @return mixed
+	 */
+	public abstract function queryFirst(string $statement, array $parameters = array());
+}
+
+class _Database_Invisible extends Database
+{
+	/**
+	 * 接続処理。
+	 *
+	 * @var PDO
+	 */
+	private $pdo;
+
+	/**
+	 * Undocumented function
+	 *
+	 * @param array<string,string|mixed> $databaseConfiguration
+	 */
+	public function __construct(array $databaseConfiguration)
+	{
+		self::$initializeChecker->throwIfNotInitialize();
+
+		$this->pdo = new PDO('sqlite:' . $databaseConfiguration['connection']);
+		$this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+	}
+
+	/**
+	 * Undocumented function
+	 *
+	 * @param PDOStatement $statement
+	 * @param array<string|int,string|int> $parameters
+	 * @return void
+	 */
+	private function setParameters(PDOStatement $statement, array $parameters): void
+	{
+		foreach ($parameters as $key => $value) {
+			$statement->bindParam($key, $value);
+		}
+	}
+
+	public function query(string $statement, array $parameters = array()): array
+	{
+		self::$initializeChecker->throwIfNotInitialize();
+
+		$query = $this->pdo->prepare($statement);
+
+		$this->setParameters($query, $parameters);
+
+		$result = $query->fetchAll();
+		if ($result === false) {
+			throw new SqlException();
+		}
+
+		return $result;
+	}
+
+	public function queryFirst(string $statement, array $parameters = array())
+	{
+		self::$initializeChecker->throwIfNotInitialize();
+
+		$query = $this->pdo->prepare($statement);
+
+		$this->setParameters($query, $parameters);
+
+		$result = $query->fetch();
+		if ($result === false) {
+			throw new SqlException();
+		}
+
+		return $result;
 	}
 }
