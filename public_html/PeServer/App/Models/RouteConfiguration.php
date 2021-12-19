@@ -23,7 +23,11 @@ abstract class RouteConfiguration
 	public static function get(): array
 	{
 		return [
-			(new Route('', HomeController::class)),
+			(new Route('', HomeController::class))
+				->addAction('privacy', HttpMethod::get(), 'privacy')
+				->addAction('contact', HttpMethod::get(), 'contact_get')
+				->addAction('contact', HttpMethod::post(), 'contact_post')
+			,
 			(new Route('account', AccountController::class))
 				->addAction('login', HttpMethod::get(), 'login_get')
 				->addAction('login', HttpMethod::post(), 'login_post')
