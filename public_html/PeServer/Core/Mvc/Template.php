@@ -7,10 +7,14 @@ namespace PeServer\Core\Mvc;
 // require_once('PeServer/Libs/smarty/libs/Smarty.class.php');
 
 use \Exception;
-use PeServer\Core\ArrayUtility;
+use \DOMDocument;
 use \Smarty;
 use \Smarty_Internal_Template;
+use \PeServer\Core\ArrayUtility;
+use \PeServer\Core\I18n;
 use \PeServer\Core\InitializeChecker;
+use \PeServer\Core\StringUtility;
+use \PeServer\Core\Throws\CoreException;
 
 /**
  * View側のテンプレート処理。
@@ -121,6 +125,57 @@ class _Template_Invisible extends Template
 			return '';
 		}
 
-		return "<b>ERROR</b>";
+		$targetKey = Validations::COMMON;
+		$classes = ['errors'];
+
+		// @phpstan-ignore-next-line
+		if (!isset($params['key']) || $params['key'] === Validations::COMMON) {
+			$classes[] = 'common-error';
+		} else {
+			$classes[] = 'value-error';
+			$targetKey = $params['key'];
+		}
+
+		$dom = new DOMDocument();
+
+		$ulElement = $dom->createElement('ul');
+		$ulElement->setAttribute('class', implode(' ', $classes));
+
+		if ($targetKey === Validations::COMMON) {
+			$commonElement = $dom->createElement('div');
+			$dom->appendChild($commonElement);
+
+			$messageElement = $dom->createElement('p');
+			$messageElement->appendChild($dom->createTextNode(I18n::message('エラーあり')));
+			$commonElement->appendChild($messageElement);
+			$commonElement->appendChild($ulElement);
+
+			$dom->appendChild($commonElement);
+		} else { // @phpstan-ignore-line
+			$dom->appendChild($ulElement);
+		}
+
+		foreach ($errors as $key => $values) {
+			if ($targetKey !== $key) {
+				continue;
+			}
+
+			$liElement = $dom->createElement('li');
+			$liElement->setAttribute('class', 'error');
+
+			foreach ($values as $value) {
+				$messageElement = $dom->createTextNode($value);
+				$liElement->appendChild($messageElement);
+			}
+
+			$ulElement->appendChild($liElement);
+		}
+
+		$result = $dom->saveHTML();
+		if($result === false) {
+			throw new CoreException();
+		}
+
+		return $result;
 	}
 }

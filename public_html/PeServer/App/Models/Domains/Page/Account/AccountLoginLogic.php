@@ -24,12 +24,12 @@ class AccountLoginLogic extends LogicBase
 			return;
 		}
 
-		$loginId = $this->getRequest('account-login-loginid');
+		$loginId = $this->getRequest('account_login_loginid');
 		if (StringUtility::isNullOrWhiteSpace($loginId)) {
 			$this->addError(Validations::COMMON, I18n::message('パスワード・パスワードが不明です'));
 		}
 
-		$password = $this->getRequest('account-login-password');
+		$password = $this->getRequest('account_login_password');
 		if (StringUtility::isNullOrWhiteSpace($password)) {
 			$this->addError(Validations::COMMON, I18n::message('パスワード・パスワードが不明です'));
 		}
