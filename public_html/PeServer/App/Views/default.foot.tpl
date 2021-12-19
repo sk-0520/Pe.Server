@@ -1,2 +1,2 @@
-<script src="/scripts/script.js"></script>
+{asset file='/scripts/script.js'}
 {block name=SCRIPTS}{/block}

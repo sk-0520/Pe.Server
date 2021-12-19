@@ -189,4 +189,9 @@ abstract class StringUtility
 	{
 		return mb_substr($value, $offset, 0 <= $length ? $length : null);
 	}
+
+	public static function toLower(string $value): string
+	{
+		return mb_strtolower($value);
+	}
 }

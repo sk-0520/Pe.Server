@@ -16,7 +16,8 @@ AutoLoader::initialize([__DIR__], '/^PeServer/');
 Initializer::initialize(
 	__DIR__,
 	__DIR__ . DIRECTORY_SEPARATOR . 'PeServer',
-	$_SERVER['SERVER_NAME'] === 'localhost' ? 'development' : 'production'
+	$_SERVER['SERVER_NAME'] === 'localhost' ? 'development' : 'production',
+	':REVISION:'
 );
 
 $routing = new Routing(RouteConfiguration::get());

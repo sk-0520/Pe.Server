@@ -114,7 +114,7 @@ class RouteTest extends TestClass
 							$this->assertEquals($request['expected'][2][$key], $actual['params'][$key], $input);
 						}
 					} else {
-						$this->assertNull($actual['params']);
+						$this->assertTrue(isset($actual['params']));
 					}
 				}
 			}

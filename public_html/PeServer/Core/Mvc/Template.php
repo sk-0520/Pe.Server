@@ -11,6 +11,7 @@ use \DOMDocument;
 use \Smarty;
 use \Smarty_Internal_Template;
 use \PeServer\Core\ArrayUtility;
+use PeServer\Core\Collection;
 use \PeServer\Core\I18n;
 use \PeServer\Core\InitializeChecker;
 use \PeServer\Core\StringUtility;
@@ -42,7 +43,15 @@ abstract class Template
 	 */
 	protected static $baseDirectoryPath;
 
-	public static function initialize(string $rootDirectoryPath, string $baseDirectoryPath, string $environment): void
+
+	/**
+	 * キャッシュバスター用のあれ。
+	 *
+	 * @var string
+	 */
+	protected static $revision;
+
+	public static function initialize(string $rootDirectoryPath, string $baseDirectoryPath, string $environment, string $revision): void
 	{
 		if (is_null(self::$initializeChecker)) {
 			self::$initializeChecker = new InitializeChecker();
@@ -51,6 +60,7 @@ abstract class Template
 
 		self::$rootDirectoryPath = $rootDirectoryPath;
 		self::$baseDirectoryPath = $baseDirectoryPath;
+		self::$revision = $revision;
 	}
 
 	public static function create(string $baseName): Template
@@ -103,12 +113,14 @@ class _Template_Invisible extends Template
 	{
 		// @phpstan-ignore-next-line
 		$this->engine->registerPlugin('function', 'show_error_messages', array($this, 'showErrorMessages'));
+		// @phpstan-ignore-next-line
+		$this->engine->registerPlugin('function', 'asset', array($this, 'asset'));
 	}
 
 	/**
 	 * エラー表示
 	 *
-	 * @param array{string,string} $params
+	 * @param array<string,string> $params
 	 * @param Smarty_Internal_Template $smarty
 	 * @return string HTML
 	 */
@@ -128,7 +140,6 @@ class _Template_Invisible extends Template
 		$targetKey = Validations::COMMON;
 		$classes = ['errors'];
 
-		// @phpstan-ignore-next-line
 		if (!isset($params['key']) || $params['key'] === Validations::COMMON) {
 			$classes[] = 'common-error';
 		} else {
@@ -151,7 +162,7 @@ class _Template_Invisible extends Template
 			$commonElement->appendChild($ulElement);
 
 			$dom->appendChild($commonElement);
-		} else { // @phpstan-ignore-line
+		} else {
 			$dom->appendChild($ulElement);
 		}
 
@@ -172,10 +183,55 @@ class _Template_Invisible extends Template
 		}
 
 		$result = $dom->saveHTML();
-		if($result === false) {
+		if ($result === false) {
 			throw new CoreException();
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Undocumented function
+	 *
+	 * @param array<string,string> $params
+	 * @param Smarty_Internal_Template $smarty
+	 * @return string
+	 */
+	public function asset(array $params, Smarty_Internal_Template $smarty): string
+	{
+		if (!isset($params['file'])) {
+			return '';
+		}
+
+		$sourcePath = $params['file'];
+		if (StringUtility::isNullOrEmpty($sourcePath)) {
+			return '';
+		}
+
+		$ignorePatterns = [
+			StringUtility::startsWith($sourcePath, 'https://', false),
+			StringUtility::startsWith($sourcePath, 'http://', false),
+		];
+		$cachebuster = '';
+		if (Collection::from($ignorePatterns)->any()) {
+			$cachebuster = self::$revision;
+		}
+
+		$ext = StringUtility::toLower(pathinfo($sourcePath, PATHINFO_EXTENSION));
+		switch ($ext) {
+			case 'css':
+				return "<link href=\"$sourcePath?$cachebuster\" rel=\"stylesheet\" />";
+
+			case 'js':
+				return "<script src=\"$sourcePath?$cachebuster\" />";
+
+			case 'png':
+			case 'jpeg':
+			case 'jpg':
+				return "<img src=\"$sourcePath?$cachebuster\" />";
+
+			default:
+				throw new CoreException($sourcePath);
+		}
 	}
 }

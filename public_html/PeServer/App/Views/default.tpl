@@ -6,7 +6,7 @@
 	<body>
 		<main id="main">
 			<h1>{block name=TITLE}{/block}</h1>
-			{show_error_messages key=''}
+			{show_error_messages}
 			<section id="content">
 				{block name=BODY}{/block}
 			</section>

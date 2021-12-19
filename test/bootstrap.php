@@ -23,7 +23,8 @@ use \PeServer\App\Models\Initializer;
 Initializer::initialize(
 	__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'public_html',
 	__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'public_html' . DIRECTORY_SEPARATOR . 'PeServer',
-	'test'
+	'test',
+	':REVISION:'
 );
 
 class Data
