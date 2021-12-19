@@ -189,4 +189,29 @@ class StringUtilityTest extends TestClass
 			$this->assertEquals($test->expected, $actual, $test->str());
 		}
 	}
+
+	public function test_toLower()
+	{
+		$tests = [
+			new Data('a', 'A'),
+			new Data('a', 'a'),
+			new Data('aａ', 'aＡ'),
+		];
+		foreach ($tests as $test) {
+			$actual = StringUtility::toLower(...$test->args);
+			$this->assertEquals($test->expected, $actual, $test->str());
+		}
+	}
+	public function test_toUpper()
+	{
+		$tests = [
+			new Data('A', 'a'),
+			new Data('A', 'A'),
+			new Data('AＡ', 'aａ'),
+		];
+		foreach ($tests as $test) {
+			$actual = StringUtility::toUpper(...$test->args);
+			$this->assertEquals($test->expected, $actual, $test->str());
+		}
+	}
 }

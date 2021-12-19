@@ -190,8 +190,25 @@ abstract class StringUtility
 		return mb_substr($value, $offset, 0 <= $length ? $length : null);
 	}
 
+	/**
+	 * 小文字を大文字に変換。
+	 *
+	 * @param string $value
+	 * @return string
+	 */
 	public static function toLower(string $value): string
 	{
 		return mb_strtolower($value);
+	}
+
+	/**
+	 * 大文字を小文字に変換。
+	 *
+	 * @param string $value
+	 * @return string
+	 */
+	public static function toUpper(string $value): string
+	{
+		return mb_strtoupper($value);
 	}
 }
