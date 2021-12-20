@@ -16,19 +16,19 @@ class Route
 	 *
 	 * @var string
 	 */
-	private $basePath;
+	private $_basePath;
 	/**
 	 * クラス完全名。
 	 *
 	 * @var string
 	 */
-	private $className;
+	private $_className;
 	/**
 	 * アクション一覧。
 	 *
 	 * @var array<string,Action>
 	 */
-	private $actions = array();
+	private $_actions = array();
 
 	/**
 	 * ルーティング情報にコントローラを登録
@@ -46,17 +46,17 @@ class Route
 		// }
 
 		if (StringUtility::isNullOrEmpty($path)) {
-			$this->basePath = $path;
+			$this->_basePath = $path;
 		} else {
 			$trimPath = trim($path);
 			if ($trimPath !== trim($trimPath, '/')) {
 				throw new LogicException('path start or end -> /');
 			}
-			$this->basePath = $trimPath;
+			$this->_basePath = $trimPath;
 		}
 
-		$this->className = $className;
-		if (mb_substr($this->basePath, 0, 3) != 'api') {
+		$this->_className = $className;
+		if (mb_substr($this->_basePath, 0, 3) != 'api') {
 			$this->addAction('', HttpMethod::get(), 'index');
 		}
 	}
@@ -71,10 +71,10 @@ class Route
 	 */
 	public function addAction(string $actionName, HttpMethod $httpMethod, ?string $methodName = null): Route
 	{
-		if (!isset($this->actions[$actionName])) {
-			$this->actions[$actionName] = new Action();
+		if (!isset($this->_actions[$actionName])) {
+			$this->_actions[$actionName] = new Action();
 		}
-		$this->actions[$actionName]->add(
+		$this->_actions[$actionName]->add(
 			$httpMethod,
 			StringUtility::isNullOrWhiteSpace($methodName) ? $actionName : $methodName
 		);
@@ -96,7 +96,7 @@ class Route
 		if (StringUtility::isNullOrEmpty($callMethod)) {
 			return [
 				'code' => HttpStatusCode::METHOD_NOT_ALLOWED,
-				'class' => $this->className,
+				'class' => $this->_className,
 				'method' => '',
 				'params' => $urlParameters,
 			];
@@ -105,7 +105,7 @@ class Route
 		// @phpstan-ignore-next-line
 		return [
 			'code' => HttpStatusCode::DO_EXECUTE,
-			'class' => $this->className,
+			'class' => $this->_className,
 			'method' => $callMethod,
 			'params' => $urlParameters,
 		];
@@ -122,22 +122,22 @@ class Route
 	{
 		$requestPath = implode('/', $requestPaths);
 
-		if (!StringUtility::startsWith($requestPath, $this->basePath, false)) {
+		if (!StringUtility::startsWith($requestPath, $this->_basePath, false)) {
 			return [
 				'code' => HttpStatusCode::NOT_FOUND,
-				'class' => $this->className,
+				'class' => $this->_className,
 				'method' => '',
 				'params' => [],
 			];
 		}
 
 		//$actionPath = $requestPaths[count($requestPaths) - 1];
-		$actionPath = ltrim(mb_substr($requestPath, mb_strlen($this->basePath)), '/');
+		$actionPath = ltrim(mb_substr($requestPath, mb_strlen($this->_basePath)), '/');
 		$actionPaths = explode('/', $actionPath);
 
-		if (!isset($this->actions[$actionPath])) {
+		if (!isset($this->_actions[$actionPath])) {
 			// URLパラメータチェック
-			foreach ($this->actions as $key => $action) {
+			foreach ($this->_actions as $key => $action) {
 				// 定義内にURLパラメータが無ければ破棄
 				if (!StringUtility::contains($key, ':', false)) {
 					continue;
@@ -205,12 +205,12 @@ class Route
 
 			return [
 				'code' => HttpStatusCode::NOT_FOUND,
-				'class' => $this->className,
+				'class' => $this->_className,
 				'method' => '',
 				'params' => [],
 			];
 		}
 
-		return $this->getActionCore($httpMethod, $this->actions[$actionPath], []);
+		return $this->getActionCore($httpMethod, $this->_actions[$actionPath], []);
 	}
 }

@@ -30,26 +30,26 @@ abstract class LogicBase implements IValidationReceiver
 	 *
 	 * @var ActionRequest
 	 */
-	private $request;
+	private $_request;
 
 	/**
 	 * HTTPステータスコード。
 	 *
 	 * @var int
 	 */
-	private $statusCode = HttpStatusCode::OK;
+	private $_statusCode = HttpStatusCode::OK;
 	/**
 	 * 検証エラー。
 	 *
 	 * @var array<string,string[]>
 	 */
-	private $errors = array();
+	private $_errors = array();
 	/**
 	 * 応答データ。
 	 *
 	 * @var array<string,string|array>
 	 */
-	private $values = array(); // @phpstan-ignore-line
+	private $_values = array(); // @phpstan-ignore-line
 
 
 	/**
@@ -64,11 +64,11 @@ abstract class LogicBase implements IValidationReceiver
 	 *
 	 * @var ActionResponse|null
 	 */
-	private $response = null;
+	private $_response = null;
 
 	protected function __construct(LogicParameter $parameter)
 	{
-		$this->request = $parameter->request;
+		$this->_request = $parameter->request;
 		$this->logger = $parameter->logger;
 
 		$this->logger->trace('LOGIC');
@@ -87,10 +87,10 @@ abstract class LogicBase implements IValidationReceiver
 	 */
 	protected function getRequest(string $key, $default = null)
 	{
-		if (!$this->request->exists($key)['exists']) {
+		if (!$this->_request->exists($key)['exists']) {
 			return $default;
 		}
-		return $this->request->getValue($key);
+		return $this->_request->getValue($key);
 	}
 
 	/**
@@ -100,27 +100,27 @@ abstract class LogicBase implements IValidationReceiver
 	 */
 	protected function hasError(): bool
 	{
-		return 0 < count($this->errors);
+		return 0 < count($this->_errors);
 	}
 
 	protected function clearErrors(): void
 	{
-		$this->errors = array();
+		$this->_errors = array();
 	}
 
 	protected function removeError(string $key): void
 	{
-		if (isset($this->errors[$key])) {
-			unset($this->errors[$key]);
+		if (isset($this->_errors[$key])) {
+			unset($this->_errors[$key]);
 		}
 	}
 
 	protected function addError(string $key, string $message): void
 	{
-		if (isset($this->errors[$key])) {
-			$this->errors[$key] = [$message];
+		if (isset($this->_errors[$key])) {
+			$this->_errors[$key] = [$message];
 		} else {
-			$this->errors[$key][] = $message;
+			$this->_errors[$key][] = $message;
 		}
 	}
 
@@ -212,9 +212,9 @@ abstract class LogicBase implements IValidationReceiver
 	public function getViewData(): array // @phpstan-ignore-line
 	{
 		return [
-			'status' => $this->statusCode,
-			'errors' => $this->errors,
-			'values' => $this->values,
+			'status' => $this->_statusCode,
+			'errors' => $this->_errors,
+			'values' => $this->_values,
 		];
 	}
 
@@ -226,7 +226,7 @@ abstract class LogicBase implements IValidationReceiver
 	 */
 	protected function setResponse(ActionResponse $response)
 	{
-		$this->response = $response;
+		$this->_response = $response;
 	}
 
 	/**
@@ -237,10 +237,10 @@ abstract class LogicBase implements IValidationReceiver
 	 */
 	public function getResponse(): ActionResponse
 	{
-		if (is_null($this->response)) {
+		if (is_null($this->_response)) {
 			throw new InvalidOperationException('not impl');
 		}
 
-		return $this->response;
+		return $this->_response;
 	}
 }

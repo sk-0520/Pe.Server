@@ -14,7 +14,7 @@ final class MultiLogger extends LoggerBase
 	 *
 	 * @var ILogger[]
 	 */
-	private $loggers;
+	private $_loggers;
 
 	/**
 	 * 生成。
@@ -27,7 +27,7 @@ final class MultiLogger extends LoggerBase
 	public function __construct(string $header, int $level, int $baseTraceIndex, array $loggers)
 	{
 		parent::__construct($header, $level, $baseTraceIndex);
-		$this->loggers = $loggers;
+		$this->_loggers = $loggers;
 	}
 
 	/**
@@ -41,7 +41,7 @@ final class MultiLogger extends LoggerBase
 	 */
 	protected function logImpl(int $level, int $traceIndex, $message, ...$parameters): void
 	{
-		foreach ($this->loggers as $logger) {
+		foreach ($this->_loggers as $logger) {
 			$logger->log($level, $traceIndex + 1, $message, ...$parameters);
 		}
 	}

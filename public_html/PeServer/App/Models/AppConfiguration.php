@@ -8,7 +8,9 @@ use \Error;
 use \PeServer\Core\FileUtility;
 use \PeServer\Core\Log\Logging;
 use \PeServer\Core\Database;
+use \PeServer\Core\I18n;
 use \PeServer\Core\InitializeChecker;
+use \PeServer\Core\Mvc\Template;
 use \PeServer\Core\StringUtility;
 
 abstract class AppConfiguration
@@ -18,14 +20,14 @@ abstract class AppConfiguration
 	 *
 	 * @var InitializeChecker|null
 	 */
-	private static $initializeChecker;
+	private static $_initializeChecker;
 
 	/**
 	 * 環境情報。
 	 *
 	 * @var string
 	 */
-	private static $environment;
+	private static $_environment;
 	/**
 	 * 設定データ。
 	 *
@@ -85,19 +87,23 @@ abstract class AppConfiguration
 		return self::replaceArray($json, $rootDirectoryPath, $baseDirectoryPath, $environment);
 	}
 
-	public static function initialize(string $rootDirectoryPath, string $baseDirectoryPath, string $environment): void
+	public static function initialize(string $rootDirectoryPath, string $baseDirectoryPath, string $environment, string $revision): void
 	{
-		if (is_null(self::$initializeChecker)) {
-			self::$initializeChecker = new InitializeChecker();
+		if (is_null(self::$_initializeChecker)) {
+			self::$_initializeChecker = new InitializeChecker();
 		}
-		self::$initializeChecker->initialize();
+		self::$_initializeChecker->initialize();
 
 		$json = self::load($rootDirectoryPath, $baseDirectoryPath, $environment);
 
 		Logging::initialize($json['logging']);
 		Database::initialize($json['persistence']);
 
-		self::$environment = $environment;
+		Template::initialize($rootDirectoryPath, $baseDirectoryPath, $environment, $revision);
+		I18n::initialize($json['i18n']);
+
+
+		self::$_environment = $environment;
 		self::$json = $json;
 		self::$rootDirectoryPath = $rootDirectoryPath;
 		self::$baseDirectoryPath = $baseDirectoryPath;
@@ -105,9 +111,9 @@ abstract class AppConfiguration
 
 	public static function isEnvironment(string $environment): bool
 	{
-		self::$initializeChecker->throwIfNotInitialize();
+		self::$_initializeChecker->throwIfNotInitialize();
 
-		return self::$environment === $environment;
+		return self::$_environment === $environment;
 	}
 
 	public static function isProductionEnvironment(): bool

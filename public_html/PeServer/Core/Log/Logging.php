@@ -27,39 +27,39 @@ abstract class Logging
 	 *
 	 * @var InitializeChecker|null
 	 */
-	private static $initializeChecker;
+	private static $_initializeChecker;
 
 	/**
 	 * ログ設定。
 	 *
 	 * @var array
 	 */
-	private static $loggingConfiguration; // @phpstan-ignore-line
+	private static $_loggingConfiguration; // @phpstan-ignore-line
 
 	/**
 	 * ログレベル。
 	 *
 	 * @var int
 	 */
-	private static $level;
+	private static $_level;
 	/**
 	 * 書式設定。
 	 *
 	 * @var string
 	 */
-	private static $format;
+	private static $_format;
 
 	public static function initialize(array $loggingConfiguration) // @phpstan-ignore-line
 	{
-		if (is_null(self::$initializeChecker)) {
-			self::$initializeChecker = new InitializeChecker();
+		if (is_null(self::$_initializeChecker)) {
+			self::$_initializeChecker = new InitializeChecker();
 		}
-		self::$initializeChecker->initialize();
+		self::$_initializeChecker->initialize();
 
-		self::$loggingConfiguration = $loggingConfiguration;
+		self::$_loggingConfiguration = $loggingConfiguration;
 
-		self::$level = self::$loggingConfiguration['level'];
-		self::$format = self::$loggingConfiguration['format'];
+		self::$_level = self::$_loggingConfiguration['level'];
+		self::$_format = self::$_loggingConfiguration['format'];
 	}
 
 	private static function formatLevel(int $level): string
@@ -140,7 +140,7 @@ abstract class Logging
 	 */
 	public static function format(int $level, int $traceIndex, string $header, $message, ...$parameters): string
 	{
-		self::$initializeChecker->throwIfNotInitialize();
+		self::$_initializeChecker->throwIfNotInitialize();
 
 		//DEBUG_BACKTRACE_PROVIDE_OBJECT
 		/** @var array[] */
@@ -171,16 +171,16 @@ abstract class Logging
 			'MESSAGE' => self::formatMessage($message, ...$parameters),
 		];
 
-		return StringUtility::replaceMap(self::$format, $map);
+		return StringUtility::replaceMap(self::$_format, $map);
 	}
 
 	public static function create(string $header, int $baseTraceIndex = 0): ILogger
 	{
-		self::$initializeChecker->throwIfNotInitialize();
+		self::$_initializeChecker->throwIfNotInitialize();
 
 		$loggers = [
-			new FileLogger($header, self::$level, $baseTraceIndex + 1, self::$loggingConfiguration['file']),
+			new FileLogger($header, self::$_level, $baseTraceIndex + 1, self::$_loggingConfiguration['file']),
 		];
-		return new MultiLogger($header, self::$level, $baseTraceIndex, $loggers);
+		return new MultiLogger($header, self::$_level, $baseTraceIndex, $loggers);
 	}
 }

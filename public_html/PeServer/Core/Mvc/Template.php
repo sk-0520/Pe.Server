@@ -11,7 +11,7 @@ use \DOMDocument;
 use \Smarty;
 use \Smarty_Internal_Template;
 use \PeServer\Core\ArrayUtility;
-use PeServer\Core\Collection;
+use \PeServer\Core\Collection;
 use \PeServer\Core\I18n;
 use \PeServer\Core\InitializeChecker;
 use \PeServer\Core\StringUtility;
@@ -95,37 +95,39 @@ class _Template_Invisible extends Template
 	 *
 	 * @var Smarty
 	 */
-	private $engine;
+	private $_engine;
 
 	public function __construct(string $baseName)
 	{
 		self::$initializeChecker->throwIfNotInitialize();
 
-		$this->engine = new Smarty();
-		$this->engine->addTemplateDir(self::$baseDirectoryPath . "/App/Views/$baseName/");
-		$this->engine->addTemplateDir(self::$baseDirectoryPath . "/App/Views/");
-		$this->engine->setCompileDir(self::$baseDirectoryPath . "/data/temp/views/c/$baseName/");
-		$this->engine->setCacheDir(self::$baseDirectoryPath . "/data/temp/views/t/$baseName/");
+		$this->_engine = new Smarty();
+		$this->_engine->addTemplateDir(self::$baseDirectoryPath . "/App/Views/$baseName/");
+		$this->_engine->addTemplateDir(self::$baseDirectoryPath . "/App/Views/");
+		$this->_engine->setCompileDir(self::$baseDirectoryPath . "/data/temp/views/c/$baseName/");
+		$this->_engine->setCacheDir(self::$baseDirectoryPath . "/data/temp/views/t/$baseName/");
 
 		$this->registerFunctions();
 	}
 
 	public function show(string $templateName, $parameters, array $options = array()): void // @phpstan-ignore-line
 	{
-		$this->engine->assign($parameters); // @phpstan-ignore-line
-		$this->engine->display($templateName); // @phpstan-ignore-line
+		// @phpstan-ignore-next-line
+		$this->_engine->assign($parameters);
+		// @phpstan-ignore-next-line
+		$this->_engine->display($templateName);
 	}
 
 	private function registerFunctions(): void
 	{
 		// @phpstan-ignore-next-line
-		$this->engine->registerPlugin('function', 'show_error_messages', array($this, 'showErrorMessages'));
+		$this->_engine->registerPlugin('function', 'show_error_messages', array($this, 'showErrorMessages'));
 		// @phpstan-ignore-next-line
-		$this->engine->registerPlugin('function', 'asset', array($this, 'asset'));
+		$this->_engine->registerPlugin('function', 'asset', array($this, 'asset'));
 	}
 
 	/**
-	 * エラー表示
+	 * エラー表示。
 	 *
 	 * @param array<string,string> $params
 	 * @param Smarty_Internal_Template $smarty
@@ -198,7 +200,7 @@ class _Template_Invisible extends Template
 	}
 
 	/**
-	 * Undocumented function
+	 * 指定されたリソースをHTMLとして読み込む。
 	 *
 	 * @param array<string,string> $params
 	 * @param Smarty_Internal_Template $smarty
@@ -220,12 +222,11 @@ class _Template_Invisible extends Template
 		$ignoreAsset =
 			StringUtility::startsWith($sourcePath, 'https://', false)
 			||
-			StringUtility::startsWith($sourcePath, 'http://', false)
-		;
+			StringUtility::startsWith($sourcePath, 'http://', false);
 
 		$resourcePath = $sourcePath;
 		if (!$ignoreAsset) {
-			if(self::$environment === 'production') {
+			if (self::$environment === 'production') {
 				$dir = pathinfo($sourcePath, PATHINFO_DIRNAME);
 				$file = pathinfo($sourcePath, PATHINFO_FILENAME);
 

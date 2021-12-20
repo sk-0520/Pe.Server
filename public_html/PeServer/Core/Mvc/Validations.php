@@ -20,17 +20,17 @@ class Validations
 	 *
 	 * @var IValidationReceiver
 	 */
-	private $callback;
+	private $_callback;
 
 	public function __construct(IValidationReceiver $callback)
 	{
-		$this->callback = $callback;
+		$this->_callback = $callback;
 	}
 
 	public function isNotEmpty(string $key, ?string $value): bool
 	{
 		if (StringUtility::isNullOrEmpty($value)) {
-			$this->callback->receiveError($key, self::KIND_EMPTY, ['value' => $value]);
+			$this->_callback->receiveError($key, self::KIND_EMPTY, ['value' => $value]);
 			return false;
 		}
 
@@ -40,7 +40,7 @@ class Validations
 	public function isNotWhiteSpace(string $key, ?string $value): bool
 	{
 		if (StringUtility::isNullOrWhiteSpace($value)) {
-			$this->callback->receiveError($key, self::KIND_WHITE_SPACE, ['value' => $value]);
+			$this->_callback->receiveError($key, self::KIND_WHITE_SPACE, ['value' => $value]);
 			return false;
 		}
 
@@ -51,7 +51,7 @@ class Validations
 	public function inLength(string $key, int $length, ?string $value): bool
 	{
 		if ($length < mb_strlen($value)) {
-			$this->callback->receiveError($key, self::KIND_LENGTH, ['value' => $value, 'safe-length' => $length, 'error-length' => mb_strlen($value)]);
+			$this->_callback->receiveError($key, self::KIND_LENGTH, ['value' => $value, 'safe-length' => $length, 'error-length' => mb_strlen($value)]);
 			return false;
 		}
 

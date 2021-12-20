@@ -16,31 +16,31 @@ class FileLogger extends LoggerBase
 	 *
 	 * @var string
 	 */
-	private $directoryPath;
+	private $_directoryPath;
 	/**
 	 * ファイル書式名
 	 *
 	 * @var string
 	 */
-	private $baseFileName;
+	private $_baseFileName;
 
 	/**
 	 * 破棄済みヘッダ名。
 	 *
 	 * @var string[]
 	 */
-	private static $cleanupHeaders = array();
+	private static $_cleanupHeaders = array();
 
 	public function __construct(string $header, int $level, int $baseTraceIndex, array $fileLoggingConfiguration) // @phpstan-ignore-line
 	{
 		parent::__construct($header, $level, $baseTraceIndex);
 
-		$this->directoryPath = $fileLoggingConfiguration['dir'];
-		$this->baseFileName = $fileLoggingConfiguration['name'];
+		$this->_directoryPath = $fileLoggingConfiguration['dir'];
+		$this->_baseFileName = $fileLoggingConfiguration['name'];
 
-		if (!in_array($this->header, self::$cleanupHeaders)) {
+		if (!in_array($this->header, self::$_cleanupHeaders)) {
 			$this->cleanup($fileLoggingConfiguration['count']);
-			self::$cleanupHeaders[] = $this->header;
+			self::$_cleanupHeaders[] = $this->header;
 		}
 	}
 
@@ -53,15 +53,15 @@ class FileLogger extends LoggerBase
 	private function cleanup(int $maxCount): void
 	{
 		$filePattern = StringUtility::replaceMap(
-			$this->baseFileName,
+			$this->_baseFileName,
 			[
 				'HEADER' => $this->toFileSafeNameHeader(),
 				'DATE' => '*',
 			]
 		);
-		$logFiles = glob(FileUtility::joinPath($this->directoryPath, $filePattern));
+		$logFiles = glob(FileUtility::joinPath($this->_directoryPath, $filePattern));
 		if($logFiles === false) {
-			throw new CoreError('glob error: ' . FileUtility::joinPath($this->directoryPath, $filePattern));
+			throw new CoreError('glob error: ' . FileUtility::joinPath($this->_directoryPath, $filePattern));
 		}
 		$logCount = count($logFiles);
 		if ($logCount <= $maxCount) {
@@ -77,19 +77,19 @@ class FileLogger extends LoggerBase
 	private function getLogFilePath(): string
 	{
 		$fileName = StringUtility::replaceMap(
-			$this->baseFileName,
+			$this->_baseFileName,
 			[
 				'HEADER' => $this->toFileSafeNameHeader(),
 				'DATE' => date('Ymd'),
 			]
 		);
 
-		return FileUtility::joinPath($this->directoryPath, $fileName);
+		return FileUtility::joinPath($this->_directoryPath, $fileName);
 	}
 
 	protected function logImpl(int $level, int $traceIndex, $message, ...$parameters): void
 	{
-		FileUtility::createDirectoryIfNotExists($this->directoryPath);
+		FileUtility::createDirectoryIfNotExists($this->_directoryPath);
 
 		$logMessage = $this->format($level, $traceIndex + 1, $message, ...$parameters);
 

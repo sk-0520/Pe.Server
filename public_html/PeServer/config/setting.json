@@ -13,5 +13,6 @@
 			"name": "log_{DATE}.log",
 			"count": 10
 		}
-	}
+	},
+	"i18n": {}
 }

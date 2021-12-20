@@ -24,7 +24,7 @@ class ActionRequest
 	 *
 	 * @var array<string,string>
 	 */
-	private $urlParameters;
+	private $_urlParameters;
 
 	/**
 	 * リクエストデータ構築
@@ -33,7 +33,7 @@ class ActionRequest
 	 */
 	public function __construct(array $urlParameters)
 	{
-		$this->urlParameters = $urlParameters;
+		$this->_urlParameters = $urlParameters;
 	}
 
 	/**
@@ -44,7 +44,7 @@ class ActionRequest
 	 */
 	public function exists(string $key): array
 	{
-		if (isset($this->urlParameters[$key])) {
+		if (isset($this->_urlParameters[$key])) {
 			return ['exists' => true, 'type' => self::REQUEST_URL];
 		}
 
@@ -79,8 +79,8 @@ class ActionRequest
 	 */
 	public function getValue(string $key): string
 	{
-		if (isset($this->urlParameters[$key])) {
-			return $this->urlParameters[$key];
+		if (isset($this->_urlParameters[$key])) {
+			return $this->_urlParameters[$key];
 		}
 
 		if (isset($_GET[$key])) {

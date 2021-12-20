@@ -16,30 +16,30 @@ abstract class Database
 	 *
 	 * @var InitializeChecker|null
 	 */
-	protected static $initializeChecker;
+	protected static $_initializeChecker;
 
 	/**
 	 * DB接続設定
 	 *
 	 * @var array
 	 */
-	private static $databaseConfiguration; // @phpstan-ignore-line
+	private static $_databaseConfiguration; // @phpstan-ignore-line
 
 	public static function initialize(array $databaseConfiguration): void // @phpstan-ignore-line
 	{
-		if (is_null(self::$initializeChecker)) {
-			self::$initializeChecker = new InitializeChecker();
+		if (is_null(self::$_initializeChecker)) {
+			self::$_initializeChecker = new InitializeChecker();
 		}
-		self::$initializeChecker->initialize();
+		self::$_initializeChecker->initialize();
 
-		self::$databaseConfiguration = $databaseConfiguration;
+		self::$_databaseConfiguration = $databaseConfiguration;
 	}
 
 	public static function create(): Database
 	{
-		self::$initializeChecker->throwIfNotInitialize();
+		self::$_initializeChecker->throwIfNotInitialize();
 
-		return new _Database_Invisible(self::$databaseConfiguration);
+		return new _Database_Invisible(self::$_databaseConfiguration);
 	}
 
 	/**
@@ -77,7 +77,7 @@ class _Database_Invisible extends Database
 	 */
 	public function __construct(array $databaseConfiguration)
 	{
-		self::$initializeChecker->throwIfNotInitialize();
+		self::$_initializeChecker->throwIfNotInitialize();
 
 		$this->pdo = new PDO('sqlite:' . $databaseConfiguration['connection']);
 		$this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -99,7 +99,7 @@ class _Database_Invisible extends Database
 
 	public function query(string $statement, array $parameters = array()): array
 	{
-		self::$initializeChecker->throwIfNotInitialize();
+		self::$_initializeChecker->throwIfNotInitialize();
 
 		$query = $this->pdo->prepare($statement);
 
@@ -115,7 +115,7 @@ class _Database_Invisible extends Database
 
 	public function queryFirst(string $statement, array $parameters = array())
 	{
-		self::$initializeChecker->throwIfNotInitialize();
+		self::$_initializeChecker->throwIfNotInitialize();
 
 		$query = $this->pdo->prepare($statement);
 

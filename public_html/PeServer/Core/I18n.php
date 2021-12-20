@@ -11,18 +11,20 @@ abstract class I18n
 	 *
 	 * @var InitializeChecker|null
 	 */
-	private static $initializeChecker;
+	private static $_initializeChecker;
 
 	public static function initialize(array $i18nConfiguration): void // @phpstan-ignore-line
 	{
-		if (is_null(self::$initializeChecker)) {
-			self::$initializeChecker = new InitializeChecker();
+		if (is_null(self::$_initializeChecker)) {
+			self::$_initializeChecker = new InitializeChecker();
 		}
-		self::$initializeChecker->initialize();
+		self::$_initializeChecker->initialize();
 	}
 
 	public static function message(string $message, string ...$parameters): string
 	{
+		self::$_initializeChecker->throwIfNotInitialize();
+
 		return $message;
 	}
 }

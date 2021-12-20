@@ -17,7 +17,7 @@ use \PeServer\Core\Mvc\Template;
 use \PeServer\Core\Mvc\LogicBase;
 use \PeServer\Core\Mvc\LogicParameter;
 use \PeServer\Core\Log\Logging;
-use PeServer\Core\StringUtility;
+use \PeServer\Core\StringUtility;
 
 /**
  * コントローラ基底処理。

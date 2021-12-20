@@ -14,14 +14,14 @@ abstract class AutoLoader
 	 *
 	 * @var string[]
 	 */
-	private static $baseDirectoryPaths;
+	private static $_baseDirectoryPaths;
 
 	/**
 	 * 読み込みベースパス。
 	 *
 	 * @var string
 	 */
-	private static $includePattern;
+	private static $_includePattern;
 
 	/**
 	 * 初期化。
@@ -31,19 +31,19 @@ abstract class AutoLoader
 	 */
 	public static function initialize(array $baseDirectoryPaths, string $includePattern)
 	{
-		self::$baseDirectoryPaths = $baseDirectoryPaths;
-		self::$includePattern = $includePattern;
+		self::$_baseDirectoryPaths = $baseDirectoryPaths;
+		self::$_includePattern = $includePattern;
 
 		spl_autoload_register([__CLASS__, 'load']);
 	}
 
 	private static function load(string $className): void
 	{
-		if (!preg_match(self::$includePattern, $className)) {
+		if (!preg_match(self::$_includePattern, $className)) {
 			return;
 		}
 
-		foreach (self::$baseDirectoryPaths as $baseDirectoryPath) {
+		foreach (self::$_baseDirectoryPaths as $baseDirectoryPath) {
 			$fileBasePath = str_replace('\\', DIRECTORY_SEPARATOR, $className);
 			$filePath = $baseDirectoryPath . DIRECTORY_SEPARATOR . $fileBasePath . '.php';
 
