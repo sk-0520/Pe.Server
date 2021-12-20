@@ -46,11 +46,22 @@ abstract class StringUtility
 	 * 文字列長を取得。
 	 *
 	 * @param string $value
-	 * @return integer
+	 * @return integer 文字数。
 	 */
 	public static function getLength(string $value): int
 	{
 		return mb_strlen($value);
+	}
+
+	/**
+	 * 文字列バイト数を取得。
+	 *
+	 * @param string $value 対象文字列。
+	 * @return integer バイト数。
+	 */
+	public static function getByteCount(string $value): int
+	{
+		return strlen($value);
 	}
 
 	/**
