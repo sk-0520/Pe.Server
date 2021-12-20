@@ -64,8 +64,6 @@ class Route
 	/**
 	 * アクション設定
 	 *
-	 * TODO: メソッド違う同一パスが対応できていない
-	 *
 	 * @param string $actionName URLとして使用されるパス, パス先頭が : でURLパラメータとなり、パラメータ名の @ 以降は一致正規表現となる
 	 * @param HttpMethod $httpMethod 使用するHTTPメソッド
 	 * @param string|null $methodName 呼び出されるコントローラメソッド。未指定なら $actionName が使用される

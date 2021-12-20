@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
+use \PeServer\Core\Throws\ArgumentException;
+
 abstract class StringUtility
 {
 	/**
@@ -210,5 +212,37 @@ abstract class StringUtility
 	public static function toUpper(string $value): string
 	{
 		return mb_strtoupper($value);
+	}
+
+	/**
+	 * 文字列分割。
+	 *
+	 * @param string $value 対象文字列。
+	 * @param string $separator 分割対象文字列。
+	 * @param integer $limit 分割数。https://www.php.net/manual/ja/function.explode.php
+	 * @return string[] 分割された文字列。
+	 * @throws ArgumentException 分割失敗(PHP8未満)
+	 * @throws \ValueError 分割失敗(PHP8以上)
+	 */
+	public static function split(string $value, string $separator, int $limit = PHP_INT_MAX): array
+	{
+		$result = explode($separator, $value, $limit);
+		if ($result === false) {
+			throw new ArgumentException();
+		}
+
+		return $result;
+	}
+
+	/**
+	 * 文字列結合。
+	 *
+	 * @param string $separator
+	 * @param string[] $values
+	 * @return string
+	 */
+	public static function join(string $separator, array $values): string
+	{
+		return implode($separator, $values);
 	}
 }

@@ -202,6 +202,7 @@ class StringUtilityTest extends TestClass
 			$this->assertEquals($test->expected, $actual, $test->str());
 		}
 	}
+
 	public function test_toUpper()
 	{
 		$tests = [
@@ -211,6 +212,30 @@ class StringUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = StringUtility::toUpper(...$test->args);
+			$this->assertEquals($test->expected, $actual, $test->str());
+		}
+	}
+
+	public function test_split()
+	{
+		$tests = [
+			new Data(['a', 'b', 'c'], 'a,b,c', ','),
+			new Data(['a', 'b', 'c'], 'a::b::c', '::'),
+		];
+		foreach ($tests as $test) {
+			$actual = StringUtility::split(...$test->args);
+			$this->assertEquals($test->expected, $actual, $test->str());
+		}
+	}
+
+	public function test_join()
+	{
+		$tests = [
+			new Data('abc', '', ['a', 'b', 'c']),
+			new Data('a,b,c', ',', ['a', 'b', 'c']),
+		];
+		foreach ($tests as $test) {
+			$actual = StringUtility::join(...$test->args);
 			$this->assertEquals($test->expected, $actual, $test->str());
 		}
 	}
