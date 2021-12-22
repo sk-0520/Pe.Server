@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domains\Page\Account;
 
+use \PeServer\Core\Database;
 use \PeServer\Core\I18n;
 use \PeServer\Core\Mvc\Validations;
 use \PeServer\Core\Mvc\LogicCallMode;
@@ -24,19 +25,41 @@ class AccountLoginLogic extends LogicBase
 			return;
 		}
 
-		$loginId = $this->getRequest('account_login_loginid');
+		$loginId = $this->getRequest('account_login_login_id');
 		if (StringUtility::isNullOrWhiteSpace($loginId)) {
-			$this->addError(Validations::COMMON, I18n::message('パスワード・パスワードが不明です'));
+			$this->addError(Validations::COMMON, I18n::message('ID・パスワードが不明です'));
 		}
 
 		$password = $this->getRequest('account_login_password');
 		if (StringUtility::isNullOrWhiteSpace($password)) {
-			$this->addError(Validations::COMMON, I18n::message('パスワード・パスワードが不明です'));
+			$this->addError(Validations::COMMON, I18n::message('ID・パスワードが不明です'));
 		}
 	}
 
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
-		//NONE
+		if ($callMode->isInitialize()) {
+			return;
+		}
+
+		$database = Database::open();
+
+		$setupCount = $database->queryFirst(
+			<<<SQL
+			select
+				COUNT(*) as count
+			from
+				users
+			where
+				users.level = 'setup'
+				and
+				users.state = 'enabled'
+SQL
+		);
+
+		if (0 < $setupCount['count']) {
+			$this->addError(Validations::COMMON, I18n::message('初期化が完了していません'));
+			return;
+		}
 	}
 }

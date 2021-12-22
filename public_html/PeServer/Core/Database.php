@@ -35,7 +35,7 @@ abstract class Database
 		self::$_databaseConfiguration = $databaseConfiguration;
 	}
 
-	public static function create(): Database
+	public static function open(): Database
 	{
 		self::$_initializeChecker->throwIfNotInitialize();
 
@@ -56,9 +56,9 @@ abstract class Database
 	 *
 	 * @param string $statement
 	 * @param array<string|int,string|int> $parameters
-	 * @return mixed
+	 * @return array<string,mixed>
 	 */
-	public abstract function queryFirst(string $statement, array $parameters = array());
+	public abstract function queryFirst(string $statement, array $parameters = array()): array;
 }
 
 class _Database_Invisible extends Database
@@ -71,7 +71,7 @@ class _Database_Invisible extends Database
 	private $pdo;
 
 	/**
-	 * Undocumented function
+	 * 生成。
 	 *
 	 * @param array<string,string|mixed> $databaseConfiguration
 	 */
@@ -79,8 +79,10 @@ class _Database_Invisible extends Database
 	{
 		self::$_initializeChecker->throwIfNotInitialize();
 
-		$this->pdo = new PDO('sqlite:' . $databaseConfiguration['connection']);
+		$dsn = 'sqlite:' . $databaseConfiguration['connection'];
+		$this->pdo = new PDO($dsn);
 		$this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 	}
 
 	/**
@@ -92,9 +94,16 @@ class _Database_Invisible extends Database
 	 */
 	private function setParameters(PDOStatement $statement, array $parameters): void
 	{
-		foreach ($parameters as $key => $value) {
-			$statement->bindParam($key, $value);
+		if (ArrayUtility::getCount($parameters)) {
+			foreach ($parameters as $key => $value) {
+				$statement->bindParam($key, $value);
+			}
 		}
+	}
+
+	private function getErrorMessage(): string
+	{
+		return var_export($this->pdo->errorInfo(), true);
 	}
 
 	public function query(string $statement, array $parameters = array()): array
@@ -105,15 +114,19 @@ class _Database_Invisible extends Database
 
 		$this->setParameters($query, $parameters);
 
+		if (!$query->execute()) {
+			throw new SqlException($this->getErrorMessage());
+		}
+
 		$result = $query->fetchAll();
 		if ($result === false) {
-			throw new SqlException();
+			throw new SqlException($this->getErrorMessage());
 		}
 
 		return $result;
 	}
 
-	public function queryFirst(string $statement, array $parameters = array())
+	public function queryFirst(string $statement, array $parameters = array()): array
 	{
 		self::$_initializeChecker->throwIfNotInitialize();
 
@@ -121,9 +134,13 @@ class _Database_Invisible extends Database
 
 		$this->setParameters($query, $parameters);
 
+		if (!$query->execute()) {
+			throw new SqlException($this->getErrorMessage());
+		}
+
 		$result = $query->fetch();
 		if ($result === false) {
-			throw new SqlException();
+			throw new SqlException($this->getErrorMessage());
 		}
 
 		return $result;

@@ -6,8 +6,8 @@
 	<dl class="input">
 		<dt>id</dt>
 		<dd>
-			<input class="edit" name="account_login_loginid" type="text" value="" />
-			{show_error_messages key='account_login_loginid'}
+			<input class="edit" name="account_login_login_id" type="text" value="" />
+			{show_error_messages key='account_login_login_id'}
 		</dd>
 
 		<dt>password</dt>

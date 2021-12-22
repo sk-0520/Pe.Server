@@ -58,4 +58,13 @@ class ArrayUtility
 
 		return false;
 	}
+
+	public static function getCount(?array $array): int // @phpstan-ignore-line
+	{
+		if (is_null($array)) {
+			return 0;
+		}
+
+		return count($array);
+	}
 }
