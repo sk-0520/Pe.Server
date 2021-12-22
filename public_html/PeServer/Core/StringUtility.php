@@ -8,6 +8,8 @@ use \PeServer\Core\Throws\ArgumentException;
 
 abstract class StringUtility
 {
+	public const TRIM_CHARACTERS = " \n\r\t\v\0";
+
 	/**
 	 * 文字列がnullか空か
 	 *
@@ -230,10 +232,11 @@ abstract class StringUtility
 	 *
 	 * @param string $value 対象文字列。
 	 * @param string $separator 分割対象文字列。
-	 * @param integer $limit 分割数。https://www.php.net/manual/ja/function.explode.php
+	 * @param integer $limit 分割数。
 	 * @return string[] 分割された文字列。
 	 * @throws ArgumentException 分割失敗(PHP8未満)
 	 * @throws \ValueError 分割失敗(PHP8以上)
+	 * @see https://www.php.net/manual/ja/function.explode.php
 	 */
 	public static function split(string $value, string $separator, int $limit = PHP_INT_MAX): array
 	{
@@ -251,9 +254,47 @@ abstract class StringUtility
 	 * @param string $separator
 	 * @param string[] $values
 	 * @return string
+	 * @see https://www.php.net/manual/ja/function.implode.php
 	 */
 	public static function join(string $separator, array $values): string
 	{
 		return implode($separator, $values);
+	}
+
+	/**
+	 * トリム処理。
+	 *
+	 * @param string $value 対象文字列。
+	 * @param string $characters トリム対象文字。
+	 * @return string トリム後文字列。
+	 * @see https://www.php.net/manual/ja/function.trim.php
+	 */
+	public static function trim(string $value, string $characters = self::TRIM_CHARACTERS): string
+	{
+		return \trim($value, $characters);
+	}
+
+	/**
+	 * 左トリム。
+	 *
+	 * @param string $value 対象文字列。
+	 * @param string $characters トリム対象文字。
+	 * @return string トリム後文字列。
+	 */
+	public static function trimStart(string $value, string $characters = self::TRIM_CHARACTERS): string
+	{
+		return ltrim($value, $characters);
+	}
+
+	/**
+	 * 右トリム。
+	 *
+	 * @param string $value 対象文字列。
+	 * @param string $characters トリム対象文字。
+	 * @return string トリム後文字列。
+	 */
+	public static function trimEnd(string $value, string $characters = self::TRIM_CHARACTERS): string
+	{
+		return rtrim($value, $characters);
 	}
 }

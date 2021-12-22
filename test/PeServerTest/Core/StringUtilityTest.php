@@ -239,4 +239,47 @@ class StringUtilityTest extends TestClass
 			$this->assertEquals($test->expected, $actual, $test->str());
 		}
 	}
+
+	public function test_trim()
+	{
+		$tests = [
+			new Data('a', 'a'),
+			new Data('a', ' a'),
+			new Data('a', 'a '),
+			new Data('a', ' a '),
+		];
+		foreach ($tests as $test) {
+			$actual = StringUtility::trim(...$test->args);
+			$this->assertEquals($test->expected, $actual, $test->str());
+		}
+	}
+
+
+	public function test_trimStart()
+	{
+		$tests = [
+			new Data('a', 'a'),
+			new Data('a', ' a'),
+			new Data('a ', 'a '),
+			new Data('a ', ' a '),
+		];
+		foreach ($tests as $test) {
+			$actual = StringUtility::trimStart(...$test->args);
+			$this->assertEquals($test->expected, $actual, $test->str());
+		}
+	}
+
+	public function test_trimEnd()
+	{
+		$tests = [
+			new Data('a', 'a'),
+			new Data(' a', ' a'),
+			new Data('a', 'a '),
+			new Data(' a', ' a '),
+		];
+		foreach ($tests as $test) {
+			$actual = StringUtility::trimEnd(...$test->args);
+			$this->assertEquals($test->expected, $actual, $test->str());
+		}
+	}
 }
