@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc;
 
 use \PeServer\Core\StringUtility;
-use \PeServer\Core\Mvc\IValidationReceiver;
+use \PeServer\Core\Mvc\ValidationReceivable;
 
 class Validations
 {
@@ -18,11 +18,11 @@ class Validations
 	/**
 	 * 検証移譲取得処理。
 	 *
-	 * @var IValidationReceiver
+	 * @var ValidationReceivable
 	 */
 	private $_callback;
 
-	public function __construct(IValidationReceiver $callback)
+	public function __construct(ValidationReceivable $callback)
 	{
 		$this->_callback = $callback;
 	}

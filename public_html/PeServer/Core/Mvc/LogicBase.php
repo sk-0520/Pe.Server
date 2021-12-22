@@ -9,7 +9,7 @@ use \PeServer\Core\ActionRequest;
 use \PeServer\Core\ActionResponse;
 use \PeServer\Core\HttpStatusCode;
 use \PeServer\Core\Mvc\LogicParameter;
-use \PeServer\Core\Mvc\IValidationReceiver;
+use \PeServer\Core\Mvc\ValidationReceivable;
 use \PeServer\Core\Mvc\Validations;
 use \PeServer\Core\Throws\InvalidOperationException;
 use \PeServer\Core\Throws\NotImplementedException;
@@ -17,7 +17,7 @@ use \PeServer\Core\Throws\NotImplementedException;
 /**
  * コントローラから呼び出されるロジック基底処理。
  */
-abstract class LogicBase implements IValidationReceiver
+abstract class LogicBase implements ValidationReceivable
 {
 	/**
 	 * ロガー。

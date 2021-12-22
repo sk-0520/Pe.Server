@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc;
 
-interface IValidationReceiver
+interface ValidationReceivable
 {
 	/**
 	 * 検証結果の失敗受領。
