@@ -56,7 +56,7 @@ abstract class Database
 	 *
 	 * @param string $statement
 	 * @param array<string|int,string|int> $parameters
-	 * @return array<string,mixed>|mixed
+	 * @return array<string,mixed>
 	 */
 	public abstract function queryFirst(string $statement, array $parameters = array()): array;
 	/**
@@ -67,7 +67,7 @@ abstract class Database
 	 * @param array<string|int,string|int> $parameters
 	 * @return array<string,mixed>|mixed
 	 */
-	public abstract function queryFirstOrDefault($result, string $statement, array $parameters = array()): array;
+	public abstract function queryFirstOrDefault($defaultValue, string $statement, array $parameters = array());
 }
 
 class _Database_Invisible extends Database
@@ -155,7 +155,7 @@ class _Database_Invisible extends Database
 		return $result;
 	}
 
-	public function queryFirstOrDefault($defaultValue, string $statement, array $parameters = array()): array
+	public function queryFirstOrDefault($defaultValue, string $statement, array $parameters = array())
 	{
 		self::$_initializeChecker->throwIfNotInitialize();
 

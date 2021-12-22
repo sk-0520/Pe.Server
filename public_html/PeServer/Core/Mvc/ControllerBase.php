@@ -100,6 +100,28 @@ abstract class ControllerBase
 		return new $logicClass($parameter);
 	}
 
+	public function existsResult(LogicBase $logic, string $key): bool
+	{
+		return isset($logic->result[$key]);
+	}
+
+	/**
+	 * Undocumented function
+	 *
+	 * @param LogicBase $logic
+	 * @param string $key
+	 * @param mixed $value
+	 * @return boolean
+	 */
+	public function hasResult(LogicBase $logic, string $key, $value): bool
+	{
+		if ($this->existsResult($logic, $key)) {
+			return $logic->result[$key] === $value;
+		}
+
+		return false;
+	}
+
 	/**
 	 * Viewを表示。
 	 *
