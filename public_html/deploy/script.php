@@ -1,5 +1,7 @@
 <?php
 
+use Deploy\FileUtility;
+
 class DeployScript
 {
 	private $_scriptArgument;
@@ -136,7 +138,7 @@ class DeployScript
 
 		//TODO: 暗号化とかとか
 		$userId = '00000000-0000-4000-0000-000000000000';
-		$loginId = 'init';
+		$loginId = 'setup';
 		$password = bin2hex(openssl_random_pseudo_bytes(4));
 
 		$pdo->exec(
@@ -204,10 +206,10 @@ insert into
 	(
 		'$userId',
 		'$loginId',
-		'init',
+		'setup',
 		'enabled',
-		'initial-user',
-		'init@localhost',
+		'setup user',
+		'setup@localhost',
 		'http://localhost',
 		''
 	)
@@ -230,6 +232,13 @@ insert into
 
 SQL
 		);
+
+		$this->_scriptArgument->log('SETTUP LOG');
+		$this->_scriptArgument->log([
+			'userId' => $userId,
+			'loginId' => $loginId,
+			'password' => $password,
+		]);
 	}
 
 	private function db_migrates_9999(PDO $pdo, int $oldVersion, int $newVersion)
