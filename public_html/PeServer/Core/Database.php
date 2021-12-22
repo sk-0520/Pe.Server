@@ -56,9 +56,18 @@ abstract class Database
 	 *
 	 * @param string $statement
 	 * @param array<string|int,string|int> $parameters
-	 * @return array<string,mixed>
+	 * @return array<string,mixed>|mixed
 	 */
 	public abstract function queryFirst(string $statement, array $parameters = array()): array;
+	/**
+	 * Undocumented function
+	 *
+	 * @param string $statement
+	 * @param array<string,mixed>|mixed $defaultValue 戻り。
+	 * @param array<string|int,string|int> $parameters
+	 * @return array<string,mixed>|mixed
+	 */
+	public abstract function queryFirstOrDefault($result, string $statement, array $parameters = array()): array;
 }
 
 class _Database_Invisible extends Database
@@ -141,6 +150,26 @@ class _Database_Invisible extends Database
 		$result = $query->fetch();
 		if ($result === false) {
 			throw new SqlException($this->getErrorMessage());
+		}
+
+		return $result;
+	}
+
+	public function queryFirstOrDefault($defaultValue, string $statement, array $parameters = array()): array
+	{
+		self::$_initializeChecker->throwIfNotInitialize();
+
+		$query = $this->pdo->prepare($statement);
+
+		$this->setParameters($query, $parameters);
+
+		if (!$query->execute()) {
+			throw new SqlException($this->getErrorMessage());
+		}
+
+		$result = $query->fetch();
+		if ($result === false) {
+			return $defaultValue;
 		}
 
 		return $result;

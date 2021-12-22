@@ -46,6 +46,7 @@ class AccountLoginLogic extends LogicBase
 
 		$setupCount = $database->queryFirst(
 			<<<SQL
+
 			select
 				COUNT(*) as count
 			from
@@ -55,11 +56,35 @@ class AccountLoginLogic extends LogicBase
 				and
 				users.state = 'enabled'
 SQL
-		);
+		)['count'];
 
-		if (0 < $setupCount['count']) {
-			$this->addError(Validations::COMMON, I18n::message('初期化が完了していません'));
-			return;
-		}
+		$user = $database->queryFirstOrDefault(
+			[
+				'user_id' => '',
+				'level' => '',
+				'password' => '',
+			],
+			<<<SQL
+
+			select
+				users.user_id,
+				users.level,
+				user_authentications.current_password
+			from
+				users
+				inner join
+					user_authentications
+					on
+					(
+						user_authentications.user_id = users.user_id
+					)
+			where
+				users.login_id = :account_login_login_id
+SQL
+			/* AUTO FORMAT */,
+			[
+				'account_login_login_id' => $this->getRequest('account_login_login_id'),
+			]
+		);
 	}
 }

@@ -51,6 +51,12 @@ abstract class LogicBase implements ValidationReceivable
 	 */
 	private $_values = array(); // @phpstan-ignore-line
 
+	/**
+	 * コントローラ内結果データ。
+	 *
+	 * @var array<string,string|array>
+	 */
+	public $result = array();
 
 	/**
 	 * Undocumented variable
