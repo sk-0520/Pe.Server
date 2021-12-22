@@ -17,6 +17,6 @@
 		<footer>
 			{include file='default.footer.tpl'}
 		</footer>
+		{include file='default.foot.tpl'}
 	</body>
-	{include file='default.foot.tpl'}
 </html>
