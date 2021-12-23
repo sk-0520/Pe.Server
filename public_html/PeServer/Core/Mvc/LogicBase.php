@@ -75,6 +75,10 @@ abstract class LogicBase implements ValidationReceivable
 
 	protected function __construct(LogicParameter $parameter)
 	{
+		if (session_status() === PHP_SESSION_ACTIVE) {
+			session_start();
+		}
+
 		$this->_request = $parameter->request;
 		$this->logger = $parameter->logger;
 
