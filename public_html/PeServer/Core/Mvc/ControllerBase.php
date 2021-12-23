@@ -128,10 +128,10 @@ abstract class ControllerBase
 	 * @param string $controllerName コントローラ完全名。
 	 * @param string $action アクション名。
 	 * @param integer $httpStatusCode HTTPステータスコード。
-	 * @param array|null $parameters View連携データ。
+	 * @param array<mixed>|null $parameters View連携データ。
 	 * @return void
 	 */
-	public function viewWithController(string $controllerName, string $action, int $httpStatusCode, ?array $parameters = null) // @phpstan-ignore-line
+	public function viewWithController(string $controllerName, string $action, int $httpStatusCode, ?array $parameters = null)
 	{
 		$lastWord = 'Controller';
 		$controllerClassName = mb_substr($controllerName, mb_strpos($controllerName, $this->skipBaseName) + mb_strlen($this->skipBaseName) + 1);
@@ -148,10 +148,10 @@ abstract class ControllerBase
 	 * Viewを表示
 	 *
 	 * @param string $action アクション名
-	 * @param array|null $parameters View連携データ。
+	 * @param array<mixed>|null $parameters View連携データ。
 	 * @return void
 	 */
-	public function view(string $action, ?array $parameters = null): void // @phpstan-ignore-line
+	public function view(string $action, ?array $parameters = null): void
 	{
 		$className = get_class($this);
 

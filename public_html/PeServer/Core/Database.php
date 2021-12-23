@@ -21,11 +21,17 @@ abstract class Database
 	/**
 	 * DB接続設定
 	 *
-	 * @var array
+	 * @var array<string,mixed>
 	 */
-	private static $_databaseConfiguration; // @phpstan-ignore-line
+	private static $_databaseConfiguration;
 
-	public static function initialize(array $databaseConfiguration): void // @phpstan-ignore-line
+	/**
+	 * Undocumented function
+	 *
+	 * @param array<string,mixed> $databaseConfiguration
+	 * @return void
+	 */
+	public static function initialize(array $databaseConfiguration): void
 	{
 		if (is_null(self::$_initializeChecker)) {
 			self::$_initializeChecker = new InitializeChecker();

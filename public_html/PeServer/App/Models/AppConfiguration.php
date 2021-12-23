@@ -31,9 +31,9 @@ abstract class AppConfiguration
 	/**
 	 * 設定データ。
 	 *
-	 * @var array
+	 * @var array<mixed>
 	 */
-	public static $json; // @phpstan-ignore-line
+	public static $json;
 
 	/**
 	 * ルートディレクトリ。
@@ -48,7 +48,16 @@ abstract class AppConfiguration
 	 */
 	public static $baseDirectoryPath;
 
-	private static function replaceArray(array $array, string $rootDirectoryPath, string $baseDirectoryPath, string $environment): array // @phpstan-ignore-line
+	/**
+	 * Undocumented function
+	 *
+	 * @param array<mixed> $array
+	 * @param string $rootDirectoryPath
+	 * @param string $baseDirectoryPath
+	 * @param string $environment
+	 * @return array<mixed>
+	 */
+	private static function replaceArray(array $array, string $rootDirectoryPath, string $baseDirectoryPath, string $environment): array
 	{
 		foreach ($array as $key => $value) {
 			if (is_array($value)) {
@@ -58,27 +67,35 @@ abstract class AppConfiguration
 					'ROOT' => $rootDirectoryPath,
 					'BASE' => $baseDirectoryPath,
 					'ENV' => $environment
-				], '<', '>');
+				], '<|', '|>');
 			}
 		}
 
 		return $array;
 	}
 
-	private static function load(string $rootDirectoryPath, string $baseDirectoryPath, string $environment): array // @phpstan-ignore-line
+	/**
+	 * Undocumented function
+	 *
+	 * @param string $rootDirectoryPath
+	 * @param string $baseDirectoryPath
+	 * @param string $environment
+	 * @return array<mixed>
+	 */
+	private static function load(string $rootDirectoryPath, string $baseDirectoryPath, string $environment): array
 	{
 		$settingDirPath = FileUtility::joinPath($baseDirectoryPath, 'config');
 
 		$baseSettingFilePath = FileUtility::joinPath($settingDirPath, 'setting.json');
-		/** @var array */
-		$baseSettingJson = FileUtility::readJsonFile($baseSettingFilePath); // @phpstan-ignore-line
+		/** @var array<mixed> */
+		$baseSettingJson = FileUtility::readJsonFile($baseSettingFilePath);
 
 		$json = array();
 
 		$envSettingFilePath = FileUtility::joinPath($settingDirPath, "setting.$environment.json");
 		if (file_exists($envSettingFilePath)) {
-			/** @var array */
-			$envSettingJson = FileUtility::readJsonFile($envSettingFilePath); // @phpstan-ignore-line
+			/** @var array<mixed> */
+			$envSettingJson = FileUtility::readJsonFile($envSettingFilePath);
 			$json = array_replace_recursive($baseSettingJson, $envSettingJson);
 		} else {
 			$json = $baseSettingJson;

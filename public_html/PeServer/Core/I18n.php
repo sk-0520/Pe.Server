@@ -13,7 +13,13 @@ abstract class I18n
 	 */
 	private static $_initializeChecker;
 
-	public static function initialize(array $i18nConfiguration): void // @phpstan-ignore-line
+	/**
+	 * Undocumented function
+	 *
+	 * @param array<string,mixed> $i18nConfiguration
+	 * @return void
+	 */
+	public static function initialize(array $i18nConfiguration): void
 	{
 		if (is_null(self::$_initializeChecker)) {
 			self::$_initializeChecker = new InitializeChecker();
@@ -21,7 +27,14 @@ abstract class I18n
 		self::$_initializeChecker->initialize();
 	}
 
-	public static function message(string $message, string ...$parameters): string
+	/**
+	 * Undocumented function
+	 *
+	 * @param string $message
+	 * @param mixed ...$parameters
+	 * @return string
+	 */
+	public static function message(string $message, ...$parameters): string
 	{
 		self::$_initializeChecker->throwIfNotInitialize();
 

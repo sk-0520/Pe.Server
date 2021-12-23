@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Log;
 
-// @phpstan-ignore-next-line
-define('LOG_REQUEST_ID', bin2hex(openssl_random_pseudo_bytes(6)));
+/** @var int */
+const LOG_REQUEST_ID_LENGTH = 6;
+define('LOG_REQUEST_ID', bin2hex(openssl_random_pseudo_bytes(LOG_REQUEST_ID_LENGTH))); // @phpstan-ignore-line
 
 use \LogicException;
 use \PeServer\Core\ArrayUtility;
@@ -32,9 +33,9 @@ abstract class Logging
 	/**
 	 * ログ設定。
 	 *
-	 * @var array
+	 * @var array<string,mixed>
 	 */
-	private static $_loggingConfiguration; // @phpstan-ignore-line
+	private static $_loggingConfiguration;
 
 	/**
 	 * ログレベル。
@@ -49,7 +50,13 @@ abstract class Logging
 	 */
 	private static $_format;
 
-	public static function initialize(array $loggingConfiguration) // @phpstan-ignore-line
+	/**
+	 * Undocumented function
+	 *
+	 * @param array<string,mixed> $loggingConfiguration
+	 * @return void
+	 */
+	public static function initialize(array $loggingConfiguration)
 	{
 		if (is_null(self::$_initializeChecker)) {
 			self::$_initializeChecker = new InitializeChecker();
@@ -142,9 +149,8 @@ abstract class Logging
 	{
 		self::$_initializeChecker->throwIfNotInitialize();
 
-		//DEBUG_BACKTRACE_PROVIDE_OBJECT
-		/** @var array[] */
-		$backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS); // @phpstan-ignore-line
+		/** @var array<string,mixed>[] */
+		$backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS); // DEBUG_BACKTRACE_PROVIDE_OBJECT
 		/** @var array<string,mixed> */
 		$traceCaller = $backtrace[$traceIndex];
 		/** @var array<string,mixed> */
@@ -153,7 +159,8 @@ abstract class Logging
 		/** @var array<string,string> */
 		$map = [
 			'TIMESTAMP' => date('c'),
-			'IP' => ArrayUtility::getOr($_SERVER, 'REMOTE_ADDR', ''),
+			'CLIENT_IP' => ArrayUtility::getOr($_SERVER, 'REMOTE_ADDR', ''),
+			'CLIENT_HOST' => ArrayUtility::getOr($_SERVER, 'REMOTE_HOST', ''),
 			'REQUEST_ID' => LOG_REQUEST_ID,
 			'UA' => ArrayUtility::getOr($_SERVER, 'HTTP_USER_AGENT', ''),
 			'METHOD' => ArrayUtility::getOr($_SERVER, 'REQUEST_METHOD', ''),

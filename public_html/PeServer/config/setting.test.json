@@ -1,7 +1,7 @@
 {
 	"persistence": {
 		"driver": "sqlite3",
-		"connection": "<APP>/temp/data/data.sqlite3",
+		"connection": "<|APP|>/temp/data/data.sqlite3",
 		"user": "",
 		"passwd": ""
 	}

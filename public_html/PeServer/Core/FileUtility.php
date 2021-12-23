@@ -65,9 +65,9 @@ abstract class FileUtility
 	 *
 	 * @param string $path パス
 	 * @param boolean $associative 連想配列として扱うか
-	 * @return array|\stdClass 応答JSON
+	 * @return array<mixed>|\stdClass 応答JSON
 	 */
-	public static function readJsonFile(string $path, bool $associative = true) // @phpstan-ignore-line
+	public static function readJsonFile(string $path, bool $associative = true)
 	{
 		$content = file_get_contents($path);
 		if ($content === false) {
@@ -229,7 +229,7 @@ abstract class FileUtility
 	 * @param string $baseDirectoryPath 対象ディレクトリ。
 	 * @param string[] $targetPaths 対象ディレクトリ。
 	 *
-	*/
+	 */
 	public static function backupItems(string $backupItem, string $baseDirectoryPath, array $targetPaths): void
 	{
 		// NONE

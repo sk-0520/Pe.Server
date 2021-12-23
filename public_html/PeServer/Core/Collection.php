@@ -13,10 +13,15 @@ use \IteratorAggregate;
  */
 class Collection implements IteratorAggregate // @phpstan-ignore-line
 {
-	/** @var array */
-	private $_items; // @phpstan-ignore-line
+	/** @var array<mixed> */
+	private $_items;
 
-	private function __construct(array $items) // @phpstan-ignore-line
+	/**
+	 * Undocumented function
+	 *
+	 * @param array<mixed> $items
+	 */
+	private function __construct(array $items)
 	{
 		$this->_items = $items;
 	}
@@ -59,7 +64,7 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 	/**
 	 * Undocumented function
 	 *
-	 * @param callable $callback
+	 * @param callable(mixed): bool $callback
 	 * @return Collection
 	 */
 	function where(callable $callback): Collection // @phpstan-ignore-line

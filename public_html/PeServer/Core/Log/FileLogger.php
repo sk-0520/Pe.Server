@@ -31,7 +31,15 @@ class FileLogger extends LoggerBase
 	 */
 	private static $_cleanupHeaders = array();
 
-	public function __construct(string $header, int $level, int $baseTraceIndex, array $fileLoggingConfiguration) // @phpstan-ignore-line
+	/**
+	 * Undocumented function
+	 *
+	 * @param string $header
+	 * @param integer $level
+	 * @param integer $baseTraceIndex
+	 * @param array<string,mixed> $fileLoggingConfiguration
+	 */
+	public function __construct(string $header, int $level, int $baseTraceIndex, array $fileLoggingConfiguration)
 	{
 		parent::__construct($header, $level, $baseTraceIndex);
 
@@ -60,7 +68,7 @@ class FileLogger extends LoggerBase
 			]
 		);
 		$logFiles = glob(FileUtility::joinPath($this->_directoryPath, $filePattern));
-		if($logFiles === false) {
+		if ($logFiles === false) {
 			throw new CoreError('glob error: ' . FileUtility::joinPath($this->_directoryPath, $filePattern));
 		}
 		$logCount = count($logFiles);

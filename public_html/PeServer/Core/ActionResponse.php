@@ -88,11 +88,11 @@ class ActionResponse
 	/**
 	 * JSON応答。
 	 *
-	 * @param array $data
+	 * @param array<mixed> $data
 	 * @param int $httpStatusCode
 	 * @return ActionResponse
 	 */
-	public static function json(array $data, int $httpStatusCode = HttpStatusCode::OK): ActionResponse // @phpstan-ignore-line
+	public static function json(array $data, int $httpStatusCode = HttpStatusCode::OK): ActionResponse
 	{
 		return new ActionResponse($httpStatusCode, Mime::JSON, $data);
 	}

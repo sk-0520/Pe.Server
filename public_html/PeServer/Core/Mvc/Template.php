@@ -81,11 +81,11 @@ abstract class Template
 	 * View描画処理。
 	 *
 	 * @param string $templateName テンプレート名。
-	 * @param mixed $parameters パラメータ。
-	 * @param array $options オプション。
+	 * @param array<string,string|int|array<mixed>> $parameters パラメータ。
+	 * @param array<string,mixed> $options オプション。
 	 * @return void no-return?
 	 */
-	public abstract function show(string $templateName, $parameters, array $options = array()): void; // @phpstan-ignore-line
+	public abstract function show(string $templateName, $parameters, array $options = array()): void;
 }
 
 class _Template_Invisible extends Template
@@ -110,7 +110,7 @@ class _Template_Invisible extends Template
 		$this->registerFunctions();
 	}
 
-	public function show(string $templateName, $parameters, array $options = array()): void // @phpstan-ignore-line
+	public function show(string $templateName, $parameters, array $options = array()): void
 	{
 		// @phpstan-ignore-next-line
 		$this->_engine->assign($parameters);

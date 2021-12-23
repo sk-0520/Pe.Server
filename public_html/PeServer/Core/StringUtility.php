@@ -297,4 +297,18 @@ abstract class StringUtility
 	{
 		return rtrim($value, $characters);
 	}
+
+
+	/**
+	 * データ出力。
+	 *
+	 * var_export/print_r で迷ったり $return = true 忘れのためのラッパー。
+	 *
+	 * @param mixed $value
+	 * @return string
+	 */
+	public static function dump($value): string
+	{
+		return var_export($value, true);
+	}
 }

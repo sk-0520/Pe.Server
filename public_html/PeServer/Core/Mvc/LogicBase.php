@@ -11,6 +11,7 @@ use \PeServer\Core\HttpStatusCode;
 use \PeServer\Core\Mvc\LogicParameter;
 use \PeServer\Core\Mvc\ValidationReceivable;
 use \PeServer\Core\Mvc\Validations;
+use PeServer\Core\StringUtility;
 use \PeServer\Core\Throws\InvalidOperationException;
 use \PeServer\Core\Throws\NotImplementedException;
 
@@ -47,16 +48,16 @@ abstract class LogicBase implements ValidationReceivable
 	/**
 	 * 応答データ。
 	 *
-	 * @var array<string,string|array>
+	 * @var array<string,string|array<mixed>>
 	 */
-	private $_values = array(); // @phpstan-ignore-line
+	private $_values = array();
 
 	/**
 	 * コントローラ内結果データ。
 	 *
-	 * @var array<string,string|array>
+	 * @var array<string,string|array<mixed>>
 	 */
-	public $result = array(); // @phpstan-ignore-line
+	public $result = array();
 
 	/**
 	 * Undocumented variable
@@ -79,9 +80,7 @@ abstract class LogicBase implements ValidationReceivable
 
 		$this->logger->trace('LOGIC');
 
-		if (is_null($this->validation)) { // @phpstan-ignore-line
-			$this->validation = new Validations($this);
-		}
+		$this->validation = new Validations($this);
 	}
 
 	/**
@@ -134,19 +133,19 @@ abstract class LogicBase implements ValidationReceivable
 	{
 		switch ($kind) {
 			case Validations::KIND_EMPTY:
-				$this->addError($key, var_export($parameters, true));
+				$this->addError($key, StringUtility::dump($parameters));
 				break;
 
 			case Validations::KIND_WHITE_SPACE:
-				$this->addError($key, var_export($parameters, true));
+				$this->addError($key, StringUtility::dump($parameters));
 				break;
 
 			case Validations::KIND_LENGTH:
-				$this->addError($key, var_export($parameters, true));
+				$this->addError($key, StringUtility::dump($parameters));
 				break;
 
 			default:
-				throw new NotImplementedException(var_export($parameters)); // @phpstan-ignore-line
+				throw new NotImplementedException(StringUtility::dump($parameters));
 		}
 	}
 
@@ -213,9 +212,9 @@ abstract class LogicBase implements ValidationReceivable
 	/**
 	 * View表示用データの取得。
 	 *
-	 * @return array{status:int,errors:array<string,string[]>,values:array<string,string|array>}
+	 * @return array{status:int,errors:array<string,string[]>,values:array<string,string|array<mixed>>}
 	 */
-	public function getViewData(): array // @phpstan-ignore-line
+	public function getViewData(): array
 	{
 		return [
 			'status' => $this->_statusCode,
