@@ -118,7 +118,7 @@ class _Database_Invisible extends Database
 
 	private function getErrorMessage(): string
 	{
-		return var_export($this->pdo->errorInfo(), true);
+		return StringUtility::dump($this->pdo->errorInfo());
 	}
 
 	public function query(string $statement, array $parameters = array()): array

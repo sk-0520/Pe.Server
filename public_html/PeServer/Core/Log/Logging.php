@@ -100,7 +100,7 @@ abstract class Logging
 			if (ArrayUtility::isNullOrEmpty($parameters)) {
 				return '';
 			}
-			return var_export($parameters, true);
+			return StringUtility::dump($parameters);
 		}
 
 		if (is_string($message) && !ArrayUtility::isNullOrEmpty($parameters) && array_keys($parameters)[0] === 0) {
@@ -110,7 +110,7 @@ abstract class Logging
 					return $value;
 				}
 				if (is_object($value) || is_array($value)) {
-					return var_export($value, true);
+					return StringUtility::dump($value);
 				}
 
 				return strval($value);
@@ -130,9 +130,9 @@ abstract class Logging
 				return $message;
 			}
 
-			return var_export($message, true);
+			return StringUtility::dump($message);
 		}
-		return var_export(['message' => $message, 'parameters' => $parameters], true);
+		return StringUtility::dump(['message' => $message, 'parameters' => $parameters]);
 	}
 
 	/**
