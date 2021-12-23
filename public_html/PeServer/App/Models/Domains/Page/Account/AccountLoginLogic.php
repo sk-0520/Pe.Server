@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domains\Page\Account;
 
-use \PeServer\Core\Database;
 use \PeServer\Core\I18n;
+use \PeServer\Core\Database;
+use \PeServer\Core\Mvc\LogicBase;
+use \PeServer\Core\StringUtility;
 use \PeServer\Core\Mvc\Validations;
 use \PeServer\Core\Mvc\LogicCallMode;
-use \PeServer\Core\Mvc\LogicBase;
 use \PeServer\Core\Mvc\LogicParameter;
-use \PeServer\Core\StringUtility;
+use \PeServer\App\Models\Database\Domains\UserDomainDao;
+use \PeServer\App\Models\Database\Entities\UsersEntityDao;
 
 class AccountLoginLogic extends LogicBase
 {
@@ -44,47 +46,25 @@ class AccountLoginLogic extends LogicBase
 
 		$database = Database::open();
 
-		$setupCount = $database->queryFirst(
-			<<<SQL
+		$usersEntityDao = new UsersEntityDao($database);
+		$userDomainDao = new UserDomainDao($database);
 
-			select
-				COUNT(*) as count
-			from
-				users
-			where
-				users.level = 'setup'
-				and
-				users.state = 'enabled'
-SQL
-		)['count'];
+		$existsSetupUser = $usersEntityDao->selectExistsSetupUser();
 
-		$user = $database->queryFirstOrDefault(
-			[
-				'user_id' => '',
-				'level' => '',
-				'password' => '',
-			],
-			<<<SQL
+		$user = $userDomainDao->selectUser([
+			'account_login_login_id' => $this->getRequest('account_login_login_id'),
+		]);
 
-			select
-				users.user_id,
-				users.level,
-				user_authentications.current_password
-			from
-				users
-				inner join
-					user_authentications
-					on
-					(
-						user_authentications.user_id = users.user_id
-					)
-			where
-				users.login_id = :account_login_login_id
-SQL
-			/* AUTO FORMAT */,
-			[
-				'account_login_login_id' => $this->getRequest('account_login_login_id'),
-			]
-		);
+		if (is_null($user)) {
+			$this->addError(Validations::COMMON, I18n::message('ID・パスワードが不明です'));
+			return;
+		}
+
+		// パスワード突合
+		if ($existsSetupUser) {
+			$this->logger->info('セットアップ ユーザー 検証');
+		} else {
+			$this->logger->info('通常 ユーザー 検証');
+		}
 	}
 }
