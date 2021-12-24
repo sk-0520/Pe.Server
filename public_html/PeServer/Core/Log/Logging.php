@@ -6,7 +6,7 @@ namespace PeServer\Core\Log;
 
 /** @var int */
 const LOG_REQUEST_ID_LENGTH = 6;
-define('LOG_REQUEST_ID', bin2hex(openssl_random_pseudo_bytes(LOG_REQUEST_ID_LENGTH))); // @phpstan-ignore-line
+define('LOG_REQUEST_ID', bin2hex(openssl_random_pseudo_bytes(LOG_REQUEST_ID_LENGTH)));
 
 use \LogicException;
 use \PeServer\Core\ArrayUtility;

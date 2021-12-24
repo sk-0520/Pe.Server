@@ -240,10 +240,12 @@ abstract class StringUtility
 	 */
 	public static function split(string $value, string $separator, int $limit = PHP_INT_MAX): array
 	{
-		$result = explode($separator, $value, $limit);
-		if ($result === false) {
+		if (StringUtility::isNullOrEmpty($separator)) {
 			throw new ArgumentException();
 		}
+
+		/** non-empty-string $separator */
+		$result = explode($separator, $value, $limit); // @phpstan-ignore-line
 
 		return $result;
 	}

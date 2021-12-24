@@ -15,5 +15,8 @@ $*
 *.tmp
 *.log
 /public_html/deploy/
+/public_html/.fast-cgi-bin
 /dev/PHPUnit
 /dev/phpstan.phar
+/test/.phpunit.result.cache
+

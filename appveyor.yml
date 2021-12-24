@@ -5,7 +5,7 @@ skip_tags: true
 #   only:
 #     - master
 environment:
-  PHP_VER: 7.1
+  PHP_VER: 8.0
 install:
   - sh: nvm install  15.14.0
   - sh: npm -g install npm@7.7.6

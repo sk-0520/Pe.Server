@@ -1,3 +1,5 @@
+AddType application/x-httpd-php80 .php
+
 # ルーティング用
 <IfModule mod_rewrite.c>
     RewriteEngine On
@@ -7,6 +9,3 @@
     RewriteRule ^.*$ index.php
 </IfModule>
 
-#####wpcomment_nojpdeny#####
-SetEnvIf Request_URI ".*" WpCommentDeny
-#####end:wpcomment_nojpdeny#####
