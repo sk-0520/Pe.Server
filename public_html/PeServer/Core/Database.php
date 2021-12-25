@@ -75,20 +75,97 @@ abstract class Database
 	 */
 	public abstract function queryFirstOrDefault($defaultValue, string $statement, array $parameters = array());
 
+	/**
+	 * Undocumented function
+	 *
+	 * @param string $statement
+	 * @param array<string|int,string|int> $parameters
+	 * @return integer
+	 */
 	public abstract function execute(string $statement, array $parameters = array()): int;
 
+	/**
+	 * Undocumented function
+	 *
+	 * @param string $statement
+	 * @param array<string|int,string|int> $parameters
+	 * @return mixed[]
+	 */
 	public abstract function selectOrdered(string $statement, array $parameters = array()): array;
+	/**
+	 * Undocumented function
+	 *
+	 * @param string $statement
+	 * @param array<string|int,string|int> $parameters
+	 * @return integer
+	 */
 	public abstract function selectSingleCount(string $statement, array $parameters = array()): int;
 
+	/**
+	 * Undocumented function
+	 *
+	 * @param string $statement
+	 * @param array<string|int,string|int> $parameters
+	 * @return integer
+	 */
 	public abstract function insert(string $statement, array $parameters = array()): int;
-	public abstract function insertSingle(string $statement, array $parameters = array()): int;
+	/**
+	 * Undocumented function
+	 *
+	 * @param string $statement
+	 * @param array<string|int,string|int> $parameters
+	 * @return void
+	 */
+	public abstract function insertSingle(string $statement, array $parameters = array()): void;
 
+	/**
+	 * Undocumented function
+	 *
+	 * @param string $statement
+	 * @param array<string|int,string|int> $parameters
+	 * @return integer
+	 */
 	public abstract function update(string $statement, array $parameters = array()): int;
+	/**
+	 * Undocumented function
+	 *
+	 * @param string $statement
+	 * @param array<string|int,string|int> $parameters
+	 * @return void
+	 */
 	public abstract function updateByKey(string $statement, array $parameters = array()): void;
+	/**
+	 * Undocumented function
+	 *
+	 * @param string $statement
+	 * @param array<string|int,string|int> $parameters
+	 * @return boolean
+	 */
 	public abstract function updateByKeyOrNothing(string $statement, array $parameters = array()): bool;
 
+	/**
+	 * Undocumented function
+	 *
+	 * @param string $statement
+	 * @param array<string|int,string|int> $parameters
+	 * @return integer
+	 */
 	public abstract function delete(string $statement, array $parameters = array()): int;
+	/**
+	 * Undocumented function
+	 *
+	 * @param string $statement
+	 * @param array<string|int,string|int> $parameters
+	 * @return void
+	 */
 	public abstract function deleteByKey(string $statement, array $parameters = array()): void;
+	/**
+	 * Undocumented function
+	 *
+	 * @param string $statement
+	 * @param array<string|int,string|int> $parameters
+	 * @return boolean
+	 */
 	public abstract function deleteByKeyOrNothing(string $statement, array $parameters = array()): bool;
 }
 
@@ -214,46 +291,103 @@ class _Database_Invisible extends Database
 
 	public function selectOrdered(string $statement, array $parameters = array()): array
 	{
-		throw new NotImplementedException();
+		if (!preg_match('/\\border\\s+by\\b/i', $statement)) {
+			throw new SqlException();
+		}
+
+		return $this->query($statement, $parameters);
 	}
 
 	public function selectSingleCount(string $statement, array $parameters = array()): int
 	{
-		throw new NotImplementedException();
+		if (!preg_match('/\\bselect\\s+count\\s*\\(/i', $statement)) {
+			throw new SqlException();
+		}
+
+		$result = $this->queryFirst($statement, $parameters);
+		return (int)current($result);
+	}
+
+	private function enforceInsert(string $statement): void
+	{
+		if (!preg_match('/\\binsert\\b/i', $statement)) {
+			throw new SqlException();
+		}
 	}
 
 	public function insert(string $statement, array $parameters = array()): int
 	{
-		throw new NotImplementedException();
+		$this->enforceInsert($statement);
+		return $this->execute($statement, $parameters);
 	}
-	public function insertSingle(string $statement, array $parameters = array()): int
+	public function insertSingle(string $statement, array $parameters = array()): void
 	{
-		throw new NotImplementedException();
+		$this->enforceInsert($statement);
+		$result = $this->execute($statement, $parameters);
+		if ($result !== 1) {
+			throw new SqlException();
+		}
+	}
+
+	private function enforceUpdate(string $statement): void
+	{
+		if (!preg_match('/\\bupdate\\b/i', $statement)) {
+			throw new SqlException();
+		}
 	}
 
 	public function update(string $statement, array $parameters = array()): int
 	{
-		throw new NotImplementedException();
+		$this->enforceUpdate($statement);
+		return $this->execute($statement, $parameters);
 	}
 	public function updateByKey(string $statement, array $parameters = array()): void
 	{
-		throw new NotImplementedException();
+		$this->enforceUpdate($statement);
+		$result = $this->execute($statement, $parameters);
+		if ($result !== 1) {
+			throw new SqlException();
+		}
 	}
 	public function updateByKeyOrNothing(string $statement, array $parameters = array()): bool
 	{
-		throw new NotImplementedException();
+		$this->enforceUpdate($statement);
+		$result = $this->execute($statement, $parameters);
+		if (1 < $result) {
+			throw new SqlException();
+		}
+
+		return $result === 1;
+	}
+
+	private function enforceDelete(string $statement): void
+	{
+		if (!preg_match('/\\bdelete\\b/i', $statement)) {
+			throw new SqlException();
+		}
 	}
 
 	public function delete(string $statement, array $parameters = array()): int
 	{
-		throw new NotImplementedException();
+		$this->enforceDelete($statement);
+		return $this->execute($statement, $parameters);
 	}
 	public function deleteByKey(string $statement, array $parameters = array()): void
 	{
-		throw new NotImplementedException();
+		$this->enforceDelete($statement);
+		$result = $this->execute($statement, $parameters);
+		if ($result !== 1) {
+			throw new SqlException();
+		}
 	}
 	public function deleteByKeyOrNothing(string $statement, array $parameters = array()): bool
 	{
-		throw new NotImplementedException();
+		$this->enforceDelete($statement);
+		$result = $this->execute($statement, $parameters);
+		if (1 < $result) {
+			throw new SqlException();
+		}
+
+		return $result === 1;
 	}
 }

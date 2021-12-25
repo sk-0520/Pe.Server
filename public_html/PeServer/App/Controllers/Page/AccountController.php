@@ -42,7 +42,7 @@ class AccountController extends PageControllerBase
 		$this->view('login', $logic->getViewData());
 	}
 
-	public function logout(ActionRequest $request, ActionOptions $options)
+	public function logout(ActionRequest $request, ActionOptions $options): void
 	{
 		$logic = $this->createLogic(AccountLogoutLogic::class, $request, $options);
 		$logic->run(LogicCallMode::submit());

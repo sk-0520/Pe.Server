@@ -14,9 +14,9 @@ class UserAuditLogsEntityDao extends DaoBase
 		parent::__construct($database);
 	}
 
-	public function insertLog(string $userId, string $event, string $info, string $ipAddress, string $userAgent)
+	public function insertLog(string $userId, string $event, string $info, string $ipAddress, string $userAgent): void
 	{
-		$this->database->execute(
+		$this->database->insertSingle(
 			<<<SQL
 
 			insert into
