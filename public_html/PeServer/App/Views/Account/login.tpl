@@ -2,9 +2,9 @@
 {block name=TITLE}ログイン{/block}
 {block name=BODY}
 
-<form class="page-login" action="/account/login" method="post">
+<form class="page-account-login" action="/account/login" method="post">
 	<dl class="input">
-		<dt>id</dt>
+		<dt>login id</dt>
 		<dd>
 			<input class="edit" name="account_login_login_id" type="text" value="" />
 			{show_error_messages key='account_login_login_id'}
@@ -17,7 +17,7 @@
 		</dd>
 
 		<dl class="action"></dl>
-		<dd>
+		<dd class="action">
 			<button>submit</button>
 		</dd>
 	</dl>

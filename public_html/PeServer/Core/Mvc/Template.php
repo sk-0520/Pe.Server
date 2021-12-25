@@ -106,6 +106,7 @@ class _Template_Invisible extends Template
 		$this->_engine->addTemplateDir(self::$baseDirectoryPath . "/App/Views/");
 		$this->_engine->setCompileDir(self::$baseDirectoryPath . "/data/temp/views/c/$baseName/");
 		$this->_engine->setCacheDir(self::$baseDirectoryPath . "/data/temp/views/t/$baseName/");
+		$this->_engine->escape_html = true;
 
 		$this->registerFunctions();
 	}

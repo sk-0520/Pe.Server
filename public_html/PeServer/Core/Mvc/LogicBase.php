@@ -8,12 +8,14 @@ use LogicException;
 use \PeServer\Core\ILogger;
 use \PeServer\Core\ActionRequest;
 use \PeServer\Core\ActionResponse;
+use PeServer\Core\ArrayUtility;
 use \PeServer\Core\HttpStatusCode;
 use \PeServer\Core\Mvc\LogicParameter;
 use \PeServer\Core\Mvc\ValidationReceivable;
 use \PeServer\Core\Mvc\SessionNextState;
 use \PeServer\Core\Mvc\Validations;
 use \PeServer\Core\StringUtility;
+use PeServer\Core\Throws\ArgumentException;
 use \PeServer\Core\Throws\InvalidOperationException;
 use \PeServer\Core\Throws\NotImplementedException;
 
@@ -55,6 +57,13 @@ abstract class LogicBase implements ValidationReceivable
 	 * @var array<string,string|array<mixed>>
 	 */
 	private $_values = array();
+
+	/**
+	 * 要素設定がなされている場合に応答データのキーをこの項目に固定。
+	 *
+	 * @var string[]
+	 */
+	private $_keys = array();
 
 	/**
 	 * コントローラ内結果データ。
@@ -137,6 +146,43 @@ abstract class LogicBase implements ValidationReceivable
 	}
 
 	/**
+	 * Undocumented function
+	 *
+	 * @param string[] $keys
+	 * @return void
+	 */
+	protected function registerParameterKeys(array $keys, bool $overwrite): void
+	{
+		$this->_keys = $keys;
+		foreach ($this->_keys as $key) {
+			if ($overwrite) {
+				$value = $this->getRequest($key, '');
+				$this->_values[$key] = $value;
+			} else {
+				$this->_values[$key] = '';
+			}
+		}
+	}
+
+	/**
+	 * Undocumented function
+	 *
+	 * @param string $key
+	 * @param string|array<mixed> $value
+	 * @return void
+	 */
+	protected function setValue(string $key, mixed $value)
+	{
+		if (ArrayUtility::getCount($this->_keys)) {
+			if (!array_search($key, $this->_keys)) {
+				throw new ArgumentException("key -> $key");
+			}
+		}
+
+		$this->_values[$key] = $value;
+	}
+
+	/**
 	 * 検証エラーが存在するか。
 	 *
 	 * @return boolean
@@ -182,10 +228,27 @@ abstract class LogicBase implements ValidationReceivable
 				$this->addError($key, StringUtility::dump($parameters));
 				break;
 
+			case Validations::KIND_MATCH:
+				$this->addError($key, StringUtility::dump($parameters));
+				break;
+
 			default:
 				throw new NotImplementedException(StringUtility::dump($parameters));
 		}
 	}
+
+	protected function validation(string $key, callable $callback): void
+	{
+		$value = $this->getRequest($key);
+		$callback($key, $value);
+	}
+
+	/**
+	 * パラメータキー登録実装。
+	 *
+	 * @return void
+	 */
+	protected abstract function registerKeysImpl(LogicCallMode $callMode);
 
 	/**
 	 * 検証ロジック実装。
@@ -202,6 +265,11 @@ abstract class LogicBase implements ValidationReceivable
 	 * @return void
 	 */
 	protected abstract function executeImpl(LogicCallMode $callMode): void;
+
+	private function registerKeys(LogicCallMode $callMode): void
+	{
+		$this->registerKeysImpl($callMode);
+	}
 
 	/**
 	 * 検証ロジック実装。
@@ -233,6 +301,8 @@ abstract class LogicBase implements ValidationReceivable
 	 */
 	public function run(LogicCallMode $callMode): bool
 	{
+		$this->registerKeys($callMode);
+
 		$this->validate($callMode);
 		if ($this->hasError()) {
 			return false;

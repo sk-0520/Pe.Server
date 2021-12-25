@@ -11,8 +11,10 @@ use \PeServer\Core\Mvc\ControllerBase;
 use \PeServer\Core\Mvc\ControllerArguments;
 use \PeServer\App\Models\Domains\Page\Account\AccountLoginLogic;
 use \PeServer\App\Models\Domains\Page\Account\AccountLogoutLogic;
+use PeServer\App\Models\SessionKey;
+use PeServer\App\Models\UserLevel;
 
-class AccountController extends PageControllerBase
+final class AccountController extends PageControllerBase
 {
 	public function __construct(ControllerArguments $arguments)
 	{
@@ -36,6 +38,11 @@ class AccountController extends PageControllerBase
 	{
 		$logic = $this->createLogic(AccountLoginLogic::class, $request, $options);
 		if ($logic->run(LogicCallMode::submit())) {
+			if ($this->session->tryGet(SessionKey::ACCOUNT, $account)) {
+				if ($account['level'] === UserLevel::SETUP) {
+					$this->redirectPath('/setting/setup');
+				}
+			}
 			$this->redirectPath('/');
 		}
 

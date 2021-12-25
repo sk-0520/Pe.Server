@@ -11,6 +11,8 @@ use \LogicException;
  */
 class Route
 {
+	public const DEFAULT_METHOD = null;
+
 	/**
 	 * ベースパス。
 	 *

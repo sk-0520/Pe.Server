@@ -14,6 +14,7 @@ class Validations
 	public const KIND_EMPTY = 0;
 	public const KIND_WHITE_SPACE = 1;
 	public const KIND_LENGTH = 2;
+	public const KIND_MATCH = 2;
 
 	/**
 	 * 検証移譲取得処理。
@@ -52,6 +53,16 @@ class Validations
 	{
 		if ($length < mb_strlen($value)) {
 			$this->_callback->receiveError($key, self::KIND_LENGTH, ['value' => $value, 'safe-length' => $length, 'error-length' => mb_strlen($value)]);
+			return false;
+		}
+
+		return true;
+	}
+
+	public function isMatch(string $key, string $pattern, string $value): bool
+	{
+		if (!preg_match($pattern, $value)) {
+			$this->_callback->receiveError($key, self::KIND_MATCH, ['value' => $value]);
 			return false;
 		}
 

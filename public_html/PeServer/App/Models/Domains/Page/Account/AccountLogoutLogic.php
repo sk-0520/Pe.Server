@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domains\Page\Account;
 
-use PeServer\App\Models\AuditLog;
 use \PeServer\Core\I18n;
 use \PeServer\Core\Database;
 use \PeServer\Core\StringUtility;
+use \PeServer\App\Models\AuditLog;
 use \PeServer\Core\Mvc\Validations;
+use \PeServer\App\Models\SessionKey;
 use \PeServer\Core\Mvc\LogicCallMode;
 use \PeServer\Core\Mvc\LogicParameter;
 use \PeServer\App\Models\Domains\Page\PageLogicBase;
@@ -22,13 +23,20 @@ class AccountLogoutLogic extends PageLogicBase
 		parent::__construct($parameter);
 	}
 
+	protected function registerKeysImpl(LogicCallMode $callMode)
+	{
+		$this->registerParameterKeys([
+			'',
+		], true);
+	}
+
 	protected function validateImpl(LogicCallMode $callMode): void
 	{
 	}
 
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
-		$userInfo = $this->getSession('user', null);
+		$userInfo = $this->getSession(SessionKey::ACCOUNT, null);
 		if(is_null($userInfo)) {
 			return;
 		}

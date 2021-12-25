@@ -15,6 +15,11 @@ class HomeContactLogic extends PageLogicBase
 		parent::__construct($parameter);
 	}
 
+	protected function registerKeysImpl(LogicCallMode $callMode)
+	{
+		//NONE
+	}
+
 	protected function validateImpl(LogicCallMode $callMode): void
 	{
 		//NONE

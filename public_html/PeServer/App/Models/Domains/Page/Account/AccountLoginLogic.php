@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domains\Page\Account;
 
-use PeServer\App\Models\AuditLog;
 use \PeServer\Core\I18n;
 use \PeServer\Core\Database;
 use \PeServer\Core\StringUtility;
+use \PeServer\App\Models\AuditLog;
 use \PeServer\Core\Mvc\Validations;
+use \PeServer\App\Models\SessionKey;
 use \PeServer\Core\Mvc\LogicCallMode;
 use \PeServer\Core\Mvc\LogicParameter;
 use \PeServer\App\Models\Domains\Page\PageLogicBase;
@@ -20,6 +21,14 @@ class AccountLoginLogic extends PageLogicBase
 	public function __construct(LogicParameter $parameter)
 	{
 		parent::__construct($parameter);
+	}
+
+	protected function registerKeysImpl(LogicCallMode $callMode): void
+	{
+		$this->registerParameterKeys([
+			'account_login_login_id',
+			'account_login_password',
+		], false);
 	}
 
 	protected function validateImpl(LogicCallMode $callMode): void
@@ -79,14 +88,14 @@ class AccountLoginLogic extends PageLogicBase
 		}
 
 		$this->removeSession(self::SESSION_ALL_CLEAR);
-		$userInfo = [
+		$account = [
 			'id' => $user['user_id'],
 			'login_id' => $user['login_id'],
 			'name' => $user['name'],
 			'level' => $user['level'],
 		];
-		$this->setSession('user', $userInfo);
+		$this->setSession(SessionKey::ACCOUNT, $account);
 		$this->restartSession();
-		$this->writeAuditLog(AuditLog::LOGIN, $userInfo);
+		$this->writeAuditLog(AuditLog::LOGIN, $account);
 	}
 }

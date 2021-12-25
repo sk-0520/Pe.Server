@@ -42,14 +42,14 @@ abstract class ControllerBase
 	 */
 	protected $skipBaseName = 'PeServer\\App\\Controllers\\Page';
 
-	private SessionStore $_session;
+	protected SessionStore $session;
 
 	protected ?LogicBase $logic = null;
 
 	protected function __construct(ControllerArguments $arguments)
 	{
 		$this->logger = $arguments->logger;
-		$this->_session = $arguments->session;
+		$this->session = $arguments->session;
 
 		$this->logger->trace('CONTROLLER');
 	}
@@ -93,7 +93,7 @@ abstract class ControllerBase
 	{
 		return new LogicParameter(
 			$request,
-			$this->_session,
+			$this->session,
 			$options,
 			Logging::create($logicName)
 		);
@@ -156,27 +156,27 @@ abstract class ControllerBase
 		$nextState = $this->logic->sessionNextState();
 		switch ($nextState) {
 			case SessionNextState::NORMAL:
-				if ($this->_session->isChanged()) {
-					if (!$this->_session->isStarted()) {
-						$this->_session->start();
+				if ($this->session->isChanged()) {
+					if (!$this->session->isStarted()) {
+						$this->session->start();
 					}
-					$this->_session->apply();
+					$this->session->apply();
 				}
 				break;
 			case SessionNextState::CANCEL:
 				// なんもしない
 				break;
 			case SessionNextState::RESTART:
-				if ($this->_session->isStarted()) {
-					$this->_session->restart();
+				if ($this->session->isStarted()) {
+					$this->session->restart();
 				} else {
-					$this->_session->start();
+					$this->session->start();
 				}
-				$this->_session->apply();
+				$this->session->apply();
 				break;
 			case SessionNextState::SHUTDOWN:
-				if ($this->_session->isStarted()) {
-					$this->_session->shutdown();
+				if ($this->session->isStarted()) {
+					$this->session->shutdown();
 				}
 				break;
 

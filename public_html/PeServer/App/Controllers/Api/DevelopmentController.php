@@ -9,7 +9,8 @@ use \PeServer\Core\Mvc\ControllerArguments;
 use \PeServer\App\Controllers\Api\ApiControllerBase;
 use \PeServer\App\Models\Domains\Api\Development\DevelopmentInitializeLogic;
 
-class DevelopmentController extends ApiControllerBase
+
+final class DevelopmentController extends ApiControllerBase
 {
 	public function __construct(ControllerArguments $arguments)
 	{
