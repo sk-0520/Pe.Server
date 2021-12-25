@@ -6,6 +6,7 @@ namespace PeServer\App\Models\Domains\Page;
 
 use \PeServer\Core\Mvc\LogicParameter;
 use \PeServer\App\Models\Domains\DomainLogicBase;
+use PeServer\App\Models\SessionKey;
 
 abstract class PageLogicBase extends DomainLogicBase
 {
@@ -16,7 +17,7 @@ abstract class PageLogicBase extends DomainLogicBase
 
 	protected function getAuditUserInfo(): array|null
 	{
-		$user = $this->getSession('user', null);
+		$user = $this->getSession(SessionKey::ACCOUNT, null);
 		if (is_null($user)) {
 			return null;
 		}
