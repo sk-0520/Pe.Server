@@ -17,6 +17,8 @@ use \PeServer\Core\Mvc\ControllerArguments;
 use \PeServer\Core\Mvc\Template;
 use \PeServer\Core\Mvc\LogicBase;
 use \PeServer\Core\Mvc\LogicParameter;
+use \PeServer\Core\Mvc\SessionNextState;
+use \PeServer\Core\Mvc\SessionStore;
 use \PeServer\Core\Log\Logging;
 use \PeServer\Core\StringUtility;
 use PeServer\Core\Throws\InvalidOperationException;
@@ -153,7 +155,7 @@ abstract class ControllerBase
 
 		$nextState = $this->logic->sessionNextState();
 		switch ($nextState) {
-			case SessionStore::NEXT_STATE_NORMAL:
+			case SessionNextState::NORMAL:
 				if ($this->_session->isChanged()) {
 					if (!$this->_session->isStarted()) {
 						$this->_session->start();
@@ -161,10 +163,10 @@ abstract class ControllerBase
 					$this->_session->apply();
 				}
 				break;
-			case SessionStore::NEXT_STATE_CANCEL:
+			case SessionNextState::CANCEL:
 				// なんもしない
 				break;
-			case SessionStore::NEXT_STATE_RESTART:
+			case SessionNextState::RESTART:
 				if ($this->_session->isStarted()) {
 					$this->_session->restart();
 				} else {
@@ -172,7 +174,7 @@ abstract class ControllerBase
 				}
 				$this->_session->apply();
 				break;
-			case SessionStore::NEXT_STATE_SHUTDOWN:
+			case SessionNextState::SHUTDOWN:
 				if ($this->_session->isStarted()) {
 					$this->_session->shutdown();
 				}

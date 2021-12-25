@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domains\Page\Account;
 
+use PeServer\App\Models\AuditLog;
 use \PeServer\Core\I18n;
 use \PeServer\Core\Database;
 use \PeServer\Core\StringUtility;
@@ -78,12 +79,14 @@ class AccountLoginLogic extends PageLogicBase
 		}
 
 		$this->removeSession(self::SESSION_ALL_CLEAR);
-		$this->setSession('user', [
+		$userInfo = [
 			'id' => $user['user_id'],
 			'login_id' => $user['login_id'],
 			'name' => $user['name'],
 			'level' => $user['level'],
-		]);
+		];
+		$this->setSession('user', $userInfo);
 		$this->restartSession();
+		$this->writeAuditLog(AuditLog::LOGIN, $userInfo);
 	}
 }

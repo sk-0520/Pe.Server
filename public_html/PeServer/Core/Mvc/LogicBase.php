@@ -11,8 +11,9 @@ use \PeServer\Core\ActionResponse;
 use \PeServer\Core\HttpStatusCode;
 use \PeServer\Core\Mvc\LogicParameter;
 use \PeServer\Core\Mvc\ValidationReceivable;
+use \PeServer\Core\Mvc\SessionNextState;
 use \PeServer\Core\Mvc\Validations;
-use PeServer\Core\StringUtility;
+use \PeServer\Core\StringUtility;
 use \PeServer\Core\Throws\InvalidOperationException;
 use \PeServer\Core\Throws\NotImplementedException;
 
@@ -77,7 +78,7 @@ abstract class LogicBase implements ValidationReceivable
 	private $_response = null;
 
 	private SessionStore $_session;
-	private int $_sessionNextState = SessionStore::NEXT_STATE_NORMAL;
+	private int $_sessionNextState = SessionNextState::NORMAL;
 
 	protected function __construct(LogicParameter $parameter)
 	{
@@ -120,15 +121,15 @@ abstract class LogicBase implements ValidationReceivable
 	}
 	protected function cancelSession(): void
 	{
-		$this->_sessionNextState = SessionStore::NEXT_STATE_CANCEL;
+		$this->_sessionNextState = SessionNextState::CANCEL;
 	}
 	protected function restartSession(): void
 	{
-		$this->_sessionNextState = SessionStore::NEXT_STATE_RESTART;
+		$this->_sessionNextState = SessionNextState::RESTART;
 	}
 	protected function shutdownSession(): void
 	{
-		$this->_sessionNextState = SessionStore::NEXT_STATE_SHUTDOWN;
+		$this->_sessionNextState = SessionNextState::SHUTDOWN;
 	}
 	public function sessionNextState(): int
 	{

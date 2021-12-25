@@ -32,6 +32,7 @@ abstract class RouteConfiguration
 			(new Route('account', AccountController::class))
 				->addAction('login', HttpMethod::get(), 'login_get')
 				->addAction('login', HttpMethod::post(), 'login_post')
+				->addAction('logout', HttpMethod::get())
 			,
 			(new Route('api/development', DevelopmentController::class))
 				->addAction('initialize', HttpMethod::post())

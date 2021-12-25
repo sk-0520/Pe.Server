@@ -10,6 +10,7 @@ use \PeServer\Core\Mvc\LogicCallMode;
 use \PeServer\Core\Mvc\ControllerBase;
 use \PeServer\Core\Mvc\ControllerArguments;
 use \PeServer\App\Models\Domains\Page\Account\AccountLoginLogic;
+use \PeServer\App\Models\Domains\Page\Account\AccountLogoutLogic;
 
 class AccountController extends PageControllerBase
 {
@@ -39,5 +40,12 @@ class AccountController extends PageControllerBase
 		}
 
 		$this->view('login', $logic->getViewData());
+	}
+
+	public function logout(ActionRequest $request, ActionOptions $options)
+	{
+		$logic = $this->createLogic(AccountLogoutLogic::class, $request, $options);
+		$logic->run(LogicCallMode::submit());
+		$this->redirectPath('/');
 	}
 }

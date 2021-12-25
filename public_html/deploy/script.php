@@ -185,6 +185,7 @@ create table
 		[user_id] text not null,
 		[timestamp] datetime not null,
 		[event] text not null,
+		[info] text not null,
 		[ip_address] text not null,
 		[user_agent] text not null,
 		primary key([sequence] autoincrement),

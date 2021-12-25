@@ -13,4 +13,14 @@ abstract class PageLogicBase extends DomainLogicBase
 	{
 		parent::__construct($parameter);
 	}
+
+	protected function getAuditUserInfo(): array|null
+	{
+		$user = $this->getSession('user', null);
+		if (is_null($user)) {
+			return null;
+		}
+
+		return ['userId' => $user['id']];
+	}
 }

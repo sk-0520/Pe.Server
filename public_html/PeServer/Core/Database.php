@@ -6,7 +6,7 @@ namespace PeServer\Core;
 
 use \PDO;
 use \PDOStatement;
-
+use PeServer\Core\Throws\NotImplementedException;
 use \PeServer\Core\Throws\SqlException;
 
 abstract class Database
@@ -74,6 +74,22 @@ abstract class Database
 	 * @return array<string,mixed>|mixed
 	 */
 	public abstract function queryFirstOrDefault($defaultValue, string $statement, array $parameters = array());
+
+	public abstract function execute(string $statement, array $parameters = array()): int;
+
+	public abstract function selectOrdered(string $statement, array $parameters = array()): array;
+	public abstract function selectSingleCount(string $statement, array $parameters = array()): int;
+
+	public abstract function insert(string $statement, array $parameters = array()): int;
+	public abstract function insertSingle(string $statement, array $parameters = array()): int;
+
+	public abstract function update(string $statement, array $parameters = array()): int;
+	public abstract function updateByKey(string $statement, array $parameters = array()): void;
+	public abstract function updateByKeyOrNothing(string $statement, array $parameters = array()): bool;
+
+	public abstract function delete(string $statement, array $parameters = array()): int;
+	public abstract function deleteByKey(string $statement, array $parameters = array()): void;
+	public abstract function deleteByKeyOrNothing(string $statement, array $parameters = array()): bool;
 }
 
 class _Database_Invisible extends Database
@@ -111,7 +127,7 @@ class _Database_Invisible extends Database
 	{
 		if (ArrayUtility::getCount($parameters)) {
 			foreach ($parameters as $key => $value) {
-				$statement->bindParam($key, $value);
+				$statement->bindValue($key, $value);
 			}
 		}
 	}
@@ -179,5 +195,65 @@ class _Database_Invisible extends Database
 		}
 
 		return $result;
+	}
+
+	public function execute(string $statement, array $parameters = array()): int
+	{
+		self::$_initializeChecker->throwIfNotInitialize();
+
+		$query = $this->pdo->prepare($statement);
+
+		$this->setParameters($query, $parameters);
+
+		if (!$query->execute()) {
+			throw new SqlException($this->getErrorMessage());
+		}
+
+		return $query->rowCount();
+	}
+
+	public function selectOrdered(string $statement, array $parameters = array()): array
+	{
+		throw new NotImplementedException();
+	}
+
+	public function selectSingleCount(string $statement, array $parameters = array()): int
+	{
+		throw new NotImplementedException();
+	}
+
+	public function insert(string $statement, array $parameters = array()): int
+	{
+		throw new NotImplementedException();
+	}
+	public function insertSingle(string $statement, array $parameters = array()): int
+	{
+		throw new NotImplementedException();
+	}
+
+	public function update(string $statement, array $parameters = array()): int
+	{
+		throw new NotImplementedException();
+	}
+	public function updateByKey(string $statement, array $parameters = array()): void
+	{
+		throw new NotImplementedException();
+	}
+	public function updateByKeyOrNothing(string $statement, array $parameters = array()): bool
+	{
+		throw new NotImplementedException();
+	}
+
+	public function delete(string $statement, array $parameters = array()): int
+	{
+		throw new NotImplementedException();
+	}
+	public function deleteByKey(string $statement, array $parameters = array()): void
+	{
+		throw new NotImplementedException();
+	}
+	public function deleteByKeyOrNothing(string $statement, array $parameters = array()): bool
+	{
+		throw new NotImplementedException();
 	}
 }

@@ -16,10 +16,6 @@ use PeServer\Core\Throws\InvalidOperationException;
  */
 class SessionStore
 {
-	public const NEXT_STATE_NORMAL = 0; // こいつらはここに所属する必要ないけどこのためだけにファイル分割はちょっとつらいので妥協
-	public const NEXT_STATE_CANCEL = 1;
-	public const NEXT_STATE_RESTART = 2;
-	public const NEXT_STATE_SHUTDOWN = 3;
 
 	/**
 	 * セッション一時データ。
@@ -45,7 +41,7 @@ class SessionStore
 
 	public function __construct()
 	{
-		if ($_COOKIE[self::$sessionKey]) {
+		if (isset($_COOKIE[self::$sessionKey]) && !StringUtility::isNullOrWhiteSpace($_COOKIE[self::$sessionKey])) {
 			$this->start();
 			$this->_values = $_SESSION;
 			$this->_isStarted = true;
@@ -105,6 +101,7 @@ class SessionStore
 			return;
 		}
 
+		//setcookie(self::$sessionKey, "", time() - 60);
 		session_destroy();
 	}
 
