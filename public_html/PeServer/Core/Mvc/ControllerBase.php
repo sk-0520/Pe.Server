@@ -44,7 +44,7 @@ abstract class ControllerBase
 
 	protected ?LogicBase $logic = null;
 
-	public function __construct(ControllerArguments $arguments)
+	protected function __construct(ControllerArguments $arguments)
 	{
 		$this->logger = $arguments->logger;
 		$this->_session = $arguments->session;
@@ -139,6 +139,12 @@ abstract class ControllerBase
 		return false;
 	}
 
+	/**
+	 * ロジック側で指定されたセッションステータスに従ってセッション情報を設定。
+	 *
+	 * @return void
+	 * @throws InvalidOperationException ロジックが生成されていない。
+	 */
 	private function applySession(): void
 	{
 		if (is_null($this->logic)) {

@@ -15,7 +15,7 @@ use \PeServer\App\Models\Domains\Page\Home\HomePrivacyLogic;
 use \PeServer\App\Models\Domains\Page\Home\HomeContactLogic;
 
 
-class HomeController extends ControllerBase
+class HomeController extends PageControllerBase
 {
 	public function __construct(ControllerArguments $arguments)
 	{

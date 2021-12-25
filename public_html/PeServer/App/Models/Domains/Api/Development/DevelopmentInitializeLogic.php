@@ -4,23 +4,24 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domains\Api\Development;
 
-use \PeServer\Core\Throws\CoreException;
-use \PeServer\Core\ActionResponse;
-use \PeServer\Core\HttpStatusCode;
-use \PeServer\Core\Mvc\LogicBase;
-use \PeServer\Core\Mvc\LogicParameter;
-use \PeServer\Core\Mvc\LogicCallMode;
 use \PeServer\Core\Mime;
+use \Deploy\ScriptArgument;
 use \PeServer\Core\ILogger;
 use \PeServer\Core\Log\Logging;
+use \PeServer\Core\Mvc\LogicBase;
+use \PeServer\Core\ActionResponse;
+use \PeServer\Core\HttpStatusCode;
+use \PeServer\Core\Mvc\LogicCallMode;
+use \PeServer\Core\Mvc\LogicParameter;
+use \PeServer\Core\Throws\CoreException;
 use \PeServer\App\Models\AppConfiguration;
-use \Deploy\ScriptArgument;
+use \PeServer\App\Models\Domains\Api\ApiLogicBase;
 
 define('NO_DEPLOY_START', '💩');
 require_once 'deploy/php-deploy-receiver.php';
 require_once 'deploy/script.php';
 
-class DevelopmentInitializeLogic extends LogicBase
+class DevelopmentInitializeLogic extends ApiLogicBase
 {
 	public function __construct(LogicParameter $parameter)
 	{

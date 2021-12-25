@@ -11,7 +11,7 @@ use \PeServer\Core\Mvc\ControllerBase;
 use \PeServer\Core\Mvc\ControllerArguments;
 use \PeServer\App\Models\Domains\Page\Account\AccountLoginLogic;
 
-class AccountController extends ControllerBase
+class AccountController extends PageControllerBase
 {
 	public function __construct(ControllerArguments $arguments)
 	{

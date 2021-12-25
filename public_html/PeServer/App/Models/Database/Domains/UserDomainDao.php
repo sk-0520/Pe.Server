@@ -18,7 +18,7 @@ class UserDomainDao extends DaoBase
 	 * Undocumented function
 	 *
 	 * @param string $loginId
-	 * @return array{user_id:string,login_id:string,level:string,password:string}|null
+	 * @return array{user_id:string,login_id:string,name:string,level:string,password:string}|null
 	 */
 	public function selectLoginUser(string $loginId)
 	{
@@ -29,6 +29,7 @@ class UserDomainDao extends DaoBase
 			select
 				users.user_id,
 				users.login_id,
+				users.name,
 				users.level,
 				user_authentications.current_password as password
 			from
@@ -41,6 +42,8 @@ class UserDomainDao extends DaoBase
 					)
 			where
 				users.login_id = :account_login_login_id
+				and
+				users.state = 'enabled'
 SQL
 			/* AUTO FORMAT */,
 			[

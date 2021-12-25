@@ -1,11 +1,11 @@
 <?php
 
-namespace PeServer\App\Controllers\Api;
+namespace PeServer\App\Controllers;
 
 use \PeServer\Core\Mvc\ControllerArguments;
-use \PeServer\App\Controllers\DomainControllerBase;
+use \PeServer\Core\Mvc\ControllerBase;
 
-abstract class ApiControllerBase extends DomainControllerBase
+abstract class DomainControllerBase extends ControllerBase
 {
 	protected function __construct(ControllerArguments $arguments)
 	{

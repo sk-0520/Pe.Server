@@ -21,6 +21,8 @@ use \PeServer\Core\Throws\NotImplementedException;
  */
 abstract class LogicBase implements ValidationReceivable
 {
+	protected const SESSION_ALL_CLEAR = '';
+
 	/**
 	 * ロガー。
 	 *
@@ -112,7 +114,10 @@ abstract class LogicBase implements ValidationReceivable
 	{
 		$this->_session->set($key, $value);
 	}
-
+	protected function removeSession(string $key): void
+	{
+		$this->_session->remove($key);
+	}
 	protected function cancelSession(): void
 	{
 		$this->_sessionNextState = SessionStore::NEXT_STATE_CANCEL;

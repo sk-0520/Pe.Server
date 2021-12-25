@@ -30,11 +30,14 @@ class Route
 	 */
 	private $_actions = array();
 
+	private ActionOptions $_baseOptions;
+
 	/**
 	 * ルーティング情報にコントローラを登録
 	 *
 	 * @param string $path URLとしてのパス。先頭が api 以外の場合に index アクションが自動登録される
 	 * @param string $className 使用されるクラス完全名
+	 * @param ActionOptions|null $options ベースとなるオプション設定。nullの場合は ActionOptions::none() が使用される。
 	 */
 	public function __construct(string $path, string $className, ?ActionOptions $options = null)
 	{
@@ -55,6 +58,8 @@ class Route
 			$this->_basePath = $trimPath;
 		}
 
+		$this->_baseOptions = $options ?? ActionOptions::none();
+
 		$this->_className = $className;
 		if (mb_substr($this->_basePath, 0, 3) != 'api') {
 			$this->addAction('', HttpMethod::get(), 'index', $options);
@@ -62,11 +67,12 @@ class Route
 	}
 
 	/**
-	 * アクション設定
+	 * アクション設定。
 	 *
-	 * @param string $actionName URLとして使用されるパス, パス先頭が : でURLパラメータとなり、パラメータ名の @ 以降は一致正規表現となる
-	 * @param HttpMethod $httpMethod 使用するHTTPメソッド
-	 * @param string|null $methodName 呼び出されるコントローラメソッド。未指定なら $actionName が使用される
+	 * @param string $actionName URLとして使用されるパス, パス先頭が : でURLパラメータとなり、パラメータ名の @ 以降は一致正規表現となる。
+	 * @param HttpMethod $httpMethod 使用するHTTPメソッド。
+	 * @param string|null $methodName 呼び出されるコントローラメソッド。未指定なら $actionName が使用される。
+	 * @param ActionOptions|null $options オプション設定。nullの場合はコンストラクタで渡されたオプションが使用される。
 	 * @return Route
 	 */
 	public function addAction(string $actionName, HttpMethod $httpMethod, ?string $methodName = null, ?ActionOptions $options = null): Route
@@ -77,7 +83,7 @@ class Route
 		$this->_actions[$actionName]->add(
 			$httpMethod,
 			StringUtility::isNullOrWhiteSpace($methodName) ? $actionName : $methodName,
-			$options ?? ActionOptions::none()
+			$options ?? $this->_baseOptions
 		);
 
 		return $this;

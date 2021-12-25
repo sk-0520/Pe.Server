@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Domains\Page\Home;
 
 use \PeServer\Core\Mvc\LogicCallMode;
-use \PeServer\Core\Mvc\LogicBase;
 use \PeServer\Core\Mvc\LogicParameter;
+use \PeServer\App\Models\Domains\Page\PageLogicBase;
 
-class HomeContactLogic extends LogicBase
+class HomeContactLogic extends PageLogicBase
 {
 	public function __construct(LogicParameter $parameter)
 	{
