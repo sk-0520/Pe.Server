@@ -52,7 +52,7 @@ abstract class LogicBase implements ValidationReceivable
 	/**
 	 * 応答データ。
 	 *
-	 * @var array<string,string|array<mixed>>
+	 * @var array<string,string|string[]|bool|int>
 	 */
 	private $_values = array();
 
@@ -167,13 +167,13 @@ abstract class LogicBase implements ValidationReceivable
 	 * Undocumented function
 	 *
 	 * @param string $key
-	 * @param string|array<mixed> $value
+	 * @param string|string[]|bool|int $value
 	 * @return void
 	 */
-	protected function setValue(string $key, mixed $value)
+	protected function setValue(string $key, $value): void
 	{
 		if (ArrayUtility::getCount($this->_keys)) {
-			if (!array_search($key, $this->_keys)) {
+			if (array_search($key, $this->_keys) === false) {
 				throw new ArgumentException("key -> $key");
 			}
 		}
@@ -319,15 +319,15 @@ abstract class LogicBase implements ValidationReceivable
 	/**
 	 * View表示用データの取得。
 	 *
-	 * @return array{status:HttpStatus,errors:array<string,string[]>,values:array<string,string|array<mixed>>}
+	 * @return TemplateParameter
 	 */
-	public function getViewData(): array
+	public function getViewData(): TemplateParameter
 	{
-		return [
-			'status' => $this->_httpStatus,
-			'errors' => $this->_errors,
-			'values' => $this->_values,
-		];
+		return new TemplateParameter(
+			$this->_httpStatus,
+			$this->_values,
+			$this->_errors
+		);
 	}
 
 	/**

@@ -8,6 +8,7 @@ namespace PeServer\Core\Mvc;
 
 use \Exception;
 use \DOMDocument;
+use DOMElement;
 use \Smarty;
 use \Smarty_Internal_Template;
 use \PeServer\Core\ArrayUtility;
@@ -16,6 +17,7 @@ use \PeServer\Core\I18n;
 use \PeServer\Core\InitializeChecker;
 use \PeServer\Core\StringUtility;
 use \PeServer\Core\Throws\CoreException;
+use PeServer\Core\Throws\InvalidOperationException;
 
 /**
  * View側のテンプレート処理。
@@ -81,10 +83,10 @@ abstract class Template
 	 * View描画処理。
 	 *
 	 * @param string $templateName テンプレート名。
-	 * @param array<string|int,string|int|array<mixed>> $parameters パラメータ。
+	 * @param TemplateParameter $parameter パラメータ。
 	 * @return void no-return?
 	 */
-	public abstract function show(string $templateName, array $parameters): void;
+	public abstract function show(string $templateName, TemplateParameter $parameter): void;
 }
 
 class _Template_Invisible extends Template
@@ -110,10 +112,14 @@ class _Template_Invisible extends Template
 		$this->registerFunctions();
 	}
 
-	public function show(string $templateName, array $parameters): void
+	public function show(string $templateName, TemplateParameter $parameter): void
 	{
 		// @phpstan-ignore-next-line
-		$this->_engine->assign($parameters);
+		$this->_engine->assign([
+			'status' => $parameter->httpStatus,
+			'values' => $parameter->values,
+			'errors' => $parameter->errors,
+		]);
 		// @phpstan-ignore-next-line
 		$this->_engine->display($templateName);
 	}
@@ -122,6 +128,8 @@ class _Template_Invisible extends Template
 	{
 		// @phpstan-ignore-next-line
 		$this->_engine->registerPlugin('function', 'show_error_messages', array($this, 'showErrorMessages'));
+		// @phpstan-ignore-next-line
+		$this->_engine->registerPlugin('function', 'input_helper', array($this, 'inputHeper'));
 		// @phpstan-ignore-next-line
 		$this->_engine->registerPlugin('function', 'asset', array($this, 'asset'));
 	}
@@ -197,6 +205,95 @@ class _Template_Invisible extends Template
 		}
 
 		return $result;
+	}
+
+	/**
+	 * 入力要素のヘルパー。
+	 *
+	 * @param array<string,string> $params
+	 * @param Smarty_Internal_Template $smarty
+	 * @return string HTML
+	 */
+	public function inputHeper(array $params, Smarty_Internal_Template $smarty): string
+	{
+		$targetKey = $params['key']; // 必須
+		$showAutoError = true;
+		if (isset($params['auto_error']) && $params['auto_error'] == 'false') {
+			$showAutoError = false;
+		}
+
+		$hasError = false;
+		// @phpstan-ignore-next-line
+		if (isset($smarty->tpl_vars['errors'])) {
+			/** @var array<string,string[]> */
+			$errors = $smarty->tpl_vars['errors']->value;
+			foreach ($errors as $key => $values) {
+				if ($targetKey === $key) {
+					$hasError = true;
+					break;
+				}
+			}
+		}
+
+		$dom = new DOMDocument();
+		/** @var DOMElement|false */
+		$element = false;
+
+		/** @var string,string|string[]|bool|int */
+		$targetValue = '';
+		/** @var array<string,string|string[]|bool|int> */
+		// @phpstan-ignore-next-line
+		if (isset($smarty->tpl_vars['values'])) {
+			$values = $smarty->tpl_vars['values']->value;
+			if (isset($values[$targetKey])) {
+				$targetValue = $values[$targetKey];
+			}
+		}
+
+		switch ($params['type']) {
+			case 'textarea': {
+					$element = $dom->createElement('textarea');
+
+					$text = $dom->createTextNode($targetValue);
+					$element->appendChild($text);
+				}
+				break;
+
+			default: {
+					$element = $dom->createElement('input');
+					$element->setAttribute('type', $params['type']);
+					$element->setAttribute('value', $targetValue);
+				}
+				break;
+		}
+		// @phpstan-ignore-next-line
+		if (!$element) {
+			throw new InvalidOperationException();
+		}
+		$dom->appendChild($element);
+
+		$element->setAttribute('name', $targetKey);
+		$ignoreKeys = ['key', 'type', 'value'];
+		foreach ($params as $key => $value) {
+			if (array_search($key, $ignoreKeys) !== false) {
+				continue;
+			}
+			$element->setAttribute($key, $value);
+		}
+		if ($hasError) {
+			$className = $element->getAttribute('class');
+			if (StringUtility::isNullOrEmpty($className)) {
+				$className = 'error';
+			} else {
+				$className .= ' error';
+			}
+			$element->setAttribute('class', $className);
+		}
+
+		if ($showAutoError) {
+			return $dom->saveHTML() . $this->showErrorMessages(['key' => $targetKey], $smarty);
+		}
+		return $dom->saveHTML(); // @phpstan-ignore-line
 	}
 
 	/**
