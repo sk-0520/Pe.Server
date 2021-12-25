@@ -36,7 +36,7 @@ abstract class I18n
 	 */
 	public static function message(string $message, ...$parameters): string
 	{
-		self::$_initializeChecker->throwIfNotInitialize();
+		self::$_initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
 
 		return $message;
 	}

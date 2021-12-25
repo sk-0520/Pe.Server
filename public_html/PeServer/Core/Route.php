@@ -84,7 +84,7 @@ class Route
 		}
 		$this->_actions[$actionName]->add(
 			$httpMethod,
-			StringUtility::isNullOrWhiteSpace($methodName) ? $actionName : $methodName,
+			StringUtility::isNullOrWhiteSpace($methodName) ? $actionName : $methodName, // @phpstan-ignore-line
 			$options ?? $this->_baseOptions
 		);
 
@@ -126,7 +126,7 @@ class Route
 	 *
 	 * @param string $httpMethod HttpMethod を参照のこと
 	 * @param string[] $requestPaths リクエストパス。URLパラメータは含まない
-	 * @return array{code:HttpStatus,class:string,method:string,params:array<string,string>,options:ActionOptions} 存在する場合にクラス・メソッドのペア。存在しない場合は null
+	 * @return array{code:HttpStatus,class:string,method:string,params:array<string,string>,options:ActionOptions}|null 存在する場合にクラス・メソッドのペア。存在しない場合は null
 	 */
 	public function getAction(string $httpMethod, array $requestPaths): ?array
 	{

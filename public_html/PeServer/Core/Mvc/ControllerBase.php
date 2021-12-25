@@ -191,10 +191,10 @@ abstract class ControllerBase
 	 * @param string $controllerName コントローラ完全名。
 	 * @param string $action アクション名。
 	 * @param HttpStatus $httpStatus HTTPステータスコード。
-	 * @param array<mixed>|null $parameters View連携データ。
+	 * @param array<string|int,string|int|array<mixed>> $parameters View連携データ。
 	 * @return void
 	 */
-	public function viewWithController(string $controllerName, string $action, HttpStatus $httpStatus, ?array $parameters = null)
+	public function viewWithController(string $controllerName, string $action, HttpStatus $httpStatus, array $parameters = array())
 	{
 		$lastWord = 'Controller';
 		$controllerClassName = mb_substr($controllerName, mb_strpos($controllerName, $this->skipBaseName) + mb_strlen($this->skipBaseName) + 1);
@@ -213,17 +213,17 @@ abstract class ControllerBase
 	 * Viewを表示
 	 *
 	 * @param string $action アクション名
-	 * @param array<mixed>|null $parameters View連携データ。
+	 * @param array<string|int,string|int|HttpStatus|array<mixed>> $parameters View連携データ。
 	 * @return void
 	 */
-	public function view(string $action, ?array $parameters = null): void
+	public function view(string $action, array $parameters = array()): void
 	{
 		$className = get_class($this);
 
 		$httpStatus = ArrayUtility::getOr($parameters, 'status', HttpStatus::ok());
 		unset($parameters['status']);
 
-		$this->viewWithController($className, $action, $httpStatus, $parameters);
+		$this->viewWithController($className, $action, $httpStatus, $parameters); // @phpstan-ignore-line アプリ側とコア側で都合が混在している(HttpStatusが完全に💩)
 	}
 
 	/**

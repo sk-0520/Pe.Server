@@ -128,7 +128,7 @@ abstract class AppConfiguration
 
 	public static function isEnvironment(string $environment): bool
 	{
-		self::$_initializeChecker->throwIfNotInitialize();
+		self::$_initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
 
 		return self::$_environment === $environment;
 	}

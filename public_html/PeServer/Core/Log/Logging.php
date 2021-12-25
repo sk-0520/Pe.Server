@@ -147,7 +147,7 @@ abstract class Logging
 	 */
 	public static function format(int $level, int $traceIndex, string $header, $message, ...$parameters): string
 	{
-		self::$_initializeChecker->throwIfNotInitialize();
+		self::$_initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
 
 		/** @var array<string,mixed>[] */
 		$backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS); // DEBUG_BACKTRACE_PROVIDE_OBJECT
@@ -183,7 +183,7 @@ abstract class Logging
 
 	public static function create(string $header, int $baseTraceIndex = 0): ILogger
 	{
-		self::$_initializeChecker->throwIfNotInitialize();
+		self::$_initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
 
 		$loggers = [
 			new FileLogger($header, self::$_level, $baseTraceIndex + 1, self::$_loggingConfiguration['file']),

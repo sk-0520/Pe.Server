@@ -45,7 +45,7 @@ abstract class Database
 
 	public static function open(): Database
 	{
-		self::$_initializeChecker->throwIfNotInitialize();
+		self::$_initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
 
 		return new _Database_Invisible(self::$_databaseConfiguration);
 	}
@@ -307,7 +307,7 @@ class _Database_Invisible extends Database
 	 */
 	public function __construct(array $databaseConfiguration)
 	{
-		self::$_initializeChecker->throwIfNotInitialize();
+		self::$_initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
 
 		$dsn = 'sqlite:' . $databaseConfiguration['connection'];
 		$this->_pdo = new PDO($dsn);
@@ -365,7 +365,7 @@ class _Database_Invisible extends Database
 
 	public function query(string $statement, array $parameters = array()): array
 	{
-		self::$_initializeChecker->throwIfNotInitialize();
+		self::$_initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
 
 		$query = $this->executeStatement($statement, $parameters);
 
@@ -379,7 +379,7 @@ class _Database_Invisible extends Database
 
 	public function queryFirst(string $statement, array $parameters = array()): array
 	{
-		self::$_initializeChecker->throwIfNotInitialize();
+		self::$_initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
 
 		$query = $this->executeStatement($statement, $parameters);
 
@@ -393,7 +393,7 @@ class _Database_Invisible extends Database
 
 	public function queryFirstOrDefault($defaultValue, string $statement, array $parameters = array())
 	{
-		self::$_initializeChecker->throwIfNotInitialize();
+		self::$_initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
 
 		$query = $this->executeStatement($statement, $parameters);
 
@@ -407,7 +407,7 @@ class _Database_Invisible extends Database
 
 	public function execute(string $statement, array $parameters = array()): int
 	{
-		self::$_initializeChecker->throwIfNotInitialize();
+		self::$_initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
 
 		$query = $this->executeStatement($statement, $parameters);
 

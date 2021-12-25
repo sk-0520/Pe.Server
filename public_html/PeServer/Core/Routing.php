@@ -94,8 +94,10 @@ class Routing
 
 		foreach ($this->_routeMap as $route) {
 			$action = $route->getAction($requestMethod, $requestPaths);
-			if ($action['code']->code() === HttpStatus::doExecute()->code()) {
-				$this->executeAction($action['class'], $action['method'], $action['params'], $action['options']);
+			if (!is_null($action)) {
+				if ($action['code']->code() === HttpStatus::doExecute()->code()) {
+					$this->executeAction($action['class'], $action['method'], $action['params'], $action['options']);
+				}
 			}
 		}
 	}

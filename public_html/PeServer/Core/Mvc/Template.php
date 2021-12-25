@@ -72,7 +72,7 @@ abstract class Template
 
 	public static function create(string $baseName): Template
 	{
-		self::$initializeChecker->throwIfNotInitialize();
+		self::$initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
 
 		return new _Template_Invisible($baseName);
 	}
@@ -81,11 +81,10 @@ abstract class Template
 	 * View描画処理。
 	 *
 	 * @param string $templateName テンプレート名。
-	 * @param array<string,string|int|array<mixed>> $parameters パラメータ。
-	 * @param array<string,mixed> $options オプション。
+	 * @param array<string|int,string|int|array<mixed>> $parameters パラメータ。
 	 * @return void no-return?
 	 */
-	public abstract function show(string $templateName, $parameters, array $options = array()): void;
+	public abstract function show(string $templateName, array $parameters): void;
 }
 
 class _Template_Invisible extends Template
@@ -99,7 +98,7 @@ class _Template_Invisible extends Template
 
 	public function __construct(string $baseName)
 	{
-		self::$initializeChecker->throwIfNotInitialize();
+		self::$initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
 
 		$this->_engine = new Smarty();
 		$this->_engine->addTemplateDir(self::$baseDirectoryPath . "/App/Views/$baseName/");
@@ -111,7 +110,7 @@ class _Template_Invisible extends Template
 		$this->registerFunctions();
 	}
 
-	public function show(string $templateName, $parameters, array $options = array()): void
+	public function show(string $templateName, array $parameters): void
 	{
 		// @phpstan-ignore-next-line
 		$this->_engine->assign($parameters);

@@ -49,7 +49,7 @@ class Validations
 	}
 
 
-	public function inLength(string $key, int $length, ?string $value): bool
+	public function inLength(string $key, int $length, string $value): bool
 	{
 		if ($length < mb_strlen($value)) {
 			$this->_callback->receiveError($key, self::KIND_LENGTH, ['value' => $value, 'safe-length' => $length, 'error-length' => mb_strlen($value)]);

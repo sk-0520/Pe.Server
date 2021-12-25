@@ -44,7 +44,7 @@ abstract class DomainLogicBase extends LogicBase
 			return;
 		}
 
-		$userId = $userInfo['userId'];
+		$userId = $userInfo['userId']; // @phpstan-ignore-line ArrayUtility::tryGet
 		$ipAddress = ArrayUtility::getOr($_SERVER, 'REMOTE_ADDR', '');
 		$userAgent = ArrayUtility::getOr($_SERVER, 'HTTP_USER_AGENT', '');
 		$dumpInfo = StringUtility::dump($info);

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core;
 
 use \PeServer\Core\Throws\ArgumentException;
+use \PeServer\Core\Throws\CoreException as ThrowsCoreException;
 
 abstract class StringUtility
 {
@@ -41,7 +42,7 @@ abstract class StringUtility
 			return true;
 		}
 
-		return strlen(trim($s)) === 0;
+		return strlen(trim($s)) === 0; // @phpstan-ignore-line
 	}
 
 	/**
@@ -81,7 +82,7 @@ abstract class StringUtility
 		$escTail = preg_quote($tail);
 		$pattern = "/$escHead(.+?)$escTail/";
 
-		return preg_replace_callback(
+		$result = preg_replace_callback(
 			$pattern,
 			function ($matches) use ($map) {
 				if (isset($map[$matches[1]])) {
@@ -91,6 +92,12 @@ abstract class StringUtility
 			},
 			$source
 		);
+
+		if(is_null($result)) {
+			throw new ThrowsCoreException();
+		}
+
+		return $result;
 	}
 
 
