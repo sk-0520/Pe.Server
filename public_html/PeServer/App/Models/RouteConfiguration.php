@@ -25,7 +25,7 @@ abstract class RouteConfiguration
 	 *
 	 * @param SessionStore $session
 	 * @param string[] $levels
-	 * @return boolean
+	 * @return int
 	 */
 	private static function filterPageAccount(SessionStore $session, array $levels): int
 	{
