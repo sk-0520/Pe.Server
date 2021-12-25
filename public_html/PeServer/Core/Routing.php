@@ -52,7 +52,7 @@ class Routing
 	 * @param string[] $urlParameters
 	 * @return void
 	 */
-	private function executeAction(string $rawControllerName, string $methodName, array $urlParameters): void
+	private function executeAction(string $rawControllerName, string $methodName, array $urlParameters, ActionOptions $options): void
 	{
 		$splitNames = explode('/', $rawControllerName);
 		$controllerName = $splitNames[count($splitNames) - 1];
@@ -63,7 +63,7 @@ class Routing
 		$request = new ActionRequest($urlParameters);
 
 		$controller = new $controllerName($controllerArguments);
-		$controller->$methodName($request);
+		$controller->$methodName($request, $options);
 	}
 
 	/**
@@ -83,7 +83,7 @@ class Routing
 		foreach ($this->_routeMap as $route) {
 			$action = $route->getAction($requestMethod, $requestPaths);
 			if ($action['code'] === HttpStatusCode::DO_EXECUTE) {
-				$this->executeAction($action['class'], $action['method'], $action['params']);
+				$this->executeAction($action['class'], $action['method'], $action['params'], $action['options']);
 			}
 		}
 	}

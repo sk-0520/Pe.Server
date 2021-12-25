@@ -36,7 +36,7 @@ class Route
 	 * @param string $path URLとしてのパス。先頭が api 以外の場合に index アクションが自動登録される
 	 * @param string $className 使用されるクラス完全名
 	 */
-	public function __construct(string $path, string $className)
+	public function __construct(string $path, string $className, ?ActionOptions $options = null)
 	{
 		// if(str_starts_with($path, '/')) {
 		// 	die();
@@ -57,7 +57,7 @@ class Route
 
 		$this->_className = $className;
 		if (mb_substr($this->_basePath, 0, 3) != 'api') {
-			$this->addAction('', HttpMethod::get(), 'index');
+			$this->addAction('', HttpMethod::get(), 'index', $options);
 		}
 	}
 
@@ -69,14 +69,15 @@ class Route
 	 * @param string|null $methodName 呼び出されるコントローラメソッド。未指定なら $actionName が使用される
 	 * @return Route
 	 */
-	public function addAction(string $actionName, HttpMethod $httpMethod, ?string $methodName = null): Route
+	public function addAction(string $actionName, HttpMethod $httpMethod, ?string $methodName = null, ?ActionOptions $options = null): Route
 	{
 		if (!isset($this->_actions[$actionName])) {
 			$this->_actions[$actionName] = new Action();
 		}
 		$this->_actions[$actionName]->add(
 			$httpMethod,
-			StringUtility::isNullOrWhiteSpace($methodName) ? $actionName : $methodName
+			StringUtility::isNullOrWhiteSpace($methodName) ? $actionName : $methodName,
+			$options ?? ActionOptions::none()
 		);
 
 		return $this;
@@ -88,26 +89,27 @@ class Route
 	 * @param string $httpMethod
 	 * @param Action $action
 	 * @param array<string,string> $urlParameters
-	 * @return array{code:int,class:string,method:string,params:array<string,string>}
+	 * @return array{code:int,class:string,method:string,params:array<string,string>,options:ActionOptions}
 	 */
 	private function getActionCore(string $httpMethod, Action $action, array $urlParameters): array
 	{
-		$callMethod = $action->get($httpMethod);
-		if (StringUtility::isNullOrEmpty($callMethod)) {
+		$actionValues = $action->get($httpMethod);
+		if (is_null($actionValues)) {
 			return [
 				'code' => HttpStatusCode::METHOD_NOT_ALLOWED,
 				'class' => $this->_className,
 				'method' => '',
 				'params' => $urlParameters,
+				'options' => ActionOptions::none(),
 			];
 		}
 
-		// @phpstan-ignore-next-line
 		return [
 			'code' => HttpStatusCode::DO_EXECUTE,
 			'class' => $this->_className,
-			'method' => $callMethod,
+			'method' => $actionValues['method'],
 			'params' => $urlParameters,
+			'options' => $actionValues['options'],
 		];
 	}
 
@@ -116,7 +118,7 @@ class Route
 	 *
 	 * @param string $httpMethod HttpMethod を参照のこと
 	 * @param string[] $requestPaths リクエストパス。URLパラメータは含まない
-	 * @return array{code:int,class:string,method:string,params:array<string,string>} 存在する場合にクラス・メソッドのペア。存在しない場合は null
+	 * @return array{code:int,class:string,method:string,params:array<string,string>,options:ActionOptions} 存在する場合にクラス・メソッドのペア。存在しない場合は null
 	 */
 	public function getAction(string $httpMethod, array $requestPaths): ?array
 	{
@@ -128,6 +130,7 @@ class Route
 				'class' => $this->_className,
 				'method' => '',
 				'params' => [],
+				'options' => ActionOptions::none(),
 			];
 		}
 
@@ -208,6 +211,7 @@ class Route
 				'class' => $this->_className,
 				'method' => '',
 				'params' => [],
+				'options' => ActionOptions::none(),
 			];
 		}
 

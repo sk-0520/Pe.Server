@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models;
 
+use \PeServer\Core\ActionOptions;
 use \PeServer\Core\Route;
 use \PeServer\Core\HttpMethod;
 use \PeServer\App\Controllers\Page\HomeController;

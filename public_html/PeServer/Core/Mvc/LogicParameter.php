@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc;
 
 use \PeServer\Core\ILogger;
+use \PeServer\Core\ActionOptions;
 use \PeServer\Core\ActionRequest;
 
 /**
@@ -25,9 +26,12 @@ class LogicParameter
 	 */
 	public $request;
 
-	public function __construct(ActionRequest $request, ILogger $logger)
+	public ActionOptions $options;
+
+	public function __construct(ActionRequest $request, ActionOptions $options, ILogger $logger)
 	{
 		$this->request = $request;
+		$this->options = $options;
 		$this->logger = $logger;
 	}
 }

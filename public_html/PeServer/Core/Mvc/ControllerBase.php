@@ -7,6 +7,7 @@ namespace PeServer\Core\Mvc;
 use \LogicException;
 use \Smarty;
 use \PeServer\Core\ILogger;
+use \PeServer\Core\ActionOptions;
 use \PeServer\Core\ActionRequest;
 use \PeServer\Core\ActionResponse;
 use \PeServer\Core\ResponseOutput;
@@ -78,10 +79,11 @@ abstract class ControllerBase
 	 * @param ActionRequest $request リクエストデータ
 	 * @return LogicParameter
 	 */
-	protected function createParameter(string $logicName, ActionRequest $request): LogicParameter
+	protected function createParameter(string $logicName, ActionRequest $request, ActionOptions $options): LogicParameter
 	{
 		return new LogicParameter(
 			$request,
+			$options,
 			Logging::create($logicName)
 		);
 	}
@@ -93,9 +95,9 @@ abstract class ControllerBase
 	 * @param ActionRequest $request リクエストデータ
 	 * @return LogicBase
 	 */
-	protected function createLogic(string $logicClass, ActionRequest $request): LogicBase
+	protected function createLogic(string $logicClass, ActionRequest $request, ActionOptions $options): LogicBase
 	{
-		$parameter = $this->createParameter($logicClass, $request);
+		$parameter = $this->createParameter($logicClass, $request, $options);
 		// @phpstan-ignore-next-line
 		return new $logicClass($parameter);
 	}
