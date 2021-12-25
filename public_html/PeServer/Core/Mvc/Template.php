@@ -164,24 +164,19 @@ class _Template_Invisible extends Template
 			$targetKey = $params['key'];
 		}
 
+		if ($targetKey !== Validations::COMMON) {
+			if (!isset($errors[$targetKey])) {
+				return '';
+			}
+			if (ArrayUtility::isNullOrEmpty($errors[$targetKey])) {
+				return '';
+			}
+		}
+
 		$dom = new DOMDocument();
 
 		$ulElement = $dom->createElement('ul');
 		$ulElement->setAttribute('class', implode(' ', $classes));
-
-		if ($targetKey === Validations::COMMON) {
-			$commonElement = $dom->createElement('div');
-			$dom->appendChild($commonElement);
-
-			$messageElement = $dom->createElement('p');
-			$messageElement->appendChild($dom->createTextNode(I18n::message('エラーあり')));
-			$commonElement->appendChild($messageElement);
-			$commonElement->appendChild($ulElement);
-
-			$dom->appendChild($commonElement);
-		} else {
-			$dom->appendChild($ulElement);
-		}
 
 		foreach ($errors as $key => $values) {
 			if ($targetKey !== $key) {
@@ -197,6 +192,22 @@ class _Template_Invisible extends Template
 			}
 
 			$ulElement->appendChild($liElement);
+		}
+
+		if ($targetKey === Validations::COMMON) {
+			$commonElement = $dom->createElement('div');
+			$dom->appendChild($commonElement);
+
+			$messageElement = $dom->createElement('p');
+			$messageElement->appendChild($dom->createTextNode(I18n::message('エラーあり')));
+			$commonElement->appendChild($messageElement);
+			if ($ulElement->childElementCount) {
+				$commonElement->appendChild($ulElement);
+			}
+
+			$dom->appendChild($commonElement);
+		} else {
+			$dom->appendChild($ulElement);
 		}
 
 		$result = $dom->saveHTML();
@@ -233,7 +244,7 @@ class _Template_Invisible extends Template
 			$errors = $smarty->tpl_vars['errors']->value;
 			foreach ($errors as $key => $values) {
 				if ($targetKey === $key) {
-					$hasError = true;
+					$hasError = 0 < ArrayUtility::getCount($values);
 					break;
 				}
 			}
