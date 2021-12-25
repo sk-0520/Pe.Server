@@ -12,6 +12,7 @@ use \PeServer\App\Controllers\Page\SettingController;
 use \PeServer\App\Controllers\Page\AccountController;
 use \PeServer\App\Controllers\Page\ErrorController;
 use \PeServer\App\Controllers\Api\DevelopmentController;
+use PeServer\Core\HttpStatusCode;
 use PeServer\Core\Mvc\SessionStore;
 
 /**
@@ -26,19 +27,19 @@ abstract class RouteConfiguration
 	 * @param string[] $levels
 	 * @return boolean
 	 */
-	private static function filterPageAccount(SessionStore $session, array $levels): bool
+	private static function filterPageAccount(SessionStore $session, array $levels): int
 	{
 		if (!$session->tryGet(SessionKey::ACCOUNT, $account)) {
-			return false;
+			return HttpStatusCode::FORBIDDEN;
 		}
 
 		foreach ($levels as $level) {
-			if ($account['level'] === $levels) {
-				return true;
+			if ($account['level'] === $level) {
+				return HttpStatusCode::DO_EXECUTE;
 			}
 		}
 
-		return false;
+		return HttpStatusCode::FORBIDDEN;
 	}
 
 	private static ?ActionOptions $_user = null;

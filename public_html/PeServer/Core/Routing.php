@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
+use Exception;
 use \PeServer\Core\Log\Logging;
 use \PeServer\Core\Mvc\ControllerArguments;
 use \PeServer\Core\Mvc\SessionStore;
@@ -61,8 +62,15 @@ class Routing
 		$splitNames = explode('/', $rawControllerName);
 		$controllerName = $splitNames[count($splitNames) - 1];
 
-		$logger = Logging::create($controllerName);
+		if (!is_null($options->sessionFilter)) {
+			$sessionFilter = $options->sessionFilter;
+			$code = $sessionFilter($this->sessionStore);
+			if (400 <= $code) {
+				throw new Exception("TODO: $code");
+			}
+		}
 
+		$logger = Logging::create($controllerName);
 		$controllerArguments = new ControllerArguments($this->sessionStore, $logger);
 		$request = new ActionRequest($urlParameters);
 
