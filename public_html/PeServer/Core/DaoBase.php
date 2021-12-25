@@ -12,21 +12,27 @@ use \PeServer\Core\Database;
 use \PeServer\Core\ILogger;
 use \PeServer\Core\Log\Logging;
 
+/**
+ * DBアクセス基底処理。
+ *
+ * こいつを継承してアクセス処理を構築する。
+ */
 abstract class DaoBase
 {
 	/**
-	 * Undocumented variable
-	 *
-	 * @var ILogger
+	 * ロガー。
 	 */
-	protected $logger;
+	protected ILogger $logger;
 	/**
-	 * Undocumented variable
-	 *
-	 * @var Database
+	 * 接続処理。
 	 */
-	protected $database;
+	protected Database $database;
 
+	/**
+	 * 生成。
+	 *
+	 * @param Database $database 接続処理。
+	 */
 	protected function __construct(Database $database)
 	{
 		$this->logger = Logging::create(__CLASS__);

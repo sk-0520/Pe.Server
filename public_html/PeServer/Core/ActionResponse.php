@@ -16,12 +16,8 @@ class ActionResponse
 {
 	/**
 	 * 応答HTTPステータスコード。
-	 *
-	 * HttpStatusCode を参照のこと。
-	 *
-	 * @var int
 	 */
-	public $httpStatusCode;
+	public HttpStatus $httpStatus;
 	/**
 	 * MIME
 	 *
@@ -60,14 +56,14 @@ class ActionResponse
 	/**
 	 * 生成。
 	 *
-	 * @param integer $httpStatusCode
+	 * @param HttpStatus $httpStatus
 	 * @param string $mime
 	 * @param mixed $data
 	 * @param callable|null $callback
 	 */
-	public function __construct(int $httpStatusCode, string $mime, $data, ?callable $callback = null)
+	public function __construct(HttpStatus $httpStatus, string $mime, $data, ?callable $callback = null)
 	{
-		$this->httpStatusCode = $httpStatusCode;
+		$this->httpStatus = $httpStatus;
 		$this->mime = $mime;
 		$this->data = $data;
 		$this->callback = $callback;
@@ -77,23 +73,23 @@ class ActionResponse
 	 * プレーンテキスト応答。
 	 *
 	 * @param string $data
-	 * @param int $httpStatusCode
+	 * @param HttpStatus|null $httpStatus
 	 * @return ActionResponse
 	 */
-	public static function text(string $data, int $httpStatusCode = HttpStatusCode::OK): ActionResponse
+	public static function text(string $data, ?HttpStatus $httpStatus = null): ActionResponse
 	{
-		return new ActionResponse($httpStatusCode, Mime::TEXT, $data);
+		return new ActionResponse($httpStatus ?? HttpStatus::ok(), Mime::TEXT, $data);
 	}
 
 	/**
 	 * JSON応答。
 	 *
 	 * @param array<mixed> $data
-	 * @param int $httpStatusCode
+	 * @param HttpStatus|null $httpStatus
 	 * @return ActionResponse
 	 */
-	public static function json(array $data, int $httpStatusCode = HttpStatusCode::OK): ActionResponse
+	public static function json(array $data, ?HttpStatus $httpStatus = null): ActionResponse
 	{
-		return new ActionResponse($httpStatusCode, Mime::JSON, $data);
+		return new ActionResponse($httpStatus ?? HttpStatus::ok(), Mime::JSON, $data);
 	}
 }

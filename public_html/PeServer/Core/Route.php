@@ -97,14 +97,14 @@ class Route
 	 * @param string $httpMethod
 	 * @param Action $action
 	 * @param array<string,string> $urlParameters
-	 * @return array{code:int,class:string,method:string,params:array<string,string>,options:ActionOptions}
+	 * @return array{code:HttpStatus,class:string,method:string,params:array<string,string>,options:ActionOptions}
 	 */
 	private function getActionCore(string $httpMethod, Action $action, array $urlParameters): array
 	{
 		$actionValues = $action->get($httpMethod);
 		if (is_null($actionValues)) {
 			return [
-				'code' => HttpStatusCode::METHOD_NOT_ALLOWED,
+				'code' => HttpStatus::methodNotAllowed(),
 				'class' => $this->_className,
 				'method' => '',
 				'params' => $urlParameters,
@@ -113,7 +113,7 @@ class Route
 		}
 
 		return [
-			'code' => HttpStatusCode::DO_EXECUTE,
+			'code' => HttpStatus::doExecute(),
 			'class' => $this->_className,
 			'method' => $actionValues['method'],
 			'params' => $urlParameters,
@@ -126,7 +126,7 @@ class Route
 	 *
 	 * @param string $httpMethod HttpMethod を参照のこと
 	 * @param string[] $requestPaths リクエストパス。URLパラメータは含まない
-	 * @return array{code:int,class:string,method:string,params:array<string,string>,options:ActionOptions} 存在する場合にクラス・メソッドのペア。存在しない場合は null
+	 * @return array{code:HttpStatus,class:string,method:string,params:array<string,string>,options:ActionOptions} 存在する場合にクラス・メソッドのペア。存在しない場合は null
 	 */
 	public function getAction(string $httpMethod, array $requestPaths): ?array
 	{
@@ -134,7 +134,7 @@ class Route
 
 		if (!StringUtility::startsWith($requestPath, $this->_basePath, false)) {
 			return [
-				'code' => HttpStatusCode::NOT_FOUND,
+				'code' => HttpStatus::notFound(),
 				'class' => $this->_className,
 				'method' => '',
 				'params' => [],
@@ -209,13 +209,13 @@ class Route
 				}
 
 				$result = $this->getActionCore($httpMethod, $action, $flatParameters);
-				if ($result['code'] === HttpStatusCode::DO_EXECUTE) {
+				if ($result['code']->code() === HttpStatus::doExecute()->code()) {
 					return $result;
 				}
 			}
 
 			return [
-				'code' => HttpStatusCode::NOT_FOUND,
+				'code' => HttpStatus::notFound(),
 				'class' => $this->_className,
 				'method' => '',
 				'params' => [],

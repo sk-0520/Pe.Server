@@ -64,9 +64,9 @@ class Routing
 
 		if (!is_null($options->sessionFilter)) {
 			$sessionFilter = $options->sessionFilter;
-			$code = $sessionFilter($this->sessionStore);
-			if (400 <= $code) {
-				throw new Exception("TODO: $code");
+			$httpStatus = $sessionFilter($this->sessionStore);
+			if (400 <= $httpStatus->code()) {
+				throw new Exception('TODO: ' . $httpStatus->code());
 			}
 		}
 
@@ -94,7 +94,7 @@ class Routing
 
 		foreach ($this->_routeMap as $route) {
 			$action = $route->getAction($requestMethod, $requestPaths);
-			if ($action['code'] === HttpStatusCode::DO_EXECUTE) {
+			if ($action['code']->code() === HttpStatus::doExecute()->code()) {
 				$this->executeAction($action['class'], $action['method'], $action['params'], $action['options']);
 			}
 		}

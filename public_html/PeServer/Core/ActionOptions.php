@@ -24,7 +24,7 @@ class ActionOptions
 	/**
 	 * Undocumented variable
 	 *
-	 * @var callable(SessionStore):int |null
+	 * @var callable(SessionStore):HttpStatus |null
 	 */
 	public $sessionFilter;
 }

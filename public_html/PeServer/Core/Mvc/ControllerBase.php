@@ -11,7 +11,7 @@ use \PeServer\Core\ActionOptions;
 use \PeServer\Core\ActionRequest;
 use \PeServer\Core\ActionResponse;
 use \PeServer\Core\ResponseOutput;
-use \PeServer\Core\HttpStatusCode;
+use \PeServer\Core\HttpStatus;
 use \PeServer\Core\ArrayUtility;
 use \PeServer\Core\Mvc\ControllerArguments;
 use \PeServer\Core\Mvc\Template;
@@ -190,11 +190,11 @@ abstract class ControllerBase
 	 *
 	 * @param string $controllerName コントローラ完全名。
 	 * @param string $action アクション名。
-	 * @param integer $httpStatusCode HTTPステータスコード。
+	 * @param HttpStatus $httpStatus HTTPステータスコード。
 	 * @param array<mixed>|null $parameters View連携データ。
 	 * @return void
 	 */
-	public function viewWithController(string $controllerName, string $action, int $httpStatusCode, ?array $parameters = null)
+	public function viewWithController(string $controllerName, string $action, HttpStatus $httpStatus, ?array $parameters = null)
 	{
 		$lastWord = 'Controller';
 		$controllerClassName = mb_substr($controllerName, mb_strpos($controllerName, $this->skipBaseName) + mb_strlen($this->skipBaseName) + 1);
@@ -220,9 +220,10 @@ abstract class ControllerBase
 	{
 		$className = get_class($this);
 
-		$httpStatusCode = ArrayUtility::getOr($parameters, 'status', HttpStatusCode::OK);
+		$httpStatus = ArrayUtility::getOr($parameters, 'status', HttpStatus::ok());
+		unset($parameters['status']);
 
-		$this->viewWithController($className, $action, $httpStatusCode, $parameters);
+		$this->viewWithController($className, $action, $httpStatus, $parameters);
 	}
 
 	/**

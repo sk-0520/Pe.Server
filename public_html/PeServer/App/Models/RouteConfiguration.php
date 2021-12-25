@@ -12,8 +12,8 @@ use \PeServer\App\Controllers\Page\SettingController;
 use \PeServer\App\Controllers\Page\AccountController;
 use \PeServer\App\Controllers\Page\ErrorController;
 use \PeServer\App\Controllers\Api\DevelopmentController;
-use PeServer\Core\HttpStatusCode;
-use PeServer\Core\Mvc\SessionStore;
+use \PeServer\Core\HttpStatus;
+use \PeServer\Core\Mvc\SessionStore;
 
 /**
  * ルーティング情報設定。
@@ -25,21 +25,21 @@ abstract class RouteConfiguration
 	 *
 	 * @param SessionStore $session
 	 * @param string[] $levels
-	 * @return int
+	 * @return HttpStatus
 	 */
-	private static function filterPageAccount(SessionStore $session, array $levels): int
+	private static function filterPageAccount(SessionStore $session, array $levels): HttpStatus
 	{
 		if (!$session->tryGet(SessionKey::ACCOUNT, $account)) {
-			return HttpStatusCode::FORBIDDEN;
+			return HttpStatus::forbidden();
 		}
 
 		foreach ($levels as $level) {
 			if ($account['level'] === $level) {
-				return HttpStatusCode::DO_EXECUTE;
+				return HttpStatus::doExecute();
 			}
 		}
 
-		return HttpStatusCode::FORBIDDEN;
+		return HttpStatus::forbidden();
 	}
 
 	private static ?ActionOptions $_user = null;

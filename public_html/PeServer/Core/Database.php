@@ -6,9 +6,11 @@ namespace PeServer\Core;
 
 use \PDO;
 use \PDOStatement;
-use PeServer\Core\Throws\NotImplementedException;
 use \PeServer\Core\Throws\SqlException;
 
+/**
+ * DB接続処理。
+ */
 abstract class Database
 {
 	/**
@@ -85,21 +87,56 @@ abstract class Database
 	public abstract function execute(string $statement, array $parameters = array()): int;
 
 	/**
-	 * Undocumented function
+	 * 並ぶ順問い合わせ文を強制。
+	 *
+	 * 単純な文字列処理のため無理な時は無理。
 	 *
 	 * @param string $statement
 	 * @param array<string|int,string|int> $parameters
 	 * @return mixed[]
 	 */
-	public abstract function selectOrdered(string $statement, array $parameters = array()): array;
+	public function selectOrdered(string $statement, array $parameters = array()): array
+	{
+		if (!preg_match('/\\border\\s+by\\b/i', $statement)) {
+			throw new SqlException();
+		}
+
+		return $this->query($statement, $parameters);
+	}
+
 	/**
-	 * Undocumented function
+	 * 単一 COUNT 関数問い合わせ文を強制。
+	 *
+	 * 単純な文字列処理のため無理な時は無理。
 	 *
 	 * @param string $statement
 	 * @param array<string|int,string|int> $parameters
 	 * @return integer
 	 */
-	public abstract function selectSingleCount(string $statement, array $parameters = array()): int;
+	public function selectSingleCount(string $statement, array $parameters = array()): int
+	{
+		if (!preg_match('/\\bselect\\s+count\\s*\\(/i', $statement)) {
+			throw new SqlException();
+		}
+
+		$result = $this->queryFirst($statement, $parameters);
+		return (int)current($result);
+	}
+
+	/**
+	 * INSERT文を強制。
+	 *
+	 * 単純な文字列処理のため無理な時は無理。
+	 *
+	 * @param string $statement
+	 * @return void
+	 */
+	private function enforceInsert(string $statement): void
+	{
+		if (!preg_match('/\\binsert\\b/i', $statement)) {
+			throw new SqlException();
+		}
+	}
 
 	/**
 	 * Undocumented function
@@ -108,7 +145,12 @@ abstract class Database
 	 * @param array<string|int,string|int> $parameters
 	 * @return integer
 	 */
-	public abstract function insert(string $statement, array $parameters = array()): int;
+	public function insert(string $statement, array $parameters = array()): int
+	{
+		$this->enforceInsert($statement);
+		return $this->execute($statement, $parameters);
+	}
+
 	/**
 	 * Undocumented function
 	 *
@@ -116,7 +158,29 @@ abstract class Database
 	 * @param array<string|int,string|int> $parameters
 	 * @return void
 	 */
-	public abstract function insertSingle(string $statement, array $parameters = array()): void;
+	public function insertSingle(string $statement, array $parameters = array()): void
+	{
+		$this->enforceInsert($statement);
+		$result = $this->execute($statement, $parameters);
+		if ($result !== 1) {
+			throw new SqlException();
+		}
+	}
+
+	/**
+	 * UPDATE文を強制。
+	 *
+	 * 単純な文字列処理のため無理な時は無理。
+	 *
+	 * @param string $statement
+	 * @return void
+	 */
+	private function enforceUpdate(string $statement): void
+	{
+		if (!preg_match('/\\bupdate\\b/i', $statement)) {
+			throw new SqlException();
+		}
+	}
 
 	/**
 	 * Undocumented function
@@ -125,7 +189,12 @@ abstract class Database
 	 * @param array<string|int,string|int> $parameters
 	 * @return integer
 	 */
-	public abstract function update(string $statement, array $parameters = array()): int;
+	public function update(string $statement, array $parameters = array()): int
+	{
+		$this->enforceUpdate($statement);
+		return $this->execute($statement, $parameters);
+	}
+
 	/**
 	 * Undocumented function
 	 *
@@ -133,7 +202,14 @@ abstract class Database
 	 * @param array<string|int,string|int> $parameters
 	 * @return void
 	 */
-	public abstract function updateByKey(string $statement, array $parameters = array()): void;
+	public function updateByKey(string $statement, array $parameters = array()): void
+	{
+		$this->enforceUpdate($statement);
+		$result = $this->execute($statement, $parameters);
+		if ($result !== 1) {
+			throw new SqlException();
+		}
+	}
 	/**
 	 * Undocumented function
 	 *
@@ -141,7 +217,31 @@ abstract class Database
 	 * @param array<string|int,string|int> $parameters
 	 * @return boolean
 	 */
-	public abstract function updateByKeyOrNothing(string $statement, array $parameters = array()): bool;
+	public function updateByKeyOrNothing(string $statement, array $parameters = array()): bool
+	{
+		$this->enforceUpdate($statement);
+		$result = $this->execute($statement, $parameters);
+		if (1 < $result) {
+			throw new SqlException();
+		}
+
+		return $result === 1;
+	}
+
+	/**
+	 * DELETE文を強制。
+	 *
+	 * 単純な文字列処理のため無理な時は無理。
+	 *
+	 * @param string $statement
+	 * @return void
+	 */
+	private function enforceDelete(string $statement): void
+	{
+		if (!preg_match('/\\bdelete\\b/i', $statement)) {
+			throw new SqlException();
+		}
+	}
 
 	/**
 	 * Undocumented function
@@ -150,7 +250,12 @@ abstract class Database
 	 * @param array<string|int,string|int> $parameters
 	 * @return integer
 	 */
-	public abstract function delete(string $statement, array $parameters = array()): int;
+	public function delete(string $statement, array $parameters = array()): int
+	{
+		$this->enforceDelete($statement);
+		return $this->execute($statement, $parameters);
+	}
+
 	/**
 	 * Undocumented function
 	 *
@@ -158,7 +263,14 @@ abstract class Database
 	 * @param array<string|int,string|int> $parameters
 	 * @return void
 	 */
-	public abstract function deleteByKey(string $statement, array $parameters = array()): void;
+	public function deleteByKey(string $statement, array $parameters = array()): void
+	{
+		$this->enforceDelete($statement);
+		$result = $this->execute($statement, $parameters);
+		if ($result !== 1) {
+			throw new SqlException();
+		}
+	}
 	/**
 	 * Undocumented function
 	 *
@@ -166,17 +278,27 @@ abstract class Database
 	 * @param array<string|int,string|int> $parameters
 	 * @return boolean
 	 */
-	public abstract function deleteByKeyOrNothing(string $statement, array $parameters = array()): bool;
+	public function deleteByKeyOrNothing(string $statement, array $parameters = array()): bool
+	{
+		$this->enforceDelete($statement);
+		$result = $this->execute($statement, $parameters);
+		if (1 < $result) {
+			throw new SqlException();
+		}
+
+		return $result === 1;
+	}
 }
 
+/**
+ * Database内部実装。
+ */
 class _Database_Invisible extends Database
 {
 	/**
 	 * 接続処理。
-	 *
-	 * @var PDO
 	 */
-	private $pdo;
+	private PDO $_pdo;
 
 	/**
 	 * 生成。
@@ -188,13 +310,13 @@ class _Database_Invisible extends Database
 		self::$_initializeChecker->throwIfNotInitialize();
 
 		$dsn = 'sqlite:' . $databaseConfiguration['connection'];
-		$this->pdo = new PDO($dsn);
-		$this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+		$this->_pdo = new PDO($dsn);
+		$this->_pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$this->_pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 	}
 
 	/**
-	 * Undocumented function
+	 * バインド実行。
 	 *
 	 * @param PDOStatement $statement
 	 * @param array<string|int,string|int> $parameters
@@ -209,22 +331,43 @@ class _Database_Invisible extends Database
 		}
 	}
 
+	/**
+	 * 直近のエラメッセージを取得。
+	 *
+	 * @return string
+	 */
 	private function getErrorMessage(): string
 	{
-		return StringUtility::dump($this->pdo->errorInfo());
+		return StringUtility::dump($this->_pdo->errorInfo());
 	}
 
-	public function query(string $statement, array $parameters = array()): array
+	/**
+	 * 文を実行。
+	 *
+	 * @param string $statement
+	 * @param array<string|int,string|int> $parameters
+	 * @return PDOStatement
+	 * @throws SqlException 実行失敗。
+	 */
+	private function executeStatement(string $statement, array $parameters): PDOStatement
 	{
-		self::$_initializeChecker->throwIfNotInitialize();
-
-		$query = $this->pdo->prepare($statement);
+		$query = $this->_pdo->prepare($statement);
 
 		$this->setParameters($query, $parameters);
 
 		if (!$query->execute()) {
 			throw new SqlException($this->getErrorMessage());
 		}
+
+		return $query;
+	}
+
+
+	public function query(string $statement, array $parameters = array()): array
+	{
+		self::$_initializeChecker->throwIfNotInitialize();
+
+		$query = $this->executeStatement($statement, $parameters);
 
 		$result = $query->fetchAll();
 		if ($result === false) {
@@ -238,13 +381,7 @@ class _Database_Invisible extends Database
 	{
 		self::$_initializeChecker->throwIfNotInitialize();
 
-		$query = $this->pdo->prepare($statement);
-
-		$this->setParameters($query, $parameters);
-
-		if (!$query->execute()) {
-			throw new SqlException($this->getErrorMessage());
-		}
+		$query = $this->executeStatement($statement, $parameters);
 
 		$result = $query->fetch();
 		if ($result === false) {
@@ -258,13 +395,7 @@ class _Database_Invisible extends Database
 	{
 		self::$_initializeChecker->throwIfNotInitialize();
 
-		$query = $this->pdo->prepare($statement);
-
-		$this->setParameters($query, $parameters);
-
-		if (!$query->execute()) {
-			throw new SqlException($this->getErrorMessage());
-		}
+		$query = $this->executeStatement($statement, $parameters);
 
 		$result = $query->fetch();
 		if ($result === false) {
@@ -278,116 +409,8 @@ class _Database_Invisible extends Database
 	{
 		self::$_initializeChecker->throwIfNotInitialize();
 
-		$query = $this->pdo->prepare($statement);
-
-		$this->setParameters($query, $parameters);
-
-		if (!$query->execute()) {
-			throw new SqlException($this->getErrorMessage());
-		}
+		$query = $this->executeStatement($statement, $parameters);
 
 		return $query->rowCount();
-	}
-
-	public function selectOrdered(string $statement, array $parameters = array()): array
-	{
-		if (!preg_match('/\\border\\s+by\\b/i', $statement)) {
-			throw new SqlException();
-		}
-
-		return $this->query($statement, $parameters);
-	}
-
-	public function selectSingleCount(string $statement, array $parameters = array()): int
-	{
-		if (!preg_match('/\\bselect\\s+count\\s*\\(/i', $statement)) {
-			throw new SqlException();
-		}
-
-		$result = $this->queryFirst($statement, $parameters);
-		return (int)current($result);
-	}
-
-	private function enforceInsert(string $statement): void
-	{
-		if (!preg_match('/\\binsert\\b/i', $statement)) {
-			throw new SqlException();
-		}
-	}
-
-	public function insert(string $statement, array $parameters = array()): int
-	{
-		$this->enforceInsert($statement);
-		return $this->execute($statement, $parameters);
-	}
-	public function insertSingle(string $statement, array $parameters = array()): void
-	{
-		$this->enforceInsert($statement);
-		$result = $this->execute($statement, $parameters);
-		if ($result !== 1) {
-			throw new SqlException();
-		}
-	}
-
-	private function enforceUpdate(string $statement): void
-	{
-		if (!preg_match('/\\bupdate\\b/i', $statement)) {
-			throw new SqlException();
-		}
-	}
-
-	public function update(string $statement, array $parameters = array()): int
-	{
-		$this->enforceUpdate($statement);
-		return $this->execute($statement, $parameters);
-	}
-	public function updateByKey(string $statement, array $parameters = array()): void
-	{
-		$this->enforceUpdate($statement);
-		$result = $this->execute($statement, $parameters);
-		if ($result !== 1) {
-			throw new SqlException();
-		}
-	}
-	public function updateByKeyOrNothing(string $statement, array $parameters = array()): bool
-	{
-		$this->enforceUpdate($statement);
-		$result = $this->execute($statement, $parameters);
-		if (1 < $result) {
-			throw new SqlException();
-		}
-
-		return $result === 1;
-	}
-
-	private function enforceDelete(string $statement): void
-	{
-		if (!preg_match('/\\bdelete\\b/i', $statement)) {
-			throw new SqlException();
-		}
-	}
-
-	public function delete(string $statement, array $parameters = array()): int
-	{
-		$this->enforceDelete($statement);
-		return $this->execute($statement, $parameters);
-	}
-	public function deleteByKey(string $statement, array $parameters = array()): void
-	{
-		$this->enforceDelete($statement);
-		$result = $this->execute($statement, $parameters);
-		if ($result !== 1) {
-			throw new SqlException();
-		}
-	}
-	public function deleteByKeyOrNothing(string $statement, array $parameters = array()): bool
-	{
-		$this->enforceDelete($statement);
-		$result = $this->execute($statement, $parameters);
-		if (1 < $result) {
-			throw new SqlException();
-		}
-
-		return $result === 1;
 	}
 }

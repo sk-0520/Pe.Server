@@ -17,7 +17,7 @@ abstract class AutoLoader
 	private static $_baseDirectoryPaths;
 
 	/**
-	 * 読み込みベースパス。
+	 * 読み込み対象パターン。
 	 *
 	 * @var string
 	 */

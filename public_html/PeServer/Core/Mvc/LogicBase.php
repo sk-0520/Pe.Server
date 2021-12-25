@@ -8,8 +8,8 @@ use LogicException;
 use \PeServer\Core\ILogger;
 use \PeServer\Core\ActionRequest;
 use \PeServer\Core\ActionResponse;
-use PeServer\Core\ArrayUtility;
-use \PeServer\Core\HttpStatusCode;
+use \PeServer\Core\ArrayUtility;
+use \PeServer\Core\HttpStatus;
 use \PeServer\Core\Mvc\LogicParameter;
 use \PeServer\Core\Mvc\ValidationReceivable;
 use \PeServer\Core\Mvc\SessionNextState;
@@ -41,10 +41,8 @@ abstract class LogicBase implements ValidationReceivable
 
 	/**
 	 * HTTPステータスコード。
-	 *
-	 * @var int
 	 */
-	private $_statusCode = HttpStatusCode::OK;
+	private HttpStatus $_httpStatus;
 	/**
 	 * 検証エラー。
 	 *
@@ -91,6 +89,7 @@ abstract class LogicBase implements ValidationReceivable
 
 	protected function __construct(LogicParameter $parameter)
 	{
+		$this->_httpStatus = HttpStatus::ok();
 		$this->_request = $parameter->request;
 		$this->_session = $parameter->session;
 		$this->logger = $parameter->logger;
@@ -320,12 +319,12 @@ abstract class LogicBase implements ValidationReceivable
 	/**
 	 * View表示用データの取得。
 	 *
-	 * @return array{status:int,errors:array<string,string[]>,values:array<string,string|array<mixed>>}
+	 * @return array{status:HttpStatus,errors:array<string,string[]>,values:array<string,string|array<mixed>>}
 	 */
 	public function getViewData(): array
 	{
 		return [
-			'status' => $this->_statusCode,
+			'status' => $this->_httpStatus,
 			'errors' => $this->_errors,
 			'values' => $this->_values,
 		];
