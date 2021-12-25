@@ -47,7 +47,7 @@ abstract class DomainLogicBase extends LogicBase
 		$userId = $userInfo['userId']; // @phpstan-ignore-line ArrayUtility::tryGet
 		$ipAddress = ArrayUtility::getOr($_SERVER, 'REMOTE_ADDR', '');
 		$userAgent = ArrayUtility::getOr($_SERVER, 'HTTP_USER_AGENT', '');
-		$dumpInfo = StringUtility::dump($info);
+		$dumpInfo = is_null($info) ? '' : json_encode($info, JSON_UNESCAPED_UNICODE);
 
 		$db = $database ?? Database::open();
 		$userAuditLogsEntityDao = new UserAuditLogsEntityDao($db);
