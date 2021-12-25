@@ -39,12 +39,12 @@ class AccountLoginLogic extends PageLogicBase
 
 		$loginId = $this->getRequest('account_login_login_id');
 		if (StringUtility::isNullOrWhiteSpace($loginId)) {
-			$this->addError(Validations::COMMON, I18n::message('ID・パスワードが不明です'));
+			$this->addError(Validations::COMMON, I18n::message('error-login-parameter'));
 		}
 
 		$password = $this->getRequest('account_login_password');
 		if (StringUtility::isNullOrWhiteSpace($password)) {
-			$this->addError(Validations::COMMON, I18n::message('ID・パスワードが不明です'));
+			$this->addError(Validations::COMMON, I18n::message('error-login-parameter'));
 		}
 	}
 
@@ -69,12 +69,12 @@ class AccountLoginLogic extends PageLogicBase
 		$user = $userDomainDao->selectLoginUser($this->getRequest('account_login_login_id'));
 
 		if (is_null($user)) {
-			$this->addError(Validations::COMMON, I18n::message('ID・パスワードが不明です'));
+			$this->addError(Validations::COMMON, I18n::message('error-login-parameter'));
 			return;
 		}
 
 		if ($existsSetupUser && $user['level'] !== 'setup') {
-			$this->addError(Validations::COMMON, I18n::message('ID・パスワードが不明です'));
+			$this->addError(Validations::COMMON, I18n::message('error-login-parameter'));
 			$this->logger->error('未セットアップ状態での通常ログインは抑制中');
 			return;
 		}
@@ -82,7 +82,7 @@ class AccountLoginLogic extends PageLogicBase
 		// パスワード突合
 		$verify_ok = password_verify($this->getRequest('account_login_password'), $user['password']);
 		if (!$verify_ok) {
-			$this->addError(Validations::COMMON, I18n::message('ID・パスワードが不明です'));
+			$this->addError(Validations::COMMON, I18n::message('error-login-parameter'));
 			$this->logger->warn('ログイン失敗: {0}', $user['user_id']);
 			return;
 		}

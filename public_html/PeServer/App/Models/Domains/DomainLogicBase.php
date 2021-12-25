@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domains;
 
-use PeServer\App\Models\Database\Entities\UserAuditLogsEntityDao;
-use \PeServer\Core\Mvc\LogicBase;
-use \PeServer\Core\Mvc\LogicParameter;
+use \PeServer\Core\Database;
+use \Prophecy\Util\StringUtil;
 use \PeServer\Core\ArrayUtility;
-use PeServer\Core\Database;
-use PeServer\Core\StringUtility;
-use PeServer\Core\Throws\InvalidOperationException;
-use Prophecy\Util\StringUtil;
+use \PeServer\Core\StringUtility;
+use \PeServer\Core\Mvc\LogicBase;
+use \PeServer\Core\Mvc\Validations;
+use \PeServer\Core\Mvc\LogicParameter;
+use \PeServer\Core\Throws\NotImplementedException;
+use \PeServer\Core\Throws\InvalidOperationException;
+use \PeServer\App\Models\Database\Entities\UserAuditLogsEntityDao;
+use PeServer\Core\I18n;
 
 abstract class DomainLogicBase extends LogicBase
 {
@@ -47,7 +50,13 @@ abstract class DomainLogicBase extends LogicBase
 		$userId = $userInfo['userId']; // @phpstan-ignore-line ArrayUtility::tryGet
 		$ipAddress = ArrayUtility::getOr($_SERVER, 'REMOTE_ADDR', '');
 		$userAgent = ArrayUtility::getOr($_SERVER, 'HTTP_USER_AGENT', '');
-		$dumpInfo = is_null($info) ? '' : json_encode($info, JSON_UNESCAPED_UNICODE);
+		$dumpInfo = '';
+		if (!is_null($info)) {
+			$jsonText = json_encode($info, JSON_UNESCAPED_UNICODE);
+			if ($jsonText !== false) {
+				$dumpInfo = $jsonText;
+			}
+		}
 
 		$db = $database ?? Database::open();
 		$userAuditLogsEntityDao = new UserAuditLogsEntityDao($db);

@@ -14,6 +14,13 @@ abstract class I18n
 	private static $_initializeChecker;
 
 	/**
+	 * Undocumented variable
+	 *
+	 * @var array<string,array<string,string>>
+	 */
+	private static array $_i18nConfiguration;
+
+	/**
 	 * Undocumented function
 	 *
 	 * @param array<string,mixed> $i18nConfiguration
@@ -25,19 +32,31 @@ abstract class I18n
 			self::$_initializeChecker = new InitializeChecker();
 		}
 		self::$_initializeChecker->initialize();
+
+		self::$_i18nConfiguration = $i18nConfiguration;
 	}
 
 	/**
 	 * Undocumented function
 	 *
 	 * @param string $message
-	 * @param mixed ...$parameters
+	 * @param array<int|string,int|string> $parameters
 	 * @return string
 	 */
-	public static function message(string $message, ...$parameters): string
+	public static function message(string $message, array $parameters = array()): string
 	{
 		self::$_initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
 
-		return $message;
+		/** @var array<string,string> */
+		$params = [];
+		foreach ($parameters as $key => $value) {
+			$params[strval($key)] = strval($value);
+		}
+
+		if (isset(self::$_i18nConfiguration['*'][$message])) {
+			$message = self::$_i18nConfiguration['*'][$message];
+		}
+
+		return StringUtility::replaceMap($message, $params);
 	}
 }

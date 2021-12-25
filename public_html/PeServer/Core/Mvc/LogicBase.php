@@ -10,6 +10,7 @@ use \PeServer\Core\ActionRequest;
 use \PeServer\Core\ActionResponse;
 use \PeServer\Core\ArrayUtility;
 use \PeServer\Core\HttpStatus;
+use PeServer\Core\I18n;
 use \PeServer\Core\Mvc\LogicParameter;
 use \PeServer\Core\Mvc\ValidationReceivable;
 use \PeServer\Core\Mvc\SessionNextState;
@@ -206,9 +207,11 @@ abstract class LogicBase implements ValidationReceivable
 	protected function addError(string $key, string $message): void
 	{
 		if (isset($this->_errors[$key])) {
-			$this->_errors[$key] = [$message];
+			if (array_search($message, $this->_errors[$key]) === false) {
+				$this->_errors[$key][] = $message;
+			}
 		} else {
-			$this->_errors[$key][] = $message;
+			$this->_errors[$key] = [$message];
 		}
 	}
 
@@ -216,19 +219,19 @@ abstract class LogicBase implements ValidationReceivable
 	{
 		switch ($kind) {
 			case Validations::KIND_EMPTY:
-				$this->addError($key, StringUtility::dump($parameters));
+				$this->addError($key, I18n::message('error-empty', $parameters));
 				break;
 
 			case Validations::KIND_WHITE_SPACE:
-				$this->addError($key, StringUtility::dump($parameters));
+				$this->addError($key, I18n::message('error-white-space', $parameters));
 				break;
 
 			case Validations::KIND_LENGTH:
-				$this->addError($key, StringUtility::dump($parameters));
+				$this->addError($key, I18n::message('error-length', $parameters));
 				break;
 
 			case Validations::KIND_MATCH:
-				$this->addError($key, StringUtility::dump($parameters));
+				$this->addError($key, I18n::message('error-match', $parameters));
 				break;
 
 			default:

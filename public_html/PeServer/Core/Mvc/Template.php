@@ -183,15 +183,16 @@ class _Template_Invisible extends Template
 				continue;
 			}
 
-			$liElement = $dom->createElement('li');
-			$liElement->setAttribute('class', 'error');
-
 			foreach ($values as $value) {
-				$messageElement = $dom->createTextNode($value);
-				$liElement->appendChild($messageElement);
-			}
+				$liElement = $dom->createElement('li');
+				$liElement->setAttribute('class', 'error');
 
-			$ulElement->appendChild($liElement);
+				$messageElement = $dom->createTextNode($value);
+
+				$liElement->appendChild($messageElement);
+
+				$ulElement->appendChild($liElement);
+			}
 		}
 
 		if ($targetKey === Validations::COMMON) {
@@ -199,7 +200,7 @@ class _Template_Invisible extends Template
 			$dom->appendChild($commonElement);
 
 			$messageElement = $dom->createElement('p');
-			$messageElement->appendChild($dom->createTextNode(I18n::message('エラーあり')));
+			$messageElement->appendChild($dom->createTextNode(I18n::message('common-error-title')));
 			$commonElement->appendChild($messageElement);
 			if ($ulElement->childElementCount) {
 				$commonElement->appendChild($ulElement);

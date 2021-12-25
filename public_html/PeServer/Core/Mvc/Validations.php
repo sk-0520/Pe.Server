@@ -14,7 +14,7 @@ class Validations
 	public const KIND_EMPTY = 0;
 	public const KIND_WHITE_SPACE = 1;
 	public const KIND_LENGTH = 2;
-	public const KIND_MATCH = 2;
+	public const KIND_MATCH = 3;
 
 	/**
 	 * 検証移譲取得処理。
@@ -62,7 +62,7 @@ class Validations
 	public function isMatch(string $key, string $pattern, string $value): bool
 	{
 		if (!preg_match($pattern, $value)) {
-			$this->_callback->receiveError($key, self::KIND_MATCH, ['value' => $value]);
+			$this->_callback->receiveError($key, self::KIND_MATCH, ['value' => $value, 'pattern' => $pattern]);
 			return false;
 		}
 
