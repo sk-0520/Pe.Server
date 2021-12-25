@@ -129,7 +129,7 @@ class _Template_Invisible extends Template
 		// @phpstan-ignore-next-line
 		$this->_engine->registerPlugin('function', 'show_error_messages', array($this, 'showErrorMessages'));
 		// @phpstan-ignore-next-line
-		$this->_engine->registerPlugin('function', 'input_helper', array($this, 'inputHeper'));
+		$this->_engine->registerPlugin('function', 'input_helper', array($this, 'inputHelper'));
 		// @phpstan-ignore-next-line
 		$this->_engine->registerPlugin('function', 'asset', array($this, 'asset'));
 	}
@@ -214,7 +214,7 @@ class _Template_Invisible extends Template
 	 * @param Smarty_Internal_Template $smarty
 	 * @return string HTML
 	 */
-	public function inputHeper(array $params, Smarty_Internal_Template $smarty): string
+	public function inputHelper(array $params, Smarty_Internal_Template $smarty): string
 	{
 		$targetKey = $params['key']; // 必須
 		$showAutoError = true;
