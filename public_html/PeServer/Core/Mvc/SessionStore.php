@@ -101,7 +101,7 @@ class SessionStore
 			return;
 		}
 
-		//setcookie(self::$sessionKey, "", time() - 60);
+		setcookie(self::$sessionKey, '', time() - 60, '/');
 		session_destroy();
 	}
 
