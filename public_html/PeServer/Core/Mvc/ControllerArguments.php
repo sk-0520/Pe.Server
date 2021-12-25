@@ -18,8 +18,11 @@ class ControllerArguments
 	 */
 	public $logger;
 
-	public function __construct(ILogger $logger)
+	public SessionStore $session;
+
+	public function __construct(SessionStore $session, ILogger $logger)
 	{
+		$this->session = $session;
 		$this->logger = $logger;
 	}
 }

@@ -13,7 +13,7 @@ use \LogicException;
 class ActionOptions
 {
 
-	private ?ActionOptions $_none;
+	private static ?ActionOptions $_none;
 	public static function none(): ActionOptions
 	{
 		return self::$_none ??= new ActionOptions();

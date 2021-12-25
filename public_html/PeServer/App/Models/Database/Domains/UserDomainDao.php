@@ -17,10 +17,10 @@ class UserDomainDao extends DaoBase
 	/**
 	 * Undocumented function
 	 *
-	 * @param array{account_login_login_id:string} $parameters
-	 * @return array{user_id:string,level:string,password:string}|null
+	 * @param string $loginId
+	 * @return array{user_id:string,login_id:string,level:string,password:string}|null
 	 */
-	public function selectUser(array $parameters)
+	public function selectLoginUser(string $loginId)
 	{
 		return $this->database->queryFirstOrDefault(
 			null,
@@ -28,6 +28,7 @@ class UserDomainDao extends DaoBase
 
 			select
 				users.user_id,
+				users.login_id,
 				users.level,
 				user_authentications.current_password as password
 			from
@@ -42,7 +43,9 @@ class UserDomainDao extends DaoBase
 				users.login_id = :account_login_login_id
 SQL
 			/* AUTO FORMAT */,
-			$parameters
+			[
+				'account_login_login_id' => $loginId,
+			]
 		);
 	}
 }

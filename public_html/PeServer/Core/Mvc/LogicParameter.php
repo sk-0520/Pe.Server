@@ -26,11 +26,14 @@ class LogicParameter
 	 */
 	public $request;
 
+	public SessionStore $session;
+
 	public ActionOptions $options;
 
-	public function __construct(ActionRequest $request, ActionOptions $options, ILogger $logger)
+	public function __construct(ActionRequest $request, SessionStore $session, ActionOptions $options, ILogger $logger)
 	{
 		$this->request = $request;
+		$this->session = $session;
 		$this->options = $options;
 		$this->logger = $logger;
 	}

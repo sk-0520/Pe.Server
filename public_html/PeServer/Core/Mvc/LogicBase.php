@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc;
 
+use LogicException;
 use \PeServer\Core\ILogger;
 use \PeServer\Core\ActionRequest;
 use \PeServer\Core\ActionResponse;
@@ -73,13 +74,13 @@ abstract class LogicBase implements ValidationReceivable
 	 */
 	private $_response = null;
 
+	private SessionStore $_session;
+	private int $_sessionNextState = SessionStore::NEXT_STATE_NORMAL;
+
 	protected function __construct(LogicParameter $parameter)
 	{
-		if (session_status() === PHP_SESSION_ACTIVE) {
-			session_start();
-		}
-
 		$this->_request = $parameter->request;
+		$this->_session = $parameter->session;
 		$this->logger = $parameter->logger;
 
 		$this->logger->trace('LOGIC');
@@ -100,6 +101,33 @@ abstract class LogicBase implements ValidationReceivable
 			return $default;
 		}
 		return $this->_request->getValue($key);
+	}
+
+	protected function getSession(string $key, mixed $default = null): mixed
+	{
+		return $this->_session->getOr($key, $default);
+	}
+
+	protected function setSession(string $key, mixed $value): void
+	{
+		$this->_session->set($key, $value);
+	}
+
+	protected function cancelSession(): void
+	{
+		$this->_sessionNextState = SessionStore::NEXT_STATE_CANCEL;
+	}
+	protected function restartSession(): void
+	{
+		$this->_sessionNextState = SessionStore::NEXT_STATE_RESTART;
+	}
+	protected function shutdownSession(): void
+	{
+		$this->_sessionNextState = SessionStore::NEXT_STATE_SHUTDOWN;
+	}
+	public function sessionNextState(): int
+	{
+		return $this->_sessionNextState;
 	}
 
 	/**

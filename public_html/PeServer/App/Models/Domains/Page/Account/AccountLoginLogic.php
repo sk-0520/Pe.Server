@@ -56,19 +56,25 @@ class AccountLoginLogic extends LogicBase
 			$this->logger->info('通常 ユーザー 検証');
 		}
 
-		$user = $userDomainDao->selectUser([
-			'account_login_login_id' => $this->getRequest('account_login_login_id'),
-		]);
+		$user = $userDomainDao->selectLoginUser($this->getRequest('account_login_login_id'));
 
 		if (is_null($user)) {
 			$this->addError(Validations::COMMON, I18n::message('ID・パスワードが不明です'));
 			return;
 		}
 
+		if ($existsSetupUser && $user['level'] !== 'setup') {
+			$this->addError(Validations::COMMON, I18n::message('ID・パスワードが不明です'));
+			$this->logger->error('未セットアップ状態での通常ログインは抑制中');
+			return;
+		}
+
 		// パスワード突合
 		$verify_ok = password_verify($this->getRequest('account_login_password'), $user['password']);
-		if($verify_ok) {
-
+		if ($verify_ok) {
+			$this->setSession('id', $user['user_id']);
+			$this->setSession('level', $user['level']);
+			$this->restartSession();
 		}
 	}
 }

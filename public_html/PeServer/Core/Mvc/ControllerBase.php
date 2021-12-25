@@ -19,6 +19,7 @@ use \PeServer\Core\Mvc\LogicBase;
 use \PeServer\Core\Mvc\LogicParameter;
 use \PeServer\Core\Log\Logging;
 use \PeServer\Core\StringUtility;
+use PeServer\Core\Throws\InvalidOperationException;
 
 /**
  * コントローラ基底処理。
@@ -39,9 +40,14 @@ abstract class ControllerBase
 	 */
 	protected $skipBaseName = 'PeServer\\App\\Controllers\\Page';
 
+	private SessionStore $_session;
+
+	protected ?LogicBase $logic = null;
+
 	public function __construct(ControllerArguments $arguments)
 	{
 		$this->logger = $arguments->logger;
+		$this->_session = $arguments->session;
 
 		$this->logger->trace('CONTROLLER');
 	}
@@ -68,6 +74,8 @@ abstract class ControllerBase
 	 */
 	public function redirectPath(string $path, ?array $query = null): void
 	{
+		$this->applySession();
+
 		$httpProtocol = StringUtility::isNullOrEmpty($_SERVER['HTTPS']) ? 'http://' : 'https://';
 		$this->redirectUrl($httpProtocol . $_SERVER['SERVER_NAME'] . '/' .  ltrim($path, '/'));
 	}
@@ -83,6 +91,7 @@ abstract class ControllerBase
 	{
 		return new LogicParameter(
 			$request,
+			$this->_session,
 			$options,
 			Logging::create($logicName)
 		);
@@ -97,9 +106,15 @@ abstract class ControllerBase
 	 */
 	protected function createLogic(string $logicClass, ActionRequest $request, ActionOptions $options): LogicBase
 	{
+		if (!is_null($this->logic)) {
+			throw new InvalidOperationException();
+		}
+
 		$parameter = $this->createParameter($logicClass, $request, $options);
-		// @phpstan-ignore-next-line
-		return new $logicClass($parameter);
+		/** @var LogicBase */
+		$logic = new $logicClass($parameter);
+		$this->logic = $logic;
+		return $logic;
 	}
 
 	public function existsResult(LogicBase $logic, string $key): bool
@@ -124,6 +139,44 @@ abstract class ControllerBase
 		return false;
 	}
 
+	private function applySession(): void
+	{
+		if (is_null($this->logic)) {
+			throw new InvalidOperationException();
+		}
+
+		$nextState = $this->logic->sessionNextState();
+		switch ($nextState) {
+			case SessionStore::NEXT_STATE_NORMAL:
+				if ($this->_session->isChanged()) {
+					if (!$this->_session->isStarted()) {
+						$this->_session->start();
+					}
+					$this->_session->apply();
+				}
+				break;
+			case SessionStore::NEXT_STATE_CANCEL:
+				// なんもしない
+				break;
+			case SessionStore::NEXT_STATE_RESTART:
+				if ($this->_session->isStarted()) {
+					$this->_session->restart();
+				} else {
+					$this->_session->start();
+				}
+				$this->_session->apply();
+				break;
+			case SessionStore::NEXT_STATE_SHUTDOWN:
+				if ($this->_session->isStarted()) {
+					$this->_session->shutdown();
+				}
+				break;
+
+			default:
+				throw new LogicException();
+		}
+	}
+
 	/**
 	 * Viewを表示。
 	 *
@@ -142,6 +195,8 @@ abstract class ControllerBase
 		$templateDirPath = str_replace('\\', DIRECTORY_SEPARATOR, $controllerBaseName);
 
 		$template = Template::create($templateDirPath);
+
+		$this->applySession();
 
 		$template->show("$action.tpl", $parameters);
 	}
@@ -170,6 +225,8 @@ abstract class ControllerBase
 	 */
 	public function data(ActionResponse $response): void
 	{
+		$this->applySession();
+
 		header('Content-Type: ' . $response->mime);
 		if ($response->chunked) {
 			header("Transfer-encoding: chunked");

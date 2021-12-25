@@ -6,6 +6,7 @@ namespace PeServer\Core;
 
 use \PeServer\Core\Log\Logging;
 use \PeServer\Core\Mvc\ControllerArguments;
+use \PeServer\Core\Mvc\SessionStore;
 
 /**
  * ルーティング。
@@ -19,6 +20,8 @@ class Routing
 	 */
 	private $_routeMap;
 
+	private SessionStore $sessionStore;
+
 	/**
 	 * 生成。
 	 *
@@ -27,6 +30,7 @@ class Routing
 	public function __construct(array $routeMap)
 	{
 		$this->_routeMap = $routeMap;
+		$this->sessionStore = new SessionStore();
 	}
 
 	/**
@@ -59,7 +63,7 @@ class Routing
 
 		$logger = Logging::create($controllerName);
 
-		$controllerArguments = new ControllerArguments($logger);
+		$controllerArguments = new ControllerArguments($this->sessionStore, $logger);
 		$request = new ActionRequest($urlParameters);
 
 		$controller = new $controllerName($controllerArguments);
