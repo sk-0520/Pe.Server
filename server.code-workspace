@@ -34,8 +34,12 @@
 			"phpstan",
 			"phpunit",
 			"ATTR_ERRMODE",
-			"ERRMODE_EXCEPTION"
+			"ERRMODE_EXCEPTION",
+			"intelephense"
 		],
 		"intelephense.environment.phpVersion": "8.0.3",
+		"intelephense.files.exclude": [
+			"**/php-deploy-receiver.php"
+		]
 	}
 }

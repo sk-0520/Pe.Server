@@ -139,8 +139,9 @@ class DeployScript
 
 		//TODO: 暗号化とかとか
 		$userId = '00000000-0000-4000-0000-000000000000';
-		$loginId = 'setup';
-		$password = bin2hex(openssl_random_pseudo_bytes(4));
+		$loginId = 'setup-' . bin2hex(openssl_random_pseudo_bytes(2));
+		$rawPassword = bin2hex(openssl_random_pseudo_bytes(4));
+		$encPassword = password_hash($rawPassword, PASSWORD_DEFAULT);
 
 		$pdo->exec(
 			<<<SQL
@@ -227,7 +228,7 @@ insert into
 	(
 		'$userId',
 		'',
-		'$password'
+		'$encPassword'
 	)
 ;
 
@@ -238,7 +239,7 @@ SQL
 		$this->_scriptArgument->log([
 			'userId' => $userId,
 			'loginId' => $loginId,
-			'password' => $password,
+			'password' => $rawPassword,
 		]);
 	}
 

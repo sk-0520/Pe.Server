@@ -29,7 +29,7 @@ class UserDomainDao extends DaoBase
 			select
 				users.user_id,
 				users.level,
-				user_authentications.current_password
+				user_authentications.current_password as password
 			from
 				users
 				inner join

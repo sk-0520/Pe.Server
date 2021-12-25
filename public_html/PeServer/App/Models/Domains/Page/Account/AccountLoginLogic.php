@@ -50,6 +50,11 @@ class AccountLoginLogic extends LogicBase
 		$userDomainDao = new UserDomainDao($database);
 
 		$existsSetupUser = $usersEntityDao->selectExistsSetupUser();
+		if ($existsSetupUser) {
+			$this->logger->info('セットアップ ユーザー 検証');
+		} else {
+			$this->logger->info('通常 ユーザー 検証');
+		}
 
 		$user = $userDomainDao->selectUser([
 			'account_login_login_id' => $this->getRequest('account_login_login_id'),
@@ -61,10 +66,9 @@ class AccountLoginLogic extends LogicBase
 		}
 
 		// パスワード突合
-		if ($existsSetupUser) {
-			$this->logger->info('セットアップ ユーザー 検証');
-		} else {
-			$this->logger->info('通常 ユーザー 検証');
+		$verify_ok = password_verify($this->getRequest('account_login_password'), $user['password']);
+		if($verify_ok) {
+
 		}
 	}
 }
