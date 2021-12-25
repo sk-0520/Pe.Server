@@ -15,27 +15,27 @@
 	<dl class="input">
 		<dt>login id</dt>
 		<dd>
-			{input_helper key='setting_setup_login_id' class="edit" type="text"}
+			{input_helper key='setting_setup_login_id' type="text" class="edit"}
 		</dd>
 
 		<dt>password</dt>
 		<dd>
-			{input_helper key='setting_setup_password' class="edit" type="text"}
+			{input_helper key='setting_setup_password' type="text" class="edit"}
 		</dd>
 
 		<dt>user name</dt>
 		<dd>
-			{input_helper key='setting_setup_user_name' class="edit" type="text"}
+			{input_helper key='setting_setup_user_name' type="text" class="edit"}
 		</dd>
 
 		<dt>web site</dt>
 		<dd>
-			{input_helper key='setting_setup_web_site' class="edit" type="text"}
+			{input_helper key='setting_setup_web_site' type="text" class="edit"}
 		</dd>
 
 		<dt>mail address</dt>
 		<dd>
-			{input_helper key='setting_setup_mail_address' class="edit" type="text"}
+			{input_helper key='setting_setup_mail_address' type="text" class="edit"}
 		</dd>
 
 		<dl class="action"></dl>

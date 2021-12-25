@@ -211,6 +211,10 @@ class _Template_Invisible extends Template
 	 * 入力要素のヘルパー。
 	 *
 	 * @param array<string,string> $params
+	 *  * key: 対象キー, valuesと紐づく
+	 *  * type: 対象のinput[type="*"]かtextareaを指定。不明時は input としてそのまま生成される。radio/checkboxは想定していないのでなんか別の方法を考えた方がいい
+	 *  * auto_error: true/false 未指定かtrueの場合にエラー表示も自動で行う(show_error_messages関数の内部呼び出し)
+	 *
 	 * @param Smarty_Internal_Template $smarty
 	 * @return string HTML
 	 */
@@ -218,7 +222,7 @@ class _Template_Invisible extends Template
 	{
 		$targetKey = $params['key']; // 必須
 		$showAutoError = true;
-		if (isset($params['auto_error']) && $params['auto_error'] == 'false') {
+		if (isset($params['auto_error']) && $params['auto_error'] != 'true') {
 			$showAutoError = false;
 		}
 

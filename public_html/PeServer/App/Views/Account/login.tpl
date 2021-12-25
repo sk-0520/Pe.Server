@@ -6,12 +6,12 @@
 	<dl class="input">
 		<dt>login id</dt>
 		<dd>
-			{input_helper key='account_login_login_id' class="edit" type="text"}
+			{input_helper key='account_login_login_id' type="text" class="edit"}
 		</dd>
 
 		<dt>password</dt>
 		<dd>
-			{input_helper key='account_login_password' class="edit" type="text"}
+			{input_helper key='account_login_password' type="password" class="edit"}
 		</dd>
 
 		<dl class="action"></dl>
