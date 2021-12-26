@@ -19,7 +19,7 @@ abstract class Database
 	 *
 	 * @var InitializeChecker|null
 	 */
-	protected static $_initializeChecker;
+	protected static $initializeChecker;
 
 	/**
 	 * DB接続設定
@@ -36,17 +36,17 @@ abstract class Database
 	 */
 	public static function initialize(array $databaseConfiguration): void
 	{
-		if (is_null(self::$_initializeChecker)) {
-			self::$_initializeChecker = new InitializeChecker();
+		if (is_null(self::$initializeChecker)) {
+			self::$initializeChecker = new InitializeChecker();
 		}
-		self::$_initializeChecker->initialize();
+		self::$initializeChecker->initialize();
 
 		self::$_databaseConfiguration = $databaseConfiguration;
 	}
 
 	public static function open(): Database
 	{
-		self::$_initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
+		self::$initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
 
 		$logger = Logging::create('database');
 
@@ -346,7 +346,7 @@ class _Database_Invisible extends Database
 	 */
 	public function __construct(array $databaseConfiguration, ILogger $logger)
 	{
-		self::$_initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
+		Database::$initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
 		$this->_logger = $logger;
 
 		$dsn = 'sqlite:' . $databaseConfiguration['connection'];
@@ -446,7 +446,7 @@ class _Database_Invisible extends Database
 
 	public function query(string $statement, array $parameters = array()): array
 	{
-		self::$_initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
+		Database::$initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
 
 		$query = $this->executeStatement($statement, $parameters);
 
@@ -460,7 +460,7 @@ class _Database_Invisible extends Database
 
 	public function queryFirst(string $statement, array $parameters = array()): array
 	{
-		self::$_initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
+		Database::$initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
 
 		$query = $this->executeStatement($statement, $parameters);
 
@@ -474,7 +474,7 @@ class _Database_Invisible extends Database
 
 	public function queryFirstOrDefault($defaultValue, string $statement, array $parameters = array())
 	{
-		self::$_initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
+		Database::$initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
 
 		$query = $this->executeStatement($statement, $parameters);
 
@@ -488,7 +488,7 @@ class _Database_Invisible extends Database
 
 	public function execute(string $statement, array $parameters = array()): int
 	{
-		self::$_initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
+		Database::$initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
 
 		$query = $this->executeStatement($statement, $parameters);
 
