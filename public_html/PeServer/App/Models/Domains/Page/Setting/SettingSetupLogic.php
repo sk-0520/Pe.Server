@@ -40,10 +40,7 @@ class SettingSetupLogic extends PageLogicBase
 
 		$this->validation('setting_setup_login_id', function ($key, $value) {
 			$accountValidator = new AccountValidator($this, $this->validator);
-			if ($this->validation->isNotWhiteSpace($key, $value)) {
-				$this->validation->inLength($key, 10, $value);
-				$this->validation->isMatch($key, '/[a-zA-Z0-9]+/', $value);
-			}
+			$accountValidator->isLoginId($key, $value);
 		});
 	}
 
