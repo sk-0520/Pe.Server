@@ -30,6 +30,23 @@ abstract class DomainLogicBase extends LogicBase
 	 */
 	protected abstract function getUserInfo(): array|null;
 
+	/**
+	 * ユーザー情報の取得。
+	 *
+	 * @return array{user_id:string}
+	 * @throws InvalidOperationException 取れないとき。
+	 */
+	protected final function userInfo(): array
+	{
+		$userInfo = $this->getUserInfo();
+
+		if (is_null($userInfo)) {
+			throw new InvalidOperationException();
+		}
+
+		return $userInfo;
+	}
+
 	private function writeAuditLogCore(string $userId, string $event, mixed $info, ?Database $database): void
 	{
 		$ipAddress = ArrayUtility::getOr($_SERVER, 'REMOTE_ADDR', '');

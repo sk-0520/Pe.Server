@@ -20,6 +20,8 @@ use \PeServer\Core\Mvc\SessionStore;
  */
 abstract class RouteConfiguration
 {
+	private const DEFAULT_METHOD = null;
+
 	/**
 	 * Undocumented function
 	 *
@@ -52,7 +54,7 @@ abstract class RouteConfiguration
 		$options = new ActionOptions();
 		$options->errorControllerName = ErrorController::class;
 		$options->sessionFilter = function (SessionStore $s) {
-			return self::filterPageAccount($s, [UserLevel::USER]);
+			return self::filterPageAccount($s, [UserLevel::USER, UserLevel::ADMINISTRATOR]);
 		};
 
 		return self::$_user = $options;
@@ -108,6 +110,7 @@ abstract class RouteConfiguration
 				->addAction('login', HttpMethod::get(), 'login_get')
 				->addAction('login', HttpMethod::post(), 'login_post')
 				->addAction('logout', HttpMethod::get())
+				->addAction('user', HttpMethod::get(), self::DEFAULT_METHOD, self::user())
 			/* AUTO-FORMAT */,
 			(new Route('setting', SettingController::class, self::admin()))
 				->addAction('setup', HttpMethod::get(), 'setup_get', self::setup())

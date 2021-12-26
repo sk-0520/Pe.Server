@@ -76,7 +76,9 @@ abstract class ControllerBase
 	 */
 	public function redirectPath(string $path, ?array $query = null): void
 	{
-		$this->applySession();
+		if(!is_null($this->logic)) {
+			$this->applySession();
+		}
 
 		$httpProtocol = StringUtility::isNullOrEmpty($_SERVER['HTTPS']) ? 'http://' : 'https://';
 		$this->redirectUrl($httpProtocol . $_SERVER['SERVER_NAME'] . '/' .  ltrim($path, '/'));

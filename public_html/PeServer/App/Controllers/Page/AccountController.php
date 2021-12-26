@@ -11,8 +11,9 @@ use \PeServer\Core\Mvc\ControllerBase;
 use \PeServer\Core\Mvc\ControllerArguments;
 use \PeServer\App\Models\Domains\Page\Account\AccountLoginLogic;
 use \PeServer\App\Models\Domains\Page\Account\AccountLogoutLogic;
-use PeServer\App\Models\SessionKey;
-use PeServer\App\Models\UserLevel;
+use \PeServer\App\Models\Domains\Page\Account\AccountUserLogic;
+use \PeServer\App\Models\SessionKey;
+use \PeServer\App\Models\UserLevel;
 
 final class AccountController extends PageControllerBase
 {
@@ -23,11 +24,20 @@ final class AccountController extends PageControllerBase
 
 	public function index(ActionRequest $request, ActionOptions $options): void
 	{
-		$this->login_get($request, $options);
+		if ($this->isLoggedIn()) {
+			$this->user($request, $options);
+		} else {
+			$this->login_get($request, $options);
+		}
 	}
 
 	public function login_get(ActionRequest $request, ActionOptions $options): void
 	{
+		if ($this->isLoggedIn()) {
+			$this->redirectPath('/account/user');
+			return;
+		}
+
 		$logic = $this->createLogic(AccountLoginLogic::class, $request, $options);
 		$logic->run(LogicCallMode::initialize());
 
@@ -36,6 +46,11 @@ final class AccountController extends PageControllerBase
 
 	public function login_post(ActionRequest $request, ActionOptions $options): void
 	{
+		if ($this->isLoggedIn()) {
+			$this->redirectPath('/account/user');
+			return;
+		}
+
 		$logic = $this->createLogic(AccountLoginLogic::class, $request, $options);
 		if ($logic->run(LogicCallMode::submit())) {
 			if ($this->session->tryGet(SessionKey::ACCOUNT, $account)) {
@@ -43,6 +58,7 @@ final class AccountController extends PageControllerBase
 					$this->redirectPath('/setting/setup');
 				}
 			}
+
 			$this->redirectPath('/');
 		}
 
@@ -53,6 +69,15 @@ final class AccountController extends PageControllerBase
 	{
 		$logic = $this->createLogic(AccountLogoutLogic::class, $request, $options);
 		$logic->run(LogicCallMode::submit());
+
 		$this->redirectPath('/');
+	}
+
+	public function user(ActionRequest $request, ActionOptions $options): void
+	{
+		$logic = $this->createLogic(AccountUserLogic::class, $request, $options);
+		$logic->run(LogicCallMode::initialize());
+
+		$this->view('user', $logic->getViewData());
 	}
 }

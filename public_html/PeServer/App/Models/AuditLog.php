@@ -12,4 +12,5 @@ class AuditLog
 
 	public const USER_CREATE = 'USER-CREATE';
 	public const USER_GENERATED = 'USER-GENERATED';
+	public const USER_STATE_CHANGE = 'USER-STATE_CHANGE';
 }

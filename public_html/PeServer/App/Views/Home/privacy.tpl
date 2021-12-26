@@ -3,7 +3,7 @@
 {block name=BODY}
 
 <p>
-	HTTPSって何？
+	HTTPSだどー！
 </p>
 
 {/block}

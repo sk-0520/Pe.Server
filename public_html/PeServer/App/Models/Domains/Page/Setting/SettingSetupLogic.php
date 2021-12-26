@@ -87,10 +87,7 @@ class SettingSetupLogic extends PageLogicBase
 
 	private function executeSubmit(LogicCallMode $callMode): void
 	{
-		$currentUserInfo = $this->getUserInfo();
-		if (is_null($currentUserInfo)) {
-			throw new InvalidOperationException();
-		}
+		$currentUserInfo = $this->userInfo();
 
 		$params = [
 			'login_id' => StringUtility::trim((string)$this->getRequest('setting_setup_login_id')),
@@ -138,12 +135,14 @@ class SettingSetupLogic extends PageLogicBase
 			);
 
 			// 現在のセットアップユーザーを無効化
+			$state = UserState::DISABLED;
 			$usersEntityDao->updateUserState(
 				$currentUserInfo['user_id'],
-				UserState::DISABLED
+				$state
 			);
 
 			// ユーザー生成記録を監査ログに追加
+			$this->writeAuditLogCurrentUser(AuditLog::USER_STATE_CHANGE, $state, $db);
 			$this->writeAuditLogCurrentUser(AuditLog::USER_CREATE, $userInfo['id'], $db);
 			$this->writeAuditLogTargetUser($userInfo['id'], AuditLog::USER_GENERATED, null, $db);
 
@@ -152,6 +151,7 @@ class SettingSetupLogic extends PageLogicBase
 
 		// 生成したのであれば現在のセットアップユーザーは用済みなのでログアウト
 		if ($result) {
+			$this->logger->info("セットアップユーザーお役目終了");
 			$this->shutdownSession();
 		}
 	}
