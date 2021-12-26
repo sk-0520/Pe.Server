@@ -74,9 +74,9 @@ abstract class LogicBase implements ValidationReceivable
 	/**
 	 * Undocumented variable
 	 *
-	 * @var Validations
+	 * @var Validator
 	 */
-	protected $validation;
+	protected $validator;
 
 	/**
 	 * 応答データ。
@@ -97,7 +97,7 @@ abstract class LogicBase implements ValidationReceivable
 
 		$this->logger->trace('LOGIC');
 
-		$this->validation = new Validations($this);
+		$this->validator = new Validator($this);
 	}
 
 	/**
@@ -218,19 +218,19 @@ abstract class LogicBase implements ValidationReceivable
 	public function receiveError(string $key, int $kind, array $parameters): void
 	{
 		switch ($kind) {
-			case Validations::KIND_EMPTY:
+			case Validator::KIND_EMPTY:
 				$this->addError($key, I18n::message('error-empty', $parameters));
 				break;
 
-			case Validations::KIND_WHITE_SPACE:
+			case Validator::KIND_WHITE_SPACE:
 				$this->addError($key, I18n::message('error-white-space', $parameters));
 				break;
 
-			case Validations::KIND_LENGTH:
+			case Validator::KIND_LENGTH:
 				$this->addError($key, I18n::message('error-length', $parameters));
 				break;
 
-			case Validations::KIND_MATCH:
+			case Validator::KIND_MATCH:
 				$this->addError($key, I18n::message('error-match', $parameters));
 				break;
 

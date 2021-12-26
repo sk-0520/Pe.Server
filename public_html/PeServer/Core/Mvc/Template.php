@@ -154,17 +154,17 @@ class _Template_Invisible extends Template
 			return '';
 		}
 
-		$targetKey = Validations::COMMON;
+		$targetKey = Validator::COMMON;
 		$classes = ['errors'];
 
-		if (!isset($params['key']) || $params['key'] === Validations::COMMON) {
+		if (!isset($params['key']) || $params['key'] === Validator::COMMON) {
 			$classes[] = 'common-error';
 		} else {
 			$classes[] = 'value-error';
 			$targetKey = $params['key'];
 		}
 
-		if ($targetKey !== Validations::COMMON) {
+		if ($targetKey !== Validator::COMMON) {
 			if (!isset($errors[$targetKey])) {
 				return '';
 			}
@@ -195,7 +195,7 @@ class _Template_Invisible extends Template
 			}
 		}
 
-		if ($targetKey === Validations::COMMON) {
+		if ($targetKey === Validator::COMMON) {
 			$commonElement = $dom->createElement('div');
 			$dom->appendChild($commonElement);
 

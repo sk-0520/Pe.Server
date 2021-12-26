@@ -7,7 +7,7 @@ namespace PeServer\Core\Mvc;
 use \PeServer\Core\StringUtility;
 use \PeServer\Core\Mvc\ValidationReceivable;
 
-class Validations
+class Validator
 {
 	public const COMMON = '';
 

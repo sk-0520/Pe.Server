@@ -9,6 +9,7 @@ use PeServer\Core\StringUtility;
 use PeServer\Core\Mvc\Validations;
 use \PeServer\Core\Mvc\LogicCallMode;
 use \PeServer\Core\Mvc\LogicParameter;
+use \PeServer\App\Models\Domains\AccountValidator;
 use \PeServer\App\Models\Domains\Page\PageLogicBase;
 
 class SettingSetupLogic extends PageLogicBase
@@ -38,6 +39,7 @@ class SettingSetupLogic extends PageLogicBase
 		}
 
 		$this->validation('setting_setup_login_id', function ($key, $value) {
+			$accountValidator = new AccountValidator($this, $this->validator);
 			if ($this->validation->isNotWhiteSpace($key, $value)) {
 				$this->validation->inLength($key, 10, $value);
 				$this->validation->isMatch($key, '/[a-zA-Z0-9]+/', $value);

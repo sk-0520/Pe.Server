@@ -8,7 +8,7 @@ use \PeServer\Core\I18n;
 use \PeServer\Core\Database;
 use \PeServer\Core\StringUtility;
 use \PeServer\App\Models\AuditLog;
-use \PeServer\Core\Mvc\Validations;
+use \PeServer\Core\Mvc\Validator;
 use \PeServer\App\Models\SessionKey;
 use \PeServer\Core\Mvc\LogicCallMode;
 use \PeServer\Core\Mvc\LogicParameter;
@@ -39,12 +39,12 @@ class AccountLoginLogic extends PageLogicBase
 
 		$loginId = $this->getRequest('account_login_login_id');
 		if (StringUtility::isNullOrWhiteSpace($loginId)) {
-			$this->addError(Validations::COMMON, I18n::message('error-login-parameter'));
+			$this->addError(Validator::COMMON, I18n::message('error-login-parameter'));
 		}
 
 		$password = $this->getRequest('account_login_password');
 		if (StringUtility::isNullOrWhiteSpace($password)) {
-			$this->addError(Validations::COMMON, I18n::message('error-login-parameter'));
+			$this->addError(Validator::COMMON, I18n::message('error-login-parameter'));
 		}
 	}
 
@@ -69,12 +69,12 @@ class AccountLoginLogic extends PageLogicBase
 		$user = $userDomainDao->selectLoginUser($this->getRequest('account_login_login_id'));
 
 		if (is_null($user)) {
-			$this->addError(Validations::COMMON, I18n::message('error-login-parameter'));
+			$this->addError(Validator::COMMON, I18n::message('error-login-parameter'));
 			return;
 		}
 
 		if ($existsSetupUser && $user['level'] !== 'setup') {
-			$this->addError(Validations::COMMON, I18n::message('error-login-parameter'));
+			$this->addError(Validator::COMMON, I18n::message('error-login-parameter'));
 			$this->logger->error('未セットアップ状態での通常ログインは抑制中');
 			return;
 		}
@@ -82,7 +82,7 @@ class AccountLoginLogic extends PageLogicBase
 		// パスワード突合
 		$verify_ok = password_verify($this->getRequest('account_login_password'), $user['password']);
 		if (!$verify_ok) {
-			$this->addError(Validations::COMMON, I18n::message('error-login-parameter'));
+			$this->addError(Validator::COMMON, I18n::message('error-login-parameter'));
 			$this->logger->warn('ログイン失敗: {0}', $user['user_id']);
 			return;
 		}
