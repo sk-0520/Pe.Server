@@ -12,6 +12,8 @@ use \PeServer\Core\Routing;
 use \PeServer\App\Models\RouteConfiguration;
 use \PeServer\App\Models\Initializer;
 
+ini_set('display_errors', '1');
+
 AutoLoader::initialize([__DIR__], '/^PeServer/');
 Initializer::initialize(
 	__DIR__,
