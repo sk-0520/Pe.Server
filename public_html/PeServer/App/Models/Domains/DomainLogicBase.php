@@ -24,11 +24,11 @@ abstract class DomainLogicBase extends LogicBase
 	}
 
 	/**
-	 * 監査用ユーザー情報の取得。
+	 * ユーザー情報の取得。
 	 *
-	 * @return array{userId:string}|null
+	 * @return array{user_id:string}|null
 	 */
-	protected abstract function getAuditUserInfo(): array|null;
+	protected abstract function getUserInfo(): array|null;
 
 	private function writeAuditLogCore(string $userId, string $event, mixed $info, ?Database $database): void
 	{
@@ -58,13 +58,13 @@ abstract class DomainLogicBase extends LogicBase
 	 */
 	protected function writeAuditLogCurrentUser(string $event, mixed $info = null, ?Database $database = null): void
 	{
-		$userInfo = $this->getAuditUserInfo();
-		if (!ArrayUtility::tryGet($userInfo, 'userId', $userId)) {
+		$userInfo = $this->getUserInfo();
+		if (!ArrayUtility::tryGet($userInfo, 'user_id', $userId)) {
 			$this->logger->error('監査ログ ユーザー情報取得失敗のため書き込み中止');
 			return;
 		}
 
-		$userId = $userInfo['userId']; // @phpstan-ignore-line ArrayUtility::tryGet
+		$userId = $userInfo['user_id']; // @phpstan-ignore-line ArrayUtility::tryGet
 
 		$this->writeAuditLogCore($userId, $event, $info, $database);
 	}

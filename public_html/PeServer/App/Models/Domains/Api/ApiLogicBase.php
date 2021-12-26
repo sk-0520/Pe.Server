@@ -21,7 +21,7 @@ abstract class ApiLogicBase extends DomainLogicBase
 		//NONE
 	}
 
-	protected function getAuditUserInfo(): array|null
+	protected function getUserInfo(): array|null
 	{
 		throw new NotImplementedException();
 	}
