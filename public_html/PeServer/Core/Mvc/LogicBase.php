@@ -241,13 +241,6 @@ abstract class LogicBase implements ValidationReceivable
 	}
 
 	/**
-	 * パラメータキー登録実装。
-	 *
-	 * @return void
-	 */
-	protected abstract function registerKeysImpl(LogicCallMode $callMode);
-
-	/**
 	 * 検証ロジック実装。
 	 *
 	 * @param LogicCallMode $callMode 呼び出し。
@@ -273,9 +266,15 @@ abstract class LogicBase implements ValidationReceivable
 		//NONE
 	}
 
+	/**
+	 * パラメータキー登録実装。
+	 *
+	 * @param LogicCallMode $callMode
+	 * @return void
+	 */
 	private function registerKeys(LogicCallMode $callMode): void
 	{
-		$this->registerKeysImpl($callMode);
+		//NONE
 	}
 
 	/**

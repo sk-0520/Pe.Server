@@ -23,7 +23,7 @@ class AccountLogoutLogic extends PageLogicBase
 		parent::__construct($parameter);
 	}
 
-	protected function registerKeysImpl(LogicCallMode $callMode)
+	protected function registerKeys(LogicCallMode $callMode): void
 	{
 		$this->registerParameterKeys([
 			'',
@@ -37,7 +37,7 @@ class AccountLogoutLogic extends PageLogicBase
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
 		$userInfo = $this->getSession(SessionKey::ACCOUNT, null);
-		if(is_null($userInfo)) {
+		if (is_null($userInfo)) {
 			return;
 		}
 

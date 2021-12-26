@@ -45,7 +45,7 @@ abstract class RouteConfiguration
 	}
 
 	private static ?ActionOptions $_user = null;
-	private static function user(): ActionOptions // @phpstan-ignore-line
+	private static function user(): ActionOptions
 	{
 		if (!is_null(self::$_user)) {
 			return self::$_user;

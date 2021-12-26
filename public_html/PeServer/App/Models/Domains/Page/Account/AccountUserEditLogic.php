@@ -19,13 +19,6 @@ class AccountUserEditLogic extends PageLogicBase
 		parent::__construct($parameter);
 	}
 
-	protected function registerKeysImpl(LogicCallMode $callMode)
-	{
-		$this->registerParameterKeys([
-			'',
-		], true);
-	}
-
 	protected function startup(LogicCallMode $callMode): void
 	{
 		$userInfo = $this->userInfo();
@@ -44,6 +37,7 @@ class AccountUserEditLogic extends PageLogicBase
 			'website' => 'account_edit_website',
 		];
 
+		// @phpstan-ignore-next-line
 		if ($callMode->initialize()) {
 			foreach ($userData as $key => $value) {
 				$this->setValue($map[$key], $value);
@@ -62,6 +56,12 @@ class AccountUserEditLogic extends PageLogicBase
 		}
 	}
 
+	protected function registerKeys(LogicCallMode $callMode): void
+	{
+		$this->registerParameterKeys([
+			'',
+		], true);
+	}
 	protected function validateImpl(LogicCallMode $callMode): void
 	{
 	}

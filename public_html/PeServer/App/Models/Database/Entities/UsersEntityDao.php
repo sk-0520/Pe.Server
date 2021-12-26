@@ -60,6 +60,7 @@ SQL
 	 */
 	public function selectUserEditData(string $userId): array
 	{
+		/** @var array{user_id:string,login_id:string,level:string,name:string,email:string,website:string} */
 		return $this->database->queryFirst(
 			<<<SQL
 
