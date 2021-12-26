@@ -52,6 +52,38 @@ SQL
 		);
 	}
 
+	/**
+	 * Undocumented function
+	 *
+	 * @param string $userId
+	 * @return array{user_id:string,login_id:string,level:string,name:string,email:string,website:string}
+	 */
+	public function selectUserEditData(string $userId): array
+	{
+		return $this->database->queryFirst(
+			<<<SQL
+
+			select
+				users.user_id,
+				users.login_id,
+				users.level,
+				users.name,
+				users.email,
+				users.website
+			from
+				users
+			where
+				users.user_id = :user_id
+
+
+SQL
+			/* AUTO-FORMAT */,
+			[
+				'user_id' => $userId
+			]
+		);
+	}
+
 	public function insertUser(string $userId, string $loginId, string $level, string $state, string $userName, string $email, string $website, string $note): void
 	{
 		$this->database->insertSingle(

@@ -12,6 +12,7 @@ use \PeServer\Core\Mvc\ControllerArguments;
 use \PeServer\App\Models\Domains\Page\Account\AccountLoginLogic;
 use \PeServer\App\Models\Domains\Page\Account\AccountLogoutLogic;
 use \PeServer\App\Models\Domains\Page\Account\AccountUserLogic;
+use \PeServer\App\Models\Domains\Page\Account\AccountUserEditLogic;
 use \PeServer\App\Models\SessionKey;
 use \PeServer\App\Models\UserLevel;
 
@@ -35,7 +36,6 @@ final class AccountController extends PageControllerBase
 	{
 		if ($this->isLoggedIn()) {
 			$this->redirectPath('/account/user');
-			return;
 		}
 
 		$logic = $this->createLogic(AccountLoginLogic::class, $request, $options);
@@ -48,7 +48,6 @@ final class AccountController extends PageControllerBase
 	{
 		if ($this->isLoggedIn()) {
 			$this->redirectPath('/account/user');
-			return;
 		}
 
 		$logic = $this->createLogic(AccountLoginLogic::class, $request, $options);
@@ -79,5 +78,23 @@ final class AccountController extends PageControllerBase
 		$logic->run(LogicCallMode::initialize());
 
 		$this->view('user', $logic->getViewData());
+	}
+
+	public function user_edit_get(ActionRequest $request, ActionOptions $options): void
+	{
+		$logic = $this->createLogic(AccountUserEditLogic::class, $request, $options);
+		$logic->run(LogicCallMode::initialize());
+
+		$this->view('user_edit', $logic->getViewData());
+	}
+
+	public function user_edit_post(ActionRequest $request, ActionOptions $options): void
+	{
+		$logic = $this->createLogic(AccountUserEditLogic::class, $request, $options);
+		if ($logic->run(LogicCallMode::submit())) {
+			$this->redirectPath('/account/user');
+		}
+
+		$this->view('user_edit', $logic->getViewData());
 	}
 }

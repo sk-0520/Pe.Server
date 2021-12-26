@@ -228,7 +228,7 @@ abstract class LogicBase implements ValidationReceivable
 			Validator::KIND_RANGE => 'error-range',
 			Validator::KIND_MATCH => 'error-match',
 			Validator::KIND_EMAIL => 'error-email',
-			Validator::KIND_WEBSITE =>'error-website',
+			Validator::KIND_WEBSITE => 'error-website',
 		];
 
 		$this->receiveErrorMessage($key, I18n::message($map[$kind], $parameters));
@@ -262,6 +262,16 @@ abstract class LogicBase implements ValidationReceivable
 	 * @return void
 	 */
 	protected abstract function executeImpl(LogicCallMode $callMode): void;
+
+	protected function startup(LogicCallMode $callMode): void
+	{
+		//NONE
+	}
+
+	protected function cleanup(LogicCallMode $callMode): void
+	{
+		//NONE
+	}
 
 	private function registerKeys(LogicCallMode $callMode): void
 	{
@@ -298,20 +308,26 @@ abstract class LogicBase implements ValidationReceivable
 	 */
 	public function run(LogicCallMode $callMode): bool
 	{
-		$this->registerKeys($callMode);
+		try {
+			$this->startup($callMode);
 
-		$this->validate($callMode);
-		if ($this->hasError()) {
-			return false;
+			$this->registerKeys($callMode);
+
+			$this->validate($callMode);
+			if ($this->hasError()) {
+				return false;
+			}
+
+			$this->execute($callMode);
+
+			if ($this->hasError()) {
+				return false;
+			}
+
+			return true;
+		} finally {
+			$this->cleanup($callMode);
 		}
-
-		$this->execute($callMode);
-
-		if ($this->hasError()) {
-			return false;
-		}
-
-		return true;
 	}
 
 	/**

@@ -4,22 +4,51 @@
 
 <dl class="page-account-user">
 	<dt>user id</dt>
-	<dd>{$smarty.session[constant('PeServer\\App\\Models\\SessionKey::ACCOUNT')]['id']}</dd>
+	<dd>
+		{$values.account_user_id}
+	</dd>
 
 	<dt>login id</dt>
-	<dd>{$smarty.session[constant('PeServer\\App\\Models\\SessionKey::ACCOUNT')]['login_id']}</dd>
+	<dd>
+		{$values.account_user_login_id}
+	</dd>
 
 	<dt>level</dt>
-	<dd>{$smarty.session[constant('PeServer\\App\\Models\\SessionKey::ACCOUNT')]['level']}</dd>
+	<dd>
+		{$values.account_user_level}
+	</dd>
 
 	<dt>user name</dt>
-	<dd>{$smarty.session[constant('PeServer\\App\\Models\\SessionKey::ACCOUNT')]['name']}</dd>
+	<dd>
+		{$values.account_user_name}
+	</dd>
 
 	<dt>email</dt>
-	<dd></dd>
+	<dd>
+		{$values.account_edit_email}
+	</dd>
 
 	<dt>website</dt>
-	<dd></dd>
+	<dd>
+		{$values.account_edit_website}
+	</dd>
+
+	<dt>plugin</dt>
+	<dd>
+		list
+	</dd>
+
+	<dt class="action">edit</dt>
+	<dd class="action">
+		<ul>
+			<li>
+				<a>register plugin</a>
+			</li>
+			<li>
+				<a href="/account/user/edit">edit user</a>
+			</li>
+		</ul>
+	</dd>
 </dl>
 
 {/block}

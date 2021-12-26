@@ -111,6 +111,8 @@ abstract class RouteConfiguration
 				->addAction('login', HttpMethod::post(), 'login_post')
 				->addAction('logout', HttpMethod::get())
 				->addAction('user', HttpMethod::get(), self::DEFAULT_METHOD, self::user())
+				->addAction('user/edit', HttpMethod::get(), 'user_edit_get', self::user())
+				->addAction('user/edit', HttpMethod::post(), 'user_edit_post', self::user())
 			/* AUTO-FORMAT */,
 			(new Route('setting', SettingController::class, self::admin()))
 				->addAction('setup', HttpMethod::get(), 'setup_get', self::setup())
