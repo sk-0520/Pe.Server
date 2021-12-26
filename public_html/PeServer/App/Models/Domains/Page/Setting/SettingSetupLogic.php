@@ -94,7 +94,6 @@ class SettingSetupLogic extends PageLogicBase
 			'id' => Uuid::generateGuid(),
 			'generate_password' => '',
 			'current_password' => password_hash($params['password'], PASSWORD_DEFAULT),
-			'email' => '', // 暗号化すんの？？
 		];
 
 		$database = Database::open();
@@ -106,6 +105,8 @@ class SettingSetupLogic extends PageLogicBase
 				return false;
 			}
 
+			// 管理者ユーザーの登録
+
 			// 現在のセットアップユーザーを無効化
 
 			// ユーザー生成記録を監査ログに追加
@@ -113,8 +114,9 @@ class SettingSetupLogic extends PageLogicBase
 			$this->writeAuditLogTargetUser($userInfo['id'], AuditLog::USER_GENERATED, null, $db);
 		}, $params, $userInfo);
 
-		// 生成したのであればこのアカウント(セットアップユーザーは用済みなのでログアウト)
+		// 生成したのであれば現在のセットアップユーザーは用済みなのでログアウト
 		if ($result) {
+			$this->shutdownSession();
 		}
 	}
 }

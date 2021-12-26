@@ -212,8 +212,8 @@ insert into
 		'setup',
 		'enabled',
 		'setup user',
-		'setup@localhost',
-		'http://localhost',
+		'',
+		'',
 		''
 	)
 ;
