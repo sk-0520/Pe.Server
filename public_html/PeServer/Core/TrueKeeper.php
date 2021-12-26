@@ -23,12 +23,20 @@ class TrueKeeper
 {
 	private bool $_state = true;
 
+	private bool $_last = false;
+
+	public function last(): bool
+	{
+		return $this->_last;
+	}
+
 	public function __set(string $name, bool $value): void
 	{
 		if ($name !== 'state') {
 			throw new ArgumentException();
 		}
 
+		$this->_last = $value;
 		if (!$value) {
 			$this->_state = false;
 		}

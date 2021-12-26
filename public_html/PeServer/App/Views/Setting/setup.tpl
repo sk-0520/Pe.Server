@@ -28,14 +28,14 @@
 			{input_helper key='setting_setup_user_name' type="text" class="edit"}
 		</dd>
 
-		<dt>web site</dt>
-		<dd>
-			{input_helper key='setting_setup_web_site' type="text" class="edit"}
-		</dd>
-
 		<dt>mail address</dt>
 		<dd>
-			{input_helper key='setting_setup_mail_address' type="text" class="edit"}
+			{input_helper key='setting_setup_email' type="text" class="edit"}
+		</dd>
+
+		<dt>web site</dt>
+		<dd>
+			{input_helper key='setting_setup_website' type="text" class="edit"}
 		</dd>
 
 		<dl class="action"></dl>

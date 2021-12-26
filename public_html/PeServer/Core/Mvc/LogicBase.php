@@ -215,28 +215,23 @@ abstract class LogicBase implements ValidationReceivable
 		}
 	}
 
-	public function receiveError(string $key, int $kind, array $parameters): void
+	public function receiveErrorMessage(string $key, string $message): void
 	{
-		switch ($kind) {
-			case Validator::KIND_EMPTY:
-				$this->addError($key, I18n::message('error-empty', $parameters));
-				break;
+		$this->addError($key, $message);
+	}
+	public function receiveErrorKind(string $key, int $kind, array $parameters): void
+	{
+		$map = [
+			Validator::KIND_EMPTY => 'error-empty',
+			Validator::KIND_WHITE_SPACE => 'error-white-space',
+			Validator::KIND_LENGTH => 'error-length',
+			Validator::KIND_RANGE => 'error-range',
+			Validator::KIND_MATCH => 'error-match',
+			Validator::KIND_EMAIL => 'error-email',
+			Validator::KIND_WEBSITE =>'error-website',
+		];
 
-			case Validator::KIND_WHITE_SPACE:
-				$this->addError($key, I18n::message('error-white-space', $parameters));
-				break;
-
-			case Validator::KIND_LENGTH:
-				$this->addError($key, I18n::message('error-length', $parameters));
-				break;
-
-			case Validator::KIND_MATCH:
-				$this->addError($key, I18n::message('error-match', $parameters));
-				break;
-
-			default:
-				throw new NotImplementedException(StringUtility::dump($parameters));
-		}
+		$this->receiveErrorMessage($key, I18n::message($map[$kind], $parameters));
 	}
 
 	protected function validation(string $key, callable $callback): void

@@ -160,7 +160,7 @@ create table
 		[level] text not null,
 		[state] text not null,
 		[name] text not null,
-		[mail_address] text not null,
+		[email] text not null,
 		[website] text not null,
 		[note] text not null,
 		primary key([user_id])
