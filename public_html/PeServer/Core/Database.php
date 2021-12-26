@@ -6,6 +6,7 @@ namespace PeServer\Core;
 
 use \PDO;
 use \PDOStatement;
+use PeServer\Core\Log\Logging;
 use \PeServer\Core\Throws\SqlException;
 
 /**
@@ -47,8 +48,44 @@ abstract class Database
 	{
 		self::$_initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
 
-		return new _Database_Invisible(self::$_databaseConfiguration);
+		$logger = Logging::create('database');
+
+		return new _Database_Invisible(self::$_databaseConfiguration, $logger);
 	}
+
+	/**
+	 * トランザクション開始。
+	 *
+	 * @return void
+	 * @throws \PDOException
+	 * @throws SqlException
+	 */
+	public abstract function beginTransaction(): void;
+	/**
+	 * トランザクションの確定。
+	 *
+	 * @return void
+	 * @throws \PDOException
+	 * @throws SqlException
+	 */
+	public abstract function commit(): void;
+	/**
+	 * トランザクションの取消。
+	 *
+	 * @return void
+	 * @throws \PDOException
+	 * @throws SqlException
+	 */
+	public abstract function rollback(): void;
+
+	/**
+	 * トランザクションラップ処理。
+	 *
+	 * @param callable $callback 実際の処理。戻り値が真の場合にコミット、偽ならロールバック。
+	 * @param mixed ...$arguments 引数
+	 * @return bool コミットされたか
+	 */
+	public abstract function transaction(callable $callback, ...$arguments): bool;
 
 	/**
 	 * Undocumented function
@@ -300,19 +337,73 @@ class _Database_Invisible extends Database
 	 */
 	private PDO $_pdo;
 
+	private ILogger $_logger;
+
 	/**
 	 * 生成。
 	 *
 	 * @param array<string,string|mixed> $databaseConfiguration
 	 */
-	public function __construct(array $databaseConfiguration)
+	public function __construct(array $databaseConfiguration, ILogger $logger)
 	{
 		self::$_initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
+		$this->_logger = $logger;
 
 		$dsn = 'sqlite:' . $databaseConfiguration['connection'];
 		$this->_pdo = new PDO($dsn);
 		$this->_pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$this->_pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+	}
+
+
+	/**
+	 * 直近のエラメッセージを取得。
+	 *
+	 * @return string
+	 */
+	private function getErrorMessage(): string
+	{
+		return StringUtility::dump($this->_pdo->errorInfo());
+	}
+
+	public function beginTransaction(): void
+	{
+		if (!$this->_pdo->beginTransaction()) {
+			throw new SqlException($this->getErrorMessage()); // これが投げられず PDOException が投げられると思う
+		}
+	}
+
+	public function commit(): void
+	{
+		if (!$this->_pdo->commit()) {
+			throw new SqlException($this->getErrorMessage());
+		}
+	}
+
+	public function rollback(): void
+	{
+		if (!$this->_pdo->rollback()) {
+			throw new SqlException($this->getErrorMessage());
+		}
+	}
+
+	public function transaction(callable $callback, ...$arguments): bool
+	{
+		try {
+			$this->beginTransaction();
+
+			$result = $callback($this, ...$arguments);
+			if ($result) {
+				$this->commit();
+				return true;
+			} else {
+				$this->rollback();
+			}
+		} catch (\Exception $ex) {
+			$this->_logger->error($ex);
+			$this->rollback();
+		}
+		return false;
 	}
 
 	/**
@@ -329,16 +420,6 @@ class _Database_Invisible extends Database
 				$statement->bindValue($key, $value);
 			}
 		}
-	}
-
-	/**
-	 * 直近のエラメッセージを取得。
-	 *
-	 * @return string
-	 */
-	private function getErrorMessage(): string
-	{
-		return StringUtility::dump($this->_pdo->errorInfo());
 	}
 
 	/**

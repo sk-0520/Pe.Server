@@ -84,6 +84,7 @@ class AccountLoginLogic extends PageLogicBase
 		if (!$verify_ok) {
 			$this->addError(Validator::COMMON, I18n::message('error-login-parameter'));
 			$this->logger->warn('ログイン失敗: {0}', $user['user_id']);
+			$this->writeAuditLogTargetUser($user['user_id'], AuditLog::LOGIN_FAILED);
 			return;
 		}
 
@@ -96,6 +97,6 @@ class AccountLoginLogic extends PageLogicBase
 		];
 		$this->setSession(SessionKey::ACCOUNT, $account);
 		$this->restartSession();
-		$this->writeAuditLog(AuditLog::LOGIN, $account);
+		$this->writeAuditLogCurrentUser(AuditLog::LOGIN_SUCCESS, $account);
 	}
 }

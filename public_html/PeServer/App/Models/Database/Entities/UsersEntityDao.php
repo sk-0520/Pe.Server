@@ -16,7 +16,7 @@ class UsersEntityDao extends DaoBase
 
 	public function selectExistsSetupUser(): bool
 	{
-		return $this->database->selectSingleCount(
+		return (bool)$this->database->selectSingleCount(
 			<<<SQL
 
 			select
@@ -29,6 +29,27 @@ class UsersEntityDao extends DaoBase
 				users.state = 'enabled'
 
 SQL
-		) === 0;
+		);
 	}
+
+	public function selectExistsLoginId(string $loginId): bool
+	{
+		return (bool)$this->database->selectSingleCount(
+			<<<SQL
+
+			select
+				COUNT(*) as count
+			from
+				users
+			where
+				users.login_id = :login_id
+
+SQL
+			/* AUTO-FORMAT */,
+			[
+				'login_id' => $loginId
+			]
+		);
+	}
+
 }

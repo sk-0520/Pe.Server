@@ -171,7 +171,7 @@ create table
 	[user_authentications]
 	(
 		[user_id] text not null,
-		[default_password] text not null,
+		[generate_password] text not null,
 		[current_password] text not null,
 		primary key([user_id]),
 		foreign key ([user_id]) references users([user_id])
@@ -201,7 +201,7 @@ insert into
 		[level],
 		[state],
 		[name],
-		[mail_address],
+		[email],
 		[website],
 		[note]
 	)
@@ -222,7 +222,7 @@ insert into
 	[user_authentications]
 	(
 		[user_id],
-		[default_password],
+		[generate_password],
 		[current_password]
 	)
 	values

@@ -41,7 +41,7 @@ class AccountLogoutLogic extends PageLogicBase
 			return;
 		}
 
-		$this->writeAuditLog(AuditLog::LOGOUT);
+		$this->writeAuditLogCurrentUser(AuditLog::LOGOUT);
 
 		$this->shutdownSession();
 	}

@@ -93,7 +93,7 @@ abstract class StringUtility
 			$source
 		);
 
-		if(is_null($result)) {
+		if (is_null($result)) {
 			throw new ThrowsCoreException();
 		}
 
@@ -319,5 +319,10 @@ abstract class StringUtility
 	public static function dump($value): string
 	{
 		return var_export($value, true);
+	}
+
+	public static function replace(string $value, string $oldValue, ?string $newValue): string
+	{
+		return str_replace($oldValue, $newValue ?? '', $value);
 	}
 }

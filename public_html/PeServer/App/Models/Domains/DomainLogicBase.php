@@ -30,24 +30,8 @@ abstract class DomainLogicBase extends LogicBase
 	 */
 	protected abstract function getAuditUserInfo(): array|null;
 
-	/**
-	 * 監査ログ出力。
-	 *
-	 * ※DBじゃなくてテキストファイルでいいかも
-	 *
-	 * @param string $event
-	 * @param mixed $info
-	 * @return void
-	 */
-	protected function writeAuditLog(string $event, mixed $info = null, ?Database $database = null): void
+	private function writeAuditLogCore(string $userId, string $event, mixed $info, ?Database $database): void
 	{
-		$userInfo = $this->getAuditUserInfo();
-		if (!ArrayUtility::tryGet($userInfo, 'userId', $userId)) {
-			$this->logger->error('監査ログ ユーザー情報取得失敗のため書き込み中止');
-			return;
-		}
-
-		$userId = $userInfo['userId']; // @phpstan-ignore-line ArrayUtility::tryGet
 		$ipAddress = ArrayUtility::getOr($_SERVER, 'REMOTE_ADDR', '');
 		$userAgent = ArrayUtility::getOr($_SERVER, 'HTTP_USER_AGENT', '');
 		$dumpInfo = '';
@@ -61,5 +45,37 @@ abstract class DomainLogicBase extends LogicBase
 		$db = $database ?? Database::open();
 		$userAuditLogsEntityDao = new UserAuditLogsEntityDao($db);
 		$userAuditLogsEntityDao->insertLog($userId, $event, $dumpInfo, $ipAddress, $userAgent);
+	}
+
+	/**
+	 * 現在ログインユーザーの監査ログ出力。
+	 *
+	 * ※DBじゃなくてテキストファイルでいいかも
+	 *
+	 * @param string $event
+	 * @param mixed $info
+	 * @return void
+	 */
+	protected function writeAuditLogCurrentUser(string $event, mixed $info = null, ?Database $database = null): void
+	{
+		$userInfo = $this->getAuditUserInfo();
+		if (!ArrayUtility::tryGet($userInfo, 'userId', $userId)) {
+			$this->logger->error('監査ログ ユーザー情報取得失敗のため書き込み中止');
+			return;
+		}
+
+		$userId = $userInfo['userId']; // @phpstan-ignore-line ArrayUtility::tryGet
+
+		$this->writeAuditLogCore($userId, $event, $info, $database);
+	}
+
+	protected function writeAuditLogTargetUser(string $userId, string $event, mixed $info = null, ?Database $database = null): void
+	{
+		if (StringUtility::isNullOrWhiteSpace($userId)) {
+			$this->logger->error('監査ログ ユーザーID不正のため書き込み中止');
+			return;
+		}
+
+		$this->writeAuditLogCore($userId, $event, $info, $database);
 	}
 }

@@ -282,4 +282,21 @@ class StringUtilityTest extends TestClass
 			$this->assertEquals($test->expected, $actual, $test->str());
 		}
 	}
+
+	public function test_replace()
+	{
+		$tests = [
+			new Data('Abcdef-Abcdef', 'abcdef-abcdef', 'a', 'A'),
+			new Data('abcxyz-abcxyz', 'abcdef-abcdef', 'def', 'xyz'),
+			new Data('🏇あｱ☃⛄', 'aあｱ☃⛄', 'a', '🏇'),
+			new Data('a🏇ｱ☃⛄', 'aあｱ☃⛄', 'あ', '🏇'),
+			new Data('aあ🏇☃⛄', 'aあｱ☃⛄', 'ｱ', '🏇'),
+			new Data('aあｱ🏇⛄', 'aあｱ☃⛄', '☃', '🏇'),
+			new Data('aあｱ☃🏇', 'aあｱ☃⛄', '⛄', '🏇'),
+		];
+		foreach ($tests as $test) {
+			$actual = StringUtility::replace(...$test->args);
+			$this->assertEquals($test->expected, $actual, $test->str());
+		}
+	}
 }

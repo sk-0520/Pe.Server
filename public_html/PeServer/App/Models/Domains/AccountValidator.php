@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domains;
 
-use \PeServer\Core\Mvc\Validator;
+use PeServer\App\Models\Database\Entities\UsersEntityDao;
+use \PeServer\Core\Database;
 use \PeServer\Core\TrueKeeper;
+use \PeServer\Core\Mvc\Validator;
+use \PeServer\Core\StringUtility;
 use \PeServer\Core\Mvc\ValidationReceivable;
-use PeServer\Core\StringUtility;
 
 class AccountValidator
 {
@@ -18,7 +20,7 @@ class AccountValidator
 	public const EMAIL_LENGTH = 254;
 	public const WEBSITE_LENGTH = 2083;
 
-	private ValidationReceivable $_receiver; // @phpstan-ignore-line
+	private ValidationReceivable $_receiver;
 	private Validator $_validator;
 
 	public function __construct(ValidationReceivable $receiver, Validator $validator)
@@ -35,7 +37,7 @@ class AccountValidator
 			$trueKeeper = new TrueKeeper();
 
 			$trueKeeper->state = $this->_validator->inLength($key, self::LOGIN_ID_LENGTH, $value);
-			$trueKeeper->state = $this->_validator->isMatch($key, '/^[a-zA-Z0-9]+$/', $value);
+			$trueKeeper->state = $this->_validator->isMatch($key, '/^[a-zA-Z0-9\\-\\._]+$/', $value);
 
 			return $trueKeeper->state;
 		}
@@ -89,6 +91,7 @@ class AccountValidator
 
 		return true;
 	}
+
 	public function isWebsite(string $key, ?string $value): bool
 	{
 		if (!StringUtility::isNullOrWhiteSpace($value)) {
@@ -100,6 +103,18 @@ class AccountValidator
 			$trueKeeper->state = $this->_validator->isWebsite($key, $value);
 
 			return $trueKeeper->state;
+		}
+
+		return true;
+	}
+
+	public function isFreeLoginId(Database $database, string $key, string $loginId): bool
+	{
+		$usersEntityDao = new UsersEntityDao($database);
+
+		if ($usersEntityDao->selectExistsLoginId($loginId)) {
+			$this->_receiver->receiveErrorMessage($key, 'ログインIDが使用できません');
+			return false;
 		}
 
 		return true;
