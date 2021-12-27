@@ -18,18 +18,18 @@ final class DevelopmentController extends ApiControllerBase
 		parent::__construct($argument);
 	}
 
-	public function initialize(ActionRequest $request, ActionOptions $options): void
+	public function initialize(ActionRequest $request): void
 	{
 		// @phpstan-ignore-next-line DevelopmentInitializeLogic は phpstan 設定で読み込み除外(デプロイ処理周りの呼び出しなので全対応が現実的でない)
-		$logic = $this->createLogic(DevelopmentInitializeLogic::class, $request, $options);
+		$logic = $this->createLogic(DevelopmentInitializeLogic::class, $request);
 		$logic->run(LogicCallMode::submit());
 
 		$this->data($logic->getResponse());
 	}
 
-	public function administrator(ActionRequest $request, ActionOptions $options): void
+	public function administrator(ActionRequest $request): void
 	{
-		$logic = $this->createLogic(DevelopmentAdministratorLogic::class, $request, $options);
+		$logic = $this->createLogic(DevelopmentAdministratorLogic::class, $request);
 		$logic->run(LogicCallMode::submit());
 
 		$this->data($logic->getResponse());

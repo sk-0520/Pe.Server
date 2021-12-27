@@ -17,16 +17,16 @@ final class SettingController extends PageControllerBase
 		parent::__construct($argument);
 	}
 
-	public function setup_get(ActionRequest $request, ActionOptions $options): void
+	public function setup_get(ActionRequest $request): void
 	{
-		$logic = $this->createLogic(SettingSetupLogic::class, $request, $options);
+		$logic = $this->createLogic(SettingSetupLogic::class, $request);
 		$logic->run(LogicCallMode::initialize());
 
 		$this->view('setup', $logic->getViewData());
 	}
-	public function setup_post(ActionRequest $request, ActionOptions $options): void
+	public function setup_post(ActionRequest $request): void
 	{
-		$logic = $this->createLogic(SettingSetupLogic::class, $request, $options);
+		$logic = $this->createLogic(SettingSetupLogic::class, $request);
 		if ($logic->run(LogicCallMode::submit())) {
 			$this->redirectPath('/');
 		}

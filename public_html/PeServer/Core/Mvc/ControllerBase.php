@@ -91,12 +91,11 @@ abstract class ControllerBase
 	 * @param ActionRequest $request リクエストデータ
 	 * @return LogicParameter
 	 */
-	protected function createParameter(string $logicName, ActionRequest $request, ActionOptions $options): LogicParameter
+	protected function createParameter(string $logicName, ActionRequest $request): LogicParameter
 	{
 		return new LogicParameter(
 			$request,
 			$this->session,
-			$options,
 			Logging::create($logicName)
 		);
 	}
@@ -108,13 +107,13 @@ abstract class ControllerBase
 	 * @param ActionRequest $request リクエストデータ
 	 * @return LogicBase
 	 */
-	protected function createLogic(string $logicClass, ActionRequest $request, ActionOptions $options): LogicBase
+	protected function createLogic(string $logicClass, ActionRequest $request): LogicBase
 	{
 		if (!is_null($this->logic)) {
 			throw new InvalidOperationException();
 		}
 
-		$parameter = $this->createParameter($logicClass, $request, $options);
+		$parameter = $this->createParameter($logicClass, $request);
 		/** @var LogicBase */
 		$logic = new $logicClass($parameter);
 		$this->logic = $logic;

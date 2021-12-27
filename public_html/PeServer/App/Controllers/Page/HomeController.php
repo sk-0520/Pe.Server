@@ -22,25 +22,25 @@ final class HomeController extends PageControllerBase
 		parent::__construct($argument);
 	}
 
-	public function index(ActionRequest $request, ActionOptions $options): void
+	public function index(ActionRequest $request): void
 	{
-		$logic = $this->createLogic(HomeIndexLogic::class, $request, $options);
+		$logic = $this->createLogic(HomeIndexLogic::class, $request);
 		$logic->run(LogicCallMode::initialize());
 
 		$this->view('index', $logic->getViewData());
 	}
 
-	public function privacy(ActionRequest $request, ActionOptions $options): void
+	public function privacy(ActionRequest $request): void
 	{
-		$logic = $this->createLogic(HomePrivacyLogic::class, $request, $options);
+		$logic = $this->createLogic(HomePrivacyLogic::class, $request);
 		$logic->run(LogicCallMode::initialize());
 
 		$this->view('privacy', $logic->getViewData());
 	}
 
-	public function contact_get(ActionRequest $request, ActionOptions $options): void
+	public function contact_get(ActionRequest $request): void
 	{
-		$logic = $this->createLogic(HomeContactLogic::class, $request, $options);
+		$logic = $this->createLogic(HomeContactLogic::class, $request);
 		$logic->run(LogicCallMode::initialize());
 
 		$this->view('contact', $logic->getViewData());
