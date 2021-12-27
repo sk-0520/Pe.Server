@@ -46,3 +46,4 @@ for:
 cache:
   - 'node_modules'
   - 'dev/phpstan.phar'
+  - '/var/cache/apt/archives'
