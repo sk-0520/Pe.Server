@@ -66,6 +66,8 @@ abstract class I18n
 			$params[strval($k)] = strval($v);
 		}
 
+		$message = $key;
+
 		if (isset(self::$_i18nConfiguration[$key]['*'])) {
 			$message = self::$_i18nConfiguration[$key]['*'];
 		}
