@@ -1,7 +1,6 @@
 #!/bin/bash -ue
 
-DEV_URL="${DEV_URL:=http://localhost}"
+cd $(cd $(dirname $0); pwd)
 
-API_URL=${DEV_URL}/api/development/initialize
-
-curl -v -X POST ${API_URL}
+./development-init-core-1.sh
+./development-init-core-2.sh

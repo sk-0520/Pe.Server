@@ -106,15 +106,15 @@ class SettingSetupLogic extends PageLogicBase
 
 		$database = Database::open();
 
-		$result = $database->transaction(function ($db, $currentUserInfo, $params, $userInfo) {
+		$result = $database->transaction(function ($database, $currentUserInfo, $params, $userInfo) {
 			$accountValidator = new AccountValidator($this, $this->validator);
 
-			if (!$accountValidator->isFreeLoginId($db, 'setting_setup_login_id', $params['login_id'])) {
+			if (!$accountValidator->isFreeLoginId($database, 'setting_setup_login_id', $params['login_id'])) {
 				return false;
 			}
 
-			$usersEntityDao = new UsersEntityDao($db);
-			$userAuthenticationsEntityDao = new UserAuthenticationsEntityDao($db);
+			$usersEntityDao = new UsersEntityDao($database);
+			$userAuthenticationsEntityDao = new UserAuthenticationsEntityDao($database);
 
 			// 管理者ユーザーの登録
 			$usersEntityDao->insertUser(
@@ -142,9 +142,9 @@ class SettingSetupLogic extends PageLogicBase
 			);
 
 			// ユーザー生成記録を監査ログに追加
-			$this->writeAuditLogCurrentUser(AuditLog::USER_STATE_CHANGE, $state, $db);
-			$this->writeAuditLogCurrentUser(AuditLog::USER_CREATE, $userInfo['id'], $db);
-			$this->writeAuditLogTargetUser($userInfo['id'], AuditLog::USER_GENERATED, null, $db);
+			$this->writeAuditLogCurrentUser(AuditLog::USER_STATE_CHANGE, $state, $database);
+			$this->writeAuditLogCurrentUser(AuditLog::USER_CREATE, $userInfo['id'], $database);
+			$this->writeAuditLogTargetUser($userInfo['id'], AuditLog::USER_GENERATED, null, $database);
 
 			return true;
 		}, $currentUserInfo, $params, $userInfo);

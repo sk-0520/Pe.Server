@@ -120,6 +120,7 @@ abstract class RouteConfiguration
 			/* AUTO-FORMAT */,
 			(new Route('api/development', DevelopmentController::class))
 				->addAction('initialize', HttpMethod::post())
+				->addAction('administrator', HttpMethod::post())
 			/* AUTO-FORMAT */,
 		];
 	}
