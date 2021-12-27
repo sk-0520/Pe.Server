@@ -15,16 +15,32 @@
 		}
 	},
 	"i18n": {
-		"*": {
-			"common-error-title": "エラーがあります",
-			"error-login-parameter": "ログインID/パスワードが正しくありません",
-			"error-empty": "入力してください",
-			"error-white-space": "入力してください",
-			"error-length": "{safe-length} 文字以内で入力してください",
-			"error-range": "{min} から {max} 文字以内で入力してください",
-			"error-match": "入力可能なパターンを入力してください",
-			"error-email": "メールアドレスが正しくありません",
-			"error-website": "URLが正しくありません"
+		"@common-error-title": {
+			"*": "エラーがあります"
+		},
+		"@error-empty": {
+			"*": "入力してください"
+		},
+		"@error-white-space": {
+			"*": "入力してください"
+		},
+		"@error-length": {
+			"*": "{safe-length} 文字以内で入力してください"
+		},
+		"@error-range": {
+			"*": "{min} から {max} 文字以内で入力してください"
+		},
+		"@error-match": {
+			"*": "入力可能なパターンを入力してください"
+		},
+		"@error-email": {
+			"*": "メールアドレスが正しくありません"
+		},
+		"@error-website": {
+			"*": "URLが正しくありません"
+		},
+		"error-login-parameter": {
+			"*": "ログインID/パスワードが正しくありません"
 		}
 	}
 }

@@ -222,13 +222,13 @@ abstract class LogicBase implements ValidationReceivable
 	public function receiveErrorKind(string $key, int $kind, array $parameters): void
 	{
 		$map = [
-			Validator::KIND_EMPTY => 'error-empty',
-			Validator::KIND_WHITE_SPACE => 'error-white-space',
-			Validator::KIND_LENGTH => 'error-length',
-			Validator::KIND_RANGE => 'error-range',
-			Validator::KIND_MATCH => 'error-match',
-			Validator::KIND_EMAIL => 'error-email',
-			Validator::KIND_WEBSITE => 'error-website',
+			Validator::KIND_EMPTY => I18n::ERROR_EMPTY,
+			Validator::KIND_WHITE_SPACE => I18n::ERROR_WHITE_SPACE,
+			Validator::KIND_LENGTH => I18n::ERROR_LENGTH,
+			Validator::KIND_RANGE => I18n::ERROR_RANGE,
+			Validator::KIND_MATCH => I18n::ERROR_MATCH,
+			Validator::KIND_EMAIL => I18n::ERROR_EMAIL,
+			Validator::KIND_WEBSITE => I18n::ERROR_WEBSITE,
 		];
 
 		$this->receiveErrorMessage($key, I18n::message($map[$kind], $parameters));

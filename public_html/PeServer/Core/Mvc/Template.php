@@ -200,7 +200,7 @@ class _Template_Impl extends Template
 			$dom->appendChild($commonElement);
 
 			$messageElement = $dom->createElement('p');
-			$messageElement->appendChild($dom->createTextNode(I18n::message('common-error-title')));
+			$messageElement->appendChild($dom->createTextNode(I18n::message(I18n::COMMON_ERROR_TITLE)));
 			$commonElement->appendChild($messageElement);
 			if ($ulElement->childElementCount) {
 				$commonElement->appendChild($ulElement);
