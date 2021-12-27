@@ -54,15 +54,15 @@ abstract class HttpStatus
 
 class _HttpStatus_Impl extends HttpStatus
 {
-	private int $_code;
+	private int $code;
 
 	public function __construct(int $code)
 	{
-		$this->_code = $code;
+		$this->code = $code;
 	}
 
 	public function code(): int
 	{
-		return $this->_code;
+		return $this->code;
 	}
 }

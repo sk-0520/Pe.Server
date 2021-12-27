@@ -22,14 +22,14 @@ abstract class I18n
 	 *
 	 * @var InitializeChecker|null
 	 */
-	private static $_initializeChecker;
+	private static $initializeChecker;
 
 	/**
 	 * Undocumented variable
 	 *
 	 * @var array<string,array<string,string>>
 	 */
-	private static array $_i18nConfiguration;
+	private static array $i18nConfiguration;
 
 	/**
 	 * Undocumented function
@@ -39,12 +39,12 @@ abstract class I18n
 	 */
 	public static function initialize(array $i18nConfiguration): void
 	{
-		if (is_null(self::$_initializeChecker)) {
-			self::$_initializeChecker = new InitializeChecker();
+		if (is_null(self::$initializeChecker)) {
+			self::$initializeChecker = new InitializeChecker();
 		}
-		self::$_initializeChecker->initialize();
+		self::$initializeChecker->initialize();
 
-		self::$_i18nConfiguration = $i18nConfiguration;
+		self::$i18nConfiguration = $i18nConfiguration;
 	}
 
 	/**
@@ -58,7 +58,7 @@ abstract class I18n
 	 */
 	public static function message(string $key, array $parameters = array()): string
 	{
-		self::$_initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
+		self::$initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
 
 		/** @var array<string,string> */
 		$params = [];
@@ -68,8 +68,8 @@ abstract class I18n
 
 		$message = $key;
 
-		if (isset(self::$_i18nConfiguration[$key]['*'])) {
-			$message = self::$_i18nConfiguration[$key]['*'];
+		if (isset(self::$i18nConfiguration[$key]['*'])) {
+			$message = self::$i18nConfiguration[$key]['*'];
 		}
 
 		return StringUtility::replaceMap($message, $params);

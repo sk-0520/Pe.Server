@@ -38,31 +38,31 @@ abstract class LogicBase implements ValidationReceivable
 	 *
 	 * @var ActionRequest
 	 */
-	private $_request;
+	private $request;
 
 	/**
 	 * HTTPステータスコード。
 	 */
-	private HttpStatus $_httpStatus;
+	private HttpStatus $httpStatus;
 	/**
 	 * 検証エラー。
 	 *
 	 * @var array<string,string[]>
 	 */
-	private $_errors = array();
+	private $errors = array();
 	/**
 	 * 応答データ。
 	 *
 	 * @var array<string,string|string[]|bool|int>
 	 */
-	private $_values = array();
+	private $values = array();
 
 	/**
 	 * 要素設定がなされている場合に応答データのキーをこの項目に固定。
 	 *
 	 * @var string[]
 	 */
-	private $_keys = array();
+	private $keys = array();
 
 	/**
 	 * コントローラ内結果データ。
@@ -83,16 +83,16 @@ abstract class LogicBase implements ValidationReceivable
 	 *
 	 * @var ActionResponse|null
 	 */
-	private $_response = null;
+	private $response = null;
 
-	private SessionStore $_session;
-	private int $_sessionNextState = SessionNextState::NORMAL;
+	private SessionStore $session;
+	private int $sessionNextState = SessionNextState::NORMAL;
 
 	protected function __construct(LogicParameter $parameter)
 	{
-		$this->_httpStatus = HttpStatus::ok();
-		$this->_request = $parameter->request;
-		$this->_session = $parameter->session;
+		$this->httpStatus = HttpStatus::ok();
+		$this->request = $parameter->request;
+		$this->session = $parameter->session;
 		$this->logger = $parameter->logger;
 
 		$this->logger->trace('LOGIC');
@@ -109,40 +109,40 @@ abstract class LogicBase implements ValidationReceivable
 	 */
 	protected function getRequest(string $key, $default = null)
 	{
-		if (!$this->_request->exists($key)['exists']) {
+		if (!$this->request->exists($key)['exists']) {
 			return $default;
 		}
-		return $this->_request->getValue($key);
+		return $this->request->getValue($key);
 	}
 
 	protected function getSession(string $key, mixed $default = null): mixed
 	{
-		return $this->_session->getOr($key, $default);
+		return $this->session->getOr($key, $default);
 	}
 
 	protected function setSession(string $key, mixed $value): void
 	{
-		$this->_session->set($key, $value);
+		$this->session->set($key, $value);
 	}
 	protected function removeSession(string $key): void
 	{
-		$this->_session->remove($key);
+		$this->session->remove($key);
 	}
 	protected function cancelSession(): void
 	{
-		$this->_sessionNextState = SessionNextState::CANCEL;
+		$this->sessionNextState = SessionNextState::CANCEL;
 	}
 	protected function restartSession(): void
 	{
-		$this->_sessionNextState = SessionNextState::RESTART;
+		$this->sessionNextState = SessionNextState::RESTART;
 	}
 	protected function shutdownSession(): void
 	{
-		$this->_sessionNextState = SessionNextState::SHUTDOWN;
+		$this->sessionNextState = SessionNextState::SHUTDOWN;
 	}
 	public function sessionNextState(): int
 	{
-		return $this->_sessionNextState;
+		return $this->sessionNextState;
 	}
 
 	/**
@@ -153,13 +153,13 @@ abstract class LogicBase implements ValidationReceivable
 	 */
 	protected function registerParameterKeys(array $keys, bool $overwrite): void
 	{
-		$this->_keys = $keys;
-		foreach ($this->_keys as $key) {
+		$this->keys = $keys;
+		foreach ($this->keys as $key) {
 			if ($overwrite) {
 				$value = $this->getRequest($key, '');
-				$this->_values[$key] = $value;
+				$this->values[$key] = $value;
 			} else {
-				$this->_values[$key] = '';
+				$this->values[$key] = '';
 			}
 		}
 	}
@@ -173,13 +173,13 @@ abstract class LogicBase implements ValidationReceivable
 	 */
 	protected function setValue(string $key, $value): void
 	{
-		if (ArrayUtility::getCount($this->_keys)) {
-			if (array_search($key, $this->_keys) === false) {
+		if (ArrayUtility::getCount($this->keys)) {
+			if (array_search($key, $this->keys) === false) {
 				throw new ArgumentException("key -> $key");
 			}
 		}
 
-		$this->_values[$key] = $value;
+		$this->values[$key] = $value;
 	}
 
 	/**
@@ -189,29 +189,29 @@ abstract class LogicBase implements ValidationReceivable
 	 */
 	protected function hasError(): bool
 	{
-		return 0 < count($this->_errors);
+		return 0 < count($this->errors);
 	}
 
 	protected function clearErrors(): void
 	{
-		$this->_errors = array();
+		$this->errors = array();
 	}
 
 	protected function removeError(string $key): void
 	{
-		if (isset($this->_errors[$key])) {
-			unset($this->_errors[$key]);
+		if (isset($this->errors[$key])) {
+			unset($this->errors[$key]);
 		}
 	}
 
 	protected function addError(string $key, string $message): void
 	{
-		if (isset($this->_errors[$key])) {
-			if (array_search($message, $this->_errors[$key]) === false) {
-				$this->_errors[$key][] = $message;
+		if (isset($this->errors[$key])) {
+			if (array_search($message, $this->errors[$key]) === false) {
+				$this->errors[$key][] = $message;
 			}
 		} else {
-			$this->_errors[$key] = [$message];
+			$this->errors[$key] = [$message];
 		}
 	}
 
@@ -337,9 +337,9 @@ abstract class LogicBase implements ValidationReceivable
 	public function getViewData(): TemplateParameter
 	{
 		return new TemplateParameter(
-			$this->_httpStatus,
-			$this->_values,
-			$this->_errors
+			$this->httpStatus,
+			$this->values,
+			$this->errors
 		);
 	}
 
@@ -351,7 +351,7 @@ abstract class LogicBase implements ValidationReceivable
 	 */
 	protected function setResponse(ActionResponse $response)
 	{
-		$this->_response = $response;
+		$this->response = $response;
 	}
 
 	/**
@@ -362,10 +362,10 @@ abstract class LogicBase implements ValidationReceivable
 	 */
 	public function getResponse(): ActionResponse
 	{
-		if (is_null($this->_response)) {
+		if (is_null($this->response)) {
 			throw new InvalidOperationException('not impl');
 		}
 
-		return $this->_response;
+		return $this->response;
 	}
 }

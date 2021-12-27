@@ -20,7 +20,7 @@ class Action
 	 *
 	 * @var array<string,array{method:string,options:ActionOptions}>
 	 */
-	private $_map = array();
+	private $map = array();
 
 	/**
 	 * 追加。
@@ -31,7 +31,7 @@ class Action
 	public function add(HttpMethod $httpMethod, string $callMethod, ActionOptions $options): void
 	{
 		foreach ($httpMethod->methods() as $method) {
-			$this->_map[$method] = [
+			$this->map[$method] = [
 				'method' => $callMethod,
 				'options' => $options,
 			];
@@ -46,7 +46,7 @@ class Action
 	 */
 	public function get(string $httpMethod): ?array
 	{
-		if (ArrayUtility::tryGet($this->_map, $httpMethod, $result)) {
+		if (ArrayUtility::tryGet($this->map, $httpMethod, $result)) {
 			return $result;
 		}
 

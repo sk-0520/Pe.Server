@@ -28,27 +28,27 @@ abstract class Logging
 	 *
 	 * @var InitializeChecker|null
 	 */
-	private static $_initializeChecker;
+	private static $initializeChecker;
 
 	/**
 	 * ログ設定。
 	 *
 	 * @var array<string,mixed>
 	 */
-	private static $_loggingConfiguration;
+	private static $loggingConfiguration;
 
 	/**
 	 * ログレベル。
 	 *
 	 * @var int
 	 */
-	private static $_level;
+	private static $level;
 	/**
 	 * 書式設定。
 	 *
 	 * @var string
 	 */
-	private static $_format;
+	private static $format;
 
 	/**
 	 * Undocumented function
@@ -58,15 +58,15 @@ abstract class Logging
 	 */
 	public static function initialize(array $loggingConfiguration)
 	{
-		if (is_null(self::$_initializeChecker)) {
-			self::$_initializeChecker = new InitializeChecker();
+		if (is_null(self::$initializeChecker)) {
+			self::$initializeChecker = new InitializeChecker();
 		}
-		self::$_initializeChecker->initialize();
+		self::$initializeChecker->initialize();
 
-		self::$_loggingConfiguration = $loggingConfiguration;
+		self::$loggingConfiguration = $loggingConfiguration;
 
-		self::$_level = self::$_loggingConfiguration['level'];
-		self::$_format = self::$_loggingConfiguration['format'];
+		self::$level = self::$loggingConfiguration['level'];
+		self::$format = self::$loggingConfiguration['format'];
 	}
 
 	private static function formatLevel(int $level): string
@@ -147,7 +147,7 @@ abstract class Logging
 	 */
 	public static function format(int $level, int $traceIndex, string $header, $message, ...$parameters): string
 	{
-		self::$_initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
+		self::$initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
 
 		/** @var array<string,mixed>[] */
 		$backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS); // DEBUG_BACKTRACE_PROVIDE_OBJECT
@@ -178,16 +178,16 @@ abstract class Logging
 			'MESSAGE' => self::formatMessage($message, ...$parameters),
 		];
 
-		return StringUtility::replaceMap(self::$_format, $map);
+		return StringUtility::replaceMap(self::$format, $map);
 	}
 
 	public static function create(string $header, int $baseTraceIndex = 0): ILogger
 	{
-		self::$_initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
+		self::$initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
 
 		$loggers = [
-			new FileLogger($header, self::$_level, $baseTraceIndex + 1, self::$_loggingConfiguration['file']),
+			new FileLogger($header, self::$level, $baseTraceIndex + 1, self::$loggingConfiguration['file']),
 		];
-		return new MultiLogger($header, self::$_level, $baseTraceIndex, $loggers);
+		return new MultiLogger($header, self::$level, $baseTraceIndex, $loggers);
 	}
 }

@@ -13,10 +13,10 @@ use \PeServer\Core\Mvc\SessionStore;
  */
 class ActionOptions
 {
-	private static ?ActionOptions $_none;
+	private static ?ActionOptions $none;
 	public static function none(): ActionOptions
 	{
-		return self::$_none ??= new ActionOptions();
+		return self::$none ??= new ActionOptions();
 	}
 
 	public string $errorControllerName;

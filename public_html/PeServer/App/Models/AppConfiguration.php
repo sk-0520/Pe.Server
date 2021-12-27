@@ -20,14 +20,14 @@ abstract class AppConfiguration
 	 *
 	 * @var InitializeChecker|null
 	 */
-	private static $_initializeChecker;
+	private static $initializeChecker;
 
 	/**
 	 * 環境情報。
 	 *
 	 * @var string
 	 */
-	private static $_environment;
+	private static $environment;
 	/**
 	 * 設定データ。
 	 *
@@ -106,10 +106,10 @@ abstract class AppConfiguration
 
 	public static function initialize(string $rootDirectoryPath, string $baseDirectoryPath, string $environment, string $revision): void
 	{
-		if (is_null(self::$_initializeChecker)) {
-			self::$_initializeChecker = new InitializeChecker();
+		if (is_null(self::$initializeChecker)) {
+			self::$initializeChecker = new InitializeChecker();
 		}
-		self::$_initializeChecker->initialize();
+		self::$initializeChecker->initialize();
 
 		$json = self::load($rootDirectoryPath, $baseDirectoryPath, $environment);
 
@@ -120,7 +120,7 @@ abstract class AppConfiguration
 		I18n::initialize($json['i18n']);
 
 
-		self::$_environment = $environment;
+		self::$environment = $environment;
 		self::$json = $json;
 		self::$rootDirectoryPath = $rootDirectoryPath;
 		self::$baseDirectoryPath = $baseDirectoryPath;
@@ -128,9 +128,9 @@ abstract class AppConfiguration
 
 	public static function isEnvironment(string $environment): bool
 	{
-		self::$_initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
+		self::$initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
 
-		return self::$_environment === $environment;
+		return self::$environment === $environment;
 	}
 
 	public static function isProductionEnvironment(): bool

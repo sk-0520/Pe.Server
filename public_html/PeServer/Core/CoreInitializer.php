@@ -11,14 +11,14 @@ abstract class CoreInitializer
 	 *
 	 * @var InitializeChecker|null
 	 */
-	private static $_initializeChecker;
+	private static $initializeChecker;
 
 	public static function initialize(): void
 	{
-		if (is_null(self::$_initializeChecker)) {
-			self::$_initializeChecker = new InitializeChecker();
+		if (is_null(self::$initializeChecker)) {
+			self::$initializeChecker = new InitializeChecker();
 		}
-		self::$_initializeChecker->initialize();
+		self::$initializeChecker->initialize();
 
 		mb_internal_encoding("UTF-8");
 	}

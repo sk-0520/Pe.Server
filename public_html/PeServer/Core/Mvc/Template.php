@@ -96,18 +96,18 @@ class _Template_Impl extends Template
 	 *
 	 * @var Smarty
 	 */
-	private $_engine;
+	private $engine;
 
 	public function __construct(string $baseName)
 	{
 		self::$initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
 
-		$this->_engine = new Smarty();
-		$this->_engine->addTemplateDir(self::$baseDirectoryPath . "/App/Views/$baseName/");
-		$this->_engine->addTemplateDir(self::$baseDirectoryPath . "/App/Views/");
-		$this->_engine->setCompileDir(self::$baseDirectoryPath . "/data/temp/views/c/$baseName/");
-		$this->_engine->setCacheDir(self::$baseDirectoryPath . "/data/temp/views/t/$baseName/");
-		$this->_engine->escape_html = true;
+		$this->engine = new Smarty();
+		$this->engine->addTemplateDir(self::$baseDirectoryPath . "/App/Views/$baseName/");
+		$this->engine->addTemplateDir(self::$baseDirectoryPath . "/App/Views/");
+		$this->engine->setCompileDir(self::$baseDirectoryPath . "/data/temp/views/c/$baseName/");
+		$this->engine->setCacheDir(self::$baseDirectoryPath . "/data/temp/views/t/$baseName/");
+		$this->engine->escape_html = true;
 
 		$this->registerFunctions();
 	}
@@ -115,23 +115,23 @@ class _Template_Impl extends Template
 	public function show(string $templateName, TemplateParameter $parameter): void
 	{
 		// @phpstan-ignore-next-line
-		$this->_engine->assign([
+		$this->engine->assign([
 			'status' => $parameter->httpStatus,
 			'values' => $parameter->values,
 			'errors' => $parameter->errors,
 		]);
 		// @phpstan-ignore-next-line
-		$this->_engine->display($templateName);
+		$this->engine->display($templateName);
 	}
 
 	private function registerFunctions(): void
 	{
 		// @phpstan-ignore-next-line
-		$this->_engine->registerPlugin('function', 'show_error_messages', array($this, 'showErrorMessages'));
+		$this->engine->registerPlugin('function', 'show_error_messages', array($this, 'showErrorMessages'));
 		// @phpstan-ignore-next-line
-		$this->_engine->registerPlugin('function', 'input_helper', array($this, 'inputHelper'));
+		$this->engine->registerPlugin('function', 'input_helper', array($this, 'inputHelper'));
 		// @phpstan-ignore-next-line
-		$this->_engine->registerPlugin('function', 'asset', array($this, 'asset'));
+		$this->engine->registerPlugin('function', 'asset', array($this, 'asset'));
 	}
 
 	/**

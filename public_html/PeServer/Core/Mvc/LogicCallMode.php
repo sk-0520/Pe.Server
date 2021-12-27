@@ -75,20 +75,20 @@ final class _LogicCallMode_Impl extends LogicCallMode
 	 *
 	 * @var int
 	 */
-	private $_mode;
+	private $mode;
 
 	public function __construct(int $mode)
 	{
-		$this->_mode = $mode;
+		$this->mode = $mode;
 	}
 
 	public function isInitialize(): bool
 	{
-		return $this->_mode === self::INITIALIZE;
+		return $this->mode === self::INITIALIZE;
 	}
 
 	public function isSubmit(): bool
 	{
-		return $this->_mode === self::SUBMIT;
+		return $this->mode === self::SUBMIT;
 	}
 }

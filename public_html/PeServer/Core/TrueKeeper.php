@@ -21,13 +21,13 @@ use PeServer\Core\Throws\ArgumentException;
  */
 class TrueKeeper
 {
-	private bool $_state = true;
+	private bool $state = true;
 
-	private bool $_last = false;
+	private bool $last = false;
 
 	public function last(): bool
 	{
-		return $this->_last;
+		return $this->last;
 	}
 
 	public function __set(string $name, bool $value): void
@@ -36,9 +36,9 @@ class TrueKeeper
 			throw new ArgumentException();
 		}
 
-		$this->_last = $value;
+		$this->last = $value;
 		if (!$value) {
-			$this->_state = false;
+			$this->state = false;
 		}
 	}
 
@@ -48,6 +48,6 @@ class TrueKeeper
 			throw new ArgumentException();
 		}
 
-		return $this->_state;
+		return $this->state;
 	}
 }

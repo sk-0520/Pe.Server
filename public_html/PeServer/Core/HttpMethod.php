@@ -74,7 +74,7 @@ abstract class HttpMethod
 class _HttpMethod_Impl extends HttpMethod
 {
 	/** @var string[] */
-	private $_methods;
+	private $methods;
 
 	/**
 	 * 生成。
@@ -97,11 +97,11 @@ class _HttpMethod_Impl extends HttpMethod
 			}
 		}
 
-		$this->_methods = $methods;
+		$this->methods = $methods;
 	}
 
 	public function methods(): array
 	{
-		return $this->_methods;
+		return $this->methods;
 	}
 }

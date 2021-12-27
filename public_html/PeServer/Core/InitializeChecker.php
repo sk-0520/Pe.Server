@@ -18,7 +18,7 @@ final class InitializeChecker
 	 *
 	 * @var boolean
 	 */
-	private $_isInitialized  = false;
+	private $isInitialized  = false;
 
 	/**
 	 * 初期化処理。
@@ -31,11 +31,11 @@ final class InitializeChecker
 	 */
 	public function initialize(): void
 	{
-		if ($this->_isInitialized) {
+		if ($this->isInitialized) {
 			throw new LogicException('initialized');
 		}
 
-		$this->_isInitialized = true;
+		$this->isInitialized = true;
 	}
 
 	/**
@@ -47,7 +47,7 @@ final class InitializeChecker
 	 */
 	public function throwIfNotInitialize(): void
 	{
-		if (!$this->_isInitialized) {
+		if (!$this->isInitialized) {
 			throw new LogicException('not initialize');
 		}
 	}

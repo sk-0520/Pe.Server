@@ -45,11 +45,11 @@ abstract class RouteConfiguration
 		return HttpStatus::forbidden();
 	}
 
-	private static ?ActionOptions $_user = null;
+	private static ?ActionOptions $user = null;
 	private static function user(): ActionOptions
 	{
-		if (!is_null(self::$_user)) {
-			return self::$_user;
+		if (!is_null(self::$user)) {
+			return self::$user;
 		}
 
 		$options = new ActionOptions();
@@ -58,14 +58,14 @@ abstract class RouteConfiguration
 			return self::filterPageAccount($argument, [UserLevel::USER, UserLevel::ADMINISTRATOR]);
 		};
 
-		return self::$_user = $options;
+		return self::$user = $options;
 	}
 
-	private static ?ActionOptions $_setup = null;
+	private static ?ActionOptions $setup = null;
 	private static function setup(): ActionOptions
 	{
-		if (!is_null(self::$_setup)) {
-			return self::$_setup;
+		if (!is_null(self::$setup)) {
+			return self::$setup;
 		}
 
 		$options = new ActionOptions();
@@ -74,14 +74,14 @@ abstract class RouteConfiguration
 			return self::filterPageAccount($argument, [UserLevel::SETUP]);
 		};
 
-		return self::$_setup = $options;
+		return self::$setup = $options;
 	}
 
-	private static ?ActionOptions $_admin = null;
+	private static ?ActionOptions $admin = null;
 	private static function admin(): ActionOptions
 	{
-		if (!is_null(self::$_admin)) {
-			return self::$_admin;
+		if (!is_null(self::$admin)) {
+			return self::$admin;
 		}
 
 		$options = new ActionOptions();
@@ -90,7 +90,7 @@ abstract class RouteConfiguration
 			return self::filterPageAccount($argument, [UserLevel::ADMINISTRATOR]);
 		};
 
-		return self::$_admin = $options;
+		return self::$admin = $options;
 	}
 
 

@@ -26,7 +26,7 @@ abstract class Database
 	 *
 	 * @var array<string,mixed>
 	 */
-	private static $_databaseConfiguration;
+	private static $databaseConfiguration;
 
 	/**
 	 * Undocumented function
@@ -41,7 +41,7 @@ abstract class Database
 		}
 		self::$initializeChecker->initialize();
 
-		self::$_databaseConfiguration = $databaseConfiguration;
+		self::$databaseConfiguration = $databaseConfiguration;
 	}
 
 	public static function open(): Database
@@ -50,7 +50,7 @@ abstract class Database
 
 		$logger = Logging::create('database');
 
-		return new _Database_Impl(self::$_databaseConfiguration, $logger);
+		return new _Database_Impl(self::$databaseConfiguration, $logger);
 	}
 
 	/**
@@ -335,9 +335,9 @@ class _Database_Impl extends Database
 	/**
 	 * 接続処理。
 	 */
-	private PDO $_pdo;
+	private PDO $pdo;
 
-	private ILogger $_logger;
+	private ILogger $logger;
 
 	/**
 	 * 生成。
@@ -347,12 +347,12 @@ class _Database_Impl extends Database
 	public function __construct(array $databaseConfiguration, ILogger $logger)
 	{
 		Database::$initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
-		$this->_logger = $logger;
+		$this->logger = $logger;
 
 		$dsn = 'sqlite:' . $databaseConfiguration['connection'];
-		$this->_pdo = new PDO($dsn);
-		$this->_pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$this->_pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+		$this->pdo = new PDO($dsn);
+		$this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 	}
 
 
@@ -363,26 +363,26 @@ class _Database_Impl extends Database
 	 */
 	private function getErrorMessage(): string
 	{
-		return StringUtility::dump($this->_pdo->errorInfo());
+		return StringUtility::dump($this->pdo->errorInfo());
 	}
 
 	public function beginTransaction(): void
 	{
-		if (!$this->_pdo->beginTransaction()) {
+		if (!$this->pdo->beginTransaction()) {
 			throw new SqlException($this->getErrorMessage()); // これが投げられず PDOException が投げられると思う
 		}
 	}
 
 	public function commit(): void
 	{
-		if (!$this->_pdo->commit()) {
+		if (!$this->pdo->commit()) {
 			throw new SqlException($this->getErrorMessage());
 		}
 	}
 
 	public function rollback(): void
 	{
-		if (!$this->_pdo->rollback()) {
+		if (!$this->pdo->rollback()) {
 			throw new SqlException($this->getErrorMessage());
 		}
 	}
@@ -400,7 +400,7 @@ class _Database_Impl extends Database
 				$this->rollback();
 			}
 		} catch (\Exception $ex) {
-			$this->_logger->error($ex);
+			$this->logger->error($ex);
 			$this->rollback();
 		}
 		return false;
@@ -432,7 +432,7 @@ class _Database_Impl extends Database
 	 */
 	private function executeStatement(string $statement, array $parameters): PDOStatement
 	{
-		$query = $this->_pdo->prepare($statement);
+		$query = $this->pdo->prepare($statement);
 
 		$this->setParameters($query, $parameters);
 

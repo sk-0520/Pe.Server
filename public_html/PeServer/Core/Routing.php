@@ -21,9 +21,9 @@ class Routing
 	 *
 	 * @var Route[]
 	 */
-	private $_routeMap;
+	private $routeMap;
 
-	private SessionStore $_session;
+	private SessionStore $session;
 
 	/**
 	 * 生成。
@@ -32,8 +32,8 @@ class Routing
 	 */
 	public function __construct(array $routeMap)
 	{
-		$this->_routeMap = $routeMap;
-		$this->_session = new SessionStore();
+		$this->routeMap = $routeMap;
+		$this->session = new SessionStore();
 	}
 
 	/**
@@ -66,7 +66,7 @@ class Routing
 
 		if (!is_null($options->filter)) {
 			$filter = $options->filter;
-			$filterArgument = new FilterArgument($this->_session);
+			$filterArgument = new FilterArgument($this->session);
 			$httpStatus = $filter($filterArgument);
 			if (400 <= $httpStatus->code()) {
 				throw new Exception('TODO: ' . $httpStatus->code());
@@ -74,7 +74,7 @@ class Routing
 		}
 
 		$logger = Logging::create($controllerName);
-		$controllerArgument = new ControllerArgument($this->_session, $logger);
+		$controllerArgument = new ControllerArgument($this->session, $logger);
 		$request = new ActionRequest($urlParameters);
 
 		$controller = new $controllerName($controllerArgument);
@@ -95,7 +95,7 @@ class Routing
 		$paths = $this->getPathValues($requestUri);
 		$requestPaths = $paths;
 
-		foreach ($this->_routeMap as $route) {
+		foreach ($this->routeMap as $route) {
 			$action = $route->getAction($requestMethod, $requestPaths);
 			if (!is_null($action)) {
 				if ($action['code']->code() === HttpStatus::doExecute()->code()) {

@@ -20,24 +20,24 @@ class AccountValidator
 	public const EMAIL_LENGTH = 254;
 	public const WEBSITE_LENGTH = 2083;
 
-	private ValidationReceivable $_receiver;
-	private Validator $_validator;
+	private ValidationReceivable $receiver;
+	private Validator $validator;
 
 	public function __construct(ValidationReceivable $receiver, Validator $validator)
 	{
-		$this->_receiver = $receiver;
-		$this->_validator = $validator;
+		$this->receiver = $receiver;
+		$this->validator = $validator;
 	}
 
 	public function isLoginId(string $key, ?string $value): bool
 	{
-		if ($this->_validator->isNotWhiteSpace($key, $value)) {
+		if ($this->validator->isNotWhiteSpace($key, $value)) {
 			// @phpstan-ignore-next-line isNotWhiteSpace
 			$value = StringUtility::trim($value);
 			$trueKeeper = new TrueKeeper();
 
-			$trueKeeper->state = $this->_validator->inLength($key, self::LOGIN_ID_LENGTH, $value);
-			$trueKeeper->state = $this->_validator->isMatch($key, '/^[a-zA-Z0-9\\-\\._]+$/', $value);
+			$trueKeeper->state = $this->validator->inLength($key, self::LOGIN_ID_LENGTH, $value);
+			$trueKeeper->state = $this->validator->isMatch($key, '/^[a-zA-Z0-9\\-\\._]+$/', $value);
 
 			return $trueKeeper->state;
 		}
@@ -47,13 +47,13 @@ class AccountValidator
 
 	public function isPassword(string $key, ?string $value): bool
 	{
-		if ($this->_validator->isNotWhiteSpace($key, $value)) {
+		if ($this->validator->isNotWhiteSpace($key, $value)) {
 			/** @var string */
 			$value = $value;
 			$trueKeeper = new TrueKeeper();
 
-			$trueKeeper->state = $this->_validator->inRange($key, self::PASSWORD_RANGE_MIN, self::PASSWORD_RANGE_MAX, $value);
-			$trueKeeper->state = $this->_validator->isMatch($key, '/^[a-zA-Z0-9!-~]+$/', $value);
+			$trueKeeper->state = $this->validator->inRange($key, self::PASSWORD_RANGE_MIN, self::PASSWORD_RANGE_MAX, $value);
+			$trueKeeper->state = $this->validator->isMatch($key, '/^[a-zA-Z0-9!-~]+$/', $value);
 
 			return $trueKeeper->state;
 		}
@@ -63,12 +63,12 @@ class AccountValidator
 
 	public function isUserName(string $key, ?string $value): bool
 	{
-		if ($this->_validator->isNotWhiteSpace($key, $value)) {
+		if ($this->validator->isNotWhiteSpace($key, $value)) {
 			// @phpstan-ignore-next-line isNotWhiteSpace
 			$value = StringUtility::trim($value);
 			$trueKeeper = new TrueKeeper();
 
-			$trueKeeper->state = $this->_validator->inLength($key, self::USER_NAME_LENGTH, $value);
+			$trueKeeper->state = $this->validator->inLength($key, self::USER_NAME_LENGTH, $value);
 
 			return $trueKeeper->state;
 		}
@@ -78,13 +78,13 @@ class AccountValidator
 
 	public function isEmail(string $key, ?string $value): bool
 	{
-		if ($this->_validator->isNotWhiteSpace($key, $value)) {
+		if ($this->validator->isNotWhiteSpace($key, $value)) {
 			// @phpstan-ignore-next-line isNotWhiteSpace
 			$value = StringUtility::trim($value);
 			$trueKeeper = new TrueKeeper();
 
-			$trueKeeper->state = $this->_validator->inLength($key, self::EMAIL_LENGTH, $value);
-			$trueKeeper->state = $this->_validator->isEmail($key, $value);
+			$trueKeeper->state = $this->validator->inLength($key, self::EMAIL_LENGTH, $value);
+			$trueKeeper->state = $this->validator->isEmail($key, $value);
 
 			return $trueKeeper->state;
 		}
@@ -99,8 +99,8 @@ class AccountValidator
 			$value = StringUtility::trim($value);
 			$trueKeeper = new TrueKeeper();
 
-			$trueKeeper->state = $this->_validator->inLength($key, self::WEBSITE_LENGTH, $value);
-			$trueKeeper->state = $this->_validator->isWebsite($key, $value);
+			$trueKeeper->state = $this->validator->inLength($key, self::WEBSITE_LENGTH, $value);
+			$trueKeeper->state = $this->validator->isWebsite($key, $value);
 
 			return $trueKeeper->state;
 		}
@@ -113,7 +113,7 @@ class AccountValidator
 		$usersEntityDao = new UsersEntityDao($database);
 
 		if ($usersEntityDao->selectExistsLoginId($loginId)) {
-			$this->_receiver->receiveErrorMessage($key, 'ログインIDが使用できません');
+			$this->receiver->receiveErrorMessage($key, 'ログインIDが使用できません');
 			return false;
 		}
 

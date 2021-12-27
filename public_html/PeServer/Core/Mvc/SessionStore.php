@@ -22,20 +22,20 @@ class SessionStore
 	 *
 	 * @var array<string,mixed>
 	 */
-	private array $_values = array();
+	private array $values = array();
 	/**
 	 * セッションは開始されているか。
 	 *
 	 * @var boolean
 	 */
-	private bool $_isStarted  = false;
+	private bool $isStarted  = false;
 
 	/**
 	 * セッションの値に変更があったか。
 	 *
 	 * @var boolean
 	 */
-	private bool $_isChanged = false;
+	private bool $isChanged = false;
 
 	private static string $sessionKey = 'PHPSESSID';
 
@@ -43,8 +43,8 @@ class SessionStore
 	{
 		if (isset($_COOKIE[self::$sessionKey]) && !StringUtility::isNullOrWhiteSpace($_COOKIE[self::$sessionKey])) {
 			$this->start();
-			$this->_values = $_SESSION;
-			$this->_isStarted = true;
+			$this->values = $_SESSION;
+			$this->isStarted = true;
 		}
 	}
 
@@ -55,7 +55,7 @@ class SessionStore
 	 */
 	public function isStarted(): bool
 	{
-		return $this->_isStarted;
+		return $this->isStarted;
 	}
 
 	/**
@@ -66,7 +66,7 @@ class SessionStore
 	 */
 	public function start(): void
 	{
-		if ($this->_isStarted) {
+		if ($this->isStarted) {
 			throw new InvalidOperationException();
 		}
 
@@ -81,7 +81,7 @@ class SessionStore
 	 */
 	public function restart(): void
 	{
-		if (!$this->_isStarted) {
+		if (!$this->isStarted) {
 			throw new InvalidOperationException();
 		}
 
@@ -97,7 +97,7 @@ class SessionStore
 	{
 		$_SESSION = array();
 
-		if (!$this->_isStarted) {
+		if (!$this->isStarted) {
 			return;
 		}
 
@@ -112,7 +112,7 @@ class SessionStore
 	 */
 	public function isChanged(): bool
 	{
-		return $this->_isChanged;
+		return $this->isChanged;
 	}
 
 	/**
@@ -124,8 +124,8 @@ class SessionStore
 	 */
 	public function set(string $key, mixed $value): void
 	{
-		$this->_values[$key] = $value;
-		$this->_isChanged = true;
+		$this->values[$key] = $value;
+		$this->isChanged = true;
 	}
 
 	/**
@@ -139,9 +139,9 @@ class SessionStore
 		if (StringUtility::isNullOrEmpty($key)) {
 			$_SESSION = array();
 		} else {
-			unset($this->_values[$key]);
+			unset($this->values[$key]);
 		}
-		$this->_isChanged = true;
+		$this->isChanged = true;
 	}
 
 	/**
@@ -153,7 +153,7 @@ class SessionStore
 	 */
 	public function getOr(string $key, mixed $defaultValue): mixed
 	{
-		return ArrayUtility::getOr($this->_values, $key, $defaultValue);
+		return ArrayUtility::getOr($this->values, $key, $defaultValue);
 	}
 
 	/**
@@ -165,7 +165,7 @@ class SessionStore
 	 */
 	public function tryGet(string $key, mixed &$result): bool
 	{
-		return ArrayUtility::tryGet($this->_values, $key, $result);
+		return ArrayUtility::tryGet($this->values, $key, $result);
 	}
 
 	/**
@@ -175,6 +175,6 @@ class SessionStore
 	 */
 	public function apply(): void
 	{
-		$_SESSION = $this->_values;
+		$_SESSION = $this->values;
 	}
 }

@@ -15,14 +15,14 @@ abstract class Initializer
 	 *
 	 * @var InitializeChecker|null
 	 */
-	private static $_initializeChecker;
+	private static $initializeChecker;
 
 	public static function initialize(string $rootDirectoryPath, string $baseDirectoryPath, string $environment, string $revision): void
 	{
-		if (is_null(self::$_initializeChecker)) {
-			self::$_initializeChecker = new InitializeChecker();
+		if (is_null(self::$initializeChecker)) {
+			self::$initializeChecker = new InitializeChecker();
 		}
-		self::$_initializeChecker->initialize();
+		self::$initializeChecker->initialize();
 
 		CoreInitializer::initialize();
 		AppConfiguration::initialize($rootDirectoryPath, $baseDirectoryPath, $environment, $revision);

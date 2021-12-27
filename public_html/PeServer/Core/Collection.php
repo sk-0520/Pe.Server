@@ -14,7 +14,7 @@ use \IteratorAggregate;
 class Collection implements IteratorAggregate // @phpstan-ignore-line
 {
 	/** @var array<mixed> */
-	private $_items;
+	private $items;
 
 	/**
 	 * Undocumented function
@@ -23,7 +23,7 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 	 */
 	private function __construct(array $items)
 	{
-		$this->_items = $items;
+		$this->items = $items;
 	}
 
 	/**
@@ -33,7 +33,7 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 	 */
 	public function getIterator(): Traversable // @phpstan-ignore-line
 	{
-		return new ArrayIterator($this->_items);
+		return new ArrayIterator($this->items);
 	}
 
 	/**
@@ -43,7 +43,7 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 	 */
 	public function toArray(): array // @phpstan-ignore-line
 	{
-		return array_values($this->_items);
+		return array_values($this->items);
 	}
 
 	/**
@@ -69,7 +69,7 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 	 */
 	function where(callable $callback): Collection // @phpstan-ignore-line
 	{
-		return self::from(array_filter($this->_items, $callback));
+		return self::from(array_filter($this->items, $callback));
 	}
 
 	/**
@@ -81,10 +81,10 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 	public function any(?callable $callback = null): bool
 	{
 		if (is_null($callback)) {
-			return 0 < count($this->_items);
+			return 0 < count($this->items);
 		}
 
-		foreach ($this->_items as $item) {
+		foreach ($this->items as $item) {
 			if ($callback($item)) {
 				return true;
 			}
@@ -101,11 +101,11 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 	 */
 	public function all(callable $callback): bool
 	{
-		if (count($this->_items) === 0) {
+		if (count($this->items) === 0) {
 			return true;
 		}
 
-		foreach ($this->_items as $item) {
+		foreach ($this->items as $item) {
 			if (!$callback($item)) {
 				return false;
 			}
