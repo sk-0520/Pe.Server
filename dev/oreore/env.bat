@@ -1,5 +1,7 @@
 cd /d %~dp0
 
+IF DEFINED OREORE_ENV exit /b
+
 set PATH=C:\Applications\xampp\xampp-portable-windows-x64-8.0.7-0-VS16\xampp\php;%PATH%
 set BASH=C:\Program Files\Git\bin\bash.exe
 
