@@ -18,6 +18,8 @@ use \PeServer\App\Models\Database\Entities\UsersEntityDao;
 
 class AccountLoginLogic extends PageLogicBase
 {
+	private const ERROR_LOGIN_PARAMETER = 'error/login-parameter';
+
 	public function __construct(LogicParameter $parameter)
 	{
 		parent::__construct($parameter);
@@ -39,12 +41,12 @@ class AccountLoginLogic extends PageLogicBase
 
 		$loginId = $this->getRequest('account_login_login_id');
 		if (StringUtility::isNullOrWhiteSpace($loginId)) {
-			$this->addError(Validator::COMMON, I18n::message('error-login-parameter'));
+			$this->addError(Validator::COMMON, I18n::message(self::ERROR_LOGIN_PARAMETER));
 		}
 
 		$password = $this->getRequest('account_login_password');
 		if (StringUtility::isNullOrWhiteSpace($password)) {
-			$this->addError(Validator::COMMON, I18n::message('error-login-parameter'));
+			$this->addError(Validator::COMMON, I18n::message(self::ERROR_LOGIN_PARAMETER));
 		}
 	}
 
@@ -69,12 +71,12 @@ class AccountLoginLogic extends PageLogicBase
 		$user = $userDomainDao->selectLoginUser($this->getRequest('account_login_login_id'));
 
 		if (is_null($user)) {
-			$this->addError(Validator::COMMON, I18n::message('error-login-parameter'));
+			$this->addError(Validator::COMMON, I18n::message(self::ERROR_LOGIN_PARAMETER));
 			return;
 		}
 
 		if ($existsSetupUser && $user['level'] !== 'setup') {
-			$this->addError(Validator::COMMON, I18n::message('error-login-parameter'));
+			$this->addError(Validator::COMMON, I18n::message(self::ERROR_LOGIN_PARAMETER));
 			$this->logger->error('未セットアップ状態での通常ログインは抑制中');
 			return;
 		}
@@ -82,7 +84,7 @@ class AccountLoginLogic extends PageLogicBase
 		// パスワード突合
 		$verify_ok = password_verify($this->getRequest('account_login_password'), $user['password']);
 		if (!$verify_ok) {
-			$this->addError(Validator::COMMON, I18n::message('error-login-parameter'));
+			$this->addError(Validator::COMMON, I18n::message(self::ERROR_LOGIN_PARAMETER));
 			$this->logger->warn('ログイン失敗: {0}', $user['user_id']);
 			$this->writeAuditLogTargetUser($user['user_id'], AuditLog::LOGIN_FAILED);
 			return;
