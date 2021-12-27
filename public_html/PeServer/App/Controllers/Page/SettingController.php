@@ -6,15 +6,15 @@ use \PeServer\Core\ActionOptions;
 use \PeServer\Core\ActionRequest;
 use \PeServer\Core\Mvc\LogicCallMode;
 use \PeServer\Core\Mvc\ControllerBase;
-use \PeServer\Core\Mvc\ControllerArguments;
+use \PeServer\Core\Mvc\ControllerArgument;
 use \PeServer\App\Controllers\DomainControllerBase;
 use \PeServer\App\Models\Domains\Page\Setting\SettingSetupLogic;
 
 final class SettingController extends PageControllerBase
 {
-	public function __construct(ControllerArguments $arguments)
+	public function __construct(ControllerArgument $argument)
 	{
-		parent::__construct($arguments);
+		parent::__construct($argument);
 	}
 
 	public function setup_get(ActionRequest $request, ActionOptions $options): void

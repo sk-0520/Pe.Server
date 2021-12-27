@@ -6,6 +6,7 @@ namespace PeServer\App\Models;
 
 use \PeServer\Core\ActionOptions;
 use \PeServer\Core\Route;
+use \PeServer\Core\FilterArgument;
 use \PeServer\Core\HttpMethod;
 use \PeServer\App\Controllers\Page\HomeController;
 use \PeServer\App\Controllers\Page\SettingController;
@@ -25,13 +26,13 @@ abstract class RouteConfiguration
 	/**
 	 * Undocumented function
 	 *
-	 * @param SessionStore $session
+	 * @param FilterArgument $argument
 	 * @param string[] $levels
 	 * @return HttpStatus
 	 */
-	private static function filterPageAccount(SessionStore $session, array $levels): HttpStatus
+	private static function filterPageAccount(FilterArgument $argument, array $levels): HttpStatus
 	{
-		if (!$session->tryGet(SessionKey::ACCOUNT, $account)) {
+		if (!$argument->session->tryGet(SessionKey::ACCOUNT, $account)) {
 			return HttpStatus::forbidden();
 		}
 
@@ -53,8 +54,8 @@ abstract class RouteConfiguration
 
 		$options = new ActionOptions();
 		$options->errorControllerName = ErrorController::class;
-		$options->sessionFilter = function (SessionStore $s) {
-			return self::filterPageAccount($s, [UserLevel::USER, UserLevel::ADMINISTRATOR]);
+		$options->filter = function (FilterArgument $argument) {
+			return self::filterPageAccount($argument, [UserLevel::USER, UserLevel::ADMINISTRATOR]);
 		};
 
 		return self::$_user = $options;
@@ -69,8 +70,8 @@ abstract class RouteConfiguration
 
 		$options = new ActionOptions();
 		$options->errorControllerName = ErrorController::class;
-		$options->sessionFilter = function (SessionStore $s) {
-			return self::filterPageAccount($s, [UserLevel::SETUP]);
+		$options->filter = function (FilterArgument $argument) {
+			return self::filterPageAccount($argument, [UserLevel::SETUP]);
 		};
 
 		return self::$_setup = $options;
@@ -85,8 +86,8 @@ abstract class RouteConfiguration
 
 		$options = new ActionOptions();
 		$options->errorControllerName = ErrorController::class;
-		$options->sessionFilter = function (SessionStore $s) {
-			return self::filterPageAccount($s, [UserLevel::ADMINISTRATOR]);
+		$options->filter = function (FilterArgument $argument) {
+			return self::filterPageAccount($argument, [UserLevel::ADMINISTRATOR]);
 		};
 
 		return self::$_admin = $options;

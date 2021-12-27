@@ -4,14 +4,14 @@ namespace PeServer\App\Controllers\Page;
 
 use \PeServer\App\Models\SessionKey;
 use \PeServer\Core\Mvc\ControllerBase;
-use \PeServer\Core\Mvc\ControllerArguments;
+use \PeServer\Core\Mvc\ControllerArgument;
 use \PeServer\App\Controllers\DomainControllerBase;
 
 abstract class PageControllerBase extends DomainControllerBase
 {
-	protected function __construct(ControllerArguments $arguments)
+	protected function __construct(ControllerArgument $argument)
 	{
-		parent::__construct($arguments);
+		parent::__construct($argument);
 	}
 
 	/**

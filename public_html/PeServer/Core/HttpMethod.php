@@ -28,7 +28,7 @@ abstract class HttpMethod
 	 */
 	public static function create(string ...$methods): HttpMethod
 	{
-		return new _HttpMethod_Invisible(...$methods);
+		return new _HttpMethod_Impl(...$methods);
 	}
 
 	/**
@@ -71,7 +71,7 @@ abstract class HttpMethod
 /**
  * アプリ側からは使用しない。
  */
-class _HttpMethod_Invisible extends HttpMethod
+class _HttpMethod_Impl extends HttpMethod
 {
 	/** @var string[] */
 	private $_methods;

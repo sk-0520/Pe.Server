@@ -13,7 +13,7 @@ use \PeServer\Core\ActionResponse;
 use \PeServer\Core\ResponseOutput;
 use \PeServer\Core\HttpStatus;
 use \PeServer\Core\ArrayUtility;
-use \PeServer\Core\Mvc\ControllerArguments;
+use \PeServer\Core\Mvc\ControllerArgument;
 use \PeServer\Core\Mvc\Template;
 use \PeServer\Core\Mvc\LogicBase;
 use \PeServer\Core\Mvc\LogicParameter;
@@ -46,10 +46,10 @@ abstract class ControllerBase
 
 	protected ?LogicBase $logic = null;
 
-	protected function __construct(ControllerArguments $arguments)
+	protected function __construct(ControllerArgument $argument)
 	{
-		$this->logger = $arguments->logger;
-		$this->session = $arguments->session;
+		$this->logger = $argument->logger;
+		$this->session = $argument->session;
 
 		$this->logger->trace('CONTROLLER');
 	}
@@ -76,7 +76,7 @@ abstract class ControllerBase
 	 */
 	public function redirectPath(string $path, ?array $query = null): void
 	{
-		if(!is_null($this->logic)) {
+		if (!is_null($this->logic)) {
 			$this->applySession();
 		}
 

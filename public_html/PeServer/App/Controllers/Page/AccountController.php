@@ -8,7 +8,7 @@ use \PeServer\Core\ActionOptions;
 use \PeServer\Core\ActionRequest;
 use \PeServer\Core\Mvc\LogicCallMode;
 use \PeServer\Core\Mvc\ControllerBase;
-use \PeServer\Core\Mvc\ControllerArguments;
+use \PeServer\Core\Mvc\ControllerArgument;
 use \PeServer\App\Models\Domains\Page\Account\AccountLoginLogic;
 use \PeServer\App\Models\Domains\Page\Account\AccountLogoutLogic;
 use \PeServer\App\Models\Domains\Page\Account\AccountUserLogic;
@@ -18,9 +18,9 @@ use \PeServer\App\Models\UserLevel;
 
 final class AccountController extends PageControllerBase
 {
-	public function __construct(ControllerArguments $arguments)
+	public function __construct(ControllerArgument $argument)
 	{
-		parent::__construct($arguments);
+		parent::__construct($argument);
 	}
 
 	public function index(ActionRequest $request, ActionOptions $options): void

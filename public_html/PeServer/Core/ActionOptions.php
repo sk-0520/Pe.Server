@@ -22,9 +22,10 @@ class ActionOptions
 	public string $errorControllerName;
 
 	/**
-	 * Undocumented variable
+	 * フィルタリング処理
 	 *
-	 * @var callable(SessionStore):HttpStatus |null
+	 * @var null|(callable(FilterArgument $argument):HttpStatus)
 	 */
-	public $sessionFilter;
+	public $filter;
+
 }

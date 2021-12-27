@@ -76,7 +76,7 @@ abstract class Template
 	{
 		self::$initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
 
-		return new _Template_Invisible($baseName);
+		return new _Template_Impl($baseName);
 	}
 
 	/**
@@ -89,7 +89,7 @@ abstract class Template
 	public abstract function show(string $templateName, TemplateParameter $parameter): void;
 }
 
-class _Template_Invisible extends Template
+class _Template_Impl extends Template
 {
 	/**
 	 * Undocumented variable

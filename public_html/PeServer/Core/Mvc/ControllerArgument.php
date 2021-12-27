@@ -9,7 +9,7 @@ use \PeServer\Core\ILogger;
 /**
  * コントローラ生成時に使用される入力値。
  */
-class ControllerArguments
+class ControllerArgument
 {
 	/**
 	 * ロガー

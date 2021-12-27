@@ -5,7 +5,7 @@ namespace PeServer\App\Controllers\Api;
 use \PeServer\Core\ActionOptions;
 use \PeServer\Core\ActionRequest;
 use \PeServer\Core\Mvc\LogicCallMode;
-use \PeServer\Core\Mvc\ControllerArguments;
+use \PeServer\Core\Mvc\ControllerArgument;
 use \PeServer\App\Controllers\Api\ApiControllerBase;
 use \PeServer\App\Models\Domains\Api\Development\DevelopmentInitializeLogic;
 use \PeServer\App\Models\Domains\Api\Development\DevelopmentAdministratorLogic;
@@ -13,9 +13,9 @@ use \PeServer\App\Models\Domains\Api\Development\DevelopmentAdministratorLogic;
 
 final class DevelopmentController extends ApiControllerBase
 {
-	public function __construct(ControllerArguments $arguments)
+	public function __construct(ControllerArgument $argument)
 	{
-		parent::__construct($arguments);
+		parent::__construct($argument);
 	}
 
 	public function initialize(ActionRequest $request, ActionOptions $options): void

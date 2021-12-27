@@ -7,7 +7,7 @@ namespace PeServer\App\Controllers\Page;
 use \PeServer\Core\ActionOptions;
 use \PeServer\Core\ActionRequest;
 use \PeServer\Core\HttpStatusCode;
-use \PeServer\Core\Mvc\ControllerArguments;
+use \PeServer\Core\Mvc\ControllerArgument;
 use \PeServer\Core\Mvc\ControllerBase;
 use \PeServer\Core\Mvc\LogicCallMode;
 use \PeServer\App\Models\Domains\Page\Home\HomeIndexLogic;
@@ -17,9 +17,9 @@ use \PeServer\App\Models\Domains\Page\Home\HomeContactLogic;
 
 final class HomeController extends PageControllerBase
 {
-	public function __construct(ControllerArguments $arguments)
+	public function __construct(ControllerArgument $argument)
 	{
-		parent::__construct($arguments);
+		parent::__construct($argument);
 	}
 
 	public function index(ActionRequest $request, ActionOptions $options): void

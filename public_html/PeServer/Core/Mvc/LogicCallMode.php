@@ -44,7 +44,7 @@ abstract class LogicCallMode
 	 */
 	private static function create(int $mode): LogicCallMode
 	{
-		return new _LogicCallMode_Invisible($mode);
+		return new _LogicCallMode_Impl($mode);
 	}
 
 	/**
@@ -68,7 +68,7 @@ abstract class LogicCallMode
 	}
 }
 
-final class _LogicCallMode_Invisible extends LogicCallMode
+final class _LogicCallMode_Impl extends LogicCallMode
 {
 	/**
 	 * 呼び出し方法。

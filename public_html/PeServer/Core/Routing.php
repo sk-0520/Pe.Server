@@ -6,8 +6,10 @@ namespace PeServer\Core;
 
 use Exception;
 use \PeServer\Core\Log\Logging;
-use \PeServer\Core\Mvc\ControllerArguments;
+use \PeServer\Core\Mvc\ControllerArgument;
 use \PeServer\Core\Mvc\SessionStore;
+use \PeServer\Core\FilterArgument;
+use \PeServer\Core\_FilterArgument_Impl;
 
 /**
  * ルーティング。
@@ -21,7 +23,7 @@ class Routing
 	 */
 	private $_routeMap;
 
-	private SessionStore $sessionStore;
+	private SessionStore $_session;
 
 	/**
 	 * 生成。
@@ -31,7 +33,7 @@ class Routing
 	public function __construct(array $routeMap)
 	{
 		$this->_routeMap = $routeMap;
-		$this->sessionStore = new SessionStore();
+		$this->_session = new SessionStore();
 	}
 
 	/**
@@ -62,19 +64,20 @@ class Routing
 		$splitNames = explode('/', $rawControllerName);
 		$controllerName = $splitNames[count($splitNames) - 1];
 
-		if (!is_null($options->sessionFilter)) {
-			$sessionFilter = $options->sessionFilter;
-			$httpStatus = $sessionFilter($this->sessionStore);
+		if (!is_null($options->filter)) {
+			$filter = $options->filter;
+			$filterArgument = new FilterArgument($this->_session);
+			$httpStatus = $filter($filterArgument);
 			if (400 <= $httpStatus->code()) {
 				throw new Exception('TODO: ' . $httpStatus->code());
 			}
 		}
 
 		$logger = Logging::create($controllerName);
-		$controllerArguments = new ControllerArguments($this->sessionStore, $logger);
+		$controllerArgument = new ControllerArgument($this->_session, $logger);
 		$request = new ActionRequest($urlParameters);
 
-		$controller = new $controllerName($controllerArguments);
+		$controller = new $controllerName($controllerArgument);
 		$controller->$methodName($request, $options);
 	}
 

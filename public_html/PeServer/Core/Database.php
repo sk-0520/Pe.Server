@@ -50,7 +50,7 @@ abstract class Database
 
 		$logger = Logging::create('database');
 
-		return new _Database_Invisible(self::$_databaseConfiguration, $logger);
+		return new _Database_Impl(self::$_databaseConfiguration, $logger);
 	}
 
 	/**
@@ -330,7 +330,7 @@ abstract class Database
 /**
  * Database内部実装。
  */
-class _Database_Invisible extends Database
+class _Database_Impl extends Database
 {
 	/**
 	 * 接続処理。

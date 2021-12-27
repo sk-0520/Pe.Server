@@ -20,39 +20,39 @@ abstract class HttpStatus
 
 	public static function doExecute(): HttpStatus
 	{
-		return new _HttpStatus_Invisible(0);
+		return new _HttpStatus_Impl(0);
 	}
 	public static function ok(): HttpStatus
 	{
-		return new _HttpStatus_Invisible(200);
+		return new _HttpStatus_Impl(200);
 	}
 
 	public static function forbidden(): HttpStatus
 	{
-		return new _HttpStatus_Invisible(403);
+		return new _HttpStatus_Impl(403);
 	}
 	public static function notFound(): HttpStatus
 	{
-		return new _HttpStatus_Invisible(404);
+		return new _HttpStatus_Impl(404);
 	}
 	public static function methodNotAllowed(): HttpStatus
 	{
-		return new _HttpStatus_Invisible(405);
+		return new _HttpStatus_Impl(405);
 	}
 
 	public static function internalServerError(): HttpStatus
 	{
-		return new _HttpStatus_Invisible(500);
+		return new _HttpStatus_Impl(500);
 	}
 	public static function serviceUnavailable(): HttpStatus
 	{
-		return new _HttpStatus_Invisible(503);
+		return new _HttpStatus_Impl(503);
 	}
 
 	public abstract function code(): int;
 }
 
-class _HttpStatus_Invisible extends HttpStatus
+class _HttpStatus_Impl extends HttpStatus
 {
 	private int $_code;
 
