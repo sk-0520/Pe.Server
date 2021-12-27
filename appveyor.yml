@@ -19,6 +19,7 @@ before_test:
   - sh: sudo apt --yes update
   - sh: sudo apt --yes install php$PHP_VER php$PHP_VER-fpm php$PHP_VER-mysql php$PHP_VER-mbstring php$PHP_VER-zip php$PHP_VER-xml
   - sh: sudo update-alternatives --set php /usr/bin/php$PHP_VER
+  - sh: ls -al /var/cache/apt/archives
 build_script:
   - sh: npm run build
   - sh: ./dev/update-config.sh $APPVEYOR_REPO_COMMIT
