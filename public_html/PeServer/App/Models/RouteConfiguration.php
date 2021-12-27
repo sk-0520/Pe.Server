@@ -14,7 +14,7 @@ use \PeServer\App\Controllers\Page\AccountController;
 use \PeServer\App\Controllers\Page\ErrorController;
 use \PeServer\App\Controllers\Api\DevelopmentController;
 use \PeServer\Core\HttpStatus;
-use \PeServer\Core\Mvc\SessionStore;
+use \PeServer\Core\Store\SessionStore;
 
 /**
  * ルーティング情報設定。

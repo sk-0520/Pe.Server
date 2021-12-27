@@ -18,8 +18,9 @@ use \PeServer\Core\Mvc\Template;
 use \PeServer\Core\Mvc\LogicBase;
 use \PeServer\Core\Mvc\LogicParameter;
 use \PeServer\Core\Mvc\SessionNextState;
-use \PeServer\Core\Mvc\SessionStore;
+use \PeServer\Core\Store\SessionStore;
 use \PeServer\Core\Log\Logging;
+use \PeServer\Core\Store\CookieStore;
 use \PeServer\Core\StringUtility;
 use PeServer\Core\Throws\InvalidOperationException;
 
@@ -42,6 +43,7 @@ abstract class ControllerBase
 	 */
 	protected $skipBaseName = 'PeServer\\App\\Controllers\\Page';
 
+	protected CookieStore $cookie;
 	protected SessionStore $session;
 
 	protected ?LogicBase $logic = null;
@@ -49,6 +51,7 @@ abstract class ControllerBase
 	protected function __construct(ControllerArgument $argument)
 	{
 		$this->logger = $argument->logger;
+		$this->cookie = $argument->cookie;
 		$this->session = $argument->session;
 
 		$this->logger->trace('CONTROLLER');
@@ -77,7 +80,7 @@ abstract class ControllerBase
 	public function redirectPath(string $path, ?array $query = null): void
 	{
 		if (!is_null($this->logic)) {
-			$this->applySession();
+			$this->applyStore();
 		}
 
 		$httpProtocol = StringUtility::isNullOrEmpty($_SERVER['HTTPS']) ? 'http://' : 'https://';
@@ -95,6 +98,7 @@ abstract class ControllerBase
 	{
 		return new LogicParameter(
 			$request,
+			$this->cookie,
 			$this->session,
 			Logging::create($logicName)
 		);
@@ -186,6 +190,13 @@ abstract class ControllerBase
 		}
 	}
 
+	private function applyStore(): void
+	{
+		$this->applySession();
+		$this->cookie->apply();
+	}
+
+
 	/**
 	 * Viewを表示。
 	 *
@@ -204,7 +215,7 @@ abstract class ControllerBase
 
 		$template = Template::create($templateDirPath);
 
-		$this->applySession();
+		$this->applyStore();
 
 		$template->show("$action.tpl", $parameter);
 	}
@@ -231,7 +242,7 @@ abstract class ControllerBase
 	 */
 	public function data(ActionResponse $response): void
 	{
-		$this->applySession();
+		$this->applyStore();
 
 		header('Content-Type: ' . $response->mime);
 		if ($response->chunked) {

@@ -35,7 +35,8 @@
 			"phpunit",
 			"ATTR_ERRMODE",
 			"ERRMODE_EXCEPTION",
-			"intelephense"
+			"intelephense",
+			"PHPSESSID"
 		],
 		"intelephense.environment.phpVersion": "8.0.3",
 		"intelephense.files.exclude": [

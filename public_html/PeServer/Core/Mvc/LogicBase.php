@@ -4,21 +4,23 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc;
 
-use LogicException;
+use \DateInterval;
+use \PeServer\Core\I18n;
 use \PeServer\Core\ILogger;
-use \PeServer\Core\ActionRequest;
-use \PeServer\Core\ActionResponse;
-use \PeServer\Core\ArrayUtility;
 use \PeServer\Core\HttpStatus;
-use PeServer\Core\I18n;
-use \PeServer\Core\Mvc\LogicParameter;
-use \PeServer\Core\Mvc\ValidationReceivable;
-use \PeServer\Core\Mvc\SessionNextState;
-use \PeServer\Core\Mvc\Validations;
+use \PeServer\Core\ArrayUtility;
+use \PeServer\Core\Store\SessionStore;
+use \PeServer\Core\ActionRequest;
 use \PeServer\Core\StringUtility;
-use PeServer\Core\Throws\ArgumentException;
-use \PeServer\Core\Throws\InvalidOperationException;
+use \PeServer\Core\ActionResponse;
+use \PeServer\Core\Mvc\Validations;
+use \PeServer\Core\Mvc\LogicParameter;
+use \PeServer\Core\Mvc\SessionNextState;
+use \PeServer\Core\Mvc\ValidationReceivable;
+use \PeServer\Core\Store\CookieStore;
+use \PeServer\Core\Throws\ArgumentException;
 use \PeServer\Core\Throws\NotImplementedException;
+use \PeServer\Core\Throws\InvalidOperationException;
 
 /**
  * コントローラから呼び出されるロジック基底処理。
@@ -85,6 +87,7 @@ abstract class LogicBase implements ValidationReceivable
 	 */
 	private $response = null;
 
+	private CookieStore $cookie;
 	private SessionStore $session;
 	private int $sessionNextState = SessionNextState::NORMAL;
 
@@ -92,6 +95,7 @@ abstract class LogicBase implements ValidationReceivable
 	{
 		$this->httpStatus = HttpStatus::ok();
 		$this->request = $parameter->request;
+		$this->cookie = $parameter->cookie;
 		$this->session = $parameter->session;
 		$this->logger = $parameter->logger;
 
@@ -113,6 +117,27 @@ abstract class LogicBase implements ValidationReceivable
 			return $default;
 		}
 		return $this->request->getValue($key);
+	}
+
+	protected function getCookie(string $key, string $default = ''): string
+	{
+		return $this->cookie->getOr($key, $default);
+	}
+	/**
+	 * Undocumented function
+	 *
+	 * @param string $key
+	 * @param string $value
+	 * @param array{path:?string,span:DateInterval|null,secure:?bool,httpOnly:?bool}|null $options
+	 * @return void
+	 */
+	protected function setCookie(string $key, string $value, array $options = null): void
+	{
+		$this->cookie->set($key, $value, $options ??  ['path' => null, 'span' => null, 'secure' => null, 'httpOnly' => null]);
+	}
+	protected function removeCookie(string $key): void
+	{
+		$this->cookie->remove($key);
 	}
 
 	protected function getSession(string $key, mixed $default = null): mixed

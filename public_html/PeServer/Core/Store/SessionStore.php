@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core\Mvc;
+namespace PeServer\Core\Store;
 
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\StringUtility;
@@ -16,6 +16,7 @@ use PeServer\Core\Throws\InvalidOperationException;
  */
 class SessionStore
 {
+	private CookieStore $cookie;
 
 	/**
 	 * セッション一時データ。
@@ -39,8 +40,10 @@ class SessionStore
 
 	private static string $sessionKey = 'PHPSESSID';
 
-	public function __construct()
+	public function __construct(CookieStore $cookie)
 	{
+		$this->cookie = $cookie;
+
 		if (isset($_COOKIE[self::$sessionKey]) && !StringUtility::isNullOrWhiteSpace($_COOKIE[self::$sessionKey])) {
 			$this->start();
 			$this->values = $_SESSION;
@@ -101,7 +104,7 @@ class SessionStore
 			return;
 		}
 
-		setcookie(self::$sessionKey, '', time() - 60, '/');
+		$this->cookie->remove(self::$sessionKey);
 		session_destroy();
 	}
 
@@ -137,10 +140,11 @@ class SessionStore
 	public function remove(string $key): void
 	{
 		if (StringUtility::isNullOrEmpty($key)) {
-			$_SESSION = array();
+			$this->values = array();
 		} else {
 			unset($this->values[$key]);
 		}
+
 		$this->isChanged = true;
 	}
 
