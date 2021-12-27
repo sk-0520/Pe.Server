@@ -47,4 +47,4 @@ for:
 cache:
   - 'node_modules'
   - 'dev/phpstan.phar'
-  - '/var/cache/apt/archives/*.deb'
+  - /var/cache/apt/archives/**.deb
