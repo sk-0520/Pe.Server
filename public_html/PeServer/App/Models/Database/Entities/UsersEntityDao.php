@@ -144,4 +144,29 @@ class UsersEntityDao extends DaoBase
 			]
 		);
 	}
+
+	public function updateUserSetting(string $userId, string $userName, string $email, string $website): void
+	{
+		$this->database->updateByKey(
+			<<<SQL
+
+			update
+				users
+			set
+				name = :name,
+				email = :email,
+				website = :website
+			where
+				user_id = :user_id
+
+			SQL,
+			[
+				'user_id' => $userId,
+				'name' => $userName,
+				'email' => $email,
+				'website' => $website,
+
+			]
+		);
+	}
 }

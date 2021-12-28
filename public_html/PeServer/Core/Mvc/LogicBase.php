@@ -194,9 +194,14 @@ abstract class LogicBase implements ValidationReceivable
 	 * @param string[] $keys
 	 * @return void
 	 */
-	protected function registerParameterKeys(array $keys, bool $overwrite): void
+	protected function registerParameterKeys(array $keys, bool $initialize, bool $overwrite): void
 	{
-		$this->keys = $keys;
+		if($initialize) {
+			$this->keys = $keys;
+		} else {
+			$this->keys += $keys;
+		}
+
 		foreach ($this->keys as $key) {
 			if ($overwrite) {
 				$value = $this->getRequest($key, '');
@@ -277,6 +282,13 @@ abstract class LogicBase implements ValidationReceivable
 		$this->receiveErrorMessage($key, I18n::message($map[$kind], $parameters));
 	}
 
+	/**
+	 * Undocumented function
+	 *
+	 * @param string $key
+	 * @param callable(string $key,?string $value):void $callback
+	 * @return void
+	 */
 	protected function validation(string $key, callable $callback): void
 	{
 		$value = $this->getRequest($key);

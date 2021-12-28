@@ -73,4 +73,9 @@ class ArrayUtility
 
 		return count($array);
 	}
+
+	public static function contains(array $haystack, mixed $needle): bool
+	{
+		return array_search($needle, $haystack) !== false;
+	}
 }

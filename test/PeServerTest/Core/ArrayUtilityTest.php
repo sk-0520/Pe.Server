@@ -41,4 +41,23 @@ class ArrayUtilityTest extends TestClass
 			$this->assertEquals($test->expected, $actual, $test->str());
 		}
 	}
+
+	public function test_contains()
+	{
+		$input = [10, 20, 30, 40];
+		$tests = [
+			new Data(true, $input, 10),
+			new Data(true, $input, 20),
+			new Data(true, $input, 30),
+			new Data(true, $input, 40),
+			new Data(false, $input, -10),
+			new Data(false, $input, -20),
+			new Data(false, $input, -30),
+			new Data(false, $input, -40),
+		];
+		foreach ($tests as $test) {
+			$actual = ArrayUtility::contains(...$test->args);
+			$this->assertBoolean($test->expected, $actual, $test->str());
+		}
+	}
 }

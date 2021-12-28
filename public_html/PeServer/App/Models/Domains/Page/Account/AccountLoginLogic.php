@@ -30,7 +30,7 @@ class AccountLoginLogic extends PageLogicBase
 		$this->registerParameterKeys([
 			'account_login_login_id',
 			'account_login_password',
-		], false);
+		], true, false);
 	}
 
 	protected function validateImpl(LogicCallMode $callMode): void

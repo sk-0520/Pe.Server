@@ -13,10 +13,12 @@ use \PeServer\Core\Mvc\ValidationReceivable;
 
 class AccountValidator
 {
-	public const LOGIN_ID_LENGTH = 50;
+	public const LOGIN_ID_RANGE_MIN = 6;
+	public const LOGIN_ID_RANGE_MAX = 50;
 	public const PASSWORD_RANGE_MIN = 8;
 	public const PASSWORD_RANGE_MAX = 50;
-	public const USER_NAME_LENGTH = 100;
+	public const USER_NAME_RANGE_MIN = 4;
+	public const USER_NAME_RANGE_MAX = 100;
 	public const EMAIL_LENGTH = 254;
 	public const WEBSITE_LENGTH = 2083;
 
@@ -36,7 +38,7 @@ class AccountValidator
 			$value = StringUtility::trim($value);
 			$trueKeeper = new TrueKeeper();
 
-			$trueKeeper->state = $this->validator->inLength($key, self::LOGIN_ID_LENGTH, $value);
+			$trueKeeper->state = $this->validator->inRange($key, self::LOGIN_ID_RANGE_MIN, self::LOGIN_ID_RANGE_MIN, $value);
 			$trueKeeper->state = $this->validator->isMatch($key, '/^[a-zA-Z0-9\\-\\._]+$/', $value);
 
 			return $trueKeeper->state;
@@ -68,7 +70,7 @@ class AccountValidator
 			$value = StringUtility::trim($value);
 			$trueKeeper = new TrueKeeper();
 
-			$trueKeeper->state = $this->validator->inLength($key, self::USER_NAME_LENGTH, $value);
+			$trueKeeper->state = $this->validator->inRange($key, self::USER_NAME_RANGE_MIN, self::USER_NAME_RANGE_MAX, $value);
 
 			return $trueKeeper->state;
 		}

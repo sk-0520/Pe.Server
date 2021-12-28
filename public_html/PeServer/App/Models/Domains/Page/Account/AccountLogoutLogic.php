@@ -27,7 +27,7 @@ class AccountLogoutLogic extends PageLogicBase
 	{
 		$this->registerParameterKeys([
 			'',
-		], true);
+		], true, true);
 	}
 
 	protected function validateImpl(LogicCallMode $callMode): void

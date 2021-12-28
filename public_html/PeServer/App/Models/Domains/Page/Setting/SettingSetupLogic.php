@@ -35,7 +35,7 @@ class SettingSetupLogic extends PageLogicBase
 			'setting_setup_user_name',
 			'setting_setup_email',
 			'setting_setup_website',
-		], true);
+		], true, true);
 
 		$this->setValue('setting_setup_password', '');
 	}
@@ -144,7 +144,7 @@ class SettingSetupLogic extends PageLogicBase
 			// ユーザー生成記録を監査ログに追加
 			$this->writeAuditLogCurrentUser(AuditLog::USER_STATE_CHANGE, $state, $database);
 			$this->writeAuditLogCurrentUser(AuditLog::USER_CREATE, $userInfo['id'], $database);
-			$this->writeAuditLogTargetUser($userInfo['id'], AuditLog::USER_GENERATED, null, $database);
+			$this->writeAuditLogTargetUser($userInfo['id'], AuditLog::USER_GENERATED, $currentUserInfo['user_id'], $database);
 
 			return true;
 		}, $currentUserInfo, $params, $userInfo);
