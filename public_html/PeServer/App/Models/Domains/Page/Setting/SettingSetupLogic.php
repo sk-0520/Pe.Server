@@ -75,18 +75,9 @@ class SettingSetupLogic extends PageLogicBase
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
 		if ($callMode->isInitialize()) {
-			$this->executeInitialize($callMode);
-		} else {
-			$this->executeSubmit($callMode);
+			return;
 		}
-	}
 
-	private function executeInitialize(LogicCallMode $callMode): void
-	{
-	}
-
-	private function executeSubmit(LogicCallMode $callMode): void
-	{
 		$currentUserInfo = $this->userInfo();
 
 		$params = [
