@@ -9,7 +9,8 @@ use \PeServer\Core\Log\Logging;
 use \PeServer\Core\Mvc\ControllerArgument;
 use \PeServer\Core\Store\SessionStore;
 use \PeServer\Core\FilterArgument;
-use PeServer\Core\Store\CookieStore;
+use \PeServer\Core\Store\CookieOption;
+use \PeServer\Core\Store\CookieStore;
 
 /**
  * ルーティング。
@@ -31,11 +32,11 @@ class Routing
 	 *
 	 * @param Route[] $routeMap ルーティング情報
 	 */
-	public function __construct(array $routeMap)
+	public function __construct(array $routeMap, CookieOption $cookieOption)
 	{
 		$this->routeMap = $routeMap;
 
-		$this->cookie = new CookieStore();
+		$this->cookie = new CookieStore($cookieOption);
 		$this->session = new SessionStore($this->cookie);
 	}
 
@@ -62,13 +63,13 @@ class Routing
 	 * @param string[] $urlParameters
 	 * @return void
 	 */
-	private function executeAction(string $rawControllerName, string $methodName, array $urlParameters, ActionOptions $options): void
+	private function executeAction(string $rawControllerName, string $methodName, array $urlParameters, ActionOption $option): void
 	{
 		$splitNames = explode('/', $rawControllerName);
 		$controllerName = $splitNames[count($splitNames) - 1];
 
-		if (!is_null($options->filter)) {
-			$filter = $options->filter;
+		if (!is_null($option->filter)) {
+			$filter = $option->filter;
 			$filterArgument = new FilterArgument($this->cookie, $this->session);
 			$httpStatus = $filter($filterArgument);
 			if (400 <= $httpStatus->code()) {
@@ -81,7 +82,7 @@ class Routing
 		$request = new ActionRequest($urlParameters);
 
 		$controller = new $controllerName($controllerArgument);
-		$controller->$methodName($request, $options);
+		$controller->$methodName($request);
 	}
 
 	/**

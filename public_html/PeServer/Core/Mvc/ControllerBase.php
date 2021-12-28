@@ -7,7 +7,7 @@ namespace PeServer\Core\Mvc;
 use \LogicException;
 use \Smarty;
 use \PeServer\Core\ILogger;
-use \PeServer\Core\ActionOptions;
+use \PeServer\Core\ActionOption;
 use \PeServer\Core\ActionRequest;
 use \PeServer\Core\ActionResponse;
 use \PeServer\Core\ResponseOutput;

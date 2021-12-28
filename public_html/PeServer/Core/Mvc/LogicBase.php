@@ -17,6 +17,7 @@ use \PeServer\Core\Mvc\Validations;
 use \PeServer\Core\Mvc\LogicParameter;
 use \PeServer\Core\Mvc\SessionNextState;
 use \PeServer\Core\Mvc\ValidationReceivable;
+use PeServer\Core\Store\CookieOption;
 use \PeServer\Core\Store\CookieStore;
 use \PeServer\Core\Throws\ArgumentException;
 use \PeServer\Core\Throws\NotImplementedException;
@@ -123,17 +124,34 @@ abstract class LogicBase implements ValidationReceivable
 	{
 		return $this->cookie->getOr($key, $default);
 	}
+
 	/**
 	 * Undocumented function
 	 *
 	 * @param string $key
 	 * @param string $value
-	 * @param array{path:?string,span:DateInterval|null,secure:?bool,httpOnly:?bool}|null $options
+	 * @param CookieOption|array{path:?string,span:?DateInterval,secure:?bool,httpOnly:?bool}|null $option
 	 * @return void
 	 */
-	protected function setCookie(string $key, string $value, array $options = null): void
+	protected function setCookie(string $key, string $value, $option = null): void
 	{
-		$this->cookie->set($key, $value, $options ??  ['path' => null, 'span' => null, 'secure' => null, 'httpOnly' => null]);
+		/** @var CookieOption|null */
+		$cookieOption = null;
+
+		if (!is_null($option)) {
+			if ($option instanceof CookieOption) {
+				$cookieOption = $option;
+			} else if (is_array($option)) {
+				$cookieOption = new CookieOption(
+					ArrayUtility::getOr($option, 'path', $this->cookie->option->path),
+					ArrayUtility::getOr($option, 'span', $this->cookie->option->span),
+					ArrayUtility::getOr($option, 'secure', $this->cookie->option->secure),
+					ArrayUtility::getOr($option, 'httpOnly', $this->cookie->option->httpOnly)
+				);
+			}
+		}
+
+		$this->cookie->set($key, $value, $cookieOption);
 	}
 	protected function removeCookie(string $key): void
 	{

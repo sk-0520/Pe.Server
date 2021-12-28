@@ -32,16 +32,16 @@ class Route
 	 */
 	private $actions = array();
 
-	private ActionOptions $baseOptions;
+	private ActionOption $baseOption;
 
 	/**
 	 * ルーティング情報にコントローラを登録
 	 *
 	 * @param string $path URLとしてのパス。先頭が api 以外の場合に index アクションが自動登録される
 	 * @param string $className 使用されるクラス完全名
-	 * @param ActionOptions|null $options ベースとなるオプション設定。nullの場合は ActionOptions::none() が使用される。
+	 * @param ActionOption|null $option ベースとなるオプション設定。nullの場合は ActionOption::none() が使用される。
 	 */
-	public function __construct(string $path, string $className, ?ActionOptions $options = null)
+	public function __construct(string $path, string $className, ?ActionOption $option = null)
 	{
 		// if(str_starts_with($path, '/')) {
 		// 	die();
@@ -60,11 +60,11 @@ class Route
 			$this->basePath = $trimPath;
 		}
 
-		$this->baseOptions = $options ?? ActionOptions::none();
+		$this->baseOption = $option ?? ActionOption::none();
 
 		$this->className = $className;
 		if (mb_substr($this->basePath, 0, 3) != 'api') {
-			$this->addAction('', HttpMethod::get(), 'index', $options);
+			$this->addAction('', HttpMethod::get(), 'index', $option);
 		}
 	}
 
@@ -74,10 +74,10 @@ class Route
 	 * @param string $actionName URLとして使用されるパス, パス先頭が : でURLパラメータとなり、パラメータ名の @ 以降は一致正規表現となる。
 	 * @param HttpMethod $httpMethod 使用するHTTPメソッド。
 	 * @param string|null $methodName 呼び出されるコントローラメソッド。未指定なら $actionName が使用される。
-	 * @param ActionOptions|null $options オプション設定。nullの場合はコンストラクタで渡されたオプションが使用される。
+	 * @param ActionOption|null $option オプション設定。nullの場合はコンストラクタで渡されたオプションが使用される。
 	 * @return Route
 	 */
-	public function addAction(string $actionName, HttpMethod $httpMethod, ?string $methodName = null, ?ActionOptions $options = null): Route
+	public function addAction(string $actionName, HttpMethod $httpMethod, ?string $methodName = null, ?ActionOption $option = null): Route
 	{
 		if (!isset($this->actions[$actionName])) {
 			$this->actions[$actionName] = new Action();
@@ -85,7 +85,7 @@ class Route
 		$this->actions[$actionName]->add(
 			$httpMethod,
 			StringUtility::isNullOrWhiteSpace($methodName) ? $actionName : $methodName, // @phpstan-ignore-line
-			$options ?? $this->baseOptions
+			$option ?? $this->baseOption
 		);
 
 		return $this;
@@ -97,7 +97,7 @@ class Route
 	 * @param string $httpMethod
 	 * @param Action $action
 	 * @param array<string,string> $urlParameters
-	 * @return array{code:HttpStatus,class:string,method:string,params:array<string,string>,options:ActionOptions}
+	 * @return array{code:HttpStatus,class:string,method:string,params:array<string,string>,options:ActionOption}
 	 */
 	private function getActionCore(string $httpMethod, Action $action, array $urlParameters): array
 	{
@@ -108,7 +108,7 @@ class Route
 				'class' => $this->className,
 				'method' => '',
 				'params' => $urlParameters,
-				'options' => ActionOptions::none(),
+				'options' => ActionOption::none(),
 			];
 		}
 
@@ -126,7 +126,7 @@ class Route
 	 *
 	 * @param string $httpMethod HttpMethod を参照のこと
 	 * @param string[] $requestPaths リクエストパス。URLパラメータは含まない
-	 * @return array{code:HttpStatus,class:string,method:string,params:array<string,string>,options:ActionOptions}|null 存在する場合にクラス・メソッドのペア。存在しない場合は null
+	 * @return array{code:HttpStatus,class:string,method:string,params:array<string,string>,options:ActionOption}|null 存在する場合にクラス・メソッドのペア。存在しない場合は null
 	 */
 	public function getAction(string $httpMethod, array $requestPaths): ?array
 	{
@@ -138,7 +138,7 @@ class Route
 				'class' => $this->className,
 				'method' => '',
 				'params' => [],
-				'options' => ActionOptions::none(),
+				'options' => ActionOption::none(),
 			];
 		}
 
@@ -219,7 +219,7 @@ class Route
 				'class' => $this->className,
 				'method' => '',
 				'params' => [],
-				'options' => ActionOptions::none(),
+				'options' => ActionOption::none(),
 			];
 		}
 

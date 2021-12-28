@@ -9,8 +9,10 @@ require_once(__DIR__ . '/PeServer/Libs/smarty/libs/Smarty.class.php');
 
 use \PeServer\Core\AutoLoader;
 use \PeServer\Core\Routing;
+use \PeServer\Core\Store\CookieOption;
 use \PeServer\App\Models\RouteConfiguration;
 use \PeServer\App\Models\Initializer;
+use PeServer\App\Models\StoreConfiguration;
 
 // ini_set('display_errors', '1');
 // error_reporting( E_ALL );
@@ -23,5 +25,5 @@ Initializer::initialize(
 	':REVISION:'
 );
 
-$routing = new Routing(RouteConfiguration::get());
+$routing = new Routing(RouteConfiguration::get(), StoreConfiguration::cookie());
 $routing->execute($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);

@@ -7,6 +7,7 @@ namespace PeServer\Core\Store;
 use \DateInterval;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\StringUtility;
+use PeServer\Core\Store\CookieOption;
 use PeServer\Core\Throws\InvalidOperationException;
 
 /**
@@ -17,13 +18,15 @@ use PeServer\Core\Throws\InvalidOperationException;
  */
 class CookieStore
 {
-	private bool $secure = false;
-	private bool $httpOnly = true;
+	/**
+	 * 設定。
+	 */
+	public CookieOption $option;
 
 	/**
 	 * cookie 一時データ。
 	 *
-	 * @var array<string,array{data:string,path:string,span:DateInterval|null,secure:bool,httpOnly:bool}>
+	 * @var array<string,array{data:string,option:CookieOption}>
 	 */
 	private array $values = array();
 	/**
@@ -40,17 +43,17 @@ class CookieStore
 	 */
 	private bool $isChanged = false;
 
-	public function __construct()
+	/**
+	 * 生成
+	 *
+	 * @param CookieOption $option
+	 */
+	public function __construct(CookieOption $option)
 	{
-		//TODO: session_get_cookie_params
+		$this->option = $option;
+
 		foreach ($_COOKIE as $k => $v) {
-			$options = [
-				'path' => '/',
-				'span' => null,
-				'secure' => $this->secure,
-				'httpOnly' => $this->httpOnly,
-			];
-			$this->set($k, $v, $options);
+			$this->set($k, $v);
 		}
 	}
 
@@ -69,18 +72,16 @@ class CookieStore
 	 *
 	 * @param string $key
 	 * @param string $value
-	 * @param array{path:?string,span:?DateInterval,secure:?bool,httpOnly:?bool} $options
+	 * @param CookieOption|null $option nullの場合コンストラクタで渡された設定値が使用される
 	 * @return void
 	 */
-	public function set(string $key, string $value, array $options): void
+	public function set(string $key, string $value, CookieOption $option = null): void
 	{
 		$this->values[$key] = [
 			'data' => $value,
-			'path' => ArrayUtility::getOr($options, 'path', ''),
-			'span' => ArrayUtility::getOr($options, 'span', null),
-			'secure' => ArrayUtility::getOr($options, 'secure', $this->secure),
-			'httpOnly' => ArrayUtility::getOr($options, 'httpOnly', $this->httpOnly),
+			'option' => $option ?? $this->$option,
 		];
+		unset($this->removes[$key]);
 		$this->isChanged = true;
 	}
 
@@ -139,13 +140,8 @@ class CookieStore
 		}
 
 		foreach ($this->values as $key => $cookie) {
-			$span = 0;
-			if (!is_null($cookie['span'])) {
-				/** @var DateInterval */
-				$time = $span;
-				$span = ($time->d * 24 * 60) + ($time->h * 60) + $time->i;
-			}
-			setcookie($key, $cookie['data'], $span, $cookie['path'], '', $cookie['secure'], $cookie['httpOnly']);
+			$option = $cookie['option'];
+			setcookie($key, $cookie['data'], $option->getTotalMinutes(), $option->path, '', $option->secure, $option->httpOnly);
 		}
 	}
 }

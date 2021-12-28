@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Controllers\Page;
 
-use \PeServer\Core\ActionOptions;
+use \PeServer\Core\ActionOption;
 use \PeServer\Core\ActionRequest;
 use \PeServer\Core\Mvc\LogicCallMode;
 use \PeServer\Core\Mvc\ControllerBase;

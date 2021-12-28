@@ -11,12 +11,12 @@ use \PeServer\Core\Store\SessionStore;
 /**
  * アクションに対するオプション。
  */
-class ActionOptions
+class ActionOption
 {
-	private static ?ActionOptions $none;
-	public static function none(): ActionOptions
+	private static ?ActionOption $none;
+	public static function none(): ActionOption
 	{
-		return self::$none ??= new ActionOptions();
+		return self::$none ??= new ActionOption();
 	}
 
 	public string $errorControllerName;

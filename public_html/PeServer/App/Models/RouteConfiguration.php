@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models;
 
-use \PeServer\Core\ActionOptions;
+use \PeServer\Core\ActionOption;
 use \PeServer\Core\Route;
 use \PeServer\Core\FilterArgument;
 use \PeServer\Core\HttpMethod;
@@ -45,14 +45,14 @@ abstract class RouteConfiguration
 		return HttpStatus::forbidden();
 	}
 
-	private static ?ActionOptions $user = null;
-	private static function user(): ActionOptions
+	private static ?ActionOption $user = null;
+	private static function user(): ActionOption
 	{
 		if (!is_null(self::$user)) {
 			return self::$user;
 		}
 
-		$options = new ActionOptions();
+		$options = new ActionOption();
 		$options->errorControllerName = ErrorController::class;
 		$options->filter = function (FilterArgument $argument) {
 			return self::filterPageAccount($argument, [UserLevel::USER, UserLevel::ADMINISTRATOR]);
@@ -61,14 +61,14 @@ abstract class RouteConfiguration
 		return self::$user = $options;
 	}
 
-	private static ?ActionOptions $setup = null;
-	private static function setup(): ActionOptions
+	private static ?ActionOption $setup = null;
+	private static function setup(): ActionOption
 	{
 		if (!is_null(self::$setup)) {
 			return self::$setup;
 		}
 
-		$options = new ActionOptions();
+		$options = new ActionOption();
 		$options->errorControllerName = ErrorController::class;
 		$options->filter = function (FilterArgument $argument) {
 			return self::filterPageAccount($argument, [UserLevel::SETUP]);
@@ -77,14 +77,14 @@ abstract class RouteConfiguration
 		return self::$setup = $options;
 	}
 
-	private static ?ActionOptions $admin = null;
-	private static function admin(): ActionOptions
+	private static ?ActionOption $admin = null;
+	private static function admin(): ActionOption
 	{
 		if (!is_null(self::$admin)) {
 			return self::$admin;
 		}
 
-		$options = new ActionOptions();
+		$options = new ActionOption();
 		$options->errorControllerName = ErrorController::class;
 		$options->filter = function (FilterArgument $argument) {
 			return self::filterPageAccount($argument, [UserLevel::ADMINISTRATOR]);

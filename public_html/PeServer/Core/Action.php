@@ -18,7 +18,7 @@ class Action
 	 * HTTPメソッドとコントローラメソッドがペアになる。
 	 * 後入れ優先。
 	 *
-	 * @var array<string,array{method:string,options:ActionOptions}>
+	 * @var array<string,array{method:string,options:ActionOption}>
 	 */
 	private $map = array();
 
@@ -28,7 +28,7 @@ class Action
 	 * @param HttpMethod $httpMethod HTTPメソッド
 	 * @param string $callMethod コントローラメソッド。
 	 */
-	public function add(HttpMethod $httpMethod, string $callMethod, ActionOptions $options): void
+	public function add(HttpMethod $httpMethod, string $callMethod, ActionOption $options): void
 	{
 		foreach ($httpMethod->methods() as $method) {
 			$this->map[$method] = [
@@ -42,7 +42,7 @@ class Action
 	 * 取得。
 	 *
 	 * @param string $httpMethod HTTPメソッド
-	 * @return array{method:string,options:ActionOptions}>|null あった場合はクラスメソッド、なければ null
+	 * @return array{method:string,options:ActionOption}>|null あった場合はクラスメソッド、なければ null
 	 */
 	public function get(string $httpMethod): ?array
 	{
