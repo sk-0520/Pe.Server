@@ -60,7 +60,7 @@ class ArrayUtility
 	}
 
 	/**
-	 * Undocumented function
+	 * 配列の件数を取得。
 	 *
 	 * @param array<mixed>|null $array
 	 * @return int
@@ -74,6 +74,13 @@ class ArrayUtility
 		return count($array);
 	}
 
+	/**
+	 * 配列に指定要素が存在するか。
+	 *
+	 * @param array<mixed> $haystack
+	 * @param mixed $needle
+	 * @return boolean
+	 */
 	public static function contains(array $haystack, mixed $needle): bool
 	{
 		return array_search($needle, $haystack) !== false;

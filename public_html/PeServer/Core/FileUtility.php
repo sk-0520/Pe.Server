@@ -6,6 +6,7 @@ namespace PeServer\Core;
 
 use \PeServer\Core\Throws\FileNotFoundException;
 use \PeServer\Core\Throws\ParseException;
+use stdClass;
 
 abstract class FileUtility
 {
@@ -61,13 +62,15 @@ abstract class FileUtility
 	}
 
 	/**
-	 * JSONとしてファイル読み込み
+	 * JSONとしてファイル読み込み。
 	 *
-	 * @param string $path パス
-	 * @param boolean $associative 連想配列として扱うか
-	 * @return array<mixed>|\stdClass 応答JSON
+	 * @param string $path パス。
+	 * @param boolean $associative 連想配列として扱うか。
+	 * @return array<mixed>|\stdClass 応答JSON。
+	 * @throws FileNotFoundException ファイルが存在しない。
+	 * @throws ParseException パース失敗。
 	 */
-	public static function readJsonFile(string $path, bool $associative = true)
+	public static function readJsonFile(string $path, bool $associative = true): array|stdClass
 	{
 		$content = file_get_contents($path);
 		if ($content === false) {

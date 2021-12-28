@@ -49,7 +49,9 @@ abstract class DomainLogicBase extends LogicBase
 
 	private function writeAuditLogCore(string $userId, string $event, mixed $info, ?Database $database): void
 	{
+		/** @var string */
 		$ipAddress = ArrayUtility::getOr($_SERVER, 'REMOTE_ADDR', '');
+		/** @var string */
 		$userAgent = ArrayUtility::getOr($_SERVER, 'HTTP_USER_AGENT', '');
 		$dumpInfo = '';
 		if (!is_null($info)) {
