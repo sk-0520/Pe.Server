@@ -13,7 +13,8 @@ use PeServer\Core\Throws\InvalidOperationException;
 /**
  * cookie 管理処理。
  *
- * 一時データとして扱い、最後にセッションへ反映する感じで動く。
+ * セッション側と違い、都度取得する感じ。
+ *
  * アプリケーション側で明示的に使用しない想定。
  */
 class CookieStore
@@ -24,7 +25,7 @@ class CookieStore
 	public CookieOption $option;
 
 	/**
-	 * cookie 一時データ。
+	 * cookie 一時設定データ。
 	 *
 	 * @var array<string,array{data:string,option:CookieOption}>
 	 */
@@ -51,10 +52,6 @@ class CookieStore
 	public function __construct(CookieOption $option)
 	{
 		$this->option = $option;
-
-		foreach ($_COOKIE as $k => $v) {
-			$this->set($k, $v);
-		}
 	}
 
 	/**
@@ -79,9 +76,11 @@ class CookieStore
 	{
 		$this->values[$key] = [
 			'data' => $value,
-			'option' => $option ?? $this->$option,
+			'option' => $option ?? $this->option,
 		];
+
 		unset($this->removes[$key]);
+
 		$this->isChanged = true;
 	}
 
@@ -113,7 +112,11 @@ class CookieStore
 	 */
 	public function getOr(string $key, string $defaultValue): string
 	{
-		return ArrayUtility::getOr($this->values, $key, $defaultValue);
+		if (ArrayUtility::tryGet($this->values, $key, $value)) {
+			return $value['data'];
+		}
+
+		return ArrayUtility::getOr($_COOKIE, $key, $defaultValue);
 	}
 
 	/**
@@ -125,6 +128,11 @@ class CookieStore
 	 */
 	public function tryGet(string $key, string &$result): bool
 	{
+		if (ArrayUtility::tryGet($this->values, $key, $value)) {
+			$result = $value['data'];
+			return true;
+		}
+
 		return ArrayUtility::tryGet($this->values, $key, $result);
 	}
 
