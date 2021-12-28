@@ -28,7 +28,7 @@ class UsersEntityDao extends DaoBase
 				and
 				users.state = 'enabled'
 
-SQL
+			SQL
 		);
 	}
 
@@ -44,8 +44,7 @@ SQL
 			where
 				users.login_id = :login_id
 
-SQL
-			/* AUTO-FORMAT */,
+			SQL,
 			[
 				'login_id' => $loginId
 			]
@@ -76,9 +75,7 @@ SQL
 			where
 				users.user_id = :user_id
 
-
-SQL
-			/* AUTO-FORMAT */,
+			SQL,
 			[
 				'user_id' => $userId
 			]
@@ -114,8 +111,7 @@ SQL
 					:note
 				)
 
-			SQL
-			/* AUTO-FORMAT */,
+			SQL,
 			[
 				'user_id' => $userId,
 				'login_id' => $loginId,
@@ -141,8 +137,7 @@ SQL
 			where
 				user_id = :user_id
 
-			SQL
-			/* AUTO-FORMAT */,
+			SQL,
 			[
 				'user_id' => $userId,
 				'state' => $state,

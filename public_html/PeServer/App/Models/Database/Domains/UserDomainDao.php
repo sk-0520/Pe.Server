@@ -44,8 +44,8 @@ class UserDomainDao extends DaoBase
 				users.login_id = :account_login_login_id
 				and
 				users.state = 'enabled'
-SQL
-			/* AUTO FORMAT */,
+
+			SQL,
 			[
 				'account_login_login_id' => $loginId,
 			]

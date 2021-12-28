@@ -33,8 +33,7 @@ class UserAuthenticationsEntityDao extends DaoBase
 					:current_password
 				)
 
-			SQL
-			/* AUTO-FORMAT */,
+			SQL,
 			[
 				'user_id' => $userId,
 				'generate_password' => $generatePassword,

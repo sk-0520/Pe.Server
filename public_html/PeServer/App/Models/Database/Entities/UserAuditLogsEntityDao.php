@@ -38,8 +38,8 @@ class UserAuditLogsEntityDao extends DaoBase
 					:ip_address,
 					:user_agent
 				)
-SQL
-			/* AUTO FORMAT */,
+
+			SQL,
 			[
 				'user_id' => $userId,
 				'event' => $event,
