@@ -10,9 +10,9 @@ function execute_install() {
 	PACKAGE_SAVE_DIR=${1}
 	PHP_VERSION=${2}
 
-	if [ -d "${PACKAGE_SAVE_DIR}" ] ; then
-		sudo sh -c "cp --force --verbose ${PACKAGE_SAVE_DIR}/*.deb ${PACKAGE_CACHE_DIR}"
-	fi
+	# if [ -d "${PACKAGE_SAVE_DIR}" ] ; then
+	# 	sudo sh -c "cp --force --verbose ${PACKAGE_SAVE_DIR}/*.deb ${PACKAGE_CACHE_DIR}"
+	# fi
 
 	apt --yes install software-properties-common
 	add-apt-repository ppa:ondrej/php
@@ -20,10 +20,10 @@ function execute_install() {
 	apt --yes install php${PHP_VERSION} php${PHP_VERSION}-fpm php${PHP_VERSION}-mysql php${PHP_VERSION}-mbstring php${PHP_VERSION}-zip php${PHP_VERSION}-xml
 	update-alternatives --set php /usr/bin/php${PHP_VERSION}
 
-	if [ ! -d "${PACKAGE_SAVE_DIR}" ] ; then
-		mkdir --parents --verbose "${PACKAGE_SAVE_DIR}"
-	fi
-	sudo sh -c "cp --force --verbose ${PACKAGE_CACHE_DIR}/*.deb ${PACKAGE_SAVE_DIR}"
+	# if [ ! -d "${PACKAGE_SAVE_DIR}" ] ; then
+	# 	mkdir --parents --verbose "${PACKAGE_SAVE_DIR}"
+	# fi
+	# sudo sh -c "cp --force --verbose ${PACKAGE_CACHE_DIR}/*.deb ${PACKAGE_SAVE_DIR}"
 }
 
 case ${CI_MODE} in
