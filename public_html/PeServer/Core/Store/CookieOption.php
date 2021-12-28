@@ -8,6 +8,18 @@ use \DateInterval;
 
 class CookieOption
 {
+	public static function create(string $path, ?DateInterval $span, bool $secure, bool $httpOnly): CookieOption
+	{
+		$option = new self();
+
+		$option->path = $path;
+		$option->span = $span;
+		$option->secure = $secure;
+		$option->httpOnly = $httpOnly;
+
+		return $option;
+	}
+
 	/**
 	 * パス
 	 *
@@ -34,14 +46,6 @@ class CookieOption
 	 * @var boolean
 	 */
 	public bool $httpOnly;
-
-	public function __construct(string $path, ?DateInterval $span, bool $secure, bool $httpOnly)
-	{
-		$this->path = $path;
-		$this->span = $span;
-		$this->secure = $secure;
-		$this->httpOnly = $httpOnly;
-	}
 
 	/**
 	 * cookie の寿命を数値に変換。

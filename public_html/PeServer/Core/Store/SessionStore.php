@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Store;
 
-use PeServer\Core\ArrayUtility;
-use PeServer\Core\StringUtility;
-use PeServer\Core\Throws\InvalidOperationException;
+use \PeServer\Core\ArrayUtility;
+use \PeServer\Core\StringUtility;
+use \PeServer\Core\Throws\ArgumentException;
+use \PeServer\Core\Throws\InvalidOperationException;
 
 /**
  * セッション管理処理。
@@ -16,6 +17,7 @@ use PeServer\Core\Throws\InvalidOperationException;
  */
 class SessionStore
 {
+	private SessionOption $option;
 	private CookieStore $cookie;
 
 	/**
@@ -38,16 +40,21 @@ class SessionStore
 	 */
 	private bool $isChanged = false;
 
-	private static string $sessionKey = 'PHPSESSID';
-
-	public function __construct(CookieStore $cookie)
+	public function __construct(SessionOption $option, CookieStore $cookie)
 	{
+		if (StringUtility::isNullOrWhiteSpace($option->name)) {
+			throw new ArgumentException('$option->name');
+		}
+
+		$this->option = $option;
 		$this->cookie = $cookie;
 
-		if (isset($_COOKIE[self::$sessionKey]) && !StringUtility::isNullOrWhiteSpace($_COOKIE[self::$sessionKey])) {
-			$this->start();
-			$this->values = $_SESSION;
-			$this->isStarted = true;
+		if ($this->cookie->tryGet($this->option->name, $name)) {
+			if (!StringUtility::isNullOrWhiteSpace($name)) {
+				$this->start();
+				$this->values = $_SESSION;
+				$this->isStarted = true;
+			}
 		}
 	}
 
@@ -71,6 +78,10 @@ class SessionStore
 	{
 		if ($this->isStarted) {
 			throw new InvalidOperationException();
+		}
+
+		if (!StringUtility::isNullOrWhiteSpace($this->option->name)) {
+			session_name($this->option->name);
 		}
 
 		session_start();
@@ -104,7 +115,7 @@ class SessionStore
 			return;
 		}
 
-		$this->cookie->remove(self::$sessionKey);
+		$this->cookie->remove($this->option->name);
 		session_destroy();
 	}
 

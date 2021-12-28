@@ -142,7 +142,7 @@ abstract class LogicBase implements ValidationReceivable
 			if ($option instanceof CookieOption) {
 				$cookieOption = $option;
 			} else if (is_array($option)) {
-				$cookieOption = new CookieOption(
+				$cookieOption = CookieOption::create(
 					ArrayUtility::getOr($option, 'path', $this->cookie->option->path),
 					ArrayUtility::getOr($option, 'span', $this->cookie->option->span),
 					ArrayUtility::getOr($option, 'secure', $this->cookie->option->secure),

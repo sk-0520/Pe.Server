@@ -25,5 +25,5 @@ Initializer::initialize(
 	':REVISION:'
 );
 
-$routing = new Routing(RouteConfiguration::get(), StoreConfiguration::cookie());
+$routing = new Routing(RouteConfiguration::get(), StoreConfiguration::get());
 $routing->execute($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);

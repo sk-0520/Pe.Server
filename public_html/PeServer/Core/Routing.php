@@ -11,6 +11,7 @@ use \PeServer\Core\Store\SessionStore;
 use \PeServer\Core\FilterArgument;
 use \PeServer\Core\Store\CookieOption;
 use \PeServer\Core\Store\CookieStore;
+use \PeServer\Core\Store\SessionOption;
 
 /**
  * ルーティング。
@@ -31,13 +32,14 @@ class Routing
 	 * 生成。
 	 *
 	 * @param Route[] $routeMap ルーティング情報
+	 * @param array{cookie:CookieOption,session:SessionOption} $storeOption $storeOption
 	 */
-	public function __construct(array $routeMap, CookieOption $cookieOption)
+	public function __construct(array $routeMap, array $storeOption)
 	{
 		$this->routeMap = $routeMap;
 
-		$this->cookie = new CookieStore($cookieOption);
-		$this->session = new SessionStore($this->cookie);
+		$this->cookie = new CookieStore($storeOption['cookie']);
+		$this->session = new SessionStore($storeOption['session'], $this->cookie);
 	}
 
 	/**

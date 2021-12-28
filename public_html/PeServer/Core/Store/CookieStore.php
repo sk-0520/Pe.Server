@@ -126,14 +126,14 @@ class CookieStore
 	 * @param string $result
 	 * @return boolean 取得できたか。
 	 */
-	public function tryGet(string $key, string &$result): bool
+	public function tryGet(string $key, ?string &$result): bool
 	{
 		if (ArrayUtility::tryGet($this->values, $key, $value)) {
 			$result = $value['data'];
 			return true;
 		}
 
-		return ArrayUtility::tryGet($this->values, $key, $result);
+		return ArrayUtility::tryGet($_COOKIE, $key, $result);
 	}
 
 	/**

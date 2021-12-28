@@ -17,6 +17,9 @@
 	"store": {
 		"cookie": {
 			"httpOnly": true
+		},
+		"session": {
+			"name": "pe"
 		}
 	},
 	"i18n": {
