@@ -14,12 +14,7 @@ before_build:
   - sh: git submodule init
   - sh: git submodule update
 before_test:
-  - sh: sudo apt --yes install software-properties-common
-  - sh: sudo add-apt-repository ppa:ondrej/php
-  - sh: sudo apt --yes update
-  - sh: sudo apt --yes install php$PHP_VER php$PHP_VER-fpm php$PHP_VER-mysql php$PHP_VER-mbstring php$PHP_VER-zip php$PHP_VER-xml
-  - sh: sudo update-alternatives --set php /usr/bin/php$PHP_VER
-  - sh: ls -al /var/cache/apt/archives
+  - sh: sudo ./dev/appveyor.sh install /var/ci-package-cache $PHP_VER
 build_script:
   - sh: npm run build
   - sh: ./dev/update-config.sh $APPVEYOR_REPO_COMMIT
@@ -47,4 +42,4 @@ for:
 cache:
   - 'node_modules'
   - 'dev/phpstan.phar'
-  - /var/cache/apt/archives/**.deb
+  - /var/ci-package-cache
