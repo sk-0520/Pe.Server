@@ -33,7 +33,7 @@ class Routing
 	 * 生成。
 	 *
 	 * @param Route[] $routeMap ルーティング情報
-	 * @param array{cookie:CookieOption,session:SessionOption} $storeOption $storeOption
+	 * @param array{cookie:CookieOption,session:SessionOption} $storeOption
 	 */
 	public function __construct(array $routeMap, array $storeOption)
 	{

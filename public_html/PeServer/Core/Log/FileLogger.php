@@ -52,7 +52,7 @@ class FileLogger extends LoggerBase
 		}
 	}
 
-	private function toFileSafeNameHeader(): string
+	private function toSafeFileNameHeader(): string
 	{
 		$trimHeader = trim($this->header, '/\\');
 		return str_replace(['/', '\\', '*', '|', '<', '>', '?'], '_', $trimHeader);
@@ -63,7 +63,7 @@ class FileLogger extends LoggerBase
 		$filePattern = StringUtility::replaceMap(
 			$this->baseFileName,
 			[
-				'HEADER' => $this->toFileSafeNameHeader(),
+				'HEADER' => $this->toSafeFileNameHeader(),
 				'DATE' => '*',
 			]
 		);
@@ -87,7 +87,7 @@ class FileLogger extends LoggerBase
 		$fileName = StringUtility::replaceMap(
 			$this->baseFileName,
 			[
-				'HEADER' => $this->toFileSafeNameHeader(),
+				'HEADER' => $this->toSafeFileNameHeader(),
 				'DATE' => date('Ymd'),
 			]
 		);
