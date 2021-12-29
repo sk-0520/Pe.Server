@@ -110,9 +110,9 @@ class AccountUserEditLogic extends PageLogicBase
 
 		$params = [
 			'id' => $userInfo['user_id'],
-			'user_name' => StringUtility::trim((string)$this->getRequest('account_user_name')),
-			'email' => StringUtility::trim((string)$this->getRequest('account_edit_email')),
-			'website' => StringUtility::trim((string)$this->getRequest('account_edit_website')),
+			'user_name' => $this->getRequest('account_user_name'),
+			'email' => $this->getRequest('account_edit_email'),
+			'website' => $this->getRequest('account_edit_website'),
 		];
 
 		$database = Database::open();

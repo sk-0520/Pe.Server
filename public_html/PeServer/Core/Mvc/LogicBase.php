@@ -109,15 +109,23 @@ abstract class LogicBase implements ValidationReceivable
 	 * リクエストデータの取得。
 	 *
 	 * @param string $key
-	 * @param mixed $default
-	 * @return mixed
+	 * @param string $default
+	 * @param bool $trim
+	 * @return string
 	 */
-	protected function getRequest(string $key, $default = null)
+	protected function getRequest(string $key, string $default = '', bool $trim = true): string
 	{
 		if (!$this->request->exists($key)['exists']) {
 			return $default;
 		}
-		return $this->request->getValue($key);
+
+		$value = $this->request->getValue($key);
+
+		if ($trim) {
+			return StringUtility::trim($value);
+		}
+
+		return $value;
 	}
 
 	protected function getCookie(string $key, string $default = ''): string
@@ -287,11 +295,17 @@ abstract class LogicBase implements ValidationReceivable
 	 *
 	 * @param string $key
 	 * @param callable(string $key,?string $value):void $callback
+	 * @param array{trim:bool} $option オプション
+	 *   * default: 取得失敗時の値。
+	 *   * trim: 値をトリムするか。
 	 * @return void
 	 */
-	protected function validation(string $key, callable $callback): void
+	protected function validation(string $key, callable $callback, array $option = []): void
 	{
-		$value = $this->getRequest($key);
+		$default = ArrayUtility::getOr($option, 'default', '');
+		$trim = ArrayUtility::getOr($option, 'trim', true);
+
+		$value = $this->getRequest($key, $default, $trim);
 		$callback($key, $value);
 	}
 

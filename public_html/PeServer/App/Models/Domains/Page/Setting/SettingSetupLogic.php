@@ -54,7 +54,7 @@ class SettingSetupLogic extends PageLogicBase
 		$this->validation('setting_setup_password', function ($key, $value) {
 			$accountValidator = new AccountValidator($this, $this->validator);
 			$accountValidator->isPassword($key, $value);
-		});
+		}, ['trim' => false]);
 
 		$this->validation('setting_setup_user_name', function ($key, $value) {
 			$accountValidator = new AccountValidator($this, $this->validator);
@@ -81,11 +81,11 @@ class SettingSetupLogic extends PageLogicBase
 		$currentUserInfo = $this->userInfo();
 
 		$params = [
-			'login_id' => StringUtility::trim((string)$this->getRequest('setting_setup_login_id')),
-			'password' => (string)$this->getRequest('setting_setup_password'),
-			'user_name' => StringUtility::trim((string)$this->getRequest('setting_setup_user_name')),
-			'email' => StringUtility::trim((string)$this->getRequest('setting_setup_email')),
-			'website' => StringUtility::trim((string)$this->getRequest('setting_setup_website')),
+			'login_id' => $this->getRequest('setting_setup_login_id'),
+			'password' => $this->getRequest('setting_setup_password', '', false),
+			'user_name' => $this->getRequest('setting_setup_user_name'),
+			'email' => $this->getRequest('setting_setup_email'),
+			'website' => $this->getRequest('setting_setup_website'),
 		];
 
 		$userInfo = [
