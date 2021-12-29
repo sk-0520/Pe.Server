@@ -93,6 +93,27 @@ abstract class RouteConfiguration
 		return self::$admin = $options;
 	}
 
+	private static ?ActionOption $development = null;
+	private static function development(): ActionOption
+	{
+		if (!is_null(self::$development)) {
+			return self::$development;
+		}
+
+		$options = new ActionOption();
+		$options->errorControllerName = ErrorController::class;
+		$options->filter = function (FilterArgument $argument) {
+			if (AppConfiguration::isProductionEnvironment()) {
+				$argument->logger->warn('本番環境での実行は抑制');
+				return HttpStatus::forbidden();
+			}
+
+			return HttpStatus::doExecute();
+		};
+
+		return self::$development = $options;
+	}
+
 
 	/**
 	 * ルーティング情報設定取得
@@ -119,7 +140,7 @@ abstract class RouteConfiguration
 				->addAction('setup', HttpMethod::get(), 'setup_get', self::setup())
 				->addAction('setup', HttpMethod::post(), 'setup_post', self::setup())
 			/* AUTO-FORMAT */,
-			(new Route('api/development', DevelopmentController::class))
+			(new Route('api/development', DevelopmentController::class, self::development()))
 				->addAction('initialize', HttpMethod::post())
 				->addAction('administrator', HttpMethod::post())
 			/* AUTO-FORMAT */,

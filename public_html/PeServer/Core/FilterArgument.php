@@ -16,10 +16,12 @@ class FilterArgument
 {
 	public CookieStore $cookie;
 	public SessionStore $session;
+	public ILogger $logger;
 
-	public function __construct(CookieStore $cookie, SessionStore $session)
+	public function __construct(CookieStore $cookie, SessionStore $session, ILogger $logger)
 	{
 		$this->cookie = $cookie;
 		$this->session = $session;
+		$this->logger = $logger;
 	}
 }

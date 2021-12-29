@@ -72,8 +72,9 @@ class Routing
 		$controllerName = $splitNames[count($splitNames) - 1];
 
 		if (!is_null($option->filter)) {
+			$filterLogger = Logging::create('filter');
 			$filter = $option->filter;
-			$filterArgument = new FilterArgument($this->cookie, $this->session);
+			$filterArgument = new FilterArgument($this->cookie, $this->session, $filterLogger);
 			$httpStatus = $filter($filterArgument);
 			if (400 <= $httpStatus->code()) {
 				throw new Exception('TODO: ' . $httpStatus->code());

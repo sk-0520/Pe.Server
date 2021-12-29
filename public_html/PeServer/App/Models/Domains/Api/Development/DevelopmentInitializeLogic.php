@@ -30,9 +30,7 @@ class DevelopmentInitializeLogic extends ApiLogicBase
 
 	protected function validateImpl(LogicCallMode $callMode): void
 	{
-		if (AppConfiguration::isProductionEnvironment()) {
-			throw new CoreException('dev or test only');
-		}
+		//NONE
 	}
 
 	protected function executeImpl(LogicCallMode $callMode): void
