@@ -295,12 +295,12 @@ abstract class LogicBase implements ValidationReceivable
 	 *
 	 * @param string $key
 	 * @param callable(string $key,?string $value):void $callback
-	 * @param array{trim:bool} $option オプション
+	 * @param array{default?:string,trim?:bool}|null $option オプション
 	 *   * default: 取得失敗時の値。
 	 *   * trim: 値をトリムするか。
 	 * @return void
 	 */
-	protected function validation(string $key, callable $callback, array $option = []): void
+	protected function validation(string $key, callable $callback, ?array $option = null): void
 	{
 		$default = ArrayUtility::getOr($option, 'default', '');
 		$trim = ArrayUtility::getOr($option, 'trim', true);
