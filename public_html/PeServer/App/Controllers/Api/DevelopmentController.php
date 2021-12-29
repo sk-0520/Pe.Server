@@ -3,7 +3,7 @@
 namespace PeServer\App\Controllers\Api;
 
 use \PeServer\Core\ActionOption;
-use \PeServer\Core\ActionRequest;
+use \PeServer\Core\Mvc\ActionRequest;
 use \PeServer\Core\Mvc\LogicCallMode;
 use \PeServer\Core\Mvc\ControllerArgument;
 use \PeServer\App\Controllers\Api\ApiControllerBase;

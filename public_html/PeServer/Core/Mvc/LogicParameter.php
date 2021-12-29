@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc;
 
 use \PeServer\Core\ILogger;
-use \PeServer\Core\ActionRequest;
+use \PeServer\Core\Mvc\ActionRequest;
 use \PeServer\Core\Store\CookieStore;
 use \PeServer\Core\Store\SessionStore;
 

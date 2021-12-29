@@ -9,7 +9,7 @@ use \Deploy\ScriptArgument;
 use \PeServer\Core\ILogger;
 use \PeServer\Core\Log\Logging;
 use \PeServer\Core\Mvc\LogicBase;
-use \PeServer\Core\ActionResponse;
+use \PeServer\Core\Mvc\ActionResponse;
 use \PeServer\Core\HttpStatusCode;
 use \PeServer\Core\Mvc\LogicCallMode;
 use \PeServer\Core\Mvc\LogicParameter;

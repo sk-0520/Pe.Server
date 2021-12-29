@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\App\Controllers\Page;
 
 use \PeServer\Core\ActionOption;
-use \PeServer\Core\ActionRequest;
+use \PeServer\Core\Mvc\ActionRequest;
 use \PeServer\Core\HttpStatusCode;
 use \PeServer\Core\Mvc\ControllerArgument;
 use \PeServer\Core\Mvc\ControllerBase;

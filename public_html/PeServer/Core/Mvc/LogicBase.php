@@ -10,9 +10,9 @@ use \PeServer\Core\ILogger;
 use \PeServer\Core\HttpStatus;
 use \PeServer\Core\ArrayUtility;
 use \PeServer\Core\Store\SessionStore;
-use \PeServer\Core\ActionRequest;
+use \PeServer\Core\Mvc\ActionRequest;
 use \PeServer\Core\StringUtility;
-use \PeServer\Core\ActionResponse;
+use \PeServer\Core\Mvc\ActionResponse;
 use \PeServer\Core\Mvc\Validations;
 use \PeServer\Core\Mvc\LogicParameter;
 use \PeServer\Core\Mvc\SessionNextState;
@@ -196,7 +196,7 @@ abstract class LogicBase implements ValidationReceivable
 	 */
 	protected function registerParameterKeys(array $keys, bool $initialize, bool $overwrite): void
 	{
-		if($initialize) {
+		if ($initialize) {
 			$this->keys = $keys;
 		} else {
 			$this->keys += $keys;

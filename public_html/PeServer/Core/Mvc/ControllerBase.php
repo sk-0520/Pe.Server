@@ -5,24 +5,23 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc;
 
 use \LogicException;
-use \Smarty;
 use \PeServer\Core\ILogger;
-use \PeServer\Core\ActionOption;
-use \PeServer\Core\ActionRequest;
-use \PeServer\Core\ActionResponse;
-use \PeServer\Core\ResponseOutput;
-use \PeServer\Core\HttpStatus;
-use \PeServer\Core\ArrayUtility;
-use \PeServer\Core\Mvc\ControllerArgument;
+use \PeServer\Core\Log\Logging;
 use \PeServer\Core\Mvc\Template;
 use \PeServer\Core\Mvc\LogicBase;
-use \PeServer\Core\Mvc\LogicParameter;
-use \PeServer\Core\Mvc\SessionNextState;
-use \PeServer\Core\Store\SessionStore;
-use \PeServer\Core\Log\Logging;
-use \PeServer\Core\Store\CookieStore;
 use \PeServer\Core\StringUtility;
-use PeServer\Core\Throws\InvalidOperationException;
+use \PeServer\Core\ResponseOutput;
+use \PeServer\Core\Mvc\ActionRequest;
+use \PeServer\Core\Store\CookieStore;
+use \PeServer\Core\Mvc\ActionResponse;
+use \PeServer\Core\Mvc\LogicParameter;
+use \PeServer\Core\Store\SessionStore;
+use \PeServer\Core\Mvc\SessionNextState;
+use \PeServer\Core\Mvc\TemplateParameter;
+use \PeServer\Core\Mvc\ControllerArgument;
+use \PeServer\Core\Throws\InvalidOperationException;
+
+
 
 /**
  * コントローラ基底処理。
