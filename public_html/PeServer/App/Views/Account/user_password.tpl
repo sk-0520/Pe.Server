@@ -1,6 +1,6 @@
 {extends file='default.tpl'}
-{block name=TITLE}ユーザー情報 編集{/block}
-{block name=BODY}
+{block name='TITLE'}ユーザー情報 編集{/block}
+{block name='BODY'}
 
 <form class="page-account-password" action="/account/user/password" method="post">
 	{csrf}

@@ -1,6 +1,6 @@
 {extends file='default.tpl'}
-{block name=TITLE}ユーザー情報{/block}
-{block name=BODY}
+{block name='TITLE'}ユーザー情報{/block}
+{block name='BODY'}
 
 <dl class="page-account-user">
 	<dt>user id</dt>

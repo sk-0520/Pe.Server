@@ -1,6 +1,6 @@
 {extends file='default.tpl'}
-{block name=TITLE}ログイン{/block}
-{block name=BODY}
+{block name='TITLE'}ログイン{/block}
+{block name='BODY'}
 
 <form class="page-account-login" action="/account/login" method="post">
 	<dl class="input">

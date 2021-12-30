@@ -1,6 +1,6 @@
 {extends file='default.tpl'}
-{block name=TITLE}セットアップ{/block}
-{block name=BODY}
+{block name='TITLE'}セットアップ{/block}
+{block name='BODY'}
 
 <p>
 	セットアップユーザーから管理者を生成するための情報を入力。<br />
