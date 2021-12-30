@@ -27,6 +27,11 @@ abstract class HttpStatus
 		return new _HttpStatus_Impl(200);
 	}
 
+	public static function found(): HttpStatus
+	{
+		return new _HttpStatus_Impl(302);
+	}
+
 	public static function forbidden(): HttpStatus
 	{
 		return new _HttpStatus_Impl(403);

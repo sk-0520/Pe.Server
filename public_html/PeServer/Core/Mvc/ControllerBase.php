@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc;
 
 use \LogicException;
+use PeServer\Core\ArrayUtility;
+use PeServer\Core\HttpStatus;
 use \PeServer\Core\ILogger;
 use \PeServer\Core\Log\Logging;
 use \PeServer\Core\Mvc\Template;
@@ -16,6 +18,7 @@ use \PeServer\Core\Store\CookieStore;
 use \PeServer\Core\Mvc\ActionResponse;
 use \PeServer\Core\Mvc\LogicParameter;
 use \PeServer\Core\Store\SessionStore;
+use PeServer\Core\Mvc\ViewActionResult;
 use \PeServer\Core\Mvc\SessionNextState;
 use \PeServer\Core\Mvc\TemplateParameter;
 use \PeServer\Core\Mvc\ControllerArgument;
@@ -54,36 +57,6 @@ abstract class ControllerBase
 		$this->session = $argument->session;
 
 		$this->logger->trace('CONTROLLER');
-	}
-
-	/**
-	 * Undocumented function
-	 *
-	 * @param string $url
-	 * @return no-return
-	 */
-	public function redirectUrl(string $url): void
-	{
-		$this->logger->info('リダイレクト: {0}', $url);
-		header("Location: $url");
-		exit;
-	}
-
-	/**
-	 * ドメイン内でリダイレクト。
-	 *
-	 * @param string $path
-	 * @param array<string,string>|null $query
-	 * @return no-return
-	 */
-	public function redirectPath(string $path, ?array $query = null): void
-	{
-		if (!is_null($this->logic)) {
-			$this->applyStore();
-		}
-
-		$httpProtocol = StringUtility::isNullOrEmpty($_SERVER['HTTPS']) ? 'http://' : 'https://';
-		$this->redirectUrl($httpProtocol . $_SERVER['SERVER_NAME'] . '/' .  ltrim($path, '/'));
 	}
 
 	/**
@@ -195,6 +168,46 @@ abstract class ControllerBase
 		$this->cookie->apply();
 	}
 
+	/**
+	 * ロジック側で生成された応答ヘッダを取得。
+	 *
+	 * @return array<string,string[]> 応答ヘッダ。ロジック未生成の場合は空の応答ヘッダを返す。
+	 */
+	private function getResponseHeaders(): array
+	{
+		/** @var array<string,string[]> */
+		$headers = [];
+
+		if (!is_null($this->logic)) {
+			$headers = $this->logic->getResponseHeaders();
+		}
+
+		return $headers;
+	}
+
+	/**
+	 * URLリダイレクト。
+	 *
+	 * @param string $url
+	 * @return RedirectActionResult
+	 */
+	public function redirectUrl(string $url): RedirectActionResult
+	{
+		return new RedirectActionResult($url, HttpStatus::found());
+	}
+
+	/**
+	 * ドメイン内でリダイレクト。
+	 *
+	 * @param string $path
+	 * @param array<string,string>|null $query
+	 * @return RedirectActionResult
+	 */
+	public function redirectPath(string $path, ?array $query = null): RedirectActionResult
+	{
+		$httpProtocol = StringUtility::isNullOrEmpty(ArrayUtility::getOr($_SERVER, 'HTTPS', '')) ? 'http://' : 'https://';
+		return $this->redirectUrl($httpProtocol . $_SERVER['SERVER_NAME'] . '/' .  ltrim($path, '/'));
+	}
 
 	/**
 	 * Viewを表示。
@@ -202,9 +215,9 @@ abstract class ControllerBase
 	 * @param string $controllerName コントローラ完全名。
 	 * @param string $action アクション名。
 	 * @param TemplateParameter $parameter View連携データ。
-	 * @return void
+	 * @return ViewActionResult
 	 */
-	public function viewWithController(string $controllerName, string $action, TemplateParameter $parameter)
+	public function viewWithController(string $controllerName, string $action, TemplateParameter $parameter): ViewActionResult
 	{
 		$lastWord = 'Controller';
 		$controllerClassName = mb_substr($controllerName, mb_strpos($controllerName, $this->skipBaseName) + mb_strlen($this->skipBaseName) + 1);
@@ -212,11 +225,7 @@ abstract class ControllerBase
 
 		$templateDirPath = str_replace('\\', DIRECTORY_SEPARATOR, $controllerBaseName);
 
-		$template = Template::create($templateDirPath);
-
-		$this->applyStore();
-
-		$template->show("$action.tpl", $parameter);
+		return new ViewActionResult($templateDirPath, $action, $parameter, $this->getResponseHeaders());
 	}
 
 	/**
@@ -224,35 +233,38 @@ abstract class ControllerBase
 	 *
 	 * @param string $action アクション名
 	 * @param TemplateParameter $parameter View連携データ。
-	 * @return void
+	 * @return ViewActionResult
 	 */
-	public function view(string $action, TemplateParameter $parameter): void
+	public function view(string $action, TemplateParameter $parameter): ViewActionResult
 	{
 		$className = get_class($this);
 
-		$this->viewWithController($className, $action, $parameter);
+		return $this->viewWithController($className, $action, $parameter);
 	}
 
 	/**
 	 * データ応答。
 	 *
 	 * @param ActionResponse $response 応答データ。
+	 * @return DataActionResult
+	 */
+	public function data(ActionResponse $response): DataActionResult
+	{
+		return new DataActionResult($response, $this->getResponseHeaders());
+	}
+
+	/**
+	 * アクション結果操作の実行。
+	 *
+	 * @param IActionResult $result
 	 * @return void
 	 */
-	public function data(ActionResponse $response): void
+	public function execute(IActionResult $result): void
 	{
-		$this->applyStore();
-
-		header('Content-Type: ' . $response->mime);
-		if ($response->chunked) {
-			header("Transfer-encoding: chunked");
+		if (!is_null($this->logic)) {
+			$this->applyStore();
 		}
 
-		if (is_null($response->callback)) {
-			$converter = new ResponseOutput();
-			$converter->output($response->mime, $response->chunked, $response->data);
-		} else {
-			call_user_func_array($response->callback, [$response->mime, $response->chunked, $response->data]);
-		}
+		$result->execute();
 	}
 }

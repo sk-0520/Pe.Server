@@ -13,6 +13,8 @@ use \PeServer\Core\Store\CookieOption;
 use \PeServer\Core\Store\SessionStore;
 use \PeServer\Core\Store\SessionOption;
 use \PeServer\Core\Mvc\ControllerArgument;
+use \PeServer\Core\Mvc\ControllerBase;
+use \PeServer\Core\Mvc\IActionResult;
 
 /**
  * ルーティング。
@@ -64,7 +66,7 @@ class Routing
 	 * @param string $rawControllerName
 	 * @param string $methodName
 	 * @param string[] $urlParameters
-	 * @return void
+	 * @return no-return
 	 */
 	private function executeAction(string $rawControllerName, string $methodName, array $urlParameters, ActionOption $option): void
 	{
@@ -85,8 +87,12 @@ class Routing
 		$controllerArgument = new ControllerArgument($this->cookie, $this->session, $logger);
 		$request = new ActionRequest($urlParameters);
 
+		/** @var ControllerBase */
 		$controller = new $controllerName($controllerArgument);
-		$controller->$methodName($request);
+		/** @var IActionResult */
+		$actionResult = $controller->$methodName($request);
+		$controller->execute($actionResult);
+		exit;
 	}
 
 	/**
@@ -108,6 +114,7 @@ class Routing
 			if (!is_null($action)) {
 				if ($action['code']->code() === HttpStatus::doExecute()->code()) {
 					$this->executeAction($action['class'], $action['method'], $action['params'], $action['options']);
+					exit; //@phpstan-ignore-line executeActionで終わるけどここだけ見たら分からないので。
 				}
 			}
 		}

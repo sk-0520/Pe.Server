@@ -9,6 +9,7 @@ use \PeServer\Core\Mvc\ControllerBase;
 use \PeServer\Core\Mvc\ControllerArgument;
 use \PeServer\App\Controllers\DomainControllerBase;
 use \PeServer\App\Models\Domains\Page\Setting\SettingSetupLogic;
+use \PeServer\Core\Mvc\IActionResult;
 
 final class SettingController extends PageControllerBase
 {
@@ -17,20 +18,20 @@ final class SettingController extends PageControllerBase
 		parent::__construct($argument);
 	}
 
-	public function setup_get(ActionRequest $request): void
+	public function setup_get(ActionRequest $request): IActionResult
 	{
 		$logic = $this->createLogic(SettingSetupLogic::class, $request);
 		$logic->run(LogicCallMode::initialize());
 
-		$this->view('setup', $logic->getViewData());
+		return $this->view('setup', $logic->getViewData());
 	}
-	public function setup_post(ActionRequest $request): void
+	public function setup_post(ActionRequest $request): IActionResult
 	{
 		$logic = $this->createLogic(SettingSetupLogic::class, $request);
 		if ($logic->run(LogicCallMode::submit())) {
-			$this->redirectPath('/');
+			return $this->redirectPath('/');
 		}
 
-		$this->view('setup', $logic->getViewData());
+		return $this->view('setup', $logic->getViewData());
 	}
 }

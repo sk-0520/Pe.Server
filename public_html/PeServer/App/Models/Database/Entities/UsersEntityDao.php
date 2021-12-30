@@ -86,7 +86,7 @@ class UsersEntityDao extends DaoBase
 	 * Undocumented function
 	 *
 	 * @param string $userId
-	 * @return array{user_id:string,login_id:string,level:string,name:string,email:string,website:string}
+	 * @return array{name:string,website:string}
 	 */
 	public function selectUserEditData(string $userId): array
 	{

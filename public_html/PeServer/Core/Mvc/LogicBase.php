@@ -92,6 +92,13 @@ abstract class LogicBase implements ValidationReceivable
 	private SessionStore $session;
 	private int $sessionNextState = SessionNextState::NORMAL;
 
+	/**
+	 * 応答ヘッダ。
+	 *
+	 * @var array<string,string[]>
+	 */
+	private array $responseHeaders = array();
+
 	protected function __construct(LogicParameter $parameter)
 	{
 		$this->httpStatus = HttpStatus::ok();
@@ -194,6 +201,15 @@ abstract class LogicBase implements ValidationReceivable
 	public function sessionNextState(): int
 	{
 		return $this->sessionNextState;
+	}
+
+	public function addResponseHeader(string $name, string $value): void
+	{
+		if (isset($this->responseHeaders[$name])) {
+			$this->responseHeaders[$name][] = $value;
+		} else {
+			$this->responseHeaders[$name] = [$value];
+		}
 	}
 
 	/**
@@ -396,6 +412,16 @@ abstract class LogicBase implements ValidationReceivable
 		} finally {
 			$this->cleanup($callMode);
 		}
+	}
+
+	/**
+	 * Undocumented function
+	 *
+	 * @return array<string,string[]>
+	 */
+	public function getResponseHeaders(): array
+	{
+		return $this->responseHeaders;
 	}
 
 	/**
