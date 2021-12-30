@@ -16,7 +16,7 @@ use \PeServer\Core\Mvc\ActionResponse;
 use \PeServer\Core\Mvc\Validations;
 use \PeServer\Core\Mvc\LogicParameter;
 use \PeServer\Core\Mvc\SessionNextState;
-use \PeServer\Core\Mvc\ValidationReceivable;
+use \PeServer\Core\Mvc\IValidationReceiver;
 use PeServer\Core\Store\CookieOption;
 use \PeServer\Core\Store\CookieStore;
 use \PeServer\Core\Throws\ArgumentException;
@@ -26,7 +26,7 @@ use \PeServer\Core\Throws\InvalidOperationException;
 /**
  * コントローラから呼び出されるロジック基底処理。
  */
-abstract class LogicBase implements ValidationReceivable
+abstract class LogicBase implements IValidationReceiver
 {
 	protected const SESSION_ALL_CLEAR = '';
 

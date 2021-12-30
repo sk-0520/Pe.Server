@@ -9,7 +9,7 @@ use \PeServer\Core\Database;
 use \PeServer\Core\TrueKeeper;
 use \PeServer\Core\Mvc\Validator;
 use \PeServer\Core\StringUtility;
-use \PeServer\Core\Mvc\ValidationReceivable;
+use \PeServer\Core\Mvc\IValidationReceiver;
 
 class AccountValidator
 {
@@ -22,10 +22,10 @@ class AccountValidator
 	public const EMAIL_LENGTH = 254;
 	public const WEBSITE_LENGTH = 2083;
 
-	private ValidationReceivable $receiver;
+	private IValidationReceiver $receiver;
 	private Validator $validator;
 
-	public function __construct(ValidationReceivable $receiver, Validator $validator)
+	public function __construct(IValidationReceiver $receiver, Validator $validator)
 	{
 		$this->receiver = $receiver;
 		$this->validator = $validator;

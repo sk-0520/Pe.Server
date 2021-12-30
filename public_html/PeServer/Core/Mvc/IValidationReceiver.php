@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc;
 
-interface ValidationReceivable
+interface IValidationReceiver
 {
 	public function receiveErrorMessage(string $key, string $message): void;
 
