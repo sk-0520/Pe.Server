@@ -14,6 +14,7 @@ use \PeServer\Core\I18n;
 use \PeServer\Core\Collection;
 use \PeServer\Core\FileUtility;
 use \PeServer\Core\ArrayUtility;
+use PeServer\Core\Csrf;
 use \PeServer\Core\StringUtility;
 use \PeServer\Core\InitializeChecker;
 use \PeServer\Core\Throws\CoreException;
@@ -170,6 +171,8 @@ class _Template_Impl extends Template
 		$this->engine->registerPlugin('function', 'show_error_messages', array($this, 'showErrorMessages'));
 		// @phpstan-ignore-next-line
 		$this->engine->registerPlugin('function', 'input_helper', array($this, 'inputHelper'));
+		// @phpstan-ignore-next-line
+		$this->engine->registerPlugin('function', 'csrf', array($this, 'embedCsrf'));
 		// @phpstan-ignore-next-line
 		$this->engine->registerPlugin('function', 'asset', array($this, 'asset'));
 	}
@@ -350,6 +353,35 @@ class _Template_Impl extends Template
 		if ($showAutoError) {
 			return $dom->saveHTML() . $this->showErrorMessages(['key' => $targetKey], $smarty);
 		}
+		return $dom->saveHTML(); // @phpstan-ignore-line
+	}
+
+	/**
+	 * CSRFトークン埋め込み処理。
+	 *
+	 * @param array<string,string> $params
+	 * @param Smarty_Internal_Template $smarty
+	 * @return string
+	 */
+	public function embedCsrf(array $params, Smarty_Internal_Template $smarty): string
+	{
+		// このタイミングではセッション処理完了を期待している
+
+		if (!isset($_SESSION[Csrf::SESSION_KEY])) {
+			return '';
+		}
+
+		$csrfToken = $_SESSION[Csrf::SESSION_KEY];
+
+		$dom = new  DOMDocument();
+
+		$element = $dom->createElement('input');
+		$dom->appendChild($element);
+
+		$element->setAttribute('type', 'hidden');
+		$element->setAttribute('name', Csrf::REQUEST_KEY);
+		$element->setAttribute('value', $csrfToken);
+
 		return $dom->saveHTML(); // @phpstan-ignore-line
 	}
 

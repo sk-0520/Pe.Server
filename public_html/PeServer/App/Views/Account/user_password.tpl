@@ -3,6 +3,8 @@
 {block name=BODY}
 
 <form class="page-account-password" action="/account/user/password" method="post">
+	{csrf}
+
 	<dl>
 		<dt>current password</dt>
 		<dd>

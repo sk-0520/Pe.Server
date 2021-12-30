@@ -3,6 +3,8 @@
 {block name=BODY}
 
 <form class="page-account-user" action="/account/user/edit" method="post">
+	{csrf}
+
 	<dl>
 		<dt>user name</dt>
 		<dd>
