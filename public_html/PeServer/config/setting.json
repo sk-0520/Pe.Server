@@ -22,6 +22,17 @@
 			"name": "pe"
 		}
 	},
+	"mail": {
+		"mode": "smtp",
+		"smtp": {
+			"host": "localhost",
+			"port": 25,
+			"secure": "none/ssl/tls",
+			"authentication": true,
+			"user_name": "mail@localhost",
+			"password": ""
+		}
+	},
 	"i18n": {
 		"@core": {
 			"common": {

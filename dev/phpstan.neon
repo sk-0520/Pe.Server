@@ -1,5 +1,5 @@
 parameters:
-  level: 8 
+  level: 8
   paths:
     - ../public_html
   excludePaths:
@@ -11,3 +11,5 @@ parameters:
     - ../public_html/PeServer/Libs/smarty/libs/Smarty.class.php
     - ../public_html/PeServer/Libs/smarty/libs/sysplugins/smarty_internal_template.php
     - ../public_html/PeServer/Libs/smarty/libs/sysplugins/smarty_internal_data.php
+    - ../public_html/PeServer/Libs/PHPMailer/src/PHPMailer.php
+    - ../public_html/PeServer/Libs/PHPMailer/src/SMTP.php
