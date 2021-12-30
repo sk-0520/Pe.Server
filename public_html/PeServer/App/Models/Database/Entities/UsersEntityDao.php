@@ -57,7 +57,7 @@ class UsersEntityDao extends DaoBase
 	 * @param string $userId
 	 * @return array{user_id:string,login_id:string,level:string,name:string,email:string,website:string}
 	 */
-	public function selectUserEditData(string $userId): array
+	public function selectUserInfoData(string $userId): array
 	{
 		/** @var array{user_id:string,login_id:string,level:string,name:string,email:string,website:string} */
 		return $this->database->queryFirst(
@@ -69,6 +69,33 @@ class UsersEntityDao extends DaoBase
 				users.level,
 				users.name,
 				users.email,
+				users.website
+			from
+				users
+			where
+				users.user_id = :user_id
+
+			SQL,
+			[
+				'user_id' => $userId
+			]
+		);
+	}
+
+	/**
+	 * Undocumented function
+	 *
+	 * @param string $userId
+	 * @return array{user_id:string,login_id:string,level:string,name:string,email:string,website:string}
+	 */
+	public function selectUserEditData(string $userId): array
+	{
+		/** @var array{name:string,website:string} */
+		return $this->database->queryFirst(
+			<<<SQL
+
+			select
+				users.name,
 				users.website
 			from
 				users
@@ -145,7 +172,7 @@ class UsersEntityDao extends DaoBase
 		);
 	}
 
-	public function updateUserSetting(string $userId, string $userName, string $email, string $website): void
+	public function updateUserSetting(string $userId, string $userName, string $website): void
 	{
 		$this->database->updateByKey(
 			<<<SQL
@@ -154,7 +181,6 @@ class UsersEntityDao extends DaoBase
 				users
 			set
 				name = :name,
-				email = :email,
 				website = :website
 			where
 				user_id = :user_id
@@ -163,9 +189,7 @@ class UsersEntityDao extends DaoBase
 			[
 				'user_id' => $userId,
 				'name' => $userName,
-				'email' => $email,
 				'website' => $website,
-
 			]
 		);
 	}

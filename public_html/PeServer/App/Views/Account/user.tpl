@@ -25,12 +25,12 @@
 
 	<dt>email</dt>
 	<dd>
-		{$values.account_edit_email}
+		{$values.account_user_email}
 	</dd>
 
 	<dt>website</dt>
 	<dd>
-		{$values.account_edit_website}
+		{$values.account_user_website}
 	</dd>
 
 	<dt>plugin</dt>

@@ -35,30 +35,24 @@ class AccountUserLogic extends PageLogicBase
 
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
-		$this->logger->info('10');
 		$userInfo = $this->userInfo();
 
-		$this->logger->info('20');
 		$database = Database::open();
 
-		$this->logger->info('30');
 		$usersEntityDao = new UsersEntityDao($database);
 
-		$this->logger->info('40');
-		$userData = $usersEntityDao->selectUserEditData($userInfo['user_id']);
+		$userInfoData = $usersEntityDao->selectUserInfoData($userInfo['user_id']);
 
-		$this->logger->info('50');
 		$map = [
 			'user_id' => 'account_user_id',
 			'login_id' => 'account_user_login_id',
 			'level' => 'account_user_level',
 			'name' => 'account_user_name',
-			'email' => 'account_edit_email',
-			'website' => 'account_edit_website',
+			'email' => 'account_user_email',
+			'website' => 'account_user_website',
 		];
 
-		$this->logger->info('60');
-		foreach ($userData as $key => $value) {
+		foreach ($userInfoData as $key => $value) {
 			$this->setValue($map[$key], $value);
 		}
 	}

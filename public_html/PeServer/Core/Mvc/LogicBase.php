@@ -341,7 +341,7 @@ abstract class LogicBase implements ValidationReceivable
 	 * @param LogicCallMode $callMode
 	 * @return void
 	 */
-	private function registerKeys(LogicCallMode $callMode): void
+	protected function registerKeys(LogicCallMode $callMode): void
 	{
 		//NONE
 	}

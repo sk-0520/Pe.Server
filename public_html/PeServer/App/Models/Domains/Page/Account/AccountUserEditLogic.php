@@ -22,51 +22,12 @@ class AccountUserEditLogic extends PageLogicBase
 		parent::__construct($parameter);
 	}
 
-	protected function startup(LogicCallMode $callMode): void
-	{
-		$userInfo = $this->userInfo();
-
-		$database = Database::open();
-		$usersEntityDao = new UsersEntityDao($database);
-
-		$userData = $usersEntityDao->selectUserEditData($userInfo['user_id']);
-
-		$map = [
-			'user_id' => 'account_user_id',
-			'login_id' => 'account_user_login_id',
-			'level' => 'account_user_level',
-			'name' => 'account_user_name',
-			'email' => 'account_edit_email',
-			'website' => 'account_edit_website',
-		];
-
-		if ($callMode->isInitialize()) {
-			foreach ($userData as $key => $value) {
-				$this->setValue($map[$key], $value);
-			}
-		} else {
-			$targets = [
-				'user_id',
-				'login_id',
-				'level',
-			];
-			foreach ($userData as $key => $value) {
-				if (ArrayUtility::contains($targets, $key)) {
-					$this->setValue($map[$key], $value);
-				} else {
-					$this->setValue($map[$key], $this->getRequest($map[$key], ''));
-				}
-			}
-		}
-	}
-
 	protected function registerKeys(LogicCallMode $callMode): void
 	{
 		$this->registerParameterKeys([
-			'account_user_name',
-			'account_edit_email',
+			'account_edit_name',
 			'account_edit_website',
-		], false, true);
+		], true, true);
 	}
 
 	protected function validateImpl(LogicCallMode $callMode): void
@@ -75,14 +36,9 @@ class AccountUserEditLogic extends PageLogicBase
 			return;
 		}
 
-		$this->validation('account_user_name', function (string $key, ?string $value) {
+		$this->validation('account_edit_name', function (string $key, ?string $value) {
 			$accountValidator = new AccountValidator($this, $this->validator);
 			$accountValidator->isUserName($key, $value);
-		});
-
-		$this->validation('account_edit_email', function (string $key, ?string $value) {
-			$accountValidator = new AccountValidator($this, $this->validator);
-			$accountValidator->isEmail($key, $value);
 		});
 
 		$this->validation('account_edit_website', function (string $key, ?string $value) {
@@ -102,6 +58,21 @@ class AccountUserEditLogic extends PageLogicBase
 
 	private function executeInitialize(LogicCallMode $callMode): void
 	{
+		$userInfo = $this->userInfo();
+
+		$database = Database::open();
+		$usersEntityDao = new UsersEntityDao($database);
+
+		$userEditData = $usersEntityDao->selectUserEditData($userInfo['user_id']);
+
+		$map = [
+			'name' => 'account_edit_name',
+			'website' => 'account_edit_website',
+		];
+
+		foreach ($userEditData as $key => $value) {
+			$this->setValue($map[$key], $value);
+		}
 	}
 
 	private function executeSubmit(LogicCallMode $callMode): void
@@ -110,8 +81,7 @@ class AccountUserEditLogic extends PageLogicBase
 
 		$params = [
 			'id' => $userInfo['user_id'],
-			'user_name' => $this->getRequest('account_user_name'),
-			'email' => $this->getRequest('account_edit_email'),
+			'user_name' => $this->getRequest('account_edit_name'),
 			'website' => $this->getRequest('account_edit_website'),
 		];
 
@@ -120,11 +90,10 @@ class AccountUserEditLogic extends PageLogicBase
 		$result = $database->transaction(function ($database, $params) {
 			$usersEntityDao = new UsersEntityDao($database);
 
-			// 管理者ユーザーの登録
+			// ユーザー情報更新
 			$usersEntityDao->updateUserSetting(
 				$params['id'],
 				$params['user_name'],
-				$params['email'],
 				$params['website']
 			);
 
