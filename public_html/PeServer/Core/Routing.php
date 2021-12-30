@@ -69,20 +69,24 @@ class Routing
 	 * @param string $rawControllerName
 	 * @param string $methodName
 	 * @param string[] $urlParameters
+	 * @param ActionOption[] $options
 	 * @return no-return
 	 */
-	private function executeAction(string $rawControllerName, string $methodName, array $urlParameters, ActionOption $option): void
+	private function executeAction(string $rawControllerName, string $methodName, array $urlParameters, array $options): void
 	{
 		$splitNames = explode('/', $rawControllerName);
 		$controllerName = $splitNames[count($splitNames) - 1];
 
-		if (!is_null($option->filter)) {
-			$filterLogger = Logging::create('filter');
-			$filter = $option->filter;
-			$filterArgument = new FilterArgument($this->cookie, $this->session, $filterLogger);
-			$httpStatus = $filter($filterArgument);
-			if (400 <= $httpStatus->code()) {
-				throw new Exception('TODO: ' . $httpStatus->code());
+		foreach ($options as $option) {
+			if (!is_null($option->filter)) {
+				$filterLogger = Logging::create('filter');
+				$filter = $option->filter;
+				$filterArgument = new FilterArgument($this->cookie, $this->session, $filterLogger);
+				$filterResult = $filter($filterArgument);
+				$httpStatus = is_array($filterResult) ? $filterResult['status']: $filterResult;
+				if (400 <= $httpStatus->code()) {
+					throw new Exception('TODO: ' . $httpStatus->code());
+				}
 			}
 		}
 
