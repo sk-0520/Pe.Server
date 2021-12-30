@@ -116,7 +116,7 @@ abstract class AppConfiguration
 		Logging::initialize($json['logging']);
 		Database::initialize($json['persistence']);
 
-		Template::initialize($rootDirectoryPath, $baseDirectoryPath, $environment, $revision);
+		Template::initialize($rootDirectoryPath, $baseDirectoryPath, 'App/Views', 'data/temp/views', $environment, $revision);
 		I18n::initialize($json['i18n']);
 
 

@@ -6,18 +6,18 @@ namespace PeServer\Core\Mvc;
 
 require_once(__DIR__ . '/../../Libs/smarty/libs/Smarty.class.php');
 
-use \Exception;
-use \DOMDocument;
-use DOMElement;
 use \Smarty;
 use \Smarty_Internal_Template;
-use \PeServer\Core\ArrayUtility;
-use \PeServer\Core\Collection;
+use \DOMElement;
+use \DOMDocument;
 use \PeServer\Core\I18n;
-use \PeServer\Core\InitializeChecker;
+use \PeServer\Core\Collection;
+use \PeServer\Core\FileUtility;
+use \PeServer\Core\ArrayUtility;
 use \PeServer\Core\StringUtility;
+use \PeServer\Core\InitializeChecker;
 use \PeServer\Core\Throws\CoreException;
-use PeServer\Core\Throws\InvalidOperationException;
+use \PeServer\Core\Throws\InvalidOperationException;
 
 /**
  * View側のテンプレート処理。
@@ -38,12 +38,30 @@ abstract class Template
 	 * @var string
 	 */
 	protected static $rootDirectoryPath;
+
 	/**
 	 * ベースディレクトリ。
 	 *
 	 * @var string
 	 */
 	protected static $baseDirectoryPath;
+
+	/**
+	 * テンプレートディレクトリベース名。
+	 *
+	 * 内部で self::$baseDirectoryPath と引数をかけ合わせる。
+	 *
+	 * @var string
+	 */
+	private static string $templateBaseName;
+	/**
+	 * 一時ディレクトリベース名。
+	 *
+	 * 内部で self::$baseDirectoryPath と引数をかけ合わせる。
+	 *
+	 * @var string
+	 */
+	private static string $temporaryBaseName;
 
 	/**
 	 * Undocumented variable
@@ -59,7 +77,7 @@ abstract class Template
 	 */
 	protected static $revision;
 
-	public static function initialize(string $rootDirectoryPath, string $baseDirectoryPath, string $environment, string $revision): void
+	public static function initialize(string $rootDirectoryPath, string $baseDirectoryPath, string $templateBaseName, string $temporaryBaseName, string $environment, string $revision): void
 	{
 		if (is_null(self::$initializeChecker)) {
 			self::$initializeChecker = new InitializeChecker();
@@ -68,15 +86,24 @@ abstract class Template
 
 		self::$rootDirectoryPath = $rootDirectoryPath;
 		self::$baseDirectoryPath = $baseDirectoryPath;
+		self::$templateBaseName = $templateBaseName;
+		self::$temporaryBaseName = $temporaryBaseName;
 		self::$environment = $environment;
 		self::$revision = $revision;
 	}
 
-	public static function create(string $baseName): Template
+	public static function create(string $baseName, string $templateBaseName = '', string $temporaryBaseName = ''): Template
 	{
 		self::$initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
 
-		return new _Template_Impl($baseName);
+		if (StringUtility::isNullOrWhiteSpace($templateBaseName)) {
+			$templateBaseName = self::$templateBaseName;
+		}
+		if (StringUtility::isNullOrWhiteSpace($temporaryBaseName)) {
+			$temporaryBaseName = self::$temporaryBaseName;
+		}
+
+		return new _Template_Impl($baseName, $templateBaseName, $temporaryBaseName);
 	}
 
 	/**
@@ -87,6 +114,7 @@ abstract class Template
 	 * @return void no-return?
 	 */
 	public abstract function show(string $templateName, TemplateParameter $parameter): void;
+	public abstract function build(string $templateName, TemplateParameter $parameter): string;
 }
 
 class _Template_Impl extends Template
@@ -98,21 +126,21 @@ class _Template_Impl extends Template
 	 */
 	private $engine;
 
-	public function __construct(string $baseName)
+	public function __construct(string $baseName, string $templateBaseName, string $temporaryBaseName)
 	{
 		self::$initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
 
 		$this->engine = new Smarty();
-		$this->engine->addTemplateDir(self::$baseDirectoryPath . "/App/Views/$baseName/");
-		$this->engine->addTemplateDir(self::$baseDirectoryPath . "/App/Views/");
-		$this->engine->setCompileDir(self::$baseDirectoryPath . "/data/temp/views/c/$baseName/");
-		$this->engine->setCacheDir(self::$baseDirectoryPath . "/data/temp/views/t/$baseName/");
+		$this->engine->addTemplateDir(FileUtility::joinPath(parent::$baseDirectoryPath, $templateBaseName, $baseName));
+		$this->engine->addTemplateDir(FileUtility::joinPath(parent::$baseDirectoryPath, $templateBaseName));
+		$this->engine->setCompileDir(FileUtility::joinPath(parent::$baseDirectoryPath, $temporaryBaseName, 'compile', $baseName));
+		$this->engine->setCacheDir(FileUtility::joinPath(parent::$baseDirectoryPath, $temporaryBaseName, 'cache', $baseName));
 		$this->engine->escape_html = true;
 
 		$this->registerFunctions();
 	}
 
-	public function show(string $templateName, TemplateParameter $parameter): void
+	private function applyParameter(TemplateParameter $parameter): void
 	{
 		// @phpstan-ignore-next-line
 		$this->engine->assign([
@@ -120,8 +148,20 @@ class _Template_Impl extends Template
 			'values' => $parameter->values,
 			'errors' => $parameter->errors,
 		]);
+	}
+
+	public function show(string $templateName, TemplateParameter $parameter): void
+	{
+		$this->applyParameter($parameter);
 		// @phpstan-ignore-next-line
 		$this->engine->display($templateName);
+	}
+
+	public function build(string $templateName, TemplateParameter $parameter): string
+	{
+		$this->applyParameter($parameter);
+		// @phpstan-ignore-next-line
+		return $this->engine->fetch($templateName);
 	}
 
 	private function registerFunctions(): void
@@ -233,9 +273,10 @@ class _Template_Impl extends Template
 	public function inputHelper(array $params, Smarty_Internal_Template $smarty): string
 	{
 		$targetKey = $params['key']; // 必須
+
 		$showAutoError = true;
-		if (isset($params['auto_error']) && $params['auto_error'] != 'true') {
-			$showAutoError = false;
+		if (ArrayUtility::tryGet($params, 'auto_error', $autError)) {
+			$showAutoError = filter_var($autError, FILTER_VALIDATE_BOOL) && boolval($autError);
 		}
 
 		$hasError = false;
@@ -315,7 +356,13 @@ class _Template_Impl extends Template
 	/**
 	 * 指定されたリソースをHTMLとして読み込む。
 	 *
+	 *  * 本番環境であればミニファイされたリソースを読もうとする
+	 *  * リビジョンをキャッシュバスターとして適用する
+	 *
 	 * @param array<string,string> $params
+	 *  * file: 対象リソース
+	 *  * auto_size: true/false trueの場合に実イメージサイズを読み込む
+	 *  * その他: 全部設定される
 	 * @param Smarty_Internal_Template $smarty
 	 * @return string
 	 */
@@ -330,40 +377,95 @@ class _Template_Impl extends Template
 			return '';
 		}
 
+		$isProduction = parent::$environment === 'production';
+
 		$extension = StringUtility::toLower(pathinfo($sourcePath, PATHINFO_EXTENSION));
 
 		$ignoreAsset =
+			StringUtility::startsWith($sourcePath, '//', false)
+			||
 			StringUtility::startsWith($sourcePath, 'https://', false)
 			||
-			StringUtility::startsWith($sourcePath, 'http://', false);
+			StringUtility::startsWith($sourcePath, 'http://', false)
+			||
+			StringUtility::contains($sourcePath, '?', false);
 
 		$resourcePath = $sourcePath;
 		if (!$ignoreAsset) {
-			if (self::$environment === 'production') {
+			if ($isProduction) {
 				$dir = pathinfo($sourcePath, PATHINFO_DIRNAME);
 				$file = pathinfo($sourcePath, PATHINFO_FILENAME);
 
 				$resourcePath = $dir . '/' . $file . '.min.' . $extension;
 			}
 
-			$resourcePath .= '?' . self::$revision;
+			$resourcePath .= '?' . parent::$revision;
 		}
 
+		$dom = new DOMDocument();
+		if (!$isProduction) {
+			$comment = $dom->createComment(StringUtility::dump($params));
+			$dom->appendChild($comment);
+		}
+
+		$skipAttributes = [
+			'file',
+			'auto_size',
+		];
+		/** @var DOMElement */
+		$element = null;
 
 		switch ($extension) {
 			case 'css':
-				return "<link href=\"$resourcePath\" rel=\"stylesheet\" />";
+				$element = $dom->createElement('link');
+				$dom->appendChild($element);
+
+				$element->setAttribute('rel', 'stylesheet');
+				$element->setAttribute('href', $resourcePath);
+				$skipAttributes = array_merge($skipAttributes, ['rel', 'href']);
+				break;
 
 			case 'js':
-				return "<script src=\"$resourcePath\"></script>";
+				$element = $dom->createElement('script');
+				$dom->appendChild($element);
+
+				$element->setAttribute('src', $resourcePath);
+				$skipAttributes = array_merge($skipAttributes, ['src']);
+				break;
 
 			case 'png':
 			case 'jpeg':
 			case 'jpg':
-				return "<img src=\"$resourcePath\" />";
+				$element = $dom->createElement('img');
+				$dom->appendChild($element);
+
+				$element->setAttribute('src', $resourcePath);
+				$skipAttributes = array_merge($skipAttributes, ['src']);
+
+				if (!$ignoreAsset && ArrayUtility::tryGet($params, 'auto_size', $autoSize)) {
+					if (filter_var($autoSize, FILTER_VALIDATE_BOOL) && boolval($autoSize)) {
+						$imagePath = FileUtility::joinPath(parent::$rootDirectoryPath, $sourcePath);
+						$imageSize = getimagesize($imagePath);
+						if ($imageSize !== false) {
+							$element->setAttribute('width', strval($imageSize[0]));
+							$element->setAttribute('height', strval($imageSize[1]));
+							$skipAttributes = array_merge($skipAttributes, ['width', 'height']);
+						}
+					}
+				}
+				break;
 
 			default:
 				throw new CoreException($resourcePath);
 		}
+
+		foreach ($params as $key => $value) {
+			if (ArrayUtility::contains($skipAttributes, $key)) {
+				continue;
+			}
+			$element->setAttribute($key, $value);
+		}
+
+		return $dom->saveHTML(); // @phpstan-ignore-line
 	}
 }
