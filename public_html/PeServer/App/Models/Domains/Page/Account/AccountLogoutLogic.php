@@ -9,7 +9,7 @@ use \PeServer\Core\Database;
 use \PeServer\Core\StringUtility;
 use \PeServer\App\Models\AuditLog;
 use \PeServer\Core\Mvc\Validations;
-use \PeServer\App\Models\SessionKey;
+use \PeServer\App\Models\SessionManager;
 use \PeServer\Core\Mvc\LogicCallMode;
 use \PeServer\Core\Mvc\LogicParameter;
 use \PeServer\App\Models\Domains\Page\PageLogicBase;
@@ -25,18 +25,17 @@ class AccountLogoutLogic extends PageLogicBase
 
 	protected function registerKeys(LogicCallMode $callMode): void
 	{
-		$this->registerParameterKeys([
-			'',
-		], true, true);
+		//NONE
 	}
 
 	protected function validateImpl(LogicCallMode $callMode): void
 	{
+		//NONE
 	}
 
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
-		$userInfo = $this->getSession(SessionKey::ACCOUNT, null);
+		$userInfo = $this->getSession(SessionManager::ACCOUNT, null);
 		if (is_null($userInfo)) {
 			return;
 		}

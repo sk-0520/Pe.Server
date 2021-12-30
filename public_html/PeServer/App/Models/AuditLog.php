@@ -14,4 +14,5 @@ class AuditLog
 	public const USER_GENERATED = 'USER-GENERATED';
 	public const USER_STATE_CHANGE = 'USER-STATE-CHANGE';
 	public const USER_EDIT = 'USER-EDIT';
+	public const USER_PASSWORD_CHANGE = 'USER-PASSWORD-CHANGE';
 }

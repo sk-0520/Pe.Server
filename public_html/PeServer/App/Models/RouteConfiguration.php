@@ -32,7 +32,7 @@ abstract class RouteConfiguration
 	 */
 	private static function filterPageAccount(FilterArgument $argument, array $levels): HttpStatus
 	{
-		if (!$argument->session->tryGet(SessionKey::ACCOUNT, $account)) {
+		if (!$argument->session->tryGet(SessionManager::ACCOUNT, $account)) {
 			return HttpStatus::forbidden();
 		}
 
@@ -135,6 +135,8 @@ abstract class RouteConfiguration
 				->addAction('user', HttpMethod::get(), self::DEFAULT_METHOD, self::user())
 				->addAction('user/edit', HttpMethod::get(), 'user_edit_get', self::user())
 				->addAction('user/edit', HttpMethod::post(), 'user_edit_post', self::user())
+				->addAction('user/password', HttpMethod::get(), 'user_password_get', self::user())
+				->addAction('user/password', HttpMethod::post(), 'user_password_post', self::user())
 			/* AUTO-FORMAT */,
 			(new Route('setting', SettingController::class, self::admin()))
 				->addAction('setup', HttpMethod::get(), 'setup_get', self::setup())

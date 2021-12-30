@@ -8,7 +8,7 @@ use \PeServer\Core\Database;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\StringUtility;
 use \PeServer\App\Models\AuditLog;
-use \PeServer\App\Models\SessionKey;
+use \PeServer\App\Models\SessionManager;
 use \PeServer\Core\Mvc\LogicCallMode;
 use \PeServer\Core\Mvc\LogicParameter;
 use PeServer\App\Models\Domains\AccountValidator;
@@ -27,7 +27,7 @@ class AccountUserEditLogic extends PageLogicBase
 		$this->registerParameterKeys([
 			'account_edit_name',
 			'account_edit_website',
-		], true, true);
+		], true);
 	}
 
 	protected function validateImpl(LogicCallMode $callMode): void
@@ -36,12 +36,12 @@ class AccountUserEditLogic extends PageLogicBase
 			return;
 		}
 
-		$this->validation('account_edit_name', function (string $key, ?string $value) {
+		$this->validation('account_edit_name', function (string $key, string $value) {
 			$accountValidator = new AccountValidator($this, $this->validator);
 			$accountValidator->isUserName($key, $value);
 		});
 
-		$this->validation('account_edit_website', function (string $key, ?string $value) {
+		$this->validation('account_edit_website', function (string $key, string $value) {
 			$accountValidator = new AccountValidator($this, $this->validator);
 			$accountValidator->isWebsite($key, $value);
 		});
@@ -80,7 +80,7 @@ class AccountUserEditLogic extends PageLogicBase
 		$userInfo = $this->userInfo();
 
 		$params = [
-			'id' => $userInfo['user_id'],
+			'id_user' => $userInfo['user_id'],
 			'user_name' => $this->getRequest('account_edit_name'),
 			'website' => $this->getRequest('account_edit_website'),
 		];
@@ -92,7 +92,7 @@ class AccountUserEditLogic extends PageLogicBase
 
 			// ユーザー情報更新
 			$usersEntityDao->updateUserSetting(
-				$params['id'],
+				$params['id_user'],
 				$params['user_name'],
 				$params['website']
 			);
@@ -102,8 +102,10 @@ class AccountUserEditLogic extends PageLogicBase
 			return true;
 		}, $params);
 
-		if (!$result) {
-			$this->logger->error('未実装');
+		if ($result) {
+			$account = SessionManager::getAccount();
+			$account['user_name'] = $params['user_name'];
+			SessionManager::setAccount($account);
 		}
 	}
 }

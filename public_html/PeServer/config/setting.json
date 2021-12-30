@@ -67,6 +67,15 @@
 		"error": {
 			"login-parameter": {
 				"*": "ログインID/パスワードが正しくありません"
+			},
+			"password-incorrect": {
+				"*": "パスワードが正しくありません"
+			},
+			"password-generate": {
+				"*": "使用できないパスワードです"
+			},
+			"password-confirm": {
+				"*": "確認用パスワードが一致しません"
 			}
 		}
 	}

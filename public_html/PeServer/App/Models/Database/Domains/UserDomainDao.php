@@ -18,7 +18,7 @@ class UserDomainDao extends DaoBase
 	 * Undocumented function
 	 *
 	 * @param string $loginId
-	 * @return array{user_id:string,login_id:string,name:string,level:string,password:string}|null
+	 * @return array{user_id:string,login_id:string,name:string,level:string,state:string,generate_password:string,current_password:string}|null
 	 */
 	public function selectLoginUser(string $loginId)
 	{
@@ -31,7 +31,9 @@ class UserDomainDao extends DaoBase
 				users.login_id,
 				users.name,
 				users.level,
-				user_authentications.current_password as password
+				users.state,
+				user_authentications.generate_password,
+				user_authentications.current_password
 			from
 				users
 				inner join
@@ -43,7 +45,9 @@ class UserDomainDao extends DaoBase
 			where
 				users.login_id = :account_login_login_id
 				and
-				users.state = 'enabled'
+				(
+					users.state = 'enabled'
+				)
 
 			SQL,
 			[

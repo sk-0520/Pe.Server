@@ -9,7 +9,7 @@ use \PeServer\Core\Database;
 use \PeServer\Core\StringUtility;
 use \PeServer\App\Models\AuditLog;
 use \PeServer\Core\Mvc\Validator;
-use \PeServer\App\Models\SessionKey;
+use \PeServer\App\Models\SessionManager;
 use \PeServer\Core\Mvc\LogicCallMode;
 use \PeServer\Core\Mvc\LogicParameter;
 use \PeServer\App\Models\Domains\Page\PageLogicBase;

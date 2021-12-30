@@ -2,7 +2,7 @@
 
 namespace PeServer\App\Controllers\Page;
 
-use \PeServer\App\Models\SessionKey;
+use \PeServer\App\Models\SessionManager;
 use \PeServer\Core\Mvc\ControllerBase;
 use \PeServer\Core\Mvc\ControllerArgument;
 use \PeServer\App\Controllers\DomainControllerBase;
@@ -21,6 +21,6 @@ abstract class PageControllerBase extends DomainControllerBase
 	 */
 	protected final function isLoggedIn(): bool
 	{
-		return $this->session->tryGet(SessionKey::ACCOUNT, $_);
+		return $this->session->tryGet(SessionManager::ACCOUNT, $_);
 	}
 }

@@ -216,9 +216,11 @@ abstract class LogicBase implements ValidationReceivable
 	 * Undocumented function
 	 *
 	 * @param string[] $keys
+	 * @param bool $overwrite キー項目を要求データで上書きするか
+	 * @param bool $initialize キー情報を初期化するか
 	 * @return void
 	 */
-	protected function registerParameterKeys(array $keys, bool $initialize, bool $overwrite): void
+	protected function registerParameterKeys(array $keys, bool $overwrite, bool $initialize = true): void
 	{
 		if ($initialize) {
 			$this->keys = $keys;
@@ -310,7 +312,7 @@ abstract class LogicBase implements ValidationReceivable
 	 * Undocumented function
 	 *
 	 * @param string $key
-	 * @param callable(string $key,?string $value):void $callback
+	 * @param callable(string $key,string $value):void $callback
 	 * @param array{default?:string,trim?:bool}|null $option オプション
 	 *   * default: 取得失敗時の値。
 	 *   * trim: 値をトリムするか。

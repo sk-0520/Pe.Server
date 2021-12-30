@@ -8,13 +8,14 @@ use \Exception;
 use \PeServer\Core\Log\Logging;
 use \PeServer\Core\FilterArgument;
 use \PeServer\Core\Mvc\ActionRequest;
+use \PeServer\Core\Mvc\IActionResult;
 use \PeServer\Core\Store\CookieStore;
+use \PeServer\Core\Mvc\ControllerBase;
 use \PeServer\Core\Store\CookieOption;
 use \PeServer\Core\Store\SessionStore;
 use \PeServer\Core\Store\SessionOption;
+use \PeServer\App\Models\SessionManager;
 use \PeServer\Core\Mvc\ControllerArgument;
-use \PeServer\Core\Mvc\ControllerBase;
-use \PeServer\Core\Mvc\IActionResult;
 
 /**
  * ルーティング。
@@ -43,6 +44,8 @@ class Routing
 
 		$this->cookie = new CookieStore($storeOption['cookie']);
 		$this->session = new SessionStore($storeOption['session'], $this->cookie);
+
+		SessionManager::initialize($this->session);
 	}
 
 	/**

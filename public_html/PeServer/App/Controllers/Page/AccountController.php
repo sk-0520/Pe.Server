@@ -13,7 +13,8 @@ use \PeServer\App\Models\Domains\Page\Account\AccountLoginLogic;
 use \PeServer\App\Models\Domains\Page\Account\AccountLogoutLogic;
 use \PeServer\App\Models\Domains\Page\Account\AccountUserLogic;
 use \PeServer\App\Models\Domains\Page\Account\AccountUserEditLogic;
-use \PeServer\App\Models\SessionKey;
+use \PeServer\App\Models\Domains\Page\Account\AccountUserPasswordLogic;
+use \PeServer\App\Models\SessionManager;
 use \PeServer\App\Models\UserLevel;
 use \PeServer\Core\Mvc\IActionResult;
 
@@ -53,7 +54,7 @@ final class AccountController extends PageControllerBase
 
 		$logic = $this->createLogic(AccountLoginLogic::class, $request);
 		if ($logic->run(LogicCallMode::submit())) {
-			if ($this->session->tryGet(SessionKey::ACCOUNT, $account)) {
+			if ($this->session->tryGet(SessionManager::ACCOUNT, $account)) {
 				if ($account['level'] === UserLevel::SETUP) {
 					return $this->redirectPath('/setting/setup');
 				}
@@ -97,5 +98,23 @@ final class AccountController extends PageControllerBase
 		}
 
 		return $this->view('user_edit', $logic->getViewData());
+	}
+
+	public function user_password_get(ActionRequest $request): IActionResult
+	{
+		$logic = $this->createLogic(AccountUserPasswordLogic::class, $request);
+		$logic->run(LogicCallMode::initialize());
+
+		return $this->view('user_password', $logic->getViewData());
+	}
+
+	public function user_password_post(ActionRequest $request): IActionResult
+	{
+		$logic = $this->createLogic(AccountUserPasswordLogic::class, $request);
+		if ($logic->run(LogicCallMode::submit())) {
+			return $this->redirectPath('/account/user');
+		}
+
+		return $this->view('user_password', $logic->getViewData());
 	}
 }

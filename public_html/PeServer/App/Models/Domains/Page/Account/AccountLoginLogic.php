@@ -9,7 +9,7 @@ use \PeServer\Core\Database;
 use \PeServer\Core\StringUtility;
 use \PeServer\App\Models\AuditLog;
 use \PeServer\Core\Mvc\Validator;
-use \PeServer\App\Models\SessionKey;
+use \PeServer\App\Models\SessionManager;
 use \PeServer\Core\Mvc\LogicCallMode;
 use \PeServer\Core\Mvc\LogicParameter;
 use \PeServer\App\Models\Domains\Page\PageLogicBase;
@@ -30,7 +30,7 @@ class AccountLoginLogic extends PageLogicBase
 		$this->registerParameterKeys([
 			'account_login_login_id',
 			'account_login_password',
-		], true, false);
+		], false);
 	}
 
 	protected function validateImpl(LogicCallMode $callMode): void
@@ -82,7 +82,7 @@ class AccountLoginLogic extends PageLogicBase
 		}
 
 		// パスワード突合
-		$verify_ok = password_verify($this->getRequest('account_login_password'), $user['password']);
+		$verify_ok = password_verify($this->getRequest('account_login_password'), $user['current_password']);
 		if (!$verify_ok) {
 			$this->addError(Validator::COMMON, I18n::message(self::ERROR_LOGIN_PARAMETER));
 			$this->logger->warn('ログイン失敗: {0}', $user['user_id']);
@@ -92,12 +92,13 @@ class AccountLoginLogic extends PageLogicBase
 
 		$this->removeSession(self::SESSION_ALL_CLEAR);
 		$account = [
-			'id' => $user['user_id'],
+			'user_id' => $user['user_id'],
 			'login_id' => $user['login_id'],
 			'name' => $user['name'],
 			'level' => $user['level'],
+			'state' => $user['state'],
 		];
-		$this->setSession(SessionKey::ACCOUNT, $account);
+		SessionManager::setAccount($account);
 		$this->restartSession();
 		$this->writeAuditLogCurrentUser(AuditLog::LOGIN_SUCCESS, $account);
 	}

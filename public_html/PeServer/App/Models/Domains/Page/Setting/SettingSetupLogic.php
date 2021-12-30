@@ -35,7 +35,7 @@ class SettingSetupLogic extends PageLogicBase
 			'setting_setup_user_name',
 			'setting_setup_email',
 			'setting_setup_website',
-		], true, true);
+		], true);
 
 		$this->setValue('setting_setup_password', '');
 	}
@@ -51,22 +51,22 @@ class SettingSetupLogic extends PageLogicBase
 			$accountValidator->isLoginId($key, $value);
 		});
 
-		$this->validation('setting_setup_password', function ($key, $value) {
+		$this->validation('setting_setup_password', function (string $key, string $value) {
 			$accountValidator = new AccountValidator($this, $this->validator);
 			$accountValidator->isPassword($key, $value);
 		}, ['trim' => false]);
 
-		$this->validation('setting_setup_user_name', function ($key, $value) {
+		$this->validation('setting_setup_user_name', function (string $key, string $value) {
 			$accountValidator = new AccountValidator($this, $this->validator);
 			$accountValidator->isUserName($key, $value);
 		});
 
-		$this->validation('setting_setup_email', function ($key, $value) {
+		$this->validation('setting_setup_email', function (string $key, string $value) {
 			$accountValidator = new AccountValidator($this, $this->validator);
 			$accountValidator->isEmail($key, $value);
 		});
 
-		$this->validation('setting_setup_website', function ($key, $value) {
+		$this->validation('setting_setup_website', function (string $key, string $value) {
 			$accountValidator = new AccountValidator($this, $this->validator);
 			$accountValidator->isWebsite($key, $value);
 		});
