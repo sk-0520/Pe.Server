@@ -145,51 +145,75 @@ class DeployScript
 
 		$pdo->exec(
 			<<<SQL
+
 create table
-	[database_version]
+	[database_version] -- DBバージョン
 	(
 		[version] integer not null
 	)
 ;
 
 create table
-	[users]
+	[users] -- ユーザー情報
 	(
-		[user_id] text not null,
-		[login_id] text not null unique,
-		[level] text not null,
-		[state] text not null,
-		[name] text not null,
-		[email] text not null,
-		[website] text not null,
-		[note] text not null,
+		[user_id] text not null, -- ユーザーID
+		[login_id] text not null unique, -- ログインID
+		[level] text not null, -- ユーザーレベル(権限てきな)
+		[state] text not null, -- 状態
+		[name] text not null, -- 名前
+		[email] text not null, -- メールアドレス
+		[website] text not null, -- Webサイト
+		[note] text not null, -- 管理者用メモ
 		primary key([user_id])
 	)
 ;
 
 create table
-	[user_authentications]
+	[user_authentications] -- ユーザー認証情報
 	(
-		[user_id] text not null,
-		[generate_password] text not null,
-		[current_password] text not null,
+		[user_id] text not null, -- ユーザーID
+		[generate_password] text not null, -- 自動生成パスワード
+		[current_password] text not null, -- 現在パスワード
 		primary key([user_id]),
 		foreign key ([user_id]) references users([user_id])
 	)
 ;
 
 create table
-	[user_audit_logs]
+	[user_audit_logs] -- 監査ログ
 	(
 		[sequence] integer not null,
-		[user_id] text not null,
-		[timestamp] datetime not null,
-		[event] text not null,
-		[info] text not null,
-		[ip_address] text not null,
-		[user_agent] text not null,
+		[user_id] text not null, -- ユーザーID
+		[timestamp] datetime not null, -- 書き込み日時(UTC)
+		[event] text not null, -- イベント
+		[info] text not null, -- 追加情報(JSON)
+		[ip_address] text not null, -- クライアントIPアドレス
+		[user_agent] text not null, -- クライアントUA
 		primary key([sequence] autoincrement),
 		foreign key ([user_id]) references users([user_id])
+	)
+;
+
+create table
+	[user_change_wait_emails] -- ユーザーメールアドレス変更確認
+	(
+		[user_id] text not null, -- ユーザーID
+		[token] text not null, -- トークン
+		[timestamp] text not null, -- トークン発行日時(UTC)
+		primary key([user_id], [token]),
+		foreign key ([user_id]) references users([user_id])
+	)
+;
+
+create table
+	[signup_wait_emails] -- 新規登録時のユーザーメールアドレス待機
+	(
+		[email] text not null, -- メールアドレス
+		[token] text not null, -- トークン
+		[timestamp] text not null, -- トークン発行日時(UTC)
+		[ip_address] text not null, -- クライアントIPアドレス
+		[user_agent] text not null, -- クライアントUA
+		primary key([email], [token])
 	)
 ;
 

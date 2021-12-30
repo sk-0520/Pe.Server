@@ -48,6 +48,9 @@
 				<a href="/account/user/edit">edit user</a>
 			</li>
 			<li>
+				<a href="/account/user/email">change email</a>
+			</li>
+			<li>
 				<a href="/account/user/password">change password</a>
 			</li>
 		</ul>
