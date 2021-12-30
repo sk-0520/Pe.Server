@@ -16,7 +16,7 @@ abstract class ApiLogicBase extends DomainLogicBase
 		parent::__construct($parameter);
 	}
 
-	protected function registerKeysImpl(LogicCallMode $callMode): void
+	protected function registerKeys(LogicCallMode $callMode): void
 	{
 		//NONE
 	}

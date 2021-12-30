@@ -96,23 +96,32 @@ abstract class ControllerBase
 		return $logic;
 	}
 
-	public function existsResult(LogicBase $logic, string $key): bool
+	/**
+	 * ロジック結果に指定キー項目が存在するか。
+	 *
+	 * @param string $key
+	 * @return boolean
+	 */
+	public function existsResult(string $key): bool
 	{
-		return isset($logic->result[$key]);
+		if (isset($this->logic)) {
+			return isset($this->logic->result[$key]);
+		}
+
+		return false;
 	}
 
 	/**
-	 * Undocumented function
+	 * ロジック結果の指定キー項目が指定値に一致するか。
 	 *
-	 * @param LogicBase $logic
 	 * @param string $key
 	 * @param mixed $value
 	 * @return boolean
 	 */
-	public function hasResult(LogicBase $logic, string $key, $value): bool
+	public function equalsResult(string $key, $value): bool
 	{
-		if ($this->existsResult($logic, $key)) {
-			return $logic->result[$key] === $value;
+		if ($this->existsResult($key)) {
+			return $this->logic->result[$key] === $value;
 		}
 
 		return false;

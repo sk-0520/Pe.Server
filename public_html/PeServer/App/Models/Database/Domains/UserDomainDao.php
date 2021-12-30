@@ -43,7 +43,7 @@ class UserDomainDao extends DaoBase
 						user_authentications.user_id = users.user_id
 					)
 			where
-				users.login_id = :account_login_login_id
+				users.login_id = :login_id
 				and
 				(
 					users.state = 'enabled'
@@ -51,7 +51,43 @@ class UserDomainDao extends DaoBase
 
 			SQL,
 			[
-				'account_login_login_id' => $loginId,
+				'login_id' => $loginId,
+			]
+		);
+	}
+
+	/**
+	 * Undocumented function
+	 *
+	 * @param string $userId
+	 * @return array{email:string,wait_email:string,token_timestamp:string}
+	 */
+	public function selectEmailAndWaitTokenTimestamp(string $userId, int $limitMinutes): array
+	{
+		return $this->database->queryFirst(
+			<<<SQL
+
+			select
+				users.email,
+				IFNULL(user_change_wait_emails.email, '') as wait_email,
+				IFNULL(user_change_wait_emails.timestamp, '') as token_timestamp
+			from
+				users
+				left join
+					user_change_wait_emails
+					on
+					(
+						user_change_wait_emails.user_id = users.user_id
+						and
+						(STRFTIME('%s', CURRENT_TIMESTAMP) - STRFTIME('%s', user_change_wait_emails.timestamp)) * 60 < :limit_minutes
+					)
+			where
+				users.user_id = :user_id
+
+			SQL,
+			[
+				'user_id' => $userId,
+				'limit_minutes' => $limitMinutes,
 			]
 		);
 	}

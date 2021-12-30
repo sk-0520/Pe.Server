@@ -23,11 +23,6 @@ class AccountUserLogic extends PageLogicBase
 		parent::__construct($parameter);
 	}
 
-	protected function registerKeysImpl(LogicCallMode $callMode): void
-	{
-		//NONE
-	}
-
 	protected function validateImpl(LogicCallMode $callMode): void
 	{
 		//NONE

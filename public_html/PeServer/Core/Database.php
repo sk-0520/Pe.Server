@@ -142,7 +142,8 @@ class Database
 	 *
 	 * @param callable $callback 実際の処理。戻り値が真の場合にコミット、偽ならロールバック。
 	 * @param mixed ...$arguments 引数
-	 * @return bool コミットされたか
+	 * @return bool コミットされたか。正常系としてのコミット・ロールバック処理の戻りであり、異常系は例外が投げられる。
+	 * @throws SqlException
 	 */
 	public function transaction(callable $callback, ...$arguments): bool
 	{
@@ -159,7 +160,9 @@ class Database
 		} catch (\Exception $ex) {
 			$this->logger->error($ex);
 			$this->rollback();
+			throw new SqlException($ex->getMessage(), $ex->getCode()(), $ex);
 		}
+
 		return false;
 	}
 

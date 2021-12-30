@@ -14,6 +14,7 @@ use \PeServer\App\Models\Domains\Page\Account\AccountLogoutLogic;
 use \PeServer\App\Models\Domains\Page\Account\AccountUserLogic;
 use \PeServer\App\Models\Domains\Page\Account\AccountUserEditLogic;
 use \PeServer\App\Models\Domains\Page\Account\AccountUserPasswordLogic;
+use \PeServer\App\Models\Domains\Page\Account\AccountUserEmailLogic;
 use \PeServer\App\Models\SessionManager;
 use \PeServer\App\Models\UserLevel;
 use \PeServer\Core\Mvc\IActionResult;
@@ -116,5 +117,25 @@ final class AccountController extends PageControllerBase
 		}
 
 		return $this->view('user_password', $logic->getViewData());
+	}
+
+	public function user_email_get(ActionRequest $request): IActionResult
+	{
+		$logic = $this->createLogic(AccountUserEmailLogic::class, $request);
+		$logic->run(LogicCallMode::initialize());
+
+		return $this->view('user_email', $logic->getViewData());
+	}
+
+	public function user_email_post(ActionRequest $request): IActionResult
+	{
+		$logic = $this->createLogic(AccountUserEmailLogic::class, $request);
+		if ($logic->run(LogicCallMode::submit())) {
+			if ($this->equalsResult('confirm', true)) {
+				return $this->view('user_email', $logic->getViewData());
+			}
+		}
+
+		return $this->view('user_email', $logic->getViewData());
 	}
 }

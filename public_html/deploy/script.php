@@ -200,13 +200,14 @@ create table
 		[user_id] text not null, -- ユーザーID
 		[token] text not null, -- トークン
 		[timestamp] text not null, -- トークン発行日時(UTC)
-		primary key([user_id], [token]),
+		[email] text not null, -- 変更後メールアドレス
+		primary key([user_id]),
 		foreign key ([user_id]) references users([user_id])
 	)
 ;
 
 create table
-	[signup_wait_emails] -- 新規登録時のユーザーメールアドレス待機
+	[sign_up_wait_emails] -- 新規登録時のユーザーメールアドレス待機
 	(
 		[email] text not null, -- メールアドレス
 		[token] text not null, -- トークン

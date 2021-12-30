@@ -22,6 +22,10 @@
 			"name": "pe"
 		}
 	},
+	"confirm": {
+		"user_change_wait_email_minutes": 10,
+		"sign_up_wait_email_minutes": 10
+	},
 	"mail": {
 		"mode": "smtp",
 		"smtp": {
@@ -76,6 +80,12 @@
 			},
 			"password-confirm": {
 				"*": "確認用パスワードが一致しません"
+			},
+			"unknown-email-mode": {
+				"*": "要求データが不明です"
+			},
+			"email-confirm-token-not-found": {
+				"*": "対象トークンが見つからないか有効期限を超えています"
 			}
 		}
 	}

@@ -109,6 +109,25 @@ class UsersEntityDao extends DaoBase
 		);
 	}
 
+	public function selectEmail(string $userId): string
+	{
+		return $this->database->queryFirst(
+			<<<SQL
+
+			select
+				users.email
+			from
+				users
+			where
+				users.user_id = :user_id
+
+			SQL,
+			[
+				'user_id' => $userId
+			]
+		)['email'];
+	}
+
 	public function insertUser(string $userId, string $loginId, string $level, string $state, string $userName, string $email, string $website, string $note): void
 	{
 		$this->database->insertSingle(
