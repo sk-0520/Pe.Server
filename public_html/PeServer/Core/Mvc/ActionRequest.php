@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc;
 
-use \LogicException;
+use PeServer\Core\Throws\KeyNotFoundException;
 
 /**
  * アクションに対するリクエストデータ。
@@ -75,7 +75,7 @@ class ActionRequest
 	 *
 	 * @param string $key
 	 * @return string
-	 * @throws LogicException キーに対する値が存在しない。
+	 * @throws KeyNotFoundException キーに対する値が存在しない。
 	 */
 	public function getValue(string $key): string
 	{
@@ -91,7 +91,7 @@ class ActionRequest
 			return $_POST[$key];
 		}
 
-		throw new LogicException("parameter not found: $key");
+		throw new KeyNotFoundException("parameter not found: $key");
 	}
 
 	// public function gets($key): array

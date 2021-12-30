@@ -24,7 +24,7 @@ class ActionOption
 	/**
 	 * フィルタリング処理
 	 *
-	 * @var null|(callable(FilterArgument $argument):(HttpStatus|array{status:HttpStatus}))
+	 * @var IActionFilter|null
 	 */
 	public $filter;
 }

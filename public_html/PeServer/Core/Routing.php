@@ -77,22 +77,21 @@ class Routing
 		$splitNames = explode('/', $rawControllerName);
 		$controllerName = $splitNames[count($splitNames) - 1];
 
+		$request = new ActionRequest($urlParameters);
+
 		foreach ($options as $option) {
 			if (!is_null($option->filter)) {
-				$filterLogger = Logging::create('filter');
-				$filter = $option->filter;
-				$filterArgument = new FilterArgument($this->cookie, $this->session, $filterLogger);
-				$filterResult = $filter($filterArgument);
-				$httpStatus = is_array($filterResult) ? $filterResult['status']: $filterResult;
-				if (400 <= $httpStatus->code()) {
-					throw new Exception('TODO: ' . $httpStatus->code());
+				$filterLogger = Logging::create('filtering');
+				$filterArgument = new FilterArgument($this->cookie, $this->session, $request, $filterLogger);
+				$filterResult = $option->filter->filtering($filterArgument);
+				if (400 <= $filterResult->status->code()) {
+					throw new Exception('TODO: ' . $filterResult->status->code());
 				}
 			}
 		}
 
 		$logger = Logging::create($controllerName);
 		$controllerArgument = new ControllerArgument($this->cookie, $this->session, $logger);
-		$request = new ActionRequest($urlParameters);
 
 		/** @var ControllerBase */
 		$controller = new $controllerName($controllerArgument);

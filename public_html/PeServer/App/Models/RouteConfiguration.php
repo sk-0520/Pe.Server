@@ -4,17 +4,21 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models;
 
-use \PeServer\Core\ActionOption;
+use \PeServer\Core\Csrf;
 use \PeServer\Core\Route;
-use \PeServer\Core\FilterArgument;
 use \PeServer\Core\HttpMethod;
-use \PeServer\App\Controllers\Page\HomeController;
-use \PeServer\App\Controllers\Page\SettingController;
-use \PeServer\App\Controllers\Page\AccountController;
-use \PeServer\App\Controllers\Page\ErrorController;
-use \PeServer\App\Controllers\Api\DevelopmentController;
 use \PeServer\Core\HttpStatus;
+use \PeServer\Core\FilterResult;
+use \PeServer\Core\ActionOption;
+use \PeServer\Core\IActionFilter;
+use \PeServer\Core\FilterArgument;
+use \PeServer\Core\Mvc\ActionResult;
 use \PeServer\Core\Store\SessionStore;
+use \PeServer\App\Controllers\Page\HomeController;
+use \PeServer\App\Controllers\Page\ErrorController;
+use \PeServer\App\Controllers\Page\AccountController;
+use \PeServer\App\Controllers\Page\SettingController;
+use \PeServer\App\Controllers\Api\DevelopmentController;
 
 /**
  * ルーティング情報設定。
@@ -28,21 +32,21 @@ abstract class RouteConfiguration
 	 *
 	 * @param FilterArgument $argument
 	 * @param string[] $levels
-	 * @return HttpStatus
+	 * @return FilterResult
 	 */
-	private static function filterPageAccount(FilterArgument $argument, array $levels): HttpStatus
+	protected static function filterPageAccount(FilterArgument $argument, array $levels): FilterResult
 	{
 		if (!$argument->session->tryGet(SessionManager::ACCOUNT, $account)) {
-			return HttpStatus::forbidden();
+			return new FilterResult(HttpStatus::forbidden());
 		}
 
 		foreach ($levels as $level) {
 			if ($account['level'] === $level) {
-				return HttpStatus::doExecute();
+				return new FilterResult(HttpStatus::doExecute());
 			}
 		}
 
-		return HttpStatus::forbidden();
+		return new FilterResult(HttpStatus::forbidden());
 	}
 
 	private static ?ActionOption $user = null;
@@ -52,13 +56,17 @@ abstract class RouteConfiguration
 			return self::$user;
 		}
 
-		$options = new ActionOption();
-		$options->errorControllerName = ErrorController::class;
-		$options->filter = function (FilterArgument $argument) {
-			return self::filterPageAccount($argument, [UserLevel::USER, UserLevel::ADMINISTRATOR]);
+		$option = new ActionOption();
+		$option->errorControllerName = ErrorController::class;
+		$option->filter = new class extends RouteConfiguration implements IActionFilter
+		{
+			public function filtering(FilterArgument $argument): FilterResult
+			{
+				return self::filterPageAccount($argument, [UserLevel::USER, UserLevel::ADMINISTRATOR]);
+			}
 		};
 
-		return self::$user = $options;
+		return self::$user = $option;
 	}
 
 	private static ?ActionOption $setup = null;
@@ -68,13 +76,17 @@ abstract class RouteConfiguration
 			return self::$setup;
 		}
 
-		$options = new ActionOption();
-		$options->errorControllerName = ErrorController::class;
-		$options->filter = function (FilterArgument $argument) {
-			return self::filterPageAccount($argument, [UserLevel::SETUP]);
+		$option = new ActionOption();
+		$option->errorControllerName = ErrorController::class;
+		$option->filter = new class extends RouteConfiguration implements IActionFilter
+		{
+			public function filtering(FilterArgument $argument): FilterResult
+			{
+				return self::filterPageAccount($argument, [UserLevel::SETUP]);
+			}
 		};
 
-		return self::$setup = $options;
+		return self::$setup = $option;
 	}
 
 	private static ?ActionOption $admin = null;
@@ -84,13 +96,17 @@ abstract class RouteConfiguration
 			return self::$admin;
 		}
 
-		$options = new ActionOption();
-		$options->errorControllerName = ErrorController::class;
-		$options->filter = function (FilterArgument $argument) {
-			return self::filterPageAccount($argument, [UserLevel::ADMINISTRATOR]);
+		$option = new ActionOption();
+		$option->errorControllerName = ErrorController::class;
+		$option->filter  = new class extends RouteConfiguration implements IActionFilter
+		{
+			public function filtering(FilterArgument $argument): FilterResult
+			{
+				return self::filterPageAccount($argument, [UserLevel::ADMINISTRATOR]);
+			}
 		};
 
-		return self::$admin = $options;
+		return self::$admin = $option;
 	}
 
 	private static ?ActionOption $development = null;
@@ -100,18 +116,22 @@ abstract class RouteConfiguration
 			return self::$development;
 		}
 
-		$options = new ActionOption();
-		$options->errorControllerName = ErrorController::class;
-		$options->filter = function (FilterArgument $argument) {
-			if (AppConfiguration::isProductionEnvironment()) {
-				$argument->logger->warn('本番環境での実行は抑制');
-				return HttpStatus::forbidden();
-			}
+		$option = new ActionOption();
+		$option->errorControllerName = ErrorController::class;
+		$option->filter = new class extends RouteConfiguration implements IActionFilter
+		{
+			public function filtering(FilterArgument $argument): FilterResult
+			{
+				if (AppConfiguration::isProductionEnvironment()) {
+					$argument->logger->warn('本番環境での実行は抑制');
+					return new FilterResult(HttpStatus::forbidden());
+				}
 
-			return HttpStatus::doExecute();
+				return new FilterResult(HttpStatus::doExecute());
+			}
 		};
 
-		return self::$development = $options;
+		return self::$development = $option;
 	}
 
 
@@ -134,9 +154,9 @@ abstract class RouteConfiguration
 				->addAction('logout', HttpMethod::get())
 				->addAction('user', HttpMethod::get(), self::DEFAULT_METHOD, [self::user()])
 				->addAction('user/edit', HttpMethod::get(), 'user_edit_get', [self::user()])
-				->addAction('user/edit', HttpMethod::post(), 'user_edit_post', [self::user()])
+				->addAction('user/edit', HttpMethod::post(), 'user_edit_post', [self::user(), Csrf::csrf()])
 				->addAction('user/password', HttpMethod::get(), 'user_password_get', [self::user()])
-				->addAction('user/password', HttpMethod::post(), 'user_password_post', [self::user()])
+				->addAction('user/password', HttpMethod::post(), 'user_password_post', [self::user(), Csrf::csrf()])
 			/* AUTO-FORMAT */,
 			(new Route('setting', SettingController::class, [self::admin()]))
 				->addAction('setup', HttpMethod::get(), 'setup_get', [self::setup()])
