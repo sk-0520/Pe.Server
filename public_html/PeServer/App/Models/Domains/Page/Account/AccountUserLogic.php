@@ -37,7 +37,7 @@ class AccountUserLogic extends PageLogicBase
 	{
 		$userInfo = $this->userInfo();
 
-		$database = Database::open();
+		$database = $this->openDatabase();
 
 		$usersEntityDao = new UsersEntityDao($database);
 

@@ -31,6 +31,16 @@ abstract class DomainLogicBase extends LogicBase
 	protected abstract function getUserInfo(): array|null;
 
 	/**
+	 * データベース接続処理。
+	 *
+	 * @return Database
+	 */
+	protected function openDatabase(): Database
+	{
+		return Database::open();
+	}
+
+	/**
 	 * ユーザー情報の取得。
 	 *
 	 * @return array{user_id:string}
@@ -61,7 +71,7 @@ abstract class DomainLogicBase extends LogicBase
 			}
 		}
 
-		$db = $database ?? Database::open();
+		$db = $database ?? $this->openDatabase();
 		$userAuditLogsEntityDao = new UserAuditLogsEntityDao($db);
 		$userAuditLogsEntityDao->insertLog($userId, $event, $dumpInfo, $ipAddress, $userAgent);
 	}

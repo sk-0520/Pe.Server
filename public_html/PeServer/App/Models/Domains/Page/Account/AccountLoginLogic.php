@@ -56,7 +56,7 @@ class AccountLoginLogic extends PageLogicBase
 			return;
 		}
 
-		$database = Database::open();
+		$database = $this->openDatabase();
 
 		$usersEntityDao = new UsersEntityDao($database);
 		$userDomainDao = new UserDomainDao($database);

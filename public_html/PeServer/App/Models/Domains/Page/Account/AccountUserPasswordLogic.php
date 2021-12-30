@@ -42,7 +42,7 @@ class AccountUserPasswordLogic extends PageLogicBase
 		$this->validation('account_password_current', function (string $key, string $value) {
 			$this->validator->isNotWhiteSpace($key, $value);
 
-			$database = Database::open();
+			$database = $this->openDatabase();
 			$userAuthenticationsEntityDao = new UserAuthenticationsEntityDao($database);
 			$passwords = $userAuthenticationsEntityDao->selectPasswords($this->userInfo()['user_id']);
 
@@ -85,7 +85,7 @@ class AccountUserPasswordLogic extends PageLogicBase
 			'password' => password_hash($newPassword, PASSWORD_DEFAULT),
 		];
 
-		$database = Database::open();
+		$database = $this->openDatabase();
 
 		$database->transaction(function ($database, $params) {
 			$userAuthenticationsEntityDao = new UserAuthenticationsEntityDao($database);

@@ -95,7 +95,7 @@ class SettingSetupLogic extends PageLogicBase
 		];
 
 
-		$database = Database::open();
+		$database = $this->openDatabase();
 
 		$result = $database->transaction(function ($database, $currentUserInfo, $params, $userInfo) {
 			$accountValidator = new AccountValidator($this, $this->validator);

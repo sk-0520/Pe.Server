@@ -49,7 +49,7 @@ class DevelopmentAdministratorLogic extends ApiLogicBase
 			'website' => 'http://localhost',
 		];
 
-		$database = Database::open();
+		$database = $this->openDatabase();
 
 		$result = $database->transaction(function (Database $database, $params) {
 			$usersEntityDao = new UsersEntityDao($database);

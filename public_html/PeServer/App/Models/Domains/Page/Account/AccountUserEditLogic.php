@@ -60,7 +60,7 @@ class AccountUserEditLogic extends PageLogicBase
 	{
 		$userInfo = $this->userInfo();
 
-		$database = Database::open();
+		$database = $this->openDatabase();
 		$usersEntityDao = new UsersEntityDao($database);
 
 		$userEditData = $usersEntityDao->selectUserEditData($userInfo['user_id']);
@@ -85,7 +85,7 @@ class AccountUserEditLogic extends PageLogicBase
 			'website' => $this->getRequest('account_edit_website'),
 		];
 
-		$database = Database::open();
+		$database = $this->openDatabase();
 
 		$result = $database->transaction(function ($database, $params) {
 			$usersEntityDao = new UsersEntityDao($database);
