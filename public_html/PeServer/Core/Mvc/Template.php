@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc;
 
-// require_once('PeServer/Libs/smarty/libs/Smarty.class.php');
+require_once(__DIR__ . '/../../Libs/smarty/libs/Smarty.class.php');
 
 use \Exception;
 use \DOMDocument;

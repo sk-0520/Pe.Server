@@ -4,25 +4,23 @@ declare(strict_types=1);
 
 namespace PeServerTest;
 
-set_include_path(__DIR__ . ':' .  __DIR__ . '/../public_html');
+//set_include_path(__DIR__ . ':' .  __DIR__ . '/../public_html');
 
 require_once(__DIR__ . '/phpunit.phar');
 require_once(__DIR__ . '/../public_html/PeServer/Core/AutoLoader.php');
-require_once(__DIR__ . '/../public_html/PeServer/Libs/smarty/libs/Smarty.class.php');
 
 use \PeServer\App\Models\Initializer;
 
 \PeServer\Core\AutoLoader::initialize(
 	[
 		__DIR__,
-		__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'public_html',
+		__DIR__ . '/../public_html',
 	],
 	'/^PeServer/'
 );
-
 Initializer::initialize(
-	__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'public_html',
-	__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'public_html' . DIRECTORY_SEPARATOR . 'PeServer',
+	__DIR__ . '/../public_html',
+	__DIR__ . '/../public_html/PeServer',
 	'test',
 	':REVISION:'
 );
