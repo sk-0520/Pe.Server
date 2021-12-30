@@ -42,26 +42,22 @@ class Route
 	/**
 	 * Undocumented function
 	 *
-	 * @param ActionOption|ActionOption[]|null $options ベースとなるオプション設定。null/0件の場合は ActionOption::none() が使用される。
+	 * @param ActionOption[]|null $options ベースとなるオプション設定。null/0件の場合は ActionOption::none() が使用される。
 	 * @param ActionOption[] $zero
 	 * @param ActionOption[] $null
 	 * @return ActionOption[]
 	 */
-	private static function toActions(ActionOption|array|null $options, array $zero, array $null): array
+	private static function toActions(?array $options, array $zero, array $null): array
 	{
 		if (is_null($options)) {
 			return [ActionOption::none()];
 		}
 
-		if (is_array($options)) {
-			if (ArrayUtility::getCount($options)) {
-				return $options;
-			} else {
-				return $zero;
-			}
+		if (ArrayUtility::getCount($options)) {
+			return $options;
 		}
 
-		return [$options];
+		return $zero;
 	}
 
 	/**
@@ -69,9 +65,9 @@ class Route
 	 *
 	 * @param string $path URLとしてのパス。先頭が api 以外の場合に index アクションが自動登録される
 	 * @param string $className 使用されるクラス完全名
-	 * @param ActionOption|ActionOption[]|null $options ベースとなるオプション設定。null/0件の場合は ActionOption::none() が使用される。
+	 * @param ActionOption[]|null $options ベースとなるオプション設定。null/0件の場合は ActionOption::none() が使用される。
 	 */
-	public function __construct(string $path, string $className, ActionOption|array|null $options = null)
+	public function __construct(string $path, string $className, ?array $options = null)
 	{
 		// if(str_starts_with($path, '/')) {
 		// 	die();
@@ -104,10 +100,10 @@ class Route
 	 * @param string $actionName URLとして使用されるパス, パス先頭が : でURLパラメータとなり、パラメータ名の @ 以降は一致正規表現となる。
 	 * @param HttpMethod $httpMethod 使用するHTTPメソッド。
 	 * @param string|null $methodName 呼び出されるコントローラメソッド。未指定なら $actionName が使用される。
-	 * @param ActionOption|ActionOption[]|null $options オプション設定。nullの場合はコンストラクタで渡されたオプションが使用される。0件の場合は ActionOption::none() が使用される。
+	 * @param ActionOption[]|null $options オプション設定。nullの場合はコンストラクタで渡されたオプションが使用される。0件の場合は ActionOption::none() が使用される。
 	 * @return Route
 	 */
-	public function addAction(string $actionName, HttpMethod $httpMethod, ?string $methodName = null, ActionOption|array|null $options = null): Route
+	public function addAction(string $actionName, HttpMethod $httpMethod, ?string $methodName = null, array|null $options = null): Route
 	{
 		if (!isset($this->actions[$actionName])) {
 			$this->actions[$actionName] = new Action();
