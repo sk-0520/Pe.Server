@@ -42,5 +42,16 @@
 		"intelephense.files.exclude": [
 			"**/php-deploy-receiver.php"
 		]
+	},
+	"extensions": {
+		"recommendations": [
+			"bmewburn.vscode-intelephense-client",
+			"neilbrayfield.php-docblocker",
+			"felixfbecker.php-debug",
+			"editorconfig.editorconfig",
+			"mehedidracula.php-namespace-resolver",
+			"sibiraj-s.vscode-scss-formatter",
+			"imperez.smarty"
+		]
 	}
 }
