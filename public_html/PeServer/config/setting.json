@@ -3,7 +3,7 @@
 		"driver": "sqlite3",
 		"connection": "<|BASE|>/data/data.sqlite3",
 		"user": "",
-		"passwd": ""
+		"password": ""
 	},
 	"logging": {
 		"level": 3,

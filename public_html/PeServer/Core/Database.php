@@ -12,45 +12,87 @@ use \PeServer\Core\Throws\SqlException;
 /**
  * DB接続処理。
  */
-abstract class Database
+class Database
 {
 	/**
-	 * 初期化チェック
-	 *
-	 * @var InitializeChecker|null
+	 * 接続処理。
 	 */
-	protected static $initializeChecker;
+	private PDO $pdo;
 
-	/**
-	 * DB接続設定
-	 *
-	 * @var array<string,mixed>
-	 */
-	private static $databaseConfiguration;
+	private ILogger $logger;
+
 
 	/**
 	 * Undocumented function
 	 *
-	 * @param array<string,mixed> $databaseConfiguration
-	 * @return void
+	 * @param string $driver 接続先
+	 * @param string $connection
+	 * @param string $user
+	 * @param string $password
+	 * @param array<mixed>|null $option
+	 * @param ILogger $logger
 	 */
-	public static function initialize(array $databaseConfiguration): void
+	public function __construct(string $driver, string $connection, string $user, string $password, ?array $option, ILogger $logger)
 	{
-		if (is_null(self::$initializeChecker)) {
-			self::$initializeChecker = new InitializeChecker();
-		}
-		self::$initializeChecker->initialize();
+		$this->logger = $logger;
 
-		self::$databaseConfiguration = $databaseConfiguration;
+		$target = match ($driver) {
+			'sqlite3' => 'sqlite',
+			default => $driver,
+		};
+
+		$dsn = $target . ':' . $connection;
+		$this->pdo = new PDO($dsn, $user, $password, $option);
+		$this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 	}
 
-	public static function open(): Database
+	/**
+	 * 直近のエラーメッセージを取得。
+	 *
+	 * @return string
+	 */
+	private function getErrorMessage(): string
 	{
-		self::$initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
+		return StringUtility::dump($this->pdo->errorInfo());
+	}
 
-		$logger = Logging::create('database');
 
-		return new _Database_Impl(self::$databaseConfiguration, $logger);
+	/**
+	 * バインド実行。
+	 *
+	 * @param PDOStatement $statement
+	 * @param array<string|int,string|int> $parameters
+	 * @return void
+	 */
+	private function setParameters(PDOStatement $statement, array $parameters): void
+	{
+		if (ArrayUtility::getCount($parameters)) {
+			foreach ($parameters as $key => $value) {
+				$statement->bindValue($key, $value);
+			}
+		}
+	}
+
+	/**
+	 * 文を実行。
+	 *
+	 * @param string $statement
+	 * @param array<string|int,string|int> $parameters
+	 * @return PDOStatement
+	 * @throws SqlException 実行失敗。
+	 */
+	private function executeStatement(string $statement, array $parameters): PDOStatement
+	{
+		$query = $this->pdo->prepare($statement);
+
+		$this->setParameters($query, $parameters);
+
+		if (!$query->execute()) {
+			throw new SqlException($this->getErrorMessage());
+		}
+
+		return $query;
 	}
 
 	/**
@@ -60,7 +102,13 @@ abstract class Database
 	 * @throws \PDOException
 	 * @throws SqlException
 	 */
-	public abstract function beginTransaction(): void;
+	public function beginTransaction(): void
+	{
+		if (!$this->pdo->beginTransaction()) {
+			throw new SqlException($this->getErrorMessage()); // これが投げられず PDOException が投げられると思う
+		}
+	}
+
 	/**
 	 * トランザクションの確定。
 	 *
@@ -68,7 +116,13 @@ abstract class Database
 	 * @throws \PDOException
 	 * @throws SqlException
 	 */
-	public abstract function commit(): void;
+	public function commit(): void
+	{
+		if (!$this->pdo->commit()) {
+			throw new SqlException($this->getErrorMessage());
+		}
+	}
+
 	/**
 	 * トランザクションの取消。
 	 *
@@ -76,7 +130,12 @@ abstract class Database
 	 * @throws \PDOException
 	 * @throws SqlException
 	 */
-	public abstract function rollback(): void;
+	public function rollback(): void
+	{
+		if (!$this->pdo->rollback()) {
+			throw new SqlException($this->getErrorMessage());
+		}
+	}
 
 	/**
 	 * トランザクションラップ処理。
@@ -85,7 +144,24 @@ abstract class Database
 	 * @param mixed ...$arguments 引数
 	 * @return bool コミットされたか
 	 */
-	public abstract function transaction(callable $callback, ...$arguments): bool;
+	public function transaction(callable $callback, ...$arguments): bool
+	{
+		try {
+			$this->beginTransaction();
+
+			$result = $callback($this, ...$arguments);
+			if ($result) {
+				$this->commit();
+				return true;
+			} else {
+				$this->rollback();
+			}
+		} catch (\Exception $ex) {
+			$this->logger->error($ex);
+			$this->rollback();
+		}
+		return false;
+	}
 
 	/**
 	 * Undocumented function
@@ -94,7 +170,17 @@ abstract class Database
 	 * @param array<string|int,string|int> $parameters
 	 * @return mixed[]
 	 */
-	public abstract function query(string $statement, array $parameters = array()): array;
+	public function query(string $statement, array $parameters = array()): array
+	{
+		$query = $this->executeStatement($statement, $parameters);
+
+		$result = $query->fetchAll();
+		if ($result === false) {
+			throw new SqlException($this->getErrorMessage());
+		}
+
+		return $result;
+	}
 
 	/**
 	 * Undocumented function
@@ -103,7 +189,18 @@ abstract class Database
 	 * @param array<string|int,string|int> $parameters
 	 * @return array<string,mixed>
 	 */
-	public abstract function queryFirst(string $statement, array $parameters = array()): array;
+	public function queryFirst(string $statement, array $parameters = array()): array
+	{
+		$query = $this->executeStatement($statement, $parameters);
+
+		$result = $query->fetch();
+		if ($result === false) {
+			throw new SqlException($this->getErrorMessage());
+		}
+
+		return $result;
+	}
+
 	/**
 	 * Undocumented function
 	 *
@@ -112,7 +209,17 @@ abstract class Database
 	 * @param array<string|int,string|int> $parameters
 	 * @return array<string,mixed>|mixed
 	 */
-	public abstract function queryFirstOrDefault($defaultValue, string $statement, array $parameters = array());
+	public function queryFirstOrDefault($defaultValue, string $statement, array $parameters = array())
+	{
+		$query = $this->executeStatement($statement, $parameters);
+
+		$result = $query->fetch();
+		if ($result === false) {
+			return $defaultValue;
+		}
+
+		return $result;
+	}
 
 	/**
 	 * Undocumented function
@@ -121,7 +228,12 @@ abstract class Database
 	 * @param array<string|int,string|int> $parameters
 	 * @return integer
 	 */
-	public abstract function execute(string $statement, array $parameters = array()): int;
+	public function execute(string $statement, array $parameters = array()): int
+	{
+		$query = $this->executeStatement($statement, $parameters);
+
+		return $query->rowCount();
+	}
 
 	/**
 	 * 並ぶ順問い合わせ文を強制。
@@ -324,173 +436,5 @@ abstract class Database
 		}
 
 		return $result === 1;
-	}
-}
-
-/**
- * Database内部実装。
- */
-class _Database_Impl extends Database
-{
-	/**
-	 * 接続処理。
-	 */
-	private PDO $pdo;
-
-	private ILogger $logger;
-
-	/**
-	 * 生成。
-	 *
-	 * @param array<string,string|mixed> $databaseConfiguration
-	 */
-	public function __construct(array $databaseConfiguration, ILogger $logger)
-	{
-		Database::$initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
-		$this->logger = $logger;
-
-		$dsn = 'sqlite:' . $databaseConfiguration['connection'];
-		$this->pdo = new PDO($dsn);
-		$this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-	}
-
-	/**
-	 * 直近のエラメッセージを取得。
-	 *
-	 * @return string
-	 */
-	private function getErrorMessage(): string
-	{
-		return StringUtility::dump($this->pdo->errorInfo());
-	}
-
-	public function beginTransaction(): void
-	{
-		if (!$this->pdo->beginTransaction()) {
-			throw new SqlException($this->getErrorMessage()); // これが投げられず PDOException が投げられると思う
-		}
-	}
-
-	public function commit(): void
-	{
-		if (!$this->pdo->commit()) {
-			throw new SqlException($this->getErrorMessage());
-		}
-	}
-
-	public function rollback(): void
-	{
-		if (!$this->pdo->rollback()) {
-			throw new SqlException($this->getErrorMessage());
-		}
-	}
-
-	public function transaction(callable $callback, ...$arguments): bool
-	{
-		try {
-			$this->beginTransaction();
-
-			$result = $callback($this, ...$arguments);
-			if ($result) {
-				$this->commit();
-				return true;
-			} else {
-				$this->rollback();
-			}
-		} catch (\Exception $ex) {
-			$this->logger->error($ex);
-			$this->rollback();
-		}
-		return false;
-	}
-
-	/**
-	 * バインド実行。
-	 *
-	 * @param PDOStatement $statement
-	 * @param array<string|int,string|int> $parameters
-	 * @return void
-	 */
-	private function setParameters(PDOStatement $statement, array $parameters): void
-	{
-		if (ArrayUtility::getCount($parameters)) {
-			foreach ($parameters as $key => $value) {
-				$statement->bindValue($key, $value);
-			}
-		}
-	}
-
-	/**
-	 * 文を実行。
-	 *
-	 * @param string $statement
-	 * @param array<string|int,string|int> $parameters
-	 * @return PDOStatement
-	 * @throws SqlException 実行失敗。
-	 */
-	private function executeStatement(string $statement, array $parameters): PDOStatement
-	{
-		$query = $this->pdo->prepare($statement);
-
-		$this->setParameters($query, $parameters);
-
-		if (!$query->execute()) {
-			throw new SqlException($this->getErrorMessage());
-		}
-
-		return $query;
-	}
-
-
-	public function query(string $statement, array $parameters = array()): array
-	{
-		Database::$initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
-
-		$query = $this->executeStatement($statement, $parameters);
-
-		$result = $query->fetchAll();
-		if ($result === false) {
-			throw new SqlException($this->getErrorMessage());
-		}
-
-		return $result;
-	}
-
-	public function queryFirst(string $statement, array $parameters = array()): array
-	{
-		Database::$initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
-
-		$query = $this->executeStatement($statement, $parameters);
-
-		$result = $query->fetch();
-		if ($result === false) {
-			throw new SqlException($this->getErrorMessage());
-		}
-
-		return $result;
-	}
-
-	public function queryFirstOrDefault($defaultValue, string $statement, array $parameters = array())
-	{
-		Database::$initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
-
-		$query = $this->executeStatement($statement, $parameters);
-
-		$result = $query->fetch();
-		if ($result === false) {
-			return $defaultValue;
-		}
-
-		return $result;
-	}
-
-	public function execute(string $statement, array $parameters = array()): int
-	{
-		Database::$initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
-
-		$query = $this->executeStatement($statement, $parameters);
-
-		return $query->rowCount();
 	}
 }

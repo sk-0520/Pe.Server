@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domains;
 
+use PeServer\App\Models\AppConfiguration;
 use \PeServer\Core\Database;
 use \Prophecy\Util\StringUtil;
 use \PeServer\Core\ArrayUtility;
@@ -37,7 +38,16 @@ abstract class DomainLogicBase extends LogicBase
 	 */
 	protected function openDatabase(): Database
 	{
-		return Database::open();
+		$persistence = AppConfiguration::$json['persistence'];
+
+		return new Database(
+			$persistence['driver'],
+			$persistence['connection'],
+			$persistence['user'],
+			$persistence['password'],
+			[],
+			$this->logger //Logging::create('database')
+		);
 	}
 
 	/**

@@ -114,11 +114,9 @@ abstract class AppConfiguration
 		$json = self::load($rootDirectoryPath, $baseDirectoryPath, $environment);
 
 		Logging::initialize($json['logging']);
-		Database::initialize($json['persistence']);
 
 		Template::initialize($rootDirectoryPath, $baseDirectoryPath, 'App/Views', 'data/temp/views', $environment, $revision);
 		I18n::initialize($json['i18n']);
-
 
 		self::$environment = $environment;
 		self::$json = $json;
