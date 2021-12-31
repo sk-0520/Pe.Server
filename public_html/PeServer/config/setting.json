@@ -28,12 +28,12 @@
 			"sign_up_wait_email_minutes": 10
 		},
 		"address": {
-			"default_domain": "@localhost",
+			"default_domain": "@localhost.localdomain",
 			"from_email": {
 				"name": "from",
-				"address": "from@localhost"
+				"address": "from@localhost.localdomain"
 			},
-			"return_email": "return@localhost"
+			"return_email": "return@localhost.localdomain"
 		}
 	},
 	"mail": {
@@ -43,14 +43,14 @@
 			"port": 25,
 			"secure": "none/ssl/tls",
 			"authentication": true,
-			"user_name": "mail@localhost",
+			"user_name": "mail@localhost.localdomain",
 			"password": ""
 		}
 	},
 	"i18n": {
 		"@core": {
 			"common": {
-				"error-title": {
+				"error_title": {
 					"*": "エラーがあります"
 				}
 			},
@@ -95,12 +95,18 @@
 				"*": "要求データが不明です"
 			},
 			"email_confirm_token_not_found": {
-				"*": "対象トークンが見つからないか有効期限を超えています"
+				"*": "対象トークンが無効か有効期限を超えています"
 			}
 		},
 		"subject": {
-			"email_change_token":{
+			"email_change_token": {
 				"*": "[PeServer] メールアドレス変更用トークン発行"
+			},
+			"email_change_new": {
+				"*": "[PeServer] メールアドレス変更通知(新)"
+			},
+			"email_change_old": {
+				"*": "[PeServer] メールアドレス変更通知(旧)"
 			}
 		}
 	}

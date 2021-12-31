@@ -92,4 +92,33 @@ class UserDomainDao extends DaoBase
 			]
 		);
 	}
+
+	public function updateEmailFromWaitEmail(string $userId, string $token, int $limitMinutes): bool
+	{
+		return $this->database->updateByKeyOrNothing(
+			<<<SQL
+
+			update
+				users
+			set
+				email = user_change_wait_emails.email
+			from
+				user_change_wait_emails
+			where
+				users.user_id = :user_id
+				and
+				user_change_wait_emails.user_id = users.user_id
+				and
+				user_change_wait_emails.token = :token
+				and
+				(STRFTIME('%s', CURRENT_TIMESTAMP) - STRFTIME('%s', user_change_wait_emails.timestamp)) < :limit_minutes * 60
+
+			SQL,
+			[
+				'user_id' => $userId,
+				'token' => $token,
+				'limit_minutes' => $limitMinutes,
+			]
+		);
+	}
 }

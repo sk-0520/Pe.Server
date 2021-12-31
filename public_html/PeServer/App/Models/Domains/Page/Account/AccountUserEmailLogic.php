@@ -136,8 +136,7 @@ class AccountUserEmailLogic extends PageLogicBase
 		}, $params);
 
 		// トークン通知メール送信
-		//Template::initialize($rootDirectoryPath, $baseDirectoryPath, 'App/Views', 'data/temp/views', $environment, $revision);
-		$template = Template::create('template');
+		$template = Template::create('template/email');
 		$html = $template->build('change-email-token.tpl', new TemplateParameter(HttpStatus::ok(), $params, []));
 
 		$mailer = new AppMailer();
@@ -154,6 +153,38 @@ class AccountUserEmailLogic extends PageLogicBase
 	private function executeConfirm(LogicCallMode $callMode): void
 	{
 		$userInfo = $this->userInfo();
+
+		$params = [
+			'user_id' => $userInfo['user_id'],
+			'token' => $this->getRequest('account_email_token'),
+		];
+
+		$database = $this->openDatabase();
+		$result = $database->transaction(function (Database $database, array $params) {
+			$userDomainDao = new UserDomainDao($database);
+
+			$updated = $userDomainDao->updateEmailFromWaitEmail(
+				$params['user_id'],
+				$params['token'],
+				AppConfiguration::$json['config']['confirm']['user_change_wait_email_minutes']
+			);
+
+			if (!$updated) {
+				return false;
+			}
+
+			$userChangeWaitEmailsEntityDao = new UserChangeWaitEmailsEntityDao($database);
+			$userChangeWaitEmailsEntityDao->deleteByUserId($params['user_id']);
+
+			$this->writeAuditLogCurrentUser(AuditLog::USER_EMAIL_CHANGED, ['token' => $params['token']], $database);
+
+			return true;
+		}, $params);
+
+		if (!$result) {
+			$this->addError('account_email_token', I18n::message('error/email_confirm_token_not_found'));
+		}
+
 
 		$this->result['confirm'] = true;
 	}

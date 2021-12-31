@@ -16,4 +16,5 @@ class AuditLog
 	public const USER_EDIT = 'USER-EDIT';
 	public const USER_PASSWORD_CHANGE = 'USER-PASSWORD-CHANGE';
 	public const USER_EMAIL_CHANGING = 'USER-EMAIL-CHANGING';
+	public const USER_EMAIL_CHANGED = 'USER-EMAIL-CHANGED';
 }
