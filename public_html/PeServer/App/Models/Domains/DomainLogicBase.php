@@ -67,7 +67,7 @@ abstract class DomainLogicBase extends LogicBase
 		return $userInfo;
 	}
 
-	private function writeAuditLogCore(string $userId, string $event, mixed $info, ?Database $database): void
+	private function writeAuditLogCore(string $userId, string $event, mixed $info, ?Database $database): int
 	{
 		/** @var string */
 		$ipAddress = ArrayUtility::getOr($_SERVER, 'REMOTE_ADDR', '');
@@ -84,6 +84,7 @@ abstract class DomainLogicBase extends LogicBase
 		$db = $database ?? $this->openDatabase();
 		$userAuditLogsEntityDao = new UserAuditLogsEntityDao($db);
 		$userAuditLogsEntityDao->insertLog($userId, $event, $dumpInfo, $ipAddress, $userAgent);
+		return $userAuditLogsEntityDao->selectLastLogId();
 	}
 
 	/**
@@ -93,28 +94,28 @@ abstract class DomainLogicBase extends LogicBase
 	 *
 	 * @param string $event
 	 * @param mixed $info
-	 * @return void
+	 * @return int
 	 */
-	protected function writeAuditLogCurrentUser(string $event, mixed $info = null, ?Database $database = null): void
+	protected function writeAuditLogCurrentUser(string $event, mixed $info = null, ?Database $database = null): int
 	{
 		$userInfo = $this->getUserInfo();
 		if (!ArrayUtility::tryGet($userInfo, 'user_id', $userId)) {
 			$this->logger->error('監査ログ ユーザー情報取得失敗のため書き込み中止');
-			return;
+			return -1;
 		}
 
 		$userId = $userInfo['user_id']; // @phpstan-ignore-line ArrayUtility::tryGet
 
-		$this->writeAuditLogCore($userId, $event, $info, $database);
+		return $this->writeAuditLogCore($userId, $event, $info, $database);
 	}
 
-	protected function writeAuditLogTargetUser(string $userId, string $event, mixed $info = null, ?Database $database = null): void
+	protected function writeAuditLogTargetUser(string $userId, string $event, mixed $info = null, ?Database $database = null): int
 	{
 		if (StringUtility::isNullOrWhiteSpace($userId)) {
 			$this->logger->error('監査ログ ユーザーID不正のため書き込み中止');
-			return;
+			return -1;
 		}
 
-		$this->writeAuditLogCore($userId, $event, $info, $database);
+		return $this->writeAuditLogCore($userId, $event, $info, $database);
 	}
 }

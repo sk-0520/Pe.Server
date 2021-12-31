@@ -45,4 +45,9 @@ final class AppMailer extends Mailer
 
 		return $result;
 	}
+
+	protected function getSubject(string $subject): string
+	{
+		return '[Pe.Server] ' . $subject;
+	}
 }

@@ -447,6 +447,7 @@ class _Template_Impl extends Template
 
 		$filePath = FileUtility::joinPath(parent::$rootDirectoryPath, $sourcePath);
 		if(($autoSize || $include) || !is_file($filePath)) {
+			 // @phpstan-ignore-next-line nullは全取得だからOK
 			foreach($this->engine->getTemplateDir(null) as $dir) {
 				$path = FileUtility::joinPath($dir, $sourcePath);
 				if(is_file($path)) {
@@ -471,7 +472,7 @@ class _Template_Impl extends Template
 					$dom->appendChild($element);
 
 					$content = file_get_contents($filePath);
-					$element->appendChild($dom->createTextNode($content));
+					$element->appendChild($dom->createTextNode($content)); // @phpstan-ignore-line しんどい
 				} else {
 					$element = $dom->createElement('link');
 					$dom->appendChild($element);
@@ -488,7 +489,7 @@ class _Template_Impl extends Template
 
 				if ($include) {
 					$content = file_get_contents($filePath);
-					$element->appendChild($dom->createTextNode($content));
+					$element->appendChild($dom->createTextNode($content)); // @phpstan-ignore-line しんどい
 				} else {
 					$element->setAttribute('src', $resourcePath);
 					$skipAttributes = array_merge($skipAttributes, ['src']);
@@ -513,7 +514,7 @@ class _Template_Impl extends Template
 
 						if ($include) {
 							$content = file_get_contents($filePath);
-							$base64 = base64_encode($content);
+							$base64 = base64_encode($content); // @phpstan-ignore-line しんどい
 							$inline = 'data:' . $imageSize['mime'] . ';base64,' . $base64;
 							$element->setAttribute('src', $inline);
 

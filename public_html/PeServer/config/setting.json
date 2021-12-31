@@ -33,7 +33,15 @@
 				"name": "from",
 				"address": "from@localhost.localdomain"
 			},
-			"return_email": "return@localhost.localdomain"
+			"return_email": "return@localhost.localdomain",
+			"families": {
+				"server_url": "https://peserver.gq/",
+				"contact_url": "https://peserver.gq/contact",
+				"app_project_url": "https://bitbucket.org/sk_0520/pe/",
+				"server_project_url": "https://bitbucket.org/sk_0520/pe.server",
+				"forum_url": "https://groups.google.com/g/pe_development",
+				"website_url": "https://content-type-text.net/"
+			}
 		}
 	},
 	"mail": {
@@ -100,13 +108,13 @@
 		},
 		"subject": {
 			"email_change_token": {
-				"*": "[PeServer] メールアドレス変更用トークン発行"
+				"*": "メールアドレス変更用トークン発行"
 			},
 			"email_change_new": {
-				"*": "[PeServer] メールアドレス変更通知(新)"
+				"*": "メールアドレス変更通知(新)"
 			},
 			"email_change_old": {
-				"*": "[PeServer] メールアドレス変更通知(旧)"
+				"*": "メールアドレス変更通知(旧)"
 			}
 		}
 	}

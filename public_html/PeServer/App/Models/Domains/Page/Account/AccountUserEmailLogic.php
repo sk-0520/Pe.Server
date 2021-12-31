@@ -17,6 +17,7 @@ use PeServer\Core\Mvc\LogicParameter;
 use PeServer\App\Models\SessionManager;
 use PeServer\Core\Mvc\TemplateParameter;
 use PeServer\App\Models\AppConfiguration;
+use PeServer\App\Models\AppTemplate;
 use PeServer\App\Models\Domains\AccountValidator;
 use PeServer\Core\Throws\NotImplementedException;
 use PeServer\App\Models\Domains\Page\PageLogicBase;
@@ -136,8 +137,9 @@ class AccountUserEmailLogic extends PageLogicBase
 		}, $params);
 
 		// トークン通知メール送信
-		$template = Template::create('template/email');
-		$html = $template->build('change-email-token.tpl', new TemplateParameter(HttpStatus::ok(), $params, []));
+		$subject = I18n::message('subject/email_change_token');
+		$value = array_merge($params, $account);
+		$html = AppTemplate::createMailTemplate('change-email-token', $subject, $value);
 
 		$mailer = new AppMailer();
 		$mailer->toAddresses = [
@@ -147,15 +149,17 @@ class AccountUserEmailLogic extends PageLogicBase
 		$mailer->setMessage([
 			'html' => $html,
 		]);
+
 		$mailer->send();
+		//file_put_contents('X:\00_others\00_others\a.html',$html);
 	}
 
 	private function executeConfirm(LogicCallMode $callMode): void
 	{
-		$userInfo = $this->userInfo();
+		$account = SessionManager::getAccount();
 
 		$params = [
-			'user_id' => $userInfo['user_id'],
+			'user_id' => $account['user_id'],
 			'token' => $this->getRequest('account_email_token'),
 		];
 
@@ -183,8 +187,43 @@ class AccountUserEmailLogic extends PageLogicBase
 
 		if (!$result) {
 			$this->addError('account_email_token', I18n::message('error/email_confirm_token_not_found'));
+			return;
 		}
 
+		// 新旧メールアドレスにそれぞれ通知メール送信
+		$items = [
+			[
+				'template' => 'change-email-new',
+				'subject' => 'subject/email_change_new',
+				'email' => $this->defaultValues['wait_email'],
+			],
+			[
+				'template' => 'change-email-old',
+				'subject' => 'subject/email_change_old',
+				'email' => $this->defaultValues['email'],
+			],
+		];
+
+		foreach ($items as $item) {
+			$subject = I18n::message($item['subject']);
+			$values = [
+				'user_id' => $account['user_id'],
+				'login_id' => $account['login_id'],
+				'name' => $account['name'],
+			];
+			$html = AppTemplate::createMailTemplate($item['template'], $subject, $values);
+
+			$mailer = new AppMailer();
+			$mailer->toAddresses = [
+				['address' => $item['email'], 'name' => $account['name']],
+			];
+			$mailer->subject = $subject;
+			$mailer->setMessage([
+				'html' => $html,
+			]);
+
+			$mailer->send();
+		}
 
 		$this->result['confirm'] = true;
 	}

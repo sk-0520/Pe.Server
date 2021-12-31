@@ -161,6 +161,11 @@ class Mailer
 		return [$data['address'], $data['name']]; // @phpstan-ignore-line getOr
 	}
 
+	protected function getSubject(string $subject): string
+	{
+		return $subject;
+	}
+
 	public function send(): void
 	{
 		$client = new PHPMailer(true);
@@ -176,7 +181,7 @@ class Mailer
 		$client->Sender = $this->returnPath;
 		$client->setFrom(...$this->convertAddress(self::ADDRESS_KIND_FROM, $this->fromAddress));
 		if (StringUtility::isNullOrWhiteSpace($client->Sender)) {
-			$client->$this->fromAddress['address'];
+			$client->Sender = $client->$this->fromAddress['address'];
 		}
 
 
@@ -197,7 +202,7 @@ class Mailer
 
 
 		$isHtml = false;
-		$client->Subject = $this->subject;
+		$client->Subject = $this->getSubject($this->subject);
 		if (ArrayUtility::tryGet($this->message, 'html', $html)) {
 			$client->isHTML(true);
 			$client->Body = $html;

@@ -6,6 +6,7 @@ namespace PeServer\App\Models\Database\Entities;
 
 use \PeServer\Core\DaoBase;
 use \PeServer\Core\Database;
+use PeServer\Core\TypeConverter;
 
 class UserAuditLogsEntityDao extends DaoBase
 {
@@ -48,5 +49,19 @@ class UserAuditLogsEntityDao extends DaoBase
 				'user_agent' => $userAgent,
 			]
 		);
+	}
+
+	public function selectLastLogId(): int
+	{
+		$result = $this->database->queryFirst(
+			<<<SQL
+
+			select
+				LAST_INSERT_ROWID() as [row_id]
+
+			SQL
+		);
+
+		return intval($result['row_id']);
 	}
 }
