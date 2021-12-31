@@ -446,6 +446,15 @@ class _Template_Impl extends Template
 		$include = TypeConverter::parseBoolean(ArrayUtility::getOr($params, 'include', false));
 
 		$filePath = FileUtility::joinPath(parent::$rootDirectoryPath, $sourcePath);
+		if(($autoSize || $include) || !is_file($filePath)) {
+			foreach($this->engine->getTemplateDir(null) as $dir) {
+				$path = FileUtility::joinPath($dir, $sourcePath);
+				if(is_file($path)) {
+					$filePath = $path;
+					break;
+				}
+			}
+		}
 
 		$skipAttributes = [
 			'file',
