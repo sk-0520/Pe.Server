@@ -17,11 +17,12 @@ abstract class PageLogicBase extends DomainLogicBase
 
 	protected function getUserInfo(): array|null
 	{
-		$user = $this->getSession(SessionManager::ACCOUNT, null);
-		if (is_null($user)) {
+		if (!SessionManager::hasAccount()) {
 			return null;
 		}
 
-		return ['user_id' => $user['user_id']];
+		$account = SessionManager::getAccount();
+
+		return ['user_id' => $account['user_id']];
 	}
 }

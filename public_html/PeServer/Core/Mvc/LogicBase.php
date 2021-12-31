@@ -70,7 +70,7 @@ abstract class LogicBase implements IValidationReceiver
 	/**
 	 * コントローラ内結果データ。
 	 *
-	 * @var array<string,string|array<mixed>>
+	 * @var array<string,mixed>
 	 */
 	public $result = array();
 

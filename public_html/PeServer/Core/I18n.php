@@ -7,9 +7,9 @@ namespace PeServer\Core;
 abstract class I18n
 {
 	// これはライブラリ側で持つ文字列リソース
-	public const COMMON_ERROR_TITLE = '@core/common/error-title';
+	public const COMMON_ERROR_TITLE = '@core/common/error_title';
 	public const ERROR_EMPTY = '@core/error/empty';
-	public const ERROR_WHITE_SPACE = '@core/error/white-space';
+	public const ERROR_WHITE_SPACE = '@core/error/white_space';
 	public const ERROR_LENGTH = '@core/error/length';
 	public const ERROR_RANGE = '@core/error/range';
 	public const ERROR_MATCH = '@core/error/match';

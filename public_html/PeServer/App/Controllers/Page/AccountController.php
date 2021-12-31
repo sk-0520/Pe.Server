@@ -132,8 +132,9 @@ final class AccountController extends PageControllerBase
 		$logic = $this->createLogic(AccountUserEmailLogic::class, $request);
 		if ($logic->run(LogicCallMode::submit())) {
 			if ($this->equalsResult('confirm', true)) {
-				return $this->view('user_email', $logic->getViewData());
+				return $this->redirectPath('/account/user');
 			}
+			return $this->redirectPath('/account/user/email');
 		}
 
 		return $this->view('user_email', $logic->getViewData());

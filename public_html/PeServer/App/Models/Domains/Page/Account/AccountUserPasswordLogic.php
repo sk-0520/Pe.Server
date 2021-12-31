@@ -47,11 +47,11 @@ class AccountUserPasswordLogic extends PageLogicBase
 			$passwords = $userAuthenticationsEntityDao->selectPasswords($this->userInfo()['user_id']);
 
 			if (!password_verify($value, $passwords['current_password'])) {
-				$this->addError($key, I18n::message('error/password-incorrect'));
+				$this->addError($key, I18n::message('error/password_incorrect'));
 			}
 			if (!StringUtility::isNullOrEmpty($passwords['generate_password'])) {
 				if (!password_verify($value, $passwords['generate_password'])) {
-					$this->addError($key, I18n::message('error/password-generate'));
+					$this->addError($key, I18n::message('error/password_generate'));
 				}
 			}
 		});
@@ -65,7 +65,7 @@ class AccountUserPasswordLogic extends PageLogicBase
 			$this->validator->isNotWhiteSpace($key, $value);
 			$newPassword = $this->getRequest('account_password_new', '', false);
 			if ($value !== $newPassword) {
-				$this->addError($key, I18n::message('error/password-confirm'));
+				$this->addError($key, I18n::message('error/password_confirm'));
 			}
 		});
 	}

@@ -12,6 +12,7 @@ require_once(__DIR__ . '/../Libs/PHPMailer/src/SMTP.php');
 
 use \PeServer\Core\Throws\ArgumentException;
 use \PeServer\Core\Throws\ArgumentNullException;
+use PeServer\Core\Throws\InvalidOperationException;
 use \PeServer\Core\Throws\NotImplementedException;
 use \PHPMailer\PHPMailer\PHPMailer;
 
@@ -41,6 +42,10 @@ class Mailer
 	public string $characterSet = 'utf-8';
 
 	/**
+	 *
+	 */
+	public string $returnPath = '';
+	/**
 	 * FROM:
 	 *
 	 * @var array{address:string,name?:string}
@@ -66,7 +71,13 @@ class Mailer
 	public array $bccAddresses = [];
 
 	public string $subject = '';
-	public string $todo_body = '';
+
+	/**
+	 * Undocumented variable
+	 *
+	 * @var array{text?:string,html?:string}
+	 */
+	private array $message = [];
 
 	/**
 	 * 生成。
@@ -99,6 +110,31 @@ class Mailer
 			default:
 				throw new NotImplementedException();
 		}
+	}
+
+	/**
+	 * Undocumented function
+	 *
+	 * @param array{text?:string,html?:string} $message
+	 * @return void
+	 * @throws ArgumentException
+	 */
+	public function setMessage(array $message)
+	{
+		if (!isset($message['text']) && !isset($message['html'])) {
+			throw new ArgumentException();
+		}
+
+		foreach (['text', 'html'] as $i) {
+			if (isset($message[$i])) {
+				// @phpstan-ignore-next-line
+				if (StringUtility::isNullOrWhiteSpace($message[$i])) {
+					throw new ArgumentException($i);
+				}
+			}
+		}
+
+		$this->message = $message;
 	}
 
 	/**
@@ -137,7 +173,12 @@ class Mailer
 		$client->CharSet = $this->characterSet;
 		$client->Encoding = $this->encoding;
 
+		$client->Sender = $this->returnPath;
 		$client->setFrom(...$this->convertAddress(self::ADDRESS_KIND_FROM, $this->fromAddress));
+		if (StringUtility::isNullOrWhiteSpace($client->Sender)) {
+			$client->$this->fromAddress['address'];
+		}
+
 
 		$client->clearAddresses();
 		foreach ($this->toAddresses as $address) {
@@ -154,8 +195,23 @@ class Mailer
 			$client->addBCC(...$this->convertAddress(self::ADDRESS_KIND_BCC, $address));
 		}
 
+
+		$isHtml = false;
 		$client->Subject = $this->subject;
-		$client->Body = $this->todo_body;
+		if (ArrayUtility::tryGet($this->message, 'html', $html)) {
+			$client->isHTML(true);
+			$client->Body = $html;
+			$isHtml = true;
+		}
+		if (ArrayUtility::tryGet($this->message, 'text', $text)) {
+			if ($isHtml) {
+				$client->AltBody = $text;
+			} else {
+				$client->Body = $text;
+			}
+		} else if (!$isHtml) {
+			throw new InvalidOperationException();
+		}
 
 		switch ($this->sendMode) {
 			case self::SEND_MODE_SMTP: {

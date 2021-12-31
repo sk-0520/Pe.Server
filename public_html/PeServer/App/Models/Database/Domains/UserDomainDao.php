@@ -60,17 +60,18 @@ class UserDomainDao extends DaoBase
 	 * Undocumented function
 	 *
 	 * @param string $userId
-	 * @return array{email:string,wait_email:string,token_timestamp:string}
+	 * @return array{email:string,wait_email:string,token_timestamp_utc:string}
 	 */
 	public function selectEmailAndWaitTokenTimestamp(string $userId, int $limitMinutes): array
 	{
+		/** @var array{email:string,wait_email:string,token_timestamp_utc:string} */
 		return $this->database->queryFirst(
 			<<<SQL
 
 			select
 				users.email,
 				IFNULL(user_change_wait_emails.email, '') as wait_email,
-				IFNULL(user_change_wait_emails.timestamp, '') as token_timestamp
+				IFNULL(STRFTIME('%Y-%m-%dT%H:%M:%SZ', user_change_wait_emails.timestamp), '') as token_timestamp_utc
 			from
 				users
 				left join
@@ -79,7 +80,7 @@ class UserDomainDao extends DaoBase
 					(
 						user_change_wait_emails.user_id = users.user_id
 						and
-						(STRFTIME('%s', CURRENT_TIMESTAMP) - STRFTIME('%s', user_change_wait_emails.timestamp)) * 60 < :limit_minutes
+						(STRFTIME('%s', CURRENT_TIMESTAMP) - STRFTIME('%s', user_change_wait_emails.timestamp)) < :limit_minutes * 60
 					)
 			where
 				users.user_id = :user_id

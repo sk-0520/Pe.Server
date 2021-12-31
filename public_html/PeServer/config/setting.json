@@ -22,9 +22,19 @@
 			"name": "pe"
 		}
 	},
-	"confirm": {
-		"user_change_wait_email_minutes": 10,
-		"sign_up_wait_email_minutes": 10
+	"config": {
+		"confirm": {
+			"user_change_wait_email_minutes": 10,
+			"sign_up_wait_email_minutes": 10
+		},
+		"address": {
+			"default_domain": "@localhost",
+			"from_email": {
+				"name": "from",
+				"address": "from@localhost"
+			},
+			"return_email": "return@localhost"
+		}
 	},
 	"mail": {
 		"mode": "smtp",
@@ -48,7 +58,7 @@
 				"empty": {
 					"*": "入力してください"
 				},
-				"white-space": {
+				"white_space": {
 					"*": "入力してください"
 				},
 				"length": {
@@ -69,23 +79,28 @@
 			}
 		},
 		"error": {
-			"login-parameter": {
+			"login_parameter": {
 				"*": "ログインID/パスワードが正しくありません"
 			},
-			"password-incorrect": {
+			"password_incorrect": {
 				"*": "パスワードが正しくありません"
 			},
-			"password-generate": {
+			"password_generate": {
 				"*": "使用できないパスワードです"
 			},
-			"password-confirm": {
+			"password_confirm": {
 				"*": "確認用パスワードが一致しません"
 			},
-			"unknown-email-mode": {
+			"unknown_email_mode": {
 				"*": "要求データが不明です"
 			},
-			"email-confirm-token-not-found": {
+			"email_confirm_token_not_found": {
 				"*": "対象トークンが見つからないか有効期限を超えています"
+			}
+		},
+		"subject": {
+			"email_change_token":{
+				"*": "[PeServer] メールアドレス変更用トークン発行"
 			}
 		}
 	}

@@ -19,8 +19,11 @@ final class AppMailer extends Mailer
 	{
 		parent::__construct(AppConfiguration::$json['mail']);
 
+		$this->fromAddress = AppConfiguration::$json['config']['address']['from_email'];
+		$this->returnPath = AppConfiguration::$json['config']['address']['return_email'];
+
 		if (!AppConfiguration::isProductionEnvironment() && isset(AppConfiguration::$json['debug'])) {
-			$target = ArrayUtility::getOr(AppConfiguration::$json['dev'], 'mail_overwrite_target', '');
+			$target = ArrayUtility::getOr(AppConfiguration::$json['debug'], 'mail_overwrite_target', '');
 			if (!StringUtility::isNullOrWhiteSpace($target)) {
 				$this->overwriteTarget = $target;
 			}
@@ -36,7 +39,9 @@ final class AppMailer extends Mailer
 		}
 
 		// 宛先を差し替え
+		$src = $result[0];
 		$result[0] = $this->overwriteTarget;
+		$result[1] = $result[1] . '[差し替え]' . $result[0];
 
 		return $result;
 	}

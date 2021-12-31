@@ -160,7 +160,7 @@ class Database
 		} catch (\Exception $ex) {
 			$this->logger->error($ex);
 			$this->rollback();
-			throw new SqlException($ex->getMessage(), $ex->getCode()(), $ex);
+			throw new SqlException($ex->getMessage(), $ex->getCode(), $ex);
 		}
 
 		return false;

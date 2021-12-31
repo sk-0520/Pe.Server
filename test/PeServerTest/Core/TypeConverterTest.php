@@ -6,10 +6,10 @@ namespace PeServerTest\Core;
 
 use \PeServerTest\Data;
 use \PeServerTest\TestClass;
-use \PeServer\Core\Numeric;
+use \PeServer\Core\TypeConverter;
 use \PeServer\Core\Throws\ParseException;
 
-class NumericTest extends TestClass
+class TypeConverterTest extends TestClass
 {
 	public function test_parseInteger()
 	{
@@ -22,7 +22,7 @@ class NumericTest extends TestClass
 			new Data(789, '  789 '),
 		];
 		foreach ($tests as $test) {
-			$actual = Numeric::parseInteger(...$test->args);
+			$actual = TypeConverter::parseInteger(...$test->args);
 			$this->assertEquals($test->expected, $actual, $test->str());
 		}
 	}
@@ -39,17 +39,37 @@ class NumericTest extends TestClass
 			'++1',
 		];
 		foreach ($tests as $test) {
-			Numeric::parseInteger($test);
+			TypeConverter::parseInteger($test);
 		}
 	}
 
 	public function test_tryParseInteger()
 	{
-		$result1 = Numeric::tryParseInteger("123", $actual1);
+		$result1 = TypeConverter::tryParseInteger("123", $actual1);
 		$this->assertTrue($result1);
 		$this->assertEquals(123, $actual1);
 
-		$result2 = Numeric::tryParseInteger("abc", $actual2);
+		$result2 = TypeConverter::tryParseInteger("abc", $actual2);
 		$this->assertFalse($result2);
+	}
+
+	public function test_parseBoolean()
+	{
+		$tests = [
+			new Data(true, '1'),
+			new Data(true, 'true'),
+			new Data(true, 'TRUE'),
+			new Data(true, 'on'),
+			new Data(true, 'ok'),
+			new Data(true, true),
+			new Data(false, false),
+			new Data(false, 'abc'),
+			new Data(false, []),
+			new Data(true, [0]),
+		];
+		foreach ($tests as $test) {
+			$actual = TypeConverter::parseBoolean(...$test->args);
+			$this->assertBoolean($test->expected, $actual, $test->str());
+		}
 	}
 }

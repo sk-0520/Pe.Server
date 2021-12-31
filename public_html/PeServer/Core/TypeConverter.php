@@ -7,9 +7,11 @@ namespace PeServer\Core;
 use \PeServer\Core\Throws\ParseException;
 
 /**
- * 数値系。
+ * 型変換系。
+ *
+ * PHPの型変換がおれの予想をはるかに超えてくる。つらい。
  */
-abstract class Numeric
+abstract class TypeConverter
 {
 	private const INT_PATTERN = '/^\s*(\+|\-)?\d+\s*$/';
 
@@ -44,5 +46,19 @@ abstract class Numeric
 
 		$result = (int)trim($input);
 		return true;
+	}
+
+	public static function parseBoolean(mixed $input): bool
+	{
+		if (is_bool($input)) {
+			return (bool)$input;
+		}
+		if (is_string($input)) {
+			$s = StringUtility::toLower(StringUtility::trim((string)$input));
+			$trues = ['true', 't', 'on', 'ok', '1'];
+			return ArrayUtility::contains($trues, $s);
+		}
+
+		return boolval($input);
 	}
 }

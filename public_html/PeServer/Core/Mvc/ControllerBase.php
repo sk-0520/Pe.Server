@@ -121,7 +121,7 @@ abstract class ControllerBase
 	public function equalsResult(string $key, $value): bool
 	{
 		if ($this->existsResult($key)) {
-			return $this->logic->result[$key] === $value;
+			return $this->logic->result[$key] === $value; // @phpstan-ignore-line existsResultで担保
 		}
 
 		return false;

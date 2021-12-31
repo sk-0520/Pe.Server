@@ -5,10 +5,17 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Domains\Page\Account;
 
 use PeServer\Core\I18n;
+use PeServer\Core\Database;
+use PeServer\Core\HttpStatus;
+use PeServer\Core\Mvc\Template;
 use PeServer\Core\Mvc\Validator;
 use PeServer\Core\StringUtility;
+use PeServer\App\Models\AuditLog;
+use PeServer\App\Models\AppMailer;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
+use PeServer\App\Models\SessionManager;
+use PeServer\Core\Mvc\TemplateParameter;
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\Domains\AccountValidator;
 use PeServer\Core\Throws\NotImplementedException;
@@ -22,12 +29,12 @@ class AccountUserEmailLogic extends PageLogicBase
 	/**
 	 * Undocumented function
 	 *
-	 * @param array{email:string,wait_email:string,token_timestamp:string} $parameter
+	 * @var array{email:string,wait_email:string,token_timestamp_utc:string}
 	 */
 	private array $defaultValues = [
 		'email' => '',
 		'wait_email' => '',
-		'token_timestamp' => '',
+		'token_timestamp_utc' => '',
 	];
 
 	public function __construct(LogicParameter $parameter)
@@ -44,7 +51,7 @@ class AccountUserEmailLogic extends PageLogicBase
 		$userDomainDao = new UserDomainDao($database);
 		$this->defaultValues = $userDomainDao->selectEmailAndWaitTokenTimestamp(
 			$userInfo['user_id'],
-			AppConfiguration::$json['confirm']['user_change_wait_email_minutes']
+			AppConfiguration::$json['config']['confirm']['user_change_wait_email_minutes']
 		);
 	}
 
@@ -54,7 +61,7 @@ class AccountUserEmailLogic extends PageLogicBase
 			'account_email_email',
 			'account_email_token',
 			'wait_email',
-			'token_timestamp'
+			'token_timestamp_utc',
 		], true);
 
 		$this->setValue('account_email_token', '');
@@ -76,13 +83,13 @@ class AccountUserEmailLogic extends PageLogicBase
 			$this->validation('account_email_token', function (string $key, string $value) {
 				$this->validator->isNotWhiteSpace($key, $value);
 
-				if (StringUtility::isNullOrWhiteSpace($this->defaultValues['token_timestamp'])) {
-					$this->addError($key, I18n::message('error/email-confirm-token-not-found'));
+				if (StringUtility::isNullOrWhiteSpace($this->defaultValues['token_timestamp_utc'])) {
+					$this->addError($key, I18n::message('error/email_confirm_token_not_found'));
 				}
 			});
 		} else {
 			$this->logger->warn('不明なモード要求 {0}', $mode);
-			$this->addError(Validator::COMMON, I18n::message('error/unknown-email-mode'));
+			$this->addError(Validator::COMMON, I18n::message('error/unknown_email_mode'));
 		}
 	}
 
@@ -107,7 +114,41 @@ class AccountUserEmailLogic extends PageLogicBase
 
 	private function executeEdit(LogicCallMode $callMode): void
 	{
-		$userInfo = $this->userInfo();
+		$account = SessionManager::getAccount();
+
+		$params = [
+			'user_id' => $account['user_id'],
+			'email' => $this->getRequest('account_email_email'),
+			'token' => sprintf('%08d', mt_rand(0, 99999999)),
+		];
+
+		$database = $this->openDatabase();
+
+		$database->transaction(function (Database $database, array $params) {
+			$userChangeWaitEmailsEntityDao = new UserChangeWaitEmailsEntityDao($database);
+
+			$userChangeWaitEmailsEntityDao->deleteByUserId($params['user_id']);
+			$userChangeWaitEmailsEntityDao->insertWaitEmails($params['user_id'], $params['email'], $params['token']);
+
+			$this->writeAuditLogCurrentUser(AuditLog::USER_EMAIL_CHANGING, ['token' => $params['token']], $database);
+
+			return true;
+		}, $params);
+
+		// トークン通知メール送信
+		//Template::initialize($rootDirectoryPath, $baseDirectoryPath, 'App/Views', 'data/temp/views', $environment, $revision);
+		$template = Template::create('template');
+		$html = $template->build('change-email-token.tpl', new TemplateParameter(HttpStatus::ok(), $params, []));
+
+		$mailer = new AppMailer();
+		$mailer->toAddresses = [
+			['address' => $params['email'], 'name' => $account['name']],
+		];
+		$mailer->subject = I18n::message('subject/email_change_token');
+		$mailer->setMessage([
+			'html' => $html,
+		]);
+		$mailer->send();
 	}
 
 	private function executeConfirm(LogicCallMode $callMode): void
@@ -124,6 +165,6 @@ class AccountUserEmailLogic extends PageLogicBase
 		}
 
 		$this->setValue('wait_email', $this->defaultValues['wait_email']);
-		$this->setValue('token_timestamp', $this->defaultValues['token_timestamp']);
+		$this->setValue('token_timestamp_utc', $this->defaultValues['token_timestamp_utc']);
 	}
 }

@@ -18,7 +18,7 @@ use \PeServer\App\Models\Database\Entities\UsersEntityDao;
 
 class AccountLoginLogic extends PageLogicBase
 {
-	private const ERROR_LOGIN_PARAMETER = 'error/login-parameter';
+	private const ERROR_LOGIN_PARAMETER = 'error/login_parameter';
 
 	public function __construct(LogicParameter $parameter)
 	{

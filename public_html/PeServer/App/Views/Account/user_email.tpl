@@ -2,9 +2,6 @@
 {block name='TITLE'}ユーザー情報 編集{/block}
 {block name='BODY'}
 
-[{$values.wait_email}]
-[{$values.token_timestamp}]
-
 <section class="page-account-email-edit">
 	<h2>アドレス変更</h2>
 
@@ -28,11 +25,25 @@
 
 {if $values.wait_email }
 	<section class="page-account-email-confirm">
+		<p>
+			メールアドレス確認待ちです。
+		</p>
+
 		<form action="/account/user/email" method="post">
 			{csrf}
 			<input type="hidden" name="account_email_mode" value="confirm" />
 
 			<dl>
+				<dt>new email</dt>
+				<dd>
+					[{$values.wait_email}]
+				</dd>
+
+				<dt>timestamp</dt>
+				<dd>
+					<time datetime="{$values.token_timestamp_utc}">[{$values.token_timestamp_utc}]</time>
+				</dd>
+
 				<dt>token</dt>
 				<dd>
 					{input_helper key='account_email_token' type="text" class="edit"}

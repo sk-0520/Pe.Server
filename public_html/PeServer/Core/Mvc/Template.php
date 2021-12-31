@@ -19,6 +19,7 @@ use \PeServer\Core\StringUtility;
 use \PeServer\Core\InitializeChecker;
 use \PeServer\Core\Throws\CoreException;
 use \PeServer\Core\Throws\InvalidOperationException;
+use PeServer\Core\TypeConverter;
 
 /**
  * View側のテンプレート処理。
@@ -394,6 +395,7 @@ class _Template_Impl extends Template
 	 * @param array<string,string> $params
 	 *  * file: 対象リソース
 	 *  * auto_size: true/false trueの場合に実イメージサイズを読み込む
+	 *  * include: true/false trueの場合にファイルの中身を使用する(結構適当)
 	 *  * その他: 全部設定される
 	 * @param Smarty_Internal_Template $smarty
 	 * @return string
@@ -440,29 +442,48 @@ class _Template_Impl extends Template
 			$dom->appendChild($comment);
 		}
 
+		$autoSize = TypeConverter::parseBoolean(ArrayUtility::getOr($params, 'auto_size', false));
+		$include = TypeConverter::parseBoolean(ArrayUtility::getOr($params, 'include', false));
+
+		$filePath = FileUtility::joinPath(parent::$rootDirectoryPath, $sourcePath);
+
 		$skipAttributes = [
 			'file',
 			'auto_size',
+			'include',
 		];
 		/** @var DOMElement */
 		$element = null;
 
 		switch ($extension) {
 			case 'css':
-				$element = $dom->createElement('link');
-				$dom->appendChild($element);
+				if ($include) {
+					$element = $dom->createElement('style');
+					$dom->appendChild($element);
 
-				$element->setAttribute('rel', 'stylesheet');
-				$element->setAttribute('href', $resourcePath);
-				$skipAttributes = array_merge($skipAttributes, ['rel', 'href']);
+					$content = file_get_contents($filePath);
+					$element->appendChild($dom->createTextNode($content));
+				} else {
+					$element = $dom->createElement('link');
+					$dom->appendChild($element);
+
+					$element->setAttribute('rel', 'stylesheet');
+					$element->setAttribute('href', $resourcePath);
+					$skipAttributes = array_merge($skipAttributes, ['rel', 'href']);
+				}
 				break;
 
 			case 'js':
 				$element = $dom->createElement('script');
 				$dom->appendChild($element);
 
-				$element->setAttribute('src', $resourcePath);
-				$skipAttributes = array_merge($skipAttributes, ['src']);
+				if ($include) {
+					$content = file_get_contents($filePath);
+					$element->appendChild($dom->createTextNode($content));
+				} else {
+					$element->setAttribute('src', $resourcePath);
+					$skipAttributes = array_merge($skipAttributes, ['src']);
+				}
 				break;
 
 			case 'png':
@@ -474,14 +495,19 @@ class _Template_Impl extends Template
 				$element->setAttribute('src', $resourcePath);
 				$skipAttributes = array_merge($skipAttributes, ['src']);
 
-				if (!$ignoreAsset && ArrayUtility::tryGet($params, 'auto_size', $autoSize)) {
-					if (filter_var($autoSize, FILTER_VALIDATE_BOOL) && boolval($autoSize)) {
-						$imagePath = FileUtility::joinPath(parent::$rootDirectoryPath, $sourcePath);
-						$imageSize = getimagesize($imagePath);
-						if ($imageSize !== false) {
-							$element->setAttribute('width', strval($imageSize[0]));
-							$element->setAttribute('height', strval($imageSize[1]));
-							$skipAttributes = array_merge($skipAttributes, ['width', 'height']);
+				if (!$ignoreAsset && ($autoSize || $include)) {
+					$imageSize = getimagesize($filePath);
+					if ($imageSize !== false) {
+						$element->setAttribute('width', strval($imageSize[0]));
+						$element->setAttribute('height', strval($imageSize[1]));
+						$skipAttributes = array_merge($skipAttributes, ['width', 'height']);
+
+						if ($include) {
+							$content = file_get_contents($filePath);
+							$base64 = base64_encode($content);
+							$inline = 'data:' . $imageSize['mime'] . ';base64,' . $base64;
+							$element->setAttribute('src', $inline);
+
 						}
 					}
 				}
