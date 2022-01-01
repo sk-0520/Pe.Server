@@ -647,6 +647,7 @@ if (!defined('NO_DEPLOY_START')) {
 //AUTO-GEN-SETTING:FILE:PeServer/Core/Throws/CoreException.php
 //AUTO-GEN-SETTING:FILE:PeServer/Core/Throws/FileNotFoundException.php
 //AUTO-GEN-SETTING:FILE:PeServer/Core/Throws/ParseException.php
+//AUTO-GEN-SETTING:FILE:PeServer/Core/Throws/ArgumentException.php
 //AUTO-GEN-SETTING:FILE:PeServer/Core/StringUtility.php
 //AUTO-GEN-SETTING:FILE:PeServer/Core/FileUtility.php
 
