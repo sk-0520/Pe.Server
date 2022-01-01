@@ -43,7 +43,7 @@ class FileLogger extends LoggerBase
 	{
 		parent::__construct($header, $level, $baseTraceIndex);
 
-		$this->directoryPath = $fileLoggingConfiguration['dir'];
+		$this->directoryPath = $fileLoggingConfiguration['directory'];
 		$this->baseFileName = $fileLoggingConfiguration['name'];
 
 		if (!in_array($this->header, self::$cleanupHeaders)) {
