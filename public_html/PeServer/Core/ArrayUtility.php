@@ -85,4 +85,16 @@ class ArrayUtility
 	{
 		return array_search($needle, $haystack) !== false;
 	}
+
+	/**
+	 * Undocumented function
+	 *
+	 * @param array<mixed> $haystack
+	 * @param string|integer $key
+	 * @return bool
+	 */
+	public static function existsKey(array $haystack, string|int $key): bool
+	{
+		return array_key_exists($key, $haystack);
+	}
 }

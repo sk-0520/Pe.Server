@@ -12,10 +12,12 @@ use \PeServer\Core\Mvc\IActionResult;
 use \PeServer\Core\Store\CookieStore;
 use \PeServer\Core\Mvc\ControllerBase;
 use \PeServer\Core\Store\CookieOption;
-use \PeServer\Core\Store\SessionStore;
+use \PeServer\Core\Store\TemporaryOption;
 use \PeServer\Core\Store\SessionOption;
+use \PeServer\Core\Store\SessionStore;
 use \PeServer\App\Models\SessionManager;
 use \PeServer\Core\Mvc\ControllerArgument;
+use PeServer\Core\Store\TemporaryStore;
 
 /**
  * ルーティング。
@@ -30,19 +32,21 @@ class Routing
 	private $routeMap;
 
 	private CookieStore $cookie;
+	private TemporaryStore $temporary;
 	private SessionStore $session;
 
 	/**
 	 * 生成。
 	 *
 	 * @param Route[] $routeMap ルーティング情報
-	 * @param array{cookie:CookieOption,session:SessionOption} $storeOption
+	 * @param array{cookie:CookieOption,temporary:TemporaryOption,session:SessionOption} $storeOption
 	 */
 	public function __construct(array $routeMap, array $storeOption)
 	{
 		$this->routeMap = $routeMap;
 
 		$this->cookie = new CookieStore($storeOption['cookie']);
+		$this->temporary = new TemporaryStore($storeOption['temporary'], $this->cookie);
 		$this->session = new SessionStore($storeOption['session'], $this->cookie);
 
 		SessionManager::initialize($this->session);
@@ -91,7 +95,7 @@ class Routing
 		}
 
 		$logger = Logging::create($controllerName);
-		$controllerArgument = new ControllerArgument($this->cookie, $this->session, $logger);
+		$controllerArgument = new ControllerArgument($this->cookie, $this->temporary, $this->session, $logger);
 
 		/** @var ControllerBase */
 		$controller = new $controllerName($controllerArgument);

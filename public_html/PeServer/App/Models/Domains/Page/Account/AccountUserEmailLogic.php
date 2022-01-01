@@ -171,7 +171,8 @@ class AccountUserEmailLogic extends PageLogicBase
 		]);
 
 		$mailer->send();
-		//file_put_contents('X:\00_others\00_others\a.html',$html);
+
+		$this->addTemporaryMessage(I18n::message('message/flash/send_email_token'));
 	}
 
 	private function executeConfirm(LogicCallMode $callMode): void
@@ -248,6 +249,7 @@ class AccountUserEmailLogic extends PageLogicBase
 		}
 
 		$this->result['confirm'] = true;
+		$this->addTemporaryMessage(I18n::message('message/flash/updated_email'));
 	}
 
 	protected function cleanup(LogicCallMode $callMode): void

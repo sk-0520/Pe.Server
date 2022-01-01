@@ -22,6 +22,7 @@ use PeServer\Core\Mvc\ViewActionResult;
 use \PeServer\Core\Mvc\SessionNextState;
 use \PeServer\Core\Mvc\TemplateParameter;
 use \PeServer\Core\Mvc\ControllerArgument;
+use PeServer\Core\Store\TemporaryStore;
 use \PeServer\Core\Throws\InvalidOperationException;
 
 
@@ -46,6 +47,7 @@ abstract class ControllerBase
 	protected $skipBaseName = 'PeServer\\App\\Controllers\\Page';
 
 	protected CookieStore $cookie;
+	protected TemporaryStore $temporary;
 	protected SessionStore $session;
 
 	protected ?LogicBase $logic = null;
@@ -54,6 +56,7 @@ abstract class ControllerBase
 	{
 		$this->logger = $argument->logger;
 		$this->cookie = $argument->cookie;
+		$this->temporary = $argument->temporary;
 		$this->session = $argument->session;
 
 		$this->logger->trace('CONTROLLER');
@@ -71,6 +74,7 @@ abstract class ControllerBase
 		return new LogicParameter(
 			$request,
 			$this->cookie,
+			$this->temporary,
 			$this->session,
 			Logging::create($logicName)
 		);
@@ -174,6 +178,7 @@ abstract class ControllerBase
 	private function applyStore(): void
 	{
 		$this->applySession();
+		$this->temporary->apply();
 		$this->cookie->apply();
 	}
 
@@ -226,7 +231,7 @@ abstract class ControllerBase
 	 * @param TemplateParameter $parameter View連携データ。
 	 * @return ViewActionResult
 	 */
-	public function viewWithController(string $controllerName, string $action, TemplateParameter $parameter): ViewActionResult
+	protected function viewWithController(string $controllerName, string $action, TemplateParameter $parameter): ViewActionResult
 	{
 		$lastWord = 'Controller';
 		$controllerClassName = mb_substr($controllerName, mb_strpos($controllerName, $this->skipBaseName) + mb_strlen($this->skipBaseName) + 1);
@@ -244,7 +249,7 @@ abstract class ControllerBase
 	 * @param TemplateParameter $parameter View連携データ。
 	 * @return ViewActionResult
 	 */
-	public function view(string $action, TemplateParameter $parameter): ViewActionResult
+	protected function view(string $action, TemplateParameter $parameter): ViewActionResult
 	{
 		$className = get_class($this);
 
@@ -257,7 +262,7 @@ abstract class ControllerBase
 	 * @param ActionResponse $response 応答データ。
 	 * @return DataActionResult
 	 */
-	public function data(ActionResponse $response): DataActionResult
+	protected function data(ActionResponse $response): DataActionResult
 	{
 		return new DataActionResult($response, $this->getResponseHeaders());
 	}

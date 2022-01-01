@@ -98,6 +98,6 @@ class AccountUserPasswordLogic extends PageLogicBase
 		}, $params);
 
 
-		//$this->addError('', 'よくせいちゅう');
+		$this->addTemporaryMessage(I18n::message('message/flash/updated_password'));
 	}
 }

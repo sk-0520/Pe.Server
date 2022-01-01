@@ -241,6 +241,7 @@ class _Template_Impl extends Template
 
 		if ($targetKey === Validator::COMMON) {
 			$commonElement = $dom->createElement('div');
+			$commonElement->setAttribute('class', 'common error');
 			$dom->appendChild($commonElement);
 
 			$messageElement = $dom->createElement('p');

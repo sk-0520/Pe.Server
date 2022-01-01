@@ -52,13 +52,24 @@ class SessionStore
 		$this->option = $option;
 		$this->cookie = $cookie;
 
-		if ($this->cookie->tryGet($this->option->name, $name)) {
-			if (!StringUtility::isNullOrWhiteSpace($name)) {
+		if ($this->cookie->tryGet($this->option->name, $nameValue)) {
+			if (!StringUtility::isNullOrWhiteSpace($nameValue)) {
 				$this->start();
 				$this->values = $_SESSION;
 				$this->isStarted = true;
 			}
 		}
+	}
+
+	/**
+	 * 一時セッションデータをセッションに反映。
+	 *
+	 * @return void
+	 */
+	public function apply(): void
+	{
+		$_SESSION = $this->values;
+		session_write_close();
 	}
 
 	/**
@@ -195,15 +206,5 @@ class SessionStore
 	public function tryGet(string $key, mixed &$result): bool
 	{
 		return ArrayUtility::tryGet($this->values, $key, $result);
-	}
-
-	/**
-	 * 一時セッションデータをセッションに反映。
-	 *
-	 * @return void
-	 */
-	public function apply(): void
-	{
-		$_SESSION = $this->values;
 	}
 }

@@ -65,6 +65,23 @@ class CookieStore
 	}
 
 	/**
+	 * 一時クッキーデータをセッションに反映。
+	 *
+	 * @return void
+	 */
+	public function apply(): void
+	{
+		foreach ($this->removes as $key) {
+			setcookie($key, '', time() - 60, '/');
+		}
+
+		foreach ($this->values as $key => $cookie) {
+			$option = $cookie['option'];
+			setcookie($key, $cookie['data'], $option->getTotalMinutes(), $option->path, '', $option->secure, $option->httpOnly);
+		}
+	}
+
+	/**
 	 * クッキーデータ設定。
 	 *
 	 * @param string $key
@@ -134,22 +151,5 @@ class CookieStore
 		}
 
 		return ArrayUtility::tryGet($_COOKIE, $key, $result);
-	}
-
-	/**
-	 * 一時クッキーデータをセッションに反映。
-	 *
-	 * @return void
-	 */
-	public function apply(): void
-	{
-		foreach ($this->removes as $key) {
-			setcookie($key, '', time() - 60, '/');
-		}
-
-		foreach ($this->values as $key => $cookie) {
-			$option = $cookie['option'];
-			setcookie($key, $cookie['data'], $option->getTotalMinutes(), $option->path, '', $option->secure, $option->httpOnly);
-		}
 	}
 }

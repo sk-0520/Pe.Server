@@ -25,6 +25,7 @@ class DeployScript
 		// 不要データの破棄
 		$removeDirs = [
 			$this->scriptArgument->joinPath($this->getAppDirectoryPath(), 'data', 'temp', 'views'),
+			$this->scriptArgument->joinPath($this->getAppDirectoryPath(), 'data', 'store', 'temporary'), // 一時データのなんぞ知らんわ
 		];
 
 		foreach ($removeDirs as $removeDir) {

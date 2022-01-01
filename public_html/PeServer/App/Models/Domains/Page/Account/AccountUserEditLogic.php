@@ -14,6 +14,7 @@ use \PeServer\Core\Mvc\LogicParameter;
 use PeServer\App\Models\Domains\AccountValidator;
 use \PeServer\App\Models\Domains\Page\PageLogicBase;
 use \PeServer\App\Models\Database\Entities\UsersEntityDao;
+use PeServer\Core\I18n;
 
 class AccountUserEditLogic extends PageLogicBase
 {
@@ -106,6 +107,8 @@ class AccountUserEditLogic extends PageLogicBase
 			$account = SessionManager::getAccount();
 			$account['user_name'] = $params['user_name'];
 			SessionManager::setAccount($account);
+
+			$this->addTemporaryMessage(I18n::message('message/flash/updated_user'));
 		}
 	}
 }

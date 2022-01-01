@@ -19,6 +19,7 @@ use \PeServer\Core\Mvc\SessionNextState;
 use \PeServer\Core\Mvc\IValidationReceiver;
 use PeServer\Core\Store\CookieOption;
 use \PeServer\Core\Store\CookieStore;
+use PeServer\Core\Store\TemporaryStore;
 use \PeServer\Core\Throws\ArgumentException;
 use \PeServer\Core\Throws\NotImplementedException;
 use \PeServer\Core\Throws\InvalidOperationException;
@@ -89,6 +90,7 @@ abstract class LogicBase implements IValidationReceiver
 	private $response = null;
 
 	private CookieStore $cookie;
+	private TemporaryStore $temporary;
 	private SessionStore $session;
 	private int $sessionNextState = SessionNextState::NORMAL;
 
@@ -104,6 +106,7 @@ abstract class LogicBase implements IValidationReceiver
 		$this->httpStatus = HttpStatus::ok();
 		$this->request = $parameter->request;
 		$this->cookie = $parameter->cookie;
+		$this->temporary = $parameter->temporary;
 		$this->session = $parameter->session;
 		$this->logger = $parameter->logger;
 
@@ -171,6 +174,35 @@ abstract class LogicBase implements IValidationReceiver
 	protected function removeCookie(string $key): void
 	{
 		$this->cookie->remove($key);
+	}
+
+	protected function peekTemporary(string $key, mixed $default = null): mixed
+	{
+		$value = $this->temporary->peek($key);
+		if (is_null($value)) {
+			return $default;
+		}
+
+		return $value;
+	}
+
+	protected function popTemporary(string $key, mixed $default = null): mixed
+	{
+		$value = $this->temporary->pop($key);
+		if (is_null($value)) {
+			return $default;
+		}
+
+		return $value;
+	}
+
+	protected function pushTemporary(string $key, mixed $value): void
+	{
+		$this->temporary->push($key, $value);
+	}
+	protected function removeTemporary(string $key): void
+	{
+		$this->temporary->remove($key);
 	}
 
 	protected function getSession(string $key, mixed $default = null): mixed

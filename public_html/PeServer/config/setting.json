@@ -20,6 +20,10 @@
 		"session": {
 			"name": "pe-sid",
 			"save": "<|BASE|>/data/store/session"
+		},
+		"temporary": {
+			"name": "pe-temp",
+			"save": "<|BASE|>/data/store/temporary"
 		}
 	},
 	"crypto": {
@@ -88,6 +92,22 @@
 				},
 				"website": {
 					"*": "URLが正しくありません"
+				}
+			}
+		},
+		"message": {
+			"flash": {
+				"updated_user": {
+					"*": "ユーザー情報を更新しました"
+				},
+				"updated_password": {
+					"*": "パスワードを更新しました"
+				},
+				"send_email_token": {
+					"*": "変更先メールアドレスにトークン発行通知メールを送信しました"
+				},
+				"updated_email": {
+					"*": "メールアドレスを更新しました"
 				}
 			}
 		},

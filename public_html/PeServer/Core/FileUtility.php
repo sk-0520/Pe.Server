@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
+use Exception;
 use \PeServer\Core\Throws\FileNotFoundException;
+use PeServer\Core\Throws\IOException;
 use \PeServer\Core\Throws\ParseException;
 use stdClass;
 
@@ -61,21 +63,55 @@ abstract class FileUtility
 		return self::toCanonicalize($joinedPath);
 	}
 
+	public static function readContent(string $path): string
+	{
+		/** @var string|false */
+		$content = false;
+		try {
+			$content = file_get_contents($path);
+		} catch (Exception $ex) {
+			throw new IOException($ex->getMessage(), $ex->getCode(), $ex);
+		}
+
+		if ($content === false) {
+			throw new IOException($path);
+		}
+
+		return $content;
+	}
+
+	private static function saveContent(string $path, mixed $data, bool $append): void
+	{
+		$flag = $append ? FILE_APPEND : 0;
+		$length = file_put_contents($path, $data, LOCK_EX | $flag);
+		if ($length === false) {
+			throw new IOException($path);
+		}
+	}
+
+	public static function writeContent(string $path, mixed $data): void
+	{
+		self::saveContent($path, $data, false);
+	}
+
+	public static function appendContent(string $path, mixed $data): void
+	{
+		self::saveContent($path, $data, true);
+	}
+
 	/**
 	 * JSONとしてファイル読み込み。
 	 *
 	 * @param string $path パス。
 	 * @param boolean $associative 連想配列として扱うか。
 	 * @return array<mixed>|\stdClass 応答JSON。
-	 * @throws FileNotFoundException ファイルが存在しない。
+	 * @throws IOException
 	 * @throws ParseException パース失敗。
 	 */
 	public static function readJsonFile(string $path, bool $associative = true): array|stdClass
 	{
-		$content = file_get_contents($path);
-		if ($content === false) {
-			throw new FileNotFoundException($path);
-		}
+		$content = self::readContent($path);
+
 		$json = json_decode($content, $associative);
 
 		if (is_null($json)) {
@@ -84,6 +120,25 @@ abstract class FileUtility
 
 		return $json;
 	}
+
+	/**
+	 * Undocumented function
+	 *
+	 * @param string $path
+	 * @param array<mixed>|stdClass $data
+	 * @return void
+	 */
+	public static function writeJsonFile(string $path, array|stdClass $data): void
+	{
+		$json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+
+		if ($json === false) {
+			throw new ParseException($path);
+		}
+
+		self::saveContent($path, $json, false);
+	}
+
 
 	/**
 	 * ディレクトリが存在しない場合に作成する。

@@ -8,7 +8,7 @@ use \PeServer\Core\ILogger;
 use \PeServer\Core\Mvc\ActionRequest;
 use \PeServer\Core\Store\CookieStore;
 use \PeServer\Core\Store\SessionStore;
-
+use PeServer\Core\Store\TemporaryStore;
 
 /**
  * ロジック用パラメータ。
@@ -29,12 +29,14 @@ class LogicParameter
 	public $request;
 
 	public CookieStore $cookie;
+	public TemporaryStore $temporary;
 	public SessionStore $session;
 
-	public function __construct(ActionRequest $request, CookieStore $cookie, SessionStore $session, ILogger $logger)
+	public function __construct(ActionRequest $request, CookieStore $cookie, TemporaryStore $temporary, SessionStore $session, ILogger $logger)
 	{
 		$this->request = $request;
 		$this->cookie = $cookie;
+		$this->temporary = $temporary;
 		$this->session = $session;
 		$this->logger = $logger;
 	}

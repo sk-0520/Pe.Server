@@ -7,7 +7,7 @@ namespace PeServer\Core\Throws;
 use \Throwable;
 use \PeServer\Core\Throws;
 
-class FileNotFoundException extends IOException
+class IOException extends CoreException
 {
 	public function __construct(string $message = "", int $code = 0, ?Throwable $previous = null)
 	{

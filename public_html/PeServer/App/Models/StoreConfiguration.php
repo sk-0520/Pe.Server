@@ -6,6 +6,7 @@ namespace PeServer\App\Models;
 
 use \PeServer\Core\ArrayUtility;
 use \PeServer\Core\Store\CookieOption;
+use \PeServer\Core\Store\TemporaryOption;
 use \PeServer\Core\Store\SessionOption;
 
 abstract class StoreConfiguration
@@ -35,6 +36,26 @@ abstract class StoreConfiguration
 	 *
 	 * @param array{string,string}|null $setting
 	 * @param CookieOption $cookie
+	 * @return TemporaryOption
+	 */
+	public static function getTemporary(?array $setting, CookieOption $cookie): TemporaryOption
+	{
+		$temporary = ArrayUtility::getOr($setting, 'temporary', null);
+
+		$option = TemporaryOption::create(
+			ArrayUtility::getOr($temporary, 'name', 'TEMP'),
+			ArrayUtility::getOr($temporary, 'save', './temp'),
+			$cookie
+		);
+
+		return $option;
+	}
+
+	/**
+	 * Undocumented function
+	 *
+	 * @param array{string,string}|null $setting
+	 * @param CookieOption $cookie
 	 * @return SessionOption
 	 */
 	public static function getSession(?array $setting, CookieOption $cookie): SessionOption
@@ -53,17 +74,19 @@ abstract class StoreConfiguration
 	/**
 	 * ストア情報取得。
 	 *
-	 * @return array{cookie:CookieOption,session:SessionOption}
+	 * @return array{cookie:CookieOption,temporary:TemporaryOption,session:SessionOption}
 	 */
 	public static function get(): array
 	{
 		$setting = ArrayUtility::getOr(AppConfiguration::$json, 'store', null);
 
 		$cookie = self::getCookie($setting);
+		$temporary = self::getTemporary($setting, $cookie);
 		$session = self::getSession($setting, $cookie);
 
 		return [
 			'cookie' => $cookie,
+			'temporary' => $temporary,
 			'session' => $session,
 		];
 	}
