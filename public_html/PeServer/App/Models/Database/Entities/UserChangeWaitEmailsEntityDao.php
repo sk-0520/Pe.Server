@@ -14,7 +14,7 @@ class UserChangeWaitEmailsEntityDao extends DaoBase
 		parent::__construct($database);
 	}
 
-	public function insertWaitEmails(string $userId, string $email, string $token):void
+	public function insertWaitEmails(string $userId, string $email, int $markEmail, string $token): void
 	{
 		$this->database->insertSingle(
 			<<<SQL
@@ -25,14 +25,16 @@ class UserChangeWaitEmailsEntityDao extends DaoBase
 					user_id,
 					token,
 					timestamp,
-					email
+					email,
+					mark_email
 				)
 				values
 				(
 					:user_id,
 					:token,
 					CURRENT_TIMESTAMP,
-					:email
+					:email,
+					:mark_email
 				)
 
 			SQL,
@@ -40,6 +42,7 @@ class UserChangeWaitEmailsEntityDao extends DaoBase
 				'user_id' => $userId,
 				'token' => $token,
 				'email' => $email,
+				'mark_email' => $markEmail,
 			]
 		);
 	}

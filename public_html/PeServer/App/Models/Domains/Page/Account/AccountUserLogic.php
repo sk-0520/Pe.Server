@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domains\Page\Account;
 
+use PeServer\App\Models\AppCryptography;
 use \PeServer\Core\I18n;
 use \PeServer\Core\Database;
 use \PeServer\Core\StringUtility;
@@ -37,6 +38,10 @@ class AccountUserLogic extends PageLogicBase
 		$usersEntityDao = new UsersEntityDao($database);
 
 		$userInfoData = $usersEntityDao->selectUserInfoData($userInfo['user_id']);
+
+		if (!StringUtility::isNullOrWhiteSpace($userInfoData['email'])) {
+			$userInfoData['email'] = AppCryptography::decrypt($userInfoData['email']);
+		}
 
 		$map = [
 			'user_id' => 'account_user_id',

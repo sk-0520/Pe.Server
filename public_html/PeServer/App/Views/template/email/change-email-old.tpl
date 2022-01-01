@@ -6,6 +6,11 @@
 	本メールをもってこのメールアドレスにメール配信されることはありません。
 </p>
 
+<div class="main" style="text-align:center">
+	変更先アドレス<br>
+	<code>{$values.new_email}</code>
+</div>
+
 <p style="color:#ff0000;font-weight:bold">
 	このメールアドレス変更が自分の意志で行われていない場合問い合わせをお願いします。
 </p>

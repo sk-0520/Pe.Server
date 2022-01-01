@@ -101,7 +101,8 @@ class UserDomainDao extends DaoBase
 			update
 				users
 			set
-				email = user_change_wait_emails.email
+				email = user_change_wait_emails.email,
+				mark_email = user_change_wait_emails.mark_email
 			from
 				user_change_wait_emails
 			where

@@ -17,6 +17,7 @@ use PeServer\Core\Mvc\LogicParameter;
 use PeServer\App\Models\SessionManager;
 use PeServer\Core\Mvc\TemplateParameter;
 use PeServer\App\Models\AppConfiguration;
+use PeServer\App\Models\AppCryptography;
 use PeServer\App\Models\AppTemplate;
 use PeServer\App\Models\Domains\AccountValidator;
 use PeServer\Core\Throws\NotImplementedException;
@@ -50,10 +51,23 @@ class AccountUserEmailLogic extends PageLogicBase
 		$database = $this->openDatabase();
 
 		$userDomainDao = new UserDomainDao($database);
-		$this->defaultValues = $userDomainDao->selectEmailAndWaitTokenTimestamp(
+		$values = $userDomainDao->selectEmailAndWaitTokenTimestamp(
 			$userInfo['user_id'],
 			AppConfiguration::$json['config']['confirm']['user_change_wait_email_minutes']
 		);
+
+		if (!StringUtility::isNullOrWhiteSpace($values['email'])) {
+			$this->defaultValues['email'] = AppCryptography::decrypt($values['email']);
+		} else {
+			$this->defaultValues['email'] = '';
+		}
+		if (!StringUtility::isNullOrWhiteSpace($values['wait_email'])) {
+			$this->defaultValues['wait_email'] = AppCryptography::decrypt($values['wait_email']);
+		} else {
+			$this->defaultValues['wait_email'] = '';
+		}
+
+		$this->defaultValues['token_timestamp_utc'] = $values['token_timestamp_utc'];
 	}
 
 	protected function registerKeys(LogicCallMode $callMode): void
@@ -117,9 +131,12 @@ class AccountUserEmailLogic extends PageLogicBase
 	{
 		$account = SessionManager::getAccount();
 
+		$email = $this->getRequest('account_email_email');
+
 		$params = [
 			'user_id' => $account['user_id'],
-			'email' => $this->getRequest('account_email_email'),
+			'email' => AppCryptography::encrypt($email),
+			'mark_email' => AppCryptography::toMark($email),
 			'token' => sprintf('%08d', mt_rand(0, 99999999)),
 		];
 
@@ -129,7 +146,7 @@ class AccountUserEmailLogic extends PageLogicBase
 			$userChangeWaitEmailsEntityDao = new UserChangeWaitEmailsEntityDao($database);
 
 			$userChangeWaitEmailsEntityDao->deleteByUserId($params['user_id']);
-			$userChangeWaitEmailsEntityDao->insertWaitEmails($params['user_id'], $params['email'], $params['token']);
+			$userChangeWaitEmailsEntityDao->insertWaitEmails($params['user_id'], $params['email'], $params['mark_email'], $params['token']);
 
 			$this->writeAuditLogCurrentUser(AuditLog::USER_EMAIL_CHANGING, ['token' => $params['token']], $database);
 
@@ -138,12 +155,15 @@ class AccountUserEmailLogic extends PageLogicBase
 
 		// トークン通知メール送信
 		$subject = I18n::message('subject/email_change_token');
-		$value = array_merge($params, $account);
-		$html = AppTemplate::createMailTemplate('change-email-token', $subject, $value);
+		$values = [
+			'name' => $account['name'],
+			'token' => $params['token'],
+		];
+		$html = AppTemplate::createMailTemplate('change-email-token', $subject, $values);
 
 		$mailer = new AppMailer();
 		$mailer->toAddresses = [
-			['address' => $params['email'], 'name' => $account['name']],
+			['address' => $email, 'name' => $account['name']],
 		];
 		$mailer->subject = I18n::message('subject/email_change_token');
 		$mailer->setMessage([
@@ -210,6 +230,8 @@ class AccountUserEmailLogic extends PageLogicBase
 				'user_id' => $account['user_id'],
 				'login_id' => $account['login_id'],
 				'name' => $account['name'],
+				'new_email' => $this->defaultValues['wait_email'],
+				'old_email' => $this->defaultValues['email'],
 			];
 			$html = AppTemplate::createMailTemplate($item['template'], $subject, $values);
 
