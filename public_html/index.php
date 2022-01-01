@@ -13,8 +13,8 @@ use \PeServer\App\Models\RouteConfiguration;
 use \PeServer\App\Models\Initializer;
 use PeServer\App\Models\StoreConfiguration;
 
-// ini_set('display_errors', '1');
-// error_reporting( E_ALL );
+ini_set('display_errors', '1');
+error_reporting( E_ALL );
 
 AutoLoader::initialize(
 	[

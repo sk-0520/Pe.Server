@@ -127,11 +127,11 @@ class DeployScript
 	private function db_migrates_0000(PDO $pdo)
 	{
 		//TODO: 全削除処理
-		$tablesStatement = $pdo->query("select sqlite_master.name from sqlite_master where sqlite_master.type='table' and sqlite_master.name <> 'sqlite_sequence'");
+		$tablesStatement = $pdo->query("select sqlite_master.name as name from sqlite_master where sqlite_master.type='table' and sqlite_master.name <> 'sqlite_sequence'");
 		$tableNameRows = $tablesStatement->fetchAll();
 
 		foreach ($tableNameRows as $tableNameRow) {
-			$tableName = $tableNameRow[0];
+			$tableName = $tableNameRow['name'];
 			$pdo->exec("drop table $tableName");
 		}
 		$tableNameRows = null;
