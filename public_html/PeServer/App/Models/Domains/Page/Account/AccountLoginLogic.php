@@ -15,6 +15,7 @@ use \PeServer\Core\Mvc\LogicParameter;
 use \PeServer\App\Models\Domains\Page\PageLogicBase;
 use \PeServer\App\Models\Database\Domains\UserDomainDao;
 use \PeServer\App\Models\Database\Entities\UsersEntityDao;
+use PeServer\Core\Cryptography;
 
 class AccountLoginLogic extends PageLogicBase
 {
@@ -82,7 +83,7 @@ class AccountLoginLogic extends PageLogicBase
 		}
 
 		// パスワード突合
-		$verify_ok = password_verify($this->getRequest('account_login_password'), $user['current_password']);
+		$verify_ok = Cryptography::verifyPassword($this->getRequest('account_login_password'), $user['current_password']);
 		if (!$verify_ok) {
 			$this->addError(Validator::COMMON, I18n::message(self::ERROR_LOGIN_PARAMETER));
 			$this->logger->warn('ログイン失敗: {0}', $user['user_id']);

@@ -22,6 +22,7 @@ use \PeServer\App\Models\AppConfiguration;
 use \PeServer\App\Models\Domains\Api\ApiLogicBase;
 use PeServer\App\Models\Database\Entities\UsersEntityDao;
 use PeServer\App\Models\Database\Entities\UserAuthenticationsEntityDao;
+use PeServer\Core\Cryptography;
 
 class DevelopmentAdministratorLogic extends ApiLogicBase
 {
@@ -43,7 +44,7 @@ class DevelopmentAdministratorLogic extends ApiLogicBase
 		$params = [
 			'user_id' => 'ffffffff-ffff-4fff-ffff-ffffffffffff',
 			'login_id' => $loginId,
-			'password' => password_hash($password, PASSWORD_DEFAULT),
+			'password' => Cryptography::toHashPassword($password),
 			'user_name' => "user-$loginId",
 			'email' => "$loginId@localhost",
 			'website' => 'http://localhost',

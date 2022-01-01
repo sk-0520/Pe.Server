@@ -15,6 +15,7 @@ use \PeServer\Core\Mvc\LogicParameter;
 use PeServer\App\Models\Domains\AccountValidator;
 use \PeServer\App\Models\Domains\Page\PageLogicBase;
 use \PeServer\App\Models\Database\Entities\UsersEntityDao;
+use PeServer\Core\Cryptography;
 use PeServer\Core\I18n;
 
 class AccountUserPasswordLogic extends PageLogicBase
@@ -46,11 +47,11 @@ class AccountUserPasswordLogic extends PageLogicBase
 			$userAuthenticationsEntityDao = new UserAuthenticationsEntityDao($database);
 			$passwords = $userAuthenticationsEntityDao->selectPasswords($this->userInfo()['user_id']);
 
-			if (!password_verify($value, $passwords['current_password'])) {
+			if (!Cryptography::verifyPassword($value, $passwords['current_password'])) {
 				$this->addError($key, I18n::message('error/password_incorrect'));
 			}
 			if (!StringUtility::isNullOrEmpty($passwords['generate_password'])) {
-				if (!password_verify($value, $passwords['generate_password'])) {
+				if (!Cryptography::verifyPassword($value, $passwords['generate_password'])) {
 					$this->addError($key, I18n::message('error/password_generate'));
 				}
 			}
@@ -82,7 +83,7 @@ class AccountUserPasswordLogic extends PageLogicBase
 
 		$params = [
 			'user_id' => $userInfo['user_id'],
-			'password' => password_hash($newPassword, PASSWORD_DEFAULT),
+			'password' => Cryptography::toHashPassword($newPassword),
 		];
 
 		$database = $this->openDatabase();

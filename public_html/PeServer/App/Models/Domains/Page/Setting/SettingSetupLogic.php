@@ -18,6 +18,7 @@ use \PeServer\App\Models\Domains\AccountValidator;
 use \PeServer\App\Models\Domains\Page\PageLogicBase;
 use \PeServer\App\Models\Database\Entities\UsersEntityDao;
 use \PeServer\App\Models\Database\Entities\UserAuthenticationsEntityDao;
+use PeServer\Core\Cryptography;
 use PeServer\Core\Throws\InvalidOperationException;
 
 class SettingSetupLogic extends PageLogicBase
@@ -91,7 +92,7 @@ class SettingSetupLogic extends PageLogicBase
 		$userInfo = [
 			'id' => Uuid::generateGuid(),
 			'generate_password' => '',
-			'current_password' => password_hash($params['password'], PASSWORD_DEFAULT),
+			'current_password' => Cryptography::toHashPassword($params['password']),
 		];
 
 
