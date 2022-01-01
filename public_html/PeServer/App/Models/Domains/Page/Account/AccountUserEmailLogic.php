@@ -171,8 +171,7 @@ class AccountUserEmailLogic extends PageLogicBase
 		]);
 
 		$mailer->send();
-
-		$this->addTemporaryMessage(I18n::message('message/flash/send_email_token'));
+		//file_put_contents('X:\00_others\00_others\a.html',$html);
 	}
 
 	private function executeConfirm(LogicCallMode $callMode): void
@@ -188,11 +187,14 @@ class AccountUserEmailLogic extends PageLogicBase
 		$result = $database->transaction(function (Database $database, array $params) {
 			$userDomainDao = new UserDomainDao($database);
 
+			$this->logger->trace('あかんかぁ');
 			$updated = $userDomainDao->updateEmailFromWaitEmail(
 				$params['user_id'],
 				$params['token'],
 				AppConfiguration::$json['config']['confirm']['user_change_wait_email_minutes']
 			);
+
+			$this->logger->trace('ここまで来てんのかい');
 
 			if (!$updated) {
 				return false;
@@ -249,7 +251,6 @@ class AccountUserEmailLogic extends PageLogicBase
 		}
 
 		$this->result['confirm'] = true;
-		$this->addTemporaryMessage(I18n::message('message/flash/updated_email'));
 	}
 
 	protected function cleanup(LogicCallMode $callMode): void
