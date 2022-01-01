@@ -38,7 +38,7 @@ class AccountValidator
 			$value = StringUtility::trim($value);
 			$trueKeeper = new TrueKeeper();
 
-			$trueKeeper->state = $this->validator->inRange($key, self::LOGIN_ID_RANGE_MIN, self::LOGIN_ID_RANGE_MIN, $value);
+			$trueKeeper->state = $this->validator->inRange($key, self::LOGIN_ID_RANGE_MIN, self::LOGIN_ID_RANGE_MAX, $value);
 			$trueKeeper->state = $this->validator->isMatch($key, '/^[a-zA-Z0-9\\-\\._]+$/', $value);
 
 			return $trueKeeper->state;
