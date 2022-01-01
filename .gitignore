@@ -7,6 +7,7 @@ temp/
 /public_html/PeServer/data/
 /public_html/PeServer/config/setting.production.json
 /public_html/PeServer/config/setting.development.json
+/dev/local-*
 desktop.ini
 *.lnk
 -*

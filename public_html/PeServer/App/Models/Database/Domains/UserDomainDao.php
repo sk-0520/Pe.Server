@@ -111,27 +111,11 @@ class UserDomainDao extends DaoBase
 				user_change_wait_emails.token = :token
 				and
 				(STRFTIME('%s', CURRENT_TIMESTAMP) - STRFTIME('%s', user_change_wait_emails.timestamp)) < :limit_minutes * 60
-			*/
+		*/
+
 		return $this->database->updateByKeyOrNothing(
 			<<<SQL
 
-			update
-				users
-			set
-				email = user_change_wait_emails.email,
-				mark_email = user_change_wait_emails.mark_email
-			from
-				user_change_wait_emails
-			where
-				users.user_id = :user_id
-				and
-				user_change_wait_emails.user_id = users.user_id
-				and
-				user_change_wait_emails.token = :token
-				and
-				(STRFTIME('%s', CURRENT_TIMESTAMP) - STRFTIME('%s', user_change_wait_emails.timestamp)) < :limit_minutes * 60
-
-			/*
 			update
 				users
 			set
@@ -161,7 +145,6 @@ class UserDomainDao extends DaoBase
 				)
 			where
 				users.user_id = :user_id
-			*/
 
 			SQL,
 			[
