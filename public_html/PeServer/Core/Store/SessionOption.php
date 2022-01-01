@@ -10,7 +10,7 @@ use \PeServer\Core\Throws\ArgumentException;
 
 class SessionOption
 {
-	public static function create(string $name, CookieOption $cookie): SessionOption
+	public static function create(string $name, string $savePath, CookieOption $cookie): SessionOption
 	{
 		if (StringUtility::isNullOrWhiteSpace($name)) {
 			throw new ArgumentException('$name');
@@ -19,6 +19,7 @@ class SessionOption
 		$option = new self();
 
 		$option->name = $name;
+		$option->savePath = $savePath;
 		$option->cookie = $cookie;
 
 		return $option;

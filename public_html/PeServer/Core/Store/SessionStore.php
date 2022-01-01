@@ -6,6 +6,7 @@ namespace PeServer\Core\Store;
 
 use \PeServer\Core\Csrf;
 use \PeServer\Core\ArrayUtility;
+use PeServer\Core\FileUtility;
 use \PeServer\Core\StringUtility;
 use \PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\CoreError;
@@ -84,6 +85,11 @@ class SessionStore
 
 		if (!StringUtility::isNullOrWhiteSpace($this->option->name)) {
 			session_name($this->option->name);
+		}
+
+		if (!StringUtility::isNullOrWhiteSpace($this->option->savePath)) {
+			FileUtility::createDirectoryIfNotExists($this->option->savePath);
+			session_save_path($this->option->savePath);
 		}
 
 		session_start();

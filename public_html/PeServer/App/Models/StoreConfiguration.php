@@ -43,6 +43,7 @@ abstract class StoreConfiguration
 
 		$option = SessionOption::create(
 			ArrayUtility::getOr($session, 'name', 'PHPSESSID'),
+			ArrayUtility::getOr($session, 'save', ''),
 			$cookie
 		);
 

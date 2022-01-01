@@ -18,8 +18,8 @@
 			"httpOnly": true
 		},
 		"session": {
-			"name": "pe",
-			"directory": ""
+			"name": "pe-sid",
+			"save": "<|BASE|>/data/store/session"
 		}
 	},
 	"crypto": {
