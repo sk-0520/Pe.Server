@@ -128,7 +128,7 @@ class UsersEntityDao extends DaoBase
 		)['email'];
 	}
 
-	public function insertUser(string $userId, string $loginId, string $level, string $state, string $userName, string $email, string $website, string $note): void
+	public function insertUser(string $userId, string $loginId, string $level, string $state, string $userName, string $email, int $mark_email, string $website, string $note): void
 	{
 		$this->database->insertSingle(
 			<<<SQL
@@ -142,6 +142,7 @@ class UsersEntityDao extends DaoBase
 					state,
 					name,
 					email,
+					mark_email,
 					website,
 					note
 				)
@@ -153,6 +154,7 @@ class UsersEntityDao extends DaoBase
 					:state,
 					:name,
 					:email,
+					:mark_email,
 					:website,
 					:note
 				)
@@ -165,6 +167,7 @@ class UsersEntityDao extends DaoBase
 				'state' => $state,
 				'name' => $userName,
 				'email' => $email,
+				'mark_email' => $mark_email,
 				'website' => $website,
 				'note' => $note,
 			]

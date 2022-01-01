@@ -22,6 +22,11 @@
 			"directory": ""
 		}
 	},
+	"crypto": {
+		"algorithm": "aes-256-cbc",
+		"password": "password",
+		"pepper": "pepper"
+	},
 	"config": {
 		"confirm": {
 			"user_change_wait_email_minutes": 10,

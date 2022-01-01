@@ -19,6 +19,7 @@ use \PeServer\Core\Mvc\LogicCallMode;
 use \PeServer\Core\Mvc\LogicParameter;
 use \PeServer\Core\Throws\CoreException;
 use \PeServer\App\Models\AppConfiguration;
+use PeServer\App\Models\AppCryptography;
 use \PeServer\App\Models\Domains\Api\ApiLogicBase;
 use PeServer\App\Models\Database\Entities\UsersEntityDao;
 use PeServer\App\Models\Database\Entities\UserAuthenticationsEntityDao;
@@ -40,13 +41,15 @@ class DevelopmentAdministratorLogic extends ApiLogicBase
 	{
 		$loginId = 'root';
 		$password = 'root';
+		$email = "$loginId@localhost.localdomain";
 
 		$params = [
 			'user_id' => 'ffffffff-ffff-4fff-ffff-ffffffffffff',
 			'login_id' => $loginId,
 			'password' => Cryptography::toHashPassword($password),
 			'user_name' => "user-$loginId",
-			'email' => "$loginId@localhost",
+			'email' => AppCryptography::encrypt($email),
+			'mark_email' => AppCryptography::toMark($email),
 			'website' => 'http://localhost',
 		];
 
@@ -63,6 +66,7 @@ class DevelopmentAdministratorLogic extends ApiLogicBase
 				UserState::ENABLED,
 				$params['user_name'],
 				$params['email'],
+				$params['mark_email'],
 				$params['website'],
 				'開発用 自動生成 管理者'
 			);

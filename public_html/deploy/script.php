@@ -51,8 +51,7 @@ class DeployScript
 
 		// 設定のマージとかしんどいので直接書いとく。
 		$this->migrate([
-			'driver' => 'sqlite3',
-			'connection' => $this->scriptArgument->joinPath($this->getAppDirectoryPath(), 'data/data.sqlite3'),
+			'connection' => 'sqlite:' . $this->scriptArgument->joinPath($this->getAppDirectoryPath(), 'data/data.sqlite3'),
 			'user' => '',
 			'passwd' => '',
 		]);
@@ -72,7 +71,7 @@ class DeployScript
 
 	private function createConnection(array $databaseSetting): PDO
 	{
-		$pdo = new PDO('sqlite:' . $databaseSetting['connection']/*, null, null, [
+		$pdo = new PDO($databaseSetting['connection']/*, null, null, [
 			PDO::ATTR_PERSISTENT => true,
 		]*/);
 		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -139,7 +138,7 @@ class DeployScript
 
 		//TODO: 暗号化とかとか
 		$userId = '00000000-0000-4000-0000-000000000000';
-		$loginId = 'setup-' . bin2hex(openssl_random_pseudo_bytes(2));
+		$loginId = 'setup_' . date('YmdHis');
 		$rawPassword = bin2hex(openssl_random_pseudo_bytes(4));
 		$encPassword = password_hash($rawPassword, PASSWORD_DEFAULT);
 
@@ -161,7 +160,8 @@ create table
 		[level] text not null, -- ユーザーレベル(権限てきな)
 		[state] text not null, -- 状態
 		[name] text not null, -- 名前
-		[email] text not null, -- メールアドレス
+		[email] text not null, -- メールアドレス(暗号化)
+		[mark_email] integer not null, -- 絞り込み用メールアドレス(ハッシュ:fnv)
 		[website] text not null, -- Webサイト
 		[note] text not null, -- 管理者用メモ
 		primary key([user_id])
@@ -172,8 +172,8 @@ create table
 	[user_authentications] -- ユーザー認証情報
 	(
 		[user_id] text not null, -- ユーザーID
-		[generate_password] text not null, -- 自動生成パスワード
-		[current_password] text not null, -- 現在パスワード
+		[generate_password] text not null, -- 自動生成パスワード(ハッシュ) 空白の可能性あり(セットアップ・管理者等)
+		[current_password] text not null, -- 現在パスワード(ハッシュ)
 		primary key([user_id]),
 		foreign key ([user_id]) references users([user_id])
 	)
@@ -200,7 +200,8 @@ create table
 		[user_id] text not null, -- ユーザーID
 		[token] text not null, -- トークン
 		[timestamp] text not null, -- トークン発行日時(UTC)
-		[email] text not null, -- 変更後メールアドレス
+		[email] text not null, -- 変更後メールアドレス(暗号化)
+		[mark_email] integer not null, -- 絞り込み用メールアドレス(ハッシュ:fnv)
 		primary key([user_id]),
 		foreign key ([user_id]) references users([user_id])
 	)
@@ -209,13 +210,23 @@ create table
 create table
 	[sign_up_wait_emails] -- 新規登録時のユーザーメールアドレス待機
 	(
-		[email] text not null, -- メールアドレス
+		[mark_email] integer not null, -- 絞り込み用メールアドレス(ハッシュ:fnv)
 		[token] text not null, -- トークン
+		[email] text not null, -- メールアドレス(暗号化)
 		[timestamp] text not null, -- トークン発行日時(UTC)
 		[ip_address] text not null, -- クライアントIPアドレス
-		[user_agent] text not null, -- クライアントUA
-		primary key([email], [token])
+		[user_agent] text not null -- クライアントUA
 	)
+;
+
+create index
+	[sign_up_wait_emails_index_search]
+	on
+		[sign_up_wait_emails]
+		(
+			[mark_email],
+			[token]
+		)
 ;
 
 insert into
@@ -227,6 +238,7 @@ insert into
 		[state],
 		[name],
 		[email],
+		[mark_email],
 		[website],
 		[note]
 	)
@@ -238,6 +250,7 @@ insert into
 		'enabled',
 		'setup user',
 		'',
+		0,
 		'',
 		''
 	)

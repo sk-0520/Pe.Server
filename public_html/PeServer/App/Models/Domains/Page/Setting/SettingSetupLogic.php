@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domains\Page\Setting;
 
+use PeServer\App\Models\AppCryptography;
 use \PeServer\Core\Uuid;
 use \PeServer\Core\I18n;
 use \PeServer\Core\Database;
@@ -81,11 +82,14 @@ class SettingSetupLogic extends PageLogicBase
 
 		$currentUserInfo = $this->userInfo();
 
+		$email = $this->getRequest('setting_setup_email');
+
 		$params = [
 			'login_id' => $this->getRequest('setting_setup_login_id'),
 			'password' => $this->getRequest('setting_setup_password', '', false),
 			'user_name' => $this->getRequest('setting_setup_user_name'),
-			'email' => $this->getRequest('setting_setup_email'),
+			'email' => AppCryptography::encrypt($email),
+			'mark_email' => AppCryptography::toMark($email),
 			'website' => $this->getRequest('setting_setup_website'),
 		];
 
@@ -116,6 +120,7 @@ class SettingSetupLogic extends PageLogicBase
 				UserState::ENABLED,
 				$params['user_name'],
 				$params['email'],
+				$params['mark_email'],
 				$params['website'],
 				''
 			);
