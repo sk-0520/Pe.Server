@@ -4,55 +4,55 @@ use Deploy\FileUtility;
 
 class DeployScript
 {
-	private $_scriptArgument;
-	private $_fileTimestampName;
+	private $scriptArgument;
+	private $fileTimestampName;
 
 	public function __construct(\Deploy\ScriptArgument $scriptArgument)
 	{
-		$this->_scriptArgument = $scriptArgument;
-		$this->_fileTimestampName = date("Y-m-d_His");
+		$this->scriptArgument = $scriptArgument;
+		$this->fileTimestampName = date("Y-m-d_His");
 	}
 
 	private function getAppDirectoryPath(): string
 	{
-		return $this->_scriptArgument->joinPath($this->_scriptArgument->publicDirectoryPath, 'PeServer');
+		return $this->scriptArgument->joinPath($this->scriptArgument->publicDirectoryPath, 'PeServer');
 	}
 
 	public function before(): void
 	{
-		$this->_scriptArgument->log('before script');
+		$this->scriptArgument->log('before script');
 
-		// キャッシュの破棄
+		// 不要データの破棄
 		$removeDirs = [
-			$this->_scriptArgument->joinPath($this->getAppDirectoryPath(), 'data', 'temp', 'views', 'c'),
+			$this->scriptArgument->joinPath($this->getAppDirectoryPath(), 'data', 'temp', 'views'),
 		];
 
 		foreach ($removeDirs as $removeDir) {
-			$this->_scriptArgument->log('remove: ' . $removeDir);
-			$this->_scriptArgument->cleanupDirectory($removeDir);
+			$this->scriptArgument->log('remove: ' . $removeDir);
+			$this->scriptArgument->cleanupDirectory($removeDir);
 		}
 
-		$backupDirectoryPath = $this->_scriptArgument->joinPath($this->getAppDirectoryPath(), 'data', 'backups');
+		$backupDirectoryPath = $this->scriptArgument->joinPath($this->getAppDirectoryPath(), 'data', 'backups');
 		if (!file_exists($backupDirectoryPath)) {
 			mkdir($backupDirectoryPath, 0777, true);
 		}
-		$backupArchiveFilePath = $this->_scriptArgument->joinPath($backupDirectoryPath, $this->_fileTimestampName . '.zip');
+		$backupArchiveFilePath = $this->scriptArgument->joinPath($backupDirectoryPath, $this->fileTimestampName . '.zip');
 
 		// バックアップ
 		$srcBackupPaths = [
-			$this->_scriptArgument->joinPath('PeServer', 'data', 'data.sqlite3'),
+			$this->scriptArgument->joinPath('PeServer', 'data', 'data.sqlite3'),
 		];
-		$this->_scriptArgument->backupFiles($backupArchiveFilePath, $srcBackupPaths);
+		$this->scriptArgument->backupFiles($backupArchiveFilePath, $srcBackupPaths);
 	}
 
 	public function after(): void
 	{
-		$this->_scriptArgument->log('after script');
+		$this->scriptArgument->log('after script');
 
 		// 設定のマージとかしんどいので直接書いとく。
 		$this->migrate([
 			'driver' => 'sqlite3',
-			'connection' => $this->_scriptArgument->joinPath($this->getAppDirectoryPath(), 'data/data.sqlite3'),
+			'connection' => $this->scriptArgument->joinPath($this->getAppDirectoryPath(), 'data/data.sqlite3'),
 			'user' => '',
 			'passwd' => '',
 		]);
@@ -85,7 +85,7 @@ class DeployScript
 	 */
 	private function db_migrate(array $databaseSetting)
 	{
-		$this->_scriptArgument->log('!!!!!!!!!!db_migrate!!!!!!!!!!');
+		$this->scriptArgument->log('!!!!!!!!!!db_migrate!!!!!!!!!!');
 
 		// SQLite を使うのは決定事項である！
 		$filePath = $databaseSetting['connection'];
@@ -113,7 +113,7 @@ class DeployScript
 		$pdo = $this->createConnection($databaseSetting);
 		$pdo->exec('PRAGMA foreign_keys = OFF;');
 		for ($i = $dbVersion + 1; $i < count($db_migrates); $i++) {
-			$this->_scriptArgument->log('DB: ' . $db_migrates[$i]);
+			$this->scriptArgument->log('DB: ' . $db_migrates[$i]);
 			call_user_func(array($this, $db_migrates[$i]), $pdo);
 			$newVersion = $i;
 		}
@@ -261,8 +261,8 @@ insert into
 SQL
 		);
 
-		$this->_scriptArgument->log('SETTUP LOG');
-		$this->_scriptArgument->log([
+		$this->scriptArgument->log('SETTUP LOG');
+		$this->scriptArgument->log([
 			'userId' => $userId,
 			'loginId' => $loginId,
 			'password' => $rawPassword,
