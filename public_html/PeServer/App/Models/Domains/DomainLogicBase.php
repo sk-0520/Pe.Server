@@ -41,7 +41,6 @@ abstract class DomainLogicBase extends LogicBase
 		$persistence = AppConfiguration::$json['persistence'];
 
 		return new Database(
-			$persistence['driver'],
 			$persistence['connection'],
 			$persistence['user'],
 			$persistence['password'],

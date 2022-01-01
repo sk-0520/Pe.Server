@@ -1,7 +1,6 @@
 {
 	"persistence": {
-		"driver": "sqlite3",
-		"connection": "<|BASE|>/data/data.sqlite3",
+		"connection": "sqlite:<|BASE|>/data/data.sqlite3",
 		"user": "",
 		"password": ""
 	},

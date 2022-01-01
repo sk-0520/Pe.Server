@@ -25,24 +25,17 @@ class Database
 	/**
 	 * Undocumented function
 	 *
-	 * @param string $driver 接続先
-	 * @param string $connection
+	 * @param string $dsn
 	 * @param string $user
 	 * @param string $password
 	 * @param array<mixed>|null $option
 	 * @param ILogger $logger
 	 */
-	public function __construct(string $driver, string $connection, string $user, string $password, ?array $option, ILogger $logger)
+	public function __construct(string $connection, string $user, string $password, ?array $option, ILogger $logger)
 	{
 		$this->logger = $logger;
 
-		$target = match ($driver) {
-			'sqlite3' => 'sqlite',
-			default => $driver,
-		};
-
-		$dsn = $target . ':' . $connection;
-		$this->pdo = new PDO($dsn, $user, $password, $option);
+		$this->pdo = new PDO($connection, $user, $password, $option);
 		$this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 	}
