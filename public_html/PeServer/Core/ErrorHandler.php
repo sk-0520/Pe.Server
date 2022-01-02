@@ -21,6 +21,20 @@ abstract class ErrorHandler
 		return self::$core ??= new _CoreErrorHandler();
 	}
 
+	protected static RequestPath $requestPath;
+
+	public static function setRequestPath(RequestPath $requestPath): void
+	{
+		self::$requestPath = $requestPath;
+	}
+
+	/**
+	 * エラーハンドラの登録処理。
+	 *
+	 * 明示的に呼び出しが必要。
+	 *
+	 * @return void
+	 */
 	public final function register(): void
 	{
 		register_shutdown_function([$this, 'receiveShutdown']);
@@ -92,16 +106,27 @@ abstract class ErrorHandler
 
 	private function _catchError(int $errorNumber, string $message, string $file, int $lineNumber, ?Throwable $throwable): void
 	{
-		$this->catchError($errorNumber, $message, $file, $lineNumber, $throwable);
-		exit;
+		if (!$this->catchError($errorNumber, $message, $file, $lineNumber, $throwable)) {
+			exit;
+		}
 	}
 
-	public abstract function catchError(int $errorNumber, string $message, string $file, int $lineNumber, ?Throwable $throwable): void;
+	/**
+	 * Undocumented function
+	 *
+	 * @param integer $errorNumber
+	 * @param string $message
+	 * @param string $file
+	 * @param integer $lineNumber
+	 * @param Throwable|null $throwable
+	 * @return boolean 次へいけるか
+	 */
+	public abstract function catchError(int $errorNumber, string $message, string $file, int $lineNumber, ?Throwable $throwable): bool;
 }
 
 final class _CoreErrorHandler extends ErrorHandler
 {
-	public function catchError(int $errorNumber, string $message, string $file, int $lineNumber, ?Throwable $throwable): void
+	public function catchError(int $errorNumber, string $message, string $file, int $lineNumber, ?Throwable $throwable): bool
 	{
 		$values = [
 			'error_number' => $errorNumber,
@@ -116,5 +141,7 @@ final class _CoreErrorHandler extends ErrorHandler
 
 		$this->setHttpStatus($throwable);
 		$this->applyTemplate('error-display.tpl', 'template', 'Core', $values);
+
+		return true;
 	}
 }

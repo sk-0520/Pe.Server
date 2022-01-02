@@ -260,12 +260,12 @@ abstract class StringUtility
 	/**
 	 * 文字列結合。
 	 *
-	 * @param string $separator
 	 * @param string[] $values
+	 * @param string $separator
 	 * @return string
 	 * @see https://www.php.net/manual/ja/function.implode.php
 	 */
-	public static function join(string $separator, array $values): string
+	public static function join(array $values, string $separator): string
 	{
 		return implode($separator, $values);
 	}

@@ -151,14 +151,12 @@ class Route
 	 * メソッド・リクエストパスから登録されているアクションを取得。
 	 *
 	 * @param string $httpMethod HttpMethod を参照のこと
-	 * @param string[] $requestPaths リクエストパス。URLパラメータは含まない
+	 * @param RequestPath $requestPath リクエストパス
 	 * @return array{code:HttpStatus,class:string,method:string,params:array<string,string>,filters:IActionFilter[]}|null 存在する場合にクラス・メソッドのペア。存在しない場合は null
 	 */
-	public function getAction(string $httpMethod, array $requestPaths): ?array
+	public function getAction(string $httpMethod, RequestPath $requestPath): ?array
 	{
-		$requestPath = implode('/', $requestPaths);
-
-		if (!StringUtility::startsWith($requestPath, $this->basePath, false)) {
+		if (!StringUtility::startsWith($requestPath->path, $this->basePath, false)) {
 			return [
 				'code' => HttpStatus::notFound(),
 				'class' => $this->className,
@@ -169,7 +167,7 @@ class Route
 		}
 
 		//$actionPath = $requestPaths[count($requestPaths) - 1];
-		$actionPath = ltrim(mb_substr($requestPath, mb_strlen($this->basePath)), '/');
+		$actionPath = ltrim(mb_substr($requestPath->path, mb_strlen($this->basePath)), '/');
 		$actionPaths = explode('/', $actionPath);
 
 		if (!isset($this->actions[$actionPath])) {

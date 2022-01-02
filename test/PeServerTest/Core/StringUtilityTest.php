@@ -231,8 +231,8 @@ class StringUtilityTest extends TestClass
 	public function test_join()
 	{
 		$tests = [
-			new Data('abc', '', ['a', 'b', 'c']),
-			new Data('a,b,c', ',', ['a', 'b', 'c']),
+			new Data('abc', ['a', 'b', 'c'], ''),
+			new Data('a,b,c', ['a', 'b', 'c'], ','),
 		];
 		foreach ($tests as $test) {
 			$actual = StringUtility::join(...$test->args);

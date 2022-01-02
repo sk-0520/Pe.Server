@@ -47,7 +47,7 @@ abstract class ActionResult implements IActionResult
 				$codeHeaders[$k] = $v;
 			} else {
 				/** @var string[] $v */
-				$joinHeaders[$k] = StringUtility::join(', ', $v);
+				$joinHeaders[$k] = StringUtility::join($v, ', ');
 			}
 		}
 

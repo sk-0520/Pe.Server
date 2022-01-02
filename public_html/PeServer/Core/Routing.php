@@ -72,31 +72,16 @@ class Routing
 	}
 
 	/**
-	 * パス部分を取得。
-	 *
-	 * @param string $requestUri
-	 * @return string[] クエリを含まないパス一覧。
-	 */
-	private function getPathValues(string $requestUri): array
-	{
-		$reqs = explode('?', $requestUri, 2);
-
-		$paths = explode('/', trim($reqs[0], '/'));
-
-		return $paths;
-	}
-
-	/**
 	 * Undocumented function
 	 *
-	 * @param string[] $requestPaths
+	 * @param RequestPath $requestPath
 	 * @param ActionRequest $request
 	 * @param IActionFilter $filter
 	 * @return bool 次のフィルタを実行してよいか
 	 */
-	private function filterCore(array $requestPaths, ActionRequest $request, IActionFilter $filter): bool
+	private function filterCore(RequestPath $requestPath, ActionRequest $request, IActionFilter $filter): bool
 	{
-		$filterArgument = new FilterArgument($requestPaths, $this->cookie, $this->session, $request, $this->filterLogger);
+		$filterArgument = new FilterArgument($requestPath, $this->cookie, $this->session, $request, $this->filterLogger);
 		$filterResult = $filter->filtering($filterArgument);
 
 		if ($filterResult->canNext()) {
@@ -111,14 +96,14 @@ class Routing
 	 * Undocumented function
 	 *
 	 * @param IActionFilter[] $filters
-	 * @param string[] $requestPaths
+	 * @param RequestPath $requestPath
 	 * @param ActionRequest $request
 	 * @return bool 後続処理は可能か
 	 */
-	private function filter(array $filters, array $requestPaths, ActionRequest $request): bool
+	private function filter(array $filters, RequestPath $requestPath, ActionRequest $request): bool
 	{
 		foreach ($filters as $filter) {
-			$canNext = $this->filterCore($requestPaths, $request, $filter);
+			$canNext = $this->filterCore($requestPath, $request, $filter);
 			if (!$canNext) {
 				return false;
 			}
@@ -130,14 +115,14 @@ class Routing
 	/**
 	 * アクション実行。
 	 *
-	 * @param string[] $requestPaths
+	 * @param RequestPath $requestPath
 	 * @param string $rawControllerName
 	 * @param string $methodName
 	 * @param string[] $urlParameters
 	 * @param IActionFilter[] $filters
 	 * @return void
 	 */
-	private function executeAction(array $requestPaths, string $rawControllerName, string $methodName, array $urlParameters, array $filters): void
+	private function executeAction(RequestPath $requestPath, string $rawControllerName, string $methodName, array $urlParameters, array $filters): void
 	{
 		$splitNames = explode('/', $rawControllerName);
 		$controllerName = $splitNames[count($splitNames) - 1];
@@ -145,12 +130,12 @@ class Routing
 		$request = new ActionRequest($urlParameters);
 
 		// アクション共通フィルタ処理
-		if (!$this->filter($this->actionFilters, $requestPaths, $request)) {
+		if (!$this->filter($this->actionFilters, $requestPath, $request)) {
 			return;
 		}
 
 		// アクションに紐づくフィルタ処理
-		if (!$this->filter($filters, $requestPaths, $request)) {
+		if (!$this->filter($filters, $requestPath, $request)) {
 			return;
 		}
 
@@ -170,17 +155,15 @@ class Routing
 	 * 失敗時の云々が甘いというかまだなんも考えてない。
 	 *
 	 * @param string $requestMethod HttpMethod を参照。
-	 * @param string $requestUri リクエストURL。
+	 * @param RequestPath $requestPath リクエストパス。
 	 * @return void
 	 */
-	private function executeCore(string $requestMethod, string $requestUri): void
+	private function executeCore(string $requestMethod, RequestPath $requestPath): void
 	{
-		$requestPaths = $this->getPathValues($requestUri);
-
 		// グローバルフィルタの適用
 		if (ArrayUtility::getCount($this->globalFilters)) {
 			$request = new ActionRequest([]);
-			if (!$this->filter($this->globalFilters, $requestPaths, $request)) {
+			if (!$this->filter($this->globalFilters, $requestPath, $request)) {
 				return;
 			}
 		}
@@ -188,10 +171,10 @@ class Routing
 		/** @var array{code:HttpStatus,class:string,method:string,params:array<string,string>,filters:IActionFilter[]}|null */
 		$errorAction = null;
 		foreach ($this->routeMap as $route) {
-			$action = $route->getAction($requestMethod, $requestPaths);
+			$action = $route->getAction($requestMethod, $requestPath);
 			if (!is_null($action)) {
 				if ($action['code']->code() === HttpStatus::none()->code()) {
-					$this->executeAction($requestPaths, $action['class'], $action['method'], $action['params'], $action['filters']);
+					$this->executeAction($requestPath, $action['class'], $action['method'], $action['params'], $action['filters']);
 					return;
 				} else if (is_null($errorAction)) {
 					$errorAction = $action;
@@ -212,11 +195,11 @@ class Routing
 	 * 失敗時の云々が甘いというかまだなんも考えてない。
 	 *
 	 * @param string $requestMethod HttpMethod を参照。
-	 * @param string $requestUri リクエストURL。
+	 * @param RequestPath $requestPath リクエストパス。
 	 * @return void
 	 */
-	public function execute(string $requestMethod, string $requestUri): void
+	public function execute(string $requestMethod, RequestPath $requestPath): void
 	{
-		$this->executeCore($requestMethod, $requestUri);
+		$this->executeCore($requestMethod, $requestPath);
 	}
 }
