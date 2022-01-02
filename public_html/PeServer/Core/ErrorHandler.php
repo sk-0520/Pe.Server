@@ -11,7 +11,7 @@ use PeServer\Core\Mvc\Validator;
 use PeServer\Core\Throws\Throws;
 use PeServer\Core\Mvc\TemplateParameter;
 use PeServer\Core\Throws\HttpStatusException;
-
+use PeServer\Core\Throws\InvalidOperationException;
 
 abstract class ErrorHandler
 {
@@ -21,12 +21,7 @@ abstract class ErrorHandler
 		return self::$core ??= new _CoreErrorHandler();
 	}
 
-	protected static RequestPath $requestPath;
-
-	public static function setRequestPath(RequestPath $requestPath): void
-	{
-		self::$requestPath = $requestPath;
-	}
+	private bool $isRegistered = false;
 
 	/**
 	 * エラーハンドラの登録処理。
@@ -37,9 +32,14 @@ abstract class ErrorHandler
 	 */
 	public final function register(): void
 	{
+		if ($this->isRegistered) {
+			throw new InvalidOperationException();
+		}
+
 		register_shutdown_function([$this, 'receiveShutdown']);
 		set_exception_handler([$this, 'receiveException']);
 		set_error_handler([$this, 'receiveError']); //@phpstan-ignore-line なんやねんもう！
+		$this->isRegistered = true;
 	}
 
 	public final function receiveShutdown(): void

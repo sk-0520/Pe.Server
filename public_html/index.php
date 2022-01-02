@@ -9,6 +9,7 @@ require_once(__DIR__ . '/PeServer/Core/AutoLoader.php');
 use PeServer\Core\Routing;
 use PeServer\Core\AutoLoader;
 use PeServer\Core\RequestPath;
+use PeServer\App\Models\AppRouting;
 use PeServer\App\Models\Initializer;
 use PeServer\Core\Store\CookieOption;
 use PeServer\App\Models\RouteConfiguration;
@@ -30,5 +31,5 @@ Initializer::initialize(
 	':REVISION:'
 );
 
-$routing = new Routing(RouteConfiguration::get(), StoreConfiguration::get());
+$routing = new AppRouting(RouteConfiguration::get(), StoreConfiguration::get());
 $routing->execute($_SERVER['REQUEST_METHOD'], new RequestPath($_SERVER['REQUEST_URI'], ''));

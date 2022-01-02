@@ -13,7 +13,7 @@ abstract class CoreInitializer
 	 */
 	private static $initializeChecker;
 
-	public static function initialize(): void
+	public static function initialize(string $environment): void
 	{
 		if (is_null(self::$initializeChecker)) {
 			self::$initializeChecker = new InitializeChecker();
@@ -23,6 +23,10 @@ abstract class CoreInitializer
 		mb_language('ja');
 		mb_internal_encoding('UTF-8');
 
-		ErrorHandler::core()->register();
+		Environment::initialize($environment);
+
+		if(!Environment::isTest()) {
+			ErrorHandler::core()->register();
+		}
 	}
 }

@@ -5,20 +5,24 @@ declare(strict_types=1);
 namespace PeServer\Core;
 
 use \Exception;
+use PeServer\Core\HttpStatus;
 use PeServer\Core\Log\Logging;
+use PeServer\Core\RequestPath;
+use PeServer\Core\ArrayUtility;
+use PeServer\Core\FilterResult;
+use PeServer\Core\IActionFilter;
 use PeServer\Core\FilterArgument;
+use PeServer\Core\Mvc\ActionResult;
 use PeServer\Core\Mvc\ActionRequest;
 use PeServer\Core\Mvc\IActionResult;
 use PeServer\Core\Store\CookieStore;
 use PeServer\Core\Mvc\ControllerBase;
 use PeServer\Core\Store\CookieOption;
-use PeServer\Core\Store\TemporaryOption;
-use PeServer\Core\Store\SessionOption;
 use PeServer\Core\Store\SessionStore;
-use PeServer\App\Models\SessionManager;
-use PeServer\Core\Mvc\ActionResult;
-use PeServer\Core\Mvc\ControllerArgument;
+use PeServer\Core\Store\SessionOption;
 use PeServer\Core\Store\TemporaryStore;
+use PeServer\Core\Store\TemporaryOption;
+use PeServer\Core\Mvc\ControllerArgument;
 
 /**
  * ルーティング。
@@ -30,25 +34,25 @@ class Routing
 	 *
 	 * @var IActionFilter[]
 	 */
-	private array $globalFilters;
+	protected array $globalFilters;
 	/**
 	 * アクション共通フィルタ処理
 	 *
 	 * @var IActionFilter[]
 	 */
-	private array $actionFilters;
+	protected array $actionFilters;
 	/**
 	 * ルーティング情報。
 	 *
 	 * @var Route[]
 	 */
-	private $routeMap;
+	protected $routeMap;
 
-	private CookieStore $cookie;
-	private TemporaryStore $temporary;
-	private SessionStore $session;
+	protected CookieStore $cookie;
+	protected TemporaryStore $temporary;
+	protected SessionStore $session;
 
-	private ILogger $filterLogger;
+	protected ILogger $filterLogger;
 
 	/**
 	 * 生成。
@@ -65,8 +69,6 @@ class Routing
 		$this->cookie = new CookieStore($storeOption['cookie']);
 		$this->temporary = new TemporaryStore($storeOption['temporary'], $this->cookie);
 		$this->session = new SessionStore($storeOption['session'], $this->cookie);
-
-		SessionManager::initialize($this->session);
 
 		$this->filterLogger = Logging::create('filtering');
 	}

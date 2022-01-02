@@ -7,6 +7,7 @@ namespace PeServer\App\Models;
 use PeServer\Core\CoreInitializer;
 use PeServer\Core\InitializeChecker;
 use PeServer\App\Models\AppConfiguration;
+use PeServer\Core\Environment;
 
 abstract class Initializer
 {
@@ -24,7 +25,7 @@ abstract class Initializer
 		}
 		self::$initializeChecker->initialize();
 
-		CoreInitializer::initialize();
-		AppConfiguration::initialize($rootDirectoryPath, $baseDirectoryPath, $environment, $revision);
+		CoreInitializer::initialize($environment);
+		AppConfiguration::initialize($rootDirectoryPath, $baseDirectoryPath, Environment::get(), $revision);
 	}
 }

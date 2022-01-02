@@ -118,29 +118,8 @@ abstract class AppConfiguration
 		Template::initialize($rootDirectoryPath, $baseDirectoryPath, 'App/Views', 'data/temp/views', $environment, $revision);
 		I18n::initialize($json['i18n']);
 
-		self::$environment = $environment;
 		self::$json = $json;
 		self::$rootDirectoryPath = $rootDirectoryPath;
 		self::$baseDirectoryPath = $baseDirectoryPath;
-	}
-
-	public static function isEnvironment(string $environment): bool
-	{
-		self::$initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
-
-		return self::$environment === $environment;
-	}
-
-	public static function isProductionEnvironment(): bool
-	{
-		return self::isEnvironment('production');
-	}
-	public static function isDevelopmentEnvironment(): bool
-	{
-		return self::isEnvironment('development');
-	}
-	public static function isTestEnvironment(): bool
-	{
-		return self::isEnvironment('test');
 	}
 }
