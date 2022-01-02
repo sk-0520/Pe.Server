@@ -91,6 +91,8 @@ class DeployScript
 		$filePath = $databaseSetting['connection'];
 		$dbVersion = -1;
 		if (file_exists($filePath)) {
+			$this->scriptArgument->log("DBあり: $filePath");
+
 			$checkPdo = $this->createConnection($databaseSetting);
 			$checkCountStatement = $checkPdo->query("select COUNT(*) from sqlite_master where sqlite_master.type='table' and sqlite_master.name='database_version'");
 			if (0 < $checkCountStatement->fetchColumn()) {
@@ -104,6 +106,8 @@ class DeployScript
 			$checkCountStatement = null;
 			$checkPdo = null;
 		}
+
+		$this->scriptArgument->log("DBバージョン: $dbVersion");
 
 		$db_migrates = [
 			'db_migrates_0000',

@@ -8,6 +8,7 @@ use \PDO;
 use \PDOStatement;
 use PeServer\Core\Log\Logging;
 use \PeServer\Core\Throws\SqlException;
+use PeServer\Core\Throws\Throws;
 
 /**
  * DB接続処理。
@@ -153,7 +154,7 @@ class Database
 		} catch (\Exception $ex) {
 			$this->logger->error($ex);
 			$this->rollback();
-			throw new SqlException($ex->getMessage(), $ex->getCode(), $ex);
+			Throws::reThrow(SqlException::class, $ex);
 		}
 
 		return false;
