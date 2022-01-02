@@ -10,10 +10,14 @@ use \PeServer\Core\Store\CookieStore;
 use \PeServer\Core\Store\SessionStore;
 
 /**
- * フィルタリング時の入力パラメータ。
+ * フィルタリング結果。
  */
 class FilterResult
 {
+	public const RESULT_KIND_NONE = 0;
+	public const RESULT_KIND_STATUS = 1;
+	public const RESULT_KIND_LOGIC = 2;
+
 	public HttpStatus $status;
 
 	public function __construct(HttpStatus $status)

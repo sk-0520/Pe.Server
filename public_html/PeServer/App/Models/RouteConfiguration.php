@@ -30,36 +30,39 @@ abstract class RouteConfiguration
 	/**
 	 * ルーティング情報設定取得
 	 *
-	 * @return Route[]
+	 * @return array{global_filters:IActionFilter[],routes:Route[]}
 	 */
 	public static function get(): array
 	{
 		return [
-			(new Route('', HomeController::class))
-				->addAction('privacy', HttpMethod::get(), 'privacy')
-				->addAction('contact', HttpMethod::get(), 'contact_get')
-				->addAction('contact', HttpMethod::post(), 'contact_post')
-			/* AUTO-FORMAT */,
-			(new Route('account', AccountController::class))
-				->addAction('login', HttpMethod::get(), 'login_get')
-				->addAction('login', HttpMethod::post(), 'login_post')
-				->addAction('logout', HttpMethod::get())
-				->addAction('user', HttpMethod::get(), self::DEFAULT_METHOD, [self::user()])
-				->addAction('user/edit', HttpMethod::get(), 'user_edit_get', [self::user()])
-				->addAction('user/edit', HttpMethod::post(), 'user_edit_post', [self::user(), Csrf::csrf()])
-				->addAction('user/password', HttpMethod::get(), 'user_password_get', [self::user()])
-				->addAction('user/password', HttpMethod::post(), 'user_password_post', [self::user(), Csrf::csrf()])
-				->addAction('user/email', HttpMethod::get(), 'user_email_get', [self::user()])
-				->addAction('user/email', HttpMethod::post(), 'user_email_post', [self::user(), Csrf::csrf()])
-			/* AUTO-FORMAT */,
-			(new Route('setting', SettingController::class, [self::admin()]))
-				->addAction('setup', HttpMethod::get(), 'setup_get', [self::setup()])
-				->addAction('setup', HttpMethod::post(), 'setup_post', [self::setup()])
-			/* AUTO-FORMAT */,
-			(new Route('api/development', DevelopmentController::class, [self::development()]))
-				->addAction('initialize', HttpMethod::post())
-				->addAction('administrator', HttpMethod::post())
-			/* AUTO-FORMAT */,
+			'global_filters' => [],
+			'routes' => [
+				(new Route('', HomeController::class))
+					->addAction('privacy', HttpMethod::get(), 'privacy')
+					->addAction('contact', HttpMethod::get(), 'contact_get')
+					->addAction('contact', HttpMethod::post(), 'contact_post')
+				/* AUTO-FORMAT */,
+				(new Route('account', AccountController::class))
+					->addAction('login', HttpMethod::get(), 'login_get')
+					->addAction('login', HttpMethod::post(), 'login_post')
+					->addAction('logout', HttpMethod::get())
+					->addAction('user', HttpMethod::get(), self::DEFAULT_METHOD, [self::user()])
+					->addAction('user/edit', HttpMethod::get(), 'user_edit_get', [self::user()])
+					->addAction('user/edit', HttpMethod::post(), 'user_edit_post', [self::user(), Csrf::csrf()])
+					->addAction('user/password', HttpMethod::get(), 'user_password_get', [self::user()])
+					->addAction('user/password', HttpMethod::post(), 'user_password_post', [self::user(), Csrf::csrf()])
+					->addAction('user/email', HttpMethod::get(), 'user_email_get', [self::user()])
+					->addAction('user/email', HttpMethod::post(), 'user_email_post', [self::user(), Csrf::csrf()])
+				/* AUTO-FORMAT */,
+				(new Route('setting', SettingController::class, [self::admin()]))
+					->addAction('setup', HttpMethod::get(), 'setup_get', [self::setup()])
+					->addAction('setup', HttpMethod::post(), 'setup_post', [self::setup()])
+				/* AUTO-FORMAT */,
+				(new Route('api/development', DevelopmentController::class, [self::development()]))
+					->addAction('initialize', HttpMethod::post())
+					->addAction('administrator', HttpMethod::post())
+				/* AUTO-FORMAT */,
+			]
 		];
 	}
 
