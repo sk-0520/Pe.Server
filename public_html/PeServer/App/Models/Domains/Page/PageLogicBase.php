@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Domains\Page;
 
 use PeServer\App\Controllers\Page\PageControllerBase;
-use \PeServer\Core\Mvc\LogicParameter;
-use \PeServer\App\Models\Domains\DomainLogicBase;
+use PeServer\Core\Mvc\LogicParameter;
+use PeServer\App\Models\Domains\DomainLogicBase;
 use PeServer\App\Models\SessionManager;
 
 abstract class PageLogicBase extends DomainLogicBase

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace PeServerTest\Core;
 
 use \LogicException;
-use \PeServer\Core\Throws\ArgumentException;
-use \PeServer\Core\TrueKeeper;
-use \PeServerTest\TestClass;
+use PeServer\Core\Throws\ArgumentException;
+use PeServer\Core\TrueKeeper;
+use PeServerTest\TestClass;
 
 class TrueKeeperTest extends TestClass
 {

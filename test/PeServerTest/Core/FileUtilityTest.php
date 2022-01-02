@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace PeServerTest\Core;
 
-use \PeServerTest\Data;
-use \PeServerTest\TestClass;
-use \PeServer\Core\FileUtility;
+use PeServerTest\Data;
+use PeServerTest\TestClass;
+use PeServer\Core\FileUtility;
 
 class FileUtilityTest extends TestClass
 {

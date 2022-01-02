@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Database\Entities;
 
-use \PeServer\Core\DaoBase;
-use \PeServer\Core\Database;
+use PeServer\Core\DaoBase;
+use PeServer\Core\Database;
 
 class UsersEntityDao extends DaoBase
 {

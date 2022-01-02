@@ -6,7 +6,7 @@ namespace PeServer\Core;
 
 use \Exception;
 use \LogicException;
-use \PeServer\Core\Store\SessionStore;
+use PeServer\Core\Store\SessionStore;
 
 /**
  * アクションに対するオプション。

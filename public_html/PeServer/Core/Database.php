@@ -7,7 +7,7 @@ namespace PeServer\Core;
 use \PDO;
 use \PDOStatement;
 use PeServer\Core\Log\Logging;
-use \PeServer\Core\Throws\SqlException;
+use PeServer\Core\Throws\SqlException;
 use PeServer\Core\Throws\Throws;
 
 /**

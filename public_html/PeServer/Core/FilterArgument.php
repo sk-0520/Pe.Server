@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
-use \PeServer\Core\Mvc\ActionRequest;
-use \PeServer\Core\Store\CookieStore;
-use \PeServer\Core\Store\SessionStore;
+use PeServer\Core\Mvc\ActionRequest;
+use PeServer\Core\Store\CookieStore;
+use PeServer\Core\Store\SessionStore;
 
 /**
  * フィルタリング時の入力パラメータ。

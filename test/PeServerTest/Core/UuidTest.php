@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace PeServerTest\Core;
 
 use \LogicException;
-use \PeServer\Core\Throws\ArgumentException;
-use \PeServer\Core\TrueKeeper;
+use PeServer\Core\Throws\ArgumentException;
+use PeServer\Core\TrueKeeper;
 use PeServer\Core\Uuid;
 use PeServerTest\Data;
-use \PeServerTest\TestClass;
+use PeServerTest\TestClass;
 
 class UuidTest extends TestClass
 {

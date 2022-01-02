@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Log;
 
-use \PeServer\Core\FileUtility;
-use \PeServer\Core\Log\LoggerBase;
-use \PeServer\Core\StringUtility;
-use \PeServer\Core\Throws\CoreError;
+use PeServer\Core\FileUtility;
+use PeServer\Core\Log\LoggerBase;
+use PeServer\Core\StringUtility;
+use PeServer\Core\Throws\CoreError;
 
 class FileLogger extends LoggerBase
 {

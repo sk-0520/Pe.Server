@@ -6,7 +6,7 @@ namespace PeServer\Core\Throws;
 
 use \Throwable;
 use \Exception;
-use \PeServer\Core\Throws;
+use PeServer\Core\Throws;
 
 class CoreException extends Exception
 {

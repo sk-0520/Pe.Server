@@ -6,11 +6,11 @@ namespace PeServer;
 
 require_once(__DIR__ . '/PeServer/Core/AutoLoader.php');
 
-use \PeServer\Core\AutoLoader;
-use \PeServer\Core\Routing;
-use \PeServer\Core\Store\CookieOption;
-use \PeServer\App\Models\RouteConfiguration;
-use \PeServer\App\Models\Initializer;
+use PeServer\Core\AutoLoader;
+use PeServer\Core\Routing;
+use PeServer\Core\Store\CookieOption;
+use PeServer\App\Models\RouteConfiguration;
+use PeServer\App\Models\Initializer;
 use PeServer\App\Models\StoreConfiguration;
 
 ini_set('display_errors', '1');

@@ -2,8 +2,8 @@
 
 namespace PeServer\App\Controllers\Api;
 
-use \PeServer\Core\Mvc\ControllerArgument;
-use \PeServer\App\Controllers\DomainControllerBase;
+use PeServer\Core\Mvc\ControllerArgument;
+use PeServer\App\Controllers\DomainControllerBase;
 
 abstract class ApiControllerBase extends DomainControllerBase
 {

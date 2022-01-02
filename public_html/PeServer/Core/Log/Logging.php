@@ -9,12 +9,12 @@ const LOG_REQUEST_ID_LENGTH = 6;
 define('LOG_REQUEST_ID', bin2hex(openssl_random_pseudo_bytes(LOG_REQUEST_ID_LENGTH)));
 
 use \LogicException;
-use \PeServer\Core\ArrayUtility;
-use \PeServer\Core\ILogger;
-use \PeServer\Core\InitializeChecker;
-use \PeServer\Core\Log\FileLogger;
-use \PeServer\Core\Log\MultiLogger;
-use \PeServer\Core\StringUtility;
+use PeServer\Core\ArrayUtility;
+use PeServer\Core\ILogger;
+use PeServer\Core\InitializeChecker;
+use PeServer\Core\Log\FileLogger;
+use PeServer\Core\Log\MultiLogger;
+use PeServer\Core\StringUtility;
 
 /**
  * ロガー生成処理。

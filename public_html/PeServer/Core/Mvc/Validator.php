@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc;
 
-use \PeServer\Core\StringUtility;
-use \PeServer\Core\Mvc\IValidationReceiver;
+use PeServer\Core\StringUtility;
+use PeServer\Core\Mvc\IValidationReceiver;
 
 class Validator
 {

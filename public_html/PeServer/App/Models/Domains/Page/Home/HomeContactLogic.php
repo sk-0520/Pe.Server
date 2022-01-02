@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domains\Page\Home;
 
-use \PeServer\Core\Mvc\LogicCallMode;
-use \PeServer\Core\Mvc\LogicParameter;
-use \PeServer\App\Models\Domains\Page\PageLogicBase;
+use PeServer\Core\Mvc\LogicCallMode;
+use PeServer\Core\Mvc\LogicParameter;
+use PeServer\App\Models\Domains\Page\PageLogicBase;
 
 class HomeContactLogic extends PageLogicBase
 {

@@ -6,8 +6,8 @@ namespace PeServer\Core\Mvc;
 
 use \Exception;
 use \LogicException;
-use \PeServer\Core\Mime;
-use \PeServer\Core\HttpStatus;
+use PeServer\Core\Mime;
+use PeServer\Core\HttpStatus;
 
 /**
  * アクション応答。

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Throws;
 
 use \Throwable;
-use \PeServer\Core\Throws;
+use PeServer\Core\Throws;
 
 class IOException extends CoreException
 {

@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domains\Api\Development;
 
-use \PeServer\Core\Mime;
+use PeServer\Core\Mime;
 use \Deploy\ScriptArgument;
-use \PeServer\Core\ILogger;
-use \PeServer\Core\Log\Logging;
-use \PeServer\Core\Mvc\LogicBase;
-use \PeServer\Core\Mvc\ActionResponse;
-use \PeServer\Core\HttpStatusCode;
-use \PeServer\Core\Mvc\LogicCallMode;
-use \PeServer\Core\Mvc\LogicParameter;
-use \PeServer\Core\Throws\CoreException;
-use \PeServer\App\Models\AppConfiguration;
-use \PeServer\App\Models\Domains\Api\ApiLogicBase;
+use PeServer\Core\ILogger;
+use PeServer\Core\Log\Logging;
+use PeServer\Core\Mvc\LogicBase;
+use PeServer\Core\Mvc\ActionResponse;
+use PeServer\Core\HttpStatusCode;
+use PeServer\Core\Mvc\LogicCallMode;
+use PeServer\Core\Mvc\LogicParameter;
+use PeServer\Core\Throws\CoreException;
+use PeServer\App\Models\AppConfiguration;
+use PeServer\App\Models\Domains\Api\ApiLogicBase;
 
 define('NO_DEPLOY_START', '💩');
 require_once 'deploy/php-deploy-receiver.php';

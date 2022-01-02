@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models;
 
-use \PeServer\Core\ArrayUtility;
-use \PeServer\Core\Store\CookieOption;
-use \PeServer\Core\Store\TemporaryOption;
-use \PeServer\Core\Store\SessionOption;
+use PeServer\Core\ArrayUtility;
+use PeServer\Core\Store\CookieOption;
+use PeServer\Core\Store\TemporaryOption;
+use PeServer\Core\Store\SessionOption;
 
 abstract class StoreConfiguration
 {

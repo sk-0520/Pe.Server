@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace PeServerTest\Core;
 
 use \LogicException;
-use \PeServer\App\Models\RouteConfiguration;
-use \PeServer\Core\HttpMethod;
-use \PeServerTest\Data;
-use \PeServerTest\TestClass;
-use \PeServer\Core\Route;
+use PeServer\App\Models\RouteConfiguration;
+use PeServer\Core\HttpMethod;
+use PeServerTest\Data;
+use PeServerTest\TestClass;
+use PeServer\Core\Route;
 
 class RouteTest extends TestClass
 {

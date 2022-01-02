@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc;
 
 use PeServer\Core\ResponseOutput;
-use \PeServer\Core\Mvc\IActionResult;
+use PeServer\Core\Mvc\IActionResult;
 
 
 class DataActionResult extends ActionResult

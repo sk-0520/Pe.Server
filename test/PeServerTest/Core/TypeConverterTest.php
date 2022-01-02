@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace PeServerTest\Core;
 
-use \PeServerTest\Data;
-use \PeServerTest\TestClass;
-use \PeServer\Core\TypeConverter;
-use \PeServer\Core\Throws\ParseException;
+use PeServerTest\Data;
+use PeServerTest\TestClass;
+use PeServer\Core\TypeConverter;
+use PeServer\Core\Throws\ParseException;
 
 class TypeConverterTest extends TestClass
 {

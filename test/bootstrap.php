@@ -9,7 +9,7 @@ namespace PeServerTest;
 require_once(__DIR__ . '/phpunit.phar');
 require_once(__DIR__ . '/../public_html/PeServer/Core/AutoLoader.php');
 
-use \PeServer\App\Models\Initializer;
+use PeServer\App\Models\Initializer;
 
 \PeServer\Core\AutoLoader::initialize(
 	[

@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace PeServer\App\Controllers\Page;
 
-use \PeServer\Core\ActionOption;
-use \PeServer\Core\HttpStatusCode;
-use \PeServer\Core\Mvc\IActionResult;
-use \PeServer\Core\Mvc\ActionRequest;
-use \PeServer\Core\Mvc\LogicCallMode;
-use \PeServer\Core\Mvc\ControllerBase;
-use \PeServer\Core\Mvc\ControllerArgument;
-use \PeServer\App\Models\Domains\Page\Home\HomeIndexLogic;
-use \PeServer\App\Models\Domains\Page\Home\HomeContactLogic;
-use \PeServer\App\Models\Domains\Page\Home\HomePrivacyLogic;
+use PeServer\Core\ActionOption;
+use PeServer\Core\HttpStatusCode;
+use PeServer\Core\Mvc\IActionResult;
+use PeServer\Core\Mvc\ActionRequest;
+use PeServer\Core\Mvc\LogicCallMode;
+use PeServer\Core\Mvc\ControllerBase;
+use PeServer\Core\Mvc\ControllerArgument;
+use PeServer\App\Models\Domains\Page\Home\HomeIndexLogic;
+use PeServer\App\Models\Domains\Page\Home\HomeContactLogic;
+use PeServer\App\Models\Domains\Page\Home\HomePrivacyLogic;
 
 
 final class HomeController extends PageControllerBase

@@ -2,14 +2,14 @@
 
 namespace PeServer\App\Controllers\Page;
 
-use \PeServer\Core\ActionOption;
-use \PeServer\Core\Mvc\ActionRequest;
-use \PeServer\Core\Mvc\LogicCallMode;
-use \PeServer\Core\Mvc\ControllerBase;
-use \PeServer\Core\Mvc\ControllerArgument;
-use \PeServer\App\Controllers\DomainControllerBase;
-use \PeServer\App\Models\Domains\Page\Setting\SettingSetupLogic;
-use \PeServer\Core\Mvc\IActionResult;
+use PeServer\Core\ActionOption;
+use PeServer\Core\Mvc\ActionRequest;
+use PeServer\Core\Mvc\LogicCallMode;
+use PeServer\Core\Mvc\ControllerBase;
+use PeServer\Core\Mvc\ControllerArgument;
+use PeServer\App\Controllers\DomainControllerBase;
+use PeServer\App\Models\Domains\Page\Setting\SettingSetupLogic;
+use PeServer\Core\Mvc\IActionResult;
 
 final class SettingController extends PageControllerBase
 {

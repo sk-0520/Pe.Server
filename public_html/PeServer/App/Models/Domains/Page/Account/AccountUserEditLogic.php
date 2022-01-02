@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domains\Page\Account;
 
-use \PeServer\Core\Database;
+use PeServer\Core\Database;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\StringUtility;
-use \PeServer\App\Models\AuditLog;
-use \PeServer\App\Models\SessionManager;
-use \PeServer\Core\Mvc\LogicCallMode;
-use \PeServer\Core\Mvc\LogicParameter;
+use PeServer\App\Models\AuditLog;
+use PeServer\App\Models\SessionManager;
+use PeServer\Core\Mvc\LogicCallMode;
+use PeServer\Core\Mvc\LogicParameter;
 use PeServer\App\Models\Domains\AccountValidator;
-use \PeServer\App\Models\Domains\Page\PageLogicBase;
-use \PeServer\App\Models\Database\Entities\UsersEntityDao;
+use PeServer\App\Models\Domains\Page\PageLogicBase;
+use PeServer\App\Models\Database\Entities\UsersEntityDao;
 use PeServer\Core\I18n;
 
 class AccountUserEditLogic extends PageLogicBase

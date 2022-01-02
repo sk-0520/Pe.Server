@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace PeServer\Core;
 
 use Exception;
-use \PeServer\Core\Throws\FileNotFoundException;
+use PeServer\Core\Throws\FileNotFoundException;
 use PeServer\Core\Throws\IOException;
-use \PeServer\Core\Throws\ParseException;
+use PeServer\Core\Throws\ParseException;
 use stdClass;
 
 abstract class FileUtility

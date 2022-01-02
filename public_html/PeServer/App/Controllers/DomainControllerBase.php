@@ -2,8 +2,8 @@
 
 namespace PeServer\App\Controllers;
 
-use \PeServer\Core\Mvc\ControllerArgument;
-use \PeServer\Core\Mvc\ControllerBase;
+use PeServer\Core\Mvc\ControllerArgument;
+use PeServer\Core\Mvc\ControllerBase;
 
 abstract class DomainControllerBase extends ControllerBase
 {

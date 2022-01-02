@@ -10,15 +10,15 @@ use \Smarty;
 use \Smarty_Internal_Template;
 use \DOMElement;
 use \DOMDocument;
-use \PeServer\Core\I18n;
-use \PeServer\Core\Collection;
-use \PeServer\Core\FileUtility;
-use \PeServer\Core\ArrayUtility;
+use PeServer\Core\I18n;
+use PeServer\Core\Collection;
+use PeServer\Core\FileUtility;
+use PeServer\Core\ArrayUtility;
 use PeServer\Core\Csrf;
-use \PeServer\Core\StringUtility;
-use \PeServer\Core\InitializeChecker;
-use \PeServer\Core\Throws\CoreException;
-use \PeServer\Core\Throws\InvalidOperationException;
+use PeServer\Core\StringUtility;
+use PeServer\Core\InitializeChecker;
+use PeServer\Core\Throws\CoreException;
+use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\TypeConverter;
 
 /**

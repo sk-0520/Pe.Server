@@ -10,10 +10,10 @@ require_once(__DIR__ . '/../Libs/PHPMailer/src/PHPMailer.php');
 //require_once(__DIR__ . '/../Libs/PHPMailer/src/POP3.php');
 require_once(__DIR__ . '/../Libs/PHPMailer/src/SMTP.php');
 
-use \PeServer\Core\Throws\ArgumentException;
-use \PeServer\Core\Throws\ArgumentNullException;
+use PeServer\Core\Throws\ArgumentException;
+use PeServer\Core\Throws\ArgumentNullException;
 use PeServer\Core\Throws\InvalidOperationException;
-use \PeServer\Core\Throws\NotImplementedException;
+use PeServer\Core\Throws\NotImplementedException;
 use \PHPMailer\PHPMailer\PHPMailer;
 
 class SmtpSetting

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Log;
 
-use \PeServer\Core\ILogger;
-use \PeServer\Core\Log\LoggerBase;
+use PeServer\Core\ILogger;
+use PeServer\Core\Log\LoggerBase;
 
 final class MultiLogger extends LoggerBase
 {
