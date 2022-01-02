@@ -88,7 +88,7 @@ class DeployScript
 		$this->scriptArgument->log('!!!!!!!!!!db_migrate!!!!!!!!!!');
 
 		// SQLite を使うのは決定事項である！
-		$filePath = $databaseSetting['connection'];
+		$filePath = str_replace('sqlite:', '', $databaseSetting['connection']);
 		$dbVersion = -1;
 		if (file_exists($filePath)) {
 			$this->scriptArgument->log("DBあり: $filePath");

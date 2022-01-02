@@ -186,21 +186,27 @@ class AccountUserEmailLogic extends PageLogicBase
 		$database = $this->openDatabase();
 		$result = $database->transaction(function (Database $database, array $params) {
 			$userDomainDao = new UserDomainDao($database);
+			$userChangeWaitEmailsEntityDao = new UserChangeWaitEmailsEntityDao($database);
 
-			$this->logger->trace('あかんかぁ');
-			$updated = $userDomainDao->updateEmailFromWaitEmail(
+			$existsToken = $userChangeWaitEmailsEntityDao->selectExistsToken(
 				$params['user_id'],
 				$params['token'],
 				AppConfiguration::$json['config']['confirm']['user_change_wait_email_minutes']
 			);
 
-			$this->logger->trace('ここまで来てんのかい');
+			if(!$existsToken) {
+				return false;
+			}
+
+			$updated = $userDomainDao->updateEmailFromWaitEmail(
+				$params['user_id'],
+				$params['token']
+			);
 
 			if (!$updated) {
 				return false;
 			}
 
-			$userChangeWaitEmailsEntityDao = new UserChangeWaitEmailsEntityDao($database);
 			$userChangeWaitEmailsEntityDao->deleteByUserId($params['user_id']);
 
 			$this->writeAuditLogCurrentUser(AuditLog::USER_EMAIL_CHANGED, ['token' => $params['token']], $database);

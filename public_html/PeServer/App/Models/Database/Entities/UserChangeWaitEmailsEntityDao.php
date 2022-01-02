@@ -14,6 +14,31 @@ class UserChangeWaitEmailsEntityDao extends DaoBase
 		parent::__construct($database);
 	}
 
+	public function selectExistsToken(string $userId, string $token, int $limitMinutes): bool
+	{
+		return 0 < $this->database->selectSingleCount(
+			<<<SQL
+
+			select
+				count(*)
+			from
+				user_change_wait_emails
+			where
+				user_change_wait_emails.user_id = :user_id
+				and
+				user_change_wait_emails.token = :token
+				and
+				(STRFTIME('%s', CURRENT_TIMESTAMP) - STRFTIME('%s', user_change_wait_emails.timestamp)) < :limit_minutes * 60
+
+			SQL,
+			[
+				'user_id' => $userId,
+				'token' => $token,
+				'limit_minutes' => $limitMinutes,
+			]
+		);
+	}
+
 	public function insertWaitEmails(string $userId, string $email, int $markEmail, string $token): void
 	{
 		$this->database->insertSingle(
