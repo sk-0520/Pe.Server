@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
+use PeServer\Core\FilterResult;
+use PeServer\Core\FilterArgument;
+
 /**
  * アクションに対するオプション。
  */

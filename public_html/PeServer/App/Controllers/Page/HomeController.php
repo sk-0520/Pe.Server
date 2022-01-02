@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PeServer\App\Controllers\Page;
 
-use PeServer\Core\ActionOption;
 use PeServer\Core\HttpStatusCode;
 use PeServer\Core\Mvc\IActionResult;
 use PeServer\Core\Mvc\ActionRequest;

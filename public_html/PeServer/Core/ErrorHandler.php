@@ -82,7 +82,7 @@ abstract class ErrorHandler
 	 * @param string $templateBaseName
 	 * @param string $templateName
 	 * @param array<string,mixed> $values
-	 * @return no-return
+	 * @return void
 	 */
 	protected function applyTemplate(string $templateName, string $baseName, string $templateBaseName, array $values): void
 	{

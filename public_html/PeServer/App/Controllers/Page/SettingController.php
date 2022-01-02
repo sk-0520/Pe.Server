@@ -2,7 +2,6 @@
 
 namespace PeServer\App\Controllers\Page;
 
-use PeServer\Core\ActionOption;
 use PeServer\Core\Mvc\ActionRequest;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\ControllerBase;

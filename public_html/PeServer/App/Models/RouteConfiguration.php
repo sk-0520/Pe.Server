@@ -9,7 +9,6 @@ use PeServer\Core\Route;
 use PeServer\Core\HttpMethod;
 use PeServer\Core\HttpStatus;
 use PeServer\Core\FilterResult;
-use PeServer\Core\ActionOption;
 use PeServer\Core\IActionFilter;
 use PeServer\Core\FilterArgument;
 use PeServer\Core\Mvc\ActionResult;
@@ -89,76 +88,46 @@ abstract class RouteConfiguration
 		return FilterResult::error(HttpStatus::forbidden());
 	}
 
-	private static ?ActionOption $user = null;
-	private static function user(): ActionOption
+	private static ?IActionFilter $user = null;
+	private static function user(): IActionFilter
 	{
-		if (!is_null(self::$user)) {
-			return self::$user;
-		}
-
-		$option = new ActionOption();
-		$option->errorControllerName = ErrorController::class;
-		$option->filter = new class extends RouteConfiguration implements IActionFilter
+		return self::$user ??= new class extends RouteConfiguration implements IActionFilter
 		{
 			public function filtering(FilterArgument $argument): FilterResult
 			{
 				return self::filterPageAccount($argument, [UserLevel::USER, UserLevel::ADMINISTRATOR]);
 			}
 		};
-
-		return self::$user = $option;
 	}
 
-	private static ?ActionOption $setup = null;
-	private static function setup(): ActionOption
+	private static ?IActionFilter $setup = null;
+	private static function setup(): IActionFilter
 	{
-		if (!is_null(self::$setup)) {
-			return self::$setup;
-		}
-
-		$option = new ActionOption();
-		$option->errorControllerName = ErrorController::class;
-		$option->filter = new class extends RouteConfiguration implements IActionFilter
+		return self::$setup ??= new class extends RouteConfiguration implements IActionFilter
 		{
 			public function filtering(FilterArgument $argument): FilterResult
 			{
 				return self::filterPageAccount($argument, [UserLevel::SETUP]);
 			}
 		};
-
-		return self::$setup = $option;
 	}
 
-	private static ?ActionOption $admin = null;
-	private static function admin(): ActionOption
+	private static ?IActionFilter $admin = null;
+	private static function admin(): IActionFilter
 	{
-		if (!is_null(self::$admin)) {
-			return self::$admin;
-		}
-
-		$option = new ActionOption();
-		$option->errorControllerName = ErrorController::class;
-		$option->filter  = new class extends RouteConfiguration implements IActionFilter
+		return self::$admin ??= new class extends RouteConfiguration implements IActionFilter
 		{
 			public function filtering(FilterArgument $argument): FilterResult
 			{
 				return self::filterPageAccount($argument, [UserLevel::ADMINISTRATOR]);
 			}
 		};
-
-		return self::$admin = $option;
 	}
 
-	private static ?ActionOption $development = null;
-	private static function development(): ActionOption
+	private static ?IActionFilter $development = null;
+	private static function development(): IActionFilter
 	{
-		if (!is_null(self::$development)) {
-			return self::$development;
-		}
-
-		$option = new ActionOption();
-		$option->errorControllerName = ErrorController::class;
-		$option->filter = new class extends RouteConfiguration implements IActionFilter
+		return self::$development ??= new class extends RouteConfiguration implements IActionFilter
 		{
 			public function filtering(FilterArgument $argument): FilterResult
 			{
@@ -170,7 +139,5 @@ abstract class RouteConfiguration
 				return FilterResult::none();
 			}
 		};
-
-		return self::$development = $option;
 	}
 }

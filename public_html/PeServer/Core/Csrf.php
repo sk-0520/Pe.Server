@@ -25,15 +25,10 @@ abstract class Csrf
 		return $hash;
 	}
 
-	private static ?ActionOption $csrf = null;
-	public static function csrf(): ActionOption
+	private static ?IActionFilter $csrf = null;
+	public static function csrf(): IActionFilter
 	{
-		if (!is_null(self::$csrf)) {
-			return self::$csrf;
-		}
-
-		$option = new ActionOption();
-		$option->filter = new class extends Csrf implements IActionFilter
+		return self::$csrf ??= new class extends Csrf implements IActionFilter
 		{
 			public function filtering(FilterArgument $argument): FilterResult
 			{
@@ -56,7 +51,5 @@ abstract class Csrf
 				return FilterResult::error(HttpStatus::forbidden());
 			}
 		};
-
-		return self::$csrf = $option;
 	}
 }

@@ -94,7 +94,7 @@ class Routing
 	 * @param IActionFilter $filter
 	 * @return bool 次のフィルタを実行してよいか
 	 */
-	private function filter(array $requestPaths, ActionRequest $request, IActionFilter $filter): bool
+	private function filterCore(array $requestPaths, ActionRequest $request, IActionFilter $filter): bool
 	{
 		$filterArgument = new FilterArgument($requestPaths, $this->cookie, $this->session, $request, $this->filterLogger);
 		$filterResult = $filter->filtering($filterArgument);
@@ -108,16 +108,36 @@ class Routing
 	}
 
 	/**
+	 * Undocumented function
+	 *
+	 * @param IActionFilter[] $filters
+	 * @param string[] $requestPaths
+	 * @param ActionRequest $request
+	 * @return bool 後続処理は可能か
+	 */
+	private function filter(array $filters, array $requestPaths, ActionRequest $request): bool
+	{
+		foreach ($filters as $filter) {
+			$canNext = $this->filterCore($requestPaths, $request, $filter);
+			if (!$canNext) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
 	 * アクション実行。
 	 *
 	 * @param string[] $requestPaths
 	 * @param string $rawControllerName
 	 * @param string $methodName
 	 * @param string[] $urlParameters
-	 * @param ActionOption[] $options
+	 * @param IActionFilter[] $filters
 	 * @return void
 	 */
-	private function executeAction(array $requestPaths, string $rawControllerName, string $methodName, array $urlParameters, array $options): void
+	private function executeAction(array $requestPaths, string $rawControllerName, string $methodName, array $urlParameters, array $filters): void
 	{
 		$splitNames = explode('/', $rawControllerName);
 		$controllerName = $splitNames[count($splitNames) - 1];
@@ -125,21 +145,13 @@ class Routing
 		$request = new ActionRequest($urlParameters);
 
 		// アクション共通フィルタ処理
-		foreach ($this->actionFilters as $filter) {
-			$canNext = $this->filter($requestPaths, $request, $filter);
-			if (!$canNext) {
-				return;
-			}
+		if (!$this->filter($this->actionFilters, $requestPaths, $request)) {
+			return;
 		}
 
 		// アクションに紐づくフィルタ処理
-		foreach ($options as $option) {
-			if (!is_null($option->filter)) {
-				$canNext = $this->filter($requestPaths, $request, $option->filter);
-				if (!$canNext) {
-					return;
-				}
-			}
+		if (!$this->filter($filters, $requestPaths, $request)) {
+			return;
 		}
 
 		$logger = Logging::create($controllerName);
@@ -168,21 +180,18 @@ class Routing
 		// グローバルフィルタの適用
 		if (ArrayUtility::getCount($this->globalFilters)) {
 			$request = new ActionRequest([]);
-			foreach ($this->globalFilters as $filter) {
-				$canNext = $this->filter($requestPaths, $request, $filter);
-				if (!$canNext) {
-					return;
-				}
+			if (!$this->filter($this->globalFilters, $requestPaths, $request)) {
+				return;
 			}
 		}
 
-		/** @var array{code:HttpStatus,class:string,method:string,params:array<string,string>,options:ActionOption[]}|null */
+		/** @var array{code:HttpStatus,class:string,method:string,params:array<string,string>,filters:IActionFilter[]}|null */
 		$errorAction = null;
 		foreach ($this->routeMap as $route) {
 			$action = $route->getAction($requestMethod, $requestPaths);
 			if (!is_null($action)) {
 				if ($action['code']->code() === HttpStatus::none()->code()) {
-					$this->executeAction($requestPaths, $action['class'], $action['method'], $action['params'], $action['options']);
+					$this->executeAction($requestPaths, $action['class'], $action['method'], $action['params'], $action['filters']);
 					return;
 				} else if (is_null($errorAction)) {
 					$errorAction = $action;
