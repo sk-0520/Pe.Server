@@ -20,9 +20,10 @@ abstract class ErrorHandler implements IErrorHandler
 		return self::$core ??= new _CoreErrorHandler();
 	}
 
+	/** @var IErrorHandler[] */
 	private static array $handlers = [];
 
-	public static function register(IErrorHandler $handler)
+	public static function register(IErrorHandler $handler): void
 	{
 		self::$handlers[] = $handler;
 	}
@@ -31,10 +32,10 @@ abstract class ErrorHandler implements IErrorHandler
 	{
 		register_shutdown_function([$this, 'receiveShutdown']);
 		set_exception_handler([$this, 'receiveException']);
-		set_error_handler([$this, 'receiveError']);
+		set_error_handler([$this, 'receiveError']); //@phpstan-ignore-line なんやねんもう！
 	}
 
-	public function receiveShutdown()
+	public function receiveShutdown(): void
 	{
 		$lastError = error_get_last();
 		if (is_null($lastError)) {
@@ -51,7 +52,7 @@ abstract class ErrorHandler implements IErrorHandler
 		exit;
 	}
 
-	public function receiveException(Throwable $throwable)
+	public function receiveException(Throwable $throwable): void
 	{
 		$this->catchError(
 			Throws::getErrorCode($throwable),
@@ -63,7 +64,7 @@ abstract class ErrorHandler implements IErrorHandler
 		exit;
 	}
 
-	public function receiveError(int $errorNumber, string $errorMessage, string $errorFile, int $errorLineNumber/* , array $_ */)
+	public function receiveError(int $errorNumber, string $errorMessage, string $errorFile, int $errorLineNumber/* , array $_ */): void
 	{
 		$this->catchError(
 			$errorNumber,
@@ -75,7 +76,7 @@ abstract class ErrorHandler implements IErrorHandler
 		exit;
 	}
 
-	protected function setHttpStatus(?Throwable $throwable)
+	protected function setHttpStatus(?Throwable $throwable): void
 	{
 		if ($throwable instanceof HttpStatusException) {
 			http_response_code($throwable->getCode());
@@ -93,10 +94,11 @@ abstract class ErrorHandler implements IErrorHandler
 	 * @param array<string,mixed> $values
 	 * @return no-return
 	 */
-	protected function applyTemplate(string $templateName, string $baseName, string $templateBaseName, array $values)
+	protected function applyTemplate(string $templateName, string $baseName, string $templateBaseName, array $values): void
 	{
 		$template = Template::create($baseName, $templateBaseName);
 		$template->show($templateName, new TemplateParameter(HttpStatus::ok(), $values, []));
+		exit;
 	}
 
 	public abstract function catchError(int $errorNumber, string $message, string $file, int $lineNumber, ?Throwable $throwable): void;
