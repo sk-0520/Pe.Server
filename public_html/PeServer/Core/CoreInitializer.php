@@ -22,5 +22,7 @@ abstract class CoreInitializer
 
 		mb_language('ja');
 		mb_internal_encoding('UTF-8');
+
+		ErrorHandler::register(ErrorHandler::core());
 	}
 }

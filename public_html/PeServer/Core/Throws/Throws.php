@@ -9,6 +9,17 @@ use \Throwable;
 
 abstract class Throws
 {
+	public static function getErrorCode(Throwable $throwable): int
+	{
+		$rawCode = $throwable->getCode();
+		$code = 0;
+		if (is_integer($rawCode)) {
+			$code = $rawCode;
+		}
+
+		return $code;
+	}
+
 	/**
 	 * 例外の再スロー。
 	 *
