@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
+use PeServer\Core\Log\Logging;
 use \Throwable;
 use PeServer\Core\Mvc\Template;
 use PeServer\Core\Mvc\Validator;
@@ -34,38 +35,35 @@ abstract class ErrorHandler
 			return;
 		}
 
-		$this->catchError(
+		$this->_catchError(
 			ArrayUtility::getOr($lastError, 'type', -1),
 			ArrayUtility::getOr($lastError, 'message', ''),
 			ArrayUtility::getOr($lastError, 'file', '<unknown>'),
 			ArrayUtility::getOr($lastError, 'line', 0),
 			null
 		);
-		exit;
 	}
 
 	public final function receiveException(Throwable $throwable): void
 	{
-		$this->catchError(
+		$this->_catchError(
 			Throws::getErrorCode($throwable),
 			$throwable->getMessage(),
 			$throwable->getFile(),
 			$throwable->getLine(),
 			$throwable
 		);
-		exit;
 	}
 
 	public final function receiveError(int $errorNumber, string $errorMessage, string $errorFile, int $errorLineNumber/* , array $_ */): void
 	{
-		$this->catchError(
+		$this->_catchError(
 			$errorNumber,
 			$errorMessage,
 			$errorFile,
 			$errorLineNumber,
 			null
 		);
-		exit;
 	}
 
 	protected final function setHttpStatus(?Throwable $throwable): void
@@ -90,6 +88,11 @@ abstract class ErrorHandler
 	{
 		$template = Template::create($baseName, $templateBaseName);
 		$template->show($templateName, new TemplateParameter(HttpStatus::ok(), $values, []));
+	}
+
+	private function _catchError(int $errorNumber, string $message, string $file, int $lineNumber, ?Throwable $throwable): void
+	{
+		$this->catchError($errorNumber, $message, $file, $lineNumber, $throwable);
 		exit;
 	}
 
@@ -107,6 +110,9 @@ final class _CoreErrorHandler extends ErrorHandler
 			'line_number' => $lineNumber,
 			'throwable' => $throwable,
 		];
+
+		$logger = Logging::create('error');
+		$logger->error($values);
 
 		$this->setHttpStatus($throwable);
 		$this->applyTemplate('error-display.tpl', 'template', 'Core', $values);
