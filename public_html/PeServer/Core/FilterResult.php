@@ -9,8 +9,9 @@ use \LogicException;
 use PeServer\Core\UrlUtility;
 use PeServer\Core\Store\CookieStore;
 use PeServer\Core\Store\SessionStore;
-use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\CoreException;
+use PeServer\Core\Throws\ArgumentException;
+use PeServer\Core\Throws\HttpStatusException;
 use PeServer\Core\Throws\InvalidOperationException;
 
 /**
@@ -111,6 +112,6 @@ class _FilterErrorResult extends FilterResult
 
 	public function apply(): void
 	{
-		throw new CoreException($this->message, $this->status->code());
+		throw new HttpStatusException($this->message, $this->status->code());
 	}
 }

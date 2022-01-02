@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
-use PeServer\Core\Mvc\Template;
-use PeServer\Core\Mvc\TemplateParameter;
-use PeServer\Core\Mvc\Validator;
 use \Throwable;
+use PeServer\Core\Mvc\Template;
+use PeServer\Core\Mvc\Validator;
 use PeServer\Core\Throws\Throws;
+use PeServer\Core\Mvc\TemplateParameter;
+use PeServer\Core\Throws\HttpStatusException;
 
 
 abstract class ErrorHandler implements IErrorHandler
@@ -74,6 +75,30 @@ abstract class ErrorHandler implements IErrorHandler
 		exit;
 	}
 
+	protected function setHttpStatus(?Throwable $throwable)
+	{
+		if ($throwable instanceof HttpStatusException) {
+			http_response_code($throwable->getCode());
+		} else {
+			http_response_code(HttpStatus::serviceUnavailable()->code());
+		}
+	}
+
+	/**
+	 * Undocumented function
+	 *
+	 * @param string $baseName
+	 * @param string $templateBaseName
+	 * @param string $templateName
+	 * @param array<string,mixed> $values
+	 * @return no-return
+	 */
+	protected function applyTemplate(string $templateName, string $baseName, string $templateBaseName, array $values)
+	{
+		$template = Template::create($baseName, $templateBaseName);
+		$template->show($templateName, new TemplateParameter(HttpStatus::ok(), $values, []));
+	}
+
 	public abstract function catchError(int $errorNumber, string $message, string $file, int $lineNumber, ?Throwable $throwable): void;
 }
 
@@ -89,7 +114,7 @@ final class _CoreErrorHandler extends ErrorHandler
 			'throwable' => $throwable,
 		];
 
-		$template = Template::create('template', 'Core');
-		$template->show('error-display.tpl', new TemplateParameter(HttpStatus::ok(), $values, []));
+		$this->setHttpStatus($throwable);
+		$this->applyTemplate('error-display.tpl', 'template', 'Core', $values);
 	}
 }
