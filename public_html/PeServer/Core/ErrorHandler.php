@@ -12,30 +12,22 @@ use PeServer\Core\Mvc\TemplateParameter;
 use PeServer\Core\Throws\HttpStatusException;
 
 
-abstract class ErrorHandler implements IErrorHandler
+abstract class ErrorHandler
 {
-	private static IErrorHandler|null $core;
-	public static function core(): IErrorHandler
+	private static ErrorHandler|null $core;
+	public static function core(): ErrorHandler
 	{
 		return self::$core ??= new _CoreErrorHandler();
 	}
 
-	/** @var IErrorHandler[] */
-	private static array $handlers = [];
-
-	public static function register(IErrorHandler $handler): void
-	{
-		self::$handlers[] = $handler;
-	}
-
-	public function __construct()
+	public final function register(): void
 	{
 		register_shutdown_function([$this, 'receiveShutdown']);
 		set_exception_handler([$this, 'receiveException']);
 		set_error_handler([$this, 'receiveError']); //@phpstan-ignore-line なんやねんもう！
 	}
 
-	public function receiveShutdown(): void
+	public final function receiveShutdown(): void
 	{
 		$lastError = error_get_last();
 		if (is_null($lastError)) {
@@ -52,7 +44,7 @@ abstract class ErrorHandler implements IErrorHandler
 		exit;
 	}
 
-	public function receiveException(Throwable $throwable): void
+	public final function receiveException(Throwable $throwable): void
 	{
 		$this->catchError(
 			Throws::getErrorCode($throwable),
@@ -64,7 +56,7 @@ abstract class ErrorHandler implements IErrorHandler
 		exit;
 	}
 
-	public function receiveError(int $errorNumber, string $errorMessage, string $errorFile, int $errorLineNumber/* , array $_ */): void
+	public final function receiveError(int $errorNumber, string $errorMessage, string $errorFile, int $errorLineNumber/* , array $_ */): void
 	{
 		$this->catchError(
 			$errorNumber,
@@ -76,7 +68,7 @@ abstract class ErrorHandler implements IErrorHandler
 		exit;
 	}
 
-	protected function setHttpStatus(?Throwable $throwable): void
+	protected final function setHttpStatus(?Throwable $throwable): void
 	{
 		if ($throwable instanceof HttpStatusException) {
 			http_response_code($throwable->getCode());
