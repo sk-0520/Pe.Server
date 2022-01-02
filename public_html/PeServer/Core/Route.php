@@ -139,7 +139,7 @@ class Route
 		}
 
 		return [
-			'code' => HttpStatus::doExecute(),
+			'code' => HttpStatus::none(),
 			'class' => $this->className,
 			'method' => $actionValues['method'],
 			'params' => $urlParameters,
@@ -235,7 +235,7 @@ class Route
 				}
 
 				$result = $this->getActionCore($httpMethod, $action, $flatParameters);
-				if ($result['code']->code() === HttpStatus::doExecute()->code()) {
+				if ($result['code']->code() === HttpStatus::none()->code()) {
 					return $result;
 				}
 			}

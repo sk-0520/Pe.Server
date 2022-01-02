@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc;
 
 use \LogicException;
-use PeServer\Core\ArrayUtility;
-use PeServer\Core\HttpStatus;
 use \PeServer\Core\ILogger;
+use PeServer\Core\HttpStatus;
+use PeServer\Core\UrlUtility;
 use \PeServer\Core\Log\Logging;
+use PeServer\Core\ArrayUtility;
 use \PeServer\Core\Mvc\Template;
 use \PeServer\Core\Mvc\LogicBase;
 use \PeServer\Core\StringUtility;
@@ -19,10 +20,10 @@ use \PeServer\Core\Mvc\ActionResponse;
 use \PeServer\Core\Mvc\LogicParameter;
 use \PeServer\Core\Store\SessionStore;
 use PeServer\Core\Mvc\ViewActionResult;
+use PeServer\Core\Store\TemporaryStore;
 use \PeServer\Core\Mvc\SessionNextState;
 use \PeServer\Core\Mvc\TemplateParameter;
 use \PeServer\Core\Mvc\ControllerArgument;
-use PeServer\Core\Store\TemporaryStore;
 use \PeServer\Core\Throws\InvalidOperationException;
 
 
@@ -219,8 +220,8 @@ abstract class ControllerBase
 	 */
 	public function redirectPath(string $path, ?array $query = null): RedirectActionResult
 	{
-		$httpProtocol = StringUtility::isNullOrEmpty(ArrayUtility::getOr($_SERVER, 'HTTPS', '')) ? 'http://' : 'https://';
-		return $this->redirectUrl($httpProtocol . $_SERVER['SERVER_NAME'] . '/' .  ltrim($path, '/'));
+		$url = UrlUtility::buildPath($path, $query ?? []);
+		return $this->redirectUrl($url);
 	}
 
 	/**

@@ -30,12 +30,13 @@ abstract class RouteConfiguration
 	/**
 	 * ルーティング情報設定取得
 	 *
-	 * @return array{global_filters:IActionFilter[],routes:Route[]}
+	 * @return array{global_filters:IActionFilter[],action_filters:IActionFilter[],routes:Route[]}
 	 */
 	public static function get(): array
 	{
 		return [
 			'global_filters' => [],
+			'action_filters' => [],
 			'routes' => [
 				(new Route('', HomeController::class))
 					->addAction('privacy', HttpMethod::get(), 'privacy')
@@ -76,16 +77,16 @@ abstract class RouteConfiguration
 	protected static function filterPageAccount(FilterArgument $argument, array $levels): FilterResult
 	{
 		if (!$argument->session->tryGet(SessionManager::ACCOUNT, $account)) {
-			return new FilterResult(HttpStatus::forbidden());
+			return FilterResult::error(HttpStatus::forbidden());
 		}
 
 		foreach ($levels as $level) {
 			if ($account['level'] === $level) {
-				return new FilterResult(HttpStatus::doExecute());
+				return FilterResult::none();
 			}
 		}
 
-		return new FilterResult(HttpStatus::forbidden());
+		return FilterResult::error(HttpStatus::forbidden());
 	}
 
 	private static ?ActionOption $user = null;
@@ -163,10 +164,10 @@ abstract class RouteConfiguration
 			{
 				if (AppConfiguration::isProductionEnvironment()) {
 					$argument->logger->warn('本番環境での実行は抑制');
-					return new FilterResult(HttpStatus::forbidden());
+					return FilterResult::error(HttpStatus::forbidden());
 				}
 
-				return new FilterResult(HttpStatus::doExecute());
+				return FilterResult::none();
 			}
 		};
 

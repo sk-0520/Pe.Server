@@ -30,7 +30,13 @@ class Routing
 	 *
 	 * @var IActionFilter[]
 	 */
-	private array $filters;
+	private array $globalFilters;
+	/**
+	 * アクション共通フィルタ処理
+	 *
+	 * @var IActionFilter[]
+	 */
+	private array $actionFilters;
 	/**
 	 * ルーティング情報。
 	 *
@@ -47,12 +53,13 @@ class Routing
 	/**
 	 * 生成。
 	 *
-	 * @param array{global_filters:IActionFilter[],routes:Route[]} $routeSetting
+	 * @param array{global_filters:IActionFilter[],action_filters:IActionFilter[],routes:Route[]} $routeSetting
 	 * @param array{cookie:CookieOption,temporary:TemporaryOption,session:SessionOption} $storeOption
 	 */
 	public function __construct(array $routeSetting, array $storeOption)
 	{
-		$this->filters = $routeSetting['global_filters'];
+		$this->globalFilters = $routeSetting['global_filters'];
+		$this->actionFilters = $routeSetting['action_filters'];
 		$this->routeMap = $routeSetting['routes'];
 
 		$this->cookie = new CookieStore($storeOption['cookie']);
@@ -85,16 +92,19 @@ class Routing
 	 * @param string[] $requestPaths
 	 * @param ActionRequest $request
 	 * @param IActionFilter $filter
-	 * @return void
+	 * @return bool 次のフィルタを実行してよいか
 	 */
-	private function filter(array $requestPaths, ActionRequest $request, IActionFilter $filter): void
+	private function filter(array $requestPaths, ActionRequest $request, IActionFilter $filter): bool
 	{
 		$filterArgument = new FilterArgument($requestPaths, $this->cookie, $this->session, $request, $this->filterLogger);
 		$filterResult = $filter->filtering($filterArgument);
 
-		if (400 <= $filterResult->status->code()) {
-			throw new Exception('TODO: ' . $filterResult->status->code());
+		if ($filterResult->canNext()) {
+			return true;
 		}
+
+		$filterResult->apply();
+		return false;
 	}
 
 	/**
@@ -105,7 +115,7 @@ class Routing
 	 * @param string $methodName
 	 * @param string[] $urlParameters
 	 * @param ActionOption[] $options
-	 * @return no-return
+	 * @return void
 	 */
 	private function executeAction(array $requestPaths, string $rawControllerName, string $methodName, array $urlParameters, array $options): void
 	{
@@ -114,9 +124,21 @@ class Routing
 
 		$request = new ActionRequest($urlParameters);
 
+		// アクション共通フィルタ処理
+		foreach ($this->actionFilters as $filter) {
+			$canNext = $this->filter($requestPaths, $request, $filter);
+			if (!$canNext) {
+				return;
+			}
+		}
+
+		// アクションに紐づくフィルタ処理
 		foreach ($options as $option) {
 			if (!is_null($option->filter)) {
-				$this->filter($requestPaths, $request, $option->filter);
+				$canNext = $this->filter($requestPaths, $request, $option->filter);
+				if (!$canNext) {
+					return;
+				}
 			}
 		}
 
@@ -128,7 +150,51 @@ class Routing
 		/** @var IActionResult */
 		$actionResult = $controller->$methodName($request);
 		$controller->execute($actionResult);
-		exit;
+	}
+
+	/**
+	 * メソッド・パスから登録されている処理を実行。
+	 *
+	 * 失敗時の云々が甘いというかまだなんも考えてない。
+	 *
+	 * @param string $requestMethod HttpMethod を参照。
+	 * @param string $requestUri リクエストURL。
+	 * @return void
+	 */
+	private function executeCore(string $requestMethod, string $requestUri): void
+	{
+		$requestPaths = $this->getPathValues($requestUri);
+
+		// グローバルフィルタの適用
+		if (ArrayUtility::getCount($this->globalFilters)) {
+			$request = new ActionRequest([]);
+			foreach ($this->globalFilters as $filter) {
+				$canNext = $this->filter($requestPaths, $request, $filter);
+				if (!$canNext) {
+					return;
+				}
+			}
+		}
+
+		/** @var array{code:HttpStatus,class:string,method:string,params:array<string,string>,options:ActionOption[]}|null */
+		$errorAction = null;
+		foreach ($this->routeMap as $route) {
+			$action = $route->getAction($requestMethod, $requestPaths);
+			if (!is_null($action)) {
+				if ($action['code']->code() === HttpStatus::none()->code()) {
+					$this->executeAction($requestPaths, $action['class'], $action['method'], $action['params'], $action['options']);
+					return;
+				} else if (is_null($errorAction)) {
+					$errorAction = $action;
+				}
+			}
+		}
+
+		if (is_null($errorAction)) {
+			FilterResult::error(HttpStatus::internalServerError())->apply();
+		} else {
+			FilterResult::error($errorAction['code'])->apply();
+		}
 	}
 
 	/**
@@ -142,23 +208,6 @@ class Routing
 	 */
 	public function execute(string $requestMethod, string $requestUri): void
 	{
-		$requestPaths = $this->getPathValues($requestUri);
-
-		if (ArrayUtility::getCount($this->filters)) {
-			$request = new ActionRequest([]);
-			foreach ($this->filters as $filter) {
-				$this->filter($requestPaths, $request, $filter);
-			}
-		}
-
-		foreach ($this->routeMap as $route) {
-			$action = $route->getAction($requestMethod, $requestPaths);
-			if (!is_null($action)) {
-				if ($action['code']->code() === HttpStatus::doExecute()->code()) {
-					$this->executeAction($requestPaths, $action['class'], $action['method'], $action['params'], $action['options']);
-					exit; //@phpstan-ignore-line executeActionで終わるけどここだけ見たら分からないので。
-				}
-			}
-		}
+		$this->executeCore($requestMethod, $requestUri);
 	}
 }

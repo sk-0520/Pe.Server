@@ -18,10 +18,11 @@ abstract class HttpStatus
 	// const INTERNAL_SERVER_ERROR = 500;
 	// const SERVICE_UNAVAILABLE = 503;
 
-	public static function doExecute(): HttpStatus
+	public static function none(): HttpStatus
 	{
 		return new _HttpStatus_Impl(0);
 	}
+
 	public static function ok(): HttpStatus
 	{
 		return new _HttpStatus_Impl(200);

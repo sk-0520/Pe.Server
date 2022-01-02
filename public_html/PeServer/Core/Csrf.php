@@ -40,20 +40,20 @@ abstract class Csrf
 				$result = $argument->request->exists(self::REQUEST_KEY);
 				if (!$result['exists']) {
 					$argument->logger->warn('要求CSRFトークンなし');
-					return new FilterResult(HttpStatus::forbidden());
+					return FilterResult::error(HttpStatus::forbidden());
 				}
 
 				$requestToken = $argument->request->getValue(self::REQUEST_KEY);
 				if ($argument->session->tryGet(self::SESSION_KEY, $sessionToken)) {
 					if ($requestToken === $sessionToken) {
-						return new FilterResult(HttpStatus::doExecute());
+						return FilterResult::none();
 					}
 					$argument->logger->warn('CSRFトークン不一致');
 				} else {
 					$argument->logger->warn('セッションCSRFトークンなし');
 				}
 
-				return new FilterResult(HttpStatus::forbidden());
+				return FilterResult::error(HttpStatus::forbidden());
 			}
 		};
 
