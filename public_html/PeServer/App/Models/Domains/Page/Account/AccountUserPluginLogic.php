@@ -13,7 +13,11 @@ use PeServer\App\Models\Domains\Page\PageLogicBase;
 use PeServer\App\Models\Domains\PluginState;
 use PeServer\App\Models\Domains\PluginUrlKey;
 use PeServer\App\Models\Domains\PluginValidator;
+use PeServer\Core\ArrayUtility;
 use PeServer\Core\Database;
+use PeServer\Core\HttpStatus;
+use PeServer\Core\Throws\HttpStatusException;
+use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Uuid;
 
 class AccountUserPluginLogic extends PageLogicBase
@@ -37,21 +41,48 @@ class AccountUserPluginLogic extends PageLogicBase
 	protected function startup(LogicCallMode $callMode): void
 	{
 		$keys = [
+			'account_plugin_plugin_id',
+			'account_plugin_plugin_name',
 			'account_plugin_display_name',
 			'account_plugin_check_url',
 			'account_plugin_lp_url',
 			'account_plugin_project_url',
 			'account_plugin_description',
+			'account_plugin_state',
 		];
 
-		if ($this->isRegister) {
+		if (!$this->isRegister) {
 			$keys = array_merge($keys, [
-				'account_plugin_plugin_id',
-				'account_plugin_plugin_name',
+				'from_account_plugin_plugin_id',
 			]);
 		}
 
 		$this->registerParameterKeys($keys, true);
+
+		if (!$this->isRegister) {
+			$pluginId = Uuid::adjustGuid($this->getRequest('plugin_id'));
+
+			if ($callMode->isInitialize()) {
+				$this->setValue('account_plugin_plugin_id', $pluginId);
+				$this->setValue('from_account_plugin_plugin_id', $pluginId);
+			} else {
+				$fromPluginId = $this->getRequest('from_account_plugin_plugin_id');
+				// プラグインIDが変更されているので死んでもらう(二つとも合うように加工された場合はもう無理、要求を粛々と処理する)
+				if (!Uuid::isEqualGuid($pluginId, $fromPluginId)) {
+					throw new HttpStatusException(HttpStatus::badRequest());
+				}
+				// プラグインIDとプラグイン名は原本を使用する
+				$database = $this->openDatabase();
+				$pluginsEntityDao = new PluginsEntityDao($database);
+				// ルーティングとフィルタでこのプラグイン所有者が保証されているのでプラグインIDのみで取得
+				$map = $pluginsEntityDao->selectPluginIds($pluginId);
+				$this->setValue('account_plugin_plugin_id', $map['plugin_id']);
+				$this->setValue('account_plugin_plugin_name', $map['plugin_name']);
+				$this->setValue('account_plugin_state', $map['plugin_name']);
+			}
+		} else {
+			$this->setValue('account_plugin_state', '');
+		}
 	}
 
 	protected function validateImpl(LogicCallMode $callMode): void
@@ -108,6 +139,21 @@ class AccountUserPluginLogic extends PageLogicBase
 		if ($callMode->isInitialize()) {
 			if (!$this->isRegister) {
 				// 既存データを引っ張ってくる
+				$pluginId = $this->getRequest('plugin_id');
+
+				$database = $this->openDatabase();
+				$pluginsEntityDao = new PluginsEntityDao($database);
+				$pluginUrlsEntityDao = new PluginUrlsEntityDao($database);
+				// ルーティングとフィルタでこのプラグイン所有者が保証されているのでプラグインIDのみで取得
+				$editMap = $pluginsEntityDao->selectEditPlugin($pluginId);
+				$this->setValue('account_plugin_plugin_name', $editMap['plugin_name']);
+				$this->setValue('account_plugin_display_name', $editMap['display_name']);
+				$this->setValue('account_plugin_description', $editMap['description']);
+
+				$urlMap = $pluginUrlsEntityDao->selectUrls($pluginId);
+				$this->setValue('account_plugin_check_url', ArrayUtility::getOr($urlMap, PluginUrlKey::CHECK, ''));
+				$this->setValue('account_plugin_lp_url', ArrayUtility::getOr($urlMap, PluginUrlKey::LANDING, ''));
+				$this->setValue('account_plugin_project_url', ArrayUtility::getOr($urlMap, PluginUrlKey::PROJECT, ''));
 			}
 
 			return;
@@ -130,7 +176,7 @@ class AccountUserPluginLogic extends PageLogicBase
 			$params['plugin_id'] = Uuid::adjustGuid($this->getRequest('account_plugin_plugin_id'));
 			$params['plugin_name'] = $this->getRequest('account_plugin_plugin_name');
 		} else {
-			$params['plugin_id'] = Uuid::adjustGuid($this->getRequest('account_plugin_plugin_id'));
+			$params['plugin_id'] = Uuid::adjustGuid($this->getRequest('plugin_id'));
 		}
 
 		$database = $this->openDatabase();
@@ -149,7 +195,7 @@ class AccountUserPluginLogic extends PageLogicBase
 					''
 				);
 			} else {
-				$pluginsEntityDao->updatePluginEdit(
+				$pluginsEntityDao->updateEditPlugin(
 					$params['plugin_id'],
 					$params['user_id'],
 					$params['display_name'],

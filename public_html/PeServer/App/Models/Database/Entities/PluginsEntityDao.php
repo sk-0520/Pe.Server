@@ -109,6 +109,60 @@ class PluginsEntityDao extends DaoBase
 		);
 	}
 
+	/**
+	 * Undocumented function
+	 *
+	 * @param string $pluginId
+	 * @return array{plugin_id:string,plugin_name:string,state:string}
+	 */
+	public function selectPluginIds(string $pluginId): array
+	{
+		return $this->database->queryFirst(
+			<<<SQL
+
+			select
+				plugins.plugin_id,
+				plugins.plugin_name,
+				plugins.state
+			from
+				plugins
+			where
+				plugins.plugin_id = :plugin_id
+
+			SQL,
+			[
+				'plugin_id' => $pluginId
+			]
+		);
+	}
+
+	/**
+	 * Undocumented function
+	 *
+	 * @param string $pluginId
+	 * @return array{plugin_name:string,display_name:string,description:string}
+	 */
+	public function selectEditPlugin(string $pluginId): array
+	{
+		return $this->database->queryFirst(
+			<<<SQL
+
+			select
+				plugins.plugin_name,
+				plugins.display_name,
+				plugins.description
+			from
+				plugins
+			where
+				plugins.plugin_id = :plugin_id
+
+			SQL,
+			[
+				'plugin_id' => $pluginId,
+			]
+		);
+	}
+
 	public function insertPlugin(string $pluginId, string $userId, string $pluginName, string $displayName, string $state, string $description, string $note): void
 	{
 		$this->database->insertSingle(
@@ -149,16 +203,16 @@ class PluginsEntityDao extends DaoBase
 		);
 	}
 
-	public function updatePluginEdit(string $pluginId, string $userId, string $displayName, string $description): void
+	public function updateEditPlugin(string $pluginId, string $userId, string $displayName, string $description): void
 	{
-		$this->database->insertSingle(
+		$this->database->updateByKey(
 			<<<SQL
 
 			update
 				plugins
 			set
 				display_name = :display_name,
-				description = :description,
+				description = :description
 			where
 				plugins.plugin_id = :plugin_id
 				and

@@ -37,6 +37,10 @@ abstract class HttpStatus
 		return new _HttpStatus_Impl(302);
 	}
 
+	public static function badRequest(): HttpStatus
+	{
+		return new _HttpStatus_Impl(400);
+	}
 	public static function forbidden(): HttpStatus
 	{
 		return new _HttpStatus_Impl(403);

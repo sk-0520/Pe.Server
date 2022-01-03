@@ -2,8 +2,19 @@
 {block name='TITLE'}ユーザー情報 編集{/block}
 {block name='BODY'}
 
-<form class="page-account-plugin" action="/account/user/plugin" method="post">
+{$is_register = !isset($values.from_account_plugin_plugin_id) || empty($values.from_account_plugin_plugin_id) }
+
+{if $is_register}
+	{$action = "/account/user/plugin"}
+{else}
+	{$action = "/account/user/plugin/{$values['from_account_plugin_plugin_id']}"}
+{/if}
+
+<form class="page-account-plugin" action="{$action}" method="post">
 	{csrf}
+	{if !$is_register}
+		<input type="hidden" name="from_account_plugin_plugin_id" value="{$values.from_account_plugin_plugin_id}" />
+	{/if}
 
 	<dl>
 		<dt>plugin id</dt>

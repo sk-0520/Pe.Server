@@ -62,6 +62,7 @@ abstract class RouteConfiguration
 					->addAction('user/plugin', HttpMethod::get(), 'user_plugin_register_get', [self::user()])
 					->addAction('user/plugin', HttpMethod::post(), 'user_plugin_register_post', [self::user(), Csrf::csrf()])
 					->addAction('user/plugin/:plugin_id@\{?[a-fA-F0-9\-]{32,}\}?', HttpMethod::get(), 'user_plugin_update_get', [self::user(), self::plugin()])
+					->addAction('user/plugin/:plugin_id@\{?[a-fA-F0-9\-]{32,}\}?', HttpMethod::post(), 'user_plugin_update_post', [self::user(), Csrf::csrf(), self::plugin()])
 				/* AUTO-FORMAT */,
 				(new Route('setting', SettingController::class, [self::admin()]))
 					->addAction('setup', HttpMethod::get(), 'setup_get', [self::setup()])
@@ -164,15 +165,15 @@ abstract class RouteConfiguration
 			public function filtering(FilterArgument $argument): FilterResult
 			{
 				$pluginIdState = $argument->request->exists('plugin_id');
-				if($pluginIdState['exists'] && $pluginIdState['type'] === ActionRequest::REQUEST_URL) {
+				if ($pluginIdState['exists'] && $pluginIdState['type'] === ActionRequest::REQUEST_URL) {
 					$pluginId = $argument->request->getValue('plugin_id');
 					// ここにきてるってことはユーザーフィルタを通過しているのでセッションを見る必要はないけど一応ね
-					if(Uuid::isGuid($pluginId) && SessionManager::hasAccount()) {
+					if (Uuid::isGuid($pluginId) && SessionManager::hasAccount()) {
 						$pluginId = Uuid::adjustGuid($pluginId);
 						$account = SessionManager::getAccount();
 						$database = $this->openDatabase();
 						$pluginsEntityDao = new PluginsEntityDao($database);
-						if($pluginsEntityDao->selectIsUserPlugin($pluginId, $account['user_id'])) {
+						if ($pluginsEntityDao->selectIsUserPlugin($pluginId, $account['user_id'])) {
 							return FilterResult::none();
 						}
 					}

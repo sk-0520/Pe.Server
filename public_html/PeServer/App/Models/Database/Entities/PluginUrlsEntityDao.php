@@ -14,12 +14,20 @@ class PluginUrlsEntityDao extends DaoBase
 		parent::__construct($database);
 	}
 
-	public function deleteByPluginId(string $pluginId): int
+	/**
+	 * Undocumented function
+	 *
+	 * @param string $pluginId
+	 * @return array<string,string>
+	 */
+	public function selectUrls(string $pluginId): array
 	{
-		return $this->database->delete(
+		$results = $this->database->query(
 			<<<SQL
 
-			delete
+			select
+				plugin_urls.key,
+				plugin_urls.url
 			from
 				plugin_urls
 			where
@@ -30,6 +38,14 @@ class PluginUrlsEntityDao extends DaoBase
 				'plugin_id' => $pluginId,
 			]
 		);
+
+		/** @var array<string,string> */
+		$map = [];
+		foreach ($results as $result) {
+			$map[$result['key']] = $result['url'];
+		}
+
+		return $map;
 	}
 
 	public function insertUrl(string $pluginId, string $key, string $url): void
@@ -56,6 +72,24 @@ class PluginUrlsEntityDao extends DaoBase
 				'plugin_id' => $pluginId,
 				'key' => $key,
 				'url' => $url,
+			]
+		);
+	}
+
+	public function deleteByPluginId(string $pluginId): int
+	{
+		return $this->database->delete(
+			<<<SQL
+
+			delete
+			from
+				plugin_urls
+			where
+				plugin_urls.plugin_id = :plugin_id
+
+			SQL,
+			[
+				'plugin_id' => $pluginId,
 			]
 		);
 	}
