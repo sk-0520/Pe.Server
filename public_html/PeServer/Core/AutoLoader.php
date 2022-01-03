@@ -6,6 +6,8 @@ namespace PeServer\Core;
 
 /**
  * オートローダー。
+ *
+ * NOTE: なにがあってもPHP標準関数ですべて処理すること。
  */
 abstract class AutoLoader
 {
@@ -47,7 +49,7 @@ abstract class AutoLoader
 			$fileBasePath = str_replace('\\', DIRECTORY_SEPARATOR, $className);
 			$filePath = $baseDirectoryPath . DIRECTORY_SEPARATOR . $fileBasePath . '.php';
 
-			if (file_exists($filePath)) {
+			if (is_file($filePath)) {
 				require_once $filePath;
 			}
 		}

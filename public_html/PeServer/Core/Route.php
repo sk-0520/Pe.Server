@@ -63,33 +63,26 @@ class Route
 	/**
 	 * ルーティング情報にコントローラを登録
 	 *
-	 * @param string $path URLとしてのパス。先頭が api 以外の場合に index アクションが自動登録される
+	 * @param string $path URLとしてのパス。先頭が api/ajax 以外の場合に index アクションが自動登録される
 	 * @param string $className 使用されるクラス完全名
 	 * @param IActionFilter[]|null $filters ベースとなるオプション設定。null/0件の場合は IActionFilter::none() が使用される。
 	 */
 	public function __construct(string $path, string $className, ?array $filters = null)
 	{
-		// if(str_starts_with($path, '/')) {
-		// 	die();
-		// }
-		// if(str_ends_with($path, '/')) {
-		// 	die();
-		// }
-
 		if (StringUtility::isNullOrEmpty($path)) {
 			$this->basePath = $path;
 		} else {
-			$trimPath = trim($path);
-			if ($trimPath !== trim($trimPath, '/')) {
+			$trimPath = StringUtility::trim($path);
+			if ($trimPath !== StringUtility::trim($trimPath, '/')) {
 				throw new LogicException('path start or end -> /');
 			}
 			$this->basePath = $trimPath;
 		}
 
 		$this->baseFilters = self::toActions($filters, [], []);
-
 		$this->className = $className;
-		if (mb_substr($this->basePath, 0, 3) != 'api') {
+
+		if (!(StringUtility::startsWith($this->basePath, 'api', false) || StringUtility::startsWith($this->basePath, 'ajax', false))) {
 			$this->addAction('', HttpMethod::get(), 'index', $this->baseFilters);
 		}
 	}
@@ -167,8 +160,8 @@ class Route
 		}
 
 		//$actionPath = $requestPaths[count($requestPaths) - 1];
-		$actionPath = ltrim(mb_substr($requestPath->full, mb_strlen($this->basePath)), '/');
-		$actionPaths = explode('/', $actionPath);
+		$actionPath = StringUtility::trimStart(mb_substr($requestPath->full, mb_strlen($this->basePath)), '/');
+		$actionPaths = StringUtility::split($actionPath, '/');
 
 		if (!isset($this->actions[$actionPath])) {
 			// URLパラメータチェック
@@ -178,8 +171,8 @@ class Route
 					continue;
 				}
 
-				$keyPaths = explode('/', $key);
-				if (count($keyPaths) !== count($actionPaths)) {
+				$keyPaths = StringUtility::split($key, '/');
+				if (ArrayUtility::getCount($keyPaths) !== ArrayUtility::getCount($actionPaths)) {
 					continue;
 				}
 
@@ -189,12 +182,12 @@ class Route
 					if ($length === 0 || $value[0] !== ':') {
 						return ['key' => $value, 'name' => '', 'value' => $targetValue];
 					}
-					$splitPaths = explode('@', $value, 2);
+					$splitPaths = StringUtility::split($value, '@', 2);
 					$requestKey = StringUtility::substring($splitPaths[0], 1);
-					$isRegex = 1 < count($splitPaths);
+					$isRegex = 1 < ArrayUtility::getCount($splitPaths);
 					if ($isRegex) {
 						$pattern = "/$splitPaths[1]/";
-						if (preg_match($pattern, $targetValue)) {
+						if (Regex::isMatch($targetValue, $pattern)) {
 							return ['key' => $value, 'name' => $requestKey, 'value' => $targetValue];
 						}
 						return null;
@@ -206,11 +199,11 @@ class Route
 				});
 
 				// 非URLパラメータ項目は一致するか
-				if (count($calcPaths) !== count($actionPaths)) {
+				if (ArrayUtility::getCount($calcPaths) !== ArrayUtility::getCount($actionPaths)) {
 					continue;
 				}
 				$success = true;
-				for ($i = 0; $i < count($calcPaths) && $success; $i++) {
+				for ($i = 0; $i < ArrayUtility::getCount($calcPaths) && $success; $i++) {
 					$calcPath = $calcPaths[$i];
 					if (StringUtility::isNullOrEmpty($calcPath['name'])) {
 						$success = $calcPath['key'] === $actionPaths[$i];
@@ -220,7 +213,7 @@ class Route
 					continue;
 				}
 
-				$calcKey = implode('/', array_column($calcPaths, 'key'));
+				$calcKey = StringUtility::join(array_column($calcPaths, 'key'), '/');
 				if ($key !== $calcKey) {
 					continue;
 				}

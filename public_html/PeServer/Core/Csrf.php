@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
-use PeServer\Core\Throws\CoreError;
+use PeServer\Core\FilterArgument;
+use PeServer\Core\Throws\SessionException;
 
 
 abstract class Csrf
@@ -13,11 +14,17 @@ abstract class Csrf
 	public const REQUEST_KEY = 'core__csrf';
 	private const HASH_ALGORITHM = 'sha256';
 
+	/**
+	 * Undocumented function
+	 *
+	 * @return string
+	 * @throws CsrfException
+	 */
 	public static function generateToken(): string
 	{
 		$sessionId = session_id();
 		if ($sessionId === false) {
-			throw new CoreError();
+			throw new SessionException('セッションID取得失敗');
 		}
 
 		$hash = hash(self::HASH_ALGORITHM, $sessionId);
