@@ -27,9 +27,9 @@ abstract class Throws
 	 * @param Throwable $previous ラップする元の例外。
 	 * @return no-return
 	 */
-	public static function reThrow(string $className, Throwable $previous): void
+	public static function reThrow(string $className, Throwable $previous, string $message = null): void
 	{
-		$message = $previous->getMessage();
+		$message = $message ?? $previous->getMessage();
 		$rawCode = $previous->getCode();
 		$code = 0;
 		if (is_integer($rawCode)) {

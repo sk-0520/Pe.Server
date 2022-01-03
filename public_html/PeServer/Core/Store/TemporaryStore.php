@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace PeServer\Core\Store;
 
 use \DateInterval;
-use PeServer\Core\ArrayUtility;
 use PeServer\Core\FileUtility;
+use PeServer\Core\ArrayUtility;
 use PeServer\Core\StringUtility;
 use PeServer\Core\Store\CookieOption;
-use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\CoreException;
+use PeServer\Core\Throws\CryptoException;
+use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\InvalidOperationException;
 
 /**
@@ -80,7 +81,7 @@ class TemporaryStore
 
 		$bytes = openssl_random_pseudo_bytes(self::ID_LENGTH);
 		if ($bytes === false) { // @phpstan-ignore-line
-			throw new CoreException();
+			throw new CryptoException();
 		}
 
 		return bin2hex($bytes);

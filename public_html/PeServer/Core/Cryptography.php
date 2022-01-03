@@ -6,6 +6,7 @@ namespace PeServer\Core;
 
 use \Exception;
 use PeServer\Core\Throws\CryptoException;
+use PeServer\Core\Throws\Throws;
 
 /**
  * 暗号化周り
@@ -30,7 +31,7 @@ abstract class Cryptography
 		try {
 			$ivLength = openssl_cipher_iv_length($algorithm);
 		} catch (Exception $ex) {
-			throw new CryptoException($algorithm, $ex->getCode(), $ex);
+			Throws::reThrow(CryptoException::class, $ex, $algorithm);
 		}
 
 		if ($ivLength === false) {
@@ -76,7 +77,7 @@ abstract class Cryptography
 		try {
 			$decData = openssl_decrypt($encData, $algorithm, $password, self::OPTION, $iv);
 		} catch (Exception $ex) {
-			throw new CryptoException($algorithm, $ex->getCode(), $ex);
+			Throws::reThrow(CryptoException::class, $ex, $algorithm);
 		}
 
 		if ($decData === false) {
