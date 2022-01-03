@@ -7,6 +7,8 @@ namespace PeServer\Core;
 
 abstract class UrlUtility
 {
+	public const LOCALHOST_PATTERN = '/https?:\/\/(\w*:\\w*@)?((localhost)|(127\.0\.0\.1))\b/';
+
 	public static function convertPathToUrl(string $path): string
 	{
 		$httpProtocol = StringUtility::isNullOrEmpty(ArrayUtility::getOr($_SERVER, 'HTTPS', '')) ? 'http://' : 'https://';

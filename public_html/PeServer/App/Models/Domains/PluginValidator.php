@@ -12,6 +12,8 @@ use PeServer\Core\StringUtility;
 use PeServer\Core\Mvc\IValidationReceiver;
 use PeServer\App\Models\Database\Entities\UsersEntityDao;
 use PeServer\App\Models\Database\Entities\PluginsEntityDao;
+use PeServer\Core\Environment;
+use PeServer\Core\UrlUtility;
 use PeServer\Core\Uuid;
 
 class PluginValidator extends ValidatorBase
@@ -82,7 +84,10 @@ class PluginValidator extends ValidatorBase
 
 			$trueKeeper->state = $this->isWebsite($key, $value);
 
-			// チェック用URLなのでワッケ分からんURLの登録は禁止する(検証環境はいい)
+			if (Environment::isProduction()) {
+				// チェック用URLなのでワッケ分からんURLの登録は禁止する(検証環境はいい)
+				$trueKeeper->state = $this->validator->isNotMatch($key, UrlUtility::LOCALHOST_PATTERN, $value);
+			}
 
 			return $trueKeeper->state;
 		}

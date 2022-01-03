@@ -1,14 +1,15 @@
 {extends file='default.tpl'}
-{block name='TITLE'}ユーザー情報 編集{/block}
-{block name='BODY'}
-
 {$is_register = !isset($values.from_account_plugin_plugin_id) || empty($values.from_account_plugin_plugin_id) }
-
 {if $is_register}
+	{block name='TITLE'}プラグイン 登録{/block}
 	{$action = "/account/user/plugin"}
+	{$readonly = false}
 {else}
+	{block name='TITLE'}プラグイン 更新: {$values.account_plugin_plugin_name}{/block}
 	{$action = "/account/user/plugin/{$values['from_account_plugin_plugin_id']}"}
+	{$readonly = true}
 {/if}
+{block name='BODY'}
 
 <form class="page-account-plugin" action="{$action}" method="post">
 	{csrf}
@@ -19,12 +20,12 @@
 	<dl>
 		<dt>plugin id</dt>
 		<dd>
-			{input_helper key='account_plugin_plugin_id' type="text" class="edit"}
+			{input_helper key='account_plugin_plugin_id' type="text" class="edit" readonly="{$readonly}"}
 		</dd>
 
 		<dt>plugin name</dt>
 		<dd>
-			{input_helper key='account_plugin_plugin_name' type="text" class="edit"}
+			{input_helper key='account_plugin_plugin_name' type="text" class="edit" readonly="{$readonly}"}
 		</dd>
 
 		<dt>display name</dt>

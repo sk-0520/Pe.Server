@@ -318,7 +318,8 @@ abstract class StringUtility
 	 */
 	public static function dump($value): string
 	{
-		return print_r($value, true) ?? '';
+		//return var_export($value, true) ?? '';
+		return print_r($value, true);
 	}
 
 	public static function replace(string $value, string $oldValue, ?string $newValue): string

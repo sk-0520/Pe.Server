@@ -6,6 +6,7 @@ namespace PeServer\Core\Mvc;
 
 use PeServer\Core\StringUtility;
 use PeServer\Core\Mvc\IValidationReceiver;
+use PeServer\Core\Regex;
 
 class Validator
 {
@@ -75,7 +76,7 @@ class Validator
 
 	public function isMatch(string $key, string $pattern, string $value): bool
 	{
-		if (!preg_match($pattern, $value)) {
+		if (!Regex::isMatch($value, $pattern)) {
 			$this->receiver->receiveErrorKind($key, self::KIND_MATCH, ['value' => $value, 'pattern' => $pattern]);
 			return false;
 		}
@@ -83,6 +84,15 @@ class Validator
 		return true;
 	}
 
+	public function isNotMatch(string $key, string $pattern, string $value): bool
+	{
+		if (Regex::isMatch($value, $pattern)) {
+			$this->receiver->receiveErrorKind($key, self::KIND_MATCH, ['value' => $value, 'pattern' => $pattern]);
+			return false;
+		}
+
+		return true;
+	}
 	public function isEmail(string $key, string $value): bool
 	{
 		if (filter_var($value, FILTER_VALIDATE_EMAIL)) {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domains\Page\Account;
 
+use PeServer\App\Models\AppDatabaseCache;
 use PeServer\Core\Database;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\StringUtility;
@@ -109,6 +110,7 @@ class AccountUserEditLogic extends PageLogicBase
 			SessionManager::setAccount($account);
 
 			$this->addTemporaryMessage(I18n::message('message/flash/updated_user'));
+			AppDatabaseCache::exportUserInformation();
 		}
 	}
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domains\Page\Account;
 
+use PeServer\App\Models\AppDatabaseCache;
 use PeServer\App\Models\AuditLog;
 use PeServer\App\Models\Database\Entities\PluginsEntityDao;
 use PeServer\App\Models\Database\Entities\PluginUrlsEntityDao;
@@ -16,6 +17,7 @@ use PeServer\App\Models\Domains\PluginValidator;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Database;
 use PeServer\Core\HttpStatus;
+use PeServer\Core\I18n;
 use PeServer\Core\Throws\HttpStatusException;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Uuid;
@@ -218,5 +220,11 @@ class AccountUserPluginLogic extends PageLogicBase
 		}, $params);
 
 		$this->result['plugin_id'] = $params['plugin_id'];
+		if ($this->isRegister) {
+			$this->addTemporaryMessage(I18n::message('message/flash/register_plugin'));
+		} else {
+			$this->addTemporaryMessage(I18n::message('message/flash/update_plugin'));
+		}
+		AppDatabaseCache::exportPluginInformation();
 	}
 }
