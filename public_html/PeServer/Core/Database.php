@@ -206,13 +206,62 @@ class Database
 	 * @param array<string|int,string|int> $parameters
 	 * @return array<string,mixed>|mixed
 	 */
-	public function queryFirstOrDefault($defaultValue, string $statement, array $parameters = array())
+	public function queryFirstOr($defaultValue, string $statement, array $parameters = array())
 	{
 		$query = $this->executeStatement($statement, $parameters);
 
 		$result = $query->fetch();
 		if ($result === false) {
 			return $defaultValue;
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Undocumented function
+	 *
+	 * @param string $statement
+	 * @param array<string|int,string|int> $parameters
+	 * @return array<string,mixed>
+	 */
+	public function querySingle(string $statement, array $parameters = array()): array
+	{
+		$query = $this->executeStatement($statement, $parameters);
+
+		$result = $query->fetch();
+		if ($result === false) {
+			throw new SqlException($this->getErrorMessage());
+		}
+
+		$next = $query->fetch();
+		if ($next !== false) {
+			throw new SqlException($this->getErrorMessage());
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Undocumented function
+	 *
+	 * @param string $statement
+	 * @param array<string,mixed>|mixed $defaultValue 戻り。
+	 * @param array<string|int,string|int> $parameters
+	 * @return array<string,mixed>|mixed
+	 */
+	public function querySingleOr($defaultValue, string $statement, array $parameters = array())
+	{
+		$query = $this->executeStatement($statement, $parameters);
+
+		$result = $query->fetch();
+		if ($result === false) {
+			return $defaultValue;
+		}
+
+		$next = $query->fetch();
+		if ($next !== false) {
+			throw new SqlException($this->getErrorMessage());
 		}
 
 		return $result;

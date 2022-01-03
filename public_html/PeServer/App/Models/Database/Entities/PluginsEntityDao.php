@@ -118,7 +118,7 @@ class PluginsEntityDao extends DaoBase
 	public function selectPluginIds(string $pluginId): array
 	{
 		/** @var array{plugin_id:string,plugin_name:string,state:string} */
-		return $this->database->queryFirst(
+		return $this->database->querySingle(
 			<<<SQL
 
 			select
@@ -146,7 +146,7 @@ class PluginsEntityDao extends DaoBase
 	public function selectEditPlugin(string $pluginId): array
 	{
 		/** @var array{plugin_name:string,display_name:string,description:string} */
-		return $this->database->queryFirst(
+		return $this->database->querySingle(
 			<<<SQL
 
 			select

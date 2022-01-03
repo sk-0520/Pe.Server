@@ -22,7 +22,7 @@ class UserDomainDao extends DaoBase
 	 */
 	public function selectLoginUser(string $loginId)
 	{
-		return $this->database->queryFirstOrDefault(
+		return $this->database->querySingleOr(
 			null,
 			<<<SQL
 
@@ -65,7 +65,7 @@ class UserDomainDao extends DaoBase
 	public function selectEmailAndWaitTokenTimestamp(string $userId, int $limitMinutes): array
 	{
 		/** @var array{email:string,wait_email:string,token_timestamp_utc:string} */
-		return $this->database->queryFirst(
+		return $this->database->querySingle(
 			<<<SQL
 
 			select

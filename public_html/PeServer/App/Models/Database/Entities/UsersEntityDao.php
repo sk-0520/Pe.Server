@@ -60,7 +60,7 @@ class UsersEntityDao extends DaoBase
 	public function selectUserInfoData(string $userId): array
 	{
 		/** @var array{user_id:string,login_id:string,level:string,name:string,email:string,website:string} */
-		return $this->database->queryFirst(
+		return $this->database->querySingle(
 			<<<SQL
 
 			select
@@ -91,7 +91,7 @@ class UsersEntityDao extends DaoBase
 	public function selectUserEditData(string $userId): array
 	{
 		/** @var array{name:string,website:string} */
-		return $this->database->queryFirst(
+		return $this->database->querySingle(
 			<<<SQL
 
 			select
@@ -111,7 +111,7 @@ class UsersEntityDao extends DaoBase
 
 	public function selectEmail(string $userId): string
 	{
-		return $this->database->queryFirst(
+		return $this->database->querySingle(
 			<<<SQL
 
 			select

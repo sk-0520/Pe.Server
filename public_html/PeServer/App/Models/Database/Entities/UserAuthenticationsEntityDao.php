@@ -23,7 +23,7 @@ class UserAuthenticationsEntityDao extends DaoBase
 	public function selectPasswords(string $userId): array
 	{
 		/** @var array{generate_password:string,current_password:string} */
-		return $this->database->queryFirst(
+		return $this->database->querySingle(
 			<<<SQL
 
 			select
