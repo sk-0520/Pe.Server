@@ -140,8 +140,8 @@ class SettingSetupLogic extends PageLogicBase
 
 			// ユーザー生成記録を監査ログに追加
 			$this->writeAuditLogCurrentUser(AuditLog::USER_STATE_CHANGE, ['state' => $state], $database);
-			$this->writeAuditLogCurrentUser(AuditLog::USER_CREATE, ['id' => $userInfo['id']], $database);
-			$this->writeAuditLogTargetUser($userInfo['id'], AuditLog::USER_GENERATED, $currentUserInfo['user_id'], $database);
+			$this->writeAuditLogCurrentUser(AuditLog::USER_CREATE, ['user_id' => $userInfo['id']], $database);
+			$this->writeAuditLogTargetUser($userInfo['id'], AuditLog::USER_GENERATED, ['user_id' => $currentUserInfo['user_id']], $database);
 
 			return true;
 		}, $currentUserInfo, $params, $userInfo);
