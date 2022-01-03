@@ -34,7 +34,7 @@ abstract class I18n
 	private static array $i18nConfiguration;
 
 	/**
-	 * Undocumented function
+	 * 初期化。
 	 *
 	 * @param array<string,string|array<string,mixed>> $i18nConfiguration
 	 * @return void
@@ -50,7 +50,7 @@ abstract class I18n
 	}
 
 	/**
-	 * Undocumented function
+	 * 平坦化。
 	 *
 	 * @param array<string,string|mixed> $array
 	 * @param string $locale

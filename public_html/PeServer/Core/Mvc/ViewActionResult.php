@@ -13,7 +13,7 @@ class ViewActionResult extends ActionResult
 	private TemplateParameter $templateParameter;
 
 	/**
-	 * Undocumented function
+	 * 生成。
 	 *
 	 * @param string $templateBaseName
 	 * @param string $actionName

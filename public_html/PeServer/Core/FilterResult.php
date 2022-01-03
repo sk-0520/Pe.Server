@@ -41,7 +41,7 @@ abstract class FilterResult
 	}
 
 	/**
-	 * Undocumented function
+	 * リダイレクト処理生成。
 	 *
 	 * @param string $path
 	 * @param array<string,string>|null $query
@@ -59,6 +59,13 @@ abstract class FilterResult
 		return new _FilterRedirectResult($status ?? HttpStatus::found(), $url);
 	}
 
+	/**
+	 * エラー処理生成。
+	 *
+	 * @param HttpStatus $status
+	 * @param string $message
+	 * @return FilterResult
+	 */
 	public static function error(HttpStatus $status, string $message = ''): FilterResult
 	{
 		return new _FilterErrorResult($status, $message);

@@ -51,7 +51,7 @@ abstract class Logging
 	private static $format;
 
 	/**
-	 * Undocumented function
+	 * 初期化。
 	 *
 	 * @param array<string,mixed> $loggingConfiguration
 	 * @return void

@@ -13,7 +13,7 @@ use PeServer\Core\Store\TemporaryOption;
 abstract class StoreConfiguration
 {
 	/**
-	 * Undocumented function
+	 * クッキー設定を取得。
 	 *
 	 * @param array{string,string}|null $setting
 	 * @return CookieOption
@@ -33,7 +33,7 @@ abstract class StoreConfiguration
 	}
 
 	/**
-	 * Undocumented function
+	 * 一時データ設定を取得。
 	 *
 	 * @param array{string,string}|null $setting
 	 * @param CookieOption $cookie
@@ -53,7 +53,7 @@ abstract class StoreConfiguration
 	}
 
 	/**
-	 * Undocumented function
+	 * セッション設定を取得。
 	 *
 	 * @param array{string,string}|null $setting
 	 * @param CookieOption $cookie

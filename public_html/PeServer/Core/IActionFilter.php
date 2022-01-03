@@ -13,7 +13,9 @@ use PeServer\Core\FilterArgument;
 interface IActionFilter
 {
 	/**
-	 * Undocumented function
+	 * フィルタリング処理。
+	 *
+	 * callable で書くのがしんどいんよ。
 	 *
 	 * @param FilterArgument $argument
 	 * @return FilterResult

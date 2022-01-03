@@ -139,7 +139,7 @@ class TemporaryStore
 	}
 
 	/**
-	 * Undocumented function
+	 * 追加。
 	 *
 	 * @param string $key
 	 * @param mixed $value

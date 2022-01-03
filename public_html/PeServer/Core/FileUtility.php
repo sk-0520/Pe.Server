@@ -122,7 +122,7 @@ abstract class FileUtility
 	}
 
 	/**
-	 * Undocumented function
+	 * JSONファイルとして出力。
 	 *
 	 * @param string $path
 	 * @param array<mixed>|stdClass $data

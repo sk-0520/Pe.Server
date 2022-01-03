@@ -49,7 +49,7 @@ abstract class SessionManager
 	}
 
 	/**
-	 * Undocumented function
+	 * アカウント情報取得。
 	 *
 	 * @return array{user_id:string,login_id:string,name:string,level:string,state:string}
 	 */
@@ -65,7 +65,7 @@ abstract class SessionManager
 	}
 
 	/**
-	 * Undocumented function
+	 * アカウント情報設定。
 	 *
 	 * @param array{user_id:string,login_id:string,name:string,level:string,state:string} $value
 	 * @return void

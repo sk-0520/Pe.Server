@@ -11,14 +11,14 @@ use PeServer\Core\Mvc\TemplateParameter;
 abstract class AppTemplate
 {
 	/**
-	 * Undocumented function
+	 * テンプレートを適用。
 	 *
 	 * @param string $baseName
 	 * @param string $templateName
 	 * @param array<string,mixed> $params
 	 * @return string
 	 */
-	private static function createTemplate(string $baseName, string $templateName, array $params, HttpStatus $status): string
+	private static function buildTemplate(string $baseName, string $templateName, array $params, HttpStatus $status): string
 	{
 		$template = Template::create('template/' . $baseName);
 		$result = $template->build($templateName . '.tpl', new TemplateParameter($status, $params, []));
@@ -36,7 +36,7 @@ abstract class AppTemplate
 	 */
 	public static function createPageTemplate(string $templateName, array $params, HttpStatus $status): string
 	{
-		return self::createTemplate('page', $templateName, $params, $status);
+		return self::buildTemplate('page', $templateName, $params, $status);
 	}
 
 	/**
@@ -61,6 +61,6 @@ abstract class AppTemplate
 			'website_url' => $families['website_url'],
 		];
 
-		return self::createTemplate('email', $templateName, $params, HttpStatus::none());
+		return self::buildTemplate('email', $templateName, $params, HttpStatus::none());
 	}
 }

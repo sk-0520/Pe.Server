@@ -16,7 +16,7 @@ abstract class UrlUtility
 	}
 
 	/**
-	 * Undocumented function
+	 * URLパスとクエリを結合。
 	 *
 	 * @param string $pathUrl
 	 * @param array<string,string> $query
@@ -33,7 +33,7 @@ abstract class UrlUtility
 	}
 
 	/**
-	 * Undocumented function
+	 * パスをURLに変換しつつクエリ結合。
 	 *
 	 * @param string $path
 	 * @param array<string,string> $query

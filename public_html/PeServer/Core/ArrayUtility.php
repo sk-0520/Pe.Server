@@ -87,7 +87,7 @@ class ArrayUtility
 	}
 
 	/**
-	 * Undocumented function
+	 * 配列に該当キーは存在するか。
 	 *
 	 * @param array<mixed> $haystack
 	 * @param string|integer $key

@@ -92,7 +92,7 @@ class ErrorHandler
 	}
 
 	/**
-	 * Undocumented function
+	 * エラー取得処理。
 	 *
 	 * @param integer $errorNumber
 	 * @param string $message

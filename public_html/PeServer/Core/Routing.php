@@ -76,7 +76,7 @@ class Routing
 	}
 
 	/**
-	 * Undocumented function
+	 * フィルタ単独処理。
 	 *
 	 * @param RequestPath $requestPath
 	 * @param ActionRequest $request
@@ -97,7 +97,7 @@ class Routing
 	}
 
 	/**
-	 * Undocumented function
+	 * フィルタをグワーッと処理。
 	 *
 	 * @param IActionFilter[] $filters
 	 * @param RequestPath $requestPath

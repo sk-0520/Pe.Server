@@ -15,10 +15,10 @@ abstract class Csrf
 	private const HASH_ALGORITHM = 'sha256';
 
 	/**
-	 * Undocumented function
+	 * CSRFトークンを取得。
 	 *
 	 * @return string
-	 * @throws SessionException
+	 * @throws SessionException セッションID取得失敗。
 	 */
 	public static function generateToken(): string
 	{

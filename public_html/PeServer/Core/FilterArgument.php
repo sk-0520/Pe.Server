@@ -20,7 +20,7 @@ class FilterArgument
 	public ILogger $logger;
 
 	/**
-	 * Undocumented function
+	 * 生成。
 	 *
 	 * @param RequestPath $requestPath
 	 * @param CookieStore $cookie

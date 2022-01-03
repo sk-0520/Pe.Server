@@ -40,14 +40,14 @@ class Route
 	private array $baseFilters;
 
 	/**
-	 * Undocumented function
+	 * フィルタに変換。
 	 *
 	 * @param IActionFilter[]|null $options ベースとなるオプション設定。null/0件の場合は IActionFilter::none() が使用される。
 	 * @param IActionFilter[] $zero
 	 * @param IActionFilter[] $null
 	 * @return IActionFilter[]
 	 */
-	private static function toActions(?array $options, array $zero, array $null): array
+	private static function toFilters(?array $options, array $zero, array $null): array
 	{
 		if (is_null($options)) {
 			return [];
@@ -79,7 +79,7 @@ class Route
 			$this->basePath = $trimPath;
 		}
 
-		$this->baseFilters = self::toActions($filters, [], []);
+		$this->baseFilters = self::toFilters($filters, [], []);
 		$this->className = $className;
 
 		if (!(StringUtility::startsWith($this->basePath, 'api', false) || StringUtility::startsWith($this->basePath, 'ajax', false))) {
@@ -104,7 +104,7 @@ class Route
 		$this->actions[$actionName]->add(
 			$httpMethod,
 			StringUtility::isNullOrWhiteSpace($methodName) ? $actionName : $methodName, // @phpstan-ignore-line
-			self::toActions($filters, [], $this->baseFilters)
+			self::toFilters($filters, [], $this->baseFilters)
 		);
 
 		return $this;

@@ -84,7 +84,7 @@ abstract class RouteConfiguration
 
 
 	/**
-	 * Undocumented function
+	 * アカウント用フィルタ処理。
 	 *
 	 * @param FilterArgument $argument
 	 * @param string[] $levels

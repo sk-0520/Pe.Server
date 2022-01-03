@@ -43,7 +43,7 @@ abstract class AppConfiguration
 	public static $baseDirectoryPath;
 
 	/**
-	 * Undocumented function
+	 * 設定データの値置き換え。
 	 *
 	 * @param array<mixed> $array
 	 * @param string $rootDirectoryPath
@@ -69,7 +69,7 @@ abstract class AppConfiguration
 	}
 
 	/**
-	 * Undocumented function
+	 * 設定ファイル読み込み。
 	 *
 	 * @param string $rootDirectoryPath
 	 * @param string $baseDirectoryPath

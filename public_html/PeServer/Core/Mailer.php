@@ -113,11 +113,11 @@ class Mailer
 	}
 
 	/**
-	 * Undocumented function
+	 * 本文設定。
 	 *
 	 * @param array{text?:string,html?:string} $message
 	 * @return void
-	 * @throws ArgumentException
+	 * @throws ArgumentException HTMLとプレーンテキスト未設定。
 	 */
 	public function setMessage(array $message)
 	{

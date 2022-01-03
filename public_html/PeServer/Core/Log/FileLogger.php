@@ -32,7 +32,7 @@ class FileLogger extends LoggerBase
 	private static $cleanupHeaders = array();
 
 	/**
-	 * Undocumented function
+	 * 生成。
 	 *
 	 * @param string $header
 	 * @param integer $level

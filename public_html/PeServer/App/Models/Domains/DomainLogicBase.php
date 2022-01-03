@@ -60,7 +60,7 @@ abstract class DomainLogicBase extends LogicBase
 	}
 
 	/**
-	 * Undocumented function
+	 * 監査ログ出力内部処理。
 	 *
 	 * @param string $userId
 	 * @param string $event

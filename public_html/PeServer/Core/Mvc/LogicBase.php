@@ -144,7 +144,7 @@ abstract class LogicBase implements IValidationReceiver
 	}
 
 	/**
-	 * Undocumented function
+	 * Cookie を設定。
 	 *
 	 * @param string $key
 	 * @param string $value
@@ -245,7 +245,7 @@ abstract class LogicBase implements IValidationReceiver
 	}
 
 	/**
-	 * Undocumented function
+	 * パラメータキーの設定。
 	 *
 	 * @param string[] $keys
 	 * @param bool $overwrite キー項目を要求データで上書きするか
@@ -271,11 +271,12 @@ abstract class LogicBase implements IValidationReceiver
 	}
 
 	/**
-	 * Undocumented function
+	 * 応答データとして設定。
 	 *
 	 * @param string $key
 	 * @param mixed $value
 	 * @return void
+	 * @throws ArgumentException 入力データとして未登録の場合に投げられる。
 	 */
 	protected function setValue(string $key, $value): void
 	{
@@ -341,7 +342,7 @@ abstract class LogicBase implements IValidationReceiver
 	}
 
 	/**
-	 * Undocumented function
+	 * キーに対する一括検証処理。
 	 *
 	 * @param string $key
 	 * @param callable(string $key,string $value):void $callback
@@ -436,7 +437,7 @@ abstract class LogicBase implements IValidationReceiver
 	}
 
 	/**
-	 * Undocumented function
+	 * 応答ヘッダの取得。
 	 *
 	 * @return array<string,string[]>
 	 */

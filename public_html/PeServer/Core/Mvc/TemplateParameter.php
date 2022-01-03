@@ -33,7 +33,7 @@ class TemplateParameter
 	public array $errors;
 
 	/**
-	 * Undocumented function
+	 * 生成。
 	 *
 	 * @param HttpStatus $httpStatus
 	 * @param array<string,mixed> $values
