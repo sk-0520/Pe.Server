@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\App\Models;
 
 use PeServer\Core\ArrayUtility;
+use PeServer\Core\Environment;
 use PeServer\Core\Mailer;
 use PeServer\Core\StringUtility;
 
@@ -22,7 +23,7 @@ final class AppMailer extends Mailer
 		$this->fromAddress = AppConfiguration::$json['config']['address']['from_email'];
 		$this->returnPath = AppConfiguration::$json['config']['address']['return_email'];
 
-		if (!AppConfiguration::isProductionEnvironment() && isset(AppConfiguration::$json['debug'])) {
+		if (!Environment::isProduction() && isset(AppConfiguration::$json['debug'])) {
 			$target = ArrayUtility::getOr(AppConfiguration::$json['debug'], 'mail_overwrite_target', '');
 			if (!StringUtility::isNullOrWhiteSpace($target)) {
 				$this->overwriteTarget = $target;

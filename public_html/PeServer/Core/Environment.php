@@ -17,7 +17,7 @@ abstract class Environment
 
 	private static string $environment = '';
 
-	public static function initialize(string $environment)
+	public static function initialize(string $environment): void
 	{
 		if (is_null(self::$initializeChecker)) {
 			self::$initializeChecker = new InitializeChecker();

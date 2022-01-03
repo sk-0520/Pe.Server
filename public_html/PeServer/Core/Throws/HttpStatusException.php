@@ -4,13 +4,18 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Throws;
 
+use PeServer\Core\HttpStatus;
 use \Throwable;
 use PeServer\Core\Throws;
 
 final class HttpStatusException extends CoreException
 {
-	public function __construct(string $message = "", int $code = 0, ?Throwable $previous = null)
+	public HttpStatus $status;
+
+	public function __construct(HttpStatus $status, string $message = "", ?Throwable $previous = null)
 	{
-		parent::__construct($message, $code, $previous);
+		$this->status = $status;
+
+		parent::__construct($message, $status->code(), $previous);
 	}
 }

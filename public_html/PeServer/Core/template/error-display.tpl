@@ -10,6 +10,9 @@
 	<body>
 		<main id="main">
 			<dl>
+				<dt>ステータスコード</dt>
+				<dd><code>{$status->code()}</code></dd>
+
 				<dt>エラーコード</dt>
 				<dd><code>{$values.error_number}</code></dd>
 
@@ -20,7 +23,7 @@
 				<dd><code>{$values.file}</code>:<code>{$values.line_number}</code></dd>
 			</dl>
 
-			{if !is_null($values.throwable)}
+			{if PeServer\Core\Environment::isDevelopment() && !is_null($values.throwable)}
 				<pre>{$values.throwable|@var_dump}</pre>
 			{/if}
 		</main>

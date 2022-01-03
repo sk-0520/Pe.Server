@@ -23,12 +23,6 @@ abstract class AppConfiguration
 	private static $initializeChecker;
 
 	/**
-	 * 環境情報。
-	 *
-	 * @var string
-	 */
-	private static $environment;
-	/**
 	 * 設定データ。
 	 *
 	 * @var array<mixed>

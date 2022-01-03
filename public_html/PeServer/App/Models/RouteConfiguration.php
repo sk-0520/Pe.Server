@@ -18,6 +18,7 @@ use PeServer\App\Controllers\Page\ErrorController;
 use PeServer\App\Controllers\Page\AccountController;
 use PeServer\App\Controllers\Page\SettingController;
 use PeServer\App\Controllers\Api\DevelopmentController;
+use PeServer\Core\Environment;
 
 /**
  * ルーティング情報設定。
@@ -131,7 +132,7 @@ abstract class RouteConfiguration
 		{
 			public function filtering(FilterArgument $argument): FilterResult
 			{
-				if (AppConfiguration::isProductionEnvironment()) {
+				if (Environment::isProduction()) {
 					$argument->logger->warn('本番環境での実行は抑制');
 					return FilterResult::error(HttpStatus::forbidden());
 				}

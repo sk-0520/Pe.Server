@@ -83,7 +83,7 @@ abstract class ErrorHandler
 	protected final function setHttpStatus(?Throwable $throwable): void
 	{
 		if ($throwable instanceof HttpStatusException) {
-			http_response_code($throwable->getCode());
+			http_response_code($throwable->status->code());
 		} else {
 			http_response_code(HttpStatus::serviceUnavailable()->code());
 		}
@@ -101,7 +101,8 @@ abstract class ErrorHandler
 	protected function applyTemplate(string $templateName, string $baseName, string $templateBaseName, array $values): void
 	{
 		$template = Template::create($baseName, $templateBaseName);
-		$template->show($templateName, new TemplateParameter(HttpStatus::ok(), $values, []));
+		$status = HttpStatus::create((int)http_response_code());
+		$template->show($templateName, new TemplateParameter($status, $values, []));
 	}
 
 	private function _catchError(int $errorNumber, string $message, string $file, int $lineNumber, ?Throwable $throwable): void

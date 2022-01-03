@@ -112,6 +112,6 @@ class _FilterErrorResult extends FilterResult
 
 	public function apply(): void
 	{
-		throw new HttpStatusException($this->message, $this->status->code());
+		throw new HttpStatusException($this->status, $this->message);
 	}
 }
