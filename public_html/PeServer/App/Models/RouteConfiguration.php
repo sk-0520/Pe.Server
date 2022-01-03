@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace PeServer\App\Models;
 
 use PeServer\Core\Csrf;
+use PeServer\Core\Uuid;
 use PeServer\Core\Route;
+use PeServer\Core\Database;
 use PeServer\Core\HttpMethod;
 use PeServer\Core\HttpStatus;
 use PeServer\Core\Environment;
 use PeServer\Core\FilterResult;
+use PeServer\Core\RouteSetting;
 use PeServer\Core\IActionFilter;
 use PeServer\Core\FilterArgument;
 use PeServer\Core\Mvc\ActionResult;
@@ -22,8 +25,6 @@ use PeServer\App\Controllers\Page\AccountController;
 use PeServer\App\Controllers\Page\SettingController;
 use PeServer\App\Controllers\Api\DevelopmentController;
 use PeServer\App\Models\Database\Entities\PluginsEntityDao;
-use PeServer\Core\Database;
-use PeServer\Core\Uuid;
 
 /**
  * ルーティング情報設定。
@@ -35,14 +36,14 @@ abstract class RouteConfiguration
 	/**
 	 * ルーティング情報設定取得
 	 *
-	 * @return array{global_filters:IActionFilter[],action_filters:IActionFilter[],routes:Route[]}
+	 * @return RouteSetting
 	 */
-	public static function get(): array
+	public static function get(): RouteSetting
 	{
-		return [
-			'global_filters' => [],
-			'action_filters' => [],
-			'routes' => [
+		return new RouteSetting(
+			[],
+			[],
+			[
 				(new Route('', HomeController::class))
 					->addAction('privacy', HttpMethod::get(), 'privacy')
 					->addAction('contact', HttpMethod::get(), 'contact_get')
@@ -73,7 +74,7 @@ abstract class RouteConfiguration
 					->addAction('administrator', HttpMethod::post())
 				/* AUTO-FORMAT */,
 			]
-		];
+		);
 	}
 
 	protected function openDatabase(): Database

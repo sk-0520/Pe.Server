@@ -18,7 +18,7 @@ abstract class Csrf
 	 * Undocumented function
 	 *
 	 * @return string
-	 * @throws CsrfException
+	 * @throws SessionException
 	 */
 	public static function generateToken(): string
 	{

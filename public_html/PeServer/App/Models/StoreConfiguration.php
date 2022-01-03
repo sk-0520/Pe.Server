@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace PeServer\App\Models;
 
 use PeServer\Core\ArrayUtility;
+use PeServer\Core\Store\StoreOption;
 use PeServer\Core\Store\CookieOption;
-use PeServer\Core\Store\TemporaryOption;
 use PeServer\Core\Store\SessionOption;
+use PeServer\Core\Store\TemporaryOption;
 
 abstract class StoreConfiguration
 {
@@ -74,9 +75,9 @@ abstract class StoreConfiguration
 	/**
 	 * ストア情報取得。
 	 *
-	 * @return array{cookie:CookieOption,temporary:TemporaryOption,session:SessionOption}
+	 * @return StoreOption
 	 */
-	public static function get(): array
+	public static function get(): StoreOption
 	{
 		$setting = ArrayUtility::getOr(AppConfiguration::$json, 'store', null);
 
@@ -84,10 +85,10 @@ abstract class StoreConfiguration
 		$temporary = self::getTemporary($setting, $cookie);
 		$session = self::getSession($setting, $cookie);
 
-		return [
-			'cookie' => $cookie,
-			'temporary' => $temporary,
-			'session' => $session,
-		];
+		return new StoreOption(
+			$cookie,
+			$temporary,
+			$session
+		);
 	}
 }

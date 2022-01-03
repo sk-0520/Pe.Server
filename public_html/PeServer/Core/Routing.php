@@ -10,12 +10,14 @@ use PeServer\Core\Log\Logging;
 use PeServer\Core\RequestPath;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\FilterResult;
+use PeServer\Core\RouteSetting;
 use PeServer\Core\IActionFilter;
 use PeServer\Core\FilterArgument;
 use PeServer\Core\Mvc\ActionResult;
 use PeServer\Core\Mvc\ActionRequest;
 use PeServer\Core\Mvc\IActionResult;
 use PeServer\Core\Store\CookieStore;
+use PeServer\Core\Store\StoreOption;
 use PeServer\Core\Mvc\ControllerBase;
 use PeServer\Core\Store\CookieOption;
 use PeServer\Core\Store\SessionStore;
@@ -57,18 +59,18 @@ class Routing
 	/**
 	 * 生成。
 	 *
-	 * @param array{global_filters:IActionFilter[],action_filters:IActionFilter[],routes:Route[]} $routeSetting
-	 * @param array{cookie:CookieOption,temporary:TemporaryOption,session:SessionOption} $storeOption
+	 * @param RouteSetting $routeSetting
+	 * @param StoreOption $storeOption
 	 */
-	public function __construct(array $routeSetting, array $storeOption)
+	public function __construct(RouteSetting $routeSetting, StoreOption $storeOption)
 	{
-		$this->globalFilters = $routeSetting['global_filters'];
-		$this->actionFilters = $routeSetting['action_filters'];
-		$this->routeMap = $routeSetting['routes'];
+		$this->globalFilters = $routeSetting->globalFilters;
+		$this->actionFilters = $routeSetting->actionFilters;
+		$this->routeMap = $routeSetting->routes;
 
-		$this->cookie = new CookieStore($storeOption['cookie']);
-		$this->temporary = new TemporaryStore($storeOption['temporary'], $this->cookie);
-		$this->session = new SessionStore($storeOption['session'], $this->cookie);
+		$this->cookie = new CookieStore($storeOption->cookie);
+		$this->temporary = new TemporaryStore($storeOption->temporary, $this->cookie);
+		$this->session = new SessionStore($storeOption->session, $this->cookie);
 
 		$this->filterLogger = Logging::create('filtering');
 	}

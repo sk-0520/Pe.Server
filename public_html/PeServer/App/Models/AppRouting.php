@@ -4,24 +4,26 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models;
 
+use PeServer\Core\Route;
 use PeServer\Core\Routing;
 use PeServer\Core\RequestPath;
+use PeServer\Core\RouteSetting;
 use PeServer\Core\IActionFilter;
-use PeServer\Core\Route;
+use PeServer\Core\Store\StoreOption;
 use PeServer\Core\Store\CookieOption;
-use PeServer\Core\Store\TemporaryOption;
 use PeServer\Core\Store\SessionOption;
 use PeServer\App\Models\SessionManager;
+use PeServer\Core\Store\TemporaryOption;
 
 class AppRouting extends Routing
 {
 	/**
 	 * 生成。
 	 *
-	 * @param array{global_filters:IActionFilter[],action_filters:IActionFilter[],routes:Route[]} $routeSetting
-	 * @param array{cookie:CookieOption,temporary:TemporaryOption,session:SessionOption} $storeOption
+	 * @param RouteSetting $routeSetting
+	 * @param StoreOption $storeOption
 	 */
-	public function __construct(array $routeSetting, array $storeOption)
+	public function __construct(RouteSetting $routeSetting, StoreOption $storeOption)
 	{
 		parent::__construct($routeSetting, $storeOption);
 
