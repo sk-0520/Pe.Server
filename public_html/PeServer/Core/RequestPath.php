@@ -25,7 +25,7 @@ class RequestPath
 	{
 		$request = $requestUri;
 		if (!StringUtility::isNullOrWhiteSpace($skipPath)) {
-			//TODO: リバースプロキシとかの場合
+			//TODO: リバースプロキシとかの場合, form のアクション、各リソースへのパスの書き換え未考慮 必要に迫られたら考える
 		}
 
 		$reqs = StringUtility::split($request, '?', 2);

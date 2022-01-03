@@ -54,6 +54,8 @@ abstract class RouteConfiguration
 					->addAction('user/password', HttpMethod::post(), 'user_password_post', [self::user(), Csrf::csrf()])
 					->addAction('user/email', HttpMethod::get(), 'user_email_get', [self::user()])
 					->addAction('user/email', HttpMethod::post(), 'user_email_post', [self::user(), Csrf::csrf()])
+					->addAction('user/plugin', HttpMethod::get(), 'user_plugin_register_get', [self::user()])
+					->addAction('user/plugin', HttpMethod::post(), 'user_plugin_register_post', [self::user(), Csrf::csrf()])
 				/* AUTO-FORMAT */,
 				(new Route('setting', SettingController::class, [self::admin()]))
 					->addAction('setup', HttpMethod::get(), 'setup_get', [self::setup()])

@@ -26,7 +26,7 @@ class AccountLoginLogic extends PageLogicBase
 		parent::__construct($parameter);
 	}
 
-	protected function registerKeys(LogicCallMode $callMode): void
+	protected function startup(LogicCallMode $callMode): void
 	{
 		$this->registerParameterKeys([
 			'account_login_login_id',

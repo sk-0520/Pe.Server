@@ -68,10 +68,7 @@ class AccountUserEmailLogic extends PageLogicBase
 		}
 
 		$this->defaultValues['token_timestamp_utc'] = $values['token_timestamp_utc'];
-	}
 
-	protected function registerKeys(LogicCallMode $callMode): void
-	{
 		parent::registerParameterKeys([
 			'account_email_email',
 			'account_email_token',
@@ -194,7 +191,7 @@ class AccountUserEmailLogic extends PageLogicBase
 				AppConfiguration::$json['config']['confirm']['user_change_wait_email_minutes']
 			);
 
-			if(!$existsToken) {
+			if (!$existsToken) {
 				return false;
 			}
 

@@ -42,7 +42,7 @@
 	<dd class="action">
 		<ul>
 			<li>
-				<a>register plugin</a>
+				<a href="/account/user/plugin">register plugin</a>
 			</li>
 			<li>
 				<a href="/account/user/edit">edit user</a>

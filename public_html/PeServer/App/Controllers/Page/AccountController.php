@@ -4,19 +4,20 @@ declare(strict_types=1);
 
 namespace PeServer\App\Controllers\Page;
 
+use PeServer\App\Models\UserLevel;
 use PeServer\Core\Mvc\ActionRequest;
+use PeServer\Core\Mvc\IActionResult;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\ControllerBase;
+use PeServer\App\Models\SessionManager;
 use PeServer\Core\Mvc\ControllerArgument;
+use PeServer\App\Models\Domains\Page\Account\AccountUserLogic;
 use PeServer\App\Models\Domains\Page\Account\AccountLoginLogic;
 use PeServer\App\Models\Domains\Page\Account\AccountLogoutLogic;
-use PeServer\App\Models\Domains\Page\Account\AccountUserLogic;
 use PeServer\App\Models\Domains\Page\Account\AccountUserEditLogic;
-use PeServer\App\Models\Domains\Page\Account\AccountUserPasswordLogic;
 use PeServer\App\Models\Domains\Page\Account\AccountUserEmailLogic;
-use PeServer\App\Models\SessionManager;
-use PeServer\App\Models\UserLevel;
-use PeServer\Core\Mvc\IActionResult;
+use PeServer\App\Models\Domains\Page\Account\AccountUserPluginLogic;
+use PeServer\App\Models\Domains\Page\Account\AccountUserPasswordLogic;
 
 final class AccountController extends PageControllerBase
 {
@@ -137,5 +138,24 @@ final class AccountController extends PageControllerBase
 		}
 
 		return $this->view('user_email', $logic->getViewData());
+	}
+
+	public function user_plugin_register_get(ActionRequest $request): IActionResult
+	{
+		$logic = $this->createLogic(AccountUserPluginLogic::class, $request, true);
+		$logic->run(LogicCallMode::initialize());
+
+		return $this->view('user_plugin', $logic->getViewData());
+	}
+
+	public function user_plugin_register_post(ActionRequest $request): IActionResult
+	{
+		$logic = $this->createLogic(AccountUserPluginLogic::class, $request, true);
+		if ($logic->run(LogicCallMode::submit())) {
+			$this->logger->info('[抑制中] リダイレクト');
+			//return $this->redirectPath('/account/user');
+		}
+
+		return $this->view('user_plugin', $logic->getViewData());
 	}
 }

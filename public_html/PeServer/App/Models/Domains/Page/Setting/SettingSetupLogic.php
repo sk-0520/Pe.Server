@@ -29,7 +29,7 @@ class SettingSetupLogic extends PageLogicBase
 		parent::__construct($parameter);
 	}
 
-	protected function registerKeys(LogicCallMode $callMode): void
+	protected function startup(LogicCallMode $callMode): void
 	{
 		$this->registerParameterKeys([
 			'setting_setup_login_id',

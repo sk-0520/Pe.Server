@@ -25,7 +25,7 @@ class AccountUserPasswordLogic extends PageLogicBase
 		parent::__construct($parameter);
 	}
 
-	protected function registerKeys(LogicCallMode $callMode): void
+	protected function startup(LogicCallMode $callMode): void
 	{
 		$this->registerParameterKeys([
 			'account_password_current',

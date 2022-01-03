@@ -23,11 +23,6 @@ class AccountLogoutLogic extends PageLogicBase
 		parent::__construct($parameter);
 	}
 
-	protected function registerKeys(LogicCallMode $callMode): void
-	{
-		//NONE
-	}
-
 	protected function validateImpl(LogicCallMode $callMode): void
 	{
 		//NONE

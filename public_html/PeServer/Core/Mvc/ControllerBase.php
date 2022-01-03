@@ -88,7 +88,7 @@ abstract class ControllerBase
 	 * @param ActionRequest $request リクエストデータ
 	 * @return LogicBase
 	 */
-	protected function createLogic(string $logicClass, ActionRequest $request): LogicBase
+	protected function createLogic(string $logicClass, ActionRequest $request, mixed ...$parameters): LogicBase
 	{
 		if (!is_null($this->logic)) {
 			throw new InvalidOperationException();
@@ -96,7 +96,7 @@ abstract class ControllerBase
 
 		$parameter = $this->createParameter($logicClass, $request);
 		/** @var LogicBase */
-		$logic = new $logicClass($parameter);
+		$logic = new $logicClass($parameter, ...$parameters);
 		$this->logic = $logic;
 		return $logic;
 	}

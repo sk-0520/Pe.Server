@@ -386,17 +386,6 @@ abstract class LogicBase implements IValidationReceiver
 	}
 
 	/**
-	 * パラメータキー登録実装。
-	 *
-	 * @param LogicCallMode $callMode
-	 * @return void
-	 */
-	protected function registerKeys(LogicCallMode $callMode): void
-	{
-		//NONE
-	}
-
-	/**
 	 * 検証ロジック実装。
 	 *
 	 * @param LogicCallMode $callMode 呼び出し。
@@ -428,8 +417,6 @@ abstract class LogicBase implements IValidationReceiver
 	{
 		try {
 			$this->startup($callMode);
-
-			$this->registerKeys($callMode);
 
 			$this->validate($callMode);
 			if ($this->hasError()) {
