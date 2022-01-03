@@ -15,6 +15,7 @@ use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\App\Models\Domains\Page\PageLogicBase;
 use PeServer\App\Models\Database\Domains\UserDomainDao;
+use PeServer\App\Models\Database\Entities\PluginsEntityDao;
 use PeServer\App\Models\Database\Entities\UsersEntityDao;
 
 class AccountUserLogic extends PageLogicBase
@@ -36,8 +37,10 @@ class AccountUserLogic extends PageLogicBase
 		$database = $this->openDatabase();
 
 		$usersEntityDao = new UsersEntityDao($database);
+		$pluginsEntityDao = new PluginsEntityDao($database);
 
 		$userInfoData = $usersEntityDao->selectUserInfoData($userInfo['user_id']);
+		$userPlugins = $pluginsEntityDao->selectPluginByUserId($userInfo['user_id']);
 
 		if (!StringUtility::isNullOrWhiteSpace($userInfoData['email'])) {
 			$userInfoData['email'] = AppCryptography::decrypt($userInfoData['email']);
@@ -55,5 +58,6 @@ class AccountUserLogic extends PageLogicBase
 		foreach ($userInfoData as $key => $value) {
 			$this->setValue($map[$key], $value);
 		}
+		$this->setValue('plugins', $userPlugins);
 	}
 }

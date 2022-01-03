@@ -57,7 +57,7 @@ abstract class LogicBase implements IValidationReceiver
 	/**
 	 * 応答データ。
 	 *
-	 * @var array<string,string|string[]|bool|int>
+	 * @var array<string,mixed>
 	 */
 	private $values = array();
 
@@ -73,7 +73,7 @@ abstract class LogicBase implements IValidationReceiver
 	 *
 	 * @var array<string,mixed>
 	 */
-	public $result = array();
+	protected $result = array();
 
 	/**
 	 * Undocumented variable
@@ -274,7 +274,7 @@ abstract class LogicBase implements IValidationReceiver
 	 * Undocumented function
 	 *
 	 * @param string $key
-	 * @param string|string[]|bool|int $value
+	 * @param mixed $value
 	 * @return void
 	 */
 	protected function setValue(string $key, $value): void
@@ -483,5 +483,33 @@ abstract class LogicBase implements IValidationReceiver
 		}
 
 		return $this->response;
+	}
+
+	/**
+	 * ロジック結果に指定キー項目が存在するか。
+	 *
+	 * @param string $key
+	 * @param mixed $result
+	 * @return boolean
+	 */
+	public function tryGetResult(string $key, &$result): bool
+	{
+		return ArrayUtility::tryGet($this->result, $key, $result);
+	}
+
+	/**
+	 * ロジック結果の指定キー項目が指定値に一致するか。
+	 *
+	 * @param string $key
+	 * @param mixed $value
+	 * @return boolean
+	 */
+	public function equalsResult(string $key, $value): bool
+	{
+		if ($this->tryGetResult($key, $result)) {
+			return $result === $value;
+		}
+
+		return false;
 	}
 }

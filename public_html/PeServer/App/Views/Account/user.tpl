@@ -35,7 +35,15 @@
 
 	<dt>plugin</dt>
 	<dd>
-		list
+		<ul>
+			{foreach from=$values.plugins item=item key=key name=name}
+				<li data-index={$key}>
+					<a href="/account/user/plugin/{$item.plugin_id}">
+						{$item.plugin_name}:{$item.display_name}
+					</a>
+				</li>
+			{/foreach}
+		</ul>
 	</dd>
 
 	<dt class="action">edit</dt>

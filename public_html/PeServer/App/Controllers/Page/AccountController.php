@@ -18,6 +18,7 @@ use PeServer\App\Models\Domains\Page\Account\AccountUserEditLogic;
 use PeServer\App\Models\Domains\Page\Account\AccountUserEmailLogic;
 use PeServer\App\Models\Domains\Page\Account\AccountUserPluginLogic;
 use PeServer\App\Models\Domains\Page\Account\AccountUserPasswordLogic;
+use PeServer\Core\Throws\InvalidOperationException;
 
 final class AccountController extends PageControllerBase
 {
@@ -131,7 +132,7 @@ final class AccountController extends PageControllerBase
 	{
 		$logic = $this->createLogic(AccountUserEmailLogic::class, $request);
 		if ($logic->run(LogicCallMode::submit())) {
-			if ($this->equalsResult('confirm', true)) {
+			if ($logic->equalsResult('confirm', true)) {
 				return $this->redirectPath('/account/user');
 			}
 			return $this->redirectPath('/account/user/email');
@@ -152,8 +153,10 @@ final class AccountController extends PageControllerBase
 	{
 		$logic = $this->createLogic(AccountUserPluginLogic::class, $request, true);
 		if ($logic->run(LogicCallMode::submit())) {
-			$this->logger->info('[抑制中] リダイレクト');
-			//return $this->redirectPath('/account/user');
+			if ($logic->tryGetResult('plugin_id', $pluginId)) {
+				return $this->redirectPath('/account/user/pluginId/' . $pluginId);
+			}
+			throw new InvalidOperationException();
 		}
 
 		return $this->view('user_plugin', $logic->getViewData());

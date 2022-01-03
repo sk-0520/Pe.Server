@@ -43,11 +43,46 @@ class PluginsEntityDao extends DaoBase
 			from
 				plugins
 			where
-				plugins.name = :name
+				plugins.plugin_name = :plugin_name
 
 			SQL,
 			[
-				'name' => $pluginName,
+				'plugin_name' => $pluginName,
+			]
+		);
+	}
+
+	/**
+	 * Undocumented function
+	 *
+	 * @param string $userId
+	 * @return array<array{plugin_id:string,plugin_name:string,display_name:string,state:string}>
+	 */
+	public function selectPluginByUserId(string $userId): array
+	{
+		return $this->database->selectOrdered(
+			<<<SQL
+
+			select
+				plugins.plugin_id,
+				plugins.plugin_name,
+				plugins.display_name,
+				plugins.state
+			from
+				plugins
+			where
+				plugins.user_id = :user_id
+			order by
+				case plugins.state
+					when 'enabled' then 1
+					when 'check_failed' then 2
+					when 'disabled' then 3
+				end,
+				plugins.plugin_name
+
+			SQL,
+			[
+				'user_id' => $userId,
 			]
 		);
 	}
@@ -62,7 +97,7 @@ class PluginsEntityDao extends DaoBase
 				(
 					plugin_id,
 					user_id,
-					name,
+					plugin_name,
 					display_name,
 					state,
 					description,

@@ -240,13 +240,13 @@ create table
 	(
 		[plugin_id] text not null, -- プラグインID
 		[user_id] text not null, -- プラグイン所有ユーザー
-		[name] text not null, -- プラグイン名,
+		[plugin_name] text not null, -- プラグイン名,
 		[display_name] text not null, -- プラグイン表示名
 		[state] text not null, -- 状態
 		[description] text not null, -- 紹介文
 		[note] text not null, -- 管理者用メモ
 		primary key([plugin_id]),
-		unique ([name]),
+		unique ([plugin_name]),
 		foreign key ([user_id]) references users([user_id])
 	)
 ;

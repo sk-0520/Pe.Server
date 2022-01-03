@@ -102,37 +102,6 @@ abstract class ControllerBase
 	}
 
 	/**
-	 * ロジック結果に指定キー項目が存在するか。
-	 *
-	 * @param string $key
-	 * @return boolean
-	 */
-	public function existsResult(string $key): bool
-	{
-		if (isset($this->logic)) {
-			return isset($this->logic->result[$key]);
-		}
-
-		return false;
-	}
-
-	/**
-	 * ロジック結果の指定キー項目が指定値に一致するか。
-	 *
-	 * @param string $key
-	 * @param mixed $value
-	 * @return boolean
-	 */
-	public function equalsResult(string $key, $value): bool
-	{
-		if ($this->existsResult($key)) {
-			return $this->logic->result[$key] === $value; // @phpstan-ignore-line existsResultで担保
-		}
-
-		return false;
-	}
-
-	/**
 	 * ロジック側で指定されたセッションステータスに従ってセッション情報を設定。
 	 *
 	 * @return void

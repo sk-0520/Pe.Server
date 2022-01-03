@@ -109,6 +109,7 @@ class AccountUserPluginLogic extends PageLogicBase
 			if (!$this->isRegister) {
 				// 既存データを引っ張ってくる
 			}
+
 			return;
 		}
 
@@ -127,7 +128,7 @@ class AccountUserPluginLogic extends PageLogicBase
 
 		if ($this->isRegister) {
 			$params['plugin_id'] = Uuid::adjustGuid($this->getRequest('account_plugin_plugin_id'));
-			$params['name'] = $this->getRequest('account_plugin_plugin_name');
+			$params['plugin_name'] = $this->getRequest('account_plugin_plugin_name');
 		} else {
 			$params['plugin_id'] = Uuid::adjustGuid($this->getRequest('account_plugin_plugin_id'));
 		}
@@ -141,7 +142,7 @@ class AccountUserPluginLogic extends PageLogicBase
 				$pluginsEntityDao->insertPlugin(
 					$params['plugin_id'],
 					$params['user_id'],
-					$params['name'],
+					$params['plugin_name'],
 					$params['display_name'],
 					PluginState::ENABLED,
 					$params['description'],
@@ -162,7 +163,7 @@ class AccountUserPluginLogic extends PageLogicBase
 			}
 
 			if ($this->isRegister) {
-				$this->writeAuditLogCurrentUser(AuditLog::USER_PLUGIN_REGISTER, ['plugin_id' => $params['plugin_id'], 'plugin_name' => $params['plugin_id']], $database);
+				$this->writeAuditLogCurrentUser(AuditLog::USER_PLUGIN_REGISTER, ['plugin_id' => $params['plugin_id'], 'plugin_name' => $params['plugin_name']], $database);
 			} else {
 				$this->writeAuditLogCurrentUser(AuditLog::USER_PLUGIN_UPDATE, ['plugin_id' => $params['plugin_id']], $database);
 			}
