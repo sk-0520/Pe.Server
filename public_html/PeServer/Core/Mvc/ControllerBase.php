@@ -123,9 +123,11 @@ abstract class ControllerBase
 					$this->session->apply();
 				}
 				break;
+
 			case SessionNextState::CANCEL:
 				// なんもしない
 				break;
+
 			case SessionNextState::RESTART:
 				if ($this->session->isStarted()) {
 					$this->session->restart();
@@ -134,6 +136,7 @@ abstract class ControllerBase
 				}
 				$this->session->apply();
 				break;
+
 			case SessionNextState::SHUTDOWN:
 				if ($this->session->isStarted()) {
 					$this->session->shutdown();

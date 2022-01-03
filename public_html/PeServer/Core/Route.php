@@ -116,28 +116,28 @@ class Route
 	 * @param string $httpMethod
 	 * @param Action $action
 	 * @param array<string,string> $urlParameters
-	 * @return array{code:HttpStatus,class:string,method:string,params:array<string,string>,filters:IActionFilter[]}
+	 * @return RouteAction
 	 */
-	private function getActionCore(string $httpMethod, Action $action, array $urlParameters): array
+	private function getActionCore(string $httpMethod, Action $action, array $urlParameters): RouteAction
 	{
 		$actionValues = $action->get($httpMethod);
 		if (is_null($actionValues)) {
-			return [
-				'code' => HttpStatus::methodNotAllowed(),
-				'class' => $this->className,
-				'method' => '',
-				'params' => $urlParameters,
-				'filters' => [],
-			];
+			return new RouteAction(
+				HttpStatus::methodNotAllowed(),
+				$this->className,
+				'',
+				$urlParameters,
+				[]
+			);
 		}
 
-		return [
-			'code' => HttpStatus::none(),
-			'class' => $this->className,
-			'method' => $actionValues['method'],
-			'params' => $urlParameters,
-			'filters' => $actionValues['filters'],
-		];
+		return new RouteAction(
+			HttpStatus::none(),
+			$this->className,
+			$actionValues['method'],
+			$urlParameters,
+			$actionValues['filters']
+		);
 	}
 
 	/**
@@ -145,18 +145,18 @@ class Route
 	 *
 	 * @param string $httpMethod HttpMethod を参照のこと
 	 * @param RequestPath $requestPath リクエストパス
-	 * @return array{code:HttpStatus,class:string,method:string,params:array<string,string>,filters:IActionFilter[]}|null 存在する場合にクラス・メソッドのペア。存在しない場合は null
+	 * @return RouteAction|null 存在する場合にクラス・メソッドのペア。存在しない場合は null
 	 */
-	public function getAction(string $httpMethod, RequestPath $requestPath): ?array
+	public function getAction(string $httpMethod, RequestPath $requestPath): ?RouteAction
 	{
 		if (!StringUtility::startsWith($requestPath->full, $this->basePath, false)) {
-			return [
-				'code' => HttpStatus::notFound(),
-				'class' => $this->className,
-				'method' => '',
-				'params' => [],
-				'filters' => [],
-			];
+			return new RouteAction(
+				HttpStatus::notFound(),
+				$this->className,
+				'',
+				[],
+				[]
+			);
 		}
 
 		//$actionPath = $requestPaths[count($requestPaths) - 1];
@@ -227,18 +227,18 @@ class Route
 				}
 
 				$result = $this->getActionCore($httpMethod, $action, $flatParameters);
-				if ($result['code']->code() === HttpStatus::none()->code()) {
+				if ($result->status->code() === HttpStatus::none()->code()) {
 					return $result;
 				}
 			}
 
-			return [
-				'code' => HttpStatus::notFound(),
-				'class' => $this->className,
-				'method' => '',
-				'params' => [],
-				'filters' => [],
-			];
+			return new RouteAction(
+				HttpStatus::notFound(),
+				$this->className,
+				'',
+				[],
+				[]
+			);
 		}
 
 		return $this->getActionCore($httpMethod, $this->actions[$actionPath], []);

@@ -15,7 +15,7 @@ abstract class StoreConfiguration
 	/**
 	 * クッキー設定を取得。
 	 *
-	 * @param array{string,string}|null $setting
+	 * @param array<string,string>|null $setting
 	 * @return CookieOption
 	 */
 	public static function getCookie(?array $setting): CookieOption
@@ -35,7 +35,7 @@ abstract class StoreConfiguration
 	/**
 	 * 一時データ設定を取得。
 	 *
-	 * @param array{string,string}|null $setting
+	 * @param array<string,string>|null $setting
 	 * @param CookieOption $cookie
 	 * @return TemporaryOption
 	 */
@@ -55,7 +55,7 @@ abstract class StoreConfiguration
 	/**
 	 * セッション設定を取得。
 	 *
-	 * @param array{string,string}|null $setting
+	 * @param array<string,string>|null $setting
 	 * @param CookieOption $cookie
 	 * @return SessionOption
 	 */

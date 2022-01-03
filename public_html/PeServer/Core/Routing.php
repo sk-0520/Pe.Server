@@ -172,13 +172,13 @@ class Routing
 			}
 		}
 
-		/** @var array{code:HttpStatus,class:string,method:string,params:array<string,string>,filters:IActionFilter[]}|null */
+		/** @var RouteAction|null */
 		$errorAction = null;
 		foreach ($this->routeMap as $route) {
 			$action = $route->getAction($requestMethod, $requestPath);
 			if (!is_null($action)) {
-				if ($action['code']->code() === HttpStatus::none()->code()) {
-					$this->executeAction($requestPath, $action['class'], $action['method'], $action['params'], $action['filters']);
+				if ($action->status->code() === HttpStatus::none()->code()) {
+					$this->executeAction($requestPath, $action->className, $action->classMethod, $action->params, $action->filters);
 					return;
 				} else if (is_null($errorAction)) {
 					$errorAction = $action;
@@ -189,7 +189,7 @@ class Routing
 		if (is_null($errorAction)) {
 			FilterResult::error(HttpStatus::internalServerError())->apply();
 		} else {
-			FilterResult::error($errorAction['code'])->apply();
+			FilterResult::error($errorAction->status)->apply();
 		}
 	}
 
