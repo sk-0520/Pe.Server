@@ -23,6 +23,5 @@ class HomeIndexLogic extends PageLogicBase
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
 		//NONE
-		$this->addTemporaryMessage('asd');
 	}
 }
