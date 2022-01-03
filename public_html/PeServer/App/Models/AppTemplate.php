@@ -15,23 +15,36 @@ abstract class AppTemplate
 	 *
 	 * @param string $baseName
 	 * @param string $templateName
-	 * @param array<string,string|string[]|bool|int> $params
+	 * @param array<string,mixed> $params
 	 * @return string
 	 */
-	private static function createTemplate(string $baseName, string $templateName, array $params): string
+	private static function createTemplate(string $baseName, string $templateName, array $params, HttpStatus $status): string
 	{
 		$template = Template::create('template/' . $baseName);
-		$result = $template->build($templateName . '.tpl', new TemplateParameter(HttpStatus::ok(), $params, []));
+		$result = $template->build($templateName . '.tpl', new TemplateParameter($status, $params, []));
 
 		return $result;
 	}
 
 	/**
-	 * Undocumented function
+	 * 汎用ページ用テンプレートの作成。
+	 *
+	 * @param string $templateName
+	 * @param array<string,mixed> $params
+	 * @param HttpStatus $status
+	 * @return string
+	 */
+	public static function createPageTemplate(string $templateName, array $params, HttpStatus $status): string
+	{
+		return self::createTemplate('page', $templateName, $params, $status);
+	}
+
+	/**
+	 * メール用テンプレートの作成。
 	 *
 	 * @param string $templateName
 	 * @param string $subject
-	 * @param array<string,string|string[]|bool|int> $params
+	 * @param array<string,mixed> $params
 	 * @return string
 	 */
 	public static function createMailTemplate(string $templateName, string $subject, array $params): string
@@ -48,6 +61,6 @@ abstract class AppTemplate
 			'website_url' => $families['website_url'],
 		];
 
-		return self::createTemplate('email', $templateName, $params);
+		return self::createTemplate('email', $templateName, $params, HttpStatus::none());
 	}
 }

@@ -26,7 +26,7 @@ abstract class CoreInitializer
 		Environment::initialize($environment);
 
 		if(!Environment::isTest()) {
-			ErrorHandler::core()->register();
+			(new ErrorHandler())->register();
 		}
 	}
 }

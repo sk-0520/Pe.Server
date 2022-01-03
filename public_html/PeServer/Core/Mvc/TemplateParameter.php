@@ -21,7 +21,7 @@ class TemplateParameter
 	/**
 	 * 値。
 	 *
-	 * @var array<string,string|string[]|bool|int>
+	 * @var array<string,mixed>
 	 */
 	public array $values;
 
@@ -36,7 +36,7 @@ class TemplateParameter
 	 * Undocumented function
 	 *
 	 * @param HttpStatus $httpStatus
-	 * @param array<string,string|string[]|bool|int> $values
+	 * @param array<string,mixed> $values
 	 * @param array<string,string[]> $errors
 	 */
 	public function __construct(HttpStatus $httpStatus, array $values, array $errors)

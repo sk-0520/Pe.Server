@@ -30,6 +30,8 @@ class AppRouting extends Routing
 
 	public function execute(string $requestMethod, RequestPath $requestPath): void
 	{
+		(new AppErrorHandler($requestPath))->register();
+
 		parent::execute($requestMethod, $requestPath);
 	}
 }

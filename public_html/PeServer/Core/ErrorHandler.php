@@ -13,14 +13,8 @@ use PeServer\Core\Mvc\TemplateParameter;
 use PeServer\Core\Throws\HttpStatusException;
 use PeServer\Core\Throws\InvalidOperationException;
 
-abstract class ErrorHandler
+class ErrorHandler
 {
-	private static ErrorHandler|null $core;
-	public static function core(): ErrorHandler
-	{
-		return self::$core ??= new _CoreErrorHandler();
-	}
-
 	private bool $isRegistered = false;
 
 	/**
@@ -80,36 +74,21 @@ abstract class ErrorHandler
 		);
 	}
 
-	protected final function setHttpStatus(?Throwable $throwable): void
+	protected final function setHttpStatus(?Throwable $throwable): HttpStatus
 	{
-		if ($throwable instanceof HttpStatusException) {
-			http_response_code($throwable->status->code());
-		} else {
-			http_response_code(HttpStatus::serviceUnavailable()->code());
-		}
-	}
+		$status = $throwable instanceof HttpStatusException
+			? $throwable->status
+			: HttpStatus::serviceUnavailable();
 
-	/**
-	 * Undocumented function
-	 *
-	 * @param string $baseName
-	 * @param string $templateBaseName
-	 * @param string $templateName
-	 * @param array<string,mixed> $values
-	 * @return void
-	 */
-	protected function applyTemplate(string $templateName, string $baseName, string $templateBaseName, array $values): void
-	{
-		$template = Template::create($baseName, $templateBaseName);
-		$status = HttpStatus::create((int)http_response_code());
-		$template->show($templateName, new TemplateParameter($status, $values, []));
+		http_response_code($status->code());
+
+		return $status;
 	}
 
 	private function _catchError(int $errorNumber, string $message, string $file, int $lineNumber, ?Throwable $throwable): void
 	{
-		if (!$this->catchError($errorNumber, $message, $file, $lineNumber, $throwable)) {
-			exit;
-		}
+		$this->catchError($errorNumber, $message, $file, $lineNumber, $throwable);
+		exit;
 	}
 
 	/**
@@ -120,14 +99,9 @@ abstract class ErrorHandler
 	 * @param string $file
 	 * @param integer $lineNumber
 	 * @param Throwable|null $throwable
-	 * @return boolean 次へいけるか
+	 * @return void
 	 */
-	public abstract function catchError(int $errorNumber, string $message, string $file, int $lineNumber, ?Throwable $throwable): bool;
-}
-
-final class _CoreErrorHandler extends ErrorHandler
-{
-	public function catchError(int $errorNumber, string $message, string $file, int $lineNumber, ?Throwable $throwable): bool
+	public function catchError(int $errorNumber, string $message, string $file, int $lineNumber, ?Throwable $throwable): void
 	{
 		$values = [
 			'error_number' => $errorNumber,
@@ -137,12 +111,12 @@ final class _CoreErrorHandler extends ErrorHandler
 			'throwable' => $throwable,
 		];
 
-		$logger = Logging::create('error');
+		$logger = Logging::create(__CLASS__);
 		$logger->error($values);
 
-		$this->setHttpStatus($throwable);
-		$this->applyTemplate('error-display.tpl', 'template', 'Core', $values);
+		$status = $this->setHttpStatus($throwable);
 
-		return true;
+		$template = Template::create('template', 'Core');
+		$template->show('error-display.tpl', new TemplateParameter($status, $values, []));
 	}
 }

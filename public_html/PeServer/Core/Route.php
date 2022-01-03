@@ -156,7 +156,7 @@ class Route
 	 */
 	public function getAction(string $httpMethod, RequestPath $requestPath): ?array
 	{
-		if (!StringUtility::startsWith($requestPath->path, $this->basePath, false)) {
+		if (!StringUtility::startsWith($requestPath->full, $this->basePath, false)) {
 			return [
 				'code' => HttpStatus::notFound(),
 				'class' => $this->className,
@@ -167,7 +167,7 @@ class Route
 		}
 
 		//$actionPath = $requestPaths[count($requestPaths) - 1];
-		$actionPath = ltrim(mb_substr($requestPath->path, mb_strlen($this->basePath)), '/');
+		$actionPath = ltrim(mb_substr($requestPath->full, mb_strlen($this->basePath)), '/');
 		$actionPaths = explode('/', $actionPath);
 
 		if (!isset($this->actions[$actionPath])) {

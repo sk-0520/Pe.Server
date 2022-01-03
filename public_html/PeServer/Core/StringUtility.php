@@ -124,7 +124,7 @@ abstract class StringUtility
 	 *
 	 * @param string $haystack 対象文字列。
 	 * @param string $needle 検索文字列。
-	 * @param boolean $ignoreCase 大文字小文字を区別するか。
+	 * @param boolean $ignoreCase 大文字小文字を無視するか。
 	 * @return boolean
 	 */
 	public static function startsWith(string $haystack, string $needle, bool $ignoreCase): bool
@@ -151,7 +151,7 @@ abstract class StringUtility
 	 *
 	 * @param string $haystack 対象文字列。
 	 * @param string $needle 検索文字列。
-	 * @param boolean $ignoreCase 大文字小文字を区別するか。
+	 * @param boolean $ignoreCase 大文字小文字を無視するか。
 	 * @return boolean
 	 */
 	public static function endsWith(string $haystack, string $needle, bool $ignoreCase): bool
@@ -178,7 +178,7 @@ abstract class StringUtility
 	 *
 	 * @param string $haystack 対象文字列。
 	 * @param string $needle 検索文字列。
-	 * @param boolean $ignoreCase 大文字小文字を区別するか。
+	 * @param boolean $ignoreCase 大文字小文字を無視するか。
 	 * @return boolean
 	 */
 	public static function contains(string $haystack, string $needle, bool $ignoreCase): bool

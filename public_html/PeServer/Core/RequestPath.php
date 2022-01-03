@@ -13,7 +13,7 @@ class RequestPath
 	 *
 	 * @var string
 	 */
-	public string $path;
+	public string $full;
 	/**
 	 * 区切り分割されたパス一覧。
 	 *
@@ -30,7 +30,7 @@ class RequestPath
 
 		$reqs = StringUtility::split($request, '?', 2);
 
-		$this->path = StringUtility::trim($reqs[0], '/');
-		$this->tree = explode('/', $this->path);
+		$this->full = StringUtility::trim($reqs[0], '/');
+		$this->tree = StringUtility::split($this->full, '/');
 	}
 }
