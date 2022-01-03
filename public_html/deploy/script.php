@@ -143,7 +143,7 @@ class DeployScript
 
 		//TODO: 暗号化とかとか
 		$userId = '00000000-0000-4000-0000-000000000000';
-		$loginId = 'setup_' . date('YmdHis');
+		$loginId = 'setup_' . bin2hex(openssl_random_pseudo_bytes(4)) . '_' . date('YmdHis');
 		$rawPassword = bin2hex(openssl_random_pseudo_bytes(4));
 		$encPassword = password_hash($rawPassword, PASSWORD_DEFAULT);
 
