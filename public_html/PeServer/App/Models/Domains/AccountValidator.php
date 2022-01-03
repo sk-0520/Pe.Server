@@ -6,12 +6,13 @@ namespace PeServer\App\Models\Domains;
 
 use PeServer\App\Models\Database\Entities\UsersEntityDao;
 use PeServer\Core\Database;
+use PeServer\Core\I18n;
 use PeServer\Core\TrueKeeper;
 use PeServer\Core\Mvc\Validator;
 use PeServer\Core\StringUtility;
 use PeServer\Core\Mvc\IValidationReceiver;
 
-class AccountValidator
+class AccountValidator extends ValidatorBase
 {
 	public const LOGIN_ID_RANGE_MIN = 6;
 	public const LOGIN_ID_RANGE_MAX = 50;
@@ -19,23 +20,16 @@ class AccountValidator
 	public const PASSWORD_RANGE_MAX = 50;
 	public const USER_NAME_RANGE_MIN = 4;
 	public const USER_NAME_RANGE_MAX = 100;
-	public const EMAIL_LENGTH = 254;
-	public const WEBSITE_LENGTH = 2083;
-
-	private IValidationReceiver $receiver;
-	private Validator $validator;
 
 	public function __construct(IValidationReceiver $receiver, Validator $validator)
 	{
-		$this->receiver = $receiver;
-		$this->validator = $validator;
+		parent::__construct($receiver, $validator);
 	}
 
 	public function isLoginId(string $key, ?string $value): bool
 	{
 		if ($this->validator->isNotWhiteSpace($key, $value)) {
-			// @phpstan-ignore-next-line isNotWhiteSpace
-			$value = StringUtility::trim($value);
+			/** @var string $value isNotWhiteSpace */
 			$trueKeeper = new TrueKeeper();
 
 			$trueKeeper->state = $this->validator->inRange($key, self::LOGIN_ID_RANGE_MIN, self::LOGIN_ID_RANGE_MAX, $value);
@@ -50,8 +44,7 @@ class AccountValidator
 	public function isPassword(string $key, ?string $value): bool
 	{
 		if ($this->validator->isNotWhiteSpace($key, $value)) {
-			/** @var string */
-			$value = $value;
+			/** @var string $value isNotWhiteSpace */
 			$trueKeeper = new TrueKeeper();
 
 			$trueKeeper->state = $this->validator->inRange($key, self::PASSWORD_RANGE_MIN, self::PASSWORD_RANGE_MAX, $value);
@@ -66,8 +59,7 @@ class AccountValidator
 	public function isUserName(string $key, ?string $value): bool
 	{
 		if ($this->validator->isNotWhiteSpace($key, $value)) {
-			// @phpstan-ignore-next-line isNotWhiteSpace
-			$value = StringUtility::trim($value);
+			/** @var string $value isNotWhiteSpace */
 			$trueKeeper = new TrueKeeper();
 
 			$trueKeeper->state = $this->validator->inRange($key, self::USER_NAME_RANGE_MIN, self::USER_NAME_RANGE_MAX, $value);
@@ -78,44 +70,12 @@ class AccountValidator
 		return false;
 	}
 
-	public function isEmail(string $key, ?string $value): bool
-	{
-		if ($this->validator->isNotWhiteSpace($key, $value)) {
-			// @phpstan-ignore-next-line isNotWhiteSpace
-			$value = StringUtility::trim($value);
-			$trueKeeper = new TrueKeeper();
-
-			$trueKeeper->state = $this->validator->inLength($key, self::EMAIL_LENGTH, $value);
-			$trueKeeper->state = $this->validator->isEmail($key, $value);
-
-			return $trueKeeper->state;
-		}
-
-		return true;
-	}
-
-	public function isWebsite(string $key, ?string $value): bool
-	{
-		if (!StringUtility::isNullOrWhiteSpace($value)) {
-			// @phpstan-ignore-next-line isNullOrWhiteSpace
-			$value = StringUtility::trim($value);
-			$trueKeeper = new TrueKeeper();
-
-			$trueKeeper->state = $this->validator->inLength($key, self::WEBSITE_LENGTH, $value);
-			$trueKeeper->state = $this->validator->isWebsite($key, $value);
-
-			return $trueKeeper->state;
-		}
-
-		return true;
-	}
-
 	public function isFreeLoginId(Database $database, string $key, string $loginId): bool
 	{
 		$usersEntityDao = new UsersEntityDao($database);
 
 		if ($usersEntityDao->selectExistsLoginId($loginId)) {
-			$this->receiver->receiveErrorMessage($key, 'ログインIDが使用できません');
+			$this->receiver->receiveErrorMessage($key, I18n::message('error/unusable_login_id'));
 			return false;
 		}
 

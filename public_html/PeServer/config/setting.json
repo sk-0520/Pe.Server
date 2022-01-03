@@ -115,6 +115,9 @@
 			"login_parameter": {
 				"*": "ログインID/パスワードが正しくありません"
 			},
+			"unusable_login_id": {
+				"*": "ログインIDが使用できません"
+			},
 			"password_incorrect": {
 				"*": "パスワードが正しくありません"
 			},
@@ -129,6 +132,15 @@
 			},
 			"email_confirm_token_not_found": {
 				"*": "対象トークンが無効か有効期限を超えています"
+			},
+			"illegal_plugin_id": {
+				"*": "プラグインIDが正しくありません"
+			},
+			"unusable_plugin_id": {
+				"*": "ログインIDが使用できません"
+			},
+			"unusable_plugin_name": {
+				"*": "ログイン名が使用できません"
 			}
 		},
 		"subject": {

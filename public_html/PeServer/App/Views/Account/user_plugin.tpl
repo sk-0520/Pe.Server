@@ -38,7 +38,7 @@
 
 		<dt>description</dt>
 		<dd>
-			{input_helper key='account_plugin_description' type="text" class="edit"}
+			{input_helper key='account_plugin_description' type="textarea" class="edit"}
 		</dd>
 
 		<dt class="action">edit</dt>

@@ -66,7 +66,16 @@ abstract class DomainLogicBase extends LogicBase
 		return $userInfo;
 	}
 
-	private function writeAuditLogCore(string $userId, string $event, mixed $info, ?Database $database): int
+	/**
+	 * Undocumented function
+	 *
+	 * @param string $userId
+	 * @param string $event
+	 * @param array<mixed>|null $info
+	 * @param Database|null $database
+	 * @return integer
+	 */
+	private function writeAuditLogCore(string $userId, string $event, ?array $info, ?Database $database): int
 	{
 		/** @var string */
 		$ipAddress = ArrayUtility::getOr($_SERVER, 'REMOTE_ADDR', '');
@@ -92,10 +101,10 @@ abstract class DomainLogicBase extends LogicBase
 	 * ※DBじゃなくてテキストファイルでいいかも
 	 *
 	 * @param string $event
-	 * @param mixed $info
+	 * @param array<mixed>|null $info
 	 * @return int
 	 */
-	protected function writeAuditLogCurrentUser(string $event, mixed $info = null, ?Database $database = null): int
+	protected function writeAuditLogCurrentUser(string $event, ?array $info = null, ?Database $database = null): int
 	{
 		$userInfo = $this->getUserInfo();
 		if (!ArrayUtility::tryGet($userInfo, 'user_id', $userId)) {
@@ -108,7 +117,16 @@ abstract class DomainLogicBase extends LogicBase
 		return $this->writeAuditLogCore($userId, $event, $info, $database);
 	}
 
-	protected function writeAuditLogTargetUser(string $userId, string $event, mixed $info = null, ?Database $database = null): int
+	/**
+	 * 対象ユーザーとして監査ログ出力。
+	 *
+	 * @param string $userId
+	 * @param string $event
+	 * @param array<mixed>|null $info
+	 * @param Database|null $database
+	 * @return integer
+	 */
+	protected function writeAuditLogTargetUser(string $userId, string $event, ?array $info = null, ?Database $database = null): int
 	{
 		if (StringUtility::isNullOrWhiteSpace($userId)) {
 			$this->logger->error('監査ログ ユーザーID不正のため書き込み中止');

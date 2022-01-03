@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Controllers\Page;
 
-use PeServer\App\Models\UserLevel;
+use PeServer\App\Models\Domains\UserLevel;
 use PeServer\Core\Mvc\ActionRequest;
 use PeServer\Core\Mvc\IActionResult;
 use PeServer\Core\Mvc\LogicCallMode;

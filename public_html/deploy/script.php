@@ -161,7 +161,7 @@ create table
 	[users] -- ユーザー情報
 	(
 		[user_id] text not null, -- ユーザーID
-		[login_id] text not null unique, -- ログインID
+		[login_id] text not null, -- ログインID
 		[level] text not null, -- ユーザーレベル(権限てきな)
 		[state] text not null, -- 状態
 		[name] text not null, -- 名前
@@ -169,7 +169,8 @@ create table
 		[mark_email] integer not null, -- 絞り込み用メールアドレス(ハッシュ:fnv)
 		[website] text not null, -- Webサイト
 		[note] text not null, -- 管理者用メモ
-		primary key([user_id])
+		primary key([user_id]),
+		unique([login_id])
 	)
 ;
 
@@ -232,6 +233,33 @@ create index
 			[mark_email],
 			[token]
 		)
+;
+
+create table
+	[plugins]
+	(
+		[plugin_id] text not null, -- プラグインID
+		[user_id] text not null, -- プラグイン所有ユーザー
+		[name] text not null, -- プラグイン名,
+		[display_name] text not null, -- プラグイン表示名
+		[state] text not null, -- 状態
+		[description] text not null, -- 紹介文
+		[note] text not null, -- 管理者用メモ
+		primary key([plugin_id]),
+		unique ([name]),
+		foreign key ([user_id]) references users([user_id])
+	)
+;
+
+create table
+	[plugin_urls]
+	(
+		[plugin_id] text not null, -- プラグインID
+		[key] text not null, -- 種類
+		[url] text not null, -- URL
+		primary key([plugin_id], [key]),
+		foreign key ([plugin_id]) references plugins([plugin_id])
+	)
 ;
 
 insert into

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\App\Models;
+namespace PeServer\App\Models\Domains;
 
 use PeServer\Core\CoreInitializer;
 use PeServer\Core\InitializeChecker;

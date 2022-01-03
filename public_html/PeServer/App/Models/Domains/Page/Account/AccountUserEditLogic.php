@@ -81,7 +81,7 @@ class AccountUserEditLogic extends PageLogicBase
 		$userInfo = $this->userInfo();
 
 		$params = [
-			'id_user' => $userInfo['user_id'],
+			'user_id' => $userInfo['user_id'],
 			'user_name' => $this->getRequest('account_edit_name'),
 			'website' => $this->getRequest('account_edit_website'),
 		];
@@ -93,7 +93,7 @@ class AccountUserEditLogic extends PageLogicBase
 
 			// ユーザー情報更新
 			$usersEntityDao->updateUserSetting(
-				$params['id_user'],
+				$params['user_id'],
 				$params['user_name'],
 				$params['website']
 			);

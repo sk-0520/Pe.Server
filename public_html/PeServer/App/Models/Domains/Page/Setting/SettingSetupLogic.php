@@ -10,8 +10,8 @@ use PeServer\Core\I18n;
 use PeServer\Core\Database;
 use PeServer\Core\StringUtility;
 use PeServer\App\Models\AuditLog;
-use PeServer\App\Models\UserLevel;
-use PeServer\App\Models\UserState;
+use PeServer\App\Models\Domains\UserLevel;
+use PeServer\App\Models\Domains\UserState;
 use PeServer\Core\Mvc\Validations;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
@@ -139,7 +139,7 @@ class SettingSetupLogic extends PageLogicBase
 			);
 
 			// ユーザー生成記録を監査ログに追加
-			$this->writeAuditLogCurrentUser(AuditLog::USER_STATE_CHANGE, $state, $database);
+			$this->writeAuditLogCurrentUser(AuditLog::USER_STATE_CHANGE, ['state' => $state], $database);
 			$this->writeAuditLogCurrentUser(AuditLog::USER_CREATE, $userInfo['id'], $database);
 			$this->writeAuditLogTargetUser($userInfo['id'], AuditLog::USER_GENERATED, $currentUserInfo['user_id'], $database);
 
