@@ -141,24 +141,44 @@ final class AccountController extends PageControllerBase
 		return $this->view('user_email', $logic->getViewData());
 	}
 
-	public function user_plugin_register_get(ActionRequest $request): IActionResult
+	private function user_plugin_get_core(ActionRequest $request, bool $isRegister): IActionResult
 	{
-		$logic = $this->createLogic(AccountUserPluginLogic::class, $request, true);
+		$logic = $this->createLogic(AccountUserPluginLogic::class, $request, $isRegister);
 		$logic->run(LogicCallMode::initialize());
 
 		return $this->view('user_plugin', $logic->getViewData());
 	}
 
-	public function user_plugin_register_post(ActionRequest $request): IActionResult
+	private function user_plugin_post_core(ActionRequest $request, bool $isRegister): IActionResult
 	{
-		$logic = $this->createLogic(AccountUserPluginLogic::class, $request, true);
+		$logic = $this->createLogic(AccountUserPluginLogic::class, $request, $isRegister);
 		if ($logic->run(LogicCallMode::submit())) {
 			if ($logic->tryGetResult('plugin_id', $pluginId)) {
-				return $this->redirectPath('/account/user/pluginId/' . $pluginId);
+				return $this->redirectPath('/account/user/plugin/' . $pluginId);
 			}
 			throw new InvalidOperationException();
 		}
 
 		return $this->view('user_plugin', $logic->getViewData());
+	}
+
+	public function user_plugin_register_get(ActionRequest $request): IActionResult
+	{
+		return $this->user_plugin_get_core($request, true);
+	}
+
+	public function user_plugin_register_post(ActionRequest $request): IActionResult
+	{
+		return $this->user_plugin_post_core($request, true);
+	}
+
+	public function user_plugin_update_get(ActionRequest $request): IActionResult
+	{
+		return $this->user_plugin_get_core($request, false);
+	}
+
+	public function user_plugin_update_post(ActionRequest $request): IActionResult
+	{
+		return $this->user_plugin_post_core($request, false);
 	}
 }

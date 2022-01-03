@@ -52,6 +52,28 @@ class PluginsEntityDao extends DaoBase
 		);
 	}
 
+	public function selectIsUserPlugin(string $pluginId, string $userId): bool
+	{
+		return 1 === $this->database->selectSingleCount(
+			<<<SQL
+
+			select
+				count(*)
+			from
+				plugins
+			where
+				plugins.plugin_id = :plugin_id
+				and
+				plugins.user_id = :user_id
+
+			SQL,
+			[
+				'plugin_id' => $pluginId,
+				'user_id' => $userId,
+			]
+		);
+	}
+
 	/**
 	 * Undocumented function
 	 *

@@ -13,6 +13,7 @@ use PeServer\Core\FilterResult;
 use PeServer\Core\IActionFilter;
 use PeServer\Core\FilterArgument;
 use PeServer\Core\Mvc\ActionResult;
+use PeServer\Core\Mvc\ActionRequest;
 use PeServer\Core\Store\SessionStore;
 use PeServer\App\Models\Domains\UserLevel;
 use PeServer\App\Controllers\Page\HomeController;
@@ -20,6 +21,9 @@ use PeServer\App\Controllers\Page\ErrorController;
 use PeServer\App\Controllers\Page\AccountController;
 use PeServer\App\Controllers\Page\SettingController;
 use PeServer\App\Controllers\Api\DevelopmentController;
+use PeServer\App\Models\Database\Entities\PluginsEntityDao;
+use PeServer\Core\Database;
+use PeServer\Core\Uuid;
 
 /**
  * ルーティング情報設定。
@@ -57,6 +61,7 @@ abstract class RouteConfiguration
 					->addAction('user/email', HttpMethod::post(), 'user_email_post', [self::user(), Csrf::csrf()])
 					->addAction('user/plugin', HttpMethod::get(), 'user_plugin_register_get', [self::user()])
 					->addAction('user/plugin', HttpMethod::post(), 'user_plugin_register_post', [self::user(), Csrf::csrf()])
+					->addAction('user/plugin/:plugin_id@\{?[a-fA-F0-9\-]{32,}\}?', HttpMethod::get(), 'user_plugin_update_get', [self::user(), self::plugin()])
 				/* AUTO-FORMAT */,
 				(new Route('setting', SettingController::class, [self::admin()]))
 					->addAction('setup', HttpMethod::get(), 'setup_get', [self::setup()])
@@ -69,6 +74,12 @@ abstract class RouteConfiguration
 			]
 		];
 	}
+
+	protected function openDatabase(): Database
+	{
+		return AppDatabase::open();
+	}
+
 
 	/**
 	 * Undocumented function
@@ -141,6 +152,33 @@ abstract class RouteConfiguration
 				}
 
 				return FilterResult::none();
+			}
+		};
+	}
+
+	private static ?IActionFilter $plugin = null;
+	private static function plugin(): IActionFilter
+	{
+		return self::$plugin ??= new class extends RouteConfiguration implements IActionFilter
+		{
+			public function filtering(FilterArgument $argument): FilterResult
+			{
+				$pluginIdState = $argument->request->exists('plugin_id');
+				if($pluginIdState['exists'] && $pluginIdState['type'] === ActionRequest::REQUEST_URL) {
+					$pluginId = $argument->request->getValue('plugin_id');
+					// ここにきてるってことはユーザーフィルタを通過しているのでセッションを見る必要はないけど一応ね
+					if(Uuid::isGuid($pluginId) && SessionManager::hasAccount()) {
+						$pluginId = Uuid::adjustGuid($pluginId);
+						$account = SessionManager::getAccount();
+						$database = $this->openDatabase();
+						$pluginsEntityDao = new PluginsEntityDao($database);
+						if($pluginsEntityDao->selectIsUserPlugin($pluginId, $account['user_id'])) {
+							return FilterResult::none();
+						}
+					}
+				}
+
+				return FilterResult::error(HttpStatus::notFound());
 			}
 		};
 	}

@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domains;
 
-use PeServer\App\Models\AppConfiguration;
+use PeServer\Core\I18n;
 use PeServer\Core\Database;
 use \Prophecy\Util\StringUtil;
 use PeServer\Core\ArrayUtility;
-use PeServer\Core\StringUtility;
 use PeServer\Core\Mvc\LogicBase;
+use PeServer\Core\StringUtility;
 use PeServer\Core\Mvc\Validations;
+use PeServer\App\Models\AppDatabase;
 use PeServer\Core\Mvc\LogicParameter;
+use PeServer\App\Models\AppConfiguration;
 use PeServer\Core\Throws\NotImplementedException;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\App\Models\Database\Entities\UserAuditLogsEntityDao;
-use PeServer\Core\I18n;
 
 abstract class DomainLogicBase extends LogicBase
 {
@@ -38,15 +39,7 @@ abstract class DomainLogicBase extends LogicBase
 	 */
 	protected function openDatabase(): Database
 	{
-		$persistence = AppConfiguration::$json['persistence'];
-
-		return new Database(
-			$persistence['connection'],
-			$persistence['user'],
-			$persistence['password'],
-			[],
-			$this->logger //Logging::create('database')
-		);
+		return AppDatabase::open($this->logger);
 	}
 
 	/**

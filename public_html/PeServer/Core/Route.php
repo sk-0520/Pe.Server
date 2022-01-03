@@ -185,20 +185,21 @@ class Route
 
 				$calcPaths = array_filter(array_map(function ($i, $value) use ($actionPaths) {
 					$length = StringUtility::getLength($value);
+					$targetValue = urldecode($actionPaths[$i]);
 					if ($length === 0 || $value[0] !== ':') {
-						return ['key' => $value, 'name' => '', 'value' => $actionPaths[$i]];
+						return ['key' => $value, 'name' => '', 'value' => $targetValue];
 					}
 					$splitPaths = explode('@', $value, 2);
 					$requestKey = StringUtility::substring($splitPaths[0], 1);
 					$isRegex = 1 < count($splitPaths);
 					if ($isRegex) {
 						$pattern = "/$splitPaths[1]/";
-						if (preg_match($pattern, $actionPaths[$i])) {
-							return ['key' => $value, 'name' => $requestKey, 'value' => $actionPaths[$i]];
+						if (preg_match($pattern, $targetValue)) {
+							return ['key' => $value, 'name' => $requestKey, 'value' => $targetValue];
 						}
 						return null;
 					} else {
-						return ['key' => $value, 'name' => $requestKey, 'value' => $actionPaths[$i]];
+						return ['key' => $value, 'name' => $requestKey, 'value' => $targetValue];
 					}
 				}, array_keys($keyPaths), array_values($keyPaths)), function ($i) {
 					return !is_null($i);
