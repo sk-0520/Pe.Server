@@ -71,6 +71,8 @@ abstract class RouteConfiguration
 					->addAction('setup', HttpMethod::get(), 'setup_get', [Route::CLEAR_MIDDLEWARE, SetupAccountFilterMiddleware::class])
 					->addAction('setup', HttpMethod::post(), 'setup_post', [Route::CLEAR_MIDDLEWARE, SetupAccountFilterMiddleware::class])
 					->addAction('environment', HttpMethod::get())
+					->addAction('default-plugin', HttpMethod::get(), 'default_plugin_get')
+					->addAction('default-plugin', HttpMethod::post(), 'default_plugin_post')
 				/* AUTO-FORMAT */,
 				(new Route('api/development', DevelopmentController::class, [DevelopmentMiddleware::class]))
 					->addAction('initialize', HttpMethod::post())

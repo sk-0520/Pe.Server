@@ -39,7 +39,7 @@ final class AccountController extends PageControllerBase
 	public function login_get(ActionRequest $request): IActionResult
 	{
 		if ($this->isLoggedIn()) {
-			return $this->redirectPath('/account/user');
+			return $this->redirectPath('account/user');
 		}
 
 		$logic = $this->createLogic(AccountLoginLogic::class, $request);
@@ -51,14 +51,14 @@ final class AccountController extends PageControllerBase
 	public function login_post(ActionRequest $request): IActionResult
 	{
 		if ($this->isLoggedIn()) {
-			return $this->redirectPath('/account/user');
+			return $this->redirectPath('account/user');
 		}
 
 		$logic = $this->createLogic(AccountLoginLogic::class, $request);
 		if ($logic->run(LogicCallMode::submit())) {
 			if ($this->session->tryGet(SessionManager::ACCOUNT, $account)) {
 				if ($account['level'] === UserLevel::SETUP) {
-					return $this->redirectPath('/setting/setup');
+					return $this->redirectPath('setting/setup');
 				}
 			}
 
@@ -96,7 +96,7 @@ final class AccountController extends PageControllerBase
 	{
 		$logic = $this->createLogic(AccountUserEditLogic::class, $request);
 		if ($logic->run(LogicCallMode::submit())) {
-			return $this->redirectPath('/account/user');
+			return $this->redirectPath('account/user');
 		}
 
 		return $this->view('user_edit', $logic->getViewData());
@@ -114,7 +114,7 @@ final class AccountController extends PageControllerBase
 	{
 		$logic = $this->createLogic(AccountUserPasswordLogic::class, $request);
 		if ($logic->run(LogicCallMode::submit())) {
-			return $this->redirectPath('/account/user');
+			return $this->redirectPath('account/user');
 		}
 
 		return $this->view('user_password', $logic->getViewData());
@@ -133,9 +133,9 @@ final class AccountController extends PageControllerBase
 		$logic = $this->createLogic(AccountUserEmailLogic::class, $request);
 		if ($logic->run(LogicCallMode::submit())) {
 			if ($logic->equalsResult('confirm', true)) {
-				return $this->redirectPath('/account/user');
+				return $this->redirectPath('account/user');
 			}
-			return $this->redirectPath('/account/user/email');
+			return $this->redirectPath('account/user/email');
 		}
 
 		return $this->view('user_email', $logic->getViewData());
@@ -154,7 +154,7 @@ final class AccountController extends PageControllerBase
 		$logic = $this->createLogic(AccountUserPluginLogic::class, $request, $isRegister);
 		if ($logic->run(LogicCallMode::submit())) {
 			if ($logic->tryGetResult('plugin_id', $pluginId)) {
-				return $this->redirectPath('/account/user/plugin/' . $pluginId);
+				return $this->redirectPath('account/user/plugin/' . $pluginId);
 			}
 			throw new InvalidOperationException();
 		}
