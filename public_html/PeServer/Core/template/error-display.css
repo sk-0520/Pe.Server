@@ -1,0 +1,12 @@
+
+.throwable dl {
+	border-top: 1px solid #ccc;
+	border-left: 1px solid #ccc;
+}
+
+.stacktrace table td {
+	vertical-align: top;
+}
+.stacktrace .args pre {
+	margin: 0;
+}
