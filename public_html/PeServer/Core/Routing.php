@@ -28,6 +28,8 @@ use PeServer\Core\Mvc\ControllerArgument;
 
 /**
  * ルーティング。
+ *
+ * 名前の割に完全に心臓部だけどWebアプリならこれが心臓でいいのか・・・？ ふとももなのか。
  */
 class Routing
 {
@@ -43,6 +45,13 @@ class Routing
 	protected SessionStore $session;
 
 	protected ILogger $middlewareLogger;
+
+	/**
+	 * 前処理済みミドルウェア一覧。
+	 *
+	 * @var IMiddleware[]
+	 */
+	private array $processedMiddleware = [];
 
 	/**
 	 * 生成。
@@ -69,13 +78,15 @@ class Routing
 	 * @param IMiddleware|string $middleware
 	 * @return bool 次のミドルウェアを実行してよいか
 	 */
-	private function handleMiddlewareCore(RequestPath $requestPath, ActionRequest $request, IMiddleware|string $middleware): bool
+	private function handleBeforeMiddlewareCore(RequestPath $requestPath, ActionRequest $request, IMiddleware|string $middleware): bool
 	{
-		$middlewareArgument = new MiddlewareArgument($requestPath, $this->cookie, $this->session, $request, $this->middlewareLogger);
+		$middlewareArgument = new MiddlewareArgument(true, $requestPath, $this->cookie, $this->session, $request, $this->middlewareLogger);
 		if (is_string($middleware)) {
 			/** @var IMiddleware */
 			$middleware = new $middleware();
 		}
+		$this->processedMiddleware[] = $middleware;
+
 		$middlewareResult = $middleware->handle($middlewareArgument);
 
 		if ($middlewareResult->canNext()) {
@@ -94,16 +105,34 @@ class Routing
 	 * @param ActionRequest $request
 	 * @return bool 後続処理は可能か
 	 */
-	private function handleMiddleware(array $middleware, RequestPath $requestPath, ActionRequest $request): bool
+	private function handleBeforeMiddleware(array $middleware, RequestPath $requestPath, ActionRequest $request): bool
 	{
 		foreach ($middleware as $middlewareItem) {
-			$canNext = $this->handleMiddlewareCore($requestPath, $request, $middlewareItem);
+			$canNext = $this->handleBeforeMiddlewareCore($requestPath, $request, $middlewareItem);
 			if (!$canNext) {
 				return false;
 			}
 		}
 
 		return true;
+	}
+
+	//TODO: 後処理を作るだけ作ったけどデータ転送処理がないからむりぽ
+	private function handleAfterMiddleware(RequestPath $requestPath, ActionRequest $request): void
+	{
+		if (!ArrayUtility::getCount($this->processedMiddleware)) {
+			return;
+		}
+
+		$middlewareArgument = new MiddlewareArgument(true, $requestPath, $this->cookie, $this->session, $request, $this->middlewareLogger);
+		$middleware = array_reverse($this->processedMiddleware);
+		foreach ($middleware as $middlewareItem) {
+			$middlewareResult = $middlewareItem->handle($middlewareArgument);
+
+			if ($middlewareResult->canNext()) {
+				return;
+			}
+		}
 	}
 
 	/**
@@ -124,12 +153,12 @@ class Routing
 		$request = new ActionRequest($urlParameters);
 
 		// アクション共通ミドルウェア処理
-		if (!$this->handleMiddleware($this->setting->actionMiddleware, $requestPath, $request)) {
+		if (!$this->handleBeforeMiddleware($this->setting->actionMiddleware, $requestPath, $request)) {
 			return;
 		}
 
 		// アクションに紐づくミドルウェア処理
-		if (!$this->handleMiddleware($middleware, $requestPath, $request)) {
+		if (!$this->handleBeforeMiddleware($middleware, $requestPath, $request)) {
 			return;
 		}
 
@@ -157,7 +186,7 @@ class Routing
 		// グローバルミドルウェアの適用
 		if (ArrayUtility::getCount($this->setting->globalMiddleware)) {
 			$request = new ActionRequest([]);
-			if (!$this->handleMiddleware($this->setting->globalMiddleware, $requestPath, $request)) {
+			if (!$this->handleBeforeMiddleware($this->setting->globalMiddleware, $requestPath, $request)) {
 				return;
 			}
 		}

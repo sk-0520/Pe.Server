@@ -42,7 +42,6 @@
 
 									<dt>メッセージ</dt>
 									<dd><code>{$throwable->getMessage()}</code></dd>
-
 								</dl>
 								{$throwable = $throwable->getPrevious()}
 							{/while}
@@ -63,14 +62,14 @@
 											</tr>
 										{/if}
 										<tr>
-											<td>function</dt>
+											<td>function</td>
 											<td>
 												{if isset($item.class) }
-													<code>{$item.class}</code>
+													<code title="class">{$item.class}</code>
 												{/if}
 												<code title="type">{$item.type}</code>
 												<code>{$item.function}</code>
-											</dt>
+											</td>
 										</tr>
 										{if isset($item.args) }
 											{foreach from=$item.args item=arg key=arg_index}
@@ -84,7 +83,6 @@
 														{else}
 															<code>{$arg}</code>
 														{/if}
-														</ol>
 													</td>
 												</tr>
 											{/foreach}

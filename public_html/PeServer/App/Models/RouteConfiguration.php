@@ -68,8 +68,8 @@ abstract class RouteConfiguration
 					->addAction('user/plugin/:plugin_id@\{?[a-fA-F0-9\-]{32,}\}?', HttpMethod::post(), 'user_plugin_update_post', [UserAccountFilterMiddleware::class, Csrf::middleware(), UserPluginEditFilterMiddleware::class])
 				/* AUTO-FORMAT */,
 				(new Route('setting', SettingController::class, [AdministratorAccountFilterMiddleware::class]))
-					->addAction('setup', HttpMethod::get(), 'setup_get', [SetupAccountFilterMiddleware::class])
-					->addAction('setup', HttpMethod::post(), 'setup_post', [SetupAccountFilterMiddleware::class])
+					->addAction('setup', HttpMethod::get(), 'setup_get', [Route::CLEAR_MIDDLEWARE, SetupAccountFilterMiddleware::class])
+					->addAction('setup', HttpMethod::post(), 'setup_post', [Route::CLEAR_MIDDLEWARE, SetupAccountFilterMiddleware::class])
 				/* AUTO-FORMAT */,
 				(new Route('api/development', DevelopmentController::class, [DevelopmentMiddleware::class]))
 					->addAction('initialize', HttpMethod::post())

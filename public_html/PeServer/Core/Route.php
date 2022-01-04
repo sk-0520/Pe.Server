@@ -91,14 +91,16 @@ class Route
 		if (ArrayUtility::getCount($middleware)) {
 			$customMiddleware = [];
 			foreach ($middleware as $index => $mw) { // @phpstan-ignore-line ArrayUtility::getCount
-				if ($mw === self::CLEAR_MIDDLEWARE) {
-					if ($index) {
+				if ($index) {
+					if ($mw === self::CLEAR_MIDDLEWARE) {
 						throw new ArgumentException();
-					} else {
-						$customMiddleware = array_merge($customMiddleware, $this->baseMiddleware);
 					}
-				} else {
 					$customMiddleware[] = $mw;
+				} else {
+					if ($mw !== self::CLEAR_MIDDLEWARE) {
+						$customMiddleware = array_merge($customMiddleware, $this->baseMiddleware);
+						$customMiddleware[] = $mw;
+					}
 				}
 			}
 		} else {
