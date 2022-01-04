@@ -150,7 +150,7 @@ class Routing
 		$controller = new $controllerName($controllerArgument);
 		/** @var IActionResult */
 		$actionResult = $controller->$methodName($request);
-		$controller->execute($actionResult);
+		$controller->output($actionResult);
 	}
 
 	/**

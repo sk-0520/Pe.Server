@@ -246,12 +246,12 @@ abstract class ControllerBase
 	 * @param IActionResult $result
 	 * @return void
 	 */
-	public function execute(IActionResult $result): void
+	public function output(IActionResult $result): void
 	{
 		if (!is_null($this->logic)) {
 			$this->applyStore();
 		}
 
-		$result->execute();
+		$result->output();
 	}
 }

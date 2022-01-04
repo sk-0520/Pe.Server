@@ -14,5 +14,5 @@ interface IActionResult
 	 *
 	 * @return void
 	 */
-	public function execute(): void;
+	public function output(): void;
 }

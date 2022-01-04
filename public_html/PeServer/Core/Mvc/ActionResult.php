@@ -72,7 +72,7 @@ abstract class ActionResult implements IActionResult
 	 *
 	 * @return void
 	 */
-	public final function execute(): void
+	public final function output(): void
 	{
 		$this->header();
 		$this->body();
