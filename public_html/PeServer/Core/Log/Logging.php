@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Log;
 
-/** @var int */
-const LOG_REQUEST_ID_LENGTH = 6;
-define('LOG_REQUEST_ID', bin2hex(openssl_random_pseudo_bytes(LOG_REQUEST_ID_LENGTH)));
-
 use \LogicException;
 use PeServer\Core\ArrayUtility;
+use PeServer\Core\Cryptography;
 use PeServer\Core\ILogger;
 use PeServer\Core\InitializeChecker;
 use PeServer\Core\Log\FileLogger;
 use PeServer\Core\Log\MultiLogger;
 use PeServer\Core\StringUtility;
+
+const LOG_REQUEST_ID_LENGTH = 6;
+define('LOG_REQUEST_ID', Cryptography::generateRandomBytes(LOG_REQUEST_ID_LENGTH)->toHex());
+
 
 /**
  * ロガー生成処理。

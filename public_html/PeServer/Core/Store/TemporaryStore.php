@@ -7,6 +7,7 @@ namespace PeServer\Core\Store;
 use \DateInterval;
 use PeServer\Core\FileUtility;
 use PeServer\Core\ArrayUtility;
+use PeServer\Core\Cryptography;
 use PeServer\Core\StringUtility;
 use PeServer\Core\Store\CookieOption;
 use PeServer\Core\Throws\CoreException;
@@ -79,12 +80,9 @@ class TemporaryStore
 			return $this->cookie->getOr($this->option->name, '');
 		}
 
-		$bytes = openssl_random_pseudo_bytes(self::ID_LENGTH);
-		if ($bytes === false) { // @phpstan-ignore-line
-			throw new CryptoException();
-		}
+		$bytes = Cryptography::generateRandomBytes(self::ID_LENGTH);
 
-		return bin2hex($bytes);
+		return $bytes->toHex();
 	}
 
 	public function apply(): void
