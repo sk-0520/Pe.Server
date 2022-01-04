@@ -9,6 +9,8 @@ use PeServer\Core\MiddlewareArgument;
 
 /**
  * ミドルウェア。
+ *
+ * 入力しか受け付けませーん。
  */
 interface IMiddleware
 {

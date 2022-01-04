@@ -17,6 +17,22 @@ abstract class Cryptography
 	private const SEPARATOR = '@';
 
 	/**
+	 * ランダムバイト文字列を生成。
+	 *
+	 * @param integer $length
+	 * @return string
+	 */
+	public static function generateRandomBytes(int $length): string
+	{
+		$result = openssl_random_pseudo_bytes($length);
+		if ($result === false) {
+			throw new CryptoException();
+		}
+
+		return $result;
+	}
+
+	/**
 	 * 文字列を暗号化。
 	 *
 	 * @param string $data 生文字列。
