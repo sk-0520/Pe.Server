@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core;
 
 use \LogicException;
+use PeServer\Core\Throws\ArgumentException;
 
 /**
  * ルーティング情報
@@ -12,6 +13,7 @@ use \LogicException;
 class Route
 {
 	public const DEFAULT_METHOD = null;
+	public const CLEAR_MIDDLEWARE = '*';
 
 	/**
 	 * ベースパス。
@@ -40,34 +42,13 @@ class Route
 	private array $baseMiddleware;
 
 	/**
-	 * ミドルウェア一覧に変換。
-	 *
-	 * @param array<IMiddleware|string>|null $middleware ベースとなるミドルウェア。
-	 * @param array<IMiddleware|string> $zero
-	 * @param array<IMiddleware|string> $null
-	 * @return array<IMiddleware|string>
-	 */
-	private static function toMiddlewareItems(?array $middleware, array $zero, array $null): array
-	{
-		if (is_null($middleware)) {
-			return $null;
-		}
-
-		if (ArrayUtility::getCount($middleware)) {
-			return $middleware;
-		}
-
-		return $zero;
-	}
-
-	/**
 	 * ルーティング情報にコントローラを登録
 	 *
 	 * @param string $path URLとしてのパス。先頭が api/ajax 以外の場合に index アクションが自動登録される
 	 * @param string $className 使用されるクラス完全名
-	 * @param array<IMiddleware|string>|null $middleware ベースとなるミドルウェア。
+	 * @param array<IMiddleware|string> $middleware ベースとなるミドルウェア。
 	 */
-	public function __construct(string $path, string $className, ?array $middleware = null)
+	public function __construct(string $path, string $className, array $middleware = [])
 	{
 		if (StringUtility::isNullOrEmpty($path)) {
 			$this->basePath = $path;
@@ -79,7 +60,11 @@ class Route
 			$this->basePath = $trimPath;
 		}
 
-		$this->baseMiddleware = self::toMiddlewareItems($middleware, [], []);
+		if (ArrayUtility::contains($middleware, self::CLEAR_MIDDLEWARE)) {
+			throw new ArgumentException('$middleware');
+		}
+
+		$this->baseMiddleware = $middleware;
 		$this->className = $className;
 
 		if (!(StringUtility::startsWith($this->basePath, 'api', false) || StringUtility::startsWith($this->basePath, 'ajax', false))) {
@@ -93,7 +78,7 @@ class Route
 	 * @param string $actionName URLとして使用されるパス, パス先頭が : でURLパラメータとなり、パラメータ名の @ 以降は一致正規表現となる。
 	 * @param HttpMethod $httpMethod 使用するHTTPメソッド。
 	 * @param string|null $methodName 呼び出されるコントローラメソッド。未指定なら $actionName が使用される。
-	 * @param array<IMiddleware|string>|null $middleware 専用ミドルウェア。コンストラクタのミドルウェア設定を上書きする。nullの場合はコンストラクタで渡されたミドルウェアが使用される。※0件は専用ミドルウェアとして0件登録になるので結果として何も使用されない
+	 * @param array<IMiddleware|string>|null $middleware 専用ミドルウェア。 第一要素が CLEAR_MIDDLEWARE であれば既存のミドルウェアを破棄する。nullの場合はコンストラクタで渡されたミドルウェアが使用される。
 	 * @return Route
 	 */
 	public function addAction(string $actionName, HttpMethod $httpMethod, ?string $methodName = null, ?array $middleware = null): Route
@@ -101,10 +86,29 @@ class Route
 		if (!isset($this->actions[$actionName])) {
 			$this->actions[$actionName] = new Action();
 		}
+
+		$customMiddleware = null;
+		if (ArrayUtility::getCount($middleware)) {
+			$customMiddleware = [];
+			foreach ($middleware as $index => $mw) { // @phpstan-ignore-line ArrayUtility::getCount
+				if ($mw === self::CLEAR_MIDDLEWARE) {
+					if ($index) {
+						throw new ArgumentException();
+					} else {
+						$customMiddleware = array_merge($customMiddleware, $this->baseMiddleware);
+					}
+				} else {
+					$customMiddleware[] = $mw;
+				}
+			}
+		} else {
+			$customMiddleware = $this->baseMiddleware;
+		}
+
 		$this->actions[$actionName]->add(
 			$httpMethod,
 			StringUtility::isNullOrWhiteSpace($methodName) ? $actionName : $methodName, // @phpstan-ignore-line
-			self::toMiddlewareItems($middleware, [], $this->baseMiddleware)
+			$customMiddleware
 		);
 
 		return $this;
