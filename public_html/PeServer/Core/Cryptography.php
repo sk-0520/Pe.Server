@@ -25,7 +25,7 @@ abstract class Cryptography
 	public static function generateRandomBytes(int $length): string
 	{
 		$result = openssl_random_pseudo_bytes($length);
-		if ($result === false) {
+		if ($result === false) { //@phpstan-ignore-line
 			throw new CryptoException();
 		}
 
