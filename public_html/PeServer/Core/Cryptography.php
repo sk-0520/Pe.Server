@@ -73,18 +73,15 @@ abstract class Cryptography
 		if ($ivLength === false) {
 			throw new CryptoException($algorithm);
 		}
-		$iv = openssl_random_pseudo_bytes($ivLength);
-		if ($iv === false) { //@phpstan-ignore-line
-			throw new CryptoException($algorithm);
-		}
-		$ivBase64 = base64_encode($iv);
 
-		$encData = openssl_encrypt($data, $algorithm, $password, self::OPTION, $iv);
+		$iv = self::generateRandomBytes($ivLength);
+
+		$encData = openssl_encrypt($data, $algorithm, $password, self::OPTION, $iv->getRaw());
 		if ($encData === false) {
 			throw new CryptoException();
 		}
 
-		return $algorithm . self::SEPARATOR . $ivBase64 . self::SEPARATOR . $encData;
+		return $algorithm . self::SEPARATOR . $iv->toBase64() . self::SEPARATOR . $encData;
 	}
 
 	/**
@@ -103,15 +100,12 @@ abstract class Cryptography
 		}
 		list($algorithm, $ivBase64, $encData) = $values;
 
-		$iv = base64_decode($ivBase64);
-		if ($iv === false) { //@phpstan-ignore-line
-			throw new CryptoException();
-		}
+		$iv = Bytes::fromBase64($ivBase64);
 
 		/** @var string|false */
 		$decData = false;
 		try {
-			$decData = openssl_decrypt($encData, $algorithm, $password, self::OPTION, $iv);
+			$decData = openssl_decrypt($encData, $algorithm, $password, self::OPTION, $iv->getRaw());
 		} catch (Exception $ex) {
 			Throws::reThrow(CryptoException::class, $ex, $algorithm);
 		}
