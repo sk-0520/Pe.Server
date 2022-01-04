@@ -70,6 +70,7 @@ abstract class RouteConfiguration
 				(new Route('setting', SettingController::class, [AdministratorAccountFilterMiddleware::class]))
 					->addAction('setup', HttpMethod::get(), 'setup_get', [Route::CLEAR_MIDDLEWARE, SetupAccountFilterMiddleware::class])
 					->addAction('setup', HttpMethod::post(), 'setup_post', [Route::CLEAR_MIDDLEWARE, SetupAccountFilterMiddleware::class])
+					->addAction('environment', HttpMethod::get())
 				/* AUTO-FORMAT */,
 				(new Route('api/development', DevelopmentController::class, [DevelopmentMiddleware::class]))
 					->addAction('initialize', HttpMethod::post())
