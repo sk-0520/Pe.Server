@@ -22,7 +22,7 @@ class RouteAction
 	/**
 	 * ミドルウェア一覧。
 	 *
-	 * @var IMiddleware[]
+	 * @var array<IMiddleware|string>
 	 */
 	public array $middleware;
 
@@ -33,7 +33,7 @@ class RouteAction
 	 * @param string $className
 	 * @param string $classMethod
 	 * @param array<string,string> $params
-	 * @param IMiddleware[] $middleware
+	 * @param array<IMiddleware|string> $middleware
 	 */
 	public function __construct(HttpStatus $status, string $className, string $classMethod, array $params, array $middleware)
 	{

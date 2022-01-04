@@ -18,7 +18,7 @@ class Action
 	 * HTTPメソッドとコントローラメソッドがペアになる。
 	 * 後入れ優先。
 	 *
-	 * @var array<string,array{method:string,middleware:IMiddleware[]}>
+	 * @var array<string,array{method:string,middleware:array<IMiddleware|string>}>
 	 */
 	private $map = array();
 
@@ -27,7 +27,7 @@ class Action
 	 *
 	 * @param HttpMethod $httpMethod HTTPメソッド
 	 * @param string $callMethod コントローラメソッド。
-	 * @param IMiddleware[] $middleware
+	 * @param array<IMiddleware|string> $middleware
 	 */
 	public function add(HttpMethod $httpMethod, string $callMethod, array $middleware): void
 	{
@@ -43,7 +43,7 @@ class Action
 	 * 取得。
 	 *
 	 * @param string $httpMethod HTTPメソッド
-	 * @return array{method:string,middleware:IMiddleware[]}>|null あった場合はクラスメソッド、なければ null
+	 * @return array{method:string,middleware:array<IMiddleware|string>}>|null あった場合はクラスメソッド、なければ null
 	 */
 	public function get(string $httpMethod): ?array
 	{

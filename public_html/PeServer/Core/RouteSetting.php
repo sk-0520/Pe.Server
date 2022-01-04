@@ -9,13 +9,13 @@ class RouteSetting
 	/**
 	 * Undocumented variable
 	 *
-	 * @var IMiddleware[]
+	 * @var array<IMiddleware|string>
 	 */
 	public array $globalMiddleware;
 	/**
 	 * Undocumented variable
 	 *
-	 * @var IMiddleware[]
+	 * @var array<IMiddleware|string>
 	 */
 	public array $actionMiddleware;
 	/**
@@ -28,8 +28,8 @@ class RouteSetting
 	/**
 	 * 生成。
 	 *
-	 * @param IMiddleware[] $globalMiddleware
-	 * @param IMiddleware[] $actionMiddleware
+	 * @param array<IMiddleware|string> $globalMiddleware
+	 * @param array<IMiddleware|string> $actionMiddleware
 	 * @param Route[] $routes
 	 */
 	public function __construct(array $globalMiddleware, array $actionMiddleware, array $routes)

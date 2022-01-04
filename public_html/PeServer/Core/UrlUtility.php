@@ -12,7 +12,7 @@ abstract class UrlUtility
 	public static function convertPathToUrl(string $path): string
 	{
 		$httpProtocol = StringUtility::isNullOrEmpty(ArrayUtility::getOr($_SERVER, 'HTTPS', '')) ? 'http://' : 'https://';
-		return $httpProtocol . $_SERVER['SERVER_NAME'] . '/' .  StringUtility::trimEnd($path, '/');
+		return $httpProtocol . $_SERVER['SERVER_NAME'] . '/' .  StringUtility::trim($path, '/');
 	}
 
 	/**

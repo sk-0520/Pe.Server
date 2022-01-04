@@ -32,23 +32,11 @@ use PeServer\Core\Mvc\ControllerArgument;
 class Routing
 {
 	/**
-	 * グローバルミドルウェア。
+	 * ルーティング設定。
 	 *
-	 * @var IMiddleware[]
+	 * @var RouteSetting
 	 */
-	protected array $globalMiddleware;
-	/**
-	 * アクション共通ミドルウェア。
-	 *
-	 * @var IMiddleware[]
-	 */
-	protected array $actionMiddleware;
-	/**
-	 * ルーティング情報。
-	 *
-	 * @var Route[]
-	 */
-	protected $routeMap;
+	protected RouteSetting $setting;
 
 	protected CookieStore $cookie;
 	protected TemporaryStore $temporary;
@@ -64,9 +52,7 @@ class Routing
 	 */
 	public function __construct(RouteSetting $routeSetting, StoreOption $storeOption)
 	{
-		$this->globalMiddleware = $routeSetting->globalMiddleware;
-		$this->actionMiddleware = $routeSetting->actionMiddleware;
-		$this->routeMap = $routeSetting->routes;
+		$this->setting = $routeSetting;
 
 		$this->cookie = new CookieStore($storeOption->cookie);
 		$this->temporary = new TemporaryStore($storeOption->temporary, $this->cookie);
@@ -80,12 +66,16 @@ class Routing
 	 *
 	 * @param RequestPath $requestPath
 	 * @param ActionRequest $request
-	 * @param IMiddleware $middleware
+	 * @param IMiddleware|string $middleware
 	 * @return bool 次のミドルウェアを実行してよいか
 	 */
-	private function handleMiddlewareCore(RequestPath $requestPath, ActionRequest $request, IMiddleware $middleware): bool
+	private function handleMiddlewareCore(RequestPath $requestPath, ActionRequest $request, IMiddleware|string $middleware): bool
 	{
 		$middlewareArgument = new MiddlewareArgument($requestPath, $this->cookie, $this->session, $request, $this->middlewareLogger);
+		if (is_string($middleware)) {
+			/** @var IMiddleware */
+			$middleware = new $middleware();
+		}
 		$middlewareResult = $middleware->handle($middlewareArgument);
 
 		if ($middlewareResult->canNext()) {
@@ -99,7 +89,7 @@ class Routing
 	/**
 	 * ミドルウェアをグワーッと処理。
 	 *
-	 * @param IMiddleware[] $middleware
+	 * @param array<IMiddleware|string> $middleware
 	 * @param RequestPath $requestPath
 	 * @param ActionRequest $request
 	 * @return bool 後続処理は可能か
@@ -123,7 +113,7 @@ class Routing
 	 * @param string $rawControllerName
 	 * @param string $methodName
 	 * @param string[] $urlParameters
-	 * @param IMiddleware[] $middleware
+	 * @param array<IMiddleware|string> $middleware
 	 * @return void
 	 */
 	private function executeAction(RequestPath $requestPath, string $rawControllerName, string $methodName, array $urlParameters, array $middleware): void
@@ -134,7 +124,7 @@ class Routing
 		$request = new ActionRequest($urlParameters);
 
 		// アクション共通ミドルウェア処理
-		if (!$this->handleMiddleware($this->actionMiddleware, $requestPath, $request)) {
+		if (!$this->handleMiddleware($this->setting->actionMiddleware, $requestPath, $request)) {
 			return;
 		}
 
@@ -165,16 +155,16 @@ class Routing
 	private function executeCore(string $requestMethod, RequestPath $requestPath): void
 	{
 		// グローバルミドルウェアの適用
-		if (ArrayUtility::getCount($this->globalMiddleware)) {
+		if (ArrayUtility::getCount($this->setting->globalMiddleware)) {
 			$request = new ActionRequest([]);
-			if (!$this->handleMiddleware($this->globalMiddleware, $requestPath, $request)) {
+			if (!$this->handleMiddleware($this->setting->globalMiddleware, $requestPath, $request)) {
 				return;
 			}
 		}
 
 		/** @var RouteAction|null */
 		$errorAction = null;
-		foreach ($this->routeMap as $route) {
+		foreach ($this->setting->routes as $route) {
 			$action = $route->getAction($requestMethod, $requestPath);
 			if (!is_null($action)) {
 				if ($action->status->code() === HttpStatus::none()->code()) {

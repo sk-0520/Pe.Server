@@ -35,17 +35,17 @@ class Route
 	/**
 	 * Undocumented variable
 	 *
-	 * @var IMiddleware[]
+	 * @var array<IMiddleware|string>
 	 */
 	private array $baseMiddleware;
 
 	/**
 	 * ミドルウェア一覧に変換。
 	 *
-	 * @param IMiddleware[]|null $middleware ベースとなるミドルウェア。
-	 * @param IMiddleware[] $zero
-	 * @param IMiddleware[] $null
-	 * @return IMiddleware[]
+	 * @param array<IMiddleware|string>|null $middleware ベースとなるミドルウェア。
+	 * @param array<IMiddleware|string> $zero
+	 * @param array<IMiddleware|string> $null
+	 * @return array<IMiddleware|string>
 	 */
 	private static function toMiddlewareItems(?array $middleware, array $zero, array $null): array
 	{
@@ -65,7 +65,7 @@ class Route
 	 *
 	 * @param string $path URLとしてのパス。先頭が api/ajax 以外の場合に index アクションが自動登録される
 	 * @param string $className 使用されるクラス完全名
-	 * @param IMiddleware[]|null $middleware ベースとなるミドルウェア。
+	 * @param array<IMiddleware|string>|null $middleware ベースとなるミドルウェア。
 	 */
 	public function __construct(string $path, string $className, ?array $middleware = null)
 	{
@@ -93,7 +93,7 @@ class Route
 	 * @param string $actionName URLとして使用されるパス, パス先頭が : でURLパラメータとなり、パラメータ名の @ 以降は一致正規表現となる。
 	 * @param HttpMethod $httpMethod 使用するHTTPメソッド。
 	 * @param string|null $methodName 呼び出されるコントローラメソッド。未指定なら $actionName が使用される。
-	 * @param IMiddleware[]|null $middleware 専用ミドルウェア。コンストラクタのミドルウェア設定を上書きする。nullの場合はコンストラクタで渡されたミドルウェアが使用される。※0件は専用ミドルウェアとして0件登録になるので結果として何も使用されない
+	 * @param array<IMiddleware|string>|null $middleware 専用ミドルウェア。コンストラクタのミドルウェア設定を上書きする。nullの場合はコンストラクタで渡されたミドルウェアが使用される。※0件は専用ミドルウェアとして0件登録になるので結果として何も使用されない
 	 * @return Route
 	 */
 	public function addAction(string $actionName, HttpMethod $httpMethod, ?string $methodName = null, ?array $middleware = null): Route
