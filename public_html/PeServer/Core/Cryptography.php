@@ -7,6 +7,7 @@ namespace PeServer\Core;
 use \Exception;
 use PeServer\Core\Throws\CryptoException;
 use PeServer\Core\Throws\Throws;
+use Throwable;
 
 /**
  * 暗号化周り
@@ -17,19 +18,38 @@ abstract class Cryptography
 	private const SEPARATOR = '@';
 
 	/**
-	 * ランダムバイト文字列を生成。
+	 * ランダムバイトデータを生成。
 	 *
 	 * @param integer $length
-	 * @return string
+	 * @return Bytes
 	 */
-	public static function generateRandomBytes(int $length): string
+	public static function generateRandomBytes(int $length): Bytes
 	{
 		$result = openssl_random_pseudo_bytes($length);
 		if ($result === false) { //@phpstan-ignore-line
 			throw new CryptoException();
 		}
 
-		return $result;
+		return new Bytes($result);
+	}
+
+	/**
+	 * 乱数取得。
+	 *
+	 * `random_int` ラッパー。
+	 *
+	 * @param integer $max 最大値
+	 * @param integer $min 最小値
+	 * @return integer
+	 * @throws CryptoException
+	 */
+	public static function generateRandomInteger(int $max = PHP_INT_MAX, int $min = 0): int
+	{
+		try {
+			return random_int($min, $max);
+		} catch (Throwable $ex) {
+			Throws::reThrow(CryptoException::class, $ex);
+		}
 	}
 
 	/**

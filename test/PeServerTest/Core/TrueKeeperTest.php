@@ -52,5 +52,6 @@ class TrueKeeperTest extends TestClass
 		$this->expectException(ArgumentException::class);
 		$tk = new TrueKeeper();
 		$tk->value = true;
+		$this->fail();
 	}
 }

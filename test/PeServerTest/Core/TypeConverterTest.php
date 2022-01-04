@@ -29,7 +29,6 @@ class TypeConverterTest extends TestClass
 
 	public function test_parseInteger_throw()
 	{
-		$this->expectException(ParseException::class);
 		$tests = [
 			'',
 			'1 1',
@@ -39,7 +38,12 @@ class TypeConverterTest extends TestClass
 			'++1',
 		];
 		foreach ($tests as $test) {
-			TypeConverter::parseInteger($test);
+			try {
+				TypeConverter::parseInteger($test);
+				$this->fail();
+			} catch(ParseException) {
+				$this->success();
+			}
 		}
 	}
 

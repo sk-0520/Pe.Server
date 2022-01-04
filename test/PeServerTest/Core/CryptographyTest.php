@@ -34,6 +34,7 @@ class CryptographyTest extends TestClass
 	{
 		$this->expectException(CryptoException::class);
 		Cryptography::encrypt('ABC', '💩', 'a');
+		$this->fail();
 	}
 
 	public function test_dec_error()
@@ -41,29 +42,34 @@ class CryptographyTest extends TestClass
 		$enc = Cryptography::encrypt('ABC', 'aes-256-cbc', 'a');
 		$this->expectException(CryptoException::class);
 		Cryptography::decrypt($enc, 'b');
+		$this->fail();
 	}
 
 	public function test_dec_data_list0_error()
 	{
 		$this->expectException(CryptoException::class);
 		Cryptography::decrypt('', 'b');
+		$this->fail();
 	}
 
 	public function test_dec_data_list4_error()
 	{
 		$this->expectException(CryptoException::class);
 		Cryptography::decrypt('@@@', 'b');
+		$this->fail();
 	}
 
 	public function test_dec_data_alg_error()
 	{
 		$this->expectException(CryptoException::class);
 		Cryptography::decrypt('💩@@', 'b');
+		$this->fail();
 	}
 
 	public function test_dec_data_iv_error()
 	{
 		$this->expectException(CryptoException::class);
 		Cryptography::decrypt('aes-256-cbc@@', 'b');
+		$this->fail();
 	}
 }

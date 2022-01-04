@@ -79,11 +79,13 @@ class UuidTest extends TestClass
 	{
 		$this->expectException(ArgumentException::class);
 		Uuid::adjustGuid('');
+		$this->fail();
 	}
 
 	public function test_adjustGuid_error_guid()
 	{
 		$this->expectException(ArgumentException::class);
 		Uuid::adjustGuid('G0457E15892844189B2730BD46B1AE30');
+		$this->fail();
 	}
 }

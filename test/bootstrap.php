@@ -63,4 +63,9 @@ class TestClass extends \PHPUnit\Framework\TestCase
 			$this->assertFalse($actual, $message);
 		}
 	}
+
+	protected function success()
+	{
+		$this->assertTrue(true);
+	}
 }

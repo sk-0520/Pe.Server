@@ -18,18 +18,21 @@ class RouteTest extends TestClass
 	{
 		$this->expectException(LogicException::class);
 		new Route('/', 'ClassName');
+		$this->fail();
 	}
 
 	public function test_construct_exception_start()
 	{
 		$this->expectException(LogicException::class);
 		new Route('/root', 'ClassName');
+		$this->fail();
 	}
 
 	public function test_construct_exception_end()
 	{
 		$this->expectException(LogicException::class);
 		new Route('root/', 'ClassName');
+		$this->fail();
 	}
 
 	public function test_getAction()
