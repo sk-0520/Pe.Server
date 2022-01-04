@@ -8,7 +8,7 @@ use PeServer\Core\Route;
 use PeServer\Core\Routing;
 use PeServer\Core\RequestPath;
 use PeServer\Core\RouteSetting;
-use PeServer\Core\IActionFilter;
+use PeServer\Core\IMiddleware;
 use PeServer\Core\Store\StoreOption;
 use PeServer\Core\Store\CookieOption;
 use PeServer\Core\Store\SessionOption;

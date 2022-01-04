@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
-use PeServer\Core\FilterArgument;
+use PeServer\Core\MiddlewareArgument;
 use PeServer\Core\Throws\SessionException;
 
 
@@ -32,30 +32,30 @@ abstract class Csrf
 		return $hash;
 	}
 
-	private static ?IActionFilter $csrf = null;
-	public static function csrf(): IActionFilter
+	private static ?IMiddleware $middleware = null;
+	public static function middleware(): IMiddleware
 	{
-		return self::$csrf ??= new class extends Csrf implements IActionFilter
+		return self::$middleware ??= new class extends Csrf implements IMiddleware
 		{
-			public function filtering(FilterArgument $argument): FilterResult
+			public function handle(MiddlewareArgument $argument): MiddlewareResult
 			{
 				$result = $argument->request->exists(self::REQUEST_KEY);
 				if (!$result['exists']) {
 					$argument->logger->warn('要求CSRFトークンなし');
-					return FilterResult::error(HttpStatus::forbidden(), 'CSRF');
+					return MiddlewareResult::error(HttpStatus::forbidden(), 'CSRF');
 				}
 
 				$requestToken = $argument->request->getValue(self::REQUEST_KEY);
 				if ($argument->session->tryGet(self::SESSION_KEY, $sessionToken)) {
 					if ($requestToken === $sessionToken) {
-						return FilterResult::none();
+						return MiddlewareResult::none();
 					}
 					$argument->logger->warn('CSRFトークン不一致');
 				} else {
 					$argument->logger->warn('セッションCSRFトークンなし');
 				}
 
-				return FilterResult::error(HttpStatus::forbidden(), 'CSRF');
+				return MiddlewareResult::error(HttpStatus::forbidden(), 'CSRF');
 			}
 		};
 	}

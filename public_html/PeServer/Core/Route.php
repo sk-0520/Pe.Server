@@ -35,26 +35,26 @@ class Route
 	/**
 	 * Undocumented variable
 	 *
-	 * @var IActionFilter[]
+	 * @var IMiddleware[]
 	 */
-	private array $baseFilters;
+	private array $baseMiddleware;
 
 	/**
-	 * フィルタに変換。
+	 * ミドルウェア一覧に変換。
 	 *
-	 * @param IActionFilter[]|null $options ベースとなるオプション設定。null/0件の場合は IActionFilter::none() が使用される。
-	 * @param IActionFilter[] $zero
-	 * @param IActionFilter[] $null
-	 * @return IActionFilter[]
+	 * @param IMiddleware[]|null $middleware ベースとなるミドルウェア。
+	 * @param IMiddleware[] $zero
+	 * @param IMiddleware[] $null
+	 * @return IMiddleware[]
 	 */
-	private static function toFilters(?array $options, array $zero, array $null): array
+	private static function toMiddlewareItems(?array $middleware, array $zero, array $null): array
 	{
-		if (is_null($options)) {
-			return [];
+		if (is_null($middleware)) {
+			return $null;
 		}
 
-		if (ArrayUtility::getCount($options)) {
-			return $options;
+		if (ArrayUtility::getCount($middleware)) {
+			return $middleware;
 		}
 
 		return $zero;
@@ -65,9 +65,9 @@ class Route
 	 *
 	 * @param string $path URLとしてのパス。先頭が api/ajax 以外の場合に index アクションが自動登録される
 	 * @param string $className 使用されるクラス完全名
-	 * @param IActionFilter[]|null $filters ベースとなるオプション設定。null/0件の場合は IActionFilter::none() が使用される。
+	 * @param IMiddleware[]|null $middleware ベースとなるミドルウェア。
 	 */
-	public function __construct(string $path, string $className, ?array $filters = null)
+	public function __construct(string $path, string $className, ?array $middleware = null)
 	{
 		if (StringUtility::isNullOrEmpty($path)) {
 			$this->basePath = $path;
@@ -79,11 +79,11 @@ class Route
 			$this->basePath = $trimPath;
 		}
 
-		$this->baseFilters = self::toFilters($filters, [], []);
+		$this->baseMiddleware = self::toMiddlewareItems($middleware, [], []);
 		$this->className = $className;
 
 		if (!(StringUtility::startsWith($this->basePath, 'api', false) || StringUtility::startsWith($this->basePath, 'ajax', false))) {
-			$this->addAction('', HttpMethod::get(), 'index', $this->baseFilters);
+			$this->addAction('', HttpMethod::get(), 'index', $this->baseMiddleware);
 		}
 	}
 
@@ -93,10 +93,10 @@ class Route
 	 * @param string $actionName URLとして使用されるパス, パス先頭が : でURLパラメータとなり、パラメータ名の @ 以降は一致正規表現となる。
 	 * @param HttpMethod $httpMethod 使用するHTTPメソッド。
 	 * @param string|null $methodName 呼び出されるコントローラメソッド。未指定なら $actionName が使用される。
-	 * @param IActionFilter[]|null $filters オプション設定。nullの場合はコンストラクタで渡されたオプションが使用される。0件の場合は IActionFilter::none() が使用される。
+	 * @param IMiddleware[]|null $middleware 専用ミドルウェア。コンストラクタのミドルウェア設定を上書きする。nullの場合はコンストラクタで渡されたミドルウェアが使用される。※0件は専用ミドルウェアとして0件登録になるので結果として何も使用されない
 	 * @return Route
 	 */
-	public function addAction(string $actionName, HttpMethod $httpMethod, ?string $methodName = null, ?array $filters = null): Route
+	public function addAction(string $actionName, HttpMethod $httpMethod, ?string $methodName = null, ?array $middleware = null): Route
 	{
 		if (!isset($this->actions[$actionName])) {
 			$this->actions[$actionName] = new Action();
@@ -104,7 +104,7 @@ class Route
 		$this->actions[$actionName]->add(
 			$httpMethod,
 			StringUtility::isNullOrWhiteSpace($methodName) ? $actionName : $methodName, // @phpstan-ignore-line
-			self::toFilters($filters, [], $this->baseFilters)
+			self::toMiddlewareItems($middleware, [], $this->baseMiddleware)
 		);
 
 		return $this;
@@ -136,7 +136,7 @@ class Route
 			$this->className,
 			$actionValues['method'],
 			$urlParameters,
-			$actionValues['filters']
+			$actionValues['middleware']
 		);
 	}
 

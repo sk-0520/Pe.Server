@@ -9,9 +9,9 @@ use PeServer\Core\Store\CookieStore;
 use PeServer\Core\Store\SessionStore;
 
 /**
- * フィルタリング時の入力パラメータ。
+ * ミドルウェアの入力パラメータ。
  */
-class FilterArgument
+class MiddlewareArgument
 {
 	public RequestPath $requestPath;
 	public CookieStore $cookie;

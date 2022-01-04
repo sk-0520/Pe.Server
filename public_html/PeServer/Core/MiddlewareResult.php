@@ -15,17 +15,17 @@ use PeServer\Core\Throws\HttpStatusException;
 use PeServer\Core\Throws\InvalidOperationException;
 
 /**
- * フィルタリング結果。
+ * ミドルウェア結果。
  */
-abstract class FilterResult
+abstract class MiddlewareResult
 {
 	public const RESULT_KIND_NONE = 0;
 	public const RESULT_KIND_STATUS = 1;
 
-	private static ?FilterResult $none;
-	public static function none(): FilterResult
+	private static ?MiddlewareResult $none;
+	public static function none(): MiddlewareResult
 	{
-		return self::$none ??= new class extends FilterResult
+		return self::$none ??= new class extends MiddlewareResult
 		{
 			public function __construct()
 			{
@@ -46,9 +46,9 @@ abstract class FilterResult
 	 * @param string $path
 	 * @param array<string,string>|null $query
 	 * @param HttpStatus|null $status
-	 * @return FilterResult
+	 * @return MiddlewareResult
 	 */
-	public static function redirect(string $path, ?array $query = null, ?HttpStatus $status = null): FilterResult
+	public static function redirect(string $path, ?array $query = null, ?HttpStatus $status = null): MiddlewareResult
 	{
 		if (Regex::isMatch($path, '|(https?:)?//|')) {
 			throw new ArgumentException();
@@ -56,7 +56,7 @@ abstract class FilterResult
 
 		$url = UrlUtility::buildPath($path, $query ?? []);
 
-		return new _FilterRedirectResult($status ?? HttpStatus::found(), $url);
+		return new _RedirectMiddlewareResult($status ?? HttpStatus::found(), $url);
 	}
 
 	/**
@@ -64,11 +64,11 @@ abstract class FilterResult
 	 *
 	 * @param HttpStatus $status
 	 * @param string $message
-	 * @return FilterResult
+	 * @return MiddlewareResult
 	 */
-	public static function error(HttpStatus $status, string $message = ''): FilterResult
+	public static function error(HttpStatus $status, string $message = ''): MiddlewareResult
 	{
-		return new _FilterErrorResult($status, $message);
+		return new _ErrorMiddlewareResult($status, $message);
 	}
 
 	private int $kind;
@@ -85,7 +85,7 @@ abstract class FilterResult
 	public abstract function apply(): void;
 }
 
-class _FilterRedirectResult extends FilterResult
+class _RedirectMiddlewareResult extends MiddlewareResult
 {
 	private HttpStatus $status;
 	private string $url;
@@ -104,7 +104,7 @@ class _FilterRedirectResult extends FilterResult
 	}
 }
 
-class _FilterErrorResult extends FilterResult
+class _ErrorMiddlewareResult extends MiddlewareResult
 {
 	private HttpStatus $status;
 	private string $message;

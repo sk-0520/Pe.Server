@@ -9,10 +9,10 @@ use PeServer\Core\HttpStatus;
 use PeServer\Core\Log\Logging;
 use PeServer\Core\RequestPath;
 use PeServer\Core\ArrayUtility;
-use PeServer\Core\FilterResult;
+use PeServer\Core\MiddlewareResult;
 use PeServer\Core\RouteSetting;
-use PeServer\Core\IActionFilter;
-use PeServer\Core\FilterArgument;
+use PeServer\Core\IMiddleware;
+use PeServer\Core\MiddlewareArgument;
 use PeServer\Core\Mvc\ActionResult;
 use PeServer\Core\Mvc\ActionRequest;
 use PeServer\Core\Mvc\IActionResult;
@@ -32,17 +32,17 @@ use PeServer\Core\Mvc\ControllerArgument;
 class Routing
 {
 	/**
-	 * グローバルフィルタ処理
+	 * グローバルミドルウェア。
 	 *
-	 * @var IActionFilter[]
+	 * @var IMiddleware[]
 	 */
-	protected array $globalFilters;
+	protected array $globalMiddleware;
 	/**
-	 * アクション共通フィルタ処理
+	 * アクション共通ミドルウェア。
 	 *
-	 * @var IActionFilter[]
+	 * @var IMiddleware[]
 	 */
-	protected array $actionFilters;
+	protected array $actionMiddleware;
 	/**
 	 * ルーティング情報。
 	 *
@@ -54,7 +54,7 @@ class Routing
 	protected TemporaryStore $temporary;
 	protected SessionStore $session;
 
-	protected ILogger $filterLogger;
+	protected ILogger $middlewareLogger;
 
 	/**
 	 * 生成。
@@ -64,50 +64,50 @@ class Routing
 	 */
 	public function __construct(RouteSetting $routeSetting, StoreOption $storeOption)
 	{
-		$this->globalFilters = $routeSetting->globalFilters;
-		$this->actionFilters = $routeSetting->actionFilters;
+		$this->globalMiddleware = $routeSetting->globalMiddleware;
+		$this->actionMiddleware = $routeSetting->actionMiddleware;
 		$this->routeMap = $routeSetting->routes;
 
 		$this->cookie = new CookieStore($storeOption->cookie);
 		$this->temporary = new TemporaryStore($storeOption->temporary, $this->cookie);
 		$this->session = new SessionStore($storeOption->session, $this->cookie);
 
-		$this->filterLogger = Logging::create('filtering');
+		$this->middlewareLogger = Logging::create('middleware');
 	}
 
 	/**
-	 * フィルタ単独処理。
+	 * ミドルウェア単独処理。
 	 *
 	 * @param RequestPath $requestPath
 	 * @param ActionRequest $request
-	 * @param IActionFilter $filter
-	 * @return bool 次のフィルタを実行してよいか
+	 * @param IMiddleware $middleware
+	 * @return bool 次のミドルウェアを実行してよいか
 	 */
-	private function filterCore(RequestPath $requestPath, ActionRequest $request, IActionFilter $filter): bool
+	private function handleMiddlewareCore(RequestPath $requestPath, ActionRequest $request, IMiddleware $middleware): bool
 	{
-		$filterArgument = new FilterArgument($requestPath, $this->cookie, $this->session, $request, $this->filterLogger);
-		$filterResult = $filter->filtering($filterArgument);
+		$middlewareArgument = new MiddlewareArgument($requestPath, $this->cookie, $this->session, $request, $this->middlewareLogger);
+		$middlewareResult = $middleware->handle($middlewareArgument);
 
-		if ($filterResult->canNext()) {
+		if ($middlewareResult->canNext()) {
 			return true;
 		}
 
-		$filterResult->apply();
+		$middlewareResult->apply();
 		return false;
 	}
 
 	/**
-	 * フィルタをグワーッと処理。
+	 * ミドルウェアをグワーッと処理。
 	 *
-	 * @param IActionFilter[] $filters
+	 * @param IMiddleware[] $middleware
 	 * @param RequestPath $requestPath
 	 * @param ActionRequest $request
 	 * @return bool 後続処理は可能か
 	 */
-	private function filter(array $filters, RequestPath $requestPath, ActionRequest $request): bool
+	private function handleMiddleware(array $middleware, RequestPath $requestPath, ActionRequest $request): bool
 	{
-		foreach ($filters as $filter) {
-			$canNext = $this->filterCore($requestPath, $request, $filter);
+		foreach ($middleware as $middlewareItem) {
+			$canNext = $this->handleMiddlewareCore($requestPath, $request, $middlewareItem);
 			if (!$canNext) {
 				return false;
 			}
@@ -123,23 +123,23 @@ class Routing
 	 * @param string $rawControllerName
 	 * @param string $methodName
 	 * @param string[] $urlParameters
-	 * @param IActionFilter[] $filters
+	 * @param IMiddleware[] $middleware
 	 * @return void
 	 */
-	private function executeAction(RequestPath $requestPath, string $rawControllerName, string $methodName, array $urlParameters, array $filters): void
+	private function executeAction(RequestPath $requestPath, string $rawControllerName, string $methodName, array $urlParameters, array $middleware): void
 	{
 		$splitNames = 	StringUtility::split($rawControllerName, '/');
 		$controllerName = $splitNames[ArrayUtility::getCount($splitNames) - 1];
 
 		$request = new ActionRequest($urlParameters);
 
-		// アクション共通フィルタ処理
-		if (!$this->filter($this->actionFilters, $requestPath, $request)) {
+		// アクション共通ミドルウェア処理
+		if (!$this->handleMiddleware($this->actionMiddleware, $requestPath, $request)) {
 			return;
 		}
 
-		// アクションに紐づくフィルタ処理
-		if (!$this->filter($filters, $requestPath, $request)) {
+		// アクションに紐づくミドルウェア処理
+		if (!$this->handleMiddleware($middleware, $requestPath, $request)) {
 			return;
 		}
 
@@ -164,10 +164,10 @@ class Routing
 	 */
 	private function executeCore(string $requestMethod, RequestPath $requestPath): void
 	{
-		// グローバルフィルタの適用
-		if (ArrayUtility::getCount($this->globalFilters)) {
+		// グローバルミドルウェアの適用
+		if (ArrayUtility::getCount($this->globalMiddleware)) {
 			$request = new ActionRequest([]);
-			if (!$this->filter($this->globalFilters, $requestPath, $request)) {
+			if (!$this->handleMiddleware($this->globalMiddleware, $requestPath, $request)) {
 				return;
 			}
 		}
@@ -178,7 +178,7 @@ class Routing
 			$action = $route->getAction($requestMethod, $requestPath);
 			if (!is_null($action)) {
 				if ($action->status->code() === HttpStatus::none()->code()) {
-					$this->executeAction($requestPath, $action->className, $action->classMethod, $action->params, $action->filters);
+					$this->executeAction($requestPath, $action->className, $action->classMethod, $action->params, $action->middleware);
 					return;
 				} else if (is_null($errorAction)) {
 					$errorAction = $action;
@@ -187,9 +187,9 @@ class Routing
 		}
 
 		if (is_null($errorAction)) {
-			FilterResult::error(HttpStatus::internalServerError())->apply();
+			MiddlewareResult::error(HttpStatus::internalServerError())->apply();
 		} else {
-			FilterResult::error($errorAction->status)->apply();
+			MiddlewareResult::error($errorAction->status)->apply();
 		}
 	}
 

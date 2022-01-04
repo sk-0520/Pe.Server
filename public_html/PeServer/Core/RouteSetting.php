@@ -9,15 +9,15 @@ class RouteSetting
 	/**
 	 * Undocumented variable
 	 *
-	 * @var IActionFilter[]
+	 * @var IMiddleware[]
 	 */
-	public array $globalFilters;
+	public array $globalMiddleware;
 	/**
 	 * Undocumented variable
 	 *
-	 * @var IActionFilter[]
+	 * @var IMiddleware[]
 	 */
-	public array $actionFilters;
+	public array $actionMiddleware;
 	/**
 	 * Undocumented variable
 	 *
@@ -28,14 +28,14 @@ class RouteSetting
 	/**
 	 * 生成。
 	 *
-	 * @param IActionFilter[] $globalFilters
-	 * @param IActionFilter[] $actionFilters
+	 * @param IMiddleware[] $globalMiddleware
+	 * @param IMiddleware[] $actionMiddleware
 	 * @param Route[] $routes
 	 */
-	public function __construct(array $globalFilters, array $actionFilters, array $routes)
+	public function __construct(array $globalMiddleware, array $actionMiddleware, array $routes)
 	{
-		$this->globalFilters = $globalFilters;
-		$this->actionFilters = $actionFilters;
+		$this->globalMiddleware = $globalMiddleware;
+		$this->actionMiddleware = $actionMiddleware;
 		$this->routes = $routes;
 	}
 }

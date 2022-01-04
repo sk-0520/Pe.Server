@@ -76,7 +76,7 @@ class AccountUserPluginLogic extends PageLogicBase
 				// プラグインIDとプラグイン名は原本を使用する
 				$database = $this->openDatabase();
 				$pluginsEntityDao = new PluginsEntityDao($database);
-				// ルーティングとフィルタでこのプラグイン所有者が保証されているのでプラグインIDのみで取得
+				// ルーティングでこのプラグイン所有者が保証されているのでプラグインIDのみで取得
 				$map = $pluginsEntityDao->selectPluginIds($pluginId);
 				$this->setValue('account_plugin_plugin_id', $map['plugin_id']);
 				$this->setValue('account_plugin_plugin_name', $map['plugin_name']);
@@ -146,7 +146,7 @@ class AccountUserPluginLogic extends PageLogicBase
 				$database = $this->openDatabase();
 				$pluginsEntityDao = new PluginsEntityDao($database);
 				$pluginUrlsEntityDao = new PluginUrlsEntityDao($database);
-				// ルーティングとフィルタでこのプラグイン所有者が保証されているのでプラグインIDのみで取得
+				// ルーティングでこのプラグイン所有者が保証されているのでプラグインIDのみで取得
 				$editMap = $pluginsEntityDao->selectEditPlugin($pluginId);
 				$this->setValue('account_plugin_plugin_name', $editMap['plugin_name']);
 				$this->setValue('account_plugin_display_name', $editMap['display_name']);

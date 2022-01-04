@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core;
 
 use PeServer\Core\HttpStatus;
-use PeServer\Core\IActionFilter;
+use PeServer\Core\IMiddleware;
 
 
 class RouteAction
@@ -20,11 +20,11 @@ class RouteAction
 	 */
 	public array $params;
 	/**
-	 * フィルタ一覧。
+	 * ミドルウェア一覧。
 	 *
-	 * @var IActionFilter[]
+	 * @var IMiddleware[]
 	 */
-	public array $filters;
+	public array $middleware;
 
 	/**
 	 * 生成。
@@ -33,14 +33,14 @@ class RouteAction
 	 * @param string $className
 	 * @param string $classMethod
 	 * @param array<string,string> $params
-	 * @param IActionFilter[] $filters
+	 * @param IMiddleware[] $middleware
 	 */
-	public function __construct(HttpStatus $status, string $className, string $classMethod, array $params, array $filters)
+	public function __construct(HttpStatus $status, string $className, string $classMethod, array $params, array $middleware)
 	{
 		$this->status = $status;
 		$this->className = $className;
 		$this->classMethod = $classMethod;
 		$this->params = $params;
-		$this->filters = $filters;
+		$this->middleware = $middleware;
 	}
 }

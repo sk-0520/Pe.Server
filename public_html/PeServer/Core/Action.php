@@ -18,7 +18,7 @@ class Action
 	 * HTTPメソッドとコントローラメソッドがペアになる。
 	 * 後入れ優先。
 	 *
-	 * @var array<string,array{method:string,filters:IActionFilter[]}>
+	 * @var array<string,array{method:string,middleware:IMiddleware[]}>
 	 */
 	private $map = array();
 
@@ -27,14 +27,14 @@ class Action
 	 *
 	 * @param HttpMethod $httpMethod HTTPメソッド
 	 * @param string $callMethod コントローラメソッド。
-	 * @param IActionFilter[] $filters
+	 * @param IMiddleware[] $middleware
 	 */
-	public function add(HttpMethod $httpMethod, string $callMethod, array $filters): void
+	public function add(HttpMethod $httpMethod, string $callMethod, array $middleware): void
 	{
 		foreach ($httpMethod->methods() as $method) {
 			$this->map[$method] = [
 				'method' => $callMethod,
-				'filters' => $filters,
+				'middleware' => $middleware,
 			];
 		}
 	}
@@ -43,7 +43,7 @@ class Action
 	 * 取得。
 	 *
 	 * @param string $httpMethod HTTPメソッド
-	 * @return array{method:string,filters:IActionFilter[]}>|null あった場合はクラスメソッド、なければ null
+	 * @return array{method:string,middleware:IMiddleware[]}>|null あった場合はクラスメソッド、なければ null
 	 */
 	public function get(string $httpMethod): ?array
 	{

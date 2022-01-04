@@ -11,10 +11,10 @@ use PeServer\Core\Database;
 use PeServer\Core\HttpMethod;
 use PeServer\Core\HttpStatus;
 use PeServer\Core\Environment;
-use PeServer\Core\FilterResult;
+use PeServer\Core\MiddlewareResult;
 use PeServer\Core\RouteSetting;
-use PeServer\Core\IActionFilter;
-use PeServer\Core\FilterArgument;
+use PeServer\Core\IMiddleware;
+use PeServer\Core\MiddlewareArgument;
 use PeServer\Core\Mvc\ActionResult;
 use PeServer\Core\Mvc\ActionRequest;
 use PeServer\Core\Store\SessionStore;
@@ -55,15 +55,15 @@ abstract class RouteConfiguration
 					->addAction('logout', HttpMethod::get())
 					->addAction('user', HttpMethod::get(), self::DEFAULT_METHOD, [self::user()])
 					->addAction('user/edit', HttpMethod::get(), 'user_edit_get', [self::user()])
-					->addAction('user/edit', HttpMethod::post(), 'user_edit_post', [self::user(), Csrf::csrf()])
+					->addAction('user/edit', HttpMethod::post(), 'user_edit_post', [self::user(), Csrf::middleware()])
 					->addAction('user/password', HttpMethod::get(), 'user_password_get', [self::user()])
-					->addAction('user/password', HttpMethod::post(), 'user_password_post', [self::user(), Csrf::csrf()])
+					->addAction('user/password', HttpMethod::post(), 'user_password_post', [self::user(), Csrf::middleware()])
 					->addAction('user/email', HttpMethod::get(), 'user_email_get', [self::user()])
-					->addAction('user/email', HttpMethod::post(), 'user_email_post', [self::user(), Csrf::csrf()])
+					->addAction('user/email', HttpMethod::post(), 'user_email_post', [self::user(), Csrf::middleware()])
 					->addAction('user/plugin', HttpMethod::get(), 'user_plugin_register_get', [self::user()])
-					->addAction('user/plugin', HttpMethod::post(), 'user_plugin_register_post', [self::user(), Csrf::csrf()])
+					->addAction('user/plugin', HttpMethod::post(), 'user_plugin_register_post', [self::user(), Csrf::middleware()])
 					->addAction('user/plugin/:plugin_id@\{?[a-fA-F0-9\-]{32,}\}?', HttpMethod::get(), 'user_plugin_update_get', [self::user(), self::plugin()])
-					->addAction('user/plugin/:plugin_id@\{?[a-fA-F0-9\-]{32,}\}?', HttpMethod::post(), 'user_plugin_update_post', [self::user(), Csrf::csrf(), self::plugin()])
+					->addAction('user/plugin/:plugin_id@\{?[a-fA-F0-9\-]{32,}\}?', HttpMethod::post(), 'user_plugin_update_post', [self::user(), Csrf::middleware(), self::plugin()])
 				/* AUTO-FORMAT */,
 				(new Route('setting', SettingController::class, [self::admin()]))
 					->addAction('setup', HttpMethod::get(), 'setup_get', [self::setup()])
@@ -86,84 +86,84 @@ abstract class RouteConfiguration
 	/**
 	 * アカウント用フィルタ処理。
 	 *
-	 * @param FilterArgument $argument
+	 * @param MiddlewareArgument $argument
 	 * @param string[] $levels
-	 * @return FilterResult
+	 * @return MiddlewareResult
 	 */
-	protected static function filterPageAccount(FilterArgument $argument, array $levels): FilterResult
+	protected static function filterPageAccount(MiddlewareArgument $argument, array $levels): MiddlewareResult
 	{
 		if (!$argument->session->tryGet(SessionManager::ACCOUNT, $account)) {
-			return FilterResult::error(HttpStatus::forbidden());
+			return MiddlewareResult::error(HttpStatus::forbidden());
 		}
 
 		foreach ($levels as $level) {
 			if ($account['level'] === $level) {
-				return FilterResult::none();
+				return MiddlewareResult::none();
 			}
 		}
 
-		return FilterResult::error(HttpStatus::forbidden());
+		return MiddlewareResult::error(HttpStatus::forbidden());
 	}
 
-	private static ?IActionFilter $user = null;
-	private static function user(): IActionFilter
+	private static ?IMiddleware $user = null;
+	private static function user(): IMiddleware
 	{
-		return self::$user ??= new class extends RouteConfiguration implements IActionFilter
+		return self::$user ??= new class extends RouteConfiguration implements IMiddleware
 		{
-			public function filtering(FilterArgument $argument): FilterResult
+			public function handle(MiddlewareArgument $argument): MiddlewareResult
 			{
 				return self::filterPageAccount($argument, [UserLevel::USER, UserLevel::ADMINISTRATOR]);
 			}
 		};
 	}
 
-	private static ?IActionFilter $setup = null;
-	private static function setup(): IActionFilter
+	private static ?IMiddleware $setup = null;
+	private static function setup(): IMiddleware
 	{
-		return self::$setup ??= new class extends RouteConfiguration implements IActionFilter
+		return self::$setup ??= new class extends RouteConfiguration implements IMiddleware
 		{
-			public function filtering(FilterArgument $argument): FilterResult
+			public function handle(MiddlewareArgument $argument): MiddlewareResult
 			{
 				return self::filterPageAccount($argument, [UserLevel::SETUP]);
 			}
 		};
 	}
 
-	private static ?IActionFilter $admin = null;
-	private static function admin(): IActionFilter
+	private static ?IMiddleware $admin = null;
+	private static function admin(): IMiddleware
 	{
-		return self::$admin ??= new class extends RouteConfiguration implements IActionFilter
+		return self::$admin ??= new class extends RouteConfiguration implements IMiddleware
 		{
-			public function filtering(FilterArgument $argument): FilterResult
+			public function handle(MiddlewareArgument $argument): MiddlewareResult
 			{
 				return self::filterPageAccount($argument, [UserLevel::ADMINISTRATOR]);
 			}
 		};
 	}
 
-	private static ?IActionFilter $development = null;
-	private static function development(): IActionFilter
+	private static ?IMiddleware $development = null;
+	private static function development(): IMiddleware
 	{
-		return self::$development ??= new class extends RouteConfiguration implements IActionFilter
+		return self::$development ??= new class extends RouteConfiguration implements IMiddleware
 		{
-			public function filtering(FilterArgument $argument): FilterResult
+			public function handle(MiddlewareArgument $argument): MiddlewareResult
 			{
 				if (Environment::isProduction()) {
 					$argument->logger->warn('本番環境での実行は抑制');
-					return FilterResult::error(HttpStatus::forbidden());
+					return MiddlewareResult::error(HttpStatus::forbidden());
 				}
 
-				return FilterResult::none();
+				return MiddlewareResult::none();
 			}
 		};
 	}
 
-	private static ?IActionFilter $plugin = null;
-	private static function plugin(): IActionFilter
+	private static ?IMiddleware $plugin = null;
+	private static function plugin(): IMiddleware
 	{
-		return self::$plugin ??= new class extends RouteConfiguration implements IActionFilter
+		return self::$plugin ??= new class extends RouteConfiguration implements IMiddleware
 		{
-			public function filtering(FilterArgument $argument): FilterResult
+			public function handle(MiddlewareArgument $argument): MiddlewareResult
 			{
 				$pluginIdState = $argument->request->exists('plugin_id');
 				if ($pluginIdState['exists'] && $pluginIdState['type'] === ActionRequest::REQUEST_URL) {
@@ -175,12 +175,12 @@ abstract class RouteConfiguration
 						$database = $this->openDatabase();
 						$pluginsEntityDao = new PluginsEntityDao($database);
 						if ($pluginsEntityDao->selectIsUserPlugin($pluginId, $account['user_id'])) {
-							return FilterResult::none();
+							return MiddlewareResult::none();
 						}
 					}
 				}
 
-				return FilterResult::error(HttpStatus::notFound());
+				return MiddlewareResult::error(HttpStatus::notFound());
 			}
 		};
 	}
