@@ -271,8 +271,8 @@ class _Template_Impl extends Template
 	 *  * key: 対象キー, valuesと紐づく
 	 *  * type: 対象のinput[type="*"]かtextareaを指定。不明時は input としてそのまま生成される。radio/checkboxは想定していないのでなんか別の方法を考えた方がいい
 	 *  * auto_error: true/false 未指定かtrueの場合にエラー表示も自動で行う(show_error_messages関数の内部呼び出し)
-	 *  * ~~readonly: true/false trueの場合に読み込み専用にする(出来るやつだけ)~~ true でもいい感じになりそう
-	 *  * ~~disabled: true/false trueの場合に非活性にする(出来るやつだけ)~~
+	 *  * readonly: true/false trueの場合に readonly を設定する
+	 *  * disabled: true/false trueの場合に disabled を設定する
 	 *
 	 * @param Smarty_Internal_Template $smarty
 	 * @return string HTML
@@ -340,6 +340,13 @@ class _Template_Impl extends Template
 		$ignoreKeys = ['key', 'type', 'value'];
 		foreach ($params as $key => $value) {
 			if (array_search($key, $ignoreKeys) !== false) {
+				continue;
+			}
+			$booleanAttrs = ['readonly', 'disabled'];
+			if (ArrayUtility::contains($booleanAttrs, $key)) {
+				if (TypeConverter::parseBoolean($value)) {
+					$element->setAttribute($key, '');
+				}
 				continue;
 			}
 			$element->setAttribute($key, $value);
@@ -449,11 +456,11 @@ class _Template_Impl extends Template
 		$include = TypeConverter::parseBoolean(ArrayUtility::getOr($params, 'include', false));
 
 		$filePath = FileUtility::joinPath(parent::$rootDirectoryPath, $sourcePath);
-		if(($autoSize || $include) || !is_file($filePath)) {
-			 // @phpstan-ignore-next-line nullは全取得だからOK
-			foreach($this->engine->getTemplateDir(null) as $dir) {
+		if (($autoSize || $include) || !is_file($filePath)) {
+			// @phpstan-ignore-next-line nullは全取得だからOK
+			foreach ($this->engine->getTemplateDir(null) as $dir) {
 				$path = FileUtility::joinPath($dir, $sourcePath);
-				if(is_file($path)) {
+				if (is_file($path)) {
 					$filePath = $path;
 					break;
 				}
@@ -520,7 +527,6 @@ class _Template_Impl extends Template
 							$base64 = base64_encode($content); // @phpstan-ignore-line しんどい
 							$inline = 'data:' . $imageSize['mime'] . ';base64,' . $base64;
 							$element->setAttribute('src', $inline);
-
 						}
 					}
 				}

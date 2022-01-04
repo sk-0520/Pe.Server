@@ -30,8 +30,8 @@ final class AppErrorHandler extends ErrorHandler
 			$next = false;
 		}
 
-		$isApi = StringUtility::startsWith($this->requestPath->full, 'api', true);
-		if ($isApi) {
+		$isJson = StringUtility::startsWith($this->requestPath->full, 'api', true) || StringUtility::startsWith($this->requestPath->full, 'ajax', true);
+		if ($isJson) {
 			$next = false;
 		}
 
@@ -48,7 +48,7 @@ final class AppErrorHandler extends ErrorHandler
 			$logger->error($values);
 			$status = $this->setHttpStatus($throwable);
 
-			if ($isApi) {
+			if ($isJson) {
 				header('Content-Type: application/json');
 				if ($isProduction) {
 					unset($values['throwable']);
