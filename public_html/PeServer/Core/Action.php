@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core;
 
 use PeServer\Core\HttpMethod;
+use PeServer\Core\Mvc\Middleware\IMiddleware;
 
 /**
  * HTTPメソッドとコントローラメソッドを紐づける。

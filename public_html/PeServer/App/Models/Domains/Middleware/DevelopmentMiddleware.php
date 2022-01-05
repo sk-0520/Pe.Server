@@ -6,9 +6,9 @@ namespace PeServer\App\Models\Domains\Middleware;
 
 use PeServer\Core\HttpStatus;
 use PeServer\Core\Environment;
-use PeServer\Core\IMiddleware;
-use PeServer\Core\MiddlewareResult;
-use PeServer\Core\MiddlewareArgument;
+use PeServer\Core\Mvc\Middleware\IMiddleware;
+use PeServer\Core\Mvc\Middleware\MiddlewareResult;
+use PeServer\Core\Mvc\Middleware\MiddlewareArgument;
 
 
 final class DevelopmentMiddleware implements IMiddleware

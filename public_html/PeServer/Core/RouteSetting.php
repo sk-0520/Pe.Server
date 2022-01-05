@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
+use PeServer\Core\Mvc\Middleware\IMiddleware;
+
 class RouteSetting
 {
 	/**

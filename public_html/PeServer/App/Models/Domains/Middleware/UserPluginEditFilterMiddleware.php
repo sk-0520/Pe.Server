@@ -6,12 +6,12 @@ namespace PeServer\App\Models\Domains\Middleware;
 
 use PeServer\Core\Uuid;
 use PeServer\Core\HttpStatus;
-use PeServer\Core\IMiddleware;
-use PeServer\Core\MiddlewareResult;
 use PeServer\App\Models\AppDatabase;
 use PeServer\Core\Mvc\ActionRequest;
-use PeServer\Core\MiddlewareArgument;
 use PeServer\App\Models\SessionManager;
+use PeServer\Core\Mvc\Middleware\IMiddleware;
+use PeServer\Core\Mvc\Middleware\MiddlewareResult;
+use PeServer\Core\Mvc\Middleware\MiddlewareArgument;
 use PeServer\App\Models\Dao\Entities\PluginsEntityDao;
 
 

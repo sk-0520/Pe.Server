@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Domains\Middleware;
 
 use PeServer\Core\HttpStatus;
-use PeServer\Core\MiddlewareResult;
-use PeServer\Core\MiddlewareArgument;
 use PeServer\App\Models\SessionManager;
-use PeServer\Core\IMiddleware;
+use PeServer\Core\Mvc\Middleware\IMiddleware;
+use PeServer\Core\Mvc\Middleware\MiddlewareResult;
+use PeServer\Core\Mvc\Middleware\MiddlewareArgument;
 
 abstract class AccountFilterMiddlewareBase implements IMiddleware
 {

@@ -2,10 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core;
+namespace PeServer\Core\Mvc\Middleware;
 
 use \Exception;
 use \LogicException;
+use PeServer\Core\Regex;
+use PeServer\Core\HttpStatus;
 use PeServer\Core\UrlUtility;
 use PeServer\Core\Store\CookieStore;
 use PeServer\Core\Store\SessionStore;

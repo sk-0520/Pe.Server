@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core;
+namespace PeServer\Core\Mvc\Middleware;
 
+use PeServer\Core\ILogger;
+use PeServer\Core\RequestPath;
 use PeServer\Core\Mvc\ActionRequest;
 use PeServer\Core\Store\CookieStore;
 use PeServer\Core\Store\SessionStore;

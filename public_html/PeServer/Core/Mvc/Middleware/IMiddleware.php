@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core;
+namespace PeServer\Core\Mvc\Middleware;
 
-use PeServer\Core\MiddlewareResult;
-use PeServer\Core\MiddlewareArgument;
+use PeServer\Core\Mvc\Middleware\MiddlewareResult;
+use PeServer\Core\Mvc\Middleware\MiddlewareArgument;
 
 /**
  * ミドルウェア。

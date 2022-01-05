@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core;
 
 use PeServer\Core\HttpStatus;
-use PeServer\Core\IMiddleware;
+use PeServer\Core\Mvc\Middleware\IMiddleware;
 
 
 class RouteAction
