@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\App\Models\Database\Entities;
+namespace PeServer\App\Models\Dao\Entities;
 
 use PeServer\Core\Database\DaoBase;
 use PeServer\Core\Database\IDatabaseContext;

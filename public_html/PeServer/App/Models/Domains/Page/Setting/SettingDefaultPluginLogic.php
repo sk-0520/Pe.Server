@@ -27,10 +27,10 @@ use PeServer\App\Models\Domains\PluginUtility;
 use PeServer\App\Models\Domains\AccountValidator;
 use PeServer\App\Models\Domains\Page\PageLogicBase;
 use PeServer\Core\Throws\InvalidOperationException;
-use PeServer\App\Models\Database\Entities\UsersEntityDao;
-use PeServer\App\Models\Database\Entities\PluginsEntityDao;
-use PeServer\App\Models\Database\Entities\PluginUrlsEntityDao;
-use PeServer\App\Models\Database\Entities\UserAuthenticationsEntityDao;
+use PeServer\App\Models\Dao\Entities\UsersEntityDao;
+use PeServer\App\Models\Dao\Entities\PluginsEntityDao;
+use PeServer\App\Models\Dao\Entities\PluginUrlsEntityDao;
+use PeServer\App\Models\Dao\Entities\UserAuthenticationsEntityDao;
 
 class SettingDefaultPluginLogic extends PageLogicBase
 {

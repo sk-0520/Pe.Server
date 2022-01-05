@@ -20,8 +20,8 @@ use PeServer\Core\Throws\HttpStatusException;
 use PeServer\App\Models\Domains\PluginValidator;
 use PeServer\App\Models\Domains\Page\PageLogicBase;
 use PeServer\Core\Throws\InvalidOperationException;
-use PeServer\App\Models\Database\Entities\PluginsEntityDao;
-use PeServer\App\Models\Database\Entities\PluginUrlsEntityDao;
+use PeServer\App\Models\Dao\Entities\PluginsEntityDao;
+use PeServer\App\Models\Dao\Entities\PluginUrlsEntityDao;
 
 class AccountUserPluginLogic extends PageLogicBase
 {

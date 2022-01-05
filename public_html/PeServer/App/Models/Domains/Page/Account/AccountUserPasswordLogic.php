@@ -16,8 +16,8 @@ use PeServer\App\Models\SessionManager;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\App\Models\Domains\AccountValidator;
 use PeServer\App\Models\Domains\Page\PageLogicBase;
-use PeServer\App\Models\Database\Entities\UsersEntityDao;
-use PeServer\App\Models\Database\Entities\UserAuthenticationsEntityDao;
+use PeServer\App\Models\Dao\Entities\UsersEntityDao;
+use PeServer\App\Models\Dao\Entities\UserAuthenticationsEntityDao;
 
 class AccountUserPasswordLogic extends PageLogicBase
 {

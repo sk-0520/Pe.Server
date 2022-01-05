@@ -21,7 +21,7 @@ use PeServer\App\Controllers\Page\HomeController;
 use PeServer\App\Controllers\Page\AccountController;
 use PeServer\App\Controllers\Page\SettingController;
 use PeServer\App\Controllers\Api\DevelopmentController;
-use PeServer\App\Models\Database\Entities\PluginsEntityDao;
+use PeServer\App\Models\Dao\Entities\PluginsEntityDao;
 use PeServer\App\Models\Domains\Middleware\DevelopmentMiddleware;
 use PeServer\App\Models\Domains\Middleware\UserAccountFilterMiddleware;
 use PeServer\App\Models\Domains\Middleware\SetupAccountFilterMiddleware;

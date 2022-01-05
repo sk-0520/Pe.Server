@@ -16,7 +16,7 @@ use PeServer\App\Models\AppDatabaseCache;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\App\Models\Domains\AccountValidator;
 use PeServer\App\Models\Domains\Page\PageLogicBase;
-use PeServer\App\Models\Database\Entities\UsersEntityDao;
+use PeServer\App\Models\Dao\Entities\UsersEntityDao;
 
 class AccountUserEditLogic extends PageLogicBase
 {

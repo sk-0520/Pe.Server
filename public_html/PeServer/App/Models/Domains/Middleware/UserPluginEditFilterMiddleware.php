@@ -12,7 +12,7 @@ use PeServer\App\Models\AppDatabase;
 use PeServer\Core\Mvc\ActionRequest;
 use PeServer\Core\MiddlewareArgument;
 use PeServer\App\Models\SessionManager;
-use PeServer\App\Models\Database\Entities\PluginsEntityDao;
+use PeServer\App\Models\Dao\Entities\PluginsEntityDao;
 
 
 final class UserPluginEditFilterMiddleware implements IMiddleware

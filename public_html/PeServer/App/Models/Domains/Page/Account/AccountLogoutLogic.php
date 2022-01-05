@@ -13,8 +13,8 @@ use PeServer\App\Models\SessionManager;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\App\Models\Domains\Page\PageLogicBase;
-use PeServer\App\Models\Database\Domains\UserDomainDao;
-use PeServer\App\Models\Database\Entities\UsersEntityDao;
+use PeServer\App\Models\Dao\Domains\UserDomainDao;
+use PeServer\App\Models\Dao\Entities\UsersEntityDao;
 
 class AccountLogoutLogic extends PageLogicBase
 {

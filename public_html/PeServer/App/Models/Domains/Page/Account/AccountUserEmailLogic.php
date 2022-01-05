@@ -23,9 +23,9 @@ use PeServer\Core\Database\IDatabaseContext;
 use PeServer\App\Models\Domains\AccountValidator;
 use PeServer\Core\Throws\NotImplementedException;
 use PeServer\App\Models\Domains\Page\PageLogicBase;
-use PeServer\App\Models\Database\Domains\UserDomainDao;
-use PeServer\App\Models\Database\Entities\UsersEntityDao;
-use PeServer\App\Models\Database\Entities\UserChangeWaitEmailsEntityDao;
+use PeServer\App\Models\Dao\Domains\UserDomainDao;
+use PeServer\App\Models\Dao\Entities\UsersEntityDao;
+use PeServer\App\Models\Dao\Entities\UserChangeWaitEmailsEntityDao;
 
 class AccountUserEmailLogic extends PageLogicBase
 {

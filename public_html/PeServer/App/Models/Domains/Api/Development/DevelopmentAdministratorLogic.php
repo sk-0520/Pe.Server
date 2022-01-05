@@ -23,8 +23,8 @@ use PeServer\App\Models\Domains\UserLevel;
 use PeServer\App\Models\Domains\UserState;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\App\Models\Domains\Api\ApiLogicBase;
-use PeServer\App\Models\Database\Entities\UsersEntityDao;
-use PeServer\App\Models\Database\Entities\UserAuthenticationsEntityDao;
+use PeServer\App\Models\Dao\Entities\UsersEntityDao;
+use PeServer\App\Models\Dao\Entities\UserAuthenticationsEntityDao;
 
 class DevelopmentAdministratorLogic extends ApiLogicBase
 {

@@ -16,7 +16,7 @@ use PeServer\Core\Mvc\LogicParameter;
 use PeServer\App\Models\AppConfiguration;
 use PeServer\Core\Throws\NotImplementedException;
 use PeServer\Core\Throws\InvalidOperationException;
-use PeServer\App\Models\Database\Entities\UserAuditLogsEntityDao;
+use PeServer\App\Models\Dao\Entities\UserAuditLogsEntityDao;
 use PeServer\Core\Database\IDatabaseContext;
 
 abstract class DomainLogicBase extends LogicBase

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domains;
 
-use PeServer\App\Models\Database\Entities\UsersEntityDao;
+use PeServer\App\Models\Dao\Entities\UsersEntityDao;
 use PeServer\Core\Database\Database;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\I18n;
