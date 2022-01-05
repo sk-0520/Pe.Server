@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core;
 
 use PeServer\Core\Throws\ArgumentException;
+use PeServer\Core\Throws\CoreException;
 
 /**
  * 文字列がバイトデータなのか普通の文字列なのかよくわからんのでこれでラップする。
@@ -80,5 +81,15 @@ final class Bytes
 		}
 
 		return new Bytes($value);
+	}
+
+	public function toString(): string
+	{
+		$nullIndex = mb_strpos($this->value, "\0");
+		if ($nullIndex !== false) {
+			throw new CoreException();
+		}
+
+		return $this->value;
 	}
 }

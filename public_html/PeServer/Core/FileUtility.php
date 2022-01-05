@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
+use stdClass;
 use Exception;
-use PeServer\Core\Throws\FileNotFoundException;
+use PeServer\Core\Bytes;
 use PeServer\Core\Throws\IOException;
 use PeServer\Core\Throws\ParseException;
-use stdClass;
+use PeServer\Core\Throws\FileNotFoundException;
 
 abstract class FileUtility
 {
@@ -113,7 +114,7 @@ abstract class FileUtility
 		return StringUtility::substring($fileName, 0, $dotIndex);
 	}
 
-	public static function readContent(string $path): string
+	public static function readContent(string $path): Bytes
 	{
 		/** @var string|false */
 		$content = false;
@@ -127,7 +128,7 @@ abstract class FileUtility
 			throw new IOException($path);
 		}
 
-		return $content;
+		return new Bytes($content);
 	}
 
 	private static function saveContent(string $path, mixed $data, bool $append): void
@@ -162,7 +163,7 @@ abstract class FileUtility
 	{
 		$content = self::readContent($path);
 
-		$json = json_decode($content, $associative);
+		$json = json_decode($content->getRaw(), $associative);
 
 		if (is_null($json)) {
 			throw new ParseException($path);

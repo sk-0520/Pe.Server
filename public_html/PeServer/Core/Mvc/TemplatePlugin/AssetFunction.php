@@ -14,7 +14,9 @@ use PeServer\Core\ArrayUtility;
 use PeServer\Core\StringUtility;
 use PeServer\Core\TypeConverter;
 use PeServer\Core\Throws\CoreException;
+use PeServer\Core\HtmlDocument;
 use PeServer\Core\Mvc\TemplatePlugin\TemplateFunctionBase;
+use PeServer\Core\Mvc\TemplatePlugin\TemplatePluginArgument;
 
 /**
  * 指定されたリソースをHTMLとして読み込む。
@@ -62,8 +64,8 @@ class AssetFunction extends TemplateFunctionBase
 		$resourcePath = $sourcePath;
 		if (!$ignoreAsset) {
 			if ($isProduction) {
-				$dir = pathinfo($sourcePath, PATHINFO_DIRNAME);
-				$file = pathinfo($sourcePath, PATHINFO_FILENAME);
+				$dir = FileUtility::getDirectoryPath($sourcePath);
+				$file = FileUtility::getFileNameWithoutExtension($sourcePath);
 
 				$resourcePath = $dir . '/' . $file . '.min.' . $extension;
 			}
@@ -71,10 +73,9 @@ class AssetFunction extends TemplateFunctionBase
 			$resourcePath .= '?' . $this->argument->revision;
 		}
 
-		$dom = new DOMDocument();
+		$dom = new HtmlDocument();
 		if (!$isProduction) {
-			$comment = $dom->createComment(StringUtility::dump($params));
-			$dom->appendChild($comment);
+			$dom->addComment(StringUtility::dump($params));
 		}
 
 		$autoSize = TypeConverter::parseBoolean(ArrayUtility::getOr($params, 'auto_size', false));
@@ -103,14 +104,12 @@ class AssetFunction extends TemplateFunctionBase
 		switch ($extension) {
 			case 'css':
 				if ($include) {
-					$element = $dom->createElement('style');
-					$dom->appendChild($element);
+					$element = $dom->addElement('style');
 
-					$content = file_get_contents($filePath);
-					$element->appendChild($dom->createTextNode($content)); // @phpstan-ignore-line しんどい
+					$content = FileUtility::readContent($filePath);
+					$element->addText($content->toString());
 				} else {
-					$element = $dom->createElement('link');
-					$dom->appendChild($element);
+					$element = $dom->addElement('link');
 
 					$element->setAttribute('rel', 'stylesheet');
 					$element->setAttribute('href', $resourcePath);
@@ -119,12 +118,11 @@ class AssetFunction extends TemplateFunctionBase
 				break;
 
 			case 'js':
-				$element = $dom->createElement('script');
-				$dom->appendChild($element);
+				$element = $dom->addElement('script');
 
 				if ($include) {
-					$content = file_get_contents($filePath);
-					$element->appendChild($dom->createTextNode($content)); // @phpstan-ignore-line しんどい
+					$content = FileUtility::readContent($filePath);
+					$element->addText($content->toString());
 				} else {
 					$element->setAttribute('src', $resourcePath);
 					$skipAttributes = array_merge($skipAttributes, ['src']);
@@ -134,8 +132,7 @@ class AssetFunction extends TemplateFunctionBase
 			case 'png':
 			case 'jpeg':
 			case 'jpg':
-				$element = $dom->createElement('img');
-				$dom->appendChild($element);
+				$element = $dom->addElement('img');
 
 				$element->setAttribute('src', $resourcePath);
 				$skipAttributes = array_merge($skipAttributes, ['src']);
@@ -168,6 +165,6 @@ class AssetFunction extends TemplateFunctionBase
 			$element->setAttribute($key, $value);
 		}
 
-		return $dom->saveHTML(); // @phpstan-ignore-line
+		return $dom->toString();
 	}
 }
