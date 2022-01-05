@@ -18,13 +18,13 @@ final class AppMailer extends Mailer
 
 	public function __construct()
 	{
-		parent::__construct(AppConfiguration::$json['mail']);
+		parent::__construct(AppConfiguration::$config['mail']);
 
-		$this->fromAddress = AppConfiguration::$json['config']['address']['from_email'];
-		$this->returnPath = AppConfiguration::$json['config']['address']['return_email'];
+		$this->fromAddress = AppConfiguration::$config['config']['address']['from_email'];
+		$this->returnPath = AppConfiguration::$config['config']['address']['return_email'];
 
-		if (!Environment::isProduction() && isset(AppConfiguration::$json['debug'])) {
-			$target = ArrayUtility::getOr(AppConfiguration::$json['debug'], 'mail_overwrite_target', '');
+		if (!Environment::isProduction() && isset(AppConfiguration::$config['debug'])) {
+			$target = ArrayUtility::getOr(AppConfiguration::$config['debug'], 'mail_overwrite_target', '');
 			if (!StringUtility::isNullOrWhiteSpace($target)) {
 				$this->overwriteTarget = $target;
 			}

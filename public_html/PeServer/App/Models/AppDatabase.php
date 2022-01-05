@@ -14,7 +14,7 @@ class AppDatabase extends Database
 
 	public static function open(?ILogger $logger = null): Database
 	{
-		$persistence = AppConfiguration::$json['persistence'];
+		$persistence = AppConfiguration::$config['persistence'];
 
 		return new Database(
 			$persistence['connection'],

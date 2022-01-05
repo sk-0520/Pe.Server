@@ -79,7 +79,7 @@ abstract class StoreConfiguration
 	 */
 	public static function get(): StoreOption
 	{
-		$setting = ArrayUtility::getOr(AppConfiguration::$json, 'store', null);
+		$setting = ArrayUtility::getOr(AppConfiguration::$config, 'store', null);
 
 		$cookie = self::getCookie($setting);
 		$temporary = self::getTemporary($setting, $cookie);

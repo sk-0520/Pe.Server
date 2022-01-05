@@ -54,7 +54,7 @@ class AccountUserEmailLogic extends PageLogicBase
 		$userDomainDao = new UserDomainDao($database);
 		$values = $userDomainDao->selectEmailAndWaitTokenTimestamp(
 			$userInfo['user_id'],
-			AppConfiguration::$json['config']['confirm']['user_change_wait_email_minutes']
+			AppConfiguration::$config['config']['confirm']['user_change_wait_email_minutes']
 		);
 
 		if (!StringUtility::isNullOrWhiteSpace($values['email'])) {
@@ -189,7 +189,7 @@ class AccountUserEmailLogic extends PageLogicBase
 			$existsToken = $userChangeWaitEmailsEntityDao->selectExistsToken(
 				$params['user_id'],
 				$params['token'],
-				AppConfiguration::$json['config']['confirm']['user_change_wait_email_minutes']
+				AppConfiguration::$config['config']['confirm']['user_change_wait_email_minutes']
 			);
 
 			if (!$existsToken) {

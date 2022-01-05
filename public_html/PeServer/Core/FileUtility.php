@@ -63,6 +63,56 @@ abstract class FileUtility
 		return self::toCanonicalize($joinedPath);
 	}
 
+	public static function getDirectoryPath(string $path): string
+	{
+		return dirname($path);
+	}
+
+	/**
+	 * ファイル名を取得。
+	 *
+	 * @param string $path
+	 * @return string
+	 */
+	public static function getFileName(string $path): string
+	{
+		return basename($path);
+	}
+
+	public static function getFileExtension(string $path, bool $withDot = false): string
+	{
+		if (StringUtility::isNullOrWhiteSpace($path)) {
+			return '';
+		}
+
+		$dotIndex = StringUtility::getLastPosition($path, '.');
+		if ($dotIndex === -1) {
+			return '';
+		}
+
+		$result = StringUtility::substring($path, $dotIndex);
+		if ($withDot) {
+			return $result;
+		}
+
+		if (!StringUtility::getByteCount($result)) {
+			return '';
+		}
+
+		return StringUtility::substring($result, 1);
+	}
+
+	public static function getFileNameWithoutExtension(string $path): string
+	{
+		$fileName = self::getFileName($path);
+		$dotIndex = StringUtility::getLastPosition($path, '.');
+		if($dotIndex === -1) {
+			return $fileName;
+		}
+
+		return StringUtility::substring($fileName, 0, $dotIndex);
+	}
+
 	public static function readContent(string $path): string
 	{
 		/** @var string|false */

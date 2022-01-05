@@ -59,7 +59,7 @@ class DevelopmentInitializeLogic extends ApiLogicBase
 		};
 
 		$deployScript = new \DeployScript($scriptArgument);  // @phpstan-ignore-line
-		$deployScript->migrate(AppConfiguration::$json['persistence']);
+		$deployScript->migrate(AppConfiguration::$config['persistence']);
 
 
 		$response = ActionResponse::json([

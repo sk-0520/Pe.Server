@@ -49,7 +49,7 @@ abstract class AppTemplate
 	 */
 	public static function createMailTemplate(string $templateName, string $subject, array $params): string
 	{
-		$families = AppConfiguration::$json['config']['address']['families'];
+		$families = AppConfiguration::$config['config']['address']['families'];
 
 		$params['app'] = [
 			'subject' => $subject,

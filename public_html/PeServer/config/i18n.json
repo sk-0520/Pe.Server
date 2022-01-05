@@ -1,0 +1,97 @@
+{
+	"@core": {
+		"common": {
+			"error_title": {
+				"*": "エラーがあります"
+			}
+		},
+		"error": {
+			"empty": {
+				"*": "入力してください"
+			},
+			"white_space": {
+				"*": "入力してください"
+			},
+			"length": {
+				"*": "{safe-length} 文字以内で入力してください"
+			},
+			"range": {
+				"*": "{min} から {max} 文字以内で入力してください"
+			},
+			"match": {
+				"*": "入力可能なパターンを入力してください"
+			},
+			"email": {
+				"*": "メールアドレスが正しくありません"
+			},
+			"website": {
+				"*": "URLが正しくありません"
+			}
+		}
+	},
+	"message": {
+		"flash": {
+			"updated_user": {
+				"*": "ユーザー情報を更新しました"
+			},
+			"updated_password": {
+				"*": "パスワードを更新しました"
+			},
+			"send_email_token": {
+				"*": "変更先メールアドレスにトークン発行通知メールを送信しました"
+			},
+			"updated_email": {
+				"*": "メールアドレスを更新しました"
+			},
+			"register_plugin": {
+				"*": "プラグインを登録しました"
+			},
+			"update_plugin": {
+				"*": "プラグインを更新しました"
+			}
+		}
+	},
+	"error": {
+		"login_parameter": {
+			"*": "ログインID/パスワードが正しくありません"
+		},
+		"unusable_login_id": {
+			"*": "ログインIDが使用できません"
+		},
+		"password_incorrect": {
+			"*": "パスワードが正しくありません"
+		},
+		"password_generate": {
+			"*": "使用できないパスワードです"
+		},
+		"password_confirm": {
+			"*": "確認用パスワードが一致しません"
+		},
+		"unknown_email_mode": {
+			"*": "要求データが不明です"
+		},
+		"email_confirm_token_not_found": {
+			"*": "対象トークンが無効か有効期限を超えています"
+		},
+		"illegal_plugin_id": {
+			"*": "プラグインIDが正しくありません"
+		},
+		"unusable_plugin_id": {
+			"*": "プラグインIDが使用できません"
+		},
+		"unusable_plugin_name": {
+			"*": "プラグイン名が使用できません"
+		}
+	},
+	"subject": {
+		"email_change_token": {
+			"*": "メールアドレス変更用トークン発行"
+		},
+		"email_change_new": {
+			"*": "メールアドレス変更通知(新)"
+		},
+		"email_change_old": {
+			"*": "メールアドレス変更通知(旧)"
+		}
+	}
+}

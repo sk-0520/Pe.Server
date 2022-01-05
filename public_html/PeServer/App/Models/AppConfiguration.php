@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\App\Models;
 
 use \Error;
+use PeServer\Core\Configuration;
 use PeServer\Core\FileUtility;
 use PeServer\Core\Log\Logging;
 use PeServer\Core\Database\Database;
@@ -27,7 +28,7 @@ abstract class AppConfiguration
 	 *
 	 * @var array<mixed>
 	 */
-	public static $json;
+	public static $config;
 
 	/**
 	 * ルートディレクトリ。
@@ -43,32 +44,6 @@ abstract class AppConfiguration
 	public static $baseDirectoryPath;
 
 	/**
-	 * 設定データの値置き換え。
-	 *
-	 * @param array<mixed> $array
-	 * @param string $rootDirectoryPath
-	 * @param string $baseDirectoryPath
-	 * @param string $environment
-	 * @return array<mixed>
-	 */
-	private static function replaceArray(array $array, string $rootDirectoryPath, string $baseDirectoryPath, string $environment): array
-	{
-		foreach ($array as $key => $value) {
-			if (is_array($value)) {
-				$array[$key] = self::replaceArray($value, $rootDirectoryPath, $baseDirectoryPath, $environment);
-			} else if (is_string($value)) {
-				$array[$key] = StringUtility::replaceMap($value, [
-					'ROOT' => $rootDirectoryPath,
-					'BASE' => $baseDirectoryPath,
-					'ENV' => $environment
-				], '<|', '|>');
-			}
-		}
-
-		return $array;
-	}
-
-	/**
 	 * 設定ファイル読み込み。
 	 *
 	 * @param string $rootDirectoryPath
@@ -76,26 +51,25 @@ abstract class AppConfiguration
 	 * @param string $environment
 	 * @return array<mixed>
 	 */
-	private static function load(string $rootDirectoryPath, string $baseDirectoryPath, string $environment): array
+	private static function load(string $rootDirectoryPath, string $baseDirectoryPath, string $environment, string $fileName): array
 	{
 		$settingDirPath = FileUtility::joinPath($baseDirectoryPath, 'config');
 
-		$baseSettingFilePath = FileUtility::joinPath($settingDirPath, 'setting.json');
-		/** @var array<mixed> */
-		$baseSettingJson = FileUtility::readJsonFile($baseSettingFilePath);
+		$configuration = new Configuration($environment);
+		$setting = $configuration->load($settingDirPath, $fileName);
 
-		$json = array();
-
-		$envSettingFilePath = FileUtility::joinPath($settingDirPath, "setting.$environment.json");
-		if (file_exists($envSettingFilePath)) {
-			/** @var array<mixed> */
-			$envSettingJson = FileUtility::readJsonFile($envSettingFilePath);
-			$json = array_replace_recursive($baseSettingJson, $envSettingJson);
-		} else {
-			$json = $baseSettingJson;
-		}
-
-		return self::replaceArray($json, $rootDirectoryPath, $baseDirectoryPath, $environment);
+		return $configuration->replace(
+			$setting,
+			[
+				'ROOT' => $rootDirectoryPath,
+				'BASE' => $baseDirectoryPath,
+				'ENV' => $environment
+			],
+			[
+				'head' => '<|',
+				'tail' => '|>',
+			]
+		);
 	}
 
 	public static function initialize(string $rootDirectoryPath, string $baseDirectoryPath, string $environment, string $revision): void
@@ -105,14 +79,15 @@ abstract class AppConfiguration
 		}
 		self::$initializeChecker->initialize();
 
-		$json = self::load($rootDirectoryPath, $baseDirectoryPath, $environment);
+		$appConfig = self::load($rootDirectoryPath, $baseDirectoryPath, $environment, 'setting.json');
+		$i18nConfig = self::load($rootDirectoryPath, $baseDirectoryPath, $environment, 'i18n.json');
 
-		Logging::initialize($json['logging']);
+		Logging::initialize($appConfig['logging']);
 
 		Template::initialize($rootDirectoryPath, $baseDirectoryPath, 'App/Views', 'data/temp/views', $environment, $revision);
-		I18n::initialize($json['i18n']);
+		I18n::initialize($i18nConfig);
 
-		self::$json = $json;
+		self::$config = $appConfig;
 		self::$rootDirectoryPath = $rootDirectoryPath;
 		self::$baseDirectoryPath = $baseDirectoryPath;
 	}

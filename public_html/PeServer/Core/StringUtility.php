@@ -119,6 +119,17 @@ abstract class StringUtility
 		return $result;
 	}
 
+	public static function getLastPosition(string $haystack, string $needle, int $offset = 0): int
+	{
+		$result =  mb_strrpos($haystack, $needle, $offset);
+		if ($result === false) {
+			return -1;
+		}
+
+		return $result;
+	}
+
+
 	/**
 	 * 先頭文字列一致判定。
 	 *

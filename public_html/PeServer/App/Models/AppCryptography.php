@@ -17,7 +17,7 @@ abstract class AppCryptography
 	 */
 	public static function encrypt(string $data): string
 	{
-		$crypto = AppConfiguration::$json['crypto'];
+		$crypto = AppConfiguration::$config['crypto'];
 		return Cryptography::encrypt($data, $crypto['algorithm'], $crypto['password']);
 	}
 
@@ -29,7 +29,7 @@ abstract class AppCryptography
 	 */
 	public static function decrypt(string $data): string
 	{
-		$crypto = AppConfiguration::$json['crypto'];
+		$crypto = AppConfiguration::$config['crypto'];
 		return Cryptography::decrypt($data, $crypto['password']);
 	}
 
@@ -43,7 +43,7 @@ abstract class AppCryptography
 	 */
 	public static function toMark(string $data): int
 	{
-		$crypto = AppConfiguration::$json['crypto'];
+		$crypto = AppConfiguration::$config['crypto'];
 		$input = $data . $crypto['pepper'];
 
 		$binary = hash('fnv132', $input, true);
