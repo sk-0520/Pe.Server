@@ -12,6 +12,7 @@ use PeServer\Core\ArrayUtility;
 use PeServer\Core\StringUtility;
 use PeServer\Core\Throws\Throws;
 use PeServer\Core\Throws\SqlException;
+use PeServer\Core\Throws\DatabaseException;
 
 /**
  * DB接続処理。
@@ -168,7 +169,7 @@ class Database implements IDatabaseContext
 
 		$result = $query->fetchAll();
 		if ($result === false) {
-			throw new SqlException($this->getErrorMessage());
+			throw new DatabaseException($this->getErrorMessage());
 		}
 
 		return $result;
@@ -180,7 +181,7 @@ class Database implements IDatabaseContext
 
 		$result = $query->fetch();
 		if ($result === false) {
-			throw new SqlException($this->getErrorMessage());
+			throw new DatabaseException($this->getErrorMessage());
 		}
 
 		return $result;
@@ -204,12 +205,12 @@ class Database implements IDatabaseContext
 
 		$result = $query->fetch();
 		if ($result === false) {
-			throw new SqlException($this->getErrorMessage());
+			throw new DatabaseException($this->getErrorMessage());
 		}
 
 		$next = $query->fetch();
 		if ($next !== false) {
-			throw new SqlException($this->getErrorMessage());
+			throw new DatabaseException($this->getErrorMessage());
 		}
 
 		return $result;
@@ -226,7 +227,7 @@ class Database implements IDatabaseContext
 
 		$next = $query->fetch();
 		if ($next !== false) {
-			throw new SqlException($this->getErrorMessage());
+			throw new DatabaseException($this->getErrorMessage());
 		}
 
 		return $result;
@@ -251,13 +252,6 @@ class Database implements IDatabaseContext
 		return (int)current($result);
 	}
 
-	/**
-	 * Undocumented function
-	 *
-	 * @param string $statement
-	 * @param array<string|int,string|int|bool>|null $parameters
-	 * @return integer
-	 */
 	public function execute(string $statement, ?array $parameters = null): int
 	{
 		$query = $this->executeStatement($statement, $parameters);
@@ -291,7 +285,7 @@ class Database implements IDatabaseContext
 		$this->enforceInsert($statement);
 		$result = $this->execute($statement, $parameters);
 		if ($result !== 1) {
-			throw new SqlException();
+			throw new DatabaseException();
 		}
 	}
 

@@ -82,6 +82,7 @@ class PluginsEntityDao extends DaoBase
 	 */
 	public function selectPluginByUserId(string $userId): array
 	{
+		/** @var array<array{plugin_id:string,plugin_name:string,display_name:string,state:string}> */
 		return $this->context->selectOrdered(
 			<<<SQL
 

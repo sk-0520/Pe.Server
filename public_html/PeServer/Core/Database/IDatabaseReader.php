@@ -4,63 +4,79 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Database;
 
+use PeServer\Core\Throws\SqlException;
+use PeServer\Core\Throws\DatabaseException;
+
 interface IDatabaseReader
 {
 	/**
-	 * Undocumented function
+	 * 問い合わせを実行。
 	 *
 	 * @param string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @return array<array<string,mixed>>
+	 * @throws \PDOException
+	 * @throws DatabaseException
 	 */
 	public function query(string $statement, ?array $parameters = null): array;
 
 	/**
-	 * Undocumented function
+	 * 問い合わせの最初のデータを取得。
 	 *
 	 * @param string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @return array<string,mixed>
+	 * @throws \PDOException
+	 * @throws DatabaseException
 	 */
 	public function queryFirst(string $statement, ?array $parameters = null): array;
 
 	/**
-	 * Undocumented function
+	 * 問い合わせの最初のデータを取得。存在しない場合に $defaultValue を返す。
 	 *
 	 * @param string $statement
 	 * @param array<string,mixed>|null $defaultValue 戻り。
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @return array<string,mixed>|null
+	 * @throws \PDOException
+	 * @throws DatabaseException
 	 */
 	public function queryFirstOr(?array $defaultValue, string $statement, ?array $parameters = null): ?array;
 
 	/**
-	 * Undocumented function
+	 * 1件だけの問い合わせを実行。
 	 *
 	 * @param string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @return array<string,mixed>
+	 * @throws \PDOException
+	 * @throws DatabaseException
 	 */
 	public function querySingle(string $statement, ?array $parameters = null): array;
 
 	/**
-	 * Undocumented function
+	 * 1件だけの問い合わせを実行。存在しない場合に $defaultValue を返す
 	 *
 	 * @param string $statement
 	 * @param array<string,mixed>|null $defaultValue 戻り。
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @return array<string,mixed>|null
+	 * @throws \PDOException
+	 * @throws DatabaseException
 	 */
 	public function querySingleOr(?array $defaultValue, string $statement, ?array $parameters = null): ?array;
 
 	/**
-	 * 並ぶ順問い合わせ文を強制。
+	 * 並び順問い合わせ文を強制。
 	 *
 	 * 単純な文字列処理のため無理な時は無理。
 	 *
 	 * @param string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
-	 * @return mixed[]
+	 * @return array<array<string,mixed>>
+	 * @throws \PDOException
+	 * @throws DatabaseException
+	 * @throws SqlException 問い合わせ文の検証エラー
 	 */
 	public function selectOrdered(string $statement, ?array $parameters = null): array;
 
@@ -72,6 +88,9 @@ interface IDatabaseReader
 	 * @param string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @return integer
+	 * @throws \PDOException
+	 * @throws DatabaseException
+	 * @throws SqlException 問い合わせ文の検証エラー
 	 */
 	public function selectSingleCount(string $statement, ?array $parameters = null): int;
 }
