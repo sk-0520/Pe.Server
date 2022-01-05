@@ -7,21 +7,22 @@ namespace PeServer\App\Models;
 use PeServer\Core\Csrf;
 use PeServer\Core\Uuid;
 use PeServer\Core\Route;
-use PeServer\Core\Database\Database;
 use PeServer\Core\HttpMethod;
 use PeServer\Core\HttpStatus;
 use PeServer\Core\IMiddleware;
 use PeServer\Core\RouteSetting;
 use PeServer\Core\MiddlewareResult;
 use PeServer\App\Models\AppDatabase;
+use PeServer\Core\Database\Database;
 use PeServer\Core\Mvc\ActionRequest;
 use PeServer\Core\MiddlewareArgument;
 use PeServer\App\Models\SessionManager;
+use PeServer\Core\Mvc\Middleware\CsrfMiddleware;
 use PeServer\App\Controllers\Page\HomeController;
 use PeServer\App\Controllers\Page\AccountController;
 use PeServer\App\Controllers\Page\SettingController;
-use PeServer\App\Controllers\Api\DevelopmentController;
 use PeServer\App\Models\Dao\Entities\PluginsEntityDao;
+use PeServer\App\Controllers\Api\DevelopmentController;
 use PeServer\App\Models\Domains\Middleware\DevelopmentMiddleware;
 use PeServer\App\Models\Domains\Middleware\UserAccountFilterMiddleware;
 use PeServer\App\Models\Domains\Middleware\SetupAccountFilterMiddleware;
@@ -57,15 +58,15 @@ abstract class RouteConfiguration
 					->addAction('logout', HttpMethod::get())
 					->addAction('user', HttpMethod::get(), self::DEFAULT_METHOD, [UserAccountFilterMiddleware::class])
 					->addAction('user/edit', HttpMethod::get(), 'user_edit_get', [UserAccountFilterMiddleware::class])
-					->addAction('user/edit', HttpMethod::post(), 'user_edit_post', [UserAccountFilterMiddleware::class, Csrf::middleware()])
+					->addAction('user/edit', HttpMethod::post(), 'user_edit_post', [UserAccountFilterMiddleware::class, CsrfMiddleware::class])
 					->addAction('user/password', HttpMethod::get(), 'user_password_get', [UserAccountFilterMiddleware::class])
-					->addAction('user/password', HttpMethod::post(), 'user_password_post', [UserAccountFilterMiddleware::class, Csrf::middleware()])
+					->addAction('user/password', HttpMethod::post(), 'user_password_post', [UserAccountFilterMiddleware::class, CsrfMiddleware::class])
 					->addAction('user/email', HttpMethod::get(), 'user_email_get', [UserAccountFilterMiddleware::class])
-					->addAction('user/email', HttpMethod::post(), 'user_email_post', [UserAccountFilterMiddleware::class, Csrf::middleware()])
+					->addAction('user/email', HttpMethod::post(), 'user_email_post', [UserAccountFilterMiddleware::class, CsrfMiddleware::class])
 					->addAction('user/plugin', HttpMethod::get(), 'user_plugin_register_get', [UserAccountFilterMiddleware::class])
-					->addAction('user/plugin', HttpMethod::post(), 'user_plugin_register_post', [UserAccountFilterMiddleware::class, Csrf::middleware()])
+					->addAction('user/plugin', HttpMethod::post(), 'user_plugin_register_post', [UserAccountFilterMiddleware::class, CsrfMiddleware::class])
 					->addAction('user/plugin/:plugin_id@\{?[a-fA-F0-9\-]{32,}\}?', HttpMethod::get(), 'user_plugin_update_get', [UserAccountFilterMiddleware::class, UserPluginEditFilterMiddleware::class])
-					->addAction('user/plugin/:plugin_id@\{?[a-fA-F0-9\-]{32,}\}?', HttpMethod::post(), 'user_plugin_update_post', [UserAccountFilterMiddleware::class, Csrf::middleware(), UserPluginEditFilterMiddleware::class])
+					->addAction('user/plugin/:plugin_id@\{?[a-fA-F0-9\-]{32,}\}?', HttpMethod::post(), 'user_plugin_update_post', [UserAccountFilterMiddleware::class, CsrfMiddleware::class, UserPluginEditFilterMiddleware::class])
 				/* AUTO-FORMAT */,
 				(new Route('setting', SettingController::class, [AdministratorAccountFilterMiddleware::class]))
 					->addAction('setup', HttpMethod::get(), 'setup_get', [Route::CLEAR_MIDDLEWARE, SetupAccountFilterMiddleware::class])

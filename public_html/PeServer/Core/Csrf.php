@@ -31,32 +31,4 @@ abstract class Csrf
 
 		return $hash;
 	}
-
-	private static ?IMiddleware $middleware = null;
-	public static function middleware(): IMiddleware
-	{
-		return self::$middleware ??= new class extends Csrf implements IMiddleware
-		{
-			public function handle(MiddlewareArgument $argument): MiddlewareResult
-			{
-				$result = $argument->request->exists(self::REQUEST_KEY);
-				if (!$result['exists']) {
-					$argument->logger->warn('要求CSRFトークンなし');
-					return MiddlewareResult::error(HttpStatus::forbidden(), 'CSRF');
-				}
-
-				$requestToken = $argument->request->getValue(self::REQUEST_KEY);
-				if ($argument->session->tryGet(self::SESSION_KEY, $sessionToken)) {
-					if ($requestToken === $sessionToken) {
-						return MiddlewareResult::none();
-					}
-					$argument->logger->warn('CSRFトークン不一致');
-				} else {
-					$argument->logger->warn('セッションCSRFトークンなし');
-				}
-
-				return MiddlewareResult::error(HttpStatus::forbidden(), 'CSRF');
-			}
-		};
-	}
 }
