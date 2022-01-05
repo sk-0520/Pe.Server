@@ -2,19 +2,24 @@
 {block name='TITLE'}セットアップ{/block}
 {block name='BODY'}
 
-<span style="font-size: 200pt">💩</span>
-<hr />
-
 <ul>
 	{foreach from=$values.plugins item=item}
 		<li>
-			<a href="/plugins/{$item.plugin_id}">{$item.plugin_name}</a>
+			<a href="/plugins/{$item.plugin_id}">
+				{if $item.registered}
+					[あり]
+				{else}
+					[なし]
+				{/if}
+				{$item.plugin_name}
+			</a>
 		</li>
 	{/foreach}
 </ul>
 
 <form action="/setting/default-plugin" method="post">
-	<button>登録</button>
+	<label><input name="delete" type="checkbox" />削除</label>
+	<button>実行</button>
 </form>
 
 {/block}

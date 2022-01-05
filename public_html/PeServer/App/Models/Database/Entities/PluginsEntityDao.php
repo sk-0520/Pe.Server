@@ -229,4 +229,22 @@ class PluginsEntityDao extends DaoBase
 			]
 		);
 	}
+
+	public function deletePlugin(string $pluginId): void
+	{
+		$this->database->deleteByKey(
+			<<<SQL
+
+			delete
+			from
+				plugins
+			where
+				plugins.plugin_id = :plugin_id
+
+			SQL,
+			[
+				'plugin_id' => $pluginId,
+			]
+		);
+	}
 }

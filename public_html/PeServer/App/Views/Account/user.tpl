@@ -38,8 +38,8 @@
 		<ul>
 			{foreach from=$values.plugins item=item key=key name=name}
 				<li data-index={$key}>
-					<a href="/account/user/plugin/{$item.plugin_id}">
-						{$item.plugin_name}:{$item.display_name}
+					<a href="/account/user/plugin/{$item.plugin_id}" title="{$item.display_name}">
+						{$item.plugin_name}
 					</a>
 				</li>
 			{/foreach}
