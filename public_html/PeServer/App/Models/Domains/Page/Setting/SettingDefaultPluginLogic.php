@@ -6,13 +6,13 @@ namespace PeServer\App\Models\Domains\Page\Setting;
 
 use PeServer\Core\I18n;
 use PeServer\Core\Uuid;
-use PeServer\Core\Database;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Cryptography;
 use PeServer\Core\StringUtility;
 use PeServer\Core\TypeConverter;
 use PeServer\App\Models\AuditLog;
 use PeServer\Core\Mvc\Validations;
+use PeServer\Core\Database\Database;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\App\Models\SessionManager;
@@ -21,6 +21,7 @@ use PeServer\App\Models\AppDatabaseCache;
 use PeServer\App\Models\Domains\UserLevel;
 use PeServer\App\Models\Domains\UserState;
 use PeServer\App\Models\Domains\PluginState;
+use PeServer\Core\Database\IDatabaseContext;
 use PeServer\App\Models\Domains\PluginUrlKey;
 use PeServer\App\Models\Domains\PluginUtility;
 use PeServer\App\Models\Domains\AccountValidator;
@@ -124,10 +125,10 @@ class SettingDefaultPluginLogic extends PageLogicBase
 
 			if (ArrayUtility::getCount($params['plugins'])) {
 				$database = $this->openDatabase();
-				$database->transaction(function (Database $database, $params) {
+				$database->transaction(function (IDatabaseContext $context, $params) {
 
 					foreach ($params['plugins'] as $plugin) {
-						PluginUtility::removePlugin($database, $plugin['plugin_id']);
+						PluginUtility::removePlugin($context, $plugin['plugin_id']);
 						$this->addTemporaryMessage('削除: ' . $plugin['plugin_name']);
 					}
 
@@ -148,9 +149,9 @@ class SettingDefaultPluginLogic extends PageLogicBase
 
 			if (ArrayUtility::getCount($params['plugins'])) {
 				$database = $this->openDatabase();
-				$database->transaction(function (Database $database, $params) {
-					$pluginsEntityDao = new PluginsEntityDao($database);
-					$pluginUrlsEntityDao = new PluginUrlsEntityDao($database);
+				$database->transaction(function (IDatabaseContext $context, $params) {
+					$pluginsEntityDao = new PluginsEntityDao($context);
+					$pluginUrlsEntityDao = new PluginUrlsEntityDao($context);
 
 					foreach ($params['plugins'] as $plugin) {
 						$pluginsEntityDao->insertPlugin(

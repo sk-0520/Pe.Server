@@ -4,26 +4,27 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domains\Api\Development;
 
-use PeServer\Core\Uuid;
 use PeServer\Core\Mime;
-use \Deploy\ScriptArgument;
+use PeServer\Core\Uuid;
 use PeServer\Core\ILogger;
-use PeServer\Core\Database;
+use \Deploy\ScriptArgument;
 use PeServer\Core\Log\Logging;
+use PeServer\Core\Cryptography;
 use PeServer\Core\Mvc\LogicBase;
-use PeServer\Core\Mvc\ActionResponse;
 use PeServer\Core\HttpStatusCode;
-use PeServer\App\Models\Domains\UserLevel;
-use PeServer\App\Models\Domains\UserState;
+use PeServer\Core\Database\Database;
 use PeServer\Core\Mvc\LogicCallMode;
+use PeServer\Core\Mvc\ActionResponse;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\Throws\CoreException;
-use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\AppCryptography;
+use PeServer\App\Models\AppConfiguration;
+use PeServer\App\Models\Domains\UserLevel;
+use PeServer\App\Models\Domains\UserState;
+use PeServer\Core\Database\IDatabaseContext;
 use PeServer\App\Models\Domains\Api\ApiLogicBase;
 use PeServer\App\Models\Database\Entities\UsersEntityDao;
 use PeServer\App\Models\Database\Entities\UserAuthenticationsEntityDao;
-use PeServer\Core\Cryptography;
 
 class DevelopmentAdministratorLogic extends ApiLogicBase
 {
@@ -55,9 +56,9 @@ class DevelopmentAdministratorLogic extends ApiLogicBase
 
 		$database = $this->openDatabase();
 
-		$result = $database->transaction(function (Database $database, $params) {
-			$usersEntityDao = new UsersEntityDao($database);
-			$userAuthenticationsEntityDao = new UserAuthenticationsEntityDao($database);
+		$result = $database->transaction(function (IDatabaseContext $context, $params) {
+			$usersEntityDao = new UsersEntityDao($context);
+			$userAuthenticationsEntityDao = new UserAuthenticationsEntityDao($context);
 
 			$usersEntityDao->insertUser(
 				$params['user_id'],
@@ -77,7 +78,7 @@ class DevelopmentAdministratorLogic extends ApiLogicBase
 				$params['password']
 			);
 
-			$database->update("update users set state = :state where level = :level", [
+			$context->update("update users set state = :state where level = :level", [
 				'state' => UserState::DISABLED,
 				'level' => UserLevel::SETUP,
 			]);

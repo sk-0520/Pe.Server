@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Database\Entities;
 
-use PeServer\Core\DaoBase;
-use PeServer\Core\Database;
+use PeServer\Core\Database\DaoBase;
+use PeServer\Core\Database\IDatabaseContext;
 
 class UsersEntityDao extends DaoBase
 {
-	public function __construct(Database $database)
+	public function __construct(IDatabaseContext $context)
 	{
-		parent::__construct($database);
+		parent::__construct($context);
 	}
 
 	public function selectExistsSetupUser(): bool
 	{
-		return (bool)$this->database->selectSingleCount(
+		return (bool)$this->context->selectSingleCount(
 			<<<SQL
 
 			select
@@ -34,7 +34,7 @@ class UsersEntityDao extends DaoBase
 
 	public function selectExistsLoginId(string $loginId): bool
 	{
-		return (bool)$this->database->selectSingleCount(
+		return (bool)$this->context->selectSingleCount(
 			<<<SQL
 
 			select
@@ -60,7 +60,7 @@ class UsersEntityDao extends DaoBase
 	public function selectUserInfoData(string $userId): array
 	{
 		/** @var array{user_id:string,login_id:string,level:string,name:string,email:string,website:string} */
-		return $this->database->querySingle(
+		return $this->context->querySingle(
 			<<<SQL
 
 			select
@@ -91,7 +91,7 @@ class UsersEntityDao extends DaoBase
 	public function selectUserEditData(string $userId): array
 	{
 		/** @var array{name:string,website:string} */
-		return $this->database->querySingle(
+		return $this->context->querySingle(
 			<<<SQL
 
 			select
@@ -111,7 +111,7 @@ class UsersEntityDao extends DaoBase
 
 	public function selectEmail(string $userId): string
 	{
-		return $this->database->querySingle(
+		return $this->context->querySingle(
 			<<<SQL
 
 			select
@@ -130,7 +130,7 @@ class UsersEntityDao extends DaoBase
 
 	public function insertUser(string $userId, string $loginId, string $level, string $state, string $userName, string $email, int $mark_email, string $website, string $note): void
 	{
-		$this->database->insertSingle(
+		$this->context->insertSingle(
 			<<<SQL
 
 			insert into
@@ -176,7 +176,7 @@ class UsersEntityDao extends DaoBase
 
 	public function updateUserState(string $userId, string $state): void
 	{
-		$this->database->updateByKey(
+		$this->context->updateByKey(
 			<<<SQL
 
 			update
@@ -196,7 +196,7 @@ class UsersEntityDao extends DaoBase
 
 	public function updateUserSetting(string $userId, string $userName, string $website): void
 	{
-		$this->database->updateByKey(
+		$this->context->updateByKey(
 			<<<SQL
 
 			update

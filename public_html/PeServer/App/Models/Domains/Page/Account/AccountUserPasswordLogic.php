@@ -4,19 +4,20 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domains\Page\Account;
 
-use PeServer\Core\Database;
+use PeServer\Core\I18n;
 use PeServer\Core\ArrayUtility;
+use PeServer\Core\Cryptography;
 use PeServer\Core\StringUtility;
 use PeServer\App\Models\AuditLog;
-use PeServer\App\Models\Database\Entities\UserAuthenticationsEntityDao;
-use PeServer\App\Models\SessionManager;
+use PeServer\Core\Database\Database;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
+use PeServer\App\Models\SessionManager;
+use PeServer\Core\Database\IDatabaseContext;
 use PeServer\App\Models\Domains\AccountValidator;
 use PeServer\App\Models\Domains\Page\PageLogicBase;
 use PeServer\App\Models\Database\Entities\UsersEntityDao;
-use PeServer\Core\Cryptography;
-use PeServer\Core\I18n;
+use PeServer\App\Models\Database\Entities\UserAuthenticationsEntityDao;
 
 class AccountUserPasswordLogic extends PageLogicBase
 {
@@ -88,11 +89,11 @@ class AccountUserPasswordLogic extends PageLogicBase
 
 		$database = $this->openDatabase();
 
-		$database->transaction(function ($database, $params) {
-			$userAuthenticationsEntityDao = new UserAuthenticationsEntityDao($database);
+		$database->transaction(function (IDatabaseContext $context, $params) {
+			$userAuthenticationsEntityDao = new UserAuthenticationsEntityDao($context);
 			$userAuthenticationsEntityDao->updateCurrentPassword($params['user_id'], $params['password']);
 
-			$this->writeAuditLogCurrentUser(AuditLog::USER_PASSWORD_CHANGE, null, $database);
+			$this->writeAuditLogCurrentUser(AuditLog::USER_PASSWORD_CHANGE, null, $context);
 
 			return true;
 		}, $params);

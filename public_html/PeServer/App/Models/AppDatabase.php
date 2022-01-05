@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\App\Models;
 
 use PeServer\Core\ILogger;
-use PeServer\Core\Database;
+use PeServer\Core\Database\Database;
 use PeServer\Core\Log\Logging;
 
 class AppDatabase extends Database

@@ -7,7 +7,7 @@ namespace PeServer\App\Models;
 use PeServer\Core\Csrf;
 use PeServer\Core\Uuid;
 use PeServer\Core\Route;
-use PeServer\Core\Database;
+use PeServer\Core\Database\Database;
 use PeServer\Core\HttpMethod;
 use PeServer\Core\HttpStatus;
 use PeServer\Core\IMiddleware;

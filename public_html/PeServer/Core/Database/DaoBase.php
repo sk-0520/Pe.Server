@@ -2,15 +2,16 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core;
+namespace PeServer\Core\Database;
 
 use \PDO;
 use \PDOStatement;
 
-use PeServer\Core\Throws\SqlException;
-use PeServer\Core\Database;
 use PeServer\Core\ILogger;
 use PeServer\Core\Log\Logging;
+use PeServer\Core\Database\Database;
+use PeServer\Core\Throws\SqlException;
+use PeServer\Core\Database\IDatabaseContext;
 
 /**
  * DBアクセス基底処理。
@@ -26,16 +27,16 @@ abstract class DaoBase
 	/**
 	 * 接続処理。
 	 */
-	protected Database $database;
+	protected IDatabaseContext $context;
 
 	/**
 	 * 生成。
 	 *
-	 * @param Database $database 接続処理。
+	 * @param IDatabaseContext $context 接続処理。
 	 */
-	protected function __construct(Database $database)
+	protected function __construct(IDatabaseContext $context)
 	{
 		$this->logger = Logging::create(__CLASS__);
-		$this->database = $database;
+		$this->context = $context;
 	}
 }

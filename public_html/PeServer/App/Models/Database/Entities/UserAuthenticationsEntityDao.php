@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Database\Entities;
 
-use PeServer\Core\DaoBase;
-use PeServer\Core\Database;
+use PeServer\Core\Database\DaoBase;
+use PeServer\Core\Database\IDatabaseContext;
 
 class UserAuthenticationsEntityDao extends DaoBase
 {
-	public function __construct(Database $database)
+	public function __construct(IDatabaseContext $context)
 	{
-		parent::__construct($database);
+		parent::__construct($context);
 	}
 
 	/**
@@ -23,7 +23,7 @@ class UserAuthenticationsEntityDao extends DaoBase
 	public function selectPasswords(string $userId): array
 	{
 		/** @var array{generate_password:string,current_password:string} */
-		return $this->database->querySingle(
+		return $this->context->querySingle(
 			<<<SQL
 
 			select
@@ -43,7 +43,7 @@ class UserAuthenticationsEntityDao extends DaoBase
 
 	public function insertUserAuthentication(string $userId, string $generatePassword, string $currentPassword): void
 	{
-		$this->database->insertSingle(
+		$this->context->insertSingle(
 			<<<SQL
 
 			insert into
@@ -71,7 +71,7 @@ class UserAuthenticationsEntityDao extends DaoBase
 
 	public function updateCurrentPassword(string $userId, string $currentPassword): void
 	{
-		$this->database->updateByKey(
+		$this->context->updateByKey(
 			<<<SQL
 
 			update

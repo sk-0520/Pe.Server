@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domains\Page\Account;
 
-use PeServer\App\Models\AppDatabaseCache;
-use PeServer\Core\Database;
+use PeServer\Core\I18n;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\StringUtility;
 use PeServer\App\Models\AuditLog;
-use PeServer\App\Models\SessionManager;
+use PeServer\Core\Database\Database;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
+use PeServer\App\Models\SessionManager;
+use PeServer\App\Models\AppDatabaseCache;
+use PeServer\Core\Database\IDatabaseContext;
 use PeServer\App\Models\Domains\AccountValidator;
 use PeServer\App\Models\Domains\Page\PageLogicBase;
 use PeServer\App\Models\Database\Entities\UsersEntityDao;
-use PeServer\Core\I18n;
 
 class AccountUserEditLogic extends PageLogicBase
 {
@@ -89,8 +90,8 @@ class AccountUserEditLogic extends PageLogicBase
 
 		$database = $this->openDatabase();
 
-		$result = $database->transaction(function ($database, $params) {
-			$usersEntityDao = new UsersEntityDao($database);
+		$result = $database->transaction(function (IDatabaseContext $context, $params) {
+			$usersEntityDao = new UsersEntityDao($context);
 
 			// ユーザー情報更新
 			$usersEntityDao->updateUserSetting(
@@ -99,7 +100,7 @@ class AccountUserEditLogic extends PageLogicBase
 				$params['website']
 			);
 
-			$this->writeAuditLogCurrentUser(AuditLog::USER_EDIT, null, $database);
+			$this->writeAuditLogCurrentUser(AuditLog::USER_EDIT, null, $context);
 
 			return true;
 		}, $params);

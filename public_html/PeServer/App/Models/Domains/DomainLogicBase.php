@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Domains;
 
 use PeServer\Core\I18n;
-use PeServer\Core\Database;
+use PeServer\Core\Database\Database;
 use \Prophecy\Util\StringUtil;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Mvc\LogicBase;
@@ -17,6 +17,7 @@ use PeServer\App\Models\AppConfiguration;
 use PeServer\Core\Throws\NotImplementedException;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\App\Models\Database\Entities\UserAuditLogsEntityDao;
+use PeServer\Core\Database\IDatabaseContext;
 
 abstract class DomainLogicBase extends LogicBase
 {
@@ -65,10 +66,10 @@ abstract class DomainLogicBase extends LogicBase
 	 * @param string $userId
 	 * @param string $event
 	 * @param array<mixed>|null $info
-	 * @param Database|null $database
+	 * @param IDatabaseContext|null $context
 	 * @return integer
 	 */
-	private function writeAuditLogCore(string $userId, string $event, ?array $info, ?Database $database): int
+	private function writeAuditLogCore(string $userId, string $event, ?array $info, ?IDatabaseContext $context): int
 	{
 		/** @var string */
 		$ipAddress = ArrayUtility::getOr($_SERVER, 'REMOTE_ADDR', '');
@@ -82,7 +83,7 @@ abstract class DomainLogicBase extends LogicBase
 			}
 		}
 
-		$db = $database ?? $this->openDatabase();
+		$db = $context ?? $this->openDatabase();
 		$userAuditLogsEntityDao = new UserAuditLogsEntityDao($db);
 		$userAuditLogsEntityDao->insertLog($userId, $event, $dumpInfo, $ipAddress, $userAgent);
 		return $userAuditLogsEntityDao->selectLastLogId();
@@ -95,9 +96,10 @@ abstract class DomainLogicBase extends LogicBase
 	 *
 	 * @param string $event
 	 * @param array<mixed>|null $info
+	 * @param IDatabaseContext|null $context
 	 * @return int
 	 */
-	protected function writeAuditLogCurrentUser(string $event, ?array $info = null, ?Database $database = null): int
+	protected function writeAuditLogCurrentUser(string $event, ?array $info = null, ?IDatabaseContext $context = null): int
 	{
 		$userInfo = $this->getUserInfo();
 		if (!ArrayUtility::tryGet($userInfo, 'user_id', $userId)) {
@@ -107,7 +109,7 @@ abstract class DomainLogicBase extends LogicBase
 
 		$userId = $userInfo['user_id']; // @phpstan-ignore-line ArrayUtility::tryGet
 
-		return $this->writeAuditLogCore($userId, $event, $info, $database);
+		return $this->writeAuditLogCore($userId, $event, $info, $context);
 	}
 
 	/**
@@ -116,16 +118,16 @@ abstract class DomainLogicBase extends LogicBase
 	 * @param string $userId
 	 * @param string $event
 	 * @param array<mixed>|null $info
-	 * @param Database|null $database
+	 * @param IDatabaseContext|null $context
 	 * @return integer
 	 */
-	protected function writeAuditLogTargetUser(string $userId, string $event, ?array $info = null, ?Database $database = null): int
+	protected function writeAuditLogTargetUser(string $userId, string $event, ?array $info = null, ?IDatabaseContext $context = null): int
 	{
 		if (StringUtility::isNullOrWhiteSpace($userId)) {
 			$this->logger->error('監査ログ ユーザーID不正のため書き込み中止');
 			return -1;
 		}
 
-		return $this->writeAuditLogCore($userId, $event, $info, $database);
+		return $this->writeAuditLogCore($userId, $event, $info, $context);
 	}
 }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Domains\Page\Account;
 
 use PeServer\Core\I18n;
-use PeServer\Core\Database;
+use PeServer\Core\Database\Database;
 use PeServer\Core\StringUtility;
 use PeServer\App\Models\AuditLog;
 use PeServer\Core\Mvc\Validator;

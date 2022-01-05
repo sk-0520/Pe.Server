@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Database\Entities;
 
-use PeServer\Core\DaoBase;
-use PeServer\Core\Database;
+use PeServer\Core\Database\DaoBase;
+use PeServer\Core\Database\IDatabaseContext;
 
 class PluginsEntityDao extends DaoBase
 {
-	public function __construct(Database $database)
+	public function __construct(IDatabaseContext $context)
 	{
-		parent::__construct($database);
+		parent::__construct($context);
 	}
 
 	public function selectExistsPluginId(string $pluginId): bool
 	{
-		return 0 < $this->database->selectSingleCount(
+		return 0 < $this->context->selectSingleCount(
 			<<<SQL
 
 			select
@@ -35,7 +35,7 @@ class PluginsEntityDao extends DaoBase
 
 	public function selectExistsPluginName(string $pluginName): bool
 	{
-		return 0 < $this->database->selectSingleCount(
+		return 0 < $this->context->selectSingleCount(
 			<<<SQL
 
 			select
@@ -54,7 +54,7 @@ class PluginsEntityDao extends DaoBase
 
 	public function selectIsUserPlugin(string $pluginId, string $userId): bool
 	{
-		return 1 === $this->database->selectSingleCount(
+		return 1 === $this->context->selectSingleCount(
 			<<<SQL
 
 			select
@@ -82,7 +82,7 @@ class PluginsEntityDao extends DaoBase
 	 */
 	public function selectPluginByUserId(string $userId): array
 	{
-		return $this->database->selectOrdered(
+		return $this->context->selectOrdered(
 			<<<SQL
 
 			select
@@ -118,7 +118,7 @@ class PluginsEntityDao extends DaoBase
 	public function selectPluginIds(string $pluginId): array
 	{
 		/** @var array{plugin_id:string,plugin_name:string,state:string} */
-		return $this->database->querySingle(
+		return $this->context->querySingle(
 			<<<SQL
 
 			select
@@ -146,7 +146,7 @@ class PluginsEntityDao extends DaoBase
 	public function selectEditPlugin(string $pluginId): array
 	{
 		/** @var array{plugin_name:string,display_name:string,description:string} */
-		return $this->database->querySingle(
+		return $this->context->querySingle(
 			<<<SQL
 
 			select
@@ -167,7 +167,7 @@ class PluginsEntityDao extends DaoBase
 
 	public function insertPlugin(string $pluginId, string $userId, string $pluginName, string $displayName, string $state, string $description, string $note): void
 	{
-		$this->database->insertSingle(
+		$this->context->insertSingle(
 			<<<SQL
 
 			insert into
@@ -207,7 +207,7 @@ class PluginsEntityDao extends DaoBase
 
 	public function updateEditPlugin(string $pluginId, string $userId, string $displayName, string $description): void
 	{
-		$this->database->updateByKey(
+		$this->context->updateByKey(
 			<<<SQL
 
 			update
@@ -232,7 +232,7 @@ class PluginsEntityDao extends DaoBase
 
 	public function deletePlugin(string $pluginId): void
 	{
-		$this->database->deleteByKey(
+		$this->context->deleteByKey(
 			<<<SQL
 
 			delete

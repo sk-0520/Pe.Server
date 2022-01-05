@@ -13,3 +13,5 @@ parameters:
     - ../public_html/PeServer/Libs/smarty/libs/sysplugins/smarty_internal_data.php
     - ../public_html/PeServer/Libs/PHPMailer/src/PHPMailer.php
     - ../public_html/PeServer/Libs/PHPMailer/src/SMTP.php
+  ignoreErrors:
+    - '/Parameter #1 \$callback of method PeServer\\Core\\Database\\Database::transaction\(\) expects callable\(PeServer\\Core\\Database\\IDatabaseContext, ...mixed\): bool,\s*Closure\(PeServer\\Core\\Database\\IDatabaseContext(.+)\): bool given\./'

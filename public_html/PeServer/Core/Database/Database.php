@@ -2,18 +2,21 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core;
+namespace PeServer\Core\Database;
 
 use \PDO;
 use \PDOStatement;
+use PeServer\Core\ILogger;
 use PeServer\Core\Log\Logging;
-use PeServer\Core\Throws\SqlException;
+use PeServer\Core\ArrayUtility;
+use PeServer\Core\StringUtility;
 use PeServer\Core\Throws\Throws;
+use PeServer\Core\Throws\SqlException;
 
 /**
  * DB接続処理。
  */
-class Database
+class Database implements IDatabaseContext
 {
 	/**
 	 * 接続処理。
@@ -51,17 +54,16 @@ class Database
 		return StringUtility::dump($this->pdo->errorInfo());
 	}
 
-
 	/**
 	 * バインド実行。
 	 *
 	 * @param PDOStatement $statement
-	 * @param array<string|int,string|int> $parameters
+	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @return void
 	 */
-	private function setParameters(PDOStatement $statement, array $parameters): void
+	private function setParameters(PDOStatement $statement, ?array $parameters): void
 	{
-		if (ArrayUtility::getCount($parameters)) {
+		if (!is_null($parameters)) {
 			foreach ($parameters as $key => $value) {
 				$statement->bindValue($key, $value);
 			}
@@ -72,11 +74,11 @@ class Database
 	 * 文を実行。
 	 *
 	 * @param string $statement
-	 * @param array<string|int,string|int> $parameters
+	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @return PDOStatement
 	 * @throws SqlException 実行失敗。
 	 */
-	private function executeStatement(string $statement, array $parameters): PDOStatement
+	private function executeStatement(string $statement, ?array $parameters): PDOStatement
 	{
 		$query = $this->pdo->prepare($statement);
 
@@ -134,7 +136,7 @@ class Database
 	/**
 	 * トランザクションラップ処理。
 	 *
-	 * @param callable $callback 実際の処理。戻り値が真の場合にコミット、偽ならロールバック。
+	 * @param callable(IDatabaseContext $context,mixed ...$arguments): bool $callback 実際の処理。戻り値が真の場合にコミット、偽ならロールバック。
 	 * @param mixed ...$arguments 引数
 	 * @return bool コミットされたか。正常系としてのコミット・ロールバック処理の戻りであり、異常系は例外が投げられる。
 	 * @throws SqlException
@@ -160,14 +162,7 @@ class Database
 		return false;
 	}
 
-	/**
-	 * Undocumented function
-	 *
-	 * @param string $statement
-	 * @param array<string|int,string|int> $parameters
-	 * @return mixed[]
-	 */
-	public function query(string $statement, array $parameters = array()): array
+	public function query(string $statement, ?array $parameters = null): array
 	{
 		$query = $this->executeStatement($statement, $parameters);
 
@@ -179,14 +174,7 @@ class Database
 		return $result;
 	}
 
-	/**
-	 * Undocumented function
-	 *
-	 * @param string $statement
-	 * @param array<string|int,string|int> $parameters
-	 * @return array<string,mixed>
-	 */
-	public function queryFirst(string $statement, array $parameters = array()): array
+	public function queryFirst(string $statement, ?array $parameters = null): array
 	{
 		$query = $this->executeStatement($statement, $parameters);
 
@@ -198,15 +186,7 @@ class Database
 		return $result;
 	}
 
-	/**
-	 * Undocumented function
-	 *
-	 * @param string $statement
-	 * @param array<string,mixed>|mixed $defaultValue 戻り。
-	 * @param array<string|int,string|int> $parameters
-	 * @return array<string,mixed>|mixed
-	 */
-	public function queryFirstOr($defaultValue, string $statement, array $parameters = array())
+	public function queryFirstOr(?array $defaultValue, string $statement, ?array $parameters = null): ?array
 	{
 		$query = $this->executeStatement($statement, $parameters);
 
@@ -218,14 +198,7 @@ class Database
 		return $result;
 	}
 
-	/**
-	 * Undocumented function
-	 *
-	 * @param string $statement
-	 * @param array<string|int,string|int> $parameters
-	 * @return array<string,mixed>
-	 */
-	public function querySingle(string $statement, array $parameters = array()): array
+	public function querySingle(string $statement, ?array $parameters = null): array
 	{
 		$query = $this->executeStatement($statement, $parameters);
 
@@ -242,15 +215,7 @@ class Database
 		return $result;
 	}
 
-	/**
-	 * Undocumented function
-	 *
-	 * @param string $statement
-	 * @param array<string,mixed>|mixed $defaultValue 戻り。
-	 * @param array<string|int,string|int> $parameters
-	 * @return array<string,mixed>|mixed
-	 */
-	public function querySingleOr($defaultValue, string $statement, array $parameters = array())
+	public function querySingleOr(?array $defaultValue, string $statement, ?array $parameters = null): ?array
 	{
 		$query = $this->executeStatement($statement, $parameters);
 
@@ -267,30 +232,7 @@ class Database
 		return $result;
 	}
 
-	/**
-	 * Undocumented function
-	 *
-	 * @param string $statement
-	 * @param array<string|int,string|int> $parameters
-	 * @return integer
-	 */
-	public function execute(string $statement, array $parameters = array()): int
-	{
-		$query = $this->executeStatement($statement, $parameters);
-
-		return $query->rowCount();
-	}
-
-	/**
-	 * 並ぶ順問い合わせ文を強制。
-	 *
-	 * 単純な文字列処理のため無理な時は無理。
-	 *
-	 * @param string $statement
-	 * @param array<string|int,string|int> $parameters
-	 * @return mixed[]
-	 */
-	public function selectOrdered(string $statement, array $parameters = array()): array
+	public function selectOrdered(string $statement, ?array $parameters = null): array
 	{
 		if (!preg_match('/\\border\\s+by\\b/i', $statement)) {
 			throw new SqlException();
@@ -299,16 +241,7 @@ class Database
 		return $this->query($statement, $parameters);
 	}
 
-	/**
-	 * 単一 COUNT 関数問い合わせ文を強制。
-	 *
-	 * 単純な文字列処理のため無理な時は無理。
-	 *
-	 * @param string $statement
-	 * @param array<string|int,string|int> $parameters
-	 * @return integer
-	 */
-	public function selectSingleCount(string $statement, array $parameters = array()): int
+	public function selectSingleCount(string $statement, ?array $parameters = null): int
 	{
 		if (!preg_match('/\\bselect\\s+count\\s*\\(/i', $statement)) {
 			throw new SqlException();
@@ -316,6 +249,20 @@ class Database
 
 		$result = $this->queryFirst($statement, $parameters);
 		return (int)current($result);
+	}
+
+	/**
+	 * Undocumented function
+	 *
+	 * @param string $statement
+	 * @param array<string|int,string|int|bool>|null $parameters
+	 * @return integer
+	 */
+	public function execute(string $statement, ?array $parameters = null): int
+	{
+		$query = $this->executeStatement($statement, $parameters);
+
+		return $query->rowCount();
 	}
 
 	/**
@@ -333,27 +280,13 @@ class Database
 		}
 	}
 
-	/**
-	 * Undocumented function
-	 *
-	 * @param string $statement
-	 * @param array<string|int,string|int> $parameters
-	 * @return integer
-	 */
-	public function insert(string $statement, array $parameters = array()): int
+	public function insert(string $statement, ?array $parameters = null): int
 	{
 		$this->enforceInsert($statement);
 		return $this->execute($statement, $parameters);
 	}
 
-	/**
-	 * Undocumented function
-	 *
-	 * @param string $statement
-	 * @param array<string|int,string|int> $parameters
-	 * @return void
-	 */
-	public function insertSingle(string $statement, array $parameters = array()): void
+	public function insertSingle(string $statement, ?array $parameters = null): void
 	{
 		$this->enforceInsert($statement);
 		$result = $this->execute($statement, $parameters);
@@ -377,27 +310,13 @@ class Database
 		}
 	}
 
-	/**
-	 * Undocumented function
-	 *
-	 * @param string $statement
-	 * @param array<string|int,string|int> $parameters
-	 * @return integer
-	 */
-	public function update(string $statement, array $parameters = array()): int
+	public function update(string $statement, ?array $parameters = null): int
 	{
 		$this->enforceUpdate($statement);
 		return $this->execute($statement, $parameters);
 	}
 
-	/**
-	 * Undocumented function
-	 *
-	 * @param string $statement
-	 * @param array<string|int,string|int> $parameters
-	 * @return void
-	 */
-	public function updateByKey(string $statement, array $parameters = array()): void
+	public function updateByKey(string $statement, ?array $parameters = null): void
 	{
 		$this->enforceUpdate($statement);
 		$result = $this->execute($statement, $parameters);
@@ -405,14 +324,8 @@ class Database
 			throw new SqlException();
 		}
 	}
-	/**
-	 * Undocumented function
-	 *
-	 * @param string $statement
-	 * @param array<string|int,string|int> $parameters
-	 * @return boolean
-	 */
-	public function updateByKeyOrNothing(string $statement, array $parameters = array()): bool
+
+	public function updateByKeyOrNothing(string $statement, ?array $parameters = null): bool
 	{
 		$this->enforceUpdate($statement);
 		$result = $this->execute($statement, $parameters);
@@ -438,27 +351,13 @@ class Database
 		}
 	}
 
-	/**
-	 * Undocumented function
-	 *
-	 * @param string $statement
-	 * @param array<string|int,string|int> $parameters
-	 * @return integer
-	 */
-	public function delete(string $statement, array $parameters = array()): int
+	public function delete(string $statement, ?array $parameters = null): int
 	{
 		$this->enforceDelete($statement);
 		return $this->execute($statement, $parameters);
 	}
 
-	/**
-	 * Undocumented function
-	 *
-	 * @param string $statement
-	 * @param array<string|int,string|int> $parameters
-	 * @return void
-	 */
-	public function deleteByKey(string $statement, array $parameters = array()): void
+	public function deleteByKey(string $statement, ?array $parameters = null): void
 	{
 		$this->enforceDelete($statement);
 		$result = $this->execute($statement, $parameters);
@@ -466,14 +365,8 @@ class Database
 			throw new SqlException();
 		}
 	}
-	/**
-	 * Undocumented function
-	 *
-	 * @param string $statement
-	 * @param array<string|int,string|int> $parameters
-	 * @return boolean
-	 */
-	public function deleteByKeyOrNothing(string $statement, array $parameters = array()): bool
+
+	public function deleteByKeyOrNothing(string $statement, ?array $parameters = null): bool
 	{
 		$this->enforceDelete($statement);
 		$result = $this->execute($statement, $parameters);

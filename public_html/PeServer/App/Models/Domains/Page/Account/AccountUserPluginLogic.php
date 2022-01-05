@@ -4,23 +4,24 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domains\Page\Account;
 
-use PeServer\App\Models\AppDatabaseCache;
+use PeServer\Core\I18n;
+use PeServer\Core\Uuid;
+use PeServer\Core\HttpStatus;
+use PeServer\Core\ArrayUtility;
 use PeServer\App\Models\AuditLog;
-use PeServer\App\Models\Database\Entities\PluginsEntityDao;
-use PeServer\App\Models\Database\Entities\PluginUrlsEntityDao;
+use PeServer\Core\Database\Database;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
-use PeServer\App\Models\Domains\Page\PageLogicBase;
+use PeServer\App\Models\AppDatabaseCache;
 use PeServer\App\Models\Domains\PluginState;
+use PeServer\Core\Database\IDatabaseContext;
 use PeServer\App\Models\Domains\PluginUrlKey;
-use PeServer\App\Models\Domains\PluginValidator;
-use PeServer\Core\ArrayUtility;
-use PeServer\Core\Database;
-use PeServer\Core\HttpStatus;
-use PeServer\Core\I18n;
 use PeServer\Core\Throws\HttpStatusException;
+use PeServer\App\Models\Domains\PluginValidator;
+use PeServer\App\Models\Domains\Page\PageLogicBase;
 use PeServer\Core\Throws\InvalidOperationException;
-use PeServer\Core\Uuid;
+use PeServer\App\Models\Database\Entities\PluginsEntityDao;
+use PeServer\App\Models\Database\Entities\PluginUrlsEntityDao;
 
 class AccountUserPluginLogic extends PageLogicBase
 {
@@ -182,9 +183,9 @@ class AccountUserPluginLogic extends PageLogicBase
 		}
 
 		$database = $this->openDatabase();
-		$database->transaction(function (Database $database, $params) {
-			$pluginsEntityDao = new PluginsEntityDao($database);
-			$pluginUrlsEntityDao = new PluginUrlsEntityDao($database);
+		$database->transaction(function (IDatabaseContext $context, $params) {
+			$pluginsEntityDao = new PluginsEntityDao($context);
+			$pluginUrlsEntityDao = new PluginUrlsEntityDao($context);
 
 			if ($this->isRegister) {
 				$pluginsEntityDao->insertPlugin(
@@ -211,9 +212,9 @@ class AccountUserPluginLogic extends PageLogicBase
 			}
 
 			if ($this->isRegister) {
-				$this->writeAuditLogCurrentUser(AuditLog::USER_PLUGIN_REGISTER, ['plugin_id' => $params['plugin_id'], 'plugin_name' => $params['plugin_name']], $database);
+				$this->writeAuditLogCurrentUser(AuditLog::USER_PLUGIN_REGISTER, ['plugin_id' => $params['plugin_id'], 'plugin_name' => $params['plugin_name']], $context);
 			} else {
-				$this->writeAuditLogCurrentUser(AuditLog::USER_PLUGIN_UPDATE, ['plugin_id' => $params['plugin_id']], $database);
+				$this->writeAuditLogCurrentUser(AuditLog::USER_PLUGIN_UPDATE, ['plugin_id' => $params['plugin_id']], $context);
 			}
 
 			return true;

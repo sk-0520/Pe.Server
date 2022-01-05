@@ -7,7 +7,7 @@ namespace PeServer\App\Models;
 use \Error;
 use PeServer\Core\FileUtility;
 use PeServer\Core\Log\Logging;
-use PeServer\Core\Database;
+use PeServer\Core\Database\Database;
 use PeServer\Core\I18n;
 use PeServer\Core\InitializeChecker;
 use PeServer\Core\Mvc\Template;

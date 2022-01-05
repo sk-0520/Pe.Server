@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Domains;
 
 use PeServer\App\Models\Database\Entities\UsersEntityDao;
-use PeServer\Core\Database;
+use PeServer\Core\Database\Database;
+use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\I18n;
 use PeServer\Core\TrueKeeper;
 use PeServer\Core\Mvc\Validator;
@@ -70,9 +71,9 @@ class AccountValidator extends ValidatorBase
 		return false;
 	}
 
-	public function isFreeLoginId(Database $database, string $key, string $loginId): bool
+	public function isFreeLoginId(IDatabaseContext $context, string $key, string $loginId): bool
 	{
-		$usersEntityDao = new UsersEntityDao($database);
+		$usersEntityDao = new UsersEntityDao($context);
 
 		if ($usersEntityDao->selectExistsLoginId($loginId)) {
 			$this->receiver->receiveErrorMessage($key, I18n::message('error/unusable_login_id'));

@@ -6,7 +6,7 @@ namespace PeServer\App\Models\Domains\Page\Account;
 
 use PeServer\App\Models\AppCryptography;
 use PeServer\Core\I18n;
-use PeServer\Core\Database;
+use PeServer\Core\Database\Database;
 use PeServer\Core\StringUtility;
 use PeServer\App\Models\AuditLog;
 use PeServer\Core\Mvc\Validator;

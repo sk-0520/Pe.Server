@@ -7,7 +7,7 @@ namespace PeServer\App\Models\Domains\Page\Setting;
 use PeServer\App\Models\AppCryptography;
 use PeServer\Core\Uuid;
 use PeServer\Core\I18n;
-use PeServer\Core\Database;
+use PeServer\Core\Database\Database;
 use PeServer\Core\StringUtility;
 use PeServer\App\Models\AuditLog;
 use PeServer\App\Models\Domains\UserLevel;
@@ -20,6 +20,7 @@ use PeServer\App\Models\Domains\Page\PageLogicBase;
 use PeServer\App\Models\Database\Entities\UsersEntityDao;
 use PeServer\App\Models\Database\Entities\UserAuthenticationsEntityDao;
 use PeServer\Core\Cryptography;
+use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\Throws\InvalidOperationException;
 
 class SettingSetupLogic extends PageLogicBase
@@ -102,7 +103,7 @@ class SettingSetupLogic extends PageLogicBase
 
 		$database = $this->openDatabase();
 
-		$result = $database->transaction(function ($database, $currentUserInfo, $params, $userInfo) {
+		$result = $database->transaction(function (IDatabaseContext $database, $currentUserInfo, $params, $userInfo) {
 			$accountValidator = new AccountValidator($this, $this->validator);
 
 			if (!$accountValidator->isFreeLoginId($database, 'setting_setup_login_id', $params['login_id'])) {

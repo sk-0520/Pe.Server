@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Database\Entities;
 
-use PeServer\Core\DaoBase;
-use PeServer\Core\Database;
+use PeServer\Core\Database\DaoBase;
+use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\TypeConverter;
 
 class UserAuditLogsEntityDao extends DaoBase
 {
-	public function __construct(Database $database)
+	public function __construct(IDatabaseContext $context)
 	{
-		parent::__construct($database);
+		parent::__construct($context);
 	}
 
 	public function insertLog(string $userId, string $event, string $info, string $ipAddress, string $userAgent): void
 	{
-		$this->database->insertSingle(
+		$this->context->insertSingle(
 			<<<SQL
 
 			insert into
@@ -53,7 +53,7 @@ class UserAuditLogsEntityDao extends DaoBase
 
 	public function selectLastLogId(): int
 	{
-		$result = $this->database->queryFirst(
+		$result = $this->context->queryFirst(
 			<<<SQL
 
 			select

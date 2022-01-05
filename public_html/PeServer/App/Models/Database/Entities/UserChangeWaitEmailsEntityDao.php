@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Database\Entities;
 
-use PeServer\Core\DaoBase;
-use PeServer\Core\Database;
+use PeServer\Core\Database\DaoBase;
+use PeServer\Core\Database\IDatabaseContext;
 
 class UserChangeWaitEmailsEntityDao extends DaoBase
 {
-	public function __construct(Database $database)
+	public function __construct(IDatabaseContext $context)
 	{
-		parent::__construct($database);
+		parent::__construct($context);
 	}
 
 	public function selectExistsToken(string $userId, string $token, int $limitMinutes): bool
 	{
-		return 0 < $this->database->selectSingleCount(
+		return 0 < $this->context->selectSingleCount(
 			<<<SQL
 
 			select
@@ -41,7 +41,7 @@ class UserChangeWaitEmailsEntityDao extends DaoBase
 
 	public function insertWaitEmails(string $userId, string $email, int $markEmail, string $token): void
 	{
-		$this->database->insertSingle(
+		$this->context->insertSingle(
 			<<<SQL
 
 			insert into
@@ -74,7 +74,7 @@ class UserChangeWaitEmailsEntityDao extends DaoBase
 
 	public function deleteByUserId(string $userId): bool
 	{
-		return $this->database->deleteByKeyOrNothing(
+		return $this->context->deleteByKeyOrNothing(
 			<<<SQL
 
 			delete

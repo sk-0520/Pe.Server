@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Database\Domains;
 
-use PeServer\Core\DaoBase;
-use PeServer\Core\Database;
+use PeServer\Core\Database\DaoBase;
+use PeServer\Core\Database\IDatabaseContext;
 
 class UserDomainDao extends DaoBase
 {
-	public function __construct(Database $database)
+	public function __construct(IDatabaseContext $context)
 	{
-		parent::__construct($database);
+		parent::__construct($context);
 	}
 
 	/**
@@ -20,9 +20,10 @@ class UserDomainDao extends DaoBase
 	 * @param string $loginId
 	 * @return array{user_id:string,login_id:string,name:string,level:string,state:string,generate_password:string,current_password:string}|null
 	 */
-	public function selectLoginUser(string $loginId)
+	public function selectLoginUser(string $loginId): ?array
 	{
-		return $this->database->querySingleOr(
+		/** @var array{user_id:string,login_id:string,name:string,level:string,state:string,generate_password:string,current_password:string}|null */
+		return $this->context->querySingleOr(
 			null,
 			<<<SQL
 
@@ -65,7 +66,7 @@ class UserDomainDao extends DaoBase
 	public function selectEmailAndWaitTokenTimestamp(string $userId, int $limitMinutes): array
 	{
 		/** @var array{email:string,wait_email:string,token_timestamp_utc:string} */
-		return $this->database->querySingle(
+		return $this->context->querySingle(
 			<<<SQL
 
 			select
@@ -95,7 +96,7 @@ class UserDomainDao extends DaoBase
 
 	public function updateEmailFromWaitEmail(string $userId, string $token): bool
 	{
-		return $this->database->updateByKeyOrNothing(
+		return $this->context->updateByKeyOrNothing(
 			<<<SQL
 
 			update

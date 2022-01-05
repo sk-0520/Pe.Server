@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Database\Entities;
 
-use PeServer\Core\DaoBase;
-use PeServer\Core\Database;
+use PeServer\Core\Database\DaoBase;
+use PeServer\Core\Database\IDatabaseContext;
 
 class PluginUrlsEntityDao extends DaoBase
 {
-	public function __construct(Database $database)
+	public function __construct(IDatabaseContext $context)
 	{
-		parent::__construct($database);
+		parent::__construct($context);
 	}
 
 	/**
@@ -22,7 +22,7 @@ class PluginUrlsEntityDao extends DaoBase
 	 */
 	public function selectUrls(string $pluginId): array
 	{
-		$results = $this->database->query(
+		$results = $this->context->query(
 			<<<SQL
 
 			select
@@ -51,7 +51,7 @@ class PluginUrlsEntityDao extends DaoBase
 
 	public function insertUrl(string $pluginId, string $key, string $url): void
 	{
-		$this->database->insertSingle(
+		$this->context->insertSingle(
 			<<<SQL
 
 			insert into
@@ -79,7 +79,7 @@ class PluginUrlsEntityDao extends DaoBase
 
 	public function deleteByPluginId(string $pluginId): int
 	{
-		return $this->database->delete(
+		return $this->context->delete(
 			<<<SQL
 
 			delete

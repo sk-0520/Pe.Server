@@ -5,20 +5,21 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Domains\Page\Account;
 
 use PeServer\Core\I18n;
-use PeServer\Core\Database;
 use PeServer\Core\HttpStatus;
 use PeServer\Core\Mvc\Template;
 use PeServer\Core\Mvc\Validator;
 use PeServer\Core\StringUtility;
 use PeServer\App\Models\AuditLog;
 use PeServer\App\Models\AppMailer;
+use PeServer\App\Models\AppTemplate;
+use PeServer\Core\Database\Database;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\App\Models\SessionManager;
+use PeServer\App\Models\AppCryptography;
 use PeServer\Core\Mvc\TemplateParameter;
 use PeServer\App\Models\AppConfiguration;
-use PeServer\App\Models\AppCryptography;
-use PeServer\App\Models\AppTemplate;
+use PeServer\Core\Database\IDatabaseContext;
 use PeServer\App\Models\Domains\AccountValidator;
 use PeServer\Core\Throws\NotImplementedException;
 use PeServer\App\Models\Domains\Page\PageLogicBase;
@@ -139,13 +140,13 @@ class AccountUserEmailLogic extends PageLogicBase
 
 		$database = $this->openDatabase();
 
-		$database->transaction(function (Database $database, array $params) {
-			$userChangeWaitEmailsEntityDao = new UserChangeWaitEmailsEntityDao($database);
+		$database->transaction(function (IDatabaseContext $context, array $params) {
+			$userChangeWaitEmailsEntityDao = new UserChangeWaitEmailsEntityDao($context);
 
 			$userChangeWaitEmailsEntityDao->deleteByUserId($params['user_id']);
 			$userChangeWaitEmailsEntityDao->insertWaitEmails($params['user_id'], $params['email'], $params['mark_email'], $params['token']);
 
-			$this->writeAuditLogCurrentUser(AuditLog::USER_EMAIL_CHANGING, ['token' => $params['token']], $database);
+			$this->writeAuditLogCurrentUser(AuditLog::USER_EMAIL_CHANGING, ['token' => $params['token']], $context);
 
 			return true;
 		}, $params);
@@ -181,9 +182,9 @@ class AccountUserEmailLogic extends PageLogicBase
 		];
 
 		$database = $this->openDatabase();
-		$result = $database->transaction(function (Database $database, array $params) {
-			$userDomainDao = new UserDomainDao($database);
-			$userChangeWaitEmailsEntityDao = new UserChangeWaitEmailsEntityDao($database);
+		$result = $database->transaction(function (IDatabaseContext $context, array $params) {
+			$userDomainDao = new UserDomainDao($context);
+			$userChangeWaitEmailsEntityDao = new UserChangeWaitEmailsEntityDao($context);
 
 			$existsToken = $userChangeWaitEmailsEntityDao->selectExistsToken(
 				$params['user_id'],
@@ -206,7 +207,7 @@ class AccountUserEmailLogic extends PageLogicBase
 
 			$userChangeWaitEmailsEntityDao->deleteByUserId($params['user_id']);
 
-			$this->writeAuditLogCurrentUser(AuditLog::USER_EMAIL_CHANGED, ['token' => $params['token']], $database);
+			$this->writeAuditLogCurrentUser(AuditLog::USER_EMAIL_CHANGED, ['token' => $params['token']], $context);
 
 			return true;
 		}, $params);
