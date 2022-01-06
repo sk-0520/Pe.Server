@@ -8,6 +8,9 @@ use PeServer\Core\Throws\ArgumentException;
 
 class Configuration
 {
+	public const FILE_TYPE_DEFAULT = '';
+	public const FILE_TYPE_JSON = 'json';
+
 	private string $environment;
 
 	public function __construct(string $environment)
@@ -29,19 +32,27 @@ class Configuration
 	 *
 	 * @param string $directoryPath
 	 * @param string $fileName
+	 * @param string $fileType ファイル種別。未指定(FILE_TYPE_DEFAULT)の場合はファイル拡張子から判断する
 	 * @return array<mixed>
 	 */
-	public function load(string $directoryPath, string $fileName): array
+	public function load(string $directoryPath, string $fileName, string $fileType = self::FILE_TYPE_DEFAULT): array
 	{
 		$baseFileExtension = FileUtility::getFileExtension($fileName, false);
 
-		$baseFilePath = FileUtility::joinPath($directoryPath, $fileName);
-		$environmentFilePath = FileUtility::joinPath($directoryPath, $this->getEnvironmentFileName($fileName));
-
+		$confType = $fileType;
+		if ($fileType === self::FILE_TYPE_DEFAULT) {
+			$confType = match (StringUtility::toLower($baseFileExtension)) {
+				'json' => self::FILE_TYPE_JSON,
+				default => self::FILE_TYPE_DEFAULT,
+			};
+		}
 		// とりあえずは JSON だけ相手にする
-		if (StringUtility::toLower($baseFileExtension) !== 'json') {
+		if ($confType !== self::FILE_TYPE_JSON) {
 			throw new ArgumentException('$fileName');
 		}
+
+		$baseFilePath = FileUtility::joinPath($directoryPath, $fileName);
+		$environmentFilePath = FileUtility::joinPath($directoryPath, $this->getEnvironmentFileName($fileName));
 
 		/** @var array<mixed> */
 		$configuration = array();
