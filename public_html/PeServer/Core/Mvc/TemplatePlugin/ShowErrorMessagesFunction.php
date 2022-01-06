@@ -10,6 +10,7 @@ use PeServer\Core\Csrf;
 use PeServer\Core\I18n;
 use \Smarty_Internal_Template;
 use PeServer\Core\ArrayUtility;
+use PeServer\Core\HtmlDocument;
 use PeServer\Core\Mvc\Validator;
 use PeServer\Core\Throws\CoreException;
 use PeServer\Core\Mvc\TemplatePlugin\TemplateFunctionBase;
@@ -34,13 +35,12 @@ class ShowErrorMessagesFunction extends TemplateFunctionBase
 
 	protected function functionBodyImpl(): string
 	{
-		// @phpstan-ignore-next-line
-		if (!isset($this->smarty->tpl_vars['errors'])) {
+		if (!$this->existsError()) {
 			return '';
 		}
 
-		/** @var array<string,string[]> */
-		$errors = $this->smarty->tpl_vars['errors']->value;
+		$errors = $this->getErrors();
+
 		if (ArrayUtility::isNullOrEmpty($errors)) {
 			return '';
 		}
@@ -64,7 +64,7 @@ class ShowErrorMessagesFunction extends TemplateFunctionBase
 			}
 		}
 
-		$dom = new DOMDocument();
+		$dom = new HtmlDocument();
 
 		$ulElement = $dom->createElement('ul');
 		$ulElement->setAttribute('class', implode(' ', $classes));
@@ -75,39 +75,27 @@ class ShowErrorMessagesFunction extends TemplateFunctionBase
 			}
 
 			foreach ($values as $value) {
-				$liElement = $dom->createElement('li');
+				$liElement = $ulElement->addElement('li');
 				$liElement->setAttribute('class', 'error');
 
-				$messageElement = $dom->createTextNode($value);
-
-				$liElement->appendChild($messageElement);
-
-				$ulElement->appendChild($liElement);
+				$messageElement = $liElement->addText($value);
 			}
 		}
 
 		if ($targetKey === Validator::COMMON) {
-			$commonElement = $dom->createElement('div');
+			$commonElement = $dom->addElement('div');
 			$commonElement->setAttribute('class', 'common error');
-			$dom->appendChild($commonElement);
 
-			$messageElement = $dom->createElement('p');
-			$messageElement->appendChild($dom->createTextNode(I18n::message(I18n::COMMON_ERROR_TITLE)));
-			$commonElement->appendChild($messageElement);
-			if ($ulElement->childElementCount) {
+			$messageElement = $commonElement->addElement('p');
+			$messageElement->addText(I18n::message(I18n::COMMON_ERROR_TITLE));
+
+			if ($ulElement->raw->childElementCount) {
 				$commonElement->appendChild($ulElement);
 			}
-
-			$dom->appendChild($commonElement);
 		} else {
 			$dom->appendChild($ulElement);
 		}
 
-		$result = $dom->saveHTML();
-		if ($result === false) {
-			throw new CoreException();
-		}
-
-		return $result;
+		return $dom->build();
 	}
 }

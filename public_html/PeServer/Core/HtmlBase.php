@@ -29,6 +29,25 @@ abstract class HtmlBase
 		$this->current = $current;
 	}
 
+	public function createElement(string $tagName): HtmlElement
+	{
+		$element = $this->document->raw->createElement($tagName);
+		if ($element === false) { // @phpstan-ignore-line
+			throw new HtmlDocumentException();
+		}
+
+		return new HtmlElement($this->document, $element);
+	}
+
+	public function appendChild(HtmlElement|DOMNode $node)
+	{
+		if ($node instanceof HtmlElement) {
+			$node = $node->raw;
+		}
+
+		$this->current->appendChild($node);
+	}
+
 	/**
 	 * HTML要素を作って追加する。
 	 *
@@ -37,13 +56,10 @@ abstract class HtmlBase
 	 */
 	public function addElement(string $tagName): HtmlElement
 	{
-		$element = $this->document->raw->createElement($tagName);
-		if ($element === false) { // @phpstan-ignore-line
-			throw new HtmlDocumentException();
-		}
+		$element = $this->createElement($tagName);
 
-		$this->current->appendChild($element);
-		return new HtmlElement($this->document, $element);
+		$this->appendChild($element);
+		return $element;
 	}
 
 	public function addComment(string $comment): DOMComment
@@ -53,7 +69,7 @@ abstract class HtmlBase
 			throw new HtmlDocumentException();
 		}
 
-		$this->current->appendChild($node);
+		$this->appendChild($node);
 
 		return $node;
 	}
@@ -65,7 +81,7 @@ abstract class HtmlBase
 			throw new HtmlDocumentException();
 		}
 
-		$this->current->appendChild($node);
+		$this->appendChild($node);
 
 		return $node;
 	}
