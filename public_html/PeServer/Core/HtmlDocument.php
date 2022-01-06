@@ -33,6 +33,8 @@ class HtmlDocument extends HtmlBase
 
 	public function build(): string
 	{
+		$this->raw->normalize();
+
 		$html = $this->raw->saveHTML();
 		if ($html === false) {
 			throw new HtmlDocumentException();

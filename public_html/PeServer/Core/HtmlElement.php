@@ -26,8 +26,26 @@ class HtmlElement extends HtmlBase
 		$this->raw = $raw;
 	}
 
-	public function setAttribute(string $qualifiedName, string $value): void
+	/**
+	 * 属性設定
+	 *
+	 * @param string $qualifiedName
+	 * @param string|boolean $value 文字列の場合はそのまま設定。真偽値の場合、真であれば属性名の設定、偽であれば属性の削除
+	 * @return void
+	 */
+	public function setAttribute(string $qualifiedName, string|bool $value): void
 	{
+		if (is_bool($value)) {
+			if ($value) {
+				$value = '';
+			} else {
+				if ($this->raw->hasAttribute($qualifiedName)) {
+					$this->raw->removeAttribute($qualifiedName);
+				}
+				return;
+			}
+		}
+
 		$result = $this->raw->setAttribute($qualifiedName, $value);
 		if ($result === false) { // @phpstan-ignore-line
 			throw new HtmlDocumentException();
