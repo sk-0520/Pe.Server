@@ -24,21 +24,15 @@ class TemplatePluginArgument
 	public string $baseDirectoryPath;
 
 	/**
-	 * 環境情報。
-	 */
-	public string $environment;
-
-	/**
 	 * キャッシュバスター用のあれ。
 	 */
 	public string $revision;
 
-	public function __construct(Smarty $engine, string $rootDirectoryPath, string $baseDirectoryPath, string $environment, string $revision)
+	public function __construct(Smarty $engine, string $rootDirectoryPath, string $baseDirectoryPath, string $revision)
 	{
 		$this->engine = $engine;
 		$this->rootDirectoryPath = $rootDirectoryPath;
 		$this->baseDirectoryPath = $baseDirectoryPath;
-		$this->environment = $environment;
 		$this->revision = $revision;
 	}
 }

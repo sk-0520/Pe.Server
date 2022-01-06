@@ -84,7 +84,7 @@ abstract class AppConfiguration
 
 		Logging::initialize($appConfig['logging']);
 
-		Template::initialize($rootDirectoryPath, $baseDirectoryPath, 'App/Views', 'data/temp/views', $environment, $revision);
+		Template::initialize($rootDirectoryPath, $baseDirectoryPath, 'App/Views', 'data/temp/views', $revision);
 		I18n::initialize($i18nConfig);
 
 		self::$config = $appConfig;

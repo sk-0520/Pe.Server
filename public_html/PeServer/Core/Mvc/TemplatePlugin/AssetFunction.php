@@ -11,6 +11,7 @@ use PeServer\Core\Csrf;
 use \Smarty_Internal_Template;
 use PeServer\Core\FileUtility;
 use PeServer\Core\ArrayUtility;
+use PeServer\Core\Environment;
 use PeServer\Core\StringUtility;
 use PeServer\Core\TypeConverter;
 use PeServer\Core\Throws\CoreException;
@@ -48,7 +49,7 @@ class AssetFunction extends TemplateFunctionBase
 			return '';
 		}
 
-		$isProduction = $this->argument->environment === 'production';
+		$isProduction = Environment::isProduction();
 
 		$extension = StringUtility::toLower(pathinfo($sourcePath, PATHINFO_EXTENSION));
 

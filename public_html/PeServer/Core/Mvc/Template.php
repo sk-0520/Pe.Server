@@ -72,20 +72,13 @@ abstract class Template
 	private static string $temporaryBaseName;
 
 	/**
-	 * Undocumented variable
-	 *
-	 * @var string
-	 */
-	protected static $environment;
-
-	/**
 	 * キャッシュバスター用のあれ。
 	 *
 	 * @var string
 	 */
 	protected static $revision;
 
-	public static function initialize(string $rootDirectoryPath, string $baseDirectoryPath, string $templateBaseName, string $temporaryBaseName, string $environment, string $revision): void
+	public static function initialize(string $rootDirectoryPath, string $baseDirectoryPath, string $templateBaseName, string $temporaryBaseName, string $revision): void
 	{
 		if (is_null(self::$initializeChecker)) {
 			self::$initializeChecker = new InitializeChecker();
@@ -96,7 +89,6 @@ abstract class Template
 		self::$baseDirectoryPath = $baseDirectoryPath;
 		self::$templateBaseName = $templateBaseName;
 		self::$temporaryBaseName = $temporaryBaseName;
-		self::$environment = $environment;
 		self::$revision = $revision;
 	}
 
@@ -178,7 +170,6 @@ class _Template_Impl extends Template
 			$this->engine,
 			self::$rootDirectoryPath,
 			self::$baseDirectoryPath,
-			self::$environment,
 			self::$revision
 		);
 		$showErrorMessagesFunction = new ShowErrorMessagesFunction($argument);
