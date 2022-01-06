@@ -24,7 +24,7 @@ abstract class TemplatePluginBase
 	 * @param Smarty_Internal_Template $smarty
 	 * @return boolean
 	 */
-	protected function existsError(Smarty_Internal_Template $smarty): bool
+	protected function existsSmartyError(Smarty_Internal_Template $smarty): bool
 	{
 		// @phpstan-ignore-next-line
 		if (!isset($smarty->tpl_vars['errors'])) {
@@ -45,9 +45,9 @@ abstract class TemplatePluginBase
 	 * @param Smarty_Internal_Template $smarty
 	 * @return array<string,string[]>
 	 */
-	protected function getErrors(Smarty_Internal_Template $smarty): array
+	protected function getSmartyErrors(Smarty_Internal_Template $smarty): array
 	{
-		if ($this->existsError($smarty)) {
+		if ($this->existsSmartyError($smarty)) {
 			// @phpstan-ignore-next-line
 			return $smarty->tpl_vars['errors']->value;
 		}

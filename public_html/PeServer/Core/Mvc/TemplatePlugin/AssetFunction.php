@@ -56,7 +56,8 @@ class AssetFunction extends TemplateFunctionBase
 
 		$isProduction = Environment::isProduction();
 
-		$extension = StringUtility::toLower(pathinfo($sourcePath, PATHINFO_EXTENSION));
+		$fileExtension = FileUtility::getFileExtension($sourcePath);
+		$extension = StringUtility::toLower($fileExtension);
 
 		$ignoreAsset =
 			StringUtility::startsWith($sourcePath, '//', false)
@@ -73,7 +74,7 @@ class AssetFunction extends TemplateFunctionBase
 				$dir = FileUtility::getDirectoryPath($sourcePath);
 				$file = FileUtility::getFileNameWithoutExtension($sourcePath);
 
-				$resourcePath = $dir . '/' . $file . '.min.' . $extension;
+				$resourcePath = $dir . '/' . $file . '.min.' . $fileExtension;
 			}
 
 			$resourcePath .= '?' . Environment::getRevision();

@@ -34,4 +34,18 @@ abstract class TemplateFunctionBase extends TemplatePluginBase implements ITempl
 
 		return $this->functionBodyImpl();
 	}
+
+	protected function existsError(): bool
+	{
+		return $this->existsSmartyError($this->smarty);
+	}
+	/**
+	 * Undocumented function
+	 *
+	 * @return array<string,string[]>
+	 */
+	protected function getErrors(): array
+	{
+		return $this->getSmartyErrors($this->smarty);
+	}
 }
