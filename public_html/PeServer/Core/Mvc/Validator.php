@@ -35,7 +35,7 @@ class Validator
 	public function isNotEmpty(string $key, ?string $value): bool
 	{
 		if (StringUtility::isNullOrEmpty($value)) {
-			$this->receiver->receiveErrorKind($key, self::KIND_EMPTY, ['value' => $value]);
+			$this->receiver->receiveErrorKind($key, self::KIND_EMPTY, ['VALUE' => $value]);
 			return false;
 		}
 
@@ -45,7 +45,7 @@ class Validator
 	public function isNotWhiteSpace(string $key, ?string $value): bool
 	{
 		if (StringUtility::isNullOrWhiteSpace($value)) {
-			$this->receiver->receiveErrorKind($key, self::KIND_WHITE_SPACE, ['value' => $value]);
+			$this->receiver->receiveErrorKind($key, self::KIND_WHITE_SPACE, ['VALUE' => $value]);
 			return false;
 		}
 
@@ -56,7 +56,7 @@ class Validator
 	public function inLength(string $key, int $length, string $value): bool
 	{
 		if ($length < mb_strlen($value)) {
-			$this->receiver->receiveErrorKind($key, self::KIND_LENGTH, ['value' => $value, 'safe-length' => $length, 'error-length' => mb_strlen($value)]);
+			$this->receiver->receiveErrorKind($key, self::KIND_LENGTH, ['VALUE' => $value, 'SAFE_LENGTH' => $length, 'ERROR_LENGTH' => mb_strlen($value)]);
 			return false;
 		}
 
@@ -67,7 +67,7 @@ class Validator
 	{
 		$length = mb_strlen($value);
 		if ($length < $min || $max < $length) {
-			$this->receiver->receiveErrorKind($key, self::KIND_RANGE, ['value' => $value, 'min' => $min, 'max' => $max, 'error-length' => mb_strlen($value)]);
+			$this->receiver->receiveErrorKind($key, self::KIND_RANGE, ['VALUE' => $value, 'RANGE_MIN' => $min, 'RANGE_MAX' => $max, 'ERROR_LENGTH' => mb_strlen($value)]);
 			return false;
 		}
 
@@ -77,7 +77,7 @@ class Validator
 	public function isMatch(string $key, string $pattern, string $value): bool
 	{
 		if (!Regex::isMatch($value, $pattern)) {
-			$this->receiver->receiveErrorKind($key, self::KIND_MATCH, ['value' => $value, 'pattern' => $pattern]);
+			$this->receiver->receiveErrorKind($key, self::KIND_MATCH, ['VALUE' => $value, 'PATTERN' => $pattern]);
 			return false;
 		}
 
@@ -99,7 +99,7 @@ class Validator
 			return true;
 		}
 
-		$this->receiver->receiveErrorKind($key, self::KIND_EMAIL, ['value' => $value]);
+		$this->receiver->receiveErrorKind($key, self::KIND_EMAIL, ['VALUE' => $value]);
 
 		return false;
 	}
@@ -112,7 +112,7 @@ class Validator
 			}
 		}
 
-		$this->receiver->receiveErrorKind($key, self::KIND_WEBSITE, ['value' => $value]);
+		$this->receiver->receiveErrorKind($key, self::KIND_WEBSITE, ['VALUE' => $value]);
 
 		return false;
 	}
