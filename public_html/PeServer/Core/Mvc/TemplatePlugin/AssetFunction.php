@@ -71,7 +71,7 @@ class AssetFunction extends TemplateFunctionBase
 				$resourcePath = $dir . '/' . $file . '.min.' . $extension;
 			}
 
-			$resourcePath .= '?' . $this->argument->revision;
+			$resourcePath .= '?' . Environment::getRevision();
 		}
 
 		$dom = new HtmlDocument();

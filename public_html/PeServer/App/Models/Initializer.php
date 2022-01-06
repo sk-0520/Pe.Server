@@ -25,7 +25,7 @@ abstract class Initializer
 		}
 		self::$initializeChecker->initialize();
 
-		CoreInitializer::initialize($environment);
-		AppConfiguration::initialize($rootDirectoryPath, $baseDirectoryPath, Environment::get(), $revision);
+		CoreInitializer::initialize($environment, $revision);
+		AppConfiguration::initialize($rootDirectoryPath, $baseDirectoryPath);
 	}
 }

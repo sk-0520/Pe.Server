@@ -71,14 +71,7 @@ abstract class Template
 	 */
 	private static string $temporaryBaseName;
 
-	/**
-	 * キャッシュバスター用のあれ。
-	 *
-	 * @var string
-	 */
-	protected static $revision;
-
-	public static function initialize(string $rootDirectoryPath, string $baseDirectoryPath, string $templateBaseName, string $temporaryBaseName, string $revision): void
+	public static function initialize(string $rootDirectoryPath, string $baseDirectoryPath, string $templateBaseName, string $temporaryBaseName): void
 	{
 		if (is_null(self::$initializeChecker)) {
 			self::$initializeChecker = new InitializeChecker();
@@ -89,7 +82,6 @@ abstract class Template
 		self::$baseDirectoryPath = $baseDirectoryPath;
 		self::$templateBaseName = $templateBaseName;
 		self::$temporaryBaseName = $temporaryBaseName;
-		self::$revision = $revision;
 	}
 
 	public static function create(string $baseName, string $templateBaseName = '', string $temporaryBaseName = ''): Template
@@ -169,8 +161,7 @@ class _Template_Impl extends Template
 		$argument = new TemplatePluginArgument(
 			$this->engine,
 			self::$rootDirectoryPath,
-			self::$baseDirectoryPath,
-			self::$revision
+			self::$baseDirectoryPath
 		);
 		$showErrorMessagesFunction = new ShowErrorMessagesFunction($argument);
 		/** @var array<string,ITemplateFunction> */

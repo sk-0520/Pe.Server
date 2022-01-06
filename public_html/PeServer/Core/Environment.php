@@ -6,6 +6,9 @@ namespace PeServer\Core;
 
 use PeServer\Core\Throws\CoreError;
 
+/**
+ * 環境情報。
+ */
 abstract class Environment
 {
 	/**
@@ -16,8 +19,9 @@ abstract class Environment
 	private static $initializeChecker;
 
 	private static string $environment = '';
+	private static string $revision = '';
 
-	public static function initialize(string $environment): void
+	public static function initialize(string $environment, string $revision): void
 	{
 		if (is_null(self::$initializeChecker)) {
 			self::$initializeChecker = new InitializeChecker();
@@ -25,6 +29,7 @@ abstract class Environment
 		self::$initializeChecker->initialize();
 
 		self::$environment = $environment;
+		self::$revision = $revision;
 	}
 
 	public static function get(): string
@@ -52,5 +57,10 @@ abstract class Environment
 	public static function isTest(): bool
 	{
 		return self::is('test');
+	}
+
+	public static function getRevision(): string
+	{
+		return self::$revision;
 	}
 }

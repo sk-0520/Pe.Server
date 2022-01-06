@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
+/**
+ * ライブラリ初期化処理。
+ */
 abstract class CoreInitializer
 {
 	/**
@@ -13,7 +16,13 @@ abstract class CoreInitializer
 	 */
 	private static $initializeChecker;
 
-	public static function initialize(string $environment): void
+	/**
+	 * 初期化処理。
+	 *
+	 * @param string $environment
+	 * @return void
+	 */
+	public static function initialize(string $environment, string $revision): void
 	{
 		if (is_null(self::$initializeChecker)) {
 			self::$initializeChecker = new InitializeChecker();
@@ -23,7 +32,7 @@ abstract class CoreInitializer
 		mb_language('ja');
 		mb_internal_encoding('UTF-8');
 
-		Environment::initialize($environment);
+		Environment::initialize($environment, $revision);
 
 		if(!Environment::isTest()) {
 			(new ErrorHandler())->register();

@@ -23,16 +23,10 @@ class TemplatePluginArgument
 	 */
 	public string $baseDirectoryPath;
 
-	/**
-	 * キャッシュバスター用のあれ。
-	 */
-	public string $revision;
-
-	public function __construct(Smarty $engine, string $rootDirectoryPath, string $baseDirectoryPath, string $revision)
+	public function __construct(Smarty $engine, string $rootDirectoryPath, string $baseDirectoryPath)
 	{
 		$this->engine = $engine;
 		$this->rootDirectoryPath = $rootDirectoryPath;
 		$this->baseDirectoryPath = $baseDirectoryPath;
-		$this->revision = $revision;
 	}
 }

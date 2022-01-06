@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace PeServer\App\Models;
 
 use \Error;
-use PeServer\Core\Configuration;
+use PeServer\Core\I18n;
+use PeServer\Core\Environment;
 use PeServer\Core\FileUtility;
 use PeServer\Core\Log\Logging;
-use PeServer\Core\Database\Database;
-use PeServer\Core\I18n;
-use PeServer\Core\InitializeChecker;
 use PeServer\Core\Mvc\Template;
+use PeServer\Core\Configuration;
 use PeServer\Core\StringUtility;
+use PeServer\Core\Database\Database;
+use PeServer\Core\InitializeChecker;
 
 abstract class AppConfiguration
 {
@@ -70,19 +71,19 @@ abstract class AppConfiguration
 		);
 	}
 
-	public static function initialize(string $rootDirectoryPath, string $baseDirectoryPath, string $environment, string $revision): void
+	public static function initialize(string $rootDirectoryPath, string $baseDirectoryPath): void
 	{
 		if (is_null(self::$initializeChecker)) {
 			self::$initializeChecker = new InitializeChecker();
 		}
 		self::$initializeChecker->initialize();
 
-		$appConfig = self::load($rootDirectoryPath, $baseDirectoryPath, $environment, 'setting.json');
-		$i18nConfig = self::load($rootDirectoryPath, $baseDirectoryPath, $environment, 'i18n.json');
+		$appConfig = self::load($rootDirectoryPath, $baseDirectoryPath, Environment::get(), 'setting.json');
+		$i18nConfig = self::load($rootDirectoryPath, $baseDirectoryPath, Environment::get(), 'i18n.json');
 
 		Logging::initialize($appConfig['logging']);
 
-		Template::initialize($rootDirectoryPath, $baseDirectoryPath, 'App/Views', 'data/temp/views', $revision);
+		Template::initialize($rootDirectoryPath, $baseDirectoryPath, 'App/Views', 'data/temp/views');
 		I18n::initialize($i18nConfig);
 
 		self::$config = $appConfig;
