@@ -10,6 +10,8 @@ use \DOMDocument;
 use PeServer\Core\Csrf;
 use \Smarty_Internal_Template;
 use PeServer\Core\ArrayUtility;
+use PeServer\Core\HtmlDocument;
+use PeServer\Core\HtmlElement;
 use PeServer\Core\StringUtility;
 use PeServer\Core\TypeConverter;
 use PeServer\Core\Throws\InvalidOperationException;
@@ -43,6 +45,46 @@ class InputHelperFunction extends TemplateFunctionBase
 		return 'input_helper';
 	}
 
+	/**
+	 * Undocumented function
+	 *
+	 * @param HtmlDocument $dom
+	 * @param string|string[]|bool|int $targetValue
+	 * @return HtmlElement
+	 */
+	private function addMainElement(HtmlDocument $dom, mixed $targetValue): HtmlElement
+	{
+		$type = ArrayUtility::getOr($this->params, 'type', '');
+
+		switch ($type) {
+			case 'textarea': {
+					$element = $dom->addElement('textarea');
+					$element->addText(strval($targetValue));
+					return $element;
+				}
+
+			default: {
+					$element = $dom->addElement('input');
+					if (!StringUtility::isNullOrWhiteSpace($type)) {
+						$element->setAttribute('type', $type);
+					}
+					$element->setAttribute('value', strval($targetValue));
+					return $element;
+				}
+		}
+	}
+
+	private function setElementAttribute(HtmlElement $element, string $name, string $value): void
+	{
+		$booleanAttrs = ['readonly', 'disabled', 'checked', 'selected'];
+		if (ArrayUtility::contains($booleanAttrs, $name)) {
+			$b = TypeConverter::parseBoolean($value);
+			$element->setAttribute($name, $b);
+		} else {
+			$element->setAttribute($name, $value);
+		}
+	}
+
 	protected function functionBodyImpl(): string
 	{
 		$targetKey = $this->params['key']; // 必須
@@ -57,11 +99,7 @@ class InputHelperFunction extends TemplateFunctionBase
 			}
 		}
 
-		$dom = new DOMDocument();
-		/** @var DOMElement|false */
-		$element = false;
-
-		/** @var string,string|string[]|bool|int */
+		/** @var string|string[]|bool|int */
 		$targetValue = '';
 		if ($this->existsValues()) {
 			$values = $this->getValues();
@@ -70,56 +108,27 @@ class InputHelperFunction extends TemplateFunctionBase
 			}
 		}
 
-		switch ($this->params['type']) {
-			case 'textarea': {
-					$element = $dom->createElement('textarea');
+		$dom = new HtmlDocument();
+		$element = $this->addMainElement($dom, $targetValue);
 
-					$text = $dom->createTextNode($targetValue);
-					$element->appendChild($text);
-				}
-				break;
-
-			default: {
-					$element = $dom->createElement('input');
-					$element->setAttribute('type', $this->params['type']);
-					$element->setAttribute('value', $targetValue);
-				}
-				break;
-		}
-		// @phpstan-ignore-next-line
-		if (!$element) {
-			throw new InvalidOperationException();
-		}
-		$dom->appendChild($element);
-
+		$element->setAttribute('id', $targetKey);
 		$element->setAttribute('name', $targetKey);
-		$ignoreKeys = ['key', 'type', 'value'];
+
+		$ignoreKeys = ['key', 'type', 'value']; // idは渡されたものを優先
 		foreach ($this->params as $key => $value) {
-			if (array_search($key, $ignoreKeys) !== false) {
+			if (ArrayUtility::contains($ignoreKeys, $key)) {
 				continue;
 			}
-			$booleanAttrs = ['readonly', 'disabled'];
-			if (ArrayUtility::contains($booleanAttrs, $key)) {
-				if (TypeConverter::parseBoolean($value)) {
-					$element->setAttribute($key, '');
-				}
-				continue;
-			}
-			$element->setAttribute($key, $value);
+			$this->setElementAttribute($element, $key, $value);
 		}
+
 		if ($hasError) {
-			$className = $element->getAttribute('class');
-			if (StringUtility::isNullOrEmpty($className)) {
-				$className = 'error';
-			} else {
-				$className .= ' error';
-			}
-			$element->setAttribute('class', $className);
+			$element->addClass('error');
 		}
 
 		if ($showAutoError) {
-			return $dom->saveHTML() . $this->showErrorMessagesFunction->functionBody(['key' => $targetKey], $this->smarty);
+			return $dom->build() . $this->showErrorMessagesFunction->functionBody(['key' => $targetKey], $this->smarty);
 		}
-		return $dom->saveHTML(); // @phpstan-ignore-line
+		return $dom->build();
 	}
 }
