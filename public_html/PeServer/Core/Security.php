@@ -8,11 +8,11 @@ use PeServer\Core\MiddlewareArgument;
 use PeServer\Core\Throws\SessionException;
 
 
-abstract class Csrf
+abstract class Security
 {
-	public const SESSION_KEY = 'core__csrf';
-	public const REQUEST_KEY = 'core__csrf';
-	private const HASH_ALGORITHM = 'sha256';
+	public const CSRF_SESSION_KEY = 'core__csrf';
+	public const CSRF_REQUEST_KEY = 'core__csrf';
+	private const CSRF_HASH_ALGORITHM = 'sha256';
 
 	/**
 	 * CSRFトークンを取得。
@@ -20,14 +20,14 @@ abstract class Csrf
 	 * @return string
 	 * @throws SessionException セッションID取得失敗。
 	 */
-	public static function generateToken(): string
+	public static function generateCsrfToken(): string
 	{
 		$sessionId = session_id();
 		if ($sessionId === false) {
 			throw new SessionException('セッションID取得失敗');
 		}
 
-		$hash = hash(self::HASH_ALGORITHM, $sessionId);
+		$hash = hash(self::CSRF_HASH_ALGORITHM, $sessionId);
 
 		return $hash;
 	}

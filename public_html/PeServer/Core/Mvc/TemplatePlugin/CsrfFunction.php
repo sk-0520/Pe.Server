@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc\TemplatePlugin;
 
 use \Smarty;
-use \Smarty_Internal_Template;
 use \DOMDocument;
-use PeServer\Core\Csrf;
+use PeServer\Core\Security;
 use PeServer\Core\HtmlDocument;
 use PeServer\Core\Mvc\TemplatePlugin\TemplateFunctionBase;
 
@@ -26,18 +25,18 @@ class CsrfFunction extends TemplateFunctionBase
 	protected function functionBodyImpl(): string
 	{
 		// このタイミングではセッション処理完了を期待している
-		if (!isset($_SESSION[Csrf::SESSION_KEY])) {
+		if (!isset($_SESSION[Security::CSRF_SESSION_KEY])) {
 			return '';
 		}
 
-		$csrfToken = $_SESSION[Csrf::SESSION_KEY];
+		$csrfToken = $_SESSION[Security::CSRF_SESSION_KEY];
 
 		$dom = new HtmlDocument();
 
 		$element = $dom->addElement('input');
 
 		$element->setAttribute('type', 'hidden');
-		$element->setAttribute('name', Csrf::REQUEST_KEY);
+		$element->setAttribute('name', Security::CSRF_REQUEST_KEY);
 		$element->setAttribute('value', $csrfToken);
 
 		return $dom->build();

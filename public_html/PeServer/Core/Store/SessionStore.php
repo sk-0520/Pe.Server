@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Store;
 
-use PeServer\Core\Csrf;
+use PeServer\Core\Security;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\FileUtility;
 use PeServer\Core\StringUtility;
@@ -106,9 +106,9 @@ class SessionStore
 		session_start();
 
 		// セッションにCSRFトークンが存在しない場合は生成
-		if (!ArrayUtility::tryGet($_SESSION, Csrf::SESSION_KEY, $_)) {
-			$csrfToken = Csrf::generateToken();
-			$this->set(Csrf::SESSION_KEY, $csrfToken);
+		if (!ArrayUtility::tryGet($_SESSION, Security::CSRF_SESSION_KEY, $_)) {
+			$csrfToken = Security::generateCsrfToken();
+			$this->set(Security::CSRF_SESSION_KEY, $csrfToken);
 		}
 	}
 
