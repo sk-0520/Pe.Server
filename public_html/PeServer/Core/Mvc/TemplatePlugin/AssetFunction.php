@@ -45,11 +45,7 @@ class AssetFunction extends TemplateFunctionBase
 
 	protected function functionBodyImpl(): string
 	{
-		if (!isset($this->params['file'])) {
-			return '';
-		}
-
-		$sourcePath = $this->params['file'];
+		$sourcePath = ArrayUtility::getOr($this->params, 'file', '');
 		if (StringUtility::isNullOrEmpty($sourcePath)) {
 			return '';
 		}

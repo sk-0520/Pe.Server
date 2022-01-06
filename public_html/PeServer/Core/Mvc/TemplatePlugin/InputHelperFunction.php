@@ -47,21 +47,13 @@ class InputHelperFunction extends TemplateFunctionBase
 	{
 		$targetKey = $this->params['key']; // 必須
 
-		$showAutoError = true;
-		if (ArrayUtility::tryGet($this->params, 'auto_error', $autError)) {
-			$showAutoError = filter_var($autError, FILTER_VALIDATE_BOOL) && boolval($autError);
-		}
+		$showAutoError = TypeConverter::parseBoolean(ArrayUtility::getOr($this->params, 'file', true));
 
 		$hasError = false;
-		// @phpstan-ignore-next-line
-		if (isset($this->smarty->tpl_vars['errors'])) {
-			/** @var array<string,string[]> */
-			$errors = $this->smarty->tpl_vars['errors']->value;
-			foreach ($errors as $key => $values) {
-				if ($targetKey === $key) {
-					$hasError = 0 < ArrayUtility::getCount($values);
-					break;
-				}
+		if ($this->existsError()) {
+			$errors = $this->getErrors();
+			if (ArrayUtility::tryGet($errors, $targetKey, $result)) {
+				$hasError = 0 < ArrayUtility::getCount($result);
 			}
 		}
 
@@ -71,12 +63,10 @@ class InputHelperFunction extends TemplateFunctionBase
 
 		/** @var string,string|string[]|bool|int */
 		$targetValue = '';
-		/** @var array<string,string|string[]|bool|int> */
-		// @phpstan-ignore-next-line
-		if (isset($this->smarty->tpl_vars['values'])) {
-			$values = $this->smarty->tpl_vars['values']->value;
-			if (isset($values[$targetKey])) {
-				$targetValue = $values[$targetKey];
+		if ($this->existsValues()) {
+			$values = $this->getValues();
+			if (ArrayUtility::tryGet($values, $targetKey, $result)) {
+				$targetValue = $result;
 			}
 		}
 

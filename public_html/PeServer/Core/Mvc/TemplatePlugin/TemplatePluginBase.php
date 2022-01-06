@@ -54,4 +54,30 @@ abstract class TemplatePluginBase
 
 		throw new InvalidOperationException();
 	}
+
+	protected function existsSmartyValues(Smarty_Internal_Template $smarty): bool
+	{
+		// @phpstan-ignore-next-line
+		if (!isset($smarty->tpl_vars['values'])) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Undocumented function
+	 *
+	 * @param Smarty_Internal_Template $smarty
+	 * @return array<string,string|string[]|bool|int>
+	 */
+	protected function getSmartyValues(Smarty_Internal_Template $smarty): array
+	{
+		if ($this->existsSmartyValues($smarty)) {
+			// @phpstan-ignore-next-line
+			return $smarty->tpl_vars['values']->value;
+		}
+
+		throw new InvalidOperationException();
+	}
 }
