@@ -48,6 +48,7 @@ abstract class TemplatePluginBase
 	protected function getErrors(Smarty_Internal_Template $smarty): array
 	{
 		if ($this->existsError($smarty)) {
+			// @phpstan-ignore-next-line
 			return $smarty->tpl_vars['errors']->value;
 		}
 

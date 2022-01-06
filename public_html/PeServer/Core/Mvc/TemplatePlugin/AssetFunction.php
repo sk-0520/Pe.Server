@@ -84,7 +84,7 @@ class AssetFunction extends TemplateFunctionBase
 		$filePath = FileUtility::joinPath($this->argument->rootDirectoryPath, $sourcePath);
 		if (($autoSize || $include) || !is_file($filePath)) {
 			// @phpstan-ignore-next-line nullは全取得だからOK
-			foreach ($this->engine->getTemplateDir(null) as $dir) {
+			foreach ($this->argument->engine->getTemplateDir(null) as $dir) {
 				$path = FileUtility::joinPath($dir, $sourcePath);
 				if (is_file($path)) {
 					$filePath = $path;
