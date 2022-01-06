@@ -29,19 +29,19 @@ class Route
 	 *
 	 * @var string
 	 */
-	private $basePath;
+	private string $basePath;
 	/**
 	 * クラス完全名。
 	 *
 	 * @var string
 	 */
-	private $className;
+	private string $className;
 	/**
 	 * アクション一覧。
 	 *
 	 * @var array<string,Action>
 	 */
-	private $actions = array();
+	private array $actions = array();
 
 	/**
 	 * Undocumented variable
