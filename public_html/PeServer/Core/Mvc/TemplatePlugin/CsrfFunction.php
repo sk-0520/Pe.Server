@@ -8,6 +8,7 @@ use \Smarty;
 use \Smarty_Internal_Template;
 use \DOMDocument;
 use PeServer\Core\Csrf;
+use PeServer\Core\HtmlDocument;
 use PeServer\Core\Mvc\TemplatePlugin\TemplateFunctionBase;
 
 class CsrfFunction extends TemplateFunctionBase
@@ -26,15 +27,14 @@ class CsrfFunction extends TemplateFunctionBase
 
 		$csrfToken = $_SESSION[Csrf::SESSION_KEY];
 
-		$dom = new DOMDocument();
+		$dom = new HtmlDocument();
 
-		$element = $dom->createElement('input');
-		$dom->appendChild($element);
+		$element = $dom->addElement('input');
 
 		$element->setAttribute('type', 'hidden');
 		$element->setAttribute('name', Csrf::REQUEST_KEY);
 		$element->setAttribute('value', $csrfToken);
 
-		return $dom->saveHTML(); // @phpstan-ignore-line
+		return $dom->build();
 	}
 }

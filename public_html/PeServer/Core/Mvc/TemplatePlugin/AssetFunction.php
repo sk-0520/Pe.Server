@@ -165,6 +165,6 @@ class AssetFunction extends TemplateFunctionBase
 			$element->setAttribute($key, $value);
 		}
 
-		return $dom->toString();
+		return $dom->build();
 	}
 }

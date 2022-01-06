@@ -31,7 +31,7 @@ class HtmlDocument extends HtmlBase
 		parent::__construct($this, $this->raw);
 	}
 
-	public function toString(): string
+	public function build(): string
 	{
 		$html = $this->raw->saveHTML();
 		if ($html === false) {
