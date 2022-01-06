@@ -27,15 +27,15 @@ class ShowErrorMessagesFunction extends TemplateFunctionBase
 		parent::__construct($argument);
 	}
 
-	public function functionBody(array $params, Smarty_Internal_Template $smarty): string
+	protected function functionBodyImpl(): string
 	{
 		// @phpstan-ignore-next-line
-		if (!isset($smarty->tpl_vars['errors'])) {
+		if (!isset($this->smarty->tpl_vars['errors'])) {
 			return '';
 		}
 
 		/** @var array<string,string[]> */
-		$errors = $smarty->tpl_vars['errors']->value;
+		$errors = $this->smarty->tpl_vars['errors']->value;
 		if (ArrayUtility::isNullOrEmpty($errors)) {
 			return '';
 		}
@@ -43,11 +43,11 @@ class ShowErrorMessagesFunction extends TemplateFunctionBase
 		$targetKey = Validator::COMMON;
 		$classes = ['errors'];
 
-		if (!isset($params['key']) || $params['key'] === Validator::COMMON) {
+		if (!isset($this->params['key']) || $this->params['key'] === Validator::COMMON) {
 			$classes[] = 'common-error';
 		} else {
 			$classes[] = 'value-error';
-			$targetKey = $params['key'];
+			$targetKey = $this->params['key'];
 		}
 
 		if ($targetKey !== Validator::COMMON) {

@@ -38,13 +38,13 @@ class AssetFunction extends TemplateFunctionBase
 		parent::__construct($argument);
 	}
 
-	public function functionBody(array $params, Smarty_Internal_Template $smarty): string
+	protected function functionBodyImpl(): string
 	{
-		if (!isset($params['file'])) {
+		if (!isset($this->params['file'])) {
 			return '';
 		}
 
-		$sourcePath = $params['file'];
+		$sourcePath = $this->params['file'];
 		if (StringUtility::isNullOrEmpty($sourcePath)) {
 			return '';
 		}
@@ -76,11 +76,11 @@ class AssetFunction extends TemplateFunctionBase
 
 		$dom = new HtmlDocument();
 		if (!$isProduction) {
-			$dom->addComment(StringUtility::dump($params));
+			$dom->addComment(StringUtility::dump($this->params));
 		}
 
-		$autoSize = TypeConverter::parseBoolean(ArrayUtility::getOr($params, 'auto_size', false));
-		$include = TypeConverter::parseBoolean(ArrayUtility::getOr($params, 'include', false));
+		$autoSize = TypeConverter::parseBoolean(ArrayUtility::getOr($this->params, 'auto_size', false));
+		$include = TypeConverter::parseBoolean(ArrayUtility::getOr($this->params, 'include', false));
 
 		$filePath = FileUtility::joinPath($this->argument->rootDirectoryPath, $sourcePath);
 		if (($autoSize || $include) || !is_file($filePath)) {
@@ -159,7 +159,7 @@ class AssetFunction extends TemplateFunctionBase
 				throw new CoreException($resourcePath);
 		}
 
-		foreach ($params as $key => $value) {
+		foreach ($this->params as $key => $value) {
 			if (ArrayUtility::contains($skipAttributes, $key)) {
 				continue;
 			}

@@ -18,7 +18,7 @@ class CsrfFunction extends TemplateFunctionBase
 		parent::__construct($argument);
 	}
 
-	public function functionBody(array $params, Smarty_Internal_Template $smarty): string
+	protected function functionBodyImpl(): string
 	{
 		// このタイミングではセッション処理完了を期待している
 		if (!isset($_SESSION[Csrf::SESSION_KEY])) {

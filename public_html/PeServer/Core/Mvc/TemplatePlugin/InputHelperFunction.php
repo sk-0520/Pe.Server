@@ -38,20 +38,20 @@ class InputHelperFunction extends TemplateFunctionBase
 		$this->showErrorMessagesFunction = $showErrorMessagesFunction;
 	}
 
-	public function functionBody(array $params, Smarty_Internal_Template $smarty): string
+	protected function functionBodyImpl(): string
 	{
-		$targetKey = $params['key']; // 必須
+		$targetKey = $this->params['key']; // 必須
 
 		$showAutoError = true;
-		if (ArrayUtility::tryGet($params, 'auto_error', $autError)) {
+		if (ArrayUtility::tryGet($this->params, 'auto_error', $autError)) {
 			$showAutoError = filter_var($autError, FILTER_VALIDATE_BOOL) && boolval($autError);
 		}
 
 		$hasError = false;
 		// @phpstan-ignore-next-line
-		if (isset($smarty->tpl_vars['errors'])) {
+		if (isset($this->smarty->tpl_vars['errors'])) {
 			/** @var array<string,string[]> */
-			$errors = $smarty->tpl_vars['errors']->value;
+			$errors = $this->smarty->tpl_vars['errors']->value;
 			foreach ($errors as $key => $values) {
 				if ($targetKey === $key) {
 					$hasError = 0 < ArrayUtility::getCount($values);
@@ -68,14 +68,14 @@ class InputHelperFunction extends TemplateFunctionBase
 		$targetValue = '';
 		/** @var array<string,string|string[]|bool|int> */
 		// @phpstan-ignore-next-line
-		if (isset($smarty->tpl_vars['values'])) {
-			$values = $smarty->tpl_vars['values']->value;
+		if (isset($this->smarty->tpl_vars['values'])) {
+			$values = $this->smarty->tpl_vars['values']->value;
 			if (isset($values[$targetKey])) {
 				$targetValue = $values[$targetKey];
 			}
 		}
 
-		switch ($params['type']) {
+		switch ($this->params['type']) {
 			case 'textarea': {
 					$element = $dom->createElement('textarea');
 
@@ -86,7 +86,7 @@ class InputHelperFunction extends TemplateFunctionBase
 
 			default: {
 					$element = $dom->createElement('input');
-					$element->setAttribute('type', $params['type']);
+					$element->setAttribute('type', $this->params['type']);
 					$element->setAttribute('value', $targetValue);
 				}
 				break;
@@ -99,7 +99,7 @@ class InputHelperFunction extends TemplateFunctionBase
 
 		$element->setAttribute('name', $targetKey);
 		$ignoreKeys = ['key', 'type', 'value'];
-		foreach ($params as $key => $value) {
+		foreach ($this->params as $key => $value) {
 			if (array_search($key, $ignoreKeys) !== false) {
 				continue;
 			}
@@ -123,7 +123,7 @@ class InputHelperFunction extends TemplateFunctionBase
 		}
 
 		if ($showAutoError) {
-			return $dom->saveHTML() . $this->showErrorMessagesFunction->functionBody(['key' => $targetKey], $smarty);
+			return $dom->saveHTML() . $this->showErrorMessagesFunction->functionBody(['key' => $targetKey], $this->smarty);
 		}
 		return $dom->saveHTML(); // @phpstan-ignore-line
 	}
