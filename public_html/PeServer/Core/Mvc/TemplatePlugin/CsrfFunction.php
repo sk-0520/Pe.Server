@@ -18,6 +18,11 @@ class CsrfFunction extends TemplateFunctionBase
 		parent::__construct($argument);
 	}
 
+	public function getFunctionName(): string
+	{
+		return 'csrf';
+	}
+
 	protected function functionBodyImpl(): string
 	{
 		// このタイミングではセッション処理完了を期待している

@@ -164,17 +164,17 @@ class _Template_Impl extends Template
 			self::$baseDirectoryPath
 		);
 		$showErrorMessagesFunction = new ShowErrorMessagesFunction($argument);
-		/** @var array<string,ITemplateFunction> */
+		/** @var array<ITemplateFunction> */
 		$plugins = [
-			'csrf' => new CsrfFunction($argument),
-			'asset' => new AssetFunction($argument),
-			'show_error_messages' => $showErrorMessagesFunction,
-			'input_helper' => new InputHelperFunction($argument, $showErrorMessagesFunction),
+			new CsrfFunction($argument),
+			new AssetFunction($argument),
+			$showErrorMessagesFunction,
+			new InputHelperFunction($argument, $showErrorMessagesFunction),
 		];
-		foreach ($plugins as $name => $plugin) {
+		foreach ($plugins as $plugin) {
 			if ($plugin instanceof ITemplateFunction) {
 				// @phpstan-ignore-next-line
-				$this->engine->registerPlugin('function', $name, array($plugin, 'functionBody'));
+				$this->engine->registerPlugin('function', $plugin->getFunctionName(), array($plugin, 'functionBody'));
 			}
 		}
 	}

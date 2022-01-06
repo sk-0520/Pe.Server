@@ -12,7 +12,14 @@ use \Smarty_Internal_Template;
 interface ITemplateFunction
 {
 	/**
-	 * エラー表示。
+	 * 関数名取得。
+	 *
+	 * @return string
+	 */
+	public function getFunctionName(): string;
+
+	/**
+	 * 関数処理出力。
 	 *
 	 * @param array<string,string> $params
 	 * @param Smarty_Internal_Template $smarty
@@ -20,5 +27,3 @@ interface ITemplateFunction
 	 */
 	public function functionBody(array $params, Smarty_Internal_Template $smarty): string;
 }
-
-

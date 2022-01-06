@@ -38,6 +38,11 @@ class AssetFunction extends TemplateFunctionBase
 		parent::__construct($argument);
 	}
 
+	public function getFunctionName(): string
+	{
+		return 'asset';
+	}
+
 	protected function functionBodyImpl(): string
 	{
 		if (!isset($this->params['file'])) {

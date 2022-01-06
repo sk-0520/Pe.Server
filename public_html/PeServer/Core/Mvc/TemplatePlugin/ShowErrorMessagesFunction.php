@@ -27,6 +27,11 @@ class ShowErrorMessagesFunction extends TemplateFunctionBase
 		parent::__construct($argument);
 	}
 
+	public function getFunctionName(): string
+	{
+		return 'show_error_messages';
+	}
+
 	protected function functionBodyImpl(): string
 	{
 		// @phpstan-ignore-next-line

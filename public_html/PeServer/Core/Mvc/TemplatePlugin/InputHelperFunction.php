@@ -38,6 +38,11 @@ class InputHelperFunction extends TemplateFunctionBase
 		$this->showErrorMessagesFunction = $showErrorMessagesFunction;
 	}
 
+	public function getFunctionName(): string
+	{
+		return 'input_helper';
+	}
+
 	protected function functionBodyImpl(): string
 	{
 		$targetKey = $this->params['key']; // 必須
