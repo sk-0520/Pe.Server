@@ -64,16 +64,17 @@ class Configuration
 	 *
 	 * @param array<mixed> $array
 	 * @param array<string,string> $map
-	 * @param array{head:string,tail:string} $block
+	 * @param string $head
+	 * @param string $tail
 	 * @return array<mixed>
 	 */
-	public function replace(array $array, array $map, array $block = ['head' => '<|', 'tail' => '|>']): array
+	public function replace(array $array, array $map, string $head, string $tail): array
 	{
 		foreach ($array as $key => $value) {
 			if (is_array($value)) {
-				$array[$key] = $this->replace($value, $map, $block);
+				$array[$key] = $this->replace($value, $map, $head, $tail);
 			} else if (is_string($value)) {
-				$array[$key] = StringUtility::replaceMap($value, $map, $block['head'], $block['tail']);
+				$array[$key] = StringUtility::replaceMap($value, $map, $head, $tail);
 			}
 		}
 

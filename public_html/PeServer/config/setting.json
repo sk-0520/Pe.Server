@@ -1,6 +1,6 @@
 {
 	"persistence": {
-		"connection": "sqlite:<|BASE|>/data/data.sqlite3",
+		"connection": "sqlite:$(BASE)/data/data.sqlite3",
 		"user": "",
 		"password": ""
 	},
@@ -8,7 +8,7 @@
 		"level": 3,
 		"format": "{TIMESTAMP} |{LEVEL}| [{CLIENT_IP}:{CLIENT_HOST}] {REQUEST_ID}|{SESSION} <{UA}> {METHOD} {REQUEST} {FILE}({LINE}) {FUNCTION} -> {MESSAGE}",
 		"file": {
-			"directory": "<|BASE|>/data/logs",
+			"directory": "$(BASE)/data/logs",
 			"name": "log_{DATE}.log",
 			"count": 10
 		}
@@ -19,11 +19,11 @@
 		},
 		"session": {
 			"name": "pe-sid",
-			"save": "<|BASE|>/data/store/session"
+			"save": "$(BASE)/data/store/session"
 		},
 		"temporary": {
 			"name": "pe-temp",
-			"save": "<|BASE|>/data/store/temporary"
+			"save": "$(BASE)/data/store/temporary"
 		}
 	},
 	"crypto": {

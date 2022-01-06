@@ -65,10 +65,8 @@ abstract class AppConfiguration
 				'BASE' => $baseDirectoryPath,
 				'ENV' => $environment
 			],
-			[
-				'head' => '<|',
-				'tail' => '|>',
-			]
+			'$(',
+			')'
 		);
 	}
 

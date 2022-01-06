@@ -1,6 +1,6 @@
 {
 	"persistence": {
-		"connection": "sqlite:<|APP|>/temp/data/data.sqlite3",
+		"connection": "sqlite:$(APP)/temp/data/data.sqlite3",
 		"user": "",
 		"passwd": ""
 	}
