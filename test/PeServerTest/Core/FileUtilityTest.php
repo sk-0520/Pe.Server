@@ -89,6 +89,8 @@ class FileUtilityTest extends TestClass
 			new Data(" ", " "),
 			new Data("a", "a.b"),
 			new Data("a.b", "a.b.c"),
+			new Data("style", "style.css"),
+			new Data("style", "/dir/style.css"),
 			new Data("", ".htaccess"),
 			new Data("", "."),
 			new Data(".", ".."),

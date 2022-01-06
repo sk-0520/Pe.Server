@@ -106,7 +106,7 @@ abstract class FileUtility
 	public static function getFileNameWithoutExtension(string $path): string
 	{
 		$fileName = self::getFileName($path);
-		$dotIndex = StringUtility::getLastPosition($path, '.');
+		$dotIndex = StringUtility::getLastPosition($fileName, '.');
 		if ($dotIndex === -1) {
 			return $fileName;
 		}
