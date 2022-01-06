@@ -41,8 +41,8 @@ abstract class StringUtility
 		if (self::isNullOrEmpty($s)) {
 			return true;
 		}
-
-		return strlen(trim($s)) === 0; // @phpstan-ignore-line
+		/** @var string $s */
+		return strlen(trim($s)) === 0;
 	}
 
 	/**
