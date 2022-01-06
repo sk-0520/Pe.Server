@@ -74,6 +74,8 @@ abstract class RouteConfiguration
 					->addAction('environment', HttpMethod::get())
 					->addAction('default-plugin', HttpMethod::get(), 'default_plugin_get')
 					->addAction('default-plugin', HttpMethod::post(), 'default_plugin_post')
+					->addAction('log', HttpMethod::get(), 'log_list')
+					->addAction('log/:log_name@\w+\.log', HttpMethod::get(), 'log_detail')
 				/* AUTO-FORMAT */,
 				(new Route('api/development', DevelopmentController::class, [DevelopmentMiddleware::class]))
 					->addAction('initialize', HttpMethod::post())

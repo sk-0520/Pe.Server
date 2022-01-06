@@ -11,6 +11,8 @@ use PeServer\Core\Mvc\TemplateParameter;
 use PeServer\Core\Mvc\ControllerArgument;
 use PeServer\App\Controllers\DomainControllerBase;
 use PeServer\App\Models\Domains\Page\Setting\SettingSetupLogic;
+use PeServer\App\Models\Domains\Page\Setting\SettingLogListLogic;
+use PeServer\App\Models\Domains\Page\Setting\SettingLogDetailLogic;
 use PeServer\App\Models\Domains\Page\Setting\SettingDefaultPluginLogic;
 
 final class SettingController extends PageControllerBase
@@ -64,5 +66,21 @@ final class SettingController extends PageControllerBase
 		}
 
 		return $this->view('default_plugin', $logic->getViewData());
+	}
+
+	public function log_list(ActionRequest $request): IActionResult
+	{
+		$logic = $this->createLogic(SettingLogListLogic::class, $request);
+		$logic->run(LogicCallMode::initialize());
+
+		return $this->view('log_list', $logic->getViewData());
+	}
+
+	public function log_detail(ActionRequest $request): IActionResult
+	{
+		$logic = $this->createLogic(SettingLogDetailLogic::class, $request);
+		$logic->run(LogicCallMode::initialize());
+
+		return $this->view('log_detail', $logic->getViewData());
 	}
 }

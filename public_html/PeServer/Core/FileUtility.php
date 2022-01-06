@@ -107,11 +107,21 @@ abstract class FileUtility
 	{
 		$fileName = self::getFileName($path);
 		$dotIndex = StringUtility::getLastPosition($path, '.');
-		if($dotIndex === -1) {
+		if ($dotIndex === -1) {
 			return $fileName;
 		}
 
 		return StringUtility::substring($fileName, 0, $dotIndex);
+	}
+
+	public static function getFileSize(string $path): int
+	{
+		$result = filesize($path);
+		if ($result === false) {
+			throw new IOException();
+		}
+
+		return $result;
 	}
 
 	public static function readContent(string $path): Bytes

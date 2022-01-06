@@ -23,7 +23,7 @@ final class UserPluginEditFilterMiddleware implements IMiddleware
 		if ($pluginIdState['exists'] && $pluginIdState['type'] === ActionRequest::REQUEST_URL) {
 			$pluginId = $argument->request->getValue('plugin_id');
 			// ここにきてるってことはユーザーフィルタを通過しているのでセッションを見る必要はないけど一応ね
-			if (Uuid::isGuid($pluginId) && SessionManager::hasAccount()) {
+			if (Uuid::isGuid($pluginId) && SessionManager::existsAccount()) {
 				$pluginId = Uuid::adjustGuid($pluginId);
 				$account = SessionManager::getAccount();
 				$database = AppDatabase::open();

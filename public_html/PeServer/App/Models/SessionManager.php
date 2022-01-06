@@ -41,7 +41,7 @@ abstract class SessionManager
 		return self::$session->isStarted();
 	}
 
-	public static function hasAccount(): bool
+	public static function existsAccount(): bool
 	{
 		self::$initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
 

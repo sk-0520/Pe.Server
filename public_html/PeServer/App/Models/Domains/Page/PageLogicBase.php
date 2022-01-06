@@ -20,7 +20,7 @@ abstract class PageLogicBase extends DomainLogicBase
 
 	protected function getUserInfo(): array|null
 	{
-		if (!SessionManager::hasAccount()) {
+		if (!SessionManager::existsAccount()) {
 			return null;
 		}
 
