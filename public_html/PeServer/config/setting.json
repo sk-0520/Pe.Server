@@ -10,7 +10,7 @@
 		"file": {
 			"directory": "$(BASE)/data/logs",
 			"name": "log_{DATE}.log",
-			"count": 10
+			"count": 100
 		}
 	},
 	"store": {
