@@ -14,9 +14,10 @@ use PeServer\App\Models\Initializer;
 use PeServer\Core\Store\CookieOption;
 use PeServer\App\Models\RouteConfiguration;
 use PeServer\App\Models\StoreConfiguration;
+use PeServer\Core\HttpMethod;
 
 ini_set('display_errors', '1');
-error_reporting( E_ALL );
+error_reporting(E_ALL);
 
 AutoLoader::initialize(
 	[
@@ -32,4 +33,4 @@ Initializer::initialize(
 );
 
 $routing = new AppRouting(RouteConfiguration::get(), StoreConfiguration::get());
-$routing->execute($_SERVER['REQUEST_METHOD'], new RequestPath($_SERVER['REQUEST_URI'], ''));
+$routing->execute(HttpMethod::from($_SERVER['REQUEST_METHOD']), new RequestPath($_SERVER['REQUEST_URI'], ''));

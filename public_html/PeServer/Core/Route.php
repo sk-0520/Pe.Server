@@ -128,12 +128,12 @@ class Route
 	/**
 	 * Undocumented function
 	 *
-	 * @param string $httpMethod
+	 * @param HttpMethod $httpMethod
 	 * @param Action $action
 	 * @param array<string,string> $urlParameters
 	 * @return RouteAction
 	 */
-	private function getActionCore(string $httpMethod, Action $action, array $urlParameters): RouteAction
+	private function getActionCore(HttpMethod $httpMethod, Action $action, array $urlParameters): RouteAction
 	{
 		$actionValues = $action->get($httpMethod);
 		if (is_null($actionValues)) {
@@ -158,11 +158,11 @@ class Route
 	/**
 	 * メソッド・リクエストパスから登録されているアクションを取得。
 	 *
-	 * @param string $httpMethod HttpMethod を参照のこと
+	 * @param HttpMethod $httpMethod HTTPメソッド。
 	 * @param RequestPath $requestPath リクエストパス
 	 * @return RouteAction|null 存在する場合にクラス・メソッドのペア。存在しない場合は null
 	 */
-	public function getAction(string $httpMethod, RequestPath $requestPath): ?RouteAction
+	public function getAction(HttpMethod $httpMethod, RequestPath $requestPath): ?RouteAction
 	{
 		if (!StringUtility::startsWith($requestPath->full, $this->basePath, false)) {
 			return new RouteAction(

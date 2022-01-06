@@ -39,6 +39,10 @@ abstract class HttpMethod
 	{
 		return new _HttpMethod_Impl(...$methods);
 	}
+	public static function from(string $method): HttpMethod
+	{
+		return new _HttpMethod_Impl(StringUtility::toUpper(StringUtility::trim($method)));
+	}
 
 	/**
 	 * @return HttpMethod GET

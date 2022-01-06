@@ -13,6 +13,7 @@ use PeServer\Core\Store\StoreOption;
 use PeServer\Core\Store\CookieOption;
 use PeServer\Core\Store\SessionOption;
 use PeServer\App\Models\SessionManager;
+use PeServer\Core\HttpMethod;
 use PeServer\Core\Store\TemporaryOption;
 
 class AppRouting extends Routing
@@ -30,7 +31,7 @@ class AppRouting extends Routing
 		SessionManager::initialize($this->session);
 	}
 
-	public function execute(string $requestMethod, RequestPath $requestPath): void
+	public function execute(HttpMethod $requestMethod, RequestPath $requestPath): void
 	{
 		(new AppErrorHandler($requestPath))->register();
 

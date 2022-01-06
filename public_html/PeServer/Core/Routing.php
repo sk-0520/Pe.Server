@@ -177,11 +177,11 @@ class Routing
 	 *
 	 * 失敗時の云々が甘いというかまだなんも考えてない。
 	 *
-	 * @param string $requestMethod HttpMethod を参照。
+	 * @param HttpMethod $requestMethod HTTPメソッド。
 	 * @param RequestPath $requestPath リクエストパス。
 	 * @return void
 	 */
-	private function executeCore(string $requestMethod, RequestPath $requestPath): void
+	private function executeCore(HttpMethod $requestMethod, RequestPath $requestPath): void
 	{
 		// グローバルミドルウェアの適用
 		if (ArrayUtility::getCount($this->setting->globalMiddleware)) {
@@ -217,11 +217,11 @@ class Routing
 	 *
 	 * 失敗時の云々が甘いというかまだなんも考えてない。
 	 *
-	 * @param string $requestMethod HttpMethod を参照。
+	 * @param HttpMethod $requestMethod HTTPメソッド。
 	 * @param RequestPath $requestPath リクエストパス。
 	 * @return void
 	 */
-	public function execute(string $requestMethod, RequestPath $requestPath): void
+	public function execute(HttpMethod $requestMethod, RequestPath $requestPath): void
 	{
 		$this->executeCore($requestMethod, $requestPath);
 	}
