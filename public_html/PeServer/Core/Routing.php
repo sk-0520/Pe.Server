@@ -147,7 +147,7 @@ class Routing
 	 */
 	private function executeAction(RequestPath $requestPath, string $rawControllerName, string $methodName, array $urlParameters, array $middleware): void
 	{
-		$splitNames = 	StringUtility::split($rawControllerName, '/');
+		$splitNames = StringUtility::split($rawControllerName, '/');
 		$controllerName = $splitNames[ArrayUtility::getCount($splitNames) - 1];
 
 		$request = new ActionRequest($urlParameters);
