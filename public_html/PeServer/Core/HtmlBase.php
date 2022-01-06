@@ -39,7 +39,7 @@ abstract class HtmlBase
 		return new HtmlElement($this->document, $element);
 	}
 
-	public function appendChild(HtmlElement|DOMNode $node)
+	public function appendChild(HtmlElement|DOMNode $node): void
 	{
 		if ($node instanceof HtmlElement) {
 			$node = $node->raw;

@@ -51,4 +51,50 @@ class HtmlElement extends HtmlBase
 			throw new HtmlDocumentException();
 		}
 	}
+
+	/**
+	 * クラス一覧を取得。
+	 *
+	 * @return string[]
+	 */
+	public function getClassList(): array
+	{
+		$classValue = $this->raw->getAttribute('class');
+		if (StringUtility::isNullOrWhiteSpace($classValue)) {
+			return [];
+		}
+
+		return StringUtility::split($classValue, ' ');
+	}
+
+	/**
+	 * Undocumented function
+	 *
+	 * @param string[] $classNames
+	 * @return void
+	 */
+	public function setClassList(array $classNames): void
+	{
+		$classValue = StringUtility::join($classNames, ' ');
+		$this->setAttribute('class', $classValue);
+	}
+
+	public function addClass(string $className): void
+	{
+		$list = $this->getClassList();
+		if (!ArrayUtility::contains($list, $className)) {
+			$list[] = $className;
+			$this->setClassList($list);
+		}
+	}
+
+	public function removeClass(string $className): void
+	{
+		$list = $this->getClassList();
+		$result = array_search($className, $list);
+		if ($result !== false) {
+			unset($list[$result]);
+			$this->setClassList($list);
+		}
+	}
 }
