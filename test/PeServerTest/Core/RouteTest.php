@@ -47,11 +47,11 @@ class RouteTest extends TestClass
 				'request' => [
 					[
 						'expected' => ['Controller', '1'],
-						'input' => [HttpMethod::GET, new RequestPath('path/action', '')]
+						'input' => [HttpMethod::get(), new RequestPath('path/action', '')]
 					],
 					[
 						'expected' => ['Controller', '2'],
-						'input' => [HttpMethod::GET, new RequestPath('path/action/action', '')]
+						'input' => [HttpMethod::get(), new RequestPath('path/action/action', '')]
 					],
 				]
 			],
@@ -63,7 +63,7 @@ class RouteTest extends TestClass
 				'request' => [
 					[
 						'expected' => ['TestController', 'list'],
-						'input' => [HttpMethod::POST, new RequestPath('api/test/list', '')]
+						'input' => [HttpMethod::post(), new RequestPath('api/test/list', '')]
 					],
 				]
 			],
@@ -78,23 +78,23 @@ class RouteTest extends TestClass
 				'request' => [
 					[
 						'expected' => ['UrlParamController', 'input1', ['value' => '123']],
-						'input' => [HttpMethod::GET, new RequestPath('controller/input/123', '')]
+						'input' => [HttpMethod::get(), new RequestPath('controller/input/123', '')]
 					],
 					[
 						'expected' => ['UrlParamController', 'input2', ['value' => '123']],
-						'input' => [HttpMethod::GET, new RequestPath('controller/123/input', '')]
+						'input' => [HttpMethod::get(), new RequestPath('controller/123/input', '')]
 					],
 					[
 						'expected' => ['UrlParamController', 'input3', ['value' => '123']],
-						'input' => [HttpMethod::GET, new RequestPath('controller/input/reg/123', '')]
+						'input' => [HttpMethod::get(), new RequestPath('controller/input/reg/123', '')]
 					],
 					[
 						'expected' => null,
-						'input' => [HttpMethod::GET, new RequestPath('controller/input/reg/abc', '')]
+						'input' => [HttpMethod::get(), new RequestPath('controller/input/reg/abc', '')]
 					],
 					[
 						'expected' => ['UrlParamController', 'input4', ['value1' => '123', 'value2' => '@@@', 'value3' => 'az']],
-						'input' => [HttpMethod::GET, new RequestPath('controller/multi/123/@@@/az/none', '')]
+						'input' => [HttpMethod::get(), new RequestPath('controller/multi/123/@@@/az/none', '')]
 					],
 				]
 			],
