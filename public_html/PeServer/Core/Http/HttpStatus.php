@@ -41,6 +41,10 @@ abstract class HttpStatus
 	{
 		return new _HttpStatus_Impl(400);
 	}
+	public static function authorizationRequired(): HttpStatus
+	{
+		return new _HttpStatus_Impl(401);
+	}
 	public static function forbidden(): HttpStatus
 	{
 		return new _HttpStatus_Impl(403);
