@@ -61,7 +61,7 @@ abstract class LoggerBase implements ILogger
 	 */
 	protected abstract function logImpl(int $level, int $traceIndex, $message, ...$parameters): void;
 
-	public final function log(int $level, int $traceIndex, $message, ...$parameters): void
+	public function log(int $level, int $traceIndex, $message, ...$parameters): void
 	{
 		if ($level < $this->level) {
 			return;

@@ -30,6 +30,11 @@ final class MultiLogger extends LoggerBase
 		$this->loggers = $loggers;
 	}
 
+	public function log(int $level, int $traceIndex, $message, ...$parameters): void
+	{
+		$this->logImpl($level, $traceIndex + 1, $message, ...$parameters);
+	}
+
 	/**
 	 * ログ出力実装。
 	 *
