@@ -118,6 +118,6 @@ class ErrorHandler
 		$status = $this->setHttpStatus($throwable);
 
 		$template = Template::create('template', 'Core');
-		$template->show('error-display.tpl', new TemplateParameter($status, $values, []));
+		echo $template->build('error-display.tpl', new TemplateParameter($status, $values, []));
 	}
 }

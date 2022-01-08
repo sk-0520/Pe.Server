@@ -38,12 +38,6 @@ class ViewActionResult implements IActionResult
 		$this->headers = $headers;
 	}
 
-	protected function body(): void
-	{
-		$template = Template::create($this->templateBaseName);
-		$template->show("$this->actionName.tpl", $this->templateParameter);
-	}
-
 	public function createResponse(): HttpResponse
 	{
 		$response = new HttpResponse();

@@ -95,9 +95,8 @@ abstract class Template
 	 *
 	 * @param string $templateName テンプレート名。
 	 * @param TemplateParameter $parameter パラメータ。
-	 * @return void no-return?
+	 * @return string
 	 */
-	public abstract function show(string $templateName, TemplateParameter $parameter): void;
 	public abstract function build(string $templateName, TemplateParameter $parameter): string;
 }
 
