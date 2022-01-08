@@ -148,7 +148,11 @@ class TemporaryStore
 		$this->values[$key] = $value;
 
 		if (ArrayUtility::contains($this->removes, $key)) {
-			unset($this->removes[$key]);
+			$index = array_search($key, $this->removes);
+			if ($index === false) {
+				throw new InvalidOperationException();
+			}
+			unset($this->removes[$index]);
 		}
 	}
 

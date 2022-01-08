@@ -16,8 +16,7 @@ use PeServer\Core\Mvc\TemplatePlugin\ITemplateFunction;
 use PeServer\Core\Mvc\TemplatePlugin\InputHelperFunction;
 use PeServer\Core\Mvc\TemplatePlugin\TemplatePluginArgument;
 use PeServer\Core\Mvc\TemplatePlugin\ShowErrorMessagesFunction;
-
-
+use PeServer\Core\Mvc\TemplatePlugin\TextImageFunction;
 
 /**
  * View側のテンプレート処理。
@@ -161,6 +160,7 @@ class _Template_Impl extends Template
 			new AssetFunction($argument),
 			$showErrorMessagesFunction,
 			new InputHelperFunction($argument, $showErrorMessagesFunction),
+			new TextImageFunction($argument),
 		];
 		foreach ($plugins as $plugin) {
 			if ($plugin instanceof ITemplateFunction) {

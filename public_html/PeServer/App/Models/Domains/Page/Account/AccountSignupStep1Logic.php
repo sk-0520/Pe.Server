@@ -25,10 +25,13 @@ use PeServer\App\Models\Domains\Page\PageLogicBase;
 use PeServer\App\Models\Dao\Entities\UsersEntityDao;
 use PeServer\App\Models\Dao\Entities\SignUpWaitEmailsEntityDao;
 use PeServer\Core\Cryptography;
+use PeServer\Core\Mvc\Validator;
 use PeServer\Core\UrlUtility;
 
 class AccountSignupStep1Logic extends PageLogicBase
 {
+	private const TEMP_TOKEN = 'sign_up_token';
+
 	public function __construct(LogicParameter $parameter)
 	{
 		parent::__construct($parameter);
@@ -37,6 +40,9 @@ class AccountSignupStep1Logic extends PageLogicBase
 	protected function startup(LogicCallMode $callMode): void
 	{
 		$this->registerParameterKeys([
+			'value',
+			'account_signup_token',
+			'account_signup_value',
 			'account_signup_email',
 		], true);
 	}
@@ -51,6 +57,17 @@ class AccountSignupStep1Logic extends PageLogicBase
 			$accountValidator = new AccountValidator($this, $this->validator);
 			$accountValidator->isEmail($key, $value);
 		});
+
+		$temp = $this->popTemporary(self::TEMP_TOKEN);
+		$tempValue = ArrayUtility::getOr($temp, 'value', '');
+		$tempToken = ArrayUtility::getOr($temp, 'token', '');
+
+		$inputValue = $this->getRequest('account_signup_value');
+		$inputToken = $this->getRequest('account_signup_token');
+
+		if (!($tempValue === $inputValue && $tempToken == $inputToken)) {
+			$this->addError('account_signup_value', I18n::message('error/sign_up_token'));
+		}
 	}
 
 	protected function executeImpl(LogicCallMode $callMode): void
@@ -122,5 +139,23 @@ class AccountSignupStep1Logic extends PageLogicBase
 		$mailer->send();
 
 		$this->result['token'] = $token;
+	}
+
+	protected function cleanup(LogicCallMode $callMode): void
+	{
+		if ($callMode->isSubmit() && ArrayUtility::existsKey($this->result, 'token')) {
+			$this->removeTemporary(self::TEMP_TOKEN);
+			return;
+		}
+
+		$tempToken = Cryptography::generateRandomBytes(10)->toHex();
+		$tempValue = sprintf('%04d', Cryptography::generateRandomInteger(9999));
+		$this->pushTemporary(self::TEMP_TOKEN, [
+			'token' => $tempToken,
+			'value' => $tempValue,
+		]);
+		$this->setValue('account_signup_token', $tempToken);
+		$this->setValue('account_signup_value', '');
+		$this->setValue('value', $tempValue);
 	}
 }
