@@ -24,5 +24,8 @@
 		<li>
 			<a href="/account/login">login</a>
 		</li>
+		<li>
+			<a href="/account/signup">signup</a>
+		</li>
 	{/if}
 </ul>

@@ -61,6 +61,8 @@ abstract class RouteConfiguration
 					->addAction('login', HttpMethod::get(), 'login_get')
 					->addAction('login', HttpMethod::post(), 'login_post')
 					->addAction('logout', HttpMethod::get())
+					->addAction('signup', HttpMethod::get(), 'signup_step1_get')
+					->addAction('signup', HttpMethod::post(), 'signup_step1_post')
 					->addAction('user', HttpMethod::get(), self::DEFAULT_METHOD, [UserAccountFilterMiddleware::class])
 					->addAction('user/edit', HttpMethod::get(), 'user_edit_get', [UserAccountFilterMiddleware::class])
 					->addAction('user/edit', HttpMethod::post(), 'user_edit_post', [UserAccountFilterMiddleware::class, CsrfMiddleware::class])

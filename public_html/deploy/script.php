@@ -216,13 +216,23 @@ create table
 create table
 	[sign_up_wait_emails] -- 新規登録時のユーザーメールアドレス待機
 	(
-		[mark_email] integer not null, -- 絞り込み用メールアドレス(ハッシュ:fnv)
 		[token] text not null, -- トークン
 		[email] text not null, -- メールアドレス(暗号化)
+		[mark_email] integer not null, -- 絞り込み用メールアドレス(ハッシュ:fnv)
 		[timestamp] text not null, -- トークン発行日時(UTC)
 		[ip_address] text not null, -- クライアントIPアドレス
-		[user_agent] text not null -- クライアントUA
+		[user_agent] text not null, -- クライアントUA
+		primary key([token])
 	)
+;
+
+create index
+	[sign_up_wait_emails_index_mark]
+	on
+		[sign_up_wait_emails]
+		(
+			[mark_email]
+		)
 ;
 
 create index

@@ -34,10 +34,11 @@
 	"config": {
 		"confirm": {
 			"user_change_wait_email_minutes": 10,
-			"sign_up_wait_email_minutes": 10
+			"sign_up_wait_email_minutes": 60
 		},
 		"address": {
-			"default_domain": "@localhost.localdomain",
+			"domain": "localhost",
+			"public_url": "http://{DOMAIN}",
 			"from_email": {
 				"name": "from",
 				"address": "from@localhost.localdomain"

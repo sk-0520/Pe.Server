@@ -84,6 +84,9 @@
 		}
 	},
 	"subject": {
+		"sign_up_step1": {
+			"*": "ユーザー登録用URL通知"
+		},
 		"email_change_token": {
 			"*": "メールアドレス変更用トークン発行"
 		},

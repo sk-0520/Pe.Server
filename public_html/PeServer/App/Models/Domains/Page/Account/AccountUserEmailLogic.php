@@ -157,13 +157,13 @@ class AccountUserEmailLogic extends PageLogicBase
 			'name' => $account['name'],
 			'token' => $params['token'],
 		];
-		$html = AppTemplate::createMailTemplate('change-email-token', $subject, $values);
+		$html = AppTemplate::createMailTemplate('change_email_token', $subject, $values);
 
 		$mailer = new AppMailer();
 		$mailer->toAddresses = [
 			['address' => $email, 'name' => $account['name']],
 		];
-		$mailer->subject = I18n::message('subject/email_change_token');
+		$mailer->subject = $subject;
 		$mailer->setMessage([
 			'html' => $html,
 		]);
@@ -220,12 +220,12 @@ class AccountUserEmailLogic extends PageLogicBase
 		// 新旧メールアドレスにそれぞれ通知メール送信
 		$items = [
 			[
-				'template' => 'change-email-new',
+				'template' => 'change_email_new',
 				'subject' => 'subject/email_change_new',
 				'email' => $this->defaultValues['wait_email'],
 			],
 			[
-				'template' => 'change-email-old',
+				'template' => 'change_email_old',
 				'subject' => 'subject/email_change_old',
 				'email' => $this->defaultValues['email'],
 			],

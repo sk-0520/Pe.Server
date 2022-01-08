@@ -4,21 +4,22 @@ declare(strict_types=1);
 
 namespace PeServer\App\Controllers\Page;
 
-use PeServer\App\Models\Domains\UserLevel;
 use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Mvc\IActionResult;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\ControllerBase;
 use PeServer\App\Models\SessionManager;
 use PeServer\Core\Mvc\ControllerArgument;
+use PeServer\App\Models\Domains\UserLevel;
+use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\App\Models\Domains\Page\Account\AccountUserLogic;
 use PeServer\App\Models\Domains\Page\Account\AccountLoginLogic;
 use PeServer\App\Models\Domains\Page\Account\AccountLogoutLogic;
 use PeServer\App\Models\Domains\Page\Account\AccountUserEditLogic;
 use PeServer\App\Models\Domains\Page\Account\AccountUserEmailLogic;
 use PeServer\App\Models\Domains\Page\Account\AccountUserPluginLogic;
+use PeServer\App\Models\Domains\Page\Account\AccountSignupStep1Logic;
 use PeServer\App\Models\Domains\Page\Account\AccountUserPasswordLogic;
-use PeServer\Core\Throws\InvalidOperationException;
 
 final class AccountController extends PageControllerBase
 {
@@ -74,6 +75,27 @@ final class AccountController extends PageControllerBase
 		$logic->run(LogicCallMode::submit());
 
 		return $this->redirectPath('/');
+	}
+
+	public function signup_step1_get(HttpRequest $request): IActionResult
+	{
+		$logic = $this->createLogic(AccountSignupStep1Logic::class, $request);
+		$logic->run(LogicCallMode::initialize());
+
+		return $this->view('view_signup_step1', $logic->getViewData());
+	}
+
+	public function signup_step1_post(HttpRequest $request): IActionResult
+	{
+		$logic = $this->createLogic(AccountSignupStep1Logic::class, $request);
+		if ($logic->run(LogicCallMode::submit())) {
+			if ($logic->tryGetResult('token', $token)) {
+				return $this->redirectPath("signup/$token");
+			}
+			throw new InvalidOperationException();
+		}
+
+		return $this->view('view_signup_step1', $logic->getViewData());
 	}
 
 	public function user(HttpRequest $request): IActionResult
@@ -154,7 +176,7 @@ final class AccountController extends PageControllerBase
 		$logic = $this->createLogic(AccountUserPluginLogic::class, $request, $isRegister);
 		if ($logic->run(LogicCallMode::submit())) {
 			if ($logic->tryGetResult('plugin_id', $pluginId)) {
-				return $this->redirectPath('account/user/plugin/' . $pluginId);
+				return $this->redirectPath("account/user/plugin/$pluginId");
 			}
 			throw new InvalidOperationException();
 		}

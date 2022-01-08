@@ -44,4 +44,21 @@ abstract class UrlUtility
 		$pathUrl = self::convertPathToUrl($path);
 		return self::joinQuery($pathUrl, $query);
 	}
+
+	public static function joinPath(string $baseUrl, string ...$paths): string
+	{
+		$pair = StringUtility::split($baseUrl, '?', 2);
+		$url = StringUtility::trimEnd($pair[0], '/');
+
+		$trimPaths = array_map(function ($i) {
+			return StringUtility::trim($i, " \t/?");
+		}, $paths);
+
+		$joinUrl = StringUtility::join([$url, ...$trimPaths], '/');
+		if (1 < ArrayUtility::getCount($pair)) {
+			$joinUrl .= '?' . $pair[1];
+		}
+
+		return $joinUrl;
+	}
 }
