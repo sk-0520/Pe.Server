@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Log;
 
+use PeServer\Core\ArrayUtility;
 use PeServer\Core\FileUtility;
 use PeServer\Core\Log\LoggerBase;
 use PeServer\Core\StringUtility;
@@ -25,11 +26,11 @@ class FileLogger extends LoggerBase
 	private $baseFileName;
 
 	/**
-	 * 破棄済みヘッダ名。
+	 * 破棄済みファイルパターン。
 	 *
 	 * @var string[]
 	 */
-	private static $cleanupHeaders = array();
+	private static $cleanupFilePatterns = array();
 
 	/**
 	 * 生成。
@@ -46,10 +47,7 @@ class FileLogger extends LoggerBase
 		$this->directoryPath = $fileLoggingConfiguration['directory'];
 		$this->baseFileName = $fileLoggingConfiguration['name'];
 
-		if (!in_array($this->header, self::$cleanupHeaders)) {
-			$this->cleanup($fileLoggingConfiguration['count']);
-			self::$cleanupHeaders[] = $this->header;
-		}
+		$this->cleanup($fileLoggingConfiguration['count']);
 	}
 
 	private function toSafeFileNameHeader(): string
@@ -58,15 +56,8 @@ class FileLogger extends LoggerBase
 		return str_replace(['/', '\\', '*', '|', '<', '>', '?'], '_', $trimHeader);
 	}
 
-	private function cleanup(int $maxCount): void
+	private function cleanupCore(int $maxCount, $filePattern): void
 	{
-		$filePattern = StringUtility::replaceMap(
-			$this->baseFileName,
-			[
-				'HEADER' => $this->toSafeFileNameHeader(),
-				'DATE' => '*',
-			]
-		);
 		$logFiles = glob(FileUtility::joinPath($this->directoryPath, $filePattern));
 		if ($logFiles === false) {
 			throw new CoreError('glob error: ' . FileUtility::joinPath($this->directoryPath, $filePattern));
@@ -79,6 +70,21 @@ class FileLogger extends LoggerBase
 		$length = $logCount - $maxCount;
 		for ($i = 0; $i < $length; $i++) {
 			unlink($logFiles[$i]);
+		}
+	}
+
+	private function cleanup(int $maxCount): void
+	{
+		$filePattern = StringUtility::replaceMap(
+			$this->baseFileName,
+			[
+				'HEADER' => $this->toSafeFileNameHeader(),
+				'DATE' => '*',
+			]
+		);
+		if (!ArrayUtility::contains(self::$cleanupFilePatterns, $filePattern)) {
+			self::$cleanupFilePatterns[] = $filePattern;
+			$this->cleanupCore($maxCount, $filePattern);
 		}
 	}
 
