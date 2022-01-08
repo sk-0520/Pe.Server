@@ -14,9 +14,9 @@ use PeServer\Core\Mvc\TemplatePlugin\CsrfFunction;
 use PeServer\Core\Mvc\TemplatePlugin\AssetFunction;
 use PeServer\Core\Mvc\TemplatePlugin\ITemplateFunction;
 use PeServer\Core\Mvc\TemplatePlugin\InputHelperFunction;
+use PeServer\Core\Mvc\TemplatePlugin\BotTextImageFunction;
 use PeServer\Core\Mvc\TemplatePlugin\TemplatePluginArgument;
 use PeServer\Core\Mvc\TemplatePlugin\ShowErrorMessagesFunction;
-use PeServer\Core\Mvc\TemplatePlugin\TextImageFunction;
 
 /**
  * View側のテンプレート処理。
@@ -160,7 +160,7 @@ class _Template_Impl extends Template
 			new AssetFunction($argument),
 			$showErrorMessagesFunction,
 			new InputHelperFunction($argument, $showErrorMessagesFunction),
-			new TextImageFunction($argument),
+			new BotTextImageFunction($argument),
 		];
 		foreach ($plugins as $plugin) {
 			if ($plugin instanceof ITemplateFunction) {

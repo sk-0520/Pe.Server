@@ -12,11 +12,7 @@
 
 		<dt>token<dt>
 		<dd>
-			{$values.account_signup_token}
-			<br />
-			{$values.value}
-			<br />
-			{text_image text=$values.value}
+			{bot_text_image text=$values.value width=48 height=16}
 			<br />
 			{input_helper key='account_signup_value' type="text" class="edit"}
 		<dd>
