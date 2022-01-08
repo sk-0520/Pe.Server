@@ -40,7 +40,7 @@
 			"domain": "localhost",
 			"public_url": "http://{DOMAIN}",
 			"from_email": {
-				"name": "from",
+				"name": "Pe.Server",
 				"address": "from@localhost.localdomain"
 			},
 			"return_email": "return@localhost.localdomain",
