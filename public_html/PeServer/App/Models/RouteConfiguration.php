@@ -23,6 +23,7 @@ use PeServer\App\Controllers\Page\AccountController;
 use PeServer\App\Controllers\Page\SettingController;
 use PeServer\App\Models\Dao\Entities\PluginsEntityDao;
 use PeServer\App\Controllers\Api\DevelopmentController;
+use PeServer\Core\Mvc\Middleware\PerformanceMiddleware;
 use PeServer\Core\Mvc\Middleware\PerformanceShutdownMiddleware;
 use PeServer\App\Models\Domains\Middleware\DevelopmentMiddleware;
 use PeServer\App\Models\Domains\Middleware\SignupStep1FilterMiddleware;
@@ -48,7 +49,9 @@ abstract class RouteConfiguration
 	{
 		return new RouteSetting(
 			[],
-			[],
+			[
+				PerformanceMiddleware::class
+			],
 			[
 				PerformanceShutdownMiddleware::class
 			],
