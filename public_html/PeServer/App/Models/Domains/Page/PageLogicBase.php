@@ -18,7 +18,7 @@ abstract class PageLogicBase extends DomainLogicBase
 		parent::__construct($parameter);
 	}
 
-	protected function getUserInfo(): array|null
+	protected function getAuditUserInfo(): array|null
 	{
 		if (!SessionManager::existsAccount()) {
 			return null;

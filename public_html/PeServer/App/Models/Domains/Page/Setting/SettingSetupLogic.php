@@ -19,6 +19,7 @@ use PeServer\App\Models\Domains\AccountValidator;
 use PeServer\App\Models\Domains\Page\PageLogicBase;
 use PeServer\App\Models\Dao\Entities\UsersEntityDao;
 use PeServer\App\Models\Dao\Entities\UserAuthenticationsEntityDao;
+use PeServer\App\Models\SessionManager;
 use PeServer\Core\Cryptography;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\Throws\InvalidOperationException;
@@ -81,7 +82,7 @@ class SettingSetupLogic extends PageLogicBase
 			return;
 		}
 
-		$currentUserInfo = $this->userInfo();
+		$currentUserInfo = SessionManager::getAccount();
 
 		$email = $this->getRequest('setting_setup_email');
 

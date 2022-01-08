@@ -15,6 +15,7 @@ use PeServer\Core\Mvc\LogicParameter;
 use PeServer\App\Models\Domains\Page\PageLogicBase;
 use PeServer\App\Models\Dao\Domains\UserDomainDao;
 use PeServer\App\Models\Dao\Entities\UsersEntityDao;
+use PeServer\App\Models\Domains\UserLevel;
 use PeServer\Core\Cryptography;
 
 class AccountLoginLogic extends PageLogicBase
@@ -76,7 +77,7 @@ class AccountLoginLogic extends PageLogicBase
 			return;
 		}
 
-		if ($existsSetupUser && $user['level'] !== 'setup') {
+		if ($existsSetupUser && $user['level'] !== UserLevel::SETUP) {
 			$this->addError(Validator::COMMON, I18n::message(self::ERROR_LOGIN_PARAMETER));
 			$this->logger->error('未セットアップ状態での通常ログインは抑制中');
 			return;

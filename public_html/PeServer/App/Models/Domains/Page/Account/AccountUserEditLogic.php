@@ -61,7 +61,7 @@ class AccountUserEditLogic extends PageLogicBase
 
 	private function executeInitialize(LogicCallMode $callMode): void
 	{
-		$userInfo = $this->userInfo();
+		$userInfo = SessionManager::getAccount();
 
 		$database = $this->openDatabase();
 		$usersEntityDao = new UsersEntityDao($database);
@@ -80,7 +80,7 @@ class AccountUserEditLogic extends PageLogicBase
 
 	private function executeSubmit(LogicCallMode $callMode): void
 	{
-		$userInfo = $this->userInfo();
+		$userInfo = SessionManager::getAccount();
 
 		$params = [
 			'user_id' => $userInfo['user_id'],

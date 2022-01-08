@@ -16,7 +16,7 @@ abstract class ApiLogicBase extends DomainLogicBase
 		parent::__construct($parameter);
 	}
 
-	protected function getUserInfo(): array|null
+	protected function getAuditUserInfo(): array|null
 	{
 		throw new NotImplementedException();
 	}

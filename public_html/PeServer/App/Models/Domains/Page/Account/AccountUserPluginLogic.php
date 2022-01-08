@@ -22,6 +22,7 @@ use PeServer\App\Models\Domains\Page\PageLogicBase;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\App\Models\Dao\Entities\PluginsEntityDao;
 use PeServer\App\Models\Dao\Entities\PluginUrlsEntityDao;
+use PeServer\App\Models\SessionManager;
 
 class AccountUserPluginLogic extends PageLogicBase
 {
@@ -162,7 +163,7 @@ class AccountUserPluginLogic extends PageLogicBase
 			return;
 		}
 
-		$userInfo = $this->userInfo();
+		$userInfo = SessionManager::getAccount();
 
 		$params = [
 			'user_id' => $userInfo['user_id'],

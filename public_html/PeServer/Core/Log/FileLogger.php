@@ -56,7 +56,7 @@ class FileLogger extends LoggerBase
 		return str_replace(['/', '\\', '*', '|', '<', '>', '?'], '_', $trimHeader);
 	}
 
-	private function cleanupCore(int $maxCount, $filePattern): void
+	private function cleanupCore(int $maxCount, string $filePattern): void
 	{
 		$logFiles = glob(FileUtility::joinPath($this->directoryPath, $filePattern));
 		if ($logFiles === false) {

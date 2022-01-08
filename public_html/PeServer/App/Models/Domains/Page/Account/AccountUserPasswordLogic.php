@@ -44,9 +44,11 @@ class AccountUserPasswordLogic extends PageLogicBase
 		$this->validation('account_password_current', function (string $key, string $value) {
 			$this->validator->isNotWhiteSpace($key, $value);
 
+			$userInfo = SessionManager::getAccount();
+
 			$database = $this->openDatabase();
 			$userAuthenticationsEntityDao = new UserAuthenticationsEntityDao($database);
-			$passwords = $userAuthenticationsEntityDao->selectPasswords($this->userInfo()['user_id']);
+			$passwords = $userAuthenticationsEntityDao->selectPasswords($userInfo['user_id']);
 
 			if (!Cryptography::verifyPassword($value, $passwords['current_password'])) {
 				$this->addError($key, I18n::message('error/password_incorrect'));
@@ -78,7 +80,7 @@ class AccountUserPasswordLogic extends PageLogicBase
 			return;
 		}
 
-		$userInfo = $this->userInfo();
+		$userInfo = SessionManager::getAccount();
 
 		$newPassword = $this->getRequest('account_password_new', '', false);
 

@@ -47,7 +47,7 @@ class AccountUserEmailLogic extends PageLogicBase
 
 	protected function startup(LogicCallMode $callMode): void
 	{
-		$userInfo = $this->userInfo();
+		$userInfo = SessionManager::getAccount();
 
 		$database = $this->openDatabase();
 

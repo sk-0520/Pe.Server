@@ -32,7 +32,7 @@ class AccountUserLogic extends PageLogicBase
 
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
-		$userInfo = $this->userInfo();
+		$userInfo = SessionManager::getAccount();
 
 		$database = $this->openDatabase();
 

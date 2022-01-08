@@ -27,13 +27,6 @@ abstract class DomainLogicBase extends LogicBase
 	}
 
 	/**
-	 * ユーザー情報の取得。
-	 *
-	 * @return array{user_id:string}|null
-	 */
-	protected abstract function getUserInfo(): array|null;
-
-	/**
 	 * データベース接続処理。
 	 *
 	 * @return Database
@@ -44,21 +37,13 @@ abstract class DomainLogicBase extends LogicBase
 	}
 
 	/**
-	 * ユーザー情報の取得。
+	 * 監査ログ用ユーザー情報の取得。
 	 *
-	 * @return array{user_id:string}
-	 * @throws InvalidOperationException 取れないとき。
+	 * ドメインロジックで明示的に使用しない想定。
+	 *
+	 * @return array{user_id:string}|null
 	 */
-	protected final function userInfo(): array
-	{
-		$userInfo = $this->getUserInfo();
-
-		if (is_null($userInfo)) {
-			throw new InvalidOperationException();
-		}
-
-		return $userInfo;
-	}
+	protected abstract function getAuditUserInfo(): array|null;
 
 	/**
 	 * 監査ログ出力内部処理。
@@ -101,7 +86,7 @@ abstract class DomainLogicBase extends LogicBase
 	 */
 	protected function writeAuditLogCurrentUser(string $event, ?array $info = null, ?IDatabaseContext $context = null): int
 	{
-		$userInfo = $this->getUserInfo();
+		$userInfo = $this->getAuditUserInfo();
 		if (!ArrayUtility::tryGet($userInfo, 'user_id', $userId)) {
 			$this->logger->error('監査ログ ユーザー情報取得失敗のため書き込み中止');
 			return -1;
