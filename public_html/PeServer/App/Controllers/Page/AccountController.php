@@ -19,6 +19,7 @@ use PeServer\App\Models\Domains\Page\Account\AccountUserEditLogic;
 use PeServer\App\Models\Domains\Page\Account\AccountUserEmailLogic;
 use PeServer\App\Models\Domains\Page\Account\AccountUserPluginLogic;
 use PeServer\App\Models\Domains\Page\Account\AccountSignupStep1Logic;
+use PeServer\App\Models\Domains\Page\Account\AccountSignupStep2Logic;
 use PeServer\App\Models\Domains\Page\Account\AccountUserPasswordLogic;
 
 final class AccountController extends PageControllerBase
@@ -90,13 +91,32 @@ final class AccountController extends PageControllerBase
 		$logic = $this->createLogic(AccountSignupStep1Logic::class, $request);
 		if ($logic->run(LogicCallMode::submit())) {
 			if ($logic->tryGetResult('token', $token)) {
-				return $this->redirectPath("signup/$token");
+				return $this->redirectPath("account/signup/$token");
 			}
 			throw new InvalidOperationException();
 		}
 
 		return $this->view('view_signup_step1', $logic->getViewData());
 	}
+
+	public function signup_step2_get(HttpRequest $request): IActionResult
+	{
+		$logic = $this->createLogic(AccountSignupStep2Logic::class, $request);
+		$logic->run(LogicCallMode::initialize());
+
+		return $this->view('view_signup_step2', $logic->getViewData());
+	}
+
+	public function signup_step2_post(HttpRequest $request): IActionResult
+	{
+		$logic = $this->createLogic(AccountSignupStep2Logic::class, $request);
+		if ($logic->run(LogicCallMode::submit())) {
+			return $this->redirectPath("/");
+		}
+
+		return $this->view('view_signup_step2', $logic->getViewData());
+	}
+
 
 	public function user(HttpRequest $request): IActionResult
 	{

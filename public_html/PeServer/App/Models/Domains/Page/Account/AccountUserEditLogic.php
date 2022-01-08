@@ -90,7 +90,7 @@ class AccountUserEditLogic extends PageLogicBase
 
 		$database = $this->openDatabase();
 
-		$result = $database->transaction(function (IDatabaseContext $context, $params) {
+		$database->transaction(function (IDatabaseContext $context, $params) {
 			$usersEntityDao = new UsersEntityDao($context);
 
 			// ユーザー情報更新
@@ -105,13 +105,11 @@ class AccountUserEditLogic extends PageLogicBase
 			return true;
 		}, $params);
 
-		if ($result) {
-			$account = SessionManager::getAccount();
-			$account['user_name'] = $params['user_name'];
-			SessionManager::setAccount($account);
+		$account = SessionManager::getAccount();
+		$account['user_name'] = $params['user_name'];
+		SessionManager::setAccount($account);
 
-			$this->addTemporaryMessage(I18n::message('message/flash/updated_user'));
-			AppDatabaseCache::exportUserInformation();
-		}
+		$this->addTemporaryMessage(I18n::message('message/flash/updated_user'));
+		AppDatabaseCache::exportUserInformation();
 	}
 }

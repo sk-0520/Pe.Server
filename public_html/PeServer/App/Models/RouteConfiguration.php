@@ -25,6 +25,8 @@ use PeServer\App\Models\Dao\Entities\PluginsEntityDao;
 use PeServer\App\Controllers\Api\DevelopmentController;
 use PeServer\Core\Mvc\Middleware\PerformanceShutdownMiddleware;
 use PeServer\App\Models\Domains\Middleware\DevelopmentMiddleware;
+use PeServer\App\Models\Domains\Middleware\SignupStep1FilterMiddleware;
+use PeServer\App\Models\Domains\Middleware\SignupStep2FilterMiddleware;
 use PeServer\App\Models\Domains\Middleware\UserAccountFilterMiddleware;
 use PeServer\App\Models\Domains\Middleware\SetupAccountFilterMiddleware;
 use PeServer\App\Models\Domains\Middleware\UserPluginEditFilterMiddleware;
@@ -61,8 +63,10 @@ abstract class RouteConfiguration
 					->addAction('login', HttpMethod::get(), 'login_get')
 					->addAction('login', HttpMethod::post(), 'login_post')
 					->addAction('logout', HttpMethod::get())
-					->addAction('signup', HttpMethod::get(), 'signup_step1_get')
-					->addAction('signup', HttpMethod::post(), 'signup_step1_post')
+					->addAction('signup', HttpMethod::get(), 'signup_step1_get', [SignupStep1FilterMiddleware::class])
+					->addAction('signup', HttpMethod::post(), 'signup_step1_post', [SignupStep1FilterMiddleware::class])
+					->addAction('signup/:token@[a-zA-Z0-9]{80}', HttpMethod::get(), 'signup_step2_get', [SignupStep1FilterMiddleware::class, SignupStep2FilterMiddleware::class])
+					->addAction('signup/:token@[a-zA-Z0-9]{80}', HttpMethod::post(), 'signup_step2_post', [SignupStep1FilterMiddleware::class, SignupStep2FilterMiddleware::class])
 					->addAction('user', HttpMethod::get(), self::DEFAULT_METHOD, [UserAccountFilterMiddleware::class])
 					->addAction('user/edit', HttpMethod::get(), 'user_edit_get', [UserAccountFilterMiddleware::class])
 					->addAction('user/edit', HttpMethod::post(), 'user_edit_post', [UserAccountFilterMiddleware::class, CsrfMiddleware::class])

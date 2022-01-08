@@ -24,6 +24,7 @@ use PeServer\App\Models\Dao\Domains\UserDomainDao;
 use PeServer\App\Models\Domains\Page\PageLogicBase;
 use PeServer\App\Models\Dao\Entities\UsersEntityDao;
 use PeServer\App\Models\Dao\Entities\SignUpWaitEmailsEntityDao;
+use PeServer\Core\Cryptography;
 use PeServer\Core\UrlUtility;
 
 class AccountSignupStep1Logic extends PageLogicBase
@@ -59,7 +60,7 @@ class AccountSignupStep1Logic extends PageLogicBase
 		}
 
 		$email = $this->getRequest('account_signup_email');
-		$token = Uuid::generateGuid();
+		$token = Cryptography::generateRandomBytes(40)->toHex();
 
 		$params = [
 			'token' => $token,

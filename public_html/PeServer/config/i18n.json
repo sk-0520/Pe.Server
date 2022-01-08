@@ -81,11 +81,17 @@
 		},
 		"unusable_plugin_name": {
 			"*": "プラグイン名が使用できません"
+		},
+		"sign_up_not_equal_email": {
+			"*": "事前入力されたメールアドレスと異なります"
 		}
 	},
 	"subject": {
 		"sign_up_step1": {
 			"*": "ユーザー登録用URL通知"
+		},
+		"sign_up_step2": {
+			"*": "ユーザー登録完了通知"
 		},
 		"email_change_token": {
 			"*": "メールアドレス変更用トークン発行"

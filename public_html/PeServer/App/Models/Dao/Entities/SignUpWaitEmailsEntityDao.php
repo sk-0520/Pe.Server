@@ -14,6 +14,47 @@ class SignUpWaitEmailsEntityDao extends DaoBase
 		parent::__construct($context);
 	}
 
+	public function selectExistsToken(string $token, int $limitMinutes): bool
+	{
+		return 1 === $this->context->selectSingleCount(
+			<<<SQL
+
+			select
+				count(*)
+			from
+				sign_up_wait_emails
+			where
+				sign_up_wait_emails.token = :token
+				and
+				(STRFTIME('%s', CURRENT_TIMESTAMP) - STRFTIME('%s', sign_up_wait_emails.timestamp)) < :limit_minutes * 60
+
+			SQL,
+			[
+				'token' => $token,
+				'limit_minutes' => $limitMinutes,
+			]
+		);
+	}
+
+	public function selectEmail(string $token): string
+	{
+		return $this->context->querySingle(
+			<<<SQL
+
+			select
+				sign_up_wait_emails.email
+			from
+				sign_up_wait_emails
+			where
+				sign_up_wait_emails.token = :token
+
+			SQL,
+			[
+				'token' => $token,
+			]
+		)['email'];
+	}
+
 	/**
 	 * Undocumented function
 	 *

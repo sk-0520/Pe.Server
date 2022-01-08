@@ -6,7 +6,9 @@
 </p>
 
 <div class="main" style="text-align:center">
-	<a href="{$values.url}">{$values.url}</a>
+	<a href="{$values.url}">本登録ページへ</a>
 </div>
+
+URL: <code>{$values.url}</code>
 
 {/block}
