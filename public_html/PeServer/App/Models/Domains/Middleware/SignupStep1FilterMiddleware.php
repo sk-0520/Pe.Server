@@ -18,10 +18,8 @@ final class SignupStep1FilterMiddleware implements IMiddleware
 {
 	public function handleBefore(MiddlewareArgument $argument): MiddlewareResult
 	{
-		if (!SessionManager::isEnabled()) {
-			if (!SessionManager::existsAccount()) {
-				return MiddlewareResult::none();
-			}
+		if (!SessionManager::existsAccount()) {
+			return MiddlewareResult::none();
 		}
 
 		return MiddlewareResult::error(HttpStatus::notFound());
