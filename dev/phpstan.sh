@@ -11,7 +11,7 @@ fi
 
 if [ ! -v IGNORE_SYNTAX_CHECK ] ; then
 	pushd ../public_html
-		find . -name '*.php' -not -path './PeServer/Libs/*' -not -path './PeServer/data/*' -exec php --syntax-check {} \;
+		find . -name '*.php' -not -path './PeServer/Core/Libs/*' -not -path './PeServer/data/*' -exec php --syntax-check {} \;
 	popd
 	echo 'ignore -> IGNORE_SYNTAX_CHECK'
 fi

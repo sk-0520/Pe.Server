@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc;
 
-require_once(__DIR__ . '/../../Libs/smarty/libs/Smarty.class.php');
+require_once(__DIR__ . '/../../Core/Libs/smarty/libs/Smarty.class.php');
 
 use \Smarty;
 use PeServer\Core\FileUtility;

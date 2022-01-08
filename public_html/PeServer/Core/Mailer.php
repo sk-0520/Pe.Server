@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
-require_once(__DIR__ . '/../Libs/PHPMailer/src/Exception.php');
-//require_once(__DIR__ . '/../Libs/PHPMailer/src/OAuth.php');
-require_once(__DIR__ . '/../Libs/PHPMailer/src/PHPMailer.php');
-//require_once(__DIR__ . '/../Libs/PHPMailer/src/POP3.php');
-require_once(__DIR__ . '/../Libs/PHPMailer/src/SMTP.php');
+require_once(__DIR__ . '/../Core/Libs/PHPMailer/src/Exception.php');
+//require_once(__DIR__ . '/../Core/Libs/PHPMailer/src/OAuth.php');
+require_once(__DIR__ . '/../Core/Libs/PHPMailer/src/PHPMailer.php');
+//require_once(__DIR__ . '/../Core/Libs/PHPMailer/src/POP3.php');
+require_once(__DIR__ . '/../Core/Libs/PHPMailer/src/SMTP.php');
 
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\ArgumentNullException;

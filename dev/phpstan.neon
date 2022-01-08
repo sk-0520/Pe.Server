@@ -4,14 +4,14 @@ parameters:
     - ../public_html
   excludePaths:
     - ../public_html/PeServer/data
-    - ../public_html/PeServer/Libs
+    - ../public_html/PeServer/Core/Libs
     - ../public_html/deploy
     - ../public_html/PeServer/App/Models/Domains/Api/Development/DevelopmentInitializeLogic.php
   scanFiles:
-    - ../public_html/PeServer/Libs/smarty/libs/Smarty.class.php
-    - ../public_html/PeServer/Libs/smarty/libs/sysplugins/smarty_internal_template.php
-    - ../public_html/PeServer/Libs/smarty/libs/sysplugins/smarty_internal_data.php
-    - ../public_html/PeServer/Libs/PHPMailer/src/PHPMailer.php
-    - ../public_html/PeServer/Libs/PHPMailer/src/SMTP.php
+    - ../public_html/PeServer/Core/Libs/smarty/libs/Smarty.class.php
+    - ../public_html/PeServer/Core/Libs/smarty/libs/sysplugins/smarty_internal_template.php
+    - ../public_html/PeServer/Core/Libs/smarty/libs/sysplugins/smarty_internal_data.php
+    - ../public_html/PeServer/Core/Libs/PHPMailer/src/PHPMailer.php
+    - ../public_html/PeServer/Core/Libs/PHPMailer/src/SMTP.php
   ignoreErrors:
     - '/Parameter #1 \$callback of method PeServer\\Core\\Database\\Database::transaction\(\) expects callable\(PeServer\\Core\\Database\\IDatabaseContext, ...mixed\): bool,\s*Closure\(PeServer\\Core\\Database\\IDatabaseContext(.+)\): bool given\./'
