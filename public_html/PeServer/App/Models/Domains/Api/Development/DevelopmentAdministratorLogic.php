@@ -11,7 +11,7 @@ use \Deploy\ScriptArgument;
 use PeServer\Core\Log\Logging;
 use PeServer\Core\Cryptography;
 use PeServer\Core\Mvc\LogicBase;
-use PeServer\Core\HttpStatusCode;
+use PeServer\Core\Http\HttpStatusCode;
 use PeServer\Core\Database\Database;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\ActionResponse;
@@ -25,6 +25,7 @@ use PeServer\Core\Database\IDatabaseContext;
 use PeServer\App\Models\Domains\Api\ApiLogicBase;
 use PeServer\App\Models\Dao\Entities\UsersEntityDao;
 use PeServer\App\Models\Dao\Entities\UserAuthenticationsEntityDao;
+use PeServer\Core\Mvc\DataContent;
 
 class DevelopmentAdministratorLogic extends ApiLogicBase
 {
@@ -87,9 +88,8 @@ class DevelopmentAdministratorLogic extends ApiLogicBase
 		}, $params);
 
 
-		$response = ActionResponse::json([
+		$this->setContent(Mime::JSON, [
 			'success' => $result
 		]);
-		$this->setResponse($response);
 	}
 }

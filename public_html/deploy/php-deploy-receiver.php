@@ -100,13 +100,13 @@ function loadRunningFile($filePath)
 	return json_decode($content, true);
 }
 
-function saveRunningFile($runningFilePath, $runningData)
+function saveRunningFile($runningFilePath,$runningData)
 {
 	$jsonString = json_encode($runningData);
 	file_put_contents($runningFilePath, $jsonString, LOCK_EX);
 }
 
-function isEnabledLifeTime($tokenExpiration, $runningData)
+function isEnabledLifeTime($tokenExpiration,$runningData)
 {
 	$timestamp = new DateTime($runningData['TIMESTAMP']);
 	$limitTimestamp = $timestamp->add(new DateInterval($tokenExpiration));
@@ -115,7 +115,7 @@ function isEnabledLifeTime($tokenExpiration, $runningData)
 	return $nowTimestamp <= $limitTimestamp;
 }
 
-function isEnabledToken($accessToken, $runningData)
+function isEnabledToken($accessToken,$runningData)
 {
 	return $accessToken === $runningData['ACCESS_TOKEN'];
 }
@@ -129,7 +129,7 @@ function exitApp($httpStatusCode)
 	exit;
 }
 
-function exitAppWithMessage($httpStatusCode, $content = null)
+function exitAppWithMessage($httpStatusCode,$content = null)
 {
 	if (is_null($content)) {
 		outputLog($httpStatusCode);
@@ -147,7 +147,7 @@ function exitAppWithMessage($httpStatusCode, $content = null)
 	exit;
 }
 
-function exitOutput($httpStatusCode, $contentType,$content)
+function exitOutput($httpStatusCode,$contentType,$content)
 {
 	outputLog($httpStatusCode);
 
@@ -182,7 +182,7 @@ function initializeOpenSsl($config)
  *
  * @return string 暗号化されたbase64文字列
  */
-function encryptPublicKey($publicKey, $source)
+function encryptPublicKey($publicKey,$source)
 {
 	openssl_public_encrypt($source, $rawData, $publicKey);
 	return base64_encode($rawData);
@@ -197,7 +197,7 @@ function encryptPublicKey($publicKey, $source)
  *
  * @return string 復号された文字列
  */
-function decryptPrivateKey($privateKey, $base64Value)
+function decryptPrivateKey($privateKey,$base64Value)
 {
 	$encValue = base64_decode($base64Value);
 	if (!openssl_private_decrypt($encValue, $rawValue, $privateKey)) {
@@ -232,7 +232,7 @@ class ScriptArgument
 	 */
 	public $config;
 
-	public function __construct($rootDirectoryPath, $publicDirectoryPath, $expandDirectoryPath, $config)
+	public function __construct($rootDirectoryPath,$publicDirectoryPath,$expandDirectoryPath,$config)
 	{
 		$this->rootDirectoryPath = $rootDirectoryPath;
 		$this->publicDirectoryPath = $publicDirectoryPath;
@@ -285,7 +285,7 @@ class ScriptArgument
 		FileUtility::cleanupDirectory($directoryPath);
 	}
 
-	public function backupFiles($archiveFilePath, $paths)
+	public function backupFiles($archiveFilePath,$paths)
 	{
 		$this->log('backup archive path: ' . $archiveFilePath);
 
@@ -335,7 +335,7 @@ function sequenceHello($config)
 	exitOutput(200, 'text/plain', $result);
 }
 
-function sequenceInitialize($config, $runningData)
+function sequenceInitialize($config,$runningData)
 {
 	outputLog('SEQUENCE_INITIALIZE');
 
@@ -362,7 +362,7 @@ function sequenceInitialize($config, $runningData)
 	exitOutput(200, 'text/plain', strval(SEQUENCE_INITIALIZE));
 }
 
-function sequenceReceive($config, $runningData)
+function sequenceReceive($config,$runningData)
 {
 	outputLog('SEQUENCE_RECEIVE');
 
@@ -394,7 +394,7 @@ function sequenceReceive($config, $runningData)
 	copy($tempFilePath, $recvFilePath);
 }
 
-function sequencePrepare($config, $runningData)
+function sequencePrepare($config,$runningData)
 {
 	outputLog('SEQUENCE_PREPARE');
 
@@ -452,7 +452,7 @@ function sequencePrepare($config, $runningData)
 	}
 }
 
-function sequenceUpdate($config, $runningData)
+function sequenceUpdate($config,$runningData)
 {
 	outputLog('SEQUENCE_UPDATE');
 
@@ -645,6 +645,7 @@ if (!defined('NO_DEPLOY_START')) {
 //AUTO-GEN------------------------------------------------------------------------
 //AUTO-GEN-SETTING:FILE:PeServer/Core/Throws/CoreError.php
 //AUTO-GEN-SETTING:FILE:PeServer/Core/Throws/CoreException.php
+//AUTO-GEN-SETTING:FILE:PeServer/Core/Throws/IOException.php
 //AUTO-GEN-SETTING:FILE:PeServer/Core/Throws/FileNotFoundException.php
 //AUTO-GEN-SETTING:FILE:PeServer/Core/Throws/ParseException.php
 //AUTO-GEN-SETTING:FILE:PeServer/Core/Throws/ArgumentException.php
@@ -664,6 +665,13 @@ class CoreError extends Error
 	}
 }
 class CoreException extends Exception
+{
+	public function __construct($message = "", $code = 0, $previous = null)
+	{
+		parent::__construct($message, $code, $previous);
+	}
+}
+class IOException extends CoreException
 {
 	public function __construct($message = "", $code = 0, $previous = null)
 	{

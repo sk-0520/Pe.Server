@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Middleware;
 
-use PeServer\Core\HttpStatus;
+use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mvc\Middleware\IMiddleware;
 use PeServer\Core\Mvc\Middleware\MiddlewareResult;
 use PeServer\Core\Mvc\Middleware\MiddlewareArgument;
@@ -12,7 +12,7 @@ use PeServer\Core\Security;
 
 class CsrfMiddleware implements IMiddleware
 {
-	public function handle(MiddlewareArgument $argument): MiddlewareResult
+	public function handleBefore(MiddlewareArgument $argument): MiddlewareResult
 	{
 		$result = $argument->request->exists(Security::CSRF_REQUEST_KEY);
 		if (!$result['exists']) {
@@ -31,5 +31,10 @@ class CsrfMiddleware implements IMiddleware
 		}
 
 		return MiddlewareResult::error(HttpStatus::forbidden(), 'CSRF');
+	}
+
+	public final function handleAfter(MiddlewareArgument $argument): MiddlewareResult
+	{
+		return MiddlewareResult::none();
 	}
 }

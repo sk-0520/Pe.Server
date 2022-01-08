@@ -7,7 +7,7 @@ namespace PeServer\Core\Mvc\Middleware;
 use \Exception;
 use \LogicException;
 use PeServer\Core\Regex;
-use PeServer\Core\HttpStatus;
+use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\UrlUtility;
 use PeServer\Core\Store\CookieStore;
 use PeServer\Core\Store\SessionStore;

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc;
 
 use PeServer\Core\ILogger;
-use PeServer\Core\Mvc\ActionRequest;
+use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Store\CookieStore;
 use PeServer\Core\Store\SessionStore;
 use PeServer\Core\Store\TemporaryStore;
@@ -24,7 +24,7 @@ class LogicParameter
 	/**
 	 * リクエスト。
 	 *
-	 * @var ActionRequest
+	 * @var HttpRequest
 	 */
 	public $request;
 
@@ -32,7 +32,7 @@ class LogicParameter
 	public TemporaryStore $temporary;
 	public SessionStore $session;
 
-	public function __construct(ActionRequest $request, CookieStore $cookie, TemporaryStore $temporary, SessionStore $session, ILogger $logger)
+	public function __construct(HttpRequest $request, CookieStore $cookie, TemporaryStore $temporary, SessionStore $session, ILogger $logger)
 	{
 		$this->request = $request;
 		$this->cookie = $cookie;

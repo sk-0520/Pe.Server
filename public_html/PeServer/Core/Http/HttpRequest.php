@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core\Mvc;
+namespace PeServer\Core\Http;
 
 use PeServer\Core\Throws\KeyNotFoundException;
 
 /**
- * アクションに対するリクエストデータ。
+ * HTTPリクエストデータ。
  *
  * GET/POST/URLパラメータの値などはこいつから取得する。
  */
-class ActionRequest
+class HttpRequest
 {
 	public const REQUEST_NONE = 'none';
 	public const REQUEST_URL = 'url';

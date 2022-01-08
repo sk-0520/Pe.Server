@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc;
 
-use PeServer\Core\HttpStatus;
+use PeServer\Core\Http\HttpStatus;
 
 /**
  * View側のテンプレート生成用パラメータ。

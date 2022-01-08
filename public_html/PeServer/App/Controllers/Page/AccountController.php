@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\App\Controllers\Page;
 
 use PeServer\App\Models\Domains\UserLevel;
-use PeServer\Core\Mvc\ActionRequest;
+use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Mvc\IActionResult;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\ControllerBase;
@@ -27,7 +27,7 @@ final class AccountController extends PageControllerBase
 		parent::__construct($argument);
 	}
 
-	public function index(ActionRequest $request): IActionResult
+	public function index(HttpRequest $request): IActionResult
 	{
 		if ($this->isLoggedIn()) {
 			return $this->user($request);
@@ -36,7 +36,7 @@ final class AccountController extends PageControllerBase
 		}
 	}
 
-	public function login_get(ActionRequest $request): IActionResult
+	public function login_get(HttpRequest $request): IActionResult
 	{
 		if ($this->isLoggedIn()) {
 			return $this->redirectPath('account/user');
@@ -48,7 +48,7 @@ final class AccountController extends PageControllerBase
 		return $this->view('login', $logic->getViewData());
 	}
 
-	public function login_post(ActionRequest $request): IActionResult
+	public function login_post(HttpRequest $request): IActionResult
 	{
 		if ($this->isLoggedIn()) {
 			return $this->redirectPath('account/user');
@@ -68,7 +68,7 @@ final class AccountController extends PageControllerBase
 		return $this->view('login', $logic->getViewData());
 	}
 
-	public function logout(ActionRequest $request): IActionResult
+	public function logout(HttpRequest $request): IActionResult
 	{
 		$logic = $this->createLogic(AccountLogoutLogic::class, $request);
 		$logic->run(LogicCallMode::submit());
@@ -76,7 +76,7 @@ final class AccountController extends PageControllerBase
 		return $this->redirectPath('/');
 	}
 
-	public function user(ActionRequest $request): IActionResult
+	public function user(HttpRequest $request): IActionResult
 	{
 		$logic = $this->createLogic(AccountUserLogic::class, $request);
 		$logic->run(LogicCallMode::initialize());
@@ -84,7 +84,7 @@ final class AccountController extends PageControllerBase
 		return $this->view('user', $logic->getViewData());
 	}
 
-	public function user_edit_get(ActionRequest $request): IActionResult
+	public function user_edit_get(HttpRequest $request): IActionResult
 	{
 		$logic = $this->createLogic(AccountUserEditLogic::class, $request);
 		$logic->run(LogicCallMode::initialize());
@@ -92,7 +92,7 @@ final class AccountController extends PageControllerBase
 		return $this->view('user_edit', $logic->getViewData());
 	}
 
-	public function user_edit_post(ActionRequest $request): IActionResult
+	public function user_edit_post(HttpRequest $request): IActionResult
 	{
 		$logic = $this->createLogic(AccountUserEditLogic::class, $request);
 		if ($logic->run(LogicCallMode::submit())) {
@@ -102,7 +102,7 @@ final class AccountController extends PageControllerBase
 		return $this->view('user_edit', $logic->getViewData());
 	}
 
-	public function user_password_get(ActionRequest $request): IActionResult
+	public function user_password_get(HttpRequest $request): IActionResult
 	{
 		$logic = $this->createLogic(AccountUserPasswordLogic::class, $request);
 		$logic->run(LogicCallMode::initialize());
@@ -110,7 +110,7 @@ final class AccountController extends PageControllerBase
 		return $this->view('user_password', $logic->getViewData());
 	}
 
-	public function user_password_post(ActionRequest $request): IActionResult
+	public function user_password_post(HttpRequest $request): IActionResult
 	{
 		$logic = $this->createLogic(AccountUserPasswordLogic::class, $request);
 		if ($logic->run(LogicCallMode::submit())) {
@@ -120,7 +120,7 @@ final class AccountController extends PageControllerBase
 		return $this->view('user_password', $logic->getViewData());
 	}
 
-	public function user_email_get(ActionRequest $request): IActionResult
+	public function user_email_get(HttpRequest $request): IActionResult
 	{
 		$logic = $this->createLogic(AccountUserEmailLogic::class, $request);
 		$logic->run(LogicCallMode::initialize());
@@ -128,7 +128,7 @@ final class AccountController extends PageControllerBase
 		return $this->view('user_email', $logic->getViewData());
 	}
 
-	public function user_email_post(ActionRequest $request): IActionResult
+	public function user_email_post(HttpRequest $request): IActionResult
 	{
 		$logic = $this->createLogic(AccountUserEmailLogic::class, $request);
 		if ($logic->run(LogicCallMode::submit())) {
@@ -141,7 +141,7 @@ final class AccountController extends PageControllerBase
 		return $this->view('user_email', $logic->getViewData());
 	}
 
-	private function user_plugin_get_core(ActionRequest $request, bool $isRegister): IActionResult
+	private function user_plugin_get_core(HttpRequest $request, bool $isRegister): IActionResult
 	{
 		$logic = $this->createLogic(AccountUserPluginLogic::class, $request, $isRegister);
 		$logic->run(LogicCallMode::initialize());
@@ -149,7 +149,7 @@ final class AccountController extends PageControllerBase
 		return $this->view('user_plugin', $logic->getViewData());
 	}
 
-	private function user_plugin_post_core(ActionRequest $request, bool $isRegister): IActionResult
+	private function user_plugin_post_core(HttpRequest $request, bool $isRegister): IActionResult
 	{
 		$logic = $this->createLogic(AccountUserPluginLogic::class, $request, $isRegister);
 		if ($logic->run(LogicCallMode::submit())) {
@@ -162,22 +162,22 @@ final class AccountController extends PageControllerBase
 		return $this->view('user_plugin', $logic->getViewData());
 	}
 
-	public function user_plugin_register_get(ActionRequest $request): IActionResult
+	public function user_plugin_register_get(HttpRequest $request): IActionResult
 	{
 		return $this->user_plugin_get_core($request, true);
 	}
 
-	public function user_plugin_register_post(ActionRequest $request): IActionResult
+	public function user_plugin_register_post(HttpRequest $request): IActionResult
 	{
 		return $this->user_plugin_post_core($request, true);
 	}
 
-	public function user_plugin_update_get(ActionRequest $request): IActionResult
+	public function user_plugin_update_get(HttpRequest $request): IActionResult
 	{
 		return $this->user_plugin_get_core($request, false);
 	}
 
-	public function user_plugin_update_post(ActionRequest $request): IActionResult
+	public function user_plugin_update_post(HttpRequest $request): IActionResult
 	{
 		return $this->user_plugin_post_core($request, false);
 	}

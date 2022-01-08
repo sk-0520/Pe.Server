@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc;
 
+use PeServer\Core\Http\HttpResponse;
+
 /**
  * アクションメソッドの結果操作。
  */
 interface IActionResult
 {
 	/**
-	 *  * アクションメソッドの結果操作を実行。
-	 *
-	 * @return void
+	 * 結果操作からHTTPレスポンスを生成。
 	 */
-	public function output(): void;
+	public function createResponse(): HttpResponse;
+
 }

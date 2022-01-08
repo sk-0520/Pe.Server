@@ -11,6 +11,7 @@ use PeServer\Core\StringUtility;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\CoreError;
 use PeServer\Core\Throws\InvalidOperationException;
+use PeServer\Core\Throws\NotImplementedException;
 
 /**
  * セッション管理処理。
@@ -20,6 +21,11 @@ use PeServer\Core\Throws\InvalidOperationException;
  */
 class SessionStore
 {
+	public const APPLY_NORMAL = 0;
+	public const APPLY_CANCEL = 1;
+	public const APPLY_RESTART = 2;
+	public const APPLY_SHUTDOWN = 3;
+
 	private SessionOption $option;
 	private CookieStore $cookie;
 
@@ -35,6 +41,8 @@ class SessionStore
 	 * @var boolean
 	 */
 	private bool $isStarted  = false;
+
+	private int $applyState = self::APPLY_NORMAL;
 
 	/**
 	 * セッションの値に変更があったか。
@@ -61,15 +69,60 @@ class SessionStore
 		}
 	}
 
+	public function setApplyState(int $state): int
+	{
+		$oldValue = $this->applyState;
+
+		$this->applyState = $state;
+
+		return $oldValue;
+	}
+
+	private function applyCore(): void
+	{
+		$_SESSION = $this->values;
+		session_write_close();
+	}
+
 	/**
-	 * 一時セッションデータをセッションに反映。
+	 * 一時セッションデータを事前指定された適用種別に応じて反映。
 	 *
 	 * @return void
 	 */
 	public function apply(): void
 	{
-		$_SESSION = $this->values;
-		session_write_close();
+		switch ($this->applyState) {
+			case self::APPLY_NORMAL:
+				if ($this->isChanged()) {
+					if (!$this->isStarted()) {
+						$this->start();
+					}
+					$this->applyCore();
+				}
+				break;
+
+			case self::APPLY_CANCEL:
+				// なんもしない
+				break;
+
+			case self::APPLY_RESTART:
+				if ($this->isStarted()) {
+					$this->restart();
+				} else {
+					$this->start();
+				}
+				$this->applyCore();
+				break;
+
+			case self::APPLY_SHUTDOWN:
+				if ($this->isStarted()) {
+					$this->shutdown();
+				}
+				break;
+
+			default:
+				throw new NotImplementedException();
+		}
 	}
 
 	/**
@@ -143,6 +196,7 @@ class SessionStore
 		$this->cookie->remove($this->option->name);
 		session_destroy();
 	}
+
 
 	/**
 	 * セッションは変更されているか。

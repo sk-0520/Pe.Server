@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
-use PeServer\Core\Log\Logging;
 use \Throwable;
+use PeServer\Core\Log\Logging;
 use PeServer\Core\Mvc\Template;
-use PeServer\Core\Mvc\Validator;
 use PeServer\Core\Throws\Throws;
+use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mvc\TemplateParameter;
 use PeServer\Core\Throws\HttpStatusException;
 use PeServer\Core\Throws\InvalidOperationException;
+
 
 class ErrorHandler
 {

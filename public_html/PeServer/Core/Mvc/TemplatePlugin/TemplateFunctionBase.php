@@ -8,7 +8,6 @@ use \Smarty_Internal_Template;
 use PeServer\Core\Mvc\TemplatePlugin\TemplatePluginBase;
 use PeServer\Core\Mvc\TemplatePlugin\TemplatePluginArgument;
 
-
 abstract class TemplateFunctionBase extends TemplatePluginBase implements ITemplateFunction
 {
 	/**

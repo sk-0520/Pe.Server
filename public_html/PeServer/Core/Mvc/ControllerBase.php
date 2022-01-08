@@ -4,28 +4,24 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc;
 
-use \LogicException;
+use PeServer\Core\Bytes;
 use PeServer\Core\ILogger;
-use PeServer\Core\HttpStatus;
 use PeServer\Core\UrlUtility;
 use PeServer\Core\Log\Logging;
-use PeServer\Core\ArrayUtility;
-use PeServer\Core\Mvc\Template;
 use PeServer\Core\Mvc\LogicBase;
-use PeServer\Core\StringUtility;
-use PeServer\Core\ResponseOutput;
-use PeServer\Core\Mvc\ActionRequest;
+use PeServer\Core\Http\HttpStatus;
+use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Store\CookieStore;
 use PeServer\Core\Mvc\ActionResponse;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\Store\SessionStore;
-use PeServer\Core\Mvc\ViewActionResult;
 use PeServer\Core\Store\TemporaryStore;
-use PeServer\Core\Mvc\SessionNextState;
 use PeServer\Core\Mvc\TemplateParameter;
 use PeServer\Core\Mvc\ControllerArgument;
+use PeServer\Core\Mvc\Result\DataActionResult;
+use PeServer\Core\Mvc\Result\ViewActionResult;
+use PeServer\Core\Mvc\Result\RedirectActionResult;
 use PeServer\Core\Throws\InvalidOperationException;
-
 
 
 /**
@@ -59,18 +55,16 @@ abstract class ControllerBase
 		$this->cookie = $argument->cookie;
 		$this->temporary = $argument->temporary;
 		$this->session = $argument->session;
-
-		$this->logger->trace('CONTROLLER');
 	}
 
 	/**
 	 * ロジック用パラメータ生成処理。
 	 *
 	 * @param string $logicName ロジック名
-	 * @param ActionRequest $request リクエストデータ
+	 * @param HttpRequest $request リクエストデータ
 	 * @return LogicParameter
 	 */
-	protected function createParameter(string $logicName, ActionRequest $request): LogicParameter
+	protected function createParameter(string $logicName, HttpRequest $request): LogicParameter
 	{
 		return new LogicParameter(
 			$request,
@@ -85,10 +79,10 @@ abstract class ControllerBase
 	 * ロジック生成処理。
 	 *
 	 * @param string $logicClass ロジック完全名。
-	 * @param ActionRequest $request リクエストデータ
+	 * @param HttpRequest $request リクエストデータ
 	 * @return LogicBase
 	 */
-	protected function createLogic(string $logicClass, ActionRequest $request, mixed ...$parameters): LogicBase
+	protected function createLogic(string $logicClass, HttpRequest $request, mixed ...$parameters): LogicBase
 	{
 		if (!is_null($this->logic)) {
 			throw new InvalidOperationException();
@@ -99,60 +93,6 @@ abstract class ControllerBase
 		$logic = new $logicClass($parameter, ...$parameters);
 		$this->logic = $logic;
 		return $logic;
-	}
-
-	/**
-	 * ロジック側で指定されたセッションステータスに従ってセッション情報を設定。
-	 *
-	 * @return void
-	 * @throws InvalidOperationException ロジックが生成されていない。
-	 */
-	private function applySession(): void
-	{
-		if (is_null($this->logic)) {
-			throw new InvalidOperationException();
-		}
-
-		$nextState = $this->logic->sessionNextState();
-		switch ($nextState) {
-			case SessionNextState::NORMAL:
-				if ($this->session->isChanged()) {
-					if (!$this->session->isStarted()) {
-						$this->session->start();
-					}
-					$this->session->apply();
-				}
-				break;
-
-			case SessionNextState::CANCEL:
-				// なんもしない
-				break;
-
-			case SessionNextState::RESTART:
-				if ($this->session->isStarted()) {
-					$this->session->restart();
-				} else {
-					$this->session->start();
-				}
-				$this->session->apply();
-				break;
-
-			case SessionNextState::SHUTDOWN:
-				if ($this->session->isStarted()) {
-					$this->session->shutdown();
-				}
-				break;
-
-			default:
-				throw new LogicException();
-		}
-	}
-
-	private function applyStore(): void
-	{
-		$this->applySession();
-		$this->temporary->apply();
-		$this->cookie->apply();
 	}
 
 	/**
@@ -232,26 +172,11 @@ abstract class ControllerBase
 	/**
 	 * データ応答。
 	 *
-	 * @param ActionResponse $response 応答データ。
+	 * @param DataContent $content
 	 * @return DataActionResult
 	 */
-	protected function data(ActionResponse $response): DataActionResult
+	protected function data(DataContent $content): DataActionResult
 	{
-		return new DataActionResult($response, $this->getResponseHeaders());
-	}
-
-	/**
-	 * アクション結果操作の実行。
-	 *
-	 * @param IActionResult $result
-	 * @return void
-	 */
-	public function output(IActionResult $result): void
-	{
-		if (!is_null($this->logic)) {
-			$this->applyStore();
-		}
-
-		$result->output();
+		return new DataActionResult($content);
 	}
 }

@@ -6,7 +6,7 @@ namespace PeServer\App\Models\Domains\Page\Account;
 
 use PeServer\Core\I18n;
 use PeServer\Core\Uuid;
-use PeServer\Core\HttpStatus;
+use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\ArrayUtility;
 use PeServer\App\Models\AuditLog;
 use PeServer\Core\Database\Database;

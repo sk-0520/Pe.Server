@@ -7,14 +7,14 @@ namespace PeServer\App\Models;
 use PeServer\Core\Csrf;
 use PeServer\Core\Uuid;
 use PeServer\Core\Route;
-use PeServer\Core\HttpMethod;
-use PeServer\Core\HttpStatus;
 use PeServer\Core\IMiddleware;
 use PeServer\Core\RouteSetting;
+use PeServer\Core\Http\HttpMethod;
+use PeServer\Core\Http\HttpStatus;
+use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\MiddlewareResult;
 use PeServer\App\Models\AppDatabase;
 use PeServer\Core\Database\Database;
-use PeServer\Core\Mvc\ActionRequest;
 use PeServer\Core\MiddlewareArgument;
 use PeServer\App\Models\SessionManager;
 use PeServer\Core\Mvc\Middleware\CsrfMiddleware;
@@ -23,6 +23,7 @@ use PeServer\App\Controllers\Page\AccountController;
 use PeServer\App\Controllers\Page\SettingController;
 use PeServer\App\Models\Dao\Entities\PluginsEntityDao;
 use PeServer\App\Controllers\Api\DevelopmentController;
+use PeServer\Core\Mvc\Middleware\PerformanceShutdownMiddleware;
 use PeServer\App\Models\Domains\Middleware\DevelopmentMiddleware;
 use PeServer\App\Models\Domains\Middleware\UserAccountFilterMiddleware;
 use PeServer\App\Models\Domains\Middleware\SetupAccountFilterMiddleware;
@@ -45,6 +46,10 @@ abstract class RouteConfiguration
 	{
 		return new RouteSetting(
 			[],
+			[],
+			[
+				PerformanceShutdownMiddleware::class
+			],
 			[],
 			[
 				(new Route('', HomeController::class))

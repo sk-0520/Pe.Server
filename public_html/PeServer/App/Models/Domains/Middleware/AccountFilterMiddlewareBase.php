@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domains\Middleware;
 
-use PeServer\Core\HttpStatus;
+use PeServer\Core\Http\HttpStatus;
 use PeServer\App\Models\SessionManager;
 use PeServer\Core\Mvc\Middleware\IMiddleware;
 use PeServer\Core\Mvc\Middleware\MiddlewareResult;
@@ -36,8 +36,13 @@ abstract class AccountFilterMiddlewareBase implements IMiddleware
 
 	protected abstract function filter(MiddlewareArgument $argument): MiddlewareResult;
 
-	public final function handle(MiddlewareArgument $argument): MiddlewareResult
+	public final function handleBefore(MiddlewareArgument $argument): MiddlewareResult
 	{
 		return $this->filter($argument);
+	}
+
+	public final function handleAfter(MiddlewareArgument $argument): MiddlewareResult
+	{
+		return MiddlewareResult::none();
 	}
 }

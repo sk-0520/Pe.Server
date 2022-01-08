@@ -6,8 +6,8 @@ namespace PeServerTest\Core;
 
 use \LogicException;
 use PeServer\App\Models\RouteConfiguration;
-use PeServer\Core\HttpMethod;
-use PeServer\Core\RequestPath;
+use PeServer\Core\Http\HttpMethod;
+use PeServer\Core\Http\RequestPath;
 use PeServerTest\Data;
 use PeServerTest\TestClass;
 use PeServer\Core\Route;

@@ -2,7 +2,7 @@
 
 namespace PeServer\App\Controllers\Api;
 
-use PeServer\Core\Mvc\ActionRequest;
+use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\ControllerArgument;
 use PeServer\App\Controllers\Api\ApiControllerBase;
@@ -17,20 +17,20 @@ final class DevelopmentController extends ApiControllerBase
 		parent::__construct($argument);
 	}
 
-	public function initialize(ActionRequest $request): IActionResult
+	public function initialize(HttpRequest $request): IActionResult
 	{
 		// @phpstan-ignore-next-line DevelopmentInitializeLogic は phpstan 設定で読み込み除外(デプロイ処理周りの呼び出しなので全対応が現実的でない)
 		$logic = $this->createLogic(DevelopmentInitializeLogic::class, $request);
 		$logic->run(LogicCallMode::submit());
 
-		return $this->data($logic->getResponse());
+		return $this->data($logic->getContent());
 	}
 
-	public function administrator(ActionRequest $request): IActionResult
+	public function administrator(HttpRequest $request): IActionResult
 	{
 		$logic = $this->createLogic(DevelopmentAdministratorLogic::class, $request);
 		$logic->run(LogicCallMode::submit());
 
-		return $this->data($logic->getResponse());
+		return $this->data($logic->getContent());
 	}
 }

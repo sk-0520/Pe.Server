@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core;
+namespace PeServer\Core\Http;
 
+use PeServer\Core\StringUtility;
 use PeServer\Core\Throws\ArgumentException;
 
 class RequestPath

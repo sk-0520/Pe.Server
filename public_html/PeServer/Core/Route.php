@@ -7,14 +7,15 @@ namespace PeServer\Core;
 use \LogicException;
 use PeServer\Core\Regex;
 use PeServer\Core\Action;
-use PeServer\Core\HttpMethod;
-use PeServer\Core\HttpStatus;
-use PeServer\Core\RequestPath;
 use PeServer\Core\RouteAction;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\StringUtility;
+use PeServer\Core\Http\HttpMethod;
+use PeServer\Core\Http\HttpStatus;
+use PeServer\Core\Http\RequestPath;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Mvc\Middleware\IMiddleware;
+use PeServer\Core\Mvc\Middleware\IShutdownMiddleware;
 
 /**
  * ルーティング情報
@@ -49,6 +50,12 @@ class Route
 	 * @var array<IMiddleware|string>
 	 */
 	private array $baseMiddleware;
+	/**
+	 * Undocumented variable
+	 *
+	 * @var array<IShutdownMiddleware|string>
+	 */
+	private array $baseShutdownMiddleware;
 
 	/**
 	 * ルーティング情報にコントローラを登録
@@ -56,8 +63,9 @@ class Route
 	 * @param string $path URLとしてのパス。先頭が api/ajax 以外の場合に index アクションが自動登録される
 	 * @param string $className 使用されるクラス完全名
 	 * @param array<IMiddleware|string> $middleware ベースとなるミドルウェア。
+	 * @param array<IShutdownMiddleware|string> $shutdownMiddleware ベースとなる終了ミドルウェア。
 	 */
-	public function __construct(string $path, string $className, array $middleware = [])
+	public function __construct(string $path, string $className, array $middleware = [], array $shutdownMiddleware = [])
 	{
 		if (StringUtility::isNullOrEmpty($path)) {
 			$this->basePath = $path;
@@ -74,28 +82,23 @@ class Route
 		}
 
 		$this->baseMiddleware = $middleware;
+		$this->baseShutdownMiddleware = $shutdownMiddleware;
 		$this->className = $className;
 
 		if (!(StringUtility::startsWith($this->basePath, 'api', false) || StringUtility::startsWith($this->basePath, 'ajax', false))) {
-			$this->addAction('', HttpMethod::get(), 'index', $this->baseMiddleware);
+			$this->addAction('', HttpMethod::get(), 'index', $this->baseMiddleware, $this->baseShutdownMiddleware);
 		}
 	}
 
 	/**
-	 * アクション設定。
+	 * Undocumented function
 	 *
-	 * @param string $actionName URLとして使用されるパス, パス先頭が : でURLパラメータとなり、パラメータ名の @ 以降は一致正規表現となる。
-	 * @param HttpMethod $httpMethod 使用するHTTPメソッド。
-	 * @param string|null $methodName 呼び出されるコントローラメソッド。未指定なら $actionName が使用される。
-	 * @param array<IMiddleware|string>|null $middleware 専用ミドルウェア。 第一要素が CLEAR_MIDDLEWARE であれば既存のミドルウェアを破棄する。nullの場合はコンストラクタで渡されたミドルウェアが使用される。
-	 * @return Route
+	 * @param array<IMiddleware|IShutdownMiddleware|string> $baseMiddleware
+	 * @param array<IMiddleware|IShutdownMiddleware|string>|null $middleware
+	 * @return array<IMiddleware|IShutdownMiddleware|string>
 	 */
-	public function addAction(string $actionName, HttpMethod $httpMethod, ?string $methodName = null, ?array $middleware = null): Route
+	private static function getMiddleware(array $baseMiddleware, ?array $middleware = null): array
 	{
-		if (!isset($this->actions[$actionName])) {
-			$this->actions[$actionName] = new Action();
-		}
-
 		$customMiddleware = null;
 		if (ArrayUtility::getCount($middleware)) {
 			$customMiddleware = [];
@@ -107,19 +110,44 @@ class Route
 					$customMiddleware[] = $mw;
 				} else {
 					if ($mw !== self::CLEAR_MIDDLEWARE) {
-						$customMiddleware = array_merge($customMiddleware, $this->baseMiddleware);
+						$customMiddleware = array_merge($customMiddleware, $baseMiddleware);
 						$customMiddleware[] = $mw;
 					}
 				}
 			}
 		} else {
-			$customMiddleware = $this->baseMiddleware;
+			$customMiddleware = $baseMiddleware;
 		}
+
+		return $customMiddleware;
+	}
+
+	/**
+	 * アクション設定。
+	 *
+	 * @param string $actionName URLとして使用されるパス, パス先頭が : でURLパラメータとなり、パラメータ名の @ 以降は一致正規表現となる。
+	 * @param HttpMethod $httpMethod 使用するHTTPメソッド。
+	 * @param string|null $methodName 呼び出されるコントローラメソッド。未指定なら $actionName が使用される。
+	 * @param array<IMiddleware|string>|null $middleware 専用ミドルウェア。 第一要素が CLEAR_MIDDLEWARE であれば既存のミドルウェアを破棄する。nullの場合はコンストラクタで渡されたミドルウェアが使用される。
+	 * @param array<IShutdownMiddleware|string>|null $shutdownMiddleware 専用終了ミドルウェア。 第一要素が CLEAR_MIDDLEWARE であれば既存のミドルウェアを破棄する。nullの場合はコンストラクタで渡されたミドルウェアが使用される。
+	 * @return Route
+	 */
+	public function addAction(string $actionName, HttpMethod $httpMethod, ?string $methodName = null, ?array $middleware = null, ?array $shutdownMiddleware = null): Route
+	{
+		if (!isset($this->actions[$actionName])) {
+			$this->actions[$actionName] = new Action();
+		}
+
+		/** @var array<IMiddleware|string> */
+		$customMiddleware = self::getMiddleware($this->baseMiddleware, $middleware);
+		/** @var array<IShutdownMiddleware|string> */
+		$customShutdownMiddleware = self::getMiddleware($this->baseShutdownMiddleware, $shutdownMiddleware);
 
 		$this->actions[$actionName]->add(
 			$httpMethod,
 			StringUtility::isNullOrWhiteSpace($methodName) ? $actionName : $methodName, // @phpstan-ignore-line
-			$customMiddleware
+			$customMiddleware,
+			$customShutdownMiddleware
 		);
 
 		return $this;
@@ -142,6 +170,7 @@ class Route
 				$this->className,
 				'',
 				$urlParameters,
+				[],
 				[]
 			);
 		}
@@ -151,7 +180,8 @@ class Route
 			$this->className,
 			$actionValues['method'],
 			$urlParameters,
-			$actionValues['middleware']
+			$actionValues['middleware'],
+			$actionValues['shutdown_middleware']
 		);
 	}
 
@@ -169,6 +199,7 @@ class Route
 				HttpStatus::notFound(),
 				$this->className,
 				'',
+				[],
 				[],
 				[]
 			);
@@ -251,6 +282,7 @@ class Route
 				HttpStatus::notFound(),
 				$this->className,
 				'',
+				[],
 				[],
 				[]
 			);

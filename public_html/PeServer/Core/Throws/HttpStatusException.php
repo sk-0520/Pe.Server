@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Throws;
 
-use PeServer\Core\HttpStatus;
+use PeServer\Core\Http\HttpStatus;
 use \Throwable;
 use PeServer\Core\Throws;
 

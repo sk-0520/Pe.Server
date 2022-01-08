@@ -5,16 +5,15 @@ declare(strict_types=1);
 namespace PeServer\Core;
 
 use \Exception;
-use PeServer\Core\HttpStatus;
 use PeServer\Core\Log\Logging;
-use PeServer\Core\RequestPath;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\RouteSetting;
-use PeServer\Core\Mvc\Middleware\MiddlewareResult;
-use PeServer\Core\Mvc\Middleware\IMiddleware;
-use PeServer\Core\Mvc\Middleware\MiddlewareArgument;
+use PeServer\Core\Http\HttpMethod;
+use PeServer\Core\Http\HttpStatus;
+use PeServer\Core\Http\HttpRequest;
+use PeServer\Core\Http\RequestPath;
 use PeServer\Core\Mvc\ActionResult;
-use PeServer\Core\Mvc\ActionRequest;
+use PeServer\Core\Http\HttpResponse;
 use PeServer\Core\Mvc\IActionResult;
 use PeServer\Core\Store\CookieStore;
 use PeServer\Core\Store\StoreOption;
@@ -22,9 +21,15 @@ use PeServer\Core\Mvc\ControllerBase;
 use PeServer\Core\Store\CookieOption;
 use PeServer\Core\Store\SessionStore;
 use PeServer\Core\Store\SessionOption;
+use PeServer\Core\Http\ResponsePrinter;
 use PeServer\Core\Store\TemporaryStore;
+use PeServer\Core\Http\ICallbackContent;
 use PeServer\Core\Store\TemporaryOption;
 use PeServer\Core\Mvc\ControllerArgument;
+use PeServer\Core\Mvc\Middleware\IMiddleware;
+use PeServer\Core\Mvc\Middleware\MiddlewareResult;
+use PeServer\Core\Mvc\Middleware\MiddlewareArgument;
+use PeServer\Core\Mvc\Middleware\IShutdownMiddleware;
 
 /**
  * ルーティング。
@@ -54,6 +59,17 @@ class Routing
 	private array $processedMiddleware = [];
 
 	/**
+	 * 終了時ミドルウェア。
+	 *
+	 * 登録の逆順に実行される。
+	 *
+	 * @var array<IShutdownMiddleware|string>
+	 */
+	private array $shutdownMiddleware = [];
+
+	private HttpRequest $shutdownRequest;
+
+	/**
 	 * 生成。
 	 *
 	 * @param RouteSetting $routeSetting
@@ -68,28 +84,29 @@ class Routing
 		$this->session = new SessionStore($storeOption->session, $this->cookie);
 
 		$this->middlewareLogger = Logging::create('middleware');
+		$this->shutdownRequest = new HttpRequest([]);
 	}
 
 	/**
 	 * ミドルウェア単独処理。
 	 *
 	 * @param RequestPath $requestPath
-	 * @param ActionRequest $request
+	 * @param HttpRequest $request
 	 * @param IMiddleware|string $middleware
 	 * @return bool 次のミドルウェアを実行してよいか
 	 */
-	private function handleBeforeMiddlewareCore(RequestPath $requestPath, ActionRequest $request, IMiddleware|string $middleware): bool
+	private function handleBeforeMiddlewareCore(RequestPath $requestPath, HttpRequest $request, IMiddleware|string $middleware): bool
 	{
-		$middlewareArgument = new MiddlewareArgument(true, $requestPath, $this->cookie, $this->session, $request, $this->middlewareLogger);
+		$middlewareArgument = new MiddlewareArgument($requestPath, $this->cookie, $this->session, $request, $this->middlewareLogger);
 		if (is_string($middleware)) {
 			/** @var IMiddleware */
 			$middleware = new $middleware();
 		}
-		$this->processedMiddleware[] = $middleware;
 
-		$middlewareResult = $middleware->handle($middlewareArgument);
+		$middlewareResult = $middleware->handleBefore($middlewareArgument);
 
 		if ($middlewareResult->canNext()) {
+			$this->processedMiddleware[] = $middleware;
 			return true;
 		}
 
@@ -102,10 +119,10 @@ class Routing
 	 *
 	 * @param array<IMiddleware|string> $middleware
 	 * @param RequestPath $requestPath
-	 * @param ActionRequest $request
+	 * @param HttpRequest $request
 	 * @return bool 後続処理は可能か
 	 */
-	private function handleBeforeMiddleware(array $middleware, RequestPath $requestPath, ActionRequest $request): bool
+	private function handleBeforeMiddleware(array $middleware, RequestPath $requestPath, HttpRequest $request): bool
 	{
 		foreach ($middleware as $middlewareItem) {
 			$canNext = $this->handleBeforeMiddlewareCore($requestPath, $request, $middlewareItem);
@@ -118,21 +135,33 @@ class Routing
 	}
 
 	//TODO: 後処理を作るだけ作ったけどデータ転送処理がないからむりぽ
-	private function handleAfterMiddleware(RequestPath $requestPath, ActionRequest $request): void
+	private function handleAfterMiddleware(RequestPath $requestPath, HttpRequest $request, HttpResponse $response): bool
 	{
 		if (!ArrayUtility::getCount($this->processedMiddleware)) {
-			return;
+			return true;
 		}
 
-		$middlewareArgument = new MiddlewareArgument(true, $requestPath, $this->cookie, $this->session, $request, $this->middlewareLogger);
+		$middlewareArgument = new MiddlewareArgument($requestPath, $this->cookie, $this->session, $request, $this->middlewareLogger);
+		$middlewareArgument->response = $response;
+
 		$middleware = array_reverse($this->processedMiddleware);
 		foreach ($middleware as $middlewareItem) {
-			$middlewareResult = $middlewareItem->handle($middlewareArgument);
+			$middlewareResult = $middlewareItem->handleAfter($middlewareArgument);
 
-			if ($middlewareResult->canNext()) {
-				return;
+			if (!$middlewareResult->canNext()) {
+				$middlewareResult->apply();
+				return false;
 			}
 		}
+
+		return true;
+	}
+
+	private function applyStore(): void
+	{
+		$this->session->apply();
+		$this->temporary->apply();
+		$this->cookie->apply();
 	}
 
 	/**
@@ -143,21 +172,24 @@ class Routing
 	 * @param string $methodName
 	 * @param string[] $urlParameters
 	 * @param array<IMiddleware|string> $middleware
+	 * @param array<IShutdownMiddleware|string> $shutdownMiddleware
 	 * @return void
 	 */
-	private function executeAction(RequestPath $requestPath, string $rawControllerName, string $methodName, array $urlParameters, array $middleware): void
+	private function executeAction(RequestPath $requestPath, string $rawControllerName, string $methodName, array $urlParameters, array $middleware, array $shutdownMiddleware): void
 	{
 		$splitNames = StringUtility::split($rawControllerName, '/');
 		$controllerName = $splitNames[ArrayUtility::getCount($splitNames) - 1];
 
-		$request = new ActionRequest($urlParameters);
+		$this->shutdownRequest = $request = new HttpRequest($urlParameters);
 
 		// アクション共通ミドルウェア処理
+		$this->shutdownMiddleware += $this->setting->actionShutdownMiddleware;
 		if (!$this->handleBeforeMiddleware($this->setting->actionMiddleware, $requestPath, $request)) {
 			return;
 		}
 
 		// アクションに紐づくミドルウェア処理
+		$this->shutdownMiddleware += $shutdownMiddleware;
 		if (!$this->handleBeforeMiddleware($middleware, $requestPath, $request)) {
 			return;
 		}
@@ -165,11 +197,30 @@ class Routing
 		$logger = Logging::create($controllerName);
 		$controllerArgument = new ControllerArgument($this->cookie, $this->temporary, $this->session, $logger);
 
-		/** @var ControllerBase */
-		$controller = new $controllerName($controllerArgument);
-		/** @var IActionResult */
-		$actionResult = $controller->$methodName($request);
-		$controller->output($actionResult);
+		/** @var IActionResult|null */
+		$actionResult = null;
+		$output = OutputBuffer::get(function () use ($controllerArgument, $controllerName, $methodName, $request, &$actionResult) {
+			/** @var ControllerBase */
+			$controller = new $controllerName($controllerArgument);
+			/** @var IActionResult */
+			$actionResult = $controller->$methodName($request);
+		});
+		// 標準出力は闇に葬る
+		if ($output->getLength()) {
+			$logger->warn($output->getRaw());
+		}
+
+		$this->applyStore();
+
+		// 最終出力
+		/** @var IActionResult $actionResult */
+		$response = $actionResult->createResponse();
+		if (!$this->handleAfterMiddleware($requestPath, $request, $response)) {
+			return;
+		}
+
+		$printer = new ResponsePrinter($response);
+		$printer->print();
 	}
 
 	/**
@@ -183,10 +234,11 @@ class Routing
 	 */
 	private function executeCore(HttpMethod $requestMethod, RequestPath $requestPath): void
 	{
+		$this->shutdownMiddleware += $this->setting->globalShutdownMiddleware;
+
 		// グローバルミドルウェアの適用
 		if (ArrayUtility::getCount($this->setting->globalMiddleware)) {
-			$request = new ActionRequest([]);
-			if (!$this->handleBeforeMiddleware($this->setting->globalMiddleware, $requestPath, $request)) {
+			if (!$this->handleBeforeMiddleware($this->setting->globalMiddleware, $requestPath, $this->shutdownRequest)) {
 				return;
 			}
 		}
@@ -197,7 +249,7 @@ class Routing
 			$action = $route->getAction($requestMethod, $requestPath);
 			if (!is_null($action)) {
 				if ($action->status->code() === HttpStatus::none()->code()) {
-					$this->executeAction($requestPath, $action->className, $action->classMethod, $action->params, $action->middleware);
+					$this->executeAction($requestPath, $action->className, $action->classMethod, $action->params, $action->middleware, $action->shutdownMiddleware);
 					return;
 				} else if (is_null($errorAction)) {
 					$errorAction = $action;
@@ -223,6 +275,25 @@ class Routing
 	 */
 	public function execute(HttpMethod $requestMethod, RequestPath $requestPath): void
 	{
-		$this->executeCore($requestMethod, $requestPath);
+		try {
+			$this->executeCore($requestMethod, $requestPath);
+		} finally {
+			$this->shutdown($requestMethod, $requestPath);
+		}
+	}
+
+	private function shutdown(HttpMethod $requestMethod, RequestPath $requestPath): void
+	{
+		if (ArrayUtility::getCount($this->shutdownMiddleware)) {
+			$middlewareArgument = new MiddlewareArgument($requestPath, $this->cookie, $this->session, $this->shutdownRequest, $this->middlewareLogger);
+			$shutdownMiddleware = array_reverse($this->shutdownMiddleware);
+			foreach ($shutdownMiddleware as $middleware) {
+				if (is_string($middleware)) {
+					/** @var IShutdownMiddleware */
+					$middleware = new $middleware();
+				}
+				$middleware->handleShutdown($middlewareArgument);
+			}
+		}
 	}
 }

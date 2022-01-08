@@ -8,13 +8,13 @@ require_once(__DIR__ . '/PeServer/Core/AutoLoader.php');
 
 use PeServer\Core\Routing;
 use PeServer\Core\AutoLoader;
-use PeServer\Core\RequestPath;
+use PeServer\Core\Http\RequestPath;
 use PeServer\App\Models\AppRouting;
 use PeServer\App\Models\Initializer;
 use PeServer\Core\Store\CookieOption;
 use PeServer\App\Models\RouteConfiguration;
 use PeServer\App\Models\StoreConfiguration;
-use PeServer\Core\HttpMethod;
+use PeServer\Core\Http\HttpMethod;
 
 ini_set('display_errors', '1');
 error_reporting(E_ALL);

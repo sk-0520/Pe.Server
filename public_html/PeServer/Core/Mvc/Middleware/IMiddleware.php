@@ -9,18 +9,22 @@ use PeServer\Core\Mvc\Middleware\MiddlewareArgument;
 
 /**
  * ミドルウェア。
- *
- * 入力しか受け付けませーん。
  */
 interface IMiddleware
 {
 	/**
-	 * 処理内容。
-	 *
-	 * callable で書くのがしんどいんよ。
+	 * 前処理。
 	 *
 	 * @param MiddlewareArgument $argument
 	 * @return MiddlewareResult
 	 */
-	public function handle(MiddlewareArgument $argument): MiddlewareResult;
+	public function handleBefore(MiddlewareArgument $argument): MiddlewareResult;
+
+	/**
+	 * 後処理。
+	 *
+	 * @param MiddlewareArgument $argument
+	 * @return MiddlewareResult
+	 */
+	public function handleAfter(MiddlewareArgument $argument): MiddlewareResult;
 }

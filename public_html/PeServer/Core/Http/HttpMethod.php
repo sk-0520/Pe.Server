@@ -2,8 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core;
+namespace PeServer\Core\Http;
 
+use PeServer\Core\Collection;
+use PeServer\Core\StringUtility;
+use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\HttpStatusException;
 

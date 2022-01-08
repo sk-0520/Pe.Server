@@ -10,7 +10,7 @@ use PeServer\Core\ILogger;
 use PeServer\Core\Log\Logging;
 use PeServer\Core\Mvc\LogicBase;
 use PeServer\Core\Mvc\ActionResponse;
-use PeServer\Core\HttpStatusCode;
+use PeServer\Core\Http\HttpStatusCode;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\Throws\CoreException;
@@ -58,13 +58,12 @@ class DevelopmentInitializeLogic extends ApiLogicBase
 			}
 		};
 
-		$deployScript = new \DeployScript($scriptArgument);  // @phpstan-ignore-line
+		$deployScript = new \DeployScript($scriptArgument); // @phpstan-ignore-line
 		$deployScript->migrate(AppConfiguration::$config['persistence']);
 
 
-		$response = ActionResponse::json([
-			'success' => true
+		$this->setContent(Mime::JSON, [
+			'success' => true,
 		]);
-		$this->setResponse($response);
 	}
 }

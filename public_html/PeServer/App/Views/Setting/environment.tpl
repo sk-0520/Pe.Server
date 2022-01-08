@@ -2,6 +2,6 @@
 {block name='TITLE'}セットアップ{/block}
 {block name='BODY'}
 
-{phpinfo()}
+{$values.phpinfo nofilter}
 
 {/block}

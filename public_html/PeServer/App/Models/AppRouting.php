@@ -6,14 +6,14 @@ namespace PeServer\App\Models;
 
 use PeServer\Core\Route;
 use PeServer\Core\Routing;
-use PeServer\Core\RequestPath;
+use PeServer\Core\Http\RequestPath;
 use PeServer\Core\RouteSetting;
 use PeServer\Core\IMiddleware;
 use PeServer\Core\Store\StoreOption;
 use PeServer\Core\Store\CookieOption;
 use PeServer\Core\Store\SessionOption;
 use PeServer\App\Models\SessionManager;
-use PeServer\Core\HttpMethod;
+use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Store\TemporaryOption;
 
 class AppRouting extends Routing

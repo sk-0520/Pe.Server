@@ -6,20 +6,21 @@ namespace PeServer\Core\Mvc;
 
 use \DateInterval;
 use PeServer\Core\I18n;
+use PeServer\Core\Bytes;
 use PeServer\Core\ILogger;
-use PeServer\Core\HttpStatus;
 use PeServer\Core\ArrayUtility;
-use PeServer\Core\Store\SessionStore;
-use PeServer\Core\Mvc\ActionRequest;
 use PeServer\Core\StringUtility;
-use PeServer\Core\Mvc\ActionResponse;
+use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mvc\Validations;
-use PeServer\Core\Mvc\LogicParameter;
-use PeServer\Core\Mvc\SessionNextState;
-use PeServer\Core\Mvc\IValidationReceiver;
-use PeServer\Core\Store\CookieOption;
+use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Store\CookieStore;
+use PeServer\Core\Mvc\ActionResponse;
+use PeServer\Core\Mvc\LogicParameter;
+use PeServer\Core\Store\CookieOption;
+use PeServer\Core\Store\SessionStore;
+use PeServer\Core\Mvc\SessionNextState;
 use PeServer\Core\Store\TemporaryStore;
+use PeServer\Core\Mvc\IValidationReceiver;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\NotImplementedException;
 use PeServer\Core\Throws\InvalidOperationException;
@@ -40,7 +41,7 @@ abstract class LogicBase implements IValidationReceiver
 	/**
 	 * リクエストデータ。
 	 *
-	 * @var ActionRequest
+	 * @var HttpRequest
 	 */
 	private $request;
 
@@ -85,14 +86,13 @@ abstract class LogicBase implements IValidationReceiver
 	/**
 	 * 応答データ。
 	 *
-	 * @var ActionResponse|null
+	 * @var DataContent|null
 	 */
-	private $response = null;
+	private $content = null;
 
 	private CookieStore $cookie;
 	private TemporaryStore $temporary;
 	private SessionStore $session;
-	private int $sessionNextState = SessionNextState::NORMAL;
 
 	/**
 	 * 応答ヘッダ。
@@ -109,8 +109,6 @@ abstract class LogicBase implements IValidationReceiver
 		$this->temporary = $parameter->temporary;
 		$this->session = $parameter->session;
 		$this->logger = $parameter->logger;
-
-		$this->logger->trace('LOGIC');
 
 		$this->validator = new Validator($this);
 	}
@@ -137,6 +135,17 @@ abstract class LogicBase implements IValidationReceiver
 
 		return $value;
 	}
+
+	protected function setHttpStatus(HttpStatus $httpStatus): void
+	{
+		$this->httpStatus = $httpStatus;
+	}
+
+	public function getHttpStatus(): HttpStatus
+	{
+		return $this->httpStatus;
+	}
+
 
 	protected function getCookie(string $key, string $default = ''): string
 	{
@@ -220,19 +229,15 @@ abstract class LogicBase implements IValidationReceiver
 	}
 	protected function cancelSession(): void
 	{
-		$this->sessionNextState = SessionNextState::CANCEL;
+		$this->session->setApplyState(SessionStore::APPLY_CANCEL);
 	}
 	protected function restartSession(): void
 	{
-		$this->sessionNextState = SessionNextState::RESTART;
+		$this->session->setApplyState(SessionStore::APPLY_RESTART);
 	}
 	protected function shutdownSession(): void
 	{
-		$this->sessionNextState = SessionNextState::SHUTDOWN;
-	}
-	public function sessionNextState(): int
-	{
-		return $this->sessionNextState;
+		$this->session->setApplyState(SessionStore::APPLY_SHUTDOWN);
 	}
 
 	public function addResponseHeader(string $name, string $value): void
@@ -463,27 +468,28 @@ abstract class LogicBase implements IValidationReceiver
 	/**
 	 * 応答データ設定。
 	 *
-	 * @param ActionResponse $response
+	 * @param string $mime
+	 * @param string|array<mixed>|Bytes $data
 	 * @return void
 	 */
-	protected function setResponse(ActionResponse $response)
+	protected function setContent(string $mime, $data): void
 	{
-		$this->response = $response;
+		$this->content = new DataContent(HttpStatus::none(), $mime, $data);
 	}
 
 	/**
 	 * 応答データ取得。
 	 *
-	 * @return ActionResponse
+	 * @return DataContent
 	 * @throws InvalidOperationException 応答データ未設定
 	 */
-	public function getResponse(): ActionResponse
+	public function getContent(): DataContent
 	{
-		if (is_null($this->response)) {
+		if (is_null($this->content)) {
 			throw new InvalidOperationException('not impl');
 		}
 
-		return $this->response;
+		return new DataContent($this->httpStatus, $this->content->mime, $this->content->data);
 	}
 
 	/**

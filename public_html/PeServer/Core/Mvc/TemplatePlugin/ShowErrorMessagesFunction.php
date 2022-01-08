@@ -14,6 +14,7 @@ use PeServer\Core\HtmlDocument;
 use PeServer\Core\Mvc\Validator;
 use PeServer\Core\Throws\CoreException;
 use PeServer\Core\Mvc\TemplatePlugin\TemplateFunctionBase;
+use PeServer\Core\Mvc\TemplatePlugin\TemplatePluginArgument;
 
 /**
  * エラーメッセージ表示。

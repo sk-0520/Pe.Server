@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Domains\Page\Account;
 
 use PeServer\Core\I18n;
-use PeServer\Core\HttpStatus;
+use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mvc\Template;
 use PeServer\Core\Mvc\Validator;
 use PeServer\Core\StringUtility;

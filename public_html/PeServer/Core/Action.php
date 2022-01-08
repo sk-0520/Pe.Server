@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
-use PeServer\Core\HttpMethod;
+use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Mvc\Middleware\IMiddleware;
+use PeServer\Core\Mvc\Middleware\IShutdownMiddleware;
 
 /**
  * HTTPメソッドとコントローラメソッドを紐づける。
@@ -19,7 +20,7 @@ class Action
 	 * HTTPメソッドとコントローラメソッドがペアになる。
 	 * 後入れ優先。
 	 *
-	 * @var array<string,array{method:string,middleware:array<IMiddleware|string>}>
+	 * @var array<string,array{method:string,middleware:array<IMiddleware|string>,shutdown_middleware:array<IShutdownMiddleware|string>}>
 	 */
 	private $map = array();
 
@@ -29,13 +30,15 @@ class Action
 	 * @param HttpMethod $httpMethod HTTPメソッド
 	 * @param string $callMethod コントローラメソッド。
 	 * @param array<IMiddleware|string> $middleware
+	 * @param array<IShutdownMiddleware|string> $shutdownMiddleware
 	 */
-	public function add(HttpMethod $httpMethod, string $callMethod, array $middleware): void
+	public function add(HttpMethod $httpMethod, string $callMethod, array $middleware, array $shutdownMiddleware): void
 	{
 		foreach ($httpMethod->methods() as $method) {
 			$this->map[$method] = [
 				'method' => $callMethod,
 				'middleware' => $middleware,
+				'shutdown_middleware' => $shutdownMiddleware,
 			];
 		}
 	}
@@ -44,7 +47,7 @@ class Action
 	 * 取得。
 	 *
 	 * @param httpMethod $httpMethod HTTPメソッド
-	 * @return array{method:string,middleware:array<IMiddleware|string>}>|null あった場合はクラスメソッド、なければ null
+	 * @return array{method:string,middleware:array<IMiddleware|string>,shutdown_middleware:array<IShutdownMiddleware|string>}>|null あった場合はクラスメソッド、なければ null
 	 */
 	public function get(httpMethod $httpMethod): ?array
 	{

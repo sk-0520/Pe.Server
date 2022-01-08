@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Domains\Middleware;
 
 use PeServer\Core\Uuid;
-use PeServer\Core\HttpStatus;
+use PeServer\Core\Http\HttpStatus;
 use PeServer\App\Models\AppDatabase;
-use PeServer\Core\Mvc\ActionRequest;
+use PeServer\Core\Http\HttpRequest;
 use PeServer\App\Models\SessionManager;
 use PeServer\Core\Mvc\Middleware\IMiddleware;
 use PeServer\Core\Mvc\Middleware\MiddlewareResult;
@@ -17,10 +17,10 @@ use PeServer\App\Models\Dao\Entities\PluginsEntityDao;
 
 final class UserPluginEditFilterMiddleware implements IMiddleware
 {
-	public final function handle(MiddlewareArgument $argument): MiddlewareResult
+	public final function handleBefore(MiddlewareArgument $argument): MiddlewareResult
 	{
 		$pluginIdState = $argument->request->exists('plugin_id');
-		if ($pluginIdState['exists'] && $pluginIdState['type'] === ActionRequest::REQUEST_URL) {
+		if ($pluginIdState['exists'] && $pluginIdState['type'] === HttpRequest::REQUEST_URL) {
 			$pluginId = $argument->request->getValue('plugin_id');
 			// ここにきてるってことはユーザーフィルタを通過しているのでセッションを見る必要はないけど一応ね
 			if (Uuid::isGuid($pluginId) && SessionManager::existsAccount()) {
@@ -35,5 +35,10 @@ final class UserPluginEditFilterMiddleware implements IMiddleware
 		}
 
 		return MiddlewareResult::error(HttpStatus::notFound());
+	}
+
+	public function handleAfter(MiddlewareArgument $argument): MiddlewareResult
+	{
+		return MiddlewareResult::none();
 	}
 }

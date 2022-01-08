@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models;
 
-use PeServer\Core\Environment;
 use \Throwable;
+use PeServer\Core\Environment;
 use PeServer\Core\Log\Logging;
-use PeServer\Core\RequestPath;
+use PeServer\Core\Http\RequestPath;
 use PeServer\Core\ErrorHandler;
 use PeServer\Core\StringUtility;
+use PeServer\App\Models\AppTemplate;
 
 final class AppErrorHandler extends ErrorHandler
 {
