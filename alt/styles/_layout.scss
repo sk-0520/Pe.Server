@@ -1,0 +1,237 @@
+@import "variable";
+@import "responsive";
+
+$break: $mediaPhone;
+
+@mixin links {
+	ul {
+		height: 100%;
+
+		li {
+			height: 100%;
+			display: inline-block;
+
+			& + li {
+				margin-left: 1rem;
+			}
+
+			a {
+				height: 100%;
+
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				padding-left: 1rem;
+				padding-right: 1rem;
+			}
+		}
+	}
+}
+
+* {
+	transition-property: all;
+	transition-duration: 0.25s;
+}
+
+body {
+	color: #111;
+	background-color: rgb(231, 173, 173);
+
+	height: calc(100% - #{$pcAdvertisingHeight});
+	@include media($break) {
+		height: calc(100% - #{$spAdvertisingHeight});
+	}
+
+	main {
+		#title {
+			position: fixed;
+			top: 0;
+			left: 0;
+			right: 0;
+			height: $pcTitleHeight;
+
+			font-size: 16pt;
+			font-weight: bold;
+			line-height: $pcTitleHeight;
+			padding-left: 1rem;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			overflow: hidden;
+
+			background: orange;
+
+			@include media($break) {
+				display: block;
+				position: relative;
+				width: calc(100% - #{$spNavigationWidth});
+				height: $spTitleHeight;
+				line-height: $spTitleHeight;
+				margin-top: $spAdvertisingHeight;
+				padding-left: 0;
+				text-align: center;
+
+				background: rgb(26, 151, 26);
+			}
+		}
+
+		#content {
+			margin-top: $pcTitleHeight + $pcHeaderHeight;
+			margin-bottom: $pcFooterHeight + $pcAdvertisingHeight;
+			padding: 2rem 4rem 3rem;
+
+			background: lime;
+
+			@include media($break) {
+				margin-top: 0;
+				margin-bottom: $spFooterHeight;
+				padding: 2rem 2rem 3rem;
+				position: inherit;
+				height: inherit;
+
+				background: rgb(104, 127, 190);
+			}
+		}
+
+		// 一旦こいつらは後回し
+		.common {
+			margin-top: $pcTitleHeight + $pcHeaderHeight;
+			@include media($break) {
+				margin-top: 0;
+			}
+
+			&.messages {
+				color:lime;
+			}
+			&.error {
+				color:red;
+			}
+		}
+
+		.common.messages + #content {
+			margin-top: 0;
+		}
+		.common.error + #content {
+			margin-top: 0;
+		}
+	}
+
+	nav {
+		display: none;
+
+		@include media($break) {
+			display: block;
+			height: $spTitleHeight;
+			position: absolute;
+			top: $spAdvertisingHeight;
+			right: 0;
+
+			details {
+				summary {
+					display: block;
+					margin-left: auto;
+					background-color: lightblue;
+					height: $spTitleHeight;
+					width: $spNavigationWidth;
+				}
+				.menu {
+					background-color: coral;
+					border-radius: 1em 0 0 1em;
+
+					padding: 1rem;
+
+					li {
+						height: 100%;
+
+						& + li {
+							border-top: 1px dotted black;
+						}
+
+						a {
+							display: block;
+							text-align: right;
+							padding: 1rem;
+							height: 100%;
+							line-height: 1rem;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	header {
+		position: absolute;
+		top: $pcTitleHeight;
+		right: 0;
+		height: $pcHeaderHeight;
+		padding-right: 2rem;
+
+		background: skyblue;
+
+		@include media($break) {
+			position: inherit;
+			height: inherit;
+			display: none;
+
+			background: rgb(197, 182, 44);
+		}
+
+		@include links();
+	}
+
+	footer {
+		position: fixed;
+		bottom: $pcAdvertisingHeight;
+		left: 0;
+		right: 0;
+		height: $pcFooterHeight;
+		text-align: center;
+
+		background: pink;
+
+		@include media($break) {
+			position: fixed;
+			bottom: 0;
+			height: $spFooterHeight;
+
+			background: rgb(181, 6, 197);
+		}
+
+		@include links();
+	}
+
+	#advertising {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		height: $pcAdvertisingHeight;
+		text-align: center;
+
+		background: red;
+
+		@include media($break) {
+			position: absolute;
+			top: 0;
+			height: $spAdvertisingHeight;
+
+			background: rgb(27, 212, 21);
+		}
+
+		a {
+			&:link,
+			&:visited,
+			&:after,
+			&:hover,
+			&:active {
+				height: 0;
+				transition: none;
+			}
+
+			img {
+				max-width: 100%;
+				height: auto;
+			}
+		}
+	}
+}

@@ -1,10 +1,17 @@
-$color: #111;
-$background-color: #eee;
+$pcTitleHeight: 60px;
+$spTitleHeight: 40px;
 
-$pcTitleHeight: 30px;
-$pcHeaderHeight: 30px;
+$pcHeaderHeight: 60px;
+$spHeaderHeight: 40px;
+
+$pcAdvertisingHeight: 60px;
+$spAdvertisingHeight: 60px;
+
+$spNavigationWidth: 40px;
 
 $pcFooterHeight: 30px;
-$pcAdvertisingHeight: 60px;
+$spFooterHeight: 30px;
 
-$spAdvertisingHeight: 60px;
+$normalLinkColor: #00f;
+$visitedLinkColor: #f0f;
+$activeLinkColor: #0ff;
