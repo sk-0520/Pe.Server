@@ -58,6 +58,7 @@ class CookieOption
 			return 0;
 		}
 
-		return ($this->span->d * 24 * 60) + ($this->span->h * 60) + $this->span->i;
+		$result = ($this->span->d * 24 * 60) + ($this->span->h * 60) + $this->span->i;
+		return $result;
 	}
 }

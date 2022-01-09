@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Store;
 
+use \DateTime;
 use \DateInterval;
+use \DateTimeZone;
 use PeServer\Core\FileUtility;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Cryptography;
@@ -13,7 +15,9 @@ use PeServer\Core\Store\CookieOption;
 use PeServer\Core\Throws\CoreException;
 use PeServer\Core\Throws\CryptoException;
 use PeServer\Core\Throws\ArgumentException;
+use PeServer\Core\Throws\ArgumentNullException;
 use PeServer\Core\Throws\InvalidOperationException;
+use PeServer\Core\Utc;
 
 /**
  * 一時データ管理処理。
@@ -58,6 +62,9 @@ class TemporaryStore
 		if (StringUtility::isNullOrWhiteSpace($option->savePath)) {
 			throw new ArgumentException('$option->savePath');
 		}
+		if (is_null($option->cookie->span)) {
+			throw new ArgumentNullException('$option->cookie->span');
+		}
 
 		$this->option = $option;
 		$this->cookie = $cookie;
@@ -98,10 +105,13 @@ class TemporaryStore
 		}
 
 		if (ArrayUtility::getCount($this->values)) {
-			$this->cookie->set($this->option->name, $id);
+			$this->cookie->set($this->option->name, $id, $this->option->cookie);
 
 			FileUtility::createParentDirectoryIfNotExists($path);
-			FileUtility::writeJsonFile($path, $this->values);
+			FileUtility::writeJsonFile($path, [
+				'timestamp' => Utc::createString(),
+				'values' => $this->values
+			]);
 		} else {
 			$this->cookie->remove($this->option->name);
 
@@ -133,7 +143,23 @@ class TemporaryStore
 		/** @var array<string,mixed> */
 		$json = FileUtility::readJsonFile($path);
 
-		$this->values = array_replace($json, $this->values);
+		$timestamp = ArrayUtility::getOr($json, 'timestamp', '');
+		if (StringUtility::isNullOrWhiteSpace($timestamp)) {
+			return;
+		}
+		if (!Utc::tryParse($timestamp, $datetime)) {
+			return;
+		}
+		/** @var \DateInterval */
+		$span = $this->option->cookie->span;
+		$saveTimestamp = $datetime->add($span);
+		$currentTimestamp = Utc::create();
+
+		if ($saveTimestamp < $currentTimestamp) {
+			return;
+		}
+
+		$this->values = array_replace(ArrayUtility::getOr($json, 'values', []), $this->values);
 	}
 
 	/**

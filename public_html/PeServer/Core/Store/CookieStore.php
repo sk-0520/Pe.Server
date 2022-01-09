@@ -77,7 +77,11 @@ class CookieStore
 
 		foreach ($this->values as $key => $cookie) {
 			$option = $cookie['option'];
-			setcookie($key, $cookie['data'], $option->getTotalMinutes(), $option->path, '', $option->secure, $option->httpOnly);
+			$minutes = $option->getTotalMinutes();
+			if ($minutes) {
+				$minutes = time() + ($minutes * 60);
+			}
+			setcookie($key, $cookie['data'], $minutes, $option->path, '', $option->secure, $option->httpOnly);
 		}
 	}
 

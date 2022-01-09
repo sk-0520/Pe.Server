@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models;
 
+use DateInterval;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Store\StoreOption;
 use PeServer\Core\Store\CookieOption;
@@ -12,6 +13,28 @@ use PeServer\Core\Store\TemporaryOption;
 
 abstract class StoreConfiguration
 {
+	/**
+	 * Undocumented function
+	 *
+	 * @param CookieOption $base
+	 * @param array<string,mixed>|null $setting
+	 * @return CookieOption
+	 */
+	private static function mergeCookie(CookieOption $base, ?array $setting): CookieOption
+	{
+		//get_object_vars($base);
+		$baseSetting = [
+			'path' => $base->path,
+			'span' => $base->span,
+			'secure' => $base->secure,
+			'httpOnly' => $base->httpOnly,
+		];
+		$overwriteSetting = array_replace_recursive($baseSetting, $setting); // @phpstan-ignore-line
+		$overwriteCookie = self::getCookie($overwriteSetting);
+
+		return $overwriteCookie;
+	}
+
 	/**
 	 * クッキー設定を取得。
 	 *
@@ -22,9 +45,16 @@ abstract class StoreConfiguration
 	{
 		$cookie = ArrayUtility::getOr($setting, 'cookie', null);
 
+		$spanSetting = ArrayUtility::getOr($cookie, 'span', null);
+		/** @var DateInterval|null */
+		$span = null;
+		if (!is_null($spanSetting)) {
+			$span = new DateInterval($spanSetting);
+		}
+
 		$option = CookieOption::create(
 			ArrayUtility::getOr($cookie, 'path', '/'),
-			ArrayUtility::getOr($cookie, 'span', null),
+			$span,
 			ArrayUtility::getOr($cookie, 'secure', false),
 			ArrayUtility::getOr($cookie, 'httpOnly', true)
 		);
@@ -42,11 +72,15 @@ abstract class StoreConfiguration
 	public static function getTemporary(?array $setting, CookieOption $cookie): TemporaryOption
 	{
 		$temporary = ArrayUtility::getOr($setting, 'temporary', null);
+		$overwriteCookie = self::mergeCookie($cookie, $temporary);
+		if (is_null($overwriteCookie->span)) {
+			$overwriteCookie->span = new DateInterval('PT30M');
+		}
 
 		$option = TemporaryOption::create(
 			ArrayUtility::getOr($temporary, 'name', 'TEMP'),
 			ArrayUtility::getOr($temporary, 'save', './temp'),
-			$cookie
+			$overwriteCookie
 		);
 
 		return $option;
@@ -62,11 +96,12 @@ abstract class StoreConfiguration
 	public static function getSession(?array $setting, CookieOption $cookie): SessionOption
 	{
 		$session = ArrayUtility::getOr($setting, 'session', null);
+		$overwriteCookie = self::mergeCookie($cookie, $session);
 
 		$option = SessionOption::create(
 			ArrayUtility::getOr($session, 'name', 'PHPSESSID'),
 			ArrayUtility::getOr($session, 'save', ''),
-			$cookie
+			$overwriteCookie
 		);
 
 		return $option;

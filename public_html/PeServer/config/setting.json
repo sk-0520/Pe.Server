@@ -19,11 +19,15 @@
 		},
 		"session": {
 			"name": "pe-sid",
-			"save": "$(BASE)/data/store/session"
+			"save": "$(BASE)/data/store/session",
+			"cookie": {}
 		},
 		"temporary": {
 			"name": "pe-temp",
-			"save": "$(BASE)/data/store/temporary"
+			"save": "$(BASE)/data/store/temporary",
+			"cookie": {
+				"span": "PT3M"
+			}
 		}
 	},
 	"crypto": {
