@@ -17,7 +17,7 @@ abstract class TemplateFunctionBase extends TemplatePluginBase implements ITempl
 	 */
 	protected array $params;
 
-	protected Smarty_Internal_Template $smarty;
+	protected Smarty_Internal_Template $template;
 
 	protected function __construct(TemplatePluginArgument $argument)
 	{
@@ -26,17 +26,17 @@ abstract class TemplateFunctionBase extends TemplatePluginBase implements ITempl
 
 	protected abstract function functionBodyImpl(): string;
 
-	public function functionBody(array $params, Smarty_Internal_Template $smarty): string
+	public function functionBody(array $params, Smarty_Internal_Template $template): string
 	{
 		$this->params = $params;
-		$this->smarty = $smarty;
+		$this->template = $template;
 
 		return $this->functionBodyImpl();
 	}
 
 	protected function existsError(): bool
 	{
-		return $this->existsSmartyError($this->smarty);
+		return $this->existsSmartyError($this->template);
 	}
 	/**
 	 * Undocumented function
@@ -45,12 +45,12 @@ abstract class TemplateFunctionBase extends TemplatePluginBase implements ITempl
 	 */
 	protected function getErrors(): array
 	{
-		return $this->getSmartyErrors($this->smarty);
+		return $this->getSmartyErrors($this->template);
 	}
 
 	protected function existsValues(): bool
 	{
-		return $this->existsSmartyValues($this->smarty);
+		return $this->existsSmartyValues($this->template);
 	}
 	/**
 	 * Undocumented function
@@ -59,6 +59,6 @@ abstract class TemplateFunctionBase extends TemplatePluginBase implements ITempl
 	 */
 	protected function getValues(): array
 	{
-		return $this->getSmartyValues($this->smarty);
+		return $this->getSmartyValues($this->template);
 	}
 }

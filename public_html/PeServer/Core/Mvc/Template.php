@@ -12,9 +12,11 @@ use PeServer\Core\StringUtility;
 use PeServer\Core\InitializeChecker;
 use PeServer\Core\Mvc\TemplatePlugin\CsrfFunction;
 use PeServer\Core\Mvc\TemplatePlugin\AssetFunction;
+use PeServer\Core\Mvc\TemplatePlugin\MarkdownFunction;
 use PeServer\Core\Mvc\TemplatePlugin\ITemplateFunction;
 use PeServer\Core\Mvc\TemplatePlugin\InputHelperFunction;
 use PeServer\Core\Mvc\TemplatePlugin\BotTextImageFunction;
+use PeServer\Core\Mvc\TemplatePlugin\ITemplateBlockFunction;
 use PeServer\Core\Mvc\TemplatePlugin\TemplatePluginArgument;
 use PeServer\Core\Mvc\TemplatePlugin\ShowErrorMessagesFunction;
 
@@ -161,9 +163,13 @@ class _Template_Impl extends Template
 			$showErrorMessagesFunction,
 			new InputHelperFunction($argument, $showErrorMessagesFunction),
 			new BotTextImageFunction($argument),
+			new MarkdownFunction($argument),
 		];
 		foreach ($plugins as $plugin) {
-			if ($plugin instanceof ITemplateFunction) {
+			if($plugin instanceof ITemplateBlockFunction) {
+				// @phpstan-ignore-next-line
+				$this->engine->registerPlugin('block', $plugin->getFunctionName(), array($plugin, 'functionBlockBody'));
+			} else if ($plugin instanceof ITemplateFunction) {
 				// @phpstan-ignore-next-line
 				$this->engine->registerPlugin('function', $plugin->getFunctionName(), array($plugin, 'functionBody'));
 			}

@@ -127,7 +127,7 @@ class InputHelperFunction extends TemplateFunctionBase
 		}
 
 		if ($showAutoError) {
-			return $dom->build() . $this->showErrorMessagesFunction->functionBody(['key' => $targetKey], $this->smarty);
+			return $dom->build() . $this->showErrorMessagesFunction->functionBody(['key' => $targetKey], $this->template);
 		}
 		return $dom->build();
 	}

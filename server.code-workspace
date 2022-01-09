@@ -24,7 +24,8 @@
 			"**/bin/**": true,
 			"**/obj/**": true,
 			"*.lnk": true,
-			"**/PHPUnit/**": true
+			"**/PHPUnit/**": true,
+			"**/Libs/**": true
 		},
 		"cSpell.words": [
 			"autoload",
@@ -36,7 +37,8 @@
 			"ATTR_ERRMODE",
 			"ERRMODE_EXCEPTION",
 			"intelephense",
-			"PHPSESSID"
+			"PHPSESSID",
+			"Michelf"
 		],
 		"intelephense.environment.phpVersion": "8.0.3",
 		"intelephense.files.exclude": [

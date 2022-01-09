@@ -40,9 +40,18 @@ abstract class AppConfiguration
 	/**
 	 * ベースディレクトリ。
 	 *
+	 * 基本的にこちらを使っておけば問題なし。
+	 *
 	 * @var string
 	 */
 	public static $baseDirectoryPath;
+
+	/**
+	 * 設定ファイル置き場。
+	 *
+	 * @var string
+	 */
+	public static string $settingDirectoryPath;
 
 	/**
 	 * 設定ファイル読み込み。
@@ -54,10 +63,8 @@ abstract class AppConfiguration
 	 */
 	private static function load(string $rootDirectoryPath, string $baseDirectoryPath, string $environment, string $fileName): array
 	{
-		$settingDirPath = FileUtility::joinPath($baseDirectoryPath, 'config');
-
 		$configuration = new Configuration($environment);
-		$setting = $configuration->load($settingDirPath, $fileName);
+		$setting = $configuration->load(self::$settingDirectoryPath, $fileName);
 
 		return $configuration->replace(
 			$setting,
@@ -77,6 +84,8 @@ abstract class AppConfiguration
 			self::$initializeChecker = new InitializeChecker();
 		}
 		self::$initializeChecker->initialize();
+
+		self::$settingDirectoryPath = FileUtility::joinPath($baseDirectoryPath, 'config');
 
 		$appConfig = self::load($rootDirectoryPath, $baseDirectoryPath, Environment::get(), 'setting.json');
 		$i18nConfig = self::load($rootDirectoryPath, $baseDirectoryPath, Environment::get(), 'i18n.json');

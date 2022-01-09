@@ -6,5 +6,7 @@
 	HTTPSだどー！
 </p>
 
+{markdown class='privacy'}{$values.privacy_policy}{/markdown}
+
 {/block}
 
