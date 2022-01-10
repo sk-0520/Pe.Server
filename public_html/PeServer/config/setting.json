@@ -15,7 +15,8 @@
 	},
 	"store": {
 		"cookie": {
-			"httpOnly": true
+			"httpOnly": true,
+			"sameSite": "strict"
 		},
 		"session": {
 			"name": "pe-sid",

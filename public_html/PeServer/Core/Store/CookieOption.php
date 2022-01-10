@@ -4,11 +4,22 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Store;
 
+use \DateTimeImmutable;
 use \DateInterval;
 
 class CookieOption
 {
-	public static function create(string $path, ?DateInterval $span, bool $secure, bool $httpOnly): CookieOption
+	/**
+	 * Undocumented function
+	 *
+	 * @param string $path
+	 * @param DateInterval|null $span
+	 * @param boolean $secure
+	 * @param boolean $httpOnly
+	 * @param 'Lax'|'lax'|'None'|'none'|'Strict'|'strict' $sameSite
+	 * @return CookieOption
+	 */
+	public static function create(string $path, ?DateInterval $span, bool $secure, bool $httpOnly, string $sameSite): CookieOption
 	{
 		$option = new self();
 
@@ -16,6 +27,7 @@ class CookieOption
 		$option->span = $span;
 		$option->secure = $secure;
 		$option->httpOnly = $httpOnly;
+		$option->sameSite = $sameSite;
 
 		return $option;
 	}
@@ -48,17 +60,28 @@ class CookieOption
 	public bool $httpOnly;
 
 	/**
+	 * Undocumented variable
+	 *
+	 * @var 'Lax'|'lax'|'None'|'none'|'Strict'|'strict'
+	 */
+	public string $sameSite;
+
+	/**
 	 * cookie の寿命を数値に変換。
 	 *
 	 * @return integer
 	 */
-	public function getTotalMinutes(): int
+	public function getExpires(): int
 	{
 		if (is_null($this->span)) {
 			return 0;
 		}
 
-		$result = ($this->span->d * 24 * 60) + ($this->span->h * 60) + $this->span->i;
-		return $result;
+		$reference = new DateTimeImmutable;
+		$endTime = $reference->add($this->span);
+
+		$result = $endTime->getTimestamp() - $reference->getTimestamp();
+
+		return $result + time();
 	}
 }

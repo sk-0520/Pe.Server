@@ -189,7 +189,8 @@ abstract class LogicBase implements IValidationReceiver
 					ArrayUtility::getOr($option, 'path', $this->cookie->option->path),
 					ArrayUtility::getOr($option, 'span', $this->cookie->option->span),
 					ArrayUtility::getOr($option, 'secure', $this->cookie->option->secure),
-					ArrayUtility::getOr($option, 'httpOnly', $this->cookie->option->httpOnly)
+					ArrayUtility::getOr($option, 'httpOnly', $this->cookie->option->httpOnly),
+					ArrayUtility::getOr($option, 'sameSite', $this->cookie->option->sameSite)
 				);
 			}
 		}

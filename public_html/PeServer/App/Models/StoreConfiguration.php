@@ -28,8 +28,12 @@ abstract class StoreConfiguration
 			'span' => $base->span,
 			'secure' => $base->secure,
 			'httpOnly' => $base->httpOnly,
+			'sameSite' => $base->sameSite,
 		];
-		$overwriteSetting = array_replace_recursive($baseSetting, $setting); // @phpstan-ignore-line
+		$overwriteSetting = [
+			'cookie' => array_replace_recursive($baseSetting, ArrayUtility::getOr($setting, 'cookie', []))
+		];
+
 		$overwriteCookie = self::getCookie($overwriteSetting);
 
 		return $overwriteCookie;
@@ -38,7 +42,7 @@ abstract class StoreConfiguration
 	/**
 	 * クッキー設定を取得。
 	 *
-	 * @param array<string,string>|null $setting
+	 * @param array<string,array<string,mixed>>|null $setting
 	 * @return CookieOption
 	 */
 	public static function getCookie(?array $setting): CookieOption
@@ -56,7 +60,8 @@ abstract class StoreConfiguration
 			ArrayUtility::getOr($cookie, 'path', '/'),
 			$span,
 			ArrayUtility::getOr($cookie, 'secure', false),
-			ArrayUtility::getOr($cookie, 'httpOnly', true)
+			ArrayUtility::getOr($cookie, 'httpOnly', true),
+			ArrayUtility::getOr($cookie, 'sameSite', 'None'),
 		);
 
 		return $option;

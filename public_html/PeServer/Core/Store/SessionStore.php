@@ -156,6 +156,16 @@ class SessionStore
 			session_save_path($this->option->savePath);
 		}
 
+		$sessionOption = [
+			'lifetime' => $this->option->cookie->getExpires(),
+			'path' => $this->option->cookie->path,
+			'domain' => '',
+			'secure' => $this->option->cookie->secure,
+			'httponly' => $this->option->cookie->httpOnly,
+			'samesite' => $this->option->cookie->sameSite,
+		];
+		session_set_cookie_params($sessionOption);
+
 		session_start();
 
 		// セッションにCSRFトークンが存在しない場合は生成

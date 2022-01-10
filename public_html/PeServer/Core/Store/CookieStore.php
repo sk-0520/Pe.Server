@@ -76,12 +76,21 @@ class CookieStore
 		}
 
 		foreach ($this->values as $key => $cookie) {
+			/** @var CookieOption */
 			$option = $cookie['option'];
-			$minutes = $option->getTotalMinutes();
-			if ($minutes) {
-				$minutes = time() + ($minutes * 60);
-			}
-			setcookie($key, $cookie['data'], $minutes, $option->path, '', $option->secure, $option->httpOnly);
+
+			setcookie(
+				$key,
+				$cookie['data'],
+				[
+					'expires' => $option->getExpires(),
+					'path' => $option->path,
+					'domain' => '',
+					'secure' => $option->secure,
+					'httponly' => $option->httpOnly,
+					'samesite' => $option->sameSite
+				]
+			);
 		}
 	}
 
