@@ -19,6 +19,7 @@ use PeServer\App\Models\Domains\AccountValidator;
 use PeServer\App\Models\Domains\Page\PageLogicBase;
 use PeServer\App\Models\Dao\Entities\UsersEntityDao;
 use PeServer\App\Models\Dao\Entities\UserAuthenticationsEntityDao;
+use PeServer\App\Models\Domains\UserUtility;
 use PeServer\App\Models\SessionManager;
 use PeServer\Core\Cryptography;
 use PeServer\Core\Database\IDatabaseContext;
@@ -96,7 +97,7 @@ class SettingSetupLogic extends PageLogicBase
 		];
 
 		$userInfo = [
-			'id' => Uuid::generateGuid(),
+			'id' => UserUtility::generateUserId(),
 			'generate_password' => '',
 			'current_password' => Cryptography::toHashPassword($params['password']),
 		];

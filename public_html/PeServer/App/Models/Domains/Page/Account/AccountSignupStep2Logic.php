@@ -23,6 +23,7 @@ use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\AppDatabaseCache;
 use PeServer\App\Models\Domains\UserLevel;
 use PeServer\App\Models\Domains\UserState;
+use PeServer\App\Models\Domains\UserUtility;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\App\Models\Domains\AccountValidator;
 use PeServer\App\Models\Dao\Domains\UserDomainDao;
@@ -108,7 +109,7 @@ class AccountSignupStep2Logic extends PageLogicBase
 			return;
 		}
 
-		$userId = Uuid::generateGuid();
+		$userId = UserUtility::generateUserId();
 		$token = $this->getRequest('token');
 		$email = $this->getRequest('account_signup_email');
 		$password = $this->getRequest('account_signup_password', '', false);
