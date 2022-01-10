@@ -20,6 +20,7 @@ use PeServer\App\Models\SessionManager;
 use PeServer\Core\Mvc\Middleware\CsrfMiddleware;
 use PeServer\App\Controllers\Page\AjaxController;
 use PeServer\App\Controllers\Page\HomeController;
+use PeServer\App\Controllers\Page\PluginController;
 use PeServer\App\Controllers\Page\AccountController;
 use PeServer\App\Controllers\Page\SettingController;
 use PeServer\App\Models\Dao\Entities\PluginsEntityDao;
@@ -83,6 +84,8 @@ abstract class RouteConfiguration
 					->addAction('user/plugin', HttpMethod::post(), 'user_plugin_register_post', [UserAccountFilterMiddleware::class, CsrfMiddleware::class])
 					->addAction('user/plugin/:plugin_id@\{?[a-fA-F0-9\-]{32,}\}?', HttpMethod::get(), 'user_plugin_update_get', [UserAccountFilterMiddleware::class, UserPluginEditFilterMiddleware::class])
 					->addAction('user/plugin/:plugin_id@\{?[a-fA-F0-9\-]{32,}\}?', HttpMethod::post(), 'user_plugin_update_post', [UserAccountFilterMiddleware::class, CsrfMiddleware::class, UserPluginEditFilterMiddleware::class])
+				/* AUTO-FORMAT */,
+				(new Route('plugin', PluginController::class))
 				/* AUTO-FORMAT */,
 				(new Route('setting', SettingController::class, [AdministratorAccountFilterMiddleware::class]))
 					->addAction('setup', HttpMethod::get(), 'setup_get', [Route::CLEAR_MIDDLEWARE, SetupAccountFilterMiddleware::class])
