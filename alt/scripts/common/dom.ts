@@ -32,8 +32,7 @@ export function moveElement(current: HTMLElement, isUp: boolean): void {
 	}
 }
 
-
-export function querySelector<THtmlElement extends Element>(element: HTMLElement, selector: string): THtmlElement {
+export function forceSelector<THtmlElement extends Element>(element: HTMLElement, selector: string): THtmlElement {
 	const result = element.querySelector(selector);
 	if (!result) {
 		throw new Error(selector);

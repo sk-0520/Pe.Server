@@ -16,10 +16,7 @@
 		<nav>
 			<details>
 				<summary>▼</summary>
-				<div class="menu">
-					{* ええねん *}
-					{include file='default.header.tpl'}
-				</div>
+				<div class="menu"></div>
 			</details>
 		</nav>
 		<header>
