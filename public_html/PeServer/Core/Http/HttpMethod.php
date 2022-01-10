@@ -110,6 +110,8 @@ abstract class HttpMethod
 	 * @return string[]
 	 */
 	public abstract function methods(): array;
+
+	public abstract function is(string $httpMethod): bool;
 }
 
 /**
@@ -152,4 +154,16 @@ class _HttpMethod_Impl extends HttpMethod
 	{
 		return $this->methods;
 	}
+
+	public function is(string $httpMethod): bool
+	{
+		foreach($this->methods as $method) {
+			if($method === $httpMethod) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 }

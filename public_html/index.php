@@ -32,5 +32,7 @@ Initializer::initialize(
 	':REVISION:'
 );
 
-$routing = new AppRouting(RouteConfiguration::get(), StoreConfiguration::get());
-$routing->execute(HttpMethod::from($_SERVER['REQUEST_METHOD']), new RequestPath($_SERVER['REQUEST_URI'], ''));
+$method = HttpMethod::from($_SERVER['REQUEST_METHOD']);
+$requestPath = new RequestPath($_SERVER['REQUEST_URI'], '');
+$routing = new AppRouting($method, $requestPath, RouteConfiguration::get(), StoreConfiguration::get());
+$routing->execute();

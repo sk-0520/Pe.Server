@@ -19,6 +19,8 @@ class HttpRequest
 	public const REQUEST_POST = 'post';
 	public const REQUEST_FILE = 'file';
 
+	private HttpMethod $httpMethod;
+
 	/**
 	 * URLパラメータ。
 	 *
@@ -31,8 +33,9 @@ class HttpRequest
 	 *
 	 * @param array<string,string> $urlParameters URLパラメータ
 	 */
-	public function __construct(array $urlParameters)
+	public function __construct(HttpMethod $httpMethod, array $urlParameters)
 	{
+		$this->httpMethod = $httpMethod;
 		$this->urlParameters = $urlParameters;
 	}
 
@@ -42,22 +45,25 @@ class HttpRequest
 	 * @param string $key キー
 	 * @return array{exists:bool,type:string}
 	 */
-	public function exists(string $key): array
+	public function exists(string $key, bool $strict = true): array
 	{
 		if (isset($this->urlParameters[$key])) {
 			return ['exists' => true, 'type' => self::REQUEST_URL];
 		}
 
-		if (isset($_GET[$key])) {
-			return ['exists' => true, 'type' => self::REQUEST_GET];
+		if (!$strict || $this->httpMethod->is(HttpMethod::GET)) {
+			if (isset($_GET[$key])) {
+				return ['exists' => true, 'type' => self::REQUEST_GET];
+			}
 		}
 
-		if (isset($_POST[$key])) {
-			return ['exists' => true, 'type' => self::REQUEST_POST];
-		}
-
-		if (isset($_FILES[$key])) {
-			return ['exists' => true, 'type' => self::REQUEST_FILE];
+		if (!$strict || $this->httpMethod->is(HttpMethod::POST)) {
+			if (isset($_POST[$key])) {
+				return ['exists' => true, 'type' => self::REQUEST_POST];
+			}
+			if (isset($_FILES[$key])) {
+				return ['exists' => true, 'type' => self::REQUEST_FILE];
+			}
 		}
 
 		return ['exists' => false, 'type' => self::REQUEST_NONE];
@@ -77,18 +83,22 @@ class HttpRequest
 	 * @return string
 	 * @throws KeyNotFoundException キーに対する値が存在しない。
 	 */
-	public function getValue(string $key): string
+	public function getValue(string $key, bool $strict = true): string
 	{
 		if (isset($this->urlParameters[$key])) {
 			return $this->urlParameters[$key];
 		}
 
-		if (isset($_GET[$key])) {
-			return $_GET[$key];
+		if (!$strict || $this->httpMethod->is(HttpMethod::GET)) {
+			if (isset($_GET[$key])) {
+				return $_GET[$key];
+			}
 		}
+		if (!$strict || $this->httpMethod->is(HttpMethod::POST)) {
 
-		if (isset($_POST[$key])) {
-			return $_POST[$key];
+			if (isset($_POST[$key])) {
+				return $_POST[$key];
+			}
 		}
 
 		throw new KeyNotFoundException("parameter not found: $key");

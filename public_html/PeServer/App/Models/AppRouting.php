@@ -24,17 +24,17 @@ class AppRouting extends Routing
 	 * @param RouteSetting $routeSetting
 	 * @param StoreOption $storeOption
 	 */
-	public function __construct(RouteSetting $routeSetting, StoreOption $storeOption)
+	public function __construct(HttpMethod $httpMethod, RequestPath $requestPath, RouteSetting $routeSetting, StoreOption $storeOption)
 	{
-		parent::__construct($routeSetting, $storeOption);
+		parent::__construct($httpMethod, $requestPath, $routeSetting, $storeOption);
 
 		SessionManager::initialize($this->session);
 	}
 
-	public function execute(HttpMethod $requestMethod, RequestPath $requestPath): void
+	public function execute(): void
 	{
-		(new AppErrorHandler($requestPath))->register();
+		(new AppErrorHandler($this->requestPath))->register();
 
-		parent::execute($requestMethod, $requestPath);
+		parent::execute();
 	}
 }
