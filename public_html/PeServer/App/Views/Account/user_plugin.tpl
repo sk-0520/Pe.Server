@@ -61,3 +61,7 @@
 </form>
 
 {/block}
+
+{block name='SCRIPTS'}
+	{asset file='/scripts/plugin-edit.js'}
+{/block}

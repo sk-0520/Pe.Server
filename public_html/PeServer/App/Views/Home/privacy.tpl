@@ -2,11 +2,7 @@
 {block name='TITLE'}プライバシーポリシー{/block}
 {block name='BODY'}
 
-<p>
-	HTTPSだどー！
-</p>
-
-{markdown class='privacy'}{$values.privacy_policy}{/markdown}
+{markdown level=constant('PeServer\\App\\Models\\Domains\\UserLevel::ADMINISTRATOR') class='privacy'}{$values.privacy_policy}{/markdown}
 
 {/block}
 

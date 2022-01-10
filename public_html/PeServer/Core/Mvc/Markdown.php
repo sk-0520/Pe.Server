@@ -20,6 +20,11 @@ class Markdown
 		$this->parser = new \Michelf\MarkdownExtra();
 	}
 
+	public function setLevel(string $userLevel): void
+	{
+		//TODO
+	}
+
 	public function build(string $markdown): string
 	{
 		return $this->parser->transform($markdown);

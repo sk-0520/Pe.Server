@@ -21,6 +21,7 @@ const webpackConfig = (env: string, args: any): webpack.Configuration => {
 		entry: {
 			// ユーザー画面共通
 			"scripts/script": path.join(inputDirectory, './scripts/entry/script.ts'),
+			"scripts/plugin-edit": path.join(inputDirectory, './scripts/entry/plugin-edit.ts'),
 			"styles/style": path.join(inputDirectory, './styles/style.scss'),
 		},
 

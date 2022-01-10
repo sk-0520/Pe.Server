@@ -6,6 +6,7 @@ namespace PeServer\Core\Mvc\TemplatePlugin;
 
 use \Smarty;
 use \DOMDocument;
+use PeServer\App\Models\Domains\UserLevel;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Security;
 use PeServer\Core\HtmlDocument;
@@ -34,7 +35,10 @@ class MarkdownFunction extends TemplateBlockFunctionBase
 			$className = 'markdown ' . $className;
 		}
 
+		$level = ArrayUtility::getOr($this->params, 'level', UserLevel::USER);
+
 		$markdown = new Markdown();
+		$markdown->setLevel($level);
 		$result = $markdown->build($content);
 		$html = '<div class="' . $className . '">' . $result . '</div>';
 
