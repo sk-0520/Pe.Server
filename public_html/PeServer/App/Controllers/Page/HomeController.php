@@ -10,10 +10,10 @@ use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\ControllerBase;
 use PeServer\Core\Http\HttpStatusCode;
 use PeServer\Core\Mvc\ControllerArgument;
-use PeServer\App\Models\Domains\Page\Home\HomeAboutLogic;
-use PeServer\App\Models\Domains\Page\Home\HomeIndexLogic;
-use PeServer\App\Models\Domains\Page\Home\HomeContactLogic;
-use PeServer\App\Models\Domains\Page\Home\HomePrivacyLogic;
+use PeServer\App\Models\Domain\Page\Home\HomeAboutLogic;
+use PeServer\App\Models\Domain\Page\Home\HomeIndexLogic;
+use PeServer\App\Models\Domain\Page\Home\HomeContactLogic;
+use PeServer\App\Models\Domain\Page\Home\HomePrivacyLogic;
 
 
 final class HomeController extends PageControllerBase

@@ -9,7 +9,7 @@ use PeServer\Core\Mvc\IActionResult;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\ControllerArgument;
 use PeServer\App\Controllers\Page\PageControllerBase;
-use PeServer\App\Models\Domains\Page\Ajax\AjaxMarkdownLogic;
+use PeServer\App\Models\Domain\Page\Ajax\AjaxMarkdownLogic;
 
 final class AjaxController extends PageControllerBase
 {

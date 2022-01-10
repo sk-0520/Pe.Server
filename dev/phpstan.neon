@@ -6,7 +6,7 @@ parameters:
     - ../public_html/PeServer/data
     - ../public_html/PeServer/Core/Libs
     - ../public_html/deploy
-    - ../public_html/PeServer/App/Models/Domains/Api/Development/DevelopmentInitializeLogic.php
+    - ../public_html/PeServer/App/Models/Domain/Api/Development/DevelopmentInitializeLogic.php
   scanFiles:
     - ../public_html/PeServer/Core/Libs/smarty/libs/Smarty.class.php
     - ../public_html/PeServer/Core/Libs/smarty/libs/sysplugins/smarty_internal_template.php

@@ -10,11 +10,11 @@ use PeServer\Core\Mvc\ControllerBase;
 use PeServer\Core\Mvc\TemplateParameter;
 use PeServer\Core\Mvc\ControllerArgument;
 use PeServer\App\Controllers\DomainControllerBase;
-use PeServer\App\Models\Domains\Page\Setting\SettingSetupLogic;
-use PeServer\App\Models\Domains\Page\Setting\SettingLogListLogic;
-use PeServer\App\Models\Domains\Page\Setting\SettingLogDetailLogic;
-use PeServer\App\Models\Domains\Page\Setting\SettingDefaultPluginLogic;
-use PeServer\App\Models\Domains\Page\Setting\SettingEnvironmentPluginLogic;
+use PeServer\App\Models\Domain\Page\Setting\SettingSetupLogic;
+use PeServer\App\Models\Domain\Page\Setting\SettingLogListLogic;
+use PeServer\App\Models\Domain\Page\Setting\SettingLogDetailLogic;
+use PeServer\App\Models\Domain\Page\Setting\SettingDefaultPluginLogic;
+use PeServer\App\Models\Domain\Page\Setting\SettingEnvironmentPluginLogic;
 
 final class SettingController extends PageControllerBase
 {

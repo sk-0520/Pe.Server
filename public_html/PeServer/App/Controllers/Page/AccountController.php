@@ -10,17 +10,17 @@ use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\ControllerBase;
 use PeServer\App\Models\SessionManager;
 use PeServer\Core\Mvc\ControllerArgument;
-use PeServer\App\Models\Domains\UserLevel;
+use PeServer\App\Models\Domain\UserLevel;
 use PeServer\Core\Throws\InvalidOperationException;
-use PeServer\App\Models\Domains\Page\Account\AccountUserLogic;
-use PeServer\App\Models\Domains\Page\Account\AccountLoginLogic;
-use PeServer\App\Models\Domains\Page\Account\AccountLogoutLogic;
-use PeServer\App\Models\Domains\Page\Account\AccountUserEditLogic;
-use PeServer\App\Models\Domains\Page\Account\AccountUserEmailLogic;
-use PeServer\App\Models\Domains\Page\Account\AccountUserPluginLogic;
-use PeServer\App\Models\Domains\Page\Account\AccountSignupStep1Logic;
-use PeServer\App\Models\Domains\Page\Account\AccountSignupStep2Logic;
-use PeServer\App\Models\Domains\Page\Account\AccountUserPasswordLogic;
+use PeServer\App\Models\Domain\Page\Account\AccountUserLogic;
+use PeServer\App\Models\Domain\Page\Account\AccountLoginLogic;
+use PeServer\App\Models\Domain\Page\Account\AccountLogoutLogic;
+use PeServer\App\Models\Domain\Page\Account\AccountUserEditLogic;
+use PeServer\App\Models\Domain\Page\Account\AccountUserEmailLogic;
+use PeServer\App\Models\Domain\Page\Account\AccountUserPluginLogic;
+use PeServer\App\Models\Domain\Page\Account\AccountSignupStep1Logic;
+use PeServer\App\Models\Domain\Page\Account\AccountSignupStep2Logic;
+use PeServer\App\Models\Domain\Page\Account\AccountUserPasswordLogic;
 
 final class AccountController extends PageControllerBase
 {

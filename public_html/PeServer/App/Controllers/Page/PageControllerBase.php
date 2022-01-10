@@ -7,7 +7,7 @@ use PeServer\Core\Mvc\TemplateParameter;
 use PeServer\Core\Mvc\ControllerArgument;
 use PeServer\Core\Mvc\Result\ViewActionResult;
 use PeServer\App\Controllers\DomainControllerBase;
-use PeServer\App\Models\Domains\Page\PageLogicBase;
+use PeServer\App\Models\Domain\Page\PageLogicBase;
 
 
 abstract class PageControllerBase extends DomainControllerBase

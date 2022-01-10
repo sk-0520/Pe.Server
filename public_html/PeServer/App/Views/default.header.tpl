@@ -3,7 +3,7 @@
 		<a href="/">top</a>
 	</li>
 	{if isset($smarty.session[constant('PeServer\\App\\Models\\SessionManager::ACCOUNT')])}
-		{if $smarty.session[constant('PeServer\\App\\Models\\SessionManager::ACCOUNT')]['level'] == constant('PeServer\\App\\Models\\Domains\\UserLevel::SETUP')}
+		{if $smarty.session[constant('PeServer\\App\\Models\\SessionManager::ACCOUNT')]['level'] == constant('PeServer\\App\\Models\\Domain\\UserLevel::SETUP')}
 			<li>
 				<a href="/setting/setup">セットアップ</a>
 			</li>
@@ -12,7 +12,7 @@
 				<a href="/account/user">ユーザー情報</a>
 			</li>
 		{/if}
-		{if $smarty.session[constant('PeServer\\App\\Models\\SessionManager::ACCOUNT')]['level'] == constant('PeServer\\App\\Models\\Domains\\UserLevel::ADMINISTRATOR')}
+		{if $smarty.session[constant('PeServer\\App\\Models\\SessionManager::ACCOUNT')]['level'] == constant('PeServer\\App\\Models\\Domain\\UserLevel::ADMINISTRATOR')}
 			<li>
 				<a href="/setting">設定</a>
 			</li>

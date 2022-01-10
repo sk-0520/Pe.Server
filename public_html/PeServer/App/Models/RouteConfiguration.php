@@ -27,13 +27,13 @@ use PeServer\App\Models\Dao\Entities\PluginsEntityDao;
 use PeServer\App\Controllers\Api\DevelopmentController;
 use PeServer\Core\Mvc\Middleware\PerformanceMiddleware;
 use PeServer\Core\Mvc\Middleware\PerformanceShutdownMiddleware;
-use PeServer\App\Models\Domains\Middleware\DevelopmentMiddleware;
-use PeServer\App\Models\Domains\Middleware\SignupStep1FilterMiddleware;
-use PeServer\App\Models\Domains\Middleware\SignupStep2FilterMiddleware;
-use PeServer\App\Models\Domains\Middleware\UserAccountFilterMiddleware;
-use PeServer\App\Models\Domains\Middleware\SetupAccountFilterMiddleware;
-use PeServer\App\Models\Domains\Middleware\UserPluginEditFilterMiddleware;
-use PeServer\App\Models\Domains\Middleware\AdministratorAccountFilterMiddleware;
+use PeServer\App\Models\Middleware\DevelopmentMiddleware;
+use PeServer\App\Models\Middleware\SignupStep1FilterMiddleware;
+use PeServer\App\Models\Middleware\SignupStep2FilterMiddleware;
+use PeServer\App\Models\Middleware\UserAccountFilterMiddleware;
+use PeServer\App\Models\Middleware\SetupAccountFilterMiddleware;
+use PeServer\App\Models\Middleware\UserPluginEditFilterMiddleware;
+use PeServer\App\Models\Middleware\AdministratorAccountFilterMiddleware;
 
 /**
  * ルーティング情報設定。
