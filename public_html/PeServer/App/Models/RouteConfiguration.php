@@ -18,6 +18,7 @@ use PeServer\Core\Database\Database;
 use PeServer\Core\MiddlewareArgument;
 use PeServer\App\Models\SessionManager;
 use PeServer\Core\Mvc\Middleware\CsrfMiddleware;
+use PeServer\App\Controllers\Page\AjaxController;
 use PeServer\App\Controllers\Page\HomeController;
 use PeServer\App\Controllers\Page\AccountController;
 use PeServer\App\Controllers\Page\SettingController;
@@ -91,6 +92,9 @@ abstract class RouteConfiguration
 					->addAction('default-plugin', HttpMethod::post(), 'default_plugin_post')
 					->addAction('log', HttpMethod::get(), 'log_list')
 					->addAction('log/:log_name@\w+\.log', HttpMethod::get(), 'log_detail')
+				/* AUTO-FORMAT */,
+				(new Route('ajax', AjaxController::class, [UserAccountFilterMiddleware::class]))
+					->addAction('markdown', HttpMethod::post(), 'markdown')
 				/* AUTO-FORMAT */,
 				(new Route('api/development', DevelopmentController::class, [DevelopmentMiddleware::class]))
 					->addAction('initialize', HttpMethod::post())

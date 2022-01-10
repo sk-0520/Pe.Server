@@ -50,7 +50,10 @@
 
 		<dt>description</dt>
 		<dd>
-			{input_helper key='account_plugin_description' type="textarea" class="edit"}
+			{input_helper key='account_plugin_description' type="textarea" class="edit markdown-editor" data-markdown-result=".markdown-browser"}
+		</dd>
+		<dd>
+			{markdown class="markdown markdown-browser"}{$values.account_plugin_description}{/markdown}
 		</dd>
 
 		<dt class="action">edit</dt>

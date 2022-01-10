@@ -4,9 +4,9 @@
  */
  export interface AjaxError {
 	/** 表示可能エラーメッセージ */
-	error: string;
+	message: string;
 	/** 内部使用エラー内容データ */
-	data: string;
+	code: string;
 	/** 対象ごとのエラー詳細 */
 	info: any;
 }
@@ -16,17 +16,11 @@
  */
 export interface AjaxResult<T> {
 	/** 正常処理結果 */
-	result: T;
+	data: T;
 	/** 以上処理結果 */
 	error?: AjaxError;
 }
 
 
-/**
- * AJAX 処理異常結果の内容は「ログイン必須」か。
- * @param error
- */
-export function isNeedLogin(error: AjaxError): boolean {
-	return error && error.data == 'NEED-LOGIN';
-}
+
 

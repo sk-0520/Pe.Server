@@ -164,16 +164,15 @@ abstract class FileUtility
 	 * JSONとしてファイル読み込み。
 	 *
 	 * @param string $path パス。
-	 * @param boolean $associative 連想配列として扱うか。
-	 * @return array<mixed>|\stdClass 応答JSON。
+	 * @return array<mixed> 応答JSON。
 	 * @throws IOException
 	 * @throws ParseException パース失敗。
 	 */
-	public static function readJsonFile(string $path, bool $associative = true): array|stdClass
+	public static function readJsonFile(string $path): array
 	{
 		$content = self::readContent($path);
 
-		$json = json_decode($content->getRaw(), $associative);
+		$json = json_decode($content->getRaw(), true);
 
 		if (is_null($json)) {
 			throw new ParseException($path);

@@ -9,6 +9,7 @@ use PeServer\Core\I18n;
 use PeServer\Core\Bytes;
 use PeServer\Core\ILogger;
 use PeServer\Core\ArrayUtility;
+use PeServer\Core\FileUtility;
 use PeServer\Core\StringUtility;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mvc\Validations;
@@ -134,6 +135,21 @@ abstract class LogicBase implements IValidationReceiver
 		}
 
 		return $value;
+	}
+
+	protected function getRequestContent(): Bytes
+	{
+		return FileUtility::readContent('php://input');
+	}
+
+	/**
+	 * Undocumented function
+	 *
+	 * @return array<mixed>
+	 */
+	protected function getRequestJson(): array
+	{
+		return FileUtility::readJsonFile('php://input');
 	}
 
 	protected function setHttpStatus(HttpStatus $httpStatus): void

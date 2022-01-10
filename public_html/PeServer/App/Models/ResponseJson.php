@@ -27,7 +27,7 @@ class ResponseJson
 	 *
 	 * @var array{message:string,code:string,info:mixed}|null
 	 */
-	public ?array $error;
+	public ?array $error = null;
 
 	/**
 	 * 正常データ生成。

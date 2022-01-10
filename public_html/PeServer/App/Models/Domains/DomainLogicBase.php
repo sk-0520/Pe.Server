@@ -5,19 +5,21 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Domains;
 
 use PeServer\Core\I18n;
-use PeServer\Core\Database\Database;
+use PeServer\Core\Mime;
 use \Prophecy\Util\StringUtil;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Mvc\LogicBase;
 use PeServer\Core\StringUtility;
 use PeServer\Core\Mvc\Validations;
 use PeServer\App\Models\AppDatabase;
+use PeServer\Core\Database\Database;
+use PeServer\App\Models\ResponseJson;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\App\Models\AppConfiguration;
+use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\Throws\NotImplementedException;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\App\Models\Dao\Entities\UserAuditLogsEntityDao;
-use PeServer\Core\Database\IDatabaseContext;
 
 abstract class DomainLogicBase extends LogicBase
 {
@@ -34,6 +36,18 @@ abstract class DomainLogicBase extends LogicBase
 	protected function openDatabase(): Database
 	{
 		return AppDatabase::open($this->logger);
+	}
+
+	protected function setResponseJson(ResponseJson $responseJson): void
+	{
+		$result = [
+			'data' => $responseJson->data,
+		];
+		if (!is_null($responseJson->error)) {
+			$result['error'] = $responseJson->error;
+		}
+
+		$this->setContent(Mime::JSON, $result);
 	}
 
 	/**
