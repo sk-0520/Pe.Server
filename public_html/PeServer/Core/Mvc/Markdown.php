@@ -15,14 +15,16 @@ class Markdown
 	 */
 	private \Michelf\Markdown $parser;
 
+	private bool $isSafeMode = true; // @phpstan-ignore-line
+
 	public function __construct()
 	{
 		$this->parser = new \Michelf\MarkdownExtra();
 	}
 
-	public function setLevel(string $userLevel): void
+	public function setSafeMode(bool $isSafeMode): void
 	{
-		//TODO
+		$this->isSafeMode = $isSafeMode;
 	}
 
 	public function build(string $markdown): string

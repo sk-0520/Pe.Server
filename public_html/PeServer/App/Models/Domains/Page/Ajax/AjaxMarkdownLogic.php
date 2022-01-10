@@ -13,6 +13,7 @@ use PeServer\App\Models\SessionManager;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Mime;
 use PeServer\Core\Mvc\Markdown;
+use PeServer\Core\TypeConverter;
 
 class AjaxMarkdownLogic extends PageLogicBase
 {
@@ -32,14 +33,14 @@ class AjaxMarkdownLogic extends PageLogicBase
 
 		$json = $this->getRequestJson();
 
-		$level = ArrayUtility::getOr($json, 'level', UserLevel::USER);
+		$isSafeMode = TypeConverter::parseBoolean(ArrayUtility::getOr($json, 'safe_mode', true));
 		$source = ArrayUtility::getOr($json, 'source', '');
 		if ($account['level'] !== UserLevel::ADMINISTRATOR) {
-			$level = UserLevel::USER;
+			$isSafeMode = true;
 		}
 
 		$markdown = new Markdown();
-		$markdown->setLevel($level);
+		$markdown->setSafeMode($isSafeMode);
 		$result = $markdown->build($source);
 
 		$this->setResponseJson(ResponseJson::success(['markdown' => $result]));

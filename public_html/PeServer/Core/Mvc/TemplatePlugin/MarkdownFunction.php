@@ -6,13 +6,13 @@ namespace PeServer\Core\Mvc\TemplatePlugin;
 
 use \Smarty;
 use \DOMDocument;
-use PeServer\App\Models\Domains\UserLevel;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Security;
 use PeServer\Core\HtmlDocument;
 use PeServer\Core\Mvc\Markdown;
 use PeServer\Core\Mvc\TemplatePlugin\TemplateBlockFunctionBase;
 use PeServer\Core\StringUtility;
+use PeServer\Core\TypeConverter;
 
 class MarkdownFunction extends TemplateBlockFunctionBase
 {
@@ -35,10 +35,10 @@ class MarkdownFunction extends TemplateBlockFunctionBase
 			$className = 'markdown ' . $className;
 		}
 
-		$level = ArrayUtility::getOr($this->params, 'level', UserLevel::USER);
+		$isSafeMode = TypeConverter::parseBoolean(ArrayUtility::getOr($this->params, 'safe_mode', true));
 
 		$markdown = new Markdown();
-		$markdown->setLevel($level);
+		$markdown->setSafeMode($isSafeMode);
 		$result = $markdown->build($content);
 		$html = '<div class="' . $className . '">' . $result . '</div>';
 
