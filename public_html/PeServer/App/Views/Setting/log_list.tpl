@@ -15,7 +15,7 @@
 				{foreach from=$values.log_files item=item}
 					<li>
 						<a href="/setting/log/{$item.name}">{$item.name}</a>
-						{$item.size}
+						<span title="{$item.size}">{$item.human_size}</span>
 					</li>
 				{/foreach}
 			</ul>

@@ -9,6 +9,7 @@ use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\Core\FileUtility;
+use PeServer\Core\SizeConverter;
 
 class SettingLogListLogic extends PageLogicBase
 {
@@ -34,10 +35,13 @@ class SettingLogListLogic extends PageLogicBase
 		});
 		natsort($logFiles);
 		$logFiles = array_map(function ($i) {
+			$sizeConverter = new SizeConverter();
+			$size = FileUtility::getFileSize($i);
 			return [
 				'directory' => FileUtility::getDirectoryPath($i),
 				'name' => FileUtility::getFileName($i),
-				'size' => FileUtility::getFileSize($i),
+				'size' => $size,
+				'human_size' => $sizeConverter->convertHumanReadableByte($size, '{f_size} {term}'),
 			];
 		}, $logFiles);
 

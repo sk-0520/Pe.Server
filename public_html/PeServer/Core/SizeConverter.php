@@ -24,11 +24,11 @@ class SizeConverter
 	 * Undocumented function
 	 *
 	 * @param integer $byteSize
-	 * @param string $sizeFormat {size} {term}
+	 * @param string $sizeFormat {f_size} {i_size} {term}
 	 * @param string[]|null $terms
 	 * @return string
 	 */
-	public function convertHumanReadableByte(int $byteSize, string $sizeFormat = '{size} {term}', ?array $terms = null): string
+	public function convertHumanReadableByte(int $byteSize, string $sizeFormat = '{i_size} {term}', ?array $terms = null): string
 	{
 		$size = $byteSize;
 		$terms = $terms ?? $this->terms;
@@ -38,7 +38,8 @@ class SizeConverter
 		}
 
 		return StringUtility::replaceMap($sizeFormat, [
-			'size' => strval($size),
+			'f_size' =>  strval(round($size, 2)),
+			'i_size' => (int)strval($size),
 			'term' => $terms[$order]
 		]);
 	}
