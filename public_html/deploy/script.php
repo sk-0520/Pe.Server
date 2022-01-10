@@ -186,6 +186,17 @@ create table
 ;
 
 create table
+	[access_keys]
+	(
+		[access_key] text not null, -- アクセスキー
+		[user_id] text not null, -- ユーザーID
+		primary key([access_key], [user_id]),
+		unique([access_key]),
+		foreign key ([user_id]) references users([user_id])
+	)
+;
+
+create table
 	[user_audit_logs] -- 監査ログ
 	(
 		[sequence] integer not null,
