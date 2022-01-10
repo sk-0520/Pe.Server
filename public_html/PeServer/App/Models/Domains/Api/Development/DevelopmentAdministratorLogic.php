@@ -41,19 +41,47 @@ class DevelopmentAdministratorLogic extends ApiLogicBase
 
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
-		$loginId = 'root';
-		$password = 'root';
-		$email = "$loginId@localhost.localdomain";
-
-		$params = [
-			'user_id' => 'ffffffff-ffff-4fff-ffff-ffffffffffff',
-			'login_id' => $loginId,
-			'password' => Cryptography::toHashPassword($password),
-			'user_name' => "user-$loginId",
-			'email' => AppCryptography::encrypt($email),
-			'mark_email' => AppCryptography::toMark($email),
-			'website' => 'http://localhost',
+		$emailDomain = '@localhost.localdomain';
+		$users = [
+			[
+				'user_id' => 'ffffffff-ffff-4fff-ffff-ffffffffffff',
+				'login_id' => 'root',
+				'password' => 'root',
+				'email' => 'root@localhost.localdomain',
+				'level' => UserLevel::ADMINISTRATOR,
+				'note' => '開発用 自動生成 管理者'
+			],
+			[
+				'user_id' => 'eeeeeeee-eeee-4eee-eeee-eeeeeeeeeeee',
+				'login_id' => 'zap-admin',
+				'password' => 'zap-admin',
+				'email' => 'zap-admin@localhost.localdomain',
+				'level' => UserLevel::ADMINISTRATOR,
+				'note' => 'ZAP用 自動生成 管理者'
+			],
+			[
+				'user_id' => 'dddddddd-dddd-4ddd-dddd-dddddddddddd',
+				'login_id' => 'zap-user',
+				'password' => 'zap-user',
+				'email' => 'zap-user@localhost.localdomain',
+				'level' => UserLevel::USER,
+				'note' => 'ZAP用 自動生成 ユーザー'
+			],
 		];
+
+		$params = array_map(function ($i) {
+			return [
+				'user_id' => $i['user_id'],
+				'login_id' => $i['login_id'],
+				'password' => Cryptography::toHashPassword($i['password']),
+				'user_name' => 'user-' . $i['login_id'],
+				'level' => $i['level'],
+				'email' => AppCryptography::encrypt($i['email']),
+				'mark_email' => AppCryptography::toMark($i['email']),
+				'website' => 'http://localhost',
+				'note' => $i['note'],
+			];
+		}, $users);
 
 		$database = $this->openDatabase();
 
@@ -61,23 +89,26 @@ class DevelopmentAdministratorLogic extends ApiLogicBase
 			$usersEntityDao = new UsersEntityDao($context);
 			$userAuthenticationsEntityDao = new UserAuthenticationsEntityDao($context);
 
-			$usersEntityDao->insertUser(
-				$params['user_id'],
-				$params['login_id'],
-				UserLevel::ADMINISTRATOR,
-				UserState::ENABLED,
-				$params['user_name'],
-				$params['email'],
-				$params['mark_email'],
-				$params['website'],
-				'開発用 自動生成 管理者'
-			);
+			foreach ($params as $user) {
 
-			$userAuthenticationsEntityDao->insertUserAuthentication(
-				$params['user_id'],
-				'',
-				$params['password']
-			);
+				$usersEntityDao->insertUser(
+					$user['user_id'],
+					$user['login_id'],
+					$user['level'],
+					UserState::ENABLED,
+					$user['user_name'],
+					$user['email'],
+					$user['mark_email'],
+					$user['website'],
+					$user['note']
+				);
+
+				$userAuthenticationsEntityDao->insertUserAuthentication(
+					$user['user_id'],
+					'',
+					$user['password']
+				);
+			}
 
 			$context->update("update users set state = :state where level = :level", [
 				'state' => UserState::DISABLED,
