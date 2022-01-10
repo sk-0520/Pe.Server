@@ -95,6 +95,8 @@ abstract class AppConfiguration
 		Template::initialize($rootDirectoryPath, $baseDirectoryPath, 'App/Views', 'data/temp/views');
 		I18n::initialize($i18nConfig);
 
+		AppDatabaseCache::initialize($appConfig['cache']['database']);
+
 		self::$config = $appConfig;
 		self::$rootDirectoryPath = $rootDirectoryPath;
 		self::$baseDirectoryPath = $baseDirectoryPath;

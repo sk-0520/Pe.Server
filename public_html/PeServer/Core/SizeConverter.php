@@ -38,8 +38,8 @@ class SizeConverter
 		}
 
 		return StringUtility::replaceMap($sizeFormat, [
-			'f_size' =>  strval(round($size, 2)),
-			'i_size' => (int)strval($size),
+			'f_size' => strval(round($size, 2)),
+			'i_size' => strval($size),
 			'term' => $terms[$order]
 		]);
 	}
