@@ -43,6 +43,10 @@
 		"intelephense.environment.phpVersion": "8.0.3",
 		"intelephense.files.exclude": [
 			"**/php-deploy-receiver.php"
+		],
+		"auto-close-tag.activationOnLanguage": [
+			"php",
+			"smarty"
 		]
 	},
 	"extensions": {
@@ -53,7 +57,8 @@
 			"editorconfig.editorconfig",
 			"mehedidracula.php-namespace-resolver",
 			"sibiraj-s.vscode-scss-formatter",
-			"imperez.smarty"
-		]
+			"imperez.smarty",
+			"formulahendry.auto-close-tag"
+		],
 	}
 }

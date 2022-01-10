@@ -58,9 +58,10 @@ abstract class RouteConfiguration
 			[],
 			[
 				(new Route('', HomeController::class))
-					->addAction('privacy', HttpMethod::get(), 'privacy')
-					->addAction('contact', HttpMethod::get(), 'contact_get')
-					->addAction('contact', HttpMethod::post(), 'contact_post')
+					->addAction('about', HttpMethod::get(), 'about')
+					->addAction('about/privacy', HttpMethod::get(), 'privacy')
+					->addAction('about/contact', HttpMethod::get(), 'contact_get')
+					->addAction('about/contact', HttpMethod::post(), 'contact_post')
 				/* AUTO-FORMAT */,
 				(new Route('account', AccountController::class))
 					->addAction('login', HttpMethod::get(), 'login_get')

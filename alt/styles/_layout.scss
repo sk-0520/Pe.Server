@@ -29,7 +29,7 @@ $break: $mediaPhone;
 }
 
 * {
-	transition-property: all;
+	transition-property: background-color;
 	transition-duration: 0.25s;
 }
 
@@ -49,6 +49,7 @@ body {
 			left: 0;
 			right: 0;
 			height: $pcTitleHeight;
+			z-index: 100;
 
 			font-size: 16pt;
 			font-weight: bold;

@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace PeServer\App\Controllers\Page;
 
-use PeServer\Core\Http\HttpStatusCode;
-use PeServer\Core\Mvc\IActionResult;
 use PeServer\Core\Http\HttpRequest;
+use PeServer\Core\Mvc\IActionResult;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\ControllerBase;
+use PeServer\Core\Http\HttpStatusCode;
 use PeServer\Core\Mvc\ControllerArgument;
+use PeServer\App\Models\Domains\Page\Home\HomeAboutLogic;
 use PeServer\App\Models\Domains\Page\Home\HomeIndexLogic;
 use PeServer\App\Models\Domains\Page\Home\HomeContactLogic;
 use PeServer\App\Models\Domains\Page\Home\HomePrivacyLogic;
@@ -44,5 +45,12 @@ final class HomeController extends PageControllerBase
 		$logic->run(LogicCallMode::initialize());
 
 		return $this->view('contact', $logic->getViewData());
+	}
+	public function about(HttpRequest $request): IActionResult
+	{
+		$logic = $this->createLogic(HomeAboutLogic::class, $request);
+		$logic->run(LogicCallMode::initialize());
+
+		return $this->view('about', $logic->getViewData());
 	}
 }

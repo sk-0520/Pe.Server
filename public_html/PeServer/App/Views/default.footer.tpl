@@ -1,11 +1,8 @@
 <ul>
 	<li>
-		<a href="/">top</a>
+		<a href="/">トップページ</a>
 	</li>
 	<li>
-		<a href="/privacy">privacy</a>
-	</li>
-	<li>
-		<a href="/contact">contact</a>
+		<a href="/about">このサイトについて</a>
 	</li>
 </ul>
