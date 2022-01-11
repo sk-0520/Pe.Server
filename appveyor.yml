@@ -41,5 +41,4 @@ for:
 
 cache:
   - 'node_modules'
-  - 'dev/phpstan.phar'
-  - /var/ci-package-cache
+  # - 'dev/phpstan.phar'
