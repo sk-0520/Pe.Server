@@ -1,7 +1,7 @@
-@import "variable";
-@import "responsive";
+@use 'variable' as variable;
+@use 'responsive' as responsive;
 
-$break: $mediaPhone;
+$break: responsive.$phone;
 
 @mixin links {
 	ul {
@@ -37,9 +37,9 @@ body {
 	color: #111;
 	background-color: rgb(231, 173, 173);
 
-	height: calc(100% - #{$pcAdvertisingHeight});
-	@include media($break) {
-		height: calc(100% - #{$spAdvertisingHeight});
+	height: calc(100% - #{variable.$pcAdvertisingHeight});
+	@include responsive.media($break) {
+		height: calc(100% - #{variable.$spAdvertisingHeight});
 	}
 
 	main {
@@ -48,12 +48,12 @@ body {
 			top: 0;
 			left: 0;
 			right: 0;
-			height: $pcTitleHeight;
+			height: variable.$pcTitleHeight;
 			z-index: 100;
 
 			font-size: 16pt;
 			font-weight: bold;
-			line-height: $pcTitleHeight;
+			line-height: variable.$pcTitleHeight;
 			padding-left: 1rem;
 			text-overflow: ellipsis;
 			white-space: nowrap;
@@ -61,13 +61,13 @@ body {
 
 			background: orange;
 
-			@include media($break) {
+			@include responsive.media($break) {
 				display: block;
 				position: relative;
-				width: calc(100% - #{$spNavigationWidth});
-				height: $spTitleHeight;
-				line-height: $spTitleHeight;
-				margin-top: $spAdvertisingHeight;
+				width: calc(100% - #{variable.$spNavigationWidth});
+				height: variable.$spTitleHeight;
+				line-height: variable.$spTitleHeight;
+				margin-top: variable.$spAdvertisingHeight;
 				padding-left: 0;
 				text-align: center;
 
@@ -76,15 +76,15 @@ body {
 		}
 
 		#content {
-			margin-top: $pcTitleHeight + $pcHeaderHeight;
-			margin-bottom: $pcFooterHeight + $pcAdvertisingHeight;
+			margin-top: variable.$pcTitleHeight + variable.$pcHeaderHeight;
+			margin-bottom: variable.$pcFooterHeight + variable.$pcAdvertisingHeight;
 			padding: 2rem 4rem 3rem;
 
 			background: lime;
 
-			@include media($break) {
+			@include responsive.media($break) {
 				margin-top: 0;
-				margin-bottom: $spFooterHeight;
+				margin-bottom: variable.$spFooterHeight;
 				padding: 2rem 2rem 3rem;
 				position: inherit;
 				height: inherit;
@@ -95,8 +95,8 @@ body {
 
 		// 一旦こいつらは後回し
 		.common {
-			margin-top: $pcTitleHeight + $pcHeaderHeight;
-			@include media($break) {
+			margin-top: variable.$pcTitleHeight + variable.$pcHeaderHeight;
+			@include responsive.media($break) {
 				margin-top: 0;
 			}
 
@@ -119,11 +119,11 @@ body {
 	nav {
 		display: none;
 
-		@include media($break) {
+		@include responsive.media($break) {
 			display: block;
-			height: $spTitleHeight;
+			height: variable.$spTitleHeight;
 			position: absolute;
-			top: $spAdvertisingHeight;
+			top: variable.$spAdvertisingHeight;
 			right: 0;
 
 			details {
@@ -131,8 +131,8 @@ body {
 					display: block;
 					margin-left: auto;
 					background-color: #add8e6;
-					height: $spTitleHeight;
-					width: $spNavigationWidth;
+					height: variable.$spTitleHeight;
+					width: variable.$spNavigationWidth;
 				}
 				.menu {
 					background-color: coral;
@@ -162,14 +162,14 @@ body {
 
 	header {
 		position: absolute;
-		top: $pcTitleHeight;
+		top: variable.$pcTitleHeight;
 		right: 0;
-		height: $pcHeaderHeight;
+		height: variable.$pcHeaderHeight;
 		padding-right: 2rem;
 
 		background: skyblue;
 
-		@include media($break) {
+		@include responsive.media($break) {
 			position: inherit;
 			height: inherit;
 			display: none;
@@ -182,18 +182,18 @@ body {
 
 	footer {
 		position: fixed;
-		bottom: $pcAdvertisingHeight;
+		bottom: variable.$pcAdvertisingHeight;
 		left: 0;
 		right: 0;
-		height: $pcFooterHeight;
+		height: variable.$pcFooterHeight;
 		text-align: center;
 
 		background: pink;
 
-		@include media($break) {
+		@include responsive.media($break) {
 			position: fixed;
 			bottom: 0;
-			height: $spFooterHeight;
+			height: variable.$spFooterHeight;
 
 			background: rgb(181, 6, 197);
 		}
@@ -206,15 +206,15 @@ body {
 		bottom: 0;
 		left: 0;
 		right: 0;
-		height: $pcAdvertisingHeight;
+		height: variable.$pcAdvertisingHeight;
 		text-align: center;
 
 		background: red;
 
-		@include media($break) {
+		@include responsive.media($break) {
 			position: absolute;
 			top: 0;
-			height: $spAdvertisingHeight;
+			height: variable.$spAdvertisingHeight;
 
 			background: rgb(27, 212, 21);
 		}

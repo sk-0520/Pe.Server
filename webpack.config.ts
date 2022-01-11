@@ -31,7 +31,7 @@ const webpackConfig = (env: string, args: any): webpack.Configuration => {
 			filename: isProduction
 				? '[name].min.js'
 				: '[name].js',
-			path: outputDirectory//path.join(outputDirectory, './scripts')
+			path: outputDirectory
 		},
 
 		module: {

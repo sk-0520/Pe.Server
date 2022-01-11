@@ -1,7 +1,7 @@
-@import 'reset-css';
-@import 'responsive';
-@import 'dialog';
-@import 'variable';
-@import 'font';
-@import 'layout';
-@import 'link';
+@forward "reset-css";
+@forward "responsive";
+@forward "dialog";
+@forward "variable";
+@forward "font";
+@forward "layout";
+@forward "link";
