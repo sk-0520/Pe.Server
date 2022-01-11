@@ -4,15 +4,12 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\TemplatePlugin;
 
-use \Smarty;
-use \DOMDocument;
 use PeServer\Core\ArrayUtility;
-use PeServer\Core\Security;
-use PeServer\Core\HtmlDocument;
 use PeServer\Core\Mvc\Markdown;
-use PeServer\Core\Mvc\TemplatePlugin\TemplateBlockFunctionBase;
 use PeServer\Core\StringUtility;
 use PeServer\Core\TypeConverter;
+use PeServer\Core\Mvc\TemplatePlugin\TemplatePluginArgument;
+use PeServer\Core\Mvc\TemplatePlugin\TemplateBlockFunctionBase;
 
 class MarkdownFunction extends TemplateBlockFunctionBase
 {

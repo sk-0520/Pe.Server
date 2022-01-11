@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Http;
 
 use PeServer\Core\StringUtility;
-use PeServer\Core\Throws\ArgumentException;
+
 
 class RequestPath
 {
@@ -16,7 +16,7 @@ class RequestPath
 	 */
 	public string $full;
 	/**
-	 * 区切り分割されたパス一覧。
+	 * / で分割されたパス一覧。
 	 *
 	 * @var string[]
 	 */

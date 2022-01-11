@@ -13,6 +13,7 @@ abstract class HttpStatus
 	{
 		return new _HttpStatus_Impl(0);
 	}
+
 	public static function create(int $code): HttpStatus
 	{
 		return new _HttpStatus_Impl($code);

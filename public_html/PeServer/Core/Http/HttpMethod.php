@@ -30,7 +30,9 @@ abstract class HttpMethod
 	private const TRACE = 'TRACE';
 
 	/**
-	 * Undocumented variable
+	 * 文字列にしたかったけど型弱すぎてね。
+	 *
+	 * もう文字列で対応してもいいような気がせんでもないけどしゃあない。
 	 *
 	 * @var array<string,HttpMethod>
 	 */
@@ -52,9 +54,15 @@ abstract class HttpMethod
 		return $result;
 	}
 
-	public static function from(string $method): HttpMethod
+	/**
+	 * 要求HTTPメソッドから HttpMethod を生成。
+	 *
+	 * @param string $requestMethod
+	 * @return HttpMethod
+	 */
+	public static function from(string $requestMethod): HttpMethod
 	{
-		return new _HttpMethod_Impl(StringUtility::toUpper(StringUtility::trim($method)));
+		return new _HttpMethod_Impl(StringUtility::toUpper(StringUtility::trim($requestMethod)));
 	}
 
 	private static function cache(string $value): HttpMethod

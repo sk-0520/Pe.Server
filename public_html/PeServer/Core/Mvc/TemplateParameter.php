@@ -13,8 +13,6 @@ class TemplateParameter
 {
 	/**
 	 * ステータスコード。
-	 *
-	 * @var HttpStatus
 	 */
 	public HttpStatus $httpStatus;
 

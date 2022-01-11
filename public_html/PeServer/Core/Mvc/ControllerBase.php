@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc;
 
-use PeServer\Core\Bytes;
 use PeServer\Core\ILogger;
 use PeServer\Core\UrlUtility;
 use PeServer\Core\Log\Logging;
 use PeServer\Core\Mvc\LogicBase;
 use PeServer\Core\Http\HttpStatus;
+use PeServer\Core\Mvc\DataContent;
 use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Store\CookieStore;
-use PeServer\Core\Mvc\ActionResponse;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\Store\SessionStore;
 use PeServer\Core\Store\TemporaryStore;
@@ -31,17 +30,13 @@ abstract class ControllerBase
 {
 	/**
 	 * ロガー。
-	 *
-	 * @var ILogger
 	 */
-	protected $logger;
+	protected ILogger $logger;
 	/**
 	 * コントローラ完全名からコントローラベース名を取得する際にスキップする文言(文字列長が使用される)
 	 * このアプリケーション内に閉じる場合は基本的に変更不要だが、別アプリケーションに持ち運ぶ場合などはここを変更する必要あり(継承側で書き換える想定)。
-	 *
-	 * @var string
 	 */
-	protected $skipBaseName = 'PeServer\\App\\Controllers\\Page';
+	protected string $skipBaseName = 'PeServer\\App\\Controllers\\Page';
 
 	protected CookieStore $cookie;
 	protected TemporaryStore $temporary;

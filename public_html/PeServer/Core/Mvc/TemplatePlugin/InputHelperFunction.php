@@ -4,17 +4,11 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\TemplatePlugin;
 
-use \Smarty;
-use DOMElement;
-use \DOMDocument;
-use PeServer\Core\Csrf;
-use \Smarty_Internal_Template;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\HtmlDocument;
 use PeServer\Core\HtmlElement;
 use PeServer\Core\StringUtility;
 use PeServer\Core\TypeConverter;
-use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Mvc\TemplatePlugin\TemplateFunctionBase;
 use PeServer\Core\Mvc\TemplatePlugin\TemplatePluginArgument;
 use PeServer\Core\Mvc\TemplatePlugin\ShowErrorMessagesFunction;

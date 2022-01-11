@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
-use DOMText;
-use DOMComment;
-use DOMElement;
-use DOMDocument;
-use DOMNode;
+use \DOMText;
+use \DOMComment;
+use \DOMNode;
 use PeServer\Core\HtmlElement;
 use PeServer\Core\Throws\HtmlDocumentException;
 
@@ -17,9 +15,7 @@ abstract class HtmlBase
 	protected HtmlDocument $document;
 
 	/**
-	 * 生で使用する用。
-	 *
-	 * @var DOMNode
+	 * 生で使用する現在データ。
 	 */
 	protected DOMNode $current;
 

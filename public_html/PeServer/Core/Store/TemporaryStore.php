@@ -4,20 +4,17 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Store;
 
-use \DateTime;
 use \DateInterval;
-use \DateTimeZone;
+use PeServer\Core\Utc;
 use PeServer\Core\FileUtility;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Cryptography;
 use PeServer\Core\StringUtility;
-use PeServer\Core\Store\CookieOption;
-use PeServer\Core\Throws\CoreException;
-use PeServer\Core\Throws\CryptoException;
+use PeServer\Core\Store\CookieStore;
+use PeServer\Core\Store\TemporaryOption;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\ArgumentNullException;
 use PeServer\Core\Throws\InvalidOperationException;
-use PeServer\Core\Utc;
 
 /**
  * 一時データ管理処理。
@@ -49,8 +46,6 @@ class TemporaryStore
 
 	/**
 	 * 取り込み処理が行われたか。
-	 *
-	 * @var boolean
 	 */
 	private bool $isImported = false;
 

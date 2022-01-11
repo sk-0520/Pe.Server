@@ -10,6 +10,7 @@ use PeServer\Core\Store\StoreOption;
 use PeServer\Core\Store\CookieOption;
 use PeServer\Core\Store\SessionOption;
 use PeServer\Core\Store\TemporaryOption;
+use PeServer\App\Models\AppConfiguration;
 
 abstract class StoreConfiguration
 {

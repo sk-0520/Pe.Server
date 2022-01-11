@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\TemplatePlugin;
 
-use \Smarty;
-use \DOMDocument;
 use PeServer\Core\Security;
 use PeServer\Core\HtmlDocument;
 use PeServer\Core\Mvc\TemplatePlugin\TemplateFunctionBase;
+use PeServer\Core\Mvc\TemplatePlugin\TemplatePluginArgument;
 
 class CsrfFunction extends TemplateFunctionBase
 {

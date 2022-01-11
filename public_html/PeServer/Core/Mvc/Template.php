@@ -10,6 +10,7 @@ use \Smarty;
 use PeServer\Core\FileUtility;
 use PeServer\Core\StringUtility;
 use PeServer\Core\InitializeChecker;
+use PeServer\Core\Mvc\TemplateParameter;
 use PeServer\Core\Mvc\TemplatePlugin\CsrfFunction;
 use PeServer\Core\Mvc\TemplatePlugin\AssetFunction;
 use PeServer\Core\Mvc\TemplatePlugin\MarkdownFunction;
@@ -29,38 +30,28 @@ abstract class Template
 {
 	/**
 	 * 初期化チェック
-	 *
-	 * @var InitializeChecker|null
 	 */
-	protected static $initializeChecker;
+	protected static ?InitializeChecker $initializeChecker = null;
 	/**
 	 * ルートディレクトリ。
-	 *
-	 * @var string
 	 */
-	protected static $rootDirectoryPath;
+	protected static string $rootDirectoryPath;
 
 	/**
 	 * ベースディレクトリ。
-	 *
-	 * @var string
 	 */
-	protected static $baseDirectoryPath;
+	protected static string $baseDirectoryPath;
 
 	/**
 	 * テンプレートディレクトリベース名。
 	 *
 	 * 内部で self::$baseDirectoryPath と引数をかけ合わせる。
-	 *
-	 * @var string
 	 */
 	private static string $templateBaseName;
 	/**
 	 * 一時ディレクトリベース名。
 	 *
 	 * 内部で self::$baseDirectoryPath と引数をかけ合わせる。
-	 *
-	 * @var string
 	 */
 	private static string $temporaryBaseName;
 
@@ -105,14 +96,12 @@ class _Template_Impl extends Template
 {
 	/**
 	 * Undocumented variable
-	 *
-	 * @var Smarty
 	 */
-	private $engine;
+	private Smarty $engine;
 
 	public function __construct(string $baseName, string $templateBaseName, string $temporaryBaseName)
 	{
-		self::$initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
+		parent::$initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
 
 		$this->engine = new Smarty();
 		$this->engine->addTemplateDir(FileUtility::joinPath(parent::$baseDirectoryPath, $templateBaseName, $baseName));
@@ -132,13 +121,6 @@ class _Template_Impl extends Template
 			'values' => $parameter->values,
 			'errors' => $parameter->errors,
 		]);
-	}
-
-	public function show(string $templateName, TemplateParameter $parameter): void
-	{
-		$this->applyParameter($parameter);
-		// @phpstan-ignore-next-line
-		$this->engine->display($templateName);
 	}
 
 	public function build(string $templateName, TemplateParameter $parameter): string
@@ -166,7 +148,7 @@ class _Template_Impl extends Template
 			new MarkdownFunction($argument),
 		];
 		foreach ($plugins as $plugin) {
-			if($plugin instanceof ITemplateBlockFunction) {
+			if ($plugin instanceof ITemplateBlockFunction) {
 				// @phpstan-ignore-next-line
 				$this->engine->registerPlugin('block', $plugin->getFunctionName(), array($plugin, 'functionBlockBody'));
 			} else if ($plugin instanceof ITemplateFunction) {

@@ -4,13 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Database;
 
-use \PDO;
-use \PDOStatement;
-
 use PeServer\Core\ILogger;
 use PeServer\Core\Log\Logging;
-use PeServer\Core\Database\Database;
-use PeServer\Core\Throws\SqlException;
 use PeServer\Core\Database\IDatabaseContext;
 
 /**

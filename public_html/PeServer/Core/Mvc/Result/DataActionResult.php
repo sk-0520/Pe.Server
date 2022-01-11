@@ -5,21 +5,18 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc\Result;
 
 use PeServer\Core\Mime;
-use PeServer\Core\Bytes;
-use PeServer\Core\ResponseOutput;
-use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mvc\DataContent;
 use PeServer\Core\Http\HttpResponse;
 use PeServer\Core\Mvc\IActionResult;
-use PeServer\Core\Mvc\ActionResponse;
 use PeServer\Core\Throws\NotImplementedException;
+
 
 class DataActionResult implements IActionResult
 {
 	private DataContent $content;
 
 	/**
-	 * Undocumented function
+	 * 生成。
 	 *
 	 * @param DataContent $content
 	 */
@@ -36,7 +33,8 @@ class DataActionResult implements IActionResult
 
 		$response->header->addValue('Content-Type', $this->content->mime);
 
-		$response->content = match ($this->content->mime) { // @phpstan-ignore-line json_encodeは後で対応する
+		// json_encodeは後で対応する
+		$response->content = match ($this->content->mime) {
 			Mime::TEXT => strval($this->content->data),
 			Mime::JSON => json_encode($this->content->data),
 			default => throw new NotImplementedException(),

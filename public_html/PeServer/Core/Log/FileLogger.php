@@ -14,23 +14,19 @@ class FileLogger extends LoggerBase
 {
 	/**
 	 * 出力ディレクトリパス。
-	 *
-	 * @var string
 	 */
-	private $directoryPath;
+	private string $directoryPath;
 	/**
 	 * ファイル書式名
-	 *
-	 * @var string
 	 */
-	private $baseFileName;
+	private string $baseFileName;
 
 	/**
 	 * 破棄済みファイルパターン。
 	 *
 	 * @var string[]
 	 */
-	private static $cleanupFilePatterns = array();
+	private static array $cleanupFilePatterns = array();
 
 	/**
 	 * 生成。

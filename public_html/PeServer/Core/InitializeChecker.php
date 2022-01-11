@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
-use \LogicException;
+use PeServer\Core\Throws\InvalidOperationException;
 
 /**
  * 初期化状態チェック処理。
@@ -15,10 +15,8 @@ final class InitializeChecker
 {
 	/**
 	 * 初期化済みか。
-	 *
-	 * @var boolean
 	 */
-	private $isInitialized  = false;
+	private bool $isInitialized  = false;
 
 	/**
 	 * 初期化処理。
@@ -27,12 +25,12 @@ final class InitializeChecker
 	 *
 	 * @return void
 	 *
-	 * @throws LogicException 既に初期化されている。
+	 * @throws InvalidOperationException 既に初期化されている。
 	 */
 	public function initialize(): void
 	{
 		if ($this->isInitialized) {
-			throw new LogicException('initialized');
+			throw new InvalidOperationException('initialized');
 		}
 
 		$this->isInitialized = true;
@@ -43,12 +41,12 @@ final class InitializeChecker
 	 *
 	 * @return void
 	 *
-	 * @throws LogicException 初期化されていない。
+	 * @throws InvalidOperationException 初期化されていない。
 	 */
 	public function throwIfNotInitialize(): void
 	{
 		if (!$this->isInitialized) {
-			throw new LogicException('not initialize');
+			throw new InvalidOperationException('not initialize');
 		}
 	}
 }

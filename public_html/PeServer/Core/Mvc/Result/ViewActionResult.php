@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc\Result;
 
 use PeServer\Core\Mvc\Template;
-use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Http\HttpResponse;
 use PeServer\Core\Mvc\IActionResult;
 use PeServer\Core\Mvc\TemplateParameter;

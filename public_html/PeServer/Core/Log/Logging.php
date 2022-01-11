@@ -12,7 +12,7 @@ use PeServer\Core\InitializeChecker;
 use PeServer\Core\Log\FileLogger;
 use PeServer\Core\Log\MultiLogger;
 use PeServer\Core\StringUtility;
-
+use PeServer\Core\Throws\NotImplementedException;
 
 /**
  * ロガー生成処理。
@@ -21,7 +21,7 @@ use PeServer\Core\StringUtility;
  */
 abstract class Logging
 {
-	const LOG_REQUEST_ID_LENGTH = 6;
+	private const LOG_REQUEST_ID_LENGTH = 6;
 
 	static string $requestId;
 
@@ -30,27 +30,27 @@ abstract class Logging
 	 *
 	 * @var InitializeChecker|null
 	 */
-	private static $initializeChecker;
+	private static ?InitializeChecker $initializeChecker = null;
 
 	/**
 	 * ログ設定。
 	 *
 	 * @var array<string,mixed>
 	 */
-	private static $loggingConfiguration;
+	private static array $loggingConfiguration;
 
 	/**
 	 * ログレベル。
 	 *
 	 * @var int
 	 */
-	private static $level;
+	private static int $level;
 	/**
 	 * 書式設定。
 	 *
 	 * @var string
 	 */
-	private static $format;
+	private static string $format;
 
 	/**
 	 * 初期化。
@@ -74,20 +74,14 @@ abstract class Logging
 
 	private static function formatLevel(int $level): string
 	{
-		switch ($level) {
-			case ILogger::LEVEL_TRACE:
-				return 'TRACE';
-			case ILogger::LEVEL_DEBUG:
-				return 'DEBUG';
-			case ILogger::LEVEL_INFORMATION:
-				return 'INFO ';
-			case ILogger::LEVEL_WARNING:
-				return 'WARN ';
-			case ILogger::LEVEL_ERROR:
-				return 'ERROR';
-		}
-
-		throw new LogicException("log level: $level");
+		return match ($level) {
+			ILogger::LEVEL_TRACE => 'TRACE',
+			ILogger::LEVEL_DEBUG => 'DEBUG',
+			ILogger::LEVEL_INFORMATION => 'INFO ',
+			ILogger::LEVEL_WARNING => 'WARN ',
+			ILogger::LEVEL_ERROR => 'ERROR',
+			default => throw new NotImplementedException(),
+		};
 	}
 
 	/**

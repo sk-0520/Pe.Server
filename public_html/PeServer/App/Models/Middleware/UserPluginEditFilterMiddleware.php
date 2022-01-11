@@ -6,8 +6,8 @@ namespace PeServer\App\Models\Middleware;
 
 use PeServer\Core\Uuid;
 use PeServer\Core\Http\HttpStatus;
-use PeServer\App\Models\AppDatabase;
 use PeServer\Core\Http\HttpRequest;
+use PeServer\App\Models\AppDatabase;
 use PeServer\App\Models\SessionManager;
 use PeServer\Core\Mvc\Middleware\IMiddleware;
 use PeServer\Core\Mvc\Middleware\MiddlewareResult;

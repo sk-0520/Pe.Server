@@ -22,7 +22,7 @@ class Action
 	 *
 	 * @var array<string,array{method:string,middleware:array<IMiddleware|string>,shutdown_middleware:array<IShutdownMiddleware|string>}>
 	 */
-	private $map = array();
+	private array $map = array();
 
 	/**
 	 * 追加。

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domain;
 
-use PeServer\Core\Database\Database;
 use PeServer\App\Models\Dao\Entities\PluginsEntityDao;
 use PeServer\App\Models\Dao\Entities\PluginUrlsEntityDao;
 use PeServer\Core\Database\IDatabaseContext;

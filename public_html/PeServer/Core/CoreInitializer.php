@@ -11,10 +11,8 @@ abstract class CoreInitializer
 {
 	/**
 	 * 初期化チェック
-	 *
-	 * @var InitializeChecker|null
 	 */
-	private static $initializeChecker;
+	private static ?InitializeChecker $initializeChecker = null;
 
 	/**
 	 * 初期化処理。

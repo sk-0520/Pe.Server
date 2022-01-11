@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Store;
 
+use PeServer\Core\Store\CookieOption;
+use PeServer\Core\Store\SessionOption;
+use PeServer\Core\Store\TemporaryOption;
+
 
 class StoreOption
 {

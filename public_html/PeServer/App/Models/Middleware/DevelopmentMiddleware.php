@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Middleware;
 
-use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Environment;
+use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mvc\Middleware\IMiddleware;
 use PeServer\Core\Mvc\Middleware\MiddlewareResult;
 use PeServer\Core\Mvc\Middleware\MiddlewareArgument;

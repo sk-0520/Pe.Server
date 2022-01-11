@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models;
 
-use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mvc\Template;
+use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mvc\TemplateParameter;
+use PeServer\App\Models\AppConfiguration;
 
 abstract class AppTemplate
 {

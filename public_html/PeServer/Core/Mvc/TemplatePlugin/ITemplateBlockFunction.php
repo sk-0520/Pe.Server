@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc\TemplatePlugin;
 
 use \Smarty_Internal_Template;
+use PeServer\Core\Mvc\TemplatePlugin\ITemplateFunction;
 
 /**
  * smarty 関数

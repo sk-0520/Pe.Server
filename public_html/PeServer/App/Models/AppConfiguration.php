@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models;
 
-use \Error;
 use PeServer\Core\I18n;
 use PeServer\Core\Environment;
 use PeServer\Core\FileUtility;
 use PeServer\Core\Log\Logging;
 use PeServer\Core\Mvc\Template;
 use PeServer\Core\Configuration;
-use PeServer\Core\StringUtility;
-use PeServer\Core\Database\Database;
 use PeServer\Core\InitializeChecker;
+use PeServer\App\Models\AppDatabaseCache;
+
 
 abstract class AppConfiguration
 {
@@ -22,7 +21,7 @@ abstract class AppConfiguration
 	 *
 	 * @var InitializeChecker|null
 	 */
-	private static $initializeChecker;
+	private static ?InitializeChecker $initializeChecker = null;
 
 	/**
 	 * 設定データ。

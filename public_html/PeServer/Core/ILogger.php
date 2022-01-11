@@ -12,15 +12,15 @@ namespace PeServer\Core;
 interface ILogger
 {
 	/** レベル: トレース */
-	const LEVEL_TRACE = 1;
+	public const LEVEL_TRACE = 1;
 	/** レベル: デバッグ */
-	const LEVEL_DEBUG = 2;
+	public const LEVEL_DEBUG = 2;
 	/** レベル: 情報 */
-	const LEVEL_INFORMATION = 3;
+	public const LEVEL_INFORMATION = 3;
 	/** レベル: 警告 */
-	const LEVEL_WARNING = 4;
+	public const LEVEL_WARNING = 4;
 	/** レベル: エラー */
-	const LEVEL_ERROR = 5;
+	public const LEVEL_ERROR = 5;
 
 	/**
 	 * ログ出力。

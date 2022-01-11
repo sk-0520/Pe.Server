@@ -9,8 +9,8 @@ use PeServer\Core\StringUtility;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\KeyNotFoundException;
-use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Throws\NotSupportedException;
+use PeServer\Core\Throws\InvalidOperationException;
 
 /**
  * HTTPヘッダー
@@ -20,14 +20,16 @@ use PeServer\Core\Throws\NotSupportedException;
 class HttpHeader
 {
 	/**
-	 * Undocumented variable
+	 * ヘッダ一覧。
+	 *
+	 * リダイレクト(Location)とは共存しない。
 	 *
 	 * @var array<string,string[]>
 	 */
 	private array $headers = [];
 
 	/**
-	 * Undocumented variable
+	 * リダイレクト設定。
 	 *
 	 * @var array{url:string,status?:HttpStatus}|null
 	 */
@@ -51,10 +53,10 @@ class HttpHeader
 	}
 
 	/**
-	 * Undocumented function
+	 * ヘッダに値一覧を設定。
 	 *
-	 * @param string $name
-	 * @param string[] $values
+	 * @param string $name ヘッダ名。
+	 * @param string[] $values 値一覧。
 	 * @return void
 	 */
 	public function setValues(string $name, array $values): void
@@ -64,7 +66,13 @@ class HttpHeader
 		$this->headers[$name] = $values;
 	}
 
-
+	/**
+	 * ヘッダに値を追加。
+	 *
+	 * @param string $name ヘッダ名。
+	 * @param string $value 値。
+	 * @return void
+	 */
 	public function addValue(string $name, string $value): void
 	{
 		$this->throwIfInvalidHeaderName($name);
@@ -77,16 +85,23 @@ class HttpHeader
 		}
 	}
 
+	/**
+	 * ヘッダ名が存在するか。
+	 *
+	 * @param string $name
+	 * @return boolean
+	 */
 	public function existsHeader(string $name): bool
 	{
 		return ArrayUtility::existsKey($this->headers, $name);
 	}
 
 	/**
-	 * Undocumented function
+	 * ヘッダの値を取得。
 	 *
 	 * @param string $name
-	 * @return string[]
+	 * @return string[] 値一覧。
+	 * @throws KeyNotFoundException
 	 */
 	public function getValues(string $name): array
 	{
@@ -97,11 +112,23 @@ class HttpHeader
 		throw new KeyNotFoundException();
 	}
 
+	/**
+	 * リダイレクト設定は存在するか。
+	 *
+	 * @return boolean
+	 */
 	public function existsRedirect(): bool
 	{
 		return !is_null($this->redirect);
 	}
 
+	/**
+	 * リダイレクト設定を割り当て。
+	 *
+	 * @param string $url
+	 * @param HttpStatus|null $status
+	 * @return void
+	 */
 	public function setRedirect(string $url, ?HttpStatus $status): void
 	{
 		if (is_null($status)) {
@@ -116,6 +143,11 @@ class HttpHeader
 		}
 	}
 
+	/**
+	 * リダイレクト設定を破棄。
+	 *
+	 * @return boolean
+	 */
 	public function clearRedirect(): bool
 	{
 		if (is_null($this->redirect)) {
@@ -127,7 +159,9 @@ class HttpHeader
 	}
 
 	/**
-	 * Undocumented function
+	 * 現在のヘッダ一覧を取得。
+	 *
+	 * 同一名ヘッダは , でまとめられる。
 	 *
 	 * @return array<string,string>
 	 */
@@ -144,9 +178,10 @@ class HttpHeader
 	}
 
 	/**
-	 * Undocumented function
+	 * リダイレクト情報を取得。
 	 *
 	 * @return array{url:string,status?:HttpStatus}
+	 * @throws InvalidOperationException リダイレクト設定が未割り当て。
 	 */
 	public function getRedirect(): array
 	{
@@ -157,6 +192,11 @@ class HttpHeader
 		return $this->redirect; //@phpstan-ignore-line not null
 	}
 
+	/**
+	 * リクエストヘッダの取得。
+	 *
+	 * @return HttpHeader
+	 */
 	public static function getRequest(): HttpHeader
 	{
 		return new _HttpHeader_Request();

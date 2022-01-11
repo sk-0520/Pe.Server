@@ -21,8 +21,6 @@ class HtmlDocument extends HtmlBase
 {
 	/**
 	 * 生で使用する用。
-	 *
-	 * @var DOMDocument
 	 */
 	public DOMDocument $raw;
 

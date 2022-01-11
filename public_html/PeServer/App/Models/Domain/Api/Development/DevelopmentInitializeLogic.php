@@ -5,15 +5,10 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Domain\Api\Development;
 
 use PeServer\Core\Mime;
-use \Deploy\ScriptArgument;
 use PeServer\Core\ILogger;
 use PeServer\Core\Log\Logging;
-use PeServer\Core\Mvc\LogicBase;
-use PeServer\Core\Mvc\ActionResponse;
-use PeServer\Core\Http\HttpStatusCode;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
-use PeServer\Core\Throws\CoreException;
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\Domain\Api\ApiLogicBase;
 
@@ -36,7 +31,7 @@ class DevelopmentInitializeLogic extends ApiLogicBase
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
 		// 結構なぐっだぐだ
-		$scriptArgument = new class() extends ScriptArgument // @phpstan-ignore-line
+		$scriptArgument = new class() extends \Deploy\ScriptArgument // @phpstan-ignore-line
 		{
 			/**
 			 * @var ILogger

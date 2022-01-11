@@ -17,16 +17,12 @@ class LogicParameter
 {
 	/**
 	 * ロガー
-	 *
-	 * @var ILogger
 	 */
-	public $logger;
+	public ILogger $logger;
 	/**
 	 * リクエスト。
-	 *
-	 * @var HttpRequest
 	 */
-	public $request;
+	public HttpRequest $request;
 
 	public CookieStore $cookie;
 	public TemporaryStore $temporary;

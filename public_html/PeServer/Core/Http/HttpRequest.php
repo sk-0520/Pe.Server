@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Http;
 
+use PeServer\Core\Http\HttpHeader;
+use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Throws\KeyNotFoundException;
 
 /**

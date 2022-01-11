@@ -8,22 +8,22 @@ use \DateInterval;
 use PeServer\Core\I18n;
 use PeServer\Core\Bytes;
 use PeServer\Core\ILogger;
-use PeServer\Core\ArrayUtility;
 use PeServer\Core\FileUtility;
+use PeServer\Core\ArrayUtility;
+use PeServer\Core\Mvc\Validator;
 use PeServer\Core\StringUtility;
 use PeServer\Core\Http\HttpStatus;
-use PeServer\Core\Mvc\Validations;
+use PeServer\Core\Mvc\DataContent;
 use PeServer\Core\Http\HttpRequest;
+use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Store\CookieStore;
-use PeServer\Core\Mvc\ActionResponse;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\Store\CookieOption;
 use PeServer\Core\Store\SessionStore;
-use PeServer\Core\Mvc\SessionNextState;
 use PeServer\Core\Store\TemporaryStore;
+use PeServer\Core\Mvc\TemplateParameter;
 use PeServer\Core\Mvc\IValidationReceiver;
 use PeServer\Core\Throws\ArgumentException;
-use PeServer\Core\Throws\NotImplementedException;
 use PeServer\Core\Throws\InvalidOperationException;
 
 /**
@@ -35,16 +35,12 @@ abstract class LogicBase implements IValidationReceiver
 
 	/**
 	 * ロガー。
-	 *
-	 * @var ILogger
 	 */
-	protected $logger;
+	protected ILogger $logger;
 	/**
 	 * リクエストデータ。
-	 *
-	 * @var HttpRequest
 	 */
-	private $request;
+	private HttpRequest $request;
 
 	/**
 	 * HTTPステータスコード。
@@ -55,41 +51,37 @@ abstract class LogicBase implements IValidationReceiver
 	 *
 	 * @var array<string,string[]>
 	 */
-	private $errors = array();
+	private array $errors = array();
 	/**
 	 * 応答データ。
 	 *
 	 * @var array<string,mixed>
 	 */
-	private $values = array();
+	private array $values = array();
 
 	/**
 	 * 要素設定がなされている場合に応答データのキーをこの項目に固定。
 	 *
 	 * @var string[]
 	 */
-	private $keys = array();
+	private array $keys = array();
 
 	/**
 	 * コントローラ内結果データ。
 	 *
 	 * @var array<string,mixed>
 	 */
-	protected $result = array();
+	protected array $result = array();
 
 	/**
-	 * Undocumented variable
-	 *
-	 * @var Validator
+	 * 検証処理。
 	 */
-	protected $validator;
+	protected Validator $validator;
 
 	/**
 	 * 応答データ。
-	 *
-	 * @var DataContent|null
 	 */
-	private $content = null;
+	private DataContent|null $content = null;
 
 	private CookieStore $cookie;
 	private TemporaryStore $temporary;

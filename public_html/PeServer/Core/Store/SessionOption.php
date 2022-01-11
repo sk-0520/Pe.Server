@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Store;
 
-use PeServer\Core\Store\CookieOption;
 use PeServer\Core\StringUtility;
+use PeServer\Core\Store\CookieOption;
 use PeServer\Core\Throws\ArgumentException;
 
 class SessionOption
@@ -16,7 +16,7 @@ class SessionOption
 			throw new ArgumentException('$name');
 		}
 
-		$option = new self();
+		$option = new SessionOption();
 
 		$option->name = $name;
 		$option->savePath = $savePath;

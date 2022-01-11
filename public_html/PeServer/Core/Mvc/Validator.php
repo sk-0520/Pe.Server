@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc;
 
+use PeServer\Core\Regex;
 use PeServer\Core\StringUtility;
 use PeServer\Core\Mvc\IValidationReceiver;
-use PeServer\Core\Regex;
 
 class Validator
 {
@@ -22,10 +22,8 @@ class Validator
 
 	/**
 	 * 検証移譲取得処理。
-	 *
-	 * @var IValidationReceiver
 	 */
-	private $receiver;
+	private IValidationReceiver $receiver;
 
 	public function __construct(IValidationReceiver $receiver)
 	{

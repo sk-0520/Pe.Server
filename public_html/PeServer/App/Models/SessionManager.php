@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models;
 
-use PeServer\Core\CoreInitializer;
 use PeServer\Core\InitializeChecker;
 use PeServer\Core\Store\SessionStore;
-use PeServer\App\Models\AppConfiguration;
-use PeServer\Core\Throws\CoreException;
 use PeServer\Core\Throws\InvalidOperationException;
 
 abstract class SessionManager
@@ -17,10 +14,8 @@ abstract class SessionManager
 
 	/**
 	 * 初期化チェック
-	 *
-	 * @var InitializeChecker|null
 	 */
-	private static $initializeChecker;
+	private static ?InitializeChecker $initializeChecker = null;
 
 	private static SessionStore $session;
 

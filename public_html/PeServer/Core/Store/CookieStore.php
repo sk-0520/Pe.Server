@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Store;
 
-use \DateInterval;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\StringUtility;
 use PeServer\Core\Store\CookieOption;
-use PeServer\Core\Throws\InvalidOperationException;
 
 /**
  * cookie 管理処理。
@@ -39,8 +37,6 @@ class CookieStore
 
 	/**
 	 * クッキーの値に変更があったか。
-	 *
-	 * @var boolean
 	 */
 	private bool $isChanged = false;
 

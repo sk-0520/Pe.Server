@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Store;
 
-use PeServer\Core\Store\CookieOption;
 use PeServer\Core\StringUtility;
+use PeServer\Core\Store\CookieOption;
 use PeServer\Core\Throws\ArgumentException;
 
 class TemporaryOption

@@ -4,15 +4,10 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\TemplatePlugin;
 
-use \Smarty;
-use \DOMDocument;
-use PeServer\Core\Csrf;
 use PeServer\Core\I18n;
-use \Smarty_Internal_Template;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\HtmlDocument;
 use PeServer\Core\Mvc\Validator;
-use PeServer\Core\Throws\CoreException;
 use PeServer\Core\Mvc\TemplatePlugin\TemplateFunctionBase;
 use PeServer\Core\Mvc\TemplatePlugin\TemplatePluginArgument;
 

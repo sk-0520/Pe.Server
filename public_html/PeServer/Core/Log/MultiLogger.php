@@ -14,7 +14,7 @@ final class MultiLogger extends LoggerBase
 	 *
 	 * @var ILogger[]
 	 */
-	private $loggers;
+	private array $loggers;
 
 	/**
 	 * 生成。

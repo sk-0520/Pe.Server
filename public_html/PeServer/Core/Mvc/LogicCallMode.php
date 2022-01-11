@@ -72,10 +72,8 @@ final class _LogicCallMode_Impl extends LogicCallMode
 {
 	/**
 	 * 呼び出し方法。
-	 *
-	 * @var int
 	 */
-	private $mode;
+	private int $mode;
 
 	public function __construct(int $mode)
 	{

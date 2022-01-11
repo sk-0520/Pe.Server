@@ -12,8 +12,6 @@ use PeServer\Core\Http\ICallbackContent;
 
 /**
  * HTTP応答データ。
- *
- * TODO: 構築中
  */
 class HttpResponse
 {

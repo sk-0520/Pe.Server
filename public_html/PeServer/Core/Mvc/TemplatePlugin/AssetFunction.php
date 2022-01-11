@@ -4,11 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\TemplatePlugin;
 
-use \Smarty;
-use DOMElement;
-use \DOMDocument;
-use PeServer\Core\Csrf;
-use \Smarty_Internal_Template;
+use \DOMElement;
 use PeServer\Core\FileUtility;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Environment;

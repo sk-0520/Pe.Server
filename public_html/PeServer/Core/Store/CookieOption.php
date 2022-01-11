@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Store;
 
-use \DateTimeImmutable;
 use \DateInterval;
+use \DateTimeImmutable;
 
 class CookieOption
 {
@@ -42,20 +42,14 @@ class CookieOption
 	 * 期限。
 	 *
 	 * 未設定で 0 扱い。
-	 *
-	 * @var DateInterval|null
 	 */
 	public ?DateInterval $span;
 	/**
 	 * HTTPS に限定。
-	 *
-	 * @var boolean
 	 */
 	public bool $secure;
 	/**
 	 *  HTTP リクエストのみで使用。
-	 *
-	 * @var boolean
 	 */
 	public bool $httpOnly;
 

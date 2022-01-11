@@ -5,27 +5,16 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Domain\Api\Development;
 
 use PeServer\Core\Mime;
-use PeServer\Core\Uuid;
-use PeServer\Core\ILogger;
-use \Deploy\ScriptArgument;
-use PeServer\Core\Log\Logging;
 use PeServer\Core\Cryptography;
-use PeServer\Core\Mvc\LogicBase;
-use PeServer\Core\Http\HttpStatusCode;
-use PeServer\Core\Database\Database;
 use PeServer\Core\Mvc\LogicCallMode;
-use PeServer\Core\Mvc\ActionResponse;
 use PeServer\Core\Mvc\LogicParameter;
-use PeServer\Core\Throws\CoreException;
 use PeServer\App\Models\AppCryptography;
-use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\Domain\UserLevel;
 use PeServer\App\Models\Domain\UserState;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\App\Models\Domain\Api\ApiLogicBase;
 use PeServer\App\Models\Dao\Entities\UsersEntityDao;
 use PeServer\App\Models\Dao\Entities\UserAuthenticationsEntityDao;
-use PeServer\Core\Mvc\DataContent;
 
 class DevelopmentAdministratorLogic extends ApiLogicBase
 {
@@ -41,7 +30,6 @@ class DevelopmentAdministratorLogic extends ApiLogicBase
 
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
-		$emailDomain = '@localhost.localdomain';
 		$users = [
 			[
 				'user_id' => 'ffffffff-ffff-4fff-ffff-ffffffffffff',

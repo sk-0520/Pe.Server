@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace PeServer\Core\Store;
 
 use PeServer\Core\Security;
-use PeServer\Core\ArrayUtility;
 use PeServer\Core\FileUtility;
+use PeServer\Core\ArrayUtility;
 use PeServer\Core\StringUtility;
+use PeServer\Core\Store\CookieStore;
+use PeServer\Core\Store\SessionOption;
 use PeServer\Core\Throws\ArgumentException;
-use PeServer\Core\Throws\CoreError;
-use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Throws\NotImplementedException;
+use PeServer\Core\Throws\InvalidOperationException;
 
 /**
  * セッション管理処理。
@@ -37,8 +38,6 @@ class SessionStore
 	private array $values = array();
 	/**
 	 * セッションは開始されているか。
-	 *
-	 * @var boolean
 	 */
 	private bool $isStarted  = false;
 
@@ -46,8 +45,6 @@ class SessionStore
 
 	/**
 	 * セッションの値に変更があったか。
-	 *
-	 * @var boolean
 	 */
 	private bool $isChanged = false;
 

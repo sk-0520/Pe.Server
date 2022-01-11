@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc;
 
-use \Exception;
-use \LogicException;
-use PeServer\Core\Mime;
 use PeServer\Core\Bytes;
 use PeServer\Core\Http\HttpStatus;
 
@@ -25,16 +22,14 @@ class DataContent
 	 * MIME
 	 *
 	 * Mime を参照のこと。
-	 *
-	 * @var string
 	 */
-	public $mime;
+	public string $mime;
 	/**
 	 * 応答生データ。
 	 *
 	 * このデータ自体はプログラム側の生値で保持する。
 	 *
-	 * @var mixed
+	 * @var string|array<mixed>|Bytes
 	 */
 	public $data;
 

@@ -7,16 +7,13 @@ namespace PeServer\App\Models;
 use PeServer\Core\CoreInitializer;
 use PeServer\Core\InitializeChecker;
 use PeServer\App\Models\AppConfiguration;
-use PeServer\Core\Environment;
 
 abstract class Initializer
 {
 	/**
 	 * 初期化チェック
-	 *
-	 * @var InitializeChecker|null
 	 */
-	private static $initializeChecker;
+	private static ?InitializeChecker $initializeChecker = null;
 
 	public static function initialize(string $rootDirectoryPath, string $baseDirectoryPath, string $environment, string $revision): void
 	{

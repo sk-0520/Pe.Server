@@ -6,7 +6,7 @@ namespace PeServer\Core\Throws;
 
 use PeServer\Core\Http\HttpStatus;
 use \Throwable;
-use PeServer\Core\Throws;
+use PeServer\Core\Throws\CoreException;
 
 final class HttpStatusException extends CoreException
 {

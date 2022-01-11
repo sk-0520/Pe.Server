@@ -6,6 +6,7 @@ namespace PeServer\App\Models;
 
 use PeServer\Core\Cryptography;
 use PeServer\Core\Throws\CoreException;
+use PeServer\App\Models\AppConfiguration;
 
 abstract class AppCryptography
 {

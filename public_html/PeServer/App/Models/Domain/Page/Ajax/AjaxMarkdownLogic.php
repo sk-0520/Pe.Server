@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domain\Page\Ajax;
 
+use PeServer\Core\ArrayUtility;
+use PeServer\Core\Mvc\Markdown;
+use PeServer\Core\TypeConverter;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\App\Models\ResponseJson;
 use PeServer\Core\Mvc\LogicParameter;
-use PeServer\App\Models\Domain\Page\PageLogicBase;
-use PeServer\App\Models\Domain\UserLevel;
 use PeServer\App\Models\SessionManager;
-use PeServer\Core\ArrayUtility;
-use PeServer\Core\Mime;
-use PeServer\Core\Mvc\Markdown;
-use PeServer\Core\TypeConverter;
+use PeServer\App\Models\Domain\UserLevel;
+use PeServer\App\Models\Domain\Page\PageLogicBase;
 
 class AjaxMarkdownLogic extends PageLogicBase
 {

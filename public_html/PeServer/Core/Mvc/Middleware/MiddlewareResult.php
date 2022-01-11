@@ -4,14 +4,9 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Middleware;
 
-use \Exception;
-use \LogicException;
 use PeServer\Core\Regex;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\UrlUtility;
-use PeServer\Core\Store\CookieStore;
-use PeServer\Core\Store\SessionStore;
-use PeServer\Core\Throws\CoreException;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\HttpStatusException;
 use PeServer\Core\Throws\InvalidOperationException;

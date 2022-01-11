@@ -13,10 +13,8 @@ abstract class Environment
 {
 	/**
 	 * 初期化チェック
-	 *
-	 * @var InitializeChecker|null
 	 */
-	private static $initializeChecker;
+	private static ?InitializeChecker $initializeChecker = null;
 
 	private static string $environment = '';
 	private static string $revision = '';

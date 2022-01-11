@@ -14,7 +14,7 @@ use \IteratorAggregate;
 class Collection implements IteratorAggregate // @phpstan-ignore-line
 {
 	/** @var array<mixed> */
-	private $items;
+	private array $items;
 
 	/**
 	 * Undocumented function

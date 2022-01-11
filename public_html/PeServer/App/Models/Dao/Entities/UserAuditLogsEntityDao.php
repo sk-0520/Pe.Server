@@ -6,7 +6,6 @@ namespace PeServer\App\Models\Dao\Entities;
 
 use PeServer\Core\Database\DaoBase;
 use PeServer\Core\Database\IDatabaseContext;
-use PeServer\Core\TypeConverter;
 
 class UserAuditLogsEntityDao extends DaoBase
 {
