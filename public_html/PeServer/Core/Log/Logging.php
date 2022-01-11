@@ -13,9 +13,6 @@ use PeServer\Core\Log\FileLogger;
 use PeServer\Core\Log\MultiLogger;
 use PeServer\Core\StringUtility;
 
-const LOG_REQUEST_ID_LENGTH = 6;
-define('LOG_REQUEST_ID', Cryptography::generateRandomBytes(LOG_REQUEST_ID_LENGTH)->toHex());
-
 
 /**
  * ロガー生成処理。
@@ -24,6 +21,10 @@ define('LOG_REQUEST_ID', Cryptography::generateRandomBytes(LOG_REQUEST_ID_LENGTH
  */
 abstract class Logging
 {
+	const LOG_REQUEST_ID_LENGTH = 6;
+
+	static string $requestId;
+
 	/**
 	 * 初期化チェック。
 	 *
@@ -65,6 +66,7 @@ abstract class Logging
 		self::$initializeChecker->initialize();
 
 		self::$loggingConfiguration = $loggingConfiguration;
+		self::$requestId = Cryptography::generateRandomBytes(self::LOG_REQUEST_ID_LENGTH)->toHex();
 
 		self::$level = self::$loggingConfiguration['level'];
 		self::$format = self::$loggingConfiguration['format'];
@@ -162,7 +164,7 @@ abstract class Logging
 			'TIMESTAMP' => date('c'),
 			'CLIENT_IP' => ArrayUtility::getOr($_SERVER, 'REMOTE_ADDR', ''),
 			'CLIENT_HOST' => ArrayUtility::getOr($_SERVER, 'REMOTE_HOST', ''),
-			'REQUEST_ID' => LOG_REQUEST_ID,
+			'REQUEST_ID' => self::$requestId,
 			'UA' => ArrayUtility::getOr($_SERVER, 'HTTP_USER_AGENT', ''),
 			'METHOD' => ArrayUtility::getOr($_SERVER, 'REQUEST_METHOD', ''),
 			'REQUEST' => ArrayUtility::getOr($_SERVER, 'REQUEST_URI', ''),

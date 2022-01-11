@@ -57,10 +57,12 @@ class Route
 	 */
 	private array $baseShutdownMiddleware;
 
+	protected string $excludeIndexPattern = '/^(api|ajax)/';
+
 	/**
 	 * ルーティング情報にコントローラを登録
 	 *
-	 * @param string $path URLとしてのパス。先頭が api/ajax 以外の場合に index アクションが自動登録される
+	 * @param string $path URLとしてのパス。$this->excludeIndexPattern に一致しない場合に index アクションが自動登録される
 	 * @param string $className 使用されるクラス完全名
 	 * @param array<IMiddleware|string> $middleware ベースとなるミドルウェア。
 	 * @param array<IShutdownMiddleware|string> $shutdownMiddleware ベースとなる終了ミドルウェア。
@@ -85,7 +87,7 @@ class Route
 		$this->baseShutdownMiddleware = $shutdownMiddleware;
 		$this->className = $className;
 
-		if (!(StringUtility::startsWith($this->basePath, 'api', false) || StringUtility::startsWith($this->basePath, 'ajax', false))) {
+		if (!Regex::isMatch($this->basePath, $this->excludeIndexPattern)) {
 			$this->addAction('', HttpMethod::get(), 'index', $this->baseMiddleware, $this->baseShutdownMiddleware);
 		}
 	}
@@ -222,6 +224,7 @@ class Route
 					continue;
 				}
 
+				/** @var array<array{key:string,name:string,value:string}> */
 				$calcPaths = array_filter(array_map(function ($i, $value) use ($actionPaths) {
 					$length = StringUtility::getLength($value);
 					$targetValue = urldecode($actionPaths[$i]);
@@ -244,12 +247,13 @@ class Route
 					return !is_null($i);
 				});
 
+				$calcPathLength = ArrayUtility::getCount($calcPaths);
 				// 非URLパラメータ項目は一致するか
-				if (ArrayUtility::getCount($calcPaths) !== ArrayUtility::getCount($actionPaths)) {
+				if ($calcPathLength !== ArrayUtility::getCount($actionPaths)) {
 					continue;
 				}
 				$success = true;
-				for ($i = 0; $i < ArrayUtility::getCount($calcPaths) && $success; $i++) {
+				for ($i = 0; $i < $calcPathLength && $success; $i++) {
 					$calcPath = $calcPaths[$i];
 					if (StringUtility::isNullOrEmpty($calcPath['name'])) {
 						$success = $calcPath['key'] === $actionPaths[$i];
@@ -273,7 +277,7 @@ class Route
 				}
 
 				$result = $this->getActionCore($httpMethod, $action, $flatParameters);
-				if ($result->status->code() === HttpStatus::none()->code()) {
+				if ($result->status->is(HttpStatus::none())) {
 					return $result;
 				}
 			}

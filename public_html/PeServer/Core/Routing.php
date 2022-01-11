@@ -253,7 +253,7 @@ class Routing
 		foreach ($this->setting->routes as $route) {
 			$action = $route->getAction($this->requestMethod, $this->requestPath);
 			if (!is_null($action)) {
-				if ($action->status->code() === HttpStatus::none()->code()) {
+				if ($action->status->is(HttpStatus::none())) {
 					$this->executeAction($action->className, $action->classMethod, $action->params, $action->middleware, $action->shutdownMiddleware);
 					return;
 				} else if (is_null($errorAction)) {

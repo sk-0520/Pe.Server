@@ -9,15 +9,6 @@ namespace PeServer\Core\Http;
  */
 abstract class HttpStatus
 {
-	// const DO_EXECUTE = 0;
-
-	// const OK = 200;
-	// const FORBIDDEN = 403;
-	// const NOT_FOUND = 404;
-	// const METHOD_NOT_ALLOWED = 405;
-	// const INTERNAL_SERVER_ERROR = 500;
-	// const SERVICE_UNAVAILABLE = 503;
-
 	public static function none(): HttpStatus
 	{
 		return new _HttpStatus_Impl(0);
@@ -67,20 +58,31 @@ abstract class HttpStatus
 		return new _HttpStatus_Impl(503);
 	}
 
-	public abstract function code(): int;
+	public abstract function getCode(): int;
+
+	public abstract function is(HttpStatus $httpStatus): bool;
 }
 
 class _HttpStatus_Impl extends HttpStatus
 {
-	private int $code;
+	public int $code;
 
 	public function __construct(int $code)
 	{
 		$this->code = $code;
 	}
 
-	public function code(): int
+	public function getCode(): int
 	{
 		return $this->code;
+	}
+
+	public function is(HttpStatus $httpStatus): bool
+	{
+		if ($httpStatus instanceof _HttpStatus_Impl) {
+			return $this->code === $httpStatus->code;
+		}
+
+		return $this->code === $httpStatus->getCode();
 	}
 }

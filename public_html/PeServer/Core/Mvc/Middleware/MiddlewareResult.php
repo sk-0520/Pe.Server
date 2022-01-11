@@ -102,7 +102,7 @@ class _RedirectMiddlewareResult extends MiddlewareResult
 
 	public function apply(): void
 	{
-		header('Location: ' . $this->url, true, $this->status->code());
+		header('Location: ' . $this->url, true, $this->status->getCode());
 	}
 }
 

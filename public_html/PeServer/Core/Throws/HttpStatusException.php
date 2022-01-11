@@ -16,6 +16,6 @@ final class HttpStatusException extends CoreException
 	{
 		$this->status = $status;
 
-		parent::__construct($message, $status->code(), $previous);
+		parent::__construct($message, $status->getCode(), $previous);
 	}
 }

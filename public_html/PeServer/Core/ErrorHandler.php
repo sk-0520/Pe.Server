@@ -81,7 +81,7 @@ class ErrorHandler
 			? $throwable->status
 			: HttpStatus::serviceUnavailable();
 
-		http_response_code($status->code());
+		http_response_code($status->getCode());
 
 		return $status;
 	}

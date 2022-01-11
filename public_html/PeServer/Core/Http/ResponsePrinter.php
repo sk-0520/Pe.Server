@@ -25,7 +25,7 @@ class ResponsePrinter
 	{
 		// リダイレクト未設定の場合はステータスコード設定
 		if (!$this->response->header->existsRedirect()) {
-			http_response_code($this->response->status->code());
+			http_response_code($this->response->status->getCode());
 		}
 
 		// ヘッダ出力
@@ -36,7 +36,7 @@ class ResponsePrinter
 		if ($this->response->header->existsRedirect()) {
 			$redirect = $this->response->header->getRedirect();
 			if (isset($redirect['status'])) {
-				header('Location: ' . $redirect['url'], true, $redirect['status']->code());
+				header('Location: ' . $redirect['url'], true, $redirect['status']->getCode());
 			} else {
 				header('Location: ' . $redirect['url']);
 			}

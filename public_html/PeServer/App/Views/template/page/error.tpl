@@ -8,7 +8,7 @@
 
 <dl>
 	<dt>ステータスコード</dt>
-	<dd><code>{$status->code()}</code></dd>
+	<dd><code>{$status->getCode()}</code></dd>
 
 	<dt>エラーコード</dt>
 	<dd><code>{$values.error_number}</code></dd>
