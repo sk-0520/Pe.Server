@@ -28,17 +28,19 @@
 			"**/Libs/**": true
 		},
 		"cSpell.words": [
+			"ATTR_ERRMODE",
 			"autoload",
 			"cachebuster",
+			"ERRMODE_EXCEPTION",
+			"httponly",
+			"intelephense",
 			"loginid",
+			"Michelf",
 			"ondrej",
+			"PHPSESSID",
 			"phpstan",
 			"phpunit",
-			"ATTR_ERRMODE",
-			"ERRMODE_EXCEPTION",
-			"intelephense",
-			"PHPSESSID",
-			"Michelf"
+			"samesite"
 		],
 		"intelephense.environment.phpVersion": "8.0.3",
 		"intelephense.files.exclude": [
