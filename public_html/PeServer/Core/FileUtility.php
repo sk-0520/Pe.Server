@@ -13,6 +13,8 @@ use PeServer\Core\Throws\FileNotFoundException;
 
 abstract class FileUtility
 {
+	public const DIRECTORY_PERMISSIONS = 0777;
+
 	/**
 	 * 絶対パスへ変換。
 	 *
@@ -208,10 +210,10 @@ abstract class FileUtility
 	 * @param string $directoryPath ディレクトリパス
 	 * @return void
 	 */
-	public static function createDirectoryIfNotExists(string $directoryPath)
+	public static function createDirectoryIfNotExists(string $directoryPath, int $permissions = self::DIRECTORY_PERMISSIONS): void
 	{
 		if (!file_exists($directoryPath)) {
-			mkdir($directoryPath, 0777, true);
+			mkdir($directoryPath, $permissions, true);
 		}
 	}
 
@@ -223,10 +225,47 @@ abstract class FileUtility
 	 * @param string $path 対象パス（メソッド自体はファイルパスとして使用することを前提としている）
 	 * @return void
 	 */
-	public static function createParentDirectoryIfNotExists(string $path)
+	public static function createParentDirectoryIfNotExists(string $path, int $permissions = self::DIRECTORY_PERMISSIONS): void
 	{
-		self::createDirectoryIfNotExists(dirname($path));
+		self::createDirectoryIfNotExists(dirname($path), $permissions);
 	}
+
+	/**
+	 * ファイル・ディレクトリが存在するか。
+	 *
+	 * @param string $path
+	 * @return boolean 存在するか。
+	 */
+	public static function existsItem(string $path): bool
+	{
+		return file_exists($path);
+	}
+
+	/**
+	 * ファイルが存在するか。
+	 *
+	 * self::existsItem より速い(file_existsよりis_fileの方が速いらすぃ)
+	 *
+	 * @param string $path
+	 * @return boolean 存在するか。
+	 */
+	public static function existsFile(string $path): bool
+	{
+		return is_file($path);
+	}
+
+	/**
+	 * ディレクトリが存在するか。
+	 *
+	 * @param string $path
+	 * @return boolean 存在するか。
+	 */
+	public static function existsDirectory(string $path): bool
+	{
+		return is_dir($path);
+	}
+
+
 
 	/**
 	 * ファイル/ディレクトリ一覧を取得する。
