@@ -53,13 +53,13 @@ class HttpRequest
 			return ['exists' => true, 'type' => self::REQUEST_URL];
 		}
 
-		if (!$strict || $this->httpMethod->is(HttpMethod::GET)) {
+		if (!$strict || $this->httpMethod->is(HttpMethod::get())) {
 			if (isset($_GET[$key])) {
 				return ['exists' => true, 'type' => self::REQUEST_GET];
 			}
 		}
 
-		if (!$strict || $this->httpMethod->is(HttpMethod::POST)) {
+		if (!$strict || $this->httpMethod->is(HttpMethod::post())) {
 			if (isset($_POST[$key])) {
 				return ['exists' => true, 'type' => self::REQUEST_POST];
 			}
@@ -91,12 +91,12 @@ class HttpRequest
 			return $this->urlParameters[$key];
 		}
 
-		if (!$strict || $this->httpMethod->is(HttpMethod::GET)) {
+		if (!$strict || $this->httpMethod->is(HttpMethod::get())) {
 			if (isset($_GET[$key])) {
 				return $_GET[$key];
 			}
 		}
-		if (!$strict || $this->httpMethod->is(HttpMethod::POST)) {
+		if (!$strict || $this->httpMethod->is(HttpMethod::post())) {
 
 			if (isset($_POST[$key])) {
 				return $_POST[$key];

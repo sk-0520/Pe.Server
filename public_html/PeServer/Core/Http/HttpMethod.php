@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Http;
 
-use PeServer\Core\Collection;
 use PeServer\Core\StringUtility;
-use PeServer\Core\Http\HttpStatus;
-use PeServer\Core\Throws\ArgumentException;
-use PeServer\Core\Throws\HttpStatusException;
+
 
 /**
  * HTTPメソッド。
@@ -16,35 +13,57 @@ use PeServer\Core\Throws\HttpStatusException;
 abstract class HttpMethod
 {
 	/** GET 生文字列 */
-	public const GET = 'GET';
+	private const GET = 'GET';
 	/** POST 生文字列 */
-	public const POST = 'POST';
+	private const POST = 'POST';
 	/** PUT 生文字列 */
-	public const PUT = 'PUT';
+	private const PUT = 'PUT';
 	/** DELETE 生文字列 */
-	public const DELETE = 'DELETE';
+	private const DELETE = 'DELETE';
 	/** HEAD 生文字列 */
-	public const HEAD = 'HEAD';
+	private const HEAD = 'HEAD';
 	/** OPTIONS 生文字列 */
-	public const OPTIONS = 'OPTIONS';
+	private const OPTIONS = 'OPTIONS';
 	/** PATCH 生文字列 */
-	public const PATCH = 'PATCH';
+	private const PATCH = 'PATCH';
 	/** TRACE 生文字列 */
-	public const TRACE = 'TRACE';
+	private const TRACE = 'TRACE';
+
+	/**
+	 * Undocumented variable
+	 *
+	 * @var array<string,HttpMethod>
+	 */
+	private static array $cacheKinds;
 
 	/**
 	 * 生成。
 	 *
-	 * @param string ...$methods
-	 * @return HttpMethod
+	 * @param string ...$httpMethodKinds
+	 * @return HttpMethod[]
 	 */
-	public static function create(string ...$methods): HttpMethod
+	public static function create(string ...$httpMethodKinds): array
 	{
-		return new _HttpMethod_Impl(...$methods);
+		$result = [];
+		foreach ($httpMethodKinds as $httpMethodKind) {
+			$result[] = new _HttpMethod_Impl($httpMethodKind);
+		}
+
+		return $result;
 	}
+
 	public static function from(string $method): HttpMethod
 	{
 		return new _HttpMethod_Impl(StringUtility::toUpper(StringUtility::trim($method)));
+	}
+
+	private static function cache(string $value): HttpMethod
+	{
+		if (!isset(self::$cacheKinds[$value])) {
+			self::$cacheKinds[$value] = new _HttpMethod_Impl($value);
+		}
+
+		return self::$cacheKinds[$value];
 	}
 
 	/**
@@ -52,118 +71,91 @@ abstract class HttpMethod
 	 */
 	public static function get(): HttpMethod
 	{
-		return self::create(self::GET);
+		return self::cache(self::GET);
 	}
 	/**
 	 * @return HttpMethod POST
 	 */
 	public static function post(): HttpMethod
 	{
-		return self::create(self::POST);
+		return self::cache(self::POST);
 	}
 	/**
 	 * @return HttpMethod PUT
 	 */
 	public static function put(): HttpMethod
 	{
-		return self::create(self::PUT);
+		return self::cache(self::PUT);
 	}
 	/**
 	 * @return HttpMethod DELETE
 	 */
 	public static function delete(): HttpMethod
 	{
-		return self::create(self::DELETE);
+		return self::cache(self::DELETE);
 	}
 	/**
 	 * @return HttpMethod HEAD
 	 */
 	public static function head(): HttpMethod
 	{
-		return self::create(self::HEAD);
+		return self::cache(self::HEAD);
 	}
 	/**
 	 * @return HttpMethod OPTIONS
 	 */
 	public static function options(): HttpMethod
 	{
-		return self::create(self::OPTIONS);
+		return self::cache(self::OPTIONS);
 	}
 	/**
 	 * @return HttpMethod PATCH
 	 */
 	public static function patch(): HttpMethod
 	{
-		return self::create(self::PATCH);
+		return self::cache(self::PATCH);
 	}
 	/**
 	 * @return HttpMethod TRACE
 	 */
 	public static function trace(): HttpMethod
 	{
-		return self::create(self::TRACE);
+		return self::cache(self::TRACE);
 	}
 
-	/**
-	 * メソッド一覧を取得。
-	 *
-	 * @return string[]
-	 */
-	public abstract function methods(): array;
+	public abstract function getKind(): string;
 
-	public abstract function is(string $httpMethod): bool;
+	public abstract function is(HttpMethod $httpMethod): bool;
 }
 
 /**
  * アプリ側からは使用しない。
  */
-class _HttpMethod_Impl extends HttpMethod
+final class _HttpMethod_Impl extends HttpMethod
 {
-	/** @var string[] */
-	private $methods;
+	public string $kind;
 
 	/**
 	 * 生成。
 	 *
-	 * @param string ...$methods HTTPメソッド。
+	 * @param string $kind HTTPメソッド種別。
 	 */
-	public function __construct(string ...$methods)
+	public function __construct(string $kind)
 	{
-		$safeMethods = Collection::from([
-			parent::GET,
-			parent::POST,
-			parent::PUT,
-			parent::DELETE,
-			parent::HEAD,
-			parent::OPTIONS,
-			parent::PATCH,
-			parent::TRACE,
-		]);
-		foreach ($methods as $method) {
-			if (!$safeMethods->any(function ($i) use ($method) {
-				return $i === $method;
-			})) {
-				throw new HttpStatusException(HttpStatus::methodNotAllowed());
-			}
+		$this->kind = $kind;
+	}
+
+	public function getKind(): string
+	{
+		return $this->kind;
+	}
+
+	public function is(HttpMethod $httpMethod): bool
+	{
+		if($httpMethod instanceof _HttpMethod_Impl) {
+			return $this->kind === $httpMethod->kind;
 		}
 
-		$this->methods = $methods;
+		return $this->kind === $httpMethod->getKind();
 	}
-
-	public function methods(): array
-	{
-		return $this->methods;
-	}
-
-	public function is(string $httpMethod): bool
-	{
-		foreach($this->methods as $method) {
-			if($method === $httpMethod) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
 }

@@ -27,15 +27,23 @@ class Action
 	/**
 	 * 追加。
 	 *
-	 * @param HttpMethod $httpMethod HTTPメソッド
+	 * @param HttpMethod|HttpMethod[] $httpMethod HTTPメソッド
 	 * @param string $callMethod コントローラメソッド。
 	 * @param array<IMiddleware|string> $middleware
 	 * @param array<IShutdownMiddleware|string> $shutdownMiddleware
 	 */
-	public function add(HttpMethod $httpMethod, string $callMethod, array $middleware, array $shutdownMiddleware): void
+	public function add(HttpMethod|array $httpMethod, string $callMethod, array $middleware, array $shutdownMiddleware): void
 	{
-		foreach ($httpMethod->methods() as $method) {
-			$this->map[$method] = [
+		if (is_array($httpMethod)) {
+			foreach ($httpMethod as $method) {
+				$this->map[$method->getKind()] = [
+					'method' => $callMethod,
+					'middleware' => $middleware,
+					'shutdown_middleware' => $shutdownMiddleware,
+				];
+			}
+		} else {
+			$this->map[$httpMethod->getKind()] = [
 				'method' => $callMethod,
 				'middleware' => $middleware,
 				'shutdown_middleware' => $shutdownMiddleware,
@@ -51,7 +59,7 @@ class Action
 	 */
 	public function get(httpMethod $httpMethod): ?array
 	{
-		if (ArrayUtility::tryGet($this->map, $httpMethod->methods()[0], $result)) {
+		if (ArrayUtility::tryGet($this->map, $httpMethod->getKind(), $result)) {
 			return $result;
 		}
 
