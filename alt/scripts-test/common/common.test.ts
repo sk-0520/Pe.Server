@@ -1,15 +1,6 @@
 import * as common from '../../scripts/common/common';
 
 describe('common', () => {
-	test('joinPath', () => {
-		expect(common.joinPath('', '')).toBe('/');
-		expect(common.joinPath('/', '/')).toBe('/');
-		expect(common.joinPath('/a/b', '/c/', 'd/', '/e')).toBe('/a/b/c/d/e');
-		expect(common.joinPath('/a/b/', '/c/', 'd/', '/e')).toBe('/a/b/c/d/e');
-		expect(common.joinPath('/a///////', 'b')).toBe('/a/b');
-		expect(common.joinPath('a', '/////b', 'c/////////', '///////d////////')).toBe('a/b/c/d');
-	});
-
 	test('toBoolean', () => {
 		expect(common.toBoolean(null)).toBe(false);
 		expect(common.toBoolean(undefined)).toBe(false);

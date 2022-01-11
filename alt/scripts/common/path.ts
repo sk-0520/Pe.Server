@@ -5,7 +5,7 @@
  */
 export function join(base: string, ...paths: string[]): string {
 	while (base.endsWith('/')) {
-		base = base.substr(0, base.length - 1);
+		base = base.substring(0, base.length - 1);
 	}
 
 	function chomp(s: string): string {
