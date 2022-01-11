@@ -10,6 +10,7 @@ use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\KeyNotFoundException;
 use PeServer\Core\Throws\InvalidOperationException;
+use PeServer\Core\Throws\NotSupportedException;
 
 /**
  * HTTPヘッダー
@@ -154,5 +155,44 @@ class HttpHeader
 		}
 
 		return $this->redirect; //@phpstan-ignore-line not null
+	}
+
+	public static function getRequest(): HttpHeader
+	{
+		return new _HttpHeader_Request();
+	}
+}
+
+/**
+ * 要求時のヘッダー一覧。
+ */
+final class _HttpHeader_Request extends HttpHeader
+{
+	public function __construct()
+	{
+		$headers = getallheaders();
+		foreach ($headers as $name => $value) {
+			$this->setValue($name, $value);
+		}
+	}
+
+	public function existsRedirect(): bool
+	{
+		throw new NotSupportedException();
+	}
+
+	public function setRedirect(string $url, ?HttpStatus $status): void
+	{
+		throw new NotSupportedException();
+	}
+
+	public function clearRedirect(): bool
+	{
+		throw new NotSupportedException();
+	}
+
+	public function getRedirect(): array
+	{
+		throw new NotSupportedException();
 	}
 }

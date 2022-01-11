@@ -7,6 +7,7 @@ namespace PeServer\Core;
 use \Exception;
 use PeServer\Core\Log\Logging;
 use PeServer\Core\ArrayUtility;
+use PeServer\Core\Http\HttpHeader;
 use PeServer\Core\RouteSetting;
 use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Http\HttpStatus;
@@ -71,6 +72,7 @@ class Routing
 
 	protected HttpMethod $requestMethod;
 	protected RequestPath $requestPath;
+	protected HttpHeader $requestHeader;
 
 	/**
 	 * 生成。
@@ -84,13 +86,14 @@ class Routing
 
 		$this->requestMethod = $requestMethod;
 		$this->requestPath = $requestPath;
+		$this->requestHeader = HttpHeader::getRequest();
 
 		$this->cookie = new CookieStore($storeOption->cookie);
 		$this->temporary = new TemporaryStore($storeOption->temporary, $this->cookie);
 		$this->session = new SessionStore($storeOption->session, $this->cookie);
 
 		$this->middlewareLogger = Logging::create('middleware');
-		$this->shutdownRequest = new HttpRequest($requestMethod, []);
+		$this->shutdownRequest = new HttpRequest($requestMethod, $this->requestHeader, []);
 	}
 
 	/**
@@ -184,7 +187,7 @@ class Routing
 		$splitNames = StringUtility::split($rawControllerName, '/');
 		$controllerName = $splitNames[ArrayUtility::getCount($splitNames) - 1];
 
-		$this->shutdownRequest = $request = new HttpRequest($this->requestMethod, $urlParameters);
+		$this->shutdownRequest = $request = new HttpRequest($this->requestMethod, $this->requestHeader, $urlParameters);
 
 		// アクション共通ミドルウェア処理
 		$this->shutdownMiddleware += $this->setting->actionShutdownMiddleware;

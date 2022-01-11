@@ -16,10 +16,8 @@ class ControllerArgument
 {
 	/**
 	 * ロガー
-	 *
-	 * @var ILogger
 	 */
-	public $logger;
+	public ILogger $logger;
 
 	public CookieStore $cookie;
 	public TemporaryStore $temporary;

@@ -24,6 +24,11 @@ class Database implements IDatabaseContext
 	 */
 	private PDO $pdo;
 
+	/**
+	 * ロガー
+	 *
+	 * @var ILogger
+	 */
 	private ILogger $logger;
 
 

@@ -19,7 +19,8 @@ class HttpRequest
 	public const REQUEST_POST = 'post';
 	public const REQUEST_FILE = 'file';
 
-	private HttpMethod $httpMethod;
+	public HttpMethod $httpMethod;
+	public HttpHeader $httpHeader;
 
 	/**
 	 * URLパラメータ。
@@ -33,9 +34,10 @@ class HttpRequest
 	 *
 	 * @param array<string,string> $urlParameters URLパラメータ
 	 */
-	public function __construct(HttpMethod $httpMethod, array $urlParameters)
+	public function __construct(HttpMethod $httpMethod, HttpHeader $httpHeader, array $urlParameters)
 	{
 		$this->httpMethod = $httpMethod;
+		$this->httpHeader = $httpHeader;
 		$this->urlParameters = $urlParameters;
 	}
 
