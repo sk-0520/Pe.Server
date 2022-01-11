@@ -16,14 +16,14 @@ abstract class AutoLoader
 	 *
 	 * @var string[]
 	 */
-	private static $baseDirectoryPaths;
+	private static array $baseDirectoryPaths;
 
 	/**
 	 * 読み込み対象パターン。
 	 *
 	 * @var string
 	 */
-	private static $includePattern;
+	private static string $includePattern;
 
 	/**
 	 * 初期化。
