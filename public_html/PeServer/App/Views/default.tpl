@@ -15,7 +15,7 @@
 		</main>
 		<nav>
 			<details>
-				<summary>▼</summary>
+				<summary></summary>
 				<div class="menu"></div>
 			</details>
 		</nav>

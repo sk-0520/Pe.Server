@@ -1,7 +1,10 @@
-@use 'variable' as variable;
-@use 'responsive' as responsive;
+@use "variable" as variable;
+@use "responsive" as responsive;
 
 $break: responsive.$phone;
+
+$base-background-color: rgb(231, 173, 173);
+$base-color: rgb(29, 29, 29);
 
 @mixin links {
 	ul {
@@ -34,8 +37,8 @@ $break: responsive.$phone;
 }
 
 body {
-	color: #111;
-	background-color: rgb(231, 173, 173);
+	background-color: $base-background-color;
+	color: $base-color;
 
 	height: calc(100% - #{variable.$pcAdvertisingHeight});
 	@include responsive.media($break) {
@@ -59,7 +62,7 @@ body {
 			white-space: nowrap;
 			overflow: hidden;
 
-			background: orange;
+			background: $base-background-color;
 
 			@include responsive.media($break) {
 				display: block;
@@ -70,26 +73,22 @@ body {
 				margin-top: variable.$spAdvertisingHeight;
 				padding-left: 0;
 				text-align: center;
-
-				background: rgb(26, 151, 26);
 			}
 		}
 
 		#content {
 			margin-top: variable.$pcTitleHeight + variable.$pcHeaderHeight;
 			margin-bottom: variable.$pcFooterHeight + variable.$pcAdvertisingHeight;
-			padding: 2rem 4rem 3rem;
+			padding: 1rem 4rem 3rem;
 
 			background: lime;
 
 			@include responsive.media($break) {
 				margin-top: 0;
 				margin-bottom: variable.$spFooterHeight;
-				padding: 2rem 2rem 3rem;
+				padding: 1rem 2rem 3rem;
 				position: inherit;
 				height: inherit;
-
-				background: rgb(104, 127, 190);
 			}
 		}
 
@@ -101,10 +100,10 @@ body {
 			}
 
 			&.messages {
-				color:lime;
+				color: lime;
 			}
 			&.error {
-				color:red;
+				color: red;
 			}
 		}
 
@@ -128,12 +127,28 @@ body {
 
 			details {
 				summary {
+					text-align: center;
 					display: block;
 					margin-left: auto;
-					background-color: #add8e6;
+					background-color: rgb(0, 0, 0, 0.1);
 					height: variable.$spTitleHeight;
 					width: variable.$spNavigationWidth;
+					line-height: variable.$spTitleHeight;
+					border-radius: 8px;
+
+					&:before {
+						font-size: 20px;
+						content: "☰";
+					}
 				}
+				&[open] summary {
+					background-color: rgb(0, 0, 0, 0.3);
+
+					&:before {
+						content: "✖";
+					}
+				}
+
 				.menu {
 					background-color: coral;
 					border-radius: 1em 0 0 1em;
@@ -167,14 +182,8 @@ body {
 		height: variable.$pcHeaderHeight;
 		padding-right: 2rem;
 
-		background: skyblue;
-
 		@include responsive.media($break) {
-			position: inherit;
-			height: inherit;
 			display: none;
-
-			background: rgb(197, 182, 44);
 		}
 
 		@include links();
@@ -187,15 +196,13 @@ body {
 		right: 0;
 		height: variable.$pcFooterHeight;
 		text-align: center;
-
-		background: pink;
+		background-color: $base-background-color;
+		color: $base-color;
 
 		@include responsive.media($break) {
 			position: fixed;
 			bottom: 0;
 			height: variable.$spFooterHeight;
-
-			background: rgb(181, 6, 197);
 		}
 
 		@include links();
@@ -208,15 +215,13 @@ body {
 		right: 0;
 		height: variable.$pcAdvertisingHeight;
 		text-align: center;
-
-		background: red;
+		background-color: $base-background-color;
+		color: $base-color;
 
 		@include responsive.media($break) {
 			position: absolute;
 			top: 0;
 			height: variable.$spAdvertisingHeight;
-
-			background: rgb(27, 212, 21);
 		}
 
 		a {
