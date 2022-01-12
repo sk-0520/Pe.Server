@@ -68,7 +68,9 @@ class CookieStore
 	public function apply(): void
 	{
 		foreach ($this->removes as $key) {
-			setcookie($key, '', time() - 60, '/');
+			if (ArrayUtility::existsKey($_COOKIE, $key)) {
+				setcookie($key, '', time() - 60, '/');
+			}
 		}
 
 		foreach ($this->values as $key => $cookie) {
