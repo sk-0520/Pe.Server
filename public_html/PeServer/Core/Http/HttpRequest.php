@@ -15,11 +15,11 @@ use PeServer\Core\Throws\KeyNotFoundException;
  */
 class HttpRequest
 {
-	public const REQUEST_NONE = 'none';
-	public const REQUEST_URL = 'url';
-	public const REQUEST_GET = 'get';
-	public const REQUEST_POST = 'post';
-	public const REQUEST_FILE = 'file';
+	public const REQUEST_NONE = 0;
+	public const REQUEST_URL = 1;
+	public const REQUEST_GET = 2;
+	public const REQUEST_POST = 3;
+	public const REQUEST_FILE = 4;
 
 	public HttpMethod $httpMethod;
 	public HttpHeader $httpHeader;
@@ -47,7 +47,7 @@ class HttpRequest
 	 * キーに対する値が存在するか。
 	 *
 	 * @param string $key キー
-	 * @return array{exists:bool,type:string}
+	 * @return array{exists:bool,type:int}
 	 */
 	public function exists(string $key, bool $strict = true): array
 	{
