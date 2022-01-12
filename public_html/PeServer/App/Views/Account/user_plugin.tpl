@@ -65,6 +65,4 @@
 
 {/block}
 
-{block name='SCRIPTS'}
-	{asset file='/scripts/plugin-edit.js'}
-{/block}
+{block name='DEFAULT_SCRIPT'}{asset file='/scripts/plugin-edit.js'}{/block}
