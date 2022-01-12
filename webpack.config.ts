@@ -6,6 +6,7 @@ import webpack from 'webpack';
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const FixStyleOnlyEntriesPlugin = require('webpack-fix-style-only-entries');
 const TerserPlugin = require("terser-webpack-plugin");
+const LiveReloadPlugin = require("webpack-livereload-plugin");
 
 const inputDirectory = path.resolve(__dirname, 'alt');
 const outputDirectory = path.resolve(__dirname, 'public_html');
@@ -91,6 +92,7 @@ const webpackConfig = (env: string, args: any): webpack.Configuration => {
 					: '[name].css'
 				,
 			}),
+			new LiveReloadPlugin(),
 		],
 	};
 
