@@ -1,4 +1,11 @@
-@use 'variable' as variable;
+$_normal-color: #33c;
+$_normal-background-color: transparent;
+
+$_visited-color: #33c;
+$_visited-background-color: transparent;
+
+$_active-color: #11f;
+$_active-background-color: #eef;
 
 a {
 	display: inline-block;
@@ -6,11 +13,13 @@ a {
 	text-decoration: none;
 
 	&:link {
-		color: variable.$normalLinkColor;
+		color: $_normal-color;
+		background: $_normal-background-color;
 	}
 
 	&:visited {
-		color: variable.$visitedLinkColor;
+		color: $_visited-color;
+		background: $_visited-background-color;
 	}
 
 	&:after {
@@ -21,7 +30,7 @@ a {
 		width: 100%;
 		height: 1px;
 		transform: scaleX(0);
-		background-color: variable.$activeLinkColor;
+		background-color: $_active-color;
 		transition: all 0.3s ease;
 	}
 
@@ -32,7 +41,7 @@ a {
 	}
 
 	&:active {
-		background-color: variable.$activeLinkColor;
+		background-color: $_active-background-color;
 		transition: all 0.2s ease;
 	}
 }

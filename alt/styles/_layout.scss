@@ -3,8 +3,16 @@
 
 $break: responsive.$phone;
 
-$base-background-color: rgb(231, 173, 173);
-$base-color: rgb(29, 29, 29);
+$base-background-color: #ddd;
+$base-color: #111;
+
+$pc-title-background-color: #ccc;
+$pc-title-shadow-color: $pc-title-background-color;
+$sp-title-background-color: $base-background-color;
+
+$pc-footer-background-color: #ccc;
+$pc-footer-shadow-color: $pc-footer-background-color;
+$sp-footer-background-color: $pc-footer-background-color;
 
 @mixin links {
 	ul {
@@ -62,9 +70,11 @@ body {
 			white-space: nowrap;
 			overflow: hidden;
 
-			background: $base-background-color;
+			background: $pc-title-background-color;
+			box-shadow: 0 0 4px 2px $pc-title-shadow-color;
 
 			@include responsive.media($break) {
+				background: $sp-title-background-color;
 				display: block;
 				position: relative;
 				width: calc(100% - #{variable.$spNavigationWidth});
@@ -73,6 +83,7 @@ body {
 				margin-top: variable.$spAdvertisingHeight;
 				padding-left: 0;
 				text-align: center;
+				box-shadow: none;
 			}
 		}
 
@@ -80,8 +91,6 @@ body {
 			margin-top: variable.$pcTitleHeight + variable.$pcHeaderHeight;
 			margin-bottom: variable.$pcFooterHeight + variable.$pcAdvertisingHeight;
 			padding: 1rem 4rem 3rem;
-
-			background: lime;
 
 			@include responsive.media($break) {
 				margin-top: 0;
@@ -127,6 +136,7 @@ body {
 
 			details {
 				summary {
+					cursor: pointer;
 					text-align: center;
 					display: block;
 					margin-left: auto;
@@ -134,7 +144,7 @@ body {
 					height: variable.$spTitleHeight;
 					width: variable.$spNavigationWidth;
 					line-height: variable.$spTitleHeight;
-					border-radius: 8px;
+					border-radius: 6px;
 
 					&:before {
 						font-size: 20px;
@@ -150,7 +160,7 @@ body {
 				}
 
 				.menu {
-					background-color: coral;
+					background-color: #eee;
 					border-radius: 1em 0 0 1em;
 
 					padding: 1rem;
@@ -196,13 +206,16 @@ body {
 		right: 0;
 		height: variable.$pcFooterHeight;
 		text-align: center;
-		background-color: $base-background-color;
+		background-color: $pc-footer-background-color;
 		color: $base-color;
+		box-shadow: 0 0 4px 2px $pc-footer-shadow-color;
 
 		@include responsive.media($break) {
-			position: fixed;
+		background-color: $sp-footer-background-color;
+		position: fixed;
 			bottom: 0;
 			height: variable.$spFooterHeight;
+			box-shadow: none;
 		}
 
 		@include links();
@@ -215,10 +228,11 @@ body {
 		right: 0;
 		height: variable.$pcAdvertisingHeight;
 		text-align: center;
-		background-color: $base-background-color;
+		background-color: $pc-footer-background-color;
 		color: $base-color;
 
 		@include responsive.media($break) {
+		background-color: $base-background-color;
 			position: absolute;
 			top: 0;
 			height: variable.$spAdvertisingHeight;
