@@ -103,16 +103,27 @@ body {
 
 		// 一旦こいつらは後回し
 		.common {
-			margin-top: variable.$pcTitleHeight + variable.$pcHeaderHeight;
+			margin: (variable.$pcTitleHeight + variable.$pcHeaderHeight) 4rem 0.5rem 4rem;
+			border-width: 2px;
+			border-style: solid;
+			border-radius: 0.5rem;
+			padding: 0.5rem;
+			background: #eee;
+			color: #111;
+
 			@include responsive.media($break) {
-				margin-top: 0;
+				margin: 0.5rem 2rem;
 			}
 
 			&.messages {
-				color: lime;
+				border-color: #090;
 			}
 			&.error {
-				color: red;
+				border-color: #900;
+
+				p {
+					color: #f00;
+				}
 			}
 		}
 
@@ -162,6 +173,7 @@ body {
 				.menu {
 					background-color: #eee;
 					border-radius: 1em 0 0 1em;
+					border: 1px solid #ccc;
 
 					padding: 1rem;
 
@@ -211,8 +223,8 @@ body {
 		box-shadow: 0 0 4px 2px $pc-footer-shadow-color;
 
 		@include responsive.media($break) {
-		background-color: $sp-footer-background-color;
-		position: fixed;
+			background-color: $sp-footer-background-color;
+			position: fixed;
 			bottom: 0;
 			height: variable.$spFooterHeight;
 			box-shadow: none;
@@ -232,7 +244,7 @@ body {
 		color: $base-color;
 
 		@include responsive.media($break) {
-		background-color: $base-background-color;
+			background-color: $base-background-color;
 			position: absolute;
 			top: 0;
 			height: variable.$spAdvertisingHeight;
