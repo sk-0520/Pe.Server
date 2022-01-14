@@ -333,7 +333,15 @@ abstract class StringUtility
 		return print_r($value, true);
 	}
 
-	public static function replace(string $value, string $oldValue, ?string $newValue): string
+	/**
+	 * Undocumented function
+	 *
+	 * @param string $value
+	 * @param string|string[] $oldValue
+	 * @param string|null $newValue
+	 * @return string
+	 */
+	public static function replace(string $value, string|array $oldValue, ?string $newValue): string
 	{
 		return str_replace($oldValue, $newValue ?? '', $value);
 	}

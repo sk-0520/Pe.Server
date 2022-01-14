@@ -299,4 +299,16 @@ class StringUtilityTest extends TestClass
 			$this->assertEquals($test->expected, $actual, $test->str());
 		}
 	}
+
+	public function test_replace_array()
+	{
+		$tests = [
+			new Data('______', 'ABCABC', ['A', 'B', 'C'], '_'),
+			new Data('___abc', 'ABCabc', ['A', 'B', 'C'], '_'),
+		];
+		foreach ($tests as $test) {
+			$actual = StringUtility::replace(...$test->args);
+			$this->assertEquals($test->expected, $actual, $test->str());
+		}
+	}
 }
