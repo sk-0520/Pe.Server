@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace PeServer\Core\Throws;
 
 use \Throwable;
-use \Exception;
+use PeServer\Core\Throws\StringException;
 
-abstract class CoreException extends Exception
+class NotStringException extends StringException
 {
 	public function __construct(string $message = "", int $code = 0, ?Throwable $previous = null)
 	{

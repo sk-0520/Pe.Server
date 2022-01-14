@@ -6,6 +6,7 @@ namespace PeServer\Core;
 
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\CoreException;
+use PeServer\Core\Throws\StringException;
 
 abstract class StringUtility
 {
@@ -94,7 +95,7 @@ abstract class StringUtility
 		);
 
 		if (is_null($result)) {
-			throw new CoreException();
+			throw new StringException();
 		}
 
 		return $result;

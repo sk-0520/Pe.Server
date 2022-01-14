@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\App\Models;
 
 use PeServer\Core\Cryptography;
-use PeServer\Core\Throws\CoreException;
+use PeServer\Core\Throws\CryptoException;
 use PeServer\App\Models\AppConfiguration;
 
 abstract class AppCryptography
@@ -49,12 +49,12 @@ abstract class AppCryptography
 
 		$binary = hash('fnv132', $input, true);
 		if ($binary === false) { // @phpstan-ignore-line
-			throw new CoreException();
+			throw new CryptoException();
 		}
 
 		$result = unpack('N', $binary, 0);
 		if ($result === false) {
-			throw new CoreException();
+			throw new CryptoException();
 		}
 
 		return $result[1];

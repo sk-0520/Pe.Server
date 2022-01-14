@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace PeServer\Core\Throws;
 
 use \Throwable;
-use \Exception;
 
-abstract class CoreException extends Exception
+class TemplateException extends CoreException
 {
 	public function __construct(string $message = "", int $code = 0, ?Throwable $previous = null)
 	{

@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc\TemplatePlugin;
 
 use \DOMElement;
+use PeServer\Core\Environment;
 use PeServer\Core\FileUtility;
 use PeServer\Core\ArrayUtility;
-use PeServer\Core\Environment;
+use PeServer\Core\HtmlDocument;
 use PeServer\Core\StringUtility;
 use PeServer\Core\TypeConverter;
-use PeServer\Core\Throws\CoreException;
-use PeServer\Core\HtmlDocument;
+use PeServer\Core\Throws\TemplateException;
 use PeServer\Core\Mvc\TemplatePlugin\TemplateFunctionBase;
 use PeServer\Core\Mvc\TemplatePlugin\TemplatePluginArgument;
 
@@ -154,7 +154,7 @@ class AssetFunction extends TemplateFunctionBase
 				break;
 
 			default:
-				throw new CoreException($resourcePath);
+				throw new TemplateException($resourcePath);
 		}
 
 		foreach ($this->params as $key => $value) {

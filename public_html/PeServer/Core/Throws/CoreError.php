@@ -7,7 +7,7 @@ namespace PeServer\Core\Throws;
 use \Throwable;
 use \Error;
 
-class CoreError extends Error
+abstract class CoreError extends Error
 {
 	public function __construct(string $message = "", int $code = 0, ?Throwable $previous = null)
 	{

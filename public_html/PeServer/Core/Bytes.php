@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core;
 
 use PeServer\Core\Throws\ArgumentException;
-use PeServer\Core\Throws\CoreException;
+use PeServer\Core\Throws\NotStringException;
 
 /**
  * 文字列がバイトデータなのか普通の文字列なのかよくわからんのでこれでラップする。
@@ -87,7 +87,7 @@ final class Bytes
 	{
 		$nullIndex = mb_strpos($this->value, "\0");
 		if ($nullIndex !== false) {
-			throw new CoreException();
+			throw new NotStringException();
 		}
 
 		return $this->value;

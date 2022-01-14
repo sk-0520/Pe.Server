@@ -6,11 +6,11 @@ namespace PeServer\Core\Mvc\TemplatePlugin;
 
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\HtmlDocument;
-use PeServer\Core\Mvc\TemplatePlugin\TemplateFunctionBase;
-use PeServer\Core\Mvc\TemplatePlugin\TemplatePluginArgument;
 use PeServer\Core\OutputBuffer;
 use PeServer\Core\StringUtility;
-use PeServer\Core\Throws\CoreError;
+use PeServer\Core\Throws\TemplateException;
+use PeServer\Core\Mvc\TemplatePlugin\TemplateFunctionBase;
+use PeServer\Core\Mvc\TemplatePlugin\TemplatePluginArgument;
 
 /**
  * Bot用にテキストから画像生成。
@@ -45,15 +45,15 @@ class BotTextImageFunction extends TemplateFunctionBase
 
 		$image = imagecreate($width, $height);
 		if ($image === false) {
-			throw new CoreError();
+			throw new TemplateException();
 		}
 		$background_color = imagecolorallocate($image, 0xee, 0xee, 0xee);
 		if ($background_color === false) {
-			throw new CoreError();
+			throw new TemplateException();
 		}
 		$text_color = imagecolorallocate($image, 0x0f, 0x0f, 0x0f);
 		if ($text_color === false) {
-			throw new CoreError();
+			throw new TemplateException();
 		}
 		imagestring($image, 5, 0, 0, $text, $text_color);
 
