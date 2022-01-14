@@ -60,7 +60,9 @@
 			"mehedidracula.php-namespace-resolver",
 			"sibiraj-s.vscode-scss-formatter",
 			"imperez.smarty",
-			"formulahendry.auto-close-tag"
+			"formulahendry.auto-close-tag",
+			"mrmlnc.vscode-apache",
+			"davidanson.vscode-markdownlint"
 		],
 	}
 }
