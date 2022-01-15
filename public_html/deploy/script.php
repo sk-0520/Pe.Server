@@ -168,6 +168,7 @@ create table
 		[email] text not null, -- メールアドレス(暗号化)
 		[mark_email] integer not null, -- 絞り込み用メールアドレス(ハッシュ:fnv)
 		[website] text not null, -- Webサイト
+		[description] text not null, -- 紹介文
 		[note] text not null, -- 管理者用メモ
 		primary key([user_id]),
 		unique([login_id])
@@ -294,6 +295,7 @@ insert into
 		[email],
 		[mark_email],
 		[website],
+		[description],
 		[note]
 	)
 	values
@@ -305,6 +307,7 @@ insert into
 		'setup user',
 		'',
 		0,
+		'',
 		'',
 		''
 	)

@@ -16,6 +16,11 @@
 			{input_helper key='account_edit_website' type="text" class="edit"}
 		</dd>
 
+		<dt>website</dt>
+		<dd>
+			{input_helper key='account_edit_description' type="textarea" class="edit"}
+		</dd>
+
 		<dt class="action">edit</dt>
 		<dd class="action">
 			<button>submit</button>

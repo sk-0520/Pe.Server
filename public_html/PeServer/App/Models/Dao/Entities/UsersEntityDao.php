@@ -96,7 +96,8 @@ class UsersEntityDao extends DaoBase
 
 			select
 				users.name,
-				users.website
+				users.website,
+				users.description
 			from
 				users
 			where
@@ -128,7 +129,7 @@ class UsersEntityDao extends DaoBase
 		)['email'];
 	}
 
-	public function insertUser(string $userId, string $loginId, string $level, string $state, string $userName, string $email, int $mark_email, string $website, string $note): void
+	public function insertUser(string $userId, string $loginId, string $level, string $state, string $userName, string $email, int $mark_email, string $website, string $description, string $note): void
 	{
 		$this->context->insertSingle(
 			<<<SQL
@@ -144,6 +145,7 @@ class UsersEntityDao extends DaoBase
 					email,
 					mark_email,
 					website,
+					description,
 					note
 				)
 				values
@@ -156,6 +158,7 @@ class UsersEntityDao extends DaoBase
 					:email,
 					:mark_email,
 					:website,
+					:description,
 					:note
 				)
 
@@ -169,6 +172,7 @@ class UsersEntityDao extends DaoBase
 				'email' => $email,
 				'mark_email' => $mark_email,
 				'website' => $website,
+				'description' => $description,
 				'note' => $note,
 			]
 		);
@@ -194,7 +198,7 @@ class UsersEntityDao extends DaoBase
 		);
 	}
 
-	public function updateUserSetting(string $userId, string $userName, string $website): void
+	public function updateUserSetting(string $userId, string $userName, string $website, string $description): void
 	{
 		$this->context->updateByKey(
 			<<<SQL
@@ -203,7 +207,8 @@ class UsersEntityDao extends DaoBase
 				users
 			set
 				name = :name,
-				website = :website
+				website = :website,
+				description = :description
 			where
 				user_id = :user_id
 
@@ -212,6 +217,7 @@ class UsersEntityDao extends DaoBase
 				'user_id' => $userId,
 				'name' => $userName,
 				'website' => $website,
+				'description' => $description,
 			]
 		);
 	}

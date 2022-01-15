@@ -67,6 +67,7 @@ class DevelopmentAdministratorLogic extends ApiLogicBase
 				'email' => AppCryptography::encrypt($i['email']),
 				'mark_email' => AppCryptography::toMark($i['email']),
 				'website' => 'http://localhost',
+				'description' => $i['note'],
 				'note' => $i['note'],
 			];
 		}, $users);
@@ -88,6 +89,7 @@ class DevelopmentAdministratorLogic extends ApiLogicBase
 					$user['email'],
 					$user['mark_email'],
 					$user['website'],
+					$user['description'],
 					$user['note']
 				);
 

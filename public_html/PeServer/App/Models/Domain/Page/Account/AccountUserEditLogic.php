@@ -27,6 +27,7 @@ class AccountUserEditLogic extends PageLogicBase
 		$this->registerParameterKeys([
 			'account_edit_name',
 			'account_edit_website',
+			'account_edit_description',
 		], true);
 	}
 
@@ -44,6 +45,11 @@ class AccountUserEditLogic extends PageLogicBase
 		$this->validation('account_edit_website', function (string $key, string $value) {
 			$accountValidator = new AccountValidator($this, $this->validator);
 			$accountValidator->isWebsite($key, $value);
+		});
+
+		$this->validation('account_edit_description', function (string $key, string $value) {
+			$accountValidator = new AccountValidator($this, $this->validator);
+			$accountValidator->isDescription($key, $value);
 		});
 	}
 
@@ -68,6 +74,7 @@ class AccountUserEditLogic extends PageLogicBase
 		$map = [
 			'name' => 'account_edit_name',
 			'website' => 'account_edit_website',
+			'description' => 'account_edit_description',
 		];
 
 		foreach ($userEditData as $key => $value) {
@@ -83,6 +90,7 @@ class AccountUserEditLogic extends PageLogicBase
 			'user_id' => $userInfo['user_id'],
 			'user_name' => $this->getRequest('account_edit_name'),
 			'website' => $this->getRequest('account_edit_website'),
+			'description' => $this->getRequest('account_edit_description'),
 		];
 
 		$database = $this->openDatabase();
@@ -94,7 +102,8 @@ class AccountUserEditLogic extends PageLogicBase
 			$usersEntityDao->updateUserSetting(
 				$params['user_id'],
 				$params['user_name'],
-				$params['website']
+				$params['website'],
+				$params['description']
 			);
 
 			$this->writeAuditLogCurrentUser(AuditLog::USER_EDIT, null, $context);

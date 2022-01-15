@@ -132,6 +132,7 @@ class AccountSignupStep2Logic extends PageLogicBase
 				$params['email'],
 				$params['mark_email'],
 				'',
+				'',
 				''
 			);
 

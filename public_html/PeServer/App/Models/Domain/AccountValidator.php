@@ -7,6 +7,7 @@ namespace PeServer\App\Models\Domain;
 use PeServer\Core\I18n;
 use PeServer\Core\TrueKeeper;
 use PeServer\Core\Mvc\Validator;
+use PeServer\Core\StringUtility;
 use PeServer\Core\Mvc\IValidationReceiver;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\App\Models\Domain\ValidatorBase;
@@ -21,6 +22,7 @@ class AccountValidator extends ValidatorBase
 	public const PASSWORD_RANGE_MAX = 50;
 	public const USER_NAME_RANGE_MIN = 4;
 	public const USER_NAME_RANGE_MAX = 100;
+	public const USER_DESCRIPTION_LENGTH = 1000;
 
 	public function __construct(IValidationReceiver $receiver, Validator $validator)
 	{
@@ -70,6 +72,21 @@ class AccountValidator extends ValidatorBase
 
 		return false;
 	}
+
+	public function isDescription(string $key, ?string $value): bool
+	{
+		if (!StringUtility::isNullOrWhiteSpace($value)) {
+			/** @var string $value isNotWhiteSpace */
+			$trueKeeper = new TrueKeeper();
+
+			$trueKeeper->state = $this->validator->inLength($key, self::USER_DESCRIPTION_LENGTH, $value);
+
+			return $trueKeeper->state;
+		}
+
+		return true;
+	}
+
 
 	public function isFreeLoginId(IDatabaseContext $context, string $key, string $loginId): bool
 	{
