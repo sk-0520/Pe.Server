@@ -35,17 +35,17 @@
 
 		<dt>check url</dt>
 		<dd>
-			{input_helper key='account_plugin_check_url' type="text" class="edit"}
+			{input_helper key='account_plugin_check_url' type="url" class="edit"}
 		</dd>
 
 		<dt>landing page url</dt>
 		<dd>
-			{input_helper key='account_plugin_lp_url' type="text" class="edit"}
+			{input_helper key='account_plugin_lp_url' type="url" class="edit"}
 		</dd>
 
 		<dt>project url</dt>
 		<dd>
-			{input_helper key='account_plugin_project_url' type="text" class="edit"}
+			{input_helper key='account_plugin_project_url' type="url" class="edit"}
 		</dd>
 
 		<dt>description</dt>

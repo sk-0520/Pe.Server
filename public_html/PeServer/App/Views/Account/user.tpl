@@ -5,7 +5,7 @@
 <dl class="page-account-user">
 	<dt>user id</dt>
 	<dd>
-		{$values.account_user_id}
+		<code>{$values.account_user_id}</code>
 	</dd>
 
 	<dt>login id</dt>

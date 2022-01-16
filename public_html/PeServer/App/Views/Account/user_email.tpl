@@ -12,7 +12,7 @@
 		<dl>
 			<dt>mail address</dt>
 			<dd>
-				{input_helper key='account_email_email' type="text" class="edit"}
+				{input_helper key='account_email_email' type="email" class="edit"}
 			</dd>
 
 			<dt class="action">edit</dt>

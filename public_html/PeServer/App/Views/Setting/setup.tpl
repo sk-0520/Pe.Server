@@ -30,12 +30,12 @@
 
 		<dt>mail address</dt>
 		<dd>
-			{input_helper key='setting_setup_email' type="text" class="edit"}
+			{input_helper key='setting_setup_email' type="email" class="edit"}
 		</dd>
 
 		<dt>web site</dt>
 		<dd>
-			{input_helper key='setting_setup_website' type="text" class="edit"}
+			{input_helper key='setting_setup_website' type="url" class="edit"}
 		</dd>
 
 		<dl class="action"></dl>

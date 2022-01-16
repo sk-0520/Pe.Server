@@ -13,7 +13,7 @@
 
 		<dt>website</dt>
 		<dd>
-			{input_helper key='account_edit_website' type="text" class="edit"}
+			{input_helper key='account_edit_website' type="url" class="edit"}
 		</dd>
 
 		<dt>website</dt>
