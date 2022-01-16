@@ -1,4 +1,4 @@
-@use "common/responsive" as responsive;
+@use "core/responsive" as responsive;
 @use "variable" as variable;
 
 $break: responsive.$phone;

@@ -1,5 +1,5 @@
-import * as logging from '../common/logging';
-import * as responsive from './responsive';
+import * as logging from '../core/logging';
+import * as responsive from '../core/responsive';
 const logger = logging.create('navigator');
 
 function register() {

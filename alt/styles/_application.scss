@@ -1,4 +1,5 @@
+@use "font" as font;
 
 code {
-	font-family: monospace;
+	@include font.monospace;
 }

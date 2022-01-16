@@ -1,4 +1,4 @@
-import * as path from '../../scripts/common/path';
+import * as path from '../../scripts/core/path';
 
 describe('path', () => {
 	test('join', () =>{

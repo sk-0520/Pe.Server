@@ -1,7 +1,7 @@
 // まぁまぁ適当さ加減がやばい
-import * as ajax from '../common/ajax'
-import * as dom from '../common/dom'
-import * as logging from '../common/logging'
+import * as ajax from '../core/ajax'
+import * as dom from '../core/dom'
+import * as logging from '../core/logging'
 const logger = logging.create('markdown');
 
 function register(selector: string) {

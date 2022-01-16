@@ -1,4 +1,4 @@
-import * as common from '../../scripts/common/common';
+import * as common from '../../scripts/core/common';
 
 describe('common', () => {
 	test('toBoolean', () => {
