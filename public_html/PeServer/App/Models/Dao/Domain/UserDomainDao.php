@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Dao\Domain;
 
 use PeServer\Core\Database\DaoBase;
+use PeServer\App\Models\Cache\UserCache;
 use PeServer\Core\Database\IDatabaseContext;
 
 class UserDomainDao extends DaoBase
@@ -92,6 +93,43 @@ class UserDomainDao extends DaoBase
 				'limit_minutes' => $limitMinutes,
 			]
 		);
+	}
+
+	/**
+	 * Undocumented function
+	 *
+	 * @return UserCache[]
+	 */
+	public function selectCacheItems(): array
+	{
+		$result = $this->context->query(
+			<<<SQL
+
+			select
+				users.user_id,
+				users.name,
+				users.state,
+				users.website,
+				users.description
+			from
+				users
+			order by
+				users.user_id
+
+			SQL
+		);
+
+		return array_map(function ($i) {
+			$cache = new UserCache();
+
+			$cache->userId = $i['user_id'];
+			$cache->userName = $i['name'];
+			$cache->state = $i['state'];
+			$cache->website = $i['website'];
+			$cache->description = $i['description'];
+
+			return $cache;
+		}, $result);
 	}
 
 	public function updateEmailFromWaitEmail(string $userId, string $token): bool

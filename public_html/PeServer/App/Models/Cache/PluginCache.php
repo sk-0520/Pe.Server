@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\App\Cache;
+namespace PeServer\App\Models\Cache;
 
 class PluginCache
 {
@@ -10,12 +10,12 @@ class PluginCache
 	public string $userId;
 	public string $pluginName;
 	public string $displayName;
-	public string $pluginState;
+	public string $state;
 	public string $description;
 	/**
 	 * Undocumented variable
 	 *
 	 * @var array<string,string>
 	 */
-	public array $urls;
+	public array $urls = [];
 }
