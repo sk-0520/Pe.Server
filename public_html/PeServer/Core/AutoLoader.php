@@ -50,7 +50,7 @@ abstract class AutoLoader
 			$filePath = $baseDirectoryPath . DIRECTORY_SEPARATOR . $fileBasePath . '.php';
 
 			if (is_file($filePath)) {
-				require_once $filePath;
+				include $filePath;
 			}
 		}
 	}
