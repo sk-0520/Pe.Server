@@ -7,34 +7,37 @@ namespace PeServer\Core;
 use PeServer\Core\Mvc\Middleware\IMiddleware;
 use PeServer\Core\Mvc\Middleware\IShutdownMiddleware;
 
+/**
+ * ルーティングの設定。
+ */
 class RouteSetting
 {
 	/**
-	 * Undocumented variable
+	 * 全体適用ミドルウェア。
 	 *
 	 * @var array<IMiddleware|string>
 	 */
 	public array $globalMiddleware;
 	/**
-	 * Undocumented variable
+	 * アクション適用ミドルウェア。
 	 *
 	 * @var array<IMiddleware|string>
 	 */
 	public array $actionMiddleware;
 	/**
-	 * Undocumented variable
+	 * 全体適用応答完了後ミドルウェア。
 	 *
 	 * @var array<IShutdownMiddleware|string>
 	 */
 	public array $globalShutdownMiddleware;
 	/**
-	 * Undocumented variable
+	 * アクション適用応答完了後ミドルウェア。
 	 *
 	 * @var array<IShutdownMiddleware|string>
 	 */
 	public array $actionShutdownMiddleware;
 	/**
-	 * Undocumented variable
+	 * ルーティング一覧。
 	 *
 	 * @var Route[]
 	 */

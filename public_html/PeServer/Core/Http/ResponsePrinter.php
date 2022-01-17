@@ -18,7 +18,7 @@ class ResponsePrinter
 	}
 
 	/**
-	 * Undocumented function
+	 * 出力。
 	 *
 	 * @return void
 	 */

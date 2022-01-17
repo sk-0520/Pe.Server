@@ -135,7 +135,7 @@ abstract class LogicBase implements IValidationReceiver
 	}
 
 	/**
-	 * Undocumented function
+	 * 要求本文から JSON を取得。
 	 *
 	 * @return array<mixed>
 	 */

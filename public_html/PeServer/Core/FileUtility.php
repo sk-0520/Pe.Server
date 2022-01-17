@@ -66,6 +66,12 @@ abstract class FileUtility
 		return self::toCanonicalize($joinedPath);
 	}
 
+	/**
+	 * ディレクトリパスを取得。
+	 *
+	 * @param string $path
+	 * @return string
+	 */
 	public static function getDirectoryPath(string $path): string
 	{
 		return dirname($path);
@@ -82,6 +88,13 @@ abstract class FileUtility
 		return basename($path);
 	}
 
+	/**
+	 * 拡張子取得。
+	 *
+	 * @param string $path
+	 * @param boolean $withDot . を付与するか。
+	 * @return string
+	 */
 	public static function getFileExtension(string $path, bool $withDot = false): string
 	{
 		if (StringUtility::isNullOrWhiteSpace($path)) {
@@ -105,6 +118,12 @@ abstract class FileUtility
 		return StringUtility::substring($result, 1);
 	}
 
+	/**
+	 * 拡張子を省いたファイル名を取得。
+	 *
+	 * @param string $path
+	 * @return string
+	 */
 	public static function getFileNameWithoutExtension(string $path): string
 	{
 		$fileName = self::getFileName($path);
@@ -116,6 +135,12 @@ abstract class FileUtility
 		return StringUtility::substring($fileName, 0, $dotIndex);
 	}
 
+	/**
+	 * ファイルサイズを取得。
+	 *
+	 * @param string $path
+	 * @return integer
+	 */
 	public static function getFileSize(string $path): int
 	{
 		$result = filesize($path);
@@ -126,6 +151,12 @@ abstract class FileUtility
 		return $result;
 	}
 
+	/**
+	 * パスから内容を取得。
+	 *
+	 * @param string $path
+	 * @return Bytes
+	 */
 	public static function readContent(string $path): Bytes
 	{
 		/** @var string|false */
@@ -143,6 +174,14 @@ abstract class FileUtility
 		return new Bytes($content);
 	}
 
+	/**
+	 * 対象パスに指定データを書き込み。
+	 *
+	 * @param string $path
+	 * @param mixed $data
+	 * @param boolean $append
+	 * @return void
+	 */
 	private static function saveContent(string $path, mixed $data, bool $append): void
 	{
 		$flag = $append ? FILE_APPEND : 0;
@@ -152,11 +191,25 @@ abstract class FileUtility
 		}
 	}
 
+	/**
+	 * 書き込み。
+	 *
+	 * @param string $path
+	 * @param mixed $data
+	 * @return void
+	 */
 	public static function writeContent(string $path, mixed $data): void
 	{
 		self::saveContent($path, $data, false);
 	}
 
+	/**
+	 * 追記。
+	 *
+	 * @param string $path
+	 * @param mixed $data
+	 * @return void
+	 */
 	public static function appendContent(string $path, mixed $data): void
 	{
 		self::saveContent($path, $data, true);
@@ -369,12 +422,12 @@ abstract class FileUtility
 	 * @param string $directoryPath 対象ディレクトリ。
 	 * @return void
 	 */
-	public static function cleanupDirectory(string $directoryPath): void
+	public static function cleanupDirectory(string $directoryPath, int $permissions = self::DIRECTORY_PERMISSIONS): void
 	{
 		if (is_dir($directoryPath)) {
 			self::removeDirectory($directoryPath);
 		}
-		mkdir($directoryPath, 0777, true);
+		mkdir($directoryPath, $permissions, true);
 	}
 
 	/**

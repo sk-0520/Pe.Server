@@ -296,7 +296,7 @@ abstract class StringUtility
 	}
 
 	/**
-	 * 左トリム。
+	 * 先頭トリム。
 	 *
 	 * @param string $value 対象文字列。
 	 * @param string $characters トリム対象文字。
@@ -308,7 +308,7 @@ abstract class StringUtility
 	}
 
 	/**
-	 * 右トリム。
+	 * 終端トリム。
 	 *
 	 * @param string $value 対象文字列。
 	 * @param string $characters トリム対象文字。
@@ -335,15 +335,15 @@ abstract class StringUtility
 	}
 
 	/**
-	 * Undocumented function
+	 * 文字列置き換え
 	 *
-	 * @param string $value
-	 * @param string|string[] $oldValue
-	 * @param string|null $newValue
-	 * @return string
+	 * @param string $source 入力文字列。
+	 * @param string|string[] $oldValue 元文字列(か、元文字列配列)
+	 * @param string|null $newValue 置き換え文字列。
+	 * @return string 置き換え後文字列。
 	 */
-	public static function replace(string $value, string|array $oldValue, ?string $newValue): string
+	public static function replace(string $source, string|array $oldValue, ?string $newValue): string
 	{
-		return str_replace($oldValue, $newValue ?? '', $value);
+		return str_replace($oldValue, $newValue ?? '', $source);
 	}
 }

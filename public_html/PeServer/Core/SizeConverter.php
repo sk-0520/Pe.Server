@@ -21,7 +21,9 @@ class SizeConverter
 	];
 
 	/**
-	 * Undocumented function
+	 * 読みやすいように変換。
+	 *
+	 * C#(Pe.Core)から移植。
 	 *
 	 * @param integer $byteSize
 	 * @param string $sizeFormat {f_size} {i_size} {term}

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
-use \Exception;
 use PeServer\Core\Log\Logging;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Http\HttpHeader;
@@ -137,7 +136,6 @@ class Routing
 		return true;
 	}
 
-	//TODO: 後処理を作るだけ作ったけどデータ転送処理がないからむりぽ
 	private function handleAfterMiddleware(HttpRequest $request, HttpResponse $response): bool
 	{
 		if (!ArrayUtility::getCount($this->processedMiddleware)) {

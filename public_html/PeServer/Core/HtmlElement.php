@@ -18,6 +18,7 @@ class HtmlElement extends HtmlBase
 	 * @var DOMElement
 	 */
 	public DOMElement $raw;
+
 	public function __construct(HtmlDocument $document, DOMElement $raw)
 	{
 		parent::__construct($document, $raw);

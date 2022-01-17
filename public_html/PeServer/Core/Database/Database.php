@@ -31,7 +31,7 @@ class Database implements IDatabaseContext
 
 
 	/**
-	 * Undocumented function
+	 * 生成。
 	 *
 	 * @param string $dsn
 	 * @param string $user

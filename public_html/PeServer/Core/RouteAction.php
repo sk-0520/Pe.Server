@@ -9,6 +9,9 @@ use PeServer\Core\Mvc\Middleware\IMiddleware;
 use PeServer\Core\Mvc\Middleware\IShutdownMiddleware;
 
 
+/**
+ * ルーティングのアクション設定。
+ */
 class RouteAction
 {
 	public HttpStatus $status;
