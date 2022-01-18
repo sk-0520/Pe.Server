@@ -8,6 +8,7 @@ class UserCache
 {
 	public string $userId;
 	public string $userName;
+	public string $level;
 	public string $state;
 	public string $website;
 	public string $description;

@@ -108,6 +108,7 @@ class UserDomainDao extends DaoBase
 			select
 				users.user_id,
 				users.name,
+				users.level,
 				users.state,
 				users.website,
 				users.description
@@ -124,6 +125,7 @@ class UserDomainDao extends DaoBase
 
 			$cache->userId = $i['user_id'];
 			$cache->userName = $i['name'];
+			$cache->level = $i['level'];
 			$cache->state = $i['state'];
 			$cache->website = $i['website'];
 			$cache->description = $i['description'];
