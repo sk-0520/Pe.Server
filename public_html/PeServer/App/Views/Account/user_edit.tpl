@@ -5,7 +5,7 @@
 <form class="page-account-user" action="/account/user/edit" method="post">
 	{csrf}
 
-	<dl>
+	<dl class="input">
 		<dt>user name</dt>
 		<dd>
 			{input_helper key='account_edit_name' type="text" class="edit"}

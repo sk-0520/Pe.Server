@@ -2,8 +2,8 @@
 {block name='TITLE'}ユーザー情報 編集{/block}
 {block name='BODY'}
 
-<form class="page-account-signup" action="/account/signup/{$values.token}" method="post">
-	<dl>
+<form class="page-account-sign-up" action="/account/signup/{$values.token}" method="post">
+	<dl class="input">
 		<dt>email</dt>
 		<dd>
 			{input_helper key='account_signup_email' type="email" class="edit"}

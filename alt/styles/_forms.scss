@@ -21,7 +21,8 @@ textarea {
 			outline: 0;
 		}
 
-		&.error, &:invalid {
+		&.error,
+		&:invalid {
 			background: #faa;
 		}
 	}
@@ -52,4 +53,17 @@ input[type="reset"].action,
 		border-color: #444;
 		outline: 0;
 	}
+}
+
+form.page-account-login,
+form.page-account-sign-up {
+	margin: 0 auto;
+	background: red;
+
+	& > dl.input {
+		background: lime;
+	}
+}
+
+form > dl.input {
 }

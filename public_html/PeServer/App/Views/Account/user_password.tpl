@@ -5,7 +5,7 @@
 <form class="page-account-password" action="/account/user/password" method="post">
 	{csrf}
 
-	<dl>
+	<dl class="input">
 		<dt>current password</dt>
 		<dd>
 			{input_helper key='account_password_current' type="password" class="edit"}

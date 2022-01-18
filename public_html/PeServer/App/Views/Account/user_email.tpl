@@ -9,7 +9,7 @@
 		{csrf}
 		<input type="hidden" name="account_email_mode" value="edit" />
 
-		<dl>
+		<dl class="input">
 			<dt>mail address</dt>
 			<dd>
 				{input_helper key='account_email_email' type="email" class="edit"}

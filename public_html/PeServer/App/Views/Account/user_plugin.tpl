@@ -17,7 +17,7 @@
 		<input type="hidden" name="from_account_plugin_plugin_id" value="{$values.from_account_plugin_plugin_id}" />
 	{/if}
 
-	<dl>
+	<dl class="input">
 		<dt>plugin id</dt>
 		<dd>
 			{input_helper key='account_plugin_plugin_id' type="text" class="edit" readonly="{$readonly}"}
