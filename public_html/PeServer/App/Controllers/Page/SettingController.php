@@ -84,6 +84,10 @@ final class SettingController extends PageControllerBase
 		$logic = $this->createLogic(SettingLogDetailLogic::class, $request);
 		$logic->run(LogicCallMode::initialize());
 
+		if ($logic->equalsResult('download', true)) {
+			return $this->data($logic->getContent());
+		}
+
 		return $this->view('log_detail', $logic->getViewData());
 	}
 }

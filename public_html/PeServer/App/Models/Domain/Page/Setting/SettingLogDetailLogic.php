@@ -11,7 +11,9 @@ use PeServer\Core\Mvc\LogicParameter;
 use PeServer\App\Models\AppConfiguration;
 use PeServer\Core\Throws\FileNotFoundException;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
-
+use PeServer\Core\Archiver;
+use PeServer\Core\Bytes;
+use PeServer\Core\Mime;
 
 class SettingLogDetailLogic extends PageLogicBase
 {
@@ -37,9 +39,19 @@ class SettingLogDetailLogic extends PageLogicBase
 		}
 
 		$bytes = FileUtility::readContent($filePath);
-		$logValue = $bytes->getRaw();
 
-		$this->setValue('log_file', $filePath);
-		$this->setValue('log_value', $logValue);
+		$archiveSize = AppConfiguration::$config['logging']['archive_size'];
+		$fileSize = FileUtility::getFileSize($filePath);
+
+		if ($archiveSize <= $fileSize) {
+			$this->result['download'] = true;
+
+			$compressed = Archiver::toGzip($bytes, 9);
+
+			$this->setDownloadContent(Mime::GZ, $fileName . '.gz', $compressed);
+		} else {
+			$this->setValue('log_file', $filePath);
+			$this->setValue('log_value', $bytes->getRaw());
+		}
 	}
 }

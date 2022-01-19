@@ -11,7 +11,8 @@
 			"directory": "$(BASE)/data/logs",
 			"name": "log_{DATE}.log",
 			"count": 100
-		}
+		},
+		"archive_size": 262144
 	},
 	"store": {
 		"cookie": {

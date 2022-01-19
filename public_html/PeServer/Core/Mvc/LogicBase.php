@@ -503,6 +503,11 @@ abstract class LogicBase implements IValidationReceiver
 		$this->content = new DataContent(HttpStatus::none(), $mime, $data);
 	}
 
+	protected function setDownloadContent(string $mime, string $fileName, Bytes $data): void
+	{
+		$this->content = new DownloadDataContent($mime, $fileName, $data);
+	}
+
 	/**
 	 * 応答データ取得。
 	 *
@@ -513,6 +518,11 @@ abstract class LogicBase implements IValidationReceiver
 	{
 		if (is_null($this->content)) {
 			throw new InvalidOperationException('not impl');
+		}
+
+		if($this->content instanceof DownloadDataContent) {
+			return $this->content;
+
 		}
 
 		return new DataContent($this->httpStatus, $this->content->mime, $this->content->data);
