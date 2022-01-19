@@ -42,7 +42,7 @@ abstract class DomainLogicBase extends LogicBase
 			$result['error'] = $responseJson->error;
 		}
 
-		$this->setContent(Mime::JSON, $result);
+		$this->setJsonContent($result);
 	}
 
 	/**

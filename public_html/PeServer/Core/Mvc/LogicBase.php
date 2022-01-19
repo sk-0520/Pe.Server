@@ -15,6 +15,7 @@ use PeServer\Core\StringUtility;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mvc\DataContent;
 use PeServer\Core\Http\HttpRequest;
+use PeServer\Core\Mime;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Store\CookieStore;
 use PeServer\Core\Mvc\LogicParameter;
@@ -472,6 +473,22 @@ abstract class LogicBase implements IValidationReceiver
 			$this->values,
 			$this->errors
 		);
+	}
+
+	final protected function setTextContent(string $data): void
+	{
+		$this->setContent(Mime::TEXT, $data);
+	}
+
+	/**
+	 * Undocumented function
+	 *
+	 * @param array<mixed> $data
+	 * @return void
+	 */
+	final protected function setJsonContent(array $data): void
+	{
+		$this->setContent(Mime::JSON, $data);
 	}
 
 	/**

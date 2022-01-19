@@ -109,7 +109,7 @@ class DevelopmentAdministratorLogic extends ApiLogicBase
 		}, $params);
 
 
-		$this->setContent(Mime::JSON, [
+		$this->setJsonContent([
 			'success' => $result
 		]);
 	}

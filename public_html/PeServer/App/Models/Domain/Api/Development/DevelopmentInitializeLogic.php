@@ -57,7 +57,7 @@ class DevelopmentInitializeLogic extends ApiLogicBase
 		$deployScript->migrate(AppConfiguration::$config['persistence']);
 
 
-		$this->setContent(Mime::JSON, [
+		$this->setJsonContent([
 			'success' => true,
 		]);
 	}
