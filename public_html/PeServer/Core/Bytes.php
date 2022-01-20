@@ -49,7 +49,7 @@ final class Bytes
 	/**
 	 * 16進数文字列に変換。
 	 *
-	 * @return string [0-9a-z]{2} で構成された文字列。
+	 * @return string [0-9a-f]{2} で構成された文字列。
 	 */
 	public function toHex(): string
 	{
