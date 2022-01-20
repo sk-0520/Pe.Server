@@ -55,7 +55,7 @@ abstract class TemplateFunctionBase extends TemplatePluginBase implements ITempl
 	/**
 	 * Undocumented function
 	 *
-	 * @return array<string,string|string[]|bool|int>
+	 * @return array<string,string|string[]|bool|int|object>
 	 */
 	protected function getValues(): array
 	{

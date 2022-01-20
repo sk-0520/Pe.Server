@@ -69,7 +69,7 @@ abstract class TemplatePluginBase
 	 * Undocumented function
 	 *
 	 * @param Smarty_Internal_Template $smarty
-	 * @return array<string,string|string[]|bool|int>
+	 * @return array<string,string|string[]|bool|int|object>
 	 */
 	protected function getSmartyValues(Smarty_Internal_Template $smarty): array
 	{
