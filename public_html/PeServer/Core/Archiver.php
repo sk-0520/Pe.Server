@@ -8,13 +8,9 @@ use PeServer\Core\Throws\ArchiveException;
 
 abstract class Archiver
 {
-	public static function toGzip(Bytes|string $data, int $level = -1, int $encoding = FORCE_GZIP): Bytes
+	public static function toGzip(Bytes $data, int $level = -1, int $encoding = FORCE_GZIP): Bytes
 	{
-		if ($data instanceof Bytes) {
-			$data = $data->getRaw();
-		}
-
-		$result = gzencode($data, $level, $encoding);
+		$result = gzencode($data->getRaw(), $level, $encoding);
 		if ($result === false) {
 			throw new ArchiveException();
 		}
