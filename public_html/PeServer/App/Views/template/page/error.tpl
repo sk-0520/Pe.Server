@@ -1,5 +1,5 @@
 {extends file='default.tpl'}
-{block name='TITLE'}エラー: {$status->code()}{/block}
+{block name='TITLE'}エラー: {$status->getCode()}{/block}
 {block name='BODY'}
 
 <p>
