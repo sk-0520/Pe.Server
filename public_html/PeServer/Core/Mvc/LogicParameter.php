@@ -16,24 +16,20 @@ use PeServer\Core\Store\TemporaryStore;
 class LogicParameter
 {
 	/**
-	 * ロガー
+	 * 生成。
+	 *
+	 * @param HttpRequest $request リクエスト。
+	 * @param CookieStore $cookie
+	 * @param TemporaryStore $temporary
+	 * @param SessionStore $session
+	 * @param ILogger $logger ロガー。
 	 */
-	public ILogger $logger;
-	/**
-	 * リクエスト。
-	 */
-	public HttpRequest $request;
-
-	public CookieStore $cookie;
-	public TemporaryStore $temporary;
-	public SessionStore $session;
-
-	public function __construct(HttpRequest $request, CookieStore $cookie, TemporaryStore $temporary, SessionStore $session, ILogger $logger)
-	{
-		$this->request = $request;
-		$this->cookie = $cookie;
-		$this->temporary = $temporary;
-		$this->session = $session;
-		$this->logger = $logger;
+	public function __construct(
+		public HttpRequest $request,
+		public CookieStore $cookie,
+		public TemporaryStore $temporary,
+		public SessionStore $session,
+		public ILogger $logger
+	) {
 	}
 }

@@ -12,17 +12,13 @@ use PeServer\Core\Throws\ArgumentException;
 
 class RedirectActionResult implements IActionResult
 {
-	private string $url;
-	private ?HttpStatus $status;
-
-	public function __construct(string $url, ?HttpStatus $status = null)
-	{
+	public function __construct(
+		private string $url,
+		private ?HttpStatus $status = null
+	) {
 		if (StringUtility::isNullOrWhiteSpace($url)) {
 			throw new ArgumentException('$url');
 		}
-
-		$this->url = $url;
-		$this->status = $status;
 	}
 
 	public function createResponse(): HttpResponse

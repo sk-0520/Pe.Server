@@ -15,19 +15,18 @@ use PeServer\Core\Store\TemporaryStore;
 class ControllerArgument
 {
 	/**
-	 * ロガー
+	 * Undocumented function
+	 *
+	 * @param CookieStore $cookie
+	 * @param TemporaryStore $temporary
+	 * @param SessionStore $session
+	 * @param ILogger $logger ロガー。
 	 */
-	public ILogger $logger;
-
-	public CookieStore $cookie;
-	public TemporaryStore $temporary;
-	public SessionStore $session;
-
-	public function __construct(CookieStore $cookie, TemporaryStore $temporary, SessionStore $session, ILogger $logger)
-	{
-		$this->cookie = $cookie;
-		$this->temporary = $temporary;
-		$this->session = $session;
-		$this->logger = $logger;
+	public function __construct(
+		public CookieStore $cookie,
+		public TemporaryStore $temporary,
+		public SessionStore $session,
+		public ILogger $logger
+	) {
 	}
 }

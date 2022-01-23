@@ -16,16 +16,14 @@ use PeServer\Core\Throws\NotImplementedException;
 
 class DataActionResult implements IActionResult
 {
-	private DataContent $content;
-
 	/**
 	 * 生成。
 	 *
 	 * @param DataContent $content
 	 */
-	public function __construct(DataContent $content)
-	{
-		$this->content = $content;
+	public function __construct(
+		private DataContent $content
+	) {
 	}
 
 	private function convertText(DataContent $content): string

@@ -11,25 +11,17 @@ use PeServer\Core\Log\Logging;
 abstract class LoggerBase implements ILogger
 {
 	/**
-	 * ヘッダ。
+	 * 生成。
 	 *
-	 * 使用用途により意味合いは変わるので実装側でルール決めして使用すること。
+	 * @param string $header ヘッダ。使用用途により意味合いは変わるので実装側でルール決めして使用すること。
+	 * @param integer $level 有効レベル。
+	 * @param integer $baseTraceIndex 基準トレース位置。
 	 */
-	protected string $header;
-	/**
-	 * 有効レベル。
-	 */
-	protected int $level;
-	/**
-	 * 基準トレース位置。
-	 */
-	protected int $baseTraceIndex;
-
-	public function __construct(string $header, int $level, int $baseTraceIndex)
-	{
-		$this->header = $header;
-		$this->level = $level;
-		$this->baseTraceIndex = $baseTraceIndex;
+	public function __construct(
+		protected string $header,
+		protected int $level,
+		protected int $baseTraceIndex
+	) {
 	}
 
 	/**

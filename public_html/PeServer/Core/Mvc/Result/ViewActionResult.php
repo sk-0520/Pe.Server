@@ -11,16 +11,6 @@ use PeServer\Core\Mvc\TemplateParameter;
 
 class ViewActionResult implements IActionResult
 {
-	private string $templateBaseName;
-	private string $actionName;
-	private TemplateParameter $templateParameter;
-	/**
-	 * Undocumented variable
-	 *
-	 * @var array<string,string[]>
-	 */
-	private array $headers;
-
 	/**
 	 * 生成。
 	 *
@@ -29,12 +19,12 @@ class ViewActionResult implements IActionResult
 	 * @param TemplateParameter $templateParameter
 	 * @param array<string,string[]> $headers
 	 */
-	public function __construct(string $templateBaseName, string $actionName, TemplateParameter $templateParameter, array $headers)
-	{
-		$this->templateBaseName = $templateBaseName;
-		$this->actionName = $actionName;
-		$this->templateParameter = $templateParameter;
-		$this->headers = $headers;
+	public function __construct(
+		private string $templateBaseName,
+		private string $actionName,
+		private TemplateParameter $templateParameter,
+		private array $headers
+	) {
 	}
 
 	public function createResponse(): HttpResponse

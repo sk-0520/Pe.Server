@@ -17,12 +17,7 @@ use PeServer\Core\Store\SessionStore;
  */
 class MiddlewareArgument
 {
-	public RequestPath $requestPath;
-	public CookieStore $cookie;
-	public SessionStore $session;
-	public HttpRequest $request;
 	public HttpResponse $response;
-	public ILogger $logger;
 
 	/**
 	 * 生成。
@@ -33,13 +28,13 @@ class MiddlewareArgument
 	 * @param HttpRequest $request
 	 * @param ILogger $logger
 	 */
-	public function __construct(RequestPath $requestPath, CookieStore $cookie, SessionStore $session, HttpRequest $request, ILogger $logger)
-	{
-		$this->requestPath = $requestPath;
-		$this->cookie = $cookie;
-		$this->session = $session;
-		$this->request = $request;
+	public function __construct(
+		public RequestPath $requestPath,
+		public CookieStore $cookie,
+		public SessionStore $session,
+		public HttpRequest $request,
+		public ILogger $logger
+	) {
 		$this->response = new HttpResponse();
-		$this->logger = $logger;
 	}
 }

@@ -9,24 +9,16 @@ use \Smarty;
 class TemplatePluginArgument
 {
 	/**
-	 * テンプレートエンジン。
+	 * 生成。
+	 *
+	 * @param Smarty $engine テンプレートエンジン。
+	 * @param string $rootDirectoryPath ルートディレクトリ。
+	 * @param string $baseDirectoryPath ベースディレクトリ。
 	 */
-	public Smarty $engine;
-
-	/**
-	 * ルートディレクトリ。
-	 */
-	public string $rootDirectoryPath;
-
-	/**
-	 * ベースディレクトリ。
-	 */
-	public string $baseDirectoryPath;
-
-	public function __construct(Smarty $engine, string $rootDirectoryPath, string $baseDirectoryPath)
-	{
-		$this->engine = $engine;
-		$this->rootDirectoryPath = $rootDirectoryPath;
-		$this->baseDirectoryPath = $baseDirectoryPath;
+	public function __construct(
+		public Smarty $engine,
+		public string $rootDirectoryPath,
+		public string $baseDirectoryPath
+	) {
 	}
 }

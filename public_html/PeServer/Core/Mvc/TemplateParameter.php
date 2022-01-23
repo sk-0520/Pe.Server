@@ -12,35 +12,16 @@ use PeServer\Core\Http\HttpStatus;
 class TemplateParameter
 {
 	/**
-	 * ステータスコード。
-	 */
-	public HttpStatus $httpStatus;
-
-	/**
-	 * 値。
-	 *
-	 * @var array<string,mixed>
-	 */
-	public array $values;
-
-	/**
-	 * エラー一覧。
-	 *
-	 * @var array<string,string[]>
-	 */
-	public array $errors;
-
-	/**
 	 * 生成。
 	 *
-	 * @param HttpStatus $httpStatus
-	 * @param array<string,mixed> $values
-	 * @param array<string,string[]> $errors
+	 * @param HttpStatus $httpStatus ステータスコード。
+	 * @param array<string,mixed> $values 値。
+	 * @param array<string,string[]> $errors エラー一覧。
 	 */
-	public function __construct(HttpStatus $httpStatus, array $values, array $errors)
-	{
-		$this->httpStatus = $httpStatus;
-		$this->values = $values;
-		$this->errors = $errors;
+	public function __construct(
+		public HttpStatus $httpStatus,
+		public array $values,
+		public array $errors
+	) {
 	}
 }
