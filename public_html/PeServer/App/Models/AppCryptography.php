@@ -7,6 +7,7 @@ namespace PeServer\App\Models;
 use PeServer\Core\Cryptography;
 use PeServer\Core\Throws\CryptoException;
 use PeServer\App\Models\AppConfiguration;
+use PeServer\Core\StringUtility;
 
 abstract class AppCryptography
 {
@@ -32,6 +33,20 @@ abstract class AppCryptography
 	{
 		$crypto = AppConfiguration::$config['crypto'];
 		return Cryptography::decrypt($data, $crypto['password']);
+	}
+
+	public static function encryptToken(string $data): string
+	{
+		$token = AppConfiguration::$config['crypto']['token'];
+		$value = Cryptography::encrypt($data, $token['algorithm'], $token['password']);
+		return StringUtility::split($value, Cryptography::SEPARATOR, 2)[1];
+	}
+
+	public static function decryptToken(string $data): string
+	{
+		$token = AppConfiguration::$config['crypto']['token'];
+		$value = $data;
+		return Cryptography::decrypt($token['algorithm'] . Cryptography::SEPARATOR . $value, $token['password']);
 	}
 
 	/**

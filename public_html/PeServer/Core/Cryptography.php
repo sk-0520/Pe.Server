@@ -15,7 +15,7 @@ use Throwable;
 abstract class Cryptography
 {
 	private const OPTION = 0;
-	private const SEPARATOR = '@';
+	public const SEPARATOR = '@';
 
 	/**
 	 * ランダムバイトデータを生成。

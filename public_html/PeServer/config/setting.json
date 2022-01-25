@@ -38,7 +38,11 @@
 	"crypto": {
 		"algorithm": "aes-256-cbc",
 		"password": "password",
-		"pepper": "pepper"
+		"pepper": "pepper",
+		"token": {
+			"algorithm": "aes-128-cbc",
+			"password": "password"
+		}
 	},
 	"config": {
 		"confirm": {
