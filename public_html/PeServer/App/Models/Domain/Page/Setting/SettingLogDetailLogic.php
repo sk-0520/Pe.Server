@@ -46,7 +46,7 @@ class SettingLogDetailLogic extends PageLogicBase
 		if ($archiveSize <= $fileSize) {
 			$this->result['download'] = true;
 
-			$compressed = Archiver::toGzip($bytes, 9);
+			$compressed = Archiver::compressGzip($bytes, 9);
 
 			$this->setDownloadContent(Mime::GZ, $fileName . '.gz', $compressed);
 		} else {
