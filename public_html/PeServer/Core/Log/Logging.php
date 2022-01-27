@@ -28,9 +28,9 @@ abstract class Logging
 	/**
 	 * 初期化チェック。
 	 *
-	 * @var InitializeChecker|null
+	 * @var InitializeChecker
 	 */
-	private static ?InitializeChecker $initializeChecker = null;
+	private static InitializeChecker $initializeChecker;
 
 	/**
 	 * ログ設定。
@@ -60,9 +60,7 @@ abstract class Logging
 	 */
 	public static function initialize(array $loggingConfiguration)
 	{
-		if (is_null(self::$initializeChecker)) {
-			self::$initializeChecker = new InitializeChecker();
-		}
+		self::$initializeChecker ??= new InitializeChecker();
 		self::$initializeChecker->initialize();
 
 		self::$loggingConfiguration = $loggingConfiguration;
@@ -144,7 +142,7 @@ abstract class Logging
 	 */
 	public static function format(int $level, int $traceIndex, string $header, $message, ...$parameters): string
 	{
-		self::$initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
+		self::$initializeChecker->throwIfNotInitialize();
 
 		/** @var array<string,mixed>[] */
 		$backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS); // DEBUG_BACKTRACE_PROVIDE_OBJECT
@@ -180,7 +178,7 @@ abstract class Logging
 
 	public static function create(string $header, int $baseTraceIndex = 0): ILogger
 	{
-		self::$initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
+		self::$initializeChecker->throwIfNotInitialize();
 
 		$loggers = [
 			new FileLogger($header, self::$level, $baseTraceIndex + 1, self::$loggingConfiguration['file']),

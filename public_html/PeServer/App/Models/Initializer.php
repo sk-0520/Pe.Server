@@ -13,13 +13,11 @@ abstract class Initializer
 	/**
 	 * 初期化チェック
 	 */
-	private static ?InitializeChecker $initializeChecker = null;
+	private static InitializeChecker $initializeChecker;
 
 	public static function initialize(string $rootDirectoryPath, string $baseDirectoryPath, string $environment, string $revision): void
 	{
-		if (is_null(self::$initializeChecker)) {
-			self::$initializeChecker = new InitializeChecker();
-		}
+		self::$initializeChecker ??= new InitializeChecker();
 		self::$initializeChecker->initialize();
 
 		CoreInitializer::initialize($environment, $revision);

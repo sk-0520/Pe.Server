@@ -14,16 +14,14 @@ abstract class Environment
 	/**
 	 * 初期化チェック
 	 */
-	private static ?InitializeChecker $initializeChecker = null;
+	private static InitializeChecker $initializeChecker;
 
 	private static string $environment = '';
 	private static string $revision = '';
 
 	public static function initialize(string $environment, string $revision): void
 	{
-		if (is_null(self::$initializeChecker)) {
-			self::$initializeChecker = new InitializeChecker();
-		}
+		self::$initializeChecker ??= new InitializeChecker();
 		self::$initializeChecker->initialize();
 
 		self::$environment = $environment;
@@ -32,14 +30,14 @@ abstract class Environment
 
 	public static function get(): string
 	{
-		self::$initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
+		self::$initializeChecker->throwIfNotInitialize();
 
 		return self::$environment;
 	}
 
 	public static function is(string $environment): bool
 	{
-		self::$initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
+		self::$initializeChecker->throwIfNotInitialize();
 
 		return self::$environment === $environment;
 	}

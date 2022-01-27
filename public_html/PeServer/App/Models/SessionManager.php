@@ -15,15 +15,13 @@ abstract class SessionManager
 	/**
 	 * 初期化チェック
 	 */
-	private static ?InitializeChecker $initializeChecker = null;
+	private static InitializeChecker $initializeChecker;
 
 	private static SessionStore $session;
 
 	public static function initialize(SessionStore $session): void
 	{
-		if (is_null(self::$initializeChecker)) {
-			self::$initializeChecker = new InitializeChecker();
-		}
+		self::$initializeChecker ??= new InitializeChecker();
 		self::$initializeChecker->initialize();
 
 		self::$session = $session;
@@ -31,14 +29,14 @@ abstract class SessionManager
 
 	public static function isEnabled(): bool
 	{
-		self::$initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
+		self::$initializeChecker->throwIfNotInitialize();
 
 		return self::$session->isStarted();
 	}
 
 	public static function existsAccount(): bool
 	{
-		self::$initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
+		self::$initializeChecker->throwIfNotInitialize();
 
 		return self::$session->tryGet(self::ACCOUNT, $_);
 	}
@@ -50,7 +48,7 @@ abstract class SessionManager
 	 */
 	public static function getAccount(): array
 	{
-		self::$initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
+		self::$initializeChecker->throwIfNotInitialize();
 
 		if (self::$session->tryGet(self::ACCOUNT, $result)) {
 			return $result;
@@ -67,7 +65,7 @@ abstract class SessionManager
 	 */
 	public static function setAccount(array $value): void
 	{
-		self::$initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
+		self::$initializeChecker->throwIfNotInitialize();
 
 		self::$session->set(self::ACCOUNT, $value);
 	}

@@ -19,15 +19,13 @@ abstract class AppDatabaseCache
 	/**
 	 * 初期化チェック
 	 */
-	private static ?InitializeChecker $initializeChecker = null;
+	private static InitializeChecker $initializeChecker;
 
 	private static string $cacheDirectoryPath;
 
 	public static function initialize(string $cacheDirectoryPath): void
 	{
-		if (is_null(self::$initializeChecker)) {
-			self::$initializeChecker = new InitializeChecker();
-		}
+		self::$initializeChecker ??= new InitializeChecker();
 		self::$initializeChecker->initialize();
 
 		self::$cacheDirectoryPath = $cacheDirectoryPath;
@@ -60,7 +58,7 @@ abstract class AppDatabaseCache
 	 */
 	public static function exportUserInformation(): void
 	{
-		self::$initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
+		self::$initializeChecker->throwIfNotInitialize();
 
 		$context = self::openDatabase();
 		$userDomainDao = new UserDomainDao($context);
@@ -76,7 +74,7 @@ abstract class AppDatabaseCache
 	 */
 	public static function exportPluginInformation(): void
 	{
-		self::$initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
+		self::$initializeChecker->throwIfNotInitialize();
 
 		$context = self::openDatabase();
 		$userDomainDao = new PluginDomainDao($context);

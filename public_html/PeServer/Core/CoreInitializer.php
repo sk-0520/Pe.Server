@@ -12,7 +12,7 @@ abstract class CoreInitializer
 	/**
 	 * 初期化チェック
 	 */
-	private static ?InitializeChecker $initializeChecker = null;
+	private static InitializeChecker $initializeChecker;
 
 	/**
 	 * 初期化処理。
@@ -22,9 +22,7 @@ abstract class CoreInitializer
 	 */
 	public static function initialize(string $environment, string $revision): void
 	{
-		if (is_null(self::$initializeChecker)) {
-			self::$initializeChecker = new InitializeChecker();
-		}
+		self::$initializeChecker ??= new InitializeChecker();
 		self::$initializeChecker->initialize();
 
 		mb_language('ja');

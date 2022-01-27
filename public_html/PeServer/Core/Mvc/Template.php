@@ -31,7 +31,7 @@ abstract class Template
 	/**
 	 * 初期化チェック
 	 */
-	protected static ?InitializeChecker $initializeChecker = null;
+	protected static InitializeChecker $initializeChecker;
 	/**
 	 * ルートディレクトリ。
 	 */
@@ -57,9 +57,7 @@ abstract class Template
 
 	public static function initialize(string $rootDirectoryPath, string $baseDirectoryPath, string $templateBaseName, string $temporaryBaseName): void
 	{
-		if (is_null(self::$initializeChecker)) {
-			self::$initializeChecker = new InitializeChecker();
-		}
+		self::$initializeChecker ??= new InitializeChecker();
 		self::$initializeChecker->initialize();
 
 		self::$rootDirectoryPath = $rootDirectoryPath;
@@ -70,7 +68,7 @@ abstract class Template
 
 	public static function create(string $baseName, string $templateBaseName = '', string $temporaryBaseName = ''): Template
 	{
-		self::$initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
+		self::$initializeChecker->throwIfNotInitialize();
 
 		if (StringUtility::isNullOrWhiteSpace($templateBaseName)) {
 			$templateBaseName = self::$templateBaseName;
@@ -101,7 +99,7 @@ class _Template_Impl extends Template
 
 	public function __construct(string $baseName, string $templateBaseName, string $temporaryBaseName)
 	{
-		parent::$initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
+		parent::$initializeChecker->throwIfNotInitialize();
 
 		$this->engine = new Smarty();
 		$this->engine->addTemplateDir(FileUtility::joinPath(parent::$baseDirectoryPath, $templateBaseName, $baseName));

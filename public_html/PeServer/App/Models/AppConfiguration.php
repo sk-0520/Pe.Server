@@ -19,9 +19,9 @@ abstract class AppConfiguration
 	/**
 	 * 初期化チェック
 	 *
-	 * @var InitializeChecker|null
+	 * @var InitializeChecker
 	 */
-	private static ?InitializeChecker $initializeChecker = null;
+	private static InitializeChecker $initializeChecker;
 
 	/**
 	 * 設定データ。
@@ -79,9 +79,7 @@ abstract class AppConfiguration
 
 	public static function initialize(string $rootDirectoryPath, string $baseDirectoryPath): void
 	{
-		if (is_null(self::$initializeChecker)) {
-			self::$initializeChecker = new InitializeChecker();
-		}
+		self::$initializeChecker ??= new InitializeChecker();
 		self::$initializeChecker->initialize();
 
 		self::$settingDirectoryPath = FileUtility::joinPath($baseDirectoryPath, 'config');

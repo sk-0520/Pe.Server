@@ -22,7 +22,7 @@ abstract class I18n
 	/**
 	 * 初期化チェック
 	 */
-	private static ?InitializeChecker $initializeChecker = null;
+	private static InitializeChecker $initializeChecker;
 
 	/**
 	 * Undocumented variable
@@ -39,9 +39,7 @@ abstract class I18n
 	 */
 	public static function initialize(array $i18nConfiguration): void
 	{
-		if (is_null(self::$initializeChecker)) {
-			self::$initializeChecker = new InitializeChecker();
-		}
+		self::$initializeChecker ??= new InitializeChecker();
 		self::$initializeChecker->initialize();
 
 		self::$i18nConfiguration = $i18nConfiguration;
@@ -104,7 +102,7 @@ abstract class I18n
 	 */
 	public static function message(string $key, array $parameters = array()): string
 	{
-		self::$initializeChecker->throwIfNotInitialize(); // @phpstan-ignore-line null access
+		self::$initializeChecker->throwIfNotInitialize();
 
 		/** @var array<string,string> */
 		$params = [];
