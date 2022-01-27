@@ -57,6 +57,10 @@ abstract class Environment
 
 	public static function getRevision(): string
 	{
-		return self::$revision;
+		if(self::isProduction()) {
+			return self::$revision;
+		}
+
+		return (string)time();
 	}
 }

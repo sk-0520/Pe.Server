@@ -1,3 +1,4 @@
+@use "core/responsive" as responsive;
 @use "font" as font;
 
 $_border_width: 2px;
@@ -55,15 +56,52 @@ input[type="reset"].action,
 	}
 }
 
-form.page-account-login,
-form.page-account-sign-up {
-	margin: 0 auto;
-	background: red;
+form > dl.input {
+	@include responsive.media(responsive.$phone) {
+		width: 95%;
+	}
 
-	& > dl.input {
-		background: lime;
+	& > dt {
+		margin-bottom: 0.5ex;
+	}
+	& > dd {
+		$margin-left: 4em;
+		margin-left: $margin-left;
+
+		> * {
+			width: calc(80% - #{$margin-left});
+		}
+
+		& + dt {
+			margin-top: 1em;
+		}
+
+		textarea {
+			height: 12em;
+		}
+
+		@include responsive.media(responsive.$phone) {
+			margin-left: 0;
+
+			textarea {
+				height: 6em;
+			}
+
+			> * {
+				width: 100%;
+			}
+		}
+
+		&.action {
+			margin-top: 0.5em;
+		}
 	}
 }
 
-form > dl.input {
+form.page-account-login,
+form.page-account-sign-up {
+	& > dl.input {
+		margin: 0 auto;
+		width: 50%;
+	}
 }

@@ -33,7 +33,7 @@
 			{csrf}
 			<input type="hidden" name="account_email_mode" value="confirm" />
 
-			<dl>
+			<dl class="input">
 				<dt>new email</dt>
 				<dd>
 					[{$values.wait_email}]
