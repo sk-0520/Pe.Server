@@ -99,6 +99,12 @@ body {
 				position: inherit;
 				height: inherit;
 			}
+
+			.value-error {
+				.error {
+					color: #f00;
+				}
+			}
 		}
 
 		.common {
@@ -117,6 +123,7 @@ body {
 			&.messages {
 				border-color: #090;
 			}
+
 			&.error {
 				border-color: #900;
 
