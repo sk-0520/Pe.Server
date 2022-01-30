@@ -23,11 +23,6 @@
 		{$values.account_user_name}
 	</dd>
 
-	<dt>email</dt>
-	<dd>
-		{$values.account_user_email}
-	</dd>
-
 	<dt>website</dt>
 	<dd>
 		{$values.account_user_website}
