@@ -105,3 +105,23 @@ form.page-account-sign-up {
 		width: 50%;
 	}
 }
+
+form.page-account-plugin {
+	$margin-left: 4em;
+
+	.tab {
+		.markdown {
+			overflow: auto;
+		}
+
+		textarea,
+		.markdown {
+			width: 100%;
+			height: 12em;
+
+			@include responsive.media(responsive.$phone) {
+				height: 6em;
+			}
+		}
+	}
+}

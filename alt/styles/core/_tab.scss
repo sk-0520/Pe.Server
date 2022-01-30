@@ -1,0 +1,36 @@
+.tab {
+	display: flex;
+	flex-wrap: wrap;
+
+	& > .tab_header {
+		margin-right: 1em;
+		padding: 0.5ex 0.5em;
+		order: -1;
+		cursor: pointer;
+
+		border: 1px solid #ccc;
+		border-bottom: none;
+		background: #ddd;
+	}
+
+	& > .tab_content {
+		width: 100%;
+		display: none;
+	}
+
+	& > input.tab_check {
+		display: none;
+
+		&:checked + .tab_header {
+			font-weight: bold;
+			background: #eee;
+
+			& + .tab_content {
+				display: block;
+
+				border: 2px solid #ccc;
+				padding: 2px;
+			}
+		}
+	}
+}

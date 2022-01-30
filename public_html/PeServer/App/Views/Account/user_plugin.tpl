@@ -50,10 +50,13 @@
 
 		<dt>description</dt>
 		<dd>
-			{input_helper key='account_plugin_description' type="textarea" class="edit markdown-editor" data-markdown-result=".markdown-browser"}
-		</dd>
-		<dd>
-			{markdown class="markdown markdown-browser"}{$values.account_plugin_description}{/markdown}
+			<div class="tab">
+				<input id="description_markdown_source" type="radio" name="tab_markdown" class="tab_check" checked><label for="description_markdown_source" class="tab_header">markdown</label>
+				<div class="tab_content">{input_helper key='account_plugin_description' type="textarea" class="edit markdown-editor" data-markdown-result=".markdown-browser"}</div>
+
+				<input id="description_markdown_preview" type="radio" name="tab_markdown" class="tab_check"><label for="description_markdown_preview" class="tab_header">preview</label>
+				<div class="tab_content">{markdown class="markdown markdown-browser"}{$values.account_plugin_description}{/markdown}</div>
+			</div>
 		</dd>
 
 		<dt class="action">edit</dt>
