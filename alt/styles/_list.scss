@@ -1,0 +1,32 @@
+@use "core/responsive" as responsive;
+
+ol,
+ul {
+	li {
+		margin-left: 3ex;
+		list-style-position: outside;
+		list-style-image: none;
+	}
+}
+
+ol li {
+	list-style-type: decimal;
+}
+
+ul li {
+	list-style-type: disc;
+}
+
+dl {
+	dd + dt {
+		margin-top: 1em;
+	}
+
+	dd {
+		margin-left: 2ex;
+
+		@include responsive.media(responsive.$phone) {
+			margin-left: 1em;
+		}
+	}
+}
