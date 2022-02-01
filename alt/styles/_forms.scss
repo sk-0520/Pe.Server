@@ -22,10 +22,17 @@ textarea {
 			outline: 0;
 		}
 
-		&.error,
-		&:invalid {
+		&.error {
 			background: #faa;
 		}
+	}
+}
+
+dt.action {
+	margin-top: 1ex;
+
+	&:before {
+		content: "\00a0";
 	}
 }
 

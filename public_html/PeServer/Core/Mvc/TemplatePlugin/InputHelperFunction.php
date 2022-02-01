@@ -70,7 +70,15 @@ class InputHelperFunction extends TemplateFunctionBase
 
 	private function setElementAttribute(HtmlElement $element, string $name, string $value): void
 	{
-		$booleanAttrs = ['readonly', 'disabled', 'checked', 'selected'];
+		$booleanAttrs = [
+			'readonly',
+			'disabled',
+			'checked',
+			'selected',
+			'autofocus',
+			'required'
+		];
+
 		if (ArrayUtility::contains($booleanAttrs, $name)) {
 			$b = TypeConverter::parseBoolean($value);
 			$element->setAttribute($name, $b);

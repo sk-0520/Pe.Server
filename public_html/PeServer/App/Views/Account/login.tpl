@@ -4,19 +4,19 @@
 
 <form class="page-account-login" action="/account/login" method="post">
 	<dl class="input">
-		<dt>login id</dt>
+		<dt>ログインID</dt>
 		<dd>
-			{input_helper key='account_login_login_id' type="text" class="edit"}
+			{input_helper key='account_login_login_id' type="text" class="edit" autofocus="true" required="true"}
 		</dd>
 
-		<dt>password</dt>
+		<dt>パスワード</dt>
 		<dd>
-			{input_helper key='account_login_password' type="password" class="edit"}
+			{input_helper key='account_login_password' type="password" class="edit" required="true"}
 		</dd>
 
-		<dl class="action"></dl>
+		<dt class="action"></dt>
 		<dd class="action">
-			<button>submit</button>
+			<button>ログイン</button>
 		</dd>
 	</dl>
 </form>

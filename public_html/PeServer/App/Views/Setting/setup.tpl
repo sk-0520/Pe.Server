@@ -38,7 +38,7 @@
 			{input_helper key='setting_setup_website' type="url" class="edit"}
 		</dd>
 
-		<dl class="action"></dl>
+		<dt class="action"></dt>
 		<dd class="action">
 			<button>submit</button>
 		</dd>
