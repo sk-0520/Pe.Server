@@ -1,25 +1,27 @@
 {extends file='default.tpl'}
-{block name='TITLE'}ユーザー情報 編集{/block}
+{block name='TITLE'}ユーザー登録: STEP1{/block}
 {block name='BODY'}
 
 <form class="page-account-sign-up" action="/account/signup" method="post">
 	<input name="account_signup_token" type="hidden" value="{$values.account_signup_token}" />
 	<dl class="input">
-		<dt>email</dt>
+		<dt>Eメールアドレス</dt>
 		<dd>
-			{input_helper key='account_signup_email' type="email" class="edit"}
+			{input_helper key='account_signup_email' type="email" class="edit" required="true"}
 		</dd>
 
-		<dt>token<dt>
+		<dt>認証トークン<dt>
 		<dd>
-			{bot_text_image text=$values.value width=48 height=16}
+			トークン: {bot_text_image alt="トークン" text=$values.value width=48 height=24 font-size="12" background-color="#eeeeee" foreground-color="#0c0c0c" obfuscate-level=0 class="token"}
 			<br />
-			{input_helper key='account_signup_value' type="text" class="edit"}
+			上記トークンを入力してください。
+			<br />
+			{input_helper key='account_signup_value' type="text" class="edit" required="true"}
 		<dd>
 
-		<dt class="action">action</dt>
+		<dt class="action">確認</dt>
 		<dd class="action">
-			<button>submit</button>
+			<button>メール送信</button>
 		</dd>
 	</dl>
 </form>

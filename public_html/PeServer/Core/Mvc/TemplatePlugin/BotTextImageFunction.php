@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc\TemplatePlugin;
 
 use PeServer\Core\ArrayUtility;
+use PeServer\Core\FileUtility;
 use PeServer\Core\HtmlDocument;
 use PeServer\Core\OutputBuffer;
 use PeServer\Core\StringUtility;
 use PeServer\Core\Throws\TemplateException;
 use PeServer\Core\Mvc\TemplatePlugin\TemplateFunctionBase;
 use PeServer\Core\Mvc\TemplatePlugin\TemplatePluginArgument;
+use PeServer\Core\TypeConverter;
 
 /**
  * Bot用にテキストから画像生成。
@@ -23,6 +25,10 @@ use PeServer\Core\Mvc\TemplatePlugin\TemplatePluginArgument;
  *  * alt: 代替文言(いらんかもね)。
  *  * width: 指定時の横幅(現状 未指定は 100)。
  *  * height: 指定時の高さ(現状 未指定は 100)。
+ *  * font-size: ホントサイズ(未指定は 12.0 )。
+ *  * background-color: 背景色
+ *  * foreground-color: 前景色
+ *  * obfuscate-level: 難読化(未指定は 0 )。 未実装。
  */
 class BotTextImageFunction extends TemplateFunctionBase
 {
@@ -36,26 +42,67 @@ class BotTextImageFunction extends TemplateFunctionBase
 		return 'bot_text_image';
 	}
 
+	/**
+	 * Undocumented function
+	 *
+	 * @param string $htmlColor
+	 * @return array{r:int,g:int,b:int}
+	 */
+	private function toColor(string $htmlColor): array
+	{
+		return [
+			'r' => (int)hexdec(substr($htmlColor, 1, 2)),
+			'g' => (int)hexdec(substr($htmlColor, 3, 2)),
+			'b' => (int)hexdec(substr($htmlColor, 5, 2)),
+		];
+	}
+
 	protected function functionBodyImpl(): string
 	{
 		$text = ArrayUtility::getOr($this->params, 'text', '');
 		$alt = ArrayUtility::getOr($this->params, 'alt', '');
 		$width = (int)ArrayUtility::getOr($this->params, 'width', 100);
 		$height = (int)ArrayUtility::getOr($this->params, 'height', 100);
+		$fontSize = (float)ArrayUtility::getOr($this->params, 'font-size', 12.5);
+		$className = ArrayUtility::getOr($this->params, 'class', '');
+		$backgroundColors = $this->toColor(ArrayUtility::getOr($this->params, 'background-color', '#eeeeee'));
+		$foregroundColors = $this->toColor(ArrayUtility::getOr($this->params, 'foreground-color', '#0f0f0f'));
+		$obfuscateLevel = TypeConverter::parseBoolean(ArrayUtility::getOr($this->params, 'obfuscate-level', 0));
 
-		$image = imagecreate($width, $height);
+		$rectX = 0;
+		$rectY = 0;
+		$rectWidth = $width - 1;
+		$rectHeight = $height - 1;
+
+		$fontFileName = 'migmix-1m-regular.ttf';
+		$fontFilePath = FileUtility::joinPath($this->argument->baseDirectoryPath, 'Core', 'Libs', 'fonts', $fontFileName);
+
+		$box = imageftbbox($fontSize, 0, $fontFilePath, $text);
+		if($box === false) {
+			throw new TemplateException();
+		}
+
+		$textWidth = $box[4] - $box[0];
+		$textHeight = $box[1] - $box[5];
+
+		$x = (int)($rectX + (($rectWidth - $rectX - $textWidth) / 2));
+		$y = (int)($rectY + (($rectHeight - $rectY - $textHeight) / 2) - $box[5]);
+
+		$image = imagecreatetruecolor($width, $height);
 		if ($image === false) {
 			throw new TemplateException();
 		}
-		$background_color = imagecolorallocate($image, 0xee, 0xee, 0xee);
-		if ($background_color === false) {
+		$backgroundColor = imagecolorallocate($image, $backgroundColors['r'], $backgroundColors['g'], $backgroundColors['b']);
+		if ($backgroundColor === false) {
 			throw new TemplateException();
 		}
-		$text_color = imagecolorallocate($image, 0x0f, 0x0f, 0x0f);
-		if ($text_color === false) {
+		$textColor = imagecolorallocate($image, $foregroundColors['r'], $foregroundColors['g'], $foregroundColors['b']);
+		if ($textColor === false) {
 			throw new TemplateException();
 		}
-		imagestring($image, 5, 0, 0, $text, $text_color);
+
+		imagefilledrectangle($image, 0, 0, $width, $height, $backgroundColor);
+		imagettftext($image, $fontSize, 0, $x, $y, $textColor, $fontFilePath, $text);
 
 		$binary = OutputBuffer::get(function () use ($image) {
 			imagepng($image);
@@ -67,6 +114,9 @@ class BotTextImageFunction extends TemplateFunctionBase
 		$img->setAttribute('src', 'data:image/png;base64,' . $binary->toBase64());
 
 		$img->setAttribute('data-hash', hash('sha256', $text));
+		if (!StringUtility::isNullOrWhiteSpace($className)) {
+			$img->setAttribute('class', $className);
+		}
 
 		if (!StringUtility::isNullOrWhiteSpace($alt)) {
 			$img->setAttribute('alt', $alt);

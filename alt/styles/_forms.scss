@@ -112,6 +112,16 @@ form.page-account-sign-up {
 		width: 50%;
 	}
 }
+form.page-account-sign-up {
+	img.token {
+		width: auto;
+		height: auto;
+		box-shadow: 0px 0px 4px 2px #aaa;
+		display: inline-block;
+		margin: 0.5em 0.5ex;
+		vertical-align: middle;
+	}
+}
 
 form.page-account-plugin {
 	$margin-left: 4em;
