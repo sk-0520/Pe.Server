@@ -5,7 +5,7 @@
 <form class="page-account-sign-up" action="/account/signup" method="post">
 	<input name="account_signup_token" type="hidden" value="{$values.account_signup_token}" />
 	<dl class="input">
-		<dt>Eメールアドレス</dt>
+		<dt>メールアドレス</dt>
 		<dd>
 			{input_helper key='account_signup_email' type="email" class="edit" required="true"}
 		</dd>

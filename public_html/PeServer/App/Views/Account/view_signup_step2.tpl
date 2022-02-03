@@ -1,37 +1,37 @@
 {extends file='default.tpl'}
-{block name='TITLE'}ユーザー情報 編集{/block}
+{block name='TITLE'}ユーザー登録: STEP2{/block}
 {block name='BODY'}
 
 <form class="page-account-sign-up" action="/account/signup/{$values.token}" method="post">
 	<dl class="input">
-		<dt>email</dt>
+		<dt>メールアドレス</dt>
 		<dd>
-			{input_helper key='account_signup_email' type="email" class="edit"}
+			{input_helper key='account_signup_email' type="email" class="edit" required="true"}
 		</dd>
 
-		<dt>login id</dt>
+		<dt>ログインID</dt>
 		<dd>
-			{input_helper key='account_signup_login_id' type="text" class="edit"}
+			{input_helper key='account_signup_login_id' type="text" class="edit" required="true"}
 		</dd>
 
-		<dt>password</dt>
+		<dt>パスワード</dt>
 		<dd>
-			{input_helper key='account_signup_password' type="password" class="edit"}
+			{input_helper key='account_signup_password' type="password" class="edit" required="true"}
 		</dd>
 
-		<dt>password confirm</dt>
+		<dt>パスワード(確認用)</dt>
 		<dd>
-			{input_helper key='account_signup_password_confirm' type="password" class="edit"}
+			{input_helper key='account_signup_password_confirm' type="password" class="edit" required="true"}
 		</dd>
 
-		<dt>name</dt>
+		<dt>名前</dt>
 		<dd>
-			{input_helper key='account_signup_name' type="text" class="edit"}
+			{input_helper key='account_signup_name' type="text" class="edit" required="true"}
 		</dd>
 
-		<dt class="action">action</dt>
+		<dt class="action"></dt>
 		<dd class="action">
-			<button>submit</button>
+			<button>登録</button>
 		</dd>
 	</dl>
 </form>

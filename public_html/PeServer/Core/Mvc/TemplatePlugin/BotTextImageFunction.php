@@ -75,7 +75,7 @@ class BotTextImageFunction extends TemplateFunctionBase
 		$rectHeight = $height - 1;
 
 		$fontFileName = 'migmix-1m-regular.ttf';
-		$fontFilePath = FileUtility::joinPath($this->argument->baseDirectoryPath, 'Core', 'Libs', 'fonts', $fontFileName);
+		$fontFilePath = FileUtility::joinPath($this->argument->baseDirectoryPath, 'Core', 'Libs', 'fonts', 'migmix', $fontFileName);
 
 		$box = imageftbbox($fontSize, 0, $fontFilePath, $text);
 		if($box === false) {
