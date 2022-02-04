@@ -185,6 +185,8 @@ body {
 
 					li {
 						height: 100%;
+						list-style-type: none;
+						margin: 0;
 
 						& + li {
 							border-top: 1px dotted black;

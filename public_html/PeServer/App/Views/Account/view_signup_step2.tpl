@@ -1,5 +1,5 @@
 {extends file='default.tpl'}
-{block name='TITLE'}ユーザー登録: STEP2{/block}
+{block name='TITLE'}ユーザー登録 2/2{/block}
 {block name='BODY'}
 
 <form class="page-account-sign-up" action="/account/signup/{$values.token}" method="post">

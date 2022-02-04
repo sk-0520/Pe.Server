@@ -92,6 +92,8 @@ class BotTextImageFunction extends TemplateFunctionBase
 		if ($image === false) {
 			throw new TemplateException();
 		}
+		imageresolution($image, 300, 300);
+
 		$backgroundColor = imagecolorallocate($image, $backgroundColors['r'], $backgroundColors['g'], $backgroundColors['b']);
 		if ($backgroundColor === false) {
 			throw new TemplateException();

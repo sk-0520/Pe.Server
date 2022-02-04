@@ -18,3 +18,4 @@ parameters:
     - ../public_html/PeServer/Core/Libs/php-markdown/Michelf/MarkdownInterface.php
   ignoreErrors:
     - '/Parameter #1 \$callback of method PeServer\\Core\\Database\\Database::transaction\(\) expects callable\(PeServer\\Core\\Database\\IDatabaseContext, ...mixed\): bool,\s*Closure\(PeServer\\Core\\Database\\IDatabaseContext(.+)\): bool given\./'
+    - '/Match expression does not handle remaining value:/'
