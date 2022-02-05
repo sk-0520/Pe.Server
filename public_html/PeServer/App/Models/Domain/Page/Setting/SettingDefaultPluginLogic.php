@@ -35,7 +35,7 @@ class SettingDefaultPluginLogic extends PageLogicBase
 			'plugin_name' => 'Pe.Plugins.Reference.ClassicTheme',
 			'check_url' => 'https://bitbucket.org/sk_0520/pe/downloads/update-Pe.Plugins.Reference.ClassicTheme.json',
 			'project_url' => 'https://bitbucket.org/sk_0520/pe',
-			'description' => "テーマをプラグインとして扱うのが💩と教えてくれた偉大なる参考実装。\nテーマの参考実装。",
+			'description' => "テーマをプラグインとして扱うのが💩と教えてくれた偉大なる参考実装。  \nテーマの参考実装。",
 			'registered' => false,
 		],
 		[
@@ -43,7 +43,7 @@ class SettingDefaultPluginLogic extends PageLogicBase
 			'plugin_name' => 'Pe.Plugins.Reference.Clock',
 			'check_url' => 'https://bitbucket.org/sk_0520/pe/downloads/update-Pe.Plugins.Reference.Clock.json',
 			'project_url' => 'https://bitbucket.org/sk_0520/pe',
-			'description' => "時計を表示する。\nウィジェット・設定の参考実装。",
+			'description' => "時計を表示する。  \nウィジェット・設定の参考実装。",
 			'registered' => false,
 		],
 		[
@@ -51,7 +51,7 @@ class SettingDefaultPluginLogic extends PageLogicBase
 			'plugin_name' => 'Pe.Plugins.Reference.Eyes',
 			'check_url' => 'https://bitbucket.org/sk_0520/pe/downloads/update-Pe.Plugins.Reference.Eyes.json',
 			'project_url' => 'https://bitbucket.org/sk_0520/pe',
-			'description' => "xeyes のおめめ。\nウィジェット・バックグラウンドの参考実装。",
+			'description' => "xeyes のおめめ。  \nウィジェット・バックグラウンドの参考実装。",
 			'registered' => false,
 		],
 		[
@@ -59,7 +59,7 @@ class SettingDefaultPluginLogic extends PageLogicBase
 			'plugin_name' => 'Pe.Plugins.Reference.FileFinder',
 			'check_url' => 'https://bitbucket.org/sk_0520/pe/downloads/update-Pe.Plugins.Reference.FileFinder.json',
 			'project_url' => 'https://bitbucket.org/sk_0520/pe',
-			'description' => "コマンド入力欄に入力された文字列をファイルパスとして扱う。\nコマンドファインダー・設定の参考実装。",
+			'description' => "コマンド入力欄に入力された文字列をファイルパスとして扱う。  \nコマンドファインダー・設定の参考実装。",
 			'registered' => false,
 		],
 		[
@@ -67,7 +67,7 @@ class SettingDefaultPluginLogic extends PageLogicBase
 			'plugin_name' => 'Pe.Plugins.Reference.Html',
 			'check_url' => 'https://bitbucket.org/sk_0520/pe/downloads/update-Pe.Plugins.Reference.Html.json',
 			'project_url' => 'https://bitbucket.org/sk_0520/pe',
-			'description' => "常に IME 死んでるマン。\nWebView ウィジェットの参考実装。",
+			'description' => "常に IME 死んでるマン。  \nWebView ウィジェットの参考実装。",
 			'registered' => false,
 		],
 	];

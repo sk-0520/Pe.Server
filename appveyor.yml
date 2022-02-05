@@ -39,6 +39,6 @@ for:
       - sh: zip -r public_html.zip .
       - sh: $APPVEYOR_BUILD_FOLDER/dev/send.sh
 
-#cache:
-#  - 'node_modules'
-#  - 'dev/phpstan.phar'
+cache:
+ - 'node_modules'
+ - 'dev/phpstan.phar'
