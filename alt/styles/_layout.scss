@@ -105,6 +105,23 @@ body {
 					color: #f00;
 				}
 			}
+
+			section + section {
+				margin-top: 3em;
+			}
+
+			h2 {
+				font-size: 1.2em;
+				margin-bottom: 1ex;
+				padding-bottom: 0.5ex;
+				padding-left: 0.5ex;
+				font-weight: bold;
+				border-bottom: 2px dotted #888;
+			}
+
+			p {
+				margin-bottom: 0.8em;
+			}
 		}
 
 		.common {

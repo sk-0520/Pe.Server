@@ -6,26 +6,35 @@
 	{csrf}
 
 	<dl class="input">
-		<dt>user name</dt>
+		<dt>名前</dt>
 		<dd>
-			{input_helper key='account_edit_name' type="text" class="edit"}
+			{input_helper key='account_edit_name' type="text" class="edit" required="true"}
 		</dd>
 
-		<dt>website</dt>
+		<dt>Webサイト</dt>
 		<dd>
-			{input_helper key='account_edit_website' type="url" class="edit"}
+			{input_helper key='account_edit_website' type="url" class="edit" required="true"}
 		</dd>
 
-		<dt>website</dt>
+		<dt>説明</dt>
 		<dd>
-			{input_helper key='account_edit_description' type="textarea" class="edit"}
+			<div class="tab">
+				<input id="description_markdown_source" type="radio" name="tab_markdown" class="tab_check" checked><label for="description_markdown_source" class="tab_header">Markdown</label>
+				<div class="tab_content">{input_helper key='account_edit_description' type="textarea" class="edit markdown-editor" data-markdown-result=".markdown-browser" required="true"}</div>
+
+				<input id="description_markdown_preview" type="radio" name="tab_markdown" class="tab_check"><label for="description_markdown_preview" class="tab_header">プレビュー</label>
+				<div class="tab_content">{markdown class="markdown markdown-browser"}{$values.account_edit_description}{/markdown}</div>
+			</div>
+
 		</dd>
 
-		<dt class="action">edit</dt>
+		<dt class="action"></dt>
 		<dd class="action">
-			<button>submit</button>
+			<button>登録</button>
 		</dd>
 	</dl>
 </form>
 
 {/block}
+
+{block name='DEFAULT_SCRIPT'}{asset file='/scripts/user-edit.js'}{/block}

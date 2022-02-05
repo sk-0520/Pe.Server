@@ -5,7 +5,7 @@
 	{$action = "/account/user/plugin"}
 	{$readonly = false}
 {else}
-	{block name='TITLE'}プラグイン 更新: {$values.account_plugin_plugin_name}{/block}
+	{block name='TITLE'}プラグイン 編集: {$values.account_plugin_plugin_name}{/block}
 	{$action = "/account/user/plugin/{$values['from_account_plugin_plugin_id']}"}
 	{$readonly = true}
 {/if}
@@ -18,50 +18,50 @@
 	{/if}
 
 	<dl class="input">
-		<dt>plugin id</dt>
+		<dt>プラグインID</dt>
 		<dd>
 			{input_helper key='account_plugin_plugin_id' type="text" class="edit" readonly="{$readonly}"}
 		</dd>
 
-		<dt>plugin name</dt>
+		<dt>プラグイン名</dt>
 		<dd>
 			{input_helper key='account_plugin_plugin_name' type="text" class="edit" readonly="{$readonly}"}
 		</dd>
 
-		<dt>display name</dt>
+		<dt>プラグイン表示名</dt>
 		<dd>
 			{input_helper key='account_plugin_display_name' type="text" class="edit"}
 		</dd>
 
-		<dt>check url</dt>
+		<dt>バージョンチェックURL</dt>
 		<dd>
 			{input_helper key='account_plugin_check_url' type="url" class="edit"}
 		</dd>
 
-		<dt>landing page url</dt>
+		<dt>紹介ページURL</dt>
 		<dd>
 			{input_helper key='account_plugin_lp_url' type="url" class="edit"}
 		</dd>
 
-		<dt>project url</dt>
+		<dt>プロジェクトURL</dt>
 		<dd>
 			{input_helper key='account_plugin_project_url' type="url" class="edit"}
 		</dd>
 
-		<dt>description</dt>
+		<dt>説明</dt>
 		<dd>
 			<div class="tab">
-				<input id="description_markdown_source" type="radio" name="tab_markdown" class="tab_check" checked><label for="description_markdown_source" class="tab_header">markdown</label>
+				<input id="description_markdown_source" type="radio" name="tab_markdown" class="tab_check" checked><label for="description_markdown_source" class="tab_header">Markdown</label>
 				<div class="tab_content">{input_helper key='account_plugin_description' type="textarea" class="edit markdown-editor" data-markdown-result=".markdown-browser"}</div>
 
-				<input id="description_markdown_preview" type="radio" name="tab_markdown" class="tab_check"><label for="description_markdown_preview" class="tab_header">preview</label>
+				<input id="description_markdown_preview" type="radio" name="tab_markdown" class="tab_check"><label for="description_markdown_preview" class="tab_header">プレビュー</label>
 				<div class="tab_content">{markdown class="markdown markdown-browser"}{$values.account_plugin_description}{/markdown}</div>
 			</div>
 		</dd>
 
-		<dt class="action">edit</dt>
+		<dt class="action"></dt>
 		<dd class="action">
-			<button>submit</button>
+			<button>登録</button>
 		</dd>
 	</dl>
 </form>
