@@ -21,18 +21,21 @@ abstract class UrlUtility
 	/**
 	 * URLパスとクエリを結合。
 	 *
-	 * @param string $pathUrl
+	 * @param string $baseurl
 	 * @param array<string,string> $query
 	 * @return string
 	 */
-	public static function joinQuery(string $pathUrl, array $query): string
+	public static function joinQuery(string $baseurl, array $query): string
 	{
-		$url = StringUtility::trimEnd($pathUrl, '?');
-		if (ArrayUtility::getCount($query)) {
-			return $url . '?' . http_build_query($query);
+		if (ArrayUtility::isNullOrEmpty($query)) {
+			if (StringUtility::contains($baseurl, '?', false)) {
+				return $baseurl . '&' . http_build_query($query);
+			}
+
+			return $baseurl . '?' . http_build_query($query);
 		}
 
-		return $url;
+		return $baseurl;
 	}
 
 	/**
