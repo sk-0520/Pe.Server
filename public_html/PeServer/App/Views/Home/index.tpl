@@ -6,5 +6,9 @@
 	Pe のサーバーが必要な処理。
 </p>
 
+<ul>
+	<li><a href="/plugin">プラグイン</a></li>
+</ul>
+
 {/block}
 

@@ -13,6 +13,7 @@ use PeServer\App\Controllers\Page\HomeController;
 use PeServer\App\Controllers\Page\PluginController;
 use PeServer\App\Controllers\Page\AccountController;
 use PeServer\App\Controllers\Page\SettingController;
+use PeServer\App\Models\Middleware\PluginIdMiddleware;
 use PeServer\App\Controllers\Api\DevelopmentController;
 use PeServer\Core\Mvc\Middleware\PerformanceMiddleware;
 use PeServer\App\Models\Middleware\DevelopmentMiddleware;
@@ -31,6 +32,8 @@ use PeServer\App\Models\Middleware\AdministratorAccountFilterMiddleware;
 abstract class RouteConfiguration
 {
 	private const DEFAULT_METHOD = null;
+
+	private const PLUGIN_ID = '\{?[a-fA-F0-9\-]{32,}\}?';
 
 	/**
 	 * ルーティング情報設定取得
@@ -72,10 +75,11 @@ abstract class RouteConfiguration
 					->addAction('user/email', HttpMethod::post(), 'user_email_post', [UserAccountFilterMiddleware::class, CsrfMiddleware::class])
 					->addAction('user/plugin', HttpMethod::get(), 'user_plugin_register_get', [UserAccountFilterMiddleware::class])
 					->addAction('user/plugin', HttpMethod::post(), 'user_plugin_register_post', [UserAccountFilterMiddleware::class, CsrfMiddleware::class])
-					->addAction('user/plugin/:plugin_id@\{?[a-fA-F0-9\-]{32,}\}?', HttpMethod::get(), 'user_plugin_update_get', [UserAccountFilterMiddleware::class, UserPluginEditFilterMiddleware::class])
-					->addAction('user/plugin/:plugin_id@\{?[a-fA-F0-9\-]{32,}\}?', HttpMethod::post(), 'user_plugin_update_post', [UserAccountFilterMiddleware::class, CsrfMiddleware::class, UserPluginEditFilterMiddleware::class])
+					->addAction('user/plugin/:plugin_id@' . self::PLUGIN_ID, HttpMethod::get(), 'user_plugin_update_get', [UserAccountFilterMiddleware::class, UserPluginEditFilterMiddleware::class])
+					->addAction('user/plugin/:plugin_id@' . self::PLUGIN_ID, HttpMethod::post(), 'user_plugin_update_post', [UserAccountFilterMiddleware::class, CsrfMiddleware::class, UserPluginEditFilterMiddleware::class])
 				/* AUTO-FORMAT */,
 				(new Route('plugin', PluginController::class))
+					->addAction(':plugin_id@' . self::PLUGIN_ID, HttpMethod::get(), 'detail', [PluginIdMiddleware::class])
 				/* AUTO-FORMAT */,
 				(new Route('setting', SettingController::class, [AdministratorAccountFilterMiddleware::class]))
 					->addAction('setup', HttpMethod::get(), 'setup_get', [Route::CLEAR_MIDDLEWARE, SetupAccountFilterMiddleware::class])

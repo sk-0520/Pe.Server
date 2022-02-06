@@ -5,7 +5,7 @@
 <ul>
 	{foreach from=$values.plugins item=item}
 		<li>
-			<a href="/plugins/{$item.plugin_id}">
+			<a href="/plugin/{$item.plugin_id}">
 				{if $item.registered}
 					[あり]
 				{else}

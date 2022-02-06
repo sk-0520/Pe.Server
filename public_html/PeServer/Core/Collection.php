@@ -7,6 +7,7 @@ namespace PeServer\Core;
 use \Traversable;
 use \ArrayIterator;
 use \IteratorAggregate;
+use PeServer\Core\Throws\InvalidOperationException;
 
 /**
  * LINQ 的なことがしたいけど PHP のイテレータ処理知らんからとりあえず適当実装。
@@ -70,6 +71,16 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 	function where(callable $callback): Collection // @phpstan-ignore-line
 	{
 		return self::from(array_filter($this->items, $callback));
+	}
+
+	function first(callable $callback): mixed
+	{
+		$array = array_filter($this->items, $callback);
+		if(count($array) === 1) {
+			return $array[array_key_first($array)];
+		}
+
+		throw new InvalidOperationException();
 	}
 
 	/**

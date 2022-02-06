@@ -8,8 +8,10 @@ use PeServer\App\Models\AppDatabaseCache;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
+use PeServer\Core\Collection;
+use PeServer\Core\Uuid;
 
-class PluginIndexLogic extends PageLogicBase
+class PluginDetailLogic extends PageLogicBase
 {
 	public function __construct(LogicParameter $parameter)
 	{
@@ -24,6 +26,11 @@ class PluginIndexLogic extends PageLogicBase
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
 		$pluginInformation = AppDatabaseCache::readPluginInformation();
-		$this->setValue('plugins', $pluginInformation);
+		$plugin = Collection::from($pluginInformation)
+			->first(function ($i) {
+				return Uuid::isEqualGuid($i->pluginId, $this->getRequest('plugin_id'));
+			});
+
+		$this->setValue('plugin', $plugin);
 	}
 }
