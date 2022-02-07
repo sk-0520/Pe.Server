@@ -22,8 +22,10 @@ use PeServer\Core\Throws\NotImplementedException;
 abstract class Logging
 {
 	private const LOG_REQUEST_ID_LENGTH = 6;
+	private const IS_ENABLED_HOST = true;
 
 	static string $requestId;
+	static ?string $requestHost = null;
 
 	/**
 	 * 初期化チェック。
@@ -130,6 +132,35 @@ abstract class Logging
 		return StringUtility::dump(['message' => $message, 'parameters' => $parameters]);
 	}
 
+	private static function getRemoteHost(): string
+	{
+		// @phpstan-ignore-next-line
+		if (!self::IS_ENABLED_HOST) {
+			return '';
+		}
+
+		if (self::$requestHost !== null) {
+			return self::$requestHost;
+		}
+
+		$serverRemoteHost = ArrayUtility::getOr($_SERVER, 'REMOTE_HOST', '');
+		if ($serverRemoteHost !== '') {
+			return self::$requestHost = $serverRemoteHost;
+		}
+
+		$serverRemoteIpAddr = ArrayUtility::getOr($_SERVER, 'REMOTE_ADDR', '');
+		if ($serverRemoteIpAddr === '') {
+			return self::$requestHost = '';
+		}
+
+		$hostName = gethostbyaddr($serverRemoteIpAddr);
+		if ($hostName === false) {
+			return self::$requestHost = '';
+		}
+
+		return self::$requestHost = $hostName;
+	}
+
 	/**
 	 * ログ書式適用。
 	 *
@@ -155,7 +186,7 @@ abstract class Logging
 		$map = [
 			'TIMESTAMP' => date('c'),
 			'CLIENT_IP' => ArrayUtility::getOr($_SERVER, 'REMOTE_ADDR', ''),
-			'CLIENT_HOST' => ArrayUtility::getOr($_SERVER, 'REMOTE_HOST', ''),
+			'CLIENT_HOST' => self::getRemoteHost(),
 			'REQUEST_ID' => self::$requestId,
 			'UA' => ArrayUtility::getOr($_SERVER, 'HTTP_USER_AGENT', ''),
 			'METHOD' => ArrayUtility::getOr($_SERVER, 'REQUEST_METHOD', ''),
