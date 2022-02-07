@@ -1,0 +1,15 @@
+section.markdown {
+	@for $i from 1 through 6 {
+		> h#{7 - $i} {
+			font-size: calc(15pt + #{$i}pt) !important;
+			line-height: 110%;
+			margin-top: 0.5em;
+			margin-bottom: 0.5em;
+			font-weight: bold;
+			border-left: #{$i}px solid #888 !important;
+			border-bottom: 1px dotted #888 !important;
+			padding-left: 0.5rem !important;
+			margin-left: #{7 - $i}px;
+		}
+	}
+}

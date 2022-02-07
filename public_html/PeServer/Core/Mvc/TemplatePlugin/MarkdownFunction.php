@@ -28,7 +28,7 @@ class MarkdownFunction extends TemplateBlockFunctionBase
 		$className = ArrayUtility::getOr($this->params, 'class', '');
 		if (StringUtility::isNullOrWhiteSpace($className)) {
 			$className = 'markdown';
-		} else if (StringUtility::contains($className, 'markdown', false)) {
+		} else if (!StringUtility::contains($className, 'markdown', false)) {
 			$className = 'markdown ' . $className;
 		}
 
@@ -37,7 +37,7 @@ class MarkdownFunction extends TemplateBlockFunctionBase
 		$markdown = new Markdown();
 		$markdown->setSafeMode($isSafeMode);
 		$result = $markdown->build($content);
-		$html = '<div class="' . $className . '">' . $result . '</div>';
+		$html = '<section class="' . $className . '">' . $result . '</section>';
 
 		return $html;
 	}
