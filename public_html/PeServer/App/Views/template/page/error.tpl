@@ -8,10 +8,10 @@
 
 <dl>
 	<dt>ステータスコード</dt>
-	<dd><code>{$status->getCode()}</code></dd>
+	<dd><code data-clipboard="inline">{$status->getCode()}</code></dd>
 
 	<dt>エラーコード</dt>
-	<dd><code>{$values.error_number}</code></dd>
+	<dd><code data-clipboard="inline">{$values.error_number}</code></dd>
 
 	<dt>メッセージ</dt>
 	<dd>{$values.message|default:'なし'}</dd>

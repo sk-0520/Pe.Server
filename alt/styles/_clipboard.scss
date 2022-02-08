@@ -1,0 +1,36 @@
+[data-clipboard="inline"] {
+	.pg-clipboard-base {
+		margin-left: 0.5ex;
+
+		$padding: 0 0.5ex;
+
+		&.pg-clipboard-ok {
+			padding: $padding;
+			cursor: default;
+			user-select: none;
+		}
+
+		.pg-clipboard-copy {
+			padding: $padding;
+			border-radius: 2px;
+			border: 1px solid #888;
+			background: #ddd;
+
+			&:hover {
+				background: #eee;
+				border-color: #999;
+			}
+
+			&:active {
+				background: #fff;
+			}
+
+			&:focus {
+				border-color: #444;
+				outline: 0;
+			}
+		}
+
+
+	}
+}

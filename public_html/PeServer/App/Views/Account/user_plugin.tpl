@@ -23,7 +23,7 @@
 			{input_helper key='account_plugin_plugin_id' type="text" class="edit" readonly="{$readonly}"}
 		</dd>
 
-		<dt>プラグイン名</dt>
+		<dt>プラグイン内部名</dt>
 		<dd>
 			{input_helper key='account_plugin_plugin_name' type="text" class="edit" readonly="{$readonly}"}
 		</dd>
@@ -68,4 +68,4 @@
 
 {/block}
 
-{block name='DEFAULT_SCRIPT'}{asset file='/scripts/plugin-edit.js'}{/block}
+{block name='DEFAULT_SCRIPT'}{asset file='/scripts/plugin_edit.js'}{/block}

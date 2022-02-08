@@ -4,10 +4,10 @@
 
 <dl>
 	<dt>プラグインID</dt>
-	<dd><code>{$values.plugin->pluginId}</code></dd>
+	<dd><code data-clipboard="inline">{$values.plugin->pluginId}</code></dd>
 
-	<dt>プラグイン名</dt>
-	<dd>{$values.plugin->pluginName}</dd>
+	<dt>プラグイン内部名</dt>
+	<dd><code data-clipboard="inline">{$values.plugin->pluginName}</code></dd>
 
 	<dt>プラグイン表示名</dt>
 	<dd>{$values.plugin->displayName}</dd>

@@ -42,7 +42,7 @@
 			<dl class="input">
 				<dt>待機中メールアドレス</dt>
 				<dd>
-					<code>{$values.wait_email}</code>
+					<code data-clipboard="inline">{$values.wait_email}</code>
 				</dd>
 
 				<dt>発行日時</dt>

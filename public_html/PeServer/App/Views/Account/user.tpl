@@ -5,7 +5,7 @@
 <dl class="page-account-user">
 	<dt>ユーザーID</dt>
 	<dd>
-		<code>{$values.account_user_id}</code>
+		<code data-clipboard="inline">{$values.account_user_id}</code>
 	</dd>
 
 	<dt>ログインID</dt>

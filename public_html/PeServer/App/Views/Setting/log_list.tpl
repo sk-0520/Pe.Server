@@ -6,7 +6,7 @@
 	<dl>
 		<dt>ディレクトリ</dt>
 		<dd>
-			<code>{$values.directory}</code>
+			<code data-clipboard="inline">{$values.directory}</code>
 		</dd>
 
 		<dt>ファイル</dt>

@@ -37,4 +37,4 @@
 
 {/block}
 
-{block name='DEFAULT_SCRIPT'}{asset file='/scripts/user-edit.js'}{/block}
+{block name='DEFAULT_SCRIPT'}{asset file='/scripts/user_edit.js'}{/block}
