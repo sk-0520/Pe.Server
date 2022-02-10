@@ -31,7 +31,7 @@ class SettingLogDetailLogic extends PageLogicBase
 	{
 		$logging = AppConfiguration::$config['logging'];
 		$dirPath = (string)$logging['file']['directory'];
-		//NONE
+
 		$fileName = StringUtility::trim($this->getRequest('log_name'), '/\\.');
 		$filePath = FileUtility::joinPath($dirPath, $fileName);
 		if (!is_file($filePath)) {
@@ -50,6 +50,7 @@ class SettingLogDetailLogic extends PageLogicBase
 
 			$this->setDownloadContent(Mime::GZ, $fileName . '.gz', $compressed);
 		} else {
+			$this->setValue('log_name', $fileName);
 			$this->setValue('log_file', $filePath);
 			$this->setValue('log_value', $bytes->getRaw());
 		}

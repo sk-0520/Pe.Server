@@ -50,13 +50,50 @@ function onMouseleaveInlineElement(event: MouseEvent) {
 	baseElement.remove();
 }
 
+function onMouseOverBlockElement(event: MouseEvent) {
+	const element = <HTMLElement>event.currentTarget;
+	if (existsClipboardBaseElement(element)) {
+		return;
+	}
+
+	const baseElement = createClipboardBaseElement();
+
+	const copyButtonElement = document.createElement('button');
+	copyButtonElement.classList.add('pg-clipboard-copy')
+	copyButtonElement.textContent = '📋';
+	copyButtonElement.setAttribute('title', 'コピー');
+	copyButtonElement.addEventListener('click', _ => {
+		// 実装設計の問題だけど先に消しとかないとテキストが💩
+		baseElement.remove();
+
+		clipboard.copyText(element.textContent ?? '');
+
+		const newBaseElement = createClipboardBaseElement();
+		newBaseElement.textContent = '✔';
+		newBaseElement.classList.add('pg-clipboard-ok');
+		element.appendChild(newBaseElement);
+	}, false);
+
+	baseElement.appendChild(copyButtonElement);
+
+	element.appendChild(baseElement);
+}
+
+function onMouseleaveBlockElement(event: MouseEvent) {
+	const element = <HTMLElement>event.currentTarget;
+
+	const baseElement = element.querySelector('.pg-clipboard-base')!;
+	baseElement.remove();
+}
+
 function registerInline(element: HTMLElement) {
 	element.addEventListener('mouseover', onMouseOverInlineElement, false);
 	element.addEventListener('mouseleave', onMouseleaveInlineElement, false);
 }
 
 function registerBlock(element: HTMLElement) {
-
+	element.addEventListener('mouseover', onMouseOverBlockElement, false);
+	element.addEventListener('mouseleave', onMouseleaveBlockElement, false);
 }
 
 function register() {
@@ -65,7 +102,7 @@ function register() {
 		registerInline(inlineCopyElement);
 	}
 
-	const blockCopyElements = document.querySelectorAll<HTMLElement>('.block-copy');
+	const blockCopyElements = document.querySelectorAll<HTMLElement>('[data-clipboard="block"]');
 	for (const blockCopyElement of blockCopyElements) {
 		registerBlock(blockCopyElement);
 	}

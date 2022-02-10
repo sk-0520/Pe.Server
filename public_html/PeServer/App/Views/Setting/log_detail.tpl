@@ -1,8 +1,8 @@
 {extends file='default.tpl'}
-{block name='TITLE'}セットアップ{/block}
+{block name='TITLE'}ログ詳細: {$values.log_name}{/block}
 {block name='BODY'}
 
 <code data-clipboard="inline">{$values.log_file}</code>
-<pre>{$values.log_value}</pre>
+<pre data-clipboard="block">{$values.log_value}</pre>
 
 {/block}
