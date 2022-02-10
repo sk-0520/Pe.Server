@@ -4,6 +4,13 @@ cd $(cd $(dirname $0)/../test; pwd)
 
 BASE_DIR=../public_html
 
+PHPUNIT_URL=https://phar.phpunit.de/phpunit-9.5.13.phar
+PHPUNIT_FILE=../test/phpunit.phar
+
+if [ ! -f ${PHPUNIT_FILE} ] ; then
+	curl --output ${PHPUNIT_FILE} --location ${PHPUNIT_URL}
+fi
+
 if [ ! -v IGNORE_NAMESPACE_CHECK ] ; then
 	NAMESPACE_ERROR=false
 
