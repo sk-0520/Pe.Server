@@ -1,5 +1,5 @@
 {extends file='default.tpl'}
-{block name='TITLE'}セットアップ{/block}
+{block name='TITLE'}標準プラグイン{/block}
 {block name='BODY'}
 
 <ul>

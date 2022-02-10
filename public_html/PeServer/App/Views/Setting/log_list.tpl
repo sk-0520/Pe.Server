@@ -1,5 +1,5 @@
 {extends file='default.tpl'}
-{block name='TITLE'}セットアップ{/block}
+{block name='TITLE'}ログ一覧{/block}
 {block name='BODY'}
 
 {if count($values.log_files)}
