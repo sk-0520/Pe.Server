@@ -9,6 +9,8 @@
 	{$action = "/account/user/plugin/{$values['from_account_plugin_plugin_id']}"}
 	{$readonly = true}
 {/if}
+{block name='DEFAULT_SCRIPT'}{asset file='/scripts/plugin_edit.js'}{/block}
+
 {block name='BODY'}
 
 <form class="page-account-plugin" action="{$action}" method="post">
@@ -68,4 +70,3 @@
 
 {/block}
 
-{block name='DEFAULT_SCRIPT'}{asset file='/scripts/plugin_edit.js'}{/block}

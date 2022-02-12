@@ -1,5 +1,7 @@
 {extends file='default.tpl'}
 {block name='TITLE'}ユーザー情報 編集{/block}
+{block name='DEFAULT_SCRIPT'}{asset file='/scripts/user_edit.js'}{/block}
+
 {block name='BODY'}
 
 <form class="page-account-user" action="/account/user/edit" method="post">
@@ -37,4 +39,3 @@
 
 {/block}
 
-{block name='DEFAULT_SCRIPT'}{asset file='/scripts/user_edit.js'}{/block}
