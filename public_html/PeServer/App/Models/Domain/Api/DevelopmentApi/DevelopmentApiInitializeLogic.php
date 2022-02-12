@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\App\Models\Domain\Api\Development;
+namespace PeServer\App\Models\Domain\Api\DevelopmentApi;
 
 use PeServer\Core\Mime;
 use PeServer\Core\ILogger;
@@ -16,7 +16,7 @@ define('NO_DEPLOY_START', '💩');
 require_once 'deploy/php-deploy-receiver.php';
 require_once 'deploy/script.php';
 
-class DevelopmentInitializeLogic extends ApiLogicBase
+class DevelopmentApiInitializeLogic extends ApiLogicBase
 {
 	public function __construct(LogicParameter $parameter)
 	{

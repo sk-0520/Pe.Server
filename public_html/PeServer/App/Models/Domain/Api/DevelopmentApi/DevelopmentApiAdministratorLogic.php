@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\App\Models\Domain\Api\Development;
+namespace PeServer\App\Models\Domain\Api\DevelopmentApi;
 
 use PeServer\Core\Mime;
 use PeServer\Core\Cryptography;
@@ -16,7 +16,7 @@ use PeServer\App\Models\Domain\Api\ApiLogicBase;
 use PeServer\App\Models\Dao\Entities\UsersEntityDao;
 use PeServer\App\Models\Dao\Entities\UserAuthenticationsEntityDao;
 
-class DevelopmentAdministratorLogic extends ApiLogicBase
+class DevelopmentApiAdministratorLogic extends ApiLogicBase
 {
 	public function __construct(LogicParameter $parameter)
 	{

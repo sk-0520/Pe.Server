@@ -2,14 +2,26 @@
 
 namespace PeServer\App\Controllers\Api;
 
+use PeServer\Core\Http\HttpRequest;
+use PeServer\Core\Mvc\IActionResult;
+use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\ControllerArgument;
 use PeServer\App\Controllers\Api\ApiControllerBase;
+use PeServer\App\Models\Domain\Api\PluginApi\PluginApiExistsLogic;
 
 
 class PluginApiController extends ApiControllerBase
 {
-	protected function __construct(ControllerArgument $argument)
+	public function __construct(ControllerArgument $argument)
 	{
 		parent::__construct($argument);
+	}
+
+	public function exists(HttpRequest $request): IActionResult
+	{
+		$logic = $this->createLogic(PluginApiExistsLogic::class, $request);
+		$logic->run(LogicCallMode::submit());
+
+		return $this->data($logic->getContent());
 	}
 }

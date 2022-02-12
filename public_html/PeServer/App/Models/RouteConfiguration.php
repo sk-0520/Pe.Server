@@ -13,10 +13,11 @@ use PeServer\App\Controllers\Page\HomeController;
 use PeServer\App\Controllers\Page\PluginController;
 use PeServer\App\Controllers\Page\AccountController;
 use PeServer\App\Controllers\Page\SettingController;
+use PeServer\App\Controllers\Api\PluginApiController;
 use PeServer\App\Models\Middleware\PluginIdMiddleware;
-use PeServer\App\Controllers\Api\DevelopmentController;
 use PeServer\Core\Mvc\Middleware\PerformanceMiddleware;
 use PeServer\App\Models\Middleware\DevelopmentMiddleware;
+use PeServer\App\Controllers\Api\DevelopmentApiController;
 use PeServer\App\Models\Middleware\SignupStep1FilterMiddleware;
 use PeServer\App\Models\Middleware\SignupStep2FilterMiddleware;
 use PeServer\App\Models\Middleware\UserAccountFilterMiddleware;
@@ -93,9 +94,12 @@ abstract class RouteConfiguration
 				(new Route('ajax', AjaxController::class, [UserAccountFilterMiddleware::class]))
 					->addAction('markdown', HttpMethod::post(), 'markdown')
 				/* AUTO-FORMAT */,
-				(new Route('api/development', DevelopmentController::class, [DevelopmentMiddleware::class]))
+				(new Route('api/development', DevelopmentApiController::class, [DevelopmentMiddleware::class]))
 					->addAction('initialize', HttpMethod::post())
 					->addAction('administrator', HttpMethod::post())
+				/* AUTO-FORMAT */,
+				(new Route('api/plugin', PluginApiController::class))
+					->addAction('exists', HttpMethod::post(), 'exists')
 				/* AUTO-FORMAT */,
 			]
 		);
