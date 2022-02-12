@@ -13,6 +13,7 @@ use PeServer\App\Models\Domain\Page\Home\HomeAboutLogic;
 use PeServer\App\Models\Domain\Page\Home\HomeIndexLogic;
 use PeServer\App\Models\Domain\Page\Home\HomeContactLogic;
 use PeServer\App\Models\Domain\Page\Home\HomePrivacyLogic;
+use PeServer\App\Models\Domain\Page\Home\HomeApiDocumentLogic;
 
 
 final class HomeController extends PageControllerBase
@@ -45,6 +46,7 @@ final class HomeController extends PageControllerBase
 
 		return $this->view('contact', $logic->getViewData());
 	}
+
 	public function about(HttpRequest $request): IActionResult
 	{
 		$logic = $this->createLogic(HomeAboutLogic::class, $request);
@@ -52,4 +54,11 @@ final class HomeController extends PageControllerBase
 
 		return $this->view('about', $logic->getViewData());
 	}
-}
+
+	public function api(HttpRequest $request): IActionResult
+	{
+		$logic = $this->createLogic(HomeApiDocumentLogic::class, $request);
+		$logic->run(LogicCallMode::initialize());
+
+		return $this->view('api', $logic->getViewData());
+	}}

@@ -31,7 +31,7 @@ final class AppErrorHandler extends ErrorHandler
 			$next = false;
 		}
 
-		$isJson = StringUtility::startsWith($this->requestPath->full, 'api', true) || StringUtility::startsWith($this->requestPath->full, 'ajax', true);
+		$isJson = StringUtility::startsWith($this->requestPath->full, 'api/', true) || StringUtility::startsWith($this->requestPath->full, 'ajax/', true);
 		if ($isJson) {
 			$next = false;
 		}

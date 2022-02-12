@@ -8,6 +8,7 @@
 
 <ul>
 	<li><a href="/plugin">プラグイン</a></li>
+	<li><a href="/api-doc">API</a></li>
 </ul>
 
 {/block}

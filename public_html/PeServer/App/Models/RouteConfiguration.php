@@ -58,7 +58,8 @@ abstract class RouteConfiguration
 					->addAction('about/privacy', HttpMethod::get(), 'privacy')
 					->addAction('about/contact', HttpMethod::get(), 'contact_get')
 					->addAction('about/contact', HttpMethod::post(), 'contact_post')
-				/* AUTO-FORMAT */,
+					->addAction('api-doc', HttpMethod::get(), 'api')
+					/* AUTO-FORMAT */,
 				(new Route('account', AccountController::class))
 					->addAction('login', HttpMethod::get(), 'login_get')
 					->addAction('login', HttpMethod::post(), 'login_post')
