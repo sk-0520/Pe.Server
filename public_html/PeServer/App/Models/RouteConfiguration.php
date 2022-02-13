@@ -91,6 +91,7 @@ abstract class RouteConfiguration
 					->addAction('default-plugin', HttpMethod::post(), 'default_plugin_post')
 					->addAction('log', HttpMethod::get(), 'log_list')
 					->addAction('log/:log_name@\w+\.log', HttpMethod::get(), 'log_detail')
+					->addAction('markdown', HttpMethod::get(), 'markdown')
 				/* AUTO-FORMAT */,
 				(new Route('ajax', AjaxController::class, [UserAccountFilterMiddleware::class]))
 					->addAction('markdown', HttpMethod::post(), 'markdown')

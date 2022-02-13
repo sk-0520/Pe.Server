@@ -11,6 +11,7 @@ use PeServer\Core\Mvc\ControllerArgument;
 use PeServer\App\Controllers\Page\PageControllerBase;
 use PeServer\App\Models\Domain\Page\Setting\SettingSetupLogic;
 use PeServer\App\Models\Domain\Page\Setting\SettingLogListLogic;
+use PeServer\App\Models\Domain\Page\Setting\SettingMarkdownLogic;
 use PeServer\App\Models\Domain\Page\Setting\SettingLogDetailLogic;
 use PeServer\App\Models\Domain\Page\Setting\SettingDefaultPluginLogic;
 use PeServer\App\Models\Domain\Page\Setting\SettingEnvironmentPluginLogic;
@@ -90,4 +91,13 @@ final class SettingController extends PageControllerBase
 
 		return $this->view('log_detail', $logic->getViewData());
 	}
+
+	public function markdown(HttpRequest $request): IActionResult
+	{
+		$logic = $this->createLogic(SettingMarkdownLogic::class, $request);
+		$logic->run(LogicCallMode::initialize());
+
+		return $this->view('markdown', $logic->getViewData());
+	}
+
 }
