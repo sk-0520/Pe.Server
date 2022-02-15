@@ -30,6 +30,14 @@
 
 ---
 
+dt 1
+:   dd 1
+
+dt 2
+:   dd 2
+
+---
+
 *em*
 
 ---
@@ -38,13 +46,47 @@
 
 ---
 
-dt 1
-:   dd 1
-
-dt 2
-:   dd 2
+これは `inline code` だよ！
 
 ---
+
+```
+block code 1
+block code 2
+block code 3
+```
+
+---
+
+```c
+size_t strlen(const char* s)
+{
+	if(!s) {
+		puts("DEBUG: NULL!");
+		return 0;
+	}
+
+	size_t length = 0; // variable
+
+	while(*s++) {
+		/*
+		increment
+		*/
+		length += 1;
+	}
+
+	return length;
+}
+```
+
+(動くかは知らん)
+
+---
+| table  | left | center | right |
+|--------|:-----|:------:|------:|
+| TABLE  | LEFT | CENTER | RIGHT |
+| EMPTY  |      | B<br>R |       |
+| `CODE` | 12   | 34     | 56    |
 
 
 ---

@@ -1,7 +1,7 @@
 section.markdown {
 	@for $i from 1 through 6 {
 		> h#{7 - $i} {
-			font-size: calc(15pt + #{$i}pt) !important;
+			font-size: calc(15pt + #{$i * 0.2}pt) !important;
 			line-height: 110%;
 			margin-top: 0.5em;
 			margin-bottom: 0.5em;
@@ -10,6 +10,75 @@ section.markdown {
 			border-bottom: 1px dotted #888 !important;
 			padding-left: 0.5rem !important;
 			margin-left: #{7 - $i}px;
+		}
+	}
+
+	p,
+	dl,
+	table,
+	pre {
+		max-width: 95%;
+		margin-left: 1em;
+		margin-top: 1ex;
+		margin-bottom: 1ex;
+	}
+
+	ul,
+	ol {
+		margin-left: 1ex;
+		margin-top: 1ex;
+		margin-bottom: 1ex;
+	}
+
+	em {
+		font-style: italic;
+	}
+
+	strong {
+		font-weight: bold;
+	}
+
+	hr {
+		border: 0;
+		border-bottom: 2px dashed #ccc;
+		background: #999;
+		margin: 1.5ex 0.5em;
+	}
+
+	table {
+		$border-color: #84afa8;
+
+		border: 3px double $border-color;
+		border-collapse: collapse;
+		border-spacing: 0;
+		table-layout: auto;
+		min-width: 60%;
+
+		td,
+		th {
+			padding: 0.5ex;
+			border: 1px solid $border-color;
+		}
+
+		tr:hover {
+			transition-property: none !important;
+			transition-duration: 0 !important;
+
+			background-color: rgba($color: #fcc, $alpha: 0.3);
+
+			td:hover {
+				background-color: rgba($color: #fcc, $alpha: 0.9);
+			}
+		}
+
+		th {
+			padding-left: 1em;
+			padding-right: 1em;
+			font-weight: bold;
+			text-align: center;
+			border-bottom: 2px solid $border-color;
+			border-right-color: #ccf;
+			background-color: #95b0b9;
 		}
 	}
 }
