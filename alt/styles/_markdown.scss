@@ -2,14 +2,14 @@ section.markdown {
 	@for $i from 1 through 6 {
 		> h#{7 - $i} {
 			font-size: calc(15pt + #{$i * 0.2}pt) !important;
-			line-height: 110%;
-			margin-top: 0.5em;
-			margin-bottom: 0.5em;
-			font-weight: bold;
+			line-height: 110% !important;
+			margin-top: 0.5em !important;
+			margin-bottom: 0.5em !important;
+			font-weight: bold !important;
 			border-left: #{$i}px solid #888 !important;
 			border-bottom: 1px dotted #888 !important;
 			padding-left: 0.5rem !important;
-			margin-left: #{7 - $i}px;
+			margin-left: #{7 - $i}px !important;
 		}
 	}
 
@@ -28,6 +28,13 @@ section.markdown {
 		margin-left: 1ex;
 		margin-top: 1ex;
 		margin-bottom: 1ex;
+
+		ul,
+		ol {
+			margin-left: 0;
+			margin-top: 0;
+			margin-bottom: 0;
+		}
 	}
 
 	em {
@@ -54,6 +61,13 @@ section.markdown {
 		table-layout: auto;
 		min-width: 60%;
 
+		tr,
+		td,
+		th {
+			transition-property: background-color;
+			transition-duration: 0.1s;
+		}
+
 		td,
 		th {
 			padding: 0.5ex;
@@ -61,9 +75,6 @@ section.markdown {
 		}
 
 		tr:hover {
-			transition-property: none !important;
-			transition-duration: 0 !important;
-
 			background-color: rgba($color: #fcc, $alpha: 0.3);
 
 			td:hover {

@@ -2,7 +2,7 @@
 import * as ajax from '../core/ajax'
 import * as dom from '../core/dom'
 import * as logging from '../core/logging'
-const logger = logging.create('markdown');
+const logger = logging.create('markdown_edit');
 
 function register(selector: string) {
 	const elements = document.querySelectorAll<HTMLTextAreaElement>(selector);

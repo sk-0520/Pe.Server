@@ -7,6 +7,12 @@ ul {
 		list-style-position: outside;
 		list-style-image: none;
 	}
+
+	ul,
+	ol {
+		margin-top: 0;
+		margin-bottom: 0;
+	}
 }
 
 ol li {
