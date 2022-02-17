@@ -36,3 +36,13 @@
 `plugin_name`
 :   型: `string`
 :   プラグイン内部名
+
+##### 応答
+
+`plugin_id`
+:   型: `boolean`
+:   存在する場合に真
+
+`plugin_name`
+:   型: `boolean`
+:   存在する場合に真

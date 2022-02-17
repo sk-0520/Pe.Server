@@ -96,6 +96,20 @@ function registerBlock(element: HTMLElement) {
 	element.addEventListener('mouseleave', onMouseleaveBlockElement, false);
 }
 
+function registerMarkdown(element: HTMLElement) {
+	const inlineCopyElements = element.querySelectorAll<HTMLElement>(':not(pre) > code');
+	const blockCopyElements = element.querySelectorAll<HTMLElement>('pre');
+
+	for (const inlineCopyElement of inlineCopyElements) {
+		inlineCopyElement.dataset['clipboard'] = 'inline';
+		registerInline(inlineCopyElement);
+	}
+	for (const blockCopyElement of blockCopyElements) {
+		blockCopyElement.dataset['clipboard'] = 'block';
+		registerBlock(blockCopyElement);
+	}
+}
+
 function register() {
 	const inlineCopyElements = document.querySelectorAll<HTMLElement>('[data-clipboard="inline"]');
 	for (const inlineCopyElement of inlineCopyElements) {
@@ -106,6 +120,12 @@ function register() {
 	for (const blockCopyElement of blockCopyElements) {
 		registerBlock(blockCopyElement);
 	}
+
+	const markdownElements = document.querySelectorAll<HTMLElement>('section.markdown');
+	for(const markdownElement of markdownElements) {
+		registerMarkdown(markdownElement);
+	}
+
 }
 
 export function boot() {
