@@ -25,7 +25,7 @@
 				<div class="tab_content">{input_helper key='account_edit_description' type="textarea" class="edit markdown-editor" data-markdown-result=".markdown-browser" required="true"}</div>
 
 				<input id="description_markdown_preview" type="radio" name="tab_markdown" class="tab_check"><label for="description_markdown_preview" class="tab_header">プレビュー</label>
-				<div class="tab_content">{markdown class="markdown markdown-browser"}{$values.account_edit_description}{/markdown}</div>
+				<div class="tab_content">{markdown class="markdown markdown-browser"}{$values.account_edit_description nofilter}{/markdown}</div>
 			</div>
 
 		</dd>

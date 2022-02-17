@@ -29,6 +29,7 @@ class Markdown
 
 	public function build(string $markdown): string
 	{
-		return $this->parser->transform($markdown);
+		$a = $this->parser->transform($markdown);
+		return $a;
 	}
 }

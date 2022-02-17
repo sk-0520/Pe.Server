@@ -1,7 +1,7 @@
 section.markdown {
 	@for $i from 1 through 6 {
 		> h#{7 - $i} {
-			font-size: calc(15pt + #{$i * 0.2}pt) !important;
+			font-size: calc(#{15 + ($i * 0.2)}pt) !important;
 			line-height: 110% !important;
 			margin-top: 0.5em !important;
 			margin-bottom: 0.5em !important;

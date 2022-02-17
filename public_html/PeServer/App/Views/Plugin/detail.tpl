@@ -27,7 +27,7 @@
 -->
 
 	<dt>説明</dt>
-	<dd>{markdown}{$values.plugin->description}{/markdown}</dd>
+	<dd>{markdown}{$values.plugin->description nofilter}{/markdown}</dd>
 </dl>
 
 

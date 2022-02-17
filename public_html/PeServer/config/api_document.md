@@ -14,6 +14,19 @@
 * 応答本文は明記されない場合 JSON で返す
   * 応答成功時はステータスコード `200`
 
+### JSON応答
+
+```json
+{
+  "data": "object|array<object>",
+  "error"?: {
+    "message": "string",
+    "code": "number",
+    "info": "object"
+  }
+}
+```
+
 ## API一覧
 
 ### プラグイン
