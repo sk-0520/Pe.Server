@@ -50,15 +50,27 @@ final class AppErrorHandler extends ErrorHandler
 			$status = $this->setHttpStatus($throwable);
 
 			if ($isJson) {
-				header('Content-Type: application/json');
+				unset($values['error_number']);
+				unset($values['message']);
 				if ($isProduction) {
 					unset($values['throwable']);
-					echo json_encode($values);
-				} else {
-					echo json_encode($values);
 				}
+
+				$response = ResponseJson::error(
+					$message,
+					strval($errorNumber),
+					$values
+				);
+
+				$json = [
+					'data' => $response->data,
+					'error' => $response->error,
+				];
+
+				header('Content-Type: application/json');
+				echo json_encode($json);
 			} else {
-				echo AppTemplate::createPageTemplate('error', $values, $status);
+				echo AppTemplate::buildPageTemplate('error', $values, $status);
 			}
 
 			return;

@@ -35,7 +35,7 @@ abstract class AppTemplate
 	 * @param HttpStatus $status
 	 * @return string
 	 */
-	public static function createPageTemplate(string $templateName, array $params, HttpStatus $status): string
+	public static function buildPageTemplate(string $templateName, array $params, HttpStatus $status): string
 	{
 		return self::buildTemplate('page', $templateName, $params, $status);
 	}

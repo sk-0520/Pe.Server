@@ -8,6 +8,7 @@ use PeServer\Core\Mime;
 use PeServer\Core\ILogger;
 use PeServer\Core\Log\Logging;
 use PeServer\Core\Mvc\LogicCallMode;
+use PeServer\App\Models\ResponseJson;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\Domain\Api\ApiLogicBase;
@@ -56,9 +57,8 @@ class DevelopmentApiInitializeLogic extends ApiLogicBase
 		$deployScript = new \DeployScript($scriptArgument); // @phpstan-ignore-line
 		$deployScript->migrate(AppConfiguration::$config['persistence']);
 
-
-		$this->setJsonContent([
+		$this->setResponseJson(ResponseJson::success([
 			'success' => true,
-		]);
+		]));
 	}
 }

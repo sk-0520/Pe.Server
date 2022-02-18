@@ -7,6 +7,7 @@ namespace PeServer\App\Models\Domain\Api\DevelopmentApi;
 use PeServer\Core\Mime;
 use PeServer\Core\Cryptography;
 use PeServer\Core\Mvc\LogicCallMode;
+use PeServer\App\Models\ResponseJson;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\App\Models\AppCryptography;
 use PeServer\App\Models\Domain\UserLevel;
@@ -108,9 +109,8 @@ class DevelopmentApiAdministratorLogic extends ApiLogicBase
 			return true;
 		}, $params);
 
-
-		$this->setJsonContent([
-			'success' => $result
-		]);
+		$this->setResponseJson(ResponseJson::success([
+			'success' => $result,
+		]));
 	}
 }
