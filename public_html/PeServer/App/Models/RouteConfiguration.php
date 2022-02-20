@@ -89,6 +89,7 @@ abstract class RouteConfiguration
 					->addAction('environment', HttpMethod::get())
 					->addAction('default-plugin', HttpMethod::get(), 'default_plugin_get')
 					->addAction('default-plugin', HttpMethod::post(), 'default_plugin_post')
+					->addAction('plugin-category', HttpMethod::get(), 'plugin_category_get')
 					->addAction('log', HttpMethod::get(), 'log_list')
 					->addAction('log/:log_name@\w+\.log', HttpMethod::get(), 'log_detail')
 					->addAction('markdown', HttpMethod::get(), 'markdown')

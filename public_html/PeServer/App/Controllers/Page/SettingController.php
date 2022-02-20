@@ -15,6 +15,7 @@ use PeServer\App\Models\Domain\Page\Setting\SettingMarkdownLogic;
 use PeServer\App\Models\Domain\Page\Setting\SettingLogDetailLogic;
 use PeServer\App\Models\Domain\Page\Setting\SettingDefaultPluginLogic;
 use PeServer\App\Models\Domain\Page\Setting\SettingEnvironmentPluginLogic;
+use PeServer\App\Models\Domain\Page\Setting\SettingPluginCategoryListLogic;
 
 final class SettingController extends PageControllerBase
 {
@@ -72,6 +73,15 @@ final class SettingController extends PageControllerBase
 		return $this->view('default_plugin', $logic->getViewData());
 	}
 
+	public function plugin_category_get(HttpRequest $request): IActionResult
+	{
+		$logic = $this->createLogic(SettingPluginCategoryListLogic::class, $request);
+		$logic->run(LogicCallMode::initialize());
+
+		return $this->view('plugin_category', $logic->getViewData());
+	}
+
+
 	public function log_list(HttpRequest $request): IActionResult
 	{
 		$logic = $this->createLogic(SettingLogListLogic::class, $request);
@@ -99,5 +109,4 @@ final class SettingController extends PageControllerBase
 
 		return $this->view('markdown', $logic->getViewData());
 	}
-
 }

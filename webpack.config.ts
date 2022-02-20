@@ -24,6 +24,7 @@ const webpackConfig = (env: string, args: any): webpack.Configuration => {
 			"scripts/script": path.join(inputDirectory, './scripts/entry/script.ts'),
 			"scripts/plugin_edit": path.join(inputDirectory, './scripts/entry/plugin_edit.ts'),
 			"scripts/user_edit": path.join(inputDirectory, './scripts/entry/user_edit.ts'),
+			"scripts/plugin_category": path.join(inputDirectory, './scripts/entry/plugin_category.ts'),
 			"styles/style": path.join(inputDirectory, './styles/style.scss'),
 		},
 

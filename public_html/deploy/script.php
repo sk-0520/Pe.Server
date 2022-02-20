@@ -168,7 +168,7 @@ create table
 		[email] text not null, -- メールアドレス(暗号化)
 		[mark_email] integer not null, -- 絞り込み用メールアドレス(ハッシュ:fnv)
 		[website] text not null, -- Webサイト
-		[description] text not null, -- 紹介文
+		[description] text not null, -- 説明文
 		[note] text not null, -- 管理者用メモ
 		primary key([user_id]),
 		unique([login_id])
@@ -265,7 +265,7 @@ create table
 		[plugin_name] text not null, -- プラグイン名,
 		[display_name] text not null, -- プラグイン表示名
 		[state] text not null, -- 状態
-		[description] text not null, -- 紹介文
+		[description] text not null, -- 説明文
 		[note] text not null, -- 管理者用メモ
 		primary key([plugin_id]),
 		unique ([plugin_name]),
@@ -281,6 +281,27 @@ create table
 		[url] text not null, -- URL
 		primary key([plugin_id], [key]),
 		foreign key ([plugin_id]) references plugins([plugin_id])
+	)
+;
+
+create table
+	[plugin_categories]
+	(
+		[plugin_category_id] text not null, -- カテゴリID
+		[display_name] text not null, -- 表示名
+		[description] text not null, -- 説明文
+		primary key([plugin_category_id])
+	)
+;
+
+create table
+	[plugin_category_mappings]
+	(
+		[plugin_id] text not null, -- プラグインID
+		[plugin_category_id] text not null, -- カテゴリID
+		primary key([plugin_id], [plugin_category_id]),
+		foreign key ([plugin_id]) references plugins([plugin_id])
+		foreign key ([plugin_category_id]) references plugin_categories([plugin_category_id])
 	)
 ;
 
@@ -325,6 +346,41 @@ insert into
 		'$userId',
 		'',
 		'$encPassword'
+	)
+;
+
+insert into
+	[plugin_categories]
+	(
+		[plugin_category_id],
+		[display_name],
+		[description]
+	)
+	values
+	(
+		'theme',
+		'テーマ',
+		''
+	),
+	(
+		'file-system',
+		'ファイル',
+		''
+	),
+	(
+		'utility',
+		'ユーティリティ',
+		''
+	),
+	(
+		'network',
+		'ネットワーク',
+		''
+	),
+	(
+		'toy',
+		'おもちゃ',
+		''
 	)
 ;
 
