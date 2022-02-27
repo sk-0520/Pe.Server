@@ -10,27 +10,30 @@
 		<tr>
 			<th>カテゴリID</th>
 			<th>カテゴリ名</th>
+			<th>説明</th>
 			<th>更新</th>
 			<th>削除</th>
 		</tr>
 	</thead>
 
-	{foreach from=$values.categories item=item}
-		<tbody id="category_items">
-			<tr>
-				<td data-plugin_category_id="{$item.plugin_category_id}"><code>{$item.plugin_category_id}</code></td>
-				<td><input id="category_add_id" type="text" value="{$item.display_name}" /></td>
+	<tbody id="category_items">
+		{foreach from=$values.categories item=item}
+			<tr data-plugin-category-id="{$item.plugin_category_id}">
+				<td><input readonly value="{$item.plugin_category_id}" /></td>
+				<td><input name="display-name" type="text" value="{$item.display_name}" /></td>
+				<td><input name="description" type="text" value="{$item.description}" /></td>
 				<td><button name="update">📝</button></td>
 				<td><button name="delete">❌</button></td>
 			</tr>
-		</tbody>
-	{/foreach}
+		{/foreach}
+	</tbody>
 
 	<tfoot>
 		<tr>
 			<th><input id="category_add_id" type="text" /></th>
 			<td><input id="category_add_display" type="text" /></td>
-			<td colspan="2"><button id="category_add_submit">追加</button></td>
+			<td><input id="category_add_description" type="text" /></td>
+			<td colspan="2"><button id="category_add_submit">✅追加</button></td>
 		</tr>
 	</tfoot>
 </table>

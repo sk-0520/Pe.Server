@@ -50,8 +50,8 @@ class AccountUserPasswordLogic extends PageLogicBase
 			if (!Cryptography::verifyPassword($value, $passwords['current_password'])) {
 				$this->addError($key, I18n::message('error/password_incorrect'));
 			}
-			if (!StringUtility::isNullOrEmpty($passwords['generate_password'])) {
-				if (!Cryptography::verifyPassword($value, $passwords['generate_password'])) {
+			if (!StringUtility::isNullOrEmpty($passwords['generated_password'])) {
+				if (!Cryptography::verifyPassword($value, $passwords['generated_password'])) {
 					$this->addError($key, I18n::message('error/password_generate'));
 				}
 			}

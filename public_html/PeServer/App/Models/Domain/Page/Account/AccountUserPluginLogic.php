@@ -13,6 +13,8 @@ use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\App\Models\SessionManager;
 use PeServer\App\Models\AppDatabaseCache;
+use PeServer\App\Models\Dao\Entities\PluginCategoriesEntityDao;
+use PeServer\App\Models\Dao\Entities\PluginCategoryMappingsEntityDao;
 use PeServer\App\Models\Domain\PluginState;
 use PeServer\App\Models\Domain\PluginUrlKey;
 use PeServer\Core\Database\IDatabaseContext;
@@ -21,6 +23,7 @@ use PeServer\App\Models\Domain\PluginValidator;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\App\Models\Dao\Entities\PluginsEntityDao;
 use PeServer\App\Models\Dao\Entities\PluginUrlsEntityDao;
+use PeServer\Core\TypeConverter;
 
 class AccountUserPluginLogic extends PageLogicBase
 {
@@ -32,6 +35,13 @@ class AccountUserPluginLogic extends PageLogicBase
 	 * @var boolean
 	 */
 	private bool $isRegister;
+
+	/**
+	 * プラグインカテゴリ一覧。
+	 *
+	 * @var array<array{plugin_category_id:string,display_name:string,description:string}>
+	 */
+	private array $pluginCategories = [];
 
 	public function __construct(LogicParameter $parameter, bool $isRegister)
 	{
@@ -51,7 +61,18 @@ class AccountUserPluginLogic extends PageLogicBase
 			'account_plugin_project_url',
 			'account_plugin_description',
 			'account_plugin_state',
+			'plugin_categories',
+			'plugin_category_ids',
+			'plugin_category_mappings',
 		];
+
+		$database = $this->openDatabase();
+		$pluginCategoriesEntityDao = new PluginCategoriesEntityDao($database);
+		$this->pluginCategories = $pluginCategoriesEntityDao->selectAllPluginCategories();
+
+		foreach ($this->pluginCategories as $category) {
+			$keys[] = 'plugin_category_' . $category['plugin_category_id'];
+		}
 
 		if (!$this->isRegister) {
 			$keys = array_merge($keys, [
@@ -84,6 +105,7 @@ class AccountUserPluginLogic extends PageLogicBase
 			}
 		} else {
 			$this->setValue('account_plugin_state', '');
+			$this->setValue('plugin_category_mappings', []);
 		}
 	}
 
@@ -146,6 +168,8 @@ class AccountUserPluginLogic extends PageLogicBase
 				$database = $this->openDatabase();
 				$pluginsEntityDao = new PluginsEntityDao($database);
 				$pluginUrlsEntityDao = new PluginUrlsEntityDao($database);
+				$pluginCategoryMappingsEntityDao = new PluginCategoryMappingsEntityDao($database);
+
 				// ルーティングでこのプラグイン所有者が保証されているのでプラグインIDのみで取得
 				$editMap = $pluginsEntityDao->selectEditPlugin($pluginId);
 				$this->setValue('account_plugin_plugin_name', $editMap['plugin_name']);
@@ -156,6 +180,9 @@ class AccountUserPluginLogic extends PageLogicBase
 				$this->setValue('account_plugin_check_url', ArrayUtility::getOr($urlMap, PluginUrlKey::CHECK, ''));
 				$this->setValue('account_plugin_lp_url', ArrayUtility::getOr($urlMap, PluginUrlKey::LANDING, ''));
 				$this->setValue('account_plugin_project_url', ArrayUtility::getOr($urlMap, PluginUrlKey::PROJECT, ''));
+
+				$pluginCategoryMappings = $pluginCategoryMappingsEntityDao->selectPluginCategoriesByPluginId($pluginId);
+				$this->setValue('plugin_category_mappings', $pluginCategoryMappings);
 			}
 
 			return;
@@ -185,6 +212,14 @@ class AccountUserPluginLogic extends PageLogicBase
 		$database->transaction(function (IDatabaseContext $context, $params) {
 			$pluginsEntityDao = new PluginsEntityDao($context);
 			$pluginUrlsEntityDao = new PluginUrlsEntityDao($context);
+			$pluginCategoryMappingsEntityDao = new PluginCategoryMappingsEntityDao($context);
+
+			$pluginCategories = [];
+			foreach ($this->pluginCategories as $category) {
+				if (TypeConverter::parseBoolean($this->getRequest('plugin_category_' . $category['plugin_category_id']))) {
+					$pluginCategories[] = $category['plugin_category_id'];
+				}
+			}
 
 			if ($this->isRegister) {
 				$pluginsEntityDao->insertPlugin(
@@ -210,6 +245,14 @@ class AccountUserPluginLogic extends PageLogicBase
 				$pluginUrlsEntityDao->insertUrl($params['plugin_id'], $k, $v);
 			}
 
+			$pluginCategoryMappingsEntityDao->deletePluginCategoryMappings($params['plugin_id']);
+			foreach($this->pluginCategories as $pluginCategory) {
+				$pluginCategoryId = $pluginCategory['plugin_category_id'];
+				if (TypeConverter::parseBoolean($this->getRequest('plugin_category_' . $pluginCategoryId))) {
+					$pluginCategoryMappingsEntityDao->insertPluginCategoryMapping($params['plugin_id'], $pluginCategoryId);
+				}
+			}
+
 			if ($this->isRegister) {
 				$this->writeAuditLogCurrentUser(AuditLog::USER_PLUGIN_REGISTER, ['plugin_id' => $params['plugin_id'], 'plugin_name' => $params['plugin_name']], $context);
 			} else {
@@ -226,5 +269,26 @@ class AccountUserPluginLogic extends PageLogicBase
 			$this->addTemporaryMessage(I18n::message('message/flash/update_plugin'));
 		}
 		AppDatabaseCache::exportPluginInformation();
+	}
+
+	protected function cleanup(LogicCallMode $callMode): void
+	{
+		$this->setValue('plugin_categories', $this->pluginCategories);
+
+		$pluginCategoryIds = array_map(function ($i) {
+			return $i['plugin_category_id'];
+		}, $this->pluginCategories);
+		$this->setValue('plugin_category_ids', $pluginCategoryIds);
+
+		if ($callMode->isSubmit()) {
+			$pluginCategories = [];
+			foreach ($pluginCategoryIds as $pluginCategoryId) {
+				if (TypeConverter::parseBoolean($this->getRequest('plugin_category_' . $pluginCategoryId))) {
+					$pluginCategories[] = $pluginCategoryId;
+				}
+			}
+
+			$this->setValue('plugin_category_mappings', $pluginCategories);
+		}
 	}
 }

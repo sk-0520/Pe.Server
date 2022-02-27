@@ -27,7 +27,7 @@ abstract class UrlUtility
 	 */
 	public static function joinQuery(string $baseurl, array $query): string
 	{
-		if (ArrayUtility::isNullOrEmpty($query)) {
+		if (!ArrayUtility::isNullOrEmpty($query)) {
 			if (StringUtility::contains($baseurl, '?', false)) {
 				return $baseurl . '&' . http_build_query($query);
 			}

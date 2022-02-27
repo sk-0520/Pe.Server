@@ -11,18 +11,22 @@ use PeServer\App\Models\AppConfiguration;
 
 class AppDatabase extends Database
 {
-	private static ?ILogger $logger;
+	private static ILogger $logger;
 
 	public static function open(?ILogger $logger = null): Database
 	{
 		$persistence = AppConfiguration::$config['persistence'];
 
-		return new Database(
+		$database = new Database(
 			$persistence['connection'],
 			$persistence['user'],
 			$persistence['password'],
 			[],
 			self::$logger ??= $logger ?? Logging::create('database')
 		);
+
+		$database->execute('PRAGMA foreign_keys = ON;');
+
+		return $database;
 	}
 }

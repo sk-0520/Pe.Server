@@ -17,6 +17,7 @@ use PeServer\App\Models\Domain\PluginUtility;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\App\Models\Dao\Entities\PluginsEntityDao;
 use PeServer\App\Models\Dao\Entities\PluginUrlsEntityDao;
+use PeServer\App\Models\Dao\Entities\PluginCategoryMappingsEntityDao;
 
 class SettingDefaultPluginLogic extends PageLogicBase
 {
@@ -27,7 +28,10 @@ class SettingDefaultPluginLogic extends PageLogicBase
 			'plugin_name' => 'Pe.Plugins.DefaultTheme',
 			'check_url' => '',
 			'project_url' => 'https://bitbucket.org/sk_0520/pe',
-			'description' => "本体同梱標準テーマ",
+			'description' => "本体同梱標準テーマ。  \nダウンロード先なし。",
+			'categories' => [
+				'theme',
+			],
 			'registered' => false,
 		],
 		[
@@ -36,6 +40,9 @@ class SettingDefaultPluginLogic extends PageLogicBase
 			'check_url' => 'https://bitbucket.org/sk_0520/pe/downloads/update-Pe.Plugins.Reference.ClassicTheme.json',
 			'project_url' => 'https://bitbucket.org/sk_0520/pe',
 			'description' => "テーマをプラグインとして扱うのが💩と教えてくれた偉大なる参考実装。  \nテーマの参考実装。",
+			'categories' => [
+				'theme',
+			],
 			'registered' => false,
 		],
 		[
@@ -44,6 +51,9 @@ class SettingDefaultPluginLogic extends PageLogicBase
 			'check_url' => 'https://bitbucket.org/sk_0520/pe/downloads/update-Pe.Plugins.Reference.Clock.json',
 			'project_url' => 'https://bitbucket.org/sk_0520/pe',
 			'description' => "時計を表示する。  \nウィジェット・設定の参考実装。",
+			'categories' => [
+				'utility',
+			],
 			'registered' => false,
 		],
 		[
@@ -52,6 +62,9 @@ class SettingDefaultPluginLogic extends PageLogicBase
 			'check_url' => 'https://bitbucket.org/sk_0520/pe/downloads/update-Pe.Plugins.Reference.Eyes.json',
 			'project_url' => 'https://bitbucket.org/sk_0520/pe',
 			'description' => "xeyes のおめめ。  \nウィジェット・バックグラウンドの参考実装。",
+			'categories' => [
+				'toy',
+			],
 			'registered' => false,
 		],
 		[
@@ -60,6 +73,9 @@ class SettingDefaultPluginLogic extends PageLogicBase
 			'check_url' => 'https://bitbucket.org/sk_0520/pe/downloads/update-Pe.Plugins.Reference.FileFinder.json',
 			'project_url' => 'https://bitbucket.org/sk_0520/pe',
 			'description' => "コマンド入力欄に入力された文字列をファイルパスとして扱う。  \nコマンドファインダー・設定の参考実装。",
+			'categories' => [
+				'file-system',
+			],
 			'registered' => false,
 		],
 		[
@@ -68,6 +84,9 @@ class SettingDefaultPluginLogic extends PageLogicBase
 			'check_url' => 'https://bitbucket.org/sk_0520/pe/downloads/update-Pe.Plugins.Reference.Html.json',
 			'project_url' => 'https://bitbucket.org/sk_0520/pe',
 			'description' => "常に IME 死んでるマン。  \nWebView ウィジェットの参考実装。",
+			'categories' => [
+				'utility',
+			],
 			'registered' => false,
 		],
 	];
@@ -138,6 +157,7 @@ class SettingDefaultPluginLogic extends PageLogicBase
 				$database->transaction(function (IDatabaseContext $context, $params) {
 					$pluginsEntityDao = new PluginsEntityDao($context);
 					$pluginUrlsEntityDao = new PluginUrlsEntityDao($context);
+					$pluginCategoryMappingsEntityDao = new PluginCategoryMappingsEntityDao($context);
 
 					foreach ($params['plugins'] as $plugin) {
 						$pluginsEntityDao->insertPlugin(
@@ -158,6 +178,11 @@ class SettingDefaultPluginLogic extends PageLogicBase
 						foreach ($map as $k => $v) {
 							$pluginUrlsEntityDao->insertUrl($plugin['plugin_id'], $k, $v);
 						}
+
+						foreach($plugin['categories'] as $categoryId) {
+							$pluginCategoryMappingsEntityDao->insertPluginCategoryMapping($plugin['plugin_id'], $categoryId);
+						}
+
 						$this->addTemporaryMessage('登録: ' . $plugin['plugin_name']);
 					}
 

@@ -297,7 +297,7 @@ abstract class LogicBase implements IValidationReceiver
 	{
 		if (ArrayUtility::getCount($this->keys)) {
 			if (array_search($key, $this->keys) === false) {
-				throw new ArgumentException("key -> $key");
+				throw new ArgumentException("未登録 key -> $key");
 			}
 		}
 

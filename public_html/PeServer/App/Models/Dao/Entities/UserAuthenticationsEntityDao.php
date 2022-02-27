@@ -18,16 +18,16 @@ class UserAuthenticationsEntityDao extends DaoBase
 	 * Undocumented function
 	 *
 	 * @param string $userId
-	 * @return array{generate_password:string,current_password:string}
+	 * @return array{generated_password:string,current_password:string}
 	 */
 	public function selectPasswords(string $userId): array
 	{
-		/** @var array{generate_password:string,current_password:string} */
+		/** @var array{generated_password:string,current_password:string} */
 		return $this->context->querySingle(
 			<<<SQL
 
 			select
-				user_authentications.generate_password,
+				user_authentications.generated_password,
 				user_authentications.current_password
 			from
 				user_authentications
@@ -41,7 +41,7 @@ class UserAuthenticationsEntityDao extends DaoBase
 		);
 	}
 
-	public function insertUserAuthentication(string $userId, string $generatePassword, string $currentPassword): void
+	public function insertUserAuthentication(string $userId, string $generatedPassword, string $currentPassword): void
 	{
 		$this->context->insertSingle(
 			<<<SQL
@@ -50,20 +50,20 @@ class UserAuthenticationsEntityDao extends DaoBase
 			user_authentications
 				(
 					user_id,
-					generate_password,
+					generated_password,
 					current_password
 				)
 				values
 				(
 					:user_id,
-					:generate_password,
+					:generated_password,
 					:current_password
 				)
 
 			SQL,
 			[
 				'user_id' => $userId,
-				'generate_password' => $generatePassword,
+				'generated_password' => $generatedPassword,
 				'current_password' => $currentPassword
 			]
 		);

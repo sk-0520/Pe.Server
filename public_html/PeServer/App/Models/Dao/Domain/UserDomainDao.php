@@ -19,11 +19,11 @@ class UserDomainDao extends DaoBase
 	 * Undocumented function
 	 *
 	 * @param string $loginId
-	 * @return array{user_id:string,login_id:string,name:string,level:string,state:string,generate_password:string,current_password:string}|null
+	 * @return array{user_id:string,login_id:string,name:string,level:string,state:string,generated_password:string,current_password:string}|null
 	 */
 	public function selectLoginUser(string $loginId): ?array
 	{
-		/** @var array{user_id:string,login_id:string,name:string,level:string,state:string,generate_password:string,current_password:string}|null */
+		/** @var array{user_id:string,login_id:string,name:string,level:string,state:string,generated_password:string,current_password:string}|null */
 		return $this->context->querySingleOr(
 			null,
 			<<<SQL
@@ -34,7 +34,7 @@ class UserDomainDao extends DaoBase
 				users.name,
 				users.level,
 				users.state,
-				user_authentications.generate_password,
+				user_authentications.generated_password,
 				user_authentications.current_password
 			from
 				users

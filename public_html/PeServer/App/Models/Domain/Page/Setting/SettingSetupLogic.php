@@ -93,7 +93,7 @@ class SettingSetupLogic extends PageLogicBase
 
 		$userInfo = [
 			'id' => UserUtility::generateUserId(),
-			'generate_password' => '',
+			'generated_password' => '',
 			'current_password' => Cryptography::toHashPassword($params['password']),
 		];
 
@@ -126,7 +126,7 @@ class SettingSetupLogic extends PageLogicBase
 
 			$userAuthenticationsEntityDao->insertUserAuthentication(
 				$userInfo['id'],
-				$userInfo['generate_password'],
+				$userInfo['generated_password'],
 				$userInfo['current_password']
 			);
 

@@ -61,6 +61,23 @@
 			</div>
 		</dd>
 
+		<dt>カテゴリー</dt>
+		<dd>
+			<ul>
+				{foreach from=$values.plugin_categories item=item key=key name=name}
+					<li>
+						<label>
+							<input type="checkbox" name="plugin_category_{$item.plugin_category_id}"
+								{if in_array($item.plugin_category_id, $values.plugin_category_mappings, true)}
+									checked
+								{/if}
+							/>
+							{$item.display_name}
+						</label></li>
+				{/foreach}
+			</ul>
+		</dd>
+
 		<dt class="action"></dt>
 		<dd class="action">
 			<button>登録</button>

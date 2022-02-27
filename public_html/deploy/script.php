@@ -179,7 +179,7 @@ create table
 	[user_authentications] -- ユーザー認証情報
 	(
 		[user_id] text not null, -- ユーザーID
-		[generate_password] text not null, -- 自動生成パスワード(ハッシュ) 空白の可能性あり(セットアップ・管理者等)
+		[generated_password] text not null, -- 自動生成パスワード(ハッシュ) 空白の可能性あり(セットアップ・管理者等)
 		[current_password] text not null, -- 現在パスワード(ハッシュ)
 		primary key([user_id]),
 		foreign key ([user_id]) references users([user_id])
@@ -338,7 +338,7 @@ insert into
 	[user_authentications]
 	(
 		[user_id],
-		[generate_password],
+		[generated_password],
 		[current_password]
 	)
 	values
@@ -357,31 +357,11 @@ insert into
 		[description]
 	)
 	values
-	(
-		'theme',
-		'テーマ',
-		''
-	),
-	(
-		'file-system',
-		'ファイル',
-		''
-	),
-	(
-		'utility',
-		'ユーティリティ',
-		''
-	),
-	(
-		'network',
-		'ネットワーク',
-		''
-	),
-	(
-		'toy',
-		'おもちゃ',
-		''
-	)
+	( 'theme', 'テーマ', '' ),
+	( 'file-system', 'ファイル', '' ),
+	( 'utility', 'ユーティリティ', '' ),
+	( 'network', 'ネットワーク', '' ),
+	( 'toy', 'おもちゃ', '' )
 ;
 
 SQL
