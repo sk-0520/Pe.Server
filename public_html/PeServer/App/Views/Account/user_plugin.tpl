@@ -73,7 +73,8 @@
 								{/if}
 							/>
 							{$item.display_name}
-						</label></li>
+						</label>
+					</li>
 				{/foreach}
 			</ul>
 		</dd>
