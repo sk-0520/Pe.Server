@@ -13,7 +13,7 @@ use PeServer\Core\ArrayUtility;
 use PeServer\Core\Collection;
 use PeServer\Core\Uuid;
 
-class PluginApiExistsLogic extends ApiLogicBase
+class PluginApiGeneratePluginIdLogic extends ApiLogicBase
 {
 	public function __construct(LogicParameter $parameter)
 	{
@@ -27,22 +27,25 @@ class PluginApiExistsLogic extends ApiLogicBase
 
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
-		$json = $this->getRequestJson();
-		$pluginId = ArrayUtility::getOr($json, 'plugin_id', '');
-		$pluginName = ArrayUtility::getOr($json, 'plugin_name', '');
-
 		$plugins = AppDatabaseCache::readPluginInformation();
 		$pluginCollection = Collection::from($plugins);
-		$existsPluginId = $pluginCollection->any(function ($i) use ($pluginId) {
-			return Uuid::isEqualGuid($i->pluginId, $pluginId);
-		});
-		$existsPluginName = $pluginCollection->any(function ($i) use ($pluginName) {
-			return $i->pluginName === $pluginName;
-		});
+
+		$pluginId = Uuid::generateGuid();
+
+		$existsPluginId = true;
+		do {
+			$existsPluginId = $pluginCollection->any(function ($i) use ($pluginId) {
+				return Uuid::isEqualGuid($i->pluginId, $pluginId);
+			});
+
+			if ($existsPluginId) {
+				$this->logger->info('重複プラグインID -> {0}', $pluginId);
+				$pluginId = Uuid::generateGuid();
+			}
+		}while($existsPluginId);
 
 		$this->setResponseJson(ResponseJson::success([
-			'plugin_id' => $existsPluginId,
-			'plugin_name' => $existsPluginName,
+			'plugin_id' => $pluginId,
 		]));
 	}
 }

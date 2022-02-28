@@ -106,6 +106,7 @@ abstract class RouteConfiguration
 				/* AUTO-FORMAT */,
 				(new Route('api/plugin', PluginApiController::class))
 					->addAction('exists', HttpMethod::post(), 'exists')
+					->addAction('generate-plugin-id', HttpMethod::get(), 'generate_plugin_id')
 				/* AUTO-FORMAT */,
 			]
 		);
