@@ -1,6 +1,6 @@
 {extends file='default.tpl'}
-{$is_register = !isset($values.from_account_plugin_plugin_id) || empty($values.from_account_plugin_plugin_id) }
-{if $is_register}
+{$isRegister = !isset($values.from_account_plugin_plugin_id) || empty($values.from_account_plugin_plugin_id) }
+{if $isRegister}
 	{block name='TITLE'}プラグイン 登録{/block}
 	{$action = "/account/user/plugin"}
 	{$readonly = false}
@@ -15,14 +15,21 @@
 
 <form class="page-account-plugin" action="{$action}" method="post">
 	{csrf}
-	{if !$is_register}
+	{if !$isRegister}
 		<input type="hidden" name="from_account_plugin_plugin_id" value="{$values.from_account_plugin_plugin_id}" />
 	{/if}
 
 	<dl class="input">
-		<dt>プラグインID</dt>
+		<dt>
+			プラグインID
+			{if $isRegister}
+				<ul class="helper">
+					<li><button id="pg-plugin-id-auto-generate" class="action sub" type="button">自動生成</button></li>
+				</ul>
+			{/if}
+		</dt>
 		<dd>
-			{input_helper key='account_plugin_plugin_id' type="text" class="edit" readonly="{$readonly}"}
+			{input_helper id='pg-plugin-id' key='account_plugin_plugin_id' type="text" class="edit" readonly="{$readonly}"}
 		</dd>
 
 		<dt>プラグイン内部名</dt>
