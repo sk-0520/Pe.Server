@@ -22,7 +22,7 @@ use PeServer\Core\StringUtility;
 
 class SettingDefaultPluginLogic extends PageLogicBase
 {
-	/** @var array{plugin_id:string,plugin_name:string,check_url:string,project_url:string,description:string,registered:bool}[] */
+	/** @var array{plugin_id:string,plugin_name:string,check_url:string,project_url:string,descriptions:string[],registered:bool}[] */
 	private array $defaultPlugins = [
 		[
 			'plugin_id' => '4524fc23-ebb9-4c79-a26b-8f472c05095e',
