@@ -17,7 +17,7 @@
 		"type": "git",
 		"url": "git+https://sk_0520@bitbucket.org/sk_0520/pe.server.git"
 	},
-	"author": "",
+	"author": "sk",
 	"license": "WTFPL2",
 	"bugs": {
 		"url": "https://bitbucket.org/sk_0520/pe.server/issues"
