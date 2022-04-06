@@ -77,12 +77,12 @@
 
 ##### 応答
 
-`items`
+`plugins`
 :   型: `[key: string]: object`
 :   プラグイン情報
 
 ```json
-"items": {
+"plugins": {
   "プラグインID": {
     "user_id": "ユーザーID",
     "plugin_name": "プラグイン名",
