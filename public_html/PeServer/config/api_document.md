@@ -59,3 +59,38 @@
 `plugin_name`
 :   型: `boolean`
 :   存在する場合に真
+
+#### プラグイン情報
+
+| 項目 | 内容 |
+|---|---|
+| エンドポイント | `/api/plugin/information` |
+| メソッド | POST |
+| 認証 | 不要 |
+| 本文 | 必要 |
+
+##### パラメータ
+
+`plugin_ids`
+:   型: `string[]`
+:   プラグインID
+
+##### 応答
+
+`plugins`
+:   型: `[key: string]: object`
+:   プラグイン情報
+
+```json
+"plugins": {
+  "プラグインID": {
+    "user_id": "ユーザーID",
+    "plugin_name": "プラグイン名",
+    "display_name": "プラグイン表示名",
+    "state": "enabled(有効)/disabled(無効)/check_failed(バージョンチェックURL無効)",
+    "description": "説明",
+    "check_url": "バージョンチェックURL",
+    "project_url": "プロジェクトURL"
+  }
+}
+```

@@ -59,7 +59,7 @@ abstract class RouteConfiguration
 					->addAction('about/contact', HttpMethod::get(), 'contact_get')
 					->addAction('about/contact', HttpMethod::post(), 'contact_post')
 					->addAction('api-doc', HttpMethod::get(), 'api')
-					/* AUTO-FORMAT */,
+				/* AUTO-FORMAT */,
 				(new Route('account', AccountController::class))
 					->addAction('login', HttpMethod::get(), 'login_get')
 					->addAction('login', HttpMethod::post(), 'login_post')
@@ -107,6 +107,7 @@ abstract class RouteConfiguration
 				(new Route('api/plugin', PluginApiController::class))
 					->addAction('exists', HttpMethod::post(), 'exists')
 					->addAction('generate-plugin-id', HttpMethod::get(), 'generate_plugin_id')
+					->addAction('information', HttpMethod::post(), 'information')
 				/* AUTO-FORMAT */,
 			]
 		);
