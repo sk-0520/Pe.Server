@@ -127,7 +127,6 @@ class Mailer
 
 		foreach (['text', 'html'] as $i) {
 			if (isset($message[$i])) {
-				// @phpstan-ignore-next-line
 				if (StringUtility::isNullOrWhiteSpace($message[$i])) {
 					throw new ArgumentException($i);
 				}

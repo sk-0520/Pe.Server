@@ -171,6 +171,7 @@ class Database implements IDatabaseContext
 		$query = $this->executeStatement($statement, $parameters);
 
 		$result = $query->fetchAll();
+		// @phpstan-ignore-next-line: Strict comparison using === between
 		if ($result === false) {
 			throw new DatabaseException($this->getErrorMessage());
 		}
