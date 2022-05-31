@@ -42,7 +42,8 @@
 			"PHPSESSID",
 			"phpstan",
 			"phpunit",
-			"samesite"
+			"samesite",
+			"sysplugins"
 		],
 		"intelephense.environment.phpVersion": "8.0.3",
 		"intelephense.files.exclude": [
