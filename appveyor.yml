@@ -40,6 +40,6 @@ for:
       - sh: $APPVEYOR_BUILD_FOLDER/dev/send.sh
 
 cache:
- - 'node_modules'
- - 'dev/phpstan.phar'
- - 'test/phpunit.phar'
+# - 'node_modules'
+# - 'dev/phpstan.phar'
+# - 'test/phpunit.phar'
