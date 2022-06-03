@@ -29,16 +29,16 @@ class ArrayUtility
 	 *
 	 * @param array<int|string,mixed>|null $array 対象配列。
 	 * @param int|string $key キー。
-	 * @param mixed $defaultValue 失敗時に返却される値。
+	 * @param mixed $fallbackValue 失敗時に返却される値。
 	 * @return mixed 値。返却時にそれが成功しているか失敗しているかは不明なので厳密さが必要であれば tryGet を使用すること。
 	 */
-	public static function getOr(?array $array, $key, $defaultValue)
+	public static function getOr(?array $array, $key, $fallbackValue)
 	{
 		if (!is_null($array) && isset($array[$key])) {
 			return $array[$key];
 		}
 
-		return $defaultValue;
+		return $fallbackValue;
 	}
 
 	/**
