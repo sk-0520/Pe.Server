@@ -54,10 +54,10 @@ class Action
 	/**
 	 * 取得。
 	 *
-	 * @param httpMethod $httpMethod HTTPメソッド
+	 * @param HttpMethod $httpMethod HTTPメソッド
 	 * @return array{method:string,middleware:array<IMiddleware|string>,shutdown_middleware:array<IShutdownMiddleware|string>}>|null あった場合はクラスメソッド、なければ null
 	 */
-	public function get(httpMethod $httpMethod): ?array
+	public function get(HttpMethod $httpMethod): ?array
 	{
 		if (ArrayUtility::tryGet($this->map, $httpMethod->getKind(), $result)) {
 			return $result;
