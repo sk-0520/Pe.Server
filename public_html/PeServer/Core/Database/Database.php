@@ -11,6 +11,7 @@ use PeServer\Core\StringUtility;
 use PeServer\Core\Throws\Throws;
 use PeServer\Core\Throws\SqlException;
 use PeServer\Core\Throws\DatabaseException;
+use PeServer\Core\TypeConverter;
 
 /**
  * DB接続処理。
@@ -258,11 +259,12 @@ class Database implements IDatabaseContext
 
 		/** @var array<string,mixed> */
 		$result = $this->queryFirst($statement, $parameters);
-		$val = current($result);
-		if(!is_int($val)) {
-			throw new DatabaseException();
+		$val = strval(current($result));
+		if (TypeConverter::tryParseInteger($val, $count)) {
+			return $count;
 		}
-		return $val;
+
+		throw new DatabaseException();
 	}
 
 	public function execute(string $statement, ?array $parameters = null): int
