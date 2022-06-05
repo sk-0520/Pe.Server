@@ -16,4 +16,4 @@ if [ ! -v IGNORE_SYNTAX_CHECK ] ; then
 	echo 'ignore -> IGNORE_SYNTAX_CHECK'
 fi
 
-php "${PHPSTAN_FILE}" analyze --configuration phpstan.neon
+php "${PHPSTAN_FILE}" analyze --configuration phpstan.neon "$@"

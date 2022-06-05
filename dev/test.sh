@@ -54,4 +54,4 @@ if [ ! -v IGNORE_NAMESPACE_CHECK ] ; then
 	fi
 fi
 
-php phpunit.phar --bootstrap ./bootstrap.php --testdox .
+php phpunit.phar --bootstrap ./bootstrap.php --testdox "$@" .
