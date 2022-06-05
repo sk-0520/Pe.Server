@@ -152,6 +152,7 @@ class Mailer
 			throw new ArgumentException('address');
 		}
 
+		/** @var string|null */
 		$name = ArrayUtility::getOr($data, 'name', null);
 		if (StringUtility::isNullOrWhiteSpace($name)) {
 			return [$data['address'], ''];

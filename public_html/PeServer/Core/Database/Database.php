@@ -183,6 +183,7 @@ class Database implements IDatabaseContext
 	{
 		$query = $this->executeStatement($statement, $parameters);
 
+		/** @var array<string,mixed>|false */
 		$result = $query->fetch();
 		if ($result === false) {
 			throw new DatabaseException($this->getErrorMessage());
@@ -195,6 +196,7 @@ class Database implements IDatabaseContext
 	{
 		$query = $this->executeStatement($statement, $parameters);
 
+		/** @var array<string,mixed>|false */
 		$result = $query->fetch();
 		if ($result === false) {
 			return $defaultValue;
@@ -207,6 +209,7 @@ class Database implements IDatabaseContext
 	{
 		$query = $this->executeStatement($statement, $parameters);
 
+		/** @var array<string,mixed>|false */
 		$result = $query->fetch();
 		if ($result === false) {
 			throw new DatabaseException($this->getErrorMessage());
@@ -224,6 +227,7 @@ class Database implements IDatabaseContext
 	{
 		$query = $this->executeStatement($statement, $parameters);
 
+		/** @var array<string,mixed>|false */
 		$result = $query->fetch();
 		if ($result === false) {
 			return $defaultValue;
@@ -252,8 +256,13 @@ class Database implements IDatabaseContext
 			throw new SqlException();
 		}
 
+		/** @var array<string,mixed> */
 		$result = $this->queryFirst($statement, $parameters);
-		return (int)current($result);
+		$val = current($result);
+		if(!is_int($val)) {
+			throw new DatabaseException();
+		}
+		return $val;
 	}
 
 	public function execute(string $statement, ?array $parameters = null): int

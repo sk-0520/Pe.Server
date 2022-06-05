@@ -48,6 +48,7 @@ class InputHelperFunction extends TemplateFunctionBase
 	 */
 	private function addMainElement(HtmlDocument $dom, mixed $targetValue): HtmlElement
 	{
+		/** @var string */
 		$type = ArrayUtility::getOr($this->params, 'type', '');
 
 		switch ($type) {

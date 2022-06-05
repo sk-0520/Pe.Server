@@ -40,9 +40,12 @@ class FileLogger extends LoggerBase
 	{
 		parent::__construct($header, $level, $baseTraceIndex);
 
+		//@phpstan-ignore-next-line
 		$this->directoryPath = $fileLoggingConfiguration['directory'];
+		//@phpstan-ignore-next-line
 		$this->baseFileName = $fileLoggingConfiguration['name'];
 
+		//@phpstan-ignore-next-line
 		$this->cleanup($fileLoggingConfiguration['count']);
 	}
 

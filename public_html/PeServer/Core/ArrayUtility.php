@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
+use PeServer\Core\Throws\TypeException;
+
 /**
  * 配列共通処理。
  */
@@ -35,7 +37,16 @@ class ArrayUtility
 	public static function getOr(?array $array, int|string $key, mixed $fallbackValue)
 	{
 		if (!is_null($array) && isset($array[$key])) {
-			return $array[$key];
+			$result = $array[$key];
+			if(!is_null($result) && !is_null($fallbackValue)) { //@phpstan-ignore-line
+				$resultType = gettype($result);
+				$fallbackValueType = gettype($fallbackValue);
+				if($resultType !== $fallbackValueType) {
+					throw new TypeException();
+				}
+			}
+
+			return $result;
 		}
 
 		return $fallbackValue;

@@ -59,14 +59,24 @@ class BotTextImageFunction extends TemplateFunctionBase
 
 	protected function functionBodyImpl(): string
 	{
+		/** @var string */
 		$text = ArrayUtility::getOr($this->params, 'text', '');
+		/** @var string */
 		$alt = ArrayUtility::getOr($this->params, 'alt', '');
+		// @phpstan-ignore-next-line
 		$width = (int)ArrayUtility::getOr($this->params, 'width', 100);
+		// @phpstan-ignore-next-line
 		$height = (int)ArrayUtility::getOr($this->params, 'height', 100);
+		// @phpstan-ignore-next-line
 		$fontSize = (float)ArrayUtility::getOr($this->params, 'font-size', 12.5);
+		/** @var string */
 		$className = ArrayUtility::getOr($this->params, 'class', '');
-		$backgroundColors = $this->toColor(ArrayUtility::getOr($this->params, 'background-color', '#eeeeee'));
-		$foregroundColors = $this->toColor(ArrayUtility::getOr($this->params, 'foreground-color', '#0f0f0f'));
+		/** @var string */
+		$backgroundColorText = ArrayUtility::getOr($this->params, 'background-color', '#eeeeee');
+		$backgroundColors = $this->toColor($backgroundColorText);
+		/** @var string */
+		$foregroundColorText = ArrayUtility::getOr($this->params, 'foreground-color', '#0f0f0f');
+		$foregroundColors = $this->toColor($foregroundColorText);
 		$obfuscateLevel = TypeConverter::parseBoolean(ArrayUtility::getOr($this->params, 'obfuscate-level', 0));
 
 		$rectX = 0;
@@ -78,7 +88,7 @@ class BotTextImageFunction extends TemplateFunctionBase
 		$fontFilePath = FileUtility::joinPath($this->argument->baseDirectoryPath, 'Core', 'Libs', 'fonts', 'migmix', $fontFileName);
 
 		$box = imageftbbox($fontSize, 0, $fontFilePath, $text);
-		if($box === false) {
+		if ($box === false) {
 			throw new TemplateException();
 		}
 
@@ -115,7 +125,11 @@ class BotTextImageFunction extends TemplateFunctionBase
 		$img = $dom->addElement('img');
 		$img->setAttribute('src', 'data:image/png;base64,' . $binary->toBase64());
 
-		$img->setAttribute('data-hash', hash('sha256', $text));
+		$textHash = hash('sha256', $text);
+		if ($textHash === false) { // @phpstan-ignore-line
+			throw new TemplateException();
+		}
+		$img->setAttribute('data-hash', $textHash);
 		if (!StringUtility::isNullOrWhiteSpace($className)) {
 			$img->setAttribute('class', $className);
 		}

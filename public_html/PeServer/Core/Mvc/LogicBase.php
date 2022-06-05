@@ -178,12 +178,23 @@ abstract class LogicBase implements IValidationReceiver
 			if ($option instanceof CookieOption) {
 				$cookieOption = $option;
 			} else if (is_array($option)) {
+				/** @var string */
+				$path = ArrayUtility::getOr($option, 'path', $this->cookie->option->path);
+				/** @var \DateInterval|null */
+				$span = ArrayUtility::getOr($option, 'span', $this->cookie->option->span);
+				/** @var bool */
+				$secure = ArrayUtility::getOr($option, 'secure', $this->cookie->option->secure);
+				/** @var bool */
+				$httpOnly = ArrayUtility::getOr($option, 'httpOnly', $this->cookie->option->httpOnly);
+				/** @var 'Lax'|'lax'|'None'|'none'|'Strict'|'strict' */
+				$sameSite = ArrayUtility::getOr($option, 'sameSite', $this->cookie->option->sameSite);
+
 				$cookieOption = CookieOption::create(
-					ArrayUtility::getOr($option, 'path', $this->cookie->option->path),
-					ArrayUtility::getOr($option, 'span', $this->cookie->option->span),
-					ArrayUtility::getOr($option, 'secure', $this->cookie->option->secure),
-					ArrayUtility::getOr($option, 'httpOnly', $this->cookie->option->httpOnly),
-					ArrayUtility::getOr($option, 'sameSite', $this->cookie->option->sameSite)
+					$path,
+					$span,
+					$secure,
+					$httpOnly,
+					(string)$sameSite
 				);
 			}
 		}
@@ -341,6 +352,15 @@ abstract class LogicBase implements IValidationReceiver
 	{
 		$this->addError($key, $message);
 	}
+
+	/**
+	 * Undocumented function
+	 *
+	 * @param string $key
+	 * @param integer $kind
+	 * @param array<int|string,int|string> $parameters
+	 * @return void
+	 */
 	public function receiveErrorKind(string $key, int $kind, array $parameters): void
 	{
 		$map = [
@@ -368,7 +388,9 @@ abstract class LogicBase implements IValidationReceiver
 	 */
 	protected function validation(string $key, callable $callback, ?array $option = null): void
 	{
+		/** @var string */
 		$default = ArrayUtility::getOr($option, 'default', '');
+		/** @var bool */
 		$trim = ArrayUtility::getOr($option, 'trim', true);
 
 		$value = $this->getRequest($key, $default, $trim);
@@ -520,9 +542,8 @@ abstract class LogicBase implements IValidationReceiver
 			throw new InvalidOperationException('not impl');
 		}
 
-		if($this->content instanceof DownloadDataContent) {
+		if ($this->content instanceof DownloadDataContent) {
 			return $this->content;
-
 		}
 
 		return new DataContent($this->httpStatus, $this->content->mime, $this->content->data);

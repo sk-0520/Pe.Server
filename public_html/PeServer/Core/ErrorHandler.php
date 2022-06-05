@@ -44,11 +44,20 @@ class ErrorHandler
 			return;
 		}
 
+		/** @var int */
+		$type = ArrayUtility::getOr($lastError, 'type', -1);
+		/** @var string */
+		$message = ArrayUtility::getOr($lastError, 'message', '');
+		/** @var string */
+		$file = ArrayUtility::getOr($lastError, 'file', '<unknown>');
+		/** @var int */
+		$line = ArrayUtility::getOr($lastError, 'line', 0);
+
 		$this->_catchError(
-			ArrayUtility::getOr($lastError, 'type', -1),
-			ArrayUtility::getOr($lastError, 'message', ''),
-			ArrayUtility::getOr($lastError, 'file', '<unknown>'),
-			ArrayUtility::getOr($lastError, 'line', 0),
+			$type,
+			$message,
+			$file,
+			$line,
 			null
 		);
 	}

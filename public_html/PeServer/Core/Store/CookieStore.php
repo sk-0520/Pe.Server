@@ -144,6 +144,7 @@ class CookieStore
 			return $value['data'];
 		}
 
+		/** @var string */
 		return ArrayUtility::getOr($_COOKIE, $key, $defaultValue);
 	}
 
