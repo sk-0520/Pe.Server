@@ -165,25 +165,21 @@ class Route
 	 */
 	private function getActionCore(HttpMethod $httpMethod, Action $action, array $urlParameters): RouteAction
 	{
-		$actionValues = $action->get($httpMethod);
-		if (is_null($actionValues)) {
+		$actionRelation = $action->get($httpMethod);
+		if (is_null($actionRelation)) {
 			return new RouteAction(
 				HttpStatus::methodNotAllowed(),
 				$this->className,
-				'',
-				$urlParameters,
-				[],
-				[]
+				ActionRelation::none(),
+				$urlParameters
 			);
 		}
 
 		return new RouteAction(
 			HttpStatus::none(),
 			$this->className,
-			$actionValues['method'],
-			$urlParameters,
-			$actionValues['middleware'],
-			$actionValues['shutdown_middleware']
+			$actionRelation,
+			$urlParameters
 		);
 	}
 
@@ -200,9 +196,7 @@ class Route
 			return new RouteAction(
 				HttpStatus::notFound(),
 				$this->className,
-				'',
-				[],
-				[],
+				ActionRelation::none(),
 				[]
 			);
 		}
@@ -285,9 +279,7 @@ class Route
 			return new RouteAction(
 				HttpStatus::notFound(),
 				$this->className,
-				'',
-				[],
-				[],
+				ActionRelation::none(),
 				[]
 			);
 		}
