@@ -61,4 +61,13 @@ abstract class TypeConverter
 
 		return boolval($input);
 	}
+
+	public static function toString(mixed $input): string
+	{
+		if (is_string($input)) {
+			return $input;
+		}
+
+		return strval($input);
+	}
 }

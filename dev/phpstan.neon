@@ -1,5 +1,5 @@
 parameters:
-  level: 8
+  level: 9
   paths:
     - ../public_html
   excludePaths:
@@ -7,6 +7,7 @@ parameters:
     - ../public_html/PeServer/Core/Libs
     - ../public_html/deploy
     - ../public_html/PeServer/App/Models/Domain/Api/DevelopmentApi/DevelopmentApiInitializeLogic.php
+    - ../public_html/PeServer/App/Models/Domain/Page/Setting/SettingDefaultPluginLogic.php
   scanFiles:
     - ../public_html/PeServer/Core/Libs/smarty/libs/Smarty.class.php
     - ../public_html/PeServer/Core/Libs/smarty/libs/sysplugins/smarty_internal_template.php
