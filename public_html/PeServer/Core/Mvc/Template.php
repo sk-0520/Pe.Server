@@ -20,6 +20,7 @@ use PeServer\Core\Mvc\TemplatePlugin\BotTextImageFunction;
 use PeServer\Core\Mvc\TemplatePlugin\ITemplateBlockFunction;
 use PeServer\Core\Mvc\TemplatePlugin\TemplatePluginArgument;
 use PeServer\Core\Mvc\TemplatePlugin\ShowErrorMessagesFunction;
+use PeServer\Core\Throws\NotImplementedException;
 
 /**
  * View側のテンプレート処理。
@@ -152,6 +153,8 @@ class _Template_Impl extends Template
 			} else if ($plugin instanceof ITemplateFunction) {
 				// @phpstan-ignore-next-line
 				$this->engine->registerPlugin('function', $plugin->getFunctionName(), array($plugin, 'functionBody'));
+			} else { //@phpstan-ignore-line
+				throw new NotImplementedException();
 			}
 		}
 	}
