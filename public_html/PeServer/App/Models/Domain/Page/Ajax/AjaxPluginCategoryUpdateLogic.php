@@ -38,6 +38,8 @@ class AjaxPluginCategoryUpdateLogic extends PageLogicBase
 
 		$database = $this->openDatabase();
 		$database->transaction(function (IDatabaseContext $context, $params) {
+			/** @var array<string,mixed> $params*/
+
 			$pluginCategoriesEntityDao = new PluginCategoriesEntityDao($context);
 
 			$pluginCategoryId = TypeConverter::toString($params['plugin_category_id']);
