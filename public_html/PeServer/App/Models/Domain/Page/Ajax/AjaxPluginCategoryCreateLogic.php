@@ -12,7 +12,7 @@ use PeServer\App\Models\SessionManager;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\App\Models\Dao\Entities\PluginCategoriesEntityDao;
-
+use PeServer\Core\TypeConverter;
 
 class AjaxPluginCategoryCreateLogic extends PageLogicBase
 {
@@ -31,15 +31,23 @@ class AjaxPluginCategoryCreateLogic extends PageLogicBase
 		$json = $this->getRequestJson();
 
 		$params = [
-			'plugin_category_id' => StringUtility::trim($json['category_id']),
-			'category_display_name' => StringUtility::trim($json['category_display_name']),
-			'category_description' => StringUtility::trim($json['category_description']),
+			'plugin_category_id' => StringUtility::trim(TypeConverter::toString($json['category_id'])),
+			'category_display_name' => StringUtility::trim(TypeConverter::toString($json['category_display_name'])),
+			'category_description' => StringUtility::trim(TypeConverter::toString($json['category_description'])),
 		];
 
 		$database = $this->openDatabase();
 		$database->transaction(function (IDatabaseContext $context, $params) {
+			/** @var array<string,mixed> $params*/
+
 			$pluginCategoriesEntityDao = new PluginCategoriesEntityDao($context);
-			$pluginCategoriesEntityDao->insertPluginCategory($params['plugin_category_id'], $params['category_display_name'], $params['category_description']);
+			/** @var string */
+			$pluginCategoryId = $params['plugin_category_id'];
+			/** @var string */
+			$categoryDisplayName = $params['category_display_name'];
+			/** @var string */
+			$categoryDescription = $params['category_description'];
+			$pluginCategoriesEntityDao->insertPluginCategory($pluginCategoryId, $categoryDisplayName, $categoryDescription);
 
 			return true;
 		}, $params);
