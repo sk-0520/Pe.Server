@@ -539,7 +539,7 @@ abstract class LogicBase implements IValidationReceiver
 	public function getContent(): DataContent
 	{
 		if (is_null($this->content)) {
-			throw new InvalidOperationException('not impl');
+			throw new InvalidOperationException();
 		}
 
 		if ($this->content instanceof DownloadDataContent) {
