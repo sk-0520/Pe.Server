@@ -15,6 +15,8 @@ use PeServer\Core\TypeConverter;
 
 /**
  * DB接続処理。
+ *
+ * TODO: __destruct で解放処理ぶっこまなアカンやろなぁ
  */
 class Database implements IDatabaseContext
 {
