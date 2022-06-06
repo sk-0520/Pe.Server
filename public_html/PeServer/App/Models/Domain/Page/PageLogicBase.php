@@ -30,6 +30,7 @@ abstract class PageLogicBase extends DomainLogicBase
 
 	protected function addTemporaryMessage(string $message): void
 	{
+		/** @var string[] */
 		$messages = $this->peekTemporary(self::TEMP_MESSAGES, []);
 		$messages[] = $message;
 		$this->pushTemporary(self::TEMP_MESSAGES, $messages);
