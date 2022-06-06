@@ -55,7 +55,7 @@ abstract class I18n
 	private static function getFlatMessage(array $array, string $locale): string|null
 	{
 		if (isset($array[$locale])) {
-			//@phpstan-ignore-next-line
+			/** @var string */
 			return $array[$locale];
 		}
 
@@ -76,9 +76,9 @@ abstract class I18n
 		$leaf = self::$i18nConfiguration;
 		$tree = StringUtility::split($key, '/');
 		foreach ($tree as $node) {
-			//@phpstan-ignore-next-line
+			//@-phpstan-ignore-next-line
 			if (isset($leaf[$node])) {
-				//@phpstan-ignore-next-line
+				//@-phpstan-ignore-next-line
 				$leaf = $leaf[$node];
 			} else {
 				$leaf = null;
@@ -87,7 +87,7 @@ abstract class I18n
 		}
 
 		if (!is_null($leaf)) {
-			//@phpstan-ignore-next-line
+			/** @var string */
 			return self::getFlatMessage($leaf, $locale);
 		}
 

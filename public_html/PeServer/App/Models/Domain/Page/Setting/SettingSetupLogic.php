@@ -103,7 +103,7 @@ class SettingSetupLogic extends PageLogicBase
 		$result = $database->transaction(function (IDatabaseContext $database, $currentUserInfo, $params, $userInfo) {
 			$accountValidator = new AccountValidator($this, $this->validator);
 
-			/** @var string @phpstan-ignore-next-line */
+			/** @var string @-phpstan-ignore-next-line */
 			$loginId = $params['login_id'];
 			if (!$accountValidator->isFreeLoginId($database, 'setting_setup_login_id', $loginId)) {
 				return false;
@@ -114,36 +114,36 @@ class SettingSetupLogic extends PageLogicBase
 
 			// 管理者ユーザーの登録
 			$usersEntityDao->insertUser(
-				$userInfo['id'], // @phpstan-ignore-line
+				$userInfo['id'], // @-phpstan-ignore-line
 				$loginId,
 				UserLevel::ADMINISTRATOR,
 				UserState::ENABLED,
-				$params['user_name'], // @phpstan-ignore-line
-				$params['email'], // @phpstan-ignore-line
-				$params['mark_email'], // @phpstan-ignore-line
-				$params['website'], // @phpstan-ignore-line
+				$params['user_name'], // @-phpstan-ignore-line
+				$params['email'], // @-phpstan-ignore-line
+				$params['mark_email'], // @-phpstan-ignore-line
+				$params['website'], // @-phpstan-ignore-line
 				'',
 				''
 			);
 
 			$userAuthenticationsEntityDao->insertUserAuthentication(
-				$userInfo['id'], // @phpstan-ignore-line
-				$userInfo['generated_password'], // @phpstan-ignore-line
-				$userInfo['current_password'] // @phpstan-ignore-line
+				$userInfo['id'], // @-phpstan-ignore-line
+				$userInfo['generated_password'], // @-phpstan-ignore-line
+				$userInfo['current_password'] // @-phpstan-ignore-line
 			);
 
 			// 現在のセットアップユーザーを無効化
 			$state = UserState::DISABLED;
 			$usersEntityDao->updateUserState(
-				$currentUserInfo['user_id'], // @phpstan-ignore-line
+				$currentUserInfo['user_id'], // @-phpstan-ignore-line
 				$state
 			);
 
 			// ユーザー生成記録を監査ログに追加
 			$this->writeAuditLogCurrentUser(AuditLog::USER_STATE_CHANGE, ['state' => $state], $database);
-			 // @phpstan-ignore-next-line
+			 // @-phpstan-ignore-next-line
 			$this->writeAuditLogCurrentUser(AuditLog::USER_CREATE, ['user_id' => $userInfo['id']], $database);
-			 // @phpstan-ignore-next-line
+			 // @-phpstan-ignore-next-line
 			$this->writeAuditLogTargetUser($userInfo['id'], AuditLog::USER_GENERATED, ['user_id' => $currentUserInfo['user_id']], $database);
 
 			return true;

@@ -28,9 +28,9 @@ class SettingLogListLogic extends PageLogicBase
 	{
 		/** @var array<string,mixed> */
 		$logging = AppConfiguration::$config['logging'];
-		/** @var string @phpstan-ignore-next-line */
+		/** @var string @-phpstan-ignore-next-line */
 		$dirPath = $logging['file']['directory'];
-		/** @var string @phpstan-ignore-next-line */
+		/** @var string @-phpstan-ignore-next-line */
 		$targetExt = FileUtility::getFileExtension($logging['file']['name']);
 		$files = FileUtility::getFiles($dirPath, false);
 

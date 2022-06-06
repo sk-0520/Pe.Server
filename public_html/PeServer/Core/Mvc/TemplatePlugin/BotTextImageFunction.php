@@ -63,11 +63,11 @@ class BotTextImageFunction extends TemplateFunctionBase
 		$text = ArrayUtility::getOr($this->params, 'text', '');
 		/** @var string */
 		$alt = ArrayUtility::getOr($this->params, 'alt', '');
-		// @phpstan-ignore-next-line
+		/** @var int */
 		$width = (int)ArrayUtility::getOr($this->params, 'width', 100);
-		// @phpstan-ignore-next-line
+		/** @var int */
 		$height = (int)ArrayUtility::getOr($this->params, 'height', 100);
-		// @phpstan-ignore-next-line
+		/** @var float */
 		$fontSize = (float)ArrayUtility::getOr($this->params, 'font-size', '12.5');
 		/** @var string */
 		$className = ArrayUtility::getOr($this->params, 'class', '');

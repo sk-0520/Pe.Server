@@ -221,7 +221,7 @@ abstract class Logging
 		self::$initializeChecker->throwIfNotInitialize();
 
 		$loggers = [
-			//@phpstan-ignore-next-line
+			//@-phpstan-ignore-next-line
 			new FileLogger($header, self::$level, $baseTraceIndex + 1, self::$loggingConfiguration['file']),
 		];
 		return new MultiLogger($header, self::$level, $baseTraceIndex, $loggers);
