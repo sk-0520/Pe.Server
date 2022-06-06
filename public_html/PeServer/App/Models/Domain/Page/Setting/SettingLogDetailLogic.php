@@ -29,7 +29,9 @@ class SettingLogDetailLogic extends PageLogicBase
 
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
+		/** @var array<string,mixed> */
 		$logging = AppConfiguration::$config['logging'];
+		/** @var string @phpstan-ignore-next-line */
 		$dirPath = (string)$logging['file']['directory'];
 
 		$fileName = StringUtility::trim($this->getRequest('log_name'), '/\\.');
@@ -40,6 +42,7 @@ class SettingLogDetailLogic extends PageLogicBase
 
 		$bytes = FileUtility::readContent($filePath);
 
+		/** @var int @phpstan-ignore-next-line */
 		$archiveSize = AppConfiguration::$config['logging']['archive_size'];
 		$fileSize = FileUtility::getFileSize($filePath);
 
