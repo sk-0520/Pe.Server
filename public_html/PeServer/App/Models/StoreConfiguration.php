@@ -31,8 +31,10 @@ abstract class StoreConfiguration
 			'httpOnly' => $base->httpOnly,
 			'sameSite' => $base->sameSite,
 		];
+		/** @var array<string,mixed> */
+		$cookie = ArrayUtility::getOr($setting, 'cookie', []);
 		$overwriteSetting = [
-			'cookie' => array_replace_recursive($baseSetting, ArrayUtility::getOr($setting, 'cookie', []))
+			'cookie' => array_replace_recursive($baseSetting, $cookie),
 		];
 
 		$overwriteCookie = self::getCookie($overwriteSetting);
@@ -43,13 +45,15 @@ abstract class StoreConfiguration
 	/**
 	 * クッキー設定を取得。
 	 *
-	 * @param array<string,array<string,mixed>>|null $setting
+	 * @param array<string,array<string,string|bool>>|null $setting
 	 * @return CookieOption
 	 */
 	public static function getCookie(?array $setting): CookieOption
 	{
+		/** @var array<string,mixed>|null */
 		$cookie = ArrayUtility::getOr($setting, 'cookie', null);
 
+		/** @var string|null */
 		$spanSetting = ArrayUtility::getOr($cookie, 'span', null);
 		/** @var DateInterval|null */
 		$span = null;
@@ -57,12 +61,20 @@ abstract class StoreConfiguration
 			$span = new DateInterval($spanSetting);
 		}
 
+		/** @var string */
+		$path = ArrayUtility::getOr($cookie, 'path', '/');
+		/** @var bool */
+		$secure = ArrayUtility::getOr($cookie, 'secure', false);
+		/** @var bool */
+		$httpOnly = ArrayUtility::getOr($cookie, 'httpOnly', true);
+		/** @var 'Lax'|'lax'|'None'|'none'|'Strict'|'strict' */
+		$sameSite = ArrayUtility::getOr($cookie, 'sameSite', 'None');
 		$option = CookieOption::create(
-			ArrayUtility::getOr($cookie, 'path', '/'),
+			$path,
 			$span,
-			ArrayUtility::getOr($cookie, 'secure', false),
-			ArrayUtility::getOr($cookie, 'httpOnly', true),
-			ArrayUtility::getOr($cookie, 'sameSite', 'None'),
+			$secure,
+			$httpOnly,
+			(string)$sameSite
 		);
 
 		return $option;
@@ -71,21 +83,26 @@ abstract class StoreConfiguration
 	/**
 	 * 一時データ設定を取得。
 	 *
-	 * @param array<string,string>|null $setting
+	 * @param array<string,array<string,string|bool>>|null $setting
 	 * @param CookieOption $cookie
 	 * @return TemporaryOption
 	 */
 	public static function getTemporary(?array $setting, CookieOption $cookie): TemporaryOption
 	{
+		/** @var array<string,mixed>|null */
 		$temporary = ArrayUtility::getOr($setting, 'temporary', null);
 		$overwriteCookie = self::mergeCookie($cookie, $temporary);
 		if (is_null($overwriteCookie->span)) {
 			$overwriteCookie->span = new DateInterval('PT30M');
 		}
 
+		/** @var string */
+		$name = ArrayUtility::getOr($temporary, 'name', 'TEMP');
+		/** @var string */
+		$save = ArrayUtility::getOr($temporary, 'save', './temp');
 		$option = TemporaryOption::create(
-			ArrayUtility::getOr($temporary, 'name', 'TEMP'),
-			ArrayUtility::getOr($temporary, 'save', './temp'),
+			$name,
+			$save,
 			$overwriteCookie
 		);
 
@@ -95,18 +112,23 @@ abstract class StoreConfiguration
 	/**
 	 * セッション設定を取得。
 	 *
-	 * @param array<string,string>|null $setting
+	 * @param array<string,array<string,string|bool>>|null $setting
 	 * @param CookieOption $cookie
 	 * @return SessionOption
 	 */
 	public static function getSession(?array $setting, CookieOption $cookie): SessionOption
 	{
+		/** @var array<string,mixed>|null */
 		$session = ArrayUtility::getOr($setting, 'session', null);
 		$overwriteCookie = self::mergeCookie($cookie, $session);
 
+		/** @var string */
+		$name = ArrayUtility::getOr($session, 'name', 'PHPSESSID');
+		/** @var string */
+		$save = ArrayUtility::getOr($session, 'save', '');
 		$option = SessionOption::create(
-			ArrayUtility::getOr($session, 'name', 'PHPSESSID'),
-			ArrayUtility::getOr($session, 'save', ''),
+			$name,
+			$save,
 			$overwriteCookie
 		);
 
@@ -120,6 +142,7 @@ abstract class StoreConfiguration
 	 */
 	public static function get(): StoreOption
 	{
+		/** @var array<string,array<string,string|bool>>|null */
 		$setting = ArrayUtility::getOr(AppConfiguration::$config, 'store', null);
 
 		$cookie = self::getCookie($setting);
