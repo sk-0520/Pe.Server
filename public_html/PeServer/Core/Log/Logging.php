@@ -13,6 +13,7 @@ use PeServer\Core\Log\FileLogger;
 use PeServer\Core\Log\MultiLogger;
 use PeServer\Core\StringUtility;
 use PeServer\Core\Throws\NotImplementedException;
+use PeServer\Core\TypeConverter;
 
 /**
  * ロガー生成処理。
@@ -68,8 +69,13 @@ abstract class Logging
 		self::$loggingConfiguration = $loggingConfiguration;
 		self::$requestId = Cryptography::generateRandomBytes(self::LOG_REQUEST_ID_LENGTH)->toHex();
 
-		self::$level = self::$loggingConfiguration['level'];
-		self::$format = self::$loggingConfiguration['format'];
+		/** @var int */
+		$level = ArrayUtility::getOr(self::$loggingConfiguration, 'level', ILogger::LEVEL_INFORMATION);
+		/** @var string */
+		$format = ArrayUtility::getOr(self::$loggingConfiguration, 'format', '{TIMESTAMP} |{LEVEL}| [{CLIENT_IP}:{CLIENT_HOST}] {REQUEST_ID}|{SESSION} <{UA}> {METHOD} {REQUEST} {FILE}({LINE}) {FUNCTION} -> {MESSAGE}');
+
+		self::$level = $level;
+		self::$format = $format;
 	}
 
 	private static function formatLevel(int $level): string
@@ -143,18 +149,21 @@ abstract class Logging
 			return self::$requestHost;
 		}
 
+		/** @var string */
 		$serverRemoteHost = ArrayUtility::getOr($_SERVER, 'REMOTE_HOST', '');
 		if ($serverRemoteHost !== '') {
 			return self::$requestHost = $serverRemoteHost;
 		}
 
+		/** @var string */
 		$serverRemoteIpAddr = ArrayUtility::getOr($_SERVER, 'REMOTE_ADDR', '');
 		if ($serverRemoteIpAddr === '') {
 			return self::$requestHost = '';
 		}
 
+		/** @var string */
 		$hostName = gethostbyaddr($serverRemoteIpAddr);
-		if ($hostName === false) {
+		if ($hostName === false) { //@phpstan-ignore-line
 			return self::$requestHost = '';
 		}
 
@@ -194,7 +203,7 @@ abstract class Logging
 			'SESSION' => session_id(),
 			//-------------------
 			'FILE' => ArrayUtility::getOr($traceCaller, 'file', ''),
-			'LINE' => ArrayUtility::getOr($traceCaller, 'line', ''),
+			'LINE' => ArrayUtility::getOr($traceCaller, 'line', 0),
 			//'CLASS' => ArrayUtility::getOr($traceMethod, 'class', ''),
 			'FUNCTION' => ArrayUtility::getOr($traceMethod, 'function', ''),
 			//'ARGS' => ArrayUtility::getOr($traceMethod, 'args', ''),
@@ -212,6 +221,7 @@ abstract class Logging
 		self::$initializeChecker->throwIfNotInitialize();
 
 		$loggers = [
+			//@-phpstan-ignore-next-line
 			new FileLogger($header, self::$level, $baseTraceIndex + 1, self::$loggingConfiguration['file']),
 		];
 		return new MultiLogger($header, self::$level, $baseTraceIndex, $loggers);

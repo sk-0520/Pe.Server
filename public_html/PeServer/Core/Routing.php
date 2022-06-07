@@ -169,13 +169,11 @@ class Routing
 	 * アクション実行。
 	 *
 	 * @param string $rawControllerName
-	 * @param string $methodName
+	 * @param ActionRelation $actionRelation
 	 * @param string[] $urlParameters
-	 * @param array<IMiddleware|string> $middleware
-	 * @param array<IShutdownMiddleware|string> $shutdownMiddleware
 	 * @return void
 	 */
-	private function executeAction(string $rawControllerName, string $methodName, array $urlParameters, array $middleware, array $shutdownMiddleware): void
+	private function executeAction(string $rawControllerName, ActionRelation $actionRelation, array $urlParameters): void
 	{
 		$splitNames = StringUtility::split($rawControllerName, '/');
 		$controllerName = $splitNames[ArrayUtility::getCount($splitNames) - 1];
@@ -189,8 +187,8 @@ class Routing
 		}
 
 		// アクションに紐づくミドルウェア処理
-		$this->shutdownMiddleware += $shutdownMiddleware;
-		if (!$this->handleBeforeMiddleware($middleware, $request)) {
+		$this->shutdownMiddleware += $actionRelation->shutdownMiddleware;
+		if (!$this->handleBeforeMiddleware($actionRelation->actionMiddleware, $request)) {
 			return;
 		}
 
@@ -199,9 +197,10 @@ class Routing
 
 		/** @var IActionResult|null */
 		$actionResult = null;
-		$output = OutputBuffer::get(function () use ($controllerArgument, $controllerName, $methodName, $request, &$actionResult) {
+		$output = OutputBuffer::get(function () use ($controllerArgument, $controllerName, $actionRelation, $request, &$actionResult) {
 			/** @var ControllerBase */
 			$controller = new $controllerName($controllerArgument);
+			$methodName = $actionRelation->controllerMethod;
 			/** @var IActionResult */
 			$actionResult = $controller->$methodName($request);
 		});
@@ -247,7 +246,7 @@ class Routing
 			$action = $route->getAction($this->requestMethod, $this->requestPath);
 			if (!is_null($action)) {
 				if ($action->status->is(HttpStatus::none())) {
-					$this->executeAction($action->className, $action->classMethod, $action->params, $action->middleware, $action->shutdownMiddleware);
+					$this->executeAction($action->className, $action->actionRelation, $action->params);
 					return;
 				} else if (is_null($errorAction)) {
 					$errorAction = $action;

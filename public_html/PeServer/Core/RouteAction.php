@@ -19,18 +19,14 @@ class RouteAction
 	 *
 	 * @param HttpStatus $status
 	 * @param string $className
-	 * @param string $classMethod
+	 * @param ActionRelation $actionRelation
 	 * @param array<string,string> $params パラメータ。
-	 * @param array<IMiddleware|string> $middleware ミドルウェア一覧。
-	 * @param array<IShutdownMiddleware|string> $shutdownMiddleware
 	 */
 	public function __construct(
 		public HttpStatus $status,
 		public string $className,
-		public string $classMethod,
-		public array $params,
-		public array $middleware,
-		public array $shutdownMiddleware
+		public ActionRelation $actionRelation,
+		public array $params
 	) {
 	}
 }

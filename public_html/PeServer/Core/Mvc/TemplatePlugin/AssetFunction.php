@@ -41,6 +41,7 @@ class AssetFunction extends TemplateFunctionBase
 
 	protected function functionBodyImpl(): string
 	{
+		/** @var string */
 		$sourcePath = ArrayUtility::getOr($this->params, 'file', '');
 		if (StringUtility::isNullOrEmpty($sourcePath)) {
 			return '';
@@ -77,8 +78,8 @@ class AssetFunction extends TemplateFunctionBase
 			$dom->addComment(StringUtility::dump($this->params));
 		}
 
-		$autoSize = TypeConverter::parseBoolean(ArrayUtility::getOr($this->params, 'auto_size', false));
-		$include = TypeConverter::parseBoolean(ArrayUtility::getOr($this->params, 'include', false));
+		$autoSize = TypeConverter::parseBoolean(ArrayUtility::getOr($this->params, 'auto_size', 'false'));
+		$include = TypeConverter::parseBoolean(ArrayUtility::getOr($this->params, 'include', 'false'));
 
 		$filePath = FileUtility::joinPath($this->argument->rootDirectoryPath, $sourcePath);
 		if (($autoSize || $include) || !is_file($filePath)) {

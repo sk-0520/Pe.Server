@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domain\Page\Ajax;
 
-use PeServer\App\Models\Dao\Entities\PluginCategoriesEntityDao;
+use PeServer\Core\StringUtility;
+use PeServer\Core\TypeConverter;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\App\Models\ResponseJson;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\App\Models\SessionManager;
-use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\Core\Database\IDatabaseContext;
-use PeServer\Core\StringUtility;
+use PeServer\App\Models\Domain\Page\PageLogicBase;
+use PeServer\App\Models\Dao\Entities\PluginCategoriesEntityDao;
 
 class AjaxPluginCategoryUpdateLogic extends PageLogicBase
 {
@@ -31,14 +32,20 @@ class AjaxPluginCategoryUpdateLogic extends PageLogicBase
 
 		$params = [
 			'plugin_category_id' => $this->getRequest('plugin_category_id'),
-			'category_display_name' => StringUtility::trim($json['category_display_name']),
-			'category_description' => StringUtility::trim($json['category_description']),
+			'category_display_name' => StringUtility::trim(TypeConverter::toString($json['category_display_name'])),
+			'category_description' => StringUtility::trim(TypeConverter::toString($json['category_description'])),
 		];
 
 		$database = $this->openDatabase();
 		$database->transaction(function (IDatabaseContext $context, $params) {
+			/** @var array<string,mixed> $params*/
+
 			$pluginCategoriesEntityDao = new PluginCategoriesEntityDao($context);
-			$pluginCategoriesEntityDao->updatePluginCategory($params['plugin_category_id'], $params['category_display_name'], $params['category_description']);
+
+			$pluginCategoryId = TypeConverter::toString($params['plugin_category_id']);
+			$categoryDisplayName = TypeConverter::toString($params['category_display_name']);
+			$categoryDescription = TypeConverter::toString($params['category_description']);
+			$pluginCategoriesEntityDao->updatePluginCategory($pluginCategoryId, $categoryDisplayName, $categoryDescription);
 
 			return true;
 		}, $params);

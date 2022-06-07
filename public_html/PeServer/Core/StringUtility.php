@@ -225,7 +225,7 @@ abstract class StringUtility
 	}
 
 	/**
-	 * 小文字を大文字に変換。
+	 * 大文字を小文字に変換。
 	 *
 	 * @param string $value
 	 * @return string
@@ -236,7 +236,7 @@ abstract class StringUtility
 	}
 
 	/**
-	 * 大文字を小文字に変換。
+	 * 小文字を大文字に変換。
 	 *
 	 * @param string $value
 	 * @return string

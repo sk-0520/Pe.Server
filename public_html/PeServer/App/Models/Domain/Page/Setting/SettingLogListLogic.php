@@ -26,8 +26,11 @@ class SettingLogListLogic extends PageLogicBase
 
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
+		/** @var array<string,mixed> */
 		$logging = AppConfiguration::$config['logging'];
-		$dirPath = (string)$logging['file']['directory'];
+		/** @var string @-phpstan-ignore-next-line */
+		$dirPath = $logging['file']['directory'];
+		/** @var string @-phpstan-ignore-next-line */
 		$targetExt = FileUtility::getFileExtension($logging['file']['name']);
 		$files = FileUtility::getFiles($dirPath, false);
 

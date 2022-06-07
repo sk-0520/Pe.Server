@@ -11,9 +11,12 @@ use PeServer\Core\StringUtility;
 use PeServer\Core\Throws\Throws;
 use PeServer\Core\Throws\SqlException;
 use PeServer\Core\Throws\DatabaseException;
+use PeServer\Core\TypeConverter;
 
 /**
  * DB接続処理。
+ *
+ * TODO: __destruct で解放処理ぶっこまなアカンやろなぁ
  */
 class Database implements IDatabaseContext
 {
@@ -171,6 +174,7 @@ class Database implements IDatabaseContext
 		$query = $this->executeStatement($statement, $parameters);
 
 		$result = $query->fetchAll();
+		// @phpstan-ignore-next-line: Strict comparison using === between
 		if ($result === false) {
 			throw new DatabaseException($this->getErrorMessage());
 		}
@@ -182,6 +186,7 @@ class Database implements IDatabaseContext
 	{
 		$query = $this->executeStatement($statement, $parameters);
 
+		/** @var array<string,mixed>|false */
 		$result = $query->fetch();
 		if ($result === false) {
 			throw new DatabaseException($this->getErrorMessage());
@@ -194,6 +199,7 @@ class Database implements IDatabaseContext
 	{
 		$query = $this->executeStatement($statement, $parameters);
 
+		/** @var array<string,mixed>|false */
 		$result = $query->fetch();
 		if ($result === false) {
 			return $defaultValue;
@@ -206,6 +212,7 @@ class Database implements IDatabaseContext
 	{
 		$query = $this->executeStatement($statement, $parameters);
 
+		/** @var array<string,mixed>|false */
 		$result = $query->fetch();
 		if ($result === false) {
 			throw new DatabaseException($this->getErrorMessage());
@@ -223,6 +230,7 @@ class Database implements IDatabaseContext
 	{
 		$query = $this->executeStatement($statement, $parameters);
 
+		/** @var array<string,mixed>|false */
 		$result = $query->fetch();
 		if ($result === false) {
 			return $defaultValue;
@@ -251,8 +259,14 @@ class Database implements IDatabaseContext
 			throw new SqlException();
 		}
 
+		/** @var array<string,mixed> */
 		$result = $this->queryFirst($statement, $parameters);
-		return (int)current($result);
+		$val = strval(current($result));
+		if (TypeConverter::tryParseInteger($val, $count)) {
+			return $count;
+		}
+
+		throw new DatabaseException();
 	}
 
 	public function execute(string $statement, ?array $parameters = null): int

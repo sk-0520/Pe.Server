@@ -6,6 +6,44 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [4.1.1] - 2022-05-17
+
+### Security
+- Prevent PHP injection through malicious block name or include file name. This addresses CVE-2022-
+
+### Fixed
+- Exclude docs and demo from export and composer [#751](https://github.com/smarty-php/smarty/pull/751)
+- PHP 8.1 deprecation notices in demo/plugins/cacheresource.pdo.php [#706](https://github.com/smarty-php/smarty/issues/706)
+- PHP 8.1 deprecation notices in truncate modifier [#699](https://github.com/smarty-php/smarty/issues/699)
+- Math equation `max(x, y)` didn't work anymore [#721](https://github.com/smarty-php/smarty/issues/721)
+- Fix PHP 8.1 deprecated warning when calling rtrim [#743](https://github.com/smarty-php/smarty/pull/743)
+- PHP 8.1: fix deprecation in escape modifier [#727](https://github.com/smarty-php/smarty/pull/727)
+
+## [4.1.0] - 2022-02-06
+
+### Added
+- PHP8.1 compatibility [#713](https://github.com/smarty-php/smarty/pull/713)
+
+## [4.0.4] - 2022-01-18
+
+### Fixed
+- Fixed illegal characters bug in math function security check [#702](https://github.com/smarty-php/smarty/issues/702)
+
+## [4.0.3] - 2022-01-10
+
+### Security
+- Prevent evasion of the `static_classes` security policy. This addresses CVE-2021-21408
+
+## [4.0.2] - 2022-01-10
+
+### Security
+- Prevent arbitrary PHP code execution through maliciously crafted expression for the math function. This addresses CVE-2021-29454
+
+## [4.0.1] - 2022-01-09
+
+### Security
+- Rewrote the mailto function to not use `eval` when encoding with javascript
+
 ## [4.0.0] - 2021-11-25
 
 ## [4.0.0-rc.0] - 2021-10-13

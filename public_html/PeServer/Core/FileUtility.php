@@ -227,6 +227,7 @@ abstract class FileUtility
 	{
 		$content = self::readContent($path);
 
+		/** @var array<mixed>|null */
 		$json = json_decode($content->getRaw(), true);
 
 		if (is_null($json)) {

@@ -25,6 +25,7 @@ class MarkdownFunction extends TemplateBlockFunctionBase
 
 	protected function functionBlockBodyImpl(string $content): string
 	{
+		/** @var string */
 		$className = ArrayUtility::getOr($this->params, 'class', '');
 		if (StringUtility::isNullOrWhiteSpace($className)) {
 			$className = 'markdown';

@@ -210,6 +210,8 @@ class AccountUserPluginLogic extends PageLogicBase
 
 		$database = $this->openDatabase();
 		$database->transaction(function (IDatabaseContext $context, $params) {
+			/** @var array<string,string> $params*/
+
 			$pluginsEntityDao = new PluginsEntityDao($context);
 			$pluginUrlsEntityDao = new PluginUrlsEntityDao($context);
 			$pluginCategoryMappingsEntityDao = new PluginCategoryMappingsEntityDao($context);
@@ -241,7 +243,9 @@ class AccountUserPluginLogic extends PageLogicBase
 			}
 
 			$pluginUrlsEntityDao->deleteByPluginId($params['plugin_id']);
-			foreach ($params['urls'] as $k => $v) {
+			/** @var array<string,string> */
+			$urls = $params['urls'];
+			foreach ($urls as $k => $v) {
 				$pluginUrlsEntityDao->insertUrl($params['plugin_id'], $k, $v);
 			}
 

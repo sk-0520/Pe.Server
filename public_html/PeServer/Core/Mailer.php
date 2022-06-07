@@ -127,7 +127,6 @@ class Mailer
 
 		foreach (['text', 'html'] as $i) {
 			if (isset($message[$i])) {
-				// @phpstan-ignore-next-line
 				if (StringUtility::isNullOrWhiteSpace($message[$i])) {
 					throw new ArgumentException($i);
 				}
@@ -153,6 +152,7 @@ class Mailer
 			throw new ArgumentException('address');
 		}
 
+		/** @var string|null */
 		$name = ArrayUtility::getOr($data, 'name', null);
 		if (StringUtility::isNullOrWhiteSpace($name)) {
 			return [$data['address'], ''];

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
+use PeServer\Core\Throws\TypeException;
+
 /**
  * 配列共通処理。
  */
@@ -29,16 +31,25 @@ class ArrayUtility
 	 *
 	 * @param array<int|string,mixed>|null $array 対象配列。
 	 * @param int|string $key キー。
-	 * @param mixed $defaultValue 失敗時に返却される値。
+	 * @param mixed $fallbackValue 失敗時に返却される値。
 	 * @return mixed 値。返却時にそれが成功しているか失敗しているかは不明なので厳密さが必要であれば tryGet を使用すること。
 	 */
-	public static function getOr(?array $array, $key, $defaultValue)
+	public static function getOr(?array $array, int|string $key, mixed $fallbackValue)
 	{
 		if (!is_null($array) && isset($array[$key])) {
-			return $array[$key];
+			$result = $array[$key];
+			if(!is_null($result) && !is_null($fallbackValue)) { //@phpstan-ignore-line
+				$resultType = gettype($result);
+				$fallbackValueType = gettype($fallbackValue);
+				if($resultType !== $fallbackValueType) {
+					throw new TypeException();
+				}
+			}
+
+			return $result;
 		}
 
-		return $defaultValue;
+		return $fallbackValue;
 	}
 
 	/**
@@ -49,7 +60,7 @@ class ArrayUtility
 	 * @param mixed $result 値を格納する変数。
 	 * @return boolean 値が存在したか。
 	 */
-	public static function tryGet(?array $array, $key, &$result): bool
+	public static function tryGet(?array $array, int|string $key, mixed &$result): bool
 	{
 		if (!is_null($array) && isset($array[$key])) {
 			$result = $array[$key];
@@ -90,10 +101,10 @@ class ArrayUtility
 	 * 配列に該当キーは存在するか。
 	 *
 	 * @param array<mixed> $haystack
-	 * @param string|integer $key
+	 * @param int|string $key
 	 * @return bool
 	 */
-	public static function existsKey(array $haystack, string|int $key): bool
+	public static function existsKey(array $haystack, int|string $key): bool
 	{
 		return array_key_exists($key, $haystack);
 	}

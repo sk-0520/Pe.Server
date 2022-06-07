@@ -13,6 +13,7 @@ use PeServer\Core\Database\IDatabaseContext;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\App\Models\Dao\Entities\PluginCategoriesEntityDao;
 use PeServer\App\Models\Dao\Entities\PluginCategoryMappingsEntityDao;
+use PeServer\Core\TypeConverter;
 
 class AjaxPluginCategoryDeleteLogic extends PageLogicBase
 {
@@ -34,11 +35,16 @@ class AjaxPluginCategoryDeleteLogic extends PageLogicBase
 
 		$database = $this->openDatabase();
 		$database->transaction(function (IDatabaseContext $context, $params) {
+			/** @var array<string,mixed> $params*/
+
 			$pluginCategoryMappingsEntityDao = new PluginCategoryMappingsEntityDao($context);
 			$pluginCategoriesEntityDao = new PluginCategoriesEntityDao($context);
 
-			$pluginCategoryMappingsEntityDao->deletePluginCategoryMappings($params['plugin_category_id']);
-			$pluginCategoriesEntityDao->deletePluginCategory($params['plugin_category_id']);
+			/** @var string */
+			$pluginCategoryId = $params['plugin_category_id'];
+
+			$pluginCategoryMappingsEntityDao->deletePluginCategoryMappings($pluginCategoryId);
+			$pluginCategoriesEntityDao->deletePluginCategory($pluginCategoryId);
 
 			return true;
 		}, $params);

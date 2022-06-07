@@ -24,7 +24,7 @@ abstract class TypeConverter
 	 */
 	public static function parseInteger(string $input): int
 	{
-		if (!preg_match(self::INT_PATTERN, $input)) {
+		if (!Regex::isMatch($input, self::INT_PATTERN)) {
 			throw new ParseException($input);
 		}
 
@@ -40,7 +40,7 @@ abstract class TypeConverter
 	 */
 	public static function tryParseInteger(string $input, ?int &$result): bool
 	{
-		if (!preg_match(self::INT_PATTERN, $input)) {
+		if (!Regex::isMatch($input, self::INT_PATTERN)) {
 			return false;
 		}
 
@@ -60,5 +60,14 @@ abstract class TypeConverter
 		}
 
 		return boolval($input);
+	}
+
+	public static function toString(mixed $input): string
+	{
+		if (is_string($input)) {
+			return $input;
+		}
+
+		return strval($input);
 	}
 }

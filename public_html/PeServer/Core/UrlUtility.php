@@ -14,7 +14,9 @@ abstract class UrlUtility
 
 	public static function convertPathToUrl(string $path): string
 	{
-		$httpProtocol = StringUtility::isNullOrEmpty(ArrayUtility::getOr($_SERVER, 'HTTPS', '')) ? 'http://' : 'https://';
+		/** @var string */
+		$httpsProtocol = ArrayUtility::getOr($_SERVER, 'HTTPS', '');
+		$httpProtocol = StringUtility::isNullOrEmpty($httpsProtocol) ? 'http://' : 'https://';
 		return $httpProtocol . $_SERVER['SERVER_NAME'] . '/' .  StringUtility::trim($path, '/');
 	}
 

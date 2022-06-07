@@ -29,7 +29,7 @@ class ListArray
 	 * @param mixed $value
 	 * @return ListArray
 	 */
-	public function add($value): ListArray
+	public function add(mixed $value): ListArray
 	{
 		$this->items[] = $value;
 
@@ -44,8 +44,28 @@ class ListArray
 	 */
 	public function addRange(array $items): ListArray
 	{
-		$this->items += $items;
+		$this->items = array_merge($this->items, $items);
 
 		return $this;
+	}
+
+	/**
+	 * 配列データを取得。
+	 *
+	 * @return array<mixed>
+	 */
+	public function getArray(): array
+	{
+		return $this->items;
+	}
+
+	/**
+	 * 現在要素数を取得。
+	 *
+	 * @return integer
+	 */
+	public function getCount(): int
+	{
+		return count($this->items);
 	}
 }
