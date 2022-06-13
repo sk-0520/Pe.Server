@@ -218,7 +218,7 @@ class Routing
 			return;
 		}
 
-		$printer = new ResponsePrinter($response);
+		$printer = new ResponsePrinter($request, $response);
 		$printer->print();
 	}
 
