@@ -4,16 +4,21 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc;
 
+/**
+ * ページャ。
+ *
+ * まだ使わんからどうしようもねぇなぁ。
+ */
 class Pager
 {
 	/**
-	 * ページ内データ件数。
+	 * ページ内データ全件数。
 	 *
 	 * @var integer
 	 */
 	public int $pageCount;
 	/**
-	 * 全体件数。
+	 * 全件数。
 	 *
 	 * @var integer
 	 */
@@ -29,7 +34,7 @@ class Pager
 	 *
 	 * @var integer
 	 */
-	public int $pageNumberCount = 5;
+	public int $shortcutCount = 5;
 
 	public function __construct(int $pageCount, int $totalCount, int $currentPageNumber)
 	{

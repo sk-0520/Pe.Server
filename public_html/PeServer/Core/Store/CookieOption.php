@@ -10,13 +10,13 @@ use \DateTimeImmutable;
 class CookieOption
 {
 	/**
-	 * Undocumented function
+	 * 生成。
 	 *
-	 * @param string $path
-	 * @param DateInterval|null $span
-	 * @param boolean $secure
-	 * @param boolean $httpOnly
-	 * @param 'Lax'|'lax'|'None'|'none'|'Strict'|'strict' $sameSite
+	 * @param string $path パス。
+	 * @param DateInterval|null $span 期間。
+	 * @param boolean $secure HTTPS に限定するか。
+	 * @param boolean $httpOnly HTTP リクエストのみで使用するか。
+	 * @param 'Lax'|'lax'|'None'|'none'|'Strict'|'strict' $sameSite 同じサイト。
 	 * @return CookieOption
 	 */
 	public static function create(string $path, ?DateInterval $span, bool $secure, bool $httpOnly, string $sameSite): CookieOption
@@ -54,7 +54,7 @@ class CookieOption
 	public bool $httpOnly;
 
 	/**
-	 * Undocumented variable
+	 * 同じサイト。
 	 *
 	 * @var 'Lax'|'lax'|'None'|'none'|'Strict'|'strict'
 	 */

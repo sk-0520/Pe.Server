@@ -36,7 +36,7 @@ class SettingLogDetailLogic extends PageLogicBase
 
 		$fileName = StringUtility::trim($this->getRequest('log_name'), '/\\.');
 		$filePath = FileUtility::joinPath($dirPath, $fileName);
-		if (!is_file($filePath)) {
+		if (!FileUtility::existsFile($filePath)) {
 			throw new FileNotFoundException();
 		}
 

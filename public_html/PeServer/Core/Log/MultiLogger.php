@@ -7,6 +7,9 @@ namespace PeServer\Core\Log;
 use PeServer\Core\ILogger;
 use PeServer\Core\Log\LoggerBase;
 
+/**
+ * 複数出力ロガー。
+ */
 final class MultiLogger extends LoggerBase
 {
 	/**
@@ -19,10 +22,10 @@ final class MultiLogger extends LoggerBase
 	/**
 	 * 生成。
 	 *
-	 * @param string $header
-	 * @param integer $level
-	 * @param integer $baseTraceIndex
-	 * @param ILogger[] $loggers
+	 * @param string $header ヘッダ。使用用途により意味合いは変わるので実装側でルール決めして使用すること。
+	 * @param integer $level 有効レベル。
+	 * @param integer $baseTraceIndex 基準トレース位置。
+	 * @param ILogger[] $loggers ロガー一覧。
 	 */
 	public function __construct(string $header, int $level, int $baseTraceIndex, array $loggers)
 	{
@@ -35,15 +38,6 @@ final class MultiLogger extends LoggerBase
 		$this->logImpl($level, $traceIndex + 1, $message, ...$parameters);
 	}
 
-	/**
-	 * ログ出力実装。
-	 *
-	 * @param integer $level ログレベル。
-	 * @param integer $traceIndex 現在フレーム数。
-	 * @param mixed $message メッセージかオブジェクト。
-	 * @param mixed ...$parameters パラメータ（可変個）。$messageが文字列の場合はプレースホルダー {\d} に対して置き換え処理が行われるがその場合は所謂0始まり・抜けなしの配列を想定している。
-	 * @return void
-	 */
 	protected function logImpl(int $level, int $traceIndex, $message, ...$parameters): void
 	{
 		foreach ($this->loggers as $logger) {

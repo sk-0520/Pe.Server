@@ -10,6 +10,9 @@ use PeServer\Core\Mvc\Middleware\IMiddleware;
 use PeServer\Core\Mvc\Middleware\MiddlewareResult;
 use PeServer\Core\Mvc\Middleware\MiddlewareArgument;
 
+/**
+ * CSRFミドルウェア。
+ */
 class CsrfMiddleware implements IMiddleware
 {
 	public function handleBefore(MiddlewareArgument $argument): MiddlewareResult

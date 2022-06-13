@@ -31,9 +31,9 @@ class FileLogger extends LoggerBase
 	/**
 	 * 生成。
 	 *
-	 * @param string $header
-	 * @param integer $level
-	 * @param integer $baseTraceIndex
+	 * @param string $header ヘッダ。使用用途により意味合いは変わるので実装側でルール決めして使用すること。
+	 * @param integer $level 有効レベル。
+	 * @param integer $baseTraceIndex 基準トレース位置。
 	 * @param array<string,mixed> $fileLoggingConfiguration
 	 */
 	public function __construct(string $header, int $level, int $baseTraceIndex, array $fileLoggingConfiguration)

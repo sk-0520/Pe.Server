@@ -25,7 +25,7 @@ use PeServer\Core\TypeConverter;
  *  * alt: 代替文言(いらんかもね)。
  *  * width: 指定時の横幅(現状 未指定は 100)。
  *  * height: 指定時の高さ(現状 未指定は 100)。
- *  * font-size: ホントサイズ(未指定は 12.0 )。
+ *  * font-size: ホントサイズ(未指定は 12.0)。
  *  * background-color: 背景色
  *  * foreground-color: 前景色
  *  * obfuscate-level: 難読化(未指定は 0 )。 未実装。

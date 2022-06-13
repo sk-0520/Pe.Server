@@ -9,6 +9,9 @@ use PeServer\Core\HtmlDocument;
 use PeServer\Core\Mvc\TemplatePlugin\TemplateFunctionBase;
 use PeServer\Core\Mvc\TemplatePlugin\TemplatePluginArgument;
 
+/**
+ * CSRFトークン埋め込み。
+ */
 class CsrfFunction extends TemplateFunctionBase
 {
 	public function __construct(TemplatePluginArgument $argument)
