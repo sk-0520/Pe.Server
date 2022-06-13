@@ -17,7 +17,7 @@ class CsrfMiddleware implements IMiddleware
 		$result = $argument->request->exists(Security::CSRF_REQUEST_KEY);
 		if (!$result['exists']) {
 			$argument->logger->warn('要求CSRFトークンなし');
-			return MiddlewareResult::error(HttpStatus::forbidden(), 'CSRF');
+			return MiddlewareResult::error(HttpStatus::misdirected(), 'CSRF');
 		}
 
 		$requestToken = $argument->request->getValue(Security::CSRF_REQUEST_KEY);
@@ -30,7 +30,7 @@ class CsrfMiddleware implements IMiddleware
 			$argument->logger->warn('セッションCSRFトークンなし');
 		}
 
-		return MiddlewareResult::error(HttpStatus::forbidden(), 'CSRF');
+		return MiddlewareResult::error(HttpStatus::misdirected(), 'CSRF');
 	}
 
 	public final function handleAfter(MiddlewareArgument $argument): MiddlewareResult
