@@ -19,6 +19,18 @@ class ErrorHandler
 	private bool $isRegistered = false;
 
 	/**
+	 * 抑制エラーコード指定。
+	 *
+	 * @return HttpStatus[]
+	 */
+	protected function getSuppressionStatusList(): array
+	{
+		return [
+			HttpStatus::notFound(),
+		];
+	}
+
+	/**
 	 * エラーハンドラの登録処理。
 	 *
 	 * 明示的に呼び出しが必要。
@@ -121,10 +133,21 @@ class ErrorHandler
 			'throwable' => $throwable,
 		];
 
-		$logger = Logging::create(__CLASS__);
-		$logger->error($values);
-
 		$status = $this->setHttpStatus($throwable);
+
+		$logger = Logging::create(__CLASS__);
+
+		$isSuppressionStatus = false;
+		foreach ($this->getSuppressionStatusList() as $suppressionStatus) {
+			if ($status->is($suppressionStatus)) {
+				$isSuppressionStatus = true;
+				$logger->info('HTTP: ' . $suppressionStatus->getCode());
+				break;
+			}
+		}
+		if (!$isSuppressionStatus) {
+			$logger->error($values);
+		}
 
 		$template = Template::create('template', 'Core');
 		echo $template->build('error-display.tpl', new TemplateParameter($status, $values, []));
