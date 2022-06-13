@@ -19,7 +19,7 @@ abstract class AutoLoader
 	private static array $baseDirectoryPaths;
 
 	/**
-	 * 読み込み対象パターン。
+	 * 読み込み対象正規表現パターン。
 	 *
 	 * @var string
 	 */
@@ -50,7 +50,7 @@ abstract class AutoLoader
 			$filePath = $baseDirectoryPath . DIRECTORY_SEPARATOR . $fileBasePath . '.php';
 
 			if (is_file($filePath)) {
-				include $filePath;
+				require $filePath;
 			}
 		}
 	}
