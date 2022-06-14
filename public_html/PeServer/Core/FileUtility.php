@@ -280,7 +280,7 @@ abstract class FileUtility
 	public static function createDirectoryIfNotExists(string $directoryPath, int $permissions = self::DIRECTORY_PERMISSIONS): bool
 	{
 		if (!file_exists($directoryPath)) {
-			return self::createDirectory($directoryPath, $permissions, true);
+			return self::createDirectory($directoryPath, $permissions);
 		}
 
 		return false;
