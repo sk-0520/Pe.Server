@@ -60,4 +60,20 @@ class ArrayUtilityTest extends TestClass
 			$this->assertBoolean($test->expected, $actual, $test->str());
 		}
 	}
+
+	public function test_getKeys()
+	{
+		$expected = [
+			0, 1, 2
+		];
+		$input = [
+			$expected[0] => 'A',
+			$expected[1] => 'B',
+			$expected[2] => 'C',
+		];
+		$actual =ArrayUtility::getKeys($input);
+		for($i = 0; $i < count($expected); $i++) {
+			$this->assertEquals($expected[$i], $actual[$i]);
+		}
+	}
 }
