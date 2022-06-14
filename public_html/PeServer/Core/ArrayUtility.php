@@ -119,4 +119,15 @@ class ArrayUtility
 	{
 		return array_keys($array);
 	}
+
+	/**
+	 * array_values ラッパー。
+	 *
+	 * @param array<int|string,mixed> $array
+	 * @return array<mixed>
+	 */
+	public static function getValues(array $array): array
+	{
+		return array_values($array);
+	}
 }

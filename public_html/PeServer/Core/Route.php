@@ -237,7 +237,7 @@ class Route
 					} else {
 						return ['key' => $value, 'name' => $requestKey, 'value' => $targetValue];
 					}
-				}, array_keys($keyPaths), array_values($keyPaths)), function ($i) {
+				}, ArrayUtility::getKeys($keyPaths), ArrayUtility::getValues($keyPaths)), function ($i) {
 					return !is_null($i);
 				});
 

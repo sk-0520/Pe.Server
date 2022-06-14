@@ -71,8 +71,24 @@ class ArrayUtilityTest extends TestClass
 			$expected[1] => 'B',
 			$expected[2] => 'C',
 		];
-		$actual =ArrayUtility::getKeys($input);
-		for($i = 0; $i < count($expected); $i++) {
+		$actual = ArrayUtility::getKeys($input);
+		for ($i = 0; $i < count($expected); $i++) {
+			$this->assertEquals($expected[$i], $actual[$i]);
+		}
+	}
+
+	public function test_getValues()
+	{
+		$expected = [
+			0, 1, 2
+		];
+		$input = [
+			'A' => $expected[0],
+			'B' => $expected[1],
+			'C' => $expected[2],
+		];
+		$actual = ArrayUtility::getValues($input);
+		for ($i = 0; $i < count($expected); $i++) {
 			$this->assertEquals($expected[$i], $actual[$i]);
 		}
 	}

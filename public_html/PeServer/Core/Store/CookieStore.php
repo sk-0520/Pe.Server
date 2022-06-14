@@ -115,14 +115,15 @@ class CookieStore
 	/**
 	 * クッキーデータ破棄。
 	 *
-	 * @param string $key 対象クッキーキー。空白指定ですべて削除。
+	 * @param string $key キー。空白指定ですべて削除。
 	 * @return void
 	 */
 	public function remove(string $key): void
 	{
 		if (StringUtility::isNullOrEmpty($key)) {
 			$this->values = array();
-			$this->removes = array_keys($_COOKIE);
+			/** @phpstan-ignore-next-line Cookie のキーは文字列 */
+			$this->removes = ArrayUtility::getKeys($_COOKIE);
 		} else {
 			unset($this->values[$key]);
 			$this->removes[] = $key;
