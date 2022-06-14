@@ -135,17 +135,17 @@ class CookieStore
 	 * クッキーデータ取得。
 	 *
 	 * @param string $key
-	 * @param string $defaultValue
+	 * @param string $fallbackValue
 	 * @return string 取得データ。
 	 */
-	public function getOr(string $key, string $defaultValue): string
+	public function getOr(string $key, string $fallbackValue): string
 	{
 		if (ArrayUtility::tryGet($this->values, $key, $value)) {
 			return $value['data'];
 		}
 
 		/** @var string */
-		return ArrayUtility::getOr($_COOKIE, $key, $defaultValue);
+		return ArrayUtility::getOr($_COOKIE, $key, $fallbackValue);
 	}
 
 	/**

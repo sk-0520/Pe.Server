@@ -249,12 +249,12 @@ class SessionStore
 	 * セッションデータ取得。
 	 *
 	 * @param string $key
-	 * @param mixed $defaultValue
+	 * @param mixed $fallbackValue
 	 * @return mixed 取得データ。
 	 */
-	public function getOr(string $key, mixed $defaultValue): mixed
+	public function getOr(string $key, mixed $fallbackValue): mixed
 	{
-		return ArrayUtility::getOr($this->values, $key, $defaultValue);
+		return ArrayUtility::getOr($this->values, $key, $fallbackValue);
 	}
 
 	/**
