@@ -426,10 +426,19 @@ abstract class FileUtility
 			if (self::existsDirectory($file)) {
 				self::removeDirectory($file);
 			} else {
-				unlink($file);
+				self::removeFile($file);
 			}
 		}
 		rmdir($directoryPath);
+	}
+
+	public static function removeFile(string $filePath): bool
+	{
+		if (self::existsFile($filePath)) {
+			return unlink($filePath);
+		}
+
+		return false;
 	}
 
 	/**
