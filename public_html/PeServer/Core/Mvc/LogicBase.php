@@ -219,7 +219,7 @@ abstract class LogicBase implements IValidationReceiver
 				/** @var 'Lax'|'lax'|'None'|'none'|'Strict'|'strict' */
 				$sameSite = ArrayUtility::getOr($option, 'sameSite', $this->cookie->option->sameSite);
 
-				$cookieOption = CookieOption::create(
+				$cookieOption = new CookieOption(
 					$path,
 					$span,
 					$secure,

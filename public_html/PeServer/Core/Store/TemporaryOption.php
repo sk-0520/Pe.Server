@@ -8,21 +8,20 @@ use PeServer\Core\StringUtility;
 use PeServer\Core\Store\CookieOption;
 use PeServer\Core\Throws\ArgumentException;
 
+/**
+ * 一時データ設定。
+ */
 class TemporaryOption
 {
-	public static function create(string $name, string $savePath, CookieOption $cookie): TemporaryOption
+	public function __construct(string $name, string $savePath, CookieOption $cookie)
 	{
 		if (StringUtility::isNullOrWhiteSpace($name)) {
 			throw new ArgumentException('$name');
 		}
 
-		$option = new self();
-
-		$option->name = $name;
-		$option->savePath = $savePath;
-		$option->cookie = $cookie;
-
-		return $option;
+		$this->name = $name;
+		$this->savePath = $savePath;
+		$this->cookie = $cookie;
 	}
 
 	public string $name;

@@ -7,6 +7,9 @@ namespace PeServer\Core\Store;
 use \DateInterval;
 use \DateTimeImmutable;
 
+/**
+ * Cookie 設定。
+ */
 class CookieOption
 {
 	/**
@@ -17,19 +20,14 @@ class CookieOption
 	 * @param boolean $secure HTTPS に限定するか。
 	 * @param boolean $httpOnly HTTP リクエストのみで使用するか。
 	 * @param 'Lax'|'lax'|'None'|'none'|'Strict'|'strict' $sameSite 同じサイト。
-	 * @return CookieOption
 	 */
-	public static function create(string $path, ?DateInterval $span, bool $secure, bool $httpOnly, string $sameSite): CookieOption
+	public function __construct(string $path, ?DateInterval $span, bool $secure, bool $httpOnly, string $sameSite)
 	{
-		$option = new self();
-
-		$option->path = $path;
-		$option->span = $span;
-		$option->secure = $secure;
-		$option->httpOnly = $httpOnly;
-		$option->sameSite = $sameSite;
-
-		return $option;
+		$this->path = $path;
+		$this->span = $span;
+		$this->secure = $secure;
+		$this->httpOnly = $httpOnly;
+		$this->sameSite = $sameSite;
 	}
 
 	/**

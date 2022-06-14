@@ -9,7 +9,7 @@ use PeServer\Core\StringUtility;
 use PeServer\Core\Store\CookieOption;
 
 /**
- * cookie 管理処理。
+ * Cookie 管理処理。
  *
  * セッション側と違い、都度取得する感じ。
  *
