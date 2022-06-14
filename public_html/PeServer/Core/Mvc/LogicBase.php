@@ -6,6 +6,7 @@ namespace PeServer\Core\Mvc;
 
 use \DateInterval;
 use PeServer\Core\I18n;
+use PeServer\Core\Mime;
 use PeServer\Core\Bytes;
 use PeServer\Core\ILogger;
 use PeServer\Core\FileUtility;
@@ -15,7 +16,6 @@ use PeServer\Core\StringUtility;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mvc\DataContent;
 use PeServer\Core\Http\HttpRequest;
-use PeServer\Core\Mime;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Store\CookieStore;
 use PeServer\Core\Mvc\LogicParameter;
@@ -82,10 +82,13 @@ abstract class LogicBase implements IValidationReceiver
 	/**
 	 * 応答データ。
 	 */
-	private DataContent|null $content = null;
+	private ?DataContent $content = null;
 
+	/** cookie 管理 */
 	private CookieStore $cookie;
+	/** 一時データ管理 */
 	private TemporaryStore $temporary;
+	/** セッション管理 */
 	private SessionStore $session;
 
 	/**
@@ -95,6 +98,11 @@ abstract class LogicBase implements IValidationReceiver
 	 */
 	private array $responseHeaders = array();
 
+	/**
+	 * 生成。
+	 *
+	 * @param LogicParameter $parameter ロジック用パラメータ。
+	 */
 	protected function __construct(LogicParameter $parameter)
 	{
 		$this->httpStatus = HttpStatus::ok();
@@ -108,17 +116,17 @@ abstract class LogicBase implements IValidationReceiver
 	}
 
 	/**
-	 * リクエストデータの取得。
+	 * 要求データの取得。
 	 *
-	 * @param string $key
-	 * @param string $default
-	 * @param bool $trim
-	 * @return string
+	 * @param string $key 要求キー。
+	 * @param string $fallbackValue 要求キーに存在しない場合の戻り値。
+	 * @param bool $trim 取得データをトリムするか。
+	 * @return string 要求データ。
 	 */
-	protected function getRequest(string $key, string $default = '', bool $trim = true): string
+	protected function getRequest(string $key, string $fallbackValue = '', bool $trim = true): string
 	{
 		if (!$this->request->exists($key)['exists']) {
-			return $default;
+			return $fallbackValue;
 		}
 
 		$value = $this->request->getValue($key);
@@ -130,6 +138,11 @@ abstract class LogicBase implements IValidationReceiver
 		return $value;
 	}
 
+	/**
+	 * 要求本文の生データを取得。
+	 *
+	 * @return Bytes
+	 */
 	protected function getRequestContent(): Bytes
 	{
 		return FileUtility::readContent('php://input');
@@ -145,28 +158,45 @@ abstract class LogicBase implements IValidationReceiver
 		return FileUtility::readJsonFile('php://input');
 	}
 
+	/**
+	 * HTTP応答ステータスコードの設定。
+	 *
+	 * @param HttpStatus $httpStatus HTTPステータスコード。
+	 * @return void
+	 */
 	protected function setHttpStatus(HttpStatus $httpStatus): void
 	{
 		$this->httpStatus = $httpStatus;
 	}
 
+	/**
+	 * HTTP応答ステータスコードの取得。
+	 *
+	 * @return HttpStatus
+	 */
 	public function getHttpStatus(): HttpStatus
 	{
 		return $this->httpStatus;
 	}
 
-
-	protected function getCookie(string $key, string $default = ''): string
+	/**
+	 * Cookie を取得。
+	 *
+	 * @param string $key キー。
+	 * @param string $fallbackValue 取得失敗時の値。
+	 * @return string
+	 */
+	protected function getCookie(string $key, string $fallbackValue = ''): string
 	{
-		return $this->cookie->getOr($key, $default);
+		return $this->cookie->getOr($key, $fallbackValue);
 	}
 
 	/**
 	 * Cookie を設定。
 	 *
-	 * @param string $key
-	 * @param string $value
-	 * @param CookieOption|array{path:?string,span:?DateInterval,secure:?bool,httpOnly:?bool}|null $option
+	 * @param string $key キー。
+	 * @param string $value 設定値。
+	 * @param CookieOption|array{path:?string,span:?DateInterval,secure:?bool,httpOnly:?bool}|null $option オプション。
 	 * @return void
 	 */
 	protected function setCookie(string $key, string $value, $option = null): void
@@ -189,7 +219,7 @@ abstract class LogicBase implements IValidationReceiver
 				/** @var 'Lax'|'lax'|'None'|'none'|'Strict'|'strict' */
 				$sameSite = ArrayUtility::getOr($option, 'sameSite', $this->cookie->option->sameSite);
 
-				$cookieOption = CookieOption::create(
+				$cookieOption = new CookieOption(
 					$path,
 					$span,
 					$secure,
@@ -201,26 +231,33 @@ abstract class LogicBase implements IValidationReceiver
 
 		$this->cookie->set($key, $value, $cookieOption);
 	}
+
+	/**
+	 * Cookie を削除。
+	 *
+	 * @param string $key キー。
+	 * @return void
+	 */
 	protected function removeCookie(string $key): void
 	{
 		$this->cookie->remove($key);
 	}
 
-	protected function peekTemporary(string $key, mixed $default = null): mixed
+	protected function peekTemporary(string $key, mixed $fallbackValue = null): mixed
 	{
 		$value = $this->temporary->peek($key);
 		if (is_null($value)) {
-			return $default;
+			return $fallbackValue;
 		}
 
 		return $value;
 	}
 
-	protected function popTemporary(string $key, mixed $default = null): mixed
+	protected function popTemporary(string $key, mixed $fallbackValue = null): mixed
 	{
 		$value = $this->temporary->pop($key);
 		if (is_null($value)) {
-			return $default;
+			return $fallbackValue;
 		}
 
 		return $value;
@@ -235,9 +272,9 @@ abstract class LogicBase implements IValidationReceiver
 		$this->temporary->remove($key);
 	}
 
-	protected function getSession(string $key, mixed $default = null): mixed
+	protected function getSession(string $key, mixed $fallbackValue = null): mixed
 	{
-		return $this->session->getOr($key, $default);
+		return $this->session->getOr($key, $fallbackValue);
 	}
 
 	protected function setSession(string $key, mixed $value): void

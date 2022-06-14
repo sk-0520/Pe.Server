@@ -38,10 +38,10 @@ class ArrayUtility
 	{
 		if (!is_null($array) && isset($array[$key])) {
 			$result = $array[$key];
-			if(!is_null($result) && !is_null($fallbackValue)) { //@phpstan-ignore-line
+			if (!is_null($result) && !is_null($fallbackValue)) { //@phpstan-ignore-line
 				$resultType = gettype($result);
 				$fallbackValueType = gettype($fallbackValue);
-				if($resultType !== $fallbackValueType) {
+				if ($resultType !== $fallbackValueType) {
 					throw new TypeException();
 				}
 			}
@@ -107,5 +107,27 @@ class ArrayUtility
 	public static function existsKey(array $haystack, int|string $key): bool
 	{
 		return array_key_exists($key, $haystack);
+	}
+
+	/**
+	 * array_keys ラッパー。
+	 *
+	 * @param array<int|string,mixed> $array
+	 * @return array<int|string>
+	 */
+	public static function getKeys(array $array): array
+	{
+		return array_keys($array);
+	}
+
+	/**
+	 * array_values ラッパー。
+	 *
+	 * @param array<int|string,mixed> $array
+	 * @return array<mixed>
+	 */
+	public static function getValues(array $array): array
+	{
+		return array_values($array);
 	}
 }

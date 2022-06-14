@@ -9,7 +9,7 @@ use PeServer\Core\StringUtility;
 use PeServer\Core\Store\CookieOption;
 
 /**
- * cookie 管理処理。
+ * Cookie 管理処理。
  *
  * セッション側と違い、都度取得する感じ。
  *
@@ -115,14 +115,15 @@ class CookieStore
 	/**
 	 * クッキーデータ破棄。
 	 *
-	 * @param string $key 対象クッキーキー。空白指定ですべて削除。
+	 * @param string $key キー。空白指定ですべて削除。
 	 * @return void
 	 */
 	public function remove(string $key): void
 	{
 		if (StringUtility::isNullOrEmpty($key)) {
 			$this->values = array();
-			$this->removes = array_keys($_COOKIE);
+			/** @phpstan-ignore-next-line Cookie のキーは文字列 */
+			$this->removes = ArrayUtility::getKeys($_COOKIE);
 		} else {
 			unset($this->values[$key]);
 			$this->removes[] = $key;
@@ -135,17 +136,17 @@ class CookieStore
 	 * クッキーデータ取得。
 	 *
 	 * @param string $key
-	 * @param string $defaultValue
+	 * @param string $fallbackValue
 	 * @return string 取得データ。
 	 */
-	public function getOr(string $key, string $defaultValue): string
+	public function getOr(string $key, string $fallbackValue): string
 	{
 		if (ArrayUtility::tryGet($this->values, $key, $value)) {
 			return $value['data'];
 		}
 
 		/** @var string */
-		return ArrayUtility::getOr($_COOKIE, $key, $defaultValue);
+		return ArrayUtility::getOr($_COOKIE, $key, $fallbackValue);
 	}
 
 	/**

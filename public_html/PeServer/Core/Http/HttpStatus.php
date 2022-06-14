@@ -49,6 +49,11 @@ abstract class HttpStatus
 	{
 		return new _HttpStatus_Impl(405);
 	}
+	public static function misdirected(): HttpStatus
+	{
+		return new _HttpStatus_Impl(421);
+	}
+
 
 	public static function internalServerError(): HttpStatus
 	{

@@ -18,17 +18,13 @@ use PeServer\Core\Throws\ArgumentException;
  *  ていうよくやるやつが動かんかってん
  *
  * @property bool $state 真偽値を何も考えずに代入する。取得した際に一度でも偽が代入されていれば偽になる。
+ * @property bool $last 最終設定値。
  */
 class TrueKeeper
 {
 	private bool $state = true;
 
 	private bool $last = false;
-
-	public function last(): bool
-	{
-		return $this->last;
-	}
 
 	public function __set(string $name, bool $value): void
 	{
@@ -44,10 +40,13 @@ class TrueKeeper
 
 	public function __get(string $name): bool
 	{
-		if ($name !== 'state') {
-			throw new ArgumentException();
+		if ($name === 'state') {
+			return $this->state;
+		}
+		if ($name === 'last') {
+			return $this->last;
 		}
 
-		return $this->state;
+		throw new ArgumentException($name);
 	}
 }

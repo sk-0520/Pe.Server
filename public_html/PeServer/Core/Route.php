@@ -88,18 +88,18 @@ class Route
 		$this->className = $className;
 
 		if (!Regex::isMatch($this->basePath, $this->excludeIndexPattern)) {
-			$this->addAction('', HttpMethod::get(), 'index', $this->baseMiddleware, $this->baseShutdownMiddleware);
+			$this->addAction('', HttpMethod::gets(), 'index', $this->baseMiddleware, $this->baseShutdownMiddleware);
 		}
 	}
 
 	/**
-	 * Undocumented function
+	 * ミドルウェア組み合わせ。
 	 *
 	 * @param array<IMiddleware|IShutdownMiddleware|string> $baseMiddleware
 	 * @param array<IMiddleware|IShutdownMiddleware|string>|null $middleware
 	 * @return array<IMiddleware|IShutdownMiddleware|string>
 	 */
-	private static function getMiddleware(array $baseMiddleware, ?array $middleware = null): array
+	private static function combineMiddleware(array $baseMiddleware, ?array $middleware = null): array
 	{
 		$customMiddleware = null;
 		if (ArrayUtility::getCount($middleware)) {
@@ -128,22 +128,22 @@ class Route
 	 * アクション設定。
 	 *
 	 * @param string $actionName URLとして使用されるパス, パス先頭が : でURLパラメータとなり、パラメータ名の @ 以降は一致正規表現となる。
-	 * @param HttpMethod $httpMethod 使用するHTTPメソッド。
+	 * @param HttpMethod|HttpMethod[] $httpMethod 使用するHTTPメソッド。
 	 * @param string|null $methodName 呼び出されるコントローラメソッド。未指定なら $actionName が使用される。
 	 * @param array<IMiddleware|string>|null $middleware 専用ミドルウェア。 第一要素が CLEAR_MIDDLEWARE であれば既存のミドルウェアを破棄する。nullの場合はコンストラクタで渡されたミドルウェアが使用される。
 	 * @param array<IShutdownMiddleware|string>|null $shutdownMiddleware 専用終了ミドルウェア。 第一要素が CLEAR_MIDDLEWARE であれば既存のミドルウェアを破棄する。nullの場合はコンストラクタで渡されたミドルウェアが使用される。
 	 * @return Route
 	 */
-	public function addAction(string $actionName, HttpMethod $httpMethod, ?string $methodName = null, ?array $middleware = null, ?array $shutdownMiddleware = null): Route
+	public function addAction(string $actionName, HttpMethod|array $httpMethod, ?string $methodName = null, ?array $middleware = null, ?array $shutdownMiddleware = null): Route
 	{
 		if (!isset($this->actions[$actionName])) {
 			$this->actions[$actionName] = new Action();
 		}
 
 		/** @var array<IMiddleware|string> */
-		$customMiddleware = self::getMiddleware($this->baseMiddleware, $middleware);
+		$customMiddleware = self::combineMiddleware($this->baseMiddleware, $middleware);
 		/** @var array<IShutdownMiddleware|string> */
-		$customShutdownMiddleware = self::getMiddleware($this->baseShutdownMiddleware, $shutdownMiddleware);
+		$customShutdownMiddleware = self::combineMiddleware($this->baseShutdownMiddleware, $shutdownMiddleware);
 
 		$this->actions[$actionName]->add(
 			$httpMethod,
@@ -237,7 +237,7 @@ class Route
 					} else {
 						return ['key' => $value, 'name' => $requestKey, 'value' => $targetValue];
 					}
-				}, array_keys($keyPaths), array_values($keyPaths)), function ($i) {
+				}, ArrayUtility::getKeys($keyPaths), ArrayUtility::getValues($keyPaths)), function ($i) {
 					return !is_null($i);
 				});
 

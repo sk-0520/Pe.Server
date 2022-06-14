@@ -6,6 +6,7 @@ namespace PeServer\App\Models\Domain\Page\Home;
 
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
+use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 
 class HomeContactLogic extends PageLogicBase
@@ -22,6 +23,10 @@ class HomeContactLogic extends PageLogicBase
 
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
-		//NONE
+		/** @var array<string,string> */
+		$families = AppConfiguration::$config['config']['address']['families'];
+		foreach ($families as $key => $value) {
+			$this->setValue($key, $value);
+		}
 	}
 }

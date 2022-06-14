@@ -10,11 +10,10 @@ use PeServer\Core\Http\HttpResponse;
 
 class ResponsePrinter
 {
-	private HttpResponse $response;
-
-	public function __construct(HttpResponse $response)
-	{
-		$this->response = $response;
+	public function __construct(
+		private HttpRequest $request,
+		private HttpResponse $response
+	) {
 	}
 
 	/**
@@ -41,6 +40,11 @@ class ResponsePrinter
 			} else {
 				header('Location: ' . $redirect['url']);
 			}
+			return;
+		}
+
+		if ($this->request->httpMethod->is(HttpMethod::head())) {
+			// HEAD 処理は出力を抑制
 			return;
 		}
 

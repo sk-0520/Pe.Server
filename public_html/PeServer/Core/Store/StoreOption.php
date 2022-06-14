@@ -8,7 +8,9 @@ use PeServer\Core\Store\CookieOption;
 use PeServer\Core\Store\SessionOption;
 use PeServer\Core\Store\TemporaryOption;
 
-
+/**
+ * ストア設定。
+ */
 class StoreOption
 {
 	public CookieOption $cookie;

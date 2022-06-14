@@ -69,7 +69,7 @@ abstract class StoreConfiguration
 		$httpOnly = ArrayUtility::getOr($cookie, 'httpOnly', true);
 		/** @var 'Lax'|'lax'|'None'|'none'|'Strict'|'strict' */
 		$sameSite = ArrayUtility::getOr($cookie, 'sameSite', 'None');
-		$option = CookieOption::create(
+		$option = new CookieOption(
 			$path,
 			$span,
 			$secure,
@@ -100,7 +100,7 @@ abstract class StoreConfiguration
 		$name = ArrayUtility::getOr($temporary, 'name', 'TEMP');
 		/** @var string */
 		$save = ArrayUtility::getOr($temporary, 'save', './temp');
-		$option = TemporaryOption::create(
+		$option = new TemporaryOption(
 			$name,
 			$save,
 			$overwriteCookie
@@ -126,7 +126,7 @@ abstract class StoreConfiguration
 		$name = ArrayUtility::getOr($session, 'name', 'PHPSESSID');
 		/** @var string */
 		$save = ArrayUtility::getOr($session, 'save', '');
-		$option = SessionOption::create(
+		$option = new SessionOption(
 			$name,
 			$save,
 			$overwriteCookie

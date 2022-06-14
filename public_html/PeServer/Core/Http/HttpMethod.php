@@ -75,6 +75,14 @@ abstract class HttpMethod
 	}
 
 	/**
+	 * @return HttpMethod[] GET + HEAD
+	 */
+	public static function gets(): array
+	{
+		return [self::get(), self::head()];
+	}
+
+	/**
 	 * @return HttpMethod GET
 	 */
 	public static function get(): HttpMethod
@@ -160,7 +168,7 @@ final class _HttpMethod_Impl extends HttpMethod
 
 	public function is(HttpMethod $httpMethod): bool
 	{
-		if($httpMethod instanceof _HttpMethod_Impl) {
+		if ($httpMethod instanceof _HttpMethod_Impl) {
 			return $this->kind === $httpMethod->kind;
 		}
 

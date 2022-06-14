@@ -23,8 +23,8 @@ use PeServer\Core\Mvc\TemplatePlugin\TemplatePluginArgument;
  *
  * $params
  *  * file: 対象リソース
- *  * auto_size: true/false trueの場合に実イメージサイズを読み込む
- *  * include: true/false trueの場合にファイルの中身を使用する(結構適当)
+ *  * auto_size: true/false trueの場合に実イメージサイズを読み込む(未指定は false)。
+ *  * include: true/false trueの場合にファイルの中身を使用する(結構適当)(未指定は false)。
  *  * その他: 全部設定される
  */
 class AssetFunction extends TemplateFunctionBase
@@ -82,11 +82,11 @@ class AssetFunction extends TemplateFunctionBase
 		$include = TypeConverter::parseBoolean(ArrayUtility::getOr($this->params, 'include', 'false'));
 
 		$filePath = FileUtility::joinPath($this->argument->rootDirectoryPath, $sourcePath);
-		if (($autoSize || $include) || !is_file($filePath)) {
+		if (($autoSize || $include) || !FileUtility::existsFile($filePath)) {
 			// @phpstan-ignore-next-line nullは全取得だからOK
 			foreach ($this->argument->engine->getTemplateDir(null) as $dir) {
 				$path = FileUtility::joinPath($dir, $sourcePath);
-				if (is_file($path)) {
+				if (FileUtility::existsFile($path)) {
 					$filePath = $path;
 					break;
 				}

@@ -110,7 +110,7 @@ class TemporaryStore
 		} else {
 			$this->cookie->remove($this->option->name);
 
-			if (is_file($path)) {
+			if (FileUtility::existsFile($path)) {
 				unlink($path);
 			}
 		}
@@ -131,7 +131,7 @@ class TemporaryStore
 		$this->isImported = true;
 
 		$path = $this->getFilePath($id);
-		if (!is_file($path)) {
+		if (!FileUtility::existsFile($path)) {
 			return;
 		}
 

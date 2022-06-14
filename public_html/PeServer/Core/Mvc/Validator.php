@@ -8,6 +8,9 @@ use PeServer\Core\Regex;
 use PeServer\Core\StringUtility;
 use PeServer\Core\Mvc\IValidationReceiver;
 
+/**
+ * 共通検証処理。
+ */
 class Validator
 {
 	public const COMMON = '';

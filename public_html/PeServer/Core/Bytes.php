@@ -11,9 +11,15 @@ use PeServer\Core\Throws\NotStringException;
  * 文字列がバイトデータなのか普通の文字列なのかよくわからんのでこれでラップする。
  *
  * ソース上の型を明示するだけの目的で、効率とかは特になにもない。
+ * あとUTF8で動くこと前提。
  */
 final class Bytes
 {
+	/**
+	 * 実体。
+	 *
+	 * @var string
+	 */
 	private string $value;
 
 	/**
@@ -83,10 +89,26 @@ final class Bytes
 		return new Bytes($value);
 	}
 
-	public function toString(): string
+	/**
+	 * NULLバイトを持つか。
+	 *
+	 * @return boolean NULLバイトを持つ。
+	 */
+	public function hasNull(): bool
 	{
 		$nullIndex = mb_strpos($this->value, "\0");
-		if ($nullIndex !== false) {
+		return $nullIndex !== false;
+	}
+
+	/**
+	 * バイトデータを文字列に変換。
+	 *
+	 * @return string
+	 * @throws NotStringException NULLバイトが存在する。
+	 */
+	public function toString(): string
+	{
+		if ($this->hasNull()) {
 			throw new NotStringException();
 		}
 

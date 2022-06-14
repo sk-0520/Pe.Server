@@ -255,6 +255,19 @@ abstract class FileUtility
 		self::saveContent($path, $json, false);
 	}
 
+	/**
+	 * ディレクトリ作成する。
+	 *
+	 * ディレクトリは再帰的に作成される。
+	 *
+	 * @param string $directoryPath ディレクトリパス。
+	 * @param int $permissions
+	 * @return bool
+	 */
+	public static function createDirectory(string $directoryPath, int $permissions = self::DIRECTORY_PERMISSIONS): bool
+	{
+		return mkdir($directoryPath, $permissions, true);
+	}
 
 	/**
 	 * ディレクトリが存在しない場合に作成する。
@@ -262,13 +275,15 @@ abstract class FileUtility
 	 * ディレクトリは再帰的に作成される。
 	 *
 	 * @param string $directoryPath ディレクトリパス
-	 * @return void
+	 * @return bool
 	 */
-	public static function createDirectoryIfNotExists(string $directoryPath, int $permissions = self::DIRECTORY_PERMISSIONS): void
+	public static function createDirectoryIfNotExists(string $directoryPath, int $permissions = self::DIRECTORY_PERMISSIONS): bool
 	{
 		if (!file_exists($directoryPath)) {
-			mkdir($directoryPath, $permissions, true);
+			return self::createDirectory($directoryPath, $permissions, true);
 		}
+
+		return false;
 	}
 
 	/**
@@ -277,11 +292,11 @@ abstract class FileUtility
 	 * ディレクトリは再帰的に作成される。
 	 *
 	 * @param string $path 対象パス（メソッド自体はファイルパスとして使用することを前提としている）
-	 * @return void
+	 * @return bool
 	 */
-	public static function createParentDirectoryIfNotExists(string $path, int $permissions = self::DIRECTORY_PERMISSIONS): void
+	public static function createParentDirectoryIfNotExists(string $path, int $permissions = self::DIRECTORY_PERMISSIONS): bool
 	{
-		self::createDirectoryIfNotExists(dirname($path), $permissions);
+		return self::createDirectoryIfNotExists(dirname($path), $permissions);
 	}
 
 	/**
@@ -346,7 +361,7 @@ abstract class FileUtility
 
 			$path = self::joinPath($directoryPath, $item);
 
-			$isDir = is_dir($path);
+			$isDir = self::existsDirectory($path);
 
 			if ($isDir && $directory) {
 				$files[] = $path;
@@ -408,13 +423,22 @@ abstract class FileUtility
 	{
 		$files = self::getChildren($directoryPath, false);
 		foreach ($files as $file) {
-			if (is_dir($file)) {
+			if (self::existsDirectory($file)) {
 				self::removeDirectory($file);
 			} else {
-				unlink($file);
+				self::removeFile($file);
 			}
 		}
 		rmdir($directoryPath);
+	}
+
+	public static function removeFile(string $filePath): bool
+	{
+		if (self::existsFile($filePath)) {
+			return unlink($filePath);
+		}
+
+		return false;
 	}
 
 	/**
@@ -425,10 +449,10 @@ abstract class FileUtility
 	 */
 	public static function cleanupDirectory(string $directoryPath, int $permissions = self::DIRECTORY_PERMISSIONS): void
 	{
-		if (is_dir($directoryPath)) {
+		if (self::existsDirectory($directoryPath)) {
 			self::removeDirectory($directoryPath);
 		}
-		mkdir($directoryPath, $permissions, true);
+		self::createDirectory($directoryPath, $permissions);
 	}
 
 	/**

@@ -15,16 +15,16 @@ interface IMiddleware
 	/**
 	 * 前処理。
 	 *
-	 * @param MiddlewareArgument $argument
-	 * @return MiddlewareResult
+	 * @param MiddlewareArgument $argument ミドルウェアの入力パラメータ。
+	 * @return MiddlewareResult ミドルウェア結果。
 	 */
 	public function handleBefore(MiddlewareArgument $argument): MiddlewareResult;
 
 	/**
 	 * 後処理。
 	 *
-	 * @param MiddlewareArgument $argument
-	 * @return MiddlewareResult
+	 * @param MiddlewareArgument $argument ミドルウェアの入力パラメータ。
+	 * @return MiddlewareResult ミドルウェア結果。
 	 */
 	public function handleAfter(MiddlewareArgument $argument): MiddlewareResult;
 }

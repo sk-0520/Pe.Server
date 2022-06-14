@@ -27,10 +27,10 @@ abstract class LoggerBase implements ILogger
 	/**
 	 * ログ書式適用。
 	 *
-	 * @param integer $level
-	 * @param integer $traceIndex
-	 * @param mixed $message
-	 * @param mixed ...$parameters
+	 * @param integer $level ログレベル
+	 * @param integer $traceIndex トレース位置。
+	 * @param mixed $message メッセージ。
+	 * @param mixed ...$parameters パラメータ。
 	 * @return string
 	 */
 	protected function format(int $level, int $traceIndex, $message, ...$parameters): string

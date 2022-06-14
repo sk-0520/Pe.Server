@@ -6,7 +6,6 @@ namespace PeServer\Core;
 
 use \DateTime;
 use \DateTimeZone;
-use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\ParseException;
 
 /**
