@@ -7,6 +7,7 @@ namespace PeServer\Core\Database;
 use \PDO;
 use \PDOStatement;
 use PeServer\Core\ILogger;
+use PeServer\Core\Regex;
 use PeServer\Core\StringUtility;
 use PeServer\Core\Throws\Throws;
 use PeServer\Core\Throws\SqlException;
@@ -90,6 +91,8 @@ class Database implements IDatabaseContext
 		$query = $this->pdo->prepare($statement);
 
 		$this->setParameters($query, $parameters);
+
+		$this->logger->trace($query, $parameters);
 
 		if (!$query->execute()) {
 			throw new SqlException($this->getErrorMessage());
@@ -246,7 +249,7 @@ class Database implements IDatabaseContext
 
 	public function selectOrdered(string $statement, ?array $parameters = null): array
 	{
-		if (!preg_match('/\\border\\s+by\\b/i', $statement)) {
+		if (!Regex::isMatch($statement, '/\\border\\s+by\\b/i')) {
 			throw new SqlException();
 		}
 
@@ -255,7 +258,7 @@ class Database implements IDatabaseContext
 
 	public function selectSingleCount(string $statement, ?array $parameters = null): int
 	{
-		if (!preg_match('/\\bselect\\s+count\\s*\\(/i', $statement)) {
+		if (!Regex::isMatch($statement, '/\\bselect\\s+count\\s*\\(/i')) {
 			throw new SqlException();
 		}
 
@@ -286,7 +289,7 @@ class Database implements IDatabaseContext
 	 */
 	private function enforceInsert(string $statement): void
 	{
-		if (!preg_match('/\\binsert\\b/i', $statement)) {
+		if (!Regex::isMatch($statement, '/\\binsert\\b/i')) {
 			throw new SqlException();
 		}
 	}
@@ -316,7 +319,7 @@ class Database implements IDatabaseContext
 	 */
 	private function enforceUpdate(string $statement): void
 	{
-		if (!preg_match('/\\bupdate\\b/i', $statement)) {
+		if (!Regex::isMatch($statement, '/\\bupdate\\b/i')) {
 			throw new SqlException();
 		}
 	}
@@ -357,7 +360,7 @@ class Database implements IDatabaseContext
 	 */
 	private function enforceDelete(string $statement): void
 	{
-		if (!preg_match('/\\bdelete\\b/i', $statement)) {
+		if (!Regex::isMatch($statement, '/\\bdelete\\b/i')) {
 			throw new SqlException();
 		}
 	}

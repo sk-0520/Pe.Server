@@ -28,4 +28,19 @@ abstract class Regex
 
 		return (bool)$result;
 	}
+
+	/**
+	 * 正規表現パターンをエスケープコードに変換。
+	 *
+	 * preg_quoteラッパー。
+	 * https://www.php.net/manual/ja/function.preg-quote.php
+	 *
+	 * @param string $s 正規表現パターン。
+	 * @param string|null $delimiter デリミタ。
+	 * @return string
+	 */
+	public static function escape(string $s, ?string $delimiter = null): string
+	{
+		return preg_quote($s, $delimiter);
+	}
 }

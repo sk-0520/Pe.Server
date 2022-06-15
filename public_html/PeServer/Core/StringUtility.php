@@ -7,6 +7,9 @@ namespace PeServer\Core;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\StringException;
 
+/**
+ * 文字列操作。
+ */
 abstract class StringUtility
 {
 	public const TRIM_CHARACTERS = " \n\r\t\v\0";
@@ -78,8 +81,8 @@ abstract class StringUtility
 	 */
 	public static function replaceMap(string $source, array $map, string $head = '{', string $tail = '}'): string
 	{
-		$escHead = preg_quote($head);
-		$escTail = preg_quote($tail);
+		$escHead = Regex::escape($head);
+		$escTail = Regex::escape($tail);
 		$pattern = "/$escHead(.+?)$escTail/";
 
 		$result = preg_replace_callback(

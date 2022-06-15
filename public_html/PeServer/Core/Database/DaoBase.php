@@ -31,7 +31,7 @@ abstract class DaoBase
 	 */
 	protected function __construct(IDatabaseContext $context)
 	{
-		$this->logger = Logging::create(__CLASS__);
+		$this->logger = Logging::create(get_class($this));
 		$this->context = $context;
 	}
 }
