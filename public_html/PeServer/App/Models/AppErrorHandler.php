@@ -21,7 +21,7 @@ final class AppErrorHandler extends ErrorHandler
 		$this->requestPath = $requestPath;
 	}
 
-	public function catchError(int $errorNumber, string $message, string $file, int $lineNumber, ?Throwable $throwable): void
+	protected function catchError(int $errorNumber, string $message, string $file, int $lineNumber, ?Throwable $throwable): void
 	{
 		$next = true;
 
