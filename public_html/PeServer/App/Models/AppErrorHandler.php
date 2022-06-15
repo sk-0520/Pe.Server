@@ -21,7 +21,7 @@ final class AppErrorHandler extends ErrorHandler
 		$this->requestPath = $requestPath;
 	}
 
-	public function catchError(int $errorNumber, string $message, string $file, int $lineNumber, ?Throwable $throwable): void
+	protected function catchError(int $errorNumber, string $message, string $file, int $lineNumber, ?Throwable $throwable): void
 	{
 		$next = true;
 
@@ -45,9 +45,21 @@ final class AppErrorHandler extends ErrorHandler
 				'throwable' => $throwable,
 			];
 
-			$logger = Logging::create(__CLASS__);
-			$logger->error($values);
 			$status = $this->setHttpStatus($throwable);
+
+			$logger = Logging::create(__CLASS__);
+
+			$isSuppressionStatus = false;
+			foreach ($this->getSuppressionStatusList() as $suppressionStatus) {
+				if ($status->is($suppressionStatus)) {
+					$isSuppressionStatus = true;
+					$logger->info('HTTP: ' . $suppressionStatus->getCode());
+					break;
+				}
+			}
+			if (!$isSuppressionStatus) {
+				$logger->error($values);
+			}
 
 			if ($isJson) {
 				unset($values['error_number']);

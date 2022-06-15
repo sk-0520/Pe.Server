@@ -7,10 +7,13 @@ namespace PeServer\Core\Http;
 use PeServer\Core\StringUtility;
 
 
+/**
+ * 要求パス。
+ */
 class RequestPath
 {
 	/**
-	 * パス。
+	 * フルパス。
 	 *
 	 * @var string
 	 */

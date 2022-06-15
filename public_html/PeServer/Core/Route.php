@@ -156,7 +156,7 @@ class Route
 	}
 
 	/**
-	 * Undocumented function
+	 * アクション取得内部実装。
 	 *
 	 * @param HttpMethod $httpMethod
 	 * @param Action $action

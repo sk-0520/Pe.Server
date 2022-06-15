@@ -130,4 +130,16 @@ class ArrayUtility
 	{
 		return array_values($array);
 	}
+
+	/**
+	 * in_array ラッパー。
+	 *
+	 * @param array<int|string,mixed> $haystack
+	 * @param array<mixed> $needle
+	 * @return boolean
+	 */
+	public static function in(array $haystack, array $needle): bool
+	{
+		return in_array($needle, $haystack, true);
+	}
 }

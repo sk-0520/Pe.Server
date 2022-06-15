@@ -13,9 +13,12 @@ use PeServer\Core\Mvc\TemplateParameter;
 use PeServer\Core\Throws\HttpStatusException;
 use PeServer\Core\Throws\InvalidOperationException;
 
-
+/**
+ * エラーハンドリング処理。
+ */
 class ErrorHandler
 {
+	/** 登録済みか。 */
 	private bool $isRegistered = false;
 
 	/**
@@ -45,10 +48,13 @@ class ErrorHandler
 
 		register_shutdown_function([$this, 'receiveShutdown']);
 		set_exception_handler([$this, 'receiveException']);
-		set_error_handler([$this, 'receiveError']); //@phpstan-ignore-line なんやねんもう！
+		set_error_handler([$this, 'receiveError']);
 		$this->isRegistered = true;
 	}
 
+	/**
+	 * シャットダウン処理でエラーがあれば処理する。
+	 */
 	public final function receiveShutdown(): void
 	{
 		$lastError = error_get_last();
@@ -74,7 +80,13 @@ class ErrorHandler
 		);
 	}
 
-	public final function receiveException(Throwable $throwable): void
+	/**
+	 * 未ハンドル例外を処理する。
+	 *
+	 * @param Throwable $throwable
+	 * @return no-return
+	 */
+	public final function receiveException(Throwable $throwable)
 	{
 		$this->_catchError(
 			Throws::getErrorCode($throwable),
@@ -85,7 +97,16 @@ class ErrorHandler
 		);
 	}
 
-	public final function receiveError(int $errorNumber, string $errorMessage, string $errorFile, int $errorLineNumber/* , array $_ */): void
+	/**
+	 * エラーを処理する。
+	 *
+	 * @param integer $errorNumber
+	 * @param string $errorMessage
+	 * @param string $errorFile
+	 * @param int $errorLineNumber
+	 * @return no-return
+	 */
+	public final function receiveError(int $errorNumber, string $errorMessage, string $errorFile, int $errorLineNumber/* , array $_ */)
 	{
 		$this->_catchError(
 			$errorNumber,
@@ -96,6 +117,12 @@ class ErrorHandler
 		);
 	}
 
+	/**
+	 * 例外からHTTP応答ステータスコードを設定する。
+	 *
+	 * @param Throwable|null $throwable
+	 * @return HttpStatus 設定されたHTTPステータスコード。
+	 */
 	protected final function setHttpStatus(?Throwable $throwable): HttpStatus
 	{
 		$status = $throwable instanceof HttpStatusException
@@ -107,14 +134,24 @@ class ErrorHandler
 		return $status;
 	}
 
-	private function _catchError(int $errorNumber, string $message, string $file, int $lineNumber, ?Throwable $throwable): void
+	/**
+	 * エラー取得処理（呼び出し側）。
+	 *
+	 * @param integer $errorNumber
+	 * @param string $message
+	 * @param string $file
+	 * @param integer $lineNumber
+	 * @param Throwable|null $throwable
+	 * @return no-return
+	 */
+	private function _catchError(int $errorNumber, string $message, string $file, int $lineNumber, ?Throwable $throwable)
 	{
 		$this->catchError($errorNumber, $message, $file, $lineNumber, $throwable);
 		exit;
 	}
 
 	/**
-	 * エラー取得処理。
+	 * エラー取得処理（本体）。
 	 *
 	 * @param integer $errorNumber
 	 * @param string $message
@@ -123,7 +160,7 @@ class ErrorHandler
 	 * @param Throwable|null $throwable
 	 * @return void
 	 */
-	public function catchError(int $errorNumber, string $message, string $file, int $lineNumber, ?Throwable $throwable): void
+	protected function catchError(int $errorNumber, string $message, string $file, int $lineNumber, ?Throwable $throwable): void
 	{
 		$values = [
 			'error_number' => $errorNumber,
