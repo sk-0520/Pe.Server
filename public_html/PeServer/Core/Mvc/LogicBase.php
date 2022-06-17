@@ -199,7 +199,7 @@ abstract class LogicBase implements IValidationReceiver
 	 * @param CookieOption|array{path:?string,span:?DateInterval,secure:?bool,httpOnly:?bool}|null $option オプション。
 	 * @return void
 	 */
-	protected function setCookie(string $key, string $value, $option = null): void
+	protected function setCookie(string $key, string $value, CookieOption|array|null $option = null): void
 	{
 		/** @var CookieOption|null */
 		$cookieOption = null;
@@ -207,7 +207,7 @@ abstract class LogicBase implements IValidationReceiver
 		if (!is_null($option)) {
 			if ($option instanceof CookieOption) {
 				$cookieOption = $option;
-			} else if (is_array($option)) {
+			} else {
 				/** @var string */
 				$path = ArrayUtility::getOr($option, 'path', $this->cookie->option->path);
 				/** @var \DateInterval|null */
