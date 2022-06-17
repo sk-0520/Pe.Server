@@ -138,7 +138,7 @@ class Database implements IDatabaseContext
 	 */
 	public function rollback(): void
 	{
-		if (!$this->pdo->rollback()) {
+		if (!$this->pdo->rollBack()) {
 			throw new SqlException($this->getErrorMessage());
 		}
 	}

@@ -46,6 +46,15 @@
 			"sysplugins",
 			"checkAlwaysTrueInstanceof"
 		],
+		"cSpell.ignorePaths": [
+			"package-lock.json",
+			"node_modules",
+			"*.code-workspace",
+			"vscode-extension",
+			".git/objects",
+			".vscode",
+			".vscode-insiders"
+		],
 		"intelephense.environment.phpVersion": "8.0.3",
 		"intelephense.files.exclude": [
 			"**/php-deploy-receiver.php"

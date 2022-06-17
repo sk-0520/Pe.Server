@@ -1,8 +1,12 @@
 parameters:
   level: 8
+
   checkAlwaysTrueCheckTypeFunctionCall: true
   checkAlwaysTrueInstanceof: true
   checkAlwaysTrueStrictComparison: true
+  checkExplicitMixedMissingReturn: true
+  checkFunctionNameCase: true
+
   paths:
     - ../public_html
   excludePaths:
