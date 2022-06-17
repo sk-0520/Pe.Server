@@ -8,6 +8,7 @@ parameters:
   checkFunctionNameCase: true
   checkInternalClassCaseSensitivity: true
   reportMaybesInMethodSignatures: true
+  reportMaybesInPropertyPhpDocTypes: true
 
   paths:
     - ../public_html
