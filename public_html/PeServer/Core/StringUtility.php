@@ -18,7 +18,7 @@ abstract class StringUtility
 	 * 文字列がnullか空か
 	 *
 	 * @param string|null $s
-	 * @return boolean
+	 * @return ($s is null ? true: ($s is non-empty-string ? true: false))
 	 */
 	public static function isNullOrEmpty(?string $s): bool
 	{
@@ -37,7 +37,7 @@ abstract class StringUtility
 	 * 文字列がnullかホワイトスペースのみで構築されているか
 	 *
 	 * @param string|null $s
-	 * @return boolean
+	 * @return ($s is null ? true: ($s is non-empty-string ? true: false))
 	 */
 	public static function isNullOrWhiteSpace(?string $s): bool
 	{

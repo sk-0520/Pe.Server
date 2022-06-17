@@ -36,7 +36,7 @@ class Validator
 	public function isNotEmpty(string $key, ?string $value): bool
 	{
 		if (StringUtility::isNullOrEmpty($value)) {
-			$this->receiver->receiveErrorKind($key, self::KIND_EMPTY, ['VALUE' => $value]);
+			$this->receiver->receiveErrorKind($key, self::KIND_EMPTY, ['VALUE' => '']);
 			return false;
 		}
 
@@ -46,7 +46,7 @@ class Validator
 	public function isNotWhiteSpace(string $key, ?string $value): bool
 	{
 		if (StringUtility::isNullOrWhiteSpace($value)) {
-			$this->receiver->receiveErrorKind($key, self::KIND_WHITE_SPACE, ['VALUE' => $value]);
+			$this->receiver->receiveErrorKind($key, self::KIND_WHITE_SPACE, ['VALUE' => $value ? $value : '']);
 			return false;
 		}
 

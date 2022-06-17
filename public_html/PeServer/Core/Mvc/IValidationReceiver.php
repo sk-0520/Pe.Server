@@ -13,7 +13,7 @@ interface IValidationReceiver
 	 *
 	 * @param string $key
 	 * @param int $kind
-	 * @param array<string,mixed> $parameters
+	 * @param array<int|string,int|string> $parameters
 	 * @return void
 	 */
 	public function receiveErrorKind(string $key, int $kind, array $parameters): void;

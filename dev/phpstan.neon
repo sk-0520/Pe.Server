@@ -7,6 +7,7 @@ parameters:
   checkExplicitMixedMissingReturn: true
   checkFunctionNameCase: true
   checkInternalClassCaseSensitivity: true
+  reportMaybesInMethodSignatures: true
 
   paths:
     - ../public_html
