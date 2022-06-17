@@ -9,6 +9,7 @@ parameters:
   checkInternalClassCaseSensitivity: true
   reportMaybesInMethodSignatures: true
   reportMaybesInPropertyPhpDocTypes: true
+  reportStaticMethodSignatures: true
 
   paths:
     - ../public_html
