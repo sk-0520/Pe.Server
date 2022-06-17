@@ -390,14 +390,6 @@ abstract class LogicBase implements IValidationReceiver
 		$this->addError($key, $message);
 	}
 
-	/**
-	 * Undocumented function
-	 *
-	 * @param string $key
-	 * @param integer $kind
-	 * @param array<int|string,int|string> $parameters
-	 * @return void
-	 */
 	public function receiveErrorKind(string $key, int $kind, array $parameters): void
 	{
 		$map = [

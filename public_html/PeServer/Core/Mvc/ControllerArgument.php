@@ -15,7 +15,7 @@ use PeServer\Core\Store\TemporaryStore;
 class ControllerArgument
 {
 	/**
-	 * Undocumented function
+	 * 生成。
 	 *
 	 * @param CookieStore $cookie
 	 * @param TemporaryStore $temporary

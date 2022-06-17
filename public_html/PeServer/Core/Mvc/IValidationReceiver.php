@@ -6,6 +6,13 @@ namespace PeServer\Core\Mvc;
 
 interface IValidationReceiver
 {
+	/**
+	 * エラーメッセージを受領。
+	 *
+	 * @param string $key
+	 * @param string $message
+	 * @return void
+	 */
 	public function receiveErrorMessage(string $key, string $message): void;
 
 	/**
