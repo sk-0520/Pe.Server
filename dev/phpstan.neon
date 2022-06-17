@@ -1,6 +1,7 @@
 parameters:
   level: 8
   checkAlwaysTrueCheckTypeFunctionCall: true
+  checkAlwaysTrueInstanceof: true
   paths:
     - ../public_html
   excludePaths:

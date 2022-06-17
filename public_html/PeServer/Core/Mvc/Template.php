@@ -150,7 +150,7 @@ class _SmartyTemplate_Impl extends Template
 			if ($plugin instanceof ITemplateBlockFunction) {
 				// @phpstan-ignore-next-line
 				$this->engine->registerPlugin('block', $plugin->getFunctionName(), array($plugin, 'functionBlockBody'));
-			} else if ($plugin instanceof ITemplateFunction) {
+			} else if ($plugin instanceof ITemplateFunction) { // @phpstan-ignore-line 増えたとき用にelseしたくないのである
 				// @phpstan-ignore-next-line
 				$this->engine->registerPlugin('function', $plugin->getFunctionName(), array($plugin, 'functionBody'));
 			} else { //@phpstan-ignore-line

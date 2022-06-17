@@ -43,7 +43,8 @@
 			"phpstan",
 			"phpunit",
 			"samesite",
-			"sysplugins"
+			"sysplugins",
+			"checkAlwaysTrueInstanceof"
 		],
 		"intelephense.environment.phpVersion": "8.0.3",
 		"intelephense.files.exclude": [
