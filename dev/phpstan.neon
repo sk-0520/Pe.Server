@@ -10,6 +10,7 @@ parameters:
   reportMaybesInMethodSignatures: true
   reportMaybesInPropertyPhpDocTypes: true
   reportStaticMethodSignatures: true
+  checkTooWideReturnTypesInProtectedAndPublicMethods: true
 
   paths:
     - ../public_html
