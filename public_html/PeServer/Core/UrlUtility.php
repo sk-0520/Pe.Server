@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core;
 
 use PeServer\Core\ArrayUtility;
+use PeServer\Core\InitialValue;
 use PeServer\Core\StringUtility;
 
 
@@ -15,7 +16,7 @@ abstract class UrlUtility
 	public static function convertPathToUrl(string $path): string
 	{
 		/** @var string */
-		$httpsProtocol = ArrayUtility::getOr($_SERVER, 'HTTPS', '');
+		$httpsProtocol = ArrayUtility::getOr($_SERVER, 'HTTPS', InitialValue::EMPTY_STRING);
 		$httpProtocol = StringUtility::isNullOrEmpty($httpsProtocol) ? 'http://' : 'https://';
 		return $httpProtocol . $_SERVER['SERVER_NAME'] . '/' .  StringUtility::trim($path, '/');
 	}

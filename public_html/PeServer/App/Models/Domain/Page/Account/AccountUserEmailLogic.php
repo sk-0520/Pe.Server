@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Domain\Page\Account;
 
 use PeServer\Core\I18n;
+use PeServer\Core\InitialValue;
 use PeServer\Core\Mvc\Validator;
 use PeServer\Core\StringUtility;
 use PeServer\App\Models\AuditLog;
@@ -30,9 +31,9 @@ class AccountUserEmailLogic extends PageLogicBase
 	 * @var array{email:string,wait_email:string,token_timestamp_utc:string}
 	 */
 	private array $defaultValues = [
-		'email' => '',
-		'wait_email' => '',
-		'token_timestamp_utc' => '',
+		'email' => InitialValue::EMPTY_STRING,
+		'wait_email' => InitialValue::EMPTY_STRING,
+		'token_timestamp_utc' => InitialValue::EMPTY_STRING,
 	];
 
 	public function __construct(LogicParameter $parameter)
@@ -55,12 +56,12 @@ class AccountUserEmailLogic extends PageLogicBase
 		if (!StringUtility::isNullOrWhiteSpace($values['email'])) {
 			$this->defaultValues['email'] = AppCryptography::decrypt($values['email']);
 		} else {
-			$this->defaultValues['email'] = '';
+			$this->defaultValues['email'] = InitialValue::EMPTY_STRING;
 		}
 		if (!StringUtility::isNullOrWhiteSpace($values['wait_email'])) {
 			$this->defaultValues['wait_email'] = AppCryptography::decrypt($values['wait_email']);
 		} else {
-			$this->defaultValues['wait_email'] = '';
+			$this->defaultValues['wait_email'] = InitialValue::EMPTY_STRING;
 		}
 
 		$this->defaultValues['token_timestamp_utc'] = $values['token_timestamp_utc'];
@@ -72,7 +73,7 @@ class AccountUserEmailLogic extends PageLogicBase
 			'token_timestamp_utc',
 		], true);
 
-		$this->setValue('account_email_token', '');
+		$this->setValue('account_email_token', InitialValue::EMPTY_STRING);
 	}
 
 	protected function validateImpl(LogicCallMode $callMode): void

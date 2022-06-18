@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
-use PeServer\Core\Throws\ArgumentException;
+use PeServer\Core\InitialValue;
 use PeServer\Core\Throws\StringException;
+use PeServer\Core\Throws\ArgumentException;
 
 /**
  * 文字列操作。
@@ -91,7 +92,7 @@ abstract class StringUtility
 				if (isset($map[$matches[1]])) {
 					return $map[$matches[1]];
 				}
-				return '';
+				return InitialValue::EMPTY_STRING;
 			},
 			$source
 		);
@@ -346,6 +347,6 @@ abstract class StringUtility
 	 */
 	public static function replace(string $source, string|array $oldValue, ?string $newValue): string
 	{
-		return str_replace($oldValue, $newValue ?? '', $source);
+		return str_replace($oldValue, $newValue ?? InitialValue::EMPTY_STRING, $source);
 	}
 }

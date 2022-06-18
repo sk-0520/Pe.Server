@@ -9,6 +9,7 @@ use PeServer\Core\Utc;
 use PeServer\Core\FileUtility;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Cryptography;
+use PeServer\Core\InitialValue;
 use PeServer\Core\StringUtility;
 use PeServer\Core\Store\CookieStore;
 use PeServer\Core\Store\TemporaryOption;
@@ -79,7 +80,7 @@ class TemporaryStore
 	private function getOrCreateId(): string
 	{
 		if ($this->hasId()) {
-			return $this->cookie->getOr($this->option->name, '');
+			return $this->cookie->getOr($this->option->name, InitialValue::EMPTY_STRING);
 		}
 
 		$bytes = Cryptography::generateRandomBytes(self::ID_LENGTH);
@@ -139,7 +140,7 @@ class TemporaryStore
 		$json = FileUtility::readJsonFile($path);
 
 		/** @var string */
-		$timestamp = ArrayUtility::getOr($json, 'timestamp', '');
+		$timestamp = ArrayUtility::getOr($json, 'timestamp', InitialValue::EMPTY_STRING);
 		if (StringUtility::isNullOrWhiteSpace($timestamp)) {
 			return;
 		}

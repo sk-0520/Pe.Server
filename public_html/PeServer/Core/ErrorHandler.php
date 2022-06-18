@@ -6,6 +6,7 @@ namespace PeServer\Core;
 
 use \Throwable;
 use PeServer\Core\Log\Logging;
+use PeServer\Core\InitialValue;
 use PeServer\Core\Mvc\Template;
 use PeServer\Core\Throws\Throws;
 use PeServer\Core\Http\HttpStatus;
@@ -65,7 +66,7 @@ class ErrorHandler
 		/** @var int */
 		$type = ArrayUtility::getOr($lastError, 'type', -1);
 		/** @var string */
-		$message = ArrayUtility::getOr($lastError, 'message', '');
+		$message = ArrayUtility::getOr($lastError, 'message', InitialValue::EMPTY_STRING);
 		/** @var string */
 		$file = ArrayUtility::getOr($lastError, 'file', '<unknown>');
 		/** @var int */

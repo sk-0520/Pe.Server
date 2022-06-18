@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
+use PeServer\Core\InitialValue;
 use PeServer\Core\Mvc\Middleware\IMiddleware;
 use PeServer\Core\Mvc\Middleware\IShutdownMiddleware;
 
@@ -36,6 +37,6 @@ class ActionRelation
 
 	public static function none(): ActionRelation
 	{
-		return new ActionRelation('', [], []);
+		return new ActionRelation(InitialValue::EMPTY_STRING, [], []);
 	}
 }

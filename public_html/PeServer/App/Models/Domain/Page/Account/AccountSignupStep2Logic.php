@@ -6,6 +6,7 @@ namespace PeServer\App\Models\Domain\Page\Account;
 
 use PeServer\Core\I18n;
 use PeServer\Core\Cryptography;
+use PeServer\Core\InitialValue;
 use PeServer\App\Models\AuditLog;
 use PeServer\App\Models\AppMailer;
 use PeServer\App\Models\AppTemplate;
@@ -43,8 +44,8 @@ class AccountSignupStep2Logic extends PageLogicBase
 			'account_signup_name',
 		], true);
 
-		$this->setValue('account_signup_password', '');
-		$this->setValue('account_signup_password_confirm', '');
+		$this->setValue('account_signup_password', InitialValue::EMPTY_STRING);
+		$this->setValue('account_signup_password_confirm', InitialValue::EMPTY_STRING);
 	}
 
 	protected function validateImpl(LogicCallMode $callMode): void
@@ -84,7 +85,7 @@ class AccountSignupStep2Logic extends PageLogicBase
 
 		$this->validation('account_signup_password_confirm', function (string $key, string $value) {
 			$this->validator->isNotWhiteSpace($key, $value);
-			$newPassword = $this->getRequest('account_signup_password', '', false);
+			$newPassword = $this->getRequest('account_signup_password', InitialValue::EMPTY_STRING, false);
 			if ($value !== $newPassword) {
 				$this->addError($key, I18n::message('error/password_confirm'));
 			}
@@ -105,7 +106,7 @@ class AccountSignupStep2Logic extends PageLogicBase
 		$userId = UserUtility::generateUserId();
 		$token = $this->getRequest('token');
 		$email = $this->getRequest('account_signup_email');
-		$password = $this->getRequest('account_signup_password', '', false);
+		$password = $this->getRequest('account_signup_password', InitialValue::EMPTY_STRING, false);
 
 		$params = [
 			'token' => $token,
@@ -131,14 +132,14 @@ class AccountSignupStep2Logic extends PageLogicBase
 				$params['user_name'],
 				$params['email'],
 				$params['mark_email'],
-				'',
-				'',
-				''
+				InitialValue::EMPTY_STRING,
+				InitialValue::EMPTY_STRING,
+				InitialValue::EMPTY_STRING
 			);
 
 			$userAuthenticationsEntityDao->insertUserAuthentication(
 				$params['user_id'],
-				'',
+				InitialValue::EMPTY_STRING,
 				$params['password']
 			);
 

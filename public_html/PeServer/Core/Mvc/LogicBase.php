@@ -11,6 +11,7 @@ use PeServer\Core\Bytes;
 use PeServer\Core\ILogger;
 use PeServer\Core\FileUtility;
 use PeServer\Core\ArrayUtility;
+use PeServer\Core\InitialValue;
 use PeServer\Core\Mvc\Validator;
 use PeServer\Core\StringUtility;
 use PeServer\Core\Http\HttpStatus;
@@ -32,7 +33,7 @@ use PeServer\Core\Throws\InvalidOperationException;
  */
 abstract class LogicBase implements IValidationReceiver
 {
-	protected const SESSION_ALL_CLEAR = '';
+	protected const SESSION_ALL_CLEAR = InitialValue::EMPTY_STRING;
 
 	/**
 	 * ロガー。
@@ -123,7 +124,7 @@ abstract class LogicBase implements IValidationReceiver
 	 * @param bool $trim 取得データをトリムするか。
 	 * @return string 要求データ。
 	 */
-	protected function getRequest(string $key, string $fallbackValue = '', bool $trim = true): string
+	protected function getRequest(string $key, string $fallbackValue = InitialValue::EMPTY_STRING, bool $trim = true): string
 	{
 		if (!$this->request->exists($key)->exists) {
 			return $fallbackValue;
@@ -186,7 +187,7 @@ abstract class LogicBase implements IValidationReceiver
 	 * @param string $fallbackValue 取得失敗時の値。
 	 * @return string
 	 */
-	protected function getCookie(string $key, string $fallbackValue = ''): string
+	protected function getCookie(string $key, string $fallbackValue = InitialValue::EMPTY_STRING): string
 	{
 		return $this->cookie->getOr($key, $fallbackValue);
 	}
@@ -325,10 +326,10 @@ abstract class LogicBase implements IValidationReceiver
 
 		foreach ($this->keys as $key) {
 			if ($overwrite) {
-				$value = $this->getRequest($key, '');
+				$value = $this->getRequest($key, InitialValue::EMPTY_STRING);
 				$this->values[$key] = $value;
 			} else {
-				$this->values[$key] = '';
+				$this->values[$key] = InitialValue::EMPTY_STRING;
 			}
 		}
 	}
@@ -418,7 +419,7 @@ abstract class LogicBase implements IValidationReceiver
 	protected function validation(string $key, callable $callback, ?array $option = null): void
 	{
 		/** @var string */
-		$default = ArrayUtility::getOr($option, 'default', '');
+		$default = ArrayUtility::getOr($option, 'default', InitialValue::EMPTY_STRING);
 		/** @var bool */
 		$trim = ArrayUtility::getOr($option, 'trim', true);
 
