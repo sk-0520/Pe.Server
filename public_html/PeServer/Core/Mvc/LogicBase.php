@@ -125,7 +125,7 @@ abstract class LogicBase implements IValidationReceiver
 	 */
 	protected function getRequest(string $key, string $fallbackValue = '', bool $trim = true): string
 	{
-		if (!$this->request->exists($key)['exists']) {
+		if (!$this->request->exists($key)->exists) {
 			return $fallbackValue;
 		}
 

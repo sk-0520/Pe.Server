@@ -15,62 +15,49 @@ use PeServer\Core\Throws\KeyNotFoundException;
  */
 class HttpRequest
 {
-	public const REQUEST_NONE = 0;
-	public const REQUEST_URL = 1;
-	public const REQUEST_GET = 2;
-	public const REQUEST_POST = 3;
-	public const REQUEST_FILE = 4;
-
-	public HttpMethod $httpMethod;
-	public HttpHeader $httpHeader;
-
 	/**
-	 * URLパラメータ。
+	 * 生成。
 	 *
-	 * @var array<string,string>
+	 * @param HttpMethod $httpMethod 要求メソッド。
+	 * @param HttpHeader $httpHeader 要求ヘッダ。
+	 * @param array $urlParameters URLパラメータ。
 	 */
-	private $urlParameters;
-
-	/**
-	 * リクエストデータ構築
-	 *
-	 * @param array<string,string> $urlParameters URLパラメータ
-	 */
-	public function __construct(HttpMethod $httpMethod, HttpHeader $httpHeader, array $urlParameters)
-	{
-		$this->httpMethod = $httpMethod;
-		$this->httpHeader = $httpHeader;
-		$this->urlParameters = $urlParameters;
+	public function __construct(
+		public HttpMethod $httpMethod,
+		public HttpHeader $httpHeader,
+		protected array $urlParameters
+	) {
 	}
 
 	/**
-	 * キーに対する値が存在するか。
+	 * 名前に対する値が存在するか。
 	 *
-	 * @param string $key キー
-	 * @return array{exists:bool,type:int}
+	 * @param string $name パラメータ名。
+	 * @param bool $strict メソッドを厳格に判定するか。
+	 * @return HttpRequestExists
 	 */
-	public function exists(string $key, bool $strict = true): array
+	public function exists(string $name, bool $strict = true): HttpRequestExists
 	{
-		if (isset($this->urlParameters[$key])) {
-			return ['exists' => true, 'type' => self::REQUEST_URL];
+		if (isset($this->urlParameters[$name])) {
+			return new HttpRequestExists($name, true, HttpRequestExists::KIND_URL);
 		}
 
 		if (!$strict || $this->httpMethod->is(HttpMethod::get())) {
-			if (isset($_GET[$key])) {
-				return ['exists' => true, 'type' => self::REQUEST_GET];
+			if (isset($_GET[$name])) {
+				return new HttpRequestExists($name, true, HttpRequestExists::KIND_GET);
 			}
 		}
 
 		if (!$strict || $this->httpMethod->is(HttpMethod::post())) {
-			if (isset($_POST[$key])) {
-				return ['exists' => true, 'type' => self::REQUEST_POST];
+			if (isset($_POST[$name])) {
+				return new HttpRequestExists($name, true, HttpRequestExists::KIND_POST);
 			}
-			if (isset($_FILES[$key])) {
-				return ['exists' => true, 'type' => self::REQUEST_FILE];
+			if (isset($_FILES[$name])) {
+				return new HttpRequestExists($name, true, HttpRequestExists::KIND_FILE);
 			}
 		}
 
-		return ['exists' => false, 'type' => self::REQUEST_NONE];
+		return new HttpRequestExists($name, false, HttpRequestExists::KIND_NONE);
 	}
 
 	// public function isMulti(string $key): bool
@@ -83,36 +70,36 @@ class HttpRequest
 	 *
 	 * ファイルは取得できない。
 	 *
-	 * @param string $key
+	 * @param string $name
 	 * @return string
 	 * @throws KeyNotFoundException キーに対する値が存在しない。
 	 */
-	public function getValue(string $key, bool $strict = true): string
+	public function getValue(string $name, bool $strict = true): string
 	{
-		if (isset($this->urlParameters[$key])) {
-			return $this->urlParameters[$key];
+		if (isset($this->urlParameters[$name])) {
+			return $this->urlParameters[$name];
 		}
 
 		if (!$strict || $this->httpMethod->is(HttpMethod::get())) {
-			if (isset($_GET[$key])) {
-				return $_GET[$key];
+			if (isset($_GET[$name])) {
+				return $_GET[$name];
 			}
 		}
 		if (!$strict || $this->httpMethod->is(HttpMethod::post())) {
 
-			if (isset($_POST[$key])) {
-				return $_POST[$key];
+			if (isset($_POST[$name])) {
+				return $_POST[$name];
 			}
 		}
 
-		throw new KeyNotFoundException("parameter not found: $key");
+		throw new KeyNotFoundException("parameter not found: $name");
 	}
 
-	// public function gets($key): array
+	// public function gets($name): array
 	// {
 	// }
 
-	// public function file($key): array
+	// public function file($name): array
 	// {
 	// }
 }
