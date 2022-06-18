@@ -20,7 +20,7 @@ class HttpRequest
 	 *
 	 * @param HttpMethod $httpMethod 要求メソッド。
 	 * @param HttpHeader $httpHeader 要求ヘッダ。
-	 * @param array $urlParameters URLパラメータ。
+	 * @param array<string,string> $urlParameters URLパラメータ。
 	 */
 	public function __construct(
 		public HttpMethod $httpMethod,

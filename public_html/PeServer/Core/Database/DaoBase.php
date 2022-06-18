@@ -19,19 +19,15 @@ abstract class DaoBase
 	 * ロガー。
 	 */
 	protected ILogger $logger;
-	/**
-	 * 接続処理。
-	 */
-	protected IDatabaseContext $context;
 
 	/**
 	 * 生成。
 	 *
 	 * @param IDatabaseContext $context 接続処理。
 	 */
-	protected function __construct(IDatabaseContext $context)
-	{
+	protected function __construct(
+		protected IDatabaseContext $context
+	) {
 		$this->logger = Logging::create(get_class($this));
-		$this->context = $context;
 	}
 }
