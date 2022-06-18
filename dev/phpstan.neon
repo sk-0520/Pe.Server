@@ -11,6 +11,7 @@ parameters:
   reportMaybesInPropertyPhpDocTypes: true
   reportStaticMethodSignatures: true
   checkTooWideReturnTypesInProtectedAndPublicMethods: true
+  checkGenericClassInNonGenericObjectType: true
 
   paths:
     - ../public_html

@@ -11,6 +11,7 @@ class ListArrayTest extends TestClass
 {
 	public function test()
 	{
+		/** @var ListArray<int> */
 		$list = new ListArray();
 		$this->assertSame(0, $list->getCount());
 
