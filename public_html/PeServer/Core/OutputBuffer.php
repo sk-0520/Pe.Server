@@ -7,8 +7,18 @@ namespace PeServer\Core;
 use PeServer\Core\Bytes;
 use PeServer\Core\Throws\OutputBufferException;
 
+/**
+ * 出力。
+ */
 abstract class OutputBuffer
 {
+	/**
+	 * 引数処理中の出力を出力。
+	 *
+	 * @param callable $action 出力を取得したい処理。
+	 * @return Bytes 取得した処理。
+	 * @throws OutputBufferException なんかあかんかった。
+	 */
 	public static function get(callable $action): Bytes
 	{
 		if (!ob_start()) {
