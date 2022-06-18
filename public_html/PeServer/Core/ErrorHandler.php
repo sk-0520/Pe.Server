@@ -172,7 +172,7 @@ class ErrorHandler
 
 		$status = $this->setHttpStatus($throwable);
 
-		$logger = Logging::create(__CLASS__);
+		$logger = Logging::create(get_class($this));
 
 		$isSuppressionStatus = false;
 		foreach ($this->getSuppressionStatusList() as $suppressionStatus) {
