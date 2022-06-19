@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
+use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\RegexException;
 
 /**
@@ -11,6 +12,23 @@ use PeServer\Core\Throws\RegexException;
  */
 abstract class Regex
 {
+	public const UNLIMITED = -1;
+
+	/**
+	 * 正規表現パターンをエスケープコードに変換。
+	 *
+	 * preg_quoteラッパー。
+	 * https://www.php.net/manual/ja/function.preg-quote.php
+	 *
+	 * @param string $s 正規表現パターン。
+	 * @param string|null $delimiter デリミタ。
+	 * @return string
+	 */
+	public static function escape(string $s, ?string $delimiter = null): string
+	{
+		return preg_quote($s, $delimiter);
+	}
+
 	/**
 	 * パターンにマッチするか。
 	 *
@@ -30,17 +48,25 @@ abstract class Regex
 	}
 
 	/**
-	 * 正規表現パターンをエスケープコードに変換。
+	 * 正規表現置き換え。
 	 *
-	 * preg_quoteラッパー。
-	 * https://www.php.net/manual/ja/function.preg-quote.php
-	 *
-	 * @param string $s 正規表現パターン。
-	 * @param string|null $delimiter デリミタ。
+	 * @param string $source 一致する対象を検索する文字列。
+	 * @param string $pattern 一致させる正規表現パターン。
+	 * @param string $replacement 置換文字列。
+	 * @param int $limit 各パターンによる 置換を行う最大回数。
 	 * @return string
 	 */
-	public static function escape(string $s, ?string $delimiter = null): string
+	public static function replace(string $source, string $pattern, string $replacement, int $limit = self::UNLIMITED): string
 	{
-		return preg_quote($s, $delimiter);
+		if (!$limit) {
+			throw new ArgumentException();
+		}
+
+		$result = preg_replace($pattern, $replacement, $source, $limit);
+		if ($result === null) {
+			throw new RegexException();
+		}
+
+		return $result;
 	}
 }
