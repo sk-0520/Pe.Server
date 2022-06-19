@@ -54,6 +54,8 @@ abstract class Regex
 	 * @param string $pattern 一致させる正規表現パターン。
 	 * @param string $replacement 置換文字列。
 	 * @param int $limit 各パターンによる 置換を行う最大回数。
+	 * @throws ArgumentException 引数がおかしい。
+	 * @throws RegexException 正規表現処理失敗。
 	 * @return string
 	 */
 	public static function replace(string $source, string $pattern, string $replacement, int $limit = self::UNLIMITED): string
@@ -63,6 +65,32 @@ abstract class Regex
 		}
 
 		$result = preg_replace($pattern, $replacement, $source, $limit);
+		if ($result === null) {
+			throw new RegexException();
+		}
+
+		return $result;
+	}
+
+
+	/**
+	 * 正規表現置き換え。
+	 *
+	 * @param string $source 一致する対象を検索する文字列。
+	 * @param string $pattern 一致させる正規表現パターン。
+	 * @param callable(array<int,string>|array<string,string>):string $replacement 置換処理。
+	 * @param int $limit 各パターンによる 置換を行う最大回数。
+	 * @throws ArgumentException 引数がおかしい。
+	 * @throws RegexException 正規表現処理失敗。
+	 * @return string
+	 */
+	public static function replaceCallback(string $source, string $pattern, callable $replacement, int $limit = self::UNLIMITED): string
+	{
+		if (!$limit) {
+			throw new ArgumentException();
+		}
+
+		$result = preg_replace_callback($pattern, $replacement, $source, $limit);
 		if ($result === null) {
 			throw new RegexException();
 		}

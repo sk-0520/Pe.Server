@@ -49,4 +49,17 @@ class RegexTest extends TestClass
 		Regex::replace('abcABC', '/(/', 'X');
 		$this->fail();
 	}
+
+	public function test_replaceCallback_test()
+	{
+		$tests = [
+			new Data('[a]bcABC', 'abcABC', '/a/', fn ($m) => '[' . $m[0] . ']'),
+			new Data('[a]bc[A]BC', 'abcABC', '/a/i', fn ($m) => '[' . $m[0] . ']'),
+			new Data('[a]bcABC', 'abcABC', '/(?<NAME>a)/', fn ($m) => '[' . $m['NAME'] . ']'),
+		];
+		foreach ($tests as $test) {
+			$actual = Regex::replaceCallback(...$test->args);
+			$this->assertEquals($test->expected, $actual, $test->str());
+		}
+	}
 }
