@@ -50,6 +50,13 @@ class RegexTest extends TestClass
 		$this->assertEquals('4', $actual4[4]);
 	}
 
+	public function test_matches_throw()
+	{
+		$this->expectException(RegexException::class);
+		Regex::matches('abcABC', '/(/');
+		$this->fail();
+	}
+
 	public function test_replace()
 	{
 		$tests = [
