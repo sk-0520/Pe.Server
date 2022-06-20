@@ -23,6 +23,33 @@ class RegexTest extends TestClass
 		}
 	}
 
+	public function test_matches()
+	{
+		$actual1 = Regex::matches('abc123XYZ', '/([a-z]+)/');
+		$this->assertEquals('abc', $actual1[1]);
+
+		$actual2 = Regex::matches('abc123XYZ', '/(?<NUM>\d+)/');
+		$this->assertEquals('123', $actual2['NUM']);
+
+		$actual3 = Regex::matches('abc123XYZ', '/(.)(.)(.)/');
+		$this->assertEquals('a', $actual3[1]);
+		$this->assertEquals('b', $actual3[2]);
+		$this->assertEquals('c', $actual3[3]);
+		$this->assertEquals('1', $actual3[4]);
+		$this->assertEquals('2', $actual3[5]);
+		$this->assertEquals('3', $actual3[6]);
+		$this->assertEquals('X', $actual3[7]);
+		$this->assertEquals('Y', $actual3[8]);
+		$this->assertEquals('Z', $actual3[9]);
+
+		$actual4 = Regex::matches('1234', '/(.)(?<NAME>.)/');
+		$this->assertEquals('1', $actual4[1]);
+		$this->assertEquals('2', $actual4[2]);
+		$this->assertEquals('2', $actual4['NAME']);
+		$this->assertEquals('3', $actual4[3]);
+		$this->assertEquals('4', $actual4[4]);
+	}
+
 	public function test_replace()
 	{
 		$tests = [

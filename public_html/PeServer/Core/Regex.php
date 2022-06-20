@@ -47,6 +47,49 @@ abstract class Regex
 		return (bool)$result;
 	}
 
+	/**
+	 * パターンマッチ。
+	 *
+	 * @param string $input
+	 * @param string $pattern
+	 * @return array<int|string,string>
+	 */
+	public static function matches(string $input, string $pattern): array
+	{
+		$result = preg_match_all($pattern, $input, $matches, PREG_PATTERN_ORDER | PREG_OFFSET_CAPTURE);
+		if ($result === false) {
+			throw new RegexException(preg_last_error_msg(), preg_last_error());
+		}
+
+		// 最初のやつは無かったことにする
+		array_shift($matches);
+
+		$items = [];
+		foreach ($matches as $key => $match) {
+			if (is_int($key)) {
+				foreach($match as $v) {
+					$items[$v[1]] = $v[0];
+				}
+			} else {
+				$items[$key] = $match[0][0];
+			}
+		}
+		ksort($items);
+
+		$resultMatches = [
+			0 => $input,
+		];
+
+		foreach ($items as $key => $item) {
+			if (is_int($key)) {
+				$resultMatches[] = $item;
+			} else {
+				$resultMatches[$key] = $item;
+			}
+		}
+
+		return $resultMatches;
+	}
 
 	/**
 	 * 正規表現置き換え。
