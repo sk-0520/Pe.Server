@@ -7,6 +7,7 @@ namespace PeServer\Core;
 use stdClass;
 use Exception;
 use PeServer\Core\Bytes;
+use PeServer\Core\InitialValue;
 use PeServer\Core\Throws\IOException;
 use PeServer\Core\Throws\ParseException;
 use PeServer\Core\Throws\FileNotFoundException;
@@ -98,12 +99,12 @@ abstract class FileUtility
 	public static function getFileExtension(string $path, bool $withDot = false): string
 	{
 		if (StringUtility::isNullOrWhiteSpace($path)) {
-			return '';
+			return InitialValue::EMPTY_STRING;
 		}
 
 		$dotIndex = StringUtility::getLastPosition($path, '.');
 		if ($dotIndex === -1) {
-			return '';
+			return InitialValue::EMPTY_STRING;
 		}
 
 		$result = StringUtility::substring($path, $dotIndex);
@@ -112,7 +113,7 @@ abstract class FileUtility
 		}
 
 		if (!StringUtility::getByteCount($result)) {
-			return '';
+			return InitialValue::EMPTY_STRING;
 		}
 
 		return StringUtility::substring($result, 1);

@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domain\Api\PluginApi;
 
-use PeServer\App\Models\AppDatabaseCache;
-use PeServer\Core\Mvc\LogicCallMode;
-use PeServer\Core\Mvc\LogicParameter;
-use PeServer\App\Models\Domain\Api\ApiLogicBase;
-use PeServer\App\Models\ResponseJson;
-use PeServer\Core\ArrayUtility;
-use PeServer\Core\Collection;
 use PeServer\Core\Uuid;
+use PeServer\Core\Collection;
+use PeServer\Core\ArrayUtility;
+use PeServer\Core\InitialValue;
+use PeServer\Core\Mvc\LogicCallMode;
+use PeServer\App\Models\ResponseJson;
+use PeServer\Core\Mvc\LogicParameter;
+use PeServer\App\Models\AppDatabaseCache;
+use PeServer\App\Models\Domain\Api\ApiLogicBase;
 
 class PluginApiExistsLogic extends ApiLogicBase
 {
@@ -28,8 +29,8 @@ class PluginApiExistsLogic extends ApiLogicBase
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
 		$json = $this->getRequestJson();
-		$pluginId = ArrayUtility::getOr($json, 'plugin_id', '');
-		$pluginName = ArrayUtility::getOr($json, 'plugin_name', '');
+		$pluginId = ArrayUtility::getOr($json, 'plugin_id', InitialValue::EMPTY_STRING);
+		$pluginName = ArrayUtility::getOr($json, 'plugin_name', InitialValue::EMPTY_STRING);
 
 		$plugins = AppDatabaseCache::readPluginInformation();
 		$pluginCollection = Collection::from($plugins);

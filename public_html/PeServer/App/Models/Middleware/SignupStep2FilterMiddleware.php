@@ -8,6 +8,7 @@ use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Http\HttpRequest;
 use PeServer\App\Models\AppDatabase;
 use PeServer\App\Models\AppConfiguration;
+use PeServer\Core\Http\HttpRequestExists;
 use PeServer\Core\Mvc\Middleware\IMiddleware;
 use PeServer\Core\Mvc\Middleware\MiddlewareResult;
 use PeServer\Core\Mvc\Middleware\MiddlewareArgument;
@@ -19,8 +20,8 @@ final class SignupStep2FilterMiddleware implements IMiddleware
 	public function handleBefore(MiddlewareArgument $argument): MiddlewareResult
 	{
 		$tokenState = $argument->request->exists('token');
-		if ($tokenState['exists'] && $tokenState['type'] == HttpRequest::REQUEST_URL) {
-			$token = $argument->request->getValue('token');
+		if ($tokenState->exists && $tokenState->kind === HttpRequestExists::KIND_URL) {
+			$token = $argument->request->getValue($tokenState->name);
 
 			$database = AppDatabase::open();
 			$signUpWaitEmailsEntityDao = new SignUpWaitEmailsEntityDao($database);

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Domain\Page\Setting;
 
 use PeServer\Core\ArrayUtility;
+use PeServer\Core\InitialValue;
+use PeServer\Core\StringUtility;
 use PeServer\Core\TypeConverter;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
@@ -18,7 +20,6 @@ use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\App\Models\Dao\Entities\PluginsEntityDao;
 use PeServer\App\Models\Dao\Entities\PluginUrlsEntityDao;
 use PeServer\App\Models\Dao\Entities\PluginCategoryMappingsEntityDao;
-use PeServer\Core\StringUtility;
 
 class SettingDefaultPluginLogic extends PageLogicBase
 {
@@ -175,7 +176,7 @@ class SettingDefaultPluginLogic extends PageLogicBase
 						$map = [
 							PluginUrlKey::CHECK => $plugin['check_url'],
 							PluginUrlKey::PROJECT => $plugin['project_url'],
-							PluginUrlKey::LANDING => '',
+							PluginUrlKey::LANDING => InitialValue::EMPTY_STRING,
 						];
 						foreach ($map as $k => $v) {
 							$pluginUrlsEntityDao->insertUrl($plugin['plugin_id'], $k, $v);

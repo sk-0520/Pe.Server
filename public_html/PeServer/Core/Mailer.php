@@ -10,11 +10,12 @@ require_once(__DIR__ . '/../Core/Libs/PHPMailer/src/PHPMailer.php');
 //require_once(__DIR__ . '/../Core/Libs/PHPMailer/src/POP3.php');
 require_once(__DIR__ . '/../Core/Libs/PHPMailer/src/SMTP.php');
 
+use PeServer\Core\InitialValue;
+use \PHPMailer\PHPMailer\PHPMailer;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\ArgumentNullException;
-use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Throws\NotImplementedException;
-use \PHPMailer\PHPMailer\PHPMailer;
+use PeServer\Core\Throws\InvalidOperationException;
 
 class SmtpSetting
 {
@@ -44,13 +45,13 @@ class Mailer
 	/**
 	 *
 	 */
-	public string $returnPath = '';
+	public string $returnPath = InitialValue::EMPTY_STRING;
 	/**
 	 * FROM:
 	 *
 	 * @var array{address:string,name?:string}
 	 */
-	public array $fromAddress = ['address' => '', 'name' => ''];
+	public array $fromAddress = ['address' => InitialValue::EMPTY_STRING, 'name' => InitialValue::EMPTY_STRING];
 	/**
 	 * TO:
 	 *
@@ -70,7 +71,7 @@ class Mailer
 	 */
 	public array $bccAddresses = [];
 
-	public string $subject = '';
+	public string $subject = InitialValue::EMPTY_STRING;
 
 	/**
 	 * Undocumented variable
@@ -155,7 +156,7 @@ class Mailer
 		/** @var string|null */
 		$name = ArrayUtility::getOr($data, 'name', null);
 		if (StringUtility::isNullOrWhiteSpace($name)) {
-			return [$data['address'], ''];
+			return [$data['address'], InitialValue::EMPTY_STRING];
 		}
 
 		return [$data['address'], $data['name']]; // @phpstan-ignore-line getOr

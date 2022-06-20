@@ -6,6 +6,7 @@ namespace PeServer\Core\Mvc\TemplatePlugin;
 
 use PeServer\Core\Security;
 use PeServer\Core\HtmlDocument;
+use PeServer\Core\InitialValue;
 use PeServer\Core\Mvc\TemplatePlugin\TemplateFunctionBase;
 use PeServer\Core\Mvc\TemplatePlugin\TemplatePluginArgument;
 
@@ -28,7 +29,7 @@ class CsrfFunction extends TemplateFunctionBase
 	{
 		// このタイミングではセッション処理完了を期待している
 		if (!isset($_SESSION[Security::CSRF_SESSION_KEY])) {
-			return '';
+			return InitialValue::EMPTY_STRING;
 		}
 
 		$csrfToken = $_SESSION[Security::CSRF_SESSION_KEY];

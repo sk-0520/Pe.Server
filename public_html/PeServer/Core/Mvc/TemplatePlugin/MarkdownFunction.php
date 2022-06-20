@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc\TemplatePlugin;
 
 use PeServer\Core\ArrayUtility;
+use PeServer\Core\InitialValue;
 use PeServer\Core\Mvc\Markdown;
 use PeServer\Core\StringUtility;
 use PeServer\Core\TypeConverter;
@@ -26,7 +27,7 @@ class MarkdownFunction extends TemplateBlockFunctionBase
 	protected function functionBlockBodyImpl(string $content): string
 	{
 		/** @var string */
-		$className = ArrayUtility::getOr($this->params, 'class', '');
+		$className = ArrayUtility::getOr($this->params, 'class', InitialValue::EMPTY_STRING);
 		if (StringUtility::isNullOrWhiteSpace($className)) {
 			$className = 'markdown';
 		} else if (!StringUtility::contains($className, 'markdown', false)) {

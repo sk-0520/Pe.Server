@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc;
 
 use PeServer\Core\Regex;
+use PeServer\Core\InitialValue;
 use PeServer\Core\StringUtility;
 use PeServer\Core\Mvc\IValidationReceiver;
 
@@ -13,7 +14,7 @@ use PeServer\Core\Mvc\IValidationReceiver;
  */
 class Validator
 {
-	public const COMMON = '';
+	public const COMMON = InitialValue::EMPTY_STRING;
 
 	public const KIND_EMPTY = 0;
 	public const KIND_WHITE_SPACE = 1;
@@ -36,7 +37,7 @@ class Validator
 	public function isNotEmpty(string $key, ?string $value): bool
 	{
 		if (StringUtility::isNullOrEmpty($value)) {
-			$this->receiver->receiveErrorKind($key, self::KIND_EMPTY, ['VALUE' => $value]);
+			$this->receiver->receiveErrorKind($key, self::KIND_EMPTY, ['VALUE' => InitialValue::EMPTY_STRING]);
 			return false;
 		}
 
@@ -46,7 +47,7 @@ class Validator
 	public function isNotWhiteSpace(string $key, ?string $value): bool
 	{
 		if (StringUtility::isNullOrWhiteSpace($value)) {
-			$this->receiver->receiveErrorKind($key, self::KIND_WHITE_SPACE, ['VALUE' => $value]);
+			$this->receiver->receiveErrorKind($key, self::KIND_WHITE_SPACE, ['VALUE' => $value ? $value : InitialValue::EMPTY_STRING]);
 			return false;
 		}
 

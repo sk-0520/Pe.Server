@@ -18,7 +18,7 @@ class CsrfMiddleware implements IMiddleware
 	public function handleBefore(MiddlewareArgument $argument): MiddlewareResult
 	{
 		$result = $argument->request->exists(Security::CSRF_REQUEST_KEY);
-		if (!$result['exists']) {
+		if (!$result->exists) {
 			$argument->logger->warn('要求CSRFトークンなし');
 			return MiddlewareResult::error(HttpStatus::misdirected(), 'CSRF');
 		}

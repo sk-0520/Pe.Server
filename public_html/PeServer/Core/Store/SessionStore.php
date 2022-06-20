@@ -7,6 +7,7 @@ namespace PeServer\Core\Store;
 use PeServer\Core\Security;
 use PeServer\Core\FileUtility;
 use PeServer\Core\ArrayUtility;
+use PeServer\Core\InitialValue;
 use PeServer\Core\StringUtility;
 use PeServer\Core\Store\CookieStore;
 use PeServer\Core\Store\SessionOption;
@@ -156,7 +157,7 @@ class SessionStore
 		$sessionOption = [
 			'lifetime' => $this->option->cookie->getExpires(),
 			'path' => $this->option->cookie->path,
-			'domain' => '',
+			'domain' => InitialValue::EMPTY_STRING,
 			'secure' => $this->option->cookie->secure,
 			'httponly' => $this->option->cookie->httpOnly,
 			'samesite' => $this->option->cookie->sameSite,

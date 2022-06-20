@@ -6,6 +6,7 @@ namespace PeServer\Core;
 
 use \Throwable;
 use PeServer\Core\Log\Logging;
+use PeServer\Core\InitialValue;
 use PeServer\Core\Mvc\Template;
 use PeServer\Core\Throws\Throws;
 use PeServer\Core\Http\HttpStatus;
@@ -65,7 +66,7 @@ class ErrorHandler
 		/** @var int */
 		$type = ArrayUtility::getOr($lastError, 'type', -1);
 		/** @var string */
-		$message = ArrayUtility::getOr($lastError, 'message', '');
+		$message = ArrayUtility::getOr($lastError, 'message', InitialValue::EMPTY_STRING);
 		/** @var string */
 		$file = ArrayUtility::getOr($lastError, 'file', '<unknown>');
 		/** @var int */
@@ -115,6 +116,18 @@ class ErrorHandler
 			$errorLineNumber,
 			null
 		);
+	}
+
+	public static function trapError(callable $action): mixed
+	{
+		$handler = new _PhpErrorHandler();
+
+		$result = $action();
+		if ($handler->isError) {
+			return false;
+		}
+
+		return $result;
 	}
 
 	/**
@@ -172,7 +185,7 @@ class ErrorHandler
 
 		$status = $this->setHttpStatus($throwable);
 
-		$logger = Logging::create(__CLASS__);
+		$logger = Logging::create(get_class($this));
 
 		$isSuppressionStatus = false;
 		foreach ($this->getSuppressionStatusList() as $suppressionStatus) {
@@ -188,5 +201,51 @@ class ErrorHandler
 
 		$template = Template::create('template', 'Core');
 		echo $template->build('error-display.tpl', new TemplateParameter($status, $values, []));
+	}
+}
+
+class _PhpErrorHandler
+{
+	public bool $closed = false;
+	public bool $isError = false;
+
+	public function __construct()
+	{
+		set_error_handler([$this, 'receiveError']);
+	}
+
+	public function __destruct()
+	{
+		$this->_close();
+	}
+
+	private function _close(): void
+	{
+		if ($this->closed) {
+			return;
+		}
+
+		restore_error_handler();
+		$this->closed = true;
+	}
+
+	public function close(): void
+	{
+		$this->_close();
+	}
+
+	/**
+	 * エラーを処理する。
+	 *
+	 * @param integer $errorNumber
+	 * @param string $errorMessage
+	 * @param string $errorFile
+	 * @param int $errorLineNumber
+	 * @return bool
+	 */
+	public final function receiveError(int $errorNumber, string $errorMessage, string $errorFile, int $errorLineNumber): bool
+	{
+		$this->isError = true;
+		return $this->isError;
 	}
 }

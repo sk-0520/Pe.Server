@@ -4,59 +4,28 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
+/**
+ * 一次元配列。
+ *
+ * @template TValue
+ */
 class ListArray
 {
 	/**
-	 * Undocumented variable
+	 * アイテム一覧。
 	 *
-	 * @var array<mixed>
+	 * @var array<TValue>
 	 */
 	private array $items;
 
 	/**
-	 * Undocumented function
+	 * 生成。
 	 *
-	 * @param array<mixed> $items
+	 * @param array<TValue> $items
 	 */
 	public function __construct(?array $items = null)
 	{
 		$this->items = $items ?? [];
-	}
-
-	/**
-	 * Undocumented function
-	 *
-	 * @param mixed $value
-	 * @return ListArray
-	 */
-	public function add(mixed $value): ListArray
-	{
-		$this->items[] = $value;
-
-		return $this;
-	}
-
-	/**
-	 * Undocumented function
-	 *
-	 * @param array<mixed> $items
-	 * @return ListArray
-	 */
-	public function addRange(array $items): ListArray
-	{
-		$this->items = array_merge($this->items, $items);
-
-		return $this;
-	}
-
-	/**
-	 * 配列データを取得。
-	 *
-	 * @return array<mixed>
-	 */
-	public function getArray(): array
-	{
-		return $this->items;
 	}
 
 	/**
@@ -67,5 +36,41 @@ class ListArray
 	public function getCount(): int
 	{
 		return count($this->items);
+	}
+
+	/**
+	 * 配列データを取得。
+	 *
+	 * @return array<TValue>
+	 */
+	public function getArray(): array
+	{
+		return $this->items;
+	}
+
+	/**
+	 * Undocumented function
+	 *
+	 * @param TValue $value
+	 * @return ListArray<TValue>
+	 */
+	public function add($value): ListArray
+	{
+		$this->items[] = $value;
+
+		return $this;
+	}
+
+	/**
+	 * Undocumented function
+	 *
+	 * @param array<TValue> $items
+	 * @return ListArray<TValue>
+	 */
+	public function addRange(array $items): ListArray
+	{
+		$this->items = array_merge($this->items, $items);
+
+		return $this;
 	}
 }

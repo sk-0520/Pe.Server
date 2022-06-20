@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Store;
 
 use PeServer\Core\ArrayUtility;
+use PeServer\Core\InitialValue;
 use PeServer\Core\StringUtility;
 use PeServer\Core\Store\CookieOption;
 
@@ -69,7 +70,7 @@ class CookieStore
 	{
 		foreach ($this->removes as $key) {
 			if (ArrayUtility::existsKey($_COOKIE, $key)) {
-				setcookie($key, '', time() - 60, '/');
+				setcookie($key, InitialValue::EMPTY_STRING, time() - 60, '/');
 			}
 		}
 
@@ -83,7 +84,7 @@ class CookieStore
 				[
 					'expires' => $option->getExpires(),
 					'path' => $option->path,
-					'domain' => '',
+					'domain' => InitialValue::EMPTY_STRING,
 					'secure' => $option->secure,
 					'httponly' => $option->httpOnly,
 					'samesite' => $option->sameSite

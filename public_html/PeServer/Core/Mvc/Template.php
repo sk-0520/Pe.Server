@@ -8,9 +8,11 @@ require_once(__DIR__ . '/../../Core/Libs/smarty/libs/Smarty.class.php');
 
 use \Smarty;
 use PeServer\Core\FileUtility;
+use PeServer\Core\InitialValue;
 use PeServer\Core\StringUtility;
 use PeServer\Core\InitializeChecker;
 use PeServer\Core\Mvc\TemplateParameter;
+use PeServer\Core\Throws\NotImplementedException;
 use PeServer\Core\Mvc\TemplatePlugin\CsrfFunction;
 use PeServer\Core\Mvc\TemplatePlugin\AssetFunction;
 use PeServer\Core\Mvc\TemplatePlugin\MarkdownFunction;
@@ -20,7 +22,6 @@ use PeServer\Core\Mvc\TemplatePlugin\BotTextImageFunction;
 use PeServer\Core\Mvc\TemplatePlugin\ITemplateBlockFunction;
 use PeServer\Core\Mvc\TemplatePlugin\TemplatePluginArgument;
 use PeServer\Core\Mvc\TemplatePlugin\ShowErrorMessagesFunction;
-use PeServer\Core\Throws\NotImplementedException;
 
 /**
  * View側のテンプレート処理。
@@ -67,7 +68,7 @@ abstract class Template
 		self::$temporaryBaseName = $temporaryBaseName;
 	}
 
-	public static function create(string $baseName, string $templateBaseName = '', string $temporaryBaseName = ''): Template
+	public static function create(string $baseName, string $templateBaseName = InitialValue::EMPTY_STRING, string $temporaryBaseName = InitialValue::EMPTY_STRING): Template
 	{
 		self::$initializeChecker->throwIfNotInitialize();
 
@@ -150,7 +151,7 @@ class _SmartyTemplate_Impl extends Template
 			if ($plugin instanceof ITemplateBlockFunction) {
 				// @phpstan-ignore-next-line
 				$this->engine->registerPlugin('block', $plugin->getFunctionName(), array($plugin, 'functionBlockBody'));
-			} else if ($plugin instanceof ITemplateFunction) {
+			} else if ($plugin instanceof ITemplateFunction) { // @phpstan-ignore-line 増えたとき用にelseしたくないのである
 				// @phpstan-ignore-next-line
 				$this->engine->registerPlugin('function', $plugin->getFunctionName(), array($plugin, 'functionBody'));
 			} else { //@phpstan-ignore-line

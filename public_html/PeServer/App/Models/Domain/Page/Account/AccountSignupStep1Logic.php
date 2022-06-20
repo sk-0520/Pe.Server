@@ -8,6 +8,7 @@ use PeServer\Core\I18n;
 use PeServer\Core\UrlUtility;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Cryptography;
+use PeServer\Core\InitialValue;
 use PeServer\Core\StringUtility;
 use PeServer\App\Models\AppMailer;
 use PeServer\App\Models\AppTemplate;
@@ -52,8 +53,8 @@ class AccountSignupStep1Logic extends PageLogicBase
 		});
 
 		$temp = $this->popTemporary(self::TEMP_TOKEN);
-		$tempValue = ArrayUtility::getOr($temp, 'value', '');
-		$tempToken = ArrayUtility::getOr($temp, 'token', '');
+		$tempValue = ArrayUtility::getOr($temp, 'value', InitialValue::EMPTY_STRING);
+		$tempToken = ArrayUtility::getOr($temp, 'token', InitialValue::EMPTY_STRING);
 
 		$inputValue = $this->getRequest('account_signup_value');
 		$inputToken = $this->getRequest('account_signup_token');
@@ -98,8 +99,8 @@ class AccountSignupStep1Logic extends PageLogicBase
 				$params['token'],
 				$params['email'],
 				$params['mark_email'],
-				ArrayUtility::getOr($_SERVER, 'REMOTE_ADDR', ''),
-				ArrayUtility::getOr($_SERVER, 'HTTP_USER_AGENT', '')
+				ArrayUtility::getOr($_SERVER, 'REMOTE_ADDR', InitialValue::EMPTY_STRING),
+				ArrayUtility::getOr($_SERVER, 'HTTP_USER_AGENT', InitialValue::EMPTY_STRING)
 			);
 
 			return true;
@@ -148,7 +149,7 @@ class AccountSignupStep1Logic extends PageLogicBase
 			'value' => $tempValue,
 		]);
 		$this->setValue('account_signup_token', $tempToken);
-		$this->setValue('account_signup_value', '');
+		$this->setValue('account_signup_value', InitialValue::EMPTY_STRING);
 		$this->setValue('value', $tempValue);
 	}
 }

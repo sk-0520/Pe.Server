@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\TemplatePlugin;
 
-use PeServer\Core\ArrayUtility;
 use PeServer\Core\FileUtility;
+use PeServer\Core\ArrayUtility;
 use PeServer\Core\HtmlDocument;
+use PeServer\Core\InitialValue;
 use PeServer\Core\OutputBuffer;
 use PeServer\Core\StringUtility;
+use PeServer\Core\TypeConverter;
 use PeServer\Core\Throws\TemplateException;
 use PeServer\Core\Mvc\TemplatePlugin\TemplateFunctionBase;
 use PeServer\Core\Mvc\TemplatePlugin\TemplatePluginArgument;
-use PeServer\Core\TypeConverter;
 
 /**
  * Bot用にテキストから画像生成。
@@ -60,9 +61,9 @@ class BotTextImageFunction extends TemplateFunctionBase
 	protected function functionBodyImpl(): string
 	{
 		/** @var string */
-		$text = ArrayUtility::getOr($this->params, 'text', '');
+		$text = ArrayUtility::getOr($this->params, 'text', InitialValue::EMPTY_STRING);
 		/** @var string */
-		$alt = ArrayUtility::getOr($this->params, 'alt', '');
+		$alt = ArrayUtility::getOr($this->params, 'alt', InitialValue::EMPTY_STRING);
 		/** @var int */
 		$width = (int)ArrayUtility::getOr($this->params, 'width', 100);
 		/** @var int */
@@ -70,7 +71,7 @@ class BotTextImageFunction extends TemplateFunctionBase
 		/** @var float */
 		$fontSize = (float)ArrayUtility::getOr($this->params, 'font-size', '12.5');
 		/** @var string */
-		$className = ArrayUtility::getOr($this->params, 'class', '');
+		$className = ArrayUtility::getOr($this->params, 'class', InitialValue::EMPTY_STRING);
 		/** @var string */
 		$backgroundColorText = ArrayUtility::getOr($this->params, 'background-color', '#eeeeee');
 		$backgroundColors = $this->toColor($backgroundColorText);
