@@ -234,8 +234,18 @@ class _PhpErrorHandler
 		$this->_close();
 	}
 
-	public final function receiveError(int $errorNumber, string $errorMessage, string $errorFile, int $errorLineNumber/* , array $_ */): void
+	/**
+	 * エラーを処理する。
+	 *
+	 * @param integer $errorNumber
+	 * @param string $errorMessage
+	 * @param string $errorFile
+	 * @param int $errorLineNumber
+	 * @return bool
+	 */
+	public final function receiveError(int $errorNumber, string $errorMessage, string $errorFile, int $errorLineNumber): bool
 	{
 		$this->isError = true;
+		return $this->isError;
 	}
 }
