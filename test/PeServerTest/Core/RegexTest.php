@@ -23,6 +23,13 @@ class RegexTest extends TestClass
 		}
 	}
 
+	public function test_isMatch_throw()
+	{
+		$this->expectException(RegexException::class);
+		Regex::isMatch('abcABC', '/(/');
+		$this->fail();
+	}
+
 	public function test_matches()
 	{
 		$actual1 = Regex::matches('abc123XYZ', '/([a-z]+)/');

@@ -39,8 +39,7 @@ abstract class Regex
 	 */
 	public static function isMatch(string $input, string $pattern): bool
 	{
-		//TODO: 警告処理
-		$result = preg_match($pattern, $input);
+		$result = ErrorHandler::trapError(fn () => preg_match($pattern, $input));
 		if ($result === false) {
 			throw new RegexException();
 		}
@@ -57,8 +56,10 @@ abstract class Regex
 	 */
 	public static function matches(string $input, string $pattern): array
 	{
-		//TODO: 警告処理
-		$result = preg_match_all($pattern, $input, $matches, PREG_PATTERN_ORDER | PREG_OFFSET_CAPTURE);
+		$matches = [];
+		$result = ErrorHandler::trapError(function () use ($pattern, $input, &$matches) {
+			preg_match_all($pattern, $input, $matches, PREG_PATTERN_ORDER | PREG_OFFSET_CAPTURE);
+		});
 		if ($result === false) {
 			throw new RegexException(preg_last_error_msg(), preg_last_error());
 		}
@@ -69,7 +70,7 @@ abstract class Regex
 		$items = [];
 		foreach ($matches as $key => $match) {
 			if (is_int($key)) {
-				foreach($match as $v) {
+				foreach ($match as $v) {
 					$items[$v[1]] = $v[0];
 				}
 			} else {
