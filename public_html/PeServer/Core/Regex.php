@@ -47,6 +47,7 @@ abstract class Regex
 		return (bool)$result;
 	}
 
+
 	/**
 	 * 正規表現置き換え。
 	 *
@@ -66,7 +67,7 @@ abstract class Regex
 
 		$result = preg_replace($pattern, $replacement, $source, $limit);
 		if ($result === null) {
-			throw new RegexException();
+			throw new RegexException(preg_last_error_msg(), preg_last_error());
 		}
 
 		return $result;
@@ -92,7 +93,7 @@ abstract class Regex
 
 		$result = preg_replace_callback($pattern, $replacement, $source, $limit);
 		if ($result === null) {
-			throw new RegexException();
+			throw new RegexException(preg_last_error_msg(), preg_last_error());
 		}
 
 		return $result;
