@@ -7,6 +7,7 @@ namespace PeServer\Core;
 use PeServer\Core\InitialValue;
 use PeServer\Core\Throws\StringException;
 use PeServer\Core\Throws\ArgumentException;
+use PHPUnit\Framework\OutputError;
 
 /**
  * 文字列操作。
@@ -327,14 +328,21 @@ abstract class StringUtility
 	 * データ出力。
 	 *
 	 * var_export/print_r で迷ったり $return = true 忘れのためのラッパー。
+	 * 色々あったけど var_dump に落ち着いた感。
 	 *
 	 * @param mixed $value
 	 * @return string
 	 */
 	public static function dump($value): string
 	{
-		//return var_export($value, true) ?? '';
-		return print_r($value, true);
+		//return print_r($value, true);
+
+		$val = OutputBuffer::get(fn () => var_dump($value));
+		if($val->hasNull()) {
+			return $val->toBase64();
+		}
+
+		return $val->toString();
 	}
 
 	/**
