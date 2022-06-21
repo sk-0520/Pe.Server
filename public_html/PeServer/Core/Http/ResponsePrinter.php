@@ -35,10 +35,10 @@ class ResponsePrinter
 
 		if ($this->response->header->existsRedirect()) {
 			$redirect = $this->response->header->getRedirect();
-			if (isset($redirect['status'])) {
-				header('Location: ' . $redirect['url'], true, $redirect['status']->getCode());
+			if ($redirect->status->is(HttpStatus::moved())) {
+				header('Location: ' . $redirect->url);
 			} else {
-				header('Location: ' . $redirect['url']);
+				header('Location: ' . $redirect->url, true, $redirect->status->getCode());
 			}
 			return;
 		}

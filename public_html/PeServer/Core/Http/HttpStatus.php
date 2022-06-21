@@ -24,6 +24,10 @@ abstract class HttpStatus
 		return new _HttpStatus_Impl(200);
 	}
 
+	public static function moved(): HttpStatus
+	{
+		return new _HttpStatus_Impl(301);
+	}
 	public static function found(): HttpStatus
 	{
 		return new _HttpStatus_Impl(302);
