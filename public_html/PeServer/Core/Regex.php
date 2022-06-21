@@ -40,11 +40,14 @@ abstract class Regex
 	public static function isMatch(string $input, string $pattern): bool
 	{
 		$result = ErrorHandler::trapError(fn () => preg_match($pattern, $input));
-		if ($result === false) {
-			throw new RegexException();
+		if (!$result->success) {
+			throw new RegexException(preg_last_error_msg(), preg_last_error());
+		}
+		if($result->value === false) {
+			throw new RegexException(preg_last_error_msg(), preg_last_error());
 		}
 
-		return (bool)$result;
+		return (bool)$result->value;
 	}
 
 	/**
@@ -58,9 +61,12 @@ abstract class Regex
 	{
 		$matches = [];
 		$result = ErrorHandler::trapError(function () use ($pattern, $input, &$matches) {
-			preg_match_all($pattern, $input, $matches, PREG_PATTERN_ORDER | PREG_OFFSET_CAPTURE);
+			return preg_match_all($pattern, $input, $matches, PREG_PATTERN_ORDER | PREG_OFFSET_CAPTURE);
 		});
-		if ($result === false) {
+		if (!$result->success) {
+			throw new RegexException(preg_last_error_msg(), preg_last_error());
+		}
+		if($result->value === false) {
 			throw new RegexException(preg_last_error_msg(), preg_last_error());
 		}
 

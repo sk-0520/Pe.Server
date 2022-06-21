@@ -118,16 +118,25 @@ class ErrorHandler
 		);
 	}
 
-	public static function trapError(callable $action): mixed
+	/**
+	 * E_ERROR的な的なやつらを一時的に補足する。
+	 *
+	 * @param callable $action 補足したい処理。
+	 * @return ResultData 結果。補足できたかどうかの真偽値が成功状態に設定されるので処理の結果自体は呼び出し側で確認すること。
+	 */
+	public static function trapError(callable $action): ResultData
 	{
 		$handler = new _PhpErrorHandler();
+		try {
+			$result = $action();
+			if ($handler->isError) {
+				return ResultData::createFailure();
+			}
 
-		$result = $action();
-		if ($handler->isError) {
-			return false;
+			return ResultData::createSuccess($result);
+		} finally {
+			$handler->close();
 		}
-
-		return $result;
 	}
 
 	/**
@@ -204,14 +213,14 @@ class ErrorHandler
 	}
 }
 
-class _PhpErrorHandler
+final class _PhpErrorHandler
 {
-	public bool $closed = false;
+	private bool $closed = false;
 	public bool $isError = false;
 
 	public function __construct()
 	{
-		set_error_handler([$this, 'receiveError']);
+		set_error_handler([$this, 'receiveError'], E_ALL);
 	}
 
 	public function __destruct()
