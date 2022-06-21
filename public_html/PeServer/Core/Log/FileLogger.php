@@ -36,9 +36,9 @@ class FileLogger extends LoggerBase
 	 * @param integer $baseTraceIndex 基準トレース位置。
 	 * @param array<string,mixed> $fileLoggingConfiguration
 	 */
-	public function __construct(string $header, int $level, int $baseTraceIndex, array $fileLoggingConfiguration)
+	public function __construct(string $format, string $header, int $level, int $baseTraceIndex, array $fileLoggingConfiguration)
 	{
-		parent::__construct($header, $level, $baseTraceIndex);
+		parent::__construct($format, $header, $level, $baseTraceIndex);
 
 		//@-phpstan-ignore-next-line
 		$this->directoryPath = $fileLoggingConfiguration['directory'];

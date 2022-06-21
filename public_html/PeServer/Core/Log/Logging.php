@@ -8,6 +8,7 @@ use \LogicException;
 use PeServer\Core\ILogger;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Cryptography;
+use PeServer\Core\FileUtility;
 use PeServer\Core\InitialValue;
 use PeServer\Core\StringUtility;
 use PeServer\Core\TypeConverter;
@@ -49,12 +50,8 @@ abstract class Logging
 	 * @var int
 	 */
 	private static int $level;
-	/**
-	 * 書式設定。
-	 *
-	 * @var string
-	 */
-	private static string $format;
+
+	//public static string $defaultFormat = '{TIMESTAMP} |{LEVEL}| [{CLIENT_IP}:{CLIENT_HOST}] {REQUEST_ID}|{SESSION} <{UA}> {METHOD} {REQUEST} {FILE}({LINE}) {FUNCTION} -> {MESSAGE}';
 
 	/**
 	 * 初期化。
@@ -72,11 +69,8 @@ abstract class Logging
 
 		/** @var int */
 		$level = ArrayUtility::getOr(self::$loggingConfiguration, 'level', ILogger::LEVEL_INFORMATION);
-		/** @var string */
-		$format = ArrayUtility::getOr(self::$loggingConfiguration, 'format', '{TIMESTAMP} |{LEVEL}| [{CLIENT_IP}:{CLIENT_HOST}] {REQUEST_ID}|{SESSION} <{UA}> {METHOD} {REQUEST} {FILE}({LINE}) {FUNCTION} -> {MESSAGE}');
 
 		self::$level = $level;
-		self::$format = $format;
 	}
 
 	private static function formatLevel(int $level): string
@@ -181,7 +175,7 @@ abstract class Logging
 	 * @param mixed ...$parameters
 	 * @return string
 	 */
-	public static function format(int $level, int $traceIndex, string $header, $message, ...$parameters): string
+	public static function format(string $format, int $level, int $traceIndex, string $header, $message, ...$parameters): string
 	{
 		self::$initializeChecker->throwIfNotInitialize();
 
@@ -204,6 +198,7 @@ abstract class Logging
 			'SESSION' => session_id(),
 			//-------------------
 			'FILE' => ArrayUtility::getOr($traceCaller, 'file', InitialValue::EMPTY_STRING),
+			'FILE_NAME' => FileUtility::getFileName(ArrayUtility::getOr($traceCaller, 'file', InitialValue::EMPTY_STRING)),
 			'LINE' => ArrayUtility::getOr($traceCaller, 'line', 0),
 			//'CLASS' => ArrayUtility::getOr($traceMethod, 'class', InitialValue::EMPTY_STRING),
 			'FUNCTION' => ArrayUtility::getOr($traceMethod, 'function', InitialValue::EMPTY_STRING),
@@ -214,7 +209,7 @@ abstract class Logging
 			'MESSAGE' => self::formatMessage($message, ...$parameters),
 		];
 
-		return StringUtility::replaceMap(self::$format, $map);
+		return StringUtility::replaceMap($format, $map);
 	}
 
 	public static function create(string $header, int $baseTraceIndex = 0): ILogger
@@ -222,9 +217,11 @@ abstract class Logging
 		self::$initializeChecker->throwIfNotInitialize();
 
 		$loggers = [
-			//@-phpstan-ignore-next-line
-			new FileLogger($header, self::$level, $baseTraceIndex + 1, self::$loggingConfiguration['file']),
+			new FileLogger(self::$loggingConfiguration['format'], $header, self::$level, $baseTraceIndex + 1, self::$loggingConfiguration['file']),
 		];
+		if (function_exists('xdebug_is_debugger_active') && \xdebug_is_debugger_active()) {
+			$loggers[] = new XdebugLogger($header, self::$level, $baseTraceIndex + 1);
+		}
 		return new MultiLogger($header, self::$level, $baseTraceIndex, $loggers);
 	}
 }

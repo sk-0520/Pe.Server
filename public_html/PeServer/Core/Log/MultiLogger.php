@@ -29,7 +29,7 @@ final class MultiLogger extends LoggerBase
 	 */
 	public function __construct(string $header, int $level, int $baseTraceIndex, array $loggers)
 	{
-		parent::__construct($header, $level, $baseTraceIndex);
+		parent::__construct('', $header, $level, $baseTraceIndex);
 		$this->loggers = $loggers;
 	}
 

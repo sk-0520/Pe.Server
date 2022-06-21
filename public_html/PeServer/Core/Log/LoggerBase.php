@@ -18,6 +18,7 @@ abstract class LoggerBase implements ILogger
 	 * @param integer $baseTraceIndex 基準トレース位置。
 	 */
 	public function __construct(
+		protected string $format,
 		protected string $header,
 		protected int $level,
 		protected int $baseTraceIndex
@@ -35,7 +36,7 @@ abstract class LoggerBase implements ILogger
 	 */
 	protected function format(int $level, int $traceIndex, $message, ...$parameters): string
 	{
-		return Logging::format($level, $traceIndex + 1, $this->header, $message, ...$parameters);
+		return Logging::format($this->format, $level, $traceIndex + 1, $this->header, $message, ...$parameters);
 	}
 
 	/**
