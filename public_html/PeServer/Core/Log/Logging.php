@@ -162,9 +162,9 @@ abstract class Logging
 			return self::$requestHost = InitialValue::EMPTY_STRING;
 		}
 
-		/** @var string */
+		/** @var string|false */
 		$hostName = gethostbyaddr($serverRemoteIpAddr);
-		if ($hostName === false) { //@phpstan-ignore-line
+		if ($hostName === false) {
 			return self::$requestHost = InitialValue::EMPTY_STRING;
 		}
 
