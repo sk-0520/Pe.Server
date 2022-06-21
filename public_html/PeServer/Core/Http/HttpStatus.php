@@ -64,8 +64,19 @@ abstract class HttpStatus
 		return new _HttpStatus_Impl(503);
 	}
 
+	/**
+	 * HTTPステータスコードを取得。
+	 *
+	 * @return integer
+	 */
 	public abstract function getCode(): int;
 
+	/**
+	 * 指定ステータスコードオブジェクトが自身と同じか。
+	 *
+	 * @param HttpStatus $httpStatus
+	 * @return boolean
+	 */
 	public abstract function is(HttpStatus $httpStatus): bool;
 }
 
