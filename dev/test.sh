@@ -6,11 +6,12 @@ BASE_DIR=../public_html
 
 PHPUNIT_VERSION=9.5.20
 PHPUNIT_URL=https://phar.phpunit.de/phpunit-${PHPUNIT_VERSION}.phar
-PHPUNIT_FILE=../test/phpunit.phar.${PHPUNIT_VERSION}
+PHPUNIT_FILE=phpunit.phar.${PHPUNIT_VERSION}
+PHPUNIT_BASE_DIR=../test
 
 if [ ! -f ${PHPUNIT_FILE} ] ; then
-	rm --force ../test/phpunit.phar.*
-	curl --output ${PHPUNIT_FILE} --location ${PHPUNIT_URL}
+	rm --force ${PHPUNIT_BASE_DIR}/phpunit.phar.*
+	curl --output ${PHPUNIT_BASE_DIR}/${PHPUNIT_FILE} --location ${PHPUNIT_URL}
 fi
 
 if [ ! -v IGNORE_NAMESPACE_CHECK ] ; then
@@ -56,6 +57,4 @@ if [ ! -v IGNORE_NAMESPACE_CHECK ] ; then
 	fi
 fi
 
-pwd
-ls -al
-php phpunit.phar.${PHPUNIT_VERSION} --bootstrap ./bootstrap.php --testdox "$@" .
+php ${PHPUNIT_FILE} --bootstrap ./bootstrap.php --testdox "$@" .
