@@ -20,7 +20,7 @@ use PeServer\Core\Throws\ArgumentException;
  * @property bool $state 真偽値を何も考えずに代入する。取得した際に一度でも偽が代入されていれば偽になる。
  * @property bool $last 最終設定値。
  */
-class TrueKeeper
+final class TrueKeeper
 {
 	private bool $state = true;
 
