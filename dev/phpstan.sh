@@ -4,10 +4,10 @@ cd $(cd $(dirname $0); pwd)
 
 PHPSTAN_VERSION=1.7.7
 PHPSTAN_URL=https://github.com/phpstan/phpstan/releases/download/${PHPSTAN_VERSION}/phpstan.phar
-PHPSTAN_FILE=${PHPSTAN_VERSION}.phpstan.phar
+PHPSTAN_FILE=phpstan.phar.${PHPSTAN_VERSION}
 
 if [ ! -f ${PHPSTAN_FILE} ] ; then
-	rm --force *.phpstan.phar
+	rm --force phpstan.phar.*
 	curl --output ${PHPSTAN_FILE} --location ${PHPSTAN_URL}
 fi
 

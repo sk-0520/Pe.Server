@@ -41,5 +41,3 @@ for:
 
 cache:
  - 'node_modules'
- - 'dev/*.phpstan.phar'
- - 'test/phpunit.phar'
