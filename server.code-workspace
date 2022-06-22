@@ -136,7 +136,9 @@
 			"zip",
 			"zlib",
 			"xdebug"
-		]
+		],
+		"php.suggest.basic": false,
+		"php.validate.enable": false
 	},
 	"extensions": {
 		"recommendations": [

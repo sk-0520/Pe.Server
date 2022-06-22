@@ -87,15 +87,15 @@ abstract class StringUtility
 		$escTail = Regex::escape($tail);
 		$pattern = "/$escHead(.+?)$escTail/";
 
-		$result = preg_replace_callback(
+		$result = Regex::replaceCallback(
+			$source,
 			$pattern,
 			function ($matches) use ($map) {
 				if (isset($map[$matches[1]])) {
 					return $map[$matches[1]];
 				}
 				return InitialValue::EMPTY_STRING;
-			},
-			$source
+			}
 		);
 
 		if (is_null($result)) {
