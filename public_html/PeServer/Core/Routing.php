@@ -219,7 +219,7 @@ class Routing
 		}
 
 		$printer = new ResponsePrinter($request, $response);
-		$printer->print();
+		$printer->execute();
 	}
 
 	/**

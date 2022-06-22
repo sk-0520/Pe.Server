@@ -21,7 +21,7 @@ class ResponsePrinter
 	 *
 	 * @return void
 	 */
-	public function print(): void
+	public function execute(): void
 	{
 		// リダイレクト未設定の場合はステータスコード設定
 		if (!$this->response->header->existsRedirect()) {
