@@ -6,7 +6,8 @@ namespace PeServerTest;
 
 //set_include_path(__DIR__ . ':' .  __DIR__ . '/../public_html');
 
-require_once(__DIR__ . '/phpunit.phar');
+$files = glob(__DIR__ . '/phpunit.phar.*');
+require_once($files[0]);
 require_once(__DIR__ . '/../public_html/PeServer/Core/AutoLoader.php');
 
 use PeServer\App\Models\Initializer;
