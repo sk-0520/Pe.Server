@@ -2,7 +2,7 @@
 
 cd $(cd $(dirname $0); pwd)
 
-PHPSTAN_VERSION=1.7.7
+PHPSTAN_VERSION=1.7.15
 PHPSTAN_URL=https://github.com/phpstan/phpstan/releases/download/${PHPSTAN_VERSION}/phpstan.phar
 PHPSTAN_FILE=phpstan.phar.${PHPSTAN_VERSION}
 
