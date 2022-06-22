@@ -58,7 +58,7 @@ class SettingEnvironmentPluginLogic extends PageLogicBase
 			'/^(.*)$/m',
 			'.phpinfo $1'
 		);
-		$dstStyle->textContent = $newCss; // @phpstan-ignore-line TODO: Regex に持たせる
+		$dstStyle->textContent = $newCss;
 
 		$content->appendChild($dstStyle);
 		$content->appendChild($dstContent);

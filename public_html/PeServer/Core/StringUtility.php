@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace PeServer\Core;
 
 use PeServer\Core\InitialValue;
+use PeServer\Core\Throws\Throws;
+use PHPUnit\Framework\OutputError;
+use PeServer\Core\Throws\RegexException;
 use PeServer\Core\Throws\StringException;
 use PeServer\Core\Throws\ArgumentException;
-use PHPUnit\Framework\OutputError;
 
 /**
  * 文字列操作。
@@ -87,22 +89,22 @@ abstract class StringUtility
 		$escTail = Regex::escape($tail);
 		$pattern = "/$escHead(.+?)$escTail/";
 
-		$result = Regex::replaceCallback(
-			$source,
-			$pattern,
-			function ($matches) use ($map) {
-				if (isset($map[$matches[1]])) {
-					return $map[$matches[1]];
+		try {
+			$result = Regex::replaceCallback(
+				$source,
+				$pattern,
+				function ($matches) use ($map) {
+					if (isset($map[$matches[1]])) {
+						return $map[$matches[1]];
+					}
+					return InitialValue::EMPTY_STRING;
 				}
-				return InitialValue::EMPTY_STRING;
-			}
-		);
+			);
 
-		if (is_null($result)) {
-			throw new StringException();
+			return $result;
+		} catch (RegexException $ex) {
+			Throws::reThrow(StringException::class, $ex);
 		}
-
-		return $result;
 	}
 
 
@@ -338,7 +340,7 @@ abstract class StringUtility
 		//return print_r($value, true);
 
 		$val = OutputBuffer::get(fn () => var_dump($value));
-		if($val->hasNull()) {
+		if ($val->hasNull()) {
 			return $val->toBase64();
 		}
 
