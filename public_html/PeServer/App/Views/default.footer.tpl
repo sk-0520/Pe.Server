@@ -1,3 +1,4 @@
+{strip}
 <ul>
 	<li>
 		<a href="/">トップページ</a>
@@ -6,3 +7,4 @@
 		<a href="/about">このサイトについて</a>
 	</li>
 </ul>
+{/strip}
