@@ -45,7 +45,7 @@ class SettingLogListLogic extends PageLogicBase
 				'directory' => FileUtility::getDirectoryPath($i),
 				'name' => FileUtility::getFileName($i),
 				'size' => $size,
-				'human_size' => $sizeConverter->convertHumanReadableByte($size, '{f_size} {term}'),
+				'human_size' => $sizeConverter->convertHumanReadableByte($size, '{f_size} {unit}'),
 			];
 		}, $logFiles);
 
