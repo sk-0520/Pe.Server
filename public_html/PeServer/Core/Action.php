@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
-use PeServer\Core\ActionRelation;
+use PeServer\Core\ActionSetting;
 use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Mvc\Middleware\IMiddleware;
 use PeServer\Core\Mvc\Middleware\IShutdownMiddleware;
@@ -21,7 +21,7 @@ class Action
 	 * HTTPメソッドとコントローラメソッドがペアになる。
 	 * 後入れ優先。
 	 *
-	 * @var array<string,ActionRelation>
+	 * @var array<string,ActionSetting>
 	 */
 	private array $map = array();
 
@@ -37,14 +37,14 @@ class Action
 	{
 		if (is_array($httpMethod)) {
 			foreach ($httpMethod as $method) {
-				$this->map[$method->getKind()] = new ActionRelation(
+				$this->map[$method->getKind()] = new ActionSetting(
 					$callMethod,
 					$middleware,
 					$shutdownMiddleware
 				);
 			}
 		} else {
-			$this->map[$httpMethod->getKind()] = new ActionRelation(
+			$this->map[$httpMethod->getKind()] = new ActionSetting(
 				$callMethod,
 				$middleware,
 				$shutdownMiddleware
@@ -56,9 +56,9 @@ class Action
 	 * 取得。
 	 *
 	 * @param HttpMethod $httpMethod HTTPメソッド
-	 * @return ActionRelation|null あった場合はクラスメソッド紐づけ情報、なければ null
+	 * @return ActionSetting|null あった場合はクラスメソッド紐づけ情報、なければ null
 	 */
-	public function get(HttpMethod $httpMethod): ?ActionRelation
+	public function get(HttpMethod $httpMethod): ?ActionSetting
 	{
 		if (ArrayUtility::tryGet($this->map, $httpMethod->getKind(), $result)) {
 			return $result;

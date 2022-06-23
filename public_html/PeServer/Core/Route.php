@@ -166,12 +166,12 @@ class Route
 	 */
 	private function getActionCore(HttpMethod $httpMethod, Action $action, array $urlParameters): RouteAction
 	{
-		$actionRelation = $action->get($httpMethod);
-		if (is_null($actionRelation)) {
+		$actionSetting = $action->get($httpMethod);
+		if (is_null($actionSetting)) {
 			return new RouteAction(
 				HttpStatus::methodNotAllowed(),
 				$this->className,
-				ActionRelation::none(),
+				ActionSetting::none(),
 				$urlParameters
 			);
 		}
@@ -179,7 +179,7 @@ class Route
 		return new RouteAction(
 			HttpStatus::none(),
 			$this->className,
-			$actionRelation,
+			$actionSetting,
 			$urlParameters
 		);
 	}
@@ -197,7 +197,7 @@ class Route
 			return new RouteAction(
 				HttpStatus::notFound(),
 				$this->className,
-				ActionRelation::none(),
+				ActionSetting::none(),
 				[]
 			);
 		}
@@ -280,7 +280,7 @@ class Route
 			return new RouteAction(
 				HttpStatus::notFound(),
 				$this->className,
-				ActionRelation::none(),
+				ActionSetting::none(),
 				[]
 			);
 		}
