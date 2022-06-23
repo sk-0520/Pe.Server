@@ -43,7 +43,7 @@ final class AppMailer extends Mailer
 		// 宛先を差し替え
 		$src = $result[0];
 		$result[0] = $this->overwriteTarget;
-		$result[1] = $result[1] . '[差し替え]' . $result[0];
+		$result[1] = $result[1] . '[差し替え]' . $src[0];
 
 		return $result;
 	}
