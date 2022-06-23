@@ -160,14 +160,7 @@ abstract class FileUtility
 	 */
 	public static function readContent(string $path): Bytes
 	{
-		/** @var string|false */
-		$content = false;
-		try {
-			$content = file_get_contents($path);
-		} catch (Exception $ex) {
-			throw new IOException($ex->getMessage(), $ex->getCode(), $ex);
-		}
-
+		$content = file_get_contents($path);
 		if ($content === false) {
 			throw new IOException($path);
 		}
