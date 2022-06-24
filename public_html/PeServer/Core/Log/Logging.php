@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Log;
 
-use \LogicException;
+use \DateTime;
 use PeServer\Core\ILogger;
+use PeServer\Core\FileUtility;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Cryptography;
-use PeServer\Core\FileUtility;
 use PeServer\Core\InitialValue;
 use PeServer\Core\StringUtility;
-use PeServer\Core\TypeConverter;
 use PeServer\Core\Log\FileLogger;
 use PeServer\Core\Log\MultiLogger;
 use PeServer\Core\InitializeChecker;
@@ -186,9 +185,14 @@ abstract class Logging
 		/** @var array<string,mixed> */
 		$traceMethod = $backtrace[$traceIndex + 1];
 
+		$timestamp = new DateTime();
+
 		/** @var array<string,string> */
 		$map = [
-			'TIMESTAMP' => date('c'),
+			'TIMESTAMP' => $timestamp->format('c'),
+			'DATE' => $timestamp->format('Y-m-d'),
+			'TIME' => $timestamp->format('H:i:s'),
+			'TIMEZONE' => $timestamp->format('P'),
 			'CLIENT_IP' => ArrayUtility::getOr($_SERVER, 'REMOTE_ADDR', InitialValue::EMPTY_STRING),
 			'CLIENT_HOST' => self::getRemoteHost(),
 			'REQUEST_ID' => self::$requestId,
