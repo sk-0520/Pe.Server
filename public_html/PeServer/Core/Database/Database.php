@@ -212,6 +212,8 @@ class Database extends DisposerBase implements IDatabaseContext
 
 	public function query(string $statement, ?array $parameters = null): array
 	{
+		$this->throwIfDisposed();
+
 		$query = $this->executeStatement($statement, $parameters);
 
 		$result = $query->fetchAll();
@@ -225,6 +227,8 @@ class Database extends DisposerBase implements IDatabaseContext
 
 	public function queryFirst(string $statement, ?array $parameters = null): array
 	{
+		$this->throwIfDisposed();
+
 		$query = $this->executeStatement($statement, $parameters);
 
 		/** @var array<string,mixed>|false */
@@ -238,6 +242,8 @@ class Database extends DisposerBase implements IDatabaseContext
 
 	public function queryFirstOr(?array $defaultValue, string $statement, ?array $parameters = null): ?array
 	{
+		$this->throwIfDisposed();
+
 		$query = $this->executeStatement($statement, $parameters);
 
 		/** @var array<string,mixed>|false */
@@ -251,6 +257,8 @@ class Database extends DisposerBase implements IDatabaseContext
 
 	public function querySingle(string $statement, ?array $parameters = null): array
 	{
+		$this->throwIfDisposed();
+
 		$query = $this->executeStatement($statement, $parameters);
 
 		/** @var array<string,mixed>|false */
@@ -269,6 +277,8 @@ class Database extends DisposerBase implements IDatabaseContext
 
 	public function querySingleOr(?array $defaultValue, string $statement, ?array $parameters = null): ?array
 	{
+		$this->throwIfDisposed();
+
 		$query = $this->executeStatement($statement, $parameters);
 
 		/** @var array<string,mixed>|false */
@@ -312,6 +322,8 @@ class Database extends DisposerBase implements IDatabaseContext
 
 	public function execute(string $statement, ?array $parameters = null): int
 	{
+		$this->throwIfDisposed();
+
 		$query = $this->executeStatement($statement, $parameters);
 
 		return $query->rowCount();
