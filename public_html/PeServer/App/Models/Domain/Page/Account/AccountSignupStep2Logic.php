@@ -25,7 +25,7 @@ use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\App\Models\Dao\Entities\UsersEntityDao;
 use PeServer\App\Models\Dao\Entities\SignUpWaitEmailsEntityDao;
 use PeServer\App\Models\Dao\Entities\UserAuthenticationsEntityDao;
-
+use PeServer\Core\EmailMessage;
 
 class AccountSignupStep2Logic extends PageLogicBase
 {
@@ -163,9 +163,7 @@ class AccountSignupStep2Logic extends PageLogicBase
 			new EmailAddress($email, $params['user_name']),
 		];
 		$mailer->subject = $subject;
-		$mailer->setMessage([
-			'html' => $html,
-		]);
+		$mailer->setMessage(new EmailMessage(null, $html));
 
 		$mailer->send();
 

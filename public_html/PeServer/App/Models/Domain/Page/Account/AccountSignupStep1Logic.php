@@ -22,6 +22,7 @@ use PeServer\Core\Database\IDatabaseContext;
 use PeServer\App\Models\Domain\AccountValidator;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\App\Models\Dao\Entities\SignUpWaitEmailsEntityDao;
+use PeServer\Core\EmailMessage;
 
 class AccountSignupStep1Logic extends PageLogicBase
 {
@@ -127,9 +128,7 @@ class AccountSignupStep1Logic extends PageLogicBase
 			new EmailAddress($email),
 		];
 		$mailer->subject = $subject;
-		$mailer->setMessage([
-			'html' => $html,
-		]);
+		$mailer->setMessage(new EmailMessage(null, $html));
 
 		$mailer->send();
 

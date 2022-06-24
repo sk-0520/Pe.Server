@@ -76,12 +76,8 @@ class Mailer
 
 	/**
 	 * メッセージ。
-	 *
-	 * @var array{text?:string,html?:string}
-	 *   * text: プレーンテキスト。
-	 *   * html: HTML。
 	 */
-	private array $message = [];
+	private EmailMessage $message;
 
 	/**
 	 * 生成。
@@ -91,6 +87,7 @@ class Mailer
 	public function __construct(array $setting)
 	{
 		$this->fromAddress = new EmailAddress(InitialValue::EMPTY_STRING, InitialValue::EMPTY_STRING);
+		$this->message = new EmailMessage();
 
 		switch ($setting['mode']) {
 			case 'smtp': {
@@ -121,22 +118,14 @@ class Mailer
 	/**
 	 * 本文設定。
 	 *
-	 * @param array{text?:string,html?:string} $message
+	 * @param EmailMessage $message
 	 * @return void
 	 * @throws ArgumentException HTMLとプレーンテキスト未設定。
 	 */
-	public function setMessage(array $message)
+	public function setMessage(EmailMessage $message)
 	{
-		if (!isset($message['text']) && !isset($message['html'])) {
+		if (!$message->isText() && !$message->isHtml()) {
 			throw new ArgumentException();
-		}
-
-		foreach (['text', 'html'] as $i) {
-			if (isset($message[$i])) {
-				if (StringUtility::isNullOrWhiteSpace($message[$i])) {
-					throw new ArgumentException($i);
-				}
-			}
 		}
 
 		$this->message = $message;
@@ -207,16 +196,16 @@ class Mailer
 
 		$isHtml = false;
 		$client->Subject = $this->getSubject($this->subject);
-		if (ArrayUtility::tryGet($this->message, 'html', $html)) {
+		if ($this->message->isHtml()) {
 			$client->isHTML(true);
-			$client->Body = $html;
+			$client->Body = $this->message->getHtml();
 			$isHtml = true;
 		}
-		if (ArrayUtility::tryGet($this->message, 'text', $text)) {
+		if ($this->message->isText()) {
 			if ($isHtml) {
-				$client->AltBody = $text;
+				$client->AltBody = $this->message->getText();
 			} else {
-				$client->Body = $text;
+				$client->Body = $this->message->getText();
 			}
 		} else if (!$isHtml) {
 			throw new InvalidOperationException();

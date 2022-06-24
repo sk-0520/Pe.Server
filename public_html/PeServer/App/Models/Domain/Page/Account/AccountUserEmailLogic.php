@@ -23,6 +23,7 @@ use PeServer\Core\Throws\NotImplementedException;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\App\Models\Dao\Entities\UserChangeWaitEmailsEntityDao;
 use PeServer\Core\EmailAddress;
+use PeServer\Core\EmailMessage;
 
 class AccountUserEmailLogic extends PageLogicBase
 {
@@ -161,9 +162,7 @@ class AccountUserEmailLogic extends PageLogicBase
 			new EmailAddress($email, $account['name']),
 		];
 		$mailer->subject = $subject;
-		$mailer->setMessage([
-			'html' => $html,
-		]);
+		$mailer->setMessage(new EmailMessage(null, $html));
 
 		$mailer->send();
 		//file_put_contents('X:\00_others\00_others\a.html',$html);
@@ -245,9 +244,7 @@ class AccountUserEmailLogic extends PageLogicBase
 				new EmailAddress($item['email'], $account['name']),
 			];
 			$mailer->subject = $subject;
-			$mailer->setMessage([
-				'html' => $html,
-			]);
+			$mailer->setMessage(new EmailMessage(null, $html));
 
 			$mailer->send();
 		}
