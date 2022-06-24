@@ -6,12 +6,14 @@ namespace PeServer\Core\Database;
 
 use \PDO;
 use \PDOStatement;
+use PeServer\Core\DisposerBase;
 use PeServer\Core\ILogger;
 use PeServer\Core\Regex;
 use PeServer\Core\StringUtility;
 use PeServer\Core\Throws\Throws;
 use PeServer\Core\Throws\SqlException;
 use PeServer\Core\Throws\DatabaseException;
+use PeServer\Core\Throws\TransactionException;
 use PeServer\Core\TypeConverter;
 
 /**
@@ -19,7 +21,7 @@ use PeServer\Core\TypeConverter;
  *
  * TODO: __destruct で解放処理ぶっこまなアカンやろなぁ
  */
-class Database implements IDatabaseContext
+class Database extends DisposerBase implements IDatabaseContext
 {
 	/**
 	 * 接続処理。
@@ -33,6 +35,12 @@ class Database implements IDatabaseContext
 	 */
 	private ILogger $logger;
 
+	/**
+	 * トランザクション中か。
+	 *
+	 * @var boolean
+	 */
+	private bool $isTransactions = false;
 
 	/**
 	 * 生成。
@@ -50,6 +58,15 @@ class Database implements IDatabaseContext
 		$this->pdo = new PDO($dsn, $user, $password, $option);
 		$this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+	}
+
+	protected function disposeImpl(): void
+	{
+		parent::disposeImpl();
+
+		if ($this->isTransactions) {
+			$this->rollback();
+		}
 	}
 
 	/**
@@ -107,12 +124,19 @@ class Database implements IDatabaseContext
 	 * @return void
 	 * @throws \PDOException
 	 * @throws SqlException
+	 * @throws TransactionException
 	 */
 	public function beginTransaction(): void
 	{
+		if ($this->isTransactions) {
+			throw new TransactionException();
+		}
+
 		if (!$this->pdo->beginTransaction()) {
 			throw new SqlException($this->getErrorMessage()); // これが投げられず PDOException が投げられると思う
 		}
+
+		$this->isTransactions = true;
 	}
 
 	/**
@@ -121,12 +145,19 @@ class Database implements IDatabaseContext
 	 * @return void
 	 * @throws \PDOException
 	 * @throws SqlException
+	 * @throws TransactionException
 	 */
 	public function commit(): void
 	{
+		if (!$this->isTransactions) {
+			throw new TransactionException();
+		}
+
 		if (!$this->pdo->commit()) {
 			throw new SqlException($this->getErrorMessage());
 		}
+
+		$this->isTransactions = false;
 	}
 
 	/**
@@ -135,12 +166,19 @@ class Database implements IDatabaseContext
 	 * @return void
 	 * @throws \PDOException
 	 * @throws SqlException
+	 * @throws TransactionException
 	 */
 	public function rollback(): void
 	{
+		if (!$this->isTransactions) {
+			throw new TransactionException();
+		}
+
 		if (!$this->pdo->rollBack()) {
 			throw new SqlException($this->getErrorMessage());
 		}
+
+		$this->isTransactions = false;
 	}
 
 	/**

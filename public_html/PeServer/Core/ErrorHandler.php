@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core;
 
 use \Throwable;
+use PeServer\Core\CloserBase;
 use PeServer\Core\Log\Logging;
 use PeServer\Core\InitialValue;
 use PeServer\Core\Mvc\Template;
@@ -135,7 +136,7 @@ class ErrorHandler
 
 			return ResultData::createSuccess($result);
 		} finally {
-			$handler->close();
+			$handler->dispose();
 		}
 	}
 
@@ -213,9 +214,8 @@ class ErrorHandler
 	}
 }
 
-final class _PhpErrorHandler
+final class _PhpErrorHandler extends DisposerBase
 {
-	private bool $closed = false;
 	public bool $isError = false;
 
 	public function __construct()
@@ -223,24 +223,11 @@ final class _PhpErrorHandler
 		set_error_handler([$this, 'receiveError'], E_ALL);
 	}
 
-	public function __destruct()
+	protected function disposeImpl(): void
 	{
-		$this->_close();
-	}
-
-	private function _close(): void
-	{
-		if ($this->closed) {
-			return;
-		}
+		parent::disposeImpl();
 
 		restore_error_handler();
-		$this->closed = true;
-	}
-
-	public function close(): void
-	{
-		$this->_close();
 	}
 
 	/**
