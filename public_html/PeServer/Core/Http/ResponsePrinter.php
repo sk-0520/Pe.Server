@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Http;
 
-use PeServer\Core\Bytes;
+use PeServer\Core\Binary;
 use PeServer\Core\Http\HttpResponse;
 
 
@@ -51,7 +51,7 @@ class ResponsePrinter
 		if ($this->response->content instanceof ICallbackContent) {
 			// 処理は自分で出力を頑張ること
 			$this->response->content->output();
-		} else if ($this->response->content instanceof Bytes) {
+		} else if ($this->response->content instanceof Binary) {
 			echo $this->response->content->getRaw();
 		} else {
 			echo $this->response->content;

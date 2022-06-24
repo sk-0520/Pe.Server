@@ -7,7 +7,7 @@ namespace PeServer\Core\Mvc;
 use \DateInterval;
 use PeServer\Core\I18n;
 use PeServer\Core\Mime;
-use PeServer\Core\Bytes;
+use PeServer\Core\Binary;
 use PeServer\Core\ILogger;
 use PeServer\Core\FileUtility;
 use PeServer\Core\ArrayUtility;
@@ -142,9 +142,9 @@ abstract class LogicBase implements IValidationReceiver
 	/**
 	 * 要求本文の生データを取得。
 	 *
-	 * @return Bytes
+	 * @return Binary
 	 */
-	protected function getRequestContent(): Bytes
+	protected function getRequestContent(): Binary
 	{
 		return FileUtility::readContent('php://input');
 	}
@@ -547,7 +547,7 @@ abstract class LogicBase implements IValidationReceiver
 	 * 応答データ設定。
 	 *
 	 * @param string $mime
-	 * @param string|array<mixed>|Bytes $data
+	 * @param string|array<mixed>|Binary $data
 	 * @return void
 	 */
 	protected function setContent(string $mime, $data): void
@@ -555,7 +555,7 @@ abstract class LogicBase implements IValidationReceiver
 		$this->content = new DataContent(HttpStatus::none(), $mime, $data);
 	}
 
-	protected function setDownloadContent(string $mime, string $fileName, Bytes $data): void
+	protected function setDownloadContent(string $mime, string $fileName, Binary $data): void
 	{
 		$this->content = new DownloadDataContent($mime, $fileName, $data);
 	}

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Result;
 
-use PeServer\Core\Bytes;
+use PeServer\Core\Binary;
 use PeServer\Core\Mime;
 use PeServer\Core\Mvc\DataContent;
 use PeServer\Core\Http\HttpResponse;
@@ -54,7 +54,7 @@ class DataActionResult implements IActionResult
 
 	private function convertRaw(DataContent $content): string
 	{
-		if ($content->data instanceof Bytes) {
+		if ($content->data instanceof Binary) {
 			return $content->data->getRaw();
 		}
 

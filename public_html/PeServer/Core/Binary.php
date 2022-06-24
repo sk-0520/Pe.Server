@@ -13,23 +13,23 @@ use PeServer\Core\Throws\NotStringException;
  * ソース上の型を明示するだけの目的で、効率とかは特になにもない。
  * あとUTF8で動くこと前提。
  */
-final class Bytes
+final class Binary
 {
 	/**
 	 * 実体。
 	 *
 	 * @var string
 	 */
-	private string $value;
+	private string $binary;
 
 	/**
 	 * 生成。
 	 *
-	 * @param string $value バイトデータとして扱う文字列。
+	 * @param string $binary バイトデータとして扱う文字列。
 	 */
-	public function __construct(string $value)
+	public function __construct(string $binary)
 	{
-		$this->value = $value;
+		$this->binary = $binary;
 	}
 
 	/**
@@ -39,7 +39,7 @@ final class Bytes
 	 */
 	public function getRaw(): string
 	{
-		return $this->value;
+		return $this->binary;
 	}
 
 	/**
@@ -49,7 +49,7 @@ final class Bytes
 	 */
 	public function getLength(): int
 	{
-		return strlen($this->value);
+		return strlen($this->binary);
 	}
 
 	/**
@@ -59,7 +59,7 @@ final class Bytes
 	 */
 	public function toHex(): string
 	{
-		return bin2hex($this->value);
+		return bin2hex($this->binary);
 	}
 
 	/**
@@ -69,24 +69,24 @@ final class Bytes
 	 */
 	public function toBase64(): string
 	{
-		return base64_encode($this->value);
+		return base64_encode($this->binary);
 	}
 
 	/**
-	 * base64 文字列から Bytes を取得。
+	 * base64 文字列から Binary を取得。
 	 *
 	 * @param string $base64
-	 * @return Bytes
+	 * @return Binary
 	 * @throws ArgumentException 変換失敗。
 	 */
-	public static function fromBase64(string $base64): Bytes
+	public static function fromBase64(string $base64): Binary
 	{
 		$value = base64_decode($base64, true);
 		if ($value === false) {
 			throw new ArgumentException('$base64');
 		}
 
-		return new Bytes($value);
+		return new Binary($value);
 	}
 
 	/**
@@ -96,7 +96,7 @@ final class Bytes
 	 */
 	public function hasNull(): bool
 	{
-		$nullIndex = mb_strpos($this->value, "\0");
+		$nullIndex = mb_strpos($this->binary, "\0");
 		return $nullIndex !== false;
 	}
 
@@ -112,6 +112,6 @@ final class Bytes
 			throw new NotStringException();
 		}
 
-		return $this->value;
+		return $this->binary;
 	}
 }

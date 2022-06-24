@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Http;
 
-use PeServer\Core\Bytes;
+use PeServer\Core\Binary;
 use PeServer\Core\Http\HttpHeader;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Http\ICallbackContent;
@@ -33,9 +33,9 @@ class HttpResponse
 	/**
 	 * 応答本文。
 	 *
-	 * @var string|Bytes|ICallbackContent|null
+	 * @var string|Binary|ICallbackContent|null
 	 */
-	public string|Bytes|ICallbackContent|null $content = null;
+	public string|Binary|ICallbackContent|null $content = null;
 
 	public function __construct()
 	{

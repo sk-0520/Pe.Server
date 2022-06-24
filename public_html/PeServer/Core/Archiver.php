@@ -14,19 +14,19 @@ abstract class Archiver
 	/**
 	 * GZIP圧縮処理。
 	 *
-	 * @param Bytes $data 圧縮するデータ
+	 * @param Binary $data 圧縮するデータ
 	 * @param integer $level 圧縮レベル。
 	 * @param integer $encoding gzencode(encoding:)
-	 * @return Bytes
+	 * @return Binary
 	 * @throws ArchiveException 失敗。
 	 */
-	public static function compressGzip(Bytes $data, int $level = -1, int $encoding = FORCE_GZIP): Bytes
+	public static function compressGzip(Binary $data, int $level = -1, int $encoding = FORCE_GZIP): Binary
 	{
 		$result = gzencode($data->getRaw(), $level, $encoding);
 		if ($result === false) {
 			throw new ArchiveException();
 		}
 
-		return new Bytes($result);
+		return new Binary($result);
 	}
 }

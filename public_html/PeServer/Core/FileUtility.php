@@ -6,7 +6,7 @@ namespace PeServer\Core;
 
 use stdClass;
 use Exception;
-use PeServer\Core\Bytes;
+use PeServer\Core\Binary;
 use PeServer\Core\InitialValue;
 use PeServer\Core\Throws\IOException;
 use PeServer\Core\Throws\ParseException;
@@ -156,16 +156,16 @@ abstract class FileUtility
 	 * パスから内容を取得。
 	 *
 	 * @param string $path
-	 * @return Bytes
+	 * @return Binary
 	 */
-	public static function readContent(string $path): Bytes
+	public static function readContent(string $path): Binary
 	{
 		$content = file_get_contents($path);
 		if ($content === false) {
 			throw new IOException($path);
 		}
 
-		return new Bytes($content);
+		return new Binary($content);
 	}
 
 	/**
