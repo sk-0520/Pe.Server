@@ -6,6 +6,7 @@ namespace PeServer\Core\Database;
 
 use PeServer\Core\Throws\SqlException;
 use PeServer\Core\Throws\DatabaseException;
+use PeServer\Core\Throws\ObjectDisposedException;
 
 interface IDatabaseReader
 {
@@ -17,6 +18,7 @@ interface IDatabaseReader
 	 * @return array<array<string,mixed>>
 	 * @throws \PDOException
 	 * @throws DatabaseException
+	 * @throws ObjectDisposedException
 	 */
 	public function query(string $statement, ?array $parameters = null): array;
 
@@ -28,6 +30,7 @@ interface IDatabaseReader
 	 * @return array<string,mixed>
 	 * @throws \PDOException
 	 * @throws DatabaseException
+	 * @throws ObjectDisposedException
 	 */
 	public function queryFirst(string $statement, ?array $parameters = null): array;
 
@@ -40,6 +43,7 @@ interface IDatabaseReader
 	 * @return array<string,mixed>|null
 	 * @throws \PDOException
 	 * @throws DatabaseException
+	 * @throws ObjectDisposedException
 	 */
 	public function queryFirstOr(?array $defaultValue, string $statement, ?array $parameters = null): ?array;
 
@@ -51,6 +55,7 @@ interface IDatabaseReader
 	 * @return array<string,mixed>
 	 * @throws \PDOException
 	 * @throws DatabaseException
+	 * @throws ObjectDisposedException
 	 */
 	public function querySingle(string $statement, ?array $parameters = null): array;
 
@@ -63,6 +68,7 @@ interface IDatabaseReader
 	 * @return array<string,mixed>|null
 	 * @throws \PDOException
 	 * @throws DatabaseException
+	 * @throws ObjectDisposedException
 	 */
 	public function querySingleOr(?array $defaultValue, string $statement, ?array $parameters = null): ?array;
 
@@ -77,6 +83,7 @@ interface IDatabaseReader
 	 * @throws \PDOException
 	 * @throws DatabaseException
 	 * @throws SqlException 問い合わせ文の検証エラー
+	 * @throws ObjectDisposedException
 	 */
 	public function selectOrdered(string $statement, ?array $parameters = null): array;
 
@@ -91,6 +98,7 @@ interface IDatabaseReader
 	 * @throws \PDOException
 	 * @throws DatabaseException
 	 * @throws SqlException 問い合わせ文の検証エラー
+	 * @throws ObjectDisposedException
 	 */
 	public function selectSingleCount(string $statement, ?array $parameters = null): int;
 }

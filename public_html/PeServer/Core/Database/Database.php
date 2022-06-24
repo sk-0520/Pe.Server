@@ -118,14 +118,6 @@ class Database extends DisposerBase implements IDatabaseContext
 		return $query;
 	}
 
-	/**
-	 * トランザクション開始。
-	 *
-	 * @return void
-	 * @throws \PDOException
-	 * @throws SqlException
-	 * @throws TransactionException
-	 */
 	public function beginTransaction(): void
 	{
 		if ($this->isTransactions) {
@@ -139,14 +131,6 @@ class Database extends DisposerBase implements IDatabaseContext
 		$this->isTransactions = true;
 	}
 
-	/**
-	 * トランザクションの確定。
-	 *
-	 * @return void
-	 * @throws \PDOException
-	 * @throws SqlException
-	 * @throws TransactionException
-	 */
 	public function commit(): void
 	{
 		if (!$this->isTransactions) {
@@ -160,14 +144,6 @@ class Database extends DisposerBase implements IDatabaseContext
 		$this->isTransactions = false;
 	}
 
-	/**
-	 * トランザクションの取消。
-	 *
-	 * @return void
-	 * @throws \PDOException
-	 * @throws SqlException
-	 * @throws TransactionException
-	 */
 	public function rollback(): void
 	{
 		if (!$this->isTransactions) {
@@ -181,14 +157,6 @@ class Database extends DisposerBase implements IDatabaseContext
 		$this->isTransactions = false;
 	}
 
-	/**
-	 * トランザクションラップ処理。
-	 *
-	 * @param callable(IDatabaseContext $context,mixed ...$arguments): bool $callback 実際の処理。戻り値が真の場合にコミット、偽ならロールバック。
-	 * @param mixed ...$arguments 引数
-	 * @return bool コミットされたか。正常系としてのコミット・ロールバック処理の戻りであり、異常系は例外が投げられる。
-	 * @throws SqlException
-	 */
 	public function transaction(callable $callback, ...$arguments): bool
 	{
 		try {
