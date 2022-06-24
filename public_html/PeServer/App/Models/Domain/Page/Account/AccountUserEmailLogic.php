@@ -22,6 +22,7 @@ use PeServer\App\Models\Dao\Domain\UserDomainDao;
 use PeServer\Core\Throws\NotImplementedException;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\App\Models\Dao\Entities\UserChangeWaitEmailsEntityDao;
+use PeServer\Core\EmailAddress;
 
 class AccountUserEmailLogic extends PageLogicBase
 {
@@ -157,7 +158,7 @@ class AccountUserEmailLogic extends PageLogicBase
 
 		$mailer = new AppMailer();
 		$mailer->toAddresses = [
-			['address' => $email, 'name' => $account['name']],
+			new EmailAddress($email, $account['name']),
 		];
 		$mailer->subject = $subject;
 		$mailer->setMessage([
@@ -241,7 +242,7 @@ class AccountUserEmailLogic extends PageLogicBase
 
 			$mailer = new AppMailer();
 			$mailer->toAddresses = [
-				['address' => $item['email'], 'name' => $account['name']],
+				new EmailAddress($item['email'], $account['name']),
 			];
 			$mailer->subject = $subject;
 			$mailer->setMessage([

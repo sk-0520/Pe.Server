@@ -7,6 +7,7 @@ namespace PeServer\App\Models;
 use PeServer\Core\Mailer;
 use PeServer\Core\Environment;
 use PeServer\Core\ArrayUtility;
+use PeServer\Core\EmailAddress;
 use PeServer\Core\InitialValue;
 use PeServer\Core\StringUtility;
 
@@ -21,7 +22,8 @@ final class AppMailer extends Mailer
 	{
 		parent::__construct(AppConfiguration::$config['mail']);
 
-		$this->fromAddress = AppConfiguration::$config['config']['address']['from_email'];
+		$fromEmail = AppConfiguration::$config['config']['address']['from_email'];
+		$this->fromAddress = new EmailAddress($fromEmail['address'], $fromEmail['name']);
 		$this->returnPath = AppConfiguration::$config['config']['address']['return_email'];
 
 		if (!Environment::isProduction() && isset(AppConfiguration::$config['debug'])) {
@@ -32,7 +34,7 @@ final class AppMailer extends Mailer
 		}
 	}
 
-	protected function convertAddress(int $kind, array $data): array
+	protected function convertAddress(int $kind, EmailAddress $data): EmailAddress
 	{
 		$result = parent::convertAddress($kind, $data);
 
@@ -41,11 +43,10 @@ final class AppMailer extends Mailer
 		}
 
 		// 宛先を差し替え
-		$src = $result[0];
-		$result[0] = $this->overwriteTarget;
-		$result[1] = $result[1] . '[差し替え]' . $src[0];
-
-		return $result;
+		return new EmailAddress(
+			$this->overwriteTarget,
+			$result->name . '[差し替え]' . $data->address
+		);
 	}
 
 	protected function getSubject(string $subject): string

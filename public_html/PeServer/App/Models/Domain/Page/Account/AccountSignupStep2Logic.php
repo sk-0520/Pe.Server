@@ -6,6 +6,7 @@ namespace PeServer\App\Models\Domain\Page\Account;
 
 use PeServer\Core\I18n;
 use PeServer\Core\Cryptography;
+use PeServer\Core\EmailAddress;
 use PeServer\Core\InitialValue;
 use PeServer\App\Models\AuditLog;
 use PeServer\App\Models\AppMailer;
@@ -159,7 +160,7 @@ class AccountSignupStep2Logic extends PageLogicBase
 
 		$mailer = new AppMailer();
 		$mailer->toAddresses = [
-			['address' => $email, 'name' => $params['user_name']],
+			new EmailAddress($email, $params['user_name']),
 		];
 		$mailer->subject = $subject;
 		$mailer->setMessage([

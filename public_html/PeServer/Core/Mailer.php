@@ -10,6 +10,7 @@ require_once(__DIR__ . '/../Core/Libs/PHPMailer/src/PHPMailer.php');
 //require_once(__DIR__ . '/../Core/Libs/PHPMailer/src/POP3.php');
 require_once(__DIR__ . '/../Core/Libs/PHPMailer/src/SMTP.php');
 
+use PeServer\Core\EmailAddress;
 use PeServer\Core\InitialValue;
 use \PHPMailer\PHPMailer\PHPMailer;
 use PeServer\Core\Throws\ArgumentException;
@@ -49,34 +50,36 @@ class Mailer
 	/**
 	 * FROM:
 	 *
-	 * @var array{address:string,name?:string}
+	 * @var EmailAddress
 	 */
-	public array $fromAddress = ['address' => InitialValue::EMPTY_STRING, 'name' => InitialValue::EMPTY_STRING];
+	public EmailAddress $fromAddress;
 	/**
 	 * TO:
 	 *
-	 * @var array<array{address:string,name?:string}>
+	 * @var EmailAddress[]
 	 */
 	public array $toAddresses = [];
 	/**
 	 * CC:
 	 *
-	 * @var array<array{address:string,name?:string}>
+	 * @var EmailAddress[]
 	 */
 	public array $ccAddresses = [];
 	/**
 	 * BCC:
 	 *
-	 * @var array<array{address:string,name?:string}>
+	 * @var EmailAddress[]
 	 */
 	public array $bccAddresses = [];
 
 	public string $subject = InitialValue::EMPTY_STRING;
 
 	/**
-	 * Undocumented variable
+	 * メッセージ。
 	 *
 	 * @var array{text?:string,html?:string}
+	 *   * text: プレーンテキスト。
+	 *   * html: HTML。
 	 */
 	private array $message = [];
 
@@ -87,6 +90,8 @@ class Mailer
 	 */
 	public function __construct(array $setting)
 	{
+		$this->fromAddress = new EmailAddress(InitialValue::EMPTY_STRING, InitialValue::EMPTY_STRING);
+
 		switch ($setting['mode']) {
 			case 'smtp': {
 					if (!isset($setting['smtp'])) {
@@ -143,23 +148,17 @@ class Mailer
 	 * サービス側でトラップせずにこいつを拡張して開発中は知らんところに飛ばないように調整する。
 	 *
 	 * @param int $kind 種別(ADDRESS_KIND_*)
-	 * @param array{address:string,name?:string} $data
-	 * @return string[]
+	 * @param EmailAddress $data
+	 * @return EmailAddress
 	 * @throws ArgumentException そもそものアドレスが未設定
 	 */
-	protected function convertAddress(int $kind, array $data): array
+	protected function convertAddress(int $kind, EmailAddress $data): EmailAddress
 	{
-		if (StringUtility::isNullOrWhiteSpace($data['address'])) {
+		if (StringUtility::isNullOrWhiteSpace($data->address)) {
 			throw new ArgumentException('address');
 		}
 
-		/** @var string|null */
-		$name = ArrayUtility::getOr($data, 'name', null);
-		if (StringUtility::isNullOrWhiteSpace($name)) {
-			return [$data['address'], InitialValue::EMPTY_STRING];
-		}
-
-		return [$data['address'], $data['name']]; // @phpstan-ignore-line getOr
+		return $data;
 	}
 
 	protected function getSubject(string $subject): string
@@ -180,7 +179,8 @@ class Mailer
 		$client->Encoding = $this->encoding;
 
 		$client->Sender = $this->returnPath;
-		$client->setFrom(...$this->convertAddress(self::ADDRESS_KIND_FROM, $this->fromAddress));
+		$fromAddress = $this->convertAddress(self::ADDRESS_KIND_FROM, $this->fromAddress);
+		$client->setFrom($fromAddress->address, $fromAddress->name);
 		if (StringUtility::isNullOrWhiteSpace($client->Sender)) {
 			$client->Sender = $client->$this->fromAddress['address'];
 		}
@@ -188,17 +188,20 @@ class Mailer
 
 		$client->clearAddresses();
 		foreach ($this->toAddresses as $address) {
-			$client->addAddress(...$this->convertAddress(self::ADDRESS_KIND_TO, $address));
+			$toAddress = $this->convertAddress(self::ADDRESS_KIND_TO, $address);
+			$client->addAddress($toAddress->address, $toAddress->name);
 		}
 
 		$client->clearCCs();
 		foreach ($this->ccAddresses as $address) {
-			$client->addCC(...$this->convertAddress(self::ADDRESS_KIND_CC, $address));
+			$ccAddress = $this->convertAddress(self::ADDRESS_KIND_CC, $address);
+			$client->addCC($ccAddress->address, $ccAddress->name);
 		}
 
 		$client->clearBCCs();
 		foreach ($this->bccAddresses as $address) {
-			$client->addBCC(...$this->convertAddress(self::ADDRESS_KIND_BCC, $address));
+			$bccAddress = $this->convertAddress(self::ADDRESS_KIND_BCC, $address);
+			$client->addBCC($bccAddress->address, $bccAddress->name);
 		}
 
 
