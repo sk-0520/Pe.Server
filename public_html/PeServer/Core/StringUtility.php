@@ -6,7 +6,6 @@ namespace PeServer\Core;
 
 use PeServer\Core\InitialValue;
 use PeServer\Core\Throws\Throws;
-use PHPUnit\Framework\OutputError;
 use PeServer\Core\Throws\RegexException;
 use PeServer\Core\Throws\StringException;
 use PeServer\Core\Throws\ArgumentException;
