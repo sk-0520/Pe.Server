@@ -101,6 +101,10 @@ class ArrayUtility
 	 * @param array<mixed> $haystack
 	 * @param mixed $needle
 	 * @return boolean
+	 *
+	 * @phpstan-template TValue
+	 * @phpstan-param TValue[] $haystack
+	 * @phpstan-param TValue $needle
 	 */
 	public static function contains(array $haystack, mixed $needle): bool
 	{
@@ -113,6 +117,9 @@ class ArrayUtility
 	 * @param array<mixed> $haystack
 	 * @param int|string $key
 	 * @return bool
+	 *
+	 * @phpstan-param array<array-key,mixed> $haystack
+	 * @phpstan-param array-key $key
 	 */
 	public static function existsKey(array $haystack, int|string $key): bool
 	{
@@ -153,10 +160,12 @@ class ArrayUtility
 	 * in_array ラッパー。
 	 *
 	 * @param array<int|string,mixed> $haystack
-	 * @param array<mixed> $needle
+	 * @param mixed $needle
 	 * @return boolean
+	 *
+	 * @phpstan-param array<array-key,mixed> $haystack
 	 */
-	public static function in(array $haystack, array $needle): bool
+	public static function in(array $haystack, mixed $needle): bool
 	{
 		return in_array($needle, $haystack, true);
 	}
