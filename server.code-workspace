@@ -151,7 +151,8 @@
 			"imperez.smarty",
 			"formulahendry.auto-close-tag",
 			"mrmlnc.vscode-apache",
-			"davidanson.vscode-markdownlint"
+			"davidanson.vscode-markdownlint",
+			"Kasik96.latte"
 		],
 	}
 }
