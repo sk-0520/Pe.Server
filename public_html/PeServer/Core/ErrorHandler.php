@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace PeServer\Core;
 
 use \Throwable;
-use PeServer\Core\CloserBase;
 use PeServer\Core\Log\Logging;
 use PeServer\Core\InitialValue;
 use PeServer\Core\Mvc\Template;
@@ -13,6 +12,7 @@ use PeServer\Core\Throws\Throws;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mvc\TemplateParameter;
 use PeServer\Core\Throws\HttpStatusException;
+use PeServer\Core\Throws\InvalidErrorLevelError;
 use PeServer\Core\Throws\InvalidOperationException;
 
 /**
@@ -120,14 +120,15 @@ class ErrorHandler
 	}
 
 	/**
-	 * E_ERROR的な的なやつらを一時的に補足する。
+	 * E_ERROR 的なやつらを一時的に補足する。
 	 *
 	 * @param callable $action 補足したい処理。
+	 * @param int $errorLevel 補足対象のエラーレベル。 https://www.php.net/manual/ja/errorfunc.constants.php
 	 * @return ResultData 結果。補足できたかどうかの真偽値が成功状態に設定されるので処理の結果自体は呼び出し側で確認すること。
 	 */
-	public static function trapError(callable $action): ResultData
+	public static function trapError(callable $action, $errorLevel = E_ALL): ResultData
 	{
-		$handler = new _PhpErrorHandler();
+		$handler = new _PhpErrorHandler($errorLevel);
 		try {
 			$result = $action();
 			if ($handler->isError) {
@@ -218,9 +219,13 @@ final class _PhpErrorHandler extends DisposerBase
 {
 	public bool $isError = false;
 
-	public function __construct()
+	public function __construct(int $errorLevel)
 	{
-		set_error_handler([$this, 'receiveError'], E_ALL);
+		if(!$errorLevel) {
+			throw new InvalidErrorLevelError();
+		}
+
+		set_error_handler([$this, 'receiveError'], $errorLevel);
 	}
 
 	protected function disposeImpl(): void
