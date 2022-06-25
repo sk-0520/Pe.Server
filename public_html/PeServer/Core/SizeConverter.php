@@ -16,7 +16,7 @@ class SizeConverter
 	 *
 	 * @var string[]
 	 */
-	public array $terms = [
+	public array $units = [
 		'byte', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB',
 	];
 
@@ -26,23 +26,23 @@ class SizeConverter
 	 * C#(Pe.Core)から移植。
 	 *
 	 * @param integer $byteSize
-	 * @param string $sizeFormat {f_size} {i_size} {term}
-	 * @param string[]|null $terms
+	 * @param string $sizeFormat {f_size} {i_size} {unit}
+	 * @param string[]|null $units
 	 * @return string
 	 */
-	public function convertHumanReadableByte(int $byteSize, string $sizeFormat = '{i_size} {term}', ?array $terms = null): string
+	public function convertHumanReadableByte(int $byteSize, string $sizeFormat = '{i_size} {unit}', ?array $units = null): string
 	{
 		$size = $byteSize;
-		$terms = $terms ?? $this->terms;
+		$units = $units ?? $this->units;
 		$order = 0;
-		while ($size >= self::KB_SIZE && ++$order < ArrayUtility::getCount($terms)) {
+		while ($size >= self::KB_SIZE && ++$order < ArrayUtility::getCount($units)) {
 			$size = $size / self::KB_SIZE;
 		}
 
 		return StringUtility::replaceMap($sizeFormat, [
 			'f_size' => strval(round($size, 2)),
 			'i_size' => strval($size),
-			'term' => $terms[$order]
+			'unit' => $units[$order]
 		]);
 	}
 }

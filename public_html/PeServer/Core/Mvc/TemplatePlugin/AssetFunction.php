@@ -9,6 +9,7 @@ use PeServer\Core\Environment;
 use PeServer\Core\FileUtility;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\HtmlDocument;
+use PeServer\Core\InitialValue;
 use PeServer\Core\StringUtility;
 use PeServer\Core\TypeConverter;
 use PeServer\Core\Throws\TemplateException;
@@ -42,9 +43,9 @@ class AssetFunction extends TemplateFunctionBase
 	protected function functionBodyImpl(): string
 	{
 		/** @var string */
-		$sourcePath = ArrayUtility::getOr($this->params, 'file', '');
+		$sourcePath = ArrayUtility::getOr($this->params, 'file', InitialValue::EMPTY_STRING);
 		if (StringUtility::isNullOrEmpty($sourcePath)) {
-			return '';
+			return InitialValue::EMPTY_STRING;
 		}
 
 		$isProduction = Environment::isProduction();

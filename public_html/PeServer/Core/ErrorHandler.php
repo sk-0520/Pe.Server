@@ -6,11 +6,13 @@ namespace PeServer\Core;
 
 use \Throwable;
 use PeServer\Core\Log\Logging;
+use PeServer\Core\InitialValue;
 use PeServer\Core\Mvc\Template;
 use PeServer\Core\Throws\Throws;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mvc\TemplateParameter;
 use PeServer\Core\Throws\HttpStatusException;
+use PeServer\Core\Throws\InvalidErrorLevelError;
 use PeServer\Core\Throws\InvalidOperationException;
 
 /**
@@ -65,7 +67,7 @@ class ErrorHandler
 		/** @var int */
 		$type = ArrayUtility::getOr($lastError, 'type', -1);
 		/** @var string */
-		$message = ArrayUtility::getOr($lastError, 'message', '');
+		$message = ArrayUtility::getOr($lastError, 'message', InitialValue::EMPTY_STRING);
 		/** @var string */
 		$file = ArrayUtility::getOr($lastError, 'file', '<unknown>');
 		/** @var int */
@@ -115,6 +117,28 @@ class ErrorHandler
 			$errorLineNumber,
 			null
 		);
+	}
+
+	/**
+	 * E_ERROR 的なやつらを一時的に補足する。
+	 *
+	 * @param callable $action 補足したい処理。
+	 * @param int $errorLevel 補足対象のエラーレベル。 https://www.php.net/manual/ja/errorfunc.constants.php
+	 * @return ResultData 結果。補足できたかどうかの真偽値が成功状態に設定されるので処理の結果自体は呼び出し側で確認すること。
+	 */
+	public static function trapError(callable $action, $errorLevel = E_ALL): ResultData
+	{
+		$handler = new _PhpErrorHandler($errorLevel);
+		try {
+			$result = $action();
+			if ($handler->isError) {
+				return ResultData::createFailure();
+			}
+
+			return ResultData::createSuccess($result);
+		} finally {
+			$handler->dispose();
+		}
 	}
 
 	/**
@@ -172,7 +196,7 @@ class ErrorHandler
 
 		$status = $this->setHttpStatus($throwable);
 
-		$logger = Logging::create(__CLASS__);
+		$logger = Logging::create(get_class($this));
 
 		$isSuppressionStatus = false;
 		foreach ($this->getSuppressionStatusList() as $suppressionStatus) {
@@ -188,5 +212,41 @@ class ErrorHandler
 
 		$template = Template::create('template', 'Core');
 		echo $template->build('error-display.tpl', new TemplateParameter($status, $values, []));
+	}
+}
+
+final class _PhpErrorHandler extends DisposerBase
+{
+	public bool $isError = false;
+
+	public function __construct(int $errorLevel)
+	{
+		if(!$errorLevel) {
+			throw new InvalidErrorLevelError();
+		}
+
+		set_error_handler([$this, 'receiveError'], $errorLevel);
+	}
+
+	protected function disposeImpl(): void
+	{
+		parent::disposeImpl();
+
+		restore_error_handler();
+	}
+
+	/**
+	 * エラーを処理する。
+	 *
+	 * @param integer $errorNumber
+	 * @param string $errorMessage
+	 * @param string $errorFile
+	 * @param int $errorLineNumber
+	 * @return bool
+	 */
+	public final function receiveError(int $errorNumber, string $errorMessage, string $errorFile, int $errorLineNumber): bool
+	{
+		$this->isError = true;
+		return $this->isError;
 	}
 }

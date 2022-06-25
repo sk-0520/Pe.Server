@@ -6,6 +6,7 @@ namespace PeServer\App\Models\Domain;
 
 use PeServer\Core\Mime;
 use PeServer\Core\ArrayUtility;
+use PeServer\Core\InitialValue;
 use PeServer\Core\Mvc\LogicBase;
 use PeServer\Core\StringUtility;
 use PeServer\App\Models\AppDatabase;
@@ -66,10 +67,10 @@ abstract class DomainLogicBase extends LogicBase
 	private function writeAuditLogCore(string $userId, string $event, ?array $info, ?IDatabaseContext $context): int
 	{
 		/** @var string */
-		$ipAddress = ArrayUtility::getOr($_SERVER, 'REMOTE_ADDR', '');
+		$ipAddress = ArrayUtility::getOr($_SERVER, 'REMOTE_ADDR', InitialValue::EMPTY_STRING);
 		/** @var string */
-		$userAgent = ArrayUtility::getOr($_SERVER, 'HTTP_USER_AGENT', '');
-		$dumpInfo = '';
+		$userAgent = ArrayUtility::getOr($_SERVER, 'HTTP_USER_AGENT', InitialValue::EMPTY_STRING);
+		$dumpInfo = InitialValue::EMPTY_STRING;
 		if (!is_null($info)) {
 			$jsonText = json_encode($info, JSON_UNESCAPED_UNICODE);
 			if ($jsonText !== false) {

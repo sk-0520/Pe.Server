@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Log;
 
-use PeServer\Core\ArrayUtility;
 use PeServer\Core\FileUtility;
-use PeServer\Core\Log\LoggerBase;
+use PeServer\Core\ArrayUtility;
 use PeServer\Core\StringUtility;
+use PeServer\Core\Log\LoggerBase;
+use PeServer\Core\Throws\Enforce;
 use PeServer\Core\Throws\IOException;
+use PeServerTest\Core\Throws\EnforceTest;
 
 class FileLogger extends LoggerBase
 {
@@ -36,17 +38,21 @@ class FileLogger extends LoggerBase
 	 * @param integer $baseTraceIndex 基準トレース位置。
 	 * @param array<string,mixed> $fileLoggingConfiguration
 	 */
-	public function __construct(string $header, int $level, int $baseTraceIndex, array $fileLoggingConfiguration)
+	public function __construct(string $format, string $header, int $level, int $baseTraceIndex, array $fileLoggingConfiguration)
 	{
-		parent::__construct($header, $level, $baseTraceIndex);
+		parent::__construct($format, $header, $level, $baseTraceIndex);
 
-		//@-phpstan-ignore-next-line
-		$this->directoryPath = $fileLoggingConfiguration['directory'];
-		//@--ignore-next-line
-		$this->baseFileName = $fileLoggingConfiguration['name'];
+		$directoryPath = ArrayUtility::getOr($fileLoggingConfiguration, 'directory', '');
+		Enforce::throwIfNullOrWhiteSpace($directoryPath);
+		$this->directoryPath = $directoryPath;
 
-		//@-phpstan-ignore-next-line
-		$this->cleanup($fileLoggingConfiguration['count']);
+		$baseFileName = ArrayUtility::getOr($fileLoggingConfiguration, 'name', '');
+		Enforce::throwIfNullOrWhiteSpace($baseFileName);
+		$this->baseFileName = $baseFileName;
+
+		$count = ArrayUtility::getOr($fileLoggingConfiguration, 'count', 0);
+		Enforce::throwIf(0 <= $count);
+		$this->cleanup($count);
 	}
 
 	private function toSafeFileNameHeader(): string
@@ -74,6 +80,10 @@ class FileLogger extends LoggerBase
 
 	private function cleanup(int $maxCount): void
 	{
+		if (!$maxCount) {
+			return;
+		}
+
 		$filePattern = StringUtility::replaceMap(
 			$this->baseFileName,
 			[

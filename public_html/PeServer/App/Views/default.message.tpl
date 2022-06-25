@@ -1,3 +1,4 @@
+{strip}
 {if isset($values.temp_messages) && !empty($values.temp_messages)}
 	<div class="common messages">
 		<ul>
@@ -7,3 +8,4 @@
 		</ul>
 	</div>
 {/if}
+{/strip}

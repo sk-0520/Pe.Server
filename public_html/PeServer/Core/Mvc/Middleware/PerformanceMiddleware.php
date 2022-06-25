@@ -13,7 +13,7 @@ use PeServer\Core\Mvc\Middleware\MiddlewareArgument;
  * グローバルに登録すれば全体、アクションに登録すればアクションの時間測定。
  * 別にそこまで厳密なものじゃないので `hrtime` は使用していない。
  */
-class PerformanceMiddleware implements IMiddleware
+final class PerformanceMiddleware implements IMiddleware
 {
 	private float $beforeMsec;
 

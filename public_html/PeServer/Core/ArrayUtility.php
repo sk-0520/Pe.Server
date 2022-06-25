@@ -33,6 +33,11 @@ class ArrayUtility
 	 * @param int|string $key キー。
 	 * @param mixed $fallbackValue 失敗時に返却される値。
 	 * @return mixed 値。返却時にそれが成功しているか失敗しているかは不明なので厳密さが必要であれば tryGet を使用すること。
+	 *
+	 * @phpstan-template TValue
+	 * @-IGNORE-phpstan-param array<array-key,TValue>|null $array 対象配列。
+	 * @phpstan-param TValue $fallbackValue
+	 * @phpstan-return TValue
 	 */
 	public static function getOr(?array $array, int|string $key, mixed $fallbackValue)
 	{
@@ -59,6 +64,11 @@ class ArrayUtility
 	 * @param int|string $key キー。
 	 * @param mixed $result 値を格納する変数。
 	 * @return boolean 値が存在したか。
+	 *
+	 * @phpstan-template TValue
+	 * @phpstan-param array<array-key,TValue>|null $array 対象配列。
+	 * @phpstan-param array-key $key キー。
+	 * @phpstan-param TValue $result 値を格納する変数。
 	 */
 	public static function tryGet(?array $array, int|string $key, mixed &$result): bool
 	{
@@ -91,6 +101,10 @@ class ArrayUtility
 	 * @param array<mixed> $haystack
 	 * @param mixed $needle
 	 * @return boolean
+	 *
+	 * @phpstan-template TValue
+	 * @phpstan-param TValue[] $haystack
+	 * @phpstan-param TValue $needle
 	 */
 	public static function contains(array $haystack, mixed $needle): bool
 	{
@@ -103,6 +117,9 @@ class ArrayUtility
 	 * @param array<mixed> $haystack
 	 * @param int|string $key
 	 * @return bool
+	 *
+	 * @phpstan-param array<array-key,mixed> $haystack
+	 * @phpstan-param array-key $key
 	 */
 	public static function existsKey(array $haystack, int|string $key): bool
 	{
@@ -114,6 +131,10 @@ class ArrayUtility
 	 *
 	 * @param array<int|string,mixed> $array
 	 * @return array<int|string>
+	 *
+	 * @phpstan-template TValue
+	 * @phpstan-param array<array-key,TValue> $array
+	 * @phpstan-return array<array-key>
 	 */
 	public static function getKeys(array $array): array
 	{
@@ -125,6 +146,10 @@ class ArrayUtility
 	 *
 	 * @param array<int|string,mixed> $array
 	 * @return array<mixed>
+	 *
+	 * @phpstan-template TValue
+	 * @phpstan-param array<array-key,TValue> $array
+	 * @phpstan-return array<TValue>
 	 */
 	public static function getValues(array $array): array
 	{
@@ -135,10 +160,12 @@ class ArrayUtility
 	 * in_array ラッパー。
 	 *
 	 * @param array<int|string,mixed> $haystack
-	 * @param array<mixed> $needle
+	 * @param mixed $needle
 	 * @return boolean
+	 *
+	 * @phpstan-param array<array-key,mixed> $haystack
 	 */
-	public static function in(array $haystack, array $needle): bool
+	public static function in(array $haystack, mixed $needle): bool
 	{
 		return in_array($needle, $haystack, true);
 	}

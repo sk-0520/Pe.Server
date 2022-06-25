@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
-use PeServer\Core\Throws\ArgumentException;
+use PeServer\Core\InitialValue;
+use PeServer\Core\Throws\Throws;
+use PeServer\Core\Throws\RegexException;
 use PeServer\Core\Throws\StringException;
+use PeServer\Core\Throws\ArgumentException;
 
 /**
  * 文字列操作。
@@ -18,7 +21,7 @@ abstract class StringUtility
 	 * 文字列がnullか空か
 	 *
 	 * @param string|null $s
-	 * @return boolean
+	 * @return ($s is null ? true: ($s is non-empty-string ? true: false))
 	 */
 	public static function isNullOrEmpty(?string $s): bool
 	{
@@ -37,7 +40,7 @@ abstract class StringUtility
 	 * 文字列がnullかホワイトスペースのみで構築されているか
 	 *
 	 * @param string|null $s
-	 * @return boolean
+	 * @return ($s is null ? true: ($s is non-empty-string ? true: false))
 	 */
 	public static function isNullOrWhiteSpace(?string $s): bool
 	{
@@ -85,22 +88,22 @@ abstract class StringUtility
 		$escTail = Regex::escape($tail);
 		$pattern = "/$escHead(.+?)$escTail/";
 
-		$result = preg_replace_callback(
-			$pattern,
-			function ($matches) use ($map) {
-				if (isset($map[$matches[1]])) {
-					return $map[$matches[1]];
+		try {
+			$result = Regex::replaceCallback(
+				$source,
+				$pattern,
+				function ($matches) use ($map) {
+					if (isset($map[$matches[1]])) {
+						return $map[$matches[1]];
+					}
+					return InitialValue::EMPTY_STRING;
 				}
-				return '';
-			},
-			$source
-		);
+			);
 
-		if (is_null($result)) {
-			throw new StringException();
+			return $result;
+		} catch (RegexException $ex) {
+			Throws::reThrow(StringException::class, $ex);
 		}
-
-		return $result;
 	}
 
 
@@ -326,14 +329,21 @@ abstract class StringUtility
 	 * データ出力。
 	 *
 	 * var_export/print_r で迷ったり $return = true 忘れのためのラッパー。
+	 * 色々あったけど var_dump に落ち着いた感。
 	 *
 	 * @param mixed $value
 	 * @return string
 	 */
 	public static function dump($value): string
 	{
-		//return var_export($value, true) ?? '';
-		return print_r($value, true);
+		//return print_r($value, true);
+
+		$val = OutputBuffer::get(fn () => var_dump($value));
+		if ($val->hasNull()) {
+			return $val->toBase64();
+		}
+
+		return $val->toString();
 	}
 
 	/**
@@ -346,6 +356,6 @@ abstract class StringUtility
 	 */
 	public static function replace(string $source, string|array $oldValue, ?string $newValue): string
 	{
-		return str_replace($oldValue, $newValue ?? '', $source);
+		return str_replace($oldValue, $newValue ?? InitialValue::EMPTY_STRING, $source);
 	}
 }

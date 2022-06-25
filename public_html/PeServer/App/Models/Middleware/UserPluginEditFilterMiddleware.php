@@ -9,6 +9,7 @@ use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Http\HttpRequest;
 use PeServer\App\Models\AppDatabase;
 use PeServer\App\Models\SessionManager;
+use PeServer\Core\Http\HttpRequestExists;
 use PeServer\Core\Mvc\Middleware\IMiddleware;
 use PeServer\Core\Mvc\Middleware\MiddlewareResult;
 use PeServer\Core\Mvc\Middleware\MiddlewareArgument;
@@ -20,8 +21,8 @@ final class UserPluginEditFilterMiddleware implements IMiddleware
 	public final function handleBefore(MiddlewareArgument $argument): MiddlewareResult
 	{
 		$pluginIdState = $argument->request->exists('plugin_id');
-		if ($pluginIdState['exists'] && $pluginIdState['type'] === HttpRequest::REQUEST_URL) {
-			$pluginId = $argument->request->getValue('plugin_id');
+		if ($pluginIdState->exists && $pluginIdState->kind === HttpRequestExists::KIND_URL) {
+			$pluginId = $argument->request->getValue($pluginIdState->name);
 			// ここにきてるってことはユーザーフィルタを通過しているのでセッションを見る必要はないけど一応ね
 			if (Uuid::isGuid($pluginId) && SessionManager::existsAccount()) {
 				$pluginId = Uuid::adjustGuid($pluginId);

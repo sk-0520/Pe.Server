@@ -24,6 +24,10 @@ abstract class HttpStatus
 		return new _HttpStatus_Impl(200);
 	}
 
+	public static function moved(): HttpStatus
+	{
+		return new _HttpStatus_Impl(301);
+	}
 	public static function found(): HttpStatus
 	{
 		return new _HttpStatus_Impl(302);
@@ -64,8 +68,19 @@ abstract class HttpStatus
 		return new _HttpStatus_Impl(503);
 	}
 
+	/**
+	 * HTTPステータスコードを取得。
+	 *
+	 * @return integer
+	 */
 	public abstract function getCode(): int;
 
+	/**
+	 * 指定ステータスコードオブジェクトが自身と同じか。
+	 *
+	 * @param HttpStatus $httpStatus
+	 * @return boolean
+	 */
 	public abstract function is(HttpStatus $httpStatus): bool;
 }
 

@@ -6,8 +6,9 @@ namespace PeServer\Core;
 
 use PeServer\Core\Log\Logging;
 use PeServer\Core\ArrayUtility;
-use PeServer\Core\Http\HttpHeader;
 use PeServer\Core\RouteSetting;
+use PeServer\Core\ActionSetting;
+use PeServer\Core\Http\HttpHeader;
 use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Http\HttpRequest;
@@ -169,11 +170,11 @@ class Routing
 	 * アクション実行。
 	 *
 	 * @param string $rawControllerName
-	 * @param ActionRelation $actionRelation
+	 * @param ActionSetting $actionSetting
 	 * @param string[] $urlParameters
 	 * @return void
 	 */
-	private function executeAction(string $rawControllerName, ActionRelation $actionRelation, array $urlParameters): void
+	private function executeAction(string $rawControllerName, ActionSetting $actionSetting, array $urlParameters): void
 	{
 		$splitNames = StringUtility::split($rawControllerName, '/');
 		$controllerName = $splitNames[ArrayUtility::getCount($splitNames) - 1];
@@ -187,8 +188,8 @@ class Routing
 		}
 
 		// アクションに紐づくミドルウェア処理
-		$this->shutdownMiddleware += $actionRelation->shutdownMiddleware;
-		if (!$this->handleBeforeMiddleware($actionRelation->actionMiddleware, $request)) {
+		$this->shutdownMiddleware += $actionSetting->shutdownMiddleware;
+		if (!$this->handleBeforeMiddleware($actionSetting->actionMiddleware, $request)) {
 			return;
 		}
 
@@ -197,10 +198,10 @@ class Routing
 
 		/** @var IActionResult|null */
 		$actionResult = null;
-		$output = OutputBuffer::get(function () use ($controllerArgument, $controllerName, $actionRelation, $request, &$actionResult) {
+		$output = OutputBuffer::get(function () use ($controllerArgument, $controllerName, $actionSetting, $request, &$actionResult) {
 			/** @var ControllerBase */
 			$controller = new $controllerName($controllerArgument);
-			$methodName = $actionRelation->controllerMethod;
+			$methodName = $actionSetting->controllerMethod;
 			/** @var IActionResult */
 			$actionResult = $controller->$methodName($request);
 		});
@@ -219,7 +220,7 @@ class Routing
 		}
 
 		$printer = new ResponsePrinter($request, $response);
-		$printer->print();
+		$printer->execute();
 	}
 
 	/**
@@ -246,7 +247,7 @@ class Routing
 			$action = $route->getAction($this->requestMethod, $this->requestPath);
 			if (!is_null($action)) {
 				if ($action->status->is(HttpStatus::none())) {
-					$this->executeAction($action->className, $action->actionRelation, $action->params);
+					$this->executeAction($action->className, $action->actionSetting, $action->params);
 					return;
 				} else if (is_null($errorAction)) {
 					$errorAction = $action;

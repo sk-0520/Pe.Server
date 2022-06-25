@@ -31,9 +31,9 @@ class HttpHeader
 	/**
 	 * リダイレクト設定。
 	 *
-	 * @var array{url:string,status?:HttpStatus}|null
+	 * @var RedirectSetting|null
 	 */
-	private ?array $redirect = null;
+	private ?RedirectSetting $redirect = null;
 
 	private function throwIfInvalidHeaderName(string $name): void
 	{
@@ -132,14 +132,9 @@ class HttpHeader
 	public function setRedirect(string $url, ?HttpStatus $status): void
 	{
 		if (is_null($status)) {
-			$this->redirect = [
-				'url' => $url,
-			];
+			$this->redirect = new RedirectSetting($url, HttpStatus::moved());
 		} else {
-			$this->redirect = [
-				'url' => $url,
-				'status' => $status,
-			];
+			$this->redirect = new RedirectSetting($url, $status);
 		}
 	}
 
@@ -180,10 +175,10 @@ class HttpHeader
 	/**
 	 * リダイレクト情報を取得。
 	 *
-	 * @return array{url:string,status?:HttpStatus}
+	 * @return RedirectSetting
 	 * @throws InvalidOperationException リダイレクト設定が未割り当て。
 	 */
-	public function getRedirect(): array
+	public function getRedirect(): RedirectSetting
 	{
 		if (!$this->existsRedirect()) {
 			throw new InvalidOperationException();
@@ -231,7 +226,7 @@ final class _HttpHeader_Request extends HttpHeader
 		throw new NotSupportedException();
 	}
 
-	public function getRedirect(): array
+	public function getRedirect(): RedirectSetting
 	{
 		throw new NotSupportedException();
 	}

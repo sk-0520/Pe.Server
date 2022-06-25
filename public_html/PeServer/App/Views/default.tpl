@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 	<!--nobanner-->
+	{strip}
 	<head>
 		{include file='default.head.tpl'}
 	</head>
@@ -35,4 +36,5 @@
 		</div>
 		{include file='default.foot.tpl'}
 	</body>
+	{/strip}
 </html>

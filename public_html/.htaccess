@@ -6,6 +6,6 @@ AddType application/x-httpd-php80 .php
     RewriteCond %{REQUEST_URI} !deploy/php-deploy-receiver.php$
     RewriteCond %{REQUEST_URI} !\.((css)|(js)|(json)|(xml))(\?[a-zA-Z0-9]*)?$
     RewriteCond %{REQUEST_URI} !\.((jpe?g)|(gif)|(png)|(ico))(\?[a-zA-Z0-9]*)?$
-    RewriteRule ^.*$ index.php
+    RewriteRule . index.php
 </IfModule>
 

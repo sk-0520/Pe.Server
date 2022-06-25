@@ -21,16 +21,16 @@ abstract class Cryptography
 	 * ランダムバイトデータを生成。
 	 *
 	 * @param integer $length
-	 * @return Bytes
+	 * @return Binary
 	 */
-	public static function generateRandomBytes(int $length): Bytes
+	public static function generateRandomBytes(int $length): Binary
 	{
 		$result = openssl_random_pseudo_bytes($length);
 		if ($result === false) { //@phpstan-ignore-line
 			throw new CryptoException();
 		}
 
-		return new Bytes($result);
+		return new Binary($result);
 	}
 
 	/**
@@ -100,7 +100,7 @@ abstract class Cryptography
 		}
 		list($algorithm, $ivBase64, $encData) = $values;
 
-		$iv = Bytes::fromBase64($ivBase64);
+		$iv = Binary::fromBase64($ivBase64);
 
 		/** @var string|false */
 		$decData = false;

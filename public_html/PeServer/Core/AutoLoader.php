@@ -39,6 +39,12 @@ abstract class AutoLoader
 		spl_autoload_register([__CLASS__, 'load']);
 	}
 
+	/**
+	 * クラス読み込み。
+	 *
+	 * @param string $className
+	 * @return void
+	 */
 	private static function load(string $className): void
 	{
 		if (!preg_match(self::$includePattern, $className)) {

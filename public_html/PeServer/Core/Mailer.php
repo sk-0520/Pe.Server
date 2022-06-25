@@ -10,11 +10,13 @@ require_once(__DIR__ . '/../Core/Libs/PHPMailer/src/PHPMailer.php');
 //require_once(__DIR__ . '/../Core/Libs/PHPMailer/src/POP3.php');
 require_once(__DIR__ . '/../Core/Libs/PHPMailer/src/SMTP.php');
 
+use PeServer\Core\EmailAddress;
+use PeServer\Core\InitialValue;
+use \PHPMailer\PHPMailer\PHPMailer;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\ArgumentNullException;
-use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Throws\NotImplementedException;
-use \PHPMailer\PHPMailer\PHPMailer;
+use PeServer\Core\Throws\InvalidOperationException;
 
 class SmtpSetting
 {
@@ -44,40 +46,38 @@ class Mailer
 	/**
 	 *
 	 */
-	public string $returnPath = '';
+	public string $returnPath = InitialValue::EMPTY_STRING;
 	/**
 	 * FROM:
 	 *
-	 * @var array{address:string,name?:string}
+	 * @var EmailAddress
 	 */
-	public array $fromAddress = ['address' => '', 'name' => ''];
+	public EmailAddress $fromAddress;
 	/**
 	 * TO:
 	 *
-	 * @var array<array{address:string,name?:string}>
+	 * @var EmailAddress[]
 	 */
 	public array $toAddresses = [];
 	/**
 	 * CC:
 	 *
-	 * @var array<array{address:string,name?:string}>
+	 * @var EmailAddress[]
 	 */
 	public array $ccAddresses = [];
 	/**
 	 * BCC:
 	 *
-	 * @var array<array{address:string,name?:string}>
+	 * @var EmailAddress[]
 	 */
 	public array $bccAddresses = [];
 
-	public string $subject = '';
+	public string $subject = InitialValue::EMPTY_STRING;
 
 	/**
-	 * Undocumented variable
-	 *
-	 * @var array{text?:string,html?:string}
+	 * メッセージ。
 	 */
-	private array $message = [];
+	private EmailMessage $message;
 
 	/**
 	 * 生成。
@@ -86,6 +86,9 @@ class Mailer
 	 */
 	public function __construct(array $setting)
 	{
+		$this->fromAddress = new EmailAddress(InitialValue::EMPTY_STRING, InitialValue::EMPTY_STRING);
+		$this->message = new EmailMessage();
+
 		switch ($setting['mode']) {
 			case 'smtp': {
 					if (!isset($setting['smtp'])) {
@@ -115,22 +118,14 @@ class Mailer
 	/**
 	 * 本文設定。
 	 *
-	 * @param array{text?:string,html?:string} $message
+	 * @param EmailMessage $message
 	 * @return void
 	 * @throws ArgumentException HTMLとプレーンテキスト未設定。
 	 */
-	public function setMessage(array $message)
+	public function setMessage(EmailMessage $message)
 	{
-		if (!isset($message['text']) && !isset($message['html'])) {
+		if (!$message->isText() && !$message->isHtml()) {
 			throw new ArgumentException();
-		}
-
-		foreach (['text', 'html'] as $i) {
-			if (isset($message[$i])) {
-				if (StringUtility::isNullOrWhiteSpace($message[$i])) {
-					throw new ArgumentException($i);
-				}
-			}
 		}
 
 		$this->message = $message;
@@ -142,23 +137,17 @@ class Mailer
 	 * サービス側でトラップせずにこいつを拡張して開発中は知らんところに飛ばないように調整する。
 	 *
 	 * @param int $kind 種別(ADDRESS_KIND_*)
-	 * @param array{address:string,name?:string} $data
-	 * @return string[]
+	 * @param EmailAddress $data
+	 * @return EmailAddress
 	 * @throws ArgumentException そもそものアドレスが未設定
 	 */
-	protected function convertAddress(int $kind, array $data): array
+	protected function convertAddress(int $kind, EmailAddress $data): EmailAddress
 	{
-		if (StringUtility::isNullOrWhiteSpace($data['address'])) {
+		if (StringUtility::isNullOrWhiteSpace($data->address)) {
 			throw new ArgumentException('address');
 		}
 
-		/** @var string|null */
-		$name = ArrayUtility::getOr($data, 'name', null);
-		if (StringUtility::isNullOrWhiteSpace($name)) {
-			return [$data['address'], ''];
-		}
-
-		return [$data['address'], $data['name']]; // @phpstan-ignore-line getOr
+		return $data;
 	}
 
 	protected function getSubject(string $subject): string
@@ -179,7 +168,8 @@ class Mailer
 		$client->Encoding = $this->encoding;
 
 		$client->Sender = $this->returnPath;
-		$client->setFrom(...$this->convertAddress(self::ADDRESS_KIND_FROM, $this->fromAddress));
+		$fromAddress = $this->convertAddress(self::ADDRESS_KIND_FROM, $this->fromAddress);
+		$client->setFrom($fromAddress->address, $fromAddress->name);
 		if (StringUtility::isNullOrWhiteSpace($client->Sender)) {
 			$client->Sender = $client->$this->fromAddress['address'];
 		}
@@ -187,32 +177,35 @@ class Mailer
 
 		$client->clearAddresses();
 		foreach ($this->toAddresses as $address) {
-			$client->addAddress(...$this->convertAddress(self::ADDRESS_KIND_TO, $address));
+			$toAddress = $this->convertAddress(self::ADDRESS_KIND_TO, $address);
+			$client->addAddress($toAddress->address, $toAddress->name);
 		}
 
 		$client->clearCCs();
 		foreach ($this->ccAddresses as $address) {
-			$client->addCC(...$this->convertAddress(self::ADDRESS_KIND_CC, $address));
+			$ccAddress = $this->convertAddress(self::ADDRESS_KIND_CC, $address);
+			$client->addCC($ccAddress->address, $ccAddress->name);
 		}
 
 		$client->clearBCCs();
 		foreach ($this->bccAddresses as $address) {
-			$client->addBCC(...$this->convertAddress(self::ADDRESS_KIND_BCC, $address));
+			$bccAddress = $this->convertAddress(self::ADDRESS_KIND_BCC, $address);
+			$client->addBCC($bccAddress->address, $bccAddress->name);
 		}
 
 
 		$isHtml = false;
 		$client->Subject = $this->getSubject($this->subject);
-		if (ArrayUtility::tryGet($this->message, 'html', $html)) {
+		if ($this->message->isHtml()) {
 			$client->isHTML(true);
-			$client->Body = $html;
+			$client->Body = $this->message->getHtml();
 			$isHtml = true;
 		}
-		if (ArrayUtility::tryGet($this->message, 'text', $text)) {
+		if ($this->message->isText()) {
 			if ($isHtml) {
-				$client->AltBody = $text;
+				$client->AltBody = $this->message->getText();
 			} else {
-				$client->Body = $text;
+				$client->Body = $this->message->getText();
 			}
 		} else if (!$isHtml) {
 			throw new InvalidOperationException();

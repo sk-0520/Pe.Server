@@ -1,3 +1,4 @@
+{strip}
 <ul>
 	<li>
 		<a href="/">トップ</a>
@@ -29,3 +30,4 @@
 		</li>
 	{/if}
 </ul>
+{/strip}

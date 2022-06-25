@@ -20,7 +20,7 @@ build_script:
   - sh: ./dev/update-config.sh $APPVEYOR_REPO_COMMIT
 test_script:
   - sh: npm run test
-  - sh: ./dev/phpstan.sh
+  - sh: ./dev/code.sh
   - sh: ./dev/test.sh
 
 artifacts:
@@ -41,5 +41,3 @@ for:
 
 cache:
  - 'node_modules'
- - 'dev/phpstan.phar'
- - 'test/phpunit.phar'

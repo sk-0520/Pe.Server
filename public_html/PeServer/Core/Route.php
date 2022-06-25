@@ -9,6 +9,7 @@ use PeServer\Core\Regex;
 use PeServer\Core\Action;
 use PeServer\Core\RouteAction;
 use PeServer\Core\ArrayUtility;
+use PeServer\Core\InitialValue;
 use PeServer\Core\StringUtility;
 use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Http\HttpStatus;
@@ -88,7 +89,7 @@ class Route
 		$this->className = $className;
 
 		if (!Regex::isMatch($this->basePath, $this->excludeIndexPattern)) {
-			$this->addAction('', HttpMethod::gets(), 'index', $this->baseMiddleware, $this->baseShutdownMiddleware);
+			$this->addAction(InitialValue::EMPTY_STRING, HttpMethod::gets(), 'index', $this->baseMiddleware, $this->baseShutdownMiddleware);
 		}
 	}
 
@@ -165,12 +166,12 @@ class Route
 	 */
 	private function getActionCore(HttpMethod $httpMethod, Action $action, array $urlParameters): RouteAction
 	{
-		$actionRelation = $action->get($httpMethod);
-		if (is_null($actionRelation)) {
+		$actionSetting = $action->get($httpMethod);
+		if (is_null($actionSetting)) {
 			return new RouteAction(
 				HttpStatus::methodNotAllowed(),
 				$this->className,
-				ActionRelation::none(),
+				ActionSetting::none(),
 				$urlParameters
 			);
 		}
@@ -178,7 +179,7 @@ class Route
 		return new RouteAction(
 			HttpStatus::none(),
 			$this->className,
-			$actionRelation,
+			$actionSetting,
 			$urlParameters
 		);
 	}
@@ -196,7 +197,7 @@ class Route
 			return new RouteAction(
 				HttpStatus::notFound(),
 				$this->className,
-				ActionRelation::none(),
+				ActionSetting::none(),
 				[]
 			);
 		}
@@ -223,7 +224,7 @@ class Route
 					$length = StringUtility::getLength($value);
 					$targetValue = urldecode($actionPaths[$i]);
 					if ($length === 0 || $value[0] !== ':') {
-						return ['key' => $value, 'name' => '', 'value' => $targetValue];
+						return ['key' => $value, 'name' => InitialValue::EMPTY_STRING, 'value' => $targetValue];
 					}
 					$splitPaths = StringUtility::split($value, '@', 2);
 					$requestKey = StringUtility::substring($splitPaths[0], 1);
@@ -279,7 +280,7 @@ class Route
 			return new RouteAction(
 				HttpStatus::notFound(),
 				$this->className,
-				ActionRelation::none(),
+				ActionSetting::none(),
 				[]
 			);
 		}

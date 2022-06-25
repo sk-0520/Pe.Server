@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Domain\Page\Setting;
 
 use PeServer\Core\Cryptography;
+use PeServer\Core\InitialValue;
 use PeServer\App\Models\AuditLog;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
@@ -18,7 +19,7 @@ use PeServer\App\Models\Domain\AccountValidator;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\App\Models\Dao\Entities\UsersEntityDao;
 use PeServer\App\Models\Dao\Entities\UserAuthenticationsEntityDao;
-
+use PeServer\Core\ArrayUtility;
 
 class SettingSetupLogic extends PageLogicBase
 {
@@ -37,7 +38,7 @@ class SettingSetupLogic extends PageLogicBase
 			'setting_setup_website',
 		], true);
 
-		$this->setValue('setting_setup_password', '');
+		$this->setValue('setting_setup_password', InitialValue::EMPTY_STRING);
 	}
 
 	protected function validateImpl(LogicCallMode $callMode): void
@@ -84,7 +85,7 @@ class SettingSetupLogic extends PageLogicBase
 
 		$params = [
 			'login_id' => $this->getRequest('setting_setup_login_id'),
-			'password' => $this->getRequest('setting_setup_password', '', false),
+			'password' => $this->getRequest('setting_setup_password', InitialValue::EMPTY_STRING, false),
 			'user_name' => $this->getRequest('setting_setup_user_name'),
 			'email' => AppCryptography::encrypt($email),
 			'mark_email' => AppCryptography::toMark($email),
@@ -93,7 +94,7 @@ class SettingSetupLogic extends PageLogicBase
 
 		$userInfo = [
 			'id' => UserUtility::generateUserId(),
-			'generated_password' => '',
+			'generated_password' => InitialValue::EMPTY_STRING,
 			'current_password' => Cryptography::toHashPassword($params['password']),
 		];
 
@@ -104,7 +105,7 @@ class SettingSetupLogic extends PageLogicBase
 			$accountValidator = new AccountValidator($this, $this->validator);
 
 			/** @var string @-phpstan-ignore-next-line */
-			$loginId = $params['login_id'];
+			$loginId = ArrayUtility::getOr($params, 'login_id', '');
 			if (!$accountValidator->isFreeLoginId($database, 'setting_setup_login_id', $loginId)) {
 				return false;
 			}
@@ -122,8 +123,8 @@ class SettingSetupLogic extends PageLogicBase
 				$params['email'], // @-phpstan-ignore-line
 				$params['mark_email'], // @-phpstan-ignore-line
 				$params['website'], // @-phpstan-ignore-line
-				'',
-				''
+				InitialValue::EMPTY_STRING,
+				InitialValue::EMPTY_STRING
 			);
 
 			$userAuthenticationsEntityDao->insertUserAuthentication(

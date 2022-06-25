@@ -19,13 +19,13 @@ class RouteAction
 	 *
 	 * @param HttpStatus $status
 	 * @param string $className
-	 * @param ActionRelation $actionRelation
+	 * @param ActionSetting $actionSetting
 	 * @param array<string,string> $params パラメータ。
 	 */
 	public function __construct(
 		public HttpStatus $status,
 		public string $className,
-		public ActionRelation $actionRelation,
+		public ActionSetting $actionSetting,
 		public array $params
 	) {
 	}

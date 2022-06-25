@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Http;
 
-use PeServer\Core\Bytes;
+use PeServer\Core\Binary;
 use PeServer\Core\Http\HttpResponse;
 
 
@@ -21,7 +21,7 @@ class ResponsePrinter
 	 *
 	 * @return void
 	 */
-	public function print(): void
+	public function execute(): void
 	{
 		// リダイレクト未設定の場合はステータスコード設定
 		if (!$this->response->header->existsRedirect()) {
@@ -35,10 +35,10 @@ class ResponsePrinter
 
 		if ($this->response->header->existsRedirect()) {
 			$redirect = $this->response->header->getRedirect();
-			if (isset($redirect['status'])) {
-				header('Location: ' . $redirect['url'], true, $redirect['status']->getCode());
+			if ($redirect->status->is(HttpStatus::moved())) {
+				header('Location: ' . $redirect->url);
 			} else {
-				header('Location: ' . $redirect['url']);
+				header('Location: ' . $redirect->url, true, $redirect->status->getCode());
 			}
 			return;
 		}
@@ -51,7 +51,7 @@ class ResponsePrinter
 		if ($this->response->content instanceof ICallbackContent) {
 			// 処理は自分で出力を頑張ること
 			$this->response->content->output();
-		} else if ($this->response->content instanceof Bytes) {
+		} else if ($this->response->content instanceof Binary) {
 			echo $this->response->content->getRaw();
 		} else {
 			echo $this->response->content;

@@ -6,21 +6,21 @@ namespace PeServerTest\Core;
 
 use PeServerTest\Data;
 use PeServerTest\TestClass;
-use PeServer\Core\Bytes;
+use PeServer\Core\Binary;
 use PeServer\Core\Throws\ArgumentException;
 
 class BytesTest extends TestClass
 {
 	public function test_getRaw()
 	{
-		$bytes = new Bytes("a\0b\0");
-		$this->assertEquals("a\0b\0", $bytes->getRaw());
+		$binary = new Binary("a\0b\0");
+		$this->assertEquals("a\0b\0", $binary->getRaw());
 	}
 
 	public function test_getLength()
 	{
-		$bytes = new Bytes("a\0b\0");
-		$this->assertEquals(4, $bytes->getLength());
+		$binary = new Binary("a\0b\0");
+		$this->assertEquals(4, $binary->getLength());
 	}
 
 	public function test_toHex()
@@ -31,25 +31,25 @@ class BytesTest extends TestClass
 			new Data("0110ff", "\x01\x10\xff"),
 		];
 		foreach ($tests as $test) {
-			$bytes = new Bytes(...$test->args);
-			$actual = $bytes->toHex();
+			$binary = new Binary(...$test->args);
+			$actual = $binary->toHex();
 			$this->assertEquals($test->expected, $actual);
 		}
 	}
 
 	public function test_base64()
 	{
-		$bytes = new Bytes("a\0b\0");
-		$base64 = $bytes->toBase64();
-		$actual = Bytes::fromBase64($base64);
-		$this->assertEquals($bytes->getRaw(), $actual->getRaw());
+		$binary = new Binary("a\0b\0");
+		$base64 = $binary->toBase64();
+		$actual = Binary::fromBase64($base64);
+		$this->assertEquals($binary->getRaw(), $actual->getRaw());
 		$this->assertEquals($base64, $actual->toBase64());
 	}
 
 	public function test_base64_error()
 	{
 		$this->expectException(ArgumentException::class);
-		Bytes::fromBase64('@@@@@@');
+		Binary::fromBase64('@@@@@@');
 		$this->fail();
 	}
 

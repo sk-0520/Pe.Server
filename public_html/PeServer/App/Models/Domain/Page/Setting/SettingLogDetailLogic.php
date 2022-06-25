@@ -12,7 +12,7 @@ use PeServer\App\Models\AppConfiguration;
 use PeServer\Core\Throws\FileNotFoundException;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\Core\Archiver;
-use PeServer\Core\Bytes;
+use PeServer\Core\Binary;
 use PeServer\Core\Mime;
 
 class SettingLogDetailLogic extends PageLogicBase
@@ -40,7 +40,7 @@ class SettingLogDetailLogic extends PageLogicBase
 			throw new FileNotFoundException();
 		}
 
-		$bytes = FileUtility::readContent($filePath);
+		$binary = FileUtility::readContent($filePath);
 
 		/** @var int @-phpstan-ignore-next-line */
 		$archiveSize = AppConfiguration::$config['logging']['archive_size'];
@@ -49,13 +49,13 @@ class SettingLogDetailLogic extends PageLogicBase
 		if ($archiveSize <= $fileSize) {
 			$this->result['download'] = true;
 
-			$compressed = Archiver::compressGzip($bytes, 9);
+			$compressed = Archiver::compressGzip($binary, 9);
 
 			$this->setDownloadContent(Mime::GZ, $fileName . '.gz', $compressed);
 		} else {
 			$this->setValue('log_name', $fileName);
 			$this->setValue('log_file', $filePath);
-			$this->setValue('log_value', $bytes->getRaw());
+			$this->setValue('log_value', $binary->getRaw());
 		}
 	}
 }

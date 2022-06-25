@@ -12,7 +12,7 @@ use PeServer\Core\OutputBuffer;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
-
+use PeServer\Core\Regex;
 
 class SettingEnvironmentPluginLogic extends PageLogicBase
 {
@@ -53,12 +53,12 @@ class SettingEnvironmentPluginLogic extends PageLogicBase
 
 		/** @var DOMElement $dstStyle */
 		$css = $dstStyle->textContent;
-		$newCss = preg_replace(
+		$newCss = Regex::replace(
+			$css,
 			'/^(.*)$/m',
-			'.phpinfo $1',
-			$css
+			'.phpinfo $1'
 		);
-		$dstStyle->textContent = $newCss; // @phpstan-ignore-line TODO: Regex に持たせる
+		$dstStyle->textContent = $newCss;
 
 		$content->appendChild($dstStyle);
 		$content->appendChild($dstContent);

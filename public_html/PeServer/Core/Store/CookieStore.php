@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Store;
 
 use PeServer\Core\ArrayUtility;
+use PeServer\Core\InitialValue;
 use PeServer\Core\StringUtility;
 use PeServer\Core\Store\CookieOption;
 
@@ -29,9 +30,10 @@ class CookieStore
 	 */
 	private array $values = array();
 	/**
-	 * 削除データ。
+	 * 削除データ(キー項目)。
 	 *
 	 * @var string[]
+	 * @phpstan-var array-key[]
 	 */
 	private array $removes = array();
 
@@ -69,7 +71,7 @@ class CookieStore
 	{
 		foreach ($this->removes as $key) {
 			if (ArrayUtility::existsKey($_COOKIE, $key)) {
-				setcookie($key, '', time() - 60, '/');
+				setcookie($key, InitialValue::EMPTY_STRING, time() - 60, '/');
 			}
 		}
 
@@ -83,7 +85,7 @@ class CookieStore
 				[
 					'expires' => $option->getExpires(),
 					'path' => $option->path,
-					'domain' => '',
+					'domain' => InitialValue::EMPTY_STRING,
 					'secure' => $option->secure,
 					'httponly' => $option->httpOnly,
 					'samesite' => $option->sameSite
@@ -122,7 +124,6 @@ class CookieStore
 	{
 		if (StringUtility::isNullOrEmpty($key)) {
 			$this->values = array();
-			/** @phpstan-ignore-next-line Cookie のキーは文字列 */
 			$this->removes = ArrayUtility::getKeys($_COOKIE);
 		} else {
 			unset($this->values[$key]);

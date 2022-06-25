@@ -8,8 +8,9 @@ use PeServer\Core\Uuid;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Http\HttpRequest;
 use PeServer\App\Models\AppDatabase;
-use PeServer\App\Models\AppDatabaseCache;
 use PeServer\App\Models\SessionManager;
+use PeServer\App\Models\AppDatabaseCache;
+use PeServer\Core\Http\HttpRequestExists;
 use PeServer\Core\Mvc\Middleware\IMiddleware;
 use PeServer\Core\Mvc\Middleware\MiddlewareResult;
 use PeServer\Core\Mvc\Middleware\MiddlewareArgument;
@@ -21,8 +22,8 @@ final class PluginIdMiddleware implements IMiddleware
 	public final function handleBefore(MiddlewareArgument $argument): MiddlewareResult
 	{
 		$pluginIdState = $argument->request->exists('plugin_id');
-		if ($pluginIdState['exists'] && $pluginIdState['type'] === HttpRequest::REQUEST_URL) {
-			$pluginId = $argument->request->getValue('plugin_id');
+		if ($pluginIdState->exists && $pluginIdState->kind === HttpRequestExists::KIND_URL) {
+			$pluginId = $argument->request->getValue($pluginIdState->name);
 			// ここにきてるってことはユーザーフィルタを通過しているのでセッションを見る必要はないけど一応ね
 			if (Uuid::isGuid($pluginId)) {
 				$pluginId = Uuid::adjustGuid($pluginId);

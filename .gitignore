@@ -19,7 +19,7 @@ $*
 /public_html/.fast-cgi-bin/
 /public_html/log/
 /dev/PHPUnit/
-/dev/phpstan.phar
+/dev/phpstan.phar.*
 /test/.phpunit.result.cache
-/test/phpunit.phar
+/test/phpunit.phar.*
 

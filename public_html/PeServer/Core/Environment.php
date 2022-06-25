@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
+use PeServer\Core\InitialValue;
 use PeServer\Core\Throws\CoreError;
 
 /**
@@ -16,8 +17,8 @@ abstract class Environment
 	 */
 	private static InitializeChecker $initializeChecker;
 
-	private static string $environment = '';
-	private static string $revision = '';
+	private static string $environment = InitialValue::EMPTY_STRING;
+	private static string $revision = InitialValue::EMPTY_STRING;
 
 	public static function initialize(string $environment, string $revision): void
 	{
@@ -57,7 +58,7 @@ abstract class Environment
 
 	public static function getRevision(): string
 	{
-		if(self::isProduction()) {
+		if (self::isProduction()) {
 			return self::$revision;
 		}
 

@@ -1,5 +1,18 @@
 parameters:
   level: 8
+
+  checkAlwaysTrueCheckTypeFunctionCall: true
+  checkAlwaysTrueInstanceof: true
+  checkAlwaysTrueStrictComparison: true
+  checkExplicitMixedMissingReturn: true
+  checkFunctionNameCase: true
+  checkInternalClassCaseSensitivity: true
+  reportMaybesInMethodSignatures: true
+  reportMaybesInPropertyPhpDocTypes: true
+  reportStaticMethodSignatures: true
+  checkTooWideReturnTypesInProtectedAndPublicMethods: true
+  checkGenericClassInNonGenericObjectType: true
+
   paths:
     - ../public_html
   excludePaths:
