@@ -13,7 +13,7 @@ use PeServer\Core\Throws\OutputBufferException;
 abstract class OutputBuffer
 {
 	/**
-	 * 引数処理中の出力を出力。
+	 * 引数処理中の出力を取得。
 	 *
 	 * @param callable $action 出力を取得したい処理。
 	 * @return Binary 取得した処理。
