@@ -12,7 +12,7 @@ final class HttpStatusException extends CoreException
 {
 	public HttpStatus $status;
 
-	public function __construct(HttpStatus $status, string $message = "", ?Throwable $previous = null)
+	public function __construct(HttpStatus $status, string $message = '', ?Throwable $previous = null)
 	{
 		$this->status = $status;
 

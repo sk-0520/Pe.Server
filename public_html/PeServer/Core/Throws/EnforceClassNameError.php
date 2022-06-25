@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace PeServer\Core\Throws;
 
 use \Throwable;
-use \Exception;
+use PeServer\Core\Throws\CoreError;
 
-abstract class CoreException extends Exception
+final class EnforceClassNameError extends CoreError
 {
 	public function __construct(string $message = '', int $code = 0, ?Throwable $previous = null)
 	{
