@@ -19,7 +19,7 @@ use PeServer\App\Models\Domain\AccountValidator;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\App\Models\Dao\Entities\UsersEntityDao;
 use PeServer\App\Models\Dao\Entities\UserAuthenticationsEntityDao;
-
+use PeServer\Core\ArrayUtility;
 
 class SettingSetupLogic extends PageLogicBase
 {
@@ -105,7 +105,7 @@ class SettingSetupLogic extends PageLogicBase
 			$accountValidator = new AccountValidator($this, $this->validator);
 
 			/** @var string @-phpstan-ignore-next-line */
-			$loginId = $params['login_id'];
+			$loginId = ArrayUtility::getOr($params, 'login_id', '');
 			if (!$accountValidator->isFreeLoginId($database, 'setting_setup_login_id', $loginId)) {
 				return false;
 			}

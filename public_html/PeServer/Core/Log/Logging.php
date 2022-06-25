@@ -186,6 +186,8 @@ abstract class Logging
 		$traceMethod = $backtrace[$traceIndex + 1];
 
 		$timestamp = new DateTime();
+		/** @var string */
+		$filePath = ArrayUtility::getOr($traceCaller, 'file', InitialValue::EMPTY_STRING);
 
 		/** @var array<string,string> */
 		$map = [
@@ -201,8 +203,8 @@ abstract class Logging
 			'REQUEST' => ArrayUtility::getOr($_SERVER, 'REQUEST_URI', InitialValue::EMPTY_STRING),
 			'SESSION' => session_id(),
 			//-------------------
-			'FILE' => ArrayUtility::getOr($traceCaller, 'file', InitialValue::EMPTY_STRING),
-			'FILE_NAME' => FileUtility::getFileName(ArrayUtility::getOr($traceCaller, 'file', InitialValue::EMPTY_STRING)),
+			'FILE' => $filePath,
+			'FILE_NAME' => FileUtility::getFileName($filePath),
 			'LINE' => ArrayUtility::getOr($traceCaller, 'line', 0),
 			//'CLASS' => ArrayUtility::getOr($traceMethod, 'class', InitialValue::EMPTY_STRING),
 			'FUNCTION' => ArrayUtility::getOr($traceMethod, 'function', InitialValue::EMPTY_STRING),
@@ -221,7 +223,8 @@ abstract class Logging
 		self::$initializeChecker->throwIfNotInitialize();
 
 		$loggers = [
-			new FileLogger(self::$loggingConfiguration['format'], $header, self::$level, $baseTraceIndex + 1, self::$loggingConfiguration['file']),
+			//@-phpstan-ignore-next-line
+			new FileLogger(ArrayUtility::getOr(self::$loggingConfiguration, 'format', ''), $header, self::$level, $baseTraceIndex + 1, /** @var array<mixed> */self::$loggingConfiguration['file']),
 		];
 		if (function_exists('xdebug_is_debugger_active') && \xdebug_is_debugger_active()) {
 			$loggers[] = new XdebugLogger($header, self::$level, $baseTraceIndex + 1);

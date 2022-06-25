@@ -25,7 +25,7 @@ abstract class I18n
 	private static InitializeChecker $initializeChecker;
 
 	/**
-	 * Undocumented variable
+	 * 設定。
 	 *
 	 * @var array<string,string|array<string,mixed>>
 	 */
@@ -73,13 +73,13 @@ abstract class I18n
 			return self::getFlatMessage(self::$i18nConfiguration[$key], $locale);
 		}
 
+		/** @var array<string,string|array<string,mixed>> */
 		$leaf = self::$i18nConfiguration;
 		$tree = StringUtility::split($key, '/');
 		foreach ($tree as $node) {
 			//@-phpstan-ignore-next-line
-			if (isset($leaf[$node])) {
-				//@-phpstan-ignore-next-line
-				$leaf = $leaf[$node];
+			if (ArrayUtility::tryGet($leaf, $node, $result)) {
+				$leaf = $result;
 			} else {
 				$leaf = null;
 				break;

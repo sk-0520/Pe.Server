@@ -28,6 +28,7 @@ class PluginApiInformationLogic extends ApiLogicBase
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
 		$json = $this->getRequestJson();
+		/** @var string[] */
 		$pluginIds = ArrayUtility::getOr($json, 'plugin_ids', []);
 
 		$plugins = AppDatabaseCache::readPluginInformation();

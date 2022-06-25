@@ -30,9 +30,10 @@ class CookieStore
 	 */
 	private array $values = array();
 	/**
-	 * 削除データ。
+	 * 削除データ(キー項目)。
 	 *
 	 * @var string[]
+	 * @phpstan-var array-key[]
 	 */
 	private array $removes = array();
 
@@ -123,7 +124,6 @@ class CookieStore
 	{
 		if (StringUtility::isNullOrEmpty($key)) {
 			$this->values = array();
-			/** @phpstan-ignore-next-line Cookie のキーは文字列 */
 			$this->removes = ArrayUtility::getKeys($_COOKIE);
 		} else {
 			unset($this->values[$key]);
