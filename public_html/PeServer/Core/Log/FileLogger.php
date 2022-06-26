@@ -57,7 +57,7 @@ class FileLogger extends LoggerBase
 
 	private function toSafeFileNameHeader(): string
 	{
-		$trimHeader = trim($this->header, '/\\');
+		$trimHeader = StringUtility::trim($this->header, '/\\');
 		return str_replace(['/', '\\', '*', '|', '<', '>', '?'], '_', $trimHeader);
 	}
 

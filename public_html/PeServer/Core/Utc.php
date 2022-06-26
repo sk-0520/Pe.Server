@@ -15,6 +15,7 @@ use PeServer\Core\Throws\ParseException;
  */
 abstract class Utc
 {
+	private const UTC_FORMAT = 'Y-m-d\TH:i:s.u\Z';
 	private static ?DateTimeZone $timezone = null;
 
 	public static function getTimezone(): DateTimeZone
@@ -29,7 +30,7 @@ abstract class Utc
 
 	public static function tryParse(string $s, ?DateTime &$result): bool
 	{
-		$datetime = DateTime::createFromFormat('Y-m-d\TH:i:s\Z', $s, self::getTimezone());
+		$datetime = DateTime::createFromFormat(self::UTC_FORMAT, $s, self::getTimezone());
 		if ($datetime === false) {
 			return false;
 		}
@@ -49,7 +50,7 @@ abstract class Utc
 
 	public static function toString(DateTime $datetime): string
 	{
-		return $datetime->format('Y-m-d\TH:i:s\Z');
+		return $datetime->format(self::UTC_FORMAT);
 	}
 
 	public static function createString(): string

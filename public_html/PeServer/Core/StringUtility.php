@@ -48,7 +48,7 @@ abstract class StringUtility
 			return true;
 		}
 		/** @var string $s */
-		return strlen(trim($s)) === 0;
+		return strlen(self::trim($s)) === 0;
 	}
 
 	/**

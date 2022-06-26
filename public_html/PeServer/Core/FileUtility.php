@@ -56,7 +56,7 @@ abstract class FileUtility
 	public static function joinPath(string $basePath, string ...$addPaths): string
 	{
 		$paths = array_merge([$basePath], array_map(function ($s) {
-			return trim($s, '/\\');
+			return StringUtility::trim($s, '/\\');
 		}, $addPaths));
 		$paths = array_filter($paths, function ($v, $k) {
 			return !StringUtility::isNullOrEmpty($v) && ($k === 0 ? true :  $v !== '/' && $v !== '\\');

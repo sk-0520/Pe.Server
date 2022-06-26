@@ -15,7 +15,7 @@ interface IDatabaseExecutor
 	 *
 	 * @param string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
-	 * @return integer
+	 * @return integer 影響件数。
 	 * @throws \PDOException
 	 * @throws DatabaseException
 	 * @throws ObjectDisposedException
@@ -53,7 +53,7 @@ interface IDatabaseExecutor
 	 *
 	 * @param string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
-	 * @return integer
+	 * @return integer 更新件数。
 	 * @throws \PDOException
 	 * @throws DatabaseException
 	 * @throws SqlException 問い合わせ文の検証エラー
@@ -92,7 +92,7 @@ interface IDatabaseExecutor
 	 *
 	 * @param string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
-	 * @return integer
+	 * @return integer 削除件数。
 	 * @throws \PDOException
 	 * @throws DatabaseException
 	 * @throws SqlException 問い合わせ文の検証エラー
