@@ -21,7 +21,8 @@ abstract class StringUtility
 	 * 文字列がnullか空か
 	 *
 	 * @param string|null $s
-	 * @return ($s is null ? true: ($s is non-empty-string ? true: false))
+	 * @return bool
+	 * @phpstan-return ($s is null ? true: ($s is non-empty-string ? true: false))
 	 */
 	public static function isNullOrEmpty(?string $s): bool
 	{
@@ -40,7 +41,8 @@ abstract class StringUtility
 	 * 文字列がnullかホワイトスペースのみで構築されているか
 	 *
 	 * @param string|null $s
-	 * @return ($s is null ? true: ($s is non-empty-string ? true: false))
+	 * @return bool
+	 * @phpstan-return ($s is null ? true: ($s is non-empty-string ? true: false))
 	 */
 	public static function isNullOrWhiteSpace(?string $s): bool
 	{
@@ -146,7 +148,7 @@ abstract class StringUtility
 	 */
 	public static function startsWith(string $haystack, string $needle, bool $ignoreCase): bool
 	{
-		if(!$ignoreCase && function_exists('str_starts_with')) {
+		if (!$ignoreCase && function_exists('str_starts_with')) {
 			return str_starts_with($haystack, $needle);
 		}
 
@@ -175,7 +177,7 @@ abstract class StringUtility
 	 */
 	public static function endsWith(string $haystack, string $needle, bool $ignoreCase): bool
 	{
-		if(!$ignoreCase && function_exists('str_ends_with')) {
+		if (!$ignoreCase && function_exists('str_ends_with')) {
 			return str_ends_with($haystack, $needle);
 		}
 
@@ -204,7 +206,7 @@ abstract class StringUtility
 	 */
 	public static function contains(string $haystack, string $needle, bool $ignoreCase): bool
 	{
-		if(!$ignoreCase && function_exists('str_contains')) {
+		if (!$ignoreCase && function_exists('str_contains')) {
 			return str_contains($haystack, $needle);
 		}
 
@@ -274,8 +276,8 @@ abstract class StringUtility
 			throw new ArgumentException();
 		}
 
-		/** non-empty-string $separator */
-		$result = explode($separator, $value, $limit); // @phpstan-ignore-line
+		/** @phpstan-var non-empty-string $separator */
+		$result = explode($separator, $value, $limit);
 
 		return $result;
 	}
@@ -287,6 +289,8 @@ abstract class StringUtility
 	 * @param string $separator
 	 * @return string
 	 * @see https://www.php.net/manual/ja/function.implode.php
+	 *
+	 * @phpstan-param non-empty-string $separator
 	 */
 	public static function join(array $values, string $separator): string
 	{
@@ -363,5 +367,22 @@ abstract class StringUtility
 	public static function replace(string $source, string|array $oldValue, ?string $newValue): string
 	{
 		return str_replace($oldValue, $newValue ?? InitialValue::EMPTY_STRING, $source);
+	}
+
+	/**
+	 * str_repeat
+	 *
+	 * @param string $value
+	 * @param integer $count
+	 * @return string
+	 * @throws ArgumentException 負数。
+	 */
+	public static function repeat(string $value, int $count): string
+	{
+		if ($count < 0) {
+			throw new ArgumentException();
+		}
+
+		return str_repeat($value, $count);
 	}
 }
