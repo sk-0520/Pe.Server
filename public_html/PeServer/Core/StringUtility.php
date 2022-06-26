@@ -146,8 +146,10 @@ abstract class StringUtility
 	 */
 	public static function startsWith(string $haystack, string $needle, bool $ignoreCase): bool
 	{
-		//PHP8
-		//str_starts_with($haystack, $needle);
+		if(!$ignoreCase && function_exists('str_starts_with')) {
+			return str_starts_with($haystack, $needle);
+		}
+
 		if (self::isNullOrEmpty($needle)) {
 			return true;
 		}
@@ -173,8 +175,10 @@ abstract class StringUtility
 	 */
 	public static function endsWith(string $haystack, string $needle, bool $ignoreCase): bool
 	{
-		//PHP8
-		//str_ends_with($haystack, $needle);
+		if(!$ignoreCase && function_exists('str_ends_with')) {
+			return str_ends_with($haystack, $needle);
+		}
+
 		if (self::isNullOrEmpty($needle)) {
 			return true;
 		}
@@ -200,8 +204,10 @@ abstract class StringUtility
 	 */
 	public static function contains(string $haystack, string $needle, bool $ignoreCase): bool
 	{
-		//PHP8
-		//str_contains
+		if(!$ignoreCase && function_exists('str_contains')) {
+			return str_contains($haystack, $needle);
+		}
+
 		if (self::isNullOrEmpty($needle)) {
 			return true;
 		}

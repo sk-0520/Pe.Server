@@ -25,7 +25,7 @@ abstract class FileUtility
 	public static function toCanonicalize(string $path): string
 	{
 		$targetPath = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path);
-		$parts = array_filter(explode(DIRECTORY_SEPARATOR, $targetPath), 'mb_strlen');
+		$parts = array_filter(StringUtility::split($targetPath, DIRECTORY_SEPARATOR), 'mb_strlen');
 		$absolutes = array();
 		foreach ($parts as $part) {
 			if ($part === '.') {
@@ -38,7 +38,7 @@ abstract class FileUtility
 			}
 		}
 
-		$result = implode(DIRECTORY_SEPARATOR, $absolutes);
+		$result = StringUtility::join($absolutes, DIRECTORY_SEPARATOR);
 		if (mb_strlen($targetPath) && $targetPath[0] === DIRECTORY_SEPARATOR) {
 			$result = DIRECTORY_SEPARATOR . $result;
 		}
@@ -63,7 +63,7 @@ abstract class FileUtility
 		}, ARRAY_FILTER_USE_BOTH);
 
 
-		$joinedPath = implode(DIRECTORY_SEPARATOR, $paths);
+		$joinedPath = StringUtility::join($paths, DIRECTORY_SEPARATOR);
 		return self::toCanonicalize($joinedPath);
 	}
 
