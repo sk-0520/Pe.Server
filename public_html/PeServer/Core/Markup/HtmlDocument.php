@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core;
+namespace PeServer\Core\Markup;
 
 use DOMNode;
 use DOMText;
 use DOMComment;
 use DOMElement;
 use DOMDocument;
-use PeServer\Core\HtmlElement;
+use PeServer\Core\Markup\HtmlElement;
 use PeServer\Core\Throws\HtmlDocumentException;
 
 /**

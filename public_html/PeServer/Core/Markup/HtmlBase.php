@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core;
+namespace PeServer\Core\Markup;
 
+use \DOMNode;
 use \DOMText;
 use \DOMComment;
-use \DOMNode;
-use PeServer\Core\HtmlElement;
+use PeServer\Core\Markup\HtmlElement;
 use PeServer\Core\Throws\HtmlDocumentException;
 
 abstract class HtmlBase

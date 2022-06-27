@@ -6,11 +6,11 @@ namespace PeServer\Core\Mvc\TemplatePlugin;
 
 use PeServer\Core\FileUtility;
 use PeServer\Core\ArrayUtility;
-use PeServer\Core\HtmlDocument;
 use PeServer\Core\InitialValue;
 use PeServer\Core\OutputBuffer;
 use PeServer\Core\StringUtility;
 use PeServer\Core\TypeConverter;
+use PeServer\Core\Markup\HtmlDocument;
 use PeServer\Core\Throws\TemplateException;
 use PeServer\Core\Mvc\TemplatePlugin\TemplateFunctionBase;
 use PeServer\Core\Mvc\TemplatePlugin\TemplatePluginArgument;

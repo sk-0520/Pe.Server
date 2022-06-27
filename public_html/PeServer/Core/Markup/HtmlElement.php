@@ -2,10 +2,14 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core;
+namespace PeServer\Core\Markup;
 
 use \DOMElement;
+use PeServer\Core\ArrayUtility;
 use PeServer\Core\InitialValue;
+use PeServer\Core\StringUtility;
+use PeServer\Core\Markup\HtmlBase;
+use PeServer\Core\Markup\HtmlDocument;
 use PeServer\Core\Throws\HtmlDocumentException;
 
 /**
