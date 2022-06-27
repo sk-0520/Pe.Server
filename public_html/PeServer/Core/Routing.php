@@ -22,6 +22,7 @@ use PeServer\Core\Store\SessionStore;
 use PeServer\Core\Http\ResponsePrinter;
 use PeServer\Core\Store\TemporaryStore;
 use PeServer\Core\Mvc\ControllerArgument;
+use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Mvc\Middleware\IMiddleware;
 use PeServer\Core\Mvc\Middleware\MiddlewareResult;
 use PeServer\Core\Mvc\Middleware\MiddlewareArgument;
@@ -91,6 +92,34 @@ class Routing
 		$this->shutdownRequest = new HttpRequest($requestMethod, $this->requestHeader, []);
 	}
 
+	protected static function getOrCreateMiddleware(IMiddleware|string $middleware): IMiddleware
+	{
+		if (is_string($middleware)) {
+			$instance = new $middleware();
+			if (!($instance instanceof IMiddleware)) {
+				throw new ArgumentException();
+			}
+			$middleware = $instance;
+		}
+
+		/** @var IMiddleware */
+		return $middleware;
+	}
+
+	protected static function getOrCreateShutdownMiddleware(IShutdownMiddleware|string $middleware): IShutdownMiddleware
+	{
+		if (is_string($middleware)) {
+			$instance = new $middleware();
+			if (!($instance instanceof IShutdownMiddleware)) {
+				throw new ArgumentException();
+			}
+			$middleware = $instance;
+		}
+
+		/** @var IShutdownMiddleware */
+		return $middleware;
+	}
+
 	/**
 	 * ミドルウェア単独処理。
 	 *
@@ -102,10 +131,7 @@ class Routing
 	private function handleBeforeMiddlewareCore(RequestPath $requestPath, HttpRequest $request, IMiddleware|string $middleware): bool
 	{
 		$middlewareArgument = new MiddlewareArgument($requestPath, $this->cookie, $this->session, $request, $this->middlewareLogger);
-		if (is_string($middleware)) {
-			/** @var IMiddleware */
-			$middleware = new $middleware();
-		}
+		$middleware = self::getOrCreateMiddleware($middleware);
 
 		$middlewareResult = $middleware->handleBefore($middlewareArgument);
 
@@ -284,10 +310,7 @@ class Routing
 			$middlewareArgument = new MiddlewareArgument($this->requestPath, $this->cookie, $this->session, $this->shutdownRequest, $this->middlewareLogger);
 			$shutdownMiddleware = array_reverse($this->shutdownMiddleware);
 			foreach ($shutdownMiddleware as $middleware) {
-				if (is_string($middleware)) {
-					/** @var IShutdownMiddleware */
-					$middleware = new $middleware();
-				}
+				$middleware = self::getOrCreateShutdownMiddleware($middleware);
 				$middleware->handleShutdown($middlewareArgument);
 			}
 		}
