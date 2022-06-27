@@ -115,8 +115,8 @@ abstract class StringUtility
 	 *
 	 * @param int|float $number フォーマットする数値
 	 * @param int $decimals 小数点以下の桁数。 0 を指定すると、 戻り値の decimal_separator は省略されます
-	 * @param int $decimal_separator 小数点を表す区切り文字
-	 * @param int $thousands_separator 千の位毎の区切り文字
+	 * @param string|null $decimal_separator 小数点を表す区切り文字
+	 * @param string|null $thousands_separator 千の位毎の区切り文字
 	 * @return string 置き換え後文字列
 	 */
 	public static function formatNumber(int|float $number, int $decimals = 0, ?string $decimal_separator = '.', ?string $thousands_separator = ','): string

@@ -406,6 +406,29 @@ abstract class FileUtility
 	{
 		return self::getChildrenCore($directoryPath, true, false, $recursive);
 	}
+
+	/**
+	 * パターンに一致するファイル・ディレクトリ一覧取得。
+	 *
+	 * glob ラッパー。
+	 * https://www.php.net/manual/ja/function.glob.php
+	 *
+	 * @param string $directoryPath ディレクトリパス
+	 * @param string $wildcard ワイルドカード。
+	 * @return string[] 一覧。
+	 * @throws IOException
+	 */
+	public static function findPattern(string $directoryPath, string $wildcard): array
+	{
+		$pattern = self::joinPath($directoryPath, $wildcard);
+		$items = glob($pattern, GLOB_MARK);
+		if ($items === false) {
+			throw new IOException();
+		}
+
+		return $items;
+	}
+
 	/**
 	 * ディレクトリを削除する。
 	 * ファイル・ディレクトリはすべて破棄される。

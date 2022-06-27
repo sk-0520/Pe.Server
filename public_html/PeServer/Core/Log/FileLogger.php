@@ -58,16 +58,13 @@ class FileLogger extends LoggerBase
 	private function toSafeFileNameHeader(): string
 	{
 		$trimHeader = StringUtility::trim($this->header, '/\\');
-		return str_replace(['/', '\\', '*', '|', '<', '>', '?'], '_', $trimHeader);
+		return StringUtility::replace($trimHeader, ['/', '\\', '*', '|', '<', '>', '?'], '_');
 	}
 
 	private function cleanupCore(int $maxCount, string $filePattern): void
 	{
-		$logFiles = glob(FileUtility::joinPath($this->directoryPath, $filePattern));
-		if ($logFiles === false) {
-			throw new IOException('glob error: ' . FileUtility::joinPath($this->directoryPath, $filePattern));
-		}
-		$logCount = count($logFiles);
+		$logFiles = FileUtility::findPattern($this->directoryPath . 'abc', $filePattern);
+		$logCount = ArrayUtility::getCount($logFiles);
 		if ($logCount <= $maxCount) {
 			return;
 		}
