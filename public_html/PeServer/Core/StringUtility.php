@@ -108,6 +108,21 @@ abstract class StringUtility
 		}
 	}
 
+	/**
+	 * 数字を千の位毎にグループ化してフォーマット
+	 *
+	 * https://www.php.net/manual/ja/function.number-format.php
+	 *
+	 * @param int|float $number フォーマットする数値
+	 * @param int $decimals 小数点以下の桁数。 0 を指定すると、 戻り値の decimal_separator は省略されます
+	 * @param int $decimal_separator 小数点を表す区切り文字
+	 * @param int $thousands_separator 千の位毎の区切り文字
+	 * @return string 置き換え後文字列
+	 */
+	public static function formatNumber(int|float $number, int $decimals = 0, ?string $decimal_separator = '.', ?string $thousands_separator = ','): string
+	{
+		return number_format($number, $decimals, $decimal_separator, $thousands_separator);
+	}
 
 	/**
 	 * 文字列位置を取得。

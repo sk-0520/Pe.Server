@@ -70,6 +70,18 @@ class StringUtilityTest extends TestClass
 		}
 	}
 
+	public function test_formatNumber()
+	{
+		$tests = [
+			new Data('123', 123),
+			new Data('1,234', 1234),
+		];
+		foreach ($tests as $test) {
+			$actual = StringUtility::formatNumber(...$test->args);
+			$this->assertEquals($test->expected, $actual, $test->str());
+		}
+	}
+
 	public function test_getPosition()
 	{
 		$tests = [
