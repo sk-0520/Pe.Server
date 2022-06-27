@@ -28,6 +28,7 @@ interface ILogger
 	 * アプリケーション層で呼び出すことはない。
 	 *
 	 * @param integer $level ログレベル。
+	 * @phpstan-param self::LEVEL_* $level ログレベル。
 	 * @param integer $traceIndex 現在フレーム数。
 	 * @param mixed $message メッセージかオブジェクト。
 	 * @param mixed ...$parameters パラメータ（可変個）。$messageが文字列の場合はプレースホルダー {\d} に対して置き換え処理が行われるがその場合は所謂0始まり・抜けなしの配列を想定している。

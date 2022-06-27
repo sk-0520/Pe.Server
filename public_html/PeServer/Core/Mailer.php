@@ -136,7 +136,8 @@ class Mailer
 	 *
 	 * サービス側でトラップせずにこいつを拡張して開発中は知らんところに飛ばないように調整する。
 	 *
-	 * @param int $kind 種別(ADDRESS_KIND_*)
+	 * @param int $kind 種別
+	 * @phpstan-param self::ADDRESS_KIND_* $kind 種別
 	 * @param EmailAddress $data
 	 * @return EmailAddress
 	 * @throws ArgumentException そもそものアドレスが未設定

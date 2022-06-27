@@ -12,9 +12,6 @@ use PeServer\Core\Log\Logging;
  */
 final class XdebugLogger extends LoggerBase
 {
-	/**
-	 * 生成。
-	 */
 	public function __construct(string $header, int $level, int $baseTraceIndex)
 	{
 		parent::__construct('{TIME} |{LEVEL}| {METHOD}: {MESSAGE} | {FILE_NAME}({LINE})', $header, $level, $baseTraceIndex);

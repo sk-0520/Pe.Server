@@ -47,6 +47,7 @@ abstract class Logging
 	 * ログレベル。
 	 *
 	 * @var int
+	 * @phpstan-var ILogger::LEVEL_*
 	 */
 	private static int $level;
 
@@ -66,7 +67,11 @@ abstract class Logging
 		self::$loggingConfiguration = $loggingConfiguration;
 		self::$requestId = Cryptography::generateRandomBytes(self::LOG_REQUEST_ID_LENGTH)->toHex();
 
-		/** @var int */
+		/**
+		 * @var int
+		 * @phpstan-var ILogger::LEVEL_*
+		 *
+		 */
 		$level = ArrayUtility::getOr(self::$loggingConfiguration, 'level', ILogger::LEVEL_INFORMATION);
 
 		self::$level = $level;
@@ -168,6 +173,7 @@ abstract class Logging
 	 * ログ書式適用。
 	 *
 	 * @param integer $level
+	 * @phpstan-param ILogger::LEVEL_* $level 有効レベル。
 	 * @param integer $traceIndex
 	 * @param string $header
 	 * @param mixed $message
@@ -224,7 +230,9 @@ abstract class Logging
 
 		$loggers = [
 			//@-phpstan-ignore-next-line
-			new FileLogger(ArrayUtility::getOr(self::$loggingConfiguration, 'format', ''), $header, self::$level, $baseTraceIndex + 1, /** @var array<mixed> */self::$loggingConfiguration['file']),
+			new FileLogger(ArrayUtility::getOr(self::$loggingConfiguration, 'format', ''), $header, self::$level, $baseTraceIndex + 1,
+			/** @var array<mixed> */
+			self::$loggingConfiguration['file']),
 		];
 		if (function_exists('xdebug_is_debugger_active') && \xdebug_is_debugger_active()) {
 			$loggers[] = new XdebugLogger($header, self::$level, $baseTraceIndex + 1);
