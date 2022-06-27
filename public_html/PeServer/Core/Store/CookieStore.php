@@ -26,7 +26,7 @@ class CookieStore
 	/**
 	 * cookie 一時設定データ。
 	 *
-	 * @var array<string,array{data:string,option:CookieOption}>
+	 * @var array<string,_CookieData>
 	 */
 	private array $values = array();
 	/**
@@ -76,19 +76,16 @@ class CookieStore
 		}
 
 		foreach ($this->values as $key => $cookie) {
-			/** @var CookieOption */
-			$option = $cookie['option'];
-
 			setcookie(
 				$key,
-				$cookie['data'],
+				$cookie->value,
 				[
-					'expires' => $option->getExpires(),
-					'path' => $option->path,
+					'expires' => $cookie->option->getExpires(),
+					'path' => $cookie->option->path,
 					'domain' => InitialValue::EMPTY_STRING,
-					'secure' => $option->secure,
-					'httponly' => $option->httpOnly,
-					'samesite' => $option->sameSite
+					'secure' => $cookie->option->secure,
+					'httponly' => $cookie->option->httpOnly,
+					'samesite' => $cookie->option->sameSite
 				]
 			);
 		}
@@ -104,10 +101,7 @@ class CookieStore
 	 */
 	public function set(string $key, string $value, CookieOption $option = null): void
 	{
-		$this->values[$key] = [
-			'data' => $value,
-			'option' => $option ?? $this->option,
-		];
+		$this->values[$key] = new _CookieData($value, $option ?? $this->option);
 
 		unset($this->removes[$key]);
 
@@ -142,8 +136,9 @@ class CookieStore
 	 */
 	public function getOr(string $key, string $fallbackValue): string
 	{
-		if (ArrayUtility::tryGet($this->values, $key, $value)) {
-			return $value['data'];
+		if (ArrayUtility::tryGet($this->values, $key, $data)) {
+			/** @var _CookieData $data */
+			return $data->value;
 		}
 
 		/** @var string */
@@ -159,11 +154,21 @@ class CookieStore
 	 */
 	public function tryGet(string $key, ?string &$result): bool
 	{
-		if (ArrayUtility::tryGet($this->values, $key, $value)) {
-			$result = $value['data'];
+		if (ArrayUtility::tryGet($this->values, $key, $data)) {
+			/** @var _CookieData $data */
+			$result = $data->value;
 			return true;
 		}
 
 		return ArrayUtility::tryGet($_COOKIE, $key, $result);
+	}
+}
+
+final class _CookieData
+{
+	public function __construct(
+		public string $value,
+		public CookieOption $option
+	) {
 	}
 }
