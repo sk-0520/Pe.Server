@@ -15,7 +15,7 @@ use PeServer\Core\Throws\HtmlDocumentException;
 /**
  * DOMElement のラッパー。
  */
-class HtmlElement extends HtmlNodeBase
+class HtmlElement extends HtmlElementBase
 {
 	/**
 	 * 生で使用する用。
@@ -98,5 +98,10 @@ class HtmlElement extends HtmlNodeBase
 			unset($list[$result]);
 			$this->setClassList($list);
 		}
+	}
+
+	public function path(): HtmlXPath
+	{
+		return new HtmlXPath($this->document, $this);
 	}
 }

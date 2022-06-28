@@ -17,7 +17,7 @@ use PeServer\Core\Throws\HtmlDocumentException;
  *
  * JSでもそうだけどなんでDOMは地味に使い辛いんかね。
  */
-class HtmlDocument extends HtmlNodeBase
+class HtmlDocument extends HtmlElementBase
 {
 	/**
 	 * 生で使用する用。
@@ -58,5 +58,10 @@ class HtmlDocument extends HtmlNodeBase
 		}
 
 		return $html;
+	}
+
+	public function path(): HtmlXPath
+	{
+		return new HtmlXPath($this->document, null);
 	}
 }
