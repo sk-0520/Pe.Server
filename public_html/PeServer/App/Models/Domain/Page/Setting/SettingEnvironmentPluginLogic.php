@@ -11,7 +11,7 @@ use PeServer\Core\Regex;
 use PeServer\Core\OutputBuffer;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
-use PeServer\Core\Markup\HtmlDocument;
+use PeServer\Core\Html\HtmlDocument;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 
 class SettingEnvironmentPluginLogic extends PageLogicBase

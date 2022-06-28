@@ -6,7 +6,7 @@ namespace PeServer\Core\Mvc\TemplatePlugin;
 
 use PeServer\Core\Security;
 use PeServer\Core\InitialValue;
-use PeServer\Core\Markup\HtmlDocument;
+use PeServer\Core\Html\HtmlDocument;
 use PeServer\Core\Mvc\TemplatePlugin\TemplateFunctionBase;
 use PeServer\Core\Mvc\TemplatePlugin\TemplatePluginArgument;
 

@@ -10,7 +10,7 @@ use PeServer\Core\InitialValue;
 use PeServer\Core\OutputBuffer;
 use PeServer\Core\StringUtility;
 use PeServer\Core\TypeConverter;
-use PeServer\Core\Markup\HtmlDocument;
+use PeServer\Core\Html\HtmlDocument;
 use PeServer\Core\Throws\TemplateException;
 use PeServer\Core\Mvc\TemplatePlugin\TemplateFunctionBase;
 use PeServer\Core\Mvc\TemplatePlugin\TemplatePluginArgument;

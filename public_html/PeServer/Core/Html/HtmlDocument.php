@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core\Markup;
+namespace PeServer\Core\Html;
 
-use DOMNode;
-use DOMText;
-use DOMComment;
-use DOMElement;
-use DOMDocument;
-use PeServer\Core\Markup\HtmlElement;
+use \DOMNode;
+use \DOMText;
+use \DOMComment;
+use \DOMElement;
+use \DOMDocument;
+use PeServer\Core\Html\HtmlElement;
 use PeServer\Core\Throws\HtmlDocumentException;
 
 /**
@@ -17,7 +17,7 @@ use PeServer\Core\Throws\HtmlDocumentException;
  *
  * JSでもそうだけどなんでDOMは地味に使い辛いんかね。
  */
-class HtmlDocument extends HtmlBase
+class HtmlDocument extends HtmlNodeBase
 {
 	/**
 	 * 生で使用する用。

@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core\Markup;
+namespace PeServer\Core\Html;
 
 use \DOMNode;
 use \DOMText;
 use \DOMComment;
-use PeServer\Core\Markup\HtmlElement;
+use PeServer\Core\Html\HtmlElement;
 use PeServer\Core\Throws\HtmlDocumentException;
 
-abstract class HtmlBase
+abstract class HtmlNodeBase
 {
 	protected HtmlDocument $document;
 

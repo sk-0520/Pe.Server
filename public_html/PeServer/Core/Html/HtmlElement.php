@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core\Markup;
+namespace PeServer\Core\Html;
 
 use \DOMElement;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\InitialValue;
 use PeServer\Core\StringUtility;
-use PeServer\Core\Markup\HtmlBase;
-use PeServer\Core\Markup\HtmlDocument;
+use PeServer\Core\Html\HtmlNodeBase;
+use PeServer\Core\Html\HtmlDocument;
 use PeServer\Core\Throws\HtmlDocumentException;
 
 /**
  * DOMElement のラッパー。
  */
-class HtmlElement extends HtmlBase
+class HtmlElement extends HtmlNodeBase
 {
 	/**
 	 * 生で使用する用。
