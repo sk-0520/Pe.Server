@@ -11,7 +11,7 @@ use PeServer\Core\Html\HtmlDocument;
 /**
  * DOMComment のラッパー。
  */
-class HtmlComment extends HtmlNodeBase
+final class HtmlComment extends HtmlNodeBase
 {
 	/**
 	 * 生で使用する用。

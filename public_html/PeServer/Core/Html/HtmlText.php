@@ -11,7 +11,7 @@ use PeServer\Core\Html\HtmlDocument;
 /**
  * DOMText のラッパー。
  */
-class HtmlText extends HtmlNodeBase
+final class HtmlText extends HtmlNodeBase
 {
 	public DOMText $raw;
 

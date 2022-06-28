@@ -65,7 +65,7 @@ class HtmlDocument extends HtmlElementBase
 		return $html;
 	}
 
-	public function path(): HtmlXPath
+	final public function path(): HtmlXPath
 	{
 		return new HtmlXPath($this->document, null);
 	}
