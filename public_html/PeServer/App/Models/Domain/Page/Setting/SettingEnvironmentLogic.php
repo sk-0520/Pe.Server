@@ -9,12 +9,13 @@ use \DOMElement;
 use \DOMDocument;
 use PeServer\Core\Regex;
 use PeServer\Core\OutputBuffer;
+use PeServer\Core\Html\HtmlElement;
+use PeServer\Core\Html\HtmlDocument;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
-use PeServer\Core\Html\HtmlDocument;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 
-class SettingEnvironmentPluginLogic extends PageLogicBase
+class SettingEnvironmentLogic extends PageLogicBase
 {
 	public function __construct(LogicParameter $parameter)
 	{
@@ -34,15 +35,13 @@ class SettingEnvironmentPluginLogic extends PageLogicBase
 			phpinfo();
 		});
 
-		$phpDom = new DOMDocument();
-		libxml_use_internal_errors(true);
-		$phpDom->loadHTML($rawPhpinfo->getRaw());
+		$phpDoc = HtmlDocument::load($rawPhpinfo->getRaw());
 
-		$xpath = new DOMXPath($phpDom);
-		$srcStyle = $xpath->query('//html/head/style')[0]; // @phpstan-ignore-line TODO: 後で対応する わかってる つらい
-		$srcContent = $xpath->query('//html/body/div')[0]; // @phpstan-ignore-line TODO: 後で対応する
-
-		//$srcStyle->content
+		$xpath = $phpDoc->path();
+		/** @var HtmlElement */
+		$srcStyle = $xpath->query('//html/head/style')[0];
+		/** @var HtmlElement */
+		$srcContent = $xpath->query('//html/body/div')[0];
 
 		$dom = new HtmlDocument();
 		$content = $dom->addElement('div');
@@ -51,14 +50,13 @@ class SettingEnvironmentPluginLogic extends PageLogicBase
 		$dstStyle = $dom->importNode($srcStyle);
 		$dstContent = $dom->importNode($srcContent);
 
-		/** @var DOMElement $dstStyle */
-		$css = $dstStyle->textContent;
+		$css = $dstStyle->raw->textContent;
 		$newCss = Regex::replace(
 			$css,
 			'/^(.*)$/m',
 			'.phpinfo $1'
 		);
-		$dstStyle->textContent = $newCss;
+		$dstStyle->raw->textContent = $newCss;
 
 		$content->appendChild($dstStyle);
 		$content->appendChild($dstContent);

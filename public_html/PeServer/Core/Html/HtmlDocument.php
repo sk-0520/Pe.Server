@@ -26,26 +26,31 @@ class HtmlDocument extends HtmlElementBase
 
 	public function __construct()
 	{
+		libxml_use_internal_errors(true);
+
 		$this->raw = new DOMDocument();
 		parent::__construct($this, $this->raw);
 	}
 
-	public function importNode(HtmlElement|DOMNode $node): HtmlElement|DOMNode
+	public static function load(string $html): HtmlDocument
 	{
-		if ($node instanceof HtmlElement) {
-			/** @var DOMElement|false */
-			$importedNode = $this->raw->importNode($node->raw, true);
-			if ($importedNode === false) {
-				throw new HtmlDocumentException();
-			}
-			return new HtmlElement($this, $importedNode);
-		} else {
-			$node = $this->raw->importNode($node, true);
-			if ($node === false) { // @phpstan-ignore-line
-				throw new HtmlDocumentException();
-			}
-			return $node;
+		$doc = new HtmlDocument();
+		$result = $doc->raw->loadHTML($html);
+		if ($result == false) {
+			throw new HtmlDocumentException();
 		}
+
+		return $doc;
+	}
+
+	public function importNode(HtmlElement $node): HtmlElement
+	{
+		/** @var DOMElement|false */
+		$importedNode = $this->raw->importNode($node->raw, true);
+		if ($importedNode === false) {
+			throw new HtmlDocumentException();
+		}
+		return new HtmlElement($this, $importedNode);
 	}
 
 	public function build(): string
