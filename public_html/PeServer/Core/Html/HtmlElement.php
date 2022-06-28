@@ -19,8 +19,6 @@ class HtmlElement extends HtmlNodeBase
 {
 	/**
 	 * 生で使用する用。
-	 *
-	 * @var DOMElement
 	 */
 	public DOMElement $raw;
 

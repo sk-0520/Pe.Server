@@ -58,7 +58,7 @@ abstract class HtmlNodeBase
 		return $element;
 	}
 
-	public function addComment(string $comment): DOMComment
+	public function addComment(string $comment): HtmlComment
 	{
 		$node = $this->document->raw->createComment($comment);
 		if ($node === false) { // @phpstan-ignore-line
@@ -67,10 +67,10 @@ abstract class HtmlNodeBase
 
 		$this->appendChild($node);
 
-		return $node;
+		return new HtmlComment($this->document, $node);
 	}
 
-	public function addText(string $text): DOMText
+	public function addText(string $text): HtmlText
 	{
 		$node = $this->document->raw->createTextNode($text);
 		if ($node === false) { // @phpstan-ignore-line
@@ -79,6 +79,6 @@ abstract class HtmlNodeBase
 
 		$this->appendChild($node);
 
-		return $node;
+		return new HtmlText($this->document, $node);
 	}
 }
