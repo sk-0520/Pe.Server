@@ -61,6 +61,7 @@ class Routing
 	 * 登録の逆順に実行される。
 	 *
 	 * @var array<IShutdownMiddleware|string>
+	 * @phpstan-var array<IShutdownMiddleware|class-string>
 	 */
 	private array $shutdownMiddleware = [];
 
@@ -92,6 +93,13 @@ class Routing
 		$this->shutdownRequest = new HttpRequest($requestMethod, $this->requestHeader, []);
 	}
 
+	/**
+	 * ミドルウェア取得。
+	 *
+	 * @param IMiddleware|string $middleware
+	 * @phpstan-param IMiddleware|class-string $middleware
+	 * @return IMiddleware
+	 */
 	protected static function getOrCreateMiddleware(IMiddleware|string $middleware): IMiddleware
 	{
 		if (is_string($middleware)) {
@@ -106,6 +114,13 @@ class Routing
 		return $middleware;
 	}
 
+	/**
+	 * 応答完了ミドルウェア取得。
+	 *
+	 * @param IShutdownMiddleware|string $middleware
+	 * @phpstan-param IShutdownMiddleware|class-string $middleware
+	 * @return IShutdownMiddleware
+	 */
 	protected static function getOrCreateShutdownMiddleware(IShutdownMiddleware|string $middleware): IShutdownMiddleware
 	{
 		if (is_string($middleware)) {
@@ -126,6 +141,7 @@ class Routing
 	 * @param RequestPath $requestPath
 	 * @param HttpRequest $request
 	 * @param IMiddleware|string $middleware
+	 * @phpstan-param IMiddleware|class-string $middleware
 	 * @return bool 次のミドルウェアを実行してよいか
 	 */
 	private function handleBeforeMiddlewareCore(RequestPath $requestPath, HttpRequest $request, IMiddleware|string $middleware): bool
@@ -148,6 +164,7 @@ class Routing
 	 * ミドルウェアをグワーッと処理。
 	 *
 	 * @param array<IMiddleware|string> $middleware
+	 * @phpstan-param array<IMiddleware|class-string> $middleware
 	 * @param HttpRequest $request
 	 * @return bool 後続処理は可能か
 	 */
@@ -196,6 +213,7 @@ class Routing
 	 * アクション実行。
 	 *
 	 * @param string $rawControllerName
+	 * @phpstan-param class-string $rawControllerName
 	 * @param ActionSetting $actionSetting
 	 * @param string[] $urlParameters
 	 * @return void

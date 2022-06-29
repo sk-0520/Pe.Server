@@ -31,7 +31,9 @@ class Action
 	 * @param HttpMethod|HttpMethod[] $httpMethod HTTPメソッド
 	 * @param string $callMethod コントローラメソッド。
 	 * @param array<IMiddleware|string> $middleware
+	 * @phpstan-param array<IMiddleware|class-string> $middleware
 	 * @param array<IShutdownMiddleware|string> $shutdownMiddleware
+	 * @phpstan-param array<IShutdownMiddleware|class-string> $shutdownMiddleware
 	 */
 	public function add(HttpMethod|array $httpMethod, string $callMethod, array $middleware, array $shutdownMiddleware): void
 	{

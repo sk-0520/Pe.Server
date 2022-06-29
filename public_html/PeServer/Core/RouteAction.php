@@ -19,6 +19,7 @@ class RouteAction
 	 *
 	 * @param HttpStatus $status
 	 * @param string $className
+	 * @phpstan-param class-string $className
 	 * @param ActionSetting $actionSetting
 	 * @param array<string,string> $params パラメータ。
 	 */

@@ -74,6 +74,7 @@ abstract class ControllerBase
 	 * ロジック生成処理。
 	 *
 	 * @param string $logicClass ロジック完全名。
+	 * @phpstan-param class-string $logicClass ロジック完全名。
 	 * @param HttpRequest $request リクエストデータ
 	 * @return LogicBase
 	 */
