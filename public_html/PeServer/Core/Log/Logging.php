@@ -172,8 +172,11 @@ abstract class Logging
 	/**
 	 * ログ書式適用。
 	 *
+	 * @param string $format
+	 * @phpstan-param literal-string $format
 	 * @param integer $level
-	 * @phpstan-param ILogger::LEVEL_* $level 有効レベル。
+	 * @phpstan-param ILogger::LEVEL_* $level 有効レベル。S
+	 * @param integer $level
 	 * @param integer $traceIndex
 	 * @param string $header
 	 * @param mixed $message
@@ -229,7 +232,7 @@ abstract class Logging
 		self::$initializeChecker->throwIfNotInitialize();
 
 		$loggers = [
-			//@-phpstan-ignore-next-line
+			//@phpstan-ignore-next-line
 			new FileLogger(ArrayUtility::getOr(self::$loggingConfiguration, 'format', ''), $header, self::$level, $baseTraceIndex + 1,
 			/** @var array<mixed> */
 			self::$loggingConfiguration['file']),

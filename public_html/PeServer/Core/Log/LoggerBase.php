@@ -13,6 +13,8 @@ abstract class LoggerBase implements ILogger
 	/**
 	 * 生成。
 	 *
+	 * @param string $format
+	 * @phpstan-param literal-string $format
 	 * @param string $header ヘッダ。使用用途により意味合いは変わるので実装側でルール決めして使用すること。
 	 * @param integer $level 有効レベル。
 	 * @phpstan-param ILogger::LEVEL_* $level 有効レベル。
