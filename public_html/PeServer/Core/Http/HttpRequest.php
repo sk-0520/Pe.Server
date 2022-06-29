@@ -23,8 +23,11 @@ class HttpRequest
 	 * @param array<string,string> $urlParameters URLパラメータ。
 	 */
 	public function __construct(
+		/** @readonly */
 		public HttpMethod $httpMethod,
+		/** @readonly */
 		public HttpHeader $httpHeader,
+		/** @readonly */
 		protected array $urlParameters
 	) {
 	}

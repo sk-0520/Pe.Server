@@ -9,10 +9,17 @@ namespace PeServer\Core;
  */
 final class ResultData
 {
-	/** 成功状態。 */
-	public bool $success = false;
-	/** 成功時のデータ。 */
-	public mixed $value = null;
+	/**
+	 * 成功状態。
+	 * @readonly
+	 */
+	public bool $success ;
+	/**
+	 * 成功時のデータ。
+	 *
+	 * @readonly
+	 */
+	public mixed $value;
 
 	private function __construct(bool $success, mixed $value)
 	{

@@ -17,12 +17,14 @@ class FileLogger extends LoggerBase
 {
 	/**
 	 * 出力ディレクトリパス。
+	 * @readonly
 	 */
 	private string $directoryPath;
 	/**
 	 * ファイル書式名
 	 *
 	 * @phpstan-var literal-string
+	 * @readonly
 	 */
 	private string $baseFileName;
 

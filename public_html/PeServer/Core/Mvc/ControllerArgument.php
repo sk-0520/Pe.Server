@@ -23,9 +23,13 @@ class ControllerArgument
 	 * @param ILogger $logger ロガー。
 	 */
 	public function __construct(
+		/** @readonly */
 		public CookieStore $cookie,
+		/** @readonly */
 		public TemporaryStore $temporary,
+		/** @readonly */
 		public SessionStore $session,
+		/** @readonly */
 		public ILogger $logger
 	) {
 	}

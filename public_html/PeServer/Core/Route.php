@@ -30,12 +30,14 @@ class Route
 	 * ベースパス。
 	 *
 	 * @var string
+	 * @readonly
 	 */
 	private string $basePath;
 	/**
 	 * クラス完全名。
 	 *
 	 * @var string
+	 * @readonly
 	 * @phpstan-var class-string
 	 */
 	private string $className;
@@ -83,6 +85,7 @@ class Route
 			if ($trimPath !== StringUtility::trim($trimPath, '/')) {
 				throw new LogicException('path start or end -> /');
 			}
+			//@phpstan-ignore-next-line
 			$this->basePath = $trimPath;
 		}
 

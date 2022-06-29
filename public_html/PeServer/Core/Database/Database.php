@@ -25,6 +25,7 @@ class Database extends DisposerBase implements IDatabaseContext
 {
 	/**
 	 * 接続処理。
+	 * @readonly
 	 */
 	private PDO $pdo;
 
@@ -32,6 +33,7 @@ class Database extends DisposerBase implements IDatabaseContext
 	 * ロガー
 	 *
 	 * @var ILogger
+	 * @readonly
 	 */
 	private ILogger $logger;
 

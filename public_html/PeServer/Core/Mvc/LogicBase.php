@@ -37,10 +37,12 @@ abstract class LogicBase implements IValidationReceiver
 
 	/**
 	 * ロガー。
+	 * @readonly
 	 */
 	protected ILogger $logger;
 	/**
 	 * リクエストデータ。
+	 * @readonly
 	 */
 	private HttpRequest $request;
 
@@ -85,11 +87,20 @@ abstract class LogicBase implements IValidationReceiver
 	 */
 	private ?DataContent $content = null;
 
-	/** cookie 管理 */
+	/**
+	 * cookie 管理
+	 * @readonly
+	 */
 	private CookieStore $cookie;
-	/** 一時データ管理 */
+	/**
+	 * 一時データ管理
+	 * @readonly
+	 */
 	private TemporaryStore $temporary;
-	/** セッション管理 */
+	/**
+	 * セッション管理
+	 * @readonly
+	 */
 	private SessionStore $session;
 
 	/**

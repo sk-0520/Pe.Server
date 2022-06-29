@@ -22,6 +22,7 @@ class DataActionResult implements IActionResult
 	 * @param DataContent $content
 	 */
 	public function __construct(
+		/** @readonly */
 		private DataContent $content
 	) {
 	}

@@ -13,6 +13,9 @@ use PeServer\Core\Html\HtmlDocument;
  */
 final class HtmlText extends HtmlNodeBase
 {
+	/**
+	 * @readonly
+	 */
 	public DOMText $raw;
 
 	public function __construct(HtmlDocument $document, DOMText $raw)

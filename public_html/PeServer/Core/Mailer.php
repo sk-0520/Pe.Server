@@ -37,7 +37,15 @@ class Mailer
 	protected const ADDRESS_KIND_CC = 3;
 	protected const ADDRESS_KIND_BCC = 4;
 
+	/**
+	 * @var integer
+	 * @phpstan-var self::SEND_MODE_*
+	 * @readonly
+	 */
 	private int $sendMode;
+	/**
+	 * @readonly
+	 */
 	private SmtpSetting $smtp;
 
 	public string $encoding  = '8bit';

@@ -24,8 +24,11 @@ class HttpRequestExists
 	 * @phpstan-param HttpRequestExists::KIND_* $kind 種別。
 	 */
 	public function __construct(
+		/** @readonly */
 		public string $name,
+		/** @readonly */
 		public bool $exists,
+		/** @readonly */
 		public int $kind
 	) {
 	}

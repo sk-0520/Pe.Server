@@ -15,6 +15,7 @@ abstract class AutoLoader
 	 * 読み込みベースパス。
 	 *
 	 * @var string[]
+	 * @readonly
 	 */
 	private static array $baseDirectoryPaths;
 
@@ -22,6 +23,7 @@ abstract class AutoLoader
 	 * 読み込み対象正規表現パターン。
 	 *
 	 * @var string
+	 * @readonly
 	 */
 	private static string $includePattern;
 

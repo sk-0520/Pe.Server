@@ -16,12 +16,14 @@ class RequestPath
 	 * フルパス。
 	 *
 	 * @var string
+	 * @readonly
 	 */
 	public string $full;
 	/**
 	 * / で分割されたパス一覧。
 	 *
 	 * @var string[]
+	 * @readonly
 	 */
 	public array $tree;
 

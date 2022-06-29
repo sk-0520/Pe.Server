@@ -21,10 +21,15 @@ use PeServer\Core\Throws\HtmlXPathException;
  */
 class HtmlXPath
 {
+	/**
+	 * @readonly
+	 */
 	public DOMXPath $path;
 
 	public function __construct(
+		/** @readonly */
 		private HtmlDocument $document,
+		/** @readonly */
 		private ?HtmlElement $element
 	) {
 		$this->path = new DOMXPath($document->raw);

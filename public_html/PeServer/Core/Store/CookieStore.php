@@ -19,11 +19,6 @@ use PeServer\Core\Store\CookieOption;
 class CookieStore
 {
 	/**
-	 * 設定。
-	 */
-	public CookieOption $option;
-
-	/**
 	 * cookie 一時設定データ。
 	 *
 	 * @var array<string,_CookieData>
@@ -47,9 +42,10 @@ class CookieStore
 	 *
 	 * @param CookieOption $option
 	 */
-	public function __construct(CookieOption $option)
-	{
-		$this->option = $option;
+	public function __construct(
+		/** @readonly */
+		public CookieOption $option
+	) {
 	}
 
 	/**

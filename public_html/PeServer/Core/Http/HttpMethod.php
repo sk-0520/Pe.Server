@@ -149,16 +149,15 @@ abstract class HttpMethod
  */
 final class _HttpMethod_Impl extends HttpMethod
 {
-	public string $kind;
-
 	/**
 	 * 生成。
 	 *
 	 * @param string $kind HTTPメソッド種別。
 	 */
-	public function __construct(string $kind)
-	{
-		$this->kind = $kind;
+	public function __construct(
+		/** @readonly */
+		private string $kind
+	) {
 	}
 
 	public function getKind(): string

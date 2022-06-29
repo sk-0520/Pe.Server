@@ -28,7 +28,9 @@ class SessionStore
 	public const APPLY_RESTART = 2;
 	public const APPLY_SHUTDOWN = 3;
 
+	/** @readonly */
 	private SessionOption $option;
+	/** @readonly */
 	private CookieStore $cookie;
 
 	/**

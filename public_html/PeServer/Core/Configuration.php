@@ -15,6 +15,12 @@ class Configuration
 	public const FILE_TYPE_DEFAULT = InitialValue::EMPTY_STRING;
 	public const FILE_TYPE_JSON = 'json';
 
+	/**
+	 * Undocumented variable
+	 *
+	 * @var string
+	 * @readonly
+	 */
 	private string $environment;
 
 	/**

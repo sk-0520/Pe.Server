@@ -15,7 +15,9 @@ class RedirectSetting
 	 * @param HttpStatus $status リダイレクト時のHTTPステータスコード。
 	 */
 	public function __construct(
+		/** @readonly */
 		public string $url,
+		/** @readonly */
 		public HttpStatus $status
 	) {
 	}

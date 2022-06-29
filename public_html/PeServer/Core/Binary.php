@@ -19,6 +19,7 @@ final class Binary
 	 * 実体。
 	 *
 	 * @var string
+	 * @readonly
 	 */
 	private string $binary;
 

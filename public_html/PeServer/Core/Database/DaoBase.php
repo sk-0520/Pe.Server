@@ -17,6 +17,7 @@ abstract class DaoBase
 {
 	/**
 	 * ロガー。
+	 * @readonly
 	 */
 	protected ILogger $logger;
 
@@ -26,6 +27,7 @@ abstract class DaoBase
 	 * @param IDatabaseContext $context 接続処理。
 	 */
 	protected function __construct(
+		/** @readonly */
 		protected IDatabaseContext $context
 	) {
 		$this->logger = Logging::create(get_class($this));

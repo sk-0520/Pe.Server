@@ -73,9 +73,16 @@ final class _LogicCallMode_Impl extends LogicCallMode
 {
 	/**
 	 * 呼び出し方法。
+	 * @readonly
 	 */
 	private int $mode;
 
+	/**
+	 * Undocumented function
+	 *
+	 * @param integer $mode
+	 * @phpstan-param LogicCallMode::INITIALIZE|LogicCallMode::SUBMIT $mode
+	 */
 	public function __construct(int $mode)
 	{
 		$this->mode = $mode;

@@ -20,9 +20,13 @@ class ViewActionResult implements IActionResult
 	 * @param array<string,string[]> $headers
 	 */
 	public function __construct(
+		/** @readonly */
 		private string $templateBaseName,
+		/** @readonly */
 		private string $actionName,
+		/** @readonly */
 		private TemplateParameter $templateParameter,
+		/** @readonly */
 		private array $headers
 	) {
 	}

@@ -13,7 +13,9 @@ use PeServer\Core\Throws\ArgumentException;
 class RedirectActionResult implements IActionResult
 {
 	public function __construct(
+		/** @readonly */
 		private string $url,
+		/** @readonly */
 		private ?HttpStatus $status = null
 	) {
 		if (StringUtility::isNullOrWhiteSpace($url)) {

@@ -19,6 +19,7 @@ final class HtmlElement extends HtmlElementBase
 {
 	/**
 	 * 生で使用する用。
+	 * @readonly
 	 */
 	public DOMElement $raw;
 

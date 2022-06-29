@@ -30,6 +30,7 @@ abstract class ControllerBase
 {
 	/**
 	 * ロガー。
+	 * @readonly
 	 */
 	protected ILogger $logger;
 	/**
@@ -38,8 +39,11 @@ abstract class ControllerBase
 	 */
 	protected string $skipBaseName = 'PeServer\\App\\Controllers\\Page';
 
+	/** @readonly */
 	protected CookieStore $cookie;
+	/** @readonly */
 	protected TemporaryStore $temporary;
+	/** @readonly */
 	protected SessionStore $session;
 
 	protected ?LogicBase $logic = null;

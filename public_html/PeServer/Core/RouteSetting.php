@@ -26,10 +26,15 @@ class RouteSetting
 	 * @param Route[] $routes ルーティング一覧。
 	 */
 	public function __construct(
+		/** @readonly */
 		public array $globalMiddleware,
+		/** @readonly */
 		public array $actionMiddleware,
+		/** @readonly */
 		public array $globalShutdownMiddleware,
+		/** @readonly */
 		public array $actionShutdownMiddleware,
+		/** @readonly */
 		public array $routes
 	) {}
 }

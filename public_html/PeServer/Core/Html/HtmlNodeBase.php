@@ -12,10 +12,14 @@ use PeServer\Core\Throws\HtmlDocumentException;
 
 abstract class HtmlNodeBase
 {
+	/**
+	 * @readonly
+	 */
 	protected HtmlDocument $document;
 
 	/**
 	 * 生で使用する現在データ。
+	 * @readonly
 	 */
 	protected DOMNode $current;
 

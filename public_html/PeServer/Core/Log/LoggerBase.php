@@ -21,9 +21,13 @@ abstract class LoggerBase implements ILogger
 	 * @param integer $baseTraceIndex 基準トレース位置。
 	 */
 	public function __construct(
+		/** @readonly */
 		protected string $format,
+		/** @readonly */
 		protected string $header,
+		/** @readonly */
 		protected int $level,
+		/** @readonly */
 		protected int $baseTraceIndex
 	) {
 	}

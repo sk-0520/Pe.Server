@@ -24,9 +24,13 @@ class RouteAction
 	 * @param array<string,string> $params パラメータ。
 	 */
 	public function __construct(
+		/** @readonly */
 		public HttpStatus $status,
+		/** @readonly */
 		public string $className,
+		/** @readonly */
 		public ActionSetting $actionSetting,
+		/** @readonly */
 		public array $params
 	) {
 	}

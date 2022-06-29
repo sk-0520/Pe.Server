@@ -15,7 +15,8 @@ final class HtmlComment extends HtmlNodeBase
 {
 	/**
 	 * 生で使用する用。
-	 */
+	 * @readonly
+	*/
 	public DOMComment $raw;
 
 	public function __construct(HtmlDocument $document, DOMComment $raw)

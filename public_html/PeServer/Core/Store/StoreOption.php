@@ -13,14 +13,13 @@ use PeServer\Core\Store\TemporaryOption;
  */
 class StoreOption
 {
-	public CookieOption $cookie;
-	public TemporaryOption $temporary;
-	public SessionOption $session;
-
-	public function __construct(CookieOption $cookie, TemporaryOption $temporary, SessionOption $session)
-	{
-		$this->cookie = $cookie;
-		$this->temporary = $temporary;
-		$this->session = $session;
+	public function __construct(
+		/** @readonly */
+		public CookieOption $cookie,
+		/** @readonly */
+		public TemporaryOption $temporary,
+		/** @readonly */
+		public SessionOption $session
+	) {
 	}
 }

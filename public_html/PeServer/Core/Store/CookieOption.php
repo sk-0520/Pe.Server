@@ -34,6 +34,7 @@ class CookieOption
 	 * パス
 	 *
 	 * @var string
+	 * @readonly
 	 */
 	public string $path;
 	/**
@@ -44,10 +45,12 @@ class CookieOption
 	public ?DateInterval $span;
 	/**
 	 * HTTPS に限定。
+	 * @readonly
 	 */
 	public bool $secure;
 	/**
 	 *  HTTP リクエストのみで使用。
+	 * @readonly
 	 */
 	public bool $httpOnly;
 
@@ -55,6 +58,7 @@ class CookieOption
 	 * 同じサイト。
 	 *
 	 * @var 'Lax'|'lax'|'None'|'none'|'Strict'|'strict'
+	 * @readonly
 	 */
 	public string $sameSite;
 

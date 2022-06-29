@@ -13,20 +13,16 @@ use PeServer\Core\Throws\ArgumentException;
  */
 class TemporaryOption
 {
-	public function __construct(string $name, string $savePath, CookieOption $cookie)
-	{
+	public function __construct(
+		/** @readonly */
+		public string $name,
+		/** @readonly */
+		public string $savePath,
+		/** @readonly */
+		public CookieOption $cookie
+	) {
 		if (StringUtility::isNullOrWhiteSpace($name)) {
 			throw new ArgumentException('$name');
 		}
-
-		$this->name = $name;
-		$this->savePath = $savePath;
-		$this->cookie = $cookie;
 	}
-
-	public string $name;
-
-	public CookieOption $cookie;
-
-	public string $savePath;
 }

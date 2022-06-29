@@ -38,14 +38,18 @@ class Routing
 	/**
 	 * ルーティング設定。
 	 *
-	 * @var RouteSetting
+	 * @readonly
 	 */
 	protected RouteSetting $setting;
 
+	/** @readonly */
 	protected CookieStore $cookie;
+	/** @readonly */
 	protected TemporaryStore $temporary;
+	/** @readonly */
 	protected SessionStore $session;
 
+	/** @readonly */
 	protected ILogger $middlewareLogger;
 
 	/**
@@ -67,8 +71,11 @@ class Routing
 
 	private HttpRequest $shutdownRequest;
 
+	/** @readonly */
 	protected HttpMethod $requestMethod;
+	/** @readonly */
 	protected RequestPath $requestPath;
+	/** @readonly */
 	protected HttpHeader $requestHeader;
 
 	/**
