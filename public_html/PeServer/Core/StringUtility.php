@@ -79,6 +79,7 @@ abstract class StringUtility
 	 * プレースホルダー文字列置き換え処理
 	 *
 	 * @param string $source 元文字列
+	 * @phpstan-param literal-string $source
 	 * @param array<string,string> $map 置き換え対象辞書
 	 * @param string $head
 	 * @param string $tail

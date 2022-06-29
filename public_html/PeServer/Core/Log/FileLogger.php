@@ -21,6 +21,8 @@ class FileLogger extends LoggerBase
 	private string $directoryPath;
 	/**
 	 * ファイル書式名
+	 *
+	 * @phpstan-var literal-string
 	 */
 	private string $baseFileName;
 
@@ -48,6 +50,7 @@ class FileLogger extends LoggerBase
 		Enforce::throwIfNullOrWhiteSpace($directoryPath);
 		$this->directoryPath = $directoryPath;
 
+		/** @phpstan-var literal-string */
 		$baseFileName = ArrayUtility::getOr($fileLoggingConfiguration, 'name', '');
 		Enforce::throwIfNullOrWhiteSpace($baseFileName);
 		$this->baseFileName = $baseFileName;

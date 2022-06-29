@@ -100,6 +100,7 @@ class Configuration
 			if (is_array($value)) {
 				$array[$key] = $this->replace($value, $map, $head, $tail);
 			} else if (is_string($value)) {
+				/** @phpstan-var literal-string $value */
 				$array[$key] = StringUtility::replaceMap($value, $map, $head, $tail);
 			}
 		}
