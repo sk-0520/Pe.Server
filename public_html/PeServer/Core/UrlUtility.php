@@ -59,9 +59,9 @@ abstract class UrlUtility
 		$pair = StringUtility::split($baseUrl, '?', 2);
 		$url = StringUtility::trimEnd($pair[0], '/');
 
-		$trimPaths = array_map(function ($i) {
+		$trimPaths = array_values(array_map(function ($i) {
 			return StringUtility::trim($i, " \t/?");
-		}, $paths);
+		}, $paths));
 
 		$joinUrl = StringUtility::join([$url, ...$trimPaths], '/');
 		if (1 < ArrayUtility::getCount($pair)) {

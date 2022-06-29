@@ -5,10 +5,12 @@ cd $(cd $(dirname $0); pwd)
 PHPSTAN_VERSION=1.8.0
 PHPSTAN_URL=https://github.com/phpstan/phpstan/releases/download/${PHPSTAN_VERSION}/phpstan.phar
 PHPSTAN_FILE=phpstan.phar.${PHPSTAN_VERSION}
+PHPSTAN_BLEEDING_EDGE=bleedingEdge.neon
 
 if [ ! -f ${PHPSTAN_FILE} ] ; then
 	rm --force phpstan.phar.*
 	curl --output ${PHPSTAN_FILE} --location ${PHPSTAN_URL}
+	curl --output ${PHPSTAN_BLEEDING_EDGE} --location https://raw.githubusercontent.com/phpstan/phpstan-src/${PHPSTAN_VERSION}/conf/bleedingEdge.neon
 fi
 
 if [ ! -v IGNORE_SYNTAX_CHECK ] ; then
