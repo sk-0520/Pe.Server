@@ -37,6 +37,19 @@ class BytesTest extends TestClass
 		}
 	}
 
+	public function test_convert()
+	{
+		$tests = [
+			new Data("0", "\x00", 2, 2),
+			//new Data("1", "\x01", 2, 2), どうなったいいのか分かってない
+		];
+		foreach ($tests as $test) {
+			$binary = new Binary($test->args[0]);
+			$actual = $binary->convert($test->args[1], $test->args[2]);
+			$this->assertEquals($test->expected, $actual);
+		}
+	}
+
 	public function test_base64()
 	{
 		$binary = new Binary("a\0b\0");

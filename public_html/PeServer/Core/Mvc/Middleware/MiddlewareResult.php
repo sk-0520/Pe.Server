@@ -69,7 +69,19 @@ abstract class MiddlewareResult
 		return new _ErrorMiddlewareResult($status, $message);
 	}
 
+	/**
+	 * Undocumented variable
+	 *
+	 * @var integer
+	 * @phpstan-var self::RESULT_KIND_*
+	 */
 	private int $kind;
+	/**
+	 * Undocumented function
+	 *
+	 * @param integer $kind
+	 * @phpstan-param self::RESULT_KIND_* $kind
+	 */
 	protected function __construct(int $kind)
 	{
 		$this->kind = $kind;
