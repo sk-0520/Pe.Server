@@ -92,8 +92,7 @@ class StringUtilityTest extends TestClass
 			new Data(-1, 'abcあいう☃⛄', '🐡'),
 
 			new Data(3, 'abcあいう☃⛄', 'あ', 3),
-			new Data(-1, 'abcあいう☃⛄', '☃', -1),
-			new Data(6, 'abcあいう☃⛄', '☃', -2),
+			new Data(-1, 'abcあいう☃⛄', '☃', 7),
 		];
 		foreach ($tests as $test) {
 			$actual = StringUtility::getPosition(...$test->args);

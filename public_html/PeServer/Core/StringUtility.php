@@ -15,6 +15,7 @@ use PeServer\Core\Throws\ArgumentException;
  */
 abstract class StringUtility
 {
+	/** トリム対象文字一覧。 */
 	public const TRIM_CHARACTERS = " \n\r\t\v\0";
 
 	/**
@@ -49,6 +50,7 @@ abstract class StringUtility
 		if (self::isNullOrEmpty($s)) {
 			return true;
 		}
+
 		/** @var string $s */
 		return strlen(self::trim($s)) === 0;
 	}
@@ -81,9 +83,10 @@ abstract class StringUtility
 	 * @param string $source 元文字列
 	 * @phpstan-param literal-string $source
 	 * @param array<string,string> $map 置き換え対象辞書
-	 * @param string $head
-	 * @param string $tail
+	 * @param string $head プレースホルダー先頭
+	 * @param string $tail プレースホルダー終端
 	 * @return string 置き換え後文字列
+	 * @throws StringException なんかもうあかんかった
 	 */
 	public static function replaceMap(string $source, array $map, string $head = '{', string $tail = '}'): string
 	{
@@ -112,7 +115,7 @@ abstract class StringUtility
 	/**
 	 * 数字を千の位毎にグループ化してフォーマット
 	 *
-	 * https://www.php.net/manual/ja/function.number-format.php
+	 * @see https://www.php.net/manual/ja/function.number-format.php
 	 *
 	 * @param int|float $number フォーマットする数値
 	 * @param int $decimals 小数点以下の桁数。 0 を指定すると、 戻り値の decimal_separator は省略されます
@@ -130,11 +133,15 @@ abstract class StringUtility
 	 *
 	 * @param string $haystack 対象文字列。
 	 * @param string $needle 検索文字列。
-	 * @param integer $offset 開始文字数目。負数の場合は後ろから。
+	 * @param integer $offset 開始文字数目。
 	 * @return integer 見つかった文字位置。見つかんない場合は -1
 	 */
 	public static function getPosition(string $haystack, string $needle, int $offset = 0): int
 	{
+		if ($offset < 0) {
+			throw new ArgumentException('$offset');
+		}
+
 		$result =  mb_strpos($haystack, $needle, $offset);
 		if ($result === false) {
 			return -1;
@@ -145,6 +152,10 @@ abstract class StringUtility
 
 	public static function getLastPosition(string $haystack, string $needle, int $offset = 0): int
 	{
+		if ($offset < 0) {
+			throw new ArgumentException('$offset');
+		}
+
 		$result =  mb_strrpos($haystack, $needle, $offset);
 		if ($result === false) {
 			return -1;
