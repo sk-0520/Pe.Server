@@ -258,7 +258,7 @@ class Routing
 		});
 		// 標準出力は闇に葬る
 		if ($output->getLength()) {
-			$logger->warn($output->getRaw());
+			$logger->warn('{0}', $output->getRaw());
 		}
 
 		$this->applyStore();

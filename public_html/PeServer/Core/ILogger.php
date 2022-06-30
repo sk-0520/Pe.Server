@@ -31,6 +31,7 @@ interface ILogger
 	 * @phpstan-param self::LEVEL_* $level ログレベル。
 	 * @param integer $traceIndex 現在フレーム数。
 	 * @param mixed $message メッセージかオブジェクト。
+	 * @phpstan-param LogMessageAlias $message
 	 * @param mixed ...$parameters パラメータ（可変個）。$messageが文字列の場合はプレースホルダー {\d} に対して置き換え処理が行われるがその場合は所謂0始まり・抜けなしの配列を想定している。
 	 * @return void
 	 */
@@ -39,6 +40,7 @@ interface ILogger
 	 * トレース
 	 *
 	 * @param mixed $message メッセージかオブジェクト。
+	 * @phpstan-param LogMessageAlias $message
 	 * @param mixed ...$parameters パラメータ（可変個）。$messageが文字列の場合はプレースホルダー {\d} に対して置き換え処理が行われるがその場合は所謂0始まり・抜けなしの配列を想定している。
 	 * @return void
 	 */
@@ -47,6 +49,7 @@ interface ILogger
 	 * デバッグ
 	 *
 	 * @param mixed $message メッセージかオブジェクト。
+	 * @phpstan-param LogMessageAlias $message
 	 * @param mixed ...$parameters パラメータ（可変個）。$messageが文字列の場合はプレースホルダー {\d} に対して置き換え処理が行われるがその場合は所謂0始まり・抜けなしの配列を想定している。
 	 * @return void
 	 */
@@ -55,6 +58,7 @@ interface ILogger
 	 * 情報
 	 *
 	 * @param mixed $message メッセージかオブジェクト。
+	 * @phpstan-param LogMessageAlias $message
 	 * @param mixed ...$parameters パラメータ（可変個）。$messageが文字列の場合はプレースホルダー {\d} に対して置き換え処理が行われるがその場合は所謂0始まり・抜けなしの配列を想定している。
 	 * @return void
 	 */
@@ -63,6 +67,7 @@ interface ILogger
 	 * 警告
 	 *
 	 * @param mixed $message メッセージかオブジェクト。
+	 * @phpstan-param LogMessageAlias $message
 	 * @param mixed ...$parameters パラメータ（可変個）。$messageが文字列の場合はプレースホルダー {\d} に対して置き換え処理が行われるがその場合は所謂0始まり・抜けなしの配列を想定している。
 	 * @return void
 	 */
@@ -71,6 +76,7 @@ interface ILogger
 	 * エラー
 	 *
 	 * @param mixed $message メッセージかオブジェクト。
+	 * @phpstan-param LogMessageAlias $message
 	 * @param mixed ...$parameters パラメータ（可変個）。$messageが文字列の場合はプレースホルダー {\d} に対して置き換え処理が行われるがその場合は所謂0始まり・抜けなしの配列を想定している。
 	 * @return void
 	 */

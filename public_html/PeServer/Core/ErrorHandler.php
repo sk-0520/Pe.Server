@@ -202,7 +202,7 @@ class ErrorHandler
 		foreach ($this->getSuppressionStatusList() as $suppressionStatus) {
 			if ($status->is($suppressionStatus)) {
 				$isSuppressionStatus = true;
-				$logger->info('HTTP: ' . $suppressionStatus->getCode());
+				$logger->info('HTTP: {0}', $suppressionStatus->getCode());
 				break;
 			}
 		}

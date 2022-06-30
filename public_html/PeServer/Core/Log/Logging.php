@@ -93,7 +93,7 @@ abstract class Logging
 	 * メッセージ書式適用。
 	 *
 	 * @param mixed $message
-	 * @phpstan-param object|array<mixed>|null|literal-string $message
+	 * @phpstan-param LogMessageAlias $message
 	 * @param mixed ...$parameters
 	 * @return string
 	 */
@@ -181,6 +181,7 @@ abstract class Logging
 	 * @param integer $traceIndex
 	 * @param string $header
 	 * @param mixed $message
+	 * @phpstan-param LogMessageAlias $message
 	 * @param mixed ...$parameters
 	 * @return string
 	 */
