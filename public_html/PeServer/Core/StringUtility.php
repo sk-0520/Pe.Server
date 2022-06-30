@@ -22,7 +22,7 @@ abstract class StringUtility
 	 *
 	 * @param string|null $s
 	 * @return bool
-	 * @phpstan-return ($s is null ? true: ($s is non-empty-string ? true: false))
+	 * @phpstan-return ($s is null ? true: ($s is non-empty-string ? false: true))
 	 */
 	public static function isNullOrEmpty(?string $s): bool
 	{
@@ -42,7 +42,7 @@ abstract class StringUtility
 	 *
 	 * @param string|null $s
 	 * @return bool
-	 * @phpstan-return ($s is null ? true: ($s is non-empty-string ? true: false))
+	 * @phpstan-return ($s is null ? true: ($s is non-empty-string ? false: true))
 	 */
 	public static function isNullOrWhiteSpace(?string $s): bool
 	{
