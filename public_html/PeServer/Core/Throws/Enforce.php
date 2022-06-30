@@ -19,16 +19,18 @@ abstract class Enforce
 	 *
 	 * @param string $argument
 	 * @param string $exceptionClass
-	 * @phpstan-param class-string $exceptionClass
+	 * @phpstan-param class-string<Throwable> $exceptionClass
 	 * @return no-return
 	 */
 	private static function throwCore(string $argument, string $exceptionClass)
 	{
 		$exception = new $exceptionClass($argument);
+		//@phpstan-ignore-next-line
 		if ($exception instanceof Throwable) {
 			throw $exception;
 		}
 
+		//@phpstan-ignore-next-line
 		throw new EnforceClassNameError($exceptionClass);
 	}
 
@@ -38,7 +40,7 @@ abstract class Enforce
 	 * @param boolean $value
 	 * @param string $argument
 	 * @param string $exceptionClass
-	 * @phpstan-param class-string $exceptionClass
+	 * @phpstan-param class-string<Throwable> $exceptionClass
 	 * @return void
 	 */
 	public static function throwIf(bool $value, string $argument = '', string $exceptionClass = EnforceException::class): void
@@ -54,7 +56,7 @@ abstract class Enforce
 	 * @param mixed $value
 	 * @param string $argument
 	 * @param string $exceptionClass
-	 * @phpstan-param class-string $exceptionClass
+	 * @phpstan-param class-string<Throwable> $exceptionClass
 	 * @return void
 	 */
 	public static function throwIfNull(mixed $value, string $argument = '', string $exceptionClass = EnforceException::class): void
@@ -70,7 +72,7 @@ abstract class Enforce
 	 * @param string|null $value
 	 * @param string $argument
 	 * @param string $exceptionClass
-	 * @phpstan-param class-string $exceptionClass
+	 * @phpstan-param class-string<Throwable> $exceptionClass
 	 * @return void
 	 */
 	public static function throwIfNullOrEmpty(?string $value, string $argument = '', string $exceptionClass = EnforceException::class): void
@@ -86,7 +88,7 @@ abstract class Enforce
 	 * @param string|null $value
 	 * @param string $argument
 	 * @param string $exceptionClass
-	 * @phpstan-param class-string $exceptionClass
+	 * @phpstan-param class-string<Throwable> $exceptionClass
 	 * @return void
 	 */
 	public static function throwIfNullOrWhiteSpace(?string $value, string $argument = '', string $exceptionClass = EnforceException::class): void

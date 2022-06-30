@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc;
 
 use \DateInterval;
+use \DateTime;
 use PeServer\Core\I18n;
 use PeServer\Core\Mime;
 use PeServer\Core\Binary;
@@ -27,6 +28,7 @@ use PeServer\Core\Mvc\TemplateParameter;
 use PeServer\Core\Mvc\IValidationReceiver;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\InvalidOperationException;
+use PeServer\Core\Utc;
 
 /**
  * コントローラから呼び出されるロジック基底処理。
@@ -34,6 +36,13 @@ use PeServer\Core\Throws\InvalidOperationException;
 abstract class LogicBase implements IValidationReceiver
 {
 	protected const SESSION_ALL_CLEAR = InitialValue::EMPTY_STRING;
+
+	/**
+	 * 開始日時。
+	 *
+	 * @readonly
+	 */
+	protected DateTime $beginTimestamp;
 
 	/**
 	 * ロガー。
@@ -117,6 +126,7 @@ abstract class LogicBase implements IValidationReceiver
 	 */
 	protected function __construct(LogicParameter $parameter)
 	{
+		$this->beginTimestamp = Utc::create();
 		$this->httpStatus = HttpStatus::ok();
 		$this->request = $parameter->request;
 		$this->cookie = $parameter->cookie;
