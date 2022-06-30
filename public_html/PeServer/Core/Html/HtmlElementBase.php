@@ -36,7 +36,7 @@ abstract class HtmlElementBase extends HtmlNodeBase
 			$node = $node->raw;
 		}
 
-		$this->current->appendChild($node);
+		$this->currentNode->appendChild($node);
 	}
 
 	/**

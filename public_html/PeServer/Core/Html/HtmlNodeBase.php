@@ -21,11 +21,11 @@ abstract class HtmlNodeBase
 	 * 生で使用する現在データ。
 	 * @readonly
 	 */
-	protected DOMNode $current;
+	protected DOMNode $currentNode;
 
-	protected function __construct(HtmlDocument $document, DOMNode $current)
+	protected function __construct(HtmlDocument $document, DOMNode $currentNode)
 	{
 		$this->document = $document;
-		$this->current = $current;
+		$this->currentNode = $currentNode;
 	}
 }
