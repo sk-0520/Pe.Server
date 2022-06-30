@@ -21,8 +21,8 @@ abstract class StringUtility
 	/**
 	 * 文字列がnullか空か
 	 *
-	 * @param string|null $s
-	 * @return bool
+	 * @param string|null $s 対象文字列。
+	 * @return bool 真: nullか空。
 	 * @phpstan-return ($s is null ? true: ($s is non-empty-string ? false: true))
 	 */
 	public static function isNullOrEmpty(?string $s): bool
@@ -41,8 +41,10 @@ abstract class StringUtility
 	/**
 	 * 文字列がnullかホワイトスペースのみで構築されているか
 	 *
-	 * @param string|null $s
-	 * @return bool
+	 * TRIM_CHARACTERSがホワイトスペースとして扱われる。
+	 *
+	 * @param string|null $s 対象文字列。
+	 * @return bool 真: nullかホワイトスペースのみ。
 	 * @phpstan-return ($s is null ? true: ($s is non-empty-string ? false: true))
 	 */
 	public static function isNullOrWhiteSpace(?string $s): bool
@@ -58,7 +60,7 @@ abstract class StringUtility
 	/**
 	 * 文字列長を取得。
 	 *
-	 * @param string $value
+	 * @param string $value 対象文字列。
 	 * @return integer 文字数。
 	 */
 	public static function getLength(string $value): int
@@ -135,6 +137,7 @@ abstract class StringUtility
 	 * @param string $needle 検索文字列。
 	 * @param integer $offset 開始文字数目。
 	 * @return integer 見つかった文字位置。見つかんない場合は -1
+	 * @throws ArgumentException
 	 */
 	public static function getPosition(string $haystack, string $needle, int $offset = 0): int
 	{
@@ -150,6 +153,15 @@ abstract class StringUtility
 		return $result;
 	}
 
+	/**
+	 * 文字列位置を取得。
+	 *
+	 * @param string $haystack 対象文字列。
+	 * @param string $needle 検索文字列。
+	 * @param integer $offset 終端文字数目。
+	 * @return integer 見つかった文字位置。見つかんない場合は -1
+	 * @throws ArgumentException
+	 */
 	public static function getLastPosition(string $haystack, string $needle, int $offset = 0): int
 	{
 		if ($offset < 0) {
@@ -163,7 +175,6 @@ abstract class StringUtility
 
 		return $result;
 	}
-
 
 	/**
 	 * 先頭文字列一致判定。
@@ -388,24 +399,33 @@ abstract class StringUtility
 	 *
 	 * @param string $source 入力文字列。
 	 * @param string|string[] $oldValue 元文字列(か、元文字列配列)
-	 * @param string|null $newValue 置き換え文字列。
+	 * @param string $newValue 置き換え文字列。
 	 * @return string 置き換え後文字列。
 	 */
-	public static function replace(string $source, string|array $oldValue, ?string $newValue): string
+	public static function replace(string $source, string|array $oldValue, string $newValue): string
 	{
-		return str_replace($oldValue, $newValue ?? InitialValue::EMPTY_STRING, $source);
+		if (is_string($oldValue) && $oldValue === $newValue) {
+			return $source;
+		}
+
+		return str_replace($oldValue, $newValue, $source);
 	}
 
 	/**
-	 * str_repeat
+	 * 文字列を反復。
+	 *
+	 * str_repeat ラッパー。
 	 *
 	 * @param string $value
 	 * @param integer $count
+	 * @phpstan-param int<0, max> $count
 	 * @return string
 	 * @throws ArgumentException 負数。
+	 * @see https://www.php.net/manual/ja/function.str-repeat.php
 	 */
 	public static function repeat(string $value, int $count): string
 	{
+		//@phpstan-ignore-next-line
 		if ($count < 0) {
 			throw new ArgumentException();
 		}
