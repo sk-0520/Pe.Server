@@ -70,7 +70,7 @@ class FileLogger extends LoggerBase
 
 	private function cleanupCore(int $maxCount, string $filePattern): void
 	{
-		$logFiles = FileUtility::findPattern($this->directoryPath . 'abc', $filePattern);
+		$logFiles = FileUtility::find($this->directoryPath, $filePattern);
 		$logCount = ArrayUtility::getCount($logFiles);
 		if ($logCount <= $maxCount) {
 			return;
@@ -78,7 +78,7 @@ class FileLogger extends LoggerBase
 
 		$length = $logCount - $maxCount;
 		for ($i = 0; $i < $length; $i++) {
-			unlink($logFiles[$i]);
+			FileUtility::removeFile($logFiles[$i]);
 		}
 	}
 

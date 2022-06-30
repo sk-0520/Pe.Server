@@ -418,7 +418,7 @@ abstract class FileUtility
 	 * @return string[] 一覧。
 	 * @throws IOException
 	 */
-	public static function findPattern(string $directoryPath, string $wildcard): array
+	public static function find(string $directoryPath, string $wildcard): array
 	{
 		$pattern = self::joinPath($directoryPath, $wildcard);
 		$items = glob($pattern, GLOB_MARK);
@@ -434,28 +434,46 @@ abstract class FileUtility
 	 * ファイル・ディレクトリはすべて破棄される。
 	 *
 	 * @param string $directoryPath 削除ディレクトリ。
-	 * @return void
+	 * @param bool $recursive 再帰的削除を行うか。
+	 * @return bool
+	 * @throws IOException
 	 */
-	public static function removeDirectory(string $directoryPath): void
+	public static function removeDirectory(string $directoryPath, bool $recursive = false): bool
 	{
-		$files = self::getChildren($directoryPath, false);
-		foreach ($files as $file) {
-			if (self::existsDirectory($file)) {
-				self::removeDirectory($file);
-			} else {
-				self::removeFile($file);
+		if ($recursive) {
+			$files = self::getChildren($directoryPath, false);
+			foreach ($files as $file) {
+				if (self::existsDirectory($file)) {
+					self::removeDirectory($file);
+				} else {
+					self::removeFile($file);
+				}
 			}
 		}
-		rmdir($directoryPath);
-	}
 
-	public static function removeFile(string $filePath): bool
-	{
-		if (self::existsFile($filePath)) {
-			return unlink($filePath);
+		$result = ErrorHandler::trapError(fn () => rmdir($directoryPath));
+		if (!$result->success) {
+			throw new IOException();
 		}
 
-		return false;
+		return $result->value;
+	}
+
+	/**
+	 * ファイル削除。
+	 *
+	 * @param string $filePath ファイルパス。
+	 * @return boolean
+	 * @throws IOException
+	 */
+	public static function removeFile(string $filePath): bool
+	{
+		$result = ErrorHandler::trapError(fn () => unlink($filePath));
+		if (!$result->success) {
+			throw new IOException();
+		}
+
+		return $result->value;
 	}
 
 	/**
