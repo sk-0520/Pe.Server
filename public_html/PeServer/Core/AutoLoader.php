@@ -45,6 +45,7 @@ abstract class AutoLoader
 	 * クラス読み込み。
 	 *
 	 * @param string $className
+	 * @phpstan-param class-string $className
 	 * @return void
 	 */
 	private static function load(string $className): void

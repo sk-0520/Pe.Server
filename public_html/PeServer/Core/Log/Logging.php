@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Log;
 
-use \DateTime;
+use \DateTimeImmutable;
 use PeServer\Core\ILogger;
 use PeServer\Core\FileUtility;
 use PeServer\Core\PathUtility;
@@ -197,7 +197,7 @@ abstract class Logging
 		/** @var array<string,mixed> */
 		$traceMethod = $backtrace[$traceIndex + 1];
 
-		$timestamp = new DateTime();
+		$timestamp = new DateTimeImmutable();
 		/** @var string */
 		$filePath = ArrayUtility::getOr($traceCaller, 'file', InitialValue::EMPTY_STRING);
 

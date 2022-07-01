@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
-use \DateTime;
+use \DateTimeImmutable;
 use \DateTimeZone;
 use PeServer\Core\Throws\ParseException;
 
@@ -23,14 +23,14 @@ abstract class Utc
 		return self::$timezone ??= new DateTimeZone('UTC');
 	}
 
-	public static function create(): DateTime
+	public static function create(): DateTimeImmutable
 	{
-		return new DateTime('now', self::getTimezone());
+		return new DateTimeImmutable('now', self::getTimezone());
 	}
 
-	public static function tryParse(string $s, ?DateTime &$result): bool
+	public static function tryParse(string $s, ?DateTimeImmutable &$result): bool
 	{
-		$datetime = DateTime::createFromFormat(self::UTC_FORMAT, $s, self::getTimezone());
+		$datetime = DateTimeImmutable::createFromFormat(self::UTC_FORMAT, $s, self::getTimezone());
 		if ($datetime === false) {
 			return false;
 		}
@@ -39,7 +39,7 @@ abstract class Utc
 		return true;
 	}
 
-	public static function parse(string $s): DateTime
+	public static function parse(string $s): DateTimeImmutable
 	{
 		if (self::tryParse($s, $result)) {
 			return $result;
@@ -48,7 +48,7 @@ abstract class Utc
 		throw new ParseException();
 	}
 
-	public static function toString(DateTime $datetime): string
+	public static function toString(DateTimeImmutable $datetime): string
 	{
 		return $datetime->format(self::UTC_FORMAT);
 	}

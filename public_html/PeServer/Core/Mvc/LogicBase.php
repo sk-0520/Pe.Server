@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc;
 
 use \DateInterval;
-use \DateTime;
+use \DateTimeImmutable;
 use PeServer\Core\I18n;
 use PeServer\Core\Mime;
 use PeServer\Core\Binary;
@@ -42,7 +42,7 @@ abstract class LogicBase implements IValidationReceiver
 	 *
 	 * @readonly
 	 */
-	protected DateTime $beginTimestamp;
+	protected DateTimeImmutable $beginTimestamp;
 
 	/**
 	 * ロガー。
