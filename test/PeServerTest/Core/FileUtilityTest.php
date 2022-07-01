@@ -23,7 +23,7 @@ class FileUtilityTest extends TestClass
 			new Data("${sep}abc${sep}def${sep}GHI", "${sep}abc", 'def', 'ghi', '..', '.', 'GHI'),
 		];
 		foreach ($tests as $test) {
-			$actual = FileUtility::joinPath(...$test->args);
+			$actual = PathUtility::joinPath(...$test->args);
 			$this->assertEquals($test->expected, $actual, $test->str());
 		}
 	}

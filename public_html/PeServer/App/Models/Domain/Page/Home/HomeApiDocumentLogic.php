@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Domain\Page\Home;
 
 use PeServer\Core\FileUtility;
+use PeServer\Core\PathUtility;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\App\Models\AppConfiguration;
@@ -25,7 +26,7 @@ class HomeApiDocumentLogic extends PageLogicBase
 
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
-		$apiDocumentPath = FileUtility::joinPath(AppConfiguration::$settingDirectoryPath, 'api_document.md');
+		$apiDocumentPath = PathUtility::joinPath(AppConfiguration::$settingDirectoryPath, 'api_document.md');
 		$apiDocument = FileUtility::readContent($apiDocumentPath);
 		$this->setValue('api_document', $apiDocument->getRaw());
 	}

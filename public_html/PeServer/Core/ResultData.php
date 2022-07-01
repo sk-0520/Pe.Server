@@ -6,6 +6,8 @@ namespace PeServer\Core;
 
 /**
  * 結果データ。
+ *
+ * @template TValue
  */
 final class ResultData
 {
@@ -13,10 +15,11 @@ final class ResultData
 	 * 成功状態。
 	 * @readonly
 	 */
-	public bool $success ;
+	public bool $success;
 	/**
 	 * 成功時のデータ。
 	 *
+	 * @phpstan-var TValue
 	 * @readonly
 	 */
 	public mixed $value;
@@ -31,7 +34,9 @@ final class ResultData
 	 * 成功データの生成。
 	 *
 	 * @param mixed $value 成功データ。
+	 * @phpstan-param TValue $value
 	 * @return ResultData
+	 * @phpstan-return ResultData<TValue>
 	 */
 	public static function createSuccess(mixed $value): ResultData
 	{
@@ -42,6 +47,7 @@ final class ResultData
 	 * 失敗データの生成。
 	 *
 	 * @return ResultData
+	 * @phpstan-return ResultData<TValue>
 	 */
 	public static function createFailure(): ResultData
 	{

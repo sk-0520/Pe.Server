@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domain\Page\Setting;
 
+use PeServer\Core\Mime;
+use PeServer\Core\Binary;
+use PeServer\Core\Archiver;
 use PeServer\Core\FileUtility;
+use PeServer\Core\PathUtility;
 use PeServer\Core\StringUtility;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\App\Models\AppConfiguration;
 use PeServer\Core\Throws\FileNotFoundException;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
-use PeServer\Core\Archiver;
-use PeServer\Core\Binary;
-use PeServer\Core\Mime;
 
 class SettingLogDetailLogic extends PageLogicBase
 {
@@ -35,7 +36,7 @@ class SettingLogDetailLogic extends PageLogicBase
 		$dirPath = (string)$logging['file']['directory'];
 
 		$fileName = StringUtility::trim($this->getRequest('log_name'), '/\\.');
-		$filePath = FileUtility::joinPath($dirPath, $fileName);
+		$filePath = PathUtility::joinPath($dirPath, $fileName);
 		if (!FileUtility::existsFile($filePath)) {
 			throw new FileNotFoundException();
 		}

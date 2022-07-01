@@ -6,6 +6,7 @@ namespace PeServer\Core\Log;
 
 use PeServer\Core\ILogger;
 use PeServer\Core\FileUtility;
+use PeServer\Core\PathUtility;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\StringUtility;
 use PeServer\Core\Log\LoggerBase;
@@ -111,7 +112,7 @@ class FileLogger extends LoggerBase
 			]
 		);
 
-		return FileUtility::joinPath($this->directoryPath, $fileName);
+		return PathUtility::joinPath($this->directoryPath, $fileName);
 	}
 
 	protected function logImpl(int $level, int $traceIndex, $message, ...$parameters): void

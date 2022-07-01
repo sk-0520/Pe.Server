@@ -41,8 +41,8 @@ class Configuration
 	 */
 	protected function getEnvironmentFileName(string $fileName): string
 	{
-		$baseFileName = FileUtility::getFileNameWithoutExtension($fileName);
-		$baseFileExtension = FileUtility::getFileExtension($fileName, false);
+		$baseFileName = PathUtility::getFileNameWithoutExtension($fileName);
+		$baseFileExtension = PathUtility::getFileExtension($fileName, false);
 		$environmentFileName = $baseFileName . '.' . $this->environment . '.' . $baseFileExtension;
 
 		return $environmentFileName;
@@ -58,7 +58,7 @@ class Configuration
 	 */
 	public function load(string $directoryPath, string $fileName, string $fileType = self::FILE_TYPE_DEFAULT): array
 	{
-		$baseFileExtension = FileUtility::getFileExtension($fileName, false);
+		$baseFileExtension = PathUtility::getFileExtension($fileName, false);
 
 		$confType = $fileType;
 		if ($fileType === self::FILE_TYPE_DEFAULT) {
@@ -72,8 +72,8 @@ class Configuration
 			throw new ArgumentException('$fileName');
 		}
 
-		$baseFilePath = FileUtility::joinPath($directoryPath, $fileName);
-		$environmentFilePath = FileUtility::joinPath($directoryPath, $this->getEnvironmentFileName($fileName));
+		$baseFilePath = PathUtility::joinPath($directoryPath, $fileName);
+		$environmentFilePath = PathUtility::joinPath($directoryPath, $this->getEnvironmentFileName($fileName));
 
 		/** @var array<mixed> */
 		$configuration = array();

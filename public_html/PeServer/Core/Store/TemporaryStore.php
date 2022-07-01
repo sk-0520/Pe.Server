@@ -7,6 +7,7 @@ namespace PeServer\Core\Store;
 use \DateInterval;
 use PeServer\Core\Utc;
 use PeServer\Core\FileUtility;
+use PeServer\Core\PathUtility;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Cryptography;
 use PeServer\Core\InitialValue;
@@ -117,7 +118,7 @@ class TemporaryStore
 
 	private function getFilePath(string $id): string
 	{
-		$path = FileUtility::joinPath($this->option->savePath, "$id.json");
+		$path = PathUtility::joinPath($this->option->savePath, "$id.json");
 		return $path;
 	}
 

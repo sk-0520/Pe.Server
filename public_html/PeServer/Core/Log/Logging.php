@@ -7,6 +7,7 @@ namespace PeServer\Core\Log;
 use \DateTime;
 use PeServer\Core\ILogger;
 use PeServer\Core\FileUtility;
+use PeServer\Core\PathUtility;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Cryptography;
 use PeServer\Core\InitialValue;
@@ -215,7 +216,7 @@ abstract class Logging
 			'SESSION' => session_id(),
 			//-------------------
 			'FILE' => $filePath,
-			'FILE_NAME' => FileUtility::getFileName($filePath),
+			'FILE_NAME' => PathUtility::getFileName($filePath),
 			'LINE' => ArrayUtility::getOr($traceCaller, 'line', 0),
 			//'CLASS' => ArrayUtility::getOr($traceMethod, 'class', InitialValue::EMPTY_STRING),
 			'FUNCTION' => ArrayUtility::getOr($traceMethod, 'function', InitialValue::EMPTY_STRING),

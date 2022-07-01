@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc\TemplatePlugin;
 
 use PeServer\Core\FileUtility;
+use PeServer\Core\PathUtility;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\InitialValue;
 use PeServer\Core\OutputBuffer;
@@ -86,7 +87,7 @@ class BotTextImageFunction extends TemplateFunctionBase
 		$rectHeight = $height - 1;
 
 		$fontFileName = 'migmix-1m-regular.ttf';
-		$fontFilePath = FileUtility::joinPath($this->argument->baseDirectoryPath, 'Core', 'Libs', 'fonts', 'migmix', $fontFileName);
+		$fontFilePath = PathUtility::joinPath($this->argument->baseDirectoryPath, 'Core', 'Libs', 'fonts', 'migmix', $fontFileName);
 
 		$box = imageftbbox($fontSize, 0, $fontFilePath, $text);
 		if ($box === false) {

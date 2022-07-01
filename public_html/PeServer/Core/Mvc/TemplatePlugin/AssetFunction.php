@@ -7,6 +7,7 @@ namespace PeServer\Core\Mvc\TemplatePlugin;
 use \DOMElement;
 use PeServer\Core\Environment;
 use PeServer\Core\FileUtility;
+use PeServer\Core\PathUtility;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\InitialValue;
 use PeServer\Core\StringUtility;
@@ -50,7 +51,7 @@ class AssetFunction extends TemplateFunctionBase
 
 		$isProduction = Environment::isProduction();
 
-		$fileExtension = FileUtility::getFileExtension($sourcePath);
+		$fileExtension = PathUtility::getFileExtension($sourcePath);
 		$extension = StringUtility::toLower($fileExtension);
 
 		$ignoreAsset =
@@ -65,8 +66,8 @@ class AssetFunction extends TemplateFunctionBase
 		$resourcePath = $sourcePath;
 		if (!$ignoreAsset) {
 			if ($isProduction) {
-				$dir = FileUtility::getDirectoryPath($sourcePath);
-				$file = FileUtility::getFileNameWithoutExtension($sourcePath);
+				$dir = PathUtility::getDirectoryPath($sourcePath);
+				$file = PathUtility::getFileNameWithoutExtension($sourcePath);
 
 				$resourcePath = $dir . '/' . $file . '.min.' . $fileExtension;
 			}
@@ -82,11 +83,11 @@ class AssetFunction extends TemplateFunctionBase
 		$autoSize = TypeConverter::parseBoolean(ArrayUtility::getOr($this->params, 'auto_size', 'false'));
 		$include = TypeConverter::parseBoolean(ArrayUtility::getOr($this->params, 'include', 'false'));
 
-		$filePath = FileUtility::joinPath($this->argument->rootDirectoryPath, $sourcePath);
+		$filePath = PathUtility::joinPath($this->argument->rootDirectoryPath, $sourcePath);
 		if (($autoSize || $include) || !FileUtility::existsFile($filePath)) {
 			// @phpstan-ignore-next-line nullは全取得だからOK
 			foreach ($this->argument->engine->getTemplateDir(null) as $dir) {
-				$path = FileUtility::joinPath($dir, $sourcePath);
+				$path = PathUtility::joinPath($dir, $sourcePath);
 				if (FileUtility::existsFile($path)) {
 					$filePath = $path;
 					break;
