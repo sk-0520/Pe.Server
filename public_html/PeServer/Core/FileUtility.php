@@ -444,9 +444,13 @@ abstract class FileUtility
 			$files = self::getChildren($directoryPath, false);
 			foreach ($files as $file) {
 				if (self::existsDirectory($file)) {
-					self::removeDirectory($file);
+					if (!self::removeDirectory($file, $recursive)) {
+						return false;
+					}
 				} else {
-					self::removeFile($file);
+					if (!self::removeFile($file)) {
+						return false;
+					}
 				}
 			}
 		}
