@@ -6,9 +6,9 @@ namespace PeServerTest\Core;
 
 use PeServerTest\Data;
 use PeServerTest\TestClass;
-use PeServer\Core\FileUtility;
+use PeServer\Core\PathUtility;
 
-class FileUtilityTest extends TestClass
+class PathUtilityTest extends TestClass
 {
 	public function test_joinPath()
 	{
@@ -37,7 +37,7 @@ class FileUtilityTest extends TestClass
 			new Data("/path1/path2", "/path1/path2/name"),
 		];
 		foreach ($tests as $test) {
-			$actual = FileUtility::getDirectoryPath(...$test->args);
+			$actual = PathUtility::getDirectoryPath(...$test->args);
 			$this->assertEquals($test->expected, $actual, $test->str());
 		}
 	}
@@ -52,7 +52,7 @@ class FileUtilityTest extends TestClass
 			new Data(".", "/."),
 		];
 		foreach ($tests as $test) {
-			$actual = FileUtility::getFileName(...$test->args);
+			$actual = PathUtility::getFileName(...$test->args);
 			$this->assertEquals($test->expected, $actual, $test->str());
 		}
 	}
@@ -77,7 +77,7 @@ class FileUtilityTest extends TestClass
 			new Data("", "txt", true),
 		];
 		foreach ($tests as $test) {
-			$actual = FileUtility::getFileExtension(...$test->args);
+			$actual = PathUtility::getFileExtension(...$test->args);
 			$this->assertEquals($test->expected, $actual, $test->str());
 		}
 	}
@@ -96,7 +96,7 @@ class FileUtilityTest extends TestClass
 			new Data(".", ".."),
 		];
 		foreach ($tests as $test) {
-			$actual = FileUtility::getFileNameWithoutExtension(...$test->args);
+			$actual = PathUtility::getFileNameWithoutExtension(...$test->args);
 			$this->assertEquals($test->expected, $actual, $test->str());
 		}
 	}

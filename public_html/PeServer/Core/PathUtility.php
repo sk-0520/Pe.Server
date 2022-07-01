@@ -16,8 +16,6 @@ use PeServer\Core\Throws\FileNotFoundException;
  */
 abstract class PathUtility
 {
-	public const DIRECTORY_PERMISSIONS = 0777;
-
 	/**
 	 * 絶対パスへ変換。
 	 *
@@ -26,7 +24,7 @@ abstract class PathUtility
 	 */
 	public static function toCanonicalize(string $path): string
 	{
-		$targetPath = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path);
+		$targetPath = StringUtility::replace($path, ['/', '\\'], DIRECTORY_SEPARATOR);
 		$parts = array_filter(StringUtility::split($targetPath, DIRECTORY_SEPARATOR), 'mb_strlen');
 		$absolutes = array();
 		foreach ($parts as $part) {
