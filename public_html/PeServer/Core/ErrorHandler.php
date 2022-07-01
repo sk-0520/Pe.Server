@@ -131,18 +131,15 @@ class ErrorHandler
 	 */
 	public static function trapError(callable $action, int $errorLevel = E_ALL): ResultData
 	{
-		$handler = new _PhpErrorHandler($errorLevel);
-		try {
+		return Code::using(new _PhpErrorHandler($errorLevel), function (_PhpErrorHandler $disposable) use ($action) {
 			$result = $action();
-			if ($handler->isError) {
+			if ($disposable->isError) {
 				/** @phpstan-var ResultData<TValue> */
 				return ResultData::createFailure();
 			}
 
 			return ResultData::createSuccess($result);
-		} finally {
-			$handler->dispose();
-		}
+		});
 	}
 
 	/**
@@ -225,7 +222,7 @@ final class _PhpErrorHandler extends DisposerBase
 
 	public function __construct(int $errorLevel)
 	{
-		if(!$errorLevel) {
+		if (!$errorLevel) {
 			throw new InvalidErrorLevelError();
 		}
 
