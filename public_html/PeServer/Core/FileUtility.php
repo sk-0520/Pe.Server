@@ -380,6 +380,29 @@ abstract class FileUtility
 	}
 
 	/**
+	 * ファイルのステータスのキャッシュをクリア
+	 *
+	 * clearstatcacheラッパー。
+	 *
+	 * @param string|null $path
+	 * @return void
+	 * @see https://www.php.net/manual/ja/function.clearstatcache.php
+	 */
+	public static function clearCache(?string $path)
+	{
+		if (is_null($path)) {
+			clearstatcache(true);
+			return;
+		}
+
+		if (StringUtility::isNullOrWhiteSpace($path)) {
+			throw new IOException();
+		}
+
+		clearstatcache(true, $path);
+	}
+
+	/**
 	 * バックアップ。
 	 *
 	 * !!未実装!!
