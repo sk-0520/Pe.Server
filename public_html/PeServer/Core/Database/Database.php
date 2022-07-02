@@ -7,7 +7,7 @@ namespace PeServer\Core\Database;
 use \PDO;
 use \PDOStatement;
 use PeServer\Core\DisposerBase;
-use PeServer\Core\ILogger;
+use PeServer\Core\Log\ILogger;
 use PeServer\Core\Regex;
 use PeServer\Core\StringUtility;
 use PeServer\Core\Throws\Throws;

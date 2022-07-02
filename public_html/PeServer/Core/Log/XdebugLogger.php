@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Log;
 
-use PeServer\Core\ILogger;
+use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\Logging;
 
 /**

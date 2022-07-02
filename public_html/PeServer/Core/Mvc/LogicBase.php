@@ -9,7 +9,7 @@ use \DateTimeImmutable;
 use PeServer\Core\I18n;
 use PeServer\Core\Mime;
 use PeServer\Core\Binary;
-use PeServer\Core\ILogger;
+use PeServer\Core\Log\ILogger;
 use PeServer\Core\FileUtility;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\InitialValue;

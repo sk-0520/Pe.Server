@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
+use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\Logging;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\RouteSetting;

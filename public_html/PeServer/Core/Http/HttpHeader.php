@@ -13,9 +13,7 @@ use PeServer\Core\Throws\NotSupportedException;
 use PeServer\Core\Throws\InvalidOperationException;
 
 /**
- * HTTPヘッダー
- *
- * TODO: 構築中。
+ * HTTPヘッダー。
  */
 class HttpHeader
 {
