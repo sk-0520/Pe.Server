@@ -15,7 +15,7 @@ use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Http\RequestPath;
 use PeServer\Core\Http\HttpResponse;
-use PeServer\Core\Mvc\IActionResult;
+use PeServer\Core\Mvc\Result\IActionResult;
 use PeServer\Core\Store\CookieStore;
 use PeServer\Core\Store\StoreOption;
 use PeServer\Core\Mvc\ControllerBase;

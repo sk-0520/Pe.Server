@@ -4,7 +4,7 @@ namespace PeServer\App\Controllers\Page;
 
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Http\HttpRequest;
-use PeServer\Core\Mvc\IActionResult;
+use PeServer\Core\Mvc\Result\IActionResult;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\TemplateParameter;
 use PeServer\Core\Mvc\ControllerArgument;
