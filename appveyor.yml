@@ -7,8 +7,8 @@ skip_tags: true
 environment:
   PHP_VER: 8.0
 install:
-  - sh: nvm install  15.14.0
-  - sh: npm -g install npm@7.7.6
+  - sh: nvm install 18.4.0
+  - sh: npm -g install npm@8.12.1
   - sh: npm install
 before_build:
   - sh: git submodule init
