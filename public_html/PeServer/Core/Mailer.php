@@ -18,16 +18,6 @@ use PeServer\Core\Throws\ArgumentNullException;
 use PeServer\Core\Throws\NotImplementedException;
 use PeServer\Core\Throws\InvalidOperationException;
 
-class SmtpSetting
-{
-	public string $host;
-	public int $port;
-	public string $secure;
-	public bool $authentication;
-	public string $userName;
-	public string $password;
-}
-
 class Mailer
 {
 	private const SEND_MODE_SMTP = 1;
@@ -46,7 +36,7 @@ class Mailer
 	/**
 	 * @readonly
 	 */
-	private SmtpSetting $smtp;
+	private _SmtpSetting $smtp;
 
 	public string $encoding  = '8bit';
 	public string $characterSet = 'utf-8';
@@ -105,13 +95,14 @@ class Mailer
 
 					$smtpSetting = $setting['smtp'];
 
-					$smtp = new SmtpSetting();
-					$smtp->host = $smtpSetting['host'];
-					$smtp->port = $smtpSetting['port'];
-					$smtp->secure = $smtpSetting['secure'];
-					$smtp->authentication = $smtpSetting['authentication'];
-					$smtp->userName = $smtpSetting['user_name'];
-					$smtp->password = $smtpSetting['password'];
+					$smtp = new _SmtpSetting(
+						$smtpSetting['host'],
+						$smtpSetting['port'],
+						$smtpSetting['secure'],
+						$smtpSetting['authentication'],
+						$smtpSetting['user_name'],
+						$smtpSetting['password']
+					);
 
 					$this->sendMode = self::SEND_MODE_SMTP;
 					$this->smtp = $smtp;
@@ -237,5 +228,23 @@ class Mailer
 		}
 
 		$client->send();
+	}
+}
+
+/**
+ * SMTP設定。
+ *
+ * @immutable
+ */
+final class _SmtpSetting
+{
+	public function __construct(
+		public string $host,
+		public int $port,
+		public string $secure,
+		public bool $authentication,
+		public string $userName,
+		public string $password
+	) {
 	}
 }
