@@ -10,15 +10,13 @@ use PeServer\Core\Throws\ArgumentException;
 
 /**
  * 一時データ設定。
+ * @immutable
  */
 class TemporaryOption
 {
 	public function __construct(
-		/** @readonly */
 		public string $name,
-		/** @readonly */
 		public string $savePath,
-		/** @readonly */
 		public CookieOption $cookie
 	) {
 		if (StringUtility::isNullOrWhiteSpace($name)) {

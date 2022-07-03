@@ -11,6 +11,7 @@ use PeServer\Core\Store\TemporaryStore;
 
 /**
  * コントローラ生成時に使用される入力値。
+ * @immutable
  */
 class ControllerArgument
 {
@@ -23,13 +24,9 @@ class ControllerArgument
 	 * @param ILogger $logger ロガー。
 	 */
 	public function __construct(
-		/** @readonly */
 		public CookieStore $cookie,
-		/** @readonly */
 		public TemporaryStore $temporary,
-		/** @readonly */
 		public SessionStore $session,
-		/** @readonly */
 		public ILogger $logger
 	) {
 	}

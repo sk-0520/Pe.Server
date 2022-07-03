@@ -10,12 +10,14 @@ use PeServer\Core\Http\HttpResponse;
 use PeServer\Core\Mvc\Result\IActionResult;
 use PeServer\Core\Throws\ArgumentException;
 
+/**
+ * リダイレクト。
+ * @immutable
+ */
 class RedirectActionResult implements IActionResult
 {
 	public function __construct(
-		/** @readonly */
 		private string $url,
-		/** @readonly */
 		private ?HttpStatus $status = null
 	) {
 		if (StringUtility::isNullOrWhiteSpace($url)) {

@@ -12,6 +12,7 @@ use PeServer\Core\Store\TemporaryStore;
 
 /**
  * ロジック用パラメータ。
+ * @immutable
  */
 class LogicParameter
 {
@@ -25,15 +26,10 @@ class LogicParameter
 	 * @param ILogger $logger ロガー。
 	 */
 	public function __construct(
-		/** @readonly */
 		public HttpRequest $request,
-		/** @readonly */
 		public CookieStore $cookie,
-		/** @readonly */
 		public TemporaryStore $temporary,
-		/** @readonly */
 		public SessionStore $session,
-		/** @readonly */
 		public ILogger $logger
 	) {
 	}

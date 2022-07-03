@@ -10,15 +10,13 @@ use PeServer\Core\Throws\ArgumentException;
 
 /**
  * セッション設定。
+ * @immutable
  */
 class SessionOption
 {
 	public function __construct(
-		/** @readonly */
 		public string $name,
-		/** @readonly */
 		public string $savePath,
-		/** @readonly */
 		public CookieOption $cookie
 	) {
 		if (StringUtility::isNullOrWhiteSpace($name)) {

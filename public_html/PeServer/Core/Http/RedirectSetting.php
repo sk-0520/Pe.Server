@@ -6,6 +6,10 @@ namespace PeServer\Core\Http;
 
 use PeServer\Core\Http\HttpStatus;
 
+/**
+ * リダイレクト設定。
+ * @immutable
+ */
 class RedirectSetting
 {
 	/**
@@ -15,9 +19,7 @@ class RedirectSetting
 	 * @param HttpStatus $status リダイレクト時のHTTPステータスコード。
 	 */
 	public function __construct(
-		/** @readonly */
 		public string $url,
-		/** @readonly */
 		public HttpStatus $status
 	) {
 	}

@@ -6,6 +6,8 @@ namespace PeServer\Core;
 
 /**
  * メールアドレス管理。
+ *
+ * @immutable
  */
 class EmailAddress
 {
@@ -13,7 +15,6 @@ class EmailAddress
 	 * 名前。
 	 *
 	 * @var string
-	 * @readonly
 	 */
 	public string $name;
 
@@ -24,7 +25,6 @@ class EmailAddress
 	 * @param string|null $name 名前。
 	 */
 	public function __construct(
-		/** @readonly */
 		public string $address,
 		?string $name = null
 	) {

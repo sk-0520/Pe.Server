@@ -10,6 +10,8 @@ use PeServer\Core\Mvc\Middleware\IShutdownMiddleware;
 
 /**
  * HTTPメソッドとコントローラメソッドの紐づけ。
+ *
+ * @immutable
  */
 class ActionSetting
 {
@@ -23,11 +25,8 @@ class ActionSetting
 	 * @phpstan-param array<IShutdownMiddleware|class-string<IShutdownMiddleware>> $shutdownMiddleware シャットダウンミドルウェア。
 	 */
 	public function __construct(
-	 	/** @readonly */
 		public string $controllerMethod,
-	 	/** @readonly */
 		public array $actionMiddleware,
-		/** @readonly */
 		public array $shutdownMiddleware
 	) {
 	}

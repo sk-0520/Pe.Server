@@ -12,6 +12,7 @@ use PeServer\Core\Throws\KeyNotFoundException;
  * HTTPリクエストデータ。
  *
  * GET/POST/URLパラメータの値などはこいつから取得する。
+ * @immutable
  */
 class HttpRequest
 {
@@ -23,11 +24,8 @@ class HttpRequest
 	 * @param array<string,string> $urlParameters URLパラメータ。
 	 */
 	public function __construct(
-		/** @readonly */
 		public HttpMethod $httpMethod,
-		/** @readonly */
 		public HttpHeader $httpHeader,
-		/** @readonly */
 		protected array $urlParameters
 	) {
 	}

@@ -10,6 +10,10 @@ use PeServer\Core\Http\HttpResponse;
 use PeServer\Core\Mvc\Result\IActionResult;
 use PeServer\Core\Mvc\TemplateParameter;
 
+/**
+ * View。
+ * @immutable
+ */
 class ViewActionResult implements IActionResult
 {
 	/**
@@ -21,13 +25,9 @@ class ViewActionResult implements IActionResult
 	 * @param array<string,string[]> $headers
 	 */
 	public function __construct(
-		/** @readonly */
 		private string $templateBaseName,
-		/** @readonly */
 		private string $actionName,
-		/** @readonly */
 		private TemplateParameter $templateParameter,
-		/** @readonly */
 		private array $headers
 	) {
 	}

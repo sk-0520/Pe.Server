@@ -8,19 +8,18 @@ namespace PeServer\Core;
  * 結果データ。
  *
  * @template TValue
+ * @immutable
  */
 final class ResultData
 {
 	/**
 	 * 成功状態。
-	 * @readonly
 	 */
 	public bool $success;
 	/**
 	 * 成功時のデータ。
 	 *
 	 * @phpstan-var TValue
-	 * @readonly
 	 */
 	public mixed $value;
 
