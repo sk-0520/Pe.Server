@@ -10,6 +10,7 @@ use PeServer\Core\Mvc\DataContent;
 
 class DownloadDataContent extends DataContent
 {
+	/** @readonly */
 	public string $fileName;
 
 	/**

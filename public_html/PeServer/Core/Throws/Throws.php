@@ -24,6 +24,7 @@ abstract class Throws
 	 * 例外の再スロー。
 	 *
 	 * @param string $className 例外名。
+	 * @phpstan-param class-string $className 例外名。
 	 * @param Throwable $previous ラップする元の例外。
 	 * @return no-return
 	 */
@@ -36,8 +37,11 @@ abstract class Throws
 			$code = $rawCode;
 		}
 
-		/** @var Exception */
 		$exception = new $className($message, $code, $previous);
+		if ($exception instanceof Throwable) {
+			throw $exception;
+		}
+		/** @var Throwable */
 		throw $exception;
 	}
 }

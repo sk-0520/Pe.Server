@@ -7,9 +7,13 @@ namespace PeServer\Core\Mvc\Result;
 use PeServer\Core\StringUtility;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Http\HttpResponse;
-use PeServer\Core\Mvc\IActionResult;
+use PeServer\Core\Mvc\Result\IActionResult;
 use PeServer\Core\Throws\ArgumentException;
 
+/**
+ * リダイレクト。
+ * @immutable
+ */
 class RedirectActionResult implements IActionResult
 {
 	public function __construct(

@@ -110,6 +110,7 @@ class AccountSignupStep1Logic extends PageLogicBase
 
 		//TODO: 設定からとるのかリダイレクトみたいにサーバーからとるのか混在中
 		$baseUrl = StringUtility::replaceMap(
+			/** @phpstan-ignore-next-line */
 			AppConfiguration::$config['config']['address']['public_url'],
 			[
 				'DOMAIN' => AppConfiguration::$config['config']['address']['domain']

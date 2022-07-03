@@ -7,6 +7,7 @@ namespace PeServerTest\Core;
 use PeServerTest\Data;
 use PeServerTest\TestClass;
 use PeServer\Core\StringUtility;
+use PeServer\Core\Throws\ArgumentException;
 
 class StringUtilityTest extends TestClass
 {
@@ -21,7 +22,7 @@ class StringUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = StringUtility::isNullOrEmpty(...$test->args);
-			$this->assertBoolean($test->expected, $actual, $test->str());
+			$this->assertBoolean($test->expected, $actual, $test->str()); //@php-ignore-line
 		}
 	}
 
@@ -69,6 +70,18 @@ class StringUtilityTest extends TestClass
 		}
 	}
 
+	public function test_formatNumber()
+	{
+		$tests = [
+			new Data('123', 123),
+			new Data('1,234', 1234),
+		];
+		foreach ($tests as $test) {
+			$actual = StringUtility::formatNumber(...$test->args);
+			$this->assertEquals($test->expected, $actual, $test->str());
+		}
+	}
+
 	public function test_getPosition()
 	{
 		$tests = [
@@ -79,8 +92,7 @@ class StringUtilityTest extends TestClass
 			new Data(-1, 'abcあいう☃⛄', '🐡'),
 
 			new Data(3, 'abcあいう☃⛄', 'あ', 3),
-			new Data(-1, 'abcあいう☃⛄', '☃', -1),
-			new Data(6, 'abcあいう☃⛄', '☃', -2),
+			new Data(-1, 'abcあいう☃⛄', '☃', 7),
 		];
 		foreach ($tests as $test) {
 			$actual = StringUtility::getPosition(...$test->args);
@@ -311,4 +323,25 @@ class StringUtilityTest extends TestClass
 			$this->assertEquals($test->expected, $actual, $test->str());
 		}
 	}
+
+	public function test_repeat()
+	{
+		$tests = [
+			new Data('', 'a', 0),
+			new Data('a', 'a', 1),
+			new Data('aa', 'a', 2),
+		];
+		foreach ($tests as $test) {
+			$actual = StringUtility::repeat(...$test->args);
+			$this->assertEquals($test->expected, $actual, $test->str());
+		}
+	}
+
+	public function test_repeat_exception()
+	{
+		$this->expectException(ArgumentException::class);
+		StringUtility::repeat('', -1);
+		$this->fail();
+	}
+
 }

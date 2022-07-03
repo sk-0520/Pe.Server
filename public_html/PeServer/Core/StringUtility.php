@@ -15,13 +15,15 @@ use PeServer\Core\Throws\ArgumentException;
  */
 abstract class StringUtility
 {
+	/** トリム対象文字一覧。 */
 	public const TRIM_CHARACTERS = " \n\r\t\v\0";
 
 	/**
 	 * 文字列がnullか空か
 	 *
-	 * @param string|null $s
-	 * @return ($s is null ? true: ($s is non-empty-string ? true: false))
+	 * @param string|null $s 対象文字列。
+	 * @return bool 真: nullか空。
+	 * @phpstan-return ($s is null ? true: ($s is non-empty-string ? false: true))
 	 */
 	public static function isNullOrEmpty(?string $s): bool
 	{
@@ -39,22 +41,26 @@ abstract class StringUtility
 	/**
 	 * 文字列がnullかホワイトスペースのみで構築されているか
 	 *
-	 * @param string|null $s
-	 * @return ($s is null ? true: ($s is non-empty-string ? true: false))
+	 * TRIM_CHARACTERSがホワイトスペースとして扱われる。
+	 *
+	 * @param string|null $s 対象文字列。
+	 * @return bool 真: nullかホワイトスペースのみ。
+	 * @phpstan-return ($s is null ? true: ($s is non-empty-string ? false: true))
 	 */
 	public static function isNullOrWhiteSpace(?string $s): bool
 	{
 		if (self::isNullOrEmpty($s)) {
 			return true;
 		}
+
 		/** @var string $s */
-		return strlen(trim($s)) === 0;
+		return strlen(self::trim($s)) === 0;
 	}
 
 	/**
 	 * 文字列長を取得。
 	 *
-	 * @param string $value
+	 * @param string $value 対象文字列。
 	 * @return integer 文字数。
 	 */
 	public static function getLength(string $value): int
@@ -77,10 +83,12 @@ abstract class StringUtility
 	 * プレースホルダー文字列置き換え処理
 	 *
 	 * @param string $source 元文字列
+	 * @phpstan-param literal-string $source
 	 * @param array<string,string> $map 置き換え対象辞書
-	 * @param string $head
-	 * @param string $tail
+	 * @param string $head プレースホルダー先頭
+	 * @param string $tail プレースホルダー終端
 	 * @return string 置き換え後文字列
+	 * @throws StringException なんかもうあかんかった
 	 */
 	public static function replaceMap(string $source, array $map, string $head = '{', string $tail = '}'): string
 	{
@@ -106,17 +114,37 @@ abstract class StringUtility
 		}
 	}
 
+	/**
+	 * 数字を千の位毎にグループ化してフォーマット
+	 *
+	 * @see https://www.php.net/manual/ja/function.number-format.php
+	 *
+	 * @param int|float $number フォーマットする数値
+	 * @param int $decimals 小数点以下の桁数。 0 を指定すると、 戻り値の decimal_separator は省略されます
+	 * @param string|null $decimal_separator 小数点を表す区切り文字
+	 * @param string|null $thousands_separator 千の位毎の区切り文字
+	 * @return string 置き換え後文字列
+	 */
+	public static function formatNumber(int|float $number, int $decimals = 0, ?string $decimal_separator = '.', ?string $thousands_separator = ','): string
+	{
+		return number_format($number, $decimals, $decimal_separator, $thousands_separator);
+	}
 
 	/**
 	 * 文字列位置を取得。
 	 *
 	 * @param string $haystack 対象文字列。
 	 * @param string $needle 検索文字列。
-	 * @param integer $offset 開始文字数目。負数の場合は後ろから。
+	 * @param integer $offset 開始文字数目。
 	 * @return integer 見つかった文字位置。見つかんない場合は -1
+	 * @throws ArgumentException
 	 */
 	public static function getPosition(string $haystack, string $needle, int $offset = 0): int
 	{
+		if ($offset < 0) {
+			throw new ArgumentException('$offset');
+		}
+
 		$result =  mb_strpos($haystack, $needle, $offset);
 		if ($result === false) {
 			return -1;
@@ -125,8 +153,21 @@ abstract class StringUtility
 		return $result;
 	}
 
+	/**
+	 * 文字列位置を取得。
+	 *
+	 * @param string $haystack 対象文字列。
+	 * @param string $needle 検索文字列。
+	 * @param integer $offset 終端文字数目。
+	 * @return integer 見つかった文字位置。見つかんない場合は -1
+	 * @throws ArgumentException
+	 */
 	public static function getLastPosition(string $haystack, string $needle, int $offset = 0): int
 	{
+		if ($offset < 0) {
+			throw new ArgumentException('$offset');
+		}
+
 		$result =  mb_strrpos($haystack, $needle, $offset);
 		if ($result === false) {
 			return -1;
@@ -134,7 +175,6 @@ abstract class StringUtility
 
 		return $result;
 	}
-
 
 	/**
 	 * 先頭文字列一致判定。
@@ -146,8 +186,10 @@ abstract class StringUtility
 	 */
 	public static function startsWith(string $haystack, string $needle, bool $ignoreCase): bool
 	{
-		//PHP8
-		//str_starts_with($haystack, $needle);
+		if (!$ignoreCase && function_exists('str_starts_with')) {
+			return str_starts_with($haystack, $needle);
+		}
+
 		if (self::isNullOrEmpty($needle)) {
 			return true;
 		}
@@ -173,8 +215,10 @@ abstract class StringUtility
 	 */
 	public static function endsWith(string $haystack, string $needle, bool $ignoreCase): bool
 	{
-		//PHP8
-		//str_ends_with($haystack, $needle);
+		if (!$ignoreCase && function_exists('str_ends_with')) {
+			return str_ends_with($haystack, $needle);
+		}
+
 		if (self::isNullOrEmpty($needle)) {
 			return true;
 		}
@@ -200,8 +244,10 @@ abstract class StringUtility
 	 */
 	public static function contains(string $haystack, string $needle, bool $ignoreCase): bool
 	{
-		//PHP8
-		//str_contains
+		if (!$ignoreCase && function_exists('str_contains')) {
+			return str_contains($haystack, $needle);
+		}
+
 		if (self::isNullOrEmpty($needle)) {
 			return true;
 		}
@@ -268,8 +314,8 @@ abstract class StringUtility
 			throw new ArgumentException();
 		}
 
-		/** non-empty-string $separator */
-		$result = explode($separator, $value, $limit); // @phpstan-ignore-line
+		/** @phpstan-var non-empty-string $separator */
+		$result = explode($separator, $value, $limit);
 
 		return $result;
 	}
@@ -281,6 +327,8 @@ abstract class StringUtility
 	 * @param string $separator
 	 * @return string
 	 * @see https://www.php.net/manual/ja/function.implode.php
+	 *
+	 * @phpstan-param non-empty-string $separator
 	 */
 	public static function join(array $values, string $separator): string
 	{
@@ -351,11 +399,37 @@ abstract class StringUtility
 	 *
 	 * @param string $source 入力文字列。
 	 * @param string|string[] $oldValue 元文字列(か、元文字列配列)
-	 * @param string|null $newValue 置き換え文字列。
+	 * @param string $newValue 置き換え文字列。
 	 * @return string 置き換え後文字列。
 	 */
-	public static function replace(string $source, string|array $oldValue, ?string $newValue): string
+	public static function replace(string $source, string|array $oldValue, string $newValue): string
 	{
-		return str_replace($oldValue, $newValue ?? InitialValue::EMPTY_STRING, $source);
+		if (is_string($oldValue) && $oldValue === $newValue) {
+			return $source;
+		}
+
+		return str_replace($oldValue, $newValue, $source);
+	}
+
+	/**
+	 * 文字列を反復。
+	 *
+	 * str_repeat ラッパー。
+	 *
+	 * @param string $value
+	 * @param integer $count
+	 * @phpstan-param int<0, max> $count
+	 * @return string
+	 * @throws ArgumentException 負数。
+	 * @see https://www.php.net/manual/ja/function.str-repeat.php
+	 */
+	public static function repeat(string $value, int $count): string
+	{
+		//@phpstan-ignore-next-line
+		if ($count < 0) {
+			throw new ArgumentException();
+		}
+
+		return str_repeat($value, $count);
 	}
 }

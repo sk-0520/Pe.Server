@@ -4,7 +4,7 @@ namespace PeServer\App\Controllers\Page;
 
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Http\HttpRequest;
-use PeServer\Core\Mvc\IActionResult;
+use PeServer\Core\Mvc\Result\IActionResult;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\TemplateParameter;
 use PeServer\Core\Mvc\ControllerArgument;
@@ -13,8 +13,8 @@ use PeServer\App\Models\Domain\Page\Setting\SettingSetupLogic;
 use PeServer\App\Models\Domain\Page\Setting\SettingLogListLogic;
 use PeServer\App\Models\Domain\Page\Setting\SettingMarkdownLogic;
 use PeServer\App\Models\Domain\Page\Setting\SettingLogDetailLogic;
+use PeServer\App\Models\Domain\Page\Setting\SettingEnvironmentLogic;
 use PeServer\App\Models\Domain\Page\Setting\SettingDefaultPluginLogic;
-use PeServer\App\Models\Domain\Page\Setting\SettingEnvironmentPluginLogic;
 use PeServer\App\Models\Domain\Page\Setting\SettingPluginCategoryListLogic;
 
 final class SettingController extends PageControllerBase
@@ -49,7 +49,7 @@ final class SettingController extends PageControllerBase
 
 	public function environment(HttpRequest $request): IActionResult
 	{
-		$logic = $this->createLogic(SettingEnvironmentPluginLogic::class, $request);
+		$logic = $this->createLogic(SettingEnvironmentLogic::class, $request);
 		$logic->run(LogicCallMode::initialize());
 
 		return $this->view('environment', $logic->getViewData());

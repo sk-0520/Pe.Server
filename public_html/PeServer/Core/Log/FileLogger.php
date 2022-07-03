@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Log;
 
+use PeServer\Core\Log\ILogger;
 use PeServer\Core\FileUtility;
+use PeServer\Core\PathUtility;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\StringUtility;
 use PeServer\Core\Log\LoggerBase;
@@ -16,10 +18,14 @@ class FileLogger extends LoggerBase
 {
 	/**
 	 * 出力ディレクトリパス。
+	 * @readonly
 	 */
 	private string $directoryPath;
 	/**
 	 * ファイル書式名
+	 *
+	 * @phpstan-var literal-string
+	 * @readonly
 	 */
 	private string $baseFileName;
 
@@ -35,6 +41,7 @@ class FileLogger extends LoggerBase
 	 *
 	 * @param string $header ヘッダ。使用用途により意味合いは変わるので実装側でルール決めして使用すること。
 	 * @param integer $level 有効レベル。
+	 * @phpstan-param ILogger::LEVEL_* $level 有効レベル。
 	 * @param integer $baseTraceIndex 基準トレース位置。
 	 * @param array<string,mixed> $fileLoggingConfiguration
 	 */
@@ -46,6 +53,7 @@ class FileLogger extends LoggerBase
 		Enforce::throwIfNullOrWhiteSpace($directoryPath);
 		$this->directoryPath = $directoryPath;
 
+		/** @phpstan-var literal-string */
 		$baseFileName = ArrayUtility::getOr($fileLoggingConfiguration, 'name', '');
 		Enforce::throwIfNullOrWhiteSpace($baseFileName);
 		$this->baseFileName = $baseFileName;
@@ -57,24 +65,21 @@ class FileLogger extends LoggerBase
 
 	private function toSafeFileNameHeader(): string
 	{
-		$trimHeader = trim($this->header, '/\\');
-		return str_replace(['/', '\\', '*', '|', '<', '>', '?'], '_', $trimHeader);
+		$trimHeader = StringUtility::trim($this->header, '/\\');
+		return StringUtility::replace($trimHeader, ['/', '\\', '*', '|', '<', '>', '?'], '_');
 	}
 
 	private function cleanupCore(int $maxCount, string $filePattern): void
 	{
-		$logFiles = glob(FileUtility::joinPath($this->directoryPath, $filePattern));
-		if ($logFiles === false) {
-			throw new IOException('glob error: ' . FileUtility::joinPath($this->directoryPath, $filePattern));
-		}
-		$logCount = count($logFiles);
+		$logFiles = FileUtility::find($this->directoryPath, $filePattern);
+		$logCount = ArrayUtility::getCount($logFiles);
 		if ($logCount <= $maxCount) {
 			return;
 		}
 
 		$length = $logCount - $maxCount;
 		for ($i = 0; $i < $length; $i++) {
-			unlink($logFiles[$i]);
+			FileUtility::removeFile($logFiles[$i]);
 		}
 	}
 
@@ -107,7 +112,7 @@ class FileLogger extends LoggerBase
 			]
 		);
 
-		return FileUtility::joinPath($this->directoryPath, $fileName);
+		return PathUtility::joinPath($this->directoryPath, $fileName);
 	}
 
 	protected function logImpl(int $level, int $traceIndex, $message, ...$parameters): void

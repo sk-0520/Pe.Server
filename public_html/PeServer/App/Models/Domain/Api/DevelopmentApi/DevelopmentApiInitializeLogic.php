@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Domain\Api\DevelopmentApi;
 
 use PeServer\Core\Mime;
-use PeServer\Core\ILogger;
+use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\Logging;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\App\Models\ResponseJson;

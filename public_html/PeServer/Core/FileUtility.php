@@ -4,137 +4,20 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
-use stdClass;
-use Exception;
+use \stdClass;
 use PeServer\Core\Binary;
+use PeServer\Core\PathUtility;
 use PeServer\Core\InitialValue;
 use PeServer\Core\Throws\IOException;
 use PeServer\Core\Throws\ParseException;
 use PeServer\Core\Throws\FileNotFoundException;
 
+/**
+ * ファイル処理系。
+ */
 abstract class FileUtility
 {
 	public const DIRECTORY_PERMISSIONS = 0777;
-
-	/**
-	 * 絶対パスへ変換。
-	 *
-	 * @param string $path パス。
-	 * @return string 絶対パス。
-	 */
-	public static function toCanonicalize(string $path): string
-	{
-		$targetPath = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path);
-		$parts = array_filter(explode(DIRECTORY_SEPARATOR, $targetPath), 'mb_strlen');
-		$absolutes = array();
-		foreach ($parts as $part) {
-			if ($part === '.') {
-				continue;
-			}
-			if ($part === '..') {
-				array_pop($absolutes);
-			} else {
-				$absolutes[] = $part;
-			}
-		}
-
-		$result = implode(DIRECTORY_SEPARATOR, $absolutes);
-		if (mb_strlen($targetPath) && $targetPath[0] === DIRECTORY_SEPARATOR) {
-			$result = DIRECTORY_SEPARATOR . $result;
-		}
-
-		return $result;
-	}
-
-	/**
-	 * パスの結合。
-	 *
-	 * @param string $basePath ベースとなるパス。
-	 * @param string ...$addPaths 連結していくパス。
-	 * @return string 結合後のパス。正規化される。
-	 */
-	public static function joinPath(string $basePath, string ...$addPaths): string
-	{
-		$paths = array_merge([$basePath], array_map(function ($s) {
-			return trim($s, '/\\');
-		}, $addPaths));
-		$paths = array_filter($paths, function ($v, $k) {
-			return !StringUtility::isNullOrEmpty($v) && ($k === 0 ? true :  $v !== '/' && $v !== '\\');
-		}, ARRAY_FILTER_USE_BOTH);
-
-
-		$joinedPath = implode(DIRECTORY_SEPARATOR, $paths);
-		return self::toCanonicalize($joinedPath);
-	}
-
-	/**
-	 * ディレクトリパスを取得。
-	 *
-	 * @param string $path
-	 * @return string
-	 */
-	public static function getDirectoryPath(string $path): string
-	{
-		return dirname($path);
-	}
-
-	/**
-	 * ファイル名を取得。
-	 *
-	 * @param string $path
-	 * @return string
-	 */
-	public static function getFileName(string $path): string
-	{
-		return basename($path);
-	}
-
-	/**
-	 * 拡張子取得。
-	 *
-	 * @param string $path
-	 * @param boolean $withDot . を付与するか。
-	 * @return string
-	 */
-	public static function getFileExtension(string $path, bool $withDot = false): string
-	{
-		if (StringUtility::isNullOrWhiteSpace($path)) {
-			return InitialValue::EMPTY_STRING;
-		}
-
-		$dotIndex = StringUtility::getLastPosition($path, '.');
-		if ($dotIndex === -1) {
-			return InitialValue::EMPTY_STRING;
-		}
-
-		$result = StringUtility::substring($path, $dotIndex);
-		if ($withDot) {
-			return $result;
-		}
-
-		if (!StringUtility::getByteCount($result)) {
-			return InitialValue::EMPTY_STRING;
-		}
-
-		return StringUtility::substring($result, 1);
-	}
-
-	/**
-	 * 拡張子を省いたファイル名を取得。
-	 *
-	 * @param string $path
-	 * @return string
-	 */
-	public static function getFileNameWithoutExtension(string $path): string
-	{
-		$fileName = self::getFileName($path);
-		$dotIndex = StringUtility::getLastPosition($fileName, '.');
-		if ($dotIndex === -1) {
-			return $fileName;
-		}
-
-		return StringUtility::substring($fileName, 0, $dotIndex);
-	}
 
 	/**
 	 * ファイルサイズを取得。
@@ -235,7 +118,7 @@ abstract class FileUtility
 	 * JSONファイルとして出力。
 	 *
 	 * @param string $path
-	 * @param array<mixed>|stdClass $data
+	 * @param array<mixed>|\stdClass $data
 	 * @return void
 	 */
 	public static function writeJsonFile(string $path, array|stdClass $data): void
@@ -353,7 +236,7 @@ abstract class FileUtility
 				continue;
 			}
 
-			$path = self::joinPath($directoryPath, $item);
+			$path = PathUtility::joinPath($directoryPath, $item);
 
 			$isDir = self::existsDirectory($path);
 
@@ -406,33 +289,80 @@ abstract class FileUtility
 	{
 		return self::getChildrenCore($directoryPath, true, false, $recursive);
 	}
+
+	/**
+	 * パターンに一致するファイル・ディレクトリ一覧取得。
+	 *
+	 * glob ラッパー。
+	 * https://www.php.net/manual/ja/function.glob.php
+	 *
+	 * @param string $directoryPath ディレクトリパス
+	 * @param string $wildcard ワイルドカード。
+	 * @return string[] 一覧。
+	 * @throws IOException
+	 */
+	public static function find(string $directoryPath, string $wildcard): array
+	{
+		$pattern = PathUtility::joinPath($directoryPath, $wildcard);
+		$items = glob($pattern, GLOB_MARK);
+		if ($items === false) {
+			throw new IOException();
+		}
+
+		return $items;
+	}
+
 	/**
 	 * ディレクトリを削除する。
 	 * ファイル・ディレクトリはすべて破棄される。
 	 *
 	 * @param string $directoryPath 削除ディレクトリ。
-	 * @return void
+	 * @param bool $recursive 再帰的削除を行うか。
+	 * @return bool
+	 * @throws IOException
 	 */
-	public static function removeDirectory(string $directoryPath): void
+	public static function removeDirectory(string $directoryPath, bool $recursive = false): bool
 	{
-		$files = self::getChildren($directoryPath, false);
-		foreach ($files as $file) {
-			if (self::existsDirectory($file)) {
-				self::removeDirectory($file);
-			} else {
-				self::removeFile($file);
+		if ($recursive) {
+			$files = self::getChildren($directoryPath, false);
+			foreach ($files as $file) {
+				if (self::existsDirectory($file)) {
+					if (!self::removeDirectory($file, $recursive)) {
+						return false;
+					}
+				} else {
+					if (!self::removeFile($file)) {
+						return false;
+					}
+				}
 			}
 		}
-		rmdir($directoryPath);
-	}
 
-	public static function removeFile(string $filePath): bool
-	{
-		if (self::existsFile($filePath)) {
-			return unlink($filePath);
+		/** @var ResultData<bool> */
+		$result = ErrorHandler::trapError(fn () => rmdir($directoryPath));
+		if (!$result->success) {
+			throw new IOException();
 		}
 
-		return false;
+		return $result->value;
+	}
+
+	/**
+	 * ファイル削除。
+	 *
+	 * @param string $filePath ファイルパス。
+	 * @return boolean
+	 * @throws IOException
+	 */
+	public static function removeFile(string $filePath): bool
+	{
+		/** @var ResultData<bool> */
+		$result = ErrorHandler::trapError(fn () => unlink($filePath));
+		if (!$result->success) {
+			throw new IOException();
+		}
+
+		return $result->value;
 	}
 
 	/**
@@ -447,6 +377,29 @@ abstract class FileUtility
 			self::removeDirectory($directoryPath);
 		}
 		self::createDirectory($directoryPath, $permissions);
+	}
+
+	/**
+	 * ファイルのステータスのキャッシュをクリア
+	 *
+	 * clearstatcacheラッパー。
+	 *
+	 * @param string|null $path
+	 * @return void
+	 * @see https://www.php.net/manual/ja/function.clearstatcache.php
+	 */
+	public static function clearCache(?string $path)
+	{
+		if (is_null($path)) {
+			clearstatcache(true);
+			return;
+		}
+
+		if (StringUtility::isNullOrWhiteSpace($path)) {
+			throw new IOException();
+		}
+
+		clearstatcache(true, $path);
 	}
 
 	/**

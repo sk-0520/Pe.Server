@@ -10,11 +10,15 @@ use PeServer\Core\Throws\ArgumentException;
 
 /**
  * セッション設定。
+ * @immutable
  */
 class SessionOption
 {
-	public function __construct(string $name, string $savePath, CookieOption $cookie)
-	{
+	public function __construct(
+		public string $name,
+		public string $savePath,
+		public CookieOption $cookie
+	) {
 		if (StringUtility::isNullOrWhiteSpace($name)) {
 			throw new ArgumentException('$name');
 		}
@@ -23,10 +27,4 @@ class SessionOption
 		$this->savePath = $savePath;
 		$this->cookie = $cookie;
 	}
-
-	public string $name;
-
-	public CookieOption $cookie;
-
-	public string $savePath;
 }

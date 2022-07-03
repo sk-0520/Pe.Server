@@ -28,7 +28,9 @@ class SessionStore
 	public const APPLY_RESTART = 2;
 	public const APPLY_SHUTDOWN = 3;
 
+	/** @readonly */
 	private SessionOption $option;
+	/** @readonly */
 	private CookieStore $cookie;
 
 	/**
@@ -42,6 +44,12 @@ class SessionStore
 	 */
 	private bool $isStarted  = false;
 
+	/**
+	 * セッション適用状態。
+	 *
+	 * @var integer
+	 * @phpstan-var self::APPLY_*
+	 */
 	private int $applyState = self::APPLY_NORMAL;
 
 	/**
@@ -67,6 +75,14 @@ class SessionStore
 		}
 	}
 
+	/**
+	 * セッション適用状態を設定。
+	 *
+	 * @param integer $state
+	 * @return integer
+	 * @phpstan-param self::APPLY_* $state
+	 * @phpstan-return self::APPLY_*
+	 */
 	public function setApplyState(int $state): int
 	{
 		$oldValue = $this->applyState;

@@ -29,15 +29,16 @@ class ArrayUtility
 	/**
 	 * 配列から値を取得する。
 	 *
+	 * @template TValue
 	 * @param array<int|string,mixed>|null $array 対象配列。
+	 * @phpstan-param array<array-key,TValue>|null $array
 	 * @param int|string $key キー。
+	 * @phpstan-param array-key $key
 	 * @param mixed $fallbackValue 失敗時に返却される値。
-	 * @return mixed 値。返却時にそれが成功しているか失敗しているかは不明なので厳密さが必要であれば tryGet を使用すること。
-	 *
-	 * @phpstan-template TValue
-	 * @-IGNORE-phpstan-param array<array-key,TValue>|null $array 対象配列。
 	 * @phpstan-param TValue $fallbackValue
+	 * @return mixed 値。返却時にそれが成功しているか失敗しているかは不明なので厳密さが必要であれば tryGet を使用すること。
 	 * @phpstan-return TValue
+	 * @throws TypeException
 	 */
 	public static function getOr(?array $array, int|string $key, mixed $fallbackValue)
 	{
@@ -60,15 +61,14 @@ class ArrayUtility
 	/**
 	 * 配列から値を取得する。
 	 *
+	 * @template TValue
 	 * @param array<int|string,mixed>|null $array 対象配列。
+	 * @phpstan-param array<array-key,TValue>|null $array
 	 * @param int|string $key キー。
+	 * @phpstan-param array-key $key
 	 * @param mixed $result 値を格納する変数。
+	 * @phpstan-param TValue $result
 	 * @return boolean 値が存在したか。
-	 *
-	 * @phpstan-template TValue
-	 * @phpstan-param array<array-key,TValue>|null $array 対象配列。
-	 * @phpstan-param array-key $key キー。
-	 * @phpstan-param TValue $result 値を格納する変数。
 	 */
 	public static function tryGet(?array $array, int|string $key, mixed &$result): bool
 	{
@@ -98,13 +98,12 @@ class ArrayUtility
 	/**
 	 * 配列に指定要素が存在するか。
 	 *
+	 * @template TValue
 	 * @param array<mixed> $haystack
-	 * @param mixed $needle
-	 * @return boolean
-	 *
-	 * @phpstan-template TValue
 	 * @phpstan-param TValue[] $haystack
+	 * @param mixed $needle
 	 * @phpstan-param TValue $needle
+	 * @return boolean
 	 */
 	public static function contains(array $haystack, mixed $needle): bool
 	{
@@ -115,11 +114,10 @@ class ArrayUtility
 	 * 配列に該当キーは存在するか。
 	 *
 	 * @param array<mixed> $haystack
-	 * @param int|string $key
-	 * @return bool
-	 *
 	 * @phpstan-param array<array-key,mixed> $haystack
+	 * @param int|string $key
 	 * @phpstan-param array-key $key
+	 * @return bool
 	 */
 	public static function existsKey(array $haystack, int|string $key): bool
 	{
@@ -129,12 +127,11 @@ class ArrayUtility
 	/**
 	 * array_keys ラッパー。
 	 *
+	 * @template TValue
 	 * @param array<int|string,mixed> $array
-	 * @return array<int|string>
-	 *
-	 * @phpstan-template TValue
 	 * @phpstan-param array<array-key,TValue> $array
-	 * @phpstan-return array<array-key>
+	 * @return array<int|string>
+	 * @phpstan-return array-key[]
 	 */
 	public static function getKeys(array $array): array
 	{
@@ -144,12 +141,11 @@ class ArrayUtility
 	/**
 	 * array_values ラッパー。
 	 *
+	 * @template TValue
 	 * @param array<int|string,mixed> $array
-	 * @return array<mixed>
-	 *
-	 * @phpstan-template TValue
 	 * @phpstan-param array<array-key,TValue> $array
-	 * @phpstan-return array<TValue>
+	 * @return array<mixed>
+	 * @phpstan-return TValue[]
 	 */
 	public static function getValues(array $array): array
 	{
@@ -159,11 +155,12 @@ class ArrayUtility
 	/**
 	 * in_array ラッパー。
 	 *
+	 * @template TValue
 	 * @param array<int|string,mixed> $haystack
+	 * @phpstan-param array<array-key,TValue> $haystack
 	 * @param mixed $needle
+	 * @phpstan-param TValue $needle
 	 * @return boolean
-	 *
-	 * @phpstan-param array<array-key,mixed> $haystack
 	 */
 	public static function in(array $haystack, mixed $needle): bool
 	{

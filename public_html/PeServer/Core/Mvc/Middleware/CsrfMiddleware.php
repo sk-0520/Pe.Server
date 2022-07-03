@@ -15,12 +15,22 @@ use PeServer\Core\Mvc\Middleware\MiddlewareArgument;
  */
 class CsrfMiddleware implements IMiddleware
 {
+	/**
+	 * CSRFトークン不正時のHTTP応答ステータス。
+	 *
+	 * @return HttpStatus
+	 */
+	protected function getErrorHttpStatus(): HttpStatus
+	{
+		return HttpStatus::misdirected();
+	}
+
 	public function handleBefore(MiddlewareArgument $argument): MiddlewareResult
 	{
 		$result = $argument->request->exists(Security::CSRF_REQUEST_KEY);
 		if (!$result->exists) {
 			$argument->logger->warn('要求CSRFトークンなし');
-			return MiddlewareResult::error(HttpStatus::misdirected(), 'CSRF');
+			return MiddlewareResult::error($this->getErrorHttpStatus(), 'CSRF');
 		}
 
 		$requestToken = $argument->request->getValue(Security::CSRF_REQUEST_KEY);
@@ -33,7 +43,7 @@ class CsrfMiddleware implements IMiddleware
 			$argument->logger->warn('セッションCSRFトークンなし');
 		}
 
-		return MiddlewareResult::error(HttpStatus::misdirected(), 'CSRF');
+		return MiddlewareResult::error($this->getErrorHttpStatus(), 'CSRF');
 	}
 
 	public final function handleAfter(MiddlewareArgument $argument): MiddlewareResult

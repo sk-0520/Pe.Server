@@ -26,6 +26,7 @@ class HttpResponse
 	 * 応答ヘッダ。
 	 *
 	 * @var HttpHeader
+	 * @readonly
 	 */
 	public HttpHeader $header;
 

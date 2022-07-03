@@ -27,6 +27,7 @@ class SizeConverter
 	 *
 	 * @param integer $byteSize
 	 * @param string $sizeFormat {f_size} {i_size} {unit}
+	 * @phpstan-param literal-string $sizeFormat
 	 * @param string[]|null $units
 	 * @return string
 	 */

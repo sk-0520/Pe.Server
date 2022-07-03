@@ -4,11 +4,16 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Result;
 
+use PeServer\Core\Mime;
 use PeServer\Core\Mvc\Template;
 use PeServer\Core\Http\HttpResponse;
-use PeServer\Core\Mvc\IActionResult;
+use PeServer\Core\Mvc\Result\IActionResult;
 use PeServer\Core\Mvc\TemplateParameter;
 
+/**
+ * View。
+ * @immutable
+ */
 class ViewActionResult implements IActionResult
 {
 	/**
@@ -37,7 +42,7 @@ class ViewActionResult implements IActionResult
 			$response->header->setValues($name, $headers);
 		}
 		if (!$response->header->existsHeader('Content-Type')) {
-			$response->header->addValue('Content-Type', 'text/html');
+			$response->header->addValue('Content-Type', Mime::HTML);
 		}
 
 

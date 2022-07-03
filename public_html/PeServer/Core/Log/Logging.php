@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Log;
 
-use \DateTime;
-use PeServer\Core\ILogger;
+use \DateTimeImmutable;
+use PeServer\Core\Log\ILogger;
 use PeServer\Core\FileUtility;
+use PeServer\Core\PathUtility;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Cryptography;
 use PeServer\Core\InitialValue;
@@ -47,6 +48,7 @@ abstract class Logging
 	 * ログレベル。
 	 *
 	 * @var int
+	 * @phpstan-var ILogger::LEVEL_*
 	 */
 	private static int $level;
 
@@ -66,7 +68,11 @@ abstract class Logging
 		self::$loggingConfiguration = $loggingConfiguration;
 		self::$requestId = Cryptography::generateRandomBytes(self::LOG_REQUEST_ID_LENGTH)->toHex();
 
-		/** @var int */
+		/**
+		 * @var int
+		 * @phpstan-var ILogger::LEVEL_*
+		 *
+		 */
 		$level = ArrayUtility::getOr(self::$loggingConfiguration, 'level', ILogger::LEVEL_INFORMATION);
 
 		self::$level = $level;
@@ -88,6 +94,7 @@ abstract class Logging
 	 * メッセージ書式適用。
 	 *
 	 * @param mixed $message
+	 * @phpstan-param LogMessageAlias $message
 	 * @param mixed ...$parameters
 	 * @return string
 	 */
@@ -167,10 +174,15 @@ abstract class Logging
 	/**
 	 * ログ書式適用。
 	 *
+	 * @param string $format
+	 * @phpstan-param literal-string $format
+	 * @param integer $level
+	 * @phpstan-param ILogger::LEVEL_* $level 有効レベル。S
 	 * @param integer $level
 	 * @param integer $traceIndex
 	 * @param string $header
 	 * @param mixed $message
+	 * @phpstan-param LogMessageAlias $message
 	 * @param mixed ...$parameters
 	 * @return string
 	 */
@@ -185,7 +197,7 @@ abstract class Logging
 		/** @var array<string,mixed> */
 		$traceMethod = $backtrace[$traceIndex + 1];
 
-		$timestamp = new DateTime();
+		$timestamp = new DateTimeImmutable();
 		/** @var string */
 		$filePath = ArrayUtility::getOr($traceCaller, 'file', InitialValue::EMPTY_STRING);
 
@@ -204,7 +216,7 @@ abstract class Logging
 			'SESSION' => session_id(),
 			//-------------------
 			'FILE' => $filePath,
-			'FILE_NAME' => FileUtility::getFileName($filePath),
+			'FILE_NAME' => PathUtility::getFileName($filePath),
 			'LINE' => ArrayUtility::getOr($traceCaller, 'line', 0),
 			//'CLASS' => ArrayUtility::getOr($traceMethod, 'class', InitialValue::EMPTY_STRING),
 			'FUNCTION' => ArrayUtility::getOr($traceMethod, 'function', InitialValue::EMPTY_STRING),
@@ -223,8 +235,10 @@ abstract class Logging
 		self::$initializeChecker->throwIfNotInitialize();
 
 		$loggers = [
-			//@-phpstan-ignore-next-line
-			new FileLogger(ArrayUtility::getOr(self::$loggingConfiguration, 'format', ''), $header, self::$level, $baseTraceIndex + 1, /** @var array<mixed> */self::$loggingConfiguration['file']),
+			//@phpstan-ignore-next-line
+			new FileLogger(ArrayUtility::getOr(self::$loggingConfiguration, 'format', ''), $header, self::$level, $baseTraceIndex + 1,
+			/** @var array<mixed> */
+			self::$loggingConfiguration['file']),
 		];
 		if (function_exists('xdebug_is_debugger_active') && \xdebug_is_debugger_active()) {
 			$loggers[] = new XdebugLogger($header, self::$level, $baseTraceIndex + 1);

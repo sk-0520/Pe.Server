@@ -19,18 +19,30 @@ abstract class Enforce
 	 *
 	 * @param string $argument
 	 * @param string $exceptionClass
+	 * @phpstan-param class-string<Throwable> $exceptionClass
 	 * @return no-return
 	 */
 	private static function throwCore(string $argument, string $exceptionClass)
 	{
 		$exception = new $exceptionClass($argument);
+		//@phpstan-ignore-next-line
 		if ($exception instanceof Throwable) {
 			throw $exception;
 		}
 
+		//@phpstan-ignore-next-line
 		throw new EnforceClassNameError($exceptionClass);
 	}
 
+	/**
+	 * 偽の場合に例外。
+	 *
+	 * @param boolean $value
+	 * @param string $argument
+	 * @param string $exceptionClass
+	 * @phpstan-param class-string<Throwable> $exceptionClass
+	 * @return void
+	 */
 	public static function throwIf(bool $value, string $argument = '', string $exceptionClass = EnforceException::class): void
 	{
 		if (!$value) {
@@ -38,6 +50,15 @@ abstract class Enforce
 		}
 	}
 
+	/**
+	 * nullの場合に例外。
+	 *
+	 * @param mixed $value
+	 * @param string $argument
+	 * @param string $exceptionClass
+	 * @phpstan-param class-string<Throwable> $exceptionClass
+	 * @return void
+	 */
 	public static function throwIfNull(mixed $value, string $argument = '', string $exceptionClass = EnforceException::class): void
 	{
 		if (is_null($value)) {
@@ -45,6 +66,15 @@ abstract class Enforce
 		}
 	}
 
+	/**
+	 * 文字列がnullか空の場合に例外。
+	 *
+	 * @param string|null $value
+	 * @param string $argument
+	 * @param string $exceptionClass
+	 * @phpstan-param class-string<Throwable> $exceptionClass
+	 * @return void
+	 */
 	public static function throwIfNullOrEmpty(?string $value, string $argument = '', string $exceptionClass = EnforceException::class): void
 	{
 		if (StringUtility::isNullOrEmpty($value)) {
@@ -52,6 +82,15 @@ abstract class Enforce
 		}
 	}
 
+	/**
+	 * 文字列がnullかホワイトスペースのみの場合に例外。
+	 *
+	 * @param string|null $value
+	 * @param string $argument
+	 * @param string $exceptionClass
+	 * @phpstan-param class-string<Throwable> $exceptionClass
+	 * @return void
+	 */
 	public static function throwIfNullOrWhiteSpace(?string $value, string $argument = '', string $exceptionClass = EnforceException::class): void
 	{
 		if (StringUtility::isNullOrWhiteSpace($value)) {

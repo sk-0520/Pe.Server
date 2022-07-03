@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc;
 
-use PeServer\Core\ILogger;
 use PeServer\Core\UrlUtility;
+use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\Logging;
 use PeServer\Core\Mvc\LogicBase;
+use PeServer\Core\StringUtility;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mvc\DataContent;
 use PeServer\Core\Http\HttpRequest;
@@ -30,6 +31,7 @@ abstract class ControllerBase
 {
 	/**
 	 * ロガー。
+	 * @readonly
 	 */
 	protected ILogger $logger;
 	/**
@@ -38,8 +40,11 @@ abstract class ControllerBase
 	 */
 	protected string $skipBaseName = 'PeServer\\App\\Controllers\\Page';
 
+	/** @readonly */
 	protected CookieStore $cookie;
+	/** @readonly */
 	protected TemporaryStore $temporary;
+	/** @readonly */
 	protected SessionStore $session;
 
 	protected ?LogicBase $logic = null;
@@ -56,6 +61,7 @@ abstract class ControllerBase
 	 * ロジック用パラメータ生成処理。
 	 *
 	 * @param string $logicName ロジック名
+	 * @phpstan-param class-string<LogicBase> $logicName
 	 * @param HttpRequest $request リクエストデータ
 	 * @return LogicParameter
 	 */
@@ -74,6 +80,7 @@ abstract class ControllerBase
 	 * ロジック生成処理。
 	 *
 	 * @param string $logicClass ロジック完全名。
+	 * @phpstan-param class-string<LogicBase> $logicClass
 	 * @param HttpRequest $request リクエストデータ
 	 * @return LogicBase
 	 */
@@ -135,6 +142,7 @@ abstract class ControllerBase
 	 * Viewを表示。
 	 *
 	 * @param string $controllerName コントローラ完全名。
+	 * @phpstan-param class-string<ControllerBase> $controllerName
 	 * @param string $action アクション名。
 	 * @param TemplateParameter $parameter View連携データ。
 	 * @return ViewActionResult
@@ -142,10 +150,14 @@ abstract class ControllerBase
 	protected function viewWithController(string $controllerName, string $action, TemplateParameter $parameter): ViewActionResult
 	{
 		$lastWord = 'Controller';
-		$controllerClassName = mb_substr($controllerName, mb_strpos($controllerName, $this->skipBaseName) + mb_strlen($this->skipBaseName) + 1);
-		$controllerBaseName = mb_substr($controllerClassName, 0, mb_strlen($controllerClassName) - mb_strlen($lastWord));
 
-		$templateDirPath = str_replace('\\', DIRECTORY_SEPARATOR, $controllerBaseName);
+		$index = StringUtility::getPosition($controllerName, $this->skipBaseName);
+		$length = StringUtility::getLength($this->skipBaseName);
+
+		$controllerClassName = StringUtility::substring($controllerName, $index + $length + 1);
+		$controllerBaseName = StringUtility::substring($controllerClassName, 0, StringUtility::getLength($controllerClassName) - StringUtility::getLength($lastWord));
+
+		$templateDirPath = StringUtility::replace($controllerBaseName, '\\', DIRECTORY_SEPARATOR);
 
 		return new ViewActionResult($templateDirPath, $action, $parameter, $this->getResponseHeaders());
 	}

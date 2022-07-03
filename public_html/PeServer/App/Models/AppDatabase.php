@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models;
 
-use PeServer\Core\ILogger;
+use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\Logging;
 use PeServer\Core\Database\Database;
 use PeServer\App\Models\AppConfiguration;

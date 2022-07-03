@@ -13,9 +13,7 @@ use PeServer\Core\Throws\NotSupportedException;
 use PeServer\Core\Throws\InvalidOperationException;
 
 /**
- * HTTPヘッダー
- *
- * TODO: 構築中。
+ * HTTPヘッダー。
  */
 class HttpHeader
 {
@@ -35,6 +33,12 @@ class HttpHeader
 	 */
 	private ?RedirectSetting $redirect = null;
 
+	/**
+	 * HTTPヘッダ名が不正であれば例外を投げる。
+	 *
+	 * @param string $name ヘッダ名
+	 * @throws ArgumentException HTTPヘッダ名不正。
+	 */
 	private function throwIfInvalidHeaderName(string $name): void
 	{
 		if (StringUtility::isNullOrWhiteSpace($name)) {
@@ -45,6 +49,13 @@ class HttpHeader
 		}
 	}
 
+	/**
+	 * HTTPヘッダ設定
+	 *
+	 * @param string $name ヘッダ名。
+	 * @param string $value 値。
+	 * @throws ArgumentException ヘッダ名不正。
+	 */
 	public function setValue(string $name, string $value): void
 	{
 		$this->throwIfInvalidHeaderName($name);
@@ -57,7 +68,7 @@ class HttpHeader
 	 *
 	 * @param string $name ヘッダ名。
 	 * @param string[] $values 値一覧。
-	 * @return void
+	 * @throws ArgumentException ヘッダ名不正。
 	 */
 	public function setValues(string $name, array $values): void
 	{
@@ -71,7 +82,7 @@ class HttpHeader
 	 *
 	 * @param string $name ヘッダ名。
 	 * @param string $value 値。
-	 * @return void
+	 * @throws ArgumentException HTTPヘッダ名不正。
 	 */
 	public function addValue(string $name, string $value): void
 	{
@@ -88,8 +99,7 @@ class HttpHeader
 	/**
 	 * ヘッダ名が存在するか。
 	 *
-	 * @param string $name
-	 * @return boolean
+	 * @param string $name ヘッダ名。
 	 */
 	public function existsHeader(string $name): bool
 	{
@@ -99,7 +109,7 @@ class HttpHeader
 	/**
 	 * ヘッダの値を取得。
 	 *
-	 * @param string $name
+	 * @param string $name ヘッダ名。
 	 * @return string[] 値一覧。
 	 * @throws KeyNotFoundException
 	 */
@@ -114,8 +124,6 @@ class HttpHeader
 
 	/**
 	 * リダイレクト設定は存在するか。
-	 *
-	 * @return boolean
 	 */
 	public function existsRedirect(): bool
 	{

@@ -6,6 +6,10 @@ namespace PeServer\Core\Http;
 
 use PeServer\Core\Http\HttpStatus;
 
+/**
+ * リダイレクト設定。
+ * @immutable
+ */
 class RedirectSetting
 {
 	/**

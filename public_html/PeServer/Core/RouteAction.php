@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace PeServer\Core;
 
 use PeServer\Core\Http\HttpStatus;
+use PeServer\Core\Mvc\ControllerBase;
 use PeServer\Core\Mvc\Middleware\IMiddleware;
 use PeServer\Core\Mvc\Middleware\IShutdownMiddleware;
 
 
 /**
  * ルーティングのアクション設定。
+ * @immutable
  */
 class RouteAction
 {
@@ -19,6 +21,7 @@ class RouteAction
 	 *
 	 * @param HttpStatus $status
 	 * @param string $className
+	 * @phpstan-param class-string<ControllerBase> $className
 	 * @param ActionSetting $actionSetting
 	 * @param array<string,string> $params パラメータ。
 	 */

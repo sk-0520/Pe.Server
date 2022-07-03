@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc;
 
 use \DateInterval;
+use \DateTimeImmutable;
 use PeServer\Core\I18n;
 use PeServer\Core\Mime;
 use PeServer\Core\Binary;
-use PeServer\Core\ILogger;
+use PeServer\Core\Log\ILogger;
 use PeServer\Core\FileUtility;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\InitialValue;
@@ -27,6 +28,7 @@ use PeServer\Core\Mvc\TemplateParameter;
 use PeServer\Core\Mvc\IValidationReceiver;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\InvalidOperationException;
+use PeServer\Core\Utc;
 
 /**
  * コントローラから呼び出されるロジック基底処理。
@@ -36,11 +38,20 @@ abstract class LogicBase implements IValidationReceiver
 	protected const SESSION_ALL_CLEAR = InitialValue::EMPTY_STRING;
 
 	/**
+	 * 開始日時。
+	 *
+	 * @readonly
+	 */
+	protected DateTimeImmutable $beginTimestamp;
+
+	/**
 	 * ロガー。
+	 * @readonly
 	 */
 	protected ILogger $logger;
 	/**
 	 * リクエストデータ。
+	 * @readonly
 	 */
 	private HttpRequest $request;
 
@@ -85,11 +96,20 @@ abstract class LogicBase implements IValidationReceiver
 	 */
 	private ?DataContent $content = null;
 
-	/** cookie 管理 */
+	/**
+	 * cookie 管理
+	 * @readonly
+	 */
 	private CookieStore $cookie;
-	/** 一時データ管理 */
+	/**
+	 * 一時データ管理
+	 * @readonly
+	 */
 	private TemporaryStore $temporary;
-	/** セッション管理 */
+	/**
+	 * セッション管理
+	 * @readonly
+	 */
 	private SessionStore $session;
 
 	/**
@@ -106,6 +126,7 @@ abstract class LogicBase implements IValidationReceiver
 	 */
 	protected function __construct(LogicParameter $parameter)
 	{
+		$this->beginTimestamp = Utc::create();
 		$this->httpStatus = HttpStatus::ok();
 		$this->request = $parameter->request;
 		$this->cookie = $parameter->cookie;

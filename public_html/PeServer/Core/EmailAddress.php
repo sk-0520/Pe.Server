@@ -6,6 +6,8 @@ namespace PeServer\Core;
 
 /**
  * メールアドレス管理。
+ *
+ * @immutable
  */
 class EmailAddress
 {

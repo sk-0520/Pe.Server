@@ -28,7 +28,7 @@ abstract class TypeConverter
 			throw new ParseException($input);
 		}
 
-		return (int)trim($input);
+		return (int)StringUtility::trim($input);
 	}
 
 	/**
@@ -44,7 +44,7 @@ abstract class TypeConverter
 			return false;
 		}
 
-		$result = (int)trim($input);
+		$result = (int)StringUtility::trim($input);
 		return true;
 	}
 

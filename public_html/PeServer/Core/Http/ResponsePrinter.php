@@ -11,7 +11,9 @@ use PeServer\Core\Http\HttpResponse;
 class ResponsePrinter
 {
 	public function __construct(
+		/** @readonly */
 		private HttpRequest $request,
+		/** @readonly */
 		private HttpResponse $response
 	) {
 	}

@@ -14,8 +14,9 @@ interface IDatabaseExecutor
 	 * 実行処理。
 	 *
 	 * @param string $statement
+	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
-	 * @return integer
+	 * @return integer 影響件数。
 	 * @throws \PDOException
 	 * @throws DatabaseException
 	 * @throws ObjectDisposedException
@@ -26,6 +27,7 @@ interface IDatabaseExecutor
 	 * 挿入処理。
 	 *
 	 * @param string $statement
+	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @return integer 挿入件数。
 	 * @throws \PDOException
@@ -39,6 +41,7 @@ interface IDatabaseExecutor
 	 * 単一挿入処理。
 	 *
 	 * @param string $statement
+	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @return void
 	 * @throws \PDOException
@@ -52,8 +55,9 @@ interface IDatabaseExecutor
 	 * 更新処理。
 	 *
 	 * @param string $statement
+	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
-	 * @return integer
+	 * @return integer 更新件数。
 	 * @throws \PDOException
 	 * @throws DatabaseException
 	 * @throws SqlException 問い合わせ文の検証エラー
@@ -65,6 +69,7 @@ interface IDatabaseExecutor
 	 * 単一更新処理。
 	 *
 	 * @param string $statement
+	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @return void
 	 * @throws \PDOException
@@ -78,6 +83,7 @@ interface IDatabaseExecutor
 	 * 単一更新処理。
 	 *
 	 * @param string $statement
+	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @return boolean 更新できたか。
 	 * @throws \PDOException
@@ -91,8 +97,9 @@ interface IDatabaseExecutor
 	 * 削除処理。
 	 *
 	 * @param string $statement
+	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
-	 * @return integer
+	 * @return integer 削除件数。
 	 * @throws \PDOException
 	 * @throws DatabaseException
 	 * @throws SqlException 問い合わせ文の検証エラー
@@ -104,6 +111,7 @@ interface IDatabaseExecutor
 	 * 単一削除処理。
 	 *
 	 * @param string $statement
+	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @return void
 	 * @throws \PDOException
@@ -117,6 +125,7 @@ interface IDatabaseExecutor
 	 * 単一削除処理。
 	 *
 	 * @param string $statement
+	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @return boolean 削除できたか。
 	 * @throws \PDOException

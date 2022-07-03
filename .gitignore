@@ -20,6 +20,6 @@ $*
 /public_html/log/
 /dev/PHPUnit/
 /dev/phpstan.phar.*
+/dev/bleedingEdge.neon
 /test/.phpunit.result.cache
 /test/phpunit.phar.*
-

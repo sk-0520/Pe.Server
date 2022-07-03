@@ -9,7 +9,7 @@ use PeServer\Core\Mime;
 use PeServer\Core\Mvc\DataContent;
 use PeServer\Core\Http\HttpResponse;
 use PeServer\Core\Mvc\DownloadDataContent;
-use PeServer\Core\Mvc\IActionResult;
+use PeServer\Core\Mvc\Result\IActionResult;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\NotImplementedException;
 
@@ -22,6 +22,7 @@ class DataActionResult implements IActionResult
 	 * @param DataContent $content
 	 */
 	public function __construct(
+		/** @readonly */
 		private DataContent $content
 	) {
 	}

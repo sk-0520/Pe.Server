@@ -10,6 +10,7 @@ namespace PeServer\Core;
 abstract class Mime
 {
 	const TEXT = 'text/plain';
+	const HTML = 'text/html';
 	const JSON = 'application/json';
 	const GZ = 'application/gzip';
 	const STREAM = 'application/octet-stream';

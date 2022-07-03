@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Domain\Page\Setting;
 
 use PeServer\Core\FileUtility;
+use PeServer\Core\PathUtility;
 use PeServer\Core\SizeConverter;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
@@ -31,19 +32,19 @@ class SettingLogListLogic extends PageLogicBase
 		/** @var string @-phpstan-ignore-next-line */
 		$dirPath = $logging['file']['directory'];
 		/** @var string @-phpstan-ignore-next-line */
-		$targetExt = FileUtility::getFileExtension($logging['file']['name']);
+		$targetExt = PathUtility::getFileExtension($logging['file']['name']);
 		$files = FileUtility::getFiles($dirPath, false);
 
 		$logFiles = array_filter($files, function ($i) use ($targetExt) {
-			return FileUtility::getFileExtension($i) === $targetExt;
+			return PathUtility::getFileExtension($i) === $targetExt;
 		});
 		natsort($logFiles);
 		$logFiles = array_map(function ($i) {
 			$sizeConverter = new SizeConverter();
 			$size = FileUtility::getFileSize($i);
 			return [
-				'directory' => FileUtility::getDirectoryPath($i),
-				'name' => FileUtility::getFileName($i),
+				'directory' => PathUtility::getDirectoryPath($i),
+				'name' => PathUtility::getFileName($i),
 				'size' => $size,
 				'human_size' => $sizeConverter->convertHumanReadableByte($size, '{f_size} {unit}'),
 			];

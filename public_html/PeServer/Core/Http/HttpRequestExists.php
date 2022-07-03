@@ -6,6 +6,7 @@ namespace PeServer\Core\Http;
 
 /**
  * HTTPリクエスト存在確認。
+ * @immutable
  */
 class HttpRequestExists
 {
@@ -20,7 +21,8 @@ class HttpRequestExists
 	 *
 	 * @param string $name パラメータ名。
 	 * @param boolean $exists 存在するか。
-	 * @param integer $kind 種別。HttpRequestExists::KIND_*
+	 * @param integer $kind 種別。
+	 * @phpstan-param HttpRequestExists::KIND_* $kind 種別。
 	 */
 	public function __construct(
 		public string $name,

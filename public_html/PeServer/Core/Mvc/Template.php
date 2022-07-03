@@ -8,6 +8,7 @@ require_once(__DIR__ . '/../../Core/Libs/smarty/libs/Smarty.class.php');
 
 use \Smarty;
 use PeServer\Core\FileUtility;
+use PeServer\Core\PathUtility;
 use PeServer\Core\InitialValue;
 use PeServer\Core\StringUtility;
 use PeServer\Core\InitializeChecker;
@@ -104,10 +105,10 @@ class _SmartyTemplate_Impl extends Template
 		parent::$initializeChecker->throwIfNotInitialize();
 
 		$this->engine = new Smarty();
-		$this->engine->addTemplateDir(FileUtility::joinPath(parent::$baseDirectoryPath, $templateBaseName, $baseName));
-		$this->engine->addTemplateDir(FileUtility::joinPath(parent::$baseDirectoryPath, $templateBaseName));
-		$this->engine->setCompileDir(FileUtility::joinPath(parent::$baseDirectoryPath, $temporaryBaseName, 'compile', $baseName));
-		$this->engine->setCacheDir(FileUtility::joinPath(parent::$baseDirectoryPath, $temporaryBaseName, 'cache', $baseName));
+		$this->engine->addTemplateDir(PathUtility::joinPath(parent::$baseDirectoryPath, $templateBaseName, $baseName));
+		$this->engine->addTemplateDir(PathUtility::joinPath(parent::$baseDirectoryPath, $templateBaseName));
+		$this->engine->setCompileDir(PathUtility::joinPath(parent::$baseDirectoryPath, $temporaryBaseName, 'compile', $baseName));
+		$this->engine->setCacheDir(PathUtility::joinPath(parent::$baseDirectoryPath, $temporaryBaseName, 'cache', $baseName));
 		$this->engine->escape_html = true;
 
 		$this->registerPlugins();

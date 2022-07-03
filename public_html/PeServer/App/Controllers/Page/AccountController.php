@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\App\Controllers\Page;
 
 use PeServer\Core\Http\HttpRequest;
-use PeServer\Core\Mvc\IActionResult;
+use PeServer\Core\Mvc\Result\IActionResult;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\App\Models\SessionManager;
 use PeServer\App\Models\Domain\UserLevel;

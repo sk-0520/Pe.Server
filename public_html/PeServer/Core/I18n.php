@@ -119,6 +119,7 @@ abstract class I18n
 			$message =  $key;
 		}
 
+		/** @phpstan-var literal-string $message */
 		return StringUtility::replaceMap($message, $params);
 	}
 }

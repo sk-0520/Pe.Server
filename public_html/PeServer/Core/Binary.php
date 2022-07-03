@@ -19,6 +19,7 @@ final class Binary
 	 * 実体。
 	 *
 	 * @var string
+	 * @readonly
 	 */
 	private string $binary;
 
@@ -60,6 +61,11 @@ final class Binary
 	public function toHex(): string
 	{
 		return bin2hex($this->binary);
+	}
+
+	public function convert(int $from, int $to): string
+	{
+		return base_convert($this->binary, $from, $to);
 	}
 
 	/**

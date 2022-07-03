@@ -14,6 +14,7 @@ interface IDatabaseReader
 	 * 問い合わせを実行。
 	 *
 	 * @param string $statement
+	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @return array<array<string,mixed>>
 	 * @throws \PDOException
@@ -26,6 +27,7 @@ interface IDatabaseReader
 	 * 問い合わせの最初のデータを取得。
 	 *
 	 * @param string $statement
+	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @return array<string,mixed>
 	 * @throws \PDOException
@@ -38,6 +40,7 @@ interface IDatabaseReader
 	 * 問い合わせの最初のデータを取得。存在しない場合に $defaultValue を返す。
 	 *
 	 * @param string $statement
+	 * @phpstan-param literal-string $statement
 	 * @param array<string,mixed>|null $defaultValue 戻り。
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @return array<string,mixed>|null
@@ -51,6 +54,7 @@ interface IDatabaseReader
 	 * 1件だけの問い合わせを実行。
 	 *
 	 * @param string $statement
+	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @return array<string,mixed>
 	 * @throws \PDOException
@@ -63,6 +67,7 @@ interface IDatabaseReader
 	 * 1件だけの問い合わせを実行。存在しない場合に $defaultValue を返す
 	 *
 	 * @param string $statement
+	 * @phpstan-param literal-string $statement
 	 * @param array<string,mixed>|null $defaultValue 戻り。
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @return array<string,mixed>|null
@@ -78,6 +83,7 @@ interface IDatabaseReader
 	 * 単純な文字列処理のため無理な時は無理。
 	 *
 	 * @param string $statement
+	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @return array<array<string,mixed>>
 	 * @throws \PDOException
@@ -93,6 +99,7 @@ interface IDatabaseReader
 	 * 単純な文字列処理のため無理な時は無理。
 	 *
 	 * @param string $statement
+	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @return integer
 	 * @throws \PDOException

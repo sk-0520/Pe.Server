@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
+use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\Logging;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\RouteSetting;
@@ -14,7 +15,7 @@ use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Http\RequestPath;
 use PeServer\Core\Http\HttpResponse;
-use PeServer\Core\Mvc\IActionResult;
+use PeServer\Core\Mvc\Result\IActionResult;
 use PeServer\Core\Store\CookieStore;
 use PeServer\Core\Store\StoreOption;
 use PeServer\Core\Mvc\ControllerBase;
@@ -22,6 +23,7 @@ use PeServer\Core\Store\SessionStore;
 use PeServer\Core\Http\ResponsePrinter;
 use PeServer\Core\Store\TemporaryStore;
 use PeServer\Core\Mvc\ControllerArgument;
+use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Mvc\Middleware\IMiddleware;
 use PeServer\Core\Mvc\Middleware\MiddlewareResult;
 use PeServer\Core\Mvc\Middleware\MiddlewareArgument;
@@ -37,14 +39,18 @@ class Routing
 	/**
 	 * ルーティング設定。
 	 *
-	 * @var RouteSetting
+	 * @readonly
 	 */
 	protected RouteSetting $setting;
 
+	/** @readonly */
 	protected CookieStore $cookie;
+	/** @readonly */
 	protected TemporaryStore $temporary;
+	/** @readonly */
 	protected SessionStore $session;
 
+	/** @readonly */
 	protected ILogger $middlewareLogger;
 
 	/**
@@ -60,13 +66,17 @@ class Routing
 	 * 登録の逆順に実行される。
 	 *
 	 * @var array<IShutdownMiddleware|string>
+	 * @phpstan-var array<IShutdownMiddleware|class-string<IShutdownMiddleware>>
 	 */
 	private array $shutdownMiddleware = [];
 
 	private HttpRequest $shutdownRequest;
 
+	/** @readonly */
 	protected HttpMethod $requestMethod;
+	/** @readonly */
 	protected RequestPath $requestPath;
+	/** @readonly */
 	protected HttpHeader $requestHeader;
 
 	/**
@@ -92,20 +102,62 @@ class Routing
 	}
 
 	/**
+	 * ミドルウェア取得。
+	 *
+	 * @param IMiddleware|string $middleware
+	 * @phpstan-param IMiddleware|class-string<IMiddleware> $middleware
+	 * @return IMiddleware
+	 */
+	protected static function getOrCreateMiddleware(IMiddleware|string $middleware): IMiddleware
+	{
+		if (is_string($middleware)) {
+			$instance = new $middleware();
+			//@phpstan-ignore-next-line
+			if (!($instance instanceof IMiddleware)) {
+				throw new ArgumentException();
+			}
+			$middleware = $instance;
+		}
+
+		/** @var IMiddleware */
+		return $middleware;
+	}
+
+	/**
+	 * 応答完了ミドルウェア取得。
+	 *
+	 * @param IShutdownMiddleware|string $middleware
+	 * @phpstan-param IShutdownMiddleware|class-string<IShutdownMiddleware> $middleware
+	 * @return IShutdownMiddleware
+	 */
+	protected static function getOrCreateShutdownMiddleware(IShutdownMiddleware|string $middleware): IShutdownMiddleware
+	{
+		if (is_string($middleware)) {
+			$instance = new $middleware();
+			//@phpstan-ignore-next-line
+			if (!($instance instanceof IShutdownMiddleware)) {
+				throw new ArgumentException();
+			}
+			$middleware = $instance;
+		}
+
+		/** @var IShutdownMiddleware */
+		return $middleware;
+	}
+
+	/**
 	 * ミドルウェア単独処理。
 	 *
 	 * @param RequestPath $requestPath
 	 * @param HttpRequest $request
 	 * @param IMiddleware|string $middleware
+	 * @phpstan-param IMiddleware|class-string<IMiddleware> $middleware
 	 * @return bool 次のミドルウェアを実行してよいか
 	 */
 	private function handleBeforeMiddlewareCore(RequestPath $requestPath, HttpRequest $request, IMiddleware|string $middleware): bool
 	{
 		$middlewareArgument = new MiddlewareArgument($requestPath, $this->cookie, $this->session, $request, $this->middlewareLogger);
-		if (is_string($middleware)) {
-			/** @var IMiddleware */
-			$middleware = new $middleware();
-		}
+		$middleware = self::getOrCreateMiddleware($middleware);
 
 		$middlewareResult = $middleware->handleBefore($middlewareArgument);
 
@@ -122,6 +174,7 @@ class Routing
 	 * ミドルウェアをグワーッと処理。
 	 *
 	 * @param array<IMiddleware|string> $middleware
+	 * @phpstan-param array<IMiddleware|class-string<IMiddleware>> $middleware
 	 * @param HttpRequest $request
 	 * @return bool 後続処理は可能か
 	 */
@@ -170,6 +223,7 @@ class Routing
 	 * アクション実行。
 	 *
 	 * @param string $rawControllerName
+	 * @phpstan-param class-string<ControllerBase> $rawControllerName
 	 * @param ActionSetting $actionSetting
 	 * @param string[] $urlParameters
 	 * @return void
@@ -207,7 +261,7 @@ class Routing
 		});
 		// 標準出力は闇に葬る
 		if ($output->getLength()) {
-			$logger->warn($output->getRaw());
+			$logger->warn('{0}', $output->getRaw());
 		}
 
 		$this->applyStore();
@@ -225,10 +279,6 @@ class Routing
 
 	/**
 	 * メソッド・パスから登録されている処理を実行。
-	 *
-	 * 失敗時の云々が甘いというかまだなんも考えてない。
-	 *
-	 * @return void
 	 */
 	private function executeCore(): void
 	{
@@ -264,10 +314,6 @@ class Routing
 
 	/**
 	 * メソッド・パスから登録されている処理を実行。
-	 *
-	 * 失敗時の云々が甘いというかまだなんも考えてない。
-	 *
-	 * @return void
 	 */
 	public function execute(): void
 	{
@@ -284,10 +330,7 @@ class Routing
 			$middlewareArgument = new MiddlewareArgument($this->requestPath, $this->cookie, $this->session, $this->shutdownRequest, $this->middlewareLogger);
 			$shutdownMiddleware = array_reverse($this->shutdownMiddleware);
 			foreach ($shutdownMiddleware as $middleware) {
-				if (is_string($middleware)) {
-					/** @var IShutdownMiddleware */
-					$middleware = new $middleware();
-				}
+				$middleware = self::getOrCreateShutdownMiddleware($middleware);
 				$middleware->handleShutdown($middlewareArgument);
 			}
 		}

@@ -7,6 +7,7 @@ namespace PeServer\Core\Store;
 use \DateInterval;
 use PeServer\Core\Utc;
 use PeServer\Core\FileUtility;
+use PeServer\Core\PathUtility;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Cryptography;
 use PeServer\Core\InitialValue;
@@ -28,9 +29,6 @@ class TemporaryStore
 {
 	private const ID_LENGTH = 40;
 
-	private TemporaryOption $option;
-	private CookieStore $cookie;
-
 	/**
 	 * 一時データ。
 	 *
@@ -50,8 +48,12 @@ class TemporaryStore
 	 */
 	private bool $isImported = false;
 
-	public function __construct(TemporaryOption $option, CookieStore $cookie)
-	{
+	public function __construct(
+		/** @readonly */
+		private TemporaryOption $option,
+		/** @readonly */
+		private CookieStore $cookie
+	) {
 		if (StringUtility::isNullOrWhiteSpace($option->name)) {
 			throw new ArgumentException('$option->name');
 		}
@@ -61,9 +63,6 @@ class TemporaryStore
 		if (is_null($option->cookie->span)) {
 			throw new ArgumentNullException('$option->cookie->span');
 		}
-
-		$this->option = $option;
-		$this->cookie = $cookie;
 	}
 
 	private function hasId(): bool
@@ -119,7 +118,7 @@ class TemporaryStore
 
 	private function getFilePath(string $id): string
 	{
-		$path = FileUtility::joinPath($this->option->savePath, "$id.json");
+		$path = PathUtility::joinPath($this->option->savePath, "$id.json");
 		return $path;
 	}
 

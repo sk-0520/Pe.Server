@@ -15,6 +15,7 @@ abstract class AutoLoader
 	 * 読み込みベースパス。
 	 *
 	 * @var string[]
+	 * @readonly
 	 */
 	private static array $baseDirectoryPaths;
 
@@ -22,6 +23,7 @@ abstract class AutoLoader
 	 * 読み込み対象正規表現パターン。
 	 *
 	 * @var string
+	 * @readonly
 	 */
 	private static string $includePattern;
 
@@ -43,6 +45,7 @@ abstract class AutoLoader
 	 * クラス読み込み。
 	 *
 	 * @param string $className
+	 * @phpstan-param class-string $className
 	 * @return void
 	 */
 	private static function load(string $className): void

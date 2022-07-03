@@ -40,6 +40,7 @@ abstract class LogicCallMode
 	 * 処理状態生成。
 	 *
 	 * @param integer $mode 状態生値。
+	 * @phpstan-param self::INITIALIZE|self::SUBMIT $mode 状態生値。
 	 * @return LogicCallMode
 	 */
 	private static function create(int $mode): LogicCallMode
@@ -72,9 +73,16 @@ final class _LogicCallMode_Impl extends LogicCallMode
 {
 	/**
 	 * 呼び出し方法。
+	 * @readonly
 	 */
 	private int $mode;
 
+	/**
+	 * Undocumented function
+	 *
+	 * @param integer $mode
+	 * @phpstan-param LogicCallMode::INITIALIZE|LogicCallMode::SUBMIT $mode
+	 */
 	public function __construct(int $mode)
 	{
 		$this->mode = $mode;

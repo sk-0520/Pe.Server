@@ -14,6 +14,7 @@ use PeServer\Core\StringUtility;
 use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Http\RequestPath;
+use PeServer\Core\Mvc\ControllerBase;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Mvc\Middleware\IMiddleware;
 use PeServer\Core\Mvc\Middleware\IShutdownMiddleware;
@@ -30,12 +31,15 @@ class Route
 	 * ベースパス。
 	 *
 	 * @var string
+	 * @readonly
 	 */
 	private string $basePath;
 	/**
 	 * クラス完全名。
 	 *
 	 * @var string
+	 * @readonly
+	 * @phpstan-var class-string<ControllerBase>
 	 */
 	private string $className;
 	/**
@@ -49,12 +53,14 @@ class Route
 	 * Undocumented variable
 	 *
 	 * @var array<IMiddleware|string>
+	 * @phpstan-var array<IMiddleware|class-string<IMiddleware>>
 	 */
 	private array $baseMiddleware;
 	/**
 	 * Undocumented variable
 	 *
 	 * @var array<IShutdownMiddleware|string>
+	 * @phpstan-var array<IShutdownMiddleware|class-string<IShutdownMiddleware>>
 	 */
 	private array $baseShutdownMiddleware;
 
@@ -65,8 +71,11 @@ class Route
 	 *
 	 * @param string $path URLとしてのパス。$this->excludeIndexPattern に一致しない場合に index アクションが自動登録される
 	 * @param string $className 使用されるクラス完全名
+	 * @phpstan-param class-string<ControllerBase> $className 使用されるクラス完全名
 	 * @param array<IMiddleware|string> $middleware ベースとなるミドルウェア。
+	 * @phpstan-param array<IMiddleware|class-string<IMiddleware>> $middleware ベースとなるミドルウェア。
 	 * @param array<IShutdownMiddleware|string> $shutdownMiddleware ベースとなる終了ミドルウェア。
+	 * @phpstan-param array<IShutdownMiddleware|class-string<IShutdownMiddleware>> $shutdownMiddleware ベースとなる終了ミドルウェア。
 	 */
 	public function __construct(string $path, string $className, array $middleware = [], array $shutdownMiddleware = [])
 	{
@@ -77,6 +86,7 @@ class Route
 			if ($trimPath !== StringUtility::trim($trimPath, '/')) {
 				throw new LogicException('path start or end -> /');
 			}
+			//@phpstan-ignore-next-line
 			$this->basePath = $trimPath;
 		}
 
@@ -97,8 +107,11 @@ class Route
 	 * ミドルウェア組み合わせ。
 	 *
 	 * @param array<IMiddleware|IShutdownMiddleware|string> $baseMiddleware
+	 * @phpstan-param array<IMiddleware|IShutdownMiddleware|class-string<IMiddleware|IShutdownMiddleware>|self::CLEAR_MIDDLEWARE> $baseMiddleware
 	 * @param array<IMiddleware|IShutdownMiddleware|string>|null $middleware
+	 * @phpstan-param array<IMiddleware|IShutdownMiddleware|class-string<IMiddleware|IShutdownMiddleware>|self::CLEAR_MIDDLEWARE>|null $middleware
 	 * @return array<IMiddleware|IShutdownMiddleware|string>
+	 * @phpstan-return array<IMiddleware|IShutdownMiddleware|class-string<IMiddleware|IShutdownMiddleware>|self::CLEAR_MIDDLEWARE>
 	 */
 	private static function combineMiddleware(array $baseMiddleware, ?array $middleware = null): array
 	{
@@ -132,7 +145,9 @@ class Route
 	 * @param HttpMethod|HttpMethod[] $httpMethod 使用するHTTPメソッド。
 	 * @param string|null $methodName 呼び出されるコントローラメソッド。未指定なら $actionName が使用される。
 	 * @param array<IMiddleware|string>|null $middleware 専用ミドルウェア。 第一要素が CLEAR_MIDDLEWARE であれば既存のミドルウェアを破棄する。nullの場合はコンストラクタで渡されたミドルウェアが使用される。
+	 * @phpstan-param array<IMiddleware|class-string<IMiddleware>|self::CLEAR_MIDDLEWARE>|null $middleware 専用ミドルウェア。 第一要素が CLEAR_MIDDLEWARE であれば既存のミドルウェアを破棄する。nullの場合はコンストラクタで渡されたミドルウェアが使用される。
 	 * @param array<IShutdownMiddleware|string>|null $shutdownMiddleware 専用終了ミドルウェア。 第一要素が CLEAR_MIDDLEWARE であれば既存のミドルウェアを破棄する。nullの場合はコンストラクタで渡されたミドルウェアが使用される。
+	 * @phpstan-param array<IShutdownMiddleware|class-string<IShutdownMiddleware>|self::CLEAR_MIDDLEWARE>|null $shutdownMiddleware 専用終了ミドルウェア。 第一要素が CLEAR_MIDDLEWARE であれば既存のミドルウェアを破棄する。nullの場合はコンストラクタで渡されたミドルウェアが使用される。
 	 * @return Route
 	 */
 	public function addAction(string $actionName, HttpMethod|array $httpMethod, ?string $methodName = null, ?array $middleware = null, ?array $shutdownMiddleware = null): Route
@@ -141,9 +156,9 @@ class Route
 			$this->actions[$actionName] = new Action();
 		}
 
-		/** @var array<IMiddleware|string> */
+		/** @phpstan-var array<IMiddleware|class-string<IMiddleware>> */
 		$customMiddleware = self::combineMiddleware($this->baseMiddleware, $middleware);
-		/** @var array<IShutdownMiddleware|string> */
+		/** @phpstan-var array<IShutdownMiddleware|class-string<IShutdownMiddleware>> */
 		$customShutdownMiddleware = self::combineMiddleware($this->baseShutdownMiddleware, $shutdownMiddleware);
 
 		$this->actions[$actionName]->add(
@@ -203,7 +218,7 @@ class Route
 		}
 
 		//$actionPath = $requestPaths[count($requestPaths) - 1];
-		$actionPath = StringUtility::trimStart(mb_substr($requestPath->full, mb_strlen($this->basePath)), '/');
+		$actionPath = StringUtility::trimStart(StringUtility::substring($requestPath->full, StringUtility::getLength($this->basePath)), '/');
 		$actionPaths = StringUtility::split($actionPath, '/');
 
 		if (!isset($this->actions[$actionPath])) {

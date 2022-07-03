@@ -7,7 +7,7 @@ namespace PeServer\Core\Database;
 use \PDO;
 use \PDOStatement;
 use PeServer\Core\DisposerBase;
-use PeServer\Core\ILogger;
+use PeServer\Core\Log\ILogger;
 use PeServer\Core\Regex;
 use PeServer\Core\StringUtility;
 use PeServer\Core\Throws\Throws;
@@ -18,13 +18,12 @@ use PeServer\Core\TypeConverter;
 
 /**
  * DB接続処理。
- *
- * TODO: __destruct で解放処理ぶっこまなアカンやろなぁ
  */
 class Database extends DisposerBase implements IDatabaseContext
 {
 	/**
 	 * 接続処理。
+	 * @readonly
 	 */
 	private PDO $pdo;
 
@@ -32,6 +31,7 @@ class Database extends DisposerBase implements IDatabaseContext
 	 * ロガー
 	 *
 	 * @var ILogger
+	 * @readonly
 	 */
 	private ILogger $logger;
 
@@ -48,14 +48,14 @@ class Database extends DisposerBase implements IDatabaseContext
 	 * @param string $dsn
 	 * @param string $user
 	 * @param string $password
-	 * @param array<mixed>|null $option
+	 * @param array<string,string>|null $options
 	 * @param ILogger $logger
 	 */
-	public function __construct(string $dsn, string $user, string $password, ?array $option, ILogger $logger)
+	public function __construct(string $dsn, string $user, string $password, ?array $options, ILogger $logger)
 	{
 		$this->logger = $logger;
 
-		$this->pdo = new PDO($dsn, $user, $password, $option);
+		$this->pdo = new PDO($dsn, $user, $password, $options);
 		$this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 	}

@@ -8,6 +8,7 @@ use PeServer\Core\I18n;
 use PeServer\Core\Environment;
 use PeServer\Core\FileUtility;
 use PeServer\Core\Log\Logging;
+use PeServer\Core\PathUtility;
 use PeServer\Core\Mvc\Template;
 use PeServer\Core\Configuration;
 use PeServer\Core\InitializeChecker;
@@ -82,7 +83,7 @@ abstract class AppConfiguration
 		self::$initializeChecker ??= new InitializeChecker();
 		self::$initializeChecker->initialize();
 
-		self::$settingDirectoryPath = FileUtility::joinPath($baseDirectoryPath, 'config');
+		self::$settingDirectoryPath = PathUtility::joinPath($baseDirectoryPath, 'config');
 
 		$appConfig = self::load($rootDirectoryPath, $baseDirectoryPath, Environment::get(), 'setting.json');
 		$i18nConfig = self::load($rootDirectoryPath, $baseDirectoryPath, Environment::get(), 'i18n.json');
