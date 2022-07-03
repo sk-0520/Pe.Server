@@ -218,7 +218,7 @@ class Route
 		}
 
 		//$actionPath = $requestPaths[count($requestPaths) - 1];
-		$actionPath = StringUtility::trimStart(mb_substr($requestPath->full, mb_strlen($this->basePath)), '/');
+		$actionPath = StringUtility::trimStart(StringUtility::substring($requestPath->full, StringUtility::getLength($this->basePath)), '/');
 		$actionPaths = StringUtility::split($actionPath, '/');
 
 		if (!isset($this->actions[$actionPath])) {

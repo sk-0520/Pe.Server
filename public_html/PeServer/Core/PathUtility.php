@@ -39,7 +39,7 @@ abstract class PathUtility
 		}
 
 		$result = StringUtility::join($absolutes, DIRECTORY_SEPARATOR);
-		if (mb_strlen($targetPath) && $targetPath[0] === DIRECTORY_SEPARATOR) {
+		if (StringUtility::getByteCount($targetPath) && $targetPath[0] === DIRECTORY_SEPARATOR) {
 			$result = DIRECTORY_SEPARATOR . $result;
 		}
 

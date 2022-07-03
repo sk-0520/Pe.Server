@@ -57,7 +57,7 @@ class Validator
 
 	public function inLength(string $key, int $length, string $value): bool
 	{
-		if ($length < mb_strlen($value)) {
+		if ($length < StringUtility::getLength($value)) {
 			$this->receiver->receiveErrorKind($key, self::KIND_LENGTH, ['VALUE' => $value, 'SAFE_LENGTH' => $length, 'ERROR_LENGTH' => mb_strlen($value)]);
 			return false;
 		}
@@ -67,7 +67,7 @@ class Validator
 
 	public function inRange(string $key, int $min, int $max, string $value): bool
 	{
-		$length = mb_strlen($value);
+		$length = StringUtility::getLength($value);
 		if ($length < $min || $max < $length) {
 			$this->receiver->receiveErrorKind($key, self::KIND_RANGE, ['VALUE' => $value, 'RANGE_MIN' => $min, 'RANGE_MAX' => $max, 'ERROR_LENGTH' => mb_strlen($value)]);
 			return false;
