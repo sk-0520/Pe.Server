@@ -4,33 +4,33 @@ declare(strict_types=1);
 
 namespace PeServerTest\Core;
 
-use \LogicException;
 use PeServer\App\Models\RouteConfiguration;
 use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Http\RequestPath;
 use PeServerTest\Data;
 use PeServerTest\TestClass;
 use PeServer\Core\Route;
+use PeServer\Core\Throws\ArgumentException;
 
 class RouteTest extends TestClass
 {
 	public function test_construct_exception_slash()
 	{
-		$this->expectException(LogicException::class);
+		$this->expectException(ArgumentException::class);
 		new Route('/', 'ClassName');
 		$this->fail();
 	}
 
 	public function test_construct_exception_start()
 	{
-		$this->expectException(LogicException::class);
+		$this->expectException(ArgumentException::class);
 		new Route('/root', 'ClassName');
 		$this->fail();
 	}
 
 	public function test_construct_exception_end()
 	{
-		$this->expectException(LogicException::class);
+		$this->expectException(ArgumentException::class);
 		new Route('root/', 'ClassName');
 		$this->fail();
 	}

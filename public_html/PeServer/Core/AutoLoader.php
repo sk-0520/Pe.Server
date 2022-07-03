@@ -30,7 +30,8 @@ abstract class AutoLoader
 	/**
 	 * 初期化。
 	 *
-	 * @param string[] $baseDirectoryPaths
+	 * @param string[] $baseDirectoryPaths ベースディレクトリ一覧。
+	 * @param string $includePattern 読み込み対象パターン（正規表現）。
 	 * @return void
 	 */
 	public static function initialize(array $baseDirectoryPaths, string $includePattern)
