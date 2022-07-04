@@ -21,6 +21,7 @@ abstract class PageControllerBase extends DomainControllerBase
 	 * ログイン済みか。
 	 *
 	 * @return boolean ログイン済み。
+	 * @SuppressWarnings(PHPMD.CamelCaseVariableName)
 	 */
 	protected final function isLoggedIn(): bool
 	{

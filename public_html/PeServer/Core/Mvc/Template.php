@@ -80,7 +80,7 @@ abstract class Template
 			$temporaryBaseName = self::$temporaryBaseName;
 		}
 
-		return new _SmartyTemplate_Impl($baseName, $templateBaseName, $temporaryBaseName);
+		return new LocalSmartyTemplateImpl($baseName, $templateBaseName, $temporaryBaseName);
 	}
 
 	/**
@@ -93,7 +93,7 @@ abstract class Template
 	public abstract function build(string $templateName, TemplateParameter $parameter): string;
 }
 
-class _SmartyTemplate_Impl extends Template
+class LocalSmartyTemplateImpl extends Template
 {
 	/**
 	 * テンプレートエンジン。

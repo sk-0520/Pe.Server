@@ -97,6 +97,7 @@ abstract class Logging
 	 * @phpstan-param LogMessageAlias $message
 	 * @param mixed ...$parameters
 	 * @return string
+	 * @SuppressWarnings(PHPMD.CyclomaticComplexity)
 	 */
 	private static function formatMessage($message, ...$parameters): string
 	{

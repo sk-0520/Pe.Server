@@ -48,7 +48,7 @@ abstract class HttpMethod
 	{
 		$result = [];
 		foreach ($httpMethodKinds as $httpMethodKind) {
-			$result[] = new _HttpMethod_Impl($httpMethodKind);
+			$result[] = new LocalHttpMethodImpl($httpMethodKind);
 		}
 
 		return $result;
@@ -62,13 +62,13 @@ abstract class HttpMethod
 	 */
 	public static function from(string $requestMethod): HttpMethod
 	{
-		return new _HttpMethod_Impl(StringUtility::toUpper(StringUtility::trim($requestMethod)));
+		return new LocalHttpMethodImpl(StringUtility::toUpper(StringUtility::trim($requestMethod)));
 	}
 
 	private static function cache(string $value): HttpMethod
 	{
 		if (!isset(self::$cacheKinds[$value])) {
-			self::$cacheKinds[$value] = new _HttpMethod_Impl($value);
+			self::$cacheKinds[$value] = new LocalHttpMethodImpl($value);
 		}
 
 		return self::$cacheKinds[$value];
@@ -147,7 +147,7 @@ abstract class HttpMethod
 /**
  * アプリ側からは使用しない。
  */
-final class _HttpMethod_Impl extends HttpMethod
+final class LocalHttpMethodImpl extends HttpMethod
 {
 	/**
 	 * 生成。
@@ -167,7 +167,7 @@ final class _HttpMethod_Impl extends HttpMethod
 
 	public function is(HttpMethod $httpMethod): bool
 	{
-		if ($httpMethod instanceof _HttpMethod_Impl) {
+		if ($httpMethod instanceof LocalHttpMethodImpl) {
 			return $this->kind === $httpMethod->kind;
 		}
 

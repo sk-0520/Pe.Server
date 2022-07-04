@@ -83,8 +83,8 @@ class AccountLoginLogic extends PageLogicBase
 		}
 
 		// パスワード突合
-		$verify_ok = Cryptography::verifyPassword($this->getRequest('account_login_password'), $user['current_password']);
-		if (!$verify_ok) {
+		$verifyOk = Cryptography::verifyPassword($this->getRequest('account_login_password'), $user['current_password']);
+		if (!$verifyOk) {
 			$this->addError(Validator::COMMON, I18n::message(self::ERROR_LOGIN_PARAMETER));
 			$this->logger->warn('ログイン失敗: {0}', $user['user_id']);
 			$this->writeAuditLogTargetUser($user['user_id'], AuditLog::LOGIN_FAILED);

@@ -8,10 +8,13 @@
 	<exclude-pattern>*\Core\Libs\*</exclude-pattern>
 	<exclude-pattern>*/data/temp/*</exclude-pattern>
 	<exclude-pattern>*\data\temp\*</exclude-pattern>
+	<exclude-pattern>*DevelopmentApiInitializeLogic.php</exclude-pattern>
+	<exclude-pattern>*DevelopmentApiAdministratorLogic.php</exclude-pattern>
 
 	<rule ref="rulesets/codesize.xml">
 		<exclude name="TooManyPublicMethods" />
 		<exclude name="ExcessiveClassComplexity" />
+		<exclude name="NPathComplexity" />
 	</rule>
 	<rule ref="rulesets/cleancode.xml">
 		<exclude name="StaticAccess" />
@@ -25,10 +28,12 @@
 	</rule>
 	<rule ref="rulesets/design.xml">
 		<exclude name="NumberOfChildren" />
+		<exclude name="CouplingBetweenObjects" />
 	</rule>
 	<rule ref="rulesets/naming.xml">
 		<exclude name="ShortVariable" />
 		<exclude name="LongVariable" />
+		<exclude name="ShortMethodName" />
 	</rule>
 
 	<!-- 未使用系はPHPStanでなんとかなるでしょ -->

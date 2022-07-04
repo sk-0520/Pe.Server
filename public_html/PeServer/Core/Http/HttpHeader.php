@@ -202,14 +202,14 @@ class HttpHeader
 	 */
 	public static function getRequest(): HttpHeader
 	{
-		return new _HttpHeader_Request();
+		return new LocalRequestHttpHeader();
 	}
 }
 
 /**
  * 要求時のヘッダー一覧。
  */
-final class _HttpHeader_Request extends HttpHeader
+final class LocalRequestHttpHeader extends HttpHeader
 {
 	public function __construct()
 	{
