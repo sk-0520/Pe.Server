@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<ruleset name="PeServer" xmlns="http://pmd.sf.net/ruleset/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0 http://pmd.sf.net/ruleset_xml_schema.xsd" xsi:noNamespaceSchemaLocation="http://pmd.sf.net/ruleset_xml_schema.xsd">
+	<description>
+		PeServer
+	</description>
+
+	<exclude-pattern>*/Core/Libs/*</exclude-pattern>
+	<exclude-pattern>*\Core\Libs\*</exclude-pattern>
+	<exclude-pattern>*/data/temp/*</exclude-pattern>
+	<exclude-pattern>*\data\temp\*</exclude-pattern>
+	<exclude-pattern>*DevelopmentApiInitializeLogic.php</exclude-pattern>
+	<exclude-pattern>*DevelopmentApiAdministratorLogic.php</exclude-pattern>
+
+	<rule ref="rulesets/codesize.xml">
+		<exclude name="TooManyPublicMethods" />
+		<exclude name="ExcessiveClassComplexity" />
+		<exclude name="NPathComplexity" />
+		<exclude name="TooManyMethods" />
+	</rule>
+	<rule ref="rulesets/cleancode.xml">
+		<exclude name="StaticAccess" />
+		<exclude name="ElseExpression" />
+		<!-- 未定義はPHPStanに任せたい -->
+		<exclude name="UndefinedVariable" />
+		<!-- いまいち分からん -->
+		<exclude name="BooleanArgumentFlag" />
+	</rule>
+	<rule ref="rulesets/controversial.xml">
+		<exclude name="CamelCaseMethodName" />
+		<exclude name="Superglobals" />
+	</rule>
+	<rule ref="rulesets/design.xml">
+		<exclude name="NumberOfChildren" />
+		<exclude name="CouplingBetweenObjects" />
+	</rule>
+	<rule ref="rulesets/naming.xml">
+		<exclude name="ShortVariable" />
+		<exclude name="LongVariable" />
+		<exclude name="ShortMethodName" />
+	</rule>
+
+	<!-- 未使用系はPHPStanでなんとかなるでしょ -->
+	<!-- <rule ref="rulesets/unusedcode.xml" /> -->
+</ruleset>

@@ -21,7 +21,7 @@ class CookieStore
 	/**
 	 * cookie 一時設定データ。
 	 *
-	 * @var array<string,_CookieData>
+	 * @var array<string,LocalCookieData>
 	 */
 	private array $values = array();
 	/**
@@ -97,7 +97,7 @@ class CookieStore
 	 */
 	public function set(string $key, string $value, CookieOption $option = null): void
 	{
-		$this->values[$key] = new _CookieData($value, $option ?? $this->option);
+		$this->values[$key] = new LocalCookieData($value, $option ?? $this->option);
 
 		unset($this->removes[$key]);
 
@@ -133,7 +133,7 @@ class CookieStore
 	public function getOr(string $key, string $fallbackValue): string
 	{
 		if (ArrayUtility::tryGet($this->values, $key, $data)) {
-			/** @var _CookieData $data */
+			/** @var LocalCookieData $data */
 			return $data->value;
 		}
 
@@ -151,7 +151,7 @@ class CookieStore
 	public function tryGet(string $key, ?string &$result): bool
 	{
 		if (ArrayUtility::tryGet($this->values, $key, $data)) {
-			/** @var _CookieData $data */
+			/** @var LocalCookieData $data */
 			$result = $data->value;
 			return true;
 		}
@@ -160,7 +160,7 @@ class CookieStore
 	}
 }
 
-final class _CookieData
+final class LocalCookieData
 {
 	public function __construct(
 		public string $value,

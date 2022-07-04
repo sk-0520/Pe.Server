@@ -34,6 +34,12 @@ abstract class SessionManager
 		return self::$session->isStarted();
 	}
 
+	/**
+	 * アカウントが存在するか。
+	 *
+	 * @return boolean
+	 * @SuppressWarnings(PHPMD.CamelCaseVariableName)
+	 */
 	public static function existsAccount(): bool
 	{
 		self::$initializeChecker->throwIfNotInitialize();

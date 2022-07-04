@@ -44,7 +44,9 @@
 			"phpunit",
 			"samesite",
 			"sysplugins",
-			"checkAlwaysTrueInstanceof"
+			"checkAlwaysTrueInstanceof",
+			"PHPMD",
+			"CyclomaticComplexity"
 		],
 		"cSpell.ignorePaths": [
 			"package-lock.json",

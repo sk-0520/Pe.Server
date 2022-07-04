@@ -54,7 +54,7 @@ abstract class MiddlewareResult
 
 		$url = UrlUtility::buildPath($path, $query ?? []);
 
-		return new _RedirectMiddlewareResult($status ?? HttpStatus::found(), $url);
+		return new LocalRedirectMiddlewareResultImpl($status ?? HttpStatus::found(), $url);
 	}
 
 	/**
@@ -66,7 +66,7 @@ abstract class MiddlewareResult
 	 */
 	public static function error(HttpStatus $status, string $message = InitialValue::EMPTY_STRING): MiddlewareResult
 	{
-		return new _ErrorMiddlewareResult($status, $message);
+		return new LocalErrorMiddlewareResultImpl($status, $message);
 	}
 
 	/**
@@ -95,7 +95,7 @@ abstract class MiddlewareResult
 	public abstract function apply(): void;
 }
 
-class _RedirectMiddlewareResult extends MiddlewareResult
+class LocalRedirectMiddlewareResultImpl extends MiddlewareResult
 {
 	private HttpStatus $status;
 	private string $url;
@@ -114,7 +114,7 @@ class _RedirectMiddlewareResult extends MiddlewareResult
 	}
 }
 
-class _ErrorMiddlewareResult extends MiddlewareResult
+class LocalErrorMiddlewareResultImpl extends MiddlewareResult
 {
 	private HttpStatus $status;
 	private string $message;

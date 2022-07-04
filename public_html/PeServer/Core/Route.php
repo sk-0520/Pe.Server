@@ -204,6 +204,7 @@ class Route
 	 * @param HttpMethod $httpMethod HTTPメソッド。
 	 * @param RequestPath $requestPath リクエストパス
 	 * @return RouteAction|null 存在する場合にクラス・メソッドのペア。存在しない場合は null
+	 * @SuppressWarnings(PHPMD.CyclomaticComplexity)
 	 */
 	public function getAction(HttpMethod $httpMethod, RequestPath $requestPath): ?RouteAction
 	{

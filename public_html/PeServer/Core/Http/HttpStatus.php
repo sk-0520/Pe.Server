@@ -11,61 +11,61 @@ abstract class HttpStatus
 {
 	public static function none(): HttpStatus
 	{
-		return new _HttpStatus_Impl(0);
+		return new LocalHttpStatusImpl(0);
 	}
 
 	public static function create(int $code): HttpStatus
 	{
-		return new _HttpStatus_Impl($code);
+		return new LocalHttpStatusImpl($code);
 	}
 
 	public static function ok(): HttpStatus
 	{
-		return new _HttpStatus_Impl(200);
+		return new LocalHttpStatusImpl(200);
 	}
 
 	public static function moved(): HttpStatus
 	{
-		return new _HttpStatus_Impl(301);
+		return new LocalHttpStatusImpl(301);
 	}
 	public static function found(): HttpStatus
 	{
-		return new _HttpStatus_Impl(302);
+		return new LocalHttpStatusImpl(302);
 	}
 
 	public static function badRequest(): HttpStatus
 	{
-		return new _HttpStatus_Impl(400);
+		return new LocalHttpStatusImpl(400);
 	}
 	public static function authorizationRequired(): HttpStatus
 	{
-		return new _HttpStatus_Impl(401);
+		return new LocalHttpStatusImpl(401);
 	}
 	public static function forbidden(): HttpStatus
 	{
-		return new _HttpStatus_Impl(403);
+		return new LocalHttpStatusImpl(403);
 	}
 	public static function notFound(): HttpStatus
 	{
-		return new _HttpStatus_Impl(404);
+		return new LocalHttpStatusImpl(404);
 	}
 	public static function methodNotAllowed(): HttpStatus
 	{
-		return new _HttpStatus_Impl(405);
+		return new LocalHttpStatusImpl(405);
 	}
 	public static function misdirected(): HttpStatus
 	{
-		return new _HttpStatus_Impl(421);
+		return new LocalHttpStatusImpl(421);
 	}
 
 
 	public static function internalServerError(): HttpStatus
 	{
-		return new _HttpStatus_Impl(500);
+		return new LocalHttpStatusImpl(500);
 	}
 	public static function serviceUnavailable(): HttpStatus
 	{
-		return new _HttpStatus_Impl(503);
+		return new LocalHttpStatusImpl(503);
 	}
 
 	/**
@@ -84,7 +84,7 @@ abstract class HttpStatus
 	public abstract function is(HttpStatus $httpStatus): bool;
 }
 
-class _HttpStatus_Impl extends HttpStatus
+class LocalHttpStatusImpl extends HttpStatus
 {
 	public function __construct(
 		/** @readonly */
@@ -99,7 +99,7 @@ class _HttpStatus_Impl extends HttpStatus
 
 	public function is(HttpStatus $httpStatus): bool
 	{
-		if ($httpStatus instanceof _HttpStatus_Impl) {
+		if ($httpStatus instanceof LocalHttpStatusImpl) {
 			return $this->code === $httpStatus->code;
 		}
 
