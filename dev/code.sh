@@ -30,4 +30,7 @@ if [ ! -v IGNORE_SYNTAX_CHECK ] ; then
 fi
 
 php "${PHPSTAN_FILE}" analyze --configuration phpstan.neon "$@"
-php "${PHPMD_FILE}" ../public_html/PeServer ansi phpmd.xml "$@"
+set +e
+#php "${PHPMD_FILE}" ../public_html/PeServer text phpmd.xml "$@"
+php "${PHPMD_FILE}" ../public_html/PeServer ansi phpmd.xml "$@" && :
+set -e
