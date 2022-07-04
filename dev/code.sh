@@ -30,4 +30,4 @@ if [ ! -v IGNORE_SYNTAX_CHECK ] ; then
 fi
 
 php "${PHPSTAN_FILE}" analyze --configuration phpstan.neon "$@"
-php "${PHPMD_FILE}" ../public_html/PeServer/Core,../public_html/PeServer/App text cleancode,codesize,controversial,design,naming,unusedcode --exclude  ../public_html/PeServer/Core/Libs/* "$@"
+php "${PHPMD_FILE}" ../public_html/PeServer ansi phpmd.xml "$@"
