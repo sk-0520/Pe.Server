@@ -15,12 +15,15 @@
 		<exclude name="TooManyPublicMethods" />
 		<exclude name="ExcessiveClassComplexity" />
 		<exclude name="NPathComplexity" />
+		<exclude name="TooManyMethods" />
 	</rule>
 	<rule ref="rulesets/cleancode.xml">
 		<exclude name="StaticAccess" />
 		<exclude name="ElseExpression" />
 		<!-- 未定義はPHPStanに任せたい -->
 		<exclude name="UndefinedVariable" />
+		<!-- いまいち分からん -->
+		<exclude name="BooleanArgumentFlag" />
 	</rule>
 	<rule ref="rulesets/controversial.xml">
 		<exclude name="CamelCaseMethodName" />
