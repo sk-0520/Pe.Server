@@ -16,10 +16,16 @@
 	<exclude-pattern>*\data\temp\*</exclude-pattern>
 
 	<rule ref="rulesets/codesize.xml" />
-	<rule ref="rulesets/cleancode.xml" />
+	<rule ref="rulesets/cleancode.xml">
+		<!-- 静的変数・メソッドはOK -->
+		<exclude name="StaticAccess" />
+	</rule>
 	<rule ref="rulesets/controversial.xml" />
 	<rule ref="rulesets/design.xml" />
-	<rule ref="rulesets/naming.xml" />
+	<rule ref="rulesets/naming.xml">
+		<!-- 短い変数名は許容 -->
+		<exclude name="ShortVariable" />
+	</rule>
 	<rule ref="rulesets/unusedcode.xml" />
 
 <config>
