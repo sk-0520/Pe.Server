@@ -21,11 +21,10 @@ abstract class PageControllerBase extends DomainControllerBase
 	 * ログイン済みか。
 	 *
 	 * @return boolean ログイン済み。
-	 * @SuppressWarnings(PHPMD.CamelCaseVariableName)
 	 */
 	protected final function isLoggedIn(): bool
 	{
-		return $this->session->tryGet(SessionManager::ACCOUNT, $_);
+		return $this->session->tryGet(SessionManager::ACCOUNT, $unused);
 	}
 
 	protected function viewWithController(string $controllerName, string $action, TemplateParameter $parameter): ViewActionResult

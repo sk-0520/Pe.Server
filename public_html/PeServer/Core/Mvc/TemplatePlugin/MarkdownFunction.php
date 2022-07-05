@@ -24,9 +24,6 @@ class MarkdownFunction extends TemplateBlockFunctionBase
 		return 'markdown';
 	}
 
-	/**
-	 * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-	 */
 	protected function functionBlockBodyImpl(string $content): string
 	{
 		/** @var string */

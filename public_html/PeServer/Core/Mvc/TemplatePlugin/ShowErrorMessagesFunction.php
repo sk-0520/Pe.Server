@@ -30,9 +30,6 @@ class ShowErrorMessagesFunction extends TemplateFunctionBase
 		return 'show_error_messages';
 	}
 
-	/**
-	 * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-	 */
 	protected function functionBodyImpl(): string
 	{
 		if (!$this->existsError()) {

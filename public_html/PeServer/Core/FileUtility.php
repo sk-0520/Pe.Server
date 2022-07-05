@@ -221,7 +221,6 @@ abstract class FileUtility
 	 * @param boolean $directory
 	 * @param boolean $file
 	 * @return string[] ファイル一覧。
-	 * @SuppressWarnings(PHPMD.CyclomaticComplexity)
 	 */
 	private static function getChildrenCore(string $directoryPath, bool $directory, bool $file, bool $recursive): array
 	{

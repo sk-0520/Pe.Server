@@ -21,7 +21,6 @@ use PeServer\Core\Throws\NotImplementedException;
  * ロガー生成処理。
  *
  * DIコンテナとか無いのでこいつを静的に使用してログがんばる。
- * @SuppressWarnings(PHPMD.Superglobals)
  */
 abstract class Logging
 {
@@ -98,7 +97,6 @@ abstract class Logging
 	 * @phpstan-param LogMessageAlias $message
 	 * @param mixed ...$parameters
 	 * @return string
-	 * @SuppressWarnings(PHPMD.CyclomaticComplexity)
 	 */
 	private static function formatMessage($message, ...$parameters): string
 	{
@@ -141,6 +139,9 @@ abstract class Logging
 		return StringUtility::dump(['message' => $message, 'parameters' => $parameters]);
 	}
 
+	/**
+ 	 * @SuppressWarnings(PHPMD.Superglobals)
+	 */
 	private static function getRemoteHost(): string
 	{
 		// @phpstan-ignore-next-line
@@ -187,6 +188,8 @@ abstract class Logging
 	 * @phpstan-param LogMessageAlias $message
 	 * @param mixed ...$parameters
 	 * @return string
+	 * @return string
+ 	 * @SuppressWarnings(PHPMD.Superglobals)
 	 */
 	public static function format(string $format, int $level, int $traceIndex, string $header, $message, ...$parameters): string
 	{

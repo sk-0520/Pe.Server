@@ -155,7 +155,6 @@ class SessionStore
 	 *
 	 * @return void
 	 * @throws InvalidOperationException 既にセッションが開始されている。
-	 * @SuppressWarnings(PHPMD.CamelCaseVariableName)
 	 */
 	public function start(): void
 	{
@@ -186,7 +185,7 @@ class SessionStore
 
 		// セッションにCSRFトークンが存在しない場合は生成
 		/**  */
-		if (!ArrayUtility::tryGet($_SESSION, Security::CSRF_SESSION_KEY, $_)) {
+		if (!ArrayUtility::tryGet($_SESSION, Security::CSRF_SESSION_KEY, $unused)) {
 			$csrfToken = Security::generateCsrfToken();
 			$this->set(Security::CSRF_SESSION_KEY, $csrfToken);
 		}

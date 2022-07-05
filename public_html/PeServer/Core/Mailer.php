@@ -159,7 +159,6 @@ class Mailer
 	 * 送信。
 	 *
 	 * @return void
-	 * @SuppressWarnings(PHPMD.CyclomaticComplexity)
 	 */
 	public function send(): void
 	{
