@@ -20,6 +20,7 @@ use PeServer\Core\Throws\InvalidOperationException;
  *
  * 一時データとして扱い、最後にセッションへ反映する感じで動く。
  * アプリケーション側で明示的に使用しない想定。
+ * @SuppressWarnings(PHPMD.Superglobals)
  */
 class SessionStore
 {

@@ -9,6 +9,7 @@ use PeServer\Core\Mvc\Middleware\IShutdownMiddleware;
 
 /**
  * 要求から応答までの全体に対する測定処理。
+ * @SuppressWarnings(PHPMD.Superglobals)
  */
 final class PerformanceShutdownMiddleware implements IShutdownMiddleware
 {

@@ -17,6 +17,7 @@ class Markdown
 
 	private bool $isSafeMode = true; // @phpstan-ignore-line
 
+	/** @SuppressWarnings(PHPMD.MissingImport) */
 	public function __construct()
 	{
 		$this->parser = new \Michelf\MarkdownExtra();

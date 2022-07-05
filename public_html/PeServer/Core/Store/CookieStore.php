@@ -15,6 +15,7 @@ use PeServer\Core\Store\CookieOption;
  * セッション側と違い、都度取得する感じ。
  *
  * アプリケーション側で明示的に使用しない想定。
+ * @SuppressWarnings(PHPMD.Superglobals)
  */
 class CookieStore
 {

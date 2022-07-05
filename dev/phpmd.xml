@@ -16,7 +16,15 @@
 		<exclude name="ExcessiveClassComplexity" />
 		<exclude name="NPathComplexity" />
 		<exclude name="TooManyMethods" />
+		<exclude name="ExcessiveMethodLength" />
 	</rule>
+	<rule ref="rulesets/codesize.xml/ExcessiveMethodLength">
+		<priority>1</priority>
+		<properties>
+			<property name="minimum" value="200" />
+		</properties>
+	</rule>
+
 	<rule ref="rulesets/cleancode.xml">
 		<exclude name="StaticAccess" />
 		<exclude name="ElseExpression" />
@@ -27,7 +35,6 @@
 	</rule>
 	<rule ref="rulesets/controversial.xml">
 		<exclude name="CamelCaseMethodName" />
-		<exclude name="Superglobals" />
 	</rule>
 	<rule ref="rulesets/design.xml">
 		<exclude name="NumberOfChildren" />
@@ -37,6 +44,12 @@
 		<exclude name="ShortVariable" />
 		<exclude name="LongVariable" />
 		<exclude name="ShortMethodName" />
+	</rule>
+	<rule ref="rulesets/naming.xml/ShortMethodName">
+		<priority>1</priority>
+		<properties>
+			<property name="minimum" value="2" />
+		</properties>
 	</rule>
 
 	<!-- 未使用系はPHPStanでなんとかなるでしょ -->

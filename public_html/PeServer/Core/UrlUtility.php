@@ -8,7 +8,10 @@ use PeServer\Core\ArrayUtility;
 use PeServer\Core\InitialValue;
 use PeServer\Core\StringUtility;
 
-
+/**
+ * URL系。
+ * @SuppressWarnings(PHPMD.Superglobals)
+ */
 abstract class UrlUtility
 {
 	public const LOCALHOST_PATTERN = '/https?:\/\/(\w*:\\w*@)?((localhost)|(127\.0\.0\.1))\b/';

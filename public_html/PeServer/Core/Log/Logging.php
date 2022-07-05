@@ -21,6 +21,7 @@ use PeServer\Core\Throws\NotImplementedException;
  * ロガー生成処理。
  *
  * DIコンテナとか無いのでこいつを静的に使用してログがんばる。
+ * @SuppressWarnings(PHPMD.Superglobals)
  */
 abstract class Logging
 {
