@@ -149,7 +149,7 @@ class HttpHeader
 	/**
 	 * リダイレクト設定を破棄。
 	 *
-	 * @return boolean
+	 * @return boolean 破棄したか。
 	 */
 	public function clearRedirect(): bool
 	{

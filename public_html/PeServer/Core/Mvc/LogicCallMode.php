@@ -74,6 +74,7 @@ final class LocalLogicCallModeImpl extends LogicCallMode
 	/**
 	 * 呼び出し方法。
 	 * @readonly
+	 * @phpstan-var parent::INITIALIZE|parent::SUBMIT $mode
 	 */
 	private int $mode;
 
@@ -81,7 +82,7 @@ final class LocalLogicCallModeImpl extends LogicCallMode
 	 * Undocumented function
 	 *
 	 * @param integer $mode
-	 * @phpstan-param LogicCallMode::INITIALIZE|LogicCallMode::SUBMIT $mode
+	 * @phpstan-param parent::INITIALIZE|parent::SUBMIT $mode
 	 */
 	public function __construct(int $mode)
 	{
