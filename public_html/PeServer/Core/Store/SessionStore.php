@@ -239,6 +239,7 @@ class SessionStore
 	 *
 	 * @param string $key
 	 * @param mixed $value
+	 * @phpstan-param ServerStoreValueAlias $value
 	 * @return void
 	 */
 	public function set(string $key, mixed $value): void
@@ -269,7 +270,9 @@ class SessionStore
 	 *
 	 * @param string $key
 	 * @param mixed $fallbackValue
+	 * @phpstan-param ServerStoreValueAlias $fallbackValue
 	 * @return mixed 取得データ。
+	 * @phpstan-return ServerStoreValueAlias
 	 */
 	public function getOr(string $key, mixed $fallbackValue): mixed
 	{
@@ -281,6 +284,7 @@ class SessionStore
 	 *
 	 * @param string $key
 	 * @param mixed $result
+	 * @phpstan-param ServerStoreValueAlias $result
 	 * @return boolean 取得できたか。
 	 */
 	public function tryGet(string $key, mixed &$result): bool
