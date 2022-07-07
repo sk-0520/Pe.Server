@@ -38,7 +38,7 @@ class CsrfMiddleware implements IMiddleware
 			if ($requestToken === $sessionToken) {
 				return MiddlewareResult::none();
 			}
-			$argument->logger->warn('CSRFトークン不一致');
+			$argument->logger->error('CSRFトークン不一致');
 		} else {
 			$argument->logger->warn('セッションCSRFトークンなし');
 		}

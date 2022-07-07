@@ -111,6 +111,7 @@ class Routing
 	protected static function getOrCreateMiddleware(IMiddleware|string $middleware): IMiddleware
 	{
 		if (is_string($middleware)) {
+			/** @var IMiddleware */
 			$instance = new $middleware();
 			//@phpstan-ignore-next-line
 			if (!($instance instanceof IMiddleware)) {

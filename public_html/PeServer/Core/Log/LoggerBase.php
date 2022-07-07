@@ -7,7 +7,9 @@ namespace PeServer\Core\Log;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\Logging;
 
-
+/**
+ * ログ出力基盤。
+ */
 abstract class LoggerBase implements ILogger
 {
 	/**
