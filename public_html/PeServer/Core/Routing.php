@@ -28,6 +28,7 @@ use PeServer\Core\Mvc\Middleware\IMiddleware;
 use PeServer\Core\Mvc\Middleware\MiddlewareResult;
 use PeServer\Core\Mvc\Middleware\MiddlewareArgument;
 use PeServer\Core\Mvc\Middleware\IShutdownMiddleware;
+use PeServer\Core\Store\SpecialStore;
 
 /**
  * ルーティング。
@@ -43,6 +44,8 @@ class Routing
 	 */
 	protected RouteSetting $setting;
 
+	/** @readonly */
+	protected SpecialStore $special;
 	/** @readonly */
 	protected CookieStore $cookie;
 	/** @readonly */
@@ -85,7 +88,7 @@ class Routing
 	 * @param RouteSetting $routeSetting
 	 * @param StoreOption $storeOption
 	 */
-	public function __construct(HttpMethod $requestMethod, RequestPath $requestPath, RouteSetting $routeSetting, StoreOption $storeOption)
+	public function __construct(HttpMethod $requestMethod, RequestPath $requestPath, RouteSetting $routeSetting, SpecialStore $special, StoreOption $storeOption)
 	{
 		$this->setting = $routeSetting;
 
@@ -93,6 +96,7 @@ class Routing
 		$this->requestPath = $requestPath;
 		$this->requestHeader = HttpHeader::getRequest();
 
+		$this->special = $special;
 		$this->cookie = new CookieStore($storeOption->cookie);
 		$this->temporary = new TemporaryStore($storeOption->temporary, $this->cookie);
 		$this->session = new SessionStore($storeOption->session, $this->cookie);
@@ -157,7 +161,7 @@ class Routing
 	 */
 	private function handleBeforeMiddlewareCore(RequestPath $requestPath, HttpRequest $request, IMiddleware|string $middleware): bool
 	{
-		$middlewareArgument = new MiddlewareArgument($requestPath, $this->cookie, $this->session, $request, $this->middlewareLogger);
+		$middlewareArgument = new MiddlewareArgument($requestPath, $this->special, $this->cookie, $this->session, $request, $this->middlewareLogger);
 		$middleware = self::getOrCreateMiddleware($middleware);
 
 		$middlewareResult = $middleware->handleBefore($middlewareArgument);
@@ -197,7 +201,7 @@ class Routing
 			return true;
 		}
 
-		$middlewareArgument = new MiddlewareArgument($this->requestPath, $this->cookie, $this->session, $request, $this->middlewareLogger);
+		$middlewareArgument = new MiddlewareArgument($this->requestPath, $this->special, $this->cookie, $this->session, $request, $this->middlewareLogger);
 		$middlewareArgument->response = $response;
 
 		$middleware = array_reverse($this->processedMiddleware);
@@ -249,7 +253,7 @@ class Routing
 		}
 
 		$logger = Logging::create($controllerName);
-		$controllerArgument = new ControllerArgument($this->cookie, $this->temporary, $this->session, $logger);
+		$controllerArgument = new ControllerArgument($this->special, $this->cookie, $this->temporary, $this->session, $logger);
 
 		/** @var IActionResult|null */
 		$actionResult = null;
@@ -328,7 +332,7 @@ class Routing
 	private function shutdown(): void
 	{
 		if (ArrayUtility::getCount($this->shutdownMiddleware)) {
-			$middlewareArgument = new MiddlewareArgument($this->requestPath, $this->cookie, $this->session, $this->shutdownRequest, $this->middlewareLogger);
+			$middlewareArgument = new MiddlewareArgument($this->requestPath, $this->special, $this->cookie, $this->session, $this->shutdownRequest, $this->middlewareLogger);
 			$shutdownMiddleware = array_reverse($this->shutdownMiddleware);
 			foreach ($shutdownMiddleware as $middleware) {
 				$middleware = self::getOrCreateShutdownMiddleware($middleware);

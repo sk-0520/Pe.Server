@@ -10,6 +10,7 @@ use PeServer\Core\Http\RequestPath;
 use PeServer\Core\Http\HttpResponse;
 use PeServer\Core\Store\CookieStore;
 use PeServer\Core\Store\SessionStore;
+use PeServer\Core\Store\SpecialStore;
 
 
 /**
@@ -23,6 +24,7 @@ class MiddlewareArgument
 	 * 生成。
 	 *
 	 * @param RequestPath $requestPath
+	 * @param SpecialStore $special
 	 * @param CookieStore $cookie
 	 * @param SessionStore $session
 	 * @param HttpRequest $request
@@ -30,6 +32,7 @@ class MiddlewareArgument
 	 */
 	public function __construct(
 		public RequestPath $requestPath,
+		public SpecialStore $special,
 		public CookieStore $cookie,
 		public SessionStore $session,
 		public HttpRequest $request,
