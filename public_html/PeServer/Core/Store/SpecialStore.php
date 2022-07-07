@@ -27,7 +27,13 @@ class SpecialStore
 		return $result;
 	}
 
-	public function containsServer(string $name): bool
+	/**
+	 * $_SERVER に名前が存在するか。
+	 *
+	 * @param string $name
+	 * @return boolean
+	 */
+	public function containsServerName(string $name): bool
 	{
 		return isset($_SERVER[$name]);
 	}

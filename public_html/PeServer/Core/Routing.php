@@ -15,20 +15,21 @@ use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Http\RequestPath;
 use PeServer\Core\Http\HttpResponse;
-use PeServer\Core\Mvc\Result\IActionResult;
 use PeServer\Core\Store\CookieStore;
 use PeServer\Core\Store\StoreOption;
 use PeServer\Core\Mvc\ControllerBase;
 use PeServer\Core\Store\SessionStore;
+use PeServer\Core\Store\SpecialStore;
+use PeServer\Core\Store\StoreOptions;
 use PeServer\Core\Http\ResponsePrinter;
 use PeServer\Core\Store\TemporaryStore;
 use PeServer\Core\Mvc\ControllerArgument;
+use PeServer\Core\Mvc\Result\IActionResult;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Mvc\Middleware\IMiddleware;
 use PeServer\Core\Mvc\Middleware\MiddlewareResult;
 use PeServer\Core\Mvc\Middleware\MiddlewareArgument;
 use PeServer\Core\Mvc\Middleware\IShutdownMiddleware;
-use PeServer\Core\Store\SpecialStore;
 
 /**
  * ルーティング。
@@ -86,9 +87,9 @@ class Routing
 	 * 生成。
 	 *
 	 * @param RouteSetting $routeSetting
-	 * @param StoreOption $storeOption
+	 * @param StoreOptions $storeOptions
 	 */
-	public function __construct(HttpMethod $requestMethod, RequestPath $requestPath, RouteSetting $routeSetting, SpecialStore $special, StoreOption $storeOption)
+	public function __construct(HttpMethod $requestMethod, RequestPath $requestPath, RouteSetting $routeSetting, StoreOptions $storeOptions)
 	{
 		$this->setting = $routeSetting;
 
@@ -96,10 +97,10 @@ class Routing
 		$this->requestPath = $requestPath;
 		$this->requestHeader = HttpHeader::getRequest();
 
-		$this->special = $special;
-		$this->cookie = new CookieStore($storeOption->cookie);
-		$this->temporary = new TemporaryStore($storeOption->temporary, $this->cookie);
-		$this->session = new SessionStore($storeOption->session, $this->cookie);
+		$this->special = $storeOptions->specialStore;
+		$this->cookie = new CookieStore($storeOptions->cookie);
+		$this->temporary = new TemporaryStore($storeOptions->temporary, $this->cookie);
+		$this->session = new SessionStore($storeOptions->session, $this->cookie);
 
 		$this->middlewareLogger = Logging::create('middleware');
 		$this->shutdownRequest = new HttpRequest($requestMethod, $this->requestHeader, []);

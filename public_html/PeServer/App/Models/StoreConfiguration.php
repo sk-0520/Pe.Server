@@ -6,11 +6,12 @@ namespace PeServer\App\Models;
 
 use DateInterval;
 use PeServer\Core\ArrayUtility;
-use PeServer\Core\Store\StoreOption;
 use PeServer\Core\Store\CookieOption;
+use PeServer\Core\Store\StoreOptions;
 use PeServer\Core\Store\SessionOption;
 use PeServer\Core\Store\TemporaryOption;
 use PeServer\App\Models\AppConfiguration;
+use PeServer\Core\Store\SpecialStore;
 
 abstract class StoreConfiguration
 {
@@ -138,9 +139,9 @@ abstract class StoreConfiguration
 	/**
 	 * ストア情報取得。
 	 *
-	 * @return StoreOption
+	 * @return StoreOptions
 	 */
-	public static function get(): StoreOption
+	public static function get(SpecialStore $specialStore): StoreOptions
 	{
 		/** @var array<string,array<string,string|bool>>|null */
 		$setting = ArrayUtility::getOr(AppConfiguration::$config, 'store', null);
@@ -149,7 +150,8 @@ abstract class StoreConfiguration
 		$temporary = self::getTemporary($setting, $cookie);
 		$session = self::getSession($setting, $cookie);
 
-		return new StoreOption(
+		return new StoreOptions(
+			$specialStore,
 			$cookie,
 			$temporary,
 			$session
