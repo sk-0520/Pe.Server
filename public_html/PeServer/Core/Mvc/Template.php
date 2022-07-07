@@ -141,11 +141,7 @@ class LocalSmartyTemplateImpl extends Template
 		$argument = new TemplatePluginArgument(
 			$this->engine,
 			self::$rootDirectoryPath,
-			self::$baseDirectoryPath,
-			self::$special,
-			self::$cookie,
-			self::$session,
-			self::$temporary
+			self::$baseDirectoryPath
 		);
 		$showErrorMessagesFunction = new ShowErrorMessagesFunction($argument);
 		/** @var array<ITemplateFunction> */
