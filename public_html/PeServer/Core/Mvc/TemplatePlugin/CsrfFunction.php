@@ -29,6 +29,7 @@ class CsrfFunction extends TemplateFunctionBase
 	protected function functionBodyImpl(): string
 	{
 		// このタイミングではセッション処理完了を期待している
+		//$this->argument->
 		if (!isset($_SESSION[Security::CSRF_SESSION_KEY])) {
 			return InitialValue::EMPTY_STRING;
 		}

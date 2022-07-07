@@ -98,7 +98,7 @@ class Routing
 		$this->requestHeader = HttpHeader::getRequest();
 
 		$this->special = $storeOptions->specialStore;
-		$this->cookie = new CookieStore($storeOptions->cookie);
+		$this->cookie = new CookieStore($this->special, $storeOptions->cookie);
 		$this->temporary = new TemporaryStore($storeOptions->temporary, $this->cookie);
 		$this->session = new SessionStore($storeOptions->session, $this->cookie);
 

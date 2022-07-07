@@ -23,6 +23,10 @@ use PeServer\Core\Mvc\TemplatePlugin\BotTextImageFunction;
 use PeServer\Core\Mvc\TemplatePlugin\ITemplateBlockFunction;
 use PeServer\Core\Mvc\TemplatePlugin\TemplatePluginArgument;
 use PeServer\Core\Mvc\TemplatePlugin\ShowErrorMessagesFunction;
+use PeServer\Core\Store\CookieStore;
+use PeServer\Core\Store\SessionStore;
+use PeServer\Core\Store\SpecialStore;
+use PeServer\Core\Store\TemporaryStore;
 
 /**
  * View側のテンプレート処理。
@@ -65,6 +69,7 @@ abstract class Template
 
 		self::$rootDirectoryPath = $rootDirectoryPath;
 		self::$baseDirectoryPath = $baseDirectoryPath;
+
 		self::$templateBaseName = $templateBaseName;
 		self::$temporaryBaseName = $temporaryBaseName;
 	}
@@ -136,7 +141,11 @@ class LocalSmartyTemplateImpl extends Template
 		$argument = new TemplatePluginArgument(
 			$this->engine,
 			self::$rootDirectoryPath,
-			self::$baseDirectoryPath
+			self::$baseDirectoryPath,
+			self::$special,
+			self::$cookie,
+			self::$session,
+			self::$temporary
 		);
 		$showErrorMessagesFunction = new ShowErrorMessagesFunction($argument);
 		/** @var array<ITemplateFunction> */
