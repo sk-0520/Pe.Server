@@ -104,8 +104,8 @@ class AccountSignupStep1Logic extends PageLogicBase
 				$params['token'],
 				$params['email'],
 				$params['mark_email'],
-				ArrayUtility::getOr($_SERVER, 'REMOTE_ADDR', InitialValue::EMPTY_STRING),
-				ArrayUtility::getOr($_SERVER, 'HTTP_USER_AGENT', InitialValue::EMPTY_STRING)
+				$this->special->getServer('REMOTE_ADDR'),
+				$this->special->getServer('HTTP_USER_AGENT')
 			);
 
 			return true;

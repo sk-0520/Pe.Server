@@ -26,6 +26,7 @@ use PeServer\Core\Store\SessionStore;
 use PeServer\Core\Store\TemporaryStore;
 use PeServer\Core\Mvc\TemplateParameter;
 use PeServer\Core\Mvc\IValidationReceiver;
+use PeServer\Core\Store\SpecialStore;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Utc;
@@ -97,6 +98,11 @@ abstract class LogicBase implements IValidationReceiver
 	private ?DataContent $content = null;
 
 	/**
+	 * PHP 変数管理
+	 * @readonly
+	 */
+	protected SpecialStore $special;
+	/**
 	 * cookie 管理
 	 * @readonly
 	 */
@@ -129,6 +135,7 @@ abstract class LogicBase implements IValidationReceiver
 		$this->beginTimestamp = Utc::create();
 		$this->httpStatus = HttpStatus::ok();
 		$this->request = $parameter->request;
+		$this->special = $parameter->special;
 		$this->cookie = $parameter->cookie;
 		$this->temporary = $parameter->temporary;
 		$this->session = $parameter->session;

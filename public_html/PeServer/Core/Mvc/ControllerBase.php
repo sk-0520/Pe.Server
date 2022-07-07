@@ -139,7 +139,7 @@ abstract class ControllerBase
 	 */
 	public function redirectPath(string $path, ?array $query = null): RedirectActionResult
 	{
-		$url = UrlUtility::buildPath($path, $query ?? []);
+		$url = UrlUtility::buildPath($path, $query ?? [], $this->special);
 		return $this->redirectUrl($url);
 	}
 

@@ -17,11 +17,14 @@ class SpecialStore
 	/**
 	 * $_SERVER から値取得。
 	 *
+	 * @template TValue
 	 * @param string $name インデックス名。
-	 * @param string $fallbackValue 取得時失敗時の値。
-	 * @return string
+	 * @param mixed $fallbackValue 取得時失敗時の値。
+	 * @phpstan-param TValue $fallbackValue
+	 * @return mixed
+	 * @phpstan-return TValue
 	 */
-	public function getServer(string $name, string $fallbackValue = InitialValue::EMPTY_STRING): string
+	public function getServer(string $name, mixed $fallbackValue = InitialValue::EMPTY_STRING): mixed
 	{
 		$result = ArrayUtility::getOr($_SERVER, $name, $fallbackValue);
 		return $result;
@@ -36,5 +39,18 @@ class SpecialStore
 	public function containsServerName(string $name): bool
 	{
 		return isset($_SERVER[$name]);
+	}
+
+	/**
+	 * $_COOKIE から値取得。
+	 *
+	 * @param string $name
+	 * @param string $fallbackValue
+	 * @return string
+	 */
+	public function getCookie(string $name, string $fallbackValue = InitialValue::EMPTY_STRING): string
+	{
+		$result = ArrayUtility::getOr($_SERVER, $name, $fallbackValue);
+		return $result;
 	}
 }

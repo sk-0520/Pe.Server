@@ -33,7 +33,7 @@ Initializer::initialize(
 	':REVISION:'
 );
 
-$method = HttpMethod::from($_SERVER['REQUEST_METHOD']);
-$requestPath = new RequestPath($_SERVER['REQUEST_URI'], '');
+$method = HttpMethod::from($specialStore->getServer('REQUEST_METHOD'));
+$requestPath = new RequestPath($specialStore->getServer('REQUEST_URI'), '');
 $routing = new AppRouting($method, $requestPath, RouteConfiguration::get(), StoreConfiguration::get($specialStore));
 $routing->execute();
