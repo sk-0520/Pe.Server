@@ -29,8 +29,9 @@ $specialStore = new AppSpecialStore();
 Initializer::initialize(
 	__DIR__,
 	__DIR__ . '/PeServer',
+	$specialStore,
 	$specialStore->getServer('SERVER_NAME') === 'localhost' ? 'development' : 'production',
-	':REVISION:'
+	':REVISION:',
 );
 
 $method = HttpMethod::from($specialStore->getServer('REQUEST_METHOD'));

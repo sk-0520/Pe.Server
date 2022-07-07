@@ -12,6 +12,7 @@ use PeServer\Core\PathUtility;
 use PeServer\Core\Mvc\Template;
 use PeServer\Core\Configuration;
 use PeServer\Core\InitializeChecker;
+use PeServer\Core\Store\SpecialStore;
 use PeServer\App\Models\AppDatabaseCache;
 
 
@@ -78,7 +79,7 @@ abstract class AppConfiguration
 		);
 	}
 
-	public static function initialize(string $rootDirectoryPath, string $baseDirectoryPath): void
+	public static function initialize(string $rootDirectoryPath, string $baseDirectoryPath, SpecialStore $specialStore): void
 	{
 		self::$initializeChecker ??= new InitializeChecker();
 		self::$initializeChecker->initialize();
@@ -88,7 +89,7 @@ abstract class AppConfiguration
 		$appConfig = self::load($rootDirectoryPath, $baseDirectoryPath, Environment::get(), 'setting.json');
 		$i18nConfig = self::load($rootDirectoryPath, $baseDirectoryPath, Environment::get(), 'i18n.json');
 
-		Logging::initialize($appConfig['logging']);
+		Logging::initialize($specialStore, $appConfig['logging']);
 
 		Template::initialize($rootDirectoryPath, $baseDirectoryPath, 'App/Views', 'data/temp/views');
 		I18n::initialize($i18nConfig);
