@@ -11,6 +11,7 @@ require_once($files[0]);
 require_once(__DIR__ . '/../public_html/PeServer/Core/AutoLoader.php');
 
 use PeServer\App\Models\Initializer;
+use PeServer\Core\Store\SpecialStore;
 
 \PeServer\Core\AutoLoader::initialize(
 	[
@@ -22,6 +23,7 @@ use PeServer\App\Models\Initializer;
 Initializer::initialize(
 	__DIR__ . '/../public_html',
 	__DIR__ . '/../public_html/PeServer',
+	new SpecialStore(),
 	'test',
 	':REVISION:'
 );

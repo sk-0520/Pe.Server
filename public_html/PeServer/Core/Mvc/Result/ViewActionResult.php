@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc\Result;
 
 use PeServer\Core\Mime;
+use PeServer\Core\InitialValue;
 use PeServer\Core\Mvc\Template;
 use PeServer\Core\Http\HttpResponse;
-use PeServer\Core\Mvc\Result\IActionResult;
 use PeServer\Core\Mvc\TemplateParameter;
+use PeServer\Core\Mvc\Result\IActionResult;
 
 /**
  * View。
@@ -46,7 +47,7 @@ class ViewActionResult implements IActionResult
 		}
 
 
-		$template = Template::create($this->templateBaseName);
+		$template = Template::create($this->templateBaseName, InitialValue::EMPTY_STRING, InitialValue::EMPTY_STRING);
 		$response->content = $template->build("$this->actionName.tpl", $this->templateParameter);
 
 		return $response;

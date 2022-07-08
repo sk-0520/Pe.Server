@@ -22,7 +22,7 @@ class TemplatePluginArgument
 	public function __construct(
 		public Smarty $engine,
 		public string $rootDirectoryPath,
-		 public string $baseDirectoryPath//,
+		public string $baseDirectoryPath //,
 		// protected SpecialStore $special,
 		// protected CookieStore $cookie,
 		// protected SessionStore $session,

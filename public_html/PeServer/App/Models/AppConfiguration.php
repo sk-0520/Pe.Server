@@ -91,7 +91,7 @@ abstract class AppConfiguration
 
 		Logging::initialize($specialStore, $appConfig['logging']);
 
-		Template::initialize($rootDirectoryPath, $baseDirectoryPath, 'App/Views', 'data/temp/views');
+		Template::initialize($rootDirectoryPath, $baseDirectoryPath, 'App/Views', 'data/temp/views', $specialStore);
 		I18n::initialize($i18nConfig);
 
 		AppDatabaseCache::initialize($appConfig['cache']['database']);

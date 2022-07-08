@@ -62,7 +62,9 @@ abstract class Template
 	 */
 	private static string $temporaryBaseName;
 
-	public static function initialize(string $rootDirectoryPath, string $baseDirectoryPath, string $templateBaseName, string $temporaryBaseName): void
+	protected static SpecialStore $specialStore;
+
+	public static function initialize(string $rootDirectoryPath, string $baseDirectoryPath, string $templateBaseName, string $temporaryBaseName, SpecialStore $specialStore): void
 	{
 		self::$initializeChecker ??= new InitializeChecker();
 		self::$initializeChecker->initialize();
@@ -72,9 +74,11 @@ abstract class Template
 
 		self::$templateBaseName = $templateBaseName;
 		self::$temporaryBaseName = $temporaryBaseName;
+
+		self::$specialStore = $specialStore;
 	}
 
-	public static function create(string $baseName, string $templateBaseName = InitialValue::EMPTY_STRING, string $temporaryBaseName = InitialValue::EMPTY_STRING): Template
+	public static function create(string $baseName, string $templateBaseName, string $temporaryBaseName): Template
 	{
 		self::$initializeChecker->throwIfNotInitialize();
 
