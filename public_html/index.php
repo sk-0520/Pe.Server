@@ -37,5 +37,5 @@ Initializer::initialize(
 
 $method = HttpMethod::from($specialStore->getServer('REQUEST_METHOD'));
 $requestPath = new RequestPath($specialStore->getServer('REQUEST_URI'), '');
-$routing = new AppRouting($method, $requestPath, RouteConfiguration::get(), AppConfiguration::$storePack);
+$routing = new AppRouting($method, $requestPath, RouteConfiguration::get(), AppConfiguration::$stores);
 $routing->execute();

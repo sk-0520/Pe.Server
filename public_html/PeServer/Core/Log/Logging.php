@@ -11,6 +11,7 @@ use PeServer\Core\PathUtility;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Cryptography;
 use PeServer\Core\InitialValue;
+use PeServer\Core\Store\Stores;
 use PeServer\Core\StringUtility;
 use PeServer\Core\Log\FileLogger;
 use PeServer\Core\Log\MultiLogger;
@@ -38,7 +39,7 @@ abstract class Logging
 	 */
 	private static InitializeChecker $initializeChecker;
 
-	private static SpecialStore $specialStore;
+	private static Stores $stores;
 	/**
 	 * ログ設定。
 	 *
@@ -62,12 +63,12 @@ abstract class Logging
 	 * @param array<string,mixed> $loggingConfiguration
 	 * @return void
 	 */
-	public static function initialize(SpecialStore $specialStore, array $loggingConfiguration)
+	public static function initialize(Stores $stores, array $loggingConfiguration)
 	{
 		self::$initializeChecker ??= new InitializeChecker();
 		self::$initializeChecker->initialize();
 
-		self::$specialStore = $specialStore;
+		self::$stores = $stores;
 		self::$loggingConfiguration = $loggingConfiguration;
 		self::$requestId = Cryptography::generateRandomBytes(self::LOG_REQUEST_ID_LENGTH)->toHex();
 
@@ -154,13 +155,13 @@ abstract class Logging
 		}
 
 		/** @var string */
-		$serverRemoteHost = self::$specialStore->getServer('REMOTE_HOST', InitialValue::EMPTY_STRING);
+		$serverRemoteHost = self::$stores->special->getServer('REMOTE_HOST', InitialValue::EMPTY_STRING);
 		if ($serverRemoteHost !== InitialValue::EMPTY_STRING) {
 			return self::$requestHost = $serverRemoteHost;
 		}
 
 		/** @var string */
-		$serverRemoteIpAddr = self::$specialStore->getServer('REMOTE_ADDR', InitialValue::EMPTY_STRING);
+		$serverRemoteIpAddr = self::$stores->special->getServer('REMOTE_ADDR', InitialValue::EMPTY_STRING);
 		if ($serverRemoteIpAddr === InitialValue::EMPTY_STRING) {
 			return self::$requestHost = InitialValue::EMPTY_STRING;
 		}
@@ -211,12 +212,12 @@ abstract class Logging
 			'DATE' => $timestamp->format('Y-m-d'),
 			'TIME' => $timestamp->format('H:i:s'),
 			'TIMEZONE' => $timestamp->format('P'),
-			'CLIENT_IP' => self::$specialStore->getServer('REMOTE_ADDR', InitialValue::EMPTY_STRING),
+			'CLIENT_IP' => self::$stores->special->getServer('REMOTE_ADDR', InitialValue::EMPTY_STRING),
 			'CLIENT_HOST' => self::getRemoteHost(),
 			'REQUEST_ID' => self::$requestId,
-			'UA' => self::$specialStore->getServer('HTTP_USER_AGENT', InitialValue::EMPTY_STRING),
-			'METHOD' => self::$specialStore->getServer('REQUEST_METHOD', InitialValue::EMPTY_STRING),
-			'REQUEST' => self::$specialStore->getServer('REQUEST_URI', InitialValue::EMPTY_STRING),
+			'UA' => self::$stores->special->getServer('HTTP_USER_AGENT', InitialValue::EMPTY_STRING),
+			'METHOD' => self::$stores->special->getServer('REQUEST_METHOD', InitialValue::EMPTY_STRING),
+			'REQUEST' => self::$stores->special->getServer('REQUEST_URI', InitialValue::EMPTY_STRING),
 			'SESSION' => session_id(),
 			//-------------------
 			'FILE' => $filePath,

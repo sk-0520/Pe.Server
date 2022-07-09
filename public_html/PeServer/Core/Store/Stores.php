@@ -9,7 +9,7 @@ use PeServer\Core\Store\SessionStore;
 use PeServer\Core\Store\SpecialStore;
 use PeServer\Core\Store\TemporaryStore;
 
-class StorePack
+class Stores
 {
 	public CookieStore $cookie;
 	public SessionStore $session;

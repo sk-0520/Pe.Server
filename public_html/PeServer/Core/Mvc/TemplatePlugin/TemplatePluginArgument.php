@@ -22,11 +22,11 @@ class TemplatePluginArgument
 	public function __construct(
 		public Smarty $engine,
 		public string $rootDirectoryPath,
-		public string $baseDirectoryPath //,
-		// protected SpecialStore $special,
-		// protected CookieStore $cookie,
-		// protected SessionStore $session,
-		// protected TemporaryStore $temporary,
+		public string $baseDirectoryPath,
+		public SpecialStore $special,
+		public CookieStore $cookie,
+		public SessionStore $session,
+		public TemporaryStore $temporary
 	) {
 	}
 }
