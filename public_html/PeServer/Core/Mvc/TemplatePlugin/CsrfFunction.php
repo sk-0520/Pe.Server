@@ -30,10 +30,11 @@ class CsrfFunction extends TemplateFunctionBase
 	{
 		// このタイミングではセッション処理完了を期待している
 
-		/** @var string $csrfToken */
 		if(!$this->argument->session->tryGet(Security::CSRF_SESSION_KEY, $csrfToken)) {
 			return InitialValue::EMPTY_STRING;
 		}
+
+		/** @var string $csrfToken */
 
 		$dom = new HtmlDocument();
 
