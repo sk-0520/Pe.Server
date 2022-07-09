@@ -11,6 +11,7 @@ use PeServer\Core\Http\RequestPath;
 use PeServer\Core\Store\StoreOptions;
 use PeServer\App\Models\SessionManager;
 use PeServer\App\Models\AppErrorHandler;
+use PeServer\Core\Store\StorePack;
 
 class AppRouting extends Routing
 {
@@ -18,11 +19,11 @@ class AppRouting extends Routing
 	 * 生成。
 	 *
 	 * @param RouteSetting $routeSetting
-	 * @param StoreOptions $storeOptions
+	 * @param StorePack $storePack
 	 */
-	public function __construct(HttpMethod $httpMethod, RequestPath $requestPath, RouteSetting $routeSetting, StoreOptions $storeOptions)
+	public function __construct(HttpMethod $httpMethod, RequestPath $requestPath, RouteSetting $routeSetting, StorePack $storePack)
 	{
-		parent::__construct($httpMethod, $requestPath, $routeSetting, $storeOptions);
+		parent::__construct($httpMethod, $requestPath, $routeSetting, $storePack);
 
 		SessionManager::initialize($this->session);
 	}

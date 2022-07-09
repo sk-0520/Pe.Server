@@ -12,6 +12,7 @@ use PeServer\Core\ActionSetting;
 use PeServer\Core\Http\HttpHeader;
 use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Http\HttpStatus;
+use PeServer\Core\Store\StorePack;
 use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Http\RequestPath;
 use PeServer\Core\Http\HttpResponse;
@@ -87,9 +88,9 @@ class Routing
 	 * 生成。
 	 *
 	 * @param RouteSetting $routeSetting
-	 * @param StoreOptions $storeOptions
+	 * @param StorePack $storePack
 	 */
-	public function __construct(HttpMethod $requestMethod, RequestPath $requestPath, RouteSetting $routeSetting, StoreOptions $storeOptions)
+	public function __construct(HttpMethod $requestMethod, RequestPath $requestPath, RouteSetting $routeSetting, StorePack $storePack)
 	{
 		$this->setting = $routeSetting;
 
@@ -97,10 +98,10 @@ class Routing
 		$this->requestPath = $requestPath;
 		$this->requestHeader = HttpHeader::getRequest();
 
-		$this->special = $storeOptions->specialStore;
-		$this->cookie = new CookieStore($this->special, $storeOptions->cookie);
-		$this->temporary = new TemporaryStore($storeOptions->temporary, $this->cookie);
-		$this->session = new SessionStore($storeOptions->session, $this->cookie);
+		$this->special = $storePack->special;
+		$this->cookie = $storePack->cookie;
+		$this->temporary = $storePack->temporary;
+		$this->session = $storePack->session;
 
 		$this->middlewareLogger = Logging::create('middleware');
 		$this->shutdownRequest = new HttpRequest($requestMethod, $this->requestHeader, []);

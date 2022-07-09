@@ -141,7 +141,7 @@ abstract class StoreConfiguration
 	 *
 	 * @return StoreOptions
 	 */
-	public static function get(SpecialStore $specialStore): StoreOptions
+	public static function build(): StoreOptions
 	{
 		/** @var array<string,array<string,string|bool>>|null */
 		$setting = ArrayUtility::getOr(AppConfiguration::$config, 'store', null);
@@ -151,7 +151,6 @@ abstract class StoreConfiguration
 		$session = self::getSession($setting, $cookie);
 
 		return new StoreOptions(
-			$specialStore,
 			$cookie,
 			$temporary,
 			$session
