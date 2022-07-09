@@ -6,12 +6,14 @@ namespace PeServer\App\Models;
 
 use PeServer\Core\I18n;
 use PeServer\Core\Environment;
-use PeServer\Core\FileUtility;
 use PeServer\Core\Log\Logging;
 use PeServer\Core\PathUtility;
 use PeServer\Core\Mvc\Template;
+use PeServer\Core\Store\Stores;
 use PeServer\Core\Configuration;
+use PeServer\Core\Store\StorePack;
 use PeServer\Core\InitializeChecker;
+use PeServer\Core\Store\SpecialStore;
 use PeServer\App\Models\AppDatabaseCache;
 
 
@@ -53,6 +55,8 @@ abstract class AppConfiguration
 	 */
 	public static string $settingDirectoryPath;
 
+	public static Stores $stores;
+
 	/**
 	 * 設定ファイル読み込み。
 	 *
@@ -78,7 +82,7 @@ abstract class AppConfiguration
 		);
 	}
 
-	public static function initialize(string $rootDirectoryPath, string $baseDirectoryPath): void
+	public static function initialize(string $rootDirectoryPath, string $baseDirectoryPath, SpecialStore $specialStore): void
 	{
 		self::$initializeChecker ??= new InitializeChecker();
 		self::$initializeChecker->initialize();
@@ -88,9 +92,12 @@ abstract class AppConfiguration
 		$appConfig = self::load($rootDirectoryPath, $baseDirectoryPath, Environment::get(), 'setting.json');
 		$i18nConfig = self::load($rootDirectoryPath, $baseDirectoryPath, Environment::get(), 'i18n.json');
 
-		Logging::initialize($appConfig['logging']);
+		$storeOptions = StoreConfiguration::build();
+		$stores = new Stores($specialStore, $storeOptions);
 
-		Template::initialize($rootDirectoryPath, $baseDirectoryPath, 'App/Views', 'data/temp/views');
+		Logging::initialize($stores, $appConfig['logging']);
+
+		Template::initialize($stores, $rootDirectoryPath, $baseDirectoryPath, 'App/Views', 'data/temp/views');
 		I18n::initialize($i18nConfig);
 
 		AppDatabaseCache::initialize($appConfig['cache']['database']);
@@ -98,5 +105,6 @@ abstract class AppConfiguration
 		self::$config = $appConfig;
 		self::$rootDirectoryPath = $rootDirectoryPath;
 		self::$baseDirectoryPath = $baseDirectoryPath;
+		self::$stores = $stores;
 	}
 }

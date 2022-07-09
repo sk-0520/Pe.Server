@@ -214,7 +214,7 @@ class ErrorHandler
 			$logger->error($values);
 		}
 
-		$template = Template::create('template', 'Core');
+		$template = Template::create('template', 'Core', InitialValue::EMPTY_STRING);
 		echo $template->build('error-display.tpl', new TemplateParameter($status, $values, []));
 	}
 }

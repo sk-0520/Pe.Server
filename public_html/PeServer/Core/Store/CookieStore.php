@@ -8,6 +8,7 @@ use PeServer\Core\ArrayUtility;
 use PeServer\Core\InitialValue;
 use PeServer\Core\StringUtility;
 use PeServer\Core\Store\CookieOption;
+use PeServer\Core\Store\SpecialStore;
 
 /**
  * Cookie 管理処理。
@@ -15,7 +16,6 @@ use PeServer\Core\Store\CookieOption;
  * セッション側と違い、都度取得する感じ。
  *
  * アプリケーション側で明示的に使用しない想定。
- * @SuppressWarnings(PHPMD.Superglobals)
  */
 class CookieStore
 {
@@ -45,6 +45,8 @@ class CookieStore
 	 */
 	public function __construct(
 		/** @readonly */
+		protected SpecialStore $special,
+		/** @readonly */
 		public CookieOption $option
 	) {
 	}
@@ -67,7 +69,7 @@ class CookieStore
 	public function apply(): void
 	{
 		foreach ($this->removes as $key) {
-			if (ArrayUtility::existsKey($_COOKIE, $key)) {
+			if ($this->special->containsCookieName($key)) {
 				setcookie($key, InitialValue::EMPTY_STRING, time() - 60, '/');
 			}
 		}
@@ -115,7 +117,7 @@ class CookieStore
 	{
 		if (StringUtility::isNullOrEmpty($key)) {
 			$this->values = array();
-			$this->removes = ArrayUtility::getKeys($_COOKIE);
+			$this->removes = $this->special->getCookieNames();
 		} else {
 			unset($this->values[$key]);
 			$this->removes[] = $key;
@@ -139,7 +141,7 @@ class CookieStore
 		}
 
 		/** @var string */
-		return ArrayUtility::getOr($_COOKIE, $key, $fallbackValue);
+		return $this->special->getCookie($key, $fallbackValue);
 	}
 
 	/**
@@ -157,7 +159,7 @@ class CookieStore
 			return true;
 		}
 
-		return ArrayUtility::tryGet($_COOKIE, $key, $result);
+		return $this->special->tryGetCookie($key, $result);
 	}
 }
 
