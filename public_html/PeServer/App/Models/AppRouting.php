@@ -25,7 +25,7 @@ class AppRouting extends Routing
 	{
 		parent::__construct($httpMethod, $requestPath, $routeSetting, $stores);
 
-		SessionManager::initialize($this->session);
+		SessionManager::initialize($this->stores->session);
 	}
 
 	public function execute(): void

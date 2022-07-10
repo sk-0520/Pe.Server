@@ -67,8 +67,8 @@ abstract class DomainLogicBase extends LogicBase
 	 */
 	private function writeAuditLogCore(string $userId, string $event, ?array $info, ?IDatabaseContext $context): int
 	{
-		$ipAddress = $this->special->getServer('REMOTE_ADDR');
-		$userAgent = $this->special->getServer('HTTP_USER_AGENT');
+		$ipAddress = $this->stores->special->getServer('REMOTE_ADDR');
+		$userAgent = $this->stores->special->getServer('HTTP_USER_AGENT');
 		$dumpInfo = InitialValue::EMPTY_STRING;
 		if (!is_null($info)) {
 			$jsonText = json_encode($info, JSON_UNESCAPED_UNICODE);

@@ -8,6 +8,7 @@ use \Smarty;
 use PeServer\Core\Store\CookieStore;
 use PeServer\Core\Store\SessionStore;
 use PeServer\Core\Store\SpecialStore;
+use PeServer\Core\Store\Stores;
 use PeServer\Core\Store\TemporaryStore;
 
 class TemplatePluginArgument
@@ -23,10 +24,7 @@ class TemplatePluginArgument
 		public Smarty $engine,
 		public string $rootDirectoryPath,
 		public string $baseDirectoryPath,
-		public SpecialStore $special,
-		public CookieStore $cookie,
-		public SessionStore $session,
-		public TemporaryStore $temporary
+		public Stores $stores
 	) {
 	}
 }

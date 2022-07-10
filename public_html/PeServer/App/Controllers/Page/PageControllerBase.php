@@ -24,12 +24,12 @@ abstract class PageControllerBase extends DomainControllerBase
 	 */
 	protected final function isLoggedIn(): bool
 	{
-		return $this->session->tryGet(SessionManager::ACCOUNT, $unused);
+		return $this->stores->session->tryGet(SessionManager::ACCOUNT, $unused);
 	}
 
 	protected function viewWithController(string $controllerName, string $action, TemplateParameter $parameter): ViewActionResult
 	{
-		$parameter->values[PageLogicBase::TEMP_MESSAGES] = $this->temporary->pop(PageLogicBase::TEMP_MESSAGES);
+		$parameter->values[PageLogicBase::TEMP_MESSAGES] = $this->stores->temporary->pop(PageLogicBase::TEMP_MESSAGES);
 
 		return parent::viewWithController($controllerName, $action, $parameter);
 	}

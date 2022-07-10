@@ -48,13 +48,7 @@ class Routing
 	protected RouteSetting $setting;
 
 	/** @readonly */
-	protected SpecialStore $special;
-	/** @readonly */
-	protected CookieStore $cookie;
-	/** @readonly */
-	protected TemporaryStore $temporary;
-	/** @readonly */
-	protected SessionStore $session;
+	protected Stores $stores;
 
 	/** @readonly */
 	protected ILogger $middlewareLogger;
@@ -99,11 +93,7 @@ class Routing
 		$this->requestPath = $requestPath;
 		$this->requestHeader = HttpHeader::getRequest();
 
-		$this->special = $stores->special;
-		$this->cookie = $stores->cookie;
-		$this->temporary = $stores->temporary;
-		$this->session = $stores->session;
-
+		$this->stores = $stores;
 		$this->middlewareLogger = Logging::create('middleware');
 		$this->shutdownRequest = new HttpRequest($requestMethod, $this->requestHeader, []);
 	}
@@ -164,7 +154,7 @@ class Routing
 	 */
 	private function handleBeforeMiddlewareCore(RequestPath $requestPath, HttpRequest $request, IMiddleware|string $middleware): bool
 	{
-		$middlewareArgument = new MiddlewareArgument($requestPath, $this->special, $this->cookie, $this->session, $request, $this->middlewareLogger);
+		$middlewareArgument = new MiddlewareArgument($requestPath, $this->stores, $request, $this->middlewareLogger);
 		$middleware = self::getOrCreateMiddleware($middleware);
 
 		$middlewareResult = $middleware->handleBefore($middlewareArgument);
@@ -204,7 +194,7 @@ class Routing
 			return true;
 		}
 
-		$middlewareArgument = new MiddlewareArgument($this->requestPath, $this->special, $this->cookie, $this->session, $request, $this->middlewareLogger);
+		$middlewareArgument = new MiddlewareArgument($this->requestPath, $this->stores, $request, $this->middlewareLogger);
 		$middlewareArgument->response = $response;
 
 		$middleware = array_reverse($this->processedMiddleware);
@@ -218,13 +208,6 @@ class Routing
 		}
 
 		return true;
-	}
-
-	private function applyStore(): void
-	{
-		$this->session->apply();
-		$this->temporary->apply();
-		$this->cookie->apply();
 	}
 
 	/**
@@ -256,7 +239,7 @@ class Routing
 		}
 
 		$logger = Logging::create($controllerName);
-		$controllerArgument = new ControllerArgument($this->special, $this->cookie, $this->temporary, $this->session, $logger);
+		$controllerArgument = new ControllerArgument($this->stores, $logger);
 
 		/** @var IActionResult|null */
 		$actionResult = null;
@@ -272,7 +255,7 @@ class Routing
 			$logger->warn('{0}', $output->getRaw());
 		}
 
-		$this->applyStore();
+		$this->stores->apply();
 
 		// 最終出力
 		/** @var IActionResult $actionResult */
@@ -335,7 +318,7 @@ class Routing
 	private function shutdown(): void
 	{
 		if (ArrayUtility::getCount($this->shutdownMiddleware)) {
-			$middlewareArgument = new MiddlewareArgument($this->requestPath, $this->special, $this->cookie, $this->session, $this->shutdownRequest, $this->middlewareLogger);
+			$middlewareArgument = new MiddlewareArgument($this->requestPath, $this->stores, $this->shutdownRequest, $this->middlewareLogger);
 			$shutdownMiddleware = array_reverse($this->shutdownMiddleware);
 			foreach ($shutdownMiddleware as $middleware) {
 				$middleware = self::getOrCreateShutdownMiddleware($middleware);

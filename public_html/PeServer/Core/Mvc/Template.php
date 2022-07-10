@@ -61,20 +61,14 @@ abstract class Template
 	 */
 	private static string $temporaryBaseName;
 
-	protected static SpecialStore $specialStore;
-	protected static CookieStore $cookieStore;
-	protected static SessionStore $sessionStore;
-	protected static TemporaryStore $temporaryStore;
+	protected static Stores $stores;
 
 	public static function initialize(Stores $stores, string $rootDirectoryPath, string $baseDirectoryPath, string $templateBaseName, string $temporaryBaseName): void
 	{
 		self::$initializeChecker ??= new InitializeChecker();
 		self::$initializeChecker->initialize();
 
-		self::$specialStore = $stores->special;
-		self::$cookieStore = $stores->cookie;
-		self::$sessionStore = $stores->session;
-		self::$temporaryStore = $stores->temporary;
+		self::$stores = $stores;
 
 		self::$rootDirectoryPath = $rootDirectoryPath;
 		self::$baseDirectoryPath = $baseDirectoryPath;
@@ -94,7 +88,7 @@ abstract class Template
 			$temporaryBaseName = self::$temporaryBaseName;
 		}
 
-		return new LocalSmartyTemplateImpl($baseName, $templateBaseName, $temporaryBaseName, self::$specialStore, self::$cookieStore, self::$sessionStore, self::$temporaryStore);
+		return new LocalSmartyTemplateImpl($baseName, $templateBaseName, $temporaryBaseName);
 	}
 
 	/**
@@ -114,19 +108,9 @@ class LocalSmartyTemplateImpl extends Template
 	 */
 	private Smarty $engine;
 
-	private SpecialStore $special;
-	private CookieStore $cookie;
-	private SessionStore $session;
-	private TemporaryStore $temporary;
-
-	public function __construct(string $baseName, string $templateBaseName, string $temporaryBaseName, SpecialStore $special, CookieStore $cookie, SessionStore $session, TemporaryStore $temporary)
+	public function __construct(string $baseName, string $templateBaseName, string $temporaryBaseName)
 	{
 		parent::$initializeChecker->throwIfNotInitialize();
-
-		$this->special = $special;
-		$this->cookie = $cookie;
-		$this->session = $session;
-		$this->temporary = $temporary;
 
 		$this->engine = new Smarty();
 		$this->engine->addTemplateDir(PathUtility::joinPath(parent::$baseDirectoryPath, $templateBaseName, $baseName));
@@ -145,12 +129,7 @@ class LocalSmartyTemplateImpl extends Template
 			'status' => $parameter->httpStatus,
 			'values' => $parameter->values,
 			'errors' => $parameter->errors,
-			'stores' => [
-				'special' => $this->special,
-				'cookie' => $this->cookie,
-				'session' => $this->session,
-				'temporary' => $this->temporary,
-			],
+			'stores' => self::$stores,
 		]);
 	}
 
@@ -167,10 +146,7 @@ class LocalSmartyTemplateImpl extends Template
 			$this->engine,
 			self::$rootDirectoryPath,
 			self::$baseDirectoryPath,
-			$this->special,
-			$this->cookie,
-			$this->session,
-			$this->temporary
+			self::$stores
 		);
 		$showErrorMessagesFunction = new ShowErrorMessagesFunction($argument);
 		/** @var array<ITemplateFunction> */

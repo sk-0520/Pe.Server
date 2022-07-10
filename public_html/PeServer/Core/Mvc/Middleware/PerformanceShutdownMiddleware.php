@@ -15,7 +15,7 @@ final class PerformanceShutdownMiddleware implements IShutdownMiddleware
 {
 	public function handleShutdown(MiddlewareArgument $argument): void
 	{
-		$time = microtime(true) - $argument->special->getServer('REQUEST_TIME_FLOAT', 0.0);
+		$time = microtime(true) - $argument->stores->special->getServer('REQUEST_TIME_FLOAT', 0.0);
 		$argument->logger->info('{0} ms', $time);
 	}
 }

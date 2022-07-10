@@ -34,7 +34,7 @@ class CsrfMiddleware implements IMiddleware
 		}
 
 		$requestToken = $argument->request->getValue(Security::CSRF_REQUEST_KEY);
-		if ($argument->session->tryGet(Security::CSRF_SESSION_KEY, $sessionToken)) {
+		if ($argument->stores->session->tryGet(Security::CSRF_SESSION_KEY, $sessionToken)) {
 			if ($requestToken === $sessionToken) {
 				return MiddlewareResult::none();
 			}
