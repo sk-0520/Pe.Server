@@ -8,6 +8,7 @@ use PeServer\Core\Regex;
 use PeServer\Core\UrlUtility;
 use PeServer\Core\InitialValue;
 use PeServer\Core\Http\HttpStatus;
+use PeServer\Core\Store\SpecialStore;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\HttpStatusException;
 use PeServer\Core\Throws\InvalidOperationException;
@@ -46,15 +47,15 @@ abstract class MiddlewareResult
 	 * @param HttpStatus|null $status
 	 * @return MiddlewareResult
 	 */
-	public static function redirect(string $path, ?array $query = null, ?HttpStatus $status = null): MiddlewareResult
+	public static function redirect(SpecialStore $specialStore, string $path, ?array $query = null, ?HttpStatus $status = null): MiddlewareResult
 	{
 		if (Regex::isMatch($path, '|(https?:)?//|')) {
 			throw new ArgumentException();
 		}
 
-		$url = UrlUtility::buildPath($path, $query ?? []);
+		$url = UrlUtility::buildPath($path, $query ?? [], $specialStore);
 
-		return new _RedirectMiddlewareResult($status ?? HttpStatus::found(), $url);
+		return new LocalRedirectMiddlewareResultImpl($status ?? HttpStatus::found(), $url);
 	}
 
 	/**
@@ -66,7 +67,7 @@ abstract class MiddlewareResult
 	 */
 	public static function error(HttpStatus $status, string $message = InitialValue::EMPTY_STRING): MiddlewareResult
 	{
-		return new _ErrorMiddlewareResult($status, $message);
+		return new LocalErrorMiddlewareResultImpl($status, $message);
 	}
 
 	/**
@@ -95,7 +96,7 @@ abstract class MiddlewareResult
 	public abstract function apply(): void;
 }
 
-class _RedirectMiddlewareResult extends MiddlewareResult
+class LocalRedirectMiddlewareResultImpl extends MiddlewareResult
 {
 	private HttpStatus $status;
 	private string $url;
@@ -114,7 +115,7 @@ class _RedirectMiddlewareResult extends MiddlewareResult
 	}
 }
 
-class _ErrorMiddlewareResult extends MiddlewareResult
+class LocalErrorMiddlewareResultImpl extends MiddlewareResult
 {
 	private HttpStatus $status;
 	private string $message;

@@ -165,6 +165,7 @@ class TemporaryStore
 	 *
 	 * @param string $key
 	 * @param mixed $value
+	 * @phpstan-param ServerStoreValueAlias $value
 	 * @return void
 	 */
 	public function push(string $key, mixed $value): void
@@ -180,7 +181,13 @@ class TemporaryStore
 		}
 	}
 
-
+	/**
+	 * Undocumented function
+	 *
+	 * @param string $key
+	 * @return mixed
+	 * @phpstan-return ServerStoreValueAlias
+	 */
 	public function peek(string $key): mixed
 	{
 		$id = $this->getOrCreateId();
@@ -193,6 +200,13 @@ class TemporaryStore
 		return $this->values[$key];
 	}
 
+	/**
+	 * Undocumented function
+	 *
+	 * @param string $key
+	 * @return mixed
+	 * @phpstan-return ServerStoreValueAlias
+	 */
 	public function pop(string $key): mixed
 	{
 		$value = $this->peek($key);

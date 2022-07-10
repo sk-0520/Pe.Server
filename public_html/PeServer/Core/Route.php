@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
-use \LogicException;
 use PeServer\Core\Regex;
 use PeServer\Core\Action;
 use PeServer\Core\RouteAction;
@@ -84,7 +83,7 @@ class Route
 		} else {
 			$trimPath = StringUtility::trim($path);
 			if ($trimPath !== StringUtility::trim($trimPath, '/')) {
-				throw new LogicException('path start or end -> /');
+				throw new ArgumentException('path start or end -> /');
 			}
 			//@phpstan-ignore-next-line
 			$this->basePath = $trimPath;

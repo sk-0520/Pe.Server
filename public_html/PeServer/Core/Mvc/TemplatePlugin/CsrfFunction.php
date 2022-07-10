@@ -12,6 +12,7 @@ use PeServer\Core\Mvc\TemplatePlugin\TemplatePluginArgument;
 
 /**
  * CSRFトークン埋め込み。
+ * @SuppressWarnings(PHPMD.Superglobals)
  */
 class CsrfFunction extends TemplateFunctionBase
 {
@@ -28,11 +29,12 @@ class CsrfFunction extends TemplateFunctionBase
 	protected function functionBodyImpl(): string
 	{
 		// このタイミングではセッション処理完了を期待している
-		if (!isset($_SESSION[Security::CSRF_SESSION_KEY])) {
+
+		if(!$this->argument->session->tryGet(Security::CSRF_SESSION_KEY, $csrfToken)) {
 			return InitialValue::EMPTY_STRING;
 		}
 
-		$csrfToken = $_SESSION[Security::CSRF_SESSION_KEY];
+		/** @var string $csrfToken */
 
 		$dom = new HtmlDocument();
 

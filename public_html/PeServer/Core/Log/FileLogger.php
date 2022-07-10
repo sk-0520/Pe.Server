@@ -12,8 +12,10 @@ use PeServer\Core\StringUtility;
 use PeServer\Core\Log\LoggerBase;
 use PeServer\Core\Throws\Enforce;
 use PeServer\Core\Throws\IOException;
-use PeServerTest\Core\Throws\EnforceTest;
 
+/**
+ * ファイルロガー。
+ */
 class FileLogger extends LoggerBase
 {
 	/**
@@ -69,6 +71,13 @@ class FileLogger extends LoggerBase
 		return StringUtility::replace($trimHeader, ['/', '\\', '*', '|', '<', '>', '?'], '_');
 	}
 
+	protected function toHeaderDate(bool $isCleanup): string
+	{
+		return $isCleanup
+			? '*'
+			: date('Ymd');
+	}
+
 	private function cleanupCore(int $maxCount, string $filePattern): void
 	{
 		$logFiles = FileUtility::find($this->directoryPath, $filePattern);
@@ -93,7 +102,7 @@ class FileLogger extends LoggerBase
 			$this->baseFileName,
 			[
 				'HEADER' => $this->toSafeFileNameHeader(),
-				'DATE' => '*',
+				'DATE' => $this->toHeaderDate(true),
 			]
 		);
 		if (!ArrayUtility::contains(self::$cleanupFilePatterns, $filePattern)) {
@@ -108,7 +117,7 @@ class FileLogger extends LoggerBase
 			$this->baseFileName,
 			[
 				'HEADER' => $this->toSafeFileNameHeader(),
-				'DATE' => date('Ymd'),
+				'DATE' => $this->toHeaderDate(false),
 			]
 		);
 

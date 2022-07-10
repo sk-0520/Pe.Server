@@ -6,19 +6,22 @@ namespace PeServer\Core;
 
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\InitialValue;
+use PeServer\Core\Store\SpecialStore;
 use PeServer\Core\StringUtility;
 
-
+/**
+ * URL系。
+ */
 abstract class UrlUtility
 {
 	public const LOCALHOST_PATTERN = '/https?:\/\/(\w*:\\w*@)?((localhost)|(127\.0\.0\.1))\b/';
 
-	public static function convertPathToUrl(string $path): string
+	public static function convertPathToUrl(string $path, SpecialStore $specialStore): string
 	{
 		/** @var string */
-		$httpsProtocol = ArrayUtility::getOr($_SERVER, 'HTTPS', InitialValue::EMPTY_STRING);
+		$httpsProtocol = $specialStore->getServer('HTTPS', InitialValue::EMPTY_STRING);
 		$httpProtocol = StringUtility::isNullOrEmpty($httpsProtocol) ? 'http://' : 'https://';
-		return $httpProtocol . $_SERVER['SERVER_NAME'] . '/' .  StringUtility::trim($path, '/');
+		return $httpProtocol . $specialStore->getServer('SERVER_NAME') . '/' .  StringUtility::trim($path, '/');
 	}
 
 	/**
@@ -48,9 +51,9 @@ abstract class UrlUtility
 	 * @param array<string,string> $query
 	 * @return string
 	 */
-	public static function buildPath(string $path, array $query): string
+	public static function buildPath(string $path, array $query, SpecialStore $specialStore): string
 	{
-		$pathUrl = self::convertPathToUrl($path);
+		$pathUrl = self::convertPathToUrl($path, $specialStore);
 		return self::joinQuery($pathUrl, $query);
 	}
 

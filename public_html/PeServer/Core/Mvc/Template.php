@@ -7,11 +7,14 @@ namespace PeServer\Core\Mvc;
 require_once(__DIR__ . '/../../Core/Libs/smarty/libs/Smarty.class.php');
 
 use \Smarty;
-use PeServer\Core\FileUtility;
 use PeServer\Core\PathUtility;
-use PeServer\Core\InitialValue;
+use PeServer\Core\Store\Stores;
 use PeServer\Core\StringUtility;
 use PeServer\Core\InitializeChecker;
+use PeServer\Core\Store\CookieStore;
+use PeServer\Core\Store\SessionStore;
+use PeServer\Core\Store\SpecialStore;
+use PeServer\Core\Store\TemporaryStore;
 use PeServer\Core\Mvc\TemplateParameter;
 use PeServer\Core\Throws\NotImplementedException;
 use PeServer\Core\Mvc\TemplatePlugin\CsrfFunction;
@@ -58,18 +61,29 @@ abstract class Template
 	 */
 	private static string $temporaryBaseName;
 
-	public static function initialize(string $rootDirectoryPath, string $baseDirectoryPath, string $templateBaseName, string $temporaryBaseName): void
+	protected static SpecialStore $specialStore;
+	protected static CookieStore $cookieStore;
+	protected static SessionStore $sessionStore;
+	protected static TemporaryStore $temporaryStore;
+
+	public static function initialize(Stores $stores, string $rootDirectoryPath, string $baseDirectoryPath, string $templateBaseName, string $temporaryBaseName): void
 	{
 		self::$initializeChecker ??= new InitializeChecker();
 		self::$initializeChecker->initialize();
 
+		self::$specialStore = $stores->special;
+		self::$cookieStore = $stores->cookie;
+		self::$sessionStore = $stores->session;
+		self::$temporaryStore = $stores->temporary;
+
 		self::$rootDirectoryPath = $rootDirectoryPath;
 		self::$baseDirectoryPath = $baseDirectoryPath;
+
 		self::$templateBaseName = $templateBaseName;
 		self::$temporaryBaseName = $temporaryBaseName;
 	}
 
-	public static function create(string $baseName, string $templateBaseName = InitialValue::EMPTY_STRING, string $temporaryBaseName = InitialValue::EMPTY_STRING): Template
+	public static function create(string $baseName, string $templateBaseName, string $temporaryBaseName): Template
 	{
 		self::$initializeChecker->throwIfNotInitialize();
 
@@ -80,7 +94,7 @@ abstract class Template
 			$temporaryBaseName = self::$temporaryBaseName;
 		}
 
-		return new _SmartyTemplate_Impl($baseName, $templateBaseName, $temporaryBaseName);
+		return new LocalSmartyTemplateImpl($baseName, $templateBaseName, $temporaryBaseName, self::$specialStore, self::$cookieStore, self::$sessionStore, self::$temporaryStore);
 	}
 
 	/**
@@ -93,16 +107,26 @@ abstract class Template
 	public abstract function build(string $templateName, TemplateParameter $parameter): string;
 }
 
-class _SmartyTemplate_Impl extends Template
+class LocalSmartyTemplateImpl extends Template
 {
 	/**
 	 * テンプレートエンジン。
 	 */
 	private Smarty $engine;
 
-	public function __construct(string $baseName, string $templateBaseName, string $temporaryBaseName)
+	private SpecialStore $special;
+	private CookieStore $cookie;
+	private SessionStore $session;
+	private TemporaryStore $temporary;
+
+	public function __construct(string $baseName, string $templateBaseName, string $temporaryBaseName, SpecialStore $special, CookieStore $cookie, SessionStore $session, TemporaryStore $temporary)
 	{
 		parent::$initializeChecker->throwIfNotInitialize();
+
+		$this->special = $special;
+		$this->cookie = $cookie;
+		$this->session = $session;
+		$this->temporary = $temporary;
 
 		$this->engine = new Smarty();
 		$this->engine->addTemplateDir(PathUtility::joinPath(parent::$baseDirectoryPath, $templateBaseName, $baseName));
@@ -121,6 +145,12 @@ class _SmartyTemplate_Impl extends Template
 			'status' => $parameter->httpStatus,
 			'values' => $parameter->values,
 			'errors' => $parameter->errors,
+			'stores' => [
+				'special' => $this->special,
+				'cookie' => $this->cookie,
+				'session' => $this->session,
+				'temporary' => $this->temporary,
+			],
 		]);
 	}
 
@@ -136,7 +166,11 @@ class _SmartyTemplate_Impl extends Template
 		$argument = new TemplatePluginArgument(
 			$this->engine,
 			self::$rootDirectoryPath,
-			self::$baseDirectoryPath
+			self::$baseDirectoryPath,
+			$this->special,
+			$this->cookie,
+			$this->session,
+			$this->temporary
 		);
 		$showErrorMessagesFunction = new ShowErrorMessagesFunction($argument);
 		/** @var array<ITemplateFunction> */

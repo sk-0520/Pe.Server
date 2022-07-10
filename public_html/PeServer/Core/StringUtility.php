@@ -120,14 +120,14 @@ abstract class StringUtility
 	 * @see https://www.php.net/manual/ja/function.number-format.php
 	 *
 	 * @param int|float $number フォーマットする数値
-	 * @param int $decimals 小数点以下の桁数。 0 を指定すると、 戻り値の decimal_separator は省略されます
-	 * @param string|null $decimal_separator 小数点を表す区切り文字
-	 * @param string|null $thousands_separator 千の位毎の区切り文字
+	 * @param int $decimals 小数点以下の桁数。 0 を指定すると、 戻り値の $decimalSeparator は省略されます
+	 * @param string|null $decimalSeparator 小数点を表す区切り文字
+	 * @param string|null $thousandsSeparator 千の位毎の区切り文字
 	 * @return string 置き換え後文字列
 	 */
-	public static function formatNumber(int|float $number, int $decimals = 0, ?string $decimal_separator = '.', ?string $thousands_separator = ','): string
+	public static function formatNumber(int|float $number, int $decimals = 0, ?string $decimalSeparator = '.', ?string $thousandsSeparator = ','): string
 	{
-		return number_format($number, $decimals, $decimal_separator, $thousands_separator);
+		return number_format($number, $decimals, $decimalSeparator, $thousandsSeparator);
 	}
 
 	/**

@@ -5,16 +5,18 @@ declare(strict_types=1);
 namespace PeServer\Core\Log;
 
 use \DateTimeImmutable;
-use PeServer\Core\Log\ILogger;
 use PeServer\Core\FileUtility;
+use PeServer\Core\Log\ILogger;
 use PeServer\Core\PathUtility;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Cryptography;
 use PeServer\Core\InitialValue;
+use PeServer\Core\Store\Stores;
 use PeServer\Core\StringUtility;
 use PeServer\Core\Log\FileLogger;
 use PeServer\Core\Log\MultiLogger;
 use PeServer\Core\InitializeChecker;
+use PeServer\Core\Store\SpecialStore;
 use PeServer\Core\Throws\NotImplementedException;
 
 /**
@@ -37,6 +39,7 @@ abstract class Logging
 	 */
 	private static InitializeChecker $initializeChecker;
 
+	private static Stores $stores;
 	/**
 	 * ログ設定。
 	 *
@@ -60,11 +63,12 @@ abstract class Logging
 	 * @param array<string,mixed> $loggingConfiguration
 	 * @return void
 	 */
-	public static function initialize(array $loggingConfiguration)
+	public static function initialize(Stores $stores, array $loggingConfiguration)
 	{
 		self::$initializeChecker ??= new InitializeChecker();
 		self::$initializeChecker->initialize();
 
+		self::$stores = $stores;
 		self::$loggingConfiguration = $loggingConfiguration;
 		self::$requestId = Cryptography::generateRandomBytes(self::LOG_REQUEST_ID_LENGTH)->toHex();
 
@@ -151,13 +155,13 @@ abstract class Logging
 		}
 
 		/** @var string */
-		$serverRemoteHost = ArrayUtility::getOr($_SERVER, 'REMOTE_HOST', InitialValue::EMPTY_STRING);
+		$serverRemoteHost = self::$stores->special->getServer('REMOTE_HOST', InitialValue::EMPTY_STRING);
 		if ($serverRemoteHost !== InitialValue::EMPTY_STRING) {
 			return self::$requestHost = $serverRemoteHost;
 		}
 
 		/** @var string */
-		$serverRemoteIpAddr = ArrayUtility::getOr($_SERVER, 'REMOTE_ADDR', InitialValue::EMPTY_STRING);
+		$serverRemoteIpAddr = self::$stores->special->getServer('REMOTE_ADDR', InitialValue::EMPTY_STRING);
 		if ($serverRemoteIpAddr === InitialValue::EMPTY_STRING) {
 			return self::$requestHost = InitialValue::EMPTY_STRING;
 		}
@@ -185,6 +189,7 @@ abstract class Logging
 	 * @phpstan-param LogMessageAlias $message
 	 * @param mixed ...$parameters
 	 * @return string
+	 * @return string
 	 */
 	public static function format(string $format, int $level, int $traceIndex, string $header, $message, ...$parameters): string
 	{
@@ -207,12 +212,12 @@ abstract class Logging
 			'DATE' => $timestamp->format('Y-m-d'),
 			'TIME' => $timestamp->format('H:i:s'),
 			'TIMEZONE' => $timestamp->format('P'),
-			'CLIENT_IP' => ArrayUtility::getOr($_SERVER, 'REMOTE_ADDR', InitialValue::EMPTY_STRING),
+			'CLIENT_IP' => self::$stores->special->getServer('REMOTE_ADDR', InitialValue::EMPTY_STRING),
 			'CLIENT_HOST' => self::getRemoteHost(),
 			'REQUEST_ID' => self::$requestId,
-			'UA' => ArrayUtility::getOr($_SERVER, 'HTTP_USER_AGENT', InitialValue::EMPTY_STRING),
-			'METHOD' => ArrayUtility::getOr($_SERVER, 'REQUEST_METHOD', InitialValue::EMPTY_STRING),
-			'REQUEST' => ArrayUtility::getOr($_SERVER, 'REQUEST_URI', InitialValue::EMPTY_STRING),
+			'UA' => self::$stores->special->getServer('HTTP_USER_AGENT', InitialValue::EMPTY_STRING),
+			'METHOD' => self::$stores->special->getServer('REQUEST_METHOD', InitialValue::EMPTY_STRING),
+			'REQUEST' => self::$stores->special->getServer('REQUEST_URI', InitialValue::EMPTY_STRING),
 			'SESSION' => session_id(),
 			//-------------------
 			'FILE' => $filePath,
@@ -235,10 +240,15 @@ abstract class Logging
 		self::$initializeChecker->throwIfNotInitialize();
 
 		$loggers = [
-			//@phpstan-ignore-next-line
-			new FileLogger(ArrayUtility::getOr(self::$loggingConfiguration, 'format', ''), $header, self::$level, $baseTraceIndex + 1,
-			/** @var array<mixed> */
-			self::$loggingConfiguration['file']),
+			new FileLogger(
+				//@phpstan-ignore-next-line
+				ArrayUtility::getOr(self::$loggingConfiguration, 'format', ''),
+				$header,
+				self::$level,
+				$baseTraceIndex + 1,
+				/** @var array<mixed> */
+				self::$loggingConfiguration['file']
+			),
 		];
 		if (function_exists('xdebug_is_debugger_active') && \xdebug_is_debugger_active()) {
 			$loggers[] = new XdebugLogger($header, self::$level, $baseTraceIndex + 1);

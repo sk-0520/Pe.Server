@@ -36,6 +36,7 @@ parameters:
 
   typeAliases:
     LogMessageAlias: 'object|array<mixed>|null|literal-string'
+    ServerStoreValueAlias: 'string|int|array<int|string|null>|null'
 
 includes:
   - ./bleedingEdge.neon

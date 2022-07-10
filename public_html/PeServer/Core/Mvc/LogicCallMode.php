@@ -45,7 +45,7 @@ abstract class LogicCallMode
 	 */
 	private static function create(int $mode): LogicCallMode
 	{
-		return new _LogicCallMode_Impl($mode);
+		return new LocalLogicCallModeImpl($mode);
 	}
 
 	/**
@@ -69,11 +69,12 @@ abstract class LogicCallMode
 	}
 }
 
-final class _LogicCallMode_Impl extends LogicCallMode
+final class LocalLogicCallModeImpl extends LogicCallMode
 {
 	/**
 	 * 呼び出し方法。
 	 * @readonly
+	 * @phpstan-var parent::INITIALIZE|parent::SUBMIT $mode
 	 */
 	private int $mode;
 
@@ -81,7 +82,7 @@ final class _LogicCallMode_Impl extends LogicCallMode
 	 * Undocumented function
 	 *
 	 * @param integer $mode
-	 * @phpstan-param LogicCallMode::INITIALIZE|LogicCallMode::SUBMIT $mode
+	 * @phpstan-param parent::INITIALIZE|parent::SUBMIT $mode
 	 */
 	public function __construct(int $mode)
 	{

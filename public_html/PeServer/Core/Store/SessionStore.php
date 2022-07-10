@@ -20,6 +20,7 @@ use PeServer\Core\Throws\InvalidOperationException;
  *
  * 一時データとして扱い、最後にセッションへ反映する感じで動く。
  * アプリケーション側で明示的に使用しない想定。
+ * @SuppressWarnings(PHPMD.Superglobals)
  */
 class SessionStore
 {
@@ -183,7 +184,8 @@ class SessionStore
 		session_start();
 
 		// セッションにCSRFトークンが存在しない場合は生成
-		if (!ArrayUtility::tryGet($_SESSION, Security::CSRF_SESSION_KEY, $_)) {
+		/**  */
+		if (!ArrayUtility::tryGet($_SESSION, Security::CSRF_SESSION_KEY, $unused)) {
 			$csrfToken = Security::generateCsrfToken();
 			$this->set(Security::CSRF_SESSION_KEY, $csrfToken);
 		}
@@ -237,6 +239,7 @@ class SessionStore
 	 *
 	 * @param string $key
 	 * @param mixed $value
+	 * @phpstan-param ServerStoreValueAlias $value
 	 * @return void
 	 */
 	public function set(string $key, mixed $value): void
@@ -267,7 +270,9 @@ class SessionStore
 	 *
 	 * @param string $key
 	 * @param mixed $fallbackValue
+	 * @phpstan-param ServerStoreValueAlias $fallbackValue
 	 * @return mixed 取得データ。
+	 * @phpstan-return ServerStoreValueAlias
 	 */
 	public function getOr(string $key, mixed $fallbackValue): mixed
 	{
@@ -279,6 +284,7 @@ class SessionStore
 	 *
 	 * @param string $key
 	 * @param mixed $result
+	 * @phpstan-param ServerStoreValueAlias $result
 	 * @return boolean 取得できたか。
 	 */
 	public function tryGet(string $key, mixed &$result): bool

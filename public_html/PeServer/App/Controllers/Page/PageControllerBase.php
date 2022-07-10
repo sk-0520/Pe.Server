@@ -24,7 +24,7 @@ abstract class PageControllerBase extends DomainControllerBase
 	 */
 	protected final function isLoggedIn(): bool
 	{
-		return $this->session->tryGet(SessionManager::ACCOUNT, $_);
+		return $this->session->tryGet(SessionManager::ACCOUNT, $unused);
 	}
 
 	protected function viewWithController(string $controllerName, string $action, TemplateParameter $parameter): ViewActionResult

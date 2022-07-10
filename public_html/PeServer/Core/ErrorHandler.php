@@ -131,7 +131,7 @@ class ErrorHandler
 	 */
 	public static function trapError(callable $action, int $errorLevel = E_ALL): ResultData
 	{
-		return Code::using(new _PhpErrorHandler($errorLevel), function (_PhpErrorHandler $disposable) use ($action) {
+		return Code::using(new LocalPhpErrorReceiver($errorLevel), function (LocalPhpErrorReceiver $disposable) use ($action) {
 			$result = $action();
 			if ($disposable->isError) {
 				/** @phpstan-var ResultData<TValue> */
@@ -162,12 +162,15 @@ class ErrorHandler
 	/**
 	 * エラー取得処理（呼び出し側）。
 	 *
+	 * こいつが呼ばれた時点でもはや何もできない。
+	 *
 	 * @param integer $errorNumber
 	 * @param string $message
 	 * @param string $file
 	 * @param integer $lineNumber
 	 * @param Throwable|null $throwable
 	 * @return no-return
+	 * @SuppressWarnings(PHPMD.ExitExpression)
 	 */
 	private function _catchError(int $errorNumber, string $message, string $file, int $lineNumber, ?Throwable $throwable)
 	{
@@ -211,12 +214,12 @@ class ErrorHandler
 			$logger->error($values);
 		}
 
-		$template = Template::create('template', 'Core');
+		$template = Template::create('template', 'Core', InitialValue::EMPTY_STRING);
 		echo $template->build('error-display.tpl', new TemplateParameter($status, $values, []));
 	}
 }
 
-final class _PhpErrorHandler extends DisposerBase
+final class LocalPhpErrorReceiver extends DisposerBase
 {
 	public bool $isError = false;
 

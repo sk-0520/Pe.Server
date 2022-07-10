@@ -8,6 +8,7 @@ use PeServer\Core\ArrayUtility;
 use PeServer\Core\InitialValue;
 use PeServer\Core\StringUtility;
 use PeServer\Core\Store\CookieOption;
+use PeServer\Core\Store\SpecialStore;
 
 /**
  * Cookie 管理処理。
@@ -21,7 +22,7 @@ class CookieStore
 	/**
 	 * cookie 一時設定データ。
 	 *
-	 * @var array<string,_CookieData>
+	 * @var array<string,LocalCookieData>
 	 */
 	private array $values = array();
 	/**
@@ -43,6 +44,8 @@ class CookieStore
 	 * @param CookieOption $option
 	 */
 	public function __construct(
+		/** @readonly */
+		protected SpecialStore $special,
 		/** @readonly */
 		public CookieOption $option
 	) {
@@ -66,7 +69,7 @@ class CookieStore
 	public function apply(): void
 	{
 		foreach ($this->removes as $key) {
-			if (ArrayUtility::existsKey($_COOKIE, $key)) {
+			if ($this->special->containsCookieName($key)) {
 				setcookie($key, InitialValue::EMPTY_STRING, time() - 60, '/');
 			}
 		}
@@ -97,7 +100,7 @@ class CookieStore
 	 */
 	public function set(string $key, string $value, CookieOption $option = null): void
 	{
-		$this->values[$key] = new _CookieData($value, $option ?? $this->option);
+		$this->values[$key] = new LocalCookieData($value, $option ?? $this->option);
 
 		unset($this->removes[$key]);
 
@@ -114,7 +117,7 @@ class CookieStore
 	{
 		if (StringUtility::isNullOrEmpty($key)) {
 			$this->values = array();
-			$this->removes = ArrayUtility::getKeys($_COOKIE);
+			$this->removes = $this->special->getCookieNames();
 		} else {
 			unset($this->values[$key]);
 			$this->removes[] = $key;
@@ -133,12 +136,12 @@ class CookieStore
 	public function getOr(string $key, string $fallbackValue): string
 	{
 		if (ArrayUtility::tryGet($this->values, $key, $data)) {
-			/** @var _CookieData $data */
+			/** @var LocalCookieData $data */
 			return $data->value;
 		}
 
 		/** @var string */
-		return ArrayUtility::getOr($_COOKIE, $key, $fallbackValue);
+		return $this->special->getCookie($key, $fallbackValue);
 	}
 
 	/**
@@ -151,16 +154,16 @@ class CookieStore
 	public function tryGet(string $key, ?string &$result): bool
 	{
 		if (ArrayUtility::tryGet($this->values, $key, $data)) {
-			/** @var _CookieData $data */
+			/** @var LocalCookieData $data */
 			$result = $data->value;
 			return true;
 		}
 
-		return ArrayUtility::tryGet($_COOKIE, $key, $result);
+		return $this->special->tryGetCookie($key, $result);
 	}
 }
 
-final class _CookieData
+final class LocalCookieData
 {
 	public function __construct(
 		public string $value,

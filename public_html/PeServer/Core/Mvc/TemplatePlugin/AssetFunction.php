@@ -41,6 +41,10 @@ class AssetFunction extends TemplateFunctionBase
 		return 'asset';
 	}
 
+	/**
+	 * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+	 * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+	 */
 	protected function functionBodyImpl(): string
 	{
 		/** @var string */

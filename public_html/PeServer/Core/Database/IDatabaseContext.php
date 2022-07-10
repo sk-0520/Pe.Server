@@ -45,7 +45,8 @@ interface IDatabaseContext extends IDatabaseReader, IDatabaseExecutor, IDisposab
 	/**
 	 * トランザクションラップ処理。
 	 *
-	 * @param callable(IDatabaseContext $context,mixed ...$arguments): bool $callback 実際の処理。戻り値が真の場合にコミット、偽ならロールバック。
+	 * @param callable $callback 実際の処理。戻り値が真の場合にコミット、偽ならロールバック。
+	 * @phpstan-param callable(IDatabaseContext $context,mixed ...$arguments): (bool) $callback
 	 * @param mixed ...$arguments 引数
 	 * @return bool コミットされたか。正常系としてのコミット・ロールバック処理の戻りであり、異常系は例外が投げられる。
 	 * @throws SqlException

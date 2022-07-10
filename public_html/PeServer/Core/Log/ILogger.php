@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Log;
 
 /**
- * ログ出力基盤。
+ * ログ出力インターフェイス。
  *
  * !!注意!! PSR-3 には準拠していない。
  */

@@ -36,7 +36,7 @@ class Mailer
 	/**
 	 * @readonly
 	 */
-	private _SmtpSetting $smtp;
+	private LocalSmtpSetting $smtp;
 
 	public string $encoding  = '8bit';
 	public string $characterSet = 'utf-8';
@@ -95,7 +95,7 @@ class Mailer
 
 					$smtpSetting = $setting['smtp'];
 
-					$smtp = new _SmtpSetting(
+					$smtp = new LocalSmtpSetting(
 						$smtpSetting['host'],
 						$smtpSetting['port'],
 						$smtpSetting['secure'],
@@ -155,6 +155,11 @@ class Mailer
 		return $subject;
 	}
 
+	/**
+	 * 送信。
+	 *
+	 * @return void
+	 */
 	public function send(): void
 	{
 		$client = new PHPMailer(true);
@@ -236,7 +241,7 @@ class Mailer
  *
  * @immutable
  */
-final class _SmtpSetting
+final class LocalSmtpSetting
 {
 	public function __construct(
 		public string $host,

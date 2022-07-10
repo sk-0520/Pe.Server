@@ -13,6 +13,7 @@ use PeServer\Core\Throws\KeyNotFoundException;
  *
  * GET/POST/URLパラメータの値などはこいつから取得する。
  * @immutable
+ * @SuppressWarnings(PHPMD.Superglobals)
  */
 class HttpRequest
 {

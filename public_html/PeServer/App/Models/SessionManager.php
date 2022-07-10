@@ -34,11 +34,16 @@ abstract class SessionManager
 		return self::$session->isStarted();
 	}
 
+	/**
+	 * アカウントが存在するか。
+	 *
+	 * @return boolean
+	 */
 	public static function existsAccount(): bool
 	{
 		self::$initializeChecker->throwIfNotInitialize();
 
-		return self::$session->tryGet(self::ACCOUNT, $_);
+		return self::$session->tryGet(self::ACCOUNT, $unused);
 	}
 
 	/**
