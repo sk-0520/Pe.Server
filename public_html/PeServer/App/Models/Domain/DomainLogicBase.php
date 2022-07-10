@@ -63,7 +63,6 @@ abstract class DomainLogicBase extends LogicBase
 	 * @param array<mixed>|null $info
 	 * @param IDatabaseContext|null $context
 	 * @return integer
-	 * @SuppressWarnings(PHPMD.Superglobals)
 	 */
 	private function writeAuditLogCore(string $userId, string $event, ?array $info, ?IDatabaseContext $context): int
 	{

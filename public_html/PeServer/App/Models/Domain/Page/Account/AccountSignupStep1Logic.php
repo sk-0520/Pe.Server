@@ -66,9 +66,6 @@ class AccountSignupStep1Logic extends PageLogicBase
 		}
 	}
 
-	/**
-	 * @SuppressWarnings(PHPMD.Superglobals)
-	 */
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
 		if ($callMode->isInitialize()) {

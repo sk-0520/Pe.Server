@@ -12,7 +12,6 @@ use PeServer\Core\Mvc\TemplatePlugin\TemplatePluginArgument;
 
 /**
  * CSRFトークン埋め込み。
- * @SuppressWarnings(PHPMD.Superglobals)
  */
 class CsrfFunction extends TemplateFunctionBase
 {
