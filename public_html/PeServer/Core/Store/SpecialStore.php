@@ -133,4 +133,82 @@ class SpecialStore
 	{
 		return ArrayUtility::getKeys($_SESSION);
 	}
+
+	public function containsGetName(string $name): bool
+	{
+		return isset($_GET[$name]);
+	}
+
+	public function getGet(string $name, string $fallbackValue = InitialValue::EMPTY_STRING): string
+	{
+		$result = ArrayUtility::getOr($_GET, $name, $fallbackValue);
+		return $result;
+	}
+
+	public function tryGetGet(string $name, ?string &$result): bool
+	{
+		return ArrayUtility::tryGet($_GET, $name, $result);
+	}
+
+	/**
+	 * $_GET の名前一覧取得。
+	 *
+	 * @return string[]
+	 */
+	public function getGetNames(): array
+	{
+		return ArrayUtility::getKeys($_GET);
+	}
+
+	public function containsPostName(string $name): bool
+	{
+		return isset($_POST[$name]);
+	}
+
+	public function getPost(string $name, string $fallbackValue = InitialValue::EMPTY_STRING): string
+	{
+		$result = ArrayUtility::getOr($_POST, $name, $fallbackValue);
+		return $result;
+	}
+
+	public function tryGetPost(string $name, ?string &$result): bool
+	{
+		return ArrayUtility::tryGet($_POST, $name, $result);
+	}
+
+	/**
+	 * $_POST の名前一覧取得。
+	 *
+	 * @return string[]
+	 */
+	public function getPostNames(): array
+	{
+		return ArrayUtility::getKeys($_POST);
+	}
+
+	public function containsFileName(string $name): bool
+	{
+		return isset($_FILES[$name]);
+	}
+
+	// public function getFile(string $name, string $fallbackValue = InitialValue::EMPTY_STRING): string
+	// {
+	// 	$result = ArrayUtility::getOr($_FILES, $name, $fallbackValue);
+	// 	return $result;
+	// }
+
+	// public function tryGetFile(string $name, ?string &$result): bool
+	// {
+	// 	return ArrayUtility::tryGet($_FILES, $name, $result);
+	// }
+
+	/**
+	 * $_FILES の名前一覧取得。
+	 *
+	 * @return string[]
+	 */
+	public function getFileNames(): array
+	{
+		return ArrayUtility::getKeys($_FILES);
+	}
 }
