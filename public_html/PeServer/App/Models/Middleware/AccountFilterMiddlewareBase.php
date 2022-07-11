@@ -21,7 +21,7 @@ abstract class AccountFilterMiddlewareBase implements IMiddleware
 	 */
 	protected function filterCore(MiddlewareArgument $argument, array $levels): MiddlewareResult
 	{
-		if (!$argument->session->tryGet(SessionManager::ACCOUNT, $account)) {
+		if (!$argument->stores->session->tryGet(SessionManager::ACCOUNT, $account)) {
 			return MiddlewareResult::error(HttpStatus::forbidden());
 		}
 

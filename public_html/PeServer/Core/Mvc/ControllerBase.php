@@ -7,6 +7,7 @@ namespace PeServer\Core\Mvc;
 use PeServer\Core\UrlUtility;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\Logging;
+use PeServer\Core\Store\Stores;
 use PeServer\Core\Mvc\LogicBase;
 use PeServer\Core\StringUtility;
 use PeServer\Core\Http\HttpStatus;
@@ -42,23 +43,14 @@ abstract class ControllerBase
 	protected string $skipBaseName = 'PeServer\\App\\Controllers\\Page';
 
 	/** @readonly */
-	protected SpecialStore $special;
-	/** @readonly */
-	protected CookieStore $cookie;
-	/** @readonly */
-	protected TemporaryStore $temporary;
-	/** @readonly */
-	protected SessionStore $session;
+	protected Stores $stores;
 
 	protected ?LogicBase $logic = null;
 
 	protected function __construct(ControllerArgument $argument)
 	{
+		$this->stores = $argument->stores;
 		$this->logger = $argument->logger;
-		$this->special = $argument->special;
-		$this->cookie = $argument->cookie;
-		$this->temporary = $argument->temporary;
-		$this->session = $argument->session;
 	}
 
 	/**
@@ -73,10 +65,7 @@ abstract class ControllerBase
 	{
 		return new LogicParameter(
 			$request,
-			$this->special,
-			$this->cookie,
-			$this->temporary,
-			$this->session,
+			$this->stores,
 			Logging::create($logicName)
 		);
 	}
@@ -139,7 +128,7 @@ abstract class ControllerBase
 	 */
 	public function redirectPath(string $path, ?array $query = null): RedirectActionResult
 	{
-		$url = UrlUtility::buildPath($path, $query ?? [], $this->special);
+		$url = UrlUtility::buildPath($path, $query ?? [], $this->stores->special);
 		return $this->redirectUrl($url);
 	}
 

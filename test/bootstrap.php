@@ -13,13 +13,15 @@ require_once(__DIR__ . '/../public_html/PeServer/Core/AutoLoader.php');
 use PeServer\App\Models\Initializer;
 use PeServer\Core\Store\SpecialStore;
 
-\PeServer\Core\AutoLoader::initialize(
+$autoLoader = new \PeServer\Core\AutoLoader(
 	[
 		__DIR__,
 		__DIR__ . '/../public_html',
 	],
 	'/^PeServer/'
 );
+$autoLoader->register();
+
 Initializer::initialize(
 	__DIR__ . '/../public_html',
 	__DIR__ . '/../public_html/PeServer',

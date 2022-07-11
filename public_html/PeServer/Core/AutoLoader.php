@@ -9,7 +9,7 @@ namespace PeServer\Core;
  *
  * NOTE: なにがあってもPHP標準関数ですべて処理すること。
  */
-abstract class AutoLoader
+class AutoLoader
 {
 	/**
 	 * 読み込みベースパス。
@@ -17,7 +17,7 @@ abstract class AutoLoader
 	 * @var string[]
 	 * @readonly
 	 */
-	private static array $baseDirectoryPaths;
+	private array $baseDirectoryPaths;
 
 	/**
 	 * 読み込み対象正規表現パターン。
@@ -25,21 +25,29 @@ abstract class AutoLoader
 	 * @var string
 	 * @readonly
 	 */
-	private static string $includePattern;
+	private string $includePattern;
 
 	/**
-	 * 初期化。
+	 * 生成。
 	 *
 	 * @param string[] $baseDirectoryPaths ベースディレクトリ一覧。
 	 * @param string $includePattern 読み込み対象パターン（正規表現）。
 	 * @return void
 	 */
-	public static function initialize(array $baseDirectoryPaths, string $includePattern)
+	public function __construct(array $baseDirectoryPaths, string $includePattern)
 	{
-		self::$baseDirectoryPaths = $baseDirectoryPaths;
-		self::$includePattern = $includePattern;
+		$this->baseDirectoryPaths = $baseDirectoryPaths;
+		$this->includePattern = $includePattern;
+	}
 
-		spl_autoload_register([__CLASS__, 'load']);
+	/**
+	 * 登録。
+	 *
+	 * @return void
+	 */
+	public function register(): void
+	{
+		spl_autoload_register([$this, 'load']);
 	}
 
 	/**
@@ -49,13 +57,13 @@ abstract class AutoLoader
 	 * @phpstan-param class-string $className
 	 * @return void
 	 */
-	private static function load(string $className): void
+	private function load(string $className): void
 	{
-		if (!preg_match(self::$includePattern, $className)) {
+		if (!preg_match($this->includePattern, $className)) {
 			return;
 		}
 
-		foreach (self::$baseDirectoryPaths as $baseDirectoryPath) {
+		foreach ($this->baseDirectoryPaths as $baseDirectoryPath) {
 			$fileBasePath = str_replace('\\', DIRECTORY_SEPARATOR, $className);
 			$filePath = $baseDirectoryPath . DIRECTORY_SEPARATOR . $fileBasePath . '.php';
 

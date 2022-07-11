@@ -9,6 +9,11 @@ use PeServer\Core\Store\SessionStore;
 use PeServer\Core\Store\SpecialStore;
 use PeServer\Core\Store\TemporaryStore;
 
+/**
+ * クッキーとかあれこれ一覧。
+ *
+ * @immutable
+ */
 class Stores
 {
 	public CookieStore $cookie;
@@ -23,5 +28,12 @@ class Stores
 		$this->cookie = new CookieStore($this->special, $this->options->cookie);
 		$this->temporary = new TemporaryStore($this->options->temporary, $this->cookie);
 		$this->session = new SessionStore($this->options->session, $this->cookie);
+	}
+
+	public function apply(): void
+	{
+		$this->session->apply();
+		$this->temporary->apply();
+		$this->cookie->apply();
 	}
 }

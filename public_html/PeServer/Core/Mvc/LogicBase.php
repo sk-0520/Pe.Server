@@ -5,14 +5,16 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc;
 
 use \DateInterval;
+use PeServer\Core\Utc;
 use \DateTimeImmutable;
 use PeServer\Core\I18n;
 use PeServer\Core\Mime;
 use PeServer\Core\Binary;
-use PeServer\Core\Log\ILogger;
 use PeServer\Core\FileUtility;
+use PeServer\Core\Log\ILogger;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\InitialValue;
+use PeServer\Core\Store\Stores;
 use PeServer\Core\Mvc\Validator;
 use PeServer\Core\StringUtility;
 use PeServer\Core\Http\HttpStatus;
@@ -23,13 +25,12 @@ use PeServer\Core\Store\CookieStore;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\Store\CookieOption;
 use PeServer\Core\Store\SessionStore;
+use PeServer\Core\Store\SpecialStore;
 use PeServer\Core\Store\TemporaryStore;
 use PeServer\Core\Mvc\TemplateParameter;
 use PeServer\Core\Mvc\IValidationReceiver;
-use PeServer\Core\Store\SpecialStore;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\InvalidOperationException;
-use PeServer\Core\Utc;
 
 /**
  * コントローラから呼び出されるロジック基底処理。
@@ -98,25 +99,9 @@ abstract class LogicBase implements IValidationReceiver
 	private ?DataContent $content = null;
 
 	/**
-	 * PHP 変数管理
 	 * @readonly
 	 */
-	protected SpecialStore $special;
-	/**
-	 * cookie 管理
-	 * @readonly
-	 */
-	private CookieStore $cookie;
-	/**
-	 * 一時データ管理
-	 * @readonly
-	 */
-	private TemporaryStore $temporary;
-	/**
-	 * セッション管理
-	 * @readonly
-	 */
-	private SessionStore $session;
+	protected Stores $stores;
 
 	/**
 	 * 応答ヘッダ。
@@ -135,10 +120,7 @@ abstract class LogicBase implements IValidationReceiver
 		$this->beginTimestamp = Utc::create();
 		$this->httpStatus = HttpStatus::ok();
 		$this->request = $parameter->request;
-		$this->special = $parameter->special;
-		$this->cookie = $parameter->cookie;
-		$this->temporary = $parameter->temporary;
-		$this->session = $parameter->session;
+		$this->stores = $parameter->stores;
 		$this->logger = $parameter->logger;
 
 		$this->validator = new Validator($this);
@@ -217,7 +199,7 @@ abstract class LogicBase implements IValidationReceiver
 	 */
 	protected function getCookie(string $key, string $fallbackValue = InitialValue::EMPTY_STRING): string
 	{
-		return $this->cookie->getOr($key, $fallbackValue);
+		return $this->stores->cookie->getOr($key, $fallbackValue);
 	}
 
 	/**
@@ -238,15 +220,15 @@ abstract class LogicBase implements IValidationReceiver
 				$cookieOption = $option;
 			} else {
 				/** @var string */
-				$path = ArrayUtility::getOr($option, 'path', $this->cookie->option->path);
+				$path = ArrayUtility::getOr($option, 'path', $this->stores->cookie->option->path);
 				/** @var \DateInterval|null */
-				$span = ArrayUtility::getOr($option, 'span', $this->cookie->option->span);
+				$span = ArrayUtility::getOr($option, 'span', $this->stores->cookie->option->span);
 				/** @var bool */
-				$secure = ArrayUtility::getOr($option, 'secure', $this->cookie->option->secure);
+				$secure = ArrayUtility::getOr($option, 'secure', $this->stores->cookie->option->secure);
 				/** @var bool */
-				$httpOnly = ArrayUtility::getOr($option, 'httpOnly', $this->cookie->option->httpOnly);
+				$httpOnly = ArrayUtility::getOr($option, 'httpOnly', $this->stores->cookie->option->httpOnly);
 				/** @var 'Lax'|'lax'|'None'|'none'|'Strict'|'strict' */
-				$sameSite = ArrayUtility::getOr($option, 'sameSite', $this->cookie->option->sameSite);
+				$sameSite = ArrayUtility::getOr($option, 'sameSite', $this->stores->cookie->option->sameSite);
 
 				$cookieOption = new CookieOption(
 					$path,
@@ -258,7 +240,7 @@ abstract class LogicBase implements IValidationReceiver
 			}
 		}
 
-		$this->cookie->set($key, $value, $cookieOption);
+		$this->stores->cookie->set($key, $value, $cookieOption);
 	}
 
 	/**
@@ -269,12 +251,12 @@ abstract class LogicBase implements IValidationReceiver
 	 */
 	protected function removeCookie(string $key): void
 	{
-		$this->cookie->remove($key);
+		$this->stores->cookie->remove($key);
 	}
 
 	protected function peekTemporary(string $key, mixed $fallbackValue = null): mixed
 	{
-		$value = $this->temporary->peek($key);
+		$value = $this->stores->temporary->peek($key);
 		if (is_null($value)) {
 			return $fallbackValue;
 		}
@@ -284,7 +266,7 @@ abstract class LogicBase implements IValidationReceiver
 
 	protected function popTemporary(string $key, mixed $fallbackValue = null): mixed
 	{
-		$value = $this->temporary->pop($key);
+		$value = $this->stores->temporary->pop($key);
 		if (is_null($value)) {
 			return $fallbackValue;
 		}
@@ -294,37 +276,37 @@ abstract class LogicBase implements IValidationReceiver
 
 	protected function pushTemporary(string $key, mixed $value): void
 	{
-		$this->temporary->push($key, $value);
+		$this->stores->temporary->push($key, $value);
 	}
 	protected function removeTemporary(string $key): void
 	{
-		$this->temporary->remove($key);
+		$this->stores->temporary->remove($key);
 	}
 
 	protected function getSession(string $key, mixed $fallbackValue = null): mixed
 	{
-		return $this->session->getOr($key, $fallbackValue);
+		return $this->stores->session->getOr($key, $fallbackValue);
 	}
 
 	protected function setSession(string $key, mixed $value): void
 	{
-		$this->session->set($key, $value);
+		$this->stores->session->set($key, $value);
 	}
 	protected function removeSession(string $key): void
 	{
-		$this->session->remove($key);
+		$this->stores->session->remove($key);
 	}
 	protected function cancelSession(): void
 	{
-		$this->session->setApplyState(SessionStore::APPLY_CANCEL);
+		$this->stores->session->setApplyState(SessionStore::APPLY_CANCEL);
 	}
 	protected function restartSession(): void
 	{
-		$this->session->setApplyState(SessionStore::APPLY_RESTART);
+		$this->stores->session->setApplyState(SessionStore::APPLY_RESTART);
 	}
 	protected function shutdownSession(): void
 	{
-		$this->session->setApplyState(SessionStore::APPLY_SHUTDOWN);
+		$this->stores->session->setApplyState(SessionStore::APPLY_SHUTDOWN);
 	}
 
 	public function addResponseHeader(string $name, string $value): void

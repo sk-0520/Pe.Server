@@ -139,13 +139,11 @@ abstract class StoreConfiguration
 	/**
 	 * ストア情報取得。
 	 *
+	 * @param array<string,array<string,string|bool>>|null $setting;
 	 * @return StoreOptions
 	 */
-	public static function build(): StoreOptions
+	public static function build($setting): StoreOptions
 	{
-		/** @var array<string,array<string,string|bool>>|null */
-		$setting = ArrayUtility::getOr(AppConfiguration::$config, 'store', null);
-
 		$cookie = self::getCookie($setting);
 		$temporary = self::getTemporary($setting, $cookie);
 		$session = self::getSession($setting, $cookie);

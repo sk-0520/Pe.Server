@@ -66,9 +66,6 @@ class AccountSignupStep1Logic extends PageLogicBase
 		}
 	}
 
-	/**
-	 * @SuppressWarnings(PHPMD.Superglobals)
-	 */
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
 		if ($callMode->isInitialize()) {
@@ -104,8 +101,8 @@ class AccountSignupStep1Logic extends PageLogicBase
 				$params['token'],
 				$params['email'],
 				$params['mark_email'],
-				$this->special->getServer('REMOTE_ADDR'),
-				$this->special->getServer('HTTP_USER_AGENT')
+				$this->stores->special->getServer('REMOTE_ADDR'),
+				$this->stores->special->getServer('HTTP_USER_AGENT')
 			);
 
 			return true;

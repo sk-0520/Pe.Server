@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc\Middleware;
 
 use PeServer\Core\Log\ILogger;
+use PeServer\Core\Store\Stores;
 use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Http\RequestPath;
 use PeServer\Core\Http\HttpResponse;
@@ -24,17 +25,13 @@ class MiddlewareArgument
 	 * 生成。
 	 *
 	 * @param RequestPath $requestPath
-	 * @param SpecialStore $special
-	 * @param CookieStore $cookie
-	 * @param SessionStore $session
+	 * @param Stores $stores
 	 * @param HttpRequest $request
 	 * @param ILogger $logger
 	 */
 	public function __construct(
 		public RequestPath $requestPath,
-		public SpecialStore $special,
-		public CookieStore $cookie,
-		public SessionStore $session,
+		public Stores $stores,
 		public HttpRequest $request,
 		public ILogger $logger
 	) {

@@ -58,7 +58,7 @@ final class AccountController extends PageControllerBase
 
 		$logic = $this->createLogic(AccountLoginLogic::class, $request);
 		if ($logic->run(LogicCallMode::submit())) {
-			if ($this->session->tryGet(SessionManager::ACCOUNT, $account)) {
+			if ($this->stores->session->tryGet(SessionManager::ACCOUNT, $account)) {
 				if ($account['level'] === UserLevel::SETUP) {
 					return $this->redirectPath('setting/setup');
 				}
