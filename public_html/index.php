@@ -14,17 +14,17 @@ use PeServer\App\Models\Initializer;
 use PeServer\App\Models\AppSpecialStore;
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\RouteConfiguration;
-use PeServer\App\Models\StoreConfiguration;
 
 ini_set('display_errors', '1');
 error_reporting(E_ALL);
 
-AutoLoader::initialize(
+$autoLoader = new AutoLoader(
 	[
 		__DIR__,
 	],
 	'/^PeServer/'
 );
+$autoLoader->register();
 
 $specialStore = new AppSpecialStore();
 Initializer::initialize(
