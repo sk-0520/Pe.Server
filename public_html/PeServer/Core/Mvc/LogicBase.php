@@ -107,6 +107,7 @@ abstract class LogicBase implements IValidationReceiver
 	 * 応答ヘッダ。
 	 *
 	 * @var array<string,string[]>
+	 * @phpstan-var array<non-empty-string,string[]>
 	 */
 	private array $responseHeaders = array();
 
@@ -309,6 +310,13 @@ abstract class LogicBase implements IValidationReceiver
 		$this->stores->session->setApplyState(SessionStore::APPLY_SHUTDOWN);
 	}
 
+	/**
+	 * 応答HTTPヘッダ追加。
+	 *
+	 * @param non-empty-string $name
+	 * @param string $value
+	 * @return void
+	 */
 	public function addResponseHeader(string $name, string $value): void
 	{
 		if (isset($this->responseHeaders[$name])) {
@@ -517,6 +525,7 @@ abstract class LogicBase implements IValidationReceiver
 	 * 応答ヘッダの取得。
 	 *
 	 * @return array<string,string[]>
+	 * @phpstan-return array<non-empty-string,string[]>
 	 */
 	public function getResponseHeaders(): array
 	{

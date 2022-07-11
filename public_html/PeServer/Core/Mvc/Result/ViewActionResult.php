@@ -24,6 +24,7 @@ class ViewActionResult implements IActionResult
 	 * @param string $actionName
 	 * @param TemplateParameter $templateParameter
 	 * @param array<string,string[]> $headers
+	 * @phpstan-param array<non-empty-string,string[]> $headers
 	 */
 	public function __construct(
 		private string $templateBaseName,

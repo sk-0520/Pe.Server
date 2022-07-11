@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Http;
 
+use PeServer\Core\Store\Stores;
 use PeServer\Core\Http\HttpHeader;
 use PeServer\Core\Http\HttpMethod;
+use PeServer\Core\Store\SpecialStore;
 use PeServer\Core\Throws\KeyNotFoundException;
 
 /**
@@ -25,9 +27,10 @@ class HttpRequest
 	 * @param array<string,string> $urlParameters URLパラメータ。
 	 */
 	public function __construct(
+		public SpecialStore $specialStore,
 		public HttpMethod $httpMethod,
 		public HttpHeader $httpHeader,
-		protected array $urlParameters
+		public array $urlParameters
 	) {
 	}
 
@@ -88,7 +91,6 @@ class HttpRequest
 			}
 		}
 		if (!$strict || $this->httpMethod->is(HttpMethod::post())) {
-
 			if (isset($_POST[$name])) {
 				return $_POST[$name];
 			}

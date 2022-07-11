@@ -95,10 +95,11 @@ abstract class ControllerBase
 	 * ロジック側で生成された応答ヘッダを取得。
 	 *
 	 * @return array<string,string[]> 応答ヘッダ。ロジック未生成の場合は空の応答ヘッダを返す。
+	 * @phpstan-return array<non-empty-string,string[]> 応答ヘッダ。ロジック未生成の場合は空の応答ヘッダを返す。
 	 */
 	private function getResponseHeaders(): array
 	{
-		/** @var array<string,string[]> */
+		/** @phpstan-var array<non-empty-string,string[]> */
 		$headers = [];
 
 		if (!is_null($this->logic)) {

@@ -95,7 +95,7 @@ class Routing
 
 		$this->stores = $stores;
 		$this->middlewareLogger = Logging::create('middleware');
-		$this->shutdownRequest = new HttpRequest($requestMethod, $this->requestHeader, []);
+		$this->shutdownRequest = new HttpRequest($this->stores->special, $requestMethod, $this->requestHeader, []);
 	}
 
 	/**
@@ -224,7 +224,7 @@ class Routing
 		$splitNames = StringUtility::split($rawControllerName, '/');
 		$controllerName = $splitNames[ArrayUtility::getCount($splitNames) - 1];
 
-		$this->shutdownRequest = $request = new HttpRequest($this->requestMethod, $this->requestHeader, $urlParameters);
+		$this->shutdownRequest = $request = new HttpRequest($this->stores->special, $this->requestMethod, $this->requestHeader, $urlParameters);
 
 		// アクション共通ミドルウェア処理
 		$this->shutdownMiddleware += $this->setting->actionShutdownMiddleware;
