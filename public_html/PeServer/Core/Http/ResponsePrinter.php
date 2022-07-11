@@ -7,7 +7,11 @@ namespace PeServer\Core\Http;
 use PeServer\Core\Binary;
 use PeServer\Core\Http\HttpResponse;
 
-
+/**
+ * HTTPレスポンス出力処理。
+ *
+ * 本クラス処理前後(execute前後)には何も出力しないのがお行儀良い処理。
+ */
 class ResponsePrinter
 {
 	public function __construct(

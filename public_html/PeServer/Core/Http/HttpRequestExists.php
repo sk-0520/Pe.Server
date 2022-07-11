@@ -10,10 +10,15 @@ namespace PeServer\Core\Http;
  */
 class HttpRequestExists
 {
+	/** 使わん */
 	public const KIND_NONE = 0;
+	/** URL */
 	public const KIND_URL = 1;
+	/** GET */
 	public const KIND_GET = 2;
+	/** POST */
 	public const KIND_POST = 3;
+	/** FILE */
 	public const KIND_FILE = 4;
 
 	/**

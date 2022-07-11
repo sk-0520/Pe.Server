@@ -51,7 +51,7 @@ abstract class Logging
 	 * ログレベル。
 	 *
 	 * @var int
-	 * @phpstan-var ILogger::LEVEL_*
+	 * @phpstan-var ILogger::LOG_LEVEL_*
 	 */
 	private static int $level;
 
@@ -74,10 +74,10 @@ abstract class Logging
 
 		/**
 		 * @var int
-		 * @phpstan-var ILogger::LEVEL_*
+		 * @phpstan-var ILogger::LOG_LEVEL_*
 		 *
 		 */
-		$level = ArrayUtility::getOr(self::$loggingConfiguration, 'level', ILogger::LEVEL_INFORMATION);
+		$level = ArrayUtility::getOr(self::$loggingConfiguration, 'level', ILogger::LOG_LEVEL_INFORMATION);
 
 		self::$level = $level;
 	}
@@ -85,11 +85,11 @@ abstract class Logging
 	private static function formatLevel(int $level): string
 	{
 		return match ($level) {
-			ILogger::LEVEL_TRACE => 'TRACE',
-			ILogger::LEVEL_DEBUG => 'DEBUG',
-			ILogger::LEVEL_INFORMATION => 'INFO ',
-			ILogger::LEVEL_WARNING => 'WARN ',
-			ILogger::LEVEL_ERROR => 'ERROR',
+			ILogger::LOG_LEVEL_TRACE => 'TRACE',
+			ILogger::LOG_LEVEL_DEBUG => 'DEBUG',
+			ILogger::LOG_LEVEL_INFORMATION => 'INFO ',
+			ILogger::LOG_LEVEL_WARNING => 'WARN ',
+			ILogger::LOG_LEVEL_ERROR => 'ERROR',
 			default => throw new NotImplementedException(),
 		};
 	}
@@ -181,7 +181,7 @@ abstract class Logging
 	 * @param string $format
 	 * @phpstan-param literal-string $format
 	 * @param integer $level
-	 * @phpstan-param ILogger::LEVEL_* $level 有効レベル。S
+	 * @phpstan-param ILogger::LOG_LEVEL_* $level 有効レベル。S
 	 * @param integer $level
 	 * @param integer $traceIndex
 	 * @param string $header

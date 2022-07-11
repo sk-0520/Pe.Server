@@ -19,7 +19,7 @@ abstract class LoggerBase implements ILogger
 	 * @phpstan-param literal-string $format
 	 * @param string $header ヘッダ。使用用途により意味合いは変わるので実装側でルール決めして使用すること。
 	 * @param integer $level 有効レベル。
-	 * @phpstan-param ILogger::LEVEL_* $level 有効レベル。
+	 * @phpstan-param ILogger::LOG_LEVEL_* $level 有効レベル。
 	 * @param integer $baseTraceIndex 基準トレース位置。
 	 */
 	public function __construct(
@@ -38,7 +38,7 @@ abstract class LoggerBase implements ILogger
 	 * ログ書式適用。
 	 *
 	 * @param integer $level ログレベル
-	 * @phpstan-param ILogger::LEVEL_* $level 有効レベル。
+	 * @phpstan-param ILogger::LOG_LEVEL_* $level 有効レベル。
 	 * @param integer $traceIndex トレース位置。
 	 * @param mixed $message メッセージ。
 	 * @phpstan-param LogMessageAlias $message
@@ -54,7 +54,7 @@ abstract class LoggerBase implements ILogger
 	 * ログ出力実装。
 	 *
 	 * @param integer $level ログレベル。
-	 * @phpstan-param self::LEVEL_* $level ログレベル。
+	 * @phpstan-param self::LOG_LEVEL_* $level ログレベル。
 	 * @param integer $traceIndex 現在フレーム数。
 	 * @param mixed $message メッセージかオブジェクト。
 	 * @phpstan-param LogMessageAlias $message
@@ -74,22 +74,22 @@ abstract class LoggerBase implements ILogger
 
 	public final function trace($message, ...$parameters): void
 	{
-		$this->log(self::LEVEL_TRACE, $this->baseTraceIndex + 1, $message, ...$parameters);
+		$this->log(self::LOG_LEVEL_TRACE, $this->baseTraceIndex + 1, $message, ...$parameters);
 	}
 	public final function debug($message, ...$parameters): void
 	{
-		$this->log(self::LEVEL_DEBUG, $this->baseTraceIndex + 1, $message, ...$parameters);
+		$this->log(self::LOG_LEVEL_DEBUG, $this->baseTraceIndex + 1, $message, ...$parameters);
 	}
 	public final function info($message, ...$parameters): void
 	{
-		$this->log(self::LEVEL_INFORMATION, $this->baseTraceIndex + 1, $message, ...$parameters);
+		$this->log(self::LOG_LEVEL_INFORMATION, $this->baseTraceIndex + 1, $message, ...$parameters);
 	}
 	public final function warn($message, ...$parameters): void
 	{
-		$this->log(self::LEVEL_WARNING, $this->baseTraceIndex + 1, $message, ...$parameters);
+		$this->log(self::LOG_LEVEL_WARNING, $this->baseTraceIndex + 1, $message, ...$parameters);
 	}
 	public final function error($message, ...$parameters): void
 	{
-		$this->log(self::LEVEL_ERROR, $this->baseTraceIndex + 1, $message, ...$parameters);
+		$this->log(self::LOG_LEVEL_ERROR, $this->baseTraceIndex + 1, $message, ...$parameters);
 	}
 }

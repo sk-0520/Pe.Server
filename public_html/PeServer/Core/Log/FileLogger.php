@@ -43,7 +43,7 @@ class FileLogger extends LoggerBase
 	 *
 	 * @param string $header ヘッダ。使用用途により意味合いは変わるので実装側でルール決めして使用すること。
 	 * @param integer $level 有効レベル。
-	 * @phpstan-param ILogger::LEVEL_* $level 有効レベル。
+	 * @phpstan-param ILogger::LOG_LEVEL_* $level 有効レベル。
 	 * @param integer $baseTraceIndex 基準トレース位置。
 	 * @param array<string,mixed> $fileLoggingConfiguration
 	 */
