@@ -41,9 +41,22 @@ class AssetFunction extends TemplateFunctionBase
 		return 'asset';
 	}
 
+	private function isIgnoreAsset(string $sourcePath): bool
+	{
+		$ignoreAsset =
+			StringUtility::startsWith($sourcePath, '//', false)
+			||
+			StringUtility::startsWith($sourcePath, 'https://', false)
+			||
+			StringUtility::startsWith($sourcePath, 'http://', false)
+			||
+			StringUtility::contains($sourcePath, '?', false);
+
+		return $ignoreAsset;
+	}
+
 	/**
 	 * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-	 * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
 	 */
 	protected function functionBodyImpl(): string
 	{
@@ -58,14 +71,7 @@ class AssetFunction extends TemplateFunctionBase
 		$fileExtension = PathUtility::getFileExtension($sourcePath);
 		$extension = StringUtility::toLower($fileExtension);
 
-		$ignoreAsset =
-			StringUtility::startsWith($sourcePath, '//', false)
-			||
-			StringUtility::startsWith($sourcePath, 'https://', false)
-			||
-			StringUtility::startsWith($sourcePath, 'http://', false)
-			||
-			StringUtility::contains($sourcePath, '?', false);
+		$ignoreAsset = $this->isIgnoreAsset($sourcePath);
 
 		$resourcePath = $sourcePath;
 		if (!$ignoreAsset) {
