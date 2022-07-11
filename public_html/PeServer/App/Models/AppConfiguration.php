@@ -8,6 +8,7 @@ use PeServer\Core\I18n;
 use PeServer\Core\Environment;
 use PeServer\Core\Log\Logging;
 use PeServer\Core\PathUtility;
+use PeServer\Core\ArrayUtility;
 use PeServer\Core\Mvc\Template;
 use PeServer\Core\Store\Stores;
 use PeServer\Core\Configuration;
@@ -92,7 +93,7 @@ abstract class AppConfiguration
 		$appConfig = self::load($rootDirectoryPath, $baseDirectoryPath, Environment::get(), 'setting.json');
 		$i18nConfig = self::load($rootDirectoryPath, $baseDirectoryPath, Environment::get(), 'i18n.json');
 
-		$storeOptions = StoreConfiguration::build();
+		$storeOptions = StoreConfiguration::build(ArrayUtility::getOr($appConfig, 'store', null));
 		$stores = new Stores($specialStore, $storeOptions);
 
 		Logging::initialize($stores, $appConfig['logging']);
