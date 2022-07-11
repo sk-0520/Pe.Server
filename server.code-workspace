@@ -1,6 +1,14 @@
 {
 	"folders": [
 		{
+			"path": "public_html/PeServer",
+			"name": "PeServer"
+		},
+		{
+			"path": "test/PeServerTest",
+			"name": "Test"
+		},
+		{
 			"path": ".",
 			"name": "ROOT"
 		}
