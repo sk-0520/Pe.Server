@@ -72,4 +72,29 @@ class CryptographyTest extends TestClass
 		Cryptography::decrypt('aes-256-cbc@@', 'b');
 		$this->fail();
 	}
+
+	public function test_generateRandomString()
+	{
+		$tests = [
+			new Data(4, 4, 'a'),
+			new Data(4, 4, 'ab'),
+			new Data(4, 4, 'abc'),
+			new Data(4, 4, 'abcd'),
+			new Data(4, 4, 'abcde'),
+			new Data(4, 4, 'あ'),
+			new Data(4, 4, 'あい'),
+			new Data(4, 4, 'あいう'),
+			new Data(4, 4, 'あいうえ'),
+			new Data(4, 4, 'あいうえお'),
+			new Data(4, 4, '🐁'),
+			new Data(4, 4, '🐁🐄'),
+			new Data(4, 4, '🐁🐄🐅'),
+			new Data(4, 4, '🐁🐄🐅🐇'),
+			new Data(4, 4, '🐁🐄🐅🐇🐉'),
+		];
+		foreach ($tests as $test) {
+			$actual = Cryptography::generateRandomString(...$test->args);
+			$this->assertEquals($test->expected, StringUtility::getLength($actual), $test->str());
+		}
+	}
 }

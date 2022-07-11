@@ -16,21 +16,60 @@ abstract class Cryptography
 {
 	private const OPTION = 0;
 	public const SEPARATOR = '@';
+	public const DEFAULT_RANDOM_STRING = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
 	/**
 	 * ランダムバイトデータを生成。
 	 *
 	 * @param integer $length
+	 * @phpstan-param positive-int $length
 	 * @return Binary
 	 */
 	public static function generateRandomBytes(int $length): Binary
 	{
+		if ($length < 1) { //@phpstan-ignore-line phpstan:positive-int
+			throw new CryptoException('$length = ' . $length);
+		}
+
 		$result = openssl_random_pseudo_bytes($length);
 		if ($result === false) { //@phpstan-ignore-line
 			throw new CryptoException();
 		}
 
 		return new Binary($result);
+	}
+
+	/**
+	 * ランダム文字列を生成。
+	 *
+	 * @param integer $length
+	 * @phpstan-param positive-int $length
+	 * @param string $characters
+	 * @phpstan-param non-empty-string $characters
+	 * @return string
+	 */
+	public static function generateRandomString(int $length, string $characters = self::DEFAULT_RANDOM_STRING): string
+	{
+		if ($length < 1) { //@phpstan-ignore-line phpstan:positive-int
+			throw new CryptoException('$length = ' . $length);
+		}
+		if (StringUtility::isNullOrWhiteSpace($characters)) { //@phpstan-ignore-line phpstan:positive-int
+			throw new CryptoException('$characters = ' . $characters);
+		}
+
+		$charactersArray = StringUtility::toCharacters($characters);
+
+		$min = 0;
+		$max = ArrayUtility::getCount($charactersArray) - 1;
+
+		$result = '';
+
+		for ($i = 0; $i < $length; $i++) {
+			$index = random_int($min, $max);
+			$result .= $charactersArray[$index];
+		}
+
+		return $result;
 	}
 
 	/**
@@ -72,6 +111,9 @@ abstract class Cryptography
 
 		if ($ivLength === false) {
 			throw new CryptoException($algorithm);
+		}
+		if ($ivLength < 1) {
+			throw new CryptoException('$ivLength = ' . $ivLength);
 		}
 
 		$iv = self::generateRandomBytes($ivLength);

@@ -344,4 +344,25 @@ class StringUtilityTest extends TestClass
 		$this->fail();
 	}
 
+	public function test_toCharacters()
+	{
+		$tests = [
+			new Data([' '], ' '),
+			new Data(['a', 'b', 'c'], 'abc'),
+			new Data(['あ', 'い', 'う'], 'あいう'),
+			new Data(['☃', '⛄', '𩸽', '🏇'], '☃⛄𩸽🏇'),
+		];
+		foreach ($tests as $test) {
+			$actual = StringUtility::toCharacters(...$test->args);
+			$this->assertEquals($test->expected, $actual, $test->str());
+		}
+	}
+
+	public function test_toCharacters_error()
+	{
+		$this->expectException(ArgumentException::class);
+		StringUtility::toCharacters('');
+		$this->fail();
+	}
+
 }

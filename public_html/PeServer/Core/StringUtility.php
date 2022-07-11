@@ -432,4 +432,27 @@ abstract class StringUtility
 
 		return str_repeat($value, $count);
 	}
+
+	/**
+	 * 文字列を文字の配列に変換。
+	 *
+	 * @param string $value
+	 * @phpstan-param non-empty-string $characters
+	 * @return array
+	 */
+	public static function toCharacters(string $value): array
+	{
+		if (StringUtility::isNullOrEmpty($value)) { //@phpstan-ignore-line phpstan:positive-int
+			throw new ArgumentException('$value = ' . $value);
+		}
+
+		$length = StringUtility::getLength($value);
+		$charactersArray = [];
+		for ($i = 0; $i < $length; $i++) {
+			$c = self::substring($value, $i, 1);
+			$charactersArray[] = $c;
+		}
+
+		return $charactersArray;
+	}
 }
