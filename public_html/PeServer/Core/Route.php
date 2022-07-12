@@ -46,7 +46,7 @@ class Route
 	 *
 	 * @var array<string,Action>
 	 */
-	private array $actions = array();
+	private array $actions = [];
 
 	/**
 	 * Undocumented variable

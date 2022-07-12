@@ -12,6 +12,8 @@ abstract class Uuid
 	/**
 	 * GUID生成。
 	 *
+	 * 非Windows環境は謎の何か。
+	 *
 	 * @return string GUID文字列
 	 */
 	public static function generateGuid(): string

@@ -125,7 +125,7 @@ abstract class Logging
 			}, $parameters);
 
 			/** @var array<string,string> */
-			$map = array();
+			$map = [];
 			foreach ($values as $key => $value) {
 				$map[strval($key)] = $value;
 			}

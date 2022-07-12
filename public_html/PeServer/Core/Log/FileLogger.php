@@ -36,7 +36,7 @@ class FileLogger extends LoggerBase
 	 *
 	 * @var string[]
 	 */
-	private static array $cleanupFilePatterns = array();
+	private static array $cleanupFilePatterns = [];
 
 	/**
 	 * 生成。

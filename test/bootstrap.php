@@ -27,6 +27,7 @@ Initializer::initialize(
 	__DIR__ . '/../public_html/PeServer',
 	new SpecialStore(),
 	'test',
+	'ja',
 	':REVISION:'
 );
 

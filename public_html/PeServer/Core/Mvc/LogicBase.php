@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc;
 
 use \DateInterval;
-use PeServer\Core\Utc;
 use \DateTimeImmutable;
+use PeServer\Core\Utc;
 use PeServer\Core\I18n;
 use PeServer\Core\Mime;
 use PeServer\Core\Binary;
@@ -40,7 +40,7 @@ abstract class LogicBase implements IValidationReceiver
 	protected const SESSION_ALL_CLEAR = InitialValue::EMPTY_STRING;
 
 	/**
-	 * 開始日時。
+	 * ロジック開始日時。
 	 *
 	 * @readonly
 	 */
@@ -66,27 +66,27 @@ abstract class LogicBase implements IValidationReceiver
 	 *
 	 * @var array<string,string[]>
 	 */
-	private array $errors = array();
+	private array $errors = [];
 	/**
 	 * 応答データ。
 	 *
-	 * @var array<string,mixed>
+	 * @var array<non-empty-string,mixed>
 	 */
-	private array $values = array();
+	private array $values = [];
 
 	/**
 	 * 要素設定がなされている場合に応答データのキーをこの項目に固定。
 	 *
-	 * @var string[]
+	 * @var non-empty-string[]
 	 */
-	private array $keys = array();
+	private array $keys = [];
 
 	/**
 	 * コントローラ内結果データ。
 	 *
 	 * @var array<string,mixed>
 	 */
-	protected array $result = array();
+	protected array $result = [];
 
 	/**
 	 * 検証処理。
@@ -109,7 +109,7 @@ abstract class LogicBase implements IValidationReceiver
 	 * @var array<string,string[]>
 	 * @phpstan-var array<non-empty-string,string[]>
 	 */
-	private array $responseHeaders = array();
+	private array $responseHeaders = [];
 
 	/**
 	 * 生成。
@@ -330,6 +330,7 @@ abstract class LogicBase implements IValidationReceiver
 	 * パラメータキーの設定。
 	 *
 	 * @param string[] $keys
+	 * @phpstan-param non-empty-string[] $keys
 	 * @param bool $overwrite キー項目を要求データで上書きするか
 	 * @param bool $initialize キー情報を初期化するか
 	 * @return void
@@ -356,6 +357,7 @@ abstract class LogicBase implements IValidationReceiver
 	 * 応答データとして設定。
 	 *
 	 * @param string $key
+	 * @phpstan-param non-empty-string $key
 	 * @param mixed $value
 	 * @return void
 	 * @throws ArgumentException 入力データとして未登録の場合に投げられる。
@@ -383,7 +385,7 @@ abstract class LogicBase implements IValidationReceiver
 
 	protected function clearErrors(): void
 	{
-		$this->errors = array();
+		$this->errors = [];
 	}
 
 	protected function removeError(string $key): void

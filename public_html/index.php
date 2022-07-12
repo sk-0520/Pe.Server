@@ -32,6 +32,7 @@ Initializer::initialize(
 	__DIR__ . '/PeServer',
 	$specialStore,
 	$specialStore->getServer('SERVER_NAME') === 'localhost' ? 'development' : 'production',
+	'ja',
 	':REVISION:'
 );
 

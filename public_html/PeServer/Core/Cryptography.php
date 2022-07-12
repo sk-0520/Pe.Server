@@ -19,11 +19,34 @@ abstract class Cryptography
 	public const DEFAULT_RANDOM_STRING = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
 	/**
+	 * 乱数取得。
+	 * `random_int` ラッパー。
+	 *
+	 * @param integer $max 最大値
+	 * @param integer $min 最小値
+	 * @return integer
+	 * @throws CryptoException 失敗
+	 * @see https://www.php.net/manual/ja/function.random-int.php
+	 */
+	public static function generateRandomInteger(int $max = PHP_INT_MAX, int $min = 0): int
+	{
+		try {
+			return random_int($min, $max);
+		} catch (Throwable $ex) {
+			Throws::reThrow(CryptoException::class, $ex);
+		}
+	}
+
+	/**
 	 * ランダムバイトデータを生成。
+	 *
+	 * `openssl_random_pseudo_bytes` ラッパー。
 	 *
 	 * @param integer $length
 	 * @phpstan-param positive-int $length
 	 * @return Binary
+	 * @throws CryptoException 失敗
+	 * @see https://www.php.net/manual/ja/function.openssl-random-pseudo-bytes.php
 	 */
 	public static function generateRandomBytes(int $length): Binary
 	{
@@ -47,6 +70,7 @@ abstract class Cryptography
 	 * @param string $characters
 	 * @phpstan-param non-empty-string $characters
 	 * @return string
+	 * @throws CryptoException 失敗
 	 */
 	public static function generateRandomString(int $length, string $characters = self::DEFAULT_RANDOM_STRING): string
 	{
@@ -65,30 +89,11 @@ abstract class Cryptography
 		$result = '';
 
 		for ($i = 0; $i < $length; $i++) {
-			$index = random_int($min, $max);
+			$index = self::generateRandomInteger($max, $min);
 			$result .= $charactersArray[$index];
 		}
 
 		return $result;
-	}
-
-	/**
-	 * 乱数取得。
-	 *
-	 * `random_int` ラッパー。
-	 *
-	 * @param integer $max 最大値
-	 * @param integer $min 最小値
-	 * @return integer
-	 * @throws CryptoException
-	 */
-	public static function generateRandomInteger(int $max = PHP_INT_MAX, int $min = 0): int
-	{
-		try {
-			return random_int($min, $max);
-		} catch (Throwable $ex) {
-			Throws::reThrow(CryptoException::class, $ex);
-		}
 	}
 
 	/**
@@ -160,10 +165,11 @@ abstract class Cryptography
 	}
 
 	/**
-	 * password_hash($password, PASSWORD_DEFAULT) のラップ
+	 * `password_hash($password, PASSWORD_DEFAULT)`ラッパー。
 	 *
 	 * @param string $password 生パスワード。
 	 * @return string ハッシュ化パスワード。
+	 * @see https://www.php.net/manual/ja/function.password-hash.php
 	 */
 	public static function toHashPassword(string $password): string
 	{
@@ -171,7 +177,7 @@ abstract class Cryptography
 	}
 
 	/**
-	 * password_verify(string $password, $hashPassword) のラップ。
+	 * `password_verify(string $password, $hashPassword)` ラッパー。
 	 *
 	 * @param string $password 生パスワード。
 	 * @param string $hashPassword ハッシュ化パスワード。
@@ -180,5 +186,61 @@ abstract class Cryptography
 	public static function verifyPassword(string $password, string $hashPassword): bool
 	{
 		return password_verify($password, $hashPassword);
+	}
+
+	/**
+	 * ハッシュアルゴリズム一覧。
+	 *
+	 * `hash_algos` ラッパー。
+	 *
+	 * @return string[]
+	 */
+	public static function getHashAlgorithms(): array
+	{
+		return hash_algos();
+	}
+
+	/**
+	 * ハッシュ化処理。
+	 *
+	 * `hash` ラッパー。
+	 *
+	 * @param string $algorithm
+	 * @phpstan-param non-empty-string $algorithm
+	 * @param Binary $binary
+	 * @//param array{seed?:?int} $options
+	 * @return string
+	 * @see https://php.net/manual/en/function.hash.php
+	 */
+	public static function generateHashString(string $algorithm, Binary $binary/*, array $options = []*/): string
+	{
+		$hash = hash($algorithm, $binary->getRaw(), false/*, $options */);
+		if ($hash === false) { //@phpstan-ignore-line
+			throw new CryptoException();
+		}
+
+		return $hash;
+	}
+
+	/**
+	 * ハッシュ化処理。
+	 *
+	 * `hash` ラッパー。
+	 *
+	 * @param string $algorithm
+	 * @phpstan-param non-empty-string $algorithm
+	 * @param Binary $binary
+	 * @//param array{seed?:?int} $options
+	 * @return Binary
+	 * @see https://php.net/manual/en/function.hash.php
+	 */
+	public static function generateHashBinary(string $algorithm, Binary $binary/*, array $options = []*/): Binary
+	{
+		$hash = hash($algorithm, $binary->getRaw(), true/*, $options */);
+		if ($hash === false) { //@phpstan-ignore-line
+			throw new CryptoException();
+		}
+
+		return new Binary($hash);
 	}
 }

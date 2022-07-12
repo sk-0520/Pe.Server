@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc;
 
+use PeServer\Core\Code;
 use PeServer\Core\UrlUtility;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\Logging;
@@ -45,8 +46,14 @@ abstract class ControllerBase
 	/** @readonly */
 	protected Stores $stores;
 
+	/** コントローラ内で今輝いてるロジック。よくないんよなぁ。 */
 	protected ?LogicBase $logic = null;
 
+	/**
+	 * 生成。
+	 *
+	 * @param ControllerArgument $argument コントローラ入力値。
+	 */
 	protected function __construct(ControllerArgument $argument)
 	{
 		$this->stores = $argument->stores;
@@ -86,7 +93,7 @@ abstract class ControllerBase
 
 		$parameter = $this->createParameter($logicClass, $request);
 		/** @var LogicBase */
-		$logic = new $logicClass($parameter, ...$parameters);
+		$logic = Code::create($logicClass, LogicBase::class, $parameter, ...$parameters); //@phpstan-ignore-line TObject
 		$this->logic = $logic;
 		return $logic;
 	}
@@ -122,9 +129,10 @@ abstract class ControllerBase
 
 	/**
 	 * ドメイン内でリダイレクト。
+	 * 基本的にこれを使っておけばいい。
 	 *
-	 * @param string $path
-	 * @param array<string,string>|null $query
+	 * @param string $path 行先。
+	 * @param array<non-empty-string,string>|null $query 付与するクエリ。
 	 * @return RedirectActionResult
 	 */
 	public function redirectPath(string $path, ?array $query = null): RedirectActionResult

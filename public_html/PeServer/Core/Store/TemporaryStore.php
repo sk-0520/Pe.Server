@@ -34,14 +34,14 @@ class TemporaryStore
 	 *
 	 * @var array<string,mixed>
 	 */
-	private array $values = array();
+	private array $values = [];
 
 	/**
 	 * 破棄データ。
 	 *
 	 * @var string[]
 	 */
-	private array $removes = array();
+	private array $removes = [];
 
 	/**
 	 * 取り込み処理が行われたか。

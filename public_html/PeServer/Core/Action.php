@@ -22,8 +22,9 @@ class Action
 	 * 後入れ優先。
 	 *
 	 * @var array<string,ActionSetting>
+	 * @phpstan-var array<parent::HTTP_METHOD_*,ActionSetting>
 	 */
-	private array $map = array();
+	private array $map = [];
 
 	/**
 	 * 追加。

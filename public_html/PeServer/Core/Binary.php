@@ -8,7 +8,7 @@ use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\NotStringException;
 
 /**
- * 文字列がバイトデータなのか普通の文字列なのかよくわからんのでこれでラップする。
+ * PHP文字列がバイトデータなのか普通の文字列なのかよくわからん。
  *
  * ソース上の型を明示するだけの目的で、効率とかは特になにもない。
  * あとUTF8で動くこと前提。
@@ -120,4 +120,12 @@ final class Binary
 
 		return $this->binary;
 	}
+
+	// public function format(string $format, int $offset = 0): array
+	// {
+	// 	$result = unpack($format, $this->binary, $offset);
+	// 	return $result;
+	// }
+
+
 }

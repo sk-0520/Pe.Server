@@ -48,7 +48,7 @@ abstract class UrlUtility
 	 * パスをURLに変換しつつクエリ結合。
 	 *
 	 * @param string $path
-	 * @param array<string,string> $query
+	 * @param array<non-empty-string,string> $query
 	 * @return string
 	 */
 	public static function buildPath(string $path, array $query, SpecialStore $specialStore): string

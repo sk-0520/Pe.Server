@@ -43,7 +43,7 @@ abstract class MiddlewareResult
 	 * リダイレクト処理生成。
 	 *
 	 * @param string $path
-	 * @param array<string,string>|null $query
+	 * @param array<non-empty-string,string>|null $query
 	 * @param HttpStatus|null $status
 	 * @return MiddlewareResult
 	 */

@@ -87,8 +87,7 @@ abstract class I18n
 		}
 
 		if (!is_null($leaf)) {
-			/** @var string */
-			return self::getFlatMessage($leaf, $locale);
+			return self::getFlatMessage($leaf, $locale) ?? InitialValue::EMPTY_STRING;
 		}
 
 
@@ -104,7 +103,7 @@ abstract class I18n
 	 * @param array<int|string,int|string> $parameters
 	 * @return string
 	 */
-	public static function message(string $key, array $parameters = array()): string
+	public static function message(string $key, array $parameters = []): string
 	{
 		self::$initializeChecker->throwIfNotInitialize();
 

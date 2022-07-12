@@ -16,12 +16,12 @@ abstract class Initializer
 	 */
 	private static InitializeChecker $initializeChecker;
 
-	public static function initialize(string $rootDirectoryPath, string $baseDirectoryPath, SpecialStore $specialStore, string $environment, string $revision): void
+	public static function initialize(string $rootDirectoryPath, string $baseDirectoryPath, SpecialStore $specialStore, string $environment, string $language, string $revision): void
 	{
 		self::$initializeChecker ??= new InitializeChecker();
 		self::$initializeChecker->initialize();
 
-		CoreInitializer::initialize($environment, $revision);
+		CoreInitializer::initialize($environment, $revision, $language, 'UTF-8');
 		AppConfiguration::initialize($rootDirectoryPath, $baseDirectoryPath, $specialStore);
 	}
 }

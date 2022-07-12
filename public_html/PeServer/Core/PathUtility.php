@@ -4,12 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
-use \stdClass;
-use PeServer\Core\Binary;
 use PeServer\Core\InitialValue;
-use PeServer\Core\Throws\IOException;
-use PeServer\Core\Throws\ParseException;
-use PeServer\Core\Throws\FileNotFoundException;
 
 /**
  * パス処理系。
@@ -26,7 +21,7 @@ abstract class PathUtility
 	{
 		$targetPath = StringUtility::replace($path, ['/', '\\'], DIRECTORY_SEPARATOR);
 		$parts = array_filter(StringUtility::split($targetPath, DIRECTORY_SEPARATOR), 'mb_strlen');
-		$absolutes = array();
+		$absolutes = [];
 		foreach ($parts as $part) {
 			if ($part === '.') {
 				continue;

@@ -16,7 +16,7 @@ class Configuration
 	public const FILE_TYPE_JSON = 'json';
 
 	/**
-	 * Undocumented variable
+	 * 環境。
 	 *
 	 * @var string
 	 * @readonly
@@ -76,7 +76,7 @@ class Configuration
 		$environmentFilePath = PathUtility::joinPath($directoryPath, $this->getEnvironmentFileName($fileName));
 
 		/** @var array<mixed> */
-		$configuration = array();
+		$configuration = [];
 
 		/** @var array<mixed> */
 		$baseConfiguration = FileUtility::readJsonFile($baseFilePath);

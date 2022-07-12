@@ -39,7 +39,7 @@ class SessionStore
 	 *
 	 * @var array<string,mixed>
 	 */
-	private array $values = array();
+	private array $values = [];
 	/**
 	 * セッションは開始されているか。
 	 */
@@ -213,7 +213,7 @@ class SessionStore
 	 */
 	public function shutdown(): void
 	{
-		$_SESSION = array();
+		$_SESSION = [];
 
 		if (!$this->isStarted) {
 			return;
@@ -257,7 +257,7 @@ class SessionStore
 	public function remove(string $key): void
 	{
 		if (StringUtility::isNullOrEmpty($key)) {
-			$this->values = array();
+			$this->values = [];
 		} else {
 			unset($this->values[$key]);
 		}

@@ -8,6 +8,9 @@ use PeServer\Core\Binary;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mvc\DataContent;
 
+/**
+ * ダウンロード用データ。
+ */
 class DownloadDataContent extends DataContent
 {
 	/** @readonly */

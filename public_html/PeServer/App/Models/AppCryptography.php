@@ -7,6 +7,7 @@ namespace PeServer\App\Models;
 use PeServer\Core\Cryptography;
 use PeServer\Core\Throws\CryptoException;
 use PeServer\App\Models\AppConfiguration;
+use PeServer\Core\Binary;
 use PeServer\Core\StringUtility;
 
 abstract class AppCryptography
@@ -62,12 +63,9 @@ abstract class AppCryptography
 		$crypto = AppConfiguration::$config['crypto'];
 		$input = $data . $crypto['pepper'];
 
-		$binary = hash('fnv132', $input, true);
-		if ($binary === false) { // @phpstan-ignore-line
-			throw new CryptoException();
-		}
+		$binary = Cryptography::generateHashBinary('fnv132', new Binary($input));
 
-		$result = unpack('N', $binary, 0);
+		$result = unpack('N', $binary->getRaw(), 0);
 		if ($result === false) {
 			throw new CryptoException();
 		}
