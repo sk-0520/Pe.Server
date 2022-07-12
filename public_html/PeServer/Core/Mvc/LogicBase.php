@@ -566,6 +566,7 @@ abstract class LogicBase implements IValidationReceiver
 	 * 応答データ設定。
 	 *
 	 * @param string $mime
+	 * @phpstan-param non-empty-string|\PeServer\Core\Mime::* $mime
 	 * @param string|array<mixed>|Binary $data
 	 * @return void
 	 */
@@ -574,6 +575,15 @@ abstract class LogicBase implements IValidationReceiver
 		$this->content = new DataContent(HttpStatus::none(), $mime, $data);
 	}
 
+	/**
+	 * Undocumented function
+	 *
+	 * @param string $mime
+	 * @phpstan-param non-empty-string|\PeServer\Core\Mime::* $mime
+	 * @param string $fileName
+	 * @param Binary $data
+	 * @return void
+	 */
 	protected function setDownloadContent(string $mime, string $fileName, Binary $data): void
 	{
 		$this->content = new DownloadDataContent($mime, $fileName, $data);

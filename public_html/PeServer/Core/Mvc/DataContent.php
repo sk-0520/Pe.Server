@@ -19,6 +19,7 @@ class DataContent
 	 *
 	 * @param HttpStatus $httpStatus 応答HTTPステータスコード。
 	 * @param string $mime MIME。Mime を参照のこと。
+	 * @phpstan-param non-empty-string|\PeServer\Core\Mime::* $mime
 	 * @param string|array<mixed>|Binary $data 応答生データ。このデータ自体はプログラム側の生値で保持する。
 	 */
 	public function __construct(
@@ -29,5 +30,6 @@ class DataContent
 		/** @readonly */
 		public $data
 	) {
+
 	}
 }

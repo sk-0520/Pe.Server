@@ -14,6 +14,9 @@ use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\NotImplementedException;
 
 
+/**
+ * 結果操作: データ。
+ */
 class DataActionResult implements IActionResult
 {
 	/**
@@ -33,7 +36,7 @@ class DataActionResult implements IActionResult
 	}
 
 	/**
-	 * Undocumented function
+	 * 配列をJSONに変換。
 	 *
 	 * @param array<mixed> $data
 	 * @return string

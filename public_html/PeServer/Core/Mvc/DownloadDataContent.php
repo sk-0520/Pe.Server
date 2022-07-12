@@ -17,6 +17,7 @@ class DownloadDataContent extends DataContent
 	 * 生成。
 	 *
 	 * @param string $mime
+	 * @phpstan-param non-empty-string|\PeServer\Core\Mime::* $mime
 	 * @param Binary $data
 	 */
 	public function __construct(string $mime, string $fileName, Binary $data)

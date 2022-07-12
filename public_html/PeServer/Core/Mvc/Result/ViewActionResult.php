@@ -12,7 +12,8 @@ use PeServer\Core\Mvc\TemplateParameter;
 use PeServer\Core\Mvc\Result\IActionResult;
 
 /**
- * View。
+ * 捜査結果: View。
+ *
  * @immutable
  */
 class ViewActionResult implements IActionResult

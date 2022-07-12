@@ -11,7 +11,8 @@ use PeServer\Core\Mvc\Result\IActionResult;
 use PeServer\Core\Throws\ArgumentException;
 
 /**
- * リダイレクト。
+ * 結果操作: リダイレクト。
+ *
  * @immutable
  */
 class RedirectActionResult implements IActionResult
