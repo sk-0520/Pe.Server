@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace PeServer\Core;
 
 use \Exception;
+use \Throwable;
 use PeServer\Core\Throws\CryptoException;
 use PeServer\Core\Throws\Throws;
-use Throwable;
 
 /**
  * 暗号化周り
@@ -208,7 +208,7 @@ abstract class Cryptography
 	 * @param string $algorithm
 	 * @phpstan-param non-empty-string $algorithm
 	 * @param Binary $binary
-	 * @//param array{seed?:?int} $options
+	 * @-param array{seed?:?int} $options
 	 * @return string
 	 * @see https://php.net/manual/en/function.hash.php
 	 */
@@ -230,7 +230,7 @@ abstract class Cryptography
 	 * @param string $algorithm
 	 * @phpstan-param non-empty-string $algorithm
 	 * @param Binary $binary
-	 * @//param array{seed?:?int} $options
+	 * @-param array{seed?:?int} $options
 	 * @return Binary
 	 * @see https://php.net/manual/en/function.hash.php
 	 */

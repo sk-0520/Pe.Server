@@ -21,7 +21,7 @@ abstract class Initializer
 		self::$initializeChecker ??= new InitializeChecker();
 		self::$initializeChecker->initialize();
 
-		CoreInitializer::initialize($environment, $revision, $language, 'UTF-8');
+		CoreInitializer::initialize($environment, $revision, $language);
 		AppConfiguration::initialize($rootDirectoryPath, $baseDirectoryPath, $specialStore);
 	}
 }
