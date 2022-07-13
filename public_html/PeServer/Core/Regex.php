@@ -17,12 +17,12 @@ abstract class Regex
 	/**
 	 * 正規表現パターンをエスケープコードに変換。
 	 *
-	 * preg_quoteラッパー。
-	 * https://www.php.net/manual/ja/function.preg-quote.php
+	 * `preg_quote` ラッパー。
 	 *
 	 * @param string $s 正規表現パターン。
 	 * @param string|null $delimiter デリミタ。
 	 * @return string
+	 * @see https://www.php.net/manual/function.preg-quote.php
 	 */
 	public static function escape(string $s, ?string $delimiter = null): string
 	{
@@ -110,6 +110,7 @@ abstract class Regex
 	 * @throws ArgumentException 引数がおかしい。
 	 * @throws RegexException 正規表現処理失敗。
 	 * @return string
+	 * @see https://www.php.net/manual/function.preg-replace.php
 	 */
 	public static function replace(string $source, string $pattern, string $replacement, int $limit = self::UNLIMITED): string
 	{
@@ -136,6 +137,7 @@ abstract class Regex
 	 * @throws ArgumentException 引数がおかしい。
 	 * @throws RegexException 正規表現処理失敗。
 	 * @return string
+	 * @see https://www.php.net/manual/function.preg-replace-callback.php
 	 */
 	public static function replaceCallback(string $source, string $pattern, callable $replacement, int $limit = self::UNLIMITED): string
 	{

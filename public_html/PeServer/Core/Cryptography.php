@@ -26,7 +26,7 @@ abstract class Cryptography
 	 * @param integer $min 最小値
 	 * @return integer
 	 * @throws CryptoException 失敗
-	 * @see https://www.php.net/manual/ja/function.random-int.php
+	 * @see https://www.php.net/manual/function.random-int.php
 	 */
 	public static function generateRandomInteger(int $max = PHP_INT_MAX, int $min = 0): int
 	{
@@ -46,7 +46,7 @@ abstract class Cryptography
 	 * @phpstan-param positive-int $length
 	 * @return Binary
 	 * @throws CryptoException 失敗
-	 * @see https://www.php.net/manual/ja/function.openssl-random-pseudo-bytes.php
+	 * @see https://www.php.net/manual/function.openssl-random-pseudo-bytes.php
 	 */
 	public static function generateRandomBytes(int $length): Binary
 	{
@@ -169,7 +169,7 @@ abstract class Cryptography
 	 *
 	 * @param string $password 生パスワード。
 	 * @return string ハッシュ化パスワード。
-	 * @see https://www.php.net/manual/ja/function.password-hash.php
+	 * @see https://www.php.net/manual/function.password-hash.php
 	 */
 	public static function toHashPassword(string $password): string
 	{

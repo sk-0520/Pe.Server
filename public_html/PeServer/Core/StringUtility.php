@@ -117,7 +117,7 @@ abstract class StringUtility
 	/**
 	 * 数字を千の位毎にグループ化してフォーマット
 	 *
-	 * @see https://www.php.net/manual/ja/function.number-format.php
+	 * @see https://www.php.net/manual/function.number-format.php
 	 *
 	 * @param int|float $number フォーマットする数値
 	 * @param int $decimals 小数点以下の桁数。 0 を指定すると、 戻り値の $decimalSeparator は省略されます
@@ -306,7 +306,7 @@ abstract class StringUtility
 	 * @return string[] 分割された文字列。
 	 * @throws ArgumentException 分割失敗(PHP8未満)
 	 * @throws \ValueError 分割失敗(PHP8以上)
-	 * @see https://www.php.net/manual/ja/function.explode.php
+	 * @see https://www.php.net/manual/function.explode.php
 	 */
 	public static function split(string $value, string $separator, int $limit = PHP_INT_MAX): array
 	{
@@ -326,7 +326,7 @@ abstract class StringUtility
 	 * @param string[] $values
 	 * @param string $separator
 	 * @return string
-	 * @see https://www.php.net/manual/ja/function.implode.php
+	 * @see https://www.php.net/manual/function.implode.php
 	 *
 	 * @phpstan-param non-empty-string $separator
 	 */
@@ -341,7 +341,7 @@ abstract class StringUtility
 	 * @param string $value 対象文字列。
 	 * @param string $characters トリム対象文字。
 	 * @return string トリム後文字列。
-	 * @see https://www.php.net/manual/ja/function.trim.php
+	 * @see https://www.php.net/manual/function.trim.php
 	 */
 	public static function trim(string $value, string $characters = self::TRIM_CHARACTERS): string
 	{
@@ -421,7 +421,7 @@ abstract class StringUtility
 	 * @phpstan-param int<0, max> $count
 	 * @return string
 	 * @throws ArgumentException 負数。
-	 * @see https://www.php.net/manual/ja/function.str-repeat.php
+	 * @see https://www.php.net/manual/function.str-repeat.php
 	 */
 	public static function repeat(string $value, int $count): string
 	{

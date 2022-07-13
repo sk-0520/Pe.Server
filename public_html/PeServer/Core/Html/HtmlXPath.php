@@ -67,7 +67,7 @@ class HtmlXPath
 	/**
 	 * 与えられた XPath 式を評価し、可能であれば結果を返す
 	 *
-	 * https://www.php.net/manual/ja/domxpath.evaluate.php
+	 * https://www.php.net/manual/domxpath.evaluate.php
 	 *
 	 * @param string $expression
 	 * @return HtmlNodeBase[]
@@ -87,7 +87,7 @@ class HtmlXPath
 	/**
 	 * 与えられた XPath 式を評価する
 	 *
-	 * https://www.php.net/manual/ja/domxpath.query.php
+	 * https://www.php.net/manual/domxpath.query.php
 	 *
 	 * @param string $expression
 	 * @return HtmlNodeBase[]

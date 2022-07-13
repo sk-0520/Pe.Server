@@ -24,7 +24,7 @@ abstract class FileUtility
 	 *
 	 * @param string $path
 	 * @return integer
-	 * @see https://www.php.net/manual/ja/function.filesize.php
+	 * @see https://www.php.net/manual/function.filesize.php
 	 * @throws IOException
 	 */
 	public static function getFileSize(string $path): int
@@ -151,7 +151,7 @@ abstract class FileUtility
 	 * @param string $directoryPath ディレクトリパス。
 	 * @param int $permissions
 	 * @return bool
-	 * @see https://www.php.net/manual/ja/function.mkdir.php
+	 * @see https://www.php.net/manual/function.mkdir.php
 	 */
 	public static function createDirectory(string $directoryPath, int $permissions = self::DIRECTORY_PERMISSIONS): bool
 	{
@@ -194,7 +194,7 @@ abstract class FileUtility
 	 *
 	 * @param string $path
 	 * @return boolean 存在するか。
-	 * @see https://www.php.net/manual/ja/function.file-exists.php
+	 * @see https://www.php.net/manual/function.file-exists.php
 	 */
 	public static function existsItem(string $path): bool
 	{
@@ -210,7 +210,7 @@ abstract class FileUtility
 	 *
 	 * @param string $path
 	 * @return boolean 存在するか。
-	 * @see https://www.php.net/manual/ja/function.is-file.php
+	 * @see https://www.php.net/manual/function.is-file.php
 	 */
 	public static function existsFile(string $path): bool
 	{
@@ -224,7 +224,7 @@ abstract class FileUtility
 	 *
 	 * @param string $path
 	 * @return boolean 存在するか。
-	 * @see https://www.php.net/manual/ja/function.is-dir.php
+	 * @see https://www.php.net/manual/function.is-dir.php
 	 */
 	public static function existsDirectory(string $path): bool
 	{
@@ -317,7 +317,7 @@ abstract class FileUtility
 	 * @param string $wildcard ワイルドカード。
 	 * @return string[] 一覧。
 	 * @throws IOException
-	 * @see https://www.php.net/manual/ja/function.glob.php
+	 * @see https://www.php.net/manual/function.glob.php
 	 */
 	public static function find(string $directoryPath, string $wildcard): array
 	{
@@ -404,7 +404,7 @@ abstract class FileUtility
 	 *
 	 * @param string|null $path
 	 * @return void
-	 * @see https://www.php.net/manual/ja/function.clearstatcache.php
+	 * @see https://www.php.net/manual/function.clearstatcache.php
 	 */
 	public static function clearCache(?string $path)
 	{

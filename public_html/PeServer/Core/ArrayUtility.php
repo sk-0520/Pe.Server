@@ -23,7 +23,7 @@ class ArrayUtility
 			return true;
 		}
 
-		return count($array) === 0;
+		return self::getCount($array) === 0;
 	}
 
 	/**
@@ -85,6 +85,7 @@ class ArrayUtility
 	 *
 	 * @param array<mixed>|null $array
 	 * @return int
+	 * @see https://www.php.net/manual/function.count.php
 	 */
 	public static function getCount(?array $array): int
 	{
@@ -104,6 +105,7 @@ class ArrayUtility
 	 * @param mixed $needle
 	 * @phpstan-param TValue $needle
 	 * @return boolean
+	 * @see https://www.php.net/manual/function.array-search.php
 	 */
 	public static function contains(array $haystack, mixed $needle): bool
 	{
@@ -118,6 +120,7 @@ class ArrayUtility
 	 * @param int|string $key
 	 * @phpstan-param array-key $key
 	 * @return bool
+	 * @see https://www.php.net/manual/function.array-key-exists.php
 	 */
 	public static function existsKey(array $haystack, int|string $key): bool
 	{
@@ -125,13 +128,14 @@ class ArrayUtility
 	}
 
 	/**
-	 * array_keys ラッパー。
+	 * `array_keys` ラッパー。
 	 *
 	 * @template TValue
 	 * @param array<int|string,mixed> $array
 	 * @phpstan-param array<array-key,TValue> $array
 	 * @return array<int|string>
 	 * @phpstan-return array-key[]
+	 * @see https://www.php.net/manual/function.array-keys.php
 	 */
 	public static function getKeys(array $array): array
 	{
@@ -139,13 +143,14 @@ class ArrayUtility
 	}
 
 	/**
-	 * array_values ラッパー。
+	 * `array_values` ラッパー。
 	 *
 	 * @template TValue
 	 * @param array<int|string,mixed> $array
 	 * @phpstan-param array<array-key,TValue> $array
 	 * @return array<mixed>
 	 * @phpstan-return TValue[]
+	 * @see https://www.php.net/manual/function.array-values.php
 	 */
 	public static function getValues(array $array): array
 	{
@@ -153,7 +158,7 @@ class ArrayUtility
 	}
 
 	/**
-	 * in_array ラッパー。
+	 * `in_array` ラッパー。
 	 *
 	 * @template TValue
 	 * @param array<int|string,mixed> $haystack
@@ -161,6 +166,7 @@ class ArrayUtility
 	 * @param mixed $needle
 	 * @phpstan-param TValue $needle
 	 * @return boolean
+	 * @see https://www.php.net/manual/function.in-array.php
 	 */
 	public static function in(array $haystack, mixed $needle): bool
 	{
