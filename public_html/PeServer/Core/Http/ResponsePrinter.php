@@ -6,6 +6,7 @@ namespace PeServer\Core\Http;
 
 use PeServer\Core\Binary;
 use PeServer\Core\Http\HttpResponse;
+use PeServer\Core\StringUtility;
 
 /**
  * HTTPレスポンス出力処理。
@@ -34,7 +35,7 @@ class ResponsePrinter
 			http_response_code($this->response->status->getCode());
 		}
 
-		// ヘッダ出力
+		// 設定済みヘッダ出力
 		foreach ($this->response->header->getHeaders() as $name => $value) {
 			header($name . ': ' . $value);
 		}
@@ -47,6 +48,13 @@ class ResponsePrinter
 				header('Location: ' . $redirect->url, true, $redirect->status->getCode());
 			}
 			return;
+		}
+
+		// ヘッダ: Content-Length
+		if ($this->response->content instanceof Binary) {
+			header('Content-Length: ' . $this->response->content->getLength());
+		} else if (is_string($this->response->content)) {
+			header('Content-Length: ' . StringUtility::getByteCount($this->response->content));
 		}
 
 		if ($this->request->httpMethod->is(HttpMethod::head())) {

@@ -48,6 +48,9 @@ class HttpHeader
 		if (StringUtility::toLower($name) === 'location') {
 			throw new ArgumentException('$name: setRedirect()');
 		}
+		if (StringUtility::toLower($name) === 'content-length') {
+			throw new ArgumentException('$name: 出力時に処理');
+		}
 	}
 
 	/**
