@@ -37,19 +37,21 @@ abstract class Code
 	 * クラスオブジェクトの生成。
 	 *
 	 * @template TObject of object
-	 * @param string|object $input 生成クラス名。オブジェクトを渡した場合は型チェックを行うのみになる。
-	 * @phpstan-param class-string|TObject $input
+	 * @param string $input 生成クラス名。
+	 * @phpstan-param class-string<TObject> $input
 	 * @param string|object $baseClass 基底クラス。オブジェクトを渡した場合は生成クラスの型チェックに使用される。
 	 * @phpstan-param class-string|object $baseClass
-	 * @return object 生成クラス。 $input がオブジェクトの場合は生成しない。
+	 * @return object 生成インスタンス。
 	 * @phpstan-return TObject
 	 * @throws TypeException 型おかしい。
 	 */
-	public static function create(string|object $input, string|object $baseClass, mixed ...$parameters): object
+	public static function create(string $input, string|object $baseClass, mixed ...$parameters): object
 	{
-		if (is_string($input)) {
-			$input = new $input(...$parameters);
+		if(!class_exists($input)) {
+			throw new TypeException();
 		}
+
+		$input = new $input(...$parameters);
 
 		if (is_string($baseClass)) {
 			if (!is_a($input, $baseClass, false)) {

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Throws;
 
 use \Throwable;
+use PeServer\Core\Code;
 use PeServer\Core\StringUtility;
 use PeServer\Core\Throws\EnforceException;
 use PeServer\Core\Throws\EnforceClassNameError;
@@ -24,14 +25,13 @@ abstract class Enforce
 	 */
 	private static function throwCore(string $argument, string $exceptionClass)
 	{
-		$exception = new $exceptionClass($argument);
-		//@phpstan-ignore-next-line
-		if ($exception instanceof Throwable) {
-			throw $exception;
+		try {
+			$exception = Code::create($exceptionClass, Throwable::class, $argument, );
+		} catch(TypeException $ex) {
+			throw new EnforceClassNameError($exceptionClass);
 		}
 
-		//@phpstan-ignore-next-line
-		throw new EnforceClassNameError($exceptionClass);
+		throw $exception;
 	}
 
 	/**

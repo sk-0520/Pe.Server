@@ -93,7 +93,7 @@ abstract class ControllerBase
 
 		$parameter = $this->createParameter($logicClass, $request);
 		/** @var LogicBase */
-		$logic = Code::create($logicClass, LogicBase::class, $parameter, ...$parameters); //@phpstan-ignore-line TObject
+		$logic = Code::create($logicClass, LogicBase::class, $parameter, ...$parameters);
 		$this->logic = $logic;
 		return $logic;
 	}

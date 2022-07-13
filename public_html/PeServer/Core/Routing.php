@@ -109,15 +109,9 @@ class Routing
 	{
 		if (is_string($middleware)) {
 			/** @var IMiddleware */
-			$instance = new $middleware();
-			//@phpstan-ignore-next-line
-			if (!($instance instanceof IMiddleware)) {
-				throw new ArgumentException();
-			}
-			$middleware = $instance;
+			$middleware = Code::create($middleware, IMiddleware::class);
 		}
 
-		/** @var IMiddleware */
 		return $middleware;
 	}
 
@@ -131,15 +125,10 @@ class Routing
 	protected static function getOrCreateShutdownMiddleware(IShutdownMiddleware|string $middleware): IShutdownMiddleware
 	{
 		if (is_string($middleware)) {
-			$instance = new $middleware();
-			//@phpstan-ignore-next-line
-			if (!($instance instanceof IShutdownMiddleware)) {
-				throw new ArgumentException();
-			}
-			$middleware = $instance;
+			/** @var IShutdownMiddleware */
+			$middleware = Code::create($middleware, IShutdownMiddleware::class);
 		}
 
-		/** @var IShutdownMiddleware */
 		return $middleware;
 	}
 
@@ -222,6 +211,7 @@ class Routing
 	private function executeAction(string $rawControllerName, ActionSetting $actionSetting, array $urlParameters): void
 	{
 		$splitNames = StringUtility::split($rawControllerName, '/');
+		/** @phpstan-var class-string<ControllerBase> */
 		$controllerName = $splitNames[ArrayUtility::getCount($splitNames) - 1];
 
 		$this->shutdownRequest = $request = new HttpRequest($this->stores->special, $this->requestMethod, $this->requestHeader, $urlParameters);
@@ -245,7 +235,7 @@ class Routing
 		$actionResult = null;
 		$output = OutputBuffer::get(function () use ($controllerArgument, $controllerName, $actionSetting, $request, &$actionResult) {
 			/** @var ControllerBase */
-			$controller = new $controllerName($controllerArgument);
+			$controller = Code::create($controllerName, ControllerBase::class, $controllerArgument);
 			$methodName = $actionSetting->controllerMethod;
 			/** @var IActionResult */
 			$actionResult = $controller->$methodName($request);

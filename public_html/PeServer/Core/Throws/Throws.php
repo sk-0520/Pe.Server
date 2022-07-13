@@ -6,6 +6,7 @@ namespace PeServer\Core\Throws;
 
 use Exception;
 use \Throwable;
+use PeServer\Core\Code;
 
 abstract class Throws
 {
@@ -24,7 +25,7 @@ abstract class Throws
 	 * 例外の再スロー。
 	 *
 	 * @param string $className 例外名。
-	 * @phpstan-param class-string $className 例外名。
+	 * @phpstan-param class-string<Throwable> $className 例外名。
 	 * @param Throwable $previous ラップする元の例外。
 	 * @return no-return
 	 */
@@ -37,11 +38,8 @@ abstract class Throws
 			$code = $rawCode;
 		}
 
-		$exception = new $className($message, $code, $previous);
-		if ($exception instanceof Throwable) {
-			throw $exception;
-		}
 		/** @var Throwable */
+		$exception = Code::create($className, Throwable::class, $message, $code, $previous);
 		throw $exception;
 	}
 }
