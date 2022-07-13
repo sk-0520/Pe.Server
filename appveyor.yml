@@ -22,12 +22,15 @@ test_script:
   - sh: npm run test
   - sh: ./dev/code.sh
   - sh: ./dev/test.sh
+  - sh: ./dev/doc.sh
 
 artifacts:
   - path: public_html
     name: public_html
   - path: coverage
     name: coverage
+  - path: api-doc
+    name: api-doc
 
 for:
   -

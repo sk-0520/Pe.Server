@@ -2,6 +2,7 @@
 temp/
 /node_modules/
 /coverage/
+/api-doc/
 /public_html/scripts/
 /public_html/styles/
 /public_html/PeServer/data/
@@ -19,8 +20,7 @@ $*
 /public_html/.fast-cgi-bin/
 /public_html/log/
 /dev/PHPUnit/
-/dev/phpstan.phar.*
-/dev/phpmd.phar.*
+/dev/*.phar.*
 /dev/bleedingEdge.neon
 /test/.phpunit.result.cache
 /test/phpunit.phar.*
