@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace PeServer\Core\Http;
 
 use PeServer\Core\ArrayUtility;
-use PeServer\Core\StringUtility;
 use PeServer\Core\Http\HttpStatus;
+use PeServer\Core\StringUtility;
 use PeServer\Core\Throws\ArgumentException;
+use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Throws\KeyNotFoundException;
 use PeServer\Core\Throws\NotSupportedException;
-use PeServer\Core\Throws\InvalidOperationException;
 
 /**
  * HTTPヘッダー。

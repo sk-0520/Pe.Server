@@ -5,10 +5,6 @@ declare(strict_types=1);
 namespace PeServer\Core\Html;
 
 use \DOMNode;
-use \DOMText;
-use \DOMComment;
-use PeServer\Core\Html\HtmlElement;
-use PeServer\Core\Throws\HtmlDocumentException;
 
 abstract class HtmlNodeBase
 {

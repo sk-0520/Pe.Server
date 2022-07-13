@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Middleware;
 
-use PeServer\Core\Mvc\Middleware\MiddlewareArgument;
 use PeServer\Core\Mvc\Middleware\IShutdownMiddleware;
+use PeServer\Core\Mvc\Middleware\MiddlewareArgument;
 
 /**
  * 要求から応答までの全体に対する測定処理。

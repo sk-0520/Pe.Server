@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Result;
 
-use PeServer\Core\Mime;
-use PeServer\Core\InitialValue;
-use PeServer\Core\Mvc\Template;
 use PeServer\Core\Http\HttpResponse;
-use PeServer\Core\Mvc\TemplateParameter;
+use PeServer\Core\InitialValue;
+use PeServer\Core\Mime;
 use PeServer\Core\Mvc\Result\IActionResult;
+use PeServer\Core\Mvc\Template;
+use PeServer\Core\Mvc\TemplateParameter;
 
 /**
- * 捜査結果: View。
+ * 結果操作: View。
  *
  * @immutable
  */

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Result;
 
-use PeServer\Core\StringUtility;
-use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Http\HttpResponse;
+use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mvc\Result\IActionResult;
+use PeServer\Core\StringUtility;
 use PeServer\Core\Throws\ArgumentException;
 
 /**

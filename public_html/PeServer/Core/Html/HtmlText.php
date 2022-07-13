@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace PeServer\Core\Html;
 
 use \DOMText;
-use PeServer\Core\Html\HtmlNodeBase;
 use PeServer\Core\Html\HtmlDocument;
+use PeServer\Core\Html\HtmlNodeBase;
 
 /**
  * DOMText のラッパー。

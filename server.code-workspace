@@ -148,7 +148,13 @@
 			"xdebug"
 		],
 		"php.suggest.basic": false,
-		"php.validate.enable": false
+		"php.validate.enable": false,
+		"intelephense.phpdoc.returnVoid": false,
+		"namespaceResolver.sortNatural": false,
+		"namespaceResolver.sortAlphabetically": true,
+		"php-docblocker.useShortNames": true,
+		"namespaceResolver.sortOnSave": false,
+		"php-docblocker.returnVoid": false
 	},
 	"extensions": {
 		"recommendations": [

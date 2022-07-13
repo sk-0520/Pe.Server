@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc\Result;
 
 use PeServer\Core\Binary;
+use PeServer\Core\Http\HttpResponse;
 use PeServer\Core\Mime;
 use PeServer\Core\Mvc\DataContent;
-use PeServer\Core\Http\HttpResponse;
 use PeServer\Core\Mvc\DownloadDataContent;
 use PeServer\Core\Mvc\Result\IActionResult;
 use PeServer\Core\Throws\ArgumentException;
-use PeServer\Core\Throws\NotImplementedException;
 
 
 /**

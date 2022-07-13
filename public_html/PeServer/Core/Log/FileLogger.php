@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Log;
 
-use PeServer\Core\Log\ILogger;
-use PeServer\Core\FileUtility;
-use PeServer\Core\PathUtility;
 use PeServer\Core\ArrayUtility;
-use PeServer\Core\StringUtility;
+use PeServer\Core\FileUtility;
 use PeServer\Core\Log\LoggerBase;
+use PeServer\Core\PathUtility;
+use PeServer\Core\StringUtility;
 use PeServer\Core\Throws\Enforce;
-use PeServer\Core\Throws\IOException;
 
 /**
  * ファイルロガー。

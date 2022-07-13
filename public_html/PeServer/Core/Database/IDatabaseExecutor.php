@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Database;
 
-use PeServer\Core\Throws\SqlException;
 use PeServer\Core\Throws\DatabaseException;
 use PeServer\Core\Throws\ObjectDisposedException;
+use PeServer\Core\Throws\SqlException;
 
 interface IDatabaseExecutor
 {

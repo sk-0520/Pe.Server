@@ -6,10 +6,9 @@ namespace PeServer\Core\Html;
 
 use \DOMElement;
 use PeServer\Core\ArrayUtility;
+use PeServer\Core\Html\HtmlDocument;
 use PeServer\Core\InitialValue;
 use PeServer\Core\StringUtility;
-use PeServer\Core\Html\HtmlNodeBase;
-use PeServer\Core\Html\HtmlDocument;
 use PeServer\Core\Throws\HtmlDocumentException;
 
 /**

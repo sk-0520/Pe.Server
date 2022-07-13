@@ -5,18 +5,16 @@ declare(strict_types=1);
 namespace PeServer\Core\Log;
 
 use \DateTimeImmutable;
-use PeServer\Core\FileUtility;
-use PeServer\Core\Log\ILogger;
-use PeServer\Core\PathUtility;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Cryptography;
+use PeServer\Core\InitializeChecker;
 use PeServer\Core\InitialValue;
+use PeServer\Core\Log\FileLogger;
+use PeServer\Core\Log\ILogger;
+use PeServer\Core\Log\MultiLogger;
+use PeServer\Core\PathUtility;
 use PeServer\Core\Store\Stores;
 use PeServer\Core\StringUtility;
-use PeServer\Core\Log\FileLogger;
-use PeServer\Core\Log\MultiLogger;
-use PeServer\Core\InitializeChecker;
-use PeServer\Core\Store\SpecialStore;
 use PeServer\Core\Throws\NotImplementedException;
 
 /**
