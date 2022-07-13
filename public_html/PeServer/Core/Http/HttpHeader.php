@@ -40,16 +40,13 @@ class HttpHeader
 	 * @phpstan-param non-empty-string $name
 	 * @throws ArgumentException HTTPヘッダ名不正。
 	 */
-	private function throwIfInvalidHeaderName(string $name): void
+	protected function throwIfInvalidHeaderName(string $name): void
 	{
 		if (StringUtility::isNullOrWhiteSpace($name)) { //@phpstan-ignore-line non-empty
 			throw new ArgumentException('$name');
 		}
 		if (StringUtility::toLower($name) === 'location') {
 			throw new ArgumentException('$name: setRedirect()');
-		}
-		if (StringUtility::toLower($name) === 'content-length') {
-			throw new ArgumentException('$name: 出力時に処理');
 		}
 	}
 
@@ -226,6 +223,11 @@ final class LocalRequestHttpHeader extends HttpHeader
 			//@phpstan-ignore-next-line non-empty
 			$this->setValue($name, $value);
 		}
+	}
+
+	protected function throwIfInvalidHeaderName(string $name): void
+	{
+		//NONE
 	}
 
 	public function existsRedirect(): bool

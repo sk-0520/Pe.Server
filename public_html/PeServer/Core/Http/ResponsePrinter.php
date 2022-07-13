@@ -15,6 +15,12 @@ use PeServer\Core\StringUtility;
  */
 class ResponsePrinter
 {
+	/**
+	 * 生成。
+	 *
+	 * @param HttpRequest $request
+	 * @param HttpResponse $response
+	 */
 	public function __construct(
 		/** @readonly */
 		private HttpRequest $request,
@@ -24,7 +30,43 @@ class ResponsePrinter
 	}
 
 	/**
-	 * 出力。
+	 * 応答ヘッダ: Content-Length を取得。
+	 *
+	 * @return int 0以上の場合は決定された出力byte数。負数は不明。
+	 */
+	private function getContentLength(): int
+	{
+		if ($this->response->content instanceof ICallbackContent) {
+			$length = $this->response->content->getLength();
+			if (0 <= $length) {
+				return $length;
+			}
+		} else if ($this->response->content instanceof Binary) {
+			return $this->response->content->getLength();
+		} else if (is_string($this->response->content)) {
+			return StringUtility::getByteCount($this->response->content);
+		}
+
+		return -1;
+	}
+
+	/**
+	 * 応答本文出力処理。
+	 */
+	private function output():void
+	{
+		if ($this->response->content instanceof ICallbackContent) {
+			// 処理は自分で出力を頑張ること
+			$this->response->content->output();
+		} else if ($this->response->content instanceof Binary) {
+			echo $this->response->content->getRaw();
+		} else {
+			echo $this->response->content;
+		}
+	}
+
+	/**
+	 * 応答出力。
 	 *
 	 * @return void
 	 */
@@ -51,10 +93,9 @@ class ResponsePrinter
 		}
 
 		// ヘッダ: Content-Length
-		if ($this->response->content instanceof Binary) {
-			header('Content-Length: ' . $this->response->content->getLength());
-		} else if (is_string($this->response->content)) {
-			header('Content-Length: ' . StringUtility::getByteCount($this->response->content));
+		$contentLength = $this->getContentLength();
+		if(0 <= $contentLength) {
+			header('Content-Length: ' . $contentLength);
 		}
 
 		if ($this->request->httpMethod->is(HttpMethod::head())) {
@@ -62,13 +103,6 @@ class ResponsePrinter
 			return;
 		}
 
-		if ($this->response->content instanceof ICallbackContent) {
-			// 処理は自分で出力を頑張ること
-			$this->response->content->output();
-		} else if ($this->response->content instanceof Binary) {
-			echo $this->response->content->getRaw();
-		} else {
-			echo $this->response->content;
-		}
+		$this->output();
 	}
 }
