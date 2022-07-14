@@ -182,7 +182,9 @@ abstract class Logging
 	 * @phpstan-param ILogger::LOG_LEVEL_* $level 有効レベル。S
 	 * @param integer $level
 	 * @param integer $traceIndex
+	 * @phpstan-param UnsignedIntegerAlias $traceIndex
 	 * @param string $header
+	 * @phpstan-param non-empty-string $header
 	 * @param mixed $message
 	 * @phpstan-param LogMessageAlias $message
 	 * @param mixed ...$parameters
@@ -233,6 +235,15 @@ abstract class Logging
 		return StringUtility::replaceMap($format, $map);
 	}
 
+	/**
+	 * 生成。
+	 *
+	 * @param string $header
+	 * @phpstan-param non-empty-string $header
+	 * @param int $baseTraceIndex
+	 * @phpstan-param UnsignedIntegerAlias $baseTraceIndex
+	 * @return ILogger
+	 */
 	public static function create(string $header, int $baseTraceIndex = 0): ILogger
 	{
 		self::$initializeChecker->throwIfNotInitialize();

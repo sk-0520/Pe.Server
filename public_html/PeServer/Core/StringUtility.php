@@ -418,7 +418,7 @@ abstract class StringUtility
 	 *
 	 * @param string $value
 	 * @param integer $count
-	 * @phpstan-param int<0, max> $count
+	 * @phpstan-param UnsignedIntegerAlias $count
 	 * @return string
 	 * @throws ArgumentException 負数。
 	 * @see https://www.php.net/manual/function.str-repeat.php

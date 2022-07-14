@@ -35,6 +35,7 @@ parameters:
     - '/Match expression does not handle remaining value:/'
 
   typeAliases:
+    UnsignedIntegerAlias: 'int<0, max>'
     LogMessageAlias: 'object|array<mixed>|null|literal-string'
     ServerStoreValueAlias: 'string|int|array<int|string|null>|null'
     DatabaseBindValueAlias: 'string|int|bool'

@@ -24,9 +24,11 @@ final class MultiLogger extends LoggerBase
 	 * 生成。
 	 *
 	 * @param string $header ヘッダ。使用用途により意味合いは変わるので実装側でルール決めして使用すること。
+	 * @phpstan-param non-empty-string $header
 	 * @param integer $level 有効レベル。
 	 * @phpstan-param self::LOG_LEVEL_* $level 有効レベル。
 	 * @param integer $baseTraceIndex 基準トレース位置。
+	 * @phpstan-param UnsignedIntegerAlias $baseTraceIndex
 	 * @param ILogger[] $loggers ロガー一覧。
 	 */
 	public function __construct(string $header, int $level, int $baseTraceIndex, array $loggers)
