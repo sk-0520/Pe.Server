@@ -42,13 +42,11 @@ class Mailer
 	public string $characterSet = 'utf-8';
 
 	/**
-	 *
+	 * Return-Path:
 	 */
 	public string $returnPath = InitialValue::EMPTY_STRING;
 	/**
 	 * FROM:
-	 *
-	 * @var EmailAddress
 	 */
 	public EmailAddress $fromAddress;
 	/**
@@ -70,6 +68,9 @@ class Mailer
 	 */
 	public array $bccAddresses = [];
 
+	/**
+	 * 件名。
+	 */
 	public string $subject = InitialValue::EMPTY_STRING;
 
 	/**
@@ -144,13 +145,19 @@ class Mailer
 	protected function convertAddress(int $kind, EmailAddress $data): EmailAddress
 	{
 		if (StringUtility::isNullOrWhiteSpace($data->address)) {
-			throw new ArgumentException('address');
+			throw new ArgumentException('$data->address');
 		}
 
 		return $data;
 	}
 
-	protected function getSubject(string $subject): string
+	/**
+	 * 件名を調整。
+	 *
+	 * @param string $subject 元になる件名。
+	 * @return string
+	 */
+	protected function buildSubject(string $subject): string
 	{
 		return $subject;
 	}
@@ -200,7 +207,7 @@ class Mailer
 
 
 		$isHtml = false;
-		$client->Subject = $this->getSubject($this->subject);
+		$client->Subject = $this->buildSubject($this->subject);
 		if ($this->message->isHtml()) {
 			$client->isHTML(true);
 			$client->Body = $this->message->getHtml();

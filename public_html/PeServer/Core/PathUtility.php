@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core;
 
 use PeServer\Core\InitialValue;
+use PeServer\Core\StringUtility;
 
 /**
  * パス処理系。
@@ -12,7 +13,7 @@ use PeServer\Core\InitialValue;
 abstract class PathUtility
 {
 	/**
-	 * 絶対パスへ変換。
+	 * パスの正規化。
 	 *
 	 * @param string $path パス。
 	 * @return string 絶対パス。
@@ -88,7 +89,7 @@ abstract class PathUtility
 	 * 拡張子取得。
 	 *
 	 * @param string $path
-	 * @param boolean $withDot . を付与するか。
+	 * @param boolean $withDot `.` を付与するか。
 	 * @return string
 	 */
 	public static function getFileExtension(string $path, bool $withDot = false): string
