@@ -16,6 +16,7 @@ interface IDatabaseExecutor
 	 * @param string $statement
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
+	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
 	 * @return integer 影響件数。
 	 * @throws \PDOException
 	 * @throws DatabaseException
@@ -29,6 +30,7 @@ interface IDatabaseExecutor
 	 * @param string $statement
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
+	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
 	 * @return integer 挿入件数。
 	 * @throws \PDOException
 	 * @throws DatabaseException
@@ -43,6 +45,7 @@ interface IDatabaseExecutor
 	 * @param string $statement
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
+	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
 	 * @return void
 	 * @throws \PDOException
 	 * @throws DatabaseException
@@ -57,6 +60,7 @@ interface IDatabaseExecutor
 	 * @param string $statement
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
+	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
 	 * @return integer 更新件数。
 	 * @throws \PDOException
 	 * @throws DatabaseException
@@ -71,6 +75,7 @@ interface IDatabaseExecutor
 	 * @param string $statement
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
+	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
 	 * @return void
 	 * @throws \PDOException
 	 * @throws DatabaseException
@@ -85,6 +90,7 @@ interface IDatabaseExecutor
 	 * @param string $statement
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
+	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
 	 * @return boolean 更新できたか。
 	 * @throws \PDOException
 	 * @throws DatabaseException
@@ -99,6 +105,7 @@ interface IDatabaseExecutor
 	 * @param string $statement
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
+	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
 	 * @return integer 削除件数。
 	 * @throws \PDOException
 	 * @throws DatabaseException
@@ -113,6 +120,7 @@ interface IDatabaseExecutor
 	 * @param string $statement
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
+	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
 	 * @return void
 	 * @throws \PDOException
 	 * @throws DatabaseException
@@ -127,6 +135,7 @@ interface IDatabaseExecutor
 	 * @param string $statement
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
+	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
 	 * @return boolean 削除できたか。
 	 * @throws \PDOException
 	 * @throws DatabaseException

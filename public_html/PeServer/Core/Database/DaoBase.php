@@ -17,6 +17,7 @@ abstract class DaoBase
 {
 	/**
 	 * ロガー。
+	 *
 	 * @readonly
 	 */
 	protected ILogger $logger;
