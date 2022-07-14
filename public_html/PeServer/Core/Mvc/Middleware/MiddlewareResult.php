@@ -18,8 +18,8 @@ use PeServer\Core\Throws\InvalidOperationException;
  */
 abstract class MiddlewareResult
 {
-	public const RESULT_KIND_NONE = 0;
-	public const RESULT_KIND_STATUS = 1;
+	protected const RESULT_KIND_NONE = 0;
+	protected const RESULT_KIND_STATUS = 1;
 
 	private static ?MiddlewareResult $none;
 	public static function none(): MiddlewareResult
