@@ -158,7 +158,7 @@ class Routing
 	}
 
 	/**
-	 * ミドルウェアをグワーッと処理。
+	 * ミドルウェア(事前)をグワーッと処理。
 	 *
 	 * @param array<IMiddleware|string> $middleware
 	 * @phpstan-param array<IMiddleware|class-string<IMiddleware>> $middleware
@@ -177,6 +177,13 @@ class Routing
 		return true;
 	}
 
+	/**
+	 * ミドルウェア(事後)をグワーッと処理。
+	 *
+	 * @param HttpRequest $request
+	 * @param HttpResponse $response
+	 * @return bool
+	 */
 	private function handleAfterMiddleware(HttpRequest $request, HttpResponse $response): bool
 	{
 		if (!ArrayUtility::getCount($this->processedMiddleware)) {
@@ -305,6 +312,9 @@ class Routing
 		}
 	}
 
+	/**
+	 * 終了処理。
+	 */
 	private function shutdown(): void
 	{
 		if (ArrayUtility::getCount($this->shutdownMiddleware)) {

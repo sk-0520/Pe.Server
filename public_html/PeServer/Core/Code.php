@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
+use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\NotImplementedException;
 use PeServer\Core\Throws\TypeException;
 
@@ -47,7 +48,7 @@ abstract class Code
 	 */
 	public static function create(string $input, string|object $baseClass, mixed ...$parameters): object
 	{
-		if(!class_exists($input)) {
+		if (!class_exists($input)) {
 			throw new TypeException();
 		}
 
@@ -66,5 +67,28 @@ abstract class Code
 
 		/** @phpstan-var TObject */
 		return $input;
+	}
+
+	/**
+	 * `method_exists` ラッパー。
+	 *
+	 * @param string|object $input
+	 * @phpstan-param class-string|object $input
+	 * @param string $method
+	 * @phpstan-param non-empty-string $method
+	 */
+	public static function existsMethod(object|string $input, string $method): bool
+	{
+		if (is_string($input)) {
+			if (StringUtility::isNullOrWhiteSpace($input)) { //@phpstan-ignore-line
+				throw new ArgumentException('$input');
+			}
+		}
+
+		if (StringUtility::isNullOrWhiteSpace($method)) { //@phpstan-ignore-line
+			throw new ArgumentException('$method');
+		}
+
+		return method_exists($input, $method);
 	}
 }
