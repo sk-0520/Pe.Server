@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
+use InvalidArgumentException;
 use PeServer\Core\InitialValue;
 use PeServer\Core\Throws\Throws;
 use PeServer\Core\Throws\RegexException;
@@ -77,6 +78,39 @@ abstract class StringUtility
 	public static function getByteCount(string $value): int
 	{
 		return strlen($value);
+	}
+
+	/**
+	 * Unicode のコードポイントに対応する文字を返す。
+	 *
+	 * `mb_chr` ラッパー。
+	 *
+	 * @param int|int[] $value
+	 * @phpstan-param UnsignedIntegerAlias|UnsignedIntegerAlias[] $value
+	 * @return string
+	 * @see https://www.php.net/manual/function.mb-chr.php
+	 * @throws InvalidArgumentException
+	 */
+	public static function fromCodePoint(int|array $value): string
+	{
+		if (is_int($value)) {
+			$single = mb_chr($value);
+			if ($single === false) { //@phpstan-ignore-line
+				throw new InvalidArgumentException();
+			}
+			return $single;
+		}
+
+		$result = '';
+		foreach ($value as $cp) {
+			$multi = mb_chr($cp);
+			if ($multi === false) { //@phpstan-ignore-line
+				throw new InvalidArgumentException();
+			}
+			$result .= $multi;
+		}
+
+		return $result;
 	}
 
 	/**

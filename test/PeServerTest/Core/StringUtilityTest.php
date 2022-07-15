@@ -56,6 +56,18 @@ class StringUtilityTest extends TestClass
 		}
 	}
 
+	public function test_fromCodePoint()
+	{
+		$tests = [
+			new Data('A', 65),
+			new Data('AB', [65, 66]),
+		];
+		foreach ($tests as $test) {
+			$actual = StringUtility::fromCodePoint(...$test->args);
+			$this->assertEquals($test->expected, $actual, $test->str());
+		}
+	}
+
 	public function test_replaceMap()
 	{
 		$tests = [
@@ -364,5 +376,4 @@ class StringUtilityTest extends TestClass
 		StringUtility::toCharacters('');
 		$this->fail();
 	}
-
 }

@@ -211,7 +211,7 @@ class ArrayUtility
 	/**
 	 * `array_is_list` ラッパー。
 	 *
-	 * @param array $array
+	 * @param array<mixed> $array
 	 * @return bool
 	 * @see https://www.php.net/manual/function.array-is-list.php#127044
 	 */
@@ -219,7 +219,7 @@ class ArrayUtility
 	{
 		if (function_exists('array_is_list')) {
 			$function = 'array_is_list'; // ignore intelephense(1010)
-			return $function($array);
+			return $function($array); //@phpstan-ignore-line
 		}
 
 		// https://www.php.net/manual/ja/function.array-is-list.php#127044
