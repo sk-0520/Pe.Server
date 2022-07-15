@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace PeServerTest\Core;
 
+use PeServer\Core\ArrayUtility;
+use PeServer\Core\Throws\InvalidOperationException;
 use PeServerTest\Data;
 use PeServerTest\TestClass;
-use PeServer\Core\ArrayUtility;
 
 class ArrayUtilityTest extends TestClass
 {
@@ -160,4 +161,65 @@ class ArrayUtilityTest extends TestClass
 			$this->assertBoolean($test->expected, $actual, $test->str());
 		}
 	}
+
+	public function test_getFirstKey()
+	{
+		$tests = [
+			new Data(0, [100]),
+			new Data(50, [50 => 100]),
+			new Data('A', ['A' => 100]),
+			new Data(0, [0, 'A' => 100]),
+			new Data('A', ['A' => 100, 0]),
+		];
+		foreach ($tests as $test) {
+			$actual = ArrayUtility::getFirstKey(...$test->args);
+			$this->assertEquals($test->expected, $actual, $test->str());
+		}
+	}
+
+	public function test_getFirstKey_error()
+	{
+		$this->expectException(InvalidOperationException::class);
+		ArrayUtility::getFirstKey([]);
+		$this->fail();
+	}
+
+	public function test_getLastKey()
+	{
+		$tests = [
+			new Data(0, [100]),
+			new Data(50, [50 => 100]),
+			new Data('A', ['A' => 100]),
+			new Data('A', [0, 'A' => 100]),
+			new Data(0, ['A' => 100, 0]), // 0なんかぁ
+		];
+		foreach ($tests as $test) {
+			$actual = ArrayUtility::getLastKey(...$test->args);
+			$this->assertEquals($test->expected, $actual, $test->str());
+		}
+	}
+
+	public function test_getLastKey_error()
+	{
+		$this->expectException(InvalidOperationException::class);
+		ArrayUtility::getLastKey([]);
+		$this->fail();
+	}
+
+	public function test_isList()
+	{
+		$tests = [
+			new Data(true, []),
+			new Data(true, [100]),
+			new Data(true, [0 => 100]),
+			new Data(false, [1 => 100]),
+			new Data(false, [50 => 100]),
+			new Data(false, ['A' => 100]),
+			new Data(false, [0, 'A' => 100]),
+			new Data(false, ['A' => 100, 0]), // 0なんかぁ
+		];
+		foreach ($tests as $test) {
+			$actual = ArrayUtility::isList(...$test->args);
+			$this->assertBoolean($test->expected, $actual, $test->str());
+		}	}
 }
