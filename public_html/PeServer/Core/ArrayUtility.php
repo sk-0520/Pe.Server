@@ -231,4 +231,16 @@ class ArrayUtility
 		}
 		return true;
 	}
+
+	/**
+	 * `array_unique` ラッパー。
+	 *
+	 * @param array<mixed> $array
+	 * @return array<mixed>
+	 * @see https://www.php.net/manual/function.array-unique.php
+	 */
+	public static function toUnique(array $array): array
+	{
+		return array_unique($array, SORT_REGULAR);
+	}
 }

@@ -221,5 +221,19 @@ class ArrayUtilityTest extends TestClass
 		foreach ($tests as $test) {
 			$actual = ArrayUtility::isList(...$test->args);
 			$this->assertBoolean($test->expected, $actual, $test->str());
-		}	}
+		}
+	}
+
+	public function test_toUnique()
+	{
+		$tests = [
+			new Data([], []),
+			new Data([0], [0, 0]),
+			new Data([1, 2, 3], [1, 2, 3, 1, 2, 3, 3, 2, 1]),
+		];
+		foreach ($tests as $test) {
+			$actual = ArrayUtility::toUnique(...$test->args);
+			$this->assertEquals($test->expected, $actual, $test->str());
+		}
+	}
 }
