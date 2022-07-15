@@ -42,6 +42,43 @@ class ArrayUtilityTest extends TestClass
 		}
 	}
 
+	public function test_tryGet()
+	{
+		$tests = [
+			new Data(['actual' => true, 'result' => 10], [10, 20, 30], 0),
+			new Data(['actual' => true, 'result' => 20], [10, 20, 30], 1),
+			new Data(['actual' => true, 'result' => 30], [10, 20, 30], 2),
+			new Data(['actual' => false, 'result' => 'ないんだわ'], [10, 20, 30], 3),
+			new Data(['actual' => true, 'result' => '123'], ['A' => '123', 'B' => '456', 'C' => '789'], 'A'),
+			new Data(['actual' => true, 'result' => '456'], ['A' => '123', 'B' => '456', 'C' => '789'], 'B'),
+			new Data(['actual' => true, 'result' => '789'], ['A' => '123', 'B' => '456', 'C' => '789'], 'C'),
+			new Data(['actual' => false, 'result' => 'ないんだわ'], ['A' => '123', 'B' => '456', 'C' => '789'], 0),
+		];
+		foreach ($tests as $test) {
+			$actual = ArrayUtility::tryGet($test->args[0], $test->args[1], $result);
+			$this->assertBoolean($test->expected['actual'], $actual, $test->str());
+			if ($actual) {
+				$this->assertEquals($test->expected['result'], $result, $test->str());
+			}
+		}
+	}
+
+	public function test_getCount()
+	{
+		$tests = [
+			new Data(0, null),
+			new Data(0, []),
+			new Data(1, [0]),
+			new Data(1, ['A' => 0]),
+			new Data(2, ['A' => 0, 'B' => 1]),
+			new Data(3, ['A' => 0, 'B' => 1, 9]),
+		];
+		foreach ($tests as $test) {
+			$actual = ArrayUtility::getCount(...$test->args);
+			$this->assertEquals($test->expected, $actual, $test->str());
+		}
+	}
+
 	public function test_contains()
 	{
 		$input = [10, 20, 30, 40];
@@ -57,6 +94,22 @@ class ArrayUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = ArrayUtility::contains(...$test->args);
+			$this->assertBoolean($test->expected, $actual, $test->str());
+		}
+	}
+
+	public function test_existsKey()
+	{
+		$tests = [
+			new Data(true, [100], 0),
+			new Data(true, [50 => 100], 50),
+			new Data(false, [50 => 100], 0),
+			new Data(false, ['A' => 100], 0),
+			new Data(true, ['A' => 100], 'A'),
+			new Data(false, ['A' => 100], 'B'),
+		];
+		foreach ($tests as $test) {
+			$actual = ArrayUtility::existsKey(...$test->args);
 			$this->assertBoolean($test->expected, $actual, $test->str());
 		}
 	}
@@ -90,6 +143,21 @@ class ArrayUtilityTest extends TestClass
 		$actual = ArrayUtility::getValues($input);
 		for ($i = 0; $i < count($expected); $i++) {
 			$this->assertEquals($expected[$i], $actual[$i]);
+		}
+	}
+
+	public function test_in()
+	{
+		$tests = [
+			new Data(true, [100], 100),
+			new Data(true, [50 => 100], 100),
+			new Data(false, [50 => 100], 50),
+			new Data(true, ['A' => 100], 100),
+			new Data(false, ['A' => 100], 'A'),
+		];
+		foreach ($tests as $test) {
+			$actual = ArrayUtility::in(...$test->args);
+			$this->assertBoolean($test->expected, $actual, $test->str());
 		}
 	}
 }
