@@ -170,12 +170,13 @@ abstract class StringUtility
 	 * @param string $haystack 対象文字列。
 	 * @param string $needle 検索文字列。
 	 * @param integer $offset 開始文字数目。
+	 * @phpstan-param UnsignedIntegerAlias $offset
 	 * @return integer 見つかった文字位置。見つかんない場合は -1
 	 * @throws ArgumentException
 	 */
 	public static function getPosition(string $haystack, string $needle, int $offset = 0): int
 	{
-		if ($offset < 0) {
+		if ($offset < 0) { //@phpstan-ignore-line UnsignedIntegerAlias
 			throw new ArgumentException('$offset');
 		}
 
@@ -193,12 +194,13 @@ abstract class StringUtility
 	 * @param string $haystack 対象文字列。
 	 * @param string $needle 検索文字列。
 	 * @param integer $offset 終端文字数目。
+	 * @phpstan-param UnsignedIntegerAlias $offset
 	 * @return integer 見つかった文字位置。見つかんない場合は -1
 	 * @throws ArgumentException
 	 */
 	public static function getLastPosition(string $haystack, string $needle, int $offset = 0): int
 	{
-		if ($offset < 0) {
+		if ($offset < 0) { //@phpstan-ignore-line UnsignedIntegerAlias
 			throw new ArgumentException('$offset');
 		}
 
@@ -336,6 +338,7 @@ abstract class StringUtility
 	 *
 	 * @param string $value 対象文字列。
 	 * @param string $separator 分割対象文字列。
+	 * @phpstan-param non-empty-string $separator 分割対象文字列。
 	 * @param integer $limit 分割数。
 	 * @return string[] 分割された文字列。
 	 * @throws ArgumentException 分割失敗(PHP8未満)
@@ -344,11 +347,10 @@ abstract class StringUtility
 	 */
 	public static function split(string $value, string $separator, int $limit = PHP_INT_MAX): array
 	{
-		if (StringUtility::isNullOrEmpty($separator)) {
+		if (StringUtility::isNullOrEmpty($separator)) { //@phpstan-ignore-line separator
 			throw new ArgumentException();
 		}
 
-		/** @phpstan-var non-empty-string $separator */
 		$result = explode($separator, $value, $limit);
 
 		return $result;
