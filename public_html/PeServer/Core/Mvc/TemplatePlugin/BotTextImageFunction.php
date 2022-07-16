@@ -4,16 +4,18 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\TemplatePlugin;
 
-use PeServer\Core\PathUtility;
 use PeServer\Core\ArrayUtility;
-use PeServer\Core\InitialValue;
-use PeServer\Core\OutputBuffer;
-use PeServer\Core\StringUtility;
-use PeServer\Core\TypeConverter;
+use PeServer\Core\Binary;
+use PeServer\Core\Cryptography;
 use PeServer\Core\Html\HtmlDocument;
-use PeServer\Core\Throws\TemplateException;
+use PeServer\Core\InitialValue;
 use PeServer\Core\Mvc\TemplatePlugin\TemplateFunctionBase;
 use PeServer\Core\Mvc\TemplatePlugin\TemplatePluginArgument;
+use PeServer\Core\OutputBuffer;
+use PeServer\Core\PathUtility;
+use PeServer\Core\StringUtility;
+use PeServer\Core\Throws\TemplateException;
+use PeServer\Core\TypeConverter;
 
 /**
  * Bot用にテキストから画像生成。
@@ -33,6 +35,8 @@ use PeServer\Core\Mvc\TemplatePlugin\TemplatePluginArgument;
  */
 class BotTextImageFunction extends TemplateFunctionBase
 {
+	private const HASH_ALGORITHM = 'sha256';
+
 	public function __construct(TemplatePluginArgument $argument)
 	{
 		parent::__construct($argument);
@@ -126,10 +130,7 @@ class BotTextImageFunction extends TemplateFunctionBase
 		$img = $dom->addElement('img');
 		$img->setAttribute('src', 'data:image/png;base64,' . $binary->toBase64());
 
-		$textHash = hash('sha256', $text);
-		if ($textHash === false) { // @phpstan-ignore-line
-			throw new TemplateException();
-		}
+		$textHash = Cryptography::generateHashString(self::HASH_ALGORITHM, new Binary($text));
 		$img->setAttribute('data-hash', $textHash);
 		if (!StringUtility::isNullOrWhiteSpace($className)) {
 			$img->setAttribute('class', $className);

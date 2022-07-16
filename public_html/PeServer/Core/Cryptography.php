@@ -200,6 +200,15 @@ abstract class Cryptography
 		return hash_algos();
 	}
 
+	private static function generateHashCore(bool $isBinary, string $algorithm, Binary $binary/*, array $options = []*/): string
+	{
+		$hash = hash($algorithm, $binary->getRaw(), $isBinary/*, $options */);
+		if ($hash === false) { //@phpstan-ignore-line
+			throw new CryptoException();
+		}
+		return $hash;
+	}
+
 	/**
 	 * ハッシュ化処理。
 	 *
@@ -214,12 +223,7 @@ abstract class Cryptography
 	 */
 	public static function generateHashString(string $algorithm, Binary $binary/*, array $options = []*/): string
 	{
-		$hash = hash($algorithm, $binary->getRaw(), false/*, $options */);
-		if ($hash === false) { //@phpstan-ignore-line
-			throw new CryptoException();
-		}
-
-		return $hash;
+		return self::generateHashCore(false, $algorithm, $binary);
 	}
 
 	/**
@@ -236,11 +240,6 @@ abstract class Cryptography
 	 */
 	public static function generateHashBinary(string $algorithm, Binary $binary/*, array $options = []*/): Binary
 	{
-		$hash = hash($algorithm, $binary->getRaw(), true/*, $options */);
-		if ($hash === false) { //@phpstan-ignore-line
-			throw new CryptoException();
-		}
-
-		return new Binary($hash);
+		return new Binary(self::generateHashCore(true, $algorithm, $binary));
 	}
 }
