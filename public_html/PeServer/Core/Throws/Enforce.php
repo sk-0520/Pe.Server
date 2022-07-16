@@ -6,9 +6,11 @@ namespace PeServer\Core\Throws;
 
 use \Throwable;
 use PeServer\Core\Code;
+use PeServer\Core\ReflectionUtility;
 use PeServer\Core\StringUtility;
-use PeServer\Core\Throws\EnforceException;
 use PeServer\Core\Throws\EnforceClassNameError;
+use PeServer\Core\Throws\EnforceException;
+use PeServer\Core\Type;
 
 /**
  * 強制処理。
@@ -26,7 +28,7 @@ abstract class Enforce
 	private static function throwCore(string $argument, string $exceptionClass)
 	{
 		try {
-			$exception = Code::create($exceptionClass, Throwable::class, $argument, );
+			$exception = ReflectionUtility::create($exceptionClass, Throwable::class, $argument, );
 		} catch(TypeException $ex) {
 			throw new EnforceClassNameError($exceptionClass);
 		}

@@ -109,7 +109,7 @@ class Routing
 	{
 		if (is_string($middleware)) {
 			/** @var IMiddleware */
-			$middleware = Code::create($middleware, IMiddleware::class);
+			$middleware = ReflectionUtility::create($middleware, IMiddleware::class);
 		}
 
 		return $middleware;
@@ -126,7 +126,7 @@ class Routing
 	{
 		if (is_string($middleware)) {
 			/** @var IShutdownMiddleware */
-			$middleware = Code::create($middleware, IShutdownMiddleware::class);
+			$middleware = ReflectionUtility::create($middleware, IShutdownMiddleware::class);
 		}
 
 		return $middleware;
@@ -242,7 +242,7 @@ class Routing
 		$actionResult = null;
 		$output = OutputBuffer::get(function () use ($controllerArgument, $controllerName, $actionSetting, $request, &$actionResult) {
 			/** @var ControllerBase */
-			$controller = Code::create($controllerName, ControllerBase::class, $controllerArgument);
+			$controller = ReflectionUtility::create($controllerName, ControllerBase::class, $controllerArgument);
 			$methodName = $actionSetting->controllerMethod;
 			/** @var IActionResult */
 			$actionResult = $controller->$methodName($request);

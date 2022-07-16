@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Throws;
 
-use Exception;
 use \Throwable;
-use PeServer\Core\Code;
+use PeServer\Core\ReflectionUtility;
+use PeServer\Core\Type;
 
 abstract class Throws
 {
@@ -39,7 +39,7 @@ abstract class Throws
 		}
 
 		/** @var Throwable */
-		$exception = Code::create($className, Throwable::class, $message, $code, $previous);
+		$exception = ReflectionUtility::create($className, Throwable::class, $message, $code, $previous);
 		throw $exception;
 	}
 }

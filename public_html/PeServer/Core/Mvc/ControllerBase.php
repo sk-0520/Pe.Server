@@ -17,9 +17,11 @@ use PeServer\Core\Mvc\Result\DataActionResult;
 use PeServer\Core\Mvc\Result\RedirectActionResult;
 use PeServer\Core\Mvc\Result\ViewActionResult;
 use PeServer\Core\Mvc\TemplateParameter;
+use PeServer\Core\ReflectionUtility;
 use PeServer\Core\Store\Stores;
 use PeServer\Core\StringUtility;
 use PeServer\Core\Throws\InvalidOperationException;
+use PeServer\Core\Type;
 use PeServer\Core\UrlUtility;
 
 
@@ -89,7 +91,7 @@ abstract class ControllerBase
 
 		$parameter = $this->createParameter($logicClass, $request);
 		/** @var LogicBase */
-		$logic = Code::create($logicClass, LogicBase::class, $parameter, ...$parameters);
+		$logic = ReflectionUtility::create($logicClass, LogicBase::class, $parameter, ...$parameters);
 		$this->logic = $logic;
 		return $logic;
 	}
