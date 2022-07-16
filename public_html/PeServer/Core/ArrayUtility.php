@@ -243,4 +243,23 @@ class ArrayUtility
 	{
 		return array_unique($array, SORT_REGULAR);
 	}
+
+	/**
+	 * `array_replace(_recursive)` ラッパー。
+	 *
+	 * @param array<mixed> $base 元になる配列。
+	 * @param array<mixed> $overwrite 上書きする配列。
+	 * @param bool $recursive 再帰的置き換えを行うか(`_recursive`呼び出し)。
+	 * @return array<mixed>
+	 * @see https://php.net/manual/function.array-replace-recursive.php
+	 * @see https://php.net/manual/function.array-replace.php
+	 */
+	public static function replace(array $base, array $overwrite, bool $recursive = true): array
+	{
+		if ($recursive) {
+			return array_replace_recursive($base, $overwrite);
+		}
+
+		return array_replace($base, $overwrite);
+	}
 }

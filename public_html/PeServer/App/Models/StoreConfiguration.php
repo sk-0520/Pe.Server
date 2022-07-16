@@ -35,7 +35,7 @@ abstract class StoreConfiguration
 		/** @var array<string,mixed> */
 		$cookie = ArrayUtility::getOr($setting, 'cookie', []);
 		$overwriteSetting = [
-			'cookie' => array_replace_recursive($baseSetting, $cookie),
+			'cookie' => ArrayUtility::replace($baseSetting, $cookie),
 		];
 
 		$overwriteCookie = self::getCookie($overwriteSetting);

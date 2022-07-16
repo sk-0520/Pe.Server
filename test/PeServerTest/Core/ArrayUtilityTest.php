@@ -236,4 +236,18 @@ class ArrayUtilityTest extends TestClass
 			$this->assertEquals($test->expected, $actual, $test->str());
 		}
 	}
+
+	public function test_replace()
+	{
+		$tests = [
+			new Data([], [], []),
+			new Data([2], [1], [2]),
+			new Data([2, 3], [1], [2, 3]),
+			new Data(['a' => 'A', 'b' => 'B'], ['a' => 'A'], ['b' => 'B']),
+		];
+		foreach ($tests as $test) {
+			$actual = ArrayUtility::replace(...$test->args);
+			$this->assertEquals($test->expected, $actual, $test->str());
+		}
+	}
 }

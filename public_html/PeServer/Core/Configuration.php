@@ -80,10 +80,10 @@ class Configuration
 
 		/** @var array<mixed> */
 		$baseConfiguration = FileUtility::readJsonFile($baseFilePath);
-		if (file_exists($environmentFilePath)) {
+		if (FileUtility::existsFile($environmentFilePath)) {
 			/** @var array<mixed> */
 			$environmentConfiguration = FileUtility::readJsonFile($environmentFilePath);
-			$configuration = array_replace_recursive($baseConfiguration, $environmentConfiguration);
+			$configuration = ArrayUtility::replace($baseConfiguration, $environmentConfiguration);
 		} else {
 			$configuration = $baseConfiguration;
 		}
