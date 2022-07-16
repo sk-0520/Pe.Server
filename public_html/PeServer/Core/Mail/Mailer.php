@@ -2,21 +2,22 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core;
+namespace PeServer\Core\Mail;
 
-require_once(__DIR__ . '/../Core/Libs/PHPMailer/src/Exception.php');
-//require_once(__DIR__ . '/../Core/Libs/PHPMailer/src/OAuth.php');
-require_once(__DIR__ . '/../Core/Libs/PHPMailer/src/PHPMailer.php');
-//require_once(__DIR__ . '/../Core/Libs/PHPMailer/src/POP3.php');
-require_once(__DIR__ . '/../Core/Libs/PHPMailer/src/SMTP.php');
+require_once(__DIR__ . '/../../Core/Libs/PHPMailer/src/Exception.php');
+//require_once(__DIR__ . '/../../Core/Libs/PHPMailer/src/OAuth.php');
+require_once(__DIR__ . '/../../Core/Libs/PHPMailer/src/PHPMailer.php');
+//require_once(__DIR__ . '/../../Core/Libs/PHPMailer/src/POP3.php');
+require_once(__DIR__ . '/../../Core/Libs/PHPMailer/src/SMTP.php');
 
 use \PHPMailer\PHPMailer\PHPMailer;
-use PeServer\Core\Throws\NotImplementedException;
-use PeServer\Core\Throws\InvalidOperationException;
-use PeServer\Core\Throws\ArgumentNullException;
-use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\InitialValue;
-use PeServer\Core\EmailAddress;
+use PeServer\Core\Mail\EmailAddress;
+use PeServer\Core\StringUtility;
+use PeServer\Core\Throws\ArgumentException;
+use PeServer\Core\Throws\ArgumentNullException;
+use PeServer\Core\Throws\InvalidOperationException;
+use PeServer\Core\Throws\NotImplementedException;
 
 class Mailer
 {

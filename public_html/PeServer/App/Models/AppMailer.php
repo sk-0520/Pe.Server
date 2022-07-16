@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models;
 
-use PeServer\Core\Mailer;
-use PeServer\Core\Environment;
 use PeServer\Core\ArrayUtility;
-use PeServer\Core\EmailAddress;
+use PeServer\Core\Environment;
 use PeServer\Core\InitialValue;
+use PeServer\Core\Mail\EmailAddress;
+use PeServer\Core\Mail\Mailer;
 use PeServer\Core\StringUtility;
 
 /**
