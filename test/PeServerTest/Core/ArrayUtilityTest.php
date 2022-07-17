@@ -265,4 +265,14 @@ class ArrayUtilityTest extends TestClass
 		}
 	}
 
+	public function test_reverse()
+	{
+		$tests = [
+			new Data([3, 2, 1], [1, 2, 3]),
+		];
+		foreach ($tests as $test) {
+			$actual = ArrayUtility::reverse(...$test->args);
+			$this->assertEquals($test->expected, $actual, $test->str());
+		}
+	}
 }

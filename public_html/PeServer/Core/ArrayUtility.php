@@ -267,32 +267,37 @@ class ArrayUtility
 	/**
 	 * キー項目をランダム取得。
 	 *
-	 * @param array<mixed> $input
-	 * @phpstan-param non-empty-array<mixed> $input
+	 * @param array<mixed> $array
+	 * @phpstan-param non-empty-array<mixed> $array
 	 * @param int $count
 	 * @phpstan-param positive-int $count
 	 * @return array<string|int>
 	 * @phpstan-return array-key[]
 	 * @throws ArgumentException
 	 */
-	public static function getRandomKeys(array $input, int $count): array
+	public static function getRandomKeys(array $array, int $count): array
 	{
 		if ($count < 1) { //@phpstan-ignore-line
 			throw new ArgumentException('$count');
 		}
 
-		$length = self::getCount($input);
+		$length = self::getCount($array);
 		if ($length < $count) {
 			throw new ArgumentException('$length < $count');
 		}
 
 		$result = [];
-		$keys = self::getKeys($input);
+		$keys = self::getKeys($array);
 		for ($i = 0; $i < $count; $i++) {
 			$index = Cryptography::generateRandomInteger($length - 1);
 			$result[] = $keys[$index];
 		}
 
 		return $result;
+	}
+
+	public static function reverse(array $input)
+	{
+		return array_reverse($input);
 	}
 }
