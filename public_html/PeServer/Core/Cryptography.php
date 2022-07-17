@@ -48,7 +48,7 @@ abstract class Cryptography
 	 * @throws CryptoException 失敗
 	 * @see https://www.php.net/manual/function.openssl-random-pseudo-bytes.php
 	 */
-	public static function generateRandomBytes(int $length): Binary
+	public static function generateRandomBinary(int $length): Binary
 	{
 		if ($length < 1) { //@phpstan-ignore-line phpstan:positive-int
 			throw new CryptoException('$length = ' . $length);
@@ -121,7 +121,7 @@ abstract class Cryptography
 			throw new CryptoException('$ivLength = ' . $ivLength);
 		}
 
-		$iv = self::generateRandomBytes($ivLength);
+		$iv = self::generateRandomBinary($ivLength);
 
 		$encData = openssl_encrypt($data, $algorithm, $password, self::OPTION, $iv->getRaw());
 		if ($encData === false) {

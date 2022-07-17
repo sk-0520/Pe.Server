@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
+use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Throws\TypeException;
 
@@ -98,6 +99,21 @@ class ArrayUtility
 	}
 
 	/**
+	 * 配列に該当キーは存在するか。
+	 *
+	 * @param array<mixed> $haystack
+	 * @phpstan-param array<array-key,mixed> $haystack
+	 * @param int|string $key
+	 * @phpstan-param array-key $key
+	 * @return bool
+	 * @see https://www.php.net/manual/function.array-key-exists.php
+	 */
+	public static function containsKey(array $haystack, int|string $key): bool
+	{
+		return array_key_exists($key, $haystack);
+	}
+
+	/**
 	 * 配列に指定要素が存在するか。
 	 *
 	 * @template TValue
@@ -108,24 +124,9 @@ class ArrayUtility
 	 * @return boolean
 	 * @see https://www.php.net/manual/function.array-search.php
 	 */
-	public static function contains(array $haystack, mixed $needle): bool
+	public static function containsValue(array $haystack, mixed $needle): bool
 	{
 		return array_search($needle, $haystack) !== false;
-	}
-
-	/**
-	 * 配列に該当キーは存在するか。
-	 *
-	 * @param array<mixed> $haystack
-	 * @phpstan-param array<array-key,mixed> $haystack
-	 * @param int|string $key
-	 * @phpstan-param array-key $key
-	 * @return bool
-	 * @see https://www.php.net/manual/function.array-key-exists.php
-	 */
-	public static function existsKey(array $haystack, int|string $key): bool
-	{
-		return array_key_exists($key, $haystack);
 	}
 
 	/**
@@ -217,8 +218,8 @@ class ArrayUtility
 	 */
 	public static function isList(array $array): bool
 	{
-		if (function_exists('array_is_list')) {
-			$function = 'array_is_list'; // ignore intelephense(1010)
+		$function = 'array_is_list'; // ignore intelephense(1010)
+		if (function_exists($function)) {
 			return $function($array); //@phpstan-ignore-line
 		}
 
@@ -261,5 +262,37 @@ class ArrayUtility
 		}
 
 		return array_replace($base, $overwrite);
+	}
+
+	/**
+	 * キー項目をランダム取得。
+	 *
+	 * @param array<mixed> $input
+	 * @phpstan-param non-empty-array<mixed> $input
+	 * @param int $count
+	 * @phpstan-param positive-int $count
+	 * @return array<string|int>
+	 * @phpstan-return array-key[]
+	 * @throws ArgumentException
+	 */
+	public static function getRandomKeys(array $input, int $count): array
+	{
+		if ($count < 1) { //@phpstan-ignore-line
+			throw new ArgumentException('$count');
+		}
+
+		$length = self::getCount($input);
+		if ($length < $count) {
+			throw new ArgumentException('$length < $count');
+		}
+
+		$result = [];
+		$keys = self::getKeys($input);
+		for ($i = 0; $i < $count; $i++) {
+			$index = Cryptography::generateRandomInteger($length - 1);
+			$result[] = $keys[$index];
+		}
+
+		return $result;
 	}
 }

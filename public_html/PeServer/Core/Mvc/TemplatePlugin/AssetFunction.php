@@ -171,7 +171,7 @@ class AssetFunction extends TemplateFunctionBase
 		}
 
 		foreach ($this->params as $key => $value) {
-			if (ArrayUtility::contains($skipAttributes, $key)) {
+			if (ArrayUtility::containsValue($skipAttributes, $key)) {
 				continue;
 			}
 			$element->setAttribute($key, $value);

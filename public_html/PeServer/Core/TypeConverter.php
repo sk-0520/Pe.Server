@@ -56,7 +56,7 @@ abstract class TypeConverter
 		if (is_string($input)) {
 			$s = StringUtility::toLower(StringUtility::trim((string)$input));
 			$trues = ['true', 't', 'on', 'ok', '1'];
-			return ArrayUtility::contains($trues, $s);
+			return ArrayUtility::containsValue($trues, $s);
 		}
 
 		return boolval($input);

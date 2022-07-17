@@ -105,7 +105,7 @@ class FileLogger extends LoggerBase
 				'DATE' => $this->toHeaderDate(true),
 			]
 		);
-		if (!ArrayUtility::contains(self::$cleanupFilePatterns, $filePattern)) {
+		if (!ArrayUtility::containsValue(self::$cleanupFilePatterns, $filePattern)) {
 			self::$cleanupFilePatterns[] = $filePattern;
 			$this->cleanupCore($maxCount, $filePattern);
 		}

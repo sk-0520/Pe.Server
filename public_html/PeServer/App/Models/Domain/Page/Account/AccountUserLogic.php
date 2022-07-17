@@ -47,7 +47,7 @@ class AccountUserLogic extends PageLogicBase
 		];
 
 		foreach ($userInfoData as $key => $value) {
-			if(ArrayUtility::existsKey($map, $key)) {
+			if(ArrayUtility::containsKey($map, $key)) {
 				$this->setValue($map[$key], $value);
 			}
 		}

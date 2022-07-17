@@ -84,7 +84,7 @@ final class HtmlElement extends HtmlElementBase
 	public function addClass(string $className): void
 	{
 		$list = $this->getClassList();
-		if (!ArrayUtility::contains($list, $className)) {
+		if (!ArrayUtility::containsValue($list, $className)) {
 			$list[] = $className;
 			$this->setClassList($list);
 		}

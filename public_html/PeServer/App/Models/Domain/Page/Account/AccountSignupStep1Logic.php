@@ -138,12 +138,12 @@ class AccountSignupStep1Logic extends PageLogicBase
 
 	protected function cleanup(LogicCallMode $callMode): void
 	{
-		if ($callMode->isSubmit() && ArrayUtility::existsKey($this->result, 'token')) {
+		if ($callMode->isSubmit() && ArrayUtility::containsKey($this->result, 'token')) {
 			$this->removeTemporary(self::TEMP_TOKEN);
 			return;
 		}
 
-		$tempToken = Cryptography::generateRandomBytes(10)->toHex();
+		$tempToken = Cryptography::generateRandomBinary(10)->toHex();
 		$tempValue = sprintf('%04d', Cryptography::generateRandomInteger(9999));
 		$this->pushTemporary(self::TEMP_TOKEN, [
 			'token' => $tempToken,

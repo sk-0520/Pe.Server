@@ -107,7 +107,7 @@ class HttpHeader
 	 */
 	public function existsHeader(string $name): bool
 	{
-		return ArrayUtility::existsKey($this->headers, $name);
+		return ArrayUtility::containsKey($this->headers, $name);
 	}
 
 	/**

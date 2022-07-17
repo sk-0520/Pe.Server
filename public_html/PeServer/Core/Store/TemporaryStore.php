@@ -170,7 +170,7 @@ class TemporaryStore
 	{
 		$this->values[$key] = $value;
 
-		if (ArrayUtility::contains($this->removes, $key)) {
+		if (ArrayUtility::containsValue($this->removes, $key)) {
 			$index = array_search($key, $this->removes);
 			if ($index === false) {
 				throw new InvalidOperationException();
@@ -191,7 +191,7 @@ class TemporaryStore
 		$id = $this->getOrCreateId();
 		$this->import($id);
 
-		if (!ArrayUtility::existsKey($this->values, $key)) {
+		if (!ArrayUtility::containsKey($this->values, $key)) {
 			return null;
 		}
 

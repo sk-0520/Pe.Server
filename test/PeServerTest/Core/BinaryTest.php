@@ -9,7 +9,7 @@ use PeServerTest\TestClass;
 use PeServer\Core\Binary;
 use PeServer\Core\Throws\ArgumentException;
 
-class BytesTest extends TestClass
+class BinaryTest extends TestClass
 {
 	public function test_getRaw()
 	{
@@ -33,7 +33,7 @@ class BytesTest extends TestClass
 		foreach ($tests as $test) {
 			$binary = new Binary(...$test->args);
 			$actual = $binary->toHex();
-			$this->assertEquals($test->expected, $actual);
+			$this->assertEquals($test->expected, $actual, $test->str());
 		}
 	}
 
@@ -46,7 +46,7 @@ class BytesTest extends TestClass
 		foreach ($tests as $test) {
 			$binary = new Binary($test->args[0]);
 			$actual = $binary->convert($test->args[1], $test->args[2]);
-			$this->assertEquals($test->expected, $actual);
+			$this->assertEquals($test->expected, $actual, $test->str());
 		}
 	}
 
@@ -64,6 +64,22 @@ class BytesTest extends TestClass
 		$this->expectException(ArgumentException::class);
 		Binary::fromBase64('@@@@@@');
 		$this->fail();
+	}
+
+	public function test_hasNull()
+	{
+		$tests = [
+			new Data(false, ""),
+			new Data(false, "abc"),
+			new Data(true, "\0abc"),
+			new Data(true, "abc\0"),
+			new Data(true, "a\0c"),
+		];
+		foreach ($tests as $test) {
+			$binary = new Binary(...$test->args);
+			$actual = $binary->hasNull();
+			$this->assertEquals($test->expected, $actual, $test->str());
+		}
 	}
 
 

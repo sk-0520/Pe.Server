@@ -89,7 +89,7 @@ class Route
 			$this->basePath = $trimPath;
 		}
 
-		if (ArrayUtility::contains($middleware, self::CLEAR_MIDDLEWARE)) {
+		if (ArrayUtility::containsValue($middleware, self::CLEAR_MIDDLEWARE)) {
 			throw new ArgumentException('$middleware');
 		}
 

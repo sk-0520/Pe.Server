@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServerTest\Core;
 
 use PeServer\Core\ArrayUtility;
+use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServerTest\Data;
 use PeServerTest\TestClass;
@@ -80,7 +81,7 @@ class ArrayUtilityTest extends TestClass
 		}
 	}
 
-	public function test_contains()
+	public function test_containsValue()
 	{
 		$input = [10, 20, 30, 40];
 		$tests = [
@@ -94,7 +95,7 @@ class ArrayUtilityTest extends TestClass
 			new Data(false, $input, -40),
 		];
 		foreach ($tests as $test) {
-			$actual = ArrayUtility::contains(...$test->args);
+			$actual = ArrayUtility::containsValue(...$test->args);
 			$this->assertBoolean($test->expected, $actual, $test->str());
 		}
 	}
@@ -110,7 +111,7 @@ class ArrayUtilityTest extends TestClass
 			new Data(false, ['A' => 100], 'B'),
 		];
 		foreach ($tests as $test) {
-			$actual = ArrayUtility::existsKey(...$test->args);
+			$actual = ArrayUtility::containsKey(...$test->args);
 			$this->assertBoolean($test->expected, $actual, $test->str());
 		}
 	}
@@ -250,4 +251,18 @@ class ArrayUtilityTest extends TestClass
 			$this->assertEquals($test->expected, $actual, $test->str());
 		}
 	}
+
+	public function test_getRandomKeys()
+	{
+		$tests = [
+			new Data(1, [1], 1),
+			new Data(1, [1, 2, 3], 1),
+			new Data(2, [1, 2, 3], 2),
+		];
+		foreach ($tests as $test) {
+			$actual = ArrayUtility::getRandomKeys(...$test->args);
+			$this->assertEquals($test->expected, ArrayUtility::getCount($actual), $test->str());
+		}
+	}
+
 }

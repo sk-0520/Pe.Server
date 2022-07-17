@@ -79,7 +79,7 @@ class InputHelperFunction extends TemplateFunctionBase
 			'required'
 		];
 
-		if (ArrayUtility::contains($booleanAttrs, $name)) {
+		if (ArrayUtility::containsValue($booleanAttrs, $name)) {
 			$b = TypeConverter::parseBoolean($value);
 			$element->setAttribute($name, $b);
 		} else {
@@ -118,7 +118,7 @@ class InputHelperFunction extends TemplateFunctionBase
 
 		$ignoreKeys = ['key', 'type', 'value']; // idは渡されたものを優先
 		foreach ($this->params as $key => $value) {
-			if (ArrayUtility::contains($ignoreKeys, $key)) {
+			if (ArrayUtility::containsValue($ignoreKeys, $key)) {
 				continue;
 			}
 			$this->setElementAttribute($element, $key, $value);

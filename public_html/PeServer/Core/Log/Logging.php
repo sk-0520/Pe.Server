@@ -68,7 +68,7 @@ abstract class Logging
 
 		self::$stores = $stores;
 		self::$loggingConfiguration = $loggingConfiguration;
-		self::$requestId = Cryptography::generateRandomBytes(self::LOG_REQUEST_ID_LENGTH)->toHex();
+		self::$requestId = Cryptography::generateRandomBinary(self::LOG_REQUEST_ID_LENGTH)->toHex();
 
 		/**
 		 * @var int
