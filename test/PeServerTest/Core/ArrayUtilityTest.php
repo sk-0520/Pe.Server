@@ -275,4 +275,24 @@ class ArrayUtilityTest extends TestClass
 			$this->assertEquals($test->expected, $actual, $test->str());
 		}
 	}
+
+
+	public function test_flip()
+	{
+		$tests = [
+			new Data([0 => 'a', 1 => 'b'], ['a' => 0, 'b' => 1]),
+		];
+		foreach ($tests as $test) {
+			$actual = ArrayUtility::flip(...$test->args);
+			$this->assertEquals($test->expected, $actual, $test->str());
+		}
+	}
+
+	public function test_flip_error()
+	{
+		$this->expectException(ArgumentException::class);
+		ArrayUtility::flip([0 => ['array' => 'value']]);
+		$this->fail();
+	}
+
 }

@@ -296,8 +296,32 @@ class ArrayUtility
 		return $result;
 	}
 
-	public static function reverse(array $input)
+	/**
+	 * `reverse` ラッパー。
+	 *
+	 * @param array<mixed> $input
+	 * @return array<mixed>
+	 * @see https://php.net/manual/function.array-reverse.php
+	 */
+	public static function reverse(array $input): array
 	{
 		return array_reverse($input);
+	}
+
+	/**
+	 * `array_flip` ラッパー。
+	 *
+	 * @param array<mixed> $input
+	 * @return array<mixed>
+	 * @throws ArgumentException
+	 * @see https://www.php.net/manual/function.array-flip.php
+	 */
+	public static function flip(array $input): array
+	{
+		$result = ErrorHandler::trapError(fn () => array_flip($input));
+		if (!$result->success) {
+			throw new ArgumentException();
+		}
+		return $result->value;
 	}
 }
