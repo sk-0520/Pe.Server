@@ -73,6 +73,7 @@ abstract class StringUtility
 		return mb_strlen($value);
 	}
 
+	/*
 	public static function getCharacterLength(string $value): int
 	{
 		$length = self::getLength($value);
@@ -81,6 +82,7 @@ abstract class StringUtility
 		}
 		return \grapheme_strlen($value);
 	}
+	*/
 
 	/**
 	 * 文字列バイト数を取得。

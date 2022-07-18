@@ -60,6 +60,7 @@ class StringUtilityTest extends TestClass
 		}
 	}
 
+	/*
 	public function test_getCharacterLength()
 	{
 		$tests = [
@@ -78,6 +79,7 @@ class StringUtilityTest extends TestClass
 			$this->assertEquals($test->expected, $actual, $test->str());
 		}
 	}
+	*/
 
 	public function test_fromCodePoint()
 	{
