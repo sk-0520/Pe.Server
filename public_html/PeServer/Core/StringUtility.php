@@ -99,6 +99,16 @@ abstract class StringUtility
 		return strlen($value);
 	}
 
+	private static function fromCodePointCore(int $value): string
+	{
+		$single = mb_chr($value);
+		if ($single === false) { //@phpstan-ignore-line
+			throw new InvalidArgumentException();
+		}
+
+		return $single;
+	}
+
 	/**
 	 * Unicode のコードポイントに対応する文字を返す。
 	 *
@@ -113,11 +123,7 @@ abstract class StringUtility
 	public static function fromCodePoint(int|array $value): string
 	{
 		if (is_int($value)) {
-			$single = mb_chr($value);
-			if ($single === false) { //@phpstan-ignore-line
-				throw new InvalidArgumentException();
-			}
-			return $single;
+			return self::fromCodePointCore($value);
 		}
 
 		$result = '';
@@ -126,11 +132,7 @@ abstract class StringUtility
 				throw new InvalidArgumentException();
 			}
 
-			$multi = mb_chr($cp);
-			if ($multi === false) { //@phpstan-ignore-line
-				throw new InvalidArgumentException();
-			}
-			$result .= $multi;
+			$result .= self::fromCodePointCore($cp);
 		}
 
 		return $result;
