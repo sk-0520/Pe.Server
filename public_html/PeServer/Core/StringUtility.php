@@ -122,6 +122,10 @@ abstract class StringUtility
 
 		$result = '';
 		foreach ($value as $cp) {
+			if (!is_int($cp)) { //@phpstan-ignore-line
+				throw new InvalidArgumentException();
+			}
+
 			$multi = mb_chr($cp);
 			if ($multi === false) { //@phpstan-ignore-line
 				throw new InvalidArgumentException();
