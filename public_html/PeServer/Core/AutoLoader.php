@@ -71,6 +71,7 @@ class AutoLoader
 
 			if (is_file($filePath)) {
 				require $filePath;
+				return;
 			}
 		}
 	}

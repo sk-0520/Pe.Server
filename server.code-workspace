@@ -54,7 +54,8 @@
 			"sysplugins",
 			"checkAlwaysTrueInstanceof",
 			"PHPMD",
-			"CyclomaticComplexity"
+			"CyclomaticComplexity",
+			"Stringable",
 		],
 		"cSpell.ignorePaths": [
 			"package-lock.json",

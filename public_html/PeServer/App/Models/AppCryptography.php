@@ -21,7 +21,7 @@ abstract class AppCryptography
 	public static function encrypt(string $data): string
 	{
 		$crypto = AppConfiguration::$config['crypto'];
-		return Cryptography::encrypt($data, $crypto['algorithm'], $crypto['password']);
+		return Cryptography::encrypt($crypto['algorithm'], $data, $crypto['password']);
 	}
 
 	/**
@@ -39,7 +39,7 @@ abstract class AppCryptography
 	public static function encryptToken(string $data): string
 	{
 		$token = AppConfiguration::$config['crypto']['token'];
-		$value = Cryptography::encrypt($data, $token['algorithm'], $token['password']);
+		$value = Cryptography::encrypt($token['algorithm'], $data, $token['password']);
 		return StringUtility::split($value, Cryptography::SEPARATOR, 2)[1];
 	}
 

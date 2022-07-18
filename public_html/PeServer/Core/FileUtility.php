@@ -24,6 +24,7 @@ abstract class FileUtility
 	 *
 	 * @param string $path
 	 * @return integer
+	 * @phpstan-return UnsignedIntegerAlias
 	 * @see https://www.php.net/manual/function.filesize.php
 	 * @throws IOException
 	 */

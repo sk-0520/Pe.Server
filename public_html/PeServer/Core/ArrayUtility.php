@@ -87,6 +87,7 @@ class ArrayUtility
 	 *
 	 * @param array<mixed>|null $array
 	 * @return int
+	 * @phpstan-return UnsignedIntegerAlias
 	 * @see https://www.php.net/manual/function.count.php
 	 */
 	public static function getCount(?array $array): int
@@ -180,6 +181,7 @@ class ArrayUtility
 	 *
 	 * @param array<mixed> $array
 	 * @return int|string
+	 * @phpstan-return array-key
 	 * @see https://www.php.net/manual/function.array-key-first.php
 	 */
 	public static function getFirstKey(array $array): int|string
@@ -197,6 +199,7 @@ class ArrayUtility
 	 *
 	 * @param array<mixed> $array
 	 * @return int|string
+	 * @phpstan-return array-key
 	 * @see https://www.php.net/manual/function.array-key-last.php
 	 */
 	public static function getLastKey(array $array): int|string

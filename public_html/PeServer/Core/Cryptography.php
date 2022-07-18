@@ -20,6 +20,7 @@ abstract class Cryptography
 
 	/**
 	 * 乱数取得。
+	 *
 	 * `random_int` ラッパー。
 	 *
 	 * @param integer $max 最大値
@@ -99,13 +100,14 @@ abstract class Cryptography
 	/**
 	 * 文字列を暗号化。
 	 *
-	 * @param string $data 生文字列。
 	 * @param string $algorithm 暗号化方法。
+	 * @phpstan-param non-empty-string $algorithm
+	 * @param string $rawValue 生文字列。
 	 * @param string $password パスワード。
 	 * @return string 暗号化された文字列。 アルゴリズム@IV@暗号化データ となる。
 	 * @throws CryptoException 失敗
 	 */
-	public static function encrypt(string $data, string $algorithm, string $password): string
+	public static function encrypt(string $algorithm, string $rawValue, string $password): string
 	{
 		$ivLength = 0;
 		try {
@@ -123,7 +125,7 @@ abstract class Cryptography
 
 		$iv = self::generateRandomBinary($ivLength);
 
-		$encData = openssl_encrypt($data, $algorithm, $password, self::OPTION, $iv->getRaw());
+		$encData = openssl_encrypt($rawValue, $algorithm, $password, self::OPTION, $iv->getRaw());
 		if ($encData === false) {
 			throw new CryptoException();
 		}
@@ -134,14 +136,14 @@ abstract class Cryptography
 	/**
 	 * Cryptography::encrypt で暗号化されたデータの復元。
 	 *
-	 * @param string $data 暗号化データ。
+	 * @param string $encValue 暗号化データ。
 	 * @param string $password パスワード。
 	 * @return string 生文字列。
 	 * @throws CryptoException 失敗
 	 */
-	public static function decrypt(string $data, string $password): string
+	public static function decrypt(string $encValue, string $password): string
 	{
-		$values = StringUtility::split($data, self::SEPARATOR);
+		$values = StringUtility::split($encValue, self::SEPARATOR);
 		if (ArrayUtility::getCount($values) !== 3) {
 			throw new CryptoException();
 		}
