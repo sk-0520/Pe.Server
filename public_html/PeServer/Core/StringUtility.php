@@ -10,6 +10,7 @@ use PeServer\Core\Throws\Throws;
 use PeServer\Core\Throws\RegexException;
 use PeServer\Core\Throws\StringException;
 use PeServer\Core\Throws\ArgumentException;
+use PeServer\Core\Throws\Enforce;
 
 /**
  * 文字列操作。
@@ -145,12 +146,17 @@ abstract class StringUtility
 	 * @phpstan-param literal-string $source
 	 * @param array<string,string> $map 置き換え対象辞書
 	 * @param string $head プレースホルダー先頭
+	 * @phpstan-param non-empty-string $head
 	 * @param string $tail プレースホルダー終端
+	 * @phpstan-param non-empty-string $tail
 	 * @return string 置き換え後文字列
 	 * @throws StringException なんかもうあかんかった
 	 */
 	public static function replaceMap(string $source, array $map, string $head = '{', string $tail = '}'): string
 	{
+		Enforce::throwIfNullOrEmpty($head, InitialValue::EMPTY_STRING, StringException::class);
+		Enforce::throwIfNullOrEmpty($tail, InitialValue::EMPTY_STRING, StringException::class);
+
 		$escHead = Regex::escape($head);
 		$escTail = Regex::escape($tail);
 		$pattern = "/$escHead(.+?)$escTail/";
@@ -176,13 +182,12 @@ abstract class StringUtility
 	/**
 	 * 数字を千の位毎にグループ化してフォーマット
 	 *
-	 * @see https://www.php.net/manual/function.number-format.php
-	 *
 	 * @param int|float $number フォーマットする数値
 	 * @param int $decimals 小数点以下の桁数。 0 を指定すると、 戻り値の $decimalSeparator は省略されます
 	 * @param string|null $decimalSeparator 小数点を表す区切り文字
 	 * @param string|null $thousandsSeparator 千の位毎の区切り文字
 	 * @return string 置き換え後文字列
+	 * @see https://www.php.net/manual/function.number-format.php
 	 */
 	public static function formatNumber(int|float $number, int $decimals = 0, ?string $decimalSeparator = '.', ?string $thousandsSeparator = ','): string
 	{
@@ -386,10 +391,9 @@ abstract class StringUtility
 	 *
 	 * @param string[] $values
 	 * @param string $separator
+	 * @phpstan-param non-empty-string $separator
 	 * @return string
 	 * @see https://www.php.net/manual/function.implode.php
-	 *
-	 * @phpstan-param non-empty-string $separator
 	 */
 	public static function join(array $values, string $separator): string
 	{

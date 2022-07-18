@@ -97,7 +97,9 @@ class Configuration
 	 * @param array<mixed> $array 元データ。配列の値のみが置き換え対象となる。
 	 * @param array<string,string> $map 置き換え設定
 	 * @param string $head 置き換え開始文字列
+	 * @phpstan-param non-empty-string $head
 	 * @param string $tail 置き換え終了文字列
+	 * @phpstan-param non-empty-string $tail
 	 * @return array<mixed>
 	 */
 	public function replace(array $array, array $map, string $head, string $tail): array
