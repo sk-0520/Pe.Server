@@ -61,19 +61,36 @@ abstract class StringUtility
 	/**
 	 * 文字列長を取得。
 	 *
+	 * `mb_strlen` ラッパー。
+	 *
 	 * @param string $value 対象文字列。
 	 * @return integer 文字数。
+	 * @phpstan-return UnsignedIntegerAlias
+	 * @see https://www.php.net/manual/function.mb-strlen.php
 	 */
 	public static function getLength(string $value): int
 	{
 		return mb_strlen($value);
 	}
 
+	public static function getCharacterLength(string $value): int
+	{
+		$length = self::getLength($value);
+		if($length < 2) {
+			return $length;
+		}
+		return \grapheme_strlen($value);
+	}
+
 	/**
 	 * 文字列バイト数を取得。
 	 *
+	 * `strlen` ラッパー。
+	 *
 	 * @param string $value 対象文字列。
 	 * @return integer バイト数。
+	 * @phpstan-return UnsignedIntegerAlias
+	 * @see https://php.net/manual/function.strlen.php
 	 */
 	public static function getByteCount(string $value): int
 	{
