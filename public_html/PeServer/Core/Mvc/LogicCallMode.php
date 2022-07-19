@@ -79,7 +79,7 @@ final class LocalLogicCallModeImpl extends LogicCallMode
 	private int $mode;
 
 	/**
-	 * Undocumented function
+	 * 生成。
 	 *
 	 * @param integer $mode
 	 * @phpstan-param parent::INITIALIZE|parent::SUBMIT $mode

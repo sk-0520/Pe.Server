@@ -27,7 +27,7 @@ abstract class Security
 			throw new SessionException('セッションID取得失敗');
 		}
 
-		$hash = hash(self::CSRF_HASH_ALGORITHM, $sessionId);
+		$hash = Cryptography::generateHashString(self::CSRF_HASH_ALGORITHM, new Binary($sessionId));
 
 		return $hash;
 	}

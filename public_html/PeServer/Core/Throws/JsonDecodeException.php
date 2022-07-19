@@ -1,0 +1,16 @@
+<?php
+
+declare(strict_types=1);
+
+namespace PeServer\Core\Throws;
+
+use \Throwable;
+use PeServer\Core\Throws\JsonExceptionBase;
+
+class JsonDecodeException extends JsonExceptionBase
+{
+	public function __construct(string $message = '', int $code = 0, ?Throwable $previous = null)
+	{
+		parent::__construct($message, $code, $previous);
+	}
+}

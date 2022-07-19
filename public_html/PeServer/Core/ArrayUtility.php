@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
+use PeServer\Core\Throws\ArgumentException;
+use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Throws\TypeException;
 
 /**
@@ -23,7 +25,7 @@ class ArrayUtility
 			return true;
 		}
 
-		return count($array) === 0;
+		return self::getCount($array) === 0;
 	}
 
 	/**
@@ -85,6 +87,8 @@ class ArrayUtility
 	 *
 	 * @param array<mixed>|null $array
 	 * @return int
+	 * @phpstan-return UnsignedIntegerAlias
+	 * @see https://www.php.net/manual/function.count.php
 	 */
 	public static function getCount(?array $array): int
 	{
@@ -96,6 +100,21 @@ class ArrayUtility
 	}
 
 	/**
+	 * 配列に該当キーは存在するか。
+	 *
+	 * @param array<mixed> $haystack
+	 * @phpstan-param array<array-key,mixed> $haystack
+	 * @param int|string $key
+	 * @phpstan-param array-key $key
+	 * @return bool
+	 * @see https://www.php.net/manual/function.array-key-exists.php
+	 */
+	public static function containsKey(array $haystack, int|string $key): bool
+	{
+		return array_key_exists($key, $haystack);
+	}
+
+	/**
 	 * 配列に指定要素が存在するか。
 	 *
 	 * @template TValue
@@ -104,34 +123,22 @@ class ArrayUtility
 	 * @param mixed $needle
 	 * @phpstan-param TValue $needle
 	 * @return boolean
+	 * @see https://www.php.net/manual/function.array-search.php
 	 */
-	public static function contains(array $haystack, mixed $needle): bool
+	public static function containsValue(array $haystack, mixed $needle): bool
 	{
 		return array_search($needle, $haystack) !== false;
 	}
 
 	/**
-	 * 配列に該当キーは存在するか。
-	 *
-	 * @param array<mixed> $haystack
-	 * @phpstan-param array<array-key,mixed> $haystack
-	 * @param int|string $key
-	 * @phpstan-param array-key $key
-	 * @return bool
-	 */
-	public static function existsKey(array $haystack, int|string $key): bool
-	{
-		return array_key_exists($key, $haystack);
-	}
-
-	/**
-	 * array_keys ラッパー。
+	 * `array_keys` ラッパー。
 	 *
 	 * @template TValue
 	 * @param array<int|string,mixed> $array
 	 * @phpstan-param array<array-key,TValue> $array
 	 * @return array<int|string>
 	 * @phpstan-return array-key[]
+	 * @see https://www.php.net/manual/function.array-keys.php
 	 */
 	public static function getKeys(array $array): array
 	{
@@ -139,13 +146,14 @@ class ArrayUtility
 	}
 
 	/**
-	 * array_values ラッパー。
+	 * `array_values` ラッパー。
 	 *
 	 * @template TValue
 	 * @param array<int|string,mixed> $array
 	 * @phpstan-param array<array-key,TValue> $array
 	 * @return array<mixed>
 	 * @phpstan-return TValue[]
+	 * @see https://www.php.net/manual/function.array-values.php
 	 */
 	public static function getValues(array $array): array
 	{
@@ -153,7 +161,7 @@ class ArrayUtility
 	}
 
 	/**
-	 * in_array ラッパー。
+	 * `in_array` ラッパー。
 	 *
 	 * @template TValue
 	 * @param array<int|string,mixed> $haystack
@@ -161,9 +169,162 @@ class ArrayUtility
 	 * @param mixed $needle
 	 * @phpstan-param TValue $needle
 	 * @return boolean
+	 * @see https://www.php.net/manual/function.in-array.php
 	 */
 	public static function in(array $haystack, mixed $needle): bool
 	{
 		return in_array($needle, $haystack, true);
+	}
+
+	/**
+	 * `array_key_first` ラッパー。
+	 *
+	 * @param array<mixed> $array
+	 * @return int|string
+	 * @phpstan-return array-key
+	 * @see https://www.php.net/manual/function.array-key-first.php
+	 */
+	public static function getFirstKey(array $array): int|string
+	{
+		$result = array_key_first($array);
+		if (is_null($result)) {
+			throw new InvalidOperationException();
+		}
+
+		return $result;
+	}
+
+	/**
+	 * `array_key_last` ラッパー。
+	 *
+	 * @param array<mixed> $array
+	 * @return int|string
+	 * @phpstan-return array-key
+	 * @see https://www.php.net/manual/function.array-key-last.php
+	 */
+	public static function getLastKey(array $array): int|string
+	{
+		$result = array_key_last($array);
+		if (is_null($result)) {
+			throw new InvalidOperationException();
+		}
+
+		return $result;
+	}
+
+	/**
+	 * `array_is_list` ラッパー。
+	 *
+	 * @param array<mixed> $array
+	 * @return bool
+	 * @see https://www.php.net/manual/function.array-is-list.php#127044
+	 */
+	public static function isList(array $array): bool
+	{
+		$function = 'array_is_list'; // ignore intelephense(1010)
+		if (function_exists($function)) {
+			return $function($array); //@phpstan-ignore-line
+		}
+
+		// https://www.php.net/manual/ja/function.array-is-list.php#127044
+		$i = 0;
+		foreach ($array as $k => $v) {
+			if ($k !== $i++) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * `array_unique` ラッパー。
+	 *
+	 * @param array<mixed> $array
+	 * @return array<mixed>
+	 * @see https://www.php.net/manual/function.array-unique.php
+	 */
+	public static function toUnique(array $array): array
+	{
+		return array_unique($array, SORT_REGULAR);
+	}
+
+	/**
+	 * `array_replace(_recursive)` ラッパー。
+	 *
+	 * @param array<mixed> $base 元になる配列。
+	 * @param array<mixed> $overwrite 上書きする配列。
+	 * @param bool $recursive 再帰的置き換えを行うか(`_recursive`呼び出し)。
+	 * @return array<mixed>
+	 * @see https://php.net/manual/function.array-replace-recursive.php
+	 * @see https://php.net/manual/function.array-replace.php
+	 */
+	public static function replace(array $base, array $overwrite, bool $recursive = true): array
+	{
+		if ($recursive) {
+			return array_replace_recursive($base, $overwrite);
+		}
+
+		return array_replace($base, $overwrite);
+	}
+
+	/**
+	 * キー項目をランダム取得。
+	 *
+	 * @param array<mixed> $array
+	 * @phpstan-param non-empty-array<mixed> $array
+	 * @param int $count
+	 * @phpstan-param positive-int $count
+	 * @return array<string|int>
+	 * @phpstan-return array-key[]
+	 * @throws ArgumentException
+	 */
+	public static function getRandomKeys(array $array, int $count): array
+	{
+		if ($count < 1) { //@phpstan-ignore-line
+			throw new ArgumentException('$count');
+		}
+
+		$length = self::getCount($array);
+		if ($length < $count) {
+			throw new ArgumentException('$length < $count');
+		}
+
+		$result = [];
+		$keys = self::getKeys($array);
+		for ($i = 0; $i < $count; $i++) {
+			$index = Cryptography::generateRandomInteger($length - 1);
+			$result[] = $keys[$index];
+		}
+
+		return $result;
+	}
+
+	/**
+	 * `reverse` ラッパー。
+	 *
+	 * @param array<mixed> $input
+	 * @return array<mixed>
+	 * @see https://php.net/manual/function.array-reverse.php
+	 */
+	public static function reverse(array $input): array
+	{
+		return array_reverse($input);
+	}
+
+	/**
+	 * `array_flip` ラッパー。
+	 *
+	 * @param array<mixed> $input
+	 * @return array<mixed>
+	 * @throws ArgumentException
+	 * @see https://www.php.net/manual/function.array-flip.php
+	 */
+	public static function flip(array $input): array
+	{
+		$result = ErrorHandler::trapError(fn () => array_flip($input));
+		if (!$result->success) {
+			throw new ArgumentException();
+		}
+		return $result->value;
 	}
 }

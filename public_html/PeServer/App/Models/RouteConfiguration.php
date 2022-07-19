@@ -88,6 +88,7 @@ abstract class RouteConfiguration
 					->addAction('setup', HttpMethod::gets(), 'setup_get', [Route::CLEAR_MIDDLEWARE, SetupAccountFilterMiddleware::class])
 					->addAction('setup', HttpMethod::post(), 'setup_post', [Route::CLEAR_MIDDLEWARE, SetupAccountFilterMiddleware::class])
 					->addAction('environment', HttpMethod::gets())
+					->addAction('configuration', HttpMethod::gets())
 					->addAction('default-plugin', HttpMethod::gets(), 'default_plugin_get')
 					->addAction('default-plugin', HttpMethod::post(), 'default_plugin_post')
 					->addAction('plugin-category', HttpMethod::gets(), 'plugin_category_get')

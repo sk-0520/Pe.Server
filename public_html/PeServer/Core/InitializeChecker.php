@@ -23,8 +23,6 @@ final class InitializeChecker
 	 *
 	 * すでに初期化されている場合は例外が投げられる。
 	 *
-	 * @return void
-	 *
 	 * @throws InvalidOperationException 既に初期化されている。
 	 */
 	public function initialize(): void
@@ -38,8 +36,6 @@ final class InitializeChecker
 
 	/**
 	 * 初期化されていない場合に例外を投げる。
-	 *
-	 * @return void
 	 *
 	 * @throws InvalidOperationException 初期化されていない。
 	 */

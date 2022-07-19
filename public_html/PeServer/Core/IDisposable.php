@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
+/**
+ * 解放処理用インターフェイス。
+ *
+ * Code::using でうまいことやりたいのだ。
+ */
 interface IDisposable
 {
 	/**

@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace PeServer\Core\Http;
 
 use PeServer\Core\ArrayUtility;
-use PeServer\Core\StringUtility;
 use PeServer\Core\Http\HttpStatus;
+use PeServer\Core\StringUtility;
 use PeServer\Core\Throws\ArgumentException;
+use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Throws\KeyNotFoundException;
 use PeServer\Core\Throws\NotSupportedException;
-use PeServer\Core\Throws\InvalidOperationException;
 
 /**
  * HTTPヘッダー。
@@ -22,7 +22,7 @@ class HttpHeader
 	 *
 	 * リダイレクト(Location)とは共存しない。
 	 *
-	 * @var array<string,string[]>
+	 * @var array<non-empty-string,string[]>
 	 */
 	private array $headers = [];
 
@@ -37,11 +37,12 @@ class HttpHeader
 	 * HTTPヘッダ名が不正であれば例外を投げる。
 	 *
 	 * @param string $name ヘッダ名
+	 * @phpstan-param non-empty-string $name
 	 * @throws ArgumentException HTTPヘッダ名不正。
 	 */
-	private function throwIfInvalidHeaderName(string $name): void
+	protected function throwIfInvalidHeaderName(string $name): void
 	{
-		if (StringUtility::isNullOrWhiteSpace($name)) {
+		if (StringUtility::isNullOrWhiteSpace($name)) { //@phpstan-ignore-line non-empty
 			throw new ArgumentException('$name');
 		}
 		if (StringUtility::toLower($name) === 'location') {
@@ -53,6 +54,7 @@ class HttpHeader
 	 * HTTPヘッダ設定
 	 *
 	 * @param string $name ヘッダ名。
+	 * @phpstan-param non-empty-string $name
 	 * @param string $value 値。
 	 * @throws ArgumentException ヘッダ名不正。
 	 */
@@ -67,6 +69,7 @@ class HttpHeader
 	 * ヘッダに値一覧を設定。
 	 *
 	 * @param string $name ヘッダ名。
+	 * @phpstan-param non-empty-string $name
 	 * @param string[] $values 値一覧。
 	 * @throws ArgumentException ヘッダ名不正。
 	 */
@@ -81,6 +84,7 @@ class HttpHeader
 	 * ヘッダに値を追加。
 	 *
 	 * @param string $name ヘッダ名。
+	 * @phpstan-param non-empty-string $name
 	 * @param string $value 値。
 	 * @throws ArgumentException HTTPヘッダ名不正。
 	 */
@@ -103,13 +107,14 @@ class HttpHeader
 	 */
 	public function existsHeader(string $name): bool
 	{
-		return ArrayUtility::existsKey($this->headers, $name);
+		return ArrayUtility::containsKey($this->headers, $name);
 	}
 
 	/**
 	 * ヘッダの値を取得。
 	 *
 	 * @param string $name ヘッダ名。
+	 * @phpstan-param non-empty-string $name
 	 * @return string[] 値一覧。
 	 * @throws KeyNotFoundException
 	 */
@@ -215,8 +220,14 @@ final class LocalRequestHttpHeader extends HttpHeader
 	{
 		$headers = getallheaders();
 		foreach ($headers as $name => $value) {
+			//@phpstan-ignore-next-line non-empty
 			$this->setValue($name, $value);
 		}
+	}
+
+	protected function throwIfInvalidHeaderName(string $name): void
+	{
+		//NONE
 	}
 
 	public function existsRedirect(): bool

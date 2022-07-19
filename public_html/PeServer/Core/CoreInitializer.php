@@ -20,13 +20,13 @@ abstract class CoreInitializer
 	 * @param string $environment
 	 * @return void
 	 */
-	public static function initialize(string $environment, string $revision): void
+	public static function initialize(string $environment, string $revision, string $language): void
 	{
 		self::$initializeChecker ??= new InitializeChecker();
 		self::$initializeChecker->initialize();
 
-		mb_language('ja');
-		mb_internal_encoding('UTF-8');
+		mb_language($language);
+		mb_internal_encoding('UTF-8'); // 固定じゃこんなもん
 
 		Environment::initialize($environment, $revision);
 

@@ -10,9 +10,9 @@ use PeServer\Core\DisposerBase;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Regex;
 use PeServer\Core\StringUtility;
-use PeServer\Core\Throws\Throws;
-use PeServer\Core\Throws\SqlException;
 use PeServer\Core\Throws\DatabaseException;
+use PeServer\Core\Throws\SqlException;
+use PeServer\Core\Throws\Throws;
 use PeServer\Core\Throws\TransactionException;
 use PeServer\Core\TypeConverter;
 
@@ -23,6 +23,7 @@ class Database extends DisposerBase implements IDatabaseContext
 {
 	/**
 	 * 接続処理。
+	 *
 	 * @readonly
 	 */
 	private PDO $pdo;
@@ -84,6 +85,7 @@ class Database extends DisposerBase implements IDatabaseContext
 	 *
 	 * @param PDOStatement $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
+	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
 	 * @return void
 	 */
 	private function setParameters(PDOStatement $statement, ?array $parameters): void
@@ -99,7 +101,7 @@ class Database extends DisposerBase implements IDatabaseContext
 	 * 文を実行。
 	 *
 	 * @param string $statement
-	 * @param array<string|int,string|int|bool>|null $parameters
+	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
 	 * @return PDOStatement
 	 * @throws SqlException 実行失敗。
 	 */

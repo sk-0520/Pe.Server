@@ -49,9 +49,46 @@ class StringUtilityTest extends TestClass
 			new Data(1, 'あ'),
 			new Data(1, '☃'),
 			new Data(1, '⛄'),
+			new Data(1, '👭'),
+			new Data(5, '🧑‍🤝‍🧑'),
+			new Data(7, '👨‍👩‍👧‍👦'),
+
 		];
 		foreach ($tests as $test) {
 			$actual = StringUtility::getLength(...$test->args);
+			$this->assertEquals($test->expected, $actual, $test->str());
+		}
+	}
+
+	/*
+	public function test_getCharacterLength()
+	{
+		$tests = [
+			new Data(0, ''),
+			new Data(1, 'a'),
+			new Data(1, 'あ'),
+			new Data(1, '☃'),
+			new Data(1, '⛄'),
+			new Data(1, '👭'),
+			new Data(1, '🧑‍🤝‍🧑'),
+			new Data(1, '👨‍👩‍👧‍👦'),
+
+		];
+		foreach ($tests as $test) {
+			$actual = StringUtility::getCharacterLength(...$test->args);
+			$this->assertEquals($test->expected, $actual, $test->str());
+		}
+	}
+	*/
+
+	public function test_fromCodePoint()
+	{
+		$tests = [
+			new Data('A', 65),
+			new Data('AB', [65, 66]),
+		];
+		foreach ($tests as $test) {
+			$actual = StringUtility::fromCodePoint(...$test->args);
 			$this->assertEquals($test->expected, $actual, $test->str());
 		}
 	}
@@ -364,5 +401,4 @@ class StringUtilityTest extends TestClass
 		StringUtility::toCharacters('');
 		$this->fail();
 	}
-
 }

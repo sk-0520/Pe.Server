@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
+use InvalidArgumentException;
 use PeServer\Core\InitialValue;
 use PeServer\Core\Throws\Throws;
 use PeServer\Core\Throws\RegexException;
 use PeServer\Core\Throws\StringException;
 use PeServer\Core\Throws\ArgumentException;
+use PeServer\Core\Throws\Enforce;
 
 /**
  * 文字列操作。
@@ -60,23 +62,81 @@ abstract class StringUtility
 	/**
 	 * 文字列長を取得。
 	 *
+	 * `mb_strlen` ラッパー。
+	 *
 	 * @param string $value 対象文字列。
 	 * @return integer 文字数。
+	 * @phpstan-return UnsignedIntegerAlias
+	 * @see https://www.php.net/manual/function.mb-strlen.php
 	 */
 	public static function getLength(string $value): int
 	{
 		return mb_strlen($value);
 	}
 
+	/*
+	public static function getCharacterLength(string $value): int
+	{
+		$length = self::getLength($value);
+		if($length < 2) {
+			return $length;
+		}
+		return \grapheme_strlen($value);
+	}
+	*/
+
 	/**
 	 * 文字列バイト数を取得。
 	 *
+	 * `strlen` ラッパー。
+	 *
 	 * @param string $value 対象文字列。
 	 * @return integer バイト数。
+	 * @phpstan-return UnsignedIntegerAlias
+	 * @see https://php.net/manual/function.strlen.php
 	 */
 	public static function getByteCount(string $value): int
 	{
 		return strlen($value);
+	}
+
+	private static function fromCodePointCore(int $value): string
+	{
+		$single = mb_chr($value);
+		if ($single === false) { //@phpstan-ignore-line
+			throw new InvalidArgumentException();
+		}
+
+		return $single;
+	}
+
+	/**
+	 * Unicode のコードポイントに対応する文字を返す。
+	 *
+	 * `mb_chr` ラッパー。
+	 *
+	 * @param int|int[] $value
+	 * @phpstan-param UnsignedIntegerAlias|UnsignedIntegerAlias[] $value
+	 * @return string
+	 * @see https://www.php.net/manual/function.mb-chr.php
+	 * @throws InvalidArgumentException
+	 */
+	public static function fromCodePoint(int|array $value): string
+	{
+		if (is_int($value)) {
+			return self::fromCodePointCore($value);
+		}
+
+		$result = '';
+		foreach ($value as $cp) {
+			if (!is_int($cp)) { //@phpstan-ignore-line
+				throw new InvalidArgumentException();
+			}
+
+			$result .= self::fromCodePointCore($cp);
+		}
+
+		return $result;
 	}
 
 	/**
@@ -86,12 +146,17 @@ abstract class StringUtility
 	 * @phpstan-param literal-string $source
 	 * @param array<string,string> $map 置き換え対象辞書
 	 * @param string $head プレースホルダー先頭
+	 * @phpstan-param non-empty-string $head
 	 * @param string $tail プレースホルダー終端
+	 * @phpstan-param non-empty-string $tail
 	 * @return string 置き換え後文字列
 	 * @throws StringException なんかもうあかんかった
 	 */
 	public static function replaceMap(string $source, array $map, string $head = '{', string $tail = '}'): string
 	{
+		Enforce::throwIfNullOrEmpty($head, InitialValue::EMPTY_STRING, StringException::class);
+		Enforce::throwIfNullOrEmpty($tail, InitialValue::EMPTY_STRING, StringException::class);
+
 		$escHead = Regex::escape($head);
 		$escTail = Regex::escape($tail);
 		$pattern = "/$escHead(.+?)$escTail/";
@@ -117,13 +182,12 @@ abstract class StringUtility
 	/**
 	 * 数字を千の位毎にグループ化してフォーマット
 	 *
-	 * @see https://www.php.net/manual/ja/function.number-format.php
-	 *
 	 * @param int|float $number フォーマットする数値
 	 * @param int $decimals 小数点以下の桁数。 0 を指定すると、 戻り値の $decimalSeparator は省略されます
 	 * @param string|null $decimalSeparator 小数点を表す区切り文字
 	 * @param string|null $thousandsSeparator 千の位毎の区切り文字
 	 * @return string 置き換え後文字列
+	 * @see https://www.php.net/manual/function.number-format.php
 	 */
 	public static function formatNumber(int|float $number, int $decimals = 0, ?string $decimalSeparator = '.', ?string $thousandsSeparator = ','): string
 	{
@@ -136,12 +200,13 @@ abstract class StringUtility
 	 * @param string $haystack 対象文字列。
 	 * @param string $needle 検索文字列。
 	 * @param integer $offset 開始文字数目。
+	 * @phpstan-param UnsignedIntegerAlias $offset
 	 * @return integer 見つかった文字位置。見つかんない場合は -1
 	 * @throws ArgumentException
 	 */
 	public static function getPosition(string $haystack, string $needle, int $offset = 0): int
 	{
-		if ($offset < 0) {
+		if ($offset < 0) { //@phpstan-ignore-line UnsignedIntegerAlias
 			throw new ArgumentException('$offset');
 		}
 
@@ -159,12 +224,13 @@ abstract class StringUtility
 	 * @param string $haystack 対象文字列。
 	 * @param string $needle 検索文字列。
 	 * @param integer $offset 終端文字数目。
+	 * @phpstan-param UnsignedIntegerAlias $offset
 	 * @return integer 見つかった文字位置。見つかんない場合は -1
 	 * @throws ArgumentException
 	 */
 	public static function getLastPosition(string $haystack, string $needle, int $offset = 0): int
 	{
-		if ($offset < 0) {
+		if ($offset < 0) { //@phpstan-ignore-line UnsignedIntegerAlias
 			throw new ArgumentException('$offset');
 		}
 
@@ -302,19 +368,19 @@ abstract class StringUtility
 	 *
 	 * @param string $value 対象文字列。
 	 * @param string $separator 分割対象文字列。
+	 * @phpstan-param non-empty-string $separator 分割対象文字列。
 	 * @param integer $limit 分割数。
 	 * @return string[] 分割された文字列。
 	 * @throws ArgumentException 分割失敗(PHP8未満)
 	 * @throws \ValueError 分割失敗(PHP8以上)
-	 * @see https://www.php.net/manual/ja/function.explode.php
+	 * @see https://www.php.net/manual/function.explode.php
 	 */
 	public static function split(string $value, string $separator, int $limit = PHP_INT_MAX): array
 	{
-		if (StringUtility::isNullOrEmpty($separator)) {
+		if (StringUtility::isNullOrEmpty($separator)) { //@phpstan-ignore-line separator
 			throw new ArgumentException();
 		}
 
-		/** @phpstan-var non-empty-string $separator */
 		$result = explode($separator, $value, $limit);
 
 		return $result;
@@ -325,10 +391,9 @@ abstract class StringUtility
 	 *
 	 * @param string[] $values
 	 * @param string $separator
-	 * @return string
-	 * @see https://www.php.net/manual/ja/function.implode.php
-	 *
 	 * @phpstan-param non-empty-string $separator
+	 * @return string
+	 * @see https://www.php.net/manual/function.implode.php
 	 */
 	public static function join(array $values, string $separator): string
 	{
@@ -341,7 +406,7 @@ abstract class StringUtility
 	 * @param string $value 対象文字列。
 	 * @param string $characters トリム対象文字。
 	 * @return string トリム後文字列。
-	 * @see https://www.php.net/manual/ja/function.trim.php
+	 * @see https://www.php.net/manual/function.trim.php
 	 */
 	public static function trim(string $value, string $characters = self::TRIM_CHARACTERS): string
 	{
@@ -418,10 +483,10 @@ abstract class StringUtility
 	 *
 	 * @param string $value
 	 * @param integer $count
-	 * @phpstan-param int<0, max> $count
+	 * @phpstan-param UnsignedIntegerAlias $count
 	 * @return string
 	 * @throws ArgumentException 負数。
-	 * @see https://www.php.net/manual/ja/function.str-repeat.php
+	 * @see https://www.php.net/manual/function.str-repeat.php
 	 */
 	public static function repeat(string $value, int $count): string
 	{

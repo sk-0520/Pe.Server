@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Database;
 
-use PeServer\Core\Throws\SqlException;
 use PeServer\Core\Throws\DatabaseException;
 use PeServer\Core\Throws\ObjectDisposedException;
+use PeServer\Core\Throws\SqlException;
 
 interface IDatabaseReader
 {
@@ -16,6 +16,7 @@ interface IDatabaseReader
 	 * @param string $statement
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
+	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
 	 * @return array<array<string,mixed>>
 	 * @throws \PDOException
 	 * @throws DatabaseException
@@ -29,6 +30,7 @@ interface IDatabaseReader
 	 * @param string $statement
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
+	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
 	 * @return array<string,mixed>
 	 * @throws \PDOException
 	 * @throws DatabaseException
@@ -43,6 +45,7 @@ interface IDatabaseReader
 	 * @phpstan-param literal-string $statement
 	 * @param array<string,mixed>|null $defaultValue 戻り。
 	 * @param array<string|int,string|int|bool>|null $parameters
+	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
 	 * @return array<string,mixed>|null
 	 * @throws \PDOException
 	 * @throws DatabaseException
@@ -56,6 +59,7 @@ interface IDatabaseReader
 	 * @param string $statement
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
+	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
 	 * @return array<string,mixed>
 	 * @throws \PDOException
 	 * @throws DatabaseException
@@ -70,6 +74,7 @@ interface IDatabaseReader
 	 * @phpstan-param literal-string $statement
 	 * @param array<string,mixed>|null $defaultValue 戻り。
 	 * @param array<string|int,string|int|bool>|null $parameters
+	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
 	 * @return array<string,mixed>|null
 	 * @throws \PDOException
 	 * @throws DatabaseException
@@ -85,6 +90,7 @@ interface IDatabaseReader
 	 * @param string $statement
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
+	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
 	 * @return array<array<string,mixed>>
 	 * @throws \PDOException
 	 * @throws DatabaseException
@@ -101,6 +107,7 @@ interface IDatabaseReader
 	 * @param string $statement
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
+	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
 	 * @return integer
 	 * @throws \PDOException
 	 * @throws DatabaseException

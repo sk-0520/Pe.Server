@@ -7,6 +7,7 @@ namespace PeServer\App\Models;
 use PeServer\Core\Cryptography;
 use PeServer\Core\Throws\CryptoException;
 use PeServer\App\Models\AppConfiguration;
+use PeServer\Core\Binary;
 use PeServer\Core\StringUtility;
 
 abstract class AppCryptography
@@ -20,7 +21,7 @@ abstract class AppCryptography
 	public static function encrypt(string $data): string
 	{
 		$crypto = AppConfiguration::$config['crypto'];
-		return Cryptography::encrypt($data, $crypto['algorithm'], $crypto['password']);
+		return Cryptography::encrypt($crypto['algorithm'], $data, $crypto['password']);
 	}
 
 	/**
@@ -38,7 +39,7 @@ abstract class AppCryptography
 	public static function encryptToken(string $data): string
 	{
 		$token = AppConfiguration::$config['crypto']['token'];
-		$value = Cryptography::encrypt($data, $token['algorithm'], $token['password']);
+		$value = Cryptography::encrypt($token['algorithm'], $data, $token['password']);
 		return StringUtility::split($value, Cryptography::SEPARATOR, 2)[1];
 	}
 
@@ -62,12 +63,9 @@ abstract class AppCryptography
 		$crypto = AppConfiguration::$config['crypto'];
 		$input = $data . $crypto['pepper'];
 
-		$binary = hash('fnv132', $input, true);
-		if ($binary === false) { // @phpstan-ignore-line
-			throw new CryptoException();
-		}
+		$binary = Cryptography::generateHashBinary('fnv132', new Binary($input));
 
-		$result = unpack('N', $binary, 0);
+		$result = unpack('N', $binary->getRaw(), 0);
 		if ($result === false) {
 			throw new CryptoException();
 		}

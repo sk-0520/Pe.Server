@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace PeServer\Core;
 
 use \Exception;
+use \Throwable;
 use PeServer\Core\Throws\CryptoException;
 use PeServer\Core\Throws\Throws;
-use Throwable;
 
 /**
  * 暗号化周り
@@ -19,13 +19,37 @@ abstract class Cryptography
 	public const DEFAULT_RANDOM_STRING = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
 	/**
+	 * 乱数取得。
+	 *
+	 * `random_int` ラッパー。
+	 *
+	 * @param integer $max 最大値
+	 * @param integer $min 最小値
+	 * @return integer
+	 * @throws CryptoException 失敗
+	 * @see https://www.php.net/manual/function.random-int.php
+	 */
+	public static function generateRandomInteger(int $max = PHP_INT_MAX, int $min = 0): int
+	{
+		try {
+			return random_int($min, $max);
+		} catch (Throwable $ex) {
+			Throws::reThrow(CryptoException::class, $ex);
+		}
+	}
+
+	/**
 	 * ランダムバイトデータを生成。
+	 *
+	 * `openssl_random_pseudo_bytes` ラッパー。
 	 *
 	 * @param integer $length
 	 * @phpstan-param positive-int $length
 	 * @return Binary
+	 * @throws CryptoException 失敗
+	 * @see https://www.php.net/manual/function.openssl-random-pseudo-bytes.php
 	 */
-	public static function generateRandomBytes(int $length): Binary
+	public static function generateRandomBinary(int $length): Binary
 	{
 		if ($length < 1) { //@phpstan-ignore-line phpstan:positive-int
 			throw new CryptoException('$length = ' . $length);
@@ -47,6 +71,7 @@ abstract class Cryptography
 	 * @param string $characters
 	 * @phpstan-param non-empty-string $characters
 	 * @return string
+	 * @throws CryptoException 失敗
 	 */
 	public static function generateRandomString(int $length, string $characters = self::DEFAULT_RANDOM_STRING): string
 	{
@@ -65,7 +90,7 @@ abstract class Cryptography
 		$result = '';
 
 		for ($i = 0; $i < $length; $i++) {
-			$index = random_int($min, $max);
+			$index = self::generateRandomInteger($max, $min);
 			$result .= $charactersArray[$index];
 		}
 
@@ -73,34 +98,16 @@ abstract class Cryptography
 	}
 
 	/**
-	 * 乱数取得。
-	 *
-	 * `random_int` ラッパー。
-	 *
-	 * @param integer $max 最大値
-	 * @param integer $min 最小値
-	 * @return integer
-	 * @throws CryptoException
-	 */
-	public static function generateRandomInteger(int $max = PHP_INT_MAX, int $min = 0): int
-	{
-		try {
-			return random_int($min, $max);
-		} catch (Throwable $ex) {
-			Throws::reThrow(CryptoException::class, $ex);
-		}
-	}
-
-	/**
 	 * 文字列を暗号化。
 	 *
-	 * @param string $data 生文字列。
 	 * @param string $algorithm 暗号化方法。
+	 * @phpstan-param non-empty-string $algorithm
+	 * @param string $rawValue 生文字列。
 	 * @param string $password パスワード。
 	 * @return string 暗号化された文字列。 アルゴリズム@IV@暗号化データ となる。
 	 * @throws CryptoException 失敗
 	 */
-	public static function encrypt(string $data, string $algorithm, string $password): string
+	public static function encrypt(string $algorithm, string $rawValue, string $password): string
 	{
 		$ivLength = 0;
 		try {
@@ -116,9 +123,9 @@ abstract class Cryptography
 			throw new CryptoException('$ivLength = ' . $ivLength);
 		}
 
-		$iv = self::generateRandomBytes($ivLength);
+		$iv = self::generateRandomBinary($ivLength);
 
-		$encData = openssl_encrypt($data, $algorithm, $password, self::OPTION, $iv->getRaw());
+		$encData = openssl_encrypt($rawValue, $algorithm, $password, self::OPTION, $iv->getRaw());
 		if ($encData === false) {
 			throw new CryptoException();
 		}
@@ -129,14 +136,14 @@ abstract class Cryptography
 	/**
 	 * Cryptography::encrypt で暗号化されたデータの復元。
 	 *
-	 * @param string $data 暗号化データ。
+	 * @param string $encValue 暗号化データ。
 	 * @param string $password パスワード。
 	 * @return string 生文字列。
 	 * @throws CryptoException 失敗
 	 */
-	public static function decrypt(string $data, string $password): string
+	public static function decrypt(string $encValue, string $password): string
 	{
-		$values = StringUtility::split($data, self::SEPARATOR);
+		$values = StringUtility::split($encValue, self::SEPARATOR);
 		if (ArrayUtility::getCount($values) !== 3) {
 			throw new CryptoException();
 		}
@@ -160,10 +167,11 @@ abstract class Cryptography
 	}
 
 	/**
-	 * password_hash($password, PASSWORD_DEFAULT) のラップ
+	 * `password_hash($password, PASSWORD_DEFAULT)`ラッパー。
 	 *
 	 * @param string $password 生パスワード。
 	 * @return string ハッシュ化パスワード。
+	 * @see https://www.php.net/manual/function.password-hash.php
 	 */
 	public static function toHashPassword(string $password): string
 	{
@@ -171,7 +179,7 @@ abstract class Cryptography
 	}
 
 	/**
-	 * password_verify(string $password, $hashPassword) のラップ。
+	 * `password_verify(string $password, $hashPassword)` ラッパー。
 	 *
 	 * @param string $password 生パスワード。
 	 * @param string $hashPassword ハッシュ化パスワード。
@@ -180,5 +188,60 @@ abstract class Cryptography
 	public static function verifyPassword(string $password, string $hashPassword): bool
 	{
 		return password_verify($password, $hashPassword);
+	}
+
+	/**
+	 * ハッシュアルゴリズム一覧。
+	 *
+	 * `hash_algos` ラッパー。
+	 *
+	 * @return string[]
+	 */
+	public static function getHashAlgorithms(): array
+	{
+		return hash_algos();
+	}
+
+	private static function generateHashCore(bool $isBinary, string $algorithm, Binary $binary/*, array $options = []*/): string
+	{
+		$hash = hash($algorithm, $binary->getRaw(), $isBinary/*, $options */);
+		if ($hash === false) { //@phpstan-ignore-line
+			throw new CryptoException();
+		}
+		return $hash;
+	}
+
+	/**
+	 * ハッシュ化処理。
+	 *
+	 * `hash` ラッパー。
+	 *
+	 * @param string $algorithm
+	 * @phpstan-param non-empty-string $algorithm
+	 * @param Binary $binary
+	 * @-param array{seed?:?int} $options
+	 * @return string
+	 * @see https://php.net/manual/function.hash.php
+	 */
+	public static function generateHashString(string $algorithm, Binary $binary/*, array $options = []*/): string
+	{
+		return self::generateHashCore(false, $algorithm, $binary);
+	}
+
+	/**
+	 * ハッシュ化処理。
+	 *
+	 * `hash` ラッパー。
+	 *
+	 * @param string $algorithm
+	 * @phpstan-param non-empty-string $algorithm
+	 * @param Binary $binary
+	 * @-param array{seed?:?int} $options
+	 * @return Binary
+	 * @see https://php.net/manual/function.hash.php
+	 */
+	public static function generateHashBinary(string $algorithm, Binary $binary/*, array $options = []*/): Binary
+	{
+		return new Binary(self::generateHashCore(true, $algorithm, $binary));
 	}
 }

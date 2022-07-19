@@ -6,7 +6,7 @@ namespace PeServer\App\Models\Domain\Page\Account;
 
 use PeServer\Core\I18n;
 use PeServer\Core\Cryptography;
-use PeServer\Core\EmailAddress;
+use PeServer\Core\Mail\EmailAddress;
 use PeServer\Core\InitialValue;
 use PeServer\App\Models\AuditLog;
 use PeServer\App\Models\AppMailer;
@@ -25,7 +25,7 @@ use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\App\Models\Dao\Entities\UsersEntityDao;
 use PeServer\App\Models\Dao\Entities\SignUpWaitEmailsEntityDao;
 use PeServer\App\Models\Dao\Entities\UserAuthenticationsEntityDao;
-use PeServer\Core\EmailMessage;
+use PeServer\Core\Mail\EmailMessage;
 
 class AccountSignupStep2Logic extends PageLogicBase
 {

@@ -1,0 +1,24 @@
+table.basic {
+	table-layout: fixed;
+	border: 2px solid #888;
+	margin-bottom: 1em;
+
+	th,
+	td {
+		border: 1px solid #ccc;
+	}
+
+	th {
+		font-weight: bold;
+		padding: 0.5ex 1em;
+		border: 1px solid #888;
+		background: #333;
+		color: #ccc;
+		font-family: monospace;
+	}
+
+	td {
+		border: 1px solid #aaa;
+		padding: 0.25ex 0.5ex;
+	}
+}

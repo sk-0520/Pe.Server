@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Result;
 
-use PeServer\Core\Mime;
-use PeServer\Core\InitialValue;
-use PeServer\Core\Mvc\Template;
 use PeServer\Core\Http\HttpResponse;
-use PeServer\Core\Mvc\TemplateParameter;
+use PeServer\Core\InitialValue;
+use PeServer\Core\Mime;
 use PeServer\Core\Mvc\Result\IActionResult;
+use PeServer\Core\Mvc\Template;
+use PeServer\Core\Mvc\TemplateParameter;
 
 /**
- * View。
+ * 結果操作: View。
+ *
  * @immutable
  */
 class ViewActionResult implements IActionResult
@@ -24,6 +25,7 @@ class ViewActionResult implements IActionResult
 	 * @param string $actionName
 	 * @param TemplateParameter $templateParameter
 	 * @param array<string,string[]> $headers
+	 * @phpstan-param array<non-empty-string,string[]> $headers
 	 */
 	public function __construct(
 		private string $templateBaseName,

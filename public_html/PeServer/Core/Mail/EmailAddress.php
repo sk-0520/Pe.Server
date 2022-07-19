@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core;
+namespace PeServer\Core\Mail;
+
+use PeServer\Core\StringUtility;
 
 /**
  * メールアドレス管理。

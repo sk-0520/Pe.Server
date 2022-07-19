@@ -24,6 +24,9 @@ abstract class FileUtility
 	 *
 	 * @param string $path
 	 * @return integer
+	 * @phpstan-return UnsignedIntegerAlias
+	 * @see https://www.php.net/manual/function.filesize.php
+	 * @throws IOException
 	 */
 	public static function getFileSize(string $path): int
 	{
@@ -40,6 +43,8 @@ abstract class FileUtility
 	 *
 	 * @param string $path
 	 * @return Binary
+	 * @see https://www.php.net/manual/function.file-get-contents.php
+	 * @throws IOException
 	 */
 	public static function readContent(string $path): Binary
 	{
@@ -58,6 +63,7 @@ abstract class FileUtility
 	 * @param mixed $data
 	 * @param boolean $append
 	 * @return void
+	 * @throws IOException
 	 */
 	private static function saveContent(string $path, mixed $data, bool $append): void
 	{
@@ -74,6 +80,7 @@ abstract class FileUtility
 	 * @param string $path
 	 * @param mixed $data
 	 * @return void
+	 * @throws IOException
 	 */
 	public static function writeContent(string $path, mixed $data): void
 	{
@@ -86,6 +93,7 @@ abstract class FileUtility
 	 * @param string $path
 	 * @param mixed $data
 	 * @return void
+	 * @throws IOException
 	 */
 	public static function appendContent(string $path, mixed $data): void
 	{
@@ -120,6 +128,8 @@ abstract class FileUtility
 	 * @param string $path
 	 * @param array<mixed>|\stdClass $data
 	 * @return void
+	 * @throws IOException
+	 * @throws ParseException
 	 */
 	public static function writeJsonFile(string $path, array|stdClass $data): void
 	{
@@ -137,9 +147,12 @@ abstract class FileUtility
 	 *
 	 * ディレクトリは再帰的に作成される。
 	 *
+	 * `mkdir` ラッパー。
+	 *
 	 * @param string $directoryPath ディレクトリパス。
 	 * @param int $permissions
 	 * @return bool
+	 * @see https://www.php.net/manual/function.mkdir.php
 	 */
 	public static function createDirectory(string $directoryPath, int $permissions = self::DIRECTORY_PERMISSIONS): bool
 	{
@@ -178,9 +191,11 @@ abstract class FileUtility
 
 	/**
 	 * ファイル・ディレクトリが存在するか。
+	 * `file_exists` ラッパー。
 	 *
 	 * @param string $path
 	 * @return boolean 存在するか。
+	 * @see https://www.php.net/manual/function.file-exists.php
 	 */
 	public static function existsItem(string $path): bool
 	{
@@ -192,8 +207,11 @@ abstract class FileUtility
 	 *
 	 * self::existsItem より速い(file_existsよりis_fileの方が速いらすぃ)
 	 *
+	 * `is_file` ラッパー。
+	 *
 	 * @param string $path
 	 * @return boolean 存在するか。
+	 * @see https://www.php.net/manual/function.is-file.php
 	 */
 	public static function existsFile(string $path): bool
 	{
@@ -203,15 +221,16 @@ abstract class FileUtility
 	/**
 	 * ディレクトリが存在するか。
 	 *
+	 * `is_dir` ラッパー。
+	 *
 	 * @param string $path
 	 * @return boolean 存在するか。
+	 * @see https://www.php.net/manual/function.is-dir.php
 	 */
 	public static function existsDirectory(string $path): bool
 	{
 		return is_dir($path);
 	}
-
-
 
 	/**
 	 * ファイル/ディレクトリ一覧を取得する。
@@ -293,13 +312,13 @@ abstract class FileUtility
 	/**
 	 * パターンに一致するファイル・ディレクトリ一覧取得。
 	 *
-	 * glob ラッパー。
-	 * https://www.php.net/manual/ja/function.glob.php
+	 * `glob` ラッパー。
 	 *
 	 * @param string $directoryPath ディレクトリパス
 	 * @param string $wildcard ワイルドカード。
 	 * @return string[] 一覧。
 	 * @throws IOException
+	 * @see https://www.php.net/manual/function.glob.php
 	 */
 	public static function find(string $directoryPath, string $wildcard): array
 	{
@@ -382,11 +401,11 @@ abstract class FileUtility
 	/**
 	 * ファイルのステータスのキャッシュをクリア
 	 *
-	 * clearstatcacheラッパー。
+	 * `clearstatcache` ラッパー。
 	 *
 	 * @param string|null $path
 	 * @return void
-	 * @see https://www.php.net/manual/ja/function.clearstatcache.php
+	 * @see https://www.php.net/manual/function.clearstatcache.php
 	 */
 	public static function clearCache(?string $path)
 	{

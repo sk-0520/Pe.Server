@@ -8,7 +8,7 @@ use PeServer\Core\I18n;
 use PeServer\Core\UrlUtility;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Cryptography;
-use PeServer\Core\EmailAddress;
+use PeServer\Core\Mail\EmailAddress;
 use PeServer\Core\InitialValue;
 use PeServer\Core\StringUtility;
 use PeServer\App\Models\AppMailer;
@@ -22,7 +22,7 @@ use PeServer\Core\Database\IDatabaseContext;
 use PeServer\App\Models\Domain\AccountValidator;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\App\Models\Dao\Entities\SignUpWaitEmailsEntityDao;
-use PeServer\Core\EmailMessage;
+use PeServer\Core\Mail\EmailMessage;
 
 class AccountSignupStep1Logic extends PageLogicBase
 {
@@ -138,12 +138,12 @@ class AccountSignupStep1Logic extends PageLogicBase
 
 	protected function cleanup(LogicCallMode $callMode): void
 	{
-		if ($callMode->isSubmit() && ArrayUtility::existsKey($this->result, 'token')) {
+		if ($callMode->isSubmit() && ArrayUtility::containsKey($this->result, 'token')) {
 			$this->removeTemporary(self::TEMP_TOKEN);
 			return;
 		}
 
-		$tempToken = Cryptography::generateRandomBytes(10)->toHex();
+		$tempToken = Cryptography::generateRandomBinary(10)->toHex();
 		$tempValue = sprintf('%04d', Cryptography::generateRandomInteger(9999));
 		$this->pushTemporary(self::TEMP_TOKEN, [
 			'token' => $tempToken,

@@ -4,12 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
-use \stdClass;
-use PeServer\Core\Binary;
 use PeServer\Core\InitialValue;
-use PeServer\Core\Throws\IOException;
-use PeServer\Core\Throws\ParseException;
-use PeServer\Core\Throws\FileNotFoundException;
+use PeServer\Core\StringUtility;
 
 /**
  * パス処理系。
@@ -17,7 +13,7 @@ use PeServer\Core\Throws\FileNotFoundException;
 abstract class PathUtility
 {
 	/**
-	 * 絶対パスへ変換。
+	 * パスの正規化。
 	 *
 	 * @param string $path パス。
 	 * @return string 絶対パス。
@@ -26,7 +22,7 @@ abstract class PathUtility
 	{
 		$targetPath = StringUtility::replace($path, ['/', '\\'], DIRECTORY_SEPARATOR);
 		$parts = array_filter(StringUtility::split($targetPath, DIRECTORY_SEPARATOR), 'mb_strlen');
-		$absolutes = array();
+		$absolutes = [];
 		foreach ($parts as $part) {
 			if ($part === '.') {
 				continue;
@@ -93,7 +89,7 @@ abstract class PathUtility
 	 * 拡張子取得。
 	 *
 	 * @param string $path
-	 * @param boolean $withDot . を付与するか。
+	 * @param boolean $withDot `.` を付与するか。
 	 * @return string
 	 */
 	public static function getFileExtension(string $path, bool $withDot = false): string

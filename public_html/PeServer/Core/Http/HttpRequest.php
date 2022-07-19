@@ -6,6 +6,7 @@ namespace PeServer\Core\Http;
 
 use PeServer\Core\Http\HttpHeader;
 use PeServer\Core\Http\HttpMethod;
+use PeServer\Core\Store\SpecialStore;
 use PeServer\Core\Throws\KeyNotFoundException;
 
 /**
@@ -13,7 +14,6 @@ use PeServer\Core\Throws\KeyNotFoundException;
  *
  * GET/POST/URLパラメータの値などはこいつから取得する。
  * @immutable
- * @SuppressWarnings(PHPMD.Superglobals)
  */
 class HttpRequest
 {
@@ -25,9 +25,10 @@ class HttpRequest
 	 * @param array<string,string> $urlParameters URLパラメータ。
 	 */
 	public function __construct(
+		public SpecialStore $specialStore,
 		public HttpMethod $httpMethod,
 		public HttpHeader $httpHeader,
-		protected array $urlParameters
+		public array $urlParameters
 	) {
 	}
 
@@ -45,16 +46,16 @@ class HttpRequest
 		}
 
 		if (!$strict || $this->httpMethod->is(HttpMethod::get())) {
-			if (isset($_GET[$name])) {
+			if ($this->specialStore->containsGetName($name)) {
 				return new HttpRequestExists($name, true, HttpRequestExists::KIND_GET);
 			}
 		}
 
 		if (!$strict || $this->httpMethod->is(HttpMethod::post())) {
-			if (isset($_POST[$name])) {
+			if ($this->specialStore->containsPostName($name)) {
 				return new HttpRequestExists($name, true, HttpRequestExists::KIND_POST);
 			}
-			if (isset($_FILES[$name])) {
+			if ($this->specialStore->containsFileName($name)) {
 				return new HttpRequestExists($name, true, HttpRequestExists::KIND_FILE);
 			}
 		}
@@ -83,14 +84,13 @@ class HttpRequest
 		}
 
 		if (!$strict || $this->httpMethod->is(HttpMethod::get())) {
-			if (isset($_GET[$name])) {
-				return $_GET[$name];
+			if ($this->specialStore->containsGetName($name)) {
+				return $this->specialStore->getGet($name);
 			}
 		}
 		if (!$strict || $this->httpMethod->is(HttpMethod::post())) {
-
-			if (isset($_POST[$name])) {
-				return $_POST[$name];
+			if ($this->specialStore->containsPostName($name)) {
+				return $this->specialStore->getPost($name);
 			}
 		}
 

@@ -30,7 +30,6 @@ class HttpResponse
 	 */
 	public HttpHeader $header;
 
-
 	/**
 	 * 応答本文。
 	 *

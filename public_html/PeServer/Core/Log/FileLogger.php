@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Log;
 
-use PeServer\Core\Log\ILogger;
-use PeServer\Core\FileUtility;
-use PeServer\Core\PathUtility;
 use PeServer\Core\ArrayUtility;
-use PeServer\Core\StringUtility;
+use PeServer\Core\FileUtility;
 use PeServer\Core\Log\LoggerBase;
+use PeServer\Core\PathUtility;
+use PeServer\Core\StringUtility;
 use PeServer\Core\Throws\Enforce;
-use PeServer\Core\Throws\IOException;
 
 /**
  * ファイルロガー。
@@ -36,15 +34,17 @@ class FileLogger extends LoggerBase
 	 *
 	 * @var string[]
 	 */
-	private static array $cleanupFilePatterns = array();
+	private static array $cleanupFilePatterns = [];
 
 	/**
 	 * 生成。
 	 *
 	 * @param string $header ヘッダ。使用用途により意味合いは変わるので実装側でルール決めして使用すること。
+	 * @phpstan-param non-empty-string $header
 	 * @param integer $level 有効レベル。
-	 * @phpstan-param ILogger::LEVEL_* $level 有効レベル。
+	 * @phpstan-param ILogger::LOG_LEVEL_* $level 有効レベル。
 	 * @param integer $baseTraceIndex 基準トレース位置。
+	 * @phpstan-param UnsignedIntegerAlias $baseTraceIndex
 	 * @param array<string,mixed> $fileLoggingConfiguration
 	 */
 	public function __construct(string $format, string $header, int $level, int $baseTraceIndex, array $fileLoggingConfiguration)
@@ -78,6 +78,13 @@ class FileLogger extends LoggerBase
 			: date('Ymd');
 	}
 
+	/**
+	 * 破棄処理内部実装。
+	 *
+	 * @param int $maxCount
+	 * @phpstan-param UnsignedIntegerAlias $maxCount
+	 * @param string $filePattern
+	 */
 	private function cleanupCore(int $maxCount, string $filePattern): void
 	{
 		$logFiles = FileUtility::find($this->directoryPath, $filePattern);
@@ -92,6 +99,12 @@ class FileLogger extends LoggerBase
 		}
 	}
 
+	/**
+	 * 破棄処理。
+	 *
+	 * @param int $maxCount
+	 * @phpstan-param UnsignedIntegerAlias $maxCount
+	 */
 	private function cleanup(int $maxCount): void
 	{
 		if (!$maxCount) {
@@ -105,7 +118,7 @@ class FileLogger extends LoggerBase
 				'DATE' => $this->toHeaderDate(true),
 			]
 		);
-		if (!ArrayUtility::contains(self::$cleanupFilePatterns, $filePattern)) {
+		if (!ArrayUtility::containsValue(self::$cleanupFilePatterns, $filePattern)) {
 			self::$cleanupFilePatterns[] = $filePattern;
 			$this->cleanupCore($maxCount, $filePattern);
 		}

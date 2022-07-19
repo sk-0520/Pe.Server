@@ -22,8 +22,8 @@ use PeServer\App\Models\Dao\Domain\UserDomainDao;
 use PeServer\Core\Throws\NotImplementedException;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\App\Models\Dao\Entities\UserChangeWaitEmailsEntityDao;
-use PeServer\Core\EmailAddress;
-use PeServer\Core\EmailMessage;
+use PeServer\Core\Mail\EmailAddress;
+use PeServer\Core\Mail\EmailMessage;
 
 class AccountUserEmailLogic extends PageLogicBase
 {

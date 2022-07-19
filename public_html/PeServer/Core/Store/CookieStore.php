@@ -24,14 +24,14 @@ class CookieStore
 	 *
 	 * @var array<string,LocalCookieData>
 	 */
-	private array $values = array();
+	private array $values = [];
 	/**
 	 * 削除データ(キー項目)。
 	 *
 	 * @var string[]
 	 * @phpstan-var array-key[]
 	 */
-	private array $removes = array();
+	private array $removes = [];
 
 	/**
 	 * クッキーの値に変更があったか。
@@ -116,7 +116,7 @@ class CookieStore
 	public function remove(string $key): void
 	{
 		if (StringUtility::isNullOrEmpty($key)) {
-			$this->values = array();
+			$this->values = [];
 			$this->removes = $this->special->getCookieNames();
 		} else {
 			unset($this->values[$key]);

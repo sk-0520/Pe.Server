@@ -2,20 +2,21 @@
 
 namespace PeServer\App\Controllers\Page;
 
-use PeServer\Core\Http\HttpStatus;
-use PeServer\Core\Http\HttpRequest;
-use PeServer\Core\Mvc\Result\IActionResult;
-use PeServer\Core\Mvc\LogicCallMode;
-use PeServer\Core\Mvc\TemplateParameter;
-use PeServer\Core\Mvc\ControllerArgument;
 use PeServer\App\Controllers\Page\PageControllerBase;
-use PeServer\App\Models\Domain\Page\Setting\SettingSetupLogic;
+use PeServer\App\Models\Domain\Page\Setting\SettingConfigurationLogic;
+use PeServer\App\Models\Domain\Page\Setting\SettingDefaultPluginLogic;
+use PeServer\App\Models\Domain\Page\Setting\SettingEnvironmentLogic;
+use PeServer\App\Models\Domain\Page\Setting\SettingLogDetailLogic;
 use PeServer\App\Models\Domain\Page\Setting\SettingLogListLogic;
 use PeServer\App\Models\Domain\Page\Setting\SettingMarkdownLogic;
-use PeServer\App\Models\Domain\Page\Setting\SettingLogDetailLogic;
-use PeServer\App\Models\Domain\Page\Setting\SettingEnvironmentLogic;
-use PeServer\App\Models\Domain\Page\Setting\SettingDefaultPluginLogic;
 use PeServer\App\Models\Domain\Page\Setting\SettingPluginCategoryListLogic;
+use PeServer\App\Models\Domain\Page\Setting\SettingSetupLogic;
+use PeServer\Core\Http\HttpRequest;
+use PeServer\Core\Http\HttpStatus;
+use PeServer\Core\Mvc\ControllerArgument;
+use PeServer\Core\Mvc\LogicCallMode;
+use PeServer\Core\Mvc\Result\IActionResult;
+use PeServer\Core\Mvc\TemplateParameter;
 
 final class SettingController extends PageControllerBase
 {
@@ -53,6 +54,14 @@ final class SettingController extends PageControllerBase
 		$logic->run(LogicCallMode::initialize());
 
 		return $this->view('environment', $logic->getViewData());
+	}
+
+	public function configuration(HttpRequest $request): IActionResult
+	{
+		$logic = $this->createLogic(SettingConfigurationLogic::class, $request);
+		$logic->run(LogicCallMode::initialize());
+
+		return $this->view('configuration', $logic->getViewData());
 	}
 
 	public function default_plugin_get(HttpRequest $request): IActionResult

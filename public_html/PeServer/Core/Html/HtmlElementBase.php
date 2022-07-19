@@ -4,11 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Html;
 
-use DOMNode;
-use \DOMElement;
-use PeServer\Core\ArrayUtility;
-use PeServer\Core\InitialValue;
-use PeServer\Core\StringUtility;
+use \DOMNode;
 use PeServer\Core\Html\HtmlDocument;
 use PeServer\Core\Html\HtmlNodeBase;
 use PeServer\Core\Throws\HtmlDocumentException;

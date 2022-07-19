@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Database;
 
+use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\Logging;
-use PeServer\Core\Database\IDatabaseContext;
 
 /**
  * DBアクセス基底処理。
@@ -17,6 +17,7 @@ abstract class DaoBase
 {
 	/**
 	 * ロガー。
+	 *
 	 * @readonly
 	 */
 	protected ILogger $logger;

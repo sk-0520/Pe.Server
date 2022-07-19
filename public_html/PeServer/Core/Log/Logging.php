@@ -5,18 +5,16 @@ declare(strict_types=1);
 namespace PeServer\Core\Log;
 
 use \DateTimeImmutable;
-use PeServer\Core\FileUtility;
-use PeServer\Core\Log\ILogger;
-use PeServer\Core\PathUtility;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Cryptography;
+use PeServer\Core\InitializeChecker;
 use PeServer\Core\InitialValue;
+use PeServer\Core\Log\FileLogger;
+use PeServer\Core\Log\ILogger;
+use PeServer\Core\Log\MultiLogger;
+use PeServer\Core\PathUtility;
 use PeServer\Core\Store\Stores;
 use PeServer\Core\StringUtility;
-use PeServer\Core\Log\FileLogger;
-use PeServer\Core\Log\MultiLogger;
-use PeServer\Core\InitializeChecker;
-use PeServer\Core\Store\SpecialStore;
 use PeServer\Core\Throws\NotImplementedException;
 
 /**
@@ -51,7 +49,7 @@ abstract class Logging
 	 * ログレベル。
 	 *
 	 * @var int
-	 * @phpstan-var ILogger::LEVEL_*
+	 * @phpstan-var ILogger::LOG_LEVEL_*
 	 */
 	private static int $level;
 
@@ -70,14 +68,14 @@ abstract class Logging
 
 		self::$stores = $stores;
 		self::$loggingConfiguration = $loggingConfiguration;
-		self::$requestId = Cryptography::generateRandomBytes(self::LOG_REQUEST_ID_LENGTH)->toHex();
+		self::$requestId = Cryptography::generateRandomBinary(self::LOG_REQUEST_ID_LENGTH)->toHex();
 
 		/**
 		 * @var int
-		 * @phpstan-var ILogger::LEVEL_*
+		 * @phpstan-var ILogger::LOG_LEVEL_*
 		 *
 		 */
-		$level = ArrayUtility::getOr(self::$loggingConfiguration, 'level', ILogger::LEVEL_INFORMATION);
+		$level = ArrayUtility::getOr(self::$loggingConfiguration, 'level', ILogger::LOG_LEVEL_INFORMATION);
 
 		self::$level = $level;
 	}
@@ -85,11 +83,11 @@ abstract class Logging
 	private static function formatLevel(int $level): string
 	{
 		return match ($level) {
-			ILogger::LEVEL_TRACE => 'TRACE',
-			ILogger::LEVEL_DEBUG => 'DEBUG',
-			ILogger::LEVEL_INFORMATION => 'INFO ',
-			ILogger::LEVEL_WARNING => 'WARN ',
-			ILogger::LEVEL_ERROR => 'ERROR',
+			ILogger::LOG_LEVEL_TRACE => 'TRACE',
+			ILogger::LOG_LEVEL_DEBUG => 'DEBUG',
+			ILogger::LOG_LEVEL_INFORMATION => 'INFO ',
+			ILogger::LOG_LEVEL_WARNING => 'WARN ',
+			ILogger::LOG_LEVEL_ERROR => 'ERROR',
 			default => throw new NotImplementedException(),
 		};
 	}
@@ -125,7 +123,7 @@ abstract class Logging
 			}, $parameters);
 
 			/** @var array<string,string> */
-			$map = array();
+			$map = [];
 			foreach ($values as $key => $value) {
 				$map[strval($key)] = $value;
 			}
@@ -181,10 +179,12 @@ abstract class Logging
 	 * @param string $format
 	 * @phpstan-param literal-string $format
 	 * @param integer $level
-	 * @phpstan-param ILogger::LEVEL_* $level 有効レベル。S
+	 * @phpstan-param ILogger::LOG_LEVEL_* $level 有効レベル。S
 	 * @param integer $level
 	 * @param integer $traceIndex
+	 * @phpstan-param UnsignedIntegerAlias $traceIndex
 	 * @param string $header
+	 * @phpstan-param non-empty-string $header
 	 * @param mixed $message
 	 * @phpstan-param LogMessageAlias $message
 	 * @param mixed ...$parameters
@@ -235,6 +235,15 @@ abstract class Logging
 		return StringUtility::replaceMap($format, $map);
 	}
 
+	/**
+	 * 生成。
+	 *
+	 * @param string $header
+	 * @phpstan-param non-empty-string $header
+	 * @param int $baseTraceIndex
+	 * @phpstan-param UnsignedIntegerAlias $baseTraceIndex
+	 * @return ILogger
+	 */
 	public static function create(string $header, int $baseTraceIndex = 0): ILogger
 	{
 		self::$initializeChecker->throwIfNotInitialize();

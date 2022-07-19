@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Middleware;
 
-use PeServer\Core\Mvc\Middleware\MiddlewareResult;
 use PeServer\Core\Mvc\Middleware\MiddlewareArgument;
+use PeServer\Core\Mvc\Middleware\MiddlewareResult;
 
 /**
  * ある区間からの測定処理。

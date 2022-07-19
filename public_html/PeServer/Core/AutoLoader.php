@@ -15,6 +15,7 @@ class AutoLoader
 	 * 読み込みベースパス。
 	 *
 	 * @var string[]
+	 * @phpstan-var non-empty-string[]
 	 * @readonly
 	 */
 	private array $baseDirectoryPaths;
@@ -31,6 +32,7 @@ class AutoLoader
 	 * 生成。
 	 *
 	 * @param string[] $baseDirectoryPaths ベースディレクトリ一覧。
+	 * @phpstan-param non-empty-string[] $baseDirectoryPaths
 	 * @param string $includePattern 読み込み対象パターン（正規表現）。
 	 * @return void
 	 */
@@ -69,6 +71,7 @@ class AutoLoader
 
 			if (is_file($filePath)) {
 				require $filePath;
+				return;
 			}
 		}
 	}

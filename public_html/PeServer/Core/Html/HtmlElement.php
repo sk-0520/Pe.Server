@@ -6,10 +6,9 @@ namespace PeServer\Core\Html;
 
 use \DOMElement;
 use PeServer\Core\ArrayUtility;
+use PeServer\Core\Html\HtmlDocument;
 use PeServer\Core\InitialValue;
 use PeServer\Core\StringUtility;
-use PeServer\Core\Html\HtmlNodeBase;
-use PeServer\Core\Html\HtmlDocument;
 use PeServer\Core\Throws\HtmlDocumentException;
 
 /**
@@ -85,7 +84,7 @@ final class HtmlElement extends HtmlElementBase
 	public function addClass(string $className): void
 	{
 		$list = $this->getClassList();
-		if (!ArrayUtility::contains($list, $className)) {
+		if (!ArrayUtility::containsValue($list, $className)) {
 			$list[] = $className;
 			$this->setClassList($list);
 		}

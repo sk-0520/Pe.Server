@@ -16,7 +16,7 @@ class Configuration
 	public const FILE_TYPE_JSON = 'json';
 
 	/**
-	 * Undocumented variable
+	 * 環境。
 	 *
 	 * @var string
 	 * @readonly
@@ -76,14 +76,14 @@ class Configuration
 		$environmentFilePath = PathUtility::joinPath($directoryPath, $this->getEnvironmentFileName($fileName));
 
 		/** @var array<mixed> */
-		$configuration = array();
+		$configuration = [];
 
 		/** @var array<mixed> */
 		$baseConfiguration = FileUtility::readJsonFile($baseFilePath);
-		if (file_exists($environmentFilePath)) {
+		if (FileUtility::existsFile($environmentFilePath)) {
 			/** @var array<mixed> */
 			$environmentConfiguration = FileUtility::readJsonFile($environmentFilePath);
-			$configuration = array_replace_recursive($baseConfiguration, $environmentConfiguration);
+			$configuration = ArrayUtility::replace($baseConfiguration, $environmentConfiguration);
 		} else {
 			$configuration = $baseConfiguration;
 		}
@@ -97,7 +97,9 @@ class Configuration
 	 * @param array<mixed> $array 元データ。配列の値のみが置き換え対象となる。
 	 * @param array<string,string> $map 置き換え設定
 	 * @param string $head 置き換え開始文字列
+	 * @phpstan-param non-empty-string $head
 	 * @param string $tail 置き換え終了文字列
+	 * @phpstan-param non-empty-string $tail
 	 * @return array<mixed>
 	 */
 	public function replace(array $array, array $map, string $head, string $tail): array

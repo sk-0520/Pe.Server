@@ -30,7 +30,7 @@ abstract class OutputBuffer
 			if ($buffer === false) {
 				throw new OutputBufferException('ob_get_contents'); // @phpstan-ignore-line This throw is overwritten by a different one in the finally block below.
 			}
-			return new Binary($buffer);  // @phpstan-ignore-line This throw is overwritten by a different one in the finally block below.
+			return new Binary($buffer); // @phpstan-ignore-line This throw is overwritten by a different one in the finally block below.
 		} finally {
 			if (!ob_end_clean()) {
 				throw new OutputBufferException('ob_end_clean');  // @phpstan-ignore-line The overwriting throw is on this line.

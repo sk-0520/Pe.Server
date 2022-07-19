@@ -129,7 +129,11 @@ class LocalSmartyTemplateImpl extends Template
 			'status' => $parameter->httpStatus,
 			'values' => $parameter->values,
 			'errors' => $parameter->errors,
-			'stores' => self::$stores,
+			'stores' => [
+				'cookie' => TemplateStore::createCookie(self::$stores->cookie),
+				'session' => TemplateStore::createSession(self::$stores->session),
+				'temporary' => TemplateStore::createTemporary(self::$stores->temporary),
+			],
 		]);
 	}
 
@@ -161,10 +165,10 @@ class LocalSmartyTemplateImpl extends Template
 		foreach ($plugins as $plugin) {
 			if ($plugin instanceof ITemplateBlockFunction) {
 				// @phpstan-ignore-next-line
-				$this->engine->registerPlugin('block', $plugin->getFunctionName(), array($plugin, 'functionBlockBody'));
+				$this->engine->registerPlugin('block', $plugin->getFunctionName(), [$plugin, 'functionBlockBody']);
 			} else if ($plugin instanceof ITemplateFunction) { // @phpstan-ignore-line 増えたとき用にelseしたくないのである
 				// @phpstan-ignore-next-line
-				$this->engine->registerPlugin('function', $plugin->getFunctionName(), array($plugin, 'functionBody'));
+				$this->engine->registerPlugin('function', $plugin->getFunctionName(), [$plugin, 'functionBody']);
 			} else { //@phpstan-ignore-line
 				throw new NotImplementedException();
 			}

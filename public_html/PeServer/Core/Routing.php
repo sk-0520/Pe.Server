@@ -95,7 +95,7 @@ class Routing
 
 		$this->stores = $stores;
 		$this->middlewareLogger = Logging::create('middleware');
-		$this->shutdownRequest = new HttpRequest($requestMethod, $this->requestHeader, []);
+		$this->shutdownRequest = new HttpRequest($this->stores->special, $requestMethod, $this->requestHeader, []);
 	}
 
 	/**
@@ -109,15 +109,9 @@ class Routing
 	{
 		if (is_string($middleware)) {
 			/** @var IMiddleware */
-			$instance = new $middleware();
-			//@phpstan-ignore-next-line
-			if (!($instance instanceof IMiddleware)) {
-				throw new ArgumentException();
-			}
-			$middleware = $instance;
+			$middleware = ReflectionUtility::create($middleware, IMiddleware::class);
 		}
 
-		/** @var IMiddleware */
 		return $middleware;
 	}
 
@@ -131,15 +125,10 @@ class Routing
 	protected static function getOrCreateShutdownMiddleware(IShutdownMiddleware|string $middleware): IShutdownMiddleware
 	{
 		if (is_string($middleware)) {
-			$instance = new $middleware();
-			//@phpstan-ignore-next-line
-			if (!($instance instanceof IShutdownMiddleware)) {
-				throw new ArgumentException();
-			}
-			$middleware = $instance;
+			/** @var IShutdownMiddleware */
+			$middleware = ReflectionUtility::create($middleware, IShutdownMiddleware::class);
 		}
 
-		/** @var IShutdownMiddleware */
 		return $middleware;
 	}
 
@@ -169,7 +158,7 @@ class Routing
 	}
 
 	/**
-	 * ミドルウェアをグワーッと処理。
+	 * ミドルウェア(事前)をグワーッと処理。
 	 *
 	 * @param array<IMiddleware|string> $middleware
 	 * @phpstan-param array<IMiddleware|class-string<IMiddleware>> $middleware
@@ -188,6 +177,13 @@ class Routing
 		return true;
 	}
 
+	/**
+	 * ミドルウェア(事後)をグワーッと処理。
+	 *
+	 * @param HttpRequest $request
+	 * @param HttpResponse $response
+	 * @return bool
+	 */
 	private function handleAfterMiddleware(HttpRequest $request, HttpResponse $response): bool
 	{
 		if (!ArrayUtility::getCount($this->processedMiddleware)) {
@@ -222,9 +218,10 @@ class Routing
 	private function executeAction(string $rawControllerName, ActionSetting $actionSetting, array $urlParameters): void
 	{
 		$splitNames = StringUtility::split($rawControllerName, '/');
+		/** @phpstan-var class-string<ControllerBase> */
 		$controllerName = $splitNames[ArrayUtility::getCount($splitNames) - 1];
 
-		$this->shutdownRequest = $request = new HttpRequest($this->requestMethod, $this->requestHeader, $urlParameters);
+		$this->shutdownRequest = $request = new HttpRequest($this->stores->special, $this->requestMethod, $this->requestHeader, $urlParameters);
 
 		// アクション共通ミドルウェア処理
 		$this->shutdownMiddleware += $this->setting->actionShutdownMiddleware;
@@ -245,7 +242,7 @@ class Routing
 		$actionResult = null;
 		$output = OutputBuffer::get(function () use ($controllerArgument, $controllerName, $actionSetting, $request, &$actionResult) {
 			/** @var ControllerBase */
-			$controller = new $controllerName($controllerArgument);
+			$controller = ReflectionUtility::create($controllerName, ControllerBase::class, $controllerArgument);
 			$methodName = $actionSetting->controllerMethod;
 			/** @var IActionResult */
 			$actionResult = $controller->$methodName($request);
@@ -315,6 +312,9 @@ class Routing
 		}
 	}
 
+	/**
+	 * 終了処理。
+	 */
 	private function shutdown(): void
 	{
 		if (ArrayUtility::getCount($this->shutdownMiddleware)) {

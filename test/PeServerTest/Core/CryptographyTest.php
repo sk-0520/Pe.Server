@@ -24,7 +24,7 @@ class CryptographyTest extends TestClass
 			['input' => 'abc', 'algorithm' => 'sm4-cbc', 'password' => '123456'],
 		];
 		foreach ($tests as $test) {
-			$enc = Cryptography::encrypt($test['input'], $test['algorithm'], $test['password']);
+			$enc = Cryptography::encrypt($test['algorithm'], $test['input'], $test['password']);
 			$dec = Cryptography::decrypt($enc, $test['password']);
 			$this->assertEquals($test['input'], $dec, StringUtility::dump(['test' => $test, 'enc' => $enc]));
 		}
@@ -33,13 +33,13 @@ class CryptographyTest extends TestClass
 	public function test_enc_error()
 	{
 		$this->expectException(CryptoException::class);
-		Cryptography::encrypt('ABC', '💩', 'a');
+		Cryptography::encrypt('💩', 'ABC', 'a');
 		$this->fail();
 	}
 
 	public function test_dec_error()
 	{
-		$enc = Cryptography::encrypt('ABC', 'aes-256-cbc', 'a');
+		$enc = Cryptography::encrypt('aes-256-cbc', 'ABC', 'a');
 		$this->expectException(CryptoException::class);
 		Cryptography::decrypt($enc, 'b');
 		$this->fail();

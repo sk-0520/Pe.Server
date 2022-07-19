@@ -2,21 +2,22 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core;
+namespace PeServer\Core\Mail;
 
-require_once(__DIR__ . '/../Core/Libs/PHPMailer/src/Exception.php');
-//require_once(__DIR__ . '/../Core/Libs/PHPMailer/src/OAuth.php');
-require_once(__DIR__ . '/../Core/Libs/PHPMailer/src/PHPMailer.php');
-//require_once(__DIR__ . '/../Core/Libs/PHPMailer/src/POP3.php');
-require_once(__DIR__ . '/../Core/Libs/PHPMailer/src/SMTP.php');
+require_once(__DIR__ . '/../../Core/Libs/PHPMailer/src/Exception.php');
+//require_once(__DIR__ . '/../../Core/Libs/PHPMailer/src/OAuth.php');
+require_once(__DIR__ . '/../../Core/Libs/PHPMailer/src/PHPMailer.php');
+//require_once(__DIR__ . '/../../Core/Libs/PHPMailer/src/POP3.php');
+require_once(__DIR__ . '/../../Core/Libs/PHPMailer/src/SMTP.php');
 
-use PeServer\Core\EmailAddress;
-use PeServer\Core\InitialValue;
 use \PHPMailer\PHPMailer\PHPMailer;
+use PeServer\Core\InitialValue;
+use PeServer\Core\Mail\EmailAddress;
+use PeServer\Core\StringUtility;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\ArgumentNullException;
-use PeServer\Core\Throws\NotImplementedException;
 use PeServer\Core\Throws\InvalidOperationException;
+use PeServer\Core\Throws\NotImplementedException;
 
 class Mailer
 {
@@ -42,13 +43,11 @@ class Mailer
 	public string $characterSet = 'utf-8';
 
 	/**
-	 *
+	 * Return-Path:
 	 */
 	public string $returnPath = InitialValue::EMPTY_STRING;
 	/**
 	 * FROM:
-	 *
-	 * @var EmailAddress
 	 */
 	public EmailAddress $fromAddress;
 	/**
@@ -70,6 +69,9 @@ class Mailer
 	 */
 	public array $bccAddresses = [];
 
+	/**
+	 * 件名。
+	 */
 	public string $subject = InitialValue::EMPTY_STRING;
 
 	/**
@@ -144,13 +146,19 @@ class Mailer
 	protected function convertAddress(int $kind, EmailAddress $data): EmailAddress
 	{
 		if (StringUtility::isNullOrWhiteSpace($data->address)) {
-			throw new ArgumentException('address');
+			throw new ArgumentException('$data->address');
 		}
 
 		return $data;
 	}
 
-	protected function getSubject(string $subject): string
+	/**
+	 * 件名を調整。
+	 *
+	 * @param string $subject 元になる件名。
+	 * @return string
+	 */
+	protected function buildSubject(string $subject): string
 	{
 		return $subject;
 	}
@@ -200,7 +208,7 @@ class Mailer
 
 
 		$isHtml = false;
-		$client->Subject = $this->getSubject($this->subject);
+		$client->Subject = $this->buildSubject($this->subject);
 		if ($this->message->isHtml()) {
 			$client->isHTML(true);
 			$client->Body = $this->message->getHtml();

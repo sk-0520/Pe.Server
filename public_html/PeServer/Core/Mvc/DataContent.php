@@ -11,6 +11,8 @@ use PeServer\Core\Http\HttpStatus;
  * アクション応答。
  *
  * JSONやらのデータを想定。
+ *
+ * @immutable
  */
 class DataContent
 {
@@ -19,15 +21,14 @@ class DataContent
 	 *
 	 * @param HttpStatus $httpStatus 応答HTTPステータスコード。
 	 * @param string $mime MIME。Mime を参照のこと。
+	 * @phpstan-param non-empty-string|\PeServer\Core\Mime::* $mime
 	 * @param string|array<mixed>|Binary $data 応答生データ。このデータ自体はプログラム側の生値で保持する。
 	 */
 	public function __construct(
-		/** @readonly */
 		public HttpStatus $httpStatus,
-		/** @readonly */
 		public string $mime,
-		/** @readonly */
 		public $data
 	) {
+
 	}
 }

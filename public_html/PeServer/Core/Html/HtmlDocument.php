@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Html;
 
-use \DOMNode;
-use \DOMText;
-use \DOMComment;
-use \DOMElement;
 use \DOMDocument;
+use \DOMElement;
 use PeServer\Core\Html\HtmlElement;
 use PeServer\Core\Throws\HtmlDocumentException;
 

@@ -4,26 +4,25 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc;
 
-use PeServer\Core\UrlUtility;
+use PeServer\Core\Code;
+use PeServer\Core\Http\HttpRequest;
+use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\Logging;
-use PeServer\Core\Store\Stores;
-use PeServer\Core\Mvc\LogicBase;
-use PeServer\Core\StringUtility;
-use PeServer\Core\Http\HttpStatus;
-use PeServer\Core\Mvc\DataContent;
-use PeServer\Core\Http\HttpRequest;
-use PeServer\Core\Store\CookieStore;
-use PeServer\Core\Mvc\LogicParameter;
-use PeServer\Core\Store\SessionStore;
-use PeServer\Core\Store\SpecialStore;
-use PeServer\Core\Store\TemporaryStore;
-use PeServer\Core\Mvc\TemplateParameter;
 use PeServer\Core\Mvc\ControllerArgument;
+use PeServer\Core\Mvc\DataContent;
+use PeServer\Core\Mvc\LogicBase;
+use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\Mvc\Result\DataActionResult;
-use PeServer\Core\Mvc\Result\ViewActionResult;
 use PeServer\Core\Mvc\Result\RedirectActionResult;
+use PeServer\Core\Mvc\Result\ViewActionResult;
+use PeServer\Core\Mvc\TemplateParameter;
+use PeServer\Core\ReflectionUtility;
+use PeServer\Core\Store\Stores;
+use PeServer\Core\StringUtility;
 use PeServer\Core\Throws\InvalidOperationException;
+use PeServer\Core\Type;
+use PeServer\Core\UrlUtility;
 
 
 /**
@@ -45,8 +44,14 @@ abstract class ControllerBase
 	/** @readonly */
 	protected Stores $stores;
 
+	/** コントローラ内で今輝いてるロジック。よくないんよなぁ。 */
 	protected ?LogicBase $logic = null;
 
+	/**
+	 * 生成。
+	 *
+	 * @param ControllerArgument $argument コントローラ入力値。
+	 */
 	protected function __construct(ControllerArgument $argument)
 	{
 		$this->stores = $argument->stores;
@@ -86,7 +91,7 @@ abstract class ControllerBase
 
 		$parameter = $this->createParameter($logicClass, $request);
 		/** @var LogicBase */
-		$logic = new $logicClass($parameter, ...$parameters);
+		$logic = ReflectionUtility::create($logicClass, LogicBase::class, $parameter, ...$parameters);
 		$this->logic = $logic;
 		return $logic;
 	}
@@ -95,10 +100,11 @@ abstract class ControllerBase
 	 * ロジック側で生成された応答ヘッダを取得。
 	 *
 	 * @return array<string,string[]> 応答ヘッダ。ロジック未生成の場合は空の応答ヘッダを返す。
+	 * @phpstan-return array<non-empty-string,string[]> 応答ヘッダ。ロジック未生成の場合は空の応答ヘッダを返す。
 	 */
 	private function getResponseHeaders(): array
 	{
-		/** @var array<string,string[]> */
+		/** @phpstan-var array<non-empty-string,string[]> */
 		$headers = [];
 
 		if (!is_null($this->logic)) {
@@ -121,9 +127,10 @@ abstract class ControllerBase
 
 	/**
 	 * ドメイン内でリダイレクト。
+	 * 基本的にこれを使っておけばいい。
 	 *
-	 * @param string $path
-	 * @param array<string,string>|null $query
+	 * @param string $path 行先。
+	 * @param array<non-empty-string,string>|null $query 付与するクエリ。
 	 * @return RedirectActionResult
 	 */
 	public function redirectPath(string $path, ?array $query = null): RedirectActionResult

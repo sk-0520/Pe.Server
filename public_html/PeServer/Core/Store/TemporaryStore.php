@@ -34,14 +34,14 @@ class TemporaryStore
 	 *
 	 * @var array<string,mixed>
 	 */
-	private array $values = array();
+	private array $values = [];
 
 	/**
 	 * 破棄データ。
 	 *
 	 * @var string[]
 	 */
-	private array $removes = array();
+	private array $removes = [];
 
 	/**
 	 * 取り込み処理が行われたか。
@@ -170,7 +170,7 @@ class TemporaryStore
 	{
 		$this->values[$key] = $value;
 
-		if (ArrayUtility::contains($this->removes, $key)) {
+		if (ArrayUtility::containsValue($this->removes, $key)) {
 			$index = array_search($key, $this->removes);
 			if ($index === false) {
 				throw new InvalidOperationException();
@@ -191,7 +191,7 @@ class TemporaryStore
 		$id = $this->getOrCreateId();
 		$this->import($id);
 
-		if (!ArrayUtility::existsKey($this->values, $key)) {
+		if (!ArrayUtility::containsKey($this->values, $key)) {
 			return null;
 		}
 

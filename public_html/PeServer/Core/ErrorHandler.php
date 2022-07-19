@@ -125,7 +125,7 @@ class ErrorHandler
 	 * @template TValue
 	 * @param callable $action 補足したい処理。
 	 * @phpstan-param callable(): (TValue) $action 補足したい処理。
-	 * @param int $errorLevel 補足対象のエラーレベル。 https://www.php.net/manual/ja/errorfunc.constants.php
+	 * @param int $errorLevel 補足対象のエラーレベル。 https://www.php.net/manual/errorfunc.constants.php
 	 * @return ResultData 結果。補足できたかどうかの真偽値が成功状態に設定されるので処理の結果自体は呼び出し側で確認すること。
 	 * @phpstan-return ResultData<TValue>
 	 */

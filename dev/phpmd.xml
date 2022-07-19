@@ -16,6 +16,7 @@
 		<exclude name="ExcessiveClassComplexity" />
 		<exclude name="NPathComplexity" />
 		<exclude name="TooManyMethods" />
+		<!-- 調整 -->
 		<exclude name="ExcessiveMethodLength" />
 		<exclude name="CyclomaticComplexity" />
 		<exclude name="ExcessiveParameterList" />
@@ -57,6 +58,7 @@
 	<rule ref="rulesets/naming.xml">
 		<exclude name="ShortVariable" />
 		<exclude name="LongVariable" />
+		<!-- 調整 -->
 		<exclude name="ShortMethodName" />
 	</rule>
 	<rule ref="rulesets/naming.xml/ShortMethodName">
