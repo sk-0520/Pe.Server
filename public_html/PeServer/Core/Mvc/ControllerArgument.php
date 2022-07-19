@@ -9,6 +9,7 @@ use PeServer\Core\Store\Stores;
 
 /**
  * コントローラ生成時に使用される入力値。
+ *
  * @immutable
  */
 class ControllerArgument
