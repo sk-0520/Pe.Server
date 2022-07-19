@@ -129,7 +129,11 @@ class LocalSmartyTemplateImpl extends Template
 			'status' => $parameter->httpStatus,
 			'values' => $parameter->values,
 			'errors' => $parameter->errors,
-			'stores' => self::$stores,
+			'stores' => [
+				'cookie' => TemplateStore::createCookie(self::$stores->cookie),
+				'session' => TemplateStore::createSession(self::$stores->session),
+				'temporary' => TemplateStore::createTemporary(self::$stores->temporary),
+			],
 		]);
 	}
 
