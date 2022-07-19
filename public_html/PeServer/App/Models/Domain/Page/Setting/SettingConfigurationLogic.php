@@ -50,19 +50,27 @@ class SettingConfigurationLogic extends PageLogicBase
 		$this->setValue('tables', $tables);
 	}
 
+	/**
+	 * テーブル情報取得。
+	 *
+	 * @param IDatabaseContext $context
+	 * @param array<mixed> $row
+	 * @return array{name:string,sql:string,table:array{columns:array<mixed>,rows:array<mixed>}}
+	 */
 	private function getTableInfo(IDatabaseContext $context, array $row): array
 	{
 		$columns = $context->query(
-			"PRAGMA table_info('{$row['name']}')"
+			"PRAGMA table_info('{$row['name']}')" //@phpstan-ignore-line
 		);
 		array_multisort(
-			array_column($columns, 'cid'),
+			array_column($columns, 'cid'), //@phpstan-ignore-line
 			SORT_ASC,
 			$columns
 		);
 		$orders = StringUtility::join(array_map(fn ($i) => $i['name'], $columns), ',');
 
 		$rows = $context->query(
+			//@phpstan-ignore-next-line
 			<<<SQL
 
 			select
