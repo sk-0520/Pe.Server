@@ -78,6 +78,13 @@ class FileLogger extends LoggerBase
 			: date('Ymd');
 	}
 
+	/**
+	 * 破棄処理内部実装。
+	 *
+	 * @param int $maxCount
+	 * @phpstan-param UnsignedIntegerAlias $maxCount
+	 * @param string $filePattern
+	 */
 	private function cleanupCore(int $maxCount, string $filePattern): void
 	{
 		$logFiles = FileUtility::find($this->directoryPath, $filePattern);
@@ -92,6 +99,12 @@ class FileLogger extends LoggerBase
 		}
 	}
 
+	/**
+	 * 破棄処理。
+	 *
+	 * @param int $maxCount
+	 * @phpstan-param UnsignedIntegerAlias $maxCount
+	 */
 	private function cleanup(int $maxCount): void
 	{
 		if (!$maxCount) {
