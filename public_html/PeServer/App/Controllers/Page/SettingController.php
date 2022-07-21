@@ -4,6 +4,7 @@ namespace PeServer\App\Controllers\Page;
 
 use PeServer\App\Controllers\Page\PageControllerBase;
 use PeServer\App\Models\Domain\Page\Setting\SettingConfigurationLogic;
+use PeServer\App\Models\Domain\Page\Setting\SettingDatabaseMaintenanceLogic;
 use PeServer\App\Models\Domain\Page\Setting\SettingDefaultPluginLogic;
 use PeServer\App\Models\Domain\Page\Setting\SettingEnvironmentLogic;
 use PeServer\App\Models\Domain\Page\Setting\SettingLogDetailLogic;
@@ -62,6 +63,20 @@ final class SettingController extends PageControllerBase
 		$logic->run(LogicCallMode::initialize());
 
 		return $this->view('configuration', $logic->getViewData());
+	}
+
+	public function database_maintenance_get(HttpRequest $request): IActionResult
+	{
+		$logic = $this->createLogic(SettingDatabaseMaintenanceLogic::class, $request);
+		$logic->run(LogicCallMode::initialize());
+
+		return $this->view('database_maintenance', $logic->getViewData());
+	}
+	public function database_maintenance_post(HttpRequest $request): IActionResult
+	{
+		$logic = $this->createLogic(SettingDatabaseMaintenanceLogic::class, $request);
+		$logic->run(LogicCallMode::submit());
+		return $this->view('database_maintenance', $logic->getViewData());
 	}
 
 	public function default_plugin_get(HttpRequest $request): IActionResult
