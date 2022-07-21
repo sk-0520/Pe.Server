@@ -35,7 +35,7 @@ class SettingConfigurationLogic extends PageLogicBase
 			select
 				*
 			from
-				sqlite_schema
+				sqlite_master
 			where
 				type = 'table'
 			order by
