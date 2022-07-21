@@ -79,6 +79,7 @@ class SettingConfigurationLogic extends PageLogicBase
 				{$row['name']}
 			order by
 				{$orders}
+
 			SQL
 		);
 
