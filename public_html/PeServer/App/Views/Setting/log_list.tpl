@@ -11,14 +11,14 @@
 
 		<dt>ファイル</dt>
 		<dd>
-			<ul>
+			<ol>
 				{foreach from=$values.log_files item=item}
 					<li>
 						<a href="/setting/log/{$item.name}">{$item.name}</a>
-						<span title="{$item.size}">{$item.human_size}</span>
+						<span title="{$item.size} byte">{$item.human_size}</span>
 					</li>
 				{/foreach}
-			</ul>
+			</ol>
 		</dd>
 	</dl>
 {else}
