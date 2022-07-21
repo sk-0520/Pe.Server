@@ -30,7 +30,7 @@
 
 	<tfoot>
 		<tr>
-			<th><input id="category_add_id" type="text" /></th>
+			<th><input id="category_add_id" type="text" placeholder="一意なプラグインID" /></th>
 			<td><input id="category_add_display" type="text" /></td>
 			<td><input id="category_add_description" type="text" /></td>
 			<td colspan="2"><button id="category_add_submit">✅追加</button></td>
