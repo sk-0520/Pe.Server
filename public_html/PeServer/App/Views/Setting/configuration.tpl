@@ -14,7 +14,7 @@
 				&nbsp;
 				(<code data-count>{$item.table.rows|count}</code>)
 			</summary>
-			<table class="basic">
+			<table>
 				<thead>
 					<tr>
 						{foreach from=$item.table.columns item=column}

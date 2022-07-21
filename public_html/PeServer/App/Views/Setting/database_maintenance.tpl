@@ -24,7 +24,7 @@
 	{if is_array($values.result)}
 		{if count($values.result)}
 			<h2>結果: {count($values.result)}</h2>
-			<table class="basic">
+			<table>
 				<thead>
 					<tr>
 						<th>-</th>
