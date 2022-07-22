@@ -17,6 +17,7 @@ abstract class Cryptography
 	private const OPTION = 0;
 	public const SEPARATOR = '@';
 	public const DEFAULT_RANDOM_STRING = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+	public const FILE_RANDOM_STRING = '0123456789abcdefghijklmnopqrstuvwxyz';
 
 	/**
 	 * 乱数取得。
