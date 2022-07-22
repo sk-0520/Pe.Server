@@ -192,7 +192,7 @@ class AccountUserPluginLogic extends PageLogicBase
 		$userInfo = SessionManager::getAccount();
 
 		$params = [
-			'user_id' => $userInfo['user_id'],
+			'user_id' => $userInfo->userId,
 			'display_name' => $this->getRequest('account_plugin_display_name'),
 			'urls' => [
 				PluginUrlKey::CHECK => $this->getRequest('account_plugin_check_url'),

@@ -61,11 +61,11 @@ abstract class DomainLogicBase extends LogicBase
 	 *
 	 * @param string $userId
 	 * @param string $event
-	 * @param array<mixed>|null $info
+	 * @param mixed|null $info
 	 * @param IDatabaseContext|null $context
 	 * @return integer
 	 */
-	private function writeAuditLogCore(string $userId, string $event, ?array $info, ?IDatabaseContext $context): int
+	private function writeAuditLogCore(string $userId, string $event, mixed $info, ?IDatabaseContext $context): int
 	{
 		$ipAddress = $this->stores->special->getServer('REMOTE_ADDR');
 		$userAgent = $this->stores->special->getServer('HTTP_USER_AGENT');
@@ -89,11 +89,11 @@ abstract class DomainLogicBase extends LogicBase
 	 * ※DBじゃなくてテキストファイルでいいかも
 	 *
 	 * @param string $event
-	 * @param array<mixed>|null $info
+	 * @param mixed $info
 	 * @param IDatabaseContext|null $context
 	 * @return int
 	 */
-	protected function writeAuditLogCurrentUser(string $event, ?array $info = null, ?IDatabaseContext $context = null): int
+	protected function writeAuditLogCurrentUser(string $event, mixed $info = null, ?IDatabaseContext $context = null): int
 	{
 		$userInfo = $this->getAuditUserInfo();
 		if (is_null($userInfo)) {

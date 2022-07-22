@@ -35,8 +35,8 @@ class AccountUserLogic extends PageLogicBase
 		$usersEntityDao = new UsersEntityDao($database);
 		$pluginsEntityDao = new PluginsEntityDao($database);
 
-		$userInfoData = $usersEntityDao->selectUserInfoData($userInfo['user_id']);
-		$userPlugins = $pluginsEntityDao->selectPluginByUserId($userInfo['user_id']);
+		$userInfoData = $usersEntityDao->selectUserInfoData($userInfo->userId);
+		$userPlugins = $pluginsEntityDao->selectPluginByUserId($userInfo->userId);
 
 		$map = [
 			'user_id' => 'account_user_id',

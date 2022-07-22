@@ -4,23 +4,24 @@ declare(strict_types=1);
 
 namespace PeServer\App\Controllers\Page;
 
-use PeServer\Core\Http\HttpRequest;
-use PeServer\Core\Mvc\Result\IActionResult;
-use PeServer\Core\Mvc\LogicCallMode;
-use PeServer\App\Models\SessionManager;
-use PeServer\App\Models\Domain\UserLevel;
-use PeServer\Core\Mvc\ControllerArgument;
-use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\App\Controllers\Page\PageControllerBase;
-use PeServer\App\Models\Domain\Page\Account\AccountUserLogic;
 use PeServer\App\Models\Domain\Page\Account\AccountLoginLogic;
 use PeServer\App\Models\Domain\Page\Account\AccountLogoutLogic;
-use PeServer\App\Models\Domain\Page\Account\AccountUserEditLogic;
-use PeServer\App\Models\Domain\Page\Account\AccountUserEmailLogic;
-use PeServer\App\Models\Domain\Page\Account\AccountUserPluginLogic;
 use PeServer\App\Models\Domain\Page\Account\AccountSignupStep1Logic;
 use PeServer\App\Models\Domain\Page\Account\AccountSignupStep2Logic;
+use PeServer\App\Models\Domain\Page\Account\AccountUserEditLogic;
+use PeServer\App\Models\Domain\Page\Account\AccountUserEmailLogic;
+use PeServer\App\Models\Domain\Page\Account\AccountUserLogic;
 use PeServer\App\Models\Domain\Page\Account\AccountUserPasswordLogic;
+use PeServer\App\Models\Domain\Page\Account\AccountUserPluginLogic;
+use PeServer\App\Models\Domain\UserLevel;
+use PeServer\App\Models\SessionAccount;
+use PeServer\App\Models\SessionManager;
+use PeServer\Core\Http\HttpRequest;
+use PeServer\Core\Mvc\ControllerArgument;
+use PeServer\Core\Mvc\LogicCallMode;
+use PeServer\Core\Mvc\Result\IActionResult;
+use PeServer\Core\Throws\InvalidOperationException;
 
 final class AccountController extends PageControllerBase
 {
@@ -59,7 +60,8 @@ final class AccountController extends PageControllerBase
 		$logic = $this->createLogic(AccountLoginLogic::class, $request);
 		if ($logic->run(LogicCallMode::submit())) {
 			if ($this->stores->session->tryGet(SessionManager::ACCOUNT, $account)) {
-				if ($account['level'] === UserLevel::SETUP) {
+			/** @var SessionAccount $account */
+			if ($account->level === UserLevel::SETUP) {
 					return $this->redirectPath('setting/setup');
 				}
 			}

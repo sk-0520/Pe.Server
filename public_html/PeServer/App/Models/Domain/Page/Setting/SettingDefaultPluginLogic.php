@@ -128,7 +128,7 @@ class SettingDefaultPluginLogic extends PageLogicBase
 				'plugins' => array_filter($this->defaultPlugins, function ($i) {
 					return $i['registered'];
 				}),
-				'user_id' => $account['user_id'],
+				'user_id' => $account->userId,
 			];
 
 			if (ArrayUtility::getCount($params['plugins'])) {
@@ -152,7 +152,7 @@ class SettingDefaultPluginLogic extends PageLogicBase
 				'plugins' => array_filter($this->defaultPlugins, function ($i) {
 					return !$i['registered'];
 				}),
-				'user_id' => $account['user_id'],
+				'user_id' => $account->userId,
 			];
 
 			if (ArrayUtility::getCount($params['plugins'])) {
