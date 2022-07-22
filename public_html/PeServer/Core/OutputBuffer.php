@@ -12,6 +12,30 @@ use PeServer\Core\Throws\OutputBufferException;
  */
 abstract class OutputBuffer
 {
+	private static function begin(): void
+	{
+		if (!ob_start()) {
+			throw new OutputBufferException('ob_start');
+		}
+	}
+
+	private static function end(): void
+	{
+		if (!ob_end_clean()) {
+			throw new OutputBufferException('ob_end_clean');
+		}
+	}
+
+	private static function getContents(): Binary
+	{
+		$buffer = ob_get_contents();
+		if ($buffer === false) {
+			throw new OutputBufferException('ob_get_contents');
+		}
+
+		return new Binary($buffer);
+	}
+
 	/**
 	 * 引数処理中の出力を取得。
 	 *
@@ -21,20 +45,13 @@ abstract class OutputBuffer
 	 */
 	public static function get(callable $action): Binary
 	{
-		if (!ob_start()) {
-			throw new OutputBufferException('ob_start');
-		}
+		self::begin();
+
 		try {
 			$action();
-			$buffer = ob_get_contents();
-			if ($buffer === false) {
-				throw new OutputBufferException('ob_get_contents'); // @phpstan-ignore-line This throw is overwritten by a different one in the finally block below.
-			}
-			return new Binary($buffer); // @phpstan-ignore-line This throw is overwritten by a different one in the finally block below.
+			return self::getContents();
 		} finally {
-			if (!ob_end_clean()) {
-				throw new OutputBufferException('ob_end_clean');  // @phpstan-ignore-line The overwriting throw is on this line.
-			}
+			self::end();
 		}
 	}
 }
