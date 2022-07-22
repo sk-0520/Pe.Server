@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domain\Api;
 
-use PeServer\Core\Mvc\LogicParameter;
 use PeServer\App\Models\Domain\DomainLogicBase;
+use PeServer\App\Models\IAuditUserInfo;
+use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\Throws\NotImplementedException;
 
 abstract class ApiLogicBase extends DomainLogicBase
@@ -15,7 +16,7 @@ abstract class ApiLogicBase extends DomainLogicBase
 		parent::__construct($parameter);
 	}
 
-	protected function getAuditUserInfo(): array|null
+	protected function getAuditUserInfo(): ?IAuditUserInfo
 	{
 		throw new NotImplementedException();
 	}

@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domain;
 
-use PeServer\Core\Mime;
-use PeServer\Core\ArrayUtility;
-use PeServer\Core\InitialValue;
-use PeServer\Core\Mvc\LogicBase;
-use PeServer\Core\StringUtility;
 use PeServer\App\Models\AppDatabase;
-use PeServer\Core\Database\Database;
-use PeServer\App\Models\ResponseJson;
-use PeServer\Core\Mvc\LogicParameter;
-use PeServer\Core\Database\IDatabaseContext;
 use PeServer\App\Models\Dao\Entities\UserAuditLogsEntityDao;
+use PeServer\App\Models\IAuditUserInfo;
+use PeServer\App\Models\ResponseJson;
+use PeServer\Core\ArrayUtility;
+use PeServer\Core\Database\Database;
+use PeServer\Core\Database\IDatabaseContext;
+use PeServer\Core\InitialValue;
+use PeServer\Core\Mime;
+use PeServer\Core\Mvc\LogicBase;
+use PeServer\Core\Mvc\LogicParameter;
+use PeServer\Core\StringUtility;
 
 
 abstract class DomainLogicBase extends LogicBase
@@ -51,9 +52,9 @@ abstract class DomainLogicBase extends LogicBase
 	 *
 	 * ドメインロジックで明示的に使用しない想定。
 	 *
-	 * @return array{user_id:string}|null
+	 * @return IAuditUserInfo|null
 	 */
-	protected abstract function getAuditUserInfo(): array|null;
+	protected abstract function getAuditUserInfo(): ?IAuditUserInfo;
 
 	/**
 	 * 監査ログ出力内部処理。
@@ -95,12 +96,12 @@ abstract class DomainLogicBase extends LogicBase
 	protected function writeAuditLogCurrentUser(string $event, ?array $info = null, ?IDatabaseContext $context = null): int
 	{
 		$userInfo = $this->getAuditUserInfo();
-		if (!ArrayUtility::tryGet($userInfo, 'user_id', $userId)) {
+		if (is_null($userInfo)) {
 			$this->logger->error('監査ログ ユーザー情報取得失敗のため書き込み中止');
 			return -1;
 		}
 
-		$userId = $userInfo['user_id']; // @phpstan-ignore-line ArrayUtility::tryGet
+		$userId = $userInfo->getUserId();
 
 		return $this->writeAuditLogCore($userId, $event, $info, $context);
 	}
