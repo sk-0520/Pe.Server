@@ -12,6 +12,7 @@ use PeServer\Core\ArrayUtility;
 use PeServer\Core\Database\Database;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\InitialValue;
+use PeServer\Core\Json;
 use PeServer\Core\Mime;
 use PeServer\Core\Mvc\LogicBase;
 use PeServer\Core\Mvc\LogicParameter;
@@ -65,16 +66,15 @@ abstract class DomainLogicBase extends LogicBase
 	 * @param IDatabaseContext|null $context
 	 * @return integer
 	 */
-	private function writeAuditLogCore(string $userId, string $event, mixed $info, ?IDatabaseContext $context): int
+	private function writeAuditLogCore(string $userId, string $event, mixed $info, ?IDatabaseContext $context, ?Json $json = null): int
 	{
 		$ipAddress = $this->stores->special->getServer('REMOTE_ADDR');
 		$userAgent = $this->stores->special->getServer('HTTP_USER_AGENT');
 		$dumpInfo = InitialValue::EMPTY_STRING;
 		if (!is_null($info)) {
-			$jsonText = json_encode($info, JSON_UNESCAPED_UNICODE);
-			if ($jsonText !== false) {
-				$dumpInfo = $jsonText;
-			}
+			$json ??= new Json();
+
+			$dumpInfo = $json->encode($info);
 		}
 
 		$db = $context ?? $this->openDatabase();

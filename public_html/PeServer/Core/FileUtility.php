@@ -108,16 +108,13 @@ abstract class FileUtility
 	 * @throws IOException
 	 * @throws ParseException パース失敗。
 	 */
-	public static function readJsonFile(string $path): array
+	public static function readJsonFile(string $path, Json $json = null): array
 	{
 		$content = self::readContent($path);
 
-		/** @var array<mixed>|null */
-		$json = json_decode($content->getRaw(), true);
+		$json ??= new Json();
 
-		if (is_null($json)) {
-			throw new ParseException($path);
-		}
+		$json = $json->decode($content->getRaw());
 
 		return $json;
 	}
@@ -131,15 +128,12 @@ abstract class FileUtility
 	 * @throws IOException
 	 * @throws ParseException
 	 */
-	public static function writeJsonFile(string $path, array|stdClass $data): void
+	public static function writeJsonFile(string $path, array|stdClass $data, ?Json $json = null): void
 	{
-		$json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+		$json ??= new Json();
+		$value = $json->encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 
-		if ($json === false) {
-			throw new ParseException($path);
-		}
-
-		self::saveContent($path, $json, false);
+		self::saveContent($path, $value, false);
 	}
 
 	/**

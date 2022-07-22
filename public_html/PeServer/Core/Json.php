@@ -7,6 +7,7 @@ namespace PeServer\Core;
 use \JsonException;
 use PeServer\Core\Throws\JsonDecodeException;
 use PeServer\Core\Throws\JsonEncodeException;
+use PeServer\Core\Throws\ParseException;
 use PeServer\Core\Throws\Throws;
 
 /**
@@ -45,7 +46,7 @@ class Json
 			Throws::reThrow(JsonEncodeException::class, $ex, json_last_error_msg());
 		}
 		if ($json == false) {
-			throw new JsonEncodeException(json_last_error_msg(), json_last_error());
+			throw new ParseException(json_last_error_msg(), json_last_error());
 		}
 
 		return $json;
