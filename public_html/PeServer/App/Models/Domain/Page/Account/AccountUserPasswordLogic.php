@@ -46,7 +46,7 @@ class AccountUserPasswordLogic extends PageLogicBase
 
 			$database = $this->openDatabase();
 			$userAuthenticationsEntityDao = new UserAuthenticationsEntityDao($database);
-			$passwords = $userAuthenticationsEntityDao->selectPasswords($userInfo['user_id']);
+			$passwords = $userAuthenticationsEntityDao->selectPasswords($userInfo->userId);
 
 			if (!Cryptography::verifyPassword($value, $passwords['current_password'])) {
 				$this->addError($key, I18n::message('error/password_incorrect'));
@@ -83,7 +83,7 @@ class AccountUserPasswordLogic extends PageLogicBase
 		$newPassword = $this->getRequest('account_password_new', InitialValue::EMPTY_STRING, false);
 
 		$params = [
-			'user_id' => $userInfo['user_id'],
+			'user_id' => $userInfo->userId,
 			'password' => Cryptography::toHashPassword($newPassword),
 		];
 

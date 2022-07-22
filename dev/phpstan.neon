@@ -37,7 +37,7 @@ parameters:
   typeAliases:
     UnsignedIntegerAlias: 'int<0, max>'
     LogMessageAlias: 'object|array<mixed>|null|literal-string'
-    ServerStoreValueAlias: 'string|int|array<int|string|null>|null'
+    ServerStoreValueAlias: 'string|int|array<int|string|null>|Serializable|null'
     DatabaseBindValueAlias: 'string|int|bool'
 
 includes:

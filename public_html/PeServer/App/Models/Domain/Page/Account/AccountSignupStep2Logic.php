@@ -4,28 +4,29 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domain\Page\Account;
 
-use PeServer\Core\I18n;
-use PeServer\Core\Cryptography;
-use PeServer\Core\Mail\EmailAddress;
-use PeServer\Core\InitialValue;
-use PeServer\App\Models\AuditLog;
-use PeServer\App\Models\AppMailer;
-use PeServer\App\Models\AppTemplate;
-use PeServer\Core\Mvc\LogicCallMode;
-use PeServer\Core\Mvc\LogicParameter;
-use PeServer\App\Models\SessionManager;
 use PeServer\App\Models\AppCryptography;
 use PeServer\App\Models\AppDatabaseCache;
+use PeServer\App\Models\AppMailer;
+use PeServer\App\Models\AppTemplate;
+use PeServer\App\Models\AuditLog;
+use PeServer\App\Models\Dao\Entities\SignUpWaitEmailsEntityDao;
+use PeServer\App\Models\Dao\Entities\UserAuthenticationsEntityDao;
+use PeServer\App\Models\Dao\Entities\UsersEntityDao;
+use PeServer\App\Models\Domain\AccountValidator;
+use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\App\Models\Domain\UserLevel;
 use PeServer\App\Models\Domain\UserState;
 use PeServer\App\Models\Domain\UserUtility;
+use PeServer\App\Models\SessionAccount;
+use PeServer\App\Models\SessionManager;
+use PeServer\Core\Cryptography;
 use PeServer\Core\Database\IDatabaseContext;
-use PeServer\App\Models\Domain\AccountValidator;
-use PeServer\App\Models\Domain\Page\PageLogicBase;
-use PeServer\App\Models\Dao\Entities\UsersEntityDao;
-use PeServer\App\Models\Dao\Entities\SignUpWaitEmailsEntityDao;
-use PeServer\App\Models\Dao\Entities\UserAuthenticationsEntityDao;
+use PeServer\Core\I18n;
+use PeServer\Core\InitialValue;
+use PeServer\Core\Mail\EmailAddress;
 use PeServer\Core\Mail\EmailMessage;
+use PeServer\Core\Mvc\LogicCallMode;
+use PeServer\Core\Mvc\LogicParameter;
 
 class AccountSignupStep2Logic extends PageLogicBase
 {
@@ -167,13 +168,13 @@ class AccountSignupStep2Logic extends PageLogicBase
 
 		$mailer->send();
 
-		SessionManager::setAccount([
-			'user_id' => $userId,
-			'login_id' => $params['login_id'],
-			'name' => $params['user_name'],
-			'level' => UserLevel::USER,
-			'state' => UserState::ENABLED,
-		]);
+		SessionManager::setAccount(new SessionAccount(
+			$userId,
+			$params['login_id'],
+			$params['user_name'],
+			UserLevel::USER,
+			UserState::ENABLED
+		));
 		AppDatabaseCache::exportUserInformation();
 	}
 }

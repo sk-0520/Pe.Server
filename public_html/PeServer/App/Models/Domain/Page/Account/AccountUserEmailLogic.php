@@ -51,7 +51,7 @@ class AccountUserEmailLogic extends PageLogicBase
 
 		$userDomainDao = new UserDomainDao($database);
 		$values = $userDomainDao->selectEmailAndWaitTokenTimestamp(
-			$userInfo['user_id'],
+			$userInfo->userId,
 			AppConfiguration::$config['config']['confirm']['user_change_wait_email_minutes']
 		);
 
@@ -130,7 +130,7 @@ class AccountUserEmailLogic extends PageLogicBase
 		$email = $this->getRequest('account_email_email');
 
 		$params = [
-			'user_id' => $account['user_id'],
+			'user_id' => $account->userId,
 			'email' => AppCryptography::encrypt($email),
 			'mark_email' => AppCryptography::toMark($email),
 			'token' => sprintf('%08d', mt_rand(0, 99999999)),
@@ -152,14 +152,14 @@ class AccountUserEmailLogic extends PageLogicBase
 		// トークン通知メール送信
 		$subject = I18n::message('subject/email_change_token');
 		$values = [
-			'name' => $account['name'],
+			'name' => $account->name,
 			'token' => $params['token'],
 		];
 		$html = AppTemplate::createMailTemplate('change_email_token', $subject, $values);
 
 		$mailer = new AppMailer();
 		$mailer->toAddresses = [
-			new EmailAddress($email, $account['name']),
+			new EmailAddress($email, $account->name),
 		];
 		$mailer->subject = $subject;
 		$mailer->setMessage(new EmailMessage(null, $html));
@@ -174,7 +174,7 @@ class AccountUserEmailLogic extends PageLogicBase
 		$account = SessionManager::getAccount();
 
 		$params = [
-			'user_id' => $account['user_id'],
+			'user_id' => $account->userId,
 			'token' => $this->getRequest('account_email_token'),
 		];
 
@@ -231,9 +231,9 @@ class AccountUserEmailLogic extends PageLogicBase
 		foreach ($items as $item) {
 			$subject = I18n::message($item['subject']);
 			$values = [
-				'user_id' => $account['user_id'],
-				'login_id' => $account['login_id'],
-				'name' => $account['name'],
+				'user_id' => $account->userId,
+				'login_id' => $account->loginId,
+				'name' => $account->name,
 				'new_email' => $this->defaultValues['wait_email'],
 				'old_email' => $this->defaultValues['email'],
 			];
@@ -241,7 +241,7 @@ class AccountUserEmailLogic extends PageLogicBase
 
 			$mailer = new AppMailer();
 			$mailer->toAddresses = [
-				new EmailAddress($item['email'], $account['name']),
+				new EmailAddress($item['email'], $account->name),
 			];
 			$mailer->subject = $subject;
 			$mailer->setMessage(new EmailMessage(null, $html));

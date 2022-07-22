@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domain\Page;
 
-use PeServer\Core\Mvc\LogicParameter;
-use PeServer\App\Models\SessionManager;
 use PeServer\App\Models\Domain\DomainLogicBase;
+use PeServer\App\Models\IAuditUserInfo;
+use PeServer\App\Models\SessionAccount;
+use PeServer\App\Models\SessionManager;
+use PeServer\Core\Mvc\LogicParameter;
 
 abstract class PageLogicBase extends DomainLogicBase
 {
@@ -17,7 +19,7 @@ abstract class PageLogicBase extends DomainLogicBase
 		parent::__construct($parameter);
 	}
 
-	protected function getAuditUserInfo(): array|null
+	protected function getAuditUserInfo(): ?IAuditUserInfo
 	{
 		if (!SessionManager::existsAccount()) {
 			return null;
@@ -25,7 +27,20 @@ abstract class PageLogicBase extends DomainLogicBase
 
 		$account = SessionManager::getAccount();
 
-		return ['user_id' => $account['user_id']];
+		return new class($account) implements IAuditUserInfo
+		{
+			private string $userId;
+
+			public function __construct(SessionAccount $account)
+			{
+				$this->userId = $account->userId;
+			}
+
+			public function getUserId(): string
+			{
+				return $this->userId;
+			}
+		};
 	}
 
 	protected function addTemporaryMessage(string $message): void
