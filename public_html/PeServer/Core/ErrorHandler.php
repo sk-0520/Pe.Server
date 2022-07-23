@@ -178,16 +178,27 @@ class ErrorHandler
 		exit;
 	}
 
+	/**
+	 * Undocumented function
+	 *
+	 * @param string $file
+	 * @param Throwable|null $throwable
+	 * @return array<string,string>
+	 */
 	private function getFileContents(string $file, ?Throwable $throwable): array
 	{
 		$files = [
 			"$file" => FileUtility::readContent($file)->getRaw(),
 		];
 
-		foreach ($throwable->getTrace() as $item) {
-			$f = $item['file'];
-			if (!isset($files[$f])) {
-				$files[$f] = FileUtility::readContent($f)->getRaw();
+		if(!is_null($throwable)) {
+			foreach ($throwable->getTrace() as $item) {
+				if(isset($item['file'])) {
+					$f = $item['file'];
+					if (!isset($files[$f])) {
+						$files[$f] = FileUtility::readContent($f)->getRaw();
+					}
+				}
 			}
 		}
 
