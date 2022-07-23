@@ -15,14 +15,14 @@
 
 		<dt>Webサイト</dt>
 		<dd>
-			{input_helper key='account_edit_website' type="url" class="edit" required="true"}
+			{input_helper key='account_edit_website' type="url" class="edit"}
 		</dd>
 
 		<dt>説明</dt>
 		<dd>
 			<div class="tab">
 				<input id="description_markdown_source" type="radio" name="tab_markdown" class="tab_check" checked><label for="description_markdown_source" class="tab_header">Markdown</label>
-				<div class="tab_content">{input_helper key='account_edit_description' type="textarea" class="edit markdown-editor" data-markdown-result=".markdown-browser" required="true"}</div>
+				<div class="tab_content">{input_helper key='account_edit_description' type="textarea" class="edit markdown-editor" data-markdown-result=".markdown-browser"}</div>
 
 				<input id="description_markdown_preview" type="radio" name="tab_markdown" class="tab_check"><label for="description_markdown_preview" class="tab_header">プレビュー</label>
 				<div class="tab_content">{markdown class="markdown markdown-browser"}{$values.account_edit_description nofilter}{/markdown}</div>

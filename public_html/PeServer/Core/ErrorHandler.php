@@ -178,6 +178,22 @@ class ErrorHandler
 		exit;
 	}
 
+	private function getFileContents(string $file, ?Throwable $throwable): array
+	{
+		$files = [
+			"$file" => FileUtility::readContent($file)->getRaw(),
+		];
+
+		foreach ($throwable->getTrace() as $item) {
+			$f = $item['file'];
+			if (!isset($files[$f])) {
+				$files[$f] = FileUtility::readContent($f)->getRaw();
+			}
+		}
+
+		return $files;
+	}
+
 	/**
 	 * エラー取得処理（本体）。
 	 *
@@ -196,6 +212,7 @@ class ErrorHandler
 			'file' => $file,
 			'line_number' => $lineNumber,
 			'throwable' => $throwable,
+			'cache' => $this->getFileContents($file, $throwable)
 		];
 
 		$status = $this->setHttpStatus($throwable);

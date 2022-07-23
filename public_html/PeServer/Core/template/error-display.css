@@ -10,3 +10,12 @@
 .stacktrace .args pre {
 	margin: 0;
 }
+
+pre.source {
+	max-height: 50vh;
+	overflow: auto;
+}
+
+summary {
+	cursor: pointer;
+}
