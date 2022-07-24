@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
+use PeServer\Core\Encoding;
+use PeServer\Core\Environment;
+use PeServer\Core\ErrorHandler;
+use PeServer\Core\InitializeChecker;
+
 /**
  * ライブラリ初期化処理。
  */
@@ -26,7 +31,8 @@ abstract class CoreInitializer
 		self::$initializeChecker->initialize();
 
 		mb_language($language);
-		mb_internal_encoding('UTF-8'); // 固定じゃこんなもん
+		//mb_internal_encoding('UTF-8'); // 固定じゃこんなもん
+		Encoding::setDefaultEncoding(Encoding::getUtf8Encoding());
 
 		Environment::initialize($environment, $revision);
 
