@@ -30,11 +30,8 @@ abstract class CoreInitializer
 		self::$initializeChecker ??= new InitializeChecker();
 		self::$initializeChecker->initialize();
 
-		mb_language($language);
-		//mb_internal_encoding('UTF-8'); // 固定じゃこんなもん
 		Encoding::setDefaultEncoding(Encoding::getUtf8Encoding());
-
-		Environment::initialize($environment, $revision);
+		Environment::initialize($environment, $revision, $language);
 
 		if(!Environment::isTest()) {
 			(new ErrorHandler())->register();

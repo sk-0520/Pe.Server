@@ -20,13 +20,22 @@ abstract class Environment
 	private static string $environment = InitialValue::EMPTY_STRING;
 	private static string $revision = InitialValue::EMPTY_STRING;
 
-	public static function initialize(string $environment, string $revision): void
+	public static function initialize(string $environment, string $revision, string $language): void
 	{
 		self::$initializeChecker ??= new InitializeChecker();
 		self::$initializeChecker->initialize();
 
 		self::$environment = $environment;
 		self::$revision = $revision;
+	}
+
+	public static function setLanguage(string $language): bool
+	{
+		return (bool)mb_language($language);
+	}
+	public static function getLanguage(): string
+	{
+		return (string)mb_language();
 	}
 
 	public static function get(): string
