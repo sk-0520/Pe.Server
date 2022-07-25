@@ -12,7 +12,7 @@ use PeServer\Core\Throws\ArgumentException;
 /**
  * @immutable UnsignedIntegerAlias
  */
-class Color implements IColor
+class RgbColor implements IColor
 {
 	/**
 	 * 生成。
@@ -38,6 +38,16 @@ class Color implements IColor
 		if ($blue < 0 || 255 < $blue) { //@phpstan-ignore-line
 			throw new ArgumentException('$blue');
 		}
+	}
+
+	public static function fromHtmlColorCode(string $htmlColor)
+	{
+		$offset = 0;
+		return new RgbColor(
+			(int)hexdec(substr($htmlColor, 1 - $offset, 2)),
+			(int)hexdec(substr($htmlColor, 3 - $offset, 2)),
+			(int)hexdec(substr($htmlColor, 5 - $offset, 2))
+		);
 	}
 
 	public function __toString(): string

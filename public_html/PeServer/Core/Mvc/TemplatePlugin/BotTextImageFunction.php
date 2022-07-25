@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\TemplatePlugin;
 
+use \Throwable;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Binary;
 use PeServer\Core\Cryptography;
 use PeServer\Core\Html\HtmlDocument;
+use PeServer\Core\Image\Graphics;
+use PeServer\Core\Image\Size;
 use PeServer\Core\InitialValue;
 use PeServer\Core\Mvc\TemplatePlugin\TemplateFunctionBase;
 use PeServer\Core\Mvc\TemplatePlugin\TemplatePluginArgument;
@@ -15,6 +18,7 @@ use PeServer\Core\OutputBuffer;
 use PeServer\Core\PathUtility;
 use PeServer\Core\StringUtility;
 use PeServer\Core\Throws\TemplateException;
+use PeServer\Core\Throws\Throws;
 use PeServer\Core\TypeConverter;
 
 /**
@@ -62,7 +66,7 @@ class BotTextImageFunction extends TemplateFunctionBase
 		];
 	}
 
-	protected function functionBodyImpl(): string
+	private function functionBodyCore(): string
 	{
 		/** @var string */
 		$text = ArrayUtility::getOr($this->params, 'text', InitialValue::EMPTY_STRING);
@@ -92,22 +96,16 @@ class BotTextImageFunction extends TemplateFunctionBase
 		$fontFileName = 'migmix-1m-regular.ttf';
 		$fontFilePath = PathUtility::joinPath($this->argument->baseDirectoryPath, 'Core', 'Libs', 'fonts', 'migmix', $fontFileName);
 
-		$box = imageftbbox($fontSize, 0, $fontFilePath, $text);
-		if ($box === false) {
-			throw new TemplateException();
-		}
+		$area = Graphics::calculateTextArea($text, $fontFilePath, $fontSize, 0);
 
-		$textWidth = $box[4] - $box[0];
-		$textHeight = $box[1] - $box[5];
+		$textWidth = $area->rightTop->x - $area->leftBottom->x;
+		$textHeight = $area->leftBottom->y - $area->rightTop->y;
 
 		$x = (int)($rectX + (($rectWidth - $rectX - $textWidth) / 2));
-		$y = (int)($rectY + (($rectHeight - $rectY - $textHeight) / 2) - $box[5]);
+		$y = (int)($rectY + (($rectHeight - $rectY - $textHeight) / 2) - $area->rightTop->y);
 
-		$image = imagecreatetruecolor($width, $height);
-		if ($image === false) {
-			throw new TemplateException();
-		}
-		imageresolution($image, 300, 300);
+		$image = Graphics::create(new Size($width, $height));
+		$image->setDpi(new Size(300, 300));
 
 		$backgroundColor = imagecolorallocate($image, $backgroundColors['r'], $backgroundColors['g'], $backgroundColors['b']);
 		if ($backgroundColor === false) {
@@ -117,6 +115,8 @@ class BotTextImageFunction extends TemplateFunctionBase
 		if ($textColor === false) {
 			throw new TemplateException();
 		}
+
+		//$image->fillRectangle
 
 		imagefilledrectangle($image, 0, 0, $width, $height, $backgroundColor);
 		imagettftext($image, $fontSize, 0, $x, $y, $textColor, $fontFilePath, $text);
@@ -141,5 +141,14 @@ class BotTextImageFunction extends TemplateFunctionBase
 		}
 
 		return $dom->build();
+	}
+
+	protected function functionBodyImpl(): string
+	{
+		try {
+			return $this->functionBodyCore();
+		} catch (Throwable $ex) {
+			Throws::reThrow(TemplateException::class, $ex);
+		}
 	}
 }

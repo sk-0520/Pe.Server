@@ -184,10 +184,10 @@ class Graphics extends DisposerBase
 	/**
 	 * `imagecolorallocate` ラッパー。
 	 *
-	 * @param Color $color
+	 * @param RgbColor $color
 	 * @return ColorResource
 	 */
-	public function attachColor(Color $color): ColorResource
+	public function attachColor(RgbColor $color): ColorResource
 	{
 		$result = imagecolorallocate($this->image, $color->red, $color->green, $color->blue);
 		if ($result === false) {
@@ -213,7 +213,7 @@ class Graphics extends DisposerBase
 
 	private function doColor(IColor $color, callable $action): mixed
 	{
-		if ($color instanceof Color) {
+		if ($color instanceof RgbColor) {
 			$colorResource = $this->attachColor($color);
 			try {
 				return $this->doColorCore($colorResource, $action);
@@ -255,7 +255,7 @@ class Graphics extends DisposerBase
 	 * @throws GraphicsException
 	 * @see https://www.php.net/manual/function.imageftbbox.php
 	 */
-	public function calculateTextArea(string $text, string $fontNameOrPath, float $fontSize, float $angle): Area
+	public static function calculateTextArea(string $text, string $fontNameOrPath, float $fontSize, float $angle): Area
 	{
 		$options = [];
 		$result = imageftbbox($fontSize, $angle, $fontNameOrPath, $text, $options);

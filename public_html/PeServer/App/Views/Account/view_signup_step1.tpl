@@ -12,7 +12,8 @@
 
 		<dt>認証トークン<dt>
 		<dd>
-			トークン: {bot_text_image alt="トークン" text=$values.value width=48 height=24 font-size="12" background-color="#eeeeee" foreground-color="#0c0c0c" obfuscate-level=0 class="token"}
+			{* トークン: {bot_text_image alt="トークン" text=$values.value width=48 height=24 font-size="12" background-color="#eeeeee" foreground-color="#0c0c0c" obfuscate-level=0 class="token"} *}
+			トークン: {bot_text_image alt="トークン" text=$values.value width=200 height=100 font-size="12" background-color="#eeeeee" foreground-color="#0c0c0c" obfuscate-level=0 class="token"}
 			<br />
 			上記トークンを入力してください。
 			<br />
