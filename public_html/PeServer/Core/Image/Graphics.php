@@ -239,6 +239,7 @@ class Graphics extends DisposerBase
 			)
 		);
 		if ($result === false) {
+			throw new GraphicsException();
 		}
 	}
 
