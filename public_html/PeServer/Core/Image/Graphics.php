@@ -13,6 +13,7 @@ use PeServer\Core\Image\ColorResource;
 use PeServer\Core\Image\IColor;
 use PeServer\Core\Image\ImageInformation;
 use PeServer\Core\OutputBuffer;
+use PeServer\Core\Throws\CoreError;
 use PeServer\Core\Throws\GraphicsException;
 use PeServer\Core\TypeConverter;
 
@@ -306,6 +307,7 @@ class Graphics extends DisposerBase
 			ImageType::JPEG => imagejpeg($this->image, null, ...$option->options()),
 			ImageType::WEBP => imagewebp($this->image, null, ...$option->options()),
 			ImageType::BMP => imagebmp($this->image, null, ...$option->options()),
+			default  => throw new CoreError(),
 		});
 	}
 }

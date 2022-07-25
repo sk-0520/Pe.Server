@@ -40,13 +40,16 @@ class RgbColor implements IColor
 		}
 	}
 
-	public static function fromHtmlColorCode(string $htmlColor)
+	public static function fromHtmlColorCode(string $htmlColor): RgbColor
 	{
 		$offset = 0;
 		return new RgbColor(
-			(int)hexdec(substr($htmlColor, 1 - $offset, 2)),
-			(int)hexdec(substr($htmlColor, 3 - $offset, 2)),
-			(int)hexdec(substr($htmlColor, 5 - $offset, 2))
+			/** @phpstan-var int<0, 255> */
+			(int)hexdec(substr($htmlColor, 1 - $offset, 2)), //@phpstan-ignore-line
+			/** @phpstan-var int<0, 255> */
+			(int)hexdec(substr($htmlColor, 3 - $offset, 2)), //@phpstan-ignore-line
+			/** @phpstan-var int<0, 255> */
+			(int)hexdec(substr($htmlColor, 5 - $offset, 2)) //@phpstan-ignore-line
 		);
 	}
 

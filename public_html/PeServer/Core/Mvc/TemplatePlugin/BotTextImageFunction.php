@@ -56,30 +56,21 @@ class BotTextImageFunction extends TemplateFunctionBase
 		return 'bot_text_image';
 	}
 
-	/**
-	 * Undocumented function
-	 *
-	 * @param string $htmlColor
-	 * @return array{r:int,g:int,b:int}
-	 */
-	private function toColor(string $htmlColor): array
-	{
-		return [
-			'r' => (int)hexdec(substr($htmlColor, 1, 2)),
-			'g' => (int)hexdec(substr($htmlColor, 3, 2)),
-			'b' => (int)hexdec(substr($htmlColor, 5, 2)),
-		];
-	}
-
 	private function functionBodyCore(): string
 	{
 		/** @var string */
 		$text = ArrayUtility::getOr($this->params, 'text', InitialValue::EMPTY_STRING);
 		/** @var string */
 		$alt = ArrayUtility::getOr($this->params, 'alt', InitialValue::EMPTY_STRING);
-		/** @var int */
+		/**
+		 * @var int
+		 * @phpstan-var positive-int
+		 */
 		$width = (int)ArrayUtility::getOr($this->params, 'width', 100);
-		/** @var int */
+		/**
+		 * @var int
+		 * @phpstan-var positive-int
+		 */
 		$height = (int)ArrayUtility::getOr($this->params, 'height', 100);
 		/** @var float */
 		$fontSize = (float)ArrayUtility::getOr($this->params, 'font-size', '12.5');
@@ -106,14 +97,16 @@ class BotTextImageFunction extends TemplateFunctionBase
 		$textWidth = $area->rightTop->x - $area->leftBottom->x;
 		$textHeight = $area->leftBottom->y - $area->rightTop->y;
 
+		/** @phpstan-var positive-int */
 		$x = (int)($rectX + (($rectWidth - $rectX - $textWidth) / 2));
+		/** @phpstan-var positive-int */
 		$y = (int)($rectY + (($rectHeight - $rectY - $textHeight) / 2) - $area->rightTop->y);
 
 		$image = Graphics::create(new Size($width, $height));
 		$image->setDpi(new Size(300, 300));
 
 		$image->fillRectangle($backgroundColor, new Rectangle(new Point(0, 0), new Size($width, $height)));
-		$image->drawText( $text, $fontFilePath, $fontSize, 0, new Point($x, $y), $foregroundColor);
+		$image->drawText($text, $fontFilePath, $fontSize, 0, new Point($x, $y), $foregroundColor);
 
 		$binary = $image->toImage(ImageType::PNG, ImageOption::png());
 
