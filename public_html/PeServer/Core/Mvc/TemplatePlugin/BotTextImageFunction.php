@@ -10,6 +10,11 @@ use PeServer\Core\Binary;
 use PeServer\Core\Cryptography;
 use PeServer\Core\Html\HtmlDocument;
 use PeServer\Core\Image\Graphics;
+use PeServer\Core\Image\ImageOption;
+use PeServer\Core\Image\ImageType;
+use PeServer\Core\Image\Point;
+use PeServer\Core\Image\Rectangle;
+use PeServer\Core\Image\RgbColor;
 use PeServer\Core\Image\Size;
 use PeServer\Core\InitialValue;
 use PeServer\Core\Mvc\TemplatePlugin\TemplateFunctionBase;
@@ -82,10 +87,10 @@ class BotTextImageFunction extends TemplateFunctionBase
 		$className = ArrayUtility::getOr($this->params, 'class', InitialValue::EMPTY_STRING);
 		/** @var string */
 		$backgroundColorText = ArrayUtility::getOr($this->params, 'background-color', '#eeeeee');
-		$backgroundColors = $this->toColor($backgroundColorText);
+		$backgroundColor = RgbColor::fromHtmlColorCode($backgroundColorText);
 		/** @var string */
 		$foregroundColorText = ArrayUtility::getOr($this->params, 'foreground-color', '#0f0f0f');
-		$foregroundColors = $this->toColor($foregroundColorText);
+		$foregroundColor = RgbColor::fromHtmlColorCode($foregroundColorText);
 		$obfuscateLevel = TypeConverter::parseBoolean(ArrayUtility::getOr($this->params, 'obfuscate-level', 0));
 
 		$rectX = 0;
@@ -107,23 +112,10 @@ class BotTextImageFunction extends TemplateFunctionBase
 		$image = Graphics::create(new Size($width, $height));
 		$image->setDpi(new Size(300, 300));
 
-		$backgroundColor = imagecolorallocate($image, $backgroundColors['r'], $backgroundColors['g'], $backgroundColors['b']);
-		if ($backgroundColor === false) {
-			throw new TemplateException();
-		}
-		$textColor = imagecolorallocate($image, $foregroundColors['r'], $foregroundColors['g'], $foregroundColors['b']);
-		if ($textColor === false) {
-			throw new TemplateException();
-		}
+		$image->fillRectangle($backgroundColor, new Rectangle(new Point(0, 0), new Size($width, $height)));
+		$image->drawText( $text, $fontFilePath, $fontSize, 0, new Point($x, $y), $foregroundColor);
 
-		//$image->fillRectangle
-
-		imagefilledrectangle($image, 0, 0, $width, $height, $backgroundColor);
-		imagettftext($image, $fontSize, 0, $x, $y, $textColor, $fontFilePath, $text);
-
-		$binary = OutputBuffer::get(function () use ($image) {
-			imagepng($image);
-		});
+		$binary = $image->toImage(ImageType::PNG, ImageOption::png());
 
 
 		$dom = new HtmlDocument();

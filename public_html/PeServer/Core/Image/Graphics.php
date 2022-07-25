@@ -271,7 +271,26 @@ class Graphics extends DisposerBase
 		);
 	}
 
-	//public function drawText(string $text, string $fontNameOrPath, float $fontSize, float $angle, Point $location, )
+	public function drawText(string $text, string $fontNameOrPath, float $fontSize, float $angle, Point $location, IColor $color): void
+	{
+		$result = $this->doColor(
+			$color,
+			fn ($attachedColor) => imagettftext(
+				$this->image,
+				$fontSize,
+				0,
+				$location->x,
+				$location->y,
+				$attachedColor,
+				$fontNameOrPath,
+				$text
+			)
+		);
+
+		if($result === false) {
+			throw new GraphicsException();
+		}
+	}
 
 	/**
 	 * 画像データ出力。
