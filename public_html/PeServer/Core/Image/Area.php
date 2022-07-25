@@ -11,13 +11,13 @@ use PeServer\Core\StringUtility;
 /**
  * @immutable
  */
-class Point4 implements Stringable
+class Area implements Stringable
 {
 	public function __construct(
+		public Point $leftTop,
 		public Point $leftBottom,
 		public Point $rightBottom,
-		public Point $rightTop,
-		public Point $leftTop
+		public Point $rightTop
 	) {
 	}
 

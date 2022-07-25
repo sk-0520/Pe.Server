@@ -8,6 +8,7 @@ use \GdImage;
 use PeServer\Core\Binary;
 use PeServer\Core\DisposerBase;
 use PeServer\Core\IDisposable;
+use PeServer\Core\Image\Area;
 use PeServer\Core\Image\ColorResource;
 use PeServer\Core\Image\IColor;
 use PeServer\Core\Image\ImageInformation;
@@ -241,6 +242,33 @@ class Graphics extends DisposerBase
 		if ($result === false) {
 			throw new GraphicsException();
 		}
+	}
+
+	/**
+	 * テキスト描画領域取得。
+	 *
+	 * @param string $text
+	 * @param string $fontNameOrPath
+	 * @param float $fontSize
+	 * @param float $angle
+	 * @return Area
+	 * @throws GraphicsException
+	 * @see https://www.php.net/manual/function.imageftbbox.php
+	 */
+	public function calculateTextArea(string $text, string $fontNameOrPath, float $fontSize, float $angle): Area
+	{
+		$options = [];
+		$result = imageftbbox($fontSize, $angle, $fontNameOrPath, $text, $options);
+		if ($result === false) {
+			throw new GraphicsException();
+		}
+
+		return new Area(
+			new Point($result[6], $result[7]),
+			new Point($result[0], $result[1]),
+			new Point($result[2], $result[3]),
+			new Point($result[4], $result[5]),
+		);
 	}
 
 	//public function drawText(string $text, string $fontNameOrPath, float $fontSize, float $angle, Point $location, )
