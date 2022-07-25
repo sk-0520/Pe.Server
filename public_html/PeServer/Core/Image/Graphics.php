@@ -6,6 +6,9 @@ namespace PeServer\Core\Image;
 
 use \GdImage;
 use PeServer\Core\DisposerBase;
+use PeServer\Core\IDisposable;
+use PeServer\Core\Image\ColorResource;
+use PeServer\Core\Image\IColor;
 use PeServer\Core\Image\ImageInformation;
 use PeServer\Core\Throws\GraphicsException;
 use PeServer\Core\TypeConverter;
@@ -125,24 +128,63 @@ class Graphics extends DisposerBase
 	 * `imagecolorallocate` ラッパー。
 	 *
 	 * @param Color $color
-	 * @return int
+	 * @return ColorResource
 	 */
-	public function attachColor(Color $color): int
+	public function attachColor(Color $color): ColorResource
 	{
 		$result = imagecolorallocate($this->image, $color->red, $color->green, $color->blue);
 		if ($result === false) {
 			throw new GraphicsException(TypeConverter::toString($color));
 		}
-		return $result;
+		return new ColorResource($this, $result);
 	}
 	/**
 	 * `imagecolordeallocate` ラッパー。
 	 *
-	 * @param int $colorResource
+	 * @param ColorResource $colorResource
 	 * @return bool
 	 */
-	public function detachColor(int $colorResource): bool
+	public function detachColor(ColorResource $colorResource): bool
 	{
-		return imagecolordeallocate($this->image, $colorResource);
+		return imagecolordeallocate($this->image, $colorResource->value);
 	}
+
+	private function doColorCore(ColorResource $color, callable $action): mixed
+	{
+		return $action($color);
+	}
+
+	private function doColor(IColor $color, callable $action): mixed
+	{
+		if ($color instanceof Color) {
+			$colorResource = $this->attachColor($color);
+			try {
+				return $this->doColorCore($colorResource, $action);
+			} finally {
+				$this->detachColor($colorResource);
+			}
+		} else {
+			assert($color instanceof ColorResource);
+			return $this->doColorCore($color, $action);
+		}
+	}
+
+	public function fillRectangle(IColor $color, Rectangle $rectangle): void
+	{
+		$result = $this->doColor(
+			$color,
+			fn ($cr) => imagefilledrectangle(
+				$this->image,
+				$rectangle->left(),
+				$rectangle->top(),
+				$rectangle->right(),
+				$rectangle->bottom(),
+				$cr->value
+			)
+		);
+		if ($result === false) {
+		}
+	}
+
+	//public function drawText(string $text, string $fontNameOrPath, float $fontSize, float $angle, Point $location, )
 }

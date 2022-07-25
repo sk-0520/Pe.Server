@@ -12,7 +12,7 @@ use PeServer\Core\Throws\ArgumentException;
 /**
  * @immutable UnsignedIntegerAlias
  */
-class Color implements Stringable
+class Color implements IColor
 {
 	/**
 	 * 生成。

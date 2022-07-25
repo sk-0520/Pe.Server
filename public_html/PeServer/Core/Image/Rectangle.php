@@ -24,6 +24,24 @@ class Rectangle implements Stringable
 	) {
 	}
 
+	public function left(): int
+	{
+		return $this->point->x;
+	}
+	public function top(): int
+	{
+		return $this->point->y;
+	}
+
+	public function right(): int
+	{
+		return $this->point->x + $this->size->width;
+	}
+	public function bottom(): int
+	{
+		return $this->point->x + $this->size->height;
+	}
+
 	public function __toString(): string
 	{
 		return Code::toString($this, $this->point . ',' . $this->size);
