@@ -301,7 +301,7 @@ class Graphics extends DisposerBase
 	 */
 	public function toImage(int $imageType, ImageOption $option): Binary
 	{
-		return OutputBuffer::get(fn ($imageType) => match ($imageType) {
+		return OutputBuffer::get(fn () => match ($imageType) {
 			ImageType::PNG => imagepng($this->image, null, ...$option->options()),
 			ImageType::JPEG => imagejpeg($this->image, null, ...$option->options()),
 			ImageType::WEBP => imagewebp($this->image, null, ...$option->options()),

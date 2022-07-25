@@ -117,7 +117,6 @@ class BotTextImageFunction extends TemplateFunctionBase
 
 		$binary = $image->toImage(ImageType::PNG, ImageOption::png());
 
-
 		$dom = new HtmlDocument();
 		$img = $dom->addElement('img');
 		$img->setAttribute('src', 'data:image/png;base64,' . $binary->toBase64());
