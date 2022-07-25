@@ -207,7 +207,7 @@ class Graphics extends DisposerBase
 
 	private function doColorCore(ColorResource $color, callable $action): mixed
 	{
-		return $action($color);
+		return $action($color->value);
 	}
 
 	private function doColor(IColor $color, callable $action): mixed
@@ -229,13 +229,13 @@ class Graphics extends DisposerBase
 	{
 		$result = $this->doColor(
 			$color,
-			fn ($cr) => imagefilledrectangle(
+			fn ($attachedColor) => imagefilledrectangle(
 				$this->image,
 				$rectangle->left(),
 				$rectangle->top(),
 				$rectangle->right(),
 				$rectangle->bottom(),
-				$cr->value
+				$attachedColor
 			)
 		);
 		if ($result === false) {
