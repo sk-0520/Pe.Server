@@ -57,6 +57,7 @@
 			"CyclomaticComplexity",
 			"Stringable",
 			"imageresolution",
+			"imagebmp",
 		],
 		"cSpell.ignorePaths": [
 			"package-lock.json",

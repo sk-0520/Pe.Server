@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace PeServer\Core\Image;
 
 use \GdImage;
+use PeServer\Core\Binary;
 use PeServer\Core\DisposerBase;
 use PeServer\Core\IDisposable;
 use PeServer\Core\Image\ColorResource;
 use PeServer\Core\Image\IColor;
 use PeServer\Core\Image\ImageInformation;
+use PeServer\Core\OutputBuffer;
 use PeServer\Core\Throws\GraphicsException;
 use PeServer\Core\TypeConverter;
 
@@ -125,6 +127,60 @@ class Graphics extends DisposerBase
 	}
 
 	/**
+	 * 画像サイズを取得
+	 *
+	 * @return Size
+	 * @throws GraphicsException
+	 * @see https://www.php.net/manual/function.imagesx.php
+	 * @see https://www.php.net/manual/function.imagesy.php
+	 */
+	public function getSize(): Size
+	{
+		$width = imagesx($this->image);
+		if ($width === false) { //@phpstan-ignore-line
+			throw new GraphicsException();
+		}
+		if ($width < 1) {
+			throw new GraphicsException();
+		}
+		$height = imagesy($this->image);
+		if ($height === false) { //@phpstan-ignore-line
+			throw new GraphicsException();
+		}
+		if ($height < 1) {
+			throw new GraphicsException();
+		}
+
+		return new Size($width, $height);
+	}
+
+	/**
+	 * 縮尺を変更。
+	 *
+	 * @param int|Size $size
+	 * @phpstan positive-int|Size $size
+	 * @param int $scaleMode
+	 * @phpstan-param ScaleMode::* $scaleMode
+	 * @return Graphics
+	 * @throws GraphicsException
+	 * @see https://www.php.net/manual/function.imagescale.php
+	 */
+	public function scale(int|Size $size, int $scaleMode): Graphics
+	{
+		$result = false;
+		if (is_int($size)) {
+			$result = imagescale($this->image, $size, -1, $scaleMode);
+		} else {
+			$result = imagescale($this->image, $size->width, $size->height, $scaleMode);
+		}
+		if ($result === false) {
+			throw new GraphicsException();
+		}
+
+		return new Graphics($result);
+	}
+
+	/**
 	 * `imagecolorallocate` ラッパー。
 	 *
 	 * @param Color $color
@@ -187,4 +243,21 @@ class Graphics extends DisposerBase
 	}
 
 	//public function drawText(string $text, string $fontNameOrPath, float $fontSize, float $angle, Point $location, )
+
+	/**
+	 * 画像データ出力。
+	 *
+	 * @param int $imageType
+	 * @phpstan-param ImageType::* $imageType
+	 * @return Binary
+	 */
+	public function toImage(int $imageType, ImageOption $option): Binary
+	{
+		return OutputBuffer::get(fn ($imageType) => match ($imageType) {
+			ImageType::PNG => imagepng($this->image, null, ...$option->options()),
+			ImageType::JPEG => imagejpeg($this->image, null, ...$option->options()),
+			ImageType::WEBP => imagewebp($this->image, null, ...$option->options()),
+			ImageType::BMP => imagebmp($this->image, null, ...$option->options()),
+		});
+	}
 }
