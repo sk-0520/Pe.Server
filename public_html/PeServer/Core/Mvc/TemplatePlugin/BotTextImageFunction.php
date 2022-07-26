@@ -7,6 +7,7 @@ namespace PeServer\Core\Mvc\TemplatePlugin;
 use \Throwable;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Binary;
+use PeServer\Core\CoreUtility;
 use PeServer\Core\Cryptography;
 use PeServer\Core\Html\HtmlDocument;
 use PeServer\Core\Image\Graphics;
@@ -87,8 +88,7 @@ class BotTextImageFunction extends TemplateFunctionBase
 		$rectWidth = $width - 1;
 		$rectHeight = $height - 1;
 
-		$fontFileName = 'migmix-1m-regular.ttf';
-		$fontFilePath = PathUtility::joinPath($this->argument->baseDirectoryPath, 'Core', 'Libs', 'fonts', 'migmix', $fontFileName);
+		$fontFilePath = PathUtility::joinPath($this->argument->baseDirectoryPath, ...CoreUtility::getDefaultFontParts());
 
 		$area = Graphics::calculateTextArea($text, $fontFilePath, $fontSize, 0);
 
