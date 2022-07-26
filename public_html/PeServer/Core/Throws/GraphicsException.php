@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace PeServer\Core\Throws;
 
 use \Throwable;
-use \Error;
+use PeServer\Core\Throws\ImageException;
 
-class CoreError extends Error
+class GraphicsException extends ImageException
 {
 	public function __construct(string $message = '', int $code = 0, ?Throwable $previous = null)
 	{

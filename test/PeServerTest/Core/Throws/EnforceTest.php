@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServerTest\Core\Throws;
 
-use Error;
+use \Error;
 use PeServerTest\TestClass;
 use PeServer\Core\Throws\Enforce;
 use PeServer\Core\Throws\EnforceException;

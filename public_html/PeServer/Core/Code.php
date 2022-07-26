@@ -33,4 +33,9 @@ abstract class Code
 			$disposable->dispose();
 		}
 	}
+
+	public static function toString(object $obj, string $text): string
+	{
+		return get_class($obj) . ': ' . $text;
+	}
 }
