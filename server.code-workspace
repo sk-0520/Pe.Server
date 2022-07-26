@@ -59,6 +59,7 @@
 			"imageresolution",
 			"imagecreatefrombmp",
 			"imagebmp",
+			"migmix"
 		],
 		"cSpell.ignorePaths": [
 			"package-lock.json",
