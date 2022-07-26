@@ -10,7 +10,7 @@ use PeServer\Core\StringUtility;
 use PeServer\Core\Throws\ArgumentException;
 
 /**
- * @immutable UnsignedIntegerAlias
+ * @immutable
  */
 class RgbColor implements IColor
 {

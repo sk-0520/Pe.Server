@@ -84,8 +84,6 @@ class BotTextImageFunction extends TemplateFunctionBase
 		$foregroundColor = RgbColor::fromHtmlColorCode($foregroundColorText);
 		$obfuscateLevel = TypeConverter::parseBoolean(ArrayUtility::getOr($this->params, 'obfuscate-level', 0));
 
-		$rectX = 0;
-		$rectY = 0;
 		$rectWidth = $width - 1;
 		$rectHeight = $height - 1;
 
@@ -98,9 +96,9 @@ class BotTextImageFunction extends TemplateFunctionBase
 		$textHeight = $area->leftBottom->y - $area->rightTop->y;
 
 		/** @phpstan-var positive-int */
-		$x = (int)($rectX + (($rectWidth - $rectX - $textWidth) / 2));
+		$x = (int)(($rectWidth - $textWidth) / 2);
 		/** @phpstan-var positive-int */
-		$y = (int)($rectY + (($rectHeight - $rectY - $textHeight) / 2) - $area->rightTop->y);
+		$y = (int)((($rectHeight - $textHeight) / 2) - $area->rightTop->y);
 
 		$image = Graphics::create(new Size($width, $height));
 		$image->setDpi(new Size(300, 300));
@@ -108,7 +106,8 @@ class BotTextImageFunction extends TemplateFunctionBase
 		$image->fillRectangle($backgroundColor, new Rectangle(new Point(0, 0), new Size($width, $height)));
 		$image->drawText($text, $fontFilePath, $fontSize, 0, new Point($x, $y), $foregroundColor);
 
-		$binary = $image->toImage(ImageType::PNG, ImageOption::png());
+		$binary = $image->toImage(ImageOption::png());
+		$image->dispose();
 
 		$dom = new HtmlDocument();
 		$img = $dom->addElement('img');

@@ -57,6 +57,7 @@
 			"CyclomaticComplexity",
 			"Stringable",
 			"imageresolution",
+			"imagecreatefrombmp",
 			"imagebmp",
 		],
 		"cSpell.ignorePaths": [
