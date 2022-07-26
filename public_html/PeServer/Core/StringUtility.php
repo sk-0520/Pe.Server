@@ -180,6 +180,20 @@ abstract class StringUtility
 	}
 
 	/**
+	 * `sprintf` ラッパー。
+	 *
+	 * @param string $format
+	 * @param mixed ...$values
+	 * @phpstan-param FormatAlias ...$values
+	 * @return string
+	 * @see https://www.php.net/manual/function.sprintf.php
+	 */
+	public static function format(string $format, string|int|float ...$values): string
+	{
+		return sprintf($format, ...$values);
+	}
+
+	/**
 	 * 数字を千の位毎にグループ化してフォーマット
 	 *
 	 * @param int|float $number フォーマットする数値

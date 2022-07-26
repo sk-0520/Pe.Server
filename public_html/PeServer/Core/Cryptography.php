@@ -17,6 +17,7 @@ abstract class Cryptography
 	private const OPTION = 0;
 	public const SEPARATOR = '@';
 	public const DEFAULT_RANDOM_STRING = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+	public const FILE_RANDOM_STRING = '0123456789abcdefghijklmnopqrstuvwxyz';
 
 	/**
 	 * 乱数取得。
@@ -221,6 +222,7 @@ abstract class Cryptography
 	 * @param Binary $binary
 	 * @-param array{seed?:?int} $options
 	 * @return string
+	 * @throws CryptoException
 	 * @see https://php.net/manual/function.hash.php
 	 */
 	public static function generateHashString(string $algorithm, Binary $binary/*, array $options = []*/): string
@@ -238,6 +240,7 @@ abstract class Cryptography
 	 * @param Binary $binary
 	 * @-param array{seed?:?int} $options
 	 * @return Binary
+	 * @throws CryptoException
 	 * @see https://php.net/manual/function.hash.php
 	 */
 	public static function generateHashBinary(string $algorithm, Binary $binary/*, array $options = []*/): Binary

@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domain\Page\Account;
 
-use PeServer\Core\I18n;
-use PeServer\App\Models\AuditLog;
-use PeServer\Core\Mvc\LogicCallMode;
-use PeServer\Core\Mvc\LogicParameter;
-use PeServer\App\Models\SessionManager;
 use PeServer\App\Models\AppDatabaseCache;
-use PeServer\Core\Database\IDatabaseContext;
+use PeServer\App\Models\AuditLog;
+use PeServer\App\Models\Dao\Entities\UsersEntityDao;
 use PeServer\App\Models\Domain\AccountValidator;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
-use PeServer\App\Models\Dao\Entities\UsersEntityDao;
+use PeServer\App\Models\SessionAccount;
+use PeServer\App\Models\SessionManager;
+use PeServer\Core\Database\IDatabaseContext;
+use PeServer\Core\I18n;
+use PeServer\Core\Mvc\LogicCallMode;
+use PeServer\Core\Mvc\LogicParameter;
 
 class AccountUserEditLogic extends PageLogicBase
 {
@@ -69,7 +70,7 @@ class AccountUserEditLogic extends PageLogicBase
 		$database = $this->openDatabase();
 		$usersEntityDao = new UsersEntityDao($database);
 
-		$userEditData = $usersEntityDao->selectUserEditData($userInfo['user_id']);
+		$userEditData = $usersEntityDao->selectUserEditData($userInfo->userId);
 
 		$map = [
 			'name' => 'account_edit_name',
@@ -87,7 +88,7 @@ class AccountUserEditLogic extends PageLogicBase
 		$userInfo = SessionManager::getAccount();
 
 		$params = [
-			'user_id' => $userInfo['user_id'],
+			'user_id' => $userInfo->userId,
 			'user_name' => $this->getRequest('account_edit_name'),
 			'website' => $this->getRequest('account_edit_website'),
 			'description' => $this->getRequest('account_edit_description'),
@@ -111,8 +112,14 @@ class AccountUserEditLogic extends PageLogicBase
 			return true;
 		}, $params);
 
-		$account = SessionManager::getAccount();
-		$account['user_name'] = $params['user_name'];
+		$source = SessionManager::getAccount();
+		$account = new SessionAccount(
+			$source->userId,
+			$source->loginId,
+			$params['user_name'],
+			$source->level,
+			$source->state
+		);
 		SessionManager::setAccount($account);
 
 		$this->addTemporaryMessage(I18n::message('message/flash/updated_user'));

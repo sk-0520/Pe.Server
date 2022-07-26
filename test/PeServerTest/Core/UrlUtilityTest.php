@@ -10,6 +10,21 @@ use PeServer\Core\UrlUtility;
 
 class UrlUtilityTest extends TestClass
 {
+	public function test_buildQuery()
+	{
+		$tests = [
+			new Data('a=b', ['a' => 'b']),
+			new Data('a=b&c=d', ['a' => 'b', 'c' => 'd']),
+			new Data('c=d&a=b', ['c' => 'd', 'a' => 'b']),
+			new Data('x', ['x']),
+			new Data('a=b&x', ['a' => 'b', 'x']),
+			new Data('a=b&x&y=z', ['a' => 'b', 'x', 'y' => 'z']),
+		];
+		foreach ($tests as $test) {
+			$actual = UrlUtility::buildQuery(...$test->args);
+			$this->assertEquals($test->expected, $actual, $test->str());
+		}
+	}
 	public function test_joinPath()
 	{
 		$tests = [

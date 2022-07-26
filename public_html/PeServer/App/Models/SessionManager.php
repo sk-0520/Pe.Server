@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models;
 
+use PeServer\App\Models\SessionAccount;
 use PeServer\Core\InitializeChecker;
 use PeServer\Core\Store\SessionStore;
 use PeServer\Core\Throws\InvalidOperationException;
@@ -49,9 +50,9 @@ abstract class SessionManager
 	/**
 	 * アカウント情報取得。
 	 *
-	 * @return array{user_id:string,login_id:string,name:string,level:string,state:string}
+	 * @return SessionAccount
 	 */
-	public static function getAccount(): array
+	public static function getAccount(): SessionAccount
 	{
 		self::$initializeChecker->throwIfNotInitialize();
 
@@ -65,10 +66,10 @@ abstract class SessionManager
 	/**
 	 * アカウント情報設定。
 	 *
-	 * @param array{user_id:string,login_id:string,name:string,level:string,state:string} $value
+	 * @param SessionAccount $value
 	 * @return void
 	 */
-	public static function setAccount(array $value): void
+	public static function setAccount(SessionAccount $value): void
 	{
 		self::$initializeChecker->throwIfNotInitialize();
 

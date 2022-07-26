@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Middleware;
 
-use PeServer\Core\Http\HttpStatus;
+use PeServer\App\Models\SessionAccount;
 use PeServer\App\Models\SessionManager;
+use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mvc\Middleware\IMiddleware;
-use PeServer\Core\Mvc\Middleware\MiddlewareResult;
 use PeServer\Core\Mvc\Middleware\MiddlewareArgument;
+use PeServer\Core\Mvc\Middleware\MiddlewareResult;
 
 abstract class AccountFilterMiddlewareBase implements IMiddleware
 {
@@ -26,7 +27,8 @@ abstract class AccountFilterMiddlewareBase implements IMiddleware
 		}
 
 		foreach ($levels as $level) {
-			if ($account['level'] === $level) {
+			/** @var SessionAccount $account */
+			if ($account->level === $level) {
 				return MiddlewareResult::none();
 			}
 		}

@@ -4,10 +4,19 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\TemplatePlugin;
 
+use \Throwable;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Binary;
+use PeServer\Core\CoreUtility;
 use PeServer\Core\Cryptography;
 use PeServer\Core\Html\HtmlDocument;
+use PeServer\Core\Image\Graphics;
+use PeServer\Core\Image\ImageOption;
+use PeServer\Core\Image\ImageType;
+use PeServer\Core\Image\Point;
+use PeServer\Core\Image\Rectangle;
+use PeServer\Core\Image\RgbColor;
+use PeServer\Core\Image\Size;
 use PeServer\Core\InitialValue;
 use PeServer\Core\Mvc\TemplatePlugin\TemplateFunctionBase;
 use PeServer\Core\Mvc\TemplatePlugin\TemplatePluginArgument;
@@ -15,6 +24,7 @@ use PeServer\Core\OutputBuffer;
 use PeServer\Core\PathUtility;
 use PeServer\Core\StringUtility;
 use PeServer\Core\Throws\TemplateException;
+use PeServer\Core\Throws\Throws;
 use PeServer\Core\TypeConverter;
 
 /**
@@ -47,30 +57,21 @@ class BotTextImageFunction extends TemplateFunctionBase
 		return 'bot_text_image';
 	}
 
-	/**
-	 * Undocumented function
-	 *
-	 * @param string $htmlColor
-	 * @return array{r:int,g:int,b:int}
-	 */
-	private function toColor(string $htmlColor): array
-	{
-		return [
-			'r' => (int)hexdec(substr($htmlColor, 1, 2)),
-			'g' => (int)hexdec(substr($htmlColor, 3, 2)),
-			'b' => (int)hexdec(substr($htmlColor, 5, 2)),
-		];
-	}
-
-	protected function functionBodyImpl(): string
+	private function functionBodyCore(): string
 	{
 		/** @var string */
 		$text = ArrayUtility::getOr($this->params, 'text', InitialValue::EMPTY_STRING);
 		/** @var string */
 		$alt = ArrayUtility::getOr($this->params, 'alt', InitialValue::EMPTY_STRING);
-		/** @var int */
+		/**
+		 * @var int
+		 * @phpstan-var positive-int
+		 */
 		$width = (int)ArrayUtility::getOr($this->params, 'width', 100);
-		/** @var int */
+		/**
+		 * @var int
+		 * @phpstan-var positive-int
+		 */
 		$height = (int)ArrayUtility::getOr($this->params, 'height', 100);
 		/** @var float */
 		$fontSize = (float)ArrayUtility::getOr($this->params, 'font-size', '12.5');
@@ -78,53 +79,35 @@ class BotTextImageFunction extends TemplateFunctionBase
 		$className = ArrayUtility::getOr($this->params, 'class', InitialValue::EMPTY_STRING);
 		/** @var string */
 		$backgroundColorText = ArrayUtility::getOr($this->params, 'background-color', '#eeeeee');
-		$backgroundColors = $this->toColor($backgroundColorText);
+		$backgroundColor = RgbColor::fromHtmlColorCode($backgroundColorText);
 		/** @var string */
 		$foregroundColorText = ArrayUtility::getOr($this->params, 'foreground-color', '#0f0f0f');
-		$foregroundColors = $this->toColor($foregroundColorText);
+		$foregroundColor = RgbColor::fromHtmlColorCode($foregroundColorText);
 		$obfuscateLevel = TypeConverter::parseBoolean(ArrayUtility::getOr($this->params, 'obfuscate-level', 0));
 
-		$rectX = 0;
-		$rectY = 0;
 		$rectWidth = $width - 1;
 		$rectHeight = $height - 1;
 
-		$fontFileName = 'migmix-1m-regular.ttf';
-		$fontFilePath = PathUtility::joinPath($this->argument->baseDirectoryPath, 'Core', 'Libs', 'fonts', 'migmix', $fontFileName);
+		$fontFilePath = PathUtility::joinPath($this->argument->baseDirectoryPath, ...CoreUtility::getDefaultFontParts());
 
-		$box = imageftbbox($fontSize, 0, $fontFilePath, $text);
-		if ($box === false) {
-			throw new TemplateException();
-		}
+		$area = Graphics::calculateTextArea($text, $fontFilePath, $fontSize, 0);
 
-		$textWidth = $box[4] - $box[0];
-		$textHeight = $box[1] - $box[5];
+		$textWidth = $area->rightTop->x - $area->leftBottom->x;
+		$textHeight = $area->leftBottom->y - $area->rightTop->y;
 
-		$x = (int)($rectX + (($rectWidth - $rectX - $textWidth) / 2));
-		$y = (int)($rectY + (($rectHeight - $rectY - $textHeight) / 2) - $box[5]);
+		/** @phpstan-var positive-int */
+		$x = (int)(($rectWidth - $textWidth) / 2);
+		/** @phpstan-var positive-int */
+		$y = (int)((($rectHeight - $textHeight) / 2) - $area->rightTop->y);
 
-		$image = imagecreatetruecolor($width, $height);
-		if ($image === false) {
-			throw new TemplateException();
-		}
-		imageresolution($image, 300, 300);
+		$image = Graphics::create(new Size($width, $height));
+		$image->setDpi(new Size(300, 300));
 
-		$backgroundColor = imagecolorallocate($image, $backgroundColors['r'], $backgroundColors['g'], $backgroundColors['b']);
-		if ($backgroundColor === false) {
-			throw new TemplateException();
-		}
-		$textColor = imagecolorallocate($image, $foregroundColors['r'], $foregroundColors['g'], $foregroundColors['b']);
-		if ($textColor === false) {
-			throw new TemplateException();
-		}
+		$image->fillRectangle($backgroundColor, new Rectangle(new Point(0, 0), new Size($width, $height)));
+		$image->drawText($text, $fontFilePath, $fontSize, 0, new Point($x, $y), $foregroundColor);
 
-		imagefilledrectangle($image, 0, 0, $width, $height, $backgroundColor);
-		imagettftext($image, $fontSize, 0, $x, $y, $textColor, $fontFilePath, $text);
-
-		$binary = OutputBuffer::get(function () use ($image) {
-			imagepng($image);
-		});
-
+		$binary = $image->toImage(ImageOption::png());
+		$image->dispose();
 
 		$dom = new HtmlDocument();
 		$img = $dom->addElement('img');
@@ -141,5 +124,14 @@ class BotTextImageFunction extends TemplateFunctionBase
 		}
 
 		return $dom->build();
+	}
+
+	protected function functionBodyImpl(): string
+	{
+		try {
+			return $this->functionBodyCore();
+		} catch (Throwable $ex) {
+			Throws::reThrow(TemplateException::class, $ex);
+		}
 	}
 }

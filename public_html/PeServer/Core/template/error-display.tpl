@@ -5,6 +5,9 @@
 		<meta charset="utf-8"/>
 		<title>Pe.Server.Core: Error</title>
 		{asset file='./error-display.css' include='true'}
+		{if PeServer\Core\Environment::isDevelopment() && !is_null($values.throwable)}
+			{asset file='./prism.css' include='true'}
+		{/if}
 	</head>
 	<body>
 		<main id="main">
@@ -23,8 +26,48 @@
 					<dd><code>{get_class($values.throwable)}</code></dd>
 				{/if}
 
+				{if PeServer\Core\Environment::isDevelopment() && !is_null($values.throwable)}
+					<dt>GET</dt>
+					<dd>
+						<details>
+							<summary>展開</summary>
+							<pre>{$smarty.get|@var_dump}</pre>
+						</details>
+					</dd>
+
+					<dt>POST</dt>
+					<dd>
+						<details>
+							<summary>展開</summary>
+							<pre>{$smarty.post|@var_dump}</pre>
+						</details>
+					</dd>
+
+					<dt>Cookie</dt>
+					<dd>
+						<details>
+							<summary>展開</summary>
+							<pre>{$smarty.cookies|@var_dump}</pre>
+						</details>
+					</dd>
+
+					<dt>Session</dt>
+					<dd>
+						<details>
+							<summary>展開</summary>
+							<pre>{$smarty.session|@var_dump}</pre>
+						</details>
+					</dd>
+				{/if}
+
 				<dt>ソース</dt>
-				<dd><code>{$values.file}</code>:<code>{$values.line_number}</code></dd>
+				<dd>
+				<code>{$values.file}</code>:<code>{$values.line_number}</code>
+					{if PeServer\Core\Environment::isDevelopment() && !is_null($values.throwable)}
+						{assign var="file" value=$values.cache[$values.file]}
+						<pre id="throw" class="source" data-line="{$values.line_number}"><code class="language-php line-numbers">{$file}</code></pre>
+					{/if}
+				</dd>
 
 				{if PeServer\Core\Environment::isDevelopment() && !is_null($values.throwable)}
 					{$throwable = $values.throwable->getPrevious()}
@@ -53,7 +96,13 @@
 						<ol class="stacktrace">
 							{foreach from=$values.throwable->getTrace() item=item}
 								<li>
-									<code>{$item.file}:{$item.line}</code>
+									<details class="file">
+										<summary>
+											<code>{$item.file}:{$item.line}</code>
+										</summary>
+										{assign var="file" value=$values.cache[$item.file]}
+										<pre class="source" data-line="{$item.line}"><code class="language-php line-numbers">{$file}</code></pre>
+									</details>
 									<table>
 										{if isset($item.object) }
 											<tr>
@@ -92,7 +141,9 @@
 							{/foreach}
 						</ol>
 					</dd>
+
 					<hr />
+
 					<details>
 						<summary>var_dump</summary>
 						<pre>{$values.throwable|@var_dump}</pre>
@@ -100,5 +151,44 @@
 				{/if}
 			</dl>
 		</main>
+
+		{if PeServer\Core\Environment::isDevelopment() && !is_null($values.throwable)}
+			{asset file='./prism.js' include='true'}
+			<script>
+
+			function scrollHighlight(sourceElement) {
+				const lines = sourceElement.querySelector('.line-highlight');
+				const linesHeight = lines.offsetHeight;
+				const sourceHeight = sourceElement.offsetHeight;
+				//lines.scrollIntoView();
+				if (sourceHeight > linesHeight && sourceElement.scrollTop < (sourceElement.scrollHeight - sourceHeight)) {
+					//sourceElement.scrollTop = sourceElement.scrollTop - (sourceHeight / 2) + (linesHeight / 2);
+					const top = sourceElement.scrollTop - (sourceHeight / 2); //+ (linesHeight / 2);
+					{literal}
+						sourceElement.scroll({top: top});
+					{/literal}
+				}
+			}
+
+			window.addEventListener('load', (event) => {
+				const sourceElement = document.getElementById('throw');
+				scrollHighlight(sourceElement);
+				{literal}
+					window.scroll({top: 0});
+				{/literal}
+
+				const fileElements = document.querySelectorAll('.file');
+				for(const fileElement of fileElements) {
+					fileElement.addEventListener('toggle', (toggleEvent) => {
+						const target = toggleEvent.target;
+						if(target.open) {
+							scrollHighlight(target);
+						}
+					})
+				}
+			});
+		{/if}
+
+		</script>
 	</body>
 </html>

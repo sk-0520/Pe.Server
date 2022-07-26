@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domain\Page\Account;
 
-use PeServer\Core\I18n;
-use PeServer\Core\Cryptography;
-use PeServer\Core\Mvc\Validator;
-use PeServer\Core\StringUtility;
 use PeServer\App\Models\AuditLog;
+use PeServer\App\Models\Dao\Domain\UserDomainDao;
+use PeServer\App\Models\Dao\Entities\UsersEntityDao;
+use PeServer\App\Models\Domain\Page\PageLogicBase;
+use PeServer\App\Models\Domain\UserLevel;
+use PeServer\App\Models\SessionAccount;
+use PeServer\App\Models\SessionManager;
+use PeServer\Core\Cryptography;
+use PeServer\Core\I18n;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
-use PeServer\App\Models\SessionManager;
-use PeServer\App\Models\Domain\UserLevel;
-use PeServer\App\Models\Dao\Domain\UserDomainDao;
-use PeServer\App\Models\Domain\Page\PageLogicBase;
-use PeServer\App\Models\Dao\Entities\UsersEntityDao;
+use PeServer\Core\Mvc\Validator;
+use PeServer\Core\StringUtility;
 
 class AccountLoginLogic extends PageLogicBase
 {
@@ -92,13 +93,13 @@ class AccountLoginLogic extends PageLogicBase
 		}
 
 		$this->removeSession(self::SESSION_ALL_CLEAR);
-		$account = [
-			'user_id' => $user['user_id'],
-			'login_id' => $user['login_id'],
-			'name' => $user['name'],
-			'level' => $user['level'],
-			'state' => $user['state'],
-		];
+		$account = new SessionAccount(
+			$user['user_id'],
+			$user['login_id'],
+			$user['name'],
+			$user['level'], //@phpstan-ignore-line
+			$user['state'] //@phpstan-ignore-line
+		);
 		SessionManager::setAccount($account);
 		$this->restartSession();
 		$this->writeAuditLogCurrentUser(AuditLog::LOGIN_SUCCESS, $account);

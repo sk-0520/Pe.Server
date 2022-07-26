@@ -82,7 +82,7 @@ class TemporaryStore
 			return $this->cookie->getOr($this->option->name, InitialValue::EMPTY_STRING);
 		}
 
-		return Cryptography::generateRandomString(self::ID_LENGTH);
+		return Cryptography::generateRandomString(self::ID_LENGTH, Cryptography::FILE_RANDOM_STRING);
 	}
 
 	public function apply(): void

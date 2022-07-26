@@ -29,7 +29,7 @@ final class UserPluginEditFilterMiddleware implements IMiddleware
 				$account = SessionManager::getAccount();
 				$database = AppDatabase::open();
 				$pluginsEntityDao = new PluginsEntityDao($database);
-				if ($pluginsEntityDao->selectIsUserPlugin($pluginId, $account['user_id'])) {
+				if ($pluginsEntityDao->selectIsUserPlugin($pluginId, $account->userId)) {
 					return MiddlewareResult::none();
 				}
 			}

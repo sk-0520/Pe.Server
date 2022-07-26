@@ -179,6 +179,33 @@ class ErrorHandler
 	}
 
 	/**
+	 * Undocumented function
+	 *
+	 * @param string $file
+	 * @param Throwable|null $throwable
+	 * @return array<string,string>
+	 */
+	private function getFileContents(string $file, ?Throwable $throwable): array
+	{
+		$files = [
+			"$file" => FileUtility::readContent($file)->getRaw(),
+		];
+
+		if(!is_null($throwable)) {
+			foreach ($throwable->getTrace() as $item) {
+				if(isset($item['file'])) {
+					$f = $item['file'];
+					if (!isset($files[$f])) {
+						$files[$f] = FileUtility::readContent($f)->getRaw();
+					}
+				}
+			}
+		}
+
+		return $files;
+	}
+
+	/**
 	 * エラー取得処理（本体）。
 	 *
 	 * @param integer $errorNumber
@@ -196,6 +223,7 @@ class ErrorHandler
 			'file' => $file,
 			'line_number' => $lineNumber,
 			'throwable' => $throwable,
+			'cache' => $this->getFileContents($file, $throwable)
 		];
 
 		$status = $this->setHttpStatus($throwable);
