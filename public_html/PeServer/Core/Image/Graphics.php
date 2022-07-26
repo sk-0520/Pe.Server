@@ -59,6 +59,14 @@ class Graphics extends DisposerBase
 		return new Graphics($image);
 	}
 
+	/**
+	 * バイナリデータから生成。
+	 *
+	 * @param Binary $binary
+	 * @param int $imageType
+	 * @phpstan-param -1|ImageType::* $imageType
+	 * @return Graphics
+	 */
 	public static function load(Binary $binary, int $imageType = -1): Graphics
 	{
 		$funcName = match ($imageType) {
@@ -79,6 +87,17 @@ class Graphics extends DisposerBase
 
 		return new Graphics($result->value);
 	}
+
+	// /**
+	//  * ファイルから生成。
+	//  *
+	//  * @param string $path
+	//  * @phpstan-param non-empty-string $path
+	//  * @return Graphics
+	//  */
+	// public static function open(string $path): Graphics
+	// {
+	// }
 
 	/**
 	 * `gd_info` ラッパー。
