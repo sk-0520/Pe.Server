@@ -11,6 +11,12 @@ use PeServer\Core\Throws\Throws;
 
 class Encoding
 {
+	public const ENCODE_ASCII = 'ASCII';
+	public const ENCODE_UTF8 = 'UTF-8';
+	public const ENCODE_UTF16 = 'UTF-16';
+	public const ENCODE_UTF32 = 'UTF-32';
+	public const ENCODE_SHIFT_JIS_WIN = 'SJIS-win';
+
 	/**
 	 * キャッシュされたエンコーディング名一覧。
 	 *
@@ -25,6 +31,12 @@ class Encoding
 	 */
 	public string $name;
 
+	/**
+	 * 生成
+	 *
+	 * @param string $name
+	 * @phpstan-param non-empty-string|Encoding::ENCODE_* $name
+	 */
 	public function __construct(string $name)
 	{
 		self::enforceEncodingName($name);
@@ -66,6 +78,7 @@ class Encoding
 	public static function getDefaultEncoding(): Encoding
 	{
 		$name = mb_internal_encoding();
+		//@phpstan-ignore-next-line
 		return new Encoding($name);
 	}
 
