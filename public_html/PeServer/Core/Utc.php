@@ -6,6 +6,7 @@ namespace PeServer\Core;
 
 use \DateTimeImmutable;
 use \DateTimeZone;
+use \DateTimeInterface;
 use PeServer\Core\Throws\ParseException;
 
 /**
@@ -16,6 +17,7 @@ use PeServer\Core\Throws\ParseException;
 abstract class Utc
 {
 	private const UTC_FORMAT = 'Y-m-d\TH:i:s.u\Z';
+
 	private static ?DateTimeZone $timezone = null;
 
 	/**
@@ -78,7 +80,7 @@ abstract class Utc
 	 * @param DateTimeImmutable $datetime
 	 * @return string
 	 */
-	public static function toString(DateTimeImmutable $datetime): string
+	public static function toString(DateTimeInterface $datetime): string
 	{
 		return $datetime->format(self::UTC_FORMAT);
 	}
