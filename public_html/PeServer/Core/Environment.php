@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace PeServer\Core;
 
 use PeServer\Core\InitialValue;
-use PeServer\Core\Throws\CoreError;
 
 /**
  * 環境情報。
@@ -27,6 +26,7 @@ abstract class Environment
 
 		self::$environment = $environment;
 		self::$revision = $revision;
+		self::setLanguage($language);
 	}
 
 	public static function setLanguage(string $language): bool
