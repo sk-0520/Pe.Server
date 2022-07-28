@@ -25,13 +25,13 @@ class RgbColor implements IColor
 	 * 生成。
 	 *
 	 * @param int $red
-	 * @phpstan-param int<0,255> $red
+	 * @phpstan-param int<self::RGB_MINIMUM,self::RGB_MAXIMUM> $red
 	 * @param int $green
-	 * @phpstan-param int<0,255> $green
+	 * @phpstan-param int<self::RGB_MINIMUM,self::RGB_MAXIMUM> $green
 	 * @param int $blue
-	 * @phpstan-param int<0,255> $blue
+	 * @phpstan-param int<self::RGB_MINIMUM,self::RGB_MAXIMUM> $blue
 	 * @param int $alpha
-	 * @phpstan-param int<0,127> $alpha
+	 * @phpstan-param int<IColor::ALPHA_NONE,IColor::ALPHA_FULL> $alpha
 	 */
 	public function __construct(
 		public int $red,
@@ -59,14 +59,14 @@ class RgbColor implements IColor
 	 * @param string $s
 	 * @param bool $isAlpha
 	 * @return int
-	 * @phpstan-return int<0,255>|int<0,127>
+	 * @phpstan-return int<self::RGB_MINIMUM,self::RGB_MAXIMUM>|int<IColor::ALPHA_NONE,IColor::ALPHA_FULL>
 	 */
 	private static function fromHex(string $s, bool $isAlpha/* 0-127に制限が必要 */): int
 	{
 		if (StringUtility::getByteCount($s) === 1) {
 			$s .= $s;
 		}
-		/** @phpstan-var int<0,255>|int<0,127> */
+		/** @phpstan-var int<self::RGB_MINIMUM,self::RGB_MAXIMUM>|int<IColor::ALPHA_NONE,IColor::ALPHA_FULL> */
 		$result = (int)hexdec($s);
 		return $result;
 	}
@@ -96,7 +96,7 @@ class RgbColor implements IColor
 			return new RgbColor($r, $g, $b);
 		}
 
-		/** @phpstan-var int<0,127> */
+		/** @phpstan-var int<IColor::ALPHA_NONE,IColor::ALPHA_FULL> */
 		$a = self::fromHex($matchers['A'], true);
 		return new RgbColor($r, $g, $b, $a);
 	}
