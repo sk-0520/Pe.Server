@@ -169,7 +169,7 @@ class SettingDefaultPluginLogic extends PageLogicBase
 							$plugin['plugin_name'],
 							$plugin['plugin_name'],
 							PluginState::ENABLED,
-							StringUtility::join($plugin['descriptions'], "\n\n"),
+							StringUtility::join("\n\n", $plugin['descriptions']),
 							'Pe専用プラグイン'
 						);
 

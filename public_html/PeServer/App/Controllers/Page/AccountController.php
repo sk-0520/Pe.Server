@@ -85,7 +85,7 @@ final class AccountController extends PageControllerBase
 		$logic = $this->createLogic(AccountSignupStep1Logic::class, $request);
 		$logic->run(LogicCallMode::initialize());
 
-		return $this->view('view_signup_step1', $logic->getViewData());
+		return $this->view('signup_step1', $logic->getViewData());
 	}
 
 	public function signup_step1_post(HttpRequest $request): IActionResult
@@ -98,7 +98,7 @@ final class AccountController extends PageControllerBase
 			throw new InvalidOperationException();
 		}
 
-		return $this->view('view_signup_step1', $logic->getViewData());
+		return $this->view('signup_step1', $logic->getViewData());
 	}
 
 	public function signup_step2_get(HttpRequest $request): IActionResult
@@ -106,7 +106,7 @@ final class AccountController extends PageControllerBase
 		$logic = $this->createLogic(AccountSignupStep2Logic::class, $request);
 		$logic->run(LogicCallMode::initialize());
 
-		return $this->view('view_signup_step2', $logic->getViewData());
+		return $this->view('signup_step2', $logic->getViewData());
 	}
 
 	public function signup_step2_post(HttpRequest $request): IActionResult
@@ -116,7 +116,7 @@ final class AccountController extends PageControllerBase
 			return $this->redirectPath("/");
 		}
 
-		return $this->view('view_signup_step2', $logic->getViewData());
+		return $this->view('signup_step2', $logic->getViewData());
 	}
 
 

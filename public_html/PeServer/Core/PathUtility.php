@@ -34,7 +34,7 @@ abstract class PathUtility
 			}
 		}
 
-		$result = StringUtility::join($absolutes, DIRECTORY_SEPARATOR);
+		$result = StringUtility::join(DIRECTORY_SEPARATOR, $absolutes);
 		if (StringUtility::getByteCount($targetPath) && $targetPath[0] === DIRECTORY_SEPARATOR) {
 			$result = DIRECTORY_SEPARATOR . $result;
 		}
@@ -59,7 +59,7 @@ abstract class PathUtility
 		}, ARRAY_FILTER_USE_BOTH);
 
 
-		$joinedPath = StringUtility::join($paths, DIRECTORY_SEPARATOR);
+		$joinedPath = StringUtility::join(DIRECTORY_SEPARATOR, $paths);
 		return self::toCanonicalize($joinedPath);
 	}
 

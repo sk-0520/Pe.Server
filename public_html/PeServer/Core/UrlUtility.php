@@ -90,7 +90,7 @@ abstract class UrlUtility
 			}
 		}
 
-		return StringUtility::join($items, '&');
+		return StringUtility::join('&', $items);
 	}
 
 	/**
@@ -148,7 +148,7 @@ abstract class UrlUtility
 			return StringUtility::trim($i, " \t/?");
 		}, $paths));
 
-		$joinUrl = StringUtility::join([$url, ...$trimPaths], '/');
+		$joinUrl = StringUtility::join('/', [$url, ...$trimPaths]);
 		if (1 < ArrayUtility::getCount($pair)) {
 			$joinUrl .= '?' . $pair[1];
 		}

@@ -14,7 +14,7 @@ class ArchiverTest extends TestClass
 	{
 		$a = new Binary('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ');
 		$b = Archiver::compressGzip($a);
-		$c = Archiver::expandGzip($b);
+		$c = Archiver::extractGzip($b);
 		$this->assertEquals($a->getRaw(), $c->getRaw());
 	}
 }

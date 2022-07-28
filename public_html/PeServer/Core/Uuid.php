@@ -107,7 +107,7 @@ abstract class Uuid
 			StringUtility::substring($c, 8 + 4 + 4, 4),
 			StringUtility::substring($c, 8 + 4 + 4 + 4, 12),
 		];
-		$e = StringUtility::join($d, '-');
+		$e = StringUtility::join('-', $d);
 
 		if (!self::isGuid($e)) {
 			throw new ArgumentException();

@@ -277,7 +277,7 @@ class Route
 					continue;
 				}
 
-				$calcKey = StringUtility::join(array_column($calcPaths, 'key'), '/');
+				$calcKey = StringUtility::join('/', array_column($calcPaths, 'key'));
 				if ($key !== $calcKey) {
 					continue;
 				}

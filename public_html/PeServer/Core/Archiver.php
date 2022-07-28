@@ -36,7 +36,7 @@ abstract class Archiver
 	 * @param Binary $data 圧縮データ。
 	 * @return Binary 展開データ。
 	 */
-	public static function expandGzip(Binary $data): Binary
+	public static function extractGzip(Binary $data): Binary
 	{
 		$result = gzdecode($data->getRaw());
 		if ($result === false) {

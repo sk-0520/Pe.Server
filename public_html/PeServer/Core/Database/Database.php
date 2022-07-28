@@ -63,11 +63,11 @@ class Database extends DisposerBase implements IDatabaseContext
 
 	protected function disposeImpl(): void
 	{
-		parent::disposeImpl();
-
 		if ($this->isTransactions) {
 			$this->rollback();
 		}
+
+		parent::disposeImpl();
 	}
 
 	/**

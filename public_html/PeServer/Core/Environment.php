@@ -73,4 +73,14 @@ abstract class Environment
 
 		return (string)time();
 	}
+
+	public static function getVariable(string $name): ?string
+	{
+		$result = getenv($name);
+		if ($result === false) {
+			return null;
+		}
+
+		return $result;
+	}
 }

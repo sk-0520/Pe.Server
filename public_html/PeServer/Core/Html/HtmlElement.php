@@ -77,7 +77,7 @@ final class HtmlElement extends HtmlElementBase
 	 */
 	public function setClassList(array $classNames): void
 	{
-		$classValue = StringUtility::join($classNames, ' ');
+		$classValue = StringUtility::join(' ', $classNames);
 		$this->setAttribute('class', $classValue);
 	}
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\TemplatePlugin;
 
+use PeServer\Core\Alignment;
 use \Throwable;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Binary;
@@ -15,8 +16,9 @@ use PeServer\Core\Image\ImageOption;
 use PeServer\Core\Image\ImageType;
 use PeServer\Core\Image\Point;
 use PeServer\Core\Image\Rectangle;
-use PeServer\Core\Image\RgbColor;
+use PeServer\Core\Image\Color\RgbColor;
 use PeServer\Core\Image\Size;
+use PeServer\Core\Image\TextSetting;
 use PeServer\Core\InitialValue;
 use PeServer\Core\Mvc\TemplatePlugin\TemplateFunctionBase;
 use PeServer\Core\Mvc\TemplatePlugin\TemplatePluginArgument;
@@ -85,26 +87,16 @@ class BotTextImageFunction extends TemplateFunctionBase
 		$foregroundColor = RgbColor::fromHtmlColorCode($foregroundColorText);
 		$obfuscateLevel = TypeConverter::parseBoolean(ArrayUtility::getOr($this->params, 'obfuscate-level', 0));
 
-		$rectWidth = $width - 1;
-		$rectHeight = $height - 1;
-
+		$size = new Size($width, $height);
 		$fontFilePath = PathUtility::joinPath($this->argument->baseDirectoryPath, ...CoreUtility::getDefaultFontParts());
+		$textSetting = new TextSetting(Alignment::HORIZONTAL_CENTER, Alignment::VERTICAL_CENTER, $fontFilePath, 0);
 
-		$area = Graphics::calculateTextArea($text, $fontFilePath, $fontSize, 0);
-
-		$textWidth = $area->rightTop->x - $area->leftBottom->x;
-		$textHeight = $area->leftBottom->y - $area->rightTop->y;
-
-		/** @phpstan-var positive-int */
-		$x = (int)(($rectWidth - $textWidth) / 2);
-		/** @phpstan-var positive-int */
-		$y = (int)((($rectHeight - $textHeight) / 2) - $area->rightTop->y);
-
-		$image = Graphics::create(new Size($width, $height));
+		$image = Graphics::create($size);
 		$image->setDpi(new Size(300, 300));
 
-		$image->fillRectangle($backgroundColor, new Rectangle(new Point(0, 0), new Size($width, $height)));
-		$image->drawText($text, $fontFilePath, $fontSize, 0, new Point($x, $y), $foregroundColor);
+		$rectangle = new Rectangle(new Point(0, 0), $size);
+		$image->fillRectangle($backgroundColor, $rectangle);
+		$image->drawText($text, $fontSize, $rectangle, $foregroundColor, $textSetting);
 
 		$binary = $image->toImage(ImageOption::png());
 		$image->dispose();

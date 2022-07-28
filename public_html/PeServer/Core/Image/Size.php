@@ -6,8 +6,11 @@ namespace PeServer\Core\Image;
 
 use \Stringable;
 use PeServer\Core\Code;
+use PeServer\Core\Throws\ArgumentException;
 
 /**
+ * 幅と高さを持つ。
+ *
  * @immutable
  */
 class Size implements Stringable
@@ -23,7 +26,14 @@ class Size implements Stringable
 	public function __construct(
 		public int $width,
 		public int $height
-	) {}
+	) {
+		if($width < 1) { //@phpstan-ignore-line positive-int
+			throw new ArgumentException('$width');
+		}
+		if($height < 1) { //@phpstan-ignore-line positive-int
+			throw new ArgumentException('$height');
+		}
+	}
 
 	public function __toString(): string
 	{

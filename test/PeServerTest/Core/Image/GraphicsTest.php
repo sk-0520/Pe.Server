@@ -8,7 +8,7 @@ use PeServer\Core\Image\Graphics;
 use PeServer\Core\Image\ImageOption;
 use PeServer\Core\Image\ImageType;
 use PeServer\Core\Image\Point;
-use PeServer\Core\Image\RgbColor;
+use PeServer\Core\Image\Color\RgbColor;
 use PeServer\Core\Image\Size;
 use PeServerTest\TestClass;
 
@@ -25,7 +25,7 @@ class GraphicsTest extends TestClass
 
 	public function test_pixel()
 	{
-		$expected = new RgbColor(0xff, 0xff, 0xff);
+		$expected = new RgbColor(0xff, 0xff, 0xff, 0x10);
 		$size = new Size(100, 100);
 		$point = new Point(50, 50);
 		$graphics = Graphics::create($size);
@@ -36,6 +36,7 @@ class GraphicsTest extends TestClass
 		$this->assertEquals($expected->red, $actual->red);
 		$this->assertEquals($expected->green, $actual->green);
 		$this->assertEquals($expected->blue, $actual->blue);
+		$this->assertEquals($expected->alpha, $actual->alpha);
 	}
 
 	public function test_load()

@@ -403,13 +403,13 @@ abstract class StringUtility
 	/**
 	 * 文字列結合。
 	 *
-	 * @param string[] $values
 	 * @param string $separator
+	 * @param string[] $values
 	 * @phpstan-param non-empty-string $separator
 	 * @return string
 	 * @see https://www.php.net/manual/function.implode.php
 	 */
-	public static function join(array $values, string $separator): string
+	public static function join(string $separator, array $values): string
 	{
 		return implode($separator, $values);
 	}

@@ -8,6 +8,8 @@ use \Stringable;
 use PeServer\Core\Code;
 
 /**
+ * 矩形領域。
+ *
  * @immutable
  */
 class Rectangle implements Stringable
@@ -15,8 +17,8 @@ class Rectangle implements Stringable
 	/**
 	 * 生成。
 	 *
-	 * @param Point $point
-	 * @param Size $size
+	 * @param Point $point 開始座標。
+	 * @param Size $size 開始座標からの幅と高さ。
 	 */
 	public function __construct(
 		public Point $point,

@@ -64,10 +64,10 @@ final class Binary implements Stringable
 		return bin2hex($this->binary);
 	}
 
-	public function convert(int $from, int $to): string
-	{
-		return base_convert($this->binary, $from, $to);
-	}
+	// public function convert(int $from, int $to): string
+	// {
+	// 	return base_convert($this->binary, $from, $to);
+	// }
 
 	/**
 	 * base64 文字列に変換。

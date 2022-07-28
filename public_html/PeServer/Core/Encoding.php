@@ -9,13 +9,18 @@ use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\EncodingException;
 use PeServer\Core\Throws\Throws;
 
+/**
+ * エンコーディング処理。
+ *
+ * コンストラクタで指定されたエンコード名に対して通常文字列へあれこれする。
+ */
 class Encoding
 {
 	public const ENCODE_ASCII = 'ASCII';
 	public const ENCODE_UTF8 = 'UTF-8';
 	public const ENCODE_UTF16 = 'UTF-16';
 	public const ENCODE_UTF32 = 'UTF-32';
-	public const ENCODE_SHIFT_JIS_WIN = 'SJIS-win';
+	public const ENCODE_WIN_JA = 'SJIS-win';
 
 	/**
 	 * キャッシュされたエンコーディング名一覧。
@@ -34,7 +39,7 @@ class Encoding
 	/**
 	 * 生成
 	 *
-	 * @param string $name
+	 * @param string $name エンコード名。
 	 * @phpstan-param non-empty-string|Encoding::ENCODE_* $name
 	 */
 	public function __construct(string $name)
@@ -103,7 +108,7 @@ class Encoding
 	 */
 	public static function getUtf8Encoding(): Encoding
 	{
-		return new Encoding('UTF-8');
+		return new Encoding(self::ENCODE_UTF8);
 	}
 
 	/**

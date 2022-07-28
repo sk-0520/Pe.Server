@@ -69,6 +69,9 @@ abstract class Regex
 		if($result->value === false) {
 			throw new RegexException(preg_last_error_msg(), preg_last_error());
 		}
+		if($result->value === 0) {
+			return [];
+		}
 
 		// 最初のやつは無かったことにする
 		array_shift($matches);

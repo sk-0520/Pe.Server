@@ -262,9 +262,9 @@ final class LocalPhpErrorReceiver extends DisposerBase
 
 	protected function disposeImpl(): void
 	{
-		parent::disposeImpl();
-
 		restore_error_handler();
+
+		parent::disposeImpl();
 	}
 
 	/**

@@ -8,22 +8,29 @@ use \Stringable;
 use PeServer\Core\Code;
 
 /**
- * @immutable
+ * 座標。
  */
 class Point implements Stringable
 {
+	private static ?Point $emptyValue = null;
+
 	/**
 	 * 生成
 	 *
-	 * @param int $x 横幅。
-	 * @phpstan-param UnsignedIntegerAlias $x
-	 * @param int $y 高さ。
-	 * @phpstan-param UnsignedIntegerAlias $y
+	 * @param int $x X座標。
+	 * @param int $y Y座標。
 	 */
 	public function __construct(
+		/** @readonly */
 		public int $x,
+		/** @readonly */
 		public int $y
 	) {
+	}
+
+	public static function empty(): Point
+	{
+		return self::$emptyValue ??= new Point(0, 0);
 	}
 
 	public function __toString(): string
