@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Image;
 
+use \Serializable;
 use \Stringable;
 use PeServer\Core\Code;
 use PeServer\Core\Throws\ArgumentException;
@@ -13,7 +14,7 @@ use PeServer\Core\Throws\ArgumentException;
  *
  * @immutable
  */
-class Size implements Stringable
+class Size implements Stringable, Serializable
 {
 	/**
 	 * 生成
@@ -33,6 +34,24 @@ class Size implements Stringable
 		if($height < 1) { //@phpstan-ignore-line positive-int
 			throw new ArgumentException('$height');
 		}
+	}
+
+	public function serialize(): string
+	{
+		$values = [
+			'width' => $this->width,
+			'height' => $this->height,
+		];
+
+		return serialize($values);
+	}
+
+	public function unserialize(string $data): void
+	{
+		$values = unserialize($data);
+
+		$this->width = $values['width']; //@phpstan-ignore-line Serializable
+		$this->height = $values['height']; //@phpstan-ignore-line Serializable
 	}
 
 	public function __toString(): string

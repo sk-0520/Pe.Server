@@ -13,6 +13,7 @@ parameters:
   reportStaticMethodSignatures: true
   checkTooWideReturnTypesInProtectedAndPublicMethods: true
   checkGenericClassInNonGenericObjectType: true
+  checkDynamicProperties: true
 
   paths:
     - ../public_html

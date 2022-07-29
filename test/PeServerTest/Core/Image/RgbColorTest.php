@@ -18,11 +18,11 @@ class RgbColorTest extends TestClass
 		$tests = [
 			new Data(new RgbColor(0xff, 0xff, 0xff), "#ffffff"),
 			new Data(new RgbColor(0xff, 0xff, 0xff), "#FFFFFF"),
-			new Data(new RgbColor(0xab, 0xcd, 0xef, 0x40), "#abcdef40"),
+			new Data(new RgbColor(0xab, 0xcd, 0xef, 0x40 / 2), "#abcdef40"),
 
 			new Data(new RgbColor(0xff, 0xff, 0xff), "ffffff"),
 			new Data(new RgbColor(0xff, 0xff, 0xff), "FFFFFF"),
-			new Data(new RgbColor(0xab, 0xcd, 0xef, 0x40), "abcdef40"),
+			new Data(new RgbColor(0xab, 0xcd, 0xef, 0x40 / 2), "abcdef40"),
 
 			new Data(new RgbColor(0xaa, 0xbb, 0xcc), "#abc"),
 		];
@@ -37,5 +37,22 @@ class RgbColorTest extends TestClass
 		$this->expectException(NotSupportedException::class);
 		RgbColor::fromHtmlColorCode("rgb(1,1,1)");
 		$this->fail();
+	}
+
+	public function test_serializable()
+	{
+		$tests = [
+			new RgbColor(0x00, 0x00, 0x00),
+			new RgbColor(0x12, 0x34, 0x56),
+			new RgbColor(0x12, 0x34, 0x56, 0x78),
+		];
+		foreach ($tests as $test) {
+			$s = serialize($test);
+			$actual = unserialize($s);
+			$this->assertEquals($test->red, $actual->red, (string)$actual->red);
+			$this->assertEquals($test->green, $actual->green, (string)$actual->red);
+			$this->assertEquals($test->blue, $actual->blue, (string)$actual->blue);
+			$this->assertEquals($test->alpha, $actual->alpha, (string)$actual->alpha);
+		}
 	}
 }

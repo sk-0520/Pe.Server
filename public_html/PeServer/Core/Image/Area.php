@@ -72,6 +72,28 @@ class Area implements Stringable
 		return $this->leftBottom->y - $this->rightTop->y;
 	}
 
+	public function serialize(): string
+	{
+		$values = [
+			'leftTop' => $this->leftTop,
+			'leftBottom' => $this->leftBottom,
+			'rightTop' => $this->rightTop,
+			'rightBottom' => $this->rightBottom,
+		];
+
+		return serialize($values);
+	}
+
+	public function unserialize(string $data): void
+	{
+		$values = unserialize($data);
+
+		$this->leftTop = $values['leftTop']; //@phpstan-ignore-line Serializable
+		$this->leftBottom = $values['leftBottom']; //@phpstan-ignore-line Serializable
+		$this->rightTop = $values['rightTop']; //@phpstan-ignore-line Serializable
+		$this->rightBottom = $values['rightBottom']; //@phpstan-ignore-line Serializable
+	}
+
 	public function __toString(): string
 	{
 		return Code::toString(

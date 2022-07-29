@@ -35,14 +35,13 @@ class SessionAccount implements Serializable
 
 	public function serialize(): string
 	{
-		$values = serialize([
+		return serialize([
 			'user_id' => $this->userId,
 			'login_id' => $this->loginId,
 			'name' => $this->name,
 			'level' => $this->level,
 			'state' => $this->state,
 		]);
-		return $values;
 	}
 
 	public function unserialize(string $data): void

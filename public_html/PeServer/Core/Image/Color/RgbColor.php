@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Image\Color;
 
+use \Serializable;
 use \Stringable;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Code;
@@ -16,7 +17,7 @@ use PeServer\Core\Throws\NotSupportedException;
 /**
  * @immutable
  */
-class RgbColor implements IColor
+class RgbColor implements IColor, Serializable
 {
 	public const RGB_MINIMUM = 0;
 	public const RGB_MAXIMUM = 255;
@@ -59,15 +60,22 @@ class RgbColor implements IColor
 	 * @param string $s
 	 * @param bool $isAlpha
 	 * @return int
-	 * @phpstan-return int<self::RGB_MINIMUM,self::RGB_MAXIMUM>|int<IColor::ALPHA_NONE,IColor::ALPHA_FULL>
+	 * @phpstan-return ($isAlpha is true ? int<IColor::ALPHA_NONE,IColor::ALPHA_FULL>: int<self::RGB_MINIMUM,self::RGB_MAXIMUM>)
 	 */
 	private static function fromHex(string $s, bool $isAlpha/* 0-127に制限が必要 */): int
 	{
 		if (StringUtility::getByteCount($s) === 1) {
 			$s .= $s;
 		}
-		/** @phpstan-var int<self::RGB_MINIMUM,self::RGB_MAXIMUM>|int<IColor::ALPHA_NONE,IColor::ALPHA_FULL> */
+
 		$result = (int)hexdec($s);
+
+		if ($isAlpha) {
+			/** @phpstan-var int<IColor::ALPHA_NONE,IColor::ALPHA_FULL> */
+			return (int)($result / 2);
+		};
+
+		/** @phpstan-var int<self::RGB_MINIMUM,self::RGB_MAXIMUM> */
 		return $result;
 	}
 
@@ -96,7 +104,6 @@ class RgbColor implements IColor
 			return new RgbColor($r, $g, $b);
 		}
 
-		/** @phpstan-var int<IColor::ALPHA_NONE,IColor::ALPHA_FULL> */
 		$a = self::fromHex($matchers['A'], true);
 		return new RgbColor($r, $g, $b, $a);
 	}
@@ -108,6 +115,33 @@ class RgbColor implements IColor
 		}
 
 		return StringUtility::format('#%02x%02x%02x%02x', $this->red, $this->green, $this->blue, $this->alpha);
+	}
+
+	public function serialize(): string
+	{
+		$values = [
+			'r' => $this->red,
+			'g' => $this->green,
+			'b' => $this->blue,
+		];
+		if ($this->alpha !== IColor::ALPHA_NONE) {
+			$values['a'] = $this->alpha;
+		}
+
+		return serialize($values);
+	}
+
+	public function unserialize(string $data): void
+	{
+		$values = unserialize($data);
+		$this->red = (int)$values['r']; //@phpstan-ignore-line Serializable
+		$this->green = (int)$values['g']; //@phpstan-ignore-line Serializable
+		$this->blue = (int)$values['b']; //@phpstan-ignore-line Serializable
+		if (isset($values['a'])) {
+			$this->alpha = (int)$values['a']; //@phpstan-ignore-line Serializable
+		} else {
+			$this->alpha = self::ALPHA_NONE; //@phpstan-ignore-line Serializable
+		}
 	}
 
 	public function __toString(): string

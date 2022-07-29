@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PeServerTest;
 
+error_reporting(E_ALL);
+
 //set_include_path(__DIR__ . ':' .  __DIR__ . '/../public_html');
 
 $files = glob(__DIR__ . '/phpunit.phar.*');
