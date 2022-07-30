@@ -98,12 +98,12 @@ class BotTextImageFunction extends TemplateFunctionBase
 		$image->fillRectangle($backgroundColor, $rectangle);
 		$image->drawText($text, $fontSize, $rectangle, $foregroundColor, $textSetting);
 
-		$binary = $image->toImage(ImageOption::png());
+		$htmlSource = $image->exportHtmlSource(ImageOption::png());
 		$image->dispose();
 
 		$dom = new HtmlDocument();
 		$img = $dom->addElement('img');
-		$img->setAttribute('src', 'data:image/png;base64,' . $binary->toBase64());
+		$img->setAttribute('src', $htmlSource);
 
 		$textHash = Cryptography::generateHashString(self::HASH_ALGORITHM, new Binary($text));
 		$img->setAttribute('data-hash', $textHash);

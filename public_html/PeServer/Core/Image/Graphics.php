@@ -536,18 +536,8 @@ class Graphics extends DisposerBase
 		);
 	}
 
-	/**
-	 * 画像データ出力。
-	 *
-	 * @param ImageOption $option
-	 * @return Binary
-	 */
-	public function toImage(ImageOption $option): Binary
+	private function exportImageCore(ImageOption $option): Binary
 	{
-		if ($option->imageType == ImageType::AUTO) {
-			throw new ArgumentException('ImageType::AUTO');
-		}
-
 		return OutputBuffer::get(fn () => match ($option->imageType) {
 			ImageType::PNG => imagepng($this->image, null, ...$option->options()),
 			ImageType::JPEG => imagejpeg($this->image, null, ...$option->options()),
@@ -555,5 +545,40 @@ class Graphics extends DisposerBase
 			ImageType::BMP => imagebmp($this->image, null, ...$option->options()),
 			default  => throw new NotImplementedException(),
 		});
+	}
+
+	/**
+	 * 画像データ出力。
+	 *
+	 * @param ImageOption $option
+	 * @return Binary
+	 */
+	public function exportImage(ImageOption $option): Binary
+	{
+		if ($option->imageType == ImageType::AUTO) {
+			throw new ArgumentException('ImageType::AUTO');
+		}
+
+		return $this->exportImageCore($option);
+	}
+
+	public function exportHtmlSource(ImageOption $option): string
+	{
+		if ($option->imageType == ImageType::AUTO) {
+			throw new ArgumentException('ImageType::AUTO');
+		}
+
+		$image = $this->exportImageCore($option);
+
+		$mime = match ($option->imageType) {
+			default => ImageType::toMime($option->imageType),
+		};
+
+		$data = 'data:' . $mime . ';base64,';
+		$body = $image->toBase64();
+
+		$result = $data . $body;
+
+		return $result;
 	}
 }

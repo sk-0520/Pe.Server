@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Image;
 
+use PeServer\Core\Throws\ImageException;
+
 /**
  * `IMAGETYPE_*` ラッパー。
  */
@@ -44,5 +46,27 @@ abstract class ImageType
 	public static function toMime(int $imageType): string
 	{
 		return image_type_to_mime_type($imageType);
+	}
+
+	/**
+	 * 拡張子を取得。
+	 *
+	 * `image_type_to_extension` ラッパー。
+	 *
+	 * @param int $imageType
+	 * @phpstan-param ImageType::* $imageType
+	 * @param bool $dot 拡張子の前にドットをつけるかどうか。
+	 * @return string
+	 * @throws ImageException
+	 * @see https://www.php.net/manual/ja/function.image-type-to-extension.php
+	 */
+	public static function toExtension(int $imageType, bool $dot = false): string
+	{
+		$result = image_type_to_extension($imageType, !$dot);
+		if($result === false) {
+			throw new ImageException();
+		}
+
+		return $result;
 	}
 }
