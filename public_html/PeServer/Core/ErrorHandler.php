@@ -179,7 +179,7 @@ class ErrorHandler
 	}
 
 	/**
-	 * Undocumented function
+	 * 検出できるソースファイル内容をすべて取得。
 	 *
 	 * @param string $file
 	 * @param Throwable|null $throwable
