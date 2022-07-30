@@ -67,6 +67,7 @@ abstract class RouteConfiguration
 					->addAction('logout', HttpMethod::gets())
 					->addAction('signup', HttpMethod::gets(), 'signup_step1_get', [SignupStep1FilterMiddleware::class])
 					->addAction('signup', HttpMethod::post(), 'signup_step1_post', [SignupStep1FilterMiddleware::class])
+					->addAction('signup/notify', HttpMethod::gets(), 'signup_notify', [SignupStep1FilterMiddleware::class])
 					->addAction('signup/:token@[a-zA-Z0-9]{80}', HttpMethod::gets(), 'signup_step2_get', [SignupStep1FilterMiddleware::class, SignupStep2FilterMiddleware::class])
 					->addAction('signup/:token@[a-zA-Z0-9]{80}', HttpMethod::post(), 'signup_step2_post', [SignupStep1FilterMiddleware::class, SignupStep2FilterMiddleware::class])
 					->addAction('user', HttpMethod::gets(), self::DEFAULT_METHOD, [UserAccountFilterMiddleware::class])

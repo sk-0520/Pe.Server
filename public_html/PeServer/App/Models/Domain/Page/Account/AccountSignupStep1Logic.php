@@ -132,8 +132,6 @@ class AccountSignupStep1Logic extends PageLogicBase
 		$mailer->setMessage(new EmailMessage(null, $html));
 
 		$mailer->send();
-
-		$this->result['token'] = $token;
 	}
 
 	protected function cleanup(LogicCallMode $callMode): void

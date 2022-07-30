@@ -7,6 +7,7 @@ namespace PeServer\App\Controllers\Page;
 use PeServer\App\Controllers\Page\PageControllerBase;
 use PeServer\App\Models\Domain\Page\Account\AccountLoginLogic;
 use PeServer\App\Models\Domain\Page\Account\AccountLogoutLogic;
+use PeServer\App\Models\Domain\Page\Account\AccountSignupNotifyLogic;
 use PeServer\App\Models\Domain\Page\Account\AccountSignupStep1Logic;
 use PeServer\App\Models\Domain\Page\Account\AccountSignupStep2Logic;
 use PeServer\App\Models\Domain\Page\Account\AccountUserEditLogic;
@@ -60,8 +61,8 @@ final class AccountController extends PageControllerBase
 		$logic = $this->createLogic(AccountLoginLogic::class, $request);
 		if ($logic->run(LogicCallMode::submit())) {
 			if ($this->stores->session->tryGet(SessionManager::ACCOUNT, $account)) {
-			/** @var SessionAccount $account */
-			if ($account->level === UserLevel::SETUP) {
+				/** @var SessionAccount $account */
+				if ($account->level === UserLevel::SETUP) {
 					return $this->redirectPath('setting/setup');
 				}
 			}
@@ -92,14 +93,19 @@ final class AccountController extends PageControllerBase
 	{
 		$logic = $this->createLogic(AccountSignupStep1Logic::class, $request);
 		if ($logic->run(LogicCallMode::submit())) {
-			if ($logic->tryGetResult('token', $token)) {
-				return $this->redirectPath("account/signup/$token");
-			}
-			throw new InvalidOperationException();
+			return $this->redirectPath("account/signup/notify");
 		}
 
 		return $this->view('signup_step1', $logic->getViewData());
 	}
+
+	public function signup_notify(HttpRequest $request): IActionResult
+	{
+		$logic = $this->createLogic(AccountSignupNotifyLogic::class, $request);
+		$logic->run(LogicCallMode::initialize());
+		return $this->view('signup_notify', $logic->getViewData());
+	}
+
 
 	public function signup_step2_get(HttpRequest $request): IActionResult
 	{
