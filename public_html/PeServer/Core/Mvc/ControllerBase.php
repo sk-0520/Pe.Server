@@ -35,11 +35,6 @@ abstract class ControllerBase
 	 * @readonly
 	 */
 	protected ILogger $logger;
-	/**
-	 * コントローラ完全名からコントローラベース名を取得する際にスキップする文言(文字列長が使用される)
-	 * このアプリケーション内に閉じる場合は基本的に変更不要だが、別アプリケーションに持ち運ぶ場合などはここを変更する必要あり(継承側で書き換える想定)。
-	 */
-	protected string $skipBaseName = 'PeServer\\App\\Controllers\\Page';
 
 	/** @readonly */
 	protected Stores $stores;
@@ -57,6 +52,13 @@ abstract class ControllerBase
 		$this->stores = $argument->stores;
 		$this->logger = $argument->logger;
 	}
+
+	/**
+	 * コントローラ完全名からコントローラベース名を取得する際にスキップする文言(文字列長が使用される)
+	 *
+	 * @return string
+	 */
+	protected abstract function getSkipBaseName(): string;
 
 	/**
 	 * ロジック用パラメータ生成処理。
@@ -152,8 +154,9 @@ abstract class ControllerBase
 	{
 		$lastWord = 'Controller';
 
-		$index = StringUtility::getPosition($controllerName, $this->skipBaseName);
-		$length = StringUtility::getLength($this->skipBaseName);
+		$skipBaseName = $this->getSkipBaseName();
+		$index = StringUtility::getPosition($controllerName, $skipBaseName);
+		$length = StringUtility::getLength($skipBaseName);
 
 		$controllerClassName = StringUtility::substring($controllerName, $index + $length + 1);
 		$controllerBaseName = StringUtility::substring($controllerClassName, 0, StringUtility::getLength($controllerClassName) - StringUtility::getLength($lastWord));

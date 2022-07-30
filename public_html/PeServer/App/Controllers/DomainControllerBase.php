@@ -11,4 +11,9 @@ abstract class DomainControllerBase extends ControllerBase
 	{
 		parent::__construct($argument);
 	}
+
+	protected function getSkipBaseName(): string
+	{
+		return 'PeServer\\App\\Controllers\\Page';
+	}
 }
