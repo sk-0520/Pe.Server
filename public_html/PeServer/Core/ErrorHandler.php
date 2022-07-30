@@ -175,7 +175,7 @@ class ErrorHandler
 	private function _catchError(int $errorNumber, string $message, string $file, int $lineNumber, ?Throwable $throwable)
 	{
 		$this->catchError($errorNumber, $message, $file, $lineNumber, $throwable);
-		exit;
+		exit($errorNumber);
 	}
 
 	/**
