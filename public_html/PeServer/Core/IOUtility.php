@@ -17,7 +17,8 @@ use PeServer\Core\Throws\FileNotFoundException;
  */
 abstract class IOUtility
 {
-	public const DIRECTORY_PERMISSIONS = 0777;
+	/** ディレクトリ作成時の通常権限。 */
+	public const DIRECTORY_PERMISSIONS = 0755;
 
 	/**
 	 * ファイルサイズを取得。
@@ -39,7 +40,7 @@ abstract class IOUtility
 	}
 
 	/**
-	 * パスから内容を取得。
+	 * ファイルの内容を取得。
 	 *
 	 * @param string $path
 	 * @return Binary
@@ -57,7 +58,7 @@ abstract class IOUtility
 	}
 
 	/**
-	 * 対象パスに指定データを書き込み。
+	 * 対象ファイルに指定データを書き込み。
 	 *
 	 * @param string $path
 	 * @param mixed $data
@@ -105,6 +106,7 @@ abstract class IOUtility
 	 *
 	 * @param string $path パス。
 	 * @return array<mixed> 応答JSON。
+	 * @param Json|null $json JSON処理
 	 * @throws IOException
 	 * @throws ParseException パース失敗。
 	 */
@@ -124,6 +126,7 @@ abstract class IOUtility
 	 *
 	 * @param string $path
 	 * @param array<mixed>|\stdClass $data
+	 * @param Json|null $json JSON処理
 	 * @return void
 	 * @throws IOException
 	 * @throws ParseException
