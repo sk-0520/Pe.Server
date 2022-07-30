@@ -14,39 +14,6 @@ pre {
 	padding: 0.5ex;
 }
 
-h2 {
-	font-size: 1.2em;
-	margin-top: 1ex;
-	margin-bottom: 1ex;
-	padding-bottom: 0.5ex;
-	padding-left: 0.5ex;
-	font-weight: bold;
-	border-bottom: 2px dotted #888;
-}
-
-h3 {
-	font-size: 1.1em;
-	margin-bottom: 0.8ex;
-	padding-bottom: 0.5ex;
-	padding-left: 0.5ex;
-	font-weight: bold;
-	border-bottom: 1px dotted #aaa;
-}
-
-@for $i from 3 through 6 {
-	> h#{7 - $i} {
-		font-size: #{15 + ($i * 0.2)}pt !important;
-		line-height: 110% !important;
-		margin-top: 0.5em !important;
-		margin-bottom: 0.5em !important;
-		font-weight: bold !important;
-		border-left: #{$i}px solid #888 !important;
-		border-bottom: 1px dotted #888 !important;
-		padding-left: 0.5rem !important;
-		margin-left: #{7 - $i}px !important;
-	}
-}
-
 p,
 dl,
 table,
