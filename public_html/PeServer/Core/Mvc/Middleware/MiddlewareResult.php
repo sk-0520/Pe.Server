@@ -21,7 +21,15 @@ abstract class MiddlewareResult
 	protected const RESULT_KIND_NONE = 0;
 	protected const RESULT_KIND_STATUS = 1;
 
+	/** 結果なしキャッシュ。 */
 	private static ?MiddlewareResult $none;
+	/**
+	 * 結果なし。
+	 *
+	 * 特に何かすることのないミドルウェアはこいつを呼べば問題なし。
+	 *
+	 * @return MiddlewareResult
+	 */
 	public static function none(): MiddlewareResult
 	{
 		return self::$none ??= new class extends MiddlewareResult
@@ -71,28 +79,30 @@ abstract class MiddlewareResult
 	}
 
 	/**
-	 * Undocumented variable
-	 *
-	 * @var integer
-	 * @phpstan-var self::RESULT_KIND_*
-	 */
-	private int $kind;
-	/**
-	 * Undocumented function
+	 * 生成。
 	 *
 	 * @param integer $kind
 	 * @phpstan-param self::RESULT_KIND_* $kind
 	 */
-	protected function __construct(int $kind)
-	{
-		$this->kind = $kind;
+	protected function __construct(
+		/** @readonly */
+		private int $kind
+	) {
 	}
 
+	/**
+	 * 次のミドルウェア処理へ移れるか。
+	 *
+	 * @return bool 真: 処理可能。
+	 */
 	public final function canNext(): bool
 	{
 		return $this->kind === self::RESULT_KIND_NONE;
 	}
 
+	/**
+	 * ミドルウェア結果適用。
+	 */
 	public abstract function apply(): void;
 }
 

@@ -77,7 +77,8 @@ abstract class LogicBase implements IValidationReceiver
 	/**
 	 * 要素設定がなされている場合に応答データのキーをこの項目に固定。
 	 *
-	 * @var non-empty-string[]
+	 * @var string[]
+	 * @phpstan-var non-empty-string[]
 	 */
 	private array $keys = [];
 
@@ -313,7 +314,8 @@ abstract class LogicBase implements IValidationReceiver
 	/**
 	 * 応答HTTPヘッダ追加。
 	 *
-	 * @param non-empty-string $name
+	 * @param string $name
+	 * @phpstan-param non-empty-string $name
 	 * @param string $value
 	 * @return void
 	 */

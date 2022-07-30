@@ -213,7 +213,7 @@ abstract class Cryptography
 	}
 
 	/**
-	 * ハッシュ化処理。
+	 * ハッシュ化処理(文字列)。
 	 *
 	 * `hash` ラッパー。
 	 *
@@ -221,7 +221,7 @@ abstract class Cryptography
 	 * @phpstan-param non-empty-string $algorithm
 	 * @param Binary $binary
 	 * @-param array{seed?:?int} $options
-	 * @return string
+	 * @return string 文字列表現。
 	 * @throws CryptoException
 	 * @see https://php.net/manual/function.hash.php
 	 */
@@ -231,7 +231,7 @@ abstract class Cryptography
 	}
 
 	/**
-	 * ハッシュ化処理。
+	 * ハッシュ化処理(バイナリ)。
 	 *
 	 * `hash` ラッパー。
 	 *
@@ -239,7 +239,7 @@ abstract class Cryptography
 	 * @phpstan-param non-empty-string $algorithm
 	 * @param Binary $binary
 	 * @-param array{seed?:?int} $options
-	 * @return Binary
+	 * @return Binary ハッシュバイナリ。
 	 * @throws CryptoException
 	 * @see https://php.net/manual/function.hash.php
 	 */

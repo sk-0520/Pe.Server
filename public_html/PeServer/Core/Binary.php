@@ -6,7 +6,7 @@ namespace PeServer\Core;
 
 use \Stringable;
 use PeServer\Core\Throws\ArgumentException;
-use PeServer\Core\Throws\NotStringException;
+use PeServer\Core\Throws\NullByteStringException;
 
 /**
  * PHP文字列がバイトデータなのか普通の文字列なのかよくわからん。
@@ -47,7 +47,11 @@ final class Binary implements Stringable
 	/**
 	 * バイト長を取得。
 	 *
+	 * `strlen` ラッパー。
+	 *
 	 * @return integer
+	 * @phpstan-return UnsignedIntegerAlias
+	 * @see https://www.php.net/manual/function.strlen.php
 	 */
 	public function getLength(): int
 	{
@@ -57,7 +61,10 @@ final class Binary implements Stringable
 	/**
 	 * 16進数文字列に変換。
 	 *
-	 * @return string [0-9a-f]{2} で構成された文字列。
+	 * `bin2hex` ラッパー。
+	 *
+	 * @return string `[0-9a-f]{2}*` で構成された文字列。
+	 * @see https://www.php.net/manual/function.bin2hex.php
 	 */
 	public function toHex(): string
 	{
@@ -72,7 +79,10 @@ final class Binary implements Stringable
 	/**
 	 * base64 文字列に変換。
 	 *
+	 * `base64_encode` ラッパー。
+	 *
 	 * @return string
+	 * @see https://www.php.net/manual/function.base64-encode.php
 	 */
 	public function toBase64(): string
 	{
@@ -82,9 +92,12 @@ final class Binary implements Stringable
 	/**
 	 * base64 文字列から Binary を取得。
 	 *
+	 * `base64_decode` ラッパー。
+	 *
 	 * @param string $base64
 	 * @return Binary
 	 * @throws ArgumentException 変換失敗。
+	 * @see https://www.php.net/manual/function.base64-decode.php
 	 */
 	public static function fromBase64(string $base64): Binary
 	{
@@ -111,12 +124,12 @@ final class Binary implements Stringable
 	 * バイトデータを文字列に変換。
 	 *
 	 * @return string
-	 * @throws NotStringException NULLバイトが存在する。
+	 * @throws NullByteStringException NULLバイトが存在する。
 	 */
 	public function toString(): string
 	{
 		if ($this->hasNull()) {
-			throw new NotStringException();
+			throw new NullByteStringException();
 		}
 
 		return $this->binary;

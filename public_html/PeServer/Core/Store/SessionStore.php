@@ -58,9 +58,15 @@ class SessionStore
 	 */
 	private bool $isChanged = false;
 
+	/**
+	 * 生成
+	 *
+	 * @param SessionOption $option セッション設定。
+	 * @param CookieStore $cookie Cookie 設定。
+	 */
 	public function __construct(SessionOption $option, CookieStore $cookie)
 	{
-		if (StringUtility::isNullOrWhiteSpace($option->name)) {
+		if (StringUtility::isNullOrWhiteSpace($option->name)) { //@phpstan-ignore-line
 			throw new ArgumentException('$option->name');
 		}
 
@@ -162,9 +168,8 @@ class SessionStore
 			throw new InvalidOperationException();
 		}
 
-		if (!StringUtility::isNullOrWhiteSpace($this->option->name)) {
-			session_name($this->option->name);
-		}
+		// セッション名はコンストラクタ時点で設定済みのためチェックしない
+		session_name($this->option->name);
 
 		if (!StringUtility::isNullOrWhiteSpace($this->option->savePath)) {
 			FileUtility::createDirectoryIfNotExists($this->option->savePath);

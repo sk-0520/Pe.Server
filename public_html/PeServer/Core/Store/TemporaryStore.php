@@ -109,7 +109,7 @@ class TemporaryStore
 			$this->cookie->remove($this->option->name);
 
 			if (FileUtility::existsFile($path)) {
-				unlink($path);
+				FileUtility::removeFile($path);
 			}
 		}
 	}
