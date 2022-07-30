@@ -20,10 +20,10 @@ class RectangleTest extends TestClass
 		foreach ($tests as $test) {
 			$s = serialize($test);
 			$actual = unserialize($s);
-			$this->assertEquals($test->point->x, $actual->point->x, (string)$actual->point->x);
-			$this->assertEquals($test->point->y, $actual->point->y, (string)$actual->point->y);
-			$this->assertEquals($test->size->width, $actual->size->width, (string)$actual->size->width);
-			$this->assertEquals($test->size->height, $actual->size->height, (string)$actual->size->height);
+			$this->assertSame($test->point->x, $actual->point->x, (string)$actual->point->x);
+			$this->assertSame($test->point->y, $actual->point->y, (string)$actual->point->y);
+			$this->assertSame($test->size->width, $actual->size->width, (string)$actual->size->width);
+			$this->assertSame($test->size->height, $actual->size->height, (string)$actual->size->height);
 		}
 	}
 }

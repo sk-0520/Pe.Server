@@ -108,14 +108,14 @@ class RouteTest extends TestClass
 				$actual = $route->getAction(...$request['input']);
 				$input = var_export($request['input'], true);
 				if (is_null($request['expected'])) {
-					$this->assertEquals(404, $actual->status->getCode(), $input);
-					$this->assertEquals('', $actual->actionSetting->controllerMethod, $input);
+					$this->assertSame(404, $actual->status->getCode(), $input);
+					$this->assertSame('', $actual->actionSetting->controllerMethod, $input);
 				} else {
-					$this->assertEquals($request['expected'][0], $actual->className, $input);
-					$this->assertEquals($request['expected'][1], $actual->actionSetting->controllerMethod, $input);
+					$this->assertSame($request['expected'][0], $actual->className, $input);
+					$this->assertSame($request['expected'][1], $actual->actionSetting->controllerMethod, $input);
 					if (isset($request['expected'][2]) && !is_null($request['expected'][2])) {
 						foreach ($request['expected'][2] as $key => $value) {
-							$this->assertEquals($request['expected'][2][$key], $actual->params[$key], $input);
+							$this->assertSame($request['expected'][2][$key], $actual->params[$key], $input);
 						}
 					} else {
 						$this->assertTrue(isset($actual->params));

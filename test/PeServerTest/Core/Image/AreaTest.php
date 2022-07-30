@@ -19,14 +19,14 @@ class AreaTest extends TestClass
 		foreach ($tests as $test) {
 			$s = serialize($test);
 			$actual = unserialize($s);
-			$this->assertEquals($test->leftTop->x, $actual->leftTop->x, (string)$test->leftTop->x);
-			$this->assertEquals($test->leftTop->y, $actual->leftTop->y, (string)$test->leftTop->y);
-			$this->assertEquals($test->leftBottom->x, $actual->leftBottom->x, (string)$test->leftBottom->x);
-			$this->assertEquals($test->leftBottom->y, $actual->leftBottom->y, (string)$test->leftBottom->y);
-			$this->assertEquals($test->rightTop->x, $actual->rightTop->x, (string)$test->rightTop->x);
-			$this->assertEquals($test->rightTop->y, $actual->rightTop->y, (string)$test->rightTop->y);
-			$this->assertEquals($test->rightBottom->x, $actual->rightBottom->x, (string)$test->rightBottom->x);
-			$this->assertEquals($test->rightBottom->y, $actual->rightBottom->y, (string)$test->rightBottom->y);
+			$this->assertSame($test->leftTop->x, $actual->leftTop->x, (string)$test->leftTop->x);
+			$this->assertSame($test->leftTop->y, $actual->leftTop->y, (string)$test->leftTop->y);
+			$this->assertSame($test->leftBottom->x, $actual->leftBottom->x, (string)$test->leftBottom->x);
+			$this->assertSame($test->leftBottom->y, $actual->leftBottom->y, (string)$test->leftBottom->y);
+			$this->assertSame($test->rightTop->x, $actual->rightTop->x, (string)$test->rightTop->x);
+			$this->assertSame($test->rightTop->y, $actual->rightTop->y, (string)$test->rightTop->y);
+			$this->assertSame($test->rightBottom->x, $actual->rightBottom->x, (string)$test->rightBottom->x);
+			$this->assertSame($test->rightBottom->y, $actual->rightBottom->y, (string)$test->rightBottom->y);
 		}
 	}
 }

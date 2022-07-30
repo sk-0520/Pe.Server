@@ -28,7 +28,7 @@ class RgbColorTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = RgbColor::fromHtmlColorCode(StringUtility::toLower($test->args[0]));
-			$this->assertEquals($test->expected->toHtml(), $actual->toHtml(), $test->str());
+			$this->assertSame($test->expected->toHtml(), $actual->toHtml(), $test->str());
 		}
 	}
 
@@ -49,10 +49,10 @@ class RgbColorTest extends TestClass
 		foreach ($tests as $test) {
 			$s = serialize($test);
 			$actual = unserialize($s);
-			$this->assertEquals($test->red, $actual->red, (string)$actual->red);
-			$this->assertEquals($test->green, $actual->green, (string)$actual->red);
-			$this->assertEquals($test->blue, $actual->blue, (string)$actual->blue);
-			$this->assertEquals($test->alpha, $actual->alpha, (string)$actual->alpha);
+			$this->assertSame($test->red, $actual->red, (string)$actual->red);
+			$this->assertSame($test->green, $actual->green, (string)$actual->red);
+			$this->assertSame($test->blue, $actual->blue, (string)$actual->blue);
+			$this->assertSame($test->alpha, $actual->alpha, (string)$actual->alpha);
 		}
 	}
 }

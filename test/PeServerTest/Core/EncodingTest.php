@@ -73,7 +73,7 @@ class EncodingTest extends TestClass
 			$encoding = new Encoding($test->args[0]);
 			$binary = $encoding->getBinary($test->args[1]);
 			$actual = $encoding->toString($binary);
-			$this->assertEquals($test->expected, $actual);
+			$this->assertSame($test->expected, $actual);
 		}
 	}
 }

@@ -19,8 +19,8 @@ class GraphicsTest extends TestClass
 		$expected = new Size(100, 100);
 		$graphics = Graphics::create($expected);
 		$actual = $graphics->getSize();
-		$this->assertEquals($expected->width, $actual->width);
-		$this->assertEquals($expected->height, $actual->height);
+		$this->assertSame($expected->width, $actual->width);
+		$this->assertSame($expected->height, $actual->height);
 	}
 
 	public function test_pixel()
@@ -33,10 +33,10 @@ class GraphicsTest extends TestClass
 		$graphics->setPixel($point, $expected);
 		$actual = $graphics->getPixel($point);
 
-		$this->assertEquals($expected->red, $actual->red);
-		$this->assertEquals($expected->green, $actual->green);
-		$this->assertEquals($expected->blue, $actual->blue);
-		$this->assertEquals($expected->alpha, $actual->alpha);
+		$this->assertSame($expected->red, $actual->red);
+		$this->assertSame($expected->green, $actual->green);
+		$this->assertSame($expected->blue, $actual->blue);
+		$this->assertSame($expected->alpha, $actual->alpha);
 	}
 
 	public function test_load()
@@ -50,6 +50,6 @@ class GraphicsTest extends TestClass
 		$newGraphics = Graphics::load($imageBinary);
 		$newImageBinary = $newGraphics->exportImage(ImageOption::png());
 
-		$this->assertEquals($imageBinary->getRaw(), $newImageBinary->getRaw());
+		$this->assertSame($imageBinary->getRaw(), $newImageBinary->getRaw());
 	}
 }

@@ -12,6 +12,7 @@ $files = glob(__DIR__ . '/phpunit.phar.*');
 require_once($files[0]);
 require_once(__DIR__ . '/../public_html/PeServer/Core/AutoLoader.php');
 
+use Exception;
 use PeServer\App\Models\Initializer;
 use PeServer\Core\Store\SpecialStore;
 
@@ -64,13 +65,18 @@ class TestClass extends \PHPUnit\Framework\TestCase
 		return $s;
 	}
 
-	protected function assertBoolean(bool $expected, bool $actual, string $message = '')
+	public static function assertEquals($expected, $actual, string $message = ''): void
 	{
-		if ($expected) {
-			$this->assertTrue($actual, $message);
-		} else {
-			$this->assertFalse($actual, $message);
+		throw new Exception('empty: $info');
+	}
+
+	protected function assertEqualsWithInfo(string $info, mixed $expected, mixed $actual, string $message = '')
+	{
+		if (empty($info)) {
+			// 厳密比較でない理由が不明
+			throw new Exception('empty: $info');
 		}
+		parent::assertEquals($expected, $actual, $message);
 	}
 
 	protected function success()

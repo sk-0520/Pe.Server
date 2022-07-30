@@ -19,7 +19,7 @@ class ImageTypeTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = ImageType::toExtension(...$test->args);
-			$this->assertEquals($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 

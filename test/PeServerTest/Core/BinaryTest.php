@@ -14,13 +14,13 @@ class BinaryTest extends TestClass
 	public function test_getRaw()
 	{
 		$binary = new Binary("a\0b\0");
-		$this->assertEquals("a\0b\0", $binary->getRaw());
+		$this->assertSame("a\0b\0", $binary->getRaw());
 	}
 
 	public function test_getLength()
 	{
 		$binary = new Binary("a\0b\0");
-		$this->assertEquals(4, $binary->getLength());
+		$this->assertSame(4, $binary->getLength());
 	}
 
 	public function test_toHex()
@@ -33,7 +33,7 @@ class BinaryTest extends TestClass
 		foreach ($tests as $test) {
 			$binary = new Binary(...$test->args);
 			$actual = $binary->toHex();
-			$this->assertEquals($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 
@@ -46,7 +46,7 @@ class BinaryTest extends TestClass
 	// 	foreach ($tests as $test) {
 	// 		$binary = new Binary($test->args[0]);
 	// 		$actual = $binary->convert($test->args[1], $test->args[2]);
-	// 		$this->assertEquals($test->expected, $actual, $test->str());
+	// 		$this->assertSame($test->expected, $actual, $test->str());
 	// 	}
 	// }
 
@@ -55,8 +55,8 @@ class BinaryTest extends TestClass
 		$binary = new Binary("a\0b\0");
 		$base64 = $binary->toBase64();
 		$actual = Binary::fromBase64($base64);
-		$this->assertEquals($binary->getRaw(), $actual->getRaw());
-		$this->assertEquals($base64, $actual->toBase64());
+		$this->assertSame($binary->getRaw(), $actual->getRaw());
+		$this->assertSame($base64, $actual->toBase64());
 	}
 
 	public function test_base64_throw()
@@ -78,7 +78,7 @@ class BinaryTest extends TestClass
 		foreach ($tests as $test) {
 			$binary = new Binary(...$test->args);
 			$actual = $binary->hasNull();
-			$this->assertEquals($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 

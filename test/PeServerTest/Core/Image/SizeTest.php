@@ -18,8 +18,8 @@ class SizeTest extends TestClass
 		foreach ($tests as $test) {
 			$s = serialize($test);
 			$actual = unserialize($s);
-			$this->assertEquals($test->width, $actual->width, (string)$actual->width);
-			$this->assertEquals($test->height, $actual->height, (string)$actual->height);
+			$this->assertSame($test->width, $actual->width, (string)$actual->width);
+			$this->assertSame($test->height, $actual->height, (string)$actual->height);
 		}
 	}
 }

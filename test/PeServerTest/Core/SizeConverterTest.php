@@ -21,7 +21,7 @@ class SizeConverterTest extends TestClass
 		foreach ($tests as $test) {
 			$sc = new SizeConverter();
 			$actual = $sc->convertHumanReadableByte(...$test->args);
-			$this->assertEquals($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 }

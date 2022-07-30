@@ -26,7 +26,7 @@ class CryptographyTest extends TestClass
 		foreach ($tests as $test) {
 			$enc = Cryptography::encrypt($test['algorithm'], $test['input'], $test['password']);
 			$dec = Cryptography::decrypt($enc, $test['password']);
-			$this->assertEquals($test['input'], $dec, StringUtility::dump(['test' => $test, 'enc' => $enc]));
+			$this->assertSame($test['input'], $dec, StringUtility::dump(['test' => $test, 'enc' => $enc]));
 		}
 	}
 
@@ -94,7 +94,7 @@ class CryptographyTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = Cryptography::generateRandomString(...$test->args);
-			$this->assertEquals($test->expected, StringUtility::getLength($actual), $test->str());
+			$this->assertSame($test->expected, StringUtility::getLength($actual), $test->str());
 		}
 	}
 }

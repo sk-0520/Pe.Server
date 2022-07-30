@@ -22,7 +22,7 @@ class StringUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = StringUtility::isNullOrEmpty(...$test->args);
-			$this->assertBoolean($test->expected, $actual, $test->str()); //@php-ignore-line
+			$this->assertSame($test->expected, $actual, $test->str()); //@php-ignore-line
 		}
 	}
 
@@ -37,7 +37,7 @@ class StringUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = StringUtility::isNullOrWhiteSpace(...$test->args);
-			$this->assertBoolean($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 
@@ -56,7 +56,7 @@ class StringUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = StringUtility::getLength(...$test->args);
-			$this->assertEquals($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 
@@ -76,7 +76,7 @@ class StringUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = StringUtility::getCharacterLength(...$test->args);
-			$this->assertEquals($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 	*/
@@ -89,7 +89,7 @@ class StringUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = StringUtility::fromCodePoint(...$test->args);
-			$this->assertEquals($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 
@@ -103,7 +103,7 @@ class StringUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = StringUtility::replaceMap(...$test->args);
-			$this->assertEquals($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 
@@ -115,7 +115,7 @@ class StringUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = StringUtility::formatNumber(...$test->args);
-			$this->assertEquals($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 
@@ -133,7 +133,7 @@ class StringUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = StringUtility::getPosition(...$test->args);
-			$this->assertEquals($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 
@@ -159,7 +159,7 @@ class StringUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = StringUtility::startsWith(...$test->args);
-			$this->assertBoolean($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 
@@ -185,7 +185,7 @@ class StringUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = StringUtility::endsWith(...$test->args);
-			$this->assertBoolean($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 
@@ -218,7 +218,7 @@ class StringUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = StringUtility::contains(...$test->args);
-			$this->assertBoolean($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 
@@ -235,7 +235,7 @@ class StringUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = StringUtility::substring(...$test->args);
-			$this->assertEquals($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 
@@ -248,7 +248,7 @@ class StringUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = StringUtility::toLower(...$test->args);
-			$this->assertEquals($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 
@@ -261,7 +261,7 @@ class StringUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = StringUtility::toUpper(...$test->args);
-			$this->assertEquals($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 
@@ -273,7 +273,7 @@ class StringUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = StringUtility::split(...$test->args);
-			$this->assertEquals($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 
@@ -285,7 +285,7 @@ class StringUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = StringUtility::join(...$test->args);
-			$this->assertEquals($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 
@@ -299,7 +299,7 @@ class StringUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = StringUtility::trim(...$test->args);
-			$this->assertEquals($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 
@@ -314,7 +314,7 @@ class StringUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = StringUtility::trimStart(...$test->args);
-			$this->assertEquals($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 
@@ -328,7 +328,7 @@ class StringUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = StringUtility::trimEnd(...$test->args);
-			$this->assertEquals($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 
@@ -345,7 +345,7 @@ class StringUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = StringUtility::replace(...$test->args);
-			$this->assertEquals($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 
@@ -357,7 +357,7 @@ class StringUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = StringUtility::replace(...$test->args);
-			$this->assertEquals($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 
@@ -370,7 +370,7 @@ class StringUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = StringUtility::repeat(...$test->args);
-			$this->assertEquals($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 
@@ -391,7 +391,7 @@ class StringUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = StringUtility::toCharacters(...$test->args);
-			$this->assertEquals($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 

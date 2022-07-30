@@ -18,8 +18,8 @@ class PointTest extends TestClass
 		foreach ($tests as $test) {
 			$s = serialize($test);
 			$actual = unserialize($s);
-			$this->assertEquals($test->x, $actual->x, (string)$actual->x);
-			$this->assertEquals($test->y, $actual->y, (string)$actual->y);
+			$this->assertSame($test->x, $actual->x, (string)$actual->x);
+			$this->assertSame($test->y, $actual->y, (string)$actual->y);
 		}
 	}
 }

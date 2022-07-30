@@ -23,7 +23,7 @@ class TypeConverterTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = TypeConverter::parseInteger(...$test->args);
-			$this->assertEquals($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 
@@ -51,7 +51,7 @@ class TypeConverterTest extends TestClass
 	{
 		$result1 = TypeConverter::tryParseInteger("123", $actual1);
 		$this->assertTrue($result1);
-		$this->assertEquals(123, $actual1);
+		$this->assertSame(123, $actual1);
 
 		$result2 = TypeConverter::tryParseInteger("abc", $actual2);
 		$this->assertFalse($result2);
@@ -73,7 +73,7 @@ class TypeConverterTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = TypeConverter::parseBoolean(...$test->args);
-			$this->assertBoolean($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 }
