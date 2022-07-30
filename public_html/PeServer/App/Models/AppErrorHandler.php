@@ -5,20 +5,24 @@ declare(strict_types=1);
 namespace PeServer\App\Models;
 
 use \Throwable;
-use PeServer\Core\Environment;
-use PeServer\Core\Log\Logging;
-use PeServer\Core\Http\RequestPath;
-use PeServer\Core\ErrorHandler;
-use PeServer\Core\StringUtility;
 use PeServer\App\Models\AppTemplate;
+use PeServer\Core\Environment;
+use PeServer\Core\ErrorHandler;
+use PeServer\Core\Http\RequestPath;
+use PeServer\Core\Json;
+use PeServer\Core\Log\Logging;
+use PeServer\Core\StringUtility;
 
 final class AppErrorHandler extends ErrorHandler
 {
 	private RequestPath $requestPath;
+	private Json $json;
 
-	public function __construct(RequestPath $requestPath)
+	public function __construct(RequestPath $requestPath, ?Json $json = null)
 	{
 		$this->requestPath = $requestPath;
+		$json ??= new Json();
+		$this->json = $json;
 	}
 
 	protected function catchError(int $errorNumber, string $message, string $file, int $lineNumber, ?Throwable $throwable): void
@@ -80,7 +84,7 @@ final class AppErrorHandler extends ErrorHandler
 				];
 
 				header('Content-Type: application/json');
-				echo json_encode($json);
+				echo $this->json->encode($json);
 			} else {
 				echo AppTemplate::buildPageTemplate('error', $values, $status);
 			}

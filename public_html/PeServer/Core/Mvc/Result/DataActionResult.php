@@ -6,6 +6,7 @@ namespace PeServer\Core\Mvc\Result;
 
 use PeServer\Core\Binary;
 use PeServer\Core\Http\HttpResponse;
+use PeServer\Core\Json;
 use PeServer\Core\Mime;
 use PeServer\Core\Mvc\DataContent;
 use PeServer\Core\Mvc\DownloadDataContent;
@@ -18,6 +19,8 @@ use PeServer\Core\Throws\ArgumentException;
  */
 class DataActionResult implements IActionResult
 {
+	protected Json $json;
+
 	/**
 	 * 生成。
 	 *
@@ -25,8 +28,11 @@ class DataActionResult implements IActionResult
 	 */
 	public function __construct(
 		/** @readonly */
-		private DataContent $content
+		private DataContent $content,
+		?Json $json = null
 	) {
+		$json ??= new Json();
+		$this->json = $json;
 	}
 
 	private function convertText(DataContent $content): string
@@ -42,10 +48,7 @@ class DataActionResult implements IActionResult
 	 */
 	private function convertJsonCore(array $data): string
 	{
-		$result = json_encode($data);
-		if ($result === false) {
-			throw new ArgumentException('$data');
-		}
+		$result = $this->json->encode($data);
 
 		return $result;
 	}
