@@ -12,7 +12,7 @@ abstract class UserUtility
 {
 	public static function generateSignupToken(): string
 	{
-		return Cryptography::generateRandomBinary(40)->toHex();
+		return Cryptography::generateRandomString(80);
 	}
 
 	public static function generateUserId(): string
