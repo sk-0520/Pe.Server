@@ -118,7 +118,7 @@ abstract class StringUtility
 	 * @phpstan-param UnsignedIntegerAlias|UnsignedIntegerAlias[] $value
 	 * @return string
 	 * @see https://www.php.net/manual/function.mb-chr.php
-	 * @throws InvalidArgumentException
+	 * @throws ArgumentException
 	 */
 	public static function fromCodePoint(int|array $value): string
 	{
