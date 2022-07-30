@@ -24,7 +24,7 @@ class EnforceTest extends TestClass
 		$this->fail();
 	}
 
-	public function test_throwIf_false_error()
+	public function test_throwIf_false_throw()
 	{
 		$this->expectException(Error::class);
 		Enforce::throwIf(false, '', Error::class);

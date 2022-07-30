@@ -395,7 +395,7 @@ class StringUtilityTest extends TestClass
 		}
 	}
 
-	public function test_toCharacters_error()
+	public function test_toCharacters_throw()
 	{
 		$this->expectException(ArgumentException::class);
 		StringUtility::toCharacters('');

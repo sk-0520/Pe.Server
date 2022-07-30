@@ -59,7 +59,7 @@ class BinaryTest extends TestClass
 		$this->assertEquals($base64, $actual->toBase64());
 	}
 
-	public function test_base64_error()
+	public function test_base64_throw()
 	{
 		$this->expectException(ArgumentException::class);
 		Binary::fromBase64('@@@@@@');

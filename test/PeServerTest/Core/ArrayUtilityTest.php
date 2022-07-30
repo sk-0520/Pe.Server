@@ -178,7 +178,7 @@ class ArrayUtilityTest extends TestClass
 		}
 	}
 
-	public function test_getFirstKey_error()
+	public function test_getFirstKey_throw()
 	{
 		$this->expectException(InvalidOperationException::class);
 		ArrayUtility::getFirstKey([]);
@@ -200,7 +200,7 @@ class ArrayUtilityTest extends TestClass
 		}
 	}
 
-	public function test_getLastKey_error()
+	public function test_getLastKey_throw()
 	{
 		$this->expectException(InvalidOperationException::class);
 		ArrayUtility::getLastKey([]);
@@ -288,7 +288,7 @@ class ArrayUtilityTest extends TestClass
 		}
 	}
 
-	public function test_flip_error()
+	public function test_flip_throw()
 	{
 		$this->expectException(ArgumentException::class);
 		ArrayUtility::flip([0 => ['array' => 'value']]);

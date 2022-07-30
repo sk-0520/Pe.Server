@@ -17,14 +17,14 @@ class EncodingTest extends TestClass
 		$this->success();
 	}
 
-	public function test_construct_error()
+	public function test_construct_throw()
 	{
 		$this->expectException(ArgumentException::class);
 		new Encoding('ascii');
 		$this->fail();
 	}
 
-	public function test_construct_empty_error()
+	public function test_construct_empty_throw()
 	{
 		$this->expectException(ArgumentException::class);
 		new Encoding('');
