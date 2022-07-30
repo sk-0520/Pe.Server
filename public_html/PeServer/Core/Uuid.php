@@ -18,7 +18,7 @@ abstract class Uuid
 	 */
 	public static function generateGuid(): string
 	{
-		if (function_exists('com_create_guid') === true) {
+		if (function_exists('com_create_guid')) {
 			$guid = com_create_guid();
 			if ($guid !== false) {
 				return StringUtility::trim($guid, '{}');
