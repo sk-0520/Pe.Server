@@ -25,13 +25,13 @@ abstract class CoreInitializer
 	 * @param string $environment
 	 * @return void
 	 */
-	public static function initialize(string $environment, string $revision, string $language): void
+	public static function initialize(string $environment, string $revision): void
 	{
 		self::$initializeChecker ??= new InitializeChecker();
 		self::$initializeChecker->initialize();
 
 		Encoding::setDefaultEncoding(Encoding::getUtf8Encoding());
-		Environment::initialize($environment, $revision, $language);
+		Environment::initialize($environment, $revision, 'uni');
 
 		if(!Environment::isTest()) {
 			(new ErrorHandler())->register();

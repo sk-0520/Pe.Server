@@ -57,9 +57,4 @@ if [ ! -v IGNORE_NAMESPACE_CHECK ] ; then
 	fi
 fi
 
-LANGUAGE_LIST="ja de en hy ko neutral ru tr ua uni zh-cn zh-tw"
-for i in $LANGUAGE_LIST; do
-	export ENV_LANG=$i
-	echo "ENV_LANG: $ENV_LANG"
-	php ${PHPUNIT_FILE} --bootstrap ./bootstrap.php --testdox "$@" .
-done
+php ${PHPUNIT_FILE} --bootstrap ./bootstrap.php --testdox "$@" .

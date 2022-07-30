@@ -24,15 +24,11 @@ $autoLoader = new \PeServer\Core\AutoLoader(
 );
 $autoLoader->register();
 
-$language = getenv('ENV_LANG');
-echo '<<' . $language . ">>\n";
-
 Initializer::initialize(
 	__DIR__ . '/../public_html',
 	__DIR__ . '/../public_html/PeServer',
 	new SpecialStore(),
 	'test',
-	$language,
 	':REVISION:'
 );
 
