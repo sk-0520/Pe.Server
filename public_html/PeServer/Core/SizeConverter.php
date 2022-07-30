@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
+/**
+ * データ容量変換。
+ */
 class SizeConverter
 {
 	/**
@@ -16,9 +19,21 @@ class SizeConverter
 	 *
 	 * @var string[]
 	 */
-	public array $units = [
+	public const UNITS = [
 		'byte', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB',
 	];
+
+	/**
+	 * 生成。
+	 *
+	 * @param int $kbSize 1KB のサイズ。
+	 * @param string[] $units サイズ単位。
+	 */
+	public function __construct(
+		private int $kbSize = self::KB_SIZE,
+		private array $units = self::UNITS
+	) {
+	}
 
 	/**
 	 * 読みやすいように変換。
@@ -28,22 +43,21 @@ class SizeConverter
 	 * @param integer $byteSize
 	 * @param string $sizeFormat {f_size} {i_size} {unit}
 	 * @phpstan-param literal-string $sizeFormat
-	 * @param string[]|null $units
 	 * @return string
 	 */
-	public function convertHumanReadableByte(int $byteSize, string $sizeFormat = '{i_size} {unit}', ?array $units = null): string
+	public function convertHumanReadableByte(int $byteSize, string $sizeFormat = '{i_size} {unit}'): string
 	{
 		$size = $byteSize;
-		$units = $units ?? $this->units;
 		$order = 0;
-		while ($size >= self::KB_SIZE && ++$order < ArrayUtility::getCount($units)) {
-			$size = $size / self::KB_SIZE;
+		$unitCount = ArrayUtility::getCount($this->units);
+		while ($size >= $this->kbSize && ++$order < $unitCount) {
+			$size = $size / $this->kbSize;
 		}
 
 		return StringUtility::replaceMap($sizeFormat, [
 			'f_size' => strval(round($size, 2)),
 			'i_size' => strval($size),
-			'unit' => $units[$order]
+			'unit' => $this->units[$order]
 		]);
 	}
 }
