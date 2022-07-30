@@ -33,8 +33,6 @@ use PeServer\App\Models\Middleware\AdministratorAccountFilterMiddleware;
  */
 abstract class RouteConfiguration
 {
-	private const DEFAULT_METHOD = null;
-
 	private const PLUGIN_ID = '\{?[a-fA-F0-9\-]{32,}\}?';
 
 	/**
@@ -70,7 +68,7 @@ abstract class RouteConfiguration
 					->addAction('signup/notify', HttpMethod::gets(), 'signup_notify', [SignupStep1FilterMiddleware::class])
 					->addAction('signup/:token@[a-zA-Z0-9]{80}', HttpMethod::gets(), 'signup_step2_get', [SignupStep1FilterMiddleware::class, SignupStep2FilterMiddleware::class])
 					->addAction('signup/:token@[a-zA-Z0-9]{80}', HttpMethod::post(), 'signup_step2_post', [SignupStep1FilterMiddleware::class, SignupStep2FilterMiddleware::class])
-					->addAction('user', HttpMethod::gets(), self::DEFAULT_METHOD, [UserAccountFilterMiddleware::class])
+					->addAction('user', HttpMethod::gets(), Route::DEFAULT_METHOD, [UserAccountFilterMiddleware::class])
 					->addAction('user/edit', HttpMethod::gets(), 'user_edit_get', [UserAccountFilterMiddleware::class])
 					->addAction('user/edit', HttpMethod::post(), 'user_edit_post', [UserAccountFilterMiddleware::class, CsrfMiddleware::class])
 					->addAction('user/password', HttpMethod::gets(), 'user_password_get', [UserAccountFilterMiddleware::class])
