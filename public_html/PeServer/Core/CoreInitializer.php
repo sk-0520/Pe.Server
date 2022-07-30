@@ -30,7 +30,7 @@ abstract class CoreInitializer
 		self::$initializeChecker ??= new InitializeChecker();
 		self::$initializeChecker->initialize();
 
-		Encoding::setDefaultEncoding(Encoding::getUtf8Encoding());
+		Encoding::setDefaultEncoding(Encoding::getUtf8());
 		Environment::initialize('C', 'uni', $environment, $revision);
 
 		if(!Environment::isTest()) {

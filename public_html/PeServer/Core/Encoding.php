@@ -16,11 +16,26 @@ use PeServer\Core\Throws\Throws;
  */
 class Encoding
 {
+	/** アスキー */
 	public const ENCODE_ASCII = 'ASCII';
+
+	/** UTF-8 */
 	public const ENCODE_UTF8 = 'UTF-8';
+	/** UTF-16 */
 	public const ENCODE_UTF16 = 'UTF-16';
+	/** UTF-32 */
 	public const ENCODE_UTF32 = 'UTF-32';
-	public const ENCODE_WIN_JA = 'SJIS-win';
+
+	/** SJIS(SHIFT-JIS) */
+	public const ENCODE_SJIS = 'SJIS';
+	/** SJIS(CP932) */
+	public const ENCODE_SJIS_WIN31J = 'CP932';
+	/** SJIS(Windows) */
+	public const ENCODE_SJIS_WIN = 'SJIS-win';
+	/** SJIS(Shift_JIS-2004) */
+	public const ENCODE_SJIS_2004 = 'SJIS-2004';
+	/** SJIS */
+	public const ENCODE_SJIS_DEFAULT = self::ENCODE_SJIS_WIN;
 
 	/**
 	 * キャッシュされたエンコーディング名一覧。
@@ -67,7 +82,10 @@ class Encoding
 	 *
 	 * キャッシュされる。
 	 *
+	 * `mb_list_encodings` ラッパー。
+	 *
 	 * @return string[]
+	 * @see https://www.php.net/manual/function.mb-list-encodings.php
 	 */
 	public static function getEncodingNames(): array
 	{
@@ -106,9 +124,19 @@ class Encoding
 	 *
 	 * @return Encoding
 	 */
-	public static function getUtf8Encoding(): Encoding
+	public static function getUtf8(): Encoding
 	{
 		return new Encoding(self::ENCODE_UTF8);
+	}
+
+	/**
+	 * SJISエンコーディング。
+	 *
+	 * @return Encoding
+	 */
+	public static function getShiftJis(): Encoding
+	{
+		return new Encoding(self::ENCODE_SJIS_DEFAULT);
 	}
 
 	/**

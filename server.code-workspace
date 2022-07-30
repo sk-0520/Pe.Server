@@ -61,6 +61,7 @@
 			"imagebmp",
 			"migmix",
 			"NEIGHBOUR",
+			"SJIS",
 		],
 		"cSpell.ignorePaths": [
 			"package-lock.json",
