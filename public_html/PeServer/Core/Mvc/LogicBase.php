@@ -10,7 +10,7 @@ use PeServer\Core\Utc;
 use PeServer\Core\I18n;
 use PeServer\Core\Mime;
 use PeServer\Core\Binary;
-use PeServer\Core\FileUtility;
+use PeServer\Core\IOUtility;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\InitialValue;
@@ -158,7 +158,7 @@ abstract class LogicBase implements IValidationReceiver
 	 */
 	protected function getRequestContent(): Binary
 	{
-		return FileUtility::readContent('php://input');
+		return IOUtility::readContent('php://input');
 	}
 
 	/**
@@ -168,7 +168,7 @@ abstract class LogicBase implements IValidationReceiver
 	 */
 	protected function getRequestJson(): array
 	{
-		return FileUtility::readJsonFile('php://input');
+		return IOUtility::readJsonFile('php://input');
 	}
 
 	/**

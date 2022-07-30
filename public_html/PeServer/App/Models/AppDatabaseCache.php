@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models;
 
-use PeServer\Core\FileUtility;
+use PeServer\Core\IOUtility;
 use PeServer\Core\Log\Logging;
 use PeServer\Core\PathUtility;
 use PeServer\Core\InitializeChecker;
@@ -49,8 +49,8 @@ abstract class AppDatabaseCache
 	private static function exportCache(string $fileName, array $cache): void
 	{
 		$filePath = PathUtility::joinPath(self::$cacheDirectoryPath, $fileName);
-		FileUtility::createParentDirectoryIfNotExists($filePath);
-		FileUtility::writeJsonFile($filePath, $cache);
+		IOUtility::createParentDirectoryIfNotExists($filePath);
+		IOUtility::writeJsonFile($filePath, $cache);
 	}
 
 	/**
@@ -62,7 +62,7 @@ abstract class AppDatabaseCache
 	private static function readCache(string $fileName): array
 	{
 		$filePath = PathUtility::joinPath(self::$cacheDirectoryPath, $fileName);
-		$result = FileUtility::readJsonFile($filePath);
+		$result = IOUtility::readJsonFile($filePath);
 		return $result;
 	}
 

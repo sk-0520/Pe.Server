@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domain\Page\Home;
 
-use PeServer\Core\FileUtility;
+use PeServer\Core\IOUtility;
 use PeServer\Core\PathUtility;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
@@ -27,7 +27,7 @@ class HomePrivacyLogic extends PageLogicBase
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
 		$privacyPolicyPath = PathUtility::joinPath(AppConfiguration::$settingDirectoryPath, 'privacy_policy.md');
-		$privacyPolicy = FileUtility::readContent($privacyPolicyPath);
+		$privacyPolicy = IOUtility::readContent($privacyPolicyPath);
 		$this->setValue('privacy_policy', $privacyPolicy->getRaw());
 	}
 }

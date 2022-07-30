@@ -13,9 +13,9 @@ use PeServer\Core\Throws\ParseException;
 use PeServer\Core\Throws\FileNotFoundException;
 
 /**
- * ファイル処理系。
+ * ファイル(+ディレクトリ)処理系。
  */
-abstract class FileUtility
+abstract class IOUtility
 {
 	public const DIRECTORY_PERMISSIONS = 0777;
 

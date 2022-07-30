@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Store;
 
 use PeServer\Core\Security;
-use PeServer\Core\FileUtility;
+use PeServer\Core\IOUtility;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\InitialValue;
 use PeServer\Core\StringUtility;
@@ -172,7 +172,7 @@ class SessionStore
 		session_name($this->option->name);
 
 		if (!StringUtility::isNullOrWhiteSpace($this->option->savePath)) {
-			FileUtility::createDirectoryIfNotExists($this->option->savePath);
+			IOUtility::createDirectoryIfNotExists($this->option->savePath);
 			session_save_path($this->option->savePath);
 		}
 

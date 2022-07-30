@@ -9,7 +9,7 @@ use PeServer\Core\Alignment;
 use PeServer\Core\Binary;
 use PeServer\Core\DisposerBase;
 use PeServer\Core\ErrorHandler;
-use PeServer\Core\FileUtility;
+use PeServer\Core\IOUtility;
 use PeServer\Core\IDisposable;
 use PeServer\Core\Image\Area;
 use PeServer\Core\Image\Color\ColorResource;
@@ -117,7 +117,7 @@ class Graphics extends DisposerBase
 	 */
 	public static function open(string $path): Graphics
 	{
-		$binary = FileUtility::readContent($path);
+		$binary = IOUtility::readContent($path);
 		return self::load($binary);
 	}
 

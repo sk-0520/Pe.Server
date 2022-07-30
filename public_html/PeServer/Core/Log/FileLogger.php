@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Log;
 
 use PeServer\Core\ArrayUtility;
-use PeServer\Core\FileUtility;
+use PeServer\Core\IOUtility;
 use PeServer\Core\Log\LoggerBase;
 use PeServer\Core\PathUtility;
 use PeServer\Core\StringUtility;
@@ -87,7 +87,7 @@ class FileLogger extends LoggerBase
 	 */
 	private function cleanupCore(int $maxCount, string $filePattern): void
 	{
-		$logFiles = FileUtility::find($this->directoryPath, $filePattern);
+		$logFiles = IOUtility::find($this->directoryPath, $filePattern);
 		$logCount = ArrayUtility::getCount($logFiles);
 		if ($logCount <= $maxCount) {
 			return;
@@ -95,7 +95,7 @@ class FileLogger extends LoggerBase
 
 		$length = $logCount - $maxCount;
 		for ($i = 0; $i < $length; $i++) {
-			FileUtility::removeFile($logFiles[$i]);
+			IOUtility::removeFile($logFiles[$i]);
 		}
 	}
 
@@ -139,7 +139,7 @@ class FileLogger extends LoggerBase
 
 	protected function logImpl(int $level, int $traceIndex, $message, ...$parameters): void
 	{
-		FileUtility::createDirectoryIfNotExists($this->directoryPath);
+		IOUtility::createDirectoryIfNotExists($this->directoryPath);
 
 		$logMessage = $this->format($level, $traceIndex + 1, $message, ...$parameters);
 

@@ -6,7 +6,7 @@ namespace PeServer\Core\Store;
 
 use \DateInterval;
 use PeServer\Core\Utc;
-use PeServer\Core\FileUtility;
+use PeServer\Core\IOUtility;
 use PeServer\Core\PathUtility;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Cryptography;
@@ -100,16 +100,16 @@ class TemporaryStore
 		if (ArrayUtility::getCount($this->values)) {
 			$this->cookie->set($this->option->name, $id, $this->option->cookie);
 
-			FileUtility::createParentDirectoryIfNotExists($path);
-			FileUtility::writeJsonFile($path, [
+			IOUtility::createParentDirectoryIfNotExists($path);
+			IOUtility::writeJsonFile($path, [
 				'timestamp' => Utc::createString(),
 				'values' => $this->values
 			]);
 		} else {
 			$this->cookie->remove($this->option->name);
 
-			if (FileUtility::existsFile($path)) {
-				FileUtility::removeFile($path);
+			if (IOUtility::existsFile($path)) {
+				IOUtility::removeFile($path);
 			}
 		}
 	}
@@ -129,12 +129,12 @@ class TemporaryStore
 		$this->isImported = true;
 
 		$path = $this->getFilePath($id);
-		if (!FileUtility::existsFile($path)) {
+		if (!IOUtility::existsFile($path)) {
 			return;
 		}
 
 		/** @var array<string,mixed> */
-		$json = FileUtility::readJsonFile($path);
+		$json = IOUtility::readJsonFile($path);
 
 		/** @var string */
 		$timestamp = ArrayUtility::getOr($json, 'timestamp', InitialValue::EMPTY_STRING);
