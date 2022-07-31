@@ -62,6 +62,7 @@
 			"migmix",
 			"NEIGHBOUR",
 			"SJIS",
+			"XDEBUG",
 		],
 		"cSpell.ignorePaths": [
 			"package-lock.json",

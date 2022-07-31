@@ -18,9 +18,9 @@ parameters:
   paths:
     - ../public_html
   excludePaths:
+    - ../public_html/deploy
     - ../public_html/PeServer/data
     - ../public_html/PeServer/Core/Libs
-    - ../public_html/deploy
     - ../public_html/PeServer/App/Models/Domain/Api/DevelopmentApi/DevelopmentApiInitializeLogic.php
   scanFiles:
     - ../public_html/PeServer/Core/Libs/smarty/libs/Smarty.class.php

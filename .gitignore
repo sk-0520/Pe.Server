@@ -22,5 +22,5 @@ $*
 /dev/PHPUnit/
 /dev/*.phar.*
 /dev/bleedingEdge.neon
-/test/.phpunit.result.cache
+/test/.phpunit*
 /test/phpunit.phar.*

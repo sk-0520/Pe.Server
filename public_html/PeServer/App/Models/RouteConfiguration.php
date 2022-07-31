@@ -26,13 +26,14 @@ use PeServer\Core\Mvc\Middleware\PerformanceShutdownMiddleware;
 use PeServer\App\Models\Middleware\SetupAccountFilterMiddleware;
 use PeServer\App\Models\Middleware\UserPluginEditFilterMiddleware;
 use PeServer\App\Models\Middleware\AdministratorAccountFilterMiddleware;
-
+use PeServer\Core\Environment;
 
 /**
  * ルーティング情報設定。
  */
 abstract class RouteConfiguration
 {
+	private const SIGNUP_TOKEN = '[a-zA-Z0-9]{80}';
 	private const PLUGIN_ID = '\{?[a-fA-F0-9\-]{32,}\}?';
 
 	/**
@@ -45,10 +46,10 @@ abstract class RouteConfiguration
 		return new RouteSetting(
 			[],
 			[
-				PerformanceMiddleware::class
+				...(Environment::isProduction() ? [PerformanceMiddleware::class] : [])
 			],
 			[
-				PerformanceShutdownMiddleware::class
+				...(Environment::isProduction() ? [PerformanceShutdownMiddleware::class] : [])
 			],
 			[],
 			[
@@ -66,8 +67,8 @@ abstract class RouteConfiguration
 					->addAction('signup', HttpMethod::gets(), 'signup_step1_get', [SignupStep1FilterMiddleware::class])
 					->addAction('signup', HttpMethod::post(), 'signup_step1_post', [SignupStep1FilterMiddleware::class])
 					->addAction('signup/notify', HttpMethod::gets(), 'signup_notify', [SignupStep1FilterMiddleware::class])
-					->addAction('signup/:token@[a-zA-Z0-9]{80}', HttpMethod::gets(), 'signup_step2_get', [SignupStep1FilterMiddleware::class, SignupStep2FilterMiddleware::class])
-					->addAction('signup/:token@[a-zA-Z0-9]{80}', HttpMethod::post(), 'signup_step2_post', [SignupStep1FilterMiddleware::class, SignupStep2FilterMiddleware::class])
+					->addAction('signup/:token@' . self::SIGNUP_TOKEN, HttpMethod::gets(), 'signup_step2_get', [SignupStep1FilterMiddleware::class, SignupStep2FilterMiddleware::class])
+					->addAction('signup/:token@' . self::SIGNUP_TOKEN, HttpMethod::post(), 'signup_step2_post', [SignupStep1FilterMiddleware::class, SignupStep2FilterMiddleware::class])
 					->addAction('user', HttpMethod::gets(), Route::DEFAULT_METHOD, [UserAccountFilterMiddleware::class])
 					->addAction('user/edit', HttpMethod::gets(), 'user_edit_get', [UserAccountFilterMiddleware::class])
 					->addAction('user/edit', HttpMethod::post(), 'user_edit_post', [UserAccountFilterMiddleware::class, CsrfMiddleware::class])

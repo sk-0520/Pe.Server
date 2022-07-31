@@ -57,4 +57,5 @@ if [ ! -v IGNORE_NAMESPACE_CHECK ] ; then
 	fi
 fi
 
-php ${PHPUNIT_FILE} --bootstrap ./bootstrap.php --testdox "$@" .
+pwd
+php ${PHPUNIT_FILE} --configuration ../dev/phpunit.xml --coverage-html ../coverage/php --testdox "$@" .
