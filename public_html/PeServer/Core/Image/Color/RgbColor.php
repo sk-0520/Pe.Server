@@ -55,7 +55,7 @@ class RgbColor implements IColor, Serializable
 	}
 
 	/**
-	 * TODO: 透明度できてない。
+	 * 16進数表現から色要素の数値に変換。
 	 *
 	 * @param string $s
 	 * @param bool $isAlpha

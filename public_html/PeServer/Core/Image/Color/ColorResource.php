@@ -25,15 +25,26 @@ class ColorResource extends DisposerBase implements IColor
 		parent::disposeImpl();
 	}
 
-	public function toHtml(): string
+	/**
+	 * RGBへ変換。
+	 *
+	 * @return RgbColor
+	 */
+	public function toRgb(): RgbColor
 	{
 		$colors = imagecolorsforindex($this->graphics->image, $this->value);
 
 		if (isset($colors['alpha']) && $colors['alpha'] === IColor::ALPHA_NONE) {
-			return StringUtility::format('#%02x%02x%02x', $colors['red'], $colors['green'], $colors['blue']);
+			return new RgbColor($colors['red'], $colors['green'], $colors['blue']);
 		}
 
-		return StringUtility::format('#%02x%02x%02x%02x', $colors['red'], $colors['green'], $colors['blue'], $colors['alpha']);
+		return new RgbColor($colors['red'], $colors['green'], $colors['blue'], $colors['alpha']);
+	}
+
+	public function toHtml(): string
+	{
+		$color = $this->toRgb();
+		return $color->toHtml();
 	}
 
 	public function __toString(): string

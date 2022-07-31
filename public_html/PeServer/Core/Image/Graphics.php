@@ -474,7 +474,7 @@ class Graphics extends DisposerBase
 	 */
 	public function drawString(string $text, float $fontSize, Point $location, IColor $color, TextSetting $setting): Area
 	{
-		/** @phpstan-var non-empty-array<UnsignedIntegerAlias>|false */
+		/** @phpstan-var non-empty-array<int>|false */
 		$result = $this->doColor(
 			$color,
 			fn ($attachedColor) => imagettftext(
@@ -562,6 +562,12 @@ class Graphics extends DisposerBase
 		return $this->exportImageCore($option);
 	}
 
+	/**
+	 * 画像データをHTMLのソースとして出力。
+	 *
+	 * @param ImageOption $option
+	 * @return string "data" URL scheme。
+	 */
 	public function exportHtmlSource(ImageOption $option): string
 	{
 		if ($option->imageType == ImageType::AUTO) {

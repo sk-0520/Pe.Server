@@ -9,6 +9,8 @@ use PeServer\Core\Code;
 use PeServer\Core\StringUtility;
 
 /**
+ * 上下左右の座標を保持。
+ *
  * @immutable
  */
 class Area implements Stringable
@@ -33,7 +35,7 @@ class Area implements Stringable
 	 * 配列から生成。
 	 *
 	 * @param int[] $areaArray
-	 * @phpstan-param non-empty-array<UnsignedIntegerAlias> $areaArray
+	 * @phpstan-param non-empty-array<int> $areaArray
 	 * @return Area
 	 */
 	public static function create(array $areaArray): Area

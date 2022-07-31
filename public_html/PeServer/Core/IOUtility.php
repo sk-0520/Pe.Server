@@ -115,10 +115,9 @@ abstract class IOUtility
 		$content = self::readContent($path);
 
 		$json ??= new Json();
+		$value = $json->decode($content->getRaw());
 
-		$json = $json->decode($content->getRaw());
-
-		return $json;
+		return $value;
 	}
 
 	/**
@@ -134,7 +133,7 @@ abstract class IOUtility
 	public static function writeJsonFile(string $path, array|stdClass $data, ?Json $json = null): void
 	{
 		$json ??= new Json();
-		$value = $json->encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+		$value = $json->encode($data);
 
 		self::saveContent($path, $value, false);
 	}
