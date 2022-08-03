@@ -6,10 +6,10 @@ namespace PeServerTest\Core;
 
 use PeServerTest\Data;
 use PeServerTest\TestClass;
-use PeServer\Core\TypeConverter;
+use PeServer\Core\TypeUtility;
 use PeServer\Core\Throws\ParseException;
 
-class TypeConverterTest extends TestClass
+class TypeUtilityTest extends TestClass
 {
 	public function test_parseInteger()
 	{
@@ -22,7 +22,7 @@ class TypeConverterTest extends TestClass
 			new Data(789, '  789 '),
 		];
 		foreach ($tests as $test) {
-			$actual = TypeConverter::parseInteger(...$test->args);
+			$actual = TypeUtility::parseInteger(...$test->args);
 			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
@@ -39,7 +39,7 @@ class TypeConverterTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			try {
-				TypeConverter::parseInteger($test);
+				TypeUtility::parseInteger($test);
 				$this->fail();
 			} catch(ParseException) {
 				$this->success();
@@ -49,11 +49,11 @@ class TypeConverterTest extends TestClass
 
 	public function test_tryParseInteger()
 	{
-		$result1 = TypeConverter::tryParseInteger("123", $actual1);
+		$result1 = TypeUtility::tryParseInteger("123", $actual1);
 		$this->assertTrue($result1);
 		$this->assertSame(123, $actual1);
 
-		$result2 = TypeConverter::tryParseInteger("abc", $actual2);
+		$result2 = TypeUtility::tryParseInteger("abc", $actual2);
 		$this->assertFalse($result2);
 	}
 
@@ -72,7 +72,25 @@ class TypeConverterTest extends TestClass
 			new Data(true, [0]),
 		];
 		foreach ($tests as $test) {
-			$actual = TypeConverter::parseBoolean(...$test->args);
+			$actual = TypeUtility::parseBoolean(...$test->args);
+			$this->assertSame($test->expected, $actual, $test->str());
+		}
+	}
+
+	function test_getType()
+	{
+		$tests = [
+			new Data(TypeUtility::TYPE_INTEGER, 1),
+			new Data(TypeUtility::TYPE_DOUBLE, 1.0),
+			new Data(TypeUtility::TYPE_STRING, ''),
+			new Data(TypeUtility::TYPE_NULL, null),
+			new Data(TypeUtility::TYPE_ARRAY, []),
+			new Data(TypeUtility::TYPE_ARRAY, [1, 2, 3]),
+			new Data(TypeUtility::TYPE_ARRAY, ['A' => 'B']),
+			new Data(self::class, $this),
+		];
+		foreach ($tests as $test) {
+			$actual = TypeUtility::getType(...$test->args);
 			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}

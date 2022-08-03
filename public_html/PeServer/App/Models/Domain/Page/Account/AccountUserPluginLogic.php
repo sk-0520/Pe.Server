@@ -8,7 +8,7 @@ use PeServer\Core\I18n;
 use PeServer\Core\Uuid;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\InitialValue;
-use PeServer\Core\TypeConverter;
+use PeServer\Core\TypeUtility;
 use PeServer\App\Models\AuditLog;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mvc\LogicCallMode;
@@ -219,7 +219,7 @@ class AccountUserPluginLogic extends PageLogicBase
 
 			$pluginCategories = [];
 			foreach ($this->pluginCategories as $category) {
-				if (TypeConverter::parseBoolean($this->getRequest('plugin_category_' . $category['plugin_category_id']))) {
+				if (TypeUtility::parseBoolean($this->getRequest('plugin_category_' . $category['plugin_category_id']))) {
 					$pluginCategories[] = $category['plugin_category_id'];
 				}
 			}
@@ -253,7 +253,7 @@ class AccountUserPluginLogic extends PageLogicBase
 			$pluginCategoryMappingsEntityDao->deletePluginCategoryMappings($params['plugin_id']);
 			foreach($this->pluginCategories as $pluginCategory) {
 				$pluginCategoryId = $pluginCategory['plugin_category_id'];
-				if (TypeConverter::parseBoolean($this->getRequest('plugin_category_' . $pluginCategoryId))) {
+				if (TypeUtility::parseBoolean($this->getRequest('plugin_category_' . $pluginCategoryId))) {
 					$pluginCategoryMappingsEntityDao->insertPluginCategoryMapping($params['plugin_id'], $pluginCategoryId);
 				}
 			}
@@ -288,7 +288,7 @@ class AccountUserPluginLogic extends PageLogicBase
 		if ($callMode->isSubmit()) {
 			$pluginCategories = [];
 			foreach ($pluginCategoryIds as $pluginCategoryId) {
-				if (TypeConverter::parseBoolean($this->getRequest('plugin_category_' . $pluginCategoryId))) {
+				if (TypeUtility::parseBoolean($this->getRequest('plugin_category_' . $pluginCategoryId))) {
 					$pluginCategories[] = $pluginCategoryId;
 				}
 			}

@@ -11,7 +11,7 @@ use PeServer\Core\PathUtility;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\InitialValue;
 use PeServer\Core\StringUtility;
-use PeServer\Core\TypeConverter;
+use PeServer\Core\TypeUtility;
 use PeServer\Core\Html\HtmlDocument;
 use PeServer\Core\Throws\TemplateException;
 use PeServer\Core\Mvc\TemplatePlugin\TemplateFunctionBase;
@@ -90,8 +90,8 @@ class AssetFunction extends TemplateFunctionBase
 			$dom->addComment(StringUtility::dump($this->params));
 		}
 
-		$autoSize = TypeConverter::parseBoolean(ArrayUtility::getOr($this->params, 'auto_size', 'false'));
-		$include = TypeConverter::parseBoolean(ArrayUtility::getOr($this->params, 'include', 'false'));
+		$autoSize = TypeUtility::parseBoolean(ArrayUtility::getOr($this->params, 'auto_size', 'false'));
+		$include = TypeUtility::parseBoolean(ArrayUtility::getOr($this->params, 'include', 'false'));
 
 		$filePath = PathUtility::joinPath($this->argument->rootDirectoryPath, $sourcePath);
 		if (($autoSize || $include) || !IOUtility::existsFile($filePath)) {

@@ -19,7 +19,7 @@ use PeServer\Core\OutputBuffer;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\GraphicsException;
 use PeServer\Core\Throws\NotImplementedException;
-use PeServer\Core\TypeConverter;
+use PeServer\Core\TypeUtility;
 
 /**
  * GD関数ラッパー。
@@ -344,7 +344,7 @@ class Graphics extends DisposerBase
 			? imagecolorallocatealpha($this->image, $color->red, $color->green, $color->blue, $color->alpha)
 			: imagecolorallocate($this->image, $color->red, $color->green, $color->blue);
 		if ($result === false) {
-			throw new GraphicsException(TypeConverter::toString($color));
+			throw new GraphicsException(TypeUtility::toString($color));
 		}
 		return new ColorResource($this, $result);
 	}

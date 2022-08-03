@@ -53,7 +53,7 @@ class Data
 
 	public function __toString(): string
 	{
-		$s = var_export($this->args, true);
+		$s = print_r($this->args, true);
 		return is_null($s) ? '' : $s;
 	}
 }

@@ -27,7 +27,7 @@ use PeServer\Core\PathUtility;
 use PeServer\Core\StringUtility;
 use PeServer\Core\Throws\TemplateException;
 use PeServer\Core\Throws\Throws;
-use PeServer\Core\TypeConverter;
+use PeServer\Core\TypeUtility;
 
 /**
  * Bot用にテキストから画像生成。
@@ -85,7 +85,7 @@ class BotTextImageFunction extends TemplateFunctionBase
 		/** @var string */
 		$foregroundColorText = ArrayUtility::getOr($this->params, 'foreground-color', '#0f0f0f');
 		$foregroundColor = RgbColor::fromHtmlColorCode($foregroundColorText);
-		$obfuscateLevel = TypeConverter::parseBoolean(ArrayUtility::getOr($this->params, 'obfuscate-level', 0));
+		$obfuscateLevel = TypeUtility::parseBoolean(ArrayUtility::getOr($this->params, 'obfuscate-level', 0));
 
 		$size = new Size($width, $height);
 		$fontFilePath = PathUtility::joinPath($this->argument->baseDirectoryPath, ...CoreUtility::getDefaultFontParts());

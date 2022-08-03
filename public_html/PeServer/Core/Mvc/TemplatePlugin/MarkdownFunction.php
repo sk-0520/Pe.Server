@@ -8,7 +8,7 @@ use PeServer\Core\ArrayUtility;
 use PeServer\Core\InitialValue;
 use PeServer\Core\Mvc\Markdown;
 use PeServer\Core\StringUtility;
-use PeServer\Core\TypeConverter;
+use PeServer\Core\TypeUtility;
 use PeServer\Core\Mvc\TemplatePlugin\TemplatePluginArgument;
 use PeServer\Core\Mvc\TemplatePlugin\TemplateBlockFunctionBase;
 
@@ -34,7 +34,7 @@ class MarkdownFunction extends TemplateBlockFunctionBase
 			$className = 'markdown ' . $className;
 		}
 
-		$isSafeMode = TypeConverter::parseBoolean(ArrayUtility::getOr($this->params, 'safe_mode', true));
+		$isSafeMode = TypeUtility::parseBoolean(ArrayUtility::getOr($this->params, 'safe_mode', true));
 
 		$markdown = new Markdown();
 		$markdown->setSafeMode($isSafeMode);
