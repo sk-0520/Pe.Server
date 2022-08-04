@@ -25,20 +25,19 @@ use PeServer\Core\TypeUtility;
  * @template TKey of array-key
  * @template TValue
  * @phpstan-type PredicateAlias callable(TValue,TKey):(bool)
+ * @implements IteratorAggregate<TKey,TValue>
  */
-class Collection implements IteratorAggregate // @phpstan-ignore-line
+class Collection implements IteratorAggregate
 {
-	/** @phpstan-var Iterator<TKey,TValue> */
-	private Iterator $iterator;
-
 	/**
 	 * 生成。
 	 *
 	 * @param Iterator $iterator
+	 * @phpstan-param Iterator<TKey,TValue> $iterator
 	 */
-	private function __construct(Iterator $iterator)
-	{
-		$this->iterator = $iterator;
+	private function __construct(
+		private Iterator $iterator
+	) {
 	}
 
 	/**
