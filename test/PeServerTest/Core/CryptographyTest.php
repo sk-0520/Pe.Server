@@ -26,18 +26,18 @@ class CryptographyTest extends TestClass
 		foreach ($tests as $test) {
 			$enc = Cryptography::encrypt($test['algorithm'], $test['input'], $test['password']);
 			$dec = Cryptography::decrypt($enc, $test['password']);
-			$this->assertEquals($test['input'], $dec, StringUtility::dump(['test' => $test, 'enc' => $enc]));
+			$this->assertSame($test['input'], $dec, StringUtility::dump(['test' => $test, 'enc' => $enc]));
 		}
 	}
 
-	public function test_enc_error()
+	public function test_enc_throw()
 	{
 		$this->expectException(CryptoException::class);
 		Cryptography::encrypt('💩', 'ABC', 'a');
 		$this->fail();
 	}
 
-	public function test_dec_error()
+	public function test_dec_throw()
 	{
 		$enc = Cryptography::encrypt('aes-256-cbc', 'ABC', 'a');
 		$this->expectException(CryptoException::class);
@@ -45,28 +45,28 @@ class CryptographyTest extends TestClass
 		$this->fail();
 	}
 
-	public function test_dec_data_list0_error()
+	public function test_dec_data_list0_throw()
 	{
 		$this->expectException(CryptoException::class);
 		Cryptography::decrypt('', 'b');
 		$this->fail();
 	}
 
-	public function test_dec_data_list4_error()
+	public function test_dec_data_list4_throw()
 	{
 		$this->expectException(CryptoException::class);
 		Cryptography::decrypt('@@@', 'b');
 		$this->fail();
 	}
 
-	public function test_dec_data_alg_error()
+	public function test_dec_data_alg_throw()
 	{
 		$this->expectException(CryptoException::class);
 		Cryptography::decrypt('💩@@', 'b');
 		$this->fail();
 	}
 
-	public function test_dec_data_iv_error()
+	public function test_dec_data_iv_throw()
 	{
 		$this->expectException(CryptoException::class);
 		Cryptography::decrypt('aes-256-cbc@@', 'b');
@@ -94,7 +94,7 @@ class CryptographyTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = Cryptography::generateRandomString(...$test->args);
-			$this->assertEquals($test->expected, StringUtility::getLength($actual), $test->str());
+			$this->assertSame($test->expected, StringUtility::getLength($actual), $test->str());
 		}
 	}
 }

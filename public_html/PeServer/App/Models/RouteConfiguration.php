@@ -26,15 +26,14 @@ use PeServer\Core\Mvc\Middleware\PerformanceShutdownMiddleware;
 use PeServer\App\Models\Middleware\SetupAccountFilterMiddleware;
 use PeServer\App\Models\Middleware\UserPluginEditFilterMiddleware;
 use PeServer\App\Models\Middleware\AdministratorAccountFilterMiddleware;
-
+use PeServer\Core\Environment;
 
 /**
  * ルーティング情報設定。
  */
 abstract class RouteConfiguration
 {
-	private const DEFAULT_METHOD = null;
-
+	private const SIGNUP_TOKEN = '[a-zA-Z0-9]{80}';
 	private const PLUGIN_ID = '\{?[a-fA-F0-9\-]{32,}\}?';
 
 	/**
@@ -47,10 +46,10 @@ abstract class RouteConfiguration
 		return new RouteSetting(
 			[],
 			[
-				PerformanceMiddleware::class
+				...(Environment::isProduction() ? [PerformanceMiddleware::class] : [])
 			],
 			[
-				PerformanceShutdownMiddleware::class
+				...(Environment::isProduction() ? [PerformanceShutdownMiddleware::class] : [])
 			],
 			[],
 			[
@@ -67,9 +66,10 @@ abstract class RouteConfiguration
 					->addAction('logout', HttpMethod::gets())
 					->addAction('signup', HttpMethod::gets(), 'signup_step1_get', [SignupStep1FilterMiddleware::class])
 					->addAction('signup', HttpMethod::post(), 'signup_step1_post', [SignupStep1FilterMiddleware::class])
-					->addAction('signup/:token@[a-zA-Z0-9]{80}', HttpMethod::gets(), 'signup_step2_get', [SignupStep1FilterMiddleware::class, SignupStep2FilterMiddleware::class])
-					->addAction('signup/:token@[a-zA-Z0-9]{80}', HttpMethod::post(), 'signup_step2_post', [SignupStep1FilterMiddleware::class, SignupStep2FilterMiddleware::class])
-					->addAction('user', HttpMethod::gets(), self::DEFAULT_METHOD, [UserAccountFilterMiddleware::class])
+					->addAction('signup/notify', HttpMethod::gets(), 'signup_notify', [SignupStep1FilterMiddleware::class])
+					->addAction('signup/:token@' . self::SIGNUP_TOKEN, HttpMethod::gets(), 'signup_step2_get', [SignupStep1FilterMiddleware::class, SignupStep2FilterMiddleware::class])
+					->addAction('signup/:token@' . self::SIGNUP_TOKEN, HttpMethod::post(), 'signup_step2_post', [SignupStep1FilterMiddleware::class, SignupStep2FilterMiddleware::class])
+					->addAction('user', HttpMethod::gets(), Route::DEFAULT_METHOD, [UserAccountFilterMiddleware::class])
 					->addAction('user/edit', HttpMethod::gets(), 'user_edit_get', [UserAccountFilterMiddleware::class])
 					->addAction('user/edit', HttpMethod::post(), 'user_edit_post', [UserAccountFilterMiddleware::class, CsrfMiddleware::class])
 					->addAction('user/password', HttpMethod::gets(), 'user_password_get', [UserAccountFilterMiddleware::class])
@@ -91,6 +91,8 @@ abstract class RouteConfiguration
 					->addAction('configuration', HttpMethod::gets())
 					->addAction('database-maintenance', HttpMethod::gets(), 'database_maintenance_get')
 					->addAction('database-maintenance', HttpMethod::post(), 'database_maintenance_post')
+					->addAction('php-evaluate', HttpMethod::gets(), 'php_evaluate_get')
+					->addAction('php-evaluate', HttpMethod::post(), 'php_evaluate_post')
 					->addAction('default-plugin', HttpMethod::gets(), 'default_plugin_get')
 					->addAction('default-plugin', HttpMethod::post(), 'default_plugin_post')
 					->addAction('plugin-category', HttpMethod::gets(), 'plugin_category_get')

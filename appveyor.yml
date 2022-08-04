@@ -6,6 +6,7 @@ skip_tags: true
 #     - master
 environment:
   PHP_VER: 8.0
+  XDEBUG_MODE: coverage
 install:
   - sh: nvm install 18.4.0
   - sh: npm -g install npm@8.12.1

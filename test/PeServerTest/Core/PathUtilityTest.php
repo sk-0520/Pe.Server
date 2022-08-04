@@ -24,7 +24,7 @@ class PathUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = PathUtility::joinPath(...$test->args);
-			$this->assertEquals($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 
@@ -38,7 +38,7 @@ class PathUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = PathUtility::getDirectoryPath(...$test->args);
-			$this->assertEquals($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 
@@ -53,7 +53,7 @@ class PathUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = PathUtility::getFileName(...$test->args);
-			$this->assertEquals($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 
@@ -78,7 +78,7 @@ class PathUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = PathUtility::getFileExtension(...$test->args);
-			$this->assertEquals($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 
@@ -97,7 +97,7 @@ class PathUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = PathUtility::getFileNameWithoutExtension(...$test->args);
-			$this->assertEquals($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 }

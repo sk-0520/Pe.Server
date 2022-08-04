@@ -12,6 +12,7 @@ use PeServer\Core\Store\SessionOption;
 use PeServer\Core\Store\TemporaryOption;
 use PeServer\App\Models\AppConfiguration;
 use PeServer\Core\Store\SpecialStore;
+use PeServer\Core\StringUtility;
 
 abstract class StoreConfiguration
 {
@@ -124,8 +125,13 @@ abstract class StoreConfiguration
 		$overwriteCookie = self::mergeCookie($cookie, $session);
 
 		/** @var string */
-		$name = ArrayUtility::getOr($session, 'name', 'PHPSESSID');
-		/** @var string */
+		$name = ArrayUtility::getOr($session, 'name', SessionOption::DEFAULT_NAME);
+		if (StringUtility::isNullOrWhiteSpace($name)) {
+			$name = SessionOption::DEFAULT_NAME;
+		}
+		/** @phpstan-var non-empty-string $name */
+
+		/** @var string $save */
 		$save = ArrayUtility::getOr($session, 'save', '');
 		$option = new SessionOption(
 			$name,

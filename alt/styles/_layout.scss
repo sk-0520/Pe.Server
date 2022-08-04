@@ -17,6 +17,7 @@ $_sp-footer-background-color: $_pc-footer-background-color;
 @mixin links {
 	ul {
 		height: 100%;
+		margin: 0;
 
 		li {
 			height: 100%;
@@ -112,6 +113,30 @@ body {
 
 			p {
 				margin-bottom: 0.8em;
+			}
+
+			h1 {
+				font-size: 1.5em;
+				font-weight: bold;
+				text-align: center;
+				background-color: #333;
+				color: #eee;
+				padding: 0.5ex 1ex;
+			}
+			@for $i from 2 through 5 {
+				h#{7 - $i} {
+					font-size: #{13 + ($i * 0.5)}pt;
+					line-height: 110%;
+					margin-top: 0.5em;
+					margin-bottom: 0.5em;
+					font-weight: bold;
+					border-left: #{$i}px solid #888;
+					border-bottom: 1px dotted #888;
+					padding-left: 0.5rem;
+					padding-top: 0.5rem;
+					padding-bottom: 0.5rem;
+					margin-left: #{7 - $i}px;
+				}
 			}
 		}
 

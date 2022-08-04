@@ -67,7 +67,7 @@ class SettingConfigurationLogic extends PageLogicBase
 			SORT_ASC,
 			$columns
 		);
-		$orders = StringUtility::join(array_map(fn ($i) => $i['name'], $columns), ',');
+		$orders = StringUtility::join(', ', array_map(fn ($i) => $i['name'], $columns));
 
 		$rows = $context->query(
 			//@phpstan-ignore-next-line

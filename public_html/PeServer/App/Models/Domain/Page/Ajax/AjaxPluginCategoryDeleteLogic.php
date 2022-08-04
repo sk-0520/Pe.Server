@@ -13,7 +13,7 @@ use PeServer\Core\Database\IDatabaseContext;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\App\Models\Dao\Entities\PluginCategoriesEntityDao;
 use PeServer\App\Models\Dao\Entities\PluginCategoryMappingsEntityDao;
-use PeServer\Core\TypeConverter;
+use PeServer\Core\TypeUtility;
 
 class AjaxPluginCategoryDeleteLogic extends PageLogicBase
 {

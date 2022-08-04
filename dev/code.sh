@@ -2,7 +2,7 @@
 
 cd $(cd $(dirname $0); pwd)
 
-PHPSTAN_VERSION=1.8.1
+PHPSTAN_VERSION=1.8.2
 PHPSTAN_URL=https://github.com/phpstan/phpstan/releases/download/${PHPSTAN_VERSION}/phpstan.phar
 PHPSTAN_FILE=phpstan.phar.${PHPSTAN_VERSION}
 PHPSTAN_BLEEDING_EDGE=bleedingEdge.neon

@@ -79,10 +79,10 @@ class Configuration
 		$configuration = [];
 
 		/** @var array<mixed> */
-		$baseConfiguration = FileUtility::readJsonFile($baseFilePath);
-		if (FileUtility::existsFile($environmentFilePath)) {
+		$baseConfiguration = IOUtility::readJsonFile($baseFilePath);
+		if (IOUtility::existsFile($environmentFilePath)) {
 			/** @var array<mixed> */
-			$environmentConfiguration = FileUtility::readJsonFile($environmentFilePath);
+			$environmentConfiguration = IOUtility::readJsonFile($environmentFilePath);
 			$configuration = ArrayUtility::replace($baseConfiguration, $environmentConfiguration);
 		} else {
 			$configuration = $baseConfiguration;

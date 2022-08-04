@@ -9,7 +9,7 @@ class ImageOption
 	/**
 	 * 生成。
 	 *
-	 * @param int[] $imageType
+	 * @param int $imageType
 	 * @phpstan-param ImageType::* $imageType
 	 * @param mixed[] $options イメージ生成処理用オプション。
 	 */

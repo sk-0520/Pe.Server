@@ -8,7 +8,7 @@ use PeServer\App\Models\AppDatabaseCache;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
-use PeServer\Core\Collection;
+use PeServer\Core\Collections\Collection;
 use PeServer\Core\Uuid;
 
 class PluginDetailLogic extends PageLogicBase

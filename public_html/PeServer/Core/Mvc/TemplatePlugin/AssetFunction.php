@@ -6,12 +6,12 @@ namespace PeServer\Core\Mvc\TemplatePlugin;
 
 use \DOMElement;
 use PeServer\Core\Environment;
-use PeServer\Core\FileUtility;
+use PeServer\Core\IOUtility;
 use PeServer\Core\PathUtility;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\InitialValue;
 use PeServer\Core\StringUtility;
-use PeServer\Core\TypeConverter;
+use PeServer\Core\TypeUtility;
 use PeServer\Core\Html\HtmlDocument;
 use PeServer\Core\Throws\TemplateException;
 use PeServer\Core\Mvc\TemplatePlugin\TemplateFunctionBase;
@@ -90,15 +90,15 @@ class AssetFunction extends TemplateFunctionBase
 			$dom->addComment(StringUtility::dump($this->params));
 		}
 
-		$autoSize = TypeConverter::parseBoolean(ArrayUtility::getOr($this->params, 'auto_size', 'false'));
-		$include = TypeConverter::parseBoolean(ArrayUtility::getOr($this->params, 'include', 'false'));
+		$autoSize = TypeUtility::parseBoolean(ArrayUtility::getOr($this->params, 'auto_size', 'false'));
+		$include = TypeUtility::parseBoolean(ArrayUtility::getOr($this->params, 'include', 'false'));
 
 		$filePath = PathUtility::joinPath($this->argument->rootDirectoryPath, $sourcePath);
-		if (($autoSize || $include) || !FileUtility::existsFile($filePath)) {
+		if (($autoSize || $include) || !IOUtility::existsFile($filePath)) {
 			// @phpstan-ignore-next-line nullは全取得だからOK
 			foreach ($this->argument->engine->getTemplateDir(null) as $dir) {
 				$path = PathUtility::joinPath($dir, $sourcePath);
-				if (FileUtility::existsFile($path)) {
+				if (IOUtility::existsFile($path)) {
 					$filePath = $path;
 					break;
 				}
@@ -118,7 +118,7 @@ class AssetFunction extends TemplateFunctionBase
 				if ($include) {
 					$element = $dom->addElement('style');
 
-					$content = FileUtility::readContent($filePath);
+					$content = IOUtility::readContent($filePath);
 					$element->addText($content->toString());
 				} else {
 					$element = $dom->addElement('link');
@@ -133,7 +133,7 @@ class AssetFunction extends TemplateFunctionBase
 				$element = $dom->addElement('script');
 
 				if ($include) {
-					$content = FileUtility::readContent($filePath);
+					$content = IOUtility::readContent($filePath);
 					$element->addText($content->toString());
 				} else {
 					$element->setAttribute('src', $resourcePath);

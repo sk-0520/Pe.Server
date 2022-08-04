@@ -13,11 +13,12 @@ use PeServer\Core\Throws\ParseException;
 use PeServer\Core\Throws\FileNotFoundException;
 
 /**
- * ファイル処理系。
+ * ファイル(+ディレクトリ)処理系。
  */
-abstract class FileUtility
+abstract class IOUtility
 {
-	public const DIRECTORY_PERMISSIONS = 0777;
+	/** ディレクトリ作成時の通常権限。 */
+	public const DIRECTORY_PERMISSIONS = 0755;
 
 	/**
 	 * ファイルサイズを取得。
@@ -39,7 +40,7 @@ abstract class FileUtility
 	}
 
 	/**
-	 * パスから内容を取得。
+	 * ファイルの内容を取得。
 	 *
 	 * @param string $path
 	 * @return Binary
@@ -57,7 +58,7 @@ abstract class FileUtility
 	}
 
 	/**
-	 * 対象パスに指定データを書き込み。
+	 * 対象ファイルに指定データを書き込み。
 	 *
 	 * @param string $path
 	 * @param mixed $data
@@ -105,6 +106,7 @@ abstract class FileUtility
 	 *
 	 * @param string $path パス。
 	 * @return array<mixed> 応答JSON。
+	 * @param Json|null $json JSON処理
 	 * @throws IOException
 	 * @throws ParseException パース失敗。
 	 */
@@ -113,10 +115,9 @@ abstract class FileUtility
 		$content = self::readContent($path);
 
 		$json ??= new Json();
+		$value = $json->decode($content->getRaw());
 
-		$json = $json->decode($content->getRaw());
-
-		return $json;
+		return $value;
 	}
 
 	/**
@@ -124,6 +125,7 @@ abstract class FileUtility
 	 *
 	 * @param string $path
 	 * @param array<mixed>|\stdClass $data
+	 * @param Json|null $json JSON処理
 	 * @return void
 	 * @throws IOException
 	 * @throws ParseException
@@ -131,7 +133,7 @@ abstract class FileUtility
 	public static function writeJsonFile(string $path, array|stdClass $data, ?Json $json = null): void
 	{
 		$json ??= new Json();
-		$value = $json->encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+		$value = $json->encode($data);
 
 		self::saveContent($path, $value, false);
 	}

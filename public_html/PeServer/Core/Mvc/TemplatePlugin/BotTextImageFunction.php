@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\TemplatePlugin;
 
+use PeServer\Core\Alignment;
 use \Throwable;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Binary;
@@ -15,8 +16,9 @@ use PeServer\Core\Image\ImageOption;
 use PeServer\Core\Image\ImageType;
 use PeServer\Core\Image\Point;
 use PeServer\Core\Image\Rectangle;
-use PeServer\Core\Image\RgbColor;
+use PeServer\Core\Image\Color\RgbColor;
 use PeServer\Core\Image\Size;
+use PeServer\Core\Image\TextSetting;
 use PeServer\Core\InitialValue;
 use PeServer\Core\Mvc\TemplatePlugin\TemplateFunctionBase;
 use PeServer\Core\Mvc\TemplatePlugin\TemplatePluginArgument;
@@ -25,7 +27,7 @@ use PeServer\Core\PathUtility;
 use PeServer\Core\StringUtility;
 use PeServer\Core\Throws\TemplateException;
 use PeServer\Core\Throws\Throws;
-use PeServer\Core\TypeConverter;
+use PeServer\Core\TypeUtility;
 
 /**
  * Bot用にテキストから画像生成。
@@ -83,35 +85,25 @@ class BotTextImageFunction extends TemplateFunctionBase
 		/** @var string */
 		$foregroundColorText = ArrayUtility::getOr($this->params, 'foreground-color', '#0f0f0f');
 		$foregroundColor = RgbColor::fromHtmlColorCode($foregroundColorText);
-		$obfuscateLevel = TypeConverter::parseBoolean(ArrayUtility::getOr($this->params, 'obfuscate-level', 0));
+		$obfuscateLevel = TypeUtility::parseBoolean(ArrayUtility::getOr($this->params, 'obfuscate-level', 0));
 
-		$rectWidth = $width - 1;
-		$rectHeight = $height - 1;
-
+		$size = new Size($width, $height);
 		$fontFilePath = PathUtility::joinPath($this->argument->baseDirectoryPath, ...CoreUtility::getDefaultFontParts());
+		$textSetting = new TextSetting(Alignment::HORIZONTAL_CENTER, Alignment::VERTICAL_CENTER, $fontFilePath, 0);
 
-		$area = Graphics::calculateTextArea($text, $fontFilePath, $fontSize, 0);
-
-		$textWidth = $area->rightTop->x - $area->leftBottom->x;
-		$textHeight = $area->leftBottom->y - $area->rightTop->y;
-
-		/** @phpstan-var positive-int */
-		$x = (int)(($rectWidth - $textWidth) / 2);
-		/** @phpstan-var positive-int */
-		$y = (int)((($rectHeight - $textHeight) / 2) - $area->rightTop->y);
-
-		$image = Graphics::create(new Size($width, $height));
+		$image = Graphics::create($size);
 		$image->setDpi(new Size(300, 300));
 
-		$image->fillRectangle($backgroundColor, new Rectangle(new Point(0, 0), new Size($width, $height)));
-		$image->drawText($text, $fontFilePath, $fontSize, 0, new Point($x, $y), $foregroundColor);
+		$rectangle = new Rectangle(new Point(0, 0), $size);
+		$image->fillRectangle($backgroundColor, $rectangle);
+		$image->drawText($text, $fontSize, $rectangle, $foregroundColor, $textSetting);
 
-		$binary = $image->toImage(ImageOption::png());
+		$htmlSource = $image->exportHtmlSource(ImageOption::png());
 		$image->dispose();
 
 		$dom = new HtmlDocument();
 		$img = $dom->addElement('img');
-		$img->setAttribute('src', 'data:image/png;base64,' . $binary->toBase64());
+		$img->setAttribute('src', $htmlSource);
 
 		$textHash = Cryptography::generateHashString(self::HASH_ALGORITHM, new Binary($text));
 		$img->setAttribute('data-hash', $textHash);

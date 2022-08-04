@@ -5,19 +5,21 @@ declare(strict_types=1);
 namespace PeServer\Core\Image;
 
 use \GdImage;
+use PeServer\Core\Alignment;
 use PeServer\Core\Binary;
 use PeServer\Core\DisposerBase;
 use PeServer\Core\ErrorHandler;
-use PeServer\Core\FileUtility;
+use PeServer\Core\IOUtility;
 use PeServer\Core\IDisposable;
 use PeServer\Core\Image\Area;
-use PeServer\Core\Image\ColorResource;
-use PeServer\Core\Image\IColor;
-use PeServer\Core\Image\ImageInformation;
+use PeServer\Core\Image\Color\ColorResource;
+use PeServer\Core\Image\Color\IColor;
+use PeServer\Core\Image\Color\RgbColor;
 use PeServer\Core\OutputBuffer;
-use PeServer\Core\Throws\CoreError;
+use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\GraphicsException;
-use PeServer\Core\TypeConverter;
+use PeServer\Core\Throws\NotImplementedException;
+use PeServer\Core\TypeUtility;
 
 /**
  * GD関数ラッパー。
@@ -26,11 +28,28 @@ use PeServer\Core\TypeConverter;
  */
 class Graphics extends DisposerBase
 {
-	private GdImage $image;
+	public const CURRENT_THICKNESS = -1;
+	public const DEFAULT_THICKNESS = 1;
 
-	private function __construct(GdImage $image)
+	public GdImage $image;
+	/** @phpstan-var positive-int */
+	private int $thickness;
+	/** @phpstan-ignore-next-line */
+	private bool $antiAlias;
+
+	private function __construct(GdImage $image, bool $isEnabledAlpha)
 	{
 		$this->image = $image;
+
+		$this->thickness = self::DEFAULT_THICKNESS;
+		imagesetthickness($this->image, $this->thickness);
+
+		if ($isEnabledAlpha) {
+			imagealphablending($this->image, false);
+			imagesavealpha($this->image, true);
+		}
+
+		$this->antiAlias = imageantialias($this->image, true);
 	}
 
 	/**
@@ -38,9 +57,9 @@ class Graphics extends DisposerBase
 	 */
 	protected function disposeImpl(): void
 	{
-		parent::disposeImpl();
-
 		imagedestroy($this->image);
+
+		parent::disposeImpl();
 	}
 
 	/**
@@ -57,7 +76,7 @@ class Graphics extends DisposerBase
 			throw new GraphicsException();
 		}
 
-		return new Graphics($image);
+		return new Graphics($image, true);
 	}
 
 	/**
@@ -65,10 +84,10 @@ class Graphics extends DisposerBase
 	 *
 	 * @param Binary $binary
 	 * @param int $imageType
-	 * @phpstan-param -1|ImageType::* $imageType
+	 * @phpstan-param ImageType::* $imageType
 	 * @return Graphics
 	 */
-	public static function load(Binary $binary, int $imageType = -1): Graphics
+	public static function load(Binary $binary, int $imageType = ImageType::AUTO): Graphics
 	{
 		$funcName = match ($imageType) {
 			ImageType::PNG => 'imagecreatefrompng',
@@ -86,7 +105,7 @@ class Graphics extends DisposerBase
 			throw new GraphicsException();
 		}
 
-		return new Graphics($result->value);
+		return new Graphics($result->value, true);
 	}
 
 	/**
@@ -98,7 +117,7 @@ class Graphics extends DisposerBase
 	 */
 	public static function open(string $path): Graphics
 	{
-		$binary = FileUtility::readContent($path);
+		$binary = IOUtility::readContent($path);
 		return self::load($binary);
 	}
 
@@ -111,48 +130,6 @@ class Graphics extends DisposerBase
 	public static function getInformation(): array
 	{
 		return gd_info();
-	}
-
-	/**
-	 * MIME取得。
-	 *
-	 * `image_type_to_mime_type` ラッパー。
-	 *
-	 * @param int $imageType
-	 * @phpstan-param ImageType::* $imageType
-	 * @return string
-	 * @see https://www.php.net/manual/function.image-type-to-mime-type.php
-	 */
-	public static function toMime(int $imageType): string
-	{
-		return image_type_to_mime_type($imageType);
-	}
-
-	/**
-	 * ファイルからイメージサイズを取得。
-	 *
-	 * `getimagesize` ラッパー。
-	 *
-	 * @param string $filePath 対象画像ファイルパス。
-	 * @return ImageInformation
-	 * @throws GraphicsException
-	 * @see https://www.php.net/manual/function.getimagesize.php
-	 */
-	public static function getImageInformation(string $filePath): ImageInformation
-	{
-		$result = getimagesize($filePath);
-		if ($result === false) {
-			throw new GraphicsException($filePath);
-		}
-
-		return new ImageInformation(
-			new Size(
-				$result[0],
-				$result[1]
-			),
-			$result['mime'],
-			$result[2]
-		);
 	}
 
 	/**
@@ -220,7 +197,7 @@ class Graphics extends DisposerBase
 	 *
 	 * @param int|Size $size int: 横幅のみ、高さは自動設定される。 Size:幅・高さ
 	 * @phpstan positive-int|Size $size
-	 * @param int $scaleMode
+	 * @param int $scaleMode 変換フラグ。
 	 * @phpstan-param ScaleMode::* $scaleMode
 	 * @return Graphics
 	 * @throws GraphicsException
@@ -238,7 +215,7 @@ class Graphics extends DisposerBase
 			throw new GraphicsException();
 		}
 
-		return new Graphics($result);
+		return new Graphics($result, true);
 	}
 
 	/**
@@ -261,7 +238,8 @@ class Graphics extends DisposerBase
 		return new RgbColor(
 			($rgb >> 16) & 0xff, //@phpstan-ignore-line 0xff
 			($rgb >> 8) & 0xff, //@phpstan-ignore-line 0xff
-			$rgb & 0xff //@phpstan-ignore-line 0xff
+			$rgb & 0xff, //@phpstan-ignore-line 0xff,
+			($rgb >> 24) & 0x7f //@phpstan-ignore-line 0xff,
 		);
 	}
 
@@ -293,18 +271,80 @@ class Graphics extends DisposerBase
 	}
 
 	/**
+	 * 線幅設定。
+	 *
+	 * @param int $thickness
+	 * @phpstan-param positive-int $thickness
+	 */
+	public function setThickness(int $thickness): void
+	{
+		$result = imagesetthickness($this->image, $thickness);
+		if ($result === false) {
+			throw new GraphicsException();
+		}
+
+		$this->thickness = $thickness;
+	}
+
+	/**
+	 * 線幅適用。
+	 *
+	 * @param int $thickness
+	 * @phpstan-param positive-int $thickness
+	 * @return IDisposable 戻し。
+	 */
+	private function applyThickness(int $thickness): IDisposable
+	{
+		if ($thickness === $this->thickness) {
+			return DisposerBase::empty();
+		}
+		if ($thickness < 1) { //@phpstan-ignore-line
+			throw new ArgumentException('$thickness');
+		}
+
+		$restoreThickness = $this->thickness;
+		$this->setThickness($thickness);
+
+		return new class($this, $restoreThickness) extends DisposerBase
+		{
+			/**
+			 * 生成。
+			 *
+			 * @param Graphics $graphics
+			 * @param int $restoreThickness
+			 * @phpstan-param positive-int $restoreThickness
+			 */
+			public function __construct(
+				private Graphics $graphics,
+				private int $restoreThickness
+			) {
+			}
+
+			protected function disposeImpl(): void
+			{
+				$this->graphics->setThickness($this->restoreThickness);
+
+				parent::disposeImpl();
+			}
+		};
+	}
+
+	/**
 	 * `imagecolorallocate` ラッパー。
 	 *
 	 * @param RgbColor $color
 	 * @return ColorResource
 	 * @throws GraphicsException
+	 * @see https://www.php.net/manual/function.imagecolorallocatealpha.php
 	 * @see https://www.php.net/manual/function.imagecolorallocate.php
 	 */
 	public function attachColor(RgbColor $color): ColorResource
 	{
-		$result = imagecolorallocate($this->image, $color->red, $color->green, $color->blue);
+		$result = $color->alpha !== RgbColor::ALPHA_NONE
+			? imagecolorallocatealpha($this->image, $color->red, $color->green, $color->blue, $color->alpha)
+			: imagecolorallocate($this->image, $color->red, $color->green, $color->blue);
 		if ($result === false) {
-			throw new GraphicsException(TypeConverter::toString($color));
+			throw new GraphicsException(TypeUtility::toString($color));
 		}
 		return new ColorResource($this, $result);
 	}
@@ -339,6 +379,12 @@ class Graphics extends DisposerBase
 		}
 	}
 
+	/**
+	 * 矩形塗り潰し。
+	 *
+	 * @param IColor $color 色。
+	 * @param Rectangle $rectangle 矩形領域。
+	 */
 	public function fillRectangle(IColor $color, Rectangle $rectangle): void
 	{
 		$result = $this->doColor(
@@ -358,44 +404,87 @@ class Graphics extends DisposerBase
 	}
 
 	/**
+	 * 矩形描画。
+	 *
+	 * @param IColor $color
+	 * @param Rectangle $rectangle
+	 * @param int $thickness
+	 * @phpstan-param positive-int|self::CURRENT_THICKNESS $thickness
+	 */
+	public function drawRectangle(IColor $color, Rectangle $rectangle, int $thickness = self::CURRENT_THICKNESS): void
+	{
+		$restore = $thickness === self::CURRENT_THICKNESS
+			? DisposerBase::empty()
+			: $this->applyThickness($thickness);
+
+		try {
+			$result = $this->doColor(
+				$color,
+				fn ($attachedColor) => imagerectangle(
+					$this->image,
+					$rectangle->left(),
+					$rectangle->top(),
+					$rectangle->right(),
+					$rectangle->bottom(),
+					$attachedColor
+				)
+			);
+
+			if ($result === false) {
+				throw new GraphicsException();
+			}
+		} finally {
+			$restore->dispose();
+		}
+	}
+
+	/**
 	 * テキスト描画領域取得。
 	 *
 	 * @param string $text
-	 * @param string $fontNameOrPath
 	 * @param float $fontSize
+	 * @param string $fontNameOrPath
 	 * @param float $angle
 	 * @return Area
 	 * @throws GraphicsException
 	 * @see https://www.php.net/manual/function.imageftbbox.php
 	 */
-	public static function calculateTextArea(string $text, string $fontNameOrPath, float $fontSize, float $angle): Area
+	public static function calculateTextArea(string $text, float $fontSize, string $fontNameOrPath, float $angle): Area
 	{
 		$options = [];
+		/** @phpstan-var non-empty-array<UnsignedIntegerAlias>|false */
 		$result = imageftbbox($fontSize, $angle, $fontNameOrPath, $text, $options);
 		if ($result === false) {
 			throw new GraphicsException();
 		}
 
-		return new Area(
-			new Point($result[6], $result[7]),
-			new Point($result[0], $result[1]),
-			new Point($result[2], $result[3]),
-			new Point($result[4], $result[5]),
-		);
+		return Area::create($result);
 	}
 
-	public function drawText(string $text, string $fontNameOrPath, float $fontSize, float $angle, Point $location, IColor $color): Area
+	/**
+	 * テキスト描画。
+	 *
+	 * @param string $text 描画テキスト。
+	 * @param float $fontSize フォントサイズ。
+	 * @param Point $location 描画開始座標。
+	 * @param IColor $color 描画色。
+	 * @param TextSetting $setting 描画するテキスト設定。
+	 * @return Area 描画領域。
+	 * @throws GraphicsException
+	 */
+	public function drawString(string $text, float $fontSize, Point $location, IColor $color, TextSetting $setting): Area
 	{
+		/** @phpstan-var non-empty-array<int>|false */
 		$result = $this->doColor(
 			$color,
 			fn ($attachedColor) => imagettftext(
 				$this->image,
 				$fontSize,
-				$angle,
-				$location->x,
-				$location->y,
+				$setting->angle,
+				(int)$location->x,
+				(int)$location->y,
 				$attachedColor,
-				$fontNameOrPath,
+				$setting->fontNameOrPath,
 				$text
 			)
 		);
@@ -404,12 +493,58 @@ class Graphics extends DisposerBase
 			throw new GraphicsException();
 		}
 
-		return new Area(
-			new Point($result[6], $result[7]),
-			new Point($result[0], $result[1]),
-			new Point($result[2], $result[3]),
-			new Point($result[4], $result[5]),
+		return Area::create($result);
+	}
+
+	/**
+	 * テキスト描画。
+	 *
+	 * 内部的に `self::calculateTextArea` を使用。
+	 *
+	 * @param string $text 描画テキスト。
+	 * @param float $fontSize フォントサイズ。
+	 * @param Rectangle $rectangle 描画する矩形。
+	 * @param IColor $color 描画色。
+	 * @param TextSetting $setting 描画するテキスト設定。
+	 * @return Area 描画領域。
+	 * @throws GraphicsException
+	 * @see https://php.net/manual/en/function.imagettftext.php
+	 */
+	public function drawText(string $text, float $fontSize, Rectangle $rectangle, IColor $color, TextSetting $setting): Area
+	{
+		$fontArea = self::calculateTextArea($text, $fontSize, $setting->fontNameOrPath, $setting->angle);
+
+		$x = match ($setting->horizontal) {
+			Alignment::HORIZONTAL_LEFT => $rectangle->left() - min($fontArea->left(), $fontArea->right()),
+			Alignment::HORIZONTAL_CENTER  => $rectangle->left() + ($rectangle->size->width / 2) - ($fontArea->width() / 2),
+			Alignment::HORIZONTAL_RIGHT => $rectangle->right() - max($fontArea->left(), $fontArea->right()), //@phpstan-ignore-line
+			default => throw new ArgumentException('$horizontal: ' . $setting->horizontal), //@phpstan-ignore-line
+		};
+		$y = match ($setting->vertical) {
+			Alignment::VERTICAL_TOP => $rectangle->top() - min($fontArea->top(), $fontArea->bottom()),
+			Alignment::VERTICAL_CENTER => $rectangle->top() + ($rectangle->size->height / 2) + ($fontArea->height() / 2),
+			Alignment::VERTICAL_BOTTOM => $rectangle->bottom() - max($fontArea->top(), $fontArea->bottom()), //@phpstan-ignore-line
+			default => throw new ArgumentException('$vertical: ' . $setting->vertical), //@phpstan-ignore-line
+		};
+
+		return $this->drawString(
+			$text,
+			$fontSize,
+			new Point((int)$x, (int)$y),
+			$color,
+			$setting
 		);
+	}
+
+	private function exportImageCore(ImageOption $option): Binary
+	{
+		return OutputBuffer::get(fn () => match ($option->imageType) {
+			ImageType::PNG => imagepng($this->image, null, ...$option->options()),
+			ImageType::JPEG => imagejpeg($this->image, null, ...$option->options()),
+			ImageType::WEBP => imagewebp($this->image, null, ...$option->options()),
+			ImageType::BMP => imagebmp($this->image, null, ...$option->options()),
+			default  => throw new NotImplementedException(),
+		});
 	}
 
 	/**
@@ -418,14 +553,38 @@ class Graphics extends DisposerBase
 	 * @param ImageOption $option
 	 * @return Binary
 	 */
-	public function toImage(ImageOption $option): Binary
+	public function exportImage(ImageOption $option): Binary
 	{
-		return OutputBuffer::get(fn () => match ($option->imageType) {
-			ImageType::PNG => imagepng($this->image, null, ...$option->options()),
-			ImageType::JPEG => imagejpeg($this->image, null, ...$option->options()),
-			ImageType::WEBP => imagewebp($this->image, null, ...$option->options()),
-			ImageType::BMP => imagebmp($this->image, null, ...$option->options()),
-			default  => throw new CoreError(),
-		});
+		if ($option->imageType == ImageType::AUTO) {
+			throw new ArgumentException('ImageType::AUTO');
+		}
+
+		return $this->exportImageCore($option);
+	}
+
+	/**
+	 * 画像データをHTMLのソースとして出力。
+	 *
+	 * @param ImageOption $option
+	 * @return string "data" URL scheme。
+	 */
+	public function exportHtmlSource(ImageOption $option): string
+	{
+		if ($option->imageType == ImageType::AUTO) {
+			throw new ArgumentException('ImageType::AUTO');
+		}
+
+		$image = $this->exportImageCore($option);
+
+		$mime = match ($option->imageType) {
+			default => ImageType::toMime($option->imageType),
+		};
+
+		$data = 'data:' . $mime . ';base64,';
+		$body = $image->toBase64();
+
+		$result = $data . $body;
+
+		return $result;
 	}
 }

@@ -17,7 +17,7 @@ function execute_install() {
 	apt --yes install software-properties-common
 	add-apt-repository ppa:ondrej/php
 	apt --yes update
-	apt --yes install php${PHP_VERSION} php${PHP_VERSION}-fpm php${PHP_VERSION}-mysql php${PHP_VERSION}-mbstring php${PHP_VERSION}-zip php${PHP_VERSION}-xml php${PHP_VERSION}-gd
+	apt --yes install php${PHP_VERSION} php${PHP_VERSION}-fpm php${PHP_VERSION}-mysql php${PHP_VERSION}-mbstring php${PHP_VERSION}-zip php${PHP_VERSION}-xml php${PHP_VERSION}-gd php${PHP_VERSION}-xdebug
 	update-alternatives --set php /usr/bin/php${PHP_VERSION}
 
 	# if [ ! -d "${PACKAGE_SAVE_DIR}" ] ; then

@@ -20,7 +20,7 @@ abstract class Regex
 	 * `preg_quote` ラッパー。
 	 *
 	 * @param string $s 正規表現パターン。
-	 * @param string|null $delimiter デリミタ。
+	 * @param string|null $delimiter デリミタ(null: `/`)。
 	 * @return string
 	 * @see https://www.php.net/manual/function.preg-quote.php
 	 */
@@ -43,7 +43,7 @@ abstract class Regex
 		if (!$result->success) {
 			throw new RegexException(preg_last_error_msg(), preg_last_error());
 		}
-		if($result->value === false) {
+		if ($result->value === false) {
 			throw new RegexException(preg_last_error_msg(), preg_last_error());
 		}
 
@@ -66,8 +66,11 @@ abstract class Regex
 		if (!$result->success) {
 			throw new RegexException(preg_last_error_msg(), preg_last_error());
 		}
-		if($result->value === false) {
+		if ($result->value === false) {
 			throw new RegexException(preg_last_error_msg(), preg_last_error());
+		}
+		if ($result->value === 0) {
+			return [];
 		}
 
 		// 最初のやつは無かったことにする
@@ -132,7 +135,8 @@ abstract class Regex
 	 *
 	 * @param string $source 一致する対象を検索する文字列。
 	 * @param string $pattern 一致させる正規表現パターン。
-	 * @param callable(array<int,string>|array<string,string>):string $replacement 置換処理。
+	 * @param callable $replacement 置換処理。
+	 * @phpstan-param callable(array<int,string>|array<string,string>):string $replacement
 	 * @param int $limit 各パターンによる 置換を行う最大回数。
 	 * @throws ArgumentException 引数がおかしい。
 	 * @throws RegexException 正規表現処理失敗。

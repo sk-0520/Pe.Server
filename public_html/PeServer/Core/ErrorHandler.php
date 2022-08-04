@@ -175,11 +175,11 @@ class ErrorHandler
 	private function _catchError(int $errorNumber, string $message, string $file, int $lineNumber, ?Throwable $throwable)
 	{
 		$this->catchError($errorNumber, $message, $file, $lineNumber, $throwable);
-		exit;
+		exit($errorNumber);
 	}
 
 	/**
-	 * Undocumented function
+	 * 検出できるソースファイル内容をすべて取得。
 	 *
 	 * @param string $file
 	 * @param Throwable|null $throwable
@@ -188,7 +188,7 @@ class ErrorHandler
 	private function getFileContents(string $file, ?Throwable $throwable): array
 	{
 		$files = [
-			"$file" => FileUtility::readContent($file)->getRaw(),
+			"$file" => IOUtility::readContent($file)->getRaw(),
 		];
 
 		if(!is_null($throwable)) {
@@ -196,7 +196,7 @@ class ErrorHandler
 				if(isset($item['file'])) {
 					$f = $item['file'];
 					if (!isset($files[$f])) {
-						$files[$f] = FileUtility::readContent($f)->getRaw();
+						$files[$f] = IOUtility::readContent($f)->getRaw();
 					}
 				}
 			}
@@ -262,9 +262,9 @@ final class LocalPhpErrorReceiver extends DisposerBase
 
 	protected function disposeImpl(): void
 	{
-		parent::disposeImpl();
-
 		restore_error_handler();
+
+		parent::disposeImpl();
 	}
 
 	/**

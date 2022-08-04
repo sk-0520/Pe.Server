@@ -9,6 +9,7 @@ use PeServer\Core\StringUtility;
 
 /**
  * 要求パス。
+ *
  * @immutable
  */
 class RequestPath

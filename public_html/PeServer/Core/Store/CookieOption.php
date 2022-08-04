@@ -45,11 +45,13 @@ class CookieOption
 	public ?DateInterval $span;
 	/**
 	 * HTTPS に限定。
+	 *
 	 * @readonly
 	 */
 	public bool $secure;
 	/**
 	 *  HTTP リクエストのみで使用。
+	 *
 	 * @readonly
 	 */
 	public bool $httpOnly;
@@ -73,7 +75,7 @@ class CookieOption
 			return 0;
 		}
 
-		$reference = new DateTimeImmutable;
+		$reference = new DateTimeImmutable();
 		$endTime = $reference->add($this->span);
 
 		$result = $endTime->getTimestamp() - $reference->getTimestamp();

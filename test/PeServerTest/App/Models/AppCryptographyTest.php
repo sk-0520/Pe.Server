@@ -19,7 +19,7 @@ class AppCryptographyTest extends TestClass
 		foreach ($tests as $test) {
 			$data = AppCryptography::encryptToken($test);
 			$actual = AppCryptography::decryptToken($data);
-			$this->assertEquals($test, $actual);
+			$this->assertSame($test, $actual);
 		}
 	}
 }

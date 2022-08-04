@@ -12,7 +12,7 @@ interface ICallbackContent
 	/**
 	 * 出力処理。
 	 *
-	 * 自前で echo とかいい感じに。
+	 * 自前で `echo` とかいい感じに。
 	 *
 	 * @return void
 	 */

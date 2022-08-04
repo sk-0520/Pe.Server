@@ -7,7 +7,7 @@ namespace PeServer\App\Models\Domain\Page\Setting;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\InitialValue;
 use PeServer\Core\StringUtility;
-use PeServer\Core\TypeConverter;
+use PeServer\Core\TypeUtility;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\App\Models\SessionManager;
@@ -123,7 +123,7 @@ class SettingDefaultPluginLogic extends PageLogicBase
 
 		$account = SessionManager::getAccount();
 
-		if (TypeConverter::parseBoolean($this->getRequest('delete'))) {
+		if (TypeUtility::parseBoolean($this->getRequest('delete'))) {
 			$params = [
 				'plugins' => array_filter($this->defaultPlugins, function ($i) {
 					return $i['registered'];
@@ -169,7 +169,7 @@ class SettingDefaultPluginLogic extends PageLogicBase
 							$plugin['plugin_name'],
 							$plugin['plugin_name'],
 							PluginState::ENABLED,
-							StringUtility::join($plugin['descriptions'], "\n\n"),
+							StringUtility::join("\n\n", $plugin['descriptions']),
 							'Pe専用プラグイン'
 						);
 

@@ -12,7 +12,7 @@ use PeServer\App\Models\SessionManager;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\App\Models\Dao\Entities\PluginCategoriesEntityDao;
-use PeServer\Core\TypeConverter;
+use PeServer\Core\TypeUtility;
 
 class AjaxPluginCategoryCreateLogic extends PageLogicBase
 {
@@ -31,9 +31,9 @@ class AjaxPluginCategoryCreateLogic extends PageLogicBase
 		$json = $this->getRequestJson();
 
 		$params = [
-			'plugin_category_id' => StringUtility::trim(TypeConverter::toString($json['category_id'])),
-			'category_display_name' => StringUtility::trim(TypeConverter::toString($json['category_display_name'])),
-			'category_description' => StringUtility::trim(TypeConverter::toString($json['category_description'])),
+			'plugin_category_id' => StringUtility::trim(TypeUtility::toString($json['category_id'])),
+			'category_display_name' => StringUtility::trim(TypeUtility::toString($json['category_display_name'])),
+			'category_description' => StringUtility::trim(TypeUtility::toString($json['category_description'])),
 		];
 
 		$database = $this->openDatabase();

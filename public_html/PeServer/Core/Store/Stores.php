@@ -16,10 +16,19 @@ use PeServer\Core\Store\TemporaryStore;
  */
 class Stores
 {
+	/** Cookie */
 	public CookieStore $cookie;
+	/** セッション */
 	public SessionStore $session;
+	/** 一時 */
 	public TemporaryStore $temporary;
 
+	/**
+	 * 生成。
+	 *
+	 * @param SpecialStore $special
+	 * @param StoreOptions $options
+	 */
 	public function __construct(
 		public SpecialStore $special,
 		private StoreOptions $options

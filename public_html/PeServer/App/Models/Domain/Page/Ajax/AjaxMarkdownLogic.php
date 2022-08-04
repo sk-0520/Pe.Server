@@ -7,7 +7,7 @@ namespace PeServer\App\Models\Domain\Page\Ajax;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\InitialValue;
 use PeServer\Core\Mvc\Markdown;
-use PeServer\Core\TypeConverter;
+use PeServer\Core\TypeUtility;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\App\Models\ResponseJson;
 use PeServer\Core\Mvc\LogicParameter;
@@ -33,7 +33,7 @@ class AjaxMarkdownLogic extends PageLogicBase
 
 		$json = $this->getRequestJson();
 
-		$isSafeMode = TypeConverter::parseBoolean(ArrayUtility::getOr($json, 'safe_mode', true));
+		$isSafeMode = TypeUtility::parseBoolean(ArrayUtility::getOr($json, 'safe_mode', true));
 		/** @var string */
 		$source = ArrayUtility::getOr($json, 'source', InitialValue::EMPTY_STRING);
 		if ($account->level !== UserLevel::ADMINISTRATOR) {

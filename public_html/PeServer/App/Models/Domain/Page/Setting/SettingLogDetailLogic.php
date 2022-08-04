@@ -7,7 +7,7 @@ namespace PeServer\App\Models\Domain\Page\Setting;
 use PeServer\Core\Mime;
 use PeServer\Core\Binary;
 use PeServer\Core\Archiver;
-use PeServer\Core\FileUtility;
+use PeServer\Core\IOUtility;
 use PeServer\Core\PathUtility;
 use PeServer\Core\StringUtility;
 use PeServer\Core\Mvc\LogicCallMode;
@@ -37,15 +37,15 @@ class SettingLogDetailLogic extends PageLogicBase
 
 		$fileName = StringUtility::trim($this->getRequest('log_name'), '/\\.');
 		$filePath = PathUtility::joinPath($dirPath, $fileName);
-		if (!FileUtility::existsFile($filePath)) {
+		if (!IOUtility::existsFile($filePath)) {
 			throw new FileNotFoundException();
 		}
 
-		$binary = FileUtility::readContent($filePath);
+		$binary = IOUtility::readContent($filePath);
 
 		/** @var int @-phpstan-ignore-next-line */
 		$archiveSize = AppConfiguration::$config['logging']['archive_size'];
-		$fileSize = FileUtility::getFileSize($filePath);
+		$fileSize = IOUtility::getFileSize($filePath);
 
 		if ($archiveSize <= $fileSize) {
 			$this->result['download'] = true;

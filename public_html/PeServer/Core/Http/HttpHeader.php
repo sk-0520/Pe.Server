@@ -179,7 +179,7 @@ class HttpHeader
 		$joinHeaders = [];
 
 		foreach ($this->headers as $name => $values) {
-			$joinHeaders[$name] = StringUtility::join($values, ', ');
+			$joinHeaders[$name] = StringUtility::join(', ', $values);
 		}
 
 		return $joinHeaders;

@@ -22,7 +22,7 @@ class UrlUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = UrlUtility::buildQuery(...$test->args);
-			$this->assertEquals($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 	public function test_joinPath()
@@ -38,7 +38,7 @@ class UrlUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = UrlUtility::joinPath(...$test->args);
-			$this->assertEquals($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 }

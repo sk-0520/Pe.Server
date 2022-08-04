@@ -14,7 +14,7 @@ use PeServer\Core\Throws\DatabaseException;
 use PeServer\Core\Throws\SqlException;
 use PeServer\Core\Throws\Throws;
 use PeServer\Core\Throws\TransactionException;
-use PeServer\Core\TypeConverter;
+use PeServer\Core\TypeUtility;
 
 /**
  * DB接続処理。
@@ -63,11 +63,11 @@ class Database extends DisposerBase implements IDatabaseContext
 
 	protected function disposeImpl(): void
 	{
-		parent::disposeImpl();
-
 		if ($this->isTransactions) {
 			$this->rollback();
 		}
+
+		parent::disposeImpl();
 	}
 
 	/**
@@ -283,7 +283,7 @@ class Database extends DisposerBase implements IDatabaseContext
 		/** @var array<string,mixed> */
 		$result = $this->queryFirst($statement, $parameters);
 		$val = strval(current($result));
-		if (TypeConverter::tryParseInteger($val, $count)) {
+		if (TypeUtility::tryParseInteger($val, $count)) {
 			return $count;
 		}
 

@@ -22,7 +22,7 @@ class ArrayUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = ArrayUtility::isNullOrEmpty(...$test->args);
-			$this->assertBoolean($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 
@@ -40,7 +40,7 @@ class ArrayUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = ArrayUtility::getOr(...$test->args);
-			$this->assertEquals($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 
@@ -58,9 +58,9 @@ class ArrayUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = ArrayUtility::tryGet($test->args[0], $test->args[1], $result);
-			$this->assertBoolean($test->expected['actual'], $actual, $test->str());
+			$this->assertSame($test->expected['actual'], $actual, $test->str());
 			if ($actual) {
-				$this->assertEquals($test->expected['result'], $result, $test->str());
+				$this->assertSame($test->expected['result'], $result, $test->str());
 			}
 		}
 	}
@@ -77,7 +77,7 @@ class ArrayUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = ArrayUtility::getCount(...$test->args);
-			$this->assertEquals($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 
@@ -96,7 +96,7 @@ class ArrayUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = ArrayUtility::containsValue(...$test->args);
-			$this->assertBoolean($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 
@@ -112,7 +112,7 @@ class ArrayUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = ArrayUtility::containsKey(...$test->args);
-			$this->assertBoolean($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 
@@ -128,7 +128,7 @@ class ArrayUtilityTest extends TestClass
 		];
 		$actual = ArrayUtility::getKeys($input);
 		for ($i = 0; $i < count($expected); $i++) {
-			$this->assertEquals($expected[$i], $actual[$i]);
+			$this->assertSame($expected[$i], $actual[$i]);
 		}
 	}
 
@@ -144,7 +144,7 @@ class ArrayUtilityTest extends TestClass
 		];
 		$actual = ArrayUtility::getValues($input);
 		for ($i = 0; $i < count($expected); $i++) {
-			$this->assertEquals($expected[$i], $actual[$i]);
+			$this->assertSame($expected[$i], $actual[$i]);
 		}
 	}
 
@@ -159,7 +159,7 @@ class ArrayUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = ArrayUtility::in(...$test->args);
-			$this->assertBoolean($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 
@@ -174,11 +174,11 @@ class ArrayUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = ArrayUtility::getFirstKey(...$test->args);
-			$this->assertEquals($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 
-	public function test_getFirstKey_error()
+	public function test_getFirstKey_throw()
 	{
 		$this->expectException(InvalidOperationException::class);
 		ArrayUtility::getFirstKey([]);
@@ -196,11 +196,11 @@ class ArrayUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = ArrayUtility::getLastKey(...$test->args);
-			$this->assertEquals($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 
-	public function test_getLastKey_error()
+	public function test_getLastKey_throw()
 	{
 		$this->expectException(InvalidOperationException::class);
 		ArrayUtility::getLastKey([]);
@@ -221,7 +221,7 @@ class ArrayUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = ArrayUtility::isList(...$test->args);
-			$this->assertBoolean($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 
@@ -234,7 +234,7 @@ class ArrayUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = ArrayUtility::toUnique(...$test->args);
-			$this->assertEquals($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 
@@ -248,7 +248,7 @@ class ArrayUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = ArrayUtility::replace(...$test->args);
-			$this->assertEquals($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 
@@ -261,7 +261,7 @@ class ArrayUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = ArrayUtility::getRandomKeys(...$test->args);
-			$this->assertEquals($test->expected, ArrayUtility::getCount($actual), $test->str());
+			$this->assertSame($test->expected, ArrayUtility::getCount($actual), $test->str());
 		}
 	}
 
@@ -272,7 +272,7 @@ class ArrayUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = ArrayUtility::reverse(...$test->args);
-			$this->assertEquals($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 
@@ -284,11 +284,11 @@ class ArrayUtilityTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = ArrayUtility::flip(...$test->args);
-			$this->assertEquals($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 
-	public function test_flip_error()
+	public function test_flip_throw()
 	{
 		$this->expectException(ArgumentException::class);
 		ArrayUtility::flip([0 => ['array' => 'value']]);

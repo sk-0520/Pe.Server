@@ -30,7 +30,7 @@ class UuidTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = Uuid::isEqualGuid(...$test->args);
-			$this->assertBoolean($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 
@@ -50,7 +50,7 @@ class UuidTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = Uuid::isGuid(...$test->args);
-			$this->assertBoolean($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 
@@ -70,7 +70,7 @@ class UuidTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = Uuid::adjustGuid(...$test->args);
-			$this->assertEquals($test->expected, $actual, $test->str());
+			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 

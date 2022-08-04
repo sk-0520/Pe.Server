@@ -26,6 +26,7 @@ abstract class TemplatePluginBase
 	 */
 	protected function existsSmartyError(Smarty_Internal_Template $smarty): bool
 	{
+		// @phpstan-ignore-next-line tpl_vars
 		if (!isset($smarty->tpl_vars['errors'])) {
 			return false;
 		}
@@ -56,6 +57,7 @@ abstract class TemplatePluginBase
 
 	protected function existsSmartyValues(Smarty_Internal_Template $smarty): bool
 	{
+		// @phpstan-ignore-next-line tpl_vars
 		if (!isset($smarty->tpl_vars['values'])) {
 			return false;
 		}

@@ -17,14 +17,14 @@ class EncodingTest extends TestClass
 		$this->success();
 	}
 
-	public function test_construct_error()
+	public function test_construct_throw()
 	{
 		$this->expectException(ArgumentException::class);
 		new Encoding('ascii');
 		$this->fail();
 	}
 
-	public function test_construct_empty_error()
+	public function test_construct_empty_throw()
 	{
 		$this->expectException(ArgumentException::class);
 		new Encoding('');
@@ -73,7 +73,7 @@ class EncodingTest extends TestClass
 			$encoding = new Encoding($test->args[0]);
 			$binary = $encoding->getBinary($test->args[1]);
 			$actual = $encoding->toString($binary);
-			$this->assertEquals($test->expected, $actual);
+			$this->assertSame($test->expected, $actual);
 		}
 	}
 }

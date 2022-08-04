@@ -10,6 +10,7 @@ use PeServer\Core\Store\TemporaryOption;
 
 /**
  * ストア設定。
+ *
  * @immutable
  */
 class StoreOptions

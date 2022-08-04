@@ -7,7 +7,7 @@ namespace PeServer\Core\Mvc\TemplatePlugin;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\InitialValue;
 use PeServer\Core\StringUtility;
-use PeServer\Core\TypeConverter;
+use PeServer\Core\TypeUtility;
 use PeServer\Core\Html\HtmlElement;
 use PeServer\Core\Html\HtmlDocument;
 use PeServer\Core\Mvc\TemplatePlugin\TemplateFunctionBase;
@@ -80,7 +80,7 @@ class InputHelperFunction extends TemplateFunctionBase
 		];
 
 		if (ArrayUtility::containsValue($booleanAttrs, $name)) {
-			$b = TypeConverter::parseBoolean($value);
+			$b = TypeUtility::parseBoolean($value);
 			$element->setAttribute($name, $b);
 		} else {
 			$element->setAttribute($name, $value);
@@ -91,7 +91,7 @@ class InputHelperFunction extends TemplateFunctionBase
 	{
 		$targetKey = $this->params['key']; // 必須
 
-		$showAutoError = TypeConverter::parseBoolean(ArrayUtility::getOr($this->params, 'file', true));
+		$showAutoError = TypeUtility::parseBoolean(ArrayUtility::getOr($this->params, 'file', true));
 
 		$hasError = false;
 		if ($this->existsError()) {

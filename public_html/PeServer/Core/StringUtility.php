@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
-use InvalidArgumentException;
 use PeServer\Core\InitialValue;
 use PeServer\Core\Throws\Throws;
 use PeServer\Core\Throws\RegexException;
@@ -21,10 +20,10 @@ abstract class StringUtility
 	public const TRIM_CHARACTERS = " \n\r\t\v\0";
 
 	/**
-	 * 文字列がnullか空か
+	 * 文字列が `null` か空か
 	 *
 	 * @param string|null $s 対象文字列。
-	 * @return bool 真: nullか空。
+	 * @return bool 真: `null`か空。
 	 * @phpstan-return ($s is null ? true: ($s is non-empty-string ? false: true))
 	 */
 	public static function isNullOrEmpty(?string $s): bool
@@ -43,7 +42,7 @@ abstract class StringUtility
 	/**
 	 * 文字列がnullかホワイトスペースのみで構築されているか
 	 *
-	 * TRIM_CHARACTERSがホワイトスペースとして扱われる。
+	 * `TRIM_CHARACTERS` がホワイトスペースとして扱われる。
 	 *
 	 * @param string|null $s 対象文字列。
 	 * @return bool 真: nullかホワイトスペースのみ。
@@ -104,7 +103,7 @@ abstract class StringUtility
 	{
 		$single = mb_chr($value);
 		if ($single === false) { //@phpstan-ignore-line
-			throw new InvalidArgumentException();
+			throw new ArgumentException();
 		}
 
 		return $single;
@@ -119,7 +118,7 @@ abstract class StringUtility
 	 * @phpstan-param UnsignedIntegerAlias|UnsignedIntegerAlias[] $value
 	 * @return string
 	 * @see https://www.php.net/manual/function.mb-chr.php
-	 * @throws InvalidArgumentException
+	 * @throws ArgumentException
 	 */
 	public static function fromCodePoint(int|array $value): string
 	{
@@ -130,7 +129,7 @@ abstract class StringUtility
 		$result = '';
 		foreach ($value as $cp) {
 			if (!is_int($cp)) { //@phpstan-ignore-line
-				throw new InvalidArgumentException();
+				throw new ArgumentException();
 			}
 
 			$result .= self::fromCodePointCore($cp);
@@ -380,6 +379,8 @@ abstract class StringUtility
 	/**
 	 * 文字列分割。
 	 *
+	 * `explode` ラッパー。
+	 *
 	 * @param string $value 対象文字列。
 	 * @param string $separator 分割対象文字列。
 	 * @phpstan-param non-empty-string $separator 分割対象文字列。
@@ -403,19 +404,23 @@ abstract class StringUtility
 	/**
 	 * 文字列結合。
 	 *
-	 * @param string[] $values
+	 * `implode` ラッパー。
+	 *
 	 * @param string $separator
+	 * @param string[] $values
 	 * @phpstan-param non-empty-string $separator
 	 * @return string
 	 * @see https://www.php.net/manual/function.implode.php
 	 */
-	public static function join(array $values, string $separator): string
+	public static function join(string $separator, array $values): string
 	{
 		return implode($separator, $values);
 	}
 
 	/**
 	 * トリム処理。
+	 *
+	 * `trim` ラッパー。
 	 *
 	 * @param string $value 対象文字列。
 	 * @param string $characters トリム対象文字。
@@ -430,9 +435,12 @@ abstract class StringUtility
 	/**
 	 * 先頭トリム。
 	 *
+	 * `ltrim` ラッパー。
+	 *
 	 * @param string $value 対象文字列。
 	 * @param string $characters トリム対象文字。
 	 * @return string トリム後文字列。
+	 * @see https://www.php.net/manual/function.ltrim.php
 	 */
 	public static function trimStart(string $value, string $characters = self::TRIM_CHARACTERS): string
 	{
@@ -442,9 +450,12 @@ abstract class StringUtility
 	/**
 	 * 終端トリム。
 	 *
+	 * `rtrim` ラッパー。
+	 *
 	 * @param string $value 対象文字列。
 	 * @param string $characters トリム対象文字。
 	 * @return string トリム後文字列。
+	 * @see https://www.php.net/manual/function.rtrim.php
 	 */
 	public static function trimEnd(string $value, string $characters = self::TRIM_CHARACTERS): string
 	{
@@ -456,7 +467,7 @@ abstract class StringUtility
 	 * データ出力。
 	 *
 	 * var_export/print_r で迷ったり $return = true 忘れのためのラッパー。
-	 * 色々あったけど var_dump に落ち着いた感。
+	 * 色々あったけど `var_dump` に落ち着いた感。
 	 *
 	 * @param mixed $value
 	 * @return string
@@ -476,10 +487,13 @@ abstract class StringUtility
 	/**
 	 * 文字列置き換え
 	 *
+	 * `str_replace` ラッパー。
+	 *
 	 * @param string $source 入力文字列。
 	 * @param string|string[] $oldValue 元文字列(か、元文字列配列)
 	 * @param string $newValue 置き換え文字列。
 	 * @return string 置き換え後文字列。
+	 * @see https://www.php.net/manual/function.str-replace.php
 	 */
 	public static function replace(string $source, string|array $oldValue, string $newValue): string
 	{
