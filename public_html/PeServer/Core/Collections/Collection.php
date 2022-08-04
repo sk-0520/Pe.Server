@@ -39,7 +39,7 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 	}
 
 	/**
-	 * 生成。
+	 * イテレータから生成。
 	 *
 	 * @template TCreateKey of array-key
 	 * @template TCreateValue
@@ -54,6 +54,21 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 	}
 
 	/**
+	 * ジェネレータから生成。
+	 *
+	 * @template TWrapKey of array-key
+	 * @template TWrapValue
+	 * @param callable $generatorFactory
+	 * @phpstan-param callable():(\Generator<TWrapKey,TWrapValue>) $generatorFactory
+	 * @return Collection
+	 * @phpstan-return Collection<TWrapKey,TWrapValue>
+	 */
+	private static function wrap(callable $generatorFactory): Collection
+	{
+		return self::create(CollectionUtility::toIterator($generatorFactory));
+	}
+
+	/**
 	 * @phpstan-return Traversable<TKey,TValue>
 	 */
 	public function getIterator(): Traversable
@@ -61,25 +76,17 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 		return $this->iterator;
 	}
 
-	// /**
-	//  * 現在イテレータをラップ。
-	//  *
-	//  * @phpstan-return Iterator<array-key,TValue>
-	//  */
-	// private function wrapIterator(): Iterator
-	// {
-	// 	return new IteratorIterator($this->iterator);
-	// }
-
 	// 開始 ----------------------------------------------------
 
 	/**
 	 * 配列からコレクション生成。
 	 *
+	 * @template TFromKey of array-key
+	 * @template TFromValue
 	 * @param Traversable|array<mixed>|callable $sequence
-	 * @phpstan-param Traversable<TKey,TValue>|array<TKey,TValue>|callable():(\Generator) $sequence
+	 * @phpstan-param Traversable<TFromKey,TFromValue>|array<TFromKey,TFromValue>|callable():(\Generator<TFromKey,TFromValue>) $sequence
 	 * @return Collection
-	 * @phpstan-return Collection<TKey,TValue>
+	 * @phpstan-return Collection<TFromKey,TFromValue>
 	 */
 	public static function from(Traversable|array|callable $sequence): Collection
 	{
@@ -97,8 +104,9 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 	 */
 	public static function range(int $start, int $count): Collection
 	{
+		$iterator = new RangeIterator($start, $count);
 		/** @phpstan-var Collection<UnsignedIntegerAlias,int> */
-		return self::create(new RangeIterator($start, $count));
+		return self::create($iterator);
 	}
 
 	/**
@@ -171,8 +179,7 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 	public function select(callable $callback): self
 	{
 		$selectIterator = new SelectIterator($this->iterator, $callback);
-		//@phpstan-ignore-next-line $this->iterator
-		return Collection::from($selectIterator);
+		return self::create($selectIterator);
 	}
 
 	/**
@@ -553,13 +560,13 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 	 * [即時] 先頭から条件を満たす限りバイパス。
 	 *
 	 * @param callable $callback
-	 * @phpstan-type PredicateAlias callable(TValue,TKey):(bool)
+	 * @phpstan-param PredicateAlias $callback
 	 * @return self
 	 * @phpstan-return Collection<TKey,TValue>
 	 */
 	public function skipWhile(callable $callback): self
 	{
-		return self::from(function () use ($callback) {
+		return self::wrap(function () use ($callback) {
 			$skipCount = 0;
 			foreach ($this->iterator as $key => $value) {
 				if (!$callback($value, $key)) {
@@ -591,7 +598,7 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 	 * [即時] 先頭から条件を満たすデータを返却。
 	 *
 	 * @param callable $callback
-	 * @phpstan-param callable(TValue,TKey):(bool) $callback
+	 * @phpstan-param PredicateAlias $callback
 	 * @return self
 	 * @phpstan-return Collection<TKey,TValue>
 	 */
@@ -608,7 +615,7 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 	 */
 	public function reverse(): Collection
 	{
-		return self::from(function () {
+		return self::wrap(function () {
 			$cache = [];
 			foreach ($this->iterator as $key => $value) {
 				$cache[] = [$key, $value];

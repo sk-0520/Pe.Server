@@ -9,14 +9,21 @@ use \Iterator;
 /**
  * range イテレータ。
  *
- * @template TValue
- * @implements Iterator<int,TValue>
+ * @implements Iterator<UnsignedIntegerAlias,int>
  */
 class RangeIterator implements Iterator
 {
+	/** @phpstan-var UnsignedIntegerAlias */
 	private int $key = 0;
 	private int $current;
 
+	/**
+	 * 生成
+	 *
+	 * @param int $start
+	 * @param int $count
+	 * @phpstan-param UnsignedIntegerAlias $count
+	 */
 	public function __construct(
 		private int $start,
 		private int $count
@@ -31,7 +38,7 @@ class RangeIterator implements Iterator
 	}
 
 	/**
-	 * @return int
+	 * @phpstan-return UnsignedIntegerAlias
 	 */
 	public function key(): mixed
 	{
