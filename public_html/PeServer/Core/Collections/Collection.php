@@ -48,12 +48,12 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 	 * @template TCreateValue
 	 * @param Iterator $iterator
 	 * @phpstan-param Iterator<TCreateKey,TCreateValue> $iterator
-	 * @return Collection
-	 * @phpstan-return Collection<TCreateKey,TCreateValue>
+	 * @return self
+	 * @phpstan-return self<TCreateKey,TCreateValue>
 	 */
-	private static function create(Iterator $iterator): Collection
+	private static function create(Iterator $iterator): self
 	{
-		return new Collection($iterator);
+		return new self($iterator);
 	}
 
 	/**
@@ -63,10 +63,10 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 	 * @template TWrapValue
 	 * @param callable $generatorFactory
 	 * @phpstan-param callable():(\Generator<TWrapKey,TWrapValue>) $generatorFactory
-	 * @return Collection
-	 * @phpstan-return Collection<TWrapKey,TWrapValue>
+	 * @return self
+	 * @phpstan-return self<TWrapKey,TWrapValue>
 	 */
-	private static function wrap(callable $generatorFactory): Collection
+	private static function wrap(callable $generatorFactory): self
 	{
 		return self::create(CollectionUtility::toIterator($generatorFactory));
 	}
@@ -88,10 +88,10 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 	 * @template TFromValue
 	 * @param Traversable|array<mixed>|callable $sequence
 	 * @phpstan-param Traversable<TFromKey,TFromValue>|array<TFromKey,TFromValue>|callable():(\Generator<TFromKey,TFromValue>) $sequence
-	 * @return Collection
-	 * @phpstan-return Collection<TFromKey,TFromValue>
+	 * @return self
+	 * @phpstan-return self<TFromKey,TFromValue>
 	 */
-	public static function from(Traversable|array|callable $sequence): Collection
+	public static function from(Traversable|array|callable $sequence): self
 	{
 		return self::create(CollectionUtility::toIterator($sequence));
 	}
@@ -102,13 +102,13 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 	 * @param int $start 開始。
 	 * @param int $count 件数。
 	 * @phpstan-param UnsignedIntegerAlias $count
-	 * @return Collection
-	 * @phpstan-return Collection<UnsignedIntegerAlias,int>
+	 * @return self
+	 * @phpstan-return self<UnsignedIntegerAlias,int>
 	 */
-	public static function range(int $start, int $count): Collection
+	public static function range(int $start, int $count): self
 	{
 		$iterator = new RangeIterator($start, $count);
-		/** @phpstan-var Collection<UnsignedIntegerAlias,int> */
+		/** @phpstan-var self<UnsignedIntegerAlias,int> */
 		return self::create($iterator);
 	}
 
@@ -120,23 +120,23 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 	 * @phpstan-param TRepeatValue $value
 	 * @param int $count 件数。
 	 * @phpstan-param UnsignedIntegerAlias $count
-	 * @return Collection
-	 * @phpstan-return Collection<UnsignedIntegerAlias,TRepeatValue>
+	 * @return self
+	 * @phpstan-return self<UnsignedIntegerAlias,TRepeatValue>
 	 */
-	public static function repeat(mixed $value, int $count): Collection
+	public static function repeat(mixed $value, int $count): self
 	{
 		$iterator = new RepeatIterator($value, $count);
-		/** @phpstan-var Collection<UnsignedIntegerAlias,TRepeatValue> */
+		/** @phpstan-var self<UnsignedIntegerAlias,TRepeatValue> */
 		return self::create($iterator);
 	}
 
 	/**
 	 * 空のコレクション。
 	 *
-	 * @return Collection
-	 * @phpstan-return Collection<TKey,TValue>
+	 * @return self
+	 * @phpstan-return self<TKey,TValue>
 	 */
-	public static function empty(): Collection
+	public static function empty(): self
 	{
 		return self::create(new EmptyIterator());
 	}
@@ -224,8 +224,8 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 	 *
 	 * @param callable $callback 値, キー: 条件を満たすか
 	 * @phpstan-param PredicateAlias $callback
-	 * @return Collection
-	 * @phpstan-return Collection<TKey,TValue>
+	 * @return self
+	 * @phpstan-return self<TKey,TValue>
 	 */
 	public function where(callable $callback): self
 	{
@@ -239,8 +239,8 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 	 * @template TResult
 	 * @param callable $callback
 	 * @phpstan-param callable(TValue,TKey):(TResult) $callback
-	 * @return Collection
-	 * @phpstan-return Collection<TKey,TResult>
+	 * @return self
+	 * @phpstan-return self<TKey,TResult>
 	 */
 	public function select(callable $callback): self
 	{
@@ -254,14 +254,14 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 	 * @template TResult
 	 * @param callable $callback
 	 * @phpstan-param callable(TValue,TKey):(TResult) $callback
-	 * @return Collection
-	 * @phpstan-return Collection<TKey,TResult>
+	 * @return self
+	 * @phpstan-return self<TKey,TResult>
 	 */
 	public function selectMany(callable $callback): self
 	{
 		//@phpstan-ignore-next-line
 		$selectIterator = new SelectManyIterator($this->iterator, $callback);
-		return new Collection($selectIterator);
+		return new self($selectIterator);
 	}
 
 
@@ -271,7 +271,7 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 	 * @param Traversable|array<mixed>|callable $sequence
 	 * @phpstan-param Traversable<TKey,TValue>|array<TKey,TValue>|callable():(\Generator) $sequence
 	 * @return self
-	 * @phpstan-return Collection<TKey,TValue>
+	 * @phpstan-return self<TKey,TValue>
 	 */
 	public function concat(Traversable|array|callable $sequence): self
 	{
@@ -291,7 +291,7 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 	 * @param mixed $value
 	 * @phpstan-param TValue $value
 	 * @return self
-	 * @phpstan-return Collection<TKey,TValue>
+	 * @phpstan-return self<TKey,TValue>
 	 */
 	public function prepend(mixed $value): self
 	{
@@ -311,7 +311,7 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 	 * @param mixed $value
 	 * @phpstan-param TValue $value
 	 * @return self
-	 * @phpstan-return Collection<TKey,TValue>
+	 * @phpstan-return self<TKey,TValue>
 	 */
 	public function append(mixed $value): self
 	{
@@ -614,7 +614,7 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 	 * @param int $skipCount
 	 * @phpstan-param UnsignedIntegerAlias $skipCount
 	 * @return self
-	 * @phpstan-return Collection<TKey,TValue>
+	 * @phpstan-return self<TKey,TValue>
 	 */
 	public function skip(int $skipCount): self
 	{
@@ -628,7 +628,7 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 	 * @param callable $callback
 	 * @phpstan-param PredicateAlias $callback
 	 * @return self
-	 * @phpstan-return Collection<TKey,TValue>
+	 * @phpstan-return self<TKey,TValue>
 	 */
 	public function skipWhile(callable $callback): self
 	{
@@ -653,7 +653,7 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 	 * @param int $takeCount
 	 * @phpstan-param UnsignedIntegerAlias $takeCount
 	 * @return self
-	 * @phpstan-return Collection<TKey,TValue>
+	 * @phpstan-return self<TKey,TValue>
 	 */
 	public function take(int $takeCount): self
 	{
@@ -666,7 +666,7 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 	 * @param callable $callback
 	 * @phpstan-param PredicateAlias $callback
 	 * @return self
-	 * @phpstan-return Collection<TKey,TValue>
+	 * @phpstan-return self<TKey,TValue>
 	 */
 	public function takeWhile(callable $callback): self
 	{
@@ -676,10 +676,10 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 	/**
 	 * [遅延] 反転。
 	 *
-	 * @return Collection
-	 * @phpstan-return Collection<TKey,TValue>
+	 * @return self
+	 * @phpstan-return self<TKey,TValue>
 	 */
-	public function reverse(): Collection
+	public function reverse(): self
 	{
 		return self::wrap(function () {
 			$cache = [];
@@ -723,10 +723,10 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 	 * @phpstan-param Traversable<TSequenceKey,TSequenceValue>|array<TSequenceKey,TSequenceValue>|callable():(\Generator) $sequence
 	 * @param callable $callback
 	 * @phpstan-param callable(array{0:TValue,1:TSequenceValue},TKey):(TResult) $callback
-	 * @return Collection
-	 * @phpstan-return Collection<array-key,TResult>
+	 * @return self
+	 * @phpstan-return self<array-key,TResult>
 	 */
-	public function zip(Traversable|array|callable $sequence, callable $callback): Collection
+	public function zip(Traversable|array|callable $sequence, callable $callback): self
 	{
 		$sequenceIterator = CollectionUtility::toIterator($sequence);
 		$iterator = new ZipIterator($this->iterator, $sequenceIterator, $callback);

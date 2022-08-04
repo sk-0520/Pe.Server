@@ -45,7 +45,7 @@ class Dictionary extends TypeArrayBase
 	 * @template TTValue
 	 * @param array $map 配列。
 	 * @phpstan-param non-empty-array<string,TTValue> $map
-	 * @return Dictionary
+	 * @return self
 	 * @phpstan-return self<TTValue>
 	 */
 	public static function create(array $map): self
@@ -68,10 +68,10 @@ class Dictionary extends TypeArrayBase
 	 * @template TTValue
 	 * @param string $type
 	 * @phpstan-param class-string|TypeUtility::TYPE_* $type
-	 * @return Dictionary
+	 * @return self
 	 * @phpstan-return self<TTValue>
 	 */
-	public static function empty(string $type): Dictionary //@phpstan-ignore-line TTValue
+	public static function empty(string $type): self //@phpstan-ignore-line TTValue
 	{
 		return new self($type, []);
 	}
