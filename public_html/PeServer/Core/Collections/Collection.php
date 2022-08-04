@@ -41,10 +41,12 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 	/**
 	 * 生成。
 	 *
+	 * @template TCreateKey of array-key
+	 * @template TCreateValue
 	 * @param Iterator $iterator
-	 * @phpstan-param Iterator<TKey,TValue> $iterator
+	 * @phpstan-param Iterator<TCreateKey,TCreateValue> $iterator
 	 * @return Collection
-	 * @phpstan-return Collection<TKey,TValue>
+	 * @phpstan-return Collection<TCreateKey,TCreateValue>
 	 */
 	private static function create(Iterator $iterator): Collection
 	{
@@ -102,15 +104,19 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 	/**
 	 * 繰り返されるコレクション生成。
 	 *
-	 * @param int $value 値。
-	 * @phpstan-param TValue $value
+	 * @template TRepeatValue
+	 * @param mixed $value 値。
+	 * @phpstan-param TRepeatValue $value
 	 * @param int $count 件数。
+	 * @phpstan-param UnsignedIntegerAlias $count
 	 * @return Collection
-	 * @phpstan-return Collection<UnsignedIntegerAlias,TValue>
+	 * @phpstan-return Collection<UnsignedIntegerAlias,TRepeatValue>
 	 */
 	public static function repeat(mixed $value, int $count): Collection
 	{
-		return self::create(new RepeatIterator($value, $count));
+		$iterator = new RepeatIterator($value, $count);
+		/** @phpstan-var Collection<UnsignedIntegerAlias,TRepeatValue> */
+		return self::create($iterator);
 	}
 
 	/**
@@ -198,6 +204,7 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 	{
 		$sequenceIterator = CollectionUtility::toIterator($sequence);
 
+		/** @phpstan-var AppendIterator<TKey,TValue,Iterator<TKey,TValue>> */
 		$appendIterator = new AppendIterator();
 		$appendIterator->append($this->iterator);
 		$appendIterator->append($sequenceIterator);
@@ -217,6 +224,7 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 	{
 		$valueIterator = CollectionUtility::toIterator([$value]);
 
+		/** @phpstan-var AppendIterator<TKey,TValue,Iterator<TKey,TValue>> */
 		$appendIterator = new AppendIterator();
 		$appendIterator->append($valueIterator);
 		$appendIterator->append($this->iterator);
@@ -236,6 +244,7 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 	{
 		$valueIterator = CollectionUtility::toIterator([$value]);
 
+		/** @phpstan-var AppendIterator<TKey,TValue,Iterator<TKey,TValue>> */
 		$appendIterator = new AppendIterator();
 		$appendIterator->append($this->iterator);
 		$appendIterator->append($valueIterator);
@@ -550,11 +559,11 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 	 */
 	public function skipWhile(callable $callback): self
 	{
-		return self::from(function () use($callback) {
+		return self::from(function () use ($callback) {
 			$skipCount = 0;
 			foreach ($this->iterator as $key => $value) {
 				if (!$callback($value, $key)) {
-					foreach($this->skip($skipCount) as $key => $value) {
+					foreach ($this->skip($skipCount) as $key => $value) {
 						yield $key => $value;
 					}
 				}
@@ -612,7 +621,7 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 	}
 
 	/**
-	 * 集計。
+	 * [即時] 集計。
 	 *
 	 * @param callable $callback
 	 * @phpstan-param callable(TValue $result,TValue,TKey):(TValue) $callback
@@ -629,5 +638,25 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 		}
 
 		return $result;
+	}
+
+	/**
+	 * [遅延] zip
+	 *
+	 * @template TSequenceKey of array-key
+	 * @template TSequenceValue
+	 * @template TResult
+	 * @param Traversable|array|callable $sequence
+	 * @phpstan-param Traversable<TSequenceKey,TSequenceValue>|array<TSequenceKey,TSequenceValue>|callable():(\Generator) $sequence
+	 * @param callable $callback
+	 * @phpstan-param callable(array{0:TValue,1:TSequenceValue},TKey):(TResult) $callback
+	 * @return Collection
+	 * @phpstan-return Collection<array-key,TResult>
+	 */
+	public function zip(Traversable|array|callable $sequence, callable $callback): Collection
+	{
+		$sequenceIterator = CollectionUtility::toIterator($sequence);
+		$iterator = new ZipIterator($this->iterator, $sequenceIterator, $callback);
+		return self::create($iterator);
 	}
 }

@@ -335,20 +335,35 @@ class CollectionTest extends TestClass
 	function test_aggregate()
 	{
 		$tests = [
-			new Data(1, Collection::range(1, 1), fn($result, $value, $key) => $result + $value),
-			new Data(3, Collection::range(1, 2), fn($result, $value, $key) => $result + $value),
-			new Data(6, Collection::range(1, 3), fn($result, $value, $key) => $result + $value),
+			new Data(1, Collection::range(1, 1), fn ($result, $value, $key) => $result + $value),
+			new Data(3, Collection::range(1, 2), fn ($result, $value, $key) => $result + $value),
+			new Data(6, Collection::range(1, 3), fn ($result, $value, $key) => $result + $value),
 
-			new Data(11, Collection::range(1, 1), fn($result, $value, $key) => $result + $value, 10),
-			new Data(13, Collection::range(1, 2), fn($result, $value, $key) => $result + $value, 10),
-			new Data(16, Collection::range(1, 3), fn($result, $value, $key) => $result + $value, 10),
+			new Data(11, Collection::range(1, 1), fn ($result, $value, $key) => $result + $value, 10),
+			new Data(13, Collection::range(1, 2), fn ($result, $value, $key) => $result + $value, 10),
+			new Data(16, Collection::range(1, 3), fn ($result, $value, $key) => $result + $value, 10),
 
-			new Data('[[[A]A]A]', Collection::repeat('A', 3), fn($result, $value, $key) => '[' . $result . $value . ']', ''),
-			new Data('[[[xA]A]A]', Collection::repeat('A', 3), fn($result, $value, $key) => '[' . $result . $value . ']', 'x'),
+			new Data('[[[A]A]A]', Collection::repeat('A', 3), fn ($result, $value, $key) => '[' . $result . $value . ']', ''),
+			new Data('[[[xA]A]A]', Collection::repeat('A', 3), fn ($result, $value, $key) => '[' . $result . $value . ']', 'x'),
 		];
 		foreach ($tests as $test) {
 			$items = Collection::from($test->args[0]);
-			$actual = $items->aggregate($test->args[1], isset($test->args[2]) ? $test->args[2]: 0);
+			$actual = $items->aggregate($test->args[1], isset($test->args[2]) ? $test->args[2] : 0);
+			$this->assertSame($test->expected, $actual, $test->str());
+		}
+	}
+
+	function test_zip()
+	{
+		$tests = [
+			new Data([['f' => 1, 's' => 10], ['f' => 2, 's' => 20]], [1, 2], [10, 20], fn ($items, $key) => ['f' => $items[0], 's' => $items[1]]),
+			new Data([['f' => 1, 's' => 10], ['f' => 2, 's' => 20]], [1, 2, 3], [10, 20], fn ($items, $key) => ['f' => $items[0], 's' => $items[1]]),
+			new Data([['f' => 1, 's' => 10], ['f' => 2, 's' => 20]], [1, 2], [10, 20, 30], fn ($items, $key) => ['f' => $items[0], 's' => $items[1]]),
+		];
+		foreach ($tests as $test) {
+			$first = Collection::from($test->args[0]);
+			$second = Collection::from($test->args[1]);
+			$actual = $first->zip($second, $test->args[2])->toArray();
 			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
