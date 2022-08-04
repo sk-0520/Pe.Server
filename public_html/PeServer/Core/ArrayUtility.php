@@ -6,6 +6,7 @@ namespace PeServer\Core;
 
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\InvalidOperationException;
+use PeServer\Core\Throws\KeyNotFoundException;
 use PeServer\Core\Throws\TypeException;
 
 /**
@@ -18,6 +19,7 @@ class ArrayUtility
 	 *
 	 * @param array<mixed>|null $array
 	 * @return boolean
+	 * @phpstan-return ($array is null ? true: ($array is non-empty-array ? false: true))
 	 */
 	public static function isNullOrEmpty(?array $array): bool
 	{
@@ -183,12 +185,13 @@ class ArrayUtility
 	 * @return int|string
 	 * @phpstan-return array-key
 	 * @see https://www.php.net/manual/function.array-key-first.php
+	 * @throws KeyNotFoundException
 	 */
 	public static function getFirstKey(array $array): int|string
 	{
 		$result = array_key_first($array);
 		if (is_null($result)) {
-			throw new InvalidOperationException();
+			throw new KeyNotFoundException();
 		}
 
 		return $result;
@@ -201,12 +204,13 @@ class ArrayUtility
 	 * @return int|string
 	 * @phpstan-return array-key
 	 * @see https://www.php.net/manual/function.array-key-last.php
+	 * @throws KeyNotFoundException
 	 */
 	public static function getLastKey(array $array): int|string
 	{
 		$result = array_key_last($array);
 		if (is_null($result)) {
-			throw new InvalidOperationException();
+			throw new KeyNotFoundException();
 		}
 
 		return $result;

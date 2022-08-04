@@ -50,7 +50,7 @@ class Dictionary extends TypeArrayBase
 	 */
 	public static function create(array $map): self
 	{
-		if (ArrayUtility::isNullOrEmpty($map)) {
+		if (ArrayUtility::isNullOrEmpty($map)) { //@phpstan-ignore-line ArrayUtility::isNullOrEmpty
 			throw new ArgumentException('$map');
 		}
 
