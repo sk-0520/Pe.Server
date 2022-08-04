@@ -12,6 +12,7 @@ use PeServer\App\Models\Domain\Page\Setting\SettingLogListLogic;
 use PeServer\App\Models\Domain\Page\Setting\SettingMarkdownLogic;
 use PeServer\App\Models\Domain\Page\Setting\SettingPluginCategoryListLogic;
 use PeServer\App\Models\Domain\Page\Setting\SettingSetupLogic;
+use PeServer\App\Models\Domain\Page\Setting\SettingPhpEvaluateLogic;
 use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mvc\ControllerArgument;
@@ -77,6 +78,20 @@ final class SettingController extends PageControllerBase
 		$logic = $this->createLogic(SettingDatabaseMaintenanceLogic::class, $request);
 		$logic->run(LogicCallMode::submit());
 		return $this->view('database_maintenance', $logic->getViewData());
+	}
+
+	public function php_evaluate_get(HttpRequest $request): IActionResult
+	{
+		$logic = $this->createLogic(SettingPhpEvaluateLogic::class, $request);
+		$logic->run(LogicCallMode::initialize());
+
+		return $this->view('php_evaluate', $logic->getViewData());
+	}
+	public function php_evaluate_post(HttpRequest $request): IActionResult
+	{
+		$logic = $this->createLogic(SettingPhpEvaluateLogic::class, $request);
+		$logic->run(LogicCallMode::submit());
+		return $this->view('php_evaluate', $logic->getViewData());
 	}
 
 	public function default_plugin_get(HttpRequest $request): IActionResult
