@@ -24,7 +24,7 @@ class GeneratorIterator implements Iterator
 	 * 生成。
 	 *
 	 * @param mixed $factory
-	 * @phpstan-param callable():(Generator) $factory
+	 * @phpstan-param callable():Generator<TKey,TValue> $factory
 	 */
 	public function __construct(
 		private mixed $factory

@@ -62,7 +62,7 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 	 * @template TWrapKey of array-key
 	 * @template TWrapValue
 	 * @param callable $generatorFactory
-	 * @phpstan-param callable():(\Generator<TWrapKey,TWrapValue>) $generatorFactory
+	 * @phpstan-param callable():\Generator<TWrapKey,TWrapValue> $generatorFactory
 	 * @return self
 	 * @phpstan-return self<TWrapKey,TWrapValue>
 	 */
@@ -269,7 +269,7 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 	 * [遅延] 末尾に連結。
 	 *
 	 * @param Traversable|array<mixed>|callable $sequence
-	 * @phpstan-param Traversable<TKey,TValue>|array<TKey,TValue>|callable():(\Generator) $sequence
+	 * @phpstan-param Traversable<TKey,TValue>|array<TKey,TValue>|callable():\Generator<TKey,TValue> $sequence
 	 * @return self
 	 * @phpstan-return self<TKey,TValue>
 	 */
@@ -720,7 +720,7 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 	 * @template TSequenceValue
 	 * @template TResult
 	 * @param Traversable|array|callable $sequence
-	 * @phpstan-param Traversable<TSequenceKey,TSequenceValue>|array<TSequenceKey,TSequenceValue>|callable():(\Generator) $sequence
+	 * @phpstan-param Traversable<TSequenceKey,TSequenceValue>|array<TSequenceKey,TSequenceValue>|callable():\Generator<TSequenceKey,TSequenceValue> $sequence
 	 * @param callable $callback
 	 * @phpstan-param callable(array{0:TValue,1:TSequenceValue},TKey):(TResult) $callback
 	 * @return self
