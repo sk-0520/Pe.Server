@@ -9,6 +9,7 @@ use PeServer\Core\ArrayUtility;
 use PeServer\Core\Collections\TypeArrayBase;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\IndexOutOfRangeException;
+use PeServer\Core\Throws\KeyNotFoundException;
 use PeServer\Core\Throws\NotSupportedException;
 use PeServer\Core\TypeUtility;
 
@@ -54,9 +55,6 @@ class Dictionary extends TypeArrayBase
 		}
 
 		$firstKey = ArrayUtility::getFirstKey($map);
-		if (!is_string($firstKey)) {
-			throw new TypeError('$offset: ' . $firstKey);
-		}
 		$firstValue = $map[$firstKey];
 
 		$type = TypeUtility::getType($firstValue);
@@ -111,7 +109,7 @@ class Dictionary extends TypeArrayBase
 		$this->throwIfInvalidOffset($offset);
 
 		if (!isset($this->items[$offset])) {
-			throw new IndexOutOfRangeException('$offset: ' . $offset);
+			throw new KeyNotFoundException('$offset: ' . $offset);
 		}
 
 		return $this->items[$offset];

@@ -63,9 +63,15 @@ class CollectionTest extends TestClass
 	{
 		$dic1 = Collection::from(['A' => 'a', 1 => 'A'])->toDictionary(fn ($v, $k) => $k, fn ($v) => $v);
 		$this->assertSame(['A' => 'a', '1' => 'A'], $dic1->getArray());
+		$this->assertSame(2, $dic1->count());
 
 		$dic2 = Collection::from([['a', 'b'], ['c', 'd']])->toDictionary(fn ($v) => $v[0], fn ($v) => $v[1]);
 		$this->assertSame(['a' => 'b', 'c' => 'd'], $dic2->getArray());
+		$this->assertSame(2, $dic2->count());
+
+		$dic3 = Collection::from([])->toDictionary(fn ($v, $k) => $v, fn ($v, $k) => $v);
+		$this->assertSame([], $dic3->getArray());
+		$this->assertSame(0, $dic3->count());
 	}
 
 	function test_toDictionary_dup_throw()

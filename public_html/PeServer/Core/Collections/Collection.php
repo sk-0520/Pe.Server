@@ -210,7 +210,7 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 		}
 
 		if (ArrayUtility::isNullOrEmpty($buffer)) {
-			Dictionary::empty($type);
+			return Dictionary::empty($type);
 		}
 		/** @phpstan-var non-empty-array<string,TResult> $buffer */
 
