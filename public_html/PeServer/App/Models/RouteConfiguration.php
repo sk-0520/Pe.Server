@@ -91,6 +91,8 @@ abstract class RouteConfiguration
 					->addAction('configuration', HttpMethod::gets())
 					->addAction('database-maintenance', HttpMethod::gets(), 'database_maintenance_get')
 					->addAction('database-maintenance', HttpMethod::post(), 'database_maintenance_post')
+					->addAction('php-evaluate', HttpMethod::gets(), 'php_evaluate_get')
+					->addAction('php-evaluate', HttpMethod::post(), 'php_evaluate_post')
 					->addAction('default-plugin', HttpMethod::gets(), 'default_plugin_get')
 					->addAction('default-plugin', HttpMethod::post(), 'default_plugin_post')
 					->addAction('plugin-category', HttpMethod::gets(), 'plugin_category_get')
