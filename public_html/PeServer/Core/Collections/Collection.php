@@ -11,8 +11,10 @@ use \EmptyIterator;
 use \Iterator;
 use \IteratorAggregate;
 use \LimitIterator;
+use PeServer\Core\ArrayUtility;
 use \Traversable;
 use PeServer\Core\Throws\InvalidOperationException;
+use PeServer\Core\TypeUtility;
 
 /**
  * イテレータを使用したコレクション処理(LINQしたいのだ)。
@@ -149,6 +151,25 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 	public function toArray(): array
 	{
 		return CollectionUtility::toArray($this->iterator, false);
+	}
+
+	/**
+	 * リスト実体化。
+	 *
+	 * `Enumerable.ToList<TSource>` 的な。
+	 *
+	 * @return Vector
+	 * @phpstan-return Vector<TValue>
+	 */
+	public function toList(): Vector
+	{
+		$array = self::toArray();
+		if (ArrayUtility::isNullOrEmpty($array)) {
+			return Vector::empty(TypeUtility::TYPE_UNKNOWN);
+		}
+		/** @phpstan-var non-empty-array<TValue> $array */
+
+		return Vector::create($array, true);
 	}
 
 	// 処理 ----------------------------------------------------
