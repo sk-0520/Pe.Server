@@ -8,6 +8,7 @@ use \TypeError;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Collections\TypeArrayBase;
 use PeServer\Core\Throws\ArgumentException;
+use PeServer\Core\Throws\ArgumentNullException;
 use PeServer\Core\Throws\IndexOutOfRangeException;
 use PeServer\Core\Throws\KeyNotFoundException;
 use PeServer\Core\Throws\NotSupportedException;
@@ -121,7 +122,7 @@ class Dictionary extends TypeArrayBase
 	public function offsetSet(mixed $offset, mixed $value): void
 	{
 		if (is_null($offset)) {
-			throw new NotSupportedException();
+			throw new ArgumentNullException();
 		}
 
 		$this->isValidType($value);

@@ -7,6 +7,7 @@ namespace PeServerTest\Core\Collections;
 use function PHPUnit\Framework\assertSame;
 use PeServer\Core\Collections\GeneratorIterator;
 use PeServer\Core\Throws\ArgumentException;
+use PeServer\Core\Throws\CallbackTypeError;
 use PeServerTest\Data;
 
 use PeServerTest\TestClass;
@@ -71,7 +72,7 @@ class GeneratorIteratorTest extends TestClass
 
 	function test_create_callable_throw()
 	{
-		$this->expectException(ArgumentException::class);
+		$this->expectException(CallbackTypeError::class);
 		new GeneratorIterator('(^_^)');
 		$this->fail();
 	}

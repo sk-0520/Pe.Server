@@ -14,7 +14,7 @@ use PeServer\Core\ArrayUtility;
 use PeServer\Core\TypeUtility;
 
 /**
- * 配列。
+ * 値の型限定基底配列。
  *
  * @template TKey of array-key
  * @template TValue
@@ -31,6 +31,12 @@ abstract class TypeArrayBase implements ArrayAccess, Countable, IteratorAggregat
 	 */
 	protected array $items = [];
 
+	/**
+	 * 生成。
+	 *
+	 * @param string $type
+	 * @phpstan-param class-string|TypeUtility::TYPE_* $type
+	 */
 	protected function __construct(
 		protected string $type
 	) {

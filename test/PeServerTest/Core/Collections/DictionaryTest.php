@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace PeServerTest\Core\Collections;
 
+use \stdClass;
+use \TypeError;
 use PeServer\Core\Collections\Dictionary;
 use PeServer\Core\Throws\ArgumentException;
+use PeServer\Core\Throws\ArgumentNullException;
 use PeServer\Core\Throws\IndexOutOfRangeException;
 use PeServer\Core\Throws\KeyNotFoundException;
 use PeServer\Core\TypeUtility;
 use PeServerTest\TestClass;
-use \stdClass;
-use \TypeError;
 
 
 class DictionaryTest extends TestClass
@@ -38,11 +39,11 @@ class DictionaryTest extends TestClass
 		$this->assertTrue(isset($actual['0']));
 	}
 
-	function test_offsetExists_throw()
+	function test_offsetExists_null_throw()
 	{
 		$actual = Dictionary::create(['a' => 'A', 'b' => 'B', '0' => 'o']);
 		$this->expectException(TypeError::class);
-		isset($actual[0]);
+		isset($actual[null]);
 		$this->fail();
 	}
 
@@ -93,6 +94,22 @@ class DictionaryTest extends TestClass
 		$this->assertSame('10', $actual['a']);
 		$this->assertSame('BB', $actual['b']);
 		$this->assertSame('oo', $actual['0']);
+	}
+
+	function test_offsetSet_null_throw()
+	{
+		$actual = Dictionary::create(['a' => 'A', 'b' => 'B', '0' => 'o']);
+		$this->expectException(ArgumentNullException::class);
+		$actual[null] = 'NULL';
+		$this->fail();
+	}
+
+	function test_offsetSet_add_throw()
+	{
+		$actual = Dictionary::create(['a' => 'A', 'b' => 'B', '0' => 'o']);
+		$this->expectException(ArgumentNullException::class);
+		$actual[] = 'NULL';
+		$this->fail();
 	}
 
 	function test_offsetUnset()

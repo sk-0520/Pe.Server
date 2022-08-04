@@ -6,7 +6,7 @@ namespace PeServer\Core\Collections;
 
 use \Iterator;
 use PeServer\Core\Collections\CollectionUtility;
-use PeServer\Core\Throws\ArgumentException;
+use PeServer\Core\Throws\CallbackTypeError;
 
 /**
  * selectMany イテレータ。
@@ -36,7 +36,7 @@ class SelectManyIterator implements Iterator
 		private mixed $callback
 	) {
 		if (!is_callable($callback)) { //@phpstan-ignore-line phpstan-param callable
-			throw new ArgumentException('$callback');
+			throw new CallbackTypeError('$callback');
 		}
 
 		$this->outerIterator = $iterator;

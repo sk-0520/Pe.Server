@@ -7,6 +7,7 @@ namespace PeServer\Core\Collections;
 use \Iterator;
 use \IteratorIterator;
 use PeServer\Core\Throws\ArgumentException;
+use PeServer\Core\Throws\CallbackTypeError;
 
 /**
  * select イテレータ。
@@ -31,7 +32,7 @@ class SelectIterator extends IteratorIterator //@phpstan-ignore-line Generic
 		private mixed $callback
 	) {
 		if (!is_callable($callback)) { //@phpstan-ignore-line phpstan-param callable
-			throw new ArgumentException('$callback');
+			throw new CallbackTypeError('$callback');
 		}
 		parent::__construct($iterator);
 	}
