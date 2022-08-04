@@ -6,6 +6,7 @@ namespace PeServerTest\Core\Collections;
 
 use ArrayIterator;
 use PeServer\Core\Collections\Collection;
+use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServerTest\Data;
 use PeServerTest\TestClass;
@@ -49,9 +50,35 @@ class CollectionTest extends TestClass
 
 		$vector2 = Collection::from([1, 2, 'KEY' => 3])->toList();
 		$this->assertSame([1, 2, 3], $vector2->getArray());
+	}
 
+	function test_toList_type_throw()
+	{
 		$this->expectException(TypeError::class);
 		Collection::from([1, 2, 'KEY' => '3'])->toList();
+		$this->fail();
+	}
+
+	function test_toDictionary()
+	{
+		$dic1 = Collection::from(['A' => 'a', 1 => 'A'])->toDictionary(fn ($v, $k) => $k, fn ($v) => $v);
+		$this->assertSame(['A' => 'a', '1' => 'A'], $dic1->getArray());
+
+		$dic2 = Collection::from([['a', 'b'], ['c', 'd']])->toDictionary(fn ($v) => $v[0], fn ($v) => $v[1]);
+		$this->assertSame(['a' => 'b', 'c' => 'd'], $dic2->getArray());
+	}
+
+	function test_toDictionary_dup_throw()
+	{
+		$this->expectException(ArgumentException::class);
+		Collection::from([1, 2])->toDictionary(fn ($v) => 'DUP', fn ($v) => $v);
+		$this->fail();
+	}
+
+	function test_toDictionary_type_throw()
+	{
+		$this->expectException(TypeError::class);
+		Collection::from(['A' => '1', 'B' => 10])->toDictionary(fn ($v, $k) => $k, fn ($v) => $v);
 		$this->fail();
 	}
 

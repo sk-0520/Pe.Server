@@ -11,8 +11,9 @@ use \EmptyIterator;
 use \Iterator;
 use \IteratorAggregate;
 use \LimitIterator;
-use PeServer\Core\ArrayUtility;
 use \Traversable;
+use PeServer\Core\ArrayUtility;
+use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\TypeUtility;
 
@@ -158,18 +159,62 @@ class Collection implements IteratorAggregate // @phpstan-ignore-line
 	 *
 	 * `Enumerable.ToList<TSource>` 的な。
 	 *
+	 * @param string $type
+	 * @phpstan-param class-string|TypeUtility::TYPE_* $type
 	 * @return Vector
 	 * @phpstan-return Vector<TValue>
 	 */
-	public function toList(): Vector
+	public function toList(string $type = TypeUtility::TYPE_UNKNOWN): Vector
 	{
 		$array = self::toArray();
 		if (ArrayUtility::isNullOrEmpty($array)) {
-			return Vector::empty(TypeUtility::TYPE_UNKNOWN);
+			return Vector::empty($type);
 		}
 		/** @phpstan-var non-empty-array<TValue> $array */
 
 		return Vector::create($array, true);
+	}
+
+	/**
+	 * 辞書実体化。
+	 *
+	 * @template TResult
+	 * @param callable $keyFactory 第1引数:値, 第1引数:キー(文字列変換済み), 戻り値:キー(文字列)。
+	 * @phpstan-param callable(TValue,TKey):string $keyFactory
+	 * @param callable $valueFactory 第1引数:値, 第1引数:キー(文字列変換済み), 戻り値:値。
+	 * @phpstan-param callable(TValue,TKey):TResult $valueFactory
+	 * @param string $type
+	 * @phpstan-param class-string|TypeUtility::TYPE_* $type
+	 * @return Dictionary
+	 * @phpstan-return Dictionary<TResult>
+	 */
+	public function toDictionary(callable $keyFactory, callable $valueFactory, string $type = TypeUtility::TYPE_UNKNOWN): Dictionary
+	{
+		/** @phpstan-var array<string,TResult> */
+		$buffer = [];
+
+		foreach ($this->iterator as $key => $value) {
+			$convertedKey = $key;
+			if (!is_string($key)) {
+				$convertedKey = TypeUtility::toString($key);
+			}
+
+			$k = call_user_func($keyFactory, $value, $convertedKey);
+			$v = call_user_func($valueFactory, $value, $convertedKey);
+
+			if (isset($buffer[$k])) {
+				throw new ArgumentException($k);
+			}
+
+			$buffer[$k] = $v;
+		}
+
+		if (ArrayUtility::isNullOrEmpty($buffer)) {
+			Dictionary::empty($type);
+		}
+		/** @phpstan-var non-empty-array<string,TResult> $buffer */
+
+		return Dictionary::create($buffer);
 	}
 
 	// 処理 ----------------------------------------------------

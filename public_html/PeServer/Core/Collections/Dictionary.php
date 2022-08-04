@@ -13,7 +13,7 @@ use PeServer\Core\Throws\NotSupportedException;
 use PeServer\Core\TypeUtility;
 
 /**
- * 連想配列。
+ * 連想配列(キーは文字列限定)。
  *
  * @template TValue
  * @extends TypeArrayBase<string,TValue>
@@ -31,7 +31,11 @@ class Dictionary extends TypeArrayBase
 	public function __construct(string $type, array $map)
 	{
 		parent::__construct($type);
-		$this->items = $map;
+
+		foreach ($map as $key => $value) {
+			$this->isValidType($value);
+			$this->items[$key] = $value;
+		}
 	}
 
 	/**
@@ -41,16 +45,16 @@ class Dictionary extends TypeArrayBase
 	 * @param array $map 配列。
 	 * @phpstan-param non-empty-array<string,TTValue> $map
 	 * @return Dictionary
-	 * @phpstan-return Dictionary<TTValue>
+	 * @phpstan-return self<TTValue>
 	 */
-	public static function create(array $map): Dictionary
+	public static function create(array $map): self
 	{
 		if (ArrayUtility::isNullOrEmpty($map)) {
 			throw new ArgumentException('$map');
 		}
 
 		$firstKey = ArrayUtility::getFirstKey($map);
-		if(!is_string($firstKey)) {
+		if (!is_string($firstKey)) {
 			throw new TypeError('$offset: ' . $firstKey);
 		}
 		$firstValue = $map[$firstKey];
@@ -58,6 +62,20 @@ class Dictionary extends TypeArrayBase
 		$type = TypeUtility::getType($firstValue);
 
 		return new self($type, $map);
+	}
+
+	/**
+	 * 空データの生成。
+	 *
+	 * @template TTValue
+	 * @param string $type
+	 * @phpstan-param class-string|TypeUtility::TYPE_* $type
+	 * @return Dictionary
+	 * @phpstan-return self<TTValue>
+	 */
+	public static function empty(string $type): Dictionary //@phpstan-ignore-line TTValue
+	{
+		return new self($type, []);
 	}
 
 	protected function throwIfInvalidOffset(mixed $offset): void
@@ -107,6 +125,8 @@ class Dictionary extends TypeArrayBase
 		if (is_null($offset)) {
 			throw new NotSupportedException();
 		}
+
+		$this->isValidType($value);
 
 		$this->items[$offset] = $value;
 	}
