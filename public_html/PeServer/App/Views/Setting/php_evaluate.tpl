@@ -23,17 +23,27 @@
 {if $values.executed}
 	<h2>結果</h2>
 	<dl>
-		<dt>output</dt>
+		<dt>出力</dt>
 		<dd>
-			<pre data-clipboard="block">{$values.output}</pre>
+			{if ($values.output instanceof \Stringable) || is_string($values.output) }
+				<pre data-clipboard="block">{$values.output}</pre>
+			{else}
+				<pre data-clipboard="block">{$values.output|var_dump}</pre>
+			{/if}
 		</dd>
 
-		<dt>result</dt>
+		<dt>結果</dt>
 		<dd>
-			<pre data-clipboard="block">{$values.result}</pre>
+			{if ($values.result instanceof \Stringable) || is_string($values.result) }
+				<pre data-clipboard="block">{$values.result}</pre>
+			{elseif $values.result}
+				<pre data-clipboard="block">{$values.result|var_dump}</pre>
+			{else}
+				なし
+			{/if}
 		</dd>
 
-		<dt>execute_statement</dt>
+		<dt>実行PHPソース</dt>
 		<dd>
 			<pre data-clipboard="block">{$values.execute_statement}</pre>
 		</dd>
