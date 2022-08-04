@@ -302,8 +302,12 @@ class ArrayUtility
 	/**
 	 * `reverse` ラッパー。
 	 *
+	 * @template TKey of array-key
+	 * @template TValue
 	 * @param array<mixed> $input
+	 * @phpstan-param array<TKey,TValue> $input
 	 * @return array<mixed>
+	 * @phpstan-return array<TKey,TValue>
 	 * @see https://php.net/manual/function.array-reverse.php
 	 */
 	public static function reverse(array $input): array
@@ -314,8 +318,12 @@ class ArrayUtility
 	/**
 	 * `array_flip` ラッパー。
 	 *
+	 * @template TKey of array-key
+	 * @template TValue
 	 * @param array<mixed> $input
+	 * @phpstan-param array<TKey,TValue> $input
 	 * @return array<mixed>
+	 * @phpstan-param array<TValue,TKey> $input
 	 * @throws ArgumentException
 	 * @see https://www.php.net/manual/function.array-flip.php
 	 */
