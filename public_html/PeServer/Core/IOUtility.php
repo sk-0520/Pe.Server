@@ -25,18 +25,19 @@ abstract class IOUtility
 	 *
 	 * @param string $path
 	 * @return integer
-	 * @phpstan-return UnsignedIntegerAlias
+	 * @return UnsignedIntegerAlias
 	 * @see https://www.php.net/manual/function.filesize.php
 	 * @throws IOException
 	 */
 	public static function getFileSize(string $path): int
 	{
-		$result = filesize($path);
-		if ($result === false) {
+		/** @phpstan-var ResultData<UnsignedIntegerAlias|false> */
+		$result = ErrorHandler::trapError(fn () => filesize($path));
+		if (!$result->success || $result->value === false) {
 			throw new IOException();
 		}
 
-		return $result;
+		return $result->value;
 	}
 
 	/**
