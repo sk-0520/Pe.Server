@@ -18,8 +18,8 @@ use PeServer\Core\TypeUtility;
  *
  * @template TKey of array-key
  * @template TValue
- * @phpstan-implements ArrayAccess<TKey,TValue>
- * @phpstan-implements IteratorAggregate<TKey,TValue>
+ * @implements ArrayAccess<TKey,TValue>
+ * @implements IteratorAggregate<TKey,TValue>
  */
 abstract class TypeArrayBase implements ArrayAccess, Countable, IteratorAggregate
 {
