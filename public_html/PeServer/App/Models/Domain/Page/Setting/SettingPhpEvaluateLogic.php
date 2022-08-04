@@ -43,6 +43,10 @@ class SettingPhpEvaluateLogic extends PageLogicBase
 		});
 	}
 
+	/**
+	 * @param LogicCallMode $callMode
+	 * @SuppressWarnings(PHPMD.EvalExpression)
+	 */
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
 		if ($callMode->isInitialize()) {
