@@ -18,6 +18,7 @@ use PeServer\Core\Throws\SqlException;
 use PeServer\Core\Throws\Throws;
 use PeServer\Core\Throws\TransactionException;
 use PeServer\Core\TypeUtility;
+use Throwable;
 
 /**
  * DB接続処理。
@@ -89,7 +90,9 @@ class Database extends DisposerBase implements IDatabaseTransactionContext
 	{
 		if (!is_null($parameters)) {
 			foreach ($parameters as $key => $value) {
-				$statement->bindValue($key, $value);
+				if (!$statement->bindValue($key, $value)) {
+					throw new SqlException('$key: ' . $key . ' -> ' . TypeUtility::getType($value));
+				}
 			}
 		}
 	}
@@ -106,14 +109,28 @@ class Database extends DisposerBase implements IDatabaseTransactionContext
 	{
 		$this->throwIfDisposed();
 
-		$query = $this->pdo->prepare($statement);
+		/** @var PDOStatement|false */
+		$query = null;
 
-		$this->setParameters($query, $parameters);
+		try {
+			$query = $this->pdo->prepare($statement);
+			if ($query === false) {
+				throw new SqlException($this->getErrorMessage());
+			}
+
+			$this->setParameters($query, $parameters);
+		} catch (PDOException $ex) {
+			Throws::reThrow(SqlException::class, $ex);
+		}
 
 		$this->logger->trace($query, $parameters);
 
-		if (!$query->execute()) {
-			throw new SqlException($this->getErrorMessage());
+		try {
+			if (!$query->execute()) {
+				throw new DatabaseException($this->getErrorMessage());
+			}
+		} catch (PDOException $ex) {
+			Throws::reThrow(DatabaseException::class, $ex);
 		}
 
 		return $query;
@@ -134,8 +151,12 @@ class Database extends DisposerBase implements IDatabaseTransactionContext
 			throw new TransactionException();
 		}
 
-		if (!$this->pdo->beginTransaction()) {
-			throw new SqlException($this->getErrorMessage()); // これが投げられず PDOException が投げられると思う
+		try {
+			if (!$this->pdo->beginTransaction()) {
+				throw new TransactionException($this->getErrorMessage());
+			}
+		} catch (PDOException $ex) {
+			Throws::reThrow(TransactionException::class, $ex, $this->getErrorMessage());
 		}
 	}
 
@@ -147,8 +168,12 @@ class Database extends DisposerBase implements IDatabaseTransactionContext
 			throw new TransactionException();
 		}
 
-		if (!$this->pdo->commit()) {
-			throw new SqlException($this->getErrorMessage());
+		try {
+			if (!$this->pdo->commit()) {
+				throw new TransactionException($this->getErrorMessage());
+			}
+		} catch (PDOException $ex) {
+			Throws::reThrow(TransactionException::class, $ex, $this->getErrorMessage());
 		}
 	}
 
@@ -158,8 +183,12 @@ class Database extends DisposerBase implements IDatabaseTransactionContext
 			throw new TransactionException();
 		}
 
-		if (!$this->pdo->rollBack()) {
-			throw new SqlException($this->getErrorMessage());
+		try {
+			if (!$this->pdo->rollBack()) {
+				throw new TransactionException($this->getErrorMessage());
+			}
+		} catch (PDOException $ex) {
+			Throws::reThrow(TransactionException::class, $ex, $this->getErrorMessage());
 		}
 	}
 
@@ -175,10 +204,10 @@ class Database extends DisposerBase implements IDatabaseTransactionContext
 			} else {
 				$this->rollback();
 			}
-		} catch (Exception $ex) {
+		} catch (Throwable $ex) {
 			$this->logger->error($ex);
 			$this->rollback();
-			Throws::reThrow(SqlException::class, $ex);
+			Throws::reThrow(DatabaseException::class, $ex);
 		}
 
 		return false;
@@ -299,7 +328,7 @@ class Database extends DisposerBase implements IDatabaseTransactionContext
 	 * @param string $statement
 	 * @return void
 	 */
-	private function enforceInsert(string $statement): void
+	protected function enforceInsert(string $statement): void
 	{
 		if (!Regex::isMatch($statement, '/\\binsert\\b/i')) {
 			throw new SqlException();
@@ -329,7 +358,7 @@ class Database extends DisposerBase implements IDatabaseTransactionContext
 	 * @param string $statement
 	 * @return void
 	 */
-	private function enforceUpdate(string $statement): void
+	protected function enforceUpdate(string $statement): void
 	{
 		if (!Regex::isMatch($statement, '/\\bupdate\\b/i')) {
 			throw new SqlException();
@@ -370,7 +399,7 @@ class Database extends DisposerBase implements IDatabaseTransactionContext
 	 * @param string $statement
 	 * @return void
 	 */
-	private function enforceDelete(string $statement): void
+	protected function enforceDelete(string $statement): void
 	{
 		if (!Regex::isMatch($statement, '/\\bdelete\\b/i')) {
 			throw new SqlException();

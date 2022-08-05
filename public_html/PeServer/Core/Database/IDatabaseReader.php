@@ -18,9 +18,8 @@ interface IDatabaseReader
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
 	 * @return array<array<string,mixed>>
-	 * @throws \PDOException
 	 * @throws DatabaseException
-	 * @throws ObjectDisposedException
+	 * @throws SqlException 問い合わせ文の検証エラー
 	 */
 	public function query(string $statement, ?array $parameters = null): array;
 
@@ -32,9 +31,8 @@ interface IDatabaseReader
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
 	 * @return array<string,mixed>
-	 * @throws \PDOException
 	 * @throws DatabaseException
-	 * @throws ObjectDisposedException
+	 * @throws SqlException 問い合わせ文の検証エラー
 	 */
 	public function queryFirst(string $statement, ?array $parameters = null): array;
 
@@ -47,9 +45,8 @@ interface IDatabaseReader
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
 	 * @return array<string,mixed>|null
-	 * @throws \PDOException
 	 * @throws DatabaseException
-	 * @throws ObjectDisposedException
+	 * @throws SqlException 問い合わせ文の検証エラー
 	 */
 	public function queryFirstOr(?array $defaultValue, string $statement, ?array $parameters = null): ?array;
 
@@ -61,9 +58,8 @@ interface IDatabaseReader
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
 	 * @return array<string,mixed>
-	 * @throws \PDOException
 	 * @throws DatabaseException
-	 * @throws ObjectDisposedException
+	 * @throws SqlException 問い合わせ文の検証エラー
 	 */
 	public function querySingle(string $statement, ?array $parameters = null): array;
 
@@ -76,9 +72,8 @@ interface IDatabaseReader
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
 	 * @return array<string,mixed>|null
-	 * @throws \PDOException
 	 * @throws DatabaseException
-	 * @throws ObjectDisposedException
+	 * @throws SqlException 問い合わせ文の検証エラー
 	 */
 	public function querySingleOr(?array $defaultValue, string $statement, ?array $parameters = null): ?array;
 
@@ -92,10 +87,8 @@ interface IDatabaseReader
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
 	 * @return array<array<string,mixed>>
-	 * @throws \PDOException
 	 * @throws DatabaseException
 	 * @throws SqlException 問い合わせ文の検証エラー
-	 * @throws ObjectDisposedException
 	 */
 	public function selectOrdered(string $statement, ?array $parameters = null): array;
 
@@ -109,10 +102,8 @@ interface IDatabaseReader
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
 	 * @return integer
-	 * @throws \PDOException
 	 * @throws DatabaseException
 	 * @throws SqlException 問い合わせ文の検証エラー
-	 * @throws ObjectDisposedException
 	 */
 	public function selectSingleCount(string $statement, ?array $parameters = null): int;
 }

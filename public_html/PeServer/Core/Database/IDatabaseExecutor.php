@@ -18,9 +18,7 @@ interface IDatabaseExecutor
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
 	 * @return integer 影響件数。
-	 * @throws \PDOException
 	 * @throws DatabaseException
-	 * @throws ObjectDisposedException
 	 */
 	public function execute(string $statement, ?array $parameters = null): int;
 
@@ -32,10 +30,8 @@ interface IDatabaseExecutor
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
 	 * @return integer 挿入件数。
-	 * @throws \PDOException
 	 * @throws DatabaseException
 	 * @throws SqlException 問い合わせ文の検証エラー
-	 * @throws ObjectDisposedException
 	 */
 	public function insert(string $statement, ?array $parameters = null): int;
 
@@ -47,10 +43,8 @@ interface IDatabaseExecutor
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
 	 * @return void
-	 * @throws \PDOException
 	 * @throws DatabaseException
 	 * @throws SqlException 問い合わせ文の検証エラー
-	 * @throws ObjectDisposedException
 	 */
 	public function insertSingle(string $statement, ?array $parameters = null): void;
 
@@ -62,10 +56,8 @@ interface IDatabaseExecutor
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
 	 * @return integer 更新件数。
-	 * @throws \PDOException
 	 * @throws DatabaseException
 	 * @throws SqlException 問い合わせ文の検証エラー
-	 * @throws ObjectDisposedException
 	 */
 	public function update(string $statement, ?array $parameters = null): int;
 
@@ -77,10 +69,8 @@ interface IDatabaseExecutor
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
 	 * @return void
-	 * @throws \PDOException
 	 * @throws DatabaseException
 	 * @throws SqlException 問い合わせ文の検証エラー
-	 * @throws ObjectDisposedException
 	 */
 	public function updateByKey(string $statement, ?array $parameters = null): void;
 
@@ -92,10 +82,8 @@ interface IDatabaseExecutor
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
 	 * @return boolean 更新できたか。
-	 * @throws \PDOException
 	 * @throws DatabaseException
 	 * @throws SqlException 問い合わせ文の検証エラー
-	 * @throws ObjectDisposedException
 	 */
 	public function updateByKeyOrNothing(string $statement, ?array $parameters = null): bool;
 
@@ -107,10 +95,8 @@ interface IDatabaseExecutor
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
 	 * @return integer 削除件数。
-	 * @throws \PDOException
 	 * @throws DatabaseException
 	 * @throws SqlException 問い合わせ文の検証エラー
-	 * @throws ObjectDisposedException
 	 */
 	public function delete(string $statement, ?array $parameters = null): int;
 
@@ -122,10 +108,8 @@ interface IDatabaseExecutor
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
 	 * @return void
-	 * @throws \PDOException
 	 * @throws DatabaseException
 	 * @throws SqlException 問い合わせ文の検証エラー
-	 * @throws ObjectDisposedException
 	 */
 	public function deleteByKey(string $statement, ?array $parameters = null): void;
 
@@ -137,10 +121,8 @@ interface IDatabaseExecutor
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
 	 * @return boolean 削除できたか。
-	 * @throws \PDOException
 	 * @throws DatabaseException
 	 * @throws SqlException 問い合わせ文の検証エラー
-	 * @throws ObjectDisposedException
 	 */
 	public function deleteByKeyOrNothing(string $statement, ?array $parameters = null): bool;
 }
