@@ -13,11 +13,13 @@ interface IDatabaseExecutor
 	/**
 	 * 実行処理。
 	 *
+	 * @template TFieldArray of FieldArrayAlias
 	 * @param string $statement
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
 	 * @return DatabaseTableResult
+	 * @phpstan-return DatabaseTableResult<TFieldArray>
 	 * @throws DatabaseException
 	 */
 	public function execute(string $statement, ?array $parameters = null): DatabaseTableResult;

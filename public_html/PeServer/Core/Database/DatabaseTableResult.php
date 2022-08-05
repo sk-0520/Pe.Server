@@ -9,6 +9,7 @@ use PeServer\Core\ArrayUtility;
 /**
  * 問い合わせ結果。
  *
+ * @template TFieldArray of FieldArrayAlias
  * @immutable
  */
 class DatabaseTableResult extends DatabaseResultBase
@@ -16,11 +17,8 @@ class DatabaseTableResult extends DatabaseResultBase
 	/**
 	 * 生成。
 	 *
-	 * @param DatabaseColumn[] $columns
-	 * @param int $resultCount
-	 * @phpstan-param UnsignedIntegerAlias $resultCount
-	 * @param array<array<string|int,mixed>> $rows
-	 * @phpstan-param array<array<array-key,mixed>> $rows
+	 * @param array<array<string|int,mixed>> $rows レコード一覧。各レコードにフィールド配列が格納されている。
+	 * @phpstan-param TFieldArray[] $rows
 	 */
 	public function __construct(
 		array $columns,
@@ -30,6 +28,12 @@ class DatabaseTableResult extends DatabaseResultBase
 		parent::__construct($columns, $resultCount);
 	}
 
+	/**
+	 * レコード件数。
+	 *
+	 * @return int
+	 * @phpstan-return UnsignedIntegerAlias
+	 */
 	public function getRowsCount(): int
 	{
 		return ArrayUtility::getCount($this->rows);

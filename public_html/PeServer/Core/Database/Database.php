@@ -167,20 +167,39 @@ class Database extends DisposerBase implements IDatabaseTransactionContext
 		return $columns;
 	}
 
+	/**
+	 * 単一行データに変換。
+	 *
+	 * データが存在しない場合、`DatabaseRowResult->field` はから配列となるが、あくまで `Database` 内限定のデータ状態となる。
+	 *
+	 * @template TFieldArray of FieldArrayAlias
+	 * @param PDOStatement $pdoStatement
+	 * @return DatabaseRowResult
+	 * @phpstan-return DatabaseRowResult<TFieldArray>
+	 */
 	private function convertRowResult(PDOStatement $pdoStatement): DatabaseRowResult
 	{
 		$columns = $this->getColumns($pdoStatement);
 
 		$resultCount = $pdoStatement->rowCount();
 
+		/** @phpstan-var TFieldArray|false */
 		$row = $pdoStatement->fetch();
 		if ($row === false) {
-			return new DatabaseRowResult($columns, $resultCount, []);
+			return new DatabaseRowResult($columns, $resultCount, []); //@phpstan-ignore-line 空データを本クラス内のみ許容
 		}
 
-		return new DatabaseRowResult($columns, $resultCount, $row);
+		return new DatabaseRowResult($columns, $resultCount, $row); //@phpstan-ignore-line 空じゃないでしょ・・・
 	}
 
+	/**
+	 * データセットに変換。
+	 *
+	 * @template TFieldArray of FieldArrayAlias
+	 * @param PDOStatement $pdoStatement
+	 * @return DatabaseTableResult
+	 * @phpstan-return DatabaseTableResult<TFieldArray>
+	 */
 	private function convertTableResult(PDOStatement $pdoStatement): DatabaseTableResult
 	{
 		$columns = $this->getColumns($pdoStatement);
@@ -195,7 +214,7 @@ class Database extends DisposerBase implements IDatabaseTransactionContext
 
 		$result = new DatabaseTableResult($columns, $resultCount, $rows);
 
-		return $result;
+		return $result; //@phpstan-ignore-line 空フィールドはない
 	}
 
 	public function inTransaction(): bool
@@ -275,31 +294,46 @@ class Database extends DisposerBase implements IDatabaseTransactionContext
 		return false;
 	}
 
+	/**
+	 * @template TFieldArray of FieldArrayAlias
+	 * @phpstan-return DatabaseTableResult<TFieldArray>
+	 */
 	public function query(string $statement, ?array $parameters = null): DatabaseTableResult
 	{
 		$query = $this->executeStatement($statement, $parameters);
 
+		/** @phpstan-var DatabaseTableResult<TFieldArray> */
 		$result = $this->convertTableResult($query);
 
 		return $result;
 	}
 
+	/**
+	 * @template TFieldArray of FieldArrayAlias
+	 * @phpstan-return DatabaseRowResult<TFieldArray>
+	 */
 	public function queryFirst(string $statement, ?array $parameters = null): DatabaseRowResult
 	{
 		$query = $this->executeStatement($statement, $parameters);
 
+		/** @phpstan-var DatabaseRowResult<TFieldArray> */
 		$result = $this->convertRowResult($query);
-		if (ArrayUtility::isNullOrEmpty($result->fields)) {
+		if (ArrayUtility::isNullOrEmpty($result->fields)) { //@phpstan-ignore-line 本クラス内限定で空の可能性あり
 			throw new DatabaseException($this->getErrorMessage());
 		}
 
 		return $result;
 	}
 
+	/**
+	 * @template TFieldArray of FieldArrayAlias
+	 * @phpstan-return DatabaseRowResult<TFieldArray>
+	 */
 	public function queryFirstOrNull(string $statement, ?array $parameters = null): ?DatabaseRowResult
 	{
 		$query = $this->executeStatement($statement, $parameters);
 
+		/** @phpstan-var DatabaseRowResult<TFieldArray> */
 		$result = $this->convertRowResult($query);
 		$result = $query->fetch();
 		if (ArrayUtility::isNullOrEmpty($result->fields)) {
@@ -309,12 +343,17 @@ class Database extends DisposerBase implements IDatabaseTransactionContext
 		return $result;
 	}
 
+	/**
+	 * @template TFieldArray of FieldArrayAlias
+	 * @phpstan-return DatabaseRowResult<TFieldArray>
+	 */
 	public function querySingle(string $statement, ?array $parameters = null): DatabaseRowResult
 	{
 		$query = $this->executeStatement($statement, $parameters);
 
+		/** @phpstan-var DatabaseRowResult<TFieldArray> */
 		$result = $this->convertRowResult($query);
-		if (ArrayUtility::isNullOrEmpty($result->fields)) {
+		if (ArrayUtility::isNullOrEmpty($result->fields)) { //@phpstan-ignore-line 本クラス内限定で空の可能性あり
 			throw new DatabaseException($this->getErrorMessage());
 		}
 
@@ -326,12 +365,17 @@ class Database extends DisposerBase implements IDatabaseTransactionContext
 		return $result;
 	}
 
+	/**
+	 * @template TFieldArray of FieldArrayAlias
+	 * @phpstan-return DatabaseRowResult<TFieldArray>
+	 */
 	public function querySingleOrNull(string $statement, ?array $parameters = null): ?DatabaseRowResult
 	{
 		$query = $this->executeStatement($statement, $parameters);
 
+		/** @phpstan-var DatabaseRowResult<TFieldArray> */
 		$result = $this->convertRowResult($query);
-		if (ArrayUtility::isNullOrEmpty($result->fields)) {
+		if (ArrayUtility::isNullOrEmpty($result->fields)) { //@phpstan-ignore-line 本クラス内限定で空の可能性あり
 			return null;
 		}
 
@@ -358,11 +402,18 @@ class Database extends DisposerBase implements IDatabaseTransactionContext
 		}
 	}
 
+	/**
+	 * @template TFieldArray of FieldArrayAlias
+	 * @phpstan-return DatabaseTableResult<TFieldArray>
+	 */
 	public function selectOrdered(string $statement, ?array $parameters = null): DatabaseTableResult
 	{
 		$this->enforceOrdered($statement);
 
-		return $this->query($statement, $parameters);
+		/** @phpstan-var DatabaseTableResult<TFieldArray> */
+		$result = $this->query($statement, $parameters);
+
+		return $result;
 	}
 
 	/**
@@ -394,10 +445,15 @@ class Database extends DisposerBase implements IDatabaseTransactionContext
 		throw new DatabaseException();
 	}
 
+	/**
+	 * @template TFieldArray of FieldArrayAlias
+	 * @phpstan-return DatabaseTableResult<TFieldArray>
+	 */
 	public function execute(string $statement, ?array $parameters = null): DatabaseTableResult
 	{
 		$query = $this->executeStatement($statement, $parameters);
 
+		/** @phpstan-var DatabaseTableResult<TFieldArray> */
 		$result = $this->convertTableResult($query);
 
 		return $result;

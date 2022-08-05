@@ -14,8 +14,8 @@ abstract class DatabaseResultBase
 	/**
 	 * 生成。
 	 *
-	 * @param DatabaseColumn[] $columns
-	 * @param int $resultCount
+	 * @param DatabaseColumn[] $columns カラム情報(取得成功したものだけ格納されている)。
+	 * @param int $resultCount 実行影響件数。
 	 * @phpstan-param UnsignedIntegerAlias $resultCount
 	 */
 	public function __construct(

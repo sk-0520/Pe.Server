@@ -17,14 +17,13 @@ class UserDomainDao extends DaoBase
 	}
 
 	/**
-	 * Undocumented function
-	 *
+	 * @template TFieldArray of array{user_id:string,login_id:string,name:string,level:string,state:string,generated_password:string,current_password:string}
 	 * @param string $loginId
-	 * @-return array{user_id:string,login_id:string,name:string,level:string,state:string,generated_password:string,current_password:string}|null
+	 * @phpstan-return DatabaseRowResult<TFieldArray>|null
 	 */
 	public function selectLoginUser(string $loginId): ?DatabaseRowResult
 	{
-		/** @-var array{user_id:string,login_id:string,name:string,level:string,state:string,generated_password:string,current_password:string}|null */
+		/** @phpstan-var DatabaseRowResult<TFieldArray>|null */
 		return $this->context->querySingleOrNull(
 			<<<SQL
 
@@ -59,14 +58,14 @@ class UserDomainDao extends DaoBase
 	}
 
 	/**
-	 * Undocumented function
+	 * @template TFieldArray of array{email:string,wait_email:string,token_timestamp_utc:string}
 	 *
 	 * @param string $userId
-	 * @-return array{email:string,wait_email:string,token_timestamp_utc:string}
+	 * @phpstan-return DatabaseRowResult<TFieldArray>
 	 */
 	public function selectEmailAndWaitTokenTimestamp(string $userId, int $limitMinutes): DatabaseRowResult
 	{
-		/** @-var array{email:string,wait_email:string,token_timestamp_utc:string} */
+		/** @phpstan-var DatabaseRowResult<TFieldArray> */
 		return $this->context->querySingle(
 			<<<SQL
 

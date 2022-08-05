@@ -16,14 +16,13 @@ class UserAuthenticationsEntityDao extends DaoBase
 	}
 
 	/**
-	 * Undocumented function
-	 *
+	 * @template TFieldArray of array{generated_password:string,current_password:string}
 	 * @param string $userId
-	 * @-return array{generated_password:string,current_password:string}
+	 * @phpstan-return DatabaseRowResult<TFieldArray>
 	 */
 	public function selectPasswords(string $userId): DatabaseRowResult
 	{
-		/** @-var array{generated_password:string,current_password:string} */
+		/** @phpstan-var DatabaseRowResult<TFieldArray> */
 		return $this->context->querySingle(
 			<<<SQL
 

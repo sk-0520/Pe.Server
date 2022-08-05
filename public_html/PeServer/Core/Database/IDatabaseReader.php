@@ -13,11 +13,13 @@ interface IDatabaseReader
 	/**
 	 * 問い合わせを実行。
 	 *
+	 * @template TFieldArray of FieldArrayAlias
 	 * @param string $statement
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
 	 * @return DatabaseTableResult
+	 * @phpstan-return DatabaseTableResult<TFieldArray>
 	 * @throws DatabaseException
 	 * @throws SqlException 問い合わせ文の検証エラー
 	 */
@@ -26,11 +28,13 @@ interface IDatabaseReader
 	/**
 	 * 問い合わせの最初のデータを取得。
 	 *
+	 * @template TFieldArray of FieldArrayAlias
 	 * @param string $statement
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
 	 * @return DatabaseRowResult
+	 * @phpstan-return DatabaseRowResult<TFieldArray>
 	 * @throws DatabaseException
 	 * @throws SqlException 問い合わせ文の検証エラー
 	 */
@@ -39,11 +43,13 @@ interface IDatabaseReader
 	/**
 	 * 問い合わせの最初のデータを取得。存在しない場合に `null` を返す。
 	 *
+	 * @template TFieldArray of FieldArrayAlias
 	 * @param string $statement
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
 	 * @return DatabaseRowResult|null
+	 * @phpstan-return DatabaseRowResult<TFieldArray>|null
 	 * @throws DatabaseException
 	 * @throws SqlException 問い合わせ文の検証エラー
 	 */
@@ -52,11 +58,13 @@ interface IDatabaseReader
 	/**
 	 * 1件だけの問い合わせを実行。
 	 *
+	 * @template TFieldArray of FieldArrayAlias
 	 * @param string $statement
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
 	 * @return DatabaseRowResult
+	 * @phpstan-return DatabaseRowResult<TFieldArray>
 	 * @throws DatabaseException
 	 * @throws SqlException 問い合わせ文の検証エラー
 	 */
@@ -65,11 +73,13 @@ interface IDatabaseReader
 	/**
 	 * 1件だけの問い合わせを実行。存在しない場合に `null` を返す
 	 *
+	 * @template TFieldArray of FieldArrayAlias
 	 * @param string $statement
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
 	 * @return DatabaseRowResult|null
+	 * @phpstan-return DatabaseRowResult<TFieldArray>|null
 	 * @throws DatabaseException
 	 * @throws SqlException 問い合わせ文の検証エラー
 	 */
@@ -80,11 +90,13 @@ interface IDatabaseReader
 	 *
 	 * 単純な文字列処理のため無理な時は無理。
 	 *
+	 * @template TFieldArray of FieldArrayAlias
 	 * @param string $statement
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
 	 * @return DatabaseTableResult
+	 * @phpstan-return DatabaseTableResult<TFieldArray>
 	 * @throws DatabaseException
 	 * @throws SqlException 問い合わせ文の検証エラー
 	 */
