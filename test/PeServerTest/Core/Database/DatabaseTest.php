@@ -83,25 +83,25 @@ class DatabaseTest extends TestClass
 	{
 		$database = DB::memory();
 		$actual1 = $database->execute('PRAGMA database_list');
-		$this->assertSame(0, $actual1);
+		$this->assertSame(0, $actual1->resultCount);
 
 		$actual2 = $database->execute('create table test(field1 integer)');
-		$this->assertSame(0, $actual2);
+		$this->assertSame(0, $actual2->resultCount);
 
 		$actual3 = $database->execute('insert into test(field1) values (1)');
-		$this->assertSame(1, $actual3);
+		$this->assertSame(1, $actual3->resultCount);
 
 		$actual4 = $database->execute('insert into test(field1) values (2)');
-		$this->assertSame(1, $actual4);
+		$this->assertSame(1, $actual4->resultCount);
 
 		$actual5 = $database->execute('insert into test(field1) values (3)');
-		$this->assertSame(1, $actual5);
+		$this->assertSame(1, $actual5->resultCount);
 
 		$actual6 = $database->execute('update test set field1 = field1 * 10 where field1 <> 1');
-		$this->assertSame(2, $actual6);
+		$this->assertSame(2, $actual6->resultCount);
 
 		$actual7 = $database->execute('delete from test');
-		$this->assertSame(3, $actual7);
+		$this->assertSame(3, $actual7->resultCount);
 	}
 
 }

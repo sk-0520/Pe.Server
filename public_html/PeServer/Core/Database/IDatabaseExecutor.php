@@ -20,7 +20,7 @@ interface IDatabaseExecutor
 	 * @return integer 影響件数。
 	 * @throws DatabaseException
 	 */
-	public function execute(string $statement, ?array $parameters = null): int;
+	public function execute(string $statement, ?array $parameters = null): DatabaseTableResult;
 
 	/**
 	 * 挿入処理。

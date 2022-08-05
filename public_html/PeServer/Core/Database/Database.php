@@ -387,11 +387,13 @@ class Database extends DisposerBase implements IDatabaseTransactionContext
 		throw new DatabaseException();
 	}
 
-	public function execute(string $statement, ?array $parameters = null): int
+	public function execute(string $statement, ?array $parameters = null): DatabaseTableResult
 	{
 		$query = $this->executeStatement($statement, $parameters);
 
-		return $query->rowCount();
+		$result = $this->convertTableResult($query);
+
+		return $result;
 	}
 
 	/**
@@ -412,14 +414,14 @@ class Database extends DisposerBase implements IDatabaseTransactionContext
 	public function insert(string $statement, ?array $parameters = null): int
 	{
 		$this->enforceInsert($statement);
-		return $this->execute($statement, $parameters);
+		return $this->execute($statement, $parameters)->resultCount;
 	}
 
 	public function insertSingle(string $statement, ?array $parameters = null): void
 	{
 		$this->enforceInsert($statement);
 		$result = $this->execute($statement, $parameters);
-		if ($result !== 1) {
+		if ($result->resultCount !== 1) {
 			throw new DatabaseException();
 		}
 	}
@@ -442,14 +444,14 @@ class Database extends DisposerBase implements IDatabaseTransactionContext
 	public function update(string $statement, ?array $parameters = null): int
 	{
 		$this->enforceUpdate($statement);
-		return $this->execute($statement, $parameters);
+		return $this->execute($statement, $parameters)->resultCount;
 	}
 
 	public function updateByKey(string $statement, ?array $parameters = null): void
 	{
 		$this->enforceUpdate($statement);
 		$result = $this->execute($statement, $parameters);
-		if ($result !== 1) {
+		if ($result->resultCount !== 1) {
 			throw new SqlException();
 		}
 	}
@@ -458,11 +460,11 @@ class Database extends DisposerBase implements IDatabaseTransactionContext
 	{
 		$this->enforceUpdate($statement);
 		$result = $this->execute($statement, $parameters);
-		if (1 < $result) {
+		if (1 < $result->resultCount) {
 			throw new SqlException();
 		}
 
-		return $result === 1;
+		return $result->resultCount === 1;
 	}
 
 	/**
@@ -483,14 +485,14 @@ class Database extends DisposerBase implements IDatabaseTransactionContext
 	public function delete(string $statement, ?array $parameters = null): int
 	{
 		$this->enforceDelete($statement);
-		return $this->execute($statement, $parameters);
+		return $this->execute($statement, $parameters)->resultCount;
 	}
 
 	public function deleteByKey(string $statement, ?array $parameters = null): void
 	{
 		$this->enforceDelete($statement);
 		$result = $this->execute($statement, $parameters);
-		if ($result !== 1) {
+		if ($result->resultCount !== 1) {
 			throw new SqlException();
 		}
 	}
@@ -499,10 +501,10 @@ class Database extends DisposerBase implements IDatabaseTransactionContext
 	{
 		$this->enforceDelete($statement);
 		$result = $this->execute($statement, $parameters);
-		if (1 < $result) {
+		if (1 < $result->resultCount) {
 			throw new SqlException();
 		}
 
-		return $result === 1;
+		return $result->resultCount === 1;
 	}
 }
