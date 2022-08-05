@@ -14,6 +14,7 @@ parameters:
   checkTooWideReturnTypesInProtectedAndPublicMethods: true
   checkGenericClassInNonGenericObjectType: true
   checkDynamicProperties: true
+  inferPrivatePropertyTypeFromConstructor: true
 
   # parallel:
   #   jobSize: 20
