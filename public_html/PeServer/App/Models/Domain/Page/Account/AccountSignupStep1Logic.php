@@ -85,7 +85,7 @@ class AccountSignupStep1Logic extends PageLogicBase
 		$this->logger->info('ユーザー登録処理開始: {0}', $params['token']);
 
 		$database = $this->openDatabase();
-		$database->transaction(function (IDatabaseContext $context, $params) {
+		$database->transaction(function (IDatabaseContext $context) use ($params) {
 			$signUpWaitEmailsEntityDao = new SignUpWaitEmailsEntityDao($context);
 
 			$likeItems = $signUpWaitEmailsEntityDao->selectLikeEmails($params['mark_email']);
@@ -106,7 +106,7 @@ class AccountSignupStep1Logic extends PageLogicBase
 			);
 
 			return true;
-		}, $params);
+		});
 
 		//TODO: 設定からとるのかリダイレクトみたいにサーバーからとるのか混在中
 		$baseUrl = StringUtility::replaceMap(

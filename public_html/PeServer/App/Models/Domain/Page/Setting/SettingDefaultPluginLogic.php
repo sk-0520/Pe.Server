@@ -23,7 +23,7 @@ use PeServer\App\Models\Dao\Entities\PluginCategoryMappingsEntityDao;
 
 class SettingDefaultPluginLogic extends PageLogicBase
 {
-	/** @var array{plugin_id:string,plugin_name:string,check_url:string,project_url:string,descriptions:string[],registered:bool}[] */
+	/** @var array{plugin_id:string,plugin_name:string,check_url:string,project_url:string,descriptions:string[],categories:string[],registered:bool}[] */
 	private array $defaultPlugins = [
 		[
 			'plugin_id' => '4524fc23-ebb9-4c79-a26b-8f472c05095e',
@@ -133,7 +133,7 @@ class SettingDefaultPluginLogic extends PageLogicBase
 
 			if (ArrayUtility::getCount($params['plugins'])) {
 				$database = $this->openDatabase();
-				$database->transaction(function (IDatabaseContext $context, $params) {
+				$database->transaction(function (IDatabaseContext $context) use ($params) {
 
 					foreach ($params['plugins'] as $plugin) {
 						PluginUtility::removePlugin($context, $plugin['plugin_id']);
@@ -141,7 +141,7 @@ class SettingDefaultPluginLogic extends PageLogicBase
 					}
 
 					return true;
-				}, $params);
+				});
 
 				AppDatabaseCache::exportPluginInformation();
 			} else {
@@ -157,7 +157,7 @@ class SettingDefaultPluginLogic extends PageLogicBase
 
 			if (ArrayUtility::getCount($params['plugins'])) {
 				$database = $this->openDatabase();
-				$database->transaction(function (IDatabaseContext $context, $params) {
+				$database->transaction(function (IDatabaseContext $context) use ($params) {
 					$pluginsEntityDao = new PluginsEntityDao($context);
 					$pluginUrlsEntityDao = new PluginUrlsEntityDao($context);
 					$pluginCategoryMappingsEntityDao = new PluginCategoryMappingsEntityDao($context);
@@ -190,7 +190,7 @@ class SettingDefaultPluginLogic extends PageLogicBase
 					}
 
 					return true;
-				}, $params);
+				});
 
 				AppDatabaseCache::exportPluginInformation();
 			} else {

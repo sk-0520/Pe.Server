@@ -210,7 +210,7 @@ class AccountUserPluginLogic extends PageLogicBase
 		}
 
 		$database = $this->openDatabase();
-		$database->transaction(function (IDatabaseContext $context, $params) {
+		$database->transaction(function (IDatabaseContext $context) use ($params) {
 			/** @var array<string,string> $params*/
 
 			$pluginsEntityDao = new PluginsEntityDao($context);
@@ -251,7 +251,7 @@ class AccountUserPluginLogic extends PageLogicBase
 			}
 
 			$pluginCategoryMappingsEntityDao->deletePluginCategoryMappings($params['plugin_id']);
-			foreach($this->pluginCategories as $pluginCategory) {
+			foreach ($this->pluginCategories as $pluginCategory) {
 				$pluginCategoryId = $pluginCategory['plugin_category_id'];
 				if (TypeUtility::parseBoolean($this->getRequest('plugin_category_' . $pluginCategoryId))) {
 					$pluginCategoryMappingsEntityDao->insertPluginCategoryMapping($params['plugin_id'], $pluginCategoryId);
@@ -265,7 +265,7 @@ class AccountUserPluginLogic extends PageLogicBase
 			}
 
 			return true;
-		}, $params);
+		});
 
 		$this->result['plugin_id'] = $params['plugin_id'];
 		if ($this->isRegister) {

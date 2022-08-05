@@ -57,7 +57,7 @@ class SettingDatabaseMaintenanceLogic extends PageLogicBase
 		/** @var int|mixed[]|Throwable */
 		$result = InitialValue::EMPTY_STRING;
 		try {
-			$database->transaction(function (IDatabaseContext $context, $statement) use (&$result) {
+			$database->transaction(function (IDatabaseContext $context) use (&$result, $statement) {
 				/** @phpstan-var literal-string $statement */
 
 				if (Regex::isMatch($statement, '/^\s*\bselect\b/')) { // select だけの判定はよくないけどしんどいのだ
@@ -66,7 +66,7 @@ class SettingDatabaseMaintenanceLogic extends PageLogicBase
 					$result = $context->execute($statement);
 				}
 				return true;
-			}, $statement);
+			});
 		} catch (Throwable $ex) {
 			$result = $ex;
 		}

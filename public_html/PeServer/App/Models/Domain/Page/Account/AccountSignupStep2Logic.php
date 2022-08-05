@@ -121,7 +121,7 @@ class AccountSignupStep2Logic extends PageLogicBase
 		];
 
 		$database = $this->openDatabase();
-		$database->transaction(function (IDatabaseContext $context, $params) {
+		$database->transaction(function (IDatabaseContext $context) use ($params) {
 			$usersEntityDao = new UsersEntityDao($context);
 			$userAuthenticationsEntityDao = new UserAuthenticationsEntityDao($context);
 			$signUpWaitEmailsEntityDao = new SignUpWaitEmailsEntityDao($context);
@@ -150,7 +150,7 @@ class AccountSignupStep2Logic extends PageLogicBase
 			$this->writeAuditLogTargetUser($params['user_id'], AuditLog::USER_CREATE, ['token' => $params['token']], $context);
 
 			return true;
-		}, $params);
+		});
 
 		$subject = I18n::message('subject/sign_up_step2');
 		$values = [

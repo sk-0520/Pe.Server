@@ -192,12 +192,12 @@ class Database extends DisposerBase implements IDatabaseTransactionContext
 		}
 	}
 
-	public function transaction(callable $callback, ...$arguments): bool
+	public function transaction(callable $callback): bool
 	{
 		try {
 			$this->beginTransaction();
 
-			$result = $callback($this, ...$arguments);
+			$result = $callback($this);
 			if ($result) {
 				$this->commit();
 				return true;

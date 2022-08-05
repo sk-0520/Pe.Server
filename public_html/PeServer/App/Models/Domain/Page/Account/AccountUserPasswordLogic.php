@@ -89,14 +89,14 @@ class AccountUserPasswordLogic extends PageLogicBase
 
 		$database = $this->openDatabase();
 
-		$database->transaction(function (IDatabaseContext $context, $params) {
+		$database->transaction(function (IDatabaseContext $context) use ($params) {
 			$userAuthenticationsEntityDao = new UserAuthenticationsEntityDao($context);
 			$userAuthenticationsEntityDao->updateCurrentPassword($params['user_id'], $params['password']);
 
 			$this->writeAuditLogCurrentUser(AuditLog::USER_PASSWORD_CHANGE, null, $context);
 
 			return true;
-		}, $params);
+		});
 
 
 		$this->addTemporaryMessage(I18n::message('message/flash/updated_password'));

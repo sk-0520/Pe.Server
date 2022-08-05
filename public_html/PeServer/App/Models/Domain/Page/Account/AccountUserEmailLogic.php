@@ -138,7 +138,7 @@ class AccountUserEmailLogic extends PageLogicBase
 
 		$database = $this->openDatabase();
 
-		$database->transaction(function (IDatabaseContext $context, array $params) {
+		$database->transaction(function (IDatabaseContext $context) use ($params) {
 			$userChangeWaitEmailsEntityDao = new UserChangeWaitEmailsEntityDao($context);
 
 			$userChangeWaitEmailsEntityDao->deleteByUserId($params['user_id']);
@@ -147,7 +147,7 @@ class AccountUserEmailLogic extends PageLogicBase
 			$this->writeAuditLogCurrentUser(AuditLog::USER_EMAIL_CHANGING, ['token' => $params['token']], $context);
 
 			return true;
-		}, $params);
+		});
 
 		// トークン通知メール送信
 		$subject = I18n::message('subject/email_change_token');
@@ -179,7 +179,7 @@ class AccountUserEmailLogic extends PageLogicBase
 		];
 
 		$database = $this->openDatabase();
-		$result = $database->transaction(function (IDatabaseContext $context, array $params) {
+		$result = $database->transaction(function (IDatabaseContext $context) use ($params) {
 			$userDomainDao = new UserDomainDao($context);
 			$userChangeWaitEmailsEntityDao = new UserChangeWaitEmailsEntityDao($context);
 
@@ -207,7 +207,7 @@ class AccountUserEmailLogic extends PageLogicBase
 			$this->writeAuditLogCurrentUser(AuditLog::USER_EMAIL_CHANGED, ['token' => $params['token']], $context);
 
 			return true;
-		}, $params);
+		});
 
 		if (!$result) {
 			$this->addError('account_email_token', I18n::message('error/email_confirm_token_not_found'));
