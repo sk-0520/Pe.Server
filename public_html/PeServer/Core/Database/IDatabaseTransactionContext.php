@@ -1,19 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
+namespace PeServer\Core\Database;
+
 use \PDOException;
 use PeServer\Core\Database\IDatabaseContext;
+use PeServer\Core\IDisposable;
 use PeServer\Core\Throws\SqlException;
 use PeServer\Core\Throws\TransactionException;
 
-interface IDatabaseTransactionContext extends IDatabaseContext
+interface IDatabaseTransactionContext extends IDatabaseContext, IDisposable
 {
-	/**
-	 * トランザクション中か。
-	 *
-	 * @return bool
-	 */
-	public function isTransactions(): bool;
-
 	/**
 	 * トランザクション開始。
 	 *

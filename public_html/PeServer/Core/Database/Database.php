@@ -6,6 +6,8 @@ namespace PeServer\Core\Database;
 
 use \PDO;
 use \PDOStatement;
+use \Exception;
+use PeServer\Core\Database\IDatabaseTransactionContext;
 use PeServer\Core\DisposerBase;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Regex;
@@ -19,7 +21,7 @@ use PeServer\Core\TypeUtility;
 /**
  * DB接続処理。
  */
-class Database extends DisposerBase implements IDatabaseContext
+class Database extends DisposerBase implements IDatabaseTransactionContext
 {
 	/**
 	 * 接続処理。
@@ -35,13 +37,6 @@ class Database extends DisposerBase implements IDatabaseContext
 	 * @readonly
 	 */
 	private ILogger $logger;
-
-	/**
-	 * トランザクション中か。
-	 *
-	 * @var boolean
-	 */
-	private bool $isTransactions = false;
 
 	/**
 	 * 生成。
@@ -63,7 +58,7 @@ class Database extends DisposerBase implements IDatabaseContext
 
 	protected function disposeImpl(): void
 	{
-		if ($this->isTransactions) {
+		if ($this->inTransaction()) {
 			$this->rollback();
 		}
 
@@ -107,6 +102,8 @@ class Database extends DisposerBase implements IDatabaseContext
 	 */
 	private function executeStatement(string $statement, ?array $parameters): PDOStatement
 	{
+		$this->throwIfDisposed();
+
 		$query = $this->pdo->prepare($statement);
 
 		$this->setParameters($query, $parameters);
@@ -120,43 +117,48 @@ class Database extends DisposerBase implements IDatabaseContext
 		return $query;
 	}
 
+	public function inTransaction(): bool
+	{
+		$this->throwIfDisposed();
+
+		return $this->pdo->inTransaction();
+	}
+
 	public function beginTransaction(): void
 	{
-		if ($this->isTransactions) {
+		$this->throwIfDisposed();
+
+		if ($this->inTransaction()) {
 			throw new TransactionException();
 		}
 
 		if (!$this->pdo->beginTransaction()) {
 			throw new SqlException($this->getErrorMessage()); // これが投げられず PDOException が投げられると思う
 		}
-
-		$this->isTransactions = true;
 	}
 
 	public function commit(): void
 	{
-		if (!$this->isTransactions) {
+		$this->throwIfDisposed();
+
+		if (!$this->inTransaction()) {
 			throw new TransactionException();
 		}
 
 		if (!$this->pdo->commit()) {
 			throw new SqlException($this->getErrorMessage());
 		}
-
-		$this->isTransactions = false;
 	}
 
 	public function rollback(): void
 	{
-		if (!$this->isTransactions) {
+		if (!$this->inTransaction()) {
 			throw new TransactionException();
 		}
 
 		if (!$this->pdo->rollBack()) {
 			throw new SqlException($this->getErrorMessage());
 		}
-
-		$this->isTransactions = false;
 	}
 
 	public function transaction(callable $callback, ...$arguments): bool
@@ -171,7 +173,7 @@ class Database extends DisposerBase implements IDatabaseContext
 			} else {
 				$this->rollback();
 			}
-		} catch (\Exception $ex) {
+		} catch (Exception $ex) {
 			$this->logger->error($ex);
 			$this->rollback();
 			Throws::reThrow(SqlException::class, $ex);
@@ -182,8 +184,6 @@ class Database extends DisposerBase implements IDatabaseContext
 
 	public function query(string $statement, ?array $parameters = null): array
 	{
-		$this->throwIfDisposed();
-
 		$query = $this->executeStatement($statement, $parameters);
 
 		$result = $query->fetchAll();
@@ -197,8 +197,6 @@ class Database extends DisposerBase implements IDatabaseContext
 
 	public function queryFirst(string $statement, ?array $parameters = null): array
 	{
-		$this->throwIfDisposed();
-
 		$query = $this->executeStatement($statement, $parameters);
 
 		/** @var array<string,mixed>|false */
@@ -212,8 +210,6 @@ class Database extends DisposerBase implements IDatabaseContext
 
 	public function queryFirstOr(?array $defaultValue, string $statement, ?array $parameters = null): ?array
 	{
-		$this->throwIfDisposed();
-
 		$query = $this->executeStatement($statement, $parameters);
 
 		/** @var array<string,mixed>|false */
@@ -227,8 +223,6 @@ class Database extends DisposerBase implements IDatabaseContext
 
 	public function querySingle(string $statement, ?array $parameters = null): array
 	{
-		$this->throwIfDisposed();
-
 		$query = $this->executeStatement($statement, $parameters);
 
 		/** @var array<string,mixed>|false */
@@ -247,8 +241,6 @@ class Database extends DisposerBase implements IDatabaseContext
 
 	public function querySingleOr(?array $defaultValue, string $statement, ?array $parameters = null): ?array
 	{
-		$this->throwIfDisposed();
-
 		$query = $this->executeStatement($statement, $parameters);
 
 		/** @var array<string,mixed>|false */
@@ -292,8 +284,6 @@ class Database extends DisposerBase implements IDatabaseContext
 
 	public function execute(string $statement, ?array $parameters = null): int
 	{
-		$this->throwIfDisposed();
-
 		$query = $this->executeStatement($statement, $parameters);
 
 		return $query->rowCount();
