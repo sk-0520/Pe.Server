@@ -288,20 +288,46 @@ class Database extends DisposerBase implements IDatabaseTransactionContext
 		return $result;
 	}
 
-	public function selectOrdered(string $statement, ?array $parameters = null): array
+	/**
+	 * ソートを強制。
+	 *
+	 * 単純な文字列処理のため無理な時は無理。
+	 *
+	 * @param string $statement
+	 * @return void
+	 */
+	protected function enforceOrdered(string $statement): void
 	{
 		if (!Regex::isMatch($statement, '/\\border\\s+by\\b/i')) {
 			throw new SqlException();
 		}
+	}
+
+	public function selectOrdered(string $statement, ?array $parameters = null): array
+	{
+		$this->enforceOrdered($statement);
 
 		return $this->query($statement, $parameters);
 	}
 
-	public function selectSingleCount(string $statement, ?array $parameters = null): int
+	/**
+	 * 単独件数取得を強制。
+	 *
+	 * 単純な文字列処理のため無理な時は無理。
+	 *
+	 * @param string $statement
+	 * @return void
+	 */
+	protected function enforceSingleCount(string $statement): void
 	{
 		if (!Regex::isMatch($statement, '/\\bselect\\s+count\\s*\\(/i')) {
 			throw new SqlException();
 		}
+	}
+
+	public function selectSingleCount(string $statement, ?array $parameters = null): int
+	{
+		$this->enforceSingleCount($statement);
 
 		/** @var array<string,mixed> */
 		$result = $this->queryFirst($statement, $parameters);
