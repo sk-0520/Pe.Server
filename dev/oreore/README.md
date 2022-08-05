@@ -22,3 +22,50 @@ if not exist %PDEPEND% (
 )
 set COVERAGE_CACHE=%TEMP%\phpunit
 ```
+
+## launch.json
+
+いっつも忘れる。
+
+```json
+{
+	// IntelliSense を使用して利用可能な属性を学べます。
+	// 既存の属性の説明をホバーして表示します。
+	// 詳細情報は次を確認してください: https://go.microsoft.com/fwlink/?linkid=830387
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "サーバー",
+			"type": "php",
+			"request": "launch",
+			"port": 9003,
+			"ignore": [
+				"**/vendor/**/*.php",
+				"**/Libs/**/*.php"
+			],
+			"xdebugSettings": {
+				"max_children": 128,
+				"max_data": 1024,
+				"max_depth": 10
+			}
+		},
+		{
+			"name": "スクリプト",
+			"type": "php",
+			"request": "launch",
+			"runtimeExecutable": "C:\\Applications\\xampp\\xampp-portable-windows-x64-8.0.7-0-VS16\\xampp\\php\\php.exe",
+			"program": "${workspaceFolder}\\dev\\phppad.php",
+			"cwd": "${workspaceFolder}",
+			"port": 0,
+			"runtimeArgs": [
+				"-dxdebug.start_with_request=yes"
+			],
+			"env": {
+				"XDEBUG_MODE": "debug,develop",
+				"XDEBUG_CONFIG": "client_port=${port}"
+			}
+		},
+	]
+}
+
+```
