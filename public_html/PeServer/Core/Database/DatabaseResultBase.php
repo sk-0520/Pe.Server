@@ -9,6 +9,13 @@ namespace PeServer\Core\Database;
  */
 abstract class DatabaseResultBase
 {
+	/**
+	 * 生成。
+	 *
+	 * @param DatabaseColumn[] $columns
+	 * @param $resultCount
+	 * @phpstan-param UnsignedIntegerAlias $resultCount
+	 */
 	public function __construct(
 		public array $columns,
 		public int $resultCount
