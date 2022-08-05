@@ -69,7 +69,7 @@ class AccountUserPluginLogic extends PageLogicBase
 
 		$database = $this->openDatabase();
 		$pluginCategoriesEntityDao = new PluginCategoriesEntityDao($database);
-		$this->pluginCategories = $pluginCategoriesEntityDao->selectAllPluginCategories();
+		$this->pluginCategories = $pluginCategoriesEntityDao->selectAllPluginCategories()->rows;
 
 		foreach ($this->pluginCategories as $category) {
 			$keys[] = 'plugin_category_' . $category['plugin_category_id'];
@@ -100,9 +100,9 @@ class AccountUserPluginLogic extends PageLogicBase
 				$pluginsEntityDao = new PluginsEntityDao($database);
 				// ルーティングでこのプラグイン所有者が保証されているのでプラグインIDのみで取得
 				$map = $pluginsEntityDao->selectPluginIds($pluginId);
-				$this->setValue('account_plugin_plugin_id', $map['plugin_id']);
-				$this->setValue('account_plugin_plugin_name', $map['plugin_name']);
-				$this->setValue('account_plugin_state', $map['plugin_name']);
+				$this->setValue('account_plugin_plugin_id', $map->fields['plugin_id']);
+				$this->setValue('account_plugin_plugin_name', $map->fields['plugin_name']);
+				$this->setValue('account_plugin_state', $map->fields['plugin_name']);
 			}
 		} else {
 			$this->setValue('account_plugin_state', InitialValue::EMPTY_STRING);
@@ -173,9 +173,9 @@ class AccountUserPluginLogic extends PageLogicBase
 
 				// ルーティングでこのプラグイン所有者が保証されているのでプラグインIDのみで取得
 				$editMap = $pluginsEntityDao->selectEditPlugin($pluginId);
-				$this->setValue('account_plugin_plugin_name', $editMap['plugin_name']);
-				$this->setValue('account_plugin_display_name', $editMap['display_name']);
-				$this->setValue('account_plugin_description', $editMap['description']);
+				$this->setValue('account_plugin_plugin_name', $editMap->fields['plugin_name']);
+				$this->setValue('account_plugin_display_name', $editMap->fields['display_name']);
+				$this->setValue('account_plugin_description', $editMap->fields['description']);
 
 				$urlMap = $pluginUrlsEntityDao->selectUrls($pluginId);
 				$this->setValue('account_plugin_check_url', ArrayUtility::getOr($urlMap, PluginUrlKey::CHECK, InitialValue::EMPTY_STRING));

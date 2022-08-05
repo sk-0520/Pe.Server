@@ -306,7 +306,6 @@ class Database extends DisposerBase implements IDatabaseTransactionContext
 		$query = $this->executeStatement($statement, $parameters);
 
 		$result = $this->convertRowResult($query);
-		$result = $query->fetch();
 		if (ArrayUtility::isNullOrEmpty($result->fields)) {
 			throw new DatabaseException($this->getErrorMessage());
 		}
@@ -377,9 +376,9 @@ class Database extends DisposerBase implements IDatabaseTransactionContext
 	{
 		$this->enforceSingleCount($statement);
 
-		/** @var array<string,mixed> */
+		/** @-var array<string,mixed> */
 		$result = $this->queryFirst($statement, $parameters);
-		$val = strval(current($result));
+		$val = strval(current($result->fields));
 		if (TypeUtility::tryParseInteger($val, $count)) {
 			return $count;
 		}

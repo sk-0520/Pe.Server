@@ -6,6 +6,7 @@ namespace PeServer\App\Models\Dao\Domain;
 
 use PeServer\Core\Database\DaoBase;
 use PeServer\App\Models\Cache\UserCache;
+use PeServer\Core\Database\DatabaseRowResult;
 use PeServer\Core\Database\IDatabaseContext;
 
 class UserDomainDao extends DaoBase
@@ -19,13 +20,12 @@ class UserDomainDao extends DaoBase
 	 * Undocumented function
 	 *
 	 * @param string $loginId
-	 * @return array{user_id:string,login_id:string,name:string,level:string,state:string,generated_password:string,current_password:string}|null
+	 * @-return array{user_id:string,login_id:string,name:string,level:string,state:string,generated_password:string,current_password:string}|null
 	 */
-	public function selectLoginUser(string $loginId): ?array
+	public function selectLoginUser(string $loginId): ?DatabaseRowResult
 	{
-		/** @var array{user_id:string,login_id:string,name:string,level:string,state:string,generated_password:string,current_password:string}|null */
-		return $this->context->querySingleOr(
-			null,
+		/** @-var array{user_id:string,login_id:string,name:string,level:string,state:string,generated_password:string,current_password:string}|null */
+		return $this->context->querySingleOrNull(
 			<<<SQL
 
 			select
@@ -62,11 +62,11 @@ class UserDomainDao extends DaoBase
 	 * Undocumented function
 	 *
 	 * @param string $userId
-	 * @return array{email:string,wait_email:string,token_timestamp_utc:string}
+	 * @-return array{email:string,wait_email:string,token_timestamp_utc:string}
 	 */
-	public function selectEmailAndWaitTokenTimestamp(string $userId, int $limitMinutes): array
+	public function selectEmailAndWaitTokenTimestamp(string $userId, int $limitMinutes): DatabaseRowResult
 	{
-		/** @var array{email:string,wait_email:string,token_timestamp_utc:string} */
+		/** @-var array{email:string,wait_email:string,token_timestamp_utc:string} */
 		return $this->context->querySingle(
 			<<<SQL
 
@@ -131,7 +131,7 @@ class UserDomainDao extends DaoBase
 			$cache->description = $i['description'];
 
 			return $cache;
-		}, $result);
+		}, $result->rows);
 	}
 
 	public function updateEmailFromWaitEmail(string $userId, string $token): bool

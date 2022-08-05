@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Dao\Entities;
 
 use PeServer\Core\Database\DaoBase;
+use PeServer\Core\Database\DatabaseTableResult;
 use PeServer\Core\Database\IDatabaseContext;
 
 class SignUpWaitEmailsEntityDao extends DaoBase
@@ -52,18 +53,18 @@ class SignUpWaitEmailsEntityDao extends DaoBase
 			[
 				'token' => $token,
 			]
-		)['email'];
+		)->fields['email'];
 	}
 
 	/**
 	 * Undocumented function
 	 *
 	 * @param integer $markEmail
-	 * @return array<array{mark_email:int,token:string,email:string}>
+	 * @-return array<array{mark_email:int,token:string,email:string}>
 	 */
-	public function selectLikeEmails(int $markEmail): array
+	public function selectLikeEmails(int $markEmail): DatabaseTableResult
 	{
-		/** @var array<array{mark_email:int,token:string,email:string}> */
+		/** @-var array<array{mark_email:int,token:string,email:string}> */
 		return $this->context->query(
 			<<<SQL
 

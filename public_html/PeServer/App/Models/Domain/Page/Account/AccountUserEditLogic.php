@@ -78,7 +78,7 @@ class AccountUserEditLogic extends PageLogicBase
 			'description' => 'account_edit_description',
 		];
 
-		foreach ($userEditData as $key => $value) {
+		foreach ($userEditData->fields as $key => $value) {
 			$this->setValue($map[$key], $value);
 		}
 	}

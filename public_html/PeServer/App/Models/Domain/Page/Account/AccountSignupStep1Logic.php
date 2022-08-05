@@ -89,7 +89,7 @@ class AccountSignupStep1Logic extends PageLogicBase
 			$signUpWaitEmailsEntityDao = new SignUpWaitEmailsEntityDao($context);
 
 			$likeItems = $signUpWaitEmailsEntityDao->selectLikeEmails($params['mark_email']);
-			foreach ($likeItems as $likeItem) {
+			foreach ($likeItems->rows as $likeItem) {
 				$rawLikeEmail = AppCryptography::decrypt($likeItem['email']);
 				if ($rawLikeEmail === $params['raw_email']) {
 					$this->logger->info('重複メールアドレスを破棄: {0}', $likeItem['token']);

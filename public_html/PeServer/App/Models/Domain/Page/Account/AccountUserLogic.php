@@ -46,11 +46,11 @@ class AccountUserLogic extends PageLogicBase
 			'website' => 'account_user_website',
 		];
 
-		foreach ($userInfoData as $key => $value) {
+		foreach ($userInfoData->fields as $key => $value) {
 			if(ArrayUtility::containsKey($map, $key)) {
 				$this->setValue($map[$key], $value);
 			}
 		}
-		$this->setValue('plugins', $userPlugins);
+		$this->setValue('plugins', $userPlugins->rows);
 	}
 }

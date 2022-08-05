@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Dao\Entities;
 
 use PeServer\Core\Database\DaoBase;
+use PeServer\Core\Database\DatabaseTableResult;
 use PeServer\Core\Database\IDatabaseContext;
 
 class PluginCategoriesEntityDao extends DaoBase
@@ -17,11 +18,11 @@ class PluginCategoriesEntityDao extends DaoBase
 	/**
 	 * Undocumented function
 	 *
-	 * @return array<array{plugin_category_id:string,display_name:string,description:string}>
+	 * @-return array<array{plugin_category_id:string,display_name:string,description:string}>
 	 */
-	public function selectAllPluginCategories(): array
+	public function selectAllPluginCategories(): DatabaseTableResult
 	{
-		/** @var array<array{plugin_category_id:string,display_name:string,description:string}> */
+		/** @-var array<array{plugin_category_id:string,display_name:string,description:string}> */
 		return $this->context->selectOrdered(
 			<<<SQL
 

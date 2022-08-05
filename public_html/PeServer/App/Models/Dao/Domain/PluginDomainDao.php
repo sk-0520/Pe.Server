@@ -89,6 +89,6 @@ class PluginDomainDao extends DaoBase
 			];
 
 			return $cache;
-		}, $result);
+		}, $result->rows);
 	}
 }

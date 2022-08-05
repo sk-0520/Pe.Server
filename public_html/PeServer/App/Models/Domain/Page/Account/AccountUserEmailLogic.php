@@ -55,18 +55,18 @@ class AccountUserEmailLogic extends PageLogicBase
 			AppConfiguration::$config['config']['confirm']['user_change_wait_email_minutes']
 		);
 
-		if (!StringUtility::isNullOrWhiteSpace($values['email'])) {
-			$this->defaultValues['email'] = AppCryptography::decrypt($values['email']);
+		if (!StringUtility::isNullOrWhiteSpace($values->fields['email'])) {
+			$this->defaultValues['email'] = AppCryptography::decrypt($values->fields['email']);
 		} else {
 			$this->defaultValues['email'] = InitialValue::EMPTY_STRING;
 		}
-		if (!StringUtility::isNullOrWhiteSpace($values['wait_email'])) {
-			$this->defaultValues['wait_email'] = AppCryptography::decrypt($values['wait_email']);
+		if (!StringUtility::isNullOrWhiteSpace($values->fields['wait_email'])) {
+			$this->defaultValues['wait_email'] = AppCryptography::decrypt($values->fields['wait_email']);
 		} else {
 			$this->defaultValues['wait_email'] = InitialValue::EMPTY_STRING;
 		}
 
-		$this->defaultValues['token_timestamp_utc'] = $values['token_timestamp_utc'];
+		$this->defaultValues['token_timestamp_utc'] = $values->fields['token_timestamp_utc'];
 
 		parent::registerParameterKeys([
 			'account_email_email',

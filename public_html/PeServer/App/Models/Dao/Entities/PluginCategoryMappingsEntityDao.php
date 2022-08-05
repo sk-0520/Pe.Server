@@ -40,7 +40,7 @@ class PluginCategoryMappingsEntityDao extends DaoBase
 
 		return array_map(function ($i) {
 			return $i['plugin_category_id'];
-		}, $results);
+		}, $results->rows);
 	}
 
 	public function insertPluginCategoryMapping(string $pluginId, string $pluginCategoryId): void

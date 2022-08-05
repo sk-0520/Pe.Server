@@ -77,28 +77,28 @@ class AccountLoginLogic extends PageLogicBase
 			return;
 		}
 
-		if ($existsSetupUser && $user['level'] !== UserLevel::SETUP) {
+		if ($existsSetupUser && $user->fields['level'] !== UserLevel::SETUP) {
 			$this->addError(Validator::COMMON, I18n::message(self::ERROR_LOGIN_PARAMETER));
 			$this->logger->error('未セットアップ状態での通常ログインは抑制中');
 			return;
 		}
 
 		// パスワード突合
-		$verifyOk = Cryptography::verifyPassword($this->getRequest('account_login_password'), $user['current_password']);
+		$verifyOk = Cryptography::verifyPassword($this->getRequest('account_login_password'), $user->fields['current_password']);
 		if (!$verifyOk) {
 			$this->addError(Validator::COMMON, I18n::message(self::ERROR_LOGIN_PARAMETER));
-			$this->logger->warn('ログイン失敗: {0}', $user['user_id']);
-			$this->writeAuditLogTargetUser($user['user_id'], AuditLog::LOGIN_FAILED);
+			$this->logger->warn('ログイン失敗: {0}', $user->fields['user_id']);
+			$this->writeAuditLogTargetUser($user->fields['user_id'], AuditLog::LOGIN_FAILED);
 			return;
 		}
 
 		$this->removeSession(self::SESSION_ALL_CLEAR);
 		$account = new SessionAccount(
-			$user['user_id'],
-			$user['login_id'],
-			$user['name'],
-			$user['level'], //@phpstan-ignore-line
-			$user['state'] //@phpstan-ignore-line
+			$user->fields['user_id'],
+			$user->fields['login_id'],
+			$user->fields['name'],
+			$user->fields['level'], //@phpstan-ignore-line
+			$user->fields['state'] //@phpstan-ignore-line
 		);
 		SessionManager::setAccount($account);
 		$this->restartSession();

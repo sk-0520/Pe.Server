@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Dao\Entities;
 
 use PeServer\Core\Database\DaoBase;
+use PeServer\Core\Database\DatabaseRowResult;
+use PeServer\Core\Database\DatabaseTableResult;
 use PeServer\Core\Database\IDatabaseContext;
 
 class PluginsEntityDao extends DaoBase
@@ -78,11 +80,11 @@ class PluginsEntityDao extends DaoBase
 	 * Undocumented function
 	 *
 	 * @param string $userId
-	 * @return array<array{plugin_id:string,plugin_name:string,display_name:string,state:string}>
+	 * @-return array<array{plugin_id:string,plugin_name:string,display_name:string,state:string}>
 	 */
-	public function selectPluginByUserId(string $userId): array
+	public function selectPluginByUserId(string $userId): DatabaseTableResult
 	{
-		/** @var array<array{plugin_id:string,plugin_name:string,display_name:string,state:string}> */
+		/** @-var array<array{plugin_id:string,plugin_name:string,display_name:string,state:string}> */
 		return $this->context->selectOrdered(
 			<<<SQL
 
@@ -114,11 +116,11 @@ class PluginsEntityDao extends DaoBase
 	 * Undocumented function
 	 *
 	 * @param string $pluginId
-	 * @return array{plugin_id:string,plugin_name:string,state:string}
+	 * @-return array{plugin_id:string,plugin_name:string,state:string}
 	 */
-	public function selectPluginIds(string $pluginId): array
+	public function selectPluginIds(string $pluginId): DatabaseRowResult
 	{
-		/** @var array{plugin_id:string,plugin_name:string,state:string} */
+		/** @-var array{plugin_id:string,plugin_name:string,state:string} */
 		return $this->context->querySingle(
 			<<<SQL
 
@@ -142,11 +144,11 @@ class PluginsEntityDao extends DaoBase
 	 * Undocumented function
 	 *
 	 * @param string $pluginId
-	 * @return array{plugin_name:string,display_name:string,description:string}
+	 * @-return array{plugin_name:string,display_name:string,description:string}
 	 */
-	public function selectEditPlugin(string $pluginId): array
+	public function selectEditPlugin(string $pluginId): DatabaseRowResult
 	{
-		/** @var array{plugin_name:string,display_name:string,description:string} */
+		/** @-var array{plugin_name:string,display_name:string,description:string} */
 		return $this->context->querySingle(
 			<<<SQL
 

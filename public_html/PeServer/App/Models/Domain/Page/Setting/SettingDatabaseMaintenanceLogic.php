@@ -61,9 +61,9 @@ class SettingDatabaseMaintenanceLogic extends PageLogicBase
 				/** @phpstan-var literal-string $statement */
 
 				if (Regex::isMatch($statement, '/^\s*\bselect\b/')) { // select だけの判定はよくないけどしんどいのだ
-					$result = $context->query($statement);
+					$result = $context->query($statement)->rows;
 				} else {
-					$result = $context->execute($statement);
+					$result = $context->execute($statement)->resultCount;
 				}
 				return true;
 			});
