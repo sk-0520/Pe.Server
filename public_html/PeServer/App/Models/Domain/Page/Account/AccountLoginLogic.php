@@ -97,8 +97,8 @@ class AccountLoginLogic extends PageLogicBase
 			$user->fields['user_id'],
 			$user->fields['login_id'],
 			$user->fields['name'],
-			$user->fields['level'], //@phpstan-ignore-line
-			$user->fields['state'] //@phpstan-ignore-line
+			$user->fields['level'],
+			$user->fields['state']
 		);
 		SessionManager::setAccount($account);
 		$this->restartSession();

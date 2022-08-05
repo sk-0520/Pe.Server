@@ -137,6 +137,14 @@ class Database extends DisposerBase implements IDatabaseTransactionContext
 		return $query;
 	}
 
+	/**
+	 * カラム情報一覧の取得。
+	 *
+	 * カラム情報は取得できたものだけを返す。
+	 *
+	 * @param PDOStatement $pdoStatement
+	 * @return DatabaseColumn[] 取得できたカラム一覧。
+	 */
 	private function getColumns(PDOStatement $pdoStatement): array
 	{
 		$count = $pdoStatement->columnCount();
@@ -149,7 +157,7 @@ class Database extends DisposerBase implements IDatabaseTransactionContext
 		for ($i = 0; $i < $count; $i++) {
 			$meta = $pdoStatement->getColumnMeta($i);
 			if ($meta === false) {
-				break;
+				continue;
 			}
 
 			$column = DatabaseColumn::create($meta);
