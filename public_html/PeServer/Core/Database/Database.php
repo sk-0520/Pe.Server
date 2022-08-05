@@ -28,7 +28,7 @@ class Database extends DisposerBase implements IDatabaseTransactionContext
 	 *
 	 * @readonly
 	 */
-	private PDO $pdo;
+	protected PDO $pdo;
 
 	/**
 	 * ロガー
@@ -36,7 +36,7 @@ class Database extends DisposerBase implements IDatabaseTransactionContext
 	 * @var ILogger
 	 * @readonly
 	 */
-	private ILogger $logger;
+	protected ILogger $logger;
 
 	/**
 	 * 生成。
