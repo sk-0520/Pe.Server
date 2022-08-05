@@ -7,6 +7,7 @@ namespace PeServer\Core\Database;
 use \PDO;
 use \PDOStatement;
 use \Exception;
+use PDOException;
 use PeServer\Core\Database\IDatabaseTransactionContext;
 use PeServer\Core\DisposerBase;
 use PeServer\Core\Log\ILogger;
@@ -46,12 +47,13 @@ class Database extends DisposerBase implements IDatabaseTransactionContext
 	 * @param string $password
 	 * @param array<string,string>|null $options
 	 * @param ILogger $logger
+	 * @throws DatabaseException
 	 */
 	public function __construct(string $dsn, string $user, string $password, ?array $options, ILogger $logger)
 	{
 		$this->logger = $logger;
 
-		$this->pdo = new PDO($dsn, $user, $password, $options);
+		$this->pdo = Throws::wrap(PDOException::class, DatabaseException::class, fn () => new PDO($dsn, $user, $password, $options));
 		$this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 	}
