@@ -17,7 +17,7 @@ interface IDatabaseExecutor
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
-	 * @return integer 影響件数。
+	 * @return DatabaseTableResult
 	 * @throws DatabaseException
 	 */
 	public function execute(string $statement, ?array $parameters = null): DatabaseTableResult;

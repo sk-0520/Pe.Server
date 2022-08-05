@@ -288,14 +288,14 @@ class Database extends DisposerBase implements IDatabaseTransactionContext
 		return $result;
 	}
 
-	public function queryFirstOr(?array $defaultValue, string $statement, ?array $parameters = null): ?DatabaseRowResult
+	public function queryFirstOrNull(string $statement, ?array $parameters = null): ?DatabaseRowResult
 	{
 		$query = $this->executeStatement($statement, $parameters);
 
 		$result = $this->convertRowResult($query);
 		$result = $query->fetch();
 		if (ArrayUtility::isNullOrEmpty($result->fields)) {
-			return $defaultValue;
+			return null;
 		}
 
 		return $result;
@@ -319,13 +319,13 @@ class Database extends DisposerBase implements IDatabaseTransactionContext
 		return $result;
 	}
 
-	public function querySingleOr(?array $defaultValue, string $statement, ?array $parameters = null): ?DatabaseRowResult
+	public function querySingleOrNull(string $statement, ?array $parameters = null): ?DatabaseRowResult
 	{
 		$query = $this->executeStatement($statement, $parameters);
 
 		$result = $this->convertRowResult($query);
 		if (ArrayUtility::isNullOrEmpty($result->fields)) {
-			return $defaultValue;
+			return null;
 		}
 
 		$next = $query->fetch();

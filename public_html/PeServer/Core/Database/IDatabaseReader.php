@@ -17,7 +17,7 @@ interface IDatabaseReader
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
-	 * @return array<array<string,mixed>>
+	 * @return DatabaseTableResult
 	 * @throws DatabaseException
 	 * @throws SqlException 問い合わせ文の検証エラー
 	 */
@@ -30,25 +30,24 @@ interface IDatabaseReader
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
-	 * @return array<string,mixed>
+	 * @return DatabaseRowResult
 	 * @throws DatabaseException
 	 * @throws SqlException 問い合わせ文の検証エラー
 	 */
 	public function queryFirst(string $statement, ?array $parameters = null): DatabaseRowResult;
 
 	/**
-	 * 問い合わせの最初のデータを取得。存在しない場合に $defaultValue を返す。
+	 * 問い合わせの最初のデータを取得。存在しない場合に `null` を返す。
 	 *
 	 * @param string $statement
 	 * @phpstan-param literal-string $statement
-	 * @param array<string,mixed>|null $defaultValue 戻り。
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
-	 * @return array<string,mixed>|null
+	 * @return DatabaseRowResult|null
 	 * @throws DatabaseException
 	 * @throws SqlException 問い合わせ文の検証エラー
 	 */
-	public function queryFirstOr(?array $defaultValue, string $statement, ?array $parameters = null): ?DatabaseRowResult;
+	public function queryFirstOrNull(string $statement, ?array $parameters = null): ?DatabaseRowResult;
 
 	/**
 	 * 1件だけの問い合わせを実行。
@@ -57,25 +56,24 @@ interface IDatabaseReader
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
-	 * @return array<string,mixed>
+	 * @return DatabaseRowResult
 	 * @throws DatabaseException
 	 * @throws SqlException 問い合わせ文の検証エラー
 	 */
 	public function querySingle(string $statement, ?array $parameters = null): DatabaseRowResult;
 
 	/**
-	 * 1件だけの問い合わせを実行。存在しない場合に $defaultValue を返す
+	 * 1件だけの問い合わせを実行。存在しない場合に `null` を返す
 	 *
 	 * @param string $statement
 	 * @phpstan-param literal-string $statement
-	 * @param array<string,mixed>|null $defaultValue 戻り。
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
-	 * @return array<string,mixed>|null
+	 * @return DatabaseRowResult|null
 	 * @throws DatabaseException
 	 * @throws SqlException 問い合わせ文の検証エラー
 	 */
-	public function querySingleOr(?array $defaultValue, string $statement, ?array $parameters = null): ?DatabaseRowResult;
+	public function querySingleOrNull(string $statement, ?array $parameters = null): ?DatabaseRowResult;
 
 	/**
 	 * 並び順問い合わせ文を強制。
@@ -86,7 +84,7 @@ interface IDatabaseReader
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
-	 * @return array<array<string,mixed>>
+	 * @return DatabaseTableResult
 	 * @throws DatabaseException
 	 * @throws SqlException 問い合わせ文の検証エラー
 	 */
