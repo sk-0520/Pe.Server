@@ -7,6 +7,7 @@ namespace PeServer\Core\Database;
 use \PDOException;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\IDisposable;
+use PeServer\Core\Throws\DatabaseException;
 use PeServer\Core\Throws\SqlException;
 use PeServer\Core\Throws\TransactionException;
 

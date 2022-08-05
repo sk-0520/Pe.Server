@@ -10,12 +10,23 @@ use PeServer\Core\ReflectionUtility;
 use PeServer\Core\Type;
 use TypeError;
 
+/**
+ * 例外処理系。
+ */
 abstract class Throws
 {
+	/**
+	 * `Throwable::getCode` のラッパー。
+	 *
+	 * なんかもうつらい。
+	 *
+	 * @param Throwable $throwable
+	 * @return int 取得したエラーコード。取得できなかった場合は `PHP_INT_MIN` を返す。
+	 */
 	public static function getErrorCode(Throwable $throwable): int
 	{
 		$rawCode = $throwable->getCode();
-		$code = 0;
+		$code = PHP_INT_MIN;
 		if (is_integer($rawCode)) {
 			$code = $rawCode;
 		}
@@ -34,11 +45,7 @@ abstract class Throws
 	public static function reThrow(string $className, Throwable $previous, string $message = null): void
 	{
 		$message = $message ?? $previous->getMessage();
-		$rawCode = $previous->getCode();
-		$code = 0;
-		if (is_integer($rawCode)) {
-			$code = $rawCode;
-		}
+		$code = self::getErrorCode($previous);
 
 		/** @var Throwable */
 		$exception = ReflectionUtility::create($className, Throwable::class, $message, $code, $previous);
