@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Database;
 
+use \Throwable;
+use \Exception;
 use \PDO;
 use \PDOStatement;
-use \Exception;
-use PDOException;
+use \PDOException;
 use PeServer\Core\ArrayUtility;
+use PeServer\Core\Database\DatabaseColumn;
+use PeServer\Core\Database\DatabaseTableResult;
 use PeServer\Core\Database\IDatabaseTransactionContext;
 use PeServer\Core\DisposerBase;
 use PeServer\Core\Log\ILogger;
@@ -19,7 +22,6 @@ use PeServer\Core\Throws\SqlException;
 use PeServer\Core\Throws\Throws;
 use PeServer\Core\Throws\TransactionException;
 use PeServer\Core\TypeUtility;
-use Throwable;
 
 /**
  * DB接続処理。
