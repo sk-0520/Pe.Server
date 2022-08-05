@@ -50,8 +50,8 @@ class DatabaseTest extends TestClass
 	{
 		$database = DB::memory();
 		$actual = $database->query("select 'text' as COL");
-		$this->assertSame(1, ArrayUtility::getCount($actual));
-		foreach ($actual as $row) {
+		$this->assertSame(1, $actual->getRowsCount());
+		foreach ($actual->rows as $row) {
 			$this->assertSame(['COL' => 'text'], $row);
 		}
 	}
@@ -70,5 +70,12 @@ class DatabaseTest extends TestClass
 		$database = DB::memory();
 		$database->query('@@@@@');
 		$this->fail();
+	}
+
+	function test_queryFirst()
+	{
+		$database = DB::memory();
+		$actual = $database->queryFirst("select 'text' as COL");
+		$this->assertSame(['COL' => 'text'], $actual->fields);
 	}
 }

@@ -8,6 +8,7 @@ use \PDO;
 use \PDOStatement;
 use \Exception;
 use PDOException;
+use PeServer\Core\ArrayUtility;
 use PeServer\Core\Database\IDatabaseTransactionContext;
 use PeServer\Core\DisposerBase;
 use PeServer\Core\Log\ILogger;
@@ -136,6 +137,59 @@ class Database extends DisposerBase implements IDatabaseTransactionContext
 		return $query;
 	}
 
+	private function getColumns(PDOStatement $pdoStatement): array
+	{
+		$count = $pdoStatement->columnCount();
+		if ($count === 0) {
+			return [];
+		}
+
+		$columns = [];
+
+		for ($i = 0; $i < $count; $i++) {
+			$meta = $pdoStatement->getColumnMeta($i);
+			if ($meta === false) {
+				break;
+			}
+
+			$column = DatabaseColumn::create($meta);
+			$columns[] = $column;
+		}
+
+		return $columns;
+	}
+
+	private function convertRowResult(PDOStatement $pdoStatement): DatabaseRowResult
+	{
+		$columns = $this->getColumns($pdoStatement);
+
+		$resultCount = $pdoStatement->rowCount();
+
+		$row = $pdoStatement->fetch();
+		if ($row === false) {
+			return new DatabaseRowResult($columns, $resultCount, []);
+		}
+
+		return new DatabaseRowResult($columns, $resultCount, $row);
+	}
+
+	private function convertTableResult(PDOStatement $pdoStatement): DatabaseTableResult
+	{
+		$columns = $this->getColumns($pdoStatement);
+
+		$resultCount = $pdoStatement->rowCount();
+
+		$rows = $pdoStatement->fetchAll();
+		// @phpstan-ignore-next-line: Strict comparison using === between
+		if ($rows === false) {
+			throw new DatabaseException($this->getErrorMessage());
+		}
+
+		$result = new DatabaseTableResult($columns, $resultCount, $rows);
+
+		return $result;
+	}
+
 	public function inTransaction(): bool
 	{
 		$this->throwIfDisposed();
@@ -213,52 +267,47 @@ class Database extends DisposerBase implements IDatabaseTransactionContext
 		return false;
 	}
 
-	public function query(string $statement, ?array $parameters = null): array
+	public function query(string $statement, ?array $parameters = null): DatabaseTableResult
 	{
 		$query = $this->executeStatement($statement, $parameters);
 
-		$result = $query->fetchAll();
-		// @phpstan-ignore-next-line: Strict comparison using === between
-		if ($result === false) {
+		$result = $this->convertTableResult($query);
+
+		return $result;
+	}
+
+	public function queryFirst(string $statement, ?array $parameters = null): DatabaseRowResult
+	{
+		$query = $this->executeStatement($statement, $parameters);
+
+		$result = $this->convertRowResult($query);
+		if (ArrayUtility::isNullOrEmpty($result->fields)) {
 			throw new DatabaseException($this->getErrorMessage());
 		}
 
 		return $result;
 	}
 
-	public function queryFirst(string $statement, ?array $parameters = null): array
+	public function queryFirstOr(?array $defaultValue, string $statement, ?array $parameters = null): ?DatabaseRowResult
 	{
 		$query = $this->executeStatement($statement, $parameters);
 
-		/** @var array<string,mixed>|false */
+		$result = $this->convertRowResult($query);
 		$result = $query->fetch();
-		if ($result === false) {
-			throw new DatabaseException($this->getErrorMessage());
-		}
-
-		return $result;
-	}
-
-	public function queryFirstOr(?array $defaultValue, string $statement, ?array $parameters = null): ?array
-	{
-		$query = $this->executeStatement($statement, $parameters);
-
-		/** @var array<string,mixed>|false */
-		$result = $query->fetch();
-		if ($result === false) {
+		if (ArrayUtility::isNullOrEmpty($result->fields)) {
 			return $defaultValue;
 		}
 
 		return $result;
 	}
 
-	public function querySingle(string $statement, ?array $parameters = null): array
+	public function querySingle(string $statement, ?array $parameters = null): DatabaseRowResult
 	{
 		$query = $this->executeStatement($statement, $parameters);
 
-		/** @var array<string,mixed>|false */
+		$result = $this->convertRowResult($query);
 		$result = $query->fetch();
-		if ($result === false) {
+		if (ArrayUtility::isNullOrEmpty($result->fields)) {
 			throw new DatabaseException($this->getErrorMessage());
 		}
 
@@ -270,13 +319,12 @@ class Database extends DisposerBase implements IDatabaseTransactionContext
 		return $result;
 	}
 
-	public function querySingleOr(?array $defaultValue, string $statement, ?array $parameters = null): ?array
+	public function querySingleOr(?array $defaultValue, string $statement, ?array $parameters = null): ?DatabaseRowResult
 	{
 		$query = $this->executeStatement($statement, $parameters);
 
-		/** @var array<string,mixed>|false */
-		$result = $query->fetch();
-		if ($result === false) {
+		$result = $this->convertRowResult($query);
+		if (ArrayUtility::isNullOrEmpty($result->fields)) {
 			return $defaultValue;
 		}
 
@@ -303,7 +351,7 @@ class Database extends DisposerBase implements IDatabaseTransactionContext
 		}
 	}
 
-	public function selectOrdered(string $statement, ?array $parameters = null): array
+	public function selectOrdered(string $statement, ?array $parameters = null): DatabaseTableResult
 	{
 		$this->enforceOrdered($statement);
 

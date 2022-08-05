@@ -21,7 +21,7 @@ interface IDatabaseReader
 	 * @throws DatabaseException
 	 * @throws SqlException 問い合わせ文の検証エラー
 	 */
-	public function query(string $statement, ?array $parameters = null): array;
+	public function query(string $statement, ?array $parameters = null): DatabaseTableResult;
 
 	/**
 	 * 問い合わせの最初のデータを取得。
@@ -34,7 +34,7 @@ interface IDatabaseReader
 	 * @throws DatabaseException
 	 * @throws SqlException 問い合わせ文の検証エラー
 	 */
-	public function queryFirst(string $statement, ?array $parameters = null): array;
+	public function queryFirst(string $statement, ?array $parameters = null): DatabaseRowResult;
 
 	/**
 	 * 問い合わせの最初のデータを取得。存在しない場合に $defaultValue を返す。
@@ -48,7 +48,7 @@ interface IDatabaseReader
 	 * @throws DatabaseException
 	 * @throws SqlException 問い合わせ文の検証エラー
 	 */
-	public function queryFirstOr(?array $defaultValue, string $statement, ?array $parameters = null): ?array;
+	public function queryFirstOr(?array $defaultValue, string $statement, ?array $parameters = null): ?DatabaseRowResult;
 
 	/**
 	 * 1件だけの問い合わせを実行。
@@ -61,7 +61,7 @@ interface IDatabaseReader
 	 * @throws DatabaseException
 	 * @throws SqlException 問い合わせ文の検証エラー
 	 */
-	public function querySingle(string $statement, ?array $parameters = null): array;
+	public function querySingle(string $statement, ?array $parameters = null): DatabaseRowResult;
 
 	/**
 	 * 1件だけの問い合わせを実行。存在しない場合に $defaultValue を返す
@@ -75,7 +75,7 @@ interface IDatabaseReader
 	 * @throws DatabaseException
 	 * @throws SqlException 問い合わせ文の検証エラー
 	 */
-	public function querySingleOr(?array $defaultValue, string $statement, ?array $parameters = null): ?array;
+	public function querySingleOr(?array $defaultValue, string $statement, ?array $parameters = null): ?DatabaseRowResult;
 
 	/**
 	 * 並び順問い合わせ文を強制。
@@ -90,7 +90,7 @@ interface IDatabaseReader
 	 * @throws DatabaseException
 	 * @throws SqlException 問い合わせ文の検証エラー
 	 */
-	public function selectOrdered(string $statement, ?array $parameters = null): array;
+	public function selectOrdered(string $statement, ?array $parameters = null): DatabaseTableResult;
 
 	/**
 	 * 単一 COUNT 関数問い合わせ文を強制。
