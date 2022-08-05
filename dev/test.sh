@@ -57,5 +57,8 @@ if [ ! -v IGNORE_NAMESPACE_CHECK ] ; then
 	fi
 fi
 
-pwd
-php ${PHPUNIT_FILE} --configuration ../dev/phpunit.xml --coverage-html ../coverage/php --testdox "$@" .
+COVERAGE_CACHE_OPTION=""
+if [[ -v COVERAGE_CACHE ]] ; then
+	COVERAGE_CACHE_OPTION="--coverage-cache ${COVERAGE_CACHE}"
+fi
+php ${PHPUNIT_FILE} --configuration ../dev/phpunit.xml --coverage-html ../coverage/php --testdox $COVERAGE_CACHE_OPTION "$@" .
