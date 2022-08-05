@@ -101,7 +101,7 @@ class SettingSetupLogic extends PageLogicBase
 
 		$database = $this->openDatabase();
 
-		$result = $database->transaction(function (IDatabaseContext $database, $currentUserInfo, $params, $userInfo) {
+		$result = $database->transaction(function (IDatabaseContext $database) use ($currentUserInfo, $params, $userInfo) {
 			$accountValidator = new AccountValidator($this, $this->validator);
 
 			/** @var string @-phpstan-ignore-next-line */
@@ -136,19 +136,19 @@ class SettingSetupLogic extends PageLogicBase
 			// 現在のセットアップユーザーを無効化
 			$state = UserState::DISABLED;
 			$usersEntityDao->updateUserState(
-				$currentUserInfo['user_id'], // @-phpstan-ignore-line
+				$currentUserInfo->userId, // @-phpstan-ignore-line
 				$state
 			);
 
 			// ユーザー生成記録を監査ログに追加
 			$this->writeAuditLogCurrentUser(AuditLog::USER_STATE_CHANGE, ['state' => $state], $database);
-			 // @-phpstan-ignore-next-line
+			// @-phpstan-ignore-next-line
 			$this->writeAuditLogCurrentUser(AuditLog::USER_CREATE, ['user_id' => $userInfo['id']], $database);
-			 // @-phpstan-ignore-next-line
-			$this->writeAuditLogTargetUser($userInfo['id'], AuditLog::USER_GENERATED, ['user_id' => $currentUserInfo['user_id']], $database);
+			// @-phpstan-ignore-next-line
+			$this->writeAuditLogTargetUser($userInfo['id'], AuditLog::USER_GENERATED, ['user_id' => $currentUserInfo->userId], $database);
 
 			return true;
-		}, $currentUserInfo, $params, $userInfo);
+		});
 
 		// 生成したのであれば現在のセットアップユーザーは用済みなのでログアウト
 		if ($result) {

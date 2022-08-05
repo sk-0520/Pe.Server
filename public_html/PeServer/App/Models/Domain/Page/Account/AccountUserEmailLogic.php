@@ -55,18 +55,18 @@ class AccountUserEmailLogic extends PageLogicBase
 			AppConfiguration::$config['config']['confirm']['user_change_wait_email_minutes']
 		);
 
-		if (!StringUtility::isNullOrWhiteSpace($values['email'])) {
-			$this->defaultValues['email'] = AppCryptography::decrypt($values['email']);
+		if (!StringUtility::isNullOrWhiteSpace($values->fields['email'])) {
+			$this->defaultValues['email'] = AppCryptography::decrypt($values->fields['email']);
 		} else {
 			$this->defaultValues['email'] = InitialValue::EMPTY_STRING;
 		}
-		if (!StringUtility::isNullOrWhiteSpace($values['wait_email'])) {
-			$this->defaultValues['wait_email'] = AppCryptography::decrypt($values['wait_email']);
+		if (!StringUtility::isNullOrWhiteSpace($values->fields['wait_email'])) {
+			$this->defaultValues['wait_email'] = AppCryptography::decrypt($values->fields['wait_email']);
 		} else {
 			$this->defaultValues['wait_email'] = InitialValue::EMPTY_STRING;
 		}
 
-		$this->defaultValues['token_timestamp_utc'] = $values['token_timestamp_utc'];
+		$this->defaultValues['token_timestamp_utc'] = $values->fields['token_timestamp_utc'];
 
 		parent::registerParameterKeys([
 			'account_email_email',
@@ -138,7 +138,7 @@ class AccountUserEmailLogic extends PageLogicBase
 
 		$database = $this->openDatabase();
 
-		$database->transaction(function (IDatabaseContext $context, array $params) {
+		$database->transaction(function (IDatabaseContext $context) use ($params) {
 			$userChangeWaitEmailsEntityDao = new UserChangeWaitEmailsEntityDao($context);
 
 			$userChangeWaitEmailsEntityDao->deleteByUserId($params['user_id']);
@@ -147,7 +147,7 @@ class AccountUserEmailLogic extends PageLogicBase
 			$this->writeAuditLogCurrentUser(AuditLog::USER_EMAIL_CHANGING, ['token' => $params['token']], $context);
 
 			return true;
-		}, $params);
+		});
 
 		// トークン通知メール送信
 		$subject = I18n::message('subject/email_change_token');
@@ -179,7 +179,7 @@ class AccountUserEmailLogic extends PageLogicBase
 		];
 
 		$database = $this->openDatabase();
-		$result = $database->transaction(function (IDatabaseContext $context, array $params) {
+		$result = $database->transaction(function (IDatabaseContext $context) use ($params) {
 			$userDomainDao = new UserDomainDao($context);
 			$userChangeWaitEmailsEntityDao = new UserChangeWaitEmailsEntityDao($context);
 
@@ -207,7 +207,7 @@ class AccountUserEmailLogic extends PageLogicBase
 			$this->writeAuditLogCurrentUser(AuditLog::USER_EMAIL_CHANGED, ['token' => $params['token']], $context);
 
 			return true;
-		}, $params);
+		});
 
 		if (!$result) {
 			$this->addError('account_email_token', I18n::message('error/email_confirm_token_not_found'));

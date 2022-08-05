@@ -29,7 +29,7 @@ class SettingPluginCategoryListLogic extends PageLogicBase
 		$database = $this->openDatabase();
 
 		$pluginCategoriesEntityDao = new PluginCategoriesEntityDao($database);
-		$categories = $pluginCategoriesEntityDao->selectAllPluginCategories();
+		$categories = $pluginCategoriesEntityDao->selectAllPluginCategories()->rows;
 
 		$this->setValue('categories', $categories);
 	}

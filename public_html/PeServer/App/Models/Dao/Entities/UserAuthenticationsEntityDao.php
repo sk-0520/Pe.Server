@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Dao\Entities;
 
 use PeServer\Core\Database\DaoBase;
+use PeServer\Core\Database\DatabaseRowResult;
 use PeServer\Core\Database\IDatabaseContext;
 
 class UserAuthenticationsEntityDao extends DaoBase
@@ -15,14 +16,13 @@ class UserAuthenticationsEntityDao extends DaoBase
 	}
 
 	/**
-	 * Undocumented function
-	 *
+	 * @template TFieldArray of array{generated_password:string,current_password:string}
 	 * @param string $userId
-	 * @return array{generated_password:string,current_password:string}
+	 * @phpstan-return DatabaseRowResult<TFieldArray>
 	 */
-	public function selectPasswords(string $userId): array
+	public function selectPasswords(string $userId): DatabaseRowResult
 	{
-		/** @var array{generated_password:string,current_password:string} */
+		/** @phpstan-var DatabaseRowResult<TFieldArray> */
 		return $this->context->querySingle(
 			<<<SQL
 

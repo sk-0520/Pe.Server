@@ -34,7 +34,7 @@ class AjaxPluginCategoryDeleteLogic extends PageLogicBase
 		];
 
 		$database = $this->openDatabase();
-		$database->transaction(function (IDatabaseContext $context, $params) {
+		$database->transaction(function (IDatabaseContext $context) use ($params) {
 			/** @var array<string,mixed> $params*/
 
 			$pluginCategoryMappingsEntityDao = new PluginCategoryMappingsEntityDao($context);
@@ -47,7 +47,7 @@ class AjaxPluginCategoryDeleteLogic extends PageLogicBase
 			$pluginCategoriesEntityDao->deletePluginCategory($pluginCategoryId);
 
 			return true;
-		}, $params);
+		});
 
 		$this->setResponseJson(ResponseJson::success($params));
 	}

@@ -75,7 +75,7 @@ class DevelopmentApiAdministratorLogic extends ApiLogicBase
 
 		$database = $this->openDatabase();
 
-		$result = $database->transaction(function (IDatabaseContext $context, $params) {
+		$result = $database->transaction(function (IDatabaseContext $context) use($params) {
 			$usersEntityDao = new UsersEntityDao($context);
 			$userAuthenticationsEntityDao = new UserAuthenticationsEntityDao($context);
 
@@ -88,7 +88,7 @@ class DevelopmentApiAdministratorLogic extends ApiLogicBase
 					UserState::ENABLED,
 					$user['user_name'],
 					$user['email'],
-					$user['mark_email'],
+					(int)$user['mark_email'],
 					$user['website'],
 					$user['description'],
 					$user['note']
@@ -107,7 +107,7 @@ class DevelopmentApiAdministratorLogic extends ApiLogicBase
 			]);
 
 			return true;
-		}, $params);
+		});
 
 		$this->setResponseJson(ResponseJson::success([
 			'success' => $result,

@@ -41,7 +41,7 @@ class PluginUrlsEntityDao extends DaoBase
 
 		/** @var array<string,string> */
 		$map = [];
-		foreach ($results as $result) {
+		foreach ($results->rows as $result) {
 			$map[$result['key']] = $result['url'];
 		}
 

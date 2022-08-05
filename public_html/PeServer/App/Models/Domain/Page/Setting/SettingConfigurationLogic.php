@@ -46,7 +46,7 @@ class SettingConfigurationLogic extends PageLogicBase
 
 		$tables = array_map(function ($i) use ($database) {
 			return $this->getTableInfo($database, $i);
-		}, $schemas);
+		}, $schemas->rows);
 		$this->setValue('tables', $tables);
 	}
 
@@ -63,11 +63,11 @@ class SettingConfigurationLogic extends PageLogicBase
 			"PRAGMA table_info('{$row['name']}')" //@phpstan-ignore-line
 		);
 		array_multisort(
-			array_column($columns, 'cid'), //@phpstan-ignore-line
+			array_column($columns->rows, 'cid'), //@phpstan-ignore-line
 			SORT_ASC,
-			$columns
+			$columns->rows
 		);
-		$orders = StringUtility::join(', ', array_map(fn ($i) => $i['name'], $columns));
+		$orders = StringUtility::join(', ', array_map(fn ($i) => $i['name'], $columns->rows));
 
 		$rows = $context->query(
 			//@phpstan-ignore-next-line
@@ -87,8 +87,8 @@ class SettingConfigurationLogic extends PageLogicBase
 			'name' => $row['name'],
 			'sql' => $row['sql'],
 			'table' => [
-				'columns' => $columns,
-				'rows' => $rows,
+				'columns' => $columns->rows,
+				'rows' => $rows->rows,
 			]
 		];
 	}

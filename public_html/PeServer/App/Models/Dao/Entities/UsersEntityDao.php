@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Dao\Entities;
 
 use PeServer\Core\Database\DaoBase;
+use PeServer\Core\Database\DatabaseRowResult;
 use PeServer\Core\Database\IDatabaseContext;
 
 class UsersEntityDao extends DaoBase
@@ -52,14 +53,13 @@ class UsersEntityDao extends DaoBase
 	}
 
 	/**
-	 * Undocumented function
-	 *
+	 * @template TFieldArray of array{user_id:string,login_id:string,level:string,name:string,email:string,website:string}
 	 * @param string $userId
-	 * @return array{user_id:string,login_id:string,level:string,name:string,email:string,website:string}
+	 * @phpstan-return DatabaseRowResult<TFieldArray>
 	 */
-	public function selectUserInfoData(string $userId): array
+	public function selectUserInfoData(string $userId): DatabaseRowResult
 	{
-		/** @var array{user_id:string,login_id:string,level:string,name:string,email:string,website:string} */
+		/** @phpstan-var DatabaseRowResult<TFieldArray> */
 		return $this->context->querySingle(
 			<<<SQL
 
@@ -83,14 +83,14 @@ class UsersEntityDao extends DaoBase
 	}
 
 	/**
-	 * Undocumented function
-	 *
+	 * @template TFieldArray of array{name:string,website:string}
 	 * @param string $userId
-	 * @return array{name:string,website:string}
+	 * @return DatabaseRowResult
+	 * @phpstan-return DatabaseRowResult<TFieldArray>
 	 */
-	public function selectUserEditData(string $userId): array
+	public function selectUserEditData(string $userId): DatabaseRowResult
 	{
-		/** @var array{name:string,website:string} */
+		/** @phpstan-var DatabaseRowResult<TFieldArray> */
 		return $this->context->querySingle(
 			<<<SQL
 
@@ -110,9 +110,14 @@ class UsersEntityDao extends DaoBase
 		);
 	}
 
+	/**
+	 * @param string $userId
+	 * @return string
+	 */
 	public function selectEmail(string $userId): string
 	{
-		return $this->context->querySingle(
+		/** @phpstan-var DatabaseRowResult<array{email:string}> */
+		$result = $this->context->querySingle(
 			<<<SQL
 
 			select
@@ -126,7 +131,9 @@ class UsersEntityDao extends DaoBase
 			[
 				'user_id' => $userId
 			]
-		)['email'];
+		);
+
+		return $result->fields['email'];
 	}
 
 	public function insertUser(string $userId, string $loginId, string $level, string $state, string $userName, string $email, int $markEmail, string $website, string $description, string $note): void

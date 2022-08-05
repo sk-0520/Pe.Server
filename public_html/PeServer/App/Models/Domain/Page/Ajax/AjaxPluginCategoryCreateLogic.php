@@ -37,7 +37,7 @@ class AjaxPluginCategoryCreateLogic extends PageLogicBase
 		];
 
 		$database = $this->openDatabase();
-		$database->transaction(function (IDatabaseContext $context, $params) {
+		$database->transaction(function (IDatabaseContext $context) use ($params) {
 			/** @var array<string,mixed> $params*/
 
 			$pluginCategoriesEntityDao = new PluginCategoriesEntityDao($context);
@@ -50,7 +50,7 @@ class AjaxPluginCategoryCreateLogic extends PageLogicBase
 			$pluginCategoriesEntityDao->insertPluginCategory($pluginCategoryId, $categoryDisplayName, $categoryDescription);
 
 			return true;
-		}, $params);
+		});
 
 		$this->setResponseJson(ResponseJson::success($params));
 	}

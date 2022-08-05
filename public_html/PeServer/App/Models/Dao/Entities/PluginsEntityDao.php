@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Dao\Entities;
 
 use PeServer\Core\Database\DaoBase;
+use PeServer\Core\Database\DatabaseRowResult;
+use PeServer\Core\Database\DatabaseTableResult;
 use PeServer\Core\Database\IDatabaseContext;
 
 class PluginsEntityDao extends DaoBase
@@ -75,14 +77,13 @@ class PluginsEntityDao extends DaoBase
 	}
 
 	/**
-	 * Undocumented function
-	 *
+	 * @template TFieldArray of array{plugin_id:string,plugin_name:string,display_name:string,state:string}
 	 * @param string $userId
-	 * @return array<array{plugin_id:string,plugin_name:string,display_name:string,state:string}>
+	 * @phpstan-return DatabaseTableResult<TFieldArray>
 	 */
-	public function selectPluginByUserId(string $userId): array
+	public function selectPluginByUserId(string $userId): DatabaseTableResult
 	{
-		/** @var array<array{plugin_id:string,plugin_name:string,display_name:string,state:string}> */
+		/** @phpstan-var DatabaseTableResult<TFieldArray> */
 		return $this->context->selectOrdered(
 			<<<SQL
 
@@ -111,14 +112,13 @@ class PluginsEntityDao extends DaoBase
 	}
 
 	/**
-	 * Undocumented function
-	 *
+	 * @template TFieldArray of array{plugin_id:string,plugin_name:string,state:string}
 	 * @param string $pluginId
-	 * @return array{plugin_id:string,plugin_name:string,state:string}
+	 * @phpstan-return DatabaseRowResult<TFieldArray>
 	 */
-	public function selectPluginIds(string $pluginId): array
+	public function selectPluginIds(string $pluginId): DatabaseRowResult
 	{
-		/** @var array{plugin_id:string,plugin_name:string,state:string} */
+		/** @phpstan-var DatabaseRowResult<TFieldArray> */
 		return $this->context->querySingle(
 			<<<SQL
 
@@ -139,14 +139,13 @@ class PluginsEntityDao extends DaoBase
 	}
 
 	/**
-	 * Undocumented function
-	 *
+	 * @template TFieldArray of array{plugin_name:string,display_name:string,description:string}
 	 * @param string $pluginId
-	 * @return array{plugin_name:string,display_name:string,description:string}
+	 * @phpstan-return DatabaseRowResult<TFieldArray>
 	 */
-	public function selectEditPlugin(string $pluginId): array
+	public function selectEditPlugin(string $pluginId): DatabaseRowResult
 	{
-		/** @var array{plugin_name:string,display_name:string,description:string} */
+		/** @phpstan-var DatabaseRowResult<TFieldArray> */
 		return $this->context->querySingle(
 			<<<SQL
 

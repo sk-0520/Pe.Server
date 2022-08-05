@@ -78,7 +78,7 @@ class AccountUserEditLogic extends PageLogicBase
 			'description' => 'account_edit_description',
 		];
 
-		foreach ($userEditData as $key => $value) {
+		foreach ($userEditData->fields as $key => $value) {
 			$this->setValue($map[$key], $value);
 		}
 	}
@@ -96,7 +96,7 @@ class AccountUserEditLogic extends PageLogicBase
 
 		$database = $this->openDatabase();
 
-		$database->transaction(function (IDatabaseContext $context, $params) {
+		$database->transaction(function (IDatabaseContext $context) use($params) {
 			$usersEntityDao = new UsersEntityDao($context);
 
 			// ユーザー情報更新
@@ -110,7 +110,7 @@ class AccountUserEditLogic extends PageLogicBase
 			$this->writeAuditLogCurrentUser(AuditLog::USER_EDIT, null, $context);
 
 			return true;
-		}, $params);
+		});
 
 		$source = SessionManager::getAccount();
 		$account = new SessionAccount(
