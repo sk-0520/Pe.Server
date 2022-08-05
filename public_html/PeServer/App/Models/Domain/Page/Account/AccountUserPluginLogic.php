@@ -40,7 +40,8 @@ class AccountUserPluginLogic extends PageLogicBase
 	/**
 	 * プラグインカテゴリ一覧。
 	 *
-	 * @var array<array{plugin_category_id:string,display_name:string,description:string}>
+	 * @-var array<array{plugin_category_id:string,display_name:string,description:string}>
+	 * @var array<mixed>
 	 */
 	private array $pluginCategories = [];
 

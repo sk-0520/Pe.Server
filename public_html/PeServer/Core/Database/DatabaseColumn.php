@@ -19,13 +19,13 @@ class DatabaseColumn
 	/**
 	 * 生成。
 	 *
-	 * @param $name カラム名(name)。
-	 * @param $length カラム長(len)。
-	 * @param $precision 数値精度(precision)。
-	 * @param $table テーブル名(table)。
-	 * @param $nativeType PHP型(native_type)。
-	 * @param $driverType SQL型(driver:decl_type)。
-	 * @param $pdoType PDO型(pdo_type)。
+	 * @param string $name カラム名(name)。
+	 * @param int $length カラム長(len)。
+	 * @param int $precision 数値精度(precision)。
+	 * @param string $table テーブル名(table)。
+	 * @param string $nativeType PHP型(native_type)。
+	 * @param string $driverType SQL型(driver:decl_type)。
+	 * @param int $pdoType PDO型(pdo_type)。
 	 * @phpstan-param -1|PDO::PARAM_* $pdoType
 	 * @param array<mixed> $flags (flags)。
 	 */
