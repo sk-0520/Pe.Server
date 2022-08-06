@@ -44,6 +44,8 @@ class Pad
 
 	public static function block(string $title, callable $callback): mixed
 	{
+		gc_collect_cycles();
+
 		$beginMemory = Memory::getUsage();
 		$sw = Timer::startNew();
 
@@ -63,7 +65,7 @@ class Pad
 
 	public static function benchmark(string $title, int $count, callable $callback): mixed
 	{
-		self::puts("<{$title}> LOOP: $count");
+		echo ("<{$title}> LOOP: $count => ");
 
 		$minMemory = PHP_INT_MAX;
 		$minTime = PHP_INT_MAX;
@@ -73,40 +75,52 @@ class Pad
 		$totalTime = 0;
 
 		$result = null;
+		$counter = 0;
+
+		gc_collect_cycles();
+		$baseMemory = Memory::getUsage();
 
 		$sw = new Timer();
 		for ($i = 0; $i < $count; $i++) {
-			$beginMemory = Memory::getUsage();
-			$sw->start();
+			gc_collect_cycles();
 
-			$result = $callback();
+			try {
+				$sw->start();
 
-			$endMemory = Memory::getUsage();
-			$sw->stop();
+				$result = $callback($i);
 
-			$useMemory = $endMemory - $beginMemory;
-			$useTime = $sw->getElapsed();
+				$endMemory = Memory::getUsage();
+				$sw->stop();
 
-			if ($useMemory < $minMemory) {
-				$minMemory = $useMemory;
+				$useMemory = $endMemory - $baseMemory;
+				$useTime = $sw->getElapsed();
+
+				if ($useMemory < $minMemory) {
+					$minMemory = $useMemory;
+				}
+				if ($useTime < $minTime) {
+					$minTime = $useTime;
+				}
+
+				if ($maxMemory < $useMemory) {
+					$maxMemory = $useMemory;
+				}
+				if ($maxTime < $useTime) {
+					$maxTime = $useTime;
+				}
+
+				$totalMemory += $useMemory;
+				$totalTime += $useTime;
+
+				$counter += 1;
+			} catch (Throwable) {
 			}
-			if ($useTime < $minTime) {
-				$minTime = $useTime;
-			}
-
-			if ($maxMemory < $useMemory) {
-				$maxMemory = $useMemory;
-			}
-			if ($maxTime < $useTime) {
-				$maxTime = $useTime;
-			}
-
-			$totalMemory += $useMemory;
-			$totalTime += $useTime;
 		}
 
-		$avgMemory = $totalMemory / $count;
-		$avgTime = $totalTime  / $count;
+		echo $counter . PHP_EOL;
+
+		$avgMemory = $totalMemory / $counter;
+		$avgTime = $totalTime  / $counter;
 
 		$sizeConverter = new SizeConverter();
 
