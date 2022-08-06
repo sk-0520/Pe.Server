@@ -16,7 +16,7 @@ use PeServer\Core\Store\StorePack;
 use PeServer\Core\InitializeChecker;
 use PeServer\Core\Store\SpecialStore;
 use PeServer\App\Models\AppDatabaseCache;
-
+use PeServer\Core\IOUtility;
 
 abstract class AppConfiguration
 {
@@ -83,12 +83,22 @@ abstract class AppConfiguration
 		);
 	}
 
+	/**
+	 * 初期化。
+	 *
+	 * @param string $rootDirectoryPath 公開ルートディレクトリ
+	 * @param string $baseDirectoryPath `\PeServer\*` のルートディレクトリ
+	 * @param SpecialStore $specialStore
+	 */
 	public static function initialize(string $rootDirectoryPath, string $baseDirectoryPath, SpecialStore $specialStore): void
 	{
 		self::$initializeChecker ??= new InitializeChecker();
 		self::$initializeChecker->initialize();
 
 		self::$settingDirectoryPath = PathUtility::joinPath($baseDirectoryPath, 'config');
+
+		$tempDirectoryPath = PathUtility::joinPath($baseDirectoryPath, 'data/temp/buckets');
+		IOUtility::setTemporaryDirectory($tempDirectoryPath);
 
 		$appConfig = self::load($rootDirectoryPath, $baseDirectoryPath, Environment::get(), 'setting.json');
 		$i18nConfig = self::load($rootDirectoryPath, $baseDirectoryPath, Environment::get(), 'i18n.json');

@@ -16,6 +16,15 @@ abstract class Initializer
 	 */
 	private static InitializeChecker $initializeChecker;
 
+	/**
+	 * 初期化。
+	 *
+	 * @param string $rootDirectoryPath 公開ルートディレクトリ
+	 * @param string $baseDirectoryPath `\PeServer\*` のルートディレクトリ
+	 * @param SpecialStore $specialStore
+	 * @param string $environment
+	 * @param string $revision
+	 */
 	public static function initialize(string $rootDirectoryPath, string $baseDirectoryPath, SpecialStore $specialStore, string $environment, string $revision): void
 	{
 		self::$initializeChecker ??= new InitializeChecker();

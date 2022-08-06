@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
+use Directory;
 use \stdClass;
 use PeServer\Core\Binary;
 use PeServer\Core\PathUtility;
 use PeServer\Core\InitialValue;
+use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\IOException;
 use PeServer\Core\Throws\ParseException;
 use PeServer\Core\Throws\FileNotFoundException;
@@ -416,6 +418,76 @@ abstract class IOUtility
 		}
 
 		clearstatcache(true, $path);
+	}
+
+	/**
+	 * 一時ディレクトリ設定。
+	 *
+	 * @param string $path
+	 * @return bool
+	 */
+	public static function setTemporaryDirectory(string $path): bool
+	{
+		self::createDirectoryIfNotExists($path);
+
+		Environment::setVariable('TMP', $path);
+		Environment::setVariable('TMPDIR', $path);
+		Environment::setVariable('TEMP', $path);
+
+		return true;
+	}
+
+	/**
+	 * 一意なファイルパスを取得。
+	 *
+	 * `tempnam` ラッパー。
+	 *
+	 * @param string $directoryPath ファイル名の親ディレクトリ。
+	 * @param string $prefix プレフィックス。
+	 * @return string
+	 * @see https://www.php.net/manual/function.tempnam.php
+	 */
+	public static function createUniqueFilePath(string $directoryPath, string $prefix): string
+	{
+		if (StringUtility::isNullOrWhiteSpace($directoryPath)) {
+			throw new ArgumentException('$directoryPath');
+		}
+
+		$result = tempnam($directoryPath, $prefix);
+		if ($result === false) {
+			throw new IOException();
+		}
+
+		return $result;
+	}
+
+	/**
+	 * 一時ディレクトリ取得。
+	 *
+	 * `sys_get_temp_di` ラッパー。
+	 *
+	 * @return string
+	 * @see https://www.php.net/manual/function.sys-get-temp-dir.php
+	 */
+	public static function getTemporaryDirectory(): string
+	{
+		return sys_get_temp_dir();
+	}
+
+	/**
+	 * 一時ファイルの取得。
+	 *
+	 * @param string $prefix
+	 * @return string
+	 */
+	public static function createTemporaryFilePath(string $prefix = ''): string
+	{
+		if (StringUtility::isNullOrWhiteSpace($prefix)) {
+			$prefixLength = PHP_OS === 'Windows' ? 3 : 64;
+			$prefix = Cryptography::generateRandomString($prefixLength, Cryptography::FILE_RANDOM_STRING);
+		}
+
+		return self::createUniqueFilePath(self::getTemporaryDirectory(), $prefix);
 	}
 
 	/**

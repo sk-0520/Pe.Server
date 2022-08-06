@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace PeServer\Core;
 
 use PeServer\Core\InitialValue;
+use PeServer\Core\Throws\ArgumentException;
+use PeServer\Core\Throws\Enforce;
 
 /**
  * 環境情報。
@@ -76,8 +78,42 @@ abstract class Environment
 		return (string)time();
 	}
 
+	/**
+	 * 環境変数設定。
+	 *
+	 * `putenv` ラッパー。
+	 *
+	 * @param string $name
+	 * @phpstan-param non-empty-string $name
+	 * @param string $value
+	 * @return bool
+	 * @see https://www.php.net/manual/function.putenv.php
+	 */
+	public static function setVariable(string $name, string $value): bool
+	{
+		if (StringUtility::isNullOrWhiteSpace($name)) { //@phpstan-ignore-line non-empty-string
+			throw new ArgumentException($name);
+		}
+
+		return putenv($name . '=' . $value);
+	}
+
+	/**
+	 * 環境変数取得。
+	 *
+	 * `getenv` ラッパー。
+	 *
+	 * @param string $name
+	 * @phpstan-param non-empty-string $name
+	 * @return string|null 環境変数の値。取得できなかった場合に null。
+	 * @see https://www.php.net/manual/function.getenv.php
+	 */
 	public static function getVariable(string $name): ?string
 	{
+		if (StringUtility::isNullOrWhiteSpace($name)) { //@phpstan-ignore-line non-empty-string
+			throw new ArgumentException($name);
+		}
+
 		$result = getenv($name);
 		if ($result === false) {
 			return null;
