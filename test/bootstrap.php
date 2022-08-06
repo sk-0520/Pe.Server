@@ -18,10 +18,13 @@ use PeServer\Core\Store\SpecialStore;
 
 $autoLoader = new \PeServer\Core\AutoLoader(
 	[
-		__DIR__,
-		__DIR__ . '/../public_html',
-	],
-	'/^PeServer/'
+		'PeServer' => [
+			'directory' => __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'public_html',
+		],
+		'PeServerTest' => [
+			'directory' => __DIR__,
+		],
+	]
 );
 $autoLoader->register();
 

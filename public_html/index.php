@@ -7,6 +7,7 @@ namespace PeServer;
 require_once(__DIR__ . '/PeServer/Core/AutoLoader.php');
 
 use PeServer\Core\AutoLoader;
+use PeServer\Core\AutoLoader2;
 use PeServer\Core\Http\HttpMethod;
 use PeServer\App\Models\AppRouting;
 use PeServer\Core\Http\RequestPath;
@@ -20,11 +21,12 @@ error_reporting(E_ALL);
 
 $autoLoader = new AutoLoader(
 	[
-		__DIR__,
-	],
-	'/^PeServer/'
+		'PeServer' => [
+			'directory' => __DIR__,
+		]
+	]
 );
-$autoLoader->register();
+$autoLoader->register(false);
 
 $specialStore = new AppSpecialStore();
 Initializer::initialize(

@@ -15,10 +15,10 @@ use PeServer\Core\Timer;
 
 $autoLoader = new \PeServer\Core\AutoLoader(
 	[
-		__DIR__,
-		__DIR__ . '/../public_html',
-	],
-	'/^PeServer/'
+		'PeServer' => [
+			'directory' => __DIR__ . '/../public_html',
+		]
+	]
 );
 $autoLoader->register();
 
