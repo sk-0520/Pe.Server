@@ -104,6 +104,7 @@ class Database extends DisposerBase implements IDatabaseTransactionContext
 	 * 文を実行。
 	 *
 	 * @param string $statement
+	 * @phpstan-param literal-string $statement
 	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
 	 * @return PDOStatement
 	 * @throws SqlException 実行失敗。
@@ -159,6 +160,10 @@ class Database extends DisposerBase implements IDatabaseTransactionContext
 		for ($i = 0; $i < $count; $i++) {
 			$meta = $pdoStatement->getColumnMeta($i);
 			if ($meta === false) {
+				continue;
+			}
+
+			if (empty($meta)) {
 				continue;
 			}
 

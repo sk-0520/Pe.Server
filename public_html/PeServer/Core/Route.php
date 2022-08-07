@@ -68,7 +68,7 @@ class Route
 	/**
 	 * インデックス付与対象となるパターン。
 	 *
-	 * @var string
+	 * @phpstan-var literal-string
 	 */
 	protected string $excludeIndexPattern = '/^(api|ajax)/';
 
@@ -251,7 +251,7 @@ class Route
 					$requestKey = StringUtility::substring($splitPaths[0], 1);
 					$isRegex = 1 < ArrayUtility::getCount($splitPaths);
 					if ($isRegex) {
-						$pattern = "/$splitPaths[1]/";
+						$pattern = Code::toLiteralString("/$splitPaths[1]/");
 						if (Regex::isMatch($targetValue, $pattern)) {
 							return ['key' => $value, 'name' => $requestKey, 'value' => $targetValue];
 						}

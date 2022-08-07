@@ -34,6 +34,7 @@ abstract class Regex
 	 *
 	 * @param string $input 対象文字列。
 	 * @param string $pattern 正規表現パターン。
+	 * @phpstan-param literal-string $pattern
 	 * @return boolean マッチしたか。
 	 * @throws RegexException 正規表現処理失敗。
 	 */
@@ -55,6 +56,7 @@ abstract class Regex
 	 *
 	 * @param string $input
 	 * @param string $pattern
+	 * @phpstan-param literal-string $pattern
 	 * @return array<int|string,string>
 	 */
 	public static function matches(string $input, string $pattern): array

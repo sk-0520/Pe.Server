@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Log;
 
 use PeServer\Core\ArrayUtility;
+use PeServer\Core\Code;
 use PeServer\Core\IOUtility;
 use PeServer\Core\Log\LoggerBase;
 use PeServer\Core\PathUtility;
@@ -55,8 +56,7 @@ class FileLogger extends LoggerBase
 		Enforce::throwIfNullOrWhiteSpace($directoryPath);
 		$this->directoryPath = $directoryPath;
 
-		/** @phpstan-var literal-string */
-		$baseFileName = ArrayUtility::getOr($fileLoggingConfiguration, 'name', '');
+		$baseFileName = Code::toLiteralString(ArrayUtility::getOr($fileLoggingConfiguration, 'name', ''));
 		Enforce::throwIfNullOrWhiteSpace($baseFileName);
 		$this->baseFileName = $baseFileName;
 

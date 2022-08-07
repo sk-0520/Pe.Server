@@ -32,10 +32,11 @@ final class ResultData
 	/**
 	 * 成功データの生成。
 	 *
+	 * @template TResultValue
 	 * @param mixed $value 成功データ。
-	 * @phpstan-param TValue $value
+	 * @phpstan-param TResultValue $value
 	 * @return ResultData
-	 * @phpstan-return ResultData<TValue>
+	 * @phpstan-return ResultData<TResultValue>
 	 */
 	public static function createSuccess(mixed $value): ResultData
 	{
@@ -46,7 +47,7 @@ final class ResultData
 	 * 失敗データの生成。
 	 *
 	 * @return ResultData
-	 * @phpstan-return ResultData<TValue>
+	 * @phpstan-return ResultData<mixed>
 	 */
 	public static function createFailure(): ResultData
 	{

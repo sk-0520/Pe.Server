@@ -76,6 +76,15 @@ class Validator
 		return true;
 	}
 
+	/**
+	 * 正規表現にマッチするか。
+	 *
+	 * @param string $key
+	 * @param string $pattern
+	 * @phpstan-param literal-string $pattern
+	 * @param string $value
+	 * @return bool
+	 */
 	public function isMatch(string $key, string $pattern, string $value): bool
 	{
 		if (!Regex::isMatch($value, $pattern)) {
@@ -86,6 +95,15 @@ class Validator
 		return true;
 	}
 
+	/**
+	 * 正規表現にマッチしないか。
+	 *
+	 * @param string $key
+	 * @param string $pattern
+	 * @phpstan-param literal-string $pattern
+	 * @param string $value
+	 * @return bool
+	 */
 	public function isNotMatch(string $key, string $pattern, string $value): bool
 	{
 		if (Regex::isMatch($value, $pattern)) {
