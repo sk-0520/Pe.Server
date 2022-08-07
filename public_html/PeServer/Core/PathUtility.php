@@ -149,12 +149,12 @@ abstract class PathUtility
 			throw new ArgumentException('$path');
 		}
 
-		$parts = pathinfo($path, PATHINFO_ALL);
+		$parts = pathinfo($path);
 
 		$result = new PathParts(
 			ArrayUtility::getOr($parts, 'dirname', '.'),
-			$parts['basename'],
-			$parts['filename'],
+			ArrayUtility::getOr($parts, 'basename', InitialValue::EMPTY_STRING),
+			ArrayUtility::getOr($parts, 'filename', InitialValue::EMPTY_STRING),
 			ArrayUtility::getOr($parts, 'extension', InitialValue::EMPTY_STRING)
 		);
 
