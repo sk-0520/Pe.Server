@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServerTest\Core\Resource;
+namespace PeServerTest\Core;
 
 use PeServer\Core\Binary;
 use PeServer\Core\Encoding;
@@ -10,8 +10,8 @@ use \stdClass;
 use \TypeError;
 use PeServer\Core\IOUtility;
 use PeServer\Core\PathUtility;
-use PeServer\Core\Resource\Stream;
-use PeServer\Core\Resource\ResourceBase;
+use PeServer\Core\Stream;
+use PeServer\Core\ResourceBase;
 use PeServer\Core\SizeConverter;
 use PeServer\Core\StringUtility;
 use PeServer\Core\Throws\ArgumentException;

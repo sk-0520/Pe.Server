@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core\Resource;
+namespace PeServer\Core;
 
 use \TypeError;
 use PeServer\Core\DisposerBase;

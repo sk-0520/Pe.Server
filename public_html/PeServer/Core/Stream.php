@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core\Resource;
+namespace PeServer\Core;
 
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Binary;
@@ -14,7 +14,6 @@ use PeServer\Core\StringUtility;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\IOException;
 use PeServer\Core\Throws\StreamException;
-use Prophecy\Util\StringUtil;
 
 /**
  * @phpstan-extends ResourceBase<mixed>

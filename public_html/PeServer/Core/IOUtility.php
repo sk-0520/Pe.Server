@@ -9,7 +9,7 @@ use \stdClass;
 use PeServer\Core\Binary;
 use PeServer\Core\PathUtility;
 use PeServer\Core\InitialValue;
-use PeServer\Core\Resource\Stream;
+use PeServer\Core\Stream;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\IOException;
 use PeServer\Core\Throws\ParseException;
