@@ -19,23 +19,35 @@ class Encoding
 	/** アスキー */
 	public const ENCODE_ASCII = 'ASCII';
 
+	/** UTF-7 */
+	public const ENCODE_UTF7 = 'UTF-7';
 	/** UTF-8 */
 	public const ENCODE_UTF8 = 'UTF-8';
 	/** UTF-16 */
-	public const ENCODE_UTF16 = 'UTF-16';
+	public const ENCODE_UTF16_PLAIN = 'UTF-16';
+	public const ENCODE_UTF16_BE = 'UTF-16BE';
+	public const ENCODE_UTF16_LE = 'UTF-16LE';
+	public const ENCODE_UTF16_DEFAULT = self::ENCODE_UTF16_LE;
 	/** UTF-32 */
-	public const ENCODE_UTF32 = 'UTF-32';
+	public const ENCODE_UTF32_PLAIN = 'UTF-32';
+	public const ENCODE_UTF32_BE = 'UTF-32BE';
+	public const ENCODE_UTF32_LE = 'UTF-32LE';
+	public const ENCODE_UTF32_DEFAULT = self::ENCODE_UTF32_LE;
 
 	/** SJIS(SHIFT-JIS) */
-	public const ENCODE_SJIS = 'SJIS';
+	public const ENCODE_SJIS_PLAIN = 'SJIS';
 	/** SJIS(CP932) */
 	public const ENCODE_SJIS_WIN31J = 'CP932';
 	/** SJIS(Windows) */
 	public const ENCODE_SJIS_WIN = 'SJIS-win';
 	/** SJIS(Shift_JIS-2004) */
 	public const ENCODE_SJIS_2004 = 'SJIS-2004';
-	/** SJIS */
-	public const ENCODE_SJIS_DEFAULT = self::ENCODE_SJIS_WIN;
+	/** SJIS(何も考えず使う用) */
+	public const ENCODE_SJIS_DEFAULT = self::ENCODE_SJIS_WIN31J;
+
+	public const ENCODE_EUC_JP_PLAIN = 'EUC-JP';
+	public const ENCODE_EUC_JP_WIN = 'eucJP-win';
+	public const ENCODE_EUC_JP_DEFAULT = self::ENCODE_EUC_JP_WIN;
 
 	/**
 	 * キャッシュされたエンコーディング名一覧。
@@ -130,6 +142,26 @@ class Encoding
 	}
 
 	/**
+	 * UTF16エンコーディング。
+	 *
+	 * @return Encoding
+	 */
+	public static function getUtf16(): Encoding
+	{
+		return new Encoding(self::ENCODE_UTF16_DEFAULT);
+	}
+
+	/**
+	 * UTF32エンコーディング。
+	 *
+	 * @return Encoding
+	 */
+	public static function getUtf32(): Encoding
+	{
+		return new Encoding(self::ENCODE_UTF32_DEFAULT);
+	}
+
+	/**
 	 * SJISエンコーディング。
 	 *
 	 * @return Encoding
@@ -216,5 +248,29 @@ class Encoding
 	public function isValid(Binary $input): bool
 	{
 		return mb_check_encoding($input->getRaw(), $this->name);
+	}
+
+	/**
+	 * 現在のエンコーディングからBOMを取得する。
+	 *
+	 * @return Binary エンコーディング対するBOM。対応しない場合空のバイナリ。
+	 */
+	public function getByteOrderMark(): Binary
+	{
+		//wikipedia の bom 見たけどわからん。
+		//TODO: 定義しているエンコーディングともあわんし、どうしたもんか
+		$bomMap = [
+			'UTF-8' => "\xEF\xBB\xBF",
+			'UTF-16BE' => "\xFE\xFF",
+			'UTF-16LE' => "\xFF\xFE",
+			'UTF-32BE' => "\x00\x00\xFE\xFF",
+			'UTF-32LE' => "\xFF\xFE\x00\x00",
+		];
+
+		if (isset($bomMap[$this->name])) {
+			return new Binary($bomMap[$this->name]);
+		}
+
+		return new Binary('');
 	}
 }

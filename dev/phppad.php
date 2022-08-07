@@ -29,6 +29,7 @@ Initializer::initialize(
 	'temp',
 	':REVISION:'
 );
+IOUtility::setTemporaryDirectory(PathUtility::joinPath(__DIR__, 'temp'));
 
 class Pad
 {

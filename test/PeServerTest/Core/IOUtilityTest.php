@@ -11,6 +11,7 @@ use PeServer\Core\Throws\CryptoException;
 use PeServer\Core\Throws\IOException;
 use PeServerTest\Data;
 use PeServerTest\TestClass;
+use Throwable;
 
 class IOUtilityTest extends TestClass
 {
@@ -25,5 +26,16 @@ class IOUtilityTest extends TestClass
 		$this->expectException(IOException::class);
 		IOUtility::getFileSize(__FILE__ . "\0" . '/');
 		$this->fail();
+	}
+
+	function test_createTemporaryFileStream()
+	{
+		try {
+			$stream = IOUtility::createTemporaryFileStream();
+			$stream->dispose();
+			$this->success();
+		} catch(Throwable $ex) {
+			$this->fail($ex->__toString());
+		}
 	}
 }

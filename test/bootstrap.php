@@ -14,6 +14,8 @@ require_once(__DIR__ . '/../public_html/PeServer/Core/AutoLoader.php');
 
 use Exception;
 use PeServer\App\Models\Initializer;
+use PeServer\Core\IOUtility;
+use PeServer\Core\PathUtility;
 use PeServer\Core\Store\SpecialStore;
 
 $autoLoader = new \PeServer\Core\AutoLoader(
@@ -35,6 +37,7 @@ Initializer::initialize(
 	'test',
 	':REVISION:'
 );
+IOUtility::setTemporaryDirectory(PathUtility::joinPath(__DIR__, 'temp'));
 
 class Data
 {

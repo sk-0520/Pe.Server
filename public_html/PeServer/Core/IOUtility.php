@@ -9,6 +9,7 @@ use \stdClass;
 use PeServer\Core\Binary;
 use PeServer\Core\PathUtility;
 use PeServer\Core\InitialValue;
+use PeServer\Core\Resource\Stream;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\IOException;
 use PeServer\Core\Throws\ParseException;
@@ -21,6 +22,20 @@ abstract class IOUtility
 {
 	/** ディレクトリ作成時の通常権限。 */
 	public const DIRECTORY_PERMISSIONS = 0755;
+
+	/**
+	 * ファイルが存在しない場合に空ファイルの作成。
+	 *
+	 * `touch` ラッパー。
+	 *
+	 * @param string $path
+	 * @return bool
+	 * @see https://www.php.net/manual/function.touch.php
+	 */
+	public static function createEmptyFileIfNotExists(string $path): bool
+	{
+		return touch($path);
+	}
 
 	/**
 	 * ファイルサイズを取得。
@@ -383,6 +398,21 @@ abstract class IOUtility
 		return $result->value;
 	}
 
+	public static function removeFileIfExists(string $filePath): bool
+	{
+		if (!self::existsItem($filePath)) {
+			return false;
+		}
+
+		/** @var ResultData<bool> */
+		$result = ErrorHandler::trapError(fn () => unlink($filePath));
+		if (!$result->success) {
+			return false;
+		}
+
+		return $result->value;
+	}
+
 	/**
 	 * ディレクトリを破棄・作成する
 	 *
@@ -488,6 +518,29 @@ abstract class IOUtility
 		}
 
 		return self::createUniqueFilePath(self::getTemporaryDirectory(), $prefix);
+	}
+
+	/**
+	 * 一時ファイルのストリーム作成。
+	 *
+	 * メモリ・一時ファイル兼メモリのストリームを使用する場合は、
+	 * `Stream::openMemory`, `Stream::openTemporary` を参照のこと。
+	 *
+	 * `tmpfile` ラッパー。
+	 *
+	 * @param Encoding|null $encoding
+	 * @return Stream
+	 * @throws IOException
+	 * @see https://www.php.net/manual/function.tmpfile.php
+	 */
+	public static function createTemporaryFileStream(?Encoding $encoding = null): Stream
+	{
+		$resource = tmpfile();
+		if ($resource === false) {
+			throw new IOException();
+		}
+
+		return new Stream($resource, $encoding);
 	}
 
 	/**

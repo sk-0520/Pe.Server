@@ -22,16 +22,16 @@ final class Binary implements Stringable
 	 * @var string
 	 * @readonly
 	 */
-	private string $binary;
+	private string $raw;
 
 	/**
 	 * 生成。
 	 *
-	 * @param string $binary バイトデータとして扱う文字列。
+	 * @param string $raw バイトデータとして扱う文字列。
 	 */
-	public function __construct(string $binary)
+	public function __construct(string $raw)
 	{
-		$this->binary = $binary;
+		$this->raw = $raw;
 	}
 
 	/**
@@ -41,7 +41,7 @@ final class Binary implements Stringable
 	 */
 	public function getRaw(): string
 	{
-		return $this->binary;
+		return $this->raw;
 	}
 
 	/**
@@ -55,7 +55,18 @@ final class Binary implements Stringable
 	 */
 	public function getLength(): int
 	{
-		return strlen($this->binary);
+		return strlen($this->raw);
+	}
+
+	/**
+	 * 指定したバイナリと等しいか。
+	 *
+	 * @param self $target 対象バイナリ。
+	 * @return bool 等しいか。
+	 */
+	public function isEquals(self $target): bool
+	{
+		return $this->raw === $target->raw;
 	}
 
 	/**
@@ -68,12 +79,12 @@ final class Binary implements Stringable
 	 */
 	public function toHex(): string
 	{
-		return bin2hex($this->binary);
+		return bin2hex($this->raw);
 	}
 
 	// public function convert(int $from, int $to): string
 	// {
-	// 	return base_convert($this->binary, $from, $to);
+	// 	return base_convert($this->raw, $from, $to);
 	// }
 
 	/**
@@ -86,7 +97,7 @@ final class Binary implements Stringable
 	 */
 	public function toBase64(): string
 	{
-		return base64_encode($this->binary);
+		return base64_encode($this->raw);
 	}
 
 	/**
@@ -116,7 +127,7 @@ final class Binary implements Stringable
 	 */
 	public function hasNull(): bool
 	{
-		$nullIndex = mb_strpos($this->binary, "\0");
+		$nullIndex = mb_strpos($this->raw, "\0");
 		return $nullIndex !== false;
 	}
 
@@ -132,7 +143,7 @@ final class Binary implements Stringable
 			throw new NullByteStringException();
 		}
 
-		return $this->binary;
+		return $this->raw;
 	}
 
 	public function __toString(): string
@@ -141,12 +152,12 @@ final class Binary implements Stringable
 			return $this->toHex();
 		}
 
-		return $this->binary;
+		return $this->raw;
 	}
 
 	// public function format(string $format, int $offset = 0): array
 	// {
-	// 	$result = unpack($format, $this->binary, $offset);
+	// 	$result = unpack($format, $this->raw, $offset);
 	// 	return $result;
 	// }
 

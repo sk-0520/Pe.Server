@@ -23,6 +23,24 @@ class BinaryTest extends TestClass
 		$this->assertSame(4, $binary->getLength());
 	}
 
+	public function provider_isEquals()
+	{
+		return [
+			[false, "\x00", ""],
+			[false, "", "\x00"],
+			[true, "\x00", "\x00"],
+		];
+	}
+
+	/** @dataProvider provider_isEquals */
+	public function test_isEquals($expected, $a, $b)
+	{
+		$aBin = new Binary($a);
+		$bBin = new Binary($b);
+		$this->assertSame($expected, $aBin->isEquals($bBin));
+		$this->assertSame($expected, $bBin->isEquals($aBin));
+	}
+
 	public function test_toHex()
 	{
 		$tests = [
