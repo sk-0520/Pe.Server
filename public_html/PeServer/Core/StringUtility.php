@@ -93,7 +93,7 @@ abstract class StringUtility
 	 * @param string $value 対象文字列。
 	 * @return integer バイト数。
 	 * @phpstan-return UnsignedIntegerAlias
-	 * @see https://php.net/manual/function.strlen.php
+	 * @see https://www.php.net/manual/function.strlen.php
 	 */
 	public static function getByteCount(string $value): int
 	{

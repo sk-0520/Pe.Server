@@ -58,7 +58,7 @@ abstract class ImageType
 	 * @param bool $dot 拡張子の前にドットをつけるかどうか。
 	 * @return string
 	 * @throws ImageException
-	 * @see https://www.php.net/manual/ja/function.image-type-to-extension.php
+	 * @see https://www.php.net/manual/function.image-type-to-extension.php
 	 */
 	public static function toExtension(int $imageType, bool $dot = false): string
 	{

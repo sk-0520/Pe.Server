@@ -223,7 +223,7 @@ class Stream extends ResourceBase
 	 * @param int $whence
 	 * @phpstan-param SEEK_SET|SEEK_END|SEEK_CUR $whence
 	 * @return bool
-	 * @see https://php.net/manual/function.fseek.php
+	 * @see https://www.php.net/manual/function.fseek.php
 	 */
 	public function seek(int $offset, int $whence = SEEK_SET): bool
 	{
@@ -237,7 +237,7 @@ class Stream extends ResourceBase
 	 * 先頭へシーク。
 	 *
 	 * @return bool
-	 * @see https://php.net/manual/function.rewind.php
+	 * @see https://www.php.net/manual/function.rewind.php
 	 */
 	public function seekHead(): bool
 	{
@@ -262,7 +262,7 @@ class Stream extends ResourceBase
 	 * @return int
 	 * @return-param UnsignedIntegerAlias
 	 * @throws StreamException
-	 * @see https://php.net/manual/function.ftell.php
+	 * @see https://www.php.net/manual/function.ftell.php
 	 */
 	public function getOffset(): int
 	{
@@ -317,7 +317,7 @@ class Stream extends ResourceBase
 	 * @return int 書き込んだバイトサイズ。
 	 * @phpstan-return UnsignedIntegerAlias
 	 * @throws StreamException
-	 * @see https://php.net/manual/function.fwrite.php
+	 * @see https://www.php.net/manual/function.fwrite.php
 	 */
 	public function writeBinary(Binary $data, ?int $byteSize = null): int
 	{
@@ -404,7 +404,7 @@ class Stream extends ResourceBase
 	 * @phpstan-param UnsignedIntegerAlias $byteSize
 	 * @return Binary 読み込んだデータ。
 	 * @throws StreamException
-	 * @see https://php.net/manual/function.fread.php
+	 * @see https://www.php.net/manual/function.fread.php
 	 */
 	public function readBinary(int $byteSize): Binary
 	{

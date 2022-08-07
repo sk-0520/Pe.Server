@@ -230,7 +230,7 @@ class ArrayUtility
 			return $function($array); //@phpstan-ignore-line
 		}
 
-		// https://www.php.net/manual/ja/function.array-is-list.php#127044
+		// https://www.php.net/manual/function.array-is-list.php#127044
 		$i = 0;
 		foreach ($array as $k => $v) {
 			if ($k !== $i++) {
@@ -259,8 +259,8 @@ class ArrayUtility
 	 * @param array<mixed> $overwrite 上書きする配列。
 	 * @param bool $recursive 再帰的置き換えを行うか(`_recursive`呼び出し)。
 	 * @return array<mixed>
-	 * @see https://php.net/manual/function.array-replace-recursive.php
-	 * @see https://php.net/manual/function.array-replace.php
+	 * @see https://www.php.net/manual/function.array-replace-recursive.php
+	 * @see https://www.php.net/manual/function.array-replace.php
 	 */
 	public static function replace(array $base, array $overwrite, bool $recursive = true): array
 	{
@@ -312,7 +312,7 @@ class ArrayUtility
 	 * @phpstan-param array<TKey,TValue> $input
 	 * @return array<mixed>
 	 * @phpstan-return array<TKey,TValue>
-	 * @see https://php.net/manual/function.array-reverse.php
+	 * @see https://www.php.net/manual/function.array-reverse.php
 	 */
 	public static function reverse(array $input): array
 	{

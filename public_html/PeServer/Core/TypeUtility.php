@@ -88,8 +88,8 @@ abstract class TypeUtility
 	 * @param mixed $input
 	 * @return string 型名
 	 * @phpstan-return class-string|self::TYPE_*
-	 * @see https://php.net/manual/function.get-class.php
-	 * @see https://php.net/manual/function.gettype.php
+	 * @see https://www.php.net/manual/function.get-class.php
+	 * @see https://www.php.net/manual/function.gettype.php
 	 */
 	public static function getType(mixed $input): string
 	{

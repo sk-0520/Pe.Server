@@ -508,7 +508,7 @@ class Graphics extends DisposerBase
 	 * @param TextSetting $setting 描画するテキスト設定。
 	 * @return Area 描画領域。
 	 * @throws GraphicsException
-	 * @see https://php.net/manual/en/function.imagettftext.php
+	 * @see https://www.php.net/manual/function.imagettftext.php
 	 */
 	public function drawText(string $text, float $fontSize, Rectangle $rectangle, IColor $color, TextSetting $setting): Area
 	{

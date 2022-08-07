@@ -41,7 +41,7 @@ abstract class Archiver
 	 * @param Binary $data 圧縮データ。
 	 * @return Binary 展開データ。
 	 * @throws ArchiveException 失敗。
-	 * @see https://php.net/manual/function.gzdecode.php
+	 * @see https://www.php.net/manual/function.gzdecode.php
 	 */
 	public static function extractGzip(Binary $data): Binary
 	{

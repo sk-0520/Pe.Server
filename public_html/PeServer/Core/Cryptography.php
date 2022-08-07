@@ -223,7 +223,7 @@ abstract class Cryptography
 	 * @-param array{seed?:?int} $options
 	 * @return string 文字列表現。
 	 * @throws CryptoException
-	 * @see https://php.net/manual/function.hash.php
+	 * @see https://www.php.net/manual/function.hash.php
 	 */
 	public static function generateHashString(string $algorithm, Binary $binary/*, array $options = []*/): string
 	{
@@ -241,7 +241,7 @@ abstract class Cryptography
 	 * @-param array{seed?:?int} $options
 	 * @return Binary ハッシュバイナリ。
 	 * @throws CryptoException
-	 * @see https://php.net/manual/function.hash.php
+	 * @see https://www.php.net/manual/function.hash.php
 	 */
 	public static function generateHashBinary(string $algorithm, Binary $binary/*, array $options = []*/): Binary
 	{
