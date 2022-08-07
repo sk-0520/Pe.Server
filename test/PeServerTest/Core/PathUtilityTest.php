@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace PeServerTest\Core;
 
+use PeServer\Core\PathParts;
+use PeServer\Core\PathUtility;
+use PeServer\Core\Throws\ArgumentException;
 use PeServerTest\Data;
 use PeServerTest\TestClass;
-use PeServer\Core\PathUtility;
 
 class PathUtilityTest extends TestClass
 {
@@ -99,5 +101,30 @@ class PathUtilityTest extends TestClass
 			$actual = PathUtility::getFileNameWithoutExtension(...$test->args);
 			$this->assertSame($test->expected, $actual, $test->str());
 		}
+	}
+
+	public function test_toParts()
+	{
+		$tests = [
+			new Data(new PathParts('/a', 'b.c', 'b', 'c'), '/a/b.c'),
+			new Data(new PathParts('.', 'a.b', 'a', 'b'), 'a.b'),
+			new Data(new PathParts('.', 'a', 'a', ''), 'a'),
+			new Data(new PathParts('.', '.htaccess', '', 'htaccess'), '.htaccess'),
+			new Data(new PathParts('/🍳/🚽', '💩.🚮', '💩', '🚮'), '/🍳/🚽/💩.🚮'),
+		];
+		foreach ($tests as $test) {
+			$actual = PathUtility::toParts(...$test->args);
+			$this->assertSame($test->expected->directory, $actual->directory, $test->str());
+			$this->assertSame($test->expected->fileName, $actual->fileName, $test->str());
+			$this->assertSame($test->expected->fileNameWithoutExtension, $actual->fileNameWithoutExtension, $test->str());
+			$this->assertSame($test->expected->extension, $actual->extension, $test->str());
+		}
+	}
+
+	public function test_toParts_empty_throw()
+	{
+		$this->expectException(ArgumentException::class);
+		PathUtility::toParts('');
+		$this->fail();
 	}
 }

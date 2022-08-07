@@ -6,6 +6,7 @@ namespace PeServer\Core;
 
 use PeServer\Core\InitialValue;
 use PeServer\Core\StringUtility;
+use PeServer\Core\Throws\ArgumentException;
 
 /**
  * パス処理系。
@@ -130,5 +131,33 @@ abstract class PathUtility
 		}
 
 		return StringUtility::substring($fileName, 0, $dotIndex);
+	}
+
+	/**
+	 * パスの分割。
+	 *
+	 * `pathinfo` ラッパー。
+	 *
+	 * @param string $path
+	 * @return PathParts
+	 * @throws ArgumentException
+	 * @see https://php.net/manual/function.pathinfo.php
+	 */
+	public static function toParts(string $path): PathParts
+	{
+		if (StringUtility::isNullOrWhiteSpace($path)) {
+			throw new ArgumentException('$path');
+		}
+
+		$parts = pathinfo($path, PATHINFO_ALL);
+
+		$result = new PathParts(
+			ArrayUtility::getOr($parts, 'dirname', '.'),
+			$parts['basename'],
+			$parts['filename'],
+			ArrayUtility::getOr($parts, 'extension', InitialValue::EMPTY_STRING)
+		);
+
+		return $result;
 	}
 }
