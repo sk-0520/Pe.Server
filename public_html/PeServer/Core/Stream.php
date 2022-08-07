@@ -27,6 +27,14 @@ class Stream extends ResourceBase
 	/** 読み書きモード。 */
 	public const MODE_EDIT = 3;
 
+	/** シーク位置: 絶対値。 */
+	public const WHENCE_SET = SEEK_SET;
+	/** シーク位置: 現在位置。 */
+	public const WHENCE_CURRENT = SEEK_CUR;
+	/** シーク位置: 末尾(設定値は負数となる)。 */
+	public const WHENCE_TAIL = SEEK_END;
+
+	/** 文字列として扱うエンコーディング。バイナリデータに対してあんまり当てにならん。 */
 	private Encoding $encoding;
 
 	/**
@@ -217,15 +225,15 @@ class Stream extends ResourceBase
 	}
 
 	/**
-	 * 現在地をシーク。
+	 * 現在位置をシーク。
 	 *
 	 * @param int $offset
 	 * @param int $whence
-	 * @phpstan-param SEEK_SET|SEEK_END|SEEK_CUR $whence
+	 * @phpstan-param self::WHENCE_* $whence
 	 * @return bool
 	 * @see https://www.php.net/manual/function.fseek.php
 	 */
-	public function seek(int $offset, int $whence = SEEK_SET): bool
+	public function seek(int $offset, int $whence): bool
 	{
 		$this->throwIfDisposed();
 
@@ -253,11 +261,11 @@ class Stream extends ResourceBase
 	 */
 	public function seekTail(): bool
 	{
-		return $this->seek(0, SEEK_END);
+		return $this->seek(0, self::WHENCE_TAIL);
 	}
 
 	/**
-	 * 現在地を取得。
+	 * 現在位置を取得。
 	 *
 	 * @return int
 	 * @return-param UnsignedIntegerAlias
@@ -334,7 +342,7 @@ class Stream extends ResourceBase
 	/**
 	 * 現在のエンコーディングを使用してBOMを書き込み。
 	 *
-	 * * 現在地に書き込む点に注意。
+	 * * 現在位置に書き込む点に注意。
 	 * * エンコーディングがBOM情報を持っていれば出力されるためBOM不要な場合は使用しないこと。
 	 *
 	 * @return int 書き込まれたバイトサイズ。
@@ -421,7 +429,7 @@ class Stream extends ResourceBase
 	/**
 	 * 現在のエンコーディングを使用してBOMを読み取る。
 	 *
-	 * * 現在地から読み込む点に注意。
+	 * * 現在位置から読み込む点に注意。
 	 * * 読み込まれた場合(エンコーディングがBOMを持っていて合致した場合)はその分読み進められる。
 	 *
 	 * @return bool BOMが読み込まれたか。
@@ -440,7 +448,7 @@ class Stream extends ResourceBase
 			return true;
 		}
 
-		$this->seek(-$readBuffer->getLength(), SEEK_CUR);
+		$this->seek(-$readBuffer->getLength(), self::WHENCE_CURRENT);
 		return false;
 	}
 
@@ -568,7 +576,7 @@ class Stream extends ResourceBase
 			if ($findLf) {
 				$dropWidth += $newlineWidth;
 			}
-			$this->seek($startOffset + $totalCount, SEEK_SET);
+			$this->seek($startOffset + $totalCount, self::WHENCE_SET);
 			$raw = substr($totalBuffer, 0, $totalCount - $dropWidth);
 			$str = $this->encoding->toString(new Binary($raw));
 

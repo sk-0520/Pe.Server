@@ -39,8 +39,14 @@ Initializer::initialize(
 );
 IOUtility::setTemporaryDirectory(PathUtility::combine(__DIR__, 'temp'));
 
+/**
+ * データ。
+ *
+ * @template TExpected
+ */
 class Data
 {
+	/** @phpstan-var TExpected */
 	public $expected;
 	public $args;
 	public $trace;

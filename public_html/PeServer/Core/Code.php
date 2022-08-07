@@ -35,7 +35,7 @@ abstract class Code
 	 * @param IDisposable $disposable
 	 * @phpstan-param TDisposable $disposable
 	 * @param callable $callback
-	 * @phpstan-param (callable(TDisposable $disposable): TResult) $callback
+	 * @phpstan-param callable(TDisposable $disposable):TResult $callback
 	 * @return mixed
 	 * @phpstan-return TResult
 	 */
