@@ -11,11 +11,13 @@ use PeServer\Core\Throws\TypeException;
 
 /**
  * 配列共通処理。
+ *
+ * 遅延処理が必要な場合 `Collections\Collection` を参照のこと。
  */
 class ArrayUtility
 {
 	/**
-	 * 配列がnullか空か。
+	 * 配列が `null` か空か。
 	 *
 	 * @param array<mixed>|null $array
 	 * @return boolean
