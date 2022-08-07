@@ -10,6 +10,7 @@ use PeServer\Core\Throws\RegexException;
 use PeServer\Core\Throws\StringException;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\Enforce;
+use Throwable;
 
 /**
  * 文字列操作。
@@ -17,7 +18,7 @@ use PeServer\Core\Throws\Enforce;
 abstract class StringUtility
 {
 	/** トリム対象文字一覧。 */
-	public const TRIM_CHARACTERS = " \n\r\t\v\0";
+	public const TRIM_CHARACTERS = " \n\r\t\v\0　";
 
 	/**
 	 * 文字列が `null` か空か
@@ -173,7 +174,7 @@ abstract class StringUtility
 			);
 
 			return $result;
-		} catch (RegexException $ex) {
+		} catch (Throwable $ex) {
 			Throws::reThrow(StringException::class, $ex);
 		}
 	}

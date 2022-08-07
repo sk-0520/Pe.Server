@@ -47,7 +47,7 @@ class TrueKeeperTest extends TestClass
 		$this->assertFalse($tk->state);
 	}
 
-	public function test_exception() {
+	public function test_throw() {
 		$this->expectException(ArgumentException::class);
 		$tk = new TrueKeeper();
 		$tk->value = true;

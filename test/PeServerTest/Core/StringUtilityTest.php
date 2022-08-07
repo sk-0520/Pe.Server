@@ -32,6 +32,10 @@ class StringUtilityTest extends TestClass
 			new Data(true, null),
 			new Data(true, ''),
 			new Data(true, ' '),
+			new Data(true, "\r"),
+			new Data(true, "\n"),
+			new Data(true, "\t"),
+			new Data(true, "　"),
 			new Data(false, '0'),
 			new Data(false, 'abc'),
 		];
@@ -296,6 +300,7 @@ class StringUtilityTest extends TestClass
 			new Data('a', ' a'),
 			new Data('a', 'a '),
 			new Data('a', ' a '),
+			new Data('a', '　a　'),
 		];
 		foreach ($tests as $test) {
 			$actual = StringUtility::trim(...$test->args);
@@ -311,6 +316,7 @@ class StringUtilityTest extends TestClass
 			new Data('a', ' a'),
 			new Data('a ', 'a '),
 			new Data('a ', ' a '),
+			new Data('a　', '　a　'),
 		];
 		foreach ($tests as $test) {
 			$actual = StringUtility::trimStart(...$test->args);
@@ -325,6 +331,7 @@ class StringUtilityTest extends TestClass
 			new Data(' a', ' a'),
 			new Data('a', 'a '),
 			new Data(' a', ' a '),
+			new Data('　a', '　a　'),
 		];
 		foreach ($tests as $test) {
 			$actual = StringUtility::trimEnd(...$test->args);
@@ -374,7 +381,7 @@ class StringUtilityTest extends TestClass
 		}
 	}
 
-	public function test_repeat_exception()
+	public function test_repeat_throw()
 	{
 		$this->expectException(ArgumentException::class);
 		StringUtility::repeat('', -1);
