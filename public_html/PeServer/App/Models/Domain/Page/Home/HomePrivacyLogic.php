@@ -26,7 +26,7 @@ class HomePrivacyLogic extends PageLogicBase
 
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
-		$privacyPolicyPath = PathUtility::joinPath(AppConfiguration::$settingDirectoryPath, 'privacy_policy.md');
+		$privacyPolicyPath = PathUtility::combine(AppConfiguration::$settingDirectoryPath, 'privacy_policy.md');
 		$privacyPolicy = IOUtility::readContent($privacyPolicyPath);
 		$this->setValue('privacy_policy', $privacyPolicy->getRaw());
 	}

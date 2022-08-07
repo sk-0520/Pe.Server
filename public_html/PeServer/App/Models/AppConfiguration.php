@@ -95,9 +95,9 @@ abstract class AppConfiguration
 		self::$initializeChecker ??= new InitializeChecker();
 		self::$initializeChecker->initialize();
 
-		self::$settingDirectoryPath = PathUtility::joinPath($baseDirectoryPath, 'config');
+		self::$settingDirectoryPath = PathUtility::combine($baseDirectoryPath, 'config');
 
-		$tempDirectoryPath = PathUtility::joinPath($baseDirectoryPath, 'data/temp/buckets');
+		$tempDirectoryPath = PathUtility::combine($baseDirectoryPath, 'data/temp/buckets');
 		IOUtility::setTemporaryDirectory($tempDirectoryPath);
 
 		$appConfig = self::load($rootDirectoryPath, $baseDirectoryPath, Environment::get(), 'setting.json');

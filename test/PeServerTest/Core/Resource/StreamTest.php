@@ -67,7 +67,7 @@ class StreamTest extends TestClass
 
 	public function test_create()
 	{
-		$path = PathUtility::joinPath(IOUtility::getTemporaryDirectory(), __FUNCTION__ . '.txt');
+		$path = PathUtility::combine(IOUtility::getTemporaryDirectory(), __FUNCTION__ . '.txt');
 
 		self::delete($path);
 
@@ -88,7 +88,7 @@ class StreamTest extends TestClass
 
 	public function test_open()
 	{
-		$path = PathUtility::joinPath(IOUtility::getTemporaryDirectory(), __FUNCTION__ . '.txt');
+		$path = PathUtility::combine(IOUtility::getTemporaryDirectory(), __FUNCTION__ . '.txt');
 
 		self::delete($path);
 
@@ -149,7 +149,7 @@ class StreamTest extends TestClass
 
 	public function test_openOrCreate()
 	{
-		$path = PathUtility::joinPath(IOUtility::getTemporaryDirectory(), __FUNCTION__ . '.txt');
+		$path = PathUtility::combine(IOUtility::getTemporaryDirectory(), __FUNCTION__ . '.txt');
 
 		self::delete($path);
 

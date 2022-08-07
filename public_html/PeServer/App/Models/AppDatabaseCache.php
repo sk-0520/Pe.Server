@@ -48,7 +48,7 @@ abstract class AppDatabaseCache
 	 */
 	private static function exportCache(string $fileName, array $cache): void
 	{
-		$filePath = PathUtility::joinPath(self::$cacheDirectoryPath, $fileName);
+		$filePath = PathUtility::combine(self::$cacheDirectoryPath, $fileName);
 		IOUtility::createParentDirectoryIfNotExists($filePath);
 		IOUtility::writeJsonFile($filePath, $cache);
 	}
@@ -61,7 +61,7 @@ abstract class AppDatabaseCache
 	 */
 	private static function readCache(string $fileName): array
 	{
-		$filePath = PathUtility::joinPath(self::$cacheDirectoryPath, $fileName);
+		$filePath = PathUtility::combine(self::$cacheDirectoryPath, $fileName);
 		$result = IOUtility::readJsonFile($filePath);
 		return $result;
 	}

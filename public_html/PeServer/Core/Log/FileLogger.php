@@ -134,7 +134,7 @@ class FileLogger extends LoggerBase
 			]
 		);
 
-		return PathUtility::joinPath($this->directoryPath, $fileName);
+		return PathUtility::combine($this->directoryPath, $fileName);
 	}
 
 	protected function logImpl(int $level, int $traceIndex, $message, ...$parameters): void

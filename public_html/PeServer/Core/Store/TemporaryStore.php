@@ -116,7 +116,7 @@ class TemporaryStore
 
 	private function getFilePath(string $id): string
 	{
-		$path = PathUtility::joinPath($this->option->savePath, "$id.json");
+		$path = PathUtility::combine($this->option->savePath, "$id.json");
 		return $path;
 	}
 

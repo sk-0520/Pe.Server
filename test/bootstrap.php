@@ -37,7 +37,7 @@ Initializer::initialize(
 	'test',
 	':REVISION:'
 );
-IOUtility::setTemporaryDirectory(PathUtility::joinPath(__DIR__, 'temp'));
+IOUtility::setTemporaryDirectory(PathUtility::combine(__DIR__, 'temp'));
 
 class Data
 {

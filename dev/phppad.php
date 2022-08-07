@@ -29,7 +29,7 @@ Initializer::initialize(
 	'temp',
 	':REVISION:'
 );
-IOUtility::setTemporaryDirectory(PathUtility::joinPath(__DIR__, 'temp'));
+IOUtility::setTemporaryDirectory(PathUtility::combine(__DIR__, 'temp'));
 
 class Pad
 {
@@ -144,7 +144,7 @@ class Pad
 	}
 }
 
-$workPath = PathUtility::joinPath(__DIR__, '@phppad.php');
+$workPath = PathUtility::combine(__DIR__, '@phppad.php');
 if (IOUtility::existsFile($workPath)) {
 	try {
 		require $workPath;

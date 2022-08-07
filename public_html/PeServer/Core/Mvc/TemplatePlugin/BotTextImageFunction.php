@@ -88,7 +88,7 @@ class BotTextImageFunction extends TemplateFunctionBase
 		$obfuscateLevel = TypeUtility::parseBoolean(ArrayUtility::getOr($this->params, 'obfuscate-level', 0));
 
 		$size = new Size($width, $height);
-		$fontFilePath = PathUtility::joinPath($this->argument->baseDirectoryPath, ...CoreUtility::getDefaultFontParts());
+		$fontFilePath = PathUtility::combine($this->argument->baseDirectoryPath, ...CoreUtility::getDefaultFontParts());
 		$textSetting = new TextSetting(Alignment::HORIZONTAL_CENTER, Alignment::VERTICAL_CENTER, $fontFilePath, 0);
 
 		$image = Graphics::create($size);

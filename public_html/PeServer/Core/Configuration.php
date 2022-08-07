@@ -72,8 +72,8 @@ class Configuration
 			throw new ArgumentException('$fileName');
 		}
 
-		$baseFilePath = PathUtility::joinPath($directoryPath, $fileName);
-		$environmentFilePath = PathUtility::joinPath($directoryPath, $this->getEnvironmentFileName($fileName));
+		$baseFilePath = PathUtility::combine($directoryPath, $fileName);
+		$environmentFilePath = PathUtility::combine($directoryPath, $this->getEnvironmentFileName($fileName));
 
 		/** @var array<mixed> */
 		$configuration = [];

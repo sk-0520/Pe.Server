@@ -18,7 +18,7 @@ abstract class PathUtility
 	 * @param string $path パス。
 	 * @return string 絶対パス。
 	 */
-	public static function toCanonicalize(string $path): string
+	public static function normalize(string $path): string
 	{
 		$targetPath = StringUtility::replace($path, ['/', '\\'], DIRECTORY_SEPARATOR);
 		$parts = array_filter(StringUtility::split($targetPath, DIRECTORY_SEPARATOR), 'mb_strlen');
@@ -49,7 +49,7 @@ abstract class PathUtility
 	 * @param string ...$addPaths 連結していくパス。
 	 * @return string 結合後のパス。正規化される。
 	 */
-	public static function joinPath(string $basePath, string ...$addPaths): string
+	public static function combine(string $basePath, string ...$addPaths): string
 	{
 		$paths = array_merge([$basePath], array_map(function ($s) {
 			return StringUtility::trim($s, '/\\');
@@ -60,7 +60,7 @@ abstract class PathUtility
 
 
 		$joinedPath = StringUtility::join(DIRECTORY_SEPARATOR, $paths);
-		return self::toCanonicalize($joinedPath);
+		return self::normalize($joinedPath);
 	}
 
 	/**

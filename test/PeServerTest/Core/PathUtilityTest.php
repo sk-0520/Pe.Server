@@ -10,7 +10,7 @@ use PeServer\Core\PathUtility;
 
 class PathUtilityTest extends TestClass
 {
-	public function test_joinPath()
+	public function test_combine()
 	{
 		$sep = DIRECTORY_SEPARATOR;
 		$tests = [
@@ -23,7 +23,7 @@ class PathUtilityTest extends TestClass
 			new Data("${sep}abc${sep}def${sep}GHI", "${sep}abc", 'def', 'ghi', '..', '.', 'GHI'),
 		];
 		foreach ($tests as $test) {
-			$actual = PathUtility::joinPath(...$test->args);
+			$actual = PathUtility::combine(...$test->args);
 			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}

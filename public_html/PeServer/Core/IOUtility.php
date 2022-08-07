@@ -269,7 +269,7 @@ abstract class IOUtility
 				continue;
 			}
 
-			$path = PathUtility::joinPath($directoryPath, $item);
+			$path = PathUtility::combine($directoryPath, $item);
 
 			$isDir = self::existsDirectory($path);
 
@@ -336,7 +336,7 @@ abstract class IOUtility
 	 */
 	public static function find(string $directoryPath, string $wildcard): array
 	{
-		$pattern = PathUtility::joinPath($directoryPath, $wildcard);
+		$pattern = PathUtility::combine($directoryPath, $wildcard);
 		$items = glob($pattern, GLOB_MARK);
 		if ($items === false) {
 			throw new IOException();

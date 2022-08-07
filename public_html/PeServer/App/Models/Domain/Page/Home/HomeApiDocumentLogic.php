@@ -26,7 +26,7 @@ class HomeApiDocumentLogic extends PageLogicBase
 
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
-		$apiDocumentPath = PathUtility::joinPath(AppConfiguration::$settingDirectoryPath, 'api_document.md');
+		$apiDocumentPath = PathUtility::combine(AppConfiguration::$settingDirectoryPath, 'api_document.md');
 		$apiDocument = IOUtility::readContent($apiDocumentPath);
 		$this->setValue('api_document', $apiDocument->getRaw());
 	}

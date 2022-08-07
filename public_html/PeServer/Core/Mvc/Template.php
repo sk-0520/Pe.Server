@@ -113,10 +113,10 @@ class LocalSmartyTemplateImpl extends Template
 		parent::$initializeChecker->throwIfNotInitialize();
 
 		$this->engine = new Smarty();
-		$this->engine->addTemplateDir(PathUtility::joinPath(parent::$baseDirectoryPath, $templateBaseName, $baseName));
-		$this->engine->addTemplateDir(PathUtility::joinPath(parent::$baseDirectoryPath, $templateBaseName));
-		$this->engine->setCompileDir(PathUtility::joinPath(parent::$baseDirectoryPath, $temporaryBaseName, 'compile', $baseName));
-		$this->engine->setCacheDir(PathUtility::joinPath(parent::$baseDirectoryPath, $temporaryBaseName, 'cache', $baseName));
+		$this->engine->addTemplateDir(PathUtility::combine(parent::$baseDirectoryPath, $templateBaseName, $baseName));
+		$this->engine->addTemplateDir(PathUtility::combine(parent::$baseDirectoryPath, $templateBaseName));
+		$this->engine->setCompileDir(PathUtility::combine(parent::$baseDirectoryPath, $temporaryBaseName, 'compile', $baseName));
+		$this->engine->setCacheDir(PathUtility::combine(parent::$baseDirectoryPath, $temporaryBaseName, 'cache', $baseName));
 		$this->engine->escape_html = true;
 
 		$this->registerPlugins();
