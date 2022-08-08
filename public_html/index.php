@@ -28,16 +28,18 @@ $autoLoader = new AutoLoader(
 );
 $autoLoader->register(false);
 
+$baseUrlPath = '';
 $specialStore = new AppSpecialStore();
 Initializer::initialize(
 	__DIR__,
 	__DIR__ . '/PeServer',
+	$baseUrlPath,
 	$specialStore,
 	$specialStore->getServer('SERVER_NAME') === 'localhost' ? 'development' : 'production',
 	':REVISION:'
 );
 
 $method = HttpMethod::from($specialStore->getServer('REQUEST_METHOD'));
-$requestPath = new RequestPath($specialStore->getServer('REQUEST_URI'), '');
+$requestPath = new RequestPath($specialStore->getServer('REQUEST_URI'), $baseUrlPath);
 $routing = new AppRouting($method, $requestPath, RouteConfiguration::get(), AppConfiguration::$stores);
 $routing->execute();

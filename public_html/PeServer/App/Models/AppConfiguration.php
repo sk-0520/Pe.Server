@@ -32,14 +32,14 @@ abstract class AppConfiguration
 	 *
 	 * @var array<mixed>
 	 */
-	public static $config;
+	public static array $config;
 
 	/**
 	 * ルートディレクトリ。
 	 *
 	 * @var string
 	 */
-	public static $rootDirectoryPath;
+	public static string $rootDirectoryPath;
 	/**
 	 * ベースディレクトリ。
 	 *
@@ -47,7 +47,14 @@ abstract class AppConfiguration
 	 *
 	 * @var string
 	 */
-	public static $baseDirectoryPath;
+	public static string $baseDirectoryPath;
+
+	/**
+	 * URL ベースパス。
+	 *
+	 * @var string
+	 */
+	public static string $urlBasePath;
 
 	/**
 	 * 設定ファイル置き場。
@@ -90,7 +97,7 @@ abstract class AppConfiguration
 	 * @param string $baseDirectoryPath `\PeServer\*` のルートディレクトリ
 	 * @param SpecialStore $specialStore
 	 */
-	public static function initialize(string $rootDirectoryPath, string $baseDirectoryPath, SpecialStore $specialStore): void
+	public static function initialize(string $rootDirectoryPath, string $baseDirectoryPath, string $urlBasePath, SpecialStore $specialStore): void
 	{
 		self::$initializeChecker ??= new InitializeChecker();
 		self::$initializeChecker->initialize();
@@ -108,7 +115,7 @@ abstract class AppConfiguration
 
 		Logging::initialize($stores, $appConfig['logging']);
 
-		Template::initialize($stores, $rootDirectoryPath, $baseDirectoryPath, 'App/Views', 'data/temp/views');
+		Template::initialize($stores, $rootDirectoryPath, $baseDirectoryPath, $urlBasePath, 'App/Views', 'data/temp/views');
 		I18n::initialize($i18nConfig);
 
 		AppDatabaseCache::initialize($appConfig['cache']['database']);
@@ -116,6 +123,7 @@ abstract class AppConfiguration
 		self::$config = $appConfig;
 		self::$rootDirectoryPath = $rootDirectoryPath;
 		self::$baseDirectoryPath = $baseDirectoryPath;
+		self::$urlBasePath = $urlBasePath;
 		self::$stores = $stores;
 	}
 }

@@ -50,6 +50,11 @@ abstract class Template
 	protected static string $baseDirectoryPath;
 
 	/**
+	 * URL ベースパス。
+	 */
+	protected static string $urlBasePath;
+
+	/**
 	 * テンプレートディレクトリベース名。
 	 *
 	 * 内部で self::$baseDirectoryPath と引数をかけ合わせる。
@@ -64,7 +69,7 @@ abstract class Template
 
 	protected static Stores $stores;
 
-	public static function initialize(Stores $stores, string $rootDirectoryPath, string $baseDirectoryPath, string $templateBaseName, string $temporaryBaseName): void
+	public static function initialize(Stores $stores, string $rootDirectoryPath, string $baseDirectoryPath, string $urlBasePath, string $templateBaseName, string $temporaryBaseName): void
 	{
 		self::$initializeChecker ??= new InitializeChecker();
 		self::$initializeChecker->initialize();
@@ -73,6 +78,7 @@ abstract class Template
 
 		self::$rootDirectoryPath = $rootDirectoryPath;
 		self::$baseDirectoryPath = $baseDirectoryPath;
+		self::$urlBasePath = $urlBasePath;
 
 		self::$templateBaseName = $templateBaseName;
 		self::$temporaryBaseName = $temporaryBaseName;
@@ -151,6 +157,7 @@ class LocalSmartyTemplateImpl extends Template
 			$this->engine,
 			self::$rootDirectoryPath,
 			self::$baseDirectoryPath,
+			self::$urlBasePath,
 			self::$stores
 		);
 		$showErrorMessagesFunction = new ShowErrorMessagesFunction($argument);

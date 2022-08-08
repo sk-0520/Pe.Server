@@ -25,12 +25,12 @@ abstract class Initializer
 	 * @param string $environment
 	 * @param string $revision
 	 */
-	public static function initialize(string $rootDirectoryPath, string $baseDirectoryPath, SpecialStore $specialStore, string $environment, string $revision): void
+	public static function initialize(string $rootDirectoryPath, string $baseDirectoryPath, string $urlBasePath, SpecialStore $specialStore, string $environment, string $revision): void
 	{
 		self::$initializeChecker ??= new InitializeChecker();
 		self::$initializeChecker->initialize();
 
 		CoreInitializer::initialize($environment, $revision);
-		AppConfiguration::initialize($rootDirectoryPath, $baseDirectoryPath, $specialStore);
+		AppConfiguration::initialize($rootDirectoryPath, $baseDirectoryPath, $urlBasePath, $specialStore);
 	}
 }

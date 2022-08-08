@@ -19,11 +19,13 @@ class TemplatePluginArgument
 	 * @param Smarty $engine テンプレートエンジン。
 	 * @param string $rootDirectoryPath ルートディレクトリ。
 	 * @param string $baseDirectoryPath ベースディレクトリ。
+	 * @param string $urlBasePath
 	 */
 	public function __construct(
 		public Smarty $engine,
 		public string $rootDirectoryPath,
 		public string $baseDirectoryPath,
+		public string $urlBasePath,
 		public Stores $stores
 	) {
 	}
