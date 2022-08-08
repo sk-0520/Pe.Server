@@ -82,7 +82,7 @@ abstract class UrlUtility
 		$items = [];
 		foreach ($query as $key => $value) {
 			if (is_int($key)) {
-				if(!StringUtility::isNullOrEmpty($value)) {
+				if (!StringUtility::isNullOrEmpty($value)) {
 					$items[] = self::encode($value, $queryKind);
 				}
 			} else {
@@ -154,5 +154,25 @@ abstract class UrlUtility
 		}
 
 		return $joinUrl;
+	}
+
+	/**
+	 * キャッシュ考慮不要な(HTTP)パスか。
+	 *
+	 * @param string $path
+	 * @return bool
+	 */
+	public static function isIgnoreCaching(string $path): bool
+	{
+		$isExternal =
+			StringUtility::startsWith($path, '//', false)
+			||
+			StringUtility::startsWith($path, 'https://', false)
+			||
+			StringUtility::startsWith($path, 'http://', false)
+			||
+			StringUtility::contains($path, '?', false);
+
+		return $isExternal;
 	}
 }

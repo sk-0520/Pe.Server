@@ -16,6 +16,7 @@ use PeServer\Core\Html\HtmlDocument;
 use PeServer\Core\Throws\TemplateException;
 use PeServer\Core\Mvc\TemplatePlugin\TemplateFunctionBase;
 use PeServer\Core\Mvc\TemplatePlugin\TemplatePluginArgument;
+use PeServer\Core\UrlUtility;
 
 /**
  * 指定されたリソースをHTMLとして読み込む。
@@ -41,20 +42,6 @@ class AssetFunction extends TemplateFunctionBase
 		return 'asset';
 	}
 
-	private function isIgnoreAsset(string $sourcePath): bool
-	{
-		$ignoreAsset =
-			StringUtility::startsWith($sourcePath, '//', false)
-			||
-			StringUtility::startsWith($sourcePath, 'https://', false)
-			||
-			StringUtility::startsWith($sourcePath, 'http://', false)
-			||
-			StringUtility::contains($sourcePath, '?', false);
-
-		return $ignoreAsset;
-	}
-
 	/**
 	 * @SuppressWarnings(PHPMD.CyclomaticComplexity)
 	 */
@@ -71,7 +58,7 @@ class AssetFunction extends TemplateFunctionBase
 		$fileExtension = PathUtility::getFileExtension($sourcePath);
 		$extension = StringUtility::toLower($fileExtension);
 
-		$ignoreAsset = $this->isIgnoreAsset($sourcePath);
+		$ignoreAsset = UrlUtility::isIgnoreCaching($sourcePath);
 
 		$resourcePath = $sourcePath;
 		if (!$ignoreAsset) {

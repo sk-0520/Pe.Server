@@ -7,25 +7,26 @@ namespace PeServer\Core\Mvc;
 require_once(__DIR__ . '/../../Core/Libs/smarty/libs/Smarty.class.php');
 
 use \Smarty;
-use PeServer\Core\PathUtility;
-use PeServer\Core\Store\Stores;
-use PeServer\Core\StringUtility;
 use PeServer\Core\InitializeChecker;
+use PeServer\Core\Mvc\TemplateParameter;
+use PeServer\Core\Mvc\TemplatePlugin\AssetFunction;
+use PeServer\Core\Mvc\TemplatePlugin\BotTextImageFunction;
+use PeServer\Core\Mvc\TemplatePlugin\CsrfFunction;
+use PeServer\Core\Mvc\TemplatePlugin\InputHelperFunction;
+use PeServer\Core\Mvc\TemplatePlugin\ITemplateBlockFunction;
+use PeServer\Core\Mvc\TemplatePlugin\ITemplateFunction;
+use PeServer\Core\Mvc\TemplatePlugin\MarkdownFunction;
+use PeServer\Core\Mvc\TemplatePlugin\ShowErrorMessagesFunction;
+use PeServer\Core\Mvc\TemplatePlugin\SourceFunction;
+use PeServer\Core\Mvc\TemplatePlugin\TemplatePluginArgument;
+use PeServer\Core\PathUtility;
 use PeServer\Core\Store\CookieStore;
 use PeServer\Core\Store\SessionStore;
 use PeServer\Core\Store\SpecialStore;
+use PeServer\Core\Store\Stores;
 use PeServer\Core\Store\TemporaryStore;
-use PeServer\Core\Mvc\TemplateParameter;
+use PeServer\Core\StringUtility;
 use PeServer\Core\Throws\NotImplementedException;
-use PeServer\Core\Mvc\TemplatePlugin\CsrfFunction;
-use PeServer\Core\Mvc\TemplatePlugin\AssetFunction;
-use PeServer\Core\Mvc\TemplatePlugin\MarkdownFunction;
-use PeServer\Core\Mvc\TemplatePlugin\ITemplateFunction;
-use PeServer\Core\Mvc\TemplatePlugin\InputHelperFunction;
-use PeServer\Core\Mvc\TemplatePlugin\BotTextImageFunction;
-use PeServer\Core\Mvc\TemplatePlugin\ITemplateBlockFunction;
-use PeServer\Core\Mvc\TemplatePlugin\TemplatePluginArgument;
-use PeServer\Core\Mvc\TemplatePlugin\ShowErrorMessagesFunction;
 
 /**
  * View側のテンプレート処理。
@@ -156,6 +157,7 @@ class LocalSmartyTemplateImpl extends Template
 		/** @var array<ITemplateFunction> */
 		$plugins = [
 			new CsrfFunction($argument),
+			new SourceFunction($argument),
 			new AssetFunction($argument),
 			$showErrorMessagesFunction,
 			new InputHelperFunction($argument, $showErrorMessagesFunction),

@@ -59,6 +59,7 @@ abstract class RouteConfiguration
 					->addAction('about/contact', HttpMethod::gets(), 'contact_get')
 					->addAction('about/contact', HttpMethod::post(), 'contact_post')
 					->addAction('api-doc', HttpMethod::gets(), 'api')
+					->addAction(':path@[a-zA-z0-9_\(\)\-]+\.[a-zA-z0-9_\(\)\-]+', HttpMethod::gets(), 'wildcard')
 				/* AUTO-FORMAT */,
 				(new Route('account', AccountController::class))
 					->addAction('login', HttpMethod::gets(), 'login_get')

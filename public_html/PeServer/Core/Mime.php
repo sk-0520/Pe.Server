@@ -14,4 +14,5 @@ abstract class Mime
 	public const JSON = 'application/json';
 	public const GZ = 'application/gzip';
 	public const STREAM = 'application/octet-stream';
+	public const ICON = 'image/vnd.microsoft.icon';
 }
