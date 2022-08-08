@@ -146,14 +146,6 @@ final class Binary implements Stringable
 		return $this->raw;
 	}
 
-	public function __toString(): string
-	{
-		if ($this->hasNull()) {
-			return $this->toHex();
-		}
-
-		return $this->raw;
-	}
 
 	// public function format(string $format, int $offset = 0): array
 	// {
@@ -162,4 +154,14 @@ final class Binary implements Stringable
 	// }
 
 
+	//Stringable
+
+	public function __toString(): string
+	{
+		if ($this->hasNull()) {
+			return $this->toHex();
+		}
+
+		return $this->raw;
+	}
 }

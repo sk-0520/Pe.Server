@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace PeServerTest\Core;
 
-use PeServerTest\Data;
-use PeServerTest\TestClass;
 use PeServer\Core\Binary;
 use PeServer\Core\Throws\ArgumentException;
+use PeServer\Core\Throws\NullByteStringException;
+use PeServerTest\Data;
+use PeServerTest\TestClass;
 
 class BinaryTest extends TestClass
 {
@@ -100,5 +101,32 @@ class BinaryTest extends TestClass
 		}
 	}
 
+	public function test_toString()
+	{
+		$expected = 'a';
+		$binary = new Binary($expected);
+		$actual = $binary->toString();
+		$this->assertSame($expected, $actual);
+	}
 
+	public function test_toString_throw()
+	{
+		$this->expectException(NullByteStringException::class);
+		$binary = new Binary("\0");
+		$actual = $binary->toString();
+		$this->fail();
+	}
+
+	public function test___toString()
+	{
+		$tests = [
+			new Data("abc", "abc"),
+			new Data("00616263", "\0abc"),
+		];
+		foreach ($tests as $test) {
+			$binary = new Binary(...$test->args);
+			$actual = (string)$binary;
+			$this->assertSame($test->expected, $actual, $test->str());
+		}
+	}
 }
