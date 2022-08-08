@@ -9,6 +9,7 @@ use PeServer\Core\Mvc\Middleware\IShutdownMiddleware;
 
 /**
  * ルーティングの設定。
+ *
  * @immutable
  */
 class RouteSetting

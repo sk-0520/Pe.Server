@@ -70,6 +70,13 @@ class Routing
 	 */
 	private array $shutdownMiddleware = [];
 
+	/**
+	 * 終了処理時に使用する要求データ。
+	 *
+	 * 要求受付前はダミー値が入っており、要求受付後はその要求値が格納される。
+	 *
+	 * @var HttpRequest
+	 */
 	private HttpRequest $shutdownRequest;
 
 	/** @readonly */
@@ -82,18 +89,19 @@ class Routing
 	/**
 	 * 生成。
 	 *
+	 * @param HttpMethod $requestMethod
+	 * @param RequestPath $requestPath
 	 * @param RouteSetting $routeSetting
 	 * @param Stores $stores
 	 */
 	public function __construct(HttpMethod $requestMethod, RequestPath $requestPath, RouteSetting $routeSetting, Stores $stores)
 	{
-		$this->setting = $routeSetting;
-
 		$this->requestMethod = $requestMethod;
 		$this->requestPath = $requestPath;
-		$this->requestHeader = HttpHeader::getRequest();
-
+		$this->setting = $routeSetting;
 		$this->stores = $stores;
+
+		$this->requestHeader = HttpHeader::getRequest();
 		$this->middlewareLogger = Logging::create('middleware');
 		$this->shutdownRequest = new HttpRequest($this->stores->special, $requestMethod, $this->requestHeader, []);
 	}
@@ -193,7 +201,7 @@ class Routing
 		$middlewareArgument = new MiddlewareArgument($this->requestPath, $this->stores, $request, $this->middlewareLogger);
 		$middlewareArgument->response = $response;
 
-		$middleware = array_reverse($this->processedMiddleware);
+		$middleware = ArrayUtility::reverse($this->processedMiddleware);
 		foreach ($middleware as $middlewareItem) {
 			$middlewareResult = $middlewareItem->handleAfter($middlewareArgument);
 
@@ -212,7 +220,8 @@ class Routing
 	 * @param string $rawControllerName
 	 * @phpstan-param class-string<ControllerBase> $rawControllerName
 	 * @param ActionSetting $actionSetting
-	 * @param string[] $urlParameters
+	 * @param array<string,string> $urlParameters
+	 * @phpstan-param array<non-empty-string,string> $urlParameters
 	 * @return void
 	 */
 	private function executeAction(string $rawControllerName, ActionSetting $actionSetting, array $urlParameters): void

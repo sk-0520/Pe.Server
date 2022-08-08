@@ -18,7 +18,7 @@ use Throwable;
 abstract class StringUtility
 {
 	/** トリム対象文字一覧。 */
-	public const TRIM_CHARACTERS = " \n\r\t\v\0　";
+	public const TRIM_CHARACTERS = " \n\r\t\v\0";
 
 	/**
 	 * 文字列が `null` か空か

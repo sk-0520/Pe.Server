@@ -19,11 +19,11 @@ use PeServer\Core\Mvc\Middleware\IMiddleware;
 use PeServer\Core\Mvc\Middleware\IShutdownMiddleware;
 
 /**
- * ルーティング情報
+ * ルーティング情報。
  */
 class Route
 {
-	/** メソッド名自動設定。あんまり使わないこと */
+	/** メソッド名自動設定。あんまり使わないこと。 */
 	public const DEFAULT_METHOD = '';
 	/** ミドルウェア指定時に以前をリセットする。 */
 	public const CLEAR_MIDDLEWARE = '*';
@@ -51,14 +51,14 @@ class Route
 	private array $actions = [];
 
 	/**
-	 * Undocumented variable
+	 * ミドルウェア一覧。
 	 *
 	 * @var array<IMiddleware|string>
 	 * @phpstan-var array<IMiddleware|class-string<IMiddleware>>
 	 */
 	private array $baseMiddleware;
 	/**
-	 * Undocumented variable
+	 * 終了ミドルウェア一覧。
 	 *
 	 * @var array<IShutdownMiddleware|string>
 	 * @phpstan-var array<IShutdownMiddleware|class-string<IShutdownMiddleware>>
@@ -183,6 +183,7 @@ class Route
 	 * @param HttpMethod $httpMethod
 	 * @param Action $action
 	 * @param array<string,string> $urlParameters
+	 * @phpstan-param array<non-empty-string,string> $urlParameters
 	 * @return RouteAction
 	 */
 	private function getActionCore(HttpMethod $httpMethod, Action $action, array $urlParameters): RouteAction
@@ -287,10 +288,12 @@ class Route
 				$calcParameters = array_filter($calcPaths, function ($i) {
 					return !StringUtility::isNullOrEmpty($i['name']);
 				});
+
 				$flatParameters = [];
 				foreach ($calcParameters as $calcParameter) {
 					$flatParameters[$calcParameter['name']] = $calcParameter['value'];
 				}
+				/** @phpstan-var array<non-empty-string,string> $flatParameters */
 
 				$result = $this->getActionCore($httpMethod, $action, $flatParameters);
 				if ($result->status->is(HttpStatus::none())) {

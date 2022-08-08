@@ -58,6 +58,7 @@ abstract class Regex
 	 * @param string $pattern
 	 * @phpstan-param literal-string $pattern
 	 * @return array<int|string,string>
+	 * @phpstan-return array<array-key,string>
 	 */
 	public static function matches(string $input, string $pattern): array
 	{
@@ -138,7 +139,7 @@ abstract class Regex
 	 * @param string $source 一致する対象を検索する文字列。
 	 * @param string $pattern 一致させる正規表現パターン。
 	 * @param callable $replacement 置換処理。
-	 * @phpstan-param callable(array<int,string>|array<string,string>):string $replacement
+	 * @phpstan-param callable(array<array-key,string>):string $replacement
 	 * @param int $limit 各パターンによる 置換を行う最大回数。
 	 * @throws ArgumentException 引数がおかしい。
 	 * @throws RegexException 正規表現処理失敗。

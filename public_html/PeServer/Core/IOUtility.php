@@ -205,6 +205,7 @@ abstract class IOUtility
 
 	/**
 	 * ファイル・ディレクトリが存在するか。
+	 *
 	 * `file_exists` ラッパー。
 	 *
 	 * @param string $path
@@ -219,9 +220,11 @@ abstract class IOUtility
 	/**
 	 * ファイルが存在するか。
 	 *
-	 * self::existsItem より速い(file_existsよりis_fileの方が速いらすぃ)
+	 * self::existsItem より速い。
+	 * `file_exists`より`is_file`の方が速いらすぃ
 	 *
 	 * `is_file` ラッパー。
+	 *
 	 *
 	 * @param string $path
 	 * @return boolean 存在するか。
@@ -250,9 +253,9 @@ abstract class IOUtility
 	 * ファイル/ディレクトリ一覧を取得する。
 	 *
 	 * @param string $directoryPath ディレクトリパス。
-	 * @param boolean $recursive 再帰的に取得するか。
-	 * @param boolean $directory
 	 * @param boolean $file
+	 * @param boolean $directory
+	 * @param boolean $recursive 再帰的に取得するか。
 	 * @return string[] ファイル一覧。
 	 */
 	private static function getChildrenCore(string $directoryPath, bool $directory, bool $file, bool $recursive): array
@@ -398,6 +401,12 @@ abstract class IOUtility
 		return $result->value;
 	}
 
+	/**
+	 * ファイルが存在する場合に削除する。
+	 *
+	 * @param string $filePath
+	 * @return bool
+	 */
 	public static function removeFileIfExists(string $filePath): bool
 	{
 		if (!self::existsItem($filePath)) {
