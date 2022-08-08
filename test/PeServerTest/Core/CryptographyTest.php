@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace PeServerTest\Core;
 
-use PeServerTest\Data;
-use PeServerTest\TestClass;
 use PeServer\Core\Cryptography;
 use PeServer\Core\StringUtility;
+use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\CryptoException;
+use PeServerTest\Data;
+use PeServerTest\TestClass;
 
 class CryptographyTest extends TestClass
 {
@@ -47,14 +48,14 @@ class CryptographyTest extends TestClass
 
 	public function test_dec_data_list0_throw()
 	{
-		$this->expectException(CryptoException::class);
+		$this->expectException(ArgumentException::class);
 		Cryptography::decrypt('', 'b');
 		$this->fail();
 	}
 
 	public function test_dec_data_list4_throw()
 	{
-		$this->expectException(CryptoException::class);
+		$this->expectException(ArgumentException::class);
 		Cryptography::decrypt('@@@', 'b');
 		$this->fail();
 	}

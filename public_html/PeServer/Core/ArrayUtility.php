@@ -137,9 +137,8 @@ class ArrayUtility
 	/**
 	 * `array_keys` ラッパー。
 	 *
-	 * @template TValue
 	 * @param array<int|string,mixed> $array
-	 * @phpstan-param array<array-key,TValue> $array
+	 * @phpstan-param array<array-key,mixed> $array
 	 * @return array<int|string>
 	 * @phpstan-return array-key[]
 	 * @see https://www.php.net/manual/function.array-keys.php
@@ -245,7 +244,10 @@ class ArrayUtility
 	/**
 	 * `array_unique` ラッパー。
 	 *
+	 * @template TKey of array-key
+	 * @template TValue
 	 * @param array<mixed> $array
+	 * @phpstan-param array<TKey,TValue> $array
 	 * @return array<mixed>
 	 * @see https://www.php.net/manual/function.array-unique.php
 	 */

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core;
 
 use \Exception;
+use PeServer\Core\Throws\ArgumentException;
 use \Throwable;
 use PeServer\Core\Throws\CryptoException;
 use PeServer\Core\Throws\Throws;
@@ -53,7 +54,7 @@ abstract class Cryptography
 	public static function generateRandomBinary(int $length): Binary
 	{
 		if ($length < 1) { //@phpstan-ignore-line phpstan:positive-int
-			throw new CryptoException('$length = ' . $length);
+			throw new CryptoException('$length: ' . $length);
 		}
 
 		$result = openssl_random_pseudo_bytes($length);
@@ -77,10 +78,10 @@ abstract class Cryptography
 	public static function generateRandomString(int $length, string $characters = self::DEFAULT_RANDOM_STRING): string
 	{
 		if ($length < 1) { //@phpstan-ignore-line phpstan:positive-int
-			throw new CryptoException('$length = ' . $length);
+			throw new ArgumentException('$length: ' . $length);
 		}
 		if (StringUtility::isNullOrWhiteSpace($characters)) { //@phpstan-ignore-line phpstan:positive-int
-			throw new CryptoException('$characters = ' . $characters);
+			throw new ArgumentException('$characters: ' . $characters);
 		}
 
 		$charactersArray = StringUtility::toCharacters($characters);
@@ -121,7 +122,7 @@ abstract class Cryptography
 			throw new CryptoException($algorithm);
 		}
 		if ($ivLength < 1) {
-			throw new CryptoException('$ivLength = ' . $ivLength);
+			throw new CryptoException('$ivLength: ' . $ivLength);
 		}
 
 		$iv = self::generateRandomBinary($ivLength);
@@ -146,7 +147,7 @@ abstract class Cryptography
 	{
 		$values = StringUtility::split($encValue, self::SEPARATOR);
 		if (ArrayUtility::getCount($values) !== 3) {
-			throw new CryptoException();
+			throw new ArgumentException();
 		}
 		list($algorithm, $ivBase64, $encData) = $values;
 
