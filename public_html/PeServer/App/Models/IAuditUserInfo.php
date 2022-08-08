@@ -4,7 +4,15 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models;
 
+/**
+ * 監査用ユーザー情報取得。
+ */
 interface IAuditUserInfo
 {
+	/**
+	 * ユーザーID取得。
+	 *
+	 * @return string
+	 */
 	public function getUserId(): string;
 }
