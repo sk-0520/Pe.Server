@@ -35,7 +35,7 @@ class HomeWildcardLogic extends PageLogicBase
 		$favicon = 'favicon.ico';
 		if (StringUtility::startsWith($requestPath, $favicon, true)) {
 			$path = PathUtility::combine(AppConfiguration::$rootDirectoryPath, 'assets', $favicon);
-			$this->setContent(Mime::ICON, IOUtility::readContent($path));
+			$this->setFileContent(Mime::ICON, $path);
 			return;
 		}
 

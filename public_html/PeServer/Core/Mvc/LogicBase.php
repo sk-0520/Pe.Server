@@ -580,7 +580,26 @@ abstract class LogicBase implements IValidationReceiver
 	}
 
 	/**
-	 * Undocumented function
+	 * ファイルを応答として設定。
+	 *
+	 * @param string|null $mime
+	 * @phpstan-param Mime::*|null $mime
+	 * @param string $path
+	 */
+	protected function setFileContent(?string $mime, string $path): void
+	{
+		if (StringUtility::isNullOrWhiteSpace($mime)) {
+			$mime = Mime::fromFileName($path);
+		}
+		/** @phpstan-var non-empty-string $mime */
+
+		$content = IOUtility::readContent($path);
+
+		$this->content = new DataContent(HttpStatus::none(), $mime, $content->getRaw());
+	}
+
+	/**
+	 * ダウンロードデータ応答。
 	 *
 	 * @param string $mime
 	 * @phpstan-param non-empty-string|\PeServer\Core\Mime::* $mime
@@ -588,7 +607,7 @@ abstract class LogicBase implements IValidationReceiver
 	 * @param Binary $data
 	 * @return void
 	 */
-	protected function setDownloadContent(string $mime, string $fileName, Binary $data): void
+	protected final function setDownloadContent(string $mime, string $fileName, Binary $data): void
 	{
 		$this->content = new DownloadDataContent($mime, $fileName, $data);
 	}
