@@ -28,9 +28,11 @@ class Validator
 	 * 検証移譲取得処理。
 	 */
 	private IValidationReceiver $receiver;
+	private Regex $regex;
 
 	public function __construct(IValidationReceiver $receiver)
 	{
+		$this->regex = new Regex();
 		$this->receiver = $receiver;
 	}
 
@@ -87,7 +89,7 @@ class Validator
 	 */
 	public function isMatch(string $key, string $pattern, string $value): bool
 	{
-		if (!Regex::isMatch($value, $pattern)) {
+		if (!$this->regex->isMatch($value, $pattern)) {
 			$this->receiver->receiveErrorKind($key, self::KIND_MATCH, ['VALUE' => $value, 'PATTERN' => $pattern]);
 			return false;
 		}
@@ -106,7 +108,7 @@ class Validator
 	 */
 	public function isNotMatch(string $key, string $pattern, string $value): bool
 	{
-		if (Regex::isMatch($value, $pattern)) {
+		if ($this->regex->isMatch($value, $pattern)) {
 			$this->receiver->receiveErrorKind($key, self::KIND_MATCH, ['value' => $value, 'pattern' => $pattern]);
 			return false;
 		}

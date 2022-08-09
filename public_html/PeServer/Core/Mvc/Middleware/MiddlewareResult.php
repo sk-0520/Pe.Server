@@ -57,7 +57,8 @@ abstract class MiddlewareResult
 	 */
 	public static function redirect(SpecialStore $specialStore, string $path, ?array $query = null, ?HttpStatus $status = null): MiddlewareResult
 	{
-		if (Regex::isMatch($path, '|(https?:)?//|')) {
+		$regex = new Regex();
+		if ($regex->isMatch($path, '|(https?:)?//|')) {
 			throw new ArgumentException();
 		}
 

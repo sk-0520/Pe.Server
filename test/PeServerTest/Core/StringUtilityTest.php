@@ -306,6 +306,8 @@ class StringUtilityTest extends TestClass
 			new Data('あ', '　あ　'),
 			new Data('あ', 'あ　'),
 			new Data('あああ', 'あああ'),
+			new Data('⚽', '🥅⚽🥅', '🥅'),
+			new Data('かきくけこ', 'あいうえおかきくけこあいうえお', 'あ..お'),
 		];
 		foreach ($tests as $test) {
 			$actual = StringUtility::trim(...$test->args);
@@ -321,7 +323,8 @@ class StringUtilityTest extends TestClass
 			new Data('a', ' a'),
 			new Data('a ', 'a '),
 			new Data('a ', ' a '),
-			//全角 new Data('a　', '　a　'),
+			new Data('あ　', '　あ　'),
+			new Data('⚽🥅', '🥅⚽🥅', '🥅'),
 		];
 		foreach ($tests as $test) {
 			$actual = StringUtility::trimStart(...$test->args);
@@ -336,7 +339,8 @@ class StringUtilityTest extends TestClass
 			new Data(' a', ' a'),
 			new Data('a', 'a '),
 			new Data(' a', ' a '),
-			//全角 new Data('　a', '　a　'),
+			new Data('　あ', '　あ　'),
+			new Data('🥅⚽', '🥅⚽🥅', '🥅'),
 		];
 		foreach ($tests as $test) {
 			$actual = StringUtility::trimEnd(...$test->args);

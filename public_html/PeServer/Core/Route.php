@@ -72,6 +72,8 @@ class Route
 	 */
 	protected string $excludeIndexPattern = '/^(api|ajax)/';
 
+	private Regex $regex;
+
 	/**
 	 * ルーティング情報にコントローラを登録
 	 *
@@ -85,6 +87,8 @@ class Route
 	 */
 	public function __construct(string $path, string $className, array $middleware = [], array $shutdownMiddleware = [])
 	{
+		$this->regex = new Regex();
+
 		if (StringUtility::isNullOrEmpty($path)) {
 			$this->basePath = $path;
 		} else {
@@ -104,7 +108,7 @@ class Route
 		$this->baseShutdownMiddleware = $shutdownMiddleware;
 		$this->className = $className;
 
-		if (!Regex::isMatch($this->basePath, $this->excludeIndexPattern)) {
+		if (!$this->regex->isMatch($this->basePath, $this->excludeIndexPattern)) {
 			$this->addAction(InitialValue::EMPTY_STRING, HttpMethod::gets(), 'index', $this->baseMiddleware, $this->baseShutdownMiddleware);
 		}
 	}
@@ -253,7 +257,7 @@ class Route
 					$isRegex = 1 < ArrayUtility::getCount($splitPaths);
 					if ($isRegex) {
 						$pattern = Code::toLiteralString("/$splitPaths[1]/");
-						if (Regex::isMatch($targetValue, $pattern)) {
+						if ($this->regex->isMatch($targetValue, $pattern)) {
 							return ['key' => $value, 'name' => $requestKey, 'value' => $targetValue];
 						}
 						return null;

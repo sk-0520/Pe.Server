@@ -132,6 +132,16 @@ class Encoding
 	}
 
 	/**
+	 * ASCIIエンコーディング。
+	 *
+	 * @return Encoding
+	 */
+	public static function getAscii(): Encoding
+	{
+		return new Encoding(self::ENCODE_ASCII);
+	}
+
+	/**
 	 * UTF8エンコーディング。
 	 *
 	 * @return Encoding

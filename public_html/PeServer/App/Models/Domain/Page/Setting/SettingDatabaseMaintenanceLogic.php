@@ -60,7 +60,8 @@ class SettingDatabaseMaintenanceLogic extends PageLogicBase
 			$database->transaction(function (IDatabaseContext $context) use (&$result, $statement) {
 				/** @phpstan-var literal-string $statement これはええねん */
 
-				if (Regex::isMatch($statement, '/^\s*\bselect\b/')) { // select だけの判定はよくないけどしんどいのだ
+				$regex = new Regex();
+				if ($regex->isMatch($statement, '/^\s*\bselect\b/')) { // select だけの判定はよくないけどしんどいのだ
 					$result = $context->query($statement)->rows;
 				} else {
 					$result = $context->execute($statement)->resultCount;

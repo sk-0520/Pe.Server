@@ -35,7 +35,8 @@ abstract class TypeUtility
 	 */
 	public static function parseInteger(string $input): int
 	{
-		if (!Regex::isMatch($input, self::INT_PATTERN)) {
+		$regex = new Regex();
+		if (!$regex->isMatch($input, self::INT_PATTERN)) {
 			throw new ParseException($input);
 		}
 
@@ -51,7 +52,8 @@ abstract class TypeUtility
 	 */
 	public static function tryParseInteger(string $input, ?int &$result): bool
 	{
-		if (!Regex::isMatch($input, self::INT_PATTERN)) {
+		$regex = new Regex();
+		if (!$regex->isMatch($input, self::INT_PATTERN)) {
 			return false;
 		}
 

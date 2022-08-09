@@ -51,7 +51,8 @@ class SettingEnvironmentLogic extends PageLogicBase
 		$dstContent = $dom->importNode($srcContent);
 
 		$css = $dstStyle->raw->textContent;
-		$newCss = Regex::replace(
+		$regex = new Regex();
+		$newCss = $regex->replace(
 			$css,
 			'/^(.*)$/m',
 			'.phpinfo $1'

@@ -89,7 +89,8 @@ class RgbColor implements IColor, Serializable
 			throw new ArgumentException($htmlColor);
 		}
 
-		$matchers = Regex::matches($htmlColor, '/#?(?<R>[0-9A-fa-f]{1,2})(?<G>[0-9A-fa-f]{1,2})(?<B>[0-9A-fa-f]{1,2})(?<A>[0-9A-fa-f]{1,2})?/');
+		$regex = new Regex();
+		$matchers = $regex->matches($htmlColor, '/#?(?<R>[0-9A-fa-f]{1,2})(?<G>[0-9A-fa-f]{1,2})(?<B>[0-9A-fa-f]{1,2})(?<A>[0-9A-fa-f]{1,2})?/');
 
 		if (ArrayUtility::isNullOrEmpty($matchers)) {
 			//rgb()的な奴は知らん

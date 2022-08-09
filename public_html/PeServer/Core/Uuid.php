@@ -78,7 +78,8 @@ abstract class Uuid
 	 */
 	public static function isGuid(string $value): bool
 	{
-		return Regex::isMatch($value, '/^\{?[a-fA-F0-9]{8}-?[a-fA-F0-9]{4}-?[a-fA-F0-9]{4}-?[a-fA-F0-9]{4}-?[a-fA-F0-9]{12}\}?$/');
+		$regex = new Regex();
+		return $regex->isMatch($value, '/^\{?[a-fA-F0-9]{8}-?[a-fA-F0-9]{4}-?[a-fA-F0-9]{4}-?[a-fA-F0-9]{4}-?[a-fA-F0-9]{12}\}?$/');
 	}
 
 	/**

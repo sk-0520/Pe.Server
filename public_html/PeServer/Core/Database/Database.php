@@ -43,6 +43,8 @@ class Database extends DisposerBase implements IDatabaseTransactionContext
 	 */
 	protected ILogger $logger;
 
+	protected Regex $regex;
+
 	/**
 	 * 生成。
 	 *
@@ -56,6 +58,7 @@ class Database extends DisposerBase implements IDatabaseTransactionContext
 	public function __construct(string $dsn, string $user, string $password, ?array $options, ILogger $logger)
 	{
 		$this->logger = $logger;
+		$this->regex = new Regex();
 
 		$this->pdo = Throws::wrap(PDOException::class, DatabaseException::class, fn () => new PDO($dsn, $user, $password, $options));
 		$this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -404,7 +407,7 @@ class Database extends DisposerBase implements IDatabaseTransactionContext
 	 */
 	protected function enforceOrdered(string $statement): void
 	{
-		if (!Regex::isMatch($statement, '/\\border\\s+by\\b/i')) {
+		if (!$this->regex->isMatch($statement, '/\\border\\s+by\\b/i')) {
 			throw new SqlException();
 		}
 	}
@@ -433,7 +436,7 @@ class Database extends DisposerBase implements IDatabaseTransactionContext
 	 */
 	protected function enforceSingleCount(string $statement): void
 	{
-		if (!Regex::isMatch($statement, '/\\bselect\\s+count\\s*\\(/i')) {
+		if (!$this->regex->isMatch($statement, '/\\bselect\\s+count\\s*\\(/i')) {
 			throw new SqlException();
 		}
 	}
@@ -476,7 +479,7 @@ class Database extends DisposerBase implements IDatabaseTransactionContext
 	 */
 	protected function enforceInsert(string $statement): void
 	{
-		if (!Regex::isMatch($statement, '/\\binsert\\b/i')) {
+		if (!$this->regex->isMatch($statement, '/\\binsert\\b/i')) {
 			throw new SqlException();
 		}
 	}
@@ -506,7 +509,7 @@ class Database extends DisposerBase implements IDatabaseTransactionContext
 	 */
 	protected function enforceUpdate(string $statement): void
 	{
-		if (!Regex::isMatch($statement, '/\\bupdate\\b/i')) {
+		if (!$this->regex->isMatch($statement, '/\\bupdate\\b/i')) {
 			throw new SqlException();
 		}
 	}
@@ -547,7 +550,7 @@ class Database extends DisposerBase implements IDatabaseTransactionContext
 	 */
 	protected function enforceDelete(string $statement): void
 	{
-		if (!Regex::isMatch($statement, '/\\bdelete\\b/i')) {
+		if (!$this->regex->isMatch($statement, '/\\bdelete\\b/i')) {
 			throw new SqlException();
 		}
 	}

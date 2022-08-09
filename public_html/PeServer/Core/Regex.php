@@ -4,15 +4,70 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
-use PeServer\Core\Throws\RegexException;
 use PeServer\Core\Throws\ArgumentException;
+use PeServer\Core\Throws\RegexDelimiterException;
+use PeServer\Core\Throws\RegexException;
+use PeServer\Core\Throws\RegexPatternException;
 
 /**
  * 正規表現ラッパー。
  */
-abstract class Regex
+class Regex
 {
 	public const UNLIMITED = -1;
+	private const DELIMITER_CLOSE_START_INDEX = 2;
+
+	private static ?Encoding $firstDefaultEncoding = null;
+	private Encoding $encoding;
+
+	/**
+	 * 生成。
+	 *
+	 * @param Encoding|null $encoding UTF-8の場合 /pattern/u の u を追加する用。標準エンコーディング(mb_internal_encoding: 基本UTF-8)を想定。
+	 */
+	public function __construct(?Encoding $encoding = null)
+	{
+		if (is_null($encoding)) {
+			if (is_null(self::$firstDefaultEncoding)) {
+				self::$firstDefaultEncoding = Encoding::getDefaultEncoding();
+			}
+			$this->encoding = self::$firstDefaultEncoding;
+		} else {
+			$this->encoding = $encoding;
+		}
+	}
+
+	private function normalizePattern(string $pattern): string
+	{
+		$byteLength = strlen($pattern);
+		if ($byteLength < 3) {
+			throw new RegexPatternException($pattern);
+		}
+
+		$open = $pattern[0];
+		$closeIndex = match ($open) {
+			'(' => strrpos($pattern, ')', self::DELIMITER_CLOSE_START_INDEX),
+			'{' => strrpos($pattern, '}', self::DELIMITER_CLOSE_START_INDEX),
+			'[' => strrpos($pattern, ']', self::DELIMITER_CLOSE_START_INDEX),
+			'<' => strrpos($pattern, '>', self::DELIMITER_CLOSE_START_INDEX),
+			default => strrpos($pattern, $open, self::DELIMITER_CLOSE_START_INDEX),
+		};
+		if ($closeIndex === false || $closeIndex === 0) {
+			throw new RegexDelimiterException();
+		}
+
+		//UTF8対応
+		if ($this->encoding->name === Encoding::ENCODE_UTF8) {
+			if ($closeIndex === ($byteLength - 1)) {
+				return $pattern . 'u';
+			}
+			if (strpos($pattern, 'u', $closeIndex) === false) {
+				return $pattern . 'u';
+			}
+		}
+
+		return $pattern;
+	}
 
 	/**
 	 * 正規表現パターンをエスケープコードに変換。
@@ -24,7 +79,7 @@ abstract class Regex
 	 * @return string
 	 * @see https://www.php.net/manual/function.preg-quote.php
 	 */
-	public static function escape(string $s, ?string $delimiter = null): string
+	public function escape(string $s, ?string $delimiter = null): string
 	{
 		return preg_quote($s, $delimiter);
 	}
@@ -38,9 +93,9 @@ abstract class Regex
 	 * @return boolean マッチしたか。
 	 * @throws RegexException 正規表現処理失敗。
 	 */
-	public static function isMatch(string $input, string $pattern): bool
+	public function isMatch(string $input, string $pattern): bool
 	{
-		$result = ErrorHandler::trapError(fn () => preg_match($pattern, $input));
+		$result = ErrorHandler::trapError(fn () => preg_match($this->normalizePattern($pattern), $input));
 		if (!$result->success) {
 			throw new RegexException(preg_last_error_msg(), preg_last_error());
 		}
@@ -60,11 +115,11 @@ abstract class Regex
 	 * @return array<int|string,string>
 	 * @phpstan-return array<array-key,string>
 	 */
-	public static function matches(string $input, string $pattern): array
+	public function matches(string $input, string $pattern): array
 	{
 		$matches = [];
 		$result = ErrorHandler::trapError(function () use ($pattern, $input, &$matches) {
-			return preg_match_all($pattern, $input, $matches, PREG_PATTERN_ORDER | PREG_OFFSET_CAPTURE);
+			return preg_match_all($this->normalizePattern($pattern), $input, $matches, PREG_PATTERN_ORDER | PREG_OFFSET_CAPTURE);
 		});
 		if (!$result->success) {
 			throw new RegexException(preg_last_error_msg(), preg_last_error());
@@ -118,18 +173,21 @@ abstract class Regex
 	 * @return string
 	 * @see https://www.php.net/manual/function.preg-replace.php
 	 */
-	public static function replace(string $source, string $pattern, string $replacement, int $limit = self::UNLIMITED): string
+	public function replace(string $source, string $pattern, string $replacement, int $limit = self::UNLIMITED): string
 	{
 		if (!$limit) {
 			throw new ArgumentException();
 		}
 
-		$result = preg_replace($pattern, $replacement, $source, $limit);
-		if ($result === null) {
+		$result = ErrorHandler::trapError(fn () => preg_replace($this->normalizePattern($pattern), $replacement, $source, $limit));
+		if (!$result->success) {
+			throw new RegexException(preg_last_error_msg(), preg_last_error());
+		}
+		if (is_null($result->value)) {
 			throw new RegexException(preg_last_error_msg(), preg_last_error());
 		}
 
-		return $result;
+		return $result->value;
 	}
 
 
@@ -146,13 +204,13 @@ abstract class Regex
 	 * @return string
 	 * @see https://www.php.net/manual/function.preg-replace-callback.php
 	 */
-	public static function replaceCallback(string $source, string $pattern, callable $replacement, int $limit = self::UNLIMITED): string
+	public function replaceCallback(string $source, string $pattern, callable $replacement, int $limit = self::UNLIMITED): string
 	{
 		if (!$limit) {
 			throw new ArgumentException();
 		}
 
-		$result = preg_replace_callback($pattern, $replacement, $source, $limit);
+		$result = preg_replace_callback($this->normalizePattern($pattern), $replacement, $source, $limit);
 		if ($result === null) {
 			throw new RegexException(preg_last_error_msg(), preg_last_error());
 		}

@@ -160,12 +160,13 @@ abstract class StringUtility
 		Enforce::throwIfNullOrEmpty($head, InitialValue::EMPTY_STRING, StringException::class);
 		Enforce::throwIfNullOrEmpty($tail, InitialValue::EMPTY_STRING, StringException::class);
 
-		$escHead = Regex::escape($head);
-		$escTail = Regex::escape($tail);
+		$regex = new Regex();
+		$escHead = $regex->escape($head);
+		$escTail = $regex->escape($tail);
 		$pattern = "/$escHead(.+?)$escTail/";
 
 		try {
-			$result = Regex::replaceCallback(
+			$result = $regex->replaceCallback(
 				$source,
 				$pattern,
 				function ($matches) use ($map) {
@@ -421,15 +422,24 @@ abstract class StringUtility
 		return implode($separator, $values);
 	}
 
-	private static function toTrimPattern(string $characters, int $trimTarget)
+	/**
+	 * トリム用パターンの生成。
+	 *
+	 * @param Regex $regex
+	 * @param string $characters
+	 * @param int $trimTarget
+	 * @phpstan-param self::TRIM_TARGET_* $trimTarget
+	 * @return string
+	 */
+	private static function createTrimPattern(Regex $regex, string $characters, int $trimTarget): string
 	{
-		$escapedCharactersPattern = Regex::escape($characters);
+		$escapedCharactersPattern = $regex->escape($characters);
 		$rangePattern = self::replace($escapedCharactersPattern, '\.\.', '-');
 
 		return match ($trimTarget) {
-			self::TRIM_TARGET_START => "/\A[$rangePattern]++|/u",
-			self::TRIM_TARGET_END => "/[$rangePattern]++\z/u",
-			self::TRIM_TARGET_BOTH => "/\A[$rangePattern]++|[$rangePattern]++\z/u",
+			self::TRIM_TARGET_START => "/\A[$rangePattern]++|/",
+			self::TRIM_TARGET_END => "/[$rangePattern]++\z/",
+			self::TRIM_TARGET_BOTH => "/\A[$rangePattern]++|[$rangePattern]++\z/",
 		};
 	}
 
@@ -450,8 +460,9 @@ abstract class StringUtility
 			return \trim($value, $characters);
 		}
 
-		$pattern = self::toTrimPattern($characters, self::TRIM_TARGET_BOTH);
-		$result = Regex::replace($value, $pattern, '');
+		$regex = new Regex();
+		$pattern = self::createTrimPattern($regex, $characters, self::TRIM_TARGET_BOTH);
+		$result = $regex->replace($value, $pattern, '');
 
 		return $result;
 	}
@@ -473,8 +484,9 @@ abstract class StringUtility
 			return ltrim($value, $characters);
 		}
 
-		$pattern = self::toTrimPattern($characters, self::TRIM_TARGET_START);
-		$result = Regex::replace($value, $pattern, '');
+		$regex = new Regex();
+		$pattern = self::createTrimPattern($regex, $characters, self::TRIM_TARGET_START);
+		$result = $regex->replace($value, $pattern, '');
 
 		return $result;
 	}
@@ -496,8 +508,9 @@ abstract class StringUtility
 			return rtrim($value, $characters);
 		}
 
-		$pattern = self::toTrimPattern($characters, self::TRIM_TARGET_END);
-		$result = Regex::replace($value, $pattern, '');
+		$regex = new Regex();
+		$pattern = self::createTrimPattern($regex, $characters, self::TRIM_TARGET_END);
+		$result = $regex->replace($value, $pattern, '');
 
 		return $result;
 	}
