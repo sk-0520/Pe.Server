@@ -32,6 +32,9 @@ class RegexTest extends TestClass
 
 	public function test_matches()
 	{
+		$actual0 = Regex::matches('abc123XYZ', '/(aaaa)/');
+		$this->assertSame(0, count($actual0));
+
 		$actual1 = Regex::matches('abc123XYZ', '/([a-z]+)/');
 		$this->assertSame('abc', $actual1[1]);
 

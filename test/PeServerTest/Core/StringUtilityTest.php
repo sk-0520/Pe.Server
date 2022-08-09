@@ -52,6 +52,9 @@ class StringUtilityTest extends TestClass
 			new Data(1, 'a'),
 			new Data(1, 'あ'),
 			new Data(1, '☃'),
+			new Data(1, "\0"),
+			new Data(2, "\0\0"),
+			new Data(3, "A\0\0"),
 			new Data(1, '⛄'),
 			new Data(1, '👭'),
 			new Data(5, '🧑‍🤝‍🧑'),
@@ -300,7 +303,9 @@ class StringUtilityTest extends TestClass
 			new Data('a', ' a'),
 			new Data('a', 'a '),
 			new Data('a', ' a '),
-			//全角 new Data('a', '　a　'),
+			new Data('あ', '　あ　'),
+			new Data('あ', 'あ　'),
+			new Data('あああ', 'あああ'),
 		];
 		foreach ($tests as $test) {
 			$actual = StringUtility::trim(...$test->args);

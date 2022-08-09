@@ -18,7 +18,10 @@ use Throwable;
 abstract class StringUtility
 {
 	/** トリム対象文字一覧。 */
-	public const TRIM_CHARACTERS = " \n\r\t\v\0";
+	public const TRIM_CHARACTERS = " \n\r\t\v\0　";
+	private const TRIM_TARGET_START = -1;
+	private const TRIM_TARGET_END = 1;
+	private const TRIM_TARGET_BOTH = 0;
 
 	/**
 	 * 文字列が `null` か空か
@@ -418,6 +421,18 @@ abstract class StringUtility
 		return implode($separator, $values);
 	}
 
+	private static function toTrimPattern(string $characters, int $trimTarget)
+	{
+		$escapedCharactersPattern = Regex::escape($characters);
+		$rangePattern = self::replace($escapedCharactersPattern, '\.\.', '-');
+
+		return match ($trimTarget) {
+			self::TRIM_TARGET_START => "/\A[$rangePattern]++|/u",
+			self::TRIM_TARGET_END => "/[$rangePattern]++\z/u",
+			self::TRIM_TARGET_BOTH => "/\A[$rangePattern]++|[$rangePattern]++\z/u",
+		};
+	}
+
 	/**
 	 * トリム処理。
 	 *
@@ -430,7 +445,15 @@ abstract class StringUtility
 	 */
 	public static function trim(string $value, string $characters = self::TRIM_CHARACTERS): string
 	{
-		return \trim($value, $characters);
+		// 1byte文字構成であればそのまま
+		if (strlen($characters) == self::getLength($characters)) {
+			return \trim($value, $characters);
+		}
+
+		$pattern = self::toTrimPattern($characters, self::TRIM_TARGET_BOTH);
+		$result = Regex::replace($value, $pattern, '');
+
+		return $result;
 	}
 
 	/**
@@ -445,7 +468,15 @@ abstract class StringUtility
 	 */
 	public static function trimStart(string $value, string $characters = self::TRIM_CHARACTERS): string
 	{
-		return ltrim($value, $characters);
+		// 1byte文字構成であればそのまま
+		if (strlen($characters) == self::getLength($characters)) {
+			return ltrim($value, $characters);
+		}
+
+		$pattern = self::toTrimPattern($characters, self::TRIM_TARGET_START);
+		$result = Regex::replace($value, $pattern, '');
+
+		return $result;
 	}
 
 	/**
@@ -460,7 +491,15 @@ abstract class StringUtility
 	 */
 	public static function trimEnd(string $value, string $characters = self::TRIM_CHARACTERS): string
 	{
-		return rtrim($value, $characters);
+		// 1byte文字構成であればそのまま
+		if (strlen($characters) == self::getLength($characters)) {
+			return rtrim($value, $characters);
+		}
+
+		$pattern = self::toTrimPattern($characters, self::TRIM_TARGET_END);
+		$result = Regex::replace($value, $pattern, '');
+
+		return $result;
 	}
 
 
