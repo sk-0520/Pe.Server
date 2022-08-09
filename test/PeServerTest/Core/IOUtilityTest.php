@@ -28,13 +28,25 @@ class IOUtilityTest extends TestClass
 		$this->fail();
 	}
 
+	function test_getState()
+	{
+		$state = IOUtility::getState(__FILE__);
+		$this->success();
+	}
+	function test_getState_throw()
+	{
+		$this->expectException(IOException::class);
+		IOUtility::getState(__FILE__ . "\0");
+		$this->fail();
+	}
+
 	function test_createTemporaryFileStream()
 	{
 		try {
 			$stream = IOUtility::createTemporaryFileStream();
 			$stream->dispose();
 			$this->success();
-		} catch(Throwable $ex) {
+		} catch (Throwable $ex) {
 			$this->fail($ex->__toString());
 		}
 	}

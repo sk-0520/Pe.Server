@@ -224,6 +224,20 @@ class Stream extends ResourceBase
 		return self::new($path, 'r+', $encoding);
 	}
 
+	public function getState(): IOState
+	{
+		/** @var ResultData<array<string|int,int>|false> */
+		$result = ErrorHandler::trapError(fn () => fstat($this->resource));
+		if (!$result->success) {
+			throw new IOException();
+		}
+		if ($result->value === false) {
+			throw new IOException();
+		}
+
+		return IOState::createFromStat($result->value);
+	}
+
 	/**
 	 * 現在位置をシーク。
 	 *

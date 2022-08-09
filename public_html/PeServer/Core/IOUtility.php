@@ -4,16 +4,18 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
-use Directory;
 use \stdClass;
+use Directory;
 use PeServer\Core\Binary;
-use PeServer\Core\PathUtility;
 use PeServer\Core\InitialValue;
+use PeServer\Core\IOState;
+use PeServer\Core\PathUtility;
+use PeServer\Core\ResultData;
 use PeServer\Core\Stream;
 use PeServer\Core\Throws\ArgumentException;
+use PeServer\Core\Throws\FileNotFoundException;
 use PeServer\Core\Throws\IOException;
 use PeServer\Core\Throws\ParseException;
-use PeServer\Core\Throws\FileNotFoundException;
 
 /**
  * ファイル(+ディレクトリ)処理系。
@@ -55,6 +57,20 @@ abstract class IOUtility
 		}
 
 		return $result->value;
+	}
+
+	public static function getState(string $path): IOState
+	{
+		/** @var ResultData<array<string|int,int>|false> */
+		$result = ErrorHandler::trapError(fn () => stat($path));
+		if (!$result->success) {
+			throw new IOException();
+		}
+		if ($result->value === false) {
+			throw new IOException();
+		}
+
+		return IOState::createFromStat($result->value);
 	}
 
 	/**
@@ -224,7 +240,6 @@ abstract class IOUtility
 	 * `file_exists`より`is_file`の方が速いらすぃ
 	 *
 	 * `is_file` ラッパー。
-	 *
 	 *
 	 * @param string $path
 	 * @return boolean 存在するか。

@@ -205,6 +205,13 @@ class StreamTest extends TestClass
 		}
 	}
 
+	public function test_getState()
+	{
+		$stream = Stream::open(__FILE__, Stream::MODE_READ);
+		$state = $stream->getState();
+		$this->success();
+	}
+
 	public function test_write_read_binary()
 	{
 		$expected = new Binary("ABC");
@@ -306,5 +313,4 @@ class StreamTest extends TestClass
 		$stream->readLine(0);
 		$this->fail();
 	}
-
 }
