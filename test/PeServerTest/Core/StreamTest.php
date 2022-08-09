@@ -212,6 +212,27 @@ class StreamTest extends TestClass
 		$this->success();
 	}
 
+	public function test_getMetaData()
+	{
+		$stream = Stream::open(__FILE__, Stream::MODE_READ);
+		$state = $stream->getMetaData();
+		$this->success();
+	}
+
+	public function test_getMetaData_temp()
+	{
+		$stream = Stream::openTemporary(10);
+		$memory = $stream->getMetaData();
+		$this->assertSame('php://temp/maxmemory:10', $memory->uri);
+
+		//こっからファイル名とれる思てんけどなぁ
+		// $stream->writeBinary(new Binary('0123456789+'));
+		// $stream->flush();
+		// $file = $stream->getMetaData();
+		// $this->assertSame('php://temp/maxmemory:10', $file->uri);
+	}
+
+
 	public function test_write_read_binary()
 	{
 		$expected = new Binary("ABC");

@@ -10,6 +10,7 @@ use PeServer\Core\Encoding;
 use PeServer\Core\ErrorHandler;
 use PeServer\Core\InitialValue;
 use PeServer\Core\IOUtility;
+use PeServer\Core\StreamMetaData;
 use PeServer\Core\StringUtility;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\IOException;
@@ -217,7 +218,7 @@ class Stream extends ResourceBase
 				throw new ArgumentException('$byteSize: ' . $memoryByteSize);
 			}
 			if ($memoryByteSize) {
-				$path .= ':' . (string)$memoryByteSize;
+				$path .= '/maxmemory:' . (string)$memoryByteSize;
 			}
 		}
 
@@ -226,6 +227,8 @@ class Stream extends ResourceBase
 
 	public function getState(): IOState
 	{
+		$this->throwIfDisposed();
+
 		/** @var ResultData<array<string|int,int>|false> */
 		$result = ErrorHandler::trapError(fn () => fstat($this->resource));
 		if (!$result->success) {
@@ -236,6 +239,14 @@ class Stream extends ResourceBase
 		}
 
 		return IOState::createFromStat($result->value);
+	}
+
+	public function getMetaData(): StreamMetaData
+	{
+		$this->throwIfDisposed();
+
+		$values = stream_get_meta_data($this->resource);
+		return StreamMetaData::createFromStream($values);
 	}
 
 	/**
