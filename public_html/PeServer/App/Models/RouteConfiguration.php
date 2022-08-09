@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\App\Models;
 
 use PeServer\Core\Route;
-use PeServer\Core\InitialValue;
+use PeServer\Core\DefaultValue;
 use PeServer\Core\RouteSetting;
 use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Mvc\Middleware\CsrfMiddleware;
@@ -53,7 +53,7 @@ abstract class RouteConfiguration
 			],
 			[],
 			[
-				(new Route(InitialValue::EMPTY_STRING, HomeController::class))
+				(new Route(DefaultValue::EMPTY_STRING, HomeController::class))
 					->addAction('about', HttpMethod::gets(), 'about')
 					->addAction('about/privacy', HttpMethod::gets(), 'privacy')
 					->addAction('about/contact', HttpMethod::gets(), 'contact_get')

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Domain\Page\Setting;
 
 use PeServer\Core\ArrayUtility;
-use PeServer\Core\InitialValue;
+use PeServer\Core\DefaultValue;
 use PeServer\Core\StringUtility;
 use PeServer\Core\TypeUtility;
 use PeServer\Core\Mvc\LogicCallMode;
@@ -176,7 +176,7 @@ class SettingDefaultPluginLogic extends PageLogicBase
 						$map = [
 							PluginUrlKey::CHECK => $plugin['check_url'],
 							PluginUrlKey::PROJECT => $plugin['project_url'],
-							PluginUrlKey::LANDING => InitialValue::EMPTY_STRING,
+							PluginUrlKey::LANDING => DefaultValue::EMPTY_STRING,
 						];
 						foreach ($map as $k => $v) {
 							$pluginUrlsEntityDao->insertUrl($plugin['plugin_id'], $k, $v);

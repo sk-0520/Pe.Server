@@ -6,7 +6,7 @@ namespace PeServer\Core\Mvc\Middleware;
 
 use PeServer\Core\Regex;
 use PeServer\Core\UrlUtility;
-use PeServer\Core\InitialValue;
+use PeServer\Core\DefaultValue;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Store\SpecialStore;
 use PeServer\Core\Throws\ArgumentException;
@@ -74,7 +74,7 @@ abstract class MiddlewareResult
 	 * @param string $message
 	 * @return MiddlewareResult
 	 */
-	public static function error(HttpStatus $status, string $message = InitialValue::EMPTY_STRING): MiddlewareResult
+	public static function error(HttpStatus $status, string $message = DefaultValue::EMPTY_STRING): MiddlewareResult
 	{
 		return new LocalErrorMiddlewareResultImpl($status, $message);
 	}

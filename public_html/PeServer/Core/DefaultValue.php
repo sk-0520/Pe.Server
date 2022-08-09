@@ -7,10 +7,13 @@ namespace PeServer\Core;
 use PeServer\Core\Throws\CoreError;
 
 /**
- * 初期値。
+ * 標準値。
  */
-abstract class InitialValue
+abstract class DefaultValue
 {
 	/** 空文字列。 */
 	public const EMPTY_STRING = '';
+
+	/** 見つからない系 */
+	public const NOT_FOUND_INDEX = -1;
 }

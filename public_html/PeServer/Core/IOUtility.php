@@ -7,7 +7,7 @@ namespace PeServer\Core;
 use \stdClass;
 use Directory;
 use PeServer\Core\Binary;
-use PeServer\Core\InitialValue;
+use PeServer\Core\DefaultValue;
 use PeServer\Core\IOState;
 use PeServer\Core\PathUtility;
 use PeServer\Core\ResultData;

@@ -19,7 +19,7 @@ use PeServer\Core\Image\Rectangle;
 use PeServer\Core\Image\Color\RgbColor;
 use PeServer\Core\Image\Size;
 use PeServer\Core\Image\TextSetting;
-use PeServer\Core\InitialValue;
+use PeServer\Core\DefaultValue;
 use PeServer\Core\Mvc\TemplatePlugin\TemplateFunctionBase;
 use PeServer\Core\Mvc\TemplatePlugin\TemplatePluginArgument;
 use PeServer\Core\OutputBuffer;
@@ -62,9 +62,9 @@ class BotTextImageFunction extends TemplateFunctionBase
 	private function functionBodyCore(): string
 	{
 		/** @var string */
-		$text = ArrayUtility::getOr($this->params, 'text', InitialValue::EMPTY_STRING);
+		$text = ArrayUtility::getOr($this->params, 'text', DefaultValue::EMPTY_STRING);
 		/** @var string */
-		$alt = ArrayUtility::getOr($this->params, 'alt', InitialValue::EMPTY_STRING);
+		$alt = ArrayUtility::getOr($this->params, 'alt', DefaultValue::EMPTY_STRING);
 		/**
 		 * @var int
 		 * @phpstan-var positive-int
@@ -78,7 +78,7 @@ class BotTextImageFunction extends TemplateFunctionBase
 		/** @var float */
 		$fontSize = (float)ArrayUtility::getOr($this->params, 'font-size', '12.5');
 		/** @var string */
-		$className = ArrayUtility::getOr($this->params, 'class', InitialValue::EMPTY_STRING);
+		$className = ArrayUtility::getOr($this->params, 'class', DefaultValue::EMPTY_STRING);
 		/** @var string */
 		$backgroundColorText = ArrayUtility::getOr($this->params, 'background-color', '#eeeeee');
 		$backgroundColor = RgbColor::fromHtmlColorCode($backgroundColorText);

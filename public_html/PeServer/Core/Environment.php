@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
-use PeServer\Core\InitialValue;
+use PeServer\Core\DefaultValue;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\Enforce;
 
@@ -18,8 +18,8 @@ abstract class Environment
 	 */
 	private static InitializeChecker $initializeChecker;
 
-	private static string $environment = InitialValue::EMPTY_STRING;
-	private static string $revision = InitialValue::EMPTY_STRING;
+	private static string $environment = DefaultValue::EMPTY_STRING;
+	private static string $revision = DefaultValue::EMPTY_STRING;
 
 	public static function initialize(string $locale, string $language, string $environment, string $revision): void
 	{

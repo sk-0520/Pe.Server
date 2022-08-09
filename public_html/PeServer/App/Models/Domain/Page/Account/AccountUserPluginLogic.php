@@ -20,7 +20,7 @@ use PeServer\Core\Database\DatabaseTableResult;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\I18n;
-use PeServer\Core\InitialValue;
+use PeServer\Core\DefaultValue;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\Throws\HttpStatusException;
@@ -106,7 +106,7 @@ class AccountUserPluginLogic extends PageLogicBase
 				$this->setValue('account_plugin_state', $map->fields['plugin_name']);
 			}
 		} else {
-			$this->setValue('account_plugin_state', InitialValue::EMPTY_STRING);
+			$this->setValue('account_plugin_state', DefaultValue::EMPTY_STRING);
 			$this->setValue('plugin_category_mappings', []);
 		}
 	}
@@ -179,9 +179,9 @@ class AccountUserPluginLogic extends PageLogicBase
 				$this->setValue('account_plugin_description', $editMap->fields['description']);
 
 				$urlMap = $pluginUrlsEntityDao->selectUrls($pluginId);
-				$this->setValue('account_plugin_check_url', ArrayUtility::getOr($urlMap, PluginUrlKey::CHECK, InitialValue::EMPTY_STRING));
-				$this->setValue('account_plugin_lp_url', ArrayUtility::getOr($urlMap, PluginUrlKey::LANDING, InitialValue::EMPTY_STRING));
-				$this->setValue('account_plugin_project_url', ArrayUtility::getOr($urlMap, PluginUrlKey::PROJECT, InitialValue::EMPTY_STRING));
+				$this->setValue('account_plugin_check_url', ArrayUtility::getOr($urlMap, PluginUrlKey::CHECK, DefaultValue::EMPTY_STRING));
+				$this->setValue('account_plugin_lp_url', ArrayUtility::getOr($urlMap, PluginUrlKey::LANDING, DefaultValue::EMPTY_STRING));
+				$this->setValue('account_plugin_project_url', ArrayUtility::getOr($urlMap, PluginUrlKey::PROJECT, DefaultValue::EMPTY_STRING));
 
 				$pluginCategoryMappings = $pluginCategoryMappingsEntityDao->selectPluginCategoriesByPluginId($pluginId);
 				$this->setValue('plugin_category_mappings', $pluginCategoryMappings);
@@ -233,7 +233,7 @@ class AccountUserPluginLogic extends PageLogicBase
 					$params['display_name'],
 					PluginState::ENABLED,
 					$params['description'],
-					InitialValue::EMPTY_STRING
+					DefaultValue::EMPTY_STRING
 				);
 			} else {
 				$pluginsEntityDao->updateEditPlugin(

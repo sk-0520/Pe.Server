@@ -6,7 +6,7 @@ namespace PeServer\Core\Mvc\TemplatePlugin;
 
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Environment;
-use PeServer\Core\InitialValue;
+use PeServer\Core\DefaultValue;
 use PeServer\Core\Mvc\TemplatePlugin\TemplateFunctionBase;
 use PeServer\Core\Mvc\TemplatePlugin\TemplatePluginArgument;
 use PeServer\Core\StringUtility;
@@ -36,14 +36,14 @@ class SourceFunction extends TemplateFunctionBase
 	protected function functionBodyImpl(): string
 	{
 		/** @var string */
-		$attributeName = ArrayUtility::getOr($this->params, 'attr', InitialValue::EMPTY_STRING);
+		$attributeName = ArrayUtility::getOr($this->params, 'attr', DefaultValue::EMPTY_STRING);
 		if (StringUtility::isNullOrEmpty($attributeName)) {
-			return InitialValue::EMPTY_STRING;
+			return DefaultValue::EMPTY_STRING;
 		}
 
-		$valuePath = ArrayUtility::getOr($this->params, 'value', InitialValue::EMPTY_STRING);
+		$valuePath = ArrayUtility::getOr($this->params, 'value', DefaultValue::EMPTY_STRING);
 		if (StringUtility::isNullOrEmpty($valuePath)) {
-			return InitialValue::EMPTY_STRING;
+			return DefaultValue::EMPTY_STRING;
 		}
 
 		$ignoreAsset = UrlUtility::isIgnoreCaching($valuePath);

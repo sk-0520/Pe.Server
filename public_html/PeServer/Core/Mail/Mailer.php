@@ -11,7 +11,7 @@ require_once(__DIR__ . '/../../Core/Libs/PHPMailer/src/PHPMailer.php');
 require_once(__DIR__ . '/../../Core/Libs/PHPMailer/src/SMTP.php');
 
 use \PHPMailer\PHPMailer\PHPMailer;
-use PeServer\Core\InitialValue;
+use PeServer\Core\DefaultValue;
 use PeServer\Core\Mail\EmailAddress;
 use PeServer\Core\StringUtility;
 use PeServer\Core\Throws\ArgumentException;
@@ -45,7 +45,7 @@ class Mailer
 	/**
 	 * Return-Path:
 	 */
-	public string $returnPath = InitialValue::EMPTY_STRING;
+	public string $returnPath = DefaultValue::EMPTY_STRING;
 	/**
 	 * FROM:
 	 */
@@ -72,7 +72,7 @@ class Mailer
 	/**
 	 * 件名。
 	 */
-	public string $subject = InitialValue::EMPTY_STRING;
+	public string $subject = DefaultValue::EMPTY_STRING;
 
 	/**
 	 * メッセージ。
@@ -86,7 +86,7 @@ class Mailer
 	 */
 	public function __construct(array $setting)
 	{
-		$this->fromAddress = new EmailAddress(InitialValue::EMPTY_STRING, InitialValue::EMPTY_STRING);
+		$this->fromAddress = new EmailAddress(DefaultValue::EMPTY_STRING, DefaultValue::EMPTY_STRING);
 		$this->message = new EmailMessage();
 
 		switch ($setting['mode']) {

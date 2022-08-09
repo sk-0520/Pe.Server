@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
-use PeServer\Core\InitialValue;
+use PeServer\Core\DefaultValue;
 use PeServer\Core\Throws\ArgumentException;
 
 abstract class Uuid
@@ -58,8 +58,8 @@ abstract class Uuid
 			return true;
 		}
 
-		$a = StringUtility::replace($a, '-', InitialValue::EMPTY_STRING);
-		$b = StringUtility::replace($b, '-', InitialValue::EMPTY_STRING);
+		$a = StringUtility::replace($a, '-', DefaultValue::EMPTY_STRING);
+		$b = StringUtility::replace($b, '-', DefaultValue::EMPTY_STRING);
 
 		if ($a === $b) {
 			return true;
@@ -96,7 +96,7 @@ abstract class Uuid
 		}
 
 		$a = StringUtility::trim($value, '{}');
-		$b = StringUtility::replace($a, '-', InitialValue::EMPTY_STRING);
+		$b = StringUtility::replace($a, '-', DefaultValue::EMPTY_STRING);
 		if (StringUtility::getLength($b) !== 32) {
 			throw new ArgumentException();
 		}

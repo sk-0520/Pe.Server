@@ -11,7 +11,7 @@ use PeServer\App\Models\ResponseJson;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Database\Database;
 use PeServer\Core\Database\IDatabaseContext;
-use PeServer\Core\InitialValue;
+use PeServer\Core\DefaultValue;
 use PeServer\Core\Json;
 use PeServer\Core\Mime;
 use PeServer\Core\Mvc\LogicBase;
@@ -70,7 +70,7 @@ abstract class DomainLogicBase extends LogicBase
 	{
 		$ipAddress = $this->stores->special->getServer('REMOTE_ADDR');
 		$userAgent = $this->stores->special->getServer('HTTP_USER_AGENT');
-		$dumpInfo = InitialValue::EMPTY_STRING;
+		$dumpInfo = DefaultValue::EMPTY_STRING;
 		if (!is_null($info)) {
 			$json ??= new Json();
 

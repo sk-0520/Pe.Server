@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc\TemplatePlugin;
 
 use \Smarty_Internal_Template;
-use PeServer\Core\InitialValue;
+use PeServer\Core\DefaultValue;
 use PeServer\Core\Throws\TypeException;
 use PeServer\Core\Throws\NotSupportedException;
 use PeServer\Core\Mvc\TemplatePlugin\TemplateFunctionBase;
@@ -26,7 +26,7 @@ abstract class TemplateBlockFunctionBase extends TemplateFunctionBase implements
 			$this->params = $params;
 			$this->template = $template;
 
-			return InitialValue::EMPTY_STRING;
+			return DefaultValue::EMPTY_STRING;
 		}
 
 		if (!is_string($content)) {

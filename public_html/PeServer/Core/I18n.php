@@ -87,7 +87,7 @@ abstract class I18n
 		}
 
 		if (!is_null($leaf)) {
-			return self::getFlatMessage($leaf, $locale) ?? InitialValue::EMPTY_STRING;
+			return self::getFlatMessage($leaf, $locale) ?? DefaultValue::EMPTY_STRING;
 		}
 
 

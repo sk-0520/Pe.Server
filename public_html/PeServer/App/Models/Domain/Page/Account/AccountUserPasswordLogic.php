@@ -6,7 +6,7 @@ namespace PeServer\App\Models\Domain\Page\Account;
 
 use PeServer\Core\I18n;
 use PeServer\Core\Cryptography;
-use PeServer\Core\InitialValue;
+use PeServer\Core\DefaultValue;
 use PeServer\Core\StringUtility;
 use PeServer\App\Models\AuditLog;
 use PeServer\Core\Mvc\LogicCallMode;
@@ -65,7 +65,7 @@ class AccountUserPasswordLogic extends PageLogicBase
 
 		$this->validation('account_password_confirm', function (string $key, string $value) {
 			$this->validator->isNotWhiteSpace($key, $value);
-			$newPassword = $this->getRequest('account_password_new', InitialValue::EMPTY_STRING, false);
+			$newPassword = $this->getRequest('account_password_new', DefaultValue::EMPTY_STRING, false);
 			if ($value !== $newPassword) {
 				$this->addError($key, I18n::message('error/password_confirm'));
 			}
@@ -80,7 +80,7 @@ class AccountUserPasswordLogic extends PageLogicBase
 
 		$userInfo = SessionManager::getAccount();
 
-		$newPassword = $this->getRequest('account_password_new', InitialValue::EMPTY_STRING, false);
+		$newPassword = $this->getRequest('account_password_new', DefaultValue::EMPTY_STRING, false);
 
 		$params = [
 			'user_id' => $userInfo->userId,

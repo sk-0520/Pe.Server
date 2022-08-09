@@ -8,7 +8,7 @@ use \DateTimeImmutable;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Cryptography;
 use PeServer\Core\InitializeChecker;
-use PeServer\Core\InitialValue;
+use PeServer\Core\DefaultValue;
 use PeServer\Core\Log\FileLogger;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\MultiLogger;
@@ -104,7 +104,7 @@ abstract class Logging
 	{
 		if (is_null($message)) {
 			if (ArrayUtility::isNullOrEmpty($parameters)) {
-				return InitialValue::EMPTY_STRING;
+				return DefaultValue::EMPTY_STRING;
 			}
 			return StringUtility::dump($parameters);
 		}
@@ -145,7 +145,7 @@ abstract class Logging
 	{
 		// @phpstan-ignore-next-line
 		if (!self::IS_ENABLED_HOST) {
-			return InitialValue::EMPTY_STRING;
+			return DefaultValue::EMPTY_STRING;
 		}
 
 		if (self::$requestHost !== null) {
@@ -153,21 +153,21 @@ abstract class Logging
 		}
 
 		/** @var string */
-		$serverRemoteHost = self::$stores->special->getServer('REMOTE_HOST', InitialValue::EMPTY_STRING);
-		if ($serverRemoteHost !== InitialValue::EMPTY_STRING) {
+		$serverRemoteHost = self::$stores->special->getServer('REMOTE_HOST', DefaultValue::EMPTY_STRING);
+		if ($serverRemoteHost !== DefaultValue::EMPTY_STRING) {
 			return self::$requestHost = $serverRemoteHost;
 		}
 
 		/** @var string */
-		$serverRemoteIpAddr = self::$stores->special->getServer('REMOTE_ADDR', InitialValue::EMPTY_STRING);
-		if ($serverRemoteIpAddr === InitialValue::EMPTY_STRING) {
-			return self::$requestHost = InitialValue::EMPTY_STRING;
+		$serverRemoteIpAddr = self::$stores->special->getServer('REMOTE_ADDR', DefaultValue::EMPTY_STRING);
+		if ($serverRemoteIpAddr === DefaultValue::EMPTY_STRING) {
+			return self::$requestHost = DefaultValue::EMPTY_STRING;
 		}
 
 		/** @var string|false */
 		$hostName = gethostbyaddr($serverRemoteIpAddr);
 		if ($hostName === false) {
-			return self::$requestHost = InitialValue::EMPTY_STRING;
+			return self::$requestHost = DefaultValue::EMPTY_STRING;
 		}
 
 		return self::$requestHost = $hostName;
@@ -204,7 +204,7 @@ abstract class Logging
 
 		$timestamp = new DateTimeImmutable();
 		/** @var string */
-		$filePath = ArrayUtility::getOr($traceCaller, 'file', InitialValue::EMPTY_STRING);
+		$filePath = ArrayUtility::getOr($traceCaller, 'file', DefaultValue::EMPTY_STRING);
 
 		/** @var array<string,string> */
 		$map = [
@@ -212,20 +212,20 @@ abstract class Logging
 			'DATE' => $timestamp->format('Y-m-d'),
 			'TIME' => $timestamp->format('H:i:s'),
 			'TIMEZONE' => $timestamp->format('P'),
-			'CLIENT_IP' => self::$stores->special->getServer('REMOTE_ADDR', InitialValue::EMPTY_STRING),
+			'CLIENT_IP' => self::$stores->special->getServer('REMOTE_ADDR', DefaultValue::EMPTY_STRING),
 			'CLIENT_HOST' => self::getRemoteHost(),
 			'REQUEST_ID' => self::$requestId,
-			'UA' => self::$stores->special->getServer('HTTP_USER_AGENT', InitialValue::EMPTY_STRING),
-			'METHOD' => self::$stores->special->getServer('REQUEST_METHOD', InitialValue::EMPTY_STRING),
-			'REQUEST' => self::$stores->special->getServer('REQUEST_URI', InitialValue::EMPTY_STRING),
+			'UA' => self::$stores->special->getServer('HTTP_USER_AGENT', DefaultValue::EMPTY_STRING),
+			'METHOD' => self::$stores->special->getServer('REQUEST_METHOD', DefaultValue::EMPTY_STRING),
+			'REQUEST' => self::$stores->special->getServer('REQUEST_URI', DefaultValue::EMPTY_STRING),
 			'SESSION' => session_id(),
 			//-------------------
 			'FILE' => $filePath,
 			'FILE_NAME' => PathUtility::getFileName($filePath),
 			'LINE' => ArrayUtility::getOr($traceCaller, 'line', 0),
-			//'CLASS' => ArrayUtility::getOr($traceMethod, 'class', InitialValue::EMPTY_STRING),
-			'FUNCTION' => ArrayUtility::getOr($traceMethod, 'function', InitialValue::EMPTY_STRING),
-			//'ARGS' => ArrayUtility::getOr($traceMethod, 'args', InitialValue::EMPTY_STRING),
+			//'CLASS' => ArrayUtility::getOr($traceMethod, 'class', DefaultValue::EMPTY_STRING),
+			'FUNCTION' => ArrayUtility::getOr($traceMethod, 'function', DefaultValue::EMPTY_STRING),
+			//'ARGS' => ArrayUtility::getOr($traceMethod, 'args', DefaultValue::EMPTY_STRING),
 			//-------------------
 			'LEVEL' => self::formatLevel($level),
 			'HEADER' => $header,

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc\TemplatePlugin;
 
 use PeServer\Core\ArrayUtility;
-use PeServer\Core\InitialValue;
+use PeServer\Core\DefaultValue;
 use PeServer\Core\StringUtility;
 use PeServer\Core\TypeUtility;
 use PeServer\Core\Html\HtmlElement;
@@ -48,7 +48,7 @@ class InputHelperFunction extends TemplateFunctionBase
 	private function addMainElement(HtmlDocument $dom, mixed $targetValue): HtmlElement
 	{
 		/** @var string */
-		$type = ArrayUtility::getOr($this->params, 'type', InitialValue::EMPTY_STRING);
+		$type = ArrayUtility::getOr($this->params, 'type', DefaultValue::EMPTY_STRING);
 
 		switch ($type) {
 			case 'textarea': {
@@ -102,7 +102,7 @@ class InputHelperFunction extends TemplateFunctionBase
 		}
 
 		/** @var string|string[]|bool|int */
-		$targetValue = InitialValue::EMPTY_STRING;
+		$targetValue = DefaultValue::EMPTY_STRING;
 		if ($this->existsValues()) {
 			$values = $this->getValues();
 			if (ArrayUtility::tryGet($values, $targetKey, $result)) {

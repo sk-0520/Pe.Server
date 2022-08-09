@@ -9,7 +9,7 @@ use PeServer\Core\UrlUtility;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Cryptography;
 use PeServer\Core\Mail\EmailAddress;
-use PeServer\Core\InitialValue;
+use PeServer\Core\DefaultValue;
 use PeServer\Core\StringUtility;
 use PeServer\App\Models\AppMailer;
 use PeServer\App\Models\AppTemplate;
@@ -55,8 +55,8 @@ class AccountSignupStep1Logic extends PageLogicBase
 		});
 
 		$temp = $this->popTemporary(self::TEMP_TOKEN);
-		$tempValue = ArrayUtility::getOr($temp, 'value', InitialValue::EMPTY_STRING);
-		$tempToken = ArrayUtility::getOr($temp, 'token', InitialValue::EMPTY_STRING);
+		$tempValue = ArrayUtility::getOr($temp, 'value', DefaultValue::EMPTY_STRING);
+		$tempToken = ArrayUtility::getOr($temp, 'token', DefaultValue::EMPTY_STRING);
 
 		$inputValue = $this->getRequest('account_signup_value');
 		$inputToken = $this->getRequest('account_signup_token');
@@ -148,7 +148,7 @@ class AccountSignupStep1Logic extends PageLogicBase
 			'value' => $tempValue,
 		]);
 		$this->setValue('account_signup_token', $tempToken);
-		$this->setValue('account_signup_value', InitialValue::EMPTY_STRING);
+		$this->setValue('account_signup_value', DefaultValue::EMPTY_STRING);
 		$this->setValue('value', $tempValue);
 	}
 }

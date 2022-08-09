@@ -6,7 +6,7 @@ namespace PeServer\Core\Mvc\TemplatePlugin;
 
 use PeServer\Core\I18n;
 use PeServer\Core\ArrayUtility;
-use PeServer\Core\InitialValue;
+use PeServer\Core\DefaultValue;
 use PeServer\Core\Mvc\Validator;
 use PeServer\Core\Html\HtmlDocument;
 use PeServer\Core\Mvc\TemplatePlugin\TemplateFunctionBase;
@@ -33,13 +33,13 @@ class ShowErrorMessagesFunction extends TemplateFunctionBase
 	protected function functionBodyImpl(): string
 	{
 		if (!$this->existsError()) {
-			return InitialValue::EMPTY_STRING;
+			return DefaultValue::EMPTY_STRING;
 		}
 
 		$errors = $this->getErrors();
 
 		if (ArrayUtility::isNullOrEmpty($errors)) {
-			return InitialValue::EMPTY_STRING;
+			return DefaultValue::EMPTY_STRING;
 		}
 
 		$targetKey = Validator::COMMON;
@@ -54,10 +54,10 @@ class ShowErrorMessagesFunction extends TemplateFunctionBase
 
 		if ($targetKey !== Validator::COMMON) {
 			if (!isset($errors[$targetKey])) {
-				return InitialValue::EMPTY_STRING;
+				return DefaultValue::EMPTY_STRING;
 			}
 			if (ArrayUtility::isNullOrEmpty($errors[$targetKey])) {
-				return InitialValue::EMPTY_STRING;
+				return DefaultValue::EMPTY_STRING;
 			}
 		}
 

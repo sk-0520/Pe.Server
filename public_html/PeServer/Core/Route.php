@@ -8,7 +8,7 @@ use PeServer\Core\Regex;
 use PeServer\Core\Action;
 use PeServer\Core\RouteAction;
 use PeServer\Core\ArrayUtility;
-use PeServer\Core\InitialValue;
+use PeServer\Core\DefaultValue;
 use PeServer\Core\StringUtility;
 use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Http\HttpStatus;
@@ -109,7 +109,7 @@ class Route
 		$this->className = $className;
 
 		if (!$this->regex->isMatch($this->basePath, $this->excludeIndexPattern)) {
-			$this->addAction(InitialValue::EMPTY_STRING, HttpMethod::gets(), 'index', $this->baseMiddleware, $this->baseShutdownMiddleware);
+			$this->addAction(DefaultValue::EMPTY_STRING, HttpMethod::gets(), 'index', $this->baseMiddleware, $this->baseShutdownMiddleware);
 		}
 	}
 
@@ -250,7 +250,7 @@ class Route
 					$length = StringUtility::getLength($value);
 					$targetValue = urldecode($actionPaths[$i]);
 					if ($length === 0 || $value[0] !== ':') {
-						return ['key' => $value, 'name' => InitialValue::EMPTY_STRING, 'value' => $targetValue];
+						return ['key' => $value, 'name' => DefaultValue::EMPTY_STRING, 'value' => $targetValue];
 					}
 					$splitPaths = StringUtility::split($value, '@', 2);
 					$requestKey = StringUtility::substring($splitPaths[0], 1);

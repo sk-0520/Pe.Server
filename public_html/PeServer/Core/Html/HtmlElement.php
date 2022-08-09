@@ -7,7 +7,7 @@ namespace PeServer\Core\Html;
 use \DOMElement;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Html\HtmlDocument;
-use PeServer\Core\InitialValue;
+use PeServer\Core\DefaultValue;
 use PeServer\Core\StringUtility;
 use PeServer\Core\Throws\HtmlDocumentException;
 
@@ -39,7 +39,7 @@ final class HtmlElement extends HtmlElementBase
 	{
 		if (is_bool($value)) {
 			if ($value) {
-				$value = InitialValue::EMPTY_STRING;
+				$value = DefaultValue::EMPTY_STRING;
 			} else {
 				if ($this->raw->hasAttribute($qualifiedName)) {
 					$this->raw->removeAttribute($qualifiedName);

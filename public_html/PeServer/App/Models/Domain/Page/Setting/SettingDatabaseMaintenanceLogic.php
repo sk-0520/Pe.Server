@@ -9,7 +9,7 @@ use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Database\IDatabaseContext;
-use PeServer\Core\InitialValue;
+use PeServer\Core\DefaultValue;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\Mvc\Validator;
@@ -55,7 +55,7 @@ class SettingDatabaseMaintenanceLogic extends PageLogicBase
 
 		$database = $this->openDatabase();
 		/** @var int|mixed[]|Throwable */
-		$result = InitialValue::EMPTY_STRING;
+		$result = DefaultValue::EMPTY_STRING;
 		try {
 			$database->transaction(function (IDatabaseContext $context) use (&$result, $statement) {
 				/** @phpstan-var literal-string $statement これはええねん */

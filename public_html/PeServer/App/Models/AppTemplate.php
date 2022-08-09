@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models;
 
-use PeServer\Core\InitialValue;
+use PeServer\Core\DefaultValue;
 use PeServer\Core\Mvc\Template;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mvc\TemplateParameter;
@@ -22,7 +22,7 @@ abstract class AppTemplate
 	 */
 	private static function buildTemplate(string $baseName, string $templateName, array $params, HttpStatus $status): string
 	{
-		$template = Template::create('template/' . $baseName, InitialValue::EMPTY_STRING, InitialValue::EMPTY_STRING);
+		$template = Template::create('template/' . $baseName, DefaultValue::EMPTY_STRING, DefaultValue::EMPTY_STRING);
 		$result = $template->build($templateName . '.tpl', new TemplateParameter($status, $params, []));
 
 		return $result;

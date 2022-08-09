@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
-use PeServer\Core\InitialValue;
+use PeServer\Core\DefaultValue;
 use PeServer\Core\Throws\Throws;
 use PeServer\Core\Throws\RegexException;
 use PeServer\Core\Throws\StringException;
@@ -157,8 +157,8 @@ abstract class StringUtility
 	 */
 	public static function replaceMap(string $source, array $map, string $head = '{', string $tail = '}'): string
 	{
-		Enforce::throwIfNullOrEmpty($head, InitialValue::EMPTY_STRING, StringException::class);
-		Enforce::throwIfNullOrEmpty($tail, InitialValue::EMPTY_STRING, StringException::class);
+		Enforce::throwIfNullOrEmpty($head, DefaultValue::EMPTY_STRING, StringException::class);
+		Enforce::throwIfNullOrEmpty($tail, DefaultValue::EMPTY_STRING, StringException::class);
 
 		$regex = new Regex();
 		$escHead = $regex->escape($head);
@@ -173,7 +173,7 @@ abstract class StringUtility
 					if (isset($map[$matches[1]])) {
 						return $map[$matches[1]];
 					}
-					return InitialValue::EMPTY_STRING;
+					return DefaultValue::EMPTY_STRING;
 				}
 			);
 
@@ -219,7 +219,8 @@ abstract class StringUtility
 	 * @param string $needle 検索文字列。
 	 * @param integer $offset 開始文字数目。
 	 * @phpstan-param UnsignedIntegerAlias $offset
-	 * @return integer 見つかった文字位置。見つかんない場合は -1
+	 * @return integer 見つかった文字位置。見つかんない場合は `DefaultValue::NOT_FOUND_INDEX`
+	 * @phpstan-return UnsignedIntegerAlias|DefaultValue::NOT_FOUND_INDEX
 	 * @throws ArgumentException
 	 */
 	public static function getPosition(string $haystack, string $needle, int $offset = 0): int
@@ -230,7 +231,7 @@ abstract class StringUtility
 
 		$result =  mb_strpos($haystack, $needle, $offset);
 		if ($result === false) {
-			return -1;
+			return DefaultValue::NOT_FOUND_INDEX;
 		}
 
 		return $result;
@@ -243,7 +244,8 @@ abstract class StringUtility
 	 * @param string $needle 検索文字列。
 	 * @param integer $offset 終端文字数目。
 	 * @phpstan-param UnsignedIntegerAlias $offset
-	 * @return integer 見つかった文字位置。見つかんない場合は -1
+	 * @return integer 見つかった文字位置。見つかんない場合は `DefaultValue::NOT_FOUND_INDEX`
+	 * @phpstan-return UnsignedIntegerAlias|DefaultValue::NOT_FOUND_INDEX
 	 * @throws ArgumentException
 	 */
 	public static function getLastPosition(string $haystack, string $needle, int $offset = 0): int
@@ -254,7 +256,7 @@ abstract class StringUtility
 
 		$result =  mb_strrpos($haystack, $needle, $offset);
 		if ($result === false) {
-			return -1;
+			return DefaultValue::NOT_FOUND_INDEX;
 		}
 
 		return $result;

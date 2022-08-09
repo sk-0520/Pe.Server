@@ -8,7 +8,7 @@ use PeServer\Core\ArrayUtility;
 use PeServer\Core\Binary;
 use PeServer\Core\Encoding;
 use PeServer\Core\ErrorHandler;
-use PeServer\Core\InitialValue;
+use PeServer\Core\DefaultValue;
 use PeServer\Core\IOUtility;
 use PeServer\Core\StreamMetaData;
 use PeServer\Core\StringUtility;
@@ -511,7 +511,7 @@ class Stream extends ResourceBase
 	{
 		$result = $this->readBinaryContents();
 		if (!$result->getLength()) {
-			return InitialValue::EMPTY_STRING;
+			return DefaultValue::EMPTY_STRING;
 		}
 
 		return $this->encoding->toString($result);

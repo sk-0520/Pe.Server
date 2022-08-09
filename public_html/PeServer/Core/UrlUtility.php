@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core;
 
 use PeServer\Core\ArrayUtility;
-use PeServer\Core\InitialValue;
+use PeServer\Core\DefaultValue;
 use PeServer\Core\Store\SpecialStore;
 use PeServer\Core\StringUtility;
 use PeServer\Core\Throws\ArgumentException;
@@ -23,7 +23,7 @@ abstract class UrlUtility
 	public static function convertPathToUrl(string $path, SpecialStore $specialStore): string
 	{
 		/** @var string */
-		$httpsProtocol = $specialStore->getServer('HTTPS', InitialValue::EMPTY_STRING);
+		$httpsProtocol = $specialStore->getServer('HTTPS', DefaultValue::EMPTY_STRING);
 		$httpProtocol = StringUtility::isNullOrEmpty($httpsProtocol) ? 'http://' : 'https://';
 		return $httpProtocol . $specialStore->getServer('SERVER_NAME') . '/' .  StringUtility::trim($path, '/');
 	}

@@ -6,7 +6,7 @@ namespace PeServer\App\Models;
 
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Environment;
-use PeServer\Core\InitialValue;
+use PeServer\Core\DefaultValue;
 use PeServer\Core\Mail\EmailAddress;
 use PeServer\Core\Mail\Mailer;
 use PeServer\Core\StringUtility;
@@ -16,7 +16,7 @@ use PeServer\Core\StringUtility;
  */
 final class AppMailer extends Mailer
 {
-	private string $overwriteTarget = InitialValue::EMPTY_STRING;
+	private string $overwriteTarget = DefaultValue::EMPTY_STRING;
 
 	public function __construct()
 	{
