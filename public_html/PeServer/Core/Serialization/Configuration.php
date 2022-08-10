@@ -2,9 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core;
+namespace PeServer\Core\Serialization;
 
+use PeServer\Core\ArrayUtility;
+use PeServer\Core\Code;
 use PeServer\Core\DefaultValue;
+use PeServer\Core\IO\Directory;
+use PeServer\Core\IO\File;
+use PeServer\Core\IO\Path;
+use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
 
 /**
@@ -41,8 +47,8 @@ class Configuration
 	 */
 	protected function getEnvironmentFileName(string $fileName): string
 	{
-		$baseFileName = PathUtility::getFileNameWithoutExtension($fileName);
-		$baseFileExtension = PathUtility::getFileExtension($fileName, false);
+		$baseFileName = Path::getFileNameWithoutExtension($fileName);
+		$baseFileExtension = Path::getFileExtension($fileName, false);
 		$environmentFileName = $baseFileName . '.' . $this->environment . '.' . $baseFileExtension;
 
 		return $environmentFileName;
@@ -58,11 +64,11 @@ class Configuration
 	 */
 	public function load(string $directoryPath, string $fileName, string $fileType = self::FILE_TYPE_DEFAULT): array
 	{
-		$baseFileExtension = PathUtility::getFileExtension($fileName, false);
+		$baseFileExtension = Path::getFileExtension($fileName, false);
 
 		$confType = $fileType;
 		if ($fileType === self::FILE_TYPE_DEFAULT) {
-			$confType = match (StringUtility::toLower($baseFileExtension)) {
+			$confType = match (Text::toLower($baseFileExtension)) {
 				'json' => self::FILE_TYPE_JSON,
 				default => self::FILE_TYPE_DEFAULT,
 			};
@@ -72,17 +78,17 @@ class Configuration
 			throw new ArgumentException('$fileName');
 		}
 
-		$baseFilePath = PathUtility::combine($directoryPath, $fileName);
-		$environmentFilePath = PathUtility::combine($directoryPath, $this->getEnvironmentFileName($fileName));
+		$baseFilePath = Path::combine($directoryPath, $fileName);
+		$environmentFilePath = Path::combine($directoryPath, $this->getEnvironmentFileName($fileName));
 
 		/** @var array<mixed> */
 		$configuration = [];
 
 		/** @var array<mixed> */
-		$baseConfiguration = IOUtility::readJsonFile($baseFilePath);
-		if (IOUtility::existsFile($environmentFilePath)) {
+		$baseConfiguration = File::readJsonFile($baseFilePath);
+		if (File::exists($environmentFilePath)) {
 			/** @var array<mixed> */
-			$environmentConfiguration = IOUtility::readJsonFile($environmentFilePath);
+			$environmentConfiguration = File::readJsonFile($environmentFilePath);
 			$configuration = ArrayUtility::replace($baseConfiguration, $environmentConfiguration);
 		} else {
 			$configuration = $baseConfiguration;
@@ -108,7 +114,7 @@ class Configuration
 			if (is_array($value)) {
 				$array[$key] = $this->replace($value, $map, $head, $tail);
 			} else if (is_string($value)) {
-				$array[$key] = StringUtility::replaceMap(Code::toLiteralString($value), $map, $head, $tail);
+				$array[$key] = Text::replaceMap(Code::toLiteralString($value), $map, $head, $tail);
 			}
 		}
 

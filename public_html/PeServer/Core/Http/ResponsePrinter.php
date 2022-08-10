@@ -6,7 +6,7 @@ namespace PeServer\Core\Http;
 
 use PeServer\Core\Binary;
 use PeServer\Core\Http\HttpResponse;
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 
 /**
  * HTTPレスポンス出力処理。
@@ -44,7 +44,7 @@ class ResponsePrinter
 		} else if ($this->response->content instanceof Binary) {
 			return $this->response->content->getLength();
 		} else if (is_string($this->response->content)) {
-			return StringUtility::getByteCount($this->response->content);
+			return Text::getByteCount($this->response->content);
 		}
 
 		return -1;

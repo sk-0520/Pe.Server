@@ -2,21 +2,22 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core;
+namespace PeServer\Core\Mvc;
 
-use PeServer\Core\Regex;
-use PeServer\Core\Action;
-use PeServer\Core\RouteAction;
 use PeServer\Core\ArrayUtility;
+use PeServer\Core\Code;
 use PeServer\Core\DefaultValue;
-use PeServer\Core\StringUtility;
 use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Http\RequestPath;
+use PeServer\Core\Mvc\Action;
 use PeServer\Core\Mvc\ControllerBase;
-use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Mvc\Middleware\IMiddleware;
 use PeServer\Core\Mvc\Middleware\IShutdownMiddleware;
+use PeServer\Core\Mvc\RouteAction;
+use PeServer\Core\Regex;
+use PeServer\Core\Text;
+use PeServer\Core\Throws\ArgumentException;
 
 /**
  * ルーティング情報。
@@ -89,11 +90,11 @@ class Route
 	{
 		$this->regex = new Regex();
 
-		if (StringUtility::isNullOrEmpty($path)) {
+		if (Text::isNullOrEmpty($path)) {
 			$this->basePath = $path;
 		} else {
-			$trimPath = StringUtility::trim($path);
-			if ($trimPath !== StringUtility::trim($trimPath, '/')) {
+			$trimPath = Text::trim($path);
+			if ($trimPath !== Text::trim($trimPath, '/')) {
 				throw new ArgumentException('path start or end -> /');
 			}
 			//@phpstan-ignore-next-line
@@ -173,7 +174,7 @@ class Route
 
 		$this->actions[$actionName]->add(
 			$httpMethod,
-			StringUtility::isNullOrEmpty($methodName) ? $actionName : $methodName,
+			Text::isNullOrEmpty($methodName) ? $actionName : $methodName,
 			$customMiddleware,
 			$customShutdownMiddleware
 		);
@@ -219,7 +220,7 @@ class Route
 	 */
 	public function getAction(HttpMethod $httpMethod, RequestPath $requestPath): ?RouteAction
 	{
-		if (!StringUtility::startsWith($requestPath->full, $this->basePath, false)) {
+		if (!Text::startsWith($requestPath->full, $this->basePath, false)) {
 			return new RouteAction(
 				HttpStatus::notFound(),
 				$this->className,
@@ -229,31 +230,31 @@ class Route
 		}
 
 		//$actionPath = $requestPaths[count($requestPaths) - 1];
-		$actionPath = StringUtility::trimStart(StringUtility::substring($requestPath->full, StringUtility::getLength($this->basePath)), '/');
-		$actionPaths = StringUtility::split($actionPath, '/');
+		$actionPath = Text::trimStart(Text::substring($requestPath->full, Text::getLength($this->basePath)), '/');
+		$actionPaths = Text::split($actionPath, '/');
 
 		if (!isset($this->actions[$actionPath])) {
 			// URLパラメータチェック
 			foreach ($this->actions as $key => $action) {
 				// 定義内にURLパラメータが無ければ破棄
-				if (!StringUtility::contains($key, ':', false)) {
+				if (!Text::contains($key, ':', false)) {
 					continue;
 				}
 
-				$keyPaths = StringUtility::split($key, '/');
+				$keyPaths = Text::split($key, '/');
 				if (ArrayUtility::getCount($keyPaths) !== ArrayUtility::getCount($actionPaths)) {
 					continue;
 				}
 
 				/** @var array<array{key:string,name:string,value:string}> */
 				$calcPaths = array_filter(array_map(function ($i, $value) use ($actionPaths) {
-					$length = StringUtility::getLength($value);
+					$length = Text::getLength($value);
 					$targetValue = urldecode($actionPaths[$i]);
 					if ($length === 0 || $value[0] !== ':') {
 						return ['key' => $value, 'name' => DefaultValue::EMPTY_STRING, 'value' => $targetValue];
 					}
-					$splitPaths = StringUtility::split($value, '@', 2);
-					$requestKey = StringUtility::substring($splitPaths[0], 1);
+					$splitPaths = Text::split($value, '@', 2);
+					$requestKey = Text::substring($splitPaths[0], 1);
 					$isRegex = 1 < ArrayUtility::getCount($splitPaths);
 					if ($isRegex) {
 						$pattern = Code::toLiteralString("/$splitPaths[1]/");
@@ -276,7 +277,7 @@ class Route
 				$success = true;
 				for ($i = 0; $i < $calcPathLength && $success; $i++) {
 					$calcPath = $calcPaths[$i];
-					if (StringUtility::isNullOrEmpty($calcPath['name'])) {
+					if (Text::isNullOrEmpty($calcPath['name'])) {
 						$success = $calcPath['key'] === $actionPaths[$i];
 					}
 				}
@@ -284,13 +285,13 @@ class Route
 					continue;
 				}
 
-				$calcKey = StringUtility::join('/', array_column($calcPaths, 'key'));
+				$calcKey = Text::join('/', array_column($calcPaths, 'key'));
 				if ($key !== $calcKey) {
 					continue;
 				}
 
 				$calcParameters = array_filter($calcPaths, function ($i) {
-					return !StringUtility::isNullOrEmpty($i['name']);
+					return !Text::isNullOrEmpty($i['name']);
 				});
 
 				$flatParameters = [];

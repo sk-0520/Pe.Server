@@ -2,16 +2,17 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core;
+namespace PeServer\Core\IO;
 
+use PeServer\Core\ArrayUtility;
 use PeServer\Core\DefaultValue;
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
 
 /**
  * パス処理系。
  */
-abstract class PathUtility
+abstract class Path
 {
 	/**
 	 * パスの正規化。
@@ -21,8 +22,8 @@ abstract class PathUtility
 	 */
 	public static function normalize(string $path): string
 	{
-		$targetPath = StringUtility::replace($path, ['/', '\\'], DIRECTORY_SEPARATOR);
-		$parts = array_filter(StringUtility::split($targetPath, DIRECTORY_SEPARATOR), 'mb_strlen');
+		$targetPath = Text::replace($path, ['/', '\\'], DIRECTORY_SEPARATOR);
+		$parts = array_filter(Text::split($targetPath, DIRECTORY_SEPARATOR), 'mb_strlen');
 		$absolutes = [];
 		foreach ($parts as $part) {
 			if ($part === '.') {
@@ -35,8 +36,8 @@ abstract class PathUtility
 			}
 		}
 
-		$result = StringUtility::join(DIRECTORY_SEPARATOR, $absolutes);
-		if (StringUtility::getByteCount($targetPath) && $targetPath[0] === DIRECTORY_SEPARATOR) {
+		$result = Text::join(DIRECTORY_SEPARATOR, $absolutes);
+		if (Text::getByteCount($targetPath) && $targetPath[0] === DIRECTORY_SEPARATOR) {
 			$result = DIRECTORY_SEPARATOR . $result;
 		}
 
@@ -53,14 +54,14 @@ abstract class PathUtility
 	public static function combine(string $basePath, string ...$addPaths): string
 	{
 		$paths = array_merge([$basePath], array_map(function ($s) {
-			return StringUtility::trim($s, '/\\');
+			return Text::trim($s, '/\\');
 		}, $addPaths));
 		$paths = array_filter($paths, function ($v, $k) {
-			return !StringUtility::isNullOrEmpty($v) && ($k === 0 ? true :  $v !== '/' && $v !== '\\');
+			return !Text::isNullOrEmpty($v) && ($k === 0 ? true :  $v !== '/' && $v !== '\\');
 		}, ARRAY_FILTER_USE_BOTH);
 
 
-		$joinedPath = StringUtility::join(DIRECTORY_SEPARATOR, $paths);
+		$joinedPath = Text::join(DIRECTORY_SEPARATOR, $paths);
 		return self::normalize($joinedPath);
 	}
 
@@ -95,25 +96,25 @@ abstract class PathUtility
 	 */
 	public static function getFileExtension(string $path, bool $withDot = false): string
 	{
-		if (StringUtility::isNullOrWhiteSpace($path)) {
+		if (Text::isNullOrWhiteSpace($path)) {
 			return DefaultValue::EMPTY_STRING;
 		}
 
-		$dotIndex = StringUtility::getLastPosition($path, '.');
+		$dotIndex = Text::getLastPosition($path, '.');
 		if ($dotIndex === DefaultValue::NOT_FOUND_INDEX) {
 			return DefaultValue::EMPTY_STRING;
 		}
 
-		$result = StringUtility::substring($path, $dotIndex);
+		$result = Text::substring($path, $dotIndex);
 		if ($withDot) {
 			return $result;
 		}
 
-		if (!StringUtility::getByteCount($result)) {
+		if (!Text::getByteCount($result)) {
 			return DefaultValue::EMPTY_STRING;
 		}
 
-		return StringUtility::substring($result, 1);
+		return Text::substring($result, 1);
 	}
 
 	/**
@@ -125,12 +126,12 @@ abstract class PathUtility
 	public static function getFileNameWithoutExtension(string $path): string
 	{
 		$fileName = self::getFileName($path);
-		$dotIndex = StringUtility::getLastPosition($fileName, '.');
+		$dotIndex = Text::getLastPosition($fileName, '.');
 		if ($dotIndex === DefaultValue::NOT_FOUND_INDEX) {
 			return $fileName;
 		}
 
-		return StringUtility::substring($fileName, 0, $dotIndex);
+		return Text::substring($fileName, 0, $dotIndex);
 	}
 
 	/**
@@ -145,7 +146,7 @@ abstract class PathUtility
 	 */
 	public static function toParts(string $path): PathParts
 	{
-		if (StringUtility::isNullOrWhiteSpace($path)) {
+		if (Text::isNullOrWhiteSpace($path)) {
 			throw new ArgumentException('$path');
 		}
 

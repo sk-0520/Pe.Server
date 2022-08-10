@@ -7,7 +7,7 @@ namespace PeServer\Core;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\DefaultValue;
 use PeServer\Core\Store\SpecialStore;
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
 
 /**
@@ -24,8 +24,8 @@ abstract class UrlUtility
 	{
 		/** @var string */
 		$httpsProtocol = $specialStore->getServer('HTTPS', DefaultValue::EMPTY_STRING);
-		$httpProtocol = StringUtility::isNullOrEmpty($httpsProtocol) ? 'http://' : 'https://';
-		return $httpProtocol . $specialStore->getServer('SERVER_NAME') . '/' .  StringUtility::trim($path, '/');
+		$httpProtocol = Text::isNullOrEmpty($httpsProtocol) ? 'http://' : 'https://';
+		return $httpProtocol . $specialStore->getServer('SERVER_NAME') . '/' .  Text::trim($path, '/');
 	}
 
 	/**
@@ -82,7 +82,7 @@ abstract class UrlUtility
 		$items = [];
 		foreach ($query as $key => $value) {
 			if (is_int($key)) {
-				if (!StringUtility::isNullOrEmpty($value)) {
+				if (!Text::isNullOrEmpty($value)) {
 					$items[] = self::encode($value, $queryKind);
 				}
 			} else {
@@ -90,7 +90,7 @@ abstract class UrlUtility
 			}
 		}
 
-		return StringUtility::join('&', $items);
+		return Text::join('&', $items);
 	}
 
 	/**
@@ -106,7 +106,7 @@ abstract class UrlUtility
 	public static function joinQuery(string $baseUrl, array $query, int $queryKind = self::URL_KIND_RFC1738): string
 	{
 		if (!ArrayUtility::isNullOrEmpty($query)) {
-			if (StringUtility::contains($baseUrl, '?', false)) {
+			if (Text::contains($baseUrl, '?', false)) {
 				return $baseUrl . '&' . self::buildQuery($query, $queryKind);
 			}
 
@@ -141,14 +141,14 @@ abstract class UrlUtility
 	 */
 	public static function joinPath(string $baseUrl, string ...$paths): string
 	{
-		$pair = StringUtility::split($baseUrl, '?', 2);
-		$url = StringUtility::trimEnd($pair[0], '/');
+		$pair = Text::split($baseUrl, '?', 2);
+		$url = Text::trimEnd($pair[0], '/');
 
 		$trimPaths = array_values(array_map(function ($i) {
-			return StringUtility::trim($i, " \t/?");
+			return Text::trim($i, " \t/?");
 		}, $paths));
 
-		$joinUrl = StringUtility::join('/', [$url, ...$trimPaths]);
+		$joinUrl = Text::join('/', [$url, ...$trimPaths]);
 		if (1 < ArrayUtility::getCount($pair)) {
 			$joinUrl .= '?' . $pair[1];
 		}
@@ -165,13 +165,13 @@ abstract class UrlUtility
 	public static function isIgnoreCaching(string $path): bool
 	{
 		$isExternal =
-			StringUtility::startsWith($path, '//', false)
+			Text::startsWith($path, '//', false)
 			||
-			StringUtility::startsWith($path, 'https://', false)
+			Text::startsWith($path, 'https://', false)
 			||
-			StringUtility::startsWith($path, 'http://', false)
+			Text::startsWith($path, 'http://', false)
 			||
-			StringUtility::contains($path, '?', false);
+			Text::contains($path, '?', false);
 
 		return $isExternal;
 	}

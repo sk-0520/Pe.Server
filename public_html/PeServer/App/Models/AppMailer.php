@@ -9,7 +9,7 @@ use PeServer\Core\Environment;
 use PeServer\Core\DefaultValue;
 use PeServer\Core\Mail\EmailAddress;
 use PeServer\Core\Mail\Mailer;
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 
 /**
  * アプリケーション側で使用するメール送信機能。
@@ -28,7 +28,7 @@ final class AppMailer extends Mailer
 
 		if (!Environment::isProduction() && isset(AppConfiguration::$config['debug'])) {
 			$target = ArrayUtility::getOr(AppConfiguration::$config['debug'], 'mail_overwrite_target', '');
-			if (!StringUtility::isNullOrWhiteSpace($target)) {
+			if (!Text::isNullOrWhiteSpace($target)) {
 				$this->overwriteTarget = $target;
 			}
 		}
@@ -38,7 +38,7 @@ final class AppMailer extends Mailer
 	{
 		$result = parent::convertAddress($kind, $data);
 
-		if ($kind != parent::ADDRESS_KIND_TO || StringUtility::isNullOrWhiteSpace($this->overwriteTarget)) {
+		if ($kind != parent::ADDRESS_KIND_TO || Text::isNullOrWhiteSpace($this->overwriteTarget)) {
 			return $result;
 		}
 

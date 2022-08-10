@@ -10,7 +10,7 @@ use PeServer\Core\ArrayUtility;
 use PeServer\Core\Cryptography;
 use PeServer\Core\Mail\EmailAddress;
 use PeServer\Core\DefaultValue;
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 use PeServer\App\Models\AppMailer;
 use PeServer\App\Models\AppTemplate;
 use PeServer\Core\Mvc\LogicCallMode;
@@ -109,7 +109,7 @@ class AccountSignupStep1Logic extends PageLogicBase
 		});
 
 		//TODO: 設定からとるのかリダイレクトみたいにサーバーからとるのか混在中
-		$baseUrl = StringUtility::replaceMap(
+		$baseUrl = Text::replaceMap(
 			/** @phpstan-ignore-next-line */
 			AppConfiguration::$config['config']['address']['public_url'],
 			[

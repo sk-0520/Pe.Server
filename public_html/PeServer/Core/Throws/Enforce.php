@@ -7,7 +7,7 @@ namespace PeServer\Core\Throws;
 use \Throwable;
 use PeServer\Core\Code;
 use PeServer\Core\ReflectionUtility;
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 use PeServer\Core\Throws\EnforceClassNameError;
 use PeServer\Core\Throws\EnforceException;
 use PeServer\Core\Type;
@@ -79,7 +79,7 @@ abstract class Enforce
 	 */
 	public static function throwIfNullOrEmpty(?string $value, string $argument = '', string $exceptionClass = EnforceException::class): void
 	{
-		if (StringUtility::isNullOrEmpty($value)) {
+		if (Text::isNullOrEmpty($value)) {
 			self::throwCore($argument, $exceptionClass);
 		}
 	}
@@ -95,7 +95,7 @@ abstract class Enforce
 	 */
 	public static function throwIfNullOrWhiteSpace(?string $value, string $argument = '', string $exceptionClass = EnforceException::class): void
 	{
-		if (StringUtility::isNullOrWhiteSpace($value)) {
+		if (Text::isNullOrWhiteSpace($value)) {
 			self::throwCore($argument, $exceptionClass);
 		}
 	}

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Store;
 
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 use PeServer\Core\Store\CookieOption;
 use PeServer\Core\Throws\ArgumentException;
 
@@ -23,7 +23,7 @@ class TemporaryOption
 		public string $savePath,
 		public CookieOption $cookie
 	) {
-		if (StringUtility::isNullOrWhiteSpace($name)) {
+		if (Text::isNullOrWhiteSpace($name)) {
 			throw new ArgumentException('$name');
 		}
 	}

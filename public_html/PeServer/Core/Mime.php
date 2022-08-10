@@ -32,7 +32,7 @@ abstract class Mime
 	public static function fromFileName(string $fileName): string
 	{
 		$result =  mime_content_type($fileName);
-		if ($result === false || StringUtility::isNullOrEmpty($result)) {
+		if ($result === false || Text::isNullOrEmpty($result)) {
 			throw new ArgumentException($fileName);
 		}
 

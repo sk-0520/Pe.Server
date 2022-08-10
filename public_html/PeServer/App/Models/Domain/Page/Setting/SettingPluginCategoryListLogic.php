@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domain\Page\Setting;
 
-use PeServer\Core\IOUtility;
+use PeServer\Core\IO\IOUtility;
 use PeServer\Core\SizeConverter;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;

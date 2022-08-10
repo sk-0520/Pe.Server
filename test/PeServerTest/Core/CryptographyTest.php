@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServerTest\Core;
 
 use PeServer\Core\Cryptography;
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\CryptoException;
 use PeServerTest\Data;
@@ -27,7 +27,7 @@ class CryptographyTest extends TestClass
 		foreach ($tests as $test) {
 			$enc = Cryptography::encrypt($test['algorithm'], $test['input'], $test['password']);
 			$dec = Cryptography::decrypt($enc, $test['password']);
-			$this->assertSame($test['input'], $dec, StringUtility::dump(['test' => $test, 'enc' => $enc]));
+			$this->assertSame($test['input'], $dec, Text::dump(['test' => $test, 'enc' => $enc]));
 		}
 	}
 
@@ -95,7 +95,7 @@ class CryptographyTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = Cryptography::generateRandomString(...$test->args);
-			$this->assertSame($test->expected, StringUtility::getLength($actual), $test->str());
+			$this->assertSame($test->expected, Text::getLength($actual), $test->str());
 		}
 	}
 }

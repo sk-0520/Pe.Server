@@ -12,11 +12,11 @@ use PeServer\Core\ArrayUtility;
 use PeServer\Core\Database\Database;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\DefaultValue;
-use PeServer\Core\Json;
+use PeServer\Core\Serialization\Json;
 use PeServer\Core\Mime;
 use PeServer\Core\Mvc\LogicBase;
 use PeServer\Core\Mvc\LogicParameter;
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 
 
 abstract class DomainLogicBase extends LogicBase
@@ -117,7 +117,7 @@ abstract class DomainLogicBase extends LogicBase
 	 */
 	protected function writeAuditLogTargetUser(string $userId, string $event, ?array $info = null, ?IDatabaseContext $context = null): int
 	{
-		if (StringUtility::isNullOrWhiteSpace($userId)) {
+		if (Text::isNullOrWhiteSpace($userId)) {
 			$this->logger->error('監査ログ ユーザーID不正のため書き込み中止');
 			return -1;
 		}

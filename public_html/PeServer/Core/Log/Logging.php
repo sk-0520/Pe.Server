@@ -12,9 +12,9 @@ use PeServer\Core\DefaultValue;
 use PeServer\Core\Log\FileLogger;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\MultiLogger;
-use PeServer\Core\PathUtility;
+use PeServer\Core\IO\Path;
 use PeServer\Core\Store\Stores;
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 use PeServer\Core\Throws\NotImplementedException;
 
 /**
@@ -106,7 +106,7 @@ abstract class Logging
 			if (ArrayUtility::isNullOrEmpty($parameters)) {
 				return DefaultValue::EMPTY_STRING;
 			}
-			return StringUtility::dump($parameters);
+			return Text::dump($parameters);
 		}
 
 		if (is_string($message) && !ArrayUtility::isNullOrEmpty($parameters) && array_keys($parameters)[0] === 0) {
@@ -116,7 +116,7 @@ abstract class Logging
 					return $value;
 				}
 				if (is_object($value) || is_array($value)) {
-					return StringUtility::dump($value);
+					return Text::dump($value);
 				}
 
 				return strval($value);
@@ -128,7 +128,7 @@ abstract class Logging
 				$map[strval($key)] = $value;
 			}
 
-			return StringUtility::replaceMap($message, $map);
+			return Text::replaceMap($message, $map);
 		}
 
 		if (ArrayUtility::isNullOrEmpty($parameters)) {
@@ -136,9 +136,9 @@ abstract class Logging
 				return $message;
 			}
 
-			return StringUtility::dump($message);
+			return Text::dump($message);
 		}
-		return StringUtility::dump(['message' => $message, 'parameters' => $parameters]);
+		return Text::dump(['message' => $message, 'parameters' => $parameters]);
 	}
 
 	private static function getRemoteHost(): string
@@ -221,7 +221,7 @@ abstract class Logging
 			'SESSION' => session_id(),
 			//-------------------
 			'FILE' => $filePath,
-			'FILE_NAME' => PathUtility::getFileName($filePath),
+			'FILE_NAME' => Path::getFileName($filePath),
 			'LINE' => ArrayUtility::getOr($traceCaller, 'line', 0),
 			//'CLASS' => ArrayUtility::getOr($traceMethod, 'class', DefaultValue::EMPTY_STRING),
 			'FUNCTION' => ArrayUtility::getOr($traceMethod, 'function', DefaultValue::EMPTY_STRING),
@@ -232,7 +232,7 @@ abstract class Logging
 			'MESSAGE' => self::formatMessage($message, ...$parameters),
 		];
 
-		return StringUtility::replaceMap($format, $map);
+		return Text::replaceMap($format, $map);
 	}
 
 	/**

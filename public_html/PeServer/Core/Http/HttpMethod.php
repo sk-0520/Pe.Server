@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Http;
 
 use PeServer\Core\ArrayUtility;
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
 
 /**
@@ -66,7 +66,7 @@ abstract class HttpMethod
 	public static function from(string $requestMethod): HttpMethod
 	{
 		//@phpstan-ignore-next-line
-		return new LocalHttpMethodImpl(StringUtility::toUpper(StringUtility::trim($requestMethod)));
+		return new LocalHttpMethodImpl(Text::toUpper(Text::trim($requestMethod)));
 	}
 
 	/**

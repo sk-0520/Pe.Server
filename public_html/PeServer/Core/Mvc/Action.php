@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core;
+namespace PeServer\Core\Mvc;
 
-use PeServer\Core\ActionSetting;
+use PeServer\Core\ArrayUtility;
 use PeServer\Core\Http\HttpMethod;
+use PeServer\Core\Mvc\ActionSetting;
 use PeServer\Core\Mvc\Middleware\IMiddleware;
 use PeServer\Core\Mvc\Middleware\IShutdownMiddleware;
 

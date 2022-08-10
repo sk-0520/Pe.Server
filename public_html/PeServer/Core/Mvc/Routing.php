@@ -2,36 +2,32 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core;
+namespace PeServer\Core\Mvc;
 
-use PeServer\Core\Log\ILogger;
-use PeServer\Core\Log\Logging;
 use PeServer\Core\ArrayUtility;
-use PeServer\Core\RouteSetting;
-use PeServer\Core\Store\Stores;
-use PeServer\Core\ActionSetting;
 use PeServer\Core\Http\HttpHeader;
 use PeServer\Core\Http\HttpMethod;
-use PeServer\Core\Http\HttpStatus;
-use PeServer\Core\Store\StorePack;
 use PeServer\Core\Http\HttpRequest;
-use PeServer\Core\Http\RequestPath;
 use PeServer\Core\Http\HttpResponse;
-use PeServer\Core\Store\CookieStore;
-use PeServer\Core\Store\StoreOption;
-use PeServer\Core\Mvc\ControllerBase;
-use PeServer\Core\Store\SessionStore;
-use PeServer\Core\Store\SpecialStore;
-use PeServer\Core\Store\StoreOptions;
+use PeServer\Core\Http\HttpStatus;
+use PeServer\Core\Http\RequestPath;
 use PeServer\Core\Http\ResponsePrinter;
-use PeServer\Core\Store\TemporaryStore;
+use PeServer\Core\Log\ILogger;
+use PeServer\Core\Log\Logging;
+use PeServer\Core\Mvc\ActionSetting;
 use PeServer\Core\Mvc\ControllerArgument;
-use PeServer\Core\Mvc\Result\IActionResult;
-use PeServer\Core\Throws\ArgumentException;
+use PeServer\Core\Mvc\ControllerBase;
 use PeServer\Core\Mvc\Middleware\IMiddleware;
-use PeServer\Core\Mvc\Middleware\MiddlewareResult;
-use PeServer\Core\Mvc\Middleware\MiddlewareArgument;
 use PeServer\Core\Mvc\Middleware\IShutdownMiddleware;
+use PeServer\Core\Mvc\Middleware\MiddlewareArgument;
+use PeServer\Core\Mvc\Middleware\MiddlewareResult;
+use PeServer\Core\Mvc\Result\IActionResult;
+use PeServer\Core\Mvc\RouteAction;
+use PeServer\Core\Mvc\RouteSetting;
+use PeServer\Core\OutputBuffer;
+use PeServer\Core\ReflectionUtility;
+use PeServer\Core\Store\Stores;
+use PeServer\Core\Text;
 
 /**
  * ルーティング。
@@ -226,7 +222,7 @@ class Routing
 	 */
 	private function executeAction(string $rawControllerName, ActionSetting $actionSetting, array $urlParameters): void
 	{
-		$splitNames = StringUtility::split($rawControllerName, '/');
+		$splitNames = Text::split($rawControllerName, '/');
 		/** @phpstan-var class-string<ControllerBase> */
 		$controllerName = $splitNames[ArrayUtility::getCount($splitNames) - 1];
 

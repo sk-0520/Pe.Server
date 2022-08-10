@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Http;
 
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 
 
 /**
@@ -30,13 +30,13 @@ class RequestPath
 	public function __construct(string $requestUri, string $skipPath)
 	{
 		$request = $requestUri;
-		if (!StringUtility::isNullOrWhiteSpace($skipPath)) {
+		if (!Text::isNullOrWhiteSpace($skipPath)) {
 			//TODO: リバースプロキシとかの場合, form のアクション、各リソースへのパスの書き換え未考慮 必要に迫られたら考える
 		}
 
-		$reqs = StringUtility::split($request, '?', 2);
+		$reqs = Text::split($request, '?', 2);
 
-		$this->full = StringUtility::trim($reqs[0], '/');
-		$this->tree = StringUtility::split($this->full, '/');
+		$this->full = Text::trim($reqs[0], '/');
+		$this->tree = Text::split($this->full, '/');
 	}
 }

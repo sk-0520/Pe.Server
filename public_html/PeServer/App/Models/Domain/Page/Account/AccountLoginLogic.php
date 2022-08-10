@@ -16,7 +16,7 @@ use PeServer\Core\I18n;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\Mvc\Validator;
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 
 class AccountLoginLogic extends PageLogicBase
 {
@@ -42,12 +42,12 @@ class AccountLoginLogic extends PageLogicBase
 		}
 
 		$loginId = $this->getRequest('account_login_login_id');
-		if (StringUtility::isNullOrWhiteSpace($loginId)) {
+		if (Text::isNullOrWhiteSpace($loginId)) {
 			$this->addError(Validator::COMMON, I18n::message(self::ERROR_LOGIN_PARAMETER));
 		}
 
 		$password = $this->getRequest('account_login_password');
-		if (StringUtility::isNullOrWhiteSpace($password)) {
+		if (Text::isNullOrWhiteSpace($password)) {
 			$this->addError(Validator::COMMON, I18n::message(self::ERROR_LOGIN_PARAMETER));
 		}
 	}

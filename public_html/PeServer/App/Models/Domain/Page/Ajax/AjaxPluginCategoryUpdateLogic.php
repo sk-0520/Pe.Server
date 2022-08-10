@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domain\Page\Ajax;
 
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 use PeServer\Core\TypeUtility;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\App\Models\ResponseJson;
@@ -32,8 +32,8 @@ class AjaxPluginCategoryUpdateLogic extends PageLogicBase
 
 		$params = [
 			'plugin_category_id' => $this->getRequest('plugin_category_id'),
-			'category_display_name' => StringUtility::trim(TypeUtility::toString($json['category_display_name'])),
-			'category_description' => StringUtility::trim(TypeUtility::toString($json['category_description'])),
+			'category_display_name' => Text::trim(TypeUtility::toString($json['category_display_name'])),
+			'category_description' => Text::trim(TypeUtility::toString($json['category_description'])),
 		];
 
 		$database = $this->openDatabase();

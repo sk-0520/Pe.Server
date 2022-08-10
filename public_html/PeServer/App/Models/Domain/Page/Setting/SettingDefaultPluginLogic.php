@@ -6,7 +6,7 @@ namespace PeServer\App\Models\Domain\Page\Setting;
 
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\DefaultValue;
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 use PeServer\Core\TypeUtility;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
@@ -169,7 +169,7 @@ class SettingDefaultPluginLogic extends PageLogicBase
 							$plugin['plugin_name'],
 							$plugin['plugin_name'],
 							PluginState::ENABLED,
-							StringUtility::join("\n\n", $plugin['descriptions']),
+							Text::join("\n\n", $plugin['descriptions']),
 							'Pe専用プラグイン'
 						);
 

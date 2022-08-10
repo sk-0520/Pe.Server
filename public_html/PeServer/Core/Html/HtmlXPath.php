@@ -13,7 +13,7 @@ use \DOMText;
 use \DOMXPath;
 use PeServer\Core\Html\HtmlDocument;
 use PeServer\Core\Html\HtmlNodeBase;
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 use PeServer\Core\Throws\HtmlXPathException;
 
 /**
@@ -58,7 +58,7 @@ class HtmlXPath
 			} else if ($node instanceof DOMDocument) {
 				$result[] = new HtmlDocument();
 			} else {
-				throw new HtmlXPathException(StringUtility::dump($node));
+				throw new HtmlXPathException(Text::dump($node));
 			}
 		}
 		return $result;

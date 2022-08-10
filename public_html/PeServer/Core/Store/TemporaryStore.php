@@ -5,18 +5,20 @@ declare(strict_types=1);
 namespace PeServer\Core\Store;
 
 use \DateInterval;
-use PeServer\Core\Utc;
-use PeServer\Core\IOUtility;
-use PeServer\Core\PathUtility;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Cryptography;
 use PeServer\Core\DefaultValue;
-use PeServer\Core\StringUtility;
+use PeServer\Core\IO\Directory;
+use PeServer\Core\IO\File;
+use PeServer\Core\IO\IOUtility;
+use PeServer\Core\IO\Path;
 use PeServer\Core\Store\CookieStore;
 use PeServer\Core\Store\TemporaryOption;
+use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\ArgumentNullException;
 use PeServer\Core\Throws\InvalidOperationException;
+use PeServer\Core\Utc;
 
 /**
  * 一時データ管理処理。
@@ -54,10 +56,10 @@ class TemporaryStore
 		/** @readonly */
 		private CookieStore $cookie
 	) {
-		if (StringUtility::isNullOrWhiteSpace($option->name)) {
+		if (Text::isNullOrWhiteSpace($option->name)) {
 			throw new ArgumentException('$option->name');
 		}
-		if (StringUtility::isNullOrWhiteSpace($option->savePath)) {
+		if (Text::isNullOrWhiteSpace($option->savePath)) {
 			throw new ArgumentException('$option->savePath');
 		}
 		if (is_null($option->cookie->span)) {
@@ -68,7 +70,7 @@ class TemporaryStore
 	private function hasId(): bool
 	{
 		if ($this->cookie->tryGet($this->option->name, $nameValue)) {
-			if (!StringUtility::isNullOrWhiteSpace($nameValue)) {
+			if (!Text::isNullOrWhiteSpace($nameValue)) {
 				return true;
 			}
 		}
@@ -100,23 +102,23 @@ class TemporaryStore
 		if (ArrayUtility::getCount($this->values)) {
 			$this->cookie->set($this->option->name, $id, $this->option->cookie);
 
-			IOUtility::createParentDirectoryIfNotExists($path);
-			IOUtility::writeJsonFile($path, [
+			Directory::createParentDirectoryIfNotExists($path);
+			File::writeJsonFile($path, [
 				'timestamp' => Utc::createString(),
 				'values' => $this->values
 			]);
 		} else {
 			$this->cookie->remove($this->option->name);
 
-			if (IOUtility::existsFile($path)) {
-				IOUtility::removeFile($path);
+			if (File::exists($path)) {
+				File::removeFile($path);
 			}
 		}
 	}
 
 	private function getFilePath(string $id): string
 	{
-		$path = PathUtility::combine($this->option->savePath, "$id.json");
+		$path = Path::combine($this->option->savePath, "$id.json");
 		return $path;
 	}
 
@@ -129,16 +131,16 @@ class TemporaryStore
 		$this->isImported = true;
 
 		$path = $this->getFilePath($id);
-		if (!IOUtility::existsFile($path)) {
+		if (!File::exists($path)) {
 			return;
 		}
 
 		/** @var array<string,mixed> */
-		$json = IOUtility::readJsonFile($path);
+		$json = File::readJsonFile($path);
 
 		/** @var string */
 		$timestamp = ArrayUtility::getOr($json, 'timestamp', DefaultValue::EMPTY_STRING);
-		if (StringUtility::isNullOrWhiteSpace($timestamp)) {
+		if (Text::isNullOrWhiteSpace($timestamp)) {
 			return;
 		}
 		if (!Utc::tryParse($timestamp, $datetime)) {

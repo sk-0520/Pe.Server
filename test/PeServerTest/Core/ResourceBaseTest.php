@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PeServerTest\Core;
 
-use PeServer\Core\IOUtility;
-use PeServer\Core\PathUtility;
+use PeServer\Core\IO\File;
+use PeServer\Core\IO\Path;
 use \stdClass;
 use \TypeError;
 use PeServer\Core\ResourceBase;
@@ -60,7 +60,7 @@ class ResourceBaseTest extends TestClass
 	public function test_constructor_closed_throw()
 	{
 		$this->expectException(ArgumentException::class);
-		$f = IOUtility::createTemporaryFilePath();
+		$f = File::createTemporaryFilePath();
 		$resource = fopen($f, 'w');
 		fclose($resource);
 		try {
@@ -82,8 +82,8 @@ class ResourceBaseTest extends TestClass
 				}
 			};
 		} finally {
-			if (IOUtility::existsFile($f)) {
-				IOUtility::removeFile($f);
+			if (File::exists($f)) {
+				File::removeFile($f);
 			}
 		}
 		$this->fail();

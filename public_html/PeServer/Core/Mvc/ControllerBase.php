@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc;
 
-use PeServer\Core\Code;
 use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Log\ILogger;
@@ -19,10 +18,11 @@ use PeServer\Core\Mvc\Result\ViewActionResult;
 use PeServer\Core\Mvc\TemplateParameter;
 use PeServer\Core\ReflectionUtility;
 use PeServer\Core\Store\Stores;
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 use PeServer\Core\Throws\InvalidOperationException;
-use PeServer\Core\Type;
 use PeServer\Core\UrlUtility;
+
+
 
 
 /**
@@ -155,13 +155,13 @@ abstract class ControllerBase
 		$lastWord = 'Controller';
 
 		$skipBaseName = $this->getSkipBaseName();
-		$index = StringUtility::getPosition($controllerName, $skipBaseName);
-		$length = StringUtility::getLength($skipBaseName);
+		$index = Text::getPosition($controllerName, $skipBaseName);
+		$length = Text::getLength($skipBaseName);
 
-		$controllerClassName = StringUtility::substring($controllerName, $index + $length + 1);
-		$controllerBaseName = StringUtility::substring($controllerClassName, 0, StringUtility::getLength($controllerClassName) - StringUtility::getLength($lastWord));
+		$controllerClassName = Text::substring($controllerName, $index + $length + 1);
+		$controllerBaseName = Text::substring($controllerClassName, 0, Text::getLength($controllerClassName) - Text::getLength($lastWord));
 
-		$templateDirPath = StringUtility::replace($controllerBaseName, '\\', DIRECTORY_SEPARATOR);
+		$templateDirPath = Text::replace($controllerBaseName, '\\', DIRECTORY_SEPARATOR);
 
 		return new ViewActionResult($templateDirPath, $action, $parameter, $this->getResponseHeaders());
 	}

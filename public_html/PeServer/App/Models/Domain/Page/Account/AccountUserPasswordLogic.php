@@ -7,7 +7,7 @@ namespace PeServer\App\Models\Domain\Page\Account;
 use PeServer\Core\I18n;
 use PeServer\Core\Cryptography;
 use PeServer\Core\DefaultValue;
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 use PeServer\App\Models\AuditLog;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
@@ -51,7 +51,7 @@ class AccountUserPasswordLogic extends PageLogicBase
 			if (!Cryptography::verifyPassword($value, $passwords->fields['current_password'])) {
 				$this->addError($key, I18n::message('error/password_incorrect'));
 			}
-			if (!StringUtility::isNullOrEmpty($passwords->fields['generated_password'])) {
+			if (!Text::isNullOrEmpty($passwords->fields['generated_password'])) {
 				if (!Cryptography::verifyPassword($value, $passwords->fields['generated_password'])) {
 					$this->addError($key, I18n::message('error/password_generate'));
 				}

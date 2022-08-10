@@ -9,7 +9,7 @@ use PeServer\Core\Environment;
 use PeServer\Core\DefaultValue;
 use PeServer\Core\Mvc\TemplatePlugin\TemplateFunctionBase;
 use PeServer\Core\Mvc\TemplatePlugin\TemplatePluginArgument;
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 use PeServer\Core\UrlUtility;
 
 /**
@@ -37,12 +37,12 @@ class SourceFunction extends TemplateFunctionBase
 	{
 		/** @var string */
 		$attributeName = ArrayUtility::getOr($this->params, 'attr', DefaultValue::EMPTY_STRING);
-		if (StringUtility::isNullOrEmpty($attributeName)) {
+		if (Text::isNullOrEmpty($attributeName)) {
 			return DefaultValue::EMPTY_STRING;
 		}
 
 		$valuePath = ArrayUtility::getOr($this->params, 'value', DefaultValue::EMPTY_STRING);
-		if (StringUtility::isNullOrEmpty($valuePath)) {
+		if (Text::isNullOrEmpty($valuePath)) {
 			return DefaultValue::EMPTY_STRING;
 		}
 

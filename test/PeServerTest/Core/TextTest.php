@@ -6,10 +6,10 @@ namespace PeServerTest\Core;
 
 use PeServerTest\Data;
 use PeServerTest\TestClass;
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
 
-class StringUtilityTest extends TestClass
+class TextTest extends TestClass
 {
 	public function test_isNullOrEmpty()
 	{
@@ -21,7 +21,7 @@ class StringUtilityTest extends TestClass
 			new Data(false, 'abc'),
 		];
 		foreach ($tests as $test) {
-			$actual = StringUtility::isNullOrEmpty(...$test->args);
+			$actual = Text::isNullOrEmpty(...$test->args);
 			$this->assertSame($test->expected, $actual, $test->str()); //@php-ignore-line
 		}
 	}
@@ -40,7 +40,7 @@ class StringUtilityTest extends TestClass
 			new Data(false, 'abc'),
 		];
 		foreach ($tests as $test) {
-			$actual = StringUtility::isNullOrWhiteSpace(...$test->args);
+			$actual = Text::isNullOrWhiteSpace(...$test->args);
 			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
@@ -62,7 +62,7 @@ class StringUtilityTest extends TestClass
 
 		];
 		foreach ($tests as $test) {
-			$actual = StringUtility::getLength(...$test->args);
+			$actual = Text::getLength(...$test->args);
 			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
@@ -82,7 +82,7 @@ class StringUtilityTest extends TestClass
 
 		];
 		foreach ($tests as $test) {
-			$actual = StringUtility::getCharacterLength(...$test->args);
+			$actual = Text::getCharacterLength(...$test->args);
 			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
@@ -95,7 +95,7 @@ class StringUtilityTest extends TestClass
 			new Data('AB', [65, 66]),
 		];
 		foreach ($tests as $test) {
-			$actual = StringUtility::fromCodePoint(...$test->args);
+			$actual = Text::fromCodePoint(...$test->args);
 			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
@@ -109,7 +109,7 @@ class StringUtilityTest extends TestClass
 			new Data('(a)[a]<a>', '({A})[{A}]<{A}>', ['A' => 'a',]),
 		];
 		foreach ($tests as $test) {
-			$actual = StringUtility::replaceMap(...$test->args);
+			$actual = Text::replaceMap(...$test->args);
 			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
@@ -121,7 +121,7 @@ class StringUtilityTest extends TestClass
 			new Data('1,234', 1234),
 		];
 		foreach ($tests as $test) {
-			$actual = StringUtility::formatNumber(...$test->args);
+			$actual = Text::formatNumber(...$test->args);
 			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
@@ -139,7 +139,7 @@ class StringUtilityTest extends TestClass
 			new Data(-1, 'abcあいう☃⛄', '☃', 7),
 		];
 		foreach ($tests as $test) {
-			$actual = StringUtility::getPosition(...$test->args);
+			$actual = Text::getPosition(...$test->args);
 			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
@@ -165,7 +165,7 @@ class StringUtilityTest extends TestClass
 			new Data(false, 'abc', 'ABCD', true),
 		];
 		foreach ($tests as $test) {
-			$actual = StringUtility::startsWith(...$test->args);
+			$actual = Text::startsWith(...$test->args);
 			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
@@ -191,7 +191,7 @@ class StringUtilityTest extends TestClass
 			new Data(false, 'abc', 'ABCD', true),
 		];
 		foreach ($tests as $test) {
-			$actual = StringUtility::endsWith(...$test->args);
+			$actual = Text::endsWith(...$test->args);
 			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
@@ -224,7 +224,7 @@ class StringUtilityTest extends TestClass
 			new Data(false, 'abc', 'ABCD', true),
 		];
 		foreach ($tests as $test) {
-			$actual = StringUtility::contains(...$test->args);
+			$actual = Text::contains(...$test->args);
 			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
@@ -241,7 +241,7 @@ class StringUtilityTest extends TestClass
 			new Data('🐎', 'あ感☃🐎', 3),
 		];
 		foreach ($tests as $test) {
-			$actual = StringUtility::substring(...$test->args);
+			$actual = Text::substring(...$test->args);
 			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
@@ -254,7 +254,7 @@ class StringUtilityTest extends TestClass
 			new Data('aａ', 'aＡ'),
 		];
 		foreach ($tests as $test) {
-			$actual = StringUtility::toLower(...$test->args);
+			$actual = Text::toLower(...$test->args);
 			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
@@ -267,7 +267,7 @@ class StringUtilityTest extends TestClass
 			new Data('AＡ', 'aａ'),
 		];
 		foreach ($tests as $test) {
-			$actual = StringUtility::toUpper(...$test->args);
+			$actual = Text::toUpper(...$test->args);
 			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
@@ -279,7 +279,7 @@ class StringUtilityTest extends TestClass
 			new Data(['a', 'b', 'c'], 'a::b::c', '::'),
 		];
 		foreach ($tests as $test) {
-			$actual = StringUtility::split(...$test->args);
+			$actual = Text::split(...$test->args);
 			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
@@ -291,7 +291,7 @@ class StringUtilityTest extends TestClass
 			new Data('a,b,c', ',', ['a', 'b', 'c']),
 		];
 		foreach ($tests as $test) {
-			$actual = StringUtility::join(...$test->args);
+			$actual = Text::join(...$test->args);
 			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
@@ -310,7 +310,7 @@ class StringUtilityTest extends TestClass
 			new Data('かきくけこ', 'あいうえおかきくけこあいうえお', 'あ..お'),
 		];
 		foreach ($tests as $test) {
-			$actual = StringUtility::trim(...$test->args);
+			$actual = Text::trim(...$test->args);
 			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
@@ -327,7 +327,7 @@ class StringUtilityTest extends TestClass
 			new Data('⚽🥅', '🥅⚽🥅', '🥅'),
 		];
 		foreach ($tests as $test) {
-			$actual = StringUtility::trimStart(...$test->args);
+			$actual = Text::trimStart(...$test->args);
 			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
@@ -343,7 +343,7 @@ class StringUtilityTest extends TestClass
 			new Data('🥅⚽', '🥅⚽🥅', '🥅'),
 		];
 		foreach ($tests as $test) {
-			$actual = StringUtility::trimEnd(...$test->args);
+			$actual = Text::trimEnd(...$test->args);
 			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
@@ -360,7 +360,7 @@ class StringUtilityTest extends TestClass
 			new Data('aあｱ☃🏇', 'aあｱ☃⛄', '⛄', '🏇'),
 		];
 		foreach ($tests as $test) {
-			$actual = StringUtility::replace(...$test->args);
+			$actual = Text::replace(...$test->args);
 			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
@@ -372,7 +372,7 @@ class StringUtilityTest extends TestClass
 			new Data('___abc', 'ABCabc', ['A', 'B', 'C'], '_'),
 		];
 		foreach ($tests as $test) {
-			$actual = StringUtility::replace(...$test->args);
+			$actual = Text::replace(...$test->args);
 			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
@@ -385,7 +385,7 @@ class StringUtilityTest extends TestClass
 			new Data('aa', 'a', 2),
 		];
 		foreach ($tests as $test) {
-			$actual = StringUtility::repeat(...$test->args);
+			$actual = Text::repeat(...$test->args);
 			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
@@ -393,7 +393,7 @@ class StringUtilityTest extends TestClass
 	public function test_repeat_throw()
 	{
 		$this->expectException(ArgumentException::class);
-		StringUtility::repeat('', -1);
+		Text::repeat('', -1);
 		$this->fail();
 	}
 
@@ -406,7 +406,7 @@ class StringUtilityTest extends TestClass
 			new Data(['☃', '⛄', '𩸽', '🏇'], '☃⛄𩸽🏇'),
 		];
 		foreach ($tests as $test) {
-			$actual = StringUtility::toCharacters(...$test->args);
+			$actual = Text::toCharacters(...$test->args);
 			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
@@ -414,7 +414,7 @@ class StringUtilityTest extends TestClass
 	public function test_toCharacters_throw()
 	{
 		$this->expectException(ArgumentException::class);
-		StringUtility::toCharacters('');
+		Text::toCharacters('');
 		$this->fail();
 	}
 }

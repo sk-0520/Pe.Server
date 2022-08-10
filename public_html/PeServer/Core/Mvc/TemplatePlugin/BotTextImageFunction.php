@@ -23,8 +23,8 @@ use PeServer\Core\DefaultValue;
 use PeServer\Core\Mvc\TemplatePlugin\TemplateFunctionBase;
 use PeServer\Core\Mvc\TemplatePlugin\TemplatePluginArgument;
 use PeServer\Core\OutputBuffer;
-use PeServer\Core\PathUtility;
-use PeServer\Core\StringUtility;
+use PeServer\Core\IO\Path;
+use PeServer\Core\Text;
 use PeServer\Core\Throws\TemplateException;
 use PeServer\Core\Throws\Throws;
 use PeServer\Core\TypeUtility;
@@ -88,7 +88,7 @@ class BotTextImageFunction extends TemplateFunctionBase
 		$obfuscateLevel = TypeUtility::parseBoolean(ArrayUtility::getOr($this->params, 'obfuscate-level', 0));
 
 		$size = new Size($width, $height);
-		$fontFilePath = PathUtility::combine($this->argument->baseDirectoryPath, ...CoreUtility::getDefaultFontParts());
+		$fontFilePath = Path::combine($this->argument->baseDirectoryPath, ...CoreUtility::getDefaultFontParts());
 		$textSetting = new TextSetting(Alignment::HORIZONTAL_CENTER, Alignment::VERTICAL_CENTER, $fontFilePath, 0);
 
 		$image = Graphics::create($size);
@@ -107,11 +107,11 @@ class BotTextImageFunction extends TemplateFunctionBase
 
 		$textHash = Cryptography::generateHashString(self::HASH_ALGORITHM, new Binary($text));
 		$img->setAttribute('data-hash', $textHash);
-		if (!StringUtility::isNullOrWhiteSpace($className)) {
+		if (!Text::isNullOrWhiteSpace($className)) {
 			$img->setAttribute('class', $className);
 		}
 
-		if (!StringUtility::isNullOrWhiteSpace($alt)) {
+		if (!Text::isNullOrWhiteSpace($alt)) {
 			$img->setAttribute('alt', $alt);
 		}
 

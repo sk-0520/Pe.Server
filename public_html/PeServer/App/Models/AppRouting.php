@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models;
 
-use PeServer\Core\Routing;
-use PeServer\Core\RouteSetting;
+use PeServer\Core\Mvc\Routing;
+use PeServer\Core\Mvc\RouteSetting;
 use PeServer\Core\Store\Stores;
 use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Http\RequestPath;

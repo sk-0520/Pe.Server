@@ -19,13 +19,13 @@ use PeServer\Core\Mvc\TemplatePlugin\MarkdownFunction;
 use PeServer\Core\Mvc\TemplatePlugin\ShowErrorMessagesFunction;
 use PeServer\Core\Mvc\TemplatePlugin\SourceFunction;
 use PeServer\Core\Mvc\TemplatePlugin\TemplatePluginArgument;
-use PeServer\Core\PathUtility;
+use PeServer\Core\IO\Path;
 use PeServer\Core\Store\CookieStore;
 use PeServer\Core\Store\SessionStore;
 use PeServer\Core\Store\SpecialStore;
 use PeServer\Core\Store\Stores;
 use PeServer\Core\Store\TemporaryStore;
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 use PeServer\Core\Throws\NotImplementedException;
 
 /**
@@ -88,10 +88,10 @@ abstract class Template
 	{
 		self::$initializeChecker->throwIfNotInitialize();
 
-		if (StringUtility::isNullOrWhiteSpace($templateBaseName)) {
+		if (Text::isNullOrWhiteSpace($templateBaseName)) {
 			$templateBaseName = self::$templateBaseName;
 		}
-		if (StringUtility::isNullOrWhiteSpace($temporaryBaseName)) {
+		if (Text::isNullOrWhiteSpace($temporaryBaseName)) {
 			$temporaryBaseName = self::$temporaryBaseName;
 		}
 
@@ -120,10 +120,10 @@ class LocalSmartyTemplateImpl extends Template
 		parent::$initializeChecker->throwIfNotInitialize();
 
 		$this->engine = new Smarty();
-		$this->engine->addTemplateDir(PathUtility::combine(parent::$baseDirectoryPath, $templateBaseName, $baseName));
-		$this->engine->addTemplateDir(PathUtility::combine(parent::$baseDirectoryPath, $templateBaseName));
-		$this->engine->setCompileDir(PathUtility::combine(parent::$baseDirectoryPath, $temporaryBaseName, 'compile', $baseName));
-		$this->engine->setCacheDir(PathUtility::combine(parent::$baseDirectoryPath, $temporaryBaseName, 'cache', $baseName));
+		$this->engine->addTemplateDir(Path::combine(parent::$baseDirectoryPath, $templateBaseName, $baseName));
+		$this->engine->addTemplateDir(Path::combine(parent::$baseDirectoryPath, $templateBaseName));
+		$this->engine->setCompileDir(Path::combine(parent::$baseDirectoryPath, $temporaryBaseName, 'compile', $baseName));
+		$this->engine->setCacheDir(Path::combine(parent::$baseDirectoryPath, $temporaryBaseName, 'cache', $baseName));
 		$this->engine->escape_html = true;
 
 		$this->registerPlugins();

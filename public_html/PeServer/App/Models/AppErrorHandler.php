@@ -9,9 +9,9 @@ use PeServer\App\Models\AppTemplate;
 use PeServer\Core\Environment;
 use PeServer\Core\ErrorHandler;
 use PeServer\Core\Http\RequestPath;
-use PeServer\Core\Json;
+use PeServer\Core\Serialization\Json;
 use PeServer\Core\Log\Logging;
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 
 final class AppErrorHandler extends ErrorHandler
 {
@@ -35,7 +35,7 @@ final class AppErrorHandler extends ErrorHandler
 			$next = false;
 		}
 
-		$isJson = StringUtility::startsWith($this->requestPath->full, 'api/', true) || StringUtility::startsWith($this->requestPath->full, 'ajax/', true);
+		$isJson = Text::startsWith($this->requestPath->full, 'api/', true) || Text::startsWith($this->requestPath->full, 'ajax/', true);
 		if ($isJson) {
 			$next = false;
 		}

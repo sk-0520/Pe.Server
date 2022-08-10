@@ -6,10 +6,12 @@ namespace PeServer\Core\Log;
 
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Code;
-use PeServer\Core\IOUtility;
+use PeServer\Core\IO\IOUtility;
 use PeServer\Core\Log\LoggerBase;
-use PeServer\Core\PathUtility;
-use PeServer\Core\StringUtility;
+use PeServer\Core\IO\Path;
+use PeServer\Core\IO\Directory;
+use PeServer\Core\IO\File;
+use PeServer\Core\Text;
 use PeServer\Core\Throws\Enforce;
 
 /**
@@ -67,8 +69,8 @@ class FileLogger extends LoggerBase
 
 	private function toSafeFileNameHeader(): string
 	{
-		$trimHeader = StringUtility::trim($this->header, '/\\');
-		return StringUtility::replace($trimHeader, ['/', '\\', '*', '|', '<', '>', '?'], '_');
+		$trimHeader = Text::trim($this->header, '/\\');
+		return Text::replace($trimHeader, ['/', '\\', '*', '|', '<', '>', '?'], '_');
 	}
 
 	protected function toHeaderDate(bool $isCleanup): string
@@ -87,7 +89,7 @@ class FileLogger extends LoggerBase
 	 */
 	private function cleanupCore(int $maxCount, string $filePattern): void
 	{
-		$logFiles = IOUtility::find($this->directoryPath, $filePattern);
+		$logFiles = Directory::find($this->directoryPath, $filePattern);
 		$logCount = ArrayUtility::getCount($logFiles);
 		if ($logCount <= $maxCount) {
 			return;
@@ -95,7 +97,7 @@ class FileLogger extends LoggerBase
 
 		$length = $logCount - $maxCount;
 		for ($i = 0; $i < $length; $i++) {
-			IOUtility::removeFile($logFiles[$i]);
+			File::removeFile($logFiles[$i]);
 		}
 	}
 
@@ -111,7 +113,7 @@ class FileLogger extends LoggerBase
 			return;
 		}
 
-		$filePattern = StringUtility::replaceMap(
+		$filePattern = Text::replaceMap(
 			$this->baseFileName,
 			[
 				'HEADER' => $this->toSafeFileNameHeader(),
@@ -126,7 +128,7 @@ class FileLogger extends LoggerBase
 
 	private function getLogFilePath(): string
 	{
-		$fileName = StringUtility::replaceMap(
+		$fileName = Text::replaceMap(
 			$this->baseFileName,
 			[
 				'HEADER' => $this->toSafeFileNameHeader(),
@@ -134,12 +136,12 @@ class FileLogger extends LoggerBase
 			]
 		);
 
-		return PathUtility::combine($this->directoryPath, $fileName);
+		return Path::combine($this->directoryPath, $fileName);
 	}
 
 	protected function logImpl(int $level, int $traceIndex, $message, ...$parameters): void
 	{
-		IOUtility::createDirectoryIfNotExists($this->directoryPath);
+		Directory::createDirectoryIfNotExists($this->directoryPath);
 
 		$logMessage = $this->format($level, $traceIndex + 1, $message, ...$parameters);
 

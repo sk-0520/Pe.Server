@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PeServerTest\Core;
+namespace PeServerTest\Core\IO;
 
-use PeServer\Core\PathParts;
-use PeServer\Core\PathUtility;
+use PeServer\Core\IO\PathParts;
+use PeServer\Core\IO\Path;
 use PeServer\Core\Throws\ArgumentException;
 use PeServerTest\Data;
 use PeServerTest\TestClass;
 
-class PathUtilityTest extends TestClass
+class PathTest extends TestClass
 {
 	public function test_combine()
 	{
@@ -25,7 +25,7 @@ class PathUtilityTest extends TestClass
 			new Data("${sep}abc${sep}def${sep}GHI", "${sep}abc", 'def', 'ghi', '..', '.', 'GHI'),
 		];
 		foreach ($tests as $test) {
-			$actual = PathUtility::combine(...$test->args);
+			$actual = Path::combine(...$test->args);
 			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
@@ -39,7 +39,7 @@ class PathUtilityTest extends TestClass
 			new Data("/path1/path2", "/path1/path2/name"),
 		];
 		foreach ($tests as $test) {
-			$actual = PathUtility::getDirectoryPath(...$test->args);
+			$actual = Path::getDirectoryPath(...$test->args);
 			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
@@ -54,7 +54,7 @@ class PathUtilityTest extends TestClass
 			new Data(".", "/."),
 		];
 		foreach ($tests as $test) {
-			$actual = PathUtility::getFileName(...$test->args);
+			$actual = Path::getFileName(...$test->args);
 			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
@@ -79,7 +79,7 @@ class PathUtilityTest extends TestClass
 			new Data("", "txt", true),
 		];
 		foreach ($tests as $test) {
-			$actual = PathUtility::getFileExtension(...$test->args);
+			$actual = Path::getFileExtension(...$test->args);
 			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
@@ -98,7 +98,7 @@ class PathUtilityTest extends TestClass
 			new Data(".", ".."),
 		];
 		foreach ($tests as $test) {
-			$actual = PathUtility::getFileNameWithoutExtension(...$test->args);
+			$actual = Path::getFileNameWithoutExtension(...$test->args);
 			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
@@ -113,7 +113,7 @@ class PathUtilityTest extends TestClass
 			new Data(new PathParts('/🍳/🚽', '💩.🚮', '💩', '🚮'), '/🍳/🚽/💩.🚮'),
 		];
 		foreach ($tests as $test) {
-			$actual = PathUtility::toParts(...$test->args);
+			$actual = Path::toParts(...$test->args);
 			$this->assertSame($test->expected->directory, $actual->directory, $test->str());
 			$this->assertSame($test->expected->fileName, $actual->fileName, $test->str());
 			$this->assertSame($test->expected->fileNameWithoutExtension, $actual->fileNameWithoutExtension, $test->str());
@@ -124,7 +124,7 @@ class PathUtilityTest extends TestClass
 	public function test_toParts_empty_throw()
 	{
 		$this->expectException(ArgumentException::class);
-		PathUtility::toParts('');
+		Path::toParts('');
 		$this->fail();
 	}
 }

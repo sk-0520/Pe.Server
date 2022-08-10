@@ -25,7 +25,7 @@
 
 	<dt>Webサイト</dt>
 		<dd>
-			{if PeServer\Core\StringUtility::isNullOrWhiteSpace($values.account_user_website)}
+			{if PeServer\Core\Text::isNullOrWhiteSpace($values.account_user_website)}
 				<span class="mute">未登録</span>
 			{else}
 				<a href="{$values.account_user_website}" target="_blank">{$values.account_user_website}</a>

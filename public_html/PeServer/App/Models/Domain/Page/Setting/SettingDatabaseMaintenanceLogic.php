@@ -14,7 +14,7 @@ use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\Mvc\Validator;
 use PeServer\Core\Regex;
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 
 class SettingDatabaseMaintenanceLogic extends PageLogicBase
 {

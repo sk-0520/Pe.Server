@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core;
+namespace PeServer\Core\Mvc;
 
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mvc\ControllerBase;

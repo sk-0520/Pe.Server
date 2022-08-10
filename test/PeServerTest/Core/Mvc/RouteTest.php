@@ -2,15 +2,14 @@
 
 declare(strict_types=1);
 
-namespace PeServerTest\Core;
+namespace PeServerTest\Core\Mvc;
 
-use PeServer\App\Models\RouteConfiguration;
 use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Http\RequestPath;
+use PeServer\Core\Mvc\Route;
+use PeServer\Core\Throws\ArgumentException;
 use PeServerTest\Data;
 use PeServerTest\TestClass;
-use PeServer\Core\Route;
-use PeServer\Core\Throws\ArgumentException;
 
 class RouteTest extends TestClass
 {

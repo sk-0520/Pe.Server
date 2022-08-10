@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domain\Page\Ajax;
 
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\App\Models\ResponseJson;
 use PeServer\Core\Mvc\LogicParameter;

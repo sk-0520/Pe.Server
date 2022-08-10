@@ -15,7 +15,7 @@ use Throwable;
 /**
  * 文字列操作。
  */
-abstract class StringUtility
+abstract class Text
 {
 	/** トリム対象文字一覧。 */
 	public const TRIM_CHARACTERS = " \n\r\t\v\0　";
@@ -399,7 +399,7 @@ abstract class StringUtility
 	 */
 	public static function split(string $value, string $separator, int $limit = PHP_INT_MAX): array
 	{
-		if (StringUtility::isNullOrEmpty($separator)) { //@phpstan-ignore-line separator
+		if (Text::isNullOrEmpty($separator)) { //@phpstan-ignore-line separator
 			throw new ArgumentException();
 		}
 
@@ -590,11 +590,11 @@ abstract class StringUtility
 	 */
 	public static function toCharacters(string $value): array
 	{
-		if (StringUtility::isNullOrEmpty($value)) { //@phpstan-ignore-line phpstan:positive-int
+		if (Text::isNullOrEmpty($value)) { //@phpstan-ignore-line phpstan:positive-int
 			throw new ArgumentException('$value = ' . $value);
 		}
 
-		$length = StringUtility::getLength($value);
+		$length = Text::getLength($value);
 		$charactersArray = [];
 		for ($i = 0; $i < $length; $i++) {
 			$c = self::substring($value, $i, 1);

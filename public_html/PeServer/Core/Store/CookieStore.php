@@ -6,7 +6,7 @@ namespace PeServer\Core\Store;
 
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\DefaultValue;
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 use PeServer\Core\Store\CookieOption;
 use PeServer\Core\Store\SpecialStore;
 
@@ -115,7 +115,7 @@ class CookieStore
 	 */
 	public function remove(string $key): void
 	{
-		if (StringUtility::isNullOrEmpty($key)) {
+		if (Text::isNullOrEmpty($key)) {
 			$this->values = [];
 			$this->removes = $this->special->getCookieNames();
 		} else {

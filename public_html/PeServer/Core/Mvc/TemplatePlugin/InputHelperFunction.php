@@ -6,7 +6,7 @@ namespace PeServer\Core\Mvc\TemplatePlugin;
 
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\DefaultValue;
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 use PeServer\Core\TypeUtility;
 use PeServer\Core\Html\HtmlElement;
 use PeServer\Core\Html\HtmlDocument;
@@ -59,7 +59,7 @@ class InputHelperFunction extends TemplateFunctionBase
 
 			default: {
 					$element = $dom->addElement('input');
-					if (!StringUtility::isNullOrWhiteSpace($type)) {
+					if (!Text::isNullOrWhiteSpace($type)) {
 						$element->setAttribute('type', $type);
 					}
 					$element->setAttribute('value', strval($targetValue));

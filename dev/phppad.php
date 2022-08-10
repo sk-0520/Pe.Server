@@ -6,9 +6,10 @@ require_once(__DIR__ . '/../public_html/PeServer/Core/AutoLoader.php');
 
 use PeServer\App\Models\Initializer;
 use PeServer\Core\ErrorHandler;
-use PeServer\Core\IOUtility;
+use PeServer\Core\IO\Directory;
+use PeServer\Core\IO\File;
+use PeServer\Core\IO\Path;
 use PeServer\Core\Memory;
-use PeServer\Core\PathUtility;
 use PeServer\Core\SizeConverter;
 use PeServer\Core\Store\SpecialStore;
 use PeServer\Core\Timer;
@@ -30,7 +31,7 @@ Initializer::initialize(
 	'temp',
 	':REVISION:'
 );
-IOUtility::setTemporaryDirectory(PathUtility::combine(__DIR__, 'temp'));
+Directory::setTemporaryDirectory(Path::combine(__DIR__, 'temp'));
 
 class Pad
 {
@@ -145,8 +146,8 @@ class Pad
 	}
 }
 
-$workPath = PathUtility::combine(__DIR__, '@phppad.php');
-if (IOUtility::existsFile($workPath)) {
+$workPath = Path::combine(__DIR__, '@phppad.php');
+if (File::exists($workPath)) {
 	try {
 		require $workPath;
 		Pad::puts(PHP_EOL . '--EXIT--');

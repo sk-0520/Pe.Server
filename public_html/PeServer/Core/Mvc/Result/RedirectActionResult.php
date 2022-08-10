@@ -7,7 +7,7 @@ namespace PeServer\Core\Mvc\Result;
 use PeServer\Core\Http\HttpResponse;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mvc\Result\IActionResult;
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
 
 /**
@@ -21,7 +21,7 @@ class RedirectActionResult implements IActionResult
 		private string $url,
 		private ?HttpStatus $status = null
 	) {
-		if (StringUtility::isNullOrWhiteSpace($url)) {
+		if (Text::isNullOrWhiteSpace($url)) {
 			throw new ArgumentException('$url');
 		}
 	}

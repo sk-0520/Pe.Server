@@ -6,11 +6,12 @@ namespace PeServer\Core\Mvc\TemplatePlugin;
 
 use \DOMElement;
 use PeServer\Core\Environment;
-use PeServer\Core\IOUtility;
-use PeServer\Core\PathUtility;
+use PeServer\Core\IO\IOUtility;
+use PeServer\Core\IO\Path;
+use PeServer\Core\IO\File;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\DefaultValue;
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 use PeServer\Core\TypeUtility;
 use PeServer\Core\Html\HtmlDocument;
 use PeServer\Core\Throws\TemplateException;
@@ -49,22 +50,22 @@ class AssetFunction extends TemplateFunctionBase
 	{
 		/** @var string */
 		$sourcePath = ArrayUtility::getOr($this->params, 'file', DefaultValue::EMPTY_STRING);
-		if (StringUtility::isNullOrEmpty($sourcePath)) {
+		if (Text::isNullOrEmpty($sourcePath)) {
 			return DefaultValue::EMPTY_STRING;
 		}
 
 		$isProduction = Environment::isProduction();
 
-		$fileExtension = PathUtility::getFileExtension($sourcePath);
-		$extension = StringUtility::toLower($fileExtension);
+		$fileExtension = Path::getFileExtension($sourcePath);
+		$extension = Text::toLower($fileExtension);
 
 		$ignoreAsset = UrlUtility::isIgnoreCaching($sourcePath);
 
 		$resourcePath = $sourcePath;
 		if (!$ignoreAsset) {
 			if ($isProduction) {
-				$dir = PathUtility::getDirectoryPath($sourcePath);
-				$file = PathUtility::getFileNameWithoutExtension($sourcePath);
+				$dir = Path::getDirectoryPath($sourcePath);
+				$file = Path::getFileNameWithoutExtension($sourcePath);
 
 				$resourcePath = $dir . '/' . $file . '.min.' . $fileExtension;
 			}
@@ -74,18 +75,18 @@ class AssetFunction extends TemplateFunctionBase
 
 		$dom = new HtmlDocument();
 		if (!$isProduction) {
-			$dom->addComment(StringUtility::dump($this->params));
+			$dom->addComment(Text::dump($this->params));
 		}
 
 		$autoSize = TypeUtility::parseBoolean(ArrayUtility::getOr($this->params, 'auto_size', 'false'));
 		$include = TypeUtility::parseBoolean(ArrayUtility::getOr($this->params, 'include', 'false'));
 
-		$filePath = PathUtility::combine($this->argument->rootDirectoryPath, $sourcePath);
-		if (($autoSize || $include) || !IOUtility::existsFile($filePath)) {
+		$filePath = Path::combine($this->argument->rootDirectoryPath, $sourcePath);
+		if (($autoSize || $include) || !FIle::exists($filePath)) {
 			// @phpstan-ignore-next-line nullは全取得だからOK
 			foreach ($this->argument->engine->getTemplateDir(null) as $dir) {
-				$path = PathUtility::combine($dir, $sourcePath);
-				if (IOUtility::existsFile($path)) {
+				$path = Path::combine($dir, $sourcePath);
+				if (IOUtility::existsItem($path)) {
 					$filePath = $path;
 					break;
 				}
@@ -105,7 +106,7 @@ class AssetFunction extends TemplateFunctionBase
 				if ($include) {
 					$element = $dom->addElement('style');
 
-					$content = IOUtility::readContent($filePath);
+					$content = File::readContent($filePath);
 					$element->addText($content->toString());
 				} else {
 					$element = $dom->addElement('link');
@@ -120,7 +121,7 @@ class AssetFunction extends TemplateFunctionBase
 				$element = $dom->addElement('script');
 
 				if ($include) {
-					$content = IOUtility::readContent($filePath);
+					$content = File::readContent($filePath);
 					$element->addText($content->toString());
 				} else {
 					$element->setAttribute('src', $resourcePath);

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mail;
 
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 use PeServer\Core\Throws\InvalidOperationException;
 
 /**
@@ -31,7 +31,7 @@ class EmailMessage
 	 */
 	public function isText(): bool
 	{
-		return !StringUtility::isNullOrWhiteSpace($this->text);
+		return !Text::isNullOrWhiteSpace($this->text);
 	}
 
 	/**
@@ -78,7 +78,7 @@ class EmailMessage
 	 */
 	public function isHtml(): bool
 	{
-		return !StringUtility::isNullOrWhiteSpace($this->html);
+		return !Text::isNullOrWhiteSpace($this->html);
 	}
 
 	/**

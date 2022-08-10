@@ -5,15 +5,16 @@ declare(strict_types=1);
 namespace PeServer\Core;
 
 use \Throwable;
-use PeServer\Core\Log\Logging;
 use PeServer\Core\DefaultValue;
-use PeServer\Core\Mvc\Template;
-use PeServer\Core\Throws\Throws;
 use PeServer\Core\Http\HttpStatus;
+use PeServer\Core\IO\File;
+use PeServer\Core\Log\Logging;
+use PeServer\Core\Mvc\Template;
 use PeServer\Core\Mvc\TemplateParameter;
 use PeServer\Core\Throws\HttpStatusException;
 use PeServer\Core\Throws\InvalidErrorLevelError;
 use PeServer\Core\Throws\InvalidOperationException;
+use PeServer\Core\Throws\Throws;
 
 /**
  * エラーハンドリング処理。
@@ -188,7 +189,7 @@ class ErrorHandler
 	private function getFileContents(string $file, ?Throwable $throwable): array
 	{
 		$files = [
-			"$file" => IOUtility::readContent($file)->getRaw(),
+			"$file" => File::readContent($file)->getRaw(),
 		];
 
 		if(!is_null($throwable)) {
@@ -196,7 +197,7 @@ class ErrorHandler
 				if(isset($item['file'])) {
 					$f = $item['file'];
 					if (!isset($files[$f])) {
-						$files[$f] = IOUtility::readContent($f)->getRaw();
+						$files[$f] = File::readContent($f)->getRaw();
 					}
 				}
 			}

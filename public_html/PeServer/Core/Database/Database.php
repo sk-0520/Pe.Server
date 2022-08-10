@@ -16,7 +16,7 @@ use PeServer\Core\Database\IDatabaseTransactionContext;
 use PeServer\Core\DisposerBase;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Regex;
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 use PeServer\Core\Throws\DatabaseException;
 use PeServer\Core\Throws\SqlException;
 use PeServer\Core\Throws\Throws;
@@ -81,7 +81,7 @@ class Database extends DisposerBase implements IDatabaseTransactionContext
 	 */
 	private function getErrorMessage(): string
 	{
-		return StringUtility::dump($this->pdo->errorInfo());
+		return Text::dump($this->pdo->errorInfo());
 	}
 
 	/**

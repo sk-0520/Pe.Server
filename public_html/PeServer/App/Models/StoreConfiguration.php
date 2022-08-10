@@ -12,7 +12,7 @@ use PeServer\Core\Store\SessionOption;
 use PeServer\Core\Store\TemporaryOption;
 use PeServer\App\Models\AppConfiguration;
 use PeServer\Core\Store\SpecialStore;
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 
 abstract class StoreConfiguration
 {
@@ -126,7 +126,7 @@ abstract class StoreConfiguration
 
 		/** @var string */
 		$name = ArrayUtility::getOr($session, 'name', SessionOption::DEFAULT_NAME);
-		if (StringUtility::isNullOrWhiteSpace($name)) {
+		if (Text::isNullOrWhiteSpace($name)) {
 			$name = SessionOption::DEFAULT_NAME;
 		}
 		/** @phpstan-var non-empty-string $name */

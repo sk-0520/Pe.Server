@@ -7,7 +7,7 @@ namespace PeServer\App\Models\Domain\Page\Account;
 use PeServer\Core\I18n;
 use PeServer\Core\DefaultValue;
 use PeServer\Core\Mvc\Validator;
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 use PeServer\App\Models\AuditLog;
 use PeServer\App\Models\AppMailer;
 use PeServer\App\Models\AppTemplate;
@@ -55,12 +55,12 @@ class AccountUserEmailLogic extends PageLogicBase
 			AppConfiguration::$config['config']['confirm']['user_change_wait_email_minutes']
 		);
 
-		if (!StringUtility::isNullOrWhiteSpace($values->fields['email'])) {
+		if (!Text::isNullOrWhiteSpace($values->fields['email'])) {
 			$this->defaultValues['email'] = AppCryptography::decrypt($values->fields['email']);
 		} else {
 			$this->defaultValues['email'] = DefaultValue::EMPTY_STRING;
 		}
-		if (!StringUtility::isNullOrWhiteSpace($values->fields['wait_email'])) {
+		if (!Text::isNullOrWhiteSpace($values->fields['wait_email'])) {
 			$this->defaultValues['wait_email'] = AppCryptography::decrypt($values->fields['wait_email']);
 		} else {
 			$this->defaultValues['wait_email'] = DefaultValue::EMPTY_STRING;
@@ -94,7 +94,7 @@ class AccountUserEmailLogic extends PageLogicBase
 			$this->validation('account_email_token', function (string $key, string $value) {
 				$this->validator->isNotWhiteSpace($key, $value);
 
-				if (StringUtility::isNullOrWhiteSpace($this->defaultValues['token_timestamp_utc'])) {
+				if (Text::isNullOrWhiteSpace($this->defaultValues['token_timestamp_utc'])) {
 					$this->addError($key, I18n::message('error/email_confirm_token_not_found'));
 				}
 			});

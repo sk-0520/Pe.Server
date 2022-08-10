@@ -8,7 +8,7 @@ use PeServer\Core\Cryptography;
 use PeServer\Core\Throws\CryptoException;
 use PeServer\App\Models\AppConfiguration;
 use PeServer\Core\Binary;
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 
 abstract class AppCryptography
 {
@@ -40,7 +40,7 @@ abstract class AppCryptography
 	{
 		$token = AppConfiguration::$config['crypto']['token'];
 		$value = Cryptography::encrypt($token['algorithm'], $data, $token['password']);
-		return StringUtility::split($value, Cryptography::SEPARATOR, 2)[1];
+		return Text::split($value, Cryptography::SEPARATOR, 2)[1];
 	}
 
 	public static function decryptToken(string $data): string

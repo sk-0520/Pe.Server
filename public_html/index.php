@@ -6,15 +6,14 @@ namespace PeServer;
 
 require_once(__DIR__ . '/PeServer/Core/AutoLoader.php');
 
-use PeServer\Core\AutoLoader;
-use PeServer\Core\AutoLoader2;
-use PeServer\Core\Http\HttpMethod;
-use PeServer\App\Models\AppRouting;
-use PeServer\Core\Http\RequestPath;
-use PeServer\App\Models\Initializer;
-use PeServer\App\Models\AppSpecialStore;
 use PeServer\App\Models\AppConfiguration;
+use PeServer\App\Models\AppRouting;
+use PeServer\App\Models\AppSpecialStore;
+use PeServer\App\Models\Initializer;
 use PeServer\App\Models\RouteConfiguration;
+use PeServer\Core\AutoLoader;
+use PeServer\Core\Http\HttpMethod;
+use PeServer\Core\Http\RequestPath;
 
 ini_set('display_errors', '1');
 error_reporting(E_ALL);

@@ -6,7 +6,7 @@ namespace PeServer\Core\Mvc;
 
 use PeServer\Core\Regex;
 use PeServer\Core\DefaultValue;
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 use PeServer\Core\Mvc\IValidationReceiver;
 
 /**
@@ -38,7 +38,7 @@ class Validator
 
 	public function isNotEmpty(string $key, ?string $value): bool
 	{
-		if (StringUtility::isNullOrEmpty($value)) {
+		if (Text::isNullOrEmpty($value)) {
 			$this->receiver->receiveErrorKind($key, self::KIND_EMPTY, ['VALUE' => DefaultValue::EMPTY_STRING]);
 			return false;
 		}
@@ -48,7 +48,7 @@ class Validator
 
 	public function isNotWhiteSpace(string $key, ?string $value): bool
 	{
-		if (StringUtility::isNullOrWhiteSpace($value)) {
+		if (Text::isNullOrWhiteSpace($value)) {
 			$this->receiver->receiveErrorKind($key, self::KIND_WHITE_SPACE, ['VALUE' => $value ? $value : DefaultValue::EMPTY_STRING]);
 			return false;
 		}
@@ -59,7 +59,7 @@ class Validator
 
 	public function inLength(string $key, int $length, string $value): bool
 	{
-		if ($length < StringUtility::getLength($value)) {
+		if ($length < Text::getLength($value)) {
 			$this->receiver->receiveErrorKind($key, self::KIND_LENGTH, ['VALUE' => $value, 'SAFE_LENGTH' => $length, 'ERROR_LENGTH' => mb_strlen($value)]);
 			return false;
 		}
@@ -69,7 +69,7 @@ class Validator
 
 	public function inRange(string $key, int $min, int $max, string $value): bool
 	{
-		$length = StringUtility::getLength($value);
+		$length = Text::getLength($value);
 		if ($length < $min || $max < $length) {
 			$this->receiver->receiveErrorKind($key, self::KIND_RANGE, ['VALUE' => $value, 'RANGE_MIN' => $min, 'RANGE_MAX' => $max, 'ERROR_LENGTH' => mb_strlen($value)]);
 			return false;

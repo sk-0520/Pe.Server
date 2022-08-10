@@ -4,19 +4,20 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models;
 
-use PeServer\Core\I18n;
-use PeServer\Core\Environment;
-use PeServer\Core\Log\Logging;
-use PeServer\Core\PathUtility;
-use PeServer\Core\ArrayUtility;
-use PeServer\Core\Mvc\Template;
-use PeServer\Core\Store\Stores;
-use PeServer\Core\Configuration;
-use PeServer\Core\Store\StorePack;
-use PeServer\Core\InitializeChecker;
-use PeServer\Core\Store\SpecialStore;
 use PeServer\App\Models\AppDatabaseCache;
-use PeServer\Core\IOUtility;
+use PeServer\Core\ArrayUtility;
+use PeServer\Core\Environment;
+use PeServer\Core\I18n;
+use PeServer\Core\InitializeChecker;
+use PeServer\Core\IO\Directory;
+use PeServer\Core\IO\IOUtility;
+use PeServer\Core\IO\Path;
+use PeServer\Core\Log\Logging;
+use PeServer\Core\Mvc\Template;
+use PeServer\Core\Serialization\Configuration;
+use PeServer\Core\Store\SpecialStore;
+use PeServer\Core\Store\StorePack;
+use PeServer\Core\Store\Stores;
 
 abstract class AppConfiguration
 {
@@ -102,10 +103,10 @@ abstract class AppConfiguration
 		self::$initializeChecker ??= new InitializeChecker();
 		self::$initializeChecker->initialize();
 
-		self::$settingDirectoryPath = PathUtility::combine($baseDirectoryPath, 'config');
+		self::$settingDirectoryPath = Path::combine($baseDirectoryPath, 'config');
 
-		$tempDirectoryPath = PathUtility::combine($baseDirectoryPath, 'data/temp/buckets');
-		IOUtility::setTemporaryDirectory($tempDirectoryPath);
+		$tempDirectoryPath = Path::combine($baseDirectoryPath, 'data/temp/buckets');
+		Directory::setTemporaryDirectory($tempDirectoryPath);
 
 		$appConfig = self::load($rootDirectoryPath, $baseDirectoryPath, Environment::get(), 'setting.json');
 		$i18nConfig = self::load($rootDirectoryPath, $baseDirectoryPath, Environment::get(), 'i18n.json');

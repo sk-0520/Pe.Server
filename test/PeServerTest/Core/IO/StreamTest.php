@@ -2,32 +2,34 @@
 
 declare(strict_types=1);
 
-namespace PeServerTest\Core;
+namespace PeServerTest\Core\IO;
 
 use PeServer\Core\Binary;
 use PeServer\Core\Encoding;
 use \stdClass;
 use \TypeError;
-use PeServer\Core\IOUtility;
-use PeServer\Core\PathUtility;
-use PeServer\Core\Stream;
+use PeServer\Core\IO\File;
+use PeServer\Core\IO\Directory;
+use PeServer\Core\IO\IOUtility;
+use PeServer\Core\IO\Path;
+use PeServer\Core\IO\Stream;
 use PeServer\Core\ResourceBase;
 use PeServer\Core\SizeConverter;
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\IOException;
 use PeServer\Core\Throws\ResourceInvalidException;
 use PeServerTest\Data;
 use PeServerTest\TestClass;
-use Throwable;
+use \Throwable;
 
 class StreamTest extends TestClass
 {
 	private static function delete(string $path)
 	{
 		try {
-			if (IOUtility::existsFile($path)) {
-				IOUtility::removeFile($path);
+			if (File::exists($path)) {
+				File::removeFile($path);
 				IOUtility::clearCache($path);
 			}
 		} catch (Throwable) {
@@ -37,7 +39,7 @@ class StreamTest extends TestClass
 
 	public function test_constructor()
 	{
-		$path = IOUtility::createTemporaryFilePath();
+		$path = File::createTemporaryFilePath();
 		try {
 			$resource = fopen($path, 'w');
 			$actual = new Stream($resource);
@@ -54,7 +56,7 @@ class StreamTest extends TestClass
 	public function test_constructor_invalid_throw()
 	{
 		$this->expectException(ResourceInvalidException::class);
-		$f = IOUtility::createTemporaryFilePath();
+		$f = File::createTemporaryFilePath();
 		$resource = gzopen($f, 'w');
 		try {
 			new Stream($resource);
@@ -67,12 +69,12 @@ class StreamTest extends TestClass
 
 	public function test_create()
 	{
-		$path = PathUtility::combine(IOUtility::getTemporaryDirectory(), __FUNCTION__ . '.txt');
+		$path = Path::combine(Directory::getTemporaryDirectory(), __FUNCTION__ . '.txt');
 
 		self::delete($path);
 
 		$stream = Stream::create($path);
-		$this->assertTrue(IOUtility::existsFile($path));
+		$this->assertTrue(File::exists($path));
 		$stream->dispose();
 
 		IOUtility::clearCache($path);
@@ -88,7 +90,7 @@ class StreamTest extends TestClass
 
 	public function test_open()
 	{
-		$path = PathUtility::combine(IOUtility::getTemporaryDirectory(), __FUNCTION__ . '.txt');
+		$path = Path::combine(Directory::getTemporaryDirectory(), __FUNCTION__ . '.txt');
 
 		self::delete($path);
 
@@ -119,7 +121,7 @@ class StreamTest extends TestClass
 			$this->fail($ex->getMessage());
 		}
 
-		IOUtility::writeContent($path, __FILE__ . ':' . __FUNCTION__ . ':' . __LINE__);
+		File::writeContent($path, __FILE__ . ':' . __FUNCTION__ . ':' . __LINE__);
 		IOUtility::clearCache($path);
 
 		try {
@@ -149,7 +151,7 @@ class StreamTest extends TestClass
 
 	public function test_openOrCreate()
 	{
-		$path = PathUtility::combine(IOUtility::getTemporaryDirectory(), __FUNCTION__ . '.txt');
+		$path = Path::combine(Directory::getTemporaryDirectory(), __FUNCTION__ . '.txt');
 
 		self::delete($path);
 
@@ -177,7 +179,7 @@ class StreamTest extends TestClass
 			$this->fail($ex->getMessage());
 		}
 
-		IOUtility::writeContent($path, __FILE__ . ':' . __FUNCTION__ . ':' . __LINE__);
+		File::writeContent($path, __FILE__ . ':' . __FUNCTION__ . ':' . __LINE__);
 		IOUtility::clearCache($path);
 
 		try {
@@ -255,11 +257,11 @@ class StreamTest extends TestClass
 		$stream = Stream::openTemporary();
 
 		$writeLength = $stream->writeString($expected);
-		$this->assertSame(StringUtility::getByteCount($expected), $writeLength);
+		$this->assertSame(Text::getByteCount($expected), $writeLength);
 
 		$stream->seekHead();
 
-		$actual = $stream->readStringContents(StringUtility::getByteCount($expected));
+		$actual = $stream->readStringContents(Text::getByteCount($expected));
 		$this->assertSame($expected, $actual);
 	}
 

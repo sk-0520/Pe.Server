@@ -2,16 +2,19 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core;
+namespace PeServer\Core\IO;
 
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Binary;
+use PeServer\Core\DefaultValue;
 use PeServer\Core\Encoding;
 use PeServer\Core\ErrorHandler;
-use PeServer\Core\DefaultValue;
-use PeServer\Core\IOUtility;
-use PeServer\Core\StreamMetaData;
-use PeServer\Core\StringUtility;
+use PeServer\Core\IO\IOUtility;
+use PeServer\Core\IO\File;
+use PeServer\Core\IO\StreamMetaData;
+use PeServer\Core\ResourceBase;
+use PeServer\Core\ResultData;
+use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\IOException;
 use PeServer\Core\Throws\StreamException;
@@ -97,7 +100,7 @@ class Stream extends ResourceBase
 	 */
 	public static function create(string $path, ?Encoding $encoding = null): self
 	{
-		if (IOUtility::existsFile($path)) {
+		if (File::exists($path)) {
 			throw new IOException($path);
 		}
 
@@ -124,7 +127,7 @@ class Stream extends ResourceBase
 		};
 
 		if ($mode === self::MODE_WRITE || $mode == self::MODE_EDIT) {
-			if (!IOUtility::existsFile($path)) {
+			if (!File::exists($path)) {
 				throw new IOException($path);
 			}
 		}
@@ -152,8 +155,8 @@ class Stream extends ResourceBase
 		};
 
 		if ($mode === self::MODE_READ) {
-			if (!IOUtility::existsFile($path)) {
-				IOUtility::createEmptyFileIfNotExists($path);
+			if (!File::exists($path)) {
+				File::createEmptyFileIfNotExists($path);
 			}
 		}
 
@@ -397,7 +400,7 @@ class Stream extends ResourceBase
 	{
 		$this->throwIfDisposed();
 
-		if (!StringUtility::getByteCount($data)) {
+		if (!Text::getByteCount($data)) {
 			return 0;
 		}
 
@@ -409,12 +412,12 @@ class Stream extends ResourceBase
 			return 0;
 		}
 
-		$dataLength = StringUtility::getLength($data);
+		$dataLength = Text::getLength($data);
 		if ($dataLength <= $count) {
 			return $this->writeBinary($this->encoding->getBinary($data));
 		}
 
-		$s = StringUtility::substring($data, 0, $count);
+		$s = Text::substring($data, 0, $count);
 		return $this->writeBinary($this->encoding->getBinary($s));
 	}
 

@@ -7,7 +7,7 @@ namespace PeServer\Core\Mvc\TemplatePlugin;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\DefaultValue;
 use PeServer\Core\Mvc\Markdown;
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 use PeServer\Core\TypeUtility;
 use PeServer\Core\Mvc\TemplatePlugin\TemplatePluginArgument;
 use PeServer\Core\Mvc\TemplatePlugin\TemplateBlockFunctionBase;
@@ -28,9 +28,9 @@ class MarkdownFunction extends TemplateBlockFunctionBase
 	{
 		/** @var string */
 		$className = ArrayUtility::getOr($this->params, 'class', DefaultValue::EMPTY_STRING);
-		if (StringUtility::isNullOrWhiteSpace($className)) {
+		if (Text::isNullOrWhiteSpace($className)) {
 			$className = 'markdown';
-		} else if (!StringUtility::contains($className, 'markdown', false)) {
+		} else if (!Text::contains($className, 'markdown', false)) {
 			$className = 'markdown ' . $className;
 		}
 

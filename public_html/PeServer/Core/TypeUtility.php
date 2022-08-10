@@ -40,7 +40,7 @@ abstract class TypeUtility
 			throw new ParseException($input);
 		}
 
-		return (int)StringUtility::trim($input);
+		return (int)Text::trim($input);
 	}
 
 	/**
@@ -57,7 +57,7 @@ abstract class TypeUtility
 			return false;
 		}
 
-		$result = (int)StringUtility::trim($input);
+		$result = (int)Text::trim($input);
 		return true;
 	}
 
@@ -67,7 +67,7 @@ abstract class TypeUtility
 			return (bool)$input;
 		}
 		if (is_string($input)) {
-			$s = StringUtility::toLower(StringUtility::trim((string)$input));
+			$s = Text::toLower(Text::trim((string)$input));
 			$trues = ['true', 't', 'on', 'ok', '1'];
 			return ArrayUtility::containsValue($trues, $s);
 		}

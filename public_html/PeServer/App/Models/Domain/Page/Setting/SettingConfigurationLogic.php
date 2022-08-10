@@ -10,7 +10,7 @@ use PeServer\Core\ArrayUtility;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 
 class SettingConfigurationLogic extends PageLogicBase
 {
@@ -67,7 +67,7 @@ class SettingConfigurationLogic extends PageLogicBase
 			SORT_ASC,
 			$columns->rows
 		);
-		$orders = StringUtility::join(', ', array_map(fn ($i) => $i['name'], $columns->rows));
+		$orders = Text::join(', ', array_map(fn ($i) => $i['name'], $columns->rows));
 
 		$rows = $context->query(
 			//@phpstan-ignore-next-line

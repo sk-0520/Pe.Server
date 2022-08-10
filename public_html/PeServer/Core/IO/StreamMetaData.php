@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core;
+namespace PeServer\Core\IO;
+
+use PeServer\Core\ArrayUtility;
 
 /**
  * `stream_get_meta_data`

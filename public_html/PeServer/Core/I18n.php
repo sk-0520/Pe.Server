@@ -75,7 +75,7 @@ abstract class I18n
 
 		/** @var array<string,string|array<string,mixed>> */
 		$leaf = self::$i18nConfiguration;
-		$tree = StringUtility::split($key, '/');
+		$tree = Text::split($key, '/');
 		foreach ($tree as $node) {
 			//@-phpstan-ignore-next-line
 			if (ArrayUtility::tryGet($leaf, $node, $result)) {
@@ -118,6 +118,6 @@ abstract class I18n
 			$message =  $key;
 		}
 
-		return StringUtility::replaceMap(Code::toLiteralString($message), $params);
+		return Text::replaceMap(Code::toLiteralString($message), $params);
 	}
 }

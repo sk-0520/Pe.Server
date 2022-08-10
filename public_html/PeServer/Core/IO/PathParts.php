@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core;
+namespace PeServer\Core\IO;
 
 use Stringable;
 
