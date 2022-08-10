@@ -4,17 +4,24 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
+use ArrayAccess;
 use \Stringable;
 use PeServer\Core\Throws\ArgumentException;
+use PeServer\Core\Throws\IndexOutOfRangeException;
+use PeServer\Core\Throws\NotSupportedException;
 use PeServer\Core\Throws\NullByteStringException;
+use TypeError;
 
 /**
  * PHP文字列がバイトデータなのか普通の文字列なのかよくわからん。
  *
  * ソース上の型を明示するだけの目的で、効率とかは特になにもない。
  * あとUTF8で動くこと前提。
+ *
+ * @phpstan-type Byte int<0,255>
+ * @implements ArrayAccess<UnsignedIntegerAlias,Byte>
  */
-final class Binary implements Stringable
+final class Binary implements Stringable, ArrayAccess
 {
 	/**
 	 * 実体。
@@ -56,6 +63,19 @@ final class Binary implements Stringable
 	public function getLength(): int
 	{
 		return strlen($this->raw);
+	}
+
+	/**
+	 * `substr` ラッパー。
+	 *
+	 * @param int $index
+	 * @param int|null $length
+	 * @return self
+	 */
+	public function getRange(int $index, ?int $length = null): self
+	{
+		$raw = substr($this->raw, $index, $length);
+		return new self($raw);
 	}
 
 	/**
@@ -153,6 +173,65 @@ final class Binary implements Stringable
 	// 	return $result;
 	// }
 
+	//ArrayAccess
+
+	/**
+	 * `ArrayAccess:offsetExists`
+	 *
+	 * @param int $offset
+	 * @phpstan-param UnsignedIntegerAlias $offset
+	 * @return bool
+	 */
+	public function offsetExists(mixed $offset): bool
+	{
+		if (!is_int($offset)) { //@phpstan-ignore-line UnsignedIntegerAlias
+			return false;
+		}
+
+		if ($offset < 0) { //@phpstan-ignore-line UnsignedIntegerAlias
+			return false;
+		}
+		if (strlen($this->raw) <= $offset) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * `ArrayAccess:offsetGet`
+	 *
+	 * @param int $offset
+	 * @phpstan-param UnsignedIntegerAlias $offset
+	 * @return int
+	 * @phpstan-return Byte
+	 */
+	public function offsetGet(mixed $offset): mixed
+	{
+		if (!is_int($offset)) { //@phpstan-ignore-line UnsignedIntegerAlias
+			throw new TypeError(TypeUtility::getType($offset));
+		}
+
+		if ($offset < 0) { //@phpstan-ignore-line UnsignedIntegerAlias
+			throw new IndexOutOfRangeException((string)$offset);
+		}
+		if (strlen($this->raw) <= $offset) {
+			throw new IndexOutOfRangeException((string)$offset);
+		}
+
+		/** @phpstan-var Byte */
+		return ord($this->raw[$offset]);
+	}
+
+	public function offsetSet(mixed $offset, mixed $value): void
+	{
+		throw new NotSupportedException();
+	}
+
+	public function offsetUnset(mixed $offset): void
+	{
+		throw new NotSupportedException();
+	}
 
 	//Stringable
 
