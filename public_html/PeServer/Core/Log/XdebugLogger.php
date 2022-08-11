@@ -18,6 +18,10 @@ final class XdebugLogger extends LoggerBase
 
 	protected final function logImpl(int $level, int $traceIndex, $message, ...$parameters): void
 	{
+		if (!function_exists('xdebug_is_debugger_active') || !\xdebug_is_debugger_active()) {
+			return;
+		}
+
 		$logMessage = $this->format($level, $traceIndex + 1, $message, ...$parameters);
 		\xdebug_notify($logMessage);
 	}

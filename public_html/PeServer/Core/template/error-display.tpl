@@ -51,13 +51,15 @@
 						</details>
 					</dd>
 
-					<dt>Session</dt>
-					<dd>
-						<details>
-							<summary>展開</summary>
-							<pre>{$smarty.session|@var_dump}</pre>
-						</details>
-					</dd>
+					{if isset($smarty.session)}
+						<dt>Session</dt>
+						<dd>
+							<details>
+								<summary>展開</summary>
+								<pre>{$smarty.session|@var_dump}</pre>
+							</details>
+						</dd>
+					{/if}
 				{/if}
 
 				<dt>ソース</dt>

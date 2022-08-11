@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core\DI;
 
+use PeServer\Core\DefaultValue;
+
 /**
  * 登録可能DIコンテナ。
  */
@@ -48,4 +50,6 @@ interface IDiRegisterContainer
 	 * @phpstan-param DiItem::LIFECYCLE_* $lifecycle
 	 */
 	function registerMapping(string $id, string $className, int $lifecycle = DiItem::LIFECYCLE_TRANSIENT): void;
+
+	function registerValue(mixed $value, string $id = DefaultValue::EMPTY_STRING): void;
 }
