@@ -11,12 +11,13 @@ use PeServer\Core\Log\ILoggerFactory;
 use PeServer\Core\Log\Logging;
 use PeServer\Core\Mvc\ControllerArgument;
 use PeServer\Core\Mvc\DataContent;
-use PeServer\Core\Mvc\Template\ITemplateFactory;
 use PeServer\Core\Mvc\LogicBase;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\Mvc\Result\DataActionResult;
+use PeServer\Core\Mvc\Result\IActionResult;
 use PeServer\Core\Mvc\Result\RedirectActionResult;
 use PeServer\Core\Mvc\Result\ViewActionResult;
+use PeServer\Core\Mvc\Template\ITemplateFactory;
 use PeServer\Core\Mvc\Template\TemplateParameter;
 use PeServer\Core\ReflectionUtility;
 use PeServer\Core\Store\Stores;
@@ -162,6 +163,29 @@ abstract class ControllerBase
 	}
 
 	/**
+	 * Undocumented function
+	 *
+	 * @param string $templateBaseName
+	 * @param string $actionName
+	 * @param TemplateParameter $templateParameter
+	 * @param array $headers
+	 * @phpstan-param array<non-empty-string,string[]> $headers
+	 * @param ITemplateFactory $templateFactory
+	 * @param IUrlHelper $urlHelper
+	 * @return ViewActionResult
+	 */
+	protected function createViewActionResult(
+		string $templateBaseName,
+		string $actionName,
+		TemplateParameter $templateParameter,
+		array $headers,
+		ITemplateFactory $templateFactory,
+		IUrlHelper $urlHelper
+	): ViewActionResult {
+		return new ViewActionResult($templateBaseName, $actionName, $templateParameter, $headers, $templateFactory, $urlHelper);
+	}
+
+	/**
 	 * Viewを表示。
 	 *
 	 * @param string $controllerName コントローラ完全名。
@@ -183,7 +207,7 @@ abstract class ControllerBase
 
 		$templateDirPath = Text::replace($controllerBaseName, '\\', DIRECTORY_SEPARATOR);
 
-		return new ViewActionResult($templateDirPath, $action, $parameter, $this->getResponseHeaders(), $this->templateFactory, $this->urlHelper);
+		return $this->createViewActionResult($templateDirPath, $action, $parameter, $this->getResponseHeaders(), $this->templateFactory, $this->urlHelper);
 	}
 
 	/**
