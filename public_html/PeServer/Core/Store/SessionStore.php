@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Store;
 
-use PeServer\Core\Security;
-use PeServer\Core\IOUtility;
 use PeServer\Core\ArrayUtility;
-use PeServer\Core\InitialValue;
-use PeServer\Core\StringUtility;
+use PeServer\Core\DefaultValue;
+use PeServer\Core\IO\Directory;
+use PeServer\Core\IO\IOUtility;
+use PeServer\Core\Security;
 use PeServer\Core\Store\CookieStore;
 use PeServer\Core\Store\SessionOption;
+use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
-use PeServer\Core\Throws\NotImplementedException;
 use PeServer\Core\Throws\InvalidOperationException;
+use PeServer\Core\Throws\NotImplementedException;
 
 /**
  * セッション管理処理。
@@ -66,7 +67,7 @@ class SessionStore
 	 */
 	public function __construct(SessionOption $option, CookieStore $cookie)
 	{
-		if (StringUtility::isNullOrWhiteSpace($option->name)) { //@phpstan-ignore-line
+		if (Text::isNullOrWhiteSpace($option->name)) { //@phpstan-ignore-line
 			throw new ArgumentException('$option->name');
 		}
 
@@ -74,7 +75,7 @@ class SessionStore
 		$this->cookie = $cookie;
 
 		if ($this->cookie->tryGet($this->option->name, $nameValue)) {
-			if (!StringUtility::isNullOrWhiteSpace($nameValue)) {
+			if (!Text::isNullOrWhiteSpace($nameValue)) {
 				$this->start();
 				$this->values = $_SESSION;
 				$this->isStarted = true;
@@ -171,15 +172,15 @@ class SessionStore
 		// セッション名はコンストラクタ時点で設定済みのためチェックしない
 		session_name($this->option->name);
 
-		if (!StringUtility::isNullOrWhiteSpace($this->option->savePath)) {
-			IOUtility::createDirectoryIfNotExists($this->option->savePath);
+		if (!Text::isNullOrWhiteSpace($this->option->savePath)) {
+			Directory::createDirectoryIfNotExists($this->option->savePath);
 			session_save_path($this->option->savePath);
 		}
 
 		$sessionOption = [
 			'lifetime' => $this->option->cookie->getExpires(),
 			'path' => $this->option->cookie->path,
-			'domain' => InitialValue::EMPTY_STRING,
+			'domain' => DefaultValue::EMPTY_STRING,
 			'secure' => $this->option->cookie->secure,
 			'httponly' => $this->option->cookie->httpOnly,
 			'samesite' => $this->option->cookie->sameSite,
@@ -261,7 +262,7 @@ class SessionStore
 	 */
 	public function remove(string $key): void
 	{
-		if (StringUtility::isNullOrEmpty($key)) {
+		if (Text::isNullOrEmpty($key)) {
 			$this->values = [];
 		} else {
 			unset($this->values[$key]);

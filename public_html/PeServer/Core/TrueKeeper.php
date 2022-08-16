@@ -18,7 +18,7 @@ use PeServer\Core\Throws\ArgumentException;
  *  ていうよくやるやつが動かんかってん
  *
  * @property bool $state 真偽値を何も考えずに代入する。取得した際に一度でも偽が代入されていれば偽になる。
- * @property bool $last 最終設定値。
+ * @property-read bool $last 最終設定値。
  */
 final class TrueKeeper
 {

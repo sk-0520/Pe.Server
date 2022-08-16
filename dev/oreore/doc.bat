@@ -5,4 +5,4 @@ call env.bat
 
 echo %DATE:/=-%T%TIME: =0%+09:00
 
-"%BASH%" ..\doc.sh --cache-folder=%TEMP%\phpdocumentor %*
+"%BASH%" -e ..\doc.sh --cache-folder=%TEMP%\phpdocumentor %*

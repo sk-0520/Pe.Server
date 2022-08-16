@@ -71,6 +71,12 @@ class Timer implements Stringable
 		$this->isRunning = false;
 	}
 
+	public function restart(): void
+	{
+		$this->stop();
+		$this->start();
+	}
+
 	/**
 	 * 現在の経過時間(ナノ秒)を取得。
 	 *

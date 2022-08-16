@@ -35,11 +35,12 @@ abstract class TypeUtility
 	 */
 	public static function parseInteger(string $input): int
 	{
-		if (!Regex::isMatch($input, self::INT_PATTERN)) {
+		$regex = new Regex();
+		if (!$regex->isMatch($input, self::INT_PATTERN)) {
 			throw new ParseException($input);
 		}
 
-		return (int)StringUtility::trim($input);
+		return (int)Text::trim($input);
 	}
 
 	/**
@@ -51,11 +52,12 @@ abstract class TypeUtility
 	 */
 	public static function tryParseInteger(string $input, ?int &$result): bool
 	{
-		if (!Regex::isMatch($input, self::INT_PATTERN)) {
+		$regex = new Regex();
+		if (!$regex->isMatch($input, self::INT_PATTERN)) {
 			return false;
 		}
 
-		$result = (int)StringUtility::trim($input);
+		$result = (int)Text::trim($input);
 		return true;
 	}
 
@@ -65,7 +67,7 @@ abstract class TypeUtility
 			return (bool)$input;
 		}
 		if (is_string($input)) {
-			$s = StringUtility::toLower(StringUtility::trim((string)$input));
+			$s = Text::toLower(Text::trim((string)$input));
 			$trues = ['true', 't', 'on', 'ok', '1'];
 			return ArrayUtility::containsValue($trues, $s);
 		}
@@ -88,8 +90,8 @@ abstract class TypeUtility
 	 * @param mixed $input
 	 * @return string 型名
 	 * @phpstan-return class-string|self::TYPE_*
-	 * @see https://php.net/manual/function.get-class.php
-	 * @see https://php.net/manual/function.gettype.php
+	 * @see https://www.php.net/manual/function.get-class.php
+	 * @see https://www.php.net/manual/function.gettype.php
 	 */
 	public static function getType(mixed $input): string
 	{

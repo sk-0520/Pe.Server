@@ -5,15 +5,25 @@ declare(strict_types=1);
 namespace PeServer\Core;
 
 use \Throwable;
-use PeServer\Core\Log\Logging;
-use PeServer\Core\InitialValue;
-use PeServer\Core\Mvc\Template;
-use PeServer\Core\Throws\Throws;
+use PeServer\Core\DefaultValue;
+use PeServer\Core\DI\Inject;
 use PeServer\Core\Http\HttpStatus;
-use PeServer\Core\Mvc\TemplateParameter;
+use PeServer\Core\IO\Directory;
+use PeServer\Core\IO\File;
+use PeServer\Core\IO\Path;
+use PeServer\Core\Log\ILogger;
+use PeServer\Core\Log\Logging;
+use PeServer\Core\Mvc\Template\ITemplateFactory;
+use PeServer\Core\Mvc\Template\SmartyTemplate;
+use PeServer\Core\Mvc\Template\TemplateFactory;
+use PeServer\Core\Mvc\Template\TemplateOptions;
+use PeServer\Core\Mvc\Template\TemplateParameter;
+use PeServer\Core\Store\Stores;
 use PeServer\Core\Throws\HttpStatusException;
 use PeServer\Core\Throws\InvalidErrorLevelError;
 use PeServer\Core\Throws\InvalidOperationException;
+use PeServer\Core\Throws\Throws;
+use PeServer\Core\Web\UrlHelper;
 
 /**
  * エラーハンドリング処理。
@@ -22,6 +32,14 @@ class ErrorHandler
 {
 	/** 登録済みか。 */
 	private bool $isRegistered = false;
+
+	#[Inject(TemplateFactory::class)] //@phpstan-ignore-next-line
+	private ITemplateFactory $templateFactory;
+
+	public function __construct(
+		protected ILogger $logger
+	) {
+	}
 
 	/**
 	 * 抑制エラーコード指定。
@@ -67,7 +85,7 @@ class ErrorHandler
 		/** @var int */
 		$type = ArrayUtility::getOr($lastError, 'type', -1);
 		/** @var string */
-		$message = ArrayUtility::getOr($lastError, 'message', InitialValue::EMPTY_STRING);
+		$message = ArrayUtility::getOr($lastError, 'message', DefaultValue::EMPTY_STRING);
 		/** @var string */
 		$file = ArrayUtility::getOr($lastError, 'file', '<unknown>');
 		/** @var int */
@@ -124,7 +142,7 @@ class ErrorHandler
 	 *
 	 * @template TValue
 	 * @param callable $action 補足したい処理。
-	 * @phpstan-param callable(): (TValue) $action 補足したい処理。
+	 * @phpstan-param callable():TValue $action 補足したい処理。
 	 * @param int $errorLevel 補足対象のエラーレベル。 https://www.php.net/manual/errorfunc.constants.php
 	 * @return ResultData 結果。補足できたかどうかの真偽値が成功状態に設定されるので処理の結果自体は呼び出し側で確認すること。
 	 * @phpstan-return ResultData<TValue>
@@ -188,15 +206,15 @@ class ErrorHandler
 	private function getFileContents(string $file, ?Throwable $throwable): array
 	{
 		$files = [
-			"$file" => IOUtility::readContent($file)->getRaw(),
+			"$file" => File::readContent($file)->getRaw(),
 		];
 
-		if(!is_null($throwable)) {
+		if (!is_null($throwable)) {
 			foreach ($throwable->getTrace() as $item) {
-				if(isset($item['file'])) {
+				if (isset($item['file'])) {
 					$f = $item['file'];
 					if (!isset($files[$f])) {
-						$files[$f] = IOUtility::readContent($f)->getRaw();
+						$files[$f] = File::readContent($f)->getRaw();
 					}
 				}
 			}
@@ -228,21 +246,26 @@ class ErrorHandler
 
 		$status = $this->setHttpStatus($throwable);
 
-		$logger = Logging::create(get_class($this));
-
 		$isSuppressionStatus = false;
 		foreach ($this->getSuppressionStatusList() as $suppressionStatus) {
 			if ($status->is($suppressionStatus)) {
 				$isSuppressionStatus = true;
-				$logger->info('HTTP: {0}', $suppressionStatus->getCode());
+				$this->logger->info('HTTP: {0}', $suppressionStatus->getCode());
 				break;
 			}
 		}
 		if (!$isSuppressionStatus) {
-			$logger->error($values);
+			$this->logger->error($values);
 		}
 
-		$template = Template::create('template', 'Core', InitialValue::EMPTY_STRING);
+		$options = new TemplateOptions(
+			__DIR__,
+			'template',
+			UrlHelper::none(),
+			Path::combine(Directory::getTemporaryDirectory(), 'PeServer-Core')
+		);
+		$template = $this->templateFactory->createTemplate($options);
+
 		echo $template->build('error-display.tpl', new TemplateParameter($status, $values, []));
 	}
 }

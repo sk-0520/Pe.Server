@@ -6,7 +6,7 @@ namespace PeServer\Core\Mvc\Result;
 
 use PeServer\Core\Binary;
 use PeServer\Core\Http\HttpResponse;
-use PeServer\Core\Json;
+use PeServer\Core\Serialization\Json;
 use PeServer\Core\Mime;
 use PeServer\Core\Mvc\DataContent;
 use PeServer\Core\Mvc\DownloadDataContent;

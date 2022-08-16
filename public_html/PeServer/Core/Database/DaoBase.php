@@ -7,6 +7,7 @@ namespace PeServer\Core\Database;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\Logging;
+use PeServer\Core\Log\NullLogger;
 
 /**
  * DBアクセス基底処理。
@@ -31,6 +32,6 @@ abstract class DaoBase
 		/** @readonly */
 		protected IDatabaseContext $context
 	) {
-		$this->logger = Logging::create(get_class($this));
+		$this->logger = new NullLogger();
 	}
 }

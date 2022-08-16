@@ -32,16 +32,16 @@ if [ ! -v IGNORE_NAMESPACE_CHECK ] ; then
 	# 名前空間がディレクトリとあっているか(オートローダーが死ぬ)
 	pushd "${BASE_DIR}"
 		for FILE in $(find . \( \( \( -type d -name 'Libs' \) -or \( -type d -name 'deploy' \) -or \( -type d -name 'data' \) -or \( -type f -name index.php \) \) -prune \) -or -type f -name '*.php' -and -print) ; do
-			if [ $(grep --count 'namespace' ${FILE}) -ne 0 ] ; then
+			if [ $(grep --count '^namespace' ${FILE}) -ne 0 ] ; then
 				TARGET_NAMESPACE=${FILE#./} # 先頭の ./ を破棄
 				TARGET_NAMESPACE=${TARGET_NAMESPACE%/*} # ファイル名を破棄
 				TARGET_NAMESPACE=${TARGET_NAMESPACE//\//\\} # ディレクトリ区切りを名前空間区切りに変換
-				SOURCE_NAMESPACE=$(grep 'namespace' $FILE)
+				SOURCE_NAMESPACE=$(grep '^namespace' $FILE)
 				SOURCE_NAMESPACE=${SOURCE_NAMESPACE#namespace}
 				SOURCE_NAMESPACE=${SOURCE_NAMESPACE%;*}
 				SOURCE_NAMESPACE=${SOURCE_NAMESPACE// /}
 				SOURCE_NAMESPACE=${SOURCE_NAMESPACE//	/}
-				if [ ${TARGET_NAMESPACE} != ${SOURCE_NAMESPACE} ] ; then
+				if [ "${TARGET_NAMESPACE}" != "${SOURCE_NAMESPACE}" ] ; then
 					echo "${FILE}: ${SOURCE_NAMESPACE} != ${TARGET_NAMESPACE}"
 					NAMESPACE_ERROR=true
 				fi
@@ -57,5 +57,8 @@ if [ ! -v IGNORE_NAMESPACE_CHECK ] ; then
 	fi
 fi
 
-pwd
-php ${PHPUNIT_FILE} --configuration ../dev/phpunit.xml --coverage-html ../coverage/php --testdox "$@" .
+COVERAGE_CACHE_OPTION=""
+if [[ -v COVERAGE_CACHE ]] ; then
+	COVERAGE_CACHE_OPTION="--coverage-cache ${COVERAGE_CACHE}"
+fi
+php ${PHPUNIT_FILE} --configuration ../dev/phpunit.xml --coverage-html ../coverage/php --testdox $COVERAGE_CACHE_OPTION "$@" .

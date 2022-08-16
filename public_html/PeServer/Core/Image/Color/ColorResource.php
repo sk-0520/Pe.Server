@@ -8,7 +8,7 @@ use PeServer\Core\Code;
 use PeServer\Core\DisposerBase;
 use PeServer\Core\Image\Graphics;
 use PeServer\Core\Image\Color\IColor;
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 
 class ColorResource extends DisposerBase implements IColor
 {

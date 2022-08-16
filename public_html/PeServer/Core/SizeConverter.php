@@ -54,7 +54,7 @@ class SizeConverter
 			$size = $size / $this->kbSize;
 		}
 
-		return StringUtility::replaceMap($sizeFormat, [
+		return Text::replaceMap($sizeFormat, [
 			'f_size' => strval(round($size, 2)),
 			'i_size' => strval($size),
 			'unit' => $this->units[$order]

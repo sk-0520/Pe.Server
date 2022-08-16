@@ -9,12 +9,13 @@ use PeServer\Core\Alignment;
 use PeServer\Core\Binary;
 use PeServer\Core\DisposerBase;
 use PeServer\Core\ErrorHandler;
-use PeServer\Core\IOUtility;
+use PeServer\Core\IO\IOUtility;
 use PeServer\Core\IDisposable;
 use PeServer\Core\Image\Area;
 use PeServer\Core\Image\Color\ColorResource;
 use PeServer\Core\Image\Color\IColor;
 use PeServer\Core\Image\Color\RgbColor;
+use PeServer\Core\IO\File;
 use PeServer\Core\OutputBuffer;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\GraphicsException;
@@ -117,7 +118,7 @@ class Graphics extends DisposerBase
 	 */
 	public static function open(string $path): Graphics
 	{
-		$binary = IOUtility::readContent($path);
+		$binary = File::readContent($path);
 		return self::load($binary);
 	}
 
@@ -508,7 +509,7 @@ class Graphics extends DisposerBase
 	 * @param TextSetting $setting 描画するテキスト設定。
 	 * @return Area 描画領域。
 	 * @throws GraphicsException
-	 * @see https://php.net/manual/en/function.imagettftext.php
+	 * @see https://www.php.net/manual/function.imagettftext.php
 	 */
 	public function drawText(string $text, float $fontSize, Rectangle $rectangle, IColor $color, TextSetting $setting): Area
 	{

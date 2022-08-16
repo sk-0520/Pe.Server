@@ -9,12 +9,12 @@ use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Database\IDatabaseContext;
-use PeServer\Core\InitialValue;
+use PeServer\Core\DefaultValue;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\Mvc\Validator;
 use PeServer\Core\Regex;
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 
 class SettingDatabaseMaintenanceLogic extends PageLogicBase
 {
@@ -55,18 +55,19 @@ class SettingDatabaseMaintenanceLogic extends PageLogicBase
 
 		$database = $this->openDatabase();
 		/** @var int|mixed[]|Throwable */
-		$result = InitialValue::EMPTY_STRING;
+		$result = DefaultValue::EMPTY_STRING;
 		try {
-			$database->transaction(function (IDatabaseContext $context, $statement) use (&$result) {
-				/** @phpstan-var literal-string $statement */
+			$database->transaction(function (IDatabaseContext $context) use (&$result, $statement) {
+				/** @phpstan-var literal-string $statement これはええねん */
 
-				if (Regex::isMatch($statement, '/^\s*\bselect\b/')) { // select だけの判定はよくないけどしんどいのだ
-					$result = $context->query($statement);
+				$regex = new Regex();
+				if ($regex->isMatch($statement, '/^\s*\bselect\b/')) { // select だけの判定はよくないけどしんどいのだ
+					$result = $context->query($statement)->rows;
 				} else {
-					$result = $context->execute($statement);
+					$result = $context->execute($statement)->resultCount;
 				}
 				return true;
-			}, $statement);
+			});
 		} catch (Throwable $ex) {
 			$result = $ex;
 		}

@@ -10,17 +10,22 @@ use PeServer\App\Models\IAuditUserInfo;
 use PeServer\App\Models\ResponseJson;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Database\Database;
+use PeServer\Core\Database\IDatabaseConnection;
 use PeServer\Core\Database\IDatabaseContext;
-use PeServer\Core\InitialValue;
-use PeServer\Core\Json;
+use PeServer\Core\DefaultValue;
+use PeServer\Core\DI\Inject;
 use PeServer\Core\Mime;
 use PeServer\Core\Mvc\LogicBase;
 use PeServer\Core\Mvc\LogicParameter;
-use PeServer\Core\StringUtility;
+use PeServer\Core\Serialization\Json;
+use PeServer\Core\Text;
 
 
 abstract class DomainLogicBase extends LogicBase
 {
+	#[Inject] //@phpstan-ignore-next-line
+	private IDatabaseConnection $databaseConnection;
+
 	public function __construct(LogicParameter $parameter)
 	{
 		parent::__construct($parameter);
@@ -33,7 +38,8 @@ abstract class DomainLogicBase extends LogicBase
 	 */
 	protected function openDatabase(): Database
 	{
-		return AppDatabase::open($this->logger);
+		//return AppDatabase::open($this->logger);
+		return $this->databaseConnection->open();
 	}
 
 	protected function setResponseJson(ResponseJson $responseJson): void
@@ -70,7 +76,7 @@ abstract class DomainLogicBase extends LogicBase
 	{
 		$ipAddress = $this->stores->special->getServer('REMOTE_ADDR');
 		$userAgent = $this->stores->special->getServer('HTTP_USER_AGENT');
-		$dumpInfo = InitialValue::EMPTY_STRING;
+		$dumpInfo = DefaultValue::EMPTY_STRING;
 		if (!is_null($info)) {
 			$json ??= new Json();
 
@@ -117,7 +123,7 @@ abstract class DomainLogicBase extends LogicBase
 	 */
 	protected function writeAuditLogTargetUser(string $userId, string $event, ?array $info = null, ?IDatabaseContext $context = null): int
 	{
-		if (StringUtility::isNullOrWhiteSpace($userId)) {
+		if (Text::isNullOrWhiteSpace($userId)) {
 			$this->logger->error('監査ログ ユーザーID不正のため書き込み中止');
 			return -1;
 		}

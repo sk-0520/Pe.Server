@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domain\Page\Account;
 
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
-use PeServer\App\Models\SessionManager;
+use PeServer\App\Models\SessionKey;
 use PeServer\App\Models\AppCryptography;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\App\Models\Dao\Entities\UsersEntityDao;
@@ -28,7 +28,7 @@ class AccountUserLogic extends PageLogicBase
 
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
-		$userInfo = SessionManager::getAccount();
+		$userInfo = $this->requireSession(SessionKey::ACCOUNT);
 
 		$database = $this->openDatabase();
 
@@ -46,11 +46,11 @@ class AccountUserLogic extends PageLogicBase
 			'website' => 'account_user_website',
 		];
 
-		foreach ($userInfoData as $key => $value) {
+		foreach ($userInfoData->fields as $key => $value) {
 			if(ArrayUtility::containsKey($map, $key)) {
 				$this->setValue($map[$key], $value);
 			}
 		}
-		$this->setValue('plugins', $userPlugins);
+		$this->setValue('plugins', $userPlugins->rows);
 	}
 }

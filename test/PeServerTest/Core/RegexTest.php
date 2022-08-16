@@ -4,41 +4,94 @@ declare(strict_types=1);
 
 namespace PeServerTest\Core;
 
-use PeServerTest\Data;
-use PeServerTest\TestClass;
+use PeServer\Core\Encoding;
 use PeServer\Core\Regex;
 use PeServer\Core\Throws\ArgumentException;
+use PeServer\Core\Throws\RegexDelimiterException;
 use PeServer\Core\Throws\RegexException;
+use PeServer\Core\Throws\RegexPatternException;
+use PeServerTest\Data;
+use PeServerTest\TestClass;
 
 class RegexTest extends TestClass
 {
-	public function test_isMatch()
+	public function test_normalizePattern_default()
 	{
 		$tests = [
-			new Data(true, 'abc', '/a/')
+			new Data(true, 'abcde', '/a/'),
+			new Data(true, 'abcde', '(b)'),
+			new Data(true, 'abcde', '{c}'),
+			new Data(true, 'abcde', '[c]'),
+			new Data(true, 'abcde', '<d>'),
+			new Data(true, 'abcde', '/e/i'),
+			new Data(false, 'abcde', '/E/'),
+			new Data(true, 'abcde', '/E/i'),
+			new Data(true, 'abcde', '/E/i'),
 		];
 		foreach ($tests as $test) {
-			$actual = Regex::isMatch(...$test->args);
+			$regex = new Regex();
+			$actual = $regex->isMatch(...$test->args);
 			$this->assertSame($test->expected, $actual, $test->str());
 		}
+	}
+
+	public function test_normalizePattern_ascii()
+	{
+		$tests = [
+			new Data(true, 'abcde', '/a/'),
+			new Data(true, 'abcde', '(b)'),
+			new Data(true, 'abcde', '{c}'),
+			new Data(true, 'abcde', '[c]'),
+			new Data(true, 'abcde', '<d>'),
+			new Data(true, 'abcde', '/e/i'),
+			new Data(false, 'abcde', '/E/'),
+			new Data(true, 'abcde', '/E/i'),
+			new Data(true, 'abcde', '/E/i'),
+		];
+		foreach ($tests as $test) {
+			$regex = new Regex(Encoding::getAscii());
+			$actual = $regex->isMatch(...$test->args);
+			$this->assertSame($test->expected, $actual, $test->str());
+		}
+	}
+
+	public function test_normalizePattern_length_throw()
+	{
+		$this->expectException(RegexPatternException::class);
+		$regex = new Regex();
+		$regex->isMatch('asd', '//');
+		$this->fail();
+	}
+
+	public function test_normalizePattern_close_throw()
+	{
+		$this->expectException(RegexDelimiterException::class);
+		$regex = new Regex();
+		$regex->isMatch('asd', '/a@');
+		$this->fail();
 	}
 
 	public function test_isMatch_throw()
 	{
 		$this->expectException(RegexException::class);
-		Regex::isMatch('abcABC', '/(/');
+		$regex = new Regex();
+		$regex->isMatch('abcABC', '/(/');
 		$this->fail();
 	}
 
 	public function test_matches()
 	{
-		$actual1 = Regex::matches('abc123XYZ', '/([a-z]+)/');
+		$regex = new Regex();
+		$actual0 = $regex->matches('abc123XYZ', '/(aaaa)/');
+		$this->assertSame(0, count($actual0));
+
+		$actual1 = $regex->matches('abc123XYZ', '/([a-z]+)/');
 		$this->assertSame('abc', $actual1[1]);
 
-		$actual2 = Regex::matches('abc123XYZ', '/(?<NUM>\d+)/');
+		$actual2 = $regex->matches('abc123XYZ', '/(?<NUM>\d+)/');
 		$this->assertSame('123', $actual2['NUM']);
 
-		$actual3 = Regex::matches('abc123XYZ', '/(.)(.)(.)/');
+		$actual3 = $regex->matches('abc123XYZ', '/(.)(.)(.)/');
 		$this->assertSame('a', $actual3[1]);
 		$this->assertSame('b', $actual3[2]);
 		$this->assertSame('c', $actual3[3]);
@@ -49,7 +102,7 @@ class RegexTest extends TestClass
 		$this->assertSame('Y', $actual3[8]);
 		$this->assertSame('Z', $actual3[9]);
 
-		$actual4 = Regex::matches('1234', '/(.)(?<NAME>.)/');
+		$actual4 = $regex->matches('1234', '/(.)(?<NAME>.)/');
 		$this->assertSame('1', $actual4[1]);
 		$this->assertSame('2', $actual4[2]);
 		$this->assertSame('2', $actual4['NAME']);
@@ -60,7 +113,8 @@ class RegexTest extends TestClass
 	public function test_matches_throw()
 	{
 		$this->expectException(RegexException::class);
-		Regex::matches('abcABC', '/(/');
+		$regex = new Regex();
+		$regex->matches('abcABC', '/(/');
 		$this->fail();
 	}
 
@@ -75,19 +129,25 @@ class RegexTest extends TestClass
 			new Data('XbcABC', 'abcABC', '/a/i', 'X', 1),
 		];
 		foreach ($tests as $test) {
-			$actual = Regex::replace(...$test->args);
+			$regex = new Regex();
+			$actual = $regex->replace(...$test->args);
 			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
 
-	public function test_replace_throw()
+	public function test_replace_throw1()
 	{
+		$regex = new Regex();
 		$this->expectException(ArgumentException::class);
-		Regex::replace('abcABC', '/a/i', 'X', 0);
+		$regex->replace('abcABC', '/a/i', 'X', 0);
 		$this->fail();
+	}
 
+	public function test_replace_throw2()
+	{
+		$regex = new Regex();
 		$this->expectException(RegexException::class);
-		Regex::replace('abcABC', '/(/', 'X');
+		$regex->replace('abcABC', '/(/', 'X');
 		$this->fail();
 	}
 
@@ -99,7 +159,8 @@ class RegexTest extends TestClass
 			new Data('[a]bcABC', 'abcABC', '/(?<NAME>a)/', fn ($m) => '[' . $m['NAME'] . ']'),
 		];
 		foreach ($tests as $test) {
-			$actual = Regex::replaceCallback(...$test->args);
+			$regex = new Regex();
+			$actual = $regex->replaceCallback(...$test->args);
 			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}

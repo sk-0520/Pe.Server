@@ -44,12 +44,12 @@ class Vector extends TypeArrayBase
 	 * @param array $items 配列。
 	 * @phpstan-param non-empty-array<TTValue> $items
 	 * @param bool $useValues
-	 * @return Vector
-	 * @phpstan-return Vector<TTValue>
+	 * @return self
+	 * @phpstan-return self<TTValue>
 	 */
-	public static function create(array $items, bool $useValues = true): Vector
+	public static function create(array $items, bool $useValues = true): self
 	{
-		if (ArrayUtility::isNullOrEmpty($items)) {
+		if (ArrayUtility::isNullOrEmpty($items)) { //@phpstan-ignore-line ArrayUtility::isNullOrEmpty
 			throw new ArgumentException('$items');
 		}
 
@@ -66,10 +66,10 @@ class Vector extends TypeArrayBase
 	 * @template TTValue
 	 * @param string $type
 	 * @phpstan-param class-string|TypeUtility::TYPE_* $type
-	 * @return Vector
-	 * @phpstan-return Vector<TTValue>
+	 * @return self
+	 * @phpstan-return self<TTValue>
 	 */
-	public static function empty(string $type): Vector //@phpstan-ignore-line わかんね
+	public static function empty(string $type): self //@phpstan-ignore-line わかんね
 	{
 		return new self($type, [], false);
 	}

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc;
 
 use PeServer\Core\Regex;
-use PeServer\Core\InitialValue;
-use PeServer\Core\StringUtility;
+use PeServer\Core\DefaultValue;
+use PeServer\Core\Text;
 use PeServer\Core\Mvc\IValidationReceiver;
 
 /**
@@ -14,7 +14,7 @@ use PeServer\Core\Mvc\IValidationReceiver;
  */
 class Validator
 {
-	public const COMMON = InitialValue::EMPTY_STRING;
+	public const COMMON = DefaultValue::EMPTY_STRING;
 
 	public const KIND_EMPTY = 0;
 	public const KIND_WHITE_SPACE = 1;
@@ -28,16 +28,18 @@ class Validator
 	 * 検証移譲取得処理。
 	 */
 	private IValidationReceiver $receiver;
+	private Regex $regex;
 
 	public function __construct(IValidationReceiver $receiver)
 	{
+		$this->regex = new Regex();
 		$this->receiver = $receiver;
 	}
 
 	public function isNotEmpty(string $key, ?string $value): bool
 	{
-		if (StringUtility::isNullOrEmpty($value)) {
-			$this->receiver->receiveErrorKind($key, self::KIND_EMPTY, ['VALUE' => InitialValue::EMPTY_STRING]);
+		if (Text::isNullOrEmpty($value)) {
+			$this->receiver->receiveErrorKind($key, self::KIND_EMPTY, ['VALUE' => DefaultValue::EMPTY_STRING]);
 			return false;
 		}
 
@@ -46,8 +48,8 @@ class Validator
 
 	public function isNotWhiteSpace(string $key, ?string $value): bool
 	{
-		if (StringUtility::isNullOrWhiteSpace($value)) {
-			$this->receiver->receiveErrorKind($key, self::KIND_WHITE_SPACE, ['VALUE' => $value ? $value : InitialValue::EMPTY_STRING]);
+		if (Text::isNullOrWhiteSpace($value)) {
+			$this->receiver->receiveErrorKind($key, self::KIND_WHITE_SPACE, ['VALUE' => $value ? $value : DefaultValue::EMPTY_STRING]);
 			return false;
 		}
 
@@ -57,7 +59,7 @@ class Validator
 
 	public function inLength(string $key, int $length, string $value): bool
 	{
-		if ($length < StringUtility::getLength($value)) {
+		if ($length < Text::getLength($value)) {
 			$this->receiver->receiveErrorKind($key, self::KIND_LENGTH, ['VALUE' => $value, 'SAFE_LENGTH' => $length, 'ERROR_LENGTH' => mb_strlen($value)]);
 			return false;
 		}
@@ -67,7 +69,7 @@ class Validator
 
 	public function inRange(string $key, int $min, int $max, string $value): bool
 	{
-		$length = StringUtility::getLength($value);
+		$length = Text::getLength($value);
 		if ($length < $min || $max < $length) {
 			$this->receiver->receiveErrorKind($key, self::KIND_RANGE, ['VALUE' => $value, 'RANGE_MIN' => $min, 'RANGE_MAX' => $max, 'ERROR_LENGTH' => mb_strlen($value)]);
 			return false;
@@ -76,9 +78,18 @@ class Validator
 		return true;
 	}
 
+	/**
+	 * 正規表現にマッチするか。
+	 *
+	 * @param string $key
+	 * @param string $pattern
+	 * @phpstan-param literal-string $pattern
+	 * @param string $value
+	 * @return bool
+	 */
 	public function isMatch(string $key, string $pattern, string $value): bool
 	{
-		if (!Regex::isMatch($value, $pattern)) {
+		if (!$this->regex->isMatch($value, $pattern)) {
 			$this->receiver->receiveErrorKind($key, self::KIND_MATCH, ['VALUE' => $value, 'PATTERN' => $pattern]);
 			return false;
 		}
@@ -86,9 +97,18 @@ class Validator
 		return true;
 	}
 
+	/**
+	 * 正規表現にマッチしないか。
+	 *
+	 * @param string $key
+	 * @param string $pattern
+	 * @phpstan-param literal-string $pattern
+	 * @param string $value
+	 * @return bool
+	 */
 	public function isNotMatch(string $key, string $pattern, string $value): bool
 	{
-		if (Regex::isMatch($value, $pattern)) {
+		if ($this->regex->isMatch($value, $pattern)) {
 			$this->receiver->receiveErrorKind($key, self::KIND_MATCH, ['value' => $value, 'pattern' => $pattern]);
 			return false;
 		}

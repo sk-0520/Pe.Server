@@ -16,22 +16,17 @@ use PeServer\Core\Store\Stores;
  */
 class MiddlewareArgument
 {
-	public HttpResponse $response;
-
 	/**
 	 * 生成。
 	 *
 	 * @param RequestPath $requestPath
 	 * @param Stores $stores
 	 * @param HttpRequest $request
-	 * @param ILogger $logger
 	 */
 	public function __construct(
 		public RequestPath $requestPath,
 		public Stores $stores,
-		public HttpRequest $request,
-		public ILogger $logger
+		public HttpRequest $request
 	) {
-		$this->response = new HttpResponse();
 	}
 }

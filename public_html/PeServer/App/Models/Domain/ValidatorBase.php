@@ -6,7 +6,7 @@ namespace PeServer\App\Models\Domain;
 
 use PeServer\Core\TrueKeeper;
 use PeServer\Core\Mvc\Validator;
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 use PeServer\Core\Mvc\IValidationReceiver;
 
 
@@ -41,7 +41,7 @@ abstract class ValidatorBase
 
 	public final function isWebsite(string $key, ?string $value): bool
 	{
-		if (!StringUtility::isNullOrWhiteSpace($value)) {
+		if (!Text::isNullOrWhiteSpace($value)) {
 			/** @var string $value isNotWhiteSpace */
 			$trueKeeper = new TrueKeeper();
 

@@ -7,8 +7,8 @@ namespace PeServer\Core\Html;
 use \DOMElement;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Html\HtmlDocument;
-use PeServer\Core\InitialValue;
-use PeServer\Core\StringUtility;
+use PeServer\Core\DefaultValue;
+use PeServer\Core\Text;
 use PeServer\Core\Throws\HtmlDocumentException;
 
 /**
@@ -39,7 +39,7 @@ final class HtmlElement extends HtmlElementBase
 	{
 		if (is_bool($value)) {
 			if ($value) {
-				$value = InitialValue::EMPTY_STRING;
+				$value = DefaultValue::EMPTY_STRING;
 			} else {
 				if ($this->raw->hasAttribute($qualifiedName)) {
 					$this->raw->removeAttribute($qualifiedName);
@@ -62,11 +62,11 @@ final class HtmlElement extends HtmlElementBase
 	public function getClassList(): array
 	{
 		$classValue = $this->raw->getAttribute('class');
-		if (StringUtility::isNullOrWhiteSpace($classValue)) {
+		if (Text::isNullOrWhiteSpace($classValue)) {
 			return [];
 		}
 
-		return StringUtility::split($classValue, ' ');
+		return Text::split($classValue, ' ');
 	}
 
 	/**
@@ -77,7 +77,7 @@ final class HtmlElement extends HtmlElementBase
 	 */
 	public function setClassList(array $classNames): void
 	{
-		$classValue = StringUtility::join(' ', $classNames);
+		$classValue = Text::join(' ', $classNames);
 		$this->setAttribute('class', $classValue);
 	}
 

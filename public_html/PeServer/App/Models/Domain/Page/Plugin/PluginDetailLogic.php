@@ -13,7 +13,7 @@ use PeServer\Core\Uuid;
 
 class PluginDetailLogic extends PageLogicBase
 {
-	public function __construct(LogicParameter $parameter)
+	public function __construct(LogicParameter $parameter, private AppDatabaseCache $dbCache)
 	{
 		parent::__construct($parameter);
 	}
@@ -25,7 +25,7 @@ class PluginDetailLogic extends PageLogicBase
 
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
-		$pluginInformation = AppDatabaseCache::readPluginInformation();
+		$pluginInformation = $this->dbCache->readPluginInformation();
 		$plugin = Collection::from($pluginInformation)
 			->first(function ($i) {
 				return Uuid::isEqualGuid($i->pluginId, $this->getRequest('plugin_id'));

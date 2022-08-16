@@ -61,6 +61,6 @@ class UserAuditLogsEntityDao extends DaoBase
 			SQL
 		);
 
-		return intval($result['row_id']);
+		return intval($result->fields['row_id']);
 	}
 }

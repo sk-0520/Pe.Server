@@ -6,38 +6,40 @@ namespace PeServer\Core\Mvc;
 
 use \DateInterval;
 use \DateTimeImmutable;
-use PeServer\Core\Utc;
-use PeServer\Core\I18n;
-use PeServer\Core\Mime;
-use PeServer\Core\Binary;
-use PeServer\Core\IOUtility;
-use PeServer\Core\Log\ILogger;
 use PeServer\Core\ArrayUtility;
-use PeServer\Core\InitialValue;
-use PeServer\Core\Store\Stores;
-use PeServer\Core\Mvc\Validator;
-use PeServer\Core\StringUtility;
-use PeServer\Core\Http\HttpStatus;
-use PeServer\Core\Mvc\DataContent;
+use PeServer\Core\Binary;
+use PeServer\Core\DefaultValue;
 use PeServer\Core\Http\HttpRequest;
+use PeServer\Core\Http\HttpStatus;
+use PeServer\Core\I18n;
+use PeServer\Core\IO\File;
+use PeServer\Core\IO\IOUtility;
+use PeServer\Core\Log\ILogger;
+use PeServer\Core\Mime;
+use PeServer\Core\Mvc\DataContent;
+use PeServer\Core\Mvc\IValidationReceiver;
 use PeServer\Core\Mvc\LogicCallMode;
-use PeServer\Core\Store\CookieStore;
 use PeServer\Core\Mvc\LogicParameter;
+use PeServer\Core\Mvc\Template\TemplateParameter;
+use PeServer\Core\Mvc\Validator;
 use PeServer\Core\Store\CookieOption;
+use PeServer\Core\Store\CookieStore;
 use PeServer\Core\Store\SessionStore;
 use PeServer\Core\Store\SpecialStore;
-use PeServer\Core\Store\TemporaryStore;
-use PeServer\Core\Mvc\TemplateParameter;
-use PeServer\Core\Mvc\IValidationReceiver;
+use PeServer\Core\Store\Stores;
+use PeServer\Core\Store\Template\TemporaryStore;
+use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\InvalidOperationException;
+use PeServer\Core\Throws\KeyNotFoundException;
+use PeServer\Core\Utc;
 
 /**
  * コントローラから呼び出されるロジック基底処理。
  */
 abstract class LogicBase implements IValidationReceiver
 {
-	protected const SESSION_ALL_CLEAR = InitialValue::EMPTY_STRING;
+	protected const SESSION_ALL_CLEAR = DefaultValue::EMPTY_STRING;
 
 	/**
 	 * ロジック開始日時。
@@ -136,7 +138,7 @@ abstract class LogicBase implements IValidationReceiver
 	 * @param bool $trim 取得データをトリムするか。
 	 * @return string 要求データ。
 	 */
-	protected function getRequest(string $key, string $fallbackValue = InitialValue::EMPTY_STRING, bool $trim = true): string
+	protected function getRequest(string $key, string $fallbackValue = DefaultValue::EMPTY_STRING, bool $trim = true): string
 	{
 		if (!$this->request->exists($key)->exists) {
 			return $fallbackValue;
@@ -145,7 +147,7 @@ abstract class LogicBase implements IValidationReceiver
 		$value = $this->request->getValue($key);
 
 		if ($trim) {
-			return StringUtility::trim($value);
+			return Text::trim($value);
 		}
 
 		return $value;
@@ -158,7 +160,7 @@ abstract class LogicBase implements IValidationReceiver
 	 */
 	protected function getRequestContent(): Binary
 	{
-		return IOUtility::readContent('php://input');
+		return File::readContent('php://input');
 	}
 
 	/**
@@ -168,7 +170,7 @@ abstract class LogicBase implements IValidationReceiver
 	 */
 	protected function getRequestJson(): array
 	{
-		return IOUtility::readJsonFile('php://input');
+		return File::readJsonFile('php://input');
 	}
 
 	/**
@@ -199,7 +201,7 @@ abstract class LogicBase implements IValidationReceiver
 	 * @param string $fallbackValue 取得失敗時の値。
 	 * @return string
 	 */
-	protected function getCookie(string $key, string $fallbackValue = InitialValue::EMPTY_STRING): string
+	protected function getCookie(string $key, string $fallbackValue = DefaultValue::EMPTY_STRING): string
 	{
 		return $this->stores->cookie->getOr($key, $fallbackValue);
 	}
@@ -285,10 +287,25 @@ abstract class LogicBase implements IValidationReceiver
 		$this->stores->temporary->remove($key);
 	}
 
+	protected function existsSession(string $key): bool
+	{
+		return $this->stores->session->tryGet($key, $unused);
+	}
+
 	protected function getSession(string $key, mixed $fallbackValue = null): mixed
 	{
 		return $this->stores->session->getOr($key, $fallbackValue);
 	}
+
+	protected function requireSession(string $key): mixed
+	{
+		if ($this->stores->session->tryGet($key, $result)) {
+			return $result;
+		}
+
+		throw new KeyNotFoundException($key);
+	}
+
 
 	protected function setSession(string $key, mixed $value): void
 	{
@@ -347,10 +364,10 @@ abstract class LogicBase implements IValidationReceiver
 
 		foreach ($this->keys as $key) {
 			if ($overwrite) {
-				$value = $this->getRequest($key, InitialValue::EMPTY_STRING);
+				$value = $this->getRequest($key, DefaultValue::EMPTY_STRING);
 				$this->values[$key] = $value;
 			} else {
-				$this->values[$key] = InitialValue::EMPTY_STRING;
+				$this->values[$key] = DefaultValue::EMPTY_STRING;
 			}
 		}
 	}
@@ -441,7 +458,7 @@ abstract class LogicBase implements IValidationReceiver
 	protected function validation(string $key, callable $callback, ?array $option = null): void
 	{
 		/** @var string */
-		$default = ArrayUtility::getOr($option, 'default', InitialValue::EMPTY_STRING);
+		$default = ArrayUtility::getOr($option, 'default', DefaultValue::EMPTY_STRING);
 		/** @var bool */
 		$trim = ArrayUtility::getOr($option, 'trim', true);
 
@@ -580,7 +597,26 @@ abstract class LogicBase implements IValidationReceiver
 	}
 
 	/**
-	 * Undocumented function
+	 * ファイルを応答として設定。
+	 *
+	 * @param string|null $mime
+	 * @phpstan-param Mime::*|null $mime
+	 * @param string $path
+	 */
+	protected function setFileContent(?string $mime, string $path): void
+	{
+		if (Text::isNullOrWhiteSpace($mime)) {
+			$mime = Mime::fromFileName($path);
+		}
+		/** @phpstan-var non-empty-string $mime */
+
+		$content = File::readContent($path);
+
+		$this->content = new DataContent(HttpStatus::none(), $mime, $content->getRaw());
+	}
+
+	/**
+	 * ダウンロードデータ応答。
 	 *
 	 * @param string $mime
 	 * @phpstan-param non-empty-string|\PeServer\Core\Mime::* $mime
@@ -588,7 +624,7 @@ abstract class LogicBase implements IValidationReceiver
 	 * @param Binary $data
 	 * @return void
 	 */
-	protected function setDownloadContent(string $mime, string $fileName, Binary $data): void
+	protected final function setDownloadContent(string $mime, string $fileName, Binary $data): void
 	{
 		$this->content = new DownloadDataContent($mime, $fileName, $data);
 	}

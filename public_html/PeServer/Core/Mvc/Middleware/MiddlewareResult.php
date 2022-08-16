@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc\Middleware;
 
 use PeServer\Core\Regex;
-use PeServer\Core\UrlUtility;
-use PeServer\Core\InitialValue;
+use PeServer\Core\Web\UrlUtility;
+use PeServer\Core\DefaultValue;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Store\SpecialStore;
 use PeServer\Core\Throws\ArgumentException;
@@ -57,7 +57,8 @@ abstract class MiddlewareResult
 	 */
 	public static function redirect(SpecialStore $specialStore, string $path, ?array $query = null, ?HttpStatus $status = null): MiddlewareResult
 	{
-		if (Regex::isMatch($path, '|(https?:)?//|')) {
+		$regex = new Regex();
+		if ($regex->isMatch($path, '|(https?:)?//|')) {
 			throw new ArgumentException();
 		}
 
@@ -73,7 +74,7 @@ abstract class MiddlewareResult
 	 * @param string $message
 	 * @return MiddlewareResult
 	 */
-	public static function error(HttpStatus $status, string $message = InitialValue::EMPTY_STRING): MiddlewareResult
+	public static function error(HttpStatus $status, string $message = DefaultValue::EMPTY_STRING): MiddlewareResult
 	{
 		return new LocalErrorMiddlewareResultImpl($status, $message);
 	}

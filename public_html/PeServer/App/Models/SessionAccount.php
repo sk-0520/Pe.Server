@@ -33,6 +33,8 @@ class SessionAccount implements Serializable
 	) {
 	}
 
+	//Serializable
+
 	public function serialize(): string
 	{
 		return serialize([
@@ -53,12 +55,4 @@ class SessionAccount implements Serializable
 		$this->level = $values['level']; //@phpstan-ignore-line Serializable
 		$this->state = $values['state']; //@phpstan-ignore-line Serializable
 	}
-
-	// public function clone(): SessionAccount
-	// {
-	// 	$dump = $this->serialize();
-	// 	$obj = unserialize($dump);
-
-	// 	return $obj;
-	// }
 }

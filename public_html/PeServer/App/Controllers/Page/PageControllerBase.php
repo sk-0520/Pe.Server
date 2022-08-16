@@ -2,8 +2,8 @@
 
 namespace PeServer\App\Controllers\Page;
 
-use PeServer\App\Models\SessionManager;
-use PeServer\Core\Mvc\TemplateParameter;
+use PeServer\App\Models\SessionKey;
+use PeServer\Core\Mvc\Template\TemplateParameter;
 use PeServer\Core\Mvc\ControllerArgument;
 use PeServer\Core\Mvc\Result\ViewActionResult;
 use PeServer\App\Controllers\DomainControllerBase;
@@ -24,7 +24,7 @@ abstract class PageControllerBase extends DomainControllerBase
 	 */
 	protected final function isLoggedIn(): bool
 	{
-		return $this->stores->session->tryGet(SessionManager::ACCOUNT, $unused);
+		return $this->stores->session->tryGet(SessionKey::ACCOUNT, $unused);
 	}
 
 	protected function viewWithController(string $controllerName, string $action, TemplateParameter $parameter): ViewActionResult

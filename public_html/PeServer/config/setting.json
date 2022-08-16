@@ -8,9 +8,16 @@
 		"level": 3,
 		"format": "{TIMESTAMP} |{LEVEL}| [{CLIENT_IP}:{CLIENT_HOST}] {REQUEST_ID}|{SESSION} <{UA}> {METHOD} {REQUEST} {FILE}({LINE}) {FUNCTION} -> {MESSAGE}",
 		"file": {
-			"directory": "$(BASE)/data/logs",
-			"name": "log_{DATE}.log",
-			"count": 100
+			"logger_class": "PeServer\\Core\\Log\\FileLogger",
+			"configuration": {
+				"level": 3,
+				"format": "{TIMESTAMP} |{LEVEL}| [{CLIENT_IP}:{CLIENT_HOST}] {REQUEST_ID}|{SESSION} <{UA}> {METHOD} {REQUEST} {FILE}({LINE}) {FUNCTION} -> {MESSAGE}",
+				"logger": {
+					"directory": "$(BASE)/data/logs",
+					"name": "log_{DATE}.log",
+					"count": 100
+				}
+			}
 		},
 		"archive_size": 5242880
 	},
@@ -33,7 +40,8 @@
 		}
 	},
 	"cache": {
-		"database": "$(BASE)/data/database_cache"
+		"database": "$(BASE)/data/database_cache",
+		"template": "$(BASE)/data/temp/template"
 	},
 	"crypto": {
 		"algorithm": "aes-256-cbc",

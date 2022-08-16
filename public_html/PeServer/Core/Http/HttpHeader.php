@@ -6,7 +6,7 @@ namespace PeServer\Core\Http;
 
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Http\HttpStatus;
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Throws\KeyNotFoundException;
@@ -42,10 +42,10 @@ class HttpHeader
 	 */
 	protected function throwIfInvalidHeaderName(string $name): void
 	{
-		if (StringUtility::isNullOrWhiteSpace($name)) { //@phpstan-ignore-line non-empty
+		if (Text::isNullOrWhiteSpace($name)) { //@phpstan-ignore-line non-empty
 			throw new ArgumentException('$name');
 		}
-		if (StringUtility::toLower($name) === 'location') {
+		if (Text::toLower($name) === 'location') {
 			throw new ArgumentException('$name: setRedirect()');
 		}
 	}
@@ -179,7 +179,7 @@ class HttpHeader
 		$joinHeaders = [];
 
 		foreach ($this->headers as $name => $values) {
-			$joinHeaders[$name] = StringUtility::join(', ', $values);
+			$joinHeaders[$name] = Text::join(', ', $values);
 		}
 
 		return $joinHeaders;

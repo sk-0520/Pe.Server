@@ -18,7 +18,7 @@ use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mvc\ControllerArgument;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\Result\IActionResult;
-use PeServer\Core\Mvc\TemplateParameter;
+use PeServer\Core\Mvc\Template\TemplateParameter;
 
 final class SettingController extends PageControllerBase
 {
@@ -27,22 +27,22 @@ final class SettingController extends PageControllerBase
 		parent::__construct($argument);
 	}
 
-	public function index(HttpRequest $request): IActionResult
+	public function index(): IActionResult
 	{
 		return $this->view('index', new TemplateParameter(HttpStatus::ok(), [], []));
 	}
 
-	public function setup_get(HttpRequest $request): IActionResult
+	public function setup_get(): IActionResult
 	{
-		$logic = $this->createLogic(SettingSetupLogic::class, $request);
+		$logic = $this->createLogic(SettingSetupLogic::class);
 		$logic->run(LogicCallMode::initialize());
 
 		return $this->view('setup', $logic->getViewData());
 	}
 
-	public function setup_post(HttpRequest $request): IActionResult
+	public function setup_post(): IActionResult
 	{
-		$logic = $this->createLogic(SettingSetupLogic::class, $request);
+		$logic = $this->createLogic(SettingSetupLogic::class);
 		if ($logic->run(LogicCallMode::submit())) {
 			return $this->redirectPath('/');
 		}
@@ -50,61 +50,61 @@ final class SettingController extends PageControllerBase
 		return $this->view('setup', $logic->getViewData());
 	}
 
-	public function environment(HttpRequest $request): IActionResult
+	public function environment(): IActionResult
 	{
-		$logic = $this->createLogic(SettingEnvironmentLogic::class, $request);
+		$logic = $this->createLogic(SettingEnvironmentLogic::class);
 		$logic->run(LogicCallMode::initialize());
 
 		return $this->view('environment', $logic->getViewData());
 	}
 
-	public function configuration(HttpRequest $request): IActionResult
+	public function configuration(): IActionResult
 	{
-		$logic = $this->createLogic(SettingConfigurationLogic::class, $request);
+		$logic = $this->createLogic(SettingConfigurationLogic::class);
 		$logic->run(LogicCallMode::initialize());
 
 		return $this->view('configuration', $logic->getViewData());
 	}
 
-	public function database_maintenance_get(HttpRequest $request): IActionResult
+	public function database_maintenance_get(): IActionResult
 	{
-		$logic = $this->createLogic(SettingDatabaseMaintenanceLogic::class, $request);
+		$logic = $this->createLogic(SettingDatabaseMaintenanceLogic::class);
 		$logic->run(LogicCallMode::initialize());
 
 		return $this->view('database_maintenance', $logic->getViewData());
 	}
-	public function database_maintenance_post(HttpRequest $request): IActionResult
+	public function database_maintenance_post(): IActionResult
 	{
-		$logic = $this->createLogic(SettingDatabaseMaintenanceLogic::class, $request);
+		$logic = $this->createLogic(SettingDatabaseMaintenanceLogic::class);
 		$logic->run(LogicCallMode::submit());
 		return $this->view('database_maintenance', $logic->getViewData());
 	}
 
-	public function php_evaluate_get(HttpRequest $request): IActionResult
+	public function php_evaluate_get(): IActionResult
 	{
-		$logic = $this->createLogic(SettingPhpEvaluateLogic::class, $request);
+		$logic = $this->createLogic(SettingPhpEvaluateLogic::class);
 		$logic->run(LogicCallMode::initialize());
 
 		return $this->view('php_evaluate', $logic->getViewData());
 	}
-	public function php_evaluate_post(HttpRequest $request): IActionResult
+	public function php_evaluate_post(): IActionResult
 	{
-		$logic = $this->createLogic(SettingPhpEvaluateLogic::class, $request);
+		$logic = $this->createLogic(SettingPhpEvaluateLogic::class);
 		$logic->run(LogicCallMode::submit());
 		return $this->view('php_evaluate', $logic->getViewData());
 	}
 
-	public function default_plugin_get(HttpRequest $request): IActionResult
+	public function default_plugin_get(): IActionResult
 	{
-		$logic = $this->createLogic(SettingDefaultPluginLogic::class, $request);
+		$logic = $this->createLogic(SettingDefaultPluginLogic::class);
 		$logic->run(LogicCallMode::initialize());
 
 		return $this->view('default_plugin', $logic->getViewData());
 	}
 
-	public function default_plugin_post(HttpRequest $request): IActionResult
+	public function default_plugin_post(): IActionResult
 	{
-		$logic = $this->createLogic(SettingDefaultPluginLogic::class, $request);
+		$logic = $this->createLogic(SettingDefaultPluginLogic::class);
 		if ($logic->run(LogicCallMode::submit())) {
 			return $this->redirectPath('setting/default-plugin');
 		}
@@ -112,26 +112,26 @@ final class SettingController extends PageControllerBase
 		return $this->view('default_plugin', $logic->getViewData());
 	}
 
-	public function plugin_category_get(HttpRequest $request): IActionResult
+	public function plugin_category_get(): IActionResult
 	{
-		$logic = $this->createLogic(SettingPluginCategoryListLogic::class, $request);
+		$logic = $this->createLogic(SettingPluginCategoryListLogic::class);
 		$logic->run(LogicCallMode::initialize());
 
 		return $this->view('plugin_category', $logic->getViewData());
 	}
 
 
-	public function log_list(HttpRequest $request): IActionResult
+	public function log_list(): IActionResult
 	{
-		$logic = $this->createLogic(SettingLogListLogic::class, $request);
+		$logic = $this->createLogic(SettingLogListLogic::class);
 		$logic->run(LogicCallMode::initialize());
 
 		return $this->view('log_list', $logic->getViewData());
 	}
 
-	public function log_detail(HttpRequest $request): IActionResult
+	public function log_detail(): IActionResult
 	{
-		$logic = $this->createLogic(SettingLogDetailLogic::class, $request);
+		$logic = $this->createLogic(SettingLogDetailLogic::class);
 		$logic->run(LogicCallMode::initialize());
 
 		if ($logic->equalsResult('download', true)) {
@@ -141,9 +141,9 @@ final class SettingController extends PageControllerBase
 		return $this->view('log_detail', $logic->getViewData());
 	}
 
-	public function markdown(HttpRequest $request): IActionResult
+	public function markdown(): IActionResult
 	{
-		$logic = $this->createLogic(SettingMarkdownLogic::class, $request);
+		$logic = $this->createLogic(SettingMarkdownLogic::class);
 		$logic->run(LogicCallMode::initialize());
 
 		return $this->view('markdown', $logic->getViewData());

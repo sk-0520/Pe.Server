@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mail;
 
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 
 /**
  * メールアドレス管理。
@@ -30,7 +30,7 @@ class EmailAddress
 		public string $address,
 		?string $name = null
 	) {
-		if (StringUtility::isNullOrEmpty($name)) {
+		if (Text::isNullOrEmpty($name)) {
 			$this->name = '';
 		} else {
 			//@phpstan-ignore-next-line isNullOrEmpty

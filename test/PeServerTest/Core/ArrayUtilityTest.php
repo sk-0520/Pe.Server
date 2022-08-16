@@ -7,6 +7,7 @@ namespace PeServerTest\Core;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\InvalidOperationException;
+use PeServer\Core\Throws\KeyNotFoundException;
 use PeServerTest\Data;
 use PeServerTest\TestClass;
 
@@ -180,7 +181,7 @@ class ArrayUtilityTest extends TestClass
 
 	public function test_getFirstKey_throw()
 	{
-		$this->expectException(InvalidOperationException::class);
+		$this->expectException(KeyNotFoundException::class);
 		ArrayUtility::getFirstKey([]);
 		$this->fail();
 	}
@@ -202,7 +203,7 @@ class ArrayUtilityTest extends TestClass
 
 	public function test_getLastKey_throw()
 	{
-		$this->expectException(InvalidOperationException::class);
+		$this->expectException(KeyNotFoundException::class);
 		ArrayUtility::getLastKey([]);
 		$this->fail();
 	}

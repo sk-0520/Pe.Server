@@ -18,7 +18,7 @@ abstract class CollectionUtility
 	 * @template TKey of array-key
 	 * @template TValue
 	 * @param Traversable|array<mixed>|callable $sequence
-	 * @phpstan-param Traversable<TKey,TValue>|array<TKey,TValue>|callable():(\Generator) $sequence
+	 * @phpstan-param Traversable<TKey,TValue>|array<TKey,TValue>|callable():\Generator<TKey,TValue> $sequence
 	 * @return Iterator
 	 * @phpstan-return Iterator<TKey,TValue>
 	 */

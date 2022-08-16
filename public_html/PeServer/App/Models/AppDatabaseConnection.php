@@ -1,0 +1,37 @@
+<?php
+
+declare(strict_types=1);
+
+namespace PeServer\App\Models;
+
+use PeServer\Core\Database\ConnectionSetting;
+use PeServer\Core\Database\Database;
+use PeServer\Core\Database\DatabaseConnection;
+use PeServer\Core\Log\ILoggerFactory;
+
+class AppDatabaseConnection extends DatabaseConnection
+{
+	public function __construct(
+		AppConfiguration $config,
+		ILoggerFactory $loggerFactory
+	) {
+		$persistence = $config->setting['persistence'];
+		$connectionSetting =  new ConnectionSetting(
+			$persistence['connection'],
+			$persistence['user'],
+			$persistence['password'],
+			[]
+		);
+
+		parent::__construct($connectionSetting, $loggerFactory);
+	}
+
+	public function open(): Database
+	{
+		$database = parent::open();
+
+		$database->execute('PRAGMA foreign_keys = ON;');
+
+		return $database;
+	}
+}

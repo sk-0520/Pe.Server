@@ -7,6 +7,7 @@ namespace PeServer\Core\Collections;
 use \Generator;
 use \Iterator;
 use PeServer\Core\Throws\ArgumentException;
+use PeServer\Core\Throws\CallbackTypeError;
 
 /**
  * ジェネレータ イテレータ。
@@ -23,13 +24,13 @@ class GeneratorIterator implements Iterator
 	 * 生成。
 	 *
 	 * @param mixed $factory
-	 * @phpstan-param callable():(Generator) $factory
+	 * @phpstan-param callable():Generator<TKey,TValue> $factory
 	 */
 	public function __construct(
 		private mixed $factory
 	) {
 		if (!is_callable($factory)) { //@phpstan-ignore-line phpstan-param callable
-			throw new ArgumentException('$factory');
+			throw new CallbackTypeError('$factory');
 		}
 		$this->generator = call_user_func($this->factory);
 	}

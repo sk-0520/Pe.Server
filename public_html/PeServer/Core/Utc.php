@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace PeServer\Core;
 
 use \DateTimeImmutable;
-use \DateTimeZone;
 use \DateTimeInterface;
+use \DateTimeZone;
+use DateTime;
+use PeServer\Core\Throws\DateTimeException;
 use PeServer\Core\Throws\ParseException;
 
 /**
@@ -93,5 +95,39 @@ abstract class Utc
 	public static function createString(): string
 	{
 		return self::toString(self::create());
+	}
+
+	/**
+	 * UNIX時間からDateTimeに変換。
+	 *
+	 * @param int $unixTime
+	 * @return DateTime
+	 * @throws DateTimeException
+	 */
+	public static function toEditableDateTimeFromUnixTime(int $unixTime): DateTime
+	{
+		$result = DateTime::createFromFormat('U', (string)$unixTime, self::getTimezone());
+		if ($result === false) {
+			throw new DateTimeException();
+		}
+
+		return $result;
+	}
+
+	/**
+	 * UNIX時間からDateTimeImmutableに変換。・
+	 *
+	 * @param int $unixTime
+	 * @return DateTimeImmutable
+	 * @throws DateTimeException
+	 */
+	public static function toDateTimeFromUnixTime(int $unixTime): DateTimeImmutable
+	{
+		$result = DateTimeImmutable::createFromFormat('U', (string)$unixTime, self::getTimezone());
+		if ($result === false) {
+			throw new DateTimeException();
+		}
+
+		return $result;
 	}
 }

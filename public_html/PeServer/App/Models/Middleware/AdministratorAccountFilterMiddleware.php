@@ -11,6 +11,8 @@ use PeServer\App\Models\Middleware\AccountFilterMiddlewareBase;
 
 final class AdministratorAccountFilterMiddleware extends AccountFilterMiddlewareBase
 {
+	//[AccountFilterMiddlewareBase]
+
 	protected function filter(MiddlewareArgument $argument): MiddlewareResult
 	{
 		return $this->filterCore($argument, [UserLevel::ADMINISTRATOR]);

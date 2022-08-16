@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc\Result;
 
 use PeServer\Core\Http\HttpResponse;
-use PeServer\Core\InitialValue;
+use PeServer\Core\IO\Directory;
+use PeServer\Core\IO\Path;
 use PeServer\Core\Mime;
+use PeServer\Core\Mvc\Template\ITemplateFactory;
 use PeServer\Core\Mvc\Result\IActionResult;
-use PeServer\Core\Mvc\Template;
-use PeServer\Core\Mvc\TemplateParameter;
+use PeServer\Core\Mvc\Template\TemplateOptions;
+use PeServer\Core\Mvc\Template\TemplateParameter;
+use PeServer\Core\Web\IUrlHelper;
 
 /**
  * 結果操作: View。
@@ -28,10 +31,12 @@ class ViewActionResult implements IActionResult
 	 * @phpstan-param array<non-empty-string,string[]> $headers
 	 */
 	public function __construct(
-		private string $templateBaseName,
-		private string $actionName,
-		private TemplateParameter $templateParameter,
-		private array $headers
+		protected string $templateBaseName,
+		protected string $actionName,
+		protected TemplateParameter $templateParameter,
+		protected array $headers,
+		protected ITemplateFactory $templateFactory,
+		protected IUrlHelper $urlHelper
 	) {
 	}
 
@@ -48,9 +53,19 @@ class ViewActionResult implements IActionResult
 			$response->header->addValue('Content-Type', Mime::HTML);
 		}
 
+		// $options = new AppTemplateOptions(
+		// 	$this->templateBaseName,
+		// 	$this->urlHelper
+		// );
+		$options = new TemplateOptions(
+			__DIR__ . '/../../template',
+			'',
+			$this->urlHelper,
+			Path::combine(Directory::getTemporaryDirectory(), 'PeServer-Core', 'template')
+		);
+		$template = $this->templateFactory->createTemplate($options);
 
-		$template = Template::create($this->templateBaseName, InitialValue::EMPTY_STRING, InitialValue::EMPTY_STRING);
-		$response->content = $template->build("$this->actionName.tpl", $this->templateParameter);
+		$response->content = $template->build($this->actionName . '.tpl', $this->templateParameter);
 
 		return $response;
 	}

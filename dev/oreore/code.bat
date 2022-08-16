@@ -5,4 +5,4 @@ call env.bat
 
 echo %DATE:/=-%T%TIME: =0%+09:00
 
-"%BASH%" ..\code.sh %*
+"%BASH%" -e ..\code.sh %*

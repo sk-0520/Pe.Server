@@ -21,33 +21,33 @@ final class AjaxController extends PageControllerBase
 		parent::__construct($argument);
 	}
 
-	public function markdown(HttpRequest $request): IActionResult
+	public function markdown(): IActionResult
 	{
-		$logic = $this->createLogic(AjaxMarkdownLogic::class, $request);
+		$logic = $this->createLogic(AjaxMarkdownLogic::class);
 		$logic->run(LogicCallMode::submit());
 
 		return $this->data($logic->getContent());
 	}
 
-	public function plugin_category_post(HttpRequest $request): IActionResult
+	public function plugin_category_post(): IActionResult
 	{
-		$logic = $this->createLogic(AjaxPluginCategoryCreateLogic::class, $request);
+		$logic = $this->createLogic(AjaxPluginCategoryCreateLogic::class);
 		$logic->run(LogicCallMode::submit());
 
 		return $this->data($logic->getContent());
 	}
 
-	public function plugin_category_patch(HttpRequest $request): IActionResult
+	public function plugin_category_patch(): IActionResult
 	{
-		$logic = $this->createLogic(AjaxPluginCategoryUpdateLogic::class, $request);
+		$logic = $this->createLogic(AjaxPluginCategoryUpdateLogic::class);
 		$logic->run(LogicCallMode::submit());
 
 		return $this->data($logic->getContent());
 	}
 
-	public function plugin_category_delete(HttpRequest $request): IActionResult
+	public function plugin_category_delete(): IActionResult
 	{
-		$logic = $this->createLogic(AjaxPluginCategoryDeleteLogic::class, $request);
+		$logic = $this->createLogic(AjaxPluginCategoryDeleteLogic::class);
 		$logic->run(LogicCallMode::submit());
 
 		return $this->data($logic->getContent());

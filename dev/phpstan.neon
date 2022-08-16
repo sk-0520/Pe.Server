@@ -1,6 +1,6 @@
 parameters:
   level: 8
-  phpVersion: 80000 # PHP 7.4
+  phpVersion: 80000
 
   checkAlwaysTrueCheckTypeFunctionCall: true
   checkAlwaysTrueInstanceof: true
@@ -14,6 +14,12 @@ parameters:
   checkTooWideReturnTypesInProtectedAndPublicMethods: true
   checkGenericClassInNonGenericObjectType: true
   checkDynamicProperties: true
+  inferPrivatePropertyTypeFromConstructor: true
+
+  # parallel:
+  #   jobSize: 20
+  #   maximumNumberOfProcesses: 32
+  #   minimumNumberOfJobsPerProcess: 2
 
   paths:
     - ../public_html
@@ -32,8 +38,10 @@ parameters:
     - ../public_html/PeServer/Core/Libs/php-markdown/Michelf/MarkdownExtra.php
     - ../public_html/PeServer/Core/Libs/php-markdown/Michelf/MarkdownInterface.php
   ignoreErrors:
-    - '/Parameter #1 \$callback of method PeServer\\Core\\Database\\Database::transaction\(\) expects callable\(PeServer\\Core\\Database\\IDatabaseContext, ...mixed\): bool,\s*Closure\(PeServer\\Core\\Database\\IDatabaseContext(.+)\): bool given\./'
+    #- '/Parameter #1 \$callback of method PeServer\\Core\\Database\\Database::transaction\(\) expects callable\(PeServer\\Core\\Database\\IDatabaseContext, ...mixed\): bool,\s*Closure\(PeServer\\Core\\Database\\IDatabaseContext(.+)\): bool given\./'
     - '/Match expression does not handle remaining value:/'
+    #入力なしの戻り値型強制できないのがつーらーいー
+    - '/Template type TFieldArray of method PeServer\\.+::.+\(\) is not referenced in a parameter./'
 
   typeAliases:
     UnsignedIntegerAlias: 'int<0, max>'
@@ -41,6 +49,7 @@ parameters:
     ServerStoreValueAlias: 'string|int|array<int|string|null>|Serializable|null'
     DatabaseBindValueAlias: 'string|int|bool'
     FormatAlias: 'string|int|float'
+    FieldArrayAlias: 'non-empty-array<array-key,mixed>'
 
 includes:
   - ./bleedingEdge.neon

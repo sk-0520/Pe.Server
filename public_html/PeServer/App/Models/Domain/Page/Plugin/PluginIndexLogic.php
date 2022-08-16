@@ -12,7 +12,7 @@ use PeServer\App\Models\Domain\Page\PageLogicBase;
 
 class PluginIndexLogic extends PageLogicBase
 {
-	public function __construct(LogicParameter $parameter)
+	public function __construct(LogicParameter $parameter, private AppDatabaseCache $dbCache)
 	{
 		parent::__construct($parameter);
 	}
@@ -24,7 +24,7 @@ class PluginIndexLogic extends PageLogicBase
 
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
-		$pluginInformation = AppDatabaseCache::readPluginInformation();
+		$pluginInformation = $this->dbCache->readPluginInformation();
 
 		usort($pluginInformation, function(PluginCache $a, PluginCache $b) {
 			return strcmp($a->pluginName, $b->pluginName);

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
-use PeServer\Core\InitialValue;
+use PeServer\Core\DefaultValue;
 use PeServer\Core\Throws\ArgumentException;
 
 abstract class Uuid
@@ -21,7 +21,7 @@ abstract class Uuid
 		if (function_exists('com_create_guid')) {
 			$guid = com_create_guid();
 			if ($guid !== false) {
-				return StringUtility::trim($guid, '{}');
+				return Text::trim($guid, '{}');
 			}
 		}
 
@@ -44,22 +44,22 @@ abstract class Uuid
 			return true;
 		}
 
-		$a = StringUtility::trim($a, '{}');
-		$b = StringUtility::trim($b, '{}');
+		$a = Text::trim($a, '{}');
+		$b = Text::trim($b, '{}');
 
 		if ($a === $b) {
 			return true;
 		}
 
-		$a = StringUtility::toLower($a);
-		$b = StringUtility::toLower($b);
+		$a = Text::toLower($a);
+		$b = Text::toLower($b);
 
 		if ($a === $b) {
 			return true;
 		}
 
-		$a = StringUtility::replace($a, '-', InitialValue::EMPTY_STRING);
-		$b = StringUtility::replace($b, '-', InitialValue::EMPTY_STRING);
+		$a = Text::replace($a, '-', DefaultValue::EMPTY_STRING);
+		$b = Text::replace($b, '-', DefaultValue::EMPTY_STRING);
 
 		if ($a === $b) {
 			return true;
@@ -78,7 +78,8 @@ abstract class Uuid
 	 */
 	public static function isGuid(string $value): bool
 	{
-		return Regex::isMatch($value, '/^\{?[a-fA-F0-9]{8}-?[a-fA-F0-9]{4}-?[a-fA-F0-9]{4}-?[a-fA-F0-9]{4}-?[a-fA-F0-9]{12}\}?$/');
+		$regex = new Regex();
+		return $regex->isMatch($value, '/^\{?[a-fA-F0-9]{8}-?[a-fA-F0-9]{4}-?[a-fA-F0-9]{4}-?[a-fA-F0-9]{4}-?[a-fA-F0-9]{12}\}?$/');
 	}
 
 	/**
@@ -90,24 +91,24 @@ abstract class Uuid
 	 */
 	public static function adjustGuid(string $value): string
 	{
-		if (StringUtility::isNullOrWhiteSpace($value)) {
+		if (Text::isNullOrWhiteSpace($value)) {
 			throw new ArgumentException();
 		}
 
-		$a = StringUtility::trim($value, '{}');
-		$b = StringUtility::replace($a, '-', InitialValue::EMPTY_STRING);
-		if (StringUtility::getLength($b) !== 32) {
+		$a = Text::trim($value, '{}');
+		$b = Text::replace($a, '-', DefaultValue::EMPTY_STRING);
+		if (Text::getLength($b) !== 32) {
 			throw new ArgumentException();
 		}
-		$c = StringUtility::toLower($b);
+		$c = Text::toLower($b);
 		$d = [
-			StringUtility::substring($c, 0, 8),
-			StringUtility::substring($c, 8, 4),
-			StringUtility::substring($c, 8 + 4, 4),
-			StringUtility::substring($c, 8 + 4 + 4, 4),
-			StringUtility::substring($c, 8 + 4 + 4 + 4, 12),
+			Text::substring($c, 0, 8),
+			Text::substring($c, 8, 4),
+			Text::substring($c, 8 + 4, 4),
+			Text::substring($c, 8 + 4 + 4, 4),
+			Text::substring($c, 8 + 4 + 4 + 4, 12),
 		];
-		$e = StringUtility::join('-', $d);
+		$e = Text::join('-', $d);
 
 		if (!self::isGuid($e)) {
 			throw new ArgumentException();

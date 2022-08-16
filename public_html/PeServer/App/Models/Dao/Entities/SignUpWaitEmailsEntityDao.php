@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Dao\Entities;
 
 use PeServer\Core\Database\DaoBase;
+use PeServer\Core\Database\DatabaseRowResult;
+use PeServer\Core\Database\DatabaseTableResult;
 use PeServer\Core\Database\IDatabaseContext;
 
 class SignUpWaitEmailsEntityDao extends DaoBase
@@ -38,7 +40,8 @@ class SignUpWaitEmailsEntityDao extends DaoBase
 
 	public function selectEmail(string $token): string
 	{
-		return $this->context->querySingle(
+		/** @phpstan-var DatabaseRowResult<array{email:string}> */
+		$result = $this->context->querySingle(
 			<<<SQL
 
 			select
@@ -52,18 +55,19 @@ class SignUpWaitEmailsEntityDao extends DaoBase
 			[
 				'token' => $token,
 			]
-		)['email'];
+		);
+
+		return $result->fields['email'];
 	}
 
 	/**
-	 * Undocumented function
-	 *
+	 * @template TFieldArray of array{mark_email:int,token:string,email:string}
 	 * @param integer $markEmail
-	 * @return array<array{mark_email:int,token:string,email:string}>
+	 * @phpstan-return DatabaseTableResult<TFieldArray>
 	 */
-	public function selectLikeEmails(int $markEmail): array
+	public function selectLikeEmails(int $markEmail): DatabaseTableResult
 	{
-		/** @var array<array{mark_email:int,token:string,email:string}> */
+		/** @phpstan-var DatabaseTableResult<TFieldArray> */
 		return $this->context->query(
 			<<<SQL
 

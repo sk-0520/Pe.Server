@@ -10,12 +10,20 @@ use \Iterator;
  * repeat イテレータ。
  *
  * @template TValue
- * @implements Iterator<int,TValue>
+ * @implements Iterator<UnsignedIntegerAlias,TValue>
  */
 class RepeatIterator implements Iterator
 {
+	/** @phpstan-var UnsignedIntegerAlias */
 	private int $key = 0;
 
+	/**
+	 * 生成。
+	 *
+	 * @param mixed $value
+	 * @param int $count
+	 * @phpstan-param UnsignedIntegerAlias $count
+	 */
 	public function __construct(
 		private mixed $value,
 		private int $count
@@ -29,6 +37,7 @@ class RepeatIterator implements Iterator
 
 	/**
 	 * @return int
+	 * @phpstan-return UnsignedIntegerAlias
 	 */
 	public function key(): mixed
 	{
@@ -36,7 +45,7 @@ class RepeatIterator implements Iterator
 	}
 
 	/**
-	 * @return int
+	 * @phpstan-return TValue
 	 */
 	public function current(): mixed
 	{

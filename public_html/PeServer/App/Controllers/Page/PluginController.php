@@ -21,17 +21,17 @@ final class PluginController extends PageControllerBase
 		parent::__construct($argument);
 	}
 
-	public function index(HttpRequest $request): IActionResult
+	public function index(): IActionResult
 	{
-		$logic = $this->createLogic(PluginIndexLogic::class, $request);
+		$logic = $this->createLogic(PluginIndexLogic::class);
 		$logic->run(LogicCallMode::initialize());
 
 		return $this->view('index', $logic->getViewData());
 	}
 
-	public function detail(HttpRequest $request): IActionResult
+	public function detail(): IActionResult
 	{
-		$logic = $this->createLogic(PluginDetailLogic::class, $request);
+		$logic = $this->createLogic(PluginDetailLogic::class);
 		$logic->run(LogicCallMode::initialize());
 
 		return $this->view('detail', $logic->getViewData());

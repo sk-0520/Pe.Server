@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Store;
 
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 use PeServer\Core\Store\CookieOption;
 use PeServer\Core\Throws\ArgumentException;
 
@@ -31,7 +31,7 @@ class SessionOption
 		public string $savePath,
 		public CookieOption $cookie
 	) {
-		if (StringUtility::isNullOrWhiteSpace($name)) { //@phpstan-ignore-line
+		if (Text::isNullOrWhiteSpace($name)) { //@phpstan-ignore-line
 			throw new ArgumentException('$name');
 		}
 

@@ -11,9 +11,9 @@ require_once(__DIR__ . '/../../Core/Libs/PHPMailer/src/PHPMailer.php');
 require_once(__DIR__ . '/../../Core/Libs/PHPMailer/src/SMTP.php');
 
 use \PHPMailer\PHPMailer\PHPMailer;
-use PeServer\Core\InitialValue;
+use PeServer\Core\DefaultValue;
 use PeServer\Core\Mail\EmailAddress;
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\ArgumentNullException;
 use PeServer\Core\Throws\InvalidOperationException;
@@ -45,7 +45,7 @@ class Mailer
 	/**
 	 * Return-Path:
 	 */
-	public string $returnPath = InitialValue::EMPTY_STRING;
+	public string $returnPath = DefaultValue::EMPTY_STRING;
 	/**
 	 * FROM:
 	 */
@@ -72,7 +72,7 @@ class Mailer
 	/**
 	 * 件名。
 	 */
-	public string $subject = InitialValue::EMPTY_STRING;
+	public string $subject = DefaultValue::EMPTY_STRING;
 
 	/**
 	 * メッセージ。
@@ -86,7 +86,7 @@ class Mailer
 	 */
 	public function __construct(array $setting)
 	{
-		$this->fromAddress = new EmailAddress(InitialValue::EMPTY_STRING, InitialValue::EMPTY_STRING);
+		$this->fromAddress = new EmailAddress(DefaultValue::EMPTY_STRING, DefaultValue::EMPTY_STRING);
 		$this->message = new EmailMessage();
 
 		switch ($setting['mode']) {
@@ -145,7 +145,7 @@ class Mailer
 	 */
 	protected function convertAddress(int $kind, EmailAddress $data): EmailAddress
 	{
-		if (StringUtility::isNullOrWhiteSpace($data->address)) {
+		if (Text::isNullOrWhiteSpace($data->address)) {
 			throw new ArgumentException('$data->address');
 		}
 
@@ -183,7 +183,7 @@ class Mailer
 		$client->Sender = $this->returnPath;
 		$fromAddress = $this->convertAddress(self::ADDRESS_KIND_FROM, $this->fromAddress);
 		$client->setFrom($fromAddress->address, $fromAddress->name);
-		if (StringUtility::isNullOrWhiteSpace($client->Sender)) {
+		if (Text::isNullOrWhiteSpace($client->Sender)) {
 			$client->Sender = $client->$this->fromAddress['address'];
 		}
 

@@ -11,19 +11,23 @@ use PeServer\Core\Throws\ArchiveException;
  */
 abstract class Archiver
 {
+	public const GZIP_DEFAULT = FORCE_GZIP;
+	public const GZIP_DEFLATE = FORCE_DEFLATE;
+
 	/**
 	 * GZIP圧縮処理。
 	 *
 	 * `gzencode` ラッパー。
 	 *
-	 * @param Binary $data 圧縮するデータ
-	 * @param integer $level 圧縮レベル。
-	 * @param integer $encoding gzencode(encoding:)
+	 * @param Binary $data 圧縮するデータ。
+	 * @param -1|0|1|2|3|4|5|6|7|8|9 $level 圧縮レベル。
+	 * @param int $encoding
+	 * @phpstan-param self::GZIP_* $encoding
 	 * @return Binary 圧縮データ。
 	 * @throws ArchiveException 失敗。
 	 * @see https://www.php.net/manual/function.gzencode.php
 	 */
-	public static function compressGzip(Binary $data, int $level = -1, int $encoding = FORCE_GZIP): Binary
+	public static function compressGzip(Binary $data, int $level = -1, int $encoding = self::GZIP_DEFAULT): Binary
 	{
 		$result = gzencode($data->getRaw(), $level, $encoding);
 		if ($result === false) {
@@ -41,7 +45,7 @@ abstract class Archiver
 	 * @param Binary $data 圧縮データ。
 	 * @return Binary 展開データ。
 	 * @throws ArchiveException 失敗。
-	 * @see https://php.net/manual/function.gzdecode.php
+	 * @see https://www.php.net/manual/function.gzdecode.php
 	 */
 	public static function extractGzip(Binary $data): Binary
 	{

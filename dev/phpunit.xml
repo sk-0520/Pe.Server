@@ -2,7 +2,7 @@
 <phpunit
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd"
-	bootstrap="../test/bootstrap.php"
+	bootstrap="../test/test.php"
 	cacheResultFile="../test/.phpunit.result.cache"
 	executionOrder="depends,defects"
 	forceCoversAnnotation="false"
@@ -13,6 +13,7 @@
 	failOnRisky="true"
 	failOnWarning="true"
 	verbose="true"
+	colors="true"
 >
 	<testsuites>
 		<testsuite name="default">

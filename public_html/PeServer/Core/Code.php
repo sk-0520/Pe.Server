@@ -14,6 +14,20 @@ use PeServer\Core\Throws\TypeException;
 abstract class Code
 {
 	/**
+	 * 文字列をリテラル文字列に変換。
+	 *
+	 * PHPStan用のラッパー(関数にしとけば後で探すの楽でしょ感で作った)。
+	 *
+	 * @param string $s
+	 * @phpstan-return literal-string
+	 */
+	public static function toLiteralString(string $s): string
+	{
+		/** @phpstan-var literal-string */
+		return $s;
+	}
+
+	/**
 	 * 疑似コード: C# using
 	 *
 	 * @template TDisposable of IDisposable
@@ -21,7 +35,7 @@ abstract class Code
 	 * @param IDisposable $disposable
 	 * @phpstan-param TDisposable $disposable
 	 * @param callable $callback
-	 * @phpstan-param (callable(TDisposable $disposable): TResult) $callback
+	 * @phpstan-param callable(TDisposable $disposable):TResult $callback
 	 * @return mixed
 	 * @phpstan-return TResult
 	 */

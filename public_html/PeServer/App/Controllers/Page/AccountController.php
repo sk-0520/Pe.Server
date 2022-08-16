@@ -17,7 +17,7 @@ use PeServer\App\Models\Domain\Page\Account\AccountUserPasswordLogic;
 use PeServer\App\Models\Domain\Page\Account\AccountUserPluginLogic;
 use PeServer\App\Models\Domain\UserLevel;
 use PeServer\App\Models\SessionAccount;
-use PeServer\App\Models\SessionManager;
+use PeServer\App\Models\SessionKey;
 use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Mvc\ControllerArgument;
 use PeServer\Core\Mvc\LogicCallMode;
@@ -31,36 +31,36 @@ final class AccountController extends PageControllerBase
 		parent::__construct($argument);
 	}
 
-	public function index(HttpRequest $request): IActionResult
+	public function index(): IActionResult
 	{
 		if ($this->isLoggedIn()) {
-			return $this->user($request);
+			return $this->user();
 		} else {
-			return $this->login_get($request);
+			return $this->login_get();
 		}
 	}
 
-	public function login_get(HttpRequest $request): IActionResult
+	public function login_get(): IActionResult
 	{
 		if ($this->isLoggedIn()) {
 			return $this->redirectPath('account/user');
 		}
 
-		$logic = $this->createLogic(AccountLoginLogic::class, $request);
+		$logic = $this->createLogic(AccountLoginLogic::class);
 		$logic->run(LogicCallMode::initialize());
 
 		return $this->view('login', $logic->getViewData());
 	}
 
-	public function login_post(HttpRequest $request): IActionResult
+	public function login_post(): IActionResult
 	{
 		if ($this->isLoggedIn()) {
 			return $this->redirectPath('account/user');
 		}
 
-		$logic = $this->createLogic(AccountLoginLogic::class, $request);
+		$logic = $this->createLogic(AccountLoginLogic::class);
 		if ($logic->run(LogicCallMode::submit())) {
-			if ($this->stores->session->tryGet(SessionManager::ACCOUNT, $account)) {
+			if ($this->stores->session->tryGet(SessionKey::ACCOUNT, $account)) {
 				/** @var SessionAccount $account */
 				if ($account->level === UserLevel::SETUP) {
 					return $this->redirectPath('setting/setup');
@@ -73,25 +73,25 @@ final class AccountController extends PageControllerBase
 		return $this->view('login', $logic->getViewData());
 	}
 
-	public function logout(HttpRequest $request): IActionResult
+	public function logout(): IActionResult
 	{
-		$logic = $this->createLogic(AccountLogoutLogic::class, $request);
+		$logic = $this->createLogic(AccountLogoutLogic::class);
 		$logic->run(LogicCallMode::submit());
 
 		return $this->redirectPath('/');
 	}
 
-	public function signup_step1_get(HttpRequest $request): IActionResult
+	public function signup_step1_get(): IActionResult
 	{
-		$logic = $this->createLogic(AccountSignupStep1Logic::class, $request);
+		$logic = $this->createLogic(AccountSignupStep1Logic::class);
 		$logic->run(LogicCallMode::initialize());
 
 		return $this->view('signup_step1', $logic->getViewData());
 	}
 
-	public function signup_step1_post(HttpRequest $request): IActionResult
+	public function signup_step1_post(): IActionResult
 	{
-		$logic = $this->createLogic(AccountSignupStep1Logic::class, $request);
+		$logic = $this->createLogic(AccountSignupStep1Logic::class);
 		if ($logic->run(LogicCallMode::submit())) {
 			return $this->redirectPath("account/signup/notify");
 		}
@@ -99,25 +99,25 @@ final class AccountController extends PageControllerBase
 		return $this->view('signup_step1', $logic->getViewData());
 	}
 
-	public function signup_notify(HttpRequest $request): IActionResult
+	public function signup_notify(): IActionResult
 	{
-		$logic = $this->createLogic(AccountSignupNotifyLogic::class, $request);
+		$logic = $this->createLogic(AccountSignupNotifyLogic::class);
 		$logic->run(LogicCallMode::initialize());
 		return $this->view('signup_notify', $logic->getViewData());
 	}
 
 
-	public function signup_step2_get(HttpRequest $request): IActionResult
+	public function signup_step2_get(): IActionResult
 	{
-		$logic = $this->createLogic(AccountSignupStep2Logic::class, $request);
+		$logic = $this->createLogic(AccountSignupStep2Logic::class);
 		$logic->run(LogicCallMode::initialize());
 
 		return $this->view('signup_step2', $logic->getViewData());
 	}
 
-	public function signup_step2_post(HttpRequest $request): IActionResult
+	public function signup_step2_post(): IActionResult
 	{
-		$logic = $this->createLogic(AccountSignupStep2Logic::class, $request);
+		$logic = $this->createLogic(AccountSignupStep2Logic::class);
 		if ($logic->run(LogicCallMode::submit())) {
 			return $this->redirectPath("/");
 		}
@@ -126,25 +126,25 @@ final class AccountController extends PageControllerBase
 	}
 
 
-	public function user(HttpRequest $request): IActionResult
+	public function user(): IActionResult
 	{
-		$logic = $this->createLogic(AccountUserLogic::class, $request);
+		$logic = $this->createLogic(AccountUserLogic::class);
 		$logic->run(LogicCallMode::initialize());
 
 		return $this->view('user', $logic->getViewData());
 	}
 
-	public function user_edit_get(HttpRequest $request): IActionResult
+	public function user_edit_get(): IActionResult
 	{
-		$logic = $this->createLogic(AccountUserEditLogic::class, $request);
+		$logic = $this->createLogic(AccountUserEditLogic::class);
 		$logic->run(LogicCallMode::initialize());
 
 		return $this->view('user_edit', $logic->getViewData());
 	}
 
-	public function user_edit_post(HttpRequest $request): IActionResult
+	public function user_edit_post(): IActionResult
 	{
-		$logic = $this->createLogic(AccountUserEditLogic::class, $request);
+		$logic = $this->createLogic(AccountUserEditLogic::class);
 		if ($logic->run(LogicCallMode::submit())) {
 			return $this->redirectPath('account/user');
 		}
@@ -152,17 +152,17 @@ final class AccountController extends PageControllerBase
 		return $this->view('user_edit', $logic->getViewData());
 	}
 
-	public function user_password_get(HttpRequest $request): IActionResult
+	public function user_password_get(): IActionResult
 	{
-		$logic = $this->createLogic(AccountUserPasswordLogic::class, $request);
+		$logic = $this->createLogic(AccountUserPasswordLogic::class);
 		$logic->run(LogicCallMode::initialize());
 
 		return $this->view('user_password', $logic->getViewData());
 	}
 
-	public function user_password_post(HttpRequest $request): IActionResult
+	public function user_password_post(): IActionResult
 	{
-		$logic = $this->createLogic(AccountUserPasswordLogic::class, $request);
+		$logic = $this->createLogic(AccountUserPasswordLogic::class);
 		if ($logic->run(LogicCallMode::submit())) {
 			return $this->redirectPath('account/user');
 		}
@@ -170,17 +170,17 @@ final class AccountController extends PageControllerBase
 		return $this->view('user_password', $logic->getViewData());
 	}
 
-	public function user_email_get(HttpRequest $request): IActionResult
+	public function user_email_get(): IActionResult
 	{
-		$logic = $this->createLogic(AccountUserEmailLogic::class, $request);
+		$logic = $this->createLogic(AccountUserEmailLogic::class);
 		$logic->run(LogicCallMode::initialize());
 
 		return $this->view('user_email', $logic->getViewData());
 	}
 
-	public function user_email_post(HttpRequest $request): IActionResult
+	public function user_email_post(): IActionResult
 	{
-		$logic = $this->createLogic(AccountUserEmailLogic::class, $request);
+		$logic = $this->createLogic(AccountUserEmailLogic::class);
 		if ($logic->run(LogicCallMode::submit())) {
 			if ($logic->equalsResult('confirm', true)) {
 				return $this->redirectPath('account/user');
@@ -191,17 +191,17 @@ final class AccountController extends PageControllerBase
 		return $this->view('user_email', $logic->getViewData());
 	}
 
-	private function user_plugin_get_core(HttpRequest $request, bool $isRegister): IActionResult
+	private function user_plugin_get_core(bool $isRegister): IActionResult
 	{
-		$logic = $this->createLogic(AccountUserPluginLogic::class, $request, $isRegister);
+		$logic = $this->createLogic(AccountUserPluginLogic::class, ['$isRegister' => $isRegister]);
 		$logic->run(LogicCallMode::initialize());
 
 		return $this->view('user_plugin', $logic->getViewData());
 	}
 
-	private function user_plugin_post_core(HttpRequest $request, bool $isRegister): IActionResult
+	private function user_plugin_post_core(bool $isRegister): IActionResult
 	{
-		$logic = $this->createLogic(AccountUserPluginLogic::class, $request, $isRegister);
+		$logic = $this->createLogic(AccountUserPluginLogic::class, ['$isRegister' => $isRegister]);
 		if ($logic->run(LogicCallMode::submit())) {
 			if ($logic->tryGetResult('plugin_id', $pluginId)) {
 				return $this->redirectPath("account/user/plugin/$pluginId");
@@ -212,23 +212,23 @@ final class AccountController extends PageControllerBase
 		return $this->view('user_plugin', $logic->getViewData());
 	}
 
-	public function user_plugin_register_get(HttpRequest $request): IActionResult
+	public function user_plugin_register_get(): IActionResult
 	{
-		return $this->user_plugin_get_core($request, true);
+		return $this->user_plugin_get_core(true);
 	}
 
-	public function user_plugin_register_post(HttpRequest $request): IActionResult
+	public function user_plugin_register_post(): IActionResult
 	{
-		return $this->user_plugin_post_core($request, true);
+		return $this->user_plugin_post_core(true);
 	}
 
-	public function user_plugin_update_get(HttpRequest $request): IActionResult
+	public function user_plugin_update_get(): IActionResult
 	{
-		return $this->user_plugin_get_core($request, false);
+		return $this->user_plugin_get_core(false);
 	}
 
-	public function user_plugin_update_post(HttpRequest $request): IActionResult
+	public function user_plugin_update_post(): IActionResult
 	{
-		return $this->user_plugin_post_core($request, false);
+		return $this->user_plugin_post_core(false);
 	}
 }

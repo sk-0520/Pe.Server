@@ -11,14 +11,17 @@ class AppCryptographyTest extends TestClass
 {
 	public function test_token()
 	{
+		/** @var AppCryptography */
+		$appCryptography = $this->container()->new(AppCryptography::class);
+
 		$tests = [
 			'a',
 			'あ',
 			'💩',
 		];
 		foreach ($tests as $test) {
-			$data = AppCryptography::encryptToken($test);
-			$actual = AppCryptography::decryptToken($data);
+			$data = $appCryptography->encryptToken($test);
+			$actual = $appCryptography->decryptToken($data);
 			$this->assertSame($test, $actual);
 		}
 	}

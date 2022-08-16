@@ -6,6 +6,7 @@ namespace PeServer\Core\Collections;
 
 use \Iterator;
 use PeServer\Core\Throws\ArgumentException;
+use PeServer\Core\Throws\CallbackTypeError;
 
 /**
  * takeWhile イテレータ。
@@ -30,7 +31,7 @@ class TakeWhileIterator implements Iterator
 		private mixed $callback
 	) {
 		if (!is_callable($callback)) { //@phpstan-ignore-line phpstan-param callable
-			throw new ArgumentException('$callback');
+			throw new CallbackTypeError('$callback');
 		}
 	}
 

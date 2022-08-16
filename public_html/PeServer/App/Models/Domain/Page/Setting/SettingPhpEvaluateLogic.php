@@ -43,10 +43,6 @@ class SettingPhpEvaluateLogic extends PageLogicBase
 		});
 	}
 
-	/**
-	 * @param LogicCallMode $callMode
-	 * @SuppressWarnings(PHPMD.EvalExpression)
-	 */
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
 		if ($callMode->isInitialize()) {
@@ -62,13 +58,25 @@ class SettingPhpEvaluateLogic extends PageLogicBase
 		$this->setValue('execute_statement', $executeStatement);
 
 		try {
-			$output = OutputBuffer::get(function() use($executeStatement, &$result) {
-				$result = eval($executeStatement);
+			$output = OutputBuffer::get(function () use ($executeStatement, &$result) {
+				$result = $this->evalStatement($executeStatement);
 			});
 			$this->setValue('output', $output);
-		} catch(Throwable $ex) {
+		} catch (Throwable $ex) {
 			$this->setValue('output', $ex);
 		}
 		$this->setValue('result', $result);
+	}
+
+	/**
+	 * PHP文を実行。
+	 *
+	 * @param string $statement
+	 * @return mixed
+	 * @SuppressWarnings(PHPMD.EvalExpression)
+	 */
+	private function evalStatement(string $statement): mixed
+	{
+		return eval($statement);
 	}
 }

@@ -7,10 +7,10 @@ namespace PeServer\App\Models\Domain;
 use PeServer\Core\I18n;
 use PeServer\Core\Uuid;
 use PeServer\Core\TrueKeeper;
-use PeServer\Core\UrlUtility;
+use PeServer\Core\Web\UrlUtility;
 use PeServer\Core\Environment;
 use PeServer\Core\Mvc\Validator;
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 use PeServer\Core\Database\Database;
 use PeServer\Core\Mvc\IValidationReceiver;
 use PeServer\App\Models\Domain\ValidatorBase;
@@ -98,7 +98,7 @@ class PluginValidator extends ValidatorBase
 
 	public function isDescription(string $key, ?string $value): bool
 	{
-		if (!StringUtility::isNullOrWhiteSpace($value)) {
+		if (!Text::isNullOrWhiteSpace($value)) {
 			/** @var string $value isNotWhiteSpace */
 			$trueKeeper = new TrueKeeper();
 

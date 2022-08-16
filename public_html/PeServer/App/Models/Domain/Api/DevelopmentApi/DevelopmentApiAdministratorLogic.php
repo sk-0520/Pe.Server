@@ -19,7 +19,7 @@ use PeServer\App\Models\Dao\Entities\UserAuthenticationsEntityDao;
 
 class DevelopmentApiAdministratorLogic extends ApiLogicBase
 {
-	public function __construct(LogicParameter $parameter)
+	public function __construct(LogicParameter $parameter, private AppCryptography $cryptography)
 	{
 		parent::__construct($parameter);
 	}
@@ -65,8 +65,8 @@ class DevelopmentApiAdministratorLogic extends ApiLogicBase
 				'password' => Cryptography::toHashPassword($i['password']),
 				'user_name' => 'user-' . $i['login_id'],
 				'level' => $i['level'],
-				'email' => AppCryptography::encrypt($i['email']),
-				'mark_email' => AppCryptography::toMark($i['email']),
+				'email' => $this->cryptography->encrypt($i['email']),
+				'mark_email' => $this->cryptography->toMark($i['email']),
 				'website' => 'http://localhost',
 				'description' => $i['note'],
 				'note' => $i['note'],
@@ -75,7 +75,7 @@ class DevelopmentApiAdministratorLogic extends ApiLogicBase
 
 		$database = $this->openDatabase();
 
-		$result = $database->transaction(function (IDatabaseContext $context, $params) {
+		$result = $database->transaction(function (IDatabaseContext $context) use($params) {
 			$usersEntityDao = new UsersEntityDao($context);
 			$userAuthenticationsEntityDao = new UserAuthenticationsEntityDao($context);
 
@@ -88,7 +88,7 @@ class DevelopmentApiAdministratorLogic extends ApiLogicBase
 					UserState::ENABLED,
 					$user['user_name'],
 					$user['email'],
-					$user['mark_email'],
+					(int)$user['mark_email'],
 					$user['website'],
 					$user['description'],
 					$user['note']
@@ -107,7 +107,7 @@ class DevelopmentApiAdministratorLogic extends ApiLogicBase
 			]);
 
 			return true;
-		}, $params);
+		});
 
 		$this->setResponseJson(ResponseJson::success([
 			'success' => $result,

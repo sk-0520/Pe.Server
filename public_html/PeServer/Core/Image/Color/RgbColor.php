@@ -9,7 +9,7 @@ use \Stringable;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Code;
 use PeServer\Core\Regex;
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\NotImplementedException;
 use PeServer\Core\Throws\NotSupportedException;
@@ -64,7 +64,7 @@ class RgbColor implements IColor, Serializable
 	 */
 	private static function fromHex(string $s, bool $isAlpha/* 0-127に制限が必要 */): int
 	{
-		if (StringUtility::getByteCount($s) === 1) {
+		if (Text::getByteCount($s) === 1) {
 			$s .= $s;
 		}
 
@@ -81,15 +81,16 @@ class RgbColor implements IColor, Serializable
 
 	public static function fromHtmlColorCode(string $htmlColor): RgbColor
 	{
-		if (StringUtility::isNullOrWhiteSpace($htmlColor)) {
+		if (Text::isNullOrWhiteSpace($htmlColor)) {
 			throw new ArgumentException($htmlColor);
 		}
-		$strColor = StringUtility::trim($htmlColor);
-		if (StringUtility::isNullOrEmpty($strColor)) {
+		$strColor = Text::trim($htmlColor);
+		if (Text::isNullOrEmpty($strColor)) {
 			throw new ArgumentException($htmlColor);
 		}
 
-		$matchers = Regex::matches($htmlColor, '/#?(?<R>[0-9A-fa-f]{1,2})(?<G>[0-9A-fa-f]{1,2})(?<B>[0-9A-fa-f]{1,2})(?<A>[0-9A-fa-f]{1,2})?/');
+		$regex = new Regex();
+		$matchers = $regex->matches($htmlColor, '/#?(?<R>[0-9A-fa-f]{1,2})(?<G>[0-9A-fa-f]{1,2})(?<B>[0-9A-fa-f]{1,2})(?<A>[0-9A-fa-f]{1,2})?/');
 
 		if (ArrayUtility::isNullOrEmpty($matchers)) {
 			//rgb()的な奴は知らん
@@ -100,7 +101,7 @@ class RgbColor implements IColor, Serializable
 		$g = self::fromHex($matchers['G'], false);
 		$b = self::fromHex($matchers['B'], false);
 
-		if (StringUtility::isNullOrEmpty($matchers['A'])) {
+		if (Text::isNullOrEmpty($matchers['A'])) {
 			return new RgbColor($r, $g, $b);
 		}
 
@@ -111,10 +112,10 @@ class RgbColor implements IColor, Serializable
 	public function toHtml(): string
 	{
 		if ($this->alpha === IColor::ALPHA_NONE) {
-			return StringUtility::format('#%02x%02x%02x', $this->red, $this->green, $this->blue);
+			return Text::format('#%02x%02x%02x', $this->red, $this->green, $this->blue);
 		}
 
-		return StringUtility::format('#%02x%02x%02x%02x', $this->red, $this->green, $this->blue, $this->alpha);
+		return Text::format('#%02x%02x%02x%02x', $this->red, $this->green, $this->blue, $this->alpha);
 	}
 
 	public function serialize(): string
@@ -146,6 +147,6 @@ class RgbColor implements IColor, Serializable
 
 	public function __toString(): string
 	{
-		return Code::toString($this, StringUtility::format('#%02x%02x%02x-%02x', $this->red, $this->green, $this->blue, $this->alpha));
+		return Code::toString($this, Text::format('#%02x%02x%02x-%02x', $this->red, $this->green, $this->blue, $this->alpha));
 	}
 }

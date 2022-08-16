@@ -15,7 +15,7 @@ use PeServer\Core\Uuid;
 
 class PluginApiInformationLogic extends ApiLogicBase
 {
-	public function __construct(LogicParameter $parameter)
+	public function __construct(LogicParameter $parameter, private AppDatabaseCache $dbCache)
 	{
 		parent::__construct($parameter);
 	}
@@ -31,7 +31,7 @@ class PluginApiInformationLogic extends ApiLogicBase
 		/** @var string[] */
 		$pluginIds = ArrayUtility::getOr($json, 'plugin_ids', []);
 
-		$plugins = AppDatabaseCache::readPluginInformation();
+		$plugins = $this->dbCache->readPluginInformation();
 		/** @var array<string,array<mixed>> */
 		$items = [];
 		foreach($pluginIds as $pluginId) {

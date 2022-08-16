@@ -19,25 +19,25 @@ class PluginApiController extends ApiControllerBase
 		parent::__construct($argument);
 	}
 
-	public function exists(HttpRequest $request): IActionResult
+	public function exists(): IActionResult
 	{
-		$logic = $this->createLogic(PluginApiExistsLogic::class, $request);
+		$logic = $this->createLogic(PluginApiExistsLogic::class);
 		$logic->run(LogicCallMode::submit());
 
 		return $this->data($logic->getContent());
 	}
 
-	public function generate_plugin_id(HttpRequest $request): IActionResult
+	public function generate_plugin_id(): IActionResult
 	{
-		$logic = $this->createLogic(PluginApiGeneratePluginIdLogic::class, $request);
+		$logic = $this->createLogic(PluginApiGeneratePluginIdLogic::class);
 		$logic->run(LogicCallMode::submit());
 
 		return $this->data($logic->getContent());
 	}
 
-	public function information(HttpRequest $request): IActionResult
+	public function information(): IActionResult
 	{
-		$logic = $this->createLogic(PluginApiInformationLogic::class, $request);
+		$logic = $this->createLogic(PluginApiInformationLogic::class);
 		$logic->run(LogicCallMode::submit());
 
 		return $this->data($logic->getContent());

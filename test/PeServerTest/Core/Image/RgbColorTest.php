@@ -6,7 +6,7 @@ declare(strict_types=1);
 namespace PeServerTest\Core\Image;
 
 use PeServer\Core\Image\Color\RgbColor;
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 use PeServer\Core\Throws\NotSupportedException;
 use PeServerTest\TestClass;
 use PeServerTest\Data;
@@ -27,7 +27,7 @@ class RgbColorTest extends TestClass
 			new Data(new RgbColor(0xaa, 0xbb, 0xcc), "#abc"),
 		];
 		foreach ($tests as $test) {
-			$actual = RgbColor::fromHtmlColorCode(StringUtility::toLower($test->args[0]));
+			$actual = RgbColor::fromHtmlColorCode(Text::toLower($test->args[0]));
 			$this->assertSame($test->expected->toHtml(), $actual->toHtml(), $test->str());
 		}
 	}

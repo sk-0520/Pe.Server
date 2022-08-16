@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core;
 
 use \Exception;
+use PeServer\Core\Throws\ArgumentException;
 use \Throwable;
 use PeServer\Core\Throws\CryptoException;
 use PeServer\Core\Throws\Throws;
@@ -53,7 +54,7 @@ abstract class Cryptography
 	public static function generateRandomBinary(int $length): Binary
 	{
 		if ($length < 1) { //@phpstan-ignore-line phpstan:positive-int
-			throw new CryptoException('$length = ' . $length);
+			throw new CryptoException('$length: ' . $length);
 		}
 
 		$result = openssl_random_pseudo_bytes($length);
@@ -77,13 +78,13 @@ abstract class Cryptography
 	public static function generateRandomString(int $length, string $characters = self::DEFAULT_RANDOM_STRING): string
 	{
 		if ($length < 1) { //@phpstan-ignore-line phpstan:positive-int
-			throw new CryptoException('$length = ' . $length);
+			throw new ArgumentException('$length: ' . $length);
 		}
-		if (StringUtility::isNullOrWhiteSpace($characters)) { //@phpstan-ignore-line phpstan:positive-int
-			throw new CryptoException('$characters = ' . $characters);
+		if (Text::isNullOrWhiteSpace($characters)) { //@phpstan-ignore-line phpstan:positive-int
+			throw new ArgumentException('$characters: ' . $characters);
 		}
 
-		$charactersArray = StringUtility::toCharacters($characters);
+		$charactersArray = Text::toCharacters($characters);
 
 		$min = 0;
 		$max = ArrayUtility::getCount($charactersArray) - 1;
@@ -121,7 +122,7 @@ abstract class Cryptography
 			throw new CryptoException($algorithm);
 		}
 		if ($ivLength < 1) {
-			throw new CryptoException('$ivLength = ' . $ivLength);
+			throw new CryptoException('$ivLength: ' . $ivLength);
 		}
 
 		$iv = self::generateRandomBinary($ivLength);
@@ -144,9 +145,9 @@ abstract class Cryptography
 	 */
 	public static function decrypt(string $encValue, string $password): string
 	{
-		$values = StringUtility::split($encValue, self::SEPARATOR);
+		$values = Text::split($encValue, self::SEPARATOR);
 		if (ArrayUtility::getCount($values) !== 3) {
-			throw new CryptoException();
+			throw new ArgumentException();
 		}
 		list($algorithm, $ivBase64, $encData) = $values;
 
@@ -192,6 +193,18 @@ abstract class Cryptography
 	}
 
 	/**
+	 * `password_needs_rehash` ラッパー。
+	 *
+	 * @param string $hashPassword
+	 * @return bool
+	 */
+	public static function needsRehashPassword(string $hashPassword): bool
+	{
+		return password_needs_rehash($hashPassword, null, []);
+	}
+
+
+	/**
 	 * ハッシュアルゴリズム一覧。
 	 *
 	 * `hash_algos` ラッパー。
@@ -203,12 +216,23 @@ abstract class Cryptography
 		return hash_algos();
 	}
 
-	private static function generateHashCore(bool $isBinary, string $algorithm, Binary $binary/*, array $options = []*/): string
+	/**
+	 * ハッシュ値生成。
+	 *
+	 * @param bool $isBinary
+	 * @param string $algorithm
+	 * @param Binary $binary
+	 * @param array{seed?:?int}|null $options
+	 * @return string
+	 */
+	private static function generateHashCore(bool $isBinary, string $algorithm, Binary $binary, ?array $options): string
 	{
-		$hash = hash($algorithm, $binary->getRaw(), $isBinary/*, $options */);
+		//$hash = hash($algorithm, $binary->getRaw(), $isBinary, $options);
+		$hash = hash($algorithm, $binary->getRaw(), $isBinary);
 		if ($hash === false) { //@phpstan-ignore-line
 			throw new CryptoException();
 		}
+
 		return $hash;
 	}
 
@@ -220,14 +244,14 @@ abstract class Cryptography
 	 * @param string $algorithm
 	 * @phpstan-param non-empty-string $algorithm
 	 * @param Binary $binary
-	 * @-param array{seed?:?int} $options
+	 * @param array{seed?:?int}|null $options
 	 * @return string 文字列表現。
 	 * @throws CryptoException
-	 * @see https://php.net/manual/function.hash.php
+	 * @see https://www.php.net/manual/function.hash.php
 	 */
-	public static function generateHashString(string $algorithm, Binary $binary/*, array $options = []*/): string
+	public static function generateHashString(string $algorithm, Binary $binary, ?array $options = null): string
 	{
-		return self::generateHashCore(false, $algorithm, $binary);
+		return self::generateHashCore(false, $algorithm, $binary, $options);
 	}
 
 	/**
@@ -238,13 +262,13 @@ abstract class Cryptography
 	 * @param string $algorithm
 	 * @phpstan-param non-empty-string $algorithm
 	 * @param Binary $binary
-	 * @-param array{seed?:?int} $options
+	 * @param array{seed?:?int}|null $options
 	 * @return Binary ハッシュバイナリ。
 	 * @throws CryptoException
-	 * @see https://php.net/manual/function.hash.php
+	 * @see https://www.php.net/manual/function.hash.php
 	 */
-	public static function generateHashBinary(string $algorithm, Binary $binary/*, array $options = []*/): Binary
+	public static function generateHashBinary(string $algorithm, Binary $binary, ?array $options = null): Binary
 	{
-		return new Binary(self::generateHashCore(true, $algorithm, $binary));
+		return new Binary(self::generateHashCore(true, $algorithm, $binary, $options));
 	}
 }

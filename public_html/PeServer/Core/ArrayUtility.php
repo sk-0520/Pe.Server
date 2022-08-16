@@ -6,18 +6,22 @@ namespace PeServer\Core;
 
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\InvalidOperationException;
+use PeServer\Core\Throws\KeyNotFoundException;
 use PeServer\Core\Throws\TypeException;
 
 /**
  * 配列共通処理。
+ *
+ * 遅延処理が必要な場合 `Collections\Collection` を参照のこと。
  */
 class ArrayUtility
 {
 	/**
-	 * 配列がnullか空か。
+	 * 配列が `null` か空か。
 	 *
 	 * @param array<mixed>|null $array
 	 * @return boolean
+	 * @phpstan-return ($array is null ? true: ($array is non-empty-array ? false: true))
 	 */
 	public static function isNullOrEmpty(?array $array): bool
 	{
@@ -47,11 +51,16 @@ class ArrayUtility
 		if (!is_null($array) && isset($array[$key])) {
 			$result = $array[$key];
 			if (!is_null($result) && !is_null($fallbackValue)) { //@phpstan-ignore-line
-				$resultType = gettype($result);
-				$fallbackValueType = gettype($fallbackValue);
-				if ($resultType !== $fallbackValueType) {
-					throw new TypeException();
+				$resultType = TypeUtility::getType($result);
+				$fallbackValueType = TypeUtility::getType($fallbackValue);
+				if ($resultType === $fallbackValueType) {
+					return $result;
 				}
+				if (is_a($result, $fallbackValueType)) {
+					return $result;
+				}
+
+				throw new TypeException();
 			}
 
 			return $result;
@@ -133,9 +142,8 @@ class ArrayUtility
 	/**
 	 * `array_keys` ラッパー。
 	 *
-	 * @template TValue
 	 * @param array<int|string,mixed> $array
-	 * @phpstan-param array<array-key,TValue> $array
+	 * @phpstan-param array<array-key,mixed> $array
 	 * @return array<int|string>
 	 * @phpstan-return array-key[]
 	 * @see https://www.php.net/manual/function.array-keys.php
@@ -183,12 +191,13 @@ class ArrayUtility
 	 * @return int|string
 	 * @phpstan-return array-key
 	 * @see https://www.php.net/manual/function.array-key-first.php
+	 * @throws KeyNotFoundException
 	 */
 	public static function getFirstKey(array $array): int|string
 	{
 		$result = array_key_first($array);
 		if (is_null($result)) {
-			throw new InvalidOperationException();
+			throw new KeyNotFoundException();
 		}
 
 		return $result;
@@ -201,12 +210,13 @@ class ArrayUtility
 	 * @return int|string
 	 * @phpstan-return array-key
 	 * @see https://www.php.net/manual/function.array-key-last.php
+	 * @throws KeyNotFoundException
 	 */
 	public static function getLastKey(array $array): int|string
 	{
 		$result = array_key_last($array);
 		if (is_null($result)) {
-			throw new InvalidOperationException();
+			throw new KeyNotFoundException();
 		}
 
 		return $result;
@@ -226,7 +236,7 @@ class ArrayUtility
 			return $function($array); //@phpstan-ignore-line
 		}
 
-		// https://www.php.net/manual/ja/function.array-is-list.php#127044
+		// https://www.php.net/manual/function.array-is-list.php#127044
 		$i = 0;
 		foreach ($array as $k => $v) {
 			if ($k !== $i++) {
@@ -239,7 +249,10 @@ class ArrayUtility
 	/**
 	 * `array_unique` ラッパー。
 	 *
+	 * @template TKey of array-key
+	 * @template TValue
 	 * @param array<mixed> $array
+	 * @phpstan-param array<TKey,TValue> $array
 	 * @return array<mixed>
 	 * @see https://www.php.net/manual/function.array-unique.php
 	 */
@@ -255,8 +268,8 @@ class ArrayUtility
 	 * @param array<mixed> $overwrite 上書きする配列。
 	 * @param bool $recursive 再帰的置き換えを行うか(`_recursive`呼び出し)。
 	 * @return array<mixed>
-	 * @see https://php.net/manual/function.array-replace-recursive.php
-	 * @see https://php.net/manual/function.array-replace.php
+	 * @see https://www.php.net/manual/function.array-replace-recursive.php
+	 * @see https://www.php.net/manual/function.array-replace.php
 	 */
 	public static function replace(array $base, array $overwrite, bool $recursive = true): array
 	{
@@ -308,7 +321,7 @@ class ArrayUtility
 	 * @phpstan-param array<TKey,TValue> $input
 	 * @return array<mixed>
 	 * @phpstan-return array<TKey,TValue>
-	 * @see https://php.net/manual/function.array-reverse.php
+	 * @see https://www.php.net/manual/function.array-reverse.php
 	 */
 	public static function reverse(array $input): array
 	{

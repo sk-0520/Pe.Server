@@ -6,29 +6,29 @@ namespace PeServer\App\Models;
 
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Environment;
-use PeServer\Core\InitialValue;
+use PeServer\Core\DefaultValue;
 use PeServer\Core\Mail\EmailAddress;
 use PeServer\Core\Mail\Mailer;
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 
 /**
  * アプリケーション側で使用するメール送信機能。
  */
 final class AppMailer extends Mailer
 {
-	private string $overwriteTarget = InitialValue::EMPTY_STRING;
+	private string $overwriteTarget = DefaultValue::EMPTY_STRING;
 
-	public function __construct()
+	public function __construct(AppConfiguration $config)
 	{
-		parent::__construct(AppConfiguration::$config['mail']);
+		parent::__construct($config->setting['mail']); //@phpstan-ignore-line いやこれはもう無理だろ
 
-		$fromEmail = AppConfiguration::$config['config']['address']['from_email'];
+		$fromEmail = $config->setting['config']['address']['from_email'];
 		$this->fromAddress = new EmailAddress($fromEmail['address'], $fromEmail['name']);
-		$this->returnPath = AppConfiguration::$config['config']['address']['return_email'];
+		$this->returnPath = $config->setting['config']['address']['return_email'];
 
-		if (!Environment::isProduction() && isset(AppConfiguration::$config['debug'])) {
-			$target = ArrayUtility::getOr(AppConfiguration::$config['debug'], 'mail_overwrite_target', '');
-			if (!StringUtility::isNullOrWhiteSpace($target)) {
+		if (!Environment::isProduction() && isset($config->setting['debug'])) {
+			$target = ArrayUtility::getOr($config->setting['debug'], 'mail_overwrite_target', '');
+			if (!Text::isNullOrWhiteSpace($target)) {
 				$this->overwriteTarget = $target;
 			}
 		}
@@ -38,7 +38,7 @@ final class AppMailer extends Mailer
 	{
 		$result = parent::convertAddress($kind, $data);
 
-		if ($kind != parent::ADDRESS_KIND_TO || StringUtility::isNullOrWhiteSpace($this->overwriteTarget)) {
+		if ($kind != parent::ADDRESS_KIND_TO || Text::isNullOrWhiteSpace($this->overwriteTarget)) {
 			return $result;
 		}
 

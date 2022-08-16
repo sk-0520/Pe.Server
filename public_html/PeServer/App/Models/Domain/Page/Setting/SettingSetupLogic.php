@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Domain\Page\Setting;
 
 use PeServer\Core\Cryptography;
-use PeServer\Core\InitialValue;
+use PeServer\Core\DefaultValue;
 use PeServer\App\Models\AuditLog;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
-use PeServer\App\Models\SessionManager;
+use PeServer\App\Models\SessionKey;
 use PeServer\App\Models\AppCryptography;
 use PeServer\App\Models\Domain\UserLevel;
 use PeServer\App\Models\Domain\UserState;
@@ -23,7 +23,7 @@ use PeServer\Core\ArrayUtility;
 
 class SettingSetupLogic extends PageLogicBase
 {
-	public function __construct(LogicParameter $parameter)
+	public function __construct(LogicParameter $parameter, private AppCryptography $cryptography)
 	{
 		parent::__construct($parameter);
 	}
@@ -38,7 +38,7 @@ class SettingSetupLogic extends PageLogicBase
 			'setting_setup_website',
 		], true);
 
-		$this->setValue('setting_setup_password', InitialValue::EMPTY_STRING);
+		$this->setValue('setting_setup_password', DefaultValue::EMPTY_STRING);
 	}
 
 	protected function validateImpl(LogicCallMode $callMode): void
@@ -79,29 +79,29 @@ class SettingSetupLogic extends PageLogicBase
 			return;
 		}
 
-		$currentUserInfo = SessionManager::getAccount();
+		$currentUserInfo = $this->requireSession(SessionKey::ACCOUNT);
 
 		$email = $this->getRequest('setting_setup_email');
 
 		$params = [
 			'login_id' => $this->getRequest('setting_setup_login_id'),
-			'password' => $this->getRequest('setting_setup_password', InitialValue::EMPTY_STRING, false),
+			'password' => $this->getRequest('setting_setup_password', DefaultValue::EMPTY_STRING, false),
 			'user_name' => $this->getRequest('setting_setup_user_name'),
-			'email' => AppCryptography::encrypt($email),
-			'mark_email' => AppCryptography::toMark($email),
+			'email' => $this->cryptography->encrypt($email),
+			'mark_email' => $this->cryptography->toMark($email),
 			'website' => $this->getRequest('setting_setup_website'),
 		];
 
 		$userInfo = [
 			'id' => UserUtility::generateUserId(),
-			'generated_password' => InitialValue::EMPTY_STRING,
+			'generated_password' => DefaultValue::EMPTY_STRING,
 			'current_password' => Cryptography::toHashPassword($params['password']),
 		];
 
 
 		$database = $this->openDatabase();
 
-		$result = $database->transaction(function (IDatabaseContext $database, $currentUserInfo, $params, $userInfo) {
+		$result = $database->transaction(function (IDatabaseContext $database) use ($currentUserInfo, $params, $userInfo) {
 			$accountValidator = new AccountValidator($this, $this->validator);
 
 			/** @var string @-phpstan-ignore-next-line */
@@ -123,8 +123,8 @@ class SettingSetupLogic extends PageLogicBase
 				$params['email'], // @-phpstan-ignore-line
 				$params['mark_email'], // @-phpstan-ignore-line
 				$params['website'], // @-phpstan-ignore-line
-				InitialValue::EMPTY_STRING,
-				InitialValue::EMPTY_STRING
+				DefaultValue::EMPTY_STRING,
+				DefaultValue::EMPTY_STRING
 			);
 
 			$userAuthenticationsEntityDao->insertUserAuthentication(
@@ -136,19 +136,19 @@ class SettingSetupLogic extends PageLogicBase
 			// 現在のセットアップユーザーを無効化
 			$state = UserState::DISABLED;
 			$usersEntityDao->updateUserState(
-				$currentUserInfo['user_id'], // @-phpstan-ignore-line
+				$currentUserInfo->userId, // @-phpstan-ignore-line
 				$state
 			);
 
 			// ユーザー生成記録を監査ログに追加
 			$this->writeAuditLogCurrentUser(AuditLog::USER_STATE_CHANGE, ['state' => $state], $database);
-			 // @-phpstan-ignore-next-line
+			// @-phpstan-ignore-next-line
 			$this->writeAuditLogCurrentUser(AuditLog::USER_CREATE, ['user_id' => $userInfo['id']], $database);
-			 // @-phpstan-ignore-next-line
-			$this->writeAuditLogTargetUser($userInfo['id'], AuditLog::USER_GENERATED, ['user_id' => $currentUserInfo['user_id']], $database);
+			// @-phpstan-ignore-next-line
+			$this->writeAuditLogTargetUser($userInfo['id'], AuditLog::USER_GENERATED, ['user_id' => $currentUserInfo->userId], $database);
 
 			return true;
-		}, $currentUserInfo, $params, $userInfo);
+		});
 
 		// 生成したのであれば現在のセットアップユーザーは用済みなのでログアウト
 		if ($result) {

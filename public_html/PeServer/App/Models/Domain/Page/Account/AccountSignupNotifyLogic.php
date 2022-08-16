@@ -8,11 +8,11 @@ use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 
 class AccountSignupNotifyLogic extends PageLogicBase
 {
-	public function __construct(LogicParameter $parameter)
+	public function __construct(LogicParameter $parameter, private AppConfiguration $config)
 	{
 		parent::__construct($parameter);
 	}
@@ -24,8 +24,8 @@ class AccountSignupNotifyLogic extends PageLogicBase
 
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
-		$emailAddress = AppConfiguration::$config['config']['address']['from_email']['address'];
-		$emailDomain = StringUtility::split($emailAddress, '@')[1];
+		$emailAddress = $this->config->setting['config']['address']['from_email']['address'];
+		$emailDomain = Text::split($emailAddress, '@')[1];
 		$this->setValue('email_address', $emailAddress);
 		$this->setValue('email_domain', $emailDomain);
 	}

@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domain\Page\Setting;
 
-use PeServer\Core\IOUtility;
-use PeServer\Core\PathUtility;
+use PeServer\Core\IO\Directory;
+use PeServer\Core\IO\File;
+use PeServer\Core\IO\Path;
 use PeServer\Core\SizeConverter;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
@@ -15,7 +16,7 @@ use PeServer\App\Models\Domain\Page\PageLogicBase;
 
 class SettingLogListLogic extends PageLogicBase
 {
-	public function __construct(LogicParameter $parameter)
+	public function __construct(LogicParameter $parameter, private AppConfiguration $config)
 	{
 		parent::__construct($parameter);
 	}
@@ -28,23 +29,23 @@ class SettingLogListLogic extends PageLogicBase
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
 		/** @var array<string,mixed> */
-		$logging = AppConfiguration::$config['logging'];
+		$logging = $this->config::$config['logging'];
 		/** @var string @-phpstan-ignore-next-line */
-		$dirPath = $logging['file']['directory'];
+		$dirPath = $logging['file']['configuration']['logger']['directory'];
 		/** @var string @-phpstan-ignore-next-line */
-		$targetExt = PathUtility::getFileExtension($logging['file']['name']);
-		$files = IOUtility::getFiles($dirPath, false);
+		$targetExt = Path::getFileExtension($logging['file']['configuration']['logger']['name']);
+		$files = Directory::getFiles($dirPath, false);
 
 		$logFiles = array_filter($files, function ($i) use ($targetExt) {
-			return PathUtility::getFileExtension($i) === $targetExt;
+			return Path::getFileExtension($i) === $targetExt;
 		});
 		natsort($logFiles);
 		$logFiles = array_map(function ($i) {
 			$sizeConverter = new SizeConverter();
-			$size = IOUtility::getFileSize($i);
+			$size = File::getFileSize($i);
 			return [
-				'directory' => PathUtility::getDirectoryPath($i),
-				'name' => PathUtility::getFileName($i),
+				'directory' => Path::getDirectoryPath($i),
+				'name' => Path::getFileName($i),
 				'size' => $size,
 				'human_size' => $sizeConverter->convertHumanReadableByte($size, '{f_size} {unit}'),
 			];

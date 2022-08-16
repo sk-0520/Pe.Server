@@ -17,12 +17,12 @@ abstract class DisposerBase implements IDisposable
 	/**
 	 * 何もしない解放処理オブジェクトを生成。
 	 */
-	public function empty(): IDisposable
+	public static function empty(): IDisposable
 	{
 		return new LocalEmptyDisposer();
 	}
 
-	public function __destruct()
+	final public function __destruct()
 	{
 		$this->dispose();
 	}
@@ -40,12 +40,6 @@ abstract class DisposerBase implements IDisposable
 		}
 	}
 
-	/** 解放済みか。 */
-	public function isDisposed(): bool
-	{
-		return $this->isDisposed;
-	}
-
 	/**
 	 * 解放処理内部実装。
 	 *
@@ -56,6 +50,13 @@ abstract class DisposerBase implements IDisposable
 	protected function disposeImpl(): void
 	{
 		//NONE
+	}
+
+	//IDisposable
+
+	public function isDisposed(): bool
+	{
+		return $this->isDisposed;
 	}
 
 	public final function dispose(): void
@@ -72,8 +73,5 @@ abstract class DisposerBase implements IDisposable
 
 final class LocalEmptyDisposer extends DisposerBase
 {
-	protected function disposeImpl(): void
-	{
-		//NONE
-	}
+	//NONE
 }

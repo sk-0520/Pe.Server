@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Middleware;
 
+use PeServer\Core\Http\HttpResponse;
+use PeServer\Core\Log\ILogger;
 use PeServer\Core\Mvc\Middleware\MiddlewareArgument;
 use PeServer\Core\Mvc\Middleware\MiddlewareResult;
 
@@ -17,6 +19,13 @@ final class PerformanceMiddleware implements IMiddleware
 {
 	private float $beforeMsec;
 
+	public function __construct(
+		private ILogger $logger
+	) {
+	}
+
+	//[IMiddleware]
+
 	public function handleBefore(MiddlewareArgument $argument): MiddlewareResult
 	{
 		$this->beforeMsec = microtime(true);
@@ -24,11 +33,11 @@ final class PerformanceMiddleware implements IMiddleware
 		return MiddlewareResult::none();
 	}
 
-	public function handleAfter(MiddlewareArgument $argument): MiddlewareResult
+	public function handleAfter(MiddlewareArgument $argument, HttpResponse $response): MiddlewareResult
 	{
 		$afterMsec = microtime(true);
 
-		$argument->logger->info('action {0} ms', $afterMsec - $this->beforeMsec);
+		$this->logger->info('action {0} ms', $afterMsec - $this->beforeMsec);
 
 		return MiddlewareResult::none();
 	}

@@ -8,19 +8,24 @@ use PeServer\Core\Cryptography;
 use PeServer\Core\Throws\CryptoException;
 use PeServer\App\Models\AppConfiguration;
 use PeServer\Core\Binary;
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 
-abstract class AppCryptography
+final class AppCryptography
 {
+	public function __construct(
+		private AppConfiguration $config
+	) {
+	}
+
 	/**
 	 * アプリケーション設定から文字列暗号化。
 	 *
 	 * @param string $data
 	 * @return string DB格納値を想定。
 	 */
-	public static function encrypt(string $data): string
+	public function encrypt(string $data): string
 	{
-		$crypto = AppConfiguration::$config['crypto'];
+		$crypto = $this->config->setting['crypto'];
 		return Cryptography::encrypt($crypto['algorithm'], $data, $crypto['password']);
 	}
 
@@ -30,22 +35,22 @@ abstract class AppCryptography
 	 * @param string $data DB格納値を想定。
 	 * @return string アプリ使用文字列を想定。
 	 */
-	public static function decrypt(string $data): string
+	public function decrypt(string $data): string
 	{
-		$crypto = AppConfiguration::$config['crypto'];
+		$crypto = $this->config->setting['crypto'];
 		return Cryptography::decrypt($data, $crypto['password']);
 	}
 
-	public static function encryptToken(string $data): string
+	public function encryptToken(string $data): string
 	{
-		$token = AppConfiguration::$config['crypto']['token'];
+		$token = $this->config->setting['crypto']['token'];
 		$value = Cryptography::encrypt($token['algorithm'], $data, $token['password']);
-		return StringUtility::split($value, Cryptography::SEPARATOR, 2)[1];
+		return Text::split($value, Cryptography::SEPARATOR, 2)[1];
 	}
 
-	public static function decryptToken(string $data): string
+	public function decryptToken(string $data): string
 	{
-		$token = AppConfiguration::$config['crypto']['token'];
+		$token = $this->config->setting['crypto']['token'];
 		$value = $data;
 		return Cryptography::decrypt($token['algorithm'] . Cryptography::SEPARATOR . $value, $token['password']);
 	}
@@ -58,9 +63,9 @@ abstract class AppCryptography
 	 * @param string $data
 	 * @return integer
 	 */
-	public static function toMark(string $data): int
+	public function toMark(string $data): int
 	{
-		$crypto = AppConfiguration::$config['crypto'];
+		$crypto = $this->config->setting['crypto'];
 		$input = $data . $crypto['pepper'];
 
 		$binary = Cryptography::generateHashBinary('fnv132', new Binary($input));

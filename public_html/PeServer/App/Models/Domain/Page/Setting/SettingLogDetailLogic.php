@@ -7,9 +7,9 @@ namespace PeServer\App\Models\Domain\Page\Setting;
 use PeServer\Core\Mime;
 use PeServer\Core\Binary;
 use PeServer\Core\Archiver;
-use PeServer\Core\IOUtility;
-use PeServer\Core\PathUtility;
-use PeServer\Core\StringUtility;
+use PeServer\Core\IO\File;
+use PeServer\Core\IO\Path;
+use PeServer\Core\Text;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\App\Models\AppConfiguration;
@@ -18,7 +18,7 @@ use PeServer\App\Models\Domain\Page\PageLogicBase;
 
 class SettingLogDetailLogic extends PageLogicBase
 {
-	public function __construct(LogicParameter $parameter)
+	public function __construct(LogicParameter $parameter, private AppConfiguration $config)
 	{
 		parent::__construct($parameter);
 	}
@@ -31,21 +31,21 @@ class SettingLogDetailLogic extends PageLogicBase
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
 		/** @var array<string,mixed> */
-		$logging = AppConfiguration::$config['logging'];
+		$logging = $this->config->setting['logging'];
 		/** @var string @-phpstan-ignore-next-line */
-		$dirPath = (string)$logging['file']['directory'];
+		$dirPath = $logging['file']['configuration']['logger']['directory'];
 
-		$fileName = StringUtility::trim($this->getRequest('log_name'), '/\\.');
-		$filePath = PathUtility::joinPath($dirPath, $fileName);
-		if (!IOUtility::existsFile($filePath)) {
+		$fileName = Text::trim($this->getRequest('log_name'), '/\\.');
+		$filePath = Path::combine($dirPath, $fileName);
+		if (!File::exists($filePath)) {
 			throw new FileNotFoundException();
 		}
 
-		$binary = IOUtility::readContent($filePath);
+		$binary = File::readContent($filePath);
 
 		/** @var int @-phpstan-ignore-next-line */
-		$archiveSize = AppConfiguration::$config['logging']['archive_size'];
-		$fileSize = IOUtility::getFileSize($filePath);
+		$archiveSize = $this->config->setting['logging']['archive_size'];
+		$fileSize = File::getFileSize($filePath);
 
 		if ($archiveSize <= $fileSize) {
 			$this->result['download'] = true;

@@ -10,7 +10,7 @@ use PeServer\App\Models\Dao\Entities\UsersEntityDao;
 use PeServer\App\Models\Domain\AccountValidator;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\App\Models\SessionAccount;
-use PeServer\App\Models\SessionManager;
+use PeServer\App\Models\SessionKey;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\I18n;
 use PeServer\Core\Mvc\LogicCallMode;
@@ -18,7 +18,7 @@ use PeServer\Core\Mvc\LogicParameter;
 
 class AccountUserEditLogic extends PageLogicBase
 {
-	public function __construct(LogicParameter $parameter)
+	public function __construct(LogicParameter $parameter, private AppDatabaseCache $dbCache)
 	{
 		parent::__construct($parameter);
 	}
@@ -65,7 +65,7 @@ class AccountUserEditLogic extends PageLogicBase
 
 	private function executeInitialize(LogicCallMode $callMode): void
 	{
-		$userInfo = SessionManager::getAccount();
+		$userInfo = $this->requireSession(SessionKey::ACCOUNT);
 
 		$database = $this->openDatabase();
 		$usersEntityDao = new UsersEntityDao($database);
@@ -78,14 +78,14 @@ class AccountUserEditLogic extends PageLogicBase
 			'description' => 'account_edit_description',
 		];
 
-		foreach ($userEditData as $key => $value) {
+		foreach ($userEditData->fields as $key => $value) {
 			$this->setValue($map[$key], $value);
 		}
 	}
 
 	private function executeSubmit(LogicCallMode $callMode): void
 	{
-		$userInfo = SessionManager::getAccount();
+		$userInfo = $this->requireSession(SessionKey::ACCOUNT);
 
 		$params = [
 			'user_id' => $userInfo->userId,
@@ -96,7 +96,7 @@ class AccountUserEditLogic extends PageLogicBase
 
 		$database = $this->openDatabase();
 
-		$database->transaction(function (IDatabaseContext $context, $params) {
+		$database->transaction(function (IDatabaseContext $context) use ($params) {
 			$usersEntityDao = new UsersEntityDao($context);
 
 			// ユーザー情報更新
@@ -110,9 +110,10 @@ class AccountUserEditLogic extends PageLogicBase
 			$this->writeAuditLogCurrentUser(AuditLog::USER_EDIT, null, $context);
 
 			return true;
-		}, $params);
+		});
 
-		$source = SessionManager::getAccount();
+
+		$source = $this->requireSession(SessionKey::ACCOUNT);
 		$account = new SessionAccount(
 			$source->userId,
 			$source->loginId,
@@ -120,9 +121,9 @@ class AccountUserEditLogic extends PageLogicBase
 			$source->level,
 			$source->state
 		);
-		SessionManager::setAccount($account);
+		$this->setSession(SessionKey::ACCOUNT, $account);
 
 		$this->addTemporaryMessage(I18n::message('message/flash/updated_user'));
-		AppDatabaseCache::exportUserInformation();
+		$this->dbCache->exportUserInformation();
 	}
 }

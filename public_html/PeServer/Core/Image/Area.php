@@ -6,7 +6,7 @@ namespace PeServer\Core\Image;
 
 use \Stringable;
 use PeServer\Core\Code;
-use PeServer\Core\StringUtility;
+use PeServer\Core\Text;
 
 /**
  * 上下左右の座標を保持。
@@ -100,7 +100,7 @@ class Area implements Stringable
 	{
 		return Code::toString(
 			$this,
-			StringUtility::join(
+			Text::join(
 				', ',
 				[
 					'leftTop: ' . $this->leftTop,

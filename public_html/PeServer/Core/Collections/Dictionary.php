@@ -8,12 +8,14 @@ use \TypeError;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Collections\TypeArrayBase;
 use PeServer\Core\Throws\ArgumentException;
+use PeServer\Core\Throws\ArgumentNullException;
 use PeServer\Core\Throws\IndexOutOfRangeException;
+use PeServer\Core\Throws\KeyNotFoundException;
 use PeServer\Core\Throws\NotSupportedException;
 use PeServer\Core\TypeUtility;
 
 /**
- * 連想配列。
+ * 連想配列(キーは文字列限定)。
  *
  * @template TValue
  * @extends TypeArrayBase<string,TValue>
@@ -31,7 +33,11 @@ class Dictionary extends TypeArrayBase
 	public function __construct(string $type, array $map)
 	{
 		parent::__construct($type);
-		$this->items = $map;
+
+		foreach ($map as $key => $value) {
+			$this->isValidType($value);
+			$this->items[$key] = $value;
+		}
 	}
 
 	/**
@@ -40,24 +46,35 @@ class Dictionary extends TypeArrayBase
 	 * @template TTValue
 	 * @param array $map 配列。
 	 * @phpstan-param non-empty-array<string,TTValue> $map
-	 * @return Dictionary
-	 * @phpstan-return Dictionary<TTValue>
+	 * @return self
+	 * @phpstan-return self<TTValue>
 	 */
-	public static function create(array $map): Dictionary
+	public static function create(array $map): self
 	{
-		if (ArrayUtility::isNullOrEmpty($map)) {
+		if (ArrayUtility::isNullOrEmpty($map)) { //@phpstan-ignore-line ArrayUtility::isNullOrEmpty
 			throw new ArgumentException('$map');
 		}
 
 		$firstKey = ArrayUtility::getFirstKey($map);
-		if(!is_string($firstKey)) {
-			throw new TypeError('$offset: ' . $firstKey);
-		}
 		$firstValue = $map[$firstKey];
 
 		$type = TypeUtility::getType($firstValue);
 
 		return new self($type, $map);
+	}
+
+	/**
+	 * 空データの生成。
+	 *
+	 * @template TTValue
+	 * @param string $type
+	 * @phpstan-param class-string|TypeUtility::TYPE_* $type
+	 * @return self
+	 * @phpstan-return self<TTValue>
+	 */
+	public static function empty(string $type): self //@phpstan-ignore-line TTValue
+	{
+		return new self($type, []);
 	}
 
 	protected function throwIfInvalidOffset(mixed $offset): void
@@ -93,7 +110,7 @@ class Dictionary extends TypeArrayBase
 		$this->throwIfInvalidOffset($offset);
 
 		if (!isset($this->items[$offset])) {
-			throw new IndexOutOfRangeException('$offset: ' . $offset);
+			throw new KeyNotFoundException('$offset: ' . $offset);
 		}
 
 		return $this->items[$offset];
@@ -105,8 +122,10 @@ class Dictionary extends TypeArrayBase
 	public function offsetSet(mixed $offset, mixed $value): void
 	{
 		if (is_null($offset)) {
-			throw new NotSupportedException();
+			throw new ArgumentNullException();
 		}
+
+		$this->isValidType($value);
 
 		$this->items[$offset] = $value;
 	}

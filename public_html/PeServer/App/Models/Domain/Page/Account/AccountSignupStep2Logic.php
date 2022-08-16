@@ -18,19 +18,20 @@ use PeServer\App\Models\Domain\UserLevel;
 use PeServer\App\Models\Domain\UserState;
 use PeServer\App\Models\Domain\UserUtility;
 use PeServer\App\Models\SessionAccount;
-use PeServer\App\Models\SessionManager;
+use PeServer\App\Models\SessionKey;
 use PeServer\Core\Cryptography;
 use PeServer\Core\Database\IDatabaseContext;
+use PeServer\Core\DefaultValue;
 use PeServer\Core\I18n;
-use PeServer\Core\InitialValue;
 use PeServer\Core\Mail\EmailAddress;
 use PeServer\Core\Mail\EmailMessage;
+use PeServer\Core\Mail\Mailer;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 
 class AccountSignupStep2Logic extends PageLogicBase
 {
-	public function __construct(LogicParameter $parameter)
+	public function __construct(LogicParameter $parameter, private AppCryptography $cryptography, private AppDatabaseCache $dbCache, private Mailer $mailer, private AppTemplate $appTemplate)
 	{
 		parent::__construct($parameter);
 	}
@@ -46,8 +47,8 @@ class AccountSignupStep2Logic extends PageLogicBase
 			'account_signup_name',
 		], true);
 
-		$this->setValue('account_signup_password', InitialValue::EMPTY_STRING);
-		$this->setValue('account_signup_password_confirm', InitialValue::EMPTY_STRING);
+		$this->setValue('account_signup_password', DefaultValue::EMPTY_STRING);
+		$this->setValue('account_signup_password_confirm', DefaultValue::EMPTY_STRING);
 	}
 
 	protected function validateImpl(LogicCallMode $callMode): void
@@ -65,7 +66,7 @@ class AccountSignupStep2Logic extends PageLogicBase
 
 				// ミドルウェアでトークン確認しているので取得できない場合は例外でOK
 				$email = $signUpWaitEmailsEntityDao->selectEmail($this->getRequest('token'));
-				$rawEmail = AppCryptography::decrypt($email);
+				$rawEmail = $this->cryptography->decrypt($email);
 				if ($value !== $rawEmail) {
 					$this->addError($key, I18n::message('error/sign_up_not_equal_email'));
 				}
@@ -87,7 +88,7 @@ class AccountSignupStep2Logic extends PageLogicBase
 
 		$this->validation('account_signup_password_confirm', function (string $key, string $value) {
 			$this->validator->isNotWhiteSpace($key, $value);
-			$newPassword = $this->getRequest('account_signup_password', InitialValue::EMPTY_STRING, false);
+			$newPassword = $this->getRequest('account_signup_password', DefaultValue::EMPTY_STRING, false);
 			if ($value !== $newPassword) {
 				$this->addError($key, I18n::message('error/password_confirm'));
 			}
@@ -108,20 +109,20 @@ class AccountSignupStep2Logic extends PageLogicBase
 		$userId = UserUtility::generateUserId();
 		$token = $this->getRequest('token');
 		$email = $this->getRequest('account_signup_email');
-		$password = $this->getRequest('account_signup_password', InitialValue::EMPTY_STRING, false);
+		$password = $this->getRequest('account_signup_password', DefaultValue::EMPTY_STRING, false);
 
 		$params = [
 			'token' => $token,
 			'user_id' => $userId,
 			'login_id' => $this->getRequest('account_signup_login_id'),
-			'email' => AppCryptography::encrypt($email),
-			'mark_email' => AppCryptography::toMark($email),
+			'email' => $this->cryptography->encrypt($email),
+			'mark_email' => $this->cryptography->toMark($email),
 			'user_name' => $this->getRequest('account_signup_name'),
 			'password' => Cryptography::toHashPassword($password)
 		];
 
 		$database = $this->openDatabase();
-		$database->transaction(function (IDatabaseContext $context, $params) {
+		$database->transaction(function (IDatabaseContext $context) use ($params) {
 			$usersEntityDao = new UsersEntityDao($context);
 			$userAuthenticationsEntityDao = new UserAuthenticationsEntityDao($context);
 			$signUpWaitEmailsEntityDao = new SignUpWaitEmailsEntityDao($context);
@@ -134,14 +135,14 @@ class AccountSignupStep2Logic extends PageLogicBase
 				$params['user_name'],
 				$params['email'],
 				$params['mark_email'],
-				InitialValue::EMPTY_STRING,
-				InitialValue::EMPTY_STRING,
-				InitialValue::EMPTY_STRING
+				DefaultValue::EMPTY_STRING,
+				DefaultValue::EMPTY_STRING,
+				DefaultValue::EMPTY_STRING
 			);
 
 			$userAuthenticationsEntityDao->insertUserAuthentication(
 				$params['user_id'],
-				InitialValue::EMPTY_STRING,
+				DefaultValue::EMPTY_STRING,
 				$params['password']
 			);
 
@@ -150,31 +151,30 @@ class AccountSignupStep2Logic extends PageLogicBase
 			$this->writeAuditLogTargetUser($params['user_id'], AuditLog::USER_CREATE, ['token' => $params['token']], $context);
 
 			return true;
-		}, $params);
+		});
 
 		$subject = I18n::message('subject/sign_up_step2');
 		$values = [
 			'name' => $params['user_name'],
 			'login_id' => $params['login_id'],
 		];
-		$html = AppTemplate::createMailTemplate('mail_signup_step2', $subject, $values);
+		$html = $this->appTemplate->createMailTemplate('mail_signup_step2', $subject, $values);
 
-		$mailer = new AppMailer();
-		$mailer->toAddresses = [
+		$this->mailer->toAddresses = [
 			new EmailAddress($email, $params['user_name']),
 		];
-		$mailer->subject = $subject;
-		$mailer->setMessage(new EmailMessage(null, $html));
+		$this->mailer->subject = $subject;
+		$this->mailer->setMessage(new EmailMessage(null, $html));
 
-		$mailer->send();
+		$this->mailer->send();
 
-		SessionManager::setAccount(new SessionAccount(
+		$this->setSession(SessionKey::ACCOUNT, new SessionAccount(
 			$userId,
 			$params['login_id'],
 			$params['user_name'],
 			UserLevel::USER,
 			UserState::ENABLED
 		));
-		AppDatabaseCache::exportUserInformation();
+		$this->dbCache->exportUserInformation();
 	}
 }

@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace PeServerTest\Core;
 
-use PeServerTest\Data;
-use PeServerTest\TestClass;
 use PeServer\Core\Binary;
 use PeServer\Core\Throws\ArgumentException;
+use PeServer\Core\Throws\IndexOutOfRangeException;
+use PeServer\Core\Throws\NotSupportedException;
+use PeServer\Core\Throws\NullByteStringException;
+use PeServerTest\Data;
+use PeServerTest\TestClass;
+use TypeError;
 
 class BinaryTest extends TestClass
 {
@@ -21,6 +25,44 @@ class BinaryTest extends TestClass
 	{
 		$binary = new Binary("a\0b\0");
 		$this->assertSame(4, $binary->getLength());
+	}
+
+	public function test_getRange()
+	{
+		$tests = [
+			new Data("\x01", "\x01", [0, 1]),
+			new Data("\x01", "\x01\x10", [0, 1]),
+			new Data("\x01\x10", "\x01\x10", [0, 2]),
+			new Data("\x01\x10\xff", "\x01\x10\xff", [0]),
+			new Data("\x10\xff", "\x01\x10\xff", [1]),
+			new Data("\x10", "\x01\x10\xff", [1, 1]),
+			new Data("\x10\xff", "\x01\x10\xff", [1, 4]),
+			new Data("", "\x01\x10\xff", [10, 4]),
+		];
+		foreach ($tests as $test) {
+			$binary = new Binary($test->args[0]);
+			$actual = $binary->getRange(...$test->args[1]);
+			$this->assertSame($test->expected, $actual->getRaw(), $test->str());
+		}
+	}
+
+
+	public function provider_isEquals()
+	{
+		return [
+			[false, "\x00", ""],
+			[false, "", "\x00"],
+			[true, "\x00", "\x00"],
+		];
+	}
+
+	/** @dataProvider provider_isEquals */
+	public function test_isEquals($expected, $a, $b)
+	{
+		$aBin = new Binary($a);
+		$bBin = new Binary($b);
+		$this->assertSame($expected, $aBin->isEquals($bBin));
+		$this->assertSame($expected, $bBin->isEquals($aBin));
 	}
 
 	public function test_toHex()
@@ -82,5 +124,86 @@ class BinaryTest extends TestClass
 		}
 	}
 
+	public function test_toString()
+	{
+		$expected = 'a';
+		$binary = new Binary($expected);
+		$actual = $binary->toString();
+		$this->assertSame($expected, $actual);
+	}
 
+	public function test_toString_throw()
+	{
+		$this->expectException(NullByteStringException::class);
+		$binary = new Binary("\0");
+		$actual = $binary->toString();
+		$this->fail();
+	}
+
+	public function test_array()
+	{
+		$binary = new Binary("A\x00a\xFF");
+		$this->assertSame(0x41, $binary[0]);
+		$this->assertSame(0x00, $binary[1]);
+		$this->assertSame(0x61, $binary[2]);
+		$this->assertSame(0xff, $binary[3]);
+
+		$this->assertTrue(isset($binary[0]));
+		$this->assertTrue(isset($binary[1]));
+		$this->assertTrue(isset($binary[2]));
+		$this->assertTrue(isset($binary[3]));
+
+		$this->assertFalse(isset($binary[-1]));
+		$this->assertFalse(isset($binary[4]));
+		$this->assertFalse(isset($binary['A']));
+
+		try {
+			$binary['A'];
+			$this->fail();
+		} catch (TypeError) {
+			$this->success();
+		}
+
+		try {
+			$binary[-1];
+			$this->fail();
+		} catch (IndexOutOfRangeException) {
+			$this->success();
+		}
+
+		try {
+			$binary[4];
+			$this->fail();
+		} catch (IndexOutOfRangeException) {
+			$this->success();
+		}
+
+		try {
+			unset($binary[0]);
+			$this->fail();
+		} catch (NotSupportedException) {
+			$this->success();
+		}
+
+		try {
+			$binary[0] = 0xff;
+			$this->fail();
+		} catch (NotSupportedException) {
+			$this->success();
+		}
+	}
+
+
+	public function test___toString()
+	{
+		$tests = [
+			new Data("abc", "abc"),
+			new Data("00616263", "\0abc"),
+		];
+		foreach ($tests as $test) {
+			$binary = new Binary(...$test->args);
+			$actual = (string)$binary;
+			$this->assertSame($test->expected, $actual, $test->str());
+		}
+	}
 }
