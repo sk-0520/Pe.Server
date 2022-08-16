@@ -19,6 +19,8 @@ class DiRegisterContainer extends DiContainer implements IDiRegisterContainer
 
 	public function add(string $id, DiItem $item): void
 	{
+		$this->throwIfDisposed();
+
 		if ($this->has($id)) {
 			throw new DiContainerRegisteredException($id);
 		}
@@ -32,6 +34,8 @@ class DiRegisterContainer extends DiContainer implements IDiRegisterContainer
 
 	public function remove(string $id): ?DiItem
 	{
+		$this->throwIfDisposed();
+
 		if (!$this->has($id)) {
 			return null;
 		}
@@ -44,16 +48,32 @@ class DiRegisterContainer extends DiContainer implements IDiRegisterContainer
 
 	public function registerClass(string $className, int $lifecycle = DiItem::LIFECYCLE_TRANSIENT): void
 	{
+		$this->throwIfDisposed();
+
+		$item = $this->remove($className);
+		if (!is_null($item)) {
+			$item->dispose();
+		}
+
 		$this->add($className, DiItem::class($className, $lifecycle));
 	}
 
 	public function registerMapping(string $id, string $className, int $lifecycle = DiItem::LIFECYCLE_TRANSIENT): void
 	{
+		$this->throwIfDisposed();
+
+		$item = $this->remove($id);
+		if (!is_null($item)) {
+			$item->dispose();
+		}
+
 		$this->add($id, DiItem::class($className, $lifecycle));
 	}
 
-	public function registerValue(mixed $value, string $id = DefaultValue::EMPTY_STRING): void
+	public function registerValue(?object $value, string $id = DefaultValue::EMPTY_STRING): void
 	{
+		$this->throwIfDisposed();
+
 		$registerId = $id;
 		if (Text::isNullOrWhiteSpace($registerId)) {
 			if (is_null($value)) {
@@ -63,6 +83,11 @@ class DiRegisterContainer extends DiContainer implements IDiRegisterContainer
 		}
 
 		/** @phpstan-var non-empty-string $registerId */
+		$item = $this->remove($registerId);
+		if (!is_null($item)) {
+			$item->dispose();
+		}
+
 		$this->add($registerId, DiItem::value($value));
 	}
 }

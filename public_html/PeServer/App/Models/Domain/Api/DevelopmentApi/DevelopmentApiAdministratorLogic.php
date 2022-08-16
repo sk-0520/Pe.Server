@@ -19,7 +19,7 @@ use PeServer\App\Models\Dao\Entities\UserAuthenticationsEntityDao;
 
 class DevelopmentApiAdministratorLogic extends ApiLogicBase
 {
-	public function __construct(LogicParameter $parameter)
+	public function __construct(LogicParameter $parameter, private AppCryptography $cryptography)
 	{
 		parent::__construct($parameter);
 	}
@@ -65,8 +65,8 @@ class DevelopmentApiAdministratorLogic extends ApiLogicBase
 				'password' => Cryptography::toHashPassword($i['password']),
 				'user_name' => 'user-' . $i['login_id'],
 				'level' => $i['level'],
-				'email' => AppCryptography::encrypt($i['email']),
-				'mark_email' => AppCryptography::toMark($i['email']),
+				'email' => $this->cryptography->encrypt($i['email']),
+				'mark_email' => $this->cryptography->toMark($i['email']),
 				'website' => 'http://localhost',
 				'description' => $i['note'],
 				'note' => $i['note'],

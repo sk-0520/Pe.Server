@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Middleware;
 
+use PeServer\Core\Http\HttpResponse;
 use PeServer\Core\Mvc\Middleware\MiddlewareArgument;
 
 /**

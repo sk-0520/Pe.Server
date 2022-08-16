@@ -11,7 +11,7 @@ use PeServer\Core\TypeUtility;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\App\Models\ResponseJson;
 use PeServer\Core\Mvc\LogicParameter;
-use PeServer\App\Models\SessionManager;
+use PeServer\App\Models\SessionKey;
 use PeServer\App\Models\Domain\UserLevel;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 
@@ -29,7 +29,7 @@ class AjaxMarkdownLogic extends PageLogicBase
 
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
-		$account = SessionManager::getAccount();
+		$account = $this->requireSession(SessionKey::ACCOUNT);
 
 		$json = $this->getRequestJson();
 

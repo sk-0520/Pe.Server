@@ -10,7 +10,7 @@ use PeServer\App\Models\Dao\Entities\UsersEntityDao;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\App\Models\Domain\UserLevel;
 use PeServer\App\Models\SessionAccount;
-use PeServer\App\Models\SessionManager;
+use PeServer\App\Models\SessionKey;
 use PeServer\Core\Cryptography;
 use PeServer\Core\I18n;
 use PeServer\Core\Mvc\LogicCallMode;
@@ -100,7 +100,7 @@ class AccountLoginLogic extends PageLogicBase
 			$user->fields['level'], //@phpstan-ignore-line
 			$user->fields['state'] //@phpstan-ignore-line
 		);
-		SessionManager::setAccount($account);
+		$this->setSession(SessionKey::ACCOUNT, $account);
 		$this->restartSession();
 		$this->writeAuditLogCurrentUser(AuditLog::LOGIN_SUCCESS, $account);
 	}

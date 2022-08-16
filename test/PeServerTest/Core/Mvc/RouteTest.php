@@ -8,6 +8,7 @@ use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Http\RequestPath;
 use PeServer\Core\Mvc\Route;
 use PeServer\Core\Throws\ArgumentException;
+use PeServer\Core\Web\UrlHelper;
 use PeServerTest\Data;
 use PeServerTest\TestClass;
 
@@ -46,11 +47,11 @@ class RouteTest extends TestClass
 				'request' => [
 					[
 						'expected' => ['Controller', '1'],
-						'input' => [HttpMethod::get(), new RequestPath('path/action', '')]
+						'input' => [HttpMethod::get(), new RequestPath('path/action', new UrlHelper(''))]
 					],
 					[
 						'expected' => ['Controller', '2'],
-						'input' => [HttpMethod::get(), new RequestPath('path/action/action', '')]
+						'input' => [HttpMethod::get(), new RequestPath('path/action/action', new UrlHelper(''))]
 					],
 				]
 			],
@@ -62,7 +63,7 @@ class RouteTest extends TestClass
 				'request' => [
 					[
 						'expected' => ['TestController', 'list'],
-						'input' => [HttpMethod::post(), new RequestPath('api/test/list', '')]
+						'input' => [HttpMethod::post(), new RequestPath('api/test/list', new UrlHelper(''))]
 					],
 				]
 			],
@@ -77,23 +78,23 @@ class RouteTest extends TestClass
 				'request' => [
 					[
 						'expected' => ['UrlParamController', 'input1', ['value' => '123']],
-						'input' => [HttpMethod::get(), new RequestPath('controller/input/123', '')]
+						'input' => [HttpMethod::get(), new RequestPath('controller/input/123', new UrlHelper(''))]
 					],
 					[
 						'expected' => ['UrlParamController', 'input2', ['value' => '123']],
-						'input' => [HttpMethod::get(), new RequestPath('controller/123/input', '')]
+						'input' => [HttpMethod::get(), new RequestPath('controller/123/input', new UrlHelper(''))]
 					],
 					[
 						'expected' => ['UrlParamController', 'input3', ['value' => '123']],
-						'input' => [HttpMethod::get(), new RequestPath('controller/input/reg/123', '')]
+						'input' => [HttpMethod::get(), new RequestPath('controller/input/reg/123', new UrlHelper(''))]
 					],
 					[
 						'expected' => null,
-						'input' => [HttpMethod::get(), new RequestPath('controller/input/reg/abc', '')]
+						'input' => [HttpMethod::get(), new RequestPath('controller/input/reg/abc', new UrlHelper(''))]
 					],
 					[
 						'expected' => ['UrlParamController', 'input4', ['value1' => '123', 'value2' => '@@@', 'value3' => 'az']],
-						'input' => [HttpMethod::get(), new RequestPath('controller/multi/123/@@@/az/none', '')]
+						'input' => [HttpMethod::get(), new RequestPath('controller/multi/123/@@@/az/none', new UrlHelper(''))]
 					],
 				]
 			],

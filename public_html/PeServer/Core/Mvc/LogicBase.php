@@ -20,17 +20,18 @@ use PeServer\Core\Mvc\DataContent;
 use PeServer\Core\Mvc\IValidationReceiver;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
-use PeServer\Core\Mvc\TemplateParameter;
+use PeServer\Core\Mvc\Template\TemplateParameter;
 use PeServer\Core\Mvc\Validator;
 use PeServer\Core\Store\CookieOption;
 use PeServer\Core\Store\CookieStore;
 use PeServer\Core\Store\SessionStore;
 use PeServer\Core\Store\SpecialStore;
 use PeServer\Core\Store\Stores;
-use PeServer\Core\Store\TemporaryStore;
+use PeServer\Core\Store\Template\TemporaryStore;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\InvalidOperationException;
+use PeServer\Core\Throws\KeyNotFoundException;
 use PeServer\Core\Utc;
 
 /**
@@ -286,10 +287,25 @@ abstract class LogicBase implements IValidationReceiver
 		$this->stores->temporary->remove($key);
 	}
 
+	protected function existsSession(string $key): bool
+	{
+		return $this->stores->session->tryGet($key, $unused);
+	}
+
 	protected function getSession(string $key, mixed $fallbackValue = null): mixed
 	{
 		return $this->stores->session->getOr($key, $fallbackValue);
 	}
+
+	protected function requireSession(string $key): mixed
+	{
+		if ($this->stores->session->tryGet($key, $result)) {
+			return $result;
+		}
+
+		throw new KeyNotFoundException($key);
+	}
+
 
 	protected function setSession(string $key, mixed $value): void
 	{

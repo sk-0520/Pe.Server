@@ -4,31 +4,32 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domain\Page\Account;
 
-use PeServer\Core\I18n;
-use PeServer\Core\UrlUtility;
-use PeServer\Core\ArrayUtility;
-use PeServer\Core\Cryptography;
-use PeServer\Core\Mail\EmailAddress;
-use PeServer\Core\DefaultValue;
-use PeServer\Core\Text;
+use PeServer\App\Models\AppConfiguration;
+use PeServer\App\Models\AppCryptography;
 use PeServer\App\Models\AppMailer;
 use PeServer\App\Models\AppTemplate;
-use PeServer\Core\Mvc\LogicCallMode;
-use PeServer\Core\Mvc\LogicParameter;
-use PeServer\App\Models\AppCryptography;
-use PeServer\App\Models\AppConfiguration;
-use PeServer\App\Models\Domain\UserUtility;
-use PeServer\Core\Database\IDatabaseContext;
+use PeServer\App\Models\Dao\Entities\SignUpWaitEmailsEntityDao;
 use PeServer\App\Models\Domain\AccountValidator;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
-use PeServer\App\Models\Dao\Entities\SignUpWaitEmailsEntityDao;
+use PeServer\App\Models\Domain\UserUtility;
+use PeServer\Core\ArrayUtility;
+use PeServer\Core\Cryptography;
+use PeServer\Core\Database\IDatabaseContext;
+use PeServer\Core\DefaultValue;
+use PeServer\Core\I18n;
+use PeServer\Core\Mail\EmailAddress;
 use PeServer\Core\Mail\EmailMessage;
+use PeServer\Core\Mail\Mailer;
+use PeServer\Core\Mvc\LogicCallMode;
+use PeServer\Core\Mvc\LogicParameter;
+use PeServer\Core\Text;
+use PeServer\Core\Web\UrlUtility;
 
 class AccountSignupStep1Logic extends PageLogicBase
 {
 	private const TEMP_TOKEN = 'sign_up_token';
 
-	public function __construct(LogicParameter $parameter)
+	public function __construct(LogicParameter $parameter, private AppConfiguration $config, private AppCryptography $cryptography, private Mailer $mailer, private AppTemplate $appTemplate)
 	{
 		parent::__construct($parameter);
 	}
@@ -78,8 +79,8 @@ class AccountSignupStep1Logic extends PageLogicBase
 		$params = [
 			'token' => $token,
 			'raw_email' => $email,
-			'email' => AppCryptography::encrypt($email),
-			'mark_email' => AppCryptography::toMark($email),
+			'email' => $this->cryptography->encrypt($email),
+			'mark_email' => $this->cryptography->toMark($email),
 		];
 
 		$this->logger->info('ユーザー登録処理開始: {0}', $params['token']);
@@ -90,7 +91,7 @@ class AccountSignupStep1Logic extends PageLogicBase
 
 			$likeItems = $signUpWaitEmailsEntityDao->selectLikeEmails($params['mark_email']);
 			foreach ($likeItems->rows as $likeItem) {
-				$rawLikeEmail = AppCryptography::decrypt($likeItem['email']);
+				$rawLikeEmail = $this->cryptography->decrypt($likeItem['email']);
 				if ($rawLikeEmail === $params['raw_email']) {
 					$this->logger->info('重複メールアドレスを破棄: {0}', $likeItem['token']);
 					$signUpWaitEmailsEntityDao->deleteToken($likeItem['token']);
@@ -111,9 +112,9 @@ class AccountSignupStep1Logic extends PageLogicBase
 		//TODO: 設定からとるのかリダイレクトみたいにサーバーからとるのか混在中
 		$baseUrl = Text::replaceMap(
 			/** @phpstan-ignore-next-line */
-			AppConfiguration::$config['config']['address']['public_url'],
+			$this->config->setting['config']['address']['public_url'],
 			[
-				'DOMAIN' => AppConfiguration::$config['config']['address']['domain']
+				'DOMAIN' => $this->config->setting['config']['address']['domain']
 			]
 		);
 		$url = UrlUtility::joinPath($baseUrl, "account/signup/$token");
@@ -122,16 +123,15 @@ class AccountSignupStep1Logic extends PageLogicBase
 		$values = [
 			'url' => $url,
 		];
-		$html = AppTemplate::createMailTemplate('mail_signup_step1', $subject, $values);
+		$html = $this->appTemplate->createMailTemplate('mail_signup_step1', $subject, $values);
 
-		$mailer = new AppMailer();
-		$mailer->toAddresses = [
+		$this->mailer->toAddresses = [
 			new EmailAddress($email),
 		];
-		$mailer->subject = $subject;
-		$mailer->setMessage(new EmailMessage(null, $html));
+		$this->mailer->subject = $subject;
+		$this->mailer->setMessage(new EmailMessage(null, $html));
 
-		$mailer->send();
+		$this->mailer->send();
 	}
 
 	protected function cleanup(LogicCallMode $callMode): void

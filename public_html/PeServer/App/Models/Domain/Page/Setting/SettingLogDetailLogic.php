@@ -18,7 +18,7 @@ use PeServer\App\Models\Domain\Page\PageLogicBase;
 
 class SettingLogDetailLogic extends PageLogicBase
 {
-	public function __construct(LogicParameter $parameter)
+	public function __construct(LogicParameter $parameter, private AppConfiguration $config)
 	{
 		parent::__construct($parameter);
 	}
@@ -31,9 +31,9 @@ class SettingLogDetailLogic extends PageLogicBase
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
 		/** @var array<string,mixed> */
-		$logging = AppConfiguration::$config['logging'];
+		$logging = $this->config->setting['logging'];
 		/** @var string @-phpstan-ignore-next-line */
-		$dirPath = (string)$logging['file']['directory'];
+		$dirPath = $logging['file']['configuration']['logger']['directory'];
 
 		$fileName = Text::trim($this->getRequest('log_name'), '/\\.');
 		$filePath = Path::combine($dirPath, $fileName);
@@ -44,7 +44,7 @@ class SettingLogDetailLogic extends PageLogicBase
 		$binary = File::readContent($filePath);
 
 		/** @var int @-phpstan-ignore-next-line */
-		$archiveSize = AppConfiguration::$config['logging']['archive_size'];
+		$archiveSize = $this->config->setting['logging']['archive_size'];
 		$fileSize = File::getFileSize($filePath);
 
 		if ($archiveSize <= $fileSize) {

@@ -16,7 +16,7 @@ use PeServer\Core\Uuid;
 
 class PluginApiExistsLogic extends ApiLogicBase
 {
-	public function __construct(LogicParameter $parameter)
+	public function __construct(LogicParameter $parameter, private AppDatabaseCache $dbCache)
 	{
 		parent::__construct($parameter);
 	}
@@ -32,7 +32,7 @@ class PluginApiExistsLogic extends ApiLogicBase
 		$pluginId = ArrayUtility::getOr($json, 'plugin_id', DefaultValue::EMPTY_STRING);
 		$pluginName = ArrayUtility::getOr($json, 'plugin_name', DefaultValue::EMPTY_STRING);
 
-		$plugins = AppDatabaseCache::readPluginInformation();
+		$plugins = $this->dbCache->readPluginInformation();
 		$pluginCollection = Collection::from($plugins);
 		$existsPluginId = $pluginCollection->any(function ($i) use ($pluginId) {
 			return Uuid::isEqualGuid($i->pluginId, $pluginId);

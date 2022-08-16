@@ -7,7 +7,7 @@ namespace PeServer\App\Models\Domain\Page\Account;
 use PeServer\App\Models\AuditLog;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
-use PeServer\App\Models\SessionManager;
+use PeServer\App\Models\SessionKey;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 
 class AccountLogoutLogic extends PageLogicBase
@@ -24,7 +24,7 @@ class AccountLogoutLogic extends PageLogicBase
 
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
-		$userInfo = $this->getSession(SessionManager::ACCOUNT, null);
+		$userInfo = $this->getSession(SessionKey::ACCOUNT, null);
 		if (is_null($userInfo)) {
 			return;
 		}

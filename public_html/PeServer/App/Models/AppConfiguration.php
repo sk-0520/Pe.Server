@@ -4,43 +4,44 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models;
 
-use PeServer\App\Models\AppDatabaseCache;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Environment;
 use PeServer\Core\I18n;
-use PeServer\Core\InitializeChecker;
 use PeServer\Core\IO\Directory;
-use PeServer\Core\IO\IOUtility;
 use PeServer\Core\IO\Path;
-use PeServer\Core\Log\Logging;
-use PeServer\Core\Mvc\Template;
 use PeServer\Core\Serialization\Configuration;
 use PeServer\Core\Store\SpecialStore;
-use PeServer\Core\Store\StorePack;
 use PeServer\Core\Store\Stores;
+use PeServer\Core\Web\IUrlHelper;
 
-abstract class AppConfiguration
+
+/**
+ * アプリ設定。
+ */
+class AppConfiguration
 {
 	/**
-	 * 初期化チェック
-	 *
-	 * @var InitializeChecker
-	 */
-	private static InitializeChecker $initializeChecker;
-
-	/**
 	 * 設定データ。
+	 *
+	 * TODO: 各処理互換性のため静的
 	 *
 	 * @var array<mixed>
 	 */
 	public static array $config;
 
 	/**
+	 * 設定データ。
+	 *
+	 * @var array<string,array<string,mixed>>
+	 */
+	public array $setting;
+
+	/**
 	 * ルートディレクトリ。
 	 *
 	 * @var string
 	 */
-	public static string $rootDirectoryPath;
+	public string $rootDirectoryPath;
 	/**
 	 * ベースディレクトリ。
 	 *
@@ -48,23 +49,53 @@ abstract class AppConfiguration
 	 *
 	 * @var string
 	 */
-	public static string $baseDirectoryPath;
+	public string $baseDirectoryPath;
 
 	/**
 	 * URL ベースパス。
 	 *
-	 * @var string
+	 * @var IUrlHelper
 	 */
-	public static string $urlBasePath;
+	public IUrlHelper $urlHelper;
 
 	/**
 	 * 設定ファイル置き場。
 	 *
 	 * @var string
 	 */
-	public static string $settingDirectoryPath;
+	public string $settingDirectoryPath;
 
-	public static Stores $stores;
+	public Stores $stores;
+
+	/**
+	 * 初期化。
+	 *
+	 * @param string $rootDirectoryPath 公開ルートディレクトリ
+	 * @param string $baseDirectoryPath `\PeServer\*` のルートディレクトリ
+	 * @param SpecialStore $specialStore
+	 */
+	public function __construct(string $rootDirectoryPath, string $baseDirectoryPath, IUrlHelper $urlHelper, SpecialStore $specialStore)
+	{
+		$this->settingDirectoryPath = Path::combine($baseDirectoryPath, 'config');
+
+		$tempDirectoryPath = Path::combine($baseDirectoryPath, 'data/temp/buckets');
+		Directory::setTemporaryDirectory($tempDirectoryPath);
+
+		$appConfig = $this->load($rootDirectoryPath, $baseDirectoryPath, Environment::get(), 'setting.json');
+		$i18nConfig = $this->load($rootDirectoryPath, $baseDirectoryPath, Environment::get(), 'i18n.json');
+
+		$storeOptions = StoreConfiguration::build(ArrayUtility::getOr($appConfig, 'store', null));
+		$stores = new Stores($specialStore, $storeOptions);
+
+		I18n::initialize($i18nConfig);
+
+		self::$config = $appConfig;
+		$this->setting = $appConfig;
+		$this->rootDirectoryPath = $rootDirectoryPath;
+		$this->baseDirectoryPath = $baseDirectoryPath;
+		$this->urlHelper = $urlHelper;
+		$this->stores = $stores;
+	}
 
 	/**
 	 * 設定ファイル読み込み。
@@ -74,10 +105,10 @@ abstract class AppConfiguration
 	 * @param string $environment
 	 * @return array<mixed>
 	 */
-	private static function load(string $rootDirectoryPath, string $baseDirectoryPath, string $environment, string $fileName): array
+	private function load(string $rootDirectoryPath, string $baseDirectoryPath, string $environment, string $fileName): array
 	{
 		$configuration = new Configuration($environment);
-		$setting = $configuration->load(self::$settingDirectoryPath, $fileName);
+		$setting = $configuration->load($this->settingDirectoryPath, $fileName);
 
 		return $configuration->replace(
 			$setting,
@@ -89,42 +120,5 @@ abstract class AppConfiguration
 			'$(',
 			')'
 		);
-	}
-
-	/**
-	 * 初期化。
-	 *
-	 * @param string $rootDirectoryPath 公開ルートディレクトリ
-	 * @param string $baseDirectoryPath `\PeServer\*` のルートディレクトリ
-	 * @param SpecialStore $specialStore
-	 */
-	public static function initialize(string $rootDirectoryPath, string $baseDirectoryPath, string $urlBasePath, SpecialStore $specialStore): void
-	{
-		self::$initializeChecker ??= new InitializeChecker();
-		self::$initializeChecker->initialize();
-
-		self::$settingDirectoryPath = Path::combine($baseDirectoryPath, 'config');
-
-		$tempDirectoryPath = Path::combine($baseDirectoryPath, 'data/temp/buckets');
-		Directory::setTemporaryDirectory($tempDirectoryPath);
-
-		$appConfig = self::load($rootDirectoryPath, $baseDirectoryPath, Environment::get(), 'setting.json');
-		$i18nConfig = self::load($rootDirectoryPath, $baseDirectoryPath, Environment::get(), 'i18n.json');
-
-		$storeOptions = StoreConfiguration::build(ArrayUtility::getOr($appConfig, 'store', null));
-		$stores = new Stores($specialStore, $storeOptions);
-
-		Logging::initialize($stores, $appConfig['logging']);
-
-		Template::initialize($stores, $rootDirectoryPath, $baseDirectoryPath, $urlBasePath, 'App/Views', 'data/temp/views');
-		I18n::initialize($i18nConfig);
-
-		AppDatabaseCache::initialize($appConfig['cache']['database']);
-
-		self::$config = $appConfig;
-		self::$rootDirectoryPath = $rootDirectoryPath;
-		self::$baseDirectoryPath = $baseDirectoryPath;
-		self::$urlBasePath = $urlBasePath;
-		self::$stores = $stores;
 	}
 }

@@ -15,7 +15,7 @@ use PeServer\Core\Uuid;
 
 class PluginApiGeneratePluginIdLogic extends ApiLogicBase
 {
-	public function __construct(LogicParameter $parameter)
+	public function __construct(LogicParameter $parameter, private AppDatabaseCache $dbCache)
 	{
 		parent::__construct($parameter);
 	}
@@ -27,7 +27,7 @@ class PluginApiGeneratePluginIdLogic extends ApiLogicBase
 
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
-		$plugins = AppDatabaseCache::readPluginInformation();
+		$plugins = $this->dbCache->readPluginInformation();
 		$pluginCollection = Collection::from($plugins);
 
 		$pluginId = Uuid::generateGuid();

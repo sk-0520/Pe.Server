@@ -9,7 +9,7 @@ use PeServer\Core\DefaultValue;
 /**
  * 登録可能DIコンテナ。
  */
-interface IDiRegisterContainer
+interface IDiRegisterContainer extends IDiContainer
 {
 	/**
 	 * 登録処理。
@@ -32,6 +32,8 @@ interface IDiRegisterContainer
 	/**
 	 * 簡易登録(クラス名指定)。
 	 *
+	 * 既に登録されている場合に既存アイテムは削除される。
+	 *
 	 * @param string $className
 	 * @phpstan-param class-string $className
 	 * @param int $lifecycle
@@ -42,6 +44,8 @@ interface IDiRegisterContainer
 	/**
 	 * 簡易登録(ID:クラス指定)。
 	 *
+	 * 既に登録されている場合に既存アイテムは削除される。
+	 *
 	 * @param string $id
 	 * @phpstan-param class-string|non-empty-string $id
 	 * @param string $className
@@ -51,5 +55,13 @@ interface IDiRegisterContainer
 	 */
 	function registerMapping(string $id, string $className, int $lifecycle = DiItem::LIFECYCLE_TRANSIENT): void;
 
-	function registerValue(mixed $value, string $id = DefaultValue::EMPTY_STRING): void;
+	/**
+	 * 簡易登録(値指定)。
+	 *
+	 * 既に登録されている場合に既存アイテムは削除される。
+	 *
+	 * @param object|null $value
+	 * @param string $id $valueの登録ID。未指定(空)の場合は $value の型名が使用される。
+	 */
+	function registerValue(?object $value, string $id = DefaultValue::EMPTY_STRING): void;
 }

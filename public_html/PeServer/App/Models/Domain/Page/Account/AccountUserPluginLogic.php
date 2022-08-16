@@ -14,7 +14,7 @@ use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\App\Models\Domain\PluginState;
 use PeServer\App\Models\Domain\PluginUrlKey;
 use PeServer\App\Models\Domain\PluginValidator;
-use PeServer\App\Models\SessionManager;
+use PeServer\App\Models\SessionKey;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Database\DatabaseTableResult;
 use PeServer\Core\Database\IDatabaseContext;
@@ -45,7 +45,7 @@ class AccountUserPluginLogic extends PageLogicBase
 	 */
 	private ?DatabaseTableResult $pluginCategories = null;
 
-	public function __construct(LogicParameter $parameter, bool $isRegister)
+	public function __construct(LogicParameter $parameter, private AppDatabaseCache $dbCache, bool $isRegister)
 	{
 		parent::__construct($parameter);
 
@@ -190,7 +190,7 @@ class AccountUserPluginLogic extends PageLogicBase
 			return;
 		}
 
-		$userInfo = SessionManager::getAccount();
+		$userInfo = $this->requireSession(SessionKey::ACCOUNT);
 
 		$params = [
 			'user_id' => $userInfo->userId,
@@ -275,7 +275,7 @@ class AccountUserPluginLogic extends PageLogicBase
 		} else {
 			$this->addTemporaryMessage(I18n::message('message/flash/update_plugin'));
 		}
-		AppDatabaseCache::exportPluginInformation();
+		$this->dbCache->exportPluginInformation();
 	}
 
 	protected function cleanup(LogicCallMode $callMode): void

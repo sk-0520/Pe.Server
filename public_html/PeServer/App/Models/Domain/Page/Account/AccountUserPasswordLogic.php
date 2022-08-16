@@ -11,7 +11,7 @@ use PeServer\Core\Text;
 use PeServer\App\Models\AuditLog;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
-use PeServer\App\Models\SessionManager;
+use PeServer\App\Models\SessionKey;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\App\Models\Domain\AccountValidator;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
@@ -42,7 +42,7 @@ class AccountUserPasswordLogic extends PageLogicBase
 		$this->validation('account_password_current', function (string $key, string $value) {
 			$this->validator->isNotWhiteSpace($key, $value);
 
-			$userInfo = SessionManager::getAccount();
+			$userInfo = $this->requireSession(SessionKey::ACCOUNT);
 
 			$database = $this->openDatabase();
 			$userAuthenticationsEntityDao = new UserAuthenticationsEntityDao($database);
@@ -78,7 +78,7 @@ class AccountUserPasswordLogic extends PageLogicBase
 			return;
 		}
 
-		$userInfo = SessionManager::getAccount();
+		$userInfo = $this->requireSession(SessionKey::ACCOUNT);
 
 		$newPassword = $this->getRequest('account_password_new', DefaultValue::EMPTY_STRING, false);
 

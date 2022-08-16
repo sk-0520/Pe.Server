@@ -5,22 +5,42 @@ declare(strict_types=1);
 namespace PeServer\App\Models;
 
 use \Throwable;
-use PeServer\App\Models\AppTemplate;
+use PeServer\Core\DefaultValue;
+use PeServer\Core\DI\Inject;
 use PeServer\Core\Environment;
 use PeServer\Core\ErrorHandler;
 use PeServer\Core\Http\RequestPath;
-use PeServer\Core\Serialization\Json;
+use PeServer\Core\IO\Directory;
+use PeServer\Core\IO\Path;
+use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\Logging;
+use PeServer\Core\Log\NullLogger;
+use PeServer\Core\Mvc\Template\ITemplateFactory;
+use PeServer\Core\Mvc\Template\TemplateFactory;
+use PeServer\Core\Mvc\Template\TemplateOptions;
+use PeServer\Core\Mvc\Template\TemplateParameter;
+use PeServer\Core\Serialization\Json;
 use PeServer\Core\Text;
+use PeServer\Core\Web\IUrlHelper;
 
 final class AppErrorHandler extends ErrorHandler
 {
 	private RequestPath $requestPath;
 	private Json $json;
+	private ITemplateFactory $templateFactory;
 
-	public function __construct(RequestPath $requestPath, ?Json $json = null)
-	{
+	public function __construct(
+		RequestPath $requestPath,
+		TemplateFactory $templateFactory,
+		private AppConfiguration $config,
+		private IUrlHelper $urlHelper,
+		?Json $json,
+		ILogger $logger
+	) {
+		parent::__construct($logger);
+
 		$this->requestPath = $requestPath;
+		$this->templateFactory = $templateFactory;
 		$json ??= new Json();
 		$this->json = $json;
 	}
@@ -40,6 +60,9 @@ final class AppErrorHandler extends ErrorHandler
 			$next = false;
 		}
 
+		// デバッグ環境で本番用エラー検証用
+		//$next = false;
+
 		if (!$next) {
 			$values = [
 				'error_number' => $errorNumber,
@@ -51,18 +74,16 @@ final class AppErrorHandler extends ErrorHandler
 
 			$status = $this->setHttpStatus($throwable);
 
-			$logger = Logging::create(get_class($this));
-
 			$isSuppressionStatus = false;
 			foreach ($this->getSuppressionStatusList() as $suppressionStatus) {
 				if ($status->is($suppressionStatus)) {
 					$isSuppressionStatus = true;
-					$logger->info('HTTP: {0}', $suppressionStatus->getCode());
+					$this->logger->info('HTTP: {0}', $suppressionStatus->getCode());
 					break;
 				}
 			}
 			if (!$isSuppressionStatus) {
-				$logger->error($values);
+				$this->logger->error($values);
 			}
 
 			if ($isJson) {
@@ -86,7 +107,18 @@ final class AppErrorHandler extends ErrorHandler
 				header('Content-Type: application/json');
 				echo $this->json->encode($json);
 			} else {
-				echo AppTemplate::buildPageTemplate('error', $values, $status);
+				$rootDir = Path::combine($this->config->baseDirectoryPath, 'App', 'Views');
+				$baseDir = Path::combine('template', 'page');
+
+				$options = new TemplateOptions(
+					$rootDir,
+					$baseDir,
+					$this->urlHelper,
+					Path::combine(Directory::getTemporaryDirectory(), 'PeServer-App')
+				);
+				$template = $this->templateFactory->createTemplate($options);
+				echo $template->build('error.tpl', new TemplateParameter($status, $values, []));
+				//$this->templateFactory->createTemplate();
 			}
 
 			return;

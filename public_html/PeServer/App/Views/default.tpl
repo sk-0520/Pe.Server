@@ -3,12 +3,25 @@
 	<!--nobanner-->
 	{strip}
 		<head>
-			{include file='default.head.tpl'}
+			<meta charset="utf-8" />
+			<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+			<title>{block name='TITLE'}{/block} - Peサーバー</title>
+			<link rel="icon" type="image/svg+xml" {source attr='href' value='/assets/favicon.svg'}>
+			{block name='DEFAULT_STYLE'}{asset file='/styles/style.css'}{/block}
+			{block name='STYLES'}{/block}
 		</head>
 		<body>
 			<main id="main">
 				<h1 id="title">{block name='TITLE'}{/block}</h1>
-				{include file='default.message.tpl'}
+				{if isset($values.temp_messages) && !empty($values.temp_messages)}
+					<div class="common messages">
+						<ul>
+							{foreach from=$values.temp_messages item=item key=key}
+								<li data-index="{$key}">{$item}</li>
+							{/foreach}
+						</ul>
+					</div>
+				{/if}
 				{show_error_messages}
 				<section id="content">
 					{block name='BODY'}{/block}
@@ -21,10 +34,48 @@
 				</details>
 			</nav>
 			<header>
-				{include file='default.header.tpl'}
+				<ul>
+					<li>
+						<a href="/">トップ</a>
+					</li>
+					{assign var="account" value=$stores.session.account}
+					{if $account}
+						{if $account->level == constant('PeServer\\App\\Models\\Domain\\UserLevel::SETUP')}
+							<li>
+								<a href="/setting/setup">セットアップ</a>
+							</li>
+						{else}
+							<li>
+								<a href="/account/user">ユーザー情報</a>
+							</li>
+						{/if}
+						{if $account->level == constant('PeServer\\App\\Models\\Domain\\UserLevel::ADMINISTRATOR')}
+							<li>
+								<a href="/setting">設定</a>
+							</li>
+						{/if}
+						<li>
+							<a href="/account/logout">ログアウト</a>
+						</li>
+					{else}
+						<li>
+							<a href="/account/login">ログイン</a>
+						</li>
+						<li>
+							<a href="/account/signup">ユーザー登録</a>
+						</li>
+					{/if}
+				</ul>
 			</header>
 			<footer>
-				{include file='default.footer.tpl'}
+				<ul>
+					<li>
+						<a href="/">トップページ</a>
+					</li>
+					<li>
+						<a href="/about">このサイトについて</a>
+					</li>
+				</ul>
 			</footer>
 			<div id="advertising">
 				{if \PeServer\Core\Environment::isDevelopment() }
@@ -33,7 +84,8 @@
 					<script type="text/javascript" src="https://cache1.value-domain.com/xa.j?site=peserver.s203.xrea.com"></script>
 				{/if}
 			</div>
-			{include file='default.foot.tpl'}
+			{block name='DEFAULT_SCRIPT'}{asset file='/scripts/script.js'}{/block}
+			{block name='SCRIPTS'}{/block}
 			{if \PeServer\Core\Environment::isDevelopment() }
 				<script>
 					window.addEventListener('load', (event) => {

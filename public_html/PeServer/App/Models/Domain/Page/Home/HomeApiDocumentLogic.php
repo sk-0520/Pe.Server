@@ -14,7 +14,7 @@ use PeServer\App\Models\Domain\Page\PageLogicBase;
 
 class HomeApiDocumentLogic extends PageLogicBase
 {
-	public function __construct(LogicParameter $parameter)
+	public function __construct(LogicParameter $parameter, private AppConfiguration $config)
 	{
 		parent::__construct($parameter);
 	}
@@ -26,7 +26,7 @@ class HomeApiDocumentLogic extends PageLogicBase
 
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
-		$apiDocumentPath = Path::combine(AppConfiguration::$settingDirectoryPath, 'api_document.md');
+		$apiDocumentPath = Path::combine($this->config->settingDirectoryPath, 'api_document.md');
 		$apiDocument = File::readContent($apiDocumentPath);
 		$this->setValue('api_document', $apiDocument->getRaw());
 	}

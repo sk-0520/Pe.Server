@@ -10,17 +10,22 @@ use PeServer\App\Models\IAuditUserInfo;
 use PeServer\App\Models\ResponseJson;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Database\Database;
+use PeServer\Core\Database\IDatabaseConnection;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\DefaultValue;
-use PeServer\Core\Serialization\Json;
+use PeServer\Core\DI\Inject;
 use PeServer\Core\Mime;
 use PeServer\Core\Mvc\LogicBase;
 use PeServer\Core\Mvc\LogicParameter;
+use PeServer\Core\Serialization\Json;
 use PeServer\Core\Text;
 
 
 abstract class DomainLogicBase extends LogicBase
 {
+	#[Inject] //@phpstan-ignore-next-line
+	private IDatabaseConnection $databaseConnection;
+
 	public function __construct(LogicParameter $parameter)
 	{
 		parent::__construct($parameter);
@@ -33,7 +38,8 @@ abstract class DomainLogicBase extends LogicBase
 	 */
 	protected function openDatabase(): Database
 	{
-		return AppDatabase::open($this->logger);
+		//return AppDatabase::open($this->logger);
+		return $this->databaseConnection->open();
 	}
 
 	protected function setResponseJson(ResponseJson $responseJson): void

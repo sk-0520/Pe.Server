@@ -62,6 +62,7 @@
 					{/if}
 				{/if}
 
+				{if isset($values.file)}
 				<dt>ソース</dt>
 				<dd>
 				<code>{$values.file}</code>:<code>{$values.line_number}</code>
@@ -70,6 +71,7 @@
 						<pre id="throw" class="source" data-line="{$values.line_number}"><code class="language-php line-numbers">{$file}</code></pre>
 					{/if}
 				</dd>
+				{/if}
 
 				{if PeServer\Core\Environment::isDevelopment() && !is_null($values.throwable)}
 					{$throwable = $values.throwable->getPrevious()}
@@ -100,10 +102,16 @@
 								<li>
 									<details class="file">
 										<summary>
-											<code>{$item.file}:{$item.line}</code>
+											{if isset($item.file)}
+												<code>{$item.file}:{$item.line}</code>
+											{else}
+												<code>しらん</code>
+											{/if}
 										</summary>
-										{assign var="file" value=$values.cache[$item.file]}
-										<pre class="source" data-line="{$item.line}"><code class="language-php line-numbers">{$file}</code></pre>
+										{if isset($item.file)}
+											{assign var="file" value=$values.cache[$item.file]}
+											<pre class="source" data-line="{$item.line}"><code class="language-php line-numbers">{$file}</code></pre>
+										{/if}
 									</details>
 									<table>
 										{if isset($item.object) }
@@ -118,7 +126,9 @@
 												{if isset($item.class) }
 													<code title="class">{$item.class}</code>
 												{/if}
-												<code title="type">{$item.type}</code>
+												{if isset($item.type) }
+													<code title="type">{$item.type}</code>
+												{/if}
 												<code>{$item.function}</code>
 											</td>
 										</tr>

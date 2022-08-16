@@ -42,34 +42,28 @@ class FileLogger extends LoggerBase
 	/**
 	 * 生成。
 	 *
-	 * @param string $header ヘッダ。使用用途により意味合いは変わるので実装側でルール決めして使用すること。
-	 * @phpstan-param non-empty-string $header
-	 * @param integer $level 有効レベル。
-	 * @phpstan-param ILogger::LOG_LEVEL_* $level 有効レベル。
-	 * @param integer $baseTraceIndex 基準トレース位置。
-	 * @phpstan-param UnsignedIntegerAlias $baseTraceIndex
-	 * @param array<string,mixed> $fileLoggingConfiguration
+	 * @param LogOptions $options
 	 */
-	public function __construct(string $format, string $header, int $level, int $baseTraceIndex, array $fileLoggingConfiguration)
+	public function __construct(LogOptions $options)
 	{
-		parent::__construct($format, $header, $level, $baseTraceIndex);
+		parent::__construct($options);
 
-		$directoryPath = ArrayUtility::getOr($fileLoggingConfiguration, 'directory', '');
+		$directoryPath = ArrayUtility::getOr($this->options->logger, 'directory', '');
 		Enforce::throwIfNullOrWhiteSpace($directoryPath);
 		$this->directoryPath = $directoryPath;
 
-		$baseFileName = Code::toLiteralString(ArrayUtility::getOr($fileLoggingConfiguration, 'name', ''));
+		$baseFileName = Code::toLiteralString(ArrayUtility::getOr($this->options->logger, 'name', ''));
 		Enforce::throwIfNullOrWhiteSpace($baseFileName);
 		$this->baseFileName = $baseFileName;
 
-		$count = ArrayUtility::getOr($fileLoggingConfiguration, 'count', 0);
+		$count = ArrayUtility::getOr($this->options->logger, 'count', 0);
 		Enforce::throwIf(0 <= $count);
 		$this->cleanup($count);
 	}
 
 	private function toSafeFileNameHeader(): string
 	{
-		$trimHeader = Text::trim($this->header, '/\\');
+		$trimHeader = Text::trim($this->options->header, '/\\');
 		return Text::replace($trimHeader, ['/', '\\', '*', '|', '<', '>', '?'], '_');
 	}
 

@@ -6,7 +6,13 @@ namespace PeServer\Core\Log;
 
 use PeServer\Core\DI\DiContainer;
 use PeServer\Core\DI\DiFactoryBase;
+use PeServer\Core\DI\IDiContainer;
+use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\ILoggerFactory;
+use PeServer\Core\Log\Logging;
+use PeServer\Core\Log\MultiLogger;
+use PeServer\Core\Log\NullLogger;
+use PeServer\Core\Log\XdebugLogger;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\NotImplementedException;
@@ -15,25 +21,60 @@ use PeServer\Core\TypeUtility;
 class LoggerFactory extends DiFactoryBase implements ILoggerFactory
 {
 	public function __construct(
-		DiContainer $container
+		IDiContainer $container
 	) {
 		parent::__construct($container);
 	}
 
-	//[ILoggerFactory]
-
-	public function new(string|object $header, int $baseTraceIndex = 0, mixed $arguments = null): ILogger
+	/**
+	 * Xdebug出力用ロガー生成。
+	 *
+	 * @param string $header
+	 * @phpstan-param non-empty-string $header
+	 * @param int $baseTraceIndex
+	 * @phpstan-param UnsignedIntegerAlias $baseTraceIndex
+	 * @return XdebugLogger|null
+	 */
+	private function createXdebugLogger(string $header, int $baseTraceIndex): ?XdebugLogger
 	{
-		$h = '';
-		if (is_string($header)) {
-			if (Text::isNullOrWhiteSpace($header)) { //@phpstan-ignore-line
-				throw new ArgumentException('$header');
-			}
-			$h = $header;
-		} else {
-			$h = TypeUtility::getType($header);
+		if (function_exists('xdebug_is_debugger_active') && \xdebug_is_debugger_active()) {
+			$options = new LogOptions(
+				$header,
+				$baseTraceIndex,
+				[
+					'level' => ILogger::LOG_LEVEL_TRACE,
+					'format' => '{TIME} |{LEVEL}| <{HEADER}> {METHOD}: {MESSAGE} | {FILE_NAME}({LINE})',
+				]
+			);
+			return new XdebugLogger($options);
 		}
 
-		return new XdebugLogger($h, ILogger::LOG_LEVEL_TRACE, $baseTraceIndex + 1);
+		return null;
+	}
+
+	//[ILoggerFactory]
+
+	public function create(string|object $header, int $baseTraceIndex = 0): ILogger
+	{
+		/** @var ILogProvider */
+		$logProvider = $this->container->get(ILogProvider::class);
+
+		$useHeader = Logging::toHeader($header);
+		$loggers = $logProvider->create($useHeader, $baseTraceIndex);
+
+		$debugLogger = $this->createXdebugLogger($useHeader, $baseTraceIndex);
+
+		if (empty($loggers)) {
+			if (is_null($debugLogger)) {
+				return new NullLogger();
+			}
+			return $debugLogger;
+		}
+
+		if (!is_null($debugLogger)) {
+			$loggers[] = $debugLogger;
+		}
+
+		return new MultiLogger($baseTraceIndex, $loggers);
 	}
 }

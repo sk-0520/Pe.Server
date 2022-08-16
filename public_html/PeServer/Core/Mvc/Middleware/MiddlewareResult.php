@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc\Middleware;
 
 use PeServer\Core\Regex;
-use PeServer\Core\UrlUtility;
+use PeServer\Core\Web\UrlUtility;
 use PeServer\Core\DefaultValue;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Store\SpecialStore;

@@ -11,5 +11,13 @@
 	<li><a href="/api-doc">API</a></li>
 </ul>
 
+{if \PeServer\Core\Environment::isDevelopment()}
+	<h2>dev</h2>
+	<ul>
+		<li><a href="/dev/exception">exception</a></li>
+	</ul>
+{/if}
+
+
 {/block}
 

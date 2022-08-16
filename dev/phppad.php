@@ -4,8 +4,8 @@ error_reporting(E_ALL);
 
 require_once(__DIR__ . '/../public_html/PeServer/Core/AutoLoader.php');
 
-use PeServer\App\Models\Initializer;
-use PeServer\Core\ErrorHandler;
+use PeServer\App\Models\AppStartup;
+use PeServer\Core\DefinedDirectory;
 use PeServer\Core\IO\Directory;
 use PeServer\Core\IO\File;
 use PeServer\Core\IO\Path;
@@ -23,13 +23,20 @@ $autoLoader = new \PeServer\Core\AutoLoader(
 );
 $autoLoader->register();
 
-Initializer::initialize(
-	__DIR__ . '/../public_html',
-	__DIR__ . '/../public_html/PeServer',
+$startup = new AppStartup(
+	new DefinedDirectory(
+		__DIR__ . '/../public_html/PeServer',
+		__DIR__ . '/../public_html'
+	),
 	'',
-	new SpecialStore(),
-	'temp',
-	':REVISION:'
+	new SpecialStore()
+);
+$container = $startup->setup(
+	AppStartup::MODE_CLI,
+	[
+		'environment' => 'temp',
+		'revision' => ':REVISION:',
+	]
 );
 Directory::setTemporaryDirectory(Path::combine(__DIR__, 'temp'));
 

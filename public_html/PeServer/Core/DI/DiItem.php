@@ -4,21 +4,22 @@ declare(strict_types=1);
 
 namespace PeServer\Core\DI;
 
+use \TypeError;
+use PeServer\Core\DisposerBase;
+use PeServer\Core\IDisposable;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Throws\NotImplementedException;
 use PeServer\Core\Throws\NotSupportedException;
 use PeServer\Core\TypeUtility;
-use PHPUnit\PhpParser\Node\Stmt\Break_;
-use TypeError;
 
 /**
  * DI登録値。
  *
  * シングルトンデータは内包する。
  */
-class DiItem
+class DiItem extends DisposerBase
 {
 	/**
 	 * ライフサイクル: 毎回作る。
@@ -64,11 +65,13 @@ class DiItem
 	 * @phpstan-param self::TYPE_* $type
 	 * @param string|mixed|callable $data 登録データ。
 	 * @phpstan-param class-string|mixed|callable(IDiContainer, DiItem[]):mixed $data
+	 * @param bool $nonDisposal IDisposable 対象にするか。
 	 */
 	public function __construct(
 		public int $lifecycle,
 		public int $type,
-		public mixed $data
+		public mixed $data,
+		public bool $nonDisposal = false
 	) {
 		if ($lifecycle !== self::LIFECYCLE_TRANSIENT && $lifecycle !== self::LIFECYCLE_SINGLETON) { //@phpstan-ignore-line self::LIFECYCLE_*
 			throw new ArgumentException('$lifecycle: ' . $lifecycle);
@@ -186,13 +189,11 @@ class DiItem
 	 * @template T
 	 * @param mixed $data
 	 * @phpstan-param T $data
-	 * @param int $lifecycle
-	 * @phpstan-param self::LIFECYCLE_* $lifecycle
 	 * @return self
 	 */
-	public static function value(mixed $data, int $lifecycle = self::LIFECYCLE_SINGLETON): self
+	public static function value(mixed $data): self
 	{
-		return new self($lifecycle, self::TYPE_VALUE, $data);
+		return new self(self::LIFECYCLE_SINGLETON, self::TYPE_VALUE, $data);
 	}
 
 	/**
@@ -208,5 +209,35 @@ class DiItem
 	public static function factory(callable $factory, int $lifecycle = self::LIFECYCLE_TRANSIENT): self
 	{
 		return new self($lifecycle, self::TYPE_FACTORY, $factory);
+	}
+
+	//[DisposerBase]
+
+	protected function disposeImpl(): void
+	{
+		if ($this->nonDisposal) {
+			return;
+		}
+
+		/** @var IDisposable|null */
+		$disposer = null;
+
+		if ($this->type === DiItem::TYPE_VALUE) {
+			if ($this->data instanceof IDisposable) {
+				$disposer = $this->data;
+			}
+		}
+		if ($this->lifecycle === DiItem::LIFECYCLE_SINGLETON) {
+			if ($this->hasSingletonValue()) {
+				$value = $this->getSingletonValue();
+				if ($value instanceof IDisposable) {
+					$disposer = $value;
+				}
+			}
+		}
+
+		if (!is_null($disposer)) {
+			$disposer->dispose();
+		}
 	}
 }

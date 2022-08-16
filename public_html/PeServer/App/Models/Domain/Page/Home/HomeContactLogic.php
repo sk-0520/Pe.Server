@@ -11,7 +11,7 @@ use PeServer\App\Models\Domain\Page\PageLogicBase;
 
 class HomeContactLogic extends PageLogicBase
 {
-	public function __construct(LogicParameter $parameter)
+	public function __construct(LogicParameter $parameter, private AppConfiguration $config)
 	{
 		parent::__construct($parameter);
 	}
@@ -27,7 +27,7 @@ class HomeContactLogic extends PageLogicBase
 		 * @var array<string,string>
 		 * @phpstan-var array<non-empty-string,string>
 		 */
-		$families = AppConfiguration::$config['config']['address']['families'];
+		$families = $this->config->setting['config']['address']['families'];
 		foreach ($families as $key => $value) {
 			$this->setValue($key, $value);
 		}

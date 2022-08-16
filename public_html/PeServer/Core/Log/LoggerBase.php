@@ -15,24 +15,11 @@ abstract class LoggerBase implements ILogger
 	/**
 	 * 生成。
 	 *
-	 * @param string $format
-	 * @phpstan-param literal-string $format
-	 * @param string $header ヘッダ。使用用途により意味合いは変わるので実装側でルール決めして使用すること。
-	 * @phpstan-param non-empty-string $header
-	 * @param integer $level 有効レベル。
-	 * @phpstan-param ILogger::LOG_LEVEL_* $level 有効レベル。
-	 * @param integer $baseTraceIndex 基準トレース位置。
-	 * @phpstan-param UnsignedIntegerAlias $baseTraceIndex
+	 * @param LogOptions $options
 	 */
-	public function __construct(
+	protected function __construct(
 		/** @readonly */
-		protected string $format,
-		/** @readonly */
-		protected string $header,
-		/** @readonly */
-		protected int $level,
-		/** @readonly */
-		protected int $baseTraceIndex
+		protected LogOptions $options
 	) {
 	}
 
@@ -50,7 +37,7 @@ abstract class LoggerBase implements ILogger
 	 */
 	protected function format(int $level, int $traceIndex, $message, ...$parameters): string
 	{
-		return Logging::format($this->format, $level, $traceIndex + 1, $this->header, $message, ...$parameters);
+		return Logging::format($this->options->format, $level, $traceIndex + 1, $this->options->header, $message, ...$parameters);
 	}
 
 	/**
@@ -69,7 +56,8 @@ abstract class LoggerBase implements ILogger
 
 	public function log(int $level, int $traceIndex, $message, ...$parameters): void
 	{
-		if ($level < $this->level) {
+		// 有効レベル未満であれば何もしない
+		if ($level < $this->options->level) {
 			return;
 		}
 
@@ -78,22 +66,22 @@ abstract class LoggerBase implements ILogger
 
 	public final function trace($message, ...$parameters): void
 	{
-		$this->log(self::LOG_LEVEL_TRACE, $this->baseTraceIndex + 1, $message, ...$parameters);
+		$this->log(self::LOG_LEVEL_TRACE, $this->options->baseTraceIndex + 1, $message, ...$parameters);
 	}
 	public final function debug($message, ...$parameters): void
 	{
-		$this->log(self::LOG_LEVEL_DEBUG, $this->baseTraceIndex + 1, $message, ...$parameters);
+		$this->log(self::LOG_LEVEL_DEBUG, $this->options->baseTraceIndex + 1, $message, ...$parameters);
 	}
 	public final function info($message, ...$parameters): void
 	{
-		$this->log(self::LOG_LEVEL_INFORMATION, $this->baseTraceIndex + 1, $message, ...$parameters);
+		$this->log(self::LOG_LEVEL_INFORMATION, $this->options->baseTraceIndex + 1, $message, ...$parameters);
 	}
 	public final function warn($message, ...$parameters): void
 	{
-		$this->log(self::LOG_LEVEL_WARNING, $this->baseTraceIndex + 1, $message, ...$parameters);
+		$this->log(self::LOG_LEVEL_WARNING, $this->options->baseTraceIndex + 1, $message, ...$parameters);
 	}
 	public final function error($message, ...$parameters): void
 	{
-		$this->log(self::LOG_LEVEL_ERROR, $this->baseTraceIndex + 1, $message, ...$parameters);
+		$this->log(self::LOG_LEVEL_ERROR, $this->options->baseTraceIndex + 1, $message, ...$parameters);
 	}
 }

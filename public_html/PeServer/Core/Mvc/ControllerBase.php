@@ -7,20 +7,23 @@ namespace PeServer\Core\Mvc;
 use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Log\ILogger;
+use PeServer\Core\Log\ILoggerFactory;
 use PeServer\Core\Log\Logging;
 use PeServer\Core\Mvc\ControllerArgument;
 use PeServer\Core\Mvc\DataContent;
+use PeServer\Core\Mvc\Template\ITemplateFactory;
 use PeServer\Core\Mvc\LogicBase;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\Mvc\Result\DataActionResult;
 use PeServer\Core\Mvc\Result\RedirectActionResult;
 use PeServer\Core\Mvc\Result\ViewActionResult;
-use PeServer\Core\Mvc\TemplateParameter;
+use PeServer\Core\Mvc\Template\TemplateParameter;
 use PeServer\Core\ReflectionUtility;
 use PeServer\Core\Store\Stores;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\InvalidOperationException;
-use PeServer\Core\UrlUtility;
+use PeServer\Core\Web\IUrlHelper;
+use PeServer\Core\Web\UrlUtility;
 
 
 
@@ -37,7 +40,17 @@ abstract class ControllerBase
 	protected ILogger $logger;
 
 	/** @readonly */
+	protected ILoggerFactory $loggerFactory;
+
+	/** @readonly */
 	protected Stores $stores;
+
+	/** @readonly */
+	protected ILogicFactory $logicFactory;
+	/** @readonly */
+	protected ITemplateFactory $templateFactory;
+	/** @readonly */
+	protected IUrlHelper $urlHelper;
 
 	/** コントローラ内で今輝いてるロジック。よくないんよなぁ。 */
 	protected ?LogicBase $logic = null;
@@ -45,12 +58,16 @@ abstract class ControllerBase
 	/**
 	 * 生成。
 	 *
-	 * @param ControllerArgument $argument コントローラ入力値。
+	 * @param ControllerArgument $argument コントローラ入力値(継承先でも必須となる)。
 	 */
 	protected function __construct(ControllerArgument $argument)
 	{
 		$this->stores = $argument->stores;
+		$this->logicFactory = $argument->logicFactory;
+		$this->templateFactory = $argument->templateFactory;
+		$this->urlHelper = $argument->urlHelper;
 		$this->logger = $argument->logger;
+		$this->loggerFactory = $argument->loggerFactory;
 	}
 
 	/**
@@ -60,40 +77,43 @@ abstract class ControllerBase
 	 */
 	protected abstract function getSkipBaseName(): string;
 
-	/**
-	 * ロジック用パラメータ生成処理。
-	 *
-	 * @param string $logicName ロジック名
-	 * @phpstan-param class-string<LogicBase> $logicName
-	 * @param HttpRequest $request リクエストデータ
-	 * @return LogicParameter
-	 */
-	protected function createParameter(string $logicName, HttpRequest $request): LogicParameter
-	{
-		return new LogicParameter(
-			$request,
-			$this->stores,
-			Logging::create($logicName)
-		);
-	}
+	// /**
+	//  * ロジック用パラメータ生成処理。
+	//  *
+	//  * @param string $logicName ロジック名
+	//  * @phpstan-param class-string<LogicBase> $logicName
+	//  * @param HttpRequest $request リクエストデータ
+	//  * @return LogicParameter
+	//  */
+	// protected function createParameter(string $logicName, HttpRequest $request): LogicParameter
+	// {
+	// 	return new LogicParameter(
+	// 		$request,
+	// 		$this->stores,
+	// 		Logging::create($logicName)
+	// 	);
+	// }
 
 	/**
 	 * ロジック生成処理。
 	 *
 	 * @param string $logicClass ロジック完全名。
 	 * @phpstan-param class-string<LogicBase> $logicClass
-	 * @param HttpRequest $request リクエストデータ
+	 * @param array<int|string,mixed> $arguments
 	 * @return LogicBase
 	 */
-	protected function createLogic(string $logicClass, HttpRequest $request, mixed ...$parameters): LogicBase
+	protected function createLogic(string $logicClass, array $arguments = []): LogicBase
 	{
 		if (!is_null($this->logic)) {
 			throw new InvalidOperationException();
 		}
 
-		$parameter = $this->createParameter($logicClass, $request);
-		/** @var LogicBase */
-		$logic = ReflectionUtility::create($logicClass, LogicBase::class, $parameter, ...$parameters);
+		// $parameter = $this->createParameter($logicClass, $request);
+		// /** @var LogicBase */
+		// $logic = ReflectionUtility::create($logicClass, LogicBase::class, $parameter, ...$parameters);
+
+		$logic = $this->logicFactory->new($logicClass, $arguments/*, ...$parameters*/);
+
 		$this->logic = $logic;
 		return $logic;
 	}
@@ -163,7 +183,7 @@ abstract class ControllerBase
 
 		$templateDirPath = Text::replace($controllerBaseName, '\\', DIRECTORY_SEPARATOR);
 
-		return new ViewActionResult($templateDirPath, $action, $parameter, $this->getResponseHeaders());
+		return new ViewActionResult($templateDirPath, $action, $parameter, $this->getResponseHeaders(), $this->templateFactory, $this->urlHelper);
 	}
 
 	/**

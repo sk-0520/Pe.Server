@@ -9,7 +9,7 @@ use PeServer\Core\DefaultValue;
 use PeServer\App\Models\AuditLog;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
-use PeServer\App\Models\SessionManager;
+use PeServer\App\Models\SessionKey;
 use PeServer\App\Models\AppCryptography;
 use PeServer\App\Models\Domain\UserLevel;
 use PeServer\App\Models\Domain\UserState;
@@ -23,7 +23,7 @@ use PeServer\Core\ArrayUtility;
 
 class SettingSetupLogic extends PageLogicBase
 {
-	public function __construct(LogicParameter $parameter)
+	public function __construct(LogicParameter $parameter, private AppCryptography $cryptography)
 	{
 		parent::__construct($parameter);
 	}
@@ -79,7 +79,7 @@ class SettingSetupLogic extends PageLogicBase
 			return;
 		}
 
-		$currentUserInfo = SessionManager::getAccount();
+		$currentUserInfo = $this->requireSession(SessionKey::ACCOUNT);
 
 		$email = $this->getRequest('setting_setup_email');
 
@@ -87,8 +87,8 @@ class SettingSetupLogic extends PageLogicBase
 			'login_id' => $this->getRequest('setting_setup_login_id'),
 			'password' => $this->getRequest('setting_setup_password', DefaultValue::EMPTY_STRING, false),
 			'user_name' => $this->getRequest('setting_setup_user_name'),
-			'email' => AppCryptography::encrypt($email),
-			'mark_email' => AppCryptography::toMark($email),
+			'email' => $this->cryptography->encrypt($email),
+			'mark_email' => $this->cryptography->toMark($email),
 			'website' => $this->getRequest('setting_setup_website'),
 		];
 

@@ -7,7 +7,7 @@ namespace PeServer\App\Models\Domain;
 use PeServer\Core\I18n;
 use PeServer\Core\Uuid;
 use PeServer\Core\TrueKeeper;
-use PeServer\Core\UrlUtility;
+use PeServer\Core\Web\UrlUtility;
 use PeServer\Core\Environment;
 use PeServer\Core\Mvc\Validator;
 use PeServer\Core\Text;

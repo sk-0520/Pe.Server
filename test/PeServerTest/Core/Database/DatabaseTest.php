@@ -9,6 +9,7 @@ use PeServer\Core\ArrayUtility;
 use PeServer\Core\Binary;
 use PeServer\Core\Database\Database;
 use PeServer\Core\Log\Logging;
+use PeServer\Core\Log\NullLogger;
 use PeServer\Core\Throws\DatabaseException;
 use PeServer\Core\Throws\SqlException;
 use PeServerTest\Core\Database\DB;
@@ -26,7 +27,7 @@ class DatabaseTest extends TestClass
 	function test_constructor_throw()
 	{
 		$this->expectException(DatabaseException::class);
-		new Database('', '', '', null, Logging::create(get_class($this)));
+		new Database('', '', '', null, new NullLogger());
 		$this->fail();
 	}
 

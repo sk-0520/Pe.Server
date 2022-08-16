@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Middleware;
 
+use PeServer\Core\Http\HttpResponse;
 use PeServer\Core\Http\HttpStatus;
+use PeServer\Core\Log\ILogger;
 use PeServer\Core\Mvc\Middleware\IMiddleware;
 use PeServer\Core\Mvc\Middleware\MiddlewareArgument;
 use PeServer\Core\Mvc\Middleware\MiddlewareResult;
@@ -15,6 +17,13 @@ use PeServer\Core\Security;
  */
 class CsrfMiddleware implements IMiddleware
 {
+	public function __construct(
+		private ILogger $logger
+	) {
+	}
+
+	//[IMiddleware]
+
 	/**
 	 * CSRFトークン不正時のHTTP応答ステータス。
 	 *
@@ -29,7 +38,7 @@ class CsrfMiddleware implements IMiddleware
 	{
 		$result = $argument->request->exists(Security::CSRF_REQUEST_KEY);
 		if (!$result->exists) {
-			$argument->logger->warn('要求CSRFトークンなし');
+			$this->logger->warn('要求CSRFトークンなし');
 			return MiddlewareResult::error($this->getErrorHttpStatus(), 'CSRF');
 		}
 
@@ -38,15 +47,15 @@ class CsrfMiddleware implements IMiddleware
 			if ($requestToken === $sessionToken) {
 				return MiddlewareResult::none();
 			}
-			$argument->logger->error('CSRFトークン不一致');
+			$this->logger->error('CSRFトークン不一致');
 		} else {
-			$argument->logger->warn('セッションCSRFトークンなし');
+			$this->logger->warn('セッションCSRFトークンなし');
 		}
 
 		return MiddlewareResult::error($this->getErrorHttpStatus(), 'CSRF');
 	}
 
-	public final function handleAfter(MiddlewareArgument $argument): MiddlewareResult
+	public final function handleAfter(MiddlewareArgument $argument, HttpResponse $response): MiddlewareResult
 	{
 		return MiddlewareResult::none();
 	}

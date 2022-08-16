@@ -14,7 +14,7 @@ use PeServer\App\Models\Domain\Page\PageLogicBase;
 
 class HomePrivacyLogic extends PageLogicBase
 {
-	public function __construct(LogicParameter $parameter)
+	public function __construct(LogicParameter $parameter, private AppConfiguration $config)
 	{
 		parent::__construct($parameter);
 	}
@@ -26,7 +26,7 @@ class HomePrivacyLogic extends PageLogicBase
 
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
-		$privacyPolicyPath = Path::combine(AppConfiguration::$settingDirectoryPath, 'privacy_policy.md');
+		$privacyPolicyPath = Path::combine($this->config->settingDirectoryPath, 'privacy_policy.md');
 		$privacyPolicy = File::readContent($privacyPolicyPath);
 		$this->setValue('privacy_policy', $privacyPolicy->getRaw());
 	}

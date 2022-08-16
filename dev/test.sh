@@ -36,12 +36,12 @@ if [ ! -v IGNORE_NAMESPACE_CHECK ] ; then
 				TARGET_NAMESPACE=${FILE#./} # 先頭の ./ を破棄
 				TARGET_NAMESPACE=${TARGET_NAMESPACE%/*} # ファイル名を破棄
 				TARGET_NAMESPACE=${TARGET_NAMESPACE//\//\\} # ディレクトリ区切りを名前空間区切りに変換
-				SOURCE_NAMESPACE=$(grep 'namespace' $FILE)
+				SOURCE_NAMESPACE=$(grep '^namespace' $FILE)
 				SOURCE_NAMESPACE=${SOURCE_NAMESPACE#namespace}
 				SOURCE_NAMESPACE=${SOURCE_NAMESPACE%;*}
 				SOURCE_NAMESPACE=${SOURCE_NAMESPACE// /}
 				SOURCE_NAMESPACE=${SOURCE_NAMESPACE//	/}
-				if [ ${TARGET_NAMESPACE} != ${SOURCE_NAMESPACE} ] ; then
+				if [ "${TARGET_NAMESPACE}" != "${SOURCE_NAMESPACE}" ] ; then
 					echo "${FILE}: ${SOURCE_NAMESPACE} != ${TARGET_NAMESPACE}"
 					NAMESPACE_ERROR=true
 				fi

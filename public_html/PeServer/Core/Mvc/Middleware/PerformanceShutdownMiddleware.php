@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Middleware;
 
+use PeServer\Core\Log\ILogger;
 use PeServer\Core\Mvc\Middleware\IShutdownMiddleware;
 use PeServer\Core\Mvc\Middleware\MiddlewareArgument;
 
@@ -12,9 +13,16 @@ use PeServer\Core\Mvc\Middleware\MiddlewareArgument;
  */
 final class PerformanceShutdownMiddleware implements IShutdownMiddleware
 {
+	public function __construct(
+		private ILogger $logger
+	) {
+	}
+
+	//[IMiddleware]
+
 	public function handleShutdown(MiddlewareArgument $argument): void
 	{
 		$time = microtime(true) - $argument->stores->special->getServer('REQUEST_TIME_FLOAT', 0.0);
-		$argument->logger->info('shutdown {0} ms', $time);
+		$this->logger->info('shutdown {0} ms', $time);
 	}
 }

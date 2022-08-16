@@ -10,6 +10,8 @@ use PeServer\Core\DI\DiRegisterContainer;
 use PeServer\Core\DI\IDiContainer;
 use PeServer\Core\DI\Inject;
 use PeServer\Core\Throws\ArgumentException;
+use PeServer\Core\Throws\DiContainerArgumentException;
+use PeServer\Core\Throws\DiContainerNotFoundException;
 use PeServer\Core\Throws\DiContainerRegisteredException;
 use PeServer\Core\Throws\DiContainerUndefinedTypeException;
 use PeServerTest\TestClass;
@@ -55,6 +57,18 @@ class DiRegisterContainerTest extends TestClass
 		$dc->add('ID', new DiItem(DiItem::LIFECYCLE_SINGLETON, DiItem::TYPE_VALUE, $expected));
 		$actual = $dc->get('ID');
 		$this->assertSame($expected, $actual);
+	}
+
+	public function test_get_throw()
+	{
+		$dc = new DiRegisterContainer();
+
+		$dc->add('ID', DiItem::value('A'));
+
+		$this->expectException(DiContainerNotFoundException::class);
+		$this->expectExceptionMessage('id');
+		$dc->get('id');
+		$this->fail();
 	}
 
 	public function test_get_type_I_life_transient()
@@ -381,6 +395,167 @@ class DiRegisterContainerTest extends TestClass
 		$this->assertSame(E::class, $actual->e::class);
 		$this->assertSame(EI::class, $actual->e->i::class);
 	}
+
+	public function test_new_arguments()
+	{
+		$dc = new DiRegisterContainer();
+
+		$dc->registerMapping(I::class, A::class);
+		$dc->registerClass(B::class);
+
+		$actual1 = $dc->get(B::class);
+		$this->assertSame(B::class, $actual1::class);
+		$this->assertSame(A::class, $actual1->i::class);
+
+		$actual2 = $dc->new(B::class);
+		$this->assertSame(B::class, $actual2::class);
+		$this->assertSame(A::class, $actual2->i::class);
+
+		$actual3 = $dc->new(B::class, [0 => new A0()]);
+		$this->assertSame(B::class, $actual3::class);
+		$this->assertSame(A0::class, $actual3->i::class);
+
+		$actual4 = $dc->new(B::class, [1 => new A0()]);
+		$this->assertSame(B::class, $actual4::class);
+		$this->assertSame(A::class, $actual4->i::class);
+
+		$actual5 = $dc->new(B::class, ['$i' => new A0()]);
+		$this->assertSame(B::class, $actual5::class);
+		$this->assertSame(A0::class, $actual5->i::class);
+
+		$actual6 = $dc->new(B::class, ['$I' => new A0()]);
+		$this->assertSame(B::class, $actual6::class);
+		$this->assertSame(A::class, $actual6->i::class);
+	}
+
+	public function test_new_arguments_value_throw()
+	{
+		$dc = new DiRegisterContainer();
+
+		$dc->registerMapping(I::class, A::class);
+		$dc->registerValue($dc->new(B::class));
+
+		$actual = $dc->new(B::class);
+		$this->assertSame(B::class, $actual::class);
+		$this->assertSame(A::class, $actual->i::class);
+
+		$this->expectException(DiContainerArgumentException::class);
+		$this->expectExceptionMessage(B::class . ': DiItem::TYPE_VALUE');
+		$dc->new(B::class, [0 => new A0()]);
+		$this->fail();
+	}
+
+	public function test_new_arguments_value_singleton()
+	{
+		$dc = new DiRegisterContainer();
+
+		$dc->registerMapping(I::class, A::class);
+		$dc->registerClass(B::class, DiItem::LIFECYCLE_SINGLETON);
+
+		$actual = $dc->new(B::class);
+		$this->assertSame(B::class, $actual::class);
+		$this->assertSame(A::class, $actual->i::class);
+
+		$this->expectException(DiContainerArgumentException::class);
+		$this->expectExceptionMessage(B::class . ': DiItem::LIFECYCLE_SINGLETON');
+		$dc->new(B::class, [0 => new A0()]);
+		$this->fail();
+	}
+
+	public function test_new_arguments_type()
+	{
+		$dc = new DiRegisterContainer();
+
+		$actual1 = $dc->new(B::class, [I::class => new A()]);
+		$this->assertSame(A::class, $actual1->i::class);
+
+		$actual2 = $dc->new(B::class, [I::class => new A0()]);
+		$this->assertSame(A0::class, $actual2->i::class);
+	}
+
+	public function test_new_arguments_type_2()
+	{
+		$dc = new DiRegisterContainer();
+		$dc->registerMapping(I::class, A::class);
+
+		$actual = $dc->new(P::class, [I::class => new A0()]);
+		$this->assertSame(A0::class, $actual->i1::class);
+		$this->assertSame(A::class, $actual->i2::class);
+	}
+
+	public function test_new_arguments_minus()
+	{
+		$dc = new DiRegisterContainer();
+
+		$actual1 = $dc->new(P::class, [-1 => new A(), -2 => new A0()]);
+		$this->assertSame(A::class, $actual1->i1::class);
+		$this->assertSame(A0::class, $actual1->i2::class);
+
+		$actual2 = $dc->new(P::class, [-2 => new A(), -1 => new A0()]);
+		$this->assertSame(A0::class, $actual2->i1::class);
+		$this->assertSame(A::class, $actual2->i2::class);
+	}
+
+	public function test_new_arguments_union()
+	{
+		$dc = new DiRegisterContainer();
+		$dc->registerMapping(I::class, EI::class);
+
+		$actual = $dc->new(Q::class, [-1 => new A(), I::class => new A0(), B::class => new B(new A0())]);
+		$this->assertSame(A0::class, $actual->i1::class);
+		$this->assertSame(B::class, $actual->i2::class);
+		$this->assertSame(A0::class, $actual->i2->i::class);
+		$this->assertSame(A::class, $actual->i3::class);
+		$this->assertSame(EI::class, $actual->i4::class);
+	}
+
+	public function test_call_instance()
+	{
+		$dc = new DiRegisterContainer();
+
+		$dc->registerMapping(I::class, A::class);
+		$instance = $dc->new(O_instance::class);
+
+		$actual = $dc->call([$instance, 'method']);
+		$this->assertSame(A::class, $actual['i']::class);
+	}
+
+	public function test_call_static()
+	{
+		$dc = new DiRegisterContainer();
+
+		$dc->registerMapping(I::class, A::class);
+
+		$actual = $dc->call(O_static::class . '::method');
+		$this->assertSame(A::class, $actual['i']::class);
+	}
+
+	public function test_call_function()
+	{
+		$dc = new DiRegisterContainer();
+
+		$dc->registerMapping(I::class, A::class);
+
+		$actual = $dc->call(O_function::class);
+		$this->assertSame(A::class, $actual['i']::class);
+	}
+
+	public function test_call_callable()
+	{
+		$dc = new DiRegisterContainer();
+
+		$dc->registerMapping(I::class, A::class);
+
+		$actual1 = $dc->call(fn (I $i) => ['i' => $i]);
+		$this->assertSame(A::class, $actual1['i']::class);
+
+		$actual2 = $dc->call(fn (#[Inject(EI::class)] I $i) => ['i' => $i]);
+		$this->assertSame(A::class, $actual2['i']::class);
+
+		$dc->registerMapping(EI::class, EI::class);
+		$actual3 = $dc->call(fn (#[Inject(EI::class)] I $i) => ['i' => $i]);
+		$this->assertSame(EI::class, $actual3['i']::class);
+	}
 }
 
 interface I
@@ -498,6 +673,47 @@ class N
 	public function __construct(
 		public H $h,
 		public E $e
+	) {
+	}
+}
+
+class O_instance
+{
+	public function method(I $i)
+	{
+		return ['i' => $i];
+	}
+}
+
+class O_static
+{
+	public static function method(I $i)
+	{
+		return ['i' => $i];
+	}
+}
+
+function O_function(I $i)
+{
+	return ['i' => $i];
+}
+
+class P
+{
+	public function __construct(
+		public I $i1,
+		public I $i2
+	) {
+	}
+}
+
+class Q
+{
+	public function __construct(
+		public int|I|B $i1,
+		public int|I|B $i2,
+		public int|I|B $i3,
+		public int|I|B $i4
 	) {
 	}
 }

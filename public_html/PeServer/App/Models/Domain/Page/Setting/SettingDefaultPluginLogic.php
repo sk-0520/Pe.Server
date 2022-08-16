@@ -10,7 +10,7 @@ use PeServer\Core\Text;
 use PeServer\Core\TypeUtility;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
-use PeServer\App\Models\SessionManager;
+use PeServer\App\Models\SessionKey;
 use PeServer\App\Models\AppDatabaseCache;
 use PeServer\App\Models\Domain\PluginState;
 use PeServer\App\Models\Domain\PluginUrlKey;
@@ -94,7 +94,7 @@ class SettingDefaultPluginLogic extends PageLogicBase
 		],
 	];
 
-	public function __construct(LogicParameter $parameter)
+	public function __construct(LogicParameter $parameter, private AppDatabaseCache $dbCache)
 	{
 		parent::__construct($parameter);
 	}
@@ -121,7 +121,7 @@ class SettingDefaultPluginLogic extends PageLogicBase
 			return;
 		}
 
-		$account = SessionManager::getAccount();
+		$account = $this->requireSession(SessionKey::ACCOUNT);
 
 		if (TypeUtility::parseBoolean($this->getRequest('delete'))) {
 			$params = [
@@ -143,7 +143,7 @@ class SettingDefaultPluginLogic extends PageLogicBase
 					return true;
 				});
 
-				AppDatabaseCache::exportPluginInformation();
+				$this->dbCache->exportPluginInformation();
 			} else {
 				$this->addTemporaryMessage('なにも削除されず');
 			}
@@ -192,7 +192,7 @@ class SettingDefaultPluginLogic extends PageLogicBase
 					return true;
 				});
 
-				AppDatabaseCache::exportPluginInformation();
+				$this->dbCache->exportPluginInformation();
 			} else {
 				$this->addTemporaryMessage('なにも登録されず');
 			}

@@ -17,8 +17,8 @@ class ControllerFactory extends DiFactoryBase implements IControllerFactory
 
 	//[IControllerFactory]
 
-	public function new(string $controllerClassName, mixed $arguments): ControllerBase
+	public function new(string $controllerClassName, mixed $arguments = null): ControllerBase
 	{
-		return $this->container->get($controllerClassName);
+		return $this->container->new($controllerClassName);
 	}
 }

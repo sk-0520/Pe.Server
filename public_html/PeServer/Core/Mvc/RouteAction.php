@@ -25,7 +25,7 @@ class RouteAction
 	 * @phpstan-param class-string<ControllerBase> $className
 	 * @param ActionSetting $actionSetting
 	 * @param array<string,string> $params パラメータ。
-	 * @phpstan-param array<non-empty-string,string> $params パラメータ。
+	 * @phpstan-param array<non-empty-string,string> $params
 	 */
 	public function __construct(
 		public HttpStatus $status,

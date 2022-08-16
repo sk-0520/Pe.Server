@@ -6,38 +6,30 @@ namespace PeServer\App\Models;
 
 use PeServer\Core\IO\File;
 use PeServer\Core\IO\Directory;
-use PeServer\Core\Log\Logging;
 use PeServer\Core\IO\Path;
-use PeServer\Core\InitializeChecker;
 use PeServer\App\Models\Cache\PluginCache;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\App\Models\Dao\Domain\UserDomainDao;
 use PeServer\App\Models\Dao\Domain\PluginDomainDao;
+use PeServer\Core\Database\IDatabaseConnection;
 
-abstract class AppDatabaseCache
+class AppDatabaseCache
 {
 	private const USER_INFORMATION = 'user.json';
 	private const PLUGIN_INFORMATION = 'plugin.json';
 
-	/**
-	 * 初期化チェック
-	 */
-	private static InitializeChecker $initializeChecker;
+	private string $cacheDirectoryPath;
 
-	private static string $cacheDirectoryPath;
-
-	public static function initialize(string $cacheDirectoryPath): void
-	{
-		self::$initializeChecker ??= new InitializeChecker();
-		self::$initializeChecker->initialize();
-
-		self::$cacheDirectoryPath = $cacheDirectoryPath;
+	public function __construct(
+		AppConfiguration $config,
+		private IDatabaseConnection $connection
+	) {
+		$this->cacheDirectoryPath = $config->setting['cache']['database'];
 	}
 
-	private static function openDatabase(): IDatabaseContext
+	private function openDatabase(): IDatabaseContext
 	{
-		$logger = Logging::create('cache');
-		return AppDatabase::open($logger);
+		return $this->connection->open();
 	}
 
 	/**
@@ -47,9 +39,9 @@ abstract class AppDatabaseCache
 	 * @param array<mixed> $cache
 	 * @return void
 	 */
-	private static function exportCache(string $fileName, array $cache): void
+	private function exportCache(string $fileName, array $cache): void
 	{
-		$filePath = Path::combine(self::$cacheDirectoryPath, $fileName);
+		$filePath = Path::combine($this->cacheDirectoryPath, $fileName);
 		Directory::createParentDirectoryIfNotExists($filePath);
 		File::writeJsonFile($filePath, $cache);
 	}
@@ -60,9 +52,9 @@ abstract class AppDatabaseCache
 	 * @param string $fileName
 	 * @return array<mixed>
 	 */
-	private static function readCache(string $fileName): array
+	private function readCache(string $fileName): array
 	{
-		$filePath = Path::combine(self::$cacheDirectoryPath, $fileName);
+		$filePath = Path::combine($this->cacheDirectoryPath, $fileName);
 		$result = File::readJsonFile($filePath);
 		return $result;
 	}
@@ -72,10 +64,8 @@ abstract class AppDatabaseCache
 	 *
 	 * @return void
 	 */
-	public static function exportUserInformation(): void
+	public function exportUserInformation(): void
 	{
-		self::$initializeChecker->throwIfNotInitialize();
-
 		$context = self::openDatabase();
 		$userDomainDao = new UserDomainDao($context);
 		$items = $userDomainDao->selectCacheItems();
@@ -88,10 +78,8 @@ abstract class AppDatabaseCache
 	 *
 	 * @return void
 	 */
-	public static function exportPluginInformation(): void
+	public function exportPluginInformation(): void
 	{
-		self::$initializeChecker->throwIfNotInitialize();
-
 		$context = self::openDatabase();
 		$userDomainDao = new PluginDomainDao($context);
 		$items = $userDomainDao->selectCacheItems();
@@ -104,13 +92,11 @@ abstract class AppDatabaseCache
 	 *
 	 * @return array<PluginCache>
 	 */
-	public static function readPluginInformation(): array
+	public function readPluginInformation(): array
 	{
-		self::$initializeChecker->throwIfNotInitialize();
-
 		$items = self::readCache(self::PLUGIN_INFORMATION);
 
-		return array_map(function($i) {
+		return array_map(function ($i) {
 			$item = new PluginCache();
 			$item->pluginId = $i['pluginId'];
 			$item->userId = $i['userId'];

@@ -4,26 +4,27 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domain\Page\Account;
 
-use PeServer\Core\I18n;
-use PeServer\Core\DefaultValue;
-use PeServer\Core\Mvc\Validator;
-use PeServer\Core\Text;
-use PeServer\App\Models\AuditLog;
+use PeServer\App\Models\AppConfiguration;
+use PeServer\App\Models\AppCryptography;
 use PeServer\App\Models\AppMailer;
 use PeServer\App\Models\AppTemplate;
-use PeServer\Core\Mvc\LogicCallMode;
-use PeServer\Core\Mvc\LogicParameter;
-use PeServer\App\Models\SessionManager;
-use PeServer\App\Models\AppCryptography;
-use PeServer\App\Models\AppConfiguration;
-use PeServer\Core\Database\IDatabaseContext;
-use PeServer\App\Models\Domain\AccountValidator;
+use PeServer\App\Models\AuditLog;
 use PeServer\App\Models\Dao\Domain\UserDomainDao;
-use PeServer\Core\Throws\NotImplementedException;
-use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\App\Models\Dao\Entities\UserChangeWaitEmailsEntityDao;
+use PeServer\App\Models\Domain\AccountValidator;
+use PeServer\App\Models\Domain\Page\PageLogicBase;
+use PeServer\App\Models\SessionKey;
+use PeServer\Core\Database\IDatabaseContext;
+use PeServer\Core\DefaultValue;
+use PeServer\Core\I18n;
 use PeServer\Core\Mail\EmailAddress;
 use PeServer\Core\Mail\EmailMessage;
+use PeServer\Core\Mail\Mailer;
+use PeServer\Core\Mvc\LogicCallMode;
+use PeServer\Core\Mvc\LogicParameter;
+use PeServer\Core\Mvc\Validator;
+use PeServer\Core\Text;
+use PeServer\Core\Throws\NotImplementedException;
 
 class AccountUserEmailLogic extends PageLogicBase
 {
@@ -38,30 +39,30 @@ class AccountUserEmailLogic extends PageLogicBase
 		'token_timestamp_utc' => DefaultValue::EMPTY_STRING,
 	];
 
-	public function __construct(LogicParameter $parameter)
+	public function __construct(LogicParameter $parameter, private AppConfiguration $config, private AppCryptography $cryptography, private Mailer $mailer, private AppTemplate $appTemplate)
 	{
 		parent::__construct($parameter);
 	}
 
 	protected function startup(LogicCallMode $callMode): void
 	{
-		$userInfo = SessionManager::getAccount();
+		$userInfo = $this->requireSession(SessionKey::ACCOUNT);
 
 		$database = $this->openDatabase();
 
 		$userDomainDao = new UserDomainDao($database);
 		$values = $userDomainDao->selectEmailAndWaitTokenTimestamp(
 			$userInfo->userId,
-			AppConfiguration::$config['config']['confirm']['user_change_wait_email_minutes']
+			$this->config->setting['config']['confirm']['user_change_wait_email_minutes']
 		);
 
 		if (!Text::isNullOrWhiteSpace($values->fields['email'])) {
-			$this->defaultValues['email'] = AppCryptography::decrypt($values->fields['email']);
+			$this->defaultValues['email'] = $this->cryptography->decrypt($values->fields['email']);
 		} else {
 			$this->defaultValues['email'] = DefaultValue::EMPTY_STRING;
 		}
 		if (!Text::isNullOrWhiteSpace($values->fields['wait_email'])) {
-			$this->defaultValues['wait_email'] = AppCryptography::decrypt($values->fields['wait_email']);
+			$this->defaultValues['wait_email'] = $this->cryptography->decrypt($values->fields['wait_email']);
 		} else {
 			$this->defaultValues['wait_email'] = DefaultValue::EMPTY_STRING;
 		}
@@ -125,14 +126,14 @@ class AccountUserEmailLogic extends PageLogicBase
 
 	private function executeEdit(LogicCallMode $callMode): void
 	{
-		$account = SessionManager::getAccount();
+		$account = $this->requireSession(SessionKey::ACCOUNT);
 
 		$email = $this->getRequest('account_email_email');
 
 		$params = [
 			'user_id' => $account->userId,
-			'email' => AppCryptography::encrypt($email),
-			'mark_email' => AppCryptography::toMark($email),
+			'email' => $this->cryptography->encrypt($email),
+			'mark_email' => $this->cryptography->toMark($email),
 			'token' => sprintf('%08d', mt_rand(0, 99999999)),
 		];
 
@@ -155,23 +156,22 @@ class AccountUserEmailLogic extends PageLogicBase
 			'name' => $account->name,
 			'token' => $params['token'],
 		];
-		$html = AppTemplate::createMailTemplate('change_email_token', $subject, $values);
+		$html = $this->appTemplate->createMailTemplate('change_email_token', $subject, $values);
 
-		$mailer = new AppMailer();
-		$mailer->toAddresses = [
+		$this->mailer->toAddresses = [
 			new EmailAddress($email, $account->name),
 		];
-		$mailer->subject = $subject;
-		$mailer->setMessage(new EmailMessage(null, $html));
+		$this->mailer->subject = $subject;
+		$this->mailer->setMessage(new EmailMessage(null, $html));
 
-		$mailer->send();
+		$this->mailer->send();
 		//file_put_contents('X:\00_others\00_others\a.html',$html);
 		$this->addTemporaryMessage(I18n::message('message/flash/send_email_token'));
 	}
 
 	private function executeConfirm(LogicCallMode $callMode): void
 	{
-		$account = SessionManager::getAccount();
+		$account = $this->requireSession(SessionKey::ACCOUNT);
 
 		$params = [
 			'user_id' => $account->userId,
@@ -186,7 +186,7 @@ class AccountUserEmailLogic extends PageLogicBase
 			$existsToken = $userChangeWaitEmailsEntityDao->selectExistsToken(
 				$params['user_id'],
 				$params['token'],
-				AppConfiguration::$config['config']['confirm']['user_change_wait_email_minutes']
+				$this->config->setting['config']['confirm']['user_change_wait_email_minutes']
 			);
 
 			if (!$existsToken) {
@@ -237,16 +237,15 @@ class AccountUserEmailLogic extends PageLogicBase
 				'new_email' => $this->defaultValues['wait_email'],
 				'old_email' => $this->defaultValues['email'],
 			];
-			$html = AppTemplate::createMailTemplate($item['template'], $subject, $values);
+			$html = $this->appTemplate->createMailTemplate($item['template'], $subject, $values);
 
-			$mailer = new AppMailer();
-			$mailer->toAddresses = [
+			$this->mailer->toAddresses = [
 				new EmailAddress($item['email'], $account->name),
 			];
-			$mailer->subject = $subject;
-			$mailer->setMessage(new EmailMessage(null, $html));
+			$this->mailer->subject = $subject;
+			$this->mailer->setMessage(new EmailMessage(null, $html));
 
-			$mailer->send();
+			$this->mailer->send();
 		}
 
 		$this->result['confirm'] = true;

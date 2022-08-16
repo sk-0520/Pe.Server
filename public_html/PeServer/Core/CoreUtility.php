@@ -6,35 +6,10 @@ namespace PeServer\Core;
 
 abstract class CoreUtility
 {
-	/**
-	 * ライブラリディレクトリ パス一覧 取得。
-	 *
-	 * @return string[]
-	 */
-	public static function getLibraryDirectoryParts(): array
-	{
-		return ['Core', 'Libs'];
-	}
-
-	/**
-	 * フォントディレクトリ パス一覧 取得。
-	 *
-	 * @return string[]
-	 */
-	public static function getFontDirectoryParts(): array
-	{
-		//@phpstan-ignore-next-line
-		return [...self::getLibraryDirectoryParts(), 'fonts'];
-	}
-
-	/**
-	 * 標準フォント パス一覧 取得。
-	 *
-	 * @return string[]
-	 */
-	public static function getDefaultFontParts(): array
-	{
-		//@phpstan-ignore-next-line
-		return [...self::getFontDirectoryParts(), 'migmix', 'migmix-1m-regular.ttf'];
-	}
+	/** ライブラリディレクトリパス */
+	public const LIBRARY_DIRECTORY_PATH = __DIR__ . DIRECTORY_SEPARATOR . 'Libs';
+	/** フォントディレクトリパス */
+	public const FONT_DIRECTORY_PATH = self::LIBRARY_DIRECTORY_PATH . DIRECTORY_SEPARATOR . 'fonts';
+	/** 標準フォントパス */
+	public const DEFAULT_FONT_FILE_PATH = self::FONT_DIRECTORY_PATH . DIRECTORY_SEPARATOR . 'migmix' . DIRECTORY_SEPARATOR . 'migmix-1m-regular.ttf';
 }

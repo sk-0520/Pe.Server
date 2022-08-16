@@ -6,6 +6,7 @@ namespace PeServerTest\Core\Database;
 
 use PeServer\Core\Database\Database;
 use PeServer\Core\Log\Logging;
+use PeServer\Core\Log\NullLogger;
 
 /** テスト用DB処理 */
 class DB
@@ -17,6 +18,6 @@ class DB
 	 */
 	public static function memory(): Database
 	{
-		return new Database('sqlite::memory:', '', '', null, Logging::create(self::class));
+		return new Database('sqlite::memory:', '', '', null, new NullLogger());
 	}
 }

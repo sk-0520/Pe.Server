@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc;
 
 use PeServer\Core\ArrayUtility;
+use PeServer\Core\DI\IDiRegisterContainer;
 use PeServer\Core\Http\HttpHeader;
 use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Http\HttpRequest;
@@ -13,6 +14,7 @@ use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Http\RequestPath;
 use PeServer\Core\Http\ResponsePrinter;
 use PeServer\Core\Log\ILogger;
+use PeServer\Core\Log\ILoggerFactory;
 use PeServer\Core\Log\Logging;
 use PeServer\Core\Mvc\ActionSetting;
 use PeServer\Core\Mvc\ControllerArgument;
@@ -47,7 +49,14 @@ class Routing
 	protected Stores $stores;
 
 	/** @readonly */
-	protected ILogger $middlewareLogger;
+	protected ILoggerFactory $loggerFactory;
+
+	/**
+	 * このルーティング内で使いまわされるDI。
+	 *
+	 * @readonly
+	 */
+	protected IDiRegisterContainer $serviceLocator;
 
 	/**
 	 * 前処理済みミドルウェア一覧。
@@ -85,21 +94,22 @@ class Routing
 	/**
 	 * 生成。
 	 *
-	 * @param HttpMethod $requestMethod
-	 * @param RequestPath $requestPath
+	 * @param RouteRequest $routeRequest
 	 * @param RouteSetting $routeSetting
 	 * @param Stores $stores
 	 */
-	public function __construct(HttpMethod $requestMethod, RequestPath $requestPath, RouteSetting $routeSetting, Stores $stores)
+	public function __construct(RouteRequest $routeRequest, RouteSetting $routeSetting, Stores $stores, ILoggerFactory $loggerFactory, IDiRegisterContainer $serviceLocator)
 	{
-		$this->requestMethod = $requestMethod;
-		$this->requestPath = $requestPath;
+		$this->requestMethod = $routeRequest->method;
+		$this->requestPath = $routeRequest->path;
 		$this->setting = $routeSetting;
 		$this->stores = $stores;
+		$this->loggerFactory = $loggerFactory;
+		$this->serviceLocator = $serviceLocator;
 
 		$this->requestHeader = HttpHeader::getRequest();
-		$this->middlewareLogger = Logging::create('middleware');
-		$this->shutdownRequest = new HttpRequest($this->stores->special, $requestMethod, $this->requestHeader, []);
+		$this->shutdownRequest = new HttpRequest($this->stores->special, $this->requestMethod, $this->requestHeader, []);
+		$this->serviceLocator->registerValue($this->shutdownRequest);
 	}
 
 	/**
@@ -109,11 +119,12 @@ class Routing
 	 * @phpstan-param IMiddleware|class-string<IMiddleware> $middleware
 	 * @return IMiddleware
 	 */
-	protected static function getOrCreateMiddleware(IMiddleware|string $middleware): IMiddleware
+	protected function getOrCreateMiddleware(IMiddleware|string $middleware): IMiddleware
 	{
 		if (is_string($middleware)) {
 			/** @var IMiddleware */
-			$middleware = ReflectionUtility::create($middleware, IMiddleware::class);
+			//$middleware = ReflectionUtility::create($middleware, IMiddleware::class);
+			$middleware = $this->serviceLocator->new($middleware);
 		}
 
 		return $middleware;
@@ -126,11 +137,12 @@ class Routing
 	 * @phpstan-param IShutdownMiddleware|class-string<IShutdownMiddleware> $middleware
 	 * @return IShutdownMiddleware
 	 */
-	protected static function getOrCreateShutdownMiddleware(IShutdownMiddleware|string $middleware): IShutdownMiddleware
+	protected function getOrCreateShutdownMiddleware(IShutdownMiddleware|string $middleware): IShutdownMiddleware
 	{
 		if (is_string($middleware)) {
 			/** @var IShutdownMiddleware */
-			$middleware = ReflectionUtility::create($middleware, IShutdownMiddleware::class);
+			//$middleware = ReflectionUtility::create($middleware, IShutdownMiddleware::class);
+			$middleware = $this->serviceLocator->new($middleware);
 		}
 
 		return $middleware;
@@ -147,7 +159,7 @@ class Routing
 	 */
 	private function handleBeforeMiddlewareCore(RequestPath $requestPath, HttpRequest $request, IMiddleware|string $middleware): bool
 	{
-		$middlewareArgument = new MiddlewareArgument($requestPath, $this->stores, $request, $this->middlewareLogger);
+		$middlewareArgument = new MiddlewareArgument($requestPath, $this->stores, $request);
 		$middleware = self::getOrCreateMiddleware($middleware);
 
 		$middlewareResult = $middleware->handleBefore($middlewareArgument);
@@ -194,12 +206,11 @@ class Routing
 			return true;
 		}
 
-		$middlewareArgument = new MiddlewareArgument($this->requestPath, $this->stores, $request, $this->middlewareLogger);
-		$middlewareArgument->response = $response;
+		$middlewareArgument = new MiddlewareArgument($this->requestPath, $this->stores, $request);
 
 		$middleware = ArrayUtility::reverse($this->processedMiddleware);
 		foreach ($middleware as $middlewareItem) {
-			$middlewareResult = $middlewareItem->handleAfter($middlewareArgument);
+			$middlewareResult = $middlewareItem->handleAfter($middlewareArgument, $response);
 
 			if (!$middlewareResult->canNext()) {
 				$middlewareResult->apply();
@@ -226,7 +237,10 @@ class Routing
 		/** @phpstan-var class-string<ControllerBase> */
 		$controllerName = $splitNames[ArrayUtility::getCount($splitNames) - 1];
 
-		$this->shutdownRequest = $request = new HttpRequest($this->stores->special, $this->requestMethod, $this->requestHeader, $urlParameters);
+		// HTTPリクエストデータをDI再登録
+		$request = new HttpRequest($this->stores->special, $this->requestMethod, $this->requestHeader, $urlParameters);
+		$this->serviceLocator->registerValue($request);
+		$this->shutdownRequest = $request;
 
 		// アクション共通ミドルウェア処理
 		$this->shutdownMiddleware += $this->setting->actionShutdownMiddleware;
@@ -240,17 +254,17 @@ class Routing
 			return;
 		}
 
-		$logger = Logging::create($controllerName);
-		$controllerArgument = new ControllerArgument($this->stores, $logger);
+		$logger = $this->loggerFactory->create($controllerName);
+		$controllerArgument = $this->serviceLocator->new(ControllerArgument::class, [Stores::class => $this->stores, ILogger::class => $logger]);
 
 		/** @var IActionResult|null */
 		$actionResult = null;
-		$output = OutputBuffer::get(function () use ($controllerArgument, $controllerName, $actionSetting, $request, &$actionResult) {
+		$output = OutputBuffer::get(function () use ($controllerArgument, $controllerName, $actionSetting, &$actionResult) {
 			/** @var ControllerBase */
-			$controller = ReflectionUtility::create($controllerName, ControllerBase::class, $controllerArgument);
+			$controller = $this->serviceLocator->new($controllerName, [ControllerArgument::class => $controllerArgument]);
 			$methodName = $actionSetting->controllerMethod;
 			/** @var IActionResult */
-			$actionResult = $controller->$methodName($request);
+			$actionResult = $this->serviceLocator->call([$controller, $methodName]); //@phpstan-ignore-line callable
 		});
 		// 標準出力は闇に葬る
 		if ($output->getLength()) {
@@ -323,7 +337,7 @@ class Routing
 	private function shutdown(): void
 	{
 		if (ArrayUtility::getCount($this->shutdownMiddleware)) {
-			$middlewareArgument = new MiddlewareArgument($this->requestPath, $this->stores, $this->shutdownRequest, $this->middlewareLogger);
+			$middlewareArgument = new MiddlewareArgument($this->requestPath, $this->stores, $this->shutdownRequest);
 			$shutdownMiddleware = array_reverse($this->shutdownMiddleware);
 			foreach ($shutdownMiddleware as $middleware) {
 				$middleware = self::getOrCreateShutdownMiddleware($middleware);

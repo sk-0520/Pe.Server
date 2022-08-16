@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Middleware;
 
 use PeServer\App\Models\SessionAccount;
-use PeServer\App\Models\SessionManager;
+use PeServer\App\Models\SessionKey;
+use PeServer\Core\Http\HttpResponse;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mvc\Middleware\IMiddleware;
 use PeServer\Core\Mvc\Middleware\MiddlewareArgument;
@@ -22,7 +23,7 @@ abstract class AccountFilterMiddlewareBase implements IMiddleware
 	 */
 	protected function filterCore(MiddlewareArgument $argument, array $levels): MiddlewareResult
 	{
-		if (!$argument->stores->session->tryGet(SessionManager::ACCOUNT, $account)) {
+		if (!$argument->stores->session->tryGet(SessionKey::ACCOUNT, $account)) {
 			return MiddlewareResult::error(HttpStatus::forbidden());
 		}
 
@@ -38,12 +39,14 @@ abstract class AccountFilterMiddlewareBase implements IMiddleware
 
 	protected abstract function filter(MiddlewareArgument $argument): MiddlewareResult;
 
+	//[IMiddleware]
+
 	public final function handleBefore(MiddlewareArgument $argument): MiddlewareResult
 	{
 		return $this->filter($argument);
 	}
 
-	public final function handleAfter(MiddlewareArgument $argument): MiddlewareResult
+	public final function handleAfter(MiddlewareArgument $argument, HttpResponse $response): MiddlewareResult
 	{
 		return MiddlewareResult::none();
 	}

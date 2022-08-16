@@ -12,6 +12,8 @@ use PeServer\App\Models\ResponseJson;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\Domain\Api\ApiLogicBase;
+use PeServer\Core\Log\ILoggerFactory;
+use PeServer\Core\Mvc\ILogicFactory;
 
 define('NO_DEPLOY_START', '💩');
 require_once 'deploy/php-deploy-receiver.php';
@@ -19,7 +21,7 @@ require_once 'deploy/script.php';
 
 class DevelopmentApiInitializeLogic extends ApiLogicBase
 {
-	public function __construct(LogicParameter $parameter)
+	public function __construct(LogicParameter $parameter, private AppConfiguration $config, private ILoggerFactory $loggerFactory)
 	{
 		parent::__construct($parameter);
 	}
@@ -32,17 +34,12 @@ class DevelopmentApiInitializeLogic extends ApiLogicBase
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
 		// 結構なぐっだぐだ
-		$scriptArgument = new class() extends \Deploy\ScriptArgument // @phpstan-ignore-line
+		$scriptArgument = new class($this->config->rootDirectoryPath, $this->loggerFactory->create(\Deploy\ScriptArgument::class)) extends \Deploy\ScriptArgument // @phpstan-ignore-line
 		{
-			/**
-			 * @var ILogger
-			 */
-			private $logger;
-			public function __construct()
+			public function __construct(string $rootDirectoryPath, private ILogger $logger)
 			{
-				$this->logger = Logging::create('script');
 				parent::__construct(  // @phpstan-ignore-line
-					AppConfiguration::$rootDirectoryPath,
+					$rootDirectoryPath,
 					'',
 					'',
 					[]
@@ -55,7 +52,7 @@ class DevelopmentApiInitializeLogic extends ApiLogicBase
 		};
 
 		$deployScript = new \DeployScript($scriptArgument); // @phpstan-ignore-line
-		$deployScript->migrate(AppConfiguration::$config['persistence']);
+		$deployScript->migrate($this->config->setting['persistence']);
 
 		$this->setResponseJson(ResponseJson::success([
 			'success' => true,

@@ -7,7 +7,7 @@ namespace PeServer\App\Models\Domain\Page;
 use PeServer\App\Models\Domain\DomainLogicBase;
 use PeServer\App\Models\IAuditUserInfo;
 use PeServer\App\Models\SessionAccount;
-use PeServer\App\Models\SessionManager;
+use PeServer\App\Models\SessionKey;
 use PeServer\Core\Mvc\LogicParameter;
 
 abstract class PageLogicBase extends DomainLogicBase
@@ -21,11 +21,11 @@ abstract class PageLogicBase extends DomainLogicBase
 
 	protected function getAuditUserInfo(): ?IAuditUserInfo
 	{
-		if (!SessionManager::existsAccount()) {
+		if (!$this->existsSession(SessionKey::ACCOUNT)) {
 			return null;
 		}
 
-		$account = SessionManager::getAccount();
+		$account = $this->requireSession(SessionKey::ACCOUNT);
 
 		return new class($account) implements IAuditUserInfo
 		{

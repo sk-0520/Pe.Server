@@ -4,12 +4,19 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Result;
 
-use PeServer\Core\Http\HttpResponse;
+use PeServer\App\Models\AppTemplateOptions;
 use PeServer\Core\DefaultValue;
+use PeServer\Core\Http\HttpResponse;
+use PeServer\Core\IO\Directory;
+use PeServer\Core\IO\Path;
 use PeServer\Core\Mime;
+use PeServer\Core\Mvc\Template\ITemplateFactory;
 use PeServer\Core\Mvc\Result\IActionResult;
-use PeServer\Core\Mvc\Template;
-use PeServer\Core\Mvc\TemplateParameter;
+use PeServer\Core\Mvc\Template\Template;
+use PeServer\Core\Mvc\Template\TemplateFactory;
+use PeServer\Core\Mvc\Template\TemplateOptions;
+use PeServer\Core\Mvc\Template\TemplateParameter;
+use PeServer\Core\Web\IUrlHelper;
 
 /**
  * 結果操作: View。
@@ -31,7 +38,9 @@ class ViewActionResult implements IActionResult
 		private string $templateBaseName,
 		private string $actionName,
 		private TemplateParameter $templateParameter,
-		private array $headers
+		private array $headers,
+		private ITemplateFactory $templateFactory,
+		private IUrlHelper $urlHelper
 	) {
 	}
 
@@ -48,9 +57,13 @@ class ViewActionResult implements IActionResult
 			$response->header->addValue('Content-Type', Mime::HTML);
 		}
 
+		$options = new AppTemplateOptions(
+			$this->templateBaseName,
+			$this->urlHelper
+		);
+		$template = $this->templateFactory->createTemplate($options);
 
-		$template = Template::create($this->templateBaseName, DefaultValue::EMPTY_STRING, DefaultValue::EMPTY_STRING);
-		$response->content = $template->build("$this->actionName.tpl", $this->templateParameter);
+		$response->content = $template->build($this->actionName . '.tpl', $this->templateParameter);
 
 		return $response;
 	}

@@ -18,7 +18,7 @@ use PeServer\Core\Throws\HttpStatusException;
 
 class HomeWildcardLogic extends PageLogicBase
 {
-	public function __construct(LogicParameter $parameter)
+	public function __construct(LogicParameter $parameter, private AppConfiguration $config)
 	{
 		parent::__construct($parameter);
 	}
@@ -34,7 +34,7 @@ class HomeWildcardLogic extends PageLogicBase
 
 		$favicon = 'favicon.ico';
 		if (Text::startsWith($requestPath, $favicon, true)) {
-			$path = Path::combine(AppConfiguration::$rootDirectoryPath, 'assets', $favicon);
+			$path = Path::combine($this->config->rootDirectoryPath, 'assets', $favicon);
 			$this->setFileContent(Mime::ICON, $path);
 			return;
 		}

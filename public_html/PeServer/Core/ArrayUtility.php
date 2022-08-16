@@ -51,11 +51,16 @@ class ArrayUtility
 		if (!is_null($array) && isset($array[$key])) {
 			$result = $array[$key];
 			if (!is_null($result) && !is_null($fallbackValue)) { //@phpstan-ignore-line
-				$resultType = gettype($result);
-				$fallbackValueType = gettype($fallbackValue);
-				if ($resultType !== $fallbackValueType) {
-					throw new TypeException();
+				$resultType = TypeUtility::getType($result);
+				$fallbackValueType = TypeUtility::getType($fallbackValue);
+				if ($resultType === $fallbackValueType) {
+					return $result;
 				}
+				if (is_a($result, $fallbackValueType)) {
+					return $result;
+				}
+
+				throw new TypeException();
 			}
 
 			return $result;

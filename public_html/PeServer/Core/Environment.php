@@ -26,21 +26,21 @@ abstract class Environment
 		self::$initializeChecker ??= new InitializeChecker();
 		self::$initializeChecker->initialize();
 
-		setlocale(LC_ALL, $locale);
+		//setlocale(LC_ALL, $locale);
 
 		self::$environment = $environment;
 		self::$revision = $revision;
-		self::setLanguage($language);
+		//self::setLanguage($language);
 	}
 
-	public static function setLanguage(string $language): bool
-	{
-		return (bool)mb_language($language);
-	}
-	public static function getLanguage(): string
-	{
-		return (string)mb_language();
-	}
+	// public static function setLanguage(string $language): bool
+	// {
+	// 	return (bool)mb_language($language);
+	// }
+	// public static function getLanguage(): string
+	// {
+	// 	return (string)mb_language();
+	// }
 
 	public static function get(): string
 	{

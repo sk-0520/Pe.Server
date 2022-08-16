@@ -11,14 +11,14 @@ use PeServer\Core\Log\LoggerBase;
  */
 final class XdebugLogger extends LoggerBase
 {
-	public function __construct(string $header, int $level, int $baseTraceIndex)
+	public function __construct(LogOptions $options)
 	{
-		parent::__construct('{TIME} |{LEVEL}| {METHOD}: {MESSAGE} | {FILE_NAME}({LINE})', $header, $level, $baseTraceIndex);
+		parent::__construct($options);
 	}
 
 	protected final function logImpl(int $level, int $traceIndex, $message, ...$parameters): void
 	{
-		if (!function_exists('xdebug_is_debugger_active') || !\xdebug_is_debugger_active()) {
+		if (!\xdebug_is_debugger_active()) {
 			return;
 		}
 

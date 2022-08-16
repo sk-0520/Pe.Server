@@ -16,7 +16,7 @@ use PeServer\App\Models\Domain\Page\PageLogicBase;
 
 class SettingLogListLogic extends PageLogicBase
 {
-	public function __construct(LogicParameter $parameter)
+	public function __construct(LogicParameter $parameter, private AppConfiguration $config)
 	{
 		parent::__construct($parameter);
 	}
@@ -29,11 +29,11 @@ class SettingLogListLogic extends PageLogicBase
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
 		/** @var array<string,mixed> */
-		$logging = AppConfiguration::$config['logging'];
+		$logging = $this->config::$config['logging'];
 		/** @var string @-phpstan-ignore-next-line */
-		$dirPath = $logging['file']['directory'];
+		$dirPath = $logging['file']['configuration']['logger']['directory'];
 		/** @var string @-phpstan-ignore-next-line */
-		$targetExt = Path::getFileExtension($logging['file']['name']);
+		$targetExt = Path::getFileExtension($logging['file']['configuration']['logger']['name']);
 		$files = Directory::getFiles($dirPath, false);
 
 		$logFiles = array_filter($files, function ($i) use ($targetExt) {

@@ -14,7 +14,7 @@ use PeServer\Core\Text;
 
 class SettingConfigurationLogic extends PageLogicBase
 {
-	public function __construct(LogicParameter $parameter)
+	public function __construct(LogicParameter $parameter, private AppConfiguration $config)
 	{
 		parent::__construct($parameter);
 	}
@@ -26,7 +26,7 @@ class SettingConfigurationLogic extends PageLogicBase
 
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
-		$this->setValue('config', AppConfiguration::$config);
+		$this->setValue('config', $this->config->setting);
 
 		$database = $this->openDatabase();
 		$schemas = $database->query(
