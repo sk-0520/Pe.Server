@@ -18,9 +18,9 @@ class LogicFactory extends DiFactoryBase implements ILogicFactory
 
 	//[ILogicFactory]
 
-	public function new(string $logicClassName, array $arguments = []): LogicBase
+	public function createLogic(string $logicClassName, array $arguments = []): LogicBase
 	{
-		$logger = $this->container->new(LoggerFactory::class)->create($logicClassName);
+		$logger = $this->container->new(LoggerFactory::class)->createLogger($logicClassName);
 		$parameter = $this->container->new(LogicParameter::class, [ILogger::class => $logger]);
 		$arguments[LogicParameter::class] = $parameter;
 		return $this->container->new($logicClassName, $arguments);

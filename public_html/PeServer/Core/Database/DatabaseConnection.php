@@ -31,7 +31,7 @@ class DatabaseConnection implements IDatabaseConnection
 			$this->setting->user,
 			$this->setting->password,
 			$this->setting->options,
-			$this->loggerFactory->create(Database::class)
+			$this->loggerFactory->createLogger(Database::class)
 		);
 	}
 }

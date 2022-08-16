@@ -113,7 +113,7 @@ abstract class ControllerBase
 		// /** @var LogicBase */
 		// $logic = ReflectionUtility::create($logicClass, LogicBase::class, $parameter, ...$parameters);
 
-		$logic = $this->logicFactory->new($logicClass, $arguments/*, ...$parameters*/);
+		$logic = $this->logicFactory->createLogic($logicClass, $arguments/*, ...$parameters*/);
 
 		$this->logic = $logic;
 		return $logic;

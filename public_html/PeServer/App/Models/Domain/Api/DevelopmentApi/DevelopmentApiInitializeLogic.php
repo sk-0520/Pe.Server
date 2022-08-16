@@ -34,7 +34,7 @@ class DevelopmentApiInitializeLogic extends ApiLogicBase
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
 		// 結構なぐっだぐだ
-		$scriptArgument = new class($this->config->rootDirectoryPath, $this->loggerFactory->create(\Deploy\ScriptArgument::class)) extends \Deploy\ScriptArgument // @phpstan-ignore-line
+		$scriptArgument = new class($this->config->rootDirectoryPath, $this->loggerFactory->createLogger(\Deploy\ScriptArgument::class)) extends \Deploy\ScriptArgument // @phpstan-ignore-line
 		{
 			public function __construct(string $rootDirectoryPath, private ILogger $logger)
 			{

@@ -254,7 +254,7 @@ class Routing
 			return;
 		}
 
-		$logger = $this->loggerFactory->create($controllerName);
+		$logger = $this->loggerFactory->createLogger($controllerName);
 		$controllerArgument = $this->serviceLocator->new(ControllerArgument::class, [Stores::class => $this->stores, ILogger::class => $logger]);
 
 		/** @var IActionResult|null */
