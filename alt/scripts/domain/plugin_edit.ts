@@ -27,8 +27,10 @@ async function generatePluginIdAsync(ev: Event) {
 }
 
 function register() {
-	const autoGenElement = document.getElementById('pg-plugin-id-auto-generate')!;
-	autoGenElement.addEventListener('click', generatePluginIdAsync, false);
+	const autoGenElement = document.getElementById('pg-plugin-id-auto-generate');
+	if(autoGenElement) {
+		autoGenElement.addEventListener('click', generatePluginIdAsync, false);
+	}
 }
 
 export function boot() {
