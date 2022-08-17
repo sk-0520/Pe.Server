@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc;
 
+use PeServer\Core\Html\CodeHighlighter;
+
 require_once(__DIR__ . '/../../Core/Libs/php-markdown/Michelf/MarkdownExtra.inc.php');
 
 class Markdown
 {
 	/**
-	 * Undocumented variable
+	 * Markdown
 	 *
 	 * @var \Michelf\Markdown|\Michelf\MarkdownExtra
 	 */
@@ -21,6 +23,10 @@ class Markdown
 	public function __construct()
 	{
 		$this->parser = new \Michelf\MarkdownExtra();
+		$this->parser->code_block_content_func = function ($code, $language) {
+			$codeHighlighter = new CodeHighlighter();
+			return $codeHighlighter->toHtml($language, $code);
+		};
 	}
 
 	public function setSafeMode(bool $isSafeMode): void

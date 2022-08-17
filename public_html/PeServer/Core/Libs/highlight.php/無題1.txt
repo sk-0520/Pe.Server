@@ -1,5 +1,0 @@
-
-	public function __construct(ControllerArgument $argument)
-	{
-		parent::__construct($argument);
-	}
