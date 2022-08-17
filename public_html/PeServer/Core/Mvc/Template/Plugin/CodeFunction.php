@@ -53,15 +53,15 @@ class CodeFunction extends TemplateBlockFunctionBase
 	 *
 	 * @param string $language
 	 * @param string $source
-	 * @return array
+	 * @return string[]
 	 */
 	private function toLines(string $language, string $source): array
 	{
 		if (!Text::isNullOrWhiteSpace($language)) {
-			$hl = new Highlighter();
+			$hl = new Highlighter(); //@phpstan-ignore-line Highlighter
 			try {
-				$highlighted = $hl->highlight($language, $source);
-				$lines = Functions::splitCodeIntoArray($highlighted->value);
+				$highlighted = $hl->highlight($language, $source); //@phpstan-ignore-line highlight
+				$lines = Functions::splitCodeIntoArray($highlighted->value); //@phpstan-ignore-line splitCodeIntoArray
 				if ($lines !== false) {
 					return $lines;
 				}
@@ -76,7 +76,7 @@ class CodeFunction extends TemplateBlockFunctionBase
 	protected function functionBlockBodyImpl(string $content): string
 	{
 		$language = ArrayUtility::getOr($this->params, 'language', DefaultValue::EMPTY_STRING);
-		$numbers = (string)$this->params['numbers'] ?? '';
+		$numbers = (string)($this->params['numbers'] ?? '');
 
 		$lineNumbers = [];
 		if (!Text::isNullOrWhiteSpace($numbers)) {

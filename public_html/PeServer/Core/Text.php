@@ -408,7 +408,13 @@ abstract class Text
 		return $result;
 	}
 
-	public static function splitLines(string $value)
+	/**
+	 * 文字列を改行で分割。
+	 *
+	 * @param string $value
+	 * @return string[]
+	 */
+	public static function splitLines(string $value): array
 	{
 		$lfValue = self::replace($value, ["\r\n", "\r"], "\n");
 		return self::split($lfValue, "\n");
