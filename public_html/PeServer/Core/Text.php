@@ -408,6 +408,12 @@ abstract class Text
 		return $result;
 	}
 
+	public static function splitLines(string $value)
+	{
+		$lfValue = self::replace($value, ["\r\n", "\r"], "\n");
+		return self::split($lfValue, "\n");
+	}
+
 	/**
 	 * 文字列結合。
 	 *

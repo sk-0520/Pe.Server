@@ -19,6 +19,7 @@ use PeServer\Core\Mvc\Template\Plugin\ShowErrorMessagesFunction;
 use PeServer\Core\Mvc\Template\Plugin\SourceFunction;
 use PeServer\Core\Mvc\Template\Plugin\TemplatePluginArgument;
 use PeServer\Core\IO\Path;
+use PeServer\Core\Mvc\Template\Plugin\CodeFunction;
 use PeServer\Core\Store\Stores;
 use PeServer\Core\Throws\NotImplementedException;
 
@@ -86,6 +87,7 @@ class SmartyTemplate extends TemplateBase
 			new InputHelperFunction($argument, $showErrorMessagesFunction),
 			new BotTextImageFunction($argument),
 			new MarkdownFunction($argument),
+			new CodeFunction($argument),
 		];
 		foreach ($plugins as $plugin) {
 			if ($plugin instanceof ITemplateBlockFunction) {

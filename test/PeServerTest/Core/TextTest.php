@@ -284,6 +284,20 @@ class TextTest extends TestClass
 		}
 	}
 
+	public function test_splitLines()
+	{
+		$tests = [
+			new Data(['a', 'b', 'c'], "a\nb\nc"),
+			new Data(['a', 'b', 'c'], "a\rb\rc"),
+			new Data(['a', 'b', 'c'], "a\r\nb\r\nc"),
+			new Data(['a', 'b', '', 'c', ''], "a\rb\n\rc\r\n"),
+		];
+		foreach ($tests as $test) {
+			$actual = Text::splitLines(...$test->args);
+			$this->assertSame($test->expected, $actual, $test->str());
+		}
+	}
+
 	public function test_join()
 	{
 		$tests = [
