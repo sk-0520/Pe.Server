@@ -2,16 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PeServer\App\Models\Domain\Page\Plugin;
+namespace PeServer\App\Models\Domain\Page\Setting;
 
 use PeServer\App\Models\AppDatabaseCache;
-use PeServer\App\Models\Cache\PluginCache;
-use PeServer\App\Models\Cache\PluginCacheItem;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
+use PeServer\Core\Timer;
 
-class PluginIndexLogic extends PageLogicBase
+class SettingCacheRebuildLogic extends PageLogicBase
 {
 	public function __construct(LogicParameter $parameter, private AppDatabaseCache $dbCache)
 	{
@@ -25,14 +24,13 @@ class PluginIndexLogic extends PageLogicBase
 
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
-		$pluginInformation = $this->dbCache->readPluginInformation();
+		$stopwatch =  Timer::startNew();
 
-		$items = $pluginInformation->items;
+		$this->dbCache->exportUserInformation();
+		$this->dbCache->exportPluginInformation();
 
-		usort($items, function (PluginCacheItem $a, PluginCacheItem $b) {
-			return strcmp($a->pluginName, $b->pluginName);
-		});
+		$stopwatch->stop();
 
-		$this->setValue('plugins', $items);
+		$this->addTemporaryMessage('キャッシュ再構築完了: ' . $stopwatch->toString());
 	}
 }

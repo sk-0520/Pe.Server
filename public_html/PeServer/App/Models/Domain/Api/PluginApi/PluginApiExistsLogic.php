@@ -33,7 +33,7 @@ class PluginApiExistsLogic extends ApiLogicBase
 		$pluginName = ArrayUtility::getOr($json, 'plugin_name', DefaultValue::EMPTY_STRING);
 
 		$plugins = $this->dbCache->readPluginInformation();
-		$pluginCollection = Collection::from($plugins);
+		$pluginCollection = Collection::from($plugins->items);
 		$existsPluginId = $pluginCollection->any(function ($i) use ($pluginId) {
 			return Uuid::isEqualGuid($i->pluginId, $pluginId);
 		});

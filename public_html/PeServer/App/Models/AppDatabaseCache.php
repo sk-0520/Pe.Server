@@ -4,19 +4,24 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models;
 
-use PeServer\Core\IO\File;
-use PeServer\Core\IO\Directory;
-use PeServer\Core\IO\Path;
+use PeServer\App\Models\Cache\CacheException;
 use PeServer\App\Models\Cache\PluginCache;
-use PeServer\Core\Database\IDatabaseContext;
-use PeServer\App\Models\Dao\Domain\UserDomainDao;
+use PeServer\App\Models\Cache\PluginCacheCategory;
+use PeServer\App\Models\Cache\PluginCacheItem;
+use PeServer\App\Models\Cache\UserCache;
 use PeServer\App\Models\Dao\Domain\PluginDomainDao;
+use PeServer\App\Models\Dao\Domain\UserDomainDao;
+use PeServer\Core\Binary;
 use PeServer\Core\Database\IDatabaseConnection;
+use PeServer\Core\Database\IDatabaseContext;
+use PeServer\Core\IO\Directory;
+use PeServer\Core\IO\File;
+use PeServer\Core\IO\Path;
 
 class AppDatabaseCache
 {
-	private const USER_INFORMATION = 'user.json';
-	private const PLUGIN_INFORMATION = 'plugin.json';
+	private const USER_INFORMATION = 'user.cache';
+	private const PLUGIN_INFORMATION = 'plugin.cache';
 
 	private string $cacheDirectoryPath;
 
@@ -33,30 +38,35 @@ class AppDatabaseCache
 	}
 
 	/**
-	 * Undocumented function
+	 * オブジェクトをキャシュデータとして出力。
 	 *
 	 * @param string $fileName
-	 * @param array<mixed> $cache
+	 * @param object $object
 	 * @return void
 	 */
-	private function exportCache(string $fileName, array $cache): void
+	private function exportCache(string $fileName, object $object): void
 	{
 		$filePath = Path::combine($this->cacheDirectoryPath, $fileName);
 		Directory::createParentDirectoryIfNotExists($filePath);
-		File::writeJsonFile($filePath, $cache);
+		$binary = Binary::serialize($object);
+		File::writeContent($filePath, $binary->getRaw());
 	}
 
 	/**
-	 * Undocumented function
+	 * キャシュデータをオブジェクトとして読み込み。
 	 *
+	 * @template T of object
 	 * @param string $fileName
-	 * @return array<mixed>
+	 * @param string $className
+	 * @phpstan-param class-string<T> $className
+	 * @return object
+	 * @phpstan-return T
 	 */
-	private function readCache(string $fileName): array
+	private function readCache(string $fileName, string $className): object
 	{
 		$filePath = Path::combine($this->cacheDirectoryPath, $fileName);
-		$result = File::readJsonFile($filePath);
-		return $result;
+		$result = File::readContent($filePath);
+		return $result->unserialize($className);
 	}
 
 	/**
@@ -66,11 +76,14 @@ class AppDatabaseCache
 	 */
 	public function exportUserInformation(): void
 	{
-		$context = self::openDatabase();
+		$context = $this->openDatabase();
 		$userDomainDao = new UserDomainDao($context);
-		$items = $userDomainDao->selectCacheItems();
 
-		self::exportCache(self::USER_INFORMATION, $items);
+		$cache = new UserCache(
+			$userDomainDao->selectCacheItems()
+		);
+
+		self::exportCache(self::USER_INFORMATION, $cache);
 	}
 
 	/**
@@ -80,33 +93,24 @@ class AppDatabaseCache
 	 */
 	public function exportPluginInformation(): void
 	{
-		$context = self::openDatabase();
+		$context = $this->openDatabase();
 		$userDomainDao = new PluginDomainDao($context);
-		$items = $userDomainDao->selectCacheItems();
 
-		self::exportCache(self::PLUGIN_INFORMATION, $items);
+		$cache = new PluginCache(
+			$userDomainDao->selectCacheCategories(),
+			$userDomainDao->selectCacheItems()
+		);
+
+		self::exportCache(self::PLUGIN_INFORMATION, $cache);
 	}
 
 	/**
-	 * Undocumented function
+	 * プラグイン情報のキャッシュ取得。
 	 *
-	 * @return array<PluginCache>
+	 * @return PluginCache
 	 */
-	public function readPluginInformation(): array
+	public function readPluginInformation(): PluginCache
 	{
-		$items = self::readCache(self::PLUGIN_INFORMATION);
-
-		return array_map(function ($i) {
-			$item = new PluginCache();
-			$item->pluginId = $i['pluginId'];
-			$item->userId = $i['userId'];
-			$item->pluginName = $i['pluginName'];
-			$item->displayName = $i['displayName'];
-			$item->state = $i['state'];
-			$item->description = $i['description'];
-			$item->urls = $i['urls'];
-
-			return $item;
-		}, $items);
+		return self::readCache(self::PLUGIN_INFORMATION, PluginCache::class);
 	}
 }

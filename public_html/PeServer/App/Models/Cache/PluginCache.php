@@ -4,18 +4,20 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Cache;
 
+use PeServer\App\Models\Cache\PluginCacheCategory;
+use PeServer\App\Models\Cache\PluginCacheItem;
+
 class PluginCache
 {
-	public string $pluginId;
-	public string $userId;
-	public string $pluginName;
-	public string $displayName;
-	public string $state;
-	public string $description;
 	/**
-	 * Undocumented variable
+	 * 生成。
 	 *
-	 * @var array<string,string>
+	 * @param PluginCacheCategory[] $categories プラグインカテゴリ一覧。
+	 * @param PluginCacheItem[] $items プラグインアイテム一覧。
 	 */
-	public array $urls = [];
+	public function __construct(
+		public array $categories,
+		public array $items
+	) {
+	}
 }

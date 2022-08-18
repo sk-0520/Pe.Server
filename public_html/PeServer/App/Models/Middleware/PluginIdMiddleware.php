@@ -38,7 +38,7 @@ final class PluginIdMiddleware implements IMiddleware
 				$pluginId = Uuid::adjustGuid($pluginId);
 
 				$plugins = $this->dbCache->readPluginInformation();
-				foreach ($plugins as $plugin) {
+				foreach ($plugins->items as $plugin) {
 					if (Uuid::isEqualGuid($plugin->pluginId, $pluginId)) {
 						return MiddlewareResult::none();
 					}

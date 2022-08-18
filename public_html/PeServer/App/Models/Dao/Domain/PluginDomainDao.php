@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Dao\Domain;
 
-use PeServer\Core\Database\DaoBase;
 use PeServer\App\Models\Cache\PluginCache;
+use PeServer\App\Models\Cache\PluginCacheCategory;
+use PeServer\App\Models\Cache\PluginCacheItem;
 use PeServer\App\Models\Domain\PluginUrlKey;
+use PeServer\Core\Database\DaoBase;
 use PeServer\Core\Database\IDatabaseContext;
 
 class PluginDomainDao extends DaoBase
@@ -19,7 +21,7 @@ class PluginDomainDao extends DaoBase
 	/**
 	 * Undocumented function
 	 *
-	 * @return PluginCache[]
+	 * @return PluginCacheItem[]
 	 */
 	public function selectCacheItems(): array
 	{
@@ -74,19 +76,52 @@ class PluginDomainDao extends DaoBase
 		);
 
 		return array_map(function ($i) {
-			$cache = new PluginCache();
+			$cache = new PluginCacheItem(
+				$i['plugin_id'],
+				$i['user_id'],
+				$i['plugin_name'],
+				$i['display_name'],
+				$i['state'],
+				$i['description'],
+				[
+					PluginUrlKey::CHECK => $i['check_plugin_url'],
+					PluginUrlKey::PROJECT => $i['project_plugin_url'],
+					PluginUrlKey::LANDING => $i['lp_plugin_url'],
+				]
+			);
 
-			$cache->pluginId = $i['plugin_id'];
-			$cache->userId = $i['user_id'];
-			$cache->pluginName = $i['plugin_name'];
-			$cache->displayName = $i['display_name'];
-			$cache->state = $i['state'];
-			$cache->description = $i['description'];
-			$cache->urls = [
-				PluginUrlKey::CHECK => $i['check_plugin_url'],
-				PluginUrlKey::PROJECT => $i['project_plugin_url'],
-				PluginUrlKey::LANDING => $i['lp_plugin_url'],
-			];
+			return $cache;
+		}, $result->rows);
+	}
+
+	/**
+	 * Undocumented function
+	 *
+	 * @return PluginCacheCategory[]
+	 */
+	public function selectCacheCategories(): array
+	{
+		$result = $this->context->query(
+			<<<SQL
+
+			select
+				plugin_categories.plugin_category_id,
+				plugin_categories.display_name,
+				plugin_categories.description
+			from
+				plugin_categories
+			order by
+				plugin_categories.plugin_category_id
+
+			SQL
+		);
+
+		return array_map(function ($i) {
+			$cache = new PluginCacheCategory(
+				$i['plugin_category_id'],
+				$i['display_name'],
+				$i['description']
+			);
 
 			return $cache;
 		}, $result->rows);

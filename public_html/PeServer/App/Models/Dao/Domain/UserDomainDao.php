@@ -6,6 +6,7 @@ namespace PeServer\App\Models\Dao\Domain;
 
 use PeServer\Core\Database\DaoBase;
 use PeServer\App\Models\Cache\UserCache;
+use PeServer\App\Models\Cache\UserCacheItem;
 use PeServer\Core\Database\DatabaseRowResult;
 use PeServer\Core\Database\IDatabaseContext;
 
@@ -97,7 +98,7 @@ class UserDomainDao extends DaoBase
 	/**
 	 * Undocumented function
 	 *
-	 * @return UserCache[]
+	 * @return UserCacheItem[]
 	 */
 	public function selectCacheItems(): array
 	{
@@ -120,14 +121,14 @@ class UserDomainDao extends DaoBase
 		);
 
 		return array_map(function ($i) {
-			$cache = new UserCache();
-
-			$cache->userId = $i['user_id'];
-			$cache->userName = $i['name'];
-			$cache->level = $i['level'];
-			$cache->state = $i['state'];
-			$cache->website = $i['website'];
-			$cache->description = $i['description'];
+			$cache = new UserCacheItem(
+				$i['user_id'],
+				$i['name'],
+				$i['level'],
+				$i['state'],
+				$i['website'],
+				$i['description']
+			);
 
 			return $cache;
 		}, $result->rows);
