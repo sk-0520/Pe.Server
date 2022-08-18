@@ -35,7 +35,7 @@ class PluginApiInformationLogic extends ApiLogicBase
 		/** @var array<string,array<mixed>> */
 		$items = [];
 		foreach($pluginIds as $pluginId) {
-			foreach($plugins as $plugin) {
+			foreach($plugins->items as $plugin) {
 				if(Uuid::isEqualGuid($plugin->pluginId, $pluginId)) {
 					$items[$plugin->pluginId] = [
 						'user_id' => $plugin->userId,

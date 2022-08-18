@@ -29,7 +29,7 @@ class ArrayUtility
 			return true;
 		}
 
-		return self::getCount($array) === 0;
+		return empty($array);
 	}
 
 	/**

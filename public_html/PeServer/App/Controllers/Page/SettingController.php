@@ -3,6 +3,7 @@
 namespace PeServer\App\Controllers\Page;
 
 use PeServer\App\Controllers\Page\PageControllerBase;
+use PeServer\App\Models\Domain\Page\Setting\SettingCacheRebuildLogic;
 use PeServer\App\Models\Domain\Page\Setting\SettingConfigurationLogic;
 use PeServer\App\Models\Domain\Page\Setting\SettingDatabaseMaintenanceLogic;
 use PeServer\App\Models\Domain\Page\Setting\SettingDefaultPluginLogic;
@@ -10,9 +11,9 @@ use PeServer\App\Models\Domain\Page\Setting\SettingEnvironmentLogic;
 use PeServer\App\Models\Domain\Page\Setting\SettingLogDetailLogic;
 use PeServer\App\Models\Domain\Page\Setting\SettingLogListLogic;
 use PeServer\App\Models\Domain\Page\Setting\SettingMarkdownLogic;
+use PeServer\App\Models\Domain\Page\Setting\SettingPhpEvaluateLogic;
 use PeServer\App\Models\Domain\Page\Setting\SettingPluginCategoryListLogic;
 use PeServer\App\Models\Domain\Page\Setting\SettingSetupLogic;
-use PeServer\App\Models\Domain\Page\Setting\SettingPhpEvaluateLogic;
 use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mvc\ControllerArgument;
@@ -112,6 +113,15 @@ final class SettingController extends PageControllerBase
 		return $this->view('default_plugin', $logic->getViewData());
 	}
 
+	public function cache_rebuild(): IActionResult
+	{
+		$logic = $this->createLogic(SettingCacheRebuildLogic::class);
+		$logic->run(LogicCallMode::submit());
+
+		return $this->redirectPath('/setting');
+
+	}
+
 	public function plugin_category_get(): IActionResult
 	{
 		$logic = $this->createLogic(SettingPluginCategoryListLogic::class);
@@ -119,7 +129,6 @@ final class SettingController extends PageControllerBase
 
 		return $this->view('plugin_category', $logic->getViewData());
 	}
-
 
 	public function log_list(): IActionResult
 	{

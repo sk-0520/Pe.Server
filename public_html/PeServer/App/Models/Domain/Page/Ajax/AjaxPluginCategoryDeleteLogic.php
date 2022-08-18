@@ -4,20 +4,21 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domain\Page\Ajax;
 
-use PeServer\Core\Text;
-use PeServer\Core\Mvc\LogicCallMode;
-use PeServer\App\Models\ResponseJson;
-use PeServer\Core\Mvc\LogicParameter;
-use PeServer\App\Models\SessionKey;
-use PeServer\Core\Database\IDatabaseContext;
-use PeServer\App\Models\Domain\Page\PageLogicBase;
+use PeServer\App\Models\AppDatabaseCache;
 use PeServer\App\Models\Dao\Entities\PluginCategoriesEntityDao;
 use PeServer\App\Models\Dao\Entities\PluginCategoryMappingsEntityDao;
+use PeServer\App\Models\Domain\Page\PageLogicBase;
+use PeServer\App\Models\ResponseJson;
+use PeServer\App\Models\SessionKey;
+use PeServer\Core\Database\IDatabaseContext;
+use PeServer\Core\Mvc\LogicCallMode;
+use PeServer\Core\Mvc\LogicParameter;
+use PeServer\Core\Text;
 use PeServer\Core\TypeUtility;
 
 class AjaxPluginCategoryDeleteLogic extends PageLogicBase
 {
-	public function __construct(LogicParameter $parameter)
+	public function __construct(LogicParameter $parameter, private AppDatabaseCache $dbCache)
 	{
 		parent::__construct($parameter);
 	}
@@ -50,5 +51,7 @@ class AjaxPluginCategoryDeleteLogic extends PageLogicBase
 		});
 
 		$this->setResponseJson(ResponseJson::success($params));
+
+		$this->dbCache->exportPluginInformation();
 	}
 }

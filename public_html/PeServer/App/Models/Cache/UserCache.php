@@ -4,12 +4,17 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Cache;
 
+use PeServer\App\Models\Cache\UserCacheItem;
+
 class UserCache
 {
-	public string $userId;
-	public string $userName;
-	public string $level;
-	public string $state;
-	public string $website;
-	public string $description;
+	/**
+	 * 生成。
+	 *
+	 * @param UserCacheItem[] $items
+	 */
+	public function __construct(
+		public array $items
+	) {
+	}
 }

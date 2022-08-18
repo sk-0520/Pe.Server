@@ -1,6 +1,8 @@
 @forward "reset-css";
 
 @forward "core/tab";
+@forward "../../public_html/PeServer/Core/Libs/highlight.php/src/Highlight/styles/vs2015.css";
+@forward "_highlight";
 @forward "font";
 @forward "forms";
 @forward "link";

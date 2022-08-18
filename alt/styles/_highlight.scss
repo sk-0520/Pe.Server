@@ -1,0 +1,33 @@
+
+pre.source {
+	max-height: 80vh;
+	overflow-x: auto;
+	overflow-y: auto;
+	font-family: Consolas, 'Courier New', Courier, Monaco, monospace;
+}
+
+pre.source code {
+	font-family: inherit;
+}
+
+pre.source code .code-line {
+	counter-increment: line-number;
+	margin: 0;
+	tab-size: 4ch;
+}
+
+pre.source code .code-line::before {
+	user-select: none;
+	display: inline-block;
+	content: counter(line-number);
+	color: #aaa;
+	width: 4ch;
+	text-align: right;
+	border-right: 1px solid #888;
+	margin-right: 2px;
+	padding-right: 2px;
+}
+
+pre.source code .code-line.strong-line {
+	background: #eeff0055;
+}

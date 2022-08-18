@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domain\Page\Plugin;
 
-use PeServer\Core\Mvc\LogicCallMode;
-use PeServer\Core\Mvc\LogicParameter;
 use PeServer\App\Models\AppDatabaseCache;
 use PeServer\App\Models\Cache\PluginCache;
+use PeServer\App\Models\Cache\PluginCacheItem;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
+use PeServer\Core\Mvc\LogicCallMode;
+use PeServer\Core\Mvc\LogicParameter;
 
 class PluginIndexLogic extends PageLogicBase
 {
@@ -26,10 +27,12 @@ class PluginIndexLogic extends PageLogicBase
 	{
 		$pluginInformation = $this->dbCache->readPluginInformation();
 
-		usort($pluginInformation, function(PluginCache $a, PluginCache $b) {
+		$items = $pluginInformation->items;
+
+		usort($items, function (PluginCacheItem $a, PluginCacheItem $b) {
 			return strcmp($a->pluginName, $b->pluginName);
 		});
 
-		$this->setValue('plugins', $pluginInformation);
+		$this->setValue('plugins', $items);
 	}
 }

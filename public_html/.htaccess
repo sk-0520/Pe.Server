@@ -4,9 +4,10 @@ AddType application/x-httpd-php80 .php
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteCond %{REQUEST_URI} !^/deploy/php-deploy-receiver.php$
-    RewriteCond %{REQUEST_URI} !^/styles/(.+\.css)(\?[a-zA-Z0-9]*)?$
-    RewriteCond %{REQUEST_URI} !^/scripts/(.+\.js)(\?[a-zA-Z0-9]*)?$
-    RewriteCond %{REQUEST_URI} !^/assets/.+
+    RewriteCond %{REQUEST_URI} !^/assets/.++
+    RewriteCond %{REQUEST_URI} !^/styles/.++
+    RewriteCond %{REQUEST_URI} !^/scripts/.++
+    RewriteCond %{REQUEST_URI} !^/public/.++
     RewriteRule . index.php
 </IfModule>
 

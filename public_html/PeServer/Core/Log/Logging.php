@@ -253,8 +253,8 @@ abstract class Logging
 			$item = $callStack[0];
 			$className = (string)$item->data; // あぶねぇかなぁ
 			$header = Logging::toHeader($className);
-			return $loggerFactory->create($header, 0);
+			return $loggerFactory->createLogger($header, 0);
 		}
-		return $loggerFactory->create('<UNKNOWN>');
+		return $loggerFactory->createLogger('<UNKNOWN>');
 	}
 }

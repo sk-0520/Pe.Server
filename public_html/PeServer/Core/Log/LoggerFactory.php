@@ -54,7 +54,7 @@ class LoggerFactory extends DiFactoryBase implements ILoggerFactory
 
 	//[ILoggerFactory]
 
-	public function create(string|object $header, int $baseTraceIndex = 0): ILogger
+	public function createLogger(string|object $header, int $baseTraceIndex = 0): ILogger
 	{
 		/** @var ILogProvider */
 		$logProvider = $this->container->get(ILogProvider::class);

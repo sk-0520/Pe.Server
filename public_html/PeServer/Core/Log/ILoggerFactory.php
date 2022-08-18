@@ -17,5 +17,5 @@ interface ILoggerFactory
 	 * @phpstan-param UnsignedIntegerAlias $baseTraceIndex
 	 * @return ILogger
 	 */
-	function create(string|object $header, int $baseTraceIndex = 0): ILogger;
+	function createLogger(string|object $header, int $baseTraceIndex = 0): ILogger;
 }

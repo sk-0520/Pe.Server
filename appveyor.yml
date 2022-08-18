@@ -28,10 +28,6 @@ test_script:
 artifacts:
   - path: public_html
     name: public_html
-  - path: coverage
-    name: coverage
-  - path: api-doc
-    name: api-doc
 
 for:
   -

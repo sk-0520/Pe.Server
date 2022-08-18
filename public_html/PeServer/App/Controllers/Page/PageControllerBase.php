@@ -33,4 +33,11 @@ abstract class PageControllerBase extends DomainControllerBase
 
 		return parent::viewWithController($controllerName, $action, $parameter);
 	}
+
+	//[DomainControllerBase]
+
+	protected function getSkipBaseName(): string
+	{
+		return 'PeServer\\App\\Controllers\\Page';
+	}
 }

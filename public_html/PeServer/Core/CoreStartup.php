@@ -21,10 +21,6 @@ use PeServer\Core\Log\ILogProvider;
 use PeServer\Core\Log\LoggerFactory;
 use PeServer\Core\Log\Logging;
 use PeServer\Core\Log\LogProvider;
-use PeServer\Core\Mvc\ActionFactory;
-use PeServer\Core\Mvc\ControllerFactory;
-use PeServer\Core\Mvc\IActionFactory;
-use PeServer\Core\Mvc\IControllerFactory;
 use PeServer\Core\Mvc\ILogicFactory;
 use PeServer\Core\Mvc\LogicFactory;
 use PeServer\Core\Mvc\RouteRequest;
@@ -132,8 +128,6 @@ class CoreStartup
 		$requestPath = new RequestPath($specialStore->getServer('REQUEST_URI'), $container->get(IUrlHelper::class));
 		$container->registerValue(new RouteRequest($method, $requestPath));
 
-		$container->registerMapping(IControllerFactory::class, ControllerFactory::class);
-		$container->registerMapping(IActionFactory::class, ActionFactory::class);
 		$container->registerMapping(ILogicFactory::class, LogicFactory::class);
 	}
 

@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
-use ArrayAccess;
+use \ArrayAccess;
 use \Stringable;
+use \TypeError;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\IndexOutOfRangeException;
 use PeServer\Core\Throws\NotSupportedException;
 use PeServer\Core\Throws\NullByteStringException;
-use TypeError;
+use PeServer\Core\Throws\SerializeException;
 
 /**
  * PHP文字列がバイトデータなのか普通の文字列なのかよくわからん。
@@ -242,5 +243,36 @@ final class Binary implements Stringable, ArrayAccess
 		}
 
 		return $this->raw;
+	}
+
+	/**
+	 * オブジェクトをシリアライズ。
+	 *
+	 * @param object $object
+	 * @return self
+	 */
+	public static function serialize(object $object): self
+	{
+		$data = serialize($object);
+		return new self($data);
+	}
+
+	/**
+	 * 現在データをオブジェクトにデシリアライズ。
+	 *
+	 * @template T of object
+	 * @param string $className 返却クラス名。
+	 * @phpstan-param class-string<T> $className
+	 * @return object デシリアライズオブジェクト。
+	 * @phpstan-return T
+	 */
+	public function unserialize(string $className): object
+	{
+		$object = unserialize($this->raw);
+		if (is_a($object, $className)) {
+			return $object;
+		}
+
+		throw new SerializeException($className . ': ' . TypeUtility::getType($object));
 	}
 }

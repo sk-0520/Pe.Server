@@ -28,7 +28,7 @@ class PluginApiGeneratePluginIdLogic extends ApiLogicBase
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
 		$plugins = $this->dbCache->readPluginInformation();
-		$pluginCollection = Collection::from($plugins);
+		$pluginCollection = Collection::from($plugins->items);
 
 		$pluginId = Uuid::generateGuid();
 

@@ -26,7 +26,7 @@ class PluginDetailLogic extends PageLogicBase
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
 		$pluginInformation = $this->dbCache->readPluginInformation();
-		$plugin = Collection::from($pluginInformation)
+		$plugin = Collection::from($pluginInformation->items)
 			->first(function ($i) {
 				return Uuid::isEqualGuid($i->pluginId, $this->getRequest('plugin_id'));
 			});

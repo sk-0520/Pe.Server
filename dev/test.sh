@@ -61,4 +61,4 @@ COVERAGE_CACHE_OPTION=""
 if [[ -v COVERAGE_CACHE ]] ; then
 	COVERAGE_CACHE_OPTION="--coverage-cache ${COVERAGE_CACHE}"
 fi
-php ${PHPUNIT_FILE} --configuration ../dev/phpunit.xml --coverage-html ../coverage/php --testdox $COVERAGE_CACHE_OPTION "$@" .
+php ${PHPUNIT_FILE} --configuration ../dev/phpunit.xml --coverage-html ../public_html/public/coverage/php --testdox $COVERAGE_CACHE_OPTION "$@" .

@@ -6,7 +6,7 @@
 		<title>Pe.Server.Core: Error</title>
 		{asset file='./error-display.css' include='true'}
 		{if PeServer\Core\Environment::isDevelopment() && !is_null($values.throwable)}
-			{asset file='./prism.css' include='true'}
+			{asset file='./highlight.php/default.css' include='true'}
 		{/if}
 	</head>
 	<body>
@@ -68,7 +68,7 @@
 				<code>{$values.file}</code>:<code>{$values.line_number}</code>
 					{if PeServer\Core\Environment::isDevelopment() && !is_null($values.throwable)}
 						{assign var="file" value=$values.cache[$values.file]}
-						<pre id="throw" class="source" data-line="{$values.line_number}"><code class="language-php line-numbers">{$file}</code></pre>
+						{code language="php" numbers=$values.line_number}{$file nofilter}{/code}
 					{/if}
 				</dd>
 				{/if}
@@ -110,7 +110,7 @@
 										</summary>
 										{if isset($item.file)}
 											{assign var="file" value=$values.cache[$item.file]}
-											<pre class="source" data-line="{$item.line}"><code class="language-php line-numbers">{$file}</code></pre>
+											{code language="php" numbers=$item.line}{$file nofilter}{/code}
 										{/if}
 									</details>
 									<table>
@@ -165,25 +165,20 @@
 		</main>
 
 		{if PeServer\Core\Environment::isDevelopment() && !is_null($values.throwable)}
-			{asset file='./prism.js' include='true'}
 			<script>
 
 			function scrollHighlight(sourceElement) {
-				const lines = sourceElement.querySelector('.line-highlight');
-				const linesHeight = lines.offsetHeight;
-				const sourceHeight = sourceElement.offsetHeight;
-				//lines.scrollIntoView();
-				if (sourceHeight > linesHeight && sourceElement.scrollTop < (sourceElement.scrollHeight - sourceHeight)) {
-					//sourceElement.scrollTop = sourceElement.scrollTop - (sourceHeight / 2) + (linesHeight / 2);
-					const top = sourceElement.scrollTop - (sourceHeight / 2); //+ (linesHeight / 2);
-					{literal}
-						sourceElement.scroll({top: top});
-					{/literal}
-				}
+				const codeElement = sourceElement.querySelector('code');
+				const strongLineElement = codeElement.querySelector('.strong-line');
+				const strongOffsetTop = strongLineElement.offsetTop;
+				const strongOffsetHeight = strongLineElement.offsetHeight;
+
+				sourceElement.scrollTop = strongOffsetTop;// - strongOffsetHeight;
+
 			}
 
 			window.addEventListener('load', (event) => {
-				const sourceElement = document.getElementById('throw');
+				const sourceElement = document.querySelector('pre.source');
 				scrollHighlight(sourceElement);
 				{literal}
 					window.scroll({top: 0});
@@ -194,7 +189,8 @@
 					fileElement.addEventListener('toggle', (toggleEvent) => {
 						const target = toggleEvent.target;
 						if(target.open) {
-							scrollHighlight(target);
+							const element = target.querySelector('pre.source');
+							scrollHighlight(element);
 						}
 					})
 				}
