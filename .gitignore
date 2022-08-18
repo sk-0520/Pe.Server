@@ -5,6 +5,7 @@ temp/
 /api-doc/
 /public_html/scripts/
 /public_html/styles/
+/public_html/public/
 /public_html/PeServer/data/
 /public_html/PeServer/config/setting.production.json
 /public_html/PeServer/config/setting.development.json
