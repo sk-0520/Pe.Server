@@ -16,6 +16,8 @@ use PeServer\App\Models\AppConfiguration;
 use PeServer\Core\Throws\FileNotFoundException;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 
+ini_set('memory_limit', '-1');
+
 class SettingLogDetailLogic extends PageLogicBase
 {
 	public function __construct(LogicParameter $parameter, private AppConfiguration $config)
