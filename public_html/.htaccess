@@ -8,6 +8,6 @@ AddType application/x-httpd-php80 .php
     RewriteCond %{REQUEST_URI} !^/styles/.++
     RewriteCond %{REQUEST_URI} !^/scripts/.++
     RewriteCond %{REQUEST_URI} !^/public/.++
+    RewriteCond %{REQUEST_URI} !^/log/.++
     RewriteRule . index.php
 </IfModule>
-
