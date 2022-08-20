@@ -139,7 +139,10 @@
 													<td>
 														{if is_object($arg) || is_array($arg) }
 															{foreach from=$arg item=values key=key}
-																	<pre class="code">[{$key}] => {$values|@var_dump}</pre>
+																<details>
+																	<summary>[{$key}] <code>{\PeServer\Core\TypeUtility::getType($values)}</code></summary>
+																	<pre class="argument">{$values|@var_dump}</pre>
+																</details>
 															{/foreach}
 														{else}
 															<code>{$arg}</code>
