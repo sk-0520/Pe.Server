@@ -114,7 +114,7 @@ class AssetFunction extends TemplateFunctionBase
 			}
 		}
 
-		if (is_null($element)) {
+		if (is_null($element)) { //@phpstan-ignore-line
 			switch ($extension) {
 				case 'css':
 					if ($include) {
