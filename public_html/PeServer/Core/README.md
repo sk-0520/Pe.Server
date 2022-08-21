@@ -11,3 +11,28 @@ Webアプリのコア部分。
   * composer は使用しない
     * お勉強もかねている
   * `PeServer\App` は `PeServer\Core` に依存しており、その逆はない
+
+## ライセンス
+
+### Core
+
+* WTFPL
+
+### 依存ライブラリ
+
+* PHP
+  * `highlight.php`
+    * BSD 3-Clause License
+    * https://github.com/scrivo/highlight.php
+  * `PHPMailer`
+    * LGPL 2.1
+    * https://github.com/PHPMailer/PHPMailer/
+  * `php-markdown`
+    * https://michelf.ca/projects/php-markdown/
+  * `smarty`
+    * LGPL 3
+    * https://www.smarty.net/
+* font
+  * `migmix`
+    * IPAフォントライセンスv1.0
+    * https://mix-mplus-ipa.osdn.jp/migmix/
