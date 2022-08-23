@@ -59,6 +59,9 @@
 				<a href="/account/user/edit">ユーザー編集</a>
 			</li>
 			<li>
+				<a href="/account/user/api">API設定</a>
+			</li>
+			<li>
 				<a href="/account/user/email">メールアドレス変更</a>
 			</li>
 			<li>

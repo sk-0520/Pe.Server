@@ -113,4 +113,14 @@ class AppDatabaseCache
 	{
 		return self::readCache(self::PLUGIN_INFORMATION, PluginCache::class);
 	}
+
+	/**
+	 * ユーザー情報のキャッシュ取得。
+	 *
+	 * @return UserCache
+	 */
+	public function readUserInformation(): UserCache
+	{
+		return self::readCache(self::USER_INFORMATION, UserCache::class);
+	}
 }

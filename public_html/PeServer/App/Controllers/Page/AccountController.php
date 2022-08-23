@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace PeServer\App\Controllers\Page;
 
 use PeServer\App\Controllers\Page\PageControllerBase;
+use PeServer\App\Models\Domain\Page\Account\AccountApiLogic;
 use PeServer\App\Models\Domain\Page\Account\AccountLoginLogic;
 use PeServer\App\Models\Domain\Page\Account\AccountLogoutLogic;
 use PeServer\App\Models\Domain\Page\Account\AccountSignupNotifyLogic;
 use PeServer\App\Models\Domain\Page\Account\AccountSignupStep1Logic;
 use PeServer\App\Models\Domain\Page\Account\AccountSignupStep2Logic;
+use PeServer\App\Models\Domain\Page\Account\AccountUserApiLogic;
 use PeServer\App\Models\Domain\Page\Account\AccountUserEditLogic;
 use PeServer\App\Models\Domain\Page\Account\AccountUserEmailLogic;
 use PeServer\App\Models\Domain\Page\Account\AccountUserLogic;
@@ -150,6 +152,24 @@ final class AccountController extends PageControllerBase
 		}
 
 		return $this->view('user_edit', $logic->getViewData());
+	}
+
+	public function user_api_get(): IActionResult
+	{
+		$logic = $this->createLogic(AccountUserApiLogic::class/*, ['$isRegister' => null]*/);
+		$logic->run(LogicCallMode::initialize());
+
+		return $this->view('user_api', $logic->getViewData());
+	}
+
+	public function user_api_post(): IActionResult
+	{
+		$logic = $this->createLogic(AccountUserApiLogic::class/*, ['$isRegister' => true]*/);
+		if ($logic->run(LogicCallMode::submit())) {
+			return $this->redirectPath('account/user/api');
+		}
+
+		return $this->view('user_api', $logic->getViewData());
 	}
 
 	public function user_password_get(): IActionResult

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models;
 
+use PeServer\App\Controllers\Api\AccountApiController;
+use PeServer\App\Controllers\Api\AdministratorApiController;
 use PeServer\App\Controllers\Api\DevelopmentApiController;
 use PeServer\App\Controllers\Api\PluginApiController;
 use PeServer\App\Controllers\Page\AccountController;
@@ -12,6 +14,8 @@ use PeServer\App\Controllers\Page\HomeController;
 use PeServer\App\Controllers\Page\PluginController;
 use PeServer\App\Controllers\Page\SettingController;
 use PeServer\App\Models\Middleware\AdministratorAccountFilterMiddleware;
+use PeServer\App\Models\Middleware\Api\ApiAdministratorAccountFilterMiddleware;
+use PeServer\App\Models\Middleware\Api\ApiUserAccountFilterMiddleware;
 use PeServer\App\Models\Middleware\DevelopmentMiddleware;
 use PeServer\App\Models\Middleware\PluginIdMiddleware;
 use PeServer\App\Models\Middleware\SetupAccountFilterMiddleware;
@@ -70,6 +74,8 @@ final class AppRouteSetting extends RouteSetting
 					->addAction('user', HttpMethod::gets(), Route::DEFAULT_METHOD, [UserAccountFilterMiddleware::class])
 					->addAction('user/edit', HttpMethod::gets(), 'user_edit_get', [UserAccountFilterMiddleware::class])
 					->addAction('user/edit', HttpMethod::post(), 'user_edit_post', [UserAccountFilterMiddleware::class, CsrfMiddleware::class])
+					->addAction('user/api', HttpMethod::gets(), 'user_api_get', [UserAccountFilterMiddleware::class])
+					->addAction('user/api', HttpMethod::post(), 'user_api_post', [UserAccountFilterMiddleware::class])
 					->addAction('user/password', HttpMethod::gets(), 'user_password_get', [UserAccountFilterMiddleware::class])
 					->addAction('user/password', HttpMethod::post(), 'user_password_post', [UserAccountFilterMiddleware::class, CsrfMiddleware::class])
 					->addAction('user/email', HttpMethod::gets(), 'user_email_get', [UserAccountFilterMiddleware::class])
@@ -113,6 +119,11 @@ final class AppRouteSetting extends RouteSetting
 					->addAction('exists', HttpMethod::post(), 'exists')
 					->addAction('generate-plugin-id', HttpMethod::gets(), 'generate_plugin_id')
 					->addAction('information', HttpMethod::post(), 'information')
+				/* AUTO-FORMAT */,
+				(new Route('api/account', AccountApiController::class, [ApiUserAccountFilterMiddleware::class, ApiAdministratorAccountFilterMiddleware::class]))
+				/* AUTO-FORMAT */,
+				(new Route('api/administrator', AdministratorApiController::class, [ApiAdministratorAccountFilterMiddleware::class]))
+					->addAction('backup', HttpMethod::post(), 'backup')
 				/* AUTO-FORMAT */,
 			]
 		);
