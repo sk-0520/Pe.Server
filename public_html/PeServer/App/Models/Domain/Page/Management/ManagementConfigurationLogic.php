@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\App\Models\Domain\Page\Setting;
+namespace PeServer\App\Models\Domain\Page\Management;
 
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
@@ -12,7 +12,7 @@ use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\Text;
 
-class SettingConfigurationLogic extends PageLogicBase
+class ManagementConfigurationLogic extends PageLogicBase
 {
 	public function __construct(LogicParameter $parameter, private AppConfiguration $config)
 	{

@@ -12,7 +12,7 @@ use PeServer\App\Controllers\Page\AccountController;
 use PeServer\App\Controllers\Page\AjaxController;
 use PeServer\App\Controllers\Page\HomeController;
 use PeServer\App\Controllers\Page\PluginController;
-use PeServer\App\Controllers\Page\SettingController;
+use PeServer\App\Controllers\Page\ManagementController;
 use PeServer\App\Models\Middleware\AdministratorAccountFilterMiddleware;
 use PeServer\App\Models\Middleware\Api\ApiAdministratorAccountFilterMiddleware;
 use PeServer\App\Models\Middleware\Api\ApiUserAccountFilterMiddleware;
@@ -88,7 +88,7 @@ final class AppRouteSetting extends RouteSetting
 				(new Route('plugin', PluginController::class))
 					->addAction(':plugin_id@' . self::PLUGIN_ID, HttpMethod::gets(), 'detail', [PluginIdMiddleware::class])
 				/* AUTO-FORMAT */,
-				(new Route('setting', SettingController::class, [AdministratorAccountFilterMiddleware::class]))
+				(new Route('management', ManagementController::class, [AdministratorAccountFilterMiddleware::class]))
 					->addAction('setup', HttpMethod::get(), 'setup_get', [Route::CLEAR_MIDDLEWARE, SetupAccountFilterMiddleware::class])
 					->addAction('setup', HttpMethod::post(), 'setup_post', [Route::CLEAR_MIDDLEWARE, SetupAccountFilterMiddleware::class])
 					->addAction('environment', HttpMethod::get())

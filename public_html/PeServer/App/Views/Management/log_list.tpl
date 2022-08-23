@@ -14,7 +14,7 @@
 			<ol>
 				{foreach from=$values.log_files item=item}
 					<li>
-						<a href="/setting/log/{$item.name}">{$item.name}</a>
+						<a href="/management/log/{$item.name}">{$item.name}</a>
 						<span title="{$item.size} byte">{$item.human_size}</span>
 					</li>
 				{/foreach}

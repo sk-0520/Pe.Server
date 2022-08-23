@@ -3,7 +3,7 @@
 {block name='BODY'}
 
 <h2>入力</h2>
-<form class="page-setting-php-evaluate" action="/setting/php-evaluate" method="post">
+<form class="page-setting-php-evaluate" action="/management/php-evaluate" method="post">
 	{csrf}
 
 	<dl class="input">

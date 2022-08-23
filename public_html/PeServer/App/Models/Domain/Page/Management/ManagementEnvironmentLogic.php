@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\App\Models\Domain\Page\Setting;
+namespace PeServer\App\Models\Domain\Page\Management;
 
 use \DOMXPath;
 use \DOMElement;
@@ -15,7 +15,7 @@ use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 
-class SettingEnvironmentLogic extends PageLogicBase
+class ManagementEnvironmentLogic extends PageLogicBase
 {
 	public function __construct(LogicParameter $parameter)
 	{

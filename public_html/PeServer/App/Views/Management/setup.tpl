@@ -11,7 +11,7 @@
 	そのため、ここで設定したユーザー情報でも設定画面で無編集保存ができない可能性あり。
 </p>
 
-<form class="page-setting-setup" action="/setting/setup" method="post">
+<form class="page-setting-setup" action="/management/setup" method="post">
 	<dl class="input">
 		<dt>login id</dt>
 		<dd>

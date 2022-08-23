@@ -41,7 +41,7 @@
 				{if $account}
 					{if $account->level == constant('PeServer\\App\\Models\\Domain\\UserLevel::SETUP')}
 						<li>
-							<a href="/setting/setup">セットアップ</a>
+							<a href="/management/setup">セットアップ</a>
 						</li>
 					{else}
 						<li>
@@ -50,7 +50,7 @@
 					{/if}
 					{if $account->level == constant('PeServer\\App\\Models\\Domain\\UserLevel::ADMINISTRATOR')}
 						<li>
-							<a href="/setting">設定</a>
+							<a href="/management">管理</a>
 						</li>
 					{/if}
 					<li>

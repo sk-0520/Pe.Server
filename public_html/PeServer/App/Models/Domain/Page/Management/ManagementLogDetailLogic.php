@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\App\Models\Domain\Page\Setting;
+namespace PeServer\App\Models\Domain\Page\Management;
 
 use PeServer\Core\Mime;
 use PeServer\Core\Binary;
@@ -18,7 +18,7 @@ use PeServer\App\Models\Domain\Page\PageLogicBase;
 
 ini_set('memory_limit', '-1');
 
-class SettingLogDetailLogic extends PageLogicBase
+class ManagementLogDetailLogic extends PageLogicBase
 {
 	public function __construct(LogicParameter $parameter, private AppConfiguration $config)
 	{

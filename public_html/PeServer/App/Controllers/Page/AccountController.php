@@ -65,7 +65,7 @@ final class AccountController extends PageControllerBase
 			if ($this->stores->session->tryGet(SessionKey::ACCOUNT, $account)) {
 				/** @var SessionAccount $account */
 				if ($account->level === UserLevel::SETUP) {
-					return $this->redirectPath('setting/setup');
+					return $this->redirectPath('management/setup');
 				}
 			}
 
