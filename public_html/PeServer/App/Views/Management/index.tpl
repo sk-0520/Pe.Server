@@ -16,6 +16,7 @@
 		<ul>
 			<li><a href="/management/environment">環境情報</a></li>
 			<li><a href="/management/configuration">現在設定</a></li>
+			<li><a href="/management/backup">バックアップ</a></li>
 		</ul>
 	</li>
 	<li>

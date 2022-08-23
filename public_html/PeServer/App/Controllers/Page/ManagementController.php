@@ -3,6 +3,7 @@
 namespace PeServer\App\Controllers\Page;
 
 use PeServer\App\Controllers\Page\PageControllerBase;
+use PeServer\App\Models\Domain\Page\Management\ManagementBackupLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementCacheRebuildLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementConfigurationLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementDatabaseMaintenanceLogic;
@@ -65,6 +66,14 @@ final class ManagementController extends PageControllerBase
 		$logic->run(LogicCallMode::initialize());
 
 		return $this->view('configuration', $logic->getViewData());
+	}
+
+	public function backup(): IActionResult
+	{
+		$logic = $this->createLogic(ManagementBackupLogic::class);
+		$logic->run(LogicCallMode::submit());
+
+		return $this->redirectPath('/management');
 	}
 
 	public function database_maintenance_get(): IActionResult
