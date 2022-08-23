@@ -41,7 +41,8 @@
 	},
 	"cache": {
 		"database": "$(BASE)/data/database_cache",
-		"template": "$(BASE)/data/temp/template"
+		"template": "$(BASE)/data/temp/template",
+		"backup": "$(BASE)/data/backups"
 	},
 	"crypto": {
 		"algorithm": "aes-256-cbc",

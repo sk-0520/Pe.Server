@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\App\Models\Domain\Page\Setting;
+namespace PeServer\App\Models\Domain\Page\Management;
 
 use PeServer\Core\IO\Directory;
 use PeServer\Core\IO\File;
@@ -14,7 +14,7 @@ use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 
 
-class SettingLogListLogic extends PageLogicBase
+class ManagementLogListLogic extends PageLogicBase
 {
 	public function __construct(LogicParameter $parameter, private AppConfiguration $config)
 	{

@@ -100,6 +100,22 @@ class TextTest extends TestClass
 		}
 	}
 
+	public function test_fromCodePoint_array_throw()
+	{
+		$this->expectException(ArgumentException::class);
+		Text::fromCodePoint(['a']);
+		$this->fail();
+	}
+
+
+	public function test_fromCodePoint_char_throw()
+	{
+		$this->expectException(ArgumentException::class);
+		Text::fromCodePoint(-1);
+		$this->fail();
+	}
+
+
 	public function test_replaceMap()
 	{
 		$tests = [
@@ -142,6 +158,20 @@ class TextTest extends TestClass
 			$actual = Text::getPosition(...$test->args);
 			$this->assertSame($test->expected, $actual, $test->str());
 		}
+	}
+
+	public function test_getPosition_throw()
+	{
+		$this->expectException(ArgumentException::class);
+		Text::getPosition('abc', 'b', -1);
+		$this->fail();
+	}
+
+	public function test_getLastPosition_throw()
+	{
+		$this->expectException(ArgumentException::class);
+		Text::getLastPosition('abc', 'b', -1);
+		$this->fail();
 	}
 
 	public function test_startsWith()
@@ -283,6 +313,14 @@ class TextTest extends TestClass
 			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
+
+	public function test_split_throw()
+	{
+		$this->expectException(ArgumentException::class);
+		Text::split('abc', '');
+		$this->fail();
+	}
+
 
 	public function test_splitLines()
 	{

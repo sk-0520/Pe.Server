@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Dao\Domain;
 
-use PeServer\Core\Database\DaoBase;
+use \DateTime;
 use PeServer\App\Models\Cache\UserCache;
 use PeServer\App\Models\Cache\UserCacheItem;
+use PeServer\Core\Database\DaoBase;
 use PeServer\Core\Database\DatabaseRowResult;
 use PeServer\Core\Database\IDatabaseContext;
+use PeServer\Core\TypeUtility;
+use PeServer\Core\Utc;
 
 class UserDomainDao extends DaoBase
 {
@@ -111,9 +114,18 @@ class UserDomainDao extends DaoBase
 				users.level,
 				users.state,
 				users.website,
-				users.description
+				users.description,
+				IFNULL(api_keys.api_key, '') as api_key,
+				IFNULL(api_keys.secret_key, '') as secret_key,
+				api_keys.created_timestamp as api_created_timestamp
 			from
 				users
+				left join
+					api_keys
+					on
+					(
+						api_keys.user_id = users.user_id
+					)
 			order by
 				users.user_id
 
@@ -121,13 +133,21 @@ class UserDomainDao extends DaoBase
 		);
 
 		return array_map(function ($i) {
+			$rawApiTimestamp = $i['api_created_timestamp'];
+			/** @var DateTime|null */
+			$apiTimestamp = null;
+			Utc::tryParseDateTime($rawApiTimestamp, $apiTimestamp);
+
 			$cache = new UserCacheItem(
 				$i['user_id'],
 				$i['name'],
 				$i['level'],
 				$i['state'],
 				$i['website'],
-				$i['description']
+				$i['description'],
+				$i['api_key'],
+				$i['secret_key'],
+				$apiTimestamp
 			);
 
 			return $cache;

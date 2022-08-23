@@ -42,6 +42,14 @@ class DevelopmentApiAdministratorLogic extends ApiLogicBase
 			],
 			[
 				'user_id' => 'eeeeeeee-eeee-4eee-eeee-eeeeeeeeeeee',
+				'login_id' => 'user',
+				'password' => 'user',
+				'email' => 'user@localhost.localdomain',
+				'level' => UserLevel::USER,
+				'note' => '開発用 自動生成 ユーザー'
+			],
+			[
+				'user_id' => '99999999-1000-4999-9999-999999999999',
 				'login_id' => 'zap-admin',
 				'password' => 'zap-admin',
 				'email' => 'zap-admin@localhost.localdomain',
@@ -49,7 +57,7 @@ class DevelopmentApiAdministratorLogic extends ApiLogicBase
 				'note' => 'ZAP用 自動生成 管理者'
 			],
 			[
-				'user_id' => 'dddddddd-dddd-4ddd-dddd-dddddddddddd',
+				'user_id' => '99999999-2000-4999-9999-999999999999',
 				'login_id' => 'zap-user',
 				'password' => 'zap-user',
 				'email' => 'zap-user@localhost.localdomain',

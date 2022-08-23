@@ -16,7 +16,6 @@ use PeServer\Core\Mvc\Template\Plugin\ITemplateBlockFunction;
 use PeServer\Core\Mvc\Template\Plugin\ITemplateFunction;
 use PeServer\Core\Mvc\Template\Plugin\MarkdownFunction;
 use PeServer\Core\Mvc\Template\Plugin\ShowErrorMessagesFunction;
-use PeServer\Core\Mvc\Template\Plugin\SourceFunction;
 use PeServer\Core\Mvc\Template\Plugin\TemplatePluginArgument;
 use PeServer\Core\IO\Path;
 use PeServer\Core\Mvc\Template\Plugin\CodeFunction;
@@ -81,7 +80,6 @@ class SmartyTemplate extends TemplateBase
 		/** @var array<ITemplateFunction> */
 		$plugins = [
 			new CsrfFunction($argument),
-			new SourceFunction($argument),
 			new AssetFunction($argument),
 			$showErrorMessagesFunction,
 			new InputHelperFunction($argument, $showErrorMessagesFunction),

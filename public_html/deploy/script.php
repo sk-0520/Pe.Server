@@ -111,10 +111,13 @@ class DeployScript
 
 		$db_migrates = [
 			'db_migrates_0000',
+			'db_migrates_0001',
 		];
 
 		$newVersion = 0;
 		$pdo = $this->createConnection($databaseSetting);
+		$pdo->beginTransaction(); // ええねん、SQLite しか使わん
+
 		$pdo->exec('PRAGMA foreign_keys = OFF;');
 		for ($i = $dbVersion + 1; $i < count($db_migrates); $i++) {
 			$this->scriptArgument->log('DB: ' . $db_migrates[$i]);
@@ -125,6 +128,8 @@ class DeployScript
 		$this->db_migrates_9999($pdo, $dbVersion, $newVersion);
 
 		$pdo->exec('PRAGMA foreign_keys = ON;');
+
+		$pdo->commit();
 	}
 
 	// 管理ユーザー admin/admin が作られるので公開時は速やかに破棄 or 変更すること
@@ -378,6 +383,32 @@ SQL
 			'loginId' => $loginId,
 			'password' => $rawPassword,
 		]);
+	}
+
+	private function db_migrates_0001(PDO $pdo)
+	{
+		$pdo->exec(
+			<<<SQL
+
+drop table
+	[access_keys]
+;
+
+create table
+	[api_keys]
+	(
+		[api_key] text not null, -- APIキー
+		[user_id] text not null, -- ユーザーID
+		[secret_key] text not null, -- シークレットキー
+		[created_timestamp] datetime not null, -- 作成日
+		primary key([api_key]),
+		unique([api_key], [user_id]),
+		foreign key ([user_id]) references users([user_id])
+	)
+;
+
+SQL
+		);
 	}
 
 	private function db_migrates_9999(PDO $pdo, int $oldVersion, int $newVersion)

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\App\Models\Domain\Page\Setting;
+namespace PeServer\App\Models\Domain\Page\Management;
 
 use PeServer\Core\Cryptography;
 use PeServer\Core\DefaultValue;
@@ -21,7 +21,7 @@ use PeServer\App\Models\Dao\Entities\UsersEntityDao;
 use PeServer\App\Models\Dao\Entities\UserAuthenticationsEntityDao;
 use PeServer\Core\ArrayUtility;
 
-class SettingSetupLogic extends PageLogicBase
+class ManagementSetupLogic extends PageLogicBase
 {
 	public function __construct(LogicParameter $parameter, private AppCryptography $cryptography)
 	{

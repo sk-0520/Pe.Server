@@ -63,7 +63,8 @@
 			"SJIS",
 			"Stringable",
 			"sysplugins",
-			"XDEBUG"
+			"XDEBUG",
+			"IFNULL"
 		],
 		"cSpell.ignorePaths": [
 			"package-lock.json",

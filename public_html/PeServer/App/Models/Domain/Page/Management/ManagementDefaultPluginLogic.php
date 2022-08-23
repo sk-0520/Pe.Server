@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\App\Models\Domain\Page\Setting;
+namespace PeServer\App\Models\Domain\Page\Management;
 
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\DefaultValue;
@@ -21,7 +21,7 @@ use PeServer\App\Models\Dao\Entities\PluginsEntityDao;
 use PeServer\App\Models\Dao\Entities\PluginUrlsEntityDao;
 use PeServer\App\Models\Dao\Entities\PluginCategoryMappingsEntityDao;
 
-class SettingDefaultPluginLogic extends PageLogicBase
+class ManagementDefaultPluginLogic extends PageLogicBase
 {
 	/** @var array{plugin_id:string,plugin_name:string,check_url:string,project_url:string,descriptions:string[],categories:string[],registered:bool}[] */
 	private array $defaultPlugins = [

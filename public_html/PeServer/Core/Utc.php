@@ -18,7 +18,20 @@ use PeServer\Core\Throws\ParseException;
  */
 abstract class Utc
 {
-	private const UTC_FORMAT = 'Y-m-d\TH:i:s.u\Z';
+	private const UTC_FORMAT_01 = 'Y-m-d\TH:i:s.u\Z';
+	private const UTC_FORMAT_02 = 'Y-m-d\TH:i:s\Z';
+	private const UTC_FORMAT_03 = 'Y-m-d\TH:i:s.u';
+	private const UTC_FORMAT_04 = 'Y-m-d\TH:i:s';
+
+	private const UTC_FORMAT_11 = 'Y-m-d H:i:s.u\Z';
+	private const UTC_FORMAT_12 = 'Y-m-d H:i:s\Z';
+	private const UTC_FORMAT_13 = 'Y-m-d H:i:s.u';
+	private const UTC_FORMAT_14 = 'Y-m-d H:i:s';
+
+	private const UTC_FORMAT_21 = 'Y/m/d H:i:s.u\Z';
+	private const UTC_FORMAT_22 = 'Y/m/d H:i:s\Z';
+	private const UTC_FORMAT_23 = 'Y/m/d H:i:s.u';
+	private const UTC_FORMAT_24 = 'Y/m/d H:i:s';
 
 	private static ?DateTimeZone $timezone = null;
 
@@ -45,19 +58,66 @@ abstract class Utc
 	/**
 	 * パース処理。
 	 *
-	 * @param string $s
-	 * @param DateTimeImmutable|null $result
+	 * @param string $dateTimeClassName
+	 * @phpstan-param class-string<DateTimeImmutable|DateTime> $dateTimeClassName
+	 * @param string|null $s
+	 * @param DateTimeImmutable|DateTime|null $result
 	 * @return boolean
 	 */
-	public static function tryParse(string $s, ?DateTimeImmutable &$result): bool
+	private static function tryParseCore(string $dateTimeClassName, ?string $s, DateTimeImmutable|DateTime|null &$result): bool
 	{
-		$datetime = DateTimeImmutable::createFromFormat(self::UTC_FORMAT, $s, self::getTimezone());
+		if (is_null($s)) {
+			return false;
+		}
+
+		$formats = [
+			self::UTC_FORMAT_01,
+			self::UTC_FORMAT_02,
+			self::UTC_FORMAT_03,
+			self::UTC_FORMAT_04,
+			self::UTC_FORMAT_11,
+			self::UTC_FORMAT_12,
+			self::UTC_FORMAT_13,
+			self::UTC_FORMAT_14,
+			self::UTC_FORMAT_21,
+			self::UTC_FORMAT_22,
+			self::UTC_FORMAT_23,
+			self::UTC_FORMAT_24,
+		];
+
+		$datetime = false;
+		foreach ($formats as $format) {
+			$datetime = $dateTimeClassName::createFromFormat($format, $s, self::getTimezone());
+			if ($datetime !== false) {
+				break;
+			}
+		}
 		if ($datetime === false) {
+			$result = null;
 			return false;
 		}
 
 		$result = $datetime;
 		return true;
+	}
+
+
+
+	/**
+	 * パース処理。
+	 *
+	 * @param string|null $s
+	 * @param DateTimeImmutable|null $result
+	 * @return boolean
+	 */
+	public static function tryParse(?string $s, ?DateTimeImmutable &$result): bool
+	{
+		return self::tryParseCore(DateTimeImmutable::class, $s, $result);
+	}
+
+	public static function tryParseDateTime(?string $s, ?DateTime &$result): bool
+	{
+		return self::tryParseCore(DateTime::class, $s, $result);
 	}
 
 	/**
@@ -76,6 +136,15 @@ abstract class Utc
 		throw new ParseException();
 	}
 
+	public static function parseDateTime(string $s): DateTime
+	{
+		if (self::tryParseDateTime($s, $result)) {
+			return $result;
+		}
+
+		throw new ParseException();
+	}
+
 	/**
 	 * 文字列化。
 	 *
@@ -84,7 +153,7 @@ abstract class Utc
 	 */
 	public static function toString(DateTimeInterface $datetime): string
 	{
-		return $datetime->format(self::UTC_FORMAT);
+		return $datetime->format(self::UTC_FORMAT_01);
 	}
 
 	/**

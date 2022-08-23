@@ -67,7 +67,10 @@ class AssetFunction extends TemplateFunctionBase
 				$dir = Path::getDirectoryPath($sourcePath);
 				$file = Path::getFileNameWithoutExtension($sourcePath);
 
-				$resourcePath = $dir . '/' . $file . '.min.' . $fileExtension;
+				$targetPath = $dir . DIRECTORY_SEPARATOR . $file . '.min.' . $fileExtension;
+				if(IOUtility::existsItem($targetPath)) {
+					$resourcePath = $targetPath;
+				}
 			}
 
 			$resourcePath .= '?' . Environment::getRevision();
@@ -101,61 +104,73 @@ class AssetFunction extends TemplateFunctionBase
 		/** @var DOMElement */
 		$element = null;
 
-		switch ($extension) {
-			case 'css':
-				if ($include) {
-					$element = $dom->addElement('style');
-
-					$content = File::readContent($filePath);
-					$element->addText($content->toString());
-				} else {
+		if (ArrayUtility::tryGet($this->params, 'rel', $relValue)) {
+			switch ($relValue) {
+				case 'icon':
 					$element = $dom->addElement('link');
-
-					$element->setAttribute('rel', 'stylesheet');
 					$element->setAttribute('href', $resourcePath);
 					$skipAttributes = array_merge($skipAttributes, ['rel', 'href']);
-				}
-				break;
+					break;
+			}
+		}
 
-			case 'js':
-				$element = $dom->addElement('script');
+		if (is_null($element)) { //@phpstan-ignore-line
+			switch ($extension) {
+				case 'css':
+					if ($include) {
+						$element = $dom->addElement('style');
 
-				if ($include) {
-					$content = File::readContent($filePath);
-					$element->addText($content->toString());
-				} else {
+						$content = File::readContent($filePath);
+						$element->addText($content->toString());
+					} else {
+						$element = $dom->addElement('link');
+
+						$element->setAttribute('rel', 'stylesheet');
+						$element->setAttribute('href', $resourcePath);
+						$skipAttributes = array_merge($skipAttributes, ['rel', 'href']);
+					}
+					break;
+
+				case 'js':
+					$element = $dom->addElement('script');
+
+					if ($include) {
+						$content = File::readContent($filePath);
+						$element->addText($content->toString());
+					} else {
+						$element->setAttribute('src', $resourcePath);
+						$skipAttributes = array_merge($skipAttributes, ['src']);
+					}
+					break;
+
+				case 'png':
+				case 'jpeg':
+				case 'jpg':
+					$element = $dom->addElement('img');
+
 					$element->setAttribute('src', $resourcePath);
 					$skipAttributes = array_merge($skipAttributes, ['src']);
-				}
-				break;
 
-			case 'png':
-			case 'jpeg':
-			case 'jpg':
-				$element = $dom->addElement('img');
+					if (!$ignoreAsset && ($autoSize || $include)) {
+						$imageSize = getimagesize($filePath);
+						if ($imageSize !== false) {
+							$element->setAttribute('width', strval($imageSize[0]));
+							$element->setAttribute('height', strval($imageSize[1]));
+							$skipAttributes = array_merge($skipAttributes, ['width', 'height']);
 
-				$element->setAttribute('src', $resourcePath);
-				$skipAttributes = array_merge($skipAttributes, ['src']);
-
-				if (!$ignoreAsset && ($autoSize || $include)) {
-					$imageSize = getimagesize($filePath);
-					if ($imageSize !== false) {
-						$element->setAttribute('width', strval($imageSize[0]));
-						$element->setAttribute('height', strval($imageSize[1]));
-						$skipAttributes = array_merge($skipAttributes, ['width', 'height']);
-
-						if ($include) {
-							$content = file_get_contents($filePath);
-							$base64 = base64_encode($content); // @phpstan-ignore-line しんどい
-							$inline = 'data:' . $imageSize['mime'] . ';base64,' . $base64;
-							$element->setAttribute('src', $inline);
+							if ($include) {
+								$content = file_get_contents($filePath);
+								$base64 = base64_encode($content); // @phpstan-ignore-line しんどい
+								$inline = 'data:' . $imageSize['mime'] . ';base64,' . $base64;
+								$element->setAttribute('src', $inline);
+							}
 						}
 					}
-				}
-				break;
+					break;
 
-			default:
-				throw new TemplateException($resourcePath);
+				default:
+					throw new TemplateException($resourcePath);
+			}
 		}
 
 		foreach ($this->params as $key => $value) {

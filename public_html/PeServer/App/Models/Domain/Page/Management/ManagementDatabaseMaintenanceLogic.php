@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\App\Models\Domain\Page\Setting;
+namespace PeServer\App\Models\Domain\Page\Management;
 
 use \Throwable;
 use PeServer\App\Models\AppConfiguration;
@@ -16,7 +16,7 @@ use PeServer\Core\Mvc\Validator;
 use PeServer\Core\Regex;
 use PeServer\Core\Text;
 
-class SettingDatabaseMaintenanceLogic extends PageLogicBase
+class ManagementDatabaseMaintenanceLogic extends PageLogicBase
 {
 	public function __construct(LogicParameter $parameter)
 	{

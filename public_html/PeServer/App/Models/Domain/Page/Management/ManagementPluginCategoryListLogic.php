@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\App\Models\Domain\Page\Setting;
+namespace PeServer\App\Models\Domain\Page\Management;
 
 use PeServer\Core\IO\IOUtility;
 use PeServer\Core\SizeConverter;
@@ -12,7 +12,7 @@ use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\App\Models\Dao\Entities\PluginCategoriesEntityDao;
 
-class SettingPluginCategoryListLogic extends PageLogicBase
+class ManagementPluginCategoryListLogic extends PageLogicBase
 {
 	public function __construct(LogicParameter $parameter)
 	{

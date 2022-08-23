@@ -3,7 +3,7 @@
 {block name='BODY'}
 
 <h2>入力</h2>
-<form class="page-setting-database-maintenance" action="/setting/database-maintenance" method="post">
+<form class="page-setting-database-maintenance" action="/management/database-maintenance" method="post">
 	{csrf}
 
 	<dl class="input">

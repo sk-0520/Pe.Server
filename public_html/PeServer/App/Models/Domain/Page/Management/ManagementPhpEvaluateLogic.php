@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\App\Models\Domain\Page\Setting;
+namespace PeServer\App\Models\Domain\Page\Management;
 
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\Core\Mvc\LogicCallMode;
@@ -10,7 +10,7 @@ use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\OutputBuffer;
 use Throwable;
 
-class SettingPhpEvaluateLogic extends PageLogicBase
+class ManagementPhpEvaluateLogic extends PageLogicBase
 {
 	public function __construct(LogicParameter $parameter)
 	{

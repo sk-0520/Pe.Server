@@ -4,12 +4,12 @@ cd $(cd $(dirname $0)/../test; pwd)
 
 BASE_DIR=../public_html
 
-PHPUNIT_VERSION=9.5.21
+PHPUNIT_VERSION=9.5.22
 PHPUNIT_URL=https://phar.phpunit.de/phpunit-${PHPUNIT_VERSION}.phar
 PHPUNIT_FILE=phpunit.phar.${PHPUNIT_VERSION}
 PHPUNIT_BASE_DIR=../test
 
-if [ ! -f ${PHPUNIT_FILE} ] ; then
+if [ ! -f ${PHPUNIT_BASE_DIR}/${PHPUNIT_FILE} ] ; then
 	rm --force ${PHPUNIT_BASE_DIR}/phpunit.phar.*
 	curl --output ${PHPUNIT_BASE_DIR}/${PHPUNIT_FILE} --location ${PHPUNIT_URL}
 fi
