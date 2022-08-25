@@ -25,6 +25,14 @@ class HttpHeader
 	 * @var array<non-empty-string,string[]>
 	 */
 	private array $headers = [];
+	/**
+	 * ヘッダの名に対するヘッダ一覧の実キーをマッピング。
+	 *
+	 * ヘッダ一覧側は最初に設定されたキー名を保持するがHTTPヘッダは大文字小文字を区別しないため本キーは小文字で統一し、値をヘッダキーとする対応表となる。
+	 *
+	 * @var array<non-empty-string,non-empty-string>
+	 */
+	private array $keyMap = [];
 
 	/**
 	 * リダイレクト設定。
@@ -37,17 +45,30 @@ class HttpHeader
 	 * HTTPヘッダ名が不正であれば例外を投げる。
 	 *
 	 * @param string $name ヘッダ名
-	 * @phpstan-param non-empty-string $name
 	 * @throws ArgumentException HTTPヘッダ名不正。
 	 */
 	protected function throwIfInvalidHeaderName(string $name): void
 	{
-		if (Text::isNullOrWhiteSpace($name)) { //@phpstan-ignore-line non-empty
+		if (Text::isNullOrWhiteSpace($name)) {
 			throw new ArgumentException('$name');
 		}
 		if (Text::toLower($name) === 'location') {
 			throw new ArgumentException('$name: setRedirect()');
 		}
+	}
+
+	/**
+	 * ヘッダ名へのマッピング名に変換。
+	 *
+	 * @param string $name 元になるヘッダ名
+	 * @phpstan-param non-empty-string $name
+	 * @return string マッピングヘッダ名。
+	 * @phpstan-return non-empty-string
+	 */
+	private static function toMapName(string $name): string
+	{
+		/** @phpstan-var non-empty-string */
+		return Text::toLower($name);
 	}
 
 	/**
@@ -62,7 +83,19 @@ class HttpHeader
 	{
 		$this->throwIfInvalidHeaderName($name);
 
+		if (isset($this->headers[$name])) {
+			$this->headers[$name] = [$value];
+			return;
+		}
+
+		$mapName = self::toMapName($name);
+		if (isset($this->keyMap[$mapName])) {
+			$this->headers[$this->keyMap[$mapName]] = [$value];
+			return;
+		}
+
 		$this->headers[$name] = [$value];
+		$this->keyMap[$mapName] = $name;
 	}
 
 	/**
@@ -77,7 +110,19 @@ class HttpHeader
 	{
 		$this->throwIfInvalidHeaderName($name);
 
+		if (isset($this->headers[$name])) {
+			$this->headers[$name] = $values;
+			return;
+		}
+
+		$mapName = self::toMapName($name);
+		if (isset($this->keyMap[$mapName])) {
+			$this->headers[$this->keyMap[$mapName]] = $values;
+			return;
+		}
+
 		$this->headers[$name] = $values;
+		$this->keyMap[$mapName] = $name;
 	}
 
 	/**
@@ -92,22 +137,39 @@ class HttpHeader
 	{
 		$this->throwIfInvalidHeaderName($name);
 
-		if (ArrayUtility::tryGet($this->headers, $name, $result)) {
-			$result[] = $value;
-			$this->headers[$name] = $result;
-		} else {
-			$this->headers[$name] = [$value];
+		if (isset($this->headers[$name])) {
+			$this->headers[$name][] = $value;
+			return;
 		}
+
+		$mapName = self::toMapName($name);
+		if (isset($this->keyMap[$mapName])) {
+			$this->headers[$this->keyMap[$mapName]][] = $value;
+			return;
+		}
+
+		$this->headers[$name] = [$value];
+		$this->keyMap[$mapName] = $name;
 	}
 
 	/**
 	 * ヘッダ名が存在するか。
 	 *
 	 * @param string $name ヘッダ名。
+	 * @phpstan-param non-empty-string $name
 	 */
 	public function existsHeader(string $name): bool
 	{
-		return ArrayUtility::containsKey($this->headers, $name);
+		if (isset($this->headers[$name])) {
+			return true;
+		}
+
+		$mapName = self::toMapName($name);
+		if (isset($this->keyMap[$mapName])) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
@@ -120,11 +182,38 @@ class HttpHeader
 	 */
 	public function getValues(string $name): array
 	{
-		if (ArrayUtility::tryGet($this->headers, $name, $result)) {
-			return $result;
+		if (isset($this->headers[$name])) {
+			return $this->headers[$name];
+		}
+
+		$mapName = self::toMapName($name);
+		if (isset($this->keyMap[$mapName])) {
+			return $this->headers[$this->keyMap[$mapName]];
 		}
 
 		throw new KeyNotFoundException();
+	}
+
+	/**
+	 * ヘッダの削除。
+	 *
+	 * @param string $name ヘッダ名。
+	 * @phpstan-param non-empty-string $name
+	 * @return bool 削除できたか。
+	 */
+	public function clearHeader(string $name): bool
+	{
+		$this->throwIfInvalidHeaderName($name);
+
+		$mapName = self::toMapName($name);
+		if (!isset($this->keyMap[$mapName])) {
+			return false;
+		}
+
+		unset($this->headers[$this->keyMap[$mapName]]);
+		unset($this->keyMap[$mapName]);
+
+		return true;
 	}
 
 	/**

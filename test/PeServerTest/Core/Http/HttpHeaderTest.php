@@ -41,6 +41,11 @@ class HttpHeaderTest extends TestClass
 		$actual2 = $hh->getValues('NAME');
 
 		$this->assertSame(['VALUE2'], $actual2);
+
+		$hh->setValue('name', 'VALUE3');
+		$actual3 = $hh->getValues('naME');
+
+		$this->assertSame(['VALUE3'], $actual3);
 	}
 
 
@@ -56,6 +61,11 @@ class HttpHeaderTest extends TestClass
 		$actual2 = $hh->getValues('NAME');
 
 		$this->assertSame(['VALUE2', 'ADD2'], $actual2);
+
+		$hh->setValues('name', ['VALUE3', 'ADD3']);
+		$actual3 = $hh->getValues('NAme');
+
+		$this->assertSame(['VALUE3', 'ADD3'], $actual3);
 	}
 
 	public function test_addValue_getValues()
@@ -70,6 +80,11 @@ class HttpHeaderTest extends TestClass
 		$actual2 = $hh->getValues('NAME');
 
 		$this->assertSame(['VALUE', 'VALUE2'], $actual2);
+
+		$hh->addValue('name', 'VALUE3');
+		$actual3 = $hh->getValues('nAMe');
+
+		$this->assertSame(['VALUE', 'VALUE2', 'VALUE3'], $actual3);
 	}
 
 	public function test_existsHeader()
@@ -81,6 +96,7 @@ class HttpHeaderTest extends TestClass
 		$this->assertFalse($hh->existsHeader('location'));
 
 		$this->assertTrue($hh->existsHeader('NAME'));
+		$this->assertTrue($hh->existsHeader('name'));
 		$this->assertFalse($hh->existsHeader('NAME2'));
 	}
 
@@ -89,6 +105,17 @@ class HttpHeaderTest extends TestClass
 		$hh = new HttpHeader();
 		$this->expectException(KeyNotFoundException::class);
 		$hh->getValues('NAME');
+	}
+
+	public function test_clearHeader()
+	{
+		$hh = new HttpHeader();
+
+		$hh->addValue('NAME1', 'VALUE1');
+
+		$this->assertTrue($hh->clearHeader('naMe1'));
+		$this->assertFalse($hh->existsHeader('nAme1'));
+		$this->assertFalse($hh->clearHeader('NAME1'));
 	}
 
 	public function test_redirect()
