@@ -35,6 +35,7 @@
 			"**/PHPUnit/**": true,
 			"**/Libs/**": true
 		},
+		"html.format.indentInnerHtml": true,
 		"cSpell.words": [
 			"ATTR_ERRMODE",
 			"autoload",
@@ -179,14 +180,14 @@
 			"editorconfig.editorconfig",
 			"mehedidracula.php-namespace-resolver",
 			"sibiraj-s.vscode-scss-formatter",
-			"imperez.smarty",
 			"formulahendry.auto-close-tag",
 			"mrmlnc.vscode-apache",
 			"davidanson.vscode-markdownlint",
 			"kasik96.latte",
 			"xdebug.php-debug",
 			"awwsky.region-marker",
-			"SantaCodes.santacodes-region-viewer"
+			"santacodes.santacodes-region-viewer",
+			"aswinkumar863.smarty-template-support"
 		],
 	}
 }
