@@ -16,11 +16,14 @@ class CaseInsensitiveKeyArrayTest extends TestClass
 	{
 		$ca = new CaseInsensitiveKeyArray();
 
+		$this->assertCount(0, $ca);
+
 		$this->assertFalse(isset($ca['key']));
 
 		$ca[123] = 456;
 		$ca[1.2] = 1;
 		$ca['KEY'] = 'A';
+		$this->assertCount(3, $ca);
 		$this->assertTrue(isset($ca[123]));
 		$this->assertTrue(isset($ca[1.2]));
 		$this->assertTrue(isset($ca['KEY']));

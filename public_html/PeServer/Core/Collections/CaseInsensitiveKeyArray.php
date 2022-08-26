@@ -7,6 +7,7 @@ namespace PeServer\Core\Collections;
 use \ArrayAccess;
 use \ArrayIterator;
 use \IteratorAggregate;
+use Countable;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\IndexOutOfRangeException;
 use PeServer\Core\Throws\KeyNotFoundException;
@@ -25,8 +26,10 @@ use Traversable;
  * @implements ArrayAccess<TKey,TValue>
  * @implements IteratorAggregate<TKey,TValue>
  */
-class CaseInsensitiveKeyArray implements ArrayAccess, IteratorAggregate
+class CaseInsensitiveKeyArray implements ArrayAccess, Countable, IteratorAggregate
 {
+	#region variable
+
 	/**
 	 * 実データ。
 	 *
@@ -40,6 +43,8 @@ class CaseInsensitiveKeyArray implements ArrayAccess, IteratorAggregate
 	 * @var array<string,string>
 	 */
 	private array $map = [];
+
+	#endregion
 
 	/**
 	 * 生成。
@@ -56,6 +61,8 @@ class CaseInsensitiveKeyArray implements ArrayAccess, IteratorAggregate
 		}
 	}
 
+	#region function
+
 	/**
 	 * オフセット名へのマッピング名に変換。
 	 *
@@ -67,7 +74,9 @@ class CaseInsensitiveKeyArray implements ArrayAccess, IteratorAggregate
 		return Text::toLower($offset);
 	}
 
-	//[ArrayAccess]
+	#endregion
+
+	#region ArrayAccess
 
 	/**
 	 * `ArrayAccess:offsetExists`
@@ -179,10 +188,23 @@ class CaseInsensitiveKeyArray implements ArrayAccess, IteratorAggregate
 		unset($this->map[$mapOffset]);
 	}
 
-	//[IteratorAggregate]
+	#endregion
+
+	#region Countable
+
+	public function count(): int
+	{
+		return count($this->data);
+	}
+
+	#endregion
+
+	#region IteratorAggregate
 
 	public function getIterator(): Traversable
 	{
 		return new ArrayIterator($this->data);
 	}
+
+	#endregion
 }

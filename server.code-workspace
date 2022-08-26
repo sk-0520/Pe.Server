@@ -64,7 +64,8 @@
 			"Stringable",
 			"sysplugins",
 			"XDEBUG",
-			"IFNULL"
+			"IFNULL",
+			"endregion"
 		],
 		"cSpell.ignorePaths": [
 			"package-lock.json",
@@ -183,7 +184,9 @@
 			"mrmlnc.vscode-apache",
 			"davidanson.vscode-markdownlint",
 			"kasik96.latte",
-			"xdebug.php-debug"
+			"xdebug.php-debug",
+			"awwsky.region-marker",
+			"SantaCodes.santacodes-region-viewer"
 		],
 	}
 }
