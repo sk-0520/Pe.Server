@@ -6,6 +6,7 @@ namespace PeServer\App\Models\Middleware\Api;
 
 use PeServer\App\Models\AppDatabaseCache;
 use PeServer\App\Models\Cache\UserCacheItem;
+use PeServer\App\Models\HttpHeaderName;
 use PeServer\App\Models\SessionKey;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Http\HttpResponse;
@@ -16,9 +17,6 @@ use PeServer\Core\Mvc\Middleware\MiddlewareResult;
 
 abstract class ApiAccountFilterMiddlewareBase implements IMiddleware
 {
-	private const API_KEY = 'X-API-KEY';
-	private const SECRET_KEY = 'X-SECRET-KEY';
-
 	public function __construct(
 		private AppDatabaseCache $dbCache
 	) {
@@ -33,10 +31,10 @@ abstract class ApiAccountFilterMiddlewareBase implements IMiddleware
 	 */
 	protected function filterCore(MiddlewareArgument $argument): MiddlewareResult
 	{
-		if ($argument->request->httpHeader->existsHeader(self::API_KEY)) {
-			if ($argument->request->httpHeader->existsHeader(self::SECRET_KEY)) {
-				$apiKeys = $argument->request->httpHeader->getValues(self::API_KEY);
-				$secrets = $argument->request->httpHeader->getValues(self::SECRET_KEY);
+		if ($argument->request->httpHeader->existsHeader(HttpHeaderName::API_KEY)) {
+			if ($argument->request->httpHeader->existsHeader(HttpHeaderName::SECRET_KEY)) {
+				$apiKeys = $argument->request->httpHeader->getValues(HttpHeaderName::API_KEY);
+				$secrets = $argument->request->httpHeader->getValues(HttpHeaderName::SECRET_KEY);
 
 				if (ArrayUtility::getCount($apiKeys) !== 1) {
 					return MiddlewareResult::error(HttpStatus::forbidden());
