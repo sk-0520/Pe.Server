@@ -348,4 +348,30 @@ class ArrayUtility
 		}
 		return $result->value;
 	}
+
+	/**
+	 * `array_map` 的なことを行う非ラッパー処理。
+	 *
+	 * `array_map` がもうなんか順序もコールバック引数も何もかも怖い。
+	 *
+	 * @template TValue
+	 * @template TResult
+	 * @param array<mixed> $input
+	 * @phpstan-param array<array-key,TValue> $input
+	 * @param callable $callback
+	 * @phpstan-param callable(TValue,array-key): TResult $callback
+	 * @return array<mixed>
+	 * @phpstan-return array<array-key,TResult>
+	 */
+	public static function map(array $input, callable $callback): array
+	{
+		/** @phpstan-var array<array-key,TResult> */
+		$result = [];
+
+		foreach ($input as $key => $value) {
+			$result[$key] = $callback($value, $key);
+		}
+
+		return $result;
+	}
 }

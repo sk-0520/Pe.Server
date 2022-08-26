@@ -296,4 +296,15 @@ class ArrayUtilityTest extends TestClass
 		$this->fail();
 	}
 
+	public function test_map()
+	{
+		$input = [
+			'A' => 'a',
+			10 => 'b'
+		];
+		$actual = ArrayUtility::map($input, fn($v) => $v . $v);
+		$this->assertSame('aa', $actual['A']);
+		$this->assertSame('bb', $actual[10]);
+	}
+
 }
