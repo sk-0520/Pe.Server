@@ -8,6 +8,7 @@ use \Throwable;
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\Core\ArrayUtility;
+use PeServer\Core\Database\DatabaseTableResult;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\DefaultValue;
 use PeServer\Core\Mvc\LogicCallMode;
@@ -23,15 +24,66 @@ class ManagementDatabaseMaintenanceLogic extends PageLogicBase
 		parent::__construct($parameter);
 	}
 
+	/**
+	 * テーブル情報取得。
+	 *
+	 * @param IDatabaseContext $context
+	 * @param array<mixed> $row
+	 * @return array{name:string,sql:string,table:array{columns:array<mixed>}}
+	 */
+	private function getTableInfo(IDatabaseContext $context, array $row): array
+	{
+		$columns = $context->query(
+			"PRAGMA table_info('{$row['name']}')" //@phpstan-ignore-line
+		);
+		// array_multisort(
+		// 	array_column($columns->rows, 'cid'), //@-phpstan-ignore-line
+		// 	SORT_ASC,
+		// 	$columns->rows
+		// );
+		// $orders = Text::join(', ', array_map(fn ($i) => $i['name'], $columns->rows));
+
+		//@phpstan-ignore-next-line
+		return [
+			'name' => (string)$row['name'],
+			'sql' => (string)$row['sql'],
+			'columns' => $columns->rows,
+		];
+	}
+
+	//[PageLogicBase]
+
 	protected function startup(LogicCallMode $callMode): void
 	{
 		$this->registerParameterKeys([
 			'database_maintenance_statement',
 			'executed',
 			'result',
+			'tables',
 		], true);
 		$this->setValue('executed', false);
 		$this->setValue('result', null);
+
+		$database = $this->openDatabase();
+		$schemas = $database->query(
+			<<<SQL
+
+			select
+				*
+			from
+				sqlite_master
+			where
+				type = 'table'
+			order by
+				name
+
+			SQL
+		);
+
+		$tables = array_map(function ($i) use ($database) {
+			return $this->getTableInfo($database, $i);
+		}, $schemas->rows);
+		$this->setValue('tables', $tables);
 	}
 
 	protected function validateImpl(LogicCallMode $callMode): void
@@ -54,17 +106,17 @@ class ManagementDatabaseMaintenanceLogic extends PageLogicBase
 		$statement = $this->getRequest('database_maintenance_statement');
 
 		$database = $this->openDatabase();
-		/** @var int|mixed[]|Throwable */
-		$result = DefaultValue::EMPTY_STRING;
+		/** @var DatabaseTableResult|Throwable|null */
+		$result = null; //@phpstan-ignore-line
 		try {
 			$database->transaction(function (IDatabaseContext $context) use (&$result, $statement) {
 				/** @phpstan-var literal-string $statement これはええねん */
 
 				$regex = new Regex();
 				if ($regex->isMatch($statement, '/^\s*\bselect\b/')) { // select だけの判定はよくないけどしんどいのだ
-					$result = $context->query($statement)->rows;
+					$result = $context->query($statement);
 				} else {
-					$result = $context->execute($statement)->resultCount;
+					$result = $context->execute($statement);
 				}
 				return true;
 			});

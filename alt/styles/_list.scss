@@ -2,6 +2,20 @@
 
 ol,
 ul {
+	&.inline {
+		padding: 0;
+		margin: 0.25em 1em;
+
+		li {
+			display: inline-block;
+			margin: 0;
+
+			& + li {
+				margin-right: 1em;
+			}
+		}
+	}
+
 	li {
 		margin-left: 3ex;
 		list-style-position: outside;
