@@ -9,7 +9,7 @@ use PeServer\App\Models\Dao\Entities\UserAuditLogsEntityDao;
 use PeServer\App\Models\IAuditUserInfo;
 use PeServer\App\Models\ResponseJson;
 use PeServer\Core\ArrayUtility;
-use PeServer\Core\Database\Database;
+use PeServer\Core\Database\DatabaseContext;
 use PeServer\Core\Database\IDatabaseConnection;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\DefaultValue;
@@ -34,9 +34,9 @@ abstract class DomainLogicBase extends LogicBase
 	/**
 	 * データベース接続処理。
 	 *
-	 * @return Database
+	 * @return DatabaseContext
 	 */
-	protected function openDatabase(): Database
+	protected function openDatabase(): DatabaseContext
 	{
 		//return AppDatabase::open($this->logger);
 		return $this->databaseConnection->open();

@@ -26,7 +26,7 @@ use PeServer\Core\TypeUtility;
 /**
  * DB接続処理。
  */
-class Database extends DisposerBase implements IDatabaseTransactionContext
+class DatabaseContext extends DisposerBase implements IDatabaseTransactionContext
 {
 	/**
 	 * 接続処理。

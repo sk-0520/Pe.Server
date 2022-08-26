@@ -11,7 +11,7 @@ use PeServer\Core\Web\UrlUtility;
 use PeServer\Core\Environment;
 use PeServer\Core\Mvc\Validator;
 use PeServer\Core\Text;
-use PeServer\Core\Database\Database;
+use PeServer\Core\Database\DatabaseContext;
 use PeServer\Core\Mvc\IValidationReceiver;
 use PeServer\App\Models\Domain\ValidatorBase;
 use PeServer\App\Models\Dao\Entities\PluginsEntityDao;
@@ -111,7 +111,7 @@ class PluginValidator extends ValidatorBase
 	}
 
 
-	public function isFreePluginId(Database $database, string $key, string $pluginId): bool
+	public function isFreePluginId(DatabaseContext $database, string $key, string $pluginId): bool
 	{
 		$pluginsEntityDao = new PluginsEntityDao($database);
 
@@ -123,7 +123,7 @@ class PluginValidator extends ValidatorBase
 		return true;
 	}
 
-	public function isFreePluginName(Database $database, string $key, string $pluginName): bool
+	public function isFreePluginName(DatabaseContext $database, string $key, string $pluginName): bool
 	{
 		$pluginsEntityDao = new PluginsEntityDao($database);
 
