@@ -64,7 +64,7 @@ class FileLogger extends LoggerBase
 	private function toSafeFileNameHeader(): string
 	{
 		$trimHeader = Text::trim($this->options->header, '/\\');
-		return Text::replace($trimHeader, ['/', '\\', '*', '|', '<', '>', '?'], '_');
+		return Text::replace($trimHeader, ['/', '\\', '*', '|', '<', '>', '?', ':'], '_');
 	}
 
 	protected function toHeaderDate(bool $isCleanup): string
