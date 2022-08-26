@@ -161,4 +161,44 @@ abstract class Path
 
 		return $result;
 	}
+
+	/**
+	 * ファイルパスに対して環境名を付与する。
+	 *
+	 * * `file.ext` + `debug` = `file.debug.ext`
+	 *
+	 * @param string $path パス。
+	 * @param string $environment 環境名。
+	 * @return string 環境名が付与されたファイルパス。入力値によっては環境に合わせたディレクトリセパレータに変わる可能性あり(`./a.b` => `.\a.env.b`)
+	 * @throws ArgumentException
+	 */
+	public static function setEnvironmentName(string $path, string $environment): string
+	{
+		if (Text::isNullOrWhiteSpace($path)) {
+			throw new ArgumentException('$path');
+		}
+		if (Text::isNullOrWhiteSpace($environment)) {
+			throw new ArgumentException('$environment');
+		}
+
+		$parts = self::toParts($path);
+
+		$name = Text::isNullOrEmpty($parts->extension)
+			? $parts->fileNameWithoutExtension . '.' . $environment
+			: $parts->fileNameWithoutExtension . '.' . $environment . '.' . $parts->extension;
+
+		if ($parts->directory === '.' && !(Text::startsWith($path, './', false) || Text::startsWith($path, '.\\', false))) {
+			return $name;
+		}
+
+		if ($parts->directory === DIRECTORY_SEPARATOR) {
+			return DIRECTORY_SEPARATOR . $name;
+		}
+
+		if (Text::endsWith($parts->directory, DIRECTORY_SEPARATOR, false)) {
+			return Text::trimEnd($parts->directory, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $name;
+		}
+
+		return $parts->directory . DIRECTORY_SEPARATOR . $name;
+	}
 }

@@ -121,6 +121,43 @@ class PathTest extends TestClass
 		}
 	}
 
+	public function test_setEnvironmentName()
+	{
+		$tests = [
+			new Data('name.env.ext', 'name.ext', 'env'),
+			new Data('.debug.env', '.env', 'debug'),
+			new Data('name-only.debug', 'name-only', 'debug'),
+			new Data('name.name.<ENV>.ext', 'name.name.ext', '<ENV>'),
+			new Data('.' . DIRECTORY_SEPARATOR . 'name.env.ext', './name.ext', 'env'),
+			new Data('..' . DIRECTORY_SEPARATOR . 'name.env.ext', '../name.ext', 'env'),
+			new Data(DIRECTORY_SEPARATOR . 'name.env.ext', '/name.ext', 'env'),
+			new Data('C:\\name.env.ext', 'C:\\name.ext', 'env'),
+			new Data('C:\\dir' . DIRECTORY_SEPARATOR . 'name.env.ext', 'C:\\dir/name.ext', 'env'),
+		];
+		foreach ($tests as $test) {
+			$actual = Path::setEnvironmentName(...$test->args);
+			$this->assertSame($test->expected, $actual, $test->str());
+		}
+	}
+
+	public function provider_setEnvironmentName_throw()
+	{
+		return [
+			['', 'env', '$path'],
+			['  ', 'env', '$path'],
+			['path', '', '$environment'],
+			['path', '   ', '$environment'],
+		];
+	}
+
+	/** @dataProvider provider_setEnvironmentName_throw */
+	public function test_setEnvironmentName_throw(mixed $path, mixed $environment, string $message)
+	{
+		$this->expectException(ArgumentException::class);
+		$this->expectExceptionMessage($message);
+		Path::setEnvironmentName($path, $environment);
+	}
+
 	public function test_toParts_empty_throw()
 	{
 		$this->expectException(ArgumentException::class);
