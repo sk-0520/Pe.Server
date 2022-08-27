@@ -70,25 +70,6 @@ class DiContainer extends DisposerBase implements IDiContainer
 		return null;
 	}
 
-	/**
-	 * 型指定から型一覧を取得。
-	 *
-	 * @param ReflectionType|null $parameterType
-	 * @return ReflectionNamedType[]
-	 */
-	protected function getReflectionTypes(?ReflectionType $parameterType): array
-	{
-		if ($parameterType instanceof ReflectionNamedType) {
-			return [$parameterType];
-		}
-
-		if ($parameterType instanceof ReflectionUnionType) {
-			return $parameterType->getTypes();
-		}
-
-		return [];
-	}
-
 	protected function canSetValue(?ReflectionType $parameterType, mixed $value): bool
 	{
 		if (is_null($value)) {
@@ -98,7 +79,7 @@ class DiContainer extends DisposerBase implements IDiContainer
 			return false;
 		}
 
-		foreach ($this->getReflectionTypes($parameterType) as $currentType) {
+		foreach (ReflectionUtility::getTypes($parameterType) as $currentType) {
 			$typeName = $currentType->getName();
 			if (is_a($value, $typeName)) {
 				return true;
@@ -110,7 +91,7 @@ class DiContainer extends DisposerBase implements IDiContainer
 
 	protected function getItemFromPropertyType(?ReflectionType $parameterType, bool $mappingKeyOnly): ?DiItem
 	{
-		foreach ($this->getReflectionTypes($parameterType) as $currentType) {
+		foreach (ReflectionUtility::getTypes($parameterType) as $currentType) {
 			/** @phpstan-var class-string */
 			$typeName = $currentType->getName();
 			$item = $this->getMappingItem($typeName, $mappingKeyOnly);
@@ -166,7 +147,7 @@ class DiContainer extends DisposerBase implements IDiContainer
 						$argument = $arguments[$parameterName];
 					} else {
 						// 型名
-						$types = $this->getReflectionTypes($parameterType);
+						$types = ReflectionUtility::getTypes($parameterType);
 						foreach ($types as $type) {
 							if (isset($arguments[$type->getName()])) {
 								$isHit = true;
@@ -276,13 +257,15 @@ class DiContainer extends DisposerBase implements IDiContainer
 	protected function setMembers(object $target, int $level, bool $mappingKeyOnly, array $callStack): void
 	{
 		$reflectionClass = new ReflectionClass($target);
-		$properties = $reflectionClass->getProperties(ReflectionProperty::IS_PUBLIC | ReflectionProperty::IS_PROTECTED | ReflectionProperty::IS_PRIVATE);
 
-		$parent = $reflectionClass;
-		while ($parent = $parent->getParentClass()) {
-			$parentProperties = $parent->getProperties(ReflectionProperty::IS_PUBLIC | ReflectionProperty::IS_PROTECTED | ReflectionProperty::IS_PRIVATE);
-			$properties = array_merge($properties, $parentProperties); //いっつもわからんくなる。何が正しいのか
-		}
+		// $properties = $reflectionClass->getProperties(ReflectionProperty::IS_PUBLIC | ReflectionProperty::IS_PROTECTED | ReflectionProperty::IS_PRIVATE);
+
+		// $parent = $reflectionClass;
+		// while ($parent = $parent->getParentClass()) {
+		// 	$parentProperties = $parent->getProperties(ReflectionProperty::IS_PUBLIC | ReflectionProperty::IS_PROTECTED | ReflectionProperty::IS_PRIVATE);
+		// 	$properties = array_merge($properties, $parentProperties); //いっつもわからんくなる。何が正しいのか
+		// }
+		$properties = ReflectionUtility::getAllProperties($reflectionClass);
 
 		foreach ($properties as $property) {
 			// コンストラクタからプロパティになりあがっている場合はそっとしておく

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Image;
 
-use \Serializable;
 use \Stringable;
 use PeServer\Core\Code;
 
@@ -13,7 +12,7 @@ use PeServer\Core\Code;
  *
  * @immutable
  */
-class Rectangle implements Stringable, Serializable
+class Rectangle implements Stringable
 {
 	/**
 	 * 生成。
@@ -26,6 +25,8 @@ class Rectangle implements Stringable, Serializable
 		public Size $size
 	) {
 	}
+
+	#region function
 
 	public function left(): int
 	{
@@ -45,26 +46,14 @@ class Rectangle implements Stringable, Serializable
 		return $this->point->x + $this->size->height;
 	}
 
-	public function serialize(): string
-	{
-		$values = [
-			'point' => $this->point,
-			'size' => $this->size,
-		];
+	#endregion
 
-		return serialize($values);
-	}
-
-	public function unserialize(string $data): void
-	{
-		$values = unserialize($data);
-
-		$this->point = $values['point']; //@phpstan-ignore-line Serializable
-		$this->size = $values['size']; //@phpstan-ignore-line Serializable
-	}
+	#region Stringable
 
 	public function __toString(): string
 	{
 		return Code::toString($this, $this->point . ',' . $this->size);
 	}
+
+	#endregion
 }

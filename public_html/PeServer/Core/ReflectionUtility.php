@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
+use \ReflectionClass;
+use \ReflectionNamedType;
+use \ReflectionProperty;
+use \ReflectionType;
+use \ReflectionUnionType;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\TypeException;
 
@@ -68,5 +73,47 @@ abstract class ReflectionUtility
 		}
 
 		return method_exists($input, $method);
+	}
+
+	/**
+	 * 対象と継承元の全てのプロパティを取得。
+	 *
+	 * @template T of object
+	 * @param ReflectionClass $current
+	 * @phpstan-param ReflectionClass<T> $current
+	 * @param int $filter
+	 * @return ReflectionProperty[]
+	 */
+	public static function getAllProperties(ReflectionClass $current, int $filter = ReflectionProperty::IS_PUBLIC | ReflectionProperty::IS_PROTECTED | ReflectionProperty::IS_PRIVATE): array
+	{
+		/** @var ReflectionProperty[] */
+		$properties = $current->getProperties($filter);
+
+		$parent = $current;
+		while ($parent = $parent->getParentClass()) {
+			$parentProperties = $parent->getProperties($filter);
+			$properties = array_merge($properties, $parentProperties); //いっつもわからんくなる。何が正しいのか
+		}
+
+		return $properties;
+	}
+
+	/**
+	 * 型指定から型一覧を取得。
+	 *
+	 * @param ReflectionType|null $parameterType
+	 * @return ReflectionNamedType[]
+	 */
+	public static function getTypes(?ReflectionType $parameterType): array
+	{
+		if ($parameterType instanceof ReflectionNamedType) {
+			return [$parameterType];
+		}
+
+		if ($parameterType instanceof ReflectionUnionType) {
+			return $parameterType->getTypes();
+		}
+
+		return [];
 	}
 }

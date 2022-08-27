@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Image;
 
-use \Serializable;
 use \Stringable;
 use PeServer\Core\Code;
 
 /**
  * 座標。
  */
-class Point implements Stringable, Serializable
+class Point implements Stringable
 {
 	private static ?Point $emptyValue = null; //phpstan-ignore-line static
 
@@ -29,31 +28,21 @@ class Point implements Stringable, Serializable
 	) {
 	}
 
+	#region function
+
 	public static function empty(): Point
 	{
 		return self::$emptyValue ??= new Point(0, 0);
 	}
 
-	public function serialize(): string
-	{
-		$values = [
-			'x' => $this->x,
-			'y' => $this->y,
-		];
+	#endregion
 
-		return serialize($values);
-	}
-
-	public function unserialize(string $data): void
-	{
-		$values = unserialize($data);
-
-		$this->x = $values['x']; //@phpstan-ignore-line Serializable
-		$this->y = $values['y']; //@phpstan-ignore-line Serializable
-	}
+	#region Stringable
 
 	public function __toString(): string
 	{
 		return Code::toString($this, $this->x . ',' . $this->y);
 	}
+
+	#endregion
 }
