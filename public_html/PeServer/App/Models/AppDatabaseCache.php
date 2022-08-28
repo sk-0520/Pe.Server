@@ -29,7 +29,7 @@ class AppDatabaseCache
 		AppConfiguration $config,
 		private IDatabaseConnection $connection
 	) {
-		$this->cacheDirectoryPath = $config->setting['cache']['database'];
+		$this->cacheDirectoryPath = $config->setting->cache->database;
 	}
 
 	private function openDatabase(): IDatabaseContext

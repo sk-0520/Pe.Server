@@ -48,16 +48,16 @@ final class AppTemplate
 	 */
 	public function createMailTemplate(string $templateName, string $subject, array $params): string
 	{
-		$families = $this->config->setting['config']['address']['families'];
+		$families = $this->config->setting->config->address->families;
 
 		$params['app'] = [
 			'subject' => $subject,
-			'server_url' => $families['server_url'],
-			'contact_url' => $families['contact_url'],
-			'app_project_url' => $families['app_project_url'],
-			'server_project_url' => $families['server_project_url'],
-			'forum_url' => $families['forum_url'],
-			'website_url' => $families['website_url'],
+			'server_url' => $families->serverUrl,
+			'contact_url' => $families->contactUrl,
+			'app_project_url' => $families->appProjectUrl,
+			'server_project_url' => $families->serverProjectUrl,
+			'forum_url' => $families->forumUrl,
+			'website_url' => $families->websiteUrl,
 		];
 
 		return $this->buildTemplate('email', $templateName, $params, HttpStatus::none());

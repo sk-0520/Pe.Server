@@ -164,7 +164,7 @@ class Collection implements IteratorAggregate
 	 * @return Vector
 	 * @phpstan-return Vector<TValue>
 	 */
-	public function toList(string $type = TypeUtility::TYPE_UNKNOWN): Vector
+	public function toList(string $type = TypeUtility::TYPE_NULL): Vector
 	{
 		$array = self::toArray();
 		if (ArrayUtility::isNullOrEmpty($array)) {
@@ -188,7 +188,7 @@ class Collection implements IteratorAggregate
 	 * @return Dictionary
 	 * @phpstan-return Dictionary<TResult>
 	 */
-	public function toDictionary(callable $keyFactory, callable $valueFactory, string $type = TypeUtility::TYPE_UNKNOWN): Dictionary
+	public function toDictionary(callable $keyFactory, callable $valueFactory, string $type = TypeUtility::TYPE_NULL): Dictionary
 	{
 		/** @phpstan-var array<string,TResult> */
 		$buffer = [];

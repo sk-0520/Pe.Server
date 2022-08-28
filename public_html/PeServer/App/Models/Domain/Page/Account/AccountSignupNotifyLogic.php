@@ -24,7 +24,7 @@ class AccountSignupNotifyLogic extends PageLogicBase
 
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
-		$emailAddress = $this->config->setting['config']['address']['from_email']['address'];
+		$emailAddress = $this->config->setting->config->address->fromEmail->address;
 		$emailDomain = Text::split($emailAddress, '@')[1];
 		$this->setValue('email_address', $emailAddress);
 		$this->setValue('email_domain', $emailDomain);

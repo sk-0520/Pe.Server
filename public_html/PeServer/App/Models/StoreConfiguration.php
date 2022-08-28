@@ -5,13 +5,18 @@ declare(strict_types=1);
 namespace PeServer\App\Models;
 
 use DateInterval;
-use PeServer\Core\ArrayUtility;
-use PeServer\Core\Store\CookieOption;
-use PeServer\Core\Store\StoreOptions;
-use PeServer\Core\Store\SessionOption;
-use PeServer\Core\Store\TemporaryOption;
 use PeServer\App\Models\AppConfiguration;
+use PeServer\App\Models\Configuration\CookieStoreSetting;
+use PeServer\App\Models\Configuration\SessionStoreSetting;
+use PeServer\App\Models\Configuration\StoreSetting;
+use PeServer\App\Models\Configuration\TemporaryStoreSetting;
+use PeServer\Core\ArrayUtility;
+use PeServer\Core\DefaultValue;
+use PeServer\Core\Store\CookieOption;
+use PeServer\Core\Store\SessionOption;
 use PeServer\Core\Store\SpecialStore;
+use PeServer\Core\Store\StoreOptions;
+use PeServer\Core\Store\TemporaryOption;
 use PeServer\Core\Text;
 
 abstract class StoreConfiguration
@@ -20,57 +25,43 @@ abstract class StoreConfiguration
 	 * Undocumented function
 	 *
 	 * @param CookieOption $base
-	 * @param array<string,mixed>|null $setting
+	 * @param CookieStoreSetting $setting
 	 * @return CookieOption
 	 */
-	private static function mergeCookie(CookieOption $base, ?array $setting): CookieOption
+	private static function mergeCookie(CookieStoreSetting $setting, CookieOption $base): CookieOption
 	{
-		//get_object_vars($base);
-		$baseSetting = [
-			'path' => $base->path,
-			'span' => $base->span,
-			'secure' => $base->secure,
-			'httpOnly' => $base->httpOnly,
-			'sameSite' => $base->sameSite,
-		];
-		/** @var array<string,mixed> */
-		$cookie = ArrayUtility::getOr($setting, 'cookie', []);
-		$overwriteSetting = [
-			'cookie' => ArrayUtility::replace($baseSetting, $cookie),
-		];
+		// //get_object_vars($base);
+		// $baseSetting = new CookieStoreSetting($base);
 
-		$overwriteCookie = self::getCookie($overwriteSetting);
-
-		return $overwriteCookie;
+		return new CookieOption(
+			Text::requireNotNullOrWhiteSpace($setting->path, $base->path),
+			Text::isNullOrWhiteSpace($setting->span) ? $base->span : new DateInterval($setting->span), //@phpstan-ignore-line not null
+			is_null($setting->secure) ? $base->secure : $setting->secure,
+			is_null($setting->httpOnly) ? $base->httpOnly : $setting->httpOnly,
+			Text::requireNotNullOrWhiteSpace($setting->sameSite, $base->sameSite) //@phpstan-ignore-line not null
+		);
 	}
 
 	/**
 	 * クッキー設定を取得。
 	 *
-	 * @param array<string,array<string,string|bool>>|null $setting
+	 * @param CookieStoreSetting $setting
 	 * @return CookieOption
 	 */
-	public static function getCookie(?array $setting): CookieOption
+	public static function getCookie(CookieStoreSetting $setting): CookieOption
 	{
-		/** @var array<string,mixed>|null */
-		$cookie = ArrayUtility::getOr($setting, 'cookie', null);
-
-		/** @var string|null */
-		$spanSetting = ArrayUtility::getOr($cookie, 'span', null);
 		/** @var DateInterval|null */
 		$span = null;
-		if (!is_null($spanSetting)) {
-			$span = new DateInterval($spanSetting);
+		if (!Text::isNullOrWhiteSpace($setting->span)) {
+			$span = new DateInterval($setting->span); //@phpstan-ignore-line not null
 		}
 
-		/** @var string */
-		$path = ArrayUtility::getOr($cookie, 'path', '/');
-		/** @var bool */
-		$secure = ArrayUtility::getOr($cookie, 'secure', false);
-		/** @var bool */
-		$httpOnly = ArrayUtility::getOr($cookie, 'httpOnly', true);
-		/** @var 'Lax'|'lax'|'None'|'none'|'Strict'|'strict' */
-		$sameSite = ArrayUtility::getOr($cookie, 'sameSite', 'None');
+		$path = Text::requireNotNullOrWhiteSpace($setting->path, '/');
+		$secure = is_null($setting->secure) ? false : $setting->secure;
+		$httpOnly = is_null($setting->httpOnly) ? true : $setting->httpOnly;
+		/** @phpstan-var 'Lax'|'lax'|'None'|'none'|'Strict'|'strict' */
+		$sameSite = Text::requireNotNullOrWhiteSpace($setting->sameSite, 'None');
+
 		$option = new CookieOption(
 			$path,
 			$span,
@@ -85,23 +76,19 @@ abstract class StoreConfiguration
 	/**
 	 * 一時データ設定を取得。
 	 *
-	 * @param array<string,array<string,string|bool>>|null $setting
+	 * @param TemporaryStoreSetting $setting
 	 * @param CookieOption $cookie
 	 * @return TemporaryOption
 	 */
-	public static function getTemporary(?array $setting, CookieOption $cookie): TemporaryOption
+	public static function getTemporary(TemporaryStoreSetting $setting, CookieOption $cookie): TemporaryOption
 	{
-		/** @var array<string,mixed>|null */
-		$temporary = ArrayUtility::getOr($setting, 'temporary', null);
-		$overwriteCookie = self::mergeCookie($cookie, $temporary);
+		$overwriteCookie = self::mergeCookie($setting->cookie, $cookie);
 		if (is_null($overwriteCookie->span)) {
 			$overwriteCookie->span = new DateInterval('PT30M');
 		}
 
-		/** @var string */
-		$name = ArrayUtility::getOr($temporary, 'name', 'TEMP');
-		/** @var string */
-		$save = ArrayUtility::getOr($temporary, 'save', './temp');
+		$name = Text::requireNotNullOrWhiteSpace($setting->name, 'TEMP');
+		$save = Text::requireNotNullOrWhiteSpace($setting->save, './temp');
 		$option = new TemporaryOption(
 			$name,
 			$save,
@@ -114,25 +101,18 @@ abstract class StoreConfiguration
 	/**
 	 * セッション設定を取得。
 	 *
-	 * @param array<string,array<string,string|bool>>|null $setting
+	 * @param SessionStoreSetting $setting
 	 * @param CookieOption $cookie
 	 * @return SessionOption
 	 */
-	public static function getSession(?array $setting, CookieOption $cookie): SessionOption
+	public static function getSession(SessionStoreSetting $setting, CookieOption $cookie): SessionOption
 	{
-		/** @var array<string,mixed>|null */
-		$session = ArrayUtility::getOr($setting, 'session', null);
-		$overwriteCookie = self::mergeCookie($cookie, $session);
+		$overwriteCookie = self::mergeCookie($setting->cookie, $cookie);
 
-		/** @var string */
-		$name = ArrayUtility::getOr($session, 'name', SessionOption::DEFAULT_NAME);
-		if (Text::isNullOrWhiteSpace($name)) {
-			$name = SessionOption::DEFAULT_NAME;
-		}
 		/** @phpstan-var non-empty-string $name */
+		$name = Text::requireNotNullOrWhiteSpace($setting->name, SessionOption::DEFAULT_NAME);
+		$save = Text::requireNotNullOrWhiteSpace($setting->save, DefaultValue::EMPTY_STRING);
 
-		/** @var string $save */
-		$save = ArrayUtility::getOr($session, 'save', '');
 		$option = new SessionOption(
 			$name,
 			$save,
@@ -145,14 +125,14 @@ abstract class StoreConfiguration
 	/**
 	 * ストア情報取得。
 	 *
-	 * @param array<string,array<string,string|bool>>|null $setting;
+	 * @param StoreSetting $setting;
 	 * @return StoreOptions
 	 */
-	public static function build($setting): StoreOptions
+	public static function build(StoreSetting $setting): StoreOptions
 	{
-		$cookie = self::getCookie($setting);
-		$temporary = self::getTemporary($setting, $cookie);
-		$session = self::getSession($setting, $cookie);
+		$cookie = self::getCookie($setting->cookie);
+		$temporary = self::getTemporary($setting->temporary, $cookie);
+		$session = self::getSession($setting->session, $cookie);
 
 		return new StoreOptions(
 			$cookie,

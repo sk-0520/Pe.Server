@@ -14,5 +14,5 @@ interface IAuditUserInfo
 	 *
 	 * @return string
 	 */
-	public function getUserId(): string;
+	function getUserId(): string;
 }

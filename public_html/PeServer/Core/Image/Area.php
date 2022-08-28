@@ -31,6 +31,8 @@ class Area implements Stringable
 	) {
 	}
 
+	#region function
+
 	/**
 	 * 配列から生成。
 	 *
@@ -74,27 +76,9 @@ class Area implements Stringable
 		return $this->leftBottom->y - $this->rightTop->y;
 	}
 
-	public function serialize(): string
-	{
-		$values = [
-			'leftTop' => $this->leftTop,
-			'leftBottom' => $this->leftBottom,
-			'rightTop' => $this->rightTop,
-			'rightBottom' => $this->rightBottom,
-		];
+	#endregion
 
-		return serialize($values);
-	}
-
-	public function unserialize(string $data): void
-	{
-		$values = unserialize($data);
-
-		$this->leftTop = $values['leftTop']; //@phpstan-ignore-line Serializable
-		$this->leftBottom = $values['leftBottom']; //@phpstan-ignore-line Serializable
-		$this->rightTop = $values['rightTop']; //@phpstan-ignore-line Serializable
-		$this->rightBottom = $values['rightBottom']; //@phpstan-ignore-line Serializable
-	}
+	#region Stringable
 
 	public function __toString(): string
 	{
@@ -111,4 +95,6 @@ class Area implements Stringable
 			)
 		);
 	}
+
+	#endregion
 }

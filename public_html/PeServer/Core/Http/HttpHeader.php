@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Http;
 
 use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\CaseInsensitiveKeyArray;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
@@ -22,17 +23,10 @@ class HttpHeader
 	 *
 	 * リダイレクト(Location)とは共存しない。
 	 *
-	 * @var array<non-empty-string,string[]>
+	 * @var CaseInsensitiveKeyArray
+	 * @phpstan-var CaseInsensitiveKeyArray<non-empty-string,string[]>
 	 */
-	private array $headers = [];
-	/**
-	 * ヘッダの名に対するヘッダ一覧の実キーをマッピング。
-	 *
-	 * ヘッダ一覧側は最初に設定されたキー名を保持するがHTTPヘッダは大文字小文字を区別しないため本キーは小文字で統一し、値をヘッダキーとする対応表となる。
-	 *
-	 * @var array<non-empty-string,non-empty-string>
-	 */
-	private array $keyMap = [];
+	private CaseInsensitiveKeyArray $headers;
 
 	/**
 	 * リダイレクト設定。
@@ -40,6 +34,11 @@ class HttpHeader
 	 * @var RedirectSetting|null
 	 */
 	private ?RedirectSetting $redirect = null;
+
+	public function __construct()
+	{
+		$this->headers = new CaseInsensitiveKeyArray();
+	}
 
 	/**
 	 * HTTPヘッダ名が不正であれば例外を投げる。
@@ -58,20 +57,6 @@ class HttpHeader
 	}
 
 	/**
-	 * ヘッダ名へのマッピング名に変換。
-	 *
-	 * @param string $name 元になるヘッダ名
-	 * @phpstan-param non-empty-string $name
-	 * @return string マッピングヘッダ名。
-	 * @phpstan-return non-empty-string
-	 */
-	private static function toMapName(string $name): string
-	{
-		/** @phpstan-var non-empty-string */
-		return Text::toLower($name);
-	}
-
-	/**
 	 * HTTPヘッダ設定
 	 *
 	 * @param string $name ヘッダ名。
@@ -83,19 +68,7 @@ class HttpHeader
 	{
 		$this->throwIfInvalidHeaderName($name);
 
-		if (isset($this->headers[$name])) {
-			$this->headers[$name] = [$value];
-			return;
-		}
-
-		$mapName = self::toMapName($name);
-		if (isset($this->keyMap[$mapName])) {
-			$this->headers[$this->keyMap[$mapName]] = [$value];
-			return;
-		}
-
 		$this->headers[$name] = [$value];
-		$this->keyMap[$mapName] = $name;
 	}
 
 	/**
@@ -110,19 +83,7 @@ class HttpHeader
 	{
 		$this->throwIfInvalidHeaderName($name);
 
-		if (isset($this->headers[$name])) {
-			$this->headers[$name] = $values;
-			return;
-		}
-
-		$mapName = self::toMapName($name);
-		if (isset($this->keyMap[$mapName])) {
-			$this->headers[$this->keyMap[$mapName]] = $values;
-			return;
-		}
-
 		$this->headers[$name] = $values;
-		$this->keyMap[$mapName] = $name;
 	}
 
 	/**
@@ -138,18 +99,13 @@ class HttpHeader
 		$this->throwIfInvalidHeaderName($name);
 
 		if (isset($this->headers[$name])) {
-			$this->headers[$name][] = $value;
-			return;
-		}
-
-		$mapName = self::toMapName($name);
-		if (isset($this->keyMap[$mapName])) {
-			$this->headers[$this->keyMap[$mapName]][] = $value;
+			$array = $this->headers[$name];
+			$array[] = $value;
+			$this->headers[$name] = $array;
 			return;
 		}
 
 		$this->headers[$name] = [$value];
-		$this->keyMap[$mapName] = $name;
 	}
 
 	/**
@@ -160,16 +116,7 @@ class HttpHeader
 	 */
 	public function existsHeader(string $name): bool
 	{
-		if (isset($this->headers[$name])) {
-			return true;
-		}
-
-		$mapName = self::toMapName($name);
-		if (isset($this->keyMap[$mapName])) {
-			return true;
-		}
-
-		return false;
+		return isset($this->headers[$name]);
 	}
 
 	/**
@@ -186,11 +133,6 @@ class HttpHeader
 			return $this->headers[$name];
 		}
 
-		$mapName = self::toMapName($name);
-		if (isset($this->keyMap[$mapName])) {
-			return $this->headers[$this->keyMap[$mapName]];
-		}
-
 		throw new KeyNotFoundException();
 	}
 
@@ -205,13 +147,11 @@ class HttpHeader
 	{
 		$this->throwIfInvalidHeaderName($name);
 
-		$mapName = self::toMapName($name);
-		if (!isset($this->keyMap[$mapName])) {
+		if (!isset($this->headers[$name])) {
 			return false;
 		}
 
-		unset($this->headers[$this->keyMap[$mapName]]);
-		unset($this->keyMap[$mapName]);
+		unset($this->headers[$name]);
 
 		return true;
 	}
@@ -307,6 +247,8 @@ final class LocalRequestHttpHeader extends HttpHeader
 {
 	public function __construct()
 	{
+		parent::__construct();
+
 		$headers = getallheaders();
 		foreach ($headers as $name => $value) {
 			//@phpstan-ignore-next-line non-empty

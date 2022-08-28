@@ -26,7 +26,7 @@ class DictionaryTest extends TestClass
 
 	function test_empty()
 	{
-		$actual = Dictionary::empty(TypeUtility::TYPE_UNKNOWN);
+		$actual = Dictionary::empty(TypeUtility::TYPE_NULL);
 		$this->assertSame(0, $actual->count());
 	}
 

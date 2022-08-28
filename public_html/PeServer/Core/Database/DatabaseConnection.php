@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Database;
 
-use PeServer\Core\Database\Database;
+use PeServer\Core\Database\DatabaseContext;
 use PeServer\Core\Log\ILoggerFactory;
 use PeServer\Core\Throws\NotImplementedException;
 
@@ -24,14 +24,14 @@ class DatabaseConnection implements IDatabaseConnection
 
 	//[IDatabaseConnection]
 
-	public function open(): Database
+	public function open(): DatabaseContext
 	{
-		return new Database(
+		return new DatabaseContext(
 			$this->setting->dsn,
 			$this->setting->user,
 			$this->setting->password,
 			$this->setting->options,
-			$this->loggerFactory->createLogger(Database::class)
+			$this->loggerFactory->createLogger(DatabaseContext::class)
 		);
 	}
 }

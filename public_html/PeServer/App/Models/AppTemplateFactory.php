@@ -39,7 +39,7 @@ class AppTemplateFactory extends TemplateFactory
 				Path::combine($config->baseDirectoryPath, 'App', 'Views'),
 				$options->controllerName,
 				$options->urlHelper,
-				$config->setting['cache']['template']
+				$config->setting->cache->template
 			);
 		}
 

@@ -40,21 +40,6 @@ class Configuration
 	}
 
 	/**
-	 * ファイル名に環境を付与。
-	 *
-	 * @param string $fileName 元となるファイル名
-	 * @return string 環境が付与されたファイル名: name.env.ext
-	 */
-	protected function getEnvironmentFileName(string $fileName): string
-	{
-		$baseFileName = Path::getFileNameWithoutExtension($fileName);
-		$baseFileExtension = Path::getFileExtension($fileName, false);
-		$environmentFileName = $baseFileName . '.' . $this->environment . '.' . $baseFileExtension;
-
-		return $environmentFileName;
-	}
-
-	/**
 	 * 設定ファイル読み込み。
 	 *
 	 * @param string $directoryPath 設定ファイル配置ディレクトリ。
@@ -79,7 +64,8 @@ class Configuration
 		}
 
 		$baseFilePath = Path::combine($directoryPath, $fileName);
-		$environmentFilePath = Path::combine($directoryPath, $this->getEnvironmentFileName($fileName));
+		$environmentFileName = Path::setEnvironmentName($fileName, $this->environment);
+		$environmentFilePath = Path::combine($directoryPath, $environmentFileName);
 
 		/** @var array<mixed> */
 		$configuration = [];

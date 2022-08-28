@@ -48,15 +48,15 @@ class FileLogger extends LoggerBase
 	{
 		parent::__construct($options);
 
-		$directoryPath = ArrayUtility::getOr($this->options->logger, 'directory', '');
+		$directoryPath = ArrayUtility::getOr($this->options->configuration, 'directory', '');
 		Enforce::throwIfNullOrWhiteSpace($directoryPath);
 		$this->directoryPath = $directoryPath;
 
-		$baseFileName = Code::toLiteralString(ArrayUtility::getOr($this->options->logger, 'name', ''));
+		$baseFileName = Code::toLiteralString(ArrayUtility::getOr($this->options->configuration, 'name', ''));
 		Enforce::throwIfNullOrWhiteSpace($baseFileName);
 		$this->baseFileName = $baseFileName;
 
-		$count = ArrayUtility::getOr($this->options->logger, 'count', 0);
+		$count = ArrayUtility::getOr($this->options->configuration, 'count', 0);
 		Enforce::throwIf(0 <= $count);
 		$this->cleanup($count);
 	}
@@ -64,7 +64,7 @@ class FileLogger extends LoggerBase
 	private function toSafeFileNameHeader(): string
 	{
 		$trimHeader = Text::trim($this->options->header, '/\\');
-		return Text::replace($trimHeader, ['/', '\\', '*', '|', '<', '>', '?'], '_');
+		return Text::replace($trimHeader, ['/', '\\', '*', '|', '<', '>', '?', ':'], '_');
 	}
 
 	protected function toHeaderDate(bool $isCleanup): string

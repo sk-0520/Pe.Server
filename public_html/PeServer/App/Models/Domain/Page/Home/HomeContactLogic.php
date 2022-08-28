@@ -27,9 +27,7 @@ class HomeContactLogic extends PageLogicBase
 		 * @var array<string,string>
 		 * @phpstan-var array<non-empty-string,string>
 		 */
-		$families = $this->config->setting['config']['address']['families'];
-		foreach ($families as $key => $value) {
-			$this->setValue($key, $value);
-		}
+		$families = $this->config->setting->config->address->families;
+		$this->setValue('families', $families);
 	}
 }

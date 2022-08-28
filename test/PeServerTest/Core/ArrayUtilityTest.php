@@ -296,4 +296,38 @@ class ArrayUtilityTest extends TestClass
 		$this->fail();
 	}
 
+	public function map_instance($value, $key) {
+		return $value . $value;
+	}
+	public static function map_static($value, $key) {
+		return $value . $value;
+	}
+
+	public function test_map()
+	{
+		$input = [
+			'A' => 'a',
+			10 => 'b'
+		];
+
+		$actual1 = ArrayUtility::map($input, fn($v) => $v . $v);
+		$this->assertSame('aa', $actual1['A']);
+		$this->assertSame('bb', $actual1[10]);
+
+		$actual2 = ArrayUtility::map($input, [$this, 'map_instance']);
+		$this->assertSame('aa', $actual2['A']);
+		$this->assertSame('bb', $actual2[10]);
+
+		$actual3 = ArrayUtility::map($input, $this::class . '::map_static');
+		$this->assertSame('aa', $actual3['A']);
+		$this->assertSame('bb', $actual3[10]);
+
+		$actual4 = ArrayUtility::map($input, 'PeServerTest\Core\map_function');
+		$this->assertSame('aa', $actual4['A']);
+		$this->assertSame('bb', $actual4[10]);
+	}
+}
+
+function map_function($value, $key) {
+	return $value . $value;
 }

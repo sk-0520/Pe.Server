@@ -154,6 +154,37 @@ class UserDomainDao extends DaoBase
 		}, $result->rows);
 	}
 
+	public function selectUserIdFromApiKey(string $apiKey, string $secretKey): ?string
+	{
+		// 特に何かとくっつける必要はないが将来的になんか項目が増えたら面倒なのでこのクラスに実装
+
+		/** @phpstan-var DatabaseRowResult<non-empty-array<string,string>>|null */
+		$result = $this->context->querySingleOrNull(
+			<<<SQL
+
+			select
+				api_keys.user_id
+			from
+				api_keys
+			where
+				api_keys.api_key = :api_key
+				and
+				api_keys.secret_key = :secret_key
+
+			SQL,
+			[
+				'api_key' => $apiKey,
+				'secret_key' => $secretKey,
+			]
+		);
+
+		if (is_null($result)) {
+			return null;
+		}
+
+		return $result->fields['user_id'];
+	}
+
 	public function updateEmailFromWaitEmail(string $userId, string $token): bool
 	{
 		return $this->context->updateByKeyOrNothing(

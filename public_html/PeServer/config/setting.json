@@ -1,18 +1,18 @@
 {
 	"persistence": {
-		"connection": "sqlite:$(BASE)/data/data.sqlite3",
-		"user": "",
-		"password": ""
+		"default": {
+			"connection": "sqlite:$(BASE)/data/data.sqlite3",
+			"user": "",
+			"password": ""
+		}
 	},
 	"logging": {
-		"level": 3,
-		"format": "{TIMESTAMP} |{LEVEL}| [{CLIENT_IP}:{CLIENT_HOST}] {REQUEST_ID}|{SESSION} <{UA}> {METHOD} {REQUEST} {FILE}({LINE}) {FUNCTION} -> {MESSAGE}",
-		"file": {
-			"logger_class": "PeServer\\Core\\Log\\FileLogger",
-			"configuration": {
+		"loggers": {
+			"file": {
+				"logger_class": "PeServer\\Core\\Log\\FileLogger",
 				"level": 3,
 				"format": "{TIMESTAMP} |{LEVEL}| [{CLIENT_IP}:{CLIENT_HOST}] {REQUEST_ID}|{SESSION} <{UA}> {METHOD} {REQUEST} {FILE}({LINE}) {FUNCTION} -> {MESSAGE}",
-				"logger": {
+				"configuration": {
 					"directory": "$(BASE)/data/logs",
 					"name": "log_{DATE}.log",
 					"count": 100

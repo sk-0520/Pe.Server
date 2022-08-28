@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Image\Color;
 
-use \Serializable;
 use \Stringable;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Code;
@@ -17,7 +16,7 @@ use PeServer\Core\Throws\NotSupportedException;
 /**
  * @immutable
  */
-class RgbColor implements IColor, Serializable
+class RgbColor implements IColor, Stringable
 {
 	public const RGB_MINIMUM = 0;
 	public const RGB_MAXIMUM = 255;
@@ -53,6 +52,8 @@ class RgbColor implements IColor, Serializable
 			throw new ArgumentException('$alpha');
 		}
 	}
+
+	#region function
 
 	/**
 	 * 16進数表現から色要素の数値に変換。
@@ -118,35 +119,14 @@ class RgbColor implements IColor, Serializable
 		return Text::format('#%02x%02x%02x%02x', $this->red, $this->green, $this->blue, $this->alpha);
 	}
 
-	public function serialize(): string
-	{
-		$values = [
-			'r' => $this->red,
-			'g' => $this->green,
-			'b' => $this->blue,
-		];
-		if ($this->alpha !== IColor::ALPHA_NONE) {
-			$values['a'] = $this->alpha;
-		}
+	#endregion
 
-		return serialize($values);
-	}
-
-	public function unserialize(string $data): void
-	{
-		$values = unserialize($data);
-		$this->red = (int)$values['r']; //@phpstan-ignore-line Serializable
-		$this->green = (int)$values['g']; //@phpstan-ignore-line Serializable
-		$this->blue = (int)$values['b']; //@phpstan-ignore-line Serializable
-		if (isset($values['a'])) {
-			$this->alpha = (int)$values['a']; //@phpstan-ignore-line Serializable
-		} else {
-			$this->alpha = self::ALPHA_NONE; //@phpstan-ignore-line Serializable
-		}
-	}
+	#region Stringable
 
 	public function __toString(): string
 	{
 		return Code::toString($this, Text::format('#%02x%02x%02x-%02x', $this->red, $this->green, $this->blue, $this->alpha));
 	}
+
+	#endregion
 }

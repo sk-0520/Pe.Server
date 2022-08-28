@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domain\Api\AdministratorApi;
 
+use PeServer\App\Models\AuditLog;
 use PeServer\App\Models\Domain\Api\ApiLogicBase;
 use PeServer\App\Models\Domain\AppArchiver;
 use PeServer\App\Models\ResponseJson;
@@ -28,6 +29,8 @@ class AdministratorApiBackupLogic extends ApiLogicBase
 	{
 		$size = $this->appArchiver->backup();
 		$this->appArchiver->rotate();
+
+		$this->writeAuditLogCurrentUser(AuditLog::API_ADMINISTRATOR_BACKUP, ['size' => $size]);
 
 		$this->setResponseJson(ResponseJson::success([
 			'success' => true,

@@ -22,10 +22,13 @@ interface ILogProvider
 	 * @param string $name
 	 * @param string $logger
 	 * @phpstan-param class-string<ILogger> $logger
-	 * @param array{level:int,format:string,logger?:array<string,mixed>|null} $configuration
-	 * @phpstan-param array{level:ILogger::LOG_LEVEL_*,format:literal-string,logger?:array<string,mixed>|null} $configuration
+	 * @param int $level
+	 * @phpstan-param ILogger::LOG_LEVEL_* $level
+	 * @param string $format
+	 * @phpstan-param literal-string $format
+	 * @param array<string,mixed> $configuration
 	 */
-	function add(string $name, string $logger, array $configuration): void;
+	function add(string $name, string $logger, int $level, string $format, array $configuration): void;
 
 	/**
 	 * ロガーの生成。

@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Database;
 
-use PeServer\Core\Database\Database;
+use PeServer\Core\Database\DatabaseContext;
 
 interface IDatabaseConnection
 {
 	/**
 	 * DB接続を開く。
 	 *
-	 * @return Database
+	 * @return DatabaseContext
 	 */
-	function open(): Database;
+	function open(): DatabaseContext;
 }

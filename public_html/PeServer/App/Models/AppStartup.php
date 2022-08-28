@@ -60,11 +60,9 @@ class AppStartup extends CoreStartup
 		);
 		$container->registerValue($appConfig);
 
-		$logging = $appConfig->setting["logging"];
-		foreach ($logging as $name => $value) {
-			if (is_array($value) && isset($value['logger_class']) && isset($value['configuration'])) {
-				$logProvider->add($name, $value['logger_class'], $value['configuration']);
-			}
+		$logging = $appConfig->setting->logging;
+		foreach ($logging->loggers as $name => $value) {
+			$logProvider->add($name, $value->loggerClass, $value->level, $value->format, $value->configuration);
 		}
 
 		$container->registerMapping(ITemplateFactory::class, AppTemplateFactory::class);

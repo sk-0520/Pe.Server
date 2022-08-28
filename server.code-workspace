@@ -35,6 +35,7 @@
 			"**/PHPUnit/**": true,
 			"**/Libs/**": true
 		},
+		"html.format.indentInnerHtml": true,
 		"cSpell.words": [
 			"ATTR_ERRMODE",
 			"autoload",
@@ -64,7 +65,8 @@
 			"Stringable",
 			"sysplugins",
 			"XDEBUG",
-			"IFNULL"
+			"IFNULL",
+			"endregion"
 		],
 		"cSpell.ignorePaths": [
 			"package-lock.json",
@@ -178,12 +180,14 @@
 			"editorconfig.editorconfig",
 			"mehedidracula.php-namespace-resolver",
 			"sibiraj-s.vscode-scss-formatter",
-			"imperez.smarty",
 			"formulahendry.auto-close-tag",
 			"mrmlnc.vscode-apache",
 			"davidanson.vscode-markdownlint",
 			"kasik96.latte",
-			"xdebug.php-debug"
+			"xdebug.php-debug",
+			"awwsky.region-marker",
+			"santacodes.santacodes-region-viewer",
+			"aswinkumar863.smarty-template-support"
 		],
 	}
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Log;
 
 use \DateTimeImmutable;
+use DateTimeInterface;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Cryptography;
 use PeServer\Core\DefaultValue;
@@ -164,9 +165,8 @@ abstract class Logging
 	 * @phpstan-param LogMessageAlias $message
 	 * @param mixed ...$parameters
 	 * @return string
-	 * @return string
 	 */
-	public static function format(string $format, int $level, int $traceIndex, string $header, $message, ...$parameters): string
+	public static function format(string $format, int $level, int $traceIndex, DateTimeInterface $timestamp, string $header, $message, ...$parameters): string
 	{
 		self::$initializeChecker->throwIfNotInitialize();
 
@@ -177,7 +177,6 @@ abstract class Logging
 		/** @var array<string,mixed> */
 		$traceMethod = $backtrace[$traceIndex + 1];
 
-		$timestamp = new DateTimeImmutable();
 		/** @var string */
 		$filePath = ArrayUtility::getOr($traceCaller, 'file', DefaultValue::EMPTY_STRING);
 

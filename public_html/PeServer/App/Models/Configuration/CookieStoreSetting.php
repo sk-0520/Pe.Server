@@ -1,0 +1,43 @@
+<?php
+
+declare(strict_types=1);
+
+namespace PeServer\App\Models\Configuration;
+
+use PeServer\Core\DefaultValue;
+use PeServer\Core\Store\CookieOption;
+
+/**
+ * Cookie設定。
+ *
+ * @immutable
+ */
+class CookieStoreSetting
+{
+	#region variable
+
+	public ?string $span = null;
+	public ?string $path = null;
+	public ?bool $secure = null;
+	public ?bool $httpOnly = null;
+	/**
+	 * @var string|null
+	 * @phpstan-var 'Lax'|'lax'|'None'|'none'|'Strict'|'strict'|null
+	 */
+	public ?string $sameSite = null;
+
+	#endregion
+
+	public function __construct(?CookieOption $option = null)
+	{
+		if (!is_null($option)) {
+			if (!is_null($option->span)) {
+				$this->span = $option->span->format('P%yY%mM%dDT%hH%iM%sS');
+			}
+			$this->path = $option->path;
+			$this->secure = $option->secure;
+			$this->httpOnly = $option->httpOnly;
+			$this->sameSite = $option->sameSite;
+		}
+	}
+}

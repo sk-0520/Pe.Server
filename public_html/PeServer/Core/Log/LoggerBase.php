@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Log;
 
+use \DateTimeImmutable;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\Logging;
 
@@ -37,7 +38,7 @@ abstract class LoggerBase implements ILogger
 	 */
 	protected function format(int $level, int $traceIndex, $message, ...$parameters): string
 	{
-		return Logging::format($this->options->format, $level, $traceIndex + 1, $this->options->header, $message, ...$parameters);
+		return Logging::format($this->options->format, $level, $traceIndex + 1, new DateTimeImmutable(), $this->options->header, $message, ...$parameters);
 	}
 
 	/**
