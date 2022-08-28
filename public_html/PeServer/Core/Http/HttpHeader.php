@@ -18,6 +18,8 @@ use PeServer\Core\Throws\NotSupportedException;
  */
 class HttpHeader
 {
+	#region variable
+
 	/**
 	 * ヘッダ一覧。
 	 *
@@ -35,10 +37,14 @@ class HttpHeader
 	 */
 	private ?RedirectSetting $redirect = null;
 
+	#endregion
+
 	public function __construct()
 	{
 		$this->headers = new CaseInsensitiveKeyArray();
 	}
+
+	#region function
 
 	/**
 	 * HTTPヘッダ名が不正であれば例外を投げる。
@@ -238,6 +244,8 @@ class HttpHeader
 	{
 		return new LocalRequestHttpHeader();
 	}
+
+	#endregion
 }
 
 /**

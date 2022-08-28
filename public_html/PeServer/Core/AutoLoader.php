@@ -22,6 +22,8 @@ use \Error;
  */
 class AutoLoader
 {
+	#region variable
+
 	/**
 	 * 名前空間接頭辞とプロジェクトマッピング。
 	 *
@@ -30,10 +32,12 @@ class AutoLoader
 	 */
 	private $setting = [];
 
+	#endregion
+
 	/**
 	 * 生成。
 	 *
-	 * @param array|null $setting
+	 * @param array|null $setting 初期化設定。内部的には `add` が実施される。
 	 * @phpstan-param array<NamespacePrefixAlias,InputMappingIncludesAlias>|null $setting
 	 */
 	public function __construct(?array $setting = null)
@@ -44,6 +48,8 @@ class AutoLoader
 			}
 		}
 	}
+
+	#region function
 
 	/**
 	 * 名前空間接頭辞の調整。
@@ -284,4 +290,6 @@ class AutoLoader
 			require $filePath;
 		}
 	}
+
+	#endregion
 }

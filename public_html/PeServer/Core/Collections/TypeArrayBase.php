@@ -23,6 +23,8 @@ use PeServer\Core\TypeUtility;
  */
 abstract class TypeArrayBase implements ArrayAccess, Countable, IteratorAggregate
 {
+	#region variable
+
 	/**
 	 * アイテム一覧。
 	 *
@@ -30,6 +32,8 @@ abstract class TypeArrayBase implements ArrayAccess, Countable, IteratorAggregat
 	 * @phpstan-var array<TKey,TValue>
 	 */
 	protected array $items = [];
+
+	#endregion
 
 	/**
 	 * 生成。
@@ -41,6 +45,8 @@ abstract class TypeArrayBase implements ArrayAccess, Countable, IteratorAggregat
 		protected string $type
 	) {
 	}
+
+	#region function
 
 	/**
 	 * 配列データを取得。
@@ -79,8 +85,9 @@ abstract class TypeArrayBase implements ArrayAccess, Countable, IteratorAggregat
 		}
 	}
 
+	#endregion
 
-	// Countable --------------------------------------
+	#region Countable
 
 	/** @phpstan-return UnsignedIntegerAlias */
 	public function count(): int
@@ -88,7 +95,10 @@ abstract class TypeArrayBase implements ArrayAccess, Countable, IteratorAggregat
 		return ArrayUtility::getCount($this->items);
 	}
 
-	// IteratorAggregate --------------------------------------
+	#endregion
+
+	#region IteratorAggregate
+
 	/**
 	 * @phpstan-return Traversable<TKey, TValue>
 	 */
@@ -96,4 +106,6 @@ abstract class TypeArrayBase implements ArrayAccess, Countable, IteratorAggregat
 	{
 		return new ArrayIterator($this->items);
 	}
+
+	#endregion
 }

@@ -21,10 +21,14 @@ use PeServer\Core\Throws\HtmlXPathException;
  */
 class HtmlXPath
 {
+	#region variable
+
 	/**
 	 * @readonly
 	 */
 	public DOMXPath $path;
+
+	#endregion
 
 	public function __construct(
 		/** @readonly */
@@ -34,6 +38,8 @@ class HtmlXPath
 	) {
 		$this->path = new DOMXPath($document->raw);
 	}
+
+	#region function
 
 	private function node(): ?DOMNode
 	{
@@ -102,4 +108,6 @@ class HtmlXPath
 
 		return $this->toArray($nodeList);
 	}
+
+	#endregion
 }

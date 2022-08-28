@@ -13,6 +13,8 @@ use PeServer\Core\Mvc\Middleware\MiddlewareResult;
  */
 interface IMiddleware
 {
+	#region function
+
 	/**
 	 * 前処理。
 	 *
@@ -29,4 +31,6 @@ interface IMiddleware
 	 * @return MiddlewareResult ミドルウェア結果。
 	 */
 	public function handleAfter(MiddlewareArgument $argument, HttpResponse $response): MiddlewareResult;
+
+	#endregion
 }

@@ -19,10 +19,14 @@ use PeServer\Core\Throws\CallbackTypeError;
  */
 class ZipIterator implements Iterator
 {
+	#region variable
+
 	/**
 	 * @var Iterator[]
 	 */
 	private array $iterators;
+
+	#endregion
 
 	/**
 	 * 生成。
@@ -45,6 +49,8 @@ class ZipIterator implements Iterator
 			$second,
 		];
 	}
+
+	#region Iterator
 
 	public function rewind(): void
 	{
@@ -81,4 +87,6 @@ class ZipIterator implements Iterator
 
 		return true;
 	}
+
+	#endregion
 }

@@ -12,6 +12,8 @@ use PeServer\Core\Log\LoggerBase;
  */
 final class MultiLogger implements ILogger
 {
+	#region variable
+
 	/**
 	 * ロガー一覧。
 	 *
@@ -29,6 +31,8 @@ final class MultiLogger implements ILogger
 	 */
 	private int $baseTraceIndex;
 
+	#endregion
+
 	/**
 	 * 生成。
 	 *
@@ -41,6 +45,31 @@ final class MultiLogger implements ILogger
 		$this->baseTraceIndex = $baseTraceIndex;
 		$this->loggers = $loggers;
 	}
+
+	#region function
+
+	/**
+	 * 横流し処理。
+	 *
+	 * @param integer $level レベル。
+	 * @phpstan-param ILogger::LOG_LEVEL_* $level
+	 * @param integer $level
+	 * @param integer $traceIndex
+	 * @phpstan-param UnsignedIntegerAlias $traceIndex
+	 * @param mixed $message
+	 * @phpstan-param LogMessageAlias $message
+	 * @param mixed ...$parameters
+	 */
+	private function logImpl(int $level, int $traceIndex, $message, ...$parameters): void
+	{
+		foreach ($this->loggers as $logger) {
+			$logger->log($level, $traceIndex + 1, $message, ...$parameters);
+		}
+	}
+
+	#endregion
+
+	#region ILogger
 
 	public function log(int $level, int $traceIndex, $message, ...$parameters): void
 	{
@@ -68,22 +97,5 @@ final class MultiLogger implements ILogger
 		$this->logImpl(ILogger::LOG_LEVEL_ERROR, $this->baseTraceIndex + 1, $message, ...$parameters);
 	}
 
-	/**
-	 * 横流し処理。
-	 *
-	 * @param integer $level レベル。
-	 * @phpstan-param ILogger::LOG_LEVEL_* $level
-	 * @param integer $level
-	 * @param integer $traceIndex
-	 * @phpstan-param UnsignedIntegerAlias $traceIndex
-	 * @param mixed $message
-	 * @phpstan-param LogMessageAlias $message
-	 * @param mixed ...$parameters
-	 */
-	private function logImpl(int $level, int $traceIndex, $message, ...$parameters): void
-	{
-		foreach ($this->loggers as $logger) {
-			$logger->log($level, $traceIndex + 1, $message, ...$parameters);
-		}
-	}
+	#endregion
 }

@@ -11,6 +11,8 @@ namespace PeServer\Core;
  */
 interface IDisposable
 {
+	#region function
+
 	/**
 	 * 解放済みか。
 	 *
@@ -24,4 +26,6 @@ interface IDisposable
 	 * @return void
 	 */
 	public function dispose(): void;
+
+	#endregion
 }

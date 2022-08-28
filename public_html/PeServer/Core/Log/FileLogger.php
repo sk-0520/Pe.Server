@@ -19,6 +19,8 @@ use PeServer\Core\Throws\Enforce;
  */
 class FileLogger extends LoggerBase
 {
+	#region variable
+
 	/**
 	 * 出力ディレクトリパス。
 	 * @readonly
@@ -38,6 +40,8 @@ class FileLogger extends LoggerBase
 	 * @var string[]
 	 */
 	private static array $cleanupFilePatterns = [];
+
+	#endregion
 
 	/**
 	 * 生成。
@@ -60,6 +64,8 @@ class FileLogger extends LoggerBase
 		Enforce::throwIf(0 <= $count);
 		$this->cleanup($count);
 	}
+
+	#region function
 
 	private function toSafeFileNameHeader(): string
 	{
@@ -133,6 +139,10 @@ class FileLogger extends LoggerBase
 		return Path::combine($this->directoryPath, $fileName);
 	}
 
+	#endregion
+
+	#region LoggerBase
+
 	protected function logImpl(int $level, int $traceIndex, $message, ...$parameters): void
 	{
 		Directory::createDirectoryIfNotExists($this->directoryPath);
@@ -143,4 +153,6 @@ class FileLogger extends LoggerBase
 		//error_logが制限されている場合はこっちを使用する→: file_put_contents($filePath, $logMessage . PHP_EOL, FILE_APPEND | LOCK_EX);
 		error_log($logMessage . PHP_EOL, 3, $filePath);
 	}
+
+	#endregion
 }

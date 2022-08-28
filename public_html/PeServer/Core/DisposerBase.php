@@ -11,8 +11,14 @@ use PeServer\Core\Throws\ObjectDisposedException;
  */
 abstract class DisposerBase implements IDisposable
 {
+	#region variable
+
 	/** 解放済みか。 */
 	private bool $isDisposed = false;
+
+	#endregion
+
+	#region function
 
 	/**
 	 * 何もしない解放処理オブジェクトを生成。
@@ -52,7 +58,9 @@ abstract class DisposerBase implements IDisposable
 		//NONE
 	}
 
-	//IDisposable
+	#endregion
+
+	#region IDisposable
 
 	public function isDisposed(): bool
 	{
@@ -69,6 +77,8 @@ abstract class DisposerBase implements IDisposable
 
 		$this->isDisposed = true;
 	}
+
+	#endregion
 }
 
 final class LocalEmptyDisposer extends DisposerBase

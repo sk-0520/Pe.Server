@@ -12,6 +12,8 @@ use \Traversable;
 
 abstract class CollectionUtility
 {
+	#region function
+
 	/**
 	 * イテレータに変換。
 	 *
@@ -53,4 +55,6 @@ abstract class CollectionUtility
 	{
 		return iterator_to_array($traverse, $preserveKeys);
 	}
+
+	#endregion
 }

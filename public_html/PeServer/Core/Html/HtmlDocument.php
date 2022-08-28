@@ -16,11 +16,15 @@ use PeServer\Core\Throws\HtmlDocumentException;
  */
 class HtmlDocument extends HtmlElementBase
 {
+	#region variable
+
 	/**
 	 * 生で使用する用。
 	 * @readonly
 	 */
 	public DOMDocument $raw;
+
+	#endregion
 
 	public function __construct()
 	{
@@ -29,6 +33,8 @@ class HtmlDocument extends HtmlElementBase
 		$this->raw = new DOMDocument();
 		parent::__construct($this, $this->raw);
 	}
+
+	#region function
 
 	public static function load(string $html): HtmlDocument
 	{
@@ -63,8 +69,14 @@ class HtmlDocument extends HtmlElementBase
 		return $html;
 	}
 
+	#endregion
+
+	#region HtmlElementBase
+
 	final public function path(): HtmlXPath
 	{
 		return new HtmlXPath($this->document, null);
 	}
+
+	#endregion
 }

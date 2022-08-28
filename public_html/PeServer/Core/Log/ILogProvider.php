@@ -6,6 +6,8 @@ namespace PeServer\Core\Log;
 
 interface ILogProvider
 {
+	#region function
+
 	/**
 	 * 指定したログの破棄。
 	 *
@@ -40,4 +42,6 @@ interface ILogProvider
 	 * @return ILogger[]
 	 */
 	function create(string $header, int $baseTraceIndex): array;
+
+	#endregion
 }

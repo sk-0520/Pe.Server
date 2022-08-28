@@ -40,6 +40,8 @@ class Dictionary extends TypeArrayBase
 		}
 	}
 
+	#region function
+
 	/**
 	 * 配列から生成。
 	 *
@@ -88,8 +90,10 @@ class Dictionary extends TypeArrayBase
 		}
 	}
 
+	#endregion
 
-	// ArrayAccess --------------------------------------
+
+	#region TypeArrayBase
 
 	/**
 	 * @param string $offset
@@ -138,4 +142,6 @@ class Dictionary extends TypeArrayBase
 
 		unset($this->items[$offset]);
 	}
+
+	#endregion
 }

@@ -9,9 +9,13 @@ use PeServer\Core\Throws\OutputBufferException;
 
 /**
  * 出力。
+ *
+ * TODO: コンストラクタで開始する方針に変更予定。 `get` の挙動に変更はなし。
  */
 abstract class OutputBuffer
 {
+	#region function
+
 	private static function begin(): void
 	{
 		if (!ob_start()) {
@@ -54,4 +58,6 @@ abstract class OutputBuffer
 			self::end();
 		}
 	}
+
+	#endregion
 }

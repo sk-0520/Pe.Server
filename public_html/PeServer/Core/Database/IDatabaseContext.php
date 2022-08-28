@@ -12,10 +12,14 @@ use PeServer\Core\Throws\TransactionException;
 
 interface IDatabaseContext extends IDatabaseReader, IDatabaseExecutor
 {
+	#region function
+
 	/**
 	 * トランザクション中か。
 	 *
 	 * @return bool
 	 */
 	public function inTransaction(): bool;
+
+	#endregion
 }

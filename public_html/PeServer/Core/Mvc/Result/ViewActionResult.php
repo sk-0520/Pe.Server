@@ -40,6 +40,8 @@ class ViewActionResult implements IActionResult
 	) {
 	}
 
+	#region IActionResult
+
 	public function createResponse(): HttpResponse
 	{
 		$response = new HttpResponse();
@@ -69,4 +71,6 @@ class ViewActionResult implements IActionResult
 
 		return $response;
 	}
+
+	#endregion
 }

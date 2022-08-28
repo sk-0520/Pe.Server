@@ -19,6 +19,8 @@ class ImageOption
 	) {
 	}
 
+	#region function
+
 	/**
 	 * オプション。
 	 *
@@ -48,4 +50,6 @@ class ImageOption
 	{
 		return new ImageOption(ImageType::PNG, [$compressed]);
 	}
+
+	#endregion
 }

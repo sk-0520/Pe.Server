@@ -13,6 +13,8 @@ use PeServer\Core\Throws\ArgumentException;
  */
 abstract class HttpMethod
 {
+	#region define
+
 	/** GET 生文字列 */
 	protected const HTTP_METHOD_GET = 'GET';
 	/** POST 生文字列 */
@@ -30,6 +32,10 @@ abstract class HttpMethod
 	/** TRACE 生文字列 */
 	protected const HTTP_METHOD_TRACE = 'TRACE';
 
+	#endregion
+
+	#region variable
+
 	/**
 	 * 文字列にしたかったけど型弱すぎてね。
 	 *
@@ -39,6 +45,10 @@ abstract class HttpMethod
 	 * @phpstan-var array<self::HTTP_METHOD_*,HttpMethod>
 	 */
 	private static array $cacheKinds;
+
+	#endregion
+
+	#region function
 
 	/**
 	 * 生成。
@@ -153,6 +163,8 @@ abstract class HttpMethod
 	public abstract function getKind(): string;
 
 	public abstract function is(HttpMethod $httpMethod): bool;
+
+	#endregion
 }
 
 /**

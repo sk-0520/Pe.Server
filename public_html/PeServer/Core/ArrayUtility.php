@@ -16,11 +16,13 @@ use PeServer\Core\Throws\TypeException;
  */
 class ArrayUtility
 {
+	#region function
+
 	/**
 	 * 配列が `null` か空か。
 	 *
-	 * @param array<mixed>|null $array
-	 * @return boolean
+	 * @param array<mixed>|null $array 対象配列。
+	 * @return boolean `null` か空の場合に真。
 	 * @phpstan-return ($array is null ? true: ($array is non-empty-array ? false: true))
 	 */
 	public static function isNullOrEmpty(?array $array): bool
@@ -94,8 +96,8 @@ class ArrayUtility
 	/**
 	 * 配列の件数を取得。
 	 *
-	 * @param array<mixed>|null $array
-	 * @return int
+	 * @param array<mixed>|null $array 対象配列。
+	 * @return int 件数。
 	 * @phpstan-return UnsignedIntegerAlias
 	 * @see https://www.php.net/manual/function.count.php
 	 */
@@ -111,9 +113,9 @@ class ArrayUtility
 	/**
 	 * 配列に該当キーは存在するか。
 	 *
-	 * @param array<mixed> $haystack
+	 * @param array<mixed> $haystack 対象配列。
 	 * @phpstan-param array<array-key,mixed> $haystack
-	 * @param int|string $key
+	 * @param int|string $key キー。
 	 * @phpstan-param array-key $key
 	 * @return bool
 	 * @see https://www.php.net/manual/function.array-key-exists.php
@@ -127,9 +129,9 @@ class ArrayUtility
 	 * 配列に指定要素が存在するか。
 	 *
 	 * @template TValue
-	 * @param array<mixed> $haystack
+	 * @param array<mixed> $haystack 対象配列。
 	 * @phpstan-param TValue[] $haystack
-	 * @param mixed $needle
+	 * @param mixed $needle 検索データ。
 	 * @phpstan-param TValue $needle
 	 * @return boolean
 	 * @see https://www.php.net/manual/function.array-search.php
@@ -142,7 +144,7 @@ class ArrayUtility
 	/**
 	 * `array_keys` ラッパー。
 	 *
-	 * @param array<int|string,mixed> $array
+	 * @param array<int|string,mixed> $array 対象配列。
 	 * @phpstan-param array<array-key,mixed> $array
 	 * @return array<int|string>
 	 * @phpstan-return array-key[]
@@ -157,7 +159,7 @@ class ArrayUtility
 	 * `array_values` ラッパー。
 	 *
 	 * @template TValue
-	 * @param array<int|string,mixed> $array
+	 * @param array<int|string,mixed> $array 対象配列。
 	 * @phpstan-param array<array-key,TValue> $array
 	 * @return array<mixed>
 	 * @phpstan-return TValue[]
@@ -172,7 +174,7 @@ class ArrayUtility
 	 * `in_array` ラッパー。
 	 *
 	 * @template TValue
-	 * @param array<int|string,mixed> $haystack
+	 * @param array<int|string,mixed> $haystack 対象配列。
 	 * @phpstan-param array<array-key,TValue> $haystack
 	 * @param mixed $needle
 	 * @phpstan-param TValue $needle
@@ -187,7 +189,7 @@ class ArrayUtility
 	/**
 	 * `array_key_first` ラッパー。
 	 *
-	 * @param array<mixed> $array
+	 * @param array<mixed> $array 対象配列。
 	 * @return int|string
 	 * @phpstan-return array-key
 	 * @see https://www.php.net/manual/function.array-key-first.php
@@ -206,7 +208,7 @@ class ArrayUtility
 	/**
 	 * `array_key_last` ラッパー。
 	 *
-	 * @param array<mixed> $array
+	 * @param array<mixed> $array 対象配列。
 	 * @return int|string
 	 * @phpstan-return array-key
 	 * @see https://www.php.net/manual/function.array-key-last.php
@@ -225,7 +227,7 @@ class ArrayUtility
 	/**
 	 * `array_is_list` ラッパー。
 	 *
-	 * @param array<mixed> $array
+	 * @param array<mixed> $array 対象配列。
 	 * @return bool
 	 * @see https://www.php.net/manual/function.array-is-list.php#127044
 	 */
@@ -251,7 +253,7 @@ class ArrayUtility
 	 *
 	 * @template TKey of array-key
 	 * @template TValue
-	 * @param array<mixed> $array
+	 * @param array<mixed> $array 対象配列。
 	 * @phpstan-param array<TKey,TValue> $array
 	 * @return array<mixed>
 	 * @see https://www.php.net/manual/function.array-unique.php
@@ -283,9 +285,9 @@ class ArrayUtility
 	/**
 	 * キー項目をランダム取得。
 	 *
-	 * @param array<mixed> $array
+	 * @param array<mixed> $array 対象配列。
 	 * @phpstan-param non-empty-array<mixed> $array
-	 * @param int $count
+	 * @param int $count 取得数。
 	 * @phpstan-param positive-int $count
 	 * @return array<string|int>
 	 * @phpstan-return array-key[]
@@ -317,7 +319,7 @@ class ArrayUtility
 	 *
 	 * @template TKey of array-key
 	 * @template TValue
-	 * @param array<mixed> $input
+	 * @param array<mixed> $input 対象配列。
 	 * @phpstan-param array<TKey,TValue> $input
 	 * @return array<mixed>
 	 * @phpstan-return array<TKey,TValue>
@@ -333,7 +335,7 @@ class ArrayUtility
 	 *
 	 * @template TKey of array-key
 	 * @template TValue
-	 * @param array<mixed> $input
+	 * @param array<mixed> $input 対象配列。
 	 * @phpstan-param array<TKey,TValue> $input
 	 * @return array<mixed>
 	 * @phpstan-param array<TValue,TKey> $input
@@ -356,7 +358,7 @@ class ArrayUtility
 	 *
 	 * @template TValue
 	 * @template TResult
-	 * @param array<mixed> $input
+	 * @param array<mixed> $input 対象配列。
 	 * @phpstan-param array<array-key,TValue> $input
 	 * @param callable $callback
 	 * @phpstan-param callable(TValue,array-key): TResult $callback
@@ -374,4 +376,6 @@ class ArrayUtility
 
 		return $result;
 	}
+
+	#endregion
 }

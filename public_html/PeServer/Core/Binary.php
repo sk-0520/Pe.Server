@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core;
 
 use \ArrayAccess;
+use Countable;
 use \Stringable;
 use \TypeError;
 use PeServer\Core\Throws\ArgumentException;
@@ -22,8 +23,10 @@ use PeServer\Core\Throws\SerializeException;
  * @phpstan-type Byte int<0,255>
  * @implements ArrayAccess<UnsignedIntegerAlias,Byte>
  */
-final class Binary implements Stringable, ArrayAccess
+final class Binary implements Stringable, ArrayAccess, Countable
 {
+	#region variable
+
 	/**
 	 * 実体。
 	 *
@@ -31,6 +34,8 @@ final class Binary implements Stringable, ArrayAccess
 	 * @readonly
 	 */
 	private string $raw;
+
+	#endregion
 
 	/**
 	 * 生成。
@@ -41,6 +46,8 @@ final class Binary implements Stringable, ArrayAccess
 	{
 		$this->raw = $raw;
 	}
+
+	#region function
 
 	/**
 	 * バイトデータをそのまま取得。
@@ -60,10 +67,11 @@ final class Binary implements Stringable, ArrayAccess
 	 * @return integer
 	 * @phpstan-return UnsignedIntegerAlias
 	 * @see https://www.php.net/manual/function.strlen.php
+	 * @deprecated `count()`
 	 */
 	public function getLength(): int
 	{
-		return strlen($this->raw);
+		return $this->count();
 	}
 
 	/**
@@ -174,7 +182,46 @@ final class Binary implements Stringable, ArrayAccess
 	// 	return $result;
 	// }
 
-	//ArrayAccess
+
+	/**
+	 * オブジェクトをシリアライズ。
+	 *
+	 * デシリアライズは `unserialize` を参照のこと。
+	 *
+	 * @param object $object シリアライズしたいオブジェクト。
+	 * @return self
+	 */
+	public static function serialize(object $object): self
+	{
+		$data = serialize($object);
+		return new self($data);
+	}
+
+	/**
+	 * 現在データをオブジェクトにデシリアライズ。
+	 *
+	 * シリアライズは `serialize` を参照のこと。
+	 *
+	 * @template T of object
+	 * @param string $className 返却クラス名。
+	 * @phpstan-param class-string<T> $className
+	 * @return object デシリアライズオブジェクト。
+	 * @phpstan-return T
+	 * @throws SerializeException
+	 */
+	public function unserialize(string $className): object
+	{
+		$object = unserialize($this->raw);
+		if (is_a($object, $className)) {
+			return $object;
+		}
+
+		throw new SerializeException($className . ': ' . TypeUtility::getType($object));
+	}
+
+	#endregion
+
+	#region ArrayAccess
 
 	/**
 	 * `ArrayAccess:offsetExists`
@@ -234,7 +281,18 @@ final class Binary implements Stringable, ArrayAccess
 		throw new NotSupportedException();
 	}
 
-	//Stringable
+	#endregion
+
+	#region Countable
+
+	public function count(): int
+	{
+		return strlen($this->raw);
+	}
+
+	#endregion
+
+	#region Stringable
 
 	public function __toString(): string
 	{
@@ -245,34 +303,6 @@ final class Binary implements Stringable, ArrayAccess
 		return $this->raw;
 	}
 
-	/**
-	 * オブジェクトをシリアライズ。
-	 *
-	 * @param object $object
-	 * @return self
-	 */
-	public static function serialize(object $object): self
-	{
-		$data = serialize($object);
-		return new self($data);
-	}
+	#endregion
 
-	/**
-	 * 現在データをオブジェクトにデシリアライズ。
-	 *
-	 * @template T of object
-	 * @param string $className 返却クラス名。
-	 * @phpstan-param class-string<T> $className
-	 * @return object デシリアライズオブジェクト。
-	 * @phpstan-return T
-	 */
-	public function unserialize(string $className): object
-	{
-		$object = unserialize($this->raw);
-		if (is_a($object, $className)) {
-			return $object;
-		}
-
-		throw new SerializeException($className . ': ' . TypeUtility::getType($object));
-	}
 }

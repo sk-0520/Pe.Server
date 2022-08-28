@@ -24,10 +24,12 @@ use PeServer\Core\Throws\IOException;
 use PeServer\Core\Throws\ParseException;
 
 /**
- * ファイル(+ディレクトリ)処理系。
+ * ファイル処理系。
  */
 abstract class File
 {
+	#region function
+
 	/**
 	 * ファイルが存在しない場合に空ファイルの作成。
 	 *
@@ -279,4 +281,6 @@ abstract class File
 
 		return new Stream($resource, $encoding);
 	}
+
+	#endregion
 }

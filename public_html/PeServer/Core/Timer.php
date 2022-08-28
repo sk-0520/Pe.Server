@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
+use \Stringable;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Throws\NotSupportedException;
 use PeServer\Core\Throws\TimerException;
-use Stringable;
 
 /**
  * `HRTime\StopWatch` 的な。
@@ -16,12 +16,18 @@ use Stringable;
  */
 class Timer implements Stringable
 {
+	#region variable
+
 	/** 計測中か。 */
 	private bool $isRunning = false;
 	/** 計測開始時間。 */
 	private int $startTime = 0;
 	/** 計測終了時間。 */
 	private int $stopTime = 0;
+
+	#endregion
+
+	#region function
 
 	/**
 	 * インスタンス生成しつつ計測開始。
@@ -104,11 +110,6 @@ class Timer implements Stringable
 		return self::nanoToMilliseconds($this->getElapsed()) . ' msec';
 	}
 
-	public function __toString(): string
-	{
-		return $this->toString();
-	}
-
 	/**
 	 * 現在のUNIX時間(秒)を取得。
 	 *
@@ -168,4 +169,15 @@ class Timer implements Stringable
 	{
 		return $nanoSec / 1e+6;
 	}
+
+	#endregion
+
+	#region Stringable
+
+	public function __toString(): string
+	{
+		return $this->toString();
+	}
+
+	#endregion
 }

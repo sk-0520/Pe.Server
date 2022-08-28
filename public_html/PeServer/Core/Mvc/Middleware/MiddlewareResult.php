@@ -18,11 +18,35 @@ use PeServer\Core\Throws\InvalidOperationException;
  */
 abstract class MiddlewareResult
 {
+	#region define
+
 	protected const RESULT_KIND_NONE = 0;
 	protected const RESULT_KIND_STATUS = 1;
 
+	#endregion
+
+	#region variable
+
 	/** 結果なしキャッシュ。 */
 	private static ?MiddlewareResult $none;
+
+	#endregion
+
+
+	/**
+	 * 生成。
+	 *
+	 * @param integer $kind
+	 * @phpstan-param self::RESULT_KIND_* $kind
+	 */
+	protected function __construct(
+		/** @readonly */
+		private int $kind
+	) {
+	}
+
+	#region function
+
 	/**
 	 * 結果なし。
 	 *
@@ -80,18 +104,6 @@ abstract class MiddlewareResult
 	}
 
 	/**
-	 * 生成。
-	 *
-	 * @param integer $kind
-	 * @phpstan-param self::RESULT_KIND_* $kind
-	 */
-	protected function __construct(
-		/** @readonly */
-		private int $kind
-	) {
-	}
-
-	/**
 	 * 次のミドルウェア処理へ移れるか。
 	 *
 	 * @return bool 真: 処理可能。
@@ -105,6 +117,8 @@ abstract class MiddlewareResult
 	 * ミドルウェア結果適用。
 	 */
 	public abstract function apply(): void;
+
+	#endregion
 }
 
 class LocalRedirectMiddlewareResultImpl extends MiddlewareResult

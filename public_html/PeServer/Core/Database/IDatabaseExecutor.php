@@ -10,6 +10,8 @@ use PeServer\Core\Throws\SqlException;
 
 interface IDatabaseExecutor
 {
+	#region function
+
 	/**
 	 * 実行処理。
 	 *
@@ -127,4 +129,6 @@ interface IDatabaseExecutor
 	 * @throws SqlException 問い合わせ文の検証エラー
 	 */
 	public function deleteByKeyOrNothing(string $statement, ?array $parameters = null): bool;
+
+	#endregion
 }

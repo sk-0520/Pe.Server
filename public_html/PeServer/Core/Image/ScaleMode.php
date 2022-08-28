@@ -9,6 +9,8 @@ namespace PeServer\Core\Image;
  */
 class ScaleMode
 {
+	#region define
+
 	/** 最近接補間。 */
 	public const NEAREST_NEIGHBOUR = IMG_NEAREST_NEIGHBOUR;
 	/** 双直線補間の固定小数点実装 (デフォルト (画像作成時も含む))。  */
@@ -17,4 +19,6 @@ class ScaleMode
 	public const BICUBIC = IMG_BICUBIC;
 	/** 双三次補間の固定小数点実装。 */
 	public const BICUBIC_FIXED  = IMG_BICUBIC_FIXED;
+
+	#endregion
 }

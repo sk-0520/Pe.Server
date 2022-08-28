@@ -13,10 +13,14 @@ use PeServer\Core\Html\HtmlNodeBase;
  */
 final class HtmlText extends HtmlNodeBase
 {
+	#region variable
+
 	/**
 	 * @readonly
 	 */
 	public DOMText $raw;
+
+	#endregion
 
 	public function __construct(HtmlDocument $document, DOMText $raw)
 	{

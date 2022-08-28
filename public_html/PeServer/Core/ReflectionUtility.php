@@ -17,6 +17,8 @@ use PeServer\Core\Throws\TypeException;
  */
 abstract class ReflectionUtility
 {
+	#region function
+
 	/**
 	 * クラスオブジェクトの生成。
 	 *
@@ -116,4 +118,6 @@ abstract class ReflectionUtility
 
 		return [];
 	}
+
+	#endregion
 }

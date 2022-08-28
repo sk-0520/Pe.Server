@@ -22,7 +22,7 @@ class CsrfMiddleware implements IMiddleware
 	) {
 	}
 
-	//[IMiddleware]
+	#region function
 
 	/**
 	 * CSRFトークン不正時のHTTP応答ステータス。
@@ -33,6 +33,10 @@ class CsrfMiddleware implements IMiddleware
 	{
 		return HttpStatus::misdirected();
 	}
+
+	#endregion
+
+	#region IMiddleware
 
 	public function handleBefore(MiddlewareArgument $argument): MiddlewareResult
 	{
@@ -59,4 +63,6 @@ class CsrfMiddleware implements IMiddleware
 	{
 		return MiddlewareResult::none();
 	}
+
+	#endregion
 }

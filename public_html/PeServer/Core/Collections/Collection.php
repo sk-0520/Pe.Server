@@ -41,6 +41,8 @@ class Collection implements IteratorAggregate
 	) {
 	}
 
+	#region function
+
 	/**
 	 * イテレータから生成。
 	 *
@@ -732,4 +734,6 @@ class Collection implements IteratorAggregate
 		$iterator = new ZipIterator($this->iterator, $sequenceIterator, $callback);
 		return self::create($iterator);
 	}
+
+	#endregion
 }

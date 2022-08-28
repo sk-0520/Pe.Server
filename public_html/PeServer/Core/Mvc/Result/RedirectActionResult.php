@@ -26,6 +26,8 @@ class RedirectActionResult implements IActionResult
 		}
 	}
 
+	#region IActionResult
+
 	public function createResponse(): HttpResponse
 	{
 		$response = new HttpResponse();
@@ -36,4 +38,6 @@ class RedirectActionResult implements IActionResult
 
 		return $response;
 	}
+
+	#endregion
 }

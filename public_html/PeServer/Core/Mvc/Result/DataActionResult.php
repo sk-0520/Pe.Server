@@ -19,7 +19,11 @@ use PeServer\Core\Throws\ArgumentException;
  */
 class DataActionResult implements IActionResult
 {
+	#region variable
+
 	protected Json $json;
+
+	#endregion
 
 	/**
 	 * 生成。
@@ -34,6 +38,8 @@ class DataActionResult implements IActionResult
 		$json ??= new Json();
 		$this->json = $json;
 	}
+
+	#region function
 
 	private function convertText(DataContent $content): string
 	{
@@ -71,6 +77,10 @@ class DataActionResult implements IActionResult
 		return strval($content->data);
 	}
 
+	#endregion
+
+	#region IActionResult
+
 	public function createResponse(): HttpResponse
 	{
 		$response = new HttpResponse();
@@ -96,4 +106,6 @@ class DataActionResult implements IActionResult
 
 		return $response;
 	}
+
+	#endregion
 }

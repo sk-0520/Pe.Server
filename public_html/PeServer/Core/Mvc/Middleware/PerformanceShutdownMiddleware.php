@@ -18,11 +18,13 @@ final class PerformanceShutdownMiddleware implements IShutdownMiddleware
 	) {
 	}
 
-	//[IMiddleware]
+	#region IShutdownMiddleware
 
 	public function handleShutdown(MiddlewareArgument $argument): void
 	{
 		$time = microtime(true) - $argument->stores->special->getServer('REQUEST_TIME_FLOAT', 0.0);
 		$this->logger->info('shutdown {0} ms', $time);
 	}
+
+	#endregion
 }

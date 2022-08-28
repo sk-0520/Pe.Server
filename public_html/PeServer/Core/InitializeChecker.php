@@ -13,10 +13,16 @@ use PeServer\Core\Throws\InvalidOperationException;
  */
 final class InitializeChecker
 {
+	#region variable
+
 	/**
 	 * 初期化済みか。
 	 */
 	private bool $isInitialized  = false;
+
+	#endregion
+
+	#region function
 
 	/**
 	 * 初期化処理。
@@ -45,4 +51,6 @@ final class InitializeChecker
 			throw new InvalidOperationException('not initialize');
 		}
 	}
+
+	#endregion
 }

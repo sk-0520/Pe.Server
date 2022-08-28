@@ -11,6 +11,8 @@ use PeServer\Core\Log\ILogger;
  */
 final class NullLogger implements ILogger
 {
+	#region ILogger
+
 	public function log(int $level, int $traceIndex, $message, ...$parameters): void
 	{
 		//NONE
@@ -35,4 +37,6 @@ final class NullLogger implements ILogger
 	{
 		//NONE
 	}
+
+	#endregion
 }

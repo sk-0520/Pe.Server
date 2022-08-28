@@ -6,6 +6,8 @@ namespace PeServer\Core;
 
 abstract class I18n
 {
+	#region define
+
 	// これはライブラリ側で持つ文字列リソース
 	public const COMMON_ERROR_TITLE = '@core/common/error_title';
 	public const ERROR_EMPTY = '@core/error/empty';
@@ -19,6 +21,10 @@ abstract class I18n
 
 	private const INVARIANT_LOCALE = '*';
 
+	#endregion
+
+	#region variable
+
 	/**
 	 * 初期化チェック
 	 */
@@ -30,6 +36,10 @@ abstract class I18n
 	 * @var array<string,string|array<string,mixed>>
 	 */
 	private static array $i18nConfiguration;
+
+	#endregion
+
+	#region function
 
 	/**
 	 * 初期化。
@@ -120,4 +130,6 @@ abstract class I18n
 
 		return Text::replaceMap(Code::toLiteralString($message), $params);
 	}
+
+	#endregion
 }

@@ -16,6 +16,8 @@ use PeServer\Core\Throws\Throws;
  */
 class Encoding
 {
+	#region define
+
 	/** アスキー */
 	public const ENCODE_ASCII = 'ASCII';
 
@@ -49,6 +51,10 @@ class Encoding
 	public const ENCODE_EUC_JP_WIN = 'eucJP-win';
 	public const ENCODE_EUC_JP_DEFAULT = self::ENCODE_EUC_JP_WIN;
 
+	#endregion
+
+	#region variable
+
 	/**
 	 * キャッシュされたエンコーディング名一覧。
 	 *
@@ -63,6 +69,8 @@ class Encoding
 	 */
 	public string $name;
 
+	#endregion
+
 	/**
 	 * 生成
 	 *
@@ -74,6 +82,8 @@ class Encoding
 		self::enforceEncodingName($name);
 		$this->name = $name;
 	}
+
+	#region function
 
 	/**
 	 * エンコーディング名が正しいか。
@@ -283,4 +293,6 @@ class Encoding
 
 		return new Binary('');
 	}
+
+	#endregion
 }

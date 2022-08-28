@@ -4,16 +4,22 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Html;
 
+use \DomainException;
 use \Highlight\Highlighter;
 use \HighlightUtilities\Functions;
-use \DomainException;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\AutoLoader;
 use PeServer\Core\CoreUtility;
 use PeServer\Core\Text;
 use PeServer\Core\TypeUtility;
 
+#region define
+
 const LIB_DIR = CoreUtility::LIBRARY_DIRECTORY_PATH . DIRECTORY_SEPARATOR . 'highlight.php/src';
+
+#endregion
+
+#region execute
 
 (new AutoLoader([
 	'Highlight' => [
@@ -24,8 +30,12 @@ const LIB_DIR = CoreUtility::LIBRARY_DIRECTORY_PATH . DIRECTORY_SEPARATOR . 'hig
 	]
 ]))->register();
 
+#endregion
+
 class CodeHighlighter
 {
+	#region function
+
 	/**
 	 * 文字列から強調行番号を取得。
 	 *
@@ -100,4 +110,6 @@ class CodeHighlighter
 
 		return $head . $values . $tail;
 	}
+
+	#endregion
 }

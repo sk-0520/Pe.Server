@@ -8,6 +8,8 @@ use \DOMNode;
 
 abstract class HtmlNodeBase
 {
+	#region variable
+
 	/**
 	 * @readonly
 	 */
@@ -18,6 +20,8 @@ abstract class HtmlNodeBase
 	 * @readonly
 	 */
 	protected DOMNode $currentNode;
+
+	#endregion
 
 	protected function __construct(HtmlDocument $document, DOMNode $currentNode)
 	{

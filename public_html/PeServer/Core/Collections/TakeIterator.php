@@ -15,7 +15,11 @@ use \Iterator;
  */
 class TakeIterator implements Iterator
 {
+	#region variable
+
 	private int $position = 0;
+
+	#endregion
 
 	/**
 	 * 生成
@@ -30,6 +34,8 @@ class TakeIterator implements Iterator
 		private int $count
 	) {
 	}
+
+	#region Iterator
 
 	public function rewind(): void
 	{
@@ -64,4 +70,6 @@ class TakeIterator implements Iterator
 
 		return false;
 	}
+
+	#endregion
 }

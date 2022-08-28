@@ -13,6 +13,8 @@ use PeServer\Core\Throws\DiContainerException;
  */
 interface IDiContainer
 {
+	#region function
+
 	/**
 	 * 指定したIDが登録されているか。
 	 *
@@ -62,4 +64,6 @@ interface IDiContainer
 	 * @return IScopedDiContainer
 	 */
 	function clone(): IScopedDiContainer;
+
+	#endregion
 }

@@ -11,6 +11,8 @@ use PeServer\Core\Throws\SqlException;
 
 interface IDatabaseReader
 {
+	#region function
+
 	/**
 	 * 問い合わせを実行。
 	 *
@@ -117,4 +119,6 @@ interface IDatabaseReader
 	 * @throws SqlException 問い合わせ文の検証エラー
 	 */
 	public function selectSingleCount(string $statement, ?array $parameters = null): int;
+
+	#endregion
 }

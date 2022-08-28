@@ -14,6 +14,8 @@ use PeServer\Core\Throws\ArgumentException;
  */
 abstract class Path
 {
+	#region function
+
 	/**
 	 * パスの正規化。
 	 *
@@ -201,4 +203,6 @@ abstract class Path
 
 		return $parts->directory . DIRECTORY_SEPARATOR . $name;
 	}
+
+	#endregion
 }

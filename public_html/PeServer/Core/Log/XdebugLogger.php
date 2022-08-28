@@ -16,6 +16,8 @@ final class XdebugLogger extends LoggerBase
 		parent::__construct($options);
 	}
 
+	#region LoggerBase
+
 	protected final function logImpl(int $level, int $traceIndex, $message, ...$parameters): void
 	{
 		if (!\xdebug_is_debugger_active()) {
@@ -25,4 +27,6 @@ final class XdebugLogger extends LoggerBase
 		$logMessage = $this->format($level, $traceIndex + 1, $message, ...$parameters);
 		\xdebug_notify($logMessage);
 	}
+
+	#endregion
 }

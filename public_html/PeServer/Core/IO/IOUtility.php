@@ -23,10 +23,12 @@ use PeServer\Core\Throws\IOException;
 use PeServer\Core\Throws\ParseException;
 
 /**
- * ファイル(+ディレクトリ)処理系。
+ * ファイル+ディレクトリ処理系。
  */
 abstract class IOUtility
 {
+	#region function
+
 	public static function getState(string $path): IOState
 	{
 		/** @var ResultData<array<string|int,int>|false> */
@@ -77,4 +79,6 @@ abstract class IOUtility
 
 		clearstatcache(true, $path);
 	}
+
+	#endregion
 }

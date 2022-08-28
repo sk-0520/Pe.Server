@@ -21,6 +21,8 @@ use PeServer\Core\Throws\NotImplementedException;
 
 class Mailer
 {
+	#region define
+
 	public const SEND_MODE_SMTP = 1;
 
 	protected const ADDRESS_KIND_FROM = 1;
@@ -30,6 +32,10 @@ class Mailer
 
 	public const DEFAULT_ENCODING = '8bit';
 	public const DEFAULT_CHARACTER_SET = 'utf-8';
+
+	#endregion
+
+	#region variable
 
 	/**
 	 * @readonly
@@ -76,6 +82,8 @@ class Mailer
 	 */
 	private EmailMessage $message;
 
+	#endregion
+
 	/**
 	 * 生成。
 	 *
@@ -87,6 +95,8 @@ class Mailer
 		$this->message = new EmailMessage();
 		$this->setting = $setting;
 	}
+
+	#region function
 
 	/**
 	 * 本文設定。
@@ -209,5 +219,7 @@ class Mailer
 
 		$client->send();
 	}
+
+	#endregion
 }
 

@@ -37,6 +37,8 @@ class Vector extends TypeArrayBase
 		}
 	}
 
+	#region function
+
 	/**
 	 * 配列から生成。
 	 *
@@ -128,7 +130,9 @@ class Vector extends TypeArrayBase
 		return $this;
 	}
 
-	// ArrayAccess --------------------------------------
+	#endregion
+
+	#region TypeArrayBase
 
 	/**
 	 * @param int $offset
@@ -188,4 +192,6 @@ class Vector extends TypeArrayBase
 
 		unset($this->items[$offset]);
 	}
+
+	#endregion
 }

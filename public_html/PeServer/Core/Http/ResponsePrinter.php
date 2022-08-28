@@ -29,6 +29,8 @@ class ResponsePrinter
 	) {
 	}
 
+	#region function
+
 	/**
 	 * 応答ヘッダ: Content-Length を取得。
 	 *
@@ -105,4 +107,6 @@ class ResponsePrinter
 
 		$this->output();
 	}
+
+	#endregion
 }

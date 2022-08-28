@@ -13,6 +13,8 @@ use PeServer\Core\Throws\TransactionException;
 
 interface IDatabaseTransactionContext extends IDatabaseContext, IDisposable
 {
+	#region function
+
 	/**
 	 * トランザクション開始。
 	 *
@@ -46,4 +48,6 @@ interface IDatabaseTransactionContext extends IDatabaseContext, IDisposable
 	 * @throws DatabaseException
 	 */
 	public function transaction(callable $callback): bool;
+
+	#endregion
 }

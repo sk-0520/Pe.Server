@@ -24,6 +24,8 @@ use PeServer\Core\Throws\StreamException;
  */
 class Stream extends ResourceBase
 {
+	#region define
+
 	/** 読み込みモード。 */
 	public const MODE_READ = 1;
 	/** 書き込みモード。 */
@@ -38,6 +40,10 @@ class Stream extends ResourceBase
 	/** シーク位置: 末尾(設定値は負数となる)。 */
 	public const WHENCE_TAIL = SEEK_END;
 
+	#endregion
+
+	#region variable
+
 	/** 文字列として扱うエンコーディング。バイナリデータに対してあんまり当てにならん。 */
 	private Encoding $encoding;
 
@@ -47,6 +53,8 @@ class Stream extends ResourceBase
 	 * 書き込み時に使用される(読み込み時は頑張る)
 	 */
 	public string $newLine = PHP_EOL;
+
+	#endregion
 
 	/**
 	 * 生成
@@ -62,6 +70,8 @@ class Stream extends ResourceBase
 
 		$this->encoding = $encoding ?? Encoding::getDefaultEncoding();
 	}
+
+	#region function
 
 	/**
 	 * `fopen` を使用してファイルストリームを生成。
@@ -614,8 +624,9 @@ class Stream extends ResourceBase
 		return $this->encoding->toString(new Binary($totalBuffer));
 	}
 
+	#endregion
 
-	//ResourceBase--------------------------------
+	#region ResourceBase
 
 	protected function release(): void
 	{
@@ -626,6 +637,8 @@ class Stream extends ResourceBase
 	{
 		return $resourceType === 'stream';
 	}
+
+	#endregion
 }
 
 class LocalNoReleaseStream extends Stream

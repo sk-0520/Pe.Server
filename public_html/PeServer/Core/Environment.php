@@ -13,6 +13,7 @@ use PeServer\Core\Throws\Enforce;
  */
 abstract class Environment
 {
+	#region variable
 	/**
 	 * 初期化チェック
 	 */
@@ -20,6 +21,10 @@ abstract class Environment
 
 	private static string $environment = DefaultValue::EMPTY_STRING;
 	private static string $revision = DefaultValue::EMPTY_STRING;
+
+	#endregion
+
+	#region function
 
 	public static function initialize(string $locale, string $language, string $environment, string $revision): void
 	{
@@ -121,4 +126,6 @@ abstract class Environment
 
 		return $result;
 	}
+
+	#endregion
 }

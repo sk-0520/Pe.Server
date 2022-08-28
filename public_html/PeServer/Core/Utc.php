@@ -7,7 +7,7 @@ namespace PeServer\Core;
 use \DateTimeImmutable;
 use \DateTimeInterface;
 use \DateTimeZone;
-use DateTime;
+use \DateTime;
 use PeServer\Core\Throws\DateTimeException;
 use PeServer\Core\Throws\ParseException;
 
@@ -18,6 +18,8 @@ use PeServer\Core\Throws\ParseException;
  */
 abstract class Utc
 {
+	#region define
+
 	private const UTC_FORMAT_01 = 'Y-m-d\TH:i:s.u\Z';
 	private const UTC_FORMAT_02 = 'Y-m-d\TH:i:s\Z';
 	private const UTC_FORMAT_03 = 'Y-m-d\TH:i:s.u';
@@ -33,7 +35,15 @@ abstract class Utc
 	private const UTC_FORMAT_23 = 'Y/m/d H:i:s.u';
 	private const UTC_FORMAT_24 = 'Y/m/d H:i:s';
 
+	#endregion
+
+	#region variable
+
 	private static ?DateTimeZone $timezone = null;
+
+	#endregion
+
+	#region function
 
 	/**
 	 * タイムゾーン取得。
@@ -199,4 +209,6 @@ abstract class Utc
 
 		return $result;
 	}
+
+	#endregion
 }

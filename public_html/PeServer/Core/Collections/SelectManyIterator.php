@@ -18,10 +18,14 @@ use PeServer\Core\Throws\CallbackTypeError;
  */
 class SelectManyIterator implements Iterator
 {
+	#region variable
+
 	/** @phpstan-var Iterator<TKey,Iterator<TKey,TValue>> */
 	private Iterator $outerIterator;
 	/** @phpstan-var Iterator<TKey,TValue> */
 	private Iterator $innerIterator;
+
+	#endregion
 
 	/**
 	 * 生成。
@@ -41,6 +45,8 @@ class SelectManyIterator implements Iterator
 
 		$this->outerIterator = $iterator;
 	}
+
+	#region Iterator
 
 	public function rewind(): void
 	{
@@ -89,4 +95,6 @@ class SelectManyIterator implements Iterator
 
 		return $this->outerIterator->valid();
 	}
+
+	#endregion
 }

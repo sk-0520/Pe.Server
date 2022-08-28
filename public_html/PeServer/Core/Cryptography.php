@@ -15,10 +15,16 @@ use PeServer\Core\Throws\Throws;
  */
 abstract class Cryptography
 {
+	#region define
+
 	private const OPTION = 0;
 	public const SEPARATOR = '@';
 	public const DEFAULT_RANDOM_STRING = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 	public const FILE_RANDOM_STRING = '0123456789abcdefghijklmnopqrstuvwxyz';
+
+	#endregion
+
+	#region function
 
 	/**
 	 * 乱数取得。
@@ -271,4 +277,6 @@ abstract class Cryptography
 	{
 		return new Binary(self::generateHashCore(true, $algorithm, $binary, $options));
 	}
+
+	#endregion
 }

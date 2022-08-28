@@ -12,6 +12,8 @@ use PeServer\Core\Mvc\Middleware\MiddlewareArgument;
  */
 interface IShutdownMiddleware
 {
+	#region function
+
 	/**
 	 * 応答完了処理。
 	 *
@@ -19,4 +21,6 @@ interface IShutdownMiddleware
 	 * @return void
 	 */
 	public function handleShutdown(MiddlewareArgument $argument): void;
+
+	#endregion
 }

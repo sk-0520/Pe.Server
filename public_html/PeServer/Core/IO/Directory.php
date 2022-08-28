@@ -22,12 +22,18 @@ use PeServer\Core\Throws\IOException;
 use PeServer\Core\Throws\ParseException;
 
 /**
- * ファイル(+ディレクトリ)処理系。
+ * ディレクトリ処理系。
  */
 abstract class Directory
 {
+	#region define
+
 	/** ディレクトリ作成時の通常権限。 */
 	public const DIRECTORY_PERMISSIONS = 0755;
+
+	#endregion
+
+	#region function
 
 	/**
 	 * ディレクトリ作成する。
@@ -267,4 +273,6 @@ abstract class Directory
 	{
 		return sys_get_temp_dir();
 	}
+
+	#endregion
 }

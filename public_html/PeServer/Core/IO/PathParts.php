@@ -29,15 +29,21 @@ class PathParts implements Stringable
 	) {
 	}
 
+	#region function
+
 	public function toString(): string
 	{
 		return $this->directory . DIRECTORY_SEPARATOR . $this->fileName;
 	}
 
-	//Stringable
+	#endregion
+
+	#region Stringable
 
 	public function __toString(): string
 	{
 		return $this->toString();
 	}
+
+	#endregion
 }

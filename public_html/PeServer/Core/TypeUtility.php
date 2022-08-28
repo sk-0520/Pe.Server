@@ -13,6 +13,8 @@ use PeServer\Core\Throws\ParseException;
  */
 abstract class TypeUtility
 {
+	#region define
+
 	private const INT_PATTERN = '/^\s*(\+|\-)?\d+\s*$/';
 
 	public const TYPE_BOOLEAN = "bool";
@@ -24,6 +26,10 @@ abstract class TypeUtility
 	public const TYPE_RESOURCE = "resource"; //BUGS: つかえん
 	public const TYPE_RESOURCE_CLOSED = "resource (closed)";
 	public const TYPE_NULL = "null";
+
+	#endregion
+
+	#region function
 
 	/**
 	 * 文字列を整数に変換。
@@ -114,4 +120,6 @@ abstract class TypeUtility
 			default => true,
 		};
 	}
+
+	#endregion
 }

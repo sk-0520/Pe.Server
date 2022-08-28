@@ -11,12 +11,18 @@ use PeServer\Core\Throws\ArgumentException;
  */
 abstract class Mime
 {
+	#region define
+
 	public const TEXT = 'text/plain';
 	public const HTML = 'text/html';
 	public const JSON = 'application/json';
 	public const GZ = 'application/gzip';
 	public const STREAM = 'application/octet-stream';
 	public const ICON = 'image/vnd.microsoft.icon';
+
+	#endregion
+
+	#region function
 
 	/**
 	 * ファイル名からMIMEを取得。
@@ -39,4 +45,6 @@ abstract class Mime
 		/** @phpstan-var non-empty-string */
 		return $result;
 	}
+
+	#endregion
 }

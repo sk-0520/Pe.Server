@@ -11,8 +11,24 @@ use PeServer\Core\Throws\ArchiveException;
  */
 abstract class Archiver
 {
+	#region define
+
+	/**
+	 * GZIP: デフォルト。
+	 *
+	 * `FORCE_GZIP` ラッパー。
+	 */
 	public const GZIP_DEFAULT = FORCE_GZIP;
+	/**
+	 * GZIP: RFC 1950 準拠。
+	 *
+	 * `FORCE_DEFLATE` ラッパー。
+	 */
 	public const GZIP_DEFLATE = FORCE_DEFLATE;
+
+	#endregion
+
+	#region function
 
 	/**
 	 * GZIP圧縮処理。
@@ -21,7 +37,7 @@ abstract class Archiver
 	 *
 	 * @param Binary $data 圧縮するデータ。
 	 * @param -1|0|1|2|3|4|5|6|7|8|9 $level 圧縮レベル。
-	 * @param int $encoding
+	 * @param int $encoding `self::GZIP_DEFAULT` か `self::FORCE_DEFLATE` を指定。
 	 * @phpstan-param self::GZIP_* $encoding
 	 * @return Binary 圧縮データ。
 	 * @throws ArchiveException 失敗。
@@ -56,4 +72,6 @@ abstract class Archiver
 
 		return new Binary($result);
 	}
+
+	#endregion
 }

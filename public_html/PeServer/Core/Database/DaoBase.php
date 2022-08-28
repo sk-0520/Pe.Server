@@ -16,12 +16,16 @@ use PeServer\Core\Log\NullLogger;
  */
 abstract class DaoBase
 {
+	#region variable
+
 	/**
 	 * ロガー。
 	 *
 	 * @readonly
 	 */
 	protected ILogger $logger;
+
+	#endregion
 
 	/**
 	 * 生成。

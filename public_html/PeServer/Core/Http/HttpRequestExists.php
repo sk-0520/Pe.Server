@@ -10,6 +10,8 @@ namespace PeServer\Core\Http;
  */
 class HttpRequestExists
 {
+	#region define
+
 	/** 使わん */
 	public const KIND_NONE = 0;
 	/** URL */
@@ -20,6 +22,8 @@ class HttpRequestExists
 	public const KIND_POST = 3;
 	/** FILE */
 	public const KIND_FILE = 4;
+
+	#endregion
 
 	/**
 	 * 生成。

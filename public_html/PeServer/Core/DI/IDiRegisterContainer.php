@@ -11,6 +11,8 @@ use PeServer\Core\DefaultValue;
  */
 interface IDiRegisterContainer extends IDiContainer
 {
+	#region function
+
 	/**
 	 * 登録処理。
 	 *
@@ -64,4 +66,6 @@ interface IDiRegisterContainer extends IDiContainer
 	 * @param string $id $valueの登録ID。未指定(空)の場合は $value の型名が使用される。
 	 */
 	function registerValue(?object $value, string $id = DefaultValue::EMPTY_STRING): void;
+
+	#endregion
 }
