@@ -53,7 +53,7 @@ abstract class StoreConfiguration
 		/** @var DateInterval|null */
 		$span = null;
 		if (!Text::isNullOrWhiteSpace($setting->span)) {
-			$span = new DateInterval($setting->span);
+			$span = new DateInterval($setting->span); //@phpstan-ignore-line not null
 		}
 
 		$path = Text::requireNotNullOrWhiteSpace($setting->path, '/');
