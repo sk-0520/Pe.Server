@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Image;
 
 use \GdImage;
-use PeServer\Core\Alignment;
+use PeServer\Core\Image\Alignment;
 use PeServer\Core\Binary;
 use PeServer\Core\DisposerBase;
 use PeServer\Core\ErrorHandler;

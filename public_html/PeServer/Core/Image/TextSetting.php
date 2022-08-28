@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Image;
 
-use PeServer\Core\Alignment;
+use PeServer\Core\Image\Alignment;
 
 class TextSetting
 {
