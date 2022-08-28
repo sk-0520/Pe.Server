@@ -82,7 +82,6 @@
 			"**/php-deploy-receiver.php"
 		],
 		"auto-close-tag.activationOnLanguage": [
-			"php",
 			"smarty"
 		],
 		"intelephense.stubs": [
