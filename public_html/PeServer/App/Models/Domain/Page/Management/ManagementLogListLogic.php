@@ -31,9 +31,9 @@ class ManagementLogListLogic extends PageLogicBase
 		/** @var array<string,mixed> */
 		$logging = $this->config::$config['logging'];
 		/** @var string @-phpstan-ignore-next-line */
-		$dirPath = $logging['file']['configuration']['logger']['directory'];
+		$dirPath = $logging['file']['configuration']['directory'];
 		/** @var string @-phpstan-ignore-next-line */
-		$targetExt = Path::getFileExtension($logging['file']['configuration']['logger']['name']);
+		$targetExt = Path::getFileExtension($logging['file']['configuration']['name']);
 		$files = Directory::getFiles($dirPath, false);
 
 		$logFiles = array_filter($files, function ($i) use ($targetExt) {

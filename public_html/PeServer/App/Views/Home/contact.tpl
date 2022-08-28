@@ -7,8 +7,8 @@
 </p>
 
 <ul>
-	<li><a href="{$values.server_project_url}">Pe.Server プロジェクト</a></li>
-	<li><a href="{$values.app_project_url}">Pe プロジェクト</a></li>
+	<li><a href="{$values.families->serverProjectUrl}">Pe.Server プロジェクト</a></li>
+	<li><a href="{$values.families->appProjectUrl}">Pe プロジェクト</a></li>
 </ul>
 
 {/block}

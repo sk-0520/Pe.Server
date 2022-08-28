@@ -15,9 +15,7 @@ class LogProvider implements ILogProvider
 	/**
 	 * ロガー。
 	 *
-	 * @var array<array{logger_class:string,configuration:array{level:int,format:string,logger?:array<string,mixed>|null}}>
-	 * @phpstan-var array<array{logger_class:class-string<ILogger>,configuration:array{level:ILogger::LOG_LEVEL_*,format:literal-string,logger?:array<string,mixed>|null}}>
-	 *
+	 * @var array<string,LocalLogProviderItem>
 	 */
 	private array $loggers = [];
 
@@ -38,16 +36,18 @@ class LogProvider implements ILogProvider
 		$this->loggers = [];
 	}
 
-	public function add(string $name, string $logger, array $configuration): void
+	public function add(string $name, string $logger, int $level, string $format, array $configuration): void
 	{
 		if (isset($this->loggers[$name])) {
 			throw new ArgumentException('$name: ' . $name);
 		}
 
-		$this->loggers[$name] = [
-			'logger_class' => $logger,
-			'configuration' => $configuration
-		];
+		$this->loggers[$name] = new LocalLogProviderItem(
+			$logger,
+			$level,
+			$format,
+			$configuration
+		);
 	}
 
 	public function create(string $header, int $baseTraceIndex): array
@@ -59,11 +59,37 @@ class LogProvider implements ILogProvider
 		$result = [];
 
 		foreach ($this->loggers as $item) {
-			$configuration = $item['configuration'];
-			$options = new LogOptions($header, $baseTraceIndex, $configuration);
-			$result[] = ReflectionUtility::create($item['logger_class'], ILogger::class, $options);
+			$options = new LogOptions($header, $baseTraceIndex, $item->level, $item->format, $item->configuration);
+			$result[] = ReflectionUtility::create($item->loggerClass, ILogger::class, $options);
 		}
 
 		return $result;
+	}
+}
+
+/**
+ * `LogProvider` 内で持ち運ぶロガー設定。
+ *
+ * @immutable
+ */
+class LocalLogProviderItem
+{
+	/**
+	 * 生成
+	 *
+	 * @param string $loggerClass
+	 * @phpstan-param class-string<ILogger> $loggerClass
+	 * @param int $level
+	 * @phpstan-param ILogger::LOG_LEVEL_* $level
+	 * @param string $format
+	 * @phpstan-param literal-string $format
+	 * @param array<string,mixed> $configuration
+	 */
+	public function __construct(
+		public string $loggerClass,
+		public int $level,
+		public string $format,
+		public array $configuration
+	) {
 	}
 }

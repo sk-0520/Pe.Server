@@ -32,10 +32,9 @@ class ManagementLogDetailLogic extends PageLogicBase
 
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
-		/** @var array<string,mixed> */
-		$logging = $this->config->setting['logging'];
+		$logging = $this->config->setting->logging;
 		/** @var string @-phpstan-ignore-next-line */
-		$dirPath = $logging['file']['configuration']['logger']['directory'];
+		$dirPath = $logging->loggers['file']->configuration['directory'];
 
 		$fileName = Text::trim($this->getRequest('log_name'), '/\\.');
 		$filePath = Path::combine($dirPath, $fileName);
@@ -46,7 +45,7 @@ class ManagementLogDetailLogic extends PageLogicBase
 		$binary = File::readContent($filePath);
 
 		/** @var int @-phpstan-ignore-next-line */
-		$archiveSize = $this->config->setting['logging']['archive_size'];
+		$archiveSize = $logging->archiveSize;
 		$fileSize = File::getFileSize($filePath);
 
 		if ($archiveSize <= $fileSize) {

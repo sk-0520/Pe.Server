@@ -9,7 +9,9 @@ use PeServer\Core\Environment;
 use PeServer\Core\DefaultValue;
 use PeServer\Core\Mail\EmailAddress;
 use PeServer\Core\Mail\Mailer;
+use PeServer\Core\Mail\SmtpSetting;
 use PeServer\Core\Text;
+use PeServer\Core\Throws\ArgumentException;
 
 /**
  * アプリケーション側で使用するメール送信機能。
@@ -20,14 +22,25 @@ final class AppMailer extends Mailer
 
 	public function __construct(AppConfiguration $config)
 	{
-		parent::__construct($config->setting['mail']); //@phpstan-ignore-line いやこれはもう無理だろ
+		$mailSetting = match ($config->setting->mail->mode) {
+			'smtp' => new SmtpSetting(
+				$config->setting->mail->smtp->host,
+				$config->setting->mail->smtp->port,
+				$config->setting->mail->smtp->secure,
+				$config->setting->mail->smtp->authentication,
+				$config->setting->mail->smtp->userName,
+				$config->setting->mail->smtp->password
+			),
+			default => throw new ArgumentException($config->setting->mail->mode),
+		};
+		parent::__construct($mailSetting);
 
-		$fromEmail = $config->setting['config']['address']['from_email'];
-		$this->fromAddress = new EmailAddress($fromEmail['address'], $fromEmail['name']);
-		$this->returnPath = $config->setting['config']['address']['return_email'];
+		$fromEmail = $config->setting->config->address->fromEmail;
+		$this->fromAddress = new EmailAddress($fromEmail->address, $fromEmail->name);
+		$this->returnPath = $config->setting->config->address->returnEmail;
 
-		if (!Environment::isProduction() && isset($config->setting['debug'])) {
-			$target = ArrayUtility::getOr($config->setting['debug'], 'mail_overwrite_target', '');
+		if (!Environment::isProduction() && isset($config->setting->debug)) {
+			$target = $config->setting->debug->mailOverwriteTarget;
 			if (!Text::isNullOrWhiteSpace($target)) {
 				$this->overwriteTarget = $target;
 			}

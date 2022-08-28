@@ -19,7 +19,8 @@ class CookieOption
 	 * @param DateInterval|null $span 期間。
 	 * @param boolean $secure HTTPS に限定するか。
 	 * @param boolean $httpOnly HTTP リクエストのみで使用するか。
-	 * @param 'Lax'|'lax'|'None'|'none'|'Strict'|'strict' $sameSite 同じサイト。
+	 * @param string $sameSite 同じサイト。
+	 * @phpstan-param 'Lax'|'lax'|'None'|'none'|'Strict'|'strict' $sameSite
 	 */
 	public function __construct(string $path, ?DateInterval $span, bool $secure, bool $httpOnly, string $sameSite)
 	{
@@ -59,7 +60,8 @@ class CookieOption
 	/**
 	 * 同じサイト。
 	 *
-	 * @var 'Lax'|'lax'|'None'|'none'|'Strict'|'strict'
+	 * @var string
+	 * @phpstan-var 'Lax'|'lax'|'None'|'none'|'Strict'|'strict'
 	 * @readonly
 	 */
 	public string $sameSite;

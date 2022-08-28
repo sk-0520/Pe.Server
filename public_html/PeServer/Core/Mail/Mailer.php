@@ -21,26 +21,23 @@ use PeServer\Core\Throws\NotImplementedException;
 
 class Mailer
 {
-	private const SEND_MODE_SMTP = 1;
+	public const SEND_MODE_SMTP = 1;
 
 	protected const ADDRESS_KIND_FROM = 1;
 	protected const ADDRESS_KIND_TO = 2;
 	protected const ADDRESS_KIND_CC = 3;
 	protected const ADDRESS_KIND_BCC = 4;
 
-	/**
-	 * @var integer
-	 * @phpstan-var self::SEND_MODE_*
-	 * @readonly
-	 */
-	private int $sendMode;
-	/**
-	 * @readonly
-	 */
-	private LocalSmtpSetting $smtp;
+	public const DEFAULT_ENCODING = '8bit';
+	public const DEFAULT_CHARACTER_SET = 'utf-8';
 
-	public string $encoding  = '8bit';
-	public string $characterSet = 'utf-8';
+	/**
+	 * @readonly
+	 */
+	private IMailSetting $setting;
+
+	public string $encoding  = self::DEFAULT_ENCODING;
+	public string $characterSet = self::DEFAULT_CHARACTER_SET;
 
 	/**
 	 * Return-Path:
@@ -82,38 +79,13 @@ class Mailer
 	/**
 	 * 生成。
 	 *
-	 * @param array{mode:string,smtp?:array{host:string,port:int,secure:string,authentication:bool,user_name:string,password:string}} $setting
+	 * @param IMailSetting $setting
 	 */
-	public function __construct(array $setting)
+	public function __construct(IMailSetting $setting)
 	{
 		$this->fromAddress = new EmailAddress(DefaultValue::EMPTY_STRING, DefaultValue::EMPTY_STRING);
 		$this->message = new EmailMessage();
-
-		switch ($setting['mode']) {
-			case 'smtp': {
-					if (!isset($setting['smtp'])) {
-						throw new ArgumentNullException('smtp');
-					}
-
-					$smtpSetting = $setting['smtp'];
-
-					$smtp = new LocalSmtpSetting(
-						$smtpSetting['host'],
-						$smtpSetting['port'],
-						$smtpSetting['secure'],
-						$smtpSetting['authentication'],
-						$smtpSetting['user_name'],
-						$smtpSetting['password']
-					);
-
-					$this->sendMode = self::SEND_MODE_SMTP;
-					$this->smtp = $smtp;
-				}
-				break;
-
-			default:
-				throw new NotImplementedException();
-		}
+		$this->setting = $setting;
 	}
 
 	/**
@@ -224,40 +196,18 @@ class Mailer
 			throw new InvalidOperationException();
 		}
 
-		switch ($this->sendMode) {
-			case self::SEND_MODE_SMTP: {
-					$client->isSMTP();
-					$client->Host = $this->smtp->host;
-					$client->Port = $this->smtp->port;
-					$client->SMTPSecure = $this->smtp->secure;
-					$client->SMTPAuth = $this->smtp->authentication;
-					$client->Username = $this->smtp->userName;
-					$client->Password = $this->smtp->password;
-				}
-				break;
-
-			default:
-				throw new NotImplementedException();
+		if ($this->setting instanceof SmtpSetting) {
+			$smtp = $this->setting;
+			$client->isSMTP();
+			$client->Host = $smtp->host;
+			$client->Port = $smtp->port;
+			$client->SMTPSecure = $smtp->secure;
+			$client->SMTPAuth = $smtp->authentication;
+			$client->Username = $smtp->userName;
+			$client->Password = $smtp->password;
 		}
 
 		$client->send();
 	}
 }
 
-/**
- * SMTP設定。
- *
- * @immutable
- */
-final class LocalSmtpSetting
-{
-	public function __construct(
-		public string $host,
-		public int $port,
-		public string $secure,
-		public bool $authentication,
-		public string $userName,
-		public string $password
-	) {
-	}
-}

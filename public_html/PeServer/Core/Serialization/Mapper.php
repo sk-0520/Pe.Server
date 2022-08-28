@@ -94,12 +94,15 @@ class Mapper
 			$sourceType = TypeUtility::getType($sourceValue);
 			$propertyTypes = ReflectionUtility::getTypes($property->getType());
 			foreach ($propertyTypes as $propertyType) {
-				if ($sourceType === $propertyType->getName()) {
+				$nestTypeName = $propertyType->getName();
+				$isArrayObject = $nestTypeName === TypeUtility::TYPE_ARRAY && class_exists($mapping->arrayValueClassName);
+
+				if ($sourceType === $nestTypeName && !$isArrayObject) {
 					$property->setValue($destination, $sourceValue);
 					continue 2; // loop: $properties
 				}
 
-				if ($sourceType === TypeUtility::TYPE_ARRAY && class_exists($propertyType->getName())) {
+				if ($sourceType === TypeUtility::TYPE_ARRAY) {
 					$nestDestination = null;
 					if ($property->isInitialized($destination)) {
 						$nestDestination = $property->getValue($destination);
@@ -109,12 +112,34 @@ class Mapper
 						if (($mapping->flags & Mapping::FLAG_OBJECT_INSTANCE_ONLY) === Mapping::FLAG_OBJECT_INSTANCE_ONLY) {
 							continue;
 						}
-						$nestClassName = $propertyType->getName();
-						$nestDestination = new $nestClassName();
+
+						$nestDestination = null;
+
+						if ($isArrayObject) {
+							$nestDestination = [];
+						} else if (class_exists($nestTypeName)) {
+							$nestDestination = new $nestTypeName();
+						}
+
 						$property->setValue($destination, $nestDestination);
 					}
 
-					$this->mapping($sourceValue, $nestDestination);
+					if ($isArrayObject) {
+						$isListArray = ($mapping->flags & Mapping::FLAG_LIST_ARRAY_VALUES) === Mapping::FLAG_LIST_ARRAY_VALUES;
+						foreach ($sourceValue as $key => $value) {
+							$objClassName = $mapping->arrayValueClassName;
+							$obj = new $objClassName();
+							$this->mapping($value, $obj);
+							if ($isListArray) {
+								$nestDestination[] = $obj;
+							} else {
+								$nestDestination[$key] = $obj;
+							}
+						}
+						$property->setValue($destination, $nestDestination);
+					} else {
+						$this->mapping($sourceValue, $nestDestination);
+					}
 
 					continue 2; // loop: $properties
 				}

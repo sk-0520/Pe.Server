@@ -63,6 +63,39 @@ abstract class Text
 	}
 
 	/**
+	 * 文字列が `null` か空の場合に代替文字列を返す。
+	 *
+	 * @param string|null $s
+	 * @param string $fallback
+	 * @return string
+	 */
+	public static function requireNotNullOrEmpty(?string $s, string $fallback): string
+	{
+		if (self::isNullOrEmpty($s)) {
+			return $fallback;
+		}
+
+		/** @var string */
+		return $s;
+	}
+
+	/**
+	 * 文字列がnullかホワイトスペースのみで構築されている場合に代替文字列を返す。
+	 *
+	 * @param string|null $s
+	 * @param string $fallback
+	 */
+	public static function requireNotNullOrWhiteSpace(?string $s, string $fallback): string
+	{
+		if (self::isNullOrWhiteSpace($s)) {
+			return $fallback;
+		}
+
+		/** @var string */
+		return $s;
+	}
+
+	/**
 	 * 文字列長を取得。
 	 *
 	 * `mb_strlen` ラッパー。

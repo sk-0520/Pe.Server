@@ -41,10 +41,9 @@ class LoggerFactory extends DiFactoryBase implements ILoggerFactory
 			$options = new LogOptions(
 				$header,
 				$baseTraceIndex,
-				[
-					'level' => ILogger::LOG_LEVEL_TRACE,
-					'format' => '{TIME} |{LEVEL}| <{HEADER}> {METHOD}: {MESSAGE} | {FILE_NAME}({LINE})',
-				]
+				ILogger::LOG_LEVEL_TRACE,
+				'{TIME} |{LEVEL}| <{HEADER}> {METHOD}: {MESSAGE} | {FILE_NAME}({LINE})',
+				[]
 			);
 			return new XdebugLogger($options);
 		}

@@ -162,6 +162,88 @@ class MapperTest extends TestClass
 		], $actual);
 		$this->fail();
 	}
+
+	public function test_mapping_AttrTypeArrayValue()
+	{
+		$mapper = new Mapper();
+		$actual = new AttrTypeArrayValue();
+		$mapper->mapping([
+			'array' => [
+				'key1' => [
+					'int' => 10,
+					'string' => 'STRING',
+				],
+				'key2' => [
+					'int' => 20,
+					'string' => 'STRSTR',
+				],
+			],
+		], $actual);
+
+		$this->assertSame(ArrayValue::class, $actual->array['key1']::class);
+		$this->assertSame(10, $actual->array['key1']->int);
+		$this->assertSame('STRING', $actual->array['key1']->string);
+
+		$this->assertSame(ArrayValue::class, $actual->array['key2']::class);
+		$this->assertSame(20, $actual->array['key2']->int);
+		$this->assertSame('STRSTR', $actual->array['key2']->string);
+	}
+
+	public function test_mapping_AttrTypeListArrayValue()
+	{
+		$mapper = new Mapper();
+		$actual = new AttrTypeListArrayValue();
+		$mapper->mapping([
+			'array' => [
+				'key1' => [
+					'int' => 10,
+					'string' => 'STRING',
+				],
+				'key2' => [
+					'int' => 20,
+					'string' => 'STRSTR',
+				],
+			],
+		], $actual);
+
+		$this->assertSame(ArrayValue::class, $actual->array[0]::class);
+		$this->assertSame(10, $actual->array[0]->int);
+		$this->assertSame('STRING', $actual->array[0]->string);
+
+		$this->assertSame(ArrayValue::class, $actual->array[1]::class);
+		$this->assertSame(20, $actual->array[1]->int);
+		$this->assertSame('STRSTR', $actual->array[1]->string);
+	}
+
+	public function test_AttrTypeArrayNest()
+	{
+		$mapper = new Mapper();
+		$actual = new AttrTypeArrayNest();
+		$mapper->mapping([
+			'array' => [
+				'k1' => [
+					'value' => [
+						'int' => 999,
+						'string' => 'K1',
+					],
+				],
+				'k2' => [
+					'value' => [
+						'int' => -999,
+						'string' => 'K2',
+					],
+				],
+			]
+		], $actual);
+
+		$this->assertSame(NestArrayValue::class, $actual->array['k1']::class);
+		$this->assertSame(999, $actual->array['k1']->value->int);
+		$this->assertSame('K1', $actual->array['k1']->value->string);
+
+		$this->assertSame(NestArrayValue::class, $actual->array['k2']::class);
+		$this->assertSame(-999, $actual->array['k2']->value->int);
+		$this->assertSame('K2', $actual->array['k2']->value->string);
+	}
 }
 
 class Normal
@@ -243,4 +325,33 @@ class AttrTypeMismatch
 {
 	#[Mapping(flags: Mapping::FLAG_EXCEPTION_TYPE_MISMATCH)]
 	public int $int;
+}
+
+class ArrayValue
+{
+	public int $int = 0;
+	public string $string = 'string';
+}
+
+class AttrTypeArrayValue
+{
+	#[Mapping(arrayValueClassName: ArrayValue::class)]
+	public array $array;
+}
+
+class AttrTypeListArrayValue
+{
+	#[Mapping(flags: Mapping::FLAG_LIST_ARRAY_VALUES, arrayValueClassName: ArrayValue::class)]
+	public array $array;
+}
+
+class NestArrayValue
+{
+	public ArrayValue $value;
+}
+
+class AttrTypeArrayNest
+{
+	#[Mapping(arrayValueClassName: NestArrayValue::class)]
+	public array $array = [];
 }

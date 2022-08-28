@@ -45,6 +45,34 @@ class TextTest extends TestClass
 		}
 	}
 
+	public function test_requireNotNullOrEmpty()
+	{
+		$tests = [
+			new Data('A', 'A', 'B'),
+			new Data('B', '', 'B'),
+			new Data(' ', ' ', 'B'),
+			new Data('B', null, 'B'),
+		];
+		foreach ($tests as $test) {
+			$actual = Text::requireNotNullOrEmpty(...$test->args);
+			$this->assertSame($test->expected, $actual, $test->str());
+		}
+	}
+
+	public function test_requireNotNullOrWhiteSpace()
+	{
+		$tests = [
+			new Data('A', 'A', 'B'),
+			new Data('B', '', 'B'),
+			new Data('B', ' ', 'B'),
+			new Data('B', null, 'B'),
+		];
+		foreach ($tests as $test) {
+			$actual = Text::requireNotNullOrWhiteSpace(...$test->args);
+			$this->assertSame($test->expected, $actual, $test->str());
+		}
+	}
+
 	public function test_getLength()
 	{
 		$tests = [

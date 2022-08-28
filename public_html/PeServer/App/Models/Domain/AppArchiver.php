@@ -29,14 +29,14 @@ class AppArchiver
 	{
 		$revision = Environment::getRevision();
 		$fileName = Utc::create()->format('Y-m-d\_His') . "_{$revision}.zip";
-		$filePath = Path::combine($this->config->setting['cache']['backup'], $fileName);
+		$filePath = Path::combine($this->config->setting->cache->backup, $fileName);
 		Directory::createParentDirectoryIfNotExists($filePath);
 
 		$zipArchive = new ZipArchive();
 		$zipArchive->open($filePath, ZipArchive::CREATE | ZipArchive::EXCL);
 
 		//DB保存
-		$connectionPath = $this->config->setting['persistence']['connection'];
+		$connectionPath = $this->config->setting->persistence->default->connection;
 		$databasePath = Text::split($connectionPath, ':', 2)[1];
 		$zipArchive->addFile($databasePath, Path::getFileName($databasePath));
 
@@ -47,7 +47,7 @@ class AppArchiver
 
 	public function rotate(): void
 	{
-		$backupFiles = Directory::find($this->config->setting['cache']['backup'], '*.zip');
+		$backupFiles = Directory::find($this->config->setting->cache->backup, '*.zip');
 		$logCount = ArrayUtility::getCount($backupFiles);
 		if ($logCount <= self::MAX_COUNT) {
 			return;

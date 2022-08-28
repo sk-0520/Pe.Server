@@ -112,9 +112,9 @@ class AccountSignupStep1Logic extends PageLogicBase
 		//TODO: 設定からとるのかリダイレクトみたいにサーバーからとるのか混在中
 		$baseUrl = Text::replaceMap(
 			/** @phpstan-ignore-next-line */
-			$this->config->setting['config']['address']['public_url'],
+			$this->config->setting->config->address->publicUrl,
 			[
-				'DOMAIN' => $this->config->setting['config']['address']['domain']
+				'DOMAIN' => $this->config->setting->config->address->domain
 			]
 		);
 		$url = UrlUtility::joinPath($baseUrl, "account/signup/$token");

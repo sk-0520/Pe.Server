@@ -37,7 +37,7 @@ final class SignupStep2FilterMiddleware implements IMiddleware
 			$signUpWaitEmailsEntityDao = new SignUpWaitEmailsEntityDao($database);
 
 			/** @var int @-phpstan-ignore-next-line */
-			$limitMinutes = $this->config->setting['config']['confirm']['sign_up_wait_email_minutes'];
+			$limitMinutes = $this->config->setting->config->confirm->signUpWaitEmailMinutes;
 			if ($signUpWaitEmailsEntityDao->selectExistsToken($token, $limitMinutes)) {
 				return MiddlewareResult::none();
 			}

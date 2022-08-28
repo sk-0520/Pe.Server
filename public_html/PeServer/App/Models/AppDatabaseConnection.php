@@ -15,11 +15,11 @@ class AppDatabaseConnection extends DatabaseConnection
 		AppConfiguration $config,
 		ILoggerFactory $loggerFactory
 	) {
-		$persistence = $config->setting['persistence'];
+		$persistence = $config->setting->persistence->default;
 		$connectionSetting =  new ConnectionSetting(
-			$persistence['connection'],
-			$persistence['user'],
-			$persistence['password'],
+			$persistence->connection,
+			$persistence->user,
+			$persistence->password,
 			[]
 		);
 

@@ -165,7 +165,6 @@ abstract class Logging
 	 * @phpstan-param LogMessageAlias $message
 	 * @param mixed ...$parameters
 	 * @return string
-	 * @return string
 	 */
 	public static function format(string $format, int $level, int $traceIndex, DateTimeInterface $timestamp, string $header, $message, ...$parameters): string
 	{
