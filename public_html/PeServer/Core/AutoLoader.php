@@ -45,6 +45,30 @@ class AutoLoader
 				$this->setImpl($k, $v, false);
 			}
 		}
+
+		// Core 固有ライブラリ登録
+		$libs = __DIR__ . DIRECTORY_SEPARATOR . 'Libs' . DIRECTORY_SEPARATOR;
+		/** @phpstan-var array<NamespacePrefixAlias,InputMappingIncludesAlias> */
+		$libraries = [
+			// highlight.php
+			'Highlight' => [
+				'directory' => $libs . 'highlight.php/src/Highlight',
+			],
+			'HighlightUtilities' => [
+				'directory' => $libs . 'highlight.php/src/HighlightUtilities',
+			],
+			// php-markdown
+			'Michelf' => [
+				'directory' => $libs . 'php-markdown/Michelf',
+			],
+			// PHPMailer
+			'PHPMailer\PHPMailer' => [
+				'directory' => $libs . 'PHPMailer/src',
+			]
+		];
+		foreach ($libraries as $k => $v) {
+			$this->setImpl($k, $v, false);
+		}
 	}
 
 	#region function

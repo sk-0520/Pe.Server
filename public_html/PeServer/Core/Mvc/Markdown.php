@@ -9,7 +9,7 @@ use PeServer\Core\Html\CodeHighlighter;
 use PeServer\Core\Regex;
 use PeServer\Core\Text;
 
-require_once(__DIR__ . '/../../Core/Libs/php-markdown/Michelf/MarkdownExtra.inc.php');
+//require_once(__DIR__ . '/../../Core/Libs/php-markdown/Michelf/MarkdownExtra.inc.php');
 
 class Markdown
 {

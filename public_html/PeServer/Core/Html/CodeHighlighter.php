@@ -13,25 +13,6 @@ use PeServer\Core\CoreUtility;
 use PeServer\Core\Text;
 use PeServer\Core\TypeUtility;
 
-#region define
-
-const LIB_DIR = CoreUtility::LIBRARY_DIRECTORY_PATH . DIRECTORY_SEPARATOR . 'highlight.php/src';
-
-#endregion
-
-#region execute
-
-(new AutoLoader([
-	'Highlight' => [
-		'directory' => LIB_DIR . DIRECTORY_SEPARATOR . 'Highlight'
-	],
-	'HighlightUtilities' => [
-		'directory' => LIB_DIR . DIRECTORY_SEPARATOR . 'HighlightUtilities'
-	]
-]))->register();
-
-#endregion
-
 class CodeHighlighter
 {
 	#region function

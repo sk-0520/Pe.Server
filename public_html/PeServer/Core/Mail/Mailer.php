@@ -4,12 +4,6 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mail;
 
-require_once(__DIR__ . '/../../Core/Libs/PHPMailer/src/Exception.php');
-//require_once(__DIR__ . '/../../Core/Libs/PHPMailer/src/OAuth.php');
-require_once(__DIR__ . '/../../Core/Libs/PHPMailer/src/PHPMailer.php');
-//require_once(__DIR__ . '/../../Core/Libs/PHPMailer/src/POP3.php');
-require_once(__DIR__ . '/../../Core/Libs/PHPMailer/src/SMTP.php');
-
 use \PHPMailer\PHPMailer\PHPMailer;
 use PeServer\Core\DefaultValue;
 use PeServer\Core\Mail\EmailAddress;
