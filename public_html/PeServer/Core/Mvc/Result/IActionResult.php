@@ -11,9 +11,13 @@ use PeServer\Core\Http\HttpResponse;
  */
 interface IActionResult
 {
+	#region function
+
 	/**
 	 * 結果操作からHTTPレスポンスを生成。
 	 */
 	public function createResponse(): HttpResponse;
+
+	#endregion
 
 }

@@ -41,6 +41,8 @@ class DatabaseColumn
 	) {
 	}
 
+	#region function
+
 	/**
 	 * `PDOStatement::getColumnMeta` で取得した配列から `DatabaseColumn` の生成
 	 *
@@ -60,4 +62,6 @@ class DatabaseColumn
 			ArrayUtility::getOr($meta, 'flags', [])
 		);
 	}
+
+	#endregion
 }

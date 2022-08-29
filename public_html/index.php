@@ -20,13 +20,10 @@ use PeServer\Core\Http\RequestPath;
 use PeServer\Core\Mvc\RouteRequest;
 use PeServer\Core\Web\UrlHelper;
 
-ini_set('display_errors', '1');
-error_reporting(E_ALL);
-
 $autoLoader = new AutoLoader(
 	[
 		'PeServer' => [
-			'directory' => __DIR__,
+			'directory' => __DIR__ . DIRECTORY_SEPARATOR . 'PeServer',
 		]
 	]
 );
@@ -34,6 +31,14 @@ $autoLoader->register(false);
 
 $urlHelper = new UrlHelper('');
 $specialStore = new AppSpecialStore();
+$isLocalhost = $specialStore->getServer('SERVER_NAME') === 'localhost';
+
+error_reporting(E_ALL);
+if ($isLocalhost) {
+	ini_set('display_errors', 'On');
+} else {
+	ini_set('display_errors', 'Off');
+}
 
 $startup = new AppStartup(
 	new DefinedDirectory(
@@ -44,7 +49,7 @@ $startup = new AppStartup(
 $container = $startup->setup(
 	AppStartup::MODE_WEB,
 	[
-		'environment' => $specialStore->getServer('SERVER_NAME') === 'localhost' ? 'development' : 'production',
+		'environment' => $isLocalhost ? 'development' : 'production',
 		'revision' => ':REVISION:',
 		'special_store' => $specialStore,
 		'url_helper' => $urlHelper,

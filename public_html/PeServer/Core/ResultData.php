@@ -12,6 +12,8 @@ namespace PeServer\Core;
  */
 final class ResultData
 {
+	#region variable
+
 	/**
 	 * 成功状態。
 	 */
@@ -23,11 +25,15 @@ final class ResultData
 	 */
 	public mixed $value;
 
+	#endregion
+
 	private function __construct(bool $success, mixed $value)
 	{
 		$this->success = $success;
 		$this->value = $value;
 	}
+
+	#region function
 
 	/**
 	 * 成功データの生成。
@@ -53,4 +59,6 @@ final class ResultData
 	{
 		return new ResultData(false, null);
 	}
+
+	#endregion
 }

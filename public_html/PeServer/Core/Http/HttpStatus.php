@@ -9,6 +9,8 @@ namespace PeServer\Core\Http;
  */
 abstract class HttpStatus
 {
+	#region function
+
 	public static function none(): HttpStatus
 	{
 		return new LocalHttpStatusImpl(0);
@@ -82,6 +84,8 @@ abstract class HttpStatus
 	 * @return boolean
 	 */
 	public abstract function is(HttpStatus $httpStatus): bool;
+
+	#endregion
 }
 
 class LocalHttpStatusImpl extends HttpStatus

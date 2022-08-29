@@ -29,7 +29,13 @@ use PeServer\Core\Utc;
  */
 class TemporaryStore
 {
+	#region define
+
 	private const ID_LENGTH = 40;
+
+	#endregion
+
+	#region variable
 
 	/**
 	 * 一時データ。
@@ -50,6 +56,8 @@ class TemporaryStore
 	 */
 	private bool $isImported = false;
 
+	#endregion
+
 	public function __construct(
 		/** @readonly */
 		private TemporaryOption $option,
@@ -66,6 +74,8 @@ class TemporaryStore
 			throw new ArgumentNullException('$option->cookie->span');
 		}
 	}
+
+	#region function
 
 	private function hasId(): bool
 	{
@@ -221,4 +231,6 @@ class TemporaryStore
 		unset($this->values[$key]);
 		$this->removes[] = $key;
 	}
+
+	#endregion
 }

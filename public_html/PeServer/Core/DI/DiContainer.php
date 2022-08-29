@@ -31,6 +31,8 @@ use PeServer\Core\TypeUtility;
 
 class DiContainer extends DisposerBase implements IDiContainer
 {
+	#region variable
+
 	/**
 	 * IDとの紐づけ。
 	 *
@@ -38,6 +40,10 @@ class DiContainer extends DisposerBase implements IDiContainer
 	 * @phpstan-var array<class-string|non-empty-string,DiItem>
 	 */
 	protected array $mapping = [];
+
+	#endregion
+
+	#region function
 
 	/**
 	 * 登録アイテムを具象クラス名も考慮して取得する。
@@ -347,7 +353,9 @@ class DiContainer extends DisposerBase implements IDiContainer
 		return $result;
 	}
 
-	//[IDiContainer]
+	#endregion
+
+	#region IDiContainer
 
 	public function has(string $id): bool
 	{
@@ -435,7 +443,9 @@ class DiContainer extends DisposerBase implements IDiContainer
 		return new ScopedDiContainer($this);
 	}
 
-	//[DisposerBase]
+	#endregion
+
+	#region DisposerBase
 
 	protected function disposeImpl(): void
 	{
@@ -445,4 +455,6 @@ class DiContainer extends DisposerBase implements IDiContainer
 
 		$this->mapping = [];
 	}
+
+	#endregion
 }

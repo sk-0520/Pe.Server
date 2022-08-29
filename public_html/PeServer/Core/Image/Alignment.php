@@ -2,13 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core;
+namespace PeServer\Core\Image;
 
 /**
  * 配置。
  */
 abstract class Alignment
 {
+	#region define
+
 	/** 水平方向: 左。 */
 	const HORIZONTAL_LEFT = 10;
 	/** 水平方向: 中央。 */
@@ -22,4 +24,6 @@ abstract class Alignment
 	const VERTICAL_CENTER = 21;
 	/** 垂直方向: 下。 */
 	const VERTICAL_BOTTOM = 22;
+
+	#endregion
 }

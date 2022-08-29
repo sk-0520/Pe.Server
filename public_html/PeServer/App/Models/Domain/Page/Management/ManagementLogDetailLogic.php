@@ -33,7 +33,7 @@ class ManagementLogDetailLogic extends PageLogicBase
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
 		$logging = $this->config->setting->logging;
-		/** @var string @-phpstan-ignore-next-line */
+		/** @var string */
 		$dirPath = $logging->loggers['file']->configuration['directory'];
 
 		$fileName = Text::trim($this->getRequest('log_name'), '/\\.');

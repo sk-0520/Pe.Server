@@ -12,8 +12,6 @@ use \Error;
  * NOTE: なにがあってもPHP標準関数ですべて処理すること。
  * 調整する場合は継承してお好きに。
  *
- * BUGS: バグかどうか微妙だけど名前空間接頭辞が物理名で紐づくことになってるのはどうなんだ。
- *
  * @phpstan-type NamespacePrefixAlias string
  * @phpstan-type BaseDirectoryAlias non-empty-string
  * @phpstan-type ClassIncludesAlias array<class-string,class-string|non-empty-string>
@@ -22,6 +20,8 @@ use \Error;
  */
 class AutoLoader
 {
+	#region variable
+
 	/**
 	 * 名前空間接頭辞とプロジェクトマッピング。
 	 *
@@ -30,10 +30,12 @@ class AutoLoader
 	 */
 	private $setting = [];
 
+	#endregion
+
 	/**
 	 * 生成。
 	 *
-	 * @param array|null $setting
+	 * @param array|null $setting 初期化設定。内部的には `add` が実施される。
 	 * @phpstan-param array<NamespacePrefixAlias,InputMappingIncludesAlias>|null $setting
 	 */
 	public function __construct(?array $setting = null)
@@ -43,7 +45,33 @@ class AutoLoader
 				$this->setImpl($k, $v, false);
 			}
 		}
+
+		// Core 固有ライブラリ登録
+		$libs = __DIR__ . DIRECTORY_SEPARATOR . 'Libs' . DIRECTORY_SEPARATOR;
+		/** @phpstan-var array<NamespacePrefixAlias,InputMappingIncludesAlias> */
+		$libraries = [
+			// highlight.php
+			'Highlight' => [
+				'directory' => $libs . 'highlight.php/src/Highlight',
+			],
+			'HighlightUtilities' => [
+				'directory' => $libs . 'highlight.php/src/HighlightUtilities',
+			],
+			// php-markdown
+			'Michelf' => [
+				'directory' => $libs . 'php-markdown/Michelf',
+			],
+			// PHPMailer
+			'PHPMailer\PHPMailer' => [
+				'directory' => $libs . 'PHPMailer/src',
+			]
+		];
+		foreach ($libraries as $k => $v) {
+			$this->setImpl($k, $v, false);
+		}
 	}
+
+	#region function
 
 	/**
 	 * 名前空間接頭辞の調整。
@@ -242,6 +270,8 @@ class AutoLoader
 	/**
 	 * 読み込み対象ファイルの取得。
 	 *
+	 * 本処理はエラーとか例外はやっちゃいけない。
+	 *
 	 * @param string $className
 	 * @return string|null ファイルが存在する場合はファイルパス。存在しない(担当じゃない)場合は null を返す。
 	 * @phpstan-return non-empty-string|null ファイルが存在する場合はファイルパス。存在しない(担当じゃない)場合は null を返す。
@@ -257,10 +287,12 @@ class AutoLoader
 					}
 				}
 
-				$fileBasePath = str_replace('\\', DIRECTORY_SEPARATOR, $className);
+				$classBaseName = substr($className, strlen($namespacePrefix));
+				$fileBasePath = str_replace('\\', DIRECTORY_SEPARATOR, $classBaseName);
+				$filePathWithoutExtensions = $mapping['directory'] . $fileBasePath;
 
 				foreach ($mapping['extensions'] as $extension) {
-					$filePath = $mapping['directory'] . $fileBasePath . $extension;
+					$filePath = $filePathWithoutExtensions . $extension;
 					if (is_file($filePath)) {
 						return $filePath;
 					}
@@ -284,4 +316,6 @@ class AutoLoader
 			require $filePath;
 		}
 	}
+
+	#endregion
 }

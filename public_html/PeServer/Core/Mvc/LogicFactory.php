@@ -16,7 +16,7 @@ class LogicFactory extends DiFactoryBase implements ILogicFactory
 		parent::__construct($container);
 	}
 
-	//[ILogicFactory]
+	#region ILogicFactory
 
 	public function createLogic(string $logicClassName, array $arguments = []): LogicBase
 	{
@@ -25,4 +25,6 @@ class LogicFactory extends DiFactoryBase implements ILogicFactory
 		$arguments[LogicParameter::class] = $parameter;
 		return $this->container->new($logicClassName, $arguments);
 	}
+
+	#endregion
 }

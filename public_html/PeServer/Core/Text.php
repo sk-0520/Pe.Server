@@ -4,24 +4,30 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
+use \Throwable;
 use PeServer\Core\DefaultValue;
 use PeServer\Core\Throws\Throws;
 use PeServer\Core\Throws\RegexException;
 use PeServer\Core\Throws\StringException;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\Enforce;
-use Throwable;
 
 /**
  * 文字列操作。
  */
 abstract class Text
 {
+	#region define
+
 	/** トリム対象文字一覧。 */
 	public const TRIM_CHARACTERS = " \n\r\t\v\0　";
 	private const TRIM_TARGET_START = -1;
 	private const TRIM_TARGET_END = 1;
 	private const TRIM_TARGET_BOTH = 0;
+
+	#endregion
+
+	#region function
 
 	/**
 	 * 文字列が `null` か空か
@@ -648,4 +654,6 @@ abstract class Text
 
 		return $charactersArray;
 	}
+
+	#endregion
 }

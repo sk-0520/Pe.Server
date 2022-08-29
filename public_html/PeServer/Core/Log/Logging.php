@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Log;
 
 use \DateTimeImmutable;
-use DateTimeInterface;
+use \DateTimeInterface;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Cryptography;
 use PeServer\Core\DefaultValue;
@@ -26,8 +26,14 @@ use PeServer\Core\TypeUtility;
  */
 abstract class Logging
 {
+	#region define
+
 	private const LOG_REQUEST_ID_LENGTH = 6;
 	private const IS_ENABLED_HOST = true;
+
+	#endregion
+
+	#region variable
 
 	static string $requestId;
 	static ?string $requestHost = null;
@@ -40,6 +46,10 @@ abstract class Logging
 	private static InitializeChecker $initializeChecker;
 
 	private static SpecialStore $specialStore;
+
+	#endregion
+
+	#region function
 
 	/**
 	 * 初期化。
@@ -256,4 +266,6 @@ abstract class Logging
 		}
 		return $loggerFactory->createLogger('<UNKNOWN>');
 	}
+
+	#endregion
 }

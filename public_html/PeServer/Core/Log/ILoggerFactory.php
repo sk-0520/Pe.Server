@@ -8,6 +8,8 @@ use PeServer\Core\Log\ILogger;
 
 interface ILoggerFactory
 {
+	#region function
+
 	/**
 	 * ロガー生成。
 	 *
@@ -18,4 +20,6 @@ interface ILoggerFactory
 	 * @return ILogger
 	 */
 	function createLogger(string|object $header, int $baseTraceIndex = 0): ILogger;
+
+	#endregion
 }

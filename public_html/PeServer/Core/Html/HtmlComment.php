@@ -13,11 +13,15 @@ use PeServer\Core\Html\HtmlNodeBase;
  */
 final class HtmlComment extends HtmlNodeBase
 {
+	#region variable
+
 	/**
 	 * 生で使用する用。
 	 * @readonly
 	*/
 	public DOMComment $raw;
+
+	#endregion
 
 	public function __construct(HtmlDocument $document, DOMComment $raw)
 	{

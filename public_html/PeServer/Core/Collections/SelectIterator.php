@@ -37,6 +37,8 @@ class SelectIterator extends IteratorIterator //@phpstan-ignore-line Generic
 		parent::__construct($iterator);
 	}
 
+	#region IteratorIterator
+
 	/**
 	 * @phpstan-return TResult
 	 */
@@ -44,4 +46,6 @@ class SelectIterator extends IteratorIterator //@phpstan-ignore-line Generic
 	{
 		return call_user_func($this->callback, parent::current(), parent::key());
 	}
+
+	#endregion
 }

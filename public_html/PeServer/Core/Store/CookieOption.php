@@ -12,24 +12,8 @@ use \DateTimeImmutable;
  */
 class CookieOption
 {
-	/**
-	 * 生成。
-	 *
-	 * @param string $path パス。
-	 * @param DateInterval|null $span 期間。
-	 * @param boolean $secure HTTPS に限定するか。
-	 * @param boolean $httpOnly HTTP リクエストのみで使用するか。
-	 * @param string $sameSite 同じサイト。
-	 * @phpstan-param 'Lax'|'lax'|'None'|'none'|'Strict'|'strict' $sameSite
-	 */
-	public function __construct(string $path, ?DateInterval $span, bool $secure, bool $httpOnly, string $sameSite)
-	{
-		$this->path = $path;
-		$this->span = $span;
-		$this->secure = $secure;
-		$this->httpOnly = $httpOnly;
-		$this->sameSite = $sameSite;
-	}
+	#region variable
+
 
 	/**
 	 * パス
@@ -66,6 +50,29 @@ class CookieOption
 	 */
 	public string $sameSite;
 
+	#endregion
+
+	/**
+	 * 生成。
+	 *
+	 * @param string $path パス。
+	 * @param DateInterval|null $span 期間。
+	 * @param boolean $secure HTTPS に限定するか。
+	 * @param boolean $httpOnly HTTP リクエストのみで使用するか。
+	 * @param string $sameSite 同じサイト。
+	 * @phpstan-param 'Lax'|'lax'|'None'|'none'|'Strict'|'strict' $sameSite
+	 */
+	public function __construct(string $path, ?DateInterval $span, bool $secure, bool $httpOnly, string $sameSite)
+	{
+		$this->path = $path;
+		$this->span = $span;
+		$this->secure = $secure;
+		$this->httpOnly = $httpOnly;
+		$this->sameSite = $sameSite;
+	}
+
+	#region function
+
 	/**
 	 * cookie の寿命を数値に変換。
 	 *
@@ -84,4 +91,6 @@ class CookieOption
 
 		return $result + time();
 	}
+
+	#endregion
 }

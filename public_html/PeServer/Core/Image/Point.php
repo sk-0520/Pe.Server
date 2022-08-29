@@ -12,7 +12,11 @@ use PeServer\Core\Code;
  */
 class Point implements Stringable
 {
+	#region variable
+
 	private static ?Point $emptyValue = null; //phpstan-ignore-line static
+
+	#endregion
 
 	/**
 	 * 生成

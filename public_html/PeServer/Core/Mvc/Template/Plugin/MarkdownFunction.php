@@ -19,6 +19,8 @@ class MarkdownFunction extends TemplateBlockFunctionBase
 		parent::__construct($argument);
 	}
 
+	#region TemplateBlockFunctionBase
+
 	public function getFunctionName(): string
 	{
 		return 'markdown';
@@ -43,4 +45,6 @@ class MarkdownFunction extends TemplateBlockFunctionBase
 
 		return $html;
 	}
+
+	#endregion
 }

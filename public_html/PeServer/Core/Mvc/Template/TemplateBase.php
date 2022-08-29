@@ -18,6 +18,8 @@ abstract class TemplateBase
 	) {
 	}
 
+	#region function
+
 	/**
 	 * View描画処理。
 	 *
@@ -26,4 +28,6 @@ abstract class TemplateBase
 	 * @return string
 	 */
 	public abstract function build(string $templateName, TemplateParameter $parameter): string;
+
+	#endregion
 }

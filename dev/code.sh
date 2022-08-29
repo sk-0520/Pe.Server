@@ -8,6 +8,11 @@ PPLINT_URL=https://github.com/php-parallel-lint/PHP-Parallel-Lint/releases/downl
 PPLINT_NAME=parallel-lint.phar
 PPLINT_FILE=${PPLINT_NAME}.${PPLINT_VERSION}
 
+# PHPCSFIXER_VERSION=v3.10.0
+# PHPCSFIXER_URL=https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/${PHPCSFIXER_VERSION}/php-cs-fixer.phar
+# PHPCSFIXER_NAME=php-cs-fixer.phar
+# PHPCSFIXER_FILE=${PHPCSFIXER_NAME}.${PHPCSFIXER_VERSION}
+
 PHPSTAN_VERSION=1.8.2
 PHPSTAN_URL=https://github.com/phpstan/phpstan/releases/download/${PHPSTAN_VERSION}/phpstan.phar
 PHPSTAN_NAME=phpstan.phar
@@ -23,6 +28,10 @@ if [ ! -f ${PPLINT_FILE} ] ; then
 	rm --force ${PPLINT_NAME}.*
 	curl --output ${PPLINT_FILE} --location ${PPLINT_URL}
 fi
+# if [ ! -f ${PHPCSFIXER_FILE} ] ; then
+# 	rm --force ${PHPCSFIXER_NAME}.*
+# 	curl --output ${PHPCSFIXER_FILE} --location ${PHPCSFIXER_URL}
+# fi
 if [ ! -f ${PHPSTAN_FILE} ] ; then
 	rm --force ${PHPSTAN_NAME}.*
 	curl --output ${PHPSTAN_FILE} --location ${PHPSTAN_URL}
@@ -40,6 +49,8 @@ fi
 # 	echo 'ignore -> IGNORE_SYNTAX_CHECK'
 # fi
 php "${PPLINT_FILE}" ../public_html/PeServer --colors --show-deprecated --exclude ../public_html/PeServer/Core/Libs  --exclude ../public_html/PeServer/data "$@"
+
+#php "${PHPCSFIXER_FILE}" fix --dry-run --diff ../public_html/PeServer  "$@"
 
 php "${PHPSTAN_FILE}" analyze --configuration phpstan.neon "$@"
 #set +e

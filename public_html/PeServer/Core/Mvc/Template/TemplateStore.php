@@ -12,6 +12,8 @@ use PeServer\Core\Throws\NotImplementedException;
 
 abstract class TemplateStore implements ArrayAccess //@phpstan-ignore-line
 {
+	#region function
+
 	public static function createCookie(CookieStore $store): TemplateStore
 	{
 		return new LocalTemplateCookieStore($store);
@@ -26,6 +28,12 @@ abstract class TemplateStore implements ArrayAccess //@phpstan-ignore-line
 	{
 		return new LocalTemplateTemporaryStore($store);
 	}
+
+	abstract protected function get(string $name): mixed;
+
+	#endregion
+
+	#region ArrayAccess
 
 	public function offsetExists(mixed $offset): bool
 	{
@@ -44,7 +52,7 @@ abstract class TemplateStore implements ArrayAccess //@phpstan-ignore-line
 		throw new NotImplementedException();
 	}
 
-	abstract protected function get(string $name): mixed;
+	#endregion
 }
 
 final class LocalTemplateCookieStore extends TemplateStore

@@ -26,6 +26,8 @@ class LoggerFactory extends DiFactoryBase implements ILoggerFactory
 		parent::__construct($container);
 	}
 
+	#region function
+
 	/**
 	 * Xdebug出力用ロガー生成。
 	 *
@@ -51,7 +53,9 @@ class LoggerFactory extends DiFactoryBase implements ILoggerFactory
 		return null;
 	}
 
-	//[ILoggerFactory]
+	#endregion
+
+	#region ILoggerFactory
 
 	public function createLogger(string|object $header, int $baseTraceIndex = 0): ILogger
 	{
@@ -76,4 +80,6 @@ class LoggerFactory extends DiFactoryBase implements ILoggerFactory
 
 		return new MultiLogger($baseTraceIndex, $loggers);
 	}
+
+	#endregion
 }

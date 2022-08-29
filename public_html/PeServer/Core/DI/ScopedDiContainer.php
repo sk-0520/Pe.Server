@@ -17,6 +17,11 @@ use PeServer\Core\DI\DiItem;
  */
 class ScopedDiContainer extends DiRegisterContainer implements IScopedDiContainer
 {
+	/**
+	 * 生成。
+	 *
+	 * @param DiContainer $sourceContainer 元になるDIコンテナ。
+	 */
 	public function __construct(DiContainer $sourceContainer)
 	{
 		foreach ($sourceContainer->mapping as $key => $item) {
@@ -28,7 +33,7 @@ class ScopedDiContainer extends DiRegisterContainer implements IScopedDiContaine
 		}
 	}
 
-	//[DiRegisterContainer]
+	#region IScopedDiContainer
 
 	public function add(string $id, DiItem $item): void
 	{
@@ -45,6 +50,8 @@ class ScopedDiContainer extends DiRegisterContainer implements IScopedDiContaine
 
 		$this->mapping = [];
 	}
+
+	#endregion
 }
 
 /**

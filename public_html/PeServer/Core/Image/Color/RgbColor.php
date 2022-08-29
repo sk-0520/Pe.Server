@@ -16,10 +16,14 @@ use PeServer\Core\Throws\NotSupportedException;
 /**
  * @immutable
  */
-class RgbColor implements IColor, Stringable
+class RgbColor implements IColor
 {
+	#region define
+
 	public const RGB_MINIMUM = 0;
 	public const RGB_MAXIMUM = 255;
+
+	#endregion
 
 	/**
 	 * 生成。
@@ -110,6 +114,10 @@ class RgbColor implements IColor, Stringable
 		return new RgbColor($r, $g, $b, $a);
 	}
 
+	#endregion
+
+	#region IColor
+
 	public function toHtml(): string
 	{
 		if ($this->alpha === IColor::ALPHA_NONE) {
@@ -118,10 +126,6 @@ class RgbColor implements IColor, Stringable
 
 		return Text::format('#%02x%02x%02x%02x', $this->red, $this->green, $this->blue, $this->alpha);
 	}
-
-	#endregion
-
-	#region Stringable
 
 	public function __toString(): string
 	{

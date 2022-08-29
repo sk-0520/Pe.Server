@@ -19,7 +19,12 @@ use PeServer\Core\Throws\ResourceInvalidException;
  */
 abstract class ResourceBase extends DisposerBase
 {
+	#region variable
+
 	protected string $resourceType;
+
+	#endregion
+
 	/**
 	 * 生成。
 	 *
@@ -45,17 +50,7 @@ abstract class ResourceBase extends DisposerBase
 		}
 	}
 
-	protected function disposeImpl(): void
-	{
-		// $resourceType = get_resource_type($this->resource);
-		// if ($resourceType === 'Unknown') {
-		// 	throw new ObjectDisposedException();
-		// }
-
-		$this->release();
-
-		$this->resource = null; //@phpstan-ignore-line はーいーるーのー
-	}
+	#region function
 
 	/**
 	 * リソース型を解放する。
@@ -69,4 +64,22 @@ abstract class ResourceBase extends DisposerBase
 	 * @return bool
 	 */
 	protected abstract function isValidType(string $resourceType): bool;
+
+	#endregion
+
+	#region DisposerBase
+
+	protected function disposeImpl(): void
+	{
+		// $resourceType = get_resource_type($this->resource);
+		// if ($resourceType === 'Unknown') {
+		// 	throw new ObjectDisposedException();
+		// }
+
+		$this->release();
+
+		$this->resource = null; //@phpstan-ignore-line はーいーるーのー
+	}
+
+	#endregion
 }

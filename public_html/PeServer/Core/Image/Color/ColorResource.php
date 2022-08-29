@@ -10,6 +10,9 @@ use PeServer\Core\Image\Graphics;
 use PeServer\Core\Image\Color\IColor;
 use PeServer\Core\Text;
 
+/**
+ * GD: 色データ。
+ */
 class ColorResource extends DisposerBase implements IColor
 {
 	public function __construct(
@@ -18,12 +21,7 @@ class ColorResource extends DisposerBase implements IColor
 	) {
 	}
 
-	protected function disposeImpl(): void
-	{
-		$this->graphics->detachColor($this);
-
-		parent::disposeImpl();
-	}
+	#region function
 
 	/**
 	 * RGBへ変換。
@@ -41,6 +39,10 @@ class ColorResource extends DisposerBase implements IColor
 		return new RgbColor($colors['red'], $colors['green'], $colors['blue'], $colors['alpha']);
 	}
 
+	#endregion
+
+	#region IColor
+
 	public function toHtml(): string
 	{
 		$color = $this->toRgb();
@@ -51,4 +53,17 @@ class ColorResource extends DisposerBase implements IColor
 	{
 		return Code::toString($this, (string)$this->value);
 	}
+
+	#endregion
+
+	#region DisposerBase
+
+	protected function disposeImpl(): void
+	{
+		$this->graphics->detachColor($this);
+
+		parent::disposeImpl();
+	}
+
+	#endregion
 }

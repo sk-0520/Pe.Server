@@ -14,8 +14,12 @@ use \Iterator;
  */
 class RepeatIterator implements Iterator
 {
+	#region variable
+
 	/** @phpstan-var UnsignedIntegerAlias */
 	private int $key = 0;
+
+	#endregion
 
 	/**
 	 * 生成。
@@ -29,6 +33,8 @@ class RepeatIterator implements Iterator
 		private int $count
 	) {
 	}
+
+	#region Iterator
 
 	public function rewind(): void
 	{
@@ -61,4 +67,6 @@ class RepeatIterator implements Iterator
 	{
 		return $this->key < $this->count;
 	}
+
+	#endregion
 }

@@ -7,13 +7,13 @@ namespace PeServer\Core\Collections;
 use \ArrayAccess;
 use \ArrayIterator;
 use \IteratorAggregate;
-use Countable;
+use \Countable;
+use \Traversable;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\IndexOutOfRangeException;
 use PeServer\Core\Throws\KeyNotFoundException;
 use PeServer\Core\Throws\NotImplementedException;
 use PeServer\Core\Throws\NotSupportedException;
-use Traversable;
 
 /**
  * キーとして大文字小文字を区別しない連想配列。

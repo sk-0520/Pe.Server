@@ -11,6 +11,8 @@ use PeServer\Core\Throws\ImageException;
  */
 abstract class ImageType
 {
+	#region define
+
 	/** こいつはラッパーじゃない。 */
 	public const AUTO = -1;
 	public const GIF = IMAGETYPE_GIF;
@@ -32,6 +34,10 @@ abstract class ImageType
 	public const SWC = IMAGETYPE_SWC;
 	public const ICO = IMAGETYPE_ICO;
 	public const WEBP = IMAGETYPE_WEBP;
+
+	#endregion
+
+	#region function
 
 	/**
 	 * MIME取得。
@@ -69,4 +75,6 @@ abstract class ImageType
 
 		return $result;
 	}
+
+	#endregion
 }

@@ -12,6 +12,8 @@ use PeServer\Core\Mvc\Template\Plugin\ITemplateFunction;
  */
 interface ITemplateBlockFunction extends ITemplateFunction
 {
+	#region function
+
 	/**
 	 * 関数名取得。
 	 *
@@ -28,4 +30,6 @@ interface ITemplateBlockFunction extends ITemplateFunction
 	 * @return string HTML
 	 */
 	public function functionBlockBody(array $params, mixed $content, Smarty_Internal_Template $template, bool &$repeat): string;
+
+	#endregion
 }

@@ -4,12 +4,6 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mail;
 
-require_once(__DIR__ . '/../../Core/Libs/PHPMailer/src/Exception.php');
-//require_once(__DIR__ . '/../../Core/Libs/PHPMailer/src/OAuth.php');
-require_once(__DIR__ . '/../../Core/Libs/PHPMailer/src/PHPMailer.php');
-//require_once(__DIR__ . '/../../Core/Libs/PHPMailer/src/POP3.php');
-require_once(__DIR__ . '/../../Core/Libs/PHPMailer/src/SMTP.php');
-
 use \PHPMailer\PHPMailer\PHPMailer;
 use PeServer\Core\DefaultValue;
 use PeServer\Core\Mail\EmailAddress;
@@ -21,6 +15,8 @@ use PeServer\Core\Throws\NotImplementedException;
 
 class Mailer
 {
+	#region define
+
 	public const SEND_MODE_SMTP = 1;
 
 	protected const ADDRESS_KIND_FROM = 1;
@@ -30,6 +26,10 @@ class Mailer
 
 	public const DEFAULT_ENCODING = '8bit';
 	public const DEFAULT_CHARACTER_SET = 'utf-8';
+
+	#endregion
+
+	#region variable
 
 	/**
 	 * @readonly
@@ -76,6 +76,8 @@ class Mailer
 	 */
 	private EmailMessage $message;
 
+	#endregion
+
 	/**
 	 * 生成。
 	 *
@@ -87,6 +89,8 @@ class Mailer
 		$this->message = new EmailMessage();
 		$this->setting = $setting;
 	}
+
+	#region function
 
 	/**
 	 * 本文設定。
@@ -209,5 +213,7 @@ class Mailer
 
 		$client->send();
 	}
+
+	#endregion
 }
 

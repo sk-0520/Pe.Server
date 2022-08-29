@@ -18,7 +18,11 @@ use PeServer\Core\Throws\CallbackTypeError;
  */
 class GeneratorIterator implements Iterator
 {
+	#region variable
+
 	private Generator $generator;
+
+	#endregion
 
 	/**
 	 * 生成。
@@ -34,6 +38,8 @@ class GeneratorIterator implements Iterator
 		}
 		$this->generator = call_user_func($this->factory);
 	}
+
+	#region Iterator
 
 	public function rewind(): void
 	{
@@ -59,4 +65,6 @@ class GeneratorIterator implements Iterator
 	{
 		return $this->generator->valid();
 	}
+
+	#endregion
 }

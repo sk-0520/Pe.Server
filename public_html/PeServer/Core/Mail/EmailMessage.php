@@ -24,6 +24,8 @@ class EmailMessage
 	) {
 	}
 
+	#region function
+
 	/**
 	 * プレーンテキストが有効か。
 	 *
@@ -117,4 +119,6 @@ class EmailMessage
 	{
 		$this->html = null;
 	}
+
+	#endregion
 }

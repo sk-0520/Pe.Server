@@ -17,7 +17,11 @@ use PeServer\Core\Throws\CallbackTypeError;
  */
 class TakeWhileIterator implements Iterator
 {
+	#region variable
+
 	private int $position = 0;
+
+	#endregion
 
 	/**
 	 * 生成
@@ -34,6 +38,8 @@ class TakeWhileIterator implements Iterator
 			throw new CallbackTypeError('$callback');
 		}
 	}
+
+	#region Iterator
 
 	public function rewind(): void
 	{
@@ -65,4 +71,6 @@ class TakeWhileIterator implements Iterator
 
 		return call_user_func($this->callback, $this->iterator->current(), $this->iterator->key());
 	}
+
+	#endregion
 }

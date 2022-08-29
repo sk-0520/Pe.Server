@@ -43,6 +43,8 @@ class StreamMetaData
 	) {
 	}
 
+	#region function
+
 	/**
 	 * `stream_get_meta_data` から作成。
 	 *
@@ -64,4 +66,6 @@ class StreamMetaData
 			(int)$values['unread_bytes']
 		);
 	}
+
+	#endregion
 }

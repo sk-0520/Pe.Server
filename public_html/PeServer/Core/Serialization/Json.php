@@ -15,8 +15,12 @@ use PeServer\Core\Throws\Throws;
  */
 class Json
 {
+	#region define
+
 	public const ENCODE_OPTION_PRETTY = JSON_PRETTY_PRINT;
 	public const ENCODE_OPTION_UNESCAPED_UNICODE = JSON_UNESCAPED_UNICODE;
+
+	#endregion
 
 	/**
 	 * 生成。
@@ -28,6 +32,8 @@ class Json
 		protected int $depth = 512
 	) {
 	}
+
+	#region function
 
 	/**
 	 * PHPデータをJSON文字列に変換。
@@ -74,4 +80,6 @@ class Json
 
 		return $value;
 	}
+
+	#endregion
 }

@@ -11,6 +11,8 @@ use \Smarty_Internal_Template;
  */
 interface ITemplateFunction
 {
+	#region function
+
 	/**
 	 * 関数名取得。
 	 *
@@ -26,4 +28,6 @@ interface ITemplateFunction
 	 * @return string HTML
 	 */
 	public function functionBody(array $params, Smarty_Internal_Template $smarty): string;
+
+	#endregion
 }

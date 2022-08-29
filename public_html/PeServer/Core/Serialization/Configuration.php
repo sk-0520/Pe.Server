@@ -18,8 +18,14 @@ use PeServer\Core\Throws\ArgumentException;
  */
 class Configuration
 {
+	#region define
+
 	public const FILE_TYPE_DEFAULT = DefaultValue::EMPTY_STRING;
 	public const FILE_TYPE_JSON = 'json';
+
+	#endregion
+
+	#region variable
 
 	/**
 	 * 環境。
@@ -28,6 +34,8 @@ class Configuration
 	 * @readonly
 	 */
 	private string $environment;
+
+	#endregion
 
 	/**
 	 * 生成
@@ -38,6 +46,8 @@ class Configuration
 	{
 		$this->environment = $environment;
 	}
+
+	#region function
 
 	/**
 	 * 設定ファイル読み込み。
@@ -106,4 +116,6 @@ class Configuration
 
 		return $array;
 	}
+
+	#endregion
 }

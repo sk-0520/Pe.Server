@@ -9,6 +9,8 @@ namespace PeServer\Core\Mvc;
  */
 abstract class LogicCallMode
 {
+	#region define
+
 	/**
 	 * 初期化状態生値。
 	 */
@@ -17,6 +19,10 @@ abstract class LogicCallMode
 	 * 確定状態生値。
 	 */
 	protected const SUBMIT = 1;
+
+	#endregion
+
+	#region function
 
 	/**
 	 * 初期化処理か。
@@ -67,6 +73,8 @@ abstract class LogicCallMode
 	{
 		return self::create(self::SUBMIT);
 	}
+
+	#endregion
 }
 
 final class LocalLogicCallModeImpl extends LogicCallMode

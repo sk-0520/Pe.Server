@@ -16,6 +16,8 @@ use PeServer\Core\Mvc\Middleware\IShutdownMiddleware;
  */
 class Action
 {
+	#region variable
+
 	/**
 	 * 紐づけ。
 	 *
@@ -26,6 +28,10 @@ class Action
 	 * @phpstan-var array<parent::HTTP_METHOD_*,ActionSetting>
 	 */
 	private array $map = [];
+
+	#endregion
+
+	#region function
 
 	/**
 	 * 追加。
@@ -70,4 +76,6 @@ class Action
 
 		return null;
 	}
+
+	#endregion
 }

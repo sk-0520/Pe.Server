@@ -15,8 +15,12 @@ use PeServer\Core\Throws\ArgumentException;
  */
 class SessionOption
 {
+	#region define
+
 	/** セッションID保持Cookie名。 */
 	public const DEFAULT_NAME = 'PHPSESSID';
+
+	#endregion
 
 	/**
 	 * 生成。

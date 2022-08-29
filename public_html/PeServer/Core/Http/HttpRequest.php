@@ -33,6 +33,8 @@ class HttpRequest
 	) {
 	}
 
+	#region function
+
 	/**
 	 * 名前に対する値が存在するか。
 	 *
@@ -105,4 +107,6 @@ class HttpRequest
 	// public function file($name): array
 	// {
 	// }
+
+	#endregion
 }

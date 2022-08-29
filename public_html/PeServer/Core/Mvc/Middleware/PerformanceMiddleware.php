@@ -17,14 +17,18 @@ use PeServer\Core\Mvc\Middleware\MiddlewareResult;
  */
 final class PerformanceMiddleware implements IMiddleware
 {
+	#region variable
+
 	private float $beforeMsec;
+
+	#endregion
 
 	public function __construct(
 		private ILogger $logger
 	) {
 	}
 
-	//[IMiddleware]
+	#region IMiddleware
 
 	public function handleBefore(MiddlewareArgument $argument): MiddlewareResult
 	{
@@ -41,4 +45,6 @@ final class PerformanceMiddleware implements IMiddleware
 
 		return MiddlewareResult::none();
 	}
+
+	#endregion
 }

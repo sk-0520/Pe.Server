@@ -30,16 +30,22 @@ use PeServer\Core\Web\UrlHelper;
  */
 class ErrorHandler
 {
+	#region variable
+
 	/** 登録済みか。 */
 	private bool $isRegistered = false;
 
 	#[Inject(TemplateFactory::class)] //@phpstan-ignore-next-line
 	private ITemplateFactory $templateFactory;
 
+	#endregion
+
 	public function __construct(
 		protected ILogger $logger
 	) {
 	}
+
+	#region function
 
 	/**
 	 * 抑制エラーコード指定。
@@ -268,6 +274,8 @@ class ErrorHandler
 
 		echo $template->build('error-display.tpl', new TemplateParameter($status, $values, []));
 	}
+
+	#endregion
 }
 
 final class LocalPhpErrorReceiver extends DisposerBase

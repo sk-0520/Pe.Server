@@ -24,10 +24,16 @@ use PeServer\Core\Throws\ArgumentException;
  */
 class Route
 {
+	#region define
+
 	/** メソッド名自動設定。あんまり使わないこと。 */
 	public const DEFAULT_METHOD = '';
 	/** ミドルウェア指定時に以前をリセットする。 */
 	public const CLEAR_MIDDLEWARE = '*';
+
+	#endregion
+
+	#region variable
 
 	/**
 	 * ベースパス。
@@ -75,6 +81,8 @@ class Route
 
 	private Regex $regex;
 
+	#endregion
+
 	/**
 	 * ルーティング情報にコントローラを登録
 	 *
@@ -113,6 +121,8 @@ class Route
 			$this->addAction(DefaultValue::EMPTY_STRING, HttpMethod::gets(), 'index', $this->baseMiddleware, $this->baseShutdownMiddleware);
 		}
 	}
+
+	#region function
 
 	/**
 	 * ミドルウェア組み合わせ。
@@ -316,4 +326,6 @@ class Route
 
 		return $this->getActionCore($httpMethod, $this->actions[$actionPath], []);
 	}
+
+	#endregion
 }

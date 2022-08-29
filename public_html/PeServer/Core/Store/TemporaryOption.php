@@ -15,8 +15,12 @@ use PeServer\Core\Throws\ArgumentException;
  */
 class TemporaryOption
 {
+	#region define
+
 	/** 一時データID保持Cookie名。 */
 	public const DEFAULT_NAME = 'PHPTEMPID';
+
+	#endregion
 
 	public function __construct(
 		public string $name,

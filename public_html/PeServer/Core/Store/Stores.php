@@ -16,12 +16,16 @@ use PeServer\Core\Store\TemporaryStore;
  */
 class Stores
 {
+	#region variable
+
 	/** Cookie */
 	public CookieStore $cookie;
 	/** セッション */
 	public SessionStore $session;
 	/** 一時 */
 	public TemporaryStore $temporary;
+
+	#endregion
 
 	/**
 	 * 生成。
@@ -39,10 +43,14 @@ class Stores
 		$this->session = new SessionStore($this->options->session, $this->cookie);
 	}
 
+	#region function
+
 	public function apply(): void
 	{
 		$this->session->apply();
 		$this->temporary->apply();
 		$this->cookie->apply();
 	}
+
+	#endregion
 }

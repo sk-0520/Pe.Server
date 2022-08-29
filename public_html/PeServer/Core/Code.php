@@ -13,6 +13,8 @@ use PeServer\Core\Throws\TypeException;
  */
 abstract class Code
 {
+	#region function
+
 	/**
 	 * 文字列をリテラル文字列に変換。
 	 *
@@ -52,4 +54,6 @@ abstract class Code
 	{
 		return get_class($obj) . ': ' . $text;
 	}
+
+	#endregion
 }

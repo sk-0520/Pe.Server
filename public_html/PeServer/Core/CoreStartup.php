@@ -45,14 +45,25 @@ use PeServer\Core\Web\UrlHelper;
  */
 class CoreStartup
 {
+	#region define
+
 	public const MODE_WEB = 'Web';
 	public const MODE_CLI = 'Cli';
 	public const MODE_TEST = 'Test';
 
+	#endregion
+
+	/**
+	 * 生成。
+	 *
+	 * @param DefinedDirectory $definedDirectory ディレクトリ定義。
+	 */
 	public function __construct(
 		protected DefinedDirectory $definedDirectory
 	) {
 	}
+
+	#region function
 
 	/**
 	 * 共通セットアップ処理。
@@ -205,4 +216,6 @@ class CoreStartup
 
 		return $container;
 	}
+
+	#endregion
 }

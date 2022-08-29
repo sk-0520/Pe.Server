@@ -20,6 +20,8 @@ class CsrfFunction extends TemplateFunctionBase
 		parent::__construct($argument);
 	}
 
+	#region TemplateFunctionBase
+
 	public function getFunctionName(): string
 	{
 		return 'csrf';
@@ -45,4 +47,6 @@ class CsrfFunction extends TemplateFunctionBase
 
 		return $dom->build();
 	}
+
+	#endregion
 }

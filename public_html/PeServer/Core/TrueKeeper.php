@@ -22,9 +22,15 @@ use PeServer\Core\Throws\ArgumentException;
  */
 final class TrueKeeper
 {
+	#region variable
+
 	private bool $state = true;
 
 	private bool $last = false;
+
+	#endregion
+
+	#region get/set
 
 	public function __set(string $name, bool $value): void
 	{
@@ -49,4 +55,6 @@ final class TrueKeeper
 
 		throw new ArgumentException($name);
 	}
+
+	#endregion
 }

@@ -14,6 +14,8 @@ use PeServer\Core\Mvc\IValidationReceiver;
  */
 class Validator
 {
+	#region define
+
 	public const COMMON = DefaultValue::EMPTY_STRING;
 
 	public const KIND_EMPTY = 0;
@@ -24,17 +26,25 @@ class Validator
 	public const KIND_EMAIL = 5;
 	public const KIND_WEBSITE = 6;
 
+	#endregion
+
+	#region variable
+
 	/**
 	 * 検証移譲取得処理。
 	 */
 	private IValidationReceiver $receiver;
 	private Regex $regex;
 
+	#endregion
+
 	public function __construct(IValidationReceiver $receiver)
 	{
 		$this->regex = new Regex();
 		$this->receiver = $receiver;
 	}
+
+	#region function
 
 	public function isNotEmpty(string $key, ?string $value): bool
 	{
@@ -138,4 +148,6 @@ class Validator
 
 		return false;
 	}
+
+	#endregion
 }

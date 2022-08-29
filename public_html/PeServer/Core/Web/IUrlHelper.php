@@ -6,5 +6,9 @@ namespace PeServer\Core\Web;
 
 interface IUrlHelper
 {
+	#region function
+
 	function getBasePath(): string;
+
+	#endregion
 }

@@ -5,16 +5,18 @@ declare(strict_types=1);
 namespace PeServer\Core\Throws;
 
 use \Throwable;
+use \TypeError;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\ReflectionUtility;
 use PeServer\Core\Type;
-use TypeError;
 
 /**
  * 例外処理系。
  */
 abstract class Throws
 {
+	#region function
+
 	/**
 	 * `Throwable::getCode` のラッパー。
 	 *
@@ -27,7 +29,7 @@ abstract class Throws
 	{
 		$rawCode = $throwable->getCode();
 		$code = PHP_INT_MIN;
-		if (is_integer($rawCode)) {
+		if (is_int($rawCode)) {
 			$code = $rawCode;
 		}
 
@@ -95,4 +97,6 @@ abstract class Throws
 			throw $throwable;
 		}
 	}
+
+	#endregion
 }

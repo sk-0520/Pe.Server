@@ -22,7 +22,7 @@ class DatabaseConnection implements IDatabaseConnection
 	) {
 	}
 
-	//[IDatabaseConnection]
+	#region IDatabaseConnection
 
 	public function open(): DatabaseContext
 	{
@@ -34,4 +34,6 @@ class DatabaseConnection implements IDatabaseConnection
 			$this->loggerFactory->createLogger(DatabaseContext::class)
 		);
 	}
+
+	#endregion
 }

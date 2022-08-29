@@ -11,6 +11,8 @@ namespace PeServer\Core\Log;
  */
 interface ILogger
 {
+	#region define
+
 	/** レベル: トレース */
 	public const LOG_LEVEL_TRACE = 1;
 	/** レベル: デバッグ */
@@ -21,6 +23,10 @@ interface ILogger
 	public const LOG_LEVEL_WARNING = 4;
 	/** レベル: エラー */
 	public const LOG_LEVEL_ERROR = 5;
+
+	#endregion
+
+	#region function
 
 	/**
 	 * ログ出力。
@@ -82,4 +88,6 @@ interface ILogger
 	 * @return void
 	 */
 	function error($message, ...$parameters): void;
+
+	#endregion
 }

@@ -28,6 +28,8 @@ use PeServer\Core\TypeUtility;
  */
 class DatabaseContext extends DisposerBase implements IDatabaseTransactionContext
 {
+	#region variable
+
 	/**
 	 * 接続処理。
 	 *
@@ -44,6 +46,8 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 	protected ILogger $logger;
 
 	protected Regex $regex;
+
+	#endregion
 
 	/**
 	 * 生成。
@@ -65,14 +69,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 		$this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 	}
 
-	protected function disposeImpl(): void
-	{
-		if ($this->inTransaction()) {
-			$this->rollback();
-		}
-
-		parent::disposeImpl();
-	}
+	#region function
 
 	/**
 	 * 直近のエラーメッセージを取得。
@@ -226,6 +223,23 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 
 		return $result; //@phpstan-ignore-line 空フィールドはない
 	}
+
+	#endregion
+
+	#region DisposerBase
+
+	protected function disposeImpl(): void
+	{
+		if ($this->inTransaction()) {
+			$this->rollback();
+		}
+
+		parent::disposeImpl();
+	}
+
+	#endregion
+
+	#region IDatabaseTransactionContext
 
 	public function inTransaction(): bool
 	{
@@ -580,4 +594,6 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 
 		return $result->resultCount === 1;
 	}
+
+	#endregion
 }

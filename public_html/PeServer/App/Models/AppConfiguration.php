@@ -25,21 +25,6 @@ class AppConfiguration
 	/**
 	 * 設定データ。
 	 *
-	 * TODO: 各処理互換性のため静的
-	 *
-	 * @var array<mixed>
-	 */
-	public static array $config;
-
-	// /**
-	//  * 設定データ。
-	//  *
-	//  * @var array<string,array<string,mixed>>
-	//  */
-	// public array $setting;
-	/**
-	 * 設定データ。
-	 *
 	 * @var AppSetting
 	 * @readonly
 	 */
@@ -102,8 +87,6 @@ class AppConfiguration
 
 		I18n::initialize($i18nConfig);
 
-		self::$config = $appConfig;
-		//$this->setting = $appConfig;
 		$this->setting = $appSetting;
 		$this->rootDirectoryPath = $rootDirectoryPath;
 		$this->baseDirectoryPath = $baseDirectoryPath;

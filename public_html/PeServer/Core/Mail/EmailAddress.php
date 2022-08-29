@@ -13,12 +13,16 @@ use PeServer\Core\Text;
  */
 class EmailAddress
 {
+	#region variable
+
 	/**
 	 * 名前。
 	 *
 	 * @var string
 	 */
 	public string $name;
+
+	#endregion
 
 	/**
 	 * 生成。

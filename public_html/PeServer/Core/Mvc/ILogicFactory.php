@@ -8,6 +8,8 @@ use PeServer\Core\Mvc\LogicParameter;
 
 interface ILogicFactory
 {
+	#region function
+
 	/**
 	 * ロジック生成。
 	 *
@@ -17,4 +19,6 @@ interface ILogicFactory
 	 * @return LogicBase
 	 */
 	function createLogic(string $logicClassName, array $arguments = []): LogicBase;
+
+	#endregion
 }

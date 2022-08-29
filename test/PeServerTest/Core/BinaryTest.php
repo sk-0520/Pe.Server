@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServerTest\Core;
 
+use \TypeError;
 use PeServer\Core\Binary;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\IndexOutOfRangeException;
@@ -11,7 +12,6 @@ use PeServer\Core\Throws\NotSupportedException;
 use PeServer\Core\Throws\NullByteStringException;
 use PeServerTest\Data;
 use PeServerTest\TestClass;
-use TypeError;
 
 class BinaryTest extends TestClass
 {
@@ -19,12 +19,6 @@ class BinaryTest extends TestClass
 	{
 		$binary = new Binary("a\0b\0");
 		$this->assertSame("a\0b\0", $binary->getRaw());
-	}
-
-	public function test_getLength()
-	{
-		$binary = new Binary("a\0b\0");
-		$this->assertSame(4, $binary->getLength());
 	}
 
 	public function test_getRange()
@@ -193,6 +187,21 @@ class BinaryTest extends TestClass
 		}
 	}
 
+	public function test_foreach()
+	{
+		$binary = new Binary("abc");
+		$expected = ['a', 'b', 'c'];
+		$i = 0;
+		foreach ($binary as $c) {
+			$this->assertSame($expected[$i++], $c);
+		}
+	}
+
+	public function test_count()
+	{
+		$binary = new Binary("a\0b\0");
+		$this->assertSame(4, $binary->count());
+	}
 
 	public function test___toString()
 	{

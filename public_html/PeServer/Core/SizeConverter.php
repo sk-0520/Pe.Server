@@ -9,6 +9,8 @@ namespace PeServer\Core;
  */
 class SizeConverter
 {
+	#region define
+
 	/**
 	 * 1KB のサイズ。
 	 */
@@ -23,6 +25,8 @@ class SizeConverter
 		'byte', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB',
 	];
 
+	#endregion
+
 	/**
 	 * 生成。
 	 *
@@ -34,6 +38,8 @@ class SizeConverter
 		private array $units = self::UNITS
 	) {
 	}
+
+	#region function
 
 	/**
 	 * 読みやすいように変換。
@@ -60,4 +66,6 @@ class SizeConverter
 			'unit' => $this->units[$order]
 		]);
 	}
+
+	#endregion
 }

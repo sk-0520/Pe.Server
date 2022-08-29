@@ -24,6 +24,8 @@ abstract class LoggerBase implements ILogger
 	) {
 	}
 
+	#region function
+
 	/**
 	 * ログ書式適用。
 	 *
@@ -55,6 +57,10 @@ abstract class LoggerBase implements ILogger
 	 */
 	protected abstract function logImpl(int $level, int $traceIndex, $message, ...$parameters): void;
 
+	#endregion
+
+	#region ILogger
+
 	public function log(int $level, int $traceIndex, $message, ...$parameters): void
 	{
 		// 有効レベル未満であれば何もしない
@@ -85,4 +91,6 @@ abstract class LoggerBase implements ILogger
 	{
 		$this->log(self::LOG_LEVEL_ERROR, $this->options->baseTraceIndex + 1, $message, ...$parameters);
 	}
+
+	#endregion
 }

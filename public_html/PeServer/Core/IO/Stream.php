@@ -24,6 +24,8 @@ use PeServer\Core\Throws\StreamException;
  */
 class Stream extends ResourceBase
 {
+	#region define
+
 	/** 読み込みモード。 */
 	public const MODE_READ = 1;
 	/** 書き込みモード。 */
@@ -38,6 +40,10 @@ class Stream extends ResourceBase
 	/** シーク位置: 末尾(設定値は負数となる)。 */
 	public const WHENCE_TAIL = SEEK_END;
 
+	#endregion
+
+	#region variable
+
 	/** 文字列として扱うエンコーディング。バイナリデータに対してあんまり当てにならん。 */
 	private Encoding $encoding;
 
@@ -47,6 +53,8 @@ class Stream extends ResourceBase
 	 * 書き込み時に使用される(読み込み時は頑張る)
 	 */
 	public string $newLine = PHP_EOL;
+
+	#endregion
 
 	/**
 	 * 生成
@@ -62,6 +70,8 @@ class Stream extends ResourceBase
 
 		$this->encoding = $encoding ?? Encoding::getDefaultEncoding();
 	}
+
+	#region function
 
 	/**
 	 * `fopen` を使用してファイルストリームを生成。
@@ -380,7 +390,7 @@ class Stream extends ResourceBase
 		$this->throwIfDisposed();
 
 		$bom = $this->encoding->getByteOrderMark();
-		if ($bom->getLength()) {
+		if ($bom->count()) {
 			return $this->writeBinary($bom);
 		}
 
@@ -465,7 +475,7 @@ class Stream extends ResourceBase
 	public function readBom(): bool
 	{
 		$bom = $this->encoding->getByteOrderMark();
-		$bomLength = $bom->getLength();
+		$bomLength = $bom->count();
 		if (!$bomLength) {
 			return false;
 		}
@@ -476,7 +486,7 @@ class Stream extends ResourceBase
 			return true;
 		}
 
-		$this->seek(-$readBuffer->getLength(), self::WHENCE_CURRENT);
+		$this->seek(-$readBuffer->count(), self::WHENCE_CURRENT);
 		return false;
 	}
 
@@ -513,7 +523,7 @@ class Stream extends ResourceBase
 	public function readStringContents(): string
 	{
 		$result = $this->readBinaryContents();
-		if (!$result->getLength()) {
+		if (!$result->count()) {
 			return DefaultValue::EMPTY_STRING;
 		}
 
@@ -557,7 +567,7 @@ class Stream extends ResourceBase
 
 		while (!$this->eof()) {
 			$binary = $this->readBinary($bufferByteSize);
-			$currentLength = $binary->getLength();
+			$currentLength = $binary->count();
 			if (!$currentLength) {
 				break;
 			}
@@ -614,8 +624,9 @@ class Stream extends ResourceBase
 		return $this->encoding->toString(new Binary($totalBuffer));
 	}
 
+	#endregion
 
-	//ResourceBase--------------------------------
+	#region ResourceBase
 
 	protected function release(): void
 	{
@@ -626,6 +637,8 @@ class Stream extends ResourceBase
 	{
 		return $resourceType === 'stream';
 	}
+
+	#endregion
 }
 
 class LocalNoReleaseStream extends Stream

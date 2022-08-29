@@ -16,6 +16,8 @@ abstract class HtmlElementBase extends HtmlNodeBase
 		parent::__construct($document, $current);
 	}
 
+	#region function
+
 	public function createElement(string $tagName): HtmlElement
 	{
 		$element = $this->document->raw->createElement($tagName);
@@ -74,4 +76,6 @@ abstract class HtmlElementBase extends HtmlNodeBase
 	}
 
 	public abstract function path(): HtmlXPath;
+
+	#endregion
 }

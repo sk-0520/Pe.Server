@@ -12,6 +12,8 @@ use PeServer\Core\Throws\NotImplementedException;
 
 class LogProvider implements ILogProvider
 {
+	#region variable
+
 	/**
 	 * ロガー。
 	 *
@@ -19,7 +21,9 @@ class LogProvider implements ILogProvider
 	 */
 	private array $loggers = [];
 
-	//[ILogProvider]
+	#endregion
+
+	#region ILogProvider
 
 	public function clear(string $name): bool
 	{
@@ -65,6 +69,8 @@ class LogProvider implements ILogProvider
 
 		return $result;
 	}
+
+	#endregion
 }
 
 /**

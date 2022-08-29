@@ -13,8 +13,12 @@ use PeServer\Core\Mvc\DataContent;
  */
 class DownloadDataContent extends DataContent
 {
+	#region variable
+
 	/** @readonly */
 	public string $fileName;
+
+	#endregion
 
 	/**
 	 * 生成。

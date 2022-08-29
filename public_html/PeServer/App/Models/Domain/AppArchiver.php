@@ -39,6 +39,10 @@ class AppArchiver
 		$connectionPath = $this->config->setting->persistence->default->connection;
 		$databasePath = Text::split($connectionPath, ':', 2)[1];
 		$zipArchive->addFile($databasePath, Path::getFileName($databasePath));
+		// 設定ファイル保存
+		$settingName = Path::setEnvironmentName('setting.json', Environment::get());
+		$settingPath = Path::combine($this->config->settingDirectoryPath, $settingName);
+		$zipArchive->addFile($settingPath, $settingName);
 
 		$zipArchive->close();
 

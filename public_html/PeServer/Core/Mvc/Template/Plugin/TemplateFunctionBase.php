@@ -10,6 +10,8 @@ use PeServer\Core\Mvc\Template\Plugin\TemplatePluginArgument;
 
 abstract class TemplateFunctionBase extends TemplatePluginBase implements ITemplateFunction
 {
+	#region variable
+
 	/**
 	 * Undocumented variable
 	 *
@@ -19,12 +21,16 @@ abstract class TemplateFunctionBase extends TemplatePluginBase implements ITempl
 
 	protected Smarty_Internal_Template $template;
 
+	#endregion
+
 	protected function __construct(TemplatePluginArgument $argument)
 	{
 		parent::__construct($argument);
 	}
 
 	protected abstract function functionBodyImpl(): string;
+
+	#region ITemplateBlockFunction
 
 	public function functionBody(array $params, Smarty_Internal_Template $template): string
 	{
@@ -33,6 +39,10 @@ abstract class TemplateFunctionBase extends TemplatePluginBase implements ITempl
 
 		return $this->functionBodyImpl();
 	}
+
+	#endregion
+
+	#region TemplatePluginBase
 
 	protected function existsError(): bool
 	{
@@ -61,4 +71,6 @@ abstract class TemplateFunctionBase extends TemplatePluginBase implements ITempl
 	{
 		return $this->getSmartyValues($this->template);
 	}
+
+	#endregion
 }

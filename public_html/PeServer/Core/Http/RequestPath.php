@@ -14,6 +14,8 @@ use PeServer\Core\Web\IUrlHelper;
  */
 class RequestPath
 {
+	#region variable
+
 	/**
 	 * フルパス。
 	 *
@@ -26,6 +28,8 @@ class RequestPath
 	 * @var string[]
 	 */
 	public array $tree;
+
+	#endregion
 
 	public function __construct(string $requestUri, private IUrlHelper $urlHelper)
 	{

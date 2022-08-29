@@ -16,17 +16,23 @@ use PeServer\Core\Throws\HtmlDocumentException;
  */
 final class HtmlElement extends HtmlElementBase
 {
+	#region variable
+
 	/**
 	 * 生で使用する用。
 	 * @readonly
 	 */
 	public DOMElement $raw;
 
+	#endregion
+
 	public function __construct(HtmlDocument $document, DOMElement $raw)
 	{
 		parent::__construct($document, $raw);
 		$this->raw = $raw;
 	}
+
+	#endregion
 
 	/**
 	 * 属性設定
@@ -100,8 +106,14 @@ final class HtmlElement extends HtmlElementBase
 		}
 	}
 
+	#endregion
+
+	#region HtmlElementBase
+
 	final public function path(): HtmlXPath
 	{
 		return new HtmlXPath($this->document, $this);
 	}
+
+	#endregion
 }

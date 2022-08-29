@@ -15,6 +15,8 @@ use PeServer\Core\Http\ICallbackContent;
  */
 class HttpResponse
 {
+	#region variable
+
 	/**
 	 * 応答HTTPステータスコード。
 	 *
@@ -29,6 +31,8 @@ class HttpResponse
 	 * @readonly
 	 */
 	public HttpHeader $header;
+
+	#endregion
 
 	/**
 	 * 応答本文。

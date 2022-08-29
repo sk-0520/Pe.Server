@@ -9,6 +9,8 @@ use PeServer\Core\Throws\ArgumentException;
 
 abstract class Uuid
 {
+	#region function
+
 	/**
 	 * GUID生成。
 	 *
@@ -116,4 +118,6 @@ abstract class Uuid
 
 		return $e;
 	}
+
+	#endregion
 }

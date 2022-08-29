@@ -14,11 +14,19 @@ use PeServer\Core\Throws\RegexPatternException;
  */
 class Regex
 {
+	#region define
+
 	public const UNLIMITED = -1;
 	private const DELIMITER_CLOSE_START_INDEX = 2;
 
+	#endregion
+
+	#region variable
+
 	private static ?Encoding $firstDefaultEncoding = null;
 	private Encoding $encoding;
+
+	#endregion
 
 	/**
 	 * 生成。
@@ -36,6 +44,8 @@ class Regex
 			$this->encoding = $encoding;
 		}
 	}
+
+	#region function
 
 	private function normalizePattern(string $pattern): string
 	{
@@ -217,4 +227,6 @@ class Regex
 
 		return $result;
 	}
+
+	#endregion
 }

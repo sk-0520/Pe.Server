@@ -18,6 +18,8 @@ use PeServer\Core\DefaultValue;
 #[Attribute(Attribute::TARGET_PROPERTY)]
 class Mapping
 {
+	#region define
+
 	/** 無視する。 */
 	public const FLAG_IGNORE = 0b11111111;
 	/** 通常。 */
@@ -30,6 +32,8 @@ class Mapping
 	public const FLAG_OBJECT_INSTANCE_ONLY = 0b00000100;
 	/** 配列内オブジェクトを生成する際にキーを無視するか */
 	public const FLAG_LIST_ARRAY_VALUES = 0b00001000;
+
+	#endregion
 
 	/**
 	 * 生成。

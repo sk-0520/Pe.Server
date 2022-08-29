@@ -12,14 +12,6 @@ namespace PeServer\Core;
 class DefinedDirectory
 {
 	/**
-	 * ライブラリディレクトリパス。
-	 *
-	 * @var string
-	 * @phpstan-var non-empty-string
-	 */
-	public string $core;
-
-	/**
 	 * 生成。
 	 *
 	 * @param string $application アプリケーションのディレクトリパス(アプリケーションが無ければ空)。
@@ -29,6 +21,5 @@ class DefinedDirectory
 		public string $application,
 		public string $public
 	) {
-		$this->core = __DIR__;
 	}
 }

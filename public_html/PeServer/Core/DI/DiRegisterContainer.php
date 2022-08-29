@@ -15,7 +15,7 @@ use PeServer\Core\TypeUtility;
 
 class DiRegisterContainer extends DiContainer implements IDiRegisterContainer
 {
-	//[IDiRegisterContainer]
+	#region IDiRegisterContainer
 
 	public function add(string $id, DiItem $item): void
 	{
@@ -90,4 +90,6 @@ class DiRegisterContainer extends DiContainer implements IDiRegisterContainer
 
 		$this->add($registerId, DiItem::value($value));
 	}
+
+	#endregion
 }

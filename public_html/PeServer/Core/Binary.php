@@ -5,6 +5,10 @@ declare(strict_types=1);
 namespace PeServer\Core;
 
 use \ArrayAccess;
+use ArrayIterator;
+use \Countable;
+use \Iterator;
+use \IteratorAggregate;
 use \Stringable;
 use \TypeError;
 use PeServer\Core\Throws\ArgumentException;
@@ -21,9 +25,12 @@ use PeServer\Core\Throws\SerializeException;
  *
  * @phpstan-type Byte int<0,255>
  * @implements ArrayAccess<UnsignedIntegerAlias,Byte>
+ * @implements IteratorAggregate<UnsignedIntegerAlias,Byte>
  */
-final class Binary implements Stringable, ArrayAccess
+final class Binary implements ArrayAccess, IteratorAggregate, Countable, Stringable
 {
+	#region variable
+
 	/**
 	 * 実体。
 	 *
@@ -31,6 +38,8 @@ final class Binary implements Stringable, ArrayAccess
 	 * @readonly
 	 */
 	private string $raw;
+
+	#endregion
 
 	/**
 	 * 生成。
@@ -42,28 +51,18 @@ final class Binary implements Stringable, ArrayAccess
 		$this->raw = $raw;
 	}
 
+	#region function
+
 	/**
 	 * バイトデータをそのまま取得。
+	 *
+	 * TODO: 将来的に readonly にするか @immutable/@readonly で保証する。
 	 *
 	 * @return string
 	 */
 	public function getRaw(): string
 	{
 		return $this->raw;
-	}
-
-	/**
-	 * バイト長を取得。
-	 *
-	 * `strlen` ラッパー。
-	 *
-	 * @return integer
-	 * @phpstan-return UnsignedIntegerAlias
-	 * @see https://www.php.net/manual/function.strlen.php
-	 */
-	public function getLength(): int
-	{
-		return strlen($this->raw);
 	}
 
 	/**
@@ -174,14 +173,52 @@ final class Binary implements Stringable, ArrayAccess
 	// 	return $result;
 	// }
 
-	//ArrayAccess
 
 	/**
-	 * `ArrayAccess:offsetExists`
+	 * オブジェクトをシリアライズ。
 	 *
+	 * デシリアライズは `unserialize` を参照のこと。
+	 *
+	 * @param object $object シリアライズしたいオブジェクト。
+	 * @return self
+	 */
+	public static function serialize(object $object): self
+	{
+		$data = serialize($object);
+		return new self($data);
+	}
+
+	/**
+	 * 現在データをオブジェクトにデシリアライズ。
+	 *
+	 * シリアライズは `serialize` を参照のこと。
+	 *
+	 * @template T of object
+	 * @param string $className 返却クラス名。
+	 * @phpstan-param class-string<T> $className
+	 * @return object デシリアライズオブジェクト。
+	 * @phpstan-return T
+	 * @throws SerializeException
+	 */
+	public function unserialize(string $className): object
+	{
+		$object = unserialize($this->raw);
+		if (is_a($object, $className)) {
+			return $object;
+		}
+
+		throw new SerializeException($className . ': ' . TypeUtility::getType($object));
+	}
+
+	#endregion
+
+	#region ArrayAccess
+
+	/**
 	 * @param int $offset
 	 * @phpstan-param UnsignedIntegerAlias $offset
 	 * @return bool
+	 * @see ArrayAccess::offsetExists
 	 */
 	public function offsetExists(mixed $offset): bool
 	{
@@ -200,12 +237,13 @@ final class Binary implements Stringable, ArrayAccess
 	}
 
 	/**
-	 * `ArrayAccess:offsetGet`
-	 *
 	 * @param int $offset
 	 * @phpstan-param UnsignedIntegerAlias $offset
 	 * @return int
 	 * @phpstan-return Byte
+	 * @throws TypeError
+	 * @throws IndexOutOfRangeException
+	 * @see ArrayAccess::offsetGet
 	 */
 	public function offsetGet(mixed $offset): mixed
 	{
@@ -224,17 +262,48 @@ final class Binary implements Stringable, ArrayAccess
 		return ord($this->raw[$offset]);
 	}
 
+	/** @throws NotSupportedException */
 	public function offsetSet(mixed $offset, mixed $value): void
 	{
 		throw new NotSupportedException();
 	}
 
+	/** @throws NotSupportedException */
 	public function offsetUnset(mixed $offset): void
 	{
 		throw new NotSupportedException();
 	}
 
-	//Stringable
+	#endregion
+
+	#region IteratorAggregate
+
+	public function getIterator(): Iterator
+	{
+		return new ArrayIterator(str_split($this->raw));
+	}
+
+	#endregion
+
+	#region Countable
+
+	/**
+	 * バイト長を取得。
+	 *
+	 * `strlen` ラッパー。
+	 *
+	 * @return integer
+	 * @phpstan-return UnsignedIntegerAlias
+	 * @see https://www.php.net/manual/function.strlen.php
+	 */
+	public function count(): int
+	{
+		return strlen($this->raw);
+	}
+
+	#endregion
+
+	#region Stringable
 
 	public function __toString(): string
 	{
@@ -245,34 +314,6 @@ final class Binary implements Stringable, ArrayAccess
 		return $this->raw;
 	}
 
-	/**
-	 * オブジェクトをシリアライズ。
-	 *
-	 * @param object $object
-	 * @return self
-	 */
-	public static function serialize(object $object): self
-	{
-		$data = serialize($object);
-		return new self($data);
-	}
+	#endregion
 
-	/**
-	 * 現在データをオブジェクトにデシリアライズ。
-	 *
-	 * @template T of object
-	 * @param string $className 返却クラス名。
-	 * @phpstan-param class-string<T> $className
-	 * @return object デシリアライズオブジェクト。
-	 * @phpstan-return T
-	 */
-	public function unserialize(string $className): object
-	{
-		$object = unserialize($this->raw);
-		if (is_a($object, $className)) {
-			return $object;
-		}
-
-		throw new SerializeException($className . ': ' . TypeUtility::getType($object));
-	}
 }

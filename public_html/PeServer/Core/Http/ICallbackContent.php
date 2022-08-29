@@ -9,6 +9,8 @@ namespace PeServer\Core\Http;
  */
 interface ICallbackContent
 {
+	#region function
+
 	/**
 	 * 出力処理。
 	 *
@@ -24,4 +26,6 @@ interface ICallbackContent
 	 * @return int 0以上の場合は決定された出力byte数。負数は不明。
 	 */
 	public function getLength(): int;
+
+	#endregion
 }

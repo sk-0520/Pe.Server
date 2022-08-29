@@ -14,6 +14,8 @@ use PeServer\Core\DefaultValue;
  */
 class SpecialStore
 {
+	#region function
+
 	/**
 	 * $_SERVER から値取得。
 	 *
@@ -211,4 +213,6 @@ class SpecialStore
 	{
 		return ArrayUtility::getKeys($_FILES);
 	}
+
+	#endregion
 }

@@ -21,6 +21,8 @@ use PeServer\Core\TypeUtility;
  */
 class DiItem extends DisposerBase
 {
+	#region define
+
 	/**
 	 * ライフサイクル: 毎回作る。
 	 */
@@ -43,6 +45,10 @@ class DiItem extends DisposerBase
 	 */
 	public const TYPE_FACTORY = 2;
 
+	#endregion
+
+	#region variable
+
 	/**
 	 * シングルトンデータを持つか。
 	 *
@@ -55,6 +61,8 @@ class DiItem extends DisposerBase
 	 * @var mixed
 	 */
 	private mixed $singletonValue = null;
+
+	#endregion
 
 	/**
 	 * 生成。
@@ -105,6 +113,8 @@ class DiItem extends DisposerBase
 				throw new NotSupportedException('$type: ' . $type);
 		}
 	}
+
+	#region function
 
 	/**
 	 * シングルトンデータを保持しているか。
@@ -211,7 +221,9 @@ class DiItem extends DisposerBase
 		return new self($lifecycle, self::TYPE_FACTORY, $factory);
 	}
 
-	//[DisposerBase]
+	#endregion
+
+	#region DisposerBase
 
 	protected function disposeImpl(): void
 	{
@@ -240,4 +252,6 @@ class DiItem extends DisposerBase
 			$disposer->dispose();
 		}
 	}
+
+	#endregion
 }

@@ -6,6 +6,8 @@ namespace PeServer\Core;
 
 abstract class Memory
 {
+	#region function
+
 	/**
 	 * 現在の使用メモリ量を取得。
 	 *
@@ -57,4 +59,6 @@ abstract class Memory
 	{
 		return memory_get_peak_usage(true);
 	}
+
+	#endregion
 }

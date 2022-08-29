@@ -18,6 +18,8 @@ abstract class TemplateBlockFunctionBase extends TemplateFunctionBase implements
 		parent::__construct($argument);
 	}
 
+	#region ITemplateBlockFunction
+
 	protected abstract function functionBlockBodyImpl(string $content): string;
 
 	public function functionBlockBody(array $params, mixed $content, Smarty_Internal_Template $template, bool &$repeat): string
@@ -36,6 +38,10 @@ abstract class TemplateBlockFunctionBase extends TemplateFunctionBase implements
 		return $this->functionBlockBodyImpl((string)$content);
 	}
 
+	#endregion
+
+	#region TemplateFunctionBase
+
 	protected final function functionBodyImpl(): string
 	{
 		throw new NotSupportedException();
@@ -45,4 +51,6 @@ abstract class TemplateBlockFunctionBase extends TemplateFunctionBase implements
 	{
 		throw new NotSupportedException();
 	}
+
+	#endregion
 }
