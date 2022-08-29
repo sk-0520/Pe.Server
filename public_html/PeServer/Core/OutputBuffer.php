@@ -8,29 +8,20 @@ use PeServer\Core\Binary;
 use PeServer\Core\Throws\OutputBufferException;
 
 /**
- * 出力。
- *
- * TODO: コンストラクタで開始する方針に変更予定。 `get` の挙動に変更はなし。
+ * 出力バッファリング。
  */
-abstract class OutputBuffer
+class OutputBuffer extends DisposerBase
 {
-	#region function
-
-	private static function begin(): void
+	public function __construct()
 	{
 		if (!ob_start()) {
 			throw new OutputBufferException('ob_start');
 		}
 	}
 
-	private static function end(): void
-	{
-		if (!ob_end_clean()) {
-			throw new OutputBufferException('ob_end_clean');
-		}
-	}
+	#region function
 
-	private static function getContents(): Binary
+	public function getContents(): Binary
 	{
 		$buffer = ob_get_contents();
 		if ($buffer === false) {
@@ -49,14 +40,27 @@ abstract class OutputBuffer
 	 */
 	public static function get(callable $action): Binary
 	{
-		self::begin();
+		$self = new self();
 
 		try {
 			$action();
-			return self::getContents();
+			return $self->getContents();
 		} finally {
-			self::end();
+			$self->dispose();
 		}
+	}
+
+	#endregion
+
+	#region DisposerBase
+
+	protected function disposeImpl(): void
+	{
+		if (!ob_end_clean()) {
+			throw new OutputBufferException('ob_end_clean');
+		}
+
+		parent::disposeImpl();
 	}
 
 	#endregion
