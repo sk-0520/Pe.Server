@@ -44,7 +44,7 @@ class ResponsePrinter
 				return $length;
 			}
 		} else if ($this->response->content instanceof Binary) {
-			return $this->response->content->getLength();
+			return $this->response->content->count();
 		} else if (is_string($this->response->content)) {
 			return Text::getByteCount($this->response->content);
 		}

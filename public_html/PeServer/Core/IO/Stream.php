@@ -390,7 +390,7 @@ class Stream extends ResourceBase
 		$this->throwIfDisposed();
 
 		$bom = $this->encoding->getByteOrderMark();
-		if ($bom->getLength()) {
+		if ($bom->count()) {
 			return $this->writeBinary($bom);
 		}
 
@@ -475,7 +475,7 @@ class Stream extends ResourceBase
 	public function readBom(): bool
 	{
 		$bom = $this->encoding->getByteOrderMark();
-		$bomLength = $bom->getLength();
+		$bomLength = $bom->count();
 		if (!$bomLength) {
 			return false;
 		}
@@ -486,7 +486,7 @@ class Stream extends ResourceBase
 			return true;
 		}
 
-		$this->seek(-$readBuffer->getLength(), self::WHENCE_CURRENT);
+		$this->seek(-$readBuffer->count(), self::WHENCE_CURRENT);
 		return false;
 	}
 
@@ -523,7 +523,7 @@ class Stream extends ResourceBase
 	public function readStringContents(): string
 	{
 		$result = $this->readBinaryContents();
-		if (!$result->getLength()) {
+		if (!$result->count()) {
 			return DefaultValue::EMPTY_STRING;
 		}
 
@@ -567,7 +567,7 @@ class Stream extends ResourceBase
 
 		while (!$this->eof()) {
 			$binary = $this->readBinary($bufferByteSize);
-			$currentLength = $binary->getLength();
+			$currentLength = $binary->count();
 			if (!$currentLength) {
 				break;
 			}

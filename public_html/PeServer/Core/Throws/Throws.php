@@ -29,7 +29,7 @@ abstract class Throws
 	{
 		$rawCode = $throwable->getCode();
 		$code = PHP_INT_MIN;
-		if (is_integer($rawCode)) {
+		if (is_int($rawCode)) {
 			$code = $rawCode;
 		}
 

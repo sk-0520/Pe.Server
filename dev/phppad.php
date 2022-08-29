@@ -44,7 +44,7 @@ class Pad
 {
 	public static function puts($value): void
 	{
-		if (is_string($value) || is_integer($value) || is_double($value)) {
+		if (is_string($value) || is_int($value) || is_double($value)) {
 			echo $value . PHP_EOL;
 			return;
 		}

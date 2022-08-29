@@ -273,7 +273,7 @@ class Routing
 			$actionResult = $this->serviceLocator->call([$controller, $methodName]); //@phpstan-ignore-line callable
 		});
 		// 標準出力は闇に葬る
-		if ($output->getLength()) {
+		if ($output->count()) {
 			$logger->warn('{0}', $output->getRaw());
 		}
 

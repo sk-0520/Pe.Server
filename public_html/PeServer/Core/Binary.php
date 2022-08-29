@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace PeServer\Core;
 
 use \ArrayAccess;
-use Countable;
+use ArrayIterator;
+use \Countable;
+use \Iterator;
+use \IteratorAggregate;
 use \Stringable;
 use \TypeError;
 use PeServer\Core\Throws\ArgumentException;
@@ -22,8 +25,9 @@ use PeServer\Core\Throws\SerializeException;
  *
  * @phpstan-type Byte int<0,255>
  * @implements ArrayAccess<UnsignedIntegerAlias,Byte>
+ * @implements IteratorAggregate<UnsignedIntegerAlias,Byte>
  */
-final class Binary implements Stringable, ArrayAccess, Countable
+final class Binary implements ArrayAccess, IteratorAggregate, Countable, Stringable
 {
 	#region variable
 
@@ -52,26 +56,13 @@ final class Binary implements Stringable, ArrayAccess, Countable
 	/**
 	 * バイトデータをそのまま取得。
 	 *
+	 * TODO: 将来的に readonly にするか @immutable/@readonly で保証する。
+	 *
 	 * @return string
 	 */
 	public function getRaw(): string
 	{
 		return $this->raw;
-	}
-
-	/**
-	 * バイト長を取得。
-	 *
-	 * `strlen` ラッパー。
-	 *
-	 * @return integer
-	 * @phpstan-return UnsignedIntegerAlias
-	 * @see https://www.php.net/manual/function.strlen.php
-	 * @deprecated `count()`
-	 */
-	public function getLength(): int
-	{
-		return $this->count();
 	}
 
 	/**
@@ -224,11 +215,10 @@ final class Binary implements Stringable, ArrayAccess, Countable
 	#region ArrayAccess
 
 	/**
-	 * `ArrayAccess:offsetExists`
-	 *
 	 * @param int $offset
 	 * @phpstan-param UnsignedIntegerAlias $offset
 	 * @return bool
+	 * @see ArrayAccess::offsetExists
 	 */
 	public function offsetExists(mixed $offset): bool
 	{
@@ -247,12 +237,13 @@ final class Binary implements Stringable, ArrayAccess, Countable
 	}
 
 	/**
-	 * `ArrayAccess:offsetGet`
-	 *
 	 * @param int $offset
 	 * @phpstan-param UnsignedIntegerAlias $offset
 	 * @return int
 	 * @phpstan-return Byte
+	 * @throws TypeError
+	 * @throws IndexOutOfRangeException
+	 * @see ArrayAccess::offsetGet
 	 */
 	public function offsetGet(mixed $offset): mixed
 	{
@@ -271,11 +262,13 @@ final class Binary implements Stringable, ArrayAccess, Countable
 		return ord($this->raw[$offset]);
 	}
 
+	/** @throws NotSupportedException */
 	public function offsetSet(mixed $offset, mixed $value): void
 	{
 		throw new NotSupportedException();
 	}
 
+	/** @throws NotSupportedException */
 	public function offsetUnset(mixed $offset): void
 	{
 		throw new NotSupportedException();
@@ -283,8 +276,26 @@ final class Binary implements Stringable, ArrayAccess, Countable
 
 	#endregion
 
+	#region IteratorAggregate
+
+	public function getIterator(): Iterator
+	{
+		return new ArrayIterator(str_split($this->raw));
+	}
+
+	#endregion
+
 	#region Countable
 
+	/**
+	 * バイト長を取得。
+	 *
+	 * `strlen` ラッパー。
+	 *
+	 * @return integer
+	 * @phpstan-return UnsignedIntegerAlias
+	 * @see https://www.php.net/manual/function.strlen.php
+	 */
 	public function count(): int
 	{
 		return strlen($this->raw);

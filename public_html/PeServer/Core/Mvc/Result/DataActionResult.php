@@ -92,7 +92,7 @@ class DataActionResult implements IActionResult
 		if ($this->content instanceof DownloadDataContent) {
 			$fileName = urlencode($this->content->fileName);
 			$response->header->addValue('Content-Disposition', "attachment; filename*=UTF-8''$fileName");
-			$response->header->addValue('Content-Length', (string)$this->content->data->getLength()); //@phpstan-ignore-line DownloadDataContent
+			$response->header->addValue('Content-Length', (string)$this->content->data->count()); //@phpstan-ignore-line DownloadDataContent
 			$response->header->addValue('X-Content-Type-Options', 'nosniff');
 			$response->header->addValue('Connection', 'close');
 			$response->content = $this->convertRaw($this->content);

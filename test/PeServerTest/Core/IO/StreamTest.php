@@ -242,11 +242,11 @@ class StreamTest extends TestClass
 		$stream = Stream::openMemory(); // 一応ここだけ php://memory を試しておく
 
 		$writeLength = $stream->writeBinary($expected);
-		$this->assertSame($expected->getLength(), $writeLength);
+		$this->assertSame($expected->count(), $writeLength);
 
 		$stream->seekHead();
 
-		$actual = $stream->readBinary($expected->getLength());
+		$actual = $stream->readBinary($expected->count());
 		$this->assertSame($expected->getRaw(), $actual->getRaw());
 	}
 
