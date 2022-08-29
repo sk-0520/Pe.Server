@@ -18,8 +18,11 @@ abstract class Cryptography
 	#region define
 
 	private const OPTION = 0;
+	/** 文字列への暗号化時のセパレータ */
 	public const SEPARATOR = '@';
+	/** 文字列乱数 標準文字列 */
 	public const DEFAULT_RANDOM_STRING = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+	/** 文字列乱数 ファイルとして扱える文字列 */
 	public const FILE_RANDOM_STRING = '0123456789abcdefghijklmnopqrstuvwxyz';
 
 	#endregion
@@ -31,9 +34,9 @@ abstract class Cryptography
 	 *
 	 * `random_int` ラッパー。
 	 *
-	 * @param integer $max 最大値
-	 * @param integer $min 最小値
-	 * @return integer
+	 * @param integer $max 最大値。
+	 * @param integer $min 最小値。
+	 * @return integer 乱数。
 	 * @throws CryptoException 失敗
 	 * @see https://www.php.net/manual/function.random-int.php
 	 */
@@ -47,13 +50,13 @@ abstract class Cryptography
 	}
 
 	/**
-	 * ランダムバイトデータを生成。
+	 * ランダムバイナリデータを生成。
 	 *
 	 * `openssl_random_pseudo_bytes` ラッパー。
 	 *
-	 * @param integer $length
+	 * @param integer $length バイト数。
 	 * @phpstan-param positive-int $length
-	 * @return Binary
+	 * @return Binary バイナリデータ。
 	 * @throws CryptoException 失敗
 	 * @see https://www.php.net/manual/function.openssl-random-pseudo-bytes.php
 	 */
@@ -74,11 +77,11 @@ abstract class Cryptography
 	/**
 	 * ランダム文字列を生成。
 	 *
-	 * @param integer $length
+	 * @param integer $length 文字列長。
 	 * @phpstan-param positive-int $length
-	 * @param string $characters
+	 * @param string $characters ランダム文字の元になる文字列。
 	 * @phpstan-param non-empty-string $characters
-	 * @return string
+	 * @return string 文字列。
 	 * @throws CryptoException 失敗
 	 */
 	public static function generateRandomString(int $length, string $characters = self::DEFAULT_RANDOM_STRING): string
@@ -192,6 +195,7 @@ abstract class Cryptography
 	 * @param string $password 生パスワード。
 	 * @param string $hashPassword ハッシュ化パスワード。
 	 * @return boolean 一致。
+	 * @see https://www.php.net/manual/function.password-verify.php
 	 */
 	public static function verifyPassword(string $password, string $hashPassword): bool
 	{
@@ -203,12 +207,12 @@ abstract class Cryptography
 	 *
 	 * @param string $hashPassword
 	 * @return bool
+	 * @see https://www.php.net/manual/function.password-needs-rehash.php
 	 */
 	public static function needsRehashPassword(string $hashPassword): bool
 	{
 		return password_needs_rehash($hashPassword, null, []);
 	}
-
 
 	/**
 	 * ハッシュアルゴリズム一覧。
@@ -216,6 +220,7 @@ abstract class Cryptography
 	 * `hash_algos` ラッパー。
 	 *
 	 * @return string[]
+	 * @see https://www.php.net/manual/function.hash-algos.php
 	 */
 	public static function getHashAlgorithms(): array
 	{
@@ -249,7 +254,7 @@ abstract class Cryptography
 	 *
 	 * @param string $algorithm
 	 * @phpstan-param non-empty-string $algorithm
-	 * @param Binary $binary
+	 * @param Binary $binary 入力バイナリデータ。
 	 * @param array{seed?:?int}|null $options
 	 * @return string 文字列表現。
 	 * @throws CryptoException
@@ -265,9 +270,9 @@ abstract class Cryptography
 	 *
 	 * `hash` ラッパー。
 	 *
-	 * @param string $algorithm
+	 * @param string $algorithm アルゴリズム。
 	 * @phpstan-param non-empty-string $algorithm
-	 * @param Binary $binary
+	 * @param Binary $binary 入力バイナリデータ。
 	 * @param array{seed?:?int}|null $options
 	 * @return Binary ハッシュバイナリ。
 	 * @throws CryptoException

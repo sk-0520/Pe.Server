@@ -11,18 +11,6 @@ namespace PeServer\Core;
  */
 class DefinedDirectory
 {
-	#region variable
-
-	/**
-	 * ライブラリディレクトリパス。
-	 *
-	 * @var string
-	 * @phpstan-var non-empty-string
-	 */
-	public string $core;
-
-	#endregion
-
 	/**
 	 * 生成。
 	 *
@@ -33,6 +21,5 @@ class DefinedDirectory
 		public string $application,
 		public string $public
 	) {
-		$this->core = __DIR__;
 	}
 }

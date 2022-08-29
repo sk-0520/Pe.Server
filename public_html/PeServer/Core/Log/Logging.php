@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Log;
 
 use \DateTimeImmutable;
-use DateTimeInterface;
+use \DateTimeInterface;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Cryptography;
 use PeServer\Core\DefaultValue;

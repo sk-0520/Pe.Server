@@ -18,6 +18,11 @@ abstract class DisposerBase implements IDisposable
 
 	#endregion
 
+	final public function __destruct()
+	{
+		$this->dispose();
+	}
+
 	#region function
 
 	/**
@@ -26,11 +31,6 @@ abstract class DisposerBase implements IDisposable
 	public static function empty(): IDisposable
 	{
 		return new LocalEmptyDisposer();
-	}
-
-	final public function __destruct()
-	{
-		$this->dispose();
 	}
 
 	/**
