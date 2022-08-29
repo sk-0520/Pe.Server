@@ -1,6 +1,20 @@
 <?php
 
+$settings = [
+	[
+		'pattern' => '..\\..\\test\\phpunit.phar.*',
+		'output' => '..\\PHPUnit',
+	],
+	// [
+	// 	'pattern' => '..\\php-cs-fixer.phar.*',
+	// 	'output' => '..\\PhpCsFixer',
+	// ],
+];
 
-$files = glob('..\\..\\test\\phpunit.phar.*');
-$phar = new Phar($files[0]);
-$phar->extractTo('..\\PHPUnit', null, true);
+foreach($settings as $setting) {
+	$files = glob($setting['pattern']);
+	$phar = new Phar($files[0]);
+	$phar->extractTo($setting['output'], null, true);
+}
+
+
