@@ -33,6 +33,8 @@ class InputHelperFunction extends TemplateFunctionBase
 		$this->showErrorMessagesFunction = $showErrorMessagesFunction;
 	}
 
+	#region TemplateFunctionBase
+
 	public function getFunctionName(): string
 	{
 		return 'input_helper';
@@ -133,4 +135,6 @@ class InputHelperFunction extends TemplateFunctionBase
 		}
 		return $dom->build();
 	}
+
+	#endregion
 }

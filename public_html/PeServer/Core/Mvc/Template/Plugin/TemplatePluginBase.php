@@ -11,12 +11,18 @@ use PeServer\Core\Throws\InvalidOperationException;
 
 abstract class TemplatePluginBase
 {
+	#region variable
+
 	protected TemplatePluginArgument $argument;
+
+	#endregion
 
 	protected function __construct(TemplatePluginArgument $argument)
 	{
 		$this->argument = $argument;
 	}
+
+	#region function
 
 	/**
 	 * エラーが存在するか。
@@ -80,4 +86,6 @@ abstract class TemplatePluginBase
 
 		throw new InvalidOperationException();
 	}
+
+	#endregion
 }

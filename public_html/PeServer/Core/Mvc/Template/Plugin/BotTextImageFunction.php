@@ -47,12 +47,18 @@ use PeServer\Core\TypeUtility;
  */
 class BotTextImageFunction extends TemplateFunctionBase
 {
+	#region define
+
 	private const HASH_ALGORITHM = 'sha256';
+
+	#endregion
 
 	public function __construct(TemplatePluginArgument $argument)
 	{
 		parent::__construct($argument);
 	}
+
+	#region TemplateFunctionBase
 
 	public function getFunctionName(): string
 	{
@@ -126,4 +132,6 @@ class BotTextImageFunction extends TemplateFunctionBase
 			Throws::reThrow(TemplateException::class, $ex);
 		}
 	}
+
+	#endregion
 }

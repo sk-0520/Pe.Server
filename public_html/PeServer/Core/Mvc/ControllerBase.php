@@ -34,6 +34,8 @@ use PeServer\Core\Web\UrlUtility;
  */
 abstract class ControllerBase
 {
+	#region variable
+
 	/**
 	 * ロガー。
 	 * @readonly
@@ -56,6 +58,8 @@ abstract class ControllerBase
 	/** コントローラ内で今輝いてるロジック。よくないんよなぁ。 */
 	protected ?LogicBase $logic = null;
 
+	#endregion
+
 	/**
 	 * 生成。
 	 *
@@ -70,6 +74,8 @@ abstract class ControllerBase
 		$this->logger = $argument->logger;
 		$this->loggerFactory = $argument->loggerFactory;
 	}
+
+	#region function
 
 	/**
 	 * コントローラ完全名からコントローラベース名を取得する際にスキップする文言(文字列長が使用される)
@@ -234,4 +240,6 @@ abstract class ControllerBase
 	{
 		return new DataActionResult($content);
 	}
+
+	#endregion
 }

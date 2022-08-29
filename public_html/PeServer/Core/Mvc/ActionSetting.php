@@ -31,8 +31,12 @@ class ActionSetting
 	) {
 	}
 
+	#region function
+
 	public static function none(): ActionSetting
 	{
 		return new ActionSetting(DefaultValue::EMPTY_STRING, [], []);
 	}
+
+	#endregion
 }

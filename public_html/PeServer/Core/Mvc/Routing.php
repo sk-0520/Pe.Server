@@ -38,6 +38,8 @@ use PeServer\Core\Text;
  */
 class Routing
 {
+	#region variable
+
 	/**
 	 * ルーティング設定。
 	 *
@@ -91,6 +93,8 @@ class Routing
 	/** @readonly */
 	protected HttpHeader $requestHeader;
 
+	#endregion
+
 	/**
 	 * 生成。
 	 *
@@ -111,6 +115,8 @@ class Routing
 		$this->shutdownRequest = new HttpRequest($this->stores->special, $this->requestMethod, $this->requestHeader, []);
 		$this->serviceLocator->registerValue($this->shutdownRequest);
 	}
+
+	#region function
 
 	/**
 	 * ミドルウェア取得。
@@ -345,4 +351,6 @@ class Routing
 			}
 		}
 	}
+
+	#endregion
 }

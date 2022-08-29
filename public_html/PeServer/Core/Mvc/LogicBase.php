@@ -39,7 +39,13 @@ use PeServer\Core\Utc;
  */
 abstract class LogicBase implements IValidationReceiver
 {
+	#region define
+
 	protected const SESSION_ALL_CLEAR = DefaultValue::EMPTY_STRING;
+
+	#endregion
+
+	#region variable
 
 	/**
 	 * ロジック開始日時。
@@ -114,6 +120,8 @@ abstract class LogicBase implements IValidationReceiver
 	 */
 	private array $responseHeaders = [];
 
+	#endregion
+
 	/**
 	 * 生成。
 	 *
@@ -129,6 +137,8 @@ abstract class LogicBase implements IValidationReceiver
 
 		$this->validator = new Validator($this);
 	}
+
+	#region function
 
 	/**
 	 * 要求データの取得。
@@ -425,26 +435,6 @@ abstract class LogicBase implements IValidationReceiver
 		}
 	}
 
-	public function receiveErrorMessage(string $key, string $message): void
-	{
-		$this->addError($key, $message);
-	}
-
-	public function receiveErrorKind(string $key, int $kind, array $parameters): void
-	{
-		$map = [
-			Validator::KIND_EMPTY => I18n::ERROR_EMPTY,
-			Validator::KIND_WHITE_SPACE => I18n::ERROR_WHITE_SPACE,
-			Validator::KIND_LENGTH => I18n::ERROR_LENGTH,
-			Validator::KIND_RANGE => I18n::ERROR_RANGE,
-			Validator::KIND_MATCH => I18n::ERROR_MATCH,
-			Validator::KIND_EMAIL => I18n::ERROR_EMAIL,
-			Validator::KIND_WEBSITE => I18n::ERROR_WEBSITE,
-		];
-
-		$this->receiveErrorMessage($key, I18n::message($map[$kind], $parameters));
-	}
-
 	/**
 	 * キーに対する一括検証処理。
 	 *
@@ -675,4 +665,30 @@ abstract class LogicBase implements IValidationReceiver
 
 		return false;
 	}
+
+	#endregion
+
+	#region IValidationReceiver
+
+	public function receiveErrorMessage(string $key, string $message): void
+	{
+		$this->addError($key, $message);
+	}
+
+	public function receiveErrorKind(string $key, int $kind, array $parameters): void
+	{
+		$map = [
+			Validator::KIND_EMPTY => I18n::ERROR_EMPTY,
+			Validator::KIND_WHITE_SPACE => I18n::ERROR_WHITE_SPACE,
+			Validator::KIND_LENGTH => I18n::ERROR_LENGTH,
+			Validator::KIND_RANGE => I18n::ERROR_RANGE,
+			Validator::KIND_MATCH => I18n::ERROR_MATCH,
+			Validator::KIND_EMAIL => I18n::ERROR_EMAIL,
+			Validator::KIND_WEBSITE => I18n::ERROR_WEBSITE,
+		];
+
+		$this->receiveErrorMessage($key, I18n::message($map[$kind], $parameters));
+	}
+
+	#endregion
 }

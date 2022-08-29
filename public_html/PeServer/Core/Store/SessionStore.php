@@ -25,10 +25,16 @@ use PeServer\Core\Throws\NotImplementedException;
  */
 class SessionStore
 {
+	#region define
+
 	public const APPLY_NORMAL = 0;
 	public const APPLY_CANCEL = 1;
 	public const APPLY_RESTART = 2;
 	public const APPLY_SHUTDOWN = 3;
+
+	#endregion
+
+	#region variable
 
 	/** @readonly */
 	private SessionOption $option;
@@ -59,6 +65,8 @@ class SessionStore
 	 */
 	private bool $isChanged = false;
 
+	#endregion
+
 	/**
 	 * 生成
 	 *
@@ -82,6 +90,8 @@ class SessionStore
 			}
 		}
 	}
+
+	#region function
 
 	/**
 	 * セッション適用状態を設定。
@@ -297,4 +307,6 @@ class SessionStore
 	{
 		return ArrayUtility::tryGet($this->values, $key, $result);
 	}
+
+	#endregion
 }

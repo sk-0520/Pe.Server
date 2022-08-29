@@ -16,10 +16,12 @@ class TemplateFactory extends DiFactoryBase implements ITemplateFactory
 		parent::__construct($container);
 	}
 
-	//[ITemplateFactory]
+	#region ITemplateFactory
 
 	public function createTemplate(TemplateOptions $options): TemplateBase
 	{
 		return $this->container->new(SmartyTemplate::class, [TemplateOptions::class => $options]);
 	}
+
+	#endregion
 }

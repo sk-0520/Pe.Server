@@ -24,10 +24,14 @@ use PeServer\Core\Throws\NotImplementedException;
 
 class SmartyTemplate extends TemplateBase
 {
+	#region variable
+
 	/**
 	 * テンプレートエンジン。
 	 */
 	private Smarty $engine;
+
+	#endregion
 
 	public function __construct(TemplateOptions $options, protected Stores $stores)
 	{
@@ -44,6 +48,8 @@ class SmartyTemplate extends TemplateBase
 
 		$this->registerPlugins();
 	}
+
+	#region function
 
 	private function applyParameter(TemplateParameter $parameter): void
 	{
@@ -99,4 +105,6 @@ class SmartyTemplate extends TemplateBase
 			}
 		}
 	}
+
+	#endregion
 }

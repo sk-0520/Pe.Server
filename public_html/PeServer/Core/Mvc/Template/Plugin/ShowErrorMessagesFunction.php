@@ -25,6 +25,8 @@ class ShowErrorMessagesFunction extends TemplateFunctionBase
 		parent::__construct($argument);
 	}
 
+	#region TemplateFunctionBase
+
 	public function getFunctionName(): string
 	{
 		return 'show_error_messages';
@@ -95,4 +97,6 @@ class ShowErrorMessagesFunction extends TemplateFunctionBase
 
 		return $dom->build();
 	}
+
+	#endregion
 }

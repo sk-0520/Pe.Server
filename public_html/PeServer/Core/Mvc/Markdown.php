@@ -13,6 +13,8 @@ require_once(__DIR__ . '/../../Core/Libs/php-markdown/Michelf/MarkdownExtra.inc.
 
 class Markdown
 {
+	#region variable
+
 	/**
 	 * Markdown
 	 *
@@ -21,6 +23,8 @@ class Markdown
 	private \Michelf\Markdown $parser;
 
 	private bool $isSafeMode = true; // @phpstan-ignore-line
+
+	#endregion
 
 	/** @SuppressWarnings(PHPMD.MissingImport) */
 	public function __construct()
@@ -31,6 +35,8 @@ class Markdown
 			return '<!-- {CODE -->' . $codeHighlighter->toHtml($language, $code) . '<!-- CODE} -->';
 		};
 	}
+
+	#region function
 
 	public function setSafeMode(bool $isSafeMode): void
 	{
@@ -55,4 +61,6 @@ class Markdown
 
 		return $trimmedTail;
 	}
+
+	#endregion
 }

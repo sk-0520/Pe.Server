@@ -17,6 +17,8 @@ class CodeFunction extends TemplateBlockFunctionBase
 		parent::__construct($argument);
 	}
 
+	#region TemplateBlockFunctionBase
+
 	public function getFunctionName(): string
 	{
 		return 'code';
@@ -35,4 +37,6 @@ class CodeFunction extends TemplateBlockFunctionBase
 
 		return $html;
 	}
+
+	#endregion
 }

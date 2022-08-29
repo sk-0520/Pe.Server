@@ -17,6 +17,8 @@ use PeServer\Core\Type;
  */
 abstract class Enforce
 {
+	#region function
+
 	/**
 	 * 例外ぶん投げ。
 	 *
@@ -99,4 +101,6 @@ abstract class Enforce
 			self::throwCore($argument, $exceptionClass);
 		}
 	}
+
+	#endregion
 }

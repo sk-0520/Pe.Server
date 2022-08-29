@@ -19,6 +19,8 @@ use PeServer\Core\Store\SpecialStore;
  */
 class CookieStore
 {
+	#region variable
+
 	/**
 	 * cookie 一時設定データ。
 	 *
@@ -38,6 +40,8 @@ class CookieStore
 	 */
 	private bool $isChanged = false;
 
+	#endregion
+
 	/**
 	 * 生成
 	 *
@@ -50,6 +54,8 @@ class CookieStore
 		public CookieOption $option
 	) {
 	}
+
+	#region function
 
 	/**
 	 * クッキーは変更されているか。
@@ -161,6 +167,8 @@ class CookieStore
 
 		return $this->special->tryGetCookie($key, $result);
 	}
+
+	#endregion
 }
 
 final class LocalCookieData

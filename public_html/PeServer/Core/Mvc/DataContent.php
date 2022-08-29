@@ -29,6 +29,5 @@ class DataContent
 		public string $mime,
 		public $data
 	) {
-
 	}
 }

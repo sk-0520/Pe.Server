@@ -38,6 +38,8 @@ class AssetFunction extends TemplateFunctionBase
 		parent::__construct($argument);
 	}
 
+	#region TemplateFunctionBase
+
 	public function getFunctionName(): string
 	{
 		return 'asset';
@@ -182,4 +184,6 @@ class AssetFunction extends TemplateFunctionBase
 
 		return $dom->build();
 	}
+
+	#endregion
 }

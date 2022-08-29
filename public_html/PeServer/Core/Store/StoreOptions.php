@@ -25,6 +25,8 @@ class StoreOptions
 	) {
 	}
 
+	#region function
+
 	public static function default(): self
 	{
 		$tempDirPath = Directory::getTemporaryDirectory();
@@ -36,4 +38,6 @@ class StoreOptions
 			new SessionOption(SessionOption::DEFAULT_NAME, Path::combine($tempDirPath, SessionOption::DEFAULT_NAME), $cookieOption)
 		);
 	}
+
+	#endregion
 }

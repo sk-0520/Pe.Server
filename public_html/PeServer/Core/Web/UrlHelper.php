@@ -13,15 +13,21 @@ class UrlHelper implements IUrlHelper
 	) {
 	}
 
+	#region function
+
 	public static function none(): self
 	{
 		return new self('');
 	}
 
-	//[IUrlHelper]
+	#endregion
+
+	#region IUrlHelper
 
 	public function getBasePath(): string
 	{
 		return $this->basePath;
 	}
+
+	#endregion
 }

@@ -15,10 +15,16 @@ use PeServer\Core\Throws\ArgumentException;
  */
 abstract class UrlUtility
 {
+	#region define
+
 	public const URL_KIND_RFC1738 = PHP_QUERY_RFC1738;
 	public const URL_KIND_RFC3986 = PHP_QUERY_RFC3986;
 
 	public const LOCALHOST_PATTERN = '/https?:\/\/(\w*:\\w*@)?((localhost)|(127\.0\.0\.1))\b/';
+
+	#endregion
+
+	#region function
 
 	public static function convertPathToUrl(string $path, SpecialStore $specialStore): string
 	{
@@ -175,4 +181,6 @@ abstract class UrlUtility
 
 		return $isExternal;
 	}
+
+	#endregion
 }
