@@ -13,4 +13,15 @@ class ArgumentNullException extends ArgumentException
 	{
 		parent::__construct($message, $code, $previous);
 	}
+
+	#region function
+
+	public static function throwIfNull(mixed $argument, string $name = ''): void
+	{
+		if (is_null($argument)) {
+			throw new ArgumentNullException($name);
+		}
+	}
+
+	#endregion
 }
