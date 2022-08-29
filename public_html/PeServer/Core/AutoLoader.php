@@ -12,8 +12,6 @@ use \Error;
  * NOTE: なにがあってもPHP標準関数ですべて処理すること。
  * 調整する場合は継承してお好きに。
  *
- * BUGS: バグかどうか微妙だけど名前空間接頭辞が物理名で紐づくことになってるのはどうなんだ。
- *
  * @phpstan-type NamespacePrefixAlias string
  * @phpstan-type BaseDirectoryAlias non-empty-string
  * @phpstan-type ClassIncludesAlias array<class-string,class-string|non-empty-string>
@@ -263,10 +261,12 @@ class AutoLoader
 					}
 				}
 
-				$fileBasePath = str_replace('\\', DIRECTORY_SEPARATOR, $className);
+				$classBaseName = substr($className, strlen($namespacePrefix));
+				$fileBasePath = str_replace('\\', DIRECTORY_SEPARATOR, $classBaseName);
+				$filePathWithoutExtensions = $mapping['directory'] . $fileBasePath;
 
 				foreach ($mapping['extensions'] as $extension) {
-					$filePath = $mapping['directory'] . $fileBasePath . $extension;
+					$filePath = $filePathWithoutExtensions . $extension;
 					if (is_file($filePath)) {
 						return $filePath;
 					}

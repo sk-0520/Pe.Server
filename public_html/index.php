@@ -26,7 +26,7 @@ error_reporting(E_ALL);
 $autoLoader = new AutoLoader(
 	[
 		'PeServer' => [
-			'directory' => __DIR__,
+			'directory' => __DIR__ . DIRECTORY_SEPARATOR . 'PeServer',
 		]
 	]
 );

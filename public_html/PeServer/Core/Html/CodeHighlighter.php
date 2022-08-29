@@ -23,10 +23,10 @@ const LIB_DIR = CoreUtility::LIBRARY_DIRECTORY_PATH . DIRECTORY_SEPARATOR . 'hig
 
 (new AutoLoader([
 	'Highlight' => [
-		'directory' => LIB_DIR //. '/Highlight'
+		'directory' => LIB_DIR . DIRECTORY_SEPARATOR . 'Highlight'
 	],
 	'HighlightUtilities' => [
-		'directory' => LIB_DIR //. '/HighlightUtilities'
+		'directory' => LIB_DIR . DIRECTORY_SEPARATOR . 'HighlightUtilities'
 	]
 ]))->register();
 

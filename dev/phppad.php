@@ -17,7 +17,7 @@ use PeServer\Core\Timer;
 $autoLoader = new \PeServer\Core\AutoLoader(
 	[
 		'PeServer' => [
-			'directory' => __DIR__ . '/../public_html',
+			'directory' => __DIR__ . '/../public_html/PeServer',
 		]
 	]
 );
