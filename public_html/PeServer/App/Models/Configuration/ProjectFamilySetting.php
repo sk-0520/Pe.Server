@@ -27,6 +27,8 @@ class ProjectFamilySetting
 	public string $forumUrl;
 	#[Mapping(name: 'website_url')]
 	public string $websiteUrl;
+	#[Mapping(name: 'api_doc_url')]
+	public string $apiDocUrl;
 
 	#endregion
 }

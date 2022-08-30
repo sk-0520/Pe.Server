@@ -18,6 +18,7 @@ use PeServer\Core\Store\SpecialStore;
 use PeServer\Core\Store\StoreOptions;
 use PeServer\Core\Store\TemporaryOption;
 use PeServer\Core\Text;
+use PeServer\Core\Time;
 
 abstract class StoreConfiguration
 {
@@ -35,7 +36,7 @@ abstract class StoreConfiguration
 
 		return new CookieOption(
 			Text::requireNotNullOrWhiteSpace($setting->path, $base->path),
-			Text::isNullOrWhiteSpace($setting->span) ? $base->span : new DateInterval($setting->span), //@phpstan-ignore-line not null
+			Text::isNullOrWhiteSpace($setting->span) ? $base->span : Time::create($setting->span), //@phpstan-ignore-line not null
 			is_null($setting->secure) ? $base->secure : $setting->secure,
 			is_null($setting->httpOnly) ? $base->httpOnly : $setting->httpOnly,
 			Text::requireNotNullOrWhiteSpace($setting->sameSite, $base->sameSite) //@phpstan-ignore-line not null
@@ -53,7 +54,7 @@ abstract class StoreConfiguration
 		/** @var DateInterval|null */
 		$span = null;
 		if (!Text::isNullOrWhiteSpace($setting->span)) {
-			$span = new DateInterval($setting->span); //@phpstan-ignore-line not null
+			$span = Time::create($setting->span); //@phpstan-ignore-line not null
 		}
 
 		$path = Text::requireNotNullOrWhiteSpace($setting->path, '/');

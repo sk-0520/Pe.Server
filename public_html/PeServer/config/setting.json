@@ -72,7 +72,8 @@
 				"app_project_url": "https://bitbucket.org/sk_0520/pe",
 				"server_project_url": "https://bitbucket.org/sk_0520/pe.server",
 				"forum_url": "https://groups.google.com/g/pe_development",
-				"website_url": "https://content-type-text.net/"
+				"website_url": "https://content-type-text.net/",
+				"api_doc_url": "https://cttn.stoplight.io/docs/pe-server"
 			}
 		}
 	},

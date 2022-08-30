@@ -67,6 +67,9 @@
 			<li>
 				<a href="/account/user/password">パスワード変更</a>
 			</li>
+			<li>
+				<a href="/account/user/audit-logs">監査ログ</a>
+			</li>
 		</ul>
 	</dd>
 </dl>
