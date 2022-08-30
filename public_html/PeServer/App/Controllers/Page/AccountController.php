@@ -12,6 +12,7 @@ use PeServer\App\Models\Domain\Page\Account\AccountSignupNotifyLogic;
 use PeServer\App\Models\Domain\Page\Account\AccountSignupStep1Logic;
 use PeServer\App\Models\Domain\Page\Account\AccountSignupStep2Logic;
 use PeServer\App\Models\Domain\Page\Account\AccountUserApiLogic;
+use PeServer\App\Models\Domain\Page\Account\AccountUserAuditLogLogic;
 use PeServer\App\Models\Domain\Page\Account\AccountUserEditLogic;
 use PeServer\App\Models\Domain\Page\Account\AccountUserEmailLogic;
 use PeServer\App\Models\Domain\Page\Account\AccountUserLogic;
@@ -251,4 +252,13 @@ final class AccountController extends PageControllerBase
 	{
 		return $this->user_plugin_post_core(false);
 	}
+
+	public function user_audit_logs(): IActionResult
+	{
+		$logic = $this->createLogic(AccountUserAuditLogLogic::class);
+		$logic->run(LogicCallMode::initialize());
+
+		return $this->view('user_audit_logs', $logic->getViewData());
+	}
+
 }

@@ -422,7 +422,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 	protected function enforceOrdered(string $statement): void
 	{
 		if (!$this->regex->isMatch($statement, '/\\border\\s+by\\b/i')) {
-			throw new SqlException();
+			throw new SqlException('order by');
 		}
 	}
 
@@ -451,7 +451,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 	protected function enforceSingleCount(string $statement): void
 	{
 		if (!$this->regex->isMatch($statement, '/\\bselect\\s+count\\s*\\(/i')) {
-			throw new SqlException();
+			throw new SqlException('select count');
 		}
 	}
 
@@ -494,7 +494,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 	protected function enforceInsert(string $statement): void
 	{
 		if (!$this->regex->isMatch($statement, '/\\binsert\\b/i')) {
-			throw new SqlException();
+			throw new SqlException('insert');
 		}
 	}
 
@@ -524,7 +524,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 	protected function enforceUpdate(string $statement): void
 	{
 		if (!$this->regex->isMatch($statement, '/\\bupdate\\b/i')) {
-			throw new SqlException();
+			throw new SqlException('update');
 		}
 	}
 
@@ -565,7 +565,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 	protected function enforceDelete(string $statement): void
 	{
 		if (!$this->regex->isMatch($statement, '/\\bdelete\\b/i')) {
-			throw new SqlException();
+			throw new SqlException('delete');
 		}
 	}
 
