@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core;
 
 use \DateInterval;
-use Exception;
+use \Exception;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\FormatException;
 use PeServer\Core\Throws\Throws;
