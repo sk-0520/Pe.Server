@@ -466,7 +466,6 @@ abstract class Text
 	 *
 	 * @param string $separator
 	 * @param string[] $values
-	 * @phpstan-param non-empty-string $separator
 	 * @return string
 	 * @see https://www.php.net/manual/function.implode.php
 	 */
