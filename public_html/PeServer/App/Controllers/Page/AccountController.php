@@ -70,7 +70,7 @@ final class AccountController extends PageControllerBase
 				}
 			}
 
-			return $this->redirectPath('/');
+			return $this->redirectPath('/account');
 		}
 
 		return $this->view('login', $logic->getViewData());
