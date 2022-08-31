@@ -29,6 +29,9 @@ use PeServer\Core\Throws\DiContainerUndefinedTypeException;
 use PeServer\Core\Throws\NotImplementedException;
 use PeServer\Core\TypeUtility;
 
+/**
+ * DIコンテナ実装。
+ */
 class DiContainer extends DisposerBase implements IDiContainer
 {
 	#region variable

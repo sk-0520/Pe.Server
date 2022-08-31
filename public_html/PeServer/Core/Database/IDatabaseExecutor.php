@@ -8,6 +8,11 @@ use PeServer\Core\Throws\DatabaseException;
 use PeServer\Core\Throws\ObjectDisposedException;
 use PeServer\Core\Throws\SqlException;
 
+/**
+ * `insert/update/delete` 系処理。
+ *
+ * DB固有の何かも行う(`PRAGMA/GRANT/USE` とか)
+ */
 interface IDatabaseExecutor
 {
 	#region function

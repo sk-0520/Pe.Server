@@ -9,6 +9,11 @@ use PeServer\Core\Throws\DatabaseException;
 use PeServer\Core\Throws\ObjectDisposedException;
 use PeServer\Core\Throws\SqlException;
 
+/**
+ * `select` 系処理。
+ *
+ * 内容によっては実行処理がなされる。
+ */
 interface IDatabaseReader
 {
 	#region function

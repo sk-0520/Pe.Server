@@ -12,7 +12,7 @@ use PeServer\Core\Text;
 use PeServer\Core\Throws\HtmlDocumentException;
 
 /**
- * DOMElement のラッパー。
+ * `DOMElement` ラッパー。
  */
 final class HtmlElement extends HtmlElementBase
 {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServerTest\Core\Database;
 
+use PeServer\Core\Database\ConnectionSetting;
 use PeServer\Core\Database\DatabaseContext;
 use PeServer\Core\Log\Logging;
 use PeServer\Core\Log\NullLogger;
@@ -18,6 +19,6 @@ class DB
 	 */
 	public static function memory(): DatabaseContext
 	{
-		return new DatabaseContext('sqlite::memory:', '', '', null, new NullLogger());
+		return new DatabaseContext(new ConnectionSetting('sqlite::memory:', '', '', null), new NullLogger());
 	}
 }

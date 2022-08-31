@@ -17,7 +17,7 @@ use PeServer\Core\Text;
 use PeServer\Core\Throws\HtmlXPathException;
 
 /**
- * DOMXPath のラッパー。
+ * `DOMXPath` ラッパー。
  */
 class HtmlXPath
 {

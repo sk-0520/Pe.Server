@@ -8,11 +8,12 @@ use \DomainException;
 use \Highlight\Highlighter;
 use \HighlightUtilities\Functions;
 use PeServer\Core\ArrayUtility;
-use PeServer\Core\AutoLoader;
-use PeServer\Core\CoreUtility;
 use PeServer\Core\Text;
 use PeServer\Core\TypeUtility;
 
+/**
+ * HTMLとしてのコードハイライト処理。
+ */
 class CodeHighlighter
 {
 	#region function

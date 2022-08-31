@@ -27,10 +27,7 @@ class DatabaseConnection implements IDatabaseConnection
 	public function open(): DatabaseContext
 	{
 		return new DatabaseContext(
-			$this->setting->dsn,
-			$this->setting->user,
-			$this->setting->password,
-			$this->setting->options,
+			$this->setting,
 			$this->loggerFactory->createLogger(DatabaseContext::class)
 		);
 	}

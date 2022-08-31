@@ -10,6 +10,9 @@ use PeServer\Core\IDisposable;
 use PeServer\Core\Throws\SqlException;
 use PeServer\Core\Throws\TransactionException;
 
+/**
+ * DB実行状態。
+ */
 interface IDatabaseContext extends IDatabaseReader, IDatabaseExecutor
 {
 	#region function

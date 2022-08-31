@@ -13,6 +13,9 @@ use PeServer\Core\Throws\ArgumentNullException;
 use PeServer\Core\Throws\DiContainerRegisteredException;
 use PeServer\Core\TypeUtility;
 
+/**
+ * 登録可能DIコンテナ実装。
+ */
 class DiRegisterContainer extends DiContainer implements IDiRegisterContainer
 {
 	#region IDiRegisterContainer

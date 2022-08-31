@@ -6,6 +6,9 @@ namespace PeServer\Core\Database;
 
 use PeServer\Core\Database\DatabaseContext;
 
+/**
+ * DB接続。
+ */
 interface IDatabaseConnection
 {
 	#region function

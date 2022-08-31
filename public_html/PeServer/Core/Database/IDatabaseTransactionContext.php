@@ -11,6 +11,9 @@ use PeServer\Core\Throws\DatabaseException;
 use PeServer\Core\Throws\SqlException;
 use PeServer\Core\Throws\TransactionException;
 
+/**
+ * トランザクションをサポートする状態。
+ */
 interface IDatabaseTransactionContext extends IDatabaseContext, IDisposable
 {
 	#region function

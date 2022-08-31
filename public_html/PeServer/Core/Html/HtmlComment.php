@@ -9,7 +9,7 @@ use PeServer\Core\Html\HtmlDocument;
 use PeServer\Core\Html\HtmlNodeBase;
 
 /**
- * DOMComment のラッパー。
+ * `DOMComment` ラッパー。
  */
 final class HtmlComment extends HtmlNodeBase
 {

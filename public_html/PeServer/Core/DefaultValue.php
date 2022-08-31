@@ -8,8 +8,6 @@ use PeServer\Core\Throws\CoreError;
 
 /**
  * 標準値。
- *
- * @deprecated いらんなこれ。生値でいいわ。気が向いたら消す。。。。消さんでもいいかなぁ。。。わからん。
  */
 abstract class DefaultValue
 {

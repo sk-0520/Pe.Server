@@ -41,6 +41,7 @@ class TemporaryStore
 	 * 一時データ。
 	 *
 	 * @var array<string,mixed>
+	 * @phpstan-var array<string,ServerStoreValueAlias>
 	 */
 	private array $values = [];
 
