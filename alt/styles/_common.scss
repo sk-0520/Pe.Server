@@ -2,12 +2,16 @@
 
 code {
 	@include font.monospace;
+	border: 1px solid #999;
+	padding: 0 3px;
+	margin: auto 3px;
+	border-radius: 0.5ex;
 }
 
 pre {
 	@include font.monospace;
 
-	width: 100%;
+	max-width: 95vw;
 	border: 1px solid #666;
 	overflow: auto;
 	max-height: 70vh;

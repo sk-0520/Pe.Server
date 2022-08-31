@@ -33,7 +33,7 @@
 					</thead>
 					<tbody>
 						<tr>
-							<td data-clipboard="inline"><code>{$values.api_key}</code></td>
+							<td><pre data-clipboard="block">{$values.api_key}</pre></td>
 							<td>{$values.created_timestamp}</td>
 						</tr>
 						{if $values.secret_key}
@@ -41,7 +41,7 @@
 								<th colspan="2">シークレットキー</th>
 							</tr>
 							<tr>
-								<td colspan="2" data-clipboard="inline"><code>{$values.secret_key}</code></td>
+								<td colspan="2"><pre data-clipboard="block">{$values.secret_key}</pre></td>
 							</tr>
 							<tr>
 								<td colspan="2">
