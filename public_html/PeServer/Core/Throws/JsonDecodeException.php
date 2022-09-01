@@ -7,6 +7,7 @@ namespace PeServer\Core\Throws;
 use \Throwable;
 use PeServer\Core\Throws\JsonExceptionBase;
 
+/** @deprecated JsonSerializer */
 class JsonDecodeException extends JsonExceptionBase
 {
 	public function __construct(string $message = '', int $code = 0, ?Throwable $previous = null)

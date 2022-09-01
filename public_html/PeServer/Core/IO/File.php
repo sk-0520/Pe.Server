@@ -17,6 +17,7 @@ use PeServer\Core\IO\IOUtility;
 use PeServer\Core\IO\Stream;
 use PeServer\Core\Serialization\Json;
 use PeServer\Core\ResultData;
+use PeServer\Core\Serialization\JsonSerializer;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\FileNotFoundException;
@@ -131,16 +132,17 @@ abstract class File
 	 *
 	 * @param string $path パス。
 	 * @return array<mixed> 応答JSON。
-	 * @param Json|null $json JSON処理
+	 * @param JsonSerializer|null $jsonSerializer JSON処理
 	 * @throws IOException
 	 * @throws ParseException パース失敗。
 	 */
-	public static function readJsonFile(string $path, Json $json = null): array
+	public static function readJsonFile(string $path, JsonSerializer $jsonSerializer = null): array
 	{
 		$content = self::readContent($path);
 
-		$json ??= new Json();
-		$value = $json->decode($content->getRaw());
+		$jsonSerializer ??= new JsonSerializer();
+		/** @var array<mixed> */
+		$value = $jsonSerializer->load($content);
 
 		return $value;
 	}
@@ -150,15 +152,15 @@ abstract class File
 	 *
 	 * @param string $path
 	 * @param array<mixed>|\stdClass $data
-	 * @param Json|null $json JSON処理
+	 * @param JsonSerializer|null $jsonSerializer JSON処理
 	 * @return void
 	 * @throws IOException
 	 * @throws ParseException
 	 */
-	public static function writeJsonFile(string $path, array|stdClass $data, ?Json $json = null): void
+	public static function writeJsonFile(string $path, array|stdClass $data, ?JsonSerializer $jsonSerializer = null): void
 	{
-		$json ??= new Json();
-		$value = $json->encode($data);
+		$jsonSerializer ??= new JsonSerializer();
+		$value = $jsonSerializer->save($data);
 
 		self::saveContent($path, $value, false);
 	}

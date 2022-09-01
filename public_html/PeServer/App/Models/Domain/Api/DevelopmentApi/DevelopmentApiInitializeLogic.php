@@ -52,7 +52,11 @@ class DevelopmentApiInitializeLogic extends ApiLogicBase
 		};
 
 		$deployScript = new \DeployScript($scriptArgument); // @phpstan-ignore-line
-		$deployScript->migrate($this->config->setting['persistence']);
+		$deployScript->migrate([
+			'connection' => $this->config->setting->persistence->default->connection,
+			'user' => $this->config->setting->persistence->default->user,
+			'password' => $this->config->setting->persistence->default->password,
+		]);
 
 		$this->setResponseJson(ResponseJson::success([
 			'success' => true,
