@@ -163,7 +163,7 @@ class AutoLoader
 		if (isset($mapping['extensions']) && $mapping['extensions'] !== null) { //@phpstan-ignore-line
 			foreach ($mapping['extensions'] as $extension) {
 				$extension = trim($extension);
-				if (!empty($extension) && $extension !== '0') {
+				if (!empty($extension)) {
 					if ($extension[0] !== '.') {
 						$extension = '.' . $extension;
 					}

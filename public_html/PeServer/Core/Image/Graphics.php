@@ -237,10 +237,10 @@ class Graphics extends DisposerBase
 		}
 
 		return new RgbColor(
-			($rgb >> 16) & 0xff, //@phpstan-ignore-line 0xff
-			($rgb >> 8) & 0xff, //@phpstan-ignore-line 0xff
-			$rgb & 0xff, //@phpstan-ignore-line 0xff,
-			($rgb >> 24) & 0x7f //@phpstan-ignore-line 0xff,
+			($rgb >> 16) & 0xff,
+			($rgb >> 8) & 0xff,
+			$rgb & 0xff,
+			($rgb >> 24) & 0x7f
 		);
 	}
 
