@@ -47,7 +47,7 @@ class JsonSerializer extends SerializerBase
 	) {
 	}
 
-	#region function
+	#region SerializerBase
 
 	protected function saveImpl(array|object $value): Binary
 	{

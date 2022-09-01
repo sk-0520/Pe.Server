@@ -174,42 +174,6 @@ final class Binary implements ArrayAccess, IteratorAggregate, Countable, Stringa
 	// }
 
 
-	/**
-	 * オブジェクトをシリアライズ。
-	 *
-	 * デシリアライズは `unserialize` を参照のこと。
-	 *
-	 * @param object $object シリアライズしたいオブジェクト。
-	 * @return self
-	 */
-	public static function serialize(object $object): self
-	{
-		$data = serialize($object);
-		return new self($data);
-	}
-
-	/**
-	 * 現在データをオブジェクトにデシリアライズ。
-	 *
-	 * シリアライズは `serialize` を参照のこと。
-	 *
-	 * @template T of object
-	 * @param string $className 返却クラス名。
-	 * @phpstan-param class-string<T> $className
-	 * @return object デシリアライズオブジェクト。
-	 * @phpstan-return T
-	 * @throws SerializeException
-	 */
-	public function unserialize(string $className): object
-	{
-		$object = unserialize($this->raw);
-		if (is_a($object, $className)) {
-			return $object;
-		}
-
-		throw new SerializeException($className . ': ' . TypeUtility::getType($object));
-	}
-
 	#endregion
 
 	#region ArrayAccess

@@ -17,19 +17,33 @@ use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\IO\Directory;
 use PeServer\Core\IO\File;
 use PeServer\Core\IO\Path;
+use PeServer\Core\Serialization\BuiltinSerializer;
+use PeServer\Core\Serialization\SerializerBase;
+use PeServer\Core\Throws\SerializeException;
+use PeServer\Core\TypeUtility;
 
 class AppDatabaseCache
 {
+	#region define
+
 	private const USER_INFORMATION = 'user.cache';
 	private const PLUGIN_INFORMATION = 'plugin.cache';
 
+	#endregion
+
+	#region variable
+
 	private string $cacheDirectoryPath;
+	private SerializerBase $serializer;
+
+	#endregion
 
 	public function __construct(
 		AppConfiguration $config,
 		private IDatabaseConnection $connection
 	) {
 		$this->cacheDirectoryPath = $config->setting->cache->database;
+		$this->serializer = new BuiltinSerializer();
 	}
 
 	private function openDatabase(): IDatabaseContext
@@ -48,7 +62,8 @@ class AppDatabaseCache
 	{
 		$filePath = Path::combine($this->cacheDirectoryPath, $fileName);
 		Directory::createParentDirectoryIfNotExists($filePath);
-		$binary = Binary::serialize($object);
+
+		$binary = $this->serializer->save($object);
 		File::writeContent($filePath, $binary->getRaw());
 	}
 
@@ -65,8 +80,14 @@ class AppDatabaseCache
 	private function readCache(string $fileName, string $className): object
 	{
 		$filePath = Path::combine($this->cacheDirectoryPath, $fileName);
-		$result = File::readContent($filePath);
-		return $result->unserialize($className);
+		$binary = File::readContent($filePath);
+		$object = $this->serializer->load($binary);
+		if (!is_array($object) && is_a($object, $className)) {
+			/** @phpstan-var T */
+			return $object;
+		}
+
+		throw new SerializeException(TypeUtility::getType($object));
 	}
 
 	/**
