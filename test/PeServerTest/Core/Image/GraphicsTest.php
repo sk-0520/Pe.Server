@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServerTest\Core\Image;
 
 use PeServer\Core\Image\Graphics;
-use PeServer\Core\Image\ImageOption;
+use PeServer\Core\Image\ImageSetting;
 use PeServer\Core\Image\ImageType;
 use PeServer\Core\Image\Point;
 use PeServer\Core\Image\Color\RgbColor;
@@ -45,10 +45,10 @@ class GraphicsTest extends TestClass
 
 		$graphics->setPixel(new Point(10, 10), new RgbColor(0xff, 0xff, 0xff));
 
-		$imageBinary = $graphics->exportImage(ImageOption::png());
+		$imageBinary = $graphics->exportImage(ImageSetting::png());
 
 		$newGraphics = Graphics::load($imageBinary);
-		$newImageBinary = $newGraphics->exportImage(ImageOption::png());
+		$newImageBinary = $newGraphics->exportImage(ImageSetting::png());
 
 		$this->assertSame($imageBinary->getRaw(), $newImageBinary->getRaw());
 	}
