@@ -38,17 +38,17 @@ class ImageOption
 
 	public static function jpeg(int $quality = -1): ImageOption
 	{
-		return new ImageOption(ImageType::PNG, [$quality]);
+		return new ImageOption(ImageType::JPEG, [$quality]);
 	}
 
 	public static function webp(int $quality = -1): ImageOption
 	{
-		return new ImageOption(ImageType::PNG, [$quality]);
+		return new ImageOption(ImageType::WEBP, [$quality]);
 	}
 
 	public static function bmp(bool $compressed = true): ImageOption
 	{
-		return new ImageOption(ImageType::PNG, [$compressed]);
+		return new ImageOption(ImageType::BMP, [$compressed]);
 	}
 
 	#endregion
