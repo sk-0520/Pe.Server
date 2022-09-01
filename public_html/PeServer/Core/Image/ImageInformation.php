@@ -7,6 +7,8 @@ namespace PeServer\Core\Image;
 use PeServer\Core\Throws\ImageException;
 
 /**
+ * 画像情報。
+ *
  * @immutable
  */
 class ImageInformation
@@ -19,7 +21,7 @@ class ImageInformation
 	 * @param int $type
 	 * @phpstan-param ImageType::* $type
 	 */
-	public function __construct(
+	private function __construct(
 		public Size $size,
 		public string $mime,
 		public int $type

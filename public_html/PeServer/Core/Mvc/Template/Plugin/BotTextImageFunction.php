@@ -12,7 +12,7 @@ use PeServer\Core\CoreUtility;
 use PeServer\Core\Cryptography;
 use PeServer\Core\Html\HtmlDocument;
 use PeServer\Core\Image\Graphics;
-use PeServer\Core\Image\ImageOption;
+use PeServer\Core\Image\ImageSetting;
 use PeServer\Core\Image\ImageType;
 use PeServer\Core\Image\Point;
 use PeServer\Core\Image\Rectangle;
@@ -104,7 +104,7 @@ class BotTextImageFunction extends TemplateFunctionBase
 		$image->fillRectangle($backgroundColor, $rectangle);
 		$image->drawText($text, $fontSize, $rectangle, $foregroundColor, $textSetting);
 
-		$htmlSource = $image->exportHtmlSource(ImageOption::png());
+		$htmlSource = $image->exportHtmlSource(ImageSetting::png());
 		$image->dispose();
 
 		$dom = new HtmlDocument();
