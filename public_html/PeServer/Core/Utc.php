@@ -65,6 +65,11 @@ abstract class Utc
 		return new DateTimeImmutable('now', self::getTimezone());
 	}
 
+	public static function createDateTime(): DateTime
+	{
+		return new DateTime('now', self::getTimezone());
+	}
+
 	/**
 	 * パース処理。
 	 *
