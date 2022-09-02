@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domain\Api\AdministratorApi;
 
-use DateInterval;
-use DateTime;
-use Exception;
+use \DateInterval;
+use \DateTime;
+use \Exception;
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\AuditLog;
 use PeServer\App\Models\Domain\Api\ApiLogicBase;
@@ -14,10 +14,12 @@ use PeServer\App\Models\Domain\AppArchiver;
 use PeServer\App\Models\ResponseJson;
 use PeServer\Core\ArrayUtility;
 use PeServer\Core\Binary;
+use PeServer\Core\IO\Directory;
 use PeServer\Core\IO\File;
 use PeServer\Core\IO\Path;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
+use PeServer\Core\Serialization\BuiltinSerializer;
 use PeServer\Core\Serialization\JsonSerializer;
 use PeServer\Core\Throws\NotImplementedException;
 use PeServer\Core\Utc;
@@ -31,7 +33,7 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 	const MODE_PREPARE = 'prepare';
 	const MODE_UPDATE = 'update';
 
-	const FILE_PROGRESS = 'deploy.json';
+	const FILE_PROGRESS = 'deploy.dat';
 	const ENABLED_RANGE_TIME = 'PT5M';
 
 	#endregion
@@ -48,27 +50,54 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 		return Path::combine($this->appConfig->baseDirectoryPath, 'data/temp', self::FILE_PROGRESS);
 	}
 
+	private function getExpandDirectoryPath(): string
+	{
+		return Path::combine($this->appConfig->baseDirectoryPath, 'data/temp/deploy');
+	}
+
 	private function getProgressSetting(): LocalProgressSetting
 	{
 		$path = $this->getProgressFilePath();
 		$binary = File::readContent($path);
-		$jsonSerializer = new JsonSerializer();
+		$serializer = new BuiltinSerializer();
 		/** @var LocalProgressSetting */
-		return $jsonSerializer->load($binary);
+		return $serializer->load($binary);
+	}
+
+	private function setProgressSetting(LocalProgressSetting $setting): void
+	{
+		$path = $this->getProgressFilePath();
+		$serializer = new BuiltinSerializer();
+		$binary = $serializer->save($setting);
+		File::writeContent($path, $binary);
 	}
 
 	private function executeStartup(): array
 	{
-		throw new NotImplementedException();
+		$setting = new LocalProgressSetting();
+		$setting->mode = self::MODE_STARTUP;
+		$setting->startupTime = Utc::createDateTime();
+
+		$dirPath = $this->getExpandDirectoryPath();
+		if (Directory::exists($dirPath)) {
+			Directory::removeDirectory($dirPath, true);
+		}
+
+		$this->setProgressSetting($setting);
+
+		return [];
 	}
+
 	private function executeUpload(): array
 	{
 		throw new NotImplementedException();
 	}
+
 	private function executePrepare(): array
 	{
 		throw new NotImplementedException();
 	}
+
 	private function executeUpdate(): array
 	{
 		throw new NotImplementedException();
