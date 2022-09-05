@@ -29,10 +29,6 @@ class AccountUserApiLogic extends PageLogicBase
 
 	protected function startup(LogicCallMode $callMode): void
 	{
-		// if (!is_null($this->isRegister)) {
-		// 	return;
-		// }
-
 		/** @var SessionAccount */
 		$userInfo = $this->requireSession(SessionKey::ACCOUNT);
 

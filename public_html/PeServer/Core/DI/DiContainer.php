@@ -104,7 +104,7 @@ class DiContainer extends DisposerBase implements IDiContainer
 			/** @phpstan-var class-string */
 			$typeName = $currentType->getName();
 			$item = $this->getMappingItem($typeName, $mappingKeyOnly);
-			if (!is_null($item)) {
+			if ($item !== null) {
 				return $item;
 			}
 		}
@@ -302,7 +302,7 @@ class DiContainer extends DisposerBase implements IDiContainer
 				}
 
 				// 設定できない場合は何もしない
-				if (!is_null($item)) {
+				if ($item !== null) {
 					$callStack[] = $item;
 					$propertyValue = $this->create($item, [], $level + 1, $mappingKeyOnly, $callStack);
 					$property->setAccessible(true);
@@ -387,7 +387,7 @@ class DiContainer extends DisposerBase implements IDiContainer
 		}
 
 		$item = $this->getMappingItem($idOrClassName, false);
-		if (!is_null($item)) {
+		if ($item !== null) {
 			if (!empty($arguments)) {
 				if ($item->type === DiItem::TYPE_VALUE) {
 					throw new DiContainerArgumentException($idOrClassName . ': DiItem::TYPE_VALUE');

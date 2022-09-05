@@ -89,7 +89,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 	 */
 	private function setParameters(PDOStatement $statement, ?array $parameters): void
 	{
-		if (!is_null($parameters)) {
+		if ($parameters !== null) {
 			foreach ($parameters as $key => $value) {
 				if (!$statement->bindValue($key, $value)) {
 					throw new SqlException('$key: ' . $key . ' -> ' . TypeUtility::getType($value));
