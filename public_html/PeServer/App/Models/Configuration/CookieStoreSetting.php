@@ -30,8 +30,8 @@ class CookieStoreSetting
 
 	public function __construct(?CookieOption $option = null)
 	{
-		if (!is_null($option)) {
-			if (!is_null($option->span)) {
+		if ($option !== null) {
+			if ($option->span !== null) {
 				$this->span = $option->span->format('P%yY%mM%dDT%hH%iM%sS');
 			}
 			$this->path = $option->path;

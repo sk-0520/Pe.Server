@@ -76,7 +76,7 @@ abstract class Utc
 	 */
 	private static function tryParseCore(string $dateTimeClassName, ?string $s, DateTimeImmutable|DateTime|null &$result): bool
 	{
-		if (is_null($s)) {
+		if ($s === null) {
 			return false;
 		}
 

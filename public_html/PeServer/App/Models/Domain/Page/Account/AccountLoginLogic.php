@@ -72,7 +72,7 @@ class AccountLoginLogic extends PageLogicBase
 
 		$user = $userDomainDao->selectLoginUser($this->getRequest('account_login_login_id'));
 
-		if (is_null($user)) {
+		if ($user === null) {
 			$this->addError(Validator::COMMON, I18n::message(self::ERROR_LOGIN_PARAMETER));
 			return;
 		}

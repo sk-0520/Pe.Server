@@ -96,7 +96,7 @@ abstract class I18n
 			}
 		}
 
-		if (!is_null($leaf)) {
+		if ($leaf !== null) {
 			return self::getFlatMessage($leaf, $locale) ?? DefaultValue::EMPTY_STRING;
 		}
 
@@ -124,7 +124,7 @@ abstract class I18n
 		}
 
 		$message = self::getMessage($key, 'ja');
-		if (is_null($message)) {
+		if ($message === null) {
 			$message =  $key;
 		}
 

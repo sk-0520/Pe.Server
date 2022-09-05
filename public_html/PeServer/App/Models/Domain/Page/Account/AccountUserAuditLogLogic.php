@@ -27,7 +27,7 @@ class AccountUserAuditLogLogic extends PageLogicBase
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
 		$userInfo = $this->getAuditUserInfo();
-		if (is_null($userInfo)) {
+		if ($userInfo === null) {
 			throw new InvalidOperationException();
 		}
 		$userId = $userInfo->getUserId();

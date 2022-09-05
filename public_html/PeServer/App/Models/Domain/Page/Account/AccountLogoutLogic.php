@@ -25,7 +25,7 @@ class AccountLogoutLogic extends PageLogicBase
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
 		$userInfo = $this->getSession(SessionKey::ACCOUNT, null);
-		if (is_null($userInfo)) {
+		if ($userInfo === null) {
 			return;
 		}
 

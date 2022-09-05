@@ -212,7 +212,7 @@ class AccountUserPluginLogic extends PageLogicBase
 
 		$database = $this->openDatabase();
 		$database->transaction(function (IDatabaseContext $context) use ($params) {
-			assert(!is_null($this->pluginCategories));
+			assert($this->pluginCategories !== null);
 
 			$pluginsEntityDao = new PluginsEntityDao($context);
 			$pluginUrlsEntityDao = new PluginUrlsEntityDao($context);
