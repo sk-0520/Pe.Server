@@ -16,6 +16,7 @@ class PluginCacheItem
 	 * @param string $state
 	 * @param string $description
 	 * @param array<string,string> $urls
+	 * @param string[] $categoryIds
 	 */
 	public function __construct(
 		public string $pluginId,
@@ -24,7 +25,8 @@ class PluginCacheItem
 		public string $displayName,
 		public string $state,
 		public string $description,
-		public array $urls = []
+		public array $urls,
+		public array $categoryIds
 	) {
 	}
 }

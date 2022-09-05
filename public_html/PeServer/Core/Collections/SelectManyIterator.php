@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Collections;
 
+use EmptyIterator;
 use \Iterator;
 use PeServer\Core\Collections\CollectionUtility;
 use PeServer\Core\Throws\CallbackTypeError;
@@ -44,6 +45,7 @@ class SelectManyIterator implements Iterator
 		}
 
 		$this->outerIterator = $iterator;
+		$this->innerIterator = new EmptyIterator();
 	}
 
 	#region Iterator
@@ -51,7 +53,9 @@ class SelectManyIterator implements Iterator
 	public function rewind(): void
 	{
 		$this->outerIterator->rewind();
-		$this->innerIterator = CollectionUtility::toIterator($this->outerIterator->current());
+		if($this->outerIterator->valid()) {
+			$this->innerIterator = CollectionUtility::toIterator($this->outerIterator->current());
+		}
 	}
 
 	/**

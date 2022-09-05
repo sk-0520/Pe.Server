@@ -8,6 +8,7 @@ use PeServer\App\Models\Cache\PluginCache;
 use PeServer\App\Models\Cache\PluginCacheCategory;
 use PeServer\App\Models\Cache\PluginCacheItem;
 use PeServer\App\Models\Domain\PluginUrlKey;
+use PeServer\Core\Collections\Collection;
 use PeServer\Core\Database\DaoBase;
 use PeServer\Core\Database\IDatabaseContext;
 
@@ -76,6 +77,29 @@ class PluginDomainDao extends DaoBase
 		);
 
 		return array_map(function ($i) {
+			$categoryIds = $this->context->query(
+				<<<SQL
+
+				select
+					plugin_categories.plugin_category_id
+				from
+					plugin_category_mappings
+					inner join
+						plugin_categories
+						on
+						(
+							plugin_categories.plugin_category_id = plugin_category_mappings.plugin_category_id
+						)
+				where
+					plugin_category_mappings.plugin_id = :plugin_id
+
+				SQL,
+				[
+					'plugin_id' => $i['plugin_id']
+				]
+			);
+
+
 			$cache = new PluginCacheItem(
 				$i['plugin_id'],
 				$i['user_id'],
@@ -87,7 +111,10 @@ class PluginDomainDao extends DaoBase
 					PluginUrlKey::CHECK => $i['check_plugin_url'],
 					PluginUrlKey::PROJECT => $i['project_plugin_url'],
 					PluginUrlKey::LANDING => $i['lp_plugin_url'],
-				]
+				],
+				Collection::from($categoryIds->rows)
+					->selectMany(fn($i) => $i)
+					->toArray()
 			);
 
 			return $cache;
