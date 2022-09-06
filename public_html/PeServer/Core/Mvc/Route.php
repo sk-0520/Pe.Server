@@ -72,13 +72,6 @@ class Route
 	 */
 	private array $baseShutdownMiddleware;
 
-	/**
-	 * インデックス付与対象となるパターン。
-	 *
-	 * @phpstan-var literal-string
-	 */
-	protected string $excludeIndexPattern = '/^(api|ajax)/';
-
 	private Regex $regex;
 
 	#endregion
@@ -117,12 +110,26 @@ class Route
 		$this->baseShutdownMiddleware = $shutdownMiddleware;
 		$this->className = $className;
 
-		if (!$this->regex->isMatch($this->basePath, $this->excludeIndexPattern)) {
+		if (!$this->regex->isMatch($this->basePath, $this->getExcludeIndexPattern())) {
 			$this->addAction(DefaultValue::EMPTY_STRING, HttpMethod::gets(), 'index', $this->baseMiddleware, $this->baseShutdownMiddleware);
 		}
 	}
 
 	#region function
+
+	/**
+	 * コントローラに対してインデックスを付与しないパターン。
+	 *
+	 * * APIとかにインデックスは不要となる
+	 * * このパターンに該当しない場合、無名のアクションとして `index` メソッドが自動登録される。
+	 *
+	 * @return string
+	 * @phpstan-return literal-string
+	 */
+	protected function getExcludeIndexPattern(): string
+	{
+		return '/\A(api|ajax)/';
+	}
 
 	/**
 	 * ミドルウェア組み合わせ。
