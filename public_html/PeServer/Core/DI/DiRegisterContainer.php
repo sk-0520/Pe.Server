@@ -73,7 +73,7 @@ class DiRegisterContainer extends DiContainer implements IDiRegisterContainer
 		$this->add($id, DiItem::class($className, $lifecycle));
 	}
 
-	public function registerValue(?object $value, string $id = DefaultValue::EMPTY_STRING): void
+	public function registerValue(?object $value, string $id = Text::EMPTY): void
 	{
 		$this->throwIfDisposed();
 

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc\Template\Plugin;
 
 use PeServer\Core\ArrayUtility;
-use PeServer\Core\DefaultValue;
+use PeServer\Core\Text;
 use PeServer\Core\Html\CodeHighlighter;
 use PeServer\Core\Mvc\Template\Plugin\TemplateBlockFunctionBase;
 use PeServer\Core\Mvc\Template\Plugin\TemplatePluginArgument;
@@ -26,7 +26,7 @@ class CodeFunction extends TemplateBlockFunctionBase
 
 	protected function functionBlockBodyImpl(string $content): string
 	{
-		$language = ArrayUtility::getOr($this->params, 'language', DefaultValue::EMPTY_STRING);
+		$language = ArrayUtility::getOr($this->params, 'language', Text::EMPTY);
 		$numbers = (string)($this->params['numbers'] ?? '');
 
 		$codeHighlighter = new CodeHighlighter();

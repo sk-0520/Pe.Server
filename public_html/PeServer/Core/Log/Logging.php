@@ -90,7 +90,7 @@ abstract class Logging
 	{
 		if ($message === null) {
 			if (ArrayUtility::isNullOrEmpty($parameters)) {
-				return DefaultValue::EMPTY_STRING;
+				return Text::EMPTY;
 			}
 			return Text::dump($parameters);
 		}
@@ -131,7 +131,7 @@ abstract class Logging
 	{
 		// @phpstan-ignore-next-line
 		if (!self::IS_ENABLED_HOST) {
-			return DefaultValue::EMPTY_STRING;
+			return Text::EMPTY;
 		}
 
 		if (self::$requestHost !== null) {
@@ -139,21 +139,21 @@ abstract class Logging
 		}
 
 		/** @var string */
-		$serverRemoteHost = self::$specialStore->getServer('REMOTE_HOST', DefaultValue::EMPTY_STRING);
-		if ($serverRemoteHost !== DefaultValue::EMPTY_STRING) {
+		$serverRemoteHost = self::$specialStore->getServer('REMOTE_HOST', Text::EMPTY);
+		if ($serverRemoteHost !== Text::EMPTY) {
 			return self::$requestHost = $serverRemoteHost;
 		}
 
 		/** @var string */
-		$serverRemoteIpAddr = self::$specialStore->getServer('REMOTE_ADDR', DefaultValue::EMPTY_STRING);
-		if ($serverRemoteIpAddr === DefaultValue::EMPTY_STRING) {
-			return self::$requestHost = DefaultValue::EMPTY_STRING;
+		$serverRemoteIpAddr = self::$specialStore->getServer('REMOTE_ADDR', Text::EMPTY);
+		if ($serverRemoteIpAddr === Text::EMPTY) {
+			return self::$requestHost = Text::EMPTY;
 		}
 
 		/** @var string|false */
 		$hostName = gethostbyaddr($serverRemoteIpAddr);
 		if ($hostName === false) {
-			return self::$requestHost = DefaultValue::EMPTY_STRING;
+			return self::$requestHost = Text::EMPTY;
 		}
 
 		return self::$requestHost = $hostName;
@@ -188,7 +188,7 @@ abstract class Logging
 		$traceMethod = $backtrace[$traceIndex + 1];
 
 		/** @var string */
-		$filePath = ArrayUtility::getOr($traceCaller, 'file', DefaultValue::EMPTY_STRING);
+		$filePath = ArrayUtility::getOr($traceCaller, 'file', Text::EMPTY);
 
 		/** @var array<string,string> */
 		$map = [
@@ -196,20 +196,20 @@ abstract class Logging
 			'DATE' => $timestamp->format('Y-m-d'),
 			'TIME' => $timestamp->format('H:i:s'),
 			'TIMEZONE' => $timestamp->format('P'),
-			'CLIENT_IP' => self::$specialStore->getServer('REMOTE_ADDR', DefaultValue::EMPTY_STRING),
+			'CLIENT_IP' => self::$specialStore->getServer('REMOTE_ADDR', Text::EMPTY),
 			'CLIENT_HOST' => self::getRemoteHost(),
 			'REQUEST_ID' => self::$requestId,
-			'UA' => self::$specialStore->getServer('HTTP_USER_AGENT', DefaultValue::EMPTY_STRING),
-			'METHOD' => self::$specialStore->getServer('REQUEST_METHOD', DefaultValue::EMPTY_STRING),
-			'REQUEST' => self::$specialStore->getServer('REQUEST_URI', DefaultValue::EMPTY_STRING),
+			'UA' => self::$specialStore->getServer('HTTP_USER_AGENT', Text::EMPTY),
+			'METHOD' => self::$specialStore->getServer('REQUEST_METHOD', Text::EMPTY),
+			'REQUEST' => self::$specialStore->getServer('REQUEST_URI', Text::EMPTY),
 			'SESSION' => session_id(),
 			//-------------------
 			'FILE' => $filePath,
 			'FILE_NAME' => Path::getFileName($filePath),
 			'LINE' => ArrayUtility::getOr($traceCaller, 'line', 0),
-			//'CLASS' => ArrayUtility::getOr($traceMethod, 'class', DefaultValue::EMPTY_STRING),
-			'FUNCTION' => ArrayUtility::getOr($traceMethod, 'function', DefaultValue::EMPTY_STRING),
-			//'ARGS' => ArrayUtility::getOr($traceMethod, 'args', DefaultValue::EMPTY_STRING),
+			//'CLASS' => ArrayUtility::getOr($traceMethod, 'class', Text::EMPTY),
+			'FUNCTION' => ArrayUtility::getOr($traceMethod, 'function', Text::EMPTY),
+			//'ARGS' => ArrayUtility::getOr($traceMethod, 'args', Text::EMPTY),
 			//-------------------
 			'LEVEL' => self::formatLevel($level),
 			'HEADER' => $header,

@@ -16,7 +16,7 @@ class Validator
 {
 	#region define
 
-	public const COMMON = DefaultValue::EMPTY_STRING;
+	public const COMMON = Text::EMPTY;
 
 	public const KIND_EMPTY = 0;
 	public const KIND_WHITE_SPACE = 1;
@@ -49,7 +49,7 @@ class Validator
 	public function isNotEmpty(string $key, ?string $value): bool
 	{
 		if (Text::isNullOrEmpty($value)) {
-			$this->receiver->receiveErrorKind($key, self::KIND_EMPTY, ['VALUE' => DefaultValue::EMPTY_STRING]);
+			$this->receiver->receiveErrorKind($key, self::KIND_EMPTY, ['VALUE' => Text::EMPTY]);
 			return false;
 		}
 
@@ -59,7 +59,7 @@ class Validator
 	public function isNotWhiteSpace(string $key, ?string $value): bool
 	{
 		if (Text::isNullOrWhiteSpace($value)) {
-			$this->receiver->receiveErrorKind($key, self::KIND_WHITE_SPACE, ['VALUE' => $value ? $value : DefaultValue::EMPTY_STRING]);
+			$this->receiver->receiveErrorKind($key, self::KIND_WHITE_SPACE, ['VALUE' => $value ? $value : Text::EMPTY]);
 			return false;
 		}
 

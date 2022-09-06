@@ -112,7 +112,7 @@ abstract class StoreConfiguration
 
 		/** @phpstan-var non-empty-string $name */
 		$name = Text::requireNotNullOrWhiteSpace($setting->name, SessionOption::DEFAULT_NAME);
-		$save = Text::requireNotNullOrWhiteSpace($setting->save, DefaultValue::EMPTY_STRING);
+		$save = Text::requireNotNullOrWhiteSpace($setting->save, Text::EMPTY);
 
 		$option = new SessionOption(
 			$name,

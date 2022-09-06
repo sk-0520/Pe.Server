@@ -38,7 +38,7 @@ class Mapper
 
 	public function __construct()
 	{
-		$this->defaultMapping = new Mapping(DefaultValue::EMPTY_STRING, Mapping::FLAG_NONE);
+		$this->defaultMapping = new Mapping(Text::EMPTY, Mapping::FLAG_NONE);
 	}
 
 	#region function

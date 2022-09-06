@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Store;
 
 use PeServer\Core\ArrayUtility;
-use PeServer\Core\DefaultValue;
+use PeServer\Core\Text;
 
 /**
  * $_SERVER, $_COOKIE, $_SESSION 読み込みアクセス。
@@ -26,7 +26,7 @@ class SpecialStore
 	 * @return mixed
 	 * @phpstan-return TValue
 	 */
-	public function getServer(string $name, mixed $fallbackValue = DefaultValue::EMPTY_STRING): mixed
+	public function getServer(string $name, mixed $fallbackValue = Text::EMPTY): mixed
 	{
 		$result = ArrayUtility::getOr($_SERVER, $name, $fallbackValue);
 		return $result;
@@ -65,7 +65,7 @@ class SpecialStore
 	 * @param string $fallbackValue
 	 * @return string
 	 */
-	public function getCookie(string $name, string $fallbackValue = DefaultValue::EMPTY_STRING): string
+	public function getCookie(string $name, string $fallbackValue = Text::EMPTY): string
 	{
 		$result = ArrayUtility::getOr($_COOKIE, $name, $fallbackValue);
 		return $result;
@@ -104,7 +104,7 @@ class SpecialStore
 	 * @param string $fallbackValue
 	 * @return string
 	 */
-	public function getSession(string $name, string $fallbackValue = DefaultValue::EMPTY_STRING): string
+	public function getSession(string $name, string $fallbackValue = Text::EMPTY): string
 	{
 		$result = ArrayUtility::getOr($_SESSION, $name, $fallbackValue);
 		return $result;
@@ -141,7 +141,7 @@ class SpecialStore
 		return isset($_GET[$name]);
 	}
 
-	public function getGet(string $name, string $fallbackValue = DefaultValue::EMPTY_STRING): string
+	public function getGet(string $name, string $fallbackValue = Text::EMPTY): string
 	{
 		$result = ArrayUtility::getOr($_GET, $name, $fallbackValue);
 		return $result;
@@ -167,7 +167,7 @@ class SpecialStore
 		return isset($_POST[$name]);
 	}
 
-	public function getPost(string $name, string $fallbackValue = DefaultValue::EMPTY_STRING): string
+	public function getPost(string $name, string $fallbackValue = Text::EMPTY): string
 	{
 		$result = ArrayUtility::getOr($_POST, $name, $fallbackValue);
 		return $result;
@@ -193,7 +193,7 @@ class SpecialStore
 		return isset($_FILES[$name]);
 	}
 
-	// public function getFile(string $name, string $fallbackValue = DefaultValue::EMPTY_STRING): string
+	// public function getFile(string $name, string $fallbackValue = Text::EMPTY): string
 	// {
 	// 	$result = ArrayUtility::getOr($_FILES, $name, $fallbackValue);
 	// 	return $result;

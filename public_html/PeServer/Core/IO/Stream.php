@@ -524,7 +524,7 @@ class Stream extends ResourceBase
 	{
 		$result = $this->readBinaryContents();
 		if (!$result->count()) {
-			return DefaultValue::EMPTY_STRING;
+			return Text::EMPTY;
 		}
 
 		return $this->encoding->toString($result);

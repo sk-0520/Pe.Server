@@ -29,7 +29,7 @@ abstract class UrlUtility
 	public static function convertPathToUrl(string $path, SpecialStore $specialStore): string
 	{
 		/** @var string */
-		$httpsProtocol = $specialStore->getServer('HTTPS', DefaultValue::EMPTY_STRING);
+		$httpsProtocol = $specialStore->getServer('HTTPS', Text::EMPTY);
 		$httpProtocol = Text::isNullOrEmpty($httpsProtocol) ? 'http://' : 'https://';
 		return $httpProtocol . $specialStore->getServer('SERVER_NAME') . '/' .  Text::trim($path, '/');
 	}

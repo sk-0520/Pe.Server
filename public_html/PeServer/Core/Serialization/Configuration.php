@@ -20,7 +20,7 @@ class Configuration
 {
 	#region define
 
-	public const FILE_TYPE_DEFAULT = DefaultValue::EMPTY_STRING;
+	public const FILE_TYPE_DEFAULT = Text::EMPTY;
 	public const FILE_TYPE_JSON = 'json';
 
 	#endregion

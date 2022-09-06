@@ -76,7 +76,7 @@ class CookieStore
 	{
 		foreach ($this->removes as $key) {
 			if ($this->special->containsCookieName($key)) {
-				setcookie($key, DefaultValue::EMPTY_STRING, time() - 60, '/');
+				setcookie($key, Text::EMPTY, time() - 60, '/');
 			}
 		}
 
@@ -87,7 +87,7 @@ class CookieStore
 				[
 					'expires' => $cookie->option->getExpires(),
 					'path' => $cookie->option->path,
-					'domain' => DefaultValue::EMPTY_STRING,
+					'domain' => Text::EMPTY,
 					'secure' => $cookie->option->secure,
 					'httponly' => $cookie->option->httpOnly,
 					'samesite' => $cookie->option->sameSite

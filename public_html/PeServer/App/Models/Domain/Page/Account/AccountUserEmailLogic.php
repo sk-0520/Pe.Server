@@ -34,9 +34,9 @@ class AccountUserEmailLogic extends PageLogicBase
 	 * @var array{email:string,wait_email:string,token_timestamp_utc:string}
 	 */
 	private array $defaultValues = [
-		'email' => DefaultValue::EMPTY_STRING,
-		'wait_email' => DefaultValue::EMPTY_STRING,
-		'token_timestamp_utc' => DefaultValue::EMPTY_STRING,
+		'email' => Text::EMPTY,
+		'wait_email' => Text::EMPTY,
+		'token_timestamp_utc' => Text::EMPTY,
 	];
 
 	public function __construct(LogicParameter $parameter, private AppConfiguration $config, private AppCryptography $cryptography, private Mailer $mailer, private AppTemplate $appTemplate)
@@ -59,12 +59,12 @@ class AccountUserEmailLogic extends PageLogicBase
 		if (!Text::isNullOrWhiteSpace($values->fields['email'])) {
 			$this->defaultValues['email'] = $this->cryptography->decrypt($values->fields['email']);
 		} else {
-			$this->defaultValues['email'] = DefaultValue::EMPTY_STRING;
+			$this->defaultValues['email'] = Text::EMPTY;
 		}
 		if (!Text::isNullOrWhiteSpace($values->fields['wait_email'])) {
 			$this->defaultValues['wait_email'] = $this->cryptography->decrypt($values->fields['wait_email']);
 		} else {
-			$this->defaultValues['wait_email'] = DefaultValue::EMPTY_STRING;
+			$this->defaultValues['wait_email'] = Text::EMPTY;
 		}
 
 		$this->defaultValues['token_timestamp_utc'] = $values->fields['token_timestamp_utc'];
@@ -76,7 +76,7 @@ class AccountUserEmailLogic extends PageLogicBase
 			'token_timestamp_utc',
 		], true);
 
-		$this->setValue('account_email_token', DefaultValue::EMPTY_STRING);
+		$this->setValue('account_email_token', Text::EMPTY);
 	}
 
 	protected function validateImpl(LogicCallMode $callMode): void

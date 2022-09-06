@@ -91,7 +91,7 @@ class ErrorHandler
 		/** @var int */
 		$type = ArrayUtility::getOr($lastError, 'type', -1);
 		/** @var string */
-		$message = ArrayUtility::getOr($lastError, 'message', DefaultValue::EMPTY_STRING);
+		$message = ArrayUtility::getOr($lastError, 'message', Text::EMPTY);
 		/** @var string */
 		$file = ArrayUtility::getOr($lastError, 'file', '<unknown>');
 		/** @var int */

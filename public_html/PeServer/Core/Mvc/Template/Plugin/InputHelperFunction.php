@@ -50,7 +50,7 @@ class InputHelperFunction extends TemplateFunctionBase
 	private function addMainElement(HtmlDocument $dom, mixed $targetValue): HtmlElement
 	{
 		/** @var string */
-		$type = ArrayUtility::getOr($this->params, 'type', DefaultValue::EMPTY_STRING);
+		$type = ArrayUtility::getOr($this->params, 'type', Text::EMPTY);
 
 		switch ($type) {
 			case 'textarea': {
@@ -104,7 +104,7 @@ class InputHelperFunction extends TemplateFunctionBase
 		}
 
 		/** @var string|string[]|bool|int */
-		$targetValue = DefaultValue::EMPTY_STRING;
+		$targetValue = Text::EMPTY;
 		if ($this->existsValues()) {
 			$values = $this->getValues();
 			if (ArrayUtility::tryGet($values, $targetKey, $result)) {

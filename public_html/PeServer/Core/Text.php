@@ -25,6 +25,9 @@ abstract class Text
 	private const TRIM_TARGET_END = 1;
 	private const TRIM_TARGET_BOTH = 0;
 
+	/** 空文字列。 */
+	public const EMPTY = '';
+
 	#endregion
 
 	#region function
@@ -196,8 +199,8 @@ abstract class Text
 	 */
 	public static function replaceMap(string $source, array $map, string $head = '{', string $tail = '}'): string
 	{
-		Enforce::throwIfNullOrEmpty($head, DefaultValue::EMPTY_STRING, StringException::class);
-		Enforce::throwIfNullOrEmpty($tail, DefaultValue::EMPTY_STRING, StringException::class);
+		Enforce::throwIfNullOrEmpty($head, Text::EMPTY, StringException::class);
+		Enforce::throwIfNullOrEmpty($tail, Text::EMPTY, StringException::class);
 
 		$regex = new Regex();
 		$escHead = $regex->escape($head);
@@ -212,7 +215,7 @@ abstract class Text
 					if (isset($map[$matches[1]])) {
 						return $map[$matches[1]];
 					}
-					return DefaultValue::EMPTY_STRING;
+					return Text::EMPTY;
 				}
 			);
 

@@ -18,7 +18,7 @@ use PeServer\Core\Throws\ArgumentException;
  */
 final class AppMailer extends Mailer
 {
-	private string $overwriteTarget = DefaultValue::EMPTY_STRING;
+	private string $overwriteTarget = Text::EMPTY;
 
 	public function __construct(AppConfiguration $config)
 	{

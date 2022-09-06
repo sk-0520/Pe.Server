@@ -29,7 +29,7 @@ class MarkdownFunction extends TemplateBlockFunctionBase
 	protected function functionBlockBodyImpl(string $content): string
 	{
 		/** @var string */
-		$className = ArrayUtility::getOr($this->params, 'class', DefaultValue::EMPTY_STRING);
+		$className = ArrayUtility::getOr($this->params, 'class', Text::EMPTY);
 		if (Text::isNullOrWhiteSpace($className)) {
 			$className = 'markdown';
 		} else if (!Text::contains($className, 'markdown', false)) {

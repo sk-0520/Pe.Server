@@ -111,7 +111,7 @@ class Route
 		$this->className = $className;
 
 		if (!$this->regex->isMatch($this->basePath, $this->getExcludeIndexPattern())) {
-			$this->addAction(DefaultValue::EMPTY_STRING, HttpMethod::gets(), 'index', $this->baseMiddleware, $this->baseShutdownMiddleware);
+			$this->addAction(Text::EMPTY, HttpMethod::gets(), 'index', $this->baseMiddleware, $this->baseShutdownMiddleware);
 		}
 	}
 
@@ -268,7 +268,7 @@ class Route
 					$length = Text::getLength($value);
 					$targetValue = urldecode($actionPaths[$i]);
 					if ($length === 0 || $value[0] !== ':') {
-						return ['key' => $value, 'name' => DefaultValue::EMPTY_STRING, 'value' => $targetValue];
+						return ['key' => $value, 'name' => Text::EMPTY, 'value' => $targetValue];
 					}
 					$splitPaths = Text::split($value, '@', 2);
 					$requestKey = Text::substring($splitPaths[0], 1);

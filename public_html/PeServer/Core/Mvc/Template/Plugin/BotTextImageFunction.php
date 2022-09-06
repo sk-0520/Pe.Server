@@ -68,9 +68,9 @@ class BotTextImageFunction extends TemplateFunctionBase
 	private function functionBodyCore(): string
 	{
 		/** @var string */
-		$text = ArrayUtility::getOr($this->params, 'text', DefaultValue::EMPTY_STRING);
+		$text = ArrayUtility::getOr($this->params, 'text', Text::EMPTY);
 		/** @var string */
-		$alt = ArrayUtility::getOr($this->params, 'alt', DefaultValue::EMPTY_STRING);
+		$alt = ArrayUtility::getOr($this->params, 'alt', Text::EMPTY);
 		/**
 		 * @var int
 		 * @phpstan-var positive-int
@@ -84,7 +84,7 @@ class BotTextImageFunction extends TemplateFunctionBase
 		/** @var float */
 		$fontSize = (float)ArrayUtility::getOr($this->params, 'font-size', '12.5');
 		/** @var string */
-		$className = ArrayUtility::getOr($this->params, 'class', DefaultValue::EMPTY_STRING);
+		$className = ArrayUtility::getOr($this->params, 'class', Text::EMPTY);
 		/** @var string */
 		$backgroundColorText = ArrayUtility::getOr($this->params, 'background-color', '#eeeeee');
 		$backgroundColor = RgbColor::fromHtmlColorCode($backgroundColorText);

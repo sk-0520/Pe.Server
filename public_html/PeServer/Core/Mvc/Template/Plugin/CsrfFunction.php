@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc\Template\Plugin;
 
 use PeServer\Core\Security;
-use PeServer\Core\DefaultValue;
+use PeServer\Core\Text;
 use PeServer\Core\Html\HtmlDocument;
 use PeServer\Core\Mvc\Template\Plugin\TemplateFunctionBase;
 use PeServer\Core\Mvc\Template\Plugin\TemplatePluginArgument;
@@ -32,7 +32,7 @@ class CsrfFunction extends TemplateFunctionBase
 		// このタイミングではセッション処理完了を期待している
 
 		if(!$this->argument->stores->session->tryGet(Security::CSRF_SESSION_KEY, $csrfToken)) {
-			return DefaultValue::EMPTY_STRING;
+			return Text::EMPTY;
 		}
 
 		/** @var string $csrfToken */

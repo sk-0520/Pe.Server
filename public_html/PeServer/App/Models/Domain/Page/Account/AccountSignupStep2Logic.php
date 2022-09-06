@@ -21,7 +21,7 @@ use PeServer\App\Models\SessionAccount;
 use PeServer\App\Models\SessionKey;
 use PeServer\Core\Cryptography;
 use PeServer\Core\Database\IDatabaseContext;
-use PeServer\Core\DefaultValue;
+use PeServer\Core\Text;
 use PeServer\Core\I18n;
 use PeServer\Core\Mail\EmailAddress;
 use PeServer\Core\Mail\EmailMessage;
@@ -47,8 +47,8 @@ class AccountSignupStep2Logic extends PageLogicBase
 			'account_signup_name',
 		], true);
 
-		$this->setValue('account_signup_password', DefaultValue::EMPTY_STRING);
-		$this->setValue('account_signup_password_confirm', DefaultValue::EMPTY_STRING);
+		$this->setValue('account_signup_password', Text::EMPTY);
+		$this->setValue('account_signup_password_confirm', Text::EMPTY);
 	}
 
 	protected function validateImpl(LogicCallMode $callMode): void
@@ -88,7 +88,7 @@ class AccountSignupStep2Logic extends PageLogicBase
 
 		$this->validation('account_signup_password_confirm', function (string $key, string $value) {
 			$this->validator->isNotWhiteSpace($key, $value);
-			$newPassword = $this->getRequest('account_signup_password', DefaultValue::EMPTY_STRING, false);
+			$newPassword = $this->getRequest('account_signup_password', Text::EMPTY, false);
 			if ($value !== $newPassword) {
 				$this->addError($key, I18n::message('error/password_confirm'));
 			}
@@ -109,7 +109,7 @@ class AccountSignupStep2Logic extends PageLogicBase
 		$userId = UserUtility::generateUserId();
 		$token = $this->getRequest('token');
 		$email = $this->getRequest('account_signup_email');
-		$password = $this->getRequest('account_signup_password', DefaultValue::EMPTY_STRING, false);
+		$password = $this->getRequest('account_signup_password', Text::EMPTY, false);
 
 		$params = [
 			'token' => $token,
@@ -135,14 +135,14 @@ class AccountSignupStep2Logic extends PageLogicBase
 				$params['user_name'],
 				$params['email'],
 				$params['mark_email'],
-				DefaultValue::EMPTY_STRING,
-				DefaultValue::EMPTY_STRING,
-				DefaultValue::EMPTY_STRING
+				Text::EMPTY,
+				Text::EMPTY,
+				Text::EMPTY
 			);
 
 			$userAuthenticationsEntityDao->insertUserAuthentication(
 				$params['user_id'],
-				DefaultValue::EMPTY_STRING,
+				Text::EMPTY,
 				$params['password']
 			);
 

@@ -45,7 +45,7 @@ final class HtmlElement extends HtmlElementBase
 	{
 		if (is_bool($value)) {
 			if ($value) {
-				$value = DefaultValue::EMPTY_STRING;
+				$value = Text::EMPTY;
 			} else {
 				if ($this->raw->hasAttribute($qualifiedName)) {
 					$this->raw->removeAttribute($qualifiedName);

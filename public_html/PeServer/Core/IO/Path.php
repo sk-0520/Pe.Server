@@ -99,12 +99,12 @@ abstract class Path
 	public static function getFileExtension(string $path, bool $withDot = false): string
 	{
 		if (Text::isNullOrWhiteSpace($path)) {
-			return DefaultValue::EMPTY_STRING;
+			return Text::EMPTY;
 		}
 
 		$dotIndex = Text::getLastPosition($path, '.');
 		if ($dotIndex === DefaultValue::NOT_FOUND_INDEX) {
-			return DefaultValue::EMPTY_STRING;
+			return Text::EMPTY;
 		}
 
 		$result = Text::substring($path, $dotIndex);
@@ -113,7 +113,7 @@ abstract class Path
 		}
 
 		if (!Text::getByteCount($result)) {
-			return DefaultValue::EMPTY_STRING;
+			return Text::EMPTY;
 		}
 
 		return Text::substring($result, 1);
@@ -156,9 +156,9 @@ abstract class Path
 
 		$result = new PathParts(
 			ArrayUtility::getOr($parts, 'dirname', '.'),
-			ArrayUtility::getOr($parts, 'basename', DefaultValue::EMPTY_STRING),
-			ArrayUtility::getOr($parts, 'filename', DefaultValue::EMPTY_STRING),
-			ArrayUtility::getOr($parts, 'extension', DefaultValue::EMPTY_STRING)
+			ArrayUtility::getOr($parts, 'basename', Text::EMPTY),
+			ArrayUtility::getOr($parts, 'filename', Text::EMPTY),
+			ArrayUtility::getOr($parts, 'extension', Text::EMPTY)
 		);
 
 		return $result;

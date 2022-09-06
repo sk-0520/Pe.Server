@@ -65,7 +65,7 @@ class AccountUserPasswordLogic extends PageLogicBase
 
 		$this->validation('account_password_confirm', function (string $key, string $value) {
 			$this->validator->isNotWhiteSpace($key, $value);
-			$newPassword = $this->getRequest('account_password_new', DefaultValue::EMPTY_STRING, false);
+			$newPassword = $this->getRequest('account_password_new', Text::EMPTY, false);
 			if ($value !== $newPassword) {
 				$this->addError($key, I18n::message('error/password_confirm'));
 			}
@@ -80,7 +80,7 @@ class AccountUserPasswordLogic extends PageLogicBase
 
 		$userInfo = $this->requireSession(SessionKey::ACCOUNT);
 
-		$newPassword = $this->getRequest('account_password_new', DefaultValue::EMPTY_STRING, false);
+		$newPassword = $this->getRequest('account_password_new', Text::EMPTY, false);
 
 		$params = [
 			'user_id' => $userInfo->userId,

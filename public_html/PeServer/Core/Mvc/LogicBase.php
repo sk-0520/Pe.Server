@@ -41,7 +41,7 @@ abstract class LogicBase implements IValidationReceiver
 {
 	#region define
 
-	protected const SESSION_ALL_CLEAR = DefaultValue::EMPTY_STRING;
+	protected const SESSION_ALL_CLEAR = Text::EMPTY;
 
 	#endregion
 
@@ -148,7 +148,7 @@ abstract class LogicBase implements IValidationReceiver
 	 * @param bool $trim 取得データをトリムするか。
 	 * @return string 要求データ。
 	 */
-	protected function getRequest(string $key, string $fallbackValue = DefaultValue::EMPTY_STRING, bool $trim = true): string
+	protected function getRequest(string $key, string $fallbackValue = Text::EMPTY, bool $trim = true): string
 	{
 		if (!$this->request->exists($key)->exists) {
 			return $fallbackValue;
@@ -211,7 +211,7 @@ abstract class LogicBase implements IValidationReceiver
 	 * @param string $fallbackValue 取得失敗時の値。
 	 * @return string
 	 */
-	protected function getCookie(string $key, string $fallbackValue = DefaultValue::EMPTY_STRING): string
+	protected function getCookie(string $key, string $fallbackValue = Text::EMPTY): string
 	{
 		return $this->stores->cookie->getOr($key, $fallbackValue);
 	}
@@ -374,10 +374,10 @@ abstract class LogicBase implements IValidationReceiver
 
 		foreach ($this->keys as $key) {
 			if ($overwrite) {
-				$value = $this->getRequest($key, DefaultValue::EMPTY_STRING);
+				$value = $this->getRequest($key, Text::EMPTY);
 				$this->values[$key] = $value;
 			} else {
-				$this->values[$key] = DefaultValue::EMPTY_STRING;
+				$this->values[$key] = Text::EMPTY;
 			}
 		}
 	}
@@ -448,7 +448,7 @@ abstract class LogicBase implements IValidationReceiver
 	protected function validation(string $key, callable $callback, ?array $option = null): void
 	{
 		/** @var string */
-		$default = ArrayUtility::getOr($option, 'default', DefaultValue::EMPTY_STRING);
+		$default = ArrayUtility::getOr($option, 'default', Text::EMPTY);
 		/** @var bool */
 		$trim = ArrayUtility::getOr($option, 'trim', true);
 

@@ -176,7 +176,7 @@ class ManagementDefaultPluginLogic extends PageLogicBase
 						$map = [
 							PluginUrlKey::CHECK => $plugin['check_url'],
 							PluginUrlKey::PROJECT => $plugin['project_url'],
-							PluginUrlKey::LANDING => DefaultValue::EMPTY_STRING,
+							PluginUrlKey::LANDING => Text::EMPTY,
 						];
 						foreach ($map as $k => $v) {
 							$pluginUrlsEntityDao->insertUrl($plugin['plugin_id'], $k, $v);

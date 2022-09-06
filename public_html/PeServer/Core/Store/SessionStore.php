@@ -190,7 +190,7 @@ class SessionStore
 		$sessionOption = [
 			'lifetime' => $this->option->cookie->getExpires(),
 			'path' => $this->option->cookie->path,
-			'domain' => DefaultValue::EMPTY_STRING,
+			'domain' => Text::EMPTY,
 			'secure' => $this->option->cookie->secure,
 			'httponly' => $this->option->cookie->httpOnly,
 			'samesite' => $this->option->cookie->sameSite,

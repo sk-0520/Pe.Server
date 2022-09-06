@@ -51,9 +51,9 @@ class AssetFunction extends TemplateFunctionBase
 	protected function functionBodyImpl(): string
 	{
 		/** @var string */
-		$sourcePath = ArrayUtility::getOr($this->params, 'file', DefaultValue::EMPTY_STRING);
+		$sourcePath = ArrayUtility::getOr($this->params, 'file', Text::EMPTY);
 		if (Text::isNullOrEmpty($sourcePath)) {
-			return DefaultValue::EMPTY_STRING;
+			return Text::EMPTY;
 		}
 
 		$isProduction = Environment::isProduction();

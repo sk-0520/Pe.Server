@@ -19,8 +19,8 @@ abstract class Environment
 	 */
 	private static InitializeChecker $initializeChecker;
 
-	private static string $environment = DefaultValue::EMPTY_STRING;
-	private static string $revision = DefaultValue::EMPTY_STRING;
+	private static string $environment = Text::EMPTY;
+	private static string $revision = Text::EMPTY;
 
 	#endregion
 

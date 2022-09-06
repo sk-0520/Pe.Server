@@ -60,8 +60,8 @@ abstract class Uuid
 			return true;
 		}
 
-		$a = Text::replace($a, '-', DefaultValue::EMPTY_STRING);
-		$b = Text::replace($b, '-', DefaultValue::EMPTY_STRING);
+		$a = Text::replace($a, '-', Text::EMPTY);
+		$b = Text::replace($b, '-', Text::EMPTY);
 
 		if ($a === $b) {
 			return true;
@@ -98,7 +98,7 @@ abstract class Uuid
 		}
 
 		$a = Text::trim($value, '{}');
-		$b = Text::replace($a, '-', DefaultValue::EMPTY_STRING);
+		$b = Text::replace($a, '-', Text::EMPTY);
 		if (Text::getLength($b) !== 32) {
 			throw new ArgumentException();
 		}

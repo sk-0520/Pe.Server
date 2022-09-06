@@ -42,7 +42,7 @@ class Mailer
 	/**
 	 * Return-Path:
 	 */
-	public string $returnPath = DefaultValue::EMPTY_STRING;
+	public string $returnPath = Text::EMPTY;
 	/**
 	 * FROM:
 	 */
@@ -69,7 +69,7 @@ class Mailer
 	/**
 	 * 件名。
 	 */
-	public string $subject = DefaultValue::EMPTY_STRING;
+	public string $subject = Text::EMPTY;
 
 	/**
 	 * メッセージ。
@@ -85,7 +85,7 @@ class Mailer
 	 */
 	public function __construct(IMailSetting $setting)
 	{
-		$this->fromAddress = new EmailAddress(DefaultValue::EMPTY_STRING, DefaultValue::EMPTY_STRING);
+		$this->fromAddress = new EmailAddress(Text::EMPTY, Text::EMPTY);
 		$this->message = new EmailMessage();
 		$this->setting = $setting;
 	}

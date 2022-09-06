@@ -78,7 +78,7 @@ abstract class DomainLogicBase extends LogicBase
 	{
 		$ipAddress = $this->stores->special->getServer('REMOTE_ADDR');
 		$userAgent = $this->stores->special->getServer('HTTP_USER_AGENT');
-		$dumpInfo = DefaultValue::EMPTY_STRING;
+		$dumpInfo = Text::EMPTY;
 		if ($info !== null) {
 			$serializer ??= new JsonSerializer();
 

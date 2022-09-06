@@ -92,7 +92,7 @@ class TemporaryStore
 	private function getOrCreateId(): string
 	{
 		if ($this->hasId()) {
-			return $this->cookie->getOr($this->option->name, DefaultValue::EMPTY_STRING);
+			return $this->cookie->getOr($this->option->name, Text::EMPTY);
 		}
 
 		return Cryptography::generateRandomString(self::ID_LENGTH, Cryptography::FILE_RANDOM_STRING);
@@ -150,7 +150,7 @@ class TemporaryStore
 		$json = File::readJsonFile($path);
 
 		/** @var string */
-		$timestamp = ArrayUtility::getOr($json, 'timestamp', DefaultValue::EMPTY_STRING);
+		$timestamp = ArrayUtility::getOr($json, 'timestamp', Text::EMPTY);
 		if (Text::isNullOrWhiteSpace($timestamp)) {
 			return;
 		}
