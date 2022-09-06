@@ -354,6 +354,27 @@ class ArrTest extends TestClass
 		Arr::range(0, -1);
 		$this->fail();
 	}
+
+	public function test_repeat()
+	{
+		$tests = [
+			new Data([], 0, 0),
+			new Data([0, 0, 0], 0, 3),
+			new Data([3, 3, 3], 3, 3),
+			new Data(['AZ', 'AZ'], 'AZ', 2),
+		];
+		foreach ($tests as $test) {
+			$actual = Arr::repeat(...$test->args);
+			$this->assertSame($test->expected, $actual, $test->str());
+		}
+	}
+
+	public function test_repeat_throw()
+	{
+		$this->expectException(ArgumentException::class);
+		Arr::repeat('VALUE', -1);
+		$this->fail();
+	}
 }
 
 function map_function($value, $key)

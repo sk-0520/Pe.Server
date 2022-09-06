@@ -404,5 +404,28 @@ class Arr
 		return \range($start, $start + $count - 1);
 	}
 
+	/**
+	 * 繰り返される配列を生成。
+	 *
+	 * `array_fill` ラッパー。
+	 *
+	 * @template TRepeatValue
+	 * @param mixed $value 値。
+	 * @phpstan-param TRepeatValue $value
+	 * @param int $count 件数。
+	 * @phpstan-param UnsignedIntegerAlias $count
+	 * @return self
+	 * @phpstan-return TRepeatValue[]
+	 * @see https://www.php.net/manual/function.array-fill.php
+	 */
+	public static function repeat(mixed $value, int $count): array
+	{
+		if ($count < 0) { //@phpstan-ignore-line
+			throw new ArgumentException('$count');
+		}
+
+		return array_fill(0, $count, $value);
+	}
+
 	#endregion
 }
