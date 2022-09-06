@@ -43,7 +43,7 @@ class HtmlXPath
 
 	private function node(): ?DOMNode
 	{
-		if (is_null($this->element)) {
+		if ($this->element === null) {
 			return null;
 		}
 

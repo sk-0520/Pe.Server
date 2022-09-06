@@ -80,7 +80,7 @@ class CookieOption
 	 */
 	public function getExpires(): int
 	{
-		if (is_null($this->span)) {
+		if ($this->span === null) {
 			return 0;
 		}
 

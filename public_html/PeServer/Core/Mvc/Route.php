@@ -204,7 +204,7 @@ class Route
 	private function getActionCore(HttpMethod $httpMethod, Action $action, array $urlParameters): RouteAction
 	{
 		$actionSetting = $action->get($httpMethod);
-		if (is_null($actionSetting)) {
+		if ($actionSetting === null) {
 			return new RouteAction(
 				HttpStatus::methodNotAllowed(),
 				$this->className,

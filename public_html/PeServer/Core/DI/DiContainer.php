@@ -81,7 +81,7 @@ class DiContainer extends DisposerBase implements IDiContainer
 
 	protected function canSetValue(?ReflectionType $parameterType, mixed $value): bool
 	{
-		if (is_null($value)) {
+		if ($value === null) {
 			return false;
 		}
 		if (!is_object($value)) {
@@ -199,12 +199,12 @@ class DiContainer extends DisposerBase implements IDiContainer
 				}
 			}
 
-			if (is_null($item)) {
+			if ($item === null) {
 				$item = $this->getItemFromPropertyType($parameterType, $mappingKeyOnly);
 			}
 
 			// 未登録
-			if (is_null($item)) {
+			if ($item === null) {
 				if ($parameter->isDefaultValueAvailable()) {
 					$result[$parameter->getPosition()] = $parameter->getDefaultValue();
 					continue;
@@ -240,7 +240,7 @@ class DiContainer extends DisposerBase implements IDiContainer
 	{
 		$classReflection = new ReflectionClass($className);
 		$constructor = $classReflection->getConstructor();
-		if (is_null($constructor)) {
+		if ($constructor === null) {
 			return new $className();
 		}
 
@@ -296,7 +296,7 @@ class DiContainer extends DisposerBase implements IDiContainer
 					$item = $this->getMappingItem($id, $mappingKeyOnly);
 				}
 
-				if (is_null($item)) {
+				if ($item === null) {
 					$propertyType = $property->getType();
 					$item = $this->getItemFromPropertyType($propertyType, $mappingKeyOnly);
 				}
@@ -431,7 +431,7 @@ class DiContainer extends DisposerBase implements IDiContainer
 			$reflectionFunc = new ReflectionFunction($callback); //@phpstan-ignore-line
 		}
 
-		if (is_null($reflectionFunc)) { //@phpstan-ignore-line
+		if ($reflectionFunc === null) { //@phpstan-ignore-line
 			throw new TypeError('$callback: ' . Text::dump($callback));
 		}
 

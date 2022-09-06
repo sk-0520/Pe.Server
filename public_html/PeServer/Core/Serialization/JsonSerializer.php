@@ -62,7 +62,7 @@ class JsonSerializer extends SerializerBase
 	protected function loadImpl(Binary $value): array|object
 	{
 		$value = json_decode($value->toString(), true, $this->depth, $this->loadOption | JSON_THROW_ON_ERROR);
-		if (is_null($value)) {
+		if ($value === null) {
 			throw new Exception(json_last_error_msg(), json_last_error());
 		}
 

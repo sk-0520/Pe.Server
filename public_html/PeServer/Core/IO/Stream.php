@@ -414,7 +414,7 @@ class Stream extends ResourceBase
 			return 0;
 		}
 
-		if (is_null($count)) {
+		if ($count === null) {
 			return $this->writeBinary($this->encoding->getBinary($data));
 		}
 

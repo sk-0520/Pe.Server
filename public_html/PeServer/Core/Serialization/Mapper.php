@@ -108,7 +108,7 @@ class Mapper
 						$nestDestination = $property->getValue($destination);
 					}
 
-					if (is_null($nestDestination)) {
+					if ($nestDestination === null) {
 						if (($mapping->flags & Mapping::FLAG_OBJECT_INSTANCE_ONLY) === Mapping::FLAG_OBJECT_INSTANCE_ONLY) {
 							continue;
 						}

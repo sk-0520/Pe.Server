@@ -68,7 +68,7 @@ class LoggerFactory extends DiFactoryBase implements ILoggerFactory
 		$debugLogger = $this->createXdebugLogger($useHeader, $baseTraceIndex);
 
 		if (empty($loggers)) {
-			if (is_null($debugLogger)) {
+			if ($debugLogger === null) {
 				return new NullLogger();
 			}
 			return $debugLogger;

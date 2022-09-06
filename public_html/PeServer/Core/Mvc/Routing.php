@@ -312,13 +312,13 @@ class Routing
 				if ($action->status->is(HttpStatus::none())) {
 					$this->executeAction($action->className, $action->actionSetting, $action->params);
 					return;
-				} else if (is_null($errorAction)) {
+				} else if ($errorAction === null) {
 					$errorAction = $action;
 				}
 			}
 		}
 
-		if (is_null($errorAction)) {
+		if ($errorAction === null) {
 			MiddlewareResult::error(HttpStatus::internalServerError())->apply();
 		} else {
 			MiddlewareResult::error($errorAction->status)->apply();

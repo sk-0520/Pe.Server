@@ -67,7 +67,7 @@ abstract class IOUtility
 	 */
 	public static function clearCache(?string $path)
 	{
-		if (is_null($path)) {
+		if ($path === null) {
 			clearstatcache(true);
 			return;
 		}

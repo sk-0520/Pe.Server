@@ -271,7 +271,7 @@ abstract class LogicBase implements IValidationReceiver
 	protected function peekTemporary(string $key, mixed $fallbackValue = null): mixed
 	{
 		$value = $this->stores->temporary->peek($key);
-		if (is_null($value)) {
+		if ($value === null) {
 			return $fallbackValue;
 		}
 
@@ -281,7 +281,7 @@ abstract class LogicBase implements IValidationReceiver
 	protected function popTemporary(string $key, mixed $fallbackValue = null): mixed
 	{
 		$value = $this->stores->temporary->pop($key);
-		if (is_null($value)) {
+		if ($value === null) {
 			return $fallbackValue;
 		}
 
@@ -627,7 +627,7 @@ abstract class LogicBase implements IValidationReceiver
 	 */
 	public function getContent(): DataContent
 	{
-		if (is_null($this->content)) {
+		if ($this->content === null) {
 			throw new InvalidOperationException();
 		}
 
