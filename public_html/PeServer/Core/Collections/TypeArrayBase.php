@@ -63,7 +63,7 @@ abstract class TypeArrayBase implements ArrayAccess, Countable, IteratorAggregat
 
 	protected function isValidType(mixed $value): void
 	{
-		if (is_null($value)) {
+		if ($value === null) {
 			if (!TypeUtility::isNullable($this->type)) {
 				throw new TypeError('$value');
 			}

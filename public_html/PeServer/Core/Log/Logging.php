@@ -88,7 +88,7 @@ abstract class Logging
 	 */
 	private static function formatMessage($message, ...$parameters): string
 	{
-		if (is_null($message)) {
+		if ($message === null) {
 			if (ArrayUtility::isNullOrEmpty($parameters)) {
 				return DefaultValue::EMPTY_STRING;
 			}

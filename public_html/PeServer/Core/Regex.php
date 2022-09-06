@@ -35,8 +35,8 @@ class Regex
 	 */
 	public function __construct(?Encoding $encoding = null)
 	{
-		if (is_null($encoding)) {
-			if (is_null(self::$firstDefaultEncoding)) {
+		if ($encoding === null) {
+			if (self::$firstDefaultEncoding === null) {
 				self::$firstDefaultEncoding = Encoding::getDefaultEncoding();
 			}
 			$this->encoding = self::$firstDefaultEncoding;
@@ -193,7 +193,7 @@ class Regex
 		if (!$result->success) {
 			throw new RegexException(preg_last_error_msg(), preg_last_error());
 		}
-		if (is_null($result->value)) {
+		if ($result->value === null) {
 			throw new RegexException(preg_last_error_msg(), preg_last_error());
 		}
 

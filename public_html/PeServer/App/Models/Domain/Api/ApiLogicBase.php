@@ -29,7 +29,7 @@ abstract class ApiLogicBase extends DomainLogicBase
 
 	protected function getAuditUserInfo(): ?IAuditUserInfo
 	{
-		if (is_null($this->auditUserInfo)) {
+		if ($this->auditUserInfo === null) {
 			if ($this->request->httpHeader->existsHeader(HttpHeaderName::API_KEY)) {
 				if ($this->request->httpHeader->existsHeader(HttpHeaderName::SECRET_KEY)) {
 					$apiKeys = $this->request->httpHeader->getValues(HttpHeaderName::API_KEY);
@@ -43,7 +43,7 @@ abstract class ApiLogicBase extends DomainLogicBase
 						$userDomainDao = new UserDomainDao($database);
 						$userId = $userDomainDao->selectUserIdFromApiKey($apiKey, $secret);
 
-						if (!is_null($userId)) {
+						if ($userId !== null) {
 							$this->auditUserInfo = new class($userId) implements IAuditUserInfo
 							{
 								public function __construct(private string $userId)

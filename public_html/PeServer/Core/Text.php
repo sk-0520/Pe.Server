@@ -38,7 +38,7 @@ abstract class Text
 	 */
 	public static function isNullOrEmpty(?string $s): bool
 	{
-		if (is_null($s)) {
+		if ($s === null) {
 			return true;
 		}
 

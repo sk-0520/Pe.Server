@@ -204,7 +204,7 @@ class Route
 	private function getActionCore(HttpMethod $httpMethod, Action $action, array $urlParameters): RouteAction
 	{
 		$actionSetting = $action->get($httpMethod);
-		if (is_null($actionSetting)) {
+		if ($actionSetting === null) {
 			return new RouteAction(
 				HttpStatus::methodNotAllowed(),
 				$this->className,
@@ -276,7 +276,7 @@ class Route
 						return ['key' => $value, 'name' => $requestKey, 'value' => $targetValue];
 					}
 				}, ArrayUtility::getKeys($keyPaths), ArrayUtility::getValues($keyPaths)), function ($i) {
-					return !is_null($i);
+					return $i !== null;
 				});
 
 				$calcPathLength = ArrayUtility::getCount($calcPaths);

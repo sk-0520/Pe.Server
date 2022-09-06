@@ -27,7 +27,7 @@ class ArrayUtility
 	 */
 	public static function isNullOrEmpty(?array $array): bool
 	{
-		if (is_null($array)) {
+		if ($array === null) {
 			return true;
 		}
 
@@ -50,9 +50,9 @@ class ArrayUtility
 	 */
 	public static function getOr(?array $array, int|string $key, mixed $fallbackValue)
 	{
-		if (!is_null($array) && isset($array[$key])) {
+		if ($array !== null && isset($array[$key])) {
 			$result = $array[$key];
-			if (!is_null($result) && !is_null($fallbackValue)) { //@phpstan-ignore-line
+			if ($result !== null && $fallbackValue !== null) { //@phpstan-ignore-line
 				$resultType = TypeUtility::getType($result);
 				$fallbackValueType = TypeUtility::getType($fallbackValue);
 				if ($resultType === $fallbackValueType) {
@@ -85,7 +85,7 @@ class ArrayUtility
 	 */
 	public static function tryGet(?array $array, int|string $key, mixed &$result): bool
 	{
-		if (!is_null($array) && isset($array[$key])) {
+		if ($array !== null && isset($array[$key])) {
 			$result = $array[$key];
 			return true;
 		}
@@ -103,7 +103,7 @@ class ArrayUtility
 	 */
 	public static function getCount(?array $array): int
 	{
-		if (is_null($array)) {
+		if ($array === null) {
 			return 0;
 		}
 
@@ -198,7 +198,7 @@ class ArrayUtility
 	public static function getFirstKey(array $array): int|string
 	{
 		$result = array_key_first($array);
-		if (is_null($result)) {
+		if ($result === null) {
 			throw new KeyNotFoundException();
 		}
 
@@ -217,7 +217,7 @@ class ArrayUtility
 	public static function getLastKey(array $array): int|string
 	{
 		$result = array_key_last($array);
-		if (is_null($result)) {
+		if ($result === null) {
 			throw new KeyNotFoundException();
 		}
 

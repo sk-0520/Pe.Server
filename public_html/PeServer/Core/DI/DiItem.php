@@ -248,7 +248,7 @@ class DiItem extends DisposerBase
 			}
 		}
 
-		if (!is_null($disposer)) {
+		if ($disposer !== null) {
 			$disposer->dispose();
 		}
 	}

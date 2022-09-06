@@ -336,7 +336,7 @@ class Collection implements IteratorAggregate
 	 */
 	public function any(?callable $callback = null): bool
 	{
-		if (is_null($callback)) {
+		if ($callback === null) {
 			$this->iterator->rewind();
 			return $this->iterator->valid();
 		}
@@ -377,7 +377,7 @@ class Collection implements IteratorAggregate
 	 */
 	public function count(callable $callback = null): int
 	{
-		if (is_null($callback)) {
+		if ($callback === null) {
 			if ($this->iterator instanceof Countable) {
 				return $this->iterator->count();
 			}
@@ -408,7 +408,7 @@ class Collection implements IteratorAggregate
 	 */
 	public function first(?callable $callback = null): mixed
 	{
-		if (is_null($callback)) {
+		if ($callback === null) {
 			foreach ($this->iterator as $key => $value) {
 				return $value;
 			}
@@ -435,7 +435,7 @@ class Collection implements IteratorAggregate
 	 */
 	public function firstOr(mixed $notFound, ?callable $callback = null): mixed
 	{
-		if (is_null($callback)) {
+		if ($callback === null) {
 			foreach ($this->iterator as $key => $value) {
 				return $value;
 			}
@@ -465,7 +465,7 @@ class Collection implements IteratorAggregate
 		/** @phpstan-var TValue */
 		$current = null;
 
-		if (is_null($callback)) {
+		if ($callback === null) {
 			foreach ($this->iterator as $key => $value) {
 				$isFound = true;
 				$current = $value;
@@ -503,7 +503,7 @@ class Collection implements IteratorAggregate
 		/** @phpstan-var TValue */
 		$current = null;
 
-		if (is_null($callback)) {
+		if ($callback === null) {
 			foreach ($this->iterator as $key => $value) {
 				$isFound = true;
 				$current = $value;
@@ -539,7 +539,7 @@ class Collection implements IteratorAggregate
 		/** @phpstan-var TValue */
 		$current = null;
 
-		if (is_null($callback)) {
+		if ($callback === null) {
 			foreach ($this->iterator as $key => $value) {
 				if ($isFound) {
 					throw new InvalidOperationException();
@@ -583,7 +583,7 @@ class Collection implements IteratorAggregate
 		/** @phpstan-var TValue */
 		$current = null;
 
-		if (is_null($callback)) {
+		if ($callback === null) {
 			foreach ($this->iterator as $key => $value) {
 				if ($isFound) {
 					throw new InvalidOperationException();

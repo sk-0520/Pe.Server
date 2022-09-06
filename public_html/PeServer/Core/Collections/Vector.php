@@ -78,7 +78,7 @@ class Vector extends TypeArrayBase
 
 	protected function throwIfInvalidOffset(mixed $offset): void
 	{
-		if (is_null($offset)) {
+		if ($offset === null) {
 			throw new TypeError('$offset: null');
 		}
 
@@ -167,7 +167,7 @@ class Vector extends TypeArrayBase
 	 */
 	public function offsetSet(mixed $offset, mixed $value): void
 	{
-		if (is_null($offset)) {
+		if ($offset === null) {
 			$this->add($value);
 			return;
 		}

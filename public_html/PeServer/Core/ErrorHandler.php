@@ -84,7 +84,7 @@ class ErrorHandler
 	public final function receiveShutdown(): void
 	{
 		$lastError = error_get_last();
-		if (is_null($lastError)) {
+		if ($lastError === null) {
 			return;
 		}
 
@@ -215,7 +215,7 @@ class ErrorHandler
 			"$file" => File::readContent($file)->getRaw(),
 		];
 
-		if (!is_null($throwable)) {
+		if ($throwable !== null) {
 			foreach ($throwable->getTrace() as $item) {
 				if (isset($item['file'])) {
 					$f = $item['file'];

@@ -107,13 +107,13 @@ class RouteTest extends TestClass
 			foreach ($test['request'] as $request) {
 				$actual = $route->getAction(...$request['input']);
 				$input = var_export($request['input'], true);
-				if (is_null($request['expected'])) {
+				if ($request['expected'] === null) {
 					$this->assertSame(404, $actual->status->getCode(), $input);
 					$this->assertSame('', $actual->actionSetting->controllerMethod, $input);
 				} else {
 					$this->assertSame($request['expected'][0], $actual->className, $input);
 					$this->assertSame($request['expected'][1], $actual->actionSetting->controllerMethod, $input);
-					if (isset($request['expected'][2]) && !is_null($request['expected'][2])) {
+					if (isset($request['expected'][2]) && $request['expected'][2] !== null) {
 						foreach ($request['expected'][2] as $key => $value) {
 							$this->assertSame($request['expected'][2][$key], $actual->params[$key], $input);
 						}

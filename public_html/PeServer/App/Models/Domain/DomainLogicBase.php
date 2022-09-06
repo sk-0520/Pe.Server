@@ -49,7 +49,7 @@ abstract class DomainLogicBase extends LogicBase
 		$result = [
 			'data' => $responseJson->data,
 		];
-		if (!is_null($responseJson->error)) {
+		if ($responseJson->error !== null) {
 			$result['error'] = $responseJson->error;
 		}
 
@@ -79,7 +79,7 @@ abstract class DomainLogicBase extends LogicBase
 		$ipAddress = $this->stores->special->getServer('REMOTE_ADDR');
 		$userAgent = $this->stores->special->getServer('HTTP_USER_AGENT');
 		$dumpInfo = DefaultValue::EMPTY_STRING;
-		if (!is_null($info)) {
+		if ($info !== null) {
 			$serializer ??= new JsonSerializer();
 
 			$dumpInfo = strval($serializer->save($info));
@@ -104,7 +104,7 @@ abstract class DomainLogicBase extends LogicBase
 	protected function writeAuditLogCurrentUser(string $event, mixed $info = null, ?IDatabaseContext $context = null): int
 	{
 		$userInfo = $this->getAuditUserInfo();
-		if (is_null($userInfo)) {
+		if ($userInfo === null) {
 			$this->logger->error('監査ログ ユーザー情報取得失敗のため書き込み中止');
 			return -1;
 		}

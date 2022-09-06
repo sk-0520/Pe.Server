@@ -81,7 +81,7 @@ class Dictionary extends TypeArrayBase
 
 	protected function throwIfInvalidOffset(mixed $offset): void
 	{
-		if (is_null($offset)) {
+		if ($offset === null) {
 			throw new TypeError('$offset: null');
 		}
 
@@ -125,7 +125,7 @@ class Dictionary extends TypeArrayBase
 	 */
 	public function offsetSet(mixed $offset, mixed $value): void
 	{
-		if (is_null($offset)) {
+		if ($offset === null) {
 			throw new ArgumentNullException();
 		}
 

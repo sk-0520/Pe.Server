@@ -54,7 +54,7 @@ class CaseInsensitiveKeyArray implements ArrayAccess, Countable, IteratorAggrega
 	 */
 	public function __construct(array $input = null)
 	{
-		if (!is_null($input)) {
+		if ($input !== null) {
 			foreach ($input as $key => $value) {
 				$this->offsetSet($key, $value);
 			}
@@ -145,7 +145,7 @@ class CaseInsensitiveKeyArray implements ArrayAccess, Countable, IteratorAggrega
 	 */
 	public function offsetSet(mixed $offset, mixed $value): void
 	{
-		if (is_null($offset)) {
+		if ($offset === null) {
 			throw new NotSupportedException();
 		}
 		if (is_int($offset)) {

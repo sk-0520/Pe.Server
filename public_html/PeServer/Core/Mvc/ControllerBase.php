@@ -111,7 +111,7 @@ abstract class ControllerBase
 	 */
 	protected function createLogic(string $logicClass, array $arguments = []): LogicBase
 	{
-		if (!is_null($this->logic)) {
+		if ($this->logic !== null) {
 			throw new InvalidOperationException();
 		}
 
@@ -136,7 +136,7 @@ abstract class ControllerBase
 		/** @phpstan-var array<non-empty-string,string[]> */
 		$headers = [];
 
-		if (!is_null($this->logic)) {
+		if ($this->logic !== null) {
 			$headers = $this->logic->getResponseHeaders();
 		}
 

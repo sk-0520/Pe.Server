@@ -226,7 +226,7 @@ class Stream extends ResourceBase
 	{
 		$path = 'php://temp';
 
-		if (!is_null($memoryByteSize)) {
+		if ($memoryByteSize !== null) {
 			if ($memoryByteSize < 0) {
 				throw new ArgumentException('$byteSize: ' . $memoryByteSize);
 			}
@@ -414,7 +414,7 @@ class Stream extends ResourceBase
 			return 0;
 		}
 
-		if (is_null($count)) {
+		if ($count === null) {
 			return $this->writeBinary($this->encoding->getBinary($data));
 		}
 
