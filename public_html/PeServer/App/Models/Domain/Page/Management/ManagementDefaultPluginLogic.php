@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domain\Page\Management;
 
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\DefaultValue;
 use PeServer\Core\Text;
 use PeServer\Core\TypeUtility;
@@ -104,7 +104,7 @@ class ManagementDefaultPluginLogic extends PageLogicBase
 		$database = $this->openDatabase();
 
 		$pluginsEntityDao = new PluginsEntityDao($database);
-		for ($i = 0; $i < ArrayUtility::getCount($this->defaultPlugins); $i++) {
+		for ($i = 0; $i < Arr::getCount($this->defaultPlugins); $i++) {
 			$this->defaultPlugins[$i]['registered'] = $pluginsEntityDao->selectExistsPluginId($this->defaultPlugins[$i]['plugin_id']);
 		}
 	}
@@ -131,7 +131,7 @@ class ManagementDefaultPluginLogic extends PageLogicBase
 				'user_id' => $account->userId,
 			];
 
-			if (ArrayUtility::getCount($params['plugins'])) {
+			if (Arr::getCount($params['plugins'])) {
 				$database = $this->openDatabase();
 				$database->transaction(function (IDatabaseContext $context) use ($params) {
 
@@ -155,7 +155,7 @@ class ManagementDefaultPluginLogic extends PageLogicBase
 				'user_id' => $account->userId,
 			];
 
-			if (ArrayUtility::getCount($params['plugins'])) {
+			if (Arr::getCount($params['plugins'])) {
 				$database = $this->openDatabase();
 				$database->transaction(function (IDatabaseContext $context) use ($params) {
 					$pluginsEntityDao = new PluginsEntityDao($context);

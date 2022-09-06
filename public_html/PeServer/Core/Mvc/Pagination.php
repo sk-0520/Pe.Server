@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc;
 
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Mvc\PageShortcut;
 use PeServer\Core\Throws\ArgumentException;
 

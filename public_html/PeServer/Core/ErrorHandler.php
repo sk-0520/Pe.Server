@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core;
 
 use \Throwable;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\DefaultValue;
 use PeServer\Core\DI\Inject;
 use PeServer\Core\Http\HttpStatus;
@@ -89,13 +90,13 @@ class ErrorHandler
 		}
 
 		/** @var int */
-		$type = ArrayUtility::getOr($lastError, 'type', -1);
+		$type = Arr::getOr($lastError, 'type', -1);
 		/** @var string */
-		$message = ArrayUtility::getOr($lastError, 'message', Text::EMPTY);
+		$message = Arr::getOr($lastError, 'message', Text::EMPTY);
 		/** @var string */
-		$file = ArrayUtility::getOr($lastError, 'file', '<unknown>');
+		$file = Arr::getOr($lastError, 'file', '<unknown>');
 		/** @var int */
-		$line = ArrayUtility::getOr($lastError, 'line', 0);
+		$line = Arr::getOr($lastError, 'line', 0);
 
 		$this->_catchError(
 			$type,

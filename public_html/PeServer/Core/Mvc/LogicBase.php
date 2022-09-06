@@ -6,7 +6,7 @@ namespace PeServer\Core\Mvc;
 
 use \DateInterval;
 use \DateTimeImmutable;
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Binary;
 use PeServer\Core\DefaultValue;
 use PeServer\Core\Http\HttpRequest;
@@ -234,15 +234,15 @@ abstract class LogicBase implements IValidationReceiver
 				$cookieOption = $option;
 			} else {
 				/** @var string */
-				$path = ArrayUtility::getOr($option, 'path', $this->stores->cookie->option->path);
+				$path = Arr::getOr($option, 'path', $this->stores->cookie->option->path);
 				/** @var \DateInterval|null */
-				$span = ArrayUtility::getOr($option, 'span', $this->stores->cookie->option->span);
+				$span = Arr::getOr($option, 'span', $this->stores->cookie->option->span);
 				/** @var bool */
-				$secure = ArrayUtility::getOr($option, 'secure', $this->stores->cookie->option->secure);
+				$secure = Arr::getOr($option, 'secure', $this->stores->cookie->option->secure);
 				/** @var bool */
-				$httpOnly = ArrayUtility::getOr($option, 'httpOnly', $this->stores->cookie->option->httpOnly);
+				$httpOnly = Arr::getOr($option, 'httpOnly', $this->stores->cookie->option->httpOnly);
 				/** @var 'Lax'|'lax'|'None'|'none'|'Strict'|'strict' */
-				$sameSite = ArrayUtility::getOr($option, 'sameSite', $this->stores->cookie->option->sameSite);
+				$sameSite = Arr::getOr($option, 'sameSite', $this->stores->cookie->option->sameSite);
 
 				$cookieOption = new CookieOption(
 					$path,
@@ -393,7 +393,7 @@ abstract class LogicBase implements IValidationReceiver
 	 */
 	protected function setValue(string $key, $value): void
 	{
-		if (ArrayUtility::getCount($this->keys)) {
+		if (Arr::getCount($this->keys)) {
 			if (array_search($key, $this->keys) === false) {
 				throw new ArgumentException("未登録 key -> $key");
 			}
@@ -448,9 +448,9 @@ abstract class LogicBase implements IValidationReceiver
 	protected function validation(string $key, callable $callback, ?array $option = null): void
 	{
 		/** @var string */
-		$default = ArrayUtility::getOr($option, 'default', Text::EMPTY);
+		$default = Arr::getOr($option, 'default', Text::EMPTY);
 		/** @var bool */
-		$trim = ArrayUtility::getOr($option, 'trim', true);
+		$trim = Arr::getOr($option, 'trim', true);
 
 		$value = $this->getRequest($key, $default, $trim);
 		$callback($key, $value);
@@ -647,7 +647,7 @@ abstract class LogicBase implements IValidationReceiver
 	 */
 	public function tryGetResult(string $key, &$result): bool
 	{
-		return ArrayUtility::tryGet($this->result, $key, $result);
+		return Arr::tryGet($this->result, $key, $result);
 	}
 
 	/**

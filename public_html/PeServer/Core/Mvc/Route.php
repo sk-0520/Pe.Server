@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc;
 
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Code;
 use PeServer\Core\DefaultValue;
 use PeServer\Core\Http\HttpMethod;
@@ -102,7 +102,7 @@ class Route
 			$this->basePath = $trimPath;
 		}
 
-		if (ArrayUtility::containsValue($middleware, self::CLEAR_MIDDLEWARE)) {
+		if (Arr::containsValue($middleware, self::CLEAR_MIDDLEWARE)) {
 			throw new ArgumentException('$middleware');
 		}
 
@@ -144,9 +144,9 @@ class Route
 	private static function combineMiddleware(array $baseMiddleware, ?array $middleware = null): array
 	{
 		$customMiddleware = null;
-		if (ArrayUtility::getCount($middleware)) {
+		if (Arr::getCount($middleware)) {
 			$customMiddleware = [];
-			foreach ($middleware as $index => $mw) { // @phpstan-ignore-line ArrayUtility::getCount
+			foreach ($middleware as $index => $mw) { // @phpstan-ignore-line Arr::getCount
 				if ($index) {
 					if ($mw === self::CLEAR_MIDDLEWARE) {
 						throw new ArgumentException();
@@ -259,7 +259,7 @@ class Route
 				}
 
 				$keyPaths = Text::split($key, '/');
-				if (ArrayUtility::getCount($keyPaths) !== ArrayUtility::getCount($actionPaths)) {
+				if (Arr::getCount($keyPaths) !== Arr::getCount($actionPaths)) {
 					continue;
 				}
 
@@ -272,7 +272,7 @@ class Route
 					}
 					$splitPaths = Text::split($value, '@', 2);
 					$requestKey = Text::substring($splitPaths[0], 1);
-					$isRegex = 1 < ArrayUtility::getCount($splitPaths);
+					$isRegex = 1 < Arr::getCount($splitPaths);
 					if ($isRegex) {
 						$pattern = Code::toLiteralString("/$splitPaths[1]/");
 						if ($this->regex->isMatch($targetValue, $pattern)) {
@@ -282,13 +282,13 @@ class Route
 					} else {
 						return ['key' => $value, 'name' => $requestKey, 'value' => $targetValue];
 					}
-				}, ArrayUtility::getKeys($keyPaths), ArrayUtility::getValues($keyPaths)), function ($i) {
+				}, Arr::getKeys($keyPaths), Arr::getValues($keyPaths)), function ($i) {
 					return $i !== null;
 				});
 
-				$calcPathLength = ArrayUtility::getCount($calcPaths);
+				$calcPathLength = Arr::getCount($calcPaths);
 				// 非URLパラメータ項目は一致するか
-				if ($calcPathLength !== ArrayUtility::getCount($actionPaths)) {
+				if ($calcPathLength !== Arr::getCount($actionPaths)) {
 					continue;
 				}
 				$success = true;

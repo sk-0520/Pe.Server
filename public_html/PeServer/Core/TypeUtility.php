@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Throws\ParseException;
 
 /**
@@ -74,7 +75,7 @@ abstract class TypeUtility
 		if (is_string($input)) {
 			$s = Text::toLower(Text::trim((string)$input));
 			$trues = ['true', 't', 'on', 'ok', '1'];
-			return ArrayUtility::containsValue($trues, $s);
+			return Arr::containsValue($trues, $s);
 		}
 
 		return boolval($input);

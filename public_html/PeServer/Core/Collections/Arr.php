@@ -2,19 +2,22 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core;
+namespace PeServer\Core\Collections;
 
+use PeServer\Core\Cryptography;
+use PeServer\Core\ErrorHandler;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Throws\KeyNotFoundException;
 use PeServer\Core\Throws\TypeException;
+use PeServer\Core\TypeUtility;
 
 /**
  * 配列共通処理。
  *
  * 遅延処理が必要な場合 `Collections\Collection` を参照のこと。
  */
-class ArrayUtility
+class Arr
 {
 	#region function
 

@@ -7,7 +7,7 @@ namespace PeServer\Core\Html;
 use \DomainException;
 use \Highlight\Highlighter;
 use \HighlightUtilities\Functions;
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Text;
 use PeServer\Core\TypeUtility;
 
@@ -81,7 +81,7 @@ class CodeHighlighter
 		foreach ($lines as $key => $line) {
 			$number = $key + 1;
 			$addClass = '';
-			if (ArrayUtility::in($lineNumbers, $number)) {
+			if (Arr::in($lineNumbers, $number)) {
 				$addClass = 'strong-line';
 			}
 			$sourceLine = '<span class="code-line ' . $addClass . '" data-line=' . $number . '>' . $line . '</span>';

@@ -13,7 +13,7 @@ use \Iterator;
 use \IteratorAggregate;
 use \LimitIterator;
 use \Traversable;
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\TypeUtility;
@@ -169,7 +169,7 @@ class Collection implements IteratorAggregate
 	public function toList(string $type = TypeUtility::TYPE_NULL): Vector
 	{
 		$array = self::toArray();
-		if (ArrayUtility::isNullOrEmpty($array)) {
+		if (Arr::isNullOrEmpty($array)) {
 			return Vector::empty($type);
 		}
 		/** @phpstan-var non-empty-array<TValue> $array */
@@ -211,7 +211,7 @@ class Collection implements IteratorAggregate
 			$buffer[$k] = $v;
 		}
 
-		if (ArrayUtility::isNullOrEmpty($buffer)) {
+		if (Arr::isNullOrEmpty($buffer)) {
 			return Dictionary::empty($type);
 		}
 		/** @phpstan-var non-empty-array<string,TResult> $buffer */

@@ -9,7 +9,7 @@ use PeServer\Core\Environment;
 use PeServer\Core\IO\IOUtility;
 use PeServer\Core\IO\Path;
 use PeServer\Core\IO\File;
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\DefaultValue;
 use PeServer\Core\Text;
 use PeServer\Core\TypeUtility;
@@ -51,7 +51,7 @@ class AssetFunction extends TemplateFunctionBase
 	protected function functionBodyImpl(): string
 	{
 		/** @var string */
-		$sourcePath = ArrayUtility::getOr($this->params, 'file', Text::EMPTY);
+		$sourcePath = Arr::getOr($this->params, 'file', Text::EMPTY);
 		if (Text::isNullOrEmpty($sourcePath)) {
 			return Text::EMPTY;
 		}
@@ -83,8 +83,8 @@ class AssetFunction extends TemplateFunctionBase
 			$dom->addComment(Text::dump($this->params));
 		}
 
-		$autoSize = TypeUtility::parseBoolean(ArrayUtility::getOr($this->params, 'auto_size', 'false'));
-		$include = TypeUtility::parseBoolean(ArrayUtility::getOr($this->params, 'include', 'false'));
+		$autoSize = TypeUtility::parseBoolean(Arr::getOr($this->params, 'auto_size', 'false'));
+		$include = TypeUtility::parseBoolean(Arr::getOr($this->params, 'include', 'false'));
 
 		$filePath = Path::combine($this->argument->rootDirectoryPath, $sourcePath);
 		if (($autoSize || $include) || !FIle::exists($filePath)) {
@@ -106,7 +106,7 @@ class AssetFunction extends TemplateFunctionBase
 		/** @var DOMElement */
 		$element = null;
 
-		if (ArrayUtility::tryGet($this->params, 'rel', $relValue)) {
+		if (Arr::tryGet($this->params, 'rel', $relValue)) {
 			switch ($relValue) {
 				case 'icon':
 					$element = $dom->addElement('link');
@@ -176,7 +176,7 @@ class AssetFunction extends TemplateFunctionBase
 		}
 
 		foreach ($this->params as $key => $value) {
-			if (ArrayUtility::containsValue($skipAttributes, $key)) {
+			if (Arr::containsValue($skipAttributes, $key)) {
 				continue;
 			}
 			$element->setAttribute($key, $value);

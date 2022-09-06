@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServerTest\Core\Mvc;
 
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Mvc\PageShortcut;
 use PeServer\Core\Mvc\Pagination;
 use PeServer\Core\Throws\ArgumentException;
@@ -74,7 +74,7 @@ class PaginationTest extends TestClass
 	public function test_getPageNumbers_count($expected, $currentPageNumber, $itemCountInPage, $totalItemCount, $shortcutMaxCount)
 	{
 		$pager = new Pagination($currentPageNumber, $itemCountInPage, $totalItemCount, shortcutMaxCount: $shortcutMaxCount);
-		$this->assertSame($expected, ArrayUtility::getCount($pager->getPageNumbers()));
+		$this->assertSame($expected, Arr::getCount($pager->getPageNumbers()));
 	}
 
 	public static function provider_getPageNumbers_pageNumber()
@@ -136,7 +136,7 @@ class PaginationTest extends TestClass
 	{
 		$pager = new Pagination($currentPageNumber, $itemCountInPage, $totalItemCount, shortcutMaxCount: $shortcutMaxCount);
 		$shortcuts = $pager->getPageNumbers();
-		$this->assertSame(ArrayUtility::getCount($expected), ArrayUtility::getCount($shortcuts));
+		$this->assertSame(Arr::getCount($expected), Arr::getCount($shortcuts));
 		for ($i = 0; $i < count($expected); $i++) {
 			$e = $expected[$i];
 			$s = $shortcuts[$i];

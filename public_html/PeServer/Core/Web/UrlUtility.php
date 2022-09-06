@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Web;
 
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\DefaultValue;
 use PeServer\Core\Store\SpecialStore;
 use PeServer\Core\Text;
@@ -111,7 +111,7 @@ abstract class UrlUtility
 	 */
 	public static function joinQuery(string $baseUrl, array $query, int $queryKind = self::URL_KIND_RFC1738): string
 	{
-		if (!ArrayUtility::isNullOrEmpty($query)) {
+		if (!Arr::isNullOrEmpty($query)) {
 			if (Text::contains($baseUrl, '?', false)) {
 				return $baseUrl . '&' . self::buildQuery($query, $queryKind);
 			}
@@ -155,7 +155,7 @@ abstract class UrlUtility
 		}, $paths));
 
 		$joinUrl = Text::join('/', [$url, ...$trimPaths]);
-		if (1 < ArrayUtility::getCount($pair)) {
+		if (1 < Arr::getCount($pair)) {
 			$joinUrl .= '?' . $pair[1];
 		}
 

@@ -10,7 +10,7 @@ use \Countable;
 use \IteratorAggregate;
 use \Traversable;
 use \TypeError;
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\TypeUtility;
 
 /**
@@ -92,7 +92,7 @@ abstract class TypeArrayBase implements ArrayAccess, Countable, IteratorAggregat
 	/** @phpstan-return UnsignedIntegerAlias */
 	public function count(): int
 	{
-		return ArrayUtility::getCount($this->items);
+		return Arr::getCount($this->items);
 	}
 
 	#endregion

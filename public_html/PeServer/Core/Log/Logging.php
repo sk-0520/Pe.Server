@@ -6,7 +6,7 @@ namespace PeServer\Core\Log;
 
 use \DateTimeImmutable;
 use \DateTimeInterface;
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Cryptography;
 use PeServer\Core\DefaultValue;
 use PeServer\Core\DI\DiItem;
@@ -89,13 +89,13 @@ abstract class Logging
 	private static function formatMessage($message, ...$parameters): string
 	{
 		if ($message === null) {
-			if (ArrayUtility::isNullOrEmpty($parameters)) {
+			if (Arr::isNullOrEmpty($parameters)) {
 				return Text::EMPTY;
 			}
 			return Text::dump($parameters);
 		}
 
-		if (is_string($message) && !ArrayUtility::isNullOrEmpty($parameters) && array_keys($parameters)[0] === 0) {
+		if (is_string($message) && !Arr::isNullOrEmpty($parameters) && array_keys($parameters)[0] === 0) {
 			/** @var string[] */
 			$values = array_map(function ($value) {
 				if (is_string($value)) {
@@ -117,7 +117,7 @@ abstract class Logging
 			return Text::replaceMap($message, $map);
 		}
 
-		if (ArrayUtility::isNullOrEmpty($parameters)) {
+		if (Arr::isNullOrEmpty($parameters)) {
 			if (is_string($message)) {
 				return $message;
 			}
@@ -188,7 +188,7 @@ abstract class Logging
 		$traceMethod = $backtrace[$traceIndex + 1];
 
 		/** @var string */
-		$filePath = ArrayUtility::getOr($traceCaller, 'file', Text::EMPTY);
+		$filePath = Arr::getOr($traceCaller, 'file', Text::EMPTY);
 
 		/** @var array<string,string> */
 		$map = [
@@ -206,10 +206,10 @@ abstract class Logging
 			//-------------------
 			'FILE' => $filePath,
 			'FILE_NAME' => Path::getFileName($filePath),
-			'LINE' => ArrayUtility::getOr($traceCaller, 'line', 0),
-			//'CLASS' => ArrayUtility::getOr($traceMethod, 'class', Text::EMPTY),
-			'FUNCTION' => ArrayUtility::getOr($traceMethod, 'function', Text::EMPTY),
-			//'ARGS' => ArrayUtility::getOr($traceMethod, 'args', Text::EMPTY),
+			'LINE' => Arr::getOr($traceCaller, 'line', 0),
+			//'CLASS' => Arr::getOr($traceMethod, 'class', Text::EMPTY),
+			'FUNCTION' => Arr::getOr($traceMethod, 'function', Text::EMPTY),
+			//'ARGS' => Arr::getOr($traceMethod, 'args', Text::EMPTY),
 			//-------------------
 			'LEVEL' => self::formatLevel($level),
 			'HEADER' => $header,

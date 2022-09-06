@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
+use PeServer\Core\Collections\Arr;
+
 /**
  * データ容量変換。
  */
@@ -55,7 +57,7 @@ class SizeConverter
 	{
 		$size = $byteSize;
 		$order = 0;
-		$unitCount = ArrayUtility::getCount($this->units);
+		$unitCount = Arr::getCount($this->units);
 		while ($size >= $this->kbSize && ++$order < $unitCount) {
 			$size = $size / $this->kbSize;
 		}

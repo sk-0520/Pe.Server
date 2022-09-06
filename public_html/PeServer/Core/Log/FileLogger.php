@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Log;
 
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Code;
 use PeServer\Core\IO\IOUtility;
 use PeServer\Core\Log\LoggerBase;
@@ -52,15 +52,15 @@ class FileLogger extends LoggerBase
 	{
 		parent::__construct($options);
 
-		$directoryPath = ArrayUtility::getOr($this->options->configuration, 'directory', '');
+		$directoryPath = Arr::getOr($this->options->configuration, 'directory', '');
 		Enforce::throwIfNullOrWhiteSpace($directoryPath);
 		$this->directoryPath = $directoryPath;
 
-		$baseFileName = Code::toLiteralString(ArrayUtility::getOr($this->options->configuration, 'name', ''));
+		$baseFileName = Code::toLiteralString(Arr::getOr($this->options->configuration, 'name', ''));
 		Enforce::throwIfNullOrWhiteSpace($baseFileName);
 		$this->baseFileName = $baseFileName;
 
-		$count = ArrayUtility::getOr($this->options->configuration, 'count', 0);
+		$count = Arr::getOr($this->options->configuration, 'count', 0);
 		Enforce::throwIf(0 <= $count);
 		$this->cleanup($count);
 	}
@@ -90,7 +90,7 @@ class FileLogger extends LoggerBase
 	private function cleanupCore(int $maxCount, string $filePattern): void
 	{
 		$logFiles = Directory::find($this->directoryPath, $filePattern);
-		$logCount = ArrayUtility::getCount($logFiles);
+		$logCount = Arr::getCount($logFiles);
 		if ($logCount <= $maxCount) {
 			return;
 		}
@@ -120,7 +120,7 @@ class FileLogger extends LoggerBase
 				'DATE' => $this->toHeaderDate(true),
 			]
 		);
-		if (!ArrayUtility::containsValue(self::$cleanupFilePatterns, $filePattern)) {
+		if (!Arr::containsValue(self::$cleanupFilePatterns, $filePattern)) {
 			self::$cleanupFilePatterns[] = $filePattern;
 			$this->cleanupCore($maxCount, $filePattern);
 		}

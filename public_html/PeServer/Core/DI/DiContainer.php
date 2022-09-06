@@ -14,7 +14,7 @@ use \ReflectionProperty;
 use \ReflectionType;
 use \ReflectionUnionType;
 use \TypeError;
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\DI\DiItem;
 use PeServer\Core\DI\Inject;
 use PeServer\Core\DI\IScopedDiContainer;
@@ -189,7 +189,7 @@ class DiContainer extends DisposerBase implements IDiContainer
 
 			// 属性指定
 			$attributes = $parameter->getAttributes(Inject::class);
-			if (!ArrayUtility::isNullOrEmpty($attributes)) {
+			if (!Arr::isNullOrEmpty($attributes)) {
 				/** @var Inject */
 				$attribute = $attributes[0]->newInstance();
 				if (!Text::isNullOrWhiteSpace($attribute->id)) {
@@ -284,7 +284,7 @@ class DiContainer extends DisposerBase implements IDiContainer
 
 			$attributes = $property->getAttributes(Inject::class);
 
-			if (!ArrayUtility::isNullOrEmpty($attributes)) {
+			if (!Arr::isNullOrEmpty($attributes)) {
 				/** @var DiItem|null */
 				$item = null;
 
@@ -411,7 +411,7 @@ class DiContainer extends DisposerBase implements IDiContainer
 
 		if (is_string($callback)) {
 			$methodArray = Text::split($callback, '::');
-			$methodCount = ArrayUtility::getCount($methodArray);
+			$methodCount = Arr::getCount($methodArray);
 			if ($methodCount === 0 || 2 < $methodCount) {
 				throw new TypeError('$callback: ' . $callback);
 			}
@@ -422,7 +422,7 @@ class DiContainer extends DisposerBase implements IDiContainer
 				$reflectionFunc = $reflectionClass->getMethod($methodArray[1]);
 			}
 		} else if (is_array($callback)) {
-			if (ArrayUtility::getCount($callback) !== 2) {
+			if (Arr::getCount($callback) !== 2) {
 				throw new TypeError('$callback: ' . Text::dump($callback));
 			}
 			$reflectionClass = new ReflectionClass($callback[0]);

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc\Template\Plugin;
 
 use PeServer\Core\I18n;
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Text;
 use PeServer\Core\Mvc\Validator;
 use PeServer\Core\Html\HtmlDocument;
@@ -40,7 +40,7 @@ class ShowErrorMessagesFunction extends TemplateFunctionBase
 
 		$errors = $this->getErrors();
 
-		if (ArrayUtility::isNullOrEmpty($errors)) {
+		if (Arr::isNullOrEmpty($errors)) {
 			return Text::EMPTY;
 		}
 
@@ -58,7 +58,7 @@ class ShowErrorMessagesFunction extends TemplateFunctionBase
 			if (!isset($errors[$targetKey])) {
 				return Text::EMPTY;
 			}
-			if (ArrayUtility::isNullOrEmpty($errors[$targetKey])) {
+			if (Arr::isNullOrEmpty($errors[$targetKey])) {
 				return Text::EMPTY;
 			}
 		}

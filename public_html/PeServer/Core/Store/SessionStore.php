@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Store;
 
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\DefaultValue;
 use PeServer\Core\IO\Directory;
 use PeServer\Core\IO\IOUtility;
@@ -201,7 +201,7 @@ class SessionStore
 
 		// セッションにCSRFトークンが存在しない場合は生成
 		/**  */
-		if (!ArrayUtility::tryGet($_SESSION, Security::CSRF_SESSION_KEY, $unused)) {
+		if (!Arr::tryGet($_SESSION, Security::CSRF_SESSION_KEY, $unused)) {
 			$csrfToken = Security::generateCsrfToken();
 			$this->set(Security::CSRF_SESSION_KEY, $csrfToken);
 		}
@@ -292,7 +292,7 @@ class SessionStore
 	 */
 	public function getOr(string $key, mixed $fallbackValue): mixed
 	{
-		return ArrayUtility::getOr($this->values, $key, $fallbackValue);
+		return Arr::getOr($this->values, $key, $fallbackValue);
 	}
 
 	/**
@@ -305,7 +305,7 @@ class SessionStore
 	 */
 	public function tryGet(string $key, mixed &$result): bool
 	{
-		return ArrayUtility::tryGet($this->values, $key, $result);
+		return Arr::tryGet($this->values, $key, $result);
 	}
 
 	#endregion

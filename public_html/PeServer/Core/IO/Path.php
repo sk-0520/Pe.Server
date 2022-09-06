@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\IO;
 
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\DefaultValue;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
@@ -155,10 +155,10 @@ abstract class Path
 		$parts = pathinfo($path);
 
 		$result = new PathParts(
-			ArrayUtility::getOr($parts, 'dirname', '.'),
-			ArrayUtility::getOr($parts, 'basename', Text::EMPTY),
-			ArrayUtility::getOr($parts, 'filename', Text::EMPTY),
-			ArrayUtility::getOr($parts, 'extension', Text::EMPTY)
+			Arr::getOr($parts, 'dirname', '.'),
+			Arr::getOr($parts, 'basename', Text::EMPTY),
+			Arr::getOr($parts, 'filename', Text::EMPTY),
+			Arr::getOr($parts, 'extension', Text::EMPTY)
 		);
 
 		return $result;

@@ -9,7 +9,7 @@ use PeServer\App\Models\Dao\Domain\UserDomainDao;
 use PeServer\App\Models\Domain\DomainLogicBase;
 use PeServer\App\Models\HttpHeaderName;
 use PeServer\App\Models\IAuditUserInfo;
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\DI\Inject;
 use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Mvc\LogicParameter;
@@ -35,7 +35,7 @@ abstract class ApiLogicBase extends DomainLogicBase
 					$apiKeys = $this->request->httpHeader->getValues(HttpHeaderName::API_KEY);
 					$secrets = $this->request->httpHeader->getValues(HttpHeaderName::SECRET_KEY);
 
-					if (ArrayUtility::getCount($apiKeys) === 1 && ArrayUtility::getCount($secrets) === 1) {
+					if (Arr::getCount($apiKeys) === 1 && Arr::getCount($secrets) === 1) {
 						$apiKey = $apiKeys[0];
 						$secret = $secrets[0];
 

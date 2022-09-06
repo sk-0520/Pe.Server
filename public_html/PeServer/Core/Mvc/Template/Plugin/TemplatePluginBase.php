@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc\Template\Plugin;
 
 use \Smarty_Internal_Template;
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Mvc\Template\Plugin\TemplatePluginArgument;
 use PeServer\Core\Throws\InvalidOperationException;
 
@@ -38,7 +38,7 @@ abstract class TemplatePluginBase
 		}
 
 		$errors = $smarty->tpl_vars['errors']->value;
-		if (ArrayUtility::isNullOrEmpty($errors)) {
+		if (Arr::isNullOrEmpty($errors)) {
 			return false;
 		}
 

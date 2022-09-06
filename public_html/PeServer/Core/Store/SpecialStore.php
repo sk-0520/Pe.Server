@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Store;
 
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Text;
 
 /**
@@ -28,13 +28,13 @@ class SpecialStore
 	 */
 	public function getServer(string $name, mixed $fallbackValue = Text::EMPTY): mixed
 	{
-		$result = ArrayUtility::getOr($_SERVER, $name, $fallbackValue);
+		$result = Arr::getOr($_SERVER, $name, $fallbackValue);
 		return $result;
 	}
 
 	public function tryGetServer(string $name, mixed &$result): bool
 	{
-		return ArrayUtility::tryGet($_SERVER, $name, $result);
+		return Arr::tryGet($_SERVER, $name, $result);
 	}
 
 	/**
@@ -55,7 +55,7 @@ class SpecialStore
 	 */
 	public function getServerNames(): array
 	{
-		return ArrayUtility::getKeys($_SERVER);
+		return Arr::getKeys($_SERVER);
 	}
 
 	/**
@@ -67,13 +67,13 @@ class SpecialStore
 	 */
 	public function getCookie(string $name, string $fallbackValue = Text::EMPTY): string
 	{
-		$result = ArrayUtility::getOr($_COOKIE, $name, $fallbackValue);
+		$result = Arr::getOr($_COOKIE, $name, $fallbackValue);
 		return $result;
 	}
 
 	public function tryGetCookie(string $name, ?string &$result): bool
 	{
-		return ArrayUtility::tryGet($_COOKIE, $name, $result);
+		return Arr::tryGet($_COOKIE, $name, $result);
 	}
 
 	/**
@@ -94,7 +94,7 @@ class SpecialStore
 	 */
 	public function getCookieNames(): array
 	{
-		return ArrayUtility::getKeys($_COOKIE);
+		return Arr::getKeys($_COOKIE);
 	}
 
 	/**
@@ -106,13 +106,13 @@ class SpecialStore
 	 */
 	public function getSession(string $name, string $fallbackValue = Text::EMPTY): string
 	{
-		$result = ArrayUtility::getOr($_SESSION, $name, $fallbackValue);
+		$result = Arr::getOr($_SESSION, $name, $fallbackValue);
 		return $result;
 	}
 
 	public function tryGetSession(string $name, ?string &$result): bool
 	{
-		return ArrayUtility::tryGet($_SESSION, $name, $result);
+		return Arr::tryGet($_SESSION, $name, $result);
 	}
 
 	/**
@@ -133,7 +133,7 @@ class SpecialStore
 	 */
 	public function getSessionNames(): array
 	{
-		return ArrayUtility::getKeys($_SESSION);
+		return Arr::getKeys($_SESSION);
 	}
 
 	public function containsGetName(string $name): bool
@@ -143,13 +143,13 @@ class SpecialStore
 
 	public function getGet(string $name, string $fallbackValue = Text::EMPTY): string
 	{
-		$result = ArrayUtility::getOr($_GET, $name, $fallbackValue);
+		$result = Arr::getOr($_GET, $name, $fallbackValue);
 		return $result;
 	}
 
 	public function tryGetGet(string $name, ?string &$result): bool
 	{
-		return ArrayUtility::tryGet($_GET, $name, $result);
+		return Arr::tryGet($_GET, $name, $result);
 	}
 
 	/**
@@ -159,7 +159,7 @@ class SpecialStore
 	 */
 	public function getGetNames(): array
 	{
-		return ArrayUtility::getKeys($_GET);
+		return Arr::getKeys($_GET);
 	}
 
 	public function containsPostName(string $name): bool
@@ -169,13 +169,13 @@ class SpecialStore
 
 	public function getPost(string $name, string $fallbackValue = Text::EMPTY): string
 	{
-		$result = ArrayUtility::getOr($_POST, $name, $fallbackValue);
+		$result = Arr::getOr($_POST, $name, $fallbackValue);
 		return $result;
 	}
 
 	public function tryGetPost(string $name, ?string &$result): bool
 	{
-		return ArrayUtility::tryGet($_POST, $name, $result);
+		return Arr::tryGet($_POST, $name, $result);
 	}
 
 	/**
@@ -185,7 +185,7 @@ class SpecialStore
 	 */
 	public function getPostNames(): array
 	{
-		return ArrayUtility::getKeys($_POST);
+		return Arr::getKeys($_POST);
 	}
 
 	public function containsFileName(string $name): bool
@@ -195,13 +195,13 @@ class SpecialStore
 
 	// public function getFile(string $name, string $fallbackValue = Text::EMPTY): string
 	// {
-	// 	$result = ArrayUtility::getOr($_FILES, $name, $fallbackValue);
+	// 	$result = Arr::getOr($_FILES, $name, $fallbackValue);
 	// 	return $result;
 	// }
 
 	// public function tryGetFile(string $name, ?string &$result): bool
 	// {
-	// 	return ArrayUtility::tryGet($_FILES, $name, $result);
+	// 	return Arr::tryGet($_FILES, $name, $result);
 	// }
 
 	/**
@@ -211,7 +211,7 @@ class SpecialStore
 	 */
 	public function getFileNames(): array
 	{
-		return ArrayUtility::getKeys($_FILES);
+		return Arr::getKeys($_FILES);
 	}
 
 	#endregion

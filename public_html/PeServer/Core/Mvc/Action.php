@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc;
 
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Mvc\ActionSetting;
 use PeServer\Core\Mvc\Middleware\IMiddleware;
@@ -70,7 +70,7 @@ class Action
 	 */
 	public function get(HttpMethod $httpMethod): ?ActionSetting
 	{
-		if (ArrayUtility::tryGet($this->map, $httpMethod->getKind(), $result)) {
+		if (Arr::tryGet($this->map, $httpMethod->getKind(), $result)) {
 			return $result;
 		}
 

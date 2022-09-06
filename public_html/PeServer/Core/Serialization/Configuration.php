@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Serialization;
 
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Code;
 use PeServer\Core\DefaultValue;
 use PeServer\Core\IO\Directory;
@@ -85,7 +85,7 @@ class Configuration
 		if (File::exists($environmentFilePath)) {
 			/** @var array<mixed> */
 			$environmentConfiguration = File::readJsonFile($environmentFilePath);
-			$configuration = ArrayUtility::replace($baseConfiguration, $environmentConfiguration);
+			$configuration = Arr::replace($baseConfiguration, $environmentConfiguration);
 		} else {
 			$configuration = $baseConfiguration;
 		}

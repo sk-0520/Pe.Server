@@ -12,7 +12,7 @@ use PeServer\App\Models\AppCryptography;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\App\Models\Dao\Entities\UsersEntityDao;
 use PeServer\App\Models\Dao\Entities\PluginsEntityDao;
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 
 class AccountUserLogic extends PageLogicBase
 {
@@ -47,7 +47,7 @@ class AccountUserLogic extends PageLogicBase
 		];
 
 		foreach ($userInfoData->fields as $key => $value) {
-			if(ArrayUtility::containsKey($map, $key)) {
+			if(Arr::containsKey($map, $key)) {
 				$this->setValue($map[$key], $value);
 			}
 		}

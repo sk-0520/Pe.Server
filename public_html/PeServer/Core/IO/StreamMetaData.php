@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\IO;
 
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 
 /**
  * `stream_get_meta_data`
@@ -53,16 +53,16 @@ class StreamMetaData
 	public static function createFromStream(array $values):self
 	{
 		return new self(
-			ArrayUtility::getOr($values, 'timed_out', false),
-			ArrayUtility::getOr($values, 'blocked', false),
-			ArrayUtility::getOr($values, 'eof', false),
+			Arr::getOr($values, 'timed_out', false),
+			Arr::getOr($values, 'blocked', false),
+			Arr::getOr($values, 'eof', false),
 			(string)$values['stream_type'],
 			(string)$values['wrapper_type'],
 			(string)$values['mode'],
 			(bool)$values['seekable'],
 			(string)$values['uri'],
-			ArrayUtility::getOr($values, 'crypto', []),
-			ArrayUtility::getOr($values, 'wrapper_data', null),
+			Arr::getOr($values, 'crypto', []),
+			Arr::getOr($values, 'wrapper_data', null),
 			(int)$values['unread_bytes']
 		);
 	}

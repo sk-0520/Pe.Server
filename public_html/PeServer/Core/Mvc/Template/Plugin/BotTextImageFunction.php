@@ -6,7 +6,7 @@ namespace PeServer\Core\Mvc\Template\Plugin;
 
 use \Throwable;
 use PeServer\Core\Image\Alignment;
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Binary;
 use PeServer\Core\CoreUtility;
 use PeServer\Core\Cryptography;
@@ -68,30 +68,30 @@ class BotTextImageFunction extends TemplateFunctionBase
 	private function functionBodyCore(): string
 	{
 		/** @var string */
-		$text = ArrayUtility::getOr($this->params, 'text', Text::EMPTY);
+		$text = Arr::getOr($this->params, 'text', Text::EMPTY);
 		/** @var string */
-		$alt = ArrayUtility::getOr($this->params, 'alt', Text::EMPTY);
+		$alt = Arr::getOr($this->params, 'alt', Text::EMPTY);
 		/**
 		 * @var int
 		 * @phpstan-var positive-int
 		 */
-		$width = (int)ArrayUtility::getOr($this->params, 'width', 100);
+		$width = (int)Arr::getOr($this->params, 'width', 100);
 		/**
 		 * @var int
 		 * @phpstan-var positive-int
 		 */
-		$height = (int)ArrayUtility::getOr($this->params, 'height', 100);
+		$height = (int)Arr::getOr($this->params, 'height', 100);
 		/** @var float */
-		$fontSize = (float)ArrayUtility::getOr($this->params, 'font-size', '12.5');
+		$fontSize = (float)Arr::getOr($this->params, 'font-size', '12.5');
 		/** @var string */
-		$className = ArrayUtility::getOr($this->params, 'class', Text::EMPTY);
+		$className = Arr::getOr($this->params, 'class', Text::EMPTY);
 		/** @var string */
-		$backgroundColorText = ArrayUtility::getOr($this->params, 'background-color', '#eeeeee');
+		$backgroundColorText = Arr::getOr($this->params, 'background-color', '#eeeeee');
 		$backgroundColor = RgbColor::fromHtmlColorCode($backgroundColorText);
 		/** @var string */
-		$foregroundColorText = ArrayUtility::getOr($this->params, 'foreground-color', '#0f0f0f');
+		$foregroundColorText = Arr::getOr($this->params, 'foreground-color', '#0f0f0f');
 		$foregroundColor = RgbColor::fromHtmlColorCode($foregroundColorText);
-		$obfuscateLevel = TypeUtility::parseBoolean(ArrayUtility::getOr($this->params, 'obfuscate-level', 0));
+		$obfuscateLevel = TypeUtility::parseBoolean(Arr::getOr($this->params, 'obfuscate-level', 0));
 
 		$size = new Size($width, $height);
 		$fontFilePath = CoreUtility::DEFAULT_FONT_FILE_PATH;

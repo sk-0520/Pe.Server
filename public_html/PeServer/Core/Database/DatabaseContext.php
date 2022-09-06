@@ -9,7 +9,7 @@ use \PDO;
 use \PDOException;
 use \PDOStatement;
 use \Throwable;
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Database\ConnectionSetting;
 use PeServer\Core\Database\DatabaseColumn;
 use PeServer\Core\Database\DatabaseTableResult;
@@ -340,7 +340,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 
 		/** @phpstan-var DatabaseRowResult<TFieldArray> */
 		$result = $this->convertRowResult($query);
-		if (ArrayUtility::isNullOrEmpty($result->fields)) { //@phpstan-ignore-line 本クラス内限定で空の可能性あり
+		if (Arr::isNullOrEmpty($result->fields)) { //@phpstan-ignore-line 本クラス内限定で空の可能性あり
 			throw new DatabaseException($this->getErrorMessage());
 		}
 
@@ -358,7 +358,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 		/** @phpstan-var DatabaseRowResult<TFieldArray> */
 		$result = $this->convertRowResult($query);
 		$result = $query->fetch();
-		if (ArrayUtility::isNullOrEmpty($result->fields)) {
+		if (Arr::isNullOrEmpty($result->fields)) {
 			return null;
 		}
 
@@ -375,7 +375,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 
 		/** @phpstan-var DatabaseRowResult<TFieldArray> */
 		$result = $this->convertRowResult($query);
-		if (ArrayUtility::isNullOrEmpty($result->fields)) { //@phpstan-ignore-line 本クラス内限定で空の可能性あり
+		if (Arr::isNullOrEmpty($result->fields)) { //@phpstan-ignore-line 本クラス内限定で空の可能性あり
 			throw new DatabaseException($this->getErrorMessage());
 		}
 
@@ -397,7 +397,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 
 		/** @phpstan-var DatabaseRowResult<TFieldArray> */
 		$result = $this->convertRowResult($query);
-		if (ArrayUtility::isNullOrEmpty($result->fields)) { //@phpstan-ignore-line 本クラス内限定で空の可能性あり
+		if (Arr::isNullOrEmpty($result->fields)) { //@phpstan-ignore-line 本クラス内限定で空の可能性あり
 			return null;
 		}
 

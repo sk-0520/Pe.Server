@@ -8,7 +8,7 @@ use PeServer\App\Models\AppDatabaseCache;
 use PeServer\App\Models\Cache\UserCacheItem;
 use PeServer\App\Models\HttpHeaderName;
 use PeServer\App\Models\SessionKey;
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Http\HttpResponse;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mvc\Middleware\IMiddleware;
@@ -36,10 +36,10 @@ abstract class ApiAccountFilterMiddlewareBase implements IMiddleware
 				$apiKeys = $argument->request->httpHeader->getValues(HttpHeaderName::API_KEY);
 				$secrets = $argument->request->httpHeader->getValues(HttpHeaderName::SECRET_KEY);
 
-				if (ArrayUtility::getCount($apiKeys) !== 1) {
+				if (Arr::getCount($apiKeys) !== 1) {
 					return MiddlewareResult::error(HttpStatus::forbidden());
 				}
-				if (ArrayUtility::getCount($secrets) !== 1) {
+				if (Arr::getCount($secrets) !== 1) {
 					return MiddlewareResult::error(HttpStatus::forbidden());
 				}
 
@@ -53,11 +53,11 @@ abstract class ApiAccountFilterMiddlewareBase implements IMiddleware
 				}
 
 				$items = array_filter($userCache->items, fn (UserCacheItem $i) => $i->apiKey === $apiKey && $i->secret === $secret);
-				if (ArrayUtility::getCount($items) !== 1) {
+				if (Arr::getCount($items) !== 1) {
 					return MiddlewareResult::error(HttpStatus::forbidden());
 				}
 
-				$key = ArrayUtility::getFirstKey($items);
+				$key = Arr::getFirstKey($items);
 				$item =  $items[$key];
 				return $this->filter($argument, $item);
 			}

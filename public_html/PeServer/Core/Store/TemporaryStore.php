@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Store;
 
 use \DateInterval;
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Cryptography;
 use PeServer\Core\DefaultValue;
 use PeServer\Core\IO\Directory;
@@ -110,7 +110,7 @@ class TemporaryStore
 			unset($this->values[$key]);
 		}
 
-		if (ArrayUtility::getCount($this->values)) {
+		if (Arr::getCount($this->values)) {
 			$this->cookie->set($this->option->name, $id, $this->option->cookie);
 
 			Directory::createParentDirectoryIfNotExists($path);
@@ -150,7 +150,7 @@ class TemporaryStore
 		$json = File::readJsonFile($path);
 
 		/** @var string */
-		$timestamp = ArrayUtility::getOr($json, 'timestamp', Text::EMPTY);
+		$timestamp = Arr::getOr($json, 'timestamp', Text::EMPTY);
 		if (Text::isNullOrWhiteSpace($timestamp)) {
 			return;
 		}
@@ -167,7 +167,7 @@ class TemporaryStore
 		}
 
 		/** @var array<string,mixed> */
-		$values = ArrayUtility::getOr($json, 'values', []);
+		$values = Arr::getOr($json, 'values', []);
 		$this->values = array_replace($values, $this->values);
 	}
 
@@ -183,7 +183,7 @@ class TemporaryStore
 	{
 		$this->values[$key] = $value;
 
-		if (ArrayUtility::containsValue($this->removes, $key)) {
+		if (Arr::containsValue($this->removes, $key)) {
 			$index = array_search($key, $this->removes);
 			if ($index === false) {
 				throw new InvalidOperationException();
@@ -204,7 +204,7 @@ class TemporaryStore
 		$id = $this->getOrCreateId();
 		$this->import($id);
 
-		if (!ArrayUtility::containsKey($this->values, $key)) {
+		if (!Arr::containsKey($this->values, $key)) {
 			return null;
 		}
 

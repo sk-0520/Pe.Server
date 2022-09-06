@@ -6,7 +6,7 @@ namespace PeServer\App\Models\Domain;
 
 use PeServer\App\Models\AppConfiguration;
 use PeServer\Core\Archiver;
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Environment;
 use PeServer\Core\IO\Directory;
 use PeServer\Core\IO\File;
@@ -52,7 +52,7 @@ class AppArchiver
 	public function rotate(): void
 	{
 		$backupFiles = Directory::find($this->config->setting->cache->backup, '*.zip');
-		$logCount = ArrayUtility::getCount($backupFiles);
+		$logCount = Arr::getCount($backupFiles);
 		if ($logCount <= self::MAX_COUNT) {
 			return;
 		}

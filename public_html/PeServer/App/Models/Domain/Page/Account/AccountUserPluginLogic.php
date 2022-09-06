@@ -15,7 +15,7 @@ use PeServer\App\Models\Domain\PluginState;
 use PeServer\App\Models\Domain\PluginUrlKey;
 use PeServer\App\Models\Domain\PluginValidator;
 use PeServer\App\Models\SessionKey;
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Database\DatabaseTableResult;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\Http\HttpStatus;
@@ -179,9 +179,9 @@ class AccountUserPluginLogic extends PageLogicBase
 				$this->setValue('account_plugin_description', $editMap->fields['description']);
 
 				$urlMap = $pluginUrlsEntityDao->selectUrls($pluginId);
-				$this->setValue('account_plugin_check_url', ArrayUtility::getOr($urlMap, PluginUrlKey::CHECK, Text::EMPTY));
-				$this->setValue('account_plugin_lp_url', ArrayUtility::getOr($urlMap, PluginUrlKey::LANDING, Text::EMPTY));
-				$this->setValue('account_plugin_project_url', ArrayUtility::getOr($urlMap, PluginUrlKey::PROJECT, Text::EMPTY));
+				$this->setValue('account_plugin_check_url', Arr::getOr($urlMap, PluginUrlKey::CHECK, Text::EMPTY));
+				$this->setValue('account_plugin_lp_url', Arr::getOr($urlMap, PluginUrlKey::LANDING, Text::EMPTY));
+				$this->setValue('account_plugin_project_url', Arr::getOr($urlMap, PluginUrlKey::PROJECT, Text::EMPTY));
 
 				$pluginCategoryMappings = $pluginCategoryMappingsEntityDao->selectPluginCategoriesByPluginId($pluginId);
 				$this->setValue('plugin_category_mappings', $pluginCategoryMappings);

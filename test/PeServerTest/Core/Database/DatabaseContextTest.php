@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServerTest\Core\Database;
 
 use PeServer\Core\Archiver;
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Binary;
 use PeServer\Core\Database\ConnectionSetting;
 use PeServer\Core\Database\DatabaseContext;

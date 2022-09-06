@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Template\Plugin;
 
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\DefaultValue;
 use PeServer\Core\Text;
 use PeServer\Core\TypeUtility;
@@ -50,7 +50,7 @@ class InputHelperFunction extends TemplateFunctionBase
 	private function addMainElement(HtmlDocument $dom, mixed $targetValue): HtmlElement
 	{
 		/** @var string */
-		$type = ArrayUtility::getOr($this->params, 'type', Text::EMPTY);
+		$type = Arr::getOr($this->params, 'type', Text::EMPTY);
 
 		switch ($type) {
 			case 'textarea': {
@@ -81,7 +81,7 @@ class InputHelperFunction extends TemplateFunctionBase
 			'required'
 		];
 
-		if (ArrayUtility::containsValue($booleanAttrs, $name)) {
+		if (Arr::containsValue($booleanAttrs, $name)) {
 			$b = TypeUtility::parseBoolean($value);
 			$element->setAttribute($name, $b);
 		} else {
@@ -93,13 +93,13 @@ class InputHelperFunction extends TemplateFunctionBase
 	{
 		$targetKey = $this->params['key']; // 必須
 
-		$showAutoError = TypeUtility::parseBoolean(ArrayUtility::getOr($this->params, 'file', true));
+		$showAutoError = TypeUtility::parseBoolean(Arr::getOr($this->params, 'file', true));
 
 		$hasError = false;
 		if ($this->existsError()) {
 			$errors = $this->getErrors();
-			if (ArrayUtility::tryGet($errors, $targetKey, $result)) {
-				$hasError = 0 < ArrayUtility::getCount($result);
+			if (Arr::tryGet($errors, $targetKey, $result)) {
+				$hasError = 0 < Arr::getCount($result);
 			}
 		}
 
@@ -107,7 +107,7 @@ class InputHelperFunction extends TemplateFunctionBase
 		$targetValue = Text::EMPTY;
 		if ($this->existsValues()) {
 			$values = $this->getValues();
-			if (ArrayUtility::tryGet($values, $targetKey, $result)) {
+			if (Arr::tryGet($values, $targetKey, $result)) {
 				$targetValue = $result;
 			}
 		}
@@ -120,7 +120,7 @@ class InputHelperFunction extends TemplateFunctionBase
 
 		$ignoreKeys = ['key', 'type', 'value']; // idは渡されたものを優先
 		foreach ($this->params as $key => $value) {
-			if (ArrayUtility::containsValue($ignoreKeys, $key)) {
+			if (Arr::containsValue($ignoreKeys, $key)) {
 				continue;
 			}
 			$this->setElementAttribute($element, $key, $value);

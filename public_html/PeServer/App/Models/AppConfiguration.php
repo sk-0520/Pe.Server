@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\App\Models;
 
 use PeServer\App\Models\Configuration\AppSetting;
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Environment;
 use PeServer\Core\I18n;
 use PeServer\Core\IO\Directory;

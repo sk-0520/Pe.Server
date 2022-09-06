@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Serialization;
 
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\DefaultValue;
 use PeServer\Core\ReflectionUtility;
 use PeServer\Core\Text;
@@ -148,7 +148,7 @@ class Mapper
 			// 型一致せずにここまで来たので可能な限り元の型に合わせる
 			if (($mapping->flags & Mapping::FLAG_EXCEPTION_TYPE_MISMATCH) === Mapping::FLAG_EXCEPTION_TYPE_MISMATCH) {
 				// ただし型変換失敗例外指定の場合は全部諦める
-				throw new MapperTypeException($keyName . '(' . $sourceType . '): ' . Text::join('|', ArrayUtility::map($propertyTypes, fn (ReflectionNamedType $p) => $p->getName())));
+				throw new MapperTypeException($keyName . '(' . $sourceType . '): ' . Text::join('|', Arr::map($propertyTypes, fn (ReflectionNamedType $p) => $p->getName())));
 			}
 
 			foreach ($propertyTypes as $propertyType) {

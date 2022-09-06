@@ -9,7 +9,7 @@ use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\App\Models\Domain\Api\ApiLogicBase;
 use PeServer\App\Models\ResponseJson;
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Collection;
 use PeServer\Core\Uuid;
 
@@ -29,7 +29,7 @@ class PluginApiInformationLogic extends ApiLogicBase
 	{
 		$json = $this->getRequestJson();
 		/** @var string[] */
-		$pluginIds = ArrayUtility::getOr($json, 'plugin_ids', []);
+		$pluginIds = Arr::getOr($json, 'plugin_ids', []);
 
 		$plugins = $this->dbCache->readPluginInformation();
 		/** @var array<string,array<mixed>> */

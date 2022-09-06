@@ -8,7 +8,7 @@ use PeServer\App\Models\AppDatabaseCache;
 use PeServer\App\Models\Cache\PluginCacheCategory;
 use PeServer\App\Models\Cache\PluginCacheItem;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Collections\Collection;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
@@ -36,7 +36,7 @@ class PluginDetailLogic extends PageLogicBase
 			});
 
 		$categories = Collection::from($pluginInformation->categories)
-			->where(fn(PluginCacheCategory $i) => ArrayUtility::in($plugin->categoryIds, $i->categoryId))
+			->where(fn(PluginCacheCategory $i) => Arr::in($plugin->categoryIds, $i->categoryId))
 			->toArray()
 		;
 		usort($categories, function (PluginCacheCategory $a, PluginCacheCategory $b) {

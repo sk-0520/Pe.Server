@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Http;
 
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Collections\CaseInsensitiveKeyArray;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Text;

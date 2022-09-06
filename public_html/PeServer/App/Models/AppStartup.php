@@ -15,7 +15,7 @@ use PeServer\App\Models\AppRouting;
 use PeServer\App\Models\AppTemplate;
 use PeServer\App\Models\AppTemplateFactory;
 use PeServer\App\Models\Domain\AppArchiver;
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\CoreStartup;
 use PeServer\Core\Database\IDatabaseConnection;
 use PeServer\Core\DefinedDirectory;
@@ -55,8 +55,8 @@ class AppStartup extends CoreStartup
 		$appConfig = new AppConfiguration(
 			$this->definedDirectory->public,
 			$this->definedDirectory->application,
-			ArrayUtility::getOr($options, 'url_helper', new UrlHelper('')), //@phpstan-ignore-line UrlHelper
-			ArrayUtility::getOr($options, 'special_store', new SpecialStore()) //@phpstan-ignore-line SpecialStore
+			Arr::getOr($options, 'url_helper', new UrlHelper('')), //@phpstan-ignore-line UrlHelper
+			Arr::getOr($options, 'special_store', new SpecialStore()) //@phpstan-ignore-line SpecialStore
 		);
 		$container->registerValue($appConfig);
 
@@ -88,7 +88,7 @@ class AppStartup extends CoreStartup
 		$method = HttpMethod::from($specialStore->getServer('REQUEST_METHOD'));
 		$requestPath = new RequestPath(
 			$specialStore->getServer('REQUEST_URI'),
-			ArrayUtility::getOr($options, 'url_helper', new UrlHelper('')), //@phpstan-ignore-line UrlHelper
+			Arr::getOr($options, 'url_helper', new UrlHelper('')), //@phpstan-ignore-line UrlHelper
 		);
 		$container->registerValue(new RouteRequest($method, $requestPath));
 
