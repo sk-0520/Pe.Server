@@ -103,7 +103,7 @@ abstract class Path
 		}
 
 		$dotIndex = Text::getLastPosition($path, '.');
-		if ($dotIndex === DefaultValue::NOT_FOUND_INDEX) {
+		if ($dotIndex === -1) {
 			return Text::EMPTY;
 		}
 
@@ -129,7 +129,7 @@ abstract class Path
 	{
 		$fileName = self::getFileName($path);
 		$dotIndex = Text::getLastPosition($fileName, '.');
-		if ($dotIndex === DefaultValue::NOT_FOUND_INDEX) {
+		if ($dotIndex === -1) {
 			return $fileName;
 		}
 

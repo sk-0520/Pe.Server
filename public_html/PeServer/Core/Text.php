@@ -261,8 +261,8 @@ abstract class Text
 	 * @param string $needle 検索文字列。
 	 * @param integer $offset 開始文字数目。
 	 * @phpstan-param UnsignedIntegerAlias $offset
-	 * @return integer 見つかった文字位置。見つかんない場合は `DefaultValue::NOT_FOUND_INDEX`
-	 * @phpstan-return UnsignedIntegerAlias|DefaultValue::NOT_FOUND_INDEX
+	 * @return integer 見つかった文字位置。見つかんない場合は `-1`
+	 * @phpstan-return UnsignedIntegerAlias|-1
 	 * @throws ArgumentException
 	 */
 	public static function getPosition(string $haystack, string $needle, int $offset = 0): int
@@ -273,7 +273,7 @@ abstract class Text
 
 		$result =  mb_strpos($haystack, $needle, $offset);
 		if ($result === false) {
-			return DefaultValue::NOT_FOUND_INDEX;
+			return -1;
 		}
 
 		return $result;
@@ -286,8 +286,8 @@ abstract class Text
 	 * @param string $needle 検索文字列。
 	 * @param integer $offset 終端文字数目。
 	 * @phpstan-param UnsignedIntegerAlias $offset
-	 * @return integer 見つかった文字位置。見つかんない場合は `DefaultValue::NOT_FOUND_INDEX`
-	 * @phpstan-return UnsignedIntegerAlias|DefaultValue::NOT_FOUND_INDEX
+	 * @return integer 見つかった文字位置。見つかんない場合は `-1`
+	 * @phpstan-return UnsignedIntegerAlias|-1
 	 * @throws ArgumentException
 	 */
 	public static function getLastPosition(string $haystack, string $needle, int $offset = 0): int
@@ -298,7 +298,7 @@ abstract class Text
 
 		$result =  mb_strrpos($haystack, $needle, $offset);
 		if ($result === false) {
-			return DefaultValue::NOT_FOUND_INDEX;
+			return -1;
 		}
 
 		return $result;
