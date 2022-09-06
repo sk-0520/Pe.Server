@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Configuration;
 
-use PeServer\Core\DefaultValue;
+use PeServer\Core\Text;
 use PeServer\Core\Serialization\Mapping;
 
 /**
@@ -17,7 +17,7 @@ class DebugSetting
 	#region variable
 
 	#[Mapping(name: 'mail_overwrite_target')]
-	public string $mailOverwriteTarget = DefaultValue::EMPTY_STRING;
+	public string $mailOverwriteTarget = Text::EMPTY;
 
 	#endregion
 }

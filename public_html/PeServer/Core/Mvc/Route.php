@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc;
 
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Code;
 use PeServer\Core\DefaultValue;
 use PeServer\Core\Http\HttpMethod;
@@ -72,13 +72,6 @@ class Route
 	 */
 	private array $baseShutdownMiddleware;
 
-	/**
-	 * インデックス付与対象となるパターン。
-	 *
-	 * @phpstan-var literal-string
-	 */
-	protected string $excludeIndexPattern = '/^(api|ajax)/';
-
 	private Regex $regex;
 
 	#endregion
@@ -109,7 +102,7 @@ class Route
 			$this->basePath = $trimPath;
 		}
 
-		if (ArrayUtility::containsValue($middleware, self::CLEAR_MIDDLEWARE)) {
+		if (Arr::containsValue($middleware, self::CLEAR_MIDDLEWARE)) {
 			throw new ArgumentException('$middleware');
 		}
 
@@ -117,12 +110,26 @@ class Route
 		$this->baseShutdownMiddleware = $shutdownMiddleware;
 		$this->className = $className;
 
-		if (!$this->regex->isMatch($this->basePath, $this->excludeIndexPattern)) {
-			$this->addAction(DefaultValue::EMPTY_STRING, HttpMethod::gets(), 'index', $this->baseMiddleware, $this->baseShutdownMiddleware);
+		if (!$this->regex->isMatch($this->basePath, $this->getExcludeIndexPattern())) {
+			$this->addAction(Text::EMPTY, HttpMethod::gets(), 'index', $this->baseMiddleware, $this->baseShutdownMiddleware);
 		}
 	}
 
 	#region function
+
+	/**
+	 * コントローラに対してインデックスを付与しないパターン。
+	 *
+	 * * APIとかにインデックスは不要となる
+	 * * このパターンに該当しない場合、無名のアクションとして `index` メソッドが自動登録される。
+	 *
+	 * @return string
+	 * @phpstan-return literal-string
+	 */
+	protected function getExcludeIndexPattern(): string
+	{
+		return '/\A(api|ajax)/';
+	}
 
 	/**
 	 * ミドルウェア組み合わせ。
@@ -137,9 +144,9 @@ class Route
 	private static function combineMiddleware(array $baseMiddleware, ?array $middleware = null): array
 	{
 		$customMiddleware = null;
-		if (ArrayUtility::getCount($middleware)) {
+		if (Arr::getCount($middleware)) {
 			$customMiddleware = [];
-			foreach ($middleware as $index => $mw) { // @phpstan-ignore-line ArrayUtility::getCount
+			foreach ($middleware as $index => $mw) { // @phpstan-ignore-line Arr::getCount
 				if ($index) {
 					if ($mw === self::CLEAR_MIDDLEWARE) {
 						throw new ArgumentException();
@@ -204,7 +211,7 @@ class Route
 	private function getActionCore(HttpMethod $httpMethod, Action $action, array $urlParameters): RouteAction
 	{
 		$actionSetting = $action->get($httpMethod);
-		if (is_null($actionSetting)) {
+		if ($actionSetting === null) {
 			return new RouteAction(
 				HttpStatus::methodNotAllowed(),
 				$this->className,
@@ -252,7 +259,7 @@ class Route
 				}
 
 				$keyPaths = Text::split($key, '/');
-				if (ArrayUtility::getCount($keyPaths) !== ArrayUtility::getCount($actionPaths)) {
+				if (Arr::getCount($keyPaths) !== Arr::getCount($actionPaths)) {
 					continue;
 				}
 
@@ -261,11 +268,11 @@ class Route
 					$length = Text::getLength($value);
 					$targetValue = urldecode($actionPaths[$i]);
 					if ($length === 0 || $value[0] !== ':') {
-						return ['key' => $value, 'name' => DefaultValue::EMPTY_STRING, 'value' => $targetValue];
+						return ['key' => $value, 'name' => Text::EMPTY, 'value' => $targetValue];
 					}
 					$splitPaths = Text::split($value, '@', 2);
 					$requestKey = Text::substring($splitPaths[0], 1);
-					$isRegex = 1 < ArrayUtility::getCount($splitPaths);
+					$isRegex = 1 < Arr::getCount($splitPaths);
 					if ($isRegex) {
 						$pattern = Code::toLiteralString("/$splitPaths[1]/");
 						if ($this->regex->isMatch($targetValue, $pattern)) {
@@ -275,13 +282,13 @@ class Route
 					} else {
 						return ['key' => $value, 'name' => $requestKey, 'value' => $targetValue];
 					}
-				}, ArrayUtility::getKeys($keyPaths), ArrayUtility::getValues($keyPaths)), function ($i) {
-					return !is_null($i);
+				}, Arr::getKeys($keyPaths), Arr::getValues($keyPaths)), function ($i) {
+					return $i !== null;
 				});
 
-				$calcPathLength = ArrayUtility::getCount($calcPaths);
+				$calcPathLength = Arr::getCount($calcPaths);
 				// 非URLパラメータ項目は一致するか
-				if ($calcPathLength !== ArrayUtility::getCount($actionPaths)) {
+				if ($calcPathLength !== Arr::getCount($actionPaths)) {
 					continue;
 				}
 				$success = true;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc;
 
-use PeServer\Core\DefaultValue;
+use PeServer\Core\Text;
 use PeServer\Core\Mvc\Middleware\IMiddleware;
 use PeServer\Core\Mvc\Middleware\IShutdownMiddleware;
 
@@ -35,7 +35,7 @@ class ActionSetting
 
 	public static function none(): ActionSetting
 	{
-		return new ActionSetting(DefaultValue::EMPTY_STRING, [], []);
+		return new ActionSetting(Text::EMPTY, [], []);
 	}
 
 	#endregion

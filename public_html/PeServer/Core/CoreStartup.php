@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\DefinedDirectory;
 use PeServer\Core\DI\DiItem;
 use PeServer\Core\DI\DiRegisterContainer;
@@ -102,7 +102,7 @@ class CoreStartup
 		$container->registerMapping(ITemplateFactory::class, TemplateFactory::class);
 		$container->registerClass(TemplateFactory::class); // こいつは Core からも使われる特殊な奴やねん
 
-		Logging::initialize(ArrayUtility::getOr($options, 'special_store', new SpecialStore())); //@phpstan-ignore-line なんだこれ
+		Logging::initialize(Arr::getOr($options, 'special_store', new SpecialStore())); //@phpstan-ignore-line なんだこれ
 
 		// Core のセットアップ時点で死ぬようではもういいです
 		if (!Environment::isTest()) {
@@ -125,10 +125,10 @@ class CoreStartup
 		$container->remove(IDiContainer::class);
 		$container->add(IDiContainer::class, DiItem::factory(fn ($dc) => $dc->get(IDiRegisterContainer::class)));
 
-		$container->registerValue(ArrayUtility::getOr($options, 'url_helper', new UrlHelper('')), IUrlHelper::class); //@phpstan-ignore-line 多分テンプレートの使い方間違ってる
+		$container->registerValue(Arr::getOr($options, 'url_helper', new UrlHelper('')), IUrlHelper::class); //@phpstan-ignore-line 多分テンプレートの使い方間違ってる
 
 		/** @var SpecialStore */
-		$specialStore = ArrayUtility::getOr($options, 'special_store', new SpecialStore());
+		$specialStore = Arr::getOr($options, 'special_store', new SpecialStore());
 		$container->registerValue($specialStore, SpecialStore::class);
 		$container->add(Stores::class, DiItem::factory(fn ($di) => new Stores($di->get(SpecialStore::class), StoreOptions::default()), DiItem::LIFECYCLE_SINGLETON));
 		$container->add(CookieStore::class, DiItem::factory(fn ($di) => $di->get(Stores::class)->cookie));

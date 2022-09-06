@@ -23,7 +23,7 @@ use PeServer\App\Models\Middleware\SignupStep1FilterMiddleware;
 use PeServer\App\Models\Middleware\SignupStep2FilterMiddleware;
 use PeServer\App\Models\Middleware\UserAccountFilterMiddleware;
 use PeServer\App\Models\Middleware\UserPluginEditFilterMiddleware;
-use PeServer\Core\DefaultValue;
+use PeServer\Core\Text;
 use PeServer\Core\Environment;
 use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Mvc\Middleware\CsrfMiddleware;
@@ -53,7 +53,7 @@ final class AppRouteSetting extends RouteSetting
 			],
 			[],
 			[
-				(new Route(DefaultValue::EMPTY_STRING, HomeController::class))
+				(new Route(Text::EMPTY, HomeController::class))
 					->addAction('about', HttpMethod::gets(), 'about')
 					->addAction('about/privacy', HttpMethod::gets(), 'privacy')
 					->addAction('about/contact', HttpMethod::gets(), 'contact_get')

@@ -14,7 +14,7 @@ use \ReflectionProperty;
 use \ReflectionType;
 use \ReflectionUnionType;
 use \TypeError;
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\DI\DiItem;
 use PeServer\Core\DI\Inject;
 use PeServer\Core\DI\IScopedDiContainer;
@@ -29,6 +29,9 @@ use PeServer\Core\Throws\DiContainerUndefinedTypeException;
 use PeServer\Core\Throws\NotImplementedException;
 use PeServer\Core\TypeUtility;
 
+/**
+ * DIコンテナ実装。
+ */
 class DiContainer extends DisposerBase implements IDiContainer
 {
 	#region variable
@@ -78,7 +81,7 @@ class DiContainer extends DisposerBase implements IDiContainer
 
 	protected function canSetValue(?ReflectionType $parameterType, mixed $value): bool
 	{
-		if (is_null($value)) {
+		if ($value === null) {
 			return false;
 		}
 		if (!is_object($value)) {
@@ -101,7 +104,7 @@ class DiContainer extends DisposerBase implements IDiContainer
 			/** @phpstan-var class-string */
 			$typeName = $currentType->getName();
 			$item = $this->getMappingItem($typeName, $mappingKeyOnly);
-			if (!is_null($item)) {
+			if ($item !== null) {
 				return $item;
 			}
 		}
@@ -186,7 +189,7 @@ class DiContainer extends DisposerBase implements IDiContainer
 
 			// 属性指定
 			$attributes = $parameter->getAttributes(Inject::class);
-			if (!ArrayUtility::isNullOrEmpty($attributes)) {
+			if (!Arr::isNullOrEmpty($attributes)) {
 				/** @var Inject */
 				$attribute = $attributes[0]->newInstance();
 				if (!Text::isNullOrWhiteSpace($attribute->id)) {
@@ -196,12 +199,12 @@ class DiContainer extends DisposerBase implements IDiContainer
 				}
 			}
 
-			if (is_null($item)) {
+			if ($item === null) {
 				$item = $this->getItemFromPropertyType($parameterType, $mappingKeyOnly);
 			}
 
 			// 未登録
-			if (is_null($item)) {
+			if ($item === null) {
 				if ($parameter->isDefaultValueAvailable()) {
 					$result[$parameter->getPosition()] = $parameter->getDefaultValue();
 					continue;
@@ -237,7 +240,7 @@ class DiContainer extends DisposerBase implements IDiContainer
 	{
 		$classReflection = new ReflectionClass($className);
 		$constructor = $classReflection->getConstructor();
-		if (is_null($constructor)) {
+		if ($constructor === null) {
 			return new $className();
 		}
 
@@ -281,7 +284,7 @@ class DiContainer extends DisposerBase implements IDiContainer
 
 			$attributes = $property->getAttributes(Inject::class);
 
-			if (!ArrayUtility::isNullOrEmpty($attributes)) {
+			if (!Arr::isNullOrEmpty($attributes)) {
 				/** @var DiItem|null */
 				$item = null;
 
@@ -293,13 +296,13 @@ class DiContainer extends DisposerBase implements IDiContainer
 					$item = $this->getMappingItem($id, $mappingKeyOnly);
 				}
 
-				if (is_null($item)) {
+				if ($item === null) {
 					$propertyType = $property->getType();
 					$item = $this->getItemFromPropertyType($propertyType, $mappingKeyOnly);
 				}
 
 				// 設定できない場合は何もしない
-				if (!is_null($item)) {
+				if ($item !== null) {
 					$callStack[] = $item;
 					$propertyValue = $this->create($item, [], $level + 1, $mappingKeyOnly, $callStack);
 					$property->setAccessible(true);
@@ -384,7 +387,7 @@ class DiContainer extends DisposerBase implements IDiContainer
 		}
 
 		$item = $this->getMappingItem($idOrClassName, false);
-		if (!is_null($item)) {
+		if ($item !== null) {
 			if (!empty($arguments)) {
 				if ($item->type === DiItem::TYPE_VALUE) {
 					throw new DiContainerArgumentException($idOrClassName . ': DiItem::TYPE_VALUE');
@@ -408,7 +411,7 @@ class DiContainer extends DisposerBase implements IDiContainer
 
 		if (is_string($callback)) {
 			$methodArray = Text::split($callback, '::');
-			$methodCount = ArrayUtility::getCount($methodArray);
+			$methodCount = Arr::getCount($methodArray);
 			if ($methodCount === 0 || 2 < $methodCount) {
 				throw new TypeError('$callback: ' . $callback);
 			}
@@ -419,7 +422,7 @@ class DiContainer extends DisposerBase implements IDiContainer
 				$reflectionFunc = $reflectionClass->getMethod($methodArray[1]);
 			}
 		} else if (is_array($callback)) {
-			if (ArrayUtility::getCount($callback) !== 2) {
+			if (Arr::getCount($callback) !== 2) {
 				throw new TypeError('$callback: ' . Text::dump($callback));
 			}
 			$reflectionClass = new ReflectionClass($callback[0]);
@@ -428,7 +431,7 @@ class DiContainer extends DisposerBase implements IDiContainer
 			$reflectionFunc = new ReflectionFunction($callback); //@phpstan-ignore-line
 		}
 
-		if (is_null($reflectionFunc)) { //@phpstan-ignore-line
+		if ($reflectionFunc === null) { //@phpstan-ignore-line
 			throw new TypeError('$callback: ' . Text::dump($callback));
 		}
 

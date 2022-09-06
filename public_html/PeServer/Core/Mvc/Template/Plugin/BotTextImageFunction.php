@@ -6,13 +6,13 @@ namespace PeServer\Core\Mvc\Template\Plugin;
 
 use \Throwable;
 use PeServer\Core\Image\Alignment;
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Binary;
 use PeServer\Core\CoreUtility;
 use PeServer\Core\Cryptography;
 use PeServer\Core\Html\HtmlDocument;
 use PeServer\Core\Image\Graphics;
-use PeServer\Core\Image\ImageOption;
+use PeServer\Core\Image\ImageSetting;
 use PeServer\Core\Image\ImageType;
 use PeServer\Core\Image\Point;
 use PeServer\Core\Image\Rectangle;
@@ -68,30 +68,30 @@ class BotTextImageFunction extends TemplateFunctionBase
 	private function functionBodyCore(): string
 	{
 		/** @var string */
-		$text = ArrayUtility::getOr($this->params, 'text', DefaultValue::EMPTY_STRING);
+		$text = Arr::getOr($this->params, 'text', Text::EMPTY);
 		/** @var string */
-		$alt = ArrayUtility::getOr($this->params, 'alt', DefaultValue::EMPTY_STRING);
+		$alt = Arr::getOr($this->params, 'alt', Text::EMPTY);
 		/**
 		 * @var int
 		 * @phpstan-var positive-int
 		 */
-		$width = (int)ArrayUtility::getOr($this->params, 'width', 100);
+		$width = (int)Arr::getOr($this->params, 'width', 100);
 		/**
 		 * @var int
 		 * @phpstan-var positive-int
 		 */
-		$height = (int)ArrayUtility::getOr($this->params, 'height', 100);
+		$height = (int)Arr::getOr($this->params, 'height', 100);
 		/** @var float */
-		$fontSize = (float)ArrayUtility::getOr($this->params, 'font-size', '12.5');
+		$fontSize = (float)Arr::getOr($this->params, 'font-size', '12.5');
 		/** @var string */
-		$className = ArrayUtility::getOr($this->params, 'class', DefaultValue::EMPTY_STRING);
+		$className = Arr::getOr($this->params, 'class', Text::EMPTY);
 		/** @var string */
-		$backgroundColorText = ArrayUtility::getOr($this->params, 'background-color', '#eeeeee');
+		$backgroundColorText = Arr::getOr($this->params, 'background-color', '#eeeeee');
 		$backgroundColor = RgbColor::fromHtmlColorCode($backgroundColorText);
 		/** @var string */
-		$foregroundColorText = ArrayUtility::getOr($this->params, 'foreground-color', '#0f0f0f');
+		$foregroundColorText = Arr::getOr($this->params, 'foreground-color', '#0f0f0f');
 		$foregroundColor = RgbColor::fromHtmlColorCode($foregroundColorText);
-		$obfuscateLevel = TypeUtility::parseBoolean(ArrayUtility::getOr($this->params, 'obfuscate-level', 0));
+		$obfuscateLevel = TypeUtility::parseBoolean(Arr::getOr($this->params, 'obfuscate-level', 0));
 
 		$size = new Size($width, $height);
 		$fontFilePath = CoreUtility::DEFAULT_FONT_FILE_PATH;
@@ -104,7 +104,7 @@ class BotTextImageFunction extends TemplateFunctionBase
 		$image->fillRectangle($backgroundColor, $rectangle);
 		$image->drawText($text, $fontSize, $rectangle, $foregroundColor, $textSetting);
 
-		$htmlSource = $image->exportHtmlSource(ImageOption::png());
+		$htmlSource = $image->exportHtmlSource(ImageSetting::png());
 		$image->dispose();
 
 		$dom = new HtmlDocument();

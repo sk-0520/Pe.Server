@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Image\Color;
 
 use \Stringable;
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Code;
 use PeServer\Core\Regex;
 use PeServer\Core\Text;
@@ -97,7 +97,7 @@ class RgbColor implements IColor
 		$regex = new Regex();
 		$matchers = $regex->matches($htmlColor, '/#?(?<R>[0-9A-fa-f]{1,2})(?<G>[0-9A-fa-f]{1,2})(?<B>[0-9A-fa-f]{1,2})(?<A>[0-9A-fa-f]{1,2})?/');
 
-		if (ArrayUtility::isNullOrEmpty($matchers)) {
+		if (Arr::isNullOrEmpty($matchers)) {
 			//rgb()的な奴は知らん
 			throw new NotSupportedException();
 		}

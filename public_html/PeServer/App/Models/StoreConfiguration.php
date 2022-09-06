@@ -10,7 +10,7 @@ use PeServer\App\Models\Configuration\CookieStoreSetting;
 use PeServer\App\Models\Configuration\SessionStoreSetting;
 use PeServer\App\Models\Configuration\StoreSetting;
 use PeServer\App\Models\Configuration\TemporaryStoreSetting;
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\DefaultValue;
 use PeServer\Core\Store\CookieOption;
 use PeServer\Core\Store\SessionOption;
@@ -37,8 +37,8 @@ abstract class StoreConfiguration
 		return new CookieOption(
 			Text::requireNotNullOrWhiteSpace($setting->path, $base->path),
 			Text::isNullOrWhiteSpace($setting->span) ? $base->span : Time::create($setting->span), //@phpstan-ignore-line not null
-			is_null($setting->secure) ? $base->secure : $setting->secure,
-			is_null($setting->httpOnly) ? $base->httpOnly : $setting->httpOnly,
+			$setting->secure === null ? $base->secure : $setting->secure,
+			$setting->httpOnly === null ? $base->httpOnly : $setting->httpOnly,
 			Text::requireNotNullOrWhiteSpace($setting->sameSite, $base->sameSite) //@phpstan-ignore-line not null
 		);
 	}
@@ -58,8 +58,8 @@ abstract class StoreConfiguration
 		}
 
 		$path = Text::requireNotNullOrWhiteSpace($setting->path, '/');
-		$secure = is_null($setting->secure) ? false : $setting->secure;
-		$httpOnly = is_null($setting->httpOnly) ? true : $setting->httpOnly;
+		$secure = $setting->secure === null ? false : $setting->secure;
+		$httpOnly = $setting->httpOnly === null ? true : $setting->httpOnly;
 		/** @phpstan-var 'Lax'|'lax'|'None'|'none'|'Strict'|'strict' */
 		$sameSite = Text::requireNotNullOrWhiteSpace($setting->sameSite, 'None');
 
@@ -84,7 +84,7 @@ abstract class StoreConfiguration
 	public static function getTemporary(TemporaryStoreSetting $setting, CookieOption $cookie): TemporaryOption
 	{
 		$overwriteCookie = self::mergeCookie($setting->cookie, $cookie);
-		if (is_null($overwriteCookie->span)) {
+		if ($overwriteCookie->span === null) {
 			$overwriteCookie->span = new DateInterval('PT30M');
 		}
 
@@ -112,7 +112,7 @@ abstract class StoreConfiguration
 
 		/** @phpstan-var non-empty-string $name */
 		$name = Text::requireNotNullOrWhiteSpace($setting->name, SessionOption::DEFAULT_NAME);
-		$save = Text::requireNotNullOrWhiteSpace($setting->save, DefaultValue::EMPTY_STRING);
+		$save = Text::requireNotNullOrWhiteSpace($setting->save, Text::EMPTY);
 
 		$option = new SessionOption(
 			$name,

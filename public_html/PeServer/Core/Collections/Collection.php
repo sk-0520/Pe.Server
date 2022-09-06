@@ -13,7 +13,7 @@ use \Iterator;
 use \IteratorAggregate;
 use \LimitIterator;
 use \Traversable;
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\TypeUtility;
@@ -169,7 +169,7 @@ class Collection implements IteratorAggregate
 	public function toList(string $type = TypeUtility::TYPE_NULL): Vector
 	{
 		$array = self::toArray();
-		if (ArrayUtility::isNullOrEmpty($array)) {
+		if (Arr::isNullOrEmpty($array)) {
 			return Vector::empty($type);
 		}
 		/** @phpstan-var non-empty-array<TValue> $array */
@@ -211,7 +211,7 @@ class Collection implements IteratorAggregate
 			$buffer[$k] = $v;
 		}
 
-		if (ArrayUtility::isNullOrEmpty($buffer)) {
+		if (Arr::isNullOrEmpty($buffer)) {
 			return Dictionary::empty($type);
 		}
 		/** @phpstan-var non-empty-array<string,TResult> $buffer */
@@ -336,7 +336,7 @@ class Collection implements IteratorAggregate
 	 */
 	public function any(?callable $callback = null): bool
 	{
-		if (is_null($callback)) {
+		if ($callback === null) {
 			$this->iterator->rewind();
 			return $this->iterator->valid();
 		}
@@ -377,7 +377,7 @@ class Collection implements IteratorAggregate
 	 */
 	public function count(callable $callback = null): int
 	{
-		if (is_null($callback)) {
+		if ($callback === null) {
 			if ($this->iterator instanceof Countable) {
 				return $this->iterator->count();
 			}
@@ -408,7 +408,7 @@ class Collection implements IteratorAggregate
 	 */
 	public function first(?callable $callback = null): mixed
 	{
-		if (is_null($callback)) {
+		if ($callback === null) {
 			foreach ($this->iterator as $key => $value) {
 				return $value;
 			}
@@ -435,7 +435,7 @@ class Collection implements IteratorAggregate
 	 */
 	public function firstOr(mixed $notFound, ?callable $callback = null): mixed
 	{
-		if (is_null($callback)) {
+		if ($callback === null) {
 			foreach ($this->iterator as $key => $value) {
 				return $value;
 			}
@@ -465,7 +465,7 @@ class Collection implements IteratorAggregate
 		/** @phpstan-var TValue */
 		$current = null;
 
-		if (is_null($callback)) {
+		if ($callback === null) {
 			foreach ($this->iterator as $key => $value) {
 				$isFound = true;
 				$current = $value;
@@ -503,7 +503,7 @@ class Collection implements IteratorAggregate
 		/** @phpstan-var TValue */
 		$current = null;
 
-		if (is_null($callback)) {
+		if ($callback === null) {
 			foreach ($this->iterator as $key => $value) {
 				$isFound = true;
 				$current = $value;
@@ -539,7 +539,7 @@ class Collection implements IteratorAggregate
 		/** @phpstan-var TValue */
 		$current = null;
 
-		if (is_null($callback)) {
+		if ($callback === null) {
 			foreach ($this->iterator as $key => $value) {
 				if ($isFound) {
 					throw new InvalidOperationException();
@@ -583,7 +583,7 @@ class Collection implements IteratorAggregate
 		/** @phpstan-var TValue */
 		$current = null;
 
-		if (is_null($callback)) {
+		if ($callback === null) {
 			foreach ($this->iterator as $key => $value) {
 				if ($isFound) {
 					throw new InvalidOperationException();
@@ -710,6 +710,68 @@ class Collection implements IteratorAggregate
 
 		foreach ($this->iterator as $key => $value) {
 			$result = $callback($result, $value, $key);
+		}
+
+		return $result;
+	}
+
+	/**
+	 * 最大データの取得。
+	 *
+	 * @param callable|null $callback
+	 * @phpstan-param callable(TValue, TKey): TValue|null $callback
+	 * @return mixed
+	 * @phpstan-return TValue|null
+	 */
+	public function max(callable $callback = null): mixed
+	{
+		/** @phpstan-var TValue|null */
+		$result = PHP_INT_MIN;
+
+		if ($callback === null) {
+			foreach ($this->iterator as $key => $value) {
+				if ($result < $value) {
+					$result = $value;
+				}
+			}
+		} else {
+			foreach ($this->iterator as $key => $value) {
+				$ret = $callback($value, $key);
+				if ($result < $ret) {
+					$result = $ret;
+				}
+			}
+		}
+
+		return $result;
+	}
+
+	/**
+	 * 最小データの取得。
+	 *
+	 * @param callable|null $callback
+	 * @phpstan-param callable(TValue, TKey): TValue|null $callback
+	 * @return mixed
+	 * @phpstan-return TValue|null
+	 */
+	public function min(callable $callback = null): mixed
+	{
+		/** @phpstan-var TValue|null */
+		$result = PHP_INT_MAX;
+
+		if ($callback === null) {
+			foreach ($this->iterator as $key => $value) {
+				if ($value < $result) {
+					$result = $value;
+				}
+			}
+		} else {
+			foreach ($this->iterator as $key => $value) {
+				$ret = $callback($value, $key);
+				if ($result < $ret) {
+					$result = $ret;
+				}
+			}
 		}
 
 		return $result;

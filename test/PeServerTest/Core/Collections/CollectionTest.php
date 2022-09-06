@@ -398,6 +398,38 @@ class CollectionTest extends TestClass
 		}
 	}
 
+	function test_max()
+	{
+		$tests = [
+			new Data(3, [1, 2, 3]),
+			new Data(3, [3, 2, 1]),
+
+			new Data(3, [new Value(i: 1), new Value(i: 2), new Value(i: 3)], fn ($i) => $i->i),
+			new Data(2.5, [new Value(f: 1.5), new Value(f: 2.5), new Value(f: 0.5)], fn ($i) => $i->f),
+		];
+		foreach ($tests as $test) {
+			$items = Collection::from($test->args[0]);
+			$actual = $items->max(isset($test->args[1]) ? $test->args[1] : null);
+			$this->assertSame($test->expected, $actual, $test->str());
+		}
+	}
+
+	function test_min()
+	{
+		$tests = [
+			new Data(1, [1, 2, 3]),
+			new Data(1, [3, 2, 1]),
+
+			// new Data(1, [new Value(i: 1), new Value(i: 2), new Value(i: 3)], fn ($i) => $i->i),
+			// new Data(0.5, [new Value(f: 1.5), new Value(f: 2.5), new Value(f: 0.5)], fn ($i) => $i->f),
+		];
+		foreach ($tests as $test) {
+			$items = Collection::from($test->args[0]);
+			$actual = $items->min(isset($test->args[1]) ? $test->args[1] : null);
+			$this->assertSame($test->expected, $actual, $test->str());
+		}
+	}
+
 	function test_zip()
 	{
 		$tests = [
@@ -411,5 +443,15 @@ class CollectionTest extends TestClass
 			$actual = $first->zip($second, $test->args[2])->toArray();
 			$this->assertSame($test->expected, $actual, $test->str());
 		}
+	}
+}
+
+class Value
+{
+	public function __construct(
+		public int $i = 0,
+		public float $f = 0,
+		public string $s = ''
+	) {
 	}
 }

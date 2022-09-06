@@ -10,7 +10,7 @@ use PeServer\Core\Html\HtmlElement;
 use PeServer\Core\Throws\HtmlDocumentException;
 
 /**
- * DOMDocument のラッパー。
+ * `DOMDocument` ラッパー。
  *
  * JSでもそうだけどなんでDOMは地味に使い辛いんかね。
  */

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Http;
 
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
 
@@ -193,7 +193,7 @@ final class LocalHttpMethodImpl extends HttpMethod
 			parent::HTTP_METHOD_TRACE,
 		];
 
-		if (!ArrayUtility::in($methods, $this->kind)) {
+		if (!Arr::in($methods, $this->kind)) {
 			throw new ArgumentException($this->kind);
 		}
 	}

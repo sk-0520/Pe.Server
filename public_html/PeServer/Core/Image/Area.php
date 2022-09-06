@@ -50,27 +50,57 @@ class Area implements Stringable
 		);
 	}
 
+	/**
+	 * 左辺のX軸を取得。
+	 *
+	 * @return int
+	 */
 	public function left(): int
 	{
 		return min($this->leftTop->x, $this->leftBottom->x);
 	}
+	/**
+	 * 上辺のY軸を取得。
+	 *
+	 * @return int
+	 */
 	public function top(): int
 	{
 		return min($this->leftTop->y, $this->rightTop->y);
 	}
+	/**
+	 * 右辺のX軸を取得。
+	 *
+	 * @return int
+	 */
 	public function right(): int
 	{
 		return max($this->rightTop->x, $this->rightBottom->x);
 	}
+	/**
+	 * 下辺のY軸を取得。
+	 *
+	 * @return int
+	 */
 	public function bottom(): int
 	{
 		return max($this->leftBottom->y, $this->rightBottom->y);
 	}
 
+	/**
+	 * 幅を取得。
+	 *
+	 * @return int
+	 */
 	public function width(): int
 	{
 		return $this->rightTop->x - $this->leftBottom->x;
 	}
+	/**
+	 * 高さを取得。
+	 *
+	 * @return int
+	 */
 	public function height(): int
 	{
 		return $this->leftBottom->y - $this->rightTop->y;

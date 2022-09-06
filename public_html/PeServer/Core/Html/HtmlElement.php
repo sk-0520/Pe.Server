@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace PeServer\Core\Html;
 
 use \DOMElement;
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Html\HtmlDocument;
 use PeServer\Core\DefaultValue;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\HtmlDocumentException;
 
 /**
- * DOMElement のラッパー。
+ * `DOMElement` ラッパー。
  */
 final class HtmlElement extends HtmlElementBase
 {
@@ -45,7 +45,7 @@ final class HtmlElement extends HtmlElementBase
 	{
 		if (is_bool($value)) {
 			if ($value) {
-				$value = DefaultValue::EMPTY_STRING;
+				$value = Text::EMPTY;
 			} else {
 				if ($this->raw->hasAttribute($qualifiedName)) {
 					$this->raw->removeAttribute($qualifiedName);
@@ -90,7 +90,7 @@ final class HtmlElement extends HtmlElementBase
 	public function addClass(string $className): void
 	{
 		$list = $this->getClassList();
-		if (!ArrayUtility::containsValue($list, $className)) {
+		if (!Arr::containsValue($list, $className)) {
 			$list[] = $className;
 			$this->setClassList($list);
 		}

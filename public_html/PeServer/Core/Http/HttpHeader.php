@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Http;
 
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Collections\CaseInsensitiveKeyArray;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Text;
@@ -167,7 +167,7 @@ class HttpHeader
 	 */
 	public function existsRedirect(): bool
 	{
-		return !is_null($this->redirect);
+		return $this->redirect !== null;
 	}
 
 	/**
@@ -179,7 +179,7 @@ class HttpHeader
 	 */
 	public function setRedirect(string $url, ?HttpStatus $status): void
 	{
-		if (is_null($status)) {
+		if ($status === null) {
 			$this->redirect = new RedirectSetting($url, HttpStatus::moved());
 		} else {
 			$this->redirect = new RedirectSetting($url, $status);
@@ -193,7 +193,7 @@ class HttpHeader
 	 */
 	public function clearRedirect(): bool
 	{
-		if (is_null($this->redirect)) {
+		if ($this->redirect === null) {
 			return false;
 		}
 		$this->redirect = null;

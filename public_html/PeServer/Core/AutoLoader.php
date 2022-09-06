@@ -163,7 +163,7 @@ class AutoLoader
 		if (isset($mapping['extensions']) && $mapping['extensions'] !== null) { //@phpstan-ignore-line
 			foreach ($mapping['extensions'] as $extension) {
 				$extension = trim($extension);
-				if (!empty($extension) && $extension !== '0') {
+				if (!empty($extension)) {
 					if ($extension[0] !== '.') {
 						$extension = '.' . $extension;
 					}
@@ -272,22 +272,22 @@ class AutoLoader
 	 *
 	 * 本処理はエラーとか例外はやっちゃいけない。
 	 *
-	 * @param string $className
-	 * @return string|null ファイルが存在する場合はファイルパス。存在しない(担当じゃない)場合は null を返す。
+	 * @param string $fullName
+	 * @return string|null ファイルが存在する場合はファイルパス。存在しない(担当じゃない)場合は `null` を返す。
 	 * @phpstan-return non-empty-string|null ファイルが存在する場合はファイルパス。存在しない(担当じゃない)場合は null を返す。
 	 */
-	protected function findIncludeFile(string $className): ?string
+	protected function findIncludeFile(string $fullName): ?string
 	{
 		foreach ($this->setting as $namespacePrefix => $mapping) {
-			if (str_starts_with($className, $namespacePrefix)) {
+			if (str_starts_with($fullName, $namespacePrefix)) {
 				foreach ($mapping['includes'] as $aliasClassName => $includeClassName) {
-					if ($aliasClassName === $className) {
-						$className = $includeClassName;
+					if ($aliasClassName === $fullName) {
+						$fullName = $includeClassName;
 						break;
 					}
 				}
 
-				$classBaseName = substr($className, strlen($namespacePrefix));
+				$classBaseName = substr($fullName, strlen($namespacePrefix));
 				$fileBasePath = str_replace('\\', DIRECTORY_SEPARATOR, $classBaseName);
 				$filePathWithoutExtensions = $mapping['directory'] . $fileBasePath;
 
@@ -304,14 +304,13 @@ class AutoLoader
 	}
 
 	/**
-	 * クラス読み込み処理。
+	 * ファイル読み込み処理。
 	 *
-	 * @param string $className クラス名
-	 * @phpstan-param class-string $className
+	 * @param string $fullName 完全名。
 	 */
-	private function load(string $className): void
+	private function load(string $fullName): void
 	{
-		$filePath = $this->findIncludeFile($className);
+		$filePath = $this->findIncludeFile($fullName);
 		if ($filePath !== null) {
 			require $filePath;
 		}

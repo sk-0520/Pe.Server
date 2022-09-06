@@ -34,7 +34,7 @@ class ResponseJson
 	 */
 	public static function success(mixed $data): ResponseJson
 	{
-		if (is_null($data)) {
+		if ($data === null) {
 			throw new ArgumentNullException('$data');
 		}
 

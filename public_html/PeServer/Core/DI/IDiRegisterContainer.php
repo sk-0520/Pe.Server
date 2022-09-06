@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\DI;
 
-use PeServer\Core\DefaultValue;
+use PeServer\Core\Text;
 
 /**
  * 登録可能DIコンテナ。
@@ -65,7 +65,7 @@ interface IDiRegisterContainer extends IDiContainer
 	 * @param object|null $value
 	 * @param string $id $valueの登録ID。未指定(空)の場合は $value の型名が使用される。
 	 */
-	function registerValue(?object $value, string $id = DefaultValue::EMPTY_STRING): void;
+	function registerValue(?object $value, string $id = Text::EMPTY): void;
 
 	#endregion
 }

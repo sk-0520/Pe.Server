@@ -237,10 +237,10 @@ class Graphics extends DisposerBase
 		}
 
 		return new RgbColor(
-			($rgb >> 16) & 0xff, //@phpstan-ignore-line 0xff
-			($rgb >> 8) & 0xff, //@phpstan-ignore-line 0xff
-			$rgb & 0xff, //@phpstan-ignore-line 0xff,
-			($rgb >> 24) & 0x7f //@phpstan-ignore-line 0xff,
+			($rgb >> 16) & 0xff,
+			($rgb >> 8) & 0xff,
+			$rgb & 0xff,
+			($rgb >> 24) & 0x7f
 		);
 	}
 
@@ -537,13 +537,13 @@ class Graphics extends DisposerBase
 		);
 	}
 
-	private function exportImageCore(ImageOption $option): Binary
+	private function exportImageCore(ImageSetting $setting): Binary
 	{
-		return OutputBuffer::get(fn () => match ($option->imageType) {
-			ImageType::PNG => imagepng($this->image, null, ...$option->options()),
-			ImageType::JPEG => imagejpeg($this->image, null, ...$option->options()),
-			ImageType::WEBP => imagewebp($this->image, null, ...$option->options()),
-			ImageType::BMP => imagebmp($this->image, null, ...$option->options()),
+		return OutputBuffer::get(fn () => match ($setting->imageType) {
+			ImageType::PNG => imagepng($this->image, null, ...$setting->options()),
+			ImageType::JPEG => imagejpeg($this->image, null, ...$setting->options()),
+			ImageType::WEBP => imagewebp($this->image, null, ...$setting->options()),
+			ImageType::BMP => imagebmp($this->image, null, ...$setting->options()),
 			default  => throw new NotImplementedException(),
 		});
 	}
@@ -551,34 +551,34 @@ class Graphics extends DisposerBase
 	/**
 	 * 画像データ出力。
 	 *
-	 * @param ImageOption $option
+	 * @param ImageSetting $setting
 	 * @return Binary
 	 */
-	public function exportImage(ImageOption $option): Binary
+	public function exportImage(ImageSetting $setting): Binary
 	{
-		if ($option->imageType == ImageType::AUTO) {
+		if ($setting->imageType == ImageType::AUTO) {
 			throw new ArgumentException('ImageType::AUTO');
 		}
 
-		return $this->exportImageCore($option);
+		return $this->exportImageCore($setting);
 	}
 
 	/**
 	 * 画像データをHTMLのソースとして出力。
 	 *
-	 * @param ImageOption $option
+	 * @param ImageSetting $setting
 	 * @return string "data" URL scheme。
 	 */
-	public function exportHtmlSource(ImageOption $option): string
+	public function exportHtmlSource(ImageSetting $setting): string
 	{
-		if ($option->imageType == ImageType::AUTO) {
+		if ($setting->imageType == ImageType::AUTO) {
 			throw new ArgumentException('ImageType::AUTO');
 		}
 
-		$image = $this->exportImageCore($option);
+		$image = $this->exportImageCore($setting);
 
-		$mime = match ($option->imageType) {
-			default => ImageType::toMime($option->imageType),
+		$mime = match ($setting->imageType) {
+			default => ImageType::toMime($setting->imageType),
 		};
 
 		$data = 'data:' . $mime . ';base64,';

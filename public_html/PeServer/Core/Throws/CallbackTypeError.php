@@ -8,8 +8,5 @@ use \Throwable;
 
 class CallbackTypeError extends CoreError
 {
-	public function __construct(string $message = '', int $code = 0, ?Throwable $previous = null)
-	{
-		parent::__construct($message, $code, $previous);
-	}
+	use ThrowableTrait;
 }

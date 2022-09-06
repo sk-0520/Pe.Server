@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Store;
 
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\DefaultValue;
 use PeServer\Core\Text;
 use PeServer\Core\Store\CookieOption;
@@ -76,7 +76,7 @@ class CookieStore
 	{
 		foreach ($this->removes as $key) {
 			if ($this->special->containsCookieName($key)) {
-				setcookie($key, DefaultValue::EMPTY_STRING, time() - 60, '/');
+				setcookie($key, Text::EMPTY, time() - 60, '/');
 			}
 		}
 
@@ -87,7 +87,7 @@ class CookieStore
 				[
 					'expires' => $cookie->option->getExpires(),
 					'path' => $cookie->option->path,
-					'domain' => DefaultValue::EMPTY_STRING,
+					'domain' => Text::EMPTY,
 					'secure' => $cookie->option->secure,
 					'httponly' => $cookie->option->httpOnly,
 					'samesite' => $cookie->option->sameSite
@@ -141,7 +141,7 @@ class CookieStore
 	 */
 	public function getOr(string $key, string $fallbackValue): string
 	{
-		if (ArrayUtility::tryGet($this->values, $key, $data)) {
+		if (Arr::tryGet($this->values, $key, $data)) {
 			/** @var LocalCookieData $data */
 			return $data->value;
 		}
@@ -159,7 +159,7 @@ class CookieStore
 	 */
 	public function tryGet(string $key, ?string &$result): bool
 	{
-		if (ArrayUtility::tryGet($this->values, $key, $data)) {
+		if (Arr::tryGet($this->values, $key, $data)) {
 			/** @var LocalCookieData $data */
 			$result = $data->value;
 			return true;

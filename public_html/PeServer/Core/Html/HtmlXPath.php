@@ -17,7 +17,7 @@ use PeServer\Core\Text;
 use PeServer\Core\Throws\HtmlXPathException;
 
 /**
- * DOMXPath のラッパー。
+ * `DOMXPath` ラッパー。
  */
 class HtmlXPath
 {
@@ -43,7 +43,7 @@ class HtmlXPath
 
 	private function node(): ?DOMNode
 	{
-		if (is_null($this->element)) {
+		if ($this->element === null) {
 			return null;
 		}
 

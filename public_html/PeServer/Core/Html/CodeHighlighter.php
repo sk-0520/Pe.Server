@@ -7,12 +7,13 @@ namespace PeServer\Core\Html;
 use \DomainException;
 use \Highlight\Highlighter;
 use \HighlightUtilities\Functions;
-use PeServer\Core\ArrayUtility;
-use PeServer\Core\AutoLoader;
-use PeServer\Core\CoreUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Text;
 use PeServer\Core\TypeUtility;
 
+/**
+ * HTMLとしてのコードハイライト処理。
+ */
 class CodeHighlighter
 {
 	#region function
@@ -80,7 +81,7 @@ class CodeHighlighter
 		foreach ($lines as $key => $line) {
 			$number = $key + 1;
 			$addClass = '';
-			if (ArrayUtility::in($lineNumbers, $number)) {
+			if (Arr::in($lineNumbers, $number)) {
 				$addClass = 'strong-line';
 			}
 			$sourceLine = '<span class="code-line ' . $addClass . '" data-line=' . $number . '>' . $line . '</span>';

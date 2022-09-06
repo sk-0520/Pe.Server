@@ -12,7 +12,7 @@ use PeServer\App\Models\Dao\Entities\SignUpWaitEmailsEntityDao;
 use PeServer\App\Models\Domain\AccountValidator;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\App\Models\Domain\UserUtility;
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Cryptography;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\DefaultValue;
@@ -56,8 +56,8 @@ class AccountSignupStep1Logic extends PageLogicBase
 		});
 
 		$temp = $this->popTemporary(self::TEMP_TOKEN);
-		$tempValue = ArrayUtility::getOr($temp, 'value', DefaultValue::EMPTY_STRING);
-		$tempToken = ArrayUtility::getOr($temp, 'token', DefaultValue::EMPTY_STRING);
+		$tempValue = Arr::getOr($temp, 'value', Text::EMPTY);
+		$tempToken = Arr::getOr($temp, 'token', Text::EMPTY);
 
 		$inputValue = $this->getRequest('account_signup_value');
 		$inputToken = $this->getRequest('account_signup_token');
@@ -136,7 +136,7 @@ class AccountSignupStep1Logic extends PageLogicBase
 
 	protected function cleanup(LogicCallMode $callMode): void
 	{
-		if ($callMode->isSubmit() && ArrayUtility::containsKey($this->result, 'token')) {
+		if ($callMode->isSubmit() && Arr::containsKey($this->result, 'token')) {
 			$this->removeTemporary(self::TEMP_TOKEN);
 			return;
 		}
@@ -148,7 +148,7 @@ class AccountSignupStep1Logic extends PageLogicBase
 			'value' => $tempValue,
 		]);
 		$this->setValue('account_signup_token', $tempToken);
-		$this->setValue('account_signup_value', DefaultValue::EMPTY_STRING);
+		$this->setValue('account_signup_value', Text::EMPTY);
 		$this->setValue('value', $tempValue);
 	}
 }

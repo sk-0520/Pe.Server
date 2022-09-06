@@ -25,6 +25,9 @@ abstract class Text
 	private const TRIM_TARGET_END = 1;
 	private const TRIM_TARGET_BOTH = 0;
 
+	/** 空文字列。 */
+	public const EMPTY = '';
+
 	#endregion
 
 	#region function
@@ -38,7 +41,7 @@ abstract class Text
 	 */
 	public static function isNullOrEmpty(?string $s): bool
 	{
-		if (is_null($s)) {
+		if ($s === null) {
 			return true;
 		}
 
@@ -196,8 +199,8 @@ abstract class Text
 	 */
 	public static function replaceMap(string $source, array $map, string $head = '{', string $tail = '}'): string
 	{
-		Enforce::throwIfNullOrEmpty($head, DefaultValue::EMPTY_STRING, StringException::class);
-		Enforce::throwIfNullOrEmpty($tail, DefaultValue::EMPTY_STRING, StringException::class);
+		Enforce::throwIfNullOrEmpty($head, Text::EMPTY, StringException::class);
+		Enforce::throwIfNullOrEmpty($tail, Text::EMPTY, StringException::class);
 
 		$regex = new Regex();
 		$escHead = $regex->escape($head);
@@ -212,7 +215,7 @@ abstract class Text
 					if (isset($map[$matches[1]])) {
 						return $map[$matches[1]];
 					}
-					return DefaultValue::EMPTY_STRING;
+					return Text::EMPTY;
 				}
 			);
 
@@ -258,8 +261,8 @@ abstract class Text
 	 * @param string $needle 検索文字列。
 	 * @param integer $offset 開始文字数目。
 	 * @phpstan-param UnsignedIntegerAlias $offset
-	 * @return integer 見つかった文字位置。見つかんない場合は `DefaultValue::NOT_FOUND_INDEX`
-	 * @phpstan-return UnsignedIntegerAlias|DefaultValue::NOT_FOUND_INDEX
+	 * @return integer 見つかった文字位置。見つかんない場合は `-1`
+	 * @phpstan-return UnsignedIntegerAlias|-1
 	 * @throws ArgumentException
 	 */
 	public static function getPosition(string $haystack, string $needle, int $offset = 0): int
@@ -270,7 +273,7 @@ abstract class Text
 
 		$result =  mb_strpos($haystack, $needle, $offset);
 		if ($result === false) {
-			return DefaultValue::NOT_FOUND_INDEX;
+			return -1;
 		}
 
 		return $result;
@@ -283,8 +286,8 @@ abstract class Text
 	 * @param string $needle 検索文字列。
 	 * @param integer $offset 終端文字数目。
 	 * @phpstan-param UnsignedIntegerAlias $offset
-	 * @return integer 見つかった文字位置。見つかんない場合は `DefaultValue::NOT_FOUND_INDEX`
-	 * @phpstan-return UnsignedIntegerAlias|DefaultValue::NOT_FOUND_INDEX
+	 * @return integer 見つかった文字位置。見つかんない場合は `-1`
+	 * @phpstan-return UnsignedIntegerAlias|-1
 	 * @throws ArgumentException
 	 */
 	public static function getLastPosition(string $haystack, string $needle, int $offset = 0): int
@@ -295,7 +298,7 @@ abstract class Text
 
 		$result =  mb_strrpos($haystack, $needle, $offset);
 		if ($result === false) {
-			return DefaultValue::NOT_FOUND_INDEX;
+			return -1;
 		}
 
 		return $result;

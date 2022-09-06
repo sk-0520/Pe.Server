@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace PeServerTest\Core\Database;
 
 use PeServer\Core\Archiver;
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Binary;
+use PeServer\Core\Database\ConnectionSetting;
 use PeServer\Core\Database\DatabaseContext;
 use PeServer\Core\Log\Logging;
 use PeServer\Core\Log\NullLogger;
@@ -27,7 +28,7 @@ class DatabaseContextTest extends TestClass
 	function test_constructor_throw()
 	{
 		$this->expectException(DatabaseException::class);
-		new DatabaseContext('', '', '', null, new NullLogger());
+		new DatabaseContext(new ConnectionSetting('', '', '', null), new NullLogger());
 		$this->fail();
 	}
 
@@ -104,5 +105,4 @@ class DatabaseContextTest extends TestClass
 		$actual7 = $database->execute('delete from test');
 		$this->assertSame(3, $actual7->resultCount);
 	}
-
 }

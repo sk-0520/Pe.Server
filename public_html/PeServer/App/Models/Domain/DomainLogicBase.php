@@ -8,7 +8,7 @@ use PeServer\App\Models\AppDatabase;
 use PeServer\App\Models\Dao\Entities\UserAuditLogsEntityDao;
 use PeServer\App\Models\IAuditUserInfo;
 use PeServer\App\Models\ResponseJson;
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Database\DatabaseContext;
 use PeServer\Core\Database\IDatabaseConnection;
 use PeServer\Core\Database\IDatabaseContext;
@@ -18,6 +18,8 @@ use PeServer\Core\Mime;
 use PeServer\Core\Mvc\LogicBase;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\Serialization\Json;
+use PeServer\Core\Serialization\JsonSerializer;
+use PeServer\Core\Serialization\SerializerBase;
 use PeServer\Core\Text;
 
 
@@ -47,7 +49,7 @@ abstract class DomainLogicBase extends LogicBase
 		$result = [
 			'data' => $responseJson->data,
 		];
-		if (!is_null($responseJson->error)) {
+		if ($responseJson->error !== null) {
 			$result['error'] = $responseJson->error;
 		}
 
@@ -72,15 +74,15 @@ abstract class DomainLogicBase extends LogicBase
 	 * @param IDatabaseContext|null $context
 	 * @return integer
 	 */
-	private function writeAuditLogCore(string $userId, string $event, mixed $info, ?IDatabaseContext $context, ?Json $json = null): int
+	private function writeAuditLogCore(string $userId, string $event, mixed $info, ?IDatabaseContext $context, ?SerializerBase $serializer = null): int
 	{
 		$ipAddress = $this->stores->special->getServer('REMOTE_ADDR');
 		$userAgent = $this->stores->special->getServer('HTTP_USER_AGENT');
-		$dumpInfo = DefaultValue::EMPTY_STRING;
-		if (!is_null($info)) {
-			$json ??= new Json();
+		$dumpInfo = Text::EMPTY;
+		if ($info !== null) {
+			$serializer ??= new JsonSerializer();
 
-			$dumpInfo = $json->encode($info);
+			$dumpInfo = strval($serializer->save($info));
 		}
 
 		$db = $context ?? $this->openDatabase();
@@ -102,7 +104,7 @@ abstract class DomainLogicBase extends LogicBase
 	protected function writeAuditLogCurrentUser(string $event, mixed $info = null, ?IDatabaseContext $context = null): int
 	{
 		$userInfo = $this->getAuditUserInfo();
-		if (is_null($userInfo)) {
+		if ($userInfo === null) {
 			$this->logger->error('監査ログ ユーザー情報取得失敗のため書き込み中止');
 			return -1;
 		}

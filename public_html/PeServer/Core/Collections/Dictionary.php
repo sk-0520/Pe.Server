@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Collections;
 
 use \TypeError;
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Collections\TypeArrayBase;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\ArgumentNullException;
@@ -53,11 +53,11 @@ class Dictionary extends TypeArrayBase
 	 */
 	public static function create(array $map): self
 	{
-		if (ArrayUtility::isNullOrEmpty($map)) { //@phpstan-ignore-line ArrayUtility::isNullOrEmpty
+		if (Arr::isNullOrEmpty($map)) { //@phpstan-ignore-line Arr::isNullOrEmpty
 			throw new ArgumentException('$map');
 		}
 
-		$firstKey = ArrayUtility::getFirstKey($map);
+		$firstKey = Arr::getFirstKey($map);
 		$firstValue = $map[$firstKey];
 
 		$type = TypeUtility::getType($firstValue);
@@ -81,7 +81,7 @@ class Dictionary extends TypeArrayBase
 
 	protected function throwIfInvalidOffset(mixed $offset): void
 	{
-		if (is_null($offset)) {
+		if ($offset === null) {
 			throw new TypeError('$offset: null');
 		}
 
@@ -125,7 +125,7 @@ class Dictionary extends TypeArrayBase
 	 */
 	public function offsetSet(mixed $offset, mixed $value): void
 	{
-		if (is_null($offset)) {
+		if ($offset === null) {
 			throw new ArgumentNullException();
 		}
 

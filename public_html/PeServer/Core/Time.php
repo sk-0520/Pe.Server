@@ -6,6 +6,7 @@ namespace PeServer\Core;
 
 use \DateInterval;
 use \Exception;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\FormatException;
 use PeServer\Core\Throws\Throws;
@@ -75,7 +76,7 @@ abstract class Time
 		$regex = new Regex($encoding);
 		$matches = $regex->matches($time, '/\A((?<DAY>\d+)\.)?(?<H>\d+):(?<M>\d+):(?<S>\d+)\z/');
 
-		if (ArrayUtility::isNullOrEmpty($matches)) {
+		if (Arr::isNullOrEmpty($matches)) {
 			throw new FormatException($time);
 		}
 

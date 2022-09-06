@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Database;
 
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 
 /**
  * 問い合わせ結果。
@@ -36,6 +36,6 @@ class DatabaseTableResult extends DatabaseResultBase
 	 */
 	public function getRowsCount(): int
 	{
-		return ArrayUtility::getCount($this->rows);
+		return Arr::getCount($this->rows);
 	}
 }

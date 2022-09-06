@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc;
 
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\DI\IDiRegisterContainer;
 use PeServer\Core\Http\HttpHeader;
 use PeServer\Core\Http\HttpMethod;
@@ -208,13 +208,13 @@ class Routing
 	 */
 	private function handleAfterMiddleware(HttpRequest $request, HttpResponse $response): bool
 	{
-		if (!ArrayUtility::getCount($this->processedMiddleware)) {
+		if (!Arr::getCount($this->processedMiddleware)) {
 			return true;
 		}
 
 		$middlewareArgument = new MiddlewareArgument($this->requestPath, $this->stores, $request);
 
-		$middleware = ArrayUtility::reverse($this->processedMiddleware);
+		$middleware = Arr::reverse($this->processedMiddleware);
 		foreach ($middleware as $middlewareItem) {
 			$middlewareResult = $middlewareItem->handleAfter($middlewareArgument, $response);
 
@@ -241,7 +241,7 @@ class Routing
 	{
 		$splitNames = Text::split($rawControllerName, '/');
 		/** @phpstan-var class-string<ControllerBase> */
-		$controllerName = $splitNames[ArrayUtility::getCount($splitNames) - 1];
+		$controllerName = $splitNames[Arr::getCount($splitNames) - 1];
 
 		// HTTPリクエストデータをDI再登録
 		$request = new HttpRequest($this->stores->special, $this->requestMethod, $this->requestHeader, $urlParameters);
@@ -298,7 +298,7 @@ class Routing
 		$this->shutdownMiddleware += $this->setting->globalShutdownMiddleware;
 
 		// グローバルミドルウェアの適用
-		if (ArrayUtility::getCount($this->setting->globalMiddleware)) {
+		if (Arr::getCount($this->setting->globalMiddleware)) {
 			if (!$this->handleBeforeMiddleware($this->setting->globalMiddleware, $this->shutdownRequest)) {
 				return;
 			}
@@ -308,17 +308,17 @@ class Routing
 		$errorAction = null;
 		foreach ($this->setting->routes as $route) {
 			$action = $route->getAction($this->requestMethod, $this->requestPath);
-			if (!is_null($action)) {
+			if ($action !== null) {
 				if ($action->status->is(HttpStatus::none())) {
 					$this->executeAction($action->className, $action->actionSetting, $action->params);
 					return;
-				} else if (is_null($errorAction)) {
+				} else if ($errorAction === null) {
 					$errorAction = $action;
 				}
 			}
 		}
 
-		if (is_null($errorAction)) {
+		if ($errorAction === null) {
 			MiddlewareResult::error(HttpStatus::internalServerError())->apply();
 		} else {
 			MiddlewareResult::error($errorAction->status)->apply();
@@ -342,7 +342,7 @@ class Routing
 	 */
 	private function shutdown(): void
 	{
-		if (ArrayUtility::getCount($this->shutdownMiddleware)) {
+		if (Arr::getCount($this->shutdownMiddleware)) {
 			$middlewareArgument = new MiddlewareArgument($this->requestPath, $this->stores, $this->shutdownRequest);
 			$shutdownMiddleware = array_reverse($this->shutdownMiddleware);
 			foreach ($shutdownMiddleware as $middleware) {

@@ -11,6 +11,8 @@ use PeServer\Core\Mime;
 use PeServer\Core\Mvc\DataContent;
 use PeServer\Core\Mvc\DownloadDataContent;
 use PeServer\Core\Mvc\Result\IActionResult;
+use PeServer\Core\Serialization\JsonSerializer;
+use PeServer\Core\Serialization\SerializerBase;
 use PeServer\Core\Throws\ArgumentException;
 
 
@@ -21,7 +23,7 @@ class DataActionResult implements IActionResult
 {
 	#region variable
 
-	protected Json $json;
+	protected JsonSerializer $jsonSerializer;
 
 	#endregion
 
@@ -33,10 +35,9 @@ class DataActionResult implements IActionResult
 	public function __construct(
 		/** @readonly */
 		private DataContent $content,
-		?Json $json = null
+		?JsonSerializer $jsonSerializer = null
 	) {
-		$json ??= new Json();
-		$this->json = $json;
+		$this->jsonSerializer = $jsonSerializer ?? new JsonSerializer();
 	}
 
 	#region function
@@ -54,9 +55,9 @@ class DataActionResult implements IActionResult
 	 */
 	private function convertJsonCore(array $data): string
 	{
-		$result = $this->json->encode($data);
+		$result = $this->jsonSerializer->save($data);
 
-		return $result;
+		return $result->toString();
 	}
 
 	private function convertJson(DataContent $content): string

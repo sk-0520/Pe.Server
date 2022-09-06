@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\DI;
 
 use \Attribute;
+use PeServer\Core\Text;
 
 /**
  * 注入設定。
@@ -23,7 +24,7 @@ class Inject
 	 * @param string $id 優先ID。コンストラクタ設定時は必須。
 	 */
 	public function __construct(
-		public string $id = ''
+		public string $id = Text::EMPTY
 	) {
 	}
 }

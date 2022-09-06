@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace PeServer\Core\Database;
 
 use \PDO;
-use PeServer\Core\ArrayUtility;
-use PeServer\Core\DefaultValue;
+use PeServer\Core\Collections\Arr;
+use PeServer\Core\Text;
 
 /**
  * カラム情報。
@@ -52,14 +52,14 @@ class DatabaseColumn
 	public static function create(array $meta): self
 	{
 		return new DatabaseColumn(
-			ArrayUtility::getOr($meta, 'name', DefaultValue::EMPTY_STRING),
-			ArrayUtility::getOr($meta, 'len', -1),
-			ArrayUtility::getOr($meta, 'precision', 0),
-			ArrayUtility::getOr($meta, 'table', DefaultValue::EMPTY_STRING),
-			ArrayUtility::getOr($meta, 'native_type', DefaultValue::EMPTY_STRING),
-			ArrayUtility::getOr($meta, 'driver:decl_type', DefaultValue::EMPTY_STRING),
-			ArrayUtility::getOr($meta, 'pdo_type', -1),
-			ArrayUtility::getOr($meta, 'flags', [])
+			Arr::getOr($meta, 'name', Text::EMPTY),
+			Arr::getOr($meta, 'len', -1),
+			Arr::getOr($meta, 'precision', 0),
+			Arr::getOr($meta, 'table', Text::EMPTY),
+			Arr::getOr($meta, 'native_type', Text::EMPTY),
+			Arr::getOr($meta, 'driver:decl_type', Text::EMPTY),
+			Arr::getOr($meta, 'pdo_type', -1),
+			Arr::getOr($meta, 'flags', [])
 		);
 	}
 

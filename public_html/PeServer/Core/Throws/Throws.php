@@ -6,7 +6,7 @@ namespace PeServer\Core\Throws;
 
 use \Throwable;
 use \TypeError;
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\ReflectionUtility;
 use PeServer\Core\Type;
 
@@ -72,7 +72,7 @@ abstract class Throws
 	{
 		if (is_string($catchExceptions)) {
 			$catchExceptions = [$catchExceptions];
-		} else if (ArrayUtility::isNullOrEmpty($catchExceptions)) { //@phpstan-ignore-line non-empty-array
+		} else if (Arr::isNullOrEmpty($catchExceptions)) { //@phpstan-ignore-line non-empty-array
 			throw new TypeError('array: $catchException');
 		}
 

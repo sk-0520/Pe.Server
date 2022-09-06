@@ -7,10 +7,8 @@ namespace PeServer\Core\Throws;
 use \Throwable;
 use PeServer\Core\Throws\CoreException;
 
+/** @deprecated */
 abstract class JsonExceptionBase extends CoreException
 {
-	public function __construct(string $message = '', int $code = 0, ?Throwable $previous = null)
-	{
-		parent::__construct($message, $code, $previous);
-	}
+	use ThrowableTrait;
 }

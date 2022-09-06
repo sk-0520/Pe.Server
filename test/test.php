@@ -80,7 +80,7 @@ class Data
 	public function __toString(): string
 	{
 		$s = print_r($this->args, true);
-		return is_null($s) ? '' : $s;
+		return $s === null ? '' : $s;
 	}
 }
 

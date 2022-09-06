@@ -19,7 +19,7 @@
 					<td>{$key}</td>
 					<td>{$item.timestamp}Z</td>
 					<td>{$item.event}</td>
-					<td>{code language='json'}{$item.info nofilter}{/code}</td>
+					<td data-clipboard="block">{code language='json'}{$item.info nofilter}{/code}</td>
 					<td>{$item.ip_address}</td>
 					<td>{$item.user_agent}</td>
 				</tr>

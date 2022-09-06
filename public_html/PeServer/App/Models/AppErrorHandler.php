@@ -19,14 +19,14 @@ use PeServer\Core\Mvc\Template\ITemplateFactory;
 use PeServer\Core\Mvc\Template\TemplateFactory;
 use PeServer\Core\Mvc\Template\TemplateOptions;
 use PeServer\Core\Mvc\Template\TemplateParameter;
-use PeServer\Core\Serialization\Json;
+use PeServer\Core\Serialization\JsonSerializer;
 use PeServer\Core\Text;
 use PeServer\Core\Web\IUrlHelper;
 
 final class AppErrorHandler extends ErrorHandler
 {
 	private RequestPath $requestPath;
-	private Json $json;
+	private JsonSerializer $jsonSerializer;
 	private ITemplateFactory $templateFactory;
 
 	public function __construct(
@@ -34,15 +34,14 @@ final class AppErrorHandler extends ErrorHandler
 		TemplateFactory $templateFactory,
 		private AppConfiguration $config,
 		private IUrlHelper $urlHelper,
-		?Json $json,
+		?JsonSerializer $jsonSerializer,
 		ILogger $logger
 	) {
 		parent::__construct($logger);
 
 		$this->requestPath = $requestPath;
 		$this->templateFactory = $templateFactory;
-		$json ??= new Json();
-		$this->json = $json;
+		$this->jsonSerializer = $jsonSerializer ?? new JsonSerializer();
 	}
 
 	protected function catchError(int $errorNumber, string $message, string $file, int $lineNumber, ?Throwable $throwable): void
@@ -105,7 +104,7 @@ final class AppErrorHandler extends ErrorHandler
 				];
 
 				header('Content-Type: application/json');
-				echo $this->json->encode($json);
+				echo $this->jsonSerializer->save($json);
 			} else {
 				$rootDir = Path::combine($this->config->baseDirectoryPath, 'App', 'Views');
 				$baseDir = Path::combine('template', 'page');

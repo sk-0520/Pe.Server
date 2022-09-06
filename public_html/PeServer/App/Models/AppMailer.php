@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models;
 
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Environment;
 use PeServer\Core\DefaultValue;
 use PeServer\Core\Mail\EmailAddress;
@@ -18,7 +18,7 @@ use PeServer\Core\Throws\ArgumentException;
  */
 final class AppMailer extends Mailer
 {
-	private string $overwriteTarget = DefaultValue::EMPTY_STRING;
+	private string $overwriteTarget = Text::EMPTY;
 
 	public function __construct(AppConfiguration $config)
 	{

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core;
 
 use \ValueError;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\EncodingException;
 use PeServer\Core\Throws\Throws;
@@ -94,7 +95,7 @@ class Encoding
 	private static function enforceEncodingName(string $name): void
 	{
 		$names = self::getEncodingNames();
-		if (!ArrayUtility::containsValue($names, $name)) {
+		if (!Arr::containsValue($names, $name)) {
 			throw new ArgumentException('$name');
 		}
 	}

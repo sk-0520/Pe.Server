@@ -34,7 +34,7 @@
  */
 function smarty_block_textformat($params, $content, Smarty_Internal_Template $template, &$repeat)
 {
-    if (is_null($content)) {
+    if ($content === null) {
         return;
     }
     if (Smarty::$_MBSTRING) {

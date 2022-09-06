@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Domain\Page\Management;
 
 use PeServer\Core\Cryptography;
-use PeServer\Core\DefaultValue;
+use PeServer\Core\Text;
 use PeServer\App\Models\AuditLog;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
@@ -19,7 +19,7 @@ use PeServer\App\Models\Domain\AccountValidator;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\App\Models\Dao\Entities\UsersEntityDao;
 use PeServer\App\Models\Dao\Entities\UserAuthenticationsEntityDao;
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 
 class ManagementSetupLogic extends PageLogicBase
 {
@@ -38,7 +38,7 @@ class ManagementSetupLogic extends PageLogicBase
 			'setting_setup_website',
 		], true);
 
-		$this->setValue('setting_setup_password', DefaultValue::EMPTY_STRING);
+		$this->setValue('setting_setup_password', Text::EMPTY);
 	}
 
 	protected function validateImpl(LogicCallMode $callMode): void
@@ -85,7 +85,7 @@ class ManagementSetupLogic extends PageLogicBase
 
 		$params = [
 			'login_id' => $this->getRequest('setting_setup_login_id'),
-			'password' => $this->getRequest('setting_setup_password', DefaultValue::EMPTY_STRING, false),
+			'password' => $this->getRequest('setting_setup_password', Text::EMPTY, false),
 			'user_name' => $this->getRequest('setting_setup_user_name'),
 			'email' => $this->cryptography->encrypt($email),
 			'mark_email' => $this->cryptography->toMark($email),
@@ -94,7 +94,7 @@ class ManagementSetupLogic extends PageLogicBase
 
 		$userInfo = [
 			'id' => UserUtility::generateUserId(),
-			'generated_password' => DefaultValue::EMPTY_STRING,
+			'generated_password' => Text::EMPTY,
 			'current_password' => Cryptography::toHashPassword($params['password']),
 		];
 
@@ -105,7 +105,7 @@ class ManagementSetupLogic extends PageLogicBase
 			$accountValidator = new AccountValidator($this, $this->validator);
 
 			/** @var string @-phpstan-ignore-next-line */
-			$loginId = ArrayUtility::getOr($params, 'login_id', '');
+			$loginId = Arr::getOr($params, 'login_id', '');
 			if (!$accountValidator->isFreeLoginId($database, 'setting_setup_login_id', $loginId)) {
 				return false;
 			}
@@ -123,8 +123,8 @@ class ManagementSetupLogic extends PageLogicBase
 				$params['email'], // @-phpstan-ignore-line
 				$params['mark_email'], // @-phpstan-ignore-line
 				$params['website'], // @-phpstan-ignore-line
-				DefaultValue::EMPTY_STRING,
-				DefaultValue::EMPTY_STRING
+				Text::EMPTY,
+				Text::EMPTY
 			);
 
 			$userAuthenticationsEntityDao->insertUserAuthentication(

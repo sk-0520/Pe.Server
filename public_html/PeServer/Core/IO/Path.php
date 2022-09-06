@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\IO;
 
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\DefaultValue;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
@@ -99,12 +99,12 @@ abstract class Path
 	public static function getFileExtension(string $path, bool $withDot = false): string
 	{
 		if (Text::isNullOrWhiteSpace($path)) {
-			return DefaultValue::EMPTY_STRING;
+			return Text::EMPTY;
 		}
 
 		$dotIndex = Text::getLastPosition($path, '.');
-		if ($dotIndex === DefaultValue::NOT_FOUND_INDEX) {
-			return DefaultValue::EMPTY_STRING;
+		if ($dotIndex === -1) {
+			return Text::EMPTY;
 		}
 
 		$result = Text::substring($path, $dotIndex);
@@ -113,7 +113,7 @@ abstract class Path
 		}
 
 		if (!Text::getByteCount($result)) {
-			return DefaultValue::EMPTY_STRING;
+			return Text::EMPTY;
 		}
 
 		return Text::substring($result, 1);
@@ -129,7 +129,7 @@ abstract class Path
 	{
 		$fileName = self::getFileName($path);
 		$dotIndex = Text::getLastPosition($fileName, '.');
-		if ($dotIndex === DefaultValue::NOT_FOUND_INDEX) {
+		if ($dotIndex === -1) {
 			return $fileName;
 		}
 
@@ -155,10 +155,10 @@ abstract class Path
 		$parts = pathinfo($path);
 
 		$result = new PathParts(
-			ArrayUtility::getOr($parts, 'dirname', '.'),
-			ArrayUtility::getOr($parts, 'basename', DefaultValue::EMPTY_STRING),
-			ArrayUtility::getOr($parts, 'filename', DefaultValue::EMPTY_STRING),
-			ArrayUtility::getOr($parts, 'extension', DefaultValue::EMPTY_STRING)
+			Arr::getOr($parts, 'dirname', '.'),
+			Arr::getOr($parts, 'basename', Text::EMPTY),
+			Arr::getOr($parts, 'filename', Text::EMPTY),
+			Arr::getOr($parts, 'extension', Text::EMPTY)
 		);
 
 		return $result;

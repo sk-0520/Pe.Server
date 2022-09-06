@@ -24,24 +24,24 @@ class DiItem extends DisposerBase
 	#region define
 
 	/**
-	 * ライフサイクル: 毎回作る。
+	 * [ライフサイクル] 毎回作る。
 	 */
 	public const LIFECYCLE_TRANSIENT = 0;
 	/**
-	 * ライフサイクル: シングルトン。
+	 * [ライフサイクル] シングルトン。
 	 */
 	public const LIFECYCLE_SINGLETON = 1;
 
 	/**
-	 * 登録種別: 型。
+	 * [登録種別] 型。
 	 */
 	public const TYPE_TYPE = 0;
 	/**
-	 * 登録種別: 値。
+	 * [登録種別] 値。
 	 */
 	public const TYPE_VALUE = 1;
 	/**
-	 * 登録種別: 生成処理。
+	 * [登録種別] 生成処理。
 	 */
 	public const TYPE_FACTORY = 2;
 
@@ -248,7 +248,7 @@ class DiItem extends DisposerBase
 			}
 		}
 
-		if (!is_null($disposer)) {
+		if ($disposer !== null) {
 			$disposer->dispose();
 		}
 	}

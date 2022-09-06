@@ -178,7 +178,7 @@ class UserDomainDao extends DaoBase
 			]
 		);
 
-		if (is_null($result)) {
+		if ($result === null) {
 			return null;
 		}
 

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Collections;
 
 use \TypeError;
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\IndexOutOfRangeException;
 use PeServer\Core\TypeUtility;
@@ -31,7 +31,7 @@ class Vector extends TypeArrayBase
 	{
 		parent::__construct($type);
 
-		if (!ArrayUtility::isNullOrEmpty($items)) {
+		if (!Arr::isNullOrEmpty($items)) {
 			//@phpstan-ignore-next-line
 			$this->addRange($items, $useValues);
 		}
@@ -51,11 +51,11 @@ class Vector extends TypeArrayBase
 	 */
 	public static function create(array $items, bool $useValues = true): self
 	{
-		if (ArrayUtility::isNullOrEmpty($items)) { //@phpstan-ignore-line ArrayUtility::isNullOrEmpty
+		if (Arr::isNullOrEmpty($items)) { //@phpstan-ignore-line Arr::isNullOrEmpty
 			throw new ArgumentException('$items');
 		}
 
-		$firstKey = ArrayUtility::getFirstKey($items);
+		$firstKey = Arr::getFirstKey($items);
 		$firstValue = $items[$firstKey];
 
 		$type = TypeUtility::getType($firstValue);
@@ -78,7 +78,7 @@ class Vector extends TypeArrayBase
 
 	protected function throwIfInvalidOffset(mixed $offset): void
 	{
-		if (is_null($offset)) {
+		if ($offset === null) {
 			throw new TypeError('$offset: null');
 		}
 
@@ -115,8 +115,8 @@ class Vector extends TypeArrayBase
 	public function addRange(array $items, bool $useValues = true): self
 	{
 		if ($useValues) {
-			$items = ArrayUtility::getValues($items);
-		} else if (!ArrayUtility::isList($items)) {
+			$items = Arr::getValues($items);
+		} else if (!Arr::isList($items)) {
 			throw new ArgumentException('$items');
 		}
 
@@ -167,7 +167,7 @@ class Vector extends TypeArrayBase
 	 */
 	public function offsetSet(mixed $offset, mixed $value): void
 	{
-		if (is_null($offset)) {
+		if ($offset === null) {
 			$this->add($value);
 			return;
 		}

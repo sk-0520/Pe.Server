@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\IO;
 
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Binary;
 use PeServer\Core\DefaultValue;
 use PeServer\Core\Encoding;
@@ -226,7 +226,7 @@ class Stream extends ResourceBase
 	{
 		$path = 'php://temp';
 
-		if (!is_null($memoryByteSize)) {
+		if ($memoryByteSize !== null) {
 			if ($memoryByteSize < 0) {
 				throw new ArgumentException('$byteSize: ' . $memoryByteSize);
 			}
@@ -414,7 +414,7 @@ class Stream extends ResourceBase
 			return 0;
 		}
 
-		if (is_null($count)) {
+		if ($count === null) {
 			return $this->writeBinary($this->encoding->getBinary($data));
 		}
 
@@ -524,7 +524,7 @@ class Stream extends ResourceBase
 	{
 		$result = $this->readBinaryContents();
 		if (!$result->count()) {
-			return DefaultValue::EMPTY_STRING;
+			return Text::EMPTY;
 		}
 
 		return $this->encoding->toString($result);

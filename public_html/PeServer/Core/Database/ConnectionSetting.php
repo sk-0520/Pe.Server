@@ -12,10 +12,10 @@ class ConnectionSetting
 	/**
 	 * 生成。
 	 *
-	 * @param string $dsn
-	 * @param string $user
-	 * @param string $password
-	 * @param array<mixed>|null $options
+	 * @param string $dsn データソース名。
+	 * @param string $user ユーザー名。
+	 * @param string $password パスワード。
+	 * @param array<string,string|int>|null $options オプション。
 	 */
 	public function __construct(
 		public string $dsn,

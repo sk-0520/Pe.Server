@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace PeServer\Core;
 
 use \Exception;
-use PeServer\Core\Throws\ArgumentException;
 use \Throwable;
+use PeServer\Core\Collections\Arr;
+use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\CryptoException;
 use PeServer\Core\Throws\Throws;
 
@@ -96,7 +97,7 @@ abstract class Cryptography
 		$charactersArray = Text::toCharacters($characters);
 
 		$min = 0;
-		$max = ArrayUtility::getCount($charactersArray) - 1;
+		$max = Arr::getCount($charactersArray) - 1;
 
 		$result = '';
 
@@ -155,7 +156,7 @@ abstract class Cryptography
 	public static function decrypt(string $encValue, string $password): string
 	{
 		$values = Text::split($encValue, self::SEPARATOR);
-		if (ArrayUtility::getCount($values) !== 3) {
+		if (Arr::getCount($values) !== 3) {
 			throw new ArgumentException();
 		}
 		list($algorithm, $ivBase64, $encData) = $values;

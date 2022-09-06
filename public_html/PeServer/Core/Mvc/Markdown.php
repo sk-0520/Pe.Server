@@ -51,12 +51,12 @@ class Markdown
 		$trimmedHead = $regex->replace(
 			$html,
 			'/<pre><code(\s+class=".+")?><!-- {CODE -->/',
-			DefaultValue::EMPTY_STRING
+			Text::EMPTY
 		);
 		$trimmedTail = Text::replace(
 			$trimmedHead,
 			'</code></pre><!-- CODE} -->',
-			DefaultValue::EMPTY_STRING
+			Text::EMPTY
 		);
 
 		return $trimmedTail;

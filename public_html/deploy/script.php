@@ -62,7 +62,7 @@ class DeployScript
 	 * マイグレーション
 	 * PeServerからも使用される
 	 *
-	 * @param {driver:string,connection:string,user:string,password:string} $databaseSetting
+	 * @param {connection:string,user:string,password:string} $databaseSetting
 	 * @return void
 	 */
 	public function migrate(array $databaseSetting)

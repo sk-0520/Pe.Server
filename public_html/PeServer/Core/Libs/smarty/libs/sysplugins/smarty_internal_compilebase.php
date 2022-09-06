@@ -184,7 +184,7 @@ abstract class Smarty_Internal_CompileBase
             list($_openTag, $_data) = array_pop($compiler->_tag_stack);
             // open tag must match with the expected ones
             if (in_array($_openTag, (array)$expectedTag)) {
-                if (is_null($_data)) {
+                if ($_data === null) {
                     // return opening tag
                     return $_openTag;
                 } else {

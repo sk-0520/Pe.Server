@@ -7,9 +7,9 @@ namespace PeServer\App\Models\Domain\Api\PluginApi;
 use PeServer\App\Models\AppDatabaseCache;
 use PeServer\App\Models\Domain\Api\ApiLogicBase;
 use PeServer\App\Models\ResponseJson;
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Collections\Collection;
-use PeServer\Core\DefaultValue;
+use PeServer\Core\Text;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\Uuid;
@@ -29,8 +29,8 @@ class PluginApiExistsLogic extends ApiLogicBase
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
 		$json = $this->getRequestJson();
-		$pluginId = ArrayUtility::getOr($json, 'plugin_id', DefaultValue::EMPTY_STRING);
-		$pluginName = ArrayUtility::getOr($json, 'plugin_name', DefaultValue::EMPTY_STRING);
+		$pluginId = Arr::getOr($json, 'plugin_id', Text::EMPTY);
+		$pluginName = Arr::getOr($json, 'plugin_name', Text::EMPTY);
 
 		$plugins = $this->dbCache->readPluginInformation();
 		$pluginCollection = Collection::from($plugins->items);

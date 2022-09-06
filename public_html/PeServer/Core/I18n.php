@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
+use PeServer\Core\Collections\Arr;
+
 abstract class I18n
 {
 	#region define
@@ -88,7 +90,7 @@ abstract class I18n
 		$tree = Text::split($key, '/');
 		foreach ($tree as $node) {
 			//@-phpstan-ignore-next-line
-			if (ArrayUtility::tryGet($leaf, $node, $result)) {
+			if (Arr::tryGet($leaf, $node, $result)) {
 				$leaf = $result;
 			} else {
 				$leaf = null;
@@ -96,8 +98,8 @@ abstract class I18n
 			}
 		}
 
-		if (!is_null($leaf)) {
-			return self::getFlatMessage($leaf, $locale) ?? DefaultValue::EMPTY_STRING;
+		if ($leaf !== null) {
+			return self::getFlatMessage($leaf, $locale) ?? Text::EMPTY;
 		}
 
 
@@ -124,7 +126,7 @@ abstract class I18n
 		}
 
 		$message = self::getMessage($key, 'ja');
-		if (is_null($message)) {
+		if ($message === null) {
 			$message =  $key;
 		}
 

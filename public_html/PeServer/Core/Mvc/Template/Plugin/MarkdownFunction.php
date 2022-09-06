@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Template\Plugin;
 
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\DefaultValue;
 use PeServer\Core\Mvc\Markdown;
 use PeServer\Core\Text;
@@ -29,14 +29,14 @@ class MarkdownFunction extends TemplateBlockFunctionBase
 	protected function functionBlockBodyImpl(string $content): string
 	{
 		/** @var string */
-		$className = ArrayUtility::getOr($this->params, 'class', DefaultValue::EMPTY_STRING);
+		$className = Arr::getOr($this->params, 'class', Text::EMPTY);
 		if (Text::isNullOrWhiteSpace($className)) {
 			$className = 'markdown';
 		} else if (!Text::contains($className, 'markdown', false)) {
 			$className = 'markdown ' . $className;
 		}
 
-		$isSafeMode = TypeUtility::parseBoolean(ArrayUtility::getOr($this->params, 'safe_mode', true));
+		$isSafeMode = TypeUtility::parseBoolean(Arr::getOr($this->params, 'safe_mode', true));
 
 		$markdown = new Markdown();
 		$markdown->setSafeMode($isSafeMode);

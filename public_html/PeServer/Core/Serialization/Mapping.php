@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Serialization;
 
-use Attribute;
-use PeServer\Core\DefaultValue;
+use \Attribute;
+use PeServer\Core\Text;
 
 /**
  * マッピング設定。
@@ -44,12 +44,12 @@ class Mapping
 	 * @param int $flags 各種設定。
 	 * @phpstan-param int-mask-of<self::FLAG_*> $flags 各種設定。
 	 * @param string $arrayValueClassName マッピング先が配列の場合に割り当てるオブジェクト。指定がない場合はただの配列となる。
-	 * @phpstan-param class-string|DefaultValue::EMPTY_STRING $arrayValueClassName
+	 * @phpstan-param class-string|Text::EMPTY $arrayValueClassName
 	 */
 	public function __construct(
-		public string $name = DefaultValue::EMPTY_STRING,
+		public string $name = Text::EMPTY,
 		public int $flags = self::FLAG_NONE,
-		public string $arrayValueClassName = DefaultValue::EMPTY_STRING
+		public string $arrayValueClassName = Text::EMPTY
 	) {
 	}
 }

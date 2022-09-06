@@ -13,6 +13,9 @@ use PeServer\Core\Throws\ArgumentNullException;
 use PeServer\Core\Throws\DiContainerRegisteredException;
 use PeServer\Core\TypeUtility;
 
+/**
+ * 登録可能DIコンテナ実装。
+ */
 class DiRegisterContainer extends DiContainer implements IDiRegisterContainer
 {
 	#region IDiRegisterContainer
@@ -51,7 +54,7 @@ class DiRegisterContainer extends DiContainer implements IDiRegisterContainer
 		$this->throwIfDisposed();
 
 		$item = $this->remove($className);
-		if (!is_null($item)) {
+		if ($item !== null) {
 			$item->dispose();
 		}
 
@@ -63,20 +66,20 @@ class DiRegisterContainer extends DiContainer implements IDiRegisterContainer
 		$this->throwIfDisposed();
 
 		$item = $this->remove($id);
-		if (!is_null($item)) {
+		if ($item !== null) {
 			$item->dispose();
 		}
 
 		$this->add($id, DiItem::class($className, $lifecycle));
 	}
 
-	public function registerValue(?object $value, string $id = DefaultValue::EMPTY_STRING): void
+	public function registerValue(?object $value, string $id = Text::EMPTY): void
 	{
 		$this->throwIfDisposed();
 
 		$registerId = $id;
 		if (Text::isNullOrWhiteSpace($registerId)) {
-			if (is_null($value)) {
+			if ($value === null) {
 				throw new ArgumentNullException('$value');
 			}
 			$registerId = TypeUtility::getType($value);
@@ -84,7 +87,7 @@ class DiRegisterContainer extends DiContainer implements IDiRegisterContainer
 
 		/** @phpstan-var non-empty-string $registerId */
 		$item = $this->remove($registerId);
-		if (!is_null($item)) {
+		if ($item !== null) {
 			$item->dispose();
 		}
 

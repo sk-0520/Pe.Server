@@ -9,16 +9,13 @@ use PeServer\Core\Throws\ArgumentException;
 
 class ArgumentNullException extends ArgumentException
 {
-	public function __construct(string $message = '', int $code = 0, ?Throwable $previous = null)
-	{
-		parent::__construct($message, $code, $previous);
-	}
+	use ThrowableTrait;
 
 	#region function
 
 	public static function throwIfNull(mixed $argument, string $name = ''): void
 	{
-		if (is_null($argument)) {
+		if ($argument === null) {
 			throw new ArgumentNullException($name);
 		}
 	}

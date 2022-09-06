@@ -6,7 +6,7 @@ namespace PeServer\Core\Mvc;
 
 use \DateInterval;
 use \DateTimeImmutable;
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Binary;
 use PeServer\Core\DefaultValue;
 use PeServer\Core\Http\HttpRequest;
@@ -41,7 +41,7 @@ abstract class LogicBase implements IValidationReceiver
 {
 	#region define
 
-	protected const SESSION_ALL_CLEAR = DefaultValue::EMPTY_STRING;
+	protected const SESSION_ALL_CLEAR = Text::EMPTY;
 
 	#endregion
 
@@ -148,7 +148,7 @@ abstract class LogicBase implements IValidationReceiver
 	 * @param bool $trim 取得データをトリムするか。
 	 * @return string 要求データ。
 	 */
-	protected function getRequest(string $key, string $fallbackValue = DefaultValue::EMPTY_STRING, bool $trim = true): string
+	protected function getRequest(string $key, string $fallbackValue = Text::EMPTY, bool $trim = true): string
 	{
 		if (!$this->request->exists($key)->exists) {
 			return $fallbackValue;
@@ -211,7 +211,7 @@ abstract class LogicBase implements IValidationReceiver
 	 * @param string $fallbackValue 取得失敗時の値。
 	 * @return string
 	 */
-	protected function getCookie(string $key, string $fallbackValue = DefaultValue::EMPTY_STRING): string
+	protected function getCookie(string $key, string $fallbackValue = Text::EMPTY): string
 	{
 		return $this->stores->cookie->getOr($key, $fallbackValue);
 	}
@@ -229,20 +229,20 @@ abstract class LogicBase implements IValidationReceiver
 		/** @var CookieOption|null */
 		$cookieOption = null;
 
-		if (!is_null($option)) {
+		if ($option !== null) {
 			if ($option instanceof CookieOption) {
 				$cookieOption = $option;
 			} else {
 				/** @var string */
-				$path = ArrayUtility::getOr($option, 'path', $this->stores->cookie->option->path);
+				$path = Arr::getOr($option, 'path', $this->stores->cookie->option->path);
 				/** @var \DateInterval|null */
-				$span = ArrayUtility::getOr($option, 'span', $this->stores->cookie->option->span);
+				$span = Arr::getOr($option, 'span', $this->stores->cookie->option->span);
 				/** @var bool */
-				$secure = ArrayUtility::getOr($option, 'secure', $this->stores->cookie->option->secure);
+				$secure = Arr::getOr($option, 'secure', $this->stores->cookie->option->secure);
 				/** @var bool */
-				$httpOnly = ArrayUtility::getOr($option, 'httpOnly', $this->stores->cookie->option->httpOnly);
+				$httpOnly = Arr::getOr($option, 'httpOnly', $this->stores->cookie->option->httpOnly);
 				/** @var 'Lax'|'lax'|'None'|'none'|'Strict'|'strict' */
-				$sameSite = ArrayUtility::getOr($option, 'sameSite', $this->stores->cookie->option->sameSite);
+				$sameSite = Arr::getOr($option, 'sameSite', $this->stores->cookie->option->sameSite);
 
 				$cookieOption = new CookieOption(
 					$path,
@@ -271,7 +271,7 @@ abstract class LogicBase implements IValidationReceiver
 	protected function peekTemporary(string $key, mixed $fallbackValue = null): mixed
 	{
 		$value = $this->stores->temporary->peek($key);
-		if (is_null($value)) {
+		if ($value === null) {
 			return $fallbackValue;
 		}
 
@@ -281,7 +281,7 @@ abstract class LogicBase implements IValidationReceiver
 	protected function popTemporary(string $key, mixed $fallbackValue = null): mixed
 	{
 		$value = $this->stores->temporary->pop($key);
-		if (is_null($value)) {
+		if ($value === null) {
 			return $fallbackValue;
 		}
 
@@ -374,10 +374,10 @@ abstract class LogicBase implements IValidationReceiver
 
 		foreach ($this->keys as $key) {
 			if ($overwrite) {
-				$value = $this->getRequest($key, DefaultValue::EMPTY_STRING);
+				$value = $this->getRequest($key, Text::EMPTY);
 				$this->values[$key] = $value;
 			} else {
-				$this->values[$key] = DefaultValue::EMPTY_STRING;
+				$this->values[$key] = Text::EMPTY;
 			}
 		}
 	}
@@ -393,7 +393,7 @@ abstract class LogicBase implements IValidationReceiver
 	 */
 	protected function setValue(string $key, $value): void
 	{
-		if (ArrayUtility::getCount($this->keys)) {
+		if (Arr::getCount($this->keys)) {
 			if (array_search($key, $this->keys) === false) {
 				throw new ArgumentException("未登録 key -> $key");
 			}
@@ -448,9 +448,9 @@ abstract class LogicBase implements IValidationReceiver
 	protected function validation(string $key, callable $callback, ?array $option = null): void
 	{
 		/** @var string */
-		$default = ArrayUtility::getOr($option, 'default', DefaultValue::EMPTY_STRING);
+		$default = Arr::getOr($option, 'default', Text::EMPTY);
 		/** @var bool */
-		$trim = ArrayUtility::getOr($option, 'trim', true);
+		$trim = Arr::getOr($option, 'trim', true);
 
 		$value = $this->getRequest($key, $default, $trim);
 		$callback($key, $value);
@@ -627,7 +627,7 @@ abstract class LogicBase implements IValidationReceiver
 	 */
 	public function getContent(): DataContent
 	{
-		if (is_null($this->content)) {
+		if ($this->content === null) {
 			throw new InvalidOperationException();
 		}
 
@@ -647,7 +647,7 @@ abstract class LogicBase implements IValidationReceiver
 	 */
 	public function tryGetResult(string $key, &$result): bool
 	{
-		return ArrayUtility::tryGet($this->result, $key, $result);
+		return Arr::tryGet($this->result, $key, $result);
 	}
 
 	/**

@@ -65,7 +65,7 @@ abstract class Enforce
 	 */
 	public static function throwIfNull(mixed $value, string $argument = '', string $exceptionClass = EnforceException::class): void
 	{
-		if (is_null($value)) {
+		if ($value === null) {
 			self::throwCore($argument, $exceptionClass);
 		}
 	}

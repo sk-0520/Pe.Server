@@ -10,7 +10,7 @@ use \Countable;
 use \IteratorAggregate;
 use \Traversable;
 use \TypeError;
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\TypeUtility;
 
 /**
@@ -63,7 +63,7 @@ abstract class TypeArrayBase implements ArrayAccess, Countable, IteratorAggregat
 
 	protected function isValidType(mixed $value): void
 	{
-		if (is_null($value)) {
+		if ($value === null) {
 			if (!TypeUtility::isNullable($this->type)) {
 				throw new TypeError('$value');
 			}
@@ -92,7 +92,7 @@ abstract class TypeArrayBase implements ArrayAccess, Countable, IteratorAggregat
 	/** @phpstan-return UnsignedIntegerAlias */
 	public function count(): int
 	{
-		return ArrayUtility::getCount($this->items);
+		return Arr::getCount($this->items);
 	}
 
 	#endregion

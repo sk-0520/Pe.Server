@@ -9,7 +9,7 @@ use PeServer\Core\Html\HtmlDocument;
 use PeServer\Core\Html\HtmlNodeBase;
 
 /**
- * DOMText のラッパー。
+ * `DOMText` ラッパー。
  */
 final class HtmlText extends HtmlNodeBase
 {

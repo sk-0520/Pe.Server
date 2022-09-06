@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Database;
 
-use \Throwable;
 use \Exception;
 use \PDO;
-use \PDOStatement;
 use \PDOException;
-use PeServer\Core\ArrayUtility;
+use \PDOStatement;
+use \Throwable;
+use PeServer\Core\Collections\Arr;
+use PeServer\Core\Database\ConnectionSetting;
 use PeServer\Core\Database\DatabaseColumn;
 use PeServer\Core\Database\DatabaseTableResult;
 use PeServer\Core\Database\IDatabaseTransactionContext;
@@ -24,7 +25,7 @@ use PeServer\Core\Throws\TransactionException;
 use PeServer\Core\TypeUtility;
 
 /**
- * DB接続処理。
+ * DB処理。
  */
 class DatabaseContext extends DisposerBase implements IDatabaseTransactionContext
 {
@@ -52,19 +53,16 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 	/**
 	 * 生成。
 	 *
-	 * @param string $dsn
-	 * @param string $user
-	 * @param string $password
-	 * @param array<string,string>|null $options
+	 * @param ConnectionSetting $setting
 	 * @param ILogger $logger
 	 * @throws DatabaseException
 	 */
-	public function __construct(string $dsn, string $user, string $password, ?array $options, ILogger $logger)
+	public function __construct(ConnectionSetting $setting, ILogger $logger)
 	{
 		$this->logger = $logger;
 		$this->regex = new Regex();
 
-		$this->pdo = Throws::wrap(PDOException::class, DatabaseException::class, fn () => new PDO($dsn, $user, $password, $options));
+		$this->pdo = Throws::wrap(PDOException::class, DatabaseException::class, fn () => new PDO($setting->dsn, $setting->user, $setting->password, $setting->options));
 		$this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 	}
@@ -91,7 +89,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 	 */
 	private function setParameters(PDOStatement $statement, ?array $parameters): void
 	{
-		if (!is_null($parameters)) {
+		if ($parameters !== null) {
 			foreach ($parameters as $key => $value) {
 				if (!$statement->bindValue($key, $value)) {
 					throw new SqlException('$key: ' . $key . ' -> ' . TypeUtility::getType($value));
@@ -342,7 +340,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 
 		/** @phpstan-var DatabaseRowResult<TFieldArray> */
 		$result = $this->convertRowResult($query);
-		if (ArrayUtility::isNullOrEmpty($result->fields)) { //@phpstan-ignore-line 本クラス内限定で空の可能性あり
+		if (Arr::isNullOrEmpty($result->fields)) { //@phpstan-ignore-line 本クラス内限定で空の可能性あり
 			throw new DatabaseException($this->getErrorMessage());
 		}
 
@@ -360,7 +358,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 		/** @phpstan-var DatabaseRowResult<TFieldArray> */
 		$result = $this->convertRowResult($query);
 		$result = $query->fetch();
-		if (ArrayUtility::isNullOrEmpty($result->fields)) {
+		if (Arr::isNullOrEmpty($result->fields)) {
 			return null;
 		}
 
@@ -377,7 +375,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 
 		/** @phpstan-var DatabaseRowResult<TFieldArray> */
 		$result = $this->convertRowResult($query);
-		if (ArrayUtility::isNullOrEmpty($result->fields)) { //@phpstan-ignore-line 本クラス内限定で空の可能性あり
+		if (Arr::isNullOrEmpty($result->fields)) { //@phpstan-ignore-line 本クラス内限定で空の可能性あり
 			throw new DatabaseException($this->getErrorMessage());
 		}
 
@@ -399,7 +397,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 
 		/** @phpstan-var DatabaseRowResult<TFieldArray> */
 		$result = $this->convertRowResult($query);
-		if (ArrayUtility::isNullOrEmpty($result->fields)) { //@phpstan-ignore-line 本クラス内限定で空の可能性あり
+		if (Arr::isNullOrEmpty($result->fields)) { //@phpstan-ignore-line 本クラス内限定で空の可能性あり
 			return null;
 		}
 

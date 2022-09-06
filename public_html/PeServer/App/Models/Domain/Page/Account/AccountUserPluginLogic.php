@@ -15,12 +15,12 @@ use PeServer\App\Models\Domain\PluginState;
 use PeServer\App\Models\Domain\PluginUrlKey;
 use PeServer\App\Models\Domain\PluginValidator;
 use PeServer\App\Models\SessionKey;
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Database\DatabaseTableResult;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\I18n;
-use PeServer\Core\DefaultValue;
+use PeServer\Core\Text;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\Throws\HttpStatusException;
@@ -106,7 +106,7 @@ class AccountUserPluginLogic extends PageLogicBase
 				$this->setValue('account_plugin_state', $map->fields['plugin_name']);
 			}
 		} else {
-			$this->setValue('account_plugin_state', DefaultValue::EMPTY_STRING);
+			$this->setValue('account_plugin_state', Text::EMPTY);
 			$this->setValue('plugin_category_mappings', []);
 		}
 	}
@@ -179,9 +179,9 @@ class AccountUserPluginLogic extends PageLogicBase
 				$this->setValue('account_plugin_description', $editMap->fields['description']);
 
 				$urlMap = $pluginUrlsEntityDao->selectUrls($pluginId);
-				$this->setValue('account_plugin_check_url', ArrayUtility::getOr($urlMap, PluginUrlKey::CHECK, DefaultValue::EMPTY_STRING));
-				$this->setValue('account_plugin_lp_url', ArrayUtility::getOr($urlMap, PluginUrlKey::LANDING, DefaultValue::EMPTY_STRING));
-				$this->setValue('account_plugin_project_url', ArrayUtility::getOr($urlMap, PluginUrlKey::PROJECT, DefaultValue::EMPTY_STRING));
+				$this->setValue('account_plugin_check_url', Arr::getOr($urlMap, PluginUrlKey::CHECK, Text::EMPTY));
+				$this->setValue('account_plugin_lp_url', Arr::getOr($urlMap, PluginUrlKey::LANDING, Text::EMPTY));
+				$this->setValue('account_plugin_project_url', Arr::getOr($urlMap, PluginUrlKey::PROJECT, Text::EMPTY));
 
 				$pluginCategoryMappings = $pluginCategoryMappingsEntityDao->selectPluginCategoriesByPluginId($pluginId);
 				$this->setValue('plugin_category_mappings', $pluginCategoryMappings);
@@ -212,7 +212,7 @@ class AccountUserPluginLogic extends PageLogicBase
 
 		$database = $this->openDatabase();
 		$database->transaction(function (IDatabaseContext $context) use ($params) {
-			assert(!is_null($this->pluginCategories));
+			assert($this->pluginCategories !== null);
 
 			$pluginsEntityDao = new PluginsEntityDao($context);
 			$pluginUrlsEntityDao = new PluginUrlsEntityDao($context);
@@ -233,7 +233,7 @@ class AccountUserPluginLogic extends PageLogicBase
 					$params['display_name'],
 					PluginState::ENABLED,
 					$params['description'],
-					DefaultValue::EMPTY_STRING
+					Text::EMPTY
 				);
 			} else {
 				$pluginsEntityDao->updateEditPlugin(

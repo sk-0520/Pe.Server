@@ -9,6 +9,8 @@ use PeServer\Core\Code;
 
 /**
  * 座標。
+ *
+ * @immutable
  */
 class Point implements Stringable
 {
@@ -25,9 +27,7 @@ class Point implements Stringable
 	 * @param int $y Y座標。
 	 */
 	public function __construct(
-		/** @readonly */
 		public int $x,
-		/** @readonly */
 		public int $y
 	) {
 	}

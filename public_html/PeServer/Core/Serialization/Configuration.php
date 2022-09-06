@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Serialization;
 
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Code;
 use PeServer\Core\DefaultValue;
 use PeServer\Core\IO\Directory;
@@ -20,7 +20,7 @@ class Configuration
 {
 	#region define
 
-	public const FILE_TYPE_DEFAULT = DefaultValue::EMPTY_STRING;
+	public const FILE_TYPE_DEFAULT = Text::EMPTY;
 	public const FILE_TYPE_JSON = 'json';
 
 	#endregion
@@ -85,7 +85,7 @@ class Configuration
 		if (File::exists($environmentFilePath)) {
 			/** @var array<mixed> */
 			$environmentConfiguration = File::readJsonFile($environmentFilePath);
-			$configuration = ArrayUtility::replace($baseConfiguration, $environmentConfiguration);
+			$configuration = Arr::replace($baseConfiguration, $environmentConfiguration);
 		} else {
 			$configuration = $baseConfiguration;
 		}

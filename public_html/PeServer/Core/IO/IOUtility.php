@@ -14,7 +14,6 @@ use PeServer\Core\Environment;
 use PeServer\Core\ErrorHandler;
 use PeServer\Core\IO\IOState;
 use PeServer\Core\IO\Stream;
-use PeServer\Core\Serialization\Json;
 use PeServer\Core\ResultData;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
@@ -68,7 +67,7 @@ abstract class IOUtility
 	 */
 	public static function clearCache(?string $path)
 	{
-		if (is_null($path)) {
+		if ($path === null) {
 			clearstatcache(true);
 			return;
 		}

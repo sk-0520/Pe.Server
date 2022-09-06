@@ -2,19 +2,22 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core;
+namespace PeServer\Core\Collections;
 
+use PeServer\Core\Cryptography;
+use PeServer\Core\ErrorHandler;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Throws\KeyNotFoundException;
 use PeServer\Core\Throws\TypeException;
+use PeServer\Core\TypeUtility;
 
 /**
  * 配列共通処理。
  *
  * 遅延処理が必要な場合 `Collections\Collection` を参照のこと。
  */
-class ArrayUtility
+class Arr
 {
 	#region function
 
@@ -27,7 +30,7 @@ class ArrayUtility
 	 */
 	public static function isNullOrEmpty(?array $array): bool
 	{
-		if (is_null($array)) {
+		if ($array === null) {
 			return true;
 		}
 
@@ -50,9 +53,9 @@ class ArrayUtility
 	 */
 	public static function getOr(?array $array, int|string $key, mixed $fallbackValue)
 	{
-		if (!is_null($array) && isset($array[$key])) {
+		if ($array !== null && isset($array[$key])) {
 			$result = $array[$key];
-			if (!is_null($result) && !is_null($fallbackValue)) { //@phpstan-ignore-line
+			if ($result !== null && $fallbackValue !== null) { //@phpstan-ignore-line
 				$resultType = TypeUtility::getType($result);
 				$fallbackValueType = TypeUtility::getType($fallbackValue);
 				if ($resultType === $fallbackValueType) {
@@ -85,7 +88,7 @@ class ArrayUtility
 	 */
 	public static function tryGet(?array $array, int|string $key, mixed &$result): bool
 	{
-		if (!is_null($array) && isset($array[$key])) {
+		if ($array !== null && isset($array[$key])) {
 			$result = $array[$key];
 			return true;
 		}
@@ -103,7 +106,7 @@ class ArrayUtility
 	 */
 	public static function getCount(?array $array): int
 	{
-		if (is_null($array)) {
+		if ($array === null) {
 			return 0;
 		}
 
@@ -198,7 +201,7 @@ class ArrayUtility
 	public static function getFirstKey(array $array): int|string
 	{
 		$result = array_key_first($array);
-		if (is_null($result)) {
+		if ($result === null) {
 			throw new KeyNotFoundException();
 		}
 
@@ -217,7 +220,7 @@ class ArrayUtility
 	public static function getLastKey(array $array): int|string
 	{
 		$result = array_key_last($array);
-		if (is_null($result)) {
+		if ($result === null) {
 			throw new KeyNotFoundException();
 		}
 
@@ -375,6 +378,53 @@ class ArrayUtility
 		}
 
 		return $result;
+	}
+
+	/**
+	 * 指定した範囲内の整数から配列生成。
+	 *
+	 * PHP の `range` とは指定方法が違うことに注意。
+	 *
+	 * @param int $start 開始。
+	 * @param int $count 件数。
+	 * @phpstan-param UnsignedIntegerAlias $count
+	 * @return self
+	 * @phpstan-return array<int>
+	 */
+	public static function range(int $start, int $count): array
+	{
+		if ($count < 0) { //@phpstan-ignore-line
+			throw new ArgumentException('$count');
+		}
+
+		if ($count === 0) {
+			return [];
+		}
+
+		return \range($start, $start + $count - 1);
+	}
+
+	/**
+	 * 繰り返される配列を生成。
+	 *
+	 * `array_fill` ラッパー。
+	 *
+	 * @template TRepeatValue
+	 * @param mixed $value 値。
+	 * @phpstan-param TRepeatValue $value
+	 * @param int $count 件数。
+	 * @phpstan-param UnsignedIntegerAlias $count
+	 * @return self
+	 * @phpstan-return TRepeatValue[]
+	 * @see https://www.php.net/manual/function.array-fill.php
+	 */
+	public static function repeat(mixed $value, int $count): array
+	{
+		if ($count < 0) { //@phpstan-ignore-line
+			throw new ArgumentException('$count');
+		}
+
+		return array_fill(0, $count, $value);
 	}
 
 	#endregion
