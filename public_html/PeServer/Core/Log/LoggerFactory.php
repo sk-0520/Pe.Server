@@ -74,7 +74,7 @@ class LoggerFactory extends DiFactoryBase implements ILoggerFactory
 			return $debugLogger;
 		}
 
-		if (!is_null($debugLogger)) {
+		if ($debugLogger !== null) {
 			$loggers[] = $debugLogger;
 		}
 

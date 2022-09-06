@@ -229,7 +229,7 @@ abstract class LogicBase implements IValidationReceiver
 		/** @var CookieOption|null */
 		$cookieOption = null;
 
-		if (!is_null($option)) {
+		if ($option !== null) {
 			if ($option instanceof CookieOption) {
 				$cookieOption = $option;
 			} else {

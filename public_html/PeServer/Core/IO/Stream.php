@@ -226,7 +226,7 @@ class Stream extends ResourceBase
 	{
 		$path = 'php://temp';
 
-		if (!is_null($memoryByteSize)) {
+		if ($memoryByteSize !== null) {
 			if ($memoryByteSize < 0) {
 				throw new ArgumentException('$byteSize: ' . $memoryByteSize);
 			}

@@ -167,7 +167,7 @@ class HttpHeader
 	 */
 	public function existsRedirect(): bool
 	{
-		return !is_null($this->redirect);
+		return $this->redirect !== null;
 	}
 
 	/**

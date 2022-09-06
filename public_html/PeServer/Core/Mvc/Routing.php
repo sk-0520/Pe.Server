@@ -308,7 +308,7 @@ class Routing
 		$errorAction = null;
 		foreach ($this->setting->routes as $route) {
 			$action = $route->getAction($this->requestMethod, $this->requestPath);
-			if (!is_null($action)) {
+			if ($action !== null) {
 				if ($action->status->is(HttpStatus::none())) {
 					$this->executeAction($action->className, $action->actionSetting, $action->params);
 					return;

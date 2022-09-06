@@ -276,7 +276,7 @@ class Route
 						return ['key' => $value, 'name' => $requestKey, 'value' => $targetValue];
 					}
 				}, ArrayUtility::getKeys($keyPaths), ArrayUtility::getValues($keyPaths)), function ($i) {
-					return !is_null($i);
+					return $i !== null;
 				});
 
 				$calcPathLength = ArrayUtility::getCount($calcPaths);
