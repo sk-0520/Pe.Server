@@ -716,6 +716,68 @@ class Collection implements IteratorAggregate
 	}
 
 	/**
+	 * 最大データの取得。
+	 *
+	 * @param callable|null $callback
+	 * @phpstan-param callable(TValue, TKey): TValue|null $callback
+	 * @return mixed
+	 * @phpstan-return TValue|null
+	 */
+	public function max(callable $callback = null): mixed
+	{
+		/** @phpstan-var TValue|null */
+		$result = PHP_INT_MIN;
+
+		if ($callback === null) {
+			foreach ($this->iterator as $key => $value) {
+				if ($result < $value) {
+					$result = $value;
+				}
+			}
+		} else {
+			foreach ($this->iterator as $key => $value) {
+				$ret = $callback($value, $key);
+				if ($result < $ret) {
+					$result = $ret;
+				}
+			}
+		}
+
+		return $result;
+	}
+
+	/**
+	 * 最小データの取得。
+	 *
+	 * @param callable|null $callback
+	 * @phpstan-param callable(TValue, TKey): TValue|null $callback
+	 * @return mixed
+	 * @phpstan-return TValue|null
+	 */
+	public function min(callable $callback = null): mixed
+	{
+		/** @phpstan-var TValue|null */
+		$result = PHP_INT_MAX;
+
+		if ($callback === null) {
+			foreach ($this->iterator as $key => $value) {
+				if ($value < $result) {
+					$result = $value;
+				}
+			}
+		} else {
+			foreach ($this->iterator as $key => $value) {
+				$ret = $callback($value, $key);
+				if ($result < $ret) {
+					$result = $ret;
+				}
+			}
+		}
+
+		return $result;
+	}
+
+	/**
 	 * [遅延] zip
 	 *
 	 * @template TSequenceKey of array-key
