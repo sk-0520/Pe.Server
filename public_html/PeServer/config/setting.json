@@ -40,6 +40,7 @@
 		}
 	},
 	"cache": {
+		"temporary": "$(BASE)/data/temp/buckets",
 		"database": "$(BASE)/data/database_cache",
 		"template": "$(BASE)/data/temp/template",
 		"backup": "$(BASE)/data/backups"
