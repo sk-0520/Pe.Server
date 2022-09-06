@@ -380,5 +380,29 @@ class Arr
 		return $result;
 	}
 
+	/**
+	 * 指定した範囲内の整数から配列生成。
+	 *
+	 * PHP の `range` とは指定方法が違うことに注意。
+	 *
+	 * @param int $start 開始。
+	 * @param int $count 件数。
+	 * @phpstan-param UnsignedIntegerAlias $count
+	 * @return self
+	 * @phpstan-return array<int>
+	 */
+	public static function range(int $start, int $count): array
+	{
+		if ($count < 0) { //@phpstan-ignore-line
+			throw new ArgumentException('$count');
+		}
+
+		if ($count === 0) {
+			return [];
+		}
+
+		return \range($start, $start + $count - 1);
+	}
+
 	#endregion
 }

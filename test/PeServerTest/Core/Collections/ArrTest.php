@@ -296,10 +296,12 @@ class ArrTest extends TestClass
 		$this->fail();
 	}
 
-	public function map_instance($value, $key) {
+	public function map_instance($value, $key)
+	{
 		return $value . $value;
 	}
-	public static function map_static($value, $key) {
+	public static function map_static($value, $key)
+	{
 		return $value . $value;
 	}
 
@@ -310,7 +312,7 @@ class ArrTest extends TestClass
 			10 => 'b'
 		];
 
-		$actual1 = Arr::map($input, fn($v) => $v . $v);
+		$actual1 = Arr::map($input, fn ($v) => $v . $v);
 		$this->assertSame('aa', $actual1['A']);
 		$this->assertSame('bb', $actual1[10]);
 
@@ -326,8 +328,35 @@ class ArrTest extends TestClass
 		$this->assertSame('aa', $actual4['A']);
 		$this->assertSame('bb', $actual4[10]);
 	}
+
+	public function test_range()
+	{
+		$tests = [
+			new Data([], 0, 0),
+			new Data([0], 0, 1),
+			new Data([1], 1, 1),
+			new Data([0, 1], 0, 2),
+			new Data([10], 10, 1),
+			new Data([10, 11], 10, 2),
+			new Data([], -10, 0),
+			new Data([-10], -10, 1),
+			new Data([-10, -9, -8], -10, 3),
+		];
+		foreach ($tests as $test) {
+			$actual = Arr::range(...$test->args);
+			$this->assertSame($test->expected, $actual, $test->str());
+		}
+	}
+
+	public function test_range_throw()
+	{
+		$this->expectException(ArgumentException::class);
+		Arr::range(0, -1);
+		$this->fail();
+	}
 }
 
-function map_function($value, $key) {
+function map_function($value, $key)
+{
 	return $value . $value;
 }

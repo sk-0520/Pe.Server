@@ -94,21 +94,21 @@ class Pagination
 
 		if ($this->shortcutTotalItemCount <= $this->shortcutMaxCount) {
 			// ショートカット全件がショートカット設定数以下は全件を指定する
-			$pageNumbers = range(1, $this->shortcutTotalItemCount);
+			$pageNumbers = Arr::range(1, $this->shortcutTotalItemCount);
 		} else {
 			$beginWidth = (int)($this->shortcutMaxCount / 2);
 			$endWidth = $this->shortcutMaxCount - $beginWidth;
 			if ($this->currentPageNumber - $beginWidth < 1) {
-				$pageNumbers = range(1, $this->shortcutMaxCount);
+				$pageNumbers = Arr::range(1, $this->shortcutMaxCount);
 			} else if ($this->shortcutTotalItemCount - $endWidth < $this->currentPageNumber) {
-				$pageNumbers = range($this->shortcutTotalItemCount - $this->shortcutMaxCount + 1, $this->shortcutTotalItemCount);
+				$pageNumbers = Arr::range($this->shortcutTotalItemCount - $this->shortcutMaxCount + 1, $this->shortcutMaxCount);
 			} else {
 				$beginPageNumber = $this->currentPageNumber - (int)($this->shortcutMaxCount / 2);
 				if ($this->currentPageNumber < $beginPageNumber) {
 					$beginPageNumber -= (int)($this->shortcutMaxCount / 2);
 				}
 
-				$pageNumbers = range($beginPageNumber, $beginPageNumber + $this->shortcutMaxCount - 1);
+				$pageNumbers = Arr::range($beginPageNumber, $this->shortcutMaxCount);
 			}
 		}
 
