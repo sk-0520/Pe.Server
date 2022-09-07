@@ -61,7 +61,6 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 		return Path::combine(Directory::getTemporaryDirectory(), 'deploy', self::ARCHIVE_FILE_NAME);
 	}
 
-
 	private function getUploadDirectoryPath(): string
 	{
 		return Path::combine(Directory::getTemporaryDirectory(), 'deploy', 'upload');
@@ -101,9 +100,23 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 		$setting->uploadedCount = 0;
 		$setting->startupTime = Utc::createDateTime();
 
-		$dirPath = $this->getExpandDirectoryPath();
-		if (Directory::exists($dirPath)) {
-			Directory::removeDirectory($dirPath, true);
+		$dirs = [
+			$this->getUploadDirectoryPath(),
+			$this->getExpandDirectoryPath(),
+		];
+		foreach ($dirs as $dir) {
+			if (Directory::exists($dir)) {
+				Directory::removeDirectory($dir, true);
+			}
+		}
+
+		$files = [
+			$this->getArchiveFilePath(),
+		];
+		foreach ($files as $file) {
+			if (File::exists($file)) {
+				File::removeFile($file);
+			}
 		}
 
 		$this->setProgressSetting($setting);
@@ -158,7 +171,13 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 			File::appendContent($archiveFilePath, $content);
 		}
 
-		throw new NotImplementedException();
+		$setting->mode = self::MODE_UPDATE;
+		$this->setProgressSetting($setting);
+
+		return [
+			'count' => (string)$setting->uploadedCount,
+			'size' => (string)File::getFileSize($archiveFilePath),
+		];
 	}
 
 	/**
