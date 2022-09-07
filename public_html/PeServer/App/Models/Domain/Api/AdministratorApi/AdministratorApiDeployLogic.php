@@ -7,6 +7,7 @@ namespace PeServer\App\Models\Domain\Api\AdministratorApi;
 use \DateInterval;
 use \DateTime;
 use \Exception;
+use \ZipArchive;
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\AuditLog;
 use PeServer\App\Models\Domain\Api\ApiLogicBase;
@@ -198,6 +199,14 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 	 */
 	private function executeUpdate(): array
 	{
+		$archiveFilePath = $this->getArchiveFilePath();
+
+		$zip = new ZipArchive();
+		$zip->open($archiveFilePath);
+		$expandDirPath = $this->getExpandDirectoryPath();
+		$zip->extractTo($expandDirPath);
+		$zip->close();
+
 		throw new NotImplementedException();
 	}
 
