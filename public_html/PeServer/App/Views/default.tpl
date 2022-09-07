@@ -6,6 +6,7 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width,initial-scale=1.0" />
 		<title>{block name='TITLE'}{/block} - Peサーバー</title>
+		{block name='HEAD'}{/block}
 		{asset file='/assets/favicon.svg' rel="icon" type="image/svg+xml"}
 		{block name='DEFAULT_STYLE'}{asset file='/styles/style.css'}{/block}
 		{block name='STYLES'}{/block}

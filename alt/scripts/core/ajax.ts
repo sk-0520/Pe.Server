@@ -1,3 +1,7 @@
+//import * as dom from './dom';
+
+export const CsrfTokenHeader: string = 'X-CSRF-TOKEN';
+
 /**
  * AJAX 処理エラー時の返却データ構造
  */
@@ -40,16 +44,21 @@ export function toResult<T>(obj: any): AjaxResult<T> {
 	return new AjaxResultImpl<T>(obj);
 }
 
-
 export async function communicateJsonAsync<T>(url: string, method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE', json?: any): Promise<AjaxResult<T>> {
+	const headers: { [name: string]: string } = {
+		'Content-Type': 'application/json'
+	};
+	const csrfToken = getCsrfToken();
+	if (csrfToken && csrfToken.length) {
+		headers[CsrfTokenHeader] = csrfToken;
+	}
+
 	const data: RequestInit = {
 		method: method,
 		mode: 'cors',
 		cache: 'no-cache',
 		credentials: 'same-origin',
-		headers: {
-			'Content-Type': 'application/json'
-		},
+		headers: headers,
 		redirect: 'follow',
 	};
 	if (json) {
@@ -62,3 +71,7 @@ export async function communicateJsonAsync<T>(url: string, method: 'GET' | 'POST
 	return toResult<T>(result);
 }
 
+export function getCsrfToken(): string {
+	const metaElement = document.getElementById('core__csrf_id') as HTMLMetaElement | null;
+	return metaElement?.content ?? '';
+}
