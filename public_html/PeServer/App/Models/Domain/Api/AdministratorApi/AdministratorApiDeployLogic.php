@@ -12,7 +12,7 @@ use PeServer\App\Models\AuditLog;
 use PeServer\App\Models\Domain\Api\ApiLogicBase;
 use PeServer\App\Models\Domain\AppArchiver;
 use PeServer\App\Models\ResponseJson;
-use PeServer\Core\ArrayUtility;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Binary;
 use PeServer\Core\IO\Directory;
 use PeServer\Core\IO\File;
@@ -28,13 +28,13 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 {
 	#region define
 
-	const MODE_STARTUP = 'startup';
-	const MODE_UPLOAD = 'upload';
-	const MODE_PREPARE = 'prepare';
-	const MODE_UPDATE = 'update';
+	private const MODE_STARTUP = 'startup';
+	private const MODE_UPLOAD = 'upload';
+	private const MODE_PREPARE = 'prepare';
+	private const MODE_UPDATE = 'update';
 
-	const FILE_PROGRESS = 'deploy.dat';
-	const ENABLED_RANGE_TIME = 'PT5M';
+	private const FILE_PROGRESS = 'deploy.dat';
+	private const ENABLED_RANGE_TIME = 'PT5M';
 
 	#endregion
 
@@ -47,12 +47,12 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 
 	private function getProgressFilePath(): string
 	{
-		return Path::combine($this->appConfig->baseDirectoryPath, 'data/temp', self::FILE_PROGRESS);
+		return Path::combine(Directory::getTemporaryDirectory(), self::FILE_PROGRESS);
 	}
 
 	private function getExpandDirectoryPath(): string
 	{
-		return Path::combine($this->appConfig->baseDirectoryPath, 'data/temp/deploy');
+		return Path::combine(Directory::getTemporaryDirectory(), 'deploy');
 	}
 
 	private function getProgressSetting(): LocalProgressSetting
@@ -110,7 +110,7 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 	protected function validateImpl(LogicCallMode $callMode): void
 	{
 		$mode = $this->getRequest('mode');
-		$modeIsEnabled = ArrayUtility::in([
+		$modeIsEnabled = Arr::in([
 			self::MODE_STARTUP,
 			self::MODE_UPLOAD,
 			self::MODE_PREPARE,
@@ -125,9 +125,9 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 			$setting = $this->getProgressSetting();
 			$current = Utc::createDateTime();
 			$limit = $setting->startupTime->add(new DateInterval(self::ENABLED_RANGE_TIME));
-			if ($limit < $current) {
-				$this->logger->error('進捗状況 時間制限超過: $limit {0} < $current {1}', $limit, $current);
-				throw new Exception('$limit: ' . $limit);
+			if ($current < $limit) {
+				$this->logger->error('進捗状況 時間制限: $current {0} < $limit {1}', Utc::toString($current), Utc::toString($limit));
+				throw new Exception('$limit: ' . Utc::toString($limit));
 			}
 
 			switch ($mode) {
