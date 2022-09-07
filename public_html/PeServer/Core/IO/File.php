@@ -86,15 +86,15 @@ abstract class File
 	 * 対象ファイルに指定データを書き込み。
 	 *
 	 * @param string $path
-	 * @param mixed $data
+	 * @param Binary $data
 	 * @param boolean $append
 	 * @return void
 	 * @throws IOException
 	 */
-	private static function saveContent(string $path, mixed $data, bool $append): void
+	private static function saveContent(string $path, Binary $data, bool $append): void
 	{
 		$flag = $append ? FILE_APPEND : 0;
-		$length = file_put_contents($path, $data, LOCK_EX | $flag);
+		$length = file_put_contents($path, $data->getRaw(), LOCK_EX | $flag);
 		if ($length === false) {
 			throw new IOException($path);
 		}
@@ -104,11 +104,11 @@ abstract class File
 	 * 書き込み。
 	 *
 	 * @param string $path
-	 * @param mixed $data
+	 * @param Binary $data
 	 * @return void
 	 * @throws IOException
 	 */
-	public static function writeContent(string $path, mixed $data): void
+	public static function writeContent(string $path, Binary $data): void
 	{
 		self::saveContent($path, $data, false);
 	}
@@ -117,11 +117,11 @@ abstract class File
 	 * 追記。
 	 *
 	 * @param string $path
-	 * @param mixed $data
+	 * @param Binary $data
 	 * @return void
 	 * @throws IOException
 	 */
-	public static function appendContent(string $path, mixed $data): void
+	public static function appendContent(string $path, Binary $data): void
 	{
 		self::saveContent($path, $data, true);
 	}

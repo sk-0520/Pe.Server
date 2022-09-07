@@ -64,7 +64,7 @@ class AppDatabaseCache
 		Directory::createParentDirectoryIfNotExists($filePath);
 
 		$binary = $this->serializer->save($object);
-		File::writeContent($filePath, $binary->getRaw());
+		File::writeContent($filePath, $binary);
 	}
 
 	/**
