@@ -91,6 +91,7 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 	{
 		$setting = new LocalProgressSetting();
 		$setting->mode = self::MODE_STARTUP;
+		$setting->uploadedCount = 0;
 		$setting->startupTime = Utc::createDateTime();
 
 		$dirPath = $this->getExpandDirectoryPath();
@@ -122,6 +123,7 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 
 		$setting = $this->getProgressSetting();
 		$setting->mode = self::MODE_UPLOAD;
+		$setting->uploadedCount += 1;
 		$this->setProgressSetting($setting);
 
 
@@ -234,6 +236,7 @@ class LocalProgressSetting
 
 	public DateTime $startupTime;
 	public string $mode;
+	public int $uploadedCount;
 
 	#endregion
 }
