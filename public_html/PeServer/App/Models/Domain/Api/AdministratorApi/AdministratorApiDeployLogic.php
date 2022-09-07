@@ -35,7 +35,8 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 	private const MODE_PREPARE = 'prepare';
 	private const MODE_UPDATE = 'update';
 
-	private const FILE_PROGRESS = 'deploy.dat';
+	private const PROGRESS_FILE_NAME = 'deploy.dat';
+	private const ARCHIVE_FILE_NAME = 'deploy.zip';
 	//private const ENABLED_RANGE_TIME = 'PT5M';
 	private const ENABLED_RANGE_TIME = 'P1M';
 
@@ -52,8 +53,14 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 
 	private function getProgressFilePath(): string
 	{
-		return Path::combine(Directory::getTemporaryDirectory(), 'deploy', self::FILE_PROGRESS);
+		return Path::combine(Directory::getTemporaryDirectory(), 'deploy', self::PROGRESS_FILE_NAME);
 	}
+
+	private function getArchiveFilePath(): string
+	{
+		return Path::combine(Directory::getTemporaryDirectory(), 'deploy', self::ARCHIVE_FILE_NAME);
+	}
+
 
 	private function getUploadDirectoryPath(): string
 	{
@@ -139,6 +146,18 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 	 */
 	private function executePrepare(): array
 	{
+		$archiveFilePath = $this->getArchiveFilePath();
+		File::removeFileIfExists($archiveFilePath);
+		File::createEmptyFileIfNotExists($archiveFilePath);
+
+		$setting = $this->getProgressSetting();
+		for ($i = 0; $i < $setting->uploadedCount; $i++) {
+			$uploadFileName = "upload-$i.dat";
+			$uploadFilePath = Path::combine($this->getUploadDirectoryPath(), $uploadFileName);
+			$content = File::readContent($uploadFilePath);
+			File::appendContent($archiveFilePath, $content);
+		}
+
 		throw new NotImplementedException();
 	}
 
