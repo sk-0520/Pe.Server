@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Log;
 
 use PeServer\Core\Log\LoggerBase;
+use PeServer\Core\Log\LogOptions;
 
 /**
  * XDebugロガー。

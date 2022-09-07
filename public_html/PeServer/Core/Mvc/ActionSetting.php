@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc;
 
-use PeServer\Core\Text;
 use PeServer\Core\Mvc\Middleware\IMiddleware;
 use PeServer\Core\Mvc\Middleware\IShutdownMiddleware;
+use PeServer\Core\Text;
 
 /**
  * HTTPメソッドとコントローラメソッドの紐づけ。

@@ -8,7 +8,6 @@ use \DateInterval;
 use \DateTimeImmutable;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Binary;
-use PeServer\Core\DefaultValue;
 use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\I18n;

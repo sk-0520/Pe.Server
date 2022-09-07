@@ -7,9 +7,10 @@ namespace PeServer\Core\Mvc\Template;
 require_once(__DIR__ . '/../../../Core/Libs/smarty/libs/Smarty.class.php');
 
 use \Smarty;
-use PeServer\Core\Mvc\Template\TemplateParameter;
+use PeServer\Core\IO\Path;
 use PeServer\Core\Mvc\Template\Plugin\AssetFunction;
 use PeServer\Core\Mvc\Template\Plugin\BotTextImageFunction;
+use PeServer\Core\Mvc\Template\Plugin\CodeFunction;
 use PeServer\Core\Mvc\Template\Plugin\CsrfFunction;
 use PeServer\Core\Mvc\Template\Plugin\InputHelperFunction;
 use PeServer\Core\Mvc\Template\Plugin\ITemplateBlockFunction;
@@ -17,8 +18,10 @@ use PeServer\Core\Mvc\Template\Plugin\ITemplateFunction;
 use PeServer\Core\Mvc\Template\Plugin\MarkdownFunction;
 use PeServer\Core\Mvc\Template\Plugin\ShowErrorMessagesFunction;
 use PeServer\Core\Mvc\Template\Plugin\TemplatePluginArgument;
-use PeServer\Core\IO\Path;
-use PeServer\Core\Mvc\Template\Plugin\CodeFunction;
+use PeServer\Core\Mvc\Template\TemplateBase;
+use PeServer\Core\Mvc\Template\TemplateOptions;
+use PeServer\Core\Mvc\Template\TemplateParameter;
+use PeServer\Core\Mvc\Template\TemplateStore;
 use PeServer\Core\Store\Stores;
 use PeServer\Core\Throws\NotImplementedException;
 

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Configuration;
 
-use PeServer\Core\DefaultValue;
-
 /**
  * 暗号設定。
  *

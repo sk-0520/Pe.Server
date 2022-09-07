@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PeServer\Core\DI;
 
-use PeServer\Core\DefaultValue;
 use PeServer\Core\DI\DiContainer;
 use PeServer\Core\DI\DiItem;
 use PeServer\Core\Text;

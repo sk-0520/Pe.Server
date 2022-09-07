@@ -7,6 +7,8 @@ namespace PeServer\Core\Html;
 use \DOMDocument;
 use \DOMElement;
 use PeServer\Core\Html\HtmlElement;
+use PeServer\Core\Html\HtmlElementBase;
+use PeServer\Core\Html\HtmlXPath;
 use PeServer\Core\Throws\HtmlDocumentException;
 
 /**

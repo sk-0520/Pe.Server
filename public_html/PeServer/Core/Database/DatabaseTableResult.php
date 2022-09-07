@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Database;
 
 use PeServer\Core\Collections\Arr;
+use PeServer\Core\Database\DatabaseResultBase;
 
 /**
  * 問い合わせ結果。

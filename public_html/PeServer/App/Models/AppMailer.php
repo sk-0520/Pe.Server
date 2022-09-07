@@ -6,7 +6,6 @@ namespace PeServer\App\Models;
 
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Environment;
-use PeServer\Core\DefaultValue;
 use PeServer\Core\Mail\EmailAddress;
 use PeServer\Core\Mail\Mailer;
 use PeServer\Core\Mail\SmtpSetting;

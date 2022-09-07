@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Database;
 
+use PeServer\Core\Database\DatabaseResultBase;
+
 /**
  * 単一問い合わせ結果。
  *

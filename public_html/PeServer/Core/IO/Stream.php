@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace PeServer\Core\IO;
 
-use PeServer\Core\Collections\Arr;
 use PeServer\Core\Binary;
-use PeServer\Core\DefaultValue;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Encoding;
 use PeServer\Core\ErrorHandler;
-use PeServer\Core\IO\IOUtility;
 use PeServer\Core\IO\File;
+use PeServer\Core\IO\IOUtility;
 use PeServer\Core\IO\StreamMetaData;
 use PeServer\Core\ResourceBase;
 use PeServer\Core\ResultData;

@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace PeServer\Core\Mail;
 
 use \PHPMailer\PHPMailer\PHPMailer;
-use PeServer\Core\DefaultValue;
 use PeServer\Core\Mail\EmailAddress;
+use PeServer\Core\Mail\EmailMessage;
+use PeServer\Core\Mail\IMailSetting;
+use PeServer\Core\Mail\SmtpSetting;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\ArgumentNullException;

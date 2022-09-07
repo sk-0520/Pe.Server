@@ -6,7 +6,6 @@ namespace PeServer\App\Models\Domain\Page\Account;
 
 use PeServer\Core\I18n;
 use PeServer\Core\Cryptography;
-use PeServer\Core\DefaultValue;
 use PeServer\Core\Text;
 use PeServer\App\Models\AuditLog;
 use PeServer\Core\Mvc\LogicCallMode;

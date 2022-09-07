@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Collections;
 
-use EmptyIterator;
+use \EmptyIterator;
 use \Iterator;
 use PeServer\Core\Collections\CollectionUtility;
 use PeServer\Core\Throws\CallbackTypeError;

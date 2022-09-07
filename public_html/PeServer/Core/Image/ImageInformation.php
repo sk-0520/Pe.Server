@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Image;
 
+use PeServer\Core\Image\ImageType;
+use PeServer\Core\Image\Size;
 use PeServer\Core\Throws\ImageException;
 
 /**

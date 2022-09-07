@@ -6,6 +6,7 @@ namespace PeServer\Core\Mvc;
 
 use PeServer\Core\Binary;
 use PeServer\Core\Http\HttpStatus;
+use PeServer\Core\Mime;
 use PeServer\Core\Mvc\DataContent;
 
 /**

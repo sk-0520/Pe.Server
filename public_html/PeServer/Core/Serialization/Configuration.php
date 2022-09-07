@@ -6,7 +6,6 @@ namespace PeServer\Core\Serialization;
 
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Code;
-use PeServer\Core\DefaultValue;
 use PeServer\Core\IO\Directory;
 use PeServer\Core\IO\File;
 use PeServer\Core\IO\Path;

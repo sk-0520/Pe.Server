@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc;
 
-use PeServer\Core\DefaultValue;
 use PeServer\Core\Html\CodeHighlighter;
 use PeServer\Core\Regex;
 use PeServer\Core\Text;

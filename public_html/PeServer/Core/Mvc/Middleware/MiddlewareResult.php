@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Middleware;
 
-use PeServer\Core\Regex;
-use PeServer\Core\Web\UrlUtility;
-use PeServer\Core\Text;
 use PeServer\Core\Http\HttpStatus;
+use PeServer\Core\Regex;
 use PeServer\Core\Store\SpecialStore;
+use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\HttpStatusException;
 use PeServer\Core\Throws\InvalidOperationException;
+use PeServer\Core\Web\UrlUtility;
 
 /**
  * ミドルウェア結果。

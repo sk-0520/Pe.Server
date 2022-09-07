@@ -6,8 +6,9 @@ namespace PeServer\Core\Image\Color;
 
 use PeServer\Core\Code;
 use PeServer\Core\DisposerBase;
-use PeServer\Core\Image\Graphics;
 use PeServer\Core\Image\Color\IColor;
+use PeServer\Core\Image\Color\RgbColor;
+use PeServer\Core\Image\Graphics;
 use PeServer\Core\Text;
 
 /**

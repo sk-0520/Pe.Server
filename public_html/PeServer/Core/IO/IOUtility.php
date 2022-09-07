@@ -4,22 +4,11 @@ declare(strict_types=1);
 
 namespace PeServer\Core\IO;
 
-use \stdClass;
-use Directory;
-use PeServer\Core\Binary;
-use PeServer\Core\Cryptography;
-use PeServer\Core\DefaultValue;
-use PeServer\Core\Encoding;
-use PeServer\Core\Environment;
 use PeServer\Core\ErrorHandler;
 use PeServer\Core\IO\IOState;
-use PeServer\Core\IO\Stream;
 use PeServer\Core\ResultData;
 use PeServer\Core\Text;
-use PeServer\Core\Throws\ArgumentException;
-use PeServer\Core\Throws\FileNotFoundException;
 use PeServer\Core\Throws\IOException;
-use PeServer\Core\Throws\ParseException;
 
 /**
  * ファイル+ディレクトリ処理系。

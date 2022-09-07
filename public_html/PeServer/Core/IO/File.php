@@ -7,7 +7,6 @@ namespace PeServer\Core\IO;
 use \stdClass;
 use PeServer\Core\Binary;
 use PeServer\Core\Cryptography;
-use PeServer\Core\DefaultValue;
 use PeServer\Core\Encoding;
 use PeServer\Core\Environment;
 use PeServer\Core\ErrorHandler;

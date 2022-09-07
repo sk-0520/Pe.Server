@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace PeServer\Core\Serialization;
 
 use PeServer\Core\Collections\Arr;
-use PeServer\Core\DefaultValue;
 use PeServer\Core\ReflectionUtility;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\KeyNotFoundException;

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc;
 
 use PeServer\Core\Regex;
-use PeServer\Core\DefaultValue;
 use PeServer\Core\Text;
 use PeServer\Core\Mvc\IValidationReceiver;
 

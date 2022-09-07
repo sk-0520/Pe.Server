@@ -6,7 +6,6 @@ namespace PeServer\Core;
 
 use \Throwable;
 use PeServer\Core\Collections\Arr;
-use PeServer\Core\DefaultValue;
 use PeServer\Core\DI\Inject;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\IO\Directory;

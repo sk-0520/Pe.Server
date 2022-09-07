@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace PeServer\Core\Web;
 
 use PeServer\Core\Collections\Arr;
-use PeServer\Core\DefaultValue;
 use PeServer\Core\Store\SpecialStore;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;

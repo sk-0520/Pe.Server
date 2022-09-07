@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Image;
 
+use PeServer\Core\Image\ImageType;
+
 /**
  * 画像生成設定。
  */
