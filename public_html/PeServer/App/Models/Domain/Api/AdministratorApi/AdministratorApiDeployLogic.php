@@ -100,6 +100,7 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 	 */
 	private function executeUpload(): array
 	{
+		$file = $this->getRequest('file');
 		throw new NotImplementedException();
 	}
 

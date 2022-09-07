@@ -162,6 +162,11 @@ abstract class LogicBase implements IValidationReceiver
 		return $value;
 	}
 
+	protected function getFile(string $key)
+	{
+		die();
+	}
+
 	/**
 	 * 要求本文の生データを取得。
 	 *
