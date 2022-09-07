@@ -146,7 +146,6 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 		$setting->uploadedCount += 1;
 		$this->setProgressSetting($setting);
 
-
 		return [
 			'sequence' => $sequence,
 		];
@@ -171,7 +170,7 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 			File::appendContent($archiveFilePath, $content);
 		}
 
-		$setting->mode = self::MODE_UPDATE;
+		$setting->mode = self::MODE_PREPARE;
 		$this->setProgressSetting($setting);
 
 		return [
