@@ -72,6 +72,11 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 		File::writeContent($path, $binary);
 	}
 
+	/**
+	 * [デプロイ] 開始の合図。
+	 *
+	 * @return array<string,string>
+	 */
 	private function executeStartup(): array
 	{
 		$setting = new LocalProgressSetting();
@@ -88,16 +93,31 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 		return [];
 	}
 
+	/**
+	 * [デプロイ] アップロード処理。
+	 *
+	 * @return array<string,string>
+	 */
 	private function executeUpload(): array
 	{
 		throw new NotImplementedException();
 	}
 
+	/**
+	 * [デプロイ] 展開処理。
+	 *
+	 * @return array<string,string>
+	 */
 	private function executePrepare(): array
 	{
 		throw new NotImplementedException();
 	}
 
+	/**
+	 * [デプロイ] 最終処理。
+	 *
+	 * @return array<string,string>
+	 */
 	private function executeUpdate(): array
 	{
 		throw new NotImplementedException();
