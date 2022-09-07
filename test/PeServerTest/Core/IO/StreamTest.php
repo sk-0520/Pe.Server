@@ -121,7 +121,7 @@ class StreamTest extends TestClass
 			$this->fail($ex->getMessage());
 		}
 
-		File::writeContent($path, __FILE__ . ':' . __FUNCTION__ . ':' . __LINE__);
+		File::writeContent($path, new Binary(__FILE__ . ':' . __FUNCTION__ . ':' . __LINE__));
 		IOUtility::clearCache($path);
 
 		try {
@@ -179,7 +179,7 @@ class StreamTest extends TestClass
 			$this->fail($ex->getMessage());
 		}
 
-		File::writeContent($path, __FILE__ . ':' . __FUNCTION__ . ':' . __LINE__);
+		File::writeContent($path, new Binary(__FILE__ . ':' . __FUNCTION__ . ':' . __LINE__));
 		IOUtility::clearCache($path);
 
 		try {
