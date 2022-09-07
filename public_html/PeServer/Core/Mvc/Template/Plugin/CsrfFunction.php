@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Template\Plugin;
 
-use PeServer\Core\Security;
-use PeServer\Core\Text;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Html\HtmlDocument;
 use PeServer\Core\Mvc\Template\Plugin\TemplateFunctionBase;
 use PeServer\Core\Mvc\Template\Plugin\TemplatePluginArgument;
+use PeServer\Core\Security;
+use PeServer\Core\Text;
+use PeServer\Core\Throws\NotImplementedException;
 
 /**
  * CSRFトークン埋め込み。
@@ -31,19 +33,36 @@ class CsrfFunction extends TemplateFunctionBase
 	{
 		// このタイミングではセッション処理完了を期待している
 
-		if(!$this->argument->stores->session->tryGet(Security::CSRF_SESSION_KEY, $csrfToken)) {
+		if (!$this->argument->stores->session->tryGet(Security::CSRF_SESSION_KEY, $csrfToken)) {
 			return Text::EMPTY;
 		}
-
 		/** @var string $csrfToken */
+
+		/** @var string $type */
+		$type = Arr::getOr($this->params, 'type', 'name');
 
 		$dom = new HtmlDocument();
 
-		$element = $dom->addElement('input');
+		switch ($type) {
+			case 'id':
+				$element = $dom->addElement('meta');
 
-		$element->setAttribute('type', 'hidden');
-		$element->setAttribute('name', Security::CSRF_REQUEST_KEY);
-		$element->setAttribute('value', $csrfToken);
+				$element->setAttribute('id', Security::CSRF_REQUEST_ID);
+				$element->setAttribute('name', Security::CSRF_REQUEST_ID);
+				$element->setAttribute('content', $csrfToken);
+				break;
+
+			case 'name':
+				$element = $dom->addElement('input');
+
+				$element->setAttribute('type', 'hidden');
+				$element->setAttribute('name', Security::CSRF_REQUEST_KEY);
+				$element->setAttribute('value', $csrfToken);
+				break;
+
+			default:
+				throw new NotImplementedException();
+		}
 
 		return $dom->build();
 	}
