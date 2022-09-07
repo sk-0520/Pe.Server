@@ -36,7 +36,8 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 	private const MODE_UPDATE = 'update';
 
 	private const FILE_PROGRESS = 'deploy.dat';
-	private const ENABLED_RANGE_TIME = 'PT5M';
+	//private const ENABLED_RANGE_TIME = 'PT5M';
+	private const ENABLED_RANGE_TIME = 'P1M';
 
 	#endregion
 
@@ -51,17 +52,17 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 
 	private function getProgressFilePath(): string
 	{
-		return Path::combine(Directory::getTemporaryDirectory(), self::FILE_PROGRESS);
+		return Path::combine(Directory::getTemporaryDirectory(), 'deploy', self::FILE_PROGRESS);
 	}
 
 	private function getUploadDirectoryPath(): string
 	{
-		return Path::combine(Directory::getTemporaryDirectory(), 'deploy/upload');
+		return Path::combine(Directory::getTemporaryDirectory(), 'deploy', 'upload');
 	}
 
 	private function getExpandDirectoryPath(): string
 	{
-		return Path::combine(Directory::getTemporaryDirectory(), 'deploy/expand');
+		return Path::combine(Directory::getTemporaryDirectory(), 'deploy', 'expand');
 	}
 
 	private function getProgressSetting(): LocalProgressSetting
@@ -119,7 +120,14 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 		$filePath = Path::combine($this->getUploadDirectoryPath(), $fileName);
 		$file->move($filePath);
 
-		throw new NotImplementedException();
+		$setting = $this->getProgressSetting();
+		$setting->mode = self::MODE_UPLOAD;
+		$this->setProgressSetting($setting);
+
+
+		return [
+			'sequence' => $sequence,
+		];
 	}
 
 	/**
@@ -164,7 +172,7 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 			$setting = $this->getProgressSetting();
 			$current = Utc::createDateTime();
 			$limit = $setting->startupTime->add(new DateInterval(self::ENABLED_RANGE_TIME));
-			if ($current < $limit) {
+			if ($limit < $current) {
 				$this->logger->error('進捗状況 時間制限: $current {0} < $limit {1}', Utc::toString($current), Utc::toString($limit));
 				throw new Exception('$limit: ' . Utc::toString($limit));
 			}
