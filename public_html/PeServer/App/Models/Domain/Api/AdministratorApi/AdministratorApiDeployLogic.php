@@ -170,6 +170,18 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 			File::appendContent($archiveFilePath, $content);
 		}
 
+		$archiveFilePath = $this->getArchiveFilePath();
+		if (!File::exists($archiveFilePath)) {
+			throw new InvalidOperationException($archiveFilePath);
+		}
+
+		$expandDirPath = $this->getExpandDirectoryPath();
+		if (Directory::exists($expandDirPath)) {
+			Directory::removeDirectory($expandDirPath, true);
+		}
+		Directory::createDirectory($expandDirPath);
+
+
 		$setting->mode = self::MODE_PREPARE;
 		$this->setProgressSetting($setting);
 
