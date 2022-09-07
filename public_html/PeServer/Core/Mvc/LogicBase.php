@@ -6,8 +6,8 @@ namespace PeServer\Core\Mvc;
 
 use \DateInterval;
 use \DateTimeImmutable;
-use PeServer\Core\Collections\Arr;
 use PeServer\Core\Binary;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\I18n;
@@ -20,6 +20,7 @@ use PeServer\Core\Mvc\IValidationReceiver;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\Mvc\Template\TemplateParameter;
+use PeServer\Core\Mvc\UploadFile;
 use PeServer\Core\Mvc\Validator;
 use PeServer\Core\Store\CookieOption;
 use PeServer\Core\Store\CookieStore;
@@ -162,9 +163,14 @@ abstract class LogicBase implements IValidationReceiver
 		return $value;
 	}
 
-	protected function getFile(string $key)
+	protected function getFile(string $key): UploadFile
 	{
-		die();
+		if (!$this->request->exists($key, true)->exists) {
+			throw new InvalidOperationException('$key: ' . $key);
+		}
+
+		$file = $this->request->getFile($key);
+		return $file;
 	}
 
 	/**

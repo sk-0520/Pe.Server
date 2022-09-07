@@ -24,7 +24,7 @@ class AdministratorApiController extends ApiControllerBase
 		return $this->data($logic->getContent());
 	}
 
-	public function deploy()
+	public function deploy(): IActionResult
 	{
 		$logic = $this->createLogic(AdministratorApiDeployLogic::class);
 		$logic->run(LogicCallMode::submit());

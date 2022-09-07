@@ -21,6 +21,8 @@ use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\Serialization\BuiltinSerializer;
 use PeServer\Core\Serialization\JsonSerializer;
+use PeServer\Core\Text;
+use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Throws\NotImplementedException;
 use PeServer\Core\Utc;
 
@@ -38,8 +40,10 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 
 	#endregion
 
-	public function __construct(LogicParameter $parameter, private AppConfiguration $appConfig)
-	{
+	public function __construct(
+		LogicParameter $parameter,
+		private AppConfiguration $appConfig //@phpstan-ignore-line
+	) {
 		parent::__construct($parameter);
 	}
 
@@ -50,9 +54,14 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 		return Path::combine(Directory::getTemporaryDirectory(), self::FILE_PROGRESS);
 	}
 
+	private function getUploadDirectoryPath(): string
+	{
+		return Path::combine(Directory::getTemporaryDirectory(), 'deploy/upload');
+	}
+
 	private function getExpandDirectoryPath(): string
 	{
-		return Path::combine(Directory::getTemporaryDirectory(), 'deploy');
+		return Path::combine(Directory::getTemporaryDirectory(), 'deploy/expand');
 	}
 
 	private function getProgressSetting(): LocalProgressSetting
@@ -100,7 +109,16 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 	 */
 	private function executeUpload(): array
 	{
-		$file = $this->getRequest('file');
+		$sequence = $this->getRequest('sequence');
+		if (Text::isNullOrWhiteSpace($sequence)) {
+			throw new InvalidOperationException('$sequence');
+		}
+
+		$file = $this->getFile('file');
+		$fileName = "upload-$sequence.dat";
+		$filePath = Path::combine($this->getUploadDirectoryPath(), $fileName);
+		$file->move($filePath);
+
 		throw new NotImplementedException();
 	}
 
