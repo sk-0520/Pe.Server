@@ -1,6 +1,7 @@
 //import * as dom from './dom';
 
-export const CsrfTokenHeader: string = 'X-CSRF-TOKEN';
+const CsrfTokenHeader: string = 'X-CSRF-TOKEN';
+const CsrfTokenId: string = 'core__csrf_id';
 
 /**
  * AJAX 処理エラー時の返却データ構造
@@ -72,6 +73,6 @@ export async function communicateJsonAsync<T>(url: string, method: 'GET' | 'POST
 }
 
 export function getCsrfToken(): string {
-	const metaElement = document.getElementById('core__csrf_id') as HTMLMetaElement | null;
+	const metaElement = document.getElementById(CsrfTokenId) as HTMLMetaElement | null;
 	return metaElement?.content ?? '';
 }
