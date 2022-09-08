@@ -46,7 +46,8 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 
 	public function __construct(
 		LogicParameter $parameter,
-		private AppConfiguration $appConfig
+		private AppConfiguration $appConfig,
+		private AppArchiver $appArchiver
 	) {
 		parent::__construct($parameter);
 	}
@@ -212,12 +213,20 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 	 */
 	private function executeUpdate(): array
 	{
+		// 各種データバックアップ
+		$this->appArchiver->backup();
+		$this->appArchiver->rotate();
+
+		// 今のソースでDB開いとく
+		$database = $this->openDatabase();
+
+		// 展開ファイルを公開ディレクトリに配置
 		$expandDirPath = $this->getExpandDirectoryPath();
 		$expandFilePaths = Directory::getFiles($expandDirPath, true);
 		foreach ($expandFilePaths as $expandFilePath) {
 			$basePath = Text::substring($expandFilePath, Text::getLength($expandDirPath) + 1);
 			$toPath = Path::combine($this->appConfig->rootDirectoryPath, $basePath);
-
+			continue;
 			$this->logger->info('UPDATE: {0}', $toPath);
 			Directory::createParentDirectoryIfNotExists($toPath);
 			File::copy($expandFilePath, $toPath);
