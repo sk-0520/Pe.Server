@@ -17,6 +17,7 @@ use PeServer\Core\Collections\Arr;
 use PeServer\Core\Binary;
 use PeServer\Core\IO\Directory;
 use PeServer\Core\IO\File;
+use PeServer\Core\IO\IOUtility;
 use PeServer\Core\IO\Path;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
@@ -45,7 +46,7 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 
 	public function __construct(
 		LogicParameter $parameter,
-		private AppConfiguration $appConfig //@phpstan-ignore-line
+		private AppConfiguration $appConfig
 	) {
 		parent::__construct($parameter);
 	}
@@ -182,6 +183,18 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 		}
 		Directory::createDirectory($expandDirPath);
 
+		// 展開
+		$archiveFilePath = $this->getArchiveFilePath();
+		$zip = new ZipArchive();
+		$zip->open($archiveFilePath);
+		$expandDirPath = $this->getExpandDirectoryPath();
+		$zip->extractTo($expandDirPath);
+		$zip->close();
+
+		$expandFilePaths = Directory::getFiles($expandDirPath, true);
+		foreach ($expandFilePaths as $expandFilePath) {
+			$this->logger->info('{0}: {1}', $expandFilePath, File::getFileSize($expandFilePath));
+		}
 
 		$setting->mode = self::MODE_PREPARE;
 		$this->setProgressSetting($setting);
@@ -199,13 +212,16 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 	 */
 	private function executeUpdate(): array
 	{
-		$archiveFilePath = $this->getArchiveFilePath();
-
-		$zip = new ZipArchive();
-		$zip->open($archiveFilePath);
 		$expandDirPath = $this->getExpandDirectoryPath();
-		$zip->extractTo($expandDirPath);
-		$zip->close();
+		$expandFilePaths = Directory::getFiles($expandDirPath, true);
+		foreach ($expandFilePaths as $expandFilePath) {
+			$basePath = Text::substring($expandFilePath, Text::getLength($expandDirPath) + 1);
+			$toPath = Path::combine($this->appConfig->rootDirectoryPath, $basePath);
+
+			$this->logger->info('UPDATE: {0}', $toPath);
+			Directory::createParentDirectoryIfNotExists($toPath);
+			File::copy($expandFilePath, $toPath);
+		}
 
 		throw new NotImplementedException();
 	}
