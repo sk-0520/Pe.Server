@@ -126,6 +126,7 @@ final class AppRouteSetting extends RouteSetting
 				/* AUTO-FORMAT */,
 				(new Route('api/application', ApplicationApiController::class))
 					->addAction('feedback', HttpMethod::post(), 'feedback')
+					->addAction('crash-report', HttpMethod::post(), 'crash_report')
 				/* AUTO-FORMAT */,
 				(new Route('api/account', AccountApiController::class, [ApiUserAccountFilterMiddleware::class, ApiAdministratorAccountFilterMiddleware::class]))
 				/* AUTO-FORMAT */,
