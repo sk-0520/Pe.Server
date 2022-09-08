@@ -182,6 +182,18 @@ abstract class File
 	}
 
 	/**
+	 * ファイルコピー。
+	 *
+	 * @param string $fromPath
+	 * @param string $toPath
+	 * @return bool
+	 */
+	public static function copy(string $fromPath, string $toPath): bool
+	{
+		return \copy($fromPath, $toPath);
+	}
+
+	/**
 	 * ファイル削除。
 	 *
 	 * @param string $filePath ファイルパス。

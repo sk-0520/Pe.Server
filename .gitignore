@@ -15,6 +15,7 @@ desktop.ini
 -*
 @*
 $*
+^*
 *.tmp
 *.log
 /public_html/deploy/
