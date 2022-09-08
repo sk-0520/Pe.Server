@@ -6,13 +6,14 @@ namespace PeServer\App\Models;
 
 use PeServer\App\Controllers\Api\AccountApiController;
 use PeServer\App\Controllers\Api\AdministratorApiController;
+use PeServer\App\Controllers\Api\ApplicationApiController;
 use PeServer\App\Controllers\Api\DevelopmentApiController;
 use PeServer\App\Controllers\Api\PluginApiController;
 use PeServer\App\Controllers\Page\AccountController;
 use PeServer\App\Controllers\Page\AjaxController;
 use PeServer\App\Controllers\Page\HomeController;
-use PeServer\App\Controllers\Page\PluginController;
 use PeServer\App\Controllers\Page\ManagementController;
+use PeServer\App\Controllers\Page\PluginController;
 use PeServer\App\Models\Middleware\AdministratorAccountFilterMiddleware;
 use PeServer\App\Models\Middleware\Api\ApiAdministratorAccountFilterMiddleware;
 use PeServer\App\Models\Middleware\Api\ApiUserAccountFilterMiddleware;
@@ -23,7 +24,6 @@ use PeServer\App\Models\Middleware\SignupStep1FilterMiddleware;
 use PeServer\App\Models\Middleware\SignupStep2FilterMiddleware;
 use PeServer\App\Models\Middleware\UserAccountFilterMiddleware;
 use PeServer\App\Models\Middleware\UserPluginEditFilterMiddleware;
-use PeServer\Core\Text;
 use PeServer\Core\Environment;
 use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Mvc\Middleware\CsrfMiddleware;
@@ -31,6 +31,7 @@ use PeServer\Core\Mvc\Middleware\PerformanceMiddleware;
 use PeServer\Core\Mvc\Middleware\PerformanceShutdownMiddleware;
 use PeServer\Core\Mvc\Route;
 use PeServer\Core\Mvc\RouteSetting;
+use PeServer\Core\Text;
 
 /**
  * アプリルーティング設定。
@@ -122,6 +123,9 @@ final class AppRouteSetting extends RouteSetting
 					->addAction('exists', HttpMethod::post(), 'exists')
 					->addAction('generate-plugin-id', HttpMethod::gets(), 'generate_plugin_id')
 					->addAction('information', HttpMethod::post(), 'information')
+				/* AUTO-FORMAT */,
+				(new Route('api/application', ApplicationApiController::class))
+					->addAction('feedback', HttpMethod::post(), 'feedback')
 				/* AUTO-FORMAT */,
 				(new Route('api/account', AccountApiController::class, [ApiUserAccountFilterMiddleware::class, ApiAdministratorAccountFilterMiddleware::class]))
 				/* AUTO-FORMAT */,
