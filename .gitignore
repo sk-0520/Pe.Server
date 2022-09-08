@@ -16,6 +16,8 @@ desktop.ini
 @*
 $*
 ^*
+*.zip
+*.7z
 *.tmp
 *.log
 /public_html/deploy/
