@@ -53,14 +53,13 @@ abstract class SetupVersionBase
 	 * @param string $statements
 	 * @return string[]
 	 */
-	protected function splitStatements(string $statements): array
+	protected function splitStatements(string $multiStatement): array
 	{
 		$regex = new Regex();
 
-		//$sqlItems =  $regex->split($statements, '/^.*;.*$/');
-		$sqlItems =  $regex->split($statements, '/^\s*;\s*$/m');
+		$statements =  $regex->split($multiStatement, '/^\s*;\s*$/m');
 		$result = [];
-		foreach($sqlItems as $statement) {
+		foreach($statements as $statement) {
 			if(Text::isNullOrWhiteSpace($statement)) {
 				continue;
 			}
