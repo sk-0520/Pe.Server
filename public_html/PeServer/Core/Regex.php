@@ -228,5 +228,15 @@ class Regex
 		return $result;
 	}
 
+	public function split(string $source, string $pattern): array
+	{
+		$result = preg_split($this->normalizePattern($pattern), $source);
+		if ($result === false) {
+			throw new RegexException(preg_last_error_msg(), preg_last_error());
+		}
+
+		return $result;
+	}
+
 	#endregion
 }

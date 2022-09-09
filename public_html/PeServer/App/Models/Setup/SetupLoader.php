@@ -6,6 +6,9 @@ namespace PeServer\App\Models\Setup;
 
 use PeServer\App\Models\Setup\Versions\SetupVersion_0000;
 use PeServer\App\Models\Setup\Versions\SetupVersion_0001;
+use PeServer\App\Models\Setup\Versions\SetupVersionBase;
+use PeServer\App\Models\Setup\Versions\SetupVersionLast;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Database\IDatabaseConnection;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\IO\File;
@@ -56,6 +59,30 @@ class SetupLoader
 		}
 
 		$this->logger->info('DBバージョン: {0}', $dbVersion);
+
+		$newVersion = 0;
+		$context = $this->defaultConnection->open();
+		$context->execute('PRAGMA foreign_keys = OFF;');
+		$context->transaction(function (IDatabaseContext $context) use ($dbVersion, &$newVersion) { // ええねん、SQLite しか使わん
+			$ioArg = new IOSetupArgument();
+			$dbArg = new DatabaseSetupArgument($context);
+
+			for ($i = $dbVersion + 1; $i < Arr::getCount($this->versions); $i++) {
+				$setupVersionClassName = $this->versions[$i];
+				$this->logger->info('CLASS: {0}', $setupVersionClassName);
+				/** @var SetupVersionBase */
+				$setupVersion = new $setupVersionClassName($this->loggerFactory);
+				$setupVersion->migrate($ioArg, $dbArg);
+
+				$newVersion = $i;
+			}
+
+			$setupLastVersion = new SetupVersionLast($dbVersion, $newVersion, $this->loggerFactory);
+			$setupLastVersion->migrate($ioArg, $dbArg);
+
+			return true;
+		});
+		$context->execute('PRAGMA foreign_keys = ON;');
 	}
 
 	#endregion

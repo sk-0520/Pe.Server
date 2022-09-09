@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Database;
 
+use PeServer\Core\Database\IDatabaseImplementation;
 use PeServer\Core\Throws\DatabaseException;
 use PeServer\Core\Throws\ObjectDisposedException;
 use PeServer\Core\Throws\SqlException;
@@ -13,7 +14,7 @@ use PeServer\Core\Throws\SqlException;
  *
  * DB固有の何かも行う(`PRAGMA/GRANT/USE` とか)
  */
-interface IDatabaseExecutor
+interface IDatabaseExecutor extends IDatabaseImplementation
 {
 	#region function
 

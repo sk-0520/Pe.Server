@@ -8,10 +8,23 @@ use PeServer\App\Models\Setup\DatabaseSetupArgument;
 use PeServer\App\Models\Setup\IOSetupArgument;
 use PeServer\App\Models\Setup\Versions\Version;
 use PeServer\Core\Database\IDatabaseContext;
+use PeServer\Core\Log\ILogger;
+use PeServer\Core\Log\ILoggerFactory;
+use PeServer\Core\Regex;
 use ReflectionClass;
 
 abstract class SetupVersionBase
 {
+	#region variable
+
+	protected ILogger $logger;
+
+	#endregion
+
+	public function __construct(ILoggerFactory $loggerFactory)
+	{
+		$this->logger = $loggerFactory->createLogger($this);
+	}
 	#region variable
 
 	public static function getVersion(string|object $objectOrClassName): int
@@ -32,6 +45,19 @@ abstract class SetupVersionBase
 	#endregion
 
 	#region function
+
+	/**
+	 * DB問い合わせ文の分割。
+	 *
+	 * @param string $statements
+	 * @return string[]
+	 */
+	protected function splitStatements(string $statements): array
+	{
+		$regex = new Regex();
+
+		return $regex->split($statements, '/;/');
+	}
 
 	protected abstract function migrateIOSystem(IOSetupArgument $argument): void;
 
