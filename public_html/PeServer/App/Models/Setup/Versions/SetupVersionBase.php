@@ -28,6 +28,14 @@ abstract class SetupVersionBase
 	}
 	#region variable
 
+	/**
+	 * [汎用] バージョン取得
+	 *
+	 * @template T of object
+	 * @param string|object $objectOrClassName
+	 * @phpstan-param class-string<T>|T $objectOrClassName
+	 * @return int
+	 */
 	public static function getVersion(string|object $objectOrClassName): int
 	{
 		$rc = new ReflectionClass($objectOrClassName);
@@ -50,19 +58,22 @@ abstract class SetupVersionBase
 	/**
 	 * DB問い合わせ文の分割。
 	 *
-	 * @param string $statements
+	 * @param string $multiStatement
 	 * @return string[]
+	 * @phpstan-return literal-string[]
 	 */
 	protected function splitStatements(string $multiStatement): array
 	{
 		$regex = new Regex();
 
 		$statements =  $regex->split($multiStatement, '/^\s*;\s*$/m');
+		/** @phpstan-var literal-string[] */
 		$result = [];
 		foreach($statements as $statement) {
 			if(Text::isNullOrWhiteSpace($statement)) {
 				continue;
 			}
+			/** @phpstan-var literal-string $statement*/
 
 			$result[] = $statement;
 		}

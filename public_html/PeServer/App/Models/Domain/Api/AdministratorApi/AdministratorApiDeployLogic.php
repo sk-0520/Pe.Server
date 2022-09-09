@@ -226,8 +226,9 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 		foreach ($expandFilePaths as $expandFilePath) {
 			$basePath = Text::substring($expandFilePath, Text::getLength($expandDirPath) + 1);
 			$toPath = Path::combine($this->appConfig->rootDirectoryPath, $basePath);
-			continue;
+
 			$this->logger->info('UPDATE: {0}', $toPath);
+
 			Directory::createParentDirectoryIfNotExists($toPath);
 			File::copy($expandFilePath, $toPath);
 		}

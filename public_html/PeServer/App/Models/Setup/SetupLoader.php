@@ -20,6 +20,9 @@ class SetupLoader
 {
 	#region variable
 
+	/**
+	 * @phpstan-var class-string<SetupVersionBase>[]
+	 */
 	private array $versions = [
 		SetupVersion_0000::class,
 		SetupVersion_0001::class,

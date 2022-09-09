@@ -38,7 +38,7 @@ class SetupVersion_0000 extends SetupVersionBase
 
 		foreach ($tableNameResult->rows as $tableNameRow) {
 			$tableName = $tableNameRow['name'];
-			$argument->default->execute("drop table $tableName");
+			$argument->default->execute("drop table $tableName"); //@phpstan-ignore-line tableName
 		}
 
 		//TODO: 暗号化とかとか
