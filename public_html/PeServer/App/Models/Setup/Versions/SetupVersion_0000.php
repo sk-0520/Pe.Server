@@ -8,6 +8,9 @@ use PeServer\App\Models\Setup\DatabaseSetupArgument;
 use PeServer\App\Models\Setup\IOSetupArgument;
 use PeServer\Core\Regex;
 
+/**
+ * @SuppressWarnings(PHPMD.CamelCaseClassName)
+ */
 #[Version(0)]
 class SetupVersion_0000 extends SetupVersionBase
 {
@@ -18,6 +21,12 @@ class SetupVersion_0000 extends SetupVersionBase
 		//NONE
 	}
 
+	/**
+	 * Undocumented function
+	 *
+	 * @param DatabaseSetupArgument $argument
+ 	 * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+	 */
 	protected function migrateDatabase(DatabaseSetupArgument $argument): void
 	{
 		//TODO: 全削除処理
