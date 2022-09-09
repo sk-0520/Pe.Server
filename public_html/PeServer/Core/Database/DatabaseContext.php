@@ -357,8 +357,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 
 		/** @phpstan-var DatabaseRowResult<TFieldArray> */
 		$result = $this->convertRowResult($query);
-		$result = $query->fetch();
-		if (Arr::isNullOrEmpty($result->fields)) {
+		if (Arr::isNullOrEmpty($result->fields)) { //@phpstan-ignore-line 本クラス内限定で空の可能性あり
 			return null;
 		}
 

@@ -14,6 +14,13 @@ interface IDatabaseConnection
 	#region function
 
 	/**
+	 * DB接続情報を取得。
+	 *
+	 * @return ConnectionSetting
+	 */
+	function getConnectionSetting(): ConnectionSetting;
+
+	/**
 	 * DB接続を開く。
 	 *
 	 * @return DatabaseContext
