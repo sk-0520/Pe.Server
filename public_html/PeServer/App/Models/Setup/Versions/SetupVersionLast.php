@@ -11,8 +11,11 @@ use PeServer\Core\Log\ILoggerFactory;
 #[Version(-1)]
 class SetupVersionLast extends SetupVersionBase
 {
-	public function __construct(private int $oldVersion, private int $newVersion, ILoggerFactory $loggerFactory)
-	{
+	public function __construct(
+		private int $oldVersion,
+		private int $newVersion,
+		ILoggerFactory $loggerFactory
+	) {
 		parent::__construct($loggerFactory);
 	}
 
@@ -56,6 +59,8 @@ class SetupVersionLast extends SetupVersionBase
 					database_version
 				set
 					version = :version
+				where
+					version < :version
 
 				SQL,
 				[
