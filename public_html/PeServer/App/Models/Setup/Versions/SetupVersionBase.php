@@ -11,6 +11,7 @@ use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\ILoggerFactory;
 use PeServer\Core\Regex;
+use PeServer\Core\Text;
 use ReflectionClass;
 
 abstract class SetupVersionBase
@@ -56,7 +57,18 @@ abstract class SetupVersionBase
 	{
 		$regex = new Regex();
 
-		return $regex->split($statements, '/;/');
+		//$sqlItems =  $regex->split($statements, '/^.*;.*$/');
+		$sqlItems =  $regex->split($statements, '/^\s*;\s*$/m');
+		$result = [];
+		foreach($sqlItems as $statement) {
+			if(Text::isNullOrWhiteSpace($statement)) {
+				continue;
+			}
+
+			$result[] = $statement;
+		}
+
+		return $result;
 	}
 
 	protected abstract function migrateIOSystem(IOSetupArgument $argument): void;

@@ -242,9 +242,9 @@ class SetupVersion_0000 extends SetupVersionBase
 				)
 				values
 				(
-					{$userId},
+					{$argument->default->escapeValue($userId)},
 					'',
-					{$encPassword}
+					{$argument->default->escapeValue($encPassword)}
 				)
 			;
 
