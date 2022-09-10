@@ -16,7 +16,7 @@ use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\ILoggerFactory;
 use PeServer\Core\Text;
 
-class SetupLoader
+class SetupRunner
 {
 	#region variable
 
