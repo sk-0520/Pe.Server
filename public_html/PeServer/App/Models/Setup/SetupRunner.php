@@ -35,10 +35,12 @@ class SetupRunner
 	) {
 		$this->logger = $loggerFactory->createLogger($this);
 
+		/** @var class-string<SetupVersionBase>[] */
 		$versions = [
 			SetupVersion_0000::class,
 			SetupVersion_0001::class,
 		];
+		// 定義ミス対応としてバージョン間並べ替え（ミスるな）
 		usort($versions, fn ($a, $b) => SetupVersionBase::getVersion($a) <=> SetupVersionBase::getVersion($b));
 		$this->versions = $versions;
 	}
