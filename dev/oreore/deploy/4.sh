@@ -1,6 +1,6 @@
 #!/bin/bash -ue
 
-. ./env.sh
+. ./@env.sh
 
 curl -X POST \
 	-H "X-API-KEY: ${DEPLOY_API_KEY}" \

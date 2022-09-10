@@ -1,6 +1,6 @@
 #!/bin/bash -ue
 
-. ./env.sh
+. ./@env.sh
 
 FILE=public_html.zip
 
