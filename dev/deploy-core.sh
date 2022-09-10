@@ -5,11 +5,8 @@ SETTING_LOG_LEVEL="${SETTING_LOG_LEVEL:=i}"
 LOCAL_TEMP_DIR=local-temp
 LOCAL_FILES_DIR=local-files
 
-SEQUENCE_INITIALIZE=startup
-SEQUENCE_RECEIVE=upload
-SEQUENCE_PREPARE=prepare
-SEQUENCE_UPDATE=update
-
+# ログレベルの取得
+# $1: t[race] < d[ebug] < i[nformation] < w[arning] < e[rror]
 function getLogLevel()
 {
 	local LEVEL=$1 # T/D/I/W/E
@@ -38,6 +35,9 @@ function getLogLevel()
 	# return $RESULT
 }
 
+# メッセージ出力
+# $1  ログレベル
+# $2* メッセージ
 function msg()
 {
 	local LEVEL=$1 # T/D/I/W/E
@@ -65,6 +65,8 @@ function msg()
 	echo -e "\e[m"
 }
 
+# タイトル表示
+# $* タイトル
 function title()
 {
 	echo ''
@@ -72,7 +74,8 @@ function title()
 	echo ''
 }
 
-
+# ディレクトリのクリーンアップ
+# $1 対象ディレクトリ
 function cleanupDir
 {
 	local DIR_PATH=$1
@@ -95,15 +98,14 @@ function saveData
 
 #-----------------------------------------------
 
-msg i START
+title ディレクトリクリア
 
+msg i ${LOCAL_TEMP_DIR}
 cleanupDir ${LOCAL_TEMP_DIR}
+msg i ${LOCAL_FILES_DIR}
 cleanupDir ${LOCAL_FILES_DIR}
 
-# デバッグ用
-rm -f running.json
-
-title HELLO!
+title DEPLOY START!
 
 openssl genrsa 2048 > ${LOCAL_SELF_PRIVATE_KEY}
 openssl rsa -in ${LOCAL_SELF_PRIVATE_KEY} -pubout -out ${LOCAL_SELF_PUBLIC_KEY}
