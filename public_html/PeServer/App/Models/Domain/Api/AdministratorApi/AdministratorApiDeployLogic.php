@@ -9,16 +9,19 @@ use \DateTime;
 use \Exception;
 use \ZipArchive;
 use PeServer\App\Models\AppConfiguration;
+use PeServer\App\Models\AppDatabaseConnection;
 use PeServer\App\Models\AuditLog;
 use PeServer\App\Models\Domain\Api\ApiLogicBase;
 use PeServer\App\Models\Domain\AppArchiver;
 use PeServer\App\Models\ResponseJson;
-use PeServer\Core\Collections\Arr;
+use PeServer\App\Models\Setup\SetupRunner;
 use PeServer\Core\Binary;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\IO\Directory;
 use PeServer\Core\IO\File;
 use PeServer\Core\IO\IOUtility;
 use PeServer\Core\IO\Path;
+use PeServer\Core\Log\ILoggerFactory;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\Serialization\BuiltinSerializer;
@@ -47,7 +50,9 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 	public function __construct(
 		LogicParameter $parameter,
 		private AppConfiguration $appConfig,
-		private AppArchiver $appArchiver
+		private AppArchiver $appArchiver,
+		private AppDatabaseConnection $databaseConnection,
+		private ILoggerFactory $loggerFactory
 	) {
 		parent::__construct($parameter);
 	}
@@ -217,7 +222,7 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 		$this->appArchiver->backup();
 		$this->appArchiver->rotate();
 
-		// 今のソースでDB開いとく
+		// 今のソースでDB開いとく(使わんけど)
 		$database = $this->openDatabase();
 
 		// 展開ファイルを公開ディレクトリに配置
@@ -233,7 +238,16 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 			File::copy($expandFilePath, $toPath);
 		}
 
-		throw new NotImplementedException();
+		// 各種マイグレーション実施
+		$setupRunner = new SetupRunner(
+			$this->databaseConnection,
+			$this->loggerFactory
+		);
+		$setupRunner->execute();
+
+		return [
+			'success' => (string)true,
+		];
 	}
 
 	#endregion
