@@ -201,7 +201,7 @@ abstract class Directory
 			$files = self::getChildren($directoryPath, false);
 			foreach ($files as $file) {
 				if (self::exists($file)) {
-					if (!self::removeDirectory($file, $recursive)) {
+					if (!self::removeDirectory($file, true)) {
 						return false;
 					}
 				} else {
@@ -230,7 +230,7 @@ abstract class Directory
 	public static function cleanupDirectory(string $directoryPath, int $permissions = self::DIRECTORY_PERMISSIONS): void
 	{
 		if (self::exists($directoryPath)) {
-			self::removeDirectory($directoryPath);
+			self::removeDirectory($directoryPath, true);
 		}
 		self::createDirectory($directoryPath, $permissions);
 	}
