@@ -65,6 +65,7 @@ class DevelopmentApiInitializeLogic extends ApiLogicBase
 		// 	]);
 		$setupRunner = new SetupRunner(
 			$this->connection,
+			$this->config,
 			$this->loggerFactory
 		);
 
