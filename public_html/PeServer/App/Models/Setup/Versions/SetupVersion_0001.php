@@ -10,7 +10,7 @@ use PeServer\App\Models\Setup\IOSetupArgument;
 /**
  * @SuppressWarnings(PHPMD.CamelCaseClassName)
  */
-#[Version(0)]
+#[Version(1)]
 class SetupVersion_0001 extends SetupVersionBase
 {
 	#region SetupVersionBase

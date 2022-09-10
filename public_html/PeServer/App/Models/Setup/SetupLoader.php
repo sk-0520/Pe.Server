@@ -23,10 +23,7 @@ class SetupLoader
 	/**
 	 * @phpstan-var class-string<SetupVersionBase>[]
 	 */
-	private array $versions = [
-		SetupVersion_0000::class,
-		SetupVersion_0001::class,
-	];
+	private array $versions;
 
 	private ILogger $logger;
 
@@ -37,6 +34,13 @@ class SetupLoader
 		private ILoggerFactory $loggerFactory
 	) {
 		$this->logger = $loggerFactory->createLogger($this);
+
+		$versions = [
+			SetupVersion_0000::class,
+			SetupVersion_0001::class,
+		];
+		usort($versions, fn ($a, $b) => SetupVersionBase::getVersion($a) <=> SetupVersionBase::getVersion($b));
+		$this->versions = $versions;
 	}
 
 	#region function
@@ -71,18 +75,21 @@ class SetupLoader
 			$ioArg = new IOSetupArgument();
 			$dbArg = new DatabaseSetupArgument($context);
 
-			for ($i = $dbVersion + 1; $i < Arr::getCount($this->versions); $i++) {
-				$setupVersionClassName = $this->versions[$i];
-				$this->logger->info('CLASS: {0}', $setupVersionClassName);
+			foreach ($this->versions as $version) {
+				$ver = SetupVersionBase::getVersion($version);
+				if ($ver <= $dbVersion) {
+					continue;
+				}
+
+				$this->logger->info('VERSION: {0}', $version);
 
 				/** @var SetupVersionBase */
-				$setupVersion = new $setupVersionClassName($this->loggerFactory);
+				$setupVersion = new $version($this->loggerFactory);
 				$setupVersion->migrate($ioArg, $dbArg);
-
-				$newVersion = $i;
+				$newVersion = $ver;
 			}
 
-			if($dbVersion <= $newVersion) {
+			if ($dbVersion <= $newVersion) {
 				$setupLastVersion = new SetupVersionLast($dbVersion, $newVersion, $this->loggerFactory);
 				$setupLastVersion->migrate($ioArg, $dbArg);
 			}

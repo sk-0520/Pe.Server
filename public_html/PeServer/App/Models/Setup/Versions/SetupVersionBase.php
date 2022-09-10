@@ -39,11 +39,13 @@ abstract class SetupVersionBase
 	public static function getVersion(string|object $objectOrClassName): int
 	{
 		$rc = new ReflectionClass($objectOrClassName);
-		/** @var Version[] */
 		$attrs = $rc->getAttributes(Version::class);
 		$attr = $attrs[0];
 
-		return $attr->version;
+		/** @var Version */
+		$version = $attr->newInstance();
+
+		return $version->version;
 	}
 
 	public function getCurrentVersion(): int
