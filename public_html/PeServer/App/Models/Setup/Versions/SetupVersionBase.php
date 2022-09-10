@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Setup\Versions;
 
+use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\Setup\DatabaseSetupArgument;
 use PeServer\App\Models\Setup\IOSetupArgument;
 use PeServer\App\Models\Setup\Versions\Version;
@@ -22,10 +23,11 @@ abstract class SetupVersionBase
 
 	#endregion
 
-	public function __construct(ILoggerFactory $loggerFactory)
+	public function __construct(protected AppConfiguration $appConfig, ILoggerFactory $loggerFactory)
 	{
 		$this->logger = $loggerFactory->createLogger($this);
 	}
+
 	#region variable
 
 	/**

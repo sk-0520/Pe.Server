@@ -241,6 +241,7 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 		// 各種マイグレーション実施
 		$setupRunner = new SetupRunner(
 			$this->databaseConnection,
+			$this->appConfig,
 			$this->loggerFactory
 		);
 		$setupRunner->execute();

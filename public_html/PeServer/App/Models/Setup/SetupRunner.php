@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Setup;
 
+use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\Setup\Versions\SetupVersion_0000;
 use PeServer\App\Models\Setup\Versions\SetupVersion_0001;
 use PeServer\App\Models\Setup\Versions\SetupVersionBase;
@@ -31,6 +32,7 @@ class SetupRunner
 
 	public function __construct(
 		private IDatabaseConnection $defaultConnection,
+		private AppConfiguration $appConfig,
 		private ILoggerFactory $loggerFactory
 	) {
 		$this->logger = $loggerFactory->createLogger($this);
@@ -86,13 +88,13 @@ class SetupRunner
 				$this->logger->info('VERSION: {0}', $version);
 
 				/** @var SetupVersionBase */
-				$setupVersion = new $version($this->loggerFactory);
+				$setupVersion = new $version($this->appConfig, $this->loggerFactory);
 				$setupVersion->migrate($ioArg, $dbArg);
 				$newVersion = $ver;
 			}
 
 			if ($dbVersion <= $newVersion) {
-				$setupLastVersion = new SetupVersionLast($dbVersion, $newVersion, $this->loggerFactory);
+				$setupLastVersion = new SetupVersionLast($dbVersion, $newVersion, $this->appConfig, $this->loggerFactory);
 				$setupLastVersion->migrate($ioArg, $dbArg);
 			}
 
