@@ -23,6 +23,8 @@ abstract class ApiAccountFilterMiddlewareBase implements IMiddleware
 		//NONE
 	}
 
+	#region function
+
 	/**
 	 * アカウント用フィルタ処理。
 	 *
@@ -68,7 +70,9 @@ abstract class ApiAccountFilterMiddlewareBase implements IMiddleware
 
 	protected abstract function filter(MiddlewareArgument $argument, UserCacheItem $item): MiddlewareResult;
 
-	//[IMiddleware]
+	#endregion
+
+	#region IMiddleware
 
 	public final function handleBefore(MiddlewareArgument $argument): MiddlewareResult
 	{
@@ -79,4 +83,6 @@ abstract class ApiAccountFilterMiddlewareBase implements IMiddleware
 	{
 		return MiddlewareResult::none();
 	}
+
+	#endregion
 }

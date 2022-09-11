@@ -126,6 +126,22 @@ class AppDatabaseCache
 	}
 
 	/**
+	 * キャッシュを全出力。
+	 *
+	 * @return string[]
+	 */
+	public function exportAll(): array
+	{
+		$this->exportUserInformation();
+		$this->exportPluginInformation();
+
+		return [
+			'user_information',
+			'plugin_information',
+		];
+	}
+
+	/**
 	 * プラグイン情報のキャッシュ取得。
 	 *
 	 * @return PluginCache

@@ -219,14 +219,14 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 	 */
 	private function executeUpdate(): array
 	{
-		// 各種データバックアップ
+		$this->logger->info('各種データバックアップ');
 		$this->appArchiver->backup();
 		$this->appArchiver->rotate();
 
 		// 今のソースでDB開いとく(使わんけど)
 		$database = $this->openDatabase();
 
-		// 展開ファイルを公開ディレクトリに配置
+		$this->logger->info('展開ファイルを公開ディレクトリに配置');
 		$expandDirPath = $this->getExpandDirectoryPath();
 		$expandFilePaths = Directory::getFiles($expandDirPath, true);
 		foreach ($expandFilePaths as $expandFilePath) {
@@ -239,7 +239,7 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 			File::copy($expandFilePath, $toPath);
 		}
 
-		// 各種マイグレーション実施
+		$this->logger->info('各種マイグレーション実施');
 		$setupRunner = new SetupRunner(
 			$this->databaseConnection,
 			$this->appConfig,

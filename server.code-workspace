@@ -36,6 +36,7 @@
 			"**/Libs/**": true
 		},
 		"html.format.indentInnerHtml": true,
+		"html.format.wrapLineLength": 0,
 		"cSpell.words": [
 			"ATTR_ERRMODE",
 			"autoload",

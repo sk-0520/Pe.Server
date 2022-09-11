@@ -83,7 +83,7 @@ class DevelopmentApiAdministratorLogic extends ApiLogicBase
 
 		$database = $this->openDatabase();
 
-		$result = $database->transaction(function (IDatabaseContext $context) use($params) {
+		$result = $database->transaction(function (IDatabaseContext $context) use ($params) {
 			$usersEntityDao = new UsersEntityDao($context);
 			$userAuthenticationsEntityDao = new UserAuthenticationsEntityDao($context);
 
@@ -109,10 +109,22 @@ class DevelopmentApiAdministratorLogic extends ApiLogicBase
 				);
 			}
 
-			$context->update("update users set state = :state where level = :level", [
-				'state' => UserState::DISABLED,
-				'level' => UserLevel::SETUP,
-			]);
+			$context->update(
+				<<<SQL
+
+				update
+					users
+				set
+					state = :state
+				where
+					level = :level
+
+				SQL,
+				[
+					'state' => UserState::DISABLED,
+					'level' => UserLevel::SETUP,
+				]
+			);
 
 			return true;
 		});
