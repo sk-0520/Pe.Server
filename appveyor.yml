@@ -37,7 +37,7 @@ for:
     deploy_script:
       - sh: cd $APPVEYOR_BUILD_FOLDER/public_html
       - sh: zip -r public_html.zip .
-      - sh: $APPVEYOR_BUILD_FOLDER/dev/send.sh
+      - sh: $APPVEYOR_BUILD_FOLDER/dev/deploy.sh "${PE_SERVER_API_KEY}" "${PE_SERVER_API_SECRET}"
 
 cache:
  - 'node_modules'

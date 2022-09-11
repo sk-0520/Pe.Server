@@ -53,11 +53,11 @@ function msg()
 	fi
 
 	case $LEVEL in
-		T ) echo -ne "" ;;
-		D ) echo -ne "" ;;
-		I ) echo -ne "" ;;
-		W ) echo -ne "" ;;
-		E ) echo -ne "" ;;
+		1 ) echo -ne "" ;;
+		2 ) echo -ne "" ;;
+		3 ) echo -ne "" ;;
+		4 ) echo -ne "" ;;
+		5 ) echo -ne "" ;;
 		* ) echo -ne "" ;;
 	esac
 

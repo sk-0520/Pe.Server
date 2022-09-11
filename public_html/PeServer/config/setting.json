@@ -43,7 +43,8 @@
 		"temporary": "$(BASE)/data/temp/buckets",
 		"database": "$(BASE)/data/database_cache",
 		"template": "$(BASE)/data/temp/template",
-		"backup": "$(BASE)/data/backups"
+		"backup": "$(BASE)/data/backups",
+		"deploy": "$(BASE)/data/temp/deploy"
 	},
 	"crypto": {
 		"algorithm": "aes-256-cbc",

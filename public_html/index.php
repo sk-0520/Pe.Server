@@ -50,7 +50,7 @@ $container = $startup->setup(
 	AppStartup::MODE_WEB,
 	[
 		'environment' => $isLocalhost ? 'development' : 'production',
-		'revision' => '55424a71fde5f93679a822ec9a92a99438d5b63d',
+		'revision' => ':REVISION:',
 		'special_store' => $specialStore,
 		'url_helper' => $urlHelper,
 	]

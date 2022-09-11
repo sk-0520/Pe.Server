@@ -25,6 +25,8 @@ class CacheSetting
 	public string $template;
 	/** バックアップ配置ディレクトリ */
 	public string $backup;
+	// /** デプロイ諸々配置ディレクトリ */
+	public string $deploy;
 
 	#endregion
 }

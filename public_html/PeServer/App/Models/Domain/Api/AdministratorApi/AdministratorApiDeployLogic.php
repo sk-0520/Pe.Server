@@ -61,22 +61,22 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 
 	private function getProgressFilePath(): string
 	{
-		return Path::combine(Directory::getTemporaryDirectory(), 'deploy', self::PROGRESS_FILE_NAME);
+		return Path::combine($this->appConfig->setting->cache->deploy, self::PROGRESS_FILE_NAME);
 	}
 
 	private function getArchiveFilePath(): string
 	{
-		return Path::combine(Directory::getTemporaryDirectory(), 'deploy', self::ARCHIVE_FILE_NAME);
+		return Path::combine($this->appConfig->setting->cache->deploy, self::ARCHIVE_FILE_NAME);
 	}
 
 	private function getUploadDirectoryPath(): string
 	{
-		return Path::combine(Directory::getTemporaryDirectory(), 'deploy', 'upload');
+		return Path::combine($this->appConfig->setting->cache->deploy, 'upload');
 	}
 
 	private function getExpandDirectoryPath(): string
 	{
-		return Path::combine(Directory::getTemporaryDirectory(), 'deploy', 'expand');
+		return Path::combine($this->appConfig->setting->cache->deploy, 'expand');
 	}
 
 	private function getProgressSetting(): LocalProgressSetting
@@ -93,6 +93,7 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 		$path = $this->getProgressFilePath();
 		$serializer = new BuiltinSerializer();
 		$binary = $serializer->save($setting);
+		Directory::createParentDirectoryIfNotExists($path);
 		File::writeContent($path, $binary);
 	}
 
@@ -308,7 +309,7 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 					throw new NotImplementedException();
 			}
 		} else if ($mode !== self::MODE_STARTUP) {
-			throw new Exception('$mode: ' . $mode . ', not found progress');
+			throw new Exception('$mode: ' . $mode . ', not found progress -> ' . $this->getProgressFilePath());
 		}
 	}
 
