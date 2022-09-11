@@ -22,13 +22,13 @@
 						<li>
 							<form method="post" action="/management/backup">
 								{csrf}
-								<button>バックアップ</submit>
+								<button class="link">バックアップ</submit>
 							</form>
 						</li>
 						<li>
 							<form method="post" action="/management/cache-rebuild">
 								{csrf}
-								<button>キャッシュ再構築</submit>
+								<button class="link">キャッシュ再構築</submit>
 							</form>
 						</li>
 					</ul>
