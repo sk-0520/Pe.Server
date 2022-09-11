@@ -26,8 +26,7 @@ class ManagementCacheRebuildLogic extends PageLogicBase
 	{
 		$stopwatch =  Timer::startNew();
 
-		$this->dbCache->exportUserInformation();
-		$this->dbCache->exportPluginInformation();
+		$this->dbCache->exportAll();
 
 		$stopwatch->stop();
 
