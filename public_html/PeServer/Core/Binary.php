@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core;
 
 use \ArrayAccess;
-use ArrayIterator;
+use \ArrayIterator;
 use \Countable;
 use \Iterator;
 use \IteratorAggregate;

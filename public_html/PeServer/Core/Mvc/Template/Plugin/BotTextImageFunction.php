@@ -19,7 +19,6 @@ use PeServer\Core\Image\Rectangle;
 use PeServer\Core\Image\Color\RgbColor;
 use PeServer\Core\Image\Size;
 use PeServer\Core\Image\TextSetting;
-use PeServer\Core\DefaultValue;
 use PeServer\Core\Mvc\Template\Plugin\TemplateFunctionBase;
 use PeServer\Core\Mvc\Template\Plugin\TemplatePluginArgument;
 use PeServer\Core\OutputBuffer;

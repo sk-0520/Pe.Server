@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
+use PeServer\Core\Binary;
 use PeServer\Core\Throws\ArchiveException;
 
 /**

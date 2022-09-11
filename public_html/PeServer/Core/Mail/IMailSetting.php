@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mail;
 
+use PeServer\Core\Mail\Mailer;
+
 interface IMailSetting
 {
 	#region function

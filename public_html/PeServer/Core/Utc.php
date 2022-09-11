@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
+use \DateTime;
 use \DateTimeImmutable;
 use \DateTimeInterface;
 use \DateTimeZone;
-use \DateTime;
 use PeServer\Core\Throws\DateTimeException;
 use PeServer\Core\Throws\ParseException;
 
@@ -63,6 +63,11 @@ abstract class Utc
 	public static function create(): DateTimeImmutable
 	{
 		return new DateTimeImmutable('now', self::getTimezone());
+	}
+
+	public static function createDateTime(): DateTime
+	{
+		return new DateTime('now', self::getTimezone());
 	}
 
 	/**
@@ -158,10 +163,10 @@ abstract class Utc
 	/**
 	 * 文字列化。
 	 *
-	 * @param DateTimeImmutable $datetime
+	 * @param DateTime|DateTimeImmutable|DateTimeInterface $datetime
 	 * @return string
 	 */
-	public static function toString(DateTimeInterface $datetime): string
+	public static function toString(DateTime|DateTimeImmutable|DateTimeInterface $datetime): string
 	{
 		return $datetime->format(self::UTC_FORMAT_01);
 	}

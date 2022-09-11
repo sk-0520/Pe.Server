@@ -7,7 +7,6 @@ namespace PeServer\Core\IO;
 use \stdClass;
 use PeServer\Core\Binary;
 use PeServer\Core\Cryptography;
-use PeServer\Core\DefaultValue;
 use PeServer\Core\Encoding;
 use PeServer\Core\Environment;
 use PeServer\Core\ErrorHandler;
@@ -87,15 +86,15 @@ abstract class File
 	 * 対象ファイルに指定データを書き込み。
 	 *
 	 * @param string $path
-	 * @param mixed $data
+	 * @param Binary $data
 	 * @param boolean $append
 	 * @return void
 	 * @throws IOException
 	 */
-	private static function saveContent(string $path, mixed $data, bool $append): void
+	private static function saveContent(string $path, Binary $data, bool $append): void
 	{
 		$flag = $append ? FILE_APPEND : 0;
-		$length = file_put_contents($path, $data, LOCK_EX | $flag);
+		$length = file_put_contents($path, $data->getRaw(), LOCK_EX | $flag);
 		if ($length === false) {
 			throw new IOException($path);
 		}
@@ -105,11 +104,11 @@ abstract class File
 	 * 書き込み。
 	 *
 	 * @param string $path
-	 * @param mixed $data
+	 * @param Binary $data
 	 * @return void
 	 * @throws IOException
 	 */
-	public static function writeContent(string $path, mixed $data): void
+	public static function writeContent(string $path, Binary $data): void
 	{
 		self::saveContent($path, $data, false);
 	}
@@ -118,11 +117,11 @@ abstract class File
 	 * 追記。
 	 *
 	 * @param string $path
-	 * @param mixed $data
+	 * @param Binary $data
 	 * @return void
 	 * @throws IOException
 	 */
-	public static function appendContent(string $path, mixed $data): void
+	public static function appendContent(string $path, Binary $data): void
 	{
 		self::saveContent($path, $data, true);
 	}
@@ -180,6 +179,32 @@ abstract class File
 	public static function exists(string $path): bool
 	{
 		return is_file($path);
+	}
+
+	/**
+	 * ファイルコピー。
+	 *
+	 * @param string $fromPath
+	 * @param string $toPath
+	 * @return bool
+	 * @see https://www.php.net/manual/function.copy.php
+	 */
+	public static function copy(string $fromPath, string $toPath): bool
+	{
+		return \copy($fromPath, $toPath);
+	}
+
+	/**
+	 * ファイル移動。
+	 *
+	 * @param string $fromPath
+	 * @param string $toPath
+	 * @return bool
+	 * @see https://www.php.net/manual/function.rename.php
+	 */
+	public static function move(string $fromPath, string $toPath): bool
+	{
+		return \rename($fromPath, $toPath);
 	}
 
 	/**

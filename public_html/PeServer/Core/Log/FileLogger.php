@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Log;
 
-use PeServer\Core\Collections\Arr;
 use PeServer\Core\Code;
-use PeServer\Core\IO\IOUtility;
-use PeServer\Core\Log\LoggerBase;
-use PeServer\Core\IO\Path;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\IO\Directory;
 use PeServer\Core\IO\File;
+use PeServer\Core\IO\IOUtility;
+use PeServer\Core\IO\Path;
+use PeServer\Core\Log\LoggerBase;
+use PeServer\Core\Log\LogOptions;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\Enforce;
 

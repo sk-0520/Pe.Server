@@ -6,7 +6,6 @@ namespace PeServer\Core\Mvc;
 
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Code;
-use PeServer\Core\DefaultValue;
 use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Http\RequestPath;

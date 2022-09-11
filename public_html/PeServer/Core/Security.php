@@ -13,7 +13,9 @@ abstract class Security
 	#region define
 
 	public const CSRF_SESSION_KEY = 'core__csrf';
-	public const CSRF_REQUEST_KEY = 'core__csrf';
+	public const CSRF_REQUEST_ID = 'core__csrf_id';
+	public const CSRF_REQUEST_KEY = 'core__csrf_name';
+	public const CSRF_HEADER_NAME = 'X-CSRF-TOKEN';
 	private const CSRF_HASH_ALGORITHM = 'sha256';
 
 	#endregion

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace PeServer\Core;
 
 use PeServer\Core\Collections\Arr;
+use PeServer\Core\Regex;
+use PeServer\Core\Text;
 use PeServer\Core\Throws\ParseException;
 
 /**

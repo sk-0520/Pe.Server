@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace PeServer\Core\Store;
 
 use PeServer\Core\Collections\Arr;
-use PeServer\Core\DefaultValue;
 use PeServer\Core\Text;
 use PeServer\Core\Store\CookieOption;
 use PeServer\Core\Store\SpecialStore;

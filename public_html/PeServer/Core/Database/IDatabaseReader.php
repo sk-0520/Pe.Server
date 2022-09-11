@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Database;
 
 use PeServer\Core\Database\DatabaseRowResult;
+use PeServer\Core\Database\IDatabaseImplementation;
 use PeServer\Core\Throws\DatabaseException;
 use PeServer\Core\Throws\ObjectDisposedException;
 use PeServer\Core\Throws\SqlException;
@@ -14,7 +15,7 @@ use PeServer\Core\Throws\SqlException;
  *
  * 内容によっては実行処理がなされる。
  */
-interface IDatabaseReader
+interface IDatabaseReader extends IDatabaseImplementation
 {
 	#region function
 

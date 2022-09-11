@@ -7,7 +7,8 @@ namespace PeServer\Core\Html;
 use \DOMElement;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Html\HtmlDocument;
-use PeServer\Core\DefaultValue;
+use PeServer\Core\Html\HtmlElementBase;
+use PeServer\Core\Html\HtmlXPath;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\HtmlDocumentException;
 

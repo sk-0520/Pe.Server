@@ -8,6 +8,7 @@ use PeServer\Core\DI\DiFactoryBase;
 use PeServer\Core\DI\IDiContainer;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\LoggerFactory;
+use PeServer\Core\Mvc\LogicParameter;
 
 class LogicFactory extends DiFactoryBase implements ILogicFactory
 {

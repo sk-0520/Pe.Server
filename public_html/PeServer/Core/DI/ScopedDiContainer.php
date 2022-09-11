@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace PeServer\Core\DI;
 
+use PeServer\Core\DI\DiContainer;
 use PeServer\Core\DI\DiItem;
+use PeServer\Core\DI\DiRegisterContainer;
 
 /**
  * 限定的DIコンテナ実装。

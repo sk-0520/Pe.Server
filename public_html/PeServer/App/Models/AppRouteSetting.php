@@ -109,9 +109,9 @@ final class AppRouteSetting extends RouteSetting
 				/* AUTO-FORMAT */,
 				(new Route('ajax', AjaxController::class, [UserAccountFilterMiddleware::class]))
 					->addAction('markdown', HttpMethod::post(), 'markdown')
-					->addAction('plugin-category', HttpMethod::post(), 'plugin_category_post', [AdministratorAccountFilterMiddleware::class])
-					->addAction('plugin-category/:plugin_category_id@.+', HttpMethod::patch(), 'plugin_category_patch', [AdministratorAccountFilterMiddleware::class])
-					->addAction('plugin-category/:plugin_category_id@.+', HttpMethod::delete(), 'plugin_category_delete', [AdministratorAccountFilterMiddleware::class])
+					->addAction('plugin-category', HttpMethod::post(), 'plugin_category_post', [CsrfMiddleware::class, AdministratorAccountFilterMiddleware::class])
+					->addAction('plugin-category/:plugin_category_id@.+', HttpMethod::patch(), 'plugin_category_patch', [CsrfMiddleware::class, AdministratorAccountFilterMiddleware::class])
+					->addAction('plugin-category/:plugin_category_id@.+', HttpMethod::delete(), 'plugin_category_delete', [CsrfMiddleware::class, AdministratorAccountFilterMiddleware::class])
 				/* AUTO-FORMAT */,
 				(new Route('api/development', DevelopmentApiController::class, [DevelopmentMiddleware::class]))
 					->addAction('initialize', HttpMethod::post())
@@ -126,6 +126,7 @@ final class AppRouteSetting extends RouteSetting
 				/* AUTO-FORMAT */,
 				(new Route('api/administrator', AdministratorApiController::class, [ApiAdministratorAccountFilterMiddleware::class]))
 					->addAction('backup', HttpMethod::post(), 'backup')
+					->addAction('deploy/:mode@.+', HttpMethod::post(), 'deploy')
 				/* AUTO-FORMAT */,
 			]
 		);

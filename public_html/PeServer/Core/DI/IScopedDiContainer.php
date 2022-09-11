@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\DI;
 
+use PeServer\Core\DI\IDiRegisterContainer;
 use PeServer\Core\IDisposable;
 
 /**

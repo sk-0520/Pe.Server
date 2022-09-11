@@ -11,8 +11,11 @@ use \DOMNode;
 use \DOMNodeList;
 use \DOMText;
 use \DOMXPath;
+use PeServer\Core\Html\HtmlComment;
 use PeServer\Core\Html\HtmlDocument;
+use PeServer\Core\Html\HtmlElement;
 use PeServer\Core\Html\HtmlNodeBase;
+use PeServer\Core\Html\HtmlText;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\HtmlXPathException;
 

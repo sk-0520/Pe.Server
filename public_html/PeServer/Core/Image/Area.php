@@ -6,6 +6,7 @@ namespace PeServer\Core\Image;
 
 use \Stringable;
 use PeServer\Core\Code;
+use PeServer\Core\Image\Point;
 use PeServer\Core\Text;
 
 /**

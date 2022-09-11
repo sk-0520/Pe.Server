@@ -8,6 +8,7 @@ use PeServer\Core\DI\DiFactoryBase;
 use PeServer\Core\DI\IDiContainer;
 use PeServer\Core\Mvc\Template\SmartyTemplate;
 use PeServer\Core\Mvc\Template\TemplateBase;
+use PeServer\Core\Mvc\Template\TemplateOptions;
 
 class TemplateFactory extends DiFactoryBase implements ITemplateFactory
 {

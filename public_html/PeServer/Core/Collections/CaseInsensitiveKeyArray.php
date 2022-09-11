@@ -6,8 +6,8 @@ namespace PeServer\Core\Collections;
 
 use \ArrayAccess;
 use \ArrayIterator;
-use \IteratorAggregate;
 use \Countable;
+use \IteratorAggregate;
 use \Traversable;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\IndexOutOfRangeException;

@@ -15,7 +15,6 @@ use PeServer\App\Models\Domain\AccountValidator;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\App\Models\SessionKey;
 use PeServer\Core\Database\IDatabaseContext;
-use PeServer\Core\DefaultValue;
 use PeServer\Core\I18n;
 use PeServer\Core\Mail\EmailAddress;
 use PeServer\Core\Mail\EmailMessage;

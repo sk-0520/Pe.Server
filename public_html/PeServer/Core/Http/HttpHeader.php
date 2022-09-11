@@ -7,6 +7,7 @@ namespace PeServer\Core\Http;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Collections\CaseInsensitiveKeyArray;
 use PeServer\Core\Http\HttpStatus;
+use PeServer\Core\Http\RedirectSetting;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\InvalidOperationException;
