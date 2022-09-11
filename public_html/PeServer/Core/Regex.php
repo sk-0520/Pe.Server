@@ -228,5 +228,22 @@ class Regex
 		return $result;
 	}
 
+	/**
+	 * 分割処理。
+	 *
+	 * @param string $source 入力文字列。
+	 * @param string $pattern パターン。
+	 * @return string[]
+	 */
+	public function split(string $source, string $pattern): array
+	{
+		$result = preg_split($this->normalizePattern($pattern), $source);
+		if ($result === false) {
+			throw new RegexException(preg_last_error_msg(), preg_last_error());
+		}
+
+		return $result;
+	}
+
 	#endregion
 }

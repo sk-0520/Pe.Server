@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Store;
 
 use PeServer\Core\Collections\Arr;
+use PeServer\Core\Mvc\UploadFile;
 use PeServer\Core\Text;
 
 /**
@@ -193,16 +194,21 @@ class SpecialStore
 		return isset($_FILES[$name]);
 	}
 
-	// public function getFile(string $name, string $fallbackValue = Text::EMPTY): string
-	// {
-	// 	$result = Arr::getOr($_FILES, $name, $fallbackValue);
-	// 	return $result;
-	// }
+	public function getFile(string $name): UploadFile
+	{
+		$file = $_FILES[$name];
+		return UploadFile::create($file);
+	}
 
-	// public function tryGetFile(string $name, ?string &$result): bool
-	// {
-	// 	return Arr::tryGet($_FILES, $name, $result);
-	// }
+	public function tryGetFile(string $name, ?UploadFile &$result): bool
+	{
+		if (Arr::tryGet($_FILES, $name, $file)) {
+			$result = UploadFile::create($file);
+			return true;
+		}
+
+		return false;
+	}
 
 	/**
 	 * $_FILES の名前一覧取得。

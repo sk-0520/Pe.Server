@@ -11,6 +11,8 @@ temp/
 /public_html/PeServer/config/setting.development.json
 /dev/local-*
 desktop.ini
+*.zip
+*.7z
 *.lnk
 -*
 @*

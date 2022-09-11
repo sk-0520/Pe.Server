@@ -19,6 +19,7 @@ use PeServer\Core\Log\ILogger;
 use PeServer\Core\Regex;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\DatabaseException;
+use PeServer\Core\Throws\NotImplementedException;
 use PeServer\Core\Throws\SqlException;
 use PeServer\Core\Throws\Throws;
 use PeServer\Core\Throws\TransactionException;
@@ -316,6 +317,20 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 		return false;
 	}
 
+	public function escapeLike(string $value): string
+	{
+		throw new NotImplementedException();
+	}
+
+	public function escapeValue(mixed $value): string
+	{
+		if ($value === null) {
+			return 'null';
+		}
+
+		return $this->pdo->quote($value);
+	}
+
 	/**
 	 * @template TFieldArray of FieldArrayAlias
 	 * @phpstan-return DatabaseTableResult<TFieldArray>
@@ -357,8 +372,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 
 		/** @phpstan-var DatabaseRowResult<TFieldArray> */
 		$result = $this->convertRowResult($query);
-		$result = $query->fetch();
-		if (Arr::isNullOrEmpty($result->fields)) {
+		if (Arr::isNullOrEmpty($result->fields)) { //@phpstan-ignore-line 本クラス内限定で空の可能性あり
 			return null;
 		}
 

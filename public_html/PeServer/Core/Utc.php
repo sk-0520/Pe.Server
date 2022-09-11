@@ -65,6 +65,11 @@ abstract class Utc
 		return new DateTimeImmutable('now', self::getTimezone());
 	}
 
+	public static function createDateTime(): DateTime
+	{
+		return new DateTime('now', self::getTimezone());
+	}
+
 	/**
 	 * パース処理。
 	 *
@@ -158,10 +163,10 @@ abstract class Utc
 	/**
 	 * 文字列化。
 	 *
-	 * @param DateTimeImmutable $datetime
+	 * @param DateTime|DateTimeImmutable|DateTimeInterface $datetime
 	 * @return string
 	 */
-	public static function toString(DateTimeInterface $datetime): string
+	public static function toString(DateTime|DateTimeImmutable|DateTimeInterface $datetime): string
 	{
 		return $datetime->format(self::UTC_FORMAT_01);
 	}

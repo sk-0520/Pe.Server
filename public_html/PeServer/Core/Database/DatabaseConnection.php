@@ -24,6 +24,11 @@ class DatabaseConnection implements IDatabaseConnection
 
 	#region IDatabaseConnection
 
+	public function getConnectionSetting(): ConnectionSetting
+	{
+		return $this->setting;
+	}
+
 	public function open(): DatabaseContext
 	{
 		return new DatabaseContext(
