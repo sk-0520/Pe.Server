@@ -22,7 +22,7 @@
 			<table>
 				<tbody>
 					<tr>
-						<td>Current</td>
+						<th>Current</th>
 						<td>
 							<a href="https://ci.appveyor.com/project/sk_0520/pe-server">
 								<img src="https://ci.appveyor.com/api/projects/status/3nevme7nvotosxy5?svg=true" />
@@ -30,7 +30,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td>Master</td>
+						<th>Master</th>
 						<td>
 							<a href="https://ci.appveyor.com/project/sk_0520/pe-server/branch/master">
 								<img src="https://ci.appveyor.com/api/projects/status/3nevme7nvotosxy5/branch/master?svg=true" />
