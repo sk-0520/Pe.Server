@@ -91,13 +91,13 @@ function api
 {
 	local ENDPOINT_PATH=$1
 
-	time curl --show-error \
+	time curl --fail \
+		--show-error \
 		--request POST \
 		--header "X-API-KEY: ${SETTING_API_KEY}" \
 		--header "X-SECRET-KEY: ${SETTING_API_SECRET}" \
 		${@:2:($#-1)} \
 		${SETTING_API_URL}/${ENDPOINT_PATH}
-
 }
 
 #-----------------------------------------------
@@ -111,7 +111,6 @@ cleanupDir ${LOCAL_FILES_DIR}
 
 title [DEPLOY] スタートアップ
 
-#curl --show-error -X POST -d seq=${SEQUENCE_INITIALIZE} --data-urlencode key=${ENC_ACCESS_KEY} ${SETTING_URL}
 api startup
 
 title [DEPLOY] アップロード
