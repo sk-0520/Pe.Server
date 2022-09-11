@@ -195,19 +195,6 @@ abstract class File
 	}
 
 	/**
-	 * ファイル移動。
-	 *
-	 * @param string $fromPath
-	 * @param string $toPath
-	 * @return bool
-	 * @see https://www.php.net/manual/function.rename.php
-	 */
-	public static function move(string $fromPath, string $toPath): bool
-	{
-		return \rename($fromPath, $toPath);
-	}
-
-	/**
 	 * ファイル削除。
 	 *
 	 * @param string $filePath ファイルパス。
