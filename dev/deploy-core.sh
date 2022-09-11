@@ -98,40 +98,20 @@ function saveData
 
 #-----------------------------------------------
 
-title ディレクトリクリア
+title [LOCAL] ディレクトリクリア
 
 msg i ${LOCAL_TEMP_DIR}
 cleanupDir ${LOCAL_TEMP_DIR}
 msg i ${LOCAL_FILES_DIR}
 cleanupDir ${LOCAL_FILES_DIR}
 
-title DEPLOY START!
+title [DEPLOY] セットアップ
 
-openssl genrsa 2048 > ${LOCAL_SELF_PRIVATE_KEY}
-openssl rsa -in ${LOCAL_SELF_PRIVATE_KEY} -pubout -out ${LOCAL_SELF_PUBLIC_KEY}
-
-curl --show-error -o ${LOCAL_INIT_DATA} -X POST -F seq=${SEQUENCE_HELLO} -F pub=@${LOCAL_SELF_PUBLIC_KEY} ${SETTING_URL}
-
-msg t $(cat ${LOCAL_INIT_DATA})
-
-msg t
-msg t test!!
-saveData 'token' ${LOCAL_ENC_ACCESS_TOKEN}
-saveData 'public_key' ${LOCAL_SERVER_PUBLIC_KEY}
-
-cat ${LOCAL_ENC_ACCESS_TOKEN} | openssl rsautl -decrypt -inkey ${LOCAL_SELF_PRIVATE_KEY} > ${LOCAL_RAW_ACCESS_TOKEN}
-
-AUTH_HEADER_VALUE=$(cat ${LOCAL_RAW_ACCESS_TOKEN})
-msg t "LOCAL_RAW_ACCESS_TOKEN: `cat $LOCAL_RAW_ACCESS_TOKEN`"
-
-title init
-
-msg t "SETTING_ACCESS_KEY: ${SETTING_ACCESS_KEY}"
-ENC_ACCESS_KEY=$(echo -n ${SETTING_ACCESS_KEY} | openssl rsautl -encrypt -pubin -inkey ${LOCAL_SERVER_PUBLIC_KEY} | base64 --wrap=0)
-msg t
-msg t "ENC_ACCESS_KEY-> ${ENC_ACCESS_KEY}"
-msg t
-curl --show-error -X POST -d seq=${SEQUENCE_INITIALIZE} --data-urlencode key=${ENC_ACCESS_KEY} ${SETTING_URL}
+#curl --show-error -X POST -d seq=${SEQUENCE_INITIALIZE} --data-urlencode key=${ENC_ACCESS_KEY} ${SETTING_URL}
+curl --show-error -X POST \
+	-H "X-API-KEY: ${SETTING_API_KEY}" \
+	-H "X-SECRET-KEY: ${SETTING_API_SECRET}" \
+	${SETTING_API_URL}/startup
 
 title recv
 
