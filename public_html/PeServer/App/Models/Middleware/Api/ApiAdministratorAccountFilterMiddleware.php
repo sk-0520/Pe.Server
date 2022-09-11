@@ -20,7 +20,7 @@ class ApiAdministratorAccountFilterMiddleware extends ApiAccountFilterMiddleware
 		parent::__construct($dbCache);
 	}
 
-	//[ApiAccountFilterMiddlewareBase]
+	#region ApiAccountFilterMiddlewareBase
 
 	protected function filter(MiddlewareArgument $argument, UserCacheItem $item): MiddlewareResult
 	{
@@ -30,4 +30,6 @@ class ApiAdministratorAccountFilterMiddleware extends ApiAccountFilterMiddleware
 
 		return MiddlewareResult::none();
 	}
+
+	#endregion
 }

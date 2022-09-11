@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domain\Api\AdministratorApi;
 
+use PeServer\App\Models\AppDatabaseCache;
 use PeServer\App\Models\AuditLog;
 use PeServer\App\Models\Domain\Api\ApiLogicBase;
 use PeServer\App\Models\Domain\AppArchiver;
@@ -11,9 +12,9 @@ use PeServer\App\Models\ResponseJson;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 
-class AdministratorApiBackupLogic extends ApiLogicBase
+class AdministratorApiCacheRebuildLogic extends ApiLogicBase
 {
-	public function __construct(LogicParameter $parameter, private AppArchiver $appArchiver)
+	public function __construct(LogicParameter $parameter, private AppDatabaseCache $dbCache)
 	{
 		parent::__construct($parameter);
 	}
@@ -27,14 +28,11 @@ class AdministratorApiBackupLogic extends ApiLogicBase
 
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
-		$size = $this->appArchiver->backup();
-		$this->appArchiver->rotate();
+		$executedItems = $this->dbCache->exportAll();
 
-		$this->writeAuditLogCurrentUser(AuditLog::API_ADMINISTRATOR_BACKUP, ['size' => $size]);
+		$this->writeAuditLogCurrentUser(AuditLog::API_ADMINISTRATOR_CACHE_REBUILD, $executedItems);
 
-		$this->setResponseJson(ResponseJson::success([
-			'size' => $size,
-		]));
+		$this->setResponseJson(ResponseJson::success($executedItems));
 	}
 
 	#endregion

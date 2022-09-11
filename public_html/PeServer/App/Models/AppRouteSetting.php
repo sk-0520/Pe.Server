@@ -126,6 +126,7 @@ final class AppRouteSetting extends RouteSetting
 				/* AUTO-FORMAT */,
 				(new Route('api/administrator', AdministratorApiController::class, [ApiAdministratorAccountFilterMiddleware::class]))
 					->addAction('backup', HttpMethod::post(), 'backup')
+					->addAction('cache-rebuild', HttpMethod::post(), 'cache_rebuild')
 					->addAction('deploy/:mode@.+', HttpMethod::post(), 'deploy')
 				/* AUTO-FORMAT */,
 			]
