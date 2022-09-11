@@ -87,13 +87,17 @@ function cleanupDir
 	fi
 }
 
-function saveData
+function sendApi
 {
-	local KEY=$1
-	local FILE=$2
-	LINE=$(grep "^$KEY:" ${LOCAL_INIT_DATA})
-	echo "${LINE#*:}" | base64 --decode > $FILE
-	msg d "${KEY} -> ${LINE#*:}"
+	local ENDPOINT_PATH=$1
+
+	time curl --show-error \
+		--request POST \
+		--header "X-API-KEY: ${SETTING_API_KEY}" \
+		--header "X-SECRET-KEY: ${SETTING_API_SECRET}" \
+		${@:2:($#-1)} \
+		${SETTING_API_URL}/${ENDPOINT_PATH}
+
 }
 
 #-----------------------------------------------
@@ -105,22 +109,26 @@ cleanupDir ${LOCAL_TEMP_DIR}
 msg i ${LOCAL_FILES_DIR}
 cleanupDir ${LOCAL_FILES_DIR}
 
-title [DEPLOY] セットアップ
+title [DEPLOY] スタートアップ
 
 #curl --show-error -X POST -d seq=${SEQUENCE_INITIALIZE} --data-urlencode key=${ENC_ACCESS_KEY} ${SETTING_URL}
-curl --show-error -X POST \
-	-H "X-API-KEY: ${SETTING_API_KEY}" \
-	-H "X-SECRET-KEY: ${SETTING_API_SECRET}" \
-	${SETTING_API_URL}/startup
+sendApi startup
 
-title recv
+title [DEPLOY] アップロード
 
+msg i "分割数: ${SETTING_SPLIT_SIZE}"
 split --bytes=${SETTING_SPLIT_SIZE} --numeric-suffixes=1 --suffix-length=8 ${SETTING_ARCHIVE_FILE_NAME} ${LOCAL_FILES_DIR}/
-INDEX=1
+INDEX=0
 for PART_FILE in `ls -1 -v ${LOCAL_FILES_DIR}/`; do
-	curl --show-error -X POST -F seq=${SEQUENCE_RECEIVE} -F file=@${LOCAL_FILES_DIR}/${PART_FILE} -F number=$INDEX  -H "${SETTING_AUTH_HEADER_NAME}: ${AUTH_HEADER_VALUE}" ${SETTING_URL}
-	let INDEX++
+	msg i "ファイル: {INDEX} - ${LOCAL_FILES_DIR}/${PART_FILE}"
+	sendApi upload\
+		-F file=@${LOCAL_FILES_DIR}/${PART_FILE} \
+		-F sequence=${INDEX} \
+
+	INDEX=$((INDEX+1))
 done
+
+
 
 title prepare
 
