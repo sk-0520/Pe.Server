@@ -82,6 +82,7 @@ class SetupRunner
 			foreach ($this->versions as $version) {
 				$ver = SetupVersionBase::getVersion($version);
 				if ($ver <= $dbVersion) {
+					$this->logger->info('無視バージョン: {0}', $ver);
 					continue;
 				}
 
@@ -96,9 +97,12 @@ class SetupRunner
 			if ($dbVersion <= $newVersion) {
 				$setupLastVersion = new SetupVersionLast($dbVersion, $newVersion, $this->appConfig, $this->loggerFactory);
 				$setupLastVersion->migrate($ioArg, $dbArg);
+				$this->logger->info('DBバージョン更新: {0}', $newVersion);
+				return true;
 			}
 
-			return true;
+			$this->logger->info('DBバージョン未更新: {0}', $dbVersion);
+			return false;
 		});
 
 		$context->execute('PRAGMA foreign_keys = ON;');
