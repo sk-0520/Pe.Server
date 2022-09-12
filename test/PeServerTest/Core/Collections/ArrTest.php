@@ -407,7 +407,7 @@ class ArrTest extends TestClass
 		}
 	}
 
-	public function test_sortByNaturalValue()
+	public function test_sortNaturalByValue()
 	{
 		$tests = [
 			new Data([], [], false),
@@ -416,7 +416,22 @@ class ArrTest extends TestClass
 			new Data(['a-1', 'A-100', 'a-200', 'b'], ['a-200', 'a-1', 'A-100', 'b'], true),
 		];
 		foreach ($tests as $test) {
-			$actual = Arr::sortByNaturalValue(...$test->args);
+			$actual = Arr::sortNaturalByValue(...$test->args);
+			$this->assertSame($test->expected, $actual, $test->str());
+		}
+	}
+
+	public function test_sortCallbackByValue()
+	{
+		$tests = [
+			new Data([], [], fn ($a, $b) => $a <=> $b),
+			new Data([1, 3, 10], [3, 10, 1], fn ($a, $b) => $a <=> $b),
+			new Data([10, 3, 1], [3, 10, 1], fn ($a, $b) => $b <=> $a),
+			new Data([['key' => 1], ['key' => 3], ['key' => 10]], [['key' => 3], ['key' => 10], ['key' => 1]], fn ($a, $b) => $a['key'] <=> $b['key']),
+			new Data([['key' => 10], ['key' => 3], ['key' => 1]], [['key' => 3], ['key' => 10], ['key' => 1]], fn ($a, $b) => $b['key'] <=> $a['key']),
+		];
+		foreach ($tests as $test) {
+			$actual = Arr::sortCallbackByValue(...$test->args);
 			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}

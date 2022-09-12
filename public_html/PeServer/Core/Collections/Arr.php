@@ -492,7 +492,7 @@ class Arr
 	 * @see https://www.php.net/manual/function.natsort.php
 	 * @see https://www.php.net/manual/function.natcasesort.php
 	 */
-	public static function sortByNaturalValue(array $array, bool $ignoreCase): array
+	public static function sortNaturalByValue(array $array, bool $ignoreCase): array
 	{
 		$result = self::getValues($array);
 
@@ -503,6 +503,32 @@ class Arr
 		}
 
 		return self::getValues($result);
+	}
+
+	/**
+	 * 値によるユーザー定義ソート。
+	 *
+	 * `asort` とかもこいつでやってくれ。
+	 *
+	 * @template TValue
+	 * @param array $array
+	 * @phpstan-param TValue[] $array
+	 * @param callable $callback
+	 * @phpstan-param callable(TValue,TValue):int $callback
+	 * @return array
+	 * @phpstan-return TValue[]
+	 * @see https://www.php.net/manual/function.usort.php
+	 * @see https://www.php.net/manual/function.uasort.php
+	 * @see https://www.php.net/manual/function.asort.php
+	 * @see https://www.php.net/manual/function.arsort.php
+	 */
+	public static function sortCallbackByValue(array $array, callable $callback): array
+	{
+		$result = $array;
+
+		usort($result, $callback);
+
+		return $result;
 	}
 
 
