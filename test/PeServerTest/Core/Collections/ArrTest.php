@@ -435,6 +435,19 @@ class ArrTest extends TestClass
 			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
+
+	public function test_sortCallbackByKey()
+	{
+		$tests = [
+			new Data([], [], fn ($a, $b) => $a <=> $b),
+			new Data(['a' => 10, 'b' => 3, 'c' => 1], ['b' => 3, 'a' => 10, 'c' => 1], fn ($a, $b) => $a <=> $b),
+			new Data(['c' => 1, 'b' => 3, 'a' => 10], ['b' => 3, 'a' => 10, 'c' => 1], fn ($a, $b) => $b <=> $a),
+		];
+		foreach ($tests as $test) {
+			$actual = Arr::sortCallbackByKey(...$test->args);
+			$this->assertSame($test->expected, $actual, $test->str());
+		}
+	}
 }
 
 function map_function($value, $key)

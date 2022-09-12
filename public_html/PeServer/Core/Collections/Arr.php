@@ -531,7 +531,31 @@ class Arr
 		return $result;
 	}
 
+	/**
+	 * キーによるユーザー定義ソート。
+	 *
+	 * @template TValue
+	 * @param array $array
+	 * @phpstan-param array<array-key,TValue> $array
+	 * @param callable $callback
+	 * @phpstan-param callable(array-key,array-key):int $callback
+	 * @return array
+	 * @phpstan-return array<array-key,TValue>
+	 * @see https://www.php.net/manual/function.usort.php
+	 */
+	public static function sortCallbackByKey(array $array, callable $callback): array
+	{
+		$result = $array;
 
+		uksort($result, $callback);
+
+		return $result;
+	}
+
+	// いやこれ無理
+	// public static function multisort(array $array, callable $callback): array
+	// {
+	// }
 
 	#endregion
 }
