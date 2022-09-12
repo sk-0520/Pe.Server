@@ -39,7 +39,7 @@ class PluginDetailLogic extends PageLogicBase
 			->where(fn(PluginCacheCategory $i) => Arr::in($plugin->categoryIds, $i->categoryId))
 			->toArray()
 		;
-		usort($categories, function (PluginCacheCategory $a, PluginCacheCategory $b) {
+		$categories = Arr::sortCallbackByValue($categories, function (PluginCacheCategory $a, PluginCacheCategory $b) {
 			return $a->categoryName <=> $b->categoryName;
 		});
 
