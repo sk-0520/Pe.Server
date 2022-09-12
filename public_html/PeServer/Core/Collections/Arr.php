@@ -452,5 +452,30 @@ class Arr
 		return $result;
 	}
 
+	/**
+	 * キーによる単純ソート。
+	 *
+	 * @template TValue
+	 * @param array $array
+	 * @phpstan-param array<array-key,TValue> $array
+	 * @param int $orderBy
+	 * @phpstan-param OrderBy::* $orderBy
+	 * @return array
+	 * @phpstan-return array<array-key,TValue>
+	 */
+	public static function sortByKey(array $array, int $orderBy): array
+	{
+		$result = $array;
+		$flags = SORT_REGULAR;
+
+		match ($orderBy) {
+			OrderBy::ASCENDING => ksort($result, $flags),
+			OrderBy::DESCENDING => krsort($result, $flags),
+		};
+
+		return $result;
+	}
+
+
 	#endregion
 }
