@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
+use PeServer\Core\Collections\Arr;
+use PeServer\Core\Collections\OrderBy;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\RegexDelimiterException;
 use PeServer\Core\Throws\RegexException;
@@ -154,7 +156,7 @@ class Regex
 				$items[$key] = $match[0][0];
 			}
 		}
-		ksort($items);
+		$items = Arr::sortByKey($items, OrderBy::ASCENDING);
 
 		$resultMatches = [
 			0 => $input,

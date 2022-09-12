@@ -18,6 +18,8 @@
 </ul>
 
 <form action="/management/default-plugin" method="post">
+	{csrf}
+
 	<label><input name="delete" type="checkbox" />削除</label>
 	<button>実行</button>
 </form>

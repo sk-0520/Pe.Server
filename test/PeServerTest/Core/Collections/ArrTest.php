@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServerTest\Core\Collections;
 
 use PeServer\Core\Collections\Arr;
+use PeServer\Core\Collections\OrderBy;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Throws\KeyNotFoundException;
@@ -374,6 +375,78 @@ class ArrTest extends TestClass
 		$this->expectException(ArgumentException::class);
 		Arr::repeat('VALUE', -1);
 		$this->fail();
+	}
+
+	public function test_sortByValue()
+	{
+		$tests = [
+			new Data([], [], OrderBy::ASCENDING),
+			new Data([], [], OrderBy::DESCENDING),
+			new Data([-1, 0, 1, 2], [2, 1, 0, -1], OrderBy::ASCENDING),
+			new Data([2, 1, 0, -1], [-1, 0, 1, 2], OrderBy::DESCENDING),
+			new Data(['A', 'a', 'z'], ['z', 'A', 'a'], OrderBy::ASCENDING),
+			new Data(['z', 'a', 'A'], ['z', 'A', 'a'], OrderBy::DESCENDING),
+		];
+		foreach ($tests as $test) {
+			$actual = Arr::sortByValue(...$test->args);
+			$this->assertSame($test->expected, $actual, $test->str());
+		}
+	}
+
+	public function test_sortByKey()
+	{
+		$tests = [
+			new Data([], [], OrderBy::ASCENDING),
+			new Data([], [], OrderBy::DESCENDING),
+			new Data(['M' => '13', 'a' => 'Z', 'z' => 'A'], ['z' => 'A', 'M' => '13', 'a' => 'Z'], OrderBy::ASCENDING),
+			new Data(['z' => 'A', 'a' => 'Z', 'M' => '13'], ['z' => 'A', 'M' => '13', 'a' => 'Z'], OrderBy::DESCENDING),
+		];
+		foreach ($tests as $test) {
+			$actual = Arr::sortByKey(...$test->args);
+			$this->assertSame($test->expected, $actual, $test->str());
+		}
+	}
+
+	public function test_sortNaturalByValue()
+	{
+		$tests = [
+			new Data([], [], false),
+			new Data([], [], true),
+			new Data(['A-100', 'a-1', 'a-200', 'b'], ['a-200', 'a-1', 'A-100', 'b'], false),
+			new Data(['a-1', 'A-100', 'a-200', 'b'], ['a-200', 'a-1', 'A-100', 'b'], true),
+		];
+		foreach ($tests as $test) {
+			$actual = Arr::sortNaturalByValue(...$test->args);
+			$this->assertSame($test->expected, $actual, $test->str());
+		}
+	}
+
+	public function test_sortCallbackByValue()
+	{
+		$tests = [
+			new Data([], [], fn ($a, $b) => $a <=> $b),
+			new Data([1, 3, 10], [3, 10, 1], fn ($a, $b) => $a <=> $b),
+			new Data([10, 3, 1], [3, 10, 1], fn ($a, $b) => $b <=> $a),
+			new Data([['key' => 1], ['key' => 3], ['key' => 10]], [['key' => 3], ['key' => 10], ['key' => 1]], fn ($a, $b) => $a['key'] <=> $b['key']),
+			new Data([['key' => 10], ['key' => 3], ['key' => 1]], [['key' => 3], ['key' => 10], ['key' => 1]], fn ($a, $b) => $b['key'] <=> $a['key']),
+		];
+		foreach ($tests as $test) {
+			$actual = Arr::sortCallbackByValue(...$test->args);
+			$this->assertSame($test->expected, $actual, $test->str());
+		}
+	}
+
+	public function test_sortCallbackByKey()
+	{
+		$tests = [
+			new Data([], [], fn ($a, $b) => $a <=> $b),
+			new Data(['a' => 10, 'b' => 3, 'c' => 1], ['b' => 3, 'a' => 10, 'c' => 1], fn ($a, $b) => $a <=> $b),
+			new Data(['c' => 1, 'b' => 3, 'a' => 10], ['b' => 3, 'a' => 10, 'c' => 1], fn ($a, $b) => $b <=> $a),
+		];
+		foreach ($tests as $test) {
+			$actual = Arr::sortCallbackByKey(...$test->args);
+			$this->assertSame($test->expected, $actual, $test->str());
+		}
 	}
 }
 

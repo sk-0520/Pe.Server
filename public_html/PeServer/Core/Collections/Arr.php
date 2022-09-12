@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Collections;
 
+use PeServer\Core\Collections\OrderBy;
 use PeServer\Core\Cryptography;
 use PeServer\Core\ErrorHandler;
 use PeServer\Core\Throws\ArgumentException;
@@ -426,6 +427,135 @@ class Arr
 
 		return array_fill(0, $count, $value);
 	}
+
+	/**
+	 * 値による単純ソート。
+	 *
+	 * @template TValue
+	 * @param array $array
+	 * @phpstan-param TValue[] $array
+	 * @param int $orderBy
+	 * @phpstan-param OrderBy::* $orderBy
+	 * @return array
+	 * @phpstan-return TValue[]
+	 * @see https://www.php.net/manual/function.sort.php
+	 * @see https://www.php.net/manual/function.rsort.php
+	 */
+	public static function sortByValue(array $array, int $orderBy): array
+	{
+		$result = $array;
+		$flags = SORT_REGULAR;
+
+		match ($orderBy) {
+			OrderBy::ASCENDING => sort($result, $flags),
+			OrderBy::DESCENDING => rsort($result, $flags),
+		};
+
+		return $result;
+	}
+
+	/**
+	 * キーによる単純ソート。
+	 *
+	 * @template TValue
+	 * @param array $array
+	 * @phpstan-param array<array-key,TValue> $array
+	 * @param int $orderBy
+	 * @phpstan-param OrderBy::* $orderBy
+	 * @return array
+	 * @phpstan-return array<array-key,TValue>
+	 * @see https://www.php.net/manual/function.ksort.php
+	 * @see https://www.php.net/manual/function.krsort.php
+	 */
+	public static function sortByKey(array $array, int $orderBy): array
+	{
+		$result = $array;
+		$flags = SORT_REGULAR;
+
+		match ($orderBy) {
+			OrderBy::ASCENDING => ksort($result, $flags),
+			OrderBy::DESCENDING => krsort($result, $flags),
+		};
+
+		return $result;
+	}
+
+	/**
+	 * 値による自然昇順ソート。
+	 *
+	 * @template TValue
+	 * @param array $array
+	 * @phpstan-param TValue[] $array
+	 * @param bool $ignoreCase 大文字小文字を無視するか。
+	 * @return array
+	 * @phpstan-return TValue[]
+	 * @see https://www.php.net/manual/function.natsort.php
+	 * @see https://www.php.net/manual/function.natcasesort.php
+	 */
+	public static function sortNaturalByValue(array $array, bool $ignoreCase): array
+	{
+		$result = self::getValues($array);
+
+		if ($ignoreCase) {
+			natcasesort($result);
+		} else {
+			natsort($result);
+		}
+
+		return self::getValues($result);
+	}
+
+	/**
+	 * 値によるユーザー定義ソート。
+	 *
+	 * `asort` とかもこいつでやってくれ。
+	 *
+	 * @template TValue
+	 * @param array $array
+	 * @phpstan-param TValue[] $array
+	 * @param callable $callback
+	 * @phpstan-param callable(TValue,TValue):int $callback
+	 * @return array
+	 * @phpstan-return TValue[]
+	 * @see https://www.php.net/manual/function.usort.php
+	 * @see https://www.php.net/manual/function.uasort.php
+	 * @see https://www.php.net/manual/function.asort.php
+	 * @see https://www.php.net/manual/function.arsort.php
+	 */
+	public static function sortCallbackByValue(array $array, callable $callback): array
+	{
+		$result = $array;
+
+		usort($result, $callback);
+
+		return $result;
+	}
+
+	/**
+	 * キーによるユーザー定義ソート。
+	 *
+	 * @template TValue
+	 * @param array $array
+	 * @phpstan-param array<array-key,TValue> $array
+	 * @param callable $callback
+	 * @phpstan-param callable(array-key,array-key):int $callback
+	 * @return array
+	 * @phpstan-return array<array-key,TValue>
+	 * @see https://www.php.net/manual/function.usort.php
+	 */
+	public static function sortCallbackByKey(array $array, callable $callback): array
+	{
+		$result = $array;
+
+		uksort($result, $callback);
+
+		return $result;
+	}
+
+	// いやこれ無理
+	// public static function multisort(array $array, callable $callback): array
+	// {
+	// }
 
 	#endregion
 }
