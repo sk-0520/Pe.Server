@@ -9,6 +9,7 @@ use PeServer\Core\Mvc\Result\IActionResult;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\ControllerArgument;
 use PeServer\App\Controllers\Page\PageControllerBase;
+use PeServer\App\Models\Domain\Page\Ajax\AjaxLogFileDeleteLogic;
 use PeServer\App\Models\Domain\Page\Ajax\AjaxMarkdownLogic;
 use PeServer\App\Models\Domain\Page\Ajax\AjaxPluginCategoryCreateLogic;
 use PeServer\App\Models\Domain\Page\Ajax\AjaxPluginCategoryDeleteLogic;
@@ -48,6 +49,14 @@ final class AjaxController extends PageControllerBase
 	public function plugin_category_delete(): IActionResult
 	{
 		$logic = $this->createLogic(AjaxPluginCategoryDeleteLogic::class);
+		$logic->run(LogicCallMode::submit());
+
+		return $this->data($logic->getContent());
+	}
+
+	public function log_delete(): IActionResult
+	{
+		$logic = $this->createLogic(AjaxLogFileDeleteLogic::class);
 		$logic->run(LogicCallMode::submit());
 
 		return $this->data($logic->getContent());

@@ -7,6 +7,10 @@ $_visited-background-color: transparent;
 $_active-color: #11f;
 $_active-background-color: #eef;
 
+details summary {
+	cursor: pointer;
+}
+
 a,
 button.link {
 	display: inline-block;
