@@ -406,6 +406,20 @@ class ArrTest extends TestClass
 			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
+
+	public function test_sortByNaturalValue()
+	{
+		$tests = [
+			new Data([], [], false),
+			new Data([], [], true),
+			new Data(['A-100', 'a-1', 'a-200', 'b'], ['a-200', 'a-1', 'A-100', 'b'], false),
+			new Data(['a-1', 'A-100', 'a-200', 'b'], ['a-200', 'a-1', 'A-100', 'b'], true),
+		];
+		foreach ($tests as $test) {
+			$actual = Arr::sortByNaturalValue(...$test->args);
+			$this->assertSame($test->expected, $actual, $test->str());
+		}
+	}
 }
 
 function map_function($value, $key)

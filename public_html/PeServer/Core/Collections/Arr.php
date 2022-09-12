@@ -438,6 +438,8 @@ class Arr
 	 * @phpstan-param OrderBy::* $orderBy
 	 * @return array
 	 * @phpstan-return TValue[]
+	 * @see https://www.php.net/manual/function.sort.php
+	 * @see https://www.php.net/manual/function.rsort.php
 	 */
 	public static function sortByValue(array $array, int $orderBy): array
 	{
@@ -462,6 +464,8 @@ class Arr
 	 * @phpstan-param OrderBy::* $orderBy
 	 * @return array
 	 * @phpstan-return array<array-key,TValue>
+	 * @see https://www.php.net/manual/function.ksort.php
+	 * @see https://www.php.net/manual/function.krsort.php
 	 */
 	public static function sortByKey(array $array, int $orderBy): array
 	{
@@ -475,6 +479,32 @@ class Arr
 
 		return $result;
 	}
+
+	/**
+	 * 値による自然昇順ソート。
+	 *
+	 * @template TValue
+	 * @param array $array
+	 * @phpstan-param TValue[] $array
+	 * @param bool $ignoreCase 大文字小文字を無視するか。
+	 * @return array
+	 * @phpstan-return TValue[]
+	 * @see https://www.php.net/manual/function.natsort.php
+	 * @see https://www.php.net/manual/function.natcasesort.php
+	 */
+	public static function sortByNaturalValue(array $array, bool $ignoreCase): array
+	{
+		$result = self::getValues($array);
+
+		if ($ignoreCase) {
+			natcasesort($result);
+		} else {
+			natsort($result);
+		}
+
+		return self::getValues($result);
+	}
+
 
 
 	#endregion
