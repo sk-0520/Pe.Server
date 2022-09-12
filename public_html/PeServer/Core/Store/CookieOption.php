@@ -14,7 +14,6 @@ class CookieOption
 {
 	#region variable
 
-
 	/**
 	 * パス
 	 *

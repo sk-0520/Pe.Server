@@ -164,4 +164,17 @@ class RegexTest extends TestClass
 			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
+
+	public function test_split()
+	{
+		$tests = [
+			new Data(['a', 'b', 'c'], 'a,b,c', '/,/'),
+			new Data(['1', '2', '3'], '1a2bc3', '/[a-z]+/'),
+		];
+		foreach ($tests as $test) {
+			$regex = new Regex();
+			$actual = $regex->split(...$test->args);
+			$this->assertSame($test->expected, $actual, $test->str());
+		}
+	}
 }

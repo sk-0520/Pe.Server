@@ -227,6 +227,7 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 		$database = $this->openDatabase();
 
 		$this->logger->info('展開ファイルを公開ディレクトリに配置');
+		$dirs = [];
 		$expandDirPath = $this->getExpandDirectoryPath();
 		$expandFilePaths = Directory::getFiles($expandDirPath, true);
 		foreach ($expandFilePaths as $expandFilePath) {
@@ -235,7 +236,11 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 
 			$this->logger->info('UPDATE: {0}', $toPath);
 
-			Directory::createParentDirectoryIfNotExists($toPath);
+			$parentPath = Path::getDirectoryPath($toPath);
+			if (!isset($dirs[$parentPath])) {
+				Directory::createDirectoryIfNotExists($parentPath);
+				$dirs[$parentPath] = true;
+			}
 			File::copy($expandFilePath, $toPath);
 		}
 

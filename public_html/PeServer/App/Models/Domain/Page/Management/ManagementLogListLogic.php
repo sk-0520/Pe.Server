@@ -12,7 +12,7 @@ use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
-
+use PeServer\Core\Collections\Arr;
 
 class ManagementLogListLogic extends PageLogicBase
 {
@@ -38,7 +38,7 @@ class ManagementLogListLogic extends PageLogicBase
 		$logFiles = array_filter($files, function ($i) use ($targetExt) {
 			return Path::getFileExtension($i) === $targetExt;
 		});
-		natsort($logFiles);
+		$logFiles = Arr::sortNaturalByValue($logFiles, true);
 		$logFiles = array_map(function ($i) {
 			$sizeConverter = new SizeConverter();
 			$size = File::getFileSize($i);

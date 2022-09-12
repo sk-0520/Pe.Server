@@ -43,8 +43,7 @@ class SetupRunner
 			SetupVersion_0001::class,
 		];
 		// 定義ミス対応としてバージョン間並べ替え（ミスるな）
-		usort($versions, fn ($a, $b) => SetupVersionBase::getVersion($a) <=> SetupVersionBase::getVersion($b));
-		$this->versions = $versions;
+		$this->versions = Arr::sortCallbackByValue($versions, fn ($a, $b) => SetupVersionBase::getVersion($a) <=> SetupVersionBase::getVersion($b));
 	}
 
 	#region function

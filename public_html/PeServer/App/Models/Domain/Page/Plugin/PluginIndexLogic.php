@@ -8,6 +8,7 @@ use PeServer\App\Models\AppDatabaseCache;
 use PeServer\App\Models\Cache\PluginCache;
 use PeServer\App\Models\Cache\PluginCacheItem;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 
@@ -27,12 +28,11 @@ class PluginIndexLogic extends PageLogicBase
 	{
 		$pluginInformation = $this->dbCache->readPluginInformation();
 
-		$items = $pluginInformation->items;
+		$plugins = Arr::sortCallbackByValue(
+			$pluginInformation->items,
+			fn (PluginCacheItem $a, PluginCacheItem $b)  => strcmp($a->pluginName, $b->pluginName)
+		);
 
-		usort($items, function (PluginCacheItem $a, PluginCacheItem $b) {
-			return strcmp($a->pluginName, $b->pluginName);
-		});
-
-		$this->setValue('plugins', $items);
+		$this->setValue('plugins', $plugins);
 	}
 }
