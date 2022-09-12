@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServerTest\Core\Collections;
 
 use PeServer\Core\Collections\Arr;
+use PeServer\Core\Collections\OrderBy;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Throws\KeyNotFoundException;
@@ -374,6 +375,20 @@ class ArrTest extends TestClass
 		$this->expectException(ArgumentException::class);
 		Arr::repeat('VALUE', -1);
 		$this->fail();
+	}
+
+	public function test_sortByValue()
+	{
+		$tests = [
+			new Data([], [], OrderBy::ASCENDING),
+			new Data([], [], OrderBy::DESCENDING),
+			new Data([-1, 0, 1, 2], [2, 1, 0, -1], OrderBy::ASCENDING),
+			new Data([2, 1, 0, -1], [-1, 0, 1, 2], OrderBy::DESCENDING),
+		];
+		foreach ($tests as $test) {
+			$actual = Arr::sortByValue(...$test->args);
+			$this->assertSame($test->expected, $actual, $test->str());
+		}
 	}
 }
 

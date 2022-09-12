@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Collections;
 
+use PeServer\Core\Collections\OrderBy;
 use PeServer\Core\Cryptography;
 use PeServer\Core\ErrorHandler;
 use PeServer\Core\Throws\ArgumentException;
@@ -425,6 +426,30 @@ class Arr
 		}
 
 		return array_fill(0, $count, $value);
+	}
+
+	/**
+	 * 値による単純ソート。
+	 *
+	 * @template TValue
+	 * @param array $array
+	 * @phpstan-param TValue[] $array
+	 * @param int $orderBy
+	 * @phpstan-param OrderBy::* $orderBy
+	 * @return array
+	 * @phpstan-return TValue[]
+	 */
+	public static function sortByValue(array $array, int $orderBy): array
+	{
+		$result = $array;
+		$flags = SORT_REGULAR;
+
+		match ($orderBy) {
+			OrderBy::ASCENDING => sort($result, $flags),
+			OrderBy::DESCENDING => rsort($result, $flags),
+		};
+
+		return $result;
 	}
 
 	#endregion
