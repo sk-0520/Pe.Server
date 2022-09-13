@@ -66,7 +66,7 @@ abstract class ApiLogicBase extends DomainLogicBase
 						}
 						return true;
 					}
-					if ($validateJsonProperty == self::VALIDATE_JSON_PROPERTY_TEXT && $json[$key] === null) {
+					if ($validateJsonProperty === self::VALIDATE_JSON_PROPERTY_TEXT && $json[$key] === null) { //@phpstan-ignore-line
 						return true;
 					}
 					break;
