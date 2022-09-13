@@ -17,7 +17,11 @@ use PeServer\Core\Throws\ArgumentException;
  */
 final class AppMailer extends Mailer
 {
+	#region variable
+
 	private string $overwriteTarget = Text::EMPTY;
+
+	#endregion
 
 	public function __construct(AppConfiguration $config)
 	{
@@ -46,6 +50,8 @@ final class AppMailer extends Mailer
 		}
 	}
 
+	#region Mailer
+
 	protected function convertAddress(int $kind, EmailAddress $data): EmailAddress
 	{
 		$result = parent::convertAddress($kind, $data);
@@ -65,4 +71,6 @@ final class AppMailer extends Mailer
 	{
 		return '[Pe.Server] ' . $subject;
 	}
+
+	#endregion
 }

@@ -28,20 +28,5 @@ class AppRouting extends Routing
 	public function __construct(RouteRequest $routeRequest, RouteSetting $routeSetting, Stores $stores, ILoggerFactory $loggerFactory, IDiRegisterContainer $serviceLocator)
 	{
 		parent::__construct($routeRequest, $routeSetting, $stores, $loggerFactory, $serviceLocator);
-
-		//$loggerFactory = $serviceLocator->get(\PeServer\Core\Log\ILoggerFactory::class);
-		// $logger->debug('DEBUG-ilogger!!');
-
-		// $logger = $loggerFactory->create('asd');
-		// $logger->debug('DEBUG-logfact!!');
-
-		//SessionKey::initialize($this->stores->session);
 	}
-
-	// public function execute(): void
-	// {
-	// 	(new AppErrorHandler($this->requestPath))->register();
-
-	// 	parent::execute();
-	// }
 }

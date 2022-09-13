@@ -21,6 +21,8 @@ use PeServer\Core\Time;
 
 abstract class StoreConfiguration
 {
+	#region function
+
 	/**
 	 * Undocumented function
 	 *
@@ -140,4 +142,6 @@ abstract class StoreConfiguration
 			$session
 		);
 	}
+
+	#endregion
 }

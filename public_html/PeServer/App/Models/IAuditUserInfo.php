@@ -9,10 +9,14 @@ namespace PeServer\App\Models;
  */
 interface IAuditUserInfo
 {
+	#region function
+
 	/**
 	 * ユーザーID取得。
 	 *
 	 * @return string
 	 */
 	function getUserId(): string;
+
+	#endregion
 }

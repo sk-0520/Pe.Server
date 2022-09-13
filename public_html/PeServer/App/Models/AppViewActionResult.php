@@ -13,6 +13,8 @@ use PeServer\Core\Web\IUrlHelper;
 
 class AppViewActionResult extends ViewActionResult
 {
+	#region ViewActionResult
+
 	public function createResponse(): HttpResponse
 	{
 		$response = new HttpResponse();
@@ -36,4 +38,6 @@ class AppViewActionResult extends ViewActionResult
 
 		return $response;
 	}
+
+	#endregion
 }

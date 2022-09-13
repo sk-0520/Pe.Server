@@ -6,6 +6,8 @@ namespace PeServer\App\Models;
 
 class AuditLog
 {
+	#region define
+
 	public const LOGIN_SUCCESS = 'LOGIN-SUCCESS';
 	public const LOGIN_FAILED = 'LOGIN-FAILED';
 	public const LOGOUT = 'LOGOUT';
@@ -24,4 +26,6 @@ class AuditLog
 
 	public const API_ADMINISTRATOR_BACKUP = 'API-ADMINISTRATOR-BACKUP';
 	public const API_ADMINISTRATOR_CACHE_REBUILD = 'API-ADMINISTRATOR-CACHE-REBUILD';
+
+	#endregion
 }

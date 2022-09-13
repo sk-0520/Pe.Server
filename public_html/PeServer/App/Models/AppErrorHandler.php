@@ -24,9 +24,13 @@ use PeServer\Core\Web\IUrlHelper;
 
 final class AppErrorHandler extends ErrorHandler
 {
+	#region variable
+
 	private RequestPath $requestPath;
 	private JsonSerializer $jsonSerializer;
 	private ITemplateFactory $templateFactory;
+
+	#endregion
 
 	public function __construct(
 		RequestPath $requestPath,
@@ -42,6 +46,8 @@ final class AppErrorHandler extends ErrorHandler
 		$this->templateFactory = $templateFactory;
 		$this->jsonSerializer = $jsonSerializer ?? new JsonSerializer();
 	}
+
+	#region ErrorHandler
 
 	protected function catchError(int $errorNumber, string $message, string $file, int $lineNumber, ?Throwable $throwable): void
 	{
@@ -124,4 +130,6 @@ final class AppErrorHandler extends ErrorHandler
 
 		parent::catchError($errorNumber, $message, $file, $lineNumber, $throwable);
 	}
+
+	#endregion
 }

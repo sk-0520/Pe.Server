@@ -23,7 +23,7 @@ class AppTemplateFactory extends TemplateFactory
 		parent::__construct($container);
 	}
 
-	//[ITemplateFactory]
+	#region TemplateFactory
 
 	/**
 	 * @param TemplateOptions $options めっちゃかえるで。
@@ -45,4 +45,6 @@ class AppTemplateFactory extends TemplateFactory
 
 		return parent::createTemplate($customOptions);
 	}
+
+	#endregion
 }

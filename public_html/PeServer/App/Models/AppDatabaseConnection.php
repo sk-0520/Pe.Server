@@ -26,6 +26,8 @@ class AppDatabaseConnection extends DatabaseConnection
 		parent::__construct($connectionSetting, $loggerFactory);
 	}
 
+	#region DatabaseConnection
+
 	public function open(): DatabaseContext
 	{
 		$database = parent::open();
@@ -34,4 +36,6 @@ class AppDatabaseConnection extends DatabaseConnection
 
 		return $database;
 	}
+
+	#endregion
 }
