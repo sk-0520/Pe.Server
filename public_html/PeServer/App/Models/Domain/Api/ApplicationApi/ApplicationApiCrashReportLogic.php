@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Domain\Api\ApplicationApi;
 
 use PeServer\App\Models\AuditLog;
+use PeServer\App\Models\Dao\Entities\CrashReportsEntityDao;
 use PeServer\App\Models\Domain\Api\ApiLogicBase;
 use PeServer\App\Models\ResponseJson;
+use PeServer\Core\Mime;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\Serialization\JsonSerializer;
@@ -47,17 +49,28 @@ class ApplicationApiCrashReportLogic extends ApiLogicBase
 
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
-		$values = [
-			'user_id' => $this->requestJson['user_id'],
-			'version' => $this->requestJson['version'],
-			'revision' => $this->requestJson['revision'],
-			'exception' => $this->requestJson['exception'],
-			'email' => $this->requestJson['mail_address'] ?? Text::EMPTY,
-			'comment' => $this->requestJson['comment'] ?? Text::EMPTY,
-			'report' => (new JsonSerializer())->save($this->requestJson)->getRaw(),
-		];
+		$database = $this->openDatabase();
+		$database->transaction(function ($context) {
+			$crashReportsEntityDao = new CrashReportsEntityDao($context);
+			$crashReportsEntityDao->insertCrashReports(
+				$this->requestJson['user_id'],
+				$this->requestJson['version'],
+				$this->requestJson['revision'],
+				$this->requestJson['exception'],
+				$this->requestJson['mail_address'] ?? Text::EMPTY,
+				$this->requestJson['comment'] ?? Text::EMPTY,
+				(new JsonSerializer())->save($this->requestJson)->getRaw()
+			);
 
-		throw new NotImplementedException();
+			$this->setContent(Mime::JSON, [
+				'success' => true,
+				'message' => '',
+			]);
+
+			return true;
+		});
+
+		//TODO: メール送信
 	}
 
 	#endregion
