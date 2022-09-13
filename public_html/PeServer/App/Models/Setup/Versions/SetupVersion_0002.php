@@ -36,6 +36,8 @@ class SetupVersion_0002 extends SetupVersionBase
 				[exception] text not null,
 
 				[email] text not null,
+				[comment] text not null,
+
 				[report] json not null,
 
 				primary key([sequence] autoincrement)
