@@ -13,9 +13,22 @@ use PeServer\Core\Throws\NotImplementedException;
 
 class ApplicationApiCrashReportLogic extends ApiLogicBase
 {
+	#region variable
+
+	/**
+	 * 要求JSON
+	 *
+	 * @var array<string,mixed>
+	 */
+	private array $requestJson;
+
+	#endregion
+
 	public function __construct(LogicParameter $parameter)
 	{
 		parent::__construct($parameter);
+
+		$this->requestJson = $this->getRequestJson();
 	}
 
 	#region ApiLogicBase

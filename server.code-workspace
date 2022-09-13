@@ -67,7 +67,8 @@
 			"sysplugins",
 			"XDEBUG",
 			"IFNULL",
-			"endregion"
+			"endregion",
+			"autoincrement"
 		],
 		"cSpell.ignorePaths": [
 			"package-lock.json",
