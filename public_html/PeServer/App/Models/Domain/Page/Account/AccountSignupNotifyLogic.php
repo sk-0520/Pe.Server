@@ -17,6 +17,8 @@ class AccountSignupNotifyLogic extends PageLogicBase
 		parent::__construct($parameter);
 	}
 
+	#region PageLogicBase
+
 	protected function validateImpl(LogicCallMode $callMode): void
 	{
 		//NONE
@@ -29,4 +31,6 @@ class AccountSignupNotifyLogic extends PageLogicBase
 		$this->setValue('email_address', $emailAddress);
 		$this->setValue('email_domain', $emailDomain);
 	}
+
+	#endregion
 }

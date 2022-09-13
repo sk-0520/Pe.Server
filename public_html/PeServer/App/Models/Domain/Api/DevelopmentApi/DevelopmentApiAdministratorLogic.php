@@ -24,6 +24,8 @@ class DevelopmentApiAdministratorLogic extends ApiLogicBase
 		parent::__construct($parameter);
 	}
 
+	#region ApiLogicBase
+
 	protected function validateImpl(LogicCallMode $callMode): void
 	{
 		//NONE
@@ -133,4 +135,6 @@ class DevelopmentApiAdministratorLogic extends ApiLogicBase
 			'success' => $result,
 		]));
 	}
+
+	#endregion
 }

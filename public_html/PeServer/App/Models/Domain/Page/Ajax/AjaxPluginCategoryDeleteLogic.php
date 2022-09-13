@@ -23,6 +23,8 @@ class AjaxPluginCategoryDeleteLogic extends PageLogicBase
 		parent::__construct($parameter);
 	}
 
+	#region PageLogicBase
+
 	protected function validateImpl(LogicCallMode $callMode): void
 	{
 		//NONE
@@ -54,4 +56,6 @@ class AjaxPluginCategoryDeleteLogic extends PageLogicBase
 
 		$this->dbCache->exportPluginInformation();
 	}
+
+	#endregion
 }

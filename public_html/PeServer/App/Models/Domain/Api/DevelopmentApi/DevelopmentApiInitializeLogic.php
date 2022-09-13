@@ -32,6 +32,8 @@ class DevelopmentApiInitializeLogic extends ApiLogicBase
 		parent::__construct($parameter);
 	}
 
+	#region ApiLogicBase
+
 	protected function validateImpl(LogicCallMode $callMode): void
 	{
 		//NONE
@@ -51,4 +53,6 @@ class DevelopmentApiInitializeLogic extends ApiLogicBase
 			'success' => true,
 		]));
 	}
+
+	#endregion
 }

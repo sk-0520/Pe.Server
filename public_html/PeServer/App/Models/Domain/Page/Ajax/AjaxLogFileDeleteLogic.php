@@ -21,6 +21,8 @@ class AjaxLogFileDeleteLogic extends PageLogicBase
 		parent::__construct($parameter);
 	}
 
+	#region PageLogicBase
+
 	protected function validateImpl(LogicCallMode $callMode): void
 	{
 		$logging = $this->config->setting->logging;
@@ -51,4 +53,6 @@ class AjaxLogFileDeleteLogic extends PageLogicBase
 
 		$this->setResponseJson(ResponseJson::success($result));
 	}
+
+	#endregion
 }

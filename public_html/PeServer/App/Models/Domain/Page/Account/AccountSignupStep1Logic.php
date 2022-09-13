@@ -33,6 +33,8 @@ class AccountSignupStep1Logic extends PageLogicBase
 		parent::__construct($parameter);
 	}
 
+	#region PageLogicBase
+
 	protected function startup(LogicCallMode $callMode): void
 	{
 		$this->registerParameterKeys([
@@ -150,4 +152,6 @@ class AccountSignupStep1Logic extends PageLogicBase
 		$this->setValue('account_signup_value', Text::EMPTY);
 		$this->setValue('value', $tempValue);
 	}
+
+	#endregion
 }

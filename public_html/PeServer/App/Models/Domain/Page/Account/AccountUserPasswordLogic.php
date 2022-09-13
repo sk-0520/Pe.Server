@@ -23,6 +23,8 @@ class AccountUserPasswordLogic extends PageLogicBase
 		parent::__construct($parameter);
 	}
 
+	#region PageLogicBase
+
 	protected function startup(LogicCallMode $callMode): void
 	{
 		$this->registerParameterKeys([
@@ -100,4 +102,6 @@ class AccountUserPasswordLogic extends PageLogicBase
 
 		$this->addTemporaryMessage(I18n::message('message/flash/updated_password'));
 	}
+
+	#endregion
 }

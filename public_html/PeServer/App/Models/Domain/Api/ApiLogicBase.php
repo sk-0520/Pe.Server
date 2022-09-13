@@ -17,15 +17,21 @@ use PeServer\Core\Throws\NotImplementedException;
 
 abstract class ApiLogicBase extends DomainLogicBase
 {
+	#region variable
+
 	#[Inject] //@phpstan-ignore-next-line Inject
 	private HttpRequest $request;
 
 	private IAuditUserInfo|null $auditUserInfo = null;
 
+	#endregion
+
 	public function __construct(LogicParameter $parameter)
 	{
 		parent::__construct($parameter);
 	}
+
+	#region function
 
 	protected function getAuditUserInfo(): ?IAuditUserInfo
 	{
@@ -65,4 +71,6 @@ abstract class ApiLogicBase extends DomainLogicBase
 
 		return $this->auditUserInfo;
 	}
+
+	#endregion
 }

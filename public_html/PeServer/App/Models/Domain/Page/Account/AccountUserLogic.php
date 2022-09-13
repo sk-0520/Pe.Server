@@ -21,6 +21,8 @@ class AccountUserLogic extends PageLogicBase
 		parent::__construct($parameter);
 	}
 
+	#region PageLogicBase
+
 	protected function validateImpl(LogicCallMode $callMode): void
 	{
 		//NONE
@@ -53,4 +55,6 @@ class AccountUserLogic extends PageLogicBase
 		}
 		$this->setValue('plugins', $userPlugins->rows);
 	}
+
+	#endregion
 }

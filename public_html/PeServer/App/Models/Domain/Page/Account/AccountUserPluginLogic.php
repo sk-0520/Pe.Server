@@ -52,6 +52,8 @@ class AccountUserPluginLogic extends PageLogicBase
 		$this->isRegister = $isRegister;
 	}
 
+	#region PageLogicBase
+
 	protected function startup(LogicCallMode $callMode): void
 	{
 		$keys = [
@@ -300,4 +302,6 @@ class AccountUserPluginLogic extends PageLogicBase
 			$this->setValue('plugin_category_mappings', $pluginCategories);
 		}
 	}
+
+	#endregion
 }
