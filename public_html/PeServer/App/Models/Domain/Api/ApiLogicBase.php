@@ -79,7 +79,7 @@ abstract class ApiLogicBase extends DomainLogicBase
 
 				case self::VALIDATE_JSON_PROPERTY_TIMESTAMP_UTC:
 					if (is_string($json[$key])) {
-						return Utc::tryParse($json[$key], $_);
+						return Utc::tryParse($json[$key], $unused);
 					}
 
 				default:
