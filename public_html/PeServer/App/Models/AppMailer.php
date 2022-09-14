@@ -20,6 +20,14 @@ final class AppMailer extends Mailer
 	#region variable
 
 	private string $overwriteTarget = Text::EMPTY;
+
+	/**
+	 * 件名のヘッダ部分。
+	 *
+	 * 特に指定しない場合は標準のものが使用される。
+	 *
+	 * @var string
+	 */
 	public string $customSubjectHeader = '';
 
 	#endregion
