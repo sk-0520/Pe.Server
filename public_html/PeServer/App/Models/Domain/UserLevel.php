@@ -14,7 +14,7 @@ abstract class UserLevel
 
 	public static function toString(string $userLevel): string
 	{
-		return match($userLevel) {
+		return match ($userLevel) {
 			self::USER => I18n::message('enum/user_level/user'),
 			self::SETUP => I18n::message('enum/user_level/setup'),
 			self::ADMINISTRATOR => I18n::message('enum/user_level/administrator'),

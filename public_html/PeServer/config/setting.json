@@ -76,6 +76,14 @@
 				"forum_url": "https://groups.google.com/g/pe_development",
 				"website_url": "https://content-type-text.net/",
 				"api_doc_url": "https://cttn.stoplight.io/docs/pe-server"
+			},
+			"notify": {
+				"crash_report": [
+					"crash_report@localhost.localdomain"
+				],
+				"feedback": [
+					"feedback@localhost.localdomain"
+				]
 			}
 		}
 	},

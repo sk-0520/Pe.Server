@@ -21,6 +21,15 @@ final class AppMailer extends Mailer
 
 	private string $overwriteTarget = Text::EMPTY;
 
+	/**
+	 * 件名のヘッダ部分。
+	 *
+	 * 特に指定しない場合は標準のものが使用される。
+	 *
+	 * @var string
+	 */
+	public string $customSubjectHeader = '';
+
 	#endregion
 
 	public function __construct(AppConfiguration $config)
@@ -69,7 +78,11 @@ final class AppMailer extends Mailer
 
 	protected function buildSubject(string $subject): string
 	{
-		return '[Pe.Server] ' . $subject;
+		$customSubjectHeader = Text::isNullOrWhiteSpace($this->customSubjectHeader)
+			? '[Pe.Server]'
+			: $this->customSubjectHeader;
+
+		return $customSubjectHeader . ' ' . $subject;
 	}
 
 	#endregion
