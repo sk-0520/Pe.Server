@@ -66,7 +66,6 @@ class ApplicationApiCrashReportLogic extends ApiLogicBase
 
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
-
 		$mailAddress = Text::isNullOrWhiteSpace($this->requestJson['mail_address'])
 			? Text::EMPTY
 			: $this->appCryptography->encrypt($this->requestJson['mail_address']);

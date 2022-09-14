@@ -73,24 +73,7 @@ class SetupVersion_0002 extends SetupVersionBase
 				[subject] text not null,
 				[content] text not null,
 
-				[detail] json not null,
-
 				primary key([sequence] autoincrement)
-			)
-		;
-
-		create table
-			[feedback_attachments]
-			(
-				[sequence] integer not null,
-				[feedback_sequence] integer not null,
-
-				[mime] text not null,
-				[name] text not null,
-				[content] text not null,
-
-				primary key([sequence] autoincrement)
-				foreign key ([feedback_sequence]) references feedbacks([sequence])
 			)
 		;
 

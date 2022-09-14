@@ -6,14 +6,12 @@ namespace PeServer\App\Models\Dao\Entities;
 
 use PeServer\Core\Binary;
 use PeServer\Core\Database\DaoBase;
+use PeServer\Core\Database\DaoTrait;
 use PeServer\Core\Database\IDatabaseContext;
 
 class CrashReportsEntityDao extends DaoBase
 {
-	public function __construct(IDatabaseContext $context)
-	{
-		parent::__construct($context);
-	}
+	use DaoTrait;
 
 	#region function
 
