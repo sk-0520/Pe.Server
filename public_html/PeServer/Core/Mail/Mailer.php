@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Mail;
 
 use \PHPMailer\PHPMailer\PHPMailer;
+use PeServer\Core\Mail\Attachment;
 use PeServer\Core\Mail\EmailAddress;
 use PeServer\Core\Mail\EmailMessage;
 use PeServer\Core\Mail\IMailSetting;
@@ -77,6 +78,13 @@ class Mailer
 	 * メッセージ。
 	 */
 	private EmailMessage $message;
+
+	/**
+	 * 添付ファイル。
+	 *
+	 * @var Attachment[]
+	 */
+	public array $attachments = [];
 
 	#endregion
 
@@ -202,6 +210,11 @@ class Mailer
 			throw new InvalidOperationException();
 		}
 
+		$client->clearAttachments();
+		foreach ($this->attachments as $attachment) {
+			$client->addStringAttachment($attachment->data->getRaw(), $attachment->name, PHPMailer::ENCODING_BASE64, $attachment->mime);
+		}
+
 		if ($this->setting instanceof SmtpSetting) {
 			$smtp = $this->setting;
 			$client->isSMTP();
@@ -218,4 +231,3 @@ class Mailer
 
 	#endregion
 }
-

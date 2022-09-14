@@ -5,12 +5,20 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Domain\Api\ApplicationApi;
 
 use \Exception;
+use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\AppCryptography;
+use PeServer\App\Models\AppMailer;
+use PeServer\App\Models\AppTemplate;
 use PeServer\App\Models\AuditLog;
 use PeServer\App\Models\Dao\Entities\CrashReportsEntityDao;
+use PeServer\App\Models\Dao\Entities\SequenceEntityDao;
 use PeServer\App\Models\Domain\Api\ApiLogicBase;
 use PeServer\App\Models\ResponseJson;
 use PeServer\Core\Archiver;
+use PeServer\Core\Database\IDatabaseContext;
+use PeServer\Core\Mail\Attachment;
+use PeServer\Core\Mail\EmailAddress;
+use PeServer\Core\Mail\EmailMessage;
 use PeServer\Core\Mime;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
@@ -31,7 +39,7 @@ class ApplicationApiCrashReportLogic extends ApiLogicBase
 
 	#endregion
 
-	public function __construct(LogicParameter $parameter, private AppCryptography $appCryptography)
+	public function __construct(LogicParameter $parameter, private AppConfiguration $config, private AppCryptography $appCryptography, private AppMailer $mailer, private AppTemplate $appTemplate)
 	{
 		parent::__construct($parameter);
 
@@ -68,8 +76,10 @@ class ApplicationApiCrashReportLogic extends ApiLogicBase
 		$binaryReport = (new JsonSerializer())->save($requestJson);
 		$compressReport = Archiver::compressGzip($binaryReport);
 
+		$sequence = 0;
+
 		$database = $this->openDatabase();
-		$result = $database->transaction(function ($context) use ($mailAddress, $requestJson, $compressReport) {
+		$result = $database->transaction(function (IDatabaseContext $context) use ($mailAddress, $requestJson, $compressReport, &$sequence) {
 			$crashReportsEntityDao = new CrashReportsEntityDao($context);
 			$crashReportsEntityDao->insertCrashReports(
 				$this->stores->special->getServer('REMOTE_ADDR'),
@@ -82,6 +92,10 @@ class ApplicationApiCrashReportLogic extends ApiLogicBase
 				$requestJson['comment'] ?? Text::EMPTY,
 				$compressReport
 			);
+
+			$sequenceEntityDao = new SequenceEntityDao($context);
+
+			$sequence = $sequenceEntityDao->getLastSequence();
 
 			$this->setContent(Mime::JSON, [
 				'success' => true,
@@ -96,7 +110,22 @@ class ApplicationApiCrashReportLogic extends ApiLogicBase
 			throw new Exception();
 		}
 
-		//TODO: メール送信
+		// メール送信
+		$crashReportEmails = $this->config->setting->config->address->notify->crashReport;
+		$exception = Text::splitLines($requestJson['exception'])[0];
+
+		$this->mailer->customSubjectHeader = '[Pe-CrashReport]';
+		$this->mailer->subject = "$sequence: $exception";
+		$message = $this->appTemplate->createMailTemplate('crash_report_email', $this->mailer->subject, $requestJson);
+		$this->mailer->setMessage(new EmailMessage($message));
+		$this->mailer->attachments[] = new Attachment("report-$sequence.json", $this->getRequestContent(), Mime::JSON);
+		foreach ($crashReportEmails as $crashReportEmail) {
+			$this->mailer->toAddresses = [
+				new EmailAddress($crashReportEmail),
+			];
+
+			$this->mailer->send();
+		}
 	}
 
 	#endregion

@@ -20,6 +20,7 @@ final class AppMailer extends Mailer
 	#region variable
 
 	private string $overwriteTarget = Text::EMPTY;
+	public string $customSubjectHeader = '';
 
 	#endregion
 
@@ -69,7 +70,11 @@ final class AppMailer extends Mailer
 
 	protected function buildSubject(string $subject): string
 	{
-		return '[Pe.Server] ' . $subject;
+		$customSubjectHeader = Text::isNullOrWhiteSpace($this->customSubjectHeader)
+			? '[Pe.Server]'
+			: $this->customSubjectHeader;
+
+		return $customSubjectHeader . ' ' . $subject;
 	}
 
 	#endregion
