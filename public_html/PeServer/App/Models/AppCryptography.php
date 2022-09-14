@@ -17,6 +17,8 @@ final class AppCryptography
 	) {
 	}
 
+	#region function
+
 	/**
 	 * アプリケーション設定から文字列暗号化。
 	 *
@@ -77,4 +79,6 @@ final class AppCryptography
 
 		return $result[1];
 	}
+
+	#endregion
 }

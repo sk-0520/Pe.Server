@@ -43,6 +43,8 @@ class AccountUserEmailLogic extends PageLogicBase
 		parent::__construct($parameter);
 	}
 
+	#region PageLogicBase
+
 	protected function startup(LogicCallMode $callMode): void
 	{
 		$userInfo = $this->requireSession(SessionKey::ACCOUNT);
@@ -261,4 +263,6 @@ class AccountUserEmailLogic extends PageLogicBase
 		$this->setValue('wait_email', $this->defaultValues['wait_email']);
 		$this->setValue('token_timestamp_utc', $this->defaultValues['token_timestamp_utc']);
 	}
+
+	#endregion
 }

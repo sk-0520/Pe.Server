@@ -13,6 +13,8 @@ use PeServer\Core\Throws\ArgumentNullException;
  */
 class ResponseJson
 {
+	#region variable
+
 	/**
 	 * 正常系データ。
 	 *
@@ -25,6 +27,10 @@ class ResponseJson
 	 * @var array{message:string,code:string,info:mixed}|null
 	 */
 	public ?array $error = null;
+
+	#endregion
+
+	#region function
 
 	/**
 	 * 正常データ生成。
@@ -64,4 +70,6 @@ class ResponseJson
 
 		return $result;
 	}
+
+	#endregion
 }

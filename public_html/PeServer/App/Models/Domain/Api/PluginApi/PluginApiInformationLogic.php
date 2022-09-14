@@ -20,6 +20,8 @@ class PluginApiInformationLogic extends ApiLogicBase
 		parent::__construct($parameter);
 	}
 
+	#region ApiLogicBase
+
 	protected function validateImpl(LogicCallMode $callMode): void
 	{
 		//NONE
@@ -56,4 +58,6 @@ class PluginApiInformationLogic extends ApiLogicBase
 			'plugins' => $items,
 		]));
 	}
+
+	#endregion
 }

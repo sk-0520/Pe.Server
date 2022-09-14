@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Configuration;
 
-use PeServer\App\Models\Configuration\PersistenceSetting;
 use PeServer\Core\Serialization\Mapping;
 
 /**
@@ -28,6 +27,8 @@ class AddressSetting
 	public string $returnEmail;
 
 	public ProjectFamilySetting $families;
+
+	public NotifySetting $notify;
 
 	#endregion
 }

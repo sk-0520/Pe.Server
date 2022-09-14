@@ -22,6 +22,8 @@ class AjaxMarkdownLogic extends PageLogicBase
 		parent::__construct($parameter);
 	}
 
+	#region PageLogicBase
+
 	protected function validateImpl(LogicCallMode $callMode): void
 	{
 		//NONE
@@ -46,4 +48,6 @@ class AjaxMarkdownLogic extends PageLogicBase
 
 		$this->setResponseJson(ResponseJson::success(['markdown' => $result]));
 	}
+
+	#endregion
 }

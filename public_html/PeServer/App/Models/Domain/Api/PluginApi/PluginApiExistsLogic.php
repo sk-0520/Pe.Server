@@ -21,6 +21,8 @@ class PluginApiExistsLogic extends ApiLogicBase
 		parent::__construct($parameter);
 	}
 
+	#region ApiLogicBase
+
 	protected function validateImpl(LogicCallMode $callMode): void
 	{
 		//NONE
@@ -46,4 +48,6 @@ class PluginApiExistsLogic extends ApiLogicBase
 			'plugin_name' => $existsPluginName,
 		]));
 	}
+
+	#endregion
 }

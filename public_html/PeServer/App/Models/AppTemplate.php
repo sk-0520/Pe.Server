@@ -22,6 +22,8 @@ final class AppTemplate
 	) {
 	}
 
+	#region function
+
 	/**
 	 * テンプレートを適用。
 	 *
@@ -62,4 +64,6 @@ final class AppTemplate
 
 		return $this->buildTemplate('email', $templateName, $params, HttpStatus::none());
 	}
+
+	#endregion
 }

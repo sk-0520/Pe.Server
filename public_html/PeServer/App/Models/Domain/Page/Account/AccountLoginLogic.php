@@ -20,12 +20,18 @@ use PeServer\Core\Text;
 
 class AccountLoginLogic extends PageLogicBase
 {
+	#region define
+
 	private const ERROR_LOGIN_PARAMETER = 'error/login_parameter';
+
+	#endregion
 
 	public function __construct(LogicParameter $parameter)
 	{
 		parent::__construct($parameter);
 	}
+
+	#region PageLogicBase
 
 	protected function startup(LogicCallMode $callMode): void
 	{
@@ -104,4 +110,6 @@ class AccountLoginLogic extends PageLogicBase
 		$this->restartSession();
 		$this->writeAuditLogCurrentUser(AuditLog::LOGIN_SUCCESS, $account);
 	}
+
+	#endregion
 }

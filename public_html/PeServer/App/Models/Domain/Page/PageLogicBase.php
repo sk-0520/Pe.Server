@@ -12,12 +12,18 @@ use PeServer\Core\Mvc\LogicParameter;
 
 abstract class PageLogicBase extends DomainLogicBase
 {
+	#region define
+
 	public const TEMP_MESSAGES = 'temp_messages';
+
+	#endregion
 
 	public function __construct(LogicParameter $parameter)
 	{
 		parent::__construct($parameter);
 	}
+
+	#region function
 
 	protected function getAuditUserInfo(): ?IAuditUserInfo
 	{
@@ -50,4 +56,6 @@ abstract class PageLogicBase extends DomainLogicBase
 		$messages[] = $message;
 		$this->pushTemporary(self::TEMP_MESSAGES, $messages);
 	}
+
+	#endregion
 }

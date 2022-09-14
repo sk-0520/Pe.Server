@@ -20,12 +20,15 @@ const webpackConfig = (env: string, args: any): webpack.Configuration => {
 
 		// 名前に親ディレクトリを含めること(JS/CSSごちゃまぜ回避方法不明)
 		entry: {
-			// ユーザー画面共通
+			// 共通スクリプト
 			"scripts/script": path.join(inputDirectory, './scripts/entry/script.ts'),
 			"scripts/plugin_edit": path.join(inputDirectory, './scripts/entry/plugin_edit.ts'),
 			"scripts/user_edit": path.join(inputDirectory, './scripts/entry/user_edit.ts'),
+			// 管理側
 			"scripts/plugin_category": path.join(inputDirectory, './scripts/entry/plugin_category.ts'),
+			"scripts/log_list": path.join(inputDirectory, './scripts/entry/log_list.ts'),
 			"scripts/database_maintenance": path.join(inputDirectory, './scripts/entry/database_maintenance.ts'),
+			// 共通スタイル
 			"styles/style": path.join(inputDirectory, './styles/style.scss'),
 		},
 

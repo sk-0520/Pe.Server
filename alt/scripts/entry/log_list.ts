@@ -1,8 +1,8 @@
 import * as default_loader from '../default_loader';
-import * as database_list from '../domain/database_list'
+import * as application_log from '../domain/application_log';
 
 
 window.addEventListener('DOMContentLoaded', ev => {
 	default_loader.boot();
-	database_list.boot();
+	application_log.boot();
 });

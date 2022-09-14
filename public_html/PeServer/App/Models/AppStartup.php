@@ -46,6 +46,8 @@ class AppStartup extends CoreStartup
 		parent::__construct($directory);
 	}
 
+	#region CoreStartup
+
 	protected function setupCommon(array $options, IDiRegisterContainer $container): void
 	{
 		parent::setupCommon($options, $container);
@@ -99,4 +101,6 @@ class AppStartup extends CoreStartup
 		$appErrorHandler = $container->new(AppErrorHandler::class, [RequestPath::class => $requestPath]);
 		$appErrorHandler->register();
 	}
+
+	#endregion
 }

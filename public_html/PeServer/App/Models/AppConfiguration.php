@@ -23,6 +23,8 @@ use PeServer\Core\Web\IUrlHelper;
  */
 class AppConfiguration
 {
+	#region variable
+
 	/**
 	 * 設定データ。
 	 *
@@ -62,6 +64,8 @@ class AppConfiguration
 
 	public Stores $stores;
 
+	#endregion
+
 	/**
 	 * 初期化。
 	 *
@@ -94,6 +98,8 @@ class AppConfiguration
 		$this->stores = $stores;
 	}
 
+	#region function
+
 	/**
 	 * 設定ファイル読み込み。
 	 *
@@ -118,4 +124,6 @@ class AppConfiguration
 			')'
 		);
 	}
+
+	#endregion
 }

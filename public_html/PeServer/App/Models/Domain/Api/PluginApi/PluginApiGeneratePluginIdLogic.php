@@ -20,6 +20,8 @@ class PluginApiGeneratePluginIdLogic extends ApiLogicBase
 		parent::__construct($parameter);
 	}
 
+	#region ApiLogicBase
+
 	protected function validateImpl(LogicCallMode $callMode): void
 	{
 		//NONE
@@ -48,4 +50,6 @@ class PluginApiGeneratePluginIdLogic extends ApiLogicBase
 			'plugin_id' => $pluginId,
 		]));
 	}
+
+	#endregion
 }

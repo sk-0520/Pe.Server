@@ -17,6 +17,8 @@ class AccountLogoutLogic extends PageLogicBase
 		parent::__construct($parameter);
 	}
 
+	#region PageLogicBase
+
 	protected function validateImpl(LogicCallMode $callMode): void
 	{
 		//NONE
@@ -33,4 +35,6 @@ class AccountLogoutLogic extends PageLogicBase
 
 		$this->shutdownSession();
 	}
+
+	#endregion
 }

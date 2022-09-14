@@ -46,6 +46,8 @@ class AppDatabaseCache
 		$this->serializer = new BuiltinSerializer();
 	}
 
+	#region function
+
 	private function openDatabase(): IDatabaseContext
 	{
 		return $this->connection->open();
@@ -160,4 +162,6 @@ class AppDatabaseCache
 	{
 		return self::readCache(self::USER_INFORMATION, UserCache::class);
 	}
+
+	#endregion
 }

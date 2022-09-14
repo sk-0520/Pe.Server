@@ -36,6 +36,8 @@ class AccountSignupStep2Logic extends PageLogicBase
 		parent::__construct($parameter);
 	}
 
+	#region PageLogicBase
+
 	protected function startup(LogicCallMode $callMode): void
 	{
 		$this->registerParameterKeys([
@@ -177,4 +179,6 @@ class AccountSignupStep2Logic extends PageLogicBase
 		));
 		$this->dbCache->exportUserInformation();
 	}
+
+	#endregion
 }

@@ -23,6 +23,8 @@ class AccountUserEditLogic extends PageLogicBase
 		parent::__construct($parameter);
 	}
 
+	#region PageLogicBase
+
 	protected function startup(LogicCallMode $callMode): void
 	{
 		$this->registerParameterKeys([
@@ -126,4 +128,6 @@ class AccountUserEditLogic extends PageLogicBase
 		$this->addTemporaryMessage(I18n::message('message/flash/updated_user'));
 		$this->dbCache->exportUserInformation();
 	}
+
+	#endregion
 }

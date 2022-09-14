@@ -6,5 +6,9 @@ namespace PeServer\App\Models;
 
 abstract class SessionKey
 {
+	#region function
+
 	public const ACCOUNT = 'account';
+
+	#endregion
 }

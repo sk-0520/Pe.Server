@@ -25,7 +25,7 @@ class AccountUserApiLogic extends PageLogicBase
 		parent::__construct($parameter);
 	}
 
-	//[DomainLogicBase]
+	#region PageLogicBase
 
 	protected function startup(LogicCallMode $callMode): void
 	{
@@ -111,4 +111,6 @@ class AccountUserApiLogic extends PageLogicBase
 
 		$this->dbCache->exportUserInformation();
 	}
+
+	#endregion
 }

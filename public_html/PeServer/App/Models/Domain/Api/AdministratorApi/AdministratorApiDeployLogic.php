@@ -234,7 +234,7 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 			$basePath = Text::substring($expandFilePath, Text::getLength($expandDirPath) + 1);
 			$toPath = Path::combine($this->appConfig->rootDirectoryPath, $basePath);
 
-			$this->logger->info('UPDATE: {0}', $toPath);
+			//$this->logger->info('UPDATE: {0}', $toPath);
 
 			$parentPath = Path::getDirectoryPath($toPath);
 			if (!isset($dirs[$parentPath])) {
