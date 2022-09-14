@@ -10,9 +10,14 @@ use PeServer\App\Models\AppMailer;
 use PeServer\App\Models\AppTemplate;
 use PeServer\App\Models\AuditLog;
 use PeServer\App\Models\Dao\Entities\FeedbacksEntityDao;
+use PeServer\App\Models\Dao\Entities\SequenceEntityDao;
 use PeServer\App\Models\Domain\Api\ApiLogicBase;
 use PeServer\App\Models\ResponseJson;
 use PeServer\Core\Database\IDatabaseContext;
+use PeServer\Core\Mail\Attachment;
+use PeServer\Core\Mail\EmailAddress;
+use PeServer\Core\Mail\EmailMessage;
+use PeServer\Core\Mime;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\Throws\NotImplementedException;
@@ -92,6 +97,15 @@ class ApplicationApiFeedbackLogic extends ApiLogicBase
 				$this->requestJson['content']
 			);
 
+			$sequenceEntityDao = new SequenceEntityDao($context);
+
+			$sequence = $sequenceEntityDao->getLastSequence();
+
+			$this->setContent(Mime::JSON, [
+				'success' => true,
+				'message' => '',
+			]);
+
 			return true;
 		});
 
@@ -101,10 +115,20 @@ class ApplicationApiFeedbackLogic extends ApiLogicBase
 		}
 
 		// メール送信
-		throw new NotImplementedException();
-		// $this->setResponseJson(ResponseJson::success([
-		// 	'size' => $size,
-		// ]));
+		$feedbackEmails = $this->config->setting->config->address->notify->feedback;
+		$subject = $this->requestJson['subject'];
+		$this->mailer->customSubjectHeader = '[Pe-Feedback]';
+		$this->mailer->subject = "$sequence: $subject";
+		$message = $this->appTemplate->createMailTemplate('feedback_email', $this->mailer->subject, $this->requestJson);
+		$this->mailer->setMessage(new EmailMessage($message));
+		$this->mailer->attachments[] = new Attachment("feedback-$sequence.json", $this->getRequestContent(), Mime::JSON);
+		foreach ($feedbackEmails as $feedbackEmail) {
+			$this->mailer->toAddresses = [
+				new EmailAddress($feedbackEmail),
+			];
+
+			$this->mailer->send();
+		}
 	}
 
 	#endregion
