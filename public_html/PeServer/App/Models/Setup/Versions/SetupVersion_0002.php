@@ -30,15 +30,19 @@ class SetupVersion_0002 extends SetupVersionBase
 				[sequence] integer not null,
 
 				[timestamp] datetime not null,
-				[user_id] text not null,
+				[ip_address] text not null,
+
 				[version] text not null,
 				[revision] text not null,
+				[build] text not null,
+				[user_id] text not null,
+
 				[exception] text not null,
 
-				[email] text not null,
+				[email] text not null, -- メールアドレス(暗号化)
 				[comment] text not null,
 
-				[report] json not null,
+				[report] blob not null,
 
 				primary key([sequence] autoincrement)
 			)
@@ -50,6 +54,8 @@ class SetupVersion_0002 extends SetupVersionBase
 				[sequence] integer not null,
 
 				[timestamp] datetime not null,
+				[ip_address] text not null,
+
 				[version] text not null,
 				[revision] text not null,
 				[build] text not null,
