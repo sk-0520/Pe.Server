@@ -6,6 +6,7 @@ namespace PeServer\Core\Database;
 
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Database\DatabaseResultBase;
+use PeServer\Core\Serialization\Mapper;
 
 /**
  * 問い合わせ結果。

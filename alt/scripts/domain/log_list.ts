@@ -9,8 +9,10 @@ function attachDelete(deleteElement: HTMLButtonElement) {
 		const logName = dom.getDataset(deleteElement, 'name');
 		const json = await ajax.communicateJsonAsync(path.join('/ajax/log', logName), 'DELETE');
 
-		if (json.data) {
+		if (!json.error) {
 			location.reload();
+		} else {
+			alert(JSON.stringify(json.error));
 		}
 	})
 }

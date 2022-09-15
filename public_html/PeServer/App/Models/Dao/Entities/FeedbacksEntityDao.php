@@ -4,16 +4,163 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Dao\Entities;
 
+use PeServer\App\Models\Data\FeedbackDetail;
+use PeServer\App\Models\Data\FeedbackListItem;
 use PeServer\Core\Binary;
+use PeServer\Core\Collections\Collection;
 use PeServer\Core\Database\DaoBase;
 use PeServer\Core\Database\DaoTrait;
+use PeServer\Core\Database\DatabaseRowResult;
+use PeServer\Core\Database\DatabaseTableResult;
 use PeServer\Core\Database\IDatabaseContext;
+use PeServer\Core\Serialization\Mapper;
 
 class FeedbacksEntityDao extends DaoBase
 {
 	use DaoTrait;
 
 	#region function
+
+	/**
+	 * フィードバック ページ 全件数取得。
+	 *
+	 * @return int
+	 * @phpstan-return UnsignedIntegerAlias
+	 */
+	public function selectFeedbackPageTotalCount(): int
+	{
+		return $this->context->selectSingleCount(
+			<<<SQL
+
+			select
+				count(*)
+			from
+				feedbacks
+				feedbacks
+
+			SQL
+		);
+	}
+
+	/**
+	 * Undocumented function
+	 *
+	 * @param int $sequence
+	 * @phpstan-param UnsignedIntegerAlias $sequence
+	 * @return bool
+	 */
+	public function selectExistsFeedback(int $sequence): bool
+	{
+		return 1 === $this->context->selectSingleCount(
+			<<<SQL
+
+			select
+				count(*)
+			from
+				feedbacks
+			where
+				sequence = :sequence
+
+			SQL,
+			[
+				'sequence' => $sequence,
+			]
+		);
+	}
+
+	/**
+	 * Undocumented function
+	 *
+	 * @param int $index
+	 * @phpstan-param UnsignedIntegerAlias $index
+	 * @param int $count
+	 * @phpstan-param UnsignedIntegerAlias $count
+	 * @return FeedbackListItem[]
+	 */
+	public function selectFeedbackPageItems(int $index, int $count): array
+	{
+		$tableResult = $this->context->selectOrdered(
+			<<<SQL
+
+			select
+				feedbacks.sequence,
+				feedbacks.timestamp,
+				feedbacks.version,
+				feedbacks.kind,
+				feedbacks.subject
+			from
+				feedbacks
+			order by
+				feedbacks.timestamp desc,
+				feedbacks.sequence desc
+			limit
+				:count
+			offset
+				:index
+
+			SQL,
+			[
+				'index' => $index,
+				'count' => $count,
+			]
+		);
+
+		$result = [];
+		$mapper = new Mapper();
+		foreach ($tableResult->rows as $row) {
+			$obj = new FeedbackListItem();
+			$mapper->mapping($row, $obj);
+			$result[] = $obj;
+		}
+
+		return $result;
+	}
+
+	public function selectFeedbackDetail(int $sequence): FeedbackDetail
+	{
+		$row = $this->context->querySingle(
+			<<<SQL
+
+			select
+				feedbacks.sequence,
+
+				feedbacks.timestamp,
+				ip_address,
+
+				feedbacks.version,
+				feedbacks.revision,
+				feedbacks.build,
+
+				feedbacks.user_id,
+
+				feedbacks.first_execute_timestamp,
+				feedbacks.first_execute_version,
+
+				feedbacks.process,
+				feedbacks.platform,
+				feedbacks.os,
+				feedbacks.clr,
+
+				feedbacks.kind,
+				feedbacks.subject,
+				feedbacks.content
+			from
+				feedbacks
+			where
+				sequence = :sequence
+
+			SQL,
+			[
+				'sequence' => $sequence,
+			]
+		);
+
+		$mapper = new Mapper();
+		$obj = new FeedbackDetail();
+		$mapper->mapping($row->fields, $obj);
+
+		return $obj;
+	}
 
 	public function insertFeedbacks(
 		string $ipAddress,
@@ -104,6 +251,24 @@ class FeedbacksEntityDao extends DaoBase
 				'kind' => $kind,
 				'subject' => $subject,
 				'content' => $content,
+			]
+		);
+	}
+
+	public function deleteFeedback(int $sequence): void
+	{
+		$this->context->deleteByKey(
+			<<<SQL
+
+			delete
+			from
+				feedbacks
+			where
+				sequence = :sequence
+
+			SQL,
+			[
+				'sequence' => $sequence,
 			]
 		);
 	}

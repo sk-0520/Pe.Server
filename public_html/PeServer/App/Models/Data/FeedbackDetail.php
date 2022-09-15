@@ -1,0 +1,47 @@
+<?php
+
+declare(strict_types=1);
+
+namespace PeServer\App\Models\Data;
+
+use \DateTime;
+use PeServer\Core\Serialization\Mapping;
+use PeServer\Core\Text;
+
+/**
+ * @immutable
+ */
+class FeedbackDetail
+{
+	#region variable
+
+	public int $sequence = -1;
+
+	public string $timestamp = Text::EMPTY;
+
+	#[Mapping(name: 'ip_address')]
+	public string $ipAddress = Text::EMPTY;
+
+	public string $version = Text::EMPTY;
+
+	public string $build = Text::EMPTY;
+
+	#[Mapping(name: 'user_id')]
+	public string $userId = Text::EMPTY;
+
+	#[Mapping(name: 'first_execute_timestamp')]
+	public string $firstExecuteTimestamp = Text::EMPTY;
+	#[Mapping(name: 'first_execute_version')]
+	public string $firstExecuteVersion = Text::EMPTY;
+
+	public string $process = Text::EMPTY;
+	public string $platform = Text::EMPTY;
+	public string $os = Text::EMPTY;
+	public string $clr = Text::EMPTY;
+
+	public string $kind = Text::EMPTY;
+	public string $subject = Text::EMPTY;
+	public string $content = Text::EMPTY;
+
+	#endregion
+}

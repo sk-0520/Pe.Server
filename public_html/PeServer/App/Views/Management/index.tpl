@@ -4,6 +4,7 @@
 
 	<ul>
 		<li><a href="/management/log">ログ</a></li>
+		<li><a href="/management/feedback">フィードバック</a></li>
 		<li>
 			プラグイン
 			<ul>

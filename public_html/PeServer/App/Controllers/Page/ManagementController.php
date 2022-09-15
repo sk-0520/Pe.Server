@@ -9,6 +9,8 @@ use PeServer\App\Models\Domain\Page\Management\ManagementConfigurationLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementDatabaseMaintenanceLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementDefaultPluginLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementEnvironmentLogic;
+use PeServer\App\Models\Domain\Page\Management\ManagementFeedbackDetailLogic;
+use PeServer\App\Models\Domain\Page\Management\ManagementFeedbackListLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementLogDetailLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementLogListLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementMarkdownLogic;
@@ -128,7 +130,30 @@ final class ManagementController extends PageControllerBase
 		$logic->run(LogicCallMode::submit());
 
 		return $this->redirectPath('/management');
+	}
 
+	public function feedback_list_top(): IActionResult
+	{
+		$logic = $this->createLogic(ManagementFeedbackListLogic::class);
+		$logic->run(LogicCallMode::initialize());
+
+		return $this->view('feedback_list', $logic->getViewData());
+	}
+
+	public function feedback_list_page(): IActionResult
+	{
+		$logic = $this->createLogic(ManagementFeedbackListLogic::class);
+		$logic->run(LogicCallMode::submit());
+
+		return $this->view('feedback_list', $logic->getViewData());
+	}
+
+	public function feedback_detail(): IActionResult
+	{
+		$logic = $this->createLogic(ManagementFeedbackDetailLogic::class);
+		$logic->run(LogicCallMode::initialize());
+
+		return $this->view('feedback_detail', $logic->getViewData());
 	}
 
 	public function plugin_category_get(): IActionResult

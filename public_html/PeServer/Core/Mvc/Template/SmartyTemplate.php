@@ -16,6 +16,7 @@ use PeServer\Core\Mvc\Template\Plugin\InputHelperFunction;
 use PeServer\Core\Mvc\Template\Plugin\ITemplateBlockFunction;
 use PeServer\Core\Mvc\Template\Plugin\ITemplateFunction;
 use PeServer\Core\Mvc\Template\Plugin\MarkdownFunction;
+use PeServer\Core\Mvc\Template\Plugin\PagerFunction;
 use PeServer\Core\Mvc\Template\Plugin\ShowErrorMessagesFunction;
 use PeServer\Core\Mvc\Template\Plugin\TemplatePluginArgument;
 use PeServer\Core\Mvc\Template\TemplateBase;
@@ -95,6 +96,7 @@ class SmartyTemplate extends TemplateBase
 			new BotTextImageFunction($argument),
 			new MarkdownFunction($argument),
 			new CodeFunction($argument),
+			new PagerFunction($argument),
 		];
 		foreach ($plugins as $plugin) {
 			if ($plugin instanceof ITemplateBlockFunction) {
