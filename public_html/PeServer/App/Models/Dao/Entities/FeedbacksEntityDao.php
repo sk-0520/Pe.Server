@@ -46,7 +46,6 @@ class FeedbacksEntityDao extends DaoBase
 	 * Undocumented function
 	 *
 	 * @param int $sequence
-	 * @phpstan-param UnsignedIntegerAlias $sequence
 	 * @return bool
 	 */
 	public function selectExistsFeedback(int $sequence): bool

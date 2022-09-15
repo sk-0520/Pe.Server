@@ -29,7 +29,6 @@ class ManagementFeedbackDetailLogic extends PageLogicBase
 				$database = $this->openDatabase();
 				$feedbacksEntityDao = new FeedbacksEntityDao($database);
 
-				/** @phpstan-var UnsignedIntegerAlias */
 				$seq = (int)$value;
 				$exists = $feedbacksEntityDao->selectExistsFeedback($seq);
 				if(!$exists) {
