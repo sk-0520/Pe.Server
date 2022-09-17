@@ -1,8 +1,13 @@
-.search-count {
+.search-count-area {
 	text-align: right;
 
-	&::before {
-		content: '件数: ';
+	.count {
+		font-style: normal;
+		margin: auto 0.5ex;
+	}
+
+	.unit {
+		opacity: 0.80;
 	}
 }
 

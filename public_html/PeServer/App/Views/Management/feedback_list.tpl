@@ -12,7 +12,10 @@
 	</template>
 
 	{if $values.total_count}
-		<p class="search-count">{$values.total_count}</p>
+		<p class="search-count-area">
+			<em class="count">{$values.total_count}</em>
+			<span class="unit">件</em>
+		</p>
 
 		<table class="search-result feedback-list-result">
 			<thead>

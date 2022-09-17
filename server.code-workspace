@@ -9,6 +9,10 @@
 			"name": "Test"
 		},
 		{
+			"path": "alt",
+			"name": "Front"
+		},
+		{
 			"path": ".",
 			"name": "ROOT"
 		}
