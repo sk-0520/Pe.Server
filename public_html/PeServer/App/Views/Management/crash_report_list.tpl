@@ -2,7 +2,7 @@
 {block name='TITLE'}クラッシュレポート{/block}
 
 {block name='HEAD'}{csrf type='id'}{/block}
-{block name='DEFAULT_SCRIPT'}{asset file='/scripts/management_crash_report.js'}{/block}
+{block name='DEFAULT_SCRIPT'}{asset file='/scripts/management_crash_report_list.js'}{/block}
 
 {block name='BODY'}
 	<template id="pg-delete-dialog">

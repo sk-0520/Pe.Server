@@ -1,6 +1,6 @@
-import * as dom from '../core/dom';
-import * as path from '../core/path';
-import * as ajax from '../core/ajax';
+import * as dom from '../../core/dom';
+import * as path from '../../core/path';
+import * as ajax from '../../core/ajax';
 
 function attachDelete(deleteElement: HTMLButtonElement) {
 	deleteElement.addEventListener('click', async ev => {

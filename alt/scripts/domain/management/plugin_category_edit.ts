@@ -1,6 +1,6 @@
-import * as dom from '../core/dom'
-import * as ajax from '../core/ajax'
-import * as path from '../core/path'
+import * as dom from '../../core/dom'
+import * as ajax from '../../core/ajax'
+import * as path from '../../core/path'
 
 function registerRow(trElement: HTMLTableRowElement) {
 	const pluginCategoryId = dom.getDataset(trElement, 'plugin-category-id');

@@ -2,7 +2,7 @@
 {block name='TITLE'}プラグインカテゴリ{/block}
 
 {block name='HEAD'}{csrf type='id'}{/block}
-{block name='DEFAULT_SCRIPT'}{asset file='/scripts/plugin_category.js'}{/block}
+{block name='DEFAULT_SCRIPT'}{asset file='/scripts/management_plugin_category.js'}{/block}
 
 {block name='BODY'}
 

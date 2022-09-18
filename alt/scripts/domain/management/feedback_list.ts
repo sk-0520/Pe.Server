@@ -1,7 +1,7 @@
-import * as dialog from '../core/dialog';
-import * as dom from '../core/dom';
-import * as ajax from '../core/ajax';
-import * as path from '../core/path';
+import * as dialog from '../../core/dialog';
+import * as dom from '../../core/dom';
+import * as ajax from '../../core/ajax';
+import * as path from '../../core/path';
 
 function attachDelete(element: HTMLButtonElement): void {
 	element.addEventListener('click', async ev => {

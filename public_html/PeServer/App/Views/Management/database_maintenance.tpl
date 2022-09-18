@@ -1,6 +1,6 @@
 {extends file='default.tpl'}
 {block name='TITLE'}DBメンテナンス{/block}
-{block name='DEFAULT_SCRIPT'}{asset file='/scripts/database_maintenance.js'}{/block}
+{block name='DEFAULT_SCRIPT'}{asset file='/scripts/management_database_maintenance.js'}{/block}
 {block name='BODY'}
 
 <h2>入力</h2>

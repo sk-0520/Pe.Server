@@ -1,7 +1,8 @@
 import * as default_loader from '../default_loader';
-import * as plugin_category_edit from '../domain/plugin_category_edit';
+import * as management_log_list from '../domain/management/log_list';
+
 
 window.addEventListener('DOMContentLoaded', ev => {
 	default_loader.boot();
-	plugin_category_edit.boot();
+	management_log_list.boot();
 });
