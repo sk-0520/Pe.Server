@@ -71,7 +71,7 @@ class FeedbacksEntityDao extends DaoBase
 
 
 	/**
-	 * Undocumented function
+	 * フィードバック ページ 表示データ取得。
 	 *
 	 * @param int $index
 	 * @phpstan-param UnsignedIntegerAlias $index

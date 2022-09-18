@@ -236,5 +236,6 @@ class CrashReportsEntityDao extends DaoBase
 			]
 		);
 	}
+
 	#endregion
 }
