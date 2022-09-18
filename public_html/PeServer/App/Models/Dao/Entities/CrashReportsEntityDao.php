@@ -19,7 +19,7 @@ class CrashReportsEntityDao extends DaoBase
 
 
 	/**
-	 * Undocumented function
+	 * クラッシュレポートを主キー検索で有無確認。
 	 *
 	 * @param int $sequence
 	 * @return bool
@@ -44,7 +44,7 @@ class CrashReportsEntityDao extends DaoBase
 	}
 
 	/**
-	 * フィードバック ページ 全件数取得。
+	 * クラッシュレポート ページ 全件数取得。
 	 *
 	 * @return int
 	 * @phpstan-return UnsignedIntegerAlias
@@ -64,7 +64,7 @@ class CrashReportsEntityDao extends DaoBase
 	}
 
 	/**
-	 * Undocumented function
+	 * クラッシュレポート ページ 表示データ取得。
 	 *
 	 * @param int $index
 	 * @phpstan-param UnsignedIntegerAlias $index
@@ -77,15 +77,29 @@ class CrashReportsEntityDao extends DaoBase
 		$tableResult = $this->context->selectOrdered(
 			<<<SQL
 
+			with alias__crash_reports as (
+				select
+					crash_reports.*,
+					REPLACE(REPLACE(crash_reports.exception, CHAR(13, 10), CHAR(10)), CHAR(13), CHAR(10)) as exception_lf
+				from
+					crash_reports
+			)
 			select
-				crash_reports.sequence,
-				crash_reports.timestamp,
-				crash_reports.version
+				alias__crash_reports.sequence,
+				alias__crash_reports.timestamp,
+				alias__crash_reports.version,
+				alias__crash_reports.exception_lf,
+				case INSTR(alias__crash_reports.exception_lf, CHAR(10))
+					when 0 then
+						alias__crash_reports.exception_lf
+					else
+						SUBSTR(alias__crash_reports.exception_lf, 0, INSTR(alias__crash_reports.exception_lf, CHAR(10)))
+				end as exception_subject
 			from
-				crash_reports
+				alias__crash_reports
 			order by
-				crash_reports.timestamp desc,
-				crash_reports.sequence desc
+				alias__crash_reports.timestamp desc,
+				alias__crash_reports.sequence desc
 			limit
 				:count
 			offset
@@ -179,5 +193,23 @@ class CrashReportsEntityDao extends DaoBase
 		);
 	}
 
+
+	public function deleteCrashReport(int $sequence): void
+	{
+		$this->context->deleteByKey(
+			<<<SQL
+
+			delete
+			from
+				crash_reports
+			where
+				sequence = :sequence
+
+			SQL,
+			[
+				'sequence' => $sequence,
+			]
+		);
+	}
 	#endregion
 }

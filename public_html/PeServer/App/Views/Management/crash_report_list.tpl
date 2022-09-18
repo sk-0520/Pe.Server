@@ -17,12 +17,13 @@
 			<span class="unit">件</em>
 		</p>
 
-		<table class="search-result feedback-list-result">
+		<table class="search-result crash-report-list-result">
 			<thead>
 				<tr>
 					<th class="column-sequence">*</th>
 					<th class="column-timestamp">日時</th>
 					<th class="column-version">バージョン</th>
+					<th class="column-exception-subject">例外</th>
 					<th class="column-detail">詳細</th>
 					<th class="column-delete">削除</th>
 				</tr>
@@ -33,6 +34,7 @@
 						<td class="column-sequence">{$item->sequence}</td>
 						<td class="column-timestamp">{$item->timestamp}</td>
 						<td class="column-version">{$item->version}</td>
+						<td class="column-exception-subject">{$item->exceptionSubject}</td>
 						<td class="column-detail"><a href="/management/crash-report/{$item->sequence}">詳細</a></td>
 						<td class="column-delete"><button class="pg-delete" data-sequence="{$item->sequence}">削除</button></form>
 						</td>

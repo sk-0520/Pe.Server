@@ -121,6 +121,7 @@ final class AppRouteSetting extends RouteSetting
 					->addAction('plugin-category/:plugin_category_id@.+', HttpMethod::delete(), 'plugin_category_delete', [CsrfMiddleware::class, AdministratorAccountFilterMiddleware::class])
 					->addAction('log/:log_name@\w+\.log', HttpMethod::delete(), 'log_delete', [CsrfMiddleware::class, AdministratorAccountFilterMiddleware::class])
 					->addAction('feedback/:sequence@\d++', HttpMethod::delete(), 'feedback_delete', [CsrfMiddleware::class, AdministratorAccountFilterMiddleware::class])
+					->addAction('crash-report/:sequence@\d++', HttpMethod::delete(), 'crash_report_delete', [CsrfMiddleware::class, AdministratorAccountFilterMiddleware::class])
 				/* AUTO-FORMAT */,
 				(new Route('api/development', DevelopmentApiController::class, [DevelopmentMiddleware::class]))
 					->addAction('initialize', HttpMethod::post())

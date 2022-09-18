@@ -18,6 +18,8 @@ class CrashReportListItem
 	public int $sequence = -1;
 	public string $timestamp = Text::EMPTY;
 	public string $version = Text::EMPTY;
+	#[Mapping(name: 'exception_subject')]
+	public string $exceptionSubject = Text::EMPTY;
 
 	#endregion
 }
