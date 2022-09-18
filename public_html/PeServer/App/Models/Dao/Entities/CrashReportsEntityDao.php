@@ -75,6 +75,7 @@ class CrashReportsEntityDao extends DaoBase
 	 */
 	public function selectCrashReportsPageItems(int $index, int $count): array
 	{
+		/*
 		$result = $this->context->selectOrdered(
 			<<<SQL
 
@@ -101,6 +102,37 @@ class CrashReportsEntityDao extends DaoBase
 			order by
 				alias__crash_reports.timestamp desc,
 				alias__crash_reports.sequence desc
+			limit
+				:count
+			offset
+				:index
+
+			SQL,
+			[
+				'index' => $index,
+				'count' => $count,
+			]
+		);
+		*/
+		$result = $this->context->selectOrdered(
+			<<<SQL
+
+			select
+				crash_reports.sequence,
+				crash_reports.timestamp,
+				crash_reports.version,
+				REPLACE(REPLACE(crash_reports.exception, CHAR(13, 10), CHAR(10)), CHAR(13), CHAR(10)) as exception_lf,
+				case INSTR(REPLACE(REPLACE(crash_reports.exception, CHAR(13, 10), CHAR(10)), CHAR(13), CHAR(10)), CHAR(10))
+					when 0 then
+						REPLACE(REPLACE(crash_reports.exception, CHAR(13, 10), CHAR(10)), CHAR(13), CHAR(10))
+					else
+						SUBSTR(REPLACE(REPLACE(crash_reports.exception, CHAR(13, 10), CHAR(10)), CHAR(13), CHAR(10)), 0, INSTR(REPLACE(REPLACE(crash_reports.exception, CHAR(13, 10), CHAR(10)), CHAR(13), CHAR(10)), CHAR(10)))
+				end as exception_subject
+			from
+				crash_reports
+			order by
+				crash_reports.timestamp desc,
+				crash_reports.sequence desc
 			limit
 				:count
 			offset
