@@ -34,7 +34,7 @@ class AjaxFeedbackDeleteLogic extends PageLogicBase
 		$database = $this->openDatabase();
 		$database->transaction(function(IDatabaseContext $context) use($sequence) {
 			$feedbacksEntityDao = new FeedbacksEntityDao($context);
-			$feedbacksEntityDao->deleteFeedback($sequence);
+			$feedbacksEntityDao->deleteFeedbacksBySequence($sequence);
 			return true;
 		});
 

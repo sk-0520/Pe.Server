@@ -35,7 +35,7 @@ class ManagementCrashReportDetailLogic extends PageLogicBase
 				$crashReportsEntityDao = new CrashReportsEntityDao($database);
 
 				$seq = (int)$value;
-				$exists = $crashReportsEntityDao->selectExistsCrashReports($seq);
+				$exists = $crashReportsEntityDao->selectExistsCrashReportsBySequence($seq);
 				if (!$exists) {
 					throw new Exception('404');
 				}

@@ -6,6 +6,7 @@ namespace PeServer\Core\Database;
 
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Database\DatabaseResultBase;
+use PeServer\Core\Serialization\IMapper;
 use PeServer\Core\Serialization\Mapper;
 
 /**
@@ -30,6 +31,8 @@ class DatabaseTableResult extends DatabaseResultBase
 		parent::__construct($columns, $resultCount);
 	}
 
+	#region function
+
 	/**
 	 * レコード件数。
 	 *
@@ -40,4 +43,32 @@ class DatabaseTableResult extends DatabaseResultBase
 	{
 		return Arr::getCount($this->rows);
 	}
+
+	/**
+	 * 結果をマッピング。
+	 *
+	 * @template TObject of object
+	 * @param string $className
+	 * @phpstan-param class-string<TObject> $className
+	 * @param IMapper|null $mapper
+	 * @return array
+	 * @phpstan-return TObject[]
+	 */
+	public function mapping(string $className, IMapper $mapper = null): array
+	{
+		/** @var TObject[] */
+		$result = [];
+		$instanceMapper = $mapper ?? new Mapper();
+
+		foreach ($this->rows as $fields) {
+			/** @phpstan-var TObject */
+			$object = $this->mappingImpl($fields, $className, $instanceMapper);
+			$result[] = $object;
+		}
+
+		return $result;
+	}
+
+
+	#endregion
 }

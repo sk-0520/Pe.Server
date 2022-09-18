@@ -43,10 +43,10 @@ class ManagementFeedbackListLogic extends PageLogicBase
 		$database = $this->openDatabase();
 		$feedbacksEntityDao = new FeedbacksEntityDao($database);
 
-		$totalCount = $feedbacksEntityDao->selectFeedbackPageTotalCount();
+		$totalCount = $feedbacksEntityDao->selectFeedbacksPageTotalCount();
 
 		$pagination = new Pagination($pageNumber, self::ITEM_COUNT_IN_PAGE, $totalCount);
-		$items = $feedbacksEntityDao->selectFeedbackPageItems(($pagination->currentPageNumber - 1) * $pagination->itemCountInPage, $pagination->itemCountInPage);
+		$items = $feedbacksEntityDao->selectFeedbacksPageItems(($pagination->currentPageNumber - 1) * $pagination->itemCountInPage, $pagination->itemCountInPage);
 
 		$this->setValue('total_count', $totalCount);
 		$this->setValue('items', $items);

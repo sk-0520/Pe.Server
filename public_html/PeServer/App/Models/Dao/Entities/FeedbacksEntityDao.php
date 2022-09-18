@@ -24,33 +24,12 @@ class FeedbacksEntityDao extends DaoBase
 	#region function
 
 	/**
-	 * フィードバック ページ 全件数取得。
-	 *
-	 * @return int
-	 * @phpstan-return UnsignedIntegerAlias
-	 */
-	public function selectFeedbackPageTotalCount(): int
-	{
-		return $this->context->selectSingleCount(
-			<<<SQL
-
-			select
-				count(*)
-			from
-				feedbacks
-				feedbacks
-
-			SQL
-		);
-	}
-
-	/**
-	 * Undocumented function
+	 * フィードバックを主キー検索で有無確認。
 	 *
 	 * @param int $sequence
 	 * @return bool
 	 */
-	public function selectExistsFeedback(int $sequence): bool
+	public function selectExistsFeedbacksBySequence(int $sequence): bool
 	{
 		return 1 === $this->context->selectSingleCount(
 			<<<SQL
@@ -70,7 +49,29 @@ class FeedbacksEntityDao extends DaoBase
 	}
 
 	/**
-	 * Undocumented function
+	 * フィードバック ページ 全件数取得。
+	 *
+	 * @return int
+	 * @phpstan-return UnsignedIntegerAlias
+	 */
+	public function selectFeedbacksPageTotalCount(): int
+	{
+		return $this->context->selectSingleCount(
+			<<<SQL
+
+			select
+				count(*)
+			from
+				feedbacks
+				feedbacks
+
+			SQL
+		);
+	}
+
+
+	/**
+	 * フィードバック ページ 表示データ取得。
 	 *
 	 * @param int $index
 	 * @phpstan-param UnsignedIntegerAlias $index
@@ -78,9 +79,9 @@ class FeedbacksEntityDao extends DaoBase
 	 * @phpstan-param UnsignedIntegerAlias $count
 	 * @return FeedbackListItemDto[]
 	 */
-	public function selectFeedbackPageItems(int $index, int $count): array
+	public function selectFeedbacksPageItems(int $index, int $count): array
 	{
-		$tableResult = $this->context->selectOrdered(
+		$result = $this->context->selectOrdered(
 			<<<SQL
 
 			select
@@ -106,20 +107,12 @@ class FeedbacksEntityDao extends DaoBase
 			]
 		);
 
-		$result = [];
-		$mapper = new Mapper();
-		foreach ($tableResult->rows as $row) {
-			$obj = new FeedbackListItemDto();
-			$mapper->mapping($row, $obj);
-			$result[] = $obj;
-		}
-
-		return $result;
+		return $result->mapping(FeedbackListItemDto::class);
 	}
 
-	public function selectFeedbackDetail(int $sequence): FeedbackDetailDto
+	public function selectFeedbacksDetailBySequence(int $sequence): FeedbackDetailDto
 	{
-		$row = $this->context->querySingle(
+		$result = $this->context->querySingle(
 			<<<SQL
 
 			select
@@ -156,11 +149,7 @@ class FeedbacksEntityDao extends DaoBase
 			]
 		);
 
-		$mapper = new Mapper();
-		$obj = new FeedbackDetailDto();
-		$mapper->mapping($row->fields, $obj);
-
-		return $obj;
+		return $result->mapping(FeedbackDetailDto::class);
 	}
 
 	public function insertFeedbacks(
@@ -256,7 +245,7 @@ class FeedbacksEntityDao extends DaoBase
 		);
 	}
 
-	public function deleteFeedback(int $sequence): void
+	public function deleteFeedbacksBySequence(int $sequence): void
 	{
 		$this->context->deleteByKey(
 			<<<SQL
