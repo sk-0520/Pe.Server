@@ -29,6 +29,7 @@ const webpackConfig = (env: string, args: any): webpack.Configuration => {
 			"scripts/log_list": path.join(inputDirectory, './scripts/entry/log_list.ts'),
 			"scripts/database_maintenance": path.join(inputDirectory, './scripts/entry/database_maintenance.ts'),
 			"scripts/feedback": path.join(inputDirectory, './scripts/entry/feedback.ts'),
+			"scripts/management_crash_report": path.join(inputDirectory, './scripts/entry/management_crash_report.ts'),
 			// 共通スタイル
 			"styles/style": path.join(inputDirectory, './styles/style.scss'),
 		},

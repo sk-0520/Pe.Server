@@ -6,6 +6,8 @@ use PeServer\App\Controllers\Page\PageControllerBase;
 use PeServer\App\Models\Domain\Page\Management\ManagementBackupLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementCacheRebuildLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementConfigurationLogic;
+use PeServer\App\Models\Domain\Page\Management\ManagementCrashReportDetailLogic;
+use PeServer\App\Models\Domain\Page\Management\ManagementCrashReportListLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementDatabaseMaintenanceLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementDefaultPluginLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementEnvironmentLogic;
@@ -154,6 +156,30 @@ final class ManagementController extends PageControllerBase
 		$logic->run(LogicCallMode::initialize());
 
 		return $this->view('feedback_detail', $logic->getViewData());
+	}
+
+	public function crash_report_list_top(): IActionResult
+	{
+		$logic = $this->createLogic(ManagementCrashReportListLogic::class);
+		$logic->run(LogicCallMode::initialize());
+
+		return $this->view('crash_report_list', $logic->getViewData());
+	}
+
+	public function crash_report_list_page(): IActionResult
+	{
+		$logic = $this->createLogic(ManagementCrashReportListLogic::class);
+		$logic->run(LogicCallMode::submit());
+
+		return $this->view('crash_report_list', $logic->getViewData());
+	}
+
+	public function crash_report_detail(): IActionResult
+	{
+		$logic = $this->createLogic(ManagementCrashReportDetailLogic::class);
+		$logic->run(LogicCallMode::initialize());
+
+		return $this->view('crash_report_detail', $logic->getViewData());
 	}
 
 	public function plugin_category_get(): IActionResult

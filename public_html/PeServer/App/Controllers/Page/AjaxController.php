@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\App\Controllers\Page;
 
 use PeServer\App\Controllers\Page\PageControllerBase;
+use PeServer\App\Models\Domain\Page\Ajax\AjaxCrashReportDeleteLogic;
 use PeServer\App\Models\Domain\Page\Ajax\AjaxFeedbackDeleteLogic;
 use PeServer\App\Models\Domain\Page\Ajax\AjaxLogFileDeleteLogic;
 use PeServer\App\Models\Domain\Page\Ajax\AjaxMarkdownLogic;
@@ -66,6 +67,14 @@ final class AjaxController extends PageControllerBase
 	public function feedback_delete(): IActionResult
 	{
 		$logic = $this->createLogic(AjaxFeedbackDeleteLogic::class);
+		$logic->run(LogicCallMode::submit());
+
+		return $this->data($logic->getContent());
+	}
+
+	public function crash_report_delete(): IActionResult
+	{
+		$logic = $this->createLogic(AjaxCrashReportDeleteLogic::class);
 		$logic->run(LogicCallMode::submit());
 
 		return $this->data($logic->getContent());
