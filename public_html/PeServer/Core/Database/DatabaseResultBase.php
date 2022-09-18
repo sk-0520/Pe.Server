@@ -6,8 +6,6 @@ namespace PeServer\Core\Database;
 
 /**
  * 問い合わせ結果格納データ基底。
- *
- * @immutable
  */
 abstract class DatabaseResultBase
 {
@@ -19,8 +17,25 @@ abstract class DatabaseResultBase
 	 * @phpstan-param UnsignedIntegerAlias $resultCount
 	 */
 	public function __construct(
+		/** @readonly */
 		public array $columns,
-		public int $resultCount
+		/** @readonly */
+		private int $resultCount
 	) {
 	}
+
+	#region function
+
+	/**
+	 * 実行影響件数を取得。
+	 *
+	 * @return int
+	 * @phpstan-return UnsignedIntegerAlias
+	 */
+	public function getResultCount(): int
+	{
+		return $this->resultCount;
+	}
+
+	#endregion
 }

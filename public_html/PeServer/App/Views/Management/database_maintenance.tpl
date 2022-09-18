@@ -56,7 +56,7 @@
 		</table>
 
 		<h3>影響件数</h3>
-		<pre>{$values.result->resultCount}</pre>
+		<pre>{$values.result->getResultCount()}</pre>
 
 
 	{else}

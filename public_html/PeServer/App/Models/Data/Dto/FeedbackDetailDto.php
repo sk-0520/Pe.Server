@@ -10,6 +10,7 @@ use PeServer\Core\Text;
 
 /**
  * @immutable
+ * @SuppressWarnings(PHPMD.TooManyFields)
  */
 class FeedbackDetailDto
 {

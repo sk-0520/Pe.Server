@@ -23,6 +23,7 @@ class DatabaseRowResult extends DatabaseResultBase
 	public function __construct(
 		array $columns,
 		int $resultCount,
+		/** @readonly */
 		public array $fields
 	) {
 		parent::__construct($columns, $resultCount);

@@ -12,6 +12,7 @@ use \Throwable;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Database\ConnectionSetting;
 use PeServer\Core\Database\DatabaseColumn;
+use PeServer\Core\Database\DatabaseSequenceResult;
 use PeServer\Core\Database\DatabaseTableResult;
 use PeServer\Core\Database\IDatabaseTransactionContext;
 use PeServer\Core\DisposerBase;
@@ -223,6 +224,24 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 		return $result; //@phpstan-ignore-line 空フィールドはない
 	}
 
+	/**
+	 * 逐次データセットに変換。
+	 *
+	 * @template TFieldArray of FieldArrayAlias
+	 * @param PDOStatement $pdoStatement
+	 * @return DatabaseSequenceResult
+	 * @phpstan-return DatabaseSequenceResult<TFieldArray>
+	 */
+	private function convertSequenceResult(PDOStatement $pdoStatement): DatabaseSequenceResult
+	{
+		$columns = $this->getColumns($pdoStatement);
+
+	 	/** @var DatabaseSequenceResult<TFieldArray> */
+		$result = new DatabaseSequenceResult($columns, $pdoStatement);
+
+		return $result;
+	}
+
 	#endregion
 
 	#region DisposerBase
@@ -329,6 +348,20 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 		}
 
 		return $this->pdo->quote($value);
+	}
+
+	/**
+	 * @template TFieldArray of FieldArrayAlias
+	 * @phpstan-return DatabaseSequenceResult<TFieldArray>
+	 */
+	public function fetch(string $statement, ?array $parameters = null): DatabaseSequenceResult
+	{
+		$query = $this->executeStatement($statement, $parameters);
+
+		/** @phpstan-var DatabaseSequenceResult<TFieldArray> */
+		$result = $this->convertSequenceResult($query);
+
+		return $result;
 	}
 
 	/**
@@ -513,14 +546,14 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 	public function insert(string $statement, ?array $parameters = null): int
 	{
 		$this->enforceInsert($statement);
-		return $this->execute($statement, $parameters)->resultCount;
+		return $this->execute($statement, $parameters)->getResultCount();
 	}
 
 	public function insertSingle(string $statement, ?array $parameters = null): void
 	{
 		$this->enforceInsert($statement);
 		$result = $this->execute($statement, $parameters);
-		if ($result->resultCount !== 1) {
+		if ($result->getResultCount() !== 1) {
 			throw new DatabaseException();
 		}
 	}
@@ -543,14 +576,14 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 	public function update(string $statement, ?array $parameters = null): int
 	{
 		$this->enforceUpdate($statement);
-		return $this->execute($statement, $parameters)->resultCount;
+		return $this->execute($statement, $parameters)->getResultCount();
 	}
 
 	public function updateByKey(string $statement, ?array $parameters = null): void
 	{
 		$this->enforceUpdate($statement);
 		$result = $this->execute($statement, $parameters);
-		if ($result->resultCount !== 1) {
+		if ($result->getResultCount() !== 1) {
 			throw new SqlException();
 		}
 	}
@@ -559,11 +592,11 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 	{
 		$this->enforceUpdate($statement);
 		$result = $this->execute($statement, $parameters);
-		if (1 < $result->resultCount) {
+		if (1 < $result->getResultCount()) {
 			throw new SqlException();
 		}
 
-		return $result->resultCount === 1;
+		return $result->getResultCount() === 1;
 	}
 
 	/**
@@ -584,14 +617,14 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 	public function delete(string $statement, ?array $parameters = null): int
 	{
 		$this->enforceDelete($statement);
-		return $this->execute($statement, $parameters)->resultCount;
+		return $this->execute($statement, $parameters)->getResultCount();
 	}
 
 	public function deleteByKey(string $statement, ?array $parameters = null): void
 	{
 		$this->enforceDelete($statement);
 		$result = $this->execute($statement, $parameters);
-		if ($result->resultCount !== 1) {
+		if ($result->getResultCount() !== 1) {
 			throw new SqlException();
 		}
 	}
@@ -600,11 +633,11 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 	{
 		$this->enforceDelete($statement);
 		$result = $this->execute($statement, $parameters);
-		if (1 < $result->resultCount) {
+		if (1 < $result->getResultCount()) {
 			throw new SqlException();
 		}
 
-		return $result->resultCount === 1;
+		return $result->getResultCount() === 1;
 	}
 
 	#endregion
