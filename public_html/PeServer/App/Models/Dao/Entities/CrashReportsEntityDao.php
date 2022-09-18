@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Dao\Entities;
 
+use PeServer\App\Models\Data\Dto\CrashReportDetailDto;
 use PeServer\App\Models\Data\Dto\CrashReportListItem;
 use PeServer\Core\Binary;
 use PeServer\Core\Database\DaoBase;
@@ -123,6 +124,31 @@ class CrashReportsEntityDao extends DaoBase
 		return $result;
 	}
 
+	public function selectCrashReportsDetail(int $sequence): CrashReportDetailDto
+	{
+		$row = $this->context->querySingle(
+			<<<SQL
+
+			select
+				crash_reports.*
+			from
+				crash_reports
+			where
+				sequence = :sequence
+
+			SQL,
+			[
+				'sequence' => $sequence,
+			]
+		);
+
+		$mapper = new Mapper();
+		$obj = new CrashReportDetailDto();
+		$mapper->mapping($row->fields, $obj);
+
+		return $obj;
+	}
+
 	public function insertCrashReports(
 		string $ipAddress,
 		string $version,
@@ -192,7 +218,6 @@ class CrashReportsEntityDao extends DaoBase
 			]
 		);
 	}
-
 
 	public function deleteCrashReport(int $sequence): void
 	{
