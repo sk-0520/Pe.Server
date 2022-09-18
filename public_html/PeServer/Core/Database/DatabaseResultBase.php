@@ -55,7 +55,7 @@ abstract class DatabaseResultBase
 	 * @return object
 	 * @phpstan-return TObject
 	 */
-	protected function convertRow(array $fields, string|object $classNameOrObject, IMapper $mapper = null): object
+	protected function mappingImpl(array $fields, string|object $classNameOrObject, IMapper $mapper = null): object
 	{
 		$object = is_string($classNameOrObject)
 			? new $classNameOrObject()

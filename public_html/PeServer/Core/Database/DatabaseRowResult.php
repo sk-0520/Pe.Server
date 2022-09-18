@@ -44,7 +44,7 @@ class DatabaseRowResult extends DatabaseResultBase
 	 */
 	public function mapping(string|object $classNameOrObject, IMapper $mapper = null): object
 	{
-		return $this->convertRow($this->fields, $classNameOrObject, $mapper);
+		return $this->mappingImpl($this->fields, $classNameOrObject, $mapper);
 	}
 
 	#endregion

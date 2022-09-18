@@ -94,6 +94,16 @@ class DatabaseContextTest extends TestClass
 		}
 	}
 
+	function test_query_mapping()
+	{
+		$database = DB::memory();
+		$actual = $database->query("select 'text0' as text union all select 'text1' as text order by text");
+		$this->assertSame(2, $actual->getRowsCount());
+		foreach ($actual->mapping(Mapping_query_mapping::class) as $index => $row) {
+			$this->assertSame("text{$index}", $row->text);
+		}
+	}
+
 	function test_query_parameter_throw()
 	{
 		$this->expectException(DatabaseException::class);
@@ -163,6 +173,15 @@ class DatabaseContextTest extends TestClass
 		$actual7 = $database->execute('delete from test');
 		$this->assertSame(3, $actual7->getResultCount());
 	}
+}
+
+class Mapping_query_mapping
+{
+	#region variable
+
+	public string $text;
+
+	#endregion
 }
 
 class Mapping_queryFirst_mapping
