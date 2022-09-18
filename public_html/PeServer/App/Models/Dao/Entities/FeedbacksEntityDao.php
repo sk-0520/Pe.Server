@@ -81,7 +81,7 @@ class FeedbacksEntityDao extends DaoBase
 	 */
 	public function selectFeedbacksPageItems(int $index, int $count): array
 	{
-		$tableResult = $this->context->selectOrdered(
+		$result = $this->context->selectOrdered(
 			<<<SQL
 
 			select
@@ -107,20 +107,12 @@ class FeedbacksEntityDao extends DaoBase
 			]
 		);
 
-		$result = [];
-		$mapper = new Mapper();
-		foreach ($tableResult->rows as $row) {
-			$obj = new FeedbackListItemDto();
-			$mapper->mapping($row, $obj);
-			$result[] = $obj;
-		}
-
-		return $result;
+		return $result->mapping(FeedbackListItemDto::class);
 	}
 
 	public function selectFeedbacksDetailBySequence(int $sequence): FeedbackDetailDto
 	{
-		$row = $this->context->querySingle(
+		$result = $this->context->querySingle(
 			<<<SQL
 
 			select
@@ -157,11 +149,7 @@ class FeedbacksEntityDao extends DaoBase
 			]
 		);
 
-		$mapper = new Mapper();
-		$obj = new FeedbackDetailDto();
-		$mapper->mapping($row->fields, $obj);
-
-		return $obj;
+		return $result->mapping(FeedbackDetailDto::class);
 	}
 
 	public function insertFeedbacks(

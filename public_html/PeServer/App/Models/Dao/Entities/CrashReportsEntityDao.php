@@ -75,7 +75,7 @@ class CrashReportsEntityDao extends DaoBase
 	 */
 	public function selectCrashReportsPageItems(int $index, int $count): array
 	{
-		$tableResult = $this->context->selectOrdered(
+		$result = $this->context->selectOrdered(
 			<<<SQL
 
 			with alias__crash_reports as (
@@ -113,20 +113,12 @@ class CrashReportsEntityDao extends DaoBase
 			]
 		);
 
-		$result = [];
-		$mapper = new Mapper();
-		foreach ($tableResult->rows as $row) {
-			$obj = new CrashReportListItemDto();
-			$mapper->mapping($row, $obj);
-			$result[] = $obj;
-		}
-
-		return $result;
+		return $result->mapping(CrashReportListItemDto::class);
 	}
 
 	public function selectCrashReportsDetail(int $sequence): CrashReportDetailDto
 	{
-		$row = $this->context->querySingle(
+		$result = $this->context->querySingle(
 			<<<SQL
 
 			select
@@ -142,11 +134,7 @@ class CrashReportsEntityDao extends DaoBase
 			]
 		);
 
-		$mapper = new Mapper();
-		$obj = new CrashReportDetailDto();
-		$mapper->mapping($row->fields, $obj);
-
-		return $obj;
+		return $result->mapping(CrashReportDetailDto::class);
 	}
 
 	public function insertCrashReports(
