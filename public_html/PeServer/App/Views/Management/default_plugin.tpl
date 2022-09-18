@@ -2,26 +2,26 @@
 {block name='TITLE'}標準プラグイン{/block}
 {block name='BODY'}
 
-<ul>
-	{foreach from=$values.plugins item=item}
-		<li>
-			<a href="/plugin/{$item.plugin_id}">
-				{if $item.registered}
-					[あり]
-				{else}
-					[なし]
-				{/if}
-				{$item.plugin_name}
-			</a>
-		</li>
-	{/foreach}
-</ul>
+	<ul>
+		{foreach from=$values.plugins item=item}
+			<li>
+				<a href="/plugin/{$item.plugin_id}">
+					{if $item.registered}
+						[あり]
+					{else}
+						[なし]
+					{/if}
+					{$item.plugin_name}
+				</a>
+			</li>
+		{/foreach}
+	</ul>
 
-<form action="/management/default-plugin" method="post">
-	{csrf}
+	<form action="/management/default-plugin" method="post">
+		{csrf}
 
-	<label><input name="delete" type="checkbox" />削除</label>
-	<button>実行</button>
-</form>
+		<label><input name="delete" type="checkbox" />削除</label>
+		<button>実行</button>
+	</form>
 
 {/block}

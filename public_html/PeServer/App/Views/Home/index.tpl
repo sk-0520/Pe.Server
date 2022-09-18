@@ -26,12 +26,7 @@
 						<th>Current</th>
 						<td>
 							<a href="https://ci.appveyor.com/project/sk_0520/pe-server">
-								<img
-									class="page-user-index-ci {\PeServer\Core\Environment::get()}"
-									{if \PeServer\Core\Environment::isProduction()}
-										src="https://ci.appveyor.com/api/projects/status/3nevme7nvotosxy5?svg=true"
-									{/if}
-								/>
+								<img class="page-user-index-ci {\PeServer\Core\Environment::get()}" {if \PeServer\Core\Environment::isProduction()} src="https://ci.appveyor.com/api/projects/status/3nevme7nvotosxy5?svg=true" {/if} />
 							</a>
 						</td>
 					</tr>
@@ -39,12 +34,7 @@
 						<th>Master</th>
 						<td>
 							<a href="https://ci.appveyor.com/project/sk_0520/pe-server/branch/master">
-								<img
-									class="page-user-index-ci {\PeServer\Core\Environment::get()}"
-									{if \PeServer\Core\Environment::isProduction()}
-										src="https://ci.appveyor.com/api/projects/status/3nevme7nvotosxy5/branch/master?svg=true"
-									{/if}
-								/>
+								<img class="page-user-index-ci {\PeServer\Core\Environment::get()}" {if \PeServer\Core\Environment::isProduction()} src="https://ci.appveyor.com/api/projects/status/3nevme7nvotosxy5/branch/master?svg=true" {/if} />
 							</a>
 						</td>
 					</tr>
