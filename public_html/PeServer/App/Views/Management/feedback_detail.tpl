@@ -15,6 +15,9 @@
 		<dt>バージョン</dt>
 		<dd>{$values.detail->version}</dd>
 
+		<dt>リビジョン</dt>
+		<dd>{$values.detail->revision}</dd>
+
 		<dt>ビルド</dt>
 		<dd>{$values.detail->build}</dd>
 

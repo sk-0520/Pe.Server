@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\App\Models\Data;
+namespace PeServer\App\Models\Data\Dto;
 
 use \DateTime;
 use PeServer\Core\Serialization\Mapping;
@@ -11,7 +11,7 @@ use PeServer\Core\Text;
 /**
  * @immutable
  */
-class FeedbackDetail
+class FeedbackDetailDto
 {
 	#region variable
 
@@ -23,6 +23,8 @@ class FeedbackDetail
 	public string $ipAddress = Text::EMPTY;
 
 	public string $version = Text::EMPTY;
+
+	public string $revision = Text::EMPTY;
 
 	public string $build = Text::EMPTY;
 

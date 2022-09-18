@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Dao\Entities;
 
+use PeServer\App\Models\Data\Dto\FeedbackDetailDto;
+use PeServer\App\Models\Data\Dto\FeedbackListItemDto;
 use PeServer\App\Models\Data\FeedbackDetail;
 use PeServer\App\Models\Data\FeedbackListItem;
 use PeServer\Core\Binary;
@@ -74,7 +76,7 @@ class FeedbacksEntityDao extends DaoBase
 	 * @phpstan-param UnsignedIntegerAlias $index
 	 * @param int $count
 	 * @phpstan-param UnsignedIntegerAlias $count
-	 * @return FeedbackListItem[]
+	 * @return FeedbackListItemDto[]
 	 */
 	public function selectFeedbackPageItems(int $index, int $count): array
 	{
@@ -107,7 +109,7 @@ class FeedbacksEntityDao extends DaoBase
 		$result = [];
 		$mapper = new Mapper();
 		foreach ($tableResult->rows as $row) {
-			$obj = new FeedbackListItem();
+			$obj = new FeedbackListItemDto();
 			$mapper->mapping($row, $obj);
 			$result[] = $obj;
 		}
@@ -115,7 +117,7 @@ class FeedbacksEntityDao extends DaoBase
 		return $result;
 	}
 
-	public function selectFeedbackDetail(int $sequence): FeedbackDetail
+	public function selectFeedbackDetail(int $sequence): FeedbackDetailDto
 	{
 		$row = $this->context->querySingle(
 			<<<SQL
@@ -155,7 +157,7 @@ class FeedbacksEntityDao extends DaoBase
 		);
 
 		$mapper = new Mapper();
-		$obj = new FeedbackDetail();
+		$obj = new FeedbackDetailDto();
 		$mapper->mapping($row->fields, $obj);
 
 		return $obj;
