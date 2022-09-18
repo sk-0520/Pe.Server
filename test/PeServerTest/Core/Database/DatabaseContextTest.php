@@ -117,6 +117,28 @@ class DatabaseContextTest extends TestClass
 		$this->assertSame(['COL' => 'text'], $actual->fields);
 	}
 
+	function test_queryFirst_mapping_class()
+	{
+		$database = DB::memory();
+		$result = $database->queryFirst("select 'text' as text, 123 as number");
+		/** @var Mapping_queryFirst_mapping */
+		$actual = $result->mapping(Mapping_queryFirst_mapping::class);
+		$this->assertSame('text', $actual->text);
+		$this->assertSame(123, $actual->number);
+	}
+
+	function test_queryFirst_mapping_object()
+	{
+		$database = DB::memory();
+		$result = $database->queryFirst("select 'text' as text, 123 as number");
+		$object = new Mapping_queryFirst_mapping();
+		/** @var Mapping_queryFirst_mapping */
+		$actual = $result->mapping($object);
+		$this->assertSame($object, $actual);
+		$this->assertSame('text', $actual->text);
+		$this->assertSame(123, $actual->number);
+	}
+
 	function test_execute()
 	{
 		$database = DB::memory();
@@ -141,4 +163,14 @@ class DatabaseContextTest extends TestClass
 		$actual7 = $database->execute('delete from test');
 		$this->assertSame(3, $actual7->getResultCount());
 	}
+}
+
+class Mapping_queryFirst_mapping
+{
+	#region variable
+
+	public string $text;
+	public int $number;
+
+	#endregion
 }
