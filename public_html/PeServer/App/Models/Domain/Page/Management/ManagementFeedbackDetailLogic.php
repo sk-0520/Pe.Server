@@ -30,7 +30,7 @@ class ManagementFeedbackDetailLogic extends PageLogicBase
 				$feedbacksEntityDao = new FeedbacksEntityDao($database);
 
 				$seq = (int)$value;
-				$exists = $feedbacksEntityDao->selectExistsFeedback($seq);
+				$exists = $feedbacksEntityDao->selectExistsFeedbacksBySequence($seq);
 				if(!$exists) {
 					throw new Exception('404');
 				}
@@ -45,7 +45,7 @@ class ManagementFeedbackDetailLogic extends PageLogicBase
 		$database = $this->openDatabase();
 		$feedbacksEntityDao = new FeedbacksEntityDao($database);
 
-		$detail = $feedbacksEntityDao->selectFeedbackDetail($sequence);
+		$detail = $feedbacksEntityDao->selectFeedbacksDetailBySequence($sequence);
 
 		$this->setValue('detail', $detail);
 	}

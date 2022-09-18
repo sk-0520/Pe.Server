@@ -25,7 +25,7 @@ class CrashReportsEntityDao extends DaoBase
 	 * @param int $sequence
 	 * @return bool
 	 */
-	public function selectExistsCrashReports(int $sequence): bool
+	public function selectExistsCrashReportsBySequence(int $sequence): bool
 	{
 		return 1 === $this->context->selectSingleCount(
 			<<<SQL
@@ -219,7 +219,7 @@ class CrashReportsEntityDao extends DaoBase
 		);
 	}
 
-	public function deleteCrashReport(int $sequence): void
+	public function deleteCrashReportsBySequence(int $sequence): void
 	{
 		$this->context->deleteByKey(
 			<<<SQL
