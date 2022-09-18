@@ -84,6 +84,43 @@ class DatabaseContextTest extends TestClass
 		$this->fail();
 	}
 
+	function test_fetch_mapping()
+	{
+		$database = DB::memory();
+		$result = $database->fetch(<<<SQL
+
+			with dummy(id, value) as (
+				values
+					(1, 'value-1'),
+					(2, 'value-2'),
+					(3, 'value-3')
+			)
+			select
+				dummy.id,
+				dummy.value
+			from
+				dummy
+			order by
+				dummy.id
+
+		SQL);
+
+		$actual = $result->mapping(Mapping_fetch_mapping::class);
+
+		$this->assertSame('id', $result->columns[0]->name);
+		$this->assertSame('value', $result->columns[1]->name);
+
+		foreach ($actual as $index => $row) {
+			$num = $index + 1;
+			$this->assertSame($num, $row->id);
+			$this->assertSame("value-{$num}", $row->value);
+		}
+
+		$this->expectException(NotSupportedException::class);
+		$actual->rewind();
+		$this->fail();
+	}
+
 	function test_query()
 	{
 		$database = DB::memory();
@@ -173,6 +210,16 @@ class DatabaseContextTest extends TestClass
 		$actual7 = $database->execute('delete from test');
 		$this->assertSame(3, $actual7->getResultCount());
 	}
+}
+
+class Mapping_fetch_mapping
+{
+	#region variable
+
+	public int $id;
+	public string $value;
+
+	#endregion
 }
 
 class Mapping_query_mapping

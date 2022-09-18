@@ -51,17 +51,16 @@ abstract class DatabaseResultBase
 	 * @phpstan-param TFieldArray $fields
 	 * @param string|object $classNameOrObject
 	 * @phpstan-param class-string<TObject>|TObject $classNameOrObject
-	 * @param IMapper|null $mapper マッピング処理。未指定なら `Mapper` を使用する。
+	 * @param IMapper $mapper マッピング処理。
 	 * @return object
 	 * @phpstan-return TObject
 	 */
-	protected function mappingImpl(array $fields, string|object $classNameOrObject, IMapper $mapper = null): object
+	protected function mappingImpl(array $fields, string|object $classNameOrObject, IMapper $mapper): object
 	{
 		$object = is_string($classNameOrObject)
 			? new $classNameOrObject()
 			: $classNameOrObject;
 
-		$mapper ??= new Mapper();
 		$mapper->mapping($fields, $object);
 
 		return $object;

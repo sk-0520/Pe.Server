@@ -58,10 +58,11 @@ class DatabaseTableResult extends DatabaseResultBase
 	{
 		/** @var TObject[] */
 		$result = [];
+		$instanceMapper = $mapper ?? new Mapper();
 
 		foreach ($this->rows as $fields) {
 			/** @phpstan-var TObject */
-			$object = $this->mappingImpl($fields, $className, $mapper);
+			$object = $this->mappingImpl($fields, $className, $instanceMapper);
 			$result[] = $object;
 		}
 

@@ -6,6 +6,7 @@ namespace PeServer\Core\Database;
 
 use PeServer\Core\Database\DatabaseResultBase;
 use PeServer\Core\Serialization\IMapper;
+use PeServer\Core\Serialization\Mapper;
 
 /**
  * 単一問い合わせ結果。
@@ -44,7 +45,7 @@ class DatabaseRowResult extends DatabaseResultBase
 	 */
 	public function mapping(string|object $classNameOrObject, IMapper $mapper = null): object
 	{
-		return $this->mappingImpl($this->fields, $classNameOrObject, $mapper);
+		return $this->mappingImpl($this->fields, $classNameOrObject, $mapper ?? new Mapper());
 	}
 
 	#endregion
