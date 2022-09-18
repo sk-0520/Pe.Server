@@ -48,7 +48,6 @@ class ManagementCrashReportListLogic extends PageLogicBase
 		$pagination = new Pagination($pageNumber, self::ITEM_COUNT_IN_PAGE, $totalCount);
 		$items = $feedbacksEntityDao->selectCrashReportsPageItems(($pagination->currentPageNumber - 1) * $pagination->itemCountInPage, $pagination->itemCountInPage);
 
-		$this->setValue('total_count', $totalCount);
 		$this->setValue('items', $items);
 		$this->setValue('pager', $pagination);
 	}

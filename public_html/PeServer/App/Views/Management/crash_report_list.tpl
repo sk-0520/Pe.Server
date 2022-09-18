@@ -11,9 +11,9 @@
 		</div>
 	</template>
 
-	{if $values.total_count}
+	{if $values.pager->totalItemCount}
 		<p class="search-count-area">
-			<em class="count">{$values.total_count}</em>
+			<em class="count">{$values.pager->totalItemCount}</em>
 			<span class="unit">件</em>
 		</p>
 
