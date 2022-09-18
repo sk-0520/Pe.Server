@@ -29,7 +29,7 @@
 						<li>
 							<form method="post" action="/management/backup">
 								{csrf}
-								<button class="link">バックアップ</submit>
+								<button class="link">バックアップ</button>
 							</form>
 						</li>
 						<li>
