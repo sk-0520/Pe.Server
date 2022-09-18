@@ -6,6 +6,7 @@ namespace PeServer\Core\Serialization;
 
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\ReflectionUtility;
+use PeServer\Core\Serialization\IMapper;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\KeyNotFoundException;
 use PeServer\Core\Throws\MapperKeyNotFoundException;
@@ -17,11 +18,9 @@ use ReflectionNamedType;
 use TypeError;
 
 /**
- * 配列とクラスオブジェクトを相互変換。
- *
- * * 配列とクラスの設計は十分に制御可能なデータであることが前提(=開発者が操作可能)
+ * マッピング通常処理。
  */
-class Mapper
+class Mapper implements IMapper
 {
 	#region variable
 
@@ -40,15 +39,9 @@ class Mapper
 		$this->defaultMapping = new Mapping(Text::EMPTY, Mapping::FLAG_NONE);
 	}
 
-	#region function
+	#region IMapper
 
 	/**
-	 * 配列データをオブジェクトにマッピング。
-	 *
-	 * @param array<string,mixed> $source 元データ。
-	 * @param object $destination マッピング先
-	 * @throws MapperKeyNotFoundException キーが見つからない(`Mapping::FLAG_EXCEPTION_NOT_FOUND_KEY`)。
-	 * @throws MapperTypeException 型変換がもう無理(`Mapping::FLAG_EXCEPTION_TYPE_MISMATCH`)。
 	 * @SuppressWarnings(PHPMD.CyclomaticComplexity)
 	 */
 	public function mapping(array $source, object $destination): void
@@ -170,12 +163,6 @@ class Mapper
 		}
 	}
 
-	/**
-	 * オブジェクトデータを配列に変換。
-	 *
-	 * @param object $source
-	 * @return array<string,mixed>
-	 */
 	public function export(object $source): array
 	{
 		throw new NotImplementedException('いるか？');

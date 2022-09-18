@@ -17,6 +17,11 @@ class Pagination
 {
 	#region define
 
+	/**
+	 * ページ番号基点。
+	 */
+	public const FIRST_PAGE_NUMBER = 1;
+
 	private const SHORTCUT_HEAD = 0;
 	private const SHORTCUT_TAIL = 1;
 
@@ -62,14 +67,14 @@ class Pagination
 		}
 
 		if (!$totalItemCount) {
-			$this->currentPageNumber = 1;
+			$this->currentPageNumber = self::FIRST_PAGE_NUMBER;
 			$this->shortcutTotalItemCount = 0;
 		} else {
 			$this->shortcutTotalItemCount = (int)ceil($this->totalItemCount / $this->itemCountInPage); //@phpstan-ignore-line @immutable
 			if ($this->shortcutTotalItemCount <= $this->currentPageNumber) {
 				$this->currentPageNumber = $this->shortcutTotalItemCount; //@phpstan-ignore-line
 			} else if (!$this->currentPageNumber) { //@phpstan-ignore-line
-				$this->currentPageNumber = 1;
+				$this->currentPageNumber = self::FIRST_PAGE_NUMBER;
 			}
 		}
 	}
@@ -94,7 +99,7 @@ class Pagination
 
 		if ($this->shortcutTotalItemCount <= $this->shortcutMaxCount) {
 			// ショートカット全件がショートカット設定数以下は全件を指定する
-			$pageNumbers = Arr::range(1, $this->shortcutTotalItemCount);
+			$pageNumbers = Arr::range(self::FIRST_PAGE_NUMBER, $this->shortcutTotalItemCount);
 		} else {
 			$beginWidth = (int)($this->shortcutMaxCount / 2);
 			$endWidth = $this->shortcutMaxCount - $beginWidth;

@@ -2,7 +2,7 @@
 {block name='TITLE'}ログ一覧{/block}
 
 {block name='HEAD'}{csrf type='id'}{/block}
-{block name='DEFAULT_SCRIPT'}{asset file='/scripts/log_list.js'}{/block}
+{block name='DEFAULT_SCRIPT'}{asset file='/scripts/management_log_list.js'}{/block}
 
 {block name='BODY'}
 

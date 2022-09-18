@@ -33,7 +33,7 @@ export function requireElementById<THtmlElement extends HTMLElement>(elementId: 
 	return result as THtmlElement;
 }
 
-export function requireSelector<THtmlElement extends HTMLElement>(selector: string, element: HTMLElement|null = null): THtmlElement {
+export function requireSelector<THtmlElement extends HTMLElement>(selector: string, element: HTMLElement | null = null): THtmlElement {
 	const result = (element ?? document).querySelector(selector);
 	if (!result) {
 		throw new Error(selector);
@@ -42,12 +42,16 @@ export function requireSelector<THtmlElement extends HTMLElement>(selector: stri
 	return result as THtmlElement;
 }
 
+export function cloneTemplate(element: HTMLTemplateElement): HTMLElement {
+	return element.content.cloneNode(true) as HTMLElement;
+}
+
 /**
  * 指定要素を兄弟間で上下させる。
  * @param current 対象要素。
  * @param isUp 上に移動させるか(偽の場合下に移動)。
  */
- export function moveElement(current: HTMLElement, isUp: boolean): void {
+export function moveElement(current: HTMLElement, isUp: boolean): void {
 	const refElement = isUp
 		? current.previousElementSibling
 		: current.nextElementSibling

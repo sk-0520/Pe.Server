@@ -25,9 +25,11 @@ const webpackConfig = (env: string, args: any): webpack.Configuration => {
 			"scripts/plugin_edit": path.join(inputDirectory, './scripts/entry/plugin_edit.ts'),
 			"scripts/user_edit": path.join(inputDirectory, './scripts/entry/user_edit.ts'),
 			// 管理側
-			"scripts/plugin_category": path.join(inputDirectory, './scripts/entry/plugin_category.ts'),
-			"scripts/log_list": path.join(inputDirectory, './scripts/entry/log_list.ts'),
-			"scripts/database_maintenance": path.join(inputDirectory, './scripts/entry/database_maintenance.ts'),
+			"scripts/management_plugin_category": path.join(inputDirectory, './scripts/entry/management_plugin_category.ts'),
+			"scripts/management_log_list": path.join(inputDirectory, './scripts/entry/management_log_list.ts'),
+			"scripts/management_database_maintenance": path.join(inputDirectory, './scripts/entry/management_database_maintenance.ts'),
+			"scripts/management_feedback_list": path.join(inputDirectory, './scripts/entry/management_feedback_list.ts'),
+			"scripts/management_crash_report_list": path.join(inputDirectory, './scripts/entry/management_crash_report_list.ts'),
 			// 共通スタイル
 			"styles/style": path.join(inputDirectory, './styles/style.scss'),
 		},

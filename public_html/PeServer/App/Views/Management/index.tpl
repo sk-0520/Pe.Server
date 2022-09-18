@@ -5,6 +5,13 @@
 	<ul>
 		<li><a href="/management/log">ログ</a></li>
 		<li>
+			Pe
+			<ul>
+				<li><a href="/management/feedback">フィードバック</a></li>
+				<li><a href="/management/crash-report">クラッシュレポート</a></li>
+			</ul>
+		</li>
+		<li>
 			プラグイン
 			<ul>
 				<li><a href="/management/default-plugin">標準プラグイン登録</a></li>

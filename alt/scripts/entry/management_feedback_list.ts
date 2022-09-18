@@ -1,8 +1,8 @@
 import * as default_loader from '../default_loader';
-import * as application_log from '../domain/application_log';
+import * as management_feedback_list from '../domain/management/feedback_list'
 
 
 window.addEventListener('DOMContentLoaded', ev => {
 	default_loader.boot();
-	application_log.boot();
+	management_feedback_list.boot();
 });

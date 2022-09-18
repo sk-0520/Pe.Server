@@ -1,0 +1,52 @@
+.search-count-area {
+	text-align: right;
+
+	.count {
+		font-style: normal;
+		margin: auto 0.5ex;
+	}
+
+	.unit {
+		opacity: 0.80;
+	}
+}
+
+.search-not-found {
+	opacity: 0.75;
+}
+
+table.search-result {
+	margin: 0.5ex auto;
+}
+
+.pagination {
+	margin: 1em;
+	list-style: none;
+	text-align: center;
+
+	li {
+		display: inline;
+		padding: 0;
+		margin: 0.5ex;
+
+		a {
+			display: inline-block;
+			margin: 0;
+			padding: 1ex;
+			min-width: 2.5ch;
+
+			&.disabled {
+				cursor: unset;
+				pointer-events: none;
+				color: #111;
+			}
+
+			&.current {
+				font-weight: bold;
+				border-radius: 5px;
+				border: 1px solid #888;
+				pointer-events: none; // 無理矢理押されても別に・・・
+			}
+		}
+	}
+}

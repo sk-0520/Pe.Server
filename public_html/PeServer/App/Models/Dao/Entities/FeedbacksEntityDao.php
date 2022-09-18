@@ -4,16 +4,153 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Dao\Entities;
 
+use PeServer\App\Models\Data\Dto\FeedbackDetailDto;
+use PeServer\App\Models\Data\Dto\FeedbackListItemDto;
+use PeServer\App\Models\Data\FeedbackDetail;
+use PeServer\App\Models\Data\FeedbackListItem;
 use PeServer\Core\Binary;
+use PeServer\Core\Collections\Collection;
 use PeServer\Core\Database\DaoBase;
 use PeServer\Core\Database\DaoTrait;
+use PeServer\Core\Database\DatabaseRowResult;
+use PeServer\Core\Database\DatabaseTableResult;
 use PeServer\Core\Database\IDatabaseContext;
+use PeServer\Core\Serialization\Mapper;
 
 class FeedbacksEntityDao extends DaoBase
 {
 	use DaoTrait;
 
 	#region function
+
+	/**
+	 * フィードバックを主キー検索で有無確認。
+	 *
+	 * @param int $sequence
+	 * @return bool
+	 */
+	public function selectExistsFeedbacksBySequence(int $sequence): bool
+	{
+		return 1 === $this->context->selectSingleCount(
+			<<<SQL
+
+			select
+				count(*)
+			from
+				feedbacks
+			where
+				sequence = :sequence
+
+			SQL,
+			[
+				'sequence' => $sequence,
+			]
+		);
+	}
+
+	/**
+	 * フィードバック ページ 全件数取得。
+	 *
+	 * @return int
+	 * @phpstan-return UnsignedIntegerAlias
+	 */
+	public function selectFeedbacksPageTotalCount(): int
+	{
+		return $this->context->selectSingleCount(
+			<<<SQL
+
+			select
+				count(*)
+			from
+				feedbacks
+				feedbacks
+
+			SQL
+		);
+	}
+
+
+	/**
+	 * フィードバック ページ 表示データ取得。
+	 *
+	 * @param int $index
+	 * @phpstan-param UnsignedIntegerAlias $index
+	 * @param int $count
+	 * @phpstan-param UnsignedIntegerAlias $count
+	 * @return FeedbackListItemDto[]
+	 */
+	public function selectFeedbacksPageItems(int $index, int $count): array
+	{
+		$result = $this->context->selectOrdered(
+			<<<SQL
+
+			select
+				feedbacks.sequence,
+				feedbacks.timestamp,
+				feedbacks.version,
+				feedbacks.kind,
+				feedbacks.subject
+			from
+				feedbacks
+			order by
+				feedbacks.timestamp desc,
+				feedbacks.sequence desc
+			limit
+				:count
+			offset
+				:index
+
+			SQL,
+			[
+				'index' => $index,
+				'count' => $count,
+			]
+		);
+
+		return $result->mapping(FeedbackListItemDto::class);
+	}
+
+	public function selectFeedbacksDetailBySequence(int $sequence): FeedbackDetailDto
+	{
+		$result = $this->context->querySingle(
+			<<<SQL
+
+			select
+				feedbacks.sequence,
+
+				feedbacks.timestamp,
+				ip_address,
+
+				feedbacks.version,
+				feedbacks.revision,
+				feedbacks.build,
+
+				feedbacks.user_id,
+
+				feedbacks.first_execute_timestamp,
+				feedbacks.first_execute_version,
+
+				feedbacks.process,
+				feedbacks.platform,
+				feedbacks.os,
+				feedbacks.clr,
+
+				feedbacks.kind,
+				feedbacks.subject,
+				feedbacks.content
+			from
+				feedbacks
+			where
+				sequence = :sequence
+
+			SQL,
+			[
+				'sequence' => $sequence,
+			]
+		);
+
+		return $result->mapping(FeedbackDetailDto::class);
+	}
 
 	public function insertFeedbacks(
 		string $ipAddress,
@@ -104,6 +241,24 @@ class FeedbacksEntityDao extends DaoBase
 				'kind' => $kind,
 				'subject' => $subject,
 				'content' => $content,
+			]
+		);
+	}
+
+	public function deleteFeedbacksBySequence(int $sequence): void
+	{
+		$this->context->deleteByKey(
+			<<<SQL
+
+			delete
+			from
+				feedbacks
+			where
+				sequence = :sequence
+
+			SQL,
+			[
+				'sequence' => $sequence,
 			]
 		);
 	}

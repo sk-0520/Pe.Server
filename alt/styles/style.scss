@@ -1,8 +1,11 @@
 @forward "reset-css";
 
+@forward "core/dialog";
 @forward "core/tab";
+
 @forward "../../public_html/PeServer/Core/Libs/highlight.php/src/Highlight/styles/vs2015.css";
-@forward "_highlight";
+
+@forward "highlight";
 @forward "font";
 @forward "forms";
 @forward "link";
@@ -11,4 +14,9 @@
 @forward "layout";
 @forward "clipboard";
 @forward "table";
+@forward "search";
 @forward "common";
+
+@forward "page/public/index";
+@forward "page/management/crash-report";
+@forward "page/management/feedback-list";

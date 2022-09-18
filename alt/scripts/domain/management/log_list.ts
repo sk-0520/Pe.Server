@@ -1,6 +1,6 @@
-import * as dom from '../core/dom';
-import * as path from '../core/path';
-import * as ajax from '../core/ajax';
+import * as dom from '../../core/dom';
+import * as path from '../../core/path';
+import * as ajax from '../../core/ajax';
 
 function attachDelete(deleteElement: HTMLButtonElement) {
 	deleteElement.addEventListener('click', async ev => {
@@ -9,8 +9,10 @@ function attachDelete(deleteElement: HTMLButtonElement) {
 		const logName = dom.getDataset(deleteElement, 'name');
 		const json = await ajax.communicateJsonAsync(path.join('/ajax/log', logName), 'DELETE');
 
-		if (json.data) {
+		if (!json.error) {
 			location.reload();
+		} else {
+			alert(JSON.stringify(json.error));
 		}
 	})
 }

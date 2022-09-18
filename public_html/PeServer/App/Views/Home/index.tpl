@@ -1,5 +1,6 @@
 {extends file='default.tpl'}
 {block name='TITLE'}トップ{/block}
+
 {block name='BODY'}
 
 	<p>
@@ -25,7 +26,12 @@
 						<th>Current</th>
 						<td>
 							<a href="https://ci.appveyor.com/project/sk_0520/pe-server">
-								<img src="https://ci.appveyor.com/api/projects/status/3nevme7nvotosxy5?svg=true" />
+								<img
+									class="page-user-index-ci {\PeServer\Core\Environment::get()}"
+									{if \PeServer\Core\Environment::isProduction()}
+										src="https://ci.appveyor.com/api/projects/status/3nevme7nvotosxy5?svg=true"
+									{/if}
+								/>
 							</a>
 						</td>
 					</tr>
@@ -33,7 +39,12 @@
 						<th>Master</th>
 						<td>
 							<a href="https://ci.appveyor.com/project/sk_0520/pe-server/branch/master">
-								<img src="https://ci.appveyor.com/api/projects/status/3nevme7nvotosxy5/branch/master?svg=true" />
+								<img
+									class="page-user-index-ci {\PeServer\Core\Environment::get()}"
+									{if \PeServer\Core\Environment::isProduction()}
+										src="https://ci.appveyor.com/api/projects/status/3nevme7nvotosxy5/branch/master?svg=true"
+									{/if}
+								/>
 							</a>
 						</td>
 					</tr>

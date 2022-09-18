@@ -1,0 +1,32 @@
+.feedback-list-result {
+	tbody {
+		.column-sequence {
+			text-align: right;
+		}
+
+		.column-timestamp {
+			text-align: center;
+		}
+
+		.column-version {
+			text-align: center;
+		}
+
+		.column-kind {
+			text-align: center;
+		}
+
+		.column-subject {
+			text-align: left;
+		}
+
+		.column-detail {
+			text-align: center;
+		}
+
+		.column-delete {
+			text-align: center;
+		}
+
+	}
+}
