@@ -16,6 +16,7 @@ use PeServer\Core\DI\Inject;
 use PeServer\Core\Mime;
 use PeServer\Core\Mvc\LogicBase;
 use PeServer\Core\Mvc\LogicParameter;
+use PeServer\Core\Serialization\ISerializer;
 use PeServer\Core\Serialization\Json;
 use PeServer\Core\Serialization\JsonSerializer;
 use PeServer\Core\Serialization\SerializerBase;
@@ -73,7 +74,7 @@ abstract class DomainLogicBase extends LogicBase
 	 * @param IDatabaseContext|null $context
 	 * @return integer
 	 */
-	private function writeAuditLogCore(string $userId, string $event, mixed $info, ?IDatabaseContext $context, ?SerializerBase $serializer = null): int
+	private function writeAuditLogCore(string $userId, string $event, mixed $info, ?IDatabaseContext $context, ?ISerializer $serializer = null): int
 	{
 		$ipAddress = $this->stores->special->getServer('REMOTE_ADDR');
 		$userAgent = $this->stores->special->getServer('HTTP_USER_AGENT');

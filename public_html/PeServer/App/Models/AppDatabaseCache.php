@@ -18,6 +18,7 @@ use PeServer\Core\IO\Directory;
 use PeServer\Core\IO\File;
 use PeServer\Core\IO\Path;
 use PeServer\Core\Serialization\BuiltinSerializer;
+use PeServer\Core\Serialization\ISerializer;
 use PeServer\Core\Serialization\SerializerBase;
 use PeServer\Core\Throws\SerializeException;
 use PeServer\Core\TypeUtility;
@@ -34,7 +35,7 @@ class AppDatabaseCache
 	#region variable
 
 	private string $cacheDirectoryPath;
-	private SerializerBase $serializer;
+	private ISerializer $serializer;
 
 	#endregion
 
