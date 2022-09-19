@@ -62,7 +62,7 @@ class ManagementCrashReportDetailLogic extends PageLogicBase
 
 		$compressReport = new Binary($detail->report);
 		if ($compressReport->count()) {
-			$report = Archiver::extractGzip($compressReport)->getRaw();
+			$report = Archiver::extractGzip($compressReport)->toBase64();
 			$this->setValue('report', $report);
 		} else {
 			$this->setValue('report', Text::EMPTY);

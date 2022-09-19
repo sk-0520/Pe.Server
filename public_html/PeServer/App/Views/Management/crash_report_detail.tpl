@@ -46,7 +46,9 @@
 		</dd>
 
 		<dt>レポート</dt>
-		<dd>{code language="json"}{$values.report nofilter}{/code}</dd>
+		<dd>
+			<a download="crash-report-{$values.detail->sequence}.json" href="data:application/json;base64,{$values.report nofilter}">ダウンロード</a>
+		</dd>
 	</dl>
 
 {/block}
