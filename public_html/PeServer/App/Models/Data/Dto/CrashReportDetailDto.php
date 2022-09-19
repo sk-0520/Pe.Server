@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Data\Dto;
 
 use \DateTime;
+use PeServer\Core\Database\DtoBase;
 use PeServer\Core\Serialization\Mapping;
 use PeServer\Core\Text;
 
 /**
  * @immutable
  */
-class CrashReportDetailDto
+class CrashReportDetailDto extends DtoBase
 {
 	#region variable
 
