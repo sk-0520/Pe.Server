@@ -8,7 +8,7 @@ use \Throwable;
 use PeServer\Core\Image\Alignment;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Binary;
-use PeServer\Core\CoreUtility;
+use PeServer\Core\CoreDefines;
 use PeServer\Core\Cryptography;
 use PeServer\Core\Html\HtmlDocument;
 use PeServer\Core\Image\Graphics;
@@ -93,7 +93,7 @@ class BotTextImageFunction extends TemplateFunctionBase
 		$obfuscateLevel = TypeUtility::parseBoolean(Arr::getOr($this->params, 'obfuscate-level', 0));
 
 		$size = new Size($width, $height);
-		$fontFilePath = CoreUtility::DEFAULT_FONT_FILE_PATH;
+		$fontFilePath = CoreDefines::DEFAULT_FONT_FILE_PATH;
 		$textSetting = new TextSetting(Alignment::HORIZONTAL_CENTER, Alignment::VERTICAL_CENTER, $fontFilePath, 0);
 
 		$image = Graphics::create($size);
