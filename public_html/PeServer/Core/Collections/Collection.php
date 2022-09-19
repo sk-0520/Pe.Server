@@ -70,7 +70,7 @@ class Collection implements IteratorAggregate
 	 */
 	private static function wrap(callable $generatorFactory): self
 	{
-		return self::create(CollectionUtility::toIterator($generatorFactory));
+		return self::create(TraverseUtility::toIterator($generatorFactory));
 	}
 
 	/**
@@ -95,7 +95,7 @@ class Collection implements IteratorAggregate
 	 */
 	public static function from(Traversable|array|callable $sequence): self
 	{
-		return self::create(CollectionUtility::toIterator($sequence));
+		return self::create(TraverseUtility::toIterator($sequence));
 	}
 
 	/**
@@ -153,7 +153,7 @@ class Collection implements IteratorAggregate
 	 */
 	public function toArray(): array
 	{
-		return CollectionUtility::toArray($this->iterator, false);
+		return TraverseUtility::toArray($this->iterator, false);
 	}
 
 	/**
@@ -277,7 +277,7 @@ class Collection implements IteratorAggregate
 	 */
 	public function concat(Traversable|array|callable $sequence): self
 	{
-		$sequenceIterator = CollectionUtility::toIterator($sequence);
+		$sequenceIterator = TraverseUtility::toIterator($sequence);
 
 		/** @phpstan-var AppendIterator<TKey,TValue,Iterator<TKey,TValue>> */
 		$appendIterator = new AppendIterator();
@@ -297,7 +297,7 @@ class Collection implements IteratorAggregate
 	 */
 	public function prepend(mixed $value): self
 	{
-		$valueIterator = CollectionUtility::toIterator([$value]);
+		$valueIterator = TraverseUtility::toIterator([$value]);
 
 		/** @phpstan-var AppendIterator<TKey,TValue,Iterator<TKey,TValue>> */
 		$appendIterator = new AppendIterator();
@@ -317,7 +317,7 @@ class Collection implements IteratorAggregate
 	 */
 	public function append(mixed $value): self
 	{
-		$valueIterator = CollectionUtility::toIterator([$value]);
+		$valueIterator = TraverseUtility::toIterator([$value]);
 
 		/** @phpstan-var AppendIterator<TKey,TValue,Iterator<TKey,TValue>> */
 		$appendIterator = new AppendIterator();
@@ -792,7 +792,7 @@ class Collection implements IteratorAggregate
 	 */
 	public function zip(Traversable|array|callable $sequence, callable $callback): self
 	{
-		$sequenceIterator = CollectionUtility::toIterator($sequence);
+		$sequenceIterator = TraverseUtility::toIterator($sequence);
 		$iterator = new ZipIterator($this->iterator, $sequenceIterator, $callback);
 		return self::create($iterator);
 	}

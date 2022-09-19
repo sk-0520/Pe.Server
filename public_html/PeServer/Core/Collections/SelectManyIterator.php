@@ -6,7 +6,7 @@ namespace PeServer\Core\Collections;
 
 use \EmptyIterator;
 use \Iterator;
-use PeServer\Core\Collections\CollectionUtility;
+use PeServer\Core\Collections\TraverseUtility;
 use PeServer\Core\Throws\CallbackTypeError;
 
 /**
@@ -54,7 +54,7 @@ class SelectManyIterator implements Iterator
 	{
 		$this->outerIterator->rewind();
 		if($this->outerIterator->valid()) {
-			$this->innerIterator = CollectionUtility::toIterator($this->outerIterator->current());
+			$this->innerIterator = TraverseUtility::toIterator($this->outerIterator->current());
 		}
 	}
 
@@ -86,7 +86,7 @@ class SelectManyIterator implements Iterator
 		if ($this->outerIterator->valid()) {
 			$this->outerIterator->next();
 			if ($this->outerIterator->valid()) {
-				$this->innerIterator = CollectionUtility::toIterator($this->outerIterator->current());
+				$this->innerIterator = TraverseUtility::toIterator($this->outerIterator->current());
 			}
 		}
 	}

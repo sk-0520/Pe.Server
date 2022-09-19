@@ -7,7 +7,7 @@ namespace PeServer\Core;
 /**
  * コアライブラリ内のなんか色々。
  */
-abstract class CoreUtility
+abstract class CoreDefines
 {
 	#region define
 

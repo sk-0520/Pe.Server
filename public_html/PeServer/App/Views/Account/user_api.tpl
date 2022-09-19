@@ -8,63 +8,67 @@
 {/if}
 {block name='BODY'}
 
-<form class="page-account-api" action="/account/user/api" method="post">
-	{csrf}
+	<form class="page-account-api" action="/account/user/api" method="post">
+		{csrf}
 
-	<dl class="input">
-		<dt>説明</dt>
-		<dd>
-			<p>APIキーを用いてAPIを実行することができます。</p>
-		</dd>
-
-		<dt>APIキー</dt>
-		{if $values.from_account_api_is_register}
+		<dl class="input">
+			<dt>説明</dt>
 			<dd>
-				<p class="mute">APIキーは登録されていません。</p>
+				<p>APIキーを用いてAPIを実行することができます。</p>
 			</dd>
-		{else}
-			<dd>
-				<table>
-					<thead>
-						<tr>
-							<th>APIキー</th>
-							<th>作成日</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td><pre data-clipboard="block">{$values.api_key}</pre></td>
-							<td>{$values.created_timestamp}</td>
-						</tr>
-						{if $values.secret_key}
-							<tr>
-								<th colspan="2">シークレットキー</th>
-							</tr>
-							<tr>
-								<td colspan="2"><pre data-clipboard="block">{$values.secret_key}</pre></td>
-							</tr>
-							<tr>
-								<td colspan="2">
-									<strong>シークレットキーは再表示できません。後生大事に保持しておいてください。</strong>
-								</th>
-							</tr>
-						{/if}
-					</tbody>
-				</table>
-			</dd>
-		{/if}
 
-		<dt class="action"></dt>
-		<dd class="action">
-			<button>
-				{if $values.from_account_api_is_register}
-					登録
-				{else}
-					削除
-				{/if}
-			</button>
-		</dd>
-	</dl>
-</form>
+			<dt>APIキー</dt>
+			{if $values.from_account_api_is_register}
+				<dd>
+					<p class="mute">APIキーは登録されていません。</p>
+				</dd>
+			{else}
+				<dd>
+					<table>
+						<thead>
+							<tr>
+								<th>APIキー</th>
+								<th>作成日</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+									<pre data-clipboard="block">{$values.api_key}</pre>
+								</td>
+								<td>{$values.created_timestamp}</td>
+							</tr>
+							{if $values.secret_key}
+								<tr>
+									<th colspan="2">シークレットキー</th>
+								</tr>
+								<tr>
+									<td colspan="2">
+										<pre data-clipboard="block">{$values.secret_key}</pre>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="2">
+										<strong>シークレットキーは再表示できません。後生大事に保持しておいてください。</strong>
+										</th>
+								</tr>
+							{/if}
+						</tbody>
+					</table>
+				</dd>
+			{/if}
+
+			<dt class="action"></dt>
+			<dd class="action">
+				<button>
+					{if $values.from_account_api_is_register}
+						登録
+					{else}
+						削除
+					{/if}
+				</button>
+			</dd>
+		</dl>
+	</form>
 
 {/block}

@@ -24,6 +24,16 @@ export function getDataset(element: HTMLOrSVGElement, dataKey: string): string {
 	return value;
 }
 
+export function getDatasetOr(element: HTMLOrSVGElement, dataKey: string, fallback: string): string {
+	const key = toCustomKey(dataKey);
+	const value = element.dataset[key];
+	if (value == undefined) {
+		return fallback;
+	}
+
+	return value;
+}
+
 export function requireElementById<THtmlElement extends HTMLElement>(elementId: string): THtmlElement {
 	const result = document.getElementById(elementId);
 	if (!result) {
@@ -40,6 +50,15 @@ export function requireSelector<THtmlElement extends HTMLElement>(selector: stri
 	}
 
 	return result as THtmlElement;
+}
+
+export function getForm(element: HTMLElement): HTMLFormElement {
+	const formElement = element.closest<HTMLFormElement>('form');
+	if (formElement === null) {
+		throw new Error(element.outerText);
+	}
+
+	return formElement;
 }
 
 export function cloneTemplate(element: HTMLTemplateElement): HTMLElement {

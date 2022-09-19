@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Data\Dto;
 
 use \DateTime;
+use PeServer\Core\Database\DtoBase;
 use PeServer\Core\Serialization\Mapping;
 use PeServer\Core\Text;
 
@@ -12,7 +13,7 @@ use PeServer\Core\Text;
  * @immutable
  * @SuppressWarnings(PHPMD.TooManyFields)
  */
-class FeedbackDetailDto
+class FeedbackDetailDto extends DtoBase
 {
 	#region variable
 

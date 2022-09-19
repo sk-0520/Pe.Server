@@ -2,23 +2,23 @@
 {block name='TITLE'}ログイン{/block}
 {block name='BODY'}
 
-<form class="page-account-login" action="/account/login" method="post">
-	<dl class="input">
-		<dt>ログインID</dt>
-		<dd>
-			{input_helper key='account_login_login_id' type="text" class="edit" autofocus="true" required="true"}
-		</dd>
+	<form class="page-account-login" action="/account/login" method="post">
+		<dl class="input">
+			<dt>ログインID</dt>
+			<dd>
+				{input_helper key='account_login_login_id' type="text" class="edit" autofocus="true" required="true"}
+			</dd>
 
-		<dt>パスワード</dt>
-		<dd>
-			{input_helper key='account_login_password' type="password" class="edit" required="true"}
-		</dd>
+			<dt>パスワード</dt>
+			<dd>
+				{input_helper key='account_login_password' type="password" class="edit" required="true"}
+			</dd>
 
-		<dt class="action"></dt>
-		<dd class="action">
-			<button>ログイン</button>
-		</dd>
-	</dl>
-</form>
+			<dt class="action"></dt>
+			<dd class="action">
+				<button>ログイン</button>
+			</dd>
+		</dl>
+	</form>
 
 {/block}

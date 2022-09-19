@@ -10,7 +10,10 @@ use \IteratorAggregate;
 use \IteratorIterator;
 use \Traversable;
 
-abstract class CollectionUtility
+/**
+ * `Traversable` に対する共通処理。
+ */
+abstract class TraverseUtility
 {
 	#region function
 
@@ -32,7 +35,7 @@ abstract class CollectionUtility
 		if ($sequence instanceof Iterator) {
 			return $sequence;
 		}
-		if(is_callable($sequence)) {
+		if (is_callable($sequence)) {
 			return new GeneratorIterator($sequence);
 		}
 
