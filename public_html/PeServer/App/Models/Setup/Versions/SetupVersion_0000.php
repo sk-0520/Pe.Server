@@ -6,6 +6,7 @@ namespace PeServer\App\Models\Setup\Versions;
 
 use PeServer\App\Models\Setup\DatabaseSetupArgument;
 use PeServer\App\Models\Setup\IOSetupArgument;
+use PeServer\Core\Code;
 use PeServer\Core\Regex;
 
 /**
@@ -25,7 +26,7 @@ class SetupVersion_0000 extends SetupVersionBase
 	 * Undocumented function
 	 *
 	 * @param DatabaseSetupArgument $argument
- 	 * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+	 * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
 	 */
 	protected function migrateDatabase(DatabaseSetupArgument $argument): void
 	{
@@ -47,7 +48,7 @@ class SetupVersion_0000 extends SetupVersionBase
 
 		foreach ($tableNameResult->rows as $tableNameRow) {
 			$tableName = $tableNameRow['name'];
-			$argument->default->execute("drop table $tableName"); //@phpstan-ignore-line tableName
+			$argument->default->execute(Code::toLiteralString("drop table $tableName"));
 		}
 
 		//TODO: 暗号化とかとか

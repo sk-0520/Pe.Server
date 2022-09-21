@@ -48,8 +48,7 @@ abstract class UrlUtility
 	{
 		return match ($queryKind) {
 			self::URL_KIND_RFC1738 => urlencode($input),
-			self::URL_KIND_RFC3986 => rawurlencode($input), //@phpstan-ignore-line
-			default => throw new ArgumentException('$queryKind'), //@phpstan-ignore-line
+			self::URL_KIND_RFC3986 => rawurlencode($input),
 		};
 	}
 
@@ -68,8 +67,7 @@ abstract class UrlUtility
 	{
 		return match ($queryKind) {
 			self::URL_KIND_RFC1738 => urldecode($input),
-			self::URL_KIND_RFC3986 => rawurldecode($input), //@phpstan-ignore-line
-			default => throw new ArgumentException('$queryKind'), //@phpstan-ignore-line
+			self::URL_KIND_RFC3986 => rawurldecode($input),
 		};
 	}
 

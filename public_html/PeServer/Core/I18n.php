@@ -92,7 +92,6 @@ abstract class I18n
 		$leaf = self::$i18nConfiguration;
 		$tree = Text::split($key, '/');
 		foreach ($tree as $node) {
-			//@-phpstan-ignore-next-line
 			if (Arr::tryGet($leaf, $node, $result)) {
 				$leaf = $result;
 			} else {
