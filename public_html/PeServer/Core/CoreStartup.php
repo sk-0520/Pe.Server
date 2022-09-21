@@ -102,7 +102,7 @@ class CoreStartup
 		$container->registerMapping(ITemplateFactory::class, TemplateFactory::class);
 		$container->registerClass(TemplateFactory::class); // こいつは Core からも使われる特殊な奴やねん
 
-		Logging::initialize(Arr::getOr($options, 'special_store', new SpecialStore())); //@phpstan-ignore-line なんだこれ
+		Logging::initialize(Arr::getOr($options, 'special_store', new SpecialStore()));
 
 		// Core のセットアップ時点で死ぬようではもういいです
 		if (!Environment::isTest()) {
@@ -125,7 +125,7 @@ class CoreStartup
 		$container->remove(IDiContainer::class);
 		$container->add(IDiContainer::class, DiItem::factory(fn ($dc) => $dc->get(IDiRegisterContainer::class)));
 
-		$container->registerValue(Arr::getOr($options, 'url_helper', new UrlHelper('')), IUrlHelper::class); //@phpstan-ignore-line 多分テンプレートの使い方間違ってる
+		$container->registerValue(Arr::getOr($options, 'url_helper', new UrlHelper('')), IUrlHelper::class);
 
 		/** @var SpecialStore */
 		$specialStore = Arr::getOr($options, 'special_store', new SpecialStore());

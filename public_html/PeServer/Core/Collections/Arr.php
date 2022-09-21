@@ -43,7 +43,7 @@ class Arr
 	 *
 	 * @template TValue
 	 * @param array<int|string,mixed>|null $array 対象配列。
-	 * @phpstan-param array<array-key,TValue>|null $array
+	 * @phpstan-param array<array-key,mixed|TValue>|null $array
 	 * @param int|string $key キー。
 	 * @phpstan-param array-key $key
 	 * @param mixed $fallbackValue 失敗時に返却される値。
@@ -63,6 +63,7 @@ class Arr
 					return $result;
 				}
 				if (is_a($result, $fallbackValueType)) {
+					/** @var TValue */
 					return $result;
 				}
 

@@ -57,8 +57,8 @@ class AppStartup extends CoreStartup
 		$appConfig = new AppConfiguration(
 			$this->definedDirectory->public,
 			$this->definedDirectory->application,
-			Arr::getOr($options, 'url_helper', new UrlHelper('')), //@phpstan-ignore-line UrlHelper
-			Arr::getOr($options, 'special_store', new SpecialStore()) //@phpstan-ignore-line SpecialStore
+			Arr::getOr($options, 'url_helper', new UrlHelper('')),
+			Arr::getOr($options, 'special_store', new SpecialStore())
 		);
 		$container->registerValue($appConfig);
 
@@ -90,7 +90,7 @@ class AppStartup extends CoreStartup
 		$method = HttpMethod::from($specialStore->getServer('REQUEST_METHOD'));
 		$requestPath = new RequestPath(
 			$specialStore->getServer('REQUEST_URI'),
-			Arr::getOr($options, 'url_helper', new UrlHelper('')), //@phpstan-ignore-line UrlHelper
+			Arr::getOr($options, 'url_helper', new UrlHelper(''))
 		);
 		$container->registerValue(new RouteRequest($method, $requestPath));
 
