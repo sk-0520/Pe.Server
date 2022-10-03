@@ -66,6 +66,13 @@ abstract class Logging
 		self::$specialStore = $specialStore;
 	}
 
+	/**
+	 * ログレベル書式化。
+	 *
+	 * @param int $level
+	 * @phpstan-param ILogger::LOG_LEVEL_* $level
+	 * @return string
+	 */
 	private static function formatLevel(int $level): string
 	{
 		return match ($level) {
@@ -74,7 +81,6 @@ abstract class Logging
 			ILogger::LOG_LEVEL_INFORMATION => 'INFO ',
 			ILogger::LOG_LEVEL_WARNING => 'WARN ',
 			ILogger::LOG_LEVEL_ERROR => 'ERROR',
-			default => throw new NotImplementedException(),
 		};
 	}
 

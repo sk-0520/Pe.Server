@@ -525,14 +525,12 @@ class Graphics extends DisposerBase
 		$x = match ($setting->horizontal) {
 			Alignment::HORIZONTAL_LEFT => $rectangle->left() - min($fontArea->left(), $fontArea->right()),
 			Alignment::HORIZONTAL_CENTER  => $rectangle->left() + ($rectangle->size->width / 2) - ($fontArea->width() / 2),
-			Alignment::HORIZONTAL_RIGHT => $rectangle->right() - max($fontArea->left(), $fontArea->right()), //@phpstan-ignore-line
-			default => throw new ArgumentException('$horizontal: ' . $setting->horizontal), //@phpstan-ignore-line
+			Alignment::HORIZONTAL_RIGHT => $rectangle->right() - max($fontArea->left(), $fontArea->right()),
 		};
 		$y = match ($setting->vertical) {
 			Alignment::VERTICAL_TOP => $rectangle->top() - min($fontArea->top(), $fontArea->bottom()),
 			Alignment::VERTICAL_CENTER => $rectangle->top() + ($rectangle->size->height / 2) + ($fontArea->height() / 2),
-			Alignment::VERTICAL_BOTTOM => $rectangle->bottom() - max($fontArea->top(), $fontArea->bottom()), //@phpstan-ignore-line
-			default => throw new ArgumentException('$vertical: ' . $setting->vertical), //@phpstan-ignore-line
+			Alignment::VERTICAL_BOTTOM => $rectangle->bottom() - max($fontArea->top(), $fontArea->bottom()),
 		};
 
 		return $this->drawString(

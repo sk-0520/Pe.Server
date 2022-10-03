@@ -61,8 +61,9 @@ class FileLogger extends LoggerBase
 		Enforce::throwIfNullOrWhiteSpace($baseFileName);
 		$this->baseFileName = $baseFileName;
 
+		/** @phpstan-var UnsignedIntegerAlias */
 		$count = Arr::getOr($this->options->configuration, 'count', 0);
-		Enforce::throwIf(0 <= $count);
+		Enforce::throwIf(0 <= $count); //@phpstan-ignore-line
 		$this->cleanup($count);
 	}
 

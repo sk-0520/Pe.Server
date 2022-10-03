@@ -131,8 +131,7 @@ class Stream extends ResourceBase
 		$openMode = match ($mode) {
 			self::MODE_READ => 'r',
 			self::MODE_WRITE => 'a',
-			self::MODE_EDIT => 'r+', //@phpstan-ignore-line
-			default => throw new ArgumentException('$mode: ' . $mode), //@phpstan-ignore-line
+			self::MODE_EDIT => 'r+',
 		};
 
 		if ($mode === self::MODE_WRITE || $mode == self::MODE_EDIT) {
@@ -159,8 +158,7 @@ class Stream extends ResourceBase
 		$openMode = match ($mode) {
 			self::MODE_READ => 'r',
 			self::MODE_WRITE => 'a',
-			self::MODE_EDIT => 'r+', //@phpstan-ignore-line
-			default => throw new ArgumentException('$mode: ' . $mode), //@phpstan-ignore-line
+			self::MODE_EDIT => 'r+',
 		};
 
 		if ($mode === self::MODE_READ) {

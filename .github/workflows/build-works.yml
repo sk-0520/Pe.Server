@@ -1,0 +1,77 @@
+name: Build Works
+
+on: push
+
+env:
+  XDEBUG_MODE: coverage
+
+jobs:
+  build:
+
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: <Checkout> Repository
+        uses: actions/checkout@v3
+
+      - name: <Add> Node/NPM
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.4.0
+          cache: npm
+
+      - name: <Setup> PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0'
+          extensions: sqlite3, mbstring, zip, xml, gd, xdebug
+
+      - name: <Install> NPM
+        run: npm install
+
+      - name: <Build> front-end
+        shell: bash
+        run: npm run build
+
+      - name: <Build> back-end
+        shell: bash
+        run: ./dev/update-config.sh ${{ github.sha }}
+
+      - name: <Test> code
+        shell: bash
+        run: ./dev/code.sh
+
+      - name: <Test> back-end
+        shell: bash
+        run: ./dev/test.sh
+
+      - name: <Generate> document
+        shell: bash
+        run: ./dev/doc.sh
+
+      - name: <Artifact> Application
+        uses: actions/upload-artifact@v3
+        with:
+          name: public_html
+          path: public_html
+
+  deploy:
+    needs: build
+
+    if: github.ref == 'refs/heads/master'
+
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: <Download> Application
+        uses: actions/download-artifact@v3
+        with:
+          name: public_html
+          path: public_html
+
+      - name: <Deploy> Application
+        shell: bash
+        run: |
+          cd public_html
+          zip -r public_html.zip .
+

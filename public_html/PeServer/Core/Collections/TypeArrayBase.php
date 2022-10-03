@@ -77,7 +77,7 @@ abstract class TypeArrayBase implements ArrayAccess, Countable, IteratorAggregat
 		}
 
 		if (is_object($value)) {
-			if (!is_subclass_of($value, $this->type)) { //@phpstan-ignore-line
+			if (!is_a($value, $this->type)) {
 				throw new TypeError('$value');
 			}
 		} else {
