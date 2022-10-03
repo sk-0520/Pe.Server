@@ -77,4 +77,3 @@ jobs:
           cd public_html
           zip -r public_html.zip .
           ${{ github.workspace }}/dev/deploy.sh "${{ secrets.PE_SERVER_API_KEY }}" "${{ secrets.PE_SERVER_API_SECRET }}"
-
