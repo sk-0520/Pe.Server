@@ -68,3 +68,10 @@ jobs:
         with:
           name: public_html
           path: public_html
+
+      - name: <Deploy> Application
+        shell: bash
+        run: |
+          cd public_html
+          zip -r public_html.zip .
+
