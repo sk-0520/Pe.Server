@@ -25,16 +25,16 @@
 					<tr>
 						<th>Current</th>
 						<td>
-							<a href="https://ci.appveyor.com/project/sk_0520/pe-server">
-								<img class="page-user-index-ci {\PeServer\Core\Environment::get()}" {if \PeServer\Core\Environment::isProduction()} src="https://ci.appveyor.com/api/projects/status/3nevme7nvotosxy5?svg=true" {/if} />
+							<a href="https://github.com/sk-0520/Pe.Server/actions">
+								<img class="page-user-index-ci {\PeServer\Core\Environment::get()}" {if \PeServer\Core\Environment::isProduction()} src="https://github.com/sk-0520/Pe.Server/actions/workflows/build-works.yml/badge.svg" {/if} />
 							</a>
 						</td>
 					</tr>
 					<tr>
 						<th>Master</th>
 						<td>
-							<a href="https://ci.appveyor.com/project/sk_0520/pe-server/branch/master">
-								<img class="page-user-index-ci {\PeServer\Core\Environment::get()}" {if \PeServer\Core\Environment::isProduction()} src="https://ci.appveyor.com/api/projects/status/3nevme7nvotosxy5/branch/master?svg=true" {/if} />
+							<a href="https://github.com/sk-0520/Pe.Server/actions?query=branch%3Amaster">
+								<img class="page-user-index-ci {\PeServer\Core\Environment::get()}" {if \PeServer\Core\Environment::isProduction()} src="https://github.com/sk-0520/Pe.Server/actions/workflows/build-works.yml/badge.svg?branch=master" {/if} />
 							</a>
 						</td>
 					</tr>
