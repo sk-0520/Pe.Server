@@ -19,10 +19,10 @@ class CryptographyTest extends TestClass
 			['input' => 'abc', 'algorithm' => 'aes-128-cbc', 'password' => '123456'],
 			['input' => 'abc', 'algorithm' => 'aes-192-cbc', 'password' => '123456'],
 			['input' => 'abc', 'algorithm' => 'aes-256-cbc', 'password' => '123456'],
-			['input' => 'abc', 'algorithm' => 'aria-128-cbc', 'password' => '123456'],
-			['input' => 'abc', 'algorithm' => 'bf-cbc', 'password' => '123456'],
-			['input' => 'abc', 'algorithm' => 'camellia-128-cbc', 'password' => '123456'],
-			['input' => 'abc', 'algorithm' => 'sm4-cbc', 'password' => '123456'],
+			// ['input' => 'abc', 'algorithm' => 'aria-128-cbc', 'password' => '123456'],
+			// ['input' => 'abc', 'algorithm' => 'bf-cbc', 'password' => '123456'],
+			// ['input' => 'abc', 'algorithm' => 'camellia-128-cbc', 'password' => '123456'],
+			// ['input' => 'abc', 'algorithm' => 'sm4-cbc', 'password' => '123456'],
 		];
 		foreach ($tests as $test) {
 			$enc = Cryptography::encrypt($test['algorithm'], $test['input'], $test['password']);
