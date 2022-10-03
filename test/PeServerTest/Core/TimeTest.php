@@ -29,7 +29,7 @@ class TimeTest extends TestClass
 		foreach ($tests as $test) {
 			$actual = Time::create(...$test->args);
 			$timestamp = $actual->format('%Y/%M/%D %H:%I:%S');
-			$this->assertSame($test->expected, $timestamp);
+			$this->assertSame($test->expected, $timestamp, $test->str());
 		}
 	}
 
@@ -46,7 +46,7 @@ class TimeTest extends TestClass
 		foreach ($tests as $test) {
 			$actual = Time::create(...$test->args);
 			$timestamp = $actual->format('%Y/%M/%D %H:%I:%S');
-			$this->assertSame($test->expected, $timestamp);
+			$this->assertSame($test->expected, $timestamp, $test->str());
 		}
 	}
 
@@ -59,7 +59,7 @@ class TimeTest extends TestClass
 		foreach ($tests as $test) {
 			$actual = Time::create(...$test->args);
 			$timestamp = $actual->format('%Y/%M/%D %H:%I:%S');
-			$this->assertSame($test->expected, $timestamp);
+			$this->assertSame($test->expected, $timestamp, $test->str());
 		}
 	}
 
