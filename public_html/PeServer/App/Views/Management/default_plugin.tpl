@@ -21,6 +21,7 @@
 		{csrf}
 
 		<label><input name="delete" type="checkbox" />削除</label>
+		<label>バージョン: <input name="version" type="text" /></label>
 		<button>実行</button>
 	</form>
 
