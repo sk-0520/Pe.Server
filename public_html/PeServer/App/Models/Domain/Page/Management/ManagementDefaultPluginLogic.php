@@ -19,83 +19,21 @@ use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\App\Models\Dao\Entities\PluginsEntityDao;
 use PeServer\App\Models\Dao\Entities\PluginUrlsEntityDao;
 use PeServer\App\Models\Dao\Entities\PluginCategoryMappingsEntityDao;
+use PeServer\App\Models\Domain\DefaultPlugin;
 
 class ManagementDefaultPluginLogic extends PageLogicBase
 {
-	/** @var array{plugin_id:string,plugin_name:string,check_url:string,project_url:string,descriptions:string[],categories:string[],registered:bool}[] */
-	private array $defaultPlugins = [
-		[
-			'plugin_id' => '4524fc23-ebb9-4c79-a26b-8f472c05095e',
-			'plugin_name' => 'Pe.Plugins.DefaultTheme',
-			'check_url' => '',
-			'project_url' => 'https://github.com/sk-0520/Pe',
-			'descriptions' => ['本体同梱標準テーマ。', 'ダウンロード先なし。',],
-			'categories' => [
-				'theme',
-			],
-			'registered' => false,
-		],
-		[
-			'plugin_id' => '67f0fa7d-52d3-4889-b595-be3703b224eb',
-			'plugin_name' => 'Pe.Plugins.Reference.ClassicTheme',
-			'check_url' => 'https://github.com/sk-0520/Pe/releases/download/<VERSION>/update-Pe.Plugins.Reference.ClassicTheme.json',
-			'project_url' => 'https://github.com/sk-0520/Pe',
-			'descriptions' => ['テーマの参考実装。', 'テーマをプラグインとして扱うのが💩と教えてくれた偉大なる参考実装。',],
-			'categories' => [
-				'theme',
-			],
-			'registered' => false,
-		],
-		[
-			'plugin_id' => '2e5c72c5-270f-4b05-afb9-c87f3966ecc5',
-			'plugin_name' => 'Pe.Plugins.Reference.Clock',
-			'check_url' => 'https://github.com/sk-0520/Pe/releases/download/<VERSION>/update-Pe.Plugins.Reference.Clock.json',
-			'project_url' => 'https://github.com/sk-0520/Pe',
-			'descriptions' => ['ランチャーボタン・ウィジェット・設定の参考実装。', '時計を表示する。',],
-			'categories' => [
-				'utility',
-			],
-			'registered' => false,
-		],
-		[
-			'plugin_id' => '799ce8bd-8f49-4e8f-9e47-4d4873084081',
-			'plugin_name' => 'Pe.Plugins.Reference.Eyes',
-			'check_url' => 'https://github.com/sk-0520/Pe/releases/download/<VERSION>/update-Pe.Plugins.Reference.Eyes.json',
-			'project_url' => 'https://github.com/sk-0520/Pe',
-			'descriptions' => ['ウィジェット・バックグラウンドの参考実装。', 'xeyes のおめめ。',],
-			'categories' => [
-				'toy',
-			],
-			'registered' => false,
-		],
-		[
-			'plugin_id' => '9dcf441d-9f8e-494f-89c1-814678bbc42c',
-			'plugin_name' => 'Pe.Plugins.Reference.FileFinder',
-			'check_url' => 'https://github.com/sk-0520/Pe/releases/download/<VERSION>/update-Pe.Plugins.Reference.FileFinder.json',
-			'project_url' => 'https://github.com/sk-0520/Pe',
-			'descriptions' => ['コマンド入力・設定の参考実装。', 'コマンド入力欄に入力された文字列をファイルパスとして扱う。',],
-			'categories' => [
-				'file',
-				'search',
-			],
-			'registered' => false,
-		],
-		[
-			'plugin_id' => '4fa1a634-6b32-4762-8ae8-3e1cf6df9db1',
-			'plugin_name' => 'Pe.Plugins.Reference.Html',
-			'check_url' => 'https://github.com/sk-0520/Pe/releases/download/<VERSION>/update-Pe.Plugins.Reference.Html.json',
-			'project_url' => 'https://github.com/sk-0520/Pe',
-			'descriptions' => ['WebView ウィジェットの参考実装。', '常に IME 死んでるマン。',],
-			'categories' => [
-				'utility',
-			],
-			'registered' => false,
-		],
-	];
+	/** @var array{item:DefaultPlugin,registered:bool}[] */
+	private array $defaultPlugins;
 
 	public function __construct(LogicParameter $parameter, private AppDatabaseCache $dbCache)
 	{
 		parent::__construct($parameter);
+
+		$this->defaultPlugins = Arr::map(DefaultPlugin::get(), fn ($i) => [
+			'item' => $i,
+			'registered' => false,
+		]);
 	}
 
 	protected function startup(LogicCallMode $callMode): void
@@ -104,7 +42,7 @@ class ManagementDefaultPluginLogic extends PageLogicBase
 
 		$pluginsEntityDao = new PluginsEntityDao($database);
 		for ($i = 0; $i < Arr::getCount($this->defaultPlugins); $i++) {
-			$this->defaultPlugins[$i]['registered'] = $pluginsEntityDao->selectExistsPluginId($this->defaultPlugins[$i]['plugin_id']);
+			$this->defaultPlugins[$i]['registered'] = $pluginsEntityDao->selectExistsPluginId($this->defaultPlugins[$i]['item']->pluginId);
 		}
 	}
 
@@ -135,8 +73,10 @@ class ManagementDefaultPluginLogic extends PageLogicBase
 				$database->transaction(function (IDatabaseContext $context) use ($params) {
 
 					foreach ($params['plugins'] as $plugin) {
-						PluginUtility::removePlugin($context, $plugin['plugin_id']);
-						$this->addTemporaryMessage('削除: ' . $plugin['plugin_name']);
+						/** @var  $plugin array{item:DefaultPlugin,registered:bool}[] */
+
+						PluginUtility::removePlugin($context, $plugin['item']->pluginId);
+						$this->addTemporaryMessage('削除: ' . $plugin['item']->pluginName);
 					}
 
 					return true;
@@ -162,30 +102,32 @@ class ManagementDefaultPluginLogic extends PageLogicBase
 					$pluginCategoryMappingsEntityDao = new PluginCategoryMappingsEntityDao($context);
 
 					foreach ($params['plugins'] as $plugin) {
+						/** @var  $plugin array{item:DefaultPlugin,registered:bool}[] */
+
 						$pluginsEntityDao->insertPlugin(
-							$plugin['plugin_id'],
+							$plugin['item']->pluginId,
 							$params['user_id'],
-							$plugin['plugin_name'],
-							$plugin['plugin_name'],
+							$plugin['item']->pluginName,
+							$plugin['item']->pluginName,
 							PluginState::ENABLED,
-							Text::join("\n\n", $plugin['descriptions']),
+							Text::join("\n\n", $plugin['item']->descriptions),
 							'Pe専用プラグイン'
 						);
 
 						$map = [
-							PluginUrlKey::CHECK => $plugin['check_url'],
-							PluginUrlKey::PROJECT => $plugin['project_url'],
+							PluginUrlKey::CHECK => $plugin['item']->checkUrl,
+							PluginUrlKey::PROJECT => $plugin['item']->projectUrl,
 							PluginUrlKey::LANDING => Text::EMPTY,
 						];
 						foreach ($map as $k => $v) {
-							$pluginUrlsEntityDao->insertUrl($plugin['plugin_id'], $k, $v);
+							$pluginUrlsEntityDao->insertUrl($plugin['item']->pluginId, $k, $v);
 						}
 
-						foreach ($plugin['categories'] as $categoryId) {
-							$pluginCategoryMappingsEntityDao->insertPluginCategoryMapping($plugin['plugin_id'], $categoryId);
+						foreach ($plugin['item']->categories as $categoryId) {
+							$pluginCategoryMappingsEntityDao->insertPluginCategoryMapping($plugin['item']->pluginId, $categoryId);
 						}
 
-						$this->addTemporaryMessage('登録: ' . $plugin['plugin_name']);
+						$this->addTemporaryMessage('登録: ' . $plugin['item']->pluginName);
 					}
 
 					return true;
