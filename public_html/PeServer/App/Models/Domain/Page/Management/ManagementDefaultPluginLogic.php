@@ -28,7 +28,7 @@ class ManagementDefaultPluginLogic extends PageLogicBase
 			'plugin_id' => '4524fc23-ebb9-4c79-a26b-8f472c05095e',
 			'plugin_name' => 'Pe.Plugins.DefaultTheme',
 			'check_url' => '',
-			'project_url' => 'https://bitbucket.org/sk_0520/pe',
+			'project_url' => 'https://github.com/sk-0520/Pe',
 			'descriptions' => ['本体同梱標準テーマ。', 'ダウンロード先なし。',],
 			'categories' => [
 				'theme',
@@ -38,8 +38,8 @@ class ManagementDefaultPluginLogic extends PageLogicBase
 		[
 			'plugin_id' => '67f0fa7d-52d3-4889-b595-be3703b224eb',
 			'plugin_name' => 'Pe.Plugins.Reference.ClassicTheme',
-			'check_url' => 'https://bitbucket.org/sk_0520/pe/downloads/update-Pe.Plugins.Reference.ClassicTheme.json',
-			'project_url' => 'https://bitbucket.org/sk_0520/pe',
+			'check_url' => 'https://github.com/sk-0520/Pe/releases/download/<VERSION>/update-Pe.Plugins.Reference.ClassicTheme.json',
+			'project_url' => 'https://github.com/sk-0520/Pe',
 			'descriptions' => ['テーマの参考実装。', 'テーマをプラグインとして扱うのが💩と教えてくれた偉大なる参考実装。',],
 			'categories' => [
 				'theme',
@@ -49,8 +49,8 @@ class ManagementDefaultPluginLogic extends PageLogicBase
 		[
 			'plugin_id' => '2e5c72c5-270f-4b05-afb9-c87f3966ecc5',
 			'plugin_name' => 'Pe.Plugins.Reference.Clock',
-			'check_url' => 'https://bitbucket.org/sk_0520/pe/downloads/update-Pe.Plugins.Reference.Clock.json',
-			'project_url' => 'https://bitbucket.org/sk_0520/pe',
+			'check_url' => 'https://github.com/sk-0520/Pe/releases/download/<VERSION>/update-Pe.Plugins.Reference.Clock.json',
+			'project_url' => 'https://github.com/sk-0520/Pe',
 			'descriptions' => ['ランチャーボタン・ウィジェット・設定の参考実装。', '時計を表示する。',],
 			'categories' => [
 				'utility',
@@ -60,8 +60,8 @@ class ManagementDefaultPluginLogic extends PageLogicBase
 		[
 			'plugin_id' => '799ce8bd-8f49-4e8f-9e47-4d4873084081',
 			'plugin_name' => 'Pe.Plugins.Reference.Eyes',
-			'check_url' => 'https://bitbucket.org/sk_0520/pe/downloads/update-Pe.Plugins.Reference.Eyes.json',
-			'project_url' => 'https://bitbucket.org/sk_0520/pe',
+			'check_url' => 'https://github.com/sk-0520/Pe/releases/download/<VERSION>/update-Pe.Plugins.Reference.Eyes.json',
+			'project_url' => 'https://github.com/sk-0520/Pe',
 			'descriptions' => ['ウィジェット・バックグラウンドの参考実装。', 'xeyes のおめめ。',],
 			'categories' => [
 				'toy',
@@ -71,8 +71,8 @@ class ManagementDefaultPluginLogic extends PageLogicBase
 		[
 			'plugin_id' => '9dcf441d-9f8e-494f-89c1-814678bbc42c',
 			'plugin_name' => 'Pe.Plugins.Reference.FileFinder',
-			'check_url' => 'https://bitbucket.org/sk_0520/pe/downloads/update-Pe.Plugins.Reference.FileFinder.json',
-			'project_url' => 'https://bitbucket.org/sk_0520/pe',
+			'check_url' => 'https://github.com/sk-0520/Pe/releases/download/<VERSION>/update-Pe.Plugins.Reference.FileFinder.json',
+			'project_url' => 'https://github.com/sk-0520/Pe',
 			'descriptions' => ['コマンド入力・設定の参考実装。', 'コマンド入力欄に入力された文字列をファイルパスとして扱う。',],
 			'categories' => [
 				'file',
@@ -83,8 +83,8 @@ class ManagementDefaultPluginLogic extends PageLogicBase
 		[
 			'plugin_id' => '4fa1a634-6b32-4762-8ae8-3e1cf6df9db1',
 			'plugin_name' => 'Pe.Plugins.Reference.Html',
-			'check_url' => 'https://bitbucket.org/sk_0520/pe/downloads/update-Pe.Plugins.Reference.Html.json',
-			'project_url' => 'https://bitbucket.org/sk_0520/pe',
+			'check_url' => 'https://github.com/sk-0520/Pe/releases/download/<VERSION>/update-Pe.Plugins.Reference.Html.json',
+			'project_url' => 'https://github.com/sk-0520/Pe',
 			'descriptions' => ['WebView ウィジェットの参考実装。', '常に IME 死んでるマン。',],
 			'categories' => [
 				'utility',
