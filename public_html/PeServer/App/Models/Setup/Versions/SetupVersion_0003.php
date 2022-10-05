@@ -27,21 +27,18 @@ class SetupVersion_0003 extends SetupVersionBase
 		create table
 			[pe_setting]
 			(
-				[version] text not null,
-				[application_info_url] text not null
+				[version] text not null
 			)
 		;
 
 		insert into
 			[pe_setting]
 			(
-				[version],
-				[application_info_url]
+				[version]
 			)
 			values
 			(
-				'0.00.000',
-				'http://example.com/'
+				'0.00.000'
 			)
 
 		SQL;
