@@ -13,6 +13,7 @@ use PeServer\App\Models\Dao\Entities\PluginUrlsEntityDao;
 use PeServer\App\Models\Domain\Api\ApiLogicBase;
 use PeServer\App\Models\Domain\AppArchiver;
 use PeServer\App\Models\Domain\DefaultPlugin;
+use PeServer\App\Models\Domain\PeVersionUpdater;
 use PeServer\App\Models\Domain\PluginUrlKey;
 use PeServer\App\Models\ResponseJson;
 use PeServer\Core\Collections\Arr;
@@ -60,28 +61,9 @@ class AdministratorApiPeVersionLogic extends ApiLogicBase
 		$version = $this->requestJson['version'];
 
 		$result = $database->transaction(function (IDatabaseContext $context) use ($version) {
+			$peVersionUpdater = new PeVersionUpdater();
 
-			$peSettingEntityDao = new PeSettingEntityDao($context);
-			$peSettingEntityDao->updatePeSettingVersion($version);
-
-			$pluginUrlsEntityDao = new PluginUrlsEntityDao($context);
-
-			$defaultPlugins = DefaultPlugin::get();
-			foreach ($defaultPlugins as $defaultPlugin) {
-				$url = Text::replaceMap(
-					$this->appConfig->setting->config->address->families->pluginUpdateInfoUrlBase,
-					[
-						'VERSION' => $version,
-						'UPDATE_INFO_NAME' => 'update-' . $defaultPlugin->pluginName . '.json',
-					]
-				);
-
-				$pluginUrlsEntityDao->updatePluginUrl(
-					$defaultPlugin->pluginId,
-					PluginUrlKey::CHECK,
-					$url
-				);
-			}
+			$peVersionUpdater->updateDatabase($context, $this->appConfig->setting->config->address->families->pluginUpdateInfoUrlBase, $version);
 
 			return true;
 		});
