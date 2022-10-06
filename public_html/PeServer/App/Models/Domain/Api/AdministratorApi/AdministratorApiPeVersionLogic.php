@@ -21,7 +21,7 @@ use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\Text;
 
-class AdministratorApiPeVersionChangeLogic extends ApiLogicBase
+class AdministratorApiPeVersionLogic extends ApiLogicBase
 {
 	#region variable
 
@@ -67,12 +67,12 @@ class AdministratorApiPeVersionChangeLogic extends ApiLogicBase
 			$pluginUrlsEntityDao = new PluginUrlsEntityDao($context);
 
 			$defaultPlugins = DefaultPlugin::get();
-			foreach($defaultPlugins as $defaultPlugin) {
+			foreach ($defaultPlugins as $defaultPlugin) {
 				$url = Text::replaceMap(
 					$this->appConfig->setting->config->address->families->pluginUpdateInfoUrlBase,
 					[
 						'VERSION' => $version,
-						'UPDATE_INFO_NAME' => $defaultPlugin->pluginName . '.json',
+						'UPDATE_INFO_NAME' => 'update-' . $defaultPlugin->pluginName . '.json',
 					]
 				);
 
