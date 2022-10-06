@@ -14,10 +14,13 @@ class DefaultPlugin
 	/**
 	 * 生成。
 	 *
-	 * @param non-empty-string $pluginId
-	 * @param non-empty-string $pluginName
+	 * @param string $pluginId
+	 * @phpstan-param non-empty-string $pluginId
+	 * @param string $pluginName
+	 * @phpstan-param non-empty-string $pluginName
 	 * @param string $checkUrl
-	 * @param non-empty-string $projectUrl
+	 * @param string $projectUrl
+	 * @phpstan-param non-empty-string $projectUrl
 	 * @param string[] $descriptions
 	 * @param string[] $categories
 	 */

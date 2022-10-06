@@ -13,7 +13,7 @@ class PeSettingEntityDao extends DaoBase
 
 	#region function
 
-	public function selectVersion(): string
+	public function selectPeSettingVersion(): string
 	{
 		$result = $this->context->querySingle(
 			<<<SQL
@@ -27,6 +27,23 @@ class PeSettingEntityDao extends DaoBase
 		);
 
 		return $result->fields['version'];
+	}
+
+	public function updatePeSettingVersion(string $version): void
+	{
+		$this->context->updateByKey(
+			<<<SQL
+
+			update
+				pe_setting
+			set
+				version = :version
+
+			SQL,
+			[
+				'version' => $version,
+			]
+		);
 	}
 
 	#endregion

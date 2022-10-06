@@ -33,10 +33,10 @@ class AdministratorApiPeVersionGetLogic extends ApiLogicBase
 
 		$peSettingEntityDao = new PeSettingEntityDao($database);
 
-		$version = $peSettingEntityDao->selectVersion();
+		$version = $peSettingEntityDao->selectPeSettingVersion();
 
 		$result = [
-			'version' => $version
+			'version' => $version,
 		];
 
 		$this->setResponseJson(ResponseJson::success($result));

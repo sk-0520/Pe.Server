@@ -77,6 +77,29 @@ class PluginUrlsEntityDao extends DaoBase
 		);
 	}
 
+	public function updatePluginUrl(string $pluginId, string $key, string $url): bool
+	{
+		return $this->context->updateByKeyOrNothing(
+			<<<SQL
+
+			update
+				plugin_urls
+			set
+				url = :url
+			where
+				plugin_id = :plugin_id
+				and
+				key = :key
+
+			SQL,
+			[
+				'plugin_id' => $pluginId,
+				'key' => $key,
+				'url' => $url,
+			]
+		);
+	}
+
 	public function deleteByPluginId(string $pluginId): int
 	{
 		return $this->context->delete(
