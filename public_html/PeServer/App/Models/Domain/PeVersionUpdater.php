@@ -15,6 +15,14 @@ class PeVersionUpdater
 {
 	#region function
 
+	/**
+	 * Undocumented function
+	 *
+	 * @param IDatabaseContext $context
+	 * @param string $baseUrl
+	 * @phpstan-param literal-string $baseUrl
+	 * @param string $version
+	 */
 	public function updateDatabase(IDatabaseContext $context, string $baseUrl, string $version): void
 	{
 		$peSettingEntityDao = new PeSettingEntityDao($context);

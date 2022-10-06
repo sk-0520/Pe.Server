@@ -30,8 +30,10 @@ class ProjectFamilySetting
 	#[Mapping(name: 'api_doc_url')]
 	public string $apiDocUrl;
 
+	/** @phpstan-var literal-string */
 	#[Mapping(name: 'pe_update_info_url_base')]
 	public string $peUpdateInfoUrlBase;
+	/** @phpstan-var literal-string */
 	#[Mapping(name: 'plugin_update_info_url_base')]
 	public string $pluginUpdateInfoUrlBase;
 
