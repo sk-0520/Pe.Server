@@ -35,7 +35,7 @@ class AdministratorApiPeVersionLogic extends ApiLogicBase
 
 	#endregion
 
-	public function __construct(LogicParameter $parameter, private AppConfiguration $appConfig, private AppDatabaseCache $appCache)
+	public function __construct(LogicParameter $parameter, private AppConfiguration $appConfig, private AppDatabaseCache $dbCache)
 	{
 		parent::__construct($parameter);
 
@@ -71,7 +71,7 @@ class AdministratorApiPeVersionLogic extends ApiLogicBase
 			throw new Exception();
 		}
 
-		$this->appCache->exportPluginInformation();
+		$this->dbCache->exportPluginInformation();
 
 		$this->setResponseJson(ResponseJson::success([]));
 	}

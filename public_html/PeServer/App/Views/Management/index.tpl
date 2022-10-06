@@ -9,6 +9,7 @@
 			<ul>
 				<li><a href="/management/feedback">フィードバック</a></li>
 				<li><a href="/management/crash-report">クラッシュレポート</a></li>
+				<li><a href="/management/version">バージョン設定</a></li>
 			</ul>
 		</li>
 		<li>

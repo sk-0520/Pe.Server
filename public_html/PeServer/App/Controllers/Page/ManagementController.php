@@ -19,6 +19,7 @@ use PeServer\App\Models\Domain\Page\Management\ManagementMarkdownLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementPhpEvaluateLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementPluginCategoryListLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementSetupLogic;
+use PeServer\App\Models\Domain\Page\Management\ManagementVersionLogic;
 use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mvc\ControllerArgument;
@@ -180,6 +181,24 @@ final class ManagementController extends PageControllerBase
 		$logic->run(LogicCallMode::initialize());
 
 		return $this->view('crash_report_detail', $logic->getViewData());
+	}
+
+	public function version_get(): IActionResult
+	{
+		$logic = $this->createLogic(ManagementVersionLogic::class);
+		$logic->run(LogicCallMode::initialize());
+
+		return $this->view('version', $logic->getViewData());
+	}
+
+	public function version_post(): IActionResult
+	{
+		$logic = $this->createLogic(ManagementVersionLogic::class);
+		if($logic->run(LogicCallMode::submit())) {
+			return $this->redirectPath('management/version');
+		}
+
+		return $this->view('version', $logic->getViewData());
 	}
 
 	public function plugin_category_get(): IActionResult

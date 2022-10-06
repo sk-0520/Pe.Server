@@ -110,6 +110,8 @@ final class AppRouteSetting extends RouteSetting
 					->addAction('crash-report', HttpMethod::get(), 'crash_report_list_top')
 					->addAction('crash-report/page/:page_number@\d++', HttpMethod::get(), 'crash_report_list_page')
 					->addAction('crash-report/:sequence@\d++', HttpMethod::get(), 'crash_report_detail')
+					->addAction('version', HttpMethod::get(), 'version_get')
+					->addAction('version', HttpMethod::post(), 'version_post')
 					->addAction('log', HttpMethod::get(), 'log_list')
 					->addAction('log/:log_name@\w+\.log', HttpMethod::get(), 'log_detail')
 					->addAction('markdown', HttpMethod::get(), 'markdown')
