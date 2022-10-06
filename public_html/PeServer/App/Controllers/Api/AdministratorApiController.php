@@ -5,6 +5,7 @@ namespace PeServer\App\Controllers\Api;
 use PeServer\App\Models\Domain\Api\AdministratorApi\AdministratorApiBackupLogic;
 use PeServer\App\Models\Domain\Api\AdministratorApi\AdministratorApiCacheRebuildLogic;
 use PeServer\App\Models\Domain\Api\AdministratorApi\AdministratorApiDeployLogic;
+use PeServer\App\Models\Domain\Api\AdministratorApi\AdministratorApiPeVersionLogic;
 use PeServer\App\Models\Domain\AppArchiver;
 use PeServer\Core\Mvc\ControllerArgument;
 use PeServer\Core\Mvc\LogicCallMode;
@@ -36,6 +37,14 @@ class AdministratorApiController extends ApiControllerBase
 	public function deploy(): IActionResult
 	{
 		$logic = $this->createLogic(AdministratorApiDeployLogic::class);
+		$logic->run(LogicCallMode::submit());
+
+		return $this->data($logic->getContent());
+	}
+
+	public function pe_version(): IActionResult
+	{
+		$logic = $this->createLogic(AdministratorApiPeVersionLogic::class);
 		$logic->run(LogicCallMode::submit());
 
 		return $this->data($logic->getContent());

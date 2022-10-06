@@ -5,9 +5,12 @@ namespace PeServer\App\Controllers\Api;
 use PeServer\App\Controllers\Api\ApiControllerBase;
 use PeServer\App\Models\Domain\Api\ApplicationApi\ApplicationApiCrashReportLogic;
 use PeServer\App\Models\Domain\Api\ApplicationApi\ApplicationApiFeedbackLogic;
+use PeServer\App\Models\Domain\Api\ApplicationApi\ApplicationApiVersionUpdateLogic;
+use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mvc\ControllerArgument;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\Result\IActionResult;
+use PeServer\Core\Mvc\Result\RedirectActionResult;
 
 class ApplicationApiController extends ApiControllerBase
 {
@@ -32,6 +35,14 @@ class ApplicationApiController extends ApiControllerBase
 		$logic->run(LogicCallMode::submit());
 
 		return $this->data($logic->getContent());
+	}
+
+	public function version_update(): IActionResult
+	{
+		$logic = $this->createLogic(ApplicationApiVersionUpdateLogic::class);
+		$logic->run(LogicCallMode::submit());
+
+		return new RedirectActionResult($logic->redirectUrl, HttpStatus::found());
 	}
 
 	#endregion
