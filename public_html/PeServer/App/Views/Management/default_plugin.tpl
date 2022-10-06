@@ -5,13 +5,13 @@
 	<ul>
 		{foreach from=$values.plugins item=item}
 			<li>
-				<a href="/plugin/{$item.plugin_id}">
+				<a href="/plugin/{$item.item->pluginId}">
 					{if $item.registered}
 						[あり]
 					{else}
 						[なし]
 					{/if}
-					{$item.plugin_name}
+					{$item.item->pluginName}
 				</a>
 			</li>
 		{/foreach}
@@ -21,6 +21,7 @@
 		{csrf}
 
 		<label><input name="delete" type="checkbox" />削除</label>
+		<label>バージョン: <input name="version" type="text" /></label>
 		<button>実行</button>
 	</form>
 

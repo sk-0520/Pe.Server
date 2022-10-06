@@ -2,9 +2,6 @@ name: Build Works
 
 on: push
 
-env:
-  XDEBUG_MODE: coverage
-
 jobs:
   build:
 
@@ -43,7 +40,9 @@ jobs:
 
       - name: <Test> back-end
         shell: bash
-        run: ./dev/test.sh
+        run: |
+          export XDEBUG_MODE=coverage
+          ./dev/test.sh
 
       - name: <Generate> document
         shell: bash
@@ -78,4 +77,3 @@ jobs:
           cd public_html
           zip -r public_html.zip .
           ${{ github.workspace }}/dev/deploy.sh "${{ secrets.PE_SERVER_API_KEY }}" "${{ secrets.PE_SERVER_API_SECRET }}"
-
