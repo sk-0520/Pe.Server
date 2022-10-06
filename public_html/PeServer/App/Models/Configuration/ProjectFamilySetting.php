@@ -30,8 +30,10 @@ class ProjectFamilySetting
 	#[Mapping(name: 'api_doc_url')]
 	public string $apiDocUrl;
 
-	#[Mapping(name: 'update_info_url_base')]
-	public string $updateInfoUrlBase;
+	#[Mapping(name: 'pe_update_info_url_base')]
+	public string $peUpdateInfoUrlBase;
+	#[Mapping(name: 'plugin_update_info_url_base')]
+	public string $pluginUpdateInfoUrlBase;
 
 	#endregion
 }
