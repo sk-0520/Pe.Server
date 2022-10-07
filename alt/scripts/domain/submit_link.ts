@@ -2,6 +2,10 @@ import * as dom from '../core/dom';
 import * as dialog from '../core/dialog';
 
 function attachSubmit(element: HTMLButtonElement): void {
+	if (element.dataset['dialog'] === 'disabled') {
+		return;
+	}
+
 	element.addEventListener('click', async ev => {
 		ev.preventDefault();
 
