@@ -21,4 +21,12 @@
 		</dl>
 	</form>
 
+	{if \PeServer\Core\Environment::isDevelopment() }
+		<form action="/account/login" method="post"  style="text-align: center; margin: 4em">
+			<input type="hidden" name="account_login_login_id" value="root" />
+			<input type="hidden" name="account_login_password" value="root" />
+			<button class="link" data-dialog="disabled">開発ログイン</button>
+		</form>
+	{/if}
+
 {/block}
