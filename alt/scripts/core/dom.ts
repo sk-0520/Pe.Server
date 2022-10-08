@@ -1,9 +1,16 @@
 
 /**
  * カスタムデータ属性のケバブ名を dataset アクセス可能な名前に変更
- * @param kebab
+ * @param kebab データ属性名。
+ * @param removeDataAttributeBegin 先頭の `data-`* を破棄するか。
  */
-export function toCustomKey(kebab: string): string {
+export function toCustomKey(kebab: string, removeDataAttributeBegin: boolean = true): string {
+
+	const dataHead = 'data-';
+	if(removeDataAttributeBegin && kebab.startsWith(dataHead)) {
+		kebab = kebab.substring(dataHead.length);
+	}
+
 	return kebab
 		.split('-')
 		.map((item, index) => index
@@ -14,8 +21,16 @@ export function toCustomKey(kebab: string): string {
 		;
 }
 
-export function getDataset(element: HTMLOrSVGElement, dataKey: string): string {
-	const key = toCustomKey(dataKey);
+/**
+ * データ属性から値を取得。
+ *
+ * @param element 要素。
+ * @param dataKey データ属性名。
+ * @param removeDataAttributeBegin 先頭の `data-`* を破棄するか。
+ * @returns
+ */
+export function getDataset(element: HTMLOrSVGElement, dataKey: string, removeDataAttributeBegin: boolean = true): string {
+	const key = toCustomKey(dataKey, removeDataAttributeBegin);
 	const value = element.dataset[key];
 	if (value == undefined) {
 		throw new Error(`${element}.${key}`);
@@ -24,8 +39,17 @@ export function getDataset(element: HTMLOrSVGElement, dataKey: string): string {
 	return value;
 }
 
-export function getDatasetOr(element: HTMLOrSVGElement, dataKey: string, fallback: string): string {
-	const key = toCustomKey(dataKey);
+/**
+ * データ属性から値を取得。
+ *
+ * @param element 要素。
+ * @param dataKey データ属性名。
+ * @param fallback 取得失敗時の返却値。
+ * @param removeDataAttributeBegin 先頭の `data-`* を破棄するか。
+ * @returns
+ */
+export function getDatasetOr(element: HTMLOrSVGElement, dataKey: string, fallback: string, removeDataAttributeBegin: boolean = true): string {
+	const key = toCustomKey(dataKey, removeDataAttributeBegin);
 	const value = element.dataset[key];
 	if (value == undefined) {
 		return fallback;
@@ -34,6 +58,12 @@ export function getDatasetOr(element: HTMLOrSVGElement, dataKey: string, fallbac
 	return value;
 }
 
+/**
+ * ID から要素取得を強制。
+ *
+ * @param elementId
+ * @returns
+ */
 export function requireElementById<THtmlElement extends HTMLElement>(elementId: string): THtmlElement {
 	const result = document.getElementById(elementId);
 	if (!result) {
@@ -43,6 +73,13 @@ export function requireElementById<THtmlElement extends HTMLElement>(elementId: 
 	return result as THtmlElement;
 }
 
+/**
+ * セレクタから要素取得を強制。
+ *
+ * @param selector
+ * @param element
+ * @returns
+ */
 export function requireSelector<THtmlElement extends HTMLElement>(selector: string, element: HTMLElement | null = null): THtmlElement {
 	const result = (element ?? document).querySelector(selector);
 	if (!result) {
@@ -52,7 +89,12 @@ export function requireSelector<THtmlElement extends HTMLElement>(selector: stri
 	return result as THtmlElement;
 }
 
-export function getForm(element: HTMLElement): HTMLFormElement {
+/**
+ * 対象要素から所属する Form 要素を取得する。
+ * @param element Formに所属する要素。
+ * @returns
+ */
+export function getParentForm(element: HTMLElement): HTMLFormElement {
 	const formElement = element.closest<HTMLFormElement>('form');
 	if (formElement === null) {
 		throw new Error(element.outerText);
