@@ -20,7 +20,7 @@ function attachSubmit(element: HTMLButtonElement): void {
 			return;
 		}
 
-		const form = dom.getForm(element);
+		const form = dom.getParentForm(element);
 		form.submit();
 	});
 }
