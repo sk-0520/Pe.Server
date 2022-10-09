@@ -15,14 +15,14 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://sk_0520@bitbucket.org/sk_0520/pe.server.git"
+		"url": "git@github.com:sk-0520/Pe.Server.git"
 	},
 	"author": "sk",
 	"license": "WTFPL2",
 	"bugs": {
-		"url": "https://bitbucket.org/sk_0520/pe.server/issues"
+		"url": "https://github.com/sk-0520/Pe.Server/issues"
 	},
-	"homepage": "https://bitbucket.org/sk_0520/pe.server/src/master/README.md",
+	"homepage": "https://github.com/sk-0520/Pe.Server/blob/master/README.md",
 	"jest": {
 		"moduleFileExtensions": [
 			"ts",
