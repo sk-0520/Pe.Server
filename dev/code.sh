@@ -19,7 +19,7 @@ PHPSTAN_NAME=phpstan.phar
 PHPSTAN_FILE=${PHPSTAN_NAME}.${PHPSTAN_VERSION}
 PHPSTAN_BLEEDING_EDGE=bleedingEdge.neon
 
-PHPMD_VERSION=2.12.0
+PHPMD_VERSION=2.13.0
 PHPMD_URL=https://github.com/phpmd/phpmd/releases/download/${PHPMD_VERSION}/phpmd.phar
 PHPMD_NAME=phpmd.phar
 PHPMD_FILE=${PHPMD_NAME}.${PHPMD_VERSION}
