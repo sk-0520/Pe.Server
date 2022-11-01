@@ -75,7 +75,7 @@ class DatabaseContextTest extends TestClass
 
 		foreach ($actual as $index => $row) {
 			$num = $index + 1;
-			$this->assertSame("{$num}", $row['id']);
+			$this->assertSame($num, $row['id']);
 			$this->assertSame("value-{$num}", $row['value']);
 		}
 
