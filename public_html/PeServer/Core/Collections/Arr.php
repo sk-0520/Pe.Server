@@ -240,7 +240,7 @@ class Arr
 	{
 		$function = 'array_is_list'; // ignore intelephense(1010)
 		if (function_exists($function)) {
-			return $function($array); //@phpstan-ignore-line
+			return $function($array);
 		}
 
 		// https://www.php.net/manual/function.array-is-list.php#127044

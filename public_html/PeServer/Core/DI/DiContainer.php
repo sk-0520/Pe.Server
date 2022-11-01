@@ -217,7 +217,6 @@ class DiContainer extends DisposerBase implements IDiContainer
 				throw new DiContainerUndefinedTypeException($parameter->name);
 			}
 
-			//@phpstan-ignore-next-line null時未実装
 			$parameterValue = $this->create($item, [], $level + 1, $mappingKeyOnly, [...$callStack, $item]);
 			$result[$parameter->getPosition()] = $parameterValue;
 		}
