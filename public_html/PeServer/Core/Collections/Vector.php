@@ -32,7 +32,6 @@ class Vector extends TypeArrayBase
 		parent::__construct($type);
 
 		if (!Arr::isNullOrEmpty($items)) {
-			//@phpstan-ignore-next-line
 			$this->addRange($items, $useValues);
 		}
 	}

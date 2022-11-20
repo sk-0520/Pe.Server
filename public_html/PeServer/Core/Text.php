@@ -37,6 +37,7 @@ abstract class Text
 	 * @param string|null $s 対象文字列。
 	 * @return bool 真: `null`か空。
 	 * @phpstan-return ($s is null ? true: ($s is non-empty-string ? false: true))
+	 * @phpstan-assert-if-false non-empty-string $s
 	 */
 	public static function isNullOrEmpty(?string $s): bool
 	{
@@ -59,6 +60,7 @@ abstract class Text
 	 * @param string|null $s 対象文字列。
 	 * @return bool 真: nullかホワイトスペースのみ。
 	 * @phpstan-return ($s is null ? true: ($s is non-empty-string ? false: true))
+	 * @phpstan-assert-if-false non-empty-string $s
 	 */
 	public static function isNullOrWhiteSpace(?string $s): bool
 	{

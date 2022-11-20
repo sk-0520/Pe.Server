@@ -242,7 +242,7 @@ abstract class Logging
 			$names = Text::split($header, '\\');
 			$name = $names[count($names) - 1];
 			if (!Text::isNullOrEmpty($name)) {
-				return $name; //@phpstan-ignore-line !Text::isNullOrEmpty
+				return $name;
 			}
 		}
 
@@ -250,7 +250,7 @@ abstract class Logging
 			return TypeUtility::getType($input);
 		}
 
-		return $header; //@phpstan-ignore-line !Text::isNullOrEmpty
+		return $header;
 	}
 
 	/**

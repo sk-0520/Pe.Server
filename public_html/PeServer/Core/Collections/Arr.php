@@ -28,6 +28,7 @@ class Arr
 	 * @param array<mixed>|null $array 対象配列。
 	 * @return boolean `null` か空の場合に真。
 	 * @phpstan-return ($array is null ? true: ($array is non-empty-array ? false: true))
+	 * @phpstan-assert-if-false non-empty-array $array
 	 */
 	public static function isNullOrEmpty(?array $array): bool
 	{
