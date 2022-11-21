@@ -272,7 +272,7 @@ abstract class Text
 			throw new ArgumentException('$offset');
 		}
 
-		$result =  mb_strpos($haystack, $needle, $offset);
+		$result = mb_strpos($haystack, $needle, $offset);
 		if ($result === false) {
 			return -1;
 		}
@@ -297,7 +297,7 @@ abstract class Text
 			throw new ArgumentException('$offset');
 		}
 
-		$result =  mb_strrpos($haystack, $needle, $offset);
+		$result = mb_strrpos($haystack, $needle, $offset);
 		if ($result === false) {
 			return -1;
 		}
