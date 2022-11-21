@@ -7,18 +7,18 @@ namespace PeServer\Core\Collections;
 /**
  * 列挙順序。
  */
-abstract class OrderBy
+enum OrderBy: int
 {
 	#region define
 
 	/**
 	 * 昇順。
 	 */
-	public const ASCENDING  = -1;
+	case ASCENDING = -1;
 	/**
 	 * 降順。
 	 */
-	public const DESCENDING  = +1;
+	case DESCENDING = +1;
 
 	#endregion
 }

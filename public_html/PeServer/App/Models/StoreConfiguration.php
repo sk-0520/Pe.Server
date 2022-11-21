@@ -37,7 +37,7 @@ abstract class StoreConfiguration
 
 		return new CookieOption(
 			Text::requireNotNullOrWhiteSpace($setting->path, $base->path),
-			Text::isNullOrWhiteSpace($setting->span) ? $base->span : Time::create($setting->span), //@phpstan-ignore-line not null
+			Text::isNullOrWhiteSpace($setting->span) ? $base->span : Time::create($setting->span),
 			$setting->secure === null ? $base->secure : $setting->secure,
 			$setting->httpOnly === null ? $base->httpOnly : $setting->httpOnly,
 			Text::requireNotNullOrWhiteSpace($setting->sameSite, $base->sameSite) //@phpstan-ignore-line not null
@@ -55,7 +55,7 @@ abstract class StoreConfiguration
 		/** @var DateInterval|null */
 		$span = null;
 		if (!Text::isNullOrWhiteSpace($setting->span)) {
-			$span = Time::create($setting->span); //@phpstan-ignore-line not null
+			$span = Time::create($setting->span);
 		}
 
 		$path = Text::requireNotNullOrWhiteSpace($setting->path, '/');

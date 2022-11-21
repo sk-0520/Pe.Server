@@ -27,7 +27,7 @@ class Arr
 	 *
 	 * @param array<mixed>|null $array 対象配列。
 	 * @return boolean `null` か空の場合に真。
-	 * @phpstan-return ($array is null ? true: ($array is non-empty-array ? false: true))
+	 * @phpstan-assert-if-false non-empty-array $array
 	 */
 	public static function isNullOrEmpty(?array $array): bool
 	{
@@ -435,14 +435,13 @@ class Arr
 	 * @template TValue
 	 * @param array $array
 	 * @phpstan-param TValue[] $array
-	 * @param int $orderBy
-	 * @phpstan-param OrderBy::* $orderBy
+	 * @param OrderBy $orderBy
 	 * @return array
 	 * @phpstan-return TValue[]
 	 * @see https://www.php.net/manual/function.sort.php
 	 * @see https://www.php.net/manual/function.rsort.php
 	 */
-	public static function sortByValue(array $array, int $orderBy): array
+	public static function sortByValue(array $array, OrderBy $orderBy): array
 	{
 		$result = $array;
 		$flags = SORT_REGULAR;
@@ -461,14 +460,13 @@ class Arr
 	 * @template TValue
 	 * @param array $array
 	 * @phpstan-param array<array-key,TValue> $array
-	 * @param int $orderBy
-	 * @phpstan-param OrderBy::* $orderBy
+	 * @param OrderBy $orderBy
 	 * @return array
 	 * @phpstan-return array<array-key,TValue>
 	 * @see https://www.php.net/manual/function.ksort.php
 	 * @see https://www.php.net/manual/function.krsort.php
 	 */
-	public static function sortByKey(array $array, int $orderBy): array
+	public static function sortByKey(array $array, OrderBy $orderBy): array
 	{
 		$result = $array;
 		$flags = SORT_REGULAR;
