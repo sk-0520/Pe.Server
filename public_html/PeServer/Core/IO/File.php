@@ -88,16 +88,18 @@ abstract class File
 	 * @param string $path
 	 * @param Binary $data
 	 * @param boolean $append
-	 * @return void
+	 * @return int 書き込みサイズ。
 	 * @throws IOException
 	 */
-	private static function saveContent(string $path, Binary $data, bool $append): void
+	private static function saveContent(string $path, Binary $data, bool $append): int
 	{
 		$flag = $append ? FILE_APPEND : 0;
 		$length = file_put_contents($path, $data->getRaw(), LOCK_EX | $flag);
 		if ($length === false) {
 			throw new IOException($path);
 		}
+
+		return $length;
 	}
 
 	/**
@@ -105,12 +107,12 @@ abstract class File
 	 *
 	 * @param string $path
 	 * @param Binary $data
-	 * @return void
+	 * @return int 書き込みサイズ。
 	 * @throws IOException
 	 */
-	public static function writeContent(string $path, Binary $data): void
+	public static function writeContent(string $path, Binary $data): int
 	{
-		self::saveContent($path, $data, false);
+		return self::saveContent($path, $data, false);
 	}
 
 	/**
@@ -118,12 +120,12 @@ abstract class File
 	 *
 	 * @param string $path
 	 * @param Binary $data
-	 * @return void
+	 * @return int 書き込みサイズ。
 	 * @throws IOException
 	 */
-	public static function appendContent(string $path, Binary $data): void
+	public static function appendContent(string $path, Binary $data): int
 	{
-		self::saveContent($path, $data, true);
+		return self::saveContent($path, $data, true);
 	}
 
 	/**
@@ -152,16 +154,16 @@ abstract class File
 	 * @param string $path
 	 * @param array<mixed>|\stdClass $data
 	 * @param JsonSerializer|null $jsonSerializer JSON処理
-	 * @return void
+	 * @return int 書き込みサイズ。
 	 * @throws IOException
 	 * @throws ParseException
 	 */
-	public static function writeJsonFile(string $path, array|stdClass $data, ?JsonSerializer $jsonSerializer = null): void
+	public static function writeJsonFile(string $path, array|stdClass $data, ?JsonSerializer $jsonSerializer = null): int
 	{
 		$jsonSerializer ??= new JsonSerializer();
 		$value = $jsonSerializer->save($data);
 
-		self::saveContent($path, $value, false);
+		return self::saveContent($path, $value, false);
 	}
 
 	/**

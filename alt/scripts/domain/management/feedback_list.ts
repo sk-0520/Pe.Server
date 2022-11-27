@@ -1,7 +1,7 @@
 import * as dialog from '../../core/dialog';
 import * as dom from '../../core/dom';
 import * as ajax from '../../core/ajax';
-import * as path from '../../core/path';
+import * as url from '../../core/url';
 
 function attachDelete(element: HTMLButtonElement): void {
 	element.addEventListener('click', async ev => {
@@ -20,7 +20,7 @@ function attachDelete(element: HTMLButtonElement): void {
 		}
 
 		const sequence = dom.getDataset(element, 'sequence');
-		const json = await ajax.communicateJsonAsync(path.join('/ajax/feedback', sequence), 'DELETE');
+		const json = await ajax.communicateJsonAsync(url.joinPath('/ajax/feedback', sequence), 'DELETE');
 
 		if (!json.error) {
 			location.reload();

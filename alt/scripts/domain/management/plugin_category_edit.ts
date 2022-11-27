@@ -1,6 +1,6 @@
 import * as dom from '../../core/dom'
 import * as ajax from '../../core/ajax'
-import * as path from '../../core/path'
+import * as url from '../../core/url'
 
 function registerRow(trElement: HTMLTableRowElement) {
 	const pluginCategoryId = dom.getDataset(trElement, 'plugin-category-id');
@@ -16,7 +16,7 @@ function registerRow(trElement: HTMLTableRowElement) {
 
 		const descriptionElement = trElement.querySelector('[name="description"]') as HTMLInputElement;
 
-		const json = await ajax.communicateJsonAsync(path.join('/ajax/plugin-category', pluginCategoryId), 'PATCH', {
+		const json = await ajax.communicateJsonAsync(url.joinPath('/ajax/plugin-category', pluginCategoryId), 'PATCH', {
 			'category_display_name': displayNameElement.value.trim(),
 			'category_description': descriptionElement.value.trim(),
 		});
@@ -27,7 +27,7 @@ function registerRow(trElement: HTMLTableRowElement) {
 
 	deleteElement.addEventListener('click', async ev => {
 		if (confirm(pluginCategoryId + ' を削除?')) {
-			const json = await ajax.communicateJsonAsync(path.join('/ajax/plugin-category', pluginCategoryId), 'DELETE');
+			const json = await ajax.communicateJsonAsync(url.joinPath('/ajax/plugin-category', pluginCategoryId), 'DELETE');
 			if(json.error) {
 				alert(json);
 			} else {

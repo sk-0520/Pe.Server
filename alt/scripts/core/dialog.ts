@@ -1,4 +1,5 @@
-import * as common from './common';
+import * as task from './task';
+import * as time from './time';
 
 export enum ButtonType {
 	/**
@@ -333,8 +334,8 @@ export function show(setting: DialogSetting<void>) {
  * 待機中ダイアログを表示
  * @param busyTimeMs 表示するまでの時間(ミリ秒)
  */
-export async function busyAsync(busyTimeMs: number): Promise<{ dialog: Dialog<void>, result: Promise<DialogResult<void>> }> {
-	await common.sleepAsync(busyTimeMs);
+export async function busyAsync(busyTimeMs: time.TimeSpan): Promise<{ dialog: Dialog<void>, result: Promise<DialogResult<void>> }> {
+	await task.sleepAsync(busyTimeMs);
 
 	const dlg = new Dialog<void>({
 		button: ButtonType.None,
