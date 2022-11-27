@@ -152,7 +152,7 @@ class Arr
 	 * @param array<int|string,mixed> $array 対象配列。
 	 * @phpstan-param array<array-key,mixed> $array
 	 * @return array<int|string>
-	 * @phpstan-return array-key[]
+	 * @phpstan-return list<array-key>
 	 * @see https://www.php.net/manual/function.array-keys.php
 	 */
 	public static function getKeys(array $array): array
@@ -167,7 +167,7 @@ class Arr
 	 * @param array<int|string,mixed> $array 対象配列。
 	 * @phpstan-param array<array-key,TValue> $array
 	 * @return array<mixed>
-	 * @phpstan-return TValue[]
+	 * @phpstan-return list<TValue>
 	 * @see https://www.php.net/manual/function.array-values.php
 	 */
 	public static function getValues(array $array): array
@@ -235,6 +235,7 @@ class Arr
 	 * @param array<mixed> $array 対象配列。
 	 * @return bool
 	 * @see https://www.php.net/manual/function.array-is-list.php#127044
+	 * @phpstan-assert-if-true list $array
 	 */
 	public static function isList(array $array): bool
 	{
@@ -295,7 +296,7 @@ class Arr
 	 * @param int $count 取得数。
 	 * @phpstan-param positive-int $count
 	 * @return array<string|int>
-	 * @phpstan-return array-key[]
+	 * @phpstan-return list<array-key>
 	 * @throws ArgumentException
 	 */
 	public static function getRandomKeys(array $array, int $count): array
@@ -391,7 +392,7 @@ class Arr
 	 * @param int $count 件数。
 	 * @phpstan-param UnsignedIntegerAlias $count
 	 * @return self
-	 * @phpstan-return array<int>
+	 * @phpstan-return list<int>
 	 */
 	public static function range(int $start, int $count): array
 	{
@@ -417,7 +418,7 @@ class Arr
 	 * @param int $count 件数。
 	 * @phpstan-param UnsignedIntegerAlias $count
 	 * @return self
-	 * @phpstan-return TRepeatValue[]
+	 * @phpstan-return list<TRepeatValue>
 	 * @see https://www.php.net/manual/function.array-fill.php
 	 */
 	public static function repeat(mixed $value, int $count): array
