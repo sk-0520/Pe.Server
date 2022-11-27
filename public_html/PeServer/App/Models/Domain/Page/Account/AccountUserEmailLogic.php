@@ -82,7 +82,7 @@ class AccountUserEmailLogic extends PageLogicBase
 
 	protected function validateImpl(LogicCallMode $callMode): void
 	{
-		if ($callMode->isInitialize()) {
+		if ($callMode === LogicCallMode::Initialize) {
 			return;
 		}
 
@@ -108,7 +108,7 @@ class AccountUserEmailLogic extends PageLogicBase
 
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
-		if ($callMode->isInitialize()) {
+		if ($callMode === LogicCallMode::Initialize) {
 			return;
 		}
 
@@ -256,7 +256,7 @@ class AccountUserEmailLogic extends PageLogicBase
 
 	protected function cleanup(LogicCallMode $callMode): void
 	{
-		if (!($this->getRequest('account_email_mode') == 'edit' && $callMode->isSubmit())) {
+		if (!($this->getRequest('account_email_mode') == 'edit' && $callMode === LogicCallMode::Submit)) {
 			$this->setValue('account_email_email', $this->defaultValues['email']);
 		}
 

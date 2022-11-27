@@ -53,7 +53,7 @@ class ManagementDefaultPluginLogic extends PageLogicBase
 
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
-		if ($callMode->isInitialize()) {
+		if ($callMode === LogicCallMode::Initialize) {
 			$this->setValue('plugins', $this->defaultPlugins);
 			return;
 		}

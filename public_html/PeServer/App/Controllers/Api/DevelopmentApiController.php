@@ -20,7 +20,7 @@ final class DevelopmentApiController extends ApiControllerBase
 	public function initialize(): IActionResult
 	{
 		$logic = $this->createLogic(DevelopmentApiInitializeLogic::class);
-		$logic->run(LogicCallMode::submit());
+		$logic->run(LogicCallMode::Submit);
 
 		return $this->data($logic->getContent());
 	}
@@ -28,7 +28,7 @@ final class DevelopmentApiController extends ApiControllerBase
 	public function administrator(): IActionResult
 	{
 		$logic = $this->createLogic(DevelopmentApiAdministratorLogic::class);
-		$logic->run(LogicCallMode::submit());
+		$logic->run(LogicCallMode::Submit);
 
 		return $this->data($logic->getContent());
 	}

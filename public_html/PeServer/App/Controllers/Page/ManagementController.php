@@ -42,7 +42,7 @@ final class ManagementController extends PageControllerBase
 	public function setup_get(): IActionResult
 	{
 		$logic = $this->createLogic(ManagementSetupLogic::class);
-		$logic->run(LogicCallMode::initialize());
+		$logic->run(LogicCallMode::Initialize);
 
 		return $this->view('setup', $logic->getViewData());
 	}
@@ -50,7 +50,7 @@ final class ManagementController extends PageControllerBase
 	public function setup_post(): IActionResult
 	{
 		$logic = $this->createLogic(ManagementSetupLogic::class);
-		if ($logic->run(LogicCallMode::submit())) {
+		if ($logic->run(LogicCallMode::Submit)) {
 			return $this->redirectPath('/');
 		}
 
@@ -60,7 +60,7 @@ final class ManagementController extends PageControllerBase
 	public function environment(): IActionResult
 	{
 		$logic = $this->createLogic(ManagementEnvironmentLogic::class);
-		$logic->run(LogicCallMode::initialize());
+		$logic->run(LogicCallMode::Initialize);
 
 		return $this->view('environment', $logic->getViewData());
 	}
@@ -68,7 +68,7 @@ final class ManagementController extends PageControllerBase
 	public function configuration(): IActionResult
 	{
 		$logic = $this->createLogic(ManagementConfigurationLogic::class);
-		$logic->run(LogicCallMode::initialize());
+		$logic->run(LogicCallMode::Initialize);
 
 		return $this->view('configuration', $logic->getViewData());
 	}
@@ -76,7 +76,7 @@ final class ManagementController extends PageControllerBase
 	public function backup(): IActionResult
 	{
 		$logic = $this->createLogic(ManagementBackupLogic::class);
-		$logic->run(LogicCallMode::submit());
+		$logic->run(LogicCallMode::Submit);
 
 		return $this->redirectPath('/management');
 	}
@@ -84,35 +84,35 @@ final class ManagementController extends PageControllerBase
 	public function database_maintenance_get(): IActionResult
 	{
 		$logic = $this->createLogic(ManagementDatabaseMaintenanceLogic::class);
-		$logic->run(LogicCallMode::initialize());
+		$logic->run(LogicCallMode::Initialize);
 
 		return $this->view('database_maintenance', $logic->getViewData());
 	}
 	public function database_maintenance_post(): IActionResult
 	{
 		$logic = $this->createLogic(ManagementDatabaseMaintenanceLogic::class);
-		$logic->run(LogicCallMode::submit());
+		$logic->run(LogicCallMode::Submit);
 		return $this->view('database_maintenance', $logic->getViewData());
 	}
 
 	public function php_evaluate_get(): IActionResult
 	{
 		$logic = $this->createLogic(ManagementPhpEvaluateLogic::class);
-		$logic->run(LogicCallMode::initialize());
+		$logic->run(LogicCallMode::Initialize);
 
 		return $this->view('php_evaluate', $logic->getViewData());
 	}
 	public function php_evaluate_post(): IActionResult
 	{
 		$logic = $this->createLogic(ManagementPhpEvaluateLogic::class);
-		$logic->run(LogicCallMode::submit());
+		$logic->run(LogicCallMode::Submit);
 		return $this->view('php_evaluate', $logic->getViewData());
 	}
 
 	public function default_plugin_get(): IActionResult
 	{
 		$logic = $this->createLogic(ManagementDefaultPluginLogic::class);
-		$logic->run(LogicCallMode::initialize());
+		$logic->run(LogicCallMode::Initialize);
 
 		return $this->view('default_plugin', $logic->getViewData());
 	}
@@ -120,7 +120,7 @@ final class ManagementController extends PageControllerBase
 	public function default_plugin_post(): IActionResult
 	{
 		$logic = $this->createLogic(ManagementDefaultPluginLogic::class);
-		if ($logic->run(LogicCallMode::submit())) {
+		if ($logic->run(LogicCallMode::Submit)) {
 			return $this->redirectPath('management/default-plugin');
 		}
 
@@ -130,7 +130,7 @@ final class ManagementController extends PageControllerBase
 	public function cache_rebuild(): IActionResult
 	{
 		$logic = $this->createLogic(ManagementCacheRebuildLogic::class);
-		$logic->run(LogicCallMode::submit());
+		$logic->run(LogicCallMode::Submit);
 
 		return $this->redirectPath('/management');
 	}
@@ -138,7 +138,7 @@ final class ManagementController extends PageControllerBase
 	public function feedback_list_top(): IActionResult
 	{
 		$logic = $this->createLogic(ManagementFeedbackListLogic::class);
-		$logic->run(LogicCallMode::initialize());
+		$logic->run(LogicCallMode::Initialize);
 
 		return $this->view('feedback_list', $logic->getViewData());
 	}
@@ -146,7 +146,7 @@ final class ManagementController extends PageControllerBase
 	public function feedback_list_page(): IActionResult
 	{
 		$logic = $this->createLogic(ManagementFeedbackListLogic::class);
-		$logic->run(LogicCallMode::submit());
+		$logic->run(LogicCallMode::Submit);
 
 		return $this->view('feedback_list', $logic->getViewData());
 	}
@@ -154,7 +154,7 @@ final class ManagementController extends PageControllerBase
 	public function feedback_detail(): IActionResult
 	{
 		$logic = $this->createLogic(ManagementFeedbackDetailLogic::class);
-		$logic->run(LogicCallMode::initialize());
+		$logic->run(LogicCallMode::Initialize);
 
 		return $this->view('feedback_detail', $logic->getViewData());
 	}
@@ -162,7 +162,7 @@ final class ManagementController extends PageControllerBase
 	public function crash_report_list_top(): IActionResult
 	{
 		$logic = $this->createLogic(ManagementCrashReportListLogic::class);
-		$logic->run(LogicCallMode::initialize());
+		$logic->run(LogicCallMode::Initialize);
 
 		return $this->view('crash_report_list', $logic->getViewData());
 	}
@@ -170,7 +170,7 @@ final class ManagementController extends PageControllerBase
 	public function crash_report_list_page(): IActionResult
 	{
 		$logic = $this->createLogic(ManagementCrashReportListLogic::class);
-		$logic->run(LogicCallMode::submit());
+		$logic->run(LogicCallMode::Submit);
 
 		return $this->view('crash_report_list', $logic->getViewData());
 	}
@@ -178,7 +178,7 @@ final class ManagementController extends PageControllerBase
 	public function crash_report_detail(): IActionResult
 	{
 		$logic = $this->createLogic(ManagementCrashReportDetailLogic::class);
-		$logic->run(LogicCallMode::initialize());
+		$logic->run(LogicCallMode::Initialize);
 
 		return $this->view('crash_report_detail', $logic->getViewData());
 	}
@@ -186,7 +186,7 @@ final class ManagementController extends PageControllerBase
 	public function version_get(): IActionResult
 	{
 		$logic = $this->createLogic(ManagementVersionLogic::class);
-		$logic->run(LogicCallMode::initialize());
+		$logic->run(LogicCallMode::Initialize);
 
 		return $this->view('version', $logic->getViewData());
 	}
@@ -194,7 +194,7 @@ final class ManagementController extends PageControllerBase
 	public function version_post(): IActionResult
 	{
 		$logic = $this->createLogic(ManagementVersionLogic::class);
-		if($logic->run(LogicCallMode::submit())) {
+		if($logic->run(LogicCallMode::Submit)) {
 			return $this->redirectPath('management/version');
 		}
 
@@ -204,7 +204,7 @@ final class ManagementController extends PageControllerBase
 	public function plugin_category_get(): IActionResult
 	{
 		$logic = $this->createLogic(ManagementPluginCategoryListLogic::class);
-		$logic->run(LogicCallMode::initialize());
+		$logic->run(LogicCallMode::Initialize);
 
 		return $this->view('plugin_category', $logic->getViewData());
 	}
@@ -212,7 +212,7 @@ final class ManagementController extends PageControllerBase
 	public function log_list(): IActionResult
 	{
 		$logic = $this->createLogic(ManagementLogListLogic::class);
-		$logic->run(LogicCallMode::initialize());
+		$logic->run(LogicCallMode::Initialize);
 
 		return $this->view('log_list', $logic->getViewData());
 	}
@@ -220,7 +220,7 @@ final class ManagementController extends PageControllerBase
 	public function log_detail(): IActionResult
 	{
 		$logic = $this->createLogic(ManagementLogDetailLogic::class);
-		$logic->run(LogicCallMode::initialize());
+		$logic->run(LogicCallMode::Initialize);
 
 		if ($logic->equalsResult('download', true)) {
 			return $this->data($logic->getContent());
@@ -232,7 +232,7 @@ final class ManagementController extends PageControllerBase
 	public function markdown(): IActionResult
 	{
 		$logic = $this->createLogic(ManagementMarkdownLogic::class);
-		$logic->run(LogicCallMode::initialize());
+		$logic->run(LogicCallMode::Initialize);
 
 		return $this->view('markdown', $logic->getViewData());
 	}

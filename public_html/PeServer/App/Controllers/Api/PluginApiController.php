@@ -22,7 +22,7 @@ class PluginApiController extends ApiControllerBase
 	public function exists(): IActionResult
 	{
 		$logic = $this->createLogic(PluginApiExistsLogic::class);
-		$logic->run(LogicCallMode::submit());
+		$logic->run(LogicCallMode::Submit);
 
 		return $this->data($logic->getContent());
 	}
@@ -30,7 +30,7 @@ class PluginApiController extends ApiControllerBase
 	public function generate_plugin_id(): IActionResult
 	{
 		$logic = $this->createLogic(PluginApiGeneratePluginIdLogic::class);
-		$logic->run(LogicCallMode::submit());
+		$logic->run(LogicCallMode::Submit);
 
 		return $this->data($logic->getContent());
 	}
@@ -38,7 +38,7 @@ class PluginApiController extends ApiControllerBase
 	public function information(): IActionResult
 	{
 		$logic = $this->createLogic(PluginApiInformationLogic::class);
-		$logic->run(LogicCallMode::submit());
+		$logic->run(LogicCallMode::Submit);
 
 		return $this->data($logic->getContent());
 	}

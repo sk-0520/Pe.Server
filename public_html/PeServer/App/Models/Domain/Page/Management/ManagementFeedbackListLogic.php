@@ -35,7 +35,7 @@ class ManagementFeedbackListLogic extends PageLogicBase
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
 		$pageNumber = 1;
-		if ($callMode->isSubmit()) {
+		if ($callMode === LogicCallMode::Submit) {
 			$requestPageNumber = $this->getRequest('page_number');
 			TypeUtility::tryParseInteger($requestPageNumber, $pageNumber);
 		}
