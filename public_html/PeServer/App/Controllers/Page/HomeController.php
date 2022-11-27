@@ -28,7 +28,7 @@ final class HomeController extends PageControllerBase
 	public function index(): IActionResult
 	{
 		$logic = $this->createLogic(HomeIndexLogic::class);
-		$logic->run(LogicCallMode::initialize());
+		$logic->run(LogicCallMode::Initialize);
 
 		return $this->view('index', $logic->getViewData());
 	}
@@ -36,7 +36,7 @@ final class HomeController extends PageControllerBase
 	public function privacy(): IActionResult
 	{
 		$logic = $this->createLogic(HomePrivacyLogic::class);
-		$logic->run(LogicCallMode::initialize());
+		$logic->run(LogicCallMode::Initialize);
 
 		return $this->view('privacy', $logic->getViewData());
 	}
@@ -44,7 +44,7 @@ final class HomeController extends PageControllerBase
 	public function contact_get(): IActionResult
 	{
 		$logic = $this->createLogic(HomeContactLogic::class);
-		$logic->run(LogicCallMode::initialize());
+		$logic->run(LogicCallMode::Initialize);
 
 		return $this->view('contact', $logic->getViewData());
 	}
@@ -52,7 +52,7 @@ final class HomeController extends PageControllerBase
 	public function about(): IActionResult
 	{
 		$logic = $this->createLogic(HomeAboutLogic::class);
-		$logic->run(LogicCallMode::initialize());
+		$logic->run(LogicCallMode::Initialize);
 
 		return $this->view('about', $logic->getViewData());
 	}
@@ -60,7 +60,7 @@ final class HomeController extends PageControllerBase
 	public function api(): IActionResult
 	{
 		$logic = $this->createLogic(HomeApiDocumentLogic::class);
-		$logic->run(LogicCallMode::initialize());
+		$logic->run(LogicCallMode::Initialize);
 
 		return $this->view('api', $logic->getViewData());
 	}
@@ -68,7 +68,7 @@ final class HomeController extends PageControllerBase
 	public function wildcard(): IActionResult
 	{
 		$logic = $this->createLogic(HomeWildcardLogic::class);
-		$logic->run(LogicCallMode::initialize());
+		$logic->run(LogicCallMode::Initialize);
 
 		return $this->data($logic->getContent());
 	}
