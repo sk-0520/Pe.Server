@@ -21,8 +21,6 @@ use PeServer\Core\TypeUtility;
 
 /**
  * ロガー生成処理。
- *
- * DIコンテナとか無いのでこいつを静的に使用してログがんばる。
  */
 abstract class Logging
 {
@@ -40,8 +38,6 @@ abstract class Logging
 
 	/**
 	 * 初期化チェック。
-	 *
-	 * @var InitializeChecker
 	 */
 	private static InitializeChecker $initializeChecker;
 
