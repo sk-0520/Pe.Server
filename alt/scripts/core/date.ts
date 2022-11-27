@@ -2,7 +2,7 @@
 簡易日付処理。
 [注意] 規模が大きくなれば moment 等を導入する
 */
-import * as common from './common';
+import * as number from './number';
 
 /**
  * なんちゃって書式処理
@@ -14,25 +14,25 @@ import * as common from './common';
 export function format(format: string, date: Date) {
 	const map: { [key: string]: (s: string) => string } = {
 		'y': s => (date.getFullYear() - 2000).toString(), // getYaer が ts にないっていうね...
-		'yy': s => common.padding(date.getFullYear() - 2000, 2, '0'),
-		'yyy': s => common.padding(date.getFullYear(), 3, '0'),
-		'yyyy': s => common.padding(date.getFullYear(), 4, '0'),
-		'yyyyy': s => common.padding(date.getFullYear(), 5, '0'),
+		'yy': s => number.padding(date.getFullYear() - 2000, 2, '0'),
+		'yyy': s => number.padding(date.getFullYear(), 3, '0'),
+		'yyyy': s => number.padding(date.getFullYear(), 4, '0'),
+		'yyyyy': s => number.padding(date.getFullYear(), 5, '0'),
 
 		'M': s => (date.getMonth() + 1).toString(),
-		'MM': s => common.padding(date.getMonth() + 1, 2, '0'),
+		'MM': s => number.padding(date.getMonth() + 1, 2, '0'),
 
 		'd': s => date.getDate().toString(),
-		'dd': s => common.padding(date.getDate(), 2, '0'),
+		'dd': s => number.padding(date.getDate(), 2, '0'),
 
 		'H': s => date.getHours().toString(),
-		'HH': s => common.padding(date.getHours(), 2, '0'),
+		'HH': s => number.padding(date.getHours(), 2, '0'),
 
 		'm': s => date.getMinutes().toString(),
-		'mm': s => common.padding(date.getMinutes(), 2, '0'),
+		'mm': s => number.padding(date.getMinutes(), 2, '0'),
 
 		's': s => date.getSeconds().toString(),
-		'ss': s => common.padding(date.getSeconds(), 2, '0'),
+		'ss': s => number.padding(date.getSeconds(), 2, '0'),
 	};
 
 	return format.replace(

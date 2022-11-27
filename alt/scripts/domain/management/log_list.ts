@@ -1,5 +1,5 @@
 import * as dom from '../../core/dom';
-import * as path from '../../core/path';
+import * as url from '../../core/url';
 import * as ajax from '../../core/ajax';
 
 function attachDelete(deleteElement: HTMLButtonElement) {
@@ -7,7 +7,7 @@ function attachDelete(deleteElement: HTMLButtonElement) {
 		ev.preventDefault();
 
 		const logName = dom.getDataset(deleteElement, 'name');
-		const json = await ajax.communicateJsonAsync(path.join('/ajax/log', logName), 'DELETE');
+		const json = await ajax.communicateJsonAsync(url.joinPath('/ajax/log', logName), 'DELETE');
 
 		if (!json.error) {
 			location.reload();
