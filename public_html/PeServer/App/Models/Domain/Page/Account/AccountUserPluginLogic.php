@@ -89,7 +89,7 @@ class AccountUserPluginLogic extends PageLogicBase
 		if (!$this->isRegister) {
 			$pluginId = Uuid::adjustGuid($this->getRequest('plugin_id'));
 
-			if ($callMode->isInitialize()) {
+			if ($callMode === LogicCallMode::Initialize) {
 				$this->setValue('account_plugin_plugin_id', $pluginId);
 				$this->setValue('from_account_plugin_plugin_id', $pluginId);
 			} else {
@@ -115,7 +115,7 @@ class AccountUserPluginLogic extends PageLogicBase
 
 	protected function validateImpl(LogicCallMode $callMode): void
 	{
-		if ($callMode->isInitialize()) {
+		if ($callMode === LogicCallMode::Initialize) {
 			return;
 		}
 
@@ -164,7 +164,7 @@ class AccountUserPluginLogic extends PageLogicBase
 
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
-		if ($callMode->isInitialize()) {
+		if ($callMode === LogicCallMode::Initialize) {
 			if (!$this->isRegister) {
 				// 既存データを引っ張ってくる
 				$pluginId = $this->getRequest('plugin_id');
@@ -291,7 +291,7 @@ class AccountUserPluginLogic extends PageLogicBase
 		}, $this->pluginCategories->rows); //@phpstan-ignore-line not null
 		$this->setValue('plugin_category_ids', $pluginCategoryIds);
 
-		if ($callMode->isSubmit()) {
+		if ($callMode === LogicCallMode::Submit) {
 			$pluginCategories = [];
 			foreach ($pluginCategoryIds as $pluginCategoryId) {
 				if (TypeUtility::parseBoolean($this->getRequest('plugin_category_' . $pluginCategoryId))) {

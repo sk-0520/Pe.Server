@@ -36,7 +36,7 @@ class AccountUserPasswordLogic extends PageLogicBase
 
 	protected function validateImpl(LogicCallMode $callMode): void
 	{
-		if ($callMode->isInitialize()) {
+		if ($callMode === LogicCallMode::Initialize) {
 			return;
 		}
 
@@ -75,7 +75,7 @@ class AccountUserPasswordLogic extends PageLogicBase
 
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
-		if ($callMode->isInitialize()) {
+		if ($callMode === LogicCallMode::Initialize) {
 			return;
 		}
 

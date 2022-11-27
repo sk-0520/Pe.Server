@@ -47,7 +47,7 @@ class AccountSignupStep1Logic extends PageLogicBase
 
 	protected function validateImpl(LogicCallMode $callMode): void
 	{
-		if ($callMode->isInitialize()) {
+		if ($callMode === LogicCallMode::Initialize) {
 			return;
 		}
 
@@ -70,7 +70,7 @@ class AccountSignupStep1Logic extends PageLogicBase
 
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
-		if ($callMode->isInitialize()) {
+		if ($callMode === LogicCallMode::Initialize) {
 			return;
 		}
 
@@ -137,7 +137,7 @@ class AccountSignupStep1Logic extends PageLogicBase
 
 	protected function cleanup(LogicCallMode $callMode): void
 	{
-		if ($callMode->isSubmit() && Arr::containsKey($this->result, 'token')) {
+		if ($callMode === LogicCallMode::Submit && Arr::containsKey($this->result, 'token')) {
 			$this->removeTemporary(self::TEMP_TOKEN);
 			return;
 		}

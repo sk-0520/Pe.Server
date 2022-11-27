@@ -41,7 +41,7 @@ class ManagementVersionLogic extends PageLogicBase
 
 	protected function validateImpl(LogicCallMode $callMode): void
 	{
-		if ($callMode->isInitialize()) {
+		if ($callMode === LogicCallMode::Initialize) {
 			return;
 		}
 
@@ -54,7 +54,7 @@ class ManagementVersionLogic extends PageLogicBase
 	{
 		$database = $this->openDatabase();
 
-		if ($callMode->isInitialize()) {
+		if ($callMode === LogicCallMode::Initialize) {
 			$peSettingEntityDao = new PeSettingEntityDao($database);
 			$version = $peSettingEntityDao->selectPeSettingVersion();
 

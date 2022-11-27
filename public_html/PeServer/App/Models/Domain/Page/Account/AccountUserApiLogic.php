@@ -41,7 +41,7 @@ class AccountUserApiLogic extends PageLogicBase
 
 	protected function validateImpl(LogicCallMode $callMode): void
 	{
-		if ($callMode->isInitialize()) {
+		if ($callMode === LogicCallMode::Initialize) {
 			return;
 		}
 	}
@@ -51,7 +51,7 @@ class AccountUserApiLogic extends PageLogicBase
 		/** @var SessionAccount */
 		$userInfo = $this->requireSession(SessionKey::ACCOUNT);
 
-		if ($callMode->isInitialize()) {
+		if ($callMode === LogicCallMode::Initialize) {
 			if (!$this->isRegister) {
 				$database = $this->openDatabase();
 				$apiKeysEntityDao = new ApiKeysEntityDao($database);

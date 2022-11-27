@@ -35,7 +35,7 @@ class ManagementCrashReportListLogic extends PageLogicBase
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
 		$pageNumber = Pagination::FIRST_PAGE_NUMBER;
-		if ($callMode->isSubmit()) {
+		if ($callMode === LogicCallMode::Submit) {
 			$requestPageNumber = $this->getRequest('page_number');
 			TypeUtility::tryParseInteger($requestPageNumber, $pageNumber);
 		}
