@@ -1,18 +1,6 @@
 {
 	"folders": [
 		{
-			"path": "public_html/PeServer",
-			"name": "PeServer"
-		},
-		{
-			"path": "test/PeServerTest",
-			"name": "Test"
-		},
-		{
-			"path": "alt",
-			"name": "Front"
-		},
-		{
 			"path": ".",
 			"name": "ROOT"
 		}
