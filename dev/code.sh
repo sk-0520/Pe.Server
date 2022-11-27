@@ -19,10 +19,10 @@ PHPSTAN_NAME=phpstan.phar
 PHPSTAN_FILE=${PHPSTAN_NAME}.${PHPSTAN_VERSION}
 PHPSTAN_BLEEDING_EDGE=bleedingEdge.neon
 
-PHPMD_VERSION=2.13.0
-PHPMD_URL=https://github.com/phpmd/phpmd/releases/download/${PHPMD_VERSION}/phpmd.phar
-PHPMD_NAME=phpmd.phar
-PHPMD_FILE=${PHPMD_NAME}.${PHPMD_VERSION}
+#[PHPMD] PHPMD_VERSION=2.13.0
+#[PHPMD] PHPMD_URL=https://github.com/phpmd/phpmd/releases/download/${PHPMD_VERSION}/phpmd.phar
+#[PHPMD] PHPMD_NAME=phpmd.phar
+#[PHPMD] PHPMD_FILE=${PHPMD_NAME}.${PHPMD_VERSION}
 
 if [ ! -f ${PPLINT_FILE} ] ; then
 	rm --force ${PPLINT_NAME}.*
@@ -37,10 +37,10 @@ if [ ! -f ${PHPSTAN_FILE} ] ; then
 	curl --output ${PHPSTAN_FILE} --location ${PHPSTAN_URL}
 	curl --output ${PHPSTAN_BLEEDING_EDGE} --location https://raw.githubusercontent.com/phpstan/phpstan-src/${PHPSTAN_VERSION}/conf/bleedingEdge.neon
 fi
-if [ ! -f ${PHPMD_FILE} ] ; then
-	rm --force ${PHPMD_NAME}.*
-	curl --output ${PHPMD_FILE} --location ${PHPMD_URL}
-fi
+#[PHPMD] if [ ! -f ${PHPMD_FILE} ] ; then
+#[PHPMD] 	rm --force ${PHPMD_NAME}.*
+#[PHPMD] 	curl --output ${PHPMD_FILE} --location ${PHPMD_URL}
+#[PHPMD] fi
 
 # if [ ! -v IGNORE_SYNTAX_CHECK ] ; then
 # 	pushd ../public_html
@@ -55,5 +55,5 @@ php "${PPLINT_FILE}" ../public_html/PeServer --colors --show-deprecated --exclud
 php "${PHPSTAN_FILE}" analyze --configuration phpstan.neon "$@"
 #set +e
 #php "${PHPMD_FILE}" ../public_html/PeServer text phpmd.xml "$@"
-php "${PHPMD_FILE}" ../public_html/PeServer ansi phpmd.xml "$@"
+#[PHPMD] php "${PHPMD_FILE}" ../public_html/PeServer ansi phpmd.xml "$@"
 #set -e
