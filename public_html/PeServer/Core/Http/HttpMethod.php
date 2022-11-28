@@ -160,6 +160,12 @@ abstract class HttpMethod
 		return self::cache(self::HTTP_METHOD_TRACE);
 	}
 
+	/**
+	 * Undocumented function
+	 *
+	 * @return string
+	 * @phpstan-return self::HTTP_METHOD_*|non-empty-string
+	 */
 	public abstract function getKind(): string;
 
 	public abstract function is(HttpMethod $httpMethod): bool;
