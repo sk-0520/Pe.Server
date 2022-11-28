@@ -33,6 +33,9 @@ abstract class Code
 	/**
 	 * 疑似コード: C# using
 	 *
+	 * これつっかえんわぁ。。。
+	 * `=>` が複数行使えればなぁ。
+	 *
 	 * @template TDisposable of IDisposable
 	 * @template TResult
 	 * @param IDisposable $disposable

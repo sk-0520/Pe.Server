@@ -24,7 +24,7 @@ class ApplicationApiController extends ApiControllerBase
 	public function feedback(): IActionResult
 	{
 		$logic = $this->createLogic(ApplicationApiFeedbackLogic::class);
-		$logic->run(LogicCallMode::submit());
+		$logic->run(LogicCallMode::Submit);
 
 		return $this->data($logic->getContent());
 	}
@@ -32,7 +32,7 @@ class ApplicationApiController extends ApiControllerBase
 	public function crash_report(): IActionResult
 	{
 		$logic = $this->createLogic(ApplicationApiCrashReportLogic::class);
-		$logic->run(LogicCallMode::submit());
+		$logic->run(LogicCallMode::Submit);
 
 		return $this->data($logic->getContent());
 	}
@@ -41,7 +41,7 @@ class ApplicationApiController extends ApiControllerBase
 	{
 		/** @var ApplicationApiVersionUpdateLogic */
 		$logic = $this->createLogic(ApplicationApiVersionUpdateLogic::class);
-		$logic->run(LogicCallMode::submit());
+		$logic->run(LogicCallMode::Submit);
 
 		return new RedirectActionResult($logic->redirectUrl, HttpStatus::found());
 	}

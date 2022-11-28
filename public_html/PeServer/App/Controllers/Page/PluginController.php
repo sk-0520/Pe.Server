@@ -24,7 +24,7 @@ final class PluginController extends PageControllerBase
 	public function index(): IActionResult
 	{
 		$logic = $this->createLogic(PluginIndexLogic::class);
-		$logic->run(LogicCallMode::initialize());
+		$logic->run(LogicCallMode::Initialize);
 
 		return $this->view('index', $logic->getViewData());
 	}
@@ -32,7 +32,7 @@ final class PluginController extends PageControllerBase
 	public function detail(): IActionResult
 	{
 		$logic = $this->createLogic(PluginDetailLogic::class);
-		$logic->run(LogicCallMode::initialize());
+		$logic->run(LogicCallMode::Initialize);
 
 		return $this->view('detail', $logic->getViewData());
 	}

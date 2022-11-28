@@ -21,7 +21,7 @@ class AdministratorApiController extends ApiControllerBase
 	public function backup(): IActionResult
 	{
 		$logic = $this->createLogic(AdministratorApiBackupLogic::class);
-		$logic->run(LogicCallMode::submit());
+		$logic->run(LogicCallMode::Submit);
 
 		return $this->data($logic->getContent());
 	}
@@ -29,7 +29,7 @@ class AdministratorApiController extends ApiControllerBase
 	public function cache_rebuild(): IActionResult
 	{
 		$logic = $this->createLogic(AdministratorApiCacheRebuildLogic::class);
-		$logic->run(LogicCallMode::submit());
+		$logic->run(LogicCallMode::Submit);
 
 		return $this->data($logic->getContent());
 	}
@@ -37,7 +37,7 @@ class AdministratorApiController extends ApiControllerBase
 	public function deploy(): IActionResult
 	{
 		$logic = $this->createLogic(AdministratorApiDeployLogic::class);
-		$logic->run(LogicCallMode::submit());
+		$logic->run(LogicCallMode::Submit);
 
 		return $this->data($logic->getContent());
 	}
@@ -45,7 +45,7 @@ class AdministratorApiController extends ApiControllerBase
 	public function pe_version(): IActionResult
 	{
 		$logic = $this->createLogic(AdministratorApiPeVersionLogic::class);
-		$logic->run(LogicCallMode::submit());
+		$logic->run(LogicCallMode::Submit);
 
 		return $this->data($logic->getContent());
 	}

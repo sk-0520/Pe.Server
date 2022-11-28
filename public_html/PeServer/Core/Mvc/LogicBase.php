@@ -251,7 +251,10 @@ abstract class LogicBase implements IValidationReceiver
 				$secure = Arr::getOr($option, 'secure', $this->stores->cookie->option->secure);
 				/** @var bool */
 				$httpOnly = Arr::getOr($option, 'httpOnly', $this->stores->cookie->option->httpOnly);
-				/** @var 'Lax'|'lax'|'None'|'none'|'Strict'|'strict' */
+				/**
+				 * @var string
+				 * @phpstan-var 'Lax'|'lax'|'None'|'none'|'Strict'|'strict'
+				*/
 				$sameSite = Arr::getOr($option, 'sameSite', $this->stores->cookie->option->sameSite);
 
 				$cookieOption = new CookieOption(
@@ -259,7 +262,7 @@ abstract class LogicBase implements IValidationReceiver
 					$span,
 					$secure,
 					$httpOnly,
-					(string)$sameSite
+					$sameSite
 				);
 			}
 		}
@@ -449,7 +452,8 @@ abstract class LogicBase implements IValidationReceiver
 	 * キーに対する一括検証処理。
 	 *
 	 * @param string $key
-	 * @param callable(string $key,string $value):void $callback
+	 * @param callable $callback
+	 * @phpstan-param callable(string,string):void $callback
 	 * @param array{default?:string,trim?:bool}|null $option オプション
 	 *   * default: 取得失敗時の値。
 	 *   * trim: 値をトリムするか。
@@ -573,7 +577,7 @@ abstract class LogicBase implements IValidationReceiver
 	}
 
 	/**
-	 * Undocumented function
+	 * JSON応答データ設定。
 	 *
 	 * @param array<mixed> $data
 	 * @return void
@@ -651,8 +655,10 @@ abstract class LogicBase implements IValidationReceiver
 	/**
 	 * ロジック結果に指定キー項目が存在するか。
 	 *
+	 * @template TValue
 	 * @param string $key
 	 * @param mixed $result
+	 * @phpstan-param TValue $result
 	 * @return boolean
 	 */
 	public function tryGetResult(string $key, &$result): bool
@@ -663,8 +669,10 @@ abstract class LogicBase implements IValidationReceiver
 	/**
 	 * ロジック結果の指定キー項目が指定値に一致するか。
 	 *
+	 * @template TValue
 	 * @param string $key
 	 * @param mixed $value
+	 * @phpstan-param TValue $value
 	 * @return boolean
 	 */
 	public function equalsResult(string $key, $value): bool
