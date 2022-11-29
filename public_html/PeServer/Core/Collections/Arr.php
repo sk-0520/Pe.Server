@@ -229,6 +229,18 @@ class Arr
 		return $result;
 	}
 
+	public static function isListImpl(array $array): bool
+	{
+		// https://www.php.net/manual/function.array-is-list.php#127044
+		$i = 0;
+		foreach ($array as $k => $v) {
+			if ($k !== $i++) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	/**
 	 * `array_is_list` ラッパー。
 	 *
@@ -244,14 +256,7 @@ class Arr
 			return $function($array);
 		}
 
-		// https://www.php.net/manual/function.array-is-list.php#127044
-		$i = 0;
-		foreach ($array as $k => $v) {
-			if ($k !== $i++) {
-				return false;
-			}
-		}
-		return true;
+		return self::isListImpl($array);
 	}
 
 	/**
