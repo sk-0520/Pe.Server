@@ -8,7 +8,7 @@
 		"test": "npm-run-all --sequential test:script",
 		"build:debug": "webpack --mode=development --config=webpack.config.ts",
 		"build:release": "webpack --mode=production --config=webpack.config.ts",
-		"build": "npm-run-all --sequential build:debug build:release",
+		"build": "npm-run-all --sequential build:release",
 		"watch": "webpack --watch --cache --mode=development --config=webpack.config.ts",
 		"check": "ncu",
 		"update": "ncu -u && npm install"
