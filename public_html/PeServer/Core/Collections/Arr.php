@@ -229,6 +229,13 @@ class Arr
 		return $result;
 	}
 
+	/**
+	 * `isList` 実装。
+	 *
+	 * @param array<mixed> $array 対象配列。
+	 * @return bool
+	 * @phpstan-assert-if-true list $array
+	 */
 	public static function isListImpl(array $array): bool
 	{
 		// https://www.php.net/manual/function.array-is-list.php#127044
