@@ -35,6 +35,10 @@ jobs:
         shell: bash
         run: ./dev/update-config.sh ${{ github.sha }}
 
+      - name: <Test> front-end
+        shell: bash
+        run: npm run test
+
       - name: <Test> code
         shell: bash
         run: ./dev/code.sh

@@ -209,6 +209,24 @@ class ArrTest extends TestClass
 		$this->fail();
 	}
 
+	public function test_isListImpl()
+	{
+		$tests = [
+			new Data(true, []),
+			new Data(true, [100]),
+			new Data(true, [0 => 100]),
+			new Data(false, [1 => 100]),
+			new Data(false, [50 => 100]),
+			new Data(false, ['A' => 100]),
+			new Data(false, [0, 'A' => 100]),
+			new Data(false, ['A' => 100, 0]), // 0なんかぁ
+		];
+		foreach ($tests as $test) {
+			$actual = Arr::isListImpl(...$test->args);
+			$this->assertSame($test->expected, $actual, $test->str());
+		}
+	}
+
 	public function test_isList()
 	{
 		$tests = [
@@ -265,6 +283,26 @@ class ArrTest extends TestClass
 			$actual = Arr::getRandomKeys(...$test->args);
 			$this->assertSame($test->expected, Arr::getCount($actual), $test->str());
 		}
+	}
+
+	public function test_getRandomKeys_throw_1()
+	{
+		$this->expectException(ArgumentException::class);
+		$this->expectExceptionMessage('$count');
+
+		Arr::getRandomKeys([], 0);
+
+		$this->fail();
+	}
+
+	public function test_getRandomKeys_throw_2()
+	{
+		$this->expectException(ArgumentException::class);
+		$this->expectExceptionMessage('$length < $count');
+
+		Arr::getRandomKeys([], 1);
+
+		$this->fail();
 	}
 
 	public function test_reverse()

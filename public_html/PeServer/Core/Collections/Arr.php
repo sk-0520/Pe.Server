@@ -230,6 +230,25 @@ class Arr
 	}
 
 	/**
+	 * `isList` 実装。
+	 *
+	 * @param array<mixed> $array 対象配列。
+	 * @return bool
+	 * @phpstan-assert-if-true list $array
+	 */
+	public static function isListImpl(array $array): bool
+	{
+		// https://www.php.net/manual/function.array-is-list.php#127044
+		$i = 0;
+		foreach ($array as $k => $v) {
+			if ($k !== $i++) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
 	 * `array_is_list` ラッパー。
 	 *
 	 * @param array<mixed> $array 対象配列。
@@ -244,14 +263,7 @@ class Arr
 			return $function($array);
 		}
 
-		// https://www.php.net/manual/function.array-is-list.php#127044
-		$i = 0;
-		foreach ($array as $k => $v) {
-			if ($k !== $i++) {
-				return false;
-			}
-		}
-		return true;
+		return self::isListImpl($array);
 	}
 
 	/**
