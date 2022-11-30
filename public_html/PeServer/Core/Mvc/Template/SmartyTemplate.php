@@ -104,14 +104,15 @@ class SmartyTemplate extends TemplateBase
 		foreach ($plugins as $plugin) {
 			// 関数は重複できない
 			if ($plugin instanceof ITemplateBlockFunction) {
-				// @phpstan-ignore-next-line
+				// @phpstan-ignore-next-line smarty
 				$this->engine->registerPlugin('block', $plugin->getFunctionName(), [$plugin, 'functionBlockBody']);
 			} else if ($plugin instanceof ITemplateFunction) {
-				// @phpstan-ignore-next-line
+				// @phpstan-ignore-next-line smarty
 				$this->engine->registerPlugin('function', $plugin->getFunctionName(), [$plugin, 'functionBody']);
 			}
 
 			if ($plugin instanceof ITemplateModifier) {
+				// @phpstan-ignore-next-line smarty
 				$this->engine->registerPlugin('modifier', $plugin->getModifierName(), [$plugin, 'modifierBody']);
 			}
 		}
