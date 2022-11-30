@@ -28,7 +28,11 @@ abstract class TemplateFunctionBase extends TemplatePluginBase implements ITempl
 		parent::__construct($argument);
 	}
 
+	#region function
+
 	protected abstract function functionBodyImpl(): string;
+
+	#endregion
 
 	#region ITemplateBlockFunction
 

@@ -1,7 +1,7 @@
 {
 	"name": "pe.server",
 	"version": "1.0.0",
-	"description": "* https://sourceforge.net/projects/xampp/files/XAMPP%20Windows/8.0.7/\r   * `xampp-portable-windows-x64-8.0.7-0-VS16.7z`",
+	"description": "",
 	"main": "index.js",
 	"scripts": {
 		"test:script": "jest",

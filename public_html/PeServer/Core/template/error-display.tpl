@@ -31,7 +31,7 @@
 					<dd>
 						<details>
 							<summary>展開</summary>
-							<pre>{$smarty.get|@var_dump}</pre>
+							<pre>{$smarty.get|dump}</pre>
 						</details>
 					</dd>
 
@@ -39,7 +39,7 @@
 					<dd>
 						<details>
 							<summary>展開</summary>
-							<pre>{$smarty.post|@var_dump}</pre>
+							<pre>{$smarty.post|dump}</pre>
 						</details>
 					</dd>
 
@@ -47,7 +47,7 @@
 					<dd>
 						<details>
 							<summary>展開</summary>
-							<pre>{$smarty.cookies|@var_dump}</pre>
+							<pre>{$smarty.cookies|dump}</pre>
 						</details>
 					</dd>
 
@@ -56,7 +56,7 @@
 						<dd>
 							<details>
 								<summary>展開</summary>
-								<pre>{$smarty.session|@var_dump}</pre>
+								<pre>{$smarty.session|dump}</pre>
 							</details>
 						</dd>
 					{/if}
@@ -141,7 +141,7 @@
 															{foreach from=$arg item=values key=key}
 																<details>
 																	<summary>[{$key}] <code>{\PeServer\Core\TypeUtility::getType($values)}</code></summary>
-																	<pre class="argument">{$values|@var_dump}</pre>
+																	<pre class="argument">{$values|dump}</pre>
 																</details>
 															{/foreach}
 														{else}
@@ -161,7 +161,7 @@
 
 					<details>
 						<summary>var_dump</summary>
-						<pre>{$values.throwable|@var_dump}</pre>
+						<pre>{$values.throwable|dump}</pre>
 					</details>
 				{/if}
 			</dl>
