@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Template\Plugin;
 
-use \Smarty_Internal_Template;
 use PeServer\Core\Mvc\Template\Plugin\TemplateModifierBase;
 use PeServer\Core\Mvc\Template\Plugin\ITemplateModifier;
+use PeServer\Core\Text;
 
-class VarDumpModifier extends TemplateModifierBase implements ITemplateModifier
+class DumpModifier extends TemplateModifierBase implements ITemplateModifier
 {
 	public function __construct(TemplatePluginArgument $argument)
 	{
@@ -19,16 +19,16 @@ class VarDumpModifier extends TemplateModifierBase implements ITemplateModifier
 
 	public function getModifierName(): string
 	{
-		return 'var_dump';
+		return 'dump';
 	}
 
 	#endregion
 
 	#region TemplateModifierBase
 
-	protected function modifierBodyImpl(mixed $value, array $params, Smarty_Internal_Template $smarty): string
+	protected function modifierBodyImpl(mixed $value, mixed ...$params): string
 	{
-		return '';
+		return Text::dump($value);
 	}
 
 	#endregion

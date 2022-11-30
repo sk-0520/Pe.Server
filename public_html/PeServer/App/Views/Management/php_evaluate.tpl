@@ -28,7 +28,7 @@
 				{if ($values.output instanceof \Stringable) || is_string($values.output) }
 					<pre data-clipboard="block">{$values.output}</pre>
 				{else}
-					<pre data-clipboard="block">{$values.output|var_dump}</pre>
+					<pre data-clipboard="block">{$values.output|dump}</pre>
 				{/if}
 			</dd>
 
@@ -37,7 +37,7 @@
 				{if ($values.result instanceof \Stringable) || is_string($values.result) }
 					<pre data-clipboard="block">{$values.result}</pre>
 				{elseif $values.result}
-					<pre data-clipboard="block">{$values.result|var_dump}</pre>
+					<pre data-clipboard="block">{$values.result|dump}</pre>
 				{else}
 					なし
 				{/if}

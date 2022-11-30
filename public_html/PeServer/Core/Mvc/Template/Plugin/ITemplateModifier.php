@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Template\Plugin;
 
-use \Smarty_Internal_Template;
-
 /**
- * smarty 関数
+ * smarty 修正子
  */
 interface ITemplateModifier
 {
@@ -23,11 +21,11 @@ interface ITemplateModifier
 	/**
 	 * 修正子処理出力。
 	 *
-	 * @param array<string,string> $params
-	 * @param Smarty_Internal_Template $smarty
-	 * @return string HTML
+	 * @param mixed $value
+	 * @param mixed ...$params
+	 * @return mixed
 	 */
-	public function modifierBody(mixed $value, array $params, Smarty_Internal_Template $smarty): string;
+	public function modifierBody(mixed $value, mixed ...$params): mixed;
 
 	#endregion
 }

@@ -64,7 +64,7 @@
 			<pre data-clipboard="block">{$values.result}</pre>
 			<details>
 				<summary>詳細ダンプ</summary>
-				<pre data-clipboard="block">{$values.result|@var_dump}</pre>
+				<pre data-clipboard="block">{$values.result|dump}</pre>
 			</details>
 			</pre>
 		{/if}

@@ -3,6 +3,6 @@
 {block name='BODY'}
 
 	<h2>setting.json</h2>
-	<pre data-clipboard="block">{$values.config|var_dump}</pre>
+	<pre data-clipboard="block">{$values.config|dump}</pre>
 
 {/block}
