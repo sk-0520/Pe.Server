@@ -65,12 +65,10 @@ class AssetFunction extends TemplateFunctionBase
 		$resourcePath = $sourcePath;
 		if (!$ignoreAsset) {
 			if ($isProduction) {
-				$dir = Path::getDirectoryPath($sourcePath);
-				$file = Path::getFileNameWithoutExtension($sourcePath);
-
-				$targetPath = $dir . DIRECTORY_SEPARATOR . $file . '.min.' . $fileExtension;
-				if(IOUtility::existsItem($targetPath)) {
-					$resourcePath = $targetPath;
+				$minimalPath = Path::setEnvironmentName($sourcePath, 'min');
+				$physicalPath = Path::combine(__DIR__, '..', '..', '..', '..', '..', $minimalPath);
+				if (IOUtility::existsItem($physicalPath)) {
+					$resourcePath = Text::replace($minimalPath, "\\", '/');
 				}
 			}
 
