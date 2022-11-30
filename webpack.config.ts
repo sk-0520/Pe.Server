@@ -11,11 +11,11 @@ const LiveReloadPlugin = require("webpack-livereload-plugin");
 const inputDirectory = path.resolve(__dirname, 'alt');
 const outputDirectory = path.resolve(__dirname, 'public_html');
 
-const webpackConfig = (env: string, args: any): webpack.Configuration => {
+export default function (env: { [key: string]: string }, args: any): webpack.Configuration {
 	/** 本番用か */
 	const isProduction = args.mode === 'production';
 
-	const conf: webpack.Configuration = {
+	const webpackConfig: webpack.Configuration = {
 		mode: args.mode,
 
 		// 名前に親ディレクトリを含めること(JS/CSSごちゃまぜ回避方法不明)
@@ -105,7 +105,7 @@ const webpackConfig = (env: string, args: any): webpack.Configuration => {
 	};
 
 	if (isProduction) {
-		conf.optimization = {
+		webpackConfig.optimization = {
 			minimize: true,
 			minimizer: [
 				new TerserPlugin({
@@ -113,9 +113,23 @@ const webpackConfig = (env: string, args: any): webpack.Configuration => {
 						compress: {
 							pure_funcs: [
 								'console.assert',
+								'console.table',
+								'console.dirxml',
+
+								'console.count',
+								'console.countReset',
+
+								'console.time',
+								'console.timeEnd',
+								'console.timeLog',
+								'console.timeStamp',
+
+								'console.profile',
+								'console.profileEnd',
+
 								'console.trace',
 								'console.debug',
-								'console.table',
+								'console.log',
 							]
 						}
 					}
@@ -124,8 +138,6 @@ const webpackConfig = (env: string, args: any): webpack.Configuration => {
 		}
 	}
 
-	return conf;
+	return webpackConfig;
 }
-
-export default webpackConfig;
 

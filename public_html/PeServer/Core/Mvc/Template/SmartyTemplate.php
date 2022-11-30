@@ -15,6 +15,7 @@ use PeServer\Core\Mvc\Template\Plugin\CsrfFunction;
 use PeServer\Core\Mvc\Template\Plugin\InputHelperFunction;
 use PeServer\Core\Mvc\Template\Plugin\ITemplateBlockFunction;
 use PeServer\Core\Mvc\Template\Plugin\ITemplateFunction;
+use PeServer\Core\Mvc\Template\Plugin\ITemplateModifier;
 use PeServer\Core\Mvc\Template\Plugin\MarkdownFunction;
 use PeServer\Core\Mvc\Template\Plugin\PagerFunction;
 use PeServer\Core\Mvc\Template\Plugin\ShowErrorMessagesFunction;
@@ -25,6 +26,7 @@ use PeServer\Core\Mvc\Template\TemplateParameter;
 use PeServer\Core\Mvc\Template\TemplateStore;
 use PeServer\Core\Store\Stores;
 use PeServer\Core\Throws\NotImplementedException;
+use PeServer\Core\Mvc\Template\Plugin\VarDumpModifier;
 
 class SmartyTemplate extends TemplateBase
 {
@@ -87,7 +89,7 @@ class SmartyTemplate extends TemplateBase
 			$this->stores
 		);
 		$showErrorMessagesFunction = new ShowErrorMessagesFunction($argument);
-		/** @var array<ITemplateFunction> */
+		/** @var array<ITemplateFunction|ITemplateModifier> */
 		$plugins = [
 			new CsrfFunction($argument),
 			new AssetFunction($argument),
@@ -97,16 +99,20 @@ class SmartyTemplate extends TemplateBase
 			new MarkdownFunction($argument),
 			new CodeFunction($argument),
 			new PagerFunction($argument),
+			new VarDumpModifier($argument),
 		];
 		foreach ($plugins as $plugin) {
+			// 関数は重複できない
 			if ($plugin instanceof ITemplateBlockFunction) {
 				// @phpstan-ignore-next-line
 				$this->engine->registerPlugin('block', $plugin->getFunctionName(), [$plugin, 'functionBlockBody']);
-			} else if ($plugin instanceof ITemplateFunction) { // @phpstan-ignore-line 増えたとき用にelseしたくないのである
+			} else if ($plugin instanceof ITemplateFunction) {
 				// @phpstan-ignore-next-line
 				$this->engine->registerPlugin('function', $plugin->getFunctionName(), [$plugin, 'functionBody']);
-			} else { //@phpstan-ignore-line
-				throw new NotImplementedException();
+			}
+
+			if ($plugin instanceof ITemplateModifier) {
+				$this->engine->registerPlugin('modifier', $plugin->getModifierName(), [$plugin, 'modifierBody']);
 			}
 		}
 	}

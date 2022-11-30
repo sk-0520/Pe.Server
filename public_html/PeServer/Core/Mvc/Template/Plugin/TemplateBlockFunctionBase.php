@@ -18,9 +18,13 @@ abstract class TemplateBlockFunctionBase extends TemplateFunctionBase implements
 		parent::__construct($argument);
 	}
 
-	#region ITemplateBlockFunction
+	#region function
 
 	protected abstract function functionBlockBodyImpl(string $content): string;
+
+	#endregion
+
+	#region ITemplateBlockFunction
 
 	public function functionBlockBody(array $params, mixed $content, Smarty_Internal_Template $template, bool &$repeat): string
 	{
