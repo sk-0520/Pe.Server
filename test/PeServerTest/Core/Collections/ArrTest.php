@@ -418,12 +418,12 @@ class ArrTest extends TestClass
 	public function test_sortByValue()
 	{
 		$tests = [
-			new Data([], [], OrderBy::ASCENDING),
-			new Data([], [], OrderBy::DESCENDING),
-			new Data([-1, 0, 1, 2], [2, 1, 0, -1], OrderBy::ASCENDING),
-			new Data([2, 1, 0, -1], [-1, 0, 1, 2], OrderBy::DESCENDING),
-			new Data(['A', 'a', 'z'], ['z', 'A', 'a'], OrderBy::ASCENDING),
-			new Data(['z', 'a', 'A'], ['z', 'A', 'a'], OrderBy::DESCENDING),
+			new Data([], [], OrderBy::Ascending),
+			new Data([], [], OrderBy::Descending),
+			new Data([-1, 0, 1, 2], [2, 1, 0, -1], OrderBy::Ascending),
+			new Data([2, 1, 0, -1], [-1, 0, 1, 2], OrderBy::Descending),
+			new Data(['A', 'a', 'z'], ['z', 'A', 'a'], OrderBy::Ascending),
+			new Data(['z', 'a', 'A'], ['z', 'A', 'a'], OrderBy::Descending),
 		];
 		foreach ($tests as $test) {
 			$actual = Arr::sortByValue(...$test->args);
@@ -434,10 +434,10 @@ class ArrTest extends TestClass
 	public function test_sortByKey()
 	{
 		$tests = [
-			new Data([], [], OrderBy::ASCENDING),
-			new Data([], [], OrderBy::DESCENDING),
-			new Data(['M' => '13', 'a' => 'Z', 'z' => 'A'], ['z' => 'A', 'M' => '13', 'a' => 'Z'], OrderBy::ASCENDING),
-			new Data(['z' => 'A', 'a' => 'Z', 'M' => '13'], ['z' => 'A', 'M' => '13', 'a' => 'Z'], OrderBy::DESCENDING),
+			new Data([], [], OrderBy::Ascending),
+			new Data([], [], OrderBy::Descending),
+			new Data(['M' => '13', 'a' => 'Z', 'z' => 'A'], ['z' => 'A', 'M' => '13', 'a' => 'Z'], OrderBy::Ascending),
+			new Data(['z' => 'A', 'a' => 'Z', 'M' => '13'], ['z' => 'A', 'M' => '13', 'a' => 'Z'], OrderBy::Descending),
 		];
 		foreach ($tests as $test) {
 			$actual = Arr::sortByKey(...$test->args);
