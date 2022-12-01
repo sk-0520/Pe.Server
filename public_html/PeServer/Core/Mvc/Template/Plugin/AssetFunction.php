@@ -108,7 +108,7 @@ class AssetFunction extends TemplateFunctionBase
 				case 'icon':
 					$element = $dom->addElement('link');
 					$element->setAttribute('href', $resourcePath);
-					$skipAttributes = array_merge($skipAttributes, ['rel', 'href']);
+					$skipAttributes = array_merge($skipAttributes, ['href']);
 					break;
 			}
 		}

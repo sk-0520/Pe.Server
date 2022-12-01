@@ -14,11 +14,11 @@ enum OrderBy: int
 	/**
 	 * 昇順。
 	 */
-	case ASCENDING = -1;
+	case Ascending = -1;
 	/**
 	 * 降順。
 	 */
-	case DESCENDING = +1;
+	case Descending = +1;
 
 	#endregion
 }

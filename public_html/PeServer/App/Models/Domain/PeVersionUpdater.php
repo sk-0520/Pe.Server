@@ -40,6 +40,11 @@ class PeVersionUpdater
 				]
 			);
 
+			// 標準テーマに更新URLは無視
+			if($defaultPlugin->pluginId === '4524fc23-ebb9-4c79-a26b-8f472c05095e') {
+				$url = '';
+			}
+
 			$pluginUrlsEntityDao->updatePluginUrl(
 				$defaultPlugin->pluginId,
 				PluginUrlKey::CHECK,

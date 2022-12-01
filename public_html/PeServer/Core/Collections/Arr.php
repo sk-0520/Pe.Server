@@ -460,8 +460,8 @@ class Arr
 		$flags = SORT_REGULAR;
 
 		match ($orderBy) {
-			OrderBy::ASCENDING => sort($result, $flags),
-			OrderBy::DESCENDING => rsort($result, $flags),
+			OrderBy::Ascending => sort($result, $flags),
+			OrderBy::Descending => rsort($result, $flags),
 		};
 
 		return $result;
@@ -485,8 +485,8 @@ class Arr
 		$flags = SORT_REGULAR;
 
 		match ($orderBy) {
-			OrderBy::ASCENDING => ksort($result, $flags),
-			OrderBy::DESCENDING => krsort($result, $flags),
+			OrderBy::Ascending => ksort($result, $flags),
+			OrderBy::Descending => krsort($result, $flags),
 		};
 
 		return $result;

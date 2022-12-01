@@ -81,7 +81,7 @@ class Collection implements IteratorAggregate
 		return $this->iterator;
 	}
 
-	// 開始 ----------------------------------------------------
+	#region 開始
 
 	/**
 	 * 配列からコレクション生成。
@@ -143,7 +143,9 @@ class Collection implements IteratorAggregate
 		return self::create(new EmptyIterator());
 	}
 
-	// 実体化 ----------------------------------------------------
+	#endregion
+
+	#region 実体化
 
 	/**
 	 * 配列実体化。
@@ -219,7 +221,9 @@ class Collection implements IteratorAggregate
 		return Dictionary::create($buffer);
 	}
 
-	// 処理 ----------------------------------------------------
+	#endregion
+
+	#region 処理
 
 	/**
 	 * [遅延] フィルタリング
@@ -716,7 +720,7 @@ class Collection implements IteratorAggregate
 	}
 
 	/**
-	 * 最大データの取得。
+	 * [即時] 最大データの取得。
 	 *
 	 * @param callable|null $callback
 	 * @phpstan-param callable(TValue, TKey): TValue|null $callback
@@ -747,7 +751,7 @@ class Collection implements IteratorAggregate
 	}
 
 	/**
-	 * 最小データの取得。
+	 * [即時] 最小データの取得。
 	 *
 	 * @param callable|null $callback
 	 * @phpstan-param callable(TValue, TKey): TValue|null $callback
@@ -796,6 +800,8 @@ class Collection implements IteratorAggregate
 		$iterator = new ZipIterator($this->iterator, $sequenceIterator, $callback);
 		return self::create($iterator);
 	}
+
+	#endregion
 
 	#endregion
 }

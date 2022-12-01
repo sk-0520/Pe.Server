@@ -156,7 +156,7 @@ class Regex
 				$items[$key] = $match[0][0];
 			}
 		}
-		$items = Arr::sortByKey($items, OrderBy::ASCENDING);
+		$items = Arr::sortByKey($items, OrderBy::Ascending);
 
 		$resultMatches = [
 			0 => $input,
