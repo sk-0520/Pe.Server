@@ -8,7 +8,7 @@ use PeServer\Core\Mvc\Template\Plugin\TemplateModifierBase;
 use PeServer\Core\Mvc\Template\Plugin\ITemplateModifier;
 use PeServer\Core\Text;
 
-class DumpModifier extends TemplateModifierBase implements ITemplateModifier
+class DumpModifier extends TemplateModifierBase
 {
 	public function __construct(TemplatePluginArgument $argument)
 	{
