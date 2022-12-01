@@ -17,10 +17,6 @@ use PeServer\Core\Mvc\ILogicFactory;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 
-define('NO_DEPLOY_START', '💩');
-require_once 'deploy/php-deploy-receiver.php';
-require_once 'deploy/script.php';
-
 class DevelopmentApiInitializeLogic extends ApiLogicBase
 {
 	public function __construct(
