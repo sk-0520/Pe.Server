@@ -6,6 +6,8 @@ namespace PeServer\Core\Database;
 
 /**
  * DB接続情報。
+ *
+ * @immutable
  */
 class ConnectionSetting
 {
