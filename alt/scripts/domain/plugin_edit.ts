@@ -1,5 +1,5 @@
 //import * as dom from '../core/dom'
-import * as ajax from '../core/ajax'
+import * as ajax from './ajax'
 
 async function generatePluginIdCoreAsync() {
 	var json = await ajax.communicateJsonAsync<{ plugin_id: string }>('/api/plugin/generate-plugin-id', 'GET');

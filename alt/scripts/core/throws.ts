@@ -1,5 +1,5 @@
 // エラー系
-// GEN: 2022-11-15T18:50:29+09:00
+// GEN: 2022-12-04T18:11:58+09:00
 
 // 手動 ---------------------
 
@@ -54,6 +54,16 @@ export class ArgumentError extends Error {
 	constructor(message?: string | undefined) {
 		super(message);
 		this.name = 'ArgumentError';
+	}
+}
+
+/**
+* パース系処理失敗
+ */
+export class ParseError extends Error {
+	constructor(message?: string | undefined) {
+		super(message);
+		this.name = 'ParseError';
 	}
 }
 

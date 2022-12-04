@@ -14,6 +14,7 @@ use PeServer\App\Controllers\Page\AjaxController;
 use PeServer\App\Controllers\Page\HomeController;
 use PeServer\App\Controllers\Page\ManagementController;
 use PeServer\App\Controllers\Page\PluginController;
+use PeServer\App\Controllers\Page\ToolController;
 use PeServer\App\Models\Middleware\AdministratorAccountFilterMiddleware;
 use PeServer\App\Models\Middleware\Api\ApiAdministratorAccountFilterMiddleware;
 use PeServer\App\Models\Middleware\Api\ApiUserAccountFilterMiddleware;
@@ -115,6 +116,10 @@ final class AppRouteSetting extends RouteSetting
 					->addAction('log', HttpMethod::get(), 'log_list')
 					->addAction('log/:log_name@\w+\.log', HttpMethod::get(), 'log_detail')
 					->addAction('markdown', HttpMethod::get(), 'markdown')
+				/* AUTO-FORMAT */,
+				(new Route('tool', ToolController::class))
+					->addAction('base64', HttpMethod::get(), 'base64_get')
+					->addAction('base64', HttpMethod::post(), 'base64_post')
 				/* AUTO-FORMAT */,
 				(new Route('ajax', AjaxController::class, [UserAccountFilterMiddleware::class]))
 					->addAction('markdown', HttpMethod::post(), 'markdown')

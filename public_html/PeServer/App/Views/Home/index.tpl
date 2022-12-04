@@ -41,6 +41,7 @@
 				</tbody>
 			</table>
 		</li>
+		<li><a href='/tool'>ツールとか</a></li>
 	</ul>
 
 	{if \PeServer\Core\Environment::isDevelopment()}

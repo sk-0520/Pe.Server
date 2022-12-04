@@ -20,7 +20,7 @@ use PeServer\Core\Throws\NotImplementedException;
 use PeServer\Core\TypeUtility;
 
 /**
- * ロガー生成処理。
+ * ロガー生成・共通処理。
  */
 abstract class Logging
 {
@@ -33,8 +33,8 @@ abstract class Logging
 
 	#region variable
 
-	static string $requestId;
-	static ?string $requestHost = null;
+	private static string $requestId;
+	private static ?string $requestHost = null;
 
 	/**
 	 * 初期化チェック。
