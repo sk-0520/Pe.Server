@@ -1,6 +1,6 @@
 import * as dialog from '../../core/dialog';
 import * as dom from '../../core/dom';
-import * as ajax from '../../core/ajax';
+import * as ajax from '../ajax';
 import * as url from '../../core/url';
 
 function attachDelete(element: HTMLButtonElement): void {

@@ -1,5 +1,5 @@
 // まぁまぁ適当さ加減がやばい
-import * as ajax from '../core/ajax'
+import * as ajax from './ajax'
 import * as dom from '../core/dom'
 import * as logging from '../core/logging'
 const logger = logging.create('markdown_edit');
