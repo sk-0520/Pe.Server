@@ -1,5 +1,7 @@
 # Pe サーバー処理系
 
+https://peserver.gq/
+
 可能な限り GAS でやってるけど無理なもんは無理。
 
 * 8.1 (サーバー側は 8.1.0RC5 っていう公開する神経疑う版で笑う)
@@ -7,5 +9,4 @@
     * `xampp-portable-windows-x64-8.1.0-0-VS16.7z`
     * `mklink /J C:\Applications\xampp\xampp-portable-windows-x64-8.1.0-0-VS16\xampp\htdocs D:\sk\Documents\programming\Pe\Pe.Server\public_html`
 
-* node: `18.4.0`
-* npm: `8.12.1`
+* node: `18.12.1`
