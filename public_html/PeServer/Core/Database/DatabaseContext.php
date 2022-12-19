@@ -163,10 +163,6 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 				continue;
 			}
 
-			if (empty($meta)) {
-				continue;
-			}
-
 			$column = DatabaseColumn::create($meta);
 			$columns[] = $column;
 		}
