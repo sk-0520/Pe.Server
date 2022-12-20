@@ -9,6 +9,7 @@ use PeServer\Core\Code;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Html\HtmlDocument;
 use PeServer\Core\Mvc\PageShortcut;
+use PeServer\Core\Mvc\PageShortcutKind;
 use PeServer\Core\Mvc\Pagination;
 use PeServer\Core\Mvc\Template\Plugin\TemplateFunctionBase;
 use PeServer\Core\Text;
@@ -58,8 +59,7 @@ class PagerFunction extends TemplateFunctionBase
 			$item = $parent->addElement('li');
 			$link = $item->addElement('a');
 
-			$item->addClass($shortcut->kind);
-			$item->addClass($shortcut->kind);
+			$item->addClass($shortcut->kind->value);
 
 			if ($shortcut->enabled) {
 				$link->setAttribute('href', Text::replaceMap(
@@ -76,13 +76,13 @@ class PagerFunction extends TemplateFunctionBase
 				$link->setAttribute('tabindex', '-1');
 			}
 
-			if ($shortcut->kind === PageShortcut::KIND_LONG) {
+			if ($shortcut->kind === PageShortcutKind::Long) {
 				if ($index === 0) {
 					$link->addText($jumpHead);
 				} else {
 					$link->addText($jumpTail);
 				}
-			} else if ($shortcut->kind === PageShortcut::KIND_SHORT) {
+			} else if ($shortcut->kind === PageShortcutKind::Short) {
 				if ($index <= 1) {
 					$link->addText($jumpPrev);
 				} else {

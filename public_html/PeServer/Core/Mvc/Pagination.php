@@ -6,6 +6,7 @@ namespace PeServer\Core\Mvc;
 
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Mvc\PageShortcut;
+use PeServer\Core\Mvc\PageShortcutKind;
 use PeServer\Core\Throws\ArgumentException;
 
 /**
@@ -126,7 +127,7 @@ class Pagination
 				$pageNumber,
 				$this->currentPageNumber == $pageNumber,
 				true,
-				PageShortcut::KIND_NORMAL,
+				PageShortcutKind::Normal,
 			);
 
 			$shortcuts[] = $item;
@@ -149,14 +150,14 @@ class Pagination
 
 		if ($this->shortcutTotalItemCount === 0 || empty($pageShortcuts)) {
 			return [
-				self::SHORTCUT_HEAD => new PageShortcut(PHP_INT_MIN, false, false, PageShortcut::KIND_SHORT), //@phpstan-ignore-line このページ番号は使用しない
-				self::SHORTCUT_TAIL => new PageShortcut(PHP_INT_MAX, false, false, PageShortcut::KIND_SHORT), // このページ番号は使用しない
+				self::SHORTCUT_HEAD => new PageShortcut(PHP_INT_MIN, false, false, PageShortcutKind::Short), //@phpstan-ignore-line このページ番号は使用しない
+				self::SHORTCUT_TAIL => new PageShortcut(PHP_INT_MAX, false, false, PageShortcutKind::Short), // このページ番号は使用しない
 			];
 		}
 
 		return [
-			self::SHORTCUT_HEAD => new PageShortcut($this->currentPageNumber - 1, false, $this->currentPageNumber !== 1, PageShortcut::KIND_SHORT), //@phpstan-ignore-line 状況次第でこのページ番号は使用しない
-			self::SHORTCUT_TAIL => new PageShortcut($this->currentPageNumber + 1, false, $this->currentPageNumber !== $this->shortcutTotalItemCount, PageShortcut::KIND_SHORT), //状況次第でこのページ番号は使用しない
+			self::SHORTCUT_HEAD => new PageShortcut($this->currentPageNumber - 1, false, $this->currentPageNumber !== 1, PageShortcutKind::Short), //@phpstan-ignore-line 状況次第でこのページ番号は使用しない
+			self::SHORTCUT_TAIL => new PageShortcut($this->currentPageNumber + 1, false, $this->currentPageNumber !== $this->shortcutTotalItemCount, PageShortcutKind::Short), //状況次第でこのページ番号は使用しない
 		];
 	}
 
@@ -173,14 +174,14 @@ class Pagination
 
 		if ($this->shortcutTotalItemCount === 0) {
 			return [
-				self::SHORTCUT_HEAD => new PageShortcut(PHP_INT_MIN, false, false, PageShortcut::KIND_LONG), //@phpstan-ignore-line このページ番号は使用しない
-				self::SHORTCUT_TAIL => new PageShortcut(PHP_INT_MAX, false, false, PageShortcut::KIND_LONG), // このページ番号は使用しない
+				self::SHORTCUT_HEAD => new PageShortcut(PHP_INT_MIN, false, false, PageShortcutKind::Long), //@phpstan-ignore-line このページ番号は使用しない
+				self::SHORTCUT_TAIL => new PageShortcut(PHP_INT_MAX, false, false, PageShortcutKind::Long), // このページ番号は使用しない
 			];
 		}
 
 		return [
-			self::SHORTCUT_HEAD => new PageShortcut(1, false, $this->currentPageNumber !== 1, PageShortcut::KIND_LONG),
-			self::SHORTCUT_TAIL => new PageShortcut($this->shortcutTotalItemCount, false, $this->currentPageNumber !== $this->shortcutTotalItemCount, PageShortcut::KIND_LONG),  //@phpstan-ignore-line
+			self::SHORTCUT_HEAD => new PageShortcut(1, false, $this->currentPageNumber !== 1, PageShortcutKind::Long),
+			self::SHORTCUT_TAIL => new PageShortcut($this->shortcutTotalItemCount, false, $this->currentPageNumber !== $this->shortcutTotalItemCount, PageShortcutKind::Long),  //@phpstan-ignore-line
 		];
 	}
 

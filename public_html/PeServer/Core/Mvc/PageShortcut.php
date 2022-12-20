@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc;
 
+use PeServer\Core\Mvc\PageShortcutKind;
 use PeServer\Core\Throws\ArgumentException;
 
 /**
@@ -13,14 +14,6 @@ use PeServer\Core\Throws\ArgumentException;
  */
 class PageShortcut
 {
-	#region define
-
-	public const KIND_NORMAL = 'normal';
-	public const KIND_SHORT = 'short';
-	public const KIND_LONG = 'long';
-
-	#endregion
-
 	#region variable
 	#endregion
 
@@ -31,14 +24,13 @@ class PageShortcut
 	 * @phpstan-param positive-int $pageNumber
 	 * @param bool $current 自身が現在選択ページか。
 	 * @param bool $enabled 有効か。
-	 * @param string $kind ショートカット種別。HTML(CSS) としてそのまま使用可能。
-	 * @phpstan-param self::KIND_* $kind
+	 * @param PageShortcutKind $kind ショートカット種別。HTML(CSS) としてそのまま使用可能。
 	 */
 	public function __construct(
 		public int $pageNumber,
 		public bool $current,
 		public bool $enabled,
-		public string $kind,
+		public PageShortcutKind $kind,
 	) {
 	}
 }
