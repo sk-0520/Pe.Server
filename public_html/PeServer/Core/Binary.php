@@ -35,9 +35,8 @@ final class Binary implements ArrayAccess, IteratorAggregate, Countable, Stringa
 	 * 実体。
 	 *
 	 * @var string
-	 * @readonly
 	 */
-	private string $raw;
+	private readonly string $raw;
 
 	#endregion
 

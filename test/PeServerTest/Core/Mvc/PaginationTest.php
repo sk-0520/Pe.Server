@@ -6,6 +6,7 @@ namespace PeServerTest\Core\Mvc;
 
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Mvc\PageShortcut;
+use PeServer\Core\Mvc\PageShortcutKind;
 use PeServer\Core\Mvc\Pagination;
 use PeServer\Core\Throws\ArgumentException;
 use PeServerTest\TestClass;
@@ -142,7 +143,7 @@ class PaginationTest extends TestClass
 			$s = $shortcuts[$i];
 			$this->assertSame($e, $s->pageNumber);
 			$this->assertTrue($s->enabled);
-			$this->assertSame($s->kind, PageShortcut::KIND_NORMAL);
+			$this->assertSame($s->kind, PageShortcutKind::Normal);
 			$this->assertSame($s->pageNumber === $pager->currentPageNumber, $s->current);
 		}
 	}
@@ -152,37 +153,37 @@ class PaginationTest extends TestClass
 		$pager = new Pagination(5, 10, 100, true, true, 3);
 		$actual = $pager->getShortcuts();
 
-		$this->assertSame(PageShortcut::KIND_LONG, $actual[0]->kind);
+		$this->assertSame(PageShortcutKind::Long, $actual[0]->kind);
 		$this->assertSame(1, $actual[0]->pageNumber);
 		$this->assertTrue($actual[0]->enabled);
 		$this->assertFalse($actual[0]->current);
 
-		$this->assertSame(PageShortcut::KIND_SHORT, $actual[1]->kind);
+		$this->assertSame(PageShortcutKind::Short, $actual[1]->kind);
 		$this->assertSame(4, $actual[1]->pageNumber);
 		$this->assertTrue($actual[1]->enabled);
 		$this->assertFalse($actual[1]->current);
 
-		$this->assertSame(PageShortcut::KIND_NORMAL, $actual[2]->kind);
+		$this->assertSame(PageShortcutKind::Normal, $actual[2]->kind);
 		$this->assertSame(4, $actual[2]->pageNumber);
 		$this->assertTrue($actual[2]->enabled);
 		$this->assertFalse($actual[2]->current);
 
-		$this->assertSame(PageShortcut::KIND_NORMAL, $actual[3]->kind);
+		$this->assertSame(PageShortcutKind::Normal, $actual[3]->kind);
 		$this->assertSame(5, $actual[3]->pageNumber);
 		$this->assertTrue($actual[3]->enabled);
 		$this->assertTrue($actual[3]->current);
 
-		$this->assertSame(PageShortcut::KIND_NORMAL, $actual[4]->kind);
+		$this->assertSame(PageShortcutKind::Normal, $actual[4]->kind);
 		$this->assertSame(6, $actual[4]->pageNumber);
 		$this->assertTrue($actual[4]->enabled);
 		$this->assertFalse($actual[4]->current);
 
-		$this->assertSame(PageShortcut::KIND_SHORT, $actual[5]->kind);
+		$this->assertSame(PageShortcutKind::Short, $actual[5]->kind);
 		$this->assertSame(6, $actual[5]->pageNumber);
 		$this->assertTrue($actual[5]->enabled);
 		$this->assertFalse($actual[5]->current);
 
-		$this->assertSame(PageShortcut::KIND_LONG, $actual[6]->kind);
+		$this->assertSame(PageShortcutKind::Long, $actual[6]->kind);
 		$this->assertSame(10, $actual[6]->pageNumber);
 		$this->assertTrue($actual[6]->enabled);
 		$this->assertFalse($actual[6]->current);
