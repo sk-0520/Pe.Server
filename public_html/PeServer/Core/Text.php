@@ -94,6 +94,7 @@ abstract class Text
 	 *
 	 * @param string|null $s
 	 * @param string $fallback
+	 * @return string
 	 */
 	public static function requireNotNullOrWhiteSpace(?string $s, string $fallback): string
 	{
