@@ -43,23 +43,17 @@ class Routing
 
 	/**
 	 * ルーティング設定。
-	 *
-	 * @readonly
 	 */
-	protected RouteSetting $setting;
+	protected readonly RouteSetting $setting;
 
-	/** @readonly */
-	protected Stores $stores;
+	protected readonly Stores $stores;
 
-	/** @readonly */
-	protected ILoggerFactory $loggerFactory;
+	protected readonly ILoggerFactory $loggerFactory;
 
 	/**
 	 * このルーティング内で使いまわされるDI。
-	 *
-	 * @readonly
 	 */
-	protected IDiRegisterContainer $serviceLocator;
+	protected readonly IDiRegisterContainer $serviceLocator;
 
 	/**
 	 * 前処理済みミドルウェア一覧。
@@ -87,12 +81,9 @@ class Routing
 	 */
 	private HttpRequest $shutdownRequest;
 
-	/** @readonly */
-	protected HttpMethod $requestMethod;
-	/** @readonly */
-	protected RequestPath $requestPath;
-	/** @readonly */
-	protected HttpHeader $requestHeader;
+	protected readonly HttpMethod $requestMethod;
+	protected readonly RequestPath $requestPath;
+	protected readonly HttpHeader $requestHeader;
 
 	#endregion
 
