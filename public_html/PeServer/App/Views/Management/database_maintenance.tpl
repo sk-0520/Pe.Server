@@ -16,7 +16,7 @@
 					<ul class="inline">
 						{foreach from=$values.tables item=item key=key name=name}
 							<li class="inline">
-								<button class="pg-table" type="button" data-table={$item.name} data-columns="{$item.columns|json_encode}">{$item.name}</button>
+								<button class="pg-table" type="button" data-table={$item.name} data-columns="{json_encode($item.columns, JSON_THROW_ON_ERROR)}">{$item.name}</button>
 							</li>
 						{/foreach}
 					</ul>
