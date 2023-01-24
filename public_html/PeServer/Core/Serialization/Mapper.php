@@ -119,8 +119,8 @@ class Mapper implements IMapper
 					if ($isArrayObject) {
 						$isListArray = ($mapping->flags & Mapping::FLAG_LIST_ARRAY_VALUES) === Mapping::FLAG_LIST_ARRAY_VALUES;
 						foreach ($sourceValue as $key => $value) {
-							$objClassName = $mapping->arrayValueClassName; //TODO: 定義どうしたもんだか
-							$obj = new $objClassName(); //@phpstan-ignore-line
+							$objClassName = $mapping->arrayValueClassName;
+							$obj = new $objClassName();
 							$this->mapping($value, $obj);
 							if ($isListArray) {
 								$nestDestination[] = $obj;
