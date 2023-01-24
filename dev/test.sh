@@ -4,7 +4,7 @@ cd $(cd $(dirname $0)/../test; pwd)
 
 BASE_DIR=../public_html
 
-PHPUNIT_VERSION=9.5.27
+PHPUNIT_VERSION=9.5.28
 PHPUNIT_URL=https://phar.phpunit.de/phpunit-${PHPUNIT_VERSION}.phar
 PHPUNIT_FILE=phpunit.phar.${PHPUNIT_VERSION}
 PHPUNIT_BASE_DIR=../test
