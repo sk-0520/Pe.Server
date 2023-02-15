@@ -27,7 +27,7 @@
 						<th>Current</th>
 						<td>
 							<a href="https://github.com/sk-0520/Pe/actions">
-								<img class="page-user-index-ci {\PeServer\Core\Environment::get()}" {if \PeServer\Core\Environment::isProduction()} src="https://github.com/sk-0520/Pe/actions/workflows/build-release.yml/badge.svg" {/if} />
+								<img class="page-user-index-ci {\PeServer\Core\Environment::get()}" {if \PeServer\Core\Environment::isProduction()} src="https://github.com/sk-0520/Pe/actions/workflows/build-works.yml/badge.svg {/if} />
 							</a>
 						</td>
 					</tr>
@@ -35,7 +35,7 @@
 						<th>Master</th>
 						<td>
 						<a href="https://github.com/sk-0520/Pe/actions?query=branch%3Amaster">
-					<img class="page-user-index-ci {\PeServer\Core\Environment::get()}" {if \PeServer\Core\Environment::isProduction()} src="https://github.com/sk-0520/Pe.Server/actions/workflows/build-release.yml/badge.svg?branch=master" {/if} />
+					<img class="page-user-index-ci {\PeServer\Core\Environment::get()}" {if \PeServer\Core\Environment::isProduction()} src="https://github.com/sk-0520/Pe/actions/workflows/build-release.yml/badge.svg" {/if} />
 							</a>
 						</td>
 					</tr>
