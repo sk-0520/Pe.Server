@@ -158,7 +158,6 @@ class AutoLoader
 			}
 		}
 
-		/** @phpstan-var non-empty-array<non-empty-string> */
 		$fixedExtensions = [];
 		if (isset($mapping['extensions']) && $mapping['extensions'] !== null) { //@phpstan-ignore-line
 			foreach ($mapping['extensions'] as $extension) {
@@ -173,7 +172,7 @@ class AutoLoader
 				}
 			}
 		}
-		if (!count($fixedExtensions)) { //@phpstan-ignore-line
+		if (!count($fixedExtensions)) {
 			$fixedExtensions = ['.php'];
 		}
 

@@ -73,15 +73,15 @@ abstract class SetupVersionBase
 		$statements =  $regex->split($multiStatement, '/^\s*;\s*$/m');
 		/** @phpstan-var literal-string[] */
 		$result = [];
-		foreach($statements as $statement) {
-			if(Text::isNullOrWhiteSpace($statement)) {
+		foreach ($statements as $statement) {
+			if (Text::isNullOrWhiteSpace($statement)) {
 				continue;
 			}
-			/** @phpstan-var literal-string $statement*/
 
 			$result[] = $statement;
 		}
 
+		/** @phpstan-var literal-string[] $result */
 		return $result;
 	}
 

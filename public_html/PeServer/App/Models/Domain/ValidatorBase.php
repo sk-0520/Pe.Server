@@ -42,7 +42,6 @@ abstract class ValidatorBase
 	public final function isWebsite(string $key, ?string $value): bool
 	{
 		if (!Text::isNullOrWhiteSpace($value)) {
-			/** @var string $value isNotWhiteSpace */
 			$trueKeeper = new TrueKeeper();
 
 			$trueKeeper->state = $this->validator->inLength($key, self::WEBSITE_LENGTH, $value);

@@ -68,7 +68,6 @@ abstract class Text
 			return true;
 		}
 
-		/** @var string $s */
 		return strlen(self::trim($s)) === 0;
 	}
 
@@ -85,7 +84,6 @@ abstract class Text
 			return $fallback;
 		}
 
-		/** @var string */
 		return $s;
 	}
 
@@ -102,7 +100,6 @@ abstract class Text
 			return $fallback;
 		}
 
-		/** @var string */
 		return $s;
 	}
 

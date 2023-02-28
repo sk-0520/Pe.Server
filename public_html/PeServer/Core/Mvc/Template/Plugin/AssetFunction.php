@@ -100,7 +100,7 @@ class AssetFunction extends TemplateFunctionBase
 			'auto_size',
 			'include',
 		];
-		/** @var DOMElement */
+		/** @var DOMElement|null */
 		$element = null;
 
 		if (Arr::tryGet($this->params, 'rel', $relValue)) {
@@ -113,7 +113,7 @@ class AssetFunction extends TemplateFunctionBase
 			}
 		}
 
-		if ($element === null) { //@phpstan-ignore-line
+		if ($element === null) {
 			switch ($extension) {
 				case 'css':
 					if ($include) {
