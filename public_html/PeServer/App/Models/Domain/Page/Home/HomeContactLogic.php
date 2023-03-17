@@ -23,10 +23,6 @@ class HomeContactLogic extends PageLogicBase
 
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
-		/**
-		 * @var array<string,string>
-		 * @phpstan-var array<non-empty-string,string>
-		 */
 		$families = $this->config->setting->config->address->families;
 		$this->setValue('families', $families);
 	}

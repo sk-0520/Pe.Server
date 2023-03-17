@@ -99,7 +99,6 @@ class PluginValidator extends ValidatorBase
 	public function isDescription(string $key, ?string $value): bool
 	{
 		if (!Text::isNullOrWhiteSpace($value)) {
-			/** @var string $value isNotWhiteSpace */
 			$trueKeeper = new TrueKeeper();
 
 			$trueKeeper->state = $this->validator->inLength($key, self::PLUGIN_DESCRIPTION_LENGTH, $value);

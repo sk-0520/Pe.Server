@@ -64,7 +64,7 @@ class Arr
 				}
 				if (is_a($result, $fallbackValueType)) {
 					/** @var TValue */
-					return $result;
+					return $result; //@phpstan-ignore-line わっからん
 				}
 
 				throw new TypeException();

@@ -2,16 +2,6 @@ import * as types from './types';
 import * as regex from './regex';
 
 /**
- * 空文字列か。
- *
- * @param s
- * @returns
- */
-export function isEmpty(s: string | null | undefined): boolean {
-	return types.isString(s) && s.length === 0;
-}
-
-/**
  * 非空文字列(ホワイトスペース構成は除く)か。
  *
  * @param s

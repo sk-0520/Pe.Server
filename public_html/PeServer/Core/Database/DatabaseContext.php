@@ -113,7 +113,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 	{
 		$this->throwIfDisposed();
 
-		/** @var PDOStatement|false */
+		/** @var PDOStatement|false|null */
 		$query = null;
 
 		try {
