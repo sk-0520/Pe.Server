@@ -1,35 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd"
-	bootstrap="../test/test.php"
-	cacheResultFile="../test/.phpunit.result.cache"
-	executionOrder="depends,defects"
-	forceCoversAnnotation="false"
-	beStrictAboutCoversAnnotation="true"
-	beStrictAboutOutputDuringTests="true"
-	beStrictAboutTodoAnnotatedTests="true"
-	convertDeprecationsToExceptions="true"
-	failOnRisky="true"
-	failOnWarning="true"
-	verbose="true"
-	colors="true"
->
-	<testsuites>
-		<testsuite name="default">
-			<directory>../test/PeServerTest</directory>
-		</testsuite>
-	</testsuites>
-
-	<coverage processUncoveredFiles="true">
-		<include>
-			<directory suffix=".php">../public_html/PeServer</directory>
-		</include>
-		<exclude>
-			<directory>../public_html/deploy</directory>
-			<directory>../public_html/PeServer/data</directory>
-			<directory>../public_html/PeServer/Core/Libs</directory>
-			<file>../public_html/PeServer/App/Models/Domain/Api/DevelopmentApi/DevelopmentApiInitializeLogic.php</file>
-		</exclude>
-	</coverage>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.0/phpunit.xsd" bootstrap="../test/test.php" executionOrder="depends,defects" beStrictAboutOutputDuringTests="true" failOnRisky="true" failOnWarning="true" colors="true" cacheDirectory=".phpunit.cache" requireCoverageMetadata="false" beStrictAboutCoverageMetadata="true">
+  <testsuites>
+    <testsuite name="default">
+      <directory>../test/PeServerTest</directory>
+    </testsuite>
+  </testsuites>
+  <coverage>
+    <include>
+      <directory suffix=".php">../public_html/PeServer</directory>
+    </include>
+    <exclude>
+      <directory>../public_html/deploy</directory>
+      <directory>../public_html/PeServer/data</directory>
+      <directory>../public_html/PeServer/Core/Libs</directory>
+      <file>../public_html/PeServer/App/Models/Domain/Api/DevelopmentApi/DevelopmentApiInitializeLogic.php</file>
+    </exclude>
+  </coverage>
 </phpunit>
