@@ -19,7 +19,7 @@ class DiItemTest extends TestClass
 	{
 		new DiItem(DiItem::LIFECYCLE_TRANSIENT, DiItem::TYPE_TYPE, self::class);
 		new DiItem(DiItem::LIFECYCLE_SINGLETON, DiItem::TYPE_VALUE, ['k' => 'v']);
-		new DiItem(DiItem::LIFECYCLE_TRANSIENT, DiItem::TYPE_FACTORY, fn () => new self());
+		new DiItem(DiItem::LIFECYCLE_TRANSIENT, DiItem::TYPE_FACTORY, fn () => new self(__FILE__));
 		$this->success();
 	}
 
@@ -101,7 +101,7 @@ class DiItemTest extends TestClass
 		$this->assertTrue($item->hasSingletonValue());
 
 		try {
-			$item->setSingletonValue(new self());
+			$item->setSingletonValue(new self(__FILE__));
 		} catch (InvalidOperationException $ex) {
 			$this->success();
 		} catch (Throwable $ex) {
