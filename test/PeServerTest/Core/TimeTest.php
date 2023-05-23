@@ -63,7 +63,7 @@ class TimeTest extends TestClass
 		}
 	}
 
-	public function provider_create_throw()
+	public static function provider_create_throw()
 	{
 		return [
 			['', ArgumentException::class],

@@ -16,13 +16,13 @@ class PathTest extends TestClass
 	{
 		$sep = DIRECTORY_SEPARATOR;
 		$tests = [
-			new Data("a${sep}b", "a", "b"),
-			new Data("a${sep}b", "a", '', "b"),
-			new Data("a${sep}b${sep}c", '', "a", 'b', "c", ''),
-			new Data("${sep}", "${sep}"),
+			new Data("a{$sep}b", "a", "b"),
+			new Data("a{$sep}b", "a", '', "b"),
+			new Data("a{$sep}b{$sep}c", '', "a", 'b', "c", ''),
+			new Data("{$sep}", "{$sep}"),
 			new Data("abc", 'abc'),
-			new Data("abc${sep}def${sep}GHI", 'abc', 'def', 'ghi', '..', '.', 'GHI'),
-			new Data("${sep}abc${sep}def${sep}GHI", "${sep}abc", 'def', 'ghi', '..', '.', 'GHI'),
+			new Data("abc{$sep}def{$sep}GHI", 'abc', 'def', 'ghi', '..', '.', 'GHI'),
+			new Data("{$sep}abc{$sep}def{$sep}GHI", "{$sep}abc", 'def', 'ghi', '..', '.', 'GHI'),
 		];
 		foreach ($tests as $test) {
 			$actual = Path::combine(...$test->args);
@@ -140,7 +140,7 @@ class PathTest extends TestClass
 		}
 	}
 
-	public function provider_setEnvironmentName_throw()
+	public static function provider_setEnvironmentName_throw()
 	{
 		return [
 			['', 'env', '$path'],

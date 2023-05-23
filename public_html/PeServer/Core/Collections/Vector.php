@@ -98,7 +98,7 @@ class Vector extends TypeArrayBase
 	{
 		$this->isValidType($value);
 
-		$this->items[] = $value; //@phpstan-ignore-line
+		$this->items[] = $value;
 
 		return $this;
 	}

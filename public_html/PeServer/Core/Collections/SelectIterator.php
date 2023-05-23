@@ -34,7 +34,7 @@ class SelectIterator extends IteratorIterator //@phpstan-ignore-line Generic
 		if (!is_callable($callback)) { //@phpstan-ignore-line phpstan-param callable
 			throw new CallbackTypeError('$callback');
 		}
-		parent::__construct($iterator);
+		parent::__construct($iterator); //@phpstan-ignore-line
 	}
 
 	#region IteratorIterator

@@ -265,7 +265,7 @@ class StreamTest extends TestClass
 		$this->assertSame($expected, $actual);
 	}
 
-	public function provider_readLine_bufferSize()
+	public static function provider_readLine_bufferSize()
 	{
 		return [
 			[1],

@@ -18,7 +18,7 @@ use PeServerTest\TestClass;
 
 class ResourceBaseTest extends TestClass
 {
-	public function provider_constructor_type_throw()
+	public static function provider_constructor_type_throw()
 	{
 		return [
 			[0],

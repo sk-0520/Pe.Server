@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Html;
 
+require_once(__DIR__ . DIRECTORY_SEPARATOR . '../Libs/highlight.php/HighlightUtilities/functions.php');
+
 use \DomainException;
 use \Highlight\Highlighter;
-use \HighlightUtilities\Functions;
+//use \HighlightUtilities;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Text;
 use PeServer\Core\TypeUtility;
+
 
 /**
  * HTMLとしてのコードハイライト処理。
@@ -50,7 +53,7 @@ class CodeHighlighter
 			$hl = new Highlighter(); //@phpstan-ignore-line Highlighter
 			try {
 				$highlighted = $hl->highlight($language, $source); //@phpstan-ignore-line highlight
-				$lines = Functions::splitCodeIntoArray($highlighted->value); //@phpstan-ignore-line splitCodeIntoArray
+				$lines = \HighlightUtilities\splitCodeIntoArray($highlighted->value); //@phpstan-ignore-line splitCodeIntoArray
 				if ($lines !== false) {
 					return $lines;
 				}

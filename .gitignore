@@ -22,6 +22,7 @@ $*
 *.7z
 *.tmp
 *.log
+*.bak
 /public_html/deploy/
 /public_html/.fast-cgi-bin/
 /public_html/log/
@@ -31,3 +32,4 @@ $*
 /test/.phpunit*
 /test/phpunit.phar.*
 /public_html/PeServer/Core/Libs/php-markdown/test
+/dev/.phpunit.cache

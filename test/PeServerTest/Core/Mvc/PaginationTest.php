@@ -21,7 +21,7 @@ class PaginationTest extends TestClass
 		$this->fail();
 	}
 
-	public function provider_constructor_shortcutTotalItemCount()
+	public static function provider_constructor_shortcutTotalItemCount()
 	{
 		return [
 			[0, 0, 0],

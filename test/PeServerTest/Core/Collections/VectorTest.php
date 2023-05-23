@@ -171,7 +171,7 @@ class VectorTest extends TestClass
 		$list['str'];
 	}
 
-	public function provider_offsetGet_throw()
+	public static function provider_offsetGet_throw()
 	{
 		return [
 			[-1],
@@ -208,7 +208,7 @@ class VectorTest extends TestClass
 		$this->assertSame(100, $list[3]);
 	}
 
-	public function provider_offsetSet_throw()
+	public static function provider_offsetSet_throw()
 	{
 		return [
 			[-1],

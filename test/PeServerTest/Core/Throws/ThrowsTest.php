@@ -17,7 +17,7 @@ use PeServerTest\TestClass;
 
 class ThrowsTest extends TestClass
 {
-	function provider_wrap()
+	public static function provider_wrap()
 	{
 		return [
 			[false, [InvalidArgumentException::class, OutOfBoundsException::class], UnexpectedValueException::class, fn () => throw new Exception()],

@@ -44,7 +44,7 @@ class DataActionResult implements IActionResult
 
 	private function convertText(DataContent $content): string
 	{
-		return strval($content->data);
+		return strval($content->data); //@phpstan-ignore-line
 	}
 
 	/**

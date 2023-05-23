@@ -53,7 +53,7 @@ class CaseInsensitiveKeyArrayTest extends TestClass
 		$this->assertFalse(isset($ca['keY']));
 	}
 
-	public function provider_get_throw()
+	public static function provider_get_throw()
 	{
 		return [
 			['B', KeyNotFoundException::class],

@@ -52,10 +52,7 @@ class AutoLoader
 		$libraries = [
 			// highlight.php
 			'Highlight' => [
-				'directory' => $libs . 'highlight.php/src/Highlight',
-			],
-			'HighlightUtilities' => [
-				'directory' => $libs . 'highlight.php/src/HighlightUtilities',
+				'directory' => $libs . 'highlight.php/Highlight',
 			],
 			// php-markdown
 			'Michelf' => [

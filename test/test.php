@@ -106,15 +106,6 @@ class TestClass extends \PHPUnit\Framework\TestCase
 		return $s;
 	}
 
-	public static function assertEquals($expected, $actual, string $message = ''): void
-	{
-		if (!strlen($message)) {
-			throw new Exception('$message が未設定。 もしくは誤って assertEquals が呼び出されている');
-		}
-
-		parent::assertEquals($expected, $actual, $message);
-	}
-
 	protected function assertEqualsWithInfo(string $info, mixed $expected, mixed $actual, string $message = '')
 	{
 		if (empty($info)) {
