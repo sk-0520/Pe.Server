@@ -23,7 +23,7 @@ class DiItemTest extends TestClass
 		$this->success();
 	}
 
-	public function provider_constructor_throw()
+	public static function provider_constructor_throw()
 	{
 		return [
 			[ArgumentException::class, -1, DiItem::TYPE_TYPE, self::class],

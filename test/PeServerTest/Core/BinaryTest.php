@@ -41,7 +41,7 @@ class BinaryTest extends TestClass
 	}
 
 
-	public function provider_isEquals()
+	public static function provider_isEquals()
 	{
 		return [
 			[false, "\x00", ""],

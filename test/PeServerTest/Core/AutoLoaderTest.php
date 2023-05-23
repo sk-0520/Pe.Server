@@ -139,7 +139,7 @@ class AutoLoaderTest extends TestClass
 		$this->assertSame(['.php', '.inc'], $actual['extensions']);
 	}
 
-	public function provider_add_throw()
+	public static function provider_add_throw()
 	{
 		return [
 			['Namespace', 'Namespace'],

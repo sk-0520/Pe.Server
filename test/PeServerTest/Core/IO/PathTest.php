@@ -140,7 +140,7 @@ class PathTest extends TestClass
 		}
 	}
 
-	public function provider_setEnvironmentName_throw()
+	public static function provider_setEnvironmentName_throw()
 	{
 		return [
 			['', 'env', '$path'],
