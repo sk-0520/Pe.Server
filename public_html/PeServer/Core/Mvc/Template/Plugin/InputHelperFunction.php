@@ -54,7 +54,11 @@ class InputHelperFunction extends TemplateFunctionBase
 		switch ($type) {
 			case 'textarea': {
 					$element = $dom->addElement('textarea');
-					$element->addText(strval($targetValue));
+					if(is_array($targetValue)) {
+						$element->addText(Text::join(PHP_EOL, $targetValue));
+					} else {
+						$element->addText(strval($targetValue));
+					}
 					return $element;
 				}
 
@@ -63,7 +67,7 @@ class InputHelperFunction extends TemplateFunctionBase
 					if (!Text::isNullOrWhiteSpace($type)) {
 						$element->setAttribute('type', $type);
 					}
-					$element->setAttribute('value', strval($targetValue));
+					$element->setAttribute('value', strval($targetValue)); //@phpstan-ignore-line
 					return $element;
 				}
 		}
