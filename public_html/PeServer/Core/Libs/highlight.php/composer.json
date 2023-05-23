@@ -11,8 +11,8 @@
     "type": "library",
     "license": "BSD-3-Clause",
     "scripts": {
-        "test:detection": "phpunit test/Highlight/DetectionTest.php",
-        "test:markup": "phpunit test/Highlight/MarkupTest.php",
+        "test:detection": "phpunit test/DetectionTest.php",
+        "test:markup": "phpunit test/MarkupTest.php",
         "test": "phpunit -v"
     },
     "support": {
@@ -20,17 +20,13 @@
         "source": "https://github.com/scrivo/highlight.php"
     },
     "autoload": {
-        "psr-4": {
-            "Highlight\\": "src/Highlight",
-            "HighlightUtilities\\": "src/HighlightUtilities"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Highlight\\Benchmark\\": "test/Benchmark",
-            "Highlight\\Tests\\": "test/Highlight",
-            "HighlightUtilities\\Tests\\": "test/HighlightUtilities"
-        }
+        "psr-0": {
+            "Highlight\\": "",
+            "HighlightUtilities\\": ""
+        },
+        "files": [
+            "HighlightUtilities/functions.php"
+        ]
     },
     "authors": [
         {
@@ -50,23 +46,16 @@
         }
     ],
     "require": {
-        "php": ">=5.6",
-        "ext-json": "*",
-        "ext-mbstring": "*"
+        "php": ">=5.4",
+        "ext-json": "*"
     },
     "require-dev": {
-        "phpbench/phpbench": "^1.0",
-        "phpunit/phpunit": "^5.7",
+        "phpunit/phpunit": "^4.8|^5.7",
         "sabberworm/php-css-parser": "^8.3",
-        "symfony/finder": "^4.4",
-        "symfony/var-dumper": "^4.4"
+        "symfony/finder": "^2.8|^3.4|^5.4",
+        "symfony/var-dumper": "^2.8|^3.4|^5.4"
     },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "10.0-dev"
-        }
-    },
-    "config": {
-        "sort-packages": true
+    "suggest": {
+        "ext-mbstring": "Allows highlighting code with unicode characters and supports language with unicode keywords"
     }
 }
