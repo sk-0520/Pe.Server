@@ -642,7 +642,7 @@ abstract class Text
 	 */
 	public static function toCharacters(string $value): array
 	{
-		if (Text::isNullOrEmpty($value)) { //@phpstan-ignore-line phpstan:positive-int
+		if (Text::isNullOrEmpty($value)) { //@phpstan-ignore-line phpstan:non-empty-string
 			throw new ArgumentException('$value = ' . $value);
 		}
 
@@ -654,6 +654,26 @@ abstract class Text
 		}
 
 		return $charactersArray;
+	}
+
+	/**
+	 * 何かしらを文字列変換
+	 *
+	 * @param mixed $raw
+	 * @param string $newline 配列の場合の改行(未指定時に `PHP_EOL`)
+	 * @return string
+	 */
+	public static function toString(mixed $raw, string $newline = PHP_EOL): string
+	{
+		if (is_string($raw)) {
+			return $raw;
+		}
+
+		if (is_array($raw)) {
+			return self::join($newline, $raw);
+		}
+
+		return strval($raw);
 	}
 
 	#endregion

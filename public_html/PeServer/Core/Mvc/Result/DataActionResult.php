@@ -7,6 +7,7 @@ namespace PeServer\Core\Mvc\Result;
 use PeServer\Core\Binary;
 use PeServer\Core\Http\HttpResponse;
 use PeServer\Core\Serialization\Json;
+use PeServer\Core\Text;
 use PeServer\Core\Mime;
 use PeServer\Core\Mvc\DataContent;
 use PeServer\Core\Mvc\DownloadDataContent;
@@ -44,7 +45,7 @@ class DataActionResult implements IActionResult
 
 	private function convertText(DataContent $content): string
 	{
-		return strval($content->data); //@phpstan-ignore-line
+		return Text::toString($content->data);
 	}
 
 	/**
