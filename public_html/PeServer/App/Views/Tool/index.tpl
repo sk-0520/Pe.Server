@@ -14,6 +14,7 @@
 
 	<ul>
 		<li><a href="/tool/base64">base64</a></li>
+		<li><a href="/tool/json">json</a></li>
 	</ul>
 
 {/block}
