@@ -85,11 +85,7 @@ abstract class TypeUtility
 
 	public static function toString(mixed $input): string
 	{
-		if (is_string($input)) {
-			return $input;
-		}
-
-		return strval($input);
+		return Text::toString($input);
 	}
 
 	/**

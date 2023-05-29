@@ -120,6 +120,8 @@ final class AppRouteSetting extends RouteSetting
 				(new Route('tool', ToolController::class))
 					->addAction('base64', HttpMethod::get(), 'base64_get')
 					->addAction('base64', HttpMethod::post(), 'base64_post')
+					->addAction('json', HttpMethod::get(), 'json_get')
+					->addAction('json', HttpMethod::post(), 'json_post')
 				/* AUTO-FORMAT */,
 				(new Route('ajax', AjaxController::class, [UserAccountFilterMiddleware::class]))
 					->addAction('markdown', HttpMethod::post(), 'markdown')

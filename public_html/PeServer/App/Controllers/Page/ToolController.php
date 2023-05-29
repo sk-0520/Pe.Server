@@ -6,6 +6,7 @@ namespace PeServer\App\Controllers\Page;
 
 use PeServer\App\Controllers\Page\PageControllerBase;
 use PeServer\App\Models\Domain\Page\Tool\ToolBase64Logic;
+use PeServer\App\Models\Domain\Page\Tool\ToolJsonLogic;
 use PeServer\App\Models\Domain\Page\Tool\ToolIndexLogic;
 use PeServer\Core\Mvc\ControllerArgument;
 use PeServer\Core\Mvc\LogicCallMode;
@@ -42,6 +43,22 @@ final class ToolController extends PageControllerBase
 		$logic->run(LogicCallMode::Submit);
 
 		return $this->view('base64', $logic->getViewData());
+	}
+
+	public function json_get(): IActionResult
+	{
+		$logic = $this->createLogic(ToolJsonLogic::class);
+		$logic->run(LogicCallMode::Initialize);
+
+		return $this->view('json', $logic->getViewData());
+	}
+
+	public function json_post(): IActionResult
+	{
+		$logic = $this->createLogic(ToolJsonLogic::class);
+		$logic->run(LogicCallMode::Submit);
+
+		return $this->view('json', $logic->getViewData());
 	}
 
 	#endregion
