@@ -629,7 +629,7 @@ class Collection implements IteratorAggregate
 	}
 
 	/**
-	 * [即時] 先頭から条件を満たす限りバイパス。
+	 * [遅延] 先頭から条件を満たす限りバイパス。
 	 *
 	 * @param callable $callback
 	 * @phpstan-param PredicateAlias $callback
@@ -654,7 +654,7 @@ class Collection implements IteratorAggregate
 	}
 
 	/**
-	 * [即時] 先頭から指定された件数を返却。
+	 * [遅延] 先頭から指定された件数を返却。
 	 *
 	 * @param int $takeCount
 	 * @phpstan-param UnsignedIntegerAlias $takeCount
@@ -667,7 +667,7 @@ class Collection implements IteratorAggregate
 	}
 
 	/**
-	 * [即時] 先頭から条件を満たすデータを返却。
+	 * [遅延] 先頭から条件を満たすデータを返却。
 	 *
 	 * @param callable $callback
 	 * @phpstan-param PredicateAlias $callback
