@@ -8,5 +8,3 @@ https://peserver.gq/
   * https://sourceforge.net/projects/xampp/files/XAMPP%20Windows/8.2.0/
     * `xampp-portable-windows-x64-8.2.0-0-VS16.7z`
     * `mklink /J C:\Applications\xampp\xampp-portable-windows-x64-8.2.0-0-VS16\xampp\htdocs D:\sk\programming\Pe\Pe.Server\public_html`
-
-* node: `18.12.1`
