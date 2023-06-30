@@ -15,7 +15,7 @@
 				"configuration": {
 					"directory": "$(BASE)/data/logs",
 					"name": "log_{DATE}.log",
-					"count": 100
+					"count": 365
 				}
 			}
 		},
