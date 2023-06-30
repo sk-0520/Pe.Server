@@ -12,6 +12,7 @@ use PeServer\App\Models\Dao\Entities\SignUpWaitEmailsEntityDao;
 use PeServer\App\Models\Domain\AccountValidator;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\App\Models\Domain\UserUtility;
+use PeServer\Core\Code;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Cryptography;
 use PeServer\Core\Database\IDatabaseContext;
@@ -112,8 +113,7 @@ class AccountSignupStep1Logic extends PageLogicBase
 
 		//TODO: 設定からとるのかリダイレクトみたいにサーバーからとるのか混在中
 		$baseUrl = Text::replaceMap(
-			/** @phpstan-ignore-next-line */
-			$this->config->setting->config->address->publicUrl,
+			Code::toLiteralString($this->config->setting->config->address->publicUrl),
 			[
 				'DOMAIN' => $this->config->setting->config->address->domain
 			]

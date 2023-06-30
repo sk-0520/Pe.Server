@@ -98,6 +98,7 @@ function api
 		--header "X-SECRET-KEY: ${SETTING_API_SECRET}" \
 		${@:2:($#-1)} \
 		${SETTING_API_URL}/${ENDPOINT_PATH}
+	echo ""
 }
 
 #-----------------------------------------------
