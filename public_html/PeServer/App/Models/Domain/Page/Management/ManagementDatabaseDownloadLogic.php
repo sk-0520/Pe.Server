@@ -43,12 +43,14 @@ class ManagementDatabaseDownloadLogic extends PageLogicBase
 			throw new HttpStatusException(HttpStatus::internalServerError());
 		}
 
-		$this->writeAuditLogCurrentUser(AuditLog::ADMINISTRATOR_DOWNLOAD_DATABASE);
-
 		$target = AppDatabaseConnection::getSqliteFilePath($this->config->setting->persistence->default->connection);
-
 		$name = Path::getFileName($target);
 		$content = File::readContent($target);
+
+		$this->writeAuditLogCurrentUser(AuditLog::ADMINISTRATOR_DOWNLOAD_DATABASE, [
+			"path" => $target,
+			"size" => $content->count(),
+		]);
 
 		$this->setDownloadContent(Mime::SQLITE3, $name, $content);
 	}
