@@ -3,6 +3,15 @@
 {block name='DEFAULT_SCRIPT'}{asset file='/scripts/management_database_maintenance.js'}{/block}
 {block name='BODY'}
 
+	<h2>メンテ</h2>
+	<ul>
+		<li>
+			<a href="/management/database-download">
+				ダウンロード
+			</a>
+		</li>
+	</ul>
+
 	<h2>入力</h2>
 	<form class="page-setting-database-maintenance" action="/management/database-maintenance" method="post">
 		{csrf}

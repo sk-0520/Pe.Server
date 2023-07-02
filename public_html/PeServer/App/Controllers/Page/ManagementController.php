@@ -9,6 +9,7 @@ use PeServer\App\Models\Domain\Page\Management\ManagementConfigurationLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementCrashReportDetailLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementCrashReportListLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementDatabaseMaintenanceLogic;
+use PeServer\App\Models\Domain\Page\Management\ManagementDatabaseDownloadLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementDefaultPluginLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementEnvironmentLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementFeedbackDetailLogic;
@@ -93,6 +94,13 @@ final class ManagementController extends PageControllerBase
 		$logic = $this->createLogic(ManagementDatabaseMaintenanceLogic::class);
 		$logic->run(LogicCallMode::Submit);
 		return $this->view('database_maintenance', $logic->getViewData());
+	}
+
+	public function database_download_get(): IActionResult
+	{
+		$logic = $this->createLogic(ManagementDatabaseDownloadLogic::class);
+		$logic->run(LogicCallMode::Submit);
+		return $this->data($logic->getContent());
 	}
 
 	public function php_evaluate_get(): IActionResult
@@ -194,7 +202,7 @@ final class ManagementController extends PageControllerBase
 	public function version_post(): IActionResult
 	{
 		$logic = $this->createLogic(ManagementVersionLogic::class);
-		if($logic->run(LogicCallMode::Submit)) {
+		if ($logic->run(LogicCallMode::Submit)) {
 			return $this->redirectPath('management/version');
 		}
 

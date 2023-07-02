@@ -99,6 +99,7 @@ final class AppRouteSetting extends RouteSetting
 					->addAction('backup', HttpMethod::post(), 'backup', [CsrfMiddleware::class])
 					->addAction('database-maintenance', HttpMethod::get(), 'database_maintenance_get')
 					->addAction('database-maintenance', HttpMethod::post(), 'database_maintenance_post', [CsrfMiddleware::class])
+					->addAction('database-download', HttpMethod::get(), 'database_download_get')
 					->addAction('php-evaluate', HttpMethod::get(), 'php_evaluate_get')
 					->addAction('php-evaluate', HttpMethod::post(), 'php_evaluate_post', [CsrfMiddleware::class])
 					->addAction('default-plugin', HttpMethod::get(), 'default_plugin_get')
