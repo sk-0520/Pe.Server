@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Domain;
 
 use PeServer\App\Models\AppConfiguration;
+use PeServer\App\Models\AppDatabaseConnection;
 use PeServer\Core\Archiver;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Environment;
@@ -36,8 +37,7 @@ class AppArchiver
 		$zipArchive->open($filePath, ZipArchive::CREATE | ZipArchive::EXCL);
 
 		//DB保存
-		$connectionPath = $this->config->setting->persistence->default->connection;
-		$databasePath = Text::split($connectionPath, ':', 2)[1];
+		$databasePath = AppDatabaseConnection::getSqliteFilePath($this->config->setting->persistence->default->connection);
 		$zipArchive->addFile($databasePath, Path::getFileName($databasePath));
 		// 設定ファイル保存
 		$settingName = Path::setEnvironmentName('setting.json', Environment::get());
