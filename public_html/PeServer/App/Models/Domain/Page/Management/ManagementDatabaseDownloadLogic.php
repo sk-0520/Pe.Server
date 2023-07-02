@@ -7,6 +7,7 @@ namespace PeServer\App\Models\Domain\Page\Management;
 use \Throwable;
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\AppDatabaseConnection;
+use PeServer\App\Models\AuditLog;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Database\DatabaseTableResult;
@@ -41,6 +42,8 @@ class ManagementDatabaseDownloadLogic extends PageLogicBase
 		if ($callMode !== LogicCallMode::Submit) {
 			throw new HttpStatusException(HttpStatus::internalServerError());
 		}
+
+		$this->writeAuditLogCurrentUser(AuditLog::ADMINISTRATOR_DOWNLOAD_DATABASE);
 
 		$target = AppDatabaseConnection::getSqliteFilePath($this->config->setting->persistence->default->connection);
 
