@@ -19,6 +19,7 @@ abstract class Mime
 	public const GZ = 'application/gzip';
 	public const STREAM = 'application/octet-stream';
 	public const ICON = 'image/vnd.microsoft.icon';
+	public const SQLITE3 = 'application/x-sqlite3';
 
 	#endregion
 

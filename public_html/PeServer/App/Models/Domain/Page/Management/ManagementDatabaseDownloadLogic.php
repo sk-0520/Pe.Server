@@ -6,6 +6,7 @@ namespace PeServer\App\Models\Domain\Page\Management;
 
 use \Throwable;
 use PeServer\App\Models\AppConfiguration;
+use PeServer\App\Models\AppDatabaseConnection;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Database\DatabaseTableResult;
@@ -13,6 +14,7 @@ use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\IO\File;
 use PeServer\Core\IO\Path;
+use PeServer\Core\Mime;
 use PeServer\Core\Mvc\DownloadFileContent;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
@@ -40,16 +42,11 @@ class ManagementDatabaseDownloadLogic extends PageLogicBase
 			throw new HttpStatusException(HttpStatus::internalServerError());
 		}
 
-		$connection = $this->config->setting->persistence->default->connection;
-		list($db, $target) = Text::split($connection, ':', 2);
-		$this->logger->debug("db: {0}, {1}", $db, $target);
-		if($db !== 'sqlite') {
-			throw new HttpStatusException(HttpStatus::internalServerError());
-		}
+		$target = AppDatabaseConnection::getSqliteFilePath($this->config->setting->persistence->default->connection);
 
 		$name = Path::getFileName($target);
 		$content = File::readContent($target);
 
-		$this->setDownloadContent('application/x-sqlite3', $name, $content);
+		$this->setDownloadContent(Mime::SQLITE3, $name, $content);
 	}
 }

@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace PeServer\App\Models;
 
 use PeServer\Core\Database\ConnectionSetting;
-use PeServer\Core\Database\DatabaseContext;
 use PeServer\Core\Database\DatabaseConnection;
+use PeServer\Core\Database\DatabaseContext;
 use PeServer\Core\Log\ILoggerFactory;
+use PeServer\Core\Text;
+use PeServer\Core\Throws\InvalidOperationException;
 
 class AppDatabaseConnection extends DatabaseConnection
 {
@@ -25,6 +27,20 @@ class AppDatabaseConnection extends DatabaseConnection
 
 		parent::__construct($connectionSetting, $loggerFactory);
 	}
+
+	#region DatabaseConnection
+
+	public static function getSqliteFilePath(string $connection): string {
+		list($db, $target) = Text::split($connection, ':', 2);
+
+		if($db !== 'sqlite') {
+			throw new InvalidOperationException($db);
+		}
+
+		return $target;
+	}
+
+	#endregion
 
 	#region DatabaseConnection
 
