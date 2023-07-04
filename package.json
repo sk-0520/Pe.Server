@@ -10,8 +10,8 @@
 		"build:release": "webpack --mode=production --config=webpack.config.ts",
 		"build": "npm-run-all --sequential build:release",
 		"watch": "webpack --watch --cache --mode=development --config=webpack.config.ts",
-		"check": "ncu",
-		"update": "ncu -u && npm install"
+		"npm-check": "ncu",
+		"npm-update": "ncu -u && npm install"
 	},
 	"repository": {
 		"type": "git",
