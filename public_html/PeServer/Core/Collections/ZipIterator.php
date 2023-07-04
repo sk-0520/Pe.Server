@@ -67,6 +67,7 @@ class ZipIterator implements Iterator
 	public function current(): mixed
 	{
 		$items = array_map(fn ($i) => $i->current(), $this->iterators);
+		//@phpstan-ignore-next-line TValue1, TValue2
 		return call_user_func($this->callback, $items, $this->key());
 	}
 
