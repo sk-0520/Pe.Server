@@ -70,7 +70,7 @@
 			"return_email": "return@localhost.localdomain",
 			"families": {
 				"server_url": "https://peserver.gq/",
-				"contact_url": "https://peserver.gq/contact",
+				"contact_url": "https://peserver.gq/about/contact",
 				"app_project_url": "https://github.com/sk-0520/Pe",
 				"server_project_url": "https://github.com/sk-0520/Pe.Server",
 				"forum_url": "https://groups.google.com/g/pe_development",
