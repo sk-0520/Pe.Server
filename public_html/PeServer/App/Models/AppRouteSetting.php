@@ -16,6 +16,7 @@ use PeServer\App\Controllers\Page\ManagementController;
 use PeServer\App\Controllers\Page\PluginController;
 use PeServer\App\Controllers\Page\ToolController;
 use PeServer\App\Models\Middleware\AdministratorAccountFilterMiddleware;
+use PeServer\App\Models\Middleware\Api\ApiAcaoMiddleware;
 use PeServer\App\Models\Middleware\Api\ApiAdministratorAccountFilterMiddleware;
 use PeServer\App\Models\Middleware\Api\ApiUserAccountFilterMiddleware;
 use PeServer\App\Models\Middleware\DevelopmentMiddleware;
@@ -137,19 +138,19 @@ final class AppRouteSetting extends RouteSetting
 					->addAction('initialize', HttpMethod::post())
 					->addAction('administrator', HttpMethod::post())
 				/* AUTO-FORMAT */,
-				(new Route('api/plugin', PluginApiController::class))
+				(new Route('api/plugin', PluginApiController::class, [ApiAcaoMiddleware::class]))
 					->addAction('exists', HttpMethod::post(), 'exists')
 					->addAction('generate-plugin-id', HttpMethod::gets(), 'generate_plugin_id')
 					->addAction('information', HttpMethod::post(), 'information')
 				/* AUTO-FORMAT */,
-				(new Route('api/application', ApplicationApiController::class))
+				(new Route('api/application', ApplicationApiController::class, [ApiAcaoMiddleware::class]))
 					->addAction('feedback', HttpMethod::post(), 'feedback')
 					->addAction('crash-report', HttpMethod::post(), 'crash_report')
 					->addAction('version/update', HttpMethod::get(), 'version_update')
 				/* AUTO-FORMAT */,
-				(new Route('api/account', AccountApiController::class, [ApiUserAccountFilterMiddleware::class, ApiAdministratorAccountFilterMiddleware::class]))
+				(new Route('api/account', AccountApiController::class, [ApiAcaoMiddleware::class, ApiUserAccountFilterMiddleware::class, ApiAdministratorAccountFilterMiddleware::class]))
 				/* AUTO-FORMAT */,
-				(new Route('api/administrator', AdministratorApiController::class, [ApiAdministratorAccountFilterMiddleware::class]))
+				(new Route('api/administrator', AdministratorApiController::class, [ApiAcaoMiddleware::class, ApiAdministratorAccountFilterMiddleware::class]))
 					->addAction('backup', HttpMethod::post(), 'backup')
 					->addAction('cache-rebuild', HttpMethod::post(), 'cache_rebuild')
 					->addAction('deploy/:mode@.+', HttpMethod::post(), 'deploy')

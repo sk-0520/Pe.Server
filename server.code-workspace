@@ -30,13 +30,17 @@
 		"html.format.indentInnerHtml": true,
 		"html.format.wrapLineLength": 0,
 		"cSpell.words": [
+			"Acao",
 			"ATTR_ERRMODE",
+			"autoincrement",
 			"autoload",
 			"cachebuster",
 			"checkAlwaysTrueInstanceof",
 			"CyclomaticComplexity",
+			"endregion",
 			"ERRMODE_EXCEPTION",
 			"httponly",
+			"IFNULL",
 			"imagebmp",
 			"imagecreatefrombmp",
 			"imageresolution",
@@ -57,10 +61,7 @@
 			"SJIS",
 			"Stringable",
 			"sysplugins",
-			"XDEBUG",
-			"IFNULL",
-			"endregion",
-			"autoincrement"
+			"XDEBUG"
 		],
 		"cSpell.ignorePaths": [
 			"package-lock.json",
