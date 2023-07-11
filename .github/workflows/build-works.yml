@@ -75,7 +75,12 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: public_html
-          path: public_html
+          path: public_html.tar
+
+      - name: <Expand> Application
+        shell: bash
+        run: |
+          tar -xfv public_html.tar -C artifact
 
       - name: <Deploy> Application
         shell: bash
