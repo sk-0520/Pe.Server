@@ -29,14 +29,16 @@ class SetupVersion_0004 extends SetupVersionBase
 			[comment] text not null,
 			foreign key([feedback_sequence]) references [feedbacks]([sequence]),
 			primary key([feedback_sequence])
-		);
+		)
+		;
 
 		create table [crash_report_comments] (
 			[crash_report_sequence]	integer not null,
 			[comment]	text not null,
 			foreign key([crash_report_sequence]) references [crash_reports]([sequence]),
 			primary key([crash_report_sequence])
-		);
+		)
+		;
 
 		SQL;
 
