@@ -38,6 +38,8 @@ class CrashReportDetailDto extends DtoBase
 
 	public string $report = Text::EMPTY;
 
+	#[Mapping(name: 'developer_comment')]
+	public string $developerComment = Text::EMPTY;
 
 	#endregion
 }

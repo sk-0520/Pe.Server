@@ -7,8 +7,8 @@ namespace PeServer\App\Models\Domain\Page\Management;
 use Exception;
 use PeServer\App\Models\AppCryptography;
 use PeServer\App\Models\AppDatabaseCache;
+use PeServer\App\Models\Dao\Domain\CrashReportsDomainDao;
 use PeServer\App\Models\Dao\Entities\CrashReportsEntityDao;
-use PeServer\App\Models\Dao\Entities\FeedbacksEntityDao;
 use PeServer\App\Models\Domain\AppArchiver;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\Core\Archiver;
@@ -49,9 +49,9 @@ class ManagementCrashReportDetailLogic extends PageLogicBase
 		$sequence = (int)$this->getRequest('sequence');
 
 		$database = $this->openDatabase();
-		$crashReportsEntityDao = new CrashReportsEntityDao($database);
+		$crashReportsDomainDao = new CrashReportsDomainDao($database);
 
-		$detail = $crashReportsEntityDao->selectCrashReportsDetail($sequence);
+		$detail = $crashReportsDomainDao->selectCrashReportsDetail($sequence);
 
 		$this->setValue('detail', $detail);
 		if (Text::isNullOrWhiteSpace($detail->email)) {
@@ -68,5 +68,7 @@ class ManagementCrashReportDetailLogic extends PageLogicBase
 		} else {
 			$this->setValue('report', Text::EMPTY);
 		}
+
+		$this->setValue('comment', $detail->developerComment);
 	}
 }
