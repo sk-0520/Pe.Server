@@ -32,6 +32,7 @@ class ManagementFeedbackDetailLogic extends PageLogicBase
 				$seq = (int)$value;
 				$exists = $feedbacksEntityDao->selectExistsFeedbacksBySequence($seq);
 				if(!$exists) {
+					//TODO: HttpStatusException
 					throw new Exception('404');
 				}
 			}
