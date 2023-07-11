@@ -69,6 +69,6 @@ class ManagementCrashReportDetailLogic extends PageLogicBase
 			$this->setValue('report', Text::EMPTY);
 		}
 
-		$this->setValue('comment', $detail->developerComment);
+		$this->setValue('developer-comment', $detail->developerComment);
 	}
 }
