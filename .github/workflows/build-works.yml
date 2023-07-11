@@ -80,8 +80,8 @@ jobs:
       - name: <Expand> Application
         shell: bash
         run: |
+          cd public_html.tar
           ls -l
-          tar xfv public_html.tar -C artifact
 
       - name: <Deploy> Application
         shell: bash
