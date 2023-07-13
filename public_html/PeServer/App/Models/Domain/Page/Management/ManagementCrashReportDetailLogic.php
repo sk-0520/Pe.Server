@@ -7,7 +7,7 @@ namespace PeServer\App\Models\Domain\Page\Management;
 use Exception;
 use PeServer\App\Models\AppCryptography;
 use PeServer\App\Models\AppDatabaseCache;
-use PeServer\App\Models\Dao\Domain\CrashReportsDomainDao;
+use PeServer\App\Models\Dao\Domain\CrashReportDomainDao;
 use PeServer\App\Models\Dao\Entities\CrashReportCommentsEntityDao;
 use PeServer\App\Models\Dao\Entities\CrashReportsEntityDao;
 use PeServer\App\Models\Domain\AppArchiver;
@@ -53,13 +53,12 @@ class ManagementCrashReportDetailLogic extends PageLogicBase
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
 		$sequence = (int)$this->getRequest('sequence');
-
 		$this->result['sequence'] = $sequence;
 
 		$database = $this->openDatabase();
-		$crashReportsDomainDao = new CrashReportsDomainDao($database);
+		$crashReportDomainDao = new CrashReportDomainDao($database);
 
-		$detail = $crashReportsDomainDao->selectCrashReportsDetail($sequence);
+		$detail = $crashReportDomainDao->selectCrashReportsDetail($sequence);
 
 		$this->setValue('detail', $detail);
 		if (Text::isNullOrWhiteSpace($detail->email)) {
@@ -79,6 +78,7 @@ class ManagementCrashReportDetailLogic extends PageLogicBase
 
 		if ($callMode === LogicCallMode::Initialize) {
 			$this->setValue('developer-comment', $detail->developerComment);
+			return;
 		}
 
 		$developerComment = (string)$this->getRequest('developer-comment');

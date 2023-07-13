@@ -11,14 +11,14 @@ use PeServer\Core\Database\DaoTrait;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\Serialization\Mapper;
 
-class CrashReportCommentsEntityDao extends DaoBase
+class FeedbackCommentsEntityDao extends DaoBase
 {
 	use DaoTrait;
 
 	#region function
 
 
-	public function selectExistsCrashReportCommentsBySequence(int $sequence): bool
+	public function selectExistsFeedbackCommentsBySequence(int $sequence): bool
 	{
 		return 1 === $this->context->selectSingleCount(
 			<<<SQL
@@ -26,9 +26,9 @@ class CrashReportCommentsEntityDao extends DaoBase
 			select
 				count(*)
 			from
-				crash_report_comments
+				feedback_comments
 			where
-				crash_report_comments.crash_report_sequence = :sequence
+				feedback_comments.feedback_sequence = :sequence
 
 			SQL,
 			[
@@ -37,65 +37,65 @@ class CrashReportCommentsEntityDao extends DaoBase
 		);
 	}
 
-	public function insertCrashReportComments(int $sequence, string $comment): void
+	public function insertFeedbackComments(int $sequence, string $comment): void
 	{
 		$this->context->insertSingle(
 			<<<SQL
 
 			insert into
-				crash_report_comments
+				feedback_comments
 				(
-					[crash_report_sequence],
+					[feedback_sequence],
 					[comment]
 				)
 				values
 				(
-					:crash_report_sequence,
+					:feedback_sequence,
 					:comment
 				)
 
 			SQL,
 			[
-				'crash_report_sequence' => $sequence,
+				'feedback_sequence' => $sequence,
 				'comment' => $comment,
 			]
 		);
 	}
 
-	public function updateCrashReportComments(int $sequence, string $comment): void
+	public function updateFeedbackComments(int $sequence, string $comment): void
 	{
 		$this->context->updateByKey(
 			<<<SQL
 
 			update
-				crash_report_comments
+				feedback_comments
 			set
 				[comment] = :comment
 			where
-				[crash_report_sequence] = :crash_report_sequence
+				[feedback_sequence] = :feedback_sequence
 
 			SQL,
 			[
-				'crash_report_sequence' => $sequence,
+				'feedback_sequence' => $sequence,
 				'comment' => $comment,
 			]
 		);
 	}
 
-	public function deleteCrashReportCommentsBySequence(int $sequence): bool
+	public function deleteFeedbackCommentsBySequence(int $sequence): bool
 	{
 		return $this->context->deleteByKeyOrNothing(
 			<<<SQL
 
 			delete
 			from
-				crash_report_comments
+				feedback_comments
 			where
-				crash_report_sequence = :crash_report_sequence
+				feedback_sequence = :feedback_sequence
 
 			SQL,
 			[
-				'crash_report_sequence' => $sequence,
+				'feedback_sequence' => $sequence,
 			]
 		);
 	}

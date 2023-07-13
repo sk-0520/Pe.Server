@@ -52,4 +52,21 @@
 		<dd>{markdown}{$values.detail->content nofilter}{/markdown}</dd>
 	</dl>
 
+	<form method="post" action="/management/feedback/{$values.detail->sequence}">
+		<section>
+			<h2>開発用</h2>
+			<dl>
+				<dt>メモ</dt>
+				<dd>
+					{input_helper key='developer-comment' type="textarea" class="edit developer-comment"}
+				</dd>
+
+				<dt class="action">実行</dt>
+				<dd class="action">
+					<button>submit</button>
+				</dd>
+			</dl>
+		</section>
+	</form>
+
 {/block}

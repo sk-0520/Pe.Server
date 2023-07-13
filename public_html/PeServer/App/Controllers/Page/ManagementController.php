@@ -160,10 +160,23 @@ final class ManagementController extends PageControllerBase
 		return $this->view('feedback_list', $logic->getViewData());
 	}
 
-	public function feedback_detail(): IActionResult
+	public function feedback_detail_get(): IActionResult
 	{
 		$logic = $this->createLogic(ManagementFeedbackDetailLogic::class);
 		$logic->run(LogicCallMode::Initialize);
+
+		return $this->view('feedback_detail', $logic->getViewData());
+	}
+
+	public function feedback_detail_post(): IActionResult
+	{
+		$logic = $this->createLogic(ManagementFeedbackDetailLogic::class);
+		if($logic->run(LogicCallMode::Submit)) {
+			if ($logic->tryGetResult('sequence', $sequence)) {
+				return $this->redirectPath("management/feedback/$sequence");
+			}
+			throw new InvalidOperationException();
+		}
 
 		return $this->view('feedback_detail', $logic->getViewData());
 	}

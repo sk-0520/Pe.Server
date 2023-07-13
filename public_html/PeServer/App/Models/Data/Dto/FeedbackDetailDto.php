@@ -47,5 +47,8 @@ class FeedbackDetailDto extends DtoBase
 	public string $subject = Text::EMPTY;
 	public string $content = Text::EMPTY;
 
+	#[Mapping(name: 'developer_comment')]
+	public string $developerComment = Text::EMPTY;
+
 	#endregion
 }

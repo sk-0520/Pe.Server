@@ -15,7 +15,7 @@ use PeServer\Core\Database\DaoBase;
 use PeServer\Core\Database\DaoTrait;
 use PeServer\Core\Database\IDatabaseContext;
 
-class CrashReportsDomainDao extends DaoBase
+class CrashReportDomainDao extends DaoBase
 {
 	use DaoTrait;
 
