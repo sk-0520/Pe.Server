@@ -97,7 +97,6 @@ class Route
 			if ($trimPath !== Text::trim($trimPath, '/')) {
 				throw new ArgumentException('path start or end -> /');
 			}
-			//@phpstan-ignore-next-line
 			$this->basePath = $trimPath;
 		}
 

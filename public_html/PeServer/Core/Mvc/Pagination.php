@@ -71,7 +71,7 @@ class Pagination
 			$this->currentPageNumber = self::FIRST_PAGE_NUMBER;
 			$this->shortcutTotalItemCount = 0;
 		} else {
-			$this->shortcutTotalItemCount = (int)ceil($this->totalItemCount / $this->itemCountInPage); //@phpstan-ignore-line @immutable
+			$this->shortcutTotalItemCount = (int)ceil($this->totalItemCount / $this->itemCountInPage);
 			if ($this->shortcutTotalItemCount <= $this->currentPageNumber) {
 				$this->currentPageNumber = $this->shortcutTotalItemCount; //@phpstan-ignore-line
 			} else if (!$this->currentPageNumber) { //@phpstan-ignore-line
