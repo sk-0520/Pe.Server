@@ -9,6 +9,7 @@ use PeServer\App\Models\Setup\Versions\SetupVersion_0000;
 use PeServer\App\Models\Setup\Versions\SetupVersion_0001;
 use PeServer\App\Models\Setup\Versions\SetupVersion_0002;
 use PeServer\App\Models\Setup\Versions\SetupVersion_0003;
+use PeServer\App\Models\Setup\Versions\SetupVersion_0004;
 use PeServer\App\Models\Setup\Versions\SetupVersionBase;
 use PeServer\App\Models\Setup\Versions\SetupVersionLast;
 use PeServer\Core\Collections\Arr;
@@ -45,6 +46,7 @@ class SetupRunner
 			SetupVersion_0001::class,
 			SetupVersion_0002::class,
 			SetupVersion_0003::class,
+			SetupVersion_0004::class,
 		];
 		// 定義ミス対応としてバージョン間並べ替え（ミスるな）
 		$this->versions = Arr::sortCallbackByValue($versions, fn ($a, $b) => SetupVersionBase::getVersion($a) <=> SetupVersionBase::getVersion($b));

@@ -37,7 +37,6 @@ class EmailAddress
 		if (Text::isNullOrEmpty($name)) {
 			$this->name = '';
 		} else {
-			//@phpstan-ignore-next-line isNullOrEmpty
 			$this->name = $name;
 		}
 	}

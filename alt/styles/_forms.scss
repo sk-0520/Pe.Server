@@ -29,6 +29,11 @@ textarea {
 		&.error {
 			background: #faa;
 		}
+
+		&.developer-comment {
+			width: 95%;
+			height: 12em;
+		}
 	}
 }
 
