@@ -38,7 +38,7 @@ class CrashReportsDomainDao extends DaoBase
 						crash_report_comments.crash_report_sequence = crash_reports.sequence
 					)
 			where
-				sequence = :sequence
+				crash_reports.sequence = :sequence
 
 			SQL,
 			[

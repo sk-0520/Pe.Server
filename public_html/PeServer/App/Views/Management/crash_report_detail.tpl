@@ -51,8 +51,7 @@
 		</dd>
 	</dl>
 
-	<form method="post" action="/management/crash-report">
-		<input type="hidden" value="{$values.detail->sequence}" />
+	<form method="post" action="/management/crash-report/{$values.detail->sequence}">
 
 		<section>
 			<h2>開発用</h2>

@@ -8,14 +8,18 @@ use Exception;
 use PeServer\App\Models\AppCryptography;
 use PeServer\App\Models\AppDatabaseCache;
 use PeServer\App\Models\Dao\Domain\CrashReportsDomainDao;
+use PeServer\App\Models\Dao\Entities\CrashReportCommentsEntityDao;
 use PeServer\App\Models\Dao\Entities\CrashReportsEntityDao;
 use PeServer\App\Models\Domain\AppArchiver;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\Core\Archiver;
 use PeServer\Core\Binary;
+use PeServer\Core\Database\IDatabaseContext;
+use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\Text;
+use PeServer\Core\Throws\HttpStatusException;
 use PeServer\Core\Timer;
 
 class ManagementCrashReportDetailLogic extends PageLogicBase
@@ -28,9 +32,9 @@ class ManagementCrashReportDetailLogic extends PageLogicBase
 	protected function validateImpl(LogicCallMode $callMode): void
 	{
 		$this->validation('sequence', function ($key, $value) {
-			$temp = $this->validator->isNotEmpty($key, $value);
+			$hasSequence = $this->validator->isNotEmpty($key, $value);
 
-			if ($temp) {
+			if ($hasSequence) {
 				$database = $this->openDatabase();
 				$crashReportsEntityDao = new CrashReportsEntityDao($database);
 
@@ -40,6 +44,8 @@ class ManagementCrashReportDetailLogic extends PageLogicBase
 					//TODO: HttpStatusException
 					throw new Exception('404');
 				}
+			} else {
+				throw new HttpStatusException(HttpStatus::badRequest());
 			}
 		});
 	}
@@ -47,6 +53,8 @@ class ManagementCrashReportDetailLogic extends PageLogicBase
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
 		$sequence = (int)$this->getRequest('sequence');
+
+		$this->result['sequence'] = $sequence;
 
 		$database = $this->openDatabase();
 		$crashReportsDomainDao = new CrashReportsDomainDao($database);
@@ -69,6 +77,25 @@ class ManagementCrashReportDetailLogic extends PageLogicBase
 			$this->setValue('report', Text::EMPTY);
 		}
 
-		$this->setValue('developer-comment', $detail->developerComment);
+		if ($callMode === LogicCallMode::Initialize) {
+			$this->setValue('developer-comment', $detail->developerComment);
+		} else if ($callMode === LogicCallMode::Submit) {
+			$developerComment = (string)$this->getRequest('developer-comment');
+
+			$result = $database->transaction(function (IDatabaseContext $context) use ($sequence, $developerComment) {
+				$crashReportCommentsEntityDao = new CrashReportCommentsEntityDao($context);
+
+				if ($crashReportCommentsEntityDao->selectExistsCrashReportCommentsBySequence($sequence)) {
+					$crashReportCommentsEntityDao->updateCrashReportComments($sequence, $developerComment);
+				} else {
+					$crashReportCommentsEntityDao->insertCrashReportComments($sequence, $developerComment);
+				}
+
+				return true;
+			});
+			if(!$result) {
+				throw new HttpStatusException(HttpStatus::internalServerError());
+			}
+		}
 	}
 }
