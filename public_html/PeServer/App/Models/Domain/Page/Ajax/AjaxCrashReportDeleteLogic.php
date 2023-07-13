@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domain\Page\Ajax;
 
+use PeServer\App\Models\Dao\Entities\CrashReportCommentsEntityDao;
 use PeServer\App\Models\Dao\Entities\CrashReportsEntityDao;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\App\Models\ResponseJson;
@@ -34,6 +35,9 @@ class AjaxCrashReportDeleteLogic extends PageLogicBase
 		$database = $this->openDatabase();
 		$database->transaction(function(IDatabaseContext $context) use($sequence) {
 			$crashReportsEntityDao = new CrashReportsEntityDao($context);
+			$crashReportCommentsEntityDao = new CrashReportCommentsEntityDao($context);
+
+			$crashReportCommentsEntityDao->deleteCrashReportCommentsBySequence($sequence);
 			$crashReportsEntityDao->deleteCrashReportsBySequence($sequence);
 			return true;
 		});

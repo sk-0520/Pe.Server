@@ -8,8 +8,8 @@ use PeServer\App\Models\Domain\Page\Management\ManagementCacheRebuildLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementConfigurationLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementCrashReportDetailLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementCrashReportListLogic;
-use PeServer\App\Models\Domain\Page\Management\ManagementDatabaseMaintenanceLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementDatabaseDownloadLogic;
+use PeServer\App\Models\Domain\Page\Management\ManagementDatabaseMaintenanceLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementDefaultPluginLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementEnvironmentLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementFeedbackDetailLogic;
@@ -27,6 +27,7 @@ use PeServer\Core\Mvc\ControllerArgument;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\Result\IActionResult;
 use PeServer\Core\Mvc\Template\TemplateParameter;
+use PeServer\Core\Throws\InvalidOperationException;
 
 final class ManagementController extends PageControllerBase
 {
@@ -159,10 +160,23 @@ final class ManagementController extends PageControllerBase
 		return $this->view('feedback_list', $logic->getViewData());
 	}
 
-	public function feedback_detail(): IActionResult
+	public function feedback_detail_get(): IActionResult
 	{
 		$logic = $this->createLogic(ManagementFeedbackDetailLogic::class);
 		$logic->run(LogicCallMode::Initialize);
+
+		return $this->view('feedback_detail', $logic->getViewData());
+	}
+
+	public function feedback_detail_post(): IActionResult
+	{
+		$logic = $this->createLogic(ManagementFeedbackDetailLogic::class);
+		if($logic->run(LogicCallMode::Submit)) {
+			if ($logic->tryGetResult('sequence', $sequence)) {
+				return $this->redirectPath("management/feedback/$sequence");
+			}
+			throw new InvalidOperationException();
+		}
 
 		return $this->view('feedback_detail', $logic->getViewData());
 	}
@@ -183,10 +197,23 @@ final class ManagementController extends PageControllerBase
 		return $this->view('crash_report_list', $logic->getViewData());
 	}
 
-	public function crash_report_detail(): IActionResult
+	public function crash_report_detail_get(): IActionResult
 	{
 		$logic = $this->createLogic(ManagementCrashReportDetailLogic::class);
 		$logic->run(LogicCallMode::Initialize);
+
+		return $this->view('crash_report_detail', $logic->getViewData());
+	}
+
+	public function crash_report_detail_post(): IActionResult
+	{
+		$logic = $this->createLogic(ManagementCrashReportDetailLogic::class);
+		if($logic->run(LogicCallMode::Submit)) {
+			if ($logic->tryGetResult('sequence', $sequence)) {
+				return $this->redirectPath("management/crash-report/$sequence");
+			}
+			throw new InvalidOperationException();
+		}
 
 		return $this->view('crash_report_detail', $logic->getViewData());
 	}

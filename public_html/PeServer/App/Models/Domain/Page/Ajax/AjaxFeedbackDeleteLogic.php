@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domain\Page\Ajax;
 
+use PeServer\App\Models\Dao\Entities\FeedbackCommentsEntityDao;
 use PeServer\App\Models\Dao\Entities\FeedbacksEntityDao;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\App\Models\ResponseJson;
@@ -34,6 +35,9 @@ class AjaxFeedbackDeleteLogic extends PageLogicBase
 		$database = $this->openDatabase();
 		$database->transaction(function(IDatabaseContext $context) use($sequence) {
 			$feedbacksEntityDao = new FeedbacksEntityDao($context);
+			$feedbackCommentsEntityDao = new FeedbackCommentsEntityDao($context);
+
+			$feedbackCommentsEntityDao->deleteFeedbackCommentsBySequence($sequence);
 			$feedbacksEntityDao->deleteFeedbacksBySequence($sequence);
 			return true;
 		});

@@ -110,48 +110,6 @@ class FeedbacksEntityDao extends DaoBase
 		return $result->mapping(FeedbackListItemDto::class);
 	}
 
-	public function selectFeedbacksDetailBySequence(int $sequence): FeedbackDetailDto
-	{
-		$result = $this->context->querySingle(
-			<<<SQL
-
-			select
-				feedbacks.sequence,
-
-				feedbacks.timestamp,
-				ip_address,
-
-				feedbacks.version,
-				feedbacks.revision,
-				feedbacks.build,
-
-				feedbacks.user_id,
-
-				feedbacks.first_execute_timestamp,
-				feedbacks.first_execute_version,
-
-				feedbacks.process,
-				feedbacks.platform,
-				feedbacks.os,
-				feedbacks.clr,
-
-				feedbacks.kind,
-				feedbacks.subject,
-				feedbacks.content
-			from
-				feedbacks
-			where
-				sequence = :sequence
-
-			SQL,
-			[
-				'sequence' => $sequence,
-			]
-		);
-
-		return $result->mapping(FeedbackDetailDto::class);
-	}
-
 	public function insertFeedbacks(
 		string $ipAddress,
 
