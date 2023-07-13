@@ -63,7 +63,7 @@
 
 				<dt class="action">実行</dt>
 				<dd class="action">
-					<button>submit</button>
+					<button>保存</button>
 				</dd>
 			</dl>
 		</section>
