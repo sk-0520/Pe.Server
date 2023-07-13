@@ -79,23 +79,23 @@ class ManagementCrashReportDetailLogic extends PageLogicBase
 
 		if ($callMode === LogicCallMode::Initialize) {
 			$this->setValue('developer-comment', $detail->developerComment);
-		} else if ($callMode === LogicCallMode::Submit) {
-			$developerComment = (string)$this->getRequest('developer-comment');
+		}
 
-			$result = $database->transaction(function (IDatabaseContext $context) use ($sequence, $developerComment) {
-				$crashReportCommentsEntityDao = new CrashReportCommentsEntityDao($context);
+		$developerComment = (string)$this->getRequest('developer-comment');
 
-				if ($crashReportCommentsEntityDao->selectExistsCrashReportCommentsBySequence($sequence)) {
-					$crashReportCommentsEntityDao->updateCrashReportComments($sequence, $developerComment);
-				} else {
-					$crashReportCommentsEntityDao->insertCrashReportComments($sequence, $developerComment);
-				}
+		$result = $database->transaction(function (IDatabaseContext $context) use ($sequence, $developerComment) {
+			$crashReportCommentsEntityDao = new CrashReportCommentsEntityDao($context);
 
-				return true;
-			});
-			if(!$result) {
-				throw new HttpStatusException(HttpStatus::internalServerError());
+			if ($crashReportCommentsEntityDao->selectExistsCrashReportCommentsBySequence($sequence)) {
+				$crashReportCommentsEntityDao->updateCrashReportComments($sequence, $developerComment);
+			} else {
+				$crashReportCommentsEntityDao->insertCrashReportComments($sequence, $developerComment);
 			}
+
+			return true;
+		});
+		if (!$result) {
+			throw new HttpStatusException(HttpStatus::internalServerError());
 		}
 	}
 }
