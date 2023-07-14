@@ -33,7 +33,7 @@ jobs:
           path: |
             dev/*.phar.*
             dev/bleedingEdge.neon
-          key: ${{ runner.os }}-dev
+          key: dev-${{ hashFiles('dev/*.sh') }}
 
       - name: <Build> front-end
         shell: bash
