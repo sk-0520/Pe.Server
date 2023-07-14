@@ -83,13 +83,12 @@ jobs:
         run: |
           cd archive_public_html
           pwd
-          ls -l
           tar xvf public_html.tar
 
       - name: <Deploy> Application
         shell: bash
         run: |
-          ls -R
           cd public_html
+          pwd
           zip -r public_html.zip .
           #${{ github.workspace }}/dev/deploy.sh "${{ secrets.PE_SERVER_API_KEY }}" "${{ secrets.PE_SERVER_API_SECRET }}"
