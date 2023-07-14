@@ -34,7 +34,7 @@ jobs:
             dev/*.phar.*
             dev/bleedingEdge.neon
             test/*.phar.*
-          key: dev-${{ hashFiles('dev/*.sh') }}
+          key: phar-cache-${{ hashFiles('dev/*.sh') }}
 
       - name: <Build> front-end
         shell: bash
