@@ -9,7 +9,7 @@
 ```bat
 cd /d %~dp0
 
-set PATH=C:\Applications\xampp\xampp-portable-windows-x64-8.0.7-0-VS16\xampp\php;%PATH%
+set PATH=C:\Applications\xampp\xampp-portable-windows-x64-8.2.0-0-VS16\xampp\php;%PATH%
 
 set TEMP=X:\00_others\00_others
 set TMP=%TEMP%
