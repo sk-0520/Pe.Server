@@ -27,12 +27,13 @@ jobs:
       - name: <Install> NPM
         run: npm install
 
-      - name: <Cache> Dev
+      - name: <Cache> Phar
         uses: actions/cache@v3
         with:
           path: |
             dev/*.phar.*
             dev/bleedingEdge.neon
+            test/*.phar.*
           key: dev-${{ hashFiles('dev/*.sh') }}
 
       - name: <Build> front-end
