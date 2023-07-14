@@ -76,11 +76,12 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: public_html
-          path: archive_public_html.tar
+          path: archive_public_html
 
       - name: <Expand> Application
         shell: bash
         run: |
+          cd archive_public_html
           pwd
           ls -l
           tar xfv archive_public_html.tar
