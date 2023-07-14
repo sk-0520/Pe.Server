@@ -84,7 +84,7 @@ jobs:
           cd archive_public_html
           pwd
           ls -l
-          tar xfv archive_public_html.tar
+          tar xvf public_html.tar
 
       - name: <Deploy> Application
         shell: bash
