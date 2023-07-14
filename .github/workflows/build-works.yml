@@ -88,7 +88,7 @@ jobs:
       - name: <Deploy> Application
         shell: bash
         run: |
-          cd public_html
+          cd archive_public_html/public_html
           pwd
           zip -r public_html.zip .
           #${{ github.workspace }}/dev/deploy.sh "${{ secrets.PE_SERVER_API_KEY }}" "${{ secrets.PE_SERVER_API_SECRET }}"
