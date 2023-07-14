@@ -30,7 +30,9 @@ jobs:
       - name: <Cache> Dev
         uses: actions/cache@v3
         with:
-          path: dev/*.phar.*
+          path: |
+            dev/*.phar.*
+            dev/bleedingEdge.neon
           key: ${{ runner.os }}-dev
 
       - name: <Build> front-end
