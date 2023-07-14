@@ -27,6 +27,12 @@ jobs:
       - name: <Install> NPM
         run: npm install
 
+      - name: <Cache> Dev
+        uses: actions/cache@v3
+        with:
+          path: dev
+          key: ${{ runner.os }}-dev
+
       - name: <Build> front-end
         shell: bash
         run: npm run build
