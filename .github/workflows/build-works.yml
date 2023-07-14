@@ -60,7 +60,7 @@ jobs:
   deploy:
     needs: build
 
-    if: github.ref == 'refs/heads/master'
+    #if: github.ref == 'refs/heads/master'
 
     runs-on: ubuntu-latest
 
@@ -79,4 +79,4 @@ jobs:
         run: |
           cd public_html
           zip -r public_html.zip .
-          ${{ github.workspace }}/dev/deploy.sh "${{ secrets.PE_SERVER_API_KEY }}" "${{ secrets.PE_SERVER_API_SECRET }}"
+          #${{ github.workspace }}/dev/deploy.sh "${{ secrets.PE_SERVER_API_KEY }}" "${{ secrets.PE_SERVER_API_SECRET }}"
