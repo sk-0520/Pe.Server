@@ -51,11 +51,15 @@ jobs:
         shell: bash
         run: ./dev/doc.sh
 
+      - name: <Archive> Application
+        shell: bash
+        run: tar cfv public_html.tar public_html
+
       - name: <Artifact> Application
         uses: actions/upload-artifact@v3
         with:
           name: public_html
-          path: public_html
+          path: public_html.tar
 
   deploy:
     needs: build
@@ -72,11 +76,17 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: public_html
-          path: public_html
+          path: archive_public_html
+
+      - name: <Expand> Application
+        shell: bash
+        run: |
+          cd archive_public_html
+          tar xvf public_html.tar
 
       - name: <Deploy> Application
         shell: bash
         run: |
-          cd public_html
+          cd archive_public_html/public_html
           zip -r public_html.zip .
-          ${{ github.workspace }}/dev/deploy.sh "${{ secrets.PE_SERVER_API_KEY }}" "${{ secrets.PE_SERVER_API_SECRET }}"
+          #${{ github.workspace }}/dev/deploy.sh "${{ secrets.PE_SERVER_API_KEY }}" "${{ secrets.PE_SERVER_API_SECRET }}"
