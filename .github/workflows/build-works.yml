@@ -80,7 +80,10 @@ jobs:
 
       - name: <Expand> Application
         shell: bash
-        run: tar xfv archive_public_html.tar
+        run: |
+          pwd
+          ls -l
+          tar xfv archive_public_html.tar
 
       - name: <Deploy> Application
         shell: bash
