@@ -30,7 +30,7 @@ jobs:
       - name: <Cache> Dev
         uses: actions/cache@v3
         with:
-          path: dev
+          path: dev/*.phar.*
           key: ${{ runner.os }}-dev
 
       - name: <Build> front-end
