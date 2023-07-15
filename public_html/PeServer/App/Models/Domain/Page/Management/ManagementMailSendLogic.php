@@ -7,6 +7,10 @@ namespace PeServer\App\Models\Domain\Page\Management;
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\AppMailer;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
+use PeServer\Core\DI\Inject;
+use PeServer\Core\Http\HttpRequest;
+use PeServer\Core\IO\File;
+use PeServer\Core\Mail\Attachment;
 use PeServer\Core\Mail\EmailAddress;
 use PeServer\Core\Mail\EmailMessage;
 use PeServer\Core\Mvc\LogicCallMode;
@@ -14,6 +18,9 @@ use PeServer\Core\Mvc\LogicParameter;
 
 class ManagementMailSendLogic extends PageLogicBase
 {
+	#[Inject] //@phpstan-ignore-next-line Inject
+	private HttpRequest $request;
+
 	public function __construct(LogicParameter $parameter, private AppConfiguration $config, private AppMailer $mailer)
 	{
 		parent::__construct($parameter);
@@ -25,7 +32,6 @@ class ManagementMailSendLogic extends PageLogicBase
 			'mail_subject',
 			'mail_to',
 			'mail_body',
-			'mail_attachment',
 		], true);
 	}
 
@@ -68,6 +74,17 @@ class ManagementMailSendLogic extends PageLogicBase
 			text: $mailBody
 		));
 
+		if($this->request->exists('mail_attachment', true)) {
+			$file = $this->getFile('mail_attachment');
+			$content = File::readContent($file->uploadedFilePath);
+			$this->mailer->attachments = [
+				new Attachment(
+					$file->originalFileName,
+					$content,
+					$file->mime
+				)
+			];
+		}
 
 		$this->mailer->send();
 	}

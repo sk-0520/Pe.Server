@@ -2,7 +2,7 @@
 {block name='TITLE'}メール送信{/block}
 {block name='BODY'}
 
-	<form action="/management/mail-send" method="post">
+	<form action="/management/mail-send" method="post" enctype="multipart/form-data">
 		{csrf}
 
 		<dl class="input">

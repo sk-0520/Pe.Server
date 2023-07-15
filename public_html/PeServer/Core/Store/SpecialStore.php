@@ -196,6 +196,10 @@ class SpecialStore
 
 	public function getFile(string $name): UploadFile
 	{
+		if(!isset($_FILES[$name])) {
+			return null;
+		}
+
 		$file = $_FILES[$name];
 		return UploadFile::create($file);
 	}
