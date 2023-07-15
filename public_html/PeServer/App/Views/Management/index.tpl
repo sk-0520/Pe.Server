@@ -48,6 +48,7 @@
 			<ul>
 				<li><a href="/management/database-maintenance">DBメンテナンス</a></li>
 				<li><a href="/management/php-evaluate">PHP実行</a></li>
+				<li><a href="/management/mail-send">メール送信</a></li>
 			</ul>
 		</li>
 		<li><a href="/management/markdown">Markdown</a></li>

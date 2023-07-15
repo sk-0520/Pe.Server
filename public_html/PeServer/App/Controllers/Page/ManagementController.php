@@ -16,6 +16,7 @@ use PeServer\App\Models\Domain\Page\Management\ManagementFeedbackDetailLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementFeedbackListLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementLogDetailLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementLogListLogic;
+use PeServer\App\Models\Domain\Page\Management\ManagementMailSendLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementMarkdownLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementPhpEvaluateLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementPluginCategoryListLogic;
@@ -96,12 +97,27 @@ final class ManagementController extends PageControllerBase
 		$logic->run(LogicCallMode::Submit);
 		return $this->view('database_maintenance', $logic->getViewData());
 	}
-
 	public function database_download_get(): IActionResult
 	{
 		$logic = $this->createLogic(ManagementDatabaseDownloadLogic::class);
 		$logic->run(LogicCallMode::Submit);
 		return $this->data($logic->getContent());
+	}
+
+	public function mail_send_get(): IActionResult
+	{
+		$logic = $this->createLogic(ManagementMailSendLogic::class);
+		$logic->run(LogicCallMode::Initialize);
+		return $this->view('mail_send', $logic->getViewData());
+	}
+	public function mail_send_post(): IActionResult
+	{
+		$logic = $this->createLogic(ManagementMailSendLogic::class);
+		if($logic->run(LogicCallMode::Submit)) {
+			return $this->redirectPath('management/mail-send');
+		}
+
+		return $this->view('mail_send', $logic->getViewData());
 	}
 
 	public function php_evaluate_get(): IActionResult
