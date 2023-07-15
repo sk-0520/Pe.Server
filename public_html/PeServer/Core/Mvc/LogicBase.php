@@ -68,7 +68,7 @@ abstract class LogicBase implements IValidationReceiver
 	/**
 	 * HTTPステータスコード。
 	 */
-	private HttpStatus $httpStatus;
+	private HttpStatus $httpResponseStatus;
 	/**
 	 * 検証エラー。
 	 *
@@ -130,7 +130,7 @@ abstract class LogicBase implements IValidationReceiver
 	protected function __construct(LogicParameter $parameter)
 	{
 		$this->beginTimestamp = Utc::create();
-		$this->httpStatus = HttpStatus::ok();
+		$this->httpResponseStatus = HttpStatus::ok();
 		$this->request = $parameter->request;
 		$this->stores = $parameter->stores;
 		$this->logger = $parameter->logger;
@@ -201,7 +201,7 @@ abstract class LogicBase implements IValidationReceiver
 	 */
 	protected function setHttpStatus(HttpStatus $httpStatus): void
 	{
-		$this->httpStatus = $httpStatus;
+		$this->httpResponseStatus = $httpStatus;
 	}
 
 	/**
@@ -211,7 +211,7 @@ abstract class LogicBase implements IValidationReceiver
 	 */
 	public function getHttpStatus(): HttpStatus
 	{
-		return $this->httpStatus;
+		return $this->httpResponseStatus;
 	}
 
 	/**
@@ -565,7 +565,7 @@ abstract class LogicBase implements IValidationReceiver
 	public function getViewData(): TemplateParameter
 	{
 		return new TemplateParameter(
-			$this->httpStatus,
+			$this->httpResponseStatus,
 			$this->values,
 			$this->errors
 		);
@@ -649,7 +649,7 @@ abstract class LogicBase implements IValidationReceiver
 			return $this->content;
 		}
 
-		return new DataContent($this->httpStatus, $this->content->mime, $this->content->data);
+		return new DataContent($this->httpResponseStatus, $this->content->mime, $this->content->data);
 	}
 
 	/**
