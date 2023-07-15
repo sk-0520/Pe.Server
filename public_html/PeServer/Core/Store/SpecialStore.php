@@ -197,7 +197,7 @@ class SpecialStore
 	public function getFile(string $name): UploadFile
 	{
 		if(!isset($_FILES[$name])) {
-			return null;
+			return UploadFile::invalid($name);
 		}
 
 		$file = $_FILES[$name];

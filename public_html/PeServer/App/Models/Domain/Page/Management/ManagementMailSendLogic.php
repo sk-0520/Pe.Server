@@ -7,8 +7,6 @@ namespace PeServer\App\Models\Domain\Page\Management;
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\AppMailer;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
-use PeServer\Core\DI\Inject;
-use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\IO\File;
 use PeServer\Core\Mail\Attachment;
 use PeServer\Core\Mail\EmailAddress;
@@ -18,9 +16,6 @@ use PeServer\Core\Mvc\LogicParameter;
 
 class ManagementMailSendLogic extends PageLogicBase
 {
-	#[Inject] //@phpstan-ignore-next-line Inject
-	private HttpRequest $request;
-
 	public function __construct(LogicParameter $parameter, private AppConfiguration $config, private AppMailer $mailer)
 	{
 		parent::__construct($parameter);
