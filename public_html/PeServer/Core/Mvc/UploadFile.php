@@ -95,13 +95,13 @@ class UploadFile
 class InvalidUploadFile extends UploadFile
 {
 	public function __construct(
-		private string $key
+		public readonly string $key
 	) {
 		parent::__construct(
 			'',
 			'',
 			'',
-			-1,
+			0,
 			-1
 		);
 	}

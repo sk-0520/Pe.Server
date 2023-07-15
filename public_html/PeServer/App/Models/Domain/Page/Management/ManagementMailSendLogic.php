@@ -13,10 +13,11 @@ use PeServer\Core\Mail\EmailAddress;
 use PeServer\Core\Mail\EmailMessage;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
+use PeServer\Core\Text;
 
 class ManagementMailSendLogic extends PageLogicBase
 {
-	public function __construct(LogicParameter $parameter, private AppConfiguration $config, private AppMailer $mailer)
+	public function __construct(LogicParameter $parameter, private AppMailer $mailer)
 	{
 		parent::__construct($parameter);
 	}
@@ -74,7 +75,7 @@ class ManagementMailSendLogic extends PageLogicBase
 			$content = File::readContent($file->uploadedFilePath);
 			$this->mailer->attachments = [
 				new Attachment(
-					$file->originalFileName,
+					Text::isNullOrWhiteSpace($file->originalFileName) ? 'mail_attachment' : $file->originalFileName,
 					$content,
 					$file->mime
 				)
