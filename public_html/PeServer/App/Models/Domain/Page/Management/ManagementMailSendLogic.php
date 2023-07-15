@@ -37,32 +37,32 @@ class ManagementMailSendLogic extends PageLogicBase
 
 	protected function validateImpl(LogicCallMode $callMode): void
 	{
-		if($callMode === LogicCallMode::Initialize) {
+		if ($callMode === LogicCallMode::Initialize) {
 			return;
 		}
 
-		$this->validation('mail_subject', function(string $key, string $value) {
+		$this->validation('mail_subject', function (string $key, string $value) {
 			$this->validator->isNotEmpty($key, $value);
 		});
 
-		$this->validation('mail_to', function(string $key, string $value) {
+		$this->validation('mail_to', function (string $key, string $value) {
 			$this->validator->isEmail($key, $value);
 		});
 
-		$this->validation('mail_body', function(string $key, string $value) {
+		$this->validation('mail_body', function (string $key, string $value) {
 			$this->validator->isNotEmpty($key, $value);
 		});
 	}
 
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
-		if($callMode === LogicCallMode::Initialize) {
+		if ($callMode === LogicCallMode::Initialize) {
 			return;
 		}
 
-		$mailSubject =$this->getRequest('mail_subject');
-		$mailTo =$this->getRequest('mail_to');
-		$mailBody =$this->getRequest('mail_body');
+		$mailSubject = $this->getRequest('mail_subject');
+		$mailTo = $this->getRequest('mail_to');
+		$mailBody = $this->getRequest('mail_body');
 
 		$this->mailer->subject = $mailSubject;
 
@@ -74,8 +74,8 @@ class ManagementMailSendLogic extends PageLogicBase
 			text: $mailBody
 		));
 
-		if($this->request->exists('mail_attachment', true)) {
-			$file = $this->getFile('mail_attachment');
+		$file = $this->getFile('mail_attachment');
+		if ($file->isEnabled()) {
 			$content = File::readContent($file->uploadedFilePath);
 			$this->mailer->attachments = [
 				new Attachment(
