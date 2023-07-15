@@ -55,10 +55,15 @@ class UploadFile
 		);
 	}
 
+	public static function invalid(string $key): self
+	{
+		return new InvalidUploadFile($key);
+	}
+
 	/**
-	 * 原則使用する必要なし。
+	 * アップロードされたファイルか。
 	 *
-	 * だってもうアップロードファイルからしか生成されないし。。。 ラッパー側で使う系かなぁ。。。わからん。
+	 * 非アップロード判定にも使用可能。
 	 *
 	 * @return bool
 	 * @see https://www.php.net/manual/function.is-uploaded-file.php
@@ -85,4 +90,29 @@ class UploadFile
 	}
 
 	#endregion
+}
+
+class InvalidUploadFile extends UploadFile
+{
+	public function __construct(
+		private string $key
+	) {
+		parent::__construct(
+			'',
+			'',
+			'',
+			-1,
+			-1
+		);
+	}
+
+	public function isEnabled(): bool
+	{
+		return false;
+	}
+
+	public function move(string $path): void
+	{
+		throw new InvalidOperationException();
+	}
 }
