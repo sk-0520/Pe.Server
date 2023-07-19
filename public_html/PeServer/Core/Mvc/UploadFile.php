@@ -57,7 +57,7 @@ class UploadFile
 
 	public static function invalid(string $key): self
 	{
-		return new InvalidUploadFile($key);
+		return new LocalInvalidUploadFile($key);
 	}
 
 	/**
@@ -92,7 +92,7 @@ class UploadFile
 	#endregion
 }
 
-class InvalidUploadFile extends UploadFile
+class LocalInvalidUploadFile extends UploadFile
 {
 	public function __construct(
 		public readonly string $key
