@@ -35,7 +35,7 @@ readonly class CliVersion implements Stringable
 	 * @param int $revision
 	 * @phpstan-param self::IGNORE_REVISION|UnsignedIntegerAlias $revision
 	 */
-	private function __construct(int $major, int $minor, int $build, int $revision)
+	public function __construct(int $major, int $minor = 0, int $build = 0, int $revision = self::IGNORE_REVISION)
 	{
 		$this->major = $major;
 		$this->minor = $minor;

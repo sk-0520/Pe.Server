@@ -10,16 +10,35 @@ use PeServer\Core\Version\CliVersion;
 
 class CliVersionTest extends TestClass
 {
+	public function test_toString()
+	{
+		$tests = [
+			new Data('1.0.0', 1),
+			new Data('1.2.0', 1, 2),
+			new Data('1.2.3', 1, 2, 3),
+			new Data('1.2.3.4', 1, 2, 3, 4),
+			new Data('1.2.3', 1, 2, 3, -1),
+		];
+		foreach ($tests as $test) {
+			$actual = new CliVersion(...$test->args);
+			$this->assertSame($test->expected, $actual->toString(), $test->str());
+		}
+	}
+
 	public function test_tryParse_success()
 	{
 		$tests = [
 			new Data('1.0.0', '1'),
+			new Data('1.0.0', '01'),
 			new Data('10.0.0', '10'),
 			new Data('1.2.0', '1.2'),
+			new Data('1.2.0', '1.02'),
 			new Data('1.20.0', '1.20'),
 			new Data('1.2.3', '1.2.3'),
+			new Data('1.2.3', '1.2.03'),
 			new Data('1.2.30', '1.2.30'),
 			new Data('1.2.3.4', '1.2.3.4'),
+			new Data('1.2.3.4', '1.2.3.04'),
 			new Data('1.2.3.40', '1.2.3.40'),
 		];
 		foreach ($tests as $test) {
