@@ -47,4 +47,25 @@ class CliVersionTest extends TestClass
 			$this->assertSame($test->expected, $result->toString(), $test->str());
 		}
 	}
+
+	public function test_tryParse_failure()
+	{
+		$tests = [
+			null,
+			'',
+			'1a',
+			'a1',
+			'a',
+			'1.',
+			'1.a',
+			'a.2',
+			'1.2.',
+			'1.2.a',
+			'1.a.3',
+		];
+		foreach ($tests as $test) {
+			$actual = CliVersion::tryParse($test, $_);
+			$this->assertFalse($actual);
+		}
+	}
 }

@@ -78,7 +78,7 @@ readonly class CliVersion implements Stringable
 
 		$regex = new Regex();
 		try {
-			$matches = $regex->matches($s, '/(?<MAJOR>\d+)(\.(?<MINOR>\d+)(\.(?<BUILD>\d+)(\.(?<REVISION>\d+))?)?)?/');
+			$matches = $regex->matches($s, '/^(?<MAJOR>\d+)(\.(?<MINOR>\d+)(\.(?<BUILD>\d+)(\.(?<REVISION>\d+))?)?)?$/');
 			$elementCount = Arr::getCount($matches);
 
 			if ($elementCount === 0) {
