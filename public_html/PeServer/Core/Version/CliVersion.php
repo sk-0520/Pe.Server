@@ -131,6 +131,48 @@ readonly class CliVersion implements Stringable
 		throw new ParseException();
 	}
 
+	public static function compare(CliVersion $a, CliVersion $b): int {
+		if ($a->major != $b->major) {
+			if ($a->major > $b->major) {
+				return 1;
+			}
+			return -1;
+		}
+
+		if ($a->minor != $b->minor) {
+			if ($a->minor > $b->minor) {
+				return 1;
+			}
+			return -1;
+		}
+
+		if ($a->build != $b->build) {
+			if ($a->build > $b->build) {
+				return 1;
+			}
+			return -1;
+		}
+
+		if ($a->revision != $b->revision) {
+			if ($a->revision > $b->revision) {
+				return 1;
+			}
+			return -1;
+		}
+
+		return 0;
+	}
+
+	public function toCompare(CliVersion $version): int
+	{
+		return self::compare($this, $version);
+	}
+
+	public function isEquals(CliVersion $version): bool
+	{
+		return !self::compare($this, $version);
+	}
+
 	public function toString(): string
 	{
 		return $this->__toString();
