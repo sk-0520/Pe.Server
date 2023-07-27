@@ -22,6 +22,8 @@ class CliVersionTest extends TestClass
 		foreach ($tests as $test) {
 			$actual = new CliVersion(...$test->args);
 			$this->assertSame($test->expected, $actual->toString(), $test->str());
+			$this->assertSame($test->expected, (string)$actual, $test->str());
+			$this->assertSame($test->expected, strval($actual), $test->str());
 		}
 	}
 
@@ -45,6 +47,8 @@ class CliVersionTest extends TestClass
 			$actual = CliVersion::tryParse($test->args[0], $result);
 			$this->assertTrue($actual, $test->str());
 			$this->assertSame($test->expected, $result->toString(), $test->str());
+			$this->assertSame($test->expected, (string)$result, $test->str());
+			$this->assertSame($test->expected, strval($result), $test->str());
 		}
 	}
 
