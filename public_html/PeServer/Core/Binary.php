@@ -26,8 +26,9 @@ use PeServer\Core\Throws\SerializeException;
  * @phpstan-type Byte int<0,255>
  * @implements ArrayAccess<UnsignedIntegerAlias,Byte>
  * @implements IteratorAggregate<UnsignedIntegerAlias,Byte>
+ * @immutable
  */
-final class Binary implements ArrayAccess, IteratorAggregate, Countable, Stringable
+readonly final class Binary implements ArrayAccess, IteratorAggregate, Countable, Stringable
 {
 	#region variable
 
