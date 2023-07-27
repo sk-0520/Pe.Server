@@ -488,12 +488,12 @@ abstract class LogicBase implements IValidationReceiver
 
 	protected function startup(LogicCallMode $callMode): void
 	{
-		//NONE
+		//NOP
 	}
 
 	protected function cleanup(LogicCallMode $callMode): void
 	{
-		//NONE
+		//NOP
 	}
 
 	/**

@@ -46,7 +46,7 @@ class ResourceBaseTest extends TestClass
 
 			protected function release(): void
 			{
-				//NONE
+				//NOP
 			}
 
 			protected function isValidType(string $resourceType): bool
@@ -73,7 +73,7 @@ class ResourceBaseTest extends TestClass
 
 				protected function release(): void
 				{
-					//NONE
+					//NOP
 				}
 
 				protected function isValidType(string $resourceType): bool

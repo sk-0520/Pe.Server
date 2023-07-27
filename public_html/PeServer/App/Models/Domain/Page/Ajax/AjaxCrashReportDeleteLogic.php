@@ -25,7 +25,7 @@ class AjaxCrashReportDeleteLogic extends PageLogicBase
 
 	protected function validateImpl(LogicCallMode $callMode): void
 	{
-		//NONE
+		//NOP
 	}
 
 	protected function executeImpl(LogicCallMode $callMode): void

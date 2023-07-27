@@ -267,7 +267,7 @@ final class LocalRequestHttpHeader extends HttpHeader
 
 	protected function throwIfInvalidHeaderName(string $name): void
 	{
-		//NONE
+		//NOP
 	}
 
 	public function existsRedirect(): bool
