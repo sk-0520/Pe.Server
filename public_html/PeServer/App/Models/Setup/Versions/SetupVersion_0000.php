@@ -19,7 +19,7 @@ class SetupVersion_0000 extends SetupVersionBase
 
 	protected function migrateIOSystem(IOSetupArgument $argument): void
 	{
-		//NONE
+		//NOP
 	}
 
 	/**

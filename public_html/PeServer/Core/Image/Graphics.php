@@ -28,7 +28,8 @@ use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\GraphicsException;
 use PeServer\Core\Throws\NotImplementedException;
 use PeServer\Core\TypeUtility;
-
+use PeServer\Core\Image\HorizontalAlignment;
+use PeServer\Core\Image\VerticalAlignment;
 /**
  * GD関数ラッパー。
  *
@@ -524,14 +525,14 @@ class Graphics extends DisposerBase
 		$fontArea = self::calculateTextArea($text, $fontSize, $setting->fontNameOrPath, $setting->angle);
 
 		$x = match ($setting->horizontal) {
-			Alignment::HORIZONTAL_LEFT => $rectangle->left() - min($fontArea->left(), $fontArea->right()),
-			Alignment::HORIZONTAL_CENTER  => $rectangle->left() + ($rectangle->size->width / 2) - ($fontArea->width() / 2),
-			Alignment::HORIZONTAL_RIGHT => $rectangle->right() - max($fontArea->left(), $fontArea->right()),
+			HorizontalAlignment::Left => $rectangle->left() - min($fontArea->left(), $fontArea->right()),
+			HorizontalAlignment::Center  => $rectangle->left() + ($rectangle->size->width / 2) - ($fontArea->width() / 2),
+			HorizontalAlignment::Right => $rectangle->right() - max($fontArea->left(), $fontArea->right()),
 		};
 		$y = match ($setting->vertical) {
-			Alignment::VERTICAL_TOP => $rectangle->top() - min($fontArea->top(), $fontArea->bottom()),
-			Alignment::VERTICAL_CENTER => $rectangle->top() + ($rectangle->size->height / 2) + ($fontArea->height() / 2),
-			Alignment::VERTICAL_BOTTOM => $rectangle->bottom() - max($fontArea->top(), $fontArea->bottom()),
+			VerticalAlignment::Top => $rectangle->top() - min($fontArea->top(), $fontArea->bottom()),
+			VerticalAlignment::Center => $rectangle->top() + ($rectangle->size->height / 2) + ($fontArea->height() / 2),
+			VerticalAlignment::Bottom => $rectangle->bottom() - max($fontArea->top(), $fontArea->bottom()),
 		};
 
 		return $this->drawString(

@@ -33,7 +33,7 @@ class StreamTest extends TestClass
 				IOUtility::clearCache($path);
 			}
 		} catch (Throwable) {
-			//NONE
+			//NOP
 		}
 	}
 

@@ -18,5 +18,5 @@ use PeServer\Core\IDisposable;
  */
 interface IScopedDiContainer extends IDiRegisterContainer, IDisposable
 {
-	//NONE
+	//NOP
 }

@@ -655,6 +655,6 @@ class LocalNoReleaseStream extends Stream
 
 	protected function release(): void
 	{
-		//NONE
+		//NOP
 	}
 }

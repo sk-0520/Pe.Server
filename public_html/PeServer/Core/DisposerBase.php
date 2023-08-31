@@ -55,7 +55,7 @@ abstract class DisposerBase implements IDisposable
 	 */
 	protected function disposeImpl(): void
 	{
-		//NONE
+		//NOP
 	}
 
 	#endregion
@@ -83,5 +83,5 @@ abstract class DisposerBase implements IDisposable
 
 final class LocalEmptyDisposer extends DisposerBase
 {
-	//NONE
+	//NOP
 }

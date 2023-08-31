@@ -15,27 +15,27 @@ final class NullLogger implements ILogger
 
 	public function log(int $level, int $traceIndex, $message, ...$parameters): void
 	{
-		//NONE
+		//NOP
 	}
 	public function trace($message, ...$parameters): void
 	{
-		//NONE
+		//NOP
 	}
 	public function debug($message, ...$parameters): void
 	{
-		//NONE
+		//NOP
 	}
 	public function info($message, ...$parameters): void
 	{
-		//NONE
+		//NOP
 	}
 	public function warn($message, ...$parameters): void
 	{
-		//NONE
+		//NOP
 	}
 	public function error($message, ...$parameters): void
 	{
-		//NONE
+		//NOP
 	}
 
 	#endregion

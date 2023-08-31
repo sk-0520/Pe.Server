@@ -23,7 +23,7 @@ class AppArchiver
 	public function __construct(
 		private AppConfiguration $config
 	) {
-		//NONE
+		//NOP
 	}
 
 	public function backup(): int

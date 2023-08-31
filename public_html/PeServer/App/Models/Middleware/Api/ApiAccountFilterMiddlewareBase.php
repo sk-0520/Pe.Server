@@ -20,7 +20,7 @@ abstract class ApiAccountFilterMiddlewareBase implements IMiddleware
 	public function __construct(
 		private AppDatabaseCache $dbCache
 	) {
-		//NONE
+		//NOP
 	}
 
 	#region function

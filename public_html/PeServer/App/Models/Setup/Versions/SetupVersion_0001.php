@@ -17,7 +17,7 @@ class SetupVersion_0001 extends SetupVersionBase
 
 	protected function migrateIOSystem(IOSetupArgument $argument): void
 	{
-		//NONE
+		//NOP
 	}
 
 	protected function migrateDatabase(DatabaseSetupArgument $argument): void

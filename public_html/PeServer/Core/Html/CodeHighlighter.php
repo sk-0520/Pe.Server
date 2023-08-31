@@ -58,7 +58,7 @@ class CodeHighlighter
 					return $lines;
 				}
 			} catch (DomainException) {
-				//NONE
+				//NOP
 			}
 		}
 

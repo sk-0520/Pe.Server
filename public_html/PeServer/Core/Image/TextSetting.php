@@ -4,23 +4,22 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Image;
 
-use PeServer\Core\Image\Alignment;
+use PeServer\Core\Image\HorizontalAlignment;
+use PeServer\Core\Image\VerticalAlignment;
 
 class TextSetting
 {
 	/**
 	 * 生成。
 	 *
-	 * @param int $horizontal
-	 * @phpstan-param Alignment::HORIZONTAL_* $horizontal
-	 * @param int $vertical
-	 * @phpstan-param Alignment::VERTICAL_* $vertical
+	 * @param HorizontalAlignment $horizontal
+	 * @param VerticalAlignment $vertical
 	 * @param string $fontNameOrPath
 	 * @param float $angle
 	 */
 	public function __construct(
-		public int $horizontal,
-		public int $vertical,
+		public HorizontalAlignment $horizontal,
+		public VerticalAlignment $vertical,
 		public string $fontNameOrPath,
 		public float $angle,
 	) {

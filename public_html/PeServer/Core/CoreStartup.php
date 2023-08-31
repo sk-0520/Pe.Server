@@ -153,7 +153,7 @@ class CoreStartup
 	 */
 	protected function setupCliService(array $options, IDiRegisterContainer $container): void
 	{
-		//NONE
+		//NOP
 	}
 
 	/**
@@ -166,7 +166,7 @@ class CoreStartup
 	 */
 	protected function setupTestService(array $options, IDiRegisterContainer $container): void
 	{
-		//NONE
+		//NOP
 	}
 
 	/**
@@ -179,7 +179,7 @@ class CoreStartup
 	 */
 	protected function setupCustom(array $options, IDiRegisterContainer $container): void
 	{
-		//NONE
+		//NOP
 	}
 
 	/**

@@ -8,5 +8,5 @@ use PeServer\Core\Store\SpecialStore;
 
 final class AppSpecialStore extends SpecialStore
 {
-	//NONE
+	//NOP
 }

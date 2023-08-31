@@ -17,8 +17,10 @@ use PeServer\Core\Image\ImageType;
 use PeServer\Core\Image\Point;
 use PeServer\Core\Image\Rectangle;
 use PeServer\Core\Image\Color\RgbColor;
+use PeServer\Core\Image\HorizontalAlignment;
 use PeServer\Core\Image\Size;
 use PeServer\Core\Image\TextSetting;
+use PeServer\Core\Image\VerticalAlignment;
 use PeServer\Core\Mvc\Template\Plugin\TemplateFunctionBase;
 use PeServer\Core\Mvc\Template\Plugin\TemplatePluginArgument;
 use PeServer\Core\OutputBuffer;
@@ -94,7 +96,7 @@ class BotTextImageFunction extends TemplateFunctionBase
 
 		$size = new Size($width, $height);
 		$fontFilePath = CoreDefines::DEFAULT_FONT_FILE_PATH;
-		$textSetting = new TextSetting(Alignment::HORIZONTAL_CENTER, Alignment::VERTICAL_CENTER, $fontFilePath, 0);
+		$textSetting = new TextSetting(HorizontalAlignment::Center, VerticalAlignment::Center, $fontFilePath, 0);
 
 		$image = Graphics::create($size);
 		$image->setDpi(new Size(300, 300));

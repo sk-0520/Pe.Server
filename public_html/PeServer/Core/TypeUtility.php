@@ -19,6 +19,7 @@ abstract class TypeUtility
 	#region define
 
 	private const INT_PATTERN = '/^\s*(\+|\-)?\d+\s*$/';
+	private const UINT_PATTERN = '/^\s*(\+)?\d+\s*$/';
 
 	public const TYPE_BOOLEAN = "bool";
 	public const TYPE_INTEGER = "int";
@@ -62,6 +63,44 @@ abstract class TypeUtility
 	{
 		$regex = new Regex();
 		if (!$regex->isMatch($input, self::INT_PATTERN)) {
+			return false;
+		}
+
+		$result = (int)Text::trim($input);
+		return true;
+	}
+
+		/**
+	 * 文字列を整数に変換。
+	 *
+	 * @param string $input 文字列。
+	 * @return integer 変換後整数。
+	 * @phpstan-return UnsignedIntegerAlias $result
+	 * @throws ParseException 変換できない文字列。
+	 */
+	public static function parseUInteger(string $input): int
+	{
+		$regex = new Regex();
+		if (!$regex->isMatch($input, self::UINT_PATTERN)) {
+			throw new ParseException($input);
+		}
+
+		/** @phpstan-var UnsignedIntegerAlias */
+		return (int)Text::trim($input);
+	}
+
+	/**
+	 * 文字列を整数に変換した結果を取得。
+	 *
+	 * @param string $input 文字列。
+	 * @param integer|null $result 変換成功時の整数。
+	 * @phpstan-param UnsignedIntegerAlias|null $result
+	 * @return boolean 変換成功状態。
+	 */
+	public static function tryParseUInteger(string $input, ?int &$result): bool
+	{
+		$regex = new Regex();
+		if (!$regex->isMatch($input, self::UINT_PATTERN)) {
 			return false;
 		}
 
