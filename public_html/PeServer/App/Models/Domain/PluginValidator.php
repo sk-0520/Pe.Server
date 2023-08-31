@@ -54,7 +54,7 @@ class PluginValidator extends ValidatorBase
 			$trueKeeper = new TrueKeeper();
 
 			$trueKeeper->state = $this->validator->inRange($key, self::PLUGIN_NAME_RANGE_MIN, self::PLUGIN_NAME_RANGE_MAX, $value);
-			$trueKeeper->state = $this->validator->isMatch($key, '/^[a-zA-Z0-9\-_!=\(\)\[\]]+$/', $value);
+			$trueKeeper->state = $this->validator->isMatch($key, '/^[a-zA-Z0-9\-_!=\(\)\[\]\.]+$/', $value);
 
 			return $trueKeeper->state;
 		}
