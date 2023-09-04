@@ -5,6 +5,7 @@ namespace PeServer\App\Controllers\Page;
 use PeServer\App\Controllers\Page\PageControllerBase;
 use PeServer\App\Models\Domain\Page\Management\ManagementBackupLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementCacheRebuildLogic;
+use PeServer\App\Models\Domain\Page\Management\ManagementClearDeployProgressLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementConfigurationLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementCrashReportDetailLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementCrashReportListLogic;
@@ -155,6 +156,13 @@ final class ManagementController extends PageControllerBase
 	public function cache_rebuild(): IActionResult
 	{
 		$logic = $this->createLogic(ManagementCacheRebuildLogic::class);
+		$logic->run(LogicCallMode::Submit);
+
+		return $this->redirectPath('/management');
+	}
+
+	public function clear_deploy_progress(): IActionResult {
+		$logic = $this->createLogic(ManagementClearDeployProgressLogic::class);
 		$logic->run(LogicCallMode::Submit);
 
 		return $this->redirectPath('/management');

@@ -39,6 +39,12 @@
 								<button class="link">キャッシュ再構築</submit>
 							</form>
 						</li>
+						<li>
+							<form method="post" action="/management/clear-deploy-progress">
+								{csrf}
+								<button class="link">デプロイ進捗ファイル破棄</submit>
+							</form>
+						</li>
 					</ul>
 				</li>
 			</ul>

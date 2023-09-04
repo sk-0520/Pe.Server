@@ -108,6 +108,7 @@ final class AppRouteSetting extends RouteSetting
 					->addAction('default-plugin', HttpMethod::get(), 'default_plugin_get')
 					->addAction('default-plugin', HttpMethod::post(), 'default_plugin_post', [CsrfMiddleware::class])
 					->addAction('cache-rebuild', HttpMethod::post(), 'cache_rebuild', [CsrfMiddleware::class])
+					->addAction('clear-deploy-progress', HttpMethod::post(), 'clear_deploy_progress', [CsrfMiddleware::class])
 					->addAction('plugin-category', HttpMethod::get(), 'plugin_category_get')
 					->addAction('feedback', HttpMethod::get(), 'feedback_list_top')
 					->addAction('feedback/page/:page_number@\d++', HttpMethod::get(), 'feedback_list_page')
