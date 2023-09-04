@@ -40,7 +40,7 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 	private const MODE_PREPARE = 'prepare';
 	private const MODE_UPDATE = 'update';
 
-	private const PROGRESS_FILE_NAME = 'deploy.dat';
+	public const PROGRESS_FILE_NAME = 'deploy.dat';
 	private const ARCHIVE_FILE_NAME = 'deploy.zip';
 	//private const ENABLED_RANGE_TIME = 'PT5M';
 	private const ENABLED_RANGE_TIME = 'P1M';
