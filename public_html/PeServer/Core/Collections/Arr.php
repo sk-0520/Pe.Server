@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Collections;
 
+use \Countable;
 use PeServer\Core\Collections\OrderBy;
 use PeServer\Core\Cryptography;
 use PeServer\Core\ErrorHandler;
@@ -101,12 +102,12 @@ class Arr
 	/**
 	 * 配列の件数を取得。
 	 *
-	 * @param array<mixed>|null $array 対象配列。
+	 * @param array<mixed>|Countable|null $array 対象配列。
 	 * @return int 件数。
 	 * @phpstan-return UnsignedIntegerAlias
 	 * @see https://www.php.net/manual/function.count.php
 	 */
-	public static function getCount(?array $array): int
+	public static function getCount(array|Countable|null $array): int
 	{
 		if ($array === null) {
 			return 0;
