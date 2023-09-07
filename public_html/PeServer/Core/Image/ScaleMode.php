@@ -7,7 +7,7 @@ namespace PeServer\Core\Image;
 /**
  * 画像サイズ変換フラグ。
  */
-class ScaleMode
+abstract class ScaleMode
 {
 	#region define
 
