@@ -1,4 +1,4 @@
-name: \[Cron] Daily
+name: "Cron Daily"
 
 # on:
 #   schedule:
@@ -15,6 +15,7 @@ jobs:
         run: |
           curl \
           -H "X-API-KEY: ${{ secrets.PE_SERVER_API_KEY }}" \
+          -H "X-SECRET-KEY: ${{ secrets.PE_SERVER_API_SECRET }}" \
           https://peserver.gq/api/administrator/backup
 
       - name: 2!
