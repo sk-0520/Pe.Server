@@ -12,8 +12,11 @@ jobs:
 
     steps:
       - name: 1!
-        run:  echo "1"
+        run: |
+          curl \
+          -H "X-API-KEY: ${{ secrets.PE_SERVER_API_KEY }}" \
+          https://peserver.gq/api/administrator/backup
 
       - name: 2!
-        run:  echo "2"
+        run:  https://peserver.gq/api/administrator/cache-rebuild
 
