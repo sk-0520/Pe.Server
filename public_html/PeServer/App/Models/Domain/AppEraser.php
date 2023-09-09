@@ -19,7 +19,7 @@ class AppEraser
 	#region function
 
 	public function execute() : void {
-		$this->logger->info('未実装');
+		$this->logger->info('未実装', $this->config);
 	}
 
 	#endregion
