@@ -7,13 +7,14 @@ namespace PeServer\App\Models\Domain\Api\AdministratorApi;
 use PeServer\App\Models\AuditLog;
 use PeServer\App\Models\Domain\Api\ApiLogicBase;
 use PeServer\App\Models\Domain\AppArchiver;
+use PeServer\App\Models\Domain\AppEraser;
 use PeServer\App\Models\ResponseJson;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 
 class AdministratorApiDeleteOldDataLogic extends ApiLogicBase
 {
-	public function __construct(LogicParameter $parameter, private AppArchiver $appArchiver)
+	public function __construct(LogicParameter $parameter, private AppEraser $appEraser)
 	{
 		parent::__construct($parameter);
 	}
@@ -27,14 +28,11 @@ class AdministratorApiDeleteOldDataLogic extends ApiLogicBase
 
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
-		$size = $this->appArchiver->backup();
-		$this->appArchiver->rotate();
+		$this->appEraser->execute();
 
-		$this->writeAuditLogCurrentUser(AuditLog::API_ADMINISTRATOR_BACKUP, ['size' => $size]);
+		$this->writeAuditLogCurrentUser(AuditLog::API_ADMINISTRATOR_DELETE_OLD_DATA);
 
-		$this->setResponseJson(ResponseJson::success([
-			'size' => $size,
-		]));
+		$this->setResponseJson(ResponseJson::success([]));
 	}
 
 	#endregion

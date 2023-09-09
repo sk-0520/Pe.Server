@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Domain\Page\Management;
 
 use PeServer\App\Models\AppDatabaseCache;
+use PeServer\App\Models\Domain\AppEraser;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
@@ -12,7 +13,7 @@ use PeServer\Core\Timer;
 
 class ManagementDeleteOldDataLogic extends PageLogicBase
 {
-	public function __construct(LogicParameter $parameter)
+	public function __construct(LogicParameter $parameter, private AppEraser $appEraser)
 	{
 		parent::__construct($parameter);
 	}
@@ -26,7 +27,7 @@ class ManagementDeleteOldDataLogic extends PageLogicBase
 	{
 		$stopwatch =  Timer::startNew();
 
-		// DO
+		$this->appEraser->execute();
 
 		$stopwatch->stop();
 
