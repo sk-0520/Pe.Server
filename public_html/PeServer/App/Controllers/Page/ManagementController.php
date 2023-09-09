@@ -12,6 +12,7 @@ use PeServer\App\Models\Domain\Page\Management\ManagementCrashReportListLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementDatabaseDownloadLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementDatabaseMaintenanceLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementDefaultPluginLogic;
+use PeServer\App\Models\Domain\Page\Management\ManagementDeleteOldDataLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementEnvironmentLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementFeedbackDetailLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementFeedbackListLogic;
@@ -80,6 +81,14 @@ final class ManagementController extends PageControllerBase
 	public function backup(): IActionResult
 	{
 		$logic = $this->createLogic(ManagementBackupLogic::class);
+		$logic->run(LogicCallMode::Submit);
+
+		return $this->redirectPath('/management');
+	}
+
+	public function delete_old_data(): IActionResult
+	{
+		$logic = $this->createLogic(ManagementDeleteOldDataLogic::class);
 		$logic->run(LogicCallMode::Submit);
 
 		return $this->redirectPath('/management');
