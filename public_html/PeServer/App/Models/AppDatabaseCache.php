@@ -93,6 +93,12 @@ class AppDatabaseCache
 		throw new SerializeException(TypeUtility::getType($object));
 	}
 
+	private function existsCache(string $fileName): bool
+	{
+		$filePath = Path::combine($this->cacheDirectoryPath, $fileName);
+		return File::exists($filePath);
+	}
+
 	/**
 	 * ユーザー情報をキャッシュ出力。
 	 *
@@ -145,6 +151,14 @@ class AppDatabaseCache
 	}
 
 	/**
+	 * プラグイン情報のキャッシュファイルが存在するか。
+	 */
+	public function existsPluginInformation(): bool
+	{
+		return self::existsCache(self::PLUGIN_INFORMATION);
+	}
+
+	/**
 	 * プラグイン情報のキャッシュ取得。
 	 *
 	 * @return PluginCache
@@ -152,6 +166,14 @@ class AppDatabaseCache
 	public function readPluginInformation(): PluginCache
 	{
 		return self::readCache(self::PLUGIN_INFORMATION, PluginCache::class);
+	}
+
+	/**
+	 * プラグイン情報のキャッシュファイルが存在するか。
+	 */
+	public function existsUserInformation(): bool
+	{
+		return self::existsCache(self::USER_INFORMATION);
 	}
 
 	/**

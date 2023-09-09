@@ -11,6 +11,7 @@ use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
+use PeServer\Core\Text;
 
 class PluginIndexLogic extends PageLogicBase
 {
@@ -26,6 +27,16 @@ class PluginIndexLogic extends PageLogicBase
 
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
+		$this->setValue('link_default_plugin', false);
+
+		if (!$this->dbCache->existsPluginInformation()) {
+			$this->setValue('plugins', []);
+			$this->setValue('link_default_plugin', true);
+			$this->addError(Text::EMPTY, "プラグインなし");
+			$this->addTemporaryMessage("この状態は原則ありえない(標準プラグインすら未登録状態)");
+			return;
+		}
+
 		$pluginInformation = $this->dbCache->readPluginInformation();
 
 		$plugins = Arr::sortCallbackByValue(
