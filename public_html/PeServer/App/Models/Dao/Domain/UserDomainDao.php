@@ -7,6 +7,7 @@ namespace PeServer\App\Models\Dao\Domain;
 use \DateTime;
 use PeServer\App\Models\Cache\UserCache;
 use PeServer\App\Models\Cache\UserCacheItem;
+use PeServer\App\Models\Data\Dto\UserListItemDto;
 use PeServer\Core\Database\DaoBase;
 use PeServer\Core\Database\DatabaseRowResult;
 use PeServer\Core\Database\IDatabaseContext;
@@ -184,6 +185,41 @@ class UserDomainDao extends DaoBase
 
 		return $result->fields['user_id'];
 	}
+
+	/**
+	 * 管理用ユーザー一覧取得。
+	 *
+	 * @phpstan-return UserListItemDto[]
+	 */
+	public function selectUserItems(): array
+	{
+		$result = $this->context->selectOrdered(
+			<<<SQL
+
+			select
+				Users.user_id,
+				Users.login_id,
+				Users.name,
+				Users.state,
+				Users.level
+			from
+				Users
+			order by
+				case Users.state
+					when 'enabled' then 0
+					when 'locked' then 1
+					when 'disabled' then 2
+					else 100
+				end,
+				Users.name,
+				Users.login_id
+
+			SQL,
+		);
+
+		return $result->mapping(UserListItemDto::class);
+	}
+
 
 	public function updateEmailFromWaitEmail(string $userId, string $token): bool
 	{
