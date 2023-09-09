@@ -45,6 +45,16 @@
 								<button class="link">デプロイ進捗ファイル破棄</submit>
 							</form>
 						</li>
+						<li>
+							管理
+							<ul>
+								<li>
+									<a href="/management/control/user">
+										ユーザー一覧
+									</a>
+								</li>
+							</ul>
+						</li>
 					</ul>
 				</li>
 			</ul>
