@@ -10,10 +10,17 @@ use PeServer\Core\Log\ILoggerFactory;
 
 class AppEraser
 {
+	#region variable
+
+	private ILogger $logger;
+
+	#endregion
+
 	public function __construct(
 		private AppConfiguration $config,
-		private ILogger $logger
+		ILoggerFactory $loggerFactory
 	) {
+		$this->logger = $loggerFactory->createLogger($this);
 	}
 
 	#region function
