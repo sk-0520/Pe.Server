@@ -34,6 +34,12 @@
 							</form>
 						</li>
 						<li>
+							<form method="post" action="/management/delete-old-data">
+								{csrf}
+								<button class="link">不要データ削除処理</submit>
+							</form>
+						</li>
+						<li>
 							<form method="post" action="/management/cache-rebuild">
 								{csrf}
 								<button class="link">キャッシュ再構築</submit>
@@ -44,6 +50,16 @@
 								{csrf}
 								<button class="link">デプロイ進捗ファイル破棄</submit>
 							</form>
+						</li>
+						<li>
+							管理
+							<ul>
+								<li>
+									<a href="/management/control/user">
+										ユーザー一覧
+									</a>
+								</li>
+							</ul>
 						</li>
 					</ul>
 				</li>

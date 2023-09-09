@@ -13,6 +13,7 @@ use PeServer\App\Controllers\Page\AccountController;
 use PeServer\App\Controllers\Page\AjaxController;
 use PeServer\App\Controllers\Page\HomeController;
 use PeServer\App\Controllers\Page\ManagementController;
+use PeServer\App\Controllers\Page\ManagementControlController;
 use PeServer\App\Controllers\Page\PluginController;
 use PeServer\App\Controllers\Page\ToolController;
 use PeServer\App\Models\Middleware\AdministratorAccountFilterMiddleware;
@@ -98,6 +99,7 @@ final class AppRouteSetting extends RouteSetting
 					->addAction('environment', HttpMethod::get())
 					->addAction('configuration', HttpMethod::get())
 					->addAction('backup', HttpMethod::post(), 'backup', [CsrfMiddleware::class])
+					->addAction('delete-old-data', HttpMethod::post(), 'delete_old_data', [CsrfMiddleware::class])
 					->addAction('database-maintenance', HttpMethod::get(), 'database_maintenance_get')
 					->addAction('database-maintenance', HttpMethod::post(), 'database_maintenance_post', [CsrfMiddleware::class])
 					->addAction('database-download', HttpMethod::get(), 'database_download_get')
@@ -107,6 +109,7 @@ final class AppRouteSetting extends RouteSetting
 					->addAction('php-evaluate', HttpMethod::post(), 'php_evaluate_post', [CsrfMiddleware::class])
 					->addAction('default-plugin', HttpMethod::get(), 'default_plugin_get')
 					->addAction('default-plugin', HttpMethod::post(), 'default_plugin_post', [CsrfMiddleware::class])
+					->addAction('delete-old-data', HttpMethod::post(), 'delete_old_data', [CsrfMiddleware::class])
 					->addAction('cache-rebuild', HttpMethod::post(), 'cache_rebuild', [CsrfMiddleware::class])
 					->addAction('clear-deploy-progress', HttpMethod::post(), 'clear_deploy_progress', [CsrfMiddleware::class])
 					->addAction('plugin-category', HttpMethod::get(), 'plugin_category_get')
@@ -123,6 +126,9 @@ final class AppRouteSetting extends RouteSetting
 					->addAction('log', HttpMethod::get(), 'log_list')
 					->addAction('log/:log_name@\w+\.log', HttpMethod::get(), 'log_detail')
 					->addAction('markdown', HttpMethod::get(), 'markdown')
+				/* AUTO-FORMAT */,
+				(new Route('management/control', ManagementControlController::class, [AdministratorAccountFilterMiddleware::class]))
+					->addAction('user', HttpMethod::get(), 'user_list_get')
 				/* AUTO-FORMAT */,
 				(new Route('tool', ToolController::class))
 					->addAction('base64', HttpMethod::get(), 'base64_get')
@@ -157,6 +163,7 @@ final class AppRouteSetting extends RouteSetting
 				/* AUTO-FORMAT */,
 				(new Route('api/administrator', AdministratorApiController::class, [ApiAcaoMiddleware::class, ApiAdministratorAccountFilterMiddleware::class]))
 					->addAction('backup', HttpMethod::post(), 'backup')
+					->addAction('delete-old-data', HttpMethod::post(), 'delete_old_data')
 					->addAction('cache-rebuild', HttpMethod::post(), 'cache_rebuild')
 					->addAction('deploy/:mode@.+', HttpMethod::post(), 'deploy')
 					->addAction('pe/version', HttpMethod::post(), 'pe_version')

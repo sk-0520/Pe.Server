@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Domain;
 
 use PeServer\Core\I18n;
+use PeServer\Core\Text;
 
 abstract class UserLevel
 {
+	public const UNKNOWN = Text::EMPTY;
 	public const USER = 'user';
 	public const SETUP = 'setup';
 	public const ADMINISTRATOR = 'administrator';

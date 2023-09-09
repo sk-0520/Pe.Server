@@ -4,6 +4,7 @@ namespace PeServer\App\Controllers\Api;
 
 use PeServer\App\Models\Domain\Api\AdministratorApi\AdministratorApiBackupLogic;
 use PeServer\App\Models\Domain\Api\AdministratorApi\AdministratorApiCacheRebuildLogic;
+use PeServer\App\Models\Domain\Api\AdministratorApi\AdministratorApiDeleteOldDataLogic;
 use PeServer\App\Models\Domain\Api\AdministratorApi\AdministratorApiDeployLogic;
 use PeServer\App\Models\Domain\Api\AdministratorApi\AdministratorApiPeVersionLogic;
 use PeServer\App\Models\Domain\AppArchiver;
@@ -21,6 +22,14 @@ class AdministratorApiController extends ApiControllerBase
 	public function backup(): IActionResult
 	{
 		$logic = $this->createLogic(AdministratorApiBackupLogic::class);
+		$logic->run(LogicCallMode::Submit);
+
+		return $this->data($logic->getContent());
+	}
+
+	public function delete_old_data(): IActionResult
+	{
+		$logic = $this->createLogic(AdministratorApiDeleteOldDataLogic::class);
 		$logic->run(LogicCallMode::Submit);
 
 		return $this->data($logic->getContent());
