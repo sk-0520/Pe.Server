@@ -71,7 +71,7 @@ class ManagementConfigurationEditLogic extends PageLogicBase
 			// 保存前にバックアップ
 			$this->appArchiver->backup();
 
-			File::writeJsonFile($this->settingPath, $data);
+			File::writeJsonFile($this->settingPath, $data, $jsonSerializer);
 
 			$this->writeAuditLogCurrentUser(AuditLog::ADMINISTRATOR_SAVE_CONFIGURATION);
 		}

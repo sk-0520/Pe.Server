@@ -152,13 +152,13 @@ abstract class File
 	 * JSONファイルとして出力。
 	 *
 	 * @param string $path
-	 * @param array<mixed>|\stdClass $data
+	 * @param array<mixed>|object $data
 	 * @param JsonSerializer|null $jsonSerializer JSON処理
 	 * @return int 書き込みサイズ。
 	 * @throws IOException
 	 * @throws ParseException
 	 */
-	public static function writeJsonFile(string $path, array|stdClass $data, ?JsonSerializer $jsonSerializer = null): int
+	public static function writeJsonFile(string $path, array|object $data, ?JsonSerializer $jsonSerializer = null): int
 	{
 		$jsonSerializer ??= new JsonSerializer();
 		$value = $jsonSerializer->save($data);
