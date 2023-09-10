@@ -8,6 +8,11 @@ use PeServer\App\Models\AppConfiguration;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\ILoggerFactory;
 
+/**
+ * 所謂削除バッチ。
+ *
+ * ふるくなったなんやかんやを削除する予定。
+ */
 class AppEraser
 {
 	#region variable
