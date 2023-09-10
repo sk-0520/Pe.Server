@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domain\Page\Management;
 
+use PeServer\App\Models\AuditLog;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\OutputBuffer;
+use PeServer\Core\Text;
 use Throwable;
 
 class ManagementPhpEvaluateLogic extends PageLogicBase
@@ -66,6 +68,11 @@ class ManagementPhpEvaluateLogic extends PageLogicBase
 			$this->setValue('output', $ex);
 		}
 		$this->setValue('result', $result);
+
+		$this->writeAuditLogCurrentUser(AuditLog::ADMINISTRATOR_EXECUTE_PHP, [
+			'php' => $executeStatement,
+			'output' => Text::dump($output),
+		]);
 	}
 
 	/**

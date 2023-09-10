@@ -6,6 +6,7 @@ namespace PeServer\App\Models\Domain\Page\Management;
 
 use \Throwable;
 use PeServer\App\Models\AppConfiguration;
+use PeServer\App\Models\AuditLog;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Database\DatabaseTableResult;
@@ -122,6 +123,11 @@ class ManagementDatabaseMaintenanceLogic extends PageLogicBase
 		} catch (Throwable $ex) {
 			$result = $ex;
 		}
+
+		$this->writeAuditLogCurrentUser(AuditLog::ADMINISTRATOR_EXECUTE_SQL, [
+			'sql' => $statement,
+			'result' => Text::dump($result),
+		]);
 
 		$this->setValue('executed', true);
 		$this->setValue('result', $result);
