@@ -6,6 +6,7 @@ namespace PeServer\App\Models\Domain\Page\Management;
 
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\AppMailer;
+use PeServer\App\Models\AuditLog;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\Core\IO\File;
 use PeServer\Core\Mail\Attachment;
@@ -81,6 +82,12 @@ class ManagementMailSendLogic extends PageLogicBase
 				)
 			];
 		}
+
+		$this->writeAuditLogCurrentUser(AuditLog::ADMINISTRATOR_EXECUTE_PHP, [
+			'subject' => $mailSubject,
+			'mailTo' => $mailTo,
+			'body' => $mailBody,
+		]);
 
 		$this->mailer->send();
 	}

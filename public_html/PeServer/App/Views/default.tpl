@@ -14,7 +14,12 @@
 
 	<body>
 		<main id="main">
-			<h1 id="title">{block name='TITLE'}{/block}</h1>
+			<h1 id="title">
+				{block name='TITLE'}{/block}
+				{if \PeServer\Core\Environment::isDevelopment()}
+					<span class="mute" style="margin-left: 1em;">(dev)</span>
+				{/if}
+			</h1>
 			{if isset($values.temp_messages) && !empty($values.temp_messages)}
 				<div class="common messages">
 					<ul>

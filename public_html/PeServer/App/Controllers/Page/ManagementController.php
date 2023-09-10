@@ -7,6 +7,7 @@ use PeServer\App\Models\Domain\Page\Management\ManagementBackupLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementCacheRebuildLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementClearDeployProgressLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementConfigurationLogic;
+use PeServer\App\Models\Domain\Page\Management\ManagementConfigurationEditLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementCrashReportDetailLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementCrashReportListLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementDatabaseDownloadLogic;
@@ -76,6 +77,24 @@ final class ManagementController extends PageControllerBase
 		$logic->run(LogicCallMode::Initialize);
 
 		return $this->view('configuration', $logic->getViewData());
+	}
+
+	public function configuration_edit_get(): IActionResult
+	{
+		$logic = $this->createLogic(ManagementConfigurationEditLogic::class);
+		$logic->run(LogicCallMode::Initialize);
+
+		return $this->view('configuration_edit', $logic->getViewData());
+	}
+
+	public function configuration_edit_post(): IActionResult
+	{
+		$logic = $this->createLogic(ManagementConfigurationEditLogic::class);
+		if($logic->run(LogicCallMode::Submit)) {
+			return $this->redirectPath('management/configuration/edit');
+		}
+
+		return $this->view('configuration_edit', $logic->getViewData());
 	}
 
 	public function backup(): IActionResult

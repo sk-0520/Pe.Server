@@ -18,7 +18,8 @@ use ZipArchive;
 
 class AppArchiver
 {
-	private const MAX_COUNT = 500;
+	/** 保持ファイル数。 */
+	private const MAX_COUNT = 180;
 
 	public function __construct(
 		private AppConfiguration $config

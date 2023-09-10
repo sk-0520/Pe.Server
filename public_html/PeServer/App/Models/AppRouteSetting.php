@@ -98,6 +98,8 @@ final class AppRouteSetting extends RouteSetting
 					->addAction('setup', HttpMethod::post(), 'setup_post', [Route::CLEAR_MIDDLEWARE, SetupAccountFilterMiddleware::class])
 					->addAction('environment', HttpMethod::get())
 					->addAction('configuration', HttpMethod::get())
+					->addAction('configuration/edit', HttpMethod::get(), 'configuration_edit_get')
+					->addAction('configuration/edit', HttpMethod::post(), 'configuration_edit_post', [CsrfMiddleware::class])
 					->addAction('backup', HttpMethod::post(), 'backup', [CsrfMiddleware::class])
 					->addAction('delete-old-data', HttpMethod::post(), 'delete_old_data', [CsrfMiddleware::class])
 					->addAction('database-maintenance', HttpMethod::get(), 'database_maintenance_get')

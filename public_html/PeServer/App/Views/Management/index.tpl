@@ -23,7 +23,14 @@
 			設定
 			<ul>
 				<li><a href="/management/environment">環境情報</a></li>
-				<li><a href="/management/configuration">現在設定</a></li>
+				<li>
+					<a href="/management/configuration">現在設定</a>
+					<ul>
+						<li>
+							<a href="/management/configuration/edit">編集</a>
+						</li>
+					</ul>
+				</li>
 				<li>
 					保守
 					<ul>
