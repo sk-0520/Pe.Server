@@ -38,6 +38,7 @@ class ResponsePrinter
 	 * 応答ヘッダ: Content-Length を取得。
 	 *
 	 * @return int 0以上の場合は決定された出力byte数。負数は不明。
+	 * @phpstan-return UnsignedIntegerAlias|ICallbackContent::UNKNOWN
 	 */
 	private function getContentLength(): int
 	{

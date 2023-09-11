@@ -4,29 +4,32 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domain\Page\Management;
 
-use PeServer\Core\Collections\Arr;
-use PeServer\Core\Text;
-use PeServer\Core\TypeUtility;
-use PeServer\Core\Mvc\LogicCallMode;
-use PeServer\Core\Mvc\LogicParameter;
-use PeServer\App\Models\SessionKey;
+use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\AppDatabaseCache;
-use PeServer\App\Models\Domain\PluginState;
-use PeServer\App\Models\Domain\PluginUrlKey;
-use PeServer\Core\Database\IDatabaseContext;
-use PeServer\App\Models\Domain\PluginUtility;
-use PeServer\App\Models\Domain\Page\PageLogicBase;
+use PeServer\App\Models\Dao\Entities\PeSettingEntityDao;
+use PeServer\App\Models\Dao\Entities\PluginCategoryMappingsEntityDao;
 use PeServer\App\Models\Dao\Entities\PluginsEntityDao;
 use PeServer\App\Models\Dao\Entities\PluginUrlsEntityDao;
-use PeServer\App\Models\Dao\Entities\PluginCategoryMappingsEntityDao;
 use PeServer\App\Models\Domain\DefaultPlugin;
+use PeServer\App\Models\Domain\Page\PageLogicBase;
+use PeServer\App\Models\Domain\PeVersionUpdater;
+use PeServer\App\Models\Domain\PluginState;
+use PeServer\App\Models\Domain\PluginUrlKey;
+use PeServer\App\Models\Domain\PluginUtility;
+use PeServer\App\Models\SessionKey;
+use PeServer\Core\Collections\Arr;
+use PeServer\Core\Database\IDatabaseContext;
+use PeServer\Core\Mvc\LogicCallMode;
+use PeServer\Core\Mvc\LogicParameter;
+use PeServer\Core\Text;
+use PeServer\Core\TypeUtility;
 
 class ManagementDefaultPluginLogic extends PageLogicBase
 {
 	/** @var array{item:DefaultPlugin,registered:bool}[] */
 	private array $defaultPlugins;
 
-	public function __construct(LogicParameter $parameter, private AppDatabaseCache $dbCache)
+	public function __construct(LogicParameter $parameter, private AppDatabaseCache $dbCache, private AppConfiguration $config)
 	{
 		parent::__construct($parameter);
 
@@ -100,6 +103,7 @@ class ManagementDefaultPluginLogic extends PageLogicBase
 					$pluginsEntityDao = new PluginsEntityDao($context);
 					$pluginUrlsEntityDao = new PluginUrlsEntityDao($context);
 					$pluginCategoryMappingsEntityDao = new PluginCategoryMappingsEntityDao($context);
+					$peSettingEntityDao = new PeSettingEntityDao($context);
 
 					foreach ($params['plugins'] as $plugin) {
 						/** @var  $plugin array{item:DefaultPlugin,registered:bool}[] */
@@ -129,6 +133,11 @@ class ManagementDefaultPluginLogic extends PageLogicBase
 
 						$this->addTemporaryMessage('登録: ' . $plugin['item']->pluginName);
 					}
+
+					$version = $peSettingEntityDao->selectPeSettingVersion();
+
+					$peVersionUpdater = new PeVersionUpdater();
+					$peVersionUpdater->updateDatabase($context, $this->config->setting->config->address->families->pluginUpdateInfoUrlBase, $version);
 
 					return true;
 				});
