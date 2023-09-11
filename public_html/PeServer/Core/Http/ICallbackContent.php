@@ -9,6 +9,12 @@ namespace PeServer\Core\Http;
  */
 interface ICallbackContent
 {
+	#region variable
+
+	public const UNKNOWN = -1;
+
+	#endregion
+
 	#region function
 
 	/**
@@ -23,7 +29,9 @@ interface ICallbackContent
 	/**
 	 * 出力長。
 	 *
-	 * @return int 0以上の場合は決定された出力byte数。負数は不明。
+	 * @return int 0以上の場合は決定された出力byte数。不明な場合は `UNKNOWN`。
+	 * @phpstan-return UnsignedIntegerAlias|self::UNKNOWN
+	 * @see ICallbackContent::UNKNOWN
 	 */
 	public function getLength(): int;
 
