@@ -13,6 +13,12 @@
 				<path>PeServer/Core/Libs/**/*</path>
 				<path>PeServer/data/**/*</path>
 			</ignore>
+			<include-source>true</include-source>
+			<markers>
+				<marker>TODO</marker>
+				<marker>BUGS</marker>
+				<marker>NOTE</marker>
+			</markers>
 		</api>
 	</version>
 </phpdocumentor>
