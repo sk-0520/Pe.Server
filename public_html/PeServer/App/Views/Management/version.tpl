@@ -8,7 +8,7 @@
 		<dl>
 			<dt>バージョン</dt>
 			<dd>
-				{input_helper key='version' type="text" class="edit"}
+				{input_helper key='version' type="text" class="edit" pattern="[0-9]+\.[0-9]+\.[0-9]+"}
 			</dd>
 
 			<dt class="action"></dt>
