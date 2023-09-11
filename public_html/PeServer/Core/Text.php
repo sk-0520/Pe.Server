@@ -227,11 +227,14 @@ abstract class Text
 	/**
 	 * `sprintf` ラッパー。
 	 *
+	 * 単純な文字列置き換えであれば `Text::replaceMap` を使用する。
+	 *
 	 * @param string $format
 	 * @param mixed ...$values
 	 * @phpstan-param FormatAlias ...$values
 	 * @return string
 	 * @see https://www.php.net/manual/function.sprintf.php
+	 * @see Text::replaceMap()
 	 */
 	public static function format(string $format, string|int|float ...$values): string
 	{
