@@ -22,7 +22,7 @@ class UserDomainDao extends DaoBase
 	}
 
 	/**
-	 * @template TFieldArray of array{user_id:string,login_id:string,name:string,level:string,state:string,generated_password:string,current_password:string}
+	 * @template TFieldArray of array{user_id:string,login_id:string,name:string,level:string,state:string,current_password:string}
 	 * @param string $loginId
 	 * @phpstan-return DatabaseRowResult<TFieldArray>|null
 	 */
@@ -38,7 +38,6 @@ class UserDomainDao extends DaoBase
 				users.name,
 				users.level,
 				users.state,
-				user_authentications.generated_password,
 				user_authentications.current_password
 			from
 				users

@@ -16,18 +16,17 @@ class UserAuthenticationsEntityDao extends DaoBase
 	}
 
 	/**
-	 * @template TFieldArray of array{generated_password:string,current_password:string}
+	 * @template TFieldArray of array{current_password:string}
 	 * @param string $userId
 	 * @phpstan-return DatabaseRowResult<TFieldArray>
 	 */
-	public function selectPasswords(string $userId): DatabaseRowResult
+	public function selectPassword(string $userId): DatabaseRowResult
 	{
 		/** @phpstan-var DatabaseRowResult<TFieldArray> */
 		return $this->context->querySingle(
 			<<<SQL
 
 			select
-				user_authentications.generated_password,
 				user_authentications.current_password
 			from
 				user_authentications
@@ -41,7 +40,7 @@ class UserAuthenticationsEntityDao extends DaoBase
 		);
 	}
 
-	public function insertUserAuthentication(string $userId, string $generatedPassword, string $currentPassword): void
+	public function insertUserAuthentication(string $userId, string $currentPassword): void
 	{
 		$this->context->insertSingle(
 			<<<SQL
@@ -50,20 +49,21 @@ class UserAuthenticationsEntityDao extends DaoBase
 			user_authentications
 				(
 					user_id,
-					generated_password,
+					reminder_token,
+					reminder_timestamp,
 					current_password
 				)
 				values
 				(
 					:user_id,
-					:generated_password,
+					'',
+					NULL,
 					:current_password
 				)
 
 			SQL,
 			[
 				'user_id' => $userId,
-				'generated_password' => $generatedPassword,
 				'current_password' => $currentPassword
 			]
 		);

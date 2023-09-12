@@ -94,10 +94,8 @@ class ManagementSetupLogic extends PageLogicBase
 
 		$userInfo = [
 			'id' => UserUtility::generateUserId(),
-			'generated_password' => Text::EMPTY,
 			'current_password' => Cryptography::toHashPassword($params['password']),
 		];
-
 
 		$database = $this->openDatabase();
 
@@ -129,7 +127,6 @@ class ManagementSetupLogic extends PageLogicBase
 
 			$userAuthenticationsEntityDao->insertUserAuthentication(
 				$userInfo['id'], // @-phpstan-ignore-line
-				$userInfo['generated_password'], // @-phpstan-ignore-line
 				$userInfo['current_password'] // @-phpstan-ignore-line
 			);
 
