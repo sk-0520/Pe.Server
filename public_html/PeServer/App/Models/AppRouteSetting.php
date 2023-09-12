@@ -12,8 +12,9 @@ use PeServer\App\Controllers\Api\PluginApiController;
 use PeServer\App\Controllers\Page\AccountController;
 use PeServer\App\Controllers\Page\AjaxController;
 use PeServer\App\Controllers\Page\HomeController;
-use PeServer\App\Controllers\Page\ManagementController;
 use PeServer\App\Controllers\Page\ManagementControlController;
+use PeServer\App\Controllers\Page\ManagementController;
+use PeServer\App\Controllers\Page\PasswordController;
 use PeServer\App\Controllers\Page\PluginController;
 use PeServer\App\Controllers\Page\ToolController;
 use PeServer\App\Models\Middleware\AdministratorAccountFilterMiddleware;
@@ -89,6 +90,9 @@ final class AppRouteSetting extends RouteSetting
 					->addAction('user/plugin/:plugin_id@' . self::PLUGIN_ID, HttpMethod::gets(), 'user_plugin_update_get', [UserAccountFilterMiddleware::class, UserPluginEditFilterMiddleware::class])
 					->addAction('user/plugin/:plugin_id@' . self::PLUGIN_ID, HttpMethod::post(), 'user_plugin_update_post', [UserAccountFilterMiddleware::class, CsrfMiddleware::class, UserPluginEditFilterMiddleware::class])
 					->addAction('user/audit-logs', HttpMethod::get(), 'user_audit_logs', [UserAccountFilterMiddleware::class])
+				/* AUTO-FORMAT */,
+				(new Route('password', PasswordController::class))
+					->addAction('reminder', HttpMethod::gets(), 'reminder_get')
 				/* AUTO-FORMAT */,
 				(new Route('plugin', PluginController::class))
 					->addAction(':plugin_id@' . self::PLUGIN_ID, HttpMethod::gets(), 'detail', [PluginIdMiddleware::class])

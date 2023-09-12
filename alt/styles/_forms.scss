@@ -147,6 +147,15 @@ form.page-account-sign-up {
 		width: 50%;
 	}
 }
+
+form.page-account-login .password-reminder {
+	margin-top: 2em;
+
+	p {
+		text-align: center;
+	}
+}
+
 form.page-account-sign-up {
 	img.token {
 		width: auto;
