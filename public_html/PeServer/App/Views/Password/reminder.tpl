@@ -5,18 +5,17 @@
 	<form action="/password/reminder" method="post">
 		{csrf}
 
-		<dl>
+		<dl class="input">
 			<dt>ログインID</dt>
 			<dd>
-				{input_helper key='login_id' type="text" class="edit"}
+				{input_helper key='login_id' type="text" class="edit" required="true"}
 			</dd>
 
 			<dt class="action"></dt>
 			<dd class="action">
-				<button>登録</button>
+				<button>再発行</button>
 			</dd>
 		</dl>
-
 	</form>
 
 {/block}
