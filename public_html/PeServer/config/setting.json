@@ -58,7 +58,8 @@
 	"config": {
 		"confirm": {
 			"user_change_wait_email_minutes": 10,
-			"sign_up_wait_email_minutes": 60
+			"sign_up_wait_email_minutes": 60,
+			"password_reminder_email_minutes": 1440
 		},
 		"address": {
 			"domain": "localhost",

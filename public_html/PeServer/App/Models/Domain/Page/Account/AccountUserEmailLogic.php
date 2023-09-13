@@ -102,7 +102,7 @@ class AccountUserEmailLogic extends PageLogicBase
 			});
 		} else {
 			$this->logger->warn('不明なモード要求 {0}', $mode);
-			$this->addError(Validator::COMMON, I18n::message('error/unknown_email_mode'));
+			$this->addCommonError(I18n::message('error/unknown_email_mode'));
 		}
 	}
 

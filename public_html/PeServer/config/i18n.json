@@ -96,6 +96,9 @@
 		"sign_up_step2": {
 			"*": "ユーザー登録完了通知"
 		},
+		"password_reminder_token": {
+			"*": "パスワード再設定URL通知"
+		},
 		"email_change_token": {
 			"*": "メールアドレス変更用トークン発行"
 		},

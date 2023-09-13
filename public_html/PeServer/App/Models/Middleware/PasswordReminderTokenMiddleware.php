@@ -17,7 +17,7 @@ use PeServer\Core\Mvc\Middleware\MiddlewareArgument;
 use PeServer\Core\Mvc\Middleware\MiddlewareResult;
 
 
-final class SignupStep2FilterMiddleware implements IMiddleware
+final class PasswordReminderTokenMiddleware implements IMiddleware
 {
 	public function __construct(
 		private AppConfiguration $config,
@@ -36,6 +36,7 @@ final class SignupStep2FilterMiddleware implements IMiddleware
 			$database = $this->connection->open();
 			$signUpWaitEmailsEntityDao = new SignUpWaitEmailsEntityDao($database);
 
+			/** @var int @-phpstan-ignore-next-line */
 			$limitMinutes = $this->config->setting->config->confirm->signUpWaitEmailMinutes;
 			if ($signUpWaitEmailsEntityDao->selectExistsToken($token, $limitMinutes)) {
 				return MiddlewareResult::none();

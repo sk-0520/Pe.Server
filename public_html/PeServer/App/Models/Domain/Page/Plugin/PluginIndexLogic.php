@@ -11,6 +11,7 @@ use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
+use PeServer\Core\Mvc\Validator;
 use PeServer\Core\Text;
 
 class PluginIndexLogic extends PageLogicBase
@@ -32,8 +33,8 @@ class PluginIndexLogic extends PageLogicBase
 		if (!$this->dbCache->existsPluginInformation()) {
 			$this->setValue('plugins', []);
 			$this->setValue('link_default_plugin', true);
-			$this->addError(Text::EMPTY, "プラグインなし");
-			$this->addError(Text::EMPTY, "この状態は原則ありえない(標準プラグインすら未登録状態)");
+			$this->addCommonError("プラグインなし");
+			$this->addCommonError("この状態は原則ありえない(標準プラグインすら未登録状態)");
 			return;
 		}
 

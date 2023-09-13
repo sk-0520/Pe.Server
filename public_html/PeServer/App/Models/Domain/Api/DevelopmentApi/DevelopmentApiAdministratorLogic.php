@@ -106,7 +106,6 @@ class DevelopmentApiAdministratorLogic extends ApiLogicBase
 
 				$userAuthenticationsEntityDao->insertUserAuthentication(
 					$user['user_id'],
-					'',
 					$user['password']
 				);
 			}

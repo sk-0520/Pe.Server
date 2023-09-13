@@ -18,6 +18,12 @@
 			<dd class="action">
 				<button>ログイン</button>
 			</dd>
+
+			<dd class="password-reminder">
+				<p>
+				<a href="/password/reminder">パスワードを忘れた場合はこちら</a>
+				</p>
+			</dd>
 		</dl>
 	</form>
 
