@@ -23,6 +23,7 @@ use PeServer\Core\Cryptography;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
+use PeServer\Core\Mvc\Validator;
 use PeServer\Core\Text;
 
 class ManagementVersionLogic extends PageLogicBase
@@ -72,7 +73,7 @@ class ManagementVersionLogic extends PageLogicBase
 		});
 
 		if (!$result) {
-			$this->addError(Text::EMPTY, 'あかん');
+			$this->addError(Validator::COMMON, 'あかん');
 			return;
 		}
 
