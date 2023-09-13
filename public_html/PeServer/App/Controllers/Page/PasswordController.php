@@ -67,8 +67,7 @@ final class PasswordController extends PageControllerBase
 	{
 		$logic = $this->createLogic(PasswordResetLogic::class);
 		if ($logic->run(LogicCallMode::Submit)) {
-			// TODO: パスワード系に移すかトップに飛ばすか、ログインさせるか
-			throw new Exception('TODO');
+			return $this->redirectPath("");
 		}
 
 		return $this->view('reset', $logic->getViewData());

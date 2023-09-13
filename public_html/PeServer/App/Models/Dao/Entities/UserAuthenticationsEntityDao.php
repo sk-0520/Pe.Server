@@ -59,7 +59,7 @@ class UserAuthenticationsEntityDao extends DaoBase
 			from
 				user_authentications
 			where
-				user_authentications.token = :token
+				user_authentications.reminder_token = :token
 
 			SQL,
 			[
@@ -78,7 +78,7 @@ class UserAuthenticationsEntityDao extends DaoBase
 			from
 				user_authentications
 			where
-				user_authentications.token = :token
+				user_authentications.reminder_token = :token
 				and
 				(STRFTIME('%s', CURRENT_TIMESTAMP) - STRFTIME('%s', user_authentications.reminder_timestamp)) < :limit_minutes * 60
 
@@ -159,4 +159,28 @@ class UserAuthenticationsEntityDao extends DaoBase
 			]
 		);
 	}
+
+	public function updateResetPassword(string $userId, string $currentPassword): void
+	{
+		$this->context->updateByKey(
+			<<<SQL
+
+			update
+				user_authentications
+			set
+				current_password = :current_password,
+				reminder_token = '',
+				reminder_timestamp = NULL
+			where
+				user_id = :user_id
+
+			SQL,
+			[
+				'user_id' => $userId,
+				'current_password' => $currentPassword,
+			]
+		);
+	}
+
+
 }
