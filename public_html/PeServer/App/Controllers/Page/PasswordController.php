@@ -12,6 +12,7 @@ use PeServer\App\Models\Domain\Page\Password\PasswordResetLogic;
 use PeServer\Core\Mvc\ControllerArgument;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\Result\IActionResult;
+use PeServer\Core\Throws\InvalidOperationException;
 
 
 final class PasswordController extends PageControllerBase
@@ -37,7 +38,10 @@ final class PasswordController extends PageControllerBase
 	{
 		$logic = $this->createLogic(PasswordReminderLogic::class);
 		if ($logic->run(LogicCallMode::Submit)) {
-			return $this->redirectPath('password/reminding');
+			if ($logic->tryGetResult('token', $token)) {
+				return $this->redirectPath("password/reminding/$token");
+			}
+			throw new InvalidOperationException();
 		}
 
 		return $this->view('reminder', $logic->getViewData());
@@ -62,7 +66,7 @@ final class PasswordController extends PageControllerBase
 	public function reset_post(): IActionResult
 	{
 		$logic = $this->createLogic(PasswordResetLogic::class);
-		if($logic->run(LogicCallMode::Initialize)) {
+		if ($logic->run(LogicCallMode::Initialize)) {
 			// TODO: パスワード系に移すかトップに飛ばすか、ログインさせるか
 			throw new Exception('TODO');
 		}

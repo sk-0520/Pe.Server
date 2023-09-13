@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Dao\Entities;
 
+use \DateTimeInterface;
 use PeServer\Core\Database\DaoBase;
 use PeServer\Core\Database\DatabaseRowResult;
 use PeServer\Core\Database\IDatabaseContext;
@@ -36,6 +37,33 @@ class UserAuthenticationsEntityDao extends DaoBase
 			SQL,
 			[
 				'user_id' => $userId
+			]
+		);
+	}
+
+	/**
+	 *
+	 * @template TFieldArray of array{user_id:string,reminder_token:string,reminder_timestamp:string}
+	 * @param string $token
+	 * @return DatabaseRowResult|null
+	 * @phpstan-return DatabaseRowResult<TFieldArray>|null
+	 */
+	public function selectPasswordReminderByToken(string $token): ?DatabaseRowResult
+	{
+		/** @var DatabaseRowResult<TFieldArray>|null */
+		return $this->context->querySingleOrNull(
+			<<<SQL
+
+			select
+				user_authentications.current_password
+			from
+				user_authentications
+			where
+				user_authentications.token = :token
+
+			SQL,
+			[
+				'token' => $token
 			]
 		);
 	}
@@ -85,6 +113,28 @@ class UserAuthenticationsEntityDao extends DaoBase
 			[
 				'user_id' => $userId,
 				'current_password' => $currentPassword
+			]
+		);
+	}
+
+	public function updatePasswordReminder(string $userId, string $token, DateTimeInterface $timestamp): void
+	{
+		$this->context->updateByKey(
+			<<<SQL
+
+			update
+				user_authentications
+			set
+				reminder_token = :token,
+				reminder_timestamp = :timestamp
+			where
+				user_id = :user_id
+
+			SQL,
+			[
+				'user_id' => $userId,
+				'token' => $token,
+				'timestamp' => $timestamp->format('c'),
 			]
 		);
 	}

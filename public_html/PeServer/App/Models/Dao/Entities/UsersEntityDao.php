@@ -53,6 +53,35 @@ class UsersEntityDao extends DaoBase
 	}
 
 	/**
+	 * @param string $loginId
+	 * @return string|null
+	 */
+	public function selectUserIdByLoginId(string $loginId): string|null
+	{
+		/** @var DatabaseRowResult<array{user_id:string}>|null */
+		$row = $this->context->queryFirstOrNull(
+			<<<SQL
+
+			select
+				users.user_id
+			from
+				users
+			where
+				users.login_id = :login_id
+
+			SQL,
+			[
+				'login_id' => $loginId
+			]
+		);
+
+		if ($row === null) {
+			return $row;
+		}
+		return $row->fields['user_id'];
+	}
+
+	/**
 	 * @template TFieldArray of array{user_id:string,login_id:string,level:string,name:string,email:string,website:string}
 	 * @param string $userId
 	 * @phpstan-return DatabaseRowResult<TFieldArray>

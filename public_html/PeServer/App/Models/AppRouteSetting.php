@@ -43,6 +43,7 @@ use PeServer\Core\Text;
 final class AppRouteSetting extends RouteSetting
 {
 	private const SIGNUP_TOKEN = '[a-zA-Z0-9]{80}';
+	private const PASSWORD_REMINDER_TOKEN = '[a-zA-Z0-9]{80}';
 	private const PLUGIN_ID = '\{?[a-fA-F0-9\-]{32,}\}?';
 
 	public function __construct()
@@ -94,7 +95,7 @@ final class AppRouteSetting extends RouteSetting
 				(new Route('password', PasswordController::class, [NotLoginMiddleware::class]))
 					->addAction('reminder', HttpMethod::gets(), 'reminder_get')
 					->addAction('reminder', HttpMethod::post(), 'reminder_post')
-					->addAction('reminding', HttpMethod::gets(), 'reminding')
+					->addAction('reminding/:token@'. self::PASSWORD_REMINDER_TOKEN, HttpMethod::gets(), 'reminding')
 				/* AUTO-FORMAT */,
 				(new Route('plugin', PluginController::class))
 					->addAction(':plugin_id@' . self::PLUGIN_ID, HttpMethod::gets(), 'detail', [PluginIdMiddleware::class])
