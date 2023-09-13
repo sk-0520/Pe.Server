@@ -6,6 +6,7 @@ namespace PeServer\App\Models\Domain\Page\Account;
 
 use PeServer\App\Models\AuditLog;
 use PeServer\App\Models\Dao\Domain\UserDomainDao;
+use PeServer\App\Models\Dao\Entities\UserAuthenticationsEntityDao;
 use PeServer\App\Models\Dao\Entities\UsersEntityDao;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\App\Models\Domain\UserLevel;
@@ -67,6 +68,7 @@ class AccountLoginLogic extends PageLogicBase
 		$database = $this->openDatabase();
 
 		$usersEntityDao = new UsersEntityDao($database);
+		$userAuthenticationsEntityDao = new UserAuthenticationsEntityDao($database);
 		$userDomainDao = new UserDomainDao($database);
 
 		$existsSetupUser = $usersEntityDao->selectExistsSetupUser();
@@ -109,6 +111,8 @@ class AccountLoginLogic extends PageLogicBase
 		$this->setSession(SessionKey::ACCOUNT, $account);
 		$this->restartSession();
 		$this->writeAuditLogCurrentUser(AuditLog::LOGIN_SUCCESS, $account);
+
+		$userAuthenticationsEntityDao->updateClearReminder($account->userId);
 	}
 
 	#endregion

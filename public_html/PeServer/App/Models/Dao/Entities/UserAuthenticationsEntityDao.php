@@ -182,5 +182,23 @@ class UserAuthenticationsEntityDao extends DaoBase
 		);
 	}
 
+	public function updateClearReminder(string $userId): void
+	{
+		$this->context->updateByKey(
+			<<<SQL
 
+			update
+				user_authentications
+			set
+				reminder_token = '',
+				reminder_timestamp = NULL
+			where
+				user_id = :user_id
+
+			SQL,
+			[
+				'user_id' => $userId,
+			]
+		);
+	}
 }
