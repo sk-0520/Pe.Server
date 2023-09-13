@@ -33,8 +33,8 @@ class PluginIndexLogic extends PageLogicBase
 		if (!$this->dbCache->existsPluginInformation()) {
 			$this->setValue('plugins', []);
 			$this->setValue('link_default_plugin', true);
-			$this->addError(Validator::COMMON, "プラグインなし");
-			$this->addError(Validator::COMMON, "この状態は原則ありえない(標準プラグインすら未登録状態)");
+			$this->addCommonError("プラグインなし");
+			$this->addCommonError("この状態は原則ありえない(標準プラグインすら未登録状態)");
 			return;
 		}
 

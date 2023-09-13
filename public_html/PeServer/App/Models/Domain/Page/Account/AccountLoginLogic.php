@@ -50,12 +50,12 @@ class AccountLoginLogic extends PageLogicBase
 
 		$loginId = $this->getRequest('account_login_login_id');
 		if (Text::isNullOrWhiteSpace($loginId)) {
-			$this->addError(Validator::COMMON, I18n::message(self::ERROR_LOGIN_PARAMETER));
+			$this->addCommonError(I18n::message(self::ERROR_LOGIN_PARAMETER));
 		}
 
 		$password = $this->getRequest('account_login_password');
 		if (Text::isNullOrWhiteSpace($password)) {
-			$this->addError(Validator::COMMON, I18n::message(self::ERROR_LOGIN_PARAMETER));
+			$this->addCommonError(I18n::message(self::ERROR_LOGIN_PARAMETER));
 		}
 	}
 
@@ -81,12 +81,12 @@ class AccountLoginLogic extends PageLogicBase
 		$user = $userDomainDao->selectLoginUser($this->getRequest('account_login_login_id'));
 
 		if ($user === null) {
-			$this->addError(Validator::COMMON, I18n::message(self::ERROR_LOGIN_PARAMETER));
+			$this->addCommonError(I18n::message(self::ERROR_LOGIN_PARAMETER));
 			return;
 		}
 
 		if ($existsSetupUser && $user->fields['level'] !== UserLevel::SETUP) {
-			$this->addError(Validator::COMMON, I18n::message(self::ERROR_LOGIN_PARAMETER));
+			$this->addCommonError(I18n::message(self::ERROR_LOGIN_PARAMETER));
 			$this->logger->error('未セットアップ状態での通常ログインは抑制中');
 			return;
 		}
@@ -94,7 +94,7 @@ class AccountLoginLogic extends PageLogicBase
 		// パスワード突合
 		$verifyOk = Cryptography::verifyPassword($this->getRequest('account_login_password'), $user->fields['current_password']);
 		if (!$verifyOk) {
-			$this->addError(Validator::COMMON, I18n::message(self::ERROR_LOGIN_PARAMETER));
+			$this->addCommonError(I18n::message(self::ERROR_LOGIN_PARAMETER));
 			$this->logger->warn('ログイン失敗: {0}', $user->fields['user_id']);
 			$this->writeAuditLogTargetUser($user->fields['user_id'], AuditLog::LOGIN_FAILED);
 			return;

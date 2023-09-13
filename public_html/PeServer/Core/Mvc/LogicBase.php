@@ -254,7 +254,7 @@ abstract class LogicBase implements IValidationReceiver
 				/**
 				 * @var string
 				 * @phpstan-var 'Lax'|'lax'|'None'|'none'|'Strict'|'strict'
-				*/
+				 */
 				$sameSite = Arr::getOr($option, 'sameSite', $this->stores->cookie->option->sameSite);
 
 				$cookieOption = new CookieOption(
@@ -435,6 +435,11 @@ abstract class LogicBase implements IValidationReceiver
 		if (isset($this->errors[$key])) {
 			unset($this->errors[$key]);
 		}
+	}
+
+	protected function addCommonError(string $message): void
+	{
+		$this->addError(Validator::COMMON, $message);
 	}
 
 	protected function addError(string $key, string $message): void
