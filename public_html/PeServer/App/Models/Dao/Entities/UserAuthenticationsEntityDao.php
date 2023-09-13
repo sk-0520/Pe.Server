@@ -68,6 +68,28 @@ class UserAuthenticationsEntityDao extends DaoBase
 		);
 	}
 
+	public function selectExistsToken(string $token, int $limitMinutes): bool
+	{
+		return 1 === $this->context->selectSingleCount(
+			<<<SQL
+
+			select
+				count(*)
+			from
+				user_authentications
+			where
+				user_authentications.token = :token
+				and
+				(STRFTIME('%s', CURRENT_TIMESTAMP) - STRFTIME('%s', user_authentications.reminder_timestamp)) < :limit_minutes * 60
+
+			SQL,
+			[
+				'token' => $token,
+				'limit_minutes' => $limitMinutes,
+			]
+		);
+	}
+
 	public function insertUserAuthentication(string $userId, string $currentPassword): void
 	{
 		$this->context->insertSingle(
@@ -117,7 +139,7 @@ class UserAuthenticationsEntityDao extends DaoBase
 		);
 	}
 
-	public function updatePasswordReminder(string $userId, string $token, DateTimeInterface $timestamp): void
+	public function updatePasswordReminder(string $userId, string $token): void
 	{
 		$this->context->updateByKey(
 			<<<SQL
@@ -126,7 +148,7 @@ class UserAuthenticationsEntityDao extends DaoBase
 				user_authentications
 			set
 				reminder_token = :token,
-				reminder_timestamp = :timestamp
+				reminder_timestamp = CURRENT_TIMESTAMP
 			where
 				user_id = :user_id
 
@@ -134,7 +156,6 @@ class UserAuthenticationsEntityDao extends DaoBase
 			[
 				'user_id' => $userId,
 				'token' => $token,
-				'timestamp' => $timestamp->format('c'),
 			]
 		);
 	}

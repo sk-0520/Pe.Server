@@ -81,12 +81,9 @@ class PasswordReminderLogic extends PageLogicBase
 			$userInfo = $usersEntityDao->selectUserInfoData($userId);
 			$email = $userInfo->fields['email'];
 
+			$this->writeAuditLogTargetUser($userId, AuditLog::USER_PASSWORD_REMINDER_TOKEN, ['token' => $token], $context);
 
-			$timestamp = Utc::create();
-
-			$this->writeAuditLogTargetUser($userId, AuditLog::USER_PASSWORD_REMINDER_TOKEN, ['timestamp' => $timestamp, 'token' => $token], $context);
-
-			$userAuthenticationsEntityDao->updatePasswordReminder($userId, $token, Utc::create());
+			$userAuthenticationsEntityDao->updatePasswordReminder($userId, $token);
 
 			return true;
 		});
