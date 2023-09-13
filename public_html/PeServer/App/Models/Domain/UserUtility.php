@@ -19,4 +19,9 @@ abstract class UserUtility
 	{
 		return Uuid::generateGuid();
 	}
+
+	public static function generatePasswordReminderToken(): string
+	{
+		return Cryptography::generateRandomString(80);
+	}
 }

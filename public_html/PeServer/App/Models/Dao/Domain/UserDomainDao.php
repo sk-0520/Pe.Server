@@ -8,6 +8,8 @@ use \DateTime;
 use PeServer\App\Models\Cache\UserCache;
 use PeServer\App\Models\Cache\UserCacheItem;
 use PeServer\App\Models\Data\Dto\UserListItemDto;
+use PeServer\App\Models\Domain\UserLevel;
+use PeServer\App\Models\Domain\UserState;
 use PeServer\Core\Database\DaoBase;
 use PeServer\Core\Database\DatabaseRowResult;
 use PeServer\Core\Database\IDatabaseContext;
@@ -22,7 +24,7 @@ class UserDomainDao extends DaoBase
 	}
 
 	/**
-	 * @template TFieldArray of array{user_id:string,login_id:string,name:string,level:string,state:string,generated_password:string,current_password:string}
+	 * @template TFieldArray of array{user_id:string,login_id:string,name:string,level:UserLevel::*,state:UserState::*,current_password:string}
 	 * @param string $loginId
 	 * @phpstan-return DatabaseRowResult<TFieldArray>|null
 	 */
@@ -38,7 +40,6 @@ class UserDomainDao extends DaoBase
 				users.name,
 				users.level,
 				users.state,
-				user_authentications.generated_password,
 				user_authentications.current_password
 			from
 				users

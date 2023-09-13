@@ -144,7 +144,6 @@ class AccountSignupStep2Logic extends PageLogicBase
 
 			$userAuthenticationsEntityDao->insertUserAuthentication(
 				$params['user_id'],
-				Text::EMPTY,
 				$params['password']
 			);
 

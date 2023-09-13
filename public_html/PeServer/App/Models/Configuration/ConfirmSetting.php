@@ -22,5 +22,8 @@ class ConfirmSetting
 	#[Mapping(name: 'sign_up_wait_email_minutes')]
 	public int $signUpWaitEmailMinutes;
 
+	#[Mapping(name: 'password_reminder_email_minutes')]
+	public int $passwordReminderEmailMinutes;
+
 	#endregion
 }
