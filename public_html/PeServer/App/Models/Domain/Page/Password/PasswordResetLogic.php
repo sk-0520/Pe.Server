@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domain\Page\Password;
 
-use function PHPUnit\Framework\returnSelf;
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\AppCryptography;
 use PeServer\App\Models\AuditLog;
@@ -28,7 +27,6 @@ class PasswordResetLogic extends PageLogicBase
 {
 	public function __construct(
 		LogicParameter $parameter,
-		private AppCryptography $cryptography,
 		private AppConfiguration $config,
 	) {
 		parent::__construct($parameter);
@@ -107,7 +105,7 @@ class PasswordResetLogic extends PageLogicBase
 	protected function cleanup(LogicCallMode $callMode): void
 	{
 		$this->setValue('token', $this->getRequest('token'));
-		$this->setValue('reminder_login_id', $this->getRequest('reminder_login_id'), Text::EMPTY);
+		$this->setValue('reminder_login_id', $this->getRequest('reminder_login_id'));
 	}
 
 	#endregion
