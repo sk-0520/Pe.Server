@@ -22,9 +22,9 @@ use PeServer\App\Models\Middleware\Api\ApiAcaoMiddleware;
 use PeServer\App\Models\Middleware\Api\ApiAdministratorAccountFilterMiddleware;
 use PeServer\App\Models\Middleware\Api\ApiUserAccountFilterMiddleware;
 use PeServer\App\Models\Middleware\DevelopmentMiddleware;
+use PeServer\App\Models\Middleware\NotLoginMiddleware;
 use PeServer\App\Models\Middleware\PluginIdMiddleware;
 use PeServer\App\Models\Middleware\SetupAccountFilterMiddleware;
-use PeServer\App\Models\Middleware\SignupStep1FilterMiddleware;
 use PeServer\App\Models\Middleware\SignupStep2FilterMiddleware;
 use PeServer\App\Models\Middleware\UserAccountFilterMiddleware;
 use PeServer\App\Models\Middleware\UserPluginEditFilterMiddleware;
@@ -71,11 +71,11 @@ final class AppRouteSetting extends RouteSetting
 					->addAction('login', HttpMethod::gets(), 'login_get')
 					->addAction('login', HttpMethod::post(), 'login_post')
 					->addAction('logout', HttpMethod::gets())
-					->addAction('signup', HttpMethod::gets(), 'signup_step1_get', [SignupStep1FilterMiddleware::class])
-					->addAction('signup', HttpMethod::post(), 'signup_step1_post', [SignupStep1FilterMiddleware::class])
-					->addAction('signup/notify', HttpMethod::gets(), 'signup_notify', [SignupStep1FilterMiddleware::class])
-					->addAction('signup/:token@' . self::SIGNUP_TOKEN, HttpMethod::gets(), 'signup_step2_get', [SignupStep1FilterMiddleware::class, SignupStep2FilterMiddleware::class])
-					->addAction('signup/:token@' . self::SIGNUP_TOKEN, HttpMethod::post(), 'signup_step2_post', [SignupStep1FilterMiddleware::class, SignupStep2FilterMiddleware::class])
+					->addAction('signup', HttpMethod::gets(), 'signup_step1_get', [NotLoginMiddleware::class])
+					->addAction('signup', HttpMethod::post(), 'signup_step1_post', [NotLoginMiddleware::class])
+					->addAction('signup/notify', HttpMethod::gets(), 'signup_notify', [NotLoginMiddleware::class])
+					->addAction('signup/:token@' . self::SIGNUP_TOKEN, HttpMethod::gets(), 'signup_step2_get', [NotLoginMiddleware::class, SignupStep2FilterMiddleware::class])
+					->addAction('signup/:token@' . self::SIGNUP_TOKEN, HttpMethod::post(), 'signup_step2_post', [NotLoginMiddleware::class, SignupStep2FilterMiddleware::class])
 					->addAction('user', HttpMethod::gets(), Route::DEFAULT_METHOD, [UserAccountFilterMiddleware::class])
 					->addAction('user/edit', HttpMethod::gets(), 'user_edit_get', [UserAccountFilterMiddleware::class])
 					->addAction('user/edit', HttpMethod::post(), 'user_edit_post', [UserAccountFilterMiddleware::class, CsrfMiddleware::class])
@@ -91,7 +91,7 @@ final class AppRouteSetting extends RouteSetting
 					->addAction('user/plugin/:plugin_id@' . self::PLUGIN_ID, HttpMethod::post(), 'user_plugin_update_post', [UserAccountFilterMiddleware::class, CsrfMiddleware::class, UserPluginEditFilterMiddleware::class])
 					->addAction('user/audit-logs', HttpMethod::get(), 'user_audit_logs', [UserAccountFilterMiddleware::class])
 				/* AUTO-FORMAT */,
-				(new Route('password', PasswordController::class))
+				(new Route('password', PasswordController::class, [NotLoginMiddleware::class]))
 					->addAction('reminder', HttpMethod::gets(), 'reminder_get')
 					->addAction('reminder', HttpMethod::post(), 'reminder_post')
 					->addAction('reminding', HttpMethod::gets(), 'reminding')

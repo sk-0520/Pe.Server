@@ -25,12 +25,16 @@ class PasswordReminderLogic extends PageLogicBase
 
 	protected function validateImpl(LogicCallMode $callMode): void
 	{
-		//NOP
+		if ($callMode === LogicCallMode::Initialize) {
+			return;
+		}
 	}
 
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
-		//NOP
+		if ($callMode === LogicCallMode::Initialize) {
+			return;
+		}
 	}
 
 	#endregion
