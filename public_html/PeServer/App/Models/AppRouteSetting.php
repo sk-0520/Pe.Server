@@ -95,7 +95,9 @@ final class AppRouteSetting extends RouteSetting
 				(new Route('password', PasswordController::class, [NotLoginMiddleware::class]))
 					->addAction('reminder', HttpMethod::gets(), 'reminder_get')
 					->addAction('reminder', HttpMethod::post(), 'reminder_post')
-					->addAction('reminding/:token@'. self::PASSWORD_REMINDER_TOKEN, HttpMethod::gets(), 'reminding')
+					->addAction('reminding/:token@'. self::PASSWORD_REMINDER_TOKEN, HttpMethod::get(), 'reminding')
+					->addAction('reset/:token@'. self::PASSWORD_REMINDER_TOKEN, HttpMethod::get(), 'reset_get')
+					->addAction('reset/:token@'. self::PASSWORD_REMINDER_TOKEN, HttpMethod::post(), 'reset_post')
 				/* AUTO-FORMAT */,
 				(new Route('plugin', PluginController::class))
 					->addAction(':plugin_id@' . self::PLUGIN_ID, HttpMethod::gets(), 'detail', [PluginIdMiddleware::class])

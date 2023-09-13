@@ -39,7 +39,7 @@ class PasswordReminderLogic extends PageLogicBase
 	protected function startup(LogicCallMode $callMode): void
 	{
 		$this->registerParameterKeys([
-			'login_id',
+			'reminder_login_id',
 		], false);
 	}
 
@@ -49,7 +49,7 @@ class PasswordReminderLogic extends PageLogicBase
 			return;
 		}
 
-		$this->validation('login_id', function (string $key, string $value) {
+		$this->validation('reminder_login_id', function (string $key, string $value) {
 			$this->validator->isNotEmpty($key, $value);
 		});
 	}
@@ -60,7 +60,7 @@ class PasswordReminderLogic extends PageLogicBase
 			return;
 		}
 
-		$loginId = $this->getRequest('login_id');
+		$loginId = $this->getRequest('reminder_login_id');
 
 		$email = Text::EMPTY;
 		$token = UserUtility::generatePasswordReminderToken();

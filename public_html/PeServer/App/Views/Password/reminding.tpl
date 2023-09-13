@@ -1,5 +1,5 @@
 {extends file='default.tpl'}
-{block name='TITLE'}パスワード再発行処理中{/block}
+{block name='TITLE'}パスワード再発行メール送信{/block}
 {block name='BODY'}
 
 	<p>パスワード再発行メールを送信しました。</p>

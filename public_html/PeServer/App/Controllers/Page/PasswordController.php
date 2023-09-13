@@ -66,7 +66,7 @@ final class PasswordController extends PageControllerBase
 	public function reset_post(): IActionResult
 	{
 		$logic = $this->createLogic(PasswordResetLogic::class);
-		if ($logic->run(LogicCallMode::Initialize)) {
+		if ($logic->run(LogicCallMode::Submit)) {
 			// TODO: パスワード系に移すかトップに飛ばすか、ログインさせるか
 			throw new Exception('TODO');
 		}

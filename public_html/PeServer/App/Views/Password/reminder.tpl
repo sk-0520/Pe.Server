@@ -8,7 +8,7 @@
 		<dl class="input">
 			<dt>ログインID</dt>
 			<dd>
-				{input_helper key='login_id' type="text" class="edit" required="true"}
+				{input_helper key='reminder_login_id' type="text" class="edit" required="true"}
 			</dd>
 
 			<dt class="action"></dt>
