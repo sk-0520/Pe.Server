@@ -96,6 +96,7 @@
 		{block name='SCRIPTS'}{/block}
 		{if \PeServer\Core\Environment::isDevelopment() }
 			<script>
+				{* DOMContentLoaded やら普通にぶっこむ系だと通常表示におけるブラウザ待機時間が目に付くので load でいいのです *}
 				window.addEventListener('load', (event) => {
 					const script = document.createElement('script');
 					script.src = 'http://localhost:35729/livereload.js';
