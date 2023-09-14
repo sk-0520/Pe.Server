@@ -41,60 +41,60 @@ class RouteTest extends TestClass
 			[
 				'route' => ['path', 'Controller'],
 				'actions' => [
-					['action', HttpMethod::get(), "1"],
-					['action/action', HttpMethod::get(), "2"],
+					['action', HttpMethod::Get, "1"],
+					['action/action', HttpMethod::Get, "2"],
 				],
 				'request' => [
 					[
 						'expected' => ['Controller', '1'],
-						'input' => [HttpMethod::get(), new RequestPath('path/action', new UrlHelper(''))]
+						'input' => [HttpMethod::Get, new RequestPath('path/action', new UrlHelper(''))]
 					],
 					[
 						'expected' => ['Controller', '2'],
-						'input' => [HttpMethod::get(), new RequestPath('path/action/action', new UrlHelper(''))]
+						'input' => [HttpMethod::Get, new RequestPath('path/action/action', new UrlHelper(''))]
 					],
 				]
 			],
 			[
 				'route' => ['api/test', 'TestController'],
 				'actions' => [
-					['list', HttpMethod::post()],
+					['list', HttpMethod::Post],
 				],
 				'request' => [
 					[
 						'expected' => ['TestController', 'list'],
-						'input' => [HttpMethod::post(), new RequestPath('api/test/list', new UrlHelper(''))]
+						'input' => [HttpMethod::Post, new RequestPath('api/test/list', new UrlHelper(''))]
 					],
 				]
 			],
 			[
 				'route' => ['controller', 'UrlParamController'],
 				'actions' => [
-					['input/:value', HttpMethod::get(), 'input1'],
-					[':value/input', HttpMethod::get(), 'input2'],
-					['input/reg/:value@\\d+', HttpMethod::get(), 'input3'],
-					['multi/:value1@\\d+/:value2/:value3@[a-z]+/none', HttpMethod::get(), 'input4'],
+					['input/:value', HttpMethod::Get, 'input1'],
+					[':value/input', HttpMethod::Get, 'input2'],
+					['input/reg/:value@\\d+', HttpMethod::Get, 'input3'],
+					['multi/:value1@\\d+/:value2/:value3@[a-z]+/none', HttpMethod::Get, 'input4'],
 				],
 				'request' => [
 					[
 						'expected' => ['UrlParamController', 'input1', ['value' => '123']],
-						'input' => [HttpMethod::get(), new RequestPath('controller/input/123', new UrlHelper(''))]
+						'input' => [HttpMethod::Get, new RequestPath('controller/input/123', new UrlHelper(''))]
 					],
 					[
 						'expected' => ['UrlParamController', 'input2', ['value' => '123']],
-						'input' => [HttpMethod::get(), new RequestPath('controller/123/input', new UrlHelper(''))]
+						'input' => [HttpMethod::Get, new RequestPath('controller/123/input', new UrlHelper(''))]
 					],
 					[
 						'expected' => ['UrlParamController', 'input3', ['value' => '123']],
-						'input' => [HttpMethod::get(), new RequestPath('controller/input/reg/123', new UrlHelper(''))]
+						'input' => [HttpMethod::Get, new RequestPath('controller/input/reg/123', new UrlHelper(''))]
 					],
 					[
 						'expected' => null,
-						'input' => [HttpMethod::get(), new RequestPath('controller/input/reg/abc', new UrlHelper(''))]
+						'input' => [HttpMethod::Get, new RequestPath('controller/input/reg/abc', new UrlHelper(''))]
 					],
 					[
 						'expected' => ['UrlParamController', 'input4', ['value1' => '123', 'value2' => '@@@', 'value3' => 'az']],
-						'input' => [HttpMethod::get(), new RequestPath('controller/multi/123/@@@/az/none', new UrlHelper(''))]
+						'input' => [HttpMethod::Get, new RequestPath('controller/multi/123/@@@/az/none', new UrlHelper(''))]
 					],
 				]
 			],
@@ -108,7 +108,7 @@ class RouteTest extends TestClass
 				$actual = $route->getAction(...$request['input']);
 				$input = var_export($request['input'], true);
 				if ($request['expected'] === null) {
-					$this->assertSame(404, $actual->status->getCode(), $input);
+					$this->assertSame(404, $actual->status->value, $input);
 					$this->assertSame('', $actual->actionSetting->controllerMethod, $input);
 				} else {
 					$this->assertSame($request['expected'][0], $actual->className, $input);

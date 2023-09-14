@@ -135,7 +135,7 @@ class CoreStartup
 		$container->add(SessionStore::class, DiItem::factory(fn ($di) => $di->get(Stores::class)->session));
 		$container->add(TemporaryStore::class, DiItem::factory(fn ($di) => $di->get(Stores::class)->temporary));
 
-		$method = HttpMethod::from($specialStore->getServer('REQUEST_METHOD'));
+		$method = HttpMethod::from(Text::toUpper(Text::trim($specialStore->getServer('REQUEST_METHOD'))));
 		$requestPath = new RequestPath($specialStore->getServer('REQUEST_URI'), $container->get(IUrlHelper::class));
 		$container->registerValue(new RouteRequest($method, $requestPath));
 

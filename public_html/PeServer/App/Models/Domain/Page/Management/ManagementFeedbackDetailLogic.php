@@ -41,7 +41,7 @@ class ManagementFeedbackDetailLogic extends PageLogicBase
 					throw new Exception('404');
 				}
 			} else {
-				throw new HttpStatusException(HttpStatus::badRequest());
+				throw new HttpStatusException(HttpStatus::BadRequest);
 			}
 		});
 	}
@@ -77,7 +77,7 @@ class ManagementFeedbackDetailLogic extends PageLogicBase
 			return true;
 		});
 		if (!$result) {
-			throw new HttpStatusException(HttpStatus::internalServerError());
+			throw new HttpStatusException(HttpStatus::InternalServerError);
 		}
 	}
 }

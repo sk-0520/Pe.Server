@@ -88,7 +88,7 @@ abstract class MiddlewareResult
 
 		$url = UrlUtility::buildPath($path, $query ?? [], $specialStore);
 
-		return new LocalRedirectMiddlewareResultImpl($status ?? HttpStatus::found(), $url);
+		return new LocalRedirectMiddlewareResultImpl($status ?? HttpStatus::Found, $url);
 	}
 
 	/**
@@ -136,7 +136,7 @@ class LocalRedirectMiddlewareResultImpl extends MiddlewareResult
 
 	public function apply(): void
 	{
-		header('Location: ' . $this->url, true, $this->status->getCode());
+		header('Location: ' . $this->url, true, $this->status->value);
 	}
 }
 

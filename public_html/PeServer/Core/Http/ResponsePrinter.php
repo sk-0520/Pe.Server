@@ -80,7 +80,7 @@ class ResponsePrinter
 	{
 		// リダイレクト未設定の場合はステータスコード設定
 		if (!$this->response->header->existsRedirect()) {
-			http_response_code($this->response->status->getCode());
+			http_response_code($this->response->status->value);
 		}
 
 		// 設定済みヘッダ出力
@@ -90,10 +90,10 @@ class ResponsePrinter
 
 		if ($this->response->header->existsRedirect()) {
 			$redirect = $this->response->header->getRedirect();
-			if ($redirect->status->is(HttpStatus::moved())) {
+			if ($redirect->status === HttpStatus::MovedPermanently) {
 				header('Location: ' . $redirect->url);
 			} else {
-				header('Location: ' . $redirect->url, true, $redirect->status->getCode());
+				header('Location: ' . $redirect->url, true, $redirect->status->value);
 			}
 			return;
 		}
@@ -104,7 +104,7 @@ class ResponsePrinter
 			header('Content-Length: ' . $contentLength);
 		}
 
-		if ($this->request->httpMethod->is(HttpMethod::head())) {
+		if ($this->request->httpMethod === HttpMethod::Head) {
 			// HEAD 処理は出力を抑制
 			return;
 		}

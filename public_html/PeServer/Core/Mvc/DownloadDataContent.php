@@ -30,7 +30,7 @@ class DownloadDataContent extends DataContent
 	 */
 	public function __construct(string $mime, string $fileName, Binary $data)
 	{
-		parent::__construct(HttpStatus::none(), $mime, $data);
+		parent::__construct(HttpStatus::None, $mime, $data);
 		$this->fileName = $fileName;
 	}
 }

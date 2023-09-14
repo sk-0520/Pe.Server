@@ -50,13 +50,13 @@ class HttpRequest
 			return new HttpRequestExists($name, true, HttpRequestExists::KIND_URL);
 		}
 
-		if (!$strict || $this->httpMethod->is(HttpMethod::get())) {
+		if (!$strict || $this->httpMethod === HttpMethod::Get) {
 			if ($this->specialStore->containsGetName($name)) {
 				return new HttpRequestExists($name, true, HttpRequestExists::KIND_GET);
 			}
 		}
 
-		if (!$strict || $this->httpMethod->is(HttpMethod::post())) {
+		if (!$strict || $this->httpMethod === HttpMethod::Post) {
 			if ($this->specialStore->containsPostName($name)) {
 				return new HttpRequestExists($name, true, HttpRequestExists::KIND_POST);
 			}
@@ -88,12 +88,12 @@ class HttpRequest
 			return $this->urlParameters[$name];
 		}
 
-		if (!$strict || $this->httpMethod->is(HttpMethod::get())) {
+		if (!$strict || $this->httpMethod === HttpMethod::Get) {
 			if ($this->specialStore->containsGetName($name)) {
 				return $this->specialStore->getGet($name);
 			}
 		}
-		if (!$strict || $this->httpMethod->is(HttpMethod::post())) {
+		if (!$strict || $this->httpMethod === HttpMethod::Post) {
 			if ($this->specialStore->containsPostName($name)) {
 				return $this->specialStore->getPost($name);
 			}

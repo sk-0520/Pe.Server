@@ -181,7 +181,7 @@ class HttpHeader
 	public function setRedirect(string $url, ?HttpStatus $status): void
 	{
 		if ($status === null) {
-			$this->redirect = new RedirectSetting($url, HttpStatus::moved());
+			$this->redirect = new RedirectSetting($url, HttpStatus::MovedPermanently);
 		} else {
 			$this->redirect = new RedirectSetting($url, $status);
 		}

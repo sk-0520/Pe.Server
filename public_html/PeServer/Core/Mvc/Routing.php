@@ -301,7 +301,7 @@ class Routing
 		foreach ($this->setting->routes as $route) {
 			$action = $route->getAction($this->requestMethod, $this->requestPath);
 			if ($action !== null) {
-				if ($action->status->is(HttpStatus::none())) {
+				if ($action->status === HttpStatus::None) {
 					$this->executeAction($action->className, $action->actionSetting, $action->params);
 					return;
 				} else if ($errorAction === null) {
@@ -311,7 +311,7 @@ class Routing
 		}
 
 		if ($errorAction === null) {
-			MiddlewareResult::error(HttpStatus::internalServerError())->apply();
+			MiddlewareResult::error(HttpStatus::InternalServerError)->apply();
 		} else {
 			MiddlewareResult::error($errorAction->status)->apply();
 		}

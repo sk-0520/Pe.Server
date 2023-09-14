@@ -42,7 +42,7 @@ final class ManagementController extends PageControllerBase
 
 	public function index(): IActionResult
 	{
-		return $this->view('index', new TemplateParameter(HttpStatus::ok(), [], []));
+		return $this->view('index', new TemplateParameter(HttpStatus::OK, [], []));
 	}
 
 	public function setup_get(): IActionResult

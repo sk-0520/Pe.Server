@@ -27,7 +27,7 @@ final class NotLoginMiddleware implements IMiddleware
 	{
 		if ($argument->stores->session->tryGet(SessionKey::ACCOUNT, $account)) {
 			$this->logger->warn('login user: {0}', $account);
-			return MiddlewareResult::error(HttpStatus::notFound());
+			return MiddlewareResult::error(HttpStatus::NotFound);
 		}
 
 		return MiddlewareResult::none();
