@@ -13,13 +13,14 @@ use PeServer\Core\Text;
 enum HttpMethod: string
 {
 	case Get = 'GET';
+	case Head = 'HEAD';
 	case Post = 'POST';
 	case Put = 'PUT';
 	case Delete = 'DELETE';
-	case Head = 'HEAD';
+	case Connect = 'CONNECT';
 	case Options = 'OPTIONS';
-	case Patch = 'PATCH';
 	case Trace = 'TRACE';
+	case Patch = 'PATCH';
 
 	/**
 	 * 通常のGET的なやつ。
