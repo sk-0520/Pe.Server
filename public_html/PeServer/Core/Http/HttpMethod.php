@@ -20,4 +20,14 @@ enum HttpMethod: string
 	case Options = 'OPTIONS';
 	case Patch = 'PATCH';
 	case Trace = 'TRACE';
+
+	/**
+	 * 通常のGET的なやつ。
+	 *
+	 * @return self[]
+	 */
+	public static function gets(): array
+	{
+		return [self::Get, self::Head];
+	}
 }

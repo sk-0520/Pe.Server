@@ -47,14 +47,14 @@ class Action
 	{
 		if (is_array($httpMethod)) {
 			foreach ($httpMethod as $method) {
-				$this->map[$method->getKind()] = new ActionSetting(
+				$this->map[$method->name] = new ActionSetting(
 					$callMethod,
 					$middleware,
 					$shutdownMiddleware
 				);
 			}
 		} else {
-			$this->map[$httpMethod->getKind()] = new ActionSetting(
+			$this->map[$httpMethod->name] = new ActionSetting(
 				$callMethod,
 				$middleware,
 				$shutdownMiddleware
@@ -70,7 +70,7 @@ class Action
 	 */
 	public function get(HttpMethod $httpMethod): ?ActionSetting
 	{
-		if (Arr::tryGet($this->map, $httpMethod->getKind(), $result)) {
+		if (Arr::tryGet($this->map, $httpMethod->name, $result)) {
 			return $result;
 		}
 

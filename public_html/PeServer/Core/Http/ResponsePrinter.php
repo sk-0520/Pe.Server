@@ -104,7 +104,7 @@ class ResponsePrinter
 			header('Content-Length: ' . $contentLength);
 		}
 
-		if ($this->request->httpMethod->is(HttpMethod::head())) {
+		if ($this->request->httpMethod === HttpMethod::Head) {
 			// HEAD 処理は出力を抑制
 			return;
 		}
