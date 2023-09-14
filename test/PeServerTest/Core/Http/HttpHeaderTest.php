@@ -129,15 +129,15 @@ class HttpHeaderTest extends TestClass
 		$this->assertTrue($hh->existsRedirect());
 		$actual1 = $hh->getRedirect();
 		$this->assertSame('url', $actual1->url);
-		$this->assertEquals(HttpStatus::moved(), $actual1->status, '生成オブジェクト自体が異なるので等価比較');
+		$this->assertSame(HttpStatus::MovedPermanently, $actual1->status);
 		$this->assertTrue($hh->clearRedirect());
 		$this->assertFalse($hh->existsRedirect());
 
-		$hh->setRedirect('URL', HttpStatus::found());
+		$hh->setRedirect('URL', HttpStatus::Found);
 		$this->assertTrue($hh->existsRedirect());
 		$actual2 = $hh->getRedirect();
 		$this->assertSame('URL', $actual2->url);
-		$this->assertEquals(HttpStatus::found(), $actual2->status, '生成オブジェクト自体が異なるので等価比較');
+		$this->assertSame(HttpStatus::Found, $actual2->status);
 		$this->assertTrue($hh->clearRedirect());
 		$this->assertFalse($hh->existsRedirect());
 
