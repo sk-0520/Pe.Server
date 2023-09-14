@@ -135,7 +135,8 @@ final class AppRouteSetting extends RouteSetting
 					->addAction('version', HttpMethod::Get, 'version_get')
 					->addAction('version', HttpMethod::Post, 'version_post')
 					->addAction('log', HttpMethod::Get, 'log_list')
-					->addAction('log/:log_name@\w+\.log', HttpMethod::Get, 'log_detail')
+					->addAction('log/:log_name@\w+\.log', HttpMethod::Get, 'log_detail_get')
+					->addAction('log/:log_name@\w+\.log', HttpMethod::Post, 'log_detail_post')
 					->addAction('markdown', HttpMethod::Get, 'markdown')
 				/* AUTO-FORMAT */,
 				(new Route('management/control', ManagementControlController::class, [AdministratorAccountFilterMiddleware::class]))
