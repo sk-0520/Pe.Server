@@ -9,6 +9,7 @@ namespace PeServer\Core\Http;
  */
 enum HttpStatus: int
 {
+	/** プログラム内部で使用するのみ, HTTPの舞台には登場しない。 */
 	case None = 0;
 
 	case Continue = 100;

@@ -40,7 +40,7 @@ class ManagementDatabaseDownloadLogic extends PageLogicBase
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
 		if ($callMode !== LogicCallMode::Submit) {
-			throw new HttpStatusException(HttpStatus::internalServerError());
+			throw new HttpStatusException(HttpStatus::InternalServerError);
 		}
 
 		$target = AppDatabaseConnection::getSqliteFilePath($this->config->setting->persistence->default->connection);

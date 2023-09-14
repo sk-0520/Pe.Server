@@ -43,7 +43,7 @@ class ApplicationApiController extends ApiControllerBase
 		$logic = $this->createLogic(ApplicationApiVersionUpdateLogic::class);
 		$logic->run(LogicCallMode::Submit);
 
-		return new RedirectActionResult($logic->redirectUrl, HttpStatus::found());
+		return new RedirectActionResult($logic->redirectUrl, HttpStatus::Found);
 	}
 
 	#endregion

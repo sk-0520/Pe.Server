@@ -130,7 +130,7 @@ abstract class LogicBase implements IValidationReceiver
 	protected function __construct(LogicParameter $parameter)
 	{
 		$this->beginTimestamp = Utc::create();
-		$this->httpResponseStatus = HttpStatus::ok();
+		$this->httpResponseStatus = HttpStatus::OK;
 		$this->request = $parameter->request;
 		$this->stores = $parameter->stores;
 		$this->logger = $parameter->logger;
@@ -602,7 +602,7 @@ abstract class LogicBase implements IValidationReceiver
 	 */
 	protected function setContent(string $mime, $data): void
 	{
-		$this->content = new DataContent(HttpStatus::none(), $mime, $data);
+		$this->content = new DataContent(HttpStatus::None, $mime, $data);
 	}
 
 	/**
@@ -621,7 +621,7 @@ abstract class LogicBase implements IValidationReceiver
 
 		$content = File::readContent($path);
 
-		$this->content = new DataContent(HttpStatus::none(), $mime, $content->getRaw());
+		$this->content = new DataContent(HttpStatus::None, $mime, $content->getRaw());
 	}
 
 	/**

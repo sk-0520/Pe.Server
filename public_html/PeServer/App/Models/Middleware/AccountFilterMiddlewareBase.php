@@ -24,7 +24,7 @@ abstract class AccountFilterMiddlewareBase implements IMiddleware
 	protected function filterCore(MiddlewareArgument $argument, array $levels): MiddlewareResult
 	{
 		if (!$argument->stores->session->tryGet(SessionKey::ACCOUNT, $account)) {
-			return MiddlewareResult::error(HttpStatus::forbidden());
+			return MiddlewareResult::error(HttpStatus::Forbidden);
 		}
 
 		foreach ($levels as $level) {
@@ -34,7 +34,7 @@ abstract class AccountFilterMiddlewareBase implements IMiddleware
 			}
 		}
 
-		return MiddlewareResult::error(HttpStatus::forbidden());
+		return MiddlewareResult::error(HttpStatus::Forbidden);
 	}
 
 	protected abstract function filter(MiddlewareArgument $argument): MiddlewareResult;

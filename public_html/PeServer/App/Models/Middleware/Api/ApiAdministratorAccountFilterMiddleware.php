@@ -25,7 +25,7 @@ class ApiAdministratorAccountFilterMiddleware extends ApiAccountFilterMiddleware
 	protected function filter(MiddlewareArgument $argument, UserCacheItem $item): MiddlewareResult
 	{
 		if ($item->level !== UserLevel::ADMINISTRATOR) {
-			return MiddlewareResult::error(HttpStatus::forbidden());
+			return MiddlewareResult::error(HttpStatus::Forbidden);
 		}
 
 		return MiddlewareResult::none();

@@ -31,7 +31,7 @@ class RedirectActionResult implements IActionResult
 	public function createResponse(): HttpResponse
 	{
 		$response = new HttpResponse();
-		$status = $this->status ?? HttpStatus::found();
+		$status = $this->status ?? HttpStatus::Found;
 
 		$response->status = $status;
 		$response->header->setRedirect($this->url, $status);
