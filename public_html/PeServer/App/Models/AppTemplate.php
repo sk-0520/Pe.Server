@@ -62,7 +62,7 @@ final class AppTemplate
 			'website_url' => $families->websiteUrl,
 		];
 
-		return $this->buildTemplate('email', $templateName, $params, HttpStatus::none());
+		return $this->buildTemplate('email', $templateName, $params, HttpStatus::None);
 	}
 
 	#endregion

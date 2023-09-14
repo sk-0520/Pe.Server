@@ -31,6 +31,7 @@ use PeServer\Core\Mvc\RouteSetting;
 use PeServer\Core\Mvc\Routing;
 use PeServer\Core\Mvc\Template\ITemplateFactory;
 use PeServer\Core\Store\SpecialStore;
+use PeServer\Core\Text;
 use PeServer\Core\Web\UrlHelper;
 
 
@@ -89,7 +90,7 @@ class AppStartup extends CoreStartup
 		/** @var SpecialStore */
 		$specialStore = $container->get(SpecialStore::class);
 
-		$method = HttpMethod::from($specialStore->getServer('REQUEST_METHOD'));
+		$method = HttpMethod::from(Text::toUpper(Text::trim($specialStore->getServer('REQUEST_METHOD'))));
 		$requestPath = new RequestPath(
 			$specialStore->getServer('REQUEST_URI'),
 			Arr::getOr($options, 'url_helper', new UrlHelper(''))

@@ -55,7 +55,7 @@ class ErrorHandler
 	protected function getSuppressionStatusList(): array
 	{
 		return [
-			HttpStatus::notFound(),
+			HttpStatus::NotFound,
 		];
 	}
 
@@ -176,9 +176,9 @@ class ErrorHandler
 	{
 		$status = $throwable instanceof HttpStatusException
 			? $throwable->status
-			: HttpStatus::serviceUnavailable();
+			: HttpStatus::ServiceUnavailable;
 
-		http_response_code($status->getCode());
+		http_response_code($status->value);
 
 		return $status;
 	}
@@ -254,9 +254,9 @@ class ErrorHandler
 
 		$isSuppressionStatus = false;
 		foreach ($this->getSuppressionStatusList() as $suppressionStatus) {
-			if ($status->is($suppressionStatus)) {
+			if ($status === $suppressionStatus) {
 				$isSuppressionStatus = true;
-				$this->logger->info('HTTP: {0}', $suppressionStatus->getCode());
+				$this->logger->info('HTTP: {0}', $suppressionStatus);
 				break;
 			}
 		}

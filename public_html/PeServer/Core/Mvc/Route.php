@@ -211,7 +211,7 @@ class Route
 		$actionSetting = $action->get($httpMethod);
 		if ($actionSetting === null) {
 			return new RouteAction(
-				HttpStatus::methodNotAllowed(),
+				HttpStatus::MethodNotAllowed,
 				$this->className,
 				ActionSetting::none(),
 				$urlParameters
@@ -219,7 +219,7 @@ class Route
 		}
 
 		return new RouteAction(
-			HttpStatus::none(),
+			HttpStatus::None,
 			$this->className,
 			$actionSetting,
 			$urlParameters
@@ -237,7 +237,7 @@ class Route
 	{
 		if (!Text::startsWith($requestPath->full, $this->basePath, false)) {
 			return new RouteAction(
-				HttpStatus::notFound(),
+				HttpStatus::NotFound,
 				$this->className,
 				ActionSetting::none(),
 				[]
@@ -316,13 +316,13 @@ class Route
 				/** @phpstan-var array<non-empty-string,string> $flatParameters */
 
 				$result = $this->getActionCore($httpMethod, $action, $flatParameters);
-				if ($result->status->is(HttpStatus::none())) {
+				if ($result->status === HttpStatus::None) {
 					return $result;
 				}
 			}
 
 			return new RouteAction(
-				HttpStatus::notFound(),
+				HttpStatus::NotFound,
 				$this->className,
 				ActionSetting::none(),
 				[]

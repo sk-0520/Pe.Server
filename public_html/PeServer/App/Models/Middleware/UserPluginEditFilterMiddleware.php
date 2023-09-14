@@ -43,7 +43,7 @@ final class UserPluginEditFilterMiddleware implements IMiddleware
 			}
 		}
 
-		return MiddlewareResult::error(HttpStatus::notFound());
+		return MiddlewareResult::error(HttpStatus::NotFound);
 	}
 
 	public function handleAfter(MiddlewareArgument $argument, HttpResponse $response): MiddlewareResult

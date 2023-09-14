@@ -48,7 +48,7 @@ class CsrfMiddleware implements IMiddleware
 	 */
 	protected function getErrorHttpStatus(): HttpStatus
 	{
-		return HttpStatus::misdirected();
+		return HttpStatus::MisdirectedRequest;
 	}
 
 	protected function getRequestMode(MiddlewareArgument $argument): int

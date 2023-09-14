@@ -39,10 +39,10 @@ abstract class ApiAccountFilterMiddlewareBase implements IMiddleware
 				$secrets = $argument->request->httpHeader->getValues(HttpHeaderName::SECRET_KEY);
 
 				if (Arr::getCount($apiKeys) !== 1) {
-					return MiddlewareResult::error(HttpStatus::forbidden());
+					return MiddlewareResult::error(HttpStatus::Forbidden);
 				}
 				if (Arr::getCount($secrets) !== 1) {
-					return MiddlewareResult::error(HttpStatus::forbidden());
+					return MiddlewareResult::error(HttpStatus::Forbidden);
 				}
 
 				$apiKey = $apiKeys[0];
@@ -51,12 +51,12 @@ abstract class ApiAccountFilterMiddlewareBase implements IMiddleware
 				$userCache = $this->dbCache->readUserInformation();
 
 				if (empty($userCache->items)) {
-					return MiddlewareResult::error(HttpStatus::forbidden());
+					return MiddlewareResult::error(HttpStatus::Forbidden);
 				}
 
 				$items = array_filter($userCache->items, fn (UserCacheItem $i) => $i->apiKey === $apiKey && $i->secret === $secret);
 				if (Arr::getCount($items) !== 1) {
-					return MiddlewareResult::error(HttpStatus::forbidden());
+					return MiddlewareResult::error(HttpStatus::Forbidden);
 				}
 
 				$key = Arr::getFirstKey($items);
@@ -65,7 +65,7 @@ abstract class ApiAccountFilterMiddlewareBase implements IMiddleware
 			}
 		}
 
-		return MiddlewareResult::error(HttpStatus::forbidden());
+		return MiddlewareResult::error(HttpStatus::Forbidden);
 	}
 
 	protected abstract function filter(MiddlewareArgument $argument, UserCacheItem $item): MiddlewareResult;

@@ -13,7 +13,7 @@
 		<main id="main">
 			<dl class="error">
 				<dt>ステータスコード</dt>
-				<dd><code>{$status->getCode()}</code></dd>
+				<dd><code>{$status->value}</code></dd>
 
 				<dt>エラーコード</dt>
 				<dd><code>{$values.error_number}</code></dd>
@@ -85,7 +85,7 @@
 									<dd><code>{get_class($throwable)}</code></dd>
 
 									<dt>エラーコード</dt>
-									<dd><code>{$throwable->getCode()}</code></dd>
+									<dd><code>{$throwable->value}</code></dd>
 
 									<dt>メッセージ</dt>
 									<dd><code>{$throwable->getMessage()}</code></dd>

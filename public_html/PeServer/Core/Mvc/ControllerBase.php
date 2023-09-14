@@ -151,7 +151,7 @@ abstract class ControllerBase
 	 */
 	public function redirectUrl(string $url): RedirectActionResult
 	{
-		return new RedirectActionResult($url, HttpStatus::found());
+		return new RedirectActionResult($url, HttpStatus::Found);
 	}
 
 	/**

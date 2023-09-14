@@ -96,7 +96,7 @@ class AccountUserPluginLogic extends PageLogicBase
 				$fromPluginId = $this->getRequest('from_account_plugin_plugin_id');
 				// プラグインIDが変更されているので死んでもらう(二つとも合うように加工された場合はもう無理、要求を粛々と処理する)
 				if (!Uuid::isEqualGuid($pluginId, $fromPluginId)) {
-					throw new HttpStatusException(HttpStatus::badRequest());
+					throw new HttpStatusException(HttpStatus::BadRequest);
 				}
 				// プラグインIDとプラグイン名は原本を使用する
 				$database = $this->openDatabase();

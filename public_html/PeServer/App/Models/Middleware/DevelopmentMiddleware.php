@@ -26,7 +26,7 @@ final class DevelopmentMiddleware implements IMiddleware
 	{
 		if (Environment::isProduction()) {
 			$this->logger->warn('本番環境での実行は抑制');
-			return MiddlewareResult::error(HttpStatus::forbidden());
+			return MiddlewareResult::error(HttpStatus::Forbidden);
 		}
 
 		return MiddlewareResult::none();

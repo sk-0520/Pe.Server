@@ -80,9 +80,9 @@ final class AppErrorHandler extends ErrorHandler
 
 			$isSuppressionStatus = false;
 			foreach ($this->getSuppressionStatusList() as $suppressionStatus) {
-				if ($status->is($suppressionStatus)) {
+				if ($status === $suppressionStatus) {
 					$isSuppressionStatus = true;
-					$this->logger->info('HTTP: {0}', $suppressionStatus->getCode());
+					$this->logger->info('HTTP: {0}', $suppressionStatus);
 					break;
 				}
 			}

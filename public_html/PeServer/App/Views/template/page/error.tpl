@@ -1,5 +1,5 @@
 {extends file='default.tpl'}
-{block name='TITLE'}エラー: {$status->getCode()}{/block}
+{block name='TITLE'}エラー: {$status->value}{/block}
 {block name='BODY'}
 
 <p>
@@ -8,7 +8,7 @@
 
 <dl>
 	<dt>ステータスコード</dt>
-	<dd><code data-clipboard="inline">{$status->getCode()}</code></dd>
+	<dd><code data-clipboard="inline">{$status->value}</code></dd>
 
 	<dt>エラーコード</dt>
 	<dd><code data-clipboard="inline">{$values.error_number}</code></dd>

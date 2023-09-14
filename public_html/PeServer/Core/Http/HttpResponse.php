@@ -43,7 +43,7 @@ class HttpResponse
 
 	public function __construct()
 	{
-		$this->status = HttpStatus::none();
+		$this->status = HttpStatus::None;
 		$this->header = new HttpHeader();
 	}
 }
