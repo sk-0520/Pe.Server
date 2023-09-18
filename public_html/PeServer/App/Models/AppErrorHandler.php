@@ -84,7 +84,7 @@ final class AppErrorHandler extends ErrorHandler
 			foreach ($this->getSuppressionStatusList() as $suppressionStatus) {
 				if ($status === $suppressionStatus) {
 					$isSuppressionStatus = true;
-					$this->logger->info('HTTP: {0}', $suppressionStatus);
+					$this->logger->info('HTTP {0}: {1}', $suppressionStatus->value, $suppressionStatus->name);
 					break;
 				}
 			}
