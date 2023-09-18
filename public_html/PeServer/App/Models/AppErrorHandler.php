@@ -8,12 +8,14 @@ use \Throwable;
 use PeServer\Core\DI\Inject;
 use PeServer\Core\Environment;
 use PeServer\Core\ErrorHandler;
+use PeServer\Core\Http\HttpHeadContentType;
 use PeServer\Core\Http\RequestPath;
 use PeServer\Core\IO\Directory;
 use PeServer\Core\IO\Path;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\Logging;
 use PeServer\Core\Log\NullLogger;
+use PeServer\Core\Mime;
 use PeServer\Core\Mvc\Template\ITemplateFactory;
 use PeServer\Core\Mvc\Template\TemplateFactory;
 use PeServer\Core\Mvc\Template\TemplateOptions;
@@ -108,7 +110,7 @@ final class AppErrorHandler extends ErrorHandler
 					'error' => $response->error,
 				];
 
-				header('Content-Type: application/json');
+				header(HttpHeadContentType::NAME . ':' . Mime::JSON);
 				echo $this->jsonSerializer->save($json);
 			} else {
 				$rootDir = Path::combine($this->config->baseDirectoryPath, 'App', 'Views');

@@ -4,6 +4,9 @@ cd $(cd $(dirname $0)/../test; pwd)
 
 BASE_DIR=../public_html
 
+LOCAL_HTTP_TEST="${LOCAL_HTTP_TEST:=localhost:8080}"
+LOCAL_HTTP_WAIT="${LOCAL_HTTP_WAIT:=1}"
+
 PHPUNIT_VERSION=10.2.5
 PHPUNIT_URL=https://phar.phpunit.de/phpunit-${PHPUNIT_VERSION}.phar
 PHPUNIT_FILE=phpunit.phar.${PHPUNIT_VERSION}
@@ -61,4 +64,10 @@ COVERAGE_CACHE_OPTION=""
 if [[ -v COVERAGE_CACHE ]] ; then
 	COVERAGE_CACHE_OPTION="--coverage-cache ${COVERAGE_CACHE}"
 fi
-php ${PHPUNIT_FILE} --configuration ../dev/phpunit.xml --coverage-html ../public_html/public/coverage/php --testdox $COVERAGE_CACHE_OPTION "$@" .
+
+cd ${PHPUNIT_BASE_DIR}
+
+php -S ${LOCAL_HTTP_TEST} -t http > http.log 2>&1 &
+trap 'kill %1' 0
+sleep ${LOCAL_HTTP_WAIT}
+php ${PHPUNIT_FILE} --configuration ../dev/phpunit.xml --coverage-html ../public_html/public/coverage/php --testdox $COVERAGE_CACHE_OPTION  "$@" .

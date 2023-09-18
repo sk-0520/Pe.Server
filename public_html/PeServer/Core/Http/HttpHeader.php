@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Http;
 
+use PeServer\Core\Binary;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Collections\CaseInsensitiveKeyArray;
+use PeServer\Core\Encoding;
+use PeServer\Core\Http\HttpHeadContentType;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Http\RedirectSetting;
 use PeServer\Core\Text;
@@ -126,6 +129,39 @@ class HttpHeader
 		return isset($this->headers[$name]);
 	}
 
+	public function existsContentType(): bool
+	{
+		return $this->existsHeader(HttpHeadContentType::NAME);
+	}
+
+	public function getContentType(): HttpHeadContentType
+	{
+		$contentType = $this->getValues(HttpHeadContentType::NAME);
+		return HttpHeadContentType::from($contentType);
+	}
+
+	public function setContentType(HttpHeadContentType $value): void
+	{
+		$this->setValues(HttpHeadContentType::NAME, $value->toValues());
+	}
+
+	/**
+	 * ヘッダ名一覧を取得。
+	 *
+	 * @return string[]
+	 * @phpstan-return non-empty-string[]
+	 */
+	public function getHeaderNames(): array
+	{
+		$result = [];
+
+		foreach ($this->headers as $name => $_) {
+			$result[] = $name;
+		}
+
+		return $result;
+	}
+
 	/**
 	 * ヘッダの値を取得。
 	 *
@@ -215,7 +251,10 @@ class HttpHeader
 		$joinHeaders = [];
 
 		foreach ($this->headers as $name => $values) {
-			$joinHeaders[$name] = Text::join(', ', $values);
+			$value = Text::join(', ', $values);
+			if (0 < Text::getLength($value)) {
+				$joinHeaders[$name] = $value;
+			}
 		}
 
 		return $joinHeaders;
@@ -237,13 +276,29 @@ class HttpHeader
 	}
 
 	/**
+	 * HTTPクライアントリクエストヘッダの生成。
+	 *
+	 * @return HttpHeader
+	 */
+	public static function createClientRequestHeader(): HttpHeader
+	{
+		return new LocalHttpClientRequestHeader();
+	}
+
+	public static function getClientResponseHeader(Binary $responseHeader, ?Encoding $encoding = null): HttpHeader
+	{
+		$encoding ??= Encoding::getDefaultEncoding();
+		return new LocalClientResponseHttpHeader($responseHeader, $encoding);
+	}
+
+	/**
 	 * リクエストヘッダの取得。
 	 *
 	 * @return HttpHeader
 	 */
-	public static function getRequest(): HttpHeader
+	public static function getRequestHeader(): HttpHeader
 	{
-		return new LocalRequestHttpHeader();
+		return new LocalHttpRequestHeader();
 	}
 
 	#endregion
@@ -252,24 +307,8 @@ class HttpHeader
 /**
  * 要求時のヘッダー一覧。
  */
-final class LocalRequestHttpHeader extends HttpHeader
+class LocalHttpClientRequestHeader extends HttpHeader
 {
-	public function __construct()
-	{
-		parent::__construct();
-
-		$headers = getallheaders();
-		foreach ($headers as $name => $value) {
-			//@phpstan-ignore-next-line non-empty
-			$this->setValue($name, $value);
-		}
-	}
-
-	protected function throwIfInvalidHeaderName(string $name): void
-	{
-		//NOP
-	}
-
 	public function existsRedirect(): bool
 	{
 		throw new NotSupportedException();
@@ -288,5 +327,61 @@ final class LocalRequestHttpHeader extends HttpHeader
 	public function getRedirect(): RedirectSetting
 	{
 		throw new NotSupportedException();
+	}
+}
+
+
+class LocalClientResponseHttpHeader extends LocalHttpClientRequestHeader
+{
+	private bool $initialized = false;
+
+	public function __construct(Binary $responseHeader, Encoding $encoding)
+	{
+		parent::__construct();
+
+		$headerString = $encoding->toString($responseHeader);
+		$headers = Text::splitLines($headerString);
+		foreach ($headers as $index => $header) {
+			if ($index === 0) {
+				// HTTP仕様の最初のあれなんでいらない
+				continue;
+			}
+			if ($header === '') {
+				// 改行分割後に何もないのであればHTTPの仕様に従って本文開始になるのでもう何もしない
+				break;
+			}
+
+			$kv = Text::split($header, ':', 2);
+			$name = Text::trim($kv[0]);
+			if (!Text::isNullOrWhiteSpace($name)) {
+				$this->setValue($name, isset($kv[1]) ? Text::trim($kv[1]) : Text::EMPTY);
+			}
+		}
+	}
+
+	protected function throwIfInvalidHeaderName(string $name): void
+	{
+		if ($this->initialized) {
+			throw new NotSupportedException();
+		}
+	}
+}
+
+class LocalHttpRequestHeader extends LocalHttpClientRequestHeader
+{
+	public function __construct()
+	{
+		parent::__construct();
+
+		$headers = getallheaders();
+		foreach ($headers as $name => $value) {
+			//@phpstan-ignore-next-line non-empty
+			$this->setValue($name, $value);
+		}
+	}
+
+	protected function throwIfInvalidHeaderName(string $name): void
+	{
+		//NOP
 	}
 }

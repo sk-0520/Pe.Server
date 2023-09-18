@@ -20,6 +20,8 @@ abstract class Text
 
 	/** トリム対象文字一覧。 */
 	public const TRIM_CHARACTERS = " \n\r\t\v\0　";
+	/** PHP の使ってる対象文字一覧 */
+	public const TRIM_PHP_CHARACTERS = " \t\n\r\0\x0B";
 	private const TRIM_TARGET_START = -1;
 	private const TRIM_TARGET_END = 1;
 	private const TRIM_TARGET_BOTH = 0;

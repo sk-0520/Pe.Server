@@ -20,13 +20,14 @@ use PeServer\Core\DI\IDiContainer;
 use PeServer\Core\DI\IDiRegisterContainer;
 use PeServer\Core\IO\Path;
 use PeServer\Core\IO\Directory;
+use PeServer\Core\IO\File;
 use PeServer\Core\Store\SpecialStore;
 use PeServer\Core\Web\UrlHelper;
 
 $autoLoader = new \PeServer\Core\AutoLoader(
 	[
 		'PeServer' => [
-			'directory' => __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'public_html'. DIRECTORY_SEPARATOR . 'PeServer',
+			'directory' => __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'public_html' . DIRECTORY_SEPARATOR . 'PeServer',
 		],
 		'PeServerTest' => [
 			'directory' => __DIR__ . DIRECTORY_SEPARATOR . 'PeServerTest',
@@ -52,6 +53,12 @@ $container = $startup->setup(
 );
 Directory::setTemporaryDirectory(Path::combine(__DIR__, 'temp'));
 TestClass::$_do_not_use_container_user_test = $container;
+
+$testSettingFilePath = Path::combine(__DIR__, '@setting.json');
+if (File::exists($testSettingFilePath)) {
+	$setting = File::readJsonFile($testSettingFilePath);
+	TestClass::$setting = array_replace_recursive(TestClass::$setting, $setting);
+}
 
 /**
  * データ。
@@ -88,6 +95,24 @@ class TestClass extends \PHPUnit\Framework\TestCase
 {
 	/** テストコードで直接使用しないDIコンテナ */
 	public static IDiContainer $_do_not_use_container_user_test;
+	/**
+	 * テスト設定。
+	 *
+	 * 本ソースファイルと同じ場所に `@setting.json` が存在すればマージされる。
+	 * @var array
+	 */
+	public static array $setting = [
+		'local_server' => 'http://localhost:8080'
+	];
+
+	public static function localServer(string $addUrl): string
+	{
+		$url = rtrim(self::$setting['local_server'], "/");
+		if (strlen($addUrl)) {
+			$url .= '/' . ltrim($addUrl, "/");
+		}
+		return $url;
+	}
 
 	/**
 	 * テスト用コンテナを取得。
@@ -113,6 +138,15 @@ class TestClass extends \PHPUnit\Framework\TestCase
 			throw new Exception('empty: $info');
 		}
 		parent::assertEquals($expected, $actual, $message);
+	}
+
+	protected function assertNotEqualsWithInfo(string $info, mixed $expected, mixed $actual, string $message = '')
+	{
+		if (empty($info)) {
+			// 厳密比較でない理由が不明
+			throw new Exception('empty: $info');
+		}
+		parent::assertNotEquals($expected, $actual, $message);
 	}
 
 	protected function success()

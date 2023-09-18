@@ -5,15 +5,16 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc\Result;
 
 use PeServer\Core\Binary;
+use PeServer\Core\Http\HttpHeadContentType;
 use PeServer\Core\Http\HttpResponse;
-use PeServer\Core\Serialization\Json;
-use PeServer\Core\Text;
 use PeServer\Core\Mime;
 use PeServer\Core\Mvc\DataContent;
 use PeServer\Core\Mvc\DownloadDataContent;
 use PeServer\Core\Mvc\Result\IActionResult;
+use PeServer\Core\Serialization\Json;
 use PeServer\Core\Serialization\JsonSerializer;
 use PeServer\Core\Serialization\SerializerBase;
+use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
 
 
@@ -89,7 +90,7 @@ class DataActionResult implements IActionResult
 
 		$response->status = $this->content->httpStatus;
 
-		$response->header->addValue('Content-Type', $this->content->mime);
+		$response->header->setContentType(new HttpHeadContentType($this->content->mime, null));
 
 		if ($this->content instanceof DownloadDataContent) {
 			$fileName = urlencode($this->content->fileName);

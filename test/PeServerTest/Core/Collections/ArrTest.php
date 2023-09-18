@@ -366,6 +366,7 @@ class ArrTest extends TestClass
 		$actual4 = Arr::map($input, 'PeServerTest\Core\Collections\map_function');
 		$this->assertSame('aa', $actual4['A']);
 		$this->assertSame('bb', $actual4[10]);
+
 	}
 
 	public function test_range()

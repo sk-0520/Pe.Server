@@ -25,7 +25,7 @@ enum HttpMethod: string
 	/**
 	 * 通常のGET的なやつ。
 	 *
-	 * @return self[]
+	 * @return self[] Get/Head。
 	 */
 	public static function gets(): array
 	{
