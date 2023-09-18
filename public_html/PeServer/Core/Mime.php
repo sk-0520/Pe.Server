@@ -8,6 +8,9 @@ use PeServer\Core\Throws\ArgumentException;
 
 /**
  * まいむ。
+ *
+ * あれこれ使いまわすやつの入力ミスを減らすために定義してるだけ。
+ * 大量に定義して管理するようなことはしない。
  */
 abstract class Mime
 {
@@ -18,6 +21,7 @@ abstract class Mime
 	public const JSON = 'application/json';
 	public const GZ = 'application/gzip';
 	public const STREAM = 'application/octet-stream';
+	public const FORM = 'application/x-www-form-urlencoded';
 	public const ICON = 'image/vnd.microsoft.icon';
 	public const SQLITE3 = 'application/x-sqlite3';
 

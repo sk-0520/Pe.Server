@@ -44,7 +44,7 @@ abstract class UrlUtility
 	 * @see https://www.php.net/manual/function.rawurldecode.php
 	 * @throws ArgumentException
 	 */
-	public static function encode(string $input, int $queryKind = self::URL_KIND_RFC1738): string
+	public static function encode(string $input, int $queryKind = self::URL_KIND_RFC3986): string
 	{
 		return match ($queryKind) {
 			self::URL_KIND_RFC1738 => urlencode($input),
@@ -63,7 +63,7 @@ abstract class UrlUtility
 	 * @see https://www.php.net/manual/function.rawurldecode.php
 	 * @throws ArgumentException
 	 */
-	public static function decode(string $input, int $queryKind = self::URL_KIND_RFC1738): string
+	public static function decode(string $input, int $queryKind = self::URL_KIND_RFC3986): string
 	{
 		return match ($queryKind) {
 			self::URL_KIND_RFC1738 => urldecode($input),
@@ -80,7 +80,7 @@ abstract class UrlUtility
 	 * @phpstan-param self::URL_KIND_* $queryKind
 	 * @return string
 	 */
-	public static function buildQuery(array $query, int $queryKind = self::URL_KIND_RFC1738): string
+	public static function buildQuery(array $query, int $queryKind = self::URL_KIND_RFC3986): string
 	{
 		$items = [];
 		foreach ($query as $key => $value) {
@@ -129,7 +129,7 @@ abstract class UrlUtility
 	 * @phpstan-param self::URL_KIND_* $queryKind
 	 * @return string
 	 */
-	public static function buildPath(string $path, array $query, SpecialStore $specialStore, int $queryKind = self::URL_KIND_RFC1738): string
+	public static function buildPath(string $path, array $query, SpecialStore $specialStore, int $queryKind = self::URL_KIND_RFC3986): string
 	{
 		$pathUrl = self::convertPathToUrl($path, $specialStore);
 		return self::joinQuery($pathUrl, $query);

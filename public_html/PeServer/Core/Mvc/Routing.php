@@ -103,7 +103,7 @@ class Routing
 		$this->loggerFactory = $loggerFactory;
 		$this->serviceLocator = $serviceLocator;
 
-		$this->requestHeader = HttpHeader::getRequest();
+		$this->requestHeader = HttpHeader::getRequestHeader();
 		$this->shutdownRequest = new HttpRequest($this->stores->special, $this->requestMethod, $this->requestHeader, []);
 		$this->serviceLocator->registerValue($this->shutdownRequest);
 	}

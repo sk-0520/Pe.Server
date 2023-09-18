@@ -48,7 +48,7 @@ class ManagementLogDetailLogic extends PageLogicBase
 		$archiveSize = $logging->archiveSize;
 		$fileSize = File::getFileSize($filePath);
 
-		if ($archiveSize <= $fileSize) {
+		if ($archiveSize <= $fileSize || $callMode === LogicCallMode::Submit) {
 			$this->result['download'] = true;
 
 			$compressed = Archiver::compressGzip($binary, 9);

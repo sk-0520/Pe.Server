@@ -90,7 +90,7 @@ final class ManagementController extends PageControllerBase
 	public function configuration_edit_post(): IActionResult
 	{
 		$logic = $this->createLogic(ManagementConfigurationEditLogic::class);
-		if($logic->run(LogicCallMode::Submit)) {
+		if ($logic->run(LogicCallMode::Submit)) {
 			return $this->redirectPath('management/configuration/edit');
 		}
 
@@ -142,7 +142,7 @@ final class ManagementController extends PageControllerBase
 	public function mail_send_post(): IActionResult
 	{
 		$logic = $this->createLogic(ManagementMailSendLogic::class);
-		if($logic->run(LogicCallMode::Submit)) {
+		if ($logic->run(LogicCallMode::Submit)) {
 			return $this->redirectPath('management/mail-send');
 		}
 
@@ -189,7 +189,8 @@ final class ManagementController extends PageControllerBase
 		return $this->redirectPath('/management');
 	}
 
-	public function clear_deploy_progress(): IActionResult {
+	public function clear_deploy_progress(): IActionResult
+	{
 		$logic = $this->createLogic(ManagementClearDeployProgressLogic::class);
 		$logic->run(LogicCallMode::Submit);
 
@@ -223,7 +224,7 @@ final class ManagementController extends PageControllerBase
 	public function feedback_detail_post(): IActionResult
 	{
 		$logic = $this->createLogic(ManagementFeedbackDetailLogic::class);
-		if($logic->run(LogicCallMode::Submit)) {
+		if ($logic->run(LogicCallMode::Submit)) {
 			if ($logic->tryGetResult('sequence', $sequence)) {
 				return $this->redirectPath("management/feedback/$sequence");
 			}
@@ -260,7 +261,7 @@ final class ManagementController extends PageControllerBase
 	public function crash_report_detail_post(): IActionResult
 	{
 		$logic = $this->createLogic(ManagementCrashReportDetailLogic::class);
-		if($logic->run(LogicCallMode::Submit)) {
+		if ($logic->run(LogicCallMode::Submit)) {
 			if ($logic->tryGetResult('sequence', $sequence)) {
 				return $this->redirectPath("management/crash-report/$sequence");
 			}
@@ -304,7 +305,7 @@ final class ManagementController extends PageControllerBase
 		return $this->view('log_list', $logic->getViewData());
 	}
 
-	public function log_detail(): IActionResult
+	public function log_detail_get(): IActionResult
 	{
 		$logic = $this->createLogic(ManagementLogDetailLogic::class);
 		$logic->run(LogicCallMode::Initialize);
@@ -314,6 +315,14 @@ final class ManagementController extends PageControllerBase
 		}
 
 		return $this->view('log_detail', $logic->getViewData());
+	}
+
+	public function log_detail_post(): IActionResult
+	{
+		$logic = $this->createLogic(ManagementLogDetailLogic::class);
+		$logic->run(LogicCallMode::Submit);
+
+		return $this->data($logic->getContent());
 	}
 
 	public function markdown(): IActionResult

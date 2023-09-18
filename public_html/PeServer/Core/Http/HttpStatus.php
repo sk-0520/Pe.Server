@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Http;
 
+use PeServer\Core\Collections\Arr;
+
 /**
  * HTTPステータスコード。
  */
@@ -79,5 +81,28 @@ enum HttpStatus: int
 	case LoopDetected = 508;
 	case NotExtended = 510;
 	case NetworkAuthenticationRequired = 511;
-}
 
+	#region function
+
+	public function isError(): bool
+	{
+		return 400 <= $this->value;
+	}
+
+	public function isRedirect(): bool
+	{
+		$codes = [
+			300,
+			301,
+			302,
+			303,
+			304,
+			307,
+			308,
+		];
+
+		return Arr::in($codes, $this->value);
+	}
+
+	#endregion
+}
