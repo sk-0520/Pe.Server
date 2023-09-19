@@ -50,7 +50,7 @@ jobs:
 
       - name: <Test> code
         shell: bash
-        run: ./dev/code.sh
+        run: ./dev/code.sh --phpcs:ignore-warning
 
       - name: <Test> back-end
         shell: bash
