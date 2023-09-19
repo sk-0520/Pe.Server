@@ -17,7 +17,6 @@ use PeServer\Core\Serialization\SerializerBase;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
 
-
 /**
  * 結果操作: データ。
  */

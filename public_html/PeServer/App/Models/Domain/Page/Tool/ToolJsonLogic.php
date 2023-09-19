@@ -60,7 +60,7 @@ class ToolJsonLogic extends PageLogicBase
 		$json = null;
 		try {
 			$json = json_decode($input, true, 1024, JSON_THROW_ON_ERROR);
-		} catch(Exception $ex) {
+		} catch (Exception $ex) {
 			$this->addError('tool_json_input', strval(($ex)));
 			return;
 		}

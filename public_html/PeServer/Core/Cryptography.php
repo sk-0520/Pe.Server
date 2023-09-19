@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
-use \Exception;
-use \Throwable;
+use Exception;
+use Throwable;
 use PeServer\Core\Binary;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Text;

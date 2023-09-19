@@ -13,6 +13,7 @@ use PeServer\Core\Web\UrlEncoding;
 /**
  * HttpClient 設定データ。
  */
+
 readonly class HttpClientOptions
 {
 	#region variable

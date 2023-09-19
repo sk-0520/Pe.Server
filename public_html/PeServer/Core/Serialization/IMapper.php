@@ -28,7 +28,7 @@ interface IMapper
 	 * @throws MapperKeyNotFoundException キーが見つからない(`Mapping::FLAG_EXCEPTION_NOT_FOUND_KEY`)。
 	 * @throws MapperTypeException 型変換がもう無理(`Mapping::FLAG_EXCEPTION_TYPE_MISMATCH`)。
 	 */
-	function mapping(array $source, object $destination): void;
+	public function mapping(array $source, object $destination): void;
 
 	/**
 	 * オブジェクトデータを配列に変換。
@@ -36,7 +36,7 @@ interface IMapper
 	 * @param object $source
 	 * @return array<string,mixed>
 	 */
-	function export(object $source): array;
+	public function export(object $source): array;
 
 	#endregion
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Collections;
 
-use \Countable;
+use Countable;
 use PeServer\Core\Collections\OrderBy;
 use PeServer\Core\Cryptography;
 use PeServer\Core\ErrorHandler;

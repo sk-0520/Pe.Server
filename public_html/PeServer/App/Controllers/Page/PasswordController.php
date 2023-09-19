@@ -14,7 +14,6 @@ use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\Result\IActionResult;
 use PeServer\Core\Throws\InvalidOperationException;
 
-
 final class PasswordController extends PageControllerBase
 {
 	public function __construct(ControllerArgument $argument)

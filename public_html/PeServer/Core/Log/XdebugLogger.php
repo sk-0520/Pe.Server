@@ -19,7 +19,7 @@ final class XdebugLogger extends LoggerBase
 
 	#region LoggerBase
 
-	protected final function logImpl(int $level, int $traceIndex, $message, ...$parameters): void
+	final protected function logImpl(int $level, int $traceIndex, $message, ...$parameters): void
 	{
 		if (!\xdebug_is_debugger_active()) {
 			return;

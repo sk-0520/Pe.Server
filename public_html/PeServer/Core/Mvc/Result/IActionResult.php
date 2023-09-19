@@ -19,5 +19,4 @@ interface IActionResult
 	public function createResponse(): HttpResponse;
 
 	#endregion
-
 }

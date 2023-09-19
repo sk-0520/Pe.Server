@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Collections;
 
-use \TypeError;
+use TypeError;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\IndexOutOfRangeException;
@@ -115,7 +115,7 @@ class Vector extends TypeArrayBase
 	{
 		if ($useValues) {
 			$items = Arr::getValues($items);
-		} else if (!Arr::isList($items)) {
+		} elseif (!Arr::isList($items)) {
 			throw new ArgumentException('$items');
 		}
 

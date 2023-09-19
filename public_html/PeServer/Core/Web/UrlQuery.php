@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Web;
 
-use \Stringable;
+use Stringable;
 use PeServer\Core\Binary;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Collections\Collection;
@@ -47,7 +47,7 @@ readonly class UrlQuery implements Stringable
 	{
 		if ($query === null) {
 			$this->items = null;
-		} else if (is_array($query)) {
+		} elseif (is_array($query)) {
 			foreach ($query as $key => $value) {
 				if (!is_array($value)) { //@phpstan-ignore-line [PUBLIC]
 					throw new ArgumentException("\$query: [$key] value not array");
@@ -114,13 +114,13 @@ readonly class UrlQuery implements Stringable
 			if ($value !== null) {
 				if (is_string($value)) {
 					$workValues = [$value];
-				} else if (is_int($value)) {
+				} elseif (is_int($value)) {
 					$workValues = [(string)$value];
-				} else if (is_array($value)) { //@phpstan-ignore-line [PUBLIC]
+				} elseif (is_array($value)) { //@phpstan-ignore-line [PUBLIC]
 					foreach ($value as $i => $v) {
 						if ($v === null || is_string($v)) {
 							$workValues[] = $v;
-						} else if (is_int($v)) { //@phpstan-ignore-line [PUBLIC]
+						} elseif (is_int($v)) { //@phpstan-ignore-line [PUBLIC]
 							$workValues[] = (string)$v;
 						} else {
 							$s = TypeUtility::getType($v);
@@ -185,7 +185,6 @@ readonly class UrlQuery implements Stringable
 
 		$kvItems = [];
 		foreach ($this->items as $key => $values) {
-
 			$encKey = $urlEncoding->encode($key);
 			foreach ($values as $value) {
 				if ($value === null) {

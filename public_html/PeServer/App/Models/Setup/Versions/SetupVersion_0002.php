@@ -11,7 +11,7 @@ use PeServer\App\Models\Setup\IOSetupArgument;
  * @SuppressWarnings(PHPMD.CamelCaseClassName)
  */
 #[Version(2)]
-class SetupVersion_0002 extends SetupVersionBase
+class SetupVersion_0002 extends SetupVersionBase //phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 {
 	#region SetupVersionBase
 

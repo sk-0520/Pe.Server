@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Http\Client;
 
-use \CurlHandle;
+use CurlHandle;
 use PeServer\Core\Binary;
 use PeServer\Core\DisposerBase;
 use PeServer\Core\Http\Client\HttpClientOptions;

@@ -18,7 +18,7 @@ interface ILogicFactory
 	 * @param array<int|string,mixed> $arguments
 	 * @return LogicBase
 	 */
-	function createLogic(string $logicClassName, array $arguments = []): LogicBase;
+	public function createLogic(string $logicClassName, array $arguments = []): LogicBase;
 
 	#endregion
 }

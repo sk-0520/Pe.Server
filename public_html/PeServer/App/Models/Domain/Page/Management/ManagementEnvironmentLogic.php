@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domain\Page\Management;
 
-use \DOMXPath;
-use \DOMElement;
-use \DOMDocument;
+use DOMXPath;
+use DOMElement;
+use DOMDocument;
 use PeServer\Core\Regex;
 use PeServer\Core\OutputBuffer;
 use PeServer\Core\Html\HtmlElement;

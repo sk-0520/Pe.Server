@@ -16,7 +16,6 @@ use PeServer\Core\Mvc\Middleware\IMiddleware;
 use PeServer\Core\Mvc\Middleware\MiddlewareArgument;
 use PeServer\Core\Mvc\Middleware\MiddlewareResult;
 
-
 final class SignupStep2FilterMiddleware implements IMiddleware
 {
 	public function __construct(

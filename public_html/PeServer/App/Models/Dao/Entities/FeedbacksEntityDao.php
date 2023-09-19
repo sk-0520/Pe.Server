@@ -112,20 +112,16 @@ class FeedbacksEntityDao extends DaoBase
 
 	public function insertFeedbacks(
 		string $ipAddress,
-
 		string $version,
 		string $revision,
 		string $build,
 		string $userId,
-
 		string $firstExecuteTimestamp,
 		string $firstExecuteVersion,
-
 		string $process,
 		string $platform,
 		string $os,
 		string $clr,
-
 		string $kind,
 		string $subject,
 		string $content

@@ -37,16 +37,16 @@ abstract class AccountFilterMiddlewareBase implements IMiddleware
 		return MiddlewareResult::error(HttpStatus::Forbidden);
 	}
 
-	protected abstract function filter(MiddlewareArgument $argument): MiddlewareResult;
+	abstract protected function filter(MiddlewareArgument $argument): MiddlewareResult;
 
 	//[IMiddleware]
 
-	public final function handleBefore(MiddlewareArgument $argument): MiddlewareResult
+	final public function handleBefore(MiddlewareArgument $argument): MiddlewareResult
 	{
 		return $this->filter($argument);
 	}
 
-	public final function handleAfter(MiddlewareArgument $argument, HttpResponse $response): MiddlewareResult
+	final public function handleAfter(MiddlewareArgument $argument, HttpResponse $response): MiddlewareResult
 	{
 		return MiddlewareResult::none();
 	}

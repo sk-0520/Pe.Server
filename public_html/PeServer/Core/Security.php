@@ -7,7 +7,6 @@ namespace PeServer\Core;
 use PeServer\Core\MiddlewareArgument;
 use PeServer\Core\Throws\SessionException;
 
-
 abstract class Security
 {
 	#region define

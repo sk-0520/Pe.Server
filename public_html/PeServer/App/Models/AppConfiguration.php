@@ -17,7 +17,6 @@ use PeServer\Core\Store\SpecialStore;
 use PeServer\Core\Store\Stores;
 use PeServer\Core\Web\IUrlHelper;
 
-
 /**
  * アプリ設定。
  */

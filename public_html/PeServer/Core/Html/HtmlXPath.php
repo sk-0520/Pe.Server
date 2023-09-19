@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Html;
 
-use \DOMComment;
-use \DOMDocument;
-use \DOMElement;
-use \DOMNode;
-use \DOMNodeList;
-use \DOMText;
-use \DOMXPath;
+use DOMComment;
+use DOMDocument;
+use DOMElement;
+use DOMNode;
+use DOMNodeList;
+use DOMText;
+use DOMXPath;
 use PeServer\Core\Html\HtmlComment;
 use PeServer\Core\Html\HtmlDocument;
 use PeServer\Core\Html\HtmlElement;
@@ -54,17 +54,17 @@ class HtmlXPath
 	}
 
 	//@phpstan-ignore-next-line
-	private function toArray(DOMNodeList  $nodeList): array
+	private function toArray(DOMNodeList $nodeList): array
 	{
 		$result = [];
 		foreach ($nodeList as $node) {
 			if ($node instanceof DOMElement) {
 				$result[] = new HtmlElement($this->document, $node);
-			} else if ($node instanceof DOMText) {
+			} elseif ($node instanceof DOMText) {
 				$result[] = new HtmlText($this->document, $node);
-			} else if ($node instanceof DOMComment) {
+			} elseif ($node instanceof DOMComment) {
 				$result[] = new HtmlComment($this->document, $node);
-			} else if ($node instanceof DOMDocument) {
+			} elseif ($node instanceof DOMDocument) {
 				$result[] = new HtmlDocument();
 			} else {
 				throw new HtmlXPathException(Text::dump($node));

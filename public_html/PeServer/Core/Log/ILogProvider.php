@@ -16,9 +16,9 @@ interface ILogProvider
 	 * @param string $name
 	 * @return bool
 	 */
-	function clear(string $name): bool;
+	public function clear(string $name): bool;
 
-	function clearAll(): void;
+	public function clearAll(): void;
 
 	/**
 	 * 追加。
@@ -32,7 +32,7 @@ interface ILogProvider
 	 * @phpstan-param literal-string $format
 	 * @param array<string,mixed> $configuration
 	 */
-	function add(string $name, string $logger, int $level, string $format, array $configuration): void;
+	public function add(string $name, string $logger, int $level, string $format, array $configuration): void;
 
 	/**
 	 * ロガーの生成。
@@ -43,7 +43,7 @@ interface ILogProvider
 	 * @phpstan-param UnsignedIntegerAlias $baseTraceIndex
 	 * @return ILogger[]
 	 */
-	function create(string $header, int $baseTraceIndex): array;
+	public function create(string $header, int $baseTraceIndex): array;
 
 	#endregion
 }

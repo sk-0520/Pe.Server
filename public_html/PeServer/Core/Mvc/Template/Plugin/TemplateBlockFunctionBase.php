@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Template\Plugin;
 
-use \Smarty_Internal_Template;
+use Smarty_Internal_Template;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\TypeException;
 use PeServer\Core\Throws\NotSupportedException;
@@ -20,7 +20,7 @@ abstract class TemplateBlockFunctionBase extends TemplateFunctionBase implements
 
 	#region function
 
-	protected abstract function functionBlockBodyImpl(string $content): string;
+	abstract protected function functionBlockBodyImpl(string $content): string;
 
 	#endregion
 
@@ -46,12 +46,12 @@ abstract class TemplateBlockFunctionBase extends TemplateFunctionBase implements
 
 	#region TemplateFunctionBase
 
-	protected final function functionBodyImpl(): string
+	final protected function functionBodyImpl(): string
 	{
 		throw new NotSupportedException();
 	}
 
-	public final function functionBody(array $params, Smarty_Internal_Template $smarty): string
+	final public function functionBody(array $params, Smarty_Internal_Template $smarty): string
 	{
 		throw new NotSupportedException();
 	}

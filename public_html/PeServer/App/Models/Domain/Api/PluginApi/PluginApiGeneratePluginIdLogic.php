@@ -44,7 +44,7 @@ class PluginApiGeneratePluginIdLogic extends ApiLogicBase
 				$this->logger->info('重複プラグインID -> {0}', $pluginId);
 				$pluginId = Uuid::generateGuid();
 			}
-		}while($existsPluginId);
+		} while ($existsPluginId);
 
 		$this->setResponseJson(ResponseJson::success([
 			'plugin_id' => $pluginId,

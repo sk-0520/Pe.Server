@@ -14,9 +14,9 @@ abstract class HttpClientContentBase
 {
 	#region function
 
-	public abstract function toHeader(): HttpHeader;
+	abstract public function toHeader(): HttpHeader;
 
-	public abstract function toBody(): Binary;
+	abstract public function toBody(): Binary;
 
 	protected function createContentTypeHeader(string $mime, ?Encoding $encoding = null): HttpHeader
 	{

@@ -36,9 +36,9 @@ class PluginApiInformationLogic extends ApiLogicBase
 		$plugins = $this->dbCache->readPluginInformation();
 		/** @var array<string,array<mixed>> */
 		$items = [];
-		foreach($pluginIds as $pluginId) {
-			foreach($plugins->items as $plugin) {
-				if(Uuid::isEqualGuid($plugin->pluginId, $pluginId)) {
+		foreach ($pluginIds as $pluginId) {
+			foreach ($plugins->items as $plugin) {
+				if (Uuid::isEqualGuid($plugin->pluginId, $pluginId)) {
 					$items[$plugin->pluginId] = [
 						'user_id' => $plugin->userId,
 						'plugin_name' => $plugin->pluginName,

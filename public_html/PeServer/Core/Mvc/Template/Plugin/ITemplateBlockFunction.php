@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Template\Plugin;
 
-use \Smarty_Internal_Template;
+use Smarty_Internal_Template;
 use PeServer\Core\Mvc\Template\Plugin\ITemplateFunction;
 
 /**

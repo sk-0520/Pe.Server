@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace PeServer\Core\DI;
 
-use \ReflectionClass;
-use \ReflectionFunction;
-use \ReflectionFunctionAbstract;
-use \ReflectionMethod;
-use \ReflectionNamedType;
-use \ReflectionParameter;
-use \ReflectionProperty;
-use \ReflectionType;
-use \ReflectionUnionType;
-use \TypeError;
+use ReflectionClass;
+use ReflectionFunction;
+use ReflectionFunctionAbstract;
+use ReflectionMethod;
+use ReflectionNamedType;
+use ReflectionParameter;
+use ReflectionProperty;
+use ReflectionType;
+use ReflectionUnionType;
+use TypeError;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\DI\DiItem;
 use PeServer\Core\DI\Inject;
@@ -420,13 +420,13 @@ class DiContainer extends DisposerBase implements IDiContainer
 				$reflectionClass = new ReflectionClass($methodArray[0]); //@phpstan-ignore-line クラスと信じるしかないやん
 				$reflectionFunc = $reflectionClass->getMethod($methodArray[1]);
 			}
-		} else if (is_array($callback)) {
+		} elseif (is_array($callback)) {
 			if (Arr::getCount($callback) !== 2) {
 				throw new TypeError('$callback: ' . Text::dump($callback));
 			}
 			$reflectionClass = new ReflectionClass($callback[0]);
 			$reflectionFunc = $reflectionClass->getMethod($callback[1]);
-		} else if (is_callable($callback)) { //@phpstan-ignore-line
+		} elseif (is_callable($callback)) {
 			$reflectionFunc = new ReflectionFunction($callback); //@phpstan-ignore-line
 		}
 

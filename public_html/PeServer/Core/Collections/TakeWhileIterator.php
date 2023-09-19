@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Collections;
 
-use \Iterator;
+use Iterator;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\CallbackTypeError;
 
@@ -65,7 +65,7 @@ class TakeWhileIterator implements Iterator
 
 	public function valid(): bool
 	{
-		if(!$this->iterator->valid()) {
+		if (!$this->iterator->valid()) {
 			return false;
 		}
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Template\Plugin;
 
-use \DOMElement;
+use DOMElement;
 use PeServer\Core\Environment;
 use PeServer\Core\IO\IOUtility;
 use PeServer\Core\IO\Path;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Store;
 
-use \DateInterval;
+use DateInterval;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Cryptography;
 use PeServer\Core\IO\Directory;

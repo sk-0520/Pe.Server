@@ -1,46 +1,49 @@
 #!/bin/bash -ue
 
-cd $(cd $(dirname $0); pwd)
+cd "$(cd "$(dirname "${0}")"; pwd)"
 
+#shellcheck disable=SC1091
+source common.sh
+#shellcheck disable=SC2048,SC2086
+common::parse_options "ignore-pplint! ignore-phpstan! ignore-phpcs! phpcs-fix! phpcs:report phpcs:ignore-warning!" $*
 
 PPLINT_VERSION=v1.3.2
 PPLINT_URL=https://github.com/php-parallel-lint/PHP-Parallel-Lint/releases/download/${PPLINT_VERSION}/parallel-lint.phar
 PPLINT_NAME=parallel-lint.phar
 PPLINT_FILE=${PPLINT_NAME}.${PPLINT_VERSION}
 
-# PHPCSFIXER_VERSION=v3.10.0
-# PHPCSFIXER_URL=https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/${PHPCSFIXER_VERSION}/php-cs-fixer.phar
-# PHPCSFIXER_NAME=php-cs-fixer.phar
-# PHPCSFIXER_FILE=${PHPCSFIXER_NAME}.${PHPCSFIXER_VERSION}
-
 PHPSTAN_VERSION=1.10.33
 PHPSTAN_URL=https://github.com/phpstan/phpstan/releases/download/${PHPSTAN_VERSION}/phpstan.phar
 PHPSTAN_NAME=phpstan.phar
 PHPSTAN_FILE=${PHPSTAN_NAME}.${PHPSTAN_VERSION}
-PHPSTAN_BLEEDING_EDGE=bleedingEdge.neon
+PHPSTAN_BLEEDING_EDGE_NAME=bleedingEdge.neon
+PHPSTAN_BLEEDING_EDGE_URL=https://raw.githubusercontent.com/phpstan/phpstan-src/${PHPSTAN_VERSION}/conf/bleedingEdge.neon
 
-#[PHPMD] PHPMD_VERSION=2.13.0
-#[PHPMD] PHPMD_URL=https://github.com/phpmd/phpmd/releases/download/${PHPMD_VERSION}/phpmd.phar
-#[PHPMD] PHPMD_NAME=phpmd.phar
-#[PHPMD] PHPMD_FILE=${PHPMD_NAME}.${PHPMD_VERSION}
+PHPCODESNIFFER_VERSION=3.7.2
+PHPCODESNIFFER_S_URL=https://github.com/squizlabs/PHP_CodeSniffer/releases/download/${PHPCODESNIFFER_VERSION}/phpcs.phar
+PHPCODESNIFFER_BF_URL=https://github.com/squizlabs/PHP_CodeSniffer/releases/download/${PHPCODESNIFFER_VERSION}/phpcbf.phar
+PHPCODESNIFFER_S_NAME=phpcs.phar
+PHPCODESNIFFER_BF_NAME=phpcbf.phar
+PHPCODESNIFFER_S_FILE=${PHPCODESNIFFER_S_NAME}.${PHPCODESNIFFER_VERSION}
+PHPCODESNIFFER_BF_FILE=${PHPCODESNIFFER_BF_NAME}.${PHPCODESNIFFER_VERSION}
 
-if [ ! -f ${PPLINT_FILE} ] ; then
-	rm --force ${PPLINT_NAME}.*
-	curl --output ${PPLINT_FILE} --location ${PPLINT_URL}
+if ! common::exists_option 'ignore-pplint' ; then
+	common::download_phar_if_not_exists "${PPLINT_FILE}" "${PPLINT_NAME}" "${PPLINT_URL}"
 fi
-# if [ ! -f ${PHPCSFIXER_FILE} ] ; then
-# 	rm --force ${PHPCSFIXER_NAME}.*
-# 	curl --output ${PHPCSFIXER_FILE} --location ${PHPCSFIXER_URL}
-# fi
-if [ ! -f ${PHPSTAN_FILE} ] ; then
-	rm --force ${PHPSTAN_NAME}.*
-	curl --output ${PHPSTAN_FILE} --location ${PHPSTAN_URL}
-	curl --output ${PHPSTAN_BLEEDING_EDGE} --location https://raw.githubusercontent.com/phpstan/phpstan-src/${PHPSTAN_VERSION}/conf/bleedingEdge.neon
+
+if ! common::exists_option 'ignore-phpstan' ; then
+	common::download_phar_if_not_exists "${PHPSTAN_FILE}" "${PHPSTAN_NAME}" "${PHPSTAN_URL}"
+	if [ "${DOWNLOAD_PHAR_RESULT}" = "DOWNLOAD" ] ; then
+		curl --output "${PHPSTAN_BLEEDING_EDGE_NAME}" --location "${PHPSTAN_BLEEDING_EDGE_URL}"
+	fi
 fi
-#[PHPMD] if [ ! -f ${PHPMD_FILE} ] ; then
-#[PHPMD] 	rm --force ${PHPMD_NAME}.*
-#[PHPMD] 	curl --output ${PHPMD_FILE} --location ${PHPMD_URL}
-#[PHPMD] fi
+
+if ! common::exists_option 'ignore-phpcs' ; then
+	common::download_phar_if_not_exists "${PHPCODESNIFFER_S_FILE}" "${PHPCODESNIFFER_S_NAME}" "${PHPCODESNIFFER_S_URL}"
+	if [ "${DOWNLOAD_PHAR_RESULT}" = "DOWNLOAD" ] ; then
+		common::download_phar_if_not_exists "${PHPCODESNIFFER_BF_FILE}" "${PHPCODESNIFFER_BF_NAME}" "${PHPCODESNIFFER_BF_URL}"
+	fi
+fi
 
 # if [ ! -v IGNORE_SYNTAX_CHECK ] ; then
 # 	pushd ../public_html
@@ -48,11 +51,40 @@ fi
 # 	popd
 # 	echo 'ignore -> IGNORE_SYNTAX_CHECK'
 # fi
-php "${PPLINT_FILE}" ../public_html/PeServer --colors --show-deprecated --exclude ../public_html/PeServer/Core/Libs  --exclude ../public_html/PeServer/data "$@"
+if ! common::exists_option 'ignore-pplint' ; then
+	php "${PPLINT_FILE}" ../public_html/PeServer --colors --show-deprecated --exclude ../public_html/PeServer/Core/Libs  --exclude ../public_html/PeServer/data
+fi
 
 #php "${PHPCSFIXER_FILE}" fix --dry-run --diff ../public_html/PeServer  "$@"
 
-php "${PHPSTAN_FILE}" analyze --configuration phpstan.neon "$@"
+if ! common::exists_option 'ignore-phpstan' ; then
+	php "${PHPSTAN_FILE}" analyze --configuration phpstan.neon
+fi
+
+if ! common::exists_option 'ignore-phpcs' ; then
+	PHPCS_OPTION_REPORT="--report=full"
+	if common::exists_option 'phpcs:report' ; then
+		PHPCS_OPTION_REPORT="--report=${COMMON_OPTIONS[phpcs:report]}"
+	fi
+
+	PHPCS_OPTIONS_WARNIG=
+	if common::exists_option 'phpcs:ignore-warning' ; then
+		PHPCS_OPTIONS_WARNIG="--warning-severity=0"
+	fi
+
+	PHPCS_OPTIONS_DEFAULT="../public_html/PeServer --standard=phpcs_ruleset.xml --colors --ignore=../public_html/PeServer/Core/Libs --ignore=../public_html/PeServer/data"
+
+	if common::exists_option 'phpcs-fix' ; then
+		echo "!!修正処理実施!!"
+
+		#shellcheck disable=SC2086
+		php "${PHPCODESNIFFER_BF_FILE}" ${PHPCS_OPTIONS_DEFAULT}
+	fi
+
+	#shellcheck disable=SC2086
+	php "${PHPCODESNIFFER_S_FILE}" ${PHPCS_OPTIONS_DEFAULT} ${PHPCS_OPTION_REPORT} ${PHPCS_OPTIONS_WARNIG}
+fi
+
 #set +e
 #php "${PHPMD_FILE}" ../public_html/PeServer text phpmd.xml "$@"
 #[PHPMD] php "${PHPMD_FILE}" ../public_html/PeServer ansi phpmd.xml "$@"

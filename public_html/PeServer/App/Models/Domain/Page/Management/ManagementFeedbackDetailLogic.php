@@ -30,13 +30,13 @@ class ManagementFeedbackDetailLogic extends PageLogicBase
 		$this->validation('sequence', function ($key, $value) {
 			$hasSequence = $this->validator->isNotEmpty($key, $value);
 
-			if($hasSequence) {
+			if ($hasSequence) {
 				$database = $this->openDatabase();
 				$feedbacksEntityDao = new FeedbacksEntityDao($database);
 
 				$seq = (int)$value;
 				$exists = $feedbacksEntityDao->selectExistsFeedbacksBySequence($seq);
-				if(!$exists) {
+				if (!$exists) {
 					//TODO: HttpStatusException
 					throw new Exception('404');
 				}

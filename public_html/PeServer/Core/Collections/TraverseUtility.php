@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Collections;
 
-use \ArrayIterator;
-use \Iterator;
-use \IteratorAggregate;
-use \IteratorIterator;
-use \Traversable;
+use ArrayIterator;
+use Iterator;
+use IteratorAggregate;
+use IteratorIterator;
+use Traversable;
 
 /**
  * `Traversable` に対する共通処理。

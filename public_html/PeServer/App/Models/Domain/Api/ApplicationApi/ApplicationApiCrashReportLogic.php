@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domain\Api\ApplicationApi;
 
-use \Exception;
+use Exception;
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\AppCryptography;
 use PeServer\App\Models\AppMailer;

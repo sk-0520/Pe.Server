@@ -6,7 +6,6 @@ namespace PeServer\App\Models\Configuration;
 
 use PeServer\Core\Serialization\Mapping;
 
-
 /**
  * SMTP設定。
  *

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\DI;
 
-use \TypeError;
+use TypeError;
 use PeServer\Core\DisposerBase;
 use PeServer\Core\IDisposable;
 use PeServer\Core\Text;

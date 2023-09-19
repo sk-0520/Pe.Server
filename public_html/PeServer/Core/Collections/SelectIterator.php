@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Collections;
 
-use \Iterator;
-use \IteratorIterator;
+use Iterator;
+use IteratorIterator;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\CallbackTypeError;
 

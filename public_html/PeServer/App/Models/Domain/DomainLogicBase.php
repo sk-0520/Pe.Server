@@ -22,7 +22,6 @@ use PeServer\Core\Serialization\JsonSerializer;
 use PeServer\Core\Serialization\SerializerBase;
 use PeServer\Core\Text;
 
-
 abstract class DomainLogicBase extends LogicBase
 {
 	#[Inject] //@phpstan-ignore-next-line
@@ -63,7 +62,7 @@ abstract class DomainLogicBase extends LogicBase
 	 *
 	 * @return IAuditUserInfo|null
 	 */
-	protected abstract function getAuditUserInfo(): ?IAuditUserInfo;
+	abstract protected function getAuditUserInfo(): ?IAuditUserInfo;
 
 	/**
 	 * 監査ログ出力内部処理。

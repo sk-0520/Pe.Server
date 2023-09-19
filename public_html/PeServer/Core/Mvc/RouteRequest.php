@@ -11,7 +11,6 @@ use PeServer\Core\Mvc\ControllerBase;
 use PeServer\Core\Mvc\Middleware\IMiddleware;
 use PeServer\Core\Mvc\Middleware\IShutdownMiddleware;
 
-
 /**
  * @immutable
  */

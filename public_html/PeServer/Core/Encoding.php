@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
-use \ValueError;
+use ValueError;
 use PeServer\Core\Binary;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Throws\ArgumentException;

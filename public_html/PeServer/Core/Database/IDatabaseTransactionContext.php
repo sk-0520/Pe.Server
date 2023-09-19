@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Database;
 
-use \PDOException;
+use PDOException;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\IDisposable;
 use PeServer\Core\Throws\DatabaseException;

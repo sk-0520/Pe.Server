@@ -11,7 +11,8 @@ use PeServer\Core\Mvc\Middleware\MiddlewareResult;
 
 class ApiAcaoMiddleware implements IMiddleware
 {
-	public function __construct() {
+	public function __construct()
+    {
 	}
 
 	#region IMiddleware
@@ -21,7 +22,7 @@ class ApiAcaoMiddleware implements IMiddleware
 		return MiddlewareResult::none();
 	}
 
-	public final function handleAfter(MiddlewareArgument $argument, HttpResponse $response): MiddlewareResult
+	final public function handleAfter(MiddlewareArgument $argument, HttpResponse $response): MiddlewareResult
 	{
 		$response->header->addValue('Access-Control-Allow-Origin', '*');
 		return MiddlewareResult::none();

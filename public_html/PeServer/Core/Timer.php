@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
-use \Stringable;
+use Stringable;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Throws\NotSupportedException;
 use PeServer\Core\Throws\TimerException;

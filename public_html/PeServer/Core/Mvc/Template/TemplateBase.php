@@ -27,7 +27,7 @@ abstract class TemplateBase
 	 * @param TemplateParameter $parameter パラメータ。
 	 * @return string
 	 */
-	public abstract function build(string $templateName, TemplateParameter $parameter): string;
+	abstract public function build(string $templateName, TemplateParameter $parameter): string;
 
 	#endregion
 }

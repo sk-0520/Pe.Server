@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Version;
 
-use \Exception;
-use \Stringable;
+use Exception;
+use Stringable;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Regex;
 use PeServer\Core\Text;
@@ -15,6 +15,7 @@ use PeServer\Core\TypeUtility;
 /**
  * .NET のバージョンクラスと同じ扱い。
  */
+
 readonly class CliVersion implements Stringable
 {
 	#region define
@@ -131,7 +132,8 @@ readonly class CliVersion implements Stringable
 		throw new ParseException();
 	}
 
-	public static function compare(CliVersion $a, CliVersion $b): int {
+	public static function compare(CliVersion $a, CliVersion $b): int
+    {
 		if ($a->major != $b->major) {
 			if ($a->major > $b->major) {
 				return 1;

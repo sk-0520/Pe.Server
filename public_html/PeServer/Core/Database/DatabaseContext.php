@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Database;
 
-use \Exception;
-use \PDO;
-use \PDOException;
-use \PDOStatement;
-use \Throwable;
+use Exception;
+use PDO;
+use PDOException;
+use PDOStatement;
+use Throwable;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Database\ConnectionSetting;
 use PeServer\Core\Database\DatabaseColumn;

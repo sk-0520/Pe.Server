@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Image;
 
-use \GdImage;
+use GdImage;
 use PeServer\Core\Binary;
 use PeServer\Core\DisposerBase;
 use PeServer\Core\ErrorHandler;
@@ -30,6 +30,7 @@ use PeServer\Core\Throws\NotImplementedException;
 use PeServer\Core\TypeUtility;
 use PeServer\Core\Image\HorizontalAlignment;
 use PeServer\Core\Image\VerticalAlignment;
+
 /**
  * GD関数ラッパー。
  *
@@ -315,7 +316,7 @@ class Graphics extends DisposerBase
 		$restoreThickness = $this->thickness;
 		$this->setThickness($thickness);
 
-		return new class($this, $restoreThickness) extends DisposerBase
+		return new class ($this, $restoreThickness) extends DisposerBase
 		{
 			/**
 			 * 生成。

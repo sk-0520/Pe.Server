@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<ruleset name="KIBUN">
+	<rule ref="PSR12">
+		<!-- まぁいらんわ -->
+		<exclude name="PSR12.Files.FileHeader" />
+		<!-- タブが好きなんや -->
+		<exclude name="Generic.WhiteSpace.DisallowTabIndent"/>
+		<arg name="tab-width" value="4"/>
+		<rule ref="Generic.WhiteSpace.ScopeIndent">
+			<properties>
+				<property name="indent" value="4"/>
+				<property name="tabIndent" value="true"/>
+			</properties>
+		</rule>
+
+		<!-- コントローラのメソッドよ -->
+		<!-- <rule name="PSR1.Methods.CamelCapsMethodName.NotCamelCaps">
+			<exclude name="Controller" />
+		</rule> -->
+		<exclude name="PSR1.Methods.CamelCapsMethodName.NotCamelCaps" />
+	</rule>
+</ruleset>

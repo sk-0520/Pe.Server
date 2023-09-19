@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domain\Page\Management;
 
-use \Throwable;
+use Throwable;
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\AppDatabaseConnection;
 use PeServer\App\Models\AuditLog;

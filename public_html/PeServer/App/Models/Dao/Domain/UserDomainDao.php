@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Dao\Domain;
 
-use \DateTime;
+use DateTime;
 use PeServer\App\Models\Cache\UserCache;
 use PeServer\App\Models\Cache\UserCacheItem;
 use PeServer\App\Models\Data\Dto\UserListItemDto;

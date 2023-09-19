@@ -15,7 +15,7 @@ interface IValidationReceiver
 	 * @param string $message
 	 * @return void
 	 */
-	function receiveErrorMessage(string $key, string $message): void;
+	public function receiveErrorMessage(string $key, string $message): void;
 
 	/**
 	 * 検証結果の失敗受領。
@@ -25,7 +25,7 @@ interface IValidationReceiver
 	 * @param array<int|string,int|string> $parameters
 	 * @return void
 	 */
-	function receiveErrorKind(string $key, int $kind, array $parameters): void;
+	public function receiveErrorKind(string $key, int $kind, array $parameters): void;
 
 	#endregion
 }

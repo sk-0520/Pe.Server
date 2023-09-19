@@ -16,7 +16,6 @@ use PeServer\Core\Mvc\IValidationReceiver;
 use PeServer\App\Models\Domain\ValidatorBase;
 use PeServer\App\Models\Dao\Entities\PluginsEntityDao;
 
-
 class PluginValidator extends ValidatorBase
 {
 	public const PLUGIN_NAME_RANGE_MIN = 4;

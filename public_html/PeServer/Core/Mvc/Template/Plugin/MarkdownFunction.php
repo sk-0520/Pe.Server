@@ -31,7 +31,7 @@ class MarkdownFunction extends TemplateBlockFunctionBase
 		$className = Arr::getOr($this->params, 'class', Text::EMPTY);
 		if (Text::isNullOrWhiteSpace($className)) {
 			$className = 'markdown';
-		} else if (!Text::contains($className, 'markdown', false)) {
+		} elseif (!Text::contains($className, 'markdown', false)) {
 			$className = 'markdown ' . $className;
 		}
 

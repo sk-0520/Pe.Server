@@ -1,6 +1,9 @@
-name: Build Works
+name: "Cron Daily Management"
 
-on: push
+on:
+  schedule:
+    - cron: "30 16 * * *"
+  workflow_dispatch:
 
 jobs:
   build:
@@ -15,7 +18,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version-file: ./.node-version
-          cache: npm
 
       - name: <Setup> PHP
         uses: shivammathur/setup-php@v2
@@ -26,15 +28,6 @@ jobs:
 
       - name: <Install> NPM
         run: npm ci
-
-      - name: <Cache> Phar
-        uses: actions/cache@v3
-        with:
-          path: |
-            dev/*.phar.*
-            dev/bleedingEdge.neon
-            test/*.phar.*
-          key: phar-cache-${{ hashFiles('dev/*.sh') }}
 
       - name: <Build> front-end
         shell: bash
@@ -50,7 +43,7 @@ jobs:
 
       - name: <Test> code
         shell: bash
-        run: ./dev/code.sh --phpcs:ignore-warning
+        run: ./dev/code.sh
 
       - name: <Test> back-end
         shell: bash
@@ -69,33 +62,3 @@ jobs:
         with:
           name: public_html
           path: public_html.tar
-
-  deploy:
-    needs: build
-
-    if: github.ref == 'refs/heads/master'
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: <Checkout> Repository
-        uses: actions/checkout@v3
-
-      - name: <Download> Application
-        uses: actions/download-artifact@v3
-        with:
-          name: public_html
-          path: archive_public_html
-
-      - name: <Expand> Application
-        shell: bash
-        run: |
-          cd archive_public_html
-          tar xvf public_html.tar
-
-      - name: <Deploy> Application
-        shell: bash
-        run: |
-          cd archive_public_html/public_html
-          zip -r public_html.zip .
-          ${{ github.workspace }}/dev/deploy.sh "${{ secrets.PE_SERVER_API_KEY }}" "${{ secrets.PE_SERVER_API_SECRET }}"

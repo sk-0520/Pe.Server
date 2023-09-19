@@ -52,20 +52,18 @@ class InputHelperFunction extends TemplateFunctionBase
 		$type = Arr::getOr($this->params, 'type', Text::EMPTY);
 
 		switch ($type) {
-			case 'textarea': {
-					$element = $dom->addElement('textarea');
-					$element->addText(Text::toString($targetValue));
-					return $element;
-				}
+			case 'textarea':
+				$element = $dom->addElement('textarea');
+				$element->addText(Text::toString($targetValue));
+				return $element;
 
-			default: {
-					$element = $dom->addElement('input');
-					if (!Text::isNullOrWhiteSpace($type)) {
-						$element->setAttribute('type', $type);
-					}
-					$element->setAttribute('value', Text::toString($targetValue));
-					return $element;
+			default:
+				$element = $dom->addElement('input');
+				if (!Text::isNullOrWhiteSpace($type)) {
+					$element->setAttribute('type', $type);
 				}
+				$element->setAttribute('value', Text::toString($targetValue));
+				return $element;
 		}
 	}
 

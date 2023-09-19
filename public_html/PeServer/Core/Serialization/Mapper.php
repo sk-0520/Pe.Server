@@ -109,7 +109,7 @@ class Mapper implements IMapper
 
 						if ($isArrayObject) {
 							$nestDestination = [];
-						} else if (class_exists($nestTypeName)) {
+						} elseif (class_exists($nestTypeName)) {
 							$nestDestination = new $nestTypeName();
 						}
 
@@ -155,6 +155,7 @@ class Mapper implements IMapper
 							$property->setValue($destination, $sourceValue);
 							continue 2; // loop: $properties
 						}
+						break;
 
 					default:
 						break;

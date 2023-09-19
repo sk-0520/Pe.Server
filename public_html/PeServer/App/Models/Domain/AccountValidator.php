@@ -13,7 +13,6 @@ use PeServer\Core\Database\IDatabaseContext;
 use PeServer\App\Models\Domain\ValidatorBase;
 use PeServer\App\Models\Dao\Entities\UsersEntityDao;
 
-
 class AccountValidator extends ValidatorBase
 {
 	public const LOGIN_ID_RANGE_MIN = 6;

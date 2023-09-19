@@ -11,7 +11,6 @@ use PeServer\App\Models\Domain\Api\PluginApi\PluginApiExistsLogic;
 use PeServer\App\Models\Domain\Api\PluginApi\PluginApiInformationLogic;
 use PeServer\App\Models\Domain\Api\PluginApi\PluginApiGeneratePluginIdLogic;
 
-
 class PluginApiController extends ApiControllerBase
 {
 	public function __construct(ControllerArgument $argument)

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
-use \TypeError;
+use TypeError;
 use PeServer\Core\DisposerBase;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\ObjectDisposedException;
@@ -55,7 +55,7 @@ abstract class ResourceBase extends DisposerBase
 	/**
 	 * リソース型を解放する。
 	 */
-	protected abstract function release(): void;
+	abstract protected function release(): void;
 
 	/**
 	 * リソース型は自身の扱えるものか。
@@ -63,7 +63,7 @@ abstract class ResourceBase extends DisposerBase
 	 * @param string $resourceType
 	 * @return bool
 	 */
-	protected abstract function isValidType(string $resourceType): bool;
+	abstract protected function isValidType(string $resourceType): bool;
 
 	#endregion
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Html;
 
-use \DOMNode;
+use DOMNode;
 use PeServer\Core\Html\HtmlDocument;
 
 abstract class HtmlNodeBase

@@ -17,7 +17,6 @@ use PeServer\Core\Mvc\Middleware\MiddlewareArgument;
 use PeServer\Core\Mvc\Middleware\MiddlewareResult;
 use PeServer\Core\Uuid;
 
-
 final class UserPluginEditFilterMiddleware implements IMiddleware
 {
 	public function __construct(
@@ -27,7 +26,7 @@ final class UserPluginEditFilterMiddleware implements IMiddleware
 
 	//[IMiddleware]
 
-	public final function handleBefore(MiddlewareArgument $argument): MiddlewareResult
+	final public function handleBefore(MiddlewareArgument $argument): MiddlewareResult
 	{
 		$pluginIdState = $argument->request->exists('plugin_id');
 		if ($pluginIdState->exists && $pluginIdState->kind === HttpRequestExists::KIND_URL) {

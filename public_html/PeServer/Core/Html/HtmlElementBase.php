@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Html;
 
-use \DOMNode;
+use DOMNode;
 use PeServer\Core\Html\HtmlDocument;
 use PeServer\Core\Html\HtmlNodeBase;
 use PeServer\Core\Throws\HtmlDocumentException;
@@ -75,7 +75,7 @@ abstract class HtmlElementBase extends HtmlNodeBase
 		return new HtmlText($this->document, $node);
 	}
 
-	public abstract function path(): HtmlXPath;
+	abstract public function path(): HtmlXPath;
 
 	#endregion
 }

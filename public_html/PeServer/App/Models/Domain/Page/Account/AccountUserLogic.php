@@ -49,7 +49,7 @@ class AccountUserLogic extends PageLogicBase
 		];
 
 		foreach ($userInfoData->fields as $key => $value) {
-			if(Arr::containsKey($map, $key)) {
+			if (Arr::containsKey($map, $key)) {
 				$this->setValue($map[$key], $value);
 			}
 		}

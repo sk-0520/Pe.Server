@@ -35,7 +35,7 @@ class ManagementClearDeployProgressLogic extends PageLogicBase
 		$progressFilePath = Path::combine($this->appConfig->setting->cache->deploy, AdministratorApiDeployLogic::PROGRESS_FILE_NAME);
 		$this->logger->debug('$progressFilePath: {0}', $progressFilePath);
 		$existsProgressFilePath = File::exists($progressFilePath);
-		if($existsProgressFilePath) {
+		if ($existsProgressFilePath) {
 			File::removeFile($progressFilePath);
 		}
 

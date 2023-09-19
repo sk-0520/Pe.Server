@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domain\Api\AdministratorApi;
 
-use \DateInterval;
-use \DateTime;
-use \Exception;
-use \ZipArchive;
+use DateInterval;
+use DateTime;
+use Exception;
+use ZipArchive;
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\AppDatabaseConnection;
 use PeServer\App\Models\AuditLog;
@@ -313,7 +313,7 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 				default:
 					throw new NotImplementedException();
 			}
-		} else if ($mode !== self::MODE_STARTUP) {
+		} elseif ($mode !== self::MODE_STARTUP) {
 			throw new Exception('$mode: ' . $mode . ', not found progress -> ' . $this->getProgressFilePath());
 		}
 	}
@@ -335,6 +335,7 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 	#endregion
 }
 
+//phpcs:ignore PSR1.Classes.ClassDeclaration.MultipleClasses
 class LocalProgressSetting
 {
 	#region variable

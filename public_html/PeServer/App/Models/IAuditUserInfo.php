@@ -16,7 +16,7 @@ interface IAuditUserInfo
 	 *
 	 * @return string
 	 */
-	function getUserId(): string;
+	public function getUserId(): string;
 
 	#endregion
 }

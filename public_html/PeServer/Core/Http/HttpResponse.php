@@ -9,7 +9,6 @@ use PeServer\Core\Http\HttpHeader;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Http\ICallbackContent;
 
-
 /**
  * HTTP応答データ。
  */

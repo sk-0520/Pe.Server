@@ -81,6 +81,7 @@ abstract class ApiLogicBase extends DomainLogicBase
 					if (is_string($json[$key])) {
 						return Utc::tryParse($json[$key], $unused);
 					}
+					break;
 
 				default:
 					break;
@@ -116,7 +117,7 @@ abstract class ApiLogicBase extends DomainLogicBase
 						$userId = $userDomainDao->selectUserIdFromApiKey($apiKey, $secret);
 
 						if ($userId !== null) {
-							$this->auditUserInfo = new class($userId) implements IAuditUserInfo
+							$this->auditUserInfo = new class ($userId) implements IAuditUserInfo
 							{
 								public function __construct(private string $userId)
 								{

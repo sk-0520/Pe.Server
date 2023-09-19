@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
-use \Throwable;
+use Throwable;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\DI\Inject;
 use PeServer\Core\Http\HttpStatus;
@@ -66,7 +66,7 @@ class ErrorHandler
 	 *
 	 * @return void
 	 */
-	public final function register(): void
+	final public function register(): void
 	{
 		if ($this->isRegistered) {
 			throw new InvalidOperationException();
@@ -81,7 +81,7 @@ class ErrorHandler
 	/**
 	 * シャットダウン処理でエラーがあれば処理する。
 	 */
-	public final function receiveShutdown(): void
+	final public function receiveShutdown(): void
 	{
 		$lastError = error_get_last();
 		if ($lastError === null) {
@@ -97,7 +97,7 @@ class ErrorHandler
 		/** @var int */
 		$line = Arr::getOr($lastError, 'line', 0);
 
-		$this->_catchError(
+		$this->catchErrorCore(
 			$type,
 			$message,
 			$file,
@@ -112,9 +112,9 @@ class ErrorHandler
 	 * @param Throwable $throwable
 	 * @return no-return
 	 */
-	public final function receiveException(Throwable $throwable)
+	final public function receiveException(Throwable $throwable)
 	{
-		$this->_catchError(
+		$this->catchErrorCore(
 			Throws::getErrorCode($throwable),
 			$throwable->getMessage(),
 			$throwable->getFile(),
@@ -132,9 +132,9 @@ class ErrorHandler
 	 * @param int $errorLineNumber
 	 * @return no-return
 	 */
-	public final function receiveError(int $errorNumber, string $errorMessage, string $errorFile, int $errorLineNumber/* , array $_ */)
+	final public function receiveError(int $errorNumber, string $errorMessage, string $errorFile, int $errorLineNumber/* , array $_ */)
 	{
-		$this->_catchError(
+		$this->catchErrorCore(
 			$errorNumber,
 			$errorMessage,
 			$errorFile,
@@ -172,7 +172,7 @@ class ErrorHandler
 	 * @param Throwable|null $throwable
 	 * @return HttpStatus 設定されたHTTPステータスコード。
 	 */
-	protected final function setHttpStatus(?Throwable $throwable): HttpStatus
+	final protected function setHttpStatus(?Throwable $throwable): HttpStatus
 	{
 		$status = $throwable instanceof HttpStatusException
 			? $throwable->status
@@ -196,7 +196,7 @@ class ErrorHandler
 	 * @return no-return
 	 * @SuppressWarnings(PHPMD.ExitExpression)
 	 */
-	private function _catchError(int $errorNumber, string $message, string $file, int $lineNumber, ?Throwable $throwable)
+	private function catchErrorCore(int $errorNumber, string $message, string $file, int $lineNumber, ?Throwable $throwable)
 	{
 		$this->catchError($errorNumber, $message, $file, $lineNumber, $throwable);
 		exit($errorNumber);
@@ -256,7 +256,7 @@ class ErrorHandler
 		foreach ($this->getSuppressionStatusList() as $suppressionStatus) {
 			if ($status === $suppressionStatus) {
 				$isSuppressionStatus = true;
-				$this->logger->info('HTTP: {0}', $suppressionStatus);
+				$this->logger->info('HTTP {0}: {1}', $suppressionStatus->value, $suppressionStatus->name);
 				break;
 			}
 		}
@@ -278,6 +278,7 @@ class ErrorHandler
 	#endregion
 }
 
+//phpcs:ignore PSR1.Classes.ClassDeclaration.MultipleClasses
 final class LocalPhpErrorReceiver extends DisposerBase
 {
 	public bool $isError = false;
@@ -307,7 +308,7 @@ final class LocalPhpErrorReceiver extends DisposerBase
 	 * @param int $errorLineNumber
 	 * @return bool
 	 */
-	public final function receiveError(int $errorNumber, string $errorMessage, string $errorFile, int $errorLineNumber): bool
+	final public function receiveError(int $errorNumber, string $errorMessage, string $errorFile, int $errorLineNumber): bool
 	{
 		$this->isError = true;
 		return $this->isError;

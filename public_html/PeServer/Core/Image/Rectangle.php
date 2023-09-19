@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Image;
 
-use \Stringable;
+use Stringable;
 use PeServer\Core\Code;
 
 /**

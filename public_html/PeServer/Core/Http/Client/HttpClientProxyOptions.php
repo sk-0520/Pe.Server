@@ -9,6 +9,7 @@ use PeServer\Core\Text;
 /**
  * HttpClient プロキシ設定データ。
  */
+
 readonly class HttpClientProxyOptions
 {
 	public function __construct(

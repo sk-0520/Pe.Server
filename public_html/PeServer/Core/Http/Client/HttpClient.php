@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Http\Client;
 
-use \Exception;
+use Exception;
 use PeServer\Core\Binary;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Collections\Collection;
@@ -125,7 +125,7 @@ class HttpClient extends DisposerBase
 			if ($overwriteHeader) {
 				$headers = Arr::replace($headers, $overwriteHeader->getHeaders());
 			}
-		} else if ($overwriteHeader) {
+		} elseif ($overwriteHeader) {
 			// 上で使ってる $request->header は差し替えられたものなので何かしらオブジェクトが入っている
 			// なのでこっちに来ることはないと思うよ
 			$headers = $overwriteHeader->getHeaders();
@@ -215,35 +215,35 @@ class HttpClient extends DisposerBase
 		return $this->sendCore($request);
 	}
 
-	public final function get(Url $url, ?HttpHeader $header = null): HttpClientResponse
+	final public function get(Url $url, ?HttpHeader $header = null): HttpClientResponse
 	{
 		$requestData = new HttpClientRequest($url, HttpMethod::Get, $header, null);
 		$request = $this->createRequest($requestData);
 		return $this->sendCore($request);
 	}
 
-	public final function post(Url $url, ?HttpHeader $header = null, ?HttpClientContentBase $content = null): HttpClientResponse
+	final public function post(Url $url, ?HttpHeader $header = null, ?HttpClientContentBase $content = null): HttpClientResponse
 	{
 		$requestData = new HttpClientRequest($url, HttpMethod::Post, $header, $content);
 		$request = $this->createRequest($requestData);
 		return $this->sendCore($request);
 	}
 
-	public final function put(Url $url, ?HttpHeader $header = null, ?HttpClientContentBase $content = null): HttpClientResponse
+	final public function put(Url $url, ?HttpHeader $header = null, ?HttpClientContentBase $content = null): HttpClientResponse
 	{
 		$requestData = new HttpClientRequest($url, HttpMethod::Put, $header, $content);
 		$request = $this->createRequest($requestData);
 		return $this->sendCore($request);
 	}
 
-	public final function patch(Url $url, ?HttpHeader $header = null, ?HttpClientContentBase $content = null): HttpClientResponse
+	final public function patch(Url $url, ?HttpHeader $header = null, ?HttpClientContentBase $content = null): HttpClientResponse
 	{
 		$requestData = new HttpClientRequest($url, HttpMethod::Patch, $header, $content);
 		$request = $this->createRequest($requestData);
 		return $this->sendCore($request);
 	}
 
-	public final function delete(Url $url, ?HttpHeader $header = null, ?HttpClientContentBase $content = null): HttpClientResponse
+	final public function delete(Url $url, ?HttpHeader $header = null, ?HttpClientContentBase $content = null): HttpClientResponse
 	{
 		$requestData = new HttpClientRequest($url, HttpMethod::Delete, $header, $content);
 		$request = $this->createRequest($requestData);

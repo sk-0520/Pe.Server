@@ -92,6 +92,7 @@ class UploadFile
 	#endregion
 }
 
+//phpcs:ignore PSR1.Classes.ClassDeclaration.MultipleClasses
 class LocalInvalidUploadFile extends UploadFile
 {
 	public function __construct(

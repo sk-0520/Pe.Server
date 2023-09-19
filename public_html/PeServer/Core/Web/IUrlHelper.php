@@ -8,7 +8,7 @@ interface IUrlHelper
 {
 	#region function
 
-	function getBasePath(): string;
+	public function getBasePath(): string;
 
 	#endregion
 }

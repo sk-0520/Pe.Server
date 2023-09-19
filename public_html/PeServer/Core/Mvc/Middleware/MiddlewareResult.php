@@ -108,7 +108,7 @@ abstract class MiddlewareResult
 	 *
 	 * @return bool 真: 処理可能。
 	 */
-	public final function canNext(): bool
+	final public function canNext(): bool
 	{
 		return $this->kind === self::RESULT_KIND_NONE;
 	}
@@ -116,11 +116,12 @@ abstract class MiddlewareResult
 	/**
 	 * ミドルウェア結果適用。
 	 */
-	public abstract function apply(): void;
+	abstract public function apply(): void;
 
 	#endregion
 }
 
+//phpcs:ignore PSR1.Classes.ClassDeclaration.MultipleClasses
 class LocalRedirectMiddlewareResultImpl extends MiddlewareResult
 {
 	private HttpStatus $status;
@@ -140,6 +141,7 @@ class LocalRedirectMiddlewareResultImpl extends MiddlewareResult
 	}
 }
 
+//phpcs:ignore PSR1.Classes.ClassDeclaration.MultipleClasses
 class LocalErrorMiddlewareResultImpl extends MiddlewareResult
 {
 	private HttpStatus $status;

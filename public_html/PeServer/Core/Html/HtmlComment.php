@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Html;
 
-use \DOMComment;
+use DOMComment;
 use PeServer\Core\Html\HtmlDocument;
 use PeServer\Core\Html\HtmlNodeBase;
 

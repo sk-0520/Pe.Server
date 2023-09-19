@@ -74,7 +74,7 @@ class Pagination
 			$this->shortcutTotalItemCount = (int)ceil($this->totalItemCount / $this->itemCountInPage);
 			if ($this->shortcutTotalItemCount <= $this->currentPageNumber) {
 				$this->currentPageNumber = $this->shortcutTotalItemCount; //@phpstan-ignore-line
-			} else if (!$this->currentPageNumber) { //@phpstan-ignore-line
+			} elseif (!$this->currentPageNumber) { //@phpstan-ignore-line
 				$this->currentPageNumber = self::FIRST_PAGE_NUMBER;
 			}
 		}
@@ -106,7 +106,7 @@ class Pagination
 			$endWidth = $this->shortcutMaxCount - $beginWidth;
 			if ($this->currentPageNumber - $beginWidth < 1) {
 				$pageNumbers = Arr::range(1, $this->shortcutMaxCount);
-			} else if ($this->shortcutTotalItemCount - $endWidth < $this->currentPageNumber) {
+			} elseif ($this->shortcutTotalItemCount - $endWidth < $this->currentPageNumber) {
 				$pageNumbers = Arr::range($this->shortcutTotalItemCount - $this->shortcutMaxCount + 1, $this->shortcutMaxCount);
 			} else {
 				$beginPageNumber = $this->currentPageNumber - (int)($this->shortcutMaxCount / 2);

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc;
 
-use \DateInterval;
-use \DateTimeImmutable;
+use DateInterval;
+use DateTimeImmutable;
 use PeServer\Core\Binary;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Http\HttpRequest;
@@ -481,7 +481,7 @@ abstract class LogicBase implements IValidationReceiver
 	 * @param LogicCallMode $callMode 呼び出し。
 	 * @return void
 	 */
-	protected abstract function validateImpl(LogicCallMode $callMode): void;
+	abstract protected function validateImpl(LogicCallMode $callMode): void;
 
 	/**
 	 * 実行ロジック実装。
@@ -489,7 +489,7 @@ abstract class LogicBase implements IValidationReceiver
 	 * @param LogicCallMode $callMode 呼び出し。
 	 * @return void
 	 */
-	protected abstract function executeImpl(LogicCallMode $callMode): void;
+	abstract protected function executeImpl(LogicCallMode $callMode): void;
 
 	protected function startup(LogicCallMode $callMode): void
 	{
@@ -633,7 +633,7 @@ abstract class LogicBase implements IValidationReceiver
 	 * @param Binary $data
 	 * @return void
 	 */
-	protected final function setDownloadContent(string $mime, string $fileName, Binary $data): void
+	final protected function setDownloadContent(string $mime, string $fileName, Binary $data): void
 	{
 		$this->content = new DownloadDataContent($mime, $fileName, $data);
 	}

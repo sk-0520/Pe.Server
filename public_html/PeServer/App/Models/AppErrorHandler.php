@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models;
 
-use \Throwable;
+use Throwable;
 use PeServer\Core\DI\Inject;
 use PeServer\Core\Environment;
 use PeServer\Core\ErrorHandler;
@@ -84,7 +84,7 @@ final class AppErrorHandler extends ErrorHandler
 			foreach ($this->getSuppressionStatusList() as $suppressionStatus) {
 				if ($status === $suppressionStatus) {
 					$isSuppressionStatus = true;
-					$this->logger->info('HTTP: {0}', $suppressionStatus);
+					$this->logger->info('HTTP {0}: {1}', $suppressionStatus->value, $suppressionStatus->name);
 					break;
 				}
 			}

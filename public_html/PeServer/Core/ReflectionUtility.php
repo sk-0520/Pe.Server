@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
-use \ReflectionClass;
-use \ReflectionNamedType;
-use \ReflectionProperty;
-use \ReflectionType;
-use \ReflectionUnionType;
+use ReflectionClass;
+use ReflectionNamedType;
+use ReflectionProperty;
+use ReflectionType;
+use ReflectionUnionType;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\TypeException;
 
