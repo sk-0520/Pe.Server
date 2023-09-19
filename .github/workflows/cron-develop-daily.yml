@@ -1,0 +1,26 @@
+name: "Cron Daily Management"
+
+on:
+  schedule:
+    - cron: "30 16 * * *"
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: <Checkout> Repository
+        uses: actions/checkout@v3
+
+      - name: <Setup> PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: sqlite3, mbstring, zip, xml, gd, xdebug
+          coverage: xdebug
+
+      - name: <Test> code
+        shell: bash
+        run: ./dev/code.sh
