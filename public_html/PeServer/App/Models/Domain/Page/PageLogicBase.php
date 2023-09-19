@@ -33,7 +33,7 @@ abstract class PageLogicBase extends DomainLogicBase
 
 		$account = $this->requireSession(SessionKey::ACCOUNT);
 
-		return new class($account) implements IAuditUserInfo
+		return new class ($account) implements IAuditUserInfo
 		{
 			private string $userId;
 

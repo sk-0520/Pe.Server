@@ -42,7 +42,7 @@ interface ILogger
 	 * @param mixed ...$parameters パラメータ（可変個）。$messageが文字列の場合はプレースホルダー {\d} に対して置き換え処理が行われるがその場合は所謂0始まり・抜けなしの配列を想定している。
 	 * @return void
 	 */
-	function log(int $level, int $traceIndex, $message, ...$parameters): void;
+	public function log(int $level, int $traceIndex, $message, ...$parameters): void;
 	/**
 	 * トレース
 	 *
@@ -51,7 +51,7 @@ interface ILogger
 	 * @param mixed ...$parameters パラメータ（可変個）。$messageが文字列の場合はプレースホルダー {\d} に対して置き換え処理が行われるがその場合は所謂0始まり・抜けなしの配列を想定している。
 	 * @return void
 	 */
-	function trace($message, ...$parameters): void;
+	public function trace($message, ...$parameters): void;
 	/**
 	 * デバッグ
 	 *
@@ -60,7 +60,7 @@ interface ILogger
 	 * @param mixed ...$parameters パラメータ（可変個）。$messageが文字列の場合はプレースホルダー {\d} に対して置き換え処理が行われるがその場合は所謂0始まり・抜けなしの配列を想定している。
 	 * @return void
 	 */
-	function debug($message, ...$parameters): void;
+	public function debug($message, ...$parameters): void;
 	/**
 	 * 情報
 	 *
@@ -69,7 +69,7 @@ interface ILogger
 	 * @param mixed ...$parameters パラメータ（可変個）。$messageが文字列の場合はプレースホルダー {\d} に対して置き換え処理が行われるがその場合は所謂0始まり・抜けなしの配列を想定している。
 	 * @return void
 	 */
-	function info($message, ...$parameters): void;
+	public function info($message, ...$parameters): void;
 	/**
 	 * 警告
 	 *
@@ -78,7 +78,7 @@ interface ILogger
 	 * @param mixed ...$parameters パラメータ（可変個）。$messageが文字列の場合はプレースホルダー {\d} に対して置き換え処理が行われるがその場合は所謂0始まり・抜けなしの配列を想定している。
 	 * @return void
 	 */
-	function warn($message, ...$parameters): void;
+	public function warn($message, ...$parameters): void;
 	/**
 	 * エラー
 	 *
@@ -87,7 +87,7 @@ interface ILogger
 	 * @param mixed ...$parameters パラメータ（可変個）。$messageが文字列の場合はプレースホルダー {\d} に対して置き換え処理が行われるがその場合は所謂0始まり・抜けなしの配列を想定している。
 	 * @return void
 	 */
-	function error($message, ...$parameters): void;
+	public function error($message, ...$parameters): void;
 
 	#endregion
 }

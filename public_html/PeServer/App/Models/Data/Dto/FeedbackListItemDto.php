@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Data\Dto;
 
-use \DateTime;
+use DateTime;
 use PeServer\Core\Database\DtoBase;
 use PeServer\Core\Text;
 

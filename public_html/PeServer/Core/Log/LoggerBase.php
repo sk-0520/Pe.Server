@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Log;
 
-use \DateTimeImmutable;
+use DateTimeImmutable;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\Logging;
 
@@ -55,7 +55,7 @@ abstract class LoggerBase implements ILogger
 	 * @param mixed ...$parameters パラメータ（可変個）。$messageが文字列の場合はプレースホルダー {\d} に対して置き換え処理が行われるがその場合は所謂0始まり・抜けなしの配列を想定している。
 	 * @return void
 	 */
-	protected abstract function logImpl(int $level, int $traceIndex, $message, ...$parameters): void;
+	abstract protected function logImpl(int $level, int $traceIndex, $message, ...$parameters): void;
 
 	#endregion
 
@@ -71,23 +71,23 @@ abstract class LoggerBase implements ILogger
 		$this->logImpl($level, $traceIndex + 1, $message, ...$parameters);
 	}
 
-	public final function trace($message, ...$parameters): void
+	final public function trace($message, ...$parameters): void
 	{
 		$this->log(self::LOG_LEVEL_TRACE, $this->options->baseTraceIndex + 1, $message, ...$parameters);
 	}
-	public final function debug($message, ...$parameters): void
+	final public function debug($message, ...$parameters): void
 	{
 		$this->log(self::LOG_LEVEL_DEBUG, $this->options->baseTraceIndex + 1, $message, ...$parameters);
 	}
-	public final function info($message, ...$parameters): void
+	final public function info($message, ...$parameters): void
 	{
 		$this->log(self::LOG_LEVEL_INFORMATION, $this->options->baseTraceIndex + 1, $message, ...$parameters);
 	}
-	public final function warn($message, ...$parameters): void
+	final public function warn($message, ...$parameters): void
 	{
 		$this->log(self::LOG_LEVEL_WARNING, $this->options->baseTraceIndex + 1, $message, ...$parameters);
 	}
-	public final function error($message, ...$parameters): void
+	final public function error($message, ...$parameters): void
 	{
 		$this->log(self::LOG_LEVEL_ERROR, $this->options->baseTraceIndex + 1, $message, ...$parameters);
 	}

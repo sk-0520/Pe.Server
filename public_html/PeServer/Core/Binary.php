@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
-use \ArrayAccess;
-use \ArrayIterator;
-use \Countable;
-use \Iterator;
-use \IteratorAggregate;
-use \Stringable;
-use \TypeError;
+use ArrayAccess;
+use ArrayIterator;
+use Countable;
+use Iterator;
+use IteratorAggregate;
+use Stringable;
+use TypeError;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\IndexOutOfRangeException;
 use PeServer\Core\Throws\NotSupportedException;
@@ -28,6 +28,7 @@ use PeServer\Core\Throws\SerializeException;
  * @implements IteratorAggregate<UnsignedIntegerAlias,Byte>
  * @immutable
  */
+
 readonly final class Binary implements ArrayAccess, IteratorAggregate, Countable, Stringable
 {
 	#region variable
@@ -280,5 +281,4 @@ readonly final class Binary implements ArrayAccess, IteratorAggregate, Countable
 	}
 
 	#endregion
-
 }

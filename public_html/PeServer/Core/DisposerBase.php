@@ -39,7 +39,7 @@ abstract class DisposerBase implements IDisposable
 	 * @return void
 	 * @throws ObjectDisposedException
 	 */
-	protected final function throwIfDisposed(): void
+	final protected function throwIfDisposed(): void
 	{
 		if ($this->isDisposed()) {
 			throw new ObjectDisposedException();
@@ -67,7 +67,7 @@ abstract class DisposerBase implements IDisposable
 		return $this->isDisposed;
 	}
 
-	public final function dispose(): void
+	final public function dispose(): void
 	{
 		if ($this->isDisposed()) {
 			return;
@@ -81,6 +81,7 @@ abstract class DisposerBase implements IDisposable
 	#endregion
 }
 
+//phpcs:ignore PSR1.Classes.ClassDeclaration.MultipleClasses
 final class LocalEmptyDisposer extends DisposerBase
 {
 	//NOP

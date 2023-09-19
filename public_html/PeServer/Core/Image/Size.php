@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Image;
 
-use \Stringable;
+use Stringable;
 use PeServer\Core\Code;
 use PeServer\Core\Throws\ArgumentException;
 
@@ -27,10 +27,10 @@ class Size implements Stringable
 		public int $width,
 		public int $height
 	) {
-		if($width < 1) { //@phpstan-ignore-line positive-int
+		if ($width < 1) { //@phpstan-ignore-line positive-int
 			throw new ArgumentException('$width');
 		}
-		if($height < 1) { //@phpstan-ignore-line positive-int
+		if ($height < 1) { //@phpstan-ignore-line positive-int
 			throw new ArgumentException('$height');
 		}
 	}

@@ -85,9 +85,9 @@ abstract class SetupVersionBase
 		return $result;
 	}
 
-	protected abstract function migrateIOSystem(IOSetupArgument $argument): void;
+	abstract protected function migrateIOSystem(IOSetupArgument $argument): void;
 
-	protected abstract function migrateDatabase(DatabaseSetupArgument $argument): void;
+	abstract protected function migrateDatabase(DatabaseSetupArgument $argument): void;
 
 	public function migrate(IOSetupArgument $ioSetup, DatabaseSetupArgument $database): void
 	{

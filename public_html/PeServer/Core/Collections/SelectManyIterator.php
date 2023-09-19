@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Collections;
 
-use \EmptyIterator;
-use \Iterator;
+use EmptyIterator;
+use Iterator;
 use PeServer\Core\Collections\TraverseUtility;
 use PeServer\Core\Throws\CallbackTypeError;
 
@@ -53,7 +53,7 @@ class SelectManyIterator implements Iterator
 	public function rewind(): void
 	{
 		$this->outerIterator->rewind();
-		if($this->outerIterator->valid()) {
+		if ($this->outerIterator->valid()) {
 			$this->innerIterator = TraverseUtility::toIterator($this->outerIterator->current());
 		}
 	}
@@ -78,7 +78,7 @@ class SelectManyIterator implements Iterator
 	{
 		if ($this->innerIterator->valid()) {
 			$this->innerIterator->next();
-			if($this->innerIterator->valid()) {
+			if ($this->innerIterator->valid()) {
 				return;
 			}
 		}

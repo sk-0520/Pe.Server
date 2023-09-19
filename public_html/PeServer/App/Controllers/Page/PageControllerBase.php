@@ -9,7 +9,6 @@ use PeServer\Core\Mvc\Result\ViewActionResult;
 use PeServer\App\Controllers\DomainControllerBase;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 
-
 abstract class PageControllerBase extends DomainControllerBase
 {
 	protected function __construct(ControllerArgument $argument)
@@ -22,7 +21,7 @@ abstract class PageControllerBase extends DomainControllerBase
 	 *
 	 * @return boolean ログイン済み。
 	 */
-	protected final function isLoggedIn(): bool
+	final protected function isLoggedIn(): bool
 	{
 		return $this->stores->session->tryGet(SessionKey::ACCOUNT, $unused);
 	}

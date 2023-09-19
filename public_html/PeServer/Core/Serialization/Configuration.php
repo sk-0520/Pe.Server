@@ -108,7 +108,7 @@ class Configuration
 		foreach ($array as $key => $value) {
 			if (is_array($value)) {
 				$array[$key] = $this->replace($value, $map, $head, $tail);
-			} else if (is_string($value)) {
+			} elseif (is_string($value)) {
 				$array[$key] = Text::replaceMap(Code::toLiteralString($value), $map, $head, $tail);
 			}
 		}

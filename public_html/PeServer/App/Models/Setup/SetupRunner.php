@@ -71,7 +71,8 @@ class SetupRunner
 			if (0 < $checkCount) {
 				$row = $context->queryFirstOrNull("select version from database_version");
 				if ($row !== null) {
-					$dbVersion = (int)$row->fields['version'];;
+					$dbVersion = (int)$row->fields['version'];
+                    ;
 				}
 			}
 		}
@@ -82,7 +83,8 @@ class SetupRunner
 		$context = $this->defaultConnection->open();
 		$context->execute('PRAGMA foreign_keys = OFF;');
 
-		$context->transaction(function (IDatabaseContext $context) use ($dbVersion, &$newVersion) { // ええねん、SQLite しか使わん
+		$context->transaction(function (IDatabaseContext $context) use ($dbVersion, &$newVersion) {
+ // ええねん、SQLite しか使わん
 			$ioArg = new IOSetupArgument();
 			$dbArg = new DatabaseSetupArgument($context);
 

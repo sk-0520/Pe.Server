@@ -47,9 +47,9 @@ class ResponsePrinter
 			if (0 <= $length) {
 				return $length;
 			}
-		} else if ($this->response->content instanceof Binary) {
+		} elseif ($this->response->content instanceof Binary) {
 			return $this->response->content->count();
-		} else if (is_string($this->response->content)) {
+		} elseif (is_string($this->response->content)) {
 			return Text::getByteCount($this->response->content);
 		}
 
@@ -59,12 +59,12 @@ class ResponsePrinter
 	/**
 	 * 応答本文出力処理。
 	 */
-	private function output():void
+	private function output(): void
 	{
 		if ($this->response->content instanceof ICallbackContent) {
 			// 処理は自分で出力を頑張ること
 			$this->response->content->output();
-		} else if ($this->response->content instanceof Binary) {
+		} elseif ($this->response->content instanceof Binary) {
 			echo $this->response->content->getRaw();
 		} else {
 			echo $this->response->content;
@@ -100,7 +100,7 @@ class ResponsePrinter
 
 		// ヘッダ: Content-Length
 		$contentLength = $this->getContentLength();
-		if(0 <= $contentLength) {
+		if (0 <= $contentLength) {
 			header('Content-Length: ' . $contentLength);
 		}
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\IO;
 
-use \stdClass;
+use stdClass;
 use PeServer\Core\Binary;
 use PeServer\Core\Cryptography;
 use PeServer\Core\Encoding;

@@ -307,6 +307,7 @@ class HttpHeader
 /**
  * 要求時のヘッダー一覧。
  */
+//phpcs:ignore PSR1.Classes.ClassDeclaration.MultipleClasses
 class LocalHttpClientRequestHeader extends HttpHeader
 {
 	public function existsRedirect(): bool
@@ -331,6 +332,7 @@ class LocalHttpClientRequestHeader extends HttpHeader
 }
 
 
+//phpcs:ignore PSR1.Classes.ClassDeclaration.MultipleClasses
 class LocalClientResponseHttpHeader extends LocalHttpClientRequestHeader
 {
 	private bool $initialized = false;
@@ -367,6 +369,7 @@ class LocalClientResponseHttpHeader extends LocalHttpClientRequestHeader
 	}
 }
 
+//phpcs:ignore PSR1.Classes.ClassDeclaration.MultipleClasses
 class LocalHttpRequestHeader extends LocalHttpClientRequestHeader
 {
 	public function __construct()

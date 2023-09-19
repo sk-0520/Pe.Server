@@ -7,6 +7,7 @@ namespace PeServer\Core\Http\Client;
 /**
  * HttpClient リダイレクト設定データ。
  */
+
 readonly class HttpRedirectOptions
 {
 	#region define

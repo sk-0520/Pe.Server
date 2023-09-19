@@ -90,7 +90,6 @@ class DevelopmentApiAdministratorLogic extends ApiLogicBase
 			$userAuthenticationsEntityDao = new UserAuthenticationsEntityDao($context);
 
 			foreach ($params as $user) {
-
 				$usersEntityDao->insertUser(
 					$user['user_id'],
 					$user['login_id'],

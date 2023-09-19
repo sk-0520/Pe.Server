@@ -15,11 +15,11 @@ abstract class TemplateModifierBase extends TemplatePluginBase implements ITempl
 
 	#region function
 
-	protected abstract function modifierBodyImpl(mixed $value, mixed ...$params): mixed;
+	abstract protected function modifierBodyImpl(mixed $value, mixed ...$params): mixed;
 
 	#region ITemplateModifier
 
-	public abstract function getModifierName(): string;
+	abstract public function getModifierName(): string;
 
 	public function modifierBody(mixed $value, mixed ...$params): mixed
 	{

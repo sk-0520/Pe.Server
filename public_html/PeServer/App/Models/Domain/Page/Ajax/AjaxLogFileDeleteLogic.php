@@ -31,7 +31,7 @@ class AjaxLogFileDeleteLogic extends PageLogicBase
 		$logName = $this->getRequest('log_name');
 		$logPath = Path::combine($dirPath, $logName);
 
-		if(!File::exists($logPath)) {
+		if (!File::exists($logPath)) {
 			throw new FileNotFoundException();
 		}
 	}

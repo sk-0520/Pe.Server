@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Collections;
 
-use \ArrayAccess;
-use \ArrayIterator;
-use \Countable;
-use \IteratorAggregate;
-use \Traversable;
-use \TypeError;
+use ArrayAccess;
+use ArrayIterator;
+use Countable;
+use IteratorAggregate;
+use Traversable;
+use TypeError;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\TypeUtility;
 
@@ -59,7 +59,7 @@ abstract class TypeArrayBase implements ArrayAccess, Countable, IteratorAggregat
 		return $this->items;
 	}
 
-	protected abstract function throwIfInvalidOffset(mixed $offset): void;
+	abstract protected function throwIfInvalidOffset(mixed $offset): void;
 
 	protected function isValidType(mixed $value): void
 	{

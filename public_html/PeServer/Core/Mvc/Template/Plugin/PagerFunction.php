@@ -40,7 +40,7 @@ class PagerFunction extends TemplateFunctionBase
 
 		/** @var string */
 		$href = $this->params['href'];
-		if(Text::isNullOrWhiteSpace($href)) {
+		if (Text::isNullOrWhiteSpace($href)) {
 			throw new Exception('href');
 		}
 		$href = Code::toLiteralString($href);
@@ -82,7 +82,7 @@ class PagerFunction extends TemplateFunctionBase
 				} else {
 					$link->addText($jumpTail);
 				}
-			} else if ($shortcut->kind === PageShortcutKind::Short) {
+			} elseif ($shortcut->kind === PageShortcutKind::Short) {
 				if ($index <= 1) {
 					$link->addText($jumpPrev);
 				} else {

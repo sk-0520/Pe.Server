@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Web;
 
-use \Stringable;
+use Stringable;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Collections\Collection;
 use PeServer\Core\Text;
@@ -14,6 +14,7 @@ use PeServer\Core\Throws\InvalidOperationException;
 /**
  * URL のパス構成要素。
  */
+
 readonly class UrlPath implements Stringable
 {
 	#region variable

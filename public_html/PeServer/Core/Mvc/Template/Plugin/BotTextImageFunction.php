@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Template\Plugin;
 
-use \Throwable;
+use Throwable;
 use PeServer\Core\Image\Alignment;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Binary;

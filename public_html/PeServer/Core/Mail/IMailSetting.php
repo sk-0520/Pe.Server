@@ -16,7 +16,7 @@ interface IMailSetting
 	 * @return int
 	 * @phpstan-return Mailer::SEND_MODE_*
 	 */
-	function mode(): int;
+	public function mode(): int;
 
 	#endregion
 }

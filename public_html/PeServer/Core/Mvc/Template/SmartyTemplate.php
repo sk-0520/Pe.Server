@@ -6,7 +6,7 @@ namespace PeServer\Core\Mvc\Template;
 
 require_once(__DIR__ . '/../../../Core/Libs/smarty/libs/Smarty.class.php');
 
-use \Smarty;
+use Smarty;
 use PeServer\Core\IO\Path;
 use PeServer\Core\Mvc\Template\Plugin\AssetFunction;
 use PeServer\Core\Mvc\Template\Plugin\BotTextImageFunction;
@@ -106,7 +106,7 @@ class SmartyTemplate extends TemplateBase
 			if ($plugin instanceof ITemplateBlockFunction) {
 				// @phpstan-ignore-next-line smarty
 				$this->engine->registerPlugin('block', $plugin->getFunctionName(), [$plugin, 'functionBlockBody']);
-			} else if ($plugin instanceof ITemplateFunction) {
+			} elseif ($plugin instanceof ITemplateFunction) {
 				// @phpstan-ignore-next-line smarty
 				$this->engine->registerPlugin('function', $plugin->getFunctionName(), [$plugin, 'functionBody']);
 			}

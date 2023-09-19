@@ -92,7 +92,7 @@ class AccountUserEmailLogic extends PageLogicBase
 				$accountValidator = new AccountValidator($this, $this->validator);
 				$accountValidator->isEmail($key, $value);
 			});
-		} else if ($mode === 'confirm') {
+		} elseif ($mode === 'confirm') {
 			$this->validation('account_email_token', function (string $key, string $value) {
 				$this->validator->isNotWhiteSpace($key, $value);
 

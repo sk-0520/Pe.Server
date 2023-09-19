@@ -304,7 +304,7 @@ class Routing
 				if ($action->status === HttpStatus::None) {
 					$this->executeAction($action->className, $action->actionSetting, $action->params);
 					return;
-				} else if ($errorAction === null) {
+				} elseif ($errorAction === null) {
 					$errorAction = $action;
 				}
 			}

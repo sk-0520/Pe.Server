@@ -18,14 +18,14 @@ interface IDatabaseConnection
 	 *
 	 * @return ConnectionSetting
 	 */
-	function getConnectionSetting(): ConnectionSetting;
+	public function getConnectionSetting(): ConnectionSetting;
 
 	/**
 	 * DB接続を開く。
 	 *
 	 * @return DatabaseContext
 	 */
-	function open(): DatabaseContext;
+	public function open(): DatabaseContext;
 
 	#endregion
 }

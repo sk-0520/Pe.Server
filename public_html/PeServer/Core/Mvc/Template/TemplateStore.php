@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Template;
 
-use \ArrayAccess;
+use ArrayAccess;
 use PeServer\Core\Store\CookieStore;
 use PeServer\Core\Store\SessionStore;
 use PeServer\Core\Store\TemporaryStore;
@@ -55,6 +55,7 @@ abstract class TemplateStore implements ArrayAccess //@phpstan-ignore-line
 	#endregion
 }
 
+//phpcs:ignore PSR1.Classes.ClassDeclaration.MultipleClasses
 final class LocalTemplateCookieStore extends TemplateStore
 {
 	public function __construct(
@@ -72,6 +73,7 @@ final class LocalTemplateCookieStore extends TemplateStore
 	}
 }
 
+//phpcs:ignore PSR1.Classes.ClassDeclaration.MultipleClasses
 final class LocalTemplateSessionStore extends TemplateStore
 {
 	public function __construct(
@@ -89,6 +91,7 @@ final class LocalTemplateSessionStore extends TemplateStore
 	}
 }
 
+//phpcs:ignore PSR1.Classes.ClassDeclaration.MultipleClasses
 final class LocalTemplateTemporaryStore extends TemplateStore
 {
 	public function __construct(

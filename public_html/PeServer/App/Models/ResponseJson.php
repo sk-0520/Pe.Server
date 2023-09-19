@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models;
 
-use \stdClass;
+use stdClass;
 use PeServer\Core\Throws\ArgumentNullException;
-
 
 /**
  * API/AJAX の共通応答データ。

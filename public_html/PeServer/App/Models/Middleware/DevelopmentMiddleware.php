@@ -12,7 +12,6 @@ use PeServer\Core\Mvc\Middleware\IMiddleware;
 use PeServer\Core\Mvc\Middleware\MiddlewareArgument;
 use PeServer\Core\Mvc\Middleware\MiddlewareResult;
 
-
 final class DevelopmentMiddleware implements IMiddleware
 {
 	public function __construct(

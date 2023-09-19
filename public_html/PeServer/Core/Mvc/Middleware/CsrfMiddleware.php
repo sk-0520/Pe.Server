@@ -60,7 +60,7 @@ class CsrfMiddleware implements IMiddleware
 		return self::MODE_BODY;
 	}
 
-	function handleBeforeHeader(MiddlewareArgument $argument): MiddlewareResult
+	protected function handleBeforeHeader(MiddlewareArgument $argument): MiddlewareResult
 	{
 		if (!$argument->request->httpHeader->existsHeader(Security::CSRF_HEADER_NAME)) {
 			$this->logger->warn('要求CSRFトークンなし');
@@ -85,7 +85,7 @@ class CsrfMiddleware implements IMiddleware
 		return MiddlewareResult::error($this->getErrorHttpStatus(), 'CSRF');
 	}
 
-	function handleBeforeBody(MiddlewareArgument $argument): MiddlewareResult
+	protected function handleBeforeBody(MiddlewareArgument $argument): MiddlewareResult
 	{
 		$result = $argument->request->exists(Security::CSRF_REQUEST_KEY);
 		if (!$result->exists) {
@@ -119,7 +119,7 @@ class CsrfMiddleware implements IMiddleware
 		};
 	}
 
-	public final function handleAfter(MiddlewareArgument $argument, HttpResponse $response): MiddlewareResult
+	final public function handleAfter(MiddlewareArgument $argument, HttpResponse $response): MiddlewareResult
 	{
 		return MiddlewareResult::none();
 	}

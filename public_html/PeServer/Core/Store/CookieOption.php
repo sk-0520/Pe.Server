@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Store;
 
-use \DateInterval;
-use \DateTimeImmutable;
+use DateInterval;
+use DateTimeImmutable;
 
 /**
  * Cookie 設定。

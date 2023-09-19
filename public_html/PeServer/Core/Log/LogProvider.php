@@ -78,6 +78,7 @@ class LogProvider implements ILogProvider
  *
  * @immutable
  */
+//phpcs:ignore PSR1.Classes.ClassDeclaration.MultipleClasses
 class LocalLogProviderItem
 {
 	/**

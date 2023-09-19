@@ -9,7 +9,6 @@ use PeServer\Core\Mvc\Validator;
 use PeServer\Core\Text;
 use PeServer\Core\Mvc\IValidationReceiver;
 
-
 abstract class ValidatorBase
 {
 	public const EMAIL_LENGTH = 254;
@@ -24,7 +23,7 @@ abstract class ValidatorBase
 		$this->validator = $validator;
 	}
 
-	public final function isEmail(string $key, ?string $value): bool
+	final public function isEmail(string $key, ?string $value): bool
 	{
 		if ($this->validator->isNotWhiteSpace($key, $value)) {
 			/** @var string $value isNotWhiteSpace */
@@ -39,7 +38,7 @@ abstract class ValidatorBase
 		return true;
 	}
 
-	public final function isWebsite(string $key, ?string $value): bool
+	final public function isWebsite(string $key, ?string $value): bool
 	{
 		if (!Text::isNullOrWhiteSpace($value)) {
 			$trueKeeper = new TrueKeeper();

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Image\Color;
 
-use \Stringable;
+use Stringable;
 use PeServer\Core\Code;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Image\Color\IColor;

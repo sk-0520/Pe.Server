@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Collections;
 
-use \AppendIterator;
-use \ArrayIterator;
-use \CallbackFilterIterator;
-use \Countable;
-use \EmptyIterator;
-use \Iterator;
-use \IteratorAggregate;
-use \LimitIterator;
-use \Traversable;
+use AppendIterator;
+use ArrayIterator;
+use CallbackFilterIterator;
+use Countable;
+use EmptyIterator;
+use Iterator;
+use IteratorAggregate;
+use LimitIterator;
+use Traversable;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\InvalidOperationException;

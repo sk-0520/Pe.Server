@@ -22,7 +22,7 @@ interface IDiContainer
 	 * @phpstan-param class-string|non-empty-string $id
 	 * @return bool
 	 */
-	function has(string $id): bool;
+	public function has(string $id): bool;
 
 	/**
 	 * 指定したIDのオブジェクトを取得。
@@ -32,7 +32,7 @@ interface IDiContainer
 	 * @return mixed
 	 * @throws DiContainerException
 	 */
-	function get(string $id): mixed;
+	public function get(string $id): mixed;
 
 	/**
 	 * クラス生成。
@@ -47,7 +47,7 @@ interface IDiContainer
 	 * @return mixed
 	 * @throws DiContainerArgumentException パラメータ指定さている場合に対象ID($idOrClassName)がシングルトン・値の場合に投げられる。
 	 */
-	function new(string $idOrClassName, array $arguments = []): mixed;
+	public function new(string $idOrClassName, array $arguments = []): mixed;
 
 	/**
 	 * コールバックを実施。
@@ -63,7 +63,7 @@ interface IDiContainer
 	 *
 	 * @return IScopedDiContainer
 	 */
-	function clone(): IScopedDiContainer;
+	public function clone(): IScopedDiContainer;
 
 	#endregion
 }

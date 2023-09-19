@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Serialization;
 
-use \JsonException;
-use \Throwable;
+use JsonException;
+use Throwable;
 use PeServer\Core\Binary;
 use PeServer\Core\Serialization\ISerializer;
 use PeServer\Core\Throws\JsonDecodeException;
@@ -27,7 +27,7 @@ abstract class SerializerBase implements ISerializer
 	 * @param array<mixed>|object $value
 	 * @return Binary
 	 */
-	protected abstract function saveImpl(array|object $value): Binary;
+	abstract protected function saveImpl(array|object $value): Binary;
 
 	/**
 	 * デシリアライズ処理実装。
@@ -35,7 +35,7 @@ abstract class SerializerBase implements ISerializer
 	 * @param Binary $value
 	 * @return array<mixed>|object
 	 */
-	protected abstract function loadImpl(Binary $value): array|object;
+	abstract protected function loadImpl(Binary $value): array|object;
 
 	#endregion
 
@@ -65,5 +65,4 @@ abstract class SerializerBase implements ISerializer
 		}
 	}
 	#endregion
-
 }

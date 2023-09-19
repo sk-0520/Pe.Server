@@ -13,7 +13,7 @@ use PeServer\Core\Regex;
  * @SuppressWarnings(PHPMD.CamelCaseClassName)
  */
 #[Version(0)]
-class SetupVersion_0000 extends SetupVersionBase
+class SetupVersion_0000 extends SetupVersionBase //phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 {
 	#region SetupVersionBase
 

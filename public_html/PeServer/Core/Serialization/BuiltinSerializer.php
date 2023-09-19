@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Serialization;
 
-use \JsonException;
-use \Exception;
+use JsonException;
+use Exception;
 use PeServer\Core\Binary;
 use PeServer\Core\Serialization\SerializerBase;
 use PeServer\Core\Throws\JsonDecodeException;

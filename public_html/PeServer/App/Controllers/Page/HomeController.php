@@ -17,7 +17,6 @@ use PeServer\Core\Mvc\ControllerArgument;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\Result\IActionResult;
 
-
 final class HomeController extends PageControllerBase
 {
 	public function __construct(ControllerArgument $argument)

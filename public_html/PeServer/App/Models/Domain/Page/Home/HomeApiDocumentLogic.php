@@ -11,7 +11,6 @@ use PeServer\Core\Mvc\LogicParameter;
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 
-
 class HomeApiDocumentLogic extends PageLogicBase
 {
 	public function __construct(LogicParameter $parameter, private AppConfiguration $config)

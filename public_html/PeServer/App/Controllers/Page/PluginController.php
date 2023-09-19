@@ -12,8 +12,6 @@ use PeServer\App\Controllers\Page\PageControllerBase;
 use PeServer\App\Models\Domain\Page\Plugin\PluginIndexLogic;
 use PeServer\App\Models\Domain\Page\Plugin\PluginDetailLogic;
 
-
-
 final class PluginController extends PageControllerBase
 {
 	public function __construct(ControllerArgument $argument)

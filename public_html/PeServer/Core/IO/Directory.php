@@ -11,7 +11,6 @@ use PeServer\Core\IO\Path;
 use PeServer\Core\ResultData;
 use PeServer\Core\Throws\IOException;
 
-
 /**
  * ディレクトリ処理系。
  */
@@ -116,7 +115,7 @@ abstract class Directory
 
 			if ($isDir && $directory) {
 				$files[] = $path;
-			} else if (!$isDir && $file) {
+			} elseif (!$isDir && $file) {
 				$files[] = $path;
 			}
 

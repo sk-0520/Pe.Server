@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Setup\Versions;
 
-use \Attribute;
+use Attribute;
 
 /**
  * @immutable

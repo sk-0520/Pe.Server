@@ -69,7 +69,7 @@ abstract class ImageType
 	public static function toExtension(int $imageType, bool $dot = false): string
 	{
 		$result = image_type_to_extension($imageType, $dot);
-		if($result === false) {
+		if ($result === false) {
 			throw new ImageException();
 		}
 

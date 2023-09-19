@@ -16,9 +16,9 @@ interface ISerializer
 	 * @param array<mixed>|object $value
 	 * @return Binary
 	 */
-	function save(array|object $value): Binary;
+	public function save(array|object $value): Binary;
 
-		/**
+	/**
 	 * デシリアライズ処理。
 	 *
 	 * @param Binary $value

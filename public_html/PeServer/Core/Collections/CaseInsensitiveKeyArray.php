@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Collections;
 
-use \ArrayAccess;
-use \ArrayIterator;
-use \Countable;
-use \IteratorAggregate;
-use \Traversable;
+use ArrayAccess;
+use ArrayIterator;
+use Countable;
+use IteratorAggregate;
+use Traversable;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\IndexOutOfRangeException;
 use PeServer\Core\Throws\KeyNotFoundException;

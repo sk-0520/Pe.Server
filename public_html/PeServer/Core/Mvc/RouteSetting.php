@@ -33,5 +33,6 @@ class RouteSetting
 		public array $globalShutdownMiddleware,
 		public array $actionShutdownMiddleware,
 		public array $routes
-	) {}
+	) {
+    }
 }

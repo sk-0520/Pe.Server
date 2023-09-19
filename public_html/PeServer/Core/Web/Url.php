@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Web;
 
-use \Stringable;
+use Stringable;
 use PeServer\Core\Binary;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Collections\Collection;
@@ -20,6 +20,7 @@ use PeServer\Core\Web\UrlUtility;
 /**
  * URL。
  */
+
 readonly class Url implements Stringable
 {
 	/**
@@ -312,7 +313,7 @@ readonly class Url implements Stringable
 		}
 
 		$work .= $this->host;
-		if($this->port !== null) {
+		if ($this->port !== null) {
 			$work .= ':' . (string)$this->port;
 		}
 		$work .= $this->path->toString($addLastSeparator);

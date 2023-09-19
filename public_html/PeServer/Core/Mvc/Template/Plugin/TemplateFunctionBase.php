@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Template\Plugin;
 
-use \Smarty_Internal_Template;
+use Smarty_Internal_Template;
 use PeServer\Core\Mvc\Template\Plugin\TemplatePluginBase;
 use PeServer\Core\Mvc\Template\Plugin\TemplatePluginArgument;
 
@@ -30,7 +30,7 @@ abstract class TemplateFunctionBase extends TemplatePluginBase implements ITempl
 
 	#region function
 
-	protected abstract function functionBodyImpl(): string;
+	abstract protected function functionBodyImpl(): string;
 
 	#endregion
 

@@ -573,7 +573,6 @@ class Stream extends ResourceBase
 			$currentOffset = 0;
 
 			while ($currentOffset < $currentLength) {
-
 				if (!$findCr) {
 					$findCr = !substr_compare($currentBuffer, $cr, $currentOffset, $newlineWidth, false);
 					if (!$findCr) {
@@ -638,6 +637,7 @@ class Stream extends ResourceBase
 	#endregion
 }
 
+//phpcs:ignore PSR1.Classes.ClassDeclaration.MultipleClasses
 class LocalNoReleaseStream extends Stream
 {
 	/**

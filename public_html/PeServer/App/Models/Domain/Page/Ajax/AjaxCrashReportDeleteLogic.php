@@ -33,7 +33,7 @@ class AjaxCrashReportDeleteLogic extends PageLogicBase
 		$sequence = (int)$this->getRequest('sequence');
 
 		$database = $this->openDatabase();
-		$database->transaction(function(IDatabaseContext $context) use($sequence) {
+		$database->transaction(function (IDatabaseContext $context) use ($sequence) {
 			$crashReportsEntityDao = new CrashReportsEntityDao($context);
 			$crashReportCommentsEntityDao = new CrashReportCommentsEntityDao($context);
 

@@ -68,18 +68,18 @@ abstract class ApiAccountFilterMiddlewareBase implements IMiddleware
 		return MiddlewareResult::error(HttpStatus::Forbidden);
 	}
 
-	protected abstract function filter(MiddlewareArgument $argument, UserCacheItem $item): MiddlewareResult;
+	abstract protected function filter(MiddlewareArgument $argument, UserCacheItem $item): MiddlewareResult;
 
 	#endregion
 
 	#region IMiddleware
 
-	public final function handleBefore(MiddlewareArgument $argument): MiddlewareResult
+	final public function handleBefore(MiddlewareArgument $argument): MiddlewareResult
 	{
 		return $this->filterCore($argument);
 	}
 
-	public final function handleAfter(MiddlewareArgument $argument, HttpResponse $response): MiddlewareResult
+	final public function handleAfter(MiddlewareArgument $argument, HttpResponse $response): MiddlewareResult
 	{
 		return MiddlewareResult::none();
 	}

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\DI;
 
-use \Attribute;
+use Attribute;
 use PeServer\Core\Text;
 
 /**

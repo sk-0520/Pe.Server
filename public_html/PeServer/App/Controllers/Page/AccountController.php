@@ -260,5 +260,4 @@ final class AccountController extends PageControllerBase
 
 		return $this->view('user_audit_logs', $logic->getViewData());
 	}
-
 }

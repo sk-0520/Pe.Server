@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mail;
 
-use \PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\PHPMailer;
 use PeServer\Core\Mail\Attachment;
 use PeServer\Core\Mail\EmailAddress;
 use PeServer\Core\Mail\EmailMessage;
@@ -206,7 +206,7 @@ class Mailer
 			} else {
 				$client->Body = $this->message->getText();
 			}
-		} else if (!$isHtml) {
+		} elseif (!$isHtml) {
 			throw new InvalidOperationException();
 		}
 

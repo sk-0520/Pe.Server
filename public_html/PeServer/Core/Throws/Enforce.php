@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Throws;
 
-use \Throwable;
+use Throwable;
 use PeServer\Core\Code;
 use PeServer\Core\ReflectionUtility;
 use PeServer\Core\Text;
@@ -30,8 +30,8 @@ abstract class Enforce
 	private static function throwCore(string $argument, string $exceptionClass)
 	{
 		try {
-			$exception = ReflectionUtility::create($exceptionClass, Throwable::class, $argument, );
-		} catch(TypeException $ex) {
+			$exception = ReflectionUtility::create($exceptionClass, Throwable::class, $argument);
+		} catch (TypeException $ex) {
 			throw new EnforceClassNameError($exceptionClass);
 		}
 

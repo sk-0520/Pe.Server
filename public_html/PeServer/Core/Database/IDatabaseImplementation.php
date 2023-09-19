@@ -17,7 +17,7 @@ interface IDatabaseImplementation
 	 * @param string $value
 	 * @return string
 	 */
-	function escapeLike(string $value): string;
+	public function escapeLike(string $value): string;
 
 	/**
 	 * バインド値のエスケープ処理。
@@ -25,7 +25,7 @@ interface IDatabaseImplementation
 	 * @param mixed $value
 	 * @return string
 	 */
-	function escapeValue(mixed $value): string;
+	public function escapeValue(mixed $value): string;
 
 	#endregion
 }

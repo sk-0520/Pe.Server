@@ -6,8 +6,8 @@ namespace PeServer\Core\Html;
 
 require_once(__DIR__ . DIRECTORY_SEPARATOR . '../Libs/highlight.php/HighlightUtilities/functions.php');
 
-use \DomainException;
-use \Highlight\Highlighter;
+use DomainException;
+use Highlight\Highlighter;
 //use \HighlightUtilities;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Text;

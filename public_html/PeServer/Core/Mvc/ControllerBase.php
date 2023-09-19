@@ -26,9 +26,6 @@ use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Web\IUrlHelper;
 use PeServer\Core\Web\UrlUtility;
 
-
-
-
 /**
  * コントローラ基底処理。
  */
@@ -82,7 +79,7 @@ abstract class ControllerBase
 	 *
 	 * @return string
 	 */
-	protected abstract function getSkipBaseName(): string;
+	abstract protected function getSkipBaseName(): string;
 
 	// /**
 	//  * ロジック用パラメータ生成処理。

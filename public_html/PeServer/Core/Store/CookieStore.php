@@ -170,6 +170,7 @@ class CookieStore
 	#endregion
 }
 
+//phpcs:ignore PSR1.Classes.ClassDeclaration.MultipleClasses
 final class LocalCookieData
 {
 	public function __construct(

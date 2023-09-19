@@ -73,7 +73,7 @@ class ManagementVersionLogic extends PageLogicBase
 		});
 
 		if (!$result) {
-			$this->addCommonError( 'あかん');
+			$this->addCommonError('あかん');
 			return;
 		}
 

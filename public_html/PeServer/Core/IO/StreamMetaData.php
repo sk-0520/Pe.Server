@@ -50,7 +50,7 @@ class StreamMetaData
 	 *
 	 * @param array<string,mixed> $values
 	 */
-	public static function createFromStream(array $values):self
+	public static function createFromStream(array $values): self
 	{
 		return new self(
 			Arr::getOr($values, 'timed_out', false),

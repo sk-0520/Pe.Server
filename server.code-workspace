@@ -53,6 +53,7 @@
 			"nosniff",
 			"ondrej",
 			"phar",
+			"phpcs",
 			"PHPMD",
 			"PHPSESSID",
 			"phpstan",
@@ -181,7 +182,8 @@
 			"awwsky.regionmarker",
 			"santacodes.santacodes-region-viewer",
 			"aswinkumar863.smarty-template-support",
-			"yusukehirao.vscode-markuplint"
+			"yusukehirao.vscode-markuplint",
+			"timonwong.shellcheck"
 		],
 	}
 }

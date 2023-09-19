@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domain\Api\ApplicationApi;
 
-use \Exception;
+use Exception;
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\AppMailer;
 use PeServer\App\Models\AppTemplate;
@@ -78,20 +78,16 @@ class ApplicationApiFeedbackLogic extends ApiLogicBase
 			$feedbacksEntityDao = new FeedbacksEntityDao($context);
 			$feedbacksEntityDao->insertFeedbacks(
 				$this->stores->special->getServer('REMOTE_ADDR'),
-
 				$this->requestJson['version'],
 				$this->requestJson['revision'],
 				$this->requestJson['build'],
 				$this->requestJson['user_id'],
-
 				$this->requestJson['first_execute_timestamp'],
 				$this->requestJson['first_execute_version'],
-
 				$this->requestJson['process'],
 				$this->requestJson['platform'],
 				$this->requestJson['os'],
 				$this->requestJson['clr'],
-
 				$this->requestJson['kind'],
 				$this->requestJson['subject'],
 				$this->requestJson['content']

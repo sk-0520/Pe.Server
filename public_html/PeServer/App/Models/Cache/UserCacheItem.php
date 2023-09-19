@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Cache;
 
-use \DateTime;
+use DateTime;
 
 class UserCacheItem
 {

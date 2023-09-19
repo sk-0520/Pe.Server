@@ -53,6 +53,7 @@ class ScopedDiContainer extends DiRegisterContainer implements IScopedDiContaine
 /**
  * `ScopedDiContainer` で削除対象になるアイテム。
  */
+//phpcs:ignore PSR1.Classes.ClassDeclaration.MultipleClasses
 final class LocalScopeDiItem extends DiItem
 {
 	public function __construct(DiItem $source)

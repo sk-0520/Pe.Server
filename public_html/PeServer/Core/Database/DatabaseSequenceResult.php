@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Database;
 
-use \Error;
-use \Iterator;
-use \PDOStatement;
-use \Traversable;
-use \IteratorIterator;
+use Error;
+use Iterator;
+use PDOStatement;
+use Traversable;
+use IteratorIterator;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Database\DatabaseResultBase;
 use PeServer\Core\Serialization\IMapper;
@@ -121,7 +121,6 @@ class DatabaseSequenceResult extends DatabaseResultBase implements Iterator
 	}
 
 	#endregion
-
 }
 
 /**
@@ -129,6 +128,7 @@ class DatabaseSequenceResult extends DatabaseResultBase implements Iterator
  * @template TObject of object
  * @implements Iterator<TObject>
  */
+//phpcs:ignore PSR1.Classes.ClassDeclaration.MultipleClasses
 class LocalSequenceIterator extends DatabaseResultBase implements Iterator
 {
 	/**
