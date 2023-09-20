@@ -93,13 +93,25 @@ if [[ -v COVERAGE_CACHE ]] ; then
 	COVERAGE_CACHE_OPTION="--coverage-cache ${COVERAGE_CACHE}"
 fi
 
-cd "${PHPUNIT_BASE_DIR}"
+PUBLIC_DIR=
+case "${TEST_MODE}" in
+	ut)
+		PUBLIC_DIR="${PHPUNIT_BASE_DIR}/http-${TEST_MODE}"
+		;;
+	*)
+		echo "--test [ut]"
+		exit 1
+		;;
+esac
+
+cd ${PHPUNIT_BASE_DIR}/
 STORAGE="_storage-${TEST_MODE}"
 if [[ -d "${STORAGE}" ]] ; then
 	rm --recursive --force "${STORAGE}"
 fi
 mkdir "${STORAGE}"
-php -S "${LOCAL_HTTP_TEST}" -t "http-${TEST_MODE}" > "http-${TEST_MODE}.log" 2>&1 &
+
+php -S "${LOCAL_HTTP_TEST}" -t "${PUBLIC_DIR}" > "http-${TEST_MODE}.log" 2>&1 &
 trap 'kill %1' 0
 sleep "${LOCAL_HTTP_WAIT}"
 #shellcheck disable=SC2086
