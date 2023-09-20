@@ -18,7 +18,7 @@ class ManagementFeedbackListLogic extends PageLogicBase
 {
 	#region define
 
-	const ITEM_COUNT_IN_PAGE = 25;
+	public const ITEM_COUNT_IN_PAGE = 25;
 
 	#endregion
 
