@@ -8,7 +8,7 @@ use PeServer\Core\DI\DiRegisterContainer;
 use PeServer\Core\DI\ScopedDiContainer;
 use PeServer\Core\DisposerBase;
 use PeServer\Core\IDisposable;
-use PeServerUT\TestClass;
+use PeServerTest\TestClass;
 
 class ScopedDiContainerTest extends TestClass
 {

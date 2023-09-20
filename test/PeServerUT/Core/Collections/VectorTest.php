@@ -8,7 +8,7 @@ use PeServer\Core\Collections\Vector;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\IndexOutOfRangeException;
 use PeServer\Core\TypeUtility;
-use PeServerUT\TestClass;
+use PeServerTest\TestClass;
 use TypeError;
 
 interface TestI {

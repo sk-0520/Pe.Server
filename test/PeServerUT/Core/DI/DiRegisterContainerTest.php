@@ -14,7 +14,7 @@ use PeServer\Core\Throws\DiContainerArgumentException;
 use PeServer\Core\Throws\DiContainerNotFoundException;
 use PeServer\Core\Throws\DiContainerRegisteredException;
 use PeServer\Core\Throws\DiContainerUndefinedTypeException;
-use PeServerUT\TestClass;
+use PeServerTest\TestClass;
 use Throwable;
 
 class DiRegisterContainerTest extends TestClass

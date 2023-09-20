@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServerUT\Core\Serialization;
 
 use PeServer\Core\Serialization\BuiltinSerializer;
-use PeServerUT\TestClass;
+use PeServerTest\TestClass;
 
 class BuiltinSerializerTest extends TestClass
 {

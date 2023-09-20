@@ -8,7 +8,7 @@ use PeServer\Core\Collections\CaseInsensitiveKeyArray;
 use PeServer\Core\Throws\IndexOutOfRangeException;
 use PeServer\Core\Throws\KeyNotFoundException;
 use PeServer\Core\Throws\NotSupportedException;
-use PeServerUT\TestClass;
+use PeServerTest\TestClass;
 
 class CaseInsensitiveKeyArrayTest extends TestClass
 {

@@ -8,8 +8,8 @@ use DateInterval;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\FormatException;
 use PeServer\Core\Time;
-use PeServerUT\Data;
-use PeServerUT\TestClass;
+use PeServerTest\Data;
+use PeServerTest\TestClass;
 
 class TimeTest extends TestClass
 {

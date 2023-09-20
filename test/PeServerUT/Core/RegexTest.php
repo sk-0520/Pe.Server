@@ -10,8 +10,8 @@ use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\RegexDelimiterException;
 use PeServer\Core\Throws\RegexException;
 use PeServer\Core\Throws\RegexPatternException;
-use PeServerUT\Data;
-use PeServerUT\TestClass;
+use PeServerTest\Data;
+use PeServerTest\TestClass;
 
 class RegexTest extends TestClass
 {

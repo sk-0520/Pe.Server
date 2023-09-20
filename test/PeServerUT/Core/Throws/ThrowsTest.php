@@ -13,7 +13,7 @@ use \UnexpectedValueException;
 use \TypeError;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\Throws;
-use PeServerUT\TestClass;
+use PeServerTest\TestClass;
 
 class ThrowsTest extends TestClass
 {

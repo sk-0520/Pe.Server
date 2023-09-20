@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PeServerUT\Core;
 
-use PeServerUT\TestClass;
-use PeServerUT\Data;
+use PeServerTest\TestClass;
+use PeServerTest\Data;
 use PeServer\Core\SizeConverter;
 
 class SizeConverterTest extends TestClass

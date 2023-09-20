@@ -10,8 +10,8 @@ use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\IndexOutOfRangeException;
 use PeServer\Core\Throws\NotSupportedException;
 use PeServer\Core\Throws\NullByteStringException;
-use PeServerUT\Data;
-use PeServerUT\TestClass;
+use PeServerTest\Data;
+use PeServerTest\TestClass;
 
 class BinaryTest extends TestClass
 {

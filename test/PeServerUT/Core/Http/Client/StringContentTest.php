@@ -8,8 +8,8 @@ use PeServer\Core\Binary;
 use PeServer\Core\Encoding;
 use PeServer\Core\Http\Client\StringContent;
 use PeServer\Core\Text;
-use PeServerUT\Data;
-use PeServerUT\TestClass;
+use PeServerTest\Data;
+use PeServerTest\TestClass;
 
 class StringContentTest extends TestClass
 {

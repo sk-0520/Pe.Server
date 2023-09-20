@@ -15,7 +15,7 @@ use PeServer\Core\Throws\DatabaseException;
 use PeServer\Core\Throws\NotSupportedException;
 use PeServer\Core\Throws\SqlException;
 use PeServerUT\Core\Database\DB;
-use PeServerUT\TestClass;
+use PeServerTest\TestClass;
 use stdClass;
 
 class DatabaseContextTest extends TestClass

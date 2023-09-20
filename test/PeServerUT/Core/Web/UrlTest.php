@@ -10,8 +10,8 @@ use PeServer\Core\Web\Url;
 use PeServer\Core\Web\UrlPath;
 use PeServer\Core\Web\UrlQuery;
 use PeServer\Core\Web\UrlUtility;
-use PeServerUT\Data;
-use PeServerUT\TestClass;
+use PeServerTest\Data;
+use PeServerTest\TestClass;
 
 class UrlTest extends TestClass
 {

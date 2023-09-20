@@ -8,8 +8,8 @@ use ArrayIterator;
 use PeServer\Core\Collections\Collection;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\InvalidOperationException;
-use PeServerUT\Data;
-use PeServerUT\TestClass;
+use PeServerTest\Data;
+use PeServerTest\TestClass;
 use TypeError;
 
 class CollectionTest extends TestClass

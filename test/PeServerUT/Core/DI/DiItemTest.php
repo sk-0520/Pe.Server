@@ -11,7 +11,7 @@ use PeServer\Core\DI\DiItem;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Throws\NotSupportedException;
-use PeServerUT\TestClass;
+use PeServerTest\TestClass;
 
 class DiItemTest extends TestClass
 {

@@ -8,8 +8,8 @@ use PeServer\Core\Cryptography;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\CryptoException;
-use PeServerUT\Data;
-use PeServerUT\TestClass;
+use PeServerTest\Data;
+use PeServerTest\TestClass;
 
 class CryptographyTest extends TestClass
 {

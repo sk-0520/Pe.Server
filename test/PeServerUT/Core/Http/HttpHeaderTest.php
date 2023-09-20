@@ -9,7 +9,7 @@ use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Throws\KeyNotFoundException;
-use PeServerUT\TestClass;
+use PeServerTest\TestClass;
 
 class HttpHeaderTest extends TestClass
 {

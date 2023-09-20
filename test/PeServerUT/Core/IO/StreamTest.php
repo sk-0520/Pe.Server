@@ -19,8 +19,8 @@ use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\IOException;
 use PeServer\Core\Throws\ResourceInvalidException;
-use PeServerUT\Data;
-use PeServerUT\TestClass;
+use PeServerTest\Data;
+use PeServerTest\TestClass;
 use \Throwable;
 
 class StreamTest extends TestClass

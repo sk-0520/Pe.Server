@@ -6,8 +6,8 @@ namespace PeServerUT\Core;
 
 use PeServer\Core\Encoding;
 use PeServer\Core\Throws\ArgumentException;
-use PeServerUT\Data;
-use PeServerUT\TestClass;
+use PeServerTest\Data;
+use PeServerTest\TestClass;
 
 class EncodingTest extends TestClass
 {

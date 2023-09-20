@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PeServerUT\Core;
 
-use PeServerUT\Data;
-use PeServerUT\TestClass;
+use PeServerTest\Data;
+use PeServerTest\TestClass;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
 

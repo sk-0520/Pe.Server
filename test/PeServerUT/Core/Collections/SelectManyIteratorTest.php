@@ -7,7 +7,7 @@ namespace PeServerUT\Core\Collections;
 use ArrayIterator;
 use PeServer\Core\Collections\SelectManyIterator;
 use PeServer\Core\Throws\CallbackTypeError;
-use PeServerUT\TestClass;
+use PeServerTest\TestClass;
 
 class SelectManyIteratorTest extends TestClass
 {

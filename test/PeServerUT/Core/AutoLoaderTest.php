@@ -8,7 +8,7 @@ use \Error;
 use PeServer\Core\Archiver;
 use PeServer\Core\AutoLoader;
 use PeServer\Core\Binary;
-use PeServerUT\TestClass;
+use PeServerTest\TestClass;
 
 class AutoLoaderTest extends TestClass
 {

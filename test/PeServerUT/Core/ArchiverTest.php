@@ -6,7 +6,7 @@ namespace PeServerUT\Core;
 
 use PeServer\Core\Archiver;
 use PeServer\Core\Binary;
-use PeServerUT\TestClass;
+use PeServerTest\TestClass;
 
 class ArchiverTest extends TestClass
 {

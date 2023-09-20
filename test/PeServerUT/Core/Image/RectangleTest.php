@@ -7,8 +7,8 @@ namespace PeServerUT\Core\Image;
 use PeServer\Core\Image\Point;
 use PeServer\Core\Image\Rectangle;
 use PeServer\Core\Image\Size;
-use PeServerUT\Data;
-use PeServerUT\TestClass;
+use PeServerTest\Data;
+use PeServerTest\TestClass;
 
 class RectangleTest extends TestClass
 {

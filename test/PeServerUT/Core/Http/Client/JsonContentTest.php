@@ -9,8 +9,8 @@ use PeServer\Core\Encoding;
 use PeServer\Core\Http\Client\JsonContent;
 use PeServer\Core\Mime;
 use PeServer\Core\Text;
-use PeServerUT\Data;
-use PeServerUT\TestClass;
+use PeServerTest\Data;
+use PeServerTest\TestClass;
 
 class JsonContentTest extends TestClass
 {

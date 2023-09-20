@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PeServerUT\Core\Web;
 
-use PeServerUT\Data;
-use PeServerUT\TestClass;
+use PeServerTest\Data;
+use PeServerTest\TestClass;
 use PeServer\Core\Web\UrlUtility;
 
 class UrlUtilityTest extends TestClass

@@ -6,7 +6,7 @@ namespace PeServerUT\Core;
 
 use PeServer\Core\OutputBuffer;
 use PeServer\Core\Throws\OutputBufferException;
-use PeServerUT\TestClass;
+use PeServerTest\TestClass;
 
 class OutputBufferTest extends TestClass
 {

@@ -10,7 +10,7 @@ use PeServer\Core\Image\ImageType;
 use PeServer\Core\Image\Point;
 use PeServer\Core\Image\Color\RgbColor;
 use PeServer\Core\Image\Size;
-use PeServerUT\TestClass;
+use PeServerTest\TestClass;
 
 class GraphicsTest extends TestClass
 {

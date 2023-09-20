@@ -10,8 +10,8 @@ use PeServer\Core\IO\IOUtility;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\CryptoException;
 use PeServer\Core\Throws\IOException;
-use PeServerUT\Data;
-use PeServerUT\TestClass;
+use PeServerTest\Data;
+use PeServerTest\TestClass;
 use Throwable;
 
 class FileTest extends TestClass

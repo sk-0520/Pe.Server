@@ -8,8 +8,8 @@ namespace PeServerUT\Core\Image;
 use PeServer\Core\Image\Color\RgbColor;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\NotSupportedException;
-use PeServerUT\TestClass;
-use PeServerUT\Data;
+use PeServerTest\TestClass;
+use PeServerTest\Data;
 
 class RgbColorTest extends TestClass
 {

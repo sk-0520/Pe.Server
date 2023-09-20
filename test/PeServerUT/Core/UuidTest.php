@@ -7,8 +7,8 @@ namespace PeServerUT\Core;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\TrueKeeper;
 use PeServer\Core\Uuid;
-use PeServerUT\Data;
-use PeServerUT\TestClass;
+use PeServerTest\Data;
+use PeServerTest\TestClass;
 
 class UuidTest extends TestClass
 {

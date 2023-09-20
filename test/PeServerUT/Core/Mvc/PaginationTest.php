@@ -9,7 +9,7 @@ use PeServer\Core\Mvc\PageShortcut;
 use PeServer\Core\Mvc\PageShortcutKind;
 use PeServer\Core\Mvc\Pagination;
 use PeServer\Core\Throws\ArgumentException;
-use PeServerUT\TestClass;
+use PeServerTest\TestClass;
 
 
 class PaginationTest extends TestClass

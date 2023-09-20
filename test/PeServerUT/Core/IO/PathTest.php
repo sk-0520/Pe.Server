@@ -7,8 +7,8 @@ namespace PeServerUT\Core\IO;
 use PeServer\Core\IO\PathParts;
 use PeServer\Core\IO\Path;
 use PeServer\Core\Throws\ArgumentException;
-use PeServerUT\Data;
-use PeServerUT\TestClass;
+use PeServerTest\Data;
+use PeServerTest\TestClass;
 
 class PathTest extends TestClass
 {

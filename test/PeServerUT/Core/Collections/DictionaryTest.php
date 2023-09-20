@@ -12,7 +12,7 @@ use PeServer\Core\Throws\ArgumentNullException;
 use PeServer\Core\Throws\IndexOutOfRangeException;
 use PeServer\Core\Throws\KeyNotFoundException;
 use PeServer\Core\TypeUtility;
-use PeServerUT\TestClass;
+use PeServerTest\TestClass;
 
 
 class DictionaryTest extends TestClass

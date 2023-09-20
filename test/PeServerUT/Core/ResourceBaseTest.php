@@ -13,8 +13,8 @@ use PeServer\Core\SizeConverter;
 use PeServer\Core\Stream;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\IOException;
-use PeServerUT\Data;
-use PeServerUT\TestClass;
+use PeServerTest\Data;
+use PeServerTest\TestClass;
 
 class ResourceBaseTest extends TestClass
 {

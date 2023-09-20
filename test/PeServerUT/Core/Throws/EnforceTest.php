@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServerUT\Core\Throws;
 
 use \Error;
-use PeServerUT\TestClass;
+use PeServerTest\TestClass;
 use PeServer\Core\Throws\Enforce;
 use PeServer\Core\Throws\EnforceException;
 

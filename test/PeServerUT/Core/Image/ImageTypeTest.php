@@ -6,8 +6,8 @@ namespace PeServerUT\Core\Image;
 
 use PeServer\Core\Image\ImageType;
 use PeServer\Core\Throws\ImageException;
-use PeServerUT\Data;
-use PeServerUT\TestClass;
+use PeServerTest\Data;
+use PeServerTest\TestClass;
 
 class ImageTypeTest extends TestClass
 {

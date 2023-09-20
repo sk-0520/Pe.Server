@@ -7,8 +7,8 @@ namespace PeServerUT\Core\Web;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Web\UrlPath;
-use PeServerUT\Data;
-use PeServerUT\TestClass;
+use PeServerTest\Data;
+use PeServerTest\TestClass;
 use PeServer\Core\Web\UrlUtility;
 
 class UrlPathTest extends TestClass

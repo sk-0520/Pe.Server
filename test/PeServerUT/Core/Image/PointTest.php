@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PeServerUT\Core\Image;
 
-use PeServerUT\TestClass;
-use PeServerUT\Data;
+use PeServerTest\TestClass;
+use PeServerTest\Data;
 use PeServer\Core\Image\Point;
 
 class PointTest extends TestClass

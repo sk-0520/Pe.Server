@@ -26,8 +26,8 @@ use PeServer\Core\Throws\HttpClientRequestException;
 use PeServer\Core\Throws\HttpClientStatusException;
 use PeServer\Core\Web\Url;
 use PeServer\Core\Web\UrlQuery;
-use PeServerUT\Data;
-use PeServerUT\TestClass;
+use PeServerTest\Data;
+use PeServerTest\TestClass;
 
 class HttpClientTest extends TestClass
 {

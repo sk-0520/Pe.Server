@@ -8,9 +8,9 @@ use function PHPUnit\Framework\assertSame;
 use PeServer\Core\Collections\GeneratorIterator;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\CallbackTypeError;
-use PeServerUT\Data;
+use PeServerTest\Data;
 
-use PeServerUT\TestClass;
+use PeServerTest\TestClass;
 use PHPUnit\PhpParser\Node\Expr\StaticCall;
 use TypeError;
 

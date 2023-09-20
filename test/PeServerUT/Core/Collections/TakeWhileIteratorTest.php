@@ -7,7 +7,7 @@ namespace PeServerUT\Core\Collections;
 use ArrayIterator;
 use PeServer\Core\Collections\TakeWhileIterator;
 use PeServer\Core\Throws\CallbackTypeError;
-use PeServerUT\TestClass;
+use PeServerTest\TestClass;
 
 class TakeWhileIteratorTest extends TestClass
 {

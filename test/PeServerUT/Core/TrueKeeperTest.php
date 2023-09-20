@@ -6,7 +6,7 @@ namespace PeServerUT\Core;
 
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\TrueKeeper;
-use PeServerUT\TestClass;
+use PeServerTest\TestClass;
 
 class TrueKeeperTest extends TestClass
 {

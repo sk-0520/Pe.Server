@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServerUT\App\Models;
 
 use PeServer\App\Models\AppCryptography;
-use PeServerUT\TestClass;
+use PeServerTest\TestClass;
 
 class AppCryptographyTest extends TestClass
 {

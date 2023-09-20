@@ -9,8 +9,8 @@ use PeServer\Core\Serialization\Mapping;
 use PeServer\Core\Throws\MapperKeyNotFoundException;
 use PeServer\Core\Throws\MapperTypeException;
 use PeServer\Core\Web\UrlUtility;
-use PeServerUT\Data;
-use PeServerUT\TestClass;
+use PeServerTest\Data;
+use PeServerTest\TestClass;
 
 class MapperTest extends TestClass
 {
