@@ -12,3 +12,4 @@ echo --MEMO--
 echo  --mode [ut/st]
 echo  --ignore-coverage
 echo  --phpunit:filter [WORD*]
+echo  --no-exit

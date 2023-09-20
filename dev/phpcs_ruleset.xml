@@ -2,8 +2,10 @@
 <ruleset name="KIBUN">
 	<arg value="sp"/>
 	<arg name="colors" />
-	<arg name="ignore" value="../public_html/PeServer/Core/Libs "/>
-	<arg name="ignore" value="../public_html/PeServer/data"/>
+
+	<exclude-pattern>*/PeServer/Core/Libs/*</exclude-pattern>
+	<exclude-pattern>*/PeServer/data/*</exclude-pattern>
+
 
 	<rule ref="PSR12">
 		<!-- まぁいらんわ -->

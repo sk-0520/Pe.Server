@@ -5,7 +5,7 @@
       <directory>../test/PeServerUT</directory>
     </testsuite>
     <testsuite name="st">
-      <directory>../test/PeServerST</directory>
+      <file>../test/PeServerST/No0010_InitializeTest.php</file>
     </testsuite>
   </testsuites>
   <coverage/>

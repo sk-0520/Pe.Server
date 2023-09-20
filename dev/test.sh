@@ -109,7 +109,7 @@ case "${TEST_MODE}" in
 esac
 
 cd ${PHPUNIT_BASE_DIR}/
-STORAGE="_storage-${TEST_MODE}"
+STORAGE="storage-${TEST_MODE}"
 if [[ -d "${STORAGE}" ]] ; then
 	rm --recursive --force "${STORAGE}"
 fi

@@ -54,7 +54,7 @@ $startup = new AppStartup(
 $container = $startup->setup(
 	AppStartup::MODE_WEB,
 	[
-		'environment' => $isLocalhost ? ($appTestMode === '' ? $appTestMode : 'development') : 'production',
+		'environment' => $isLocalhost ? ($appTestMode !== '' ? $appTestMode : 'development') : 'production',
 		'revision' => ':REVISION:',
 		'special_store' => $specialStore,
 		'url_helper' => $urlHelper,

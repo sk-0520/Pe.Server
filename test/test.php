@@ -57,7 +57,7 @@ $container = $startup->setup(
 		'url_helper' => new UrlHelper(''),
 	]
 );
-Directory::setTemporaryDirectory(Path::combine(__DIR__, "/_storage-$appTestMode/temp"));
+Directory::setTemporaryDirectory(Path::combine(__DIR__, "/storage-$appTestMode/temp"));
 TestClass::$_do_not_use_container_user_test = $container;
 
 $testSettingFilePath = Path::combine(__DIR__, '@setting.json');
