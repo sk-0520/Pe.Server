@@ -14,7 +14,7 @@
 			開発ドキュメント
 			<ul>
 				<li><a href='/public/api-doc/'>Doc: PeServer</a></li>
-				<li><a href='/public/coverage/php/'>Code Coverage: PeServer</a></li>
+				<li><a href='/public/coverage/php/ut/'>Code Coverage: PeServer</a></li>
 				<li><a href='/public/coverage/script/lcov-report/'>Code Coverage: Script</a></li>
 			</ul>
 		</li>

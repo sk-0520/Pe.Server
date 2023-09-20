@@ -4,8 +4,18 @@ pushd "$(cd "$(dirname "${0}")"; pwd)"
 	#shellcheck disable=SC1091
 	source common.sh
 	#shellcheck disable=SC2048,SC2086
-	common::parse_options "ignore-namespace! ignore-coverage! phpunit:filter" $*
+	common::parse_options 'test# ignore-namespace! ignore-coverage! phpunit:filter' $*
 popd
+
+TEST_MODE=${COMMON_OPTIONS[test]}
+case "${TEST_MODE}" in
+	ut)
+		;;
+	*)
+		echo "--test [ut]"
+		exit 1
+		;;
+esac
 
 cd "$(cd "$(dirname "${0}")/../test"; pwd)"
 
@@ -75,7 +85,7 @@ fi
 
 PHPUNIT_OPTION_COVERAGE=
 if ! common::exists_option 'ignore-coverage' ; then
-	PHPUNIT_OPTION_COVERAGE="--coverage-html ../public_html/public/coverage/php"
+	PHPUNIT_OPTION_COVERAGE="--coverage-html ../public_html/public/coverage/php/ut"
 fi
 
 COVERAGE_CACHE_OPTION=""
@@ -84,8 +94,13 @@ if [[ -v COVERAGE_CACHE ]] ; then
 fi
 
 cd "${PHPUNIT_BASE_DIR}"
-php -S "${LOCAL_HTTP_TEST}" -t http > http.log 2>&1 &
+STORAGE="_storage-${TEST_MODE}"
+if [[ -d "${STORAGE}" ]] ; then
+	rm --recursive --force "${STORAGE}"
+fi
+mkdir "${STORAGE}"
+php -S "${LOCAL_HTTP_TEST}" -t "http-${TEST_MODE}" > "http-${TEST_MODE}.log" 2>&1 &
 trap 'kill %1' 0
 sleep "${LOCAL_HTTP_WAIT}"
 #shellcheck disable=SC2086
-php "${PHPUNIT_FILE}" --configuration ../dev/phpunit.xml --testdox ${PHPUNIT_OPTION_COVERAGE} ${COVERAGE_CACHE_OPTION} ${PHPUNIT_OPTION_FILTER} .
+php "${PHPUNIT_FILE}" --configuration "../dev/phpunit-${TEST_MODE}.xml" --testdox ${PHPUNIT_OPTION_COVERAGE} ${COVERAGE_CACHE_OPTION} ${PHPUNIT_OPTION_FILTER} .

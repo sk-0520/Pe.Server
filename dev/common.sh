@@ -19,7 +19,7 @@ declare -A COMMON_OPTIONS=()
 #
 # 引数:
 #   1:  コマンドライン引数定義( "" でまとめる想定)
-#       終端 * で必須
+#       終端 # で必須
 #       終端 ! でスイッチ
 #   2*: コマンドライン引数実体
 function common::parse_options()
@@ -39,10 +39,10 @@ function common::parse_options()
 		local SWITCH=false
 		local KEY=
 
-		if [ "$LAST" = "*" ] ; then
+		if [[ "$LAST" = "#" ]] ; then
 			REQUIRE=true
 			KEY=${ITEM:0:-1}
-		elif [ "$LAST" = "!" ] ; then
+		elif [[ "$LAST" = "!" ]] ; then
 			SWITCH=true
 			KEY=${ITEM:0:-1}
 		else
