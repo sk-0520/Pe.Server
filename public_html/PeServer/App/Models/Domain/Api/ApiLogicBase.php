@@ -31,7 +31,7 @@ abstract class ApiLogicBase extends DomainLogicBase
 
 	#region variable
 
-	#[Inject] //@phpstan-ignore-next-line Inject
+	#[Inject] //@phpstan-ignore-next-line [INJECT]
 	private HttpRequest $request;
 
 	private IAuditUserInfo|null $auditUserInfo = null;
