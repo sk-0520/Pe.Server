@@ -50,11 +50,15 @@ jobs:
 
       - name: <Test> code
         shell: bash
-        run: ./dev/code.sh --phpcs:ignore-warning
+        run: ./dev/code.sh
 
-      - name: <Test> back-end
+      - name: <Test> back-end UT
         shell: bash
-        run: ./dev/test.sh
+        run: ./dev/test.sh --mode ut
+
+      - name: <Test> back-end ST
+        shell: bash
+        run: ./dev/test.sh --mode st
 
       - name: <Generate> document
         shell: bash

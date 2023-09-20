@@ -45,20 +45,14 @@ jobs:
         shell: bash
         run: ./dev/code.sh
 
-      - name: <Test> back-end
+      - name: <Test> back-end UT
         shell: bash
-        run: ./dev/test.sh
+        run: ./dev/test.sh --mode ut
+
+      - name: <Test> back-end ST
+        shell: bash
+        run: ./dev/test.sh --mode st
 
       - name: <Generate> document
         shell: bash
         run: ./dev/doc.sh
-
-      - name: <Archive> Application
-        shell: bash
-        run: tar cfv public_html.tar public_html
-
-      - name: <Artifact> Application
-        uses: actions/upload-artifact@v3
-        with:
-          name: public_html
-          path: public_html.tar

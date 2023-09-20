@@ -33,9 +33,14 @@ $urlHelper = new UrlHelper('');
 $specialStore = new AppSpecialStore();
 $isLocalhost = $specialStore->getServer('SERVER_NAME') === 'localhost';
 
+$appTestMode = '';
 error_reporting(E_ALL);
 if ($isLocalhost) {
 	ini_set('display_errors', 'On');
+	$mode = getenv('APP_TEST_MODE');
+	if(is_string($mode)) {
+		$appTestMode = $mode;
+	}
 } else {
 	ini_set('display_errors', 'Off');
 }
@@ -49,7 +54,7 @@ $startup = new AppStartup(
 $container = $startup->setup(
 	AppStartup::MODE_WEB,
 	[
-		'environment' => $isLocalhost ? 'development' : 'production',
+		'environment' => $isLocalhost ? ($appTestMode !== '' ? $appTestMode : 'development') : 'production',
 		'revision' => ':REVISION:',
 		'special_store' => $specialStore,
 		'url_helper' => $urlHelper,
