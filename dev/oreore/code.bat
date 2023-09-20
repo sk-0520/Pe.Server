@@ -5,7 +5,7 @@ call env.bat
 
 echo %DATE:/=-%T%TIME: =0%+09:00
 
-"%BASH%" -e ..\code.sh --ignore-pplint %*
+"%BASH%" -e ..\code.sh --ignore-pplint --phpcs:cache %TEMP%/phpcs.cache %*
 
 echo.
 echo --MEMO--

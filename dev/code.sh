@@ -5,7 +5,7 @@ cd "$(cd "$(dirname "${0}")"; pwd)"
 #shellcheck disable=SC1091
 source common.sh
 #shellcheck disable=SC2048,SC2086
-common::parse_options "ignore-pplint! ignore-phpstan! ignore-phpcs! phpcs-fix! phpcs:report phpcs:ignore-warning!" $*
+common::parse_options "ignore-pplint! ignore-phpstan! ignore-phpcs! phpcs-fix! phpcs:report phpcs:ignore-warning! phpcs:cache" $*
 
 PPLINT_VERSION=v1.3.2
 PPLINT_URL=https://github.com/php-parallel-lint/PHP-Parallel-Lint/releases/download/${PPLINT_VERSION}/parallel-lint.phar
@@ -72,6 +72,12 @@ if ! common::exists_option 'ignore-phpcs' ; then
 		PHPCS_OPTIONS_WARNIG="--warning-severity=0"
 	fi
 
+	PHPCS_OPTIONS_CACHE=
+	if common::exists_option 'phpcs:cache' ; then
+		PHPCS_OPTIONS_CACHE="--cache=${COMMON_OPTIONS[phpcs:cache]}"
+	fi
+
+
 	PHPCS_OPTIONS_DEFAULT="../public_html/PeServer --standard=phpcs_ruleset.xml"
 
 	if common::exists_option 'phpcs-fix' ; then
@@ -82,7 +88,7 @@ if ! common::exists_option 'ignore-phpcs' ; then
 	fi
 
 	#shellcheck disable=SC2086
-	php "${PHPCODESNIFFER_S_FILE}" ${PHPCS_OPTIONS_DEFAULT} ${PHPCS_OPTION_REPORT} ${PHPCS_OPTIONS_WARNIG}
+	php "${PHPCODESNIFFER_S_FILE}" ${PHPCS_OPTIONS_DEFAULT} ${PHPCS_OPTION_REPORT} ${PHPCS_OPTIONS_WARNIG} ${PHPCS_OPTIONS_CACHE}
 fi
 
 #set +e
