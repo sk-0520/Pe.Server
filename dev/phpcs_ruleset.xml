@@ -11,9 +11,13 @@
 		<!-- タブが好きなんや -->
 		<exclude name="Generic.WhiteSpace.DisallowTabIndent"/>
 
+		<!-- 長さはどうでもいい -->
 		<exclude name="Generic.Files.LineLength.TooLong"/>
+		<!-- 何言ってんのか分からん -->
+		<exclude name="PSR1.Files.SideEffects"/>
 	</rule>
 
+	<!-- タブが好きなんや -->
 	<rule ref="Generic.WhiteSpace.ScopeIndent">
 		<properties>
 			<property name="tabIndent" value="true"/>
