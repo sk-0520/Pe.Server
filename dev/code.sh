@@ -72,7 +72,7 @@ if ! common::exists_option 'ignore-phpcs' ; then
 		PHPCS_OPTIONS_WARNIG="--warning-severity=0"
 	fi
 
-	PHPCS_OPTIONS_DEFAULT="../public_html/PeServer --standard=phpcs_ruleset.xml --colors --ignore=../public_html/PeServer/Core/Libs --ignore=../public_html/PeServer/data"
+	PHPCS_OPTIONS_DEFAULT="../public_html/PeServer --standard=phpcs_ruleset.xml"
 
 	if common::exists_option 'phpcs-fix' ; then
 		echo "!!修正処理実施!!"
