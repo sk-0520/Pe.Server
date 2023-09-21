@@ -21,13 +21,12 @@ class ImageInformation
 	 *
 	 * @param Size $size
 	 * @param string $mime
-	 * @param int $type
-	 * @phpstan-param ImageType::* $type
+	 * @param ImageType $type
 	 */
 	private function __construct(
 		public Size $size,
 		public string $mime,
-		public int $type
+		public ImageType $type
 	) {
 	}
 
@@ -64,7 +63,7 @@ class ImageInformation
 				$result[1]
 			),
 			$result['mime'],
-			$result[2]
+			ImageType::from($result[2])
 		);
 	}
 }
