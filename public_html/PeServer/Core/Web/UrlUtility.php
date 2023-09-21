@@ -25,6 +25,13 @@ abstract class UrlUtility
 
 	#region function
 
+	/**
+	 * TODO: 要整理, Url と何らかの組み合わせで出来るはず。
+	 *
+	 * @param string $path
+	 * @param SpecialStore $specialStore
+	 * @return string
+	 */
 	public static function convertPathToUrl(string $path, SpecialStore $specialStore): string
 	{
 		/** @var string */
