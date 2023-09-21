@@ -6,6 +6,7 @@ namespace PeServer\Core\Web;
 
 use PeServer\Core\Binary;
 use PeServer\Core\Encoding;
+use PeServer\Core\Web\UrlEncode;
 use PeServer\Core\Web\UrlUtility;
 
 /**
@@ -19,12 +20,11 @@ readonly class UrlEncoding
 	/**
 	 * 生成。
 	 *
-	 * @param int $url URLエンコード種別
-	 * @phpstan-param UrlUtility::URL_KIND_* $url
+	 * @param UrlEncode $url URLエンコード種別
 	 * @param Encoding $string 文字列エンコード種別
 	 */
 	public function __construct(
-		public int $url,
+		public UrlEncode $url,
 		public Encoding $string
 	) {
 	}
@@ -33,7 +33,39 @@ readonly class UrlEncoding
 
 	public static function createDefault(): self
 	{
-		return new self(UrlUtility::URL_KIND_RFC3986, Encoding::getDefaultEncoding());
+		return new self(UrlEncode::Rfc3986, Encoding::getDefaultEncoding());
+	}
+
+	/**
+	 * URLエンコード。
+	 *
+	 * @param string $input
+	 * @return string
+	 * @see https://www.php.net/manual/function.urldecode.php
+	 * @see https://www.php.net/manual/function.rawurldecode.php
+	 */
+	public function encodeUrl(string $input): string
+	{
+		return match ($this->url) {
+			UrlEncode::Rfc1738 => urlencode($input),
+			UrlEncode::Rfc3986 => rawurlencode($input),
+		};
+	}
+
+	/**
+	 * URLデコード。
+	 *
+	 * @param string $input
+	 * @return string
+	 * @see https://www.php.net/manual/function.urldecode.php
+	 * @see https://www.php.net/manual/function.rawurldecode.php
+	 */
+	public function decodeUrl(string $input): string
+	{
+		return match ($this->url) {
+			UrlEncode::Rfc1738 => urldecode($input),
+			UrlEncode::Rfc3986 => rawurldecode($input),
+		};
 	}
 
 	/**
@@ -45,7 +77,8 @@ readonly class UrlEncoding
 	public function encode(string $value): string
 	{
 		$encodeString = $this->string->getBinary($value)->getRaw();
-		$encodeValue = UrlUtility::encode($encodeString, $this->url);
+		$encodeValue = $this->encodeUrl($encodeString);
+
 		return $encodeValue;
 	}
 
@@ -57,7 +90,7 @@ readonly class UrlEncoding
 	 */
 	public function decode(string $value): string
 	{
-		$decodeValue = new Binary(UrlUtility::decode($value, $this->url));
+		$decodeValue = new Binary($this->decode($value));
 		$decodeString = $this->string->toString($decodeValue);
 
 		return $decodeString;

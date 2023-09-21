@@ -10,6 +10,7 @@ use PeServer\Core\Encoding;
 use PeServer\Core\Http\HttpHeader;
 use PeServer\Core\Text;
 use PeServer\Core\TypeUtility;
+use PeServer\Core\Web\UrlEncode;
 use PeServer\Core\Web\UrlEncoding;
 use PeServer\Core\Web\UrlUtility;
 
@@ -23,7 +24,7 @@ class FormUrlEncodedContent extends StaticContentBase
 	 */
 	public function __construct(Dictionary $map, ?UrlEncoding $urlEncoding = null)
 	{
-		$urlEncoding ??= new UrlEncoding(UrlUtility::URL_KIND_RFC1738, Encoding::getDefaultEncoding());
+		$urlEncoding ??= new UrlEncoding(UrlEncode::Rfc1738, Encoding::getDefaultEncoding());
 
 		$kvItems = [];
 		foreach ($map as $key => $value) {
