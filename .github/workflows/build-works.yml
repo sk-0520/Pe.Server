@@ -2,6 +2,10 @@ name: Build Works
 
 on: push
 
+env:
+  php-versions: '8.2'
+  extensions: sqlite3, mbstring, zip, xml, gd, xdebug
+
 jobs:
   build:
 
@@ -20,8 +24,8 @@ jobs:
       - name: <Setup> PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'
-          extensions: sqlite3, mbstring, zip, xml, gd, xdebug
+          php-version: ${{ env.php-versions }}
+          extensions: ${{ env.extensions }}
           coverage: xdebug
 
       - name: <Install> NPM
@@ -76,8 +80,8 @@ jobs:
       - name: <Setup> PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'
-          extensions: sqlite3, mbstring, zip, xml, gd, xdebug
+          php-version: ${{ env.php-versions }}
+          extensions: ${{ env.extensions }}
           coverage: xdebug
 
       - name: <Cache> Phar
@@ -107,8 +111,8 @@ jobs:
       - name: <Setup> PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'
-          extensions: sqlite3, mbstring, zip, xml, gd, xdebug
+          php-version: ${{ env.php-versions }}
+          extensions: ${{ env.extensions }}
           coverage: xdebug
 
       - name: <Cache> Phar
