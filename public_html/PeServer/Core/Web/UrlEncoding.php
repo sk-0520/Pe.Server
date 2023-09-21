@@ -39,16 +39,16 @@ readonly class UrlEncoding
 	/**
 	 * URLエンコード。
 	 *
-	 * @param string $input
+	 * @param Binary $input
 	 * @return string
 	 * @see https://www.php.net/manual/function.urldecode.php
 	 * @see https://www.php.net/manual/function.rawurldecode.php
 	 */
-	public function encodeUrl(string $input): string
+	public function encodeUrl(Binary $input): string
 	{
 		return match ($this->url) {
-			UrlEncode::Rfc1738 => urlencode($input),
-			UrlEncode::Rfc3986 => rawurlencode($input),
+			UrlEncode::Rfc1738 => urlencode($input->getRaw()),
+			UrlEncode::Rfc3986 => rawurlencode($input->getRaw()),
 		};
 	}
 
@@ -56,16 +56,18 @@ readonly class UrlEncoding
 	 * URLデコード。
 	 *
 	 * @param string $input
-	 * @return string
+	 * @return Binary
 	 * @see https://www.php.net/manual/function.urldecode.php
 	 * @see https://www.php.net/manual/function.rawurldecode.php
 	 */
-	public function decodeUrl(string $input): string
+	public function decodeUrl(string $input): Binary
 	{
-		return match ($this->url) {
+		$raw = match ($this->url) {
 			UrlEncode::Rfc1738 => urldecode($input),
 			UrlEncode::Rfc3986 => rawurldecode($input),
 		};
+
+		return new Binary($raw);
 	}
 
 	/**
@@ -76,7 +78,7 @@ readonly class UrlEncoding
 	 */
 	public function encode(string $value): string
 	{
-		$encodeString = $this->string->getBinary($value)->getRaw();
+		$encodeString = $this->string->getBinary($value);
 		$encodeValue = $this->encodeUrl($encodeString);
 
 		return $encodeValue;
@@ -90,7 +92,7 @@ readonly class UrlEncoding
 	 */
 	public function decode(string $value): string
 	{
-		$decodeValue = new Binary($this->decode($value));
+		$decodeValue = $this->decodeUrl($value);
 		$decodeString = $this->string->toString($decodeValue);
 
 		return $decodeString;
