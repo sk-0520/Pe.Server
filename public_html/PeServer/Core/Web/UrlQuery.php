@@ -116,7 +116,7 @@ readonly class UrlQuery implements Stringable
 					$workValues = [$value];
 				} elseif (is_int($value)) {
 					$workValues = [(string)$value];
-				} elseif (is_array($value)) { //@phpstan-ignore-line [PUBLIC]
+				} elseif (is_array($value)) {
 					foreach ($value as $i => $v) {
 						if ($v === null || is_string($v)) {
 							$workValues[] = $v;

@@ -7,8 +7,6 @@ namespace PeServerTest;
 ini_set('memory_limit', '-1');
 error_reporting(E_ALL);
 
-//set_include_path(__DIR__ . ':' .  __DIR__ . '/../public_html');
-
 $files = glob(__DIR__ . '/phpunit.phar.*');
 require_once($files[0]);
 require_once(__DIR__ . '/../public_html/PeServer/Core/AutoLoader.php');
@@ -24,13 +22,21 @@ use PeServer\Core\IO\File;
 use PeServer\Core\Store\SpecialStore;
 use PeServer\Core\Web\UrlHelper;
 
+$appTestMode = getenv("APP_TEST_MODE");
+if(!is_string($appTestMode) || $appTestMode === '') {
+	throw new Exception('$appTestMode');
+}
+
 $autoLoader = new \PeServer\Core\AutoLoader(
 	[
 		'PeServer' => [
-			'directory' => __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'public_html' . DIRECTORY_SEPARATOR . 'PeServer',
+			'directory' => __DIR__ . '/../public_html/PeServer',
 		],
-		'PeServerTest' => [
-			'directory' => __DIR__ . DIRECTORY_SEPARATOR . 'PeServerTest',
+		'PeServerUT' => [
+			'directory' => __DIR__ . '/PeServerUT',
+		],
+		'PeServerST' => [
+			'directory' => __DIR__ . '/PeServerST',
 		],
 	]
 );
@@ -51,7 +57,7 @@ $container = $startup->setup(
 		'url_helper' => new UrlHelper(''),
 	]
 );
-Directory::setTemporaryDirectory(Path::combine(__DIR__, 'temp'));
+Directory::setTemporaryDirectory(Path::combine(__DIR__, "/storage-$appTestMode/temp"));
 TestClass::$_do_not_use_container_user_test = $container;
 
 $testSettingFilePath = Path::combine(__DIR__, '@setting.json');

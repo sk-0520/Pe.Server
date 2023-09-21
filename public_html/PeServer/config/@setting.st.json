@@ -1,0 +1,49 @@
+{
+	"logging": {
+		"loggers": {
+			"file": {
+				"logger_class": "PeServer\\Core\\Log\\FileLogger",
+				"level": 3,
+				"format": "{TIMESTAMP} |{LEVEL}| [{CLIENT_IP}:{CLIENT_HOST}] {REQUEST_ID}|{SESSION} <{UA}> {METHOD} {REQUEST} {FILE}({LINE}) {FUNCTION} -> {MESSAGE}",
+				"configuration": {
+					"directory": "$(BASE)/../../test/storage-st/logs",
+					"name": "log_{DATE}.log",
+					"count": 365
+				}
+			}
+		},
+		"archive_size": 5242880
+	},
+	"persistence": {
+		"default": {
+			"connection": "sqlite:$(BASE)/../../test/storage-st/data.sqlite3",
+			"user": "",
+			"passwd": ""
+		}
+	},
+	"store": {
+		"cookie": {
+			"httpOnly": true,
+			"sameSite": "lax"
+		},
+		"session": {
+			"name": "pe-sid",
+			"save": "$(BASE)/../../test/storage-st/store/session",
+			"cookie": {}
+		},
+		"temporary": {
+			"name": "pe-temp",
+			"save": "$(BASE)/../../test/storage-st/store/temporary",
+			"cookie": {
+				"span": "PT3M"
+			}
+		}
+	},
+	"cache": {
+		"temporary": "$(BASE)/../../test/storage-st/temp/buckets",
+		"database": "$(BASE)/../../test/storage-st/database_cache",
+		"template": "$(BASE)/../../test/storage-st/temp/template",
+		"backup": "$(BASE)/../../test/storage-st/backups",
+		"deploy": "$(BASE)/../../test/storage-st/temp/deploy"
+	}
+}

@@ -4,8 +4,20 @@ pushd "$(cd "$(dirname "${0}")"; pwd)"
 	#shellcheck disable=SC1091
 	source common.sh
 	#shellcheck disable=SC2048,SC2086
-	common::parse_options "ignore-namespace! ignore-coverage! phpunit:filter" $*
+	common::parse_options 'mode# no-exit! ignore-namespace! ignore-coverage! phpunit:filter' $*
 popd
+
+TEST_MODE="${COMMON_OPTIONS['mode']}"
+case "${TEST_MODE}" in
+	ut) ;;
+	st) ;;
+	*)
+		echo "--mode [ut/st]"
+		exit 1
+		;;
+esac
+# サーバー側引き渡し用(bootstrapでも流用)
+export APP_TEST_MODE="${TEST_MODE}"
 
 cd "$(cd "$(dirname "${0}")/../test"; pwd)"
 
@@ -14,7 +26,7 @@ BASE_DIR=../public_html
 LOCAL_HTTP_TEST="${LOCAL_HTTP_TEST:=localhost:8080}"
 LOCAL_HTTP_WAIT="${LOCAL_HTTP_WAIT:=1}"
 
-PHPUNIT_VERSION=10.2.5
+PHPUNIT_VERSION=10.3.5
 PHPUNIT_URL=https://phar.phpunit.de/phpunit-${PHPUNIT_VERSION}.phar
 PHPUNIT_NAME=phpunit.phar
 PHPUNIT_FILE=${PHPUNIT_NAME}.${PHPUNIT_VERSION}
@@ -75,7 +87,7 @@ fi
 
 PHPUNIT_OPTION_COVERAGE=
 if ! common::exists_option 'ignore-coverage' ; then
-	PHPUNIT_OPTION_COVERAGE="--coverage-html ../public_html/public/coverage/php"
+	PHPUNIT_OPTION_COVERAGE="--coverage-html ../public_html/public/coverage/php/${TEST_MODE}"
 fi
 
 COVERAGE_CACHE_OPTION=""
@@ -83,9 +95,32 @@ if [[ -v COVERAGE_CACHE ]] ; then
 	COVERAGE_CACHE_OPTION="--coverage-cache ${COVERAGE_CACHE}"
 fi
 
-cd "${PHPUNIT_BASE_DIR}"
-php -S "${LOCAL_HTTP_TEST}" -t http > http.log 2>&1 &
+PUBLIC_DIR=
+case "${TEST_MODE}" in
+	ut)
+		PUBLIC_DIR="${PHPUNIT_BASE_DIR}/http-${TEST_MODE}"
+		;;
+	st)
+		PUBLIC_DIR="${BASE_DIR}"
+		;;
+	*)
+		exit 255
+		;;
+esac
+
+cd ${PHPUNIT_BASE_DIR}/
+STORAGE="storage-${TEST_MODE}"
+if [[ -d "${STORAGE}" ]] ; then
+	rm --recursive --force "${STORAGE}"
+fi
+mkdir "${STORAGE}"
+
+php -S "${LOCAL_HTTP_TEST}" -t "${PUBLIC_DIR}" > "http-${TEST_MODE}.log" 2>&1 &
 trap 'kill %1' 0
 sleep "${LOCAL_HTTP_WAIT}"
 #shellcheck disable=SC2086
-php "${PHPUNIT_FILE}" --configuration ../dev/phpunit.xml --testdox ${PHPUNIT_OPTION_COVERAGE} ${COVERAGE_CACHE_OPTION} ${PHPUNIT_OPTION_FILTER} .
+php "${PHPUNIT_FILE}" --configuration "../dev/phpunit.xml" --testsuite "${TEST_MODE}" --testdox ${PHPUNIT_OPTION_COVERAGE} ${COVERAGE_CACHE_OPTION} ${PHPUNIT_OPTION_FILTER}
+
+if common::exists_option 'no-exit' ; then
+	read
+fi

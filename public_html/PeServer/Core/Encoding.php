@@ -193,10 +193,10 @@ class Encoding
 		return new Encoding(self::ENCODE_SJIS_DEFAULT);
 	}
 
-	/** @deprecated toBinary */
-	public function getBinary(string $input): Binary
+	/** @deprecated getBinary */
+	public function toBinary(string $input): Binary
 	{
-		return $this->toBinary($input);
+		return $this->getBinary($input);
 	}
 
 	/**
@@ -207,7 +207,7 @@ class Encoding
 	 * @throws EncodingException
 	 * @see https://www.php.net/manual/function.mb-convert-encoding.php
 	 */
-	public function toBinary(string $input): Binary
+	public function getBinary(string $input): Binary
 	{
 		$default = self::getDefaultEncoding();
 		if ($default->name === $this->name) {

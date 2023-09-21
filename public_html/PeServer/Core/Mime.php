@@ -20,6 +20,7 @@ abstract class Mime
 	public const HTML = 'text/html';
 	public const JSON = 'application/json';
 	public const GZ = 'application/gzip';
+	public const ZIP = 'application/zip';
 	public const STREAM = 'application/octet-stream';
 	public const FORM = 'application/x-www-form-urlencoded';
 	public const ICON = 'image/vnd.microsoft.icon';

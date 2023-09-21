@@ -29,8 +29,13 @@ abstract class UrlUtility
 	{
 		/** @var string */
 		$httpsProtocol = $specialStore->getServer('HTTPS', Text::EMPTY);
-		$httpProtocol = Text::isNullOrEmpty($httpsProtocol) ? 'http://' : 'https://';
-		return $httpProtocol . $specialStore->getServer('SERVER_NAME') . '/' .  Text::trim($path, '/');
+		$scheme = Text::isNullOrEmpty($httpsProtocol) ? 'http://' : 'https://';
+
+		/** @var int|null */
+		$serverPort = $specialStore->getServer('SERVER_PORT', null);
+		$port = $serverPort !== null ? ':' . $serverPort : '';
+
+		return $scheme . $specialStore->getServer('SERVER_NAME') . $port . '/' .  Text::trim($path, '/');
 	}
 
 	/**

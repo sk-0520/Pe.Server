@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domain\Page\Management;
 
+use ZipArchive;
 use PeServer\Core\Mime;
 use PeServer\Core\Binary;
 use PeServer\Core\Archiver;
@@ -51,9 +52,18 @@ class ManagementLogDetailLogic extends PageLogicBase
 		if ($archiveSize <= $fileSize || $callMode === LogicCallMode::Submit) {
 			$this->result['download'] = true;
 
-			$compressed = Archiver::compressGzip($binary, 9);
+			$tempLogArchivePath = File::createTemporaryFilePath();
 
-			$this->setDownloadContent(Mime::GZ, $fileName . '.gz', $compressed);
+			$zipArchive = new ZipArchive();
+			$zipArchive->open($tempLogArchivePath, ZipArchive::CREATE | ZipArchive::OVERWRITE);
+			$zipArchive->addFromString($fileName, $binary->getRaw());
+			$zipArchive->close();
+
+			$compressed = File::readContent($tempLogArchivePath);
+
+			File::removeFile($tempLogArchivePath);
+
+			$this->setDownloadContent(Mime::ZIP, $fileName . '.zip', $compressed);
 		} else {
 			$this->setValue('log_name', $fileName);
 			$this->setValue('log_file', $filePath);

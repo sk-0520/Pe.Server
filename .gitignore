@@ -9,6 +9,7 @@ temp/
 /public_html/PeServer/data/
 /public_html/PeServer/config/setting.production.json
 /public_html/PeServer/config/setting.development.json
+/public_html/PeServer/config/setting.st.json
 /dev/local-*
 desktop.ini
 *.zip
@@ -33,3 +34,4 @@ $*
 /test/phpunit.phar.*
 /public_html/PeServer/Core/Libs/php-markdown/test
 /dev/.phpunit.cache
+/test/storage-*
