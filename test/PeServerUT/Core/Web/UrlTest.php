@@ -35,6 +35,8 @@ class UrlTest extends TestClass
 		$this->assertFalse(Url::tryParse('*', $_));
 		$this->assertFalse(Url::tryParse('http::://:80.localhost', $_));
 		$this->assertFalse(Url::tryParse(' http://localhost ', $_));
+		$this->assertFalse(Url::tryParse('http://#', $_));
+		$this->assertFalse(Url::tryParse('http:// #', $_));
 	}
 
 	public function test_try_parse_scheme()

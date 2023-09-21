@@ -59,9 +59,9 @@ readonly class Url implements Stringable
 	 *
 	 * @param array<array-key,mixed> $elements
 	 * @param string $key
-	 * @param UrlEncoding $urlEncoding
 	 * @param string|null $default
-	 * @return string デコードされた値か、取得失敗時のデフォルト値
+	 * @param UrlEncoding $urlEncoding
+	 * @return string|null デコードされた値か、取得失敗時のデフォルト値
 	 */
 	private static function getDecodedValue(array $elements, string $key, ?string $default, UrlEncoding $urlEncoding): ?string
 	{
@@ -95,10 +95,10 @@ readonly class Url implements Stringable
 		}
 
 		// さすがにこの二点は保証しておきたい(scheme は微妙と思いつつ)
-		if (!isset($elements['scheme']) || Text::isNullOrEmpty($elements['scheme'])) {
+		if (!isset($elements['scheme']) || Text::isNullOrWhiteSpace($elements['scheme'])) {
 			return false;
 		}
-		if (!isset($elements['host']) || Text::isNullOrEmpty($elements['host'])) {
+		if (!array_key_exists('host', $elements) || Text::isNullOrWhiteSpace($elements['host'])) {
 			return false;
 		}
 

@@ -119,7 +119,7 @@ php -S "${LOCAL_HTTP_TEST}" -t "${PUBLIC_DIR}" > "http-${TEST_MODE}.log" 2>&1 &
 trap 'kill %1' 0
 sleep "${LOCAL_HTTP_WAIT}"
 #shellcheck disable=SC2086
-php "${PHPUNIT_FILE}" --configuration "../dev/phpunit.xml" --testsuite "${TEST_MODE}" --testdox ${PHPUNIT_OPTION_COVERAGE} ${COVERAGE_CACHE_OPTION} ${PHPUNIT_OPTION_FILTER}
+php "${PHPUNIT_FILE}"  --configuration "../dev/phpunit.xml" --testsuite "${TEST_MODE}" ${PHPUNIT_OPTION_COVERAGE} ${COVERAGE_CACHE_OPTION} ${PHPUNIT_OPTION_FILTER}
 
 if common::exists_option 'no-exit' ; then
 	read
