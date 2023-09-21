@@ -7,6 +7,7 @@ namespace PeServer\Core\Store;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Mvc\UploadFile;
 use PeServer\Core\Text;
+use PHPUnit\PharIo\Manifest\Url;
 
 /**
  * $_SERVER, $_COOKIE, $_SESSION 読み込みアクセス。
@@ -57,6 +58,17 @@ class SpecialStore
 	public function getServerNames(): array
 	{
 		return Arr::getKeys($_SERVER);
+	}
+
+	/**
+	 * `REQUEST_URI`
+	 *
+	 * @return Url
+	 */
+	public function getRequestUrl(): Url
+	{
+		$uri = self::getServer('REQUEST_URI');
+		return new Url($uri);
 	}
 
 	/**
