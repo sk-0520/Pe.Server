@@ -14,7 +14,6 @@ use PeServer\Core\Throws\InvalidOperationException;
 /**
  * URL のパス構成要素。
  */
-
 readonly class UrlPath implements Stringable
 {
 	#region variable
@@ -28,7 +27,6 @@ readonly class UrlPath implements Stringable
 	 * @var string[]|null
 	 */
 	private array|null $pathElements;
-
 
 	#endregion
 

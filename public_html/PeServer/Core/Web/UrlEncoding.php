@@ -14,7 +14,6 @@ use PeServer\Core\Web\UrlUtility;
  *
  * URLエンコード処理と、処理後の文字列を対象の文字コードで云々する。
  */
-
 readonly class UrlEncoding
 {
 	/**
