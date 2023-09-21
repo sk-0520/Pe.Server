@@ -44,7 +44,7 @@ readonly class UrlEncoding
 	 */
 	public function encode(string $value): string
 	{
-		$encodeString = $this->string->toBinary($value)->getRaw();
+		$encodeString = $this->string->getBinary($value)->getRaw();
 		$encodeValue = UrlUtility::encode($encodeString, $this->url);
 		return $encodeValue;
 	}
