@@ -93,17 +93,16 @@ class Graphics extends DisposerBase
 	 * バイナリデータから生成。
 	 *
 	 * @param Binary $binary
-	 * @param int $imageType
-	 * @phpstan-param ImageType::* $imageType
+	 * @param ImageType $imageType
 	 * @return Graphics
 	 */
-	public static function load(Binary $binary, int $imageType = ImageType::AUTO): Graphics
+	public static function load(Binary $binary, ImageType $imageType = ImageType::Auto): Graphics
 	{
 		$funcName = match ($imageType) {
-			ImageType::PNG => 'imagecreatefrompng',
-			ImageType::JPEG => 'imagecreatefromjpeg',
-			ImageType::WEBP => 'imagecreatefromwebp',
-			ImageType::BMP => 'imagecreatefrombmp',
+			ImageType::Png => 'imagecreatefrompng',
+			ImageType::Jpeg => 'imagecreatefromjpeg',
+			ImageType::Webp => 'imagecreatefromwebp',
+			ImageType::Bmp => 'imagecreatefrombmp',
 			default => 'imagecreatefromstring'
 		};
 
@@ -208,19 +207,18 @@ class Graphics extends DisposerBase
 	 *
 	 * @param int|Size $size int: 横幅のみ、高さは自動設定される。 Size:幅・高さ
 	 * @phpstan positive-int|Size $size
-	 * @param int $scaleMode 変換フラグ。
-	 * @phpstan-param ScaleMode::* $scaleMode
+	 * @param ScaleMode $scaleMode 変換フラグ。
 	 * @return Graphics
 	 * @throws GraphicsException
 	 * @see https://www.php.net/manual/function.imagescale.php
 	 */
-	public function scale(int|Size $size, int $scaleMode): Graphics
+	public function scale(int|Size $size, ScaleMode $scaleMode): Graphics
 	{
 		$result = false;
 		if (is_int($size)) {
-			$result = imagescale($this->image, $size, -1, $scaleMode);
+			$result = imagescale($this->image, $size, -1, $scaleMode->value);
 		} else {
-			$result = imagescale($this->image, $size->width, $size->height, $scaleMode);
+			$result = imagescale($this->image, $size->width, $size->height, $scaleMode->value);
 		}
 		if ($result === false) {
 			throw new GraphicsException();
@@ -548,10 +546,10 @@ class Graphics extends DisposerBase
 	private function exportImageCore(ImageSetting $setting): Binary
 	{
 		return OutputBuffer::get(fn () => match ($setting->imageType) {
-			ImageType::PNG => imagepng($this->image, null, ...$setting->options()),
-			ImageType::JPEG => imagejpeg($this->image, null, ...$setting->options()),
-			ImageType::WEBP => imagewebp($this->image, null, ...$setting->options()),
-			ImageType::BMP => imagebmp($this->image, null, ...$setting->options()),
+			ImageType::Png => imagepng($this->image, null, ...$setting->options()),
+			ImageType::Jpeg => imagejpeg($this->image, null, ...$setting->options()),
+			ImageType::Webp => imagewebp($this->image, null, ...$setting->options()),
+			ImageType::Bmp => imagebmp($this->image, null, ...$setting->options()),
 			default  => throw new NotImplementedException(),
 		});
 	}
@@ -564,7 +562,7 @@ class Graphics extends DisposerBase
 	 */
 	public function exportImage(ImageSetting $setting): Binary
 	{
-		if ($setting->imageType == ImageType::AUTO) {
+		if ($setting->imageType == ImageType::Auto) {
 			throw new ArgumentException('ImageType::AUTO');
 		}
 
@@ -579,14 +577,14 @@ class Graphics extends DisposerBase
 	 */
 	public function exportHtmlSource(ImageSetting $setting): string
 	{
-		if ($setting->imageType == ImageType::AUTO) {
+		if ($setting->imageType == ImageType::Auto) {
 			throw new ArgumentException('ImageType::AUTO');
 		}
 
 		$image = $this->exportImageCore($setting);
 
 		$mime = match ($setting->imageType) {
-			default => ImageType::toMime($setting->imageType),
+			default => $setting->imageType->toMime(),
 		};
 
 		$data = 'data:' . $mime . ';base64,';

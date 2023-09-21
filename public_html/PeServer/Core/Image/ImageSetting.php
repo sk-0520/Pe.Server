@@ -14,12 +14,11 @@ class ImageSetting
 	/**
 	 * 生成。
 	 *
-	 * @param int $imageType
-	 * @phpstan-param ImageType::* $imageType
+	 * @param ImageType $imageType
 	 * @param mixed[] $options イメージ生成処理用オプション。
 	 */
 	public function __construct(
-		public int $imageType,
+		public ImageType $imageType,
 		protected array $options
 	) {
 	}
@@ -38,22 +37,22 @@ class ImageSetting
 
 	public static function png(int $quality = -1, int $filters = -1): self
 	{
-		return new self(ImageType::PNG, [$quality, $filters]);
+		return new self(ImageType::Png, [$quality, $filters]);
 	}
 
 	public static function jpeg(int $quality = -1): self
 	{
-		return new self(ImageType::JPEG, [$quality]);
+		return new self(ImageType::Jpeg, [$quality]);
 	}
 
 	public static function webp(int $quality = -1): self
 	{
-		return new self(ImageType::WEBP, [$quality]);
+		return new self(ImageType::Webp, [$quality]);
 	}
 
 	public static function bmp(bool $compressed = true): self
 	{
-		return new self(ImageType::BMP, [$compressed]);
+		return new self(ImageType::Bmp, [$compressed]);
 	}
 
 	#endregion

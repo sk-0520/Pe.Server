@@ -14,11 +14,11 @@ class ImageTypeTest extends TestClass
 	public function test_toExtension()
 	{
 		$tests = [
-			new Data('jpeg', ImageType::JPEG, false),
-			new Data('.jpeg', ImageType::JPEG, true),
+			new Data('jpeg', ImageType::Jpeg, false),
+			new Data('.jpeg', ImageType::Jpeg, true),
 		];
 		foreach ($tests as $test) {
-			$actual = ImageType::toExtension(...$test->args);
+			$actual = $test->args[0]->toExtension($test->args[1]);
 			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
@@ -26,7 +26,7 @@ class ImageTypeTest extends TestClass
 	public function test_toExtension_throw()
 	{
 		$this->expectException(ImageException::class);
-		ImageType::toExtension(ImageType::AUTO);
+		ImageType::Auto->toExtension();
 		$this->fail();
 	}
 }
