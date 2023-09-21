@@ -44,16 +44,16 @@ class RgbColor implements IColor
 		public int $blue,
 		public int $alpha = IColor::ALPHA_NONE
 	) {
-		if ($red < self::RGB_MINIMUM || self::RGB_MAXIMUM < $red) { //@phpstan-ignore-line
+		if ($red < self::RGB_MINIMUM || self::RGB_MAXIMUM < $red) { //@phpstan-ignore-line [DOCTYPE]
 			throw new ArgumentException('$red');
 		}
-		if ($green < self::RGB_MINIMUM || self::RGB_MAXIMUM < $green) { //@phpstan-ignore-line
+		if ($green < self::RGB_MINIMUM || self::RGB_MAXIMUM < $green) { //@phpstan-ignore-line [DOCTYPE]
 			throw new ArgumentException('$green');
 		}
-		if ($blue < self::RGB_MINIMUM || self::RGB_MAXIMUM < $blue) { //@phpstan-ignore-line
+		if ($blue < self::RGB_MINIMUM || self::RGB_MAXIMUM < $blue) { //@phpstan-ignore-line [DOCTYPE]
 			throw new ArgumentException('$blue');
 		}
-		if ($alpha < self::ALPHA_NONE || self::ALPHA_FULL < $alpha) { //@phpstan-ignore-line
+		if ($alpha < self::ALPHA_NONE || self::ALPHA_FULL < $alpha) { //@phpstan-ignore-line [DOCTYPE]
 			throw new ArgumentException('$alpha');
 		}
 	}

@@ -188,11 +188,11 @@ readonly final class Binary implements ArrayAccess, IteratorAggregate, Countable
 	 */
 	public function offsetExists(mixed $offset): bool
 	{
-		if (!is_int($offset)) { //@phpstan-ignore-line UnsignedIntegerAlias
+		if (!is_int($offset)) { //@phpstan-ignore-line [DOCTYPE] UnsignedIntegerAlias
 			return false;
 		}
 
-		if ($offset < 0) { //@phpstan-ignore-line UnsignedIntegerAlias
+		if ($offset < 0) { //@phpstan-ignore-line [DOCTYPE] UnsignedIntegerAlias
 			return false;
 		}
 		if (strlen($this->raw) <= $offset) {

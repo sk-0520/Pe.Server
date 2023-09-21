@@ -63,7 +63,7 @@ class FileLogger extends LoggerBase
 
 		/** @phpstan-var UnsignedIntegerAlias */
 		$count = Arr::getOr($this->options->configuration, 'count', 0);
-		Enforce::throwIf(0 <= $count); //@phpstan-ignore-line
+		Enforce::throwIf(0 <= $count); //@phpstan-ignore-line [DOCTYPE]
 		$this->cleanup($count);
 	}
 

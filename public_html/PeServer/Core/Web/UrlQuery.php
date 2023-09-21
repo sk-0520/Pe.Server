@@ -49,11 +49,11 @@ readonly class UrlQuery implements Stringable
 			$this->items = null;
 		} elseif (is_array($query)) {
 			foreach ($query as $key => $value) {
-				if (!is_array($value)) { //@phpstan-ignore-line [PUBLIC]
+				if (!is_array($value)) { //@phpstan-ignore-line [DOCTYPE]
 					throw new ArgumentException("\$query: [$key] value not array");
 				}
 				foreach ($value as $i => $v) {
-					if (!($v === null || is_string($v))) { //@phpstan-ignore-line [PUBLIC]
+					if (!($v === null || is_string($v))) { //@phpstan-ignore-line [DOCTYPE]
 						$s = TypeUtility::getType($v);
 						throw new ArgumentException("\$query: [$key] value $i:[$s] not string|null");
 					}
@@ -120,7 +120,7 @@ readonly class UrlQuery implements Stringable
 					foreach ($value as $i => $v) {
 						if ($v === null || is_string($v)) {
 							$workValues[] = $v;
-						} elseif (is_int($v)) { //@phpstan-ignore-line [PUBLIC]
+						} elseif (is_int($v)) { //@phpstan-ignore-line [DOCTYPE]
 							$workValues[] = (string)$v;
 						} else {
 							$s = TypeUtility::getType($v);

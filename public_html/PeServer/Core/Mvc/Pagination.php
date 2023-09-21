@@ -63,7 +63,7 @@ class Pagination
 		public bool $longJump = true,
 		private int $shortcutMaxCount = 5
 	) {
-		if ($itemCountInPage < 0) { //@phpstan-ignore-line
+		if ($itemCountInPage < 0) { //@phpstan-ignore-line [DOCTYPE]
 			throw new ArgumentException('$itemCountInPage');
 		}
 
@@ -73,8 +73,8 @@ class Pagination
 		} else {
 			$this->shortcutTotalItemCount = (int)ceil($this->totalItemCount / $this->itemCountInPage);
 			if ($this->shortcutTotalItemCount <= $this->currentPageNumber) {
-				$this->currentPageNumber = $this->shortcutTotalItemCount; //@phpstan-ignore-line
-			} elseif (!$this->currentPageNumber) { //@phpstan-ignore-line
+				$this->currentPageNumber = $this->shortcutTotalItemCount; //@phpstan-ignore-line [DOCTYPE]
+			} elseif (!$this->currentPageNumber) { //@phpstan-ignore-line [DOCTYPE]
 				$this->currentPageNumber = self::FIRST_PAGE_NUMBER;
 			}
 		}

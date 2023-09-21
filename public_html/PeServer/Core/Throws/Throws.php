@@ -72,17 +72,17 @@ abstract class Throws
 	{
 		if (is_string($catchExceptions)) {
 			$catchExceptions = [$catchExceptions];
-		} elseif (Arr::isNullOrEmpty($catchExceptions)) { //@phpstan-ignore-line non-empty-array
+		} elseif (Arr::isNullOrEmpty($catchExceptions)) { //@phpstan-ignore-line [DOCTYPE] non-empty-array
 			throw new TypeError('array: $catchException');
 		}
 
 		foreach ($catchExceptions as $key => $catchException) {
-			if (!is_subclass_of($catchException, Throwable::class)) { //@phpstan-ignore-line class-string<Throwable>
+			if (!is_subclass_of($catchException, Throwable::class)) { //@phpstan-ignore-line [DOCTYPE] class-string<Throwable>
 				throw new TypeError('$catchException[' . $key . ']: ' . $catchException);
 			}
 		}
 
-		if (!is_subclass_of($throwException, Throwable::class)) { //@phpstan-ignore-line class-string<Throwable>
+		if (!is_subclass_of($throwException, Throwable::class)) { //@phpstan-ignore-line [DOCTYPE] class-string<Throwable>
 			throw new TypeError('$throwException');
 		}
 

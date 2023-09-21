@@ -314,7 +314,7 @@ class Arr
 	 */
 	public static function getRandomKeys(array $array, int $count): array
 	{
-		if ($count < 1) { //@phpstan-ignore-line
+		if ($count < 1) { //@phpstan-ignore-line [DOCTYPE]
 			throw new ArgumentException('$count');
 		}
 
@@ -409,7 +409,7 @@ class Arr
 	 */
 	public static function range(int $start, int $count): array
 	{
-		if ($count < 0) { //@phpstan-ignore-line
+		if ($count < 0) { //@phpstan-ignore-line [DOCTYPE]
 			throw new ArgumentException('$count');
 		}
 
@@ -436,7 +436,7 @@ class Arr
 	 */
 	public static function repeat(mixed $value, int $count): array
 	{
-		if ($count < 0) { //@phpstan-ignore-line
+		if ($count < 0) { //@phpstan-ignore-line [DOCTYPE]
 			throw new ArgumentException('$count');
 		}
 

@@ -27,10 +27,10 @@ class Size implements Stringable
 		public int $width,
 		public int $height
 	) {
-		if ($width < 1) { //@phpstan-ignore-line positive-int
+		if ($width < 1) { //@phpstan-ignore-line [DOCTYPE]
 			throw new ArgumentException('$width');
 		}
-		if ($height < 1) { //@phpstan-ignore-line positive-int
+		if ($height < 1) { //@phpstan-ignore-line [DOCTYPE]
 			throw new ArgumentException('$height');
 		}
 	}

@@ -30,6 +30,7 @@ class EmailMessage
 	 * プレーンテキストが有効か。
 	 *
 	 * @return boolean
+	 * @phpstan-assert-if-true non-empty-string $this->text
 	 */
 	public function isText(): bool
 	{
@@ -56,7 +57,6 @@ class EmailMessage
 	public function getText(): string
 	{
 		if ($this->isText()) {
-			//@phpstan-ignore-next-line
 			return $this->text;
 		}
 

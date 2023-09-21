@@ -60,6 +60,7 @@ readonly class Url implements Stringable
 	 * @param array<array-key,mixed> $elements
 	 * @param string $key
 	 * @param UrlEncoding $urlEncoding
+	 * @param string|null $default
 	 * @return string デコードされた値か、取得失敗時のデフォルト値
 	 */
 	private static function getDecodedValue(array $elements, string $key, ?string $default, UrlEncoding $urlEncoding): ?string

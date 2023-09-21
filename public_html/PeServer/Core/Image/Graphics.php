@@ -186,14 +186,14 @@ class Graphics extends DisposerBase
 	public function getSize(): Size
 	{
 		$width = imagesx($this->image);
-		if ($width === false) { //@phpstan-ignore-line
+		if ($width === false) { //@phpstan-ignore-line [PHP_VERSION]
 			throw new GraphicsException();
 		}
 		if ($width < 1) {
 			throw new GraphicsException();
 		}
 		$height = imagesy($this->image);
-		if ($height === false) { //@phpstan-ignore-line
+		if ($height === false) { //@phpstan-ignore-line [PHP_VERSION]
 			throw new GraphicsException();
 		}
 		if ($height < 1) {

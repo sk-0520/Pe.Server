@@ -35,7 +35,7 @@ class SessionOption
 		public string $savePath,
 		public CookieOption $cookie
 	) {
-		if (Text::isNullOrWhiteSpace($name)) { //@phpstan-ignore-line
+		if (Text::isNullOrWhiteSpace($name)) { //@phpstan-ignore-line [DOCTYPE]
 			throw new ArgumentException('$name');
 		}
 

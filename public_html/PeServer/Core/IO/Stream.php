@@ -541,7 +541,7 @@ class Stream extends ResourceBase
 	{
 		$this->throwIfDisposed();
 
-		if ($bufferByteSize < 1) { //@phpstan-ignore-line positive-int
+		if ($bufferByteSize < 1) { //@phpstan-ignore-line [DOCTYPE]
 			throw new ArgumentException('$bufferByteSize');
 		}
 

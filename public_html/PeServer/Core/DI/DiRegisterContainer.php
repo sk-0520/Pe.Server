@@ -27,7 +27,7 @@ class DiRegisterContainer extends DiContainer implements IDiRegisterContainer
 			throw new DiContainerRegisteredException($id);
 		}
 
-		if (Text::isNullOrWhiteSpace($id)) { //@phpstan-ignore-line
+		if (Text::isNullOrWhiteSpace($id)) { //@phpstan-ignore-line [DOCTYPE]
 			throw new ArgumentException('$id');
 		}
 

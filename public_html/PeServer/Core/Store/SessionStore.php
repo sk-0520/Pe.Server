@@ -74,7 +74,7 @@ class SessionStore
 	 */
 	public function __construct(SessionOption $option, CookieStore $cookie)
 	{
-		if (Text::isNullOrWhiteSpace($option->name)) { //@phpstan-ignore-line
+		if (Text::isNullOrWhiteSpace($option->name)) { //@phpstan-ignore-line [DOCTYPE]
 			throw new ArgumentException('$option->name');
 		}
 
