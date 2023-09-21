@@ -48,17 +48,9 @@ jobs:
         shell: bash
         run: npm run test
 
-      - name: <Test> code
-        shell: bash
-        run: ./dev/code.sh
-
       - name: <Test> back-end UT
         shell: bash
         run: ./dev/test.sh --mode ut
-
-      - name: <Test> back-end ST
-        shell: bash
-        run: ./dev/test.sh --mode st
 
       - name: <Generate> document
         shell: bash
@@ -74,8 +66,77 @@ jobs:
           name: public_html
           path: public_html.tar
 
+  code-backend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: <Checkout> Repository
+        uses: actions/checkout@v3
+
+      - name: <Setup> PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: sqlite3, mbstring, zip, xml, gd, xdebug
+          coverage: xdebug
+
+      - name: <Cache> Phar
+        uses: actions/cache@v3
+        with:
+          path: |
+            dev/*.phar.*
+            dev/bleedingEdge.neon
+            test/*.phar.*
+          key: phar-cache-${{ hashFiles('dev/*.sh') }}
+
+      - name: <Build> back-end
+        shell: bash
+        run: ./dev/update-config.sh ${{ github.sha }}
+
+      - name: <Test> code
+        shell: bash
+        run: ./dev/code.sh
+
+  test-backend-st:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: <Checkout> Repository
+        uses: actions/checkout@v3
+
+      - name: <Setup> PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: sqlite3, mbstring, zip, xml, gd, xdebug
+          coverage: xdebug
+
+      - name: <Cache> Phar
+        uses: actions/cache@v3
+        with:
+          path: |
+            dev/*.phar.*
+            dev/bleedingEdge.neon
+            test/*.phar.*
+          key: phar-cache-${{ hashFiles('dev/*.sh') }}
+
+      - name: <Build> back-end
+        shell: bash
+        run: ./dev/update-config.sh ${{ github.sha }}
+
+      - name: <Test> code
+        shell: bash
+        run: ./dev/code.sh
+
+      - name: <Test> back-end ST
+        shell: bash
+        run: ./dev/test.sh --mode st --ignore-namespace
+
   deploy:
-    needs: build
+    needs:
+      - build
+      - code-backend
+      - test-backend-st
 
     if: github.ref == 'refs/heads/master'
 
