@@ -128,7 +128,7 @@ jobs:
         shell: bash
         run: ./dev/code.sh
 
-      - name: <Test> back-end ST
+      - name: <Test> back-end ST --ignore-coverage
         shell: bash
         run: ./dev/test.sh --mode st --ignore-namespace
 
