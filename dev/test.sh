@@ -2,17 +2,17 @@
 
 pushd "$(cd "$(dirname "${0}")"; pwd)"
 	#shellcheck disable=SC1091
-	source common.sh
+	source shell/common.sh
 	#shellcheck disable=SC2048,SC2086
 	common::parse_options 'mode# no-exit! ignore-namespace! ignore-coverage! phpunit:filter' $*
 popd
 
-TEST_MODE="${COMMON_OPTIONS['mode']}"
+TEST_MODE="$(common::get_option_value mode)"
 case "${TEST_MODE}" in
 	ut) ;;
 	st) ;;
 	*)
-		echo "--mode [ut/st]"
+		logger::error "--mode [ut/st]"
 		exit 1
 		;;
 esac
@@ -35,7 +35,8 @@ PHPUNIT_BASE_DIR=../test
 common::download_phar_if_not_exists "${PHPUNIT_BASE_DIR}/${PHPUNIT_FILE}" "${PHPUNIT_BASE_DIR}/${PHPUNIT_NAME}" "${PHPUNIT_URL}"
 
 if ! common::exists_option 'ignore-namespace' ; then
-	echo "CHECKE NAMESPACE"
+	logger::info "[CHECKE NAMESPACE]"
+
 	NAMESPACE_ERROR=false
 
 	# Core に App 混入がないか確認
@@ -44,7 +45,7 @@ if ! common::exists_option 'ignore-namespace' ; then
 		#shellcheck disable=SC2044
 		for FILE in $(find . -type f -name '*.php') ; do
 			if [ "$(grep --count 'PeServer\\App' "${FILE}")" -ne 0 ] ; then
-				echo "${FILE}:"
+				logger::info "${FILE}:"
 				grep --line-number 'PeServer\\App' "${FILE}"
 				NAMESPACE_ERROR=true
 			fi
@@ -65,24 +66,24 @@ if ! common::exists_option 'ignore-namespace' ; then
 				SOURCE_NAMESPACE=${SOURCE_NAMESPACE// /}
 				SOURCE_NAMESPACE=${SOURCE_NAMESPACE//	/}
 				if [ "${TARGET_NAMESPACE}" != "${SOURCE_NAMESPACE}" ] ; then
-					echo "${FILE}: ${SOURCE_NAMESPACE} != ${TARGET_NAMESPACE}"
+					logger::error "${FILE}: ${SOURCE_NAMESPACE} != ${TARGET_NAMESPACE}"
 					NAMESPACE_ERROR=true
 				fi
 			fi
 		done
 	popd
 
-	echo 'ignore -> IGNORE_NAMESPACE_CHECK'
+	logger::info 'ignore -> IGNORE_NAMESPACE_CHECK'
 
 	if "${NAMESPACE_ERROR}" ; then
-		echo "namespace error!"
+		logger::error "namespace error!"
 		exit 1
 	fi
 fi
 
 PHPUNIT_OPTION_FILTER=
 if common::exists_option 'phpunit:filter' ; then
-	PHPUNIT_OPTION_FILTER="--filter ${COMMON_OPTIONS[phpunit:filter]}"
+	PHPUNIT_OPTION_FILTER="--filter $(common::get_option_value phpunit:filter)"
 fi
 
 PHPUNIT_OPTION_COVERAGE=
@@ -122,5 +123,5 @@ sleep "${LOCAL_HTTP_WAIT}"
 php "${PHPUNIT_FILE}"  --configuration "../dev/phpunit.xml" --testsuite "${TEST_MODE}" ${PHPUNIT_OPTION_COVERAGE} ${COVERAGE_CACHE_OPTION} ${PHPUNIT_OPTION_FILTER}
 
 if common::exists_option 'no-exit' ; then
-	read
+	read -r
 fi

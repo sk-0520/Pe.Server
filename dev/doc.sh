@@ -3,7 +3,7 @@
 cd "$(cd "$(dirname "${0}")"; pwd)"
 
 #shellcheck disable=SC1091
-source common.sh
+source shell/common.sh
 #common::parse_options "none" $*
 
 PHPDOC_VERSION=v3.4.1

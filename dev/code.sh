@@ -3,7 +3,7 @@
 cd "$(cd "$(dirname "${0}")"; pwd)"
 
 #shellcheck disable=SC1091
-source common.sh
+source shell/common.sh
 #shellcheck disable=SC2048,SC2086
 common::parse_options "ignore-pplint! ignore-phpstan! ignore-phpcs! phpcs-fix! phpcs:report phpcs:ignore-warning! phpcs:cache" $*
 
@@ -33,24 +33,18 @@ fi
 
 if ! common::exists_option 'ignore-phpstan' ; then
 	common::download_phar_if_not_exists "${PHPSTAN_FILE}" "${PHPSTAN_NAME}" "${PHPSTAN_URL}"
-	if [ "${DOWNLOAD_PHAR_RESULT}" = "DOWNLOAD" ] ; then
+	if [ "${COMMON_DOWNLOAD_PHAR_RESULT}" = "DOWNLOAD" ] ; then
 		curl --output "${PHPSTAN_BLEEDING_EDGE_NAME}" --location "${PHPSTAN_BLEEDING_EDGE_URL}"
 	fi
 fi
 
 if ! common::exists_option 'ignore-phpcs' ; then
 	common::download_phar_if_not_exists "${PHPCODESNIFFER_S_FILE}" "${PHPCODESNIFFER_S_NAME}" "${PHPCODESNIFFER_S_URL}"
-	if [ "${DOWNLOAD_PHAR_RESULT}" = "DOWNLOAD" ] ; then
+	if [ "${COMMON_DOWNLOAD_PHAR_RESULT}" = "DOWNLOAD" ] ; then
 		common::download_phar_if_not_exists "${PHPCODESNIFFER_BF_FILE}" "${PHPCODESNIFFER_BF_NAME}" "${PHPCODESNIFFER_BF_URL}"
 	fi
 fi
 
-# if [ ! -v IGNORE_SYNTAX_CHECK ] ; then
-# 	pushd ../public_html
-# 		find . -name '*.php' -not -path './PeServer/Core/Libs/*' -not -path './PeServer/data/*' -exec php --syntax-check {} \;
-# 	popd
-# 	echo 'ignore -> IGNORE_SYNTAX_CHECK'
-# fi
 if ! common::exists_option 'ignore-pplint' ; then
 	php "${PPLINT_FILE}" ../public_html/PeServer --colors --show-deprecated --exclude ../public_html/PeServer/Core/Libs  --exclude ../public_html/PeServer/data
 fi
@@ -64,7 +58,7 @@ fi
 if ! common::exists_option 'ignore-phpcs' ; then
 	PHPCS_OPTION_REPORT="--report=full"
 	if common::exists_option 'phpcs:report' ; then
-		PHPCS_OPTION_REPORT="--report=${COMMON_OPTIONS[phpcs:report]}"
+		PHPCS_OPTION_REPORT="$(common::get_option_value phpcs:report)"
 	fi
 
 	PHPCS_OPTIONS_WARNIG=
@@ -74,14 +68,14 @@ if ! common::exists_option 'ignore-phpcs' ; then
 
 	PHPCS_OPTIONS_CACHE=
 	if common::exists_option 'phpcs:cache' ; then
-		PHPCS_OPTIONS_CACHE="--cache=${COMMON_OPTIONS[phpcs:cache]}"
+		PHPCS_OPTIONS_CACHE="--cache $(common::get_option_value phpcs:cache)"
 	fi
 
 
 	PHPCS_OPTIONS_DEFAULT="../public_html/PeServer --standard=phpcs_ruleset.xml"
 
 	if common::exists_option 'phpcs-fix' ; then
-		echo "!!修正処理実施!!"
+		logger::info "!!修正処理実施!!"
 
 		#shellcheck disable=SC2086
 		php "${PHPCODESNIFFER_BF_FILE}" ${PHPCS_OPTIONS_DEFAULT}

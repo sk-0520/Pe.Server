@@ -3,13 +3,19 @@
 #
 # * 使用側から `source common.sh` で取り込まれることを想定している
 # * 二重に読み込まれることは想定していない
-#
+# * 以下モジュールが依存モジュールとして読み込まれる
+#   * logger.sh
+
+#shellcheck disable=SC1091
+source "$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)/logger.sh"
 
 # コマンドライン引数の辞書変数
 # 決まりを守って正しく使う
-declare -A COMMON_OPTIONS=()
+declare -A _COMMON_OPTIONS=()
 
-# コマンドライン引数($COMMON_OPTIONS)を使用可能にする。
+# コマンドライン引数($_COMMON_OPTIONS)を使用可能にする。
+#
+# 使用可能にするが出来る限りヘルパ関数を使用すること。
 #
 # オプションは --name value もしくは --switch 形式のみを受け付ける
 #
@@ -22,7 +28,7 @@ declare -A COMMON_OPTIONS=()
 #       終端 # で必須
 #       終端 ! でスイッチ
 #   2*: コマンドライン引数実体
-function common::parse_options()
+function common::parse_options
 {
 	# コマンド一覧
 	local DEF_ITEMS="$1"
@@ -49,8 +55,6 @@ function common::parse_options()
 			KEY="${ITEM}"
 		fi
 
-		# echo " [$ITEM] > $KEY  $REQUIRE  $SWITCH"
-
 		REQUIRE_MAP[$KEY]=$REQUIRE
 		SWITCH_MAP[$KEY]=$SWITCH
 	done
@@ -59,7 +63,7 @@ function common::parse_options()
 	shift
 
 	while [ $# -gt 0 ] ; do
-		VALUE=$1
+		local VALUE=$1
 
 		local IS_KEY=false
 		local KEY=
@@ -74,7 +78,7 @@ function common::parse_options()
 		if $IS_KEY ; then
 			set +u
 			if [[ ${SWITCH_MAP[${KEY}]} = true ]]; then
-				COMMON_OPTIONS[${KEY}]=true
+				_COMMON_OPTIONS[${KEY}]=true
 				shift
 				continue
 			fi
@@ -83,23 +87,23 @@ function common::parse_options()
 			shift;
 
 			if [ $# -eq 0 ] ; then
-				echo "パラメータ指定不備あり"
+				logger::error "パラメータ指定不備あり" >&2
 				exit 10
 			fi
 
 			VALUE=$1
-			COMMON_OPTIONS[${KEY}]=$VALUE
+			_COMMON_OPTIONS[${KEY}]=$VALUE
 		fi
 
 		shift;
 	done
 
 	for KEY in "${!REQUIRE_MAP[@]}" ; do
-		xxx=${REQUIRE_MAP[$KEY]}
-		if $xxx ; then
+		local VALUE=${REQUIRE_MAP[$KEY]}
+		if $VALUE ; then
 			set +u
-			if [[ -z ${COMMON_OPTIONS[${KEY}]} ]] ; then
-				echo "必須パラメータ未指定: $KEY"
+			if [[ -z ${_COMMON_OPTIONS[${KEY}]} ]] ; then
+				logger::error "必須パラメータ未指定: $KEY"
 				exit 20
 			fi
 			set -u
@@ -119,13 +123,13 @@ function common::parse_options()
 # 戻り値:
 #   0: 存在する
 #   1: 存在しない
-function common::exists_option()
+function common::exists_option
 {
 	local NAME="$1"
 	local RESULT=0
 
 	set +u
-	if [[ -z ${COMMON_OPTIONS[${NAME}]} ]] ; then
+	if [[ -z ${_COMMON_OPTIONS[${NAME}]} ]] ; then
 		RESULT=1
 	fi
 	set -u
@@ -133,7 +137,39 @@ function common::exists_option()
 	return ${RESULT}
 }
 
-declare DOWNLOAD_PHAR_RESULT=NONE
+function common::get_option_value
+{
+	local NAME="$1"
+
+	if ! common::exists_option "${NAME}" ; then
+		logger::error "${NAME} not found"
+		return 10
+	fi
+
+	local VALUE=${_COMMON_OPTIONS[${NAME}]}
+	if [[ "${VALUE}" = true ]] ; then
+		logger::error "${NAME} is switch"
+		return 20
+	fi
+
+	echo "${VALUE}"
+	return 0
+}
+
+# function common::is_in
+# {
+# 	local NEEDLE="$1"
+
+# 	for ITEM in "${@:2:($#-1)}" ; do
+# 		if [[ "${ITEM}" = "${NEEDLE}" ]] ; then
+# 			return 0
+# 		fi
+# 	done
+
+# 	return 1
+# }
+
+COMMON_DOWNLOAD_PHAR_RESULT=NONE
 # Phar ファイルが存在しなければダウンロードして古い Phar ファイル を破棄する
 #
 # 引数:
@@ -142,7 +178,7 @@ declare DOWNLOAD_PHAR_RESULT=NONE
 #   3: URL
 #
 # 結果:
-#   $DOWNLOAD_PHAR_RESULT を参照
+#   $COMMON_DOWNLOAD_PHAR_RESULT を参照
 #   NONE: 実施しなかった
 #   DOWNLOAD: 実施した
 function common::download_phar_if_not_exists
@@ -151,16 +187,15 @@ function common::download_phar_if_not_exists
 	local BASE_NAME=${2}
 	local DOWNLOAD_URL=${3}
 
-
 	if [ ! -f "${FILE_PATH}" ] ; then
-		echo "DONWLOAD: ${BASE_NAME} ${DOWNLOAD_URL}"
+		logger::info "DONWLOAD: ${BASE_NAME} ${DOWNLOAD_URL}"
 
 		rm --force "${BASE_NAME}".*
 		curl --output "${FILE_PATH}" --location "${DOWNLOAD_URL}"
 
-		DOWNLOAD_PHAR_RESULT=DOWNLOAD
+		COMMON_DOWNLOAD_PHAR_RESULT=DOWNLOAD
 	else
 		#shellcheck disable=SC2034
-		DOWNLOAD_PHAR_RESULT=NONE
+		COMMON_DOWNLOAD_PHAR_RESULT=NONE
 	fi
 }
