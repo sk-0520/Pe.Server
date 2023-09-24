@@ -14,23 +14,28 @@ use PeServer\App\Models\Dao\Entities\UserAuthenticationsEntityDao;
 use PeServer\App\Models\Dao\Entities\UsersEntityDao;
 use PeServer\App\Models\Domain\AccountValidator;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
+use PeServer\App\Models\Domain\Page\SessionAnonymousTrait;
 use PeServer\App\Models\Domain\UserLevel;
 use PeServer\App\Models\Domain\UserState;
 use PeServer\App\Models\Domain\UserUtility;
 use PeServer\App\Models\SessionAccount;
+use PeServer\App\Models\SessionAnonymous;
 use PeServer\App\Models\SessionKey;
 use PeServer\Core\Cryptography;
 use PeServer\Core\Database\IDatabaseContext;
-use PeServer\Core\Text;
+use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\I18n;
 use PeServer\Core\Mail\EmailAddress;
 use PeServer\Core\Mail\EmailMessage;
 use PeServer\Core\Mail\Mailer;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
+use PeServer\Core\Text;
 
 class AccountSignupStep2Logic extends PageLogicBase
 {
+	use SessionAnonymousTrait;
+
 	public function __construct(LogicParameter $parameter, private AppCryptography $cryptography, private AppDatabaseCache $dbCache, private Mailer $mailer, private AppTemplate $appTemplate)
 	{
 		parent::__construct($parameter);
@@ -58,6 +63,8 @@ class AccountSignupStep2Logic extends PageLogicBase
 		if ($callMode === LogicCallMode::Initialize) {
 			return;
 		}
+
+		$this->throwHttpStatusIfNotSignup2(HttpStatus::NotFound);
 
 		$this->validation('account_signup_email', function (string $key, string $value) {
 			$accountValidator = new AccountValidator($this, $this->validator);
@@ -105,6 +112,7 @@ class AccountSignupStep2Logic extends PageLogicBase
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
 		if ($callMode === LogicCallMode::Initialize) {
+			$this->setSession(SessionKey::ANONYMOUS, new SessionAnonymous(signup2: true));
 			return;
 		}
 
@@ -169,6 +177,7 @@ class AccountSignupStep2Logic extends PageLogicBase
 
 		$this->mailer->send();
 
+		$this->removeSession(SessionKey::ANONYMOUS);
 		$this->setSession(SessionKey::ACCOUNT, new SessionAccount(
 			$userId,
 			$params['login_id'],
@@ -177,6 +186,7 @@ class AccountSignupStep2Logic extends PageLogicBase
 			UserState::ENABLED
 		));
 		$this->dbCache->exportUserInformation();
+		$this->restartSession();
 	}
 
 	#endregion

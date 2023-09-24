@@ -6,12 +6,19 @@ namespace PeServer\App\Models\Domain\Page\Account;
 
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
+use PeServer\App\Models\Domain\Page\SessionAnonymousTrait;
+use PeServer\App\Models\SessionAnonymous;
+use PeServer\App\Models\SessionKey;
+use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\Text;
+use PeServer\Core\Throws\HttpStatusException;
 
 class AccountSignupNotifyLogic extends PageLogicBase
 {
+	use SessionAnonymousTrait;
+
 	public function __construct(LogicParameter $parameter, private AppConfiguration $config)
 	{
 		parent::__construct($parameter);
@@ -21,7 +28,7 @@ class AccountSignupNotifyLogic extends PageLogicBase
 
 	protected function validateImpl(LogicCallMode $callMode): void
 	{
-		//NOP
+		$this->throwHttpStatusIfNotSignup1(HttpStatus::NotFound);
 	}
 
 	protected function executeImpl(LogicCallMode $callMode): void
