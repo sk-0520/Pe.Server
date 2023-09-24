@@ -211,7 +211,7 @@ function assert::test
 		set -e
 
 		if [ ${_ASSERT_CURRENT_SUCCESS} = false ] ; then
-			while IFS= read -r LINE ; do
+			while read -r LINE ; do
 				# 制御コードは外す
 				local TEXT_LINE
 				TEXT_LINE="$(echo "${LINE}" | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g")"

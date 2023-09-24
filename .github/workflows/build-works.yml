@@ -50,7 +50,7 @@ jobs:
             dev/*.phar.*
             dev/bleedingEdge.neon
             test/*.phar.*
-          key: phar-cache-${{ hashFiles('dev/*.sh') }}
+          key: phar-cache-${{ github.job }}-${{ hashFiles('dev/*.sh') }}
 
       - name: <Build> front-end
         shell: bash
@@ -105,7 +105,7 @@ jobs:
             dev/*.phar.*
             dev/bleedingEdge.neon
             test/*.phar.*
-          key: phar-cache-${{ hashFiles('dev/*.sh') }}
+          key: phar-cache-${{ github.job }}-${{ hashFiles('dev/*.sh') }}
 
       - name: <Build> back-end
         shell: bash
@@ -138,7 +138,7 @@ jobs:
             dev/*.phar.*
             dev/bleedingEdge.neon
             test/*.phar.*
-          key: phar-cache-${{ hashFiles('dev/*.sh') }}
+          key: phar-cache-${{ github.job }}-${{ hashFiles('dev/*.sh') }}
 
       - name: <Build> back-end
         shell: bash
