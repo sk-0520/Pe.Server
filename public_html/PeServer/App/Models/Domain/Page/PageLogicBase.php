@@ -6,7 +6,7 @@ namespace PeServer\App\Models\Domain\Page;
 
 use PeServer\App\Models\Domain\DomainLogicBase;
 use PeServer\App\Models\IAuditUserInfo;
-use PeServer\App\Models\SessionAccount;
+use PeServer\App\Models\Data\SessionAccount;
 use PeServer\App\Models\SessionKey;
 use PeServer\Core\Mvc\LogicParameter;
 

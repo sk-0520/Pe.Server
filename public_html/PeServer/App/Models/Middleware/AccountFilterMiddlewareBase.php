@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Middleware;
 
-use PeServer\App\Models\SessionAccount;
+use PeServer\App\Models\Data\SessionAccount;
 use PeServer\App\Models\SessionKey;
 use PeServer\Core\Http\HttpResponse;
 use PeServer\Core\Http\HttpStatus;

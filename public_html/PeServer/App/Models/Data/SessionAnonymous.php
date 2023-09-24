@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\App\Models;
+namespace PeServer\App\Models\Data;
 
 /**
  * 匿名セッション情報。

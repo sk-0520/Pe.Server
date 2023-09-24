@@ -15,7 +15,7 @@ use PeServer\App\Models\Dao\Entities\UsersEntityDao;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\App\Models\Domain\Page\SessionAnonymousTrait;
 use PeServer\App\Models\Domain\UserUtility;
-use PeServer\App\Models\SessionAnonymous;
+use PeServer\App\Models\Data\SessionAnonymous;
 use PeServer\App\Models\SessionKey;
 use PeServer\Core\Code;
 use PeServer\Core\Collections\Arr;

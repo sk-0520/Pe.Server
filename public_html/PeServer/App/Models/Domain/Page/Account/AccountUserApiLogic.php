@@ -10,7 +10,7 @@ use PeServer\App\Models\AuditLog;
 use PeServer\App\Models\Dao\Entities\ApiKeysEntityDao;
 use PeServer\App\Models\Domain\ApiUtility;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
-use PeServer\App\Models\SessionAccount;
+use PeServer\App\Models\Data\SessionAccount;
 use PeServer\App\Models\SessionKey;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
