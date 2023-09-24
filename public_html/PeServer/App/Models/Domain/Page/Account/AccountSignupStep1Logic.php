@@ -9,11 +9,13 @@ use PeServer\App\Models\AppCryptography;
 use PeServer\App\Models\AppMailer;
 use PeServer\App\Models\AppTemplate;
 use PeServer\App\Models\Dao\Entities\SignUpWaitEmailsEntityDao;
+use PeServer\App\Models\AppEmailInformation;
+use PeServer\App\Models\Data\EmailInformation;
+use PeServer\App\Models\Data\SessionAnonymous;
 use PeServer\App\Models\Domain\AccountValidator;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\App\Models\Domain\Page\SessionAnonymousTrait;
 use PeServer\App\Models\Domain\UserUtility;
-use PeServer\App\Models\Data\SessionAnonymous;
 use PeServer\App\Models\SessionKey;
 use PeServer\Core\Code;
 use PeServer\Core\Collections\Arr;
@@ -35,7 +37,7 @@ class AccountSignupStep1Logic extends PageLogicBase
 
 	private const TEMP_TOKEN = 'sign_up_token';
 
-	public function __construct(LogicParameter $parameter, private AppConfiguration $config, private AppCryptography $cryptography, private Mailer $mailer, private AppTemplate $appTemplate)
+	public function __construct(LogicParameter $parameter, private AppConfiguration $config, private AppCryptography $cryptography, private Mailer $mailer, private AppTemplate $appTemplate, private AppEmailInformation $appEmailInformation)
 	{
 		parent::__construct($parameter);
 	}
@@ -44,6 +46,8 @@ class AccountSignupStep1Logic extends PageLogicBase
 
 	protected function startup(LogicCallMode $callMode): void
 	{
+		$this->setValue('email', $this->appEmailInformation);
+
 		$this->registerParameterKeys([
 			'value',
 			'account_signup_token',

@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Domain\Page\Account;
 
 use PeServer\App\Models\AppConfiguration;
+use PeServer\App\Models\AppEmailInformation;
+use PeServer\App\Models\Data\EmailInformation;
+use PeServer\App\Models\Data\SessionAnonymous;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\App\Models\Domain\Page\SessionAnonymousTrait;
-use PeServer\App\Models\Data\SessionAnonymous;
 use PeServer\App\Models\SessionKey;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mvc\LogicCallMode;
@@ -19,7 +21,7 @@ class AccountSignupNotifyLogic extends PageLogicBase
 {
 	use SessionAnonymousTrait;
 
-	public function __construct(LogicParameter $parameter, private AppConfiguration $config)
+	public function __construct(LogicParameter $parameter, private AppEmailInformation $appEmailInformation)
 	{
 		parent::__construct($parameter);
 	}
@@ -33,10 +35,7 @@ class AccountSignupNotifyLogic extends PageLogicBase
 
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
-		$emailAddress = $this->config->setting->config->address->fromEmail->address;
-		$emailDomain = Text::split($emailAddress, '@')[1];
-		$this->setValue('email_address', $emailAddress);
-		$this->setValue('email_domain', $emailDomain);
+		$this->setValue('email', $this->appEmailInformation);
 	}
 
 	#endregion

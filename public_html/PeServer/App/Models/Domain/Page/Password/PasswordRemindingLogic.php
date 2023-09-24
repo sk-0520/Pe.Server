@@ -7,6 +7,7 @@ namespace PeServer\App\Models\Domain\Page\Password;
 use PeServer\App\Models\AppCryptography;
 use PeServer\App\Models\Dao\Entities\PluginsEntityDao;
 use PeServer\App\Models\Dao\Entities\UsersEntityDao;
+use PeServer\App\Models\AppEmailInformation;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\App\Models\Domain\Page\SessionAnonymousTrait;
 use PeServer\App\Models\SessionKey;
@@ -20,7 +21,7 @@ class PasswordRemindingLogic extends PageLogicBase
 {
 	use SessionAnonymousTrait;
 
-	public function __construct(LogicParameter $parameter)
+	public function __construct(LogicParameter $parameter, private AppEmailInformation $appEmailInformation)
 	{
 		parent::__construct($parameter);
 	}
@@ -35,6 +36,7 @@ class PasswordRemindingLogic extends PageLogicBase
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
 		//TODO: AccountSignupNotifyLogic と同じ処理すべきじゃないかなぁ
+		$this->setValue('email', $this->appEmailInformation);
 	}
 
 	#endregion

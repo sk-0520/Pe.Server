@@ -187,6 +187,9 @@ class AccountSignupStep2Logic extends PageLogicBase
 		));
 		$this->dbCache->exportUserInformation();
 		$this->restartSession();
+
+		$this->addTemporaryMessage('現在ログイン中です');
+		$this->addTemporaryMessage('ユーザー登録が完了しました、通知メールを確認してください');
 	}
 
 	#endregion

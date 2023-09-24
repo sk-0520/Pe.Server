@@ -15,6 +15,9 @@
 			<dd class="action">
 				<button>再発行</button>
 			</dd>
+			<dd>
+				{include file="template/page/email-info.tpl" email=$values.email}
+			</dd>
 		</dl>
 	</form>
 
