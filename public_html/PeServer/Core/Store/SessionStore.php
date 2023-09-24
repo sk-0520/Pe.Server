@@ -111,7 +111,11 @@ class SessionStore
 
 	private function applyCore(): void
 	{
+		$csrfToken = Security::generateCsrfToken();
+		$this->set(Security::CSRF_SESSION_KEY, $csrfToken);
+
 		$_SESSION = $this->values;
+
 		session_write_close();
 	}
 
@@ -197,13 +201,6 @@ class SessionStore
 		session_set_cookie_params($sessionOption);
 
 		session_start();
-
-		// セッションにCSRFトークンが存在しない場合は生成
-		/**  */
-		if (!Arr::tryGet($_SESSION, Security::CSRF_SESSION_KEY, $unused)) {
-			$csrfToken = Security::generateCsrfToken();
-			$this->set(Security::CSRF_SESSION_KEY, $csrfToken);
-		}
 	}
 
 	/**
@@ -217,8 +214,6 @@ class SessionStore
 		if (!$this->isStarted) {
 			throw new InvalidOperationException();
 		}
-
-		session_regenerate_id();
 	}
 
 	/**
