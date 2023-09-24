@@ -11,6 +11,7 @@
 
 		<form action="/account/user/email" method="post">
 			{csrf}
+
 			<input type="hidden" name="account_email_mode" value="edit" />
 
 			<dl class="input">

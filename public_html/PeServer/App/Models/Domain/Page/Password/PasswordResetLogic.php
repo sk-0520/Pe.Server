@@ -6,15 +6,16 @@ namespace PeServer\App\Models\Domain\Page\Password;
 
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\AppCryptography;
+use PeServer\App\Models\AppEmailInformation;
 use PeServer\App\Models\AuditLog;
 use PeServer\App\Models\Dao\Entities\PluginsEntityDao;
 use PeServer\App\Models\Dao\Entities\UserAuditLogsEntityDao;
 use PeServer\App\Models\Dao\Entities\UserAuthenticationsEntityDao;
 use PeServer\App\Models\Dao\Entities\UsersEntityDao;
+use PeServer\App\Models\Data\SessionAnonymous;
 use PeServer\App\Models\Domain\AccountValidator;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\App\Models\Domain\Page\SessionAnonymousTrait;
-use PeServer\App\Models\SessionAnonymous;
 use PeServer\App\Models\SessionKey;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Cryptography;
@@ -32,6 +33,7 @@ class PasswordResetLogic extends PageLogicBase
 	public function __construct(
 		LogicParameter $parameter,
 		private AppConfiguration $config,
+		private AppEmailInformation $appEmailInformation
 	) {
 		parent::__construct($parameter);
 	}
@@ -40,6 +42,7 @@ class PasswordResetLogic extends PageLogicBase
 
 	protected function startup(LogicCallMode $callMode): void
 	{
+		$this->setValue('email', $this->appEmailInformation);
 	}
 
 	protected function validateImpl(LogicCallMode $callMode): void
@@ -107,6 +110,7 @@ class PasswordResetLogic extends PageLogicBase
 		});
 
 		$this->addTemporaryMessage('パスワード変更が実施されました');
+		$this->addTemporaryMessage('ログインを実施してください');
 	}
 
 	protected function cleanup(LogicCallMode $callMode): void

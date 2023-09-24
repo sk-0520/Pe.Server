@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domain\Page;
 
-use PeServer\App\Models\SessionAnonymous;
+use PeServer\App\Models\Data\SessionAnonymous;
 use PeServer\App\Models\SessionKey;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Throws\HttpStatusException;

@@ -8,6 +8,7 @@ use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\AppCryptography;
 use PeServer\App\Models\AppDatabaseCache;
 use PeServer\App\Models\AppDatabaseConnection;
+use PeServer\App\Models\AppEmailInformation;
 use PeServer\App\Models\AppErrorHandler;
 use PeServer\App\Models\AppMailer;
 use PeServer\App\Models\AppRouteSetting;
@@ -76,6 +77,7 @@ class AppStartup extends CoreStartup
 		$container->registerClass(AppTemplate::class);
 		$container->registerClass(AppArchiver::class);
 		$container->registerClass(AppEraser::class);
+		$container->registerClass(AppEmailInformation::class);
 	}
 
 	protected function setupWebService(array $options, IDiRegisterContainer $container): void

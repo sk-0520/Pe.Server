@@ -18,8 +18,8 @@ use PeServer\App\Models\Domain\Page\SessionAnonymousTrait;
 use PeServer\App\Models\Domain\UserLevel;
 use PeServer\App\Models\Domain\UserState;
 use PeServer\App\Models\Domain\UserUtility;
-use PeServer\App\Models\SessionAccount;
-use PeServer\App\Models\SessionAnonymous;
+use PeServer\App\Models\Data\SessionAccount;
+use PeServer\App\Models\Data\SessionAnonymous;
 use PeServer\App\Models\SessionKey;
 use PeServer\Core\Cryptography;
 use PeServer\Core\Database\IDatabaseContext;
@@ -187,6 +187,9 @@ class AccountSignupStep2Logic extends PageLogicBase
 		));
 		$this->dbCache->exportUserInformation();
 		$this->restartSession();
+
+		$this->addTemporaryMessage('現在ログイン中です');
+		$this->addTemporaryMessage('ユーザー登録が完了しました、通知メールを確認してください');
 	}
 
 	#endregion

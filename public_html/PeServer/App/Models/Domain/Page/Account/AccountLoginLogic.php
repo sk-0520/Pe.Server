@@ -8,11 +8,11 @@ use PeServer\App\Models\AuditLog;
 use PeServer\App\Models\Dao\Domain\UserDomainDao;
 use PeServer\App\Models\Dao\Entities\UserAuthenticationsEntityDao;
 use PeServer\App\Models\Dao\Entities\UsersEntityDao;
+use PeServer\App\Models\Data\SessionAccount;
+use PeServer\App\Models\Data\SessionAnonymous;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\App\Models\Domain\Page\SessionAnonymousTrait;
 use PeServer\App\Models\Domain\UserLevel;
-use PeServer\App\Models\SessionAccount;
-use PeServer\App\Models\SessionAnonymous;
 use PeServer\App\Models\SessionKey;
 use PeServer\Core\Cryptography;
 use PeServer\Core\Http\HttpStatus;
@@ -20,6 +20,7 @@ use PeServer\Core\I18n;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\Mvc\Validator;
+use PeServer\Core\Security;
 use PeServer\Core\Text;
 
 class AccountLoginLogic extends PageLogicBase

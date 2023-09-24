@@ -12,10 +12,11 @@ use PeServer\App\Models\AuditLog;
 use PeServer\App\Models\Dao\Entities\PluginsEntityDao;
 use PeServer\App\Models\Dao\Entities\UserAuthenticationsEntityDao;
 use PeServer\App\Models\Dao\Entities\UsersEntityDao;
+use PeServer\App\Models\AppEmailInformation;
+use PeServer\App\Models\Data\SessionAnonymous;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\App\Models\Domain\Page\SessionAnonymousTrait;
 use PeServer\App\Models\Domain\UserUtility;
-use PeServer\App\Models\SessionAnonymous;
 use PeServer\App\Models\SessionKey;
 use PeServer\Core\Code;
 use PeServer\Core\Collections\Arr;
@@ -34,7 +35,7 @@ class PasswordReminderLogic extends PageLogicBase
 {
 	use SessionAnonymousTrait;
 
-	public function __construct(LogicParameter $parameter, private AppConfiguration $config, private AppCryptography $cryptography, private AppMailer $mailer, private AppTemplate $appTemplate)
+	public function __construct(LogicParameter $parameter, private AppConfiguration $config, private AppCryptography $cryptography, private AppMailer $mailer, private AppTemplate $appTemplate, private AppEmailInformation $appEmailInformation)
 	{
 		parent::__construct($parameter);
 	}
@@ -43,6 +44,8 @@ class PasswordReminderLogic extends PageLogicBase
 
 	protected function startup(LogicCallMode $callMode): void
 	{
+		$this->setValue('email', $this->appEmailInformation);
+
 		$this->registerParameterKeys([
 			'reminder_login_id',
 		], false);

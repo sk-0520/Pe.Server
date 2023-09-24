@@ -19,7 +19,7 @@ use PeServer\App\Models\Domain\Page\Account\AccountUserLogic;
 use PeServer\App\Models\Domain\Page\Account\AccountUserPasswordLogic;
 use PeServer\App\Models\Domain\Page\Account\AccountUserPluginLogic;
 use PeServer\App\Models\Domain\UserLevel;
-use PeServer\App\Models\SessionAccount;
+use PeServer\App\Models\Data\SessionAccount;
 use PeServer\App\Models\SessionKey;
 use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Mvc\ControllerArgument;

@@ -26,6 +26,9 @@
 			<dd class="action">
 				<button>メール送信</button>
 			</dd>
+			<dd>
+				{include file="template/page/email-info.tpl" email=$values.email}
+			</dd>
 		</dl>
 	</form>
 

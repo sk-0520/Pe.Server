@@ -5,17 +5,12 @@
 	<p>
 		<strong>アカウント登録用URLを入力されたメールアドレスに送信しました。</strong>
 	</p>
+	<p>
+		送信されたアカウント登録用URLは一定時間で無効化されます。
+	</p>
 
 	<hr />
 
-	<ul>
-		<li>
-			受信拒否をしている場合、<code data-clipboard="inline">{$values.email_address}</code>を許可してください。
-			<ul>
-				<li>その他通知メールを送信する可能性もあるのでドメイン<code data-clipboard="inline">{$values.email_domain}</code>を許可してもらえるとうれしいです。</li>
-			</ul>
-		</li>
-		<li>送信されたアカウント登録用URLは一定時間で無効化されます。</li>
-	</ul>
+	{include file="template/page/email-info.tpl" email=$values.email}
 
 {/block}

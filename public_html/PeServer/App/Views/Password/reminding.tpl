@@ -5,4 +5,6 @@
 	<p>パスワード再発行メールを送信しました。</p>
 	<p>次工程はメールに記載されているURLを確認してください。</p>
 
+	{include file="template/page/email-info.tpl" email=$values.email}
+
 {/block}
