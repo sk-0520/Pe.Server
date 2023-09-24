@@ -233,13 +233,22 @@ function assert::test
 # テストスクリプトファイルを列挙し、それぞれのテストを実行する
 # テスト実行処理の親となるスクリプトから呼び出される想定
 #
-# TODO: 環境変数とかで設定を渡せるようにしておきたい
+# 環境変数
+#  ASSERT_TESTS_DIR: テストスクリプト格納ディレクトリ
+#  ASSERT_TESTS_PATTERN: テストスクリプトファイルパターン
 function assert::tests
 {
-	#TODO ディレクトリとか制御する必要あり
+	local OLD_SETTING_U=${-//[^u]/}
+	set +u
+	local TESTS_DIR=${ASSERT_TESTS_DIR:="test"}
+	local TESTS_PATTERN=${ASSERT_TESTS_PATTERN:='*.test.sh'}
+	if [[ -n "${OLD_SETTING_U}" ]] ; then
+		set -u
+	fi
+
 	declare -a ERROR_FILES=()
 
-	for FILE in test/*.test.sh ; do
+	for FILE in ${TESTS_DIR}/${TESTS_PATTERN} ; do
 		set +e
 		"./${FILE}"
 		local RESULT=$?

@@ -8,7 +8,7 @@ readonly LOGGER_LEVEL_ERROR=5
 
 _LOGGER_OLD_SETTING_U=${-//[^u]/}
 set +u
-LOGGER_DEFAULT_LEVEL=${LOGGER_DEFAULT_LEVEL:${LOGGER_LEVEL_INFORMATION}}
+LOGGER_DEFAULT_LEVEL=${LOGGER_DEFAULT_LEVEL:=${LOGGER_LEVEL_INFORMATION}}
 LOGGER_DEFAULT_HEAD=$(basename "${0}")
 if [[ -n "${_LOGGER_OLD_SETTING_U}" ]] ; then
 	set -u
@@ -52,9 +52,9 @@ function logger::log()
 
 	local MSG_LEVEL
 	set +e
-	MSG_LEVEL=$(logger::get_level "${LEVEL}")
+	MSG_LEVEL=$(_logger::get_level "${LEVEL}")
 	local DEF_LEVEL
-	DEF_LEVEL=$(logger::get_level "${LOGGER_DEFAULT_LEVEL}")
+	DEF_LEVEL=$(_logger::get_level "${LOGGER_DEFAULT_LEVEL}")
 	set -e
 
 	if [[ "${MSG_LEVEL}" -lt "${DEF_LEVEL}" ]] ; then
