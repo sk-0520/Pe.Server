@@ -28,6 +28,40 @@ function test_options_value_white_success
 	assert::equals " " "${RESULT}"
 }
 
+function test_options_value_case
+{
+	common::parse_options 'abc|A|B|C' --abc 'A'
+	assert::is_success $?
+	common::parse_options 'abc|A|B|C' --abc 'B'
+	assert::is_success $?
+	common::parse_options 'abc|A|B|C' --abc 'C'
+	assert::is_success $?
+	common::parse_options 'abc|A|B|C'
+	assert::is_success $?
+
+	local RETRUN_CODE
+	common::parse_options 'abc|A|B|C' --abc 'D' || RETRUN_CODE=$?
+	assert::is_failuer ${RETRUN_CODE}
+}
+
+function test_options_value_case_required
+{
+	common::parse_options 'abc|A|B|C!' --abc 'A'
+	assert::is_success $?
+	common::parse_options 'abc|A|B|C!' --abc 'B'
+	assert::is_success $?
+	common::parse_options 'abc|A|B|C!' --abc 'C'
+	assert::is_success $?
+
+	local RETRUN_CODE_1
+	common::parse_options 'abc|A|B|C!' || RETRUN_CODE_1=$?
+	assert::is_failuer ${RETRUN_CODE_1}
+
+	local RETRUN_CODE_2
+	common::parse_options 'abc|A|B|C!' --abc 'D' || RETRUN_CODE_2=$?
+	assert::is_failuer ${RETRUN_CODE_2}
+}
+
 function test_options_value_error
 {
 	common::parse_options 'abc' --abc ABC
@@ -50,6 +84,12 @@ function test_options_switch
 	assert::is_failuer ${RETRUN_CODE}
 }
 
+function test_options_switch_error
+{
+	local RETRUN_CODE
+	common::parse_options 'switch|a|b!' --switch || RETRUN_CODE=$?
+	assert::is_failuer ${RETRUN_CODE}
+}
 
 #--------------------------------
 assert::test

@@ -21,12 +21,15 @@ declare -A _COMMON_OPTIONS=()
 #
 # 以下の使用を想定している
 # #shellcheck disable=SC2048,SC2086
-# common::parse_options "name required* switch!" $*
+# common::parse_options "name required# switch!" $*
 #
 # 引数:
 #   1:  コマンドライン引数定義( "" でまとめる想定)
 #       終端 # で必須
 #       終端 ! でスイッチ
+#       非スイッチの場合に|で区切られたものが受付可能な値に制限する
+#       option|a|b  -> option は a と b のみを受け付ける
+#       option|a|b# -> option は a と b のみを受け付ける(オプション指定必須)
 #   2*: コマンドライン引数実体
 function common::parse_options
 {
@@ -35,6 +38,7 @@ function common::parse_options
 
 	declare -A REQUIRE_MAP=()
 	declare -A SWITCH_MAP=()
+	declare -A CASE_MAP=()
 
 	for ITEM in $DEF_ITEMS
 	do
@@ -53,6 +57,20 @@ function common::parse_options
 			KEY=${ITEM:0:-1}
 		else
 			KEY="${ITEM}"
+		fi
+
+		if ! $SWITCH ; then
+			local OLD_IFS="${IFS}"
+			IFS='|'
+			read -ra KEYS <<< "${KEY}"
+			IFS="${OLD_IFS}"
+
+			if [[ ${#KEYS[@]} != 1 ]] ; then
+				KEY=${KEYS[0]}
+				CASE_MAP[$KEY]="${KEYS[*]:1}"
+			else
+				CASE_MAP[$KEY]=
+			fi
 		fi
 
 		REQUIRE_MAP[$KEY]=$REQUIRE
@@ -90,11 +108,28 @@ function common::parse_options
 			shift;
 
 			if [ $# -eq 0 ] ; then
-				logger::error "パラメータ指定不備あり" >&2
-				exit 10
+				logger::error "パラメータ指定不備あり"
+				return 10
 			fi
 
 			VALUE=$1
+
+			CASE_VALUES=${CASE_MAP[${KEY}]}
+			if [[ -n "${CASE_VALUES}" ]] ; then
+				local IS_HIT=false
+				for CASE_VALUE in ${CASE_VALUES} ; do
+					if [[ "${CASE_VALUE}" = "${VALUE}" ]] ; then
+						IS_HIT=true
+						break
+					fi
+				done
+
+				if ! ${IS_HIT} ; then
+					logger::error "受け入れられない値: --${KEY} ${VALUE} (${CASE_VALUES})"
+					return 20
+				fi
+			fi
+
 			_COMMON_OPTIONS[${KEY}]=$VALUE
 		fi
 
@@ -108,7 +143,7 @@ function common::parse_options
 			set +u
 			if [[ -z ${_COMMON_OPTIONS[${KEY}]} ]] ; then
 				logger::error "必須パラメータ未指定: $KEY"
-				exit 20
+				return 30
 			fi
 			set -u
 			if [[ -n "${OLD_SETTING_U}" ]] ; then

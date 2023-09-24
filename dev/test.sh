@@ -4,18 +4,11 @@ pushd "$(cd "$(dirname "${0}")"; pwd)"
 	#shellcheck disable=SC1091
 	source shell/common.sh
 	#shellcheck disable=SC2048,SC2086
-	common::parse_options 'mode# no-exit! ignore-namespace! ignore-coverage! phpunit:filter' $*
+	common::parse_options 'mode|ut|st# no-exit! ignore-namespace! ignore-coverage! phpunit:filter' $*
 popd
 
 TEST_MODE="$(common::get_option_value mode)"
-case "${TEST_MODE}" in
-	ut) ;;
-	st) ;;
-	*)
-		logger::error "--mode [ut/st]"
-		exit 1
-		;;
-esac
+
 # サーバー側引き渡し用(bootstrapでも流用)
 export APP_TEST_MODE="${TEST_MODE}"
 
