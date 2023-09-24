@@ -70,7 +70,7 @@ final class AppRouteSetting extends RouteSetting
 				/* AUTO-FORMAT */,
 				(new Route('account', AccountController::class))
 					->addAction('login', HttpMethod::gets(), 'login_get')
-					->addAction('login', HttpMethod::Post, 'login_post')
+					->addAction('login', HttpMethod::Post, 'login_post', [CsrfMiddleware::class])
 					->addAction('logout', HttpMethod::gets())
 					->addAction('signup', HttpMethod::gets(), 'signup_step1_get', [NotLoginMiddleware::class])
 					->addAction('signup', HttpMethod::Post, 'signup_step1_post', [NotLoginMiddleware::class, CsrfMiddleware::class])
@@ -89,7 +89,7 @@ final class AppRouteSetting extends RouteSetting
 					->addAction('user/plugin', HttpMethod::gets(), 'user_plugin_register_get', [UserAccountFilterMiddleware::class])
 					->addAction('user/plugin', HttpMethod::Post, 'user_plugin_register_post', [UserAccountFilterMiddleware::class, CsrfMiddleware::class])
 					->addAction('user/plugin/:plugin_id@' . self::PLUGIN_ID, HttpMethod::gets(), 'user_plugin_update_get', [UserAccountFilterMiddleware::class, UserPluginEditFilterMiddleware::class])
-					->addAction('user/plugin/:plugin_id@' . self::PLUGIN_ID, HttpMethod::Post, 'user_plugin_update_post', [UserAccountFilterMiddleware::class, CsrfMiddleware::class, UserPluginEditFilterMiddleware::class])
+					->addAction('user/plugin/:plugin_id@' . self::PLUGIN_ID, HttpMethod::Post, 'user_plugin_update_post', [UserAccountFilterMiddleware::class, UserPluginEditFilterMiddleware::class, CsrfMiddleware::class])
 					->addAction('user/audit-logs', HttpMethod::Get, 'user_audit_logs', [UserAccountFilterMiddleware::class])
 				/* AUTO-FORMAT */,
 				(new Route('password', PasswordController::class, [NotLoginMiddleware::class]))

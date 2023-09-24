@@ -3,6 +3,8 @@
 {block name='BODY'}
 
 	<form class="page-account-login" action="/account/login" method="post">
+		{csrf}
+
 		<dl class="input">
 			<dt>ログインID</dt>
 			<dd>

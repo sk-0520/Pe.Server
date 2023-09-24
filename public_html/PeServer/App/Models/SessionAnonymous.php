@@ -12,6 +12,7 @@ namespace PeServer\App\Models;
 readonly class SessionAnonymous
 {
 	public function __construct(
+		public bool $login = false,
 		public bool $signup1 = false,
 		public bool $signup2 = false,
 		public bool $passwordReminder = false,

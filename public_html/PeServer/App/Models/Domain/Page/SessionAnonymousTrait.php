@@ -28,6 +28,11 @@ trait SessionAnonymousTrait
 		return false;
 	}
 
+	protected function isEnabledLogin(): bool
+	{
+		return $this->isTrueProperty('login');
+	}
+
 	protected function isEnabledSignup1(): bool
 	{
 		return $this->isTrueProperty('signup1');
@@ -53,6 +58,11 @@ trait SessionAnonymousTrait
 		if (!$this->isTrueProperty($propertyName)) {
 			throw new HttpStatusException($httpStatus);
 		}
+	}
+
+	protected function throwHttpStatusIfNotLogin(HttpStatus $httpStatus): void
+	{
+		$this->throwHttpStatusIfIsDisabled('login', $httpStatus);
 	}
 
 	protected function throwHttpStatusIfNotSignup1(HttpStatus $httpStatus): void
