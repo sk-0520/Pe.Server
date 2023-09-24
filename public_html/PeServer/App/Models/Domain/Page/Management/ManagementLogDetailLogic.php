@@ -52,18 +52,9 @@ class ManagementLogDetailLogic extends PageLogicBase
 		if ($archiveSize <= $fileSize || $callMode === LogicCallMode::Submit) {
 			$this->result['download'] = true;
 
-			$tempLogArchivePath = File::createTemporaryFilePath();
+			$compressed = Archiver::compressGzip($binary, 9);
 
-			$zipArchive = new ZipArchive();
-			$zipArchive->open($tempLogArchivePath, ZipArchive::CREATE | ZipArchive::OVERWRITE);
-			$zipArchive->addFromString($fileName, $binary->getRaw());
-			$zipArchive->close();
-
-			$compressed = File::readContent($tempLogArchivePath);
-
-			File::removeFile($tempLogArchivePath);
-
-			$this->setDownloadContent(Mime::ZIP, $fileName . '.zip', $compressed);
+			$this->setDownloadContent(Mime::GZ, $fileName . '.gz', $compressed);
 		} else {
 			$this->setValue('log_name', $fileName);
 			$this->setValue('log_file', $filePath);

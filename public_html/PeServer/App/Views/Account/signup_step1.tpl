@@ -3,6 +3,8 @@
 {block name='BODY'}
 
 	<form class="page-account-sign-up" action="/account/signup" method="post">
+		{csrf}
+
 		<input name="account_signup_token" type="hidden" value="{$values.account_signup_token}" />
 		<dl class="input">
 			<dt>メールアドレス</dt>

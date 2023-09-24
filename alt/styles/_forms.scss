@@ -141,7 +141,9 @@ form > dl.input {
 }
 
 form.page-account-login,
-form.page-account-sign-up {
+form.page-account-sign-up,
+form.page-password-reminder,
+form.page-password-reset {
 	& > dl.input {
 		margin: 0 auto;
 		width: 50%;

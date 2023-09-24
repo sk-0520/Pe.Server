@@ -11,11 +11,15 @@ use PeServer\App\Models\AppTemplate;
 use PeServer\App\Models\Dao\Entities\SignUpWaitEmailsEntityDao;
 use PeServer\App\Models\Domain\AccountValidator;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
+use PeServer\App\Models\Domain\Page\SessionAnonymousTrait;
 use PeServer\App\Models\Domain\UserUtility;
+use PeServer\App\Models\SessionAnonymous;
+use PeServer\App\Models\SessionKey;
 use PeServer\Core\Code;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Cryptography;
 use PeServer\Core\Database\IDatabaseContext;
+use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\I18n;
 use PeServer\Core\Mail\EmailAddress;
 use PeServer\Core\Mail\EmailMessage;
@@ -27,6 +31,8 @@ use PeServer\Core\Web\UrlUtility;
 
 class AccountSignupStep1Logic extends PageLogicBase
 {
+	use SessionAnonymousTrait;
+
 	private const TEMP_TOKEN = 'sign_up_token';
 
 	public function __construct(LogicParameter $parameter, private AppConfiguration $config, private AppCryptography $cryptography, private Mailer $mailer, private AppTemplate $appTemplate)
@@ -52,6 +58,8 @@ class AccountSignupStep1Logic extends PageLogicBase
 			return;
 		}
 
+		$this->throwHttpStatusIfNotSignup1(HttpStatus::NotFound);
+
 		$this->validation('account_signup_email', function (string $key, string $value) {
 			$accountValidator = new AccountValidator($this, $this->validator);
 			$accountValidator->isEmail($key, $value);
@@ -72,6 +80,7 @@ class AccountSignupStep1Logic extends PageLogicBase
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
 		if ($callMode === LogicCallMode::Initialize) {
+			$this->setSession(SessionKey::ANONYMOUS, new SessionAnonymous(signup1: true));
 			return;
 		}
 

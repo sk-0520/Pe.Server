@@ -9,10 +9,13 @@ use PeServer\App\Models\Dao\Domain\UserDomainDao;
 use PeServer\App\Models\Dao\Entities\UserAuthenticationsEntityDao;
 use PeServer\App\Models\Dao\Entities\UsersEntityDao;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
+use PeServer\App\Models\Domain\Page\SessionAnonymousTrait;
 use PeServer\App\Models\Domain\UserLevel;
 use PeServer\App\Models\SessionAccount;
+use PeServer\App\Models\SessionAnonymous;
 use PeServer\App\Models\SessionKey;
 use PeServer\Core\Cryptography;
+use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\I18n;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
@@ -21,6 +24,8 @@ use PeServer\Core\Text;
 
 class AccountLoginLogic extends PageLogicBase
 {
+	use SessionAnonymousTrait;
+
 	#region define
 
 	private const ERROR_LOGIN_PARAMETER = 'error/login_parameter';
@@ -48,6 +53,8 @@ class AccountLoginLogic extends PageLogicBase
 			return;
 		}
 
+		$this->throwHttpStatusIfNotLogin(HttpStatus::NotFound);
+
 		$loginId = $this->getRequest('account_login_login_id');
 		if (Text::isNullOrWhiteSpace($loginId)) {
 			$this->addCommonError(I18n::message(self::ERROR_LOGIN_PARAMETER));
@@ -62,6 +69,7 @@ class AccountLoginLogic extends PageLogicBase
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
 		if ($callMode === LogicCallMode::Initialize) {
+			$this->setSession(SessionKey::ANONYMOUS, new SessionAnonymous(login: true));
 			return;
 		}
 
