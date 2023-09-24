@@ -51,10 +51,10 @@ function logger::log()
 	local LEVEL=$1 # T/D/I/W/E
 
 	local MSG_LEVEL
-	set +e
-	MSG_LEVEL=$(_logger::get_level "${LEVEL}")
 	local DEF_LEVEL
-	DEF_LEVEL=$(_logger::get_level "${LOGGER_DEFAULT_LEVEL}")
+	set +e
+	MSG_LEVEL=$(logger::_get_level "${LEVEL}")
+	DEF_LEVEL=$(logger::_get_level "${LOGGER_DEFAULT_LEVEL}")
 	set -e
 
 	if [[ "${MSG_LEVEL}" -lt "${DEF_LEVEL}" ]] ; then
