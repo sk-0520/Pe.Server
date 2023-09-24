@@ -1,4 +1,4 @@
-name: "Cron:daily Management"
+name: "[Daily] Management"
 
 on:
   schedule:
