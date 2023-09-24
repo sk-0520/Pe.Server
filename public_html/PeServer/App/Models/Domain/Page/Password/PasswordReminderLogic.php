@@ -27,6 +27,7 @@ use PeServer\Core\Mail\EmailAddress;
 use PeServer\Core\Mail\EmailMessage;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
+use PeServer\Core\Serialization\JsonSerializer;
 use PeServer\Core\Text;
 use PeServer\Core\Utc;
 use PeServer\Core\Web\UrlUtility;
@@ -125,7 +126,21 @@ class PasswordReminderLogic extends PageLogicBase
 
 			$this->mailer->send();
 		} else {
-			//TODO: 待機処理
+			// 管理側になんかあったよメールの送信
+			$jsonSerializer = new JsonSerializer();
+			$content = $jsonSerializer->save([
+				'login_id' => $loginId,
+				'ip_address' => $this->stores->special->getServer('REMOTE_ADDR'),
+				'user_agent' => $this->stores->special->getServer('HTTP_USER_AGENT'),
+			]);
+
+			$this->mailer->toAddresses = [
+				new EmailAddress($this->config->setting->config->address->fromEmail->address),
+			];
+			$this->mailer->subject = '<SPAM-REMINDER>' . I18n::message('subject/password_reminder_token');
+			$this->mailer->setMessage(new EmailMessage('多分期待してないリマインダー' . PHP_EOL . $content));
+
+			$this->mailer->send();
 		}
 	}
 
