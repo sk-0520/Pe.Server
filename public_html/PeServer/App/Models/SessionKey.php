@@ -15,14 +15,15 @@ abstract class SessionKey
 	 */
 	public const ACCOUNT = 'account';
 	/**
-	 * 一時的なセッション。
+	 * 一時的な匿名セッション。
 	 *
-	 * 以下の画面でCSRFを使用するためにトークンが突っ込まれるイメージ
+	 * 以下の画面でCSRFを有効にするために使う
+	 *
 	 * * ログイン画面
 	 * * パスワード再発行
 	 * * 新規登録
 	 */
-	public const TEMPORARY = 'temporary';
+	public const ANONYMOUS = 'anonymous';
 
 	#endregion
 }

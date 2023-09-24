@@ -12,6 +12,8 @@ use PeServer\App\Models\Dao\Entities\SignUpWaitEmailsEntityDao;
 use PeServer\App\Models\Domain\AccountValidator;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\App\Models\Domain\UserUtility;
+use PeServer\App\Models\SessionKey;
+use PeServer\App\Models\SessionAnonymous;
 use PeServer\Core\Code;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Cryptography;
@@ -72,6 +74,7 @@ class AccountSignupStep1Logic extends PageLogicBase
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
 		if ($callMode === LogicCallMode::Initialize) {
+			$this->setSession(SessionKey::ANONYMOUS, new SessionAnonymous(signup1: true));
 			return;
 		}
 
