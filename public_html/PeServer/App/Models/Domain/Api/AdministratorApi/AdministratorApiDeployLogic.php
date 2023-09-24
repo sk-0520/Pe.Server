@@ -327,6 +327,7 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 			self::MODE_UPLOAD => $this->executeUpload(),
 			self::MODE_PREPARE => $this->executePrepare(),
 			self::MODE_UPDATE => $this->executeUpdate(),
+			default => throw new Exception()
 		};
 
 		$this->setResponseJson(ResponseJson::success($result));

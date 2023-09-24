@@ -37,7 +37,6 @@ parameters:
     - ../public_html/PeServer/Core/Libs/php-markdown/Michelf/MarkdownExtra.php
     - ../public_html/PeServer/Core/Libs/php-markdown/Michelf/MarkdownInterface.php
   ignoreErrors:
-    - '/Match expression does not handle remaining value:/'
     #入力なしの戻り値型強制できないのがつーらーいー
     - '/Template type TFieldArray of method PeServer\\.+::.+\(\) is not referenced in a parameter./'
     #本体設定系はめっちゃくちゃなことをするので初期化系エラーは無視
