@@ -13,7 +13,7 @@ trait SessionAnonymousTrait
 {
 	#region function
 
-	private function isTrueProperty(string $propertyName)
+	private function isTrueProperty(string $propertyName): bool
 	{
 		if ($this->existsSession(SessionKey::ANONYMOUS)) {
 			$sessionAnonymous = $this->getSession(SessionKey::ANONYMOUS);
@@ -53,7 +53,7 @@ trait SessionAnonymousTrait
 		return $this->isTrueProperty('passwordReset');
 	}
 
-	private function throwHttpStatusIfIsDisabled(string $propertyName, HttpStatus $httpStatus)
+	private function throwHttpStatusIfIsDisabled(string $propertyName, HttpStatus $httpStatus): void
 	{
 		if (!$this->isTrueProperty($propertyName)) {
 			throw new HttpStatusException($httpStatus);
