@@ -15,6 +15,7 @@ readonly class SessionAnonymous
 		public bool $signup1 = false,
 		public bool $signup2 = false,
 		public bool $passwordReminder = false,
+		public bool $passwordReset = false,
 	) {
 	}
 }

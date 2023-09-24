@@ -13,11 +13,14 @@ use PeServer\App\Models\Dao\Entities\PluginsEntityDao;
 use PeServer\App\Models\Dao\Entities\UserAuthenticationsEntityDao;
 use PeServer\App\Models\Dao\Entities\UsersEntityDao;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
+use PeServer\App\Models\Domain\Page\SessionAnonymousTrait;
 use PeServer\App\Models\Domain\UserUtility;
+use PeServer\App\Models\SessionAnonymous;
 use PeServer\App\Models\SessionKey;
 use PeServer\Core\Code;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Database\IDatabaseContext;
+use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\I18n;
 use PeServer\Core\Mail\EmailAddress;
 use PeServer\Core\Mail\EmailMessage;
@@ -29,6 +32,8 @@ use PeServer\Core\Web\UrlUtility;
 
 class PasswordReminderLogic extends PageLogicBase
 {
+	use SessionAnonymousTrait;
+
 	public function __construct(LogicParameter $parameter, private AppConfiguration $config, private AppCryptography $cryptography, private AppMailer $mailer, private AppTemplate $appTemplate)
 	{
 		parent::__construct($parameter);
@@ -49,6 +54,8 @@ class PasswordReminderLogic extends PageLogicBase
 			return;
 		}
 
+		$this->throwHttpStatusIfNotPasswordReminder(HttpStatus::NotFound);
+
 		$this->validation('reminder_login_id', function (string $key, string $value) {
 			$this->validator->isNotEmpty($key, $value);
 		});
@@ -57,6 +64,7 @@ class PasswordReminderLogic extends PageLogicBase
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
 		if ($callMode === LogicCallMode::Initialize) {
+			$this->setSession(SessionKey::ANONYMOUS, new SessionAnonymous(passwordReminder: true));
 			return;
 		}
 

@@ -13,10 +13,13 @@ use PeServer\App\Models\Dao\Entities\UserAuthenticationsEntityDao;
 use PeServer\App\Models\Dao\Entities\UsersEntityDao;
 use PeServer\App\Models\Domain\AccountValidator;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
+use PeServer\App\Models\Domain\Page\SessionAnonymousTrait;
+use PeServer\App\Models\SessionAnonymous;
 use PeServer\App\Models\SessionKey;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Cryptography;
 use PeServer\Core\Database\IDatabaseContext;
+use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\I18n;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
@@ -24,6 +27,8 @@ use PeServer\Core\Text;
 
 class PasswordResetLogic extends PageLogicBase
 {
+	use SessionAnonymousTrait;
+
 	public function __construct(
 		LogicParameter $parameter,
 		private AppConfiguration $config,
@@ -42,6 +47,8 @@ class PasswordResetLogic extends PageLogicBase
 		if ($callMode === LogicCallMode::Initialize) {
 			return;
 		}
+
+		$this->throwHttpStatusIfNotPasswordReset(HttpStatus::NotFound);
 
 		$this->validation('reminder_login_id', function (string $key, string $value) {
 			$this->validator->isNotWhiteSpace($key, $value);
@@ -65,6 +72,7 @@ class PasswordResetLogic extends PageLogicBase
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
 		if ($callMode === LogicCallMode::Initialize) {
+			$this->setSession(SessionKey::ANONYMOUS, new SessionAnonymous(passwordReset: true));
 			return;
 		}
 

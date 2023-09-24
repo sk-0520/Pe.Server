@@ -4,18 +4,22 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domain\Page\Password;
 
-use PeServer\Core\Text;
+use PeServer\App\Models\AppCryptography;
+use PeServer\App\Models\Dao\Entities\PluginsEntityDao;
+use PeServer\App\Models\Dao\Entities\UsersEntityDao;
+use PeServer\App\Models\Domain\Page\PageLogicBase;
+use PeServer\App\Models\Domain\Page\SessionAnonymousTrait;
+use PeServer\App\Models\SessionKey;
+use PeServer\Core\Collections\Arr;
+use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
-use PeServer\App\Models\SessionKey;
-use PeServer\App\Models\AppCryptography;
-use PeServer\App\Models\Domain\Page\PageLogicBase;
-use PeServer\App\Models\Dao\Entities\UsersEntityDao;
-use PeServer\App\Models\Dao\Entities\PluginsEntityDao;
-use PeServer\Core\Collections\Arr;
+use PeServer\Core\Text;
 
 class PasswordRemindingLogic extends PageLogicBase
 {
+	use SessionAnonymousTrait;
+
 	public function __construct(LogicParameter $parameter)
 	{
 		parent::__construct($parameter);
@@ -25,12 +29,12 @@ class PasswordRemindingLogic extends PageLogicBase
 
 	protected function validateImpl(LogicCallMode $callMode): void
 	{
-		//NOP
+		$this->throwHttpStatusIfNotPasswordReminder(HttpStatus::NotFound);
 	}
 
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
-		//NOP
+		//TODO: AccountSignupNotifyLogic と同じ処理すべきじゃないかなぁ
 	}
 
 	#endregion

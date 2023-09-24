@@ -43,6 +43,11 @@ trait SessionAnonymousTrait
 		return $this->isTrueProperty('passwordReminder');
 	}
 
+	protected function isPasswordReset(): bool
+	{
+		return $this->isTrueProperty('passwordReset');
+	}
+
 	private function throwHttpStatusIfIsDisabled(string $propertyName, HttpStatus $httpStatus)
 	{
 		if (!$this->isTrueProperty($propertyName)) {
@@ -65,6 +70,10 @@ trait SessionAnonymousTrait
 		$this->throwHttpStatusIfIsDisabled('passwordReminder', $httpStatus);
 	}
 
+	protected function throwHttpStatusIfNotPasswordReset(HttpStatus $httpStatus): void
+	{
+		$this->throwHttpStatusIfIsDisabled('passwordReset', $httpStatus);
+	}
 
 	#endregion
 }
