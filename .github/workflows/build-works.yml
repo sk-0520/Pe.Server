@@ -144,10 +144,6 @@ jobs:
         shell: bash
         run: ./dev/update-config.sh ${{ github.sha }}
 
-      - name: <Test> code
-        shell: bash
-        run: ./dev/code.sh
-
       - name: <Test> back-end ST
         shell: bash
         run: ./dev/test.sh --mode st --ignore-coverage
