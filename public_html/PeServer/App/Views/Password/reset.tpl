@@ -2,7 +2,7 @@
 {block name='TITLE'}パスワード再発行最終工程{/block}
 {block name='BODY'}
 
-	<form action="/password/reset/{$values.token}" method="post">
+	<form class="page-password-reset" action="/password/reset/{$values.token}" method="post">
 		{csrf}
 
 		<dl class="input">

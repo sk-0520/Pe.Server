@@ -2,7 +2,7 @@
 {block name='TITLE'}パスワード再設定{/block}
 {block name='BODY'}
 
-	<form action="/password/reminder" method="post">
+	<form class="page-password-reminder" action="/password/reminder" method="post">
 		{csrf}
 
 		<dl class="input">
