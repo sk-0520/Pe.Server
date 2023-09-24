@@ -6,10 +6,13 @@ readonly LOGGER_LEVEL_INFORMATION=3
 readonly LOGGER_LEVEL_WARNING=4
 readonly LOGGER_LEVEL_ERROR=5
 
+_LOGGER_OLD_SETTING_U=${-//[^u]/}
 set +u
 LOGGER_DEFAULT_LEVEL=${LOGGER_DEFAULT_LEVEL:${LOGGER_LEVEL_INFORMATION}}
 LOGGER_DEFAULT_HEAD=$(basename "${0}")
-set -u
+if [[ -n "${_LOGGER_OLD_SETTING_U}" ]] ; then
+	set -u
+fi
 
 # ログレベルの取得
 # $1: t[race] < d[ebug] < i[nformation] < w[arning] < e[rror]

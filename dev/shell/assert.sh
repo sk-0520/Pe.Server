@@ -2,6 +2,8 @@
 
 # テストスクリプト処理用スクリプト
 #
+# このスクリプトは依存関係を持たない
+#
 # テストスクリプトから assert::test を実行することでテストが頑張りだす
 # んでテストスクリプトを規定のディレクトリに配置していれば assert::tests を呼び出すことですべて実行する
 #
@@ -89,12 +91,22 @@ function assert::_call_enable_function
 	fi
 }
 
+function assert::success
+{
+	:
+}
+
+function assert::failuer {
+	assert::_set_error
+	assert::_output_error "${BASH_LINENO[0]}: ${FUNCNAME[0]}"
+}
+
 
 # 戻り値が成功(0)
 #
 # 以下の使用を想定している
-# assert::return_success $?
-function assert::return_success
+# assert::is_success $?
+function assert::is_success
 {
 	if [[ "${1}" != '0' ]] ; then
 		assert::_set_error
@@ -105,8 +117,8 @@ function assert::return_success
 # 戻り値が成功(!0)
 #
 # 以下の使用を想定している
-# assert::return_success $?
-function assert::return_failuer
+# assert::is_failuer $?
+function assert::is_failuer
 {
 	if [[ "${1}" == '0' ]] ; then
 		assert::_set_error
@@ -200,11 +212,16 @@ function assert::test
 
 		if [ ${_ASSERT_CURRENT_SUCCESS} = false ] ; then
 			while IFS= read -r LINE ; do
-				assert::_write_warning "  ${LINE}"
-				assert::_write_break
+				# 制御コードは外す
+				local TEXT_LINE
+				TEXT_LINE="$(echo "${LINE}" | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g")"
+
+				if [[ -n "${TEXT_LINE}" ]] ; then
+					assert::_write_warning "  ${TEXT_LINE}"
+					assert::_write_break
+				fi
 			done < "${TEMP_MESSAGE}"
 		fi
-
 		assert::_call_enable_function "${FUNCTION_TEARDOWN}" "${FUNC}"
 	done
 

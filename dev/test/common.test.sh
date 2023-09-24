@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -eu
 
 #shellcheck disable=SC2164
 cd "$(cd "$(dirname "${0}")"; pwd)"
@@ -14,7 +14,7 @@ function test_options_value_success
 	common::parse_options 'abc' --abc ABC
 	local RESULT
 	RESULT=$(common::get_option_value abc)
-	assert::return_success $?
+	assert::is_success $?
 	assert::equals "ABC" "${RESULT}"
 }
 
@@ -24,7 +24,7 @@ function test_options_value_white_success
 	common::parse_options 'abc' --abc ' '
 	local RESULT
 	RESULT=$(common::get_option_value abc)
-	assert::return_success $?
+	assert::is_success $?
 	assert::equals " " "${RESULT}"
 }
 
@@ -33,20 +33,23 @@ function test_options_value_error
 	common::parse_options 'abc' --abc ABC
 	local RESULT
 	RESULT=$(common::get_option_value xyz)
-	assert::return_failuer $?
+	assert::is_failuer $?
 }
 
-# function test_is_in_success
-# {
-# 	common::common::is_in 'abc' 'abc'
-# 	assert::return_success $?
-# }
+function test_options_switch
+{
+	common::parse_options 'abc switch!' --abc ABC --switch
+	if common::exists_option switch ; then
+		assert::success
+	else
+		assert::failuer
+	fi
 
-# function test_is_in_failuer
-# {
-# 	common::common::is_in 'abc' 'ABC'
-# 	assert::return_failuer $?
-# }
+	local RETRUN_CODE
+	common::get_option_value switch || RETRUN_CODE=$?
+	assert::is_failuer ${RETRUN_CODE}
+}
+
 
 #--------------------------------
 assert::test

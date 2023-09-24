@@ -76,13 +76,16 @@ function common::parse_options
 		fi
 
 		if $IS_KEY ; then
+			local OLD_SETTING_U=${-//[^u]/}
 			set +u
 			if [[ ${SWITCH_MAP[${KEY}]} = true ]]; then
 				_COMMON_OPTIONS[${KEY}]=true
 				shift
 				continue
 			fi
-			set -u
+			if [[ -n "${OLD_SETTING_U}" ]] ; then
+				set -u
+			fi
 
 			shift;
 
@@ -101,12 +104,16 @@ function common::parse_options
 	for KEY in "${!REQUIRE_MAP[@]}" ; do
 		local VALUE=${REQUIRE_MAP[$KEY]}
 		if $VALUE ; then
+			local OLD_SETTING_U=${-//[^u]/}
 			set +u
 			if [[ -z ${_COMMON_OPTIONS[${KEY}]} ]] ; then
 				logger::error "必須パラメータ未指定: $KEY"
 				exit 20
 			fi
 			set -u
+			if [[ -n "${OLD_SETTING_U}" ]] ; then
+				set -u
+			fi
 		fi
 	done
 }
@@ -122,33 +129,48 @@ function common::parse_options
 #
 # 戻り値:
 #   0: 存在する
-#   1: 存在しない
+#   !0: 存在しない
 function common::exists_option
 {
 	local NAME="$1"
 	local RESULT=0
 
+	local OLD_SETTING_U=${-//[^u]/}
 	set +u
 	if [[ -z ${_COMMON_OPTIONS[${NAME}]} ]] ; then
 		RESULT=1
 	fi
-	set -u
+	if [[ -n "${OLD_SETTING_U}" ]] ; then
+		set -u
+	fi
 
 	return ${RESULT}
 }
 
+
+# コマンドライン引数のオプションに対して値を取得
+#
+# 以下の使用を想定している
+# VALUE=$(common::get_option_value, 'option')
+#
+# 引数:
+#   1:  コマンドライン引数オプション
+#
+# 戻り値:
+#   0: 存在する
+#   !0: 存在しない
 function common::get_option_value
 {
 	local NAME="$1"
 
 	if ! common::exists_option "${NAME}" ; then
-		logger::error "${NAME} not found"
+		logger::error "存在しないオプション: ${NAME}"
 		return 10
 	fi
 
 	local VALUE=${_COMMON_OPTIONS[${NAME}]}
 	if [[ "${VALUE}" = true ]] ; then
-		logger::error "${NAME} is switch"
+		logger::error "オプション種別はスイッチ: ${NAME}"
 		return 20
 	fi
 
@@ -156,19 +178,10 @@ function common::get_option_value
 	return 0
 }
 
-# function common::is_in
-# {
-# 	local NEEDLE="$1"
-
-# 	for ITEM in "${@:2:($#-1)}" ; do
-# 		if [[ "${ITEM}" = "${NEEDLE}" ]] ; then
-# 			return 0
-# 		fi
-# 	done
-
-# 	return 1
-# }
-
+# common::download_phar_if_not_exists の処理結果
+#
+# NONE: 実施しなかった
+# DOWNLOAD: 実施した
 COMMON_DOWNLOAD_PHAR_RESULT=NONE
 # Phar ファイルが存在しなければダウンロードして古い Phar ファイル を破棄する
 #
