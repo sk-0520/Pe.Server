@@ -73,8 +73,6 @@ if ! common::exists_option 'ignore-namespace' ; then
 		done
 	popd
 
-	logger::info 'ignore -> IGNORE_NAMESPACE_CHECK'
-
 	if "${NAMESPACE_ERROR}" ; then
 		logger::error "namespace error!"
 		exit 1

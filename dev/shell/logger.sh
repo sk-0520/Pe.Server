@@ -16,7 +16,7 @@ fi
 
 # ログレベルの取得
 # $1: t[race] < d[ebug] < i[nformation] < w[arning] < e[rror]
-function logger::get_level()
+function logger::_get_level()
 {
 	local LEVEL=$1 # T/D/I/W/E
 
