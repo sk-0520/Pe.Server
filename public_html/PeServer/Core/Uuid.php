@@ -28,14 +28,14 @@ abstract class Uuid
 
 		return sprintf(
 			'%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
-			mt_rand(0, 65535),
-			mt_rand(0, 65535),
-			mt_rand(0, 65535),
-			mt_rand(16384, 20479),
-			mt_rand(32768, 49151),
-			mt_rand(0, 65535),
-			mt_rand(0, 65535),
-			mt_rand(0, 65535)
+			random_int(0, 65535),
+			random_int(0, 65535),
+			random_int(0, 65535),
+			random_int(16384, 20479),
+			random_int(32768, 49151),
+			random_int(0, 65535),
+			random_int(0, 65535),
+			random_int(0, 65535)
 		);
 	}
 
