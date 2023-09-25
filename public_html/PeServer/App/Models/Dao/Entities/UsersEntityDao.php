@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Dao\Entities;
 
+use PeServer\App\Models\Data\Dto\UserInformationDto;
 use PeServer\Core\Database\DaoBase;
 use PeServer\Core\Database\DatabaseRowResult;
 use PeServer\Core\Database\IDatabaseContext;
@@ -82,14 +83,12 @@ class UsersEntityDao extends DaoBase
 	}
 
 	/**
-	 * @template TFieldArray of array{user_id:string,login_id:string,level:string,name:string,email:string,website:string}
 	 * @param string $userId
-	 * @phpstan-return DatabaseRowResult<TFieldArray>
+	 * @return UserInformationDto
 	 */
-	public function selectUserInfoData(string $userId): DatabaseRowResult
+	public function selectUserInfoData(string $userId): UserInformationDto
 	{
-		/** @phpstan-var DatabaseRowResult<TFieldArray> */
-		return $this->context->querySingle(
+		$result = $this->context->querySingle(
 			<<<SQL
 
 			select
@@ -109,6 +108,8 @@ class UsersEntityDao extends DaoBase
 				'user_id' => $userId
 			]
 		);
+
+		return $result->mapping(UserInformationDto::class);
 	}
 
 	/**
