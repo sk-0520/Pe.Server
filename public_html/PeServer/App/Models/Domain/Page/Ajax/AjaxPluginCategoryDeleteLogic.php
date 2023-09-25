@@ -11,9 +11,11 @@ use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\App\Models\ResponseJson;
 use PeServer\App\Models\SessionKey;
 use PeServer\Core\Database\IDatabaseContext;
+use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\Text;
+use PeServer\Core\Throws\HttpStatusException;
 use PeServer\Core\TypeUtility;
 
 class AjaxPluginCategoryDeleteLogic extends PageLogicBase
@@ -36,14 +38,15 @@ class AjaxPluginCategoryDeleteLogic extends PageLogicBase
 			'plugin_category_id' => $this->getRequest('plugin_category_id'),
 		];
 
+		if (Text::isNullOrWhiteSpace($params['plugin_category_id'])) {
+			throw new HttpStatusException(HttpStatus::BadRequest);
+		}
+
 		$database = $this->openDatabase();
 		$database->transaction(function (IDatabaseContext $context) use ($params) {
-			/** @var array<string,mixed> $params*/
-
 			$pluginCategoryMappingsEntityDao = new PluginCategoryMappingsEntityDao($context);
 			$pluginCategoriesEntityDao = new PluginCategoriesEntityDao($context);
 
-			/** @var string */
 			$pluginCategoryId = $params['plugin_category_id'];
 
 			$pluginCategoryMappingsEntityDao->deletePluginCategoryMappings($pluginCategoryId);
