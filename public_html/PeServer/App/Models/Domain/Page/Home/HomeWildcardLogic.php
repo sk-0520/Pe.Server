@@ -39,7 +39,7 @@ class HomeWildcardLogic extends PageLogicBase
 
 		if (Text::startsWith($targetPath, $assetsDirPath, true)) {
 			if (File::exists($targetPath)) {
-				$this->setFileContent(Mime::fromFileName($targetPath), $targetPath);
+				$this->setFileContent(null, $targetPath);
 				return;
 			}
 		}

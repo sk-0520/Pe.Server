@@ -94,28 +94,28 @@ class AccountLoginLogic extends PageLogicBase
 			return;
 		}
 
-		if ($existsSetupUser && $user->fields['level'] !== UserLevel::SETUP) {
+		if ($existsSetupUser && $user->level !== UserLevel::SETUP) {
 			$this->addCommonError(I18n::message(self::ERROR_LOGIN_PARAMETER));
 			$this->logger->error('未セットアップ状態での通常ログインは抑制中');
 			return;
 		}
 
 		// パスワード突合
-		$verifyOk = Cryptography::verifyPassword($this->getRequest('account_login_password'), $user->fields['current_password']);
+		$verifyOk = Cryptography::verifyPassword($this->getRequest('account_login_password'), $user->currentPassword);
 		if (!$verifyOk) {
 			$this->addCommonError(I18n::message(self::ERROR_LOGIN_PARAMETER));
-			$this->logger->warn('ログイン失敗: {0}', $user->fields['user_id']);
-			$this->writeAuditLogTargetUser($user->fields['user_id'], AuditLog::LOGIN_FAILED);
+			$this->logger->warn('ログイン失敗: {0}', $user->userId);
+			$this->writeAuditLogTargetUser($user->userId, AuditLog::LOGIN_FAILED);
 			return;
 		}
 
 		$this->removeSession(self::SESSION_ALL_CLEAR);
 		$account = new SessionAccount(
-			$user->fields['user_id'],
-			$user->fields['login_id'],
-			$user->fields['name'],
-			$user->fields['level'],
-			$user->fields['state']
+			$user->userId,
+			$user->loginId,
+			$user->name,
+			$user->level,
+			$user->state
 		);
 		$this->setSession(SessionKey::ACCOUNT, $account);
 		$this->restartSession();

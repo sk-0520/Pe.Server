@@ -7,6 +7,7 @@ namespace PeServer\App\Models\Dao\Domain;
 use DateTime;
 use PeServer\App\Models\Cache\UserCache;
 use PeServer\App\Models\Cache\UserCacheItem;
+use PeServer\App\Models\Data\Dto\LoginUserDto;
 use PeServer\App\Models\Data\Dto\UserListItemDto;
 use PeServer\App\Models\Domain\UserLevel;
 use PeServer\App\Models\Domain\UserState;
@@ -24,14 +25,12 @@ class UserDomainDao extends DaoBase
 	}
 
 	/**
-	 * @template TFieldArray of array{user_id:string,login_id:string,name:string,level:UserLevel::*,state:UserState::*,current_password:string}
 	 * @param string $loginId
-	 * @phpstan-return DatabaseRowResult<TFieldArray>|null
+	 * @phpstan-return LoginUserDto|null
 	 */
-	public function selectLoginUser(string $loginId): ?DatabaseRowResult
+	public function selectLoginUser(string $loginId): ?LoginUserDto
 	{
-		/** @phpstan-var DatabaseRowResult<TFieldArray>|null */
-		return $this->context->querySingleOrNull(
+		$result = $this->context->querySingleOrNull(
 			<<<SQL
 
 			select
@@ -61,6 +60,12 @@ class UserDomainDao extends DaoBase
 				'login_id' => $loginId,
 			]
 		);
+
+		if ($result === null) {
+			return null;
+		}
+
+		return $result->mapping(LoginUserDto::class);
 	}
 
 	/**
