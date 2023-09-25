@@ -19,10 +19,10 @@
 
 		<tbody id="category_items">
 			{foreach from=$values.categories item=item}
-				<tr data-plugin-category-id="{$item.plugin_category_id}">
-					<td><input readonly value="{$item.plugin_category_id}" /></td>
-					<td><input name="display-name" type="text" value="{$item.display_name}" /></td>
-					<td><input name="description" type="text" value="{$item.description}" /></td>
+				<tr data-plugin-category-id="{$item->pluginCategoryId}">
+					<td><input readonly value="{$item->pluginCategoryId}" /></td>
+					<td><input name="display-name" type="text" value="{$item->displayName}" /></td>
+					<td><input name="description" type="text" value="{$item->description}" /></td>
 					<td><button name="update">📝</button></td>
 					<td><button name="delete">❌</button></td>
 				</tr>

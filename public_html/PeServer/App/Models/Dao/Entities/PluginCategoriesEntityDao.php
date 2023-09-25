@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Dao\Entities;
 
+use PeServer\App\Models\Data\Dto\PluginCategoryDto;
 use PeServer\Core\Database\DaoBase;
 use PeServer\Core\Database\DatabaseTableResult;
 use PeServer\Core\Database\IDatabaseContext;
@@ -16,13 +17,11 @@ class PluginCategoriesEntityDao extends DaoBase
 	}
 
 	/**
-	 * @template TFieldArray of array{plugin_category_id:string,display_name:string,description:string}>
-	 * @phpstan-return DatabaseTableResult<TFieldArray>
+	 * @return PluginCategoryDto[]
 	 */
-	public function selectAllPluginCategories(): DatabaseTableResult
+	public function selectAllPluginCategories(): array
 	{
-		/** @phpstan-var DatabaseTableResult<TFieldArray> */
-		return $this->context->selectOrdered(
+		$result =  $this->context->selectOrdered(
 			<<<SQL
 
 			select
@@ -37,6 +36,8 @@ class PluginCategoriesEntityDao extends DaoBase
 			SQL,
 			[]
 		);
+
+		return $result->mapping(PluginCategoryDto::class);
 	}
 
 	public function insertPluginCategory(string $pluginCategoryId, string $displayName, string $description): void
