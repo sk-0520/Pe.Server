@@ -135,7 +135,7 @@ class AccountUserEmailLogic extends PageLogicBase
 			'user_id' => $account->userId,
 			'email' => $this->cryptography->encrypt($email),
 			'mark_email' => $this->cryptography->toMark($email),
-			'token' => sprintf('%08d', mt_rand(0, 99999999)),
+			'token' => sprintf('%08d', random_int(0, 99999999)),
 		];
 
 		$database = $this->openDatabase();

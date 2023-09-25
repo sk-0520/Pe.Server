@@ -5,30 +5,30 @@
 	<dl class="page-account-user">
 		<dt>ユーザーID</dt>
 		<dd>
-			<code data-clipboard="inline">{$values.account_user_id}</code>
+			<code data-clipboard="inline">{$values.user->userId}</code>
 		</dd>
 
 		<dt>ログインID</dt>
 		<dd>
-			{$values.account_user_login_id}
+			{$values.user->loginId}
 		</dd>
 
 		<dt>権限</dt>
 		<dd>
-			{PeServer\App\Models\Domain\UserLevel::toString($values.account_user_level)}
+			{PeServer\App\Models\Domain\UserLevel::toString($values.user->level)}
 		</dd>
 
 		<dt>名前</dt>
 		<dd>
-			{$values.account_user_name}
+			{$values.user->name}
 		</dd>
 
 		<dt>Webサイト</dt>
 		<dd>
-			{if PeServer\Core\Text::isNullOrWhiteSpace($values.account_user_website)}
+			{if PeServer\Core\Text::isNullOrWhiteSpace($values.user->website)}
 				<span class="mute">未登録</span>
 			{else}
-				<a href="{$values.account_user_website}" target="_blank">{$values.account_user_website}</a>
+				<a href="{$values.user->website}" target="_blank">{$values.user->website}</a>
 			{/if}
 		</dd>
 

@@ -10,6 +10,7 @@ use PeServer\App\Models\Dao\Entities\PluginCategoriesEntityDao;
 use PeServer\App\Models\Dao\Entities\PluginCategoryMappingsEntityDao;
 use PeServer\App\Models\Dao\Entities\PluginsEntityDao;
 use PeServer\App\Models\Dao\Entities\PluginUrlsEntityDao;
+use PeServer\App\Models\Data\Dto\PluginCategoryDto;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\App\Models\Domain\PluginState;
 use PeServer\App\Models\Domain\PluginUrlKey;
@@ -20,9 +21,9 @@ use PeServer\Core\Database\DatabaseTableResult;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\I18n;
-use PeServer\Core\Text;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
+use PeServer\Core\Text;
 use PeServer\Core\Throws\HttpStatusException;
 use PeServer\Core\TypeUtility;
 use PeServer\Core\Uuid;
@@ -41,9 +42,9 @@ class AccountUserPluginLogic extends PageLogicBase
 	/**
 	 * プラグインカテゴリ一覧。
 	 *
-	 * @phpstan-var DatabaseTableResult<array{plugin_category_id:string,display_name:string,description:string}>|null
+	 * @var PluginCategoryDto[]
 	 */
-	private ?DatabaseTableResult $pluginCategories = null;
+	private array $pluginCategories = [];
 
 	public function __construct(LogicParameter $parameter, private AppDatabaseCache $dbCache, bool $isRegister)
 	{
@@ -74,8 +75,8 @@ class AccountUserPluginLogic extends PageLogicBase
 		$pluginCategoriesEntityDao = new PluginCategoriesEntityDao($database);
 		$this->pluginCategories = $pluginCategoriesEntityDao->selectAllPluginCategories();
 
-		foreach ($this->pluginCategories->rows as $category) {
-			$keys[] = 'plugin_category_' . $category['plugin_category_id'];
+		foreach ($this->pluginCategories as $category) {
+			$keys[] = 'plugin_category_' . $category->pluginCategoryId;
 		}
 
 		if (!$this->isRegister) {
@@ -214,16 +215,14 @@ class AccountUserPluginLogic extends PageLogicBase
 
 		$database = $this->openDatabase();
 		$database->transaction(function (IDatabaseContext $context) use ($params) {
-			assert($this->pluginCategories !== null);
-
 			$pluginsEntityDao = new PluginsEntityDao($context);
 			$pluginUrlsEntityDao = new PluginUrlsEntityDao($context);
 			$pluginCategoryMappingsEntityDao = new PluginCategoryMappingsEntityDao($context);
 
 			$pluginCategories = [];
-			foreach ($this->pluginCategories->rows as $category) {
-				if (TypeUtility::parseBoolean($this->getRequest('plugin_category_' . $category['plugin_category_id']))) {
-					$pluginCategories[] = $category['plugin_category_id'];
+			foreach ($this->pluginCategories as $category) {
+				if (TypeUtility::parseBoolean($this->getRequest('plugin_category_' . $category->pluginCategoryId))) {
+					$pluginCategories[] = $category->pluginCategoryId;
 				}
 			}
 
@@ -254,10 +253,9 @@ class AccountUserPluginLogic extends PageLogicBase
 			}
 
 			$pluginCategoryMappingsEntityDao->deletePluginCategoryMappings($params['plugin_id']);
-			foreach ($this->pluginCategories->rows as $pluginCategory) {
-				$pluginCategoryId = $pluginCategory['plugin_category_id'];
-				if (TypeUtility::parseBoolean($this->getRequest('plugin_category_' . $pluginCategoryId))) {
-					$pluginCategoryMappingsEntityDao->insertPluginCategoryMapping($params['plugin_id'], $pluginCategoryId);
+			foreach ($this->pluginCategories as $pluginCategory) {
+				if (TypeUtility::parseBoolean($this->getRequest('plugin_category_' . $pluginCategory->pluginCategoryId))) {
+					$pluginCategoryMappingsEntityDao->insertPluginCategoryMapping($params['plugin_id'], $pluginCategory->pluginCategoryId);
 				}
 			}
 
@@ -282,13 +280,11 @@ class AccountUserPluginLogic extends PageLogicBase
 
 	protected function cleanup(LogicCallMode $callMode): void
 	{
-		assert($this->pluginCategories !== null);
-
-		$this->setValue('plugin_categories', $this->pluginCategories->rows);
+		$this->setValue('plugin_categories', $this->pluginCategories);
 
 		$pluginCategoryIds = array_map(function ($i) {
-			return $i['plugin_category_id'];
-		}, $this->pluginCategories->rows); //@phpstan-ignore-line not null
+			return $i->pluginCategoryId;
+		}, $this->pluginCategories);
 		$this->setValue('plugin_category_ids', $pluginCategoryIds);
 
 		if ($callMode === LogicCallMode::Submit) {

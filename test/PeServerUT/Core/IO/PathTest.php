@@ -52,6 +52,11 @@ class PathTest extends TestClass
 			//new Data("name", "path\\name"), // winだけ？
 			new Data("", "/"),
 			new Data(".", "/."),
+			new Data("b", "a/b"),
+			new Data(".", "./"),
+			new Data(".", "./."),
+			new Data("..", "../"),
+			new Data("a", "../../a"),
 		];
 		foreach ($tests as $test) {
 			$actual = Path::getFileName(...$test->args);

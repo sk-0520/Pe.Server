@@ -48,11 +48,7 @@ class AccountUserLogic extends PageLogicBase
 			'website' => 'account_user_website',
 		];
 
-		foreach ($userInfoData->fields as $key => $value) {
-			if (Arr::containsKey($map, $key)) {
-				$this->setValue($map[$key], $value);
-			}
-		}
+		$this->setValue('user', $userInfoData);
 		$this->setValue('plugins', $userPlugins->rows);
 	}
 

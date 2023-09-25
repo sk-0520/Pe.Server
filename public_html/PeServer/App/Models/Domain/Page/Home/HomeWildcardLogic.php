@@ -12,6 +12,7 @@ use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\Core\Environment;
 use PeServer\Core\Http\HttpStatus;
+use PeServer\Core\IO\File;
 use PeServer\Core\Mime;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\HttpStatusException;
@@ -30,15 +31,20 @@ class HomeWildcardLogic extends PageLogicBase
 
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
-		$requestPath = $this->getRequest('path');
+		$unsafeRequestPath = $this->getRequest('path');
 
-		$favicon = 'favicon.ico';
-		if (Text::startsWith($requestPath, $favicon, true)) {
-			$path = Path::combine($this->config->rootDirectoryPath, 'assets', $favicon);
-			$this->setFileContent(Mime::ICON, $path);
-			return;
+		$requestFileName = Path::getFileName($unsafeRequestPath);
+		$assetsDirPath = Path::combine($this->config->rootDirectoryPath, 'assets');
+		$targetPath = Path::combine($assetsDirPath, $requestFileName);
+
+		if (Text::startsWith($targetPath, $assetsDirPath, true)) {
+			if (File::exists($targetPath)) {
+				$this->setFileContent(null, $targetPath);
+				return;
+			}
 		}
 
-		throw new HttpStatusException(HttpStatus::NotFound, $requestPath);
+
+		throw new HttpStatusException(HttpStatus::NotFound, $unsafeRequestPath);
 	}
 }
