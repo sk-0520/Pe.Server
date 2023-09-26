@@ -9,13 +9,14 @@ use ArrayIterator;
 use Countable;
 use Iterator;
 use IteratorAggregate;
-use Stringable;
-use TypeError;
+use PeServer\Core\Collections\ArrayAccessHelper;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\IndexOutOfRangeException;
 use PeServer\Core\Throws\NotSupportedException;
 use PeServer\Core\Throws\NullByteStringException;
 use PeServer\Core\Throws\SerializeException;
+use Stringable;
+use TypeError;
 
 /**
  * PHP文字列がバイトデータなのか普通の文字列なのかよくわからん。
@@ -188,13 +189,10 @@ readonly final class Binary implements ArrayAccess, IteratorAggregate, Countable
 	 */
 	public function offsetExists(mixed $offset): bool
 	{
-		if (!is_int($offset)) { //@phpstan-ignore-line [DOCTYPE] UnsignedIntegerAlias
+		if (!ArrayAccessHelper::offsetExistsUInt($offset)) { //@phpstan-ignore-line [DOCTYPE] UnsignedIntegerAlias
 			return false;
 		}
 
-		if ($offset < 0) { //@phpstan-ignore-line [DOCTYPE] UnsignedIntegerAlias
-			return false;
-		}
 		if (strlen($this->raw) <= $offset) {
 			return false;
 		}
@@ -213,13 +211,8 @@ readonly final class Binary implements ArrayAccess, IteratorAggregate, Countable
 	 */
 	public function offsetGet(mixed $offset): mixed
 	{
-		if (!is_int($offset)) { //@phpstan-ignore-line UnsignedIntegerAlias
-			throw new TypeError(TypeUtility::getType($offset));
-		}
+		ArrayAccessHelper::offsetGetUInt($offset); //@phpstan-ignore-line [DOCTYPE] UnsignedIntegerAlias
 
-		if ($offset < 0) { //@phpstan-ignore-line UnsignedIntegerAlias
-			throw new IndexOutOfRangeException((string)$offset);
-		}
 		if (strlen($this->raw) <= $offset) {
 			throw new IndexOutOfRangeException((string)$offset);
 		}

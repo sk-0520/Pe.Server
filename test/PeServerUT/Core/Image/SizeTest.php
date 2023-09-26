@@ -4,12 +4,34 @@ declare(strict_types=1);
 
 namespace PeServerUT\Core\Image;
 
-use PeServerTest\TestClass;
-use PeServerTest\Data;
 use PeServer\Core\Image\Size;
+use PeServer\Core\Throws\ArgumentException;
+use PeServerTest\Data;
+use PeServerTest\TestClass;
 
 class SizeTest extends TestClass
 {
+
+	public static function provider_constructor_throw()
+	{
+		return [
+			[0, 0],
+			[1, 0],
+			[0, 1],
+			[-1, -1],
+			[+1, -1],
+			[-1, +1],
+		];
+	}
+
+	/** @dataProvider provider_constructor_throw */
+	public function test_constructor_throw($width, $height)
+	{
+		$this->expectException(ArgumentException::class);
+		new Size($width, $height);
+		$this->fail();
+	}
+
 	public function test_serializable()
 	{
 		$tests = [

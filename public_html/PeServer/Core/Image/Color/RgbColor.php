@@ -91,12 +91,9 @@ class RgbColor implements IColor
 			throw new ArgumentException($htmlColor);
 		}
 		$strColor = Text::trim($htmlColor);
-		if (Text::isNullOrEmpty($strColor)) {
-			throw new ArgumentException($htmlColor);
-		}
 
 		$regex = new Regex();
-		$matchers = $regex->matches($htmlColor, '/#?(?<R>[0-9A-fa-f]{1,2})(?<G>[0-9A-fa-f]{1,2})(?<B>[0-9A-fa-f]{1,2})(?<A>[0-9A-fa-f]{1,2})?/');
+		$matchers = $regex->matches($strColor, '/#?(?<R>[0-9A-fa-f]{1,2})(?<G>[0-9A-fa-f]{1,2})(?<B>[0-9A-fa-f]{1,2})(?<A>[0-9A-fa-f]{1,2})?/');
 
 		if (Arr::isNullOrEmpty($matchers)) {
 			//rgb()的な奴は知らん

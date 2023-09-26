@@ -4,17 +4,29 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Web;
 
-use Stringable;
+use ArrayAccess;
+use ArrayIterator;
+use Countable;
+use Iterator;
+use IteratorAggregate;
 use PeServer\Core\Collections\Arr;
+use PeServer\Core\Collections\ArrayAccessHelper;
 use PeServer\Core\Collections\Collection;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
+use PeServer\Core\Throws\IndexOutOfRangeException;
 use PeServer\Core\Throws\InvalidOperationException;
+use PeServer\Core\Throws\NotSupportedException;
+use PeServer\Core\TypeUtility;
+use Stringable;
+use TypeError;
 
 /**
  * URL のパス構成要素。
+ * @implements ArrayAccess<UnsignedIntegerAlias,string>
+ * @implements IteratorAggregate<UnsignedIntegerAlias,string>
  */
-readonly class UrlPath implements Stringable
+readonly class UrlPath implements ArrayAccess, Countable, IteratorAggregate, Stringable
 {
 	#region variable
 
@@ -26,14 +38,14 @@ readonly class UrlPath implements Stringable
 	 *
 	 * @var string[]|null
 	 */
-	private array|null $pathElements;
+	private array|null $elements;
 
 	#endregion
 
 	public function __construct(string $path)
 	{
 		if (Text::isNullOrWhiteSpace($path)) {
-			$this->pathElements = null;
+			$this->elements = null;
 		} else {
 			$elements = Collection::from(Text::split($path, '/'))
 				->select(fn ($a) => Text::trim($a, '/'))
@@ -46,7 +58,7 @@ readonly class UrlPath implements Stringable
 				}
 			}
 
-			$this->pathElements = $elements;
+			$this->elements = $elements;
 		}
 	}
 
@@ -80,12 +92,12 @@ readonly class UrlPath implements Stringable
 	 * ルートの `/` すら持たない空のパスか。
 	 *
 	 * @return bool
-	 * @phpstan-assert-if-true null $this->pathElements
-	 * @phpstan-assert-if-false string[] $this->pathElements
+	 * @phpstan-assert-if-true null $this->elements
+	 * @phpstan-assert-if-false string[] $this->elements
 	 */
 	public function isEmpty(): bool
 	{
-		return $this->pathElements === null;
+		return $this->elements === null;
 	}
 
 	/**
@@ -99,7 +111,7 @@ readonly class UrlPath implements Stringable
 			throw new InvalidOperationException('empty');
 		}
 
-		return $this->pathElements;
+		return $this->elements;
 	}
 
 	/**
@@ -117,7 +129,7 @@ readonly class UrlPath implements Stringable
 		if ($this->isEmpty()) {
 			return new self($element);
 		} else {
-			return self::from([...$this->pathElements, $element]);
+			return self::from([...$this->elements, $element]);
 		}
 	}
 
@@ -127,11 +139,97 @@ readonly class UrlPath implements Stringable
 			return Text::EMPTY;
 		}
 
-		if (!Arr::getCount($this->pathElements)) {
+		if (!Arr::getCount($this->elements)) {
 			return '/';
 		}
 
-		return '/' . Text::join('/', $this->pathElements) . ($addLastSeparator ? '/' : Text::EMPTY);
+		return '/' . Text::join('/', $this->elements) . ($addLastSeparator ? '/' : Text::EMPTY);
+	}
+
+	#endregion
+
+	#region ArrayAccess
+
+	/**
+	 * @param int $offset
+	 * @phpstan-param UnsignedIntegerAlias $offset
+	 * @return bool
+	 * @see ArrayAccess::offsetExists
+	 */
+	public function offsetExists(mixed $offset): bool
+	{
+		if (!ArrayAccessHelper::offsetExistsUInt($offset)) { //@phpstan-ignore-line [DOCTYPE] UnsignedIntegerAlias
+			return false;
+		}
+
+		if ($this->isEmpty()) {
+			return false;
+		}
+
+		return isset($this->elements[$offset]);
+	}
+
+	/**
+	 * @param int $offset
+	 * @phpstan-param UnsignedIntegerAlias $offset
+	 * @return string
+	 * @throws TypeError
+	 * @throws IndexOutOfRangeException
+	 * @see ArrayAccess::offsetGet
+	 */
+	public function offsetGet(mixed $offset): mixed
+	{
+		ArrayAccessHelper::offsetGetUInt($offset); //@phpstan-ignore-line [DOCTYPE] UnsignedIntegerAlias
+
+		if ($this->isEmpty()) {
+			throw new IndexOutOfRangeException((string)$offset);
+		}
+
+		if (!isset($this->elements[$offset])) {
+			throw new IndexOutOfRangeException((string)$offset);
+		}
+
+		return $this->elements[$offset];
+	}
+
+	/** @throws NotSupportedException */
+	public function offsetSet(mixed $offset, mixed $value): void
+	{
+		throw new NotSupportedException();
+	}
+
+	/** @throws NotSupportedException */
+	public function offsetUnset(mixed $offset): void
+	{
+		throw new NotSupportedException();
+	}
+
+	#endregion
+
+	#region Countable
+
+	/**
+	 * Countable::count
+	 *
+	 * @return int
+	 * @phpstan-return UnsignedIntegerAlias
+	 */
+	public function count(): int
+	{
+		if ($this->isEmpty()) {
+			return 0;
+		}
+
+		return count($this->elements);
+	}
+
+	#endregion
+
+	#region IteratorAggregate
+
+	public function getIterator(): Iterator
+	{
+		return new ArrayIterator($this->elements ?? []);
 	}
 
 	#endregion

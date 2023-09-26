@@ -7,9 +7,10 @@ namespace PeServerUT\Core\Image;
 
 use PeServer\Core\Image\Color\RgbColor;
 use PeServer\Core\Text;
+use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\NotSupportedException;
-use PeServerTest\TestClass;
 use PeServerTest\Data;
+use PeServerTest\TestClass;
 
 class RgbColorTest extends TestClass
 {
@@ -38,6 +39,23 @@ class RgbColorTest extends TestClass
 		RgbColor::fromHtmlColorCode("rgb(1,1,1)");
 		$this->fail();
 	}
+
+	public static function provider_fromHtmlColorCode_throw()
+	{
+		return [
+			[''],
+			[' '],
+		];
+	}
+
+	/** @dataProvider provider_fromHtmlColorCode_throw */
+	public function test_fromHtmlColorCode_throw($arg)
+	{
+		$this->expectException(ArgumentException::class);
+		RgbColor::fromHtmlColorCode($arg);
+		$this->fail();
+	}
+
 
 	public function test_serializable()
 	{
