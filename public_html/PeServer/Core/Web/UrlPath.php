@@ -4,17 +4,28 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Web;
 
+use ArrayAccess;
+use ArrayIterator;
+use Countable;
+use Iterator;
+use IteratorAggregate;
 use Stringable;
+use TypeError;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Collections\Collection;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
+use PeServer\Core\Throws\IndexOutOfRangeException;
 use PeServer\Core\Throws\InvalidOperationException;
+use PeServer\Core\Throws\NotSupportedException;
+use PeServer\Core\TypeUtility;
 
 /**
  * URL のパス構成要素。
+ * @implements ArrayAccess<UnsignedIntegerAlias,string>
+ * @implements IteratorAggregate<UnsignedIntegerAlias,string>
  */
-readonly class UrlPath implements Stringable
+readonly class UrlPath implements ArrayAccess, Countable, IteratorAggregate, Stringable
 {
 	#region variable
 
@@ -132,6 +143,106 @@ readonly class UrlPath implements Stringable
 		}
 
 		return '/' . Text::join('/', $this->pathElements) . ($addLastSeparator ? '/' : Text::EMPTY);
+	}
+
+	#endregion
+
+	#region ArrayAccess
+
+	/**
+	 * @param int $offset
+	 * @phpstan-param UnsignedIntegerAlias $offset
+	 * @return bool
+	 * @see ArrayAccess::offsetExists
+	 */
+	public function offsetExists(mixed $offset): bool
+	{
+		if (!is_int($offset)) { //@phpstan-ignore-line [DOCTYPE] UnsignedIntegerAlias
+			return false;
+		}
+
+		if ($offset < 0) { //@phpstan-ignore-line [DOCTYPE] UnsignedIntegerAlias
+			return false;
+		}
+
+		if ($this->isEmpty()) {
+			return false;
+		}
+
+		if (count($this->pathElements) <= $offset) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * @param int $offset
+	 * @phpstan-param UnsignedIntegerAlias $offset
+	 * @return string
+	 * @throws TypeError
+	 * @throws IndexOutOfRangeException
+	 * @see ArrayAccess::offsetGet
+	 */
+	public function offsetGet(mixed $offset): mixed
+	{
+		if (!is_int($offset)) { //@phpstan-ignore-line UnsignedIntegerAlias
+			throw new TypeError(TypeUtility::getType($offset));
+		}
+
+		if ($offset < 0) { //@phpstan-ignore-line UnsignedIntegerAlias
+			throw new IndexOutOfRangeException((string)$offset);
+		}
+
+		if ($this->isEmpty()) {
+			throw new IndexOutOfRangeException((string)$offset);
+		}
+
+		if (count($this->pathElements) <= $offset) {
+			throw new IndexOutOfRangeException((string)$offset);
+		}
+
+		return $this->pathElements[$offset];
+	}
+
+	/** @throws NotSupportedException */
+	public function offsetSet(mixed $offset, mixed $value): void
+	{
+		throw new NotSupportedException();
+	}
+
+	/** @throws NotSupportedException */
+	public function offsetUnset(mixed $offset): void
+	{
+		throw new NotSupportedException();
+	}
+
+	#endregion
+
+	#region Countable
+
+	/**
+	 * Countable::count
+	 *
+	 * @return int
+	 * @phpstan-return UnsignedIntegerAlias
+	 */
+	public function count(): int
+	{
+		if ($this->isEmpty()) {
+			return 0;
+		}
+
+		return count($this->pathElements);
+	}
+
+	#endregion
+
+	#region IteratorAggregate
+
+	public function getIterator(): Iterator
+	{
+		return new ArrayIterator($this->pathElements ?? []);
 	}
 
 	#endregion

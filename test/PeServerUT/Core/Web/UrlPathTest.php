@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace PeServerUT\Core\Web;
 
 use PeServer\Core\Throws\ArgumentException;
+use PeServer\Core\Throws\IndexOutOfRangeException;
 use PeServer\Core\Throws\InvalidOperationException;
+use PeServer\Core\Throws\NotSupportedException;
 use PeServer\Core\Web\UrlPath;
+use PeServer\Core\Web\UrlUtility;
 use PeServerTest\Data;
 use PeServerTest\TestClass;
-use PeServer\Core\Web\UrlUtility;
+use TypeError;
 
 class UrlPathTest extends TestClass
 {
@@ -131,10 +134,81 @@ class UrlPathTest extends TestClass
 		foreach ($tests as $test) {
 			$actual = new UrlPath($test->args[0]);
 			$this->assertSame($test->expected, $actual->toString($test->args[1]), $test->str());
-			if(!$test->args[1]) {
+			if (!$test->args[1]) {
 				$this->assertSame($test->expected, (string)$actual, $test->str());
 				$this->assertSame($test->expected, strval($actual), $test->str());
 			}
 		}
+	}
+
+	public function test_ArrayAccess()
+	{
+		$url = new UrlPath("/a/b/c");
+		$this->assertSame('a', $url[0]);
+		$this->assertSame('b', $url[1]);
+		$this->assertSame('c', $url[2]);
+
+
+		try {
+			$_ = $url['key'];
+			$this->fail();
+		} catch (TypeError) {
+			$this->success();
+		}
+
+		try {
+			$_ = $url[-1];
+			$this->fail();
+		} catch (IndexOutOfRangeException) {
+			$this->success();
+		}
+
+		try {
+			$_ = $url[3];
+			$this->fail();
+		} catch (IndexOutOfRangeException) {
+			$this->success();
+		}
+
+		$this->assertTrue(isset($url[0]));
+		$this->assertTrue(isset($url[1]));
+		$this->assertTrue(isset($url[2]));
+		$this->assertFalse(isset($url[3]));
+		$this->assertFalse(isset($url['key']));
+		$this->assertFalse(isset($url[-1]));
+
+		try {
+			$url[0] = 'A';
+			$this->fail();
+		} catch (NotSupportedException) {
+			$this->success();
+		}
+
+		try {
+			unset($url[0]);
+			$this->fail();
+		} catch (NotSupportedException) {
+			$this->success();
+		}
+
+		$this->assertCount(3, $url);
+		$this->assertSame(['a', 'b', 'c'], iterator_to_array($url));
+	}
+
+	public function test_ArrayAccess_empty()
+	{
+		$url = new UrlPath('');
+
+		try {
+			$_ = $url[0];
+			$this->fail();
+		} catch (IndexOutOfRangeException) {
+			$this->success();
+		}
+
+		$this->assertFalse(isset($url[0]));
+
+		$this->assertCount(0, $url);
+		$this->assertSame([], iterator_to_array($url));
 	}
 }
