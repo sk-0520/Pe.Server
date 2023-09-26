@@ -9,9 +9,8 @@ use ArrayIterator;
 use Countable;
 use Iterator;
 use IteratorAggregate;
-use Stringable;
-use TypeError;
 use PeServer\Core\Collections\Arr;
+use PeServer\Core\Collections\ArrayAccessHelper;
 use PeServer\Core\Collections\Collection;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
@@ -19,6 +18,8 @@ use PeServer\Core\Throws\IndexOutOfRangeException;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Throws\NotSupportedException;
 use PeServer\Core\TypeUtility;
+use Stringable;
+use TypeError;
 
 /**
  * URL のパス構成要素。
@@ -157,11 +158,7 @@ readonly class UrlPath implements ArrayAccess, Countable, IteratorAggregate, Str
 	 */
 	public function offsetExists(mixed $offset): bool
 	{
-		if (!is_int($offset)) { //@phpstan-ignore-line [DOCTYPE] UnsignedIntegerAlias
-			return false;
-		}
-
-		if ($offset < 0) { //@phpstan-ignore-line [DOCTYPE] UnsignedIntegerAlias
+		if (!ArrayAccessHelper::offsetExistsUInt($offset)) { //@phpstan-ignore-line [DOCTYPE] UnsignedIntegerAlias
 			return false;
 		}
 
@@ -169,11 +166,7 @@ readonly class UrlPath implements ArrayAccess, Countable, IteratorAggregate, Str
 			return false;
 		}
 
-		if (count($this->pathElements) <= $offset) {
-			return false;
-		}
-
-		return true;
+		return isset($this->pathElements[$offset]);
 	}
 
 	/**
@@ -186,19 +179,13 @@ readonly class UrlPath implements ArrayAccess, Countable, IteratorAggregate, Str
 	 */
 	public function offsetGet(mixed $offset): mixed
 	{
-		if (!is_int($offset)) { //@phpstan-ignore-line UnsignedIntegerAlias
-			throw new TypeError(TypeUtility::getType($offset));
-		}
-
-		if ($offset < 0) { //@phpstan-ignore-line UnsignedIntegerAlias
-			throw new IndexOutOfRangeException((string)$offset);
-		}
+		ArrayAccessHelper::offsetGetUInt($offset); //@phpstan-ignore-line [DOCTYPE] UnsignedIntegerAlias
 
 		if ($this->isEmpty()) {
 			throw new IndexOutOfRangeException((string)$offset);
 		}
 
-		if (count($this->pathElements) <= $offset) {
+		if (!isset($this->pathElements[$offset])) {
 			throw new IndexOutOfRangeException((string)$offset);
 		}
 
