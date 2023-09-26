@@ -12,6 +12,22 @@ use PeServerTest\TestClass;
 
 class RectangleTest extends TestClass
 {
+	public function test_normal()
+	{
+		$rect = new Rectangle(new Point(1, 2), new Size(3, 4));
+
+		$this->assertSame(1, $rect->point->x);
+		$this->assertSame(2, $rect->point->y);
+		$this->assertSame(3, $rect->size->width);
+		$this->assertSame(4, $rect->size->height);
+
+		$this->assertSame(1, $rect->left());
+		$this->assertSame(2, $rect->top());
+
+		$this->assertSame(1 + 3, $rect->right());
+		$this->assertSame(2 + 4, $rect->bottom());
+	}
+
 	public function test_serializable()
 	{
 		$tests = [

@@ -256,17 +256,42 @@ class UrlTest extends TestClass
 		$this->assertNotSame($src->fragment, $new->fragment);
 	}
 
-	public function test_toString() {
+	public function test_toString()
+	{
 		$tests = [
-			new Data('http://localhost', 'http://localhost', false),
-			new Data('http://USER@localhost', 'http://USER@localhost', false),
-			new Data('http://:PASS@localhost', 'http://:PASS@localhost', false),
-			new Data('http://USER:PASS@localhost', 'http://USER:PASS@localhost', false),
-			new Data('http://localhost:8888', 'http://localhost:8888', false),
+			new Data('http://localhost', 'http://localhost'),
+			new Data('http://USER@localhost', 'http://USER@localhost'),
+			new Data('http://:PASS@localhost', 'http://:PASS@localhost'),
+			new Data('http://USER:PASS@localhost', 'http://USER:PASS@localhost'),
+			new Data('http://localhost:8888', 'http://localhost:8888'),
+			new Data('http://localhost/a', 'http://localhost/a'),
+			new Data('http://localhost/a?q=k', 'http://localhost/a?q=k'),
+			new Data('http://localhost/a?q=k&Q', 'http://localhost/a?q=k&Q'),
+			new Data('http://localhost/a?q=k&Q#f', 'http://localhost/a?q=k&Q#f'),
 		];
 		foreach ($tests as $test) {
-			$actual = Url::parse($test->args[0]);
-			$this->assertSame($test->expected, $actual->toString(null, $test->args[1]), $test->str());
+			$actual = Url::parse(...$test->args);
+			$this->assertSame($test->expected, $actual->toString(), $test->str());
+			$this->assertSame($test->expected, (string)$actual, $test->str());
+		}
+	}
+
+	public function test_toString_slash()
+	{
+		$tests = [
+			new Data('http://localhost', 'http://localhost'),
+			new Data('http://USER@localhost', 'http://USER@localhost'),
+			new Data('http://:PASS@localhost', 'http://:PASS@localhost'),
+			new Data('http://USER:PASS@localhost', 'http://USER:PASS@localhost'),
+			new Data('http://localhost:8888', 'http://localhost:8888'),
+			new Data('http://localhost/a/', 'http://localhost/a'),
+			new Data('http://localhost/a/?q=k', 'http://localhost/a?q=k'),
+			new Data('http://localhost/a/?q=k&Q', 'http://localhost/a?q=k&Q'),
+			new Data('http://localhost/a/?q=k&Q#f', 'http://localhost/a?q=k&Q#f'),
+		];
+		foreach ($tests as $test) {
+			$actual = Url::parse(...$test->args);
+			$this->assertSame($test->expected, $actual->toString(addLastSeparator:true), $test->str());
 		}
 	}
 }

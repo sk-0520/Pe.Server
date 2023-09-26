@@ -34,7 +34,7 @@ class EmailAddress
 		public string $address,
 		?string $name = null
 	) {
-		if (Text::isNullOrEmpty($name)) {
+		if (Text::isNullOrWhiteSpace($name)) {
 			$this->name = '';
 		} else {
 			$this->name = $name;

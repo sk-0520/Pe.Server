@@ -43,7 +43,7 @@ class Rectangle implements Stringable
 	}
 	public function bottom(): int
 	{
-		return $this->point->x + $this->size->height;
+		return $this->point->y + $this->size->height;
 	}
 
 	#endregion

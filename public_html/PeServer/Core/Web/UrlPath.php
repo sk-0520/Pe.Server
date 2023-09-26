@@ -38,14 +38,14 @@ readonly class UrlPath implements ArrayAccess, Countable, IteratorAggregate, Str
 	 *
 	 * @var string[]|null
 	 */
-	private array|null $pathElements;
+	private array|null $elements;
 
 	#endregion
 
 	public function __construct(string $path)
 	{
 		if (Text::isNullOrWhiteSpace($path)) {
-			$this->pathElements = null;
+			$this->elements = null;
 		} else {
 			$elements = Collection::from(Text::split($path, '/'))
 				->select(fn ($a) => Text::trim($a, '/'))
@@ -58,7 +58,7 @@ readonly class UrlPath implements ArrayAccess, Countable, IteratorAggregate, Str
 				}
 			}
 
-			$this->pathElements = $elements;
+			$this->elements = $elements;
 		}
 	}
 
@@ -92,12 +92,12 @@ readonly class UrlPath implements ArrayAccess, Countable, IteratorAggregate, Str
 	 * ルートの `/` すら持たない空のパスか。
 	 *
 	 * @return bool
-	 * @phpstan-assert-if-true null $this->pathElements
-	 * @phpstan-assert-if-false string[] $this->pathElements
+	 * @phpstan-assert-if-true null $this->elements
+	 * @phpstan-assert-if-false string[] $this->elements
 	 */
 	public function isEmpty(): bool
 	{
-		return $this->pathElements === null;
+		return $this->elements === null;
 	}
 
 	/**
@@ -111,7 +111,7 @@ readonly class UrlPath implements ArrayAccess, Countable, IteratorAggregate, Str
 			throw new InvalidOperationException('empty');
 		}
 
-		return $this->pathElements;
+		return $this->elements;
 	}
 
 	/**
@@ -129,7 +129,7 @@ readonly class UrlPath implements ArrayAccess, Countable, IteratorAggregate, Str
 		if ($this->isEmpty()) {
 			return new self($element);
 		} else {
-			return self::from([...$this->pathElements, $element]);
+			return self::from([...$this->elements, $element]);
 		}
 	}
 
@@ -139,11 +139,11 @@ readonly class UrlPath implements ArrayAccess, Countable, IteratorAggregate, Str
 			return Text::EMPTY;
 		}
 
-		if (!Arr::getCount($this->pathElements)) {
+		if (!Arr::getCount($this->elements)) {
 			return '/';
 		}
 
-		return '/' . Text::join('/', $this->pathElements) . ($addLastSeparator ? '/' : Text::EMPTY);
+		return '/' . Text::join('/', $this->elements) . ($addLastSeparator ? '/' : Text::EMPTY);
 	}
 
 	#endregion
@@ -166,7 +166,7 @@ readonly class UrlPath implements ArrayAccess, Countable, IteratorAggregate, Str
 			return false;
 		}
 
-		return isset($this->pathElements[$offset]);
+		return isset($this->elements[$offset]);
 	}
 
 	/**
@@ -185,11 +185,11 @@ readonly class UrlPath implements ArrayAccess, Countable, IteratorAggregate, Str
 			throw new IndexOutOfRangeException((string)$offset);
 		}
 
-		if (!isset($this->pathElements[$offset])) {
+		if (!isset($this->elements[$offset])) {
 			throw new IndexOutOfRangeException((string)$offset);
 		}
 
-		return $this->pathElements[$offset];
+		return $this->elements[$offset];
 	}
 
 	/** @throws NotSupportedException */
@@ -220,7 +220,7 @@ readonly class UrlPath implements ArrayAccess, Countable, IteratorAggregate, Str
 			return 0;
 		}
 
-		return count($this->pathElements);
+		return count($this->elements);
 	}
 
 	#endregion
@@ -229,7 +229,7 @@ readonly class UrlPath implements ArrayAccess, Countable, IteratorAggregate, Str
 
 	public function getIterator(): Iterator
 	{
-		return new ArrayIterator($this->pathElements ?? []);
+		return new ArrayIterator($this->elements ?? []);
 	}
 
 	#endregion
