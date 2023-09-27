@@ -279,11 +279,11 @@ class UrlTest extends TestClass
 	public function test_toString_slash()
 	{
 		$tests = [
-			new Data('http://localhost', 'http://localhost'),
-			new Data('http://USER@localhost', 'http://USER@localhost'),
-			new Data('http://:PASS@localhost', 'http://:PASS@localhost'),
-			new Data('http://USER:PASS@localhost', 'http://USER:PASS@localhost'),
-			new Data('http://localhost:8888', 'http://localhost:8888'),
+			new Data('http://localhost/', 'http://localhost'),
+			new Data('http://USER@localhost/', 'http://USER@localhost'),
+			new Data('http://:PASS@localhost/', 'http://:PASS@localhost'),
+			new Data('http://USER:PASS@localhost/', 'http://USER:PASS@localhost'),
+			new Data('http://localhost:8888/', 'http://localhost:8888'),
 			new Data('http://localhost/a/', 'http://localhost/a'),
 			new Data('http://localhost/a/?q=k', 'http://localhost/a?q=k'),
 			new Data('http://localhost/a/?q=k&Q', 'http://localhost/a?q=k&Q'),
@@ -291,7 +291,7 @@ class UrlTest extends TestClass
 		];
 		foreach ($tests as $test) {
 			$actual = Url::parse(...$test->args);
-			$this->assertSame($test->expected, $actual->toString(addLastSeparator:true), $test->str());
+			$this->assertSame($test->expected, $actual->toString(trailingSlash:true), $test->str());
 		}
 	}
 }

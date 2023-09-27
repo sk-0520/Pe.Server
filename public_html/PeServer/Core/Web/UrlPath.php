@@ -133,7 +133,7 @@ readonly class UrlPath implements ArrayAccess, Countable, IteratorAggregate, Str
 		}
 	}
 
-	public function toString(bool $addLastSeparator): string
+	public function toString(bool $trailingSlash): string
 	{
 		if ($this->isEmpty()) {
 			return Text::EMPTY;
@@ -143,7 +143,7 @@ readonly class UrlPath implements ArrayAccess, Countable, IteratorAggregate, Str
 			return '/';
 		}
 
-		return '/' . Text::join('/', $this->elements) . ($addLastSeparator ? '/' : Text::EMPTY);
+		return '/' . Text::join('/', $this->elements) . ($trailingSlash ? '/' : Text::EMPTY);
 	}
 
 	#endregion

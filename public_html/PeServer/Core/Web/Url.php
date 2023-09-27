@@ -294,7 +294,7 @@ readonly class Url implements Stringable
 		);
 	}
 
-	public function toString(?UrlEncoding $urlEncoding = null, bool $addLastSeparator = false): string
+	public function toString(?UrlEncoding $urlEncoding = null, bool $trailingSlash = false): string
 	{
 		$urlEncoding ??= UrlEncoding::createDefault();
 
@@ -317,7 +317,11 @@ readonly class Url implements Stringable
 		if ($this->port !== null) {
 			$work .= ':' . (string)$this->port;
 		}
-		$work .= $this->path->toString($addLastSeparator);
+		if ($this->path->isEmpty() && $trailingSlash) {
+			$work .= '/';
+		} else {
+			$work .= $this->path->toString($trailingSlash);
+		}
 		$work .= $this->query->toString($urlEncoding);
 
 		if ($this->fragment !== null) {
