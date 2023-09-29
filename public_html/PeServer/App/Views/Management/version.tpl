@@ -5,7 +5,7 @@
 	<form action="/management/version" method="post">
 		{csrf}
 
-		<dl>
+		<dl class="input">
 			<dt>バージョン</dt>
 			<dd>
 				{input_helper key='version' type="text" class="edit" pattern="[0-9]+\.[0-9]+\.[0-9]+"}

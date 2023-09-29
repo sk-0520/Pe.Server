@@ -50,6 +50,9 @@ class CollectionTest extends TestClass
 
 		$vector2 = Collection::from([1, 2, 'KEY' => 3])->toList();
 		$this->assertSame([1, 2, 3], $vector2->getArray());
+
+		$vector3 = Collection::from([])->toList();
+		$this->assertSame([], $vector3->getArray());
 	}
 
 	function test_toList_type_throw()

@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace PeServerUT\Core\Database;
 
+use Exception;
 use PeServer\Core\Archiver;
-use PeServer\Core\Collections\Arr;
 use PeServer\Core\Binary;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Database\ConnectionSetting;
 use PeServer\Core\Database\DatabaseContext;
 use PeServer\Core\Log\Logging;
@@ -14,8 +15,9 @@ use PeServer\Core\Log\NullLogger;
 use PeServer\Core\Throws\DatabaseException;
 use PeServer\Core\Throws\NotSupportedException;
 use PeServer\Core\Throws\SqlException;
-use PeServerUT\Core\Database\DB;
+use PeServer\Core\Throws\TransactionException;
 use PeServerTest\TestClass;
+use PeServerUT\Core\Database\DB;
 use stdClass;
 
 class DatabaseContextTest extends TestClass
@@ -47,7 +49,61 @@ class DatabaseContextTest extends TestClass
 		$this->assertTrue($database->inTransaction());
 		$database->rollback();
 		$this->assertFalse($database->inTransaction());
+
+		$transactionResult1 = $database->transaction(function($context) {
+			try {
+				$context->beginTransaction();
+				$this->fail();
+			} catch(TransactionException) {
+				$this->success();
+			}
+		});
+		$this->isFalse($transactionResult1);
+
+		$transactionResult2 = $database->transaction(function($context) {
+			try {
+				throw new Exception();
+				$this->fail();
+			} catch(Exception) {
+				$this->success();
+			}
+		});
+		$this->isFalse($transactionResult2);
 	}
+
+	function test_beginTransaction()
+	{
+		$database = DB::memory();
+		$this->assertFalse($database->inTransaction());
+		$database->beginTransaction();
+		$this->assertTrue($database->inTransaction());
+		$this->expectException(TransactionException::class);
+		$database->beginTransaction();
+		$this->fail();
+	}
+
+	function test_commit()
+	{
+		$database = DB::memory();
+		$database->beginTransaction();
+		$database->commit();
+
+		$this->expectException(TransactionException::class);
+		$database->commit();
+		$this->fail();
+	}
+
+	function test_rollback()
+	{
+		$database = DB::memory();
+		$database->beginTransaction();
+		$database->rollback();
+
+		$this->expectException(TransactionException::class);
+		$database->rollback();
+		$this->fail();
+	}
+
 
 	function test_fetch()
 	{

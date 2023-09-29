@@ -13,6 +13,7 @@ use PeServer\Core\Mvc\LogicParameter;
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\Core\Collections\Arr;
+use PeServer\Core\Collections\Collection;
 
 class ManagementLogListLogic extends PageLogicBase
 {
@@ -38,17 +39,19 @@ class ManagementLogListLogic extends PageLogicBase
 		$logFiles = array_filter($files, function ($i) use ($targetExt) {
 			return Path::getFileExtension($i) === $targetExt;
 		});
-		$logFiles = Arr::sortNaturalByValue($logFiles, true);
-		$logFiles = array_map(function ($i) {
-			$sizeConverter = new SizeConverter();
-			$size = File::getFileSize($i);
-			return [
-				'directory' => Path::getDirectoryPath($i),
-				'name' => Path::getFileName($i),
-				'size' => $size,
-				'human_size' => $sizeConverter->convertHumanReadableByte($size, '{f_size} {unit}'),
-			];
-		}, $logFiles);
+		$logFiles = Collection::from(Arr::sortNaturalByValue($logFiles, true))
+			->select(function ($i) {
+				$sizeConverter = new SizeConverter();
+				$size = File::getFileSize($i);
+				return [
+					'directory' => Path::getDirectoryPath($i),
+					'name' => Path::getFileName($i),
+					'size' => $size,
+					'human_size' => $sizeConverter->convertHumanReadableByte($size, '{f_size} {unit}'),
+				];
+			})
+			->reverse()
+			->toList();
 
 		$this->setValue('directory', $dirPath);
 		$this->setValue('log_files', $logFiles);
