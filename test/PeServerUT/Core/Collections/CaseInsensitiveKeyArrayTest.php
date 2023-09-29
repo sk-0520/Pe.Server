@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServerUT\Core\Collections;
 
 use PeServer\Core\Collections\CaseInsensitiveKeyArray;
+use PeServer\Core\ErrorHandler;
 use PeServer\Core\Throws\IndexOutOfRangeException;
 use PeServer\Core\Throws\KeyNotFoundException;
 use PeServer\Core\Throws\NotSupportedException;

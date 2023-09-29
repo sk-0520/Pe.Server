@@ -92,10 +92,6 @@ class CaseInsensitiveKeyArray implements ArrayAccess, Countable, IteratorAggrega
 		if (is_int($offset)) {
 			return false;
 		}
-		if (is_double($offset)) { //@phpstan-ignore-line サポートしているがドキュメント上は通常配列キー限定
-			$floatOffset = (string)$offset;
-			return isset($this->data[$floatOffset]);
-		}
 
 		$mapOffset = $this->toMapKey($offset);
 		if (isset($this->map[$mapOffset])) {
@@ -118,13 +114,6 @@ class CaseInsensitiveKeyArray implements ArrayAccess, Countable, IteratorAggrega
 			return $this->data[$offset];
 		}
 		if (is_int($offset)) {
-			throw new IndexOutOfRangeException('$offset: ' . $offset);
-		}
-		if (is_double($offset)) { //@phpstan-ignore-line サポートしているがドキュメント上は通常配列キー限定
-			$floatOffset = (string)$offset;
-			if (isset($this->data[$floatOffset])) {
-				return $this->data[$floatOffset];
-			}
 			throw new IndexOutOfRangeException('$offset: ' . $offset);
 		}
 
