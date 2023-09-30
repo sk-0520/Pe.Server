@@ -91,9 +91,9 @@ class ResponsePrinter
 		if ($this->response->header->existsRedirect()) {
 			$redirect = $this->response->header->getRedirect();
 			if ($redirect->status === HttpStatus::MovedPermanently) {
-				header('Location: ' . $redirect->url);
+				header('Location: ' . $redirect->url->toString());
 			} else {
-				header('Location: ' . $redirect->url, true, $redirect->status->value);
+				header('Location: ' . $redirect->url->toString(), true, $redirect->status->value);
 			}
 			return;
 		}

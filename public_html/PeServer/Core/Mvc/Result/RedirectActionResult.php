@@ -9,6 +9,7 @@ use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mvc\Result\IActionResult;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
+use PeServer\Core\Web\Url;
 
 /**
  * 結果操作: リダイレクト。
@@ -18,12 +19,9 @@ use PeServer\Core\Throws\ArgumentException;
 class RedirectActionResult implements IActionResult
 {
 	public function __construct(
-		private string $url,
+		private Url $url,
 		private ?HttpStatus $status = null
 	) {
-		if (Text::isNullOrWhiteSpace($url)) {
-			throw new ArgumentException('$url');
-		}
 	}
 
 	#region IActionResult

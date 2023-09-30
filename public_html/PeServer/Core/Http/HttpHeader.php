@@ -16,6 +16,7 @@ use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Throws\KeyNotFoundException;
 use PeServer\Core\Throws\NotSupportedException;
+use PeServer\Core\Web\Url;
 
 /**
  * HTTPヘッダー。
@@ -210,11 +211,11 @@ class HttpHeader
 	/**
 	 * リダイレクト設定を割り当て。
 	 *
-	 * @param string $url
+	 * @param Url $url
 	 * @param HttpStatus|null $status
 	 * @return void
 	 */
-	public function setRedirect(string $url, ?HttpStatus $status): void
+	public function setRedirect(Url $url, ?HttpStatus $status): void
 	{
 		if ($status === null) {
 			$this->redirect = new RedirectSetting($url, HttpStatus::MovedPermanently);
@@ -315,7 +316,7 @@ class LocalHttpClientRequestHeader extends HttpHeader
 		throw new NotSupportedException();
 	}
 
-	public function setRedirect(string $url, ?HttpStatus $status): void
+	public function setRedirect(Url $url, ?HttpStatus $status): void
 	{
 		throw new NotSupportedException();
 	}
