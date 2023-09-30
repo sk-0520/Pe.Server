@@ -9,7 +9,6 @@ use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Mvc\UploadFile;
 use PeServer\Core\Store\SpecialStore;
 use PeServer\Core\Throws\KeyNotFoundException;
-use PHPUnit\SebastianBergmann\Type\NullType;
 
 /**
  * HTTPリクエストデータ。

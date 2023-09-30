@@ -7,7 +7,6 @@ namespace PeServer\App\Models\Domain;
 use PeServer\Core\I18n;
 use PeServer\Core\Uuid;
 use PeServer\Core\TrueKeeper;
-use PeServer\Core\Web\UrlUtility;
 use PeServer\Core\Environment;
 use PeServer\Core\Mvc\Validator;
 use PeServer\Core\Text;
@@ -18,11 +17,12 @@ use PeServer\App\Models\Dao\Entities\PluginsEntityDao;
 
 class PluginValidator extends ValidatorBase
 {
-	public const PLUGIN_NAME_RANGE_MIN = 4;
-	public const PLUGIN_NAME_RANGE_MAX = 64;
-	public const PLUGIN_DISPLAY_NAME_LENGTH = 500;
-	public const PLUGIN_DESCRIPTION_LENGTH = 1000;
+	private const PLUGIN_NAME_RANGE_MIN = 4;
+	private const PLUGIN_NAME_RANGE_MAX = 64;
+	private const PLUGIN_DISPLAY_NAME_LENGTH = 500;
+	private const PLUGIN_DESCRIPTION_LENGTH = 1000;
 
+	private const LOCALHOST_PATTERN = '/https?:\/\/(\w*:\\w*@)?((localhost)|(127\.0\.0\.1))\b/';
 
 	public function __construct(IValidationReceiver $receiver, Validator $validator)
 	{
@@ -86,7 +86,7 @@ class PluginValidator extends ValidatorBase
 
 			if (Environment::isProduction()) {
 				// チェック用URLなのでワッケ分からんURLの登録は禁止する(検証環境はいい)
-				$trueKeeper->state = $this->validator->isNotMatch($key, UrlUtility::LOCALHOST_PATTERN, $value);
+				$trueKeeper->state = $this->validator->isNotMatch($key, self::LOCALHOST_PATTERN, $value);
 			}
 
 			return $trueKeeper->state;

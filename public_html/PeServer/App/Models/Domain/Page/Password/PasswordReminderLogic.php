@@ -32,7 +32,6 @@ use PeServer\Core\Serialization\JsonSerializer;
 use PeServer\Core\Text;
 use PeServer\Core\Utc;
 use PeServer\Core\Web\UrlPath;
-use PeServer\Core\Web\UrlUtility;
 
 class PasswordReminderLogic extends PageLogicBase
 {

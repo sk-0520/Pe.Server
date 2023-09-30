@@ -31,7 +31,6 @@ use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\Text;
 use PeServer\Core\Web\UrlPath;
-use PeServer\Core\Web\UrlUtility;
 
 class AccountSignupStep1Logic extends PageLogicBase
 {

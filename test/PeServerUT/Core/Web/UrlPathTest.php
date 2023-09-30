@@ -9,7 +9,6 @@ use PeServer\Core\Throws\IndexOutOfRangeException;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Throws\NotSupportedException;
 use PeServer\Core\Web\UrlPath;
-use PeServer\Core\Web\UrlUtility;
 use PeServerTest\Data;
 use PeServerTest\TestClass;
 use TypeError;
