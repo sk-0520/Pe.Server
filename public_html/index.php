@@ -31,7 +31,7 @@ $autoLoader->register(false);
 
 $urlHelper = new UrlHelper('');
 $specialStore = new AppSpecialStore();
-$isLocalhost = $specialStore->getServer('SERVER_NAME') === 'localhost';
+$isLocalhost = $specialStore->getServerName() === 'localhost';
 
 $appTestMode = '';
 error_reporting(E_ALL);

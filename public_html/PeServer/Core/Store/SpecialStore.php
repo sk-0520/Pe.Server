@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Store;
 
 use PeServer\Core\Collections\Arr;
+use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Mvc\UploadFile;
 use PeServer\Core\Text;
 use PeServer\Core\Web\Url;
@@ -312,6 +313,14 @@ class SpecialStore
 	{
 		return $this->getServerUrlCore(true);
 	}
+
+	public function getRequestMethod(): HttpMethod
+	{
+		$raw = $this->getServer('REQUEST_METHOD', Text::EMPTY);
+
+		return HttpMethod::from(Text::toUpper(Text::trim($raw)));
+	}
+
 
 
 
