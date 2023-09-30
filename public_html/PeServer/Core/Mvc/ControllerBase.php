@@ -156,7 +156,7 @@ abstract class ControllerBase
 
 	/**
 	 * ドメイン内でリダイレクト。
-	 * 基本的にこれを使っておけばいい。
+	 * 基本的にこれを使っておけばいいが、ドメイン周りはそれっぽく取得しているだけなので正確に対応するなら継承先でいい感じにすること。
 	 *
 	 * @param UrlPath|string $path 行先。
 	 * @param UrlQuery|null $query 付与するクエリ。

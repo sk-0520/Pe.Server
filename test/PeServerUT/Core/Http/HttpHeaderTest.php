@@ -9,6 +9,7 @@ use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Throws\KeyNotFoundException;
+use PeServer\Core\Web\Url;
 use PeServerTest\TestClass;
 
 class HttpHeaderTest extends TestClass
@@ -125,18 +126,18 @@ class HttpHeaderTest extends TestClass
 		$this->assertFalse($hh->existsRedirect());
 		$this->assertFalse($hh->clearRedirect());
 
-		$hh->setRedirect('url', null);
+		$hh->setRedirect(Url::parse('http://localhost'), null);
 		$this->assertTrue($hh->existsRedirect());
 		$actual1 = $hh->getRedirect();
-		$this->assertSame('url', $actual1->url);
+		$this->assertSame('http://localhost', $actual1->url->toString());
 		$this->assertSame(HttpStatus::MovedPermanently, $actual1->status);
 		$this->assertTrue($hh->clearRedirect());
 		$this->assertFalse($hh->existsRedirect());
 
-		$hh->setRedirect('URL', HttpStatus::Found);
+		$hh->setRedirect(Url::parse('http://127.0.0.1'), HttpStatus::Found);
 		$this->assertTrue($hh->existsRedirect());
 		$actual2 = $hh->getRedirect();
-		$this->assertSame('URL', $actual2->url);
+		$this->assertSame('http://127.0.0.1', $actual2->url->toString());
 		$this->assertSame(HttpStatus::Found, $actual2->status);
 		$this->assertTrue($hh->clearRedirect());
 		$this->assertFalse($hh->existsRedirect());

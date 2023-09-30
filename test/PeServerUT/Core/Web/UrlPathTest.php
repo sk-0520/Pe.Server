@@ -105,6 +105,8 @@ class UrlPathTest extends TestClass
 			new Data([], '/', ''),
 			new Data(['b'], '/', 'b'),
 			new Data(['a', 'b', 'c'], 'a/b', 'c'),
+			new Data(['a', 'b', 'c'], 'a/b', ['c']),
+			new Data(['a', 'b', 'c', 'd'], 'a/b', ['c', 'd']),
 		];
 		foreach ($tests as $test) {
 			$path = new UrlPath($test->args[0]);
@@ -118,6 +120,26 @@ class UrlPathTest extends TestClass
 		$path = new UrlPath('');
 		$actual = $path->add('a');
 		$this->assertSame(['a'], $actual->getElements());
+	}
+
+	public static function provider_add_throw()
+	{
+		return [
+			[[], '$element: empty array'],
+			[[''], '$element[0]: whitespace string'],
+			[['a', ''], '$element[1]: whitespace string'],
+			[[1], '$element[0]: not string'],
+			[['a', 1], '$element[1]: not string'],
+		];
+	}
+	/** @dataProvider provider_add_throw */
+	public function test_add_throw($input, $message)
+	{
+		$path = new UrlPath('');
+		$this->expectException(ArgumentException::class);
+		$this->expectExceptionMessage($message);
+		$path->add($input);
+		$this->fail();
 	}
 
 	public function test_toString()

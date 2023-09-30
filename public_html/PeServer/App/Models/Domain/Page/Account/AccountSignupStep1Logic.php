@@ -127,7 +127,7 @@ class AccountSignupStep1Logic extends PageLogicBase
 		});
 
 
-		$url = $this->appUrl->getPublicUrl()->changePath(new UrlPath("account/signup/$token"));
+		$url = $this->appUrl->addPublicUrl(new UrlPath("account/signup/$token"));
 
 		$subject = I18n::message('subject/sign_up_step1');
 		$values = [

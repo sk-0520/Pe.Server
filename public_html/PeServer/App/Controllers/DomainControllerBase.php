@@ -55,10 +55,18 @@ abstract class DomainControllerBase extends ControllerBase
 		return new AppViewActionResult($templateBaseName, $actionName, $templateParameter, $headers, $templateFactory, $urlHelper);
 	}
 
-	// protected function redirectPath(UrlPath|string $path, ?UrlQuery $query = null): RedirectActionResult
-	// {
-	// 	return parent::redirectPath($path, $query);
-	// }
+	protected function redirectPath(UrlPath|string $path, ?UrlQuery $query = null): RedirectActionResult
+	{
+		//NOTE: リダイレクトURLは設定から取得するためオーバーライドしている
+
+		if (is_string($path)) {
+			$path = new UrlPath($path);
+		}
+
+		$url = $this->appUrl->addPublicUrl($path, $query);
+
+		return parent::redirectUrl($url);
+	}
 
 	#endregion
 }

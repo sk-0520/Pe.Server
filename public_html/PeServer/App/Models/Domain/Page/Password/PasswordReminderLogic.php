@@ -105,7 +105,7 @@ class PasswordReminderLogic extends PageLogicBase
 		if ($result) {
 			$rawEmail = $this->cryptography->decrypt($email);
 
-			$url = $this->appUrl->getPublicUrl()->changePath(new UrlPath("password/reset/$token"));
+			$url = $this->appUrl->addPublicUrl(new UrlPath("password/reset/$token"));
 
 			$subject = I18n::message('subject/password_reminder_token');
 			$values = [
