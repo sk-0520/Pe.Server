@@ -149,7 +149,7 @@ abstract class ControllerBase
 	 * @param Url $url
 	 * @return RedirectActionResult
 	 */
-	public function redirectUrl(Url $url): RedirectActionResult
+	protected function redirectUrl(Url $url): RedirectActionResult
 	{
 		return new RedirectActionResult($url, HttpStatus::Found);
 	}
@@ -162,7 +162,7 @@ abstract class ControllerBase
 	 * @param UrlQuery|null $query 付与するクエリ。
 	 * @return RedirectActionResult
 	 */
-	public function redirectPath(UrlPath|string $path, ?UrlQuery $query = null): RedirectActionResult
+	protected function redirectPath(UrlPath|string $path, ?UrlQuery $query = null): RedirectActionResult
 	{
 		$url = $this->stores->special->getServerUrl();
 
