@@ -11,7 +11,7 @@ use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\HttpStatusException;
 use PeServer\Core\Throws\InvalidOperationException;
-use PeServer\Core\Web\UrlUtility;
+use PeServer\Core\Web\Url;
 
 /**
  * ミドルウェア結果。
@@ -74,21 +74,17 @@ abstract class MiddlewareResult
 	/**
 	 * リダイレクト処理生成。
 	 *
-	 * @param string $path
-	 * @param array<non-empty-string,string>|null $query
-	 * @param HttpStatus|null $status
+	 * @param Url $url
+	 * @param HttpStatus $status
 	 * @return MiddlewareResult
 	 */
-	public static function redirect(SpecialStore $specialStore, string $path, ?array $query = null, ?HttpStatus $status = null): MiddlewareResult
+	public static function redirect(Url $url, HttpStatus $status = HttpStatus::Found): MiddlewareResult
 	{
-		$regex = new Regex();
-		if ($regex->isMatch($path, '|(https?:)?//|')) {
-			throw new ArgumentException();
+		if (!$status->isRedirect()) {
+			throw new ArgumentException('$status');
 		}
 
-		$url = UrlUtility::buildPath($path, $query ?? [], $specialStore);
-
-		return new LocalRedirectMiddlewareResultImpl($status ?? HttpStatus::Found, $url);
+		return new LocalRedirectMiddlewareResultImpl($status, $url);
 	}
 
 	/**
@@ -125,9 +121,9 @@ abstract class MiddlewareResult
 class LocalRedirectMiddlewareResultImpl extends MiddlewareResult
 {
 	private HttpStatus $status;
-	private string $url;
+	private Url $url;
 
-	public function __construct(HttpStatus $status, string $url)
+	public function __construct(HttpStatus $status, Url $url)
 	{
 		parent::__construct(parent::RESULT_KIND_STATUS);
 
@@ -137,7 +133,7 @@ class LocalRedirectMiddlewareResultImpl extends MiddlewareResult
 
 	public function apply(): void
 	{
-		header('Location: ' . $this->url, true, $this->status->value);
+		header('Location: ' . $this->url->toString(), true, $this->status->value);
 	}
 }
 
