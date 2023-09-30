@@ -37,6 +37,30 @@ class AssetFunction extends TemplateFunctionBase
 		parent::__construct($argument);
 	}
 
+	#region function
+
+	/**
+	 * キャッシュ考慮不要な(HTTP)パスか。
+	 *
+	 * @param string $path
+	 * @return bool
+	 */
+	private function isIgnoreCaching(string $path): bool
+	{
+		$isExternal =
+			Text::startsWith($path, '//', false)
+			||
+			Text::startsWith($path, 'https://', false)
+			||
+			Text::startsWith($path, 'http://', false)
+			||
+			Text::contains($path, '?', false);
+
+		return $isExternal;
+	}
+
+	#endregion
+
 	#region TemplateFunctionBase
 
 	public function getFunctionName(): string
@@ -60,7 +84,7 @@ class AssetFunction extends TemplateFunctionBase
 		$fileExtension = Path::getFileExtension($sourcePath);
 		$extension = Text::toLower($fileExtension);
 
-		$ignoreAsset = UrlUtility::isIgnoreCaching($sourcePath);
+		$ignoreAsset = $this->isIgnoreCaching($sourcePath);
 
 		$resourcePath = $sourcePath;
 		if (!$ignoreAsset) {

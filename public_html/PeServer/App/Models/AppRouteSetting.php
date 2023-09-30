@@ -31,6 +31,7 @@ use PeServer\App\Models\Middleware\UserPluginEditFilterMiddleware;
 use PeServer\Core\Environment;
 use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Mvc\Middleware\CsrfMiddleware;
+use PeServer\Core\Mvc\Middleware\HttpsMiddleware;
 use PeServer\Core\Mvc\Middleware\PerformanceMiddleware;
 use PeServer\Core\Mvc\Middleware\PerformanceShutdownMiddleware;
 use PeServer\Core\Mvc\Route;
@@ -50,7 +51,9 @@ final class AppRouteSetting extends RouteSetting
 	{
 		$isProduction = Environment::isProduction();
 		parent::__construct(
-			[],
+			[
+				...($isProduction ? [HttpsMiddleware::class] : [])
+			],
 			[
 				...($isProduction ? [PerformanceMiddleware::class] : [])
 			],

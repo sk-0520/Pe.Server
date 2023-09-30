@@ -15,7 +15,6 @@ use PeServer\Core\Throws\ParseException;
 use PeServer\Core\Web\UrlEncoding;
 use PeServer\Core\Web\UrlPath;
 use PeServer\Core\Web\UrlQuery;
-use PeServer\Core\Web\UrlUtility;
 
 /**
  * URL。

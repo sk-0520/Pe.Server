@@ -24,6 +24,9 @@ use PeServer\Core\Store\Stores;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Web\IUrlHelper;
+use PeServer\Core\Web\Url;
+use PeServer\Core\Web\UrlPath;
+use PeServer\Core\Web\UrlQuery;
 use PeServer\Core\Web\UrlUtility;
 
 /**
@@ -143,25 +146,35 @@ abstract class ControllerBase
 	/**
 	 * URLリダイレクト。
 	 *
-	 * @param string $url
+	 * @param Url $url
 	 * @return RedirectActionResult
 	 */
-	public function redirectUrl(string $url): RedirectActionResult
+	protected function redirectUrl(Url $url): RedirectActionResult
 	{
 		return new RedirectActionResult($url, HttpStatus::Found);
 	}
 
 	/**
 	 * ドメイン内でリダイレクト。
-	 * 基本的にこれを使っておけばいい。
+	 * 基本的にこれを使っておけばいいが、ドメイン周りはそれっぽく取得しているだけなので正確に対応するなら継承先でいい感じにすること。
 	 *
-	 * @param string $path 行先。
-	 * @param array<non-empty-string,string>|null $query 付与するクエリ。
+	 * @param UrlPath|string $path 行先。
+	 * @param UrlQuery|null $query 付与するクエリ。
 	 * @return RedirectActionResult
 	 */
-	public function redirectPath(string $path, ?array $query = null): RedirectActionResult
+	protected function redirectPath(UrlPath|string $path, ?UrlQuery $query = null): RedirectActionResult
 	{
-		$url = UrlUtility::buildPath($path, $query ?? [], $this->stores->special);
+		$url = $this->stores->special->getServerUrl();
+
+		if (is_string($path)) {
+			$path = new UrlPath($path);
+		}
+		$url = $url->changePath($path);
+
+		if ($query !== null) {
+			$url = $url->changeQuery($query);
+		}
+
 		return $this->redirectUrl($url);
 	}
 

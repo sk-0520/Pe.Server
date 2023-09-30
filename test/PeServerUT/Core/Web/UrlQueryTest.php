@@ -12,7 +12,6 @@ use PeServer\Core\Web\UrlEncoding;
 use PeServer\Core\Web\UrlQuery;
 use PeServerTest\Data;
 use PeServerTest\TestClass;
-use PeServer\Core\Web\UrlUtility;
 
 class UrlQueryTest extends TestClass
 {

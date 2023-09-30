@@ -6,13 +6,14 @@ namespace PeServer\App\Models\Domain\Page\Password;
 
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\AppCryptography;
+use PeServer\App\Models\AppEmailInformation;
 use PeServer\App\Models\AppMailer;
 use PeServer\App\Models\AppTemplate;
+use PeServer\App\Models\AppUrl;
 use PeServer\App\Models\AuditLog;
 use PeServer\App\Models\Dao\Entities\PluginsEntityDao;
 use PeServer\App\Models\Dao\Entities\UserAuthenticationsEntityDao;
 use PeServer\App\Models\Dao\Entities\UsersEntityDao;
-use PeServer\App\Models\AppEmailInformation;
 use PeServer\App\Models\Data\SessionAnonymous;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\App\Models\Domain\Page\SessionAnonymousTrait;
@@ -30,13 +31,13 @@ use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\Serialization\JsonSerializer;
 use PeServer\Core\Text;
 use PeServer\Core\Utc;
-use PeServer\Core\Web\UrlUtility;
+use PeServer\Core\Web\UrlPath;
 
 class PasswordReminderLogic extends PageLogicBase
 {
 	use SessionAnonymousTrait;
 
-	public function __construct(LogicParameter $parameter, private AppConfiguration $config, private AppCryptography $cryptography, private AppMailer $mailer, private AppTemplate $appTemplate, private AppEmailInformation $appEmailInformation)
+	public function __construct(LogicParameter $parameter, private AppConfiguration $config, private AppCryptography $cryptography, private AppMailer $mailer, private AppTemplate $appTemplate, private AppEmailInformation $appEmailInformation, private AppUrl $appUrl)
 	{
 		parent::__construct($parameter);
 	}
@@ -103,18 +104,12 @@ class PasswordReminderLogic extends PageLogicBase
 		if ($result) {
 			$rawEmail = $this->cryptography->decrypt($email);
 
-			$baseUrl = Text::replaceMap(
-				Code::toLiteralString($this->config->setting->config->address->publicUrl),
-				[
-					'DOMAIN' => $this->config->setting->config->address->domain
-				]
-			);
-			$url = UrlUtility::joinPath($baseUrl, "password/reset/$token");
+			$url = $this->appUrl->addPublicUrl(new UrlPath("password/reset/$token"));
 
 			$subject = I18n::message('subject/password_reminder_token');
 			$values = [
 				'login_id' => $loginId,
-				'url' => $url,
+				'url' => $url->toString(),
 			];
 			$html = $this->appTemplate->createMailTemplate('password_reminder_token', $subject, $values);
 

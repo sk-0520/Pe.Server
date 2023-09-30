@@ -8,7 +8,6 @@ use PeServer\Core\Binary;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Encoding;
 use PeServer\Core\Text;
-use PHPUnit\PhpParser\Node\Stmt\Break_;
 
 class HttpHeadContentType
 {

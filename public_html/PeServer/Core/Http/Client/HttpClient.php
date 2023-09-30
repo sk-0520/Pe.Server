@@ -19,7 +19,6 @@ use PeServer\Core\Throws\HttpClientRequestException;
 use PeServer\Core\Throws\HttpClientStatusException;
 use PeServer\Core\Throws\NotImplementedException;
 use PeServer\Core\Web\Url;
-use PHPUnit\PhpParser\Node\Stmt\Break_;
 
 /**
  * HTTPへ旅立つのだ。

@@ -37,6 +37,7 @@ readonly class UrlPath implements ArrayAccess, Countable, IteratorAggregate, Str
 	 * 配列要素数が 0 の場合は `/` のみ
 	 *
 	 * @var string[]|null
+	 * @phpstan-var non-empty-string[]|null
 	 */
 	private array|null $elements;
 
@@ -47,6 +48,7 @@ readonly class UrlPath implements ArrayAccess, Countable, IteratorAggregate, Str
 		if (Text::isNullOrWhiteSpace($path)) {
 			$this->elements = null;
 		} else {
+			/** @phpstan-var non-empty-string[] */
 			$elements = Collection::from(Text::split($path, '/'))
 				->select(fn ($a) => Text::trim($a, '/'))
 				->where(fn ($a) => !Text::isNullOrWhiteSpace($a))
@@ -104,6 +106,7 @@ readonly class UrlPath implements ArrayAccess, Countable, IteratorAggregate, Str
 	 * パスの各要素を取得。
 	 *
 	 * @return string[]
+	 * @phpstan-return non-empty-string[]
 	 */
 	public function getElements(): array
 	{
@@ -117,19 +120,37 @@ readonly class UrlPath implements ArrayAccess, Countable, IteratorAggregate, Str
 	/**
 	 * 終端パスを追加。
 	 *
-	 * @param string $element
+	 * @param string|string[] $element
+	 * @phpstan-param string|non-empty-array<non-empty-string> $element
 	 * @return self 終端パスの追加された `UrlPath`
 	 */
-	public function add(string $element): self
+	public function add(string|array $element): self
 	{
-		if (Text::isNullOrWhiteSpace($element)) {
-			return $this;
+		if (is_string($element)) {
+			if (Text::isNullOrWhiteSpace($element)) {
+				return $this;
+			}
+			$elements = [$element];
+		} else {
+			if (count($element) === 0) { //@phpstan-ignore-line [DOCTYPE]
+				throw new ArgumentException('$element: empty array');
+			}
+			foreach ($element as $i => $elm) {
+				if (is_string($elm)) { //@phpstan-ignore-line [DOCTYPE]
+					if (Text::isNullOrWhiteSpace($elm)) { //@phpstan-ignore-line [DOCTYPE]
+						throw new ArgumentException("\$element[$i]: whitespace string");
+					}
+				} else {
+					throw new ArgumentException("\$element[$i]: not string");
+				}
+			}
+			$elements = $element;
 		}
 
 		if ($this->isEmpty()) {
-			return new self($element);
+			return self::from($elements);
 		} else {
-			return self::from([...$this->elements, $element]);
+			return self::from([...$this->elements, ...$elements]);
 		}
 	}
 

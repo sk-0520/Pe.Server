@@ -23,12 +23,13 @@ use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\NotImplementedException;
+use PeServer\Core\Web\Url;
 
 class ApplicationApiVersionUpdateLogic extends ApiLogicBase
 {
 	#region variable
 
-	public string $redirectUrl = '';
+	public Url|null $redirectUrl = null;
 
 	#endregion
 
@@ -51,12 +52,14 @@ class ApplicationApiVersionUpdateLogic extends ApiLogicBase
 
 		$version = $peSettingEntityDao->selectPeSettingVersion();
 
-		$this->redirectUrl = Text::replaceMap(
-			$this->config->setting->config->address->families->peUpdateInfoUrlBase,
-			[
-				'VERSION' => $version,
-				'UPDATE_INFO_NAME' => 'update.json',
-			]
+		$this->redirectUrl = Url::parse(
+			Text::replaceMap(
+				$this->config->setting->config->address->families->peUpdateInfoUrlBase,
+				[
+					'VERSION' => $version,
+					'UPDATE_INFO_NAME' => 'update.json',
+				]
+			)
 		);
 	}
 

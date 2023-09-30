@@ -7,7 +7,6 @@ namespace PeServer\Core\Web;
 use PeServer\Core\Binary;
 use PeServer\Core\Encoding;
 use PeServer\Core\Web\UrlEncode;
-use PeServer\Core\Web\UrlUtility;
 
 /**
  * URLエンコードを処理。

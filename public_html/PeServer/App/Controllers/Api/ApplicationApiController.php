@@ -11,6 +11,7 @@ use PeServer\Core\Mvc\ControllerArgument;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\Result\IActionResult;
 use PeServer\Core\Mvc\Result\RedirectActionResult;
+use PeServer\Core\Throws\InvalidOperationException;
 
 class ApplicationApiController extends ApiControllerBase
 {
@@ -42,6 +43,10 @@ class ApplicationApiController extends ApiControllerBase
 		/** @var ApplicationApiVersionUpdateLogic */
 		$logic = $this->createLogic(ApplicationApiVersionUpdateLogic::class);
 		$logic->run(LogicCallMode::Submit);
+
+		if ($logic->redirectUrl === null) {
+			throw new InvalidOperationException();
+		}
 
 		return new RedirectActionResult($logic->redirectUrl, HttpStatus::Found);
 	}

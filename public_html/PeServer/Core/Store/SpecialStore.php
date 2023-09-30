@@ -8,6 +8,8 @@ use PeServer\Core\Collections\Arr;
 use PeServer\Core\Mvc\UploadFile;
 use PeServer\Core\Text;
 use PeServer\Core\Web\Url;
+use PeServer\Core\Web\UrlPath;
+use PeServer\Core\Web\UrlQuery;
 
 /**
  * $_SERVER, $_COOKIE, $_SESSION 読み込みアクセス。
@@ -58,17 +60,6 @@ class SpecialStore
 	public function getServerNames(): array
 	{
 		return Arr::getKeys($_SERVER);
-	}
-
-	/**
-	 * `REQUEST_URI`
-	 *
-	 * @return Url
-	 */
-	public function getRequestUrl(): Url
-	{
-		$uri = self::getServer('REQUEST_URI');
-		return Url::parse($uri);
 	}
 
 	/**
@@ -235,6 +226,94 @@ class SpecialStore
 	{
 		return Arr::getKeys($_FILES);
 	}
+
+	public function getServerName(): string
+	{
+		return $this->getServer('SERVER_NAME');
+	}
+
+	public function isHttps(): bool
+	{
+		return $this->getServer('HTTPS') === 'on';
+	}
+
+	public function isLocalhost(): bool
+	{
+		return Arr::in(
+			[
+				'loc!alhost',
+				'127.0.0.1',
+			],
+			$this->getServerName()
+		);
+	}
+
+	public function getPort(): int
+	{
+		$raw = $this->getServer('SERVER_PORT', null);
+		// if (Text::isNullOrEmpty($raw)) {
+		// 	return null;
+		// }
+
+		return (int)$raw;
+	}
+
+	public function getHost(): string
+	{
+		return $this->getServer('HTTP_HOST', TEXT::EMPTY);
+	}
+
+	private function getServerUrlCore(bool $withPathInfo): Url
+	{
+		$isHttps = $this->isHttps();
+
+		$port = $this->getPort();
+		if ($isHttps) {
+			if ($port === 443) {
+				$port = '';
+			}
+		} else {
+			if ($port === 80) {
+				$port = '';
+			}
+		}
+		if ($port !== '') {
+			$port = ":$port";
+		}
+
+		$query = $this->getServer('QUERY_STRING', Text::EMPTY);
+		if (Text::isNullOrEmpty($query)) {
+			$query = null;
+		}
+
+		$url = $isHttps ? 'https://' : 'http://';
+		$url .= $this->getHost();
+		$url .= $port;
+		if ($withPathInfo) {
+			$url .= $this->getServer('REQUEST_URI', Text::EMPTY);
+		}
+
+		return Url::parse($url);
+	}
+
+	public function getServerUrl(): Url
+	{
+		return $this->getServerUrlCore(false);
+	}
+
+	/**
+	 * URLを取得。
+	 *
+	 * リバースプロキシだったり認証だったりの細かい制御は行っていない。
+	 *
+	 * @return Url
+	 */
+	public function getRequestUrl(): Url
+	{
+		return $this->getServerUrlCore(true);
+	}
+
+
 
 	#endregion
 }

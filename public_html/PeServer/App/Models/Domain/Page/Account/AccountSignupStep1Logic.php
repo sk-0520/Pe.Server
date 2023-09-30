@@ -10,6 +10,7 @@ use PeServer\App\Models\AppMailer;
 use PeServer\App\Models\AppTemplate;
 use PeServer\App\Models\Dao\Entities\SignUpWaitEmailsEntityDao;
 use PeServer\App\Models\AppEmailInformation;
+use PeServer\App\Models\AppUrl;
 use PeServer\App\Models\Data\EmailInformation;
 use PeServer\App\Models\Data\SessionAnonymous;
 use PeServer\App\Models\Domain\AccountValidator;
@@ -29,7 +30,7 @@ use PeServer\Core\Mail\Mailer;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\Text;
-use PeServer\Core\Web\UrlUtility;
+use PeServer\Core\Web\UrlPath;
 
 class AccountSignupStep1Logic extends PageLogicBase
 {
@@ -37,7 +38,7 @@ class AccountSignupStep1Logic extends PageLogicBase
 
 	private const TEMP_TOKEN = 'sign_up_token';
 
-	public function __construct(LogicParameter $parameter, private AppConfiguration $config, private AppCryptography $cryptography, private Mailer $mailer, private AppTemplate $appTemplate, private AppEmailInformation $appEmailInformation)
+	public function __construct(LogicParameter $parameter, private AppConfiguration $config, private AppCryptography $cryptography, private Mailer $mailer, private AppTemplate $appTemplate, private AppEmailInformation $appEmailInformation, private AppUrl $appUrl)
 	{
 		parent::__construct($parameter);
 	}
@@ -124,18 +125,12 @@ class AccountSignupStep1Logic extends PageLogicBase
 			return true;
 		});
 
-		//TODO: 設定からとるのかリダイレクトみたいにサーバーからとるのか混在中
-		$baseUrl = Text::replaceMap(
-			Code::toLiteralString($this->config->setting->config->address->publicUrl),
-			[
-				'DOMAIN' => $this->config->setting->config->address->domain
-			]
-		);
-		$url = UrlUtility::joinPath($baseUrl, "account/signup/$token");
+
+		$url = $this->appUrl->addPublicUrl(new UrlPath("account/signup/$token"));
 
 		$subject = I18n::message('subject/sign_up_step1');
 		$values = [
-			'url' => $url,
+			'url' => $url->toString(),
 		];
 		$html = $this->appTemplate->createMailTemplate('mail_signup_step1', $subject, $values);
 

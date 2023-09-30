@@ -1,7 +1,7 @@
 # 独自処理用
 
 * 各種バッチファイルは `env.bat` を読み込み、 さらに `@env.bat` が存在する場合に `@env.bat` を読み込む
-* `@env.bat` に各種環境情報を記述する(PHPのパスとか)
+* `@env.bat` に各種環境情報を記述する(PHPのパスとか ※わたくしあんまりPATH通さないのです)
 * 同一プロンプトでは `%OREORE_ENV%` が定義されている間は再読み込みを行わない
 
 ## @env.bat
@@ -53,7 +53,7 @@ set COVERAGE_CACHE=%TEMP%\phpunit
 			"name": "スクリプト",
 			"type": "php",
 			"request": "launch",
-			"runtimeExecutable": "C:\\Applications\\xampp\\xampp-portable-windows-x64-8.0.7-0-VS16\\xampp\\php\\php.exe",
+			"runtimeExecutable": "C:\\Applications\\xampp\\xampp-portable-windows-x64-8.2.0-0-VS16\\xampp\\php\\php.exe",
 			"program": "${workspaceFolder}\\dev\\phppad.php",
 			"cwd": "${workspaceFolder}",
 			"port": 0,
@@ -69,3 +69,8 @@ set COVERAGE_CACHE=%TEMP%\phpunit
 }
 
 ```
+
+## extract.bat
+
+PHPUnit を Phar で運用しているがさすがに VSCode は呼んでくれないので 
+Phar を展開してとりあえず VSCode が認識してくれるようにする展開処理。
