@@ -74,8 +74,8 @@
 					{foreach from=$values.plugin_categories item=item key=key name=name}
 						<li>
 							<label>
-								<input type="checkbox" name="plugin_category_{$item.plugin_category_id}" {if in_array($item.plugin_category_id, $values.plugin_category_mappings, true)} checked {/if} />
-								{$item.display_name}
+								<input type="checkbox" name="plugin_category_{$item->pluginCategoryId}" {if in_array($item->pluginCategoryId, $values.plugin_category_mappings, true)} checked {/if} />
+								{$item->displayName}
 							</label>
 						</li>
 					{/foreach}
