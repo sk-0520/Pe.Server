@@ -39,7 +39,7 @@ abstract class Logging
 	/**
 	 * 初期化チェック。
 	 */
-	private static InitializeChecker $initializeChecker;
+	private static InitializeChecker|null $initializeChecker = null;
 
 	private static SpecialStore $specialStore;
 
@@ -180,7 +180,7 @@ abstract class Logging
 	 */
 	public static function format(string $format, int $level, int $traceIndex, DateTimeInterface $timestamp, string $header, $message, ...$parameters): string
 	{
-		self::$initializeChecker->throwIfNotInitialize();
+		InitializeChecker::throwIfNotInitialize(self::$initializeChecker);
 
 		/** @var array<string,mixed>[] */
 		$backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS); // DEBUG_BACKTRACE_PROVIDE_OBJECT

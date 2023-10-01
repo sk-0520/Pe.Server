@@ -26,9 +26,9 @@ class ResponsePrinter
 	 */
 	public function __construct(
 		/** @readonly */
-		private HttpRequest $request,
+		protected HttpRequest $request,
 		/** @readonly */
-		private HttpResponse $response
+		protected HttpResponse $response
 	) {
 	}
 

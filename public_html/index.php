@@ -31,14 +31,14 @@ $autoLoader->register(false);
 
 $urlHelper = new UrlHelper('');
 $specialStore = new AppSpecialStore();
-$isLocalhost = $specialStore->getServerName() === 'localhost';
+$isLocalhost = $specialStore->isLocalhost();
 
 $appTestMode = '';
 error_reporting(E_ALL);
 if ($isLocalhost) {
 	ini_set('display_errors', 'On');
 	$mode = getenv('APP_TEST_MODE');
-	if(is_string($mode)) {
+	if (is_string($mode)) {
 		$appTestMode = $mode;
 	}
 } else {

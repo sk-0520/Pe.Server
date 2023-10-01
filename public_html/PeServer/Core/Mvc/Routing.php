@@ -11,6 +11,7 @@ use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Http\HttpResponse;
 use PeServer\Core\Http\HttpStatus;
+use PeServer\Core\Http\IResponsePrinterFactory;
 use PeServer\Core\Http\RequestPath;
 use PeServer\Core\Http\ResponsePrinter;
 use PeServer\Core\Log\ILogger;
@@ -85,6 +86,8 @@ class Routing
 	protected readonly RequestPath $requestPath;
 	protected readonly HttpHeader $requestHeader;
 
+	protected readonly IResponsePrinterFactory $responsePrinterFactory;
+
 	#endregion
 
 	/**
@@ -94,16 +97,17 @@ class Routing
 	 * @param RouteSetting $routeSetting
 	 * @param Stores $stores
 	 */
-	public function __construct(RouteRequest $routeRequest, RouteSetting $routeSetting, Stores $stores, ILoggerFactory $loggerFactory, IDiRegisterContainer $serviceLocator)
+	public function __construct(RouteRequest $routeRequest, RouteSetting $routeSetting, Stores $stores, IResponsePrinterFactory $responsePrinterFactory, ILoggerFactory $loggerFactory, IDiRegisterContainer $serviceLocator)
 	{
 		$this->requestMethod = $routeRequest->method;
 		$this->requestPath = $routeRequest->path;
 		$this->setting = $routeSetting;
 		$this->stores = $stores;
+		$this->responsePrinterFactory = $responsePrinterFactory;
 		$this->loggerFactory = $loggerFactory;
 		$this->serviceLocator = $serviceLocator;
 
-		$this->requestHeader = HttpHeader::getRequestHeader();
+		$this->requestHeader = $this->stores->special->getRequestHeader();
 		$this->shutdownRequest = new HttpRequest($this->stores->special, $this->requestMethod, $this->requestHeader, []);
 		$this->serviceLocator->registerValue($this->shutdownRequest);
 	}
@@ -278,7 +282,7 @@ class Routing
 			return;
 		}
 
-		$printer = new ResponsePrinter($request, $response);
+		$printer = $this->serviceLocator->new(ResponsePrinter::class, [$request, $response]);
 		$printer->execute();
 	}
 

@@ -33,7 +33,7 @@ abstract class I18n
 	/**
 	 * 初期化チェック
 	 */
-	private static InitializeChecker $initializeChecker;
+	private static InitializeChecker|null $initializeChecker = null;
 
 	/**
 	 * 設定。
@@ -119,7 +119,7 @@ abstract class I18n
 	 */
 	public static function message(string $key, array $parameters = []): string
 	{
-		self::$initializeChecker->throwIfNotInitialize();
+		InitializeChecker::throwIfNotInitialize(self::$initializeChecker);
 
 		/** @var array<string,string> */
 		$params = [];

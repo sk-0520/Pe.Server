@@ -40,16 +40,24 @@ final class InitializeChecker
 		$this->isInitialized = true;
 	}
 
+	private function throwIfNotInitializeCore(): void
+	{
+		if (!$this->isInitialized) {
+			throw new InvalidOperationException('not initialize');
+		}
+	}
+
 	/**
 	 * 初期化されていない場合に例外を投げる。
 	 *
 	 * @throws InvalidOperationException 初期化されていない。
 	 */
-	public function throwIfNotInitialize(): void
+	public static function throwIfNotInitialize(?InitializeChecker $checker): void
 	{
-		if (!$this->isInitialized) {
-			throw new InvalidOperationException('not initialize');
+		if ($checker === null) {
+			throw new InvalidOperationException('not initialize(null)');
 		}
+		$checker->throwIfNotInitializeCore();
 	}
 
 	#endregion

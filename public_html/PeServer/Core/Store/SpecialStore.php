@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Store;
 
 use PeServer\Core\Collections\Arr;
+use PeServer\Core\Http\HttpHeader;
 use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Mvc\UploadFile;
 use PeServer\Core\Text;
@@ -242,7 +243,7 @@ class SpecialStore
 	{
 		return Arr::in(
 			[
-				'loc!alhost',
+				'localhost',
 				'127.0.0.1',
 			],
 			$this->getServerName()
@@ -321,7 +322,17 @@ class SpecialStore
 		return HttpMethod::from(Text::toUpper(Text::trim($raw)));
 	}
 
-
+	/**
+	 * リクエストヘッダの取得。
+	 *
+	 * 直接使用するのではなく、ここで受け取ったヘッダを使いまわすイメージ。
+	 *
+	 * @return HttpHeader
+	 */
+	public function getRequestHeader(): HttpHeader
+	{
+		return HttpHeader::getRequestHeader();
+	}
 
 
 	#endregion
