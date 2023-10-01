@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Domain;
 
 use PeServer\App\Models\AppConfiguration;
+use PeServer\App\Models\AppDatabaseConnection;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\ILoggerFactory;
 
@@ -23,6 +24,7 @@ class AppEraser
 
 	public function __construct(
 		private AppConfiguration $config,
+		private AppDatabaseConnection $databaseConnection,
 		ILoggerFactory $loggerFactory
 	) {
 		$this->logger = $loggerFactory->createLogger($this);
@@ -32,7 +34,14 @@ class AppEraser
 
 	public function execute(): void
     {
+		$database = $this->databaseConnection->open();
+
 		$this->logger->info('未実装', $this->config);
+
+		$this->logger->debug('キュッとする処理だけ対応');
+		$database->execute('vacuum');
+		$database->execute('reindex');
+		$database->execute('analyze');
 	}
 
 	#endregion
