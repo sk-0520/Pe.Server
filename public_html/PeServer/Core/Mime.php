@@ -25,6 +25,7 @@ abstract class Mime
 	public const FORM = 'application/x-www-form-urlencoded';
 	public const ICON = 'image/vnd.microsoft.icon';
 	public const SQLITE3 = 'application/x-sqlite3';
+	public const SVG = 'image/svg+xml';
 
 	#endregion
 
