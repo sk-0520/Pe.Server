@@ -81,7 +81,7 @@
 		<li>
 			実行
 			<ul>
-				<li><a href="/management/database-maintenance">DBメンテナンス</a></li>
+				<li><a href="/management/database-maintenance">DBメンテナンス</a> (<a href="/management/database-download">DL</a>)</li>
 				<li><a href="/management/php-evaluate">PHP実行</a></li>
 				<li><a href="/management/mail-send">メール送信</a></li>
 			</ul>
