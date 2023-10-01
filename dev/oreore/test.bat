@@ -12,4 +12,5 @@ echo --MEMO--
 echo  --mode [ut/it/uit/st]
 echo  --ignore-coverage
 echo  --phpunit:filter [WORD*]
+echo  --phpunit:exclude-group slow
 echo  --no-exit
