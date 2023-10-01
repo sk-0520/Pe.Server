@@ -162,6 +162,33 @@ abstract class Logging
 	}
 
 	/**
+	 * ログで使う共通的なやつら
+	 *
+	 * @param DateTimeInterface $timestamp
+	 * @param SpecialStore $specialStore
+	 * @return array{TIMESTAMP:string,DATE:string,TIME:string,TIMEZONE:string,CLIENT_IP:string,CLIENT_HOST:string,REQUEST_ID:string,UA:string,METHOD:string,REQUEST:string,SESSION:string|false}
+	 */
+	public static function getLogParameters(DateTimeInterface $timestamp, SpecialStore $specialStore): array
+	{
+		InitializeChecker::throwIfNotInitialize(self::$initializeChecker);
+
+		return [
+			'TIMESTAMP' => $timestamp->format('c'),
+			'DATE' => $timestamp->format('Y-m-d'),
+			'TIME' => $timestamp->format('H:i:s'),
+			'TIMEZONE' => $timestamp->format('P'),
+			'CLIENT_IP' => $specialStore->getServer('REMOTE_ADDR', Text::EMPTY),
+			'CLIENT_HOST' => self::getRemoteHost(),
+			'REQUEST_ID' => self::$requestId,
+			'UA' => $specialStore->getServer('HTTP_USER_AGENT', Text::EMPTY),
+			'METHOD' => $specialStore->getServer('REQUEST_METHOD', Text::EMPTY),
+			'REQUEST' => $specialStore->getServer('REQUEST_URI', Text::EMPTY),
+			'SESSION' => session_id(),
+			'REFERER' => $specialStore->getServer('HTTP_REFERER', Text::EMPTY),
+		];
+	}
+
+	/**
 	 * ログ書式適用。
 	 *
 	 * @param string $format
@@ -194,17 +221,7 @@ abstract class Logging
 
 		/** @var array<string,string> */
 		$map = [
-			'TIMESTAMP' => $timestamp->format('c'),
-			'DATE' => $timestamp->format('Y-m-d'),
-			'TIME' => $timestamp->format('H:i:s'),
-			'TIMEZONE' => $timestamp->format('P'),
-			'CLIENT_IP' => self::$specialStore->getServer('REMOTE_ADDR', Text::EMPTY),
-			'CLIENT_HOST' => self::getRemoteHost(),
-			'REQUEST_ID' => self::$requestId,
-			'UA' => self::$specialStore->getServer('HTTP_USER_AGENT', Text::EMPTY),
-			'METHOD' => self::$specialStore->getServer('REQUEST_METHOD', Text::EMPTY),
-			'REQUEST' => self::$specialStore->getServer('REQUEST_URI', Text::EMPTY),
-			'SESSION' => session_id(),
+			...self::getLogParameters($timestamp, self::$specialStore),
 			//-------------------
 			'FILE' => $filePath,
 			'FILE_NAME' => Path::getFileName($filePath),

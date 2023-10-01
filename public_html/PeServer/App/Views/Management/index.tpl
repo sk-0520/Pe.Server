@@ -47,6 +47,12 @@
 							</form>
 						</li>
 						<li>
+							<form method="post" action="/management/vacuum-access-log">
+								{csrf}
+								<button class="link">アクセスログ整理</submit>
+							</form>
+						</li>
+						<li>
 							<form method="post" action="/management/cache-rebuild">
 								{csrf}
 								<button class="link">キャッシュ再構築</submit>

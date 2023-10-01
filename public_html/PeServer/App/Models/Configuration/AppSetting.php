@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Configuration;
 
 use PeServer\App\Models\Configuration\PersistenceSetting;
+use PeServer\Core\Serialization\Mapping;
 
 /**
  * アプリ設定。
@@ -22,6 +23,9 @@ class AppSetting
 	public StoreSetting $store;
 
 	public CacheSetting $cache;
+
+	#[Mapping("access_log")]
+	public AccessLogSetting $accessLog;
 
 	public CryptoSetting $crypto;
 

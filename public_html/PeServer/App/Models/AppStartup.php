@@ -16,6 +16,7 @@ use PeServer\App\Models\AppRouting;
 use PeServer\App\Models\AppTemplate;
 use PeServer\App\Models\AppTemplateFactory;
 use PeServer\App\Models\AppUrl;
+use PeServer\App\Models\Domain\AccessLogManager;
 use PeServer\App\Models\Domain\AppArchiver;
 use PeServer\App\Models\Domain\AppEraser;
 use PeServer\Core\Collections\Arr;
@@ -80,6 +81,7 @@ class AppStartup extends CoreStartup
 		$container->registerClass(AppEraser::class);
 		$container->registerClass(AppEmailInformation::class);
 		$container->registerClass(AppUrl::class);
+		$container->registerClass(AccessLogManager::class);
 	}
 
 	protected function setupWebService(array $options, IDiRegisterContainer $container): void

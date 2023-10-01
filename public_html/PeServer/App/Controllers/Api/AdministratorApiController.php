@@ -7,6 +7,7 @@ use PeServer\App\Models\Domain\Api\AdministratorApi\AdministratorApiCacheRebuild
 use PeServer\App\Models\Domain\Api\AdministratorApi\AdministratorApiDeleteOldDataLogic;
 use PeServer\App\Models\Domain\Api\AdministratorApi\AdministratorApiDeployLogic;
 use PeServer\App\Models\Domain\Api\AdministratorApi\AdministratorApiPeVersionLogic;
+use PeServer\App\Models\Domain\Api\AdministratorApi\AdministratorApiVacuumAccessLogLogic;
 use PeServer\App\Models\Domain\AppArchiver;
 use PeServer\Core\Mvc\ControllerArgument;
 use PeServer\Core\Mvc\LogicCallMode;
@@ -30,6 +31,14 @@ class AdministratorApiController extends ApiControllerBase
 	public function delete_old_data(): IActionResult
 	{
 		$logic = $this->createLogic(AdministratorApiDeleteOldDataLogic::class);
+		$logic->run(LogicCallMode::Submit);
+
+		return $this->data($logic->getContent());
+	}
+
+	public function vacuum_access_log(): IActionResult
+	{
+		$logic = $this->createLogic(AdministratorApiVacuumAccessLogLogic::class);
 		$logic->run(LogicCallMode::Submit);
 
 		return $this->data($logic->getContent());
