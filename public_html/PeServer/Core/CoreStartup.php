@@ -14,7 +14,10 @@ use PeServer\Core\Encoding;
 use PeServer\Core\Environment;
 use PeServer\Core\ErrorHandler;
 use PeServer\Core\Http\HttpMethod;
+use PeServer\Core\Http\IResponsePrinterFactory;
 use PeServer\Core\Http\RequestPath;
+use PeServer\Core\Http\ResponsePrinter;
+use PeServer\Core\Http\ResponsePrinterFactory;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\ILoggerFactory;
 use PeServer\Core\Log\ILogProvider;
@@ -99,6 +102,8 @@ class CoreStartup
 		$container->add(IDiContainer::class, new DiItem(DiItem::LIFECYCLE_SINGLETON, DiItem::TYPE_VALUE, $container, true));
 		$container->registerMapping(ITemplateFactory::class, TemplateFactory::class);
 		$container->registerClass(TemplateFactory::class); // こいつは Core からも使われる特殊な奴やねん
+		$container->registerMapping(IResponsePrinterFactory::class, ResponsePrinterFactory::class); // こいつも Core からも使われる特殊な奴やねん
+		//$container->registerClass(ResponsePrinterFactory::class);
 
 		Logging::initialize(Arr::getOr($options, 'special_store', new SpecialStore()));
 
@@ -133,7 +138,7 @@ class CoreStartup
 		$container->add(SessionStore::class, DiItem::factory(fn ($di) => $di->get(Stores::class)->session));
 		$container->add(TemporaryStore::class, DiItem::factory(fn ($di) => $di->get(Stores::class)->temporary));
 
-		$method = HttpMethod::from(Text::toUpper(Text::trim($specialStore->getServer('REQUEST_METHOD'))));
+		$method = $specialStore->getRequestMethod();
 		$requestPath = new RequestPath($specialStore->getServer('REQUEST_URI'), $container->get(IUrlHelper::class));
 		$container->registerValue(new RouteRequest($method, $requestPath));
 

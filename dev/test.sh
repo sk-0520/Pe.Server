@@ -4,7 +4,7 @@ pushd "$(cd "$(dirname "${0}")"; pwd)"
 	#shellcheck disable=SC1091
 	source shell/common.sh
 	#shellcheck disable=SC2048,SC2086
-	common::parse_options 'mode|ut|st# no-exit! ignore-namespace! ignore-coverage! phpunit:filter' $*
+	common::parse_options 'mode|ut|it|st|uit# no-exit! ignore-namespace! ignore-coverage! phpunit:filter phpunit:exclude-group' $*
 popd
 
 TEST_MODE="$(common::get_option_value mode)"
@@ -76,6 +76,11 @@ PHPUNIT_OPTION_FILTER=
 if common::exists_option 'phpunit:filter' ; then
 	PHPUNIT_OPTION_FILTER="--filter $(common::get_option_value phpunit:filter)"
 fi
+PHPUNIT_OPTION_EXCLUDE_GROUP=
+if common::exists_option 'phpunit:exclude-group' ; then
+	PHPUNIT_OPTION_EXCLUDE_GROUP="--exclude-group $(common::get_option_value phpunit:exclude-group)"
+fi
+
 
 PHPUNIT_OPTION_COVERAGE=
 if ! common::exists_option 'ignore-coverage' ; then
@@ -88,9 +93,14 @@ if [[ -v COVERAGE_CACHE ]] ; then
 fi
 
 PUBLIC_DIR=
+TEST_SUITE="--testsuite ${TEST_MODE}"
 case "${TEST_MODE}" in
-	ut)
+	ut | it)
 		PUBLIC_DIR="${PHPUNIT_BASE_DIR}/http-${TEST_MODE}"
+		;;
+	uit )
+		PUBLIC_DIR="${PHPUNIT_BASE_DIR}/http-ut"
+		TEST_SUITE="--testsuite ut,it"
 		;;
 	st)
 		PUBLIC_DIR="${BASE_DIR}"
@@ -111,7 +121,7 @@ php -S "${LOCAL_HTTP_TEST}" -t "${PUBLIC_DIR}" > "http-${TEST_MODE}.log" 2>&1 &
 trap 'kill %1' 0
 sleep "${LOCAL_HTTP_WAIT}"
 #shellcheck disable=SC2086
-php "${PHPUNIT_FILE}"  --configuration "../dev/phpunit.xml" --testsuite "${TEST_MODE}" ${PHPUNIT_OPTION_COVERAGE} ${COVERAGE_CACHE_OPTION} ${PHPUNIT_OPTION_FILTER}
+php "${PHPUNIT_FILE}"  --configuration "../dev/phpunit.xml" ${TEST_SUITE} ${PHPUNIT_OPTION_COVERAGE} ${COVERAGE_CACHE_OPTION} ${PHPUNIT_OPTION_FILTER} ${PHPUNIT_OPTION_EXCLUDE_GROUP}
 
 if common::exists_option 'no-exit' ; then
 	read -r

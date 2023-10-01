@@ -9,7 +9,8 @@ echo %DATE:/=-%T%TIME: =0%+09:00
 
 echo.
 echo --MEMO--
-echo  --mode [ut/st]
+echo  --mode [ut/it/uit/st]
 echo  --ignore-coverage
 echo  --phpunit:filter [WORD*]
+echo  --phpunit:exclude-group slow
 echo  --no-exit

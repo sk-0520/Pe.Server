@@ -4,10 +4,15 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
-use Throwable;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\DI\Inject;
+use PeServer\Core\Http\HttpHeader;
+use PeServer\Core\Http\HttpMethod;
+use PeServer\Core\Http\HttpRequest;
+use PeServer\Core\Http\HttpResponse;
 use PeServer\Core\Http\HttpStatus;
+use PeServer\Core\Http\IResponsePrinterFactory;
+use PeServer\Core\Http\ResponsePrinter;
 use PeServer\Core\IO\Directory;
 use PeServer\Core\IO\File;
 use PeServer\Core\IO\Path;
@@ -18,12 +23,14 @@ use PeServer\Core\Mvc\Template\SmartyTemplate;
 use PeServer\Core\Mvc\Template\TemplateFactory;
 use PeServer\Core\Mvc\Template\TemplateOptions;
 use PeServer\Core\Mvc\Template\TemplateParameter;
+use PeServer\Core\Store\SpecialStore;
 use PeServer\Core\Store\Stores;
 use PeServer\Core\Throws\HttpStatusException;
 use PeServer\Core\Throws\InvalidErrorLevelError;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Throws\Throws;
 use PeServer\Core\Web\UrlHelper;
+use Throwable;
 
 /**
  * エラーハンドリング処理。
@@ -37,6 +44,9 @@ class ErrorHandler
 
 	#[Inject(TemplateFactory::class)] //@phpstan-ignore-next-line
 	private ITemplateFactory $templateFactory;
+
+	#[Inject] //@phpstan-ignore-next-line [INJECT]
+	private IResponsePrinterFactory $responsePrinterFactory;
 
 	#endregion
 
@@ -167,18 +177,16 @@ class ErrorHandler
 	}
 
 	/**
-	 * 例外からHTTP応答ステータスコードを設定する。
+	 * 例外からHTTP応答ステータスコードを取得する。
 	 *
 	 * @param Throwable|null $throwable
 	 * @return HttpStatus 設定されたHTTPステータスコード。
 	 */
-	final protected function setHttpStatus(?Throwable $throwable): HttpStatus
+	final protected function getHttpStatus(?Throwable $throwable): HttpStatus
 	{
 		$status = $throwable instanceof HttpStatusException
 			? $throwable->status
 			: HttpStatus::ServiceUnavailable;
-
-		http_response_code($status->value);
 
 		return $status;
 	}
@@ -241,6 +249,9 @@ class ErrorHandler
 	 */
 	protected function catchError(int $errorNumber, string $message, string $file, int $lineNumber, ?Throwable $throwable): void
 	{
+		$response = new HttpResponse();
+		$response->status = $this->getHttpStatus($throwable);
+
 		$values = [
 			'error_number' => $errorNumber,
 			'message' => $message,
@@ -250,11 +261,9 @@ class ErrorHandler
 			'cache' => $this->getFileContents($file, $throwable)
 		];
 
-		$status = $this->setHttpStatus($throwable);
-
 		$isSuppressionStatus = false;
 		foreach ($this->getSuppressionStatusList() as $suppressionStatus) {
-			if ($status === $suppressionStatus) {
+			if ($response->status === $suppressionStatus) {
 				$isSuppressionStatus = true;
 				$this->logger->info('HTTP {0}: {1}', $suppressionStatus->value, $suppressionStatus->name);
 				break;
@@ -272,7 +281,11 @@ class ErrorHandler
 		);
 		$template = $this->templateFactory->createTemplate($options);
 
-		echo $template->build('error-display.tpl', new TemplateParameter($status, $values, []));
+		$response->content = $template->build('error-display.tpl', new TemplateParameter($response->status, $values, []));
+
+		$printer = $this->responsePrinterFactory->createResponsePrinter(HttpRequest::none(), $response);
+
+		$printer->execute();
 	}
 
 	#endregion

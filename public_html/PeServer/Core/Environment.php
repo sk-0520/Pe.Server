@@ -16,7 +16,7 @@ abstract class Environment
 	/**
 	 * 初期化チェック
 	 */
-	private static InitializeChecker $initializeChecker;
+	private static InitializeChecker|null $initializeChecker = null;
 
 	private static string $environment = Text::EMPTY;
 	private static string $revision = Text::EMPTY;
@@ -48,14 +48,14 @@ abstract class Environment
 
 	public static function get(): string
 	{
-		self::$initializeChecker->throwIfNotInitialize();
+		InitializeChecker::throwIfNotInitialize(self::$initializeChecker);
 
 		return self::$environment;
 	}
 
 	public static function is(string $environment): bool
 	{
-		self::$initializeChecker->throwIfNotInitialize();
+		InitializeChecker::throwIfNotInitialize(self::$initializeChecker);
 
 		return self::$environment === $environment;
 	}

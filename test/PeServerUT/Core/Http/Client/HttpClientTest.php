@@ -29,6 +29,9 @@ use PeServer\Core\Web\UrlQuery;
 use PeServerTest\Data;
 use PeServerTest\TestClass;
 
+/**
+ * @group slow
+ */
 class HttpClientTest extends TestClass
 {
 	public function test_get_path_echo()

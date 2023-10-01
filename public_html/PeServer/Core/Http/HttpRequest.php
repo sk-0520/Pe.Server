@@ -37,6 +37,16 @@ class HttpRequest
 	#region function
 
 	/**
+	 * 無効なリクエストを生成。
+	 *
+	 * パラメータ内部で使用してるけど結構どうでもいい部分で使用する(原則使用することはない)。
+	 */
+	public static function none(): self
+	{
+		return new self(new SpecialStore(), HttpMethod::Get, new HttpHeader(), []);
+	}
+
+	/**
 	 * 名前に対する値が存在するか。
 	 *
 	 * @param string $name パラメータ名。

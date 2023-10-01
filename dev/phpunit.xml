@@ -4,6 +4,9 @@
     <testsuite name="ut">
       <directory>../test/PeServerUT</directory>
     </testsuite>
+    <testsuite name="it">
+      <directory>../test/PeServerIT</directory>
+    </testsuite>
     <testsuite name="st">
       <file>../test/PeServerST/No0010_InitializeTest.php</file>
     </testsuite>

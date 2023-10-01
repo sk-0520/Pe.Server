@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models;
 
-use Throwable;
 use PeServer\Core\DI\Inject;
 use PeServer\Core\Environment;
 use PeServer\Core\ErrorHandler;
 use PeServer\Core\Http\HttpHeadContentType;
+use PeServer\Core\Http\HttpRequest;
+use PeServer\Core\Http\HttpResponse;
+use PeServer\Core\Http\IResponsePrinterFactory;
 use PeServer\Core\Http\RequestPath;
 use PeServer\Core\IO\Directory;
 use PeServer\Core\IO\Path;
@@ -23,6 +25,7 @@ use PeServer\Core\Mvc\Template\TemplateParameter;
 use PeServer\Core\Serialization\JsonSerializer;
 use PeServer\Core\Text;
 use PeServer\Core\Web\IUrlHelper;
+use Throwable;
 
 final class AppErrorHandler extends ErrorHandler
 {
@@ -37,6 +40,7 @@ final class AppErrorHandler extends ErrorHandler
 	public function __construct(
 		RequestPath $requestPath,
 		TemplateFactory $templateFactory,
+		private IResponsePrinterFactory $responsePrinterFactory,
 		private AppConfiguration $config,
 		private IUrlHelper $urlHelper,
 		?JsonSerializer $jsonSerializer,
@@ -70,6 +74,9 @@ final class AppErrorHandler extends ErrorHandler
 		//$next = false;
 
 		if (!$next) {
+			$response = new HttpResponse();
+			$response->status = $this->getHttpStatus($throwable);
+
 			$values = [
 				'error_number' => $errorNumber,
 				'message' => $message,
@@ -78,11 +85,9 @@ final class AppErrorHandler extends ErrorHandler
 				'throwable' => $throwable,
 			];
 
-			$status = $this->setHttpStatus($throwable);
-
 			$isSuppressionStatus = false;
 			foreach ($this->getSuppressionStatusList() as $suppressionStatus) {
-				if ($status === $suppressionStatus) {
+				if ($response->status === $suppressionStatus) {
 					$isSuppressionStatus = true;
 					$this->logger->info('HTTP {0}: {1}', $suppressionStatus->value, $suppressionStatus->name);
 					break;
@@ -99,19 +104,19 @@ final class AppErrorHandler extends ErrorHandler
 					unset($values['throwable']);
 				}
 
-				$response = ResponseJson::error(
+				$responseJson = ResponseJson::error(
 					$message,
 					strval($errorNumber),
 					$values
 				);
 
 				$json = [
-					'data' => $response->data,
-					'error' => $response->error,
+					'data' => $responseJson->data,
+					'error' => $responseJson->error,
 				];
 
-				header(HttpHeadContentType::NAME . ':' . Mime::JSON);
-				echo $this->jsonSerializer->save($json);
+				$response->header->addValue(HttpHeadContentType::NAME, Mime::JSON);
+				$response->content = $this->jsonSerializer->save($json);
 			} else {
 				$rootDir = Path::combine($this->config->baseDirectoryPath, 'App', 'Views');
 				$baseDir = Path::combine('template', 'page');
@@ -123,10 +128,11 @@ final class AppErrorHandler extends ErrorHandler
 					Path::combine(Directory::getTemporaryDirectory(), 'PeServer-App')
 				);
 				$template = $this->templateFactory->createTemplate($options);
-				echo $template->build('error.tpl', new TemplateParameter($status, $values, []));
-				//$this->templateFactory->createTemplate();
+				$response->content =  $template->build('error.tpl', new TemplateParameter($response->status, $values, []));
 			}
 
+			$printer = $this->responsePrinterFactory->createResponsePrinter(HttpRequest::none(), $response);
+			$printer->execute();
 			return;
 		}
 

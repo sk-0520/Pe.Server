@@ -64,9 +64,9 @@ jobs:
         shell: bash
         run: npm run test
 
-      - name: <Test> back-end UT
+      - name: <Test> back-end UT/IT
         shell: bash
-        run: ./dev/test.sh --mode ut --ignore-namespace
+        run: ./dev/test.sh --mode uit --ignore-namespace
 
       - name: <Generate> document
         shell: bash

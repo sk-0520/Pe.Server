@@ -2,23 +2,18 @@
 
 declare(strict_types=1);
 
-namespace PeServer\App\Models;
+namespace PeServerTest;
 
-use PeServer\App\Models\AppErrorHandler;
-use PeServer\App\Models\SessionKey;
+use PeServer\App\Models\AppRouting;
 use PeServer\Core\DI\IDiRegisterContainer;
-use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Http\IResponsePrinterFactory;
-use PeServer\Core\Http\RequestPath;
-use PeServer\Core\Log\ILogger;
+use PeServer\Core\Http\ResponsePrinter;
 use PeServer\Core\Log\ILoggerFactory;
 use PeServer\Core\Mvc\RouteRequest;
 use PeServer\Core\Mvc\RouteSetting;
-use PeServer\Core\Mvc\Routing;
-use PeServer\Core\Store\StoreOptions;
 use PeServer\Core\Store\Stores;
 
-class AppRouting extends Routing
+class TestRoutingWithoutMiddleware extends AppRouting
 {
 	/**
 	 * 生成。

@@ -16,14 +16,15 @@ use PeServer\App\Models\AppStartup;
 use PeServer\Core\DefinedDirectory;
 use PeServer\Core\DI\IDiContainer;
 use PeServer\Core\DI\IDiRegisterContainer;
-use PeServer\Core\IO\Path;
 use PeServer\Core\IO\Directory;
 use PeServer\Core\IO\File;
+use PeServer\Core\IO\Path;
 use PeServer\Core\Store\SpecialStore;
 use PeServer\Core\Web\UrlHelper;
+use PeServerTest\TestClass;
 
 $appTestMode = getenv("APP_TEST_MODE");
-if(!is_string($appTestMode) || $appTestMode === '') {
+if (!is_string($appTestMode) || $appTestMode === '') {
 	throw new Exception('$appTestMode');
 }
 
@@ -32,8 +33,14 @@ $autoLoader = new \PeServer\Core\AutoLoader(
 		'PeServer' => [
 			'directory' => __DIR__ . '/../public_html/PeServer',
 		],
+		'PeServerTest' => [
+			'directory' => __DIR__ . '/PeServerTest',
+		],
 		'PeServerUT' => [
 			'directory' => __DIR__ . '/PeServerUT',
+		],
+		'PeServerIT' => [
+			'directory' => __DIR__ . '/PeServerIT',
 		],
 		'PeServerST' => [
 			'directory' => __DIR__ . '/PeServerST',
@@ -41,6 +48,8 @@ $autoLoader = new \PeServer\Core\AutoLoader(
 	]
 );
 $autoLoader->register();
+
+$isIntegrationTest = $appTestMode === 'it';
 
 $startup = new AppStartup(
 	new DefinedDirectory(
@@ -53,7 +62,7 @@ $container = $startup->setup(
 	[
 		'environment' => 'test',
 		'revision' => ':REVISION:',
-		'special_store' => new SpecialStore(),
+		'special_store' => $isIntegrationTest ? new TestSetupSpecialStore(): new SpecialStore(),
 		'url_helper' => new UrlHelper(''),
 	]
 );
@@ -64,99 +73,4 @@ $testSettingFilePath = Path::combine(__DIR__, '@setting.json');
 if (File::exists($testSettingFilePath)) {
 	$setting = File::readJsonFile($testSettingFilePath);
 	TestClass::$setting = array_replace_recursive(TestClass::$setting, $setting);
-}
-
-/**
- * データ。
- *
- * @template TExpected
- */
-class Data
-{
-	/** @phpstan-var TExpected */
-	public $expected;
-	public $args;
-	public $trace;
-
-	public function __construct($expected, ...$args)
-	{
-		$this->expected = $expected;
-		$this->args = $args;
-		$this->trace = debug_backtrace(1)[0];
-	}
-
-	public function str(): string
-	{
-		return "{$this->trace["file"]}:{$this->trace["line"]} " . $this->__toString();
-	}
-
-	public function __toString(): string
-	{
-		$s = print_r($this->args, true);
-		return $s === null ? '' : $s;
-	}
-}
-
-class TestClass extends \PHPUnit\Framework\TestCase
-{
-	/** テストコードで直接使用しないDIコンテナ */
-	public static IDiContainer $_do_not_use_container_user_test;
-	/**
-	 * テスト設定。
-	 *
-	 * 本ソースファイルと同じ場所に `@setting.json` が存在すればマージされる。
-	 * @var array
-	 */
-	public static array $setting = [
-		'local_server' => 'http://localhost:8080'
-	];
-
-	public static function localServer(string $addUrl): string
-	{
-		$url = rtrim(self::$setting['local_server'], "/");
-		if (strlen($addUrl)) {
-			$url .= '/' . ltrim($addUrl, "/");
-		}
-		return $url;
-	}
-
-	/**
-	 * テスト用コンテナを取得。
-	 *
-	 * スコープ内でのみ有効。
-	 *
-	 * @return IDiRegisterContainer
-	 */
-	protected function container(): IDiRegisterContainer
-	{
-		return self::$_do_not_use_container_user_test->clone();
-	}
-
-	protected static function s($s): string
-	{
-		return $s;
-	}
-
-	protected function assertEqualsWithInfo(string $info, mixed $expected, mixed $actual, string $message = '')
-	{
-		if (empty($info)) {
-			// 厳密比較でない理由が不明
-			throw new Exception('empty: $info');
-		}
-		parent::assertEquals($expected, $actual, $message);
-	}
-
-	protected function assertNotEqualsWithInfo(string $info, mixed $expected, mixed $actual, string $message = '')
-	{
-		if (empty($info)) {
-			// 厳密比較でない理由が不明
-			throw new Exception('empty: $info');
-		}
-		parent::assertNotEquals($expected, $actual, $message);
-	}
-
-	protected function success()
-	{
-		$this->assertTrue(true);
-	}
 }

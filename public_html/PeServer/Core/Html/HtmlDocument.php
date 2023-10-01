@@ -10,6 +10,8 @@ use PeServer\Core\Html\HtmlElement;
 use PeServer\Core\Html\HtmlElementBase;
 use PeServer\Core\Html\HtmlXPath;
 use PeServer\Core\Throws\HtmlDocumentException;
+use PeServer\Core\Throws\Throws;
+use ValueError;
 
 /**
  * `DOMDocument` ラッパー。
@@ -41,7 +43,7 @@ class HtmlDocument extends HtmlElementBase
 	public static function load(string $html): HtmlDocument
 	{
 		$doc = new HtmlDocument();
-		$result = $doc->raw->loadHTML($html);
+		$result = Throws::wrap(ValueError::class, HtmlDocumentException::class, fn() => $doc->raw->loadHTML($html));
 		if ($result == false) {
 			throw new HtmlDocumentException();
 		}
