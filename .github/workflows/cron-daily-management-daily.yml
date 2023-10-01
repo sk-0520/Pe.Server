@@ -29,6 +29,15 @@ jobs:
           -H "X-SECRET-KEY: ${{ secrets.PE_SERVER_API_SECRET }}" \
           https://peserver.gq/api/administrator/delete-old-data
 
+      - name: Vacuum Access Log
+        run: |
+          curl \
+          -X POST \
+          -H "User-Agent: GitHub Actions" \
+          -H "X-API-KEY: ${{ secrets.PE_SERVER_API_KEY }}" \
+          -H "X-SECRET-KEY: ${{ secrets.PE_SERVER_API_SECRET }}" \
+          https://peserver.gq/api/administrator/vacuum-access-log
+
       - name: Rebuild
         run:  |
           curl \
