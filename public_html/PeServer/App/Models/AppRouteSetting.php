@@ -145,6 +145,7 @@ final class AppRouteSetting extends RouteSetting
 					->addAction('default-plugin', HttpMethod::Post, 'default_plugin_post', [CsrfMiddleware::class])
 					->addAction('delete-old-data', HttpMethod::Post, 'delete_old_data', [CsrfMiddleware::class])
 					->addAction('cache-rebuild', HttpMethod::Post, 'cache_rebuild', [CsrfMiddleware::class])
+					->addAction('vacuum-access-log', HttpMethod::Post, 'vacuum_access_log', [CsrfMiddleware::class])
 					->addAction('clear-deploy-progress', HttpMethod::Post, 'clear_deploy_progress', [CsrfMiddleware::class])
 					->addAction('plugin-category', HttpMethod::Get, 'plugin_category_get')
 					->addAction('feedback', HttpMethod::Get, 'feedback_list_top')
@@ -200,6 +201,7 @@ final class AppRouteSetting extends RouteSetting
 					->addAction('backup', HttpMethod::Post, 'backup')
 					->addAction('delete-old-data', HttpMethod::Post, 'delete_old_data')
 					->addAction('cache-rebuild', HttpMethod::Post, 'cache_rebuild')
+					->addAction('vacuum-access-log', HttpMethod::Post, 'vacuum_access_log')
 					->addAction('deploy/:mode@.+', HttpMethod::Post, 'deploy')
 					->addAction('pe/version', HttpMethod::Post, 'pe_version')
 				/* AUTO-FORMAT */,

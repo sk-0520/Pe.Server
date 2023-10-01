@@ -7,6 +7,7 @@ namespace PeServer\App\Models\Domain;
 use DateTimeImmutable;
 use PeServer\App\Models\AppConfiguration;
 use PeServer\Core\Binary;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Database\IDatabaseConnection;
 use PeServer\Core\IO\Directory;
 use PeServer\Core\IO\File;
@@ -50,6 +51,16 @@ class AccessLogManager
 		$log = new Binary($data . PHP_EOL);
 		//$this->logger->trace("{0}", $data);
 		File::appendContent($filePath, $log);
+	}
+
+	public function vacuum(): void
+	{
+		$files = Directory::find($this->appConfig->setting->accessLog->directory, "*.log");
+		$contents = [];
+		foreach ($files as $file) {
+			$contents[] = File::readContent($file);
+			//File::removeFile($file);
+		}
 	}
 
 	#endregion
