@@ -40,17 +40,17 @@ class AccessLogDao extends DaoBase
 				)
 				values
 				(
-					:timestamp
-					:clientIp
-					:clientHost
-					:requestId
-					:session
-					:ua
-					:method
-					:path
-					:query
-					:fragment
-					:referer
+					:timestamp,
+					:clientIp,
+					:clientHost,
+					:requestId,
+					:session,
+					:ua,
+					:method,
+					:path,
+					:query,
+					:fragment,
+					:referer,
 					:runningTime
 				)
 
