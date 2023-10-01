@@ -17,6 +17,7 @@ use PeServer\App\Controllers\Page\ManagementController;
 use PeServer\App\Controllers\Page\PasswordController;
 use PeServer\App\Controllers\Page\PluginController;
 use PeServer\App\Controllers\Page\ToolController;
+use PeServer\App\Models\Middleware\AccessLogMiddleware;
 use PeServer\App\Models\Middleware\AdministratorAccountFilterMiddleware;
 use PeServer\App\Models\Middleware\Api\ApiAcaoMiddleware;
 use PeServer\App\Models\Middleware\Api\ApiAdministratorAccountFilterMiddleware;
@@ -50,17 +51,36 @@ final class AppRouteSetting extends RouteSetting
 	public function __construct()
 	{
 		$isProduction = Environment::isProduction();
+
+		$globalMiddleware = [];
+		$actionMiddleware = [];
+		$globalShutdownMiddleware = [
+			AccessLogMiddleware::class,
+		];
+		$actionShutdownMiddleware = [];
+
+		if ($isProduction) {
+			$globalMiddleware = [
+				HttpsMiddleware::class,
+				...$globalMiddleware,
+			];
+
+			$actionMiddleware = [
+				PerformanceMiddleware::class,
+				...$actionMiddleware,
+			];
+
+			$globalShutdownMiddleware = [
+				PerformanceShutdownMiddleware::class,
+				...$globalShutdownMiddleware,
+			];
+		}
+
 		parent::__construct(
-			[
-				...($isProduction ? [HttpsMiddleware::class] : [])
-			],
-			[
-				...($isProduction ? [PerformanceMiddleware::class] : [])
-			],
-			[
-				...($isProduction ? [PerformanceShutdownMiddleware::class] : [])
-			],
-			[],
+			$globalMiddleware,
+			$actionMiddleware,
+			$globalShutdownMiddleware,
+			$actionShutdownMiddleware,
 			[
 				(new Route(Text::EMPTY, HomeController::class))
 					->addAction('about', HttpMethod::gets(), 'about')

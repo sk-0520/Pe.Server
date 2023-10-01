@@ -45,5 +45,8 @@
 		"template": "$(BASE)/../../test/storage-st/temp/template",
 		"backup": "$(BASE)/../../test/storage-st/backups",
 		"deploy": "$(BASE)/../../test/storage-st/temp/deploy"
+	},
+	"access_log": {
+		"directory": "$(BASE)/../../test/storage-st/access_log"
 	}
 }
