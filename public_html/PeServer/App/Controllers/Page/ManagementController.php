@@ -6,8 +6,8 @@ use PeServer\App\Controllers\Page\PageControllerBase;
 use PeServer\App\Models\Domain\Page\Management\ManagementBackupLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementCacheRebuildLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementClearDeployProgressLogic;
-use PeServer\App\Models\Domain\Page\Management\ManagementConfigurationLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementConfigurationEditLogic;
+use PeServer\App\Models\Domain\Page\Management\ManagementConfigurationLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementCrashReportDetailLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementCrashReportListLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementDatabaseDownloadLogic;
@@ -24,6 +24,7 @@ use PeServer\App\Models\Domain\Page\Management\ManagementMarkdownLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementPhpEvaluateLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementPluginCategoryListLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementSetupLogic;
+use PeServer\App\Models\Domain\Page\Management\ManagementVacuumAccessLogLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementVersionLogic;
 use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Http\HttpStatus;
@@ -184,6 +185,14 @@ final class ManagementController extends PageControllerBase
 	public function cache_rebuild(): IActionResult
 	{
 		$logic = $this->createLogic(ManagementCacheRebuildLogic::class);
+		$logic->run(LogicCallMode::Submit);
+
+		return $this->redirectPath('/management');
+	}
+
+	public function vacuum_access_log(): IActionResult
+	{
+		$logic = $this->createLogic(ManagementVacuumAccessLogLogic::class);
 		$logic->run(LogicCallMode::Submit);
 
 		return $this->redirectPath('/management');

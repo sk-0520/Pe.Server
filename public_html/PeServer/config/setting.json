@@ -46,6 +46,9 @@
 		"backup": "$(BASE)/data/backups",
 		"deploy": "$(BASE)/data/temp/deploy"
 	},
+	"access_log": {
+		"directory": "$(BASE)/data/access_log"
+	},
 	"crypto": {
 		"algorithm": "aes-256-cbc",
 		"password": "password",
