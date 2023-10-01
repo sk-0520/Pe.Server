@@ -79,6 +79,7 @@ class AccessLogManager
 				}
 
 				$raw = $jsonSerializer->load(new Binary($line));
+				assert(is_array($raw));
 
 				$request = $raw['REQUEST'];
 				$pqf = Text::split($request, '?', 2);

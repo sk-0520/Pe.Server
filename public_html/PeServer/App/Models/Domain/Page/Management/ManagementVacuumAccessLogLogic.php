@@ -13,7 +13,7 @@ use PeServer\Core\Timer;
 
 class ManagementVacuumAccessLogLogic extends PageLogicBase
 {
-	public function __construct(LogicParameter $parameter, private AccessLogManager $accessLogManager, private AppDatabaseCache $dbCache)
+	public function __construct(LogicParameter $parameter, private AccessLogManager $accessLogManager)
 	{
 		parent::__construct($parameter);
 	}
