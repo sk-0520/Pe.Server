@@ -184,6 +184,7 @@ abstract class Logging
 			'METHOD' => $specialStore->getServer('REQUEST_METHOD', Text::EMPTY),
 			'REQUEST' => $specialStore->getServer('REQUEST_URI', Text::EMPTY),
 			'SESSION' => session_id(),
+			'REFERER' => $specialStore->getServer('HTTP_REFERER', Text::EMPTY),
 		];
 	}
 
