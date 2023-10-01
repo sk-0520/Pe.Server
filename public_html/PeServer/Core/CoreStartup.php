@@ -78,6 +78,7 @@ class CoreStartup
 	{
 		setlocale(LC_ALL, 'C');
 		mb_language('uni');
+		date_default_timezone_set('Asia/Tokyo');
 		Environment::initialize('C', 'uni', $options['environment'], $options['revision']);
 		Encoding::setDefaultEncoding(Encoding::getUtf8());
 
