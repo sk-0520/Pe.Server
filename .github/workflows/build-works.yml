@@ -68,6 +68,10 @@ jobs:
         shell: bash
         run: ./dev/test.sh --mode uit --ignore-namespace
 
+      - name: <Test> back-end cleanup
+        shell: bash
+        run: ./dev/test-cleanup.sh
+
       - name: <Generate> document
         shell: bash
         run: ./dev/doc.sh
