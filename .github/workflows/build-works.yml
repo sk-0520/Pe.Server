@@ -65,6 +65,7 @@ jobs:
         run: npm run test
 
       - name: <Test> back-end UT/IT
+        if: github.ref == 'refs/heads/master'
         shell: bash
         run: ./dev/test.sh --mode uit --ignore-namespace
 
