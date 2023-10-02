@@ -100,6 +100,7 @@ class AccessLogManager
 				$dto->requestId = $raw['REQUEST_ID'];
 				$dto->session = $raw['SESSION'];
 				$dto->ua = $raw['UA'];
+				$dto->method = $raw['METHOD'];
 				$dto->path = $p;
 				$dto->query = $q;
 				$dto->fragment = $f;
