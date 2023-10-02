@@ -39,8 +39,8 @@ class AppEraser
 		$this->logger->info('未実装', $this->config);
 
 		$this->logger->debug('キュッとする処理だけ対応');
-		$database->execute('vacuum');
 		$database->execute('reindex');
+		$database->execute('vacuum');
 		$database->execute('analyze');
 	}
 
