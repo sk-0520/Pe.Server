@@ -45,7 +45,6 @@ class ManagementLogDetailLogic extends PageLogicBase
 
 		$binary = File::readContent($filePath);
 
-		/** @var int @-phpstan-ignore-next-line */
 		$archiveSize = $logging->archiveSize;
 		$fileSize = File::getFileSize($filePath);
 

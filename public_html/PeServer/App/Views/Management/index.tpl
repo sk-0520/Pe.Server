@@ -72,6 +72,11 @@
 										ユーザー一覧
 									</a>
 								</li>
+								<li>
+									<a href="/management/control/backup">
+										バックアップ一覧
+									</a>
+								</li>
 							</ul>
 						</li>
 					</ul>

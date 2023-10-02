@@ -147,7 +147,7 @@ abstract class Text
 	private static function fromCodePointCore(int $value): string
 	{
 		$single = mb_chr($value);
-		if ($single === false) { //@phpstan-ignore-line
+		if ($single === false) { //@phpstan-ignore-line [PHP_VERSION]
 			throw new ArgumentException();
 		}
 

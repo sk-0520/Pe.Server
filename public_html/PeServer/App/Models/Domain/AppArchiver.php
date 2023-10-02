@@ -27,11 +27,26 @@ class AppArchiver
 		//NOP
 	}
 
+	public function getDirectory(): string
+	{
+		return $this->config->setting->cache->backup;
+	}
+
+	/**
+	 * アーカイブファイル一覧の取得。
+	 *
+	 * @return string[]
+	 */
+	public function getFiles(): array
+	{
+		return Directory::find($this->getDirectory(), '*.zip');
+	}
+
 	public function backup(): int
 	{
 		$revision = Environment::getRevision();
 		$fileName = Utc::create()->format('Y-m-d\_His') . "_{$revision}.zip";
-		$filePath = Path::combine($this->config->setting->cache->backup, $fileName);
+		$filePath = Path::combine($this->getDirectory(), $fileName);
 		Directory::createParentDirectoryIfNotExists($filePath);
 
 		$zipArchive = new ZipArchive();
@@ -52,7 +67,7 @@ class AppArchiver
 
 	public function rotate(): void
 	{
-		$backupFiles = Directory::find($this->config->setting->cache->backup, '*.zip');
+		$backupFiles = $this->getFiles();
 		$logCount = Arr::getCount($backupFiles);
 		if ($logCount <= self::MAX_COUNT) {
 			return;

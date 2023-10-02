@@ -36,12 +36,6 @@ class ManagementDatabaseMaintenanceLogic extends PageLogicBase
 		$columns = $context->query(
 			"PRAGMA table_info('{$row['name']}')" //@phpstan-ignore-line
 		);
-		// array_multisort(
-		// 	array_column($columns->rows, 'cid'), //@-phpstan-ignore-line
-		// 	SORT_ASC,
-		// 	$columns->rows
-		// );
-		// $orders = Text::join(', ', array_map(fn ($i) => $i['name'], $columns->rows));
 
 		//@phpstan-ignore-next-line
 		return [
@@ -106,8 +100,7 @@ class ManagementDatabaseMaintenanceLogic extends PageLogicBase
 		$statement = $this->getRequest('database_maintenance_statement');
 
 		$database = $this->openDatabase();
-		/** @var DatabaseTableResult|Throwable|null */
-		$result = null; //@phpstan-ignore-line
+		$result = null;
 		try {
 			$database->transaction(function (IDatabaseContext $context) use (&$result, $statement) {
 				/** @phpstan-var literal-string $statement これはええねん */

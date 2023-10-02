@@ -30,9 +30,7 @@ class ManagementLogListLogic extends PageLogicBase
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
 		$logging = $this->config->setting->logging;
-		/** @var string @-phpstan-ignore-next-line */
 		$dirPath = $logging->loggers['file']->configuration['directory'];
-		/** @var string @-phpstan-ignore-next-line */
 		$targetExt = Path::getFileExtension($logging->loggers['file']->configuration['name']);
 		$files = Directory::getFiles($dirPath, false);
 

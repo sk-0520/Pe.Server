@@ -3,6 +3,8 @@
 namespace PeServer\App\Controllers\Page;
 
 use PeServer\App\Controllers\Page\PageControllerBase;
+use PeServer\App\Models\Domain\Page\ManagementControl\ManagementControlBackupDownloadLogic;
+use PeServer\App\Models\Domain\Page\ManagementControl\ManagementControlBackupListLogic;
 use PeServer\App\Models\Domain\Page\ManagementControl\ManagementControlUserListLogic;
 use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Http\HttpStatus;
@@ -25,5 +27,21 @@ final class ManagementControlController extends PageControllerBase
 		$logic->run(LogicCallMode::Initialize);
 
 		return $this->view('user_list', $logic->getViewData());
+	}
+
+	public function backup_list_get(): IActionResult
+	{
+		$logic = $this->createLogic(ManagementControlBackupListLogic::class);
+		$logic->run(LogicCallMode::Initialize);
+
+		return $this->view('backup_list', $logic->getViewData());
+	}
+
+	public function backup_detail_get(): IActionResult
+	{
+		$logic = $this->createLogic(ManagementControlBackupDownloadLogic::class);
+		$logic->run(LogicCallMode::Submit);
+
+		return $this->data($logic->getContent());
 	}
 }
