@@ -165,6 +165,8 @@ final class AppRouteSetting extends RouteSetting
 				/* AUTO-FORMAT */,
 				(new Route('management/control', ManagementControlController::class, [AdministratorAccountFilterMiddleware::class]))
 					->addAction('user', HttpMethod::Get, 'user_list_get')
+					->addAction('backup', HttpMethod::Get, 'backup_list_get')
+					->addAction('backup/:file_name@\w+\.zip', HttpMethod::Get, 'backup_detail_get')
 				/* AUTO-FORMAT */,
 				(new Route('tool', ToolController::class))
 					->addAction('base64', HttpMethod::Get, 'base64_get')
