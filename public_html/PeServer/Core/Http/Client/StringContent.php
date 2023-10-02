@@ -18,7 +18,7 @@ class StringContent extends StaticContentBase
 	) {
 		$encoding = $encoding ?? Encoding::getDefaultEncoding();
 
-		$body = $encoding->toBinary($string);
+		$body = $encoding->getBinary($string);
 		parent::__construct($body);
 	}
 
