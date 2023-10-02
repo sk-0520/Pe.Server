@@ -65,12 +65,12 @@ abstract class ReflectionUtility
 	public static function existsMethod(object|string $input, string $method): bool
 	{
 		if (is_string($input)) {
-			if (Text::isNullOrWhiteSpace($input)) { //@phpstan-ignore-line
+			if (Text::isNullOrWhiteSpace($input)) { //@phpstan-ignore-line [DOCTYPE]
 				throw new ArgumentException('$input');
 			}
 		}
 
-		if (Text::isNullOrWhiteSpace($method)) { //@phpstan-ignore-line
+		if (Text::isNullOrWhiteSpace($method)) { //@phpstan-ignore-line [DOCTYPE]
 			throw new ArgumentException('$method');
 		}
 

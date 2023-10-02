@@ -136,7 +136,7 @@ class Timer implements Stringable
 		return microtime(true);
 	}
 
-	//@phpstan-ignore-next-line
+	//@phpstan-ignore-next-line 32bit(笑)
 	private static function getCurrentTime32(): float|false
 	{
 		throw new NotSupportedException();
