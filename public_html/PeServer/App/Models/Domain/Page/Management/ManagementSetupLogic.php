@@ -102,8 +102,7 @@ class ManagementSetupLogic extends PageLogicBase
 		$result = $database->transaction(function (IDatabaseContext $database) use ($currentUserInfo, $params, $userInfo) {
 			$accountValidator = new AccountValidator($this, $this->validator);
 
-			/** @var string @-phpstan-ignore-next-line */
-			$loginId = Arr::getOr($params, 'login_id', '');
+			$loginId = Arr::getOr($params, 'login_id', Text::EMPTY);
 			if (!$accountValidator->isFreeLoginId($database, 'setting_setup_login_id', $loginId)) {
 				return false;
 			}
@@ -113,35 +112,33 @@ class ManagementSetupLogic extends PageLogicBase
 
 			// 管理者ユーザーの登録
 			$usersEntityDao->insertUser(
-				$userInfo['id'], // @-phpstan-ignore-line
+				$userInfo['id'],
 				$loginId,
 				UserLevel::ADMINISTRATOR,
 				UserState::ENABLED,
-				$params['user_name'], // @-phpstan-ignore-line
-				$params['email'], // @-phpstan-ignore-line
-				$params['mark_email'], // @-phpstan-ignore-line
-				$params['website'], // @-phpstan-ignore-line
+				$params['user_name'],
+				$params['email'],
+				$params['mark_email'],
+				$params['website'],
 				Text::EMPTY,
 				Text::EMPTY
 			);
 
 			$userAuthenticationsEntityDao->insertUserAuthentication(
-				$userInfo['id'], // @-phpstan-ignore-line
-				$userInfo['current_password'] // @-phpstan-ignore-line
+				$userInfo['id'],
+				$userInfo['current_password']
 			);
 
 			// 現在のセットアップユーザーを無効化
 			$state = UserState::DISABLED;
 			$usersEntityDao->updateUserState(
-				$currentUserInfo->userId, // @-phpstan-ignore-line
+				$currentUserInfo->userId,
 				$state
 			);
 
 			// ユーザー生成記録を監査ログに追加
 			$this->writeAuditLogCurrentUser(AuditLog::USER_STATE_CHANGE, ['state' => $state], $database);
-			// @-phpstan-ignore-next-line
 			$this->writeAuditLogCurrentUser(AuditLog::USER_CREATE, ['user_id' => $userInfo['id']], $database);
-			// @-phpstan-ignore-next-line
 			$this->writeAuditLogTargetUser($userInfo['id'], AuditLog::USER_GENERATED, ['user_id' => $currentUserInfo->userId], $database);
 
 			return true;

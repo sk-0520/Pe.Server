@@ -57,7 +57,7 @@ class Arr
 	{
 		if ($array !== null && isset($array[$key])) {
 			$result = $array[$key];
-			if ($result !== null && $fallbackValue !== null) { //@phpstan-ignore-line
+			if ($result !== null && $fallbackValue !== null) { //@phpstan-ignore-line [DOCTYPE]
 				$resultType = TypeUtility::getType($result);
 				$fallbackValueType = TypeUtility::getType($fallbackValue);
 				if ($resultType === $fallbackValueType) {
