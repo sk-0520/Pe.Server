@@ -9,6 +9,7 @@ use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\AppDatabaseConnection;
 use PeServer\App\Models\AuditLog;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
+use PeServer\Core\Archiver;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Database\DatabaseTableResult;
 use PeServer\Core\Database\IDatabaseContext;
@@ -47,11 +48,17 @@ class ManagementDatabaseDownloadLogic extends PageLogicBase
 		$name = Path::getFileName($target);
 		$content = File::readContent($target);
 
+		$archive = [
+			'mime' => Mime::GZ,
+			'name' => "$name.gz",
+			'content' => Archiver::compressGzip($content, 9),
+		];
+
 		$this->writeAuditLogCurrentUser(AuditLog::ADMINISTRATOR_DOWNLOAD_DATABASE, [
 			"path" => $target,
 			"size" => $content->count(),
 		]);
 
-		$this->setDownloadContent(Mime::SQLITE3, $name, $content);
+		$this->setDownloadContent($archive['mime'], $archive['name'], $archive['content']);
 	}
 }
