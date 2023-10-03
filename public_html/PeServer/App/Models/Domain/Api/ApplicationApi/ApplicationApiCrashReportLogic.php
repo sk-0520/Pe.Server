@@ -123,7 +123,12 @@ class ApplicationApiCrashReportLogic extends ApiLogicBase
 				new EmailAddress($crashReportEmail),
 			];
 
-			$this->mailer->send();
+			try {
+				$this->mailer->send();
+			} catch (Exception $ex) {
+				// メール送信は開発側の都合なのでエラーならログに記録するのみ
+				$this->logger->error($ex);
+			}
 		}
 	}
 

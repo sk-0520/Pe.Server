@@ -52,13 +52,13 @@
 		<dd>{markdown}{$values.detail->content nofilter}{/markdown}</dd>
 	</dl>
 
-	<form method="post" action="/management/feedback/{$values.detail->sequence}">
-		<section>
+	<section>
+		<form method="post" action="/management/feedback/{$values.detail->sequence}">
 			<h2>開発用</h2>
-			<dl>
+			<dl class="input">
 				<dt>メモ</dt>
 				<dd>
-					{input_helper key='developer-comment' type="textarea" class="edit developer-comment"}
+					{input_helper key='developer-comment' type="textarea" class="edit"}
 				</dd>
 
 				<dt class="action">実行</dt>
@@ -66,7 +66,7 @@
 					<button>保存</button>
 				</dd>
 			</dl>
-		</section>
-	</form>
+		</form>
+	</section>
 
 {/block}

@@ -123,7 +123,12 @@ class ApplicationApiFeedbackLogic extends ApiLogicBase
 				new EmailAddress($feedbackEmail),
 			];
 
-			$this->mailer->send();
+			try {
+				$this->mailer->send();
+			} catch (Exception $ex) {
+				// メール送信は開発側の都合なのでエラーならログに記録するのみ
+				$this->logger->error($ex);
+			}
 		}
 	}
 
