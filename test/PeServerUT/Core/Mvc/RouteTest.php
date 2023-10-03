@@ -58,7 +58,7 @@ class RouteTest extends TestClass
 			[
 				'route' => ['api/test', 'TestController'],
 				'actions' => [
-					['list', HttpMethod::Post],
+					['list', HttpMethod::Post, 'list'],
 				],
 				'request' => [
 					[
