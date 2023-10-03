@@ -57,7 +57,7 @@
 			<dl class="input">
 				<dt>メモ</dt>
 				<dd>
-					{input_helper key='developer-comment' type="textarea" class="edit developer-comment"}
+					{input_helper key='developer-comment' type="textarea" class="edit"}
 				</dd>
 
 				<dt class="action">実行</dt>

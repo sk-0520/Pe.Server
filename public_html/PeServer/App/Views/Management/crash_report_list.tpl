@@ -36,8 +36,7 @@
 						<td class="column-version">{$item->version}</td>
 						<td class="column-exception-subject">{$item->exceptionSubject}</td>
 						<td class="column-detail"><a href="/management/crash-report/{$item->sequence}">詳細</a></td>
-						<td class="column-delete"><button class="pg-delete" data-sequence="{$item->sequence}">削除</button></form>
-						</td>
+						<td class="column-delete"><button class="pg-delete" data-sequence="{$item->sequence}">削除</button></td>
 					</tr>
 				{/foreach}
 			</tbody>
