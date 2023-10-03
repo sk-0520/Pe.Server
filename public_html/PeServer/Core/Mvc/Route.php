@@ -25,8 +25,6 @@ class Route
 {
 	#region define
 
-	/** メソッド名自動設定。あんまり使わないこと。 */
-	public const DEFAULT_METHOD = '';
 	/** ミドルウェア指定時に以前をリセットする。 */
 	public const CLEAR_MIDDLEWARE = '*';
 
@@ -169,15 +167,19 @@ class Route
 	 *
 	 * @param string $actionName URLとして使用されるパス, パス先頭が : でURLパラメータとなり、パラメータ名の @ 以降は一致正規表現となる。
 	 * @param HttpMethod|HttpMethod[] $httpMethod 使用するHTTPメソッド。
-	 * @param string $methodName 呼び出されるコントローラメソッド。未指定なら $actionName が使用される。
+	 * @param string $methodName 呼び出されるコントローラメソッド。
 	 * @param array<IMiddleware|string>|null $middleware 専用ミドルウェア。 第一要素が CLEAR_MIDDLEWARE であれば既存のミドルウェアを破棄する。nullの場合はコンストラクタで渡されたミドルウェアが使用される。
 	 * @phpstan-param array<IMiddleware|class-string<IMiddleware>|self::CLEAR_MIDDLEWARE>|null $middleware
 	 * @param array<IShutdownMiddleware|string>|null $shutdownMiddleware 専用終了ミドルウェア。 第一要素が CLEAR_MIDDLEWARE であれば既存のミドルウェアを破棄する。nullの場合はコンストラクタで渡されたミドルウェアが使用される。
 	 * @phpstan-param array<IShutdownMiddleware|class-string<IShutdownMiddleware>|self::CLEAR_MIDDLEWARE>|null $shutdownMiddleware
 	 * @return Route
 	 */
-	public function addAction(string $actionName, HttpMethod|array $httpMethod, string $methodName = self::DEFAULT_METHOD, ?array $middleware = null, ?array $shutdownMiddleware = null): Route
+	public function addAction(string $actionName, HttpMethod|array $httpMethod, string $methodName, ?array $middleware = null, ?array $shutdownMiddleware = null): Route
 	{
+		if (Text::isNullOrWhiteSpace($methodName)) {
+			throw new ArgumentException('$methodName');
+		}
+
 		if (!isset($this->actions[$actionName])) {
 			$this->actions[$actionName] = new Action();
 		}
@@ -189,7 +191,7 @@ class Route
 
 		$this->actions[$actionName]->add(
 			$httpMethod,
-			Text::isNullOrEmpty($methodName) ? $actionName : $methodName,
+			$methodName,
 			$customMiddleware,
 			$customShutdownMiddleware
 		);
