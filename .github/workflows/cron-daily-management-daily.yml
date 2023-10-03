@@ -15,7 +15,8 @@ jobs:
         run: |
           curl \
           --request POST \
-          --header "User-Agent: GitHub Actions:${GITHUB_RUN_ID}" \
+          --header "User-Agent: GitHub Actions" \
+          --header "Referer: https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" \
           --header "X-API-KEY: ${{ secrets.PE_SERVER_API_KEY }}" \
           --header "X-SECRET-KEY: ${{ secrets.PE_SERVER_API_SECRET }}" \
           https://peserver.gq/api/administrator/backup
@@ -24,7 +25,8 @@ jobs:
         run: |
           curl \
           --request POST \
-          --header "User-Agent: GitHub Actions:${GITHUB_RUN_ID}" \
+          --header "User-Agent: GitHub Actions" \
+          --header "Referer: https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" \
           --header "X-API-KEY: ${{ secrets.PE_SERVER_API_KEY }}" \
           --header "X-SECRET-KEY: ${{ secrets.PE_SERVER_API_SECRET }}" \
           https://peserver.gq/api/administrator/delete-old-data
@@ -33,7 +35,8 @@ jobs:
         run: |
           curl \
           --request POST \
-          --header "User-Agent: GitHub Actions:${GITHUB_RUN_ID}" \
+          --header "User-Agent: GitHub Actions" \
+          --header "Referer: https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" \
           --header "X-API-KEY: ${{ secrets.PE_SERVER_API_KEY }}" \
           --header "X-SECRET-KEY: ${{ secrets.PE_SERVER_API_SECRET }}" \
           https://peserver.gq/api/administrator/vacuum-access-log
@@ -42,7 +45,8 @@ jobs:
         run:  |
           curl \
           --request POST \
-          --header "User-Agent: GitHub Actions:${GITHUB_RUN_ID}" \
+          --header "User-Agent: GitHub Actions" \
+          --header "Referer: https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" \
           --header "X-API-KEY: ${{ secrets.PE_SERVER_API_KEY }}" \
           --header "X-SECRET-KEY: ${{ secrets.PE_SERVER_API_SECRET }}" \
           https://peserver.gq/api/administrator/cache-rebuild
