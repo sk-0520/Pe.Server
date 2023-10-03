@@ -6,7 +6,7 @@ namespace PeServer\App\Models\Domain;
 
 use DateTimeImmutable;
 use PeServer\App\Models\AppConfiguration;
-use PeServer\App\Models\Dao\Entities\AccessLogDao;
+use PeServer\App\Models\Dao\Entities\AccessLogsEntityDao;
 use PeServer\App\Models\Data\Dto\AccessLogDto;
 use PeServer\Core\Binary;
 use PeServer\Core\Collections\Arr;
@@ -115,7 +115,7 @@ class AccessLogManager
 			$this->logger->info('アクセスログ件数: {0}', count($accessLogs));
 			$database = $this->databaseConnection->open();
 			$database->transaction(function ($context) use ($accessLogs) {
-				$dao = new AccessLogDao($context);
+				$dao = new AccessLogsEntityDao($context);
 				foreach ($accessLogs as $accessLog) {
 					$dao->insertAccessLog($accessLog);
 				}

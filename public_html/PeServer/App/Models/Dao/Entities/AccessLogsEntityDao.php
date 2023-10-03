@@ -8,7 +8,7 @@ use PeServer\App\Models\Data\Dto\AccessLogDto;
 use PeServer\Core\Database\DaoBase;
 use PeServer\Core\Database\IDatabaseContext;
 
-class AccessLogDao extends DaoBase
+class AccessLogsEntityDao extends DaoBase
 {
 	public function __construct(IDatabaseContext $context)
 	{
