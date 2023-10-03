@@ -80,9 +80,9 @@ class Route
 	 * @param string $className 使用されるクラス完全名
 	 * @phpstan-param class-string<ControllerBase> $className 使用されるクラス完全名
 	 * @param array<IMiddleware|string> $middleware ベースとなるミドルウェア。
-	 * @phpstan-param array<IMiddleware|class-string<IMiddleware>> $middleware ベースとなるミドルウェア。
+	 * @phpstan-param array<IMiddleware|class-string<IMiddleware>> $middleware
 	 * @param array<IShutdownMiddleware|string> $shutdownMiddleware ベースとなる終了ミドルウェア。
-	 * @phpstan-param array<IShutdownMiddleware|class-string<IShutdownMiddleware>> $shutdownMiddleware ベースとなる終了ミドルウェア。
+	 * @phpstan-param array<IShutdownMiddleware|class-string<IShutdownMiddleware>> $shutdownMiddleware
 	 */
 	public function __construct(string $path, string $className, array $middleware = [], array $shutdownMiddleware = [])
 	{
@@ -130,12 +130,14 @@ class Route
 	/**
 	 * ミドルウェア組み合わせ。
 	 *
+	 * @template TMiddleware of IMiddleware|IShutdownMiddleware
+	 *
 	 * @param array<IMiddleware|IShutdownMiddleware|string> $baseMiddleware
-	 * @phpstan-param array<IMiddleware|IShutdownMiddleware|class-string<IMiddleware|IShutdownMiddleware>|self::CLEAR_MIDDLEWARE> $baseMiddleware
+	 * @phpstan-param array<TMiddleware|class-string<TMiddleware>> $baseMiddleware
 	 * @param array<IMiddleware|IShutdownMiddleware|string>|null $middleware
-	 * @phpstan-param array<IMiddleware|IShutdownMiddleware|class-string<IMiddleware|IShutdownMiddleware>|self::CLEAR_MIDDLEWARE>|null $middleware
+	 * @phpstan-param array<TMiddleware|class-string<TMiddleware>|self::CLEAR_MIDDLEWARE>|null $middleware
 	 * @return array<IMiddleware|IShutdownMiddleware|string>
-	 * @phpstan-return array<IMiddleware|IShutdownMiddleware|class-string<IMiddleware|IShutdownMiddleware>|self::CLEAR_MIDDLEWARE>
+	 * @phpstan-return array<TMiddleware|class-string<TMiddleware>>
 	 */
 	private static function combineMiddleware(array $baseMiddleware, ?array $middleware = null): array
 	{
@@ -184,9 +186,7 @@ class Route
 			$this->actions[$actionName] = new Action();
 		}
 
-		/** @phpstan-var array<IMiddleware|class-string<IMiddleware>> */
 		$customMiddleware = self::combineMiddleware($this->baseMiddleware, $middleware);
-		/** @phpstan-var array<IShutdownMiddleware|class-string<IShutdownMiddleware>> */
 		$customShutdownMiddleware = self::combineMiddleware($this->baseShutdownMiddleware, $shutdownMiddleware);
 
 		$this->actions[$actionName]->add(
