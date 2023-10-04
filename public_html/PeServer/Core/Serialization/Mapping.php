@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Serialization;
 
 use Attribute;
+use PeServer\Core\Serialization\Converter\TypeConverterBase;
 use PeServer\Core\Text;
 
 /**
@@ -45,11 +46,14 @@ class Mapping
 	 * @phpstan-param int-mask-of<self::FLAG_*> $flags 各種設定。
 	 * @param string $arrayValueClassName マッピング先が配列の場合に割り当てるオブジェクト。指定がない場合はただの配列となる。
 	 * @phpstan-param class-string|Text::EMPTY $arrayValueClassName
+	 * @param string $converter オブジェクト変換処理用の変換クラス名。
+	 * @phpstan-param class-string<TypeConverterBase<class-string>>|string $converter
 	 */
 	public function __construct(
 		public string $name = Text::EMPTY,
 		public int $flags = self::FLAG_NONE,
-		public string $arrayValueClassName = Text::EMPTY
+		public string $arrayValueClassName = Text::EMPTY,
+		public string $converter = Text::EMPTY,
 	) {
 	}
 }

@@ -4,10 +4,17 @@ declare(strict_types=1);
 
 namespace PeServerUT\Core\Serialization;
 
+use \DateInterval;
+use \DateTimeImmutable;
+use \DateTimeInterface;
+use DateTime;
+use PeServer\Core\Serialization\Converter\DateIntervalConverter;
+use PeServer\Core\Serialization\Converter\DateTimeConverter;
 use PeServer\Core\Serialization\Mapper;
 use PeServer\Core\Serialization\Mapping;
 use PeServer\Core\Throws\MapperKeyNotFoundException;
 use PeServer\Core\Throws\MapperTypeException;
+use PeServer\Core\Time;
 use PeServerTest\Data;
 use PeServerTest\TestClass;
 
@@ -243,6 +250,23 @@ class MapperTest extends TestClass
 		$this->assertSame(-999, $actual->array['k2']->value->int);
 		$this->assertSame('K2', $actual->array['k2']->value->string);
 	}
+
+	public function test_TypeConverter()
+	{
+		$actual = new DateTimeClass();
+		$mapper = new Mapper();
+		$mapper->mapping([
+			'datetime' => '2022-10-04T19:46:12+09:00',
+			'immutable' => '2023-10-04T19:46:12+09:00',
+			'interface' => '2023-10-04T19:46:12+00:00',
+			'interval' => '1.23:45:34',
+		], $actual);
+
+		$this->assertSame('2022-10-04T19:46:12+09:00', $actual->datetime->format(DateTime::ATOM));
+		$this->assertSame('2023-10-04T19:46:12+09:00', $actual->immutable->format(DateTime::ATOM));
+		$this->assertSame('2023-10-04T19:46:12+00:00', $actual->interface->format(DateTime::ATOM));
+		$this->assertSame('1.23:45:34', Time::toString($actual->interval, Time::FORMAT_READABLE));
+	}
 }
 
 class Normal
@@ -353,4 +377,16 @@ class AttrTypeArrayNest
 {
 	#[Mapping(arrayValueClassName: NestArrayValue::class)]
 	public array $array = [];
+}
+
+class DateTimeClass
+{
+	#[Mapping(converter: DateTimeConverter::class)]
+	public DateTime $datetime;
+	#[Mapping(converter: DateTimeConverter::class)]
+	public DateTimeImmutable $immutable;
+	#[Mapping(converter: DateTimeConverter::class)]
+	public DateTimeInterface $interface;
+	#[Mapping(converter: DateIntervalConverter::class)]
+	public DateInterval $interval;
 }

@@ -73,6 +73,8 @@ abstract class Time
 
 	private static function createReadable(string $time, ?Encoding $encoding = null): DateInterval
 	{
+		//TODO: 秒未満未対応かぁ～
+
 		$regex = new Regex($encoding);
 		$matches = $regex->matches($time, '/\A((?<DAY>\d+)\.)?(?<H>\d+):(?<M>\d+):(?<S>\d+)\z/');
 

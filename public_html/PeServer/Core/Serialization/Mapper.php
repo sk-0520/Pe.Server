@@ -6,6 +6,7 @@ namespace PeServer\Core\Serialization;
 
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\ReflectionUtility;
+use PeServer\Core\Serialization\Converter\TypeConverterBase;
 use PeServer\Core\Serialization\IMapper;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\KeyNotFoundException;
@@ -133,6 +134,14 @@ class Mapper implements IMapper
 						$this->mapping($sourceValue, $nestDestination);
 					}
 
+					continue 2; // loop: $properties
+				}
+
+				if (!Text::isNullOrWhiteSpace($mapping->converter)) {
+					/** @phpstan-var TypeConverterBase<mixed> */
+					$converter = new $mapping->converter();
+					$convertedValue = $converter->read($keyName, $propertyType, $sourceValue);
+					$property->setValue($destination, $convertedValue);
 					continue 2; // loop: $properties
 				}
 			}
