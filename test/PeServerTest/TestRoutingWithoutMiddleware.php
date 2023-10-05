@@ -6,6 +6,8 @@ namespace PeServerTest;
 
 use PeServer\App\Models\AppRouting;
 use PeServer\Core\DI\IDiRegisterContainer;
+use PeServer\Core\Http\HttpRequest;
+use PeServer\Core\Http\HttpResponse;
 use PeServer\Core\Http\IResponsePrinterFactory;
 use PeServer\Core\Http\ResponsePrinter;
 use PeServer\Core\Log\ILoggerFactory;
@@ -25,4 +27,24 @@ class TestRoutingWithoutMiddleware extends AppRouting
 	{
 		parent::__construct($routeRequest, $routeSetting, $stores, $responsePrinterFactory, $loggerFactory, $serviceLocator);
 	}
+
+	#region AppRouting
+
+	protected function handleBeforeMiddleware(array $middleware, HttpRequest $request): bool
+	{
+		return true;
+	}
+
+	protected function handleAfterMiddleware(HttpRequest $request, HttpResponse $response): bool
+	{
+		return true;
+	}
+
+	protected function handleShutdownMiddleware(): void
+	{
+		//NOP
+	}
+
+
+	#endregion
 }
