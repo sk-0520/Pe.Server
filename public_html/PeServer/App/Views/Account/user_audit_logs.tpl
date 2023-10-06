@@ -14,7 +14,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			{foreach from=$values.logs->rows item=item key=key name=name}
+			{foreach from=$values.items->rows item=item key=key name=name}
 				<tr>
 					<td>{$key}</td>
 					<td>{$item.timestamp}Z</td>
@@ -26,5 +26,7 @@
 			{/foreach}
 		</tbody>
 	</table>
+
+	{pager data=$values.pager href="/account/user/audit-logs/page/<page_number>"}
 
 {/block}

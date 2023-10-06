@@ -183,7 +183,7 @@ class Routing
 	 * @param HttpRequest $request
 	 * @return bool 後続処理は可能か
 	 */
-	private function handleBeforeMiddleware(array $middleware, HttpRequest $request): bool
+	protected function handleBeforeMiddleware(array $middleware, HttpRequest $request): bool
 	{
 		foreach ($middleware as $middlewareItem) {
 			$canNext = $this->handleBeforeMiddlewareCore($this->requestPath, $request, $middlewareItem);
@@ -202,7 +202,7 @@ class Routing
 	 * @param HttpResponse $response
 	 * @return bool
 	 */
-	private function handleAfterMiddleware(HttpRequest $request, HttpResponse $response): bool
+	protected function handleAfterMiddleware(HttpRequest $request, HttpResponse $response): bool
 	{
 		if (!Arr::getCount($this->processedMiddleware)) {
 			return true;
@@ -321,6 +321,27 @@ class Routing
 		}
 	}
 
+	protected function handleShutdownMiddleware(): void
+	{
+		if (Arr::getCount($this->shutdownMiddleware)) {
+			$middlewareArgument = new MiddlewareArgument($this->requestPath, $this->stores, $this->shutdownRequest);
+
+			$shutdownMiddleware = array_reverse($this->shutdownMiddleware);
+			foreach ($shutdownMiddleware as $middleware) {
+				$middleware = self::getOrCreateShutdownMiddleware($middleware);
+				$middleware->handleShutdown($middlewareArgument);
+			}
+		}
+	}
+
+	/**
+	 * 終了処理。
+	 */
+	private function shutdown(): void
+	{
+		$this->handleShutdownMiddleware();
+	}
+
 	/**
 	 * メソッド・パスから登録されている処理を実行。
 	 */
@@ -330,21 +351,6 @@ class Routing
 			$this->executeCore();
 		} finally {
 			$this->shutdown();
-		}
-	}
-
-	/**
-	 * 終了処理。
-	 */
-	private function shutdown(): void
-	{
-		if (Arr::getCount($this->shutdownMiddleware)) {
-			$middlewareArgument = new MiddlewareArgument($this->requestPath, $this->stores, $this->shutdownRequest);
-			$shutdownMiddleware = array_reverse($this->shutdownMiddleware);
-			foreach ($shutdownMiddleware as $middleware) {
-				$middleware = self::getOrCreateShutdownMiddleware($middleware);
-				$middleware->handleShutdown($middlewareArgument);
-			}
 		}
 	}
 

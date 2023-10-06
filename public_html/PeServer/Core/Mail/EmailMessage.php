@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Mail;
 
 use PeServer\Core\Text;
+use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\InvalidOperationException;
 
 /**
@@ -32,7 +33,7 @@ class EmailMessage
 	 * @return boolean
 	 * @phpstan-assert-if-true non-empty-string $this->text
 	 */
-	public function isText(): bool
+	public function hasText(): bool
 	{
 		return !Text::isNullOrWhiteSpace($this->text);
 	}
@@ -41,10 +42,16 @@ class EmailMessage
 	 * プレーンテキストを設定。
 	 *
 	 * @param string $value
+	 * @phpstan-param non-empty-string $value
 	 * @return void
 	 */
 	public function setText(string $value): void
 	{
+		//@phpstan-ignore-next-line [DOCTYPE]
+		if (Text::isNullOrWhiteSpace($value)) {
+			throw new ArgumentException('$value');
+		}
+
 		$this->text = $value;
 	}
 
@@ -56,7 +63,7 @@ class EmailMessage
 	 */
 	public function getText(): string
 	{
-		if ($this->isText()) {
+		if ($this->hasText()) {
 			return $this->text;
 		}
 
@@ -77,8 +84,9 @@ class EmailMessage
 	 * HTMLが有効か。
 	 *
 	 * @return boolean
+	 * @phpstan-assert-if-true non-empty-string $this->html
 	 */
-	public function isHtml(): bool
+	public function hasHtml(): bool
 	{
 		return !Text::isNullOrWhiteSpace($this->html);
 	}
@@ -87,10 +95,16 @@ class EmailMessage
 	 * HTMLを設定。
 	 *
 	 * @param string $value
+	 * @phpstan-param non-empty-string $value
 	 * @return void
 	 */
 	public function setHtml(string $value): void
 	{
+		//@phpstan-ignore-next-line [DOCTYPE]
+		if (Text::isNullOrWhiteSpace($value)) {
+			throw new ArgumentException('$value');
+		}
+
 		$this->html = $value;
 	}
 
@@ -102,8 +116,7 @@ class EmailMessage
 	 */
 	public function getHtml(): string
 	{
-		if ($this->isHtml()) {
-			//@phpstan-ignore-next-line
+		if ($this->hasHtml()) {
 			return $this->html;
 		}
 

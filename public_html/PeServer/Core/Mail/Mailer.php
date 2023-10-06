@@ -111,7 +111,7 @@ class Mailer
 	 */
 	public function setMessage(EmailMessage $message)
 	{
-		if (!$message->isText() && !$message->isHtml()) {
+		if (!$message->hasText() && !$message->hasHtml()) {
 			throw new ArgumentException();
 		}
 
@@ -195,12 +195,12 @@ class Mailer
 
 		$isHtml = false;
 		$client->Subject = $this->buildSubject($this->subject);
-		if ($this->message->isHtml()) {
+		if ($this->message->hasHtml()) {
 			$client->isHTML(true);
 			$client->Body = $this->message->getHtml();
 			$isHtml = true;
 		}
-		if ($this->message->isText()) {
+		if ($this->message->hasText()) {
 			if ($isHtml) {
 				$client->AltBody = $this->message->getText();
 			} else {

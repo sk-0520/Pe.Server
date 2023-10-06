@@ -6,17 +6,20 @@ namespace PeServer\App\Models\Domain\Page\Account;
 
 use PeServer\App\Models\Dao\Entities\UserAuditLogsEntityDao;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
+use PeServer\Core\Archiver;
+use PeServer\Core\Mime;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\Mvc\Pagination;
+use PeServer\Core\Serialization\JsonSerializer;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\TypeUtility;
 
-class AccountUserAuditLogLogic extends PageLogicBase
+class AccountUserAuditLogDownloadLogic extends PageLogicBase
 {
 	#region define
 
-	public const ITEM_COUNT_IN_PAGE = 10;
+	public const RAW_LOG_SIZE = 2 * 1024 * 1024;
 
 	#endregion
 
@@ -49,12 +52,16 @@ class AccountUserAuditLogLogic extends PageLogicBase
 		$database = $this->openDatabase();
 		$userAuditLogsEntityDao = new UserAuditLogsEntityDao($database);
 
-		$totalCount = $userAuditLogsEntityDao->selectAuditLogsPageTotalCountFromUserId($userId);
-		$pagination = new Pagination($pageNumber, self::ITEM_COUNT_IN_PAGE, $totalCount);
-		$items = $userAuditLogsEntityDao->selectAuditLogsPageItemsFromUserId($userId, ($pagination->currentPageNumber - 1) * $pagination->itemCountInPage, $pagination->itemCountInPage);
+		$result = $userAuditLogsEntityDao->selectAuditLogsFromUserId($userId);
+		$jsonSerializer = new JsonSerializer();
+		$items = $jsonSerializer->save($result->rows);
 
-		$this->setValue('items', $items);
-		$this->setValue('pager', $pagination);
+		if ($items->count() < self::RAW_LOG_SIZE) {
+			$this->setDownloadContent(Mime::JSON, "audit-log.json", $items);
+		} else {
+			$data = Archiver::compressGzip($items, 9);
+			$this->setDownloadContent(Mime::GZ, "audit-log.json.gz", $data);
+		}
 	}
 
 	#endregion

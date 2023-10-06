@@ -5,7 +5,11 @@ call env.bat
 
 echo %DATE:/=-%T%TIME: =0%+09:00
 
-"%BASH%" -e ..\test.sh --ignore-namespace %*
+if "%1"=="" (
+	"%BASH%" -e ..\test.sh --ignore-namespace --mode uit --phpunit:exclude-group slow
+) else (
+	"%BASH%" -e ..\test.sh --ignore-namespace %*
+)
 
 echo.
 echo --MEMO--
