@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\App\Controllers\Page;
 
 use PeServer\App\Controllers\Page\PageControllerBase;
+use PeServer\App\Models\Data\SessionAccount;
 use PeServer\App\Models\Domain\Page\Account\AccountApiLogic;
 use PeServer\App\Models\Domain\Page\Account\AccountLoginLogic;
 use PeServer\App\Models\Domain\Page\Account\AccountLogoutLogic;
@@ -12,6 +13,7 @@ use PeServer\App\Models\Domain\Page\Account\AccountSignupNotifyLogic;
 use PeServer\App\Models\Domain\Page\Account\AccountSignupStep1Logic;
 use PeServer\App\Models\Domain\Page\Account\AccountSignupStep2Logic;
 use PeServer\App\Models\Domain\Page\Account\AccountUserApiLogic;
+use PeServer\App\Models\Domain\Page\Account\AccountUserAuditLogDownloadLogic;
 use PeServer\App\Models\Domain\Page\Account\AccountUserAuditLogLogic;
 use PeServer\App\Models\Domain\Page\Account\AccountUserEditLogic;
 use PeServer\App\Models\Domain\Page\Account\AccountUserEmailLogic;
@@ -19,7 +21,6 @@ use PeServer\App\Models\Domain\Page\Account\AccountUserLogic;
 use PeServer\App\Models\Domain\Page\Account\AccountUserPasswordLogic;
 use PeServer\App\Models\Domain\Page\Account\AccountUserPluginLogic;
 use PeServer\App\Models\Domain\UserLevel;
-use PeServer\App\Models\Data\SessionAccount;
 use PeServer\App\Models\SessionKey;
 use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Mvc\ControllerArgument;
@@ -253,11 +254,27 @@ final class AccountController extends PageControllerBase
 		return $this->user_plugin_post_core(false);
 	}
 
-	public function user_audit_logs(): IActionResult
+	public function user_audit_logs_top(): IActionResult
 	{
 		$logic = $this->createLogic(AccountUserAuditLogLogic::class);
 		$logic->run(LogicCallMode::Initialize);
 
 		return $this->view('user_audit_logs', $logic->getViewData());
+	}
+
+	public function user_audit_logs_page(): IActionResult
+	{
+		$logic = $this->createLogic(AccountUserAuditLogLogic::class);
+		$logic->run(LogicCallMode::Submit);
+
+		return $this->view('user_audit_logs', $logic->getViewData());
+	}
+
+	public function user_audit_logs_download(): IActionResult
+	{
+		$logic = $this->createLogic(AccountUserAuditLogDownloadLogic::class);
+		$logic->run(LogicCallMode::Submit);
+
+		return $this->data($logic->getContent());
 	}
 }

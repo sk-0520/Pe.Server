@@ -113,7 +113,9 @@ final class AppRouteSetting extends RouteSetting
 					->addAction('user/plugin', HttpMethod::Post, 'user_plugin_register_post', [UserAccountFilterMiddleware::class, CsrfMiddleware::class])
 					->addAction('user/plugin/:plugin_id@' . self::PLUGIN_ID, HttpMethod::gets(), 'user_plugin_update_get', [UserAccountFilterMiddleware::class, UserPluginEditFilterMiddleware::class])
 					->addAction('user/plugin/:plugin_id@' . self::PLUGIN_ID, HttpMethod::Post, 'user_plugin_update_post', [UserAccountFilterMiddleware::class, UserPluginEditFilterMiddleware::class, CsrfMiddleware::class])
-					->addAction('user/audit-logs', HttpMethod::Get, 'user_audit_logs', [UserAccountFilterMiddleware::class])
+					->addAction('user/audit-logs', HttpMethod::Get, 'user_audit_logs_top', [UserAccountFilterMiddleware::class])
+					->addAction('user/audit-logs/page/:page_number@\d++', HttpMethod::Get, 'user_audit_logs_page', [UserAccountFilterMiddleware::class])
+					->addAction('user/audit-logs/download', HttpMethod::Get, 'user_audit_logs_download', [UserAccountFilterMiddleware::class])
 				/* AUTO-FORMAT */,
 				(new Route('password', PasswordController::class, [NotLoginMiddleware::class]))
 					->addAction('reminder', HttpMethod::gets(), 'reminder_get')

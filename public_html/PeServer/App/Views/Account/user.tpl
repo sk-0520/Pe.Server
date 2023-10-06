@@ -68,7 +68,7 @@
 					<a href="/account/user/password">パスワード変更</a>
 				</li>
 				<li>
-					<a href="/account/user/audit-logs">監査ログ</a>
+					<a href="/account/user/audit-logs">監査ログ</a> (<a href="/account/user/audit-logs/download">DL</a>)
 				</li>
 			</ul>
 		</dd>
