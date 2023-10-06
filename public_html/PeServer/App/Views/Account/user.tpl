@@ -10,7 +10,7 @@
 
 		<dt>ログインID</dt>
 		<dd>
-			{$values.user->loginId}
+			<code data-clipboard="inline">{$values.user->loginId}</code>
 		</dd>
 
 		<dt>権限</dt>
