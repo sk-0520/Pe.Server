@@ -15,6 +15,7 @@ parameters:
   checkGenericClassInNonGenericObjectType: true
   checkDynamicProperties: true
   inferPrivatePropertyTypeFromConstructor: true
+  rememberPossiblyImpureFunctionValues: false
 
   # parallel:
   #   jobSize: 20
