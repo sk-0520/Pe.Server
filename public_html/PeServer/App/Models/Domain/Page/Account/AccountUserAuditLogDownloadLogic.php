@@ -6,6 +6,7 @@ namespace PeServer\App\Models\Domain\Page\Account;
 
 use PeServer\App\Models\Dao\Entities\UserAuditLogsEntityDao;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
+use PeServer\Core\Archiver;
 use PeServer\Core\Mime;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
@@ -16,6 +17,12 @@ use PeServer\Core\TypeUtility;
 
 class AccountUserAuditLogDownloadLogic extends PageLogicBase
 {
+	#region define
+
+	public const RAW_LOG_SIZE = 2 * 1024 * 1024;
+
+	#endregion
+
 	public function __construct(LogicParameter $parameter)
 	{
 		parent::__construct($parameter);
@@ -45,11 +52,16 @@ class AccountUserAuditLogDownloadLogic extends PageLogicBase
 		$database = $this->openDatabase();
 		$userAuditLogsEntityDao = new UserAuditLogsEntityDao($database);
 
-		$data = $userAuditLogsEntityDao->selectAuditLogsFromUserId($userId);
+		$result = $userAuditLogsEntityDao->selectAuditLogsFromUserId($userId);
 		$jsonSerializer = new JsonSerializer();
-		$items = $jsonSerializer->save($data->rows);
+		$items = $jsonSerializer->save($result->rows);
 
-		$this->setDownloadContent(Mime::JSON, "audit-log.json", $items);
+		if ($items->count() < self::RAW_LOG_SIZE) {
+			$this->setDownloadContent(Mime::JSON, "audit-log.json", $items);
+		} else {
+			$data = Archiver::compressGzip($items, 9);
+			$this->setDownloadContent(Mime::GZ, "audit-log.json.gz", $data);
+		}
 	}
 
 	#endregion
