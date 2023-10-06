@@ -253,10 +253,18 @@ final class AccountController extends PageControllerBase
 		return $this->user_plugin_post_core(false);
 	}
 
-	public function user_audit_logs(): IActionResult
+	public function user_audit_logs_top(): IActionResult
 	{
 		$logic = $this->createLogic(AccountUserAuditLogLogic::class);
 		$logic->run(LogicCallMode::Initialize);
+
+		return $this->view('user_audit_logs', $logic->getViewData());
+	}
+
+	public function crash_report_list_page(): IActionResult
+	{
+		$logic = $this->createLogic(AccountUserAuditLogLogic::class);
+		$logic->run(LogicCallMode::Submit);
 
 		return $this->view('user_audit_logs', $logic->getViewData());
 	}

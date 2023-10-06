@@ -25,6 +25,8 @@
 				</tr>
 			{/foreach}
 		</tbody>
+
+		{* {pager data=$values.pager href="/account/user/audit-logs/page/<page_number>"} *}
 	</table>
 
 {/block}
