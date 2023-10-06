@@ -261,7 +261,7 @@ final class AccountController extends PageControllerBase
 		return $this->view('user_audit_logs', $logic->getViewData());
 	}
 
-	public function crash_report_list_page(): IActionResult
+	public function user_audit_logs_page(): IActionResult
 	{
 		$logic = $this->createLogic(AccountUserAuditLogLogic::class);
 		$logic->run(LogicCallMode::Submit);
