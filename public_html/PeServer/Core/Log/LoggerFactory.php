@@ -6,6 +6,7 @@ namespace PeServer\Core\Log;
 
 use PeServer\Core\DI\DiContainer;
 use PeServer\Core\DI\DiFactoryBase;
+use PeServer\Core\DI\DiFactoryTrait;
 use PeServer\Core\DI\IDiContainer;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\ILoggerFactory;
@@ -22,11 +23,7 @@ use PeServer\Core\TypeUtility;
 
 class LoggerFactory extends DiFactoryBase implements ILoggerFactory
 {
-	public function __construct(
-		IDiContainer $container
-	) {
-		parent::__construct($container);
-	}
+	use DiFactoryTrait;
 
 	#region function
 

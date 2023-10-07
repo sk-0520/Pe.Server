@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc;
 
 use PeServer\Core\DI\DiFactoryBase;
+use PeServer\Core\DI\DiFactoryTrait;
 use PeServer\Core\DI\IDiContainer;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\LoggerFactory;
@@ -12,10 +13,7 @@ use PeServer\Core\Mvc\LogicParameter;
 
 class LogicFactory extends DiFactoryBase implements ILogicFactory
 {
-	public function __construct(IDiContainer $container)
-	{
-		parent::__construct($container);
-	}
+	use DiFactoryTrait;
 
 	#region ILogicFactory
 
