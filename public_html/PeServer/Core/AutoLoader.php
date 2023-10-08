@@ -156,7 +156,7 @@ class AutoLoader
 		}
 
 		$fixedExtensions = [];
-		if (isset($mapping['extensions']) && $mapping['extensions'] !== null) { //@phpstan-ignore-line
+		if (isset($mapping['extensions'])) {
 			foreach ($mapping['extensions'] as $extension) {
 				$extension = trim($extension);
 				if (!empty($extension)) {

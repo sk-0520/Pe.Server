@@ -21,8 +21,8 @@ class HttpClientInformation
 	 * @param array<string,mixed> $rawItems
 	 */
 	public function __construct(
-		readonly private UrlEncoding $urlEncoding,
-		readonly private HttpClientRequest $request, //@phpstan-ignore-line
+		readonly protected UrlEncoding $urlEncoding,
+		readonly protected HttpClientRequest $request,
 		readonly public array $rawItems
 	) {
 	}

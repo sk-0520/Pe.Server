@@ -210,7 +210,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 		$resultCount = $pdoStatement->rowCount();
 
 		$rows = $pdoStatement->fetchAll();
-		// @phpstan-ignore-next-line: Strict comparison using === between
+		// @phpstan-ignore-next-line: [PHP_VERSION]
 		if ($rows === false) {
 			throw new DatabaseException($this->getErrorMessage());
 		}

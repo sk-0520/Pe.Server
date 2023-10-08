@@ -98,13 +98,9 @@ class ErrorHandler
 			return;
 		}
 
-		/** @var int */
 		$type = Arr::getOr($lastError, 'type', -1);
-		/** @var string */
 		$message = Arr::getOr($lastError, 'message', Text::EMPTY);
-		/** @var string */
 		$file = Arr::getOr($lastError, 'file', '<unknown>');
-		/** @var int */
 		$line = Arr::getOr($lastError, 'line', 0);
 
 		$this->catchErrorCore(

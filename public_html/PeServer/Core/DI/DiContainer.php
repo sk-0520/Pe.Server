@@ -246,10 +246,7 @@ class DiContainer extends DisposerBase implements IDiContainer
 		$parameters = $this->generateParameterValues($constructor, $arguments, $level, $mappingKeyOnly, $callStack);
 
 		$result = new $className(...$parameters);
-
-		if (is_object($result)) { //@phpstan-ignore-line
-			$this->setMembers($result, $level, $mappingKeyOnly, $callStack);
-		}
+		$this->setMembers($result, $level, $mappingKeyOnly, $callStack);
 
 		return $result;
 	}
