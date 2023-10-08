@@ -14,6 +14,8 @@ abstract class DiFactoryBase
 	/**
 	 * 生成。
 	 *
+	 * 継承した側は `DiFactoryTrait` を用いる想定。
+	 *
 	 * @param IDiContainer $container DIコンテナ。
 	 */
 	protected function __construct(
