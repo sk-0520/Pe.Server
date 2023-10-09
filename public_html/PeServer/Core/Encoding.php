@@ -216,7 +216,7 @@ class Encoding
 
 		try {
 			$output = mb_convert_encoding($input, $this->name, $default->name);
-			if ($output === false) { //@phpstan-ignore-line
+			if ($output === false) { //@phpstan-ignore-line [PHP_VERSION]
 				throw new EncodingException();
 			}
 			return new Binary($output);
@@ -260,7 +260,7 @@ class Encoding
 	public function getAliasNames(): array
 	{
 		$names = mb_encoding_aliases($this->name);
-		if ($names === false) { //@phpstan-ignore-line
+		if ($names === false) { //@phpstan-ignore-line [PHP_VERSION]
 			throw new EncodingException($this->name);
 		}
 
