@@ -50,21 +50,21 @@ class DatabaseContextTest extends TestClass
 		$database->rollback();
 		$this->assertFalse($database->inTransaction());
 
-		$transactionResult1 = $database->transaction(function($context) {
+		$transactionResult1 = $database->transaction(function ($context) {
 			try {
 				$context->beginTransaction();
 				$this->fail();
-			} catch(TransactionException) {
+			} catch (TransactionException) {
 				$this->success();
 			}
 		});
 		$this->isFalse($transactionResult1);
 
-		$transactionResult2 = $database->transaction(function($context) {
+		$transactionResult2 = $database->transaction(function ($context) {
 			try {
 				throw new Exception();
 				$this->fail();
-			} catch(Exception) {
+			} catch (Exception) {
 				$this->success();
 			}
 		});
@@ -220,6 +220,14 @@ class DatabaseContextTest extends TestClass
 		$this->assertSame(['COL' => 'text'], $actual->fields);
 	}
 
+	function test_queryFirst_throw()
+	{
+		$database = DB::memory();
+		$this->expectException(DatabaseException::class);
+		$database->queryFirst("select 'text' as COL where 1 = 0");
+		$this->fail();
+	}
+
 	function test_queryFirst_mapping_class()
 	{
 		$database = DB::memory();
@@ -240,6 +248,302 @@ class DatabaseContextTest extends TestClass
 		$this->assertSame($object, $actual);
 		$this->assertSame('text', $actual->text);
 		$this->assertSame(123, $actual->number);
+	}
+
+	function test_queryFirstOrNull()
+	{
+		$database = DB::memory();
+		$actual = $database->queryFirstOrNull("select 'text' as COL");
+		$this->assertSame(['COL' => 'text'], $actual->fields);
+	}
+
+	function test_queryFirstOrNull_null()
+	{
+		$database = DB::memory();
+		$actual = $database->queryFirstOrNull("select 'text' as COL where 1 = 0");
+		$this->assertNull($actual);
+	}
+
+	function test_querySingle()
+	{
+		$database = DB::memory();
+		$actual = $database->querySingle(
+			<<<SQL
+
+			select
+				*
+			from
+				(
+					select 'text1' as COL
+					union all
+					select 'text2' as COL
+					union all
+					select 'text3' as COL
+				)
+			where
+				COL = 'text2'
+
+			SQL
+		);
+		$this->assertSame(['COL' => 'text2'], $actual->fields);
+	}
+
+	function test_querySingle_throw_0()
+	{
+		$database = DB::memory();
+		$this->expectException(DatabaseException::class);
+		$database->querySingle(
+			<<<SQL
+
+			select
+				*
+			from
+				(
+					select 'text1' as COL
+					union all
+					select 'text2' as COL
+					union all
+					select 'text3' as COL
+				)
+			where
+				COL = 'text0'
+
+			SQL
+		);
+		$this->fail();
+	}
+
+	function test_querySingle_throw_2()
+	{
+		$database = DB::memory();
+		$this->expectException(DatabaseException::class);
+		$database->querySingle(
+			<<<SQL
+
+			select
+				*
+			from
+				(
+					select 'text1' as COL
+					union all
+					select 'text2' as COL
+					union all
+					select 'text3' as COL
+				)
+			where
+				COL = 'text2'
+				or
+				COL = 'text3'
+
+			SQL
+		);
+		$this->fail();
+	}
+
+	function test_querySingleOrNull()
+	{
+		$database = DB::memory();
+		$actual = $database->querySingleOrNull(
+			<<<SQL
+
+			select
+				*
+			from
+				(
+					select 'text1' as COL
+					union all
+					select 'text2' as COL
+					union all
+					select 'text3' as COL
+				)
+			where
+				COL = 'text2'
+
+			SQL
+		);
+		$this->assertSame(['COL' => 'text2'], $actual->fields);
+	}
+
+	function test_querySingleOrNull_0()
+	{
+		$database = DB::memory();
+		$actual = $database->querySingleOrNull(
+			<<<SQL
+
+			select
+				*
+			from
+				(
+					select 'text1' as COL
+					union all
+					select 'text2' as COL
+					union all
+					select 'text3' as COL
+				)
+			where
+				COL = 'text4'
+
+			SQL
+		);
+		$this->assertNull($actual);
+	}
+
+	function test_querySingleOrNull_2()
+	{
+		$database = DB::memory();
+		$actual = $database->querySingleOrNull(
+			<<<SQL
+
+			select
+				*
+			from
+				(
+					select 'text1' as COL
+					union all
+					select 'text2' as COL
+					union all
+					select 'text3' as COL
+				)
+			where
+				COL = 'text2'
+				or
+				COL = 'text3'
+
+			SQL
+		);
+		$this->assertNull($actual);
+	}
+
+	function test_selectOrdered()
+	{
+		$database = DB::memory();
+		$actual = $database->selectOrdered(
+			<<<SQL
+
+			select
+				*
+			from
+				(
+					select 0 as COL
+					union all
+					select 10 as COL
+					union all
+					select -10 as COL
+				)
+			order by
+					COL
+
+			SQL
+		);
+		$this->assertSame(-10, $actual->rows[0]['COL']);
+		$this->assertSame(0, $actual->rows[1]['COL']);
+		$this->assertSame(10, $actual->rows[2]['COL']);
+	}
+
+	function test_selectOrdered_throw()
+	{
+		$database = DB::memory();
+		$this->expectException(SqlException::class);
+		$this->expectExceptionMessage('order by');
+		$database->selectOrdered(
+			<<<SQL
+
+			select
+				*
+			from
+				(
+					select 0 as COL
+					union all
+					select 10 as COL
+					union all
+					select -10 as COL
+				)
+
+			SQL
+		);
+		$this->fail();
+	}
+
+	function test_selectSingleCount()
+	{
+		$database = DB::memory();
+		$actual = $database->selectSingleCount(
+			<<<SQL
+
+			select
+				count(*)
+			from
+				(
+					select 0 as COL
+					union all
+					select 10 as COL
+					union all
+					select -10 as COL
+				)
+			order by
+					COL
+
+			SQL
+		);
+		$this->assertSame(3, $actual);
+	}
+
+	function test_selectSingleCount_name()
+	{
+		$database = DB::memory();
+		$actual = $database->selectSingleCount(
+			<<<SQL
+
+			select
+				count(*) as COL_NAME
+			from
+				(
+					select 0 as COL
+					union all
+					select 10 as COL
+					union all
+					select -10 as COL
+				)
+			order by
+					COL
+
+			SQL
+		);
+		$this->assertSame(3, $actual);
+	}
+
+	function test_selectSingleCount_throw_sql()
+	{
+		$database = DB::memory();
+		$this->expectException(DatabaseException::class);
+		$database->selectSingleCount(
+			<<<SQL
+
+			select
+				'text' as COL2,
+				count(*) as COL_NAME
+			from
+				(
+					select 0 as COL
+					union all
+					select 10 as COL
+					union all
+					select -10 as COL
+				)
+			order by
+					COL
+
+			SQL
+		);
+		$this->fail();
+	}
+
+	function test_selectSingleCount_throw_count()
+	{
+		$database = DB::memory();
+		$this->expectException(SqlException::class);
+		$database->selectSingleCount("select 'text' as COL");
+		$this->fail();
 	}
 
 	function test_execute()
@@ -265,6 +569,170 @@ class DatabaseContextTest extends TestClass
 
 		$actual7 = $database->execute('delete from test');
 		$this->assertSame(3, $actual7->getResultCount());
+	}
+
+	function test_insert()
+	{
+		$database = DB::memory();
+		$database->execute('create table TBL(COL integer)');
+		$actual = $database->insert('insert into TBL(COL) values (10)');
+		$this->assertSame(1, $actual);
+	}
+
+	function test_insert_throw()
+	{
+		$database = DB::memory();
+		$database->execute('create table TBL(COL integer)');
+		$this->expectException(SqlException::class);
+		$database->insert('select * from TBL');
+		$this->fail();
+	}
+
+	function test_insertSingle()
+	{
+		$database = DB::memory();
+		$database->execute('create table TBL(COL integer)');
+		$database->insertSingle('insert into TBL(COL) values (10)');
+		$this->success();
+	}
+
+	function test_insertSingle_throw_sql()
+	{
+		$database = DB::memory();
+		$database->execute('create table TBL(COL integer)');
+		$this->expectException(SqlException::class);
+		$database->insertSingle('select * from TBL');
+		$this->fail();
+	}
+
+	function test_insertSingle_throw_2()
+	{
+		$database = DB::memory();
+		$database->execute('create table TBL(COL integer)');
+		$this->expectException(DatabaseException::class);
+		$database->insertSingle('insert into TBL(COL) values (10), (20)');
+		$this->fail();
+	}
+
+	function test_update()
+	{
+		$database = DB::memory();
+		$database->execute('create table TBL(COL integer, VAL text)');
+		$database->execute("insert into TBL(COL, VAL) values (10, 'A'), (20, 'B')");
+		$database->update('update TBL set VAL = VAL || VAL');
+		$this->assertSame('AA', $database->querySingle('select VAL from TBL where COL = 10')->fields['VAL']);
+		$this->assertSame('BB', $database->querySingle('select VAL from TBL where COL = 20')->fields['VAL']);
+	}
+
+	function test_update_throw()
+	{
+		$database = DB::memory();
+		$database->execute('create table TBL(COL integer, VAL text)');
+		$database->execute("insert into TBL(COL, VAL) values (10, 'A'), (20, 'B')");
+		$this->expectException(SqlException::class);
+		$database->update('select * from TBL');
+	}
+
+	function test_updateByKey()
+	{
+		$database = DB::memory();
+		$database->execute('create table TBL(COL integer, VAL text)');
+		$database->execute("insert into TBL(COL, VAL) values (10, 'A'), (20, 'B')");
+		$database->updateByKey('update TBL set VAL = VAL || VAL where COL = 20');
+		$this->assertSame('A', $database->querySingle('select VAL from TBL where COL = 10')->fields['VAL']);
+		$this->assertSame('BB', $database->querySingle('select VAL from TBL where COL = 20')->fields['VAL']);
+	}
+
+	function test_updateByKey_throw()
+	{
+		$database = DB::memory();
+		$database->execute('create table TBL(COL integer, VAL text)');
+		$database->execute("insert into TBL(COL, VAL) values (10, 'A'), (20, 'B')");
+		$this->expectException(DatabaseException::class);
+		$database->updateByKey('update TBL set VAL = VAL || VAL');
+	}
+
+	function test_updateByKeyOrNothing()
+	{
+		$database = DB::memory();
+		$database->execute('create table TBL(COL integer, VAL text)');
+		$database->execute("insert into TBL(COL, VAL) values (10, 'A'), (20, 'B')");
+
+		$actual = $database->updateByKeyOrNothing('update TBL set VAL = VAL || VAL where COL = 20');
+		$this->assertTrue($actual);
+		$this->assertSame('A', $database->querySingle('select VAL from TBL where COL = 10')->fields['VAL']);
+		$this->assertSame('BB', $database->querySingle('select VAL from TBL where COL = 20')->fields['VAL']);
+	}
+
+	function test_updateByKeyOrNothing_throw()
+	{
+		$database = DB::memory();
+		$database->execute('create table TBL(COL integer, VAL text)');
+		$database->execute("insert into TBL(COL, VAL) values (10, 'A'), (20, 'B')");
+
+		$actual = $database->updateByKeyOrNothing('update TBL set VAL = VAL || VAL where COL = 30');
+		$this->assertFalse($actual);
+		$this->assertSame('A', $database->querySingle('select VAL from TBL where COL = 10')->fields['VAL']);
+		$this->assertSame('B', $database->querySingle('select VAL from TBL where COL = 20')->fields['VAL']);
+	}
+
+	function test_delete()
+	{
+		$database = DB::memory();
+		$database->execute('create table TBL(COL integer, VAL text)');
+		$database->execute("insert into TBL(COL, VAL) values (10, 'A'), (20, 'B')");
+		$database->delete('delete from TBL');
+		$this->assertSame(0, $database->selectSingleCount('select count(*) from TBL'));
+	}
+
+	function test_delete_throw()
+	{
+		$database = DB::memory();
+		$database->execute('create table TBL(COL integer, VAL text)');
+		$database->execute("insert into TBL(COL, VAL) values (10, 'A'), (20, 'B')");
+		$this->expectException(SqlException::class);
+		$database->delete('select * from TBL');
+		$this->fail();
+	}
+
+	function test_deleteByKey()
+	{
+		$database = DB::memory();
+		$database->execute('create table TBL(COL integer, VAL text)');
+		$database->execute("insert into TBL(COL, VAL) values (10, 'A'), (20, 'B')");
+		$database->deleteByKey('delete from TBL where COL = 20');
+		$this->assertSame('A', $database->querySingle('select VAL from TBL where COL = 10')->fields['VAL']);
+		$this->assertNull($database->querySingleOrNull('select VAL from TBL where COL = 20'));
+	}
+
+	function test_deleteByKey_throw()
+	{
+		$database = DB::memory();
+		$database->execute('create table TBL(COL integer, VAL text)');
+		$database->execute("insert into TBL(COL, VAL) values (10, 'A'), (20, 'B')");
+		$this->expectException(DatabaseException::class);
+		$database->deleteByKey('delete from TBL where COL = 30');
+		$this->fail();
+	}
+
+	function test_deleteByKeyOrNothing()
+	{
+		$database = DB::memory();
+		$database->execute('create table TBL(COL integer, VAL text)');
+		$database->execute("insert into TBL(COL, VAL) values (10, 'A'), (20, 'B')");
+		$this->assertTrue($database->deleteByKeyOrNothing('delete from TBL where COL = 20'));
+		$this->assertSame('A', $database->querySingle('select VAL from TBL where COL = 10')->fields['VAL']);
+		$this->assertNull($database->querySingleOrNull('select VAL from TBL where COL = 20'));
+	}
+
+
+	function test_deleteByKeyOrNothing_throw()
+	{
+		$database = DB::memory();
+		$database->execute('create table TBL(COL integer, VAL text)');
+		$database->execute("insert into TBL(COL, VAL) values (10, 'A'), (20, 'B')");
+		$this->expectException(DatabaseException::class);
+		$database->deleteByKeyOrNothing('delete from TBL');
 	}
 }
 

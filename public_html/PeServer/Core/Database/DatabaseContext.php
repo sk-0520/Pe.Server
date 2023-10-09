@@ -446,7 +446,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 
 		$next = $query->fetch();
 		if ($next !== false) {
-			throw new DatabaseException($this->getErrorMessage());
+			return null;
 		}
 
 		return $result;
@@ -580,7 +580,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 		$this->enforceUpdate($statement);
 		$result = $this->execute($statement, $parameters);
 		if ($result->getResultCount() !== 1) {
-			throw new SqlException();
+			throw new DatabaseException();
 		}
 	}
 
@@ -589,7 +589,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 		$this->enforceUpdate($statement);
 		$result = $this->execute($statement, $parameters);
 		if (1 < $result->getResultCount()) {
-			throw new SqlException();
+			throw new DatabaseException();
 		}
 
 		return $result->getResultCount() === 1;
@@ -621,7 +621,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 		$this->enforceDelete($statement);
 		$result = $this->execute($statement, $parameters);
 		if ($result->getResultCount() !== 1) {
-			throw new SqlException();
+			throw new DatabaseException();
 		}
 	}
 
@@ -630,7 +630,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 		$this->enforceDelete($statement);
 		$result = $this->execute($statement, $parameters);
 		if (1 < $result->getResultCount()) {
-			throw new SqlException();
+			throw new DatabaseException();
 		}
 
 		return $result->getResultCount() === 1;
