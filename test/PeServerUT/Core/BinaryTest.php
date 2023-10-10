@@ -128,10 +128,17 @@ class BinaryTest extends TestClass
 
 	public function test_toString_throw()
 	{
-		$this->expectException(NullByteStringException::class);
 		$binary = new Binary("\0");
-		$actual = $binary->toString();
+		$this->expectException(NullByteStringException::class);
+		$binary->toString();
 		$this->fail();
+	}
+
+	public function test_toArray()
+	{
+		$binary = new Binary("str");
+		$actual = $binary->toArray('C*');
+		$this->assertSame([1 => 115, 2 => 116, 3 => 114], $actual);
 	}
 
 	public function test_array()

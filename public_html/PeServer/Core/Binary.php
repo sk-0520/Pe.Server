@@ -11,6 +11,7 @@ use Iterator;
 use IteratorAggregate;
 use PeServer\Core\Collections\ArrayAccessHelper;
 use PeServer\Core\Throws\ArgumentException;
+use PeServer\Core\Throws\FormatException;
 use PeServer\Core\Throws\IndexOutOfRangeException;
 use PeServer\Core\Throws\NotSupportedException;
 use PeServer\Core\Throws\NullByteStringException;
@@ -169,12 +170,26 @@ readonly final class Binary implements ArrayAccess, IteratorAggregate, Countable
 		return $this->raw;
 	}
 
+	/**
+	 * 配列化。
+	 *
+	 * `unpack` ラッパー。
+	 *
+	 * @param string $format
+	 * @param int $offset
+	 * @phpstan-param UnsignedIntegerAlias $offset
+	 * @return array<mixed>
+	 * @see https://www.php.net/manual/function.unpack.php
+	 */
+	public function toArray(string $format, int $offset = 0): array
+	{
+		$result = unpack($format, $this->raw, $offset);
+		if ($result === false) {
+			throw new FormatException();
+		}
 
-	// public function format(string $format, int $offset = 0): array
-	// {
-	// 	$result = unpack($format, $this->raw, $offset);
-	// 	return $result;
-	// }
+		return $result;
+	}
 
 
 	#endregion
