@@ -7,6 +7,7 @@ namespace PeServerUT\Core;
 use \TypeError;
 use PeServer\Core\Binary;
 use PeServer\Core\Throws\ArgumentException;
+use PeServer\Core\Throws\BinaryException;
 use PeServer\Core\Throws\IndexOutOfRangeException;
 use PeServer\Core\Throws\NotSupportedException;
 use PeServer\Core\Throws\NullByteStringException;
@@ -139,6 +140,13 @@ class BinaryTest extends TestClass
 		$binary = new Binary("str");
 		$actual = $binary->toArray('C*');
 		$this->assertSame([1 => 115, 2 => 116, 3 => 114], $actual);
+	}
+
+	public function test_toArray_throw()
+	{
+		$binary = new Binary("");
+		$this->expectException(BinaryException::class);
+		$binary->toArray('あ');
 	}
 
 	public function test_array()

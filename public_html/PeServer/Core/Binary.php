@@ -9,6 +9,8 @@ use ArrayIterator;
 use Countable;
 use Iterator;
 use IteratorAggregate;
+use Stringable;
+use TypeError;
 use PeServer\Core\Collections\ArrayAccessHelper;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\FormatException;
@@ -16,8 +18,9 @@ use PeServer\Core\Throws\IndexOutOfRangeException;
 use PeServer\Core\Throws\NotSupportedException;
 use PeServer\Core\Throws\NullByteStringException;
 use PeServer\Core\Throws\SerializeException;
-use Stringable;
-use TypeError;
+use PeServer\Core\Throws\BinaryException;
+use PeServer\Core\Throws\Throws;
+use ValueError;
 
 /**
  * PHP文字列がバイトデータなのか普通の文字列なのかよくわからん。
@@ -39,7 +42,7 @@ readonly final class Binary implements ArrayAccess, IteratorAggregate, Countable
 	 *
 	 * @var string
 	 */
-	public string $raw;
+	public readonly string $raw;
 
 	#endregion
 
@@ -169,9 +172,9 @@ readonly final class Binary implements ArrayAccess, IteratorAggregate, Countable
 	 */
 	public function toArray(string $format, int $offset = 0): array
 	{
-		$result = unpack($format, $this->raw, $offset);
+		$result = Throws::wrap(ValueError::class, BinaryException::class, fn () => unpack($format, $this->raw, $offset));
 		if ($result === false) {
-			throw new FormatException();
+			throw new BinaryException();
 		}
 
 		return $result;
