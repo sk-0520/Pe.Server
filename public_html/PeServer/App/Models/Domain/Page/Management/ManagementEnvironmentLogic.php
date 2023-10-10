@@ -35,7 +35,7 @@ class ManagementEnvironmentLogic extends PageLogicBase
 			phpinfo();
 		});
 
-		$phpDoc = HtmlDocument::load($rawPhpinfo->getRaw());
+		$phpDoc = HtmlDocument::load($rawPhpinfo->raw);
 
 		$xpath = $phpDoc->path();
 		/** @var HtmlElement */

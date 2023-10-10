@@ -621,7 +621,7 @@ abstract class LogicBase implements IValidationReceiver
 
 		$content = File::readContent($path);
 
-		$this->content = new DataContent(HttpStatus::None, $mime, $content->getRaw());
+		$this->content = new DataContent(HttpStatus::None, $mime, $content->raw);
 	}
 
 	/**

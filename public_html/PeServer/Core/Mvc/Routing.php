@@ -270,7 +270,7 @@ class Routing
 		});
 		// 標準出力は闇に葬る
 		if ($output->count()) {
-			$logger->warn('{0}', $output->getRaw());
+			$logger->warn('{0}', $output->raw);
 		}
 
 		$this->stores->apply();

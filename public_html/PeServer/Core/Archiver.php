@@ -46,7 +46,7 @@ abstract class Archiver
 	 */
 	public static function compressGzip(Binary $data, int $level = -1, int $encoding = self::GZIP_DEFAULT): Binary
 	{
-		$result = gzencode($data->getRaw(), $level, $encoding);
+		$result = gzencode($data->raw, $level, $encoding);
 		if ($result === false) {
 			throw new ArchiveException();
 		}
@@ -66,7 +66,7 @@ abstract class Archiver
 	 */
 	public static function extractGzip(Binary $data): Binary
 	{
-		$result = gzdecode($data->getRaw());
+		$result = gzdecode($data->raw);
 		if ($result === false) {
 			throw new ArchiveException();
 		}

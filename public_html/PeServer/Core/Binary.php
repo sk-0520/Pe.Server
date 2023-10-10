@@ -30,7 +30,6 @@ use TypeError;
  * @implements IteratorAggregate<UnsignedIntegerAlias,Byte>
  * @immutable
  */
-
 readonly final class Binary implements ArrayAccess, IteratorAggregate, Countable, Stringable
 {
 	#region variable
@@ -39,9 +38,8 @@ readonly final class Binary implements ArrayAccess, IteratorAggregate, Countable
 	 * 実体。
 	 *
 	 * @var string
-	 * @readonly
 	 */
-	private string $raw;
+	public string $raw;
 
 	#endregion
 
@@ -56,18 +54,6 @@ readonly final class Binary implements ArrayAccess, IteratorAggregate, Countable
 	}
 
 	#region function
-
-	/**
-	 * バイトデータをそのまま取得。
-	 *
-	 * TODO: 将来的に readonly にするか @immutable/@readonly で保証する。
-	 *
-	 * @return string
-	 */
-	public function getRaw(): string
-	{
-		return $this->raw;
-	}
 
 	/**
 	 * `substr` ラッパー。

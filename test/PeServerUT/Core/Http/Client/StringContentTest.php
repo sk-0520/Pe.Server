@@ -16,7 +16,7 @@ class StringContentTest extends TestClass
 	public function test_default_encoding()
 	{
 		$sc = new StringContent("abc");
-		$this->assertSame("abc", $sc->toBody()->getRaw());
+		$this->assertSame("abc", $sc->toBody()->raw);
 		$this->assertFalse($sc->toHeader()->existsContentType());
 	}
 
@@ -35,9 +35,9 @@ class StringContentTest extends TestClass
 			$this->assertSame($test['input'], $test['encoding']->toString($sc->toBody()));
 
 			if ($test['encoding']->name === Encoding::getDefaultEncoding()->name) {
-				$this->assertSame($test['input'], $sc->toBody()->getRaw());
+				$this->assertSame($test['input'], $sc->toBody()->raw);
 			} else {
-				$this->assertNotSame($test['input'], $sc->toBody()->getRaw());
+				$this->assertNotSame($test['input'], $sc->toBody()->raw);
 			}
 		}
 	}

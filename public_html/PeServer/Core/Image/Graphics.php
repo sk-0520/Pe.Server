@@ -107,7 +107,7 @@ class Graphics extends DisposerBase
 		};
 
 		$result = ErrorHandler::trapError(
-			fn () => call_user_func($funcName, $binary->getRaw())
+			fn () => call_user_func($funcName, $binary->raw)
 		);
 
 		if (!$result->success) {

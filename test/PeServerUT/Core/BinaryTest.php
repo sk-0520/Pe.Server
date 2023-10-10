@@ -18,7 +18,7 @@ class BinaryTest extends TestClass
 	public function test_getRaw()
 	{
 		$binary = new Binary("a\0b\0");
-		$this->assertSame("a\0b\0", $binary->getRaw());
+		$this->assertSame("a\0b\0", $binary->raw);
 	}
 
 	public function test_getRange()
@@ -36,7 +36,7 @@ class BinaryTest extends TestClass
 		foreach ($tests as $test) {
 			$binary = new Binary($test->args[0]);
 			$actual = $binary->getRange(...$test->args[1]);
-			$this->assertSame($test->expected, $actual->getRaw(), $test->str());
+			$this->assertSame($test->expected, $actual->raw, $test->str());
 		}
 	}
 
@@ -91,7 +91,7 @@ class BinaryTest extends TestClass
 		$binary = new Binary("a\0b\0");
 		$base64 = $binary->toBase64();
 		$actual = Binary::fromBase64($base64);
-		$this->assertSame($binary->getRaw(), $actual->getRaw());
+		$this->assertSame($binary->raw, $actual->raw);
 		$this->assertSame($base64, $actual->toBase64());
 	}
 

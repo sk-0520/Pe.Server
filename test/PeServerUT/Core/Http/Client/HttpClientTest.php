@@ -40,15 +40,15 @@ class HttpClientTest extends TestClass
 
 		$hc = new HttpClient(new HttpClientOptions());
 		$actual1 = $hc->get($url);
-		$this->assertSame('/Core/Http/Client/get-path-echo.php', $actual1->content->getRaw());
+		$this->assertSame('/Core/Http/Client/get-path-echo.php', $actual1->content->raw);
 		$actual1->dispose();
 
 		$actual2 = $hc->send(new HttpClientRequest($url, HttpMethod::Get, null, null));
-		$this->assertSame('/Core/Http/Client/get-path-echo.php', $actual2->content->getRaw());
+		$this->assertSame('/Core/Http/Client/get-path-echo.php', $actual2->content->raw);
 		$actual2->dispose();
 
 		$actual3 = HttpClient::request(new HttpClientRequest($url, HttpMethod::Get, null, null), new HttpClientOptions());
-		$this->assertSame('/Core/Http/Client/get-path-echo.php', $actual3->content->getRaw());
+		$this->assertSame('/Core/Http/Client/get-path-echo.php', $actual3->content->raw);
 		$actual3->dispose();
 	}
 
@@ -89,17 +89,17 @@ class HttpClientTest extends TestClass
 		$header1->setContentType(new HttpHeadContentType('application/octet-stream', null));
 		$actual1 = $hc->post($url, $header1, null);
 		$this->assertSame('application/octet-stream', $actual1->header->getContentType()->mime);
-		$this->assertSame('', $actual1->content->getRaw());
+		$this->assertSame('', $actual1->content->raw);
 		$actual1->dispose();
 
 		$actual2 = $hc->post($url, null, new BinaryContent(new Binary("あ\0い\1う\2え\3お！\4"), 'text/binary-text'));
 		$this->assertSame('text/binary-text', $actual2->header->getContentType()->mime);
-		$this->assertSame("あ\0い\1う\2え\3お！\4", $actual2->content->getRaw());
+		$this->assertSame("あ\0い\1う\2え\3お！\4", $actual2->content->raw);
 		$actual2->dispose();
 
 		$actual3 = $hc->post($url, null, new StringContent('かきくけこ？', 'text/plain-text'));
 		$this->assertSame('text/plain-text', $actual3->header->getContentType()->mime);
-		$this->assertSame('かきくけこ？', $actual3->content->getRaw());
+		$this->assertSame('かきくけこ？', $actual3->content->raw);
 		$actual3->dispose();
 
 		$actual4 = $hc->post($url, null, new JsonContent(["a" => "A", "b" => [1, 2, 3]]));
@@ -109,12 +109,12 @@ class HttpClientTest extends TestClass
 
 		$actual5 = HttpClient::request(new HttpClientRequest($url, HttpMethod::Post, null, new StringContent('さしすせそ！', 'mime/💩')), new HttpClientOptions());
 		$this->assertSame('mime/💩', $actual5->header->getContentType()->mime);
-		$this->assertSame("さしすせそ！", $actual5->content->getRaw());
+		$this->assertSame("さしすせそ！", $actual5->content->raw);
 		$actual5->dispose();
 
 		$actual6 = HttpClient::request(new HttpClientRequest($url, HttpMethod::Post, null, new FormUrlEncodedContent(Dictionary::create(['KEY' => 'あ']))), new HttpClientOptions());
 		$this->assertSame(Mime::FORM, $actual6->header->getContentType()->mime);
-		$this->assertSame("KEY=%E3%81%82", $actual6->content->getRaw());
+		$this->assertSame("KEY=%E3%81%82", $actual6->content->raw);
 
 		//TODO: あとはマルチパートくらいだろうけどもう別にどうでもいいわ
 	}
@@ -157,7 +157,7 @@ class HttpClientTest extends TestClass
 		$hc = new HttpClient(new HttpClientOptions(redirect: new HttpRedirectOptions(count: $redirectMaxCount)));
 		$actual = $hc->get($url);
 
-		$this->assertSame('GOAL!', $actual->content->getRaw());
+		$this->assertSame('GOAL!', $actual->content->raw);
 		$this->assertSame($redirectCount, $actual->information->getRedirectCount());
 		$this->assertSame($url->changeQuery(UrlQuery::from(['redirect' => 0]))->toString(), $actual->information->getEffectiveUrl()->toString());
 	}
@@ -176,7 +176,7 @@ class HttpClientTest extends TestClass
 		} catch (HttpClientStatusException $ex) {
 			$this->assertSame(CURLE_TOO_MANY_REDIRECTS, $ex->response->clientStatus->number);
 			$this->assertSame(HttpStatus::Found->value, $ex->response->information->getHttpStatus()->value);
-			$this->assertSame('', $ex->response->content->getRaw());
+			$this->assertSame('', $ex->response->content->raw);
 		}
 	}
 
@@ -190,6 +190,6 @@ class HttpClientTest extends TestClass
 		$actual = $hc->get($url);
 		$this->assertSame(HttpStatus::Found->value, $actual->information->getHttpStatus()->value);
 		$this->assertTrue($actual->information->getHttpStatus()->isRedirect());
-		$this->assertSame('still', $actual->content->getRaw());
+		$this->assertSame('still', $actual->content->raw);
 	}
 }

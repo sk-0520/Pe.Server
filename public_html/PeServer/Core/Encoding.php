@@ -237,11 +237,11 @@ class Encoding
 	{
 		$default = self::getDefaultEncoding();
 		if ($default->name === $this->name) {
-			return $input->getRaw();
+			return $input->raw;
 		}
 
 		try {
-			$output = mb_convert_encoding($input->getRaw(), $default->name, $this->name);
+			$output = mb_convert_encoding($input->raw, $default->name, $this->name);
 			if ($output === false) { //@phpstan-ignore-line
 				throw new EncodingException();
 			}
@@ -275,7 +275,7 @@ class Encoding
 	 */
 	public function isValid(Binary $input): bool
 	{
-		return mb_check_encoding($input->getRaw(), $this->name);
+		return mb_check_encoding($input->raw, $this->name);
 	}
 
 	/**

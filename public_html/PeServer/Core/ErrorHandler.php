@@ -216,7 +216,7 @@ class ErrorHandler
 	private function getFileContents(string $file, ?Throwable $throwable): array
 	{
 		$files = [
-			"$file" => File::readContent($file)->getRaw(),
+			"$file" => File::readContent($file)->raw,
 		];
 
 		if ($throwable !== null) {
@@ -224,7 +224,7 @@ class ErrorHandler
 				if (isset($item['file'])) {
 					$f = $item['file'];
 					if (!isset($files[$f])) {
-						$files[$f] = File::readContent($f)->getRaw();
+						$files[$f] = File::readContent($f)->raw;
 					}
 				}
 			}

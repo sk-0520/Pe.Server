@@ -69,7 +69,7 @@ class DataActionResult implements IActionResult
 	private function convertRaw(DataContent $content): string
 	{
 		if ($content->data instanceof Binary) {
-			return $content->data->getRaw();
+			return $content->data->raw;
 		}
 
 		if (is_array($content->data)) {

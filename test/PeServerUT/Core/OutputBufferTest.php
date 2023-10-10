@@ -15,7 +15,7 @@ class OutputBufferTest extends TestClass
 		$actual = OutputBuffer::get(function () {
 			echo 'abc';
 		});
-		$this->assertSame('abc', $actual->getRaw());
+		$this->assertSame('abc', $actual->raw);
 	}
 
 	public function test_getContents()
@@ -24,11 +24,11 @@ class OutputBufferTest extends TestClass
 
 		echo 'ABC';
 		$actual1 = $ob->getContents();
-		$this->assertSame('ABC', $actual1->getRaw());
+		$this->assertSame('ABC', $actual1->raw);
 
 		echo 'DEF';
 		$actual2 = $ob->getContents();
-		$this->assertSame('ABCDEF', $actual2->getRaw());
+		$this->assertSame('ABCDEF', $actual2->raw);
 
 		$ob->dispose();
 	}

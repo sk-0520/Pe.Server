@@ -366,7 +366,7 @@ class Stream extends ResourceBase
 	{
 		$this->throwIfDisposed();
 
-		$result = fwrite($this->resource, $data->getRaw(), $byteSize);
+		$result = fwrite($this->resource, $data->raw, $byteSize);
 		if ($result === false) {
 			throw new StreamException();
 		}
@@ -545,8 +545,8 @@ class Stream extends ResourceBase
 			throw new ArgumentException('$bufferByteSize');
 		}
 
-		$cr = $this->encoding->getBinary("\r")->getRaw();
-		$lf = $this->encoding->getBinary("\n")->getRaw();
+		$cr = $this->encoding->getBinary("\r")->raw;
+		$lf = $this->encoding->getBinary("\n")->raw;
 		$newlineWidth = strlen($cr);
 
 		if ($bufferByteSize < $newlineWidth) {
@@ -569,7 +569,7 @@ class Stream extends ResourceBase
 				break;
 			}
 
-			$currentBuffer = $binary->getRaw();
+			$currentBuffer = $binary->raw;
 			$currentOffset = 0;
 
 			while ($currentOffset < $currentLength) {

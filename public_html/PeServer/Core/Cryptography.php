@@ -139,7 +139,7 @@ abstract class Cryptography
 
 		$iv = self::generateRandomBinary($ivLength);
 
-		$encData = openssl_encrypt($rawValue, $algorithm, $password, self::OPTION, $iv->getRaw());
+		$encData = openssl_encrypt($rawValue, $algorithm, $password, self::OPTION, $iv->raw);
 		if ($encData === false) {
 			throw new CryptoException();
 		}
@@ -168,7 +168,7 @@ abstract class Cryptography
 		/** @var string|false */
 		$decData = false;
 		try {
-			$decData = openssl_decrypt($encData, $algorithm, $password, self::OPTION, $iv->getRaw());
+			$decData = openssl_decrypt($encData, $algorithm, $password, self::OPTION, $iv->raw);
 		} catch (Exception $ex) {
 			Throws::reThrow(CryptoException::class, $ex, $algorithm);
 		}
@@ -241,8 +241,8 @@ abstract class Cryptography
 	 */
 	private static function generateHashCore(bool $isBinary, string $algorithm, Binary $binary, ?array $options): string
 	{
-		//$hash = hash($algorithm, $binary->getRaw(), $isBinary, $options);
-		$hash = hash($algorithm, $binary->getRaw(), $isBinary);
+		//$hash = hash($algorithm, $binary->raw, $isBinary, $options);
+		$hash = hash($algorithm, $binary->raw, $isBinary);
 		if ($hash === false) { //@phpstan-ignore-line [PHP_VERSION]
 			throw new CryptoException();
 		}

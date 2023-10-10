@@ -57,7 +57,7 @@ class ManagementLogDetailLogic extends PageLogicBase
 		} else {
 			$this->setValue('log_name', $fileName);
 			$this->setValue('log_file', $filePath);
-			$this->setValue('log_value', $binary->getRaw());
+			$this->setValue('log_value', $binary->raw);
 		}
 	}
 }

@@ -29,7 +29,7 @@ class BuiltinSerializer extends SerializerBase
 
 	protected function loadImpl(Binary $value): array|object
 	{
-		$data = unserialize($value->getRaw());
+		$data = unserialize($value->raw);
 		if (is_array($data) || is_object($data)) {
 			return $data;
 		}

@@ -45,8 +45,8 @@ readonly class UrlEncoding
 	public function encodeUrl(Binary $input): string
 	{
 		return match ($this->url) {
-			UrlEncode::Rfc1738 => urlencode($input->getRaw()),
-			UrlEncode::Rfc3986 => rawurlencode($input->getRaw()),
+			UrlEncode::Rfc1738 => urlencode($input->raw),
+			UrlEncode::Rfc3986 => rawurlencode($input->raw),
 		};
 	}
 

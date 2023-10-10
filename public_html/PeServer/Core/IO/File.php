@@ -94,7 +94,7 @@ abstract class File
 	private static function saveContent(string $path, Binary $data, bool $append): int
 	{
 		$flag = $append ? FILE_APPEND : 0;
-		$length = file_put_contents($path, $data->getRaw(), LOCK_EX | $flag);
+		$length = file_put_contents($path, $data->raw, LOCK_EX | $flag);
 		if ($length === false) {
 			throw new IOException($path);
 		}

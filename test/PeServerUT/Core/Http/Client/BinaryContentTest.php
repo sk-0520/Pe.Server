@@ -17,7 +17,7 @@ class BinaryContentTest extends TestClass
 	public function test_default()
 	{
 		$bc = new BinaryContent(new Binary("abc"));
-		$this->assertSame("abc", $bc->toBody()->getRaw());
+		$this->assertSame("abc", $bc->toBody()->raw);
 		$this->assertFalse($bc->toHeader()->existsContentType());
 	}
 }

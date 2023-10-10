@@ -72,7 +72,7 @@ class AccessLogManager
 		/** @var AccessLogDto[] */
 		$accessLogs = [];
 		foreach ($contents as $content) {
-			$lines = Text::splitLines($content->getRaw());
+			$lines = Text::splitLines($content->raw);
 			foreach ($lines as $line) {
 				if (Text::isNullOrWhiteSpace($line)) {
 					continue;
