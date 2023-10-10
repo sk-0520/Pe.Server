@@ -601,12 +601,16 @@ abstract class Text
 	 *
 	 * @param string $source 入力文字列。
 	 * @param string|string[] $oldValue 元文字列(か、元文字列配列)
-	 * @param string $newValue 置き換え文字列。
+	 * @param string|string[] $newValue 置き換え文字列(か、元文字列配列)。
 	 * @return string 置き換え後文字列。
 	 * @see https://www.php.net/manual/function.str-replace.php
 	 */
-	public static function replace(string $source, string|array $oldValue, string $newValue): string
+	public static function replace(string $source, string|array $oldValue, string|array $newValue): string
 	{
+		if (is_string($oldValue) && is_array($newValue)) {
+			throw new ArgumentException('$newValue');
+		}
+
 		if (is_string($oldValue) && $oldValue === $newValue) {
 			return $source;
 		}

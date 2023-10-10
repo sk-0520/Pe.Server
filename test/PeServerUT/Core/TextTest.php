@@ -438,12 +438,21 @@ class TextTest extends TestClass
 			new Data('aあ🏇☃⛄', 'aあｱ☃⛄', 'ｱ', '🏇'),
 			new Data('aあｱ🏇⛄', 'aあｱ☃⛄', '☃', '🏇'),
 			new Data('aあｱ☃🏇', 'aあｱ☃⛄', '⛄', '🏇'),
+			new Data('aあｱ🏇🏇', 'aあｱ☃⛄', ['☃', '⛄'], '🏇'),
+			new Data('aあｱ🏇🐎', 'aあｱ☃⛄', ['☃', '⛄'], ['🏇', '🐎']),
 		];
 		foreach ($tests as $test) {
 			$actual = Text::replace(...$test->args);
 			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
+	public function test_replace_throw()
+	{
+		$this->expectException(ArgumentException::class);
+		Text::replace('aaa', 'a', ['a']);
+		$this->fail();
+	}
+
 
 	public function test_replace_array()
 	{

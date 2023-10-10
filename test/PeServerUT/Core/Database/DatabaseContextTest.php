@@ -16,6 +16,7 @@ use PeServer\Core\Throws\DatabaseException;
 use PeServer\Core\Throws\NotSupportedException;
 use PeServer\Core\Throws\SqlException;
 use PeServer\Core\Throws\TransactionException;
+use PeServerTest\Data;
 use PeServerTest\TestClass;
 use PeServerUT\Core\Database\DB;
 use stdClass;
@@ -104,6 +105,35 @@ class DatabaseContextTest extends TestClass
 		$this->fail();
 	}
 
+	function test_escapeLike()
+	{
+		$database = DB::memory();
+		$tests = [
+			new Data("value", "value"),
+			new Data("10\\%", "10%"),
+			new Data("10\\\\", "10\\"),
+			new Data("10\\_", "10_"),
+			new Data("\\_10\\%", "_10%"),
+		];
+		foreach ($tests as $test) {
+			$actual = $database->escapeLike(...$test->args);
+			$this->assertSame($test->expected, $actual, $test->str());
+		}
+	}
+
+	function test_escapeValue()
+	{
+		$database = DB::memory();
+		$tests = [
+			new Data("'value'", "value"),
+			new Data("null", null),
+			new Data("'a''a'", "a'a"),
+		];
+		foreach ($tests as $test) {
+			$actual = $database->escapeValue(...$test->args);
+			$this->assertSame($test->expected, $actual, $test->str());
+		}
+	}
 
 	function test_fetch()
 	{

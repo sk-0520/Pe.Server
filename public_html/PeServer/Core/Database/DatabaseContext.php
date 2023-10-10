@@ -334,7 +334,11 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 
 	public function escapeLike(string $value): string
 	{
-		throw new NotImplementedException();
+		return Text::replace(
+			$value,
+			["\\", '%', '_'],
+			["\\\\", '\\%', '\\_'],
+		);
 	}
 
 	public function escapeValue(mixed $value): string
