@@ -34,6 +34,8 @@ class OutputBuffer extends DisposerBase
 	/**
 	 * 引数処理中の出力を取得。
 	 *
+	 * 基本的にこれだけ使ってればいい。
+	 *
 	 * @param callable $action 出力を取得したい処理。
 	 * @return Binary 取得した処理。
 	 * @throws OutputBufferException なんかあかんかった。

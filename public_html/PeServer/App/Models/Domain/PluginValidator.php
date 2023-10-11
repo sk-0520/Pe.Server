@@ -32,7 +32,6 @@ class PluginValidator extends ValidatorBase
 	public function isPluginId(string $key, ?string $value): bool
 	{
 		if ($this->validator->isNotWhiteSpace($key, $value)) {
-			/** @var string $value isNotWhiteSpace */
 			$trueKeeper = new TrueKeeper();
 
 			if (!Uuid::isGuid($value)) {
@@ -49,7 +48,6 @@ class PluginValidator extends ValidatorBase
 	public function isPluginName(string $key, ?string $value): bool
 	{
 		if ($this->validator->isNotWhiteSpace($key, $value)) {
-			/** @var string $value isNotWhiteSpace */
 			$trueKeeper = new TrueKeeper();
 
 			$trueKeeper->state = $this->validator->inRange($key, self::PLUGIN_NAME_RANGE_MIN, self::PLUGIN_NAME_RANGE_MAX, $value);
@@ -64,7 +62,6 @@ class PluginValidator extends ValidatorBase
 	public function isDisplayName(string $key, ?string $value): bool
 	{
 		if ($this->validator->isNotWhiteSpace($key, $value)) {
-			/** @var string $value isNotWhiteSpace */
 			$trueKeeper = new TrueKeeper();
 
 			$trueKeeper->state = $this->validator->inLength($key, self::PLUGIN_DISPLAY_NAME_LENGTH, $value);
@@ -78,8 +75,6 @@ class PluginValidator extends ValidatorBase
 	public function isCheckUrl(string $key, ?string $value): bool
 	{
 		if ($this->validator->isNotWhiteSpace($key, $value)) {
-			/** @var string $value isNotWhiteSpace */
-
 			$trueKeeper = new TrueKeeper();
 
 			$trueKeeper->state = $this->isWebsite($key, $value);

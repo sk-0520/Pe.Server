@@ -55,6 +55,14 @@ class Validator
 		return true;
 	}
 
+	/**
+	 * ホワイトスペース以外か。
+	 *
+	 * @param string $key
+	 * @param string|null $value
+	 * @return bool
+	 * @phpstan-assert-if-true non-empty-string $value
+	 */
 	public function isNotWhiteSpace(string $key, ?string $value): bool
 	{
 		if (Text::isNullOrWhiteSpace($value)) {
