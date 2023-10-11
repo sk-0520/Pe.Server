@@ -508,6 +508,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 		$result = $this->queryFirst($statement, $parameters);
 		$val = strval(current($result->fields));
 		if (TypeUtility::tryParseInteger($val, $count)) {
+			/** @var UnsignedIntegerAlias */
 			return $count;
 		}
 
