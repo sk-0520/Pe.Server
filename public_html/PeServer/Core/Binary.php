@@ -177,6 +177,7 @@ readonly final class Binary implements ArrayAccess, IteratorAggregate, Countable
 			throw new BinaryException();
 		}
 
+		/** @var array<mixed> */
 		return $result;
 	}
 
