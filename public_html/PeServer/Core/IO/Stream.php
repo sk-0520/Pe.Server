@@ -239,7 +239,6 @@ class Stream extends ResourceBase
 	{
 		$this->throwIfDisposed();
 
-		/** @var ResultData<array<string|int,int>|false> */
 		$result = ErrorHandler::trapError(fn () => fstat($this->resource));
 		if (!$result->success) {
 			throw new IOException();

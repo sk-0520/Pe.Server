@@ -114,7 +114,6 @@ class Graphics extends DisposerBase
 			throw new GraphicsException();
 		}
 
-		//@phpstan-ignore-next-line bool
 		return new Graphics($result->value, true);
 	}
 
