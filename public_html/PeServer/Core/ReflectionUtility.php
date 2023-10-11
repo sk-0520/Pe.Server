@@ -88,7 +88,6 @@ abstract class ReflectionUtility
 	 */
 	public static function getAllProperties(ReflectionClass $current, int $filter = ReflectionProperty::IS_PUBLIC | ReflectionProperty::IS_PROTECTED | ReflectionProperty::IS_PRIVATE): array
 	{
-		/** @var ReflectionProperty[] */
 		$properties = $current->getProperties($filter);
 
 		$parent = $current;
