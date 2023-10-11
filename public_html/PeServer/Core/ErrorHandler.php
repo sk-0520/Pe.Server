@@ -98,13 +98,9 @@ class ErrorHandler
 			return;
 		}
 
-		/** @var int */
 		$type = Arr::getOr($lastError, 'type', -1);
-		/** @var string */
 		$message = Arr::getOr($lastError, 'message', Text::EMPTY);
-		/** @var string */
 		$file = Arr::getOr($lastError, 'file', '<unknown>');
-		/** @var int */
 		$line = Arr::getOr($lastError, 'line', 0);
 
 		$this->catchErrorCore(
@@ -220,7 +216,7 @@ class ErrorHandler
 	private function getFileContents(string $file, ?Throwable $throwable): array
 	{
 		$files = [
-			"$file" => File::readContent($file)->getRaw(),
+			"$file" => File::readContent($file)->raw,
 		];
 
 		if ($throwable !== null) {
@@ -228,7 +224,7 @@ class ErrorHandler
 				if (isset($item['file'])) {
 					$f = $item['file'];
 					if (!isset($files[$f])) {
-						$files[$f] = File::readContent($f)->getRaw();
+						$files[$f] = File::readContent($f)->raw;
 					}
 				}
 			}

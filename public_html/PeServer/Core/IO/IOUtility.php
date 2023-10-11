@@ -19,7 +19,6 @@ abstract class IOUtility
 
 	public static function getState(string $path): IOState
 	{
-		/** @var ResultData<array<string|int,int>|false> */
 		$result = ErrorHandler::trapError(fn () => stat($path));
 		if (!$result->success) {
 			throw new IOException();

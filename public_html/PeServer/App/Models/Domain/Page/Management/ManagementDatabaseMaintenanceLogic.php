@@ -8,6 +8,7 @@ use Throwable;
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\AuditLog;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
+use PeServer\Core\Code;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Database\DatabaseTableResult;
 use PeServer\Core\Database\IDatabaseContext;
@@ -33,8 +34,9 @@ class ManagementDatabaseMaintenanceLogic extends PageLogicBase
 	 */
 	private function getTableInfo(IDatabaseContext $context, array $row): array
 	{
+		$name = Code::toLiteralString($row['name']);
 		$columns = $context->query(
-			"PRAGMA table_info('{$row['name']}')" //@phpstan-ignore-line
+			"PRAGMA table_info('$name')"
 		);
 
 		//@phpstan-ignore-next-line

@@ -294,7 +294,7 @@ abstract class Text
 	 */
 	public static function getLastPosition(string $haystack, string $needle, int $offset = 0): int
 	{
-		if ($offset < 0) { //@phpstan-ignore-line UnsignedIntegerAlias
+		if ($offset < 0) { //@phpstan-ignore-line [PHPDOC]
 			throw new ArgumentException('$offset');
 		}
 
@@ -443,7 +443,7 @@ abstract class Text
 	 */
 	public static function split(string $value, string $separator, int $limit = PHP_INT_MAX): array
 	{
-		if (Text::isNullOrEmpty($separator)) { //@phpstan-ignore-line separator
+		if (Text::isNullOrEmpty($separator)) { //@phpstan-ignore-line [PHPDOC]
 			throw new ArgumentException();
 		}
 
@@ -601,12 +601,16 @@ abstract class Text
 	 *
 	 * @param string $source 入力文字列。
 	 * @param string|string[] $oldValue 元文字列(か、元文字列配列)
-	 * @param string $newValue 置き換え文字列。
+	 * @param string|string[] $newValue 置き換え文字列(か、元文字列配列)。
 	 * @return string 置き換え後文字列。
 	 * @see https://www.php.net/manual/function.str-replace.php
 	 */
-	public static function replace(string $source, string|array $oldValue, string $newValue): string
+	public static function replace(string $source, string|array $oldValue, string|array $newValue): string
 	{
+		if (is_string($oldValue) && is_array($newValue)) {
+			throw new ArgumentException('$newValue');
+		}
+
 		if (is_string($oldValue) && $oldValue === $newValue) {
 			return $source;
 		}
@@ -628,7 +632,7 @@ abstract class Text
 	 */
 	public static function repeat(string $value, int $count): string
 	{
-		//@phpstan-ignore-next-line
+		//@phpstan-ignore-next-line [PHPDOC]
 		if ($count < 0) {
 			throw new ArgumentException();
 		}
@@ -645,7 +649,7 @@ abstract class Text
 	 */
 	public static function toCharacters(string $value): array
 	{
-		if (Text::isNullOrEmpty($value)) { //@phpstan-ignore-line phpstan:non-empty-string
+		if (Text::isNullOrEmpty($value)) { //@phpstan-ignore-line [PHPDOC]
 			throw new ArgumentException('$value = ' . $value);
 		}
 

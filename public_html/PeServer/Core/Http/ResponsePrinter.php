@@ -65,7 +65,7 @@ class ResponsePrinter
 			// 処理は自分で出力を頑張ること
 			$this->response->content->output();
 		} elseif ($this->response->content instanceof Binary) {
-			echo $this->response->content->getRaw();
+			echo $this->response->content->raw;
 		} else {
 			echo $this->response->content;
 		}

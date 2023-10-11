@@ -21,7 +21,7 @@ final class ResultData
 	/**
 	 * 成功時のデータ。
 	 *
-	 * @phpstan-var TValue
+	 * @phpstan-var ($success is true ? TValue : mixed)
 	 */
 	public mixed $value;
 

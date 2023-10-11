@@ -49,7 +49,7 @@ $autoLoader = new \PeServer\Core\AutoLoader(
 );
 $autoLoader->register();
 
-$isIntegrationTest = $appTestMode === 'it';
+$isIntegrationTest = $appTestMode === 'it' || $appTestMode === 'uit';
 
 $startup = new AppStartup(
 	new DefinedDirectory(

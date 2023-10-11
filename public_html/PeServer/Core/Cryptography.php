@@ -65,12 +65,12 @@ abstract class Cryptography
 	 */
 	public static function generateRandomBinary(int $length): Binary
 	{
-		if ($length < 1) { //@phpstan-ignore-line phpstan:positive-int
+		if ($length < 1) { //@phpstan-ignore-line [PHPDOC]
 			throw new CryptoException('$length: ' . $length);
 		}
 
 		$result = openssl_random_pseudo_bytes($length);
-		if ($result === false) { //@phpstan-ignore-line
+		if ($result === false) { //@phpstan-ignore-line [PHPVERSION]
 			throw new CryptoException();
 		}
 
@@ -89,10 +89,10 @@ abstract class Cryptography
 	 */
 	public static function generateRandomString(int $length, string $characters = self::DEFAULT_RANDOM_STRING): string
 	{
-		if ($length < 1) { //@phpstan-ignore-line phpstan:positive-int
+		if ($length < 1) { //@phpstan-ignore-line [PHPDOC]
 			throw new ArgumentException('$length: ' . $length);
 		}
-		if (Text::isNullOrWhiteSpace($characters)) { //@phpstan-ignore-line phpstan:positive-int
+		if (Text::isNullOrWhiteSpace($characters)) { //@phpstan-ignore-line [PHPDOC]
 			throw new ArgumentException('$characters: ' . $characters);
 		}
 
@@ -139,7 +139,7 @@ abstract class Cryptography
 
 		$iv = self::generateRandomBinary($ivLength);
 
-		$encData = openssl_encrypt($rawValue, $algorithm, $password, self::OPTION, $iv->getRaw());
+		$encData = openssl_encrypt($rawValue, $algorithm, $password, self::OPTION, $iv->raw);
 		if ($encData === false) {
 			throw new CryptoException();
 		}
@@ -168,7 +168,7 @@ abstract class Cryptography
 		/** @var string|false */
 		$decData = false;
 		try {
-			$decData = openssl_decrypt($encData, $algorithm, $password, self::OPTION, $iv->getRaw());
+			$decData = openssl_decrypt($encData, $algorithm, $password, self::OPTION, $iv->raw);
 		} catch (Exception $ex) {
 			Throws::reThrow(CryptoException::class, $ex, $algorithm);
 		}
@@ -241,9 +241,9 @@ abstract class Cryptography
 	 */
 	private static function generateHashCore(bool $isBinary, string $algorithm, Binary $binary, ?array $options): string
 	{
-		//$hash = hash($algorithm, $binary->getRaw(), $isBinary, $options);
-		$hash = hash($algorithm, $binary->getRaw(), $isBinary);
-		if ($hash === false) { //@phpstan-ignore-line
+		//$hash = hash($algorithm, $binary->raw, $isBinary, $options);
+		$hash = hash($algorithm, $binary->raw, $isBinary);
+		if ($hash === false) { //@phpstan-ignore-line [PHP_VERSION]
 			throw new CryptoException();
 		}
 

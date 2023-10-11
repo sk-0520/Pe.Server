@@ -6,6 +6,7 @@ namespace PeServer\App\Models;
 
 use PeServer\App\Models\AppTemplateOptions;
 use PeServer\Core\DI\DiFactoryBase;
+use PeServer\Core\DI\DiFactoryTrait;
 use PeServer\Core\DI\IDiContainer;
 use PeServer\Core\IO\Directory;
 use PeServer\Core\IO\Path;
@@ -18,10 +19,7 @@ use PeServer\Core\Throws\NotImplementedException;
 
 class AppTemplateFactory extends TemplateFactory
 {
-	public function __construct(IDiContainer $container)
-	{
-		parent::__construct($container);
-	}
+	use DiFactoryTrait;
 
 	#region TemplateFactory
 

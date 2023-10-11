@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServerUT\Core\Web;
 
 use PeServer\Core\Encoding;
-use PeServer\Core\Web\UrlEncode;
+use PeServer\Core\Web\UrlEncodeKind;
 use PeServer\Core\Web\UrlEncoding;
 use PeServerTest\TestClass;
 
@@ -15,7 +15,7 @@ class UrlEncodingTest extends TestClass
 	{
 		$ue = UrlEncoding::createDefault();
 
-		$this->assertSame(UrlEncode::Rfc3986, $ue->url);
+		$this->assertSame(UrlEncodeKind::Rfc3986, $ue->url);
 		$this->assertSame(Encoding::ENCODE_UTF8, $ue->string->name);
 	}
 }

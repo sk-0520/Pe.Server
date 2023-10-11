@@ -31,7 +31,6 @@ class AccountValidator extends ValidatorBase
 	public function isLoginId(string $key, ?string $value): bool
 	{
 		if ($this->validator->isNotWhiteSpace($key, $value)) {
-			/** @var string $value isNotWhiteSpace */
 			$trueKeeper = new TrueKeeper();
 
 			$trueKeeper->state = $this->validator->inRange($key, self::LOGIN_ID_RANGE_MIN, self::LOGIN_ID_RANGE_MAX, $value);
@@ -46,7 +45,6 @@ class AccountValidator extends ValidatorBase
 	public function isPassword(string $key, ?string $value): bool
 	{
 		if ($this->validator->isNotWhiteSpace($key, $value)) {
-			/** @var string $value isNotWhiteSpace */
 			$trueKeeper = new TrueKeeper();
 
 			$trueKeeper->state = $this->validator->inRange($key, self::PASSWORD_RANGE_MIN, self::PASSWORD_RANGE_MAX, $value);
@@ -61,7 +59,6 @@ class AccountValidator extends ValidatorBase
 	public function isUserName(string $key, ?string $value): bool
 	{
 		if ($this->validator->isNotWhiteSpace($key, $value)) {
-			/** @var string $value isNotWhiteSpace */
 			$trueKeeper = new TrueKeeper();
 
 			$trueKeeper->state = $this->validator->inRange($key, self::USER_NAME_RANGE_MIN, self::USER_NAME_RANGE_MAX, $value);

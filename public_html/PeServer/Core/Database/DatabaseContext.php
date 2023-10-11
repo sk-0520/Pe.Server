@@ -210,7 +210,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 		$resultCount = $pdoStatement->rowCount();
 
 		$rows = $pdoStatement->fetchAll();
-		// @phpstan-ignore-next-line: Strict comparison using === between
+		// @phpstan-ignore-next-line: [PHP_VERSION]
 		if ($rows === false) {
 			throw new DatabaseException($this->getErrorMessage());
 		}
@@ -334,7 +334,11 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 
 	public function escapeLike(string $value): string
 	{
-		throw new NotImplementedException();
+		return Text::replace(
+			$value,
+			["\\", '%', '_'],
+			["\\\\", '\\%', '\\_'],
+		);
 	}
 
 	public function escapeValue(mixed $value): string
@@ -446,7 +450,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 
 		$next = $query->fetch();
 		if ($next !== false) {
-			throw new DatabaseException($this->getErrorMessage());
+			return null;
 		}
 
 		return $result;
@@ -504,6 +508,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 		$result = $this->queryFirst($statement, $parameters);
 		$val = strval(current($result->fields));
 		if (TypeUtility::tryParseInteger($val, $count)) {
+			/** @var UnsignedIntegerAlias */
 			return $count;
 		}
 
@@ -580,7 +585,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 		$this->enforceUpdate($statement);
 		$result = $this->execute($statement, $parameters);
 		if ($result->getResultCount() !== 1) {
-			throw new SqlException();
+			throw new DatabaseException();
 		}
 	}
 
@@ -589,7 +594,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 		$this->enforceUpdate($statement);
 		$result = $this->execute($statement, $parameters);
 		if (1 < $result->getResultCount()) {
-			throw new SqlException();
+			throw new DatabaseException();
 		}
 
 		return $result->getResultCount() === 1;
@@ -621,7 +626,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 		$this->enforceDelete($statement);
 		$result = $this->execute($statement, $parameters);
 		if ($result->getResultCount() !== 1) {
-			throw new SqlException();
+			throw new DatabaseException();
 		}
 	}
 
@@ -630,7 +635,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 		$this->enforceDelete($statement);
 		$result = $this->execute($statement, $parameters);
 		if (1 < $result->getResultCount()) {
-			throw new SqlException();
+			throw new DatabaseException();
 		}
 
 		return $result->getResultCount() === 1;

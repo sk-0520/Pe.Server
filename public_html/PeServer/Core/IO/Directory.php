@@ -211,7 +211,6 @@ abstract class Directory
 			}
 		}
 
-		/** @var ResultData<bool> */
 		$result = ErrorHandler::trapError(fn () => rmdir($directoryPath));
 		if (!$result->success) {
 			throw new IOException();

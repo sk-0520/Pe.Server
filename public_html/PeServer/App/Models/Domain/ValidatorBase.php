@@ -26,7 +26,6 @@ abstract class ValidatorBase
 	final public function isEmail(string $key, ?string $value): bool
 	{
 		if ($this->validator->isNotWhiteSpace($key, $value)) {
-			/** @var string $value isNotWhiteSpace */
 			$trueKeeper = new TrueKeeper();
 
 			$trueKeeper->state = $this->validator->inLength($key, self::EMAIL_LENGTH, $value);

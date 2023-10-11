@@ -50,6 +50,6 @@ class GraphicsTest extends TestClass
 		$newGraphics = Graphics::load($imageBinary);
 		$newImageBinary = $newGraphics->exportImage(ImageSetting::png());
 
-		$this->assertSame($imageBinary->getRaw(), $newImageBinary->getRaw());
+		$this->assertSame($imageBinary->raw, $newImageBinary->raw);
 	}
 }

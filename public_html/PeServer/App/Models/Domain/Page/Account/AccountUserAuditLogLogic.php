@@ -43,7 +43,9 @@ class AccountUserAuditLogLogic extends PageLogicBase
 		$pageNumber = Pagination::FIRST_PAGE_NUMBER;
 		if ($callMode === LogicCallMode::Submit) {
 			$requestPageNumber = $this->getRequest('page_number');
-			TypeUtility::tryParseInteger($requestPageNumber, $pageNumber);
+			if (TypeUtility::tryParsePositiveInteger($requestPageNumber, $temp)) {
+				$pageNumber = $temp;
+			}
 		}
 
 		$database = $this->openDatabase();

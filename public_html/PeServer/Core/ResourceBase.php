@@ -7,6 +7,7 @@ namespace PeServer\Core;
 use TypeError;
 use PeServer\Core\DisposerBase;
 use PeServer\Core\Throws\ArgumentException;
+use PeServer\Core\Throws\NotImplementedException;
 use PeServer\Core\Throws\ObjectDisposedException;
 use PeServer\Core\Throws\ResourceInvalidException;
 
@@ -16,6 +17,7 @@ use PeServer\Core\Throws\ResourceInvalidException;
  * 細かい処理は継承側で対応する。
  *
  * @template TResource
+ * @property TResource $raw 公開リソース。
  */
 abstract class ResourceBase extends DisposerBase
 {
@@ -64,6 +66,17 @@ abstract class ResourceBase extends DisposerBase
 	 * @return bool
 	 */
 	abstract protected function isValidType(string $resourceType): bool;
+
+	public function __get(string $name): mixed
+	{
+		switch ($name) {
+			case 'raw':
+				return $this->resource;
+
+			default:
+				throw new NotImplementedException($name);
+		}
+	}
 
 	#endregion
 

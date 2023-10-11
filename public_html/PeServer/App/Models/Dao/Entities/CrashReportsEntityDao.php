@@ -211,7 +211,7 @@ class CrashReportsEntityDao extends DaoBase
 				'email' => $email,
 				'comment' => $comment,
 
-				'report' => $report->getRaw()
+				'report' => $report->raw
 
 			]
 		);

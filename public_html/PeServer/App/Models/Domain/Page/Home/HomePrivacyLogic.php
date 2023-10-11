@@ -27,6 +27,6 @@ class HomePrivacyLogic extends PageLogicBase
 	{
 		$privacyPolicyPath = Path::combine($this->config->settingDirectoryPath, 'privacy_policy.md');
 		$privacyPolicy = File::readContent($privacyPolicyPath);
-		$this->setValue('privacy_policy', $privacyPolicy->getRaw());
+		$this->setValue('privacy_policy', $privacyPolicy->raw);
 	}
 }

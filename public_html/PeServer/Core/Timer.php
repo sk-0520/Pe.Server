@@ -144,11 +144,16 @@ class Timer implements Stringable
 	/**
 	 * 64bit環境用 `hrtime`
 	 *
-	 * @return int|false
+	 * @return int
 	 */
-	private static function getCurrentTime64(): int|bool //@phpstan-ignore-line
+	private static function getCurrentTime64(): int
 	{
-		return hrtime(true);
+		$result = hrtime(true);
+		if ($result === false) { //@phpstan-ignore-line 失敗したら false 返ってくるっぽいんだけどなぁ
+			throw new TimerException();
+		}
+
+		return $result;
 	}
 	/**
 	 * 現在のナノ秒を取得。
@@ -157,12 +162,7 @@ class Timer implements Stringable
 	 */
 	public static function getCurrentTime(): int
 	{
-		$result = self::getCurrentTime64();
-		if ($result === false) {
-			throw new TimerException();
-		}
-
-		return $result;
+		return self::getCurrentTime64();
 	}
 
 	public static function nanoToMilliseconds(int $nanoSec): float

@@ -7,6 +7,7 @@ namespace PeServerUT\Core;
 use \TypeError;
 use PeServer\Core\Binary;
 use PeServer\Core\Throws\ArgumentException;
+use PeServer\Core\Throws\BinaryException;
 use PeServer\Core\Throws\IndexOutOfRangeException;
 use PeServer\Core\Throws\NotSupportedException;
 use PeServer\Core\Throws\NullByteStringException;
@@ -18,7 +19,7 @@ class BinaryTest extends TestClass
 	public function test_getRaw()
 	{
 		$binary = new Binary("a\0b\0");
-		$this->assertSame("a\0b\0", $binary->getRaw());
+		$this->assertSame("a\0b\0", $binary->raw);
 	}
 
 	public function test_getRange()
@@ -36,7 +37,7 @@ class BinaryTest extends TestClass
 		foreach ($tests as $test) {
 			$binary = new Binary($test->args[0]);
 			$actual = $binary->getRange(...$test->args[1]);
-			$this->assertSame($test->expected, $actual->getRaw(), $test->str());
+			$this->assertSame($test->expected, $actual->raw, $test->str());
 		}
 	}
 
@@ -91,7 +92,7 @@ class BinaryTest extends TestClass
 		$binary = new Binary("a\0b\0");
 		$base64 = $binary->toBase64();
 		$actual = Binary::fromBase64($base64);
-		$this->assertSame($binary->getRaw(), $actual->getRaw());
+		$this->assertSame($binary->raw, $actual->raw);
 		$this->assertSame($base64, $actual->toBase64());
 	}
 
@@ -128,10 +129,24 @@ class BinaryTest extends TestClass
 
 	public function test_toString_throw()
 	{
-		$this->expectException(NullByteStringException::class);
 		$binary = new Binary("\0");
-		$actual = $binary->toString();
+		$this->expectException(NullByteStringException::class);
+		$binary->toString();
 		$this->fail();
+	}
+
+	public function test_toArray()
+	{
+		$binary = new Binary("str");
+		$actual = $binary->toArray('C*');
+		$this->assertSame([1 => 115, 2 => 116, 3 => 114], $actual);
+	}
+
+	public function test_toArray_throw()
+	{
+		$binary = new Binary("");
+		$this->expectException(BinaryException::class);
+		$binary->toArray('あ');
 	}
 
 	public function test_array()

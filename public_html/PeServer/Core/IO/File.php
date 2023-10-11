@@ -55,7 +55,6 @@ abstract class File
 	 */
 	public static function getFileSize(string $path): int
 	{
-		/** @phpstan-var ResultData<UnsignedIntegerAlias|false> */
 		$result = ErrorHandler::trapError(fn () => filesize($path));
 		if (!$result->success || $result->value === false) {
 			throw new IOException();
@@ -94,7 +93,7 @@ abstract class File
 	private static function saveContent(string $path, Binary $data, bool $append): int
 	{
 		$flag = $append ? FILE_APPEND : 0;
-		$length = file_put_contents($path, $data->getRaw(), LOCK_EX | $flag);
+		$length = file_put_contents($path, $data->raw, LOCK_EX | $flag);
 		if ($length === false) {
 			throw new IOException($path);
 		}
@@ -205,7 +204,6 @@ abstract class File
 	 */
 	public static function removeFile(string $filePath): bool
 	{
-		/** @var ResultData<bool> */
 		$result = ErrorHandler::trapError(fn () => unlink($filePath));
 		if (!$result->success) {
 			throw new IOException();
@@ -226,7 +224,6 @@ abstract class File
 			return false;
 		}
 
-		/** @var ResultData<bool> */
 		$result = ErrorHandler::trapError(fn () => unlink($filePath));
 		if (!$result->success) {
 			return false;

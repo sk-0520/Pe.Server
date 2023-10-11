@@ -9,14 +9,18 @@ use ArrayIterator;
 use Countable;
 use Iterator;
 use IteratorAggregate;
+use Stringable;
+use TypeError;
 use PeServer\Core\Collections\ArrayAccessHelper;
 use PeServer\Core\Throws\ArgumentException;
+use PeServer\Core\Throws\FormatException;
 use PeServer\Core\Throws\IndexOutOfRangeException;
 use PeServer\Core\Throws\NotSupportedException;
 use PeServer\Core\Throws\NullByteStringException;
 use PeServer\Core\Throws\SerializeException;
-use Stringable;
-use TypeError;
+use PeServer\Core\Throws\BinaryException;
+use PeServer\Core\Throws\Throws;
+use ValueError;
 
 /**
  * PHP文字列がバイトデータなのか普通の文字列なのかよくわからん。
@@ -29,7 +33,6 @@ use TypeError;
  * @implements IteratorAggregate<UnsignedIntegerAlias,Byte>
  * @immutable
  */
-
 readonly final class Binary implements ArrayAccess, IteratorAggregate, Countable, Stringable
 {
 	#region variable
@@ -38,9 +41,8 @@ readonly final class Binary implements ArrayAccess, IteratorAggregate, Countable
 	 * 実体。
 	 *
 	 * @var string
-	 * @readonly
 	 */
-	private string $raw;
+	public readonly string $raw;
 
 	#endregion
 
@@ -55,18 +57,6 @@ readonly final class Binary implements ArrayAccess, IteratorAggregate, Countable
 	}
 
 	#region function
-
-	/**
-	 * バイトデータをそのまま取得。
-	 *
-	 * TODO: 将来的に readonly にするか @immutable/@readonly で保証する。
-	 *
-	 * @return string
-	 */
-	public function getRaw(): string
-	{
-		return $this->raw;
-	}
 
 	/**
 	 * `substr` ラッパー。
@@ -169,12 +159,27 @@ readonly final class Binary implements ArrayAccess, IteratorAggregate, Countable
 		return $this->raw;
 	}
 
+	/**
+	 * 配列化。
+	 *
+	 * `unpack` ラッパー。
+	 *
+	 * @param string $format
+	 * @param int $offset
+	 * @phpstan-param UnsignedIntegerAlias $offset
+	 * @return array<mixed>
+	 * @see https://www.php.net/manual/function.unpack.php
+	 */
+	public function toArray(string $format, int $offset = 0): array
+	{
+		$result = Throws::wrap(ValueError::class, BinaryException::class, fn () => unpack($format, $this->raw, $offset));
+		if ($result === false) {
+			throw new BinaryException();
+		}
 
-	// public function format(string $format, int $offset = 0): array
-	// {
-	// 	$result = unpack($format, $this->raw, $offset);
-	// 	return $result;
-	// }
+		/** @var array<mixed> */
+		return $result;
+	}
 
 
 	#endregion

@@ -247,7 +247,7 @@ class StreamTest extends TestClass
 		$stream->seekHead();
 
 		$actual = $stream->readBinary($expected->count());
-		$this->assertSame($expected->getRaw(), $actual->getRaw());
+		$this->assertSame($expected->raw, $actual->raw);
 	}
 
 	public function test_write_read_string()

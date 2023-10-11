@@ -6,7 +6,7 @@ namespace PeServer\Core\Web;
 
 use PeServer\Core\Binary;
 use PeServer\Core\Encoding;
-use PeServer\Core\Web\UrlEncode;
+use PeServer\Core\Web\UrlEncodeKind;
 
 /**
  * URLエンコードを処理。
@@ -18,11 +18,11 @@ readonly class UrlEncoding
 	/**
 	 * 生成。
 	 *
-	 * @param UrlEncode $url URLエンコード種別
+	 * @param UrlEncodeKind $url URLエンコード種別
 	 * @param Encoding $string 文字列エンコード種別
 	 */
 	public function __construct(
-		public UrlEncode $url,
+		public UrlEncodeKind $url,
 		public Encoding $string
 	) {
 	}
@@ -31,7 +31,7 @@ readonly class UrlEncoding
 
 	public static function createDefault(): self
 	{
-		return new self(UrlEncode::Rfc3986, Encoding::getDefaultEncoding());
+		return new self(UrlEncodeKind::Rfc3986, Encoding::getDefaultEncoding());
 	}
 
 	/**
@@ -45,8 +45,8 @@ readonly class UrlEncoding
 	public function encodeUrl(Binary $input): string
 	{
 		return match ($this->url) {
-			UrlEncode::Rfc1738 => urlencode($input->getRaw()),
-			UrlEncode::Rfc3986 => rawurlencode($input->getRaw()),
+			UrlEncodeKind::Rfc1738 => urlencode($input->raw),
+			UrlEncodeKind::Rfc3986 => rawurlencode($input->raw),
 		};
 	}
 
@@ -61,8 +61,8 @@ readonly class UrlEncoding
 	public function decodeUrl(string $input): Binary
 	{
 		$raw = match ($this->url) {
-			UrlEncode::Rfc1738 => urldecode($input),
-			UrlEncode::Rfc3986 => rawurldecode($input),
+			UrlEncodeKind::Rfc1738 => urldecode($input),
+			UrlEncodeKind::Rfc3986 => rawurldecode($input),
 		};
 
 		return new Binary($raw);

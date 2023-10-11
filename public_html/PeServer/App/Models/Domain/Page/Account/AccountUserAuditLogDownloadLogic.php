@@ -43,11 +43,13 @@ class AccountUserAuditLogDownloadLogic extends PageLogicBase
 		}
 		$userId = $userInfo->getUserId();
 
-		$pageNumber = Pagination::FIRST_PAGE_NUMBER;
-		if ($callMode === LogicCallMode::Submit) {
-			$requestPageNumber = $this->getRequest('page_number');
-			TypeUtility::tryParseInteger($requestPageNumber, $pageNumber);
-		}
+		// $pageNumber = Pagination::FIRST_PAGE_NUMBER;
+		// if ($callMode === LogicCallMode::Submit) {
+		// 	$requestPageNumber = $this->getRequest('page_number');
+		// 	if (TypeUtility::tryParseInteger($requestPageNumber, $temp)) {
+		// 		$pageNumber = $temp;
+		// 	}
+		// }
 
 		$database = $this->openDatabase();
 		$userAuditLogsEntityDao = new UserAuditLogsEntityDao($database);

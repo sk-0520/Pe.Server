@@ -212,7 +212,7 @@ class Mailer
 
 		$client->clearAttachments();
 		foreach ($this->attachments as $attachment) {
-			$client->addStringAttachment($attachment->data->getRaw(), $attachment->name, PHPMailer::ENCODING_BASE64, $attachment->mime);
+			$client->addStringAttachment($attachment->data->raw, $attachment->name, PHPMailer::ENCODING_BASE64, $attachment->mime);
 		}
 
 		if ($this->setting instanceof SmtpSetting) {

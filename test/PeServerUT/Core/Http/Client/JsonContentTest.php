@@ -17,7 +17,7 @@ class JsonContentTest extends TestClass
 	public function test_default()
 	{
 		$jc = new JsonContent(["a" => "b"]);
-		$this->assertJson($jc->toBody()->getRaw());
+		$this->assertJson($jc->toBody()->raw);
 		$this->assertSame(Mime::JSON, $jc->toHeader()->getContentType()->mime);
 	}
 }

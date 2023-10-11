@@ -20,9 +20,9 @@ class TestHtmlDocument extends HtmlDocument
 		if (is_string($html)) {
 			$result = $doc->raw->loadHTML($html);
 		} else if ($html instanceof Binary) {
-			$result = $doc->raw->loadHTML($html->getRaw());
+			$result = $doc->raw->loadHTML($html->raw);
 		} else if ($html instanceof ICallbackContent) {
-			$result = $doc->raw->loadHTML(OutputBuffer::get(fn () => $html->output())->getRaw());
+			$result = $doc->raw->loadHTML(OutputBuffer::get(fn () => $html->output())->raw);
 		}
 		if ($result == false) {
 			throw new HtmlDocumentException();

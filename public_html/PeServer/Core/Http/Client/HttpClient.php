@@ -105,7 +105,7 @@ class HttpClient extends DisposerBase
 						$overwriteHeader->setValues($name, $customHeader->getValues($name));
 					}
 					//cspell:disable-next-line
-					$curlOptions[CURLOPT_POSTFIELDS] = $request->content->toBody()->getRaw();
+					$curlOptions[CURLOPT_POSTFIELDS] = $request->content->toBody()->raw;
 				} else {
 					//cspell:disable-next-line
 					$curlOptions[CURLOPT_POSTFIELDS] = Text::EMPTY;

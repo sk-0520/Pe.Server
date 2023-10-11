@@ -58,6 +58,7 @@ abstract class TypeUtility
 	 * @param string $input 文字列。
 	 * @param integer|null $result 変換成功時の整数。
 	 * @return boolean 変換成功状態。
+	 * @phpstan-assert-if-true int $result
 	 */
 	public static function tryParseInteger(string $input, ?int &$result): bool
 	{
@@ -70,7 +71,7 @@ abstract class TypeUtility
 		return true;
 	}
 
-		/**
+	/**
 	 * 文字列を整数に変換。
 	 *
 	 * @param string $input 文字列。
@@ -96,6 +97,7 @@ abstract class TypeUtility
 	 * @param integer|null $result 変換成功時の整数。
 	 * @phpstan-param UnsignedIntegerAlias|null $result
 	 * @return boolean 変換成功状態。
+	 * @phpstan-assert-if-true UnsignedIntegerAlias $result
 	 */
 	public static function tryParseUInteger(string $input, ?int &$result): bool
 	{
@@ -106,6 +108,45 @@ abstract class TypeUtility
 
 		$result = (int)Text::trim($input);
 		return true;
+	}
+
+	/**
+	 * 文字列を整数に変換。
+	 *
+	 * @param string $input 文字列。
+	 * @return integer 変換後整数。
+	 * @phpstan-return positive-int $result
+	 * @throws ParseException 変換できない文字列。
+	 */
+	public static function parsePositiveInteger(string $input): int
+	{
+		$result = self::parseUInteger($input);
+		if (0 < $result) {
+			return $result;
+		}
+
+		throw new ParseException($input);
+	}
+
+	/**
+	 * 文字列を整数に変換した結果を取得。
+	 *
+	 * @param string $input 文字列。
+	 * @param integer|null $result 変換成功時の整数。
+	 * @phpstan-param positive-int|null $result
+	 * @return boolean 変換成功状態。
+	 * @phpstan-assert-if-true positive-int $result
+	 */
+	public static function tryParsePositiveInteger(string $input, ?int &$result): bool
+	{
+		if (self::tryParseUInteger($input, $temp)) {
+			if (0 < $temp) {
+				$result = $temp;
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	public static function parseBoolean(mixed $input): bool

@@ -107,14 +107,13 @@ class Graphics extends DisposerBase
 		};
 
 		$result = ErrorHandler::trapError(
-			fn () => call_user_func($funcName, $binary->getRaw())
+			fn () => call_user_func($funcName, $binary->raw)
 		);
 
 		if (!$result->success) {
 			throw new GraphicsException();
 		}
 
-		//@phpstan-ignore-next-line bool
 		return new Graphics($result->value, true);
 	}
 
@@ -307,7 +306,7 @@ class Graphics extends DisposerBase
 		if ($thickness === $this->thickness) {
 			return DisposerBase::empty();
 		}
-		if ($thickness < 1) { //@phpstan-ignore-line
+		if ($thickness < 1) { //@phpstan-ignore-line [PHPDOC]
 			throw new ArgumentException('$thickness');
 		}
 

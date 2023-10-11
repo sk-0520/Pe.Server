@@ -72,7 +72,7 @@ final class AppCryptography
 
 		$binary = Cryptography::generateHashBinary('fnv132', new Binary($input));
 
-		$result = unpack('N', $binary->getRaw(), 0);
+		$result = unpack('N', $binary->raw, 0);
 		if ($result === false) {
 			throw new CryptoException();
 		}
