@@ -12,7 +12,7 @@ use PeServer\Core\Mvc\Template\ITemplateFactory;
 use PeServer\Core\Mvc\Template\TemplateParameter;
 use PeServer\Core\Web\IUrlHelper;
 
-class AppViewActionResult extends ViewActionResult
+readonly final class AppViewActionResult extends ViewActionResult
 {
 	#region ViewActionResult
 

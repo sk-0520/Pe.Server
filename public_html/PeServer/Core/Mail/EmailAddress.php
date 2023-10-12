@@ -8,17 +8,13 @@ use PeServer\Core\Text;
 
 /**
  * メールアドレス管理。
- *
- * @immutable
  */
-class EmailAddress
+readonly class EmailAddress
 {
 	#region variable
 
 	/**
 	 * 名前。
-	 *
-	 * @var string
 	 */
 	public string $name;
 

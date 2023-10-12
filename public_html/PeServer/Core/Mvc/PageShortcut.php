@@ -9,10 +9,8 @@ use PeServer\Core\Throws\ArgumentException;
 
 /**
  * ページャのショートカット。
- *
- * @immutable
  */
-class PageShortcut
+readonly class PageShortcut
 {
 	#region variable
 	#endregion

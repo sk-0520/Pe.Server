@@ -17,10 +17,8 @@ use PeServer\Core\Web\IUrlHelper;
 
 /**
  * 結果操作: View。
- *
- * @immutable
  */
-class ViewActionResult implements IActionResult
+readonly class ViewActionResult implements IActionResult
 {
 	/**
 	 * 生成。

@@ -9,10 +9,8 @@ use PeServer\Core\Utc;
 
 /**
  * `stat` でもらえる情報。
- *
- * @immutable
  */
-class IOState
+readonly class IOState
 {
 	/**
 	 * 生成。

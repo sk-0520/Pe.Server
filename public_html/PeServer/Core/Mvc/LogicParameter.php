@@ -10,10 +10,8 @@ use PeServer\Core\Http\HttpRequest;
 
 /**
  * ロジック用パラメータ。
- *
- * @immutable
  */
-class LogicParameter
+readonly class LogicParameter
 {
 	/**
 	 * 生成。

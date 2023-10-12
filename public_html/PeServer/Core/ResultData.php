@@ -8,9 +8,8 @@ namespace PeServer\Core;
  * 結果データ。
  *
  * @template TValue
- * @immutable
  */
-final class ResultData
+final readonly class ResultData
 {
 	#region variable
 

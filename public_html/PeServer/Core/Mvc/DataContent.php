@@ -12,10 +12,8 @@ use PeServer\Core\Mime;
  * アクション応答。
  *
  * JSONやらのデータを想定。
- *
- * @immutable
  */
-class DataContent
+readonly class DataContent
 {
 	/**
 	 * 生成。
@@ -28,7 +26,7 @@ class DataContent
 	public function __construct(
 		public HttpStatus $httpStatus,
 		public string $mime,
-		public $data
+		public string|array|Binary $data
 	) {
 	}
 }

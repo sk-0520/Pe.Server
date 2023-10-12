@@ -13,10 +13,8 @@ use PeServer\Core\Web\Url;
 
 /**
  * 結果操作: リダイレクト。
- *
- * @immutable
  */
-class RedirectActionResult implements IActionResult
+readonly class RedirectActionResult implements IActionResult
 {
 	public function __construct(
 		private Url $url,

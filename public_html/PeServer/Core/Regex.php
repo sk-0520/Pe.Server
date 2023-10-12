@@ -26,7 +26,7 @@ class Regex
 	#region variable
 
 	private static ?Encoding $firstDefaultEncoding = null;
-	private Encoding $encoding;
+	private readonly Encoding $encoding;
 
 	#endregion
 

@@ -8,10 +8,8 @@ use Stringable;
 
 /**
  * パスの各要素。
- *
- * @immutable
  */
-class PathParts implements Stringable
+readonly class PathParts implements Stringable
 {
 	/**
 	 * 生成。

@@ -8,10 +8,8 @@ use PeServer\Core\Collections\Arr;
 
 /**
  * `stream_get_meta_data`
- *
- * @immutable
  */
-class StreamMetaData
+readonly class StreamMetaData
 {
 	/**
 	 * 生成。

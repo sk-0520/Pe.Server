@@ -20,7 +20,7 @@ use PeServer\Core\Throws\ArgumentException;
 /**
  * 結果操作: データ。
  */
-class DataActionResult implements IActionResult
+readonly class DataActionResult implements IActionResult
 {
 	#region variable
 
@@ -34,7 +34,6 @@ class DataActionResult implements IActionResult
 	 * @param DataContent $content
 	 */
 	public function __construct(
-		/** @readonly */
 		private DataContent $content,
 		?JsonSerializer $jsonSerializer = null
 	) {

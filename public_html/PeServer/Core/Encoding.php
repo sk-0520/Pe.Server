@@ -15,6 +15,8 @@ use PeServer\Core\Throws\Throws;
  * エンコーディング処理。
  *
  * コンストラクタで指定されたエンコード名に対して通常文字列へあれこれする。
+ *
+ * TODO: キャッシュしておきたい感。
  */
 class Encoding
 {
@@ -66,10 +68,8 @@ class Encoding
 
 	/**
 	 * エンコード名。
-	 *
-	 * @readonly
 	 */
-	public string $name;
+	public readonly string $name;
 
 	#endregion
 

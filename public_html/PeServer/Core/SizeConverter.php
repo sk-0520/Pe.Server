@@ -9,7 +9,7 @@ use PeServer\Core\Collections\Arr;
 /**
  * データ容量変換。
  */
-class SizeConverter
+readonly class SizeConverter
 {
 	#region define
 

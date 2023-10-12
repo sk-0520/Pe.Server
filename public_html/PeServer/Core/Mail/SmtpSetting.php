@@ -8,10 +8,8 @@ use PeServer\Core\Mail\Mailer;
 
 /**
  * SMTP送信設定。
- *
- * @immutable
  */
-class SmtpSetting implements IMailSetting
+readonly class SmtpSetting implements IMailSetting
 {
 	public function __construct(
 		public string $host,
