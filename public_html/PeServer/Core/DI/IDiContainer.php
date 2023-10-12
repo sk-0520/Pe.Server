@@ -26,7 +26,7 @@ interface IDiContainer extends ContainerInterface
 	 * @phpstan-param class-string|non-empty-string $id
 	 * @return bool
 	 */
-	public function has(string $id): bool;
+	public function has(string $id): bool; //@phpstan-ignore-line [TYPE_INTERFACE]
 
 	/**
 	 * 指定したIDのオブジェクトを取得。
@@ -36,7 +36,7 @@ interface IDiContainer extends ContainerInterface
 	 * @return mixed
 	 * @throws DiContainerException
 	 */
-	public function get(string $id): mixed;
+	public function get(string $id): mixed; //@phpstan-ignore-line [TYPE_INTERFACE]
 
 	/**
 	 * クラス生成。

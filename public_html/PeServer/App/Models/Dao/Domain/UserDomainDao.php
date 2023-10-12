@@ -12,6 +12,7 @@ use PeServer\App\Models\Data\Dto\UserListItemDto;
 use PeServer\App\Models\Domain\UserLevel;
 use PeServer\App\Models\Domain\UserState;
 use PeServer\Core\Database\DaoBase;
+use PeServer\Core\Database\DaoTrait;
 use PeServer\Core\Database\DatabaseRowResult;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\TypeUtility;
@@ -19,10 +20,9 @@ use PeServer\Core\Utc;
 
 class UserDomainDao extends DaoBase
 {
-	public function __construct(IDatabaseContext $context)
-	{
-		parent::__construct($context);
-	}
+	use DaoTrait;
+
+	#region function
 
 	/**
 	 * @param string $loginId
@@ -265,4 +265,6 @@ class UserDomainDao extends DaoBase
 			]
 		);
 	}
+
+	#endregion
 }

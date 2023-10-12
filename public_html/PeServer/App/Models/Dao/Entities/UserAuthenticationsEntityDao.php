@@ -6,15 +6,15 @@ namespace PeServer\App\Models\Dao\Entities;
 
 use DateTimeInterface;
 use PeServer\Core\Database\DaoBase;
+use PeServer\Core\Database\DaoTrait;
 use PeServer\Core\Database\DatabaseRowResult;
 use PeServer\Core\Database\IDatabaseContext;
 
 class UserAuthenticationsEntityDao extends DaoBase
 {
-	public function __construct(IDatabaseContext $context)
-	{
-		parent::__construct($context);
-	}
+	use DaoTrait;
+
+	#region function
 
 	/**
 	 * @template TFieldArray of array{current_password:string}
@@ -201,4 +201,6 @@ class UserAuthenticationsEntityDao extends DaoBase
 			]
 		);
 	}
+
+	#endregion
 }

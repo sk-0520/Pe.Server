@@ -16,7 +16,7 @@ class SequenceEntityDao extends DaoBase
 {
 	use DaoTrait;
 
-	#region
+	#region function
 
 	public function getLastSequence(): int
 	{

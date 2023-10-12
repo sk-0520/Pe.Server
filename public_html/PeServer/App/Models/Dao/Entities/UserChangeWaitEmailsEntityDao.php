@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Dao\Entities;
 
 use PeServer\Core\Database\DaoBase;
+use PeServer\Core\Database\DaoTrait;
 use PeServer\Core\Database\IDatabaseContext;
 
 class UserChangeWaitEmailsEntityDao extends DaoBase
 {
-	public function __construct(IDatabaseContext $context)
-	{
-		parent::__construct($context);
-	}
+	use DaoTrait;
+
+	#region function
 
 	public function selectExistsToken(string $userId, string $token, int $limitMinutes): bool
 	{
@@ -89,4 +89,6 @@ class UserChangeWaitEmailsEntityDao extends DaoBase
 			]
 		);
 	}
+
+	#endregion
 }

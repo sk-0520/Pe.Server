@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Dao\Entities;
 
 use PeServer\Core\Database\DaoBase;
+use PeServer\Core\Database\DaoTrait;
 use PeServer\Core\Database\DatabaseRowResult;
 use PeServer\Core\Database\DatabaseTableResult;
 use PeServer\Core\Database\IDatabaseContext;
 
 class SignUpWaitEmailsEntityDao extends DaoBase
 {
-	public function __construct(IDatabaseContext $context)
-	{
-		parent::__construct($context);
-	}
+	use DaoTrait;
+
+	#region function
 
 	public function selectExistsToken(string $token, int $limitMinutes): bool
 	{
@@ -140,4 +140,6 @@ class SignUpWaitEmailsEntityDao extends DaoBase
 			]
 		);
 	}
+
+	#endregion
 }

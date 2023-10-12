@@ -37,6 +37,9 @@ parameters:
     - ../public_html/PeServer/Core/Libs/php-markdown/Michelf/Markdown.php
     - ../public_html/PeServer/Core/Libs/php-markdown/Michelf/MarkdownExtra.php
     - ../public_html/PeServer/Core/Libs/php-markdown/Michelf/MarkdownInterface.php
+    - ../public_html/PeServer/Core/Libs/php-fig/container/src/ContainerExceptionInterface.php
+    - ../public_html/PeServer/Core/Libs/php-fig/container/src/ContainerInterface.php
+    - ../public_html/PeServer/Core/Libs/php-fig/container/src/NotFoundExceptionInterface.php
   ignoreErrors:
     #入力なしの戻り値型強制できないのがつーらーいー
     - '/Template type TFieldArray of method PeServer\\.+::.+\(\) is not referenced in a parameter./'
