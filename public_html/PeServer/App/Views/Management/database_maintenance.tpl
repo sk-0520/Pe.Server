@@ -48,7 +48,7 @@
 					<tr>
 						<th>-</th>
 						{foreach from=$values.result->columns item=item key=key}
-							<th data-clipboard="inline">{$item->name}</th>
+							<th data-clipboard="block">{$item->name}</th>
 						{/foreach}
 					</tr>
 				</thead>
@@ -57,7 +57,7 @@
 						<tr>
 							<th>{$numner + 1}</th>
 							{foreach from=$row item=cell key=key}
-								<td data-clipboard="inline">{$cell|escape:'html'|nl2br nofilter}</td>
+								<td data-clipboard="block">{$cell|escape:'html'|nl2br nofilter}</td>
 							{/foreach}
 						</tr>
 					{/foreach}
