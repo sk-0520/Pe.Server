@@ -88,7 +88,7 @@ readonly class DataActionResult implements IActionResult
 
 		$response->status = $this->content->httpStatus;
 
-		$response->header->setContentType(new ContentType($this->content->mime, null));
+		$response->header->setContentType(ContentType::create($this->content->mime));
 
 		if ($this->content instanceof DownloadDataContent) {
 			$fileName = urlencode($this->content->fileName);

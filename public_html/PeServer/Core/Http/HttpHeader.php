@@ -138,7 +138,7 @@ class HttpHeader
 	public function getContentType(): ContentType
 	{
 		$contentType = $this->getValues(ContentType::NAME);
-		return ContentType::from($contentType);
+		return ContentType::from($contentType[0]);
 	}
 
 	public function setContentType(ContentType $value): void

@@ -25,7 +25,7 @@ abstract class HttpClientContentBase
 		}
 
 		$result = HttpHeader::createClientRequestHeader();
-		$result->setContentType(new ContentType($mime, $encoding));
+		$result->setContentType(ContentType::create($mime, $encoding));
 
 		return $result;
 	}

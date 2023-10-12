@@ -9,7 +9,7 @@ use PeServer\Core\Collections\Arr;
 use PeServer\Core\Encoding;
 use PeServer\Core\Text;
 
-class ContentType
+readonly class ContentType
 {
 	#region define
 
@@ -17,7 +17,7 @@ class ContentType
 
 	#endregion
 
-	public function __construct(
+	protected function __construct(
 		public string $mime,
 		public ?Encoding $encoding,
 		public ?string $boundary = null
@@ -30,16 +30,16 @@ class ContentType
 	}
 
 	/**
-	 * Undocumented function
+	 * HTTPヘッダ値から `ContentType` に変換。
 	 *
-	 * @param string[] $params
+	 * @param string $value
 	 * @return self
 	 */
-	public static function from(array $params): self
+	public static function from(string $value): self
 	{
 		$mime = Text::EMPTY;
 
-		$rawParamValues = Text::split($params[0], ';');
+		$rawParamValues = Text::split($value, ';');
 
 		$mime = Text::trim($rawParamValues[0]);
 		/** @var Encoding|null */
