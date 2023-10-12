@@ -20,8 +20,6 @@ class Mailer
 {
 	#region define
 
-	public const SEND_MODE_SMTP = 1;
-
 	protected const ADDRESS_KIND_FROM = 1;
 	protected const ADDRESS_KIND_TO = 2;
 	protected const ADDRESS_KIND_CC = 3;

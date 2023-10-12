@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Mail;
 
 use PeServer\Core\Mail\Mailer;
+use PeServer\Core\Mail\SendMode;
 
 /**
  * SMTP送信設定。
@@ -23,9 +24,9 @@ readonly class SmtpSetting implements IMailSetting
 
 	#region IMailSetting
 
-	public function mode(): int
+	public function mode(): SendMode
 	{
-		return Mailer::SEND_MODE_SMTP;
+		return SendMode::Smtp;
 	}
 
 	#endregion
