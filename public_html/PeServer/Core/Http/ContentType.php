@@ -9,7 +9,7 @@ use PeServer\Core\Collections\Arr;
 use PeServer\Core\Encoding;
 use PeServer\Core\Text;
 
-class HttpHeadContentType
+class ContentType
 {
 	#region define
 

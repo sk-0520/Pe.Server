@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServerTest;
 
-use PeServer\Core\Http\HttpHeadContentType;
+use PeServer\Core\Http\ContentType;
 use PeServer\Core\Http\HttpResponse;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mime;
@@ -32,7 +32,7 @@ class TestHttpResponse
 		return $this->response->status;
 	}
 
-	public function getContentType(): HttpHeadContentType
+	public function getContentType(): ContentType
 	{
 		return $this->response->header->getContentType();
 	}

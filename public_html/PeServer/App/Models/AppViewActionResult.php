@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models;
 
-use PeServer\Core\Http\HttpHeadContentType;
+use PeServer\Core\Http\ContentType;
 use PeServer\Core\Http\HttpResponse;
 use PeServer\Core\Mime;
 use PeServer\Core\Mvc\Result\ViewActionResult;
@@ -25,8 +25,8 @@ readonly final class AppViewActionResult extends ViewActionResult
 		foreach ($this->headers as $name => $headers) {
 			$response->header->setValues($name, $headers);
 		}
-		if (!$response->header->existsHeader(HttpHeadContentType::NAME)) {
-			$response->header->addValue(HttpHeadContentType::NAME, Mime::HTML);
+		if (!$response->header->existsHeader(ContentType::NAME)) {
+			$response->header->addValue(ContentType::NAME, Mime::HTML);
 		}
 
 		$options = new AppTemplateOptions(

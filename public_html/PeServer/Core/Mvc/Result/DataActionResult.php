@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc\Result;
 
 use PeServer\Core\Binary;
-use PeServer\Core\Http\HttpHeadContentType;
+use PeServer\Core\Http\ContentType;
 use PeServer\Core\Http\HttpResponse;
 use PeServer\Core\Mime;
 use PeServer\Core\Mvc\DataContent;
@@ -88,7 +88,7 @@ readonly class DataActionResult implements IActionResult
 
 		$response->status = $this->content->httpStatus;
 
-		$response->header->setContentType(new HttpHeadContentType($this->content->mime, null));
+		$response->header->setContentType(new ContentType($this->content->mime, null));
 
 		if ($this->content instanceof DownloadDataContent) {
 			$fileName = urlencode($this->content->fileName);

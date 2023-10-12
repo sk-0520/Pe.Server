@@ -8,7 +8,7 @@ use PeServer\Core\Binary;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Collections\CaseInsensitiveKeyArray;
 use PeServer\Core\Encoding;
-use PeServer\Core\Http\HttpHeadContentType;
+use PeServer\Core\Http\ContentType;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Http\RedirectSetting;
 use PeServer\Core\Text;
@@ -132,18 +132,18 @@ class HttpHeader
 
 	public function existsContentType(): bool
 	{
-		return $this->existsHeader(HttpHeadContentType::NAME);
+		return $this->existsHeader(ContentType::NAME);
 	}
 
-	public function getContentType(): HttpHeadContentType
+	public function getContentType(): ContentType
 	{
-		$contentType = $this->getValues(HttpHeadContentType::NAME);
-		return HttpHeadContentType::from($contentType);
+		$contentType = $this->getValues(ContentType::NAME);
+		return ContentType::from($contentType);
 	}
 
-	public function setContentType(HttpHeadContentType $value): void
+	public function setContentType(ContentType $value): void
 	{
-		$this->setValues(HttpHeadContentType::NAME, $value->toValues());
+		$this->setValues(ContentType::NAME, $value->toValues());
 	}
 
 	/**

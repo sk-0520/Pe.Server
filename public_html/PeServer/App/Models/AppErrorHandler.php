@@ -7,7 +7,7 @@ namespace PeServer\App\Models;
 use PeServer\Core\DI\Inject;
 use PeServer\Core\Environment;
 use PeServer\Core\ErrorHandler;
-use PeServer\Core\Http\HttpHeadContentType;
+use PeServer\Core\Http\ContentType;
 use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Http\HttpResponse;
 use PeServer\Core\Http\IResponsePrinterFactory;
@@ -115,7 +115,7 @@ final class AppErrorHandler extends ErrorHandler
 					'error' => $responseJson->error,
 				];
 
-				$response->header->addValue(HttpHeadContentType::NAME, Mime::JSON);
+				$response->header->addValue(ContentType::NAME, Mime::JSON);
 				$response->content = $this->jsonSerializer->save($json);
 			} else {
 				$rootDir = Path::combine($this->config->baseDirectoryPath, 'App', 'Views');

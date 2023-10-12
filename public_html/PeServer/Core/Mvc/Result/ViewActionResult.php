@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Result;
 
-use PeServer\Core\Http\HttpHeadContentType;
+use PeServer\Core\Http\ContentType;
 use PeServer\Core\Http\HttpResponse;
 use PeServer\Core\IO\Directory;
 use PeServer\Core\IO\Path;
@@ -50,8 +50,8 @@ readonly class ViewActionResult implements IActionResult
 		foreach ($this->headers as $name => $headers) {
 			$response->header->setValues($name, $headers);
 		}
-		if (!$response->header->existsHeader(HttpHeadContentType::NAME)) {
-			$response->header->addValue(HttpHeadContentType::NAME, Mime::HTML);
+		if (!$response->header->existsHeader(ContentType::NAME)) {
+			$response->header->addValue(ContentType::NAME, Mime::HTML);
 		}
 
 		$options = new TemplateOptions(
