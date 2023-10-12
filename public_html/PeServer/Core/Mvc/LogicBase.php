@@ -166,7 +166,7 @@ abstract class LogicBase implements IValidationReceiver
 	protected function getFile(string $key): UploadFile
 	{
 		if (!$this->request->exists($key, true)->exists) {
-			throw new InvalidOperationException('$key: ' . $key);
+			throw new KeyNotFoundException('$key: ' . $key);
 		}
 
 		$file = $this->request->getFile($key);
