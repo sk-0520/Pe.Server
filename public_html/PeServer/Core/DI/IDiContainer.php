@@ -7,12 +7,16 @@ namespace PeServer\Core\DI;
 use PeServer\Core\DI\IScopedDiContainer;
 use PeServer\Core\Throws\DiContainerArgumentException;
 use PeServer\Core\Throws\DiContainerException;
+use Psr\Container\ContainerInterface;
 
 /**
  * DIコンテナ。
  */
-interface IDiContainer
+interface IDiContainer extends ContainerInterface
 {
+	#region ContainerInterface
+	#endregion
+
 	#region function
 
 	/**
