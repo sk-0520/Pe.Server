@@ -31,7 +31,6 @@ use ValueError;
  * @phpstan-type Byte int<0,255>
  * @implements ArrayAccess<UnsignedIntegerAlias,Byte>
  * @implements IteratorAggregate<UnsignedIntegerAlias,Byte>
- * @immutable
  */
 readonly final class Binary implements ArrayAccess, IteratorAggregate, Countable, Stringable
 {
