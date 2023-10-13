@@ -9,14 +9,13 @@ use PeServer\Core\Binary;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\EncodingException;
+use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Throws\Throws;
 
 /**
  * エンコーディング処理。
  *
  * コンストラクタで指定されたエンコード名に対して通常文字列へあれこれする。
- *
- * TODO: キャッシュしておきたい感。
  */
 class Encoding
 {
@@ -51,6 +50,9 @@ class Encoding
 	/** SJIS(何も考えず使う用) */
 	public const ENCODE_SJIS_DEFAULT = self::ENCODE_SJIS_WIN31J;
 
+	public const ENCODE_JIS_PLAIN = 'JIS';
+	public const ENCODE_JIS_DEFAULT = self::ENCODE_JIS_PLAIN;
+
 	public const ENCODE_EUC_JP_PLAIN = 'EUC-JP';
 	public const ENCODE_EUC_JP_WIN = 'eucJP-win';
 	public const ENCODE_EUC_JP_DEFAULT = self::ENCODE_EUC_JP_WIN;
@@ -65,6 +67,18 @@ class Encoding
 	 * @var string[]|null
 	 */
 	protected static ?array $cacheNames = null;
+
+	/**
+	 * デフォルトエンコーディング。
+	 *
+	 * `setDefaultEncoding` で設定され、
+	 * `getDefaultEncoding` で使用される。
+	 *
+	 * ただし `getDefaultEncoding` で本プロパティ未設定の場合は上書きされる。
+	 *
+	 * @var self|null
+	 */
+	private static ?self $defaultEncoding = null;
 
 	/**
 	 * エンコード名。
@@ -124,9 +138,16 @@ class Encoding
 	 */
 	public static function getDefaultEncoding(): Encoding
 	{
-		$name = mb_internal_encoding();
-		//@phpstan-ignore-next-line
-		return new Encoding($name);
+		if (self::$defaultEncoding === null) {
+			$name = mb_internal_encoding();
+			if (Text::isNullOrEmpty($name)) {
+				throw new InvalidOperationException();
+			}
+
+			return self::$defaultEncoding = new Encoding($name);
+		}
+
+		return self::$defaultEncoding;
 	}
 
 	/**
@@ -141,6 +162,8 @@ class Encoding
 		if (!$result) {
 			throw new ArgumentException('$encoding');
 		}
+
+		self::$defaultEncoding = $encoding;
 	}
 
 	/**
@@ -191,12 +214,6 @@ class Encoding
 	public static function getShiftJis(): Encoding
 	{
 		return new Encoding(self::ENCODE_SJIS_DEFAULT);
-	}
-
-	/** @deprecated getBinary */
-	public function toBinary(string $input): Binary
-	{
-		return $this->getBinary($input);
 	}
 
 	/**
