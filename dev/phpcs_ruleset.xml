@@ -6,6 +6,7 @@
 	<exclude-pattern>*/PeServer/Core/Libs/*</exclude-pattern>
 	<exclude-pattern>*/PeServer/data/*</exclude-pattern>
 
+	<rule ref="Generic.PHP.RequireStrictTypes" />
 
 	<rule ref="PSR12">
 		<!-- まぁいらんわ -->

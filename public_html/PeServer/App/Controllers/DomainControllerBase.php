@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PeServer\App\Controllers;
 
 use PeServer\App\Models\AppConfiguration;
