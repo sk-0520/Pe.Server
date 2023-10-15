@@ -41,12 +41,6 @@ abstract class SerializerBase implements ISerializer
 
 	#region ISerializer
 
-	/**
-	 * シリアライズ処理。
-	 *
-	 * @param array<mixed>|object $value
-	 * @return Binary
-	 */
 	public function save(array|object $value): Binary
 	{
 		try {
