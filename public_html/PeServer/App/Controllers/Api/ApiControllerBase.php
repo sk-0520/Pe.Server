@@ -14,10 +14,12 @@ abstract class ApiControllerBase extends DomainControllerBase
 		parent::__construct($argument);
 	}
 
-	//[DomainControllerBase]
+	#region DomainControllerBase
 
 	protected function getSkipBaseName(): string
 	{
-		return 'PeServer\\App\\Controllers\\Api';
+		return __NAMESPACE__;
 	}
+
+	#endregion
 }
