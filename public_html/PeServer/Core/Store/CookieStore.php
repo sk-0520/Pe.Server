@@ -6,7 +6,7 @@ namespace PeServer\Core\Store;
 
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Text;
-use PeServer\Core\Store\CookieOption;
+use PeServer\Core\Store\CookieOptions;
 use PeServer\Core\Store\SpecialStore;
 
 /**
@@ -44,13 +44,14 @@ class CookieStore
 	/**
 	 * 生成
 	 *
-	 * @param CookieOption $option
+	 * @param SpecialStore $special
+	 * @param CookieOptions $options
 	 */
 	public function __construct(
 		/** @readonly */
 		protected SpecialStore $special,
 		/** @readonly */
-		public CookieOption $option
+		public CookieOptions $options
 	) {
 	}
 
@@ -84,12 +85,12 @@ class CookieStore
 				$key,
 				$cookie->value,
 				[
-					'expires' => $cookie->option->getExpires(),
-					'path' => $cookie->option->path,
+					'expires' => $cookie->options->getExpires(),
+					'path' => $cookie->options->path,
 					'domain' => Text::EMPTY,
-					'secure' => $cookie->option->secure,
-					'httponly' => $cookie->option->httpOnly,
-					'samesite' => $cookie->option->sameSite
+					'secure' => $cookie->options->secure,
+					'httponly' => $cookie->options->httpOnly,
+					'samesite' => $cookie->options->sameSite
 				]
 			);
 		}
@@ -100,12 +101,12 @@ class CookieStore
 	 *
 	 * @param string $key
 	 * @param string $value
-	 * @param CookieOption|null $option nullの場合コンストラクタで渡された設定値が使用される
+	 * @param CookieOptions|null $options nullの場合コンストラクタで渡された設定値が使用される
 	 * @return void
 	 */
-	public function set(string $key, string $value, CookieOption $option = null): void
+	public function set(string $key, string $value, CookieOptions $options = null): void
 	{
-		$this->values[$key] = new LocalCookieData($value, $option ?? $this->option);
+		$this->values[$key] = new LocalCookieData($value, $options ?? $this->options);
 
 		unset($this->removes[$key]);
 
@@ -175,7 +176,7 @@ final class LocalCookieData
 {
 	public function __construct(
 		public string $value,
-		public CookieOption $option
+		public CookieOptions $options
 	) {
 	}
 }

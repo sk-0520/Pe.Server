@@ -10,7 +10,7 @@ use DateTimeImmutable;
 /**
  * Cookie 設定。
  */
-class CookieOption
+class CookieOptions
 {
 	#region variable
 

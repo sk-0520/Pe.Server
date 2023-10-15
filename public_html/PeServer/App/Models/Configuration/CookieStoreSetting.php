@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Configuration;
 
-use PeServer\Core\Store\CookieOption;
+use PeServer\Core\Store\CookieOptions;
 
 /**
  * Cookie設定。
@@ -27,7 +27,7 @@ class CookieStoreSetting
 
 	#endregion
 
-	public function __construct(?CookieOption $option = null)
+	public function __construct(?CookieOptions $option = null)
 	{
 		if ($option !== null) {
 			if ($option->span !== null) {

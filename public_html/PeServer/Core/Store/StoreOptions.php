@@ -7,9 +7,9 @@ namespace PeServer\Core\Store;
 use PeServer\Core\IO\Directory;
 use PeServer\Core\IO\IOUtility;
 use PeServer\Core\IO\Path;
-use PeServer\Core\Store\CookieOption;
-use PeServer\Core\Store\SessionOption;
-use PeServer\Core\Store\TemporaryOption;
+use PeServer\Core\Store\CookieOptions;
+use PeServer\Core\Store\SessionOptions;
+use PeServer\Core\Store\TemporaryOptions;
 
 /**
  * ストア設定。
@@ -19,9 +19,9 @@ use PeServer\Core\Store\TemporaryOption;
 class StoreOptions
 {
 	public function __construct(
-		public CookieOption $cookie,
-		public TemporaryOption $temporary,
-		public SessionOption $session
+		public CookieOptions $cookie,
+		public TemporaryOptions $temporary,
+		public SessionOptions $session
 	) {
 	}
 
@@ -30,12 +30,12 @@ class StoreOptions
 	public static function default(): self
 	{
 		$tempDirPath = Directory::getTemporaryDirectory();
-		$cookieOption = new CookieOption('', null, true, true, 'Lax');
+		$cookieOption = new CookieOptions('', null, true, true, 'Lax');
 
 		return new self(
 			$cookieOption,
-			new TemporaryOption(TemporaryOption::DEFAULT_NAME, Path::combine($tempDirPath, TemporaryOption::DEFAULT_NAME), $cookieOption),
-			new SessionOption(SessionOption::DEFAULT_NAME, Path::combine($tempDirPath, SessionOption::DEFAULT_NAME), $cookieOption)
+			new TemporaryOptions(TemporaryOptions::DEFAULT_NAME, Path::combine($tempDirPath, TemporaryOptions::DEFAULT_NAME), $cookieOption),
+			new SessionOptions(SessionOptions::DEFAULT_NAME, Path::combine($tempDirPath, SessionOptions::DEFAULT_NAME), $cookieOption)
 		);
 	}
 

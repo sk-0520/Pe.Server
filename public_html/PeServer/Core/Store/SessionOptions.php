@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Store;
 
 use PeServer\Core\Text;
-use PeServer\Core\Store\CookieOption;
+use PeServer\Core\Store\CookieOptions;
 use PeServer\Core\Throws\ArgumentException;
 
 /**
@@ -13,7 +13,7 @@ use PeServer\Core\Throws\ArgumentException;
  *
  * @immutable
  */
-class SessionOption
+class SessionOptions
 {
 	#region define
 
@@ -28,12 +28,12 @@ class SessionOption
 	 * @param string $name セッション名。
 	 * @phpstan-param non-empty-string $name
 	 * @param string $savePath 保存場所。
-	 * @param CookieOption $cookie クッキー設定。
+	 * @param CookieOptions $cookie クッキー設定。
 	 */
 	public function __construct(
 		public string $name,
 		public string $savePath,
-		public CookieOption $cookie
+		public CookieOptions $cookie
 	) {
 		if (Text::isNullOrWhiteSpace($name)) { //@phpstan-ignore-line [DOCTYPE]
 			throw new ArgumentException('$name');

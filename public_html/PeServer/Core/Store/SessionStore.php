@@ -8,8 +8,8 @@ use PeServer\Core\Collections\Arr;
 use PeServer\Core\IO\Directory;
 use PeServer\Core\IO\IOUtility;
 use PeServer\Core\Security;
-use PeServer\Core\Store\CookieStore;
-use PeServer\Core\Store\SessionOption;
+use PeServer\Core\Store\CookieStores;
+use PeServer\Core\Store\SessionOptions;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\InvalidOperationException;
@@ -36,7 +36,7 @@ class SessionStore
 	#region variable
 
 	/** @readonly */
-	private SessionOption $option;
+	private SessionOptions $options;
 	/** @readonly */
 	private CookieStore $cookie;
 
@@ -69,19 +69,19 @@ class SessionStore
 	/**
 	 * 生成
 	 *
-	 * @param SessionOption $option セッション設定。
+	 * @param SessionOptions $options セッション設定。
 	 * @param CookieStore $cookie Cookie 設定。
 	 */
-	public function __construct(SessionOption $option, CookieStore $cookie)
+	public function __construct(SessionOptions $options, CookieStore $cookie)
 	{
-		if (Text::isNullOrWhiteSpace($option->name)) { //@phpstan-ignore-line [DOCTYPE]
-			throw new ArgumentException('$option->name');
+		if (Text::isNullOrWhiteSpace($options->name)) { //@phpstan-ignore-line [DOCTYPE]
+			throw new ArgumentException('$options->name');
 		}
 
-		$this->option = $option;
+		$this->options = $options;
 		$this->cookie = $cookie;
 
-		if ($this->cookie->tryGet($this->option->name, $nameValue)) {
+		if ($this->cookie->tryGet($this->options->name, $nameValue)) {
 			if (!Text::isNullOrWhiteSpace($nameValue)) {
 				$this->start();
 				$this->values = $_SESSION;
@@ -183,20 +183,20 @@ class SessionStore
 		}
 
 		// セッション名はコンストラクタ時点で設定済みのためチェックしない
-		session_name($this->option->name);
+		session_name($this->options->name);
 
-		if (!Text::isNullOrWhiteSpace($this->option->savePath)) {
-			Directory::createDirectoryIfNotExists($this->option->savePath);
-			session_save_path($this->option->savePath);
+		if (!Text::isNullOrWhiteSpace($this->options->savePath)) {
+			Directory::createDirectoryIfNotExists($this->options->savePath);
+			session_save_path($this->options->savePath);
 		}
 
 		$sessionOption = [
-			'lifetime' => $this->option->cookie->getExpires(),
-			'path' => $this->option->cookie->path,
+			'lifetime' => $this->options->cookie->getExpires(),
+			'path' => $this->options->cookie->path,
 			'domain' => Text::EMPTY,
-			'secure' => $this->option->cookie->secure,
-			'httponly' => $this->option->cookie->httpOnly,
-			'samesite' => $this->option->cookie->sameSite,
+			'secure' => $this->options->cookie->secure,
+			'httponly' => $this->options->cookie->httpOnly,
+			'samesite' => $this->options->cookie->sameSite,
 		];
 		session_set_cookie_params($sessionOption);
 
@@ -229,7 +229,7 @@ class SessionStore
 			return;
 		}
 
-		$this->cookie->remove($this->option->name);
+		$this->cookie->remove($this->options->name);
 		session_destroy();
 	}
 

@@ -12,7 +12,7 @@ use PeServer\Core\IO\File;
 use PeServer\Core\IO\IOUtility;
 use PeServer\Core\IO\Path;
 use PeServer\Core\Store\CookieStore;
-use PeServer\Core\Store\TemporaryOption;
+use PeServer\Core\Store\TemporaryOptions;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\ArgumentNullException;
@@ -60,18 +60,18 @@ class TemporaryStore
 
 	public function __construct(
 		/** @readonly */
-		private TemporaryOption $option,
+		private TemporaryOptions $options,
 		/** @readonly */
 		private CookieStore $cookie
 	) {
-		if (Text::isNullOrWhiteSpace($option->name)) {
-			throw new ArgumentException('$option->name');
+		if (Text::isNullOrWhiteSpace($options->name)) {
+			throw new ArgumentException('$options->name');
 		}
-		if (Text::isNullOrWhiteSpace($option->savePath)) {
-			throw new ArgumentException('$option->savePath');
+		if (Text::isNullOrWhiteSpace($options->savePath)) {
+			throw new ArgumentException('$options->savePath');
 		}
-		if ($option->cookie->span === null) {
-			throw new ArgumentNullException('$option->cookie->span');
+		if ($options->cookie->span === null) {
+			throw new ArgumentNullException('$options->cookie->span');
 		}
 	}
 
@@ -79,7 +79,7 @@ class TemporaryStore
 
 	private function hasId(): bool
 	{
-		if ($this->cookie->tryGet($this->option->name, $nameValue)) {
+		if ($this->cookie->tryGet($this->options->name, $nameValue)) {
 			if (!Text::isNullOrWhiteSpace($nameValue)) {
 				return true;
 			}
@@ -91,7 +91,7 @@ class TemporaryStore
 	private function getOrCreateId(): string
 	{
 		if ($this->hasId()) {
-			return $this->cookie->getOr($this->option->name, Text::EMPTY);
+			return $this->cookie->getOr($this->options->name, Text::EMPTY);
 		}
 
 		return Cryptography::generateRandomString(self::ID_LENGTH, Cryptography::FILE_RANDOM_STRING);
@@ -110,7 +110,7 @@ class TemporaryStore
 		}
 
 		if (Arr::getCount($this->values)) {
-			$this->cookie->set($this->option->name, $id, $this->option->cookie);
+			$this->cookie->set($this->options->name, $id, $this->options->cookie);
 
 			Directory::createParentDirectoryIfNotExists($path);
 			File::writeJsonFile($path, [
@@ -118,7 +118,7 @@ class TemporaryStore
 				'values' => $this->values
 			]);
 		} else {
-			$this->cookie->remove($this->option->name);
+			$this->cookie->remove($this->options->name);
 
 			if (File::exists($path)) {
 				File::removeFile($path);
@@ -128,7 +128,7 @@ class TemporaryStore
 
 	private function getFilePath(string $id): string
 	{
-		$path = Path::combine($this->option->savePath, "$id.json");
+		$path = Path::combine($this->options->savePath, "$id.json");
 		return $path;
 	}
 
@@ -157,7 +157,7 @@ class TemporaryStore
 			return;
 		}
 		/** @var \DateInterval */
-		$span = $this->option->cookie->span;
+		$span = $this->options->cookie->span;
 		$saveTimestamp = $datetime->add($span);
 		$currentTimestamp = Utc::create();
 

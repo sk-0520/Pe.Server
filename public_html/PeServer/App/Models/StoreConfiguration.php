@@ -11,11 +11,11 @@ use PeServer\App\Models\Configuration\SessionStoreSetting;
 use PeServer\App\Models\Configuration\StoreSetting;
 use PeServer\App\Models\Configuration\TemporaryStoreSetting;
 use PeServer\Core\Collections\Arr;
-use PeServer\Core\Store\CookieOption;
-use PeServer\Core\Store\SessionOption;
+use PeServer\Core\Store\CookieOptions;
+use PeServer\Core\Store\SessionOptions;
 use PeServer\Core\Store\SpecialStore;
 use PeServer\Core\Store\StoreOptions;
-use PeServer\Core\Store\TemporaryOption;
+use PeServer\Core\Store\TemporaryOptions;
 use PeServer\Core\Text;
 use PeServer\Core\Time;
 
@@ -26,16 +26,16 @@ abstract class StoreConfiguration
 	/**
 	 * Undocumented function
 	 *
-	 * @param CookieOption $base
+	 * @param CookieOptions $base
 	 * @param CookieStoreSetting $setting
-	 * @return CookieOption
+	 * @return CookieOptions
 	 */
-	private static function mergeCookie(CookieStoreSetting $setting, CookieOption $base): CookieOption
+	private static function mergeCookie(CookieStoreSetting $setting, CookieOptions $base): CookieOptions
 	{
 		// //get_object_vars($base);
 		// $baseSetting = new CookieStoreSetting($base);
 
-		return new CookieOption(
+		return new CookieOptions(
 			Text::requireNotNullOrWhiteSpace($setting->path, $base->path),
 			Text::isNullOrWhiteSpace($setting->span) ? $base->span : Time::create($setting->span),
 			$setting->secure === null ? $base->secure : $setting->secure,
@@ -48,9 +48,9 @@ abstract class StoreConfiguration
 	 * クッキー設定を取得。
 	 *
 	 * @param CookieStoreSetting $setting
-	 * @return CookieOption
+	 * @return CookieOptions
 	 */
-	public static function getCookie(CookieStoreSetting $setting): CookieOption
+	public static function getCookie(CookieStoreSetting $setting): CookieOptions
 	{
 		/** @var DateInterval|null */
 		$span = null;
@@ -64,7 +64,7 @@ abstract class StoreConfiguration
 		/** @phpstan-var 'Lax'|'lax'|'None'|'none'|'Strict'|'strict' */
 		$sameSite = Text::requireNotNullOrWhiteSpace($setting->sameSite, 'None');
 
-		$option = new CookieOption(
+		$options = new CookieOptions(
 			$path,
 			$span,
 			$secure,
@@ -72,17 +72,17 @@ abstract class StoreConfiguration
 			(string)$sameSite
 		);
 
-		return $option;
+		return $options;
 	}
 
 	/**
 	 * 一時データ設定を取得。
 	 *
 	 * @param TemporaryStoreSetting $setting
-	 * @param CookieOption $cookie
-	 * @return TemporaryOption
+	 * @param CookieOptions $cookie
+	 * @return TemporaryOptions
 	 */
-	public static function getTemporary(TemporaryStoreSetting $setting, CookieOption $cookie): TemporaryOption
+	public static function getTemporary(TemporaryStoreSetting $setting, CookieOptions $cookie): TemporaryOptions
 	{
 		$overwriteCookie = self::mergeCookie($setting->cookie, $cookie);
 		if ($overwriteCookie->span === null) {
@@ -91,37 +91,37 @@ abstract class StoreConfiguration
 
 		$name = Text::requireNotNullOrWhiteSpace($setting->name, 'TEMP');
 		$save = Text::requireNotNullOrWhiteSpace($setting->save, './temp');
-		$option = new TemporaryOption(
+		$options = new TemporaryOptions(
 			$name,
 			$save,
 			$overwriteCookie
 		);
 
-		return $option;
+		return $options;
 	}
 
 	/**
 	 * セッション設定を取得。
 	 *
 	 * @param SessionStoreSetting $setting
-	 * @param CookieOption $cookie
-	 * @return SessionOption
+	 * @param CookieOptions $cookie
+	 * @return SessionOptions
 	 */
-	public static function getSession(SessionStoreSetting $setting, CookieOption $cookie): SessionOption
+	public static function getSession(SessionStoreSetting $setting, CookieOptions $cookie): SessionOptions
 	{
 		$overwriteCookie = self::mergeCookie($setting->cookie, $cookie);
 
 		/** @phpstan-var non-empty-string $name */
-		$name = Text::requireNotNullOrWhiteSpace($setting->name, SessionOption::DEFAULT_NAME);
+		$name = Text::requireNotNullOrWhiteSpace($setting->name, SessionOptions::DEFAULT_NAME);
 		$save = Text::requireNotNullOrWhiteSpace($setting->save, Text::EMPTY);
 
-		$option = new SessionOption(
+		$options = new SessionOptions(
 			$name,
 			$save,
 			$overwriteCookie
 		);
 
-		return $option;
+		return $options;
 	}
 
 	/**
