@@ -25,7 +25,8 @@
 			"**/obj/**": true,
 			"*.lnk": true,
 			"**/PHPUnit/**": true,
-			"**/Libs/**": true
+			"**/Libs/**": true,
+			"**/dev/extracts/**": true
 		},
 		"html.format.indentInnerHtml": true,
 		"html.format.wrapLineLength": 0,
@@ -74,9 +75,6 @@
 			".vscode-insiders"
 		],
 		"intelephense.environment.phpVersion": "8.2.0",
-		"intelephense.files.exclude": [
-			"**/php-deploy-receiver.php"
-		],
 		"auto-close-tag.activationOnLanguage": [
 			"smarty"
 		],

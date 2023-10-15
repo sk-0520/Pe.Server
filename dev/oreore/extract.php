@@ -3,17 +3,18 @@
 $settings = [
 	[
 		'pattern' => '..\\..\\test\\phpunit.phar.*',
-		'output' => '..\\PHPUnit',
+		'output' => '..\\extracts\\PHPUnit',
 	],
 	// [
-	// 	'pattern' => '..\\php-cs-fixer.phar.*',
-	// 	'output' => '..\\PhpCsFixer',
+	// 	'pattern' => '..\\phpstan.phar.*',
+	// 	'output' => '..\\extracts\\phpstan',
 	// ],
 ];
 
 foreach($settings as $setting) {
 	$files = glob($setting['pattern']);
-	$phar = new Phar($files[0]);
+	natsort($files);
+	$phar = new Phar(end($files));
 	$phar->extractTo($setting['output'], null, true);
 }
 
