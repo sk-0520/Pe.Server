@@ -80,7 +80,7 @@ class AccountUserPasswordLogic extends PageLogicBase
 
 		$params = [
 			'user_id' => $userInfo->userId,
-			'password' => Cryptography::toHashPassword($newPassword),
+			'password' => Cryptography::hashPassword($newPassword),
 		];
 
 		$database = $this->openDatabase();

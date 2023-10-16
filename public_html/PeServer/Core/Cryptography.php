@@ -187,7 +187,7 @@ abstract class Cryptography
 	 * @return string ハッシュ化パスワード。
 	 * @see https://www.php.net/manual/function.password-hash.php
 	 */
-	public static function toHashPassword(string $password): string
+	public static function hashPassword(string $password): string
 	{
 		return password_hash($password, PASSWORD_DEFAULT);
 	}
@@ -212,9 +212,33 @@ abstract class Cryptography
 	 * @return bool
 	 * @see https://www.php.net/manual/function.password-needs-rehash.php
 	 */
-	public static function needsResetPassword(string $hashPassword): bool
+	public static function needPasswordReset(string $hashPassword): bool
 	{
 		return password_needs_rehash($hashPassword, null, []);
+	}
+
+	/**
+	 * `password_get_info` ラッパー。
+	 *
+	 * @param string $hashPassword
+	 * @return array{algo:string,algoName:string,options:array<mixed>}
+	 * @see https://www.php.net/manual/function.password-get-info.php
+	 */
+	public static function getPasswordInformation(string $hashPassword): array
+	{
+		//@phpstan-ignore-next-line [PHPDOC]
+		return password_get_info($hashPassword);
+	}
+
+	/**
+	 * `password_algos` ラッパー。
+	 *
+	 * @return string[]
+	 * @see https://www.php.net/manual/function.password-algos.php
+	 */
+	public static function getPasswordAlgorithms(): array
+	{
+		return password_algos();
 	}
 
 	/**

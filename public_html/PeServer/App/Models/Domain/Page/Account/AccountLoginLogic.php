@@ -100,13 +100,28 @@ class AccountLoginLogic extends PageLogicBase
 			return;
 		}
 
+		$loginRawPassword = $this->getRequest('account_login_password');
 		// パスワード突合
-		$verifyOk = Cryptography::verifyPassword($this->getRequest('account_login_password'), $user->currentPassword);
+		$verifyOk = Cryptography::verifyPassword($loginRawPassword, $user->currentPassword);
 		if (!$verifyOk) {
 			$this->addCommonError(I18n::message(self::ERROR_LOGIN_PARAMETER));
 			$this->logger->warn('ログイン失敗: {0}', $user->userId);
 			$this->writeAuditLogTargetUser($user->userId, AuditLog::LOGIN_FAILED);
 			return;
+		}
+		// パスワードのアルゴリズムが古い場合に再設定する(業務ロジックのポリシー云々ではない)
+		$isNeedsResetPassword = Cryptography::needPasswordReset($user->currentPassword);
+		if ($isNeedsResetPassword) {
+			$info = Cryptography::getPasswordInformation($user->currentPassword);
+			$this->logger->info("[OLD] password needs reset: {0}, {1}", $user->userId, $info);
+			$loginNewPassword = Cryptography::hashPassword($loginRawPassword);
+			$database->transaction(function ($context) use ($user, $loginNewPassword) {
+				$userAuthenticationsEntityDao = new UserAuthenticationsEntityDao($context);
+				$userAuthenticationsEntityDao->updateResetPassword($user->userId, $loginNewPassword);
+				$info = Cryptography::getPasswordInformation($loginNewPassword);
+				$this->logger->info("[NEW] password needs reset: {0}, {1}", $user->userId, $info);
+				return true;
+			});
 		}
 
 		$this->removeSession(self::SESSION_ALL_CLEAR);
