@@ -212,7 +212,7 @@ abstract class Cryptography
 	 * @return bool
 	 * @see https://www.php.net/manual/function.password-needs-rehash.php
 	 */
-	public static function needsRehashPassword(string $hashPassword): bool
+	public static function needsResetPassword(string $hashPassword): bool
 	{
 		return password_needs_rehash($hashPassword, null, []);
 	}
