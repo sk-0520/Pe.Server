@@ -227,6 +227,28 @@ class Graphics extends DisposerBase
 	}
 
 	/**
+	 * `imagerotate` ラッパー。
+	 *
+	 * @param float $angle
+	 * @param IColor $backgroundColor
+	 * @return self
+	 * @throws GraphicsException
+	 * @see https://www.php.net/manual/function.imagerotate.php
+	 */
+	public function rotate(float $angle, IColor $backgroundColor): self
+	{
+		$result = $this->doColor(
+			$backgroundColor,
+			fn ($attachedColor) => imagerotate($this->image, $angle, $attachedColor)
+		);
+		if ($result === false) {
+			throw new GraphicsException();
+		}
+
+		return new Graphics($result, true);
+	}
+
+	/**
 	 * 指定したピクセルの色を取得。
 	 *
 	 * `imagecolorat` ラッパー。
@@ -313,7 +335,8 @@ class Graphics extends DisposerBase
 		$restoreThickness = $this->thickness;
 		$this->setThickness($thickness);
 
-		return new class ($this, $restoreThickness) extends DisposerBase
+		//phpcs:ignore PSR12.Classes.AnonClassDeclaration.SpaceAfterKeyword
+		return new class($this, $restoreThickness) extends DisposerBase
 		{
 			/**
 			 * 生成。
