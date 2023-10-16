@@ -11,10 +11,8 @@ use PeServer\Core\Throws\ImageException;
 
 /**
  * 画像情報。
- *
- * @immutable
  */
-class ImageInformation
+readonly class ImageInformation
 {
 	/**
 	 * 生成
