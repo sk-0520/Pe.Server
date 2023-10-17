@@ -245,6 +245,7 @@ class Graphics extends DisposerBase
 			throw new GraphicsException();
 		}
 
+		//@phpstan-ignore-next-line ↑が false だけのはずなんだけど true を捕まえてる感じ
 		return new Graphics($result, true);
 	}
 
@@ -390,23 +391,43 @@ class Graphics extends DisposerBase
 		return imagecolordeallocate($this->image, $colorResource->value);
 	}
 
-	private function doColorCore(ColorResource $color, callable $action): mixed
+	/**
+	 * 色処理の実行部分。
+	 *
+	 * @template TResult
+	 * @param ColorResource $color
+	 * @param callable $callback
+	 * @phpstan-param callable(mixed): TResult $callback
+	 * @return mixed
+	 * @phpstan-return TResult
+	 */
+	private function doColorCore(ColorResource $color, callable $callback): mixed
 	{
-		return $action($color->value);
+		return $callback($color->value);
 	}
 
-	private function doColor(IColor $color, callable $action): mixed
+	/**
+	 * 色の処理。
+	 *
+	 * @template TResult
+	 * @param IColor $color
+	 * @param callable $callback
+	 * @phpstan-param callable(mixed): TResult $callback
+	 * @return mixed
+	 * @phpstan-return TResult
+	 */
+	private function doColor(IColor $color, callable $callback): mixed
 	{
 		if ($color instanceof RgbColor) {
 			$colorResource = $this->attachColor($color);
 			try {
-				return $this->doColorCore($colorResource, $action);
+				return $this->doColorCore($colorResource, $callback);
 			} finally {
 				$this->detachColor($colorResource);
 			}
 		} else {
 			assert($color instanceof ColorResource);
-			return $this->doColorCore($color, $action);
+			return $this->doColorCore($color, $callback);
 		}
 	}
 
@@ -495,6 +516,8 @@ class Graphics extends DisposerBase
 	/**
 	 * テキスト描画。
 	 *
+	 * `imagettftext` ラッパー。
+	 *
 	 * @param string $text 描画テキスト。
 	 * @param float $fontSize フォントサイズ。
 	 * @param Point $location 描画開始座標。
@@ -502,18 +525,18 @@ class Graphics extends DisposerBase
 	 * @param TextSetting $setting 描画するテキスト設定。
 	 * @return Area 描画領域。
 	 * @throws GraphicsException
+	 * @see https://www.php.net/manual/ja/function.imagettftext.php
 	 */
 	public function drawString(string $text, float $fontSize, Point $location, IColor $color, TextSetting $setting): Area
 	{
-		/** @phpstan-var non-empty-array<int>|false */
 		$result = $this->doColor(
 			$color,
 			fn ($attachedColor) => imagettftext(
 				$this->image,
 				$fontSize,
 				$setting->angle,
-				(int)$location->x,
-				(int)$location->y,
+				$location->x,
+				$location->y,
 				$attachedColor,
 				$setting->fontNameOrPath,
 				$text
@@ -524,13 +547,14 @@ class Graphics extends DisposerBase
 			throw new GraphicsException();
 		}
 
+		//@phpstan-ignore-next-line ↑が false だけのはずなんだけど true を捕まえてる感じ
 		return Area::create($result);
 	}
 
 	/**
-	 * テキスト描画。
+	 * いい感じにテキスト描画。
 	 *
-	 * 内部的に `self::calculateTextArea` を使用。
+	 * 内部的に `self::calculateTextArea`, `self::drawString` を使用。
 	 *
 	 * @param string $text 描画テキスト。
 	 * @param float $fontSize フォントサイズ。
