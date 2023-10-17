@@ -20,7 +20,7 @@ readonly class ContentType
 	protected function __construct(
 		public string $mime,
 		public ?Encoding $encoding,
-		public ?string $boundary = null
+		public ?string $boundary
 	) {
 	}
 
@@ -31,6 +31,8 @@ readonly class ContentType
 
 	/**
 	 * HTTPヘッダ値から `ContentType` に変換。
+	 *
+	 * TODO: これ根本的におかしい。のでテストも stringStartsWith でふんわりしている
 	 *
 	 * @param string $value
 	 * @return self
