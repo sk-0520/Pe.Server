@@ -329,7 +329,7 @@ class Graphics extends DisposerBase
 		if ($thickness === $this->thickness) {
 			return DisposerBase::empty();
 		}
-		if ($thickness < 1) { //@phpstan-ignore-line [PHPDOC]
+		if ($thickness < 1) { //@phpstan-ignore-line [DOCTYPE]
 			throw new ArgumentException('$thickness');
 		}
 

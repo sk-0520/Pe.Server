@@ -95,7 +95,7 @@ abstract class Environment
 	 */
 	public static function setVariable(string $name, string $value): bool
 	{
-		if (Text::isNullOrWhiteSpace($name)) { //@phpstan-ignore-line [PHPDOC]
+		if (Text::isNullOrWhiteSpace($name)) { //@phpstan-ignore-line [DOCTYPE]
 			throw new ArgumentException($name);
 		}
 
@@ -114,7 +114,7 @@ abstract class Environment
 	 */
 	public static function getVariable(string $name): ?string
 	{
-		if (Text::isNullOrWhiteSpace($name)) { //@phpstan-ignore-line [PHPDOC]
+		if (Text::isNullOrWhiteSpace($name)) { //@phpstan-ignore-line [DOCTYPE]
 			throw new ArgumentException($name);
 		}
 

@@ -65,7 +65,7 @@ abstract class Cryptography
 	 */
 	public static function generateRandomBinary(int $length): Binary
 	{
-		if ($length < 1) { //@phpstan-ignore-line [PHPDOC]
+		if ($length < 1) { //@phpstan-ignore-line [DOCTYPE]
 			throw new CryptoException('$length: ' . $length);
 		}
 
@@ -89,10 +89,10 @@ abstract class Cryptography
 	 */
 	public static function generateRandomString(int $length, string $characters = self::DEFAULT_RANDOM_STRING): string
 	{
-		if ($length < 1) { //@phpstan-ignore-line [PHPDOC]
+		if ($length < 1) { //@phpstan-ignore-line [DOCTYPE]
 			throw new ArgumentException('$length: ' . $length);
 		}
-		if (Text::isNullOrWhiteSpace($characters)) { //@phpstan-ignore-line [PHPDOC]
+		if (Text::isNullOrWhiteSpace($characters)) { //@phpstan-ignore-line [DOCTYPE]
 			throw new ArgumentException('$characters: ' . $characters);
 		}
 
@@ -226,7 +226,7 @@ abstract class Cryptography
 	 */
 	public static function getPasswordInformation(string $hashPassword): array
 	{
-		//@phpstan-ignore-next-line [PHPDOC]
+		//@phpstan-ignore-next-line [DOCTYPE]
 		return password_get_info($hashPassword);
 	}
 

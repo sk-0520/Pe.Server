@@ -294,7 +294,7 @@ abstract class Text
 	 */
 	public static function getLastPosition(string $haystack, string $needle, int $offset = 0): int
 	{
-		if ($offset < 0) { //@phpstan-ignore-line [PHPDOC]
+		if ($offset < 0) { //@phpstan-ignore-line [DOCTYPE]
 			throw new ArgumentException('$offset');
 		}
 
@@ -443,7 +443,7 @@ abstract class Text
 	 */
 	public static function split(string $value, string $separator, int $limit = PHP_INT_MAX): array
 	{
-		if (Text::isNullOrEmpty($separator)) { //@phpstan-ignore-line [PHPDOC]
+		if (Text::isNullOrEmpty($separator)) { //@phpstan-ignore-line [DOCTYPE]
 			throw new ArgumentException();
 		}
 
@@ -632,7 +632,7 @@ abstract class Text
 	 */
 	public static function repeat(string $value, int $count): string
 	{
-		//@phpstan-ignore-next-line [PHPDOC]
+		//@phpstan-ignore-next-line [DOCTYPE]
 		if ($count < 0) {
 			throw new ArgumentException();
 		}
@@ -649,7 +649,7 @@ abstract class Text
 	 */
 	public static function toCharacters(string $value): array
 	{
-		if (Text::isNullOrEmpty($value)) { //@phpstan-ignore-line [PHPDOC]
+		if (Text::isNullOrEmpty($value)) { //@phpstan-ignore-line [DOCTYPE]
 			throw new ArgumentException('$value = ' . $value);
 		}
 
