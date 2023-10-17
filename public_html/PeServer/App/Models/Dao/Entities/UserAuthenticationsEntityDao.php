@@ -182,6 +182,34 @@ class UserAuthenticationsEntityDao extends DaoBase
 		);
 	}
 
+	/**
+	 * パスワードの変更。
+	 *
+	 * 純粋に現在のパスワードのみを変更する。
+	 *
+	 * @param string $userId
+	 * @param string $password
+	 */
+	public function updatePasswordOnly(string $userId, string $password): void
+	{
+		$this->context->updateByKey(
+			<<<SQL
+
+			update
+				user_authentications
+			set
+				current_password = :password
+			where
+				user_id = :user_id
+
+			SQL,
+			[
+				'user_id' => $userId,
+				'password' => $password,
+			]
+		);
+	}
+
 	public function updateClearReminder(string $userId): void
 	{
 		$this->context->updateByKey(

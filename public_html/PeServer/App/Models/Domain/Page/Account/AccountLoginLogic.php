@@ -110,16 +110,16 @@ class AccountLoginLogic extends PageLogicBase
 			return;
 		}
 		// パスワードのアルゴリズムが古い場合に再設定する(業務ロジックのポリシー云々ではない)
-		$isNeedsResetPassword = Cryptography::needPasswordReset($user->currentPassword);
-		if ($isNeedsResetPassword) {
+		$isNeedRehashPassword = Cryptography::needRehashPassword($user->currentPassword);
+		if ($isNeedRehashPassword) {
 			$info = Cryptography::getPasswordInformation($user->currentPassword);
-			$this->logger->info("[OLD] password needs reset: {0}, {1}", $user->userId, $info);
+			$this->logger->info("[OLD] password needs rehash: {0}, {1}", $user->userId, $info);
 			$loginNewPassword = Cryptography::hashPassword($loginRawPassword);
 			$database->transaction(function ($context) use ($user, $loginNewPassword) {
 				$userAuthenticationsEntityDao = new UserAuthenticationsEntityDao($context);
-				$userAuthenticationsEntityDao->updateResetPassword($user->userId, $loginNewPassword);
+				$userAuthenticationsEntityDao->updatePasswordOnly($user->userId, $loginNewPassword);
 				$info = Cryptography::getPasswordInformation($loginNewPassword);
-				$this->logger->info("[NEW] password needs reset: {0}, {1}", $user->userId, $info);
+				$this->logger->info("[NEW] password needs rehash: {0}, {1}", $user->userId, $info);
 				return true;
 			});
 		}
