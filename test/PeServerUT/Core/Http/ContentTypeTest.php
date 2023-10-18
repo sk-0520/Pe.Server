@@ -21,7 +21,7 @@ class ContentTypeTest extends TestClass
 		$this->assertSame(Encoding::getShiftJis()->name, $actual2->encoding->name);
 	}
 
-	public function test_from()
+	public function test_from_semicolon()
 	{
 		$actual1 = ContentType::from('mime');
 		$this->assertSame('mime', $actual1->mime);
@@ -39,4 +39,24 @@ class ContentTypeTest extends TestClass
 		$this->assertSame('UTF-32', $actual3->encoding->name);
 		$this->assertSame('***', $actual3->boundary);
 	}
+
+	public function test_from_comma()
+	{
+		$actual1 = ContentType::from('mime');
+		$this->assertSame('mime', $actual1->mime);
+
+		$actual2 = ContentType::from('mime! , charset=CP932 ');
+		$this->assertSame('mime!', $actual2->mime);
+		$this->assertSame('CP932', $actual2->encoding->name);
+
+		$actual2 = ContentType::from('mime? , boundary=*** ');
+		$this->assertSame('mime?', $actual2->mime);
+		$this->assertSame('***', $actual2->boundary);
+
+		$actual3 = ContentType::from('mime@ , charset=UTF-32 , boundary=*** ');
+		$this->assertSame('mime@', $actual3->mime);
+		$this->assertSame('UTF-32', $actual3->encoding->name);
+		$this->assertSame('***', $actual3->boundary);
+	}
+
 }

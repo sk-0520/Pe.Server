@@ -88,32 +88,32 @@ class HttpClientTest extends TestClass
 		$header1 = HttpHeader::createClientRequestHeader();
 		$header1->setContentType(ContentType::create('application/octet-stream', null));
 		$actual1 = $hc->post($url, $header1, null);
-		$this->stringStartsWith('application/octet-stream', $actual1->header->getContentType()->mime);
+		$this->assertSame('application/octet-stream', $actual1->header->getContentType()->mime);
 		$this->assertSame('', $actual1->content->raw);
 		$actual1->dispose();
 
 		$actual2 = $hc->post($url, null, new BinaryContent(new Binary("あ\0い\1う\2え\3お！\4"), 'text/binary-text'));
-		$this->stringStartsWith('text/binary-text', $actual2->header->getContentType()->mime);
+		$this->assertSame('text/binary-text', $actual2->header->getContentType()->mime);
 		$this->assertSame("あ\0い\1う\2え\3お！\4", $actual2->content->raw);
 		$actual2->dispose();
 
 		$actual3 = $hc->post($url, null, new StringContent('かきくけこ？', 'text/plain-text'));
-		$this->stringStartsWith('text/plain-text', $actual3->header->getContentType()->mime);
+		$this->assertSame('text/plain-text', $actual3->header->getContentType()->mime);
 		$this->assertSame('かきくけこ？', $actual3->content->raw);
 		$actual3->dispose();
 
 		$actual4 = $hc->post($url, null, new JsonContent(["a" => "A", "b" => [1, 2, 3]]));
-		$this->stringStartsWith(Mime::JSON, $actual4->header->getContentType()->mime);
+		$this->assertSame(Mime::JSON, $actual4->header->getContentType()->mime);
 		$this->assertSame(["a" => "A", "b" => [1, 2, 3]], (new JsonSerializer())->load($actual4->content));
 		$actual4->dispose();
 
 		$actual5 = HttpClient::request(new HttpClientRequest($url, HttpMethod::Post, null, new StringContent('さしすせそ！', 'mime/💩')), new HttpClientOptions());
-		$this->stringStartsWith('mime/💩', $actual5->header->getContentType()->mime);
+		$this->assertSame('mime/💩', $actual5->header->getContentType()->mime);
 		$this->assertSame("さしすせそ！", $actual5->content->raw);
 		$actual5->dispose();
 
 		$actual6 = HttpClient::request(new HttpClientRequest($url, HttpMethod::Post, null, new FormUrlEncodedContent(Dictionary::create(['KEY' => 'あ']))), new HttpClientOptions());
-		$this->stringStartsWith(Mime::FORM, $actual6->header->getContentType()->mime);
+		$this->assertSame(Mime::FORM, $actual6->header->getContentType()->mime);
 		$this->assertSame("KEY=%E3%81%82", $actual6->content->raw);
 
 		//TODO: あとはマルチパートくらいだろうけどもう別にどうでもいいわ

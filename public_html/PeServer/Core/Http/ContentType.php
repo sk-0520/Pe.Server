@@ -32,18 +32,17 @@ readonly class ContentType
 	/**
 	 * HTTPヘッダ値から `ContentType` に変換。
 	 *
-	 * TODO: これ根本的におかしい。のでテストも stringStartsWith でふんわりしている
-	 *
 	 * @param string $value
 	 * @return self
 	 */
 	public static function from(string $value): self
 	{
-		$mime = Text::EMPTY;
-
-		$rawParamValues = Text::split($value, ';');
+		$rawParamValues = Text::contains($value, ',', true)
+			? Text::split($value, ',')
+			: Text::split($value, ';');
 
 		$mime = Text::trim($rawParamValues[0]);
+		
 		/** @var Encoding|null */
 		$encoding = null;
 		/** @var string|null */
