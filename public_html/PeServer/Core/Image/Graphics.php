@@ -79,14 +79,14 @@ class Graphics extends DisposerBase
 	 * @return Graphics
 	 * @throws GraphicsException
 	 */
-	public static function create(Size $size): Graphics
+	public static function create(Size $size): self
 	{
 		$image = imagecreatetruecolor($size->width, $size->height);
 		if ($image === false) {
 			throw new GraphicsException();
 		}
 
-		return new Graphics($image, true);
+		return new self($image, true);
 	}
 
 	/**
@@ -96,7 +96,7 @@ class Graphics extends DisposerBase
 	 * @param ImageType $imageType
 	 * @return Graphics
 	 */
-	public static function load(Binary $binary, ImageType $imageType = ImageType::Auto): Graphics
+	public static function load(Binary $binary, ImageType $imageType = ImageType::Auto): self
 	{
 		$funcName = match ($imageType) {
 			ImageType::Png => 'imagecreatefrompng',
@@ -114,7 +114,7 @@ class Graphics extends DisposerBase
 			throw new GraphicsException();
 		}
 
-		return new Graphics($result->value, true);
+		return new self($result->value, true);
 	}
 
 	/**
@@ -124,7 +124,7 @@ class Graphics extends DisposerBase
 	 * @phpstan-param non-empty-string $path
 	 * @return Graphics
 	 */
-	public static function open(string $path): Graphics
+	public static function open(string $path): self
 	{
 		$binary = File::readContent($path);
 		return self::load($binary);
@@ -211,7 +211,7 @@ class Graphics extends DisposerBase
 	 * @throws GraphicsException
 	 * @see https://www.php.net/manual/function.imagescale.php
 	 */
-	public function scale(int|Size $size, ScaleMode $scaleMode): Graphics
+	public function scale(int|Size $size, ScaleMode $scaleMode): self
 	{
 		$result = false;
 		if (is_int($size)) {
@@ -223,7 +223,7 @@ class Graphics extends DisposerBase
 			throw new GraphicsException();
 		}
 
-		return new Graphics($result, true);
+		return new self($result, true);
 	}
 
 	/**
@@ -231,7 +231,7 @@ class Graphics extends DisposerBase
 	 *
 	 * @param float $angle
 	 * @param IColor $backgroundColor
-	 * @return self
+	 * @return Graphics
 	 * @throws GraphicsException
 	 * @see https://www.php.net/manual/function.imagerotate.php
 	 */
@@ -246,7 +246,7 @@ class Graphics extends DisposerBase
 		}
 
 		//@phpstan-ignore-next-line ↑が false だけのはずなんだけど true を捕まえてる感じ
-		return new Graphics($result, true);
+		return new self($result, true);
 	}
 
 	/**

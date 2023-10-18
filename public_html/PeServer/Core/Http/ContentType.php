@@ -9,7 +9,7 @@ use PeServer\Core\Collections\Arr;
 use PeServer\Core\Encoding;
 use PeServer\Core\Text;
 
-readonly class ContentType
+readonly final class ContentType
 {
 	#region define
 
@@ -17,7 +17,7 @@ readonly class ContentType
 
 	#endregion
 
-	protected function __construct(
+	private function __construct(
 		public string $mime,
 		public ?Encoding $encoding,
 		public ?string $boundary
@@ -42,7 +42,7 @@ readonly class ContentType
 			: Text::split($value, ';');
 
 		$mime = Text::trim($rawParamValues[0]);
-		
+
 		/** @var Encoding|null */
 		$encoding = null;
 		/** @var string|null */
