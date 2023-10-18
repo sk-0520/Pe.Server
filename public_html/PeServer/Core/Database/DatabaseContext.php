@@ -65,8 +65,8 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 		$this->regex = new Regex();
 
 		$this->pdo = Throws::wrap(PDOException::class, DatabaseException::class, fn () => new PDO($setting->dsn, $setting->user, $setting->password, $setting->options));
-		$this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+		$this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); //cspell:disable-line
+		$this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC); //cspell:disable-line
 	}
 
 	#region function
@@ -232,7 +232,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 	{
 		$columns = $this->getColumns($pdoStatement);
 
-	 	/** @var DatabaseSequenceResult<TFieldArray> */
+		/** @var DatabaseSequenceResult<TFieldArray> */
 		$result = new DatabaseSequenceResult($columns, $pdoStatement);
 
 		return $result;

@@ -244,7 +244,7 @@ abstract class Directory
 		self::createDirectoryIfNotExists($path);
 
 		Environment::setVariable('TMP', $path);
-		Environment::setVariable('TMPDIR', $path);
+		Environment::setVariable('TMPDIR', $path); //cspell:disable-line
 		Environment::setVariable('TEMP', $path);
 
 		return true;

@@ -102,7 +102,7 @@ class Graphics extends DisposerBase
 			ImageType::Png => 'imagecreatefrompng',
 			ImageType::Jpeg => 'imagecreatefromjpeg',
 			ImageType::Webp => 'imagecreatefromwebp',
-			ImageType::Bmp => 'imagecreatefrombmp',
+			ImageType::Bmp => 'imagecreatefrombmp', //cspell:disable-line
 			default => 'imagecreatefromstring'
 		};
 
@@ -150,9 +150,9 @@ class Graphics extends DisposerBase
 	 */
 	public function getDpi(): Size
 	{
-		$result = imageresolution($this->image);
+		$result = imageresolution($this->image);  //cspell:disable-line
 		if ($result === false) {
-			throw new GraphicsException('imageresolution');
+			throw new GraphicsException('imageresolution'); //cspell:disable-line
 		}
 		assert(is_array($result));
 
@@ -167,9 +167,9 @@ class Graphics extends DisposerBase
 	 */
 	public function setDpi(Size $size): void
 	{
-		$result = imageresolution($this->image, $size->width, $size->height);
+		$result = imageresolution($this->image, $size->width, $size->height); //cspell:disable-line
 		if ($result === false) {
-			throw new GraphicsException('imageresolution: ' . $size);
+			throw new GraphicsException('imageresolution: ' . $size); //cspell:disable-line
 		}
 	}
 
@@ -595,7 +595,7 @@ class Graphics extends DisposerBase
 			ImageType::Png => imagepng($this->image, null, ...$setting->options()),
 			ImageType::Jpeg => imagejpeg($this->image, null, ...$setting->options()),
 			ImageType::Webp => imagewebp($this->image, null, ...$setting->options()),
-			ImageType::Bmp => imagebmp($this->image, null, ...$setting->options()),
+			ImageType::Bmp => imagebmp($this->image, null, ...$setting->options()), //cspell:disable-line
 			default  => throw new NotImplementedException(),
 		});
 	}
