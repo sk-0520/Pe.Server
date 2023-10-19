@@ -44,6 +44,7 @@ final class AppErrorHandler extends ErrorHandler
 		private AppConfiguration $config,
 		private IUrlHelper $urlHelper,
 		?JsonSerializer $jsonSerializer,
+		private Environment $environment,
 		ILogger $logger
 	) {
 		parent::__construct($logger);
@@ -59,7 +60,7 @@ final class AppErrorHandler extends ErrorHandler
 	{
 		$next = true;
 
-		$isProduction = Environment::isProduction();
+		$isProduction = $this->environment->isProduction();
 
 		if ($isProduction) {
 			$next = false;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Middleware;
 
+use PeServer\Core\Environment;
 use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Http\HttpResponse;
 use PeServer\Core\Http\RequestPath;
@@ -25,6 +26,7 @@ class MiddlewareArgument
 	public function __construct(
 		public RequestPath $requestPath,
 		public Stores $stores,
+		public Environment $environment,
 		public HttpRequest $request
 	) {
 	}

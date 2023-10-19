@@ -107,7 +107,7 @@ class CoreStartup
 		Logging::initialize(Arr::getOr($options, 'special_store', new SpecialStore()));
 
 		// Core のセットアップ時点で死ぬようではもういいです
-		if (!Environment::isTest()) {
+		if (!$environment->isTest()) {
 			$errorHandler = $container->new(ErrorHandler::class);
 			$errorHandler->register();
 		}

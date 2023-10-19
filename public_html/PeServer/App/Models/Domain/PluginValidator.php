@@ -24,7 +24,7 @@ class PluginValidator extends ValidatorBase
 
 	private const LOCALHOST_PATTERN = '/https?:\/\/(\w*:\\w*@)?((localhost)|(127\.0\.0\.1))\b/';
 
-	public function __construct(IValidationReceiver $receiver, Validator $validator)
+	public function __construct(IValidationReceiver $receiver, Validator $validator, private Environment $environment)
 	{
 		parent::__construct($receiver, $validator);
 	}
@@ -79,7 +79,7 @@ class PluginValidator extends ValidatorBase
 
 			$trueKeeper->state = $this->isWebsite($key, $value);
 
-			if (Environment::isProduction()) {
+			if ($this->environment->isProduction()) {
 				// チェック用URLなのでワッケ分からんURLの登録は禁止する(検証環境はいい)
 				$trueKeeper->state = $this->validator->isNotMatch($key, self::LOCALHOST_PATTERN, $value);
 			}

@@ -23,7 +23,7 @@ final class DevelopmentMiddleware implements IMiddleware
 
 	public function handleBefore(MiddlewareArgument $argument): MiddlewareResult
 	{
-		if (Environment::isProduction()) {
+		if ($argument->environment->isProduction()) {
 			$this->logger->warn('本番環境での実行は抑制');
 			return MiddlewareResult::error(HttpStatus::Forbidden);
 		}

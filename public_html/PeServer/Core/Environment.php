@@ -18,9 +18,6 @@ class Environment
 	 */
 	private static InitializeChecker|null $initializeChecker = null;
 
-	private static string $environment = Text::EMPTY;
-	private static string $revision = Text::EMPTY;
-
 	#endregion
 
 	#region function
@@ -29,8 +26,8 @@ class Environment
 		string $locale,
 		string $language,
 		string $timezone,
-		string $environment,
-		string $revision
+		private string $environment,
+		private string $revision
 	) {
 		self::$initializeChecker ??= new InitializeChecker();
 		self::$initializeChecker->initialize();
@@ -40,8 +37,6 @@ class Environment
 		date_default_timezone_set($timezone);
 		//setlocale(LC_ALL, $locale);
 
-		self::$environment = $environment;
-		self::$revision = $revision;
 		//self::setLanguage($language);
 	}
 
@@ -54,37 +49,33 @@ class Environment
 	// 	return (string)mb_language();
 	// }
 
-	public static function get(): string
+	public function get(): string
 	{
-		InitializeChecker::throwIfNotInitialize(self::$initializeChecker);
-
-		return self::$environment;
+		return $this->environment;
 	}
 
-	public static function is(string $environment): bool
+	public function is(string $environment): bool
 	{
-		InitializeChecker::throwIfNotInitialize(self::$initializeChecker);
-
-		return self::$environment === $environment;
+		return $this->environment === $environment;
 	}
 
-	public static function isProduction(): bool
+	public function isProduction(): bool
 	{
-		return self::is('production');
+		return $this->is('production');
 	}
-	public static function isDevelopment(): bool
+	public function isDevelopment(): bool
 	{
-		return self::is('development');
+		return $this->is('development');
 	}
-	public static function isTest(): bool
+	public function isTest(): bool
 	{
-		return self::is('test');
+		return $this->is('test');
 	}
 
-	public static function getRevision(): string
+	public function getRevision(): string
 	{
-		if (self::isProduction()) {
-			return self::$revision;
+		if ($this->isProduction()) {
+			return $this->revision;
 		}
 
 		return (string)time();

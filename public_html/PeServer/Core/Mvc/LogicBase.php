@@ -8,6 +8,7 @@ use DateInterval;
 use DateTimeImmutable;
 use PeServer\Core\Binary;
 use PeServer\Core\Collections\Arr;
+use PeServer\Core\Environment;
 use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\I18n;
@@ -112,6 +113,8 @@ abstract class LogicBase implements IValidationReceiver
 	 */
 	protected Stores $stores;
 
+	protected readonly Environment $environment;
+
 	/**
 	 * 応答ヘッダ。
 	 *
@@ -133,6 +136,7 @@ abstract class LogicBase implements IValidationReceiver
 		$this->httpResponseStatus = HttpStatus::OK;
 		$this->request = $parameter->request;
 		$this->stores = $parameter->stores;
+		$this->environment = $parameter->environment;
 		$this->logger = $parameter->logger;
 
 		$this->validator = new Validator($this);

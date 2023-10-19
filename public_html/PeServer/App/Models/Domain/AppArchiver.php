@@ -22,7 +22,8 @@ class AppArchiver
 	private const MAX_COUNT = 180;
 
 	public function __construct(
-		private AppConfiguration $config
+		private AppConfiguration $config,
+		private Environment $environment
 	) {
 		//NOP
 	}
@@ -44,7 +45,7 @@ class AppArchiver
 
 	public function backup(): int
 	{
-		$revision = Environment::getRevision();
+		$revision = $this->environment->getRevision();
 		$fileName = Utc::create()->format('Y-m-d\_His') . "_{$revision}.zip";
 		$filePath = Path::combine($this->getDirectory(), $fileName);
 		Directory::createParentDirectoryIfNotExists($filePath);
@@ -56,7 +57,7 @@ class AppArchiver
 		$databasePath = AppDatabaseConnection::getSqliteFilePath($this->config->setting->persistence->default->connection);
 		$zipArchive->addFile($databasePath, Path::getFileName($databasePath));
 		// 設定ファイル保存
-		$settingName = Path::setEnvironmentName('setting.json', Environment::get());
+		$settingName = Path::setEnvironmentName('setting.json', $this->environment->get());
 		$settingPath = Path::combine($this->config->settingDirectoryPath, $settingName);
 		$zipArchive->addFile($settingPath, $settingName);
 
