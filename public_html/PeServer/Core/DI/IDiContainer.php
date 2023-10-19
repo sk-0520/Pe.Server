@@ -7,12 +7,16 @@ namespace PeServer\Core\DI;
 use PeServer\Core\DI\IScopedDiContainer;
 use PeServer\Core\Throws\DiContainerArgumentException;
 use PeServer\Core\Throws\DiContainerException;
+use Psr\Container\ContainerInterface;
 
 /**
  * DIコンテナ。
  */
-interface IDiContainer
+interface IDiContainer extends ContainerInterface
 {
+	#region ContainerInterface
+	#endregion
+
 	#region function
 
 	/**
@@ -22,7 +26,7 @@ interface IDiContainer
 	 * @phpstan-param class-string|non-empty-string $id
 	 * @return bool
 	 */
-	public function has(string $id): bool;
+	public function has(string $id): bool; //@phpstan-ignore-line [TYPE_INTERFACE]
 
 	/**
 	 * 指定したIDのオブジェクトを取得。
@@ -32,7 +36,7 @@ interface IDiContainer
 	 * @return mixed
 	 * @throws DiContainerException
 	 */
-	public function get(string $id): mixed;
+	public function get(string $id): mixed; //@phpstan-ignore-line [TYPE_INTERFACE]
 
 	/**
 	 * クラス生成。

@@ -9,10 +9,8 @@ use PeServer\Core\Utc;
 
 /**
  * `stat` でもらえる情報。
- *
- * @immutable
  */
-class IOState
+readonly class IOState
 {
 	/**
 	 * 生成。
@@ -62,15 +60,15 @@ class IOState
 			$values['dev'],
 			$values['ino'],
 			$values['mode'],
-			$values['nlink'],
+			$values['nlink'], //cspell:disable-line
 			$values['uid'],
 			$values['gid'],
-			$values['rdev'],
+			$values['rdev'], //cspell:disable-line
 			$values['size'],
 			Utc::toDateTimeFromUnixTime($values['atime']),
 			Utc::toDateTimeFromUnixTime($values['mtime']),
 			Utc::toDateTimeFromUnixTime($values['ctime']),
-			$values['blksize'],
+			$values['blksize'], //cspell:disable-line
 			$values['blocks']
 		);
 	}

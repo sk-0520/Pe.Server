@@ -122,14 +122,14 @@ class AccountUserPluginLogic extends PageLogicBase
 
 		if ($this->isRegister) {
 			$this->validation('account_plugin_plugin_id', function (string $key, string $value) {
-				$pluginValidator = new PluginValidator($this, $this->validator);
+				$pluginValidator = new PluginValidator($this, $this->validator, $this->environment);
 				if ($pluginValidator->isPluginId($key, $value)) {
 					$database = $this->openDatabase();
 					$pluginValidator->isFreePluginId($database, $key, $value);
 				}
 			});
 			$this->validation('account_plugin_plugin_name', function (string $key, string $value) {
-				$pluginValidator = new PluginValidator($this, $this->validator);
+				$pluginValidator = new PluginValidator($this, $this->validator, $this->environment);
 				if ($pluginValidator->isPluginName($key, $value)) {
 					$database = $this->openDatabase();
 					$pluginValidator->isFreePluginName($database, $key, $value);
@@ -138,27 +138,27 @@ class AccountUserPluginLogic extends PageLogicBase
 		}
 
 		$this->validation('account_plugin_display_name', function (string $key, string $value) {
-			$pluginValidator = new PluginValidator($this, $this->validator);
+			$pluginValidator = new PluginValidator($this, $this->validator, $this->environment);
 			$pluginValidator->isDisplayName($key, $value);
 		});
 
 		$this->validation('account_plugin_check_url', function (string $key, string $value) {
-			$pluginValidator = new PluginValidator($this, $this->validator);
+			$pluginValidator = new PluginValidator($this, $this->validator, $this->environment);
 			$pluginValidator->isCheckUrl($key, $value);
 		});
 
 		$this->validation('account_plugin_lp_url', function (string $key, string $value) {
-			$pluginValidator = new PluginValidator($this, $this->validator);
+			$pluginValidator = new PluginValidator($this, $this->validator, $this->environment);
 			$pluginValidator->isWebsite($key, $value);
 		});
 
 		$this->validation('account_plugin_project_url', function (string $key, string $value) {
-			$pluginValidator = new PluginValidator($this, $this->validator);
+			$pluginValidator = new PluginValidator($this, $this->validator, $this->environment);
 			$pluginValidator->isWebsite($key, $value);
 		});
 
 		$this->validation('account_plugin_description', function (string $key, string $value) {
-			$pluginValidator = new PluginValidator($this, $this->validator);
+			$pluginValidator = new PluginValidator($this, $this->validator, $this->environment);
 			$pluginValidator->isDescription($key, $value);
 		});
 	}

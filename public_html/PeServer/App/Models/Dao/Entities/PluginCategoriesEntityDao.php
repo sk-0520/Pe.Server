@@ -6,15 +6,15 @@ namespace PeServer\App\Models\Dao\Entities;
 
 use PeServer\App\Models\Data\Dto\PluginCategoryDto;
 use PeServer\Core\Database\DaoBase;
+use PeServer\Core\Database\DaoTrait;
 use PeServer\Core\Database\DatabaseTableResult;
 use PeServer\Core\Database\IDatabaseContext;
 
 class PluginCategoriesEntityDao extends DaoBase
 {
-	public function __construct(IDatabaseContext $context)
-	{
-		parent::__construct($context);
-	}
+	use DaoTrait;
+
+	#region function
 
 	/**
 	 * @return PluginCategoryDto[]
@@ -107,4 +107,6 @@ class PluginCategoriesEntityDao extends DaoBase
 			]
 		);
 	}
+
+	#endregion
 }

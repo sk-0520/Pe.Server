@@ -12,7 +12,7 @@ use PeServer\Core\Mvc\DataContent;
 /**
  * ダウンロード用データ。
  */
-class DownloadDataContent extends DataContent
+readonly class DownloadDataContent extends DataContent
 {
 	#region variable
 
@@ -26,9 +26,9 @@ class DownloadDataContent extends DataContent
 	 *
 	 * @param string $mime
 	 * @phpstan-param non-empty-string|\PeServer\Core\Mime::* $mime
-	 * @param Binary $data
+	 * @param string|Binary $data
 	 */
-	public function __construct(string $mime, string $fileName, Binary $data)
+	public function __construct(string $mime, string $fileName, string|Binary $data)
 	{
 		parent::__construct(HttpStatus::None, $mime, $data);
 		$this->fileName = $fileName;

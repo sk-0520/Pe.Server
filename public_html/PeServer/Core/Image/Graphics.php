@@ -79,14 +79,14 @@ class Graphics extends DisposerBase
 	 * @return Graphics
 	 * @throws GraphicsException
 	 */
-	public static function create(Size $size): Graphics
+	public static function create(Size $size): self
 	{
 		$image = imagecreatetruecolor($size->width, $size->height);
 		if ($image === false) {
 			throw new GraphicsException();
 		}
 
-		return new Graphics($image, true);
+		return new self($image, true);
 	}
 
 	/**
@@ -96,13 +96,13 @@ class Graphics extends DisposerBase
 	 * @param ImageType $imageType
 	 * @return Graphics
 	 */
-	public static function load(Binary $binary, ImageType $imageType = ImageType::Auto): Graphics
+	public static function load(Binary $binary, ImageType $imageType = ImageType::Auto): self
 	{
 		$funcName = match ($imageType) {
 			ImageType::Png => 'imagecreatefrompng',
 			ImageType::Jpeg => 'imagecreatefromjpeg',
 			ImageType::Webp => 'imagecreatefromwebp',
-			ImageType::Bmp => 'imagecreatefrombmp',
+			ImageType::Bmp => 'imagecreatefrombmp', //cspell:disable-line
 			default => 'imagecreatefromstring'
 		};
 
@@ -114,7 +114,7 @@ class Graphics extends DisposerBase
 			throw new GraphicsException();
 		}
 
-		return new Graphics($result->value, true);
+		return new self($result->value, true);
 	}
 
 	/**
@@ -124,7 +124,7 @@ class Graphics extends DisposerBase
 	 * @phpstan-param non-empty-string $path
 	 * @return Graphics
 	 */
-	public static function open(string $path): Graphics
+	public static function open(string $path): self
 	{
 		$binary = File::readContent($path);
 		return self::load($binary);
@@ -150,9 +150,9 @@ class Graphics extends DisposerBase
 	 */
 	public function getDpi(): Size
 	{
-		$result = imageresolution($this->image);
+		$result = imageresolution($this->image);  //cspell:disable-line
 		if ($result === false) {
-			throw new GraphicsException('imageresolution');
+			throw new GraphicsException('imageresolution'); //cspell:disable-line
 		}
 		assert(is_array($result));
 
@@ -167,9 +167,9 @@ class Graphics extends DisposerBase
 	 */
 	public function setDpi(Size $size): void
 	{
-		$result = imageresolution($this->image, $size->width, $size->height);
+		$result = imageresolution($this->image, $size->width, $size->height); //cspell:disable-line
 		if ($result === false) {
-			throw new GraphicsException('imageresolution: ' . $size);
+			throw new GraphicsException('imageresolution: ' . $size); //cspell:disable-line
 		}
 	}
 
@@ -211,7 +211,7 @@ class Graphics extends DisposerBase
 	 * @throws GraphicsException
 	 * @see https://www.php.net/manual/function.imagescale.php
 	 */
-	public function scale(int|Size $size, ScaleMode $scaleMode): Graphics
+	public function scale(int|Size $size, ScaleMode $scaleMode): self
 	{
 		$result = false;
 		if (is_int($size)) {
@@ -223,7 +223,30 @@ class Graphics extends DisposerBase
 			throw new GraphicsException();
 		}
 
-		return new Graphics($result, true);
+		return new self($result, true);
+	}
+
+	/**
+	 * `imagerotate` ラッパー。
+	 *
+	 * @param float $angle
+	 * @param IColor $backgroundColor
+	 * @return Graphics
+	 * @throws GraphicsException
+	 * @see https://www.php.net/manual/function.imagerotate.php
+	 */
+	public function rotate(float $angle, IColor $backgroundColor): self
+	{
+		$result = $this->doColor(
+			$backgroundColor,
+			fn ($attachedColor) => imagerotate($this->image, $angle, $attachedColor)
+		);
+		if ($result === false) {
+			throw new GraphicsException();
+		}
+
+		//@phpstan-ignore-next-line ↑が false だけのはずなんだけど true を捕まえてる感じ
+		return new self($result, true);
 	}
 
 	/**
@@ -306,14 +329,15 @@ class Graphics extends DisposerBase
 		if ($thickness === $this->thickness) {
 			return DisposerBase::empty();
 		}
-		if ($thickness < 1) { //@phpstan-ignore-line [PHPDOC]
+		if ($thickness < 1) { //@phpstan-ignore-line [DOCTYPE]
 			throw new ArgumentException('$thickness');
 		}
 
 		$restoreThickness = $this->thickness;
 		$this->setThickness($thickness);
 
-		return new class ($this, $restoreThickness) extends DisposerBase
+		//phpcs:ignore PSR12.Classes.AnonClassDeclaration.SpaceAfterKeyword
+		return new class($this, $restoreThickness) extends DisposerBase
 		{
 			/**
 			 * 生成。
@@ -367,23 +391,43 @@ class Graphics extends DisposerBase
 		return imagecolordeallocate($this->image, $colorResource->value);
 	}
 
-	private function doColorCore(ColorResource $color, callable $action): mixed
+	/**
+	 * 色処理の実行部分。
+	 *
+	 * @template TResult
+	 * @param ColorResource $color
+	 * @param callable $callback
+	 * @phpstan-param callable(mixed): TResult $callback
+	 * @return mixed
+	 * @phpstan-return TResult
+	 */
+	private function doColorCore(ColorResource $color, callable $callback): mixed
 	{
-		return $action($color->value);
+		return $callback($color->value);
 	}
 
-	private function doColor(IColor $color, callable $action): mixed
+	/**
+	 * 色の処理。
+	 *
+	 * @template TResult
+	 * @param IColor $color
+	 * @param callable $callback
+	 * @phpstan-param callable(mixed): TResult $callback
+	 * @return mixed
+	 * @phpstan-return TResult
+	 */
+	private function doColor(IColor $color, callable $callback): mixed
 	{
 		if ($color instanceof RgbColor) {
 			$colorResource = $this->attachColor($color);
 			try {
-				return $this->doColorCore($colorResource, $action);
+				return $this->doColorCore($colorResource, $callback);
 			} finally {
 				$this->detachColor($colorResource);
 			}
 		} else {
 			assert($color instanceof ColorResource);
-			return $this->doColorCore($color, $action);
+			return $this->doColorCore($color, $callback);
 		}
 	}
 
@@ -472,6 +516,8 @@ class Graphics extends DisposerBase
 	/**
 	 * テキスト描画。
 	 *
+	 * `imagettftext` ラッパー。
+	 *
 	 * @param string $text 描画テキスト。
 	 * @param float $fontSize フォントサイズ。
 	 * @param Point $location 描画開始座標。
@@ -479,18 +525,18 @@ class Graphics extends DisposerBase
 	 * @param TextSetting $setting 描画するテキスト設定。
 	 * @return Area 描画領域。
 	 * @throws GraphicsException
+	 * @see https://www.php.net/manual/ja/function.imagettftext.php
 	 */
 	public function drawString(string $text, float $fontSize, Point $location, IColor $color, TextSetting $setting): Area
 	{
-		/** @phpstan-var non-empty-array<int>|false */
 		$result = $this->doColor(
 			$color,
 			fn ($attachedColor) => imagettftext(
 				$this->image,
 				$fontSize,
 				$setting->angle,
-				(int)$location->x,
-				(int)$location->y,
+				$location->x,
+				$location->y,
 				$attachedColor,
 				$setting->fontNameOrPath,
 				$text
@@ -501,13 +547,14 @@ class Graphics extends DisposerBase
 			throw new GraphicsException();
 		}
 
+		//@phpstan-ignore-next-line ↑が false だけのはずなんだけど true を捕まえてる感じ
 		return Area::create($result);
 	}
 
 	/**
-	 * テキスト描画。
+	 * いい感じにテキスト描画。
 	 *
-	 * 内部的に `self::calculateTextArea` を使用。
+	 * 内部的に `self::calculateTextArea`, `self::drawString` を使用。
 	 *
 	 * @param string $text 描画テキスト。
 	 * @param float $fontSize フォントサイズ。
@@ -548,7 +595,7 @@ class Graphics extends DisposerBase
 			ImageType::Png => imagepng($this->image, null, ...$setting->options()),
 			ImageType::Jpeg => imagejpeg($this->image, null, ...$setting->options()),
 			ImageType::Webp => imagewebp($this->image, null, ...$setting->options()),
-			ImageType::Bmp => imagebmp($this->image, null, ...$setting->options()),
+			ImageType::Bmp => imagebmp($this->image, null, ...$setting->options()), //cspell:disable-line
 			default  => throw new NotImplementedException(),
 		});
 	}

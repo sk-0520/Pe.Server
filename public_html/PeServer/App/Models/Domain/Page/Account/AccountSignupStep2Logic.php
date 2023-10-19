@@ -128,7 +128,7 @@ class AccountSignupStep2Logic extends PageLogicBase
 			'email' => $this->cryptography->encrypt($email),
 			'mark_email' => $this->cryptography->toMark($email),
 			'user_name' => $this->getRequest('account_signup_name'),
-			'password' => Cryptography::toHashPassword($password)
+			'password' => Cryptography::hashPassword($password)
 		];
 
 		$database = $this->openDatabase();

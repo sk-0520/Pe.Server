@@ -94,7 +94,7 @@ class ManagementSetupLogic extends PageLogicBase
 
 		$userInfo = [
 			'id' => UserUtility::generateUserId(),
-			'current_password' => Cryptography::toHashPassword($params['password']),
+			'current_password' => Cryptography::hashPassword($params['password']),
 		];
 
 		$database = $this->openDatabase();

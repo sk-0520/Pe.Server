@@ -61,7 +61,11 @@ class AutoLoader
 			// PHPMailer
 			'PHPMailer\PHPMailer' => [
 				'directory' => $libs . 'PHPMailer/src',
-			]
+			],
+			// Psr
+			'Psr\Container' => [
+				'directory' => $libs . 'php-fig/container/src',
+			],
 		];
 		foreach ($libraries as $k => $v) {
 			$this->setImpl($k, $v, false);

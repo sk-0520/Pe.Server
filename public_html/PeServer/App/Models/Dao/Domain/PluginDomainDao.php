@@ -10,14 +10,14 @@ use PeServer\App\Models\Cache\PluginCacheItem;
 use PeServer\App\Models\Domain\PluginUrlKey;
 use PeServer\Core\Collections\Collection;
 use PeServer\Core\Database\DaoBase;
+use PeServer\Core\Database\DaoTrait;
 use PeServer\Core\Database\IDatabaseContext;
 
 class PluginDomainDao extends DaoBase
 {
-	public function __construct(IDatabaseContext $context)
-	{
-		parent::__construct($context);
-	}
+	use DaoTrait;
+
+	#region function
 
 	/**
 	 * Undocumented function
@@ -153,4 +153,6 @@ class PluginDomainDao extends DaoBase
 			return $cache;
 		}, $result->rows);
 	}
+
+	#endregion
 }

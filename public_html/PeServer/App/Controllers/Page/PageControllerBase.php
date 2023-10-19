@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PeServer\App\Controllers\Page;
 
 use PeServer\App\Models\SessionKey;
@@ -15,6 +17,8 @@ abstract class PageControllerBase extends DomainControllerBase
 	{
 		parent::__construct($argument);
 	}
+
+	#region function
 
 	/**
 	 * ログイン済みか。
@@ -33,10 +37,14 @@ abstract class PageControllerBase extends DomainControllerBase
 		return parent::viewWithController($controllerName, $action, $parameter);
 	}
 
-	//[DomainControllerBase]
+	#endregion
+
+	#region DomainControllerBase
 
 	protected function getSkipBaseName(): string
 	{
-		return 'PeServer\\App\\Controllers\\Page';
+		return __NAMESPACE__;
 	}
+
+	#endregion
 }

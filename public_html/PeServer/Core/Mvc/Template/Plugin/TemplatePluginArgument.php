@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc\Template\Plugin;
 
 use Smarty;
+use PeServer\Core\Environment;
 use PeServer\Core\Store\CookieStore;
 use PeServer\Core\Store\SessionStore;
 use PeServer\Core\Store\SpecialStore;
@@ -21,13 +22,15 @@ class TemplatePluginArgument
 	 * @param string $rootDirectoryPath ルートディレクトリ。
 	 * @param string $baseDirectoryPath ベースディレクトリ。
 	 * @param IUrlHelper $urlHelper
+	 * @param Environment $environment
 	 */
 	public function __construct(
 		public Smarty $engine,
 		public string $rootDirectoryPath,
 		public string $baseDirectoryPath,
 		public IUrlHelper $urlHelper,
-		public Stores $stores
+		public Stores $stores,
+		public Environment $environment
 	) {
 	}
 }

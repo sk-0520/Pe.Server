@@ -39,6 +39,13 @@ abstract class Uuid
 		);
 	}
 
+	/**
+	 * GUIDとして同じか。
+	 *
+	 * @param string $a
+	 * @param string $b
+	 * @return bool
+	 */
 	public static function isEqualGuid(string $a, string $b): bool
 	{
 		if ($a === $b) {

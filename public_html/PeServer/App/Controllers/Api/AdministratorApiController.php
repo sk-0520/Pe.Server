@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PeServer\App\Controllers\Api;
 
 use PeServer\App\Models\Domain\Api\AdministratorApi\AdministratorApiBackupLogic;

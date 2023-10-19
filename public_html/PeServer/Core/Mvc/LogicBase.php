@@ -8,6 +8,7 @@ use DateInterval;
 use DateTimeImmutable;
 use PeServer\Core\Binary;
 use PeServer\Core\Collections\Arr;
+use PeServer\Core\Environment;
 use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\I18n;
@@ -22,7 +23,7 @@ use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\Mvc\Template\TemplateParameter;
 use PeServer\Core\Mvc\UploadFile;
 use PeServer\Core\Mvc\Validator;
-use PeServer\Core\Store\CookieOption;
+use PeServer\Core\Store\CookieOptions;
 use PeServer\Core\Store\CookieStore;
 use PeServer\Core\Store\SessionStore;
 use PeServer\Core\Store\SpecialStore;
@@ -112,6 +113,8 @@ abstract class LogicBase implements IValidationReceiver
 	 */
 	protected Stores $stores;
 
+	protected readonly Environment $environment;
+
 	/**
 	 * 応答ヘッダ。
 	 *
@@ -133,6 +136,7 @@ abstract class LogicBase implements IValidationReceiver
 		$this->httpResponseStatus = HttpStatus::OK;
 		$this->request = $parameter->request;
 		$this->stores = $parameter->stores;
+		$this->environment = $parameter->environment;
 		$this->logger = $parameter->logger;
 
 		$this->validator = new Validator($this);
@@ -166,7 +170,7 @@ abstract class LogicBase implements IValidationReceiver
 	protected function getFile(string $key): UploadFile
 	{
 		if (!$this->request->exists($key, true)->exists) {
-			throw new InvalidOperationException('$key: ' . $key);
+			throw new KeyNotFoundException('$key: ' . $key);
 		}
 
 		$file = $this->request->getFile($key);
@@ -231,33 +235,33 @@ abstract class LogicBase implements IValidationReceiver
 	 *
 	 * @param string $key キー。
 	 * @param string $value 設定値。
-	 * @param CookieOption|array{path:?string,span:?DateInterval,secure:?bool,httpOnly:?bool}|null $option オプション。
+	 * @param CookieOptions|array{path:?string,span:?DateInterval,secure:?bool,httpOnly:?bool}|null $options オプション。
 	 * @return void
 	 */
-	protected function setCookie(string $key, string $value, CookieOption|array|null $option = null): void
+	protected function setCookie(string $key, string $value, CookieOptions|array|null $options = null): void
 	{
-		/** @var CookieOption|null */
-		$cookieOption = null;
+		/** @var CookieOptions|null */
+		$cookieOptions = null;
 
-		if ($option !== null) {
-			if ($option instanceof CookieOption) {
-				$cookieOption = $option;
+		if ($options !== null) {
+			if ($options instanceof CookieOptions) {
+				$cookieOptions = $options;
 			} else {
 				/** @var string */
-				$path = Arr::getOr($option, 'path', $this->stores->cookie->option->path);
+				$path = Arr::getOr($options, 'path', $this->stores->cookie->options->path);
 				/** @var \DateInterval|null */
-				$span = Arr::getOr($option, 'span', $this->stores->cookie->option->span);
+				$span = Arr::getOr($options, 'span', $this->stores->cookie->options->span);
 				/** @var bool */
-				$secure = Arr::getOr($option, 'secure', $this->stores->cookie->option->secure);
+				$secure = Arr::getOr($options, 'secure', $this->stores->cookie->options->secure);
 				/** @var bool */
-				$httpOnly = Arr::getOr($option, 'httpOnly', $this->stores->cookie->option->httpOnly);
+				$httpOnly = Arr::getOr($options, 'httpOnly', $this->stores->cookie->options->httpOnly);
 				/**
 				 * @var string
 				 * @phpstan-var 'Lax'|'lax'|'None'|'none'|'Strict'|'strict'
 				 */
-				$sameSite = Arr::getOr($option, 'sameSite', $this->stores->cookie->option->sameSite);
+				$sameSite = Arr::getOr($options, 'sameSite', $this->stores->cookie->options->sameSite);
 
-				$cookieOption = new CookieOption(
+				$cookieOptions = new CookieOptions(
 					$path,
 					$span,
 					$secure,
@@ -267,7 +271,7 @@ abstract class LogicBase implements IValidationReceiver
 			}
 		}
 
-		$this->stores->cookie->set($key, $value, $cookieOption);
+		$this->stores->cookie->set($key, $value, $cookieOptions);
 	}
 
 	/**
@@ -459,17 +463,17 @@ abstract class LogicBase implements IValidationReceiver
 	 * @param string $key
 	 * @param callable $callback
 	 * @phpstan-param callable(string,string):void $callback
-	 * @param array{default?:string,trim?:bool}|null $option オプション
+	 * @param array{default?:string,trim?:bool}|null $options オプション
 	 *   * default: 取得失敗時の値。
 	 *   * trim: 値をトリムするか。
 	 * @return void
 	 */
-	protected function validation(string $key, callable $callback, ?array $option = null): void
+	protected function validation(string $key, callable $callback, ?array $options = null): void
 	{
 		/** @var string */
-		$default = Arr::getOr($option, 'default', Text::EMPTY);
+		$default = Arr::getOr($options, 'default', Text::EMPTY);
 		/** @var bool */
-		$trim = Arr::getOr($option, 'trim', true);
+		$trim = Arr::getOr($options, 'trim', true);
 
 		$value = $this->getRequest($key, $default, $trim);
 		$callback($key, $value);

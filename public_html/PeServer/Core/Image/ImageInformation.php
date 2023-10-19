@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace PeServer\Core\Image;
 
 use Exception;
+use PeServer\Core\ErrorHandler;
 use PeServer\Core\Image\ImageType;
 use PeServer\Core\Image\Size;
+use PeServer\Core\Throws\Enforce;
 use PeServer\Core\Throws\ImageException;
 
 /**
  * 画像情報。
- *
- * @immutable
  */
-class ImageInformation
+readonly class ImageInformation
 {
 	/**
 	 * 生成
@@ -42,20 +42,16 @@ class ImageInformation
 	 */
 	public static function load(string $filePath): ImageInformation
 	{
-		$result = getimagesize($filePath);
-		if ($result === false) {
+		$result = ErrorHandler::trapError(fn () => getimagesize($filePath));
+		if (!$result->success || $result->value === false) {
 			throw new ImageException($filePath);
 		}
 
-		if ($result[0] < 1) {
-			throw new Exception('$result[0]: ' . $result[0]);
-		}
-		if ($result[1] < 1) {
-			throw new Exception('$result[1]: ' . $result[1]);
-		}
-		if (!(-1 <= $result[2] && $result[2] <= 18 && $result[2] !== 0)) {
-			throw new Exception('$result[2]: ' . $result[2]);
-		}
+		$result = $result->value;
+
+		Enforce::throwIf(1 <= $result[0]);
+		Enforce::throwIf(1 <= $result[1]);
+		Enforce::throwIf(-1 <= $result[2] && $result[2] <= 18 && $result[2] !== 0);
 
 		return new ImageInformation(
 			new Size(

@@ -7,7 +7,7 @@ namespace PeServer\Core\Http\Client;
 use PeServer\Core\Binary;
 use PeServer\Core\Encoding;
 use PeServer\Core\Http\HttpHeader;
-use PeServer\Core\Http\HttpHeadContentType;
+use PeServer\Core\Http\ContentType;
 use PeServer\Core\Text;
 
 abstract class HttpClientContentBase
@@ -25,7 +25,7 @@ abstract class HttpClientContentBase
 		}
 
 		$result = HttpHeader::createClientRequestHeader();
-		$result->setContentType(new HttpHeadContentType($mime, $encoding));
+		$result->setContentType(ContentType::create($mime, $encoding));
 
 		return $result;
 	}

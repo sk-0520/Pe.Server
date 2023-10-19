@@ -10,10 +10,8 @@ use PeServer\Core\Text;
 
 /**
  * HTTPメソッドとコントローラメソッドの紐づけ。
- *
- * @immutable
  */
-class ActionSetting
+readonly class ActionSetting
 {
 	/**
 	 * 生成。

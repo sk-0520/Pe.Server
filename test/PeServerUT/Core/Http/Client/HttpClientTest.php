@@ -15,7 +15,7 @@ use PeServer\Core\Http\Client\HttpClientRequest;
 use PeServer\Core\Http\Client\HttpRedirectOptions;
 use PeServer\Core\Http\Client\JsonContent;
 use PeServer\Core\Http\Client\StringContent;
-use PeServer\Core\Http\HttpHeadContentType;
+use PeServer\Core\Http\ContentType;
 use PeServer\Core\Http\HttpHeader;
 use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Http\HttpStatus;
@@ -86,7 +86,7 @@ class HttpClientTest extends TestClass
 		$hc = new HttpClient(new HttpClientOptions());
 
 		$header1 = HttpHeader::createClientRequestHeader();
-		$header1->setContentType(new HttpHeadContentType('application/octet-stream', null));
+		$header1->setContentType(ContentType::create('application/octet-stream', null));
 		$actual1 = $hc->post($url, $header1, null);
 		$this->assertSame('application/octet-stream', $actual1->header->getContentType()->mime);
 		$this->assertSame('', $actual1->content->raw);
@@ -143,7 +143,7 @@ class HttpClientTest extends TestClass
 
 		$this->expectException(HttpClientRequestException::class);
 		$header = HttpHeader::createClientRequestHeader();
-		$header->setContentType(HttpHeadContentType::create('application/octet-stream'));
+		$header->setContentType(ContentType::create('application/octet-stream'));
 		$hc->send(new HttpClientRequest($url, $method, $header, null));
 		$this->fail();
 	}

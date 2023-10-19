@@ -22,6 +22,7 @@ class JsonSerializer extends SerializerBase
 
 	public const SAVE_NONE = 0;
 	public const SAVE_PRETTY = JSON_PRETTY_PRINT;
+	public const SAVE_UNESCAPED_SLASHES = JSON_UNESCAPED_SLASHES;
 	public const SAVE_UNESCAPED_UNICODE = JSON_UNESCAPED_UNICODE;
 	public const SAVE_DEFAULT = self::SAVE_PRETTY | self::SAVE_UNESCAPED_UNICODE;
 

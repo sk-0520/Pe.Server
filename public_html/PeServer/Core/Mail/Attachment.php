@@ -10,10 +10,8 @@ use PeServer\Core\Text;
 
 /**
  * メール添付データ。
- *
- * @immutable
  */
-class Attachment
+readonly class Attachment
 {
 	/**
 	 * 生成。

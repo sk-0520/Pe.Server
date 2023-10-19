@@ -6,15 +6,15 @@ namespace PeServer\App\Models\Dao\Entities;
 
 use PeServer\App\Models\Data\Dto\UserInformationDto;
 use PeServer\Core\Database\DaoBase;
+use PeServer\Core\Database\DaoTrait;
 use PeServer\Core\Database\DatabaseRowResult;
 use PeServer\Core\Database\IDatabaseContext;
 
 class UsersEntityDao extends DaoBase
 {
-	public function __construct(IDatabaseContext $context)
-	{
-		parent::__construct($context);
-	}
+	use DaoTrait;
+
+	#region function
 
 	public function selectExistsSetupUser(): bool
 	{
@@ -258,4 +258,6 @@ class UsersEntityDao extends DaoBase
 			]
 		);
 	}
+
+	#endregion
 }

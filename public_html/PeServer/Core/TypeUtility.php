@@ -149,6 +149,12 @@ abstract class TypeUtility
 		return false;
 	}
 
+	/**
+	 * 文字列を真偽値に変換した結果を取得。
+	 *
+	 * @param mixed $input
+	 * @return bool
+	 */
 	public static function parseBoolean(mixed $input): bool
 	{
 		if (is_bool($input)) {
@@ -181,6 +187,14 @@ abstract class TypeUtility
 		return get_debug_type($input); //@phpstan-ignore-line 正直戻り値の制限いらんとは思っている
 	}
 
+	/**
+	 * NULL を許容する型か。
+	 *
+	 * NULL 許容型ではないことに注意。
+	 *
+	 * @param string $type
+	 * @return bool
+	 */
 	public static function isNullable(string $type): bool
 	{
 		// if($type[0] === '?') {

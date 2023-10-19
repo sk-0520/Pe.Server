@@ -25,25 +25,21 @@
 			"**/obj/**": true,
 			"*.lnk": true,
 			"**/PHPUnit/**": true,
-			"**/Libs/**": true
+			"**/Libs/**": true,
+			"**/dev/extracts/**": true
 		},
 		"html.format.indentInnerHtml": true,
 		"html.format.wrapLineLength": 0,
 		"cSpell.words": [
 			"Acao",
-			"ATTR_ERRMODE",
 			"autoincrement",
 			"autoload",
 			"cachebuster",
 			"checkAlwaysTrueInstanceof",
 			"CyclomaticComplexity",
 			"endregion",
-			"ERRMODE_EXCEPTION",
 			"httponly",
 			"IFNULL",
-			"imagebmp",
-			"imagecreatefrombmp",
-			"imageresolution",
 			"intelephense",
 			"LINQ",
 			"loginid",
@@ -74,9 +70,6 @@
 			".vscode-insiders"
 		],
 		"intelephense.environment.phpVersion": "8.2.0",
-		"intelephense.files.exclude": [
-			"**/php-deploy-receiver.php"
-		],
 		"auto-close-tag.activationOnLanguage": [
 			"smarty"
 		],

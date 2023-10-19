@@ -12,10 +12,8 @@ use PeServer\Core\Web\IUrlHelper;
 
 /**
  * コントローラ生成時に使用される入力値。
- *
- * @immutable
  */
-class ControllerArgument
+readonly class ControllerArgument
 {
 	/**
 	 * 生成。

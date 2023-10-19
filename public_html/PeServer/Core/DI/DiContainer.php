@@ -356,12 +356,12 @@ class DiContainer extends DisposerBase implements IDiContainer
 
 	#region IDiContainer
 
-	public function has(string $id): bool
+	public function has(string $id): bool //@phpstan-ignore-line [TYPE_INTERFACE]
 	{
 		return isset($this->mapping[$id]);
 	}
 
-	public function get(string $id): mixed
+	public function get(string $id): mixed //@phpstan-ignore-line [TYPE_INTERFACE]
 	{
 		$this->throwIfDisposed();
 

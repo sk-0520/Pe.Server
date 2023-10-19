@@ -6,6 +6,7 @@ namespace PeServer\Core\Mvc;
 
 use PeServer\Core\IO\Directory;
 use PeServer\Core\Throws\InvalidOperationException;
+use PeServer\Core\Throws\NotSupportedException;
 
 /**
  * アップロードファイル。
@@ -114,6 +115,6 @@ class LocalInvalidUploadFile extends UploadFile
 
 	public function move(string $path): void
 	{
-		throw new InvalidOperationException();
+		throw new NotSupportedException();
 	}
 }

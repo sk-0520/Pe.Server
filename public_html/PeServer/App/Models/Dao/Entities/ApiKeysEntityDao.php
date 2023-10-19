@@ -6,15 +6,15 @@ namespace PeServer\App\Models\Dao\Entities;
 
 use DateTimeImmutable;
 use PeServer\Core\Database\DaoBase;
+use PeServer\Core\Database\DaoTrait;
 use PeServer\Core\Database\DatabaseRowResult;
 use PeServer\Core\Database\IDatabaseContext;
 
 class ApiKeysEntityDao extends DaoBase
 {
-	public function __construct(IDatabaseContext $context)
-	{
-		parent::__construct($context);
-	}
+	use DaoTrait;
+
+	#region function
 
 	public function selectExistsApiKeyByUserId(string $userId): bool
 	{
@@ -134,4 +134,6 @@ class ApiKeysEntityDao extends DaoBase
 			]
 		);
 	}
+
+	#endregion
 }

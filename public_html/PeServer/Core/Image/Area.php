@@ -19,10 +19,10 @@ class Area implements Stringable
 	/**
 	 * 生成
 	 *
-	 * @param Point $leftTop 左上座標([6], [7])
-	 * @param Point $leftBottom 左下座標([0], [1])
-	 * @param Point $rightBottom 右下座標([2], [3])
-	 * @param Point $rightTop 右上座標([4], [5])
+	 * @param Point $leftTop 左上座標
+	 * @param Point $leftBottom 左下座標
+	 * @param Point $rightBottom 右下座標
+	 * @param Point $rightTop 右上座標
 	 */
 	public function __construct(
 		public Point $leftTop,
@@ -38,12 +38,20 @@ class Area implements Stringable
 	 * 配列から生成。
 	 *
 	 * @param int[] $areaArray
+	 *   * 0 :左下角の X 座標
+	 *   * 1 :左下角の Y 座標
+	 *   * 2 :右下角の X 座標
+	 *   * 3 :右下角の Y 座標
+	 *   * 4 :右上角の X 座標
+	 *   * 5 :右上角の Y 座標
+	 *   * 6 :左上角の X 座標
+	 *   * 7 :左上角の Y 座標
 	 * @phpstan-param non-empty-array<int> $areaArray
 	 * @return Area
 	 */
-	public static function create(array $areaArray): Area
+	public static function create(array $areaArray): self
 	{
-		return new Area(
+		return new self(
 			new Point($areaArray[6], $areaArray[7]),
 			new Point($areaArray[0], $areaArray[1]),
 			new Point($areaArray[2], $areaArray[3]),

@@ -101,7 +101,7 @@ class PasswordResetLogic extends PageLogicBase
 				return false;
 			}
 
-			$password = Cryptography::toHashPassword($rawPassword);
+			$password = Cryptography::hashPassword($rawPassword);
 			$userAuthenticationsEntityDao->updateResetPassword($userId, $password);
 
 			$this->writeAuditLogTargetUser($userId, AuditLog::USER_PASSWORD_REMINDER_RESET, ['token' => $token], $context);

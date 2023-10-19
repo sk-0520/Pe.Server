@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc\Result;
 
 use PeServer\Core\Binary;
-use PeServer\Core\Http\HttpHeadContentType;
+use PeServer\Core\Http\ContentType;
 use PeServer\Core\Http\HttpResponse;
 use PeServer\Core\Mime;
 use PeServer\Core\Mvc\DataContent;
@@ -20,7 +20,7 @@ use PeServer\Core\Throws\ArgumentException;
 /**
  * 結果操作: データ。
  */
-class DataActionResult implements IActionResult
+readonly class DataActionResult implements IActionResult
 {
 	#region variable
 
@@ -34,7 +34,6 @@ class DataActionResult implements IActionResult
 	 * @param DataContent $content
 	 */
 	public function __construct(
-		/** @readonly */
 		private DataContent $content,
 		?JsonSerializer $jsonSerializer = null
 	) {
@@ -89,7 +88,7 @@ class DataActionResult implements IActionResult
 
 		$response->status = $this->content->httpStatus;
 
-		$response->header->setContentType(new HttpHeadContentType($this->content->mime, null));
+		$response->header->setContentType(ContentType::create($this->content->mime));
 
 		if ($this->content instanceof DownloadDataContent) {
 			$fileName = urlencode($this->content->fileName);

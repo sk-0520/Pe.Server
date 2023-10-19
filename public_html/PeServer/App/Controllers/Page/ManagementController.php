@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PeServer\App\Controllers\Page;
 
 use PeServer\App\Controllers\Page\PageControllerBase;

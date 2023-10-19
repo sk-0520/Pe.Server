@@ -6,10 +6,8 @@ namespace PeServer\Core;
 
 /**
  * 最低限のディレクトリ定義。
- *
- * @immutable
  */
-class DefinedDirectory
+readonly class DefinedDirectory
 {
 	/**
 	 * 生成。

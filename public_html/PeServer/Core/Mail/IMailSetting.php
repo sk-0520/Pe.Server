@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Mail;
 
 use PeServer\Core\Mail\Mailer;
+use PeServer\Core\Mail\SendMode;
 
 interface IMailSetting
 {
@@ -13,10 +14,9 @@ interface IMailSetting
 	/**
 	 * メール送信方法。
 	 *
-	 * @return int
-	 * @phpstan-return Mailer::SEND_MODE_*
+	 * @return SendMode
 	 */
-	public function mode(): int;
+	public function mode(): SendMode;
 
 	#endregion
 }

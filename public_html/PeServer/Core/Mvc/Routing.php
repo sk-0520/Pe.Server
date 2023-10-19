@@ -6,6 +6,7 @@ namespace PeServer\Core\Mvc;
 
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\DI\IDiRegisterContainer;
+use PeServer\Core\Environment;
 use PeServer\Core\Http\HttpHeader;
 use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Http\HttpRequest;
@@ -48,6 +49,7 @@ class Routing
 	protected readonly RouteSetting $setting;
 
 	protected readonly Stores $stores;
+	protected readonly Environment $environment;
 
 	protected readonly ILoggerFactory $loggerFactory;
 
@@ -97,12 +99,13 @@ class Routing
 	 * @param RouteSetting $routeSetting
 	 * @param Stores $stores
 	 */
-	public function __construct(RouteRequest $routeRequest, RouteSetting $routeSetting, Stores $stores, IResponsePrinterFactory $responsePrinterFactory, ILoggerFactory $loggerFactory, IDiRegisterContainer $serviceLocator)
+	public function __construct(RouteRequest $routeRequest, RouteSetting $routeSetting, Stores $stores, Environment $environment, IResponsePrinterFactory $responsePrinterFactory, ILoggerFactory $loggerFactory, IDiRegisterContainer $serviceLocator)
 	{
 		$this->requestMethod = $routeRequest->method;
 		$this->requestPath = $routeRequest->path;
 		$this->setting = $routeSetting;
 		$this->stores = $stores;
+		$this->environment = $environment;
 		$this->responsePrinterFactory = $responsePrinterFactory;
 		$this->loggerFactory = $loggerFactory;
 		$this->serviceLocator = $serviceLocator;
@@ -161,7 +164,7 @@ class Routing
 	 */
 	private function handleBeforeMiddlewareCore(RequestPath $requestPath, HttpRequest $request, IMiddleware|string $middleware): bool
 	{
-		$middlewareArgument = new MiddlewareArgument($requestPath, $this->stores, $request);
+		$middlewareArgument = new MiddlewareArgument($requestPath, $this->stores, $this->environment, $request);
 		$middleware = self::getOrCreateMiddleware($middleware);
 
 		$middlewareResult = $middleware->handleBefore($middlewareArgument);
@@ -208,7 +211,7 @@ class Routing
 			return true;
 		}
 
-		$middlewareArgument = new MiddlewareArgument($this->requestPath, $this->stores, $request);
+		$middlewareArgument = new MiddlewareArgument($this->requestPath, $this->stores, $this->environment, $request);
 
 		$middleware = Arr::reverse($this->processedMiddleware);
 		foreach ($middleware as $middlewareItem) {
@@ -324,7 +327,7 @@ class Routing
 	protected function handleShutdownMiddleware(): void
 	{
 		if (Arr::getCount($this->shutdownMiddleware)) {
-			$middlewareArgument = new MiddlewareArgument($this->requestPath, $this->stores, $this->shutdownRequest);
+			$middlewareArgument = new MiddlewareArgument($this->requestPath, $this->stores, $this->environment, $this->shutdownRequest);
 
 			$shutdownMiddleware = array_reverse($this->shutdownMiddleware);
 			foreach ($shutdownMiddleware as $middleware) {

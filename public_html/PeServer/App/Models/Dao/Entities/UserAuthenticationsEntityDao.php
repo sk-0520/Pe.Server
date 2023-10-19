@@ -6,15 +6,15 @@ namespace PeServer\App\Models\Dao\Entities;
 
 use DateTimeInterface;
 use PeServer\Core\Database\DaoBase;
+use PeServer\Core\Database\DaoTrait;
 use PeServer\Core\Database\DatabaseRowResult;
 use PeServer\Core\Database\IDatabaseContext;
 
 class UserAuthenticationsEntityDao extends DaoBase
 {
-	public function __construct(IDatabaseContext $context)
-	{
-		parent::__construct($context);
-	}
+	use DaoTrait;
+
+	#region function
 
 	/**
 	 * @template TFieldArray of array{current_password:string}
@@ -182,6 +182,34 @@ class UserAuthenticationsEntityDao extends DaoBase
 		);
 	}
 
+	/**
+	 * パスワードの変更。
+	 *
+	 * 純粋に現在のパスワードのみを変更する。
+	 *
+	 * @param string $userId
+	 * @param string $password
+	 */
+	public function updatePasswordOnly(string $userId, string $password): void
+	{
+		$this->context->updateByKey(
+			<<<SQL
+
+			update
+				user_authentications
+			set
+				current_password = :password
+			where
+				user_id = :user_id
+
+			SQL,
+			[
+				'user_id' => $userId,
+				'password' => $password,
+			]
+		);
+	}
+
 	public function updateClearReminder(string $userId): void
 	{
 		$this->context->updateByKey(
@@ -201,4 +229,6 @@ class UserAuthenticationsEntityDao extends DaoBase
 			]
 		);
 	}
+
+	#endregion
 }

@@ -65,6 +65,11 @@ abstract class Utc
 		return new DateTimeImmutable('now', self::getTimezone());
 	}
 
+	/**
+	 * 現在時刻を変更可能なオブジェクトとして取得。
+	 *
+	 * @return DateTime
+	 */
 	public static function createDateTime(): DateTime
 	{
 		return new DateTime('now', self::getTimezone());
@@ -78,6 +83,7 @@ abstract class Utc
 	 * @param string|null $s
 	 * @param DateTimeImmutable|DateTime|null $result
 	 * @return boolean
+	 * @phpstan-assert-if-true DateTimeImmutable|DateTime $result
 	 */
 	private static function tryParseCore(string $dateTimeClassName, ?string $s, DateTimeImmutable|DateTime|null &$result): bool
 	{
@@ -116,20 +122,27 @@ abstract class Utc
 		return true;
 	}
 
-
-
 	/**
 	 * パース処理。
 	 *
 	 * @param string|null $s
 	 * @param DateTimeImmutable|null $result
-	 * @return boolean
+	 * @return boolean パース成功状態。
+	 * @phpstan-assert-if-true DateTimeImmutable $result
 	 */
 	public static function tryParse(?string $s, ?DateTimeImmutable &$result): bool
 	{
 		return self::tryParseCore(DateTimeImmutable::class, $s, $result);
 	}
 
+	/**
+	 * 変更可能なオブジェクトとしてパース処理。
+	 *
+	 * @param string|null $s
+	 * @param DateTime|null $result
+	 * @return boolean パース成功状態。
+	 * @phpstan-assert-if-true DateTime $result
+	 */
 	public static function tryParseDateTime(?string $s, ?DateTime &$result): bool
 	{
 		return self::tryParseCore(DateTime::class, $s, $result);
@@ -151,6 +164,13 @@ abstract class Utc
 		throw new ParseException();
 	}
 
+	/**
+	 * 変更可能なオブジェクトとしてパース処理。
+	 *
+	 * @param string $s
+	 * @return DateTime
+	 * @throws ParseException
+	 */
 	public static function parseDateTime(string $s): DateTime
 	{
 		if (self::tryParseDateTime($s, $result)) {

@@ -42,6 +42,39 @@ class CsrfMiddleware implements IMiddleware
 	#region function
 
 	/**
+	 * CSRFとして有効なセッションキーを返す。
+	 *
+	 * @return string
+	 * @phpstan-return non-empty-string
+	 */
+	protected function getSessionKey(): string
+	{
+		return Security::CSRF_SESSION_KEY;
+	}
+
+	/**
+	 * CSRFとして有効なヘッダ名を返す。
+	 *
+	 * @return string
+	 * @phpstan-return non-empty-string
+	 */
+	protected function getHeaderName(): string
+	{
+		return Security::CSRF_HEADER_NAME;
+	}
+
+	/**
+	 * CSRFとして有効なリクエストキーを返す。
+	 *
+	 * @return string
+	 * @phpstan-return non-empty-string
+	 */
+	protected function getRequestKey(): string
+	{
+		return Security::CSRF_REQUEST_KEY;
+	}
+
+	/**
 	 * CSRFトークン不正時のHTTP応答ステータス。
 	 *
 	 * @return HttpStatus
@@ -62,13 +95,13 @@ class CsrfMiddleware implements IMiddleware
 
 	protected function handleBeforeHeader(MiddlewareArgument $argument): MiddlewareResult
 	{
-		if (!$argument->request->httpHeader->existsHeader(Security::CSRF_HEADER_NAME)) {
+		if (!$argument->request->httpHeader->existsHeader($this->getHeaderName())) {
 			$this->logger->warn('要求CSRFトークンなし');
 			return MiddlewareResult::error($this->getErrorHttpStatus(), 'CSRF');
 		}
 
-		if ($argument->stores->session->tryGet(Security::CSRF_SESSION_KEY, $sessionToken)) {
-			$values = $argument->request->httpHeader->getValues(Security::CSRF_HEADER_NAME);
+		if ($argument->stores->session->tryGet($this->getSessionKey(), $sessionToken)) {
+			$values = $argument->request->httpHeader->getValues($this->getHeaderName());
 			if (Arr::getCount($values) === 1) {
 				if ($values[0] === $sessionToken) {
 					return MiddlewareResult::none();
@@ -87,14 +120,14 @@ class CsrfMiddleware implements IMiddleware
 
 	protected function handleBeforeBody(MiddlewareArgument $argument): MiddlewareResult
 	{
-		$result = $argument->request->exists(Security::CSRF_REQUEST_KEY);
+		$result = $argument->request->exists($this->getRequestKey());
 		if (!$result->exists) {
 			$this->logger->warn('要求CSRFトークンなし');
 			return MiddlewareResult::error($this->getErrorHttpStatus(), 'CSRF');
 		}
 
-		$requestToken = $argument->request->getValue(Security::CSRF_REQUEST_KEY);
-		if ($argument->stores->session->tryGet(Security::CSRF_SESSION_KEY, $sessionToken)) {
+		$requestToken = $argument->request->getValue($this->getRequestKey());
+		if ($argument->stores->session->tryGet($this->getSessionKey(), $sessionToken)) {
 			if ($requestToken === $sessionToken) {
 				return MiddlewareResult::none();
 			}

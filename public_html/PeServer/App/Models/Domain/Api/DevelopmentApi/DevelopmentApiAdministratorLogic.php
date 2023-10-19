@@ -72,7 +72,7 @@ class DevelopmentApiAdministratorLogic extends ApiLogicBase
 			return [
 				'user_id' => $i['user_id'],
 				'login_id' => $i['login_id'],
-				'password' => Cryptography::toHashPassword($i['password']),
+				'password' => Cryptography::hashPassword($i['password']),
 				'user_name' => 'user-' . $i['login_id'],
 				'level' => $i['level'],
 				'email' => $this->cryptography->encrypt($i['email']),

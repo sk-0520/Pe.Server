@@ -9,7 +9,7 @@ use PeServer\Core\Image\ImageType;
 /**
  * 画像生成設定。
  */
-class ImageSetting
+readonly class ImageSetting
 {
 	/**
 	 * 生成。
