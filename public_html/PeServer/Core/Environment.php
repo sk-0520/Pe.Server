@@ -12,14 +12,6 @@ use PeServer\Core\Throws\Enforce;
  */
 class Environment
 {
-	#region variable
-	/**
-	 * 初期化チェック
-	 */
-	private static InitializeChecker|null $initializeChecker = null;
-
-	#endregion
-
 	#region function
 
 	public function __construct(
@@ -29,25 +21,10 @@ class Environment
 		private string $environment,
 		private string $revision
 	) {
-		self::$initializeChecker ??= new InitializeChecker();
-		self::$initializeChecker->initialize();
-
 		setlocale(LC_ALL, $locale);
 		mb_language($language);
 		date_default_timezone_set($timezone);
-		//setlocale(LC_ALL, $locale);
-
-		//self::setLanguage($language);
 	}
-
-	// public static function setLanguage(string $language): bool
-	// {
-	// 	return (bool)mb_language($language);
-	// }
-	// public static function getLanguage(): string
-	// {
-	// 	return (string)mb_language();
-	// }
 
 	public function get(): string
 	{
