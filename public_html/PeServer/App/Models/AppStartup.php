@@ -25,6 +25,7 @@ use PeServer\Core\Database\IDatabaseConnection;
 use PeServer\Core\DefinedDirectory;
 use PeServer\Core\DI\DiItem;
 use PeServer\Core\DI\IDiRegisterContainer;
+use PeServer\Core\Environment;
 use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Http\RequestPath;
 use PeServer\Core\Log\ILogProvider;
@@ -62,7 +63,8 @@ class AppStartup extends CoreStartup
 			$this->definedDirectory->public,
 			$this->definedDirectory->application,
 			Arr::getOr($options, 'url_helper', new UrlHelper('')),
-			Arr::getOr($options, 'special_store', new SpecialStore())
+			Arr::getOr($options, 'special_store', new SpecialStore()),
+			$container->get(Environment::class)
 		);
 		$container->registerValue($appConfig);
 

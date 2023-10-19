@@ -32,7 +32,7 @@ final class AppMailer extends Mailer
 
 	#endregion
 
-	public function __construct(AppConfiguration $config)
+	public function __construct(AppConfiguration $config, Environment $environment)
 	{
 		$mailSetting = match ($config->setting->mail->mode) {
 			'smtp' => new SmtpSetting(
@@ -51,7 +51,7 @@ final class AppMailer extends Mailer
 		$this->fromAddress = new EmailAddress($fromEmail->address, $fromEmail->name);
 		$this->returnPath = $config->setting->config->address->returnEmail;
 
-		if (!Environment::isProduction() && isset($config->setting->debug)) {
+		if (!$environment->isProduction() && isset($config->setting->debug)) {
 			$target = $config->setting->debug->mailOverwriteTarget;
 			if (!Text::isNullOrWhiteSpace($target)) {
 				$this->overwriteTarget = $target;

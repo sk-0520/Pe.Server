@@ -72,12 +72,12 @@ class AppConfiguration
 	 * @param string $baseDirectoryPath `\PeServer\*` のルートディレクトリ
 	 * @param SpecialStore $specialStore
 	 */
-	public function __construct(string $rootDirectoryPath, string $baseDirectoryPath, IUrlHelper $urlHelper, SpecialStore $specialStore)
+	public function __construct(string $rootDirectoryPath, string $baseDirectoryPath, IUrlHelper $urlHelper, SpecialStore $specialStore, Environment $environment)
 	{
 		$this->settingDirectoryPath = Path::combine($baseDirectoryPath, 'config');
 
-		$appConfig = $this->load($rootDirectoryPath, $baseDirectoryPath, Environment::get(), 'setting.json');
-		$i18nConfig = $this->load($rootDirectoryPath, $baseDirectoryPath, Environment::get(), 'i18n.json');
+		$appConfig = $this->load($rootDirectoryPath, $baseDirectoryPath, $environment->get(), 'setting.json');
+		$i18nConfig = $this->load($rootDirectoryPath, $baseDirectoryPath, $environment->get(), 'i18n.json');
 
 		$mapper = new Mapper();
 		$appSetting = new AppSetting();

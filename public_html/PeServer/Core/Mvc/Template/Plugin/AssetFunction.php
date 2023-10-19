@@ -79,7 +79,7 @@ class AssetFunction extends TemplateFunctionBase
 			return Text::EMPTY;
 		}
 
-		$isProduction = Environment::isProduction();
+		$isProduction = $this->argument->environment->isProduction();
 
 		$fileExtension = Path::getFileExtension($sourcePath);
 		$extension = Text::toLower($fileExtension);
@@ -96,7 +96,7 @@ class AssetFunction extends TemplateFunctionBase
 				}
 			}
 
-			$resourcePath .= '?' . Environment::getRevision();
+			$resourcePath .= '?' . $this->argument->environment->getRevision();
 		}
 
 		$dom = new HtmlDocument();

@@ -1,11 +1,11 @@
-{$show_exception = PeServer\Core\Environment::isDevelopment() && $values.throwable !== null}
+{$show_exception = $environment->isDevelopment() && $values.throwable !== null}
 <!DOCTYPE html>
 <html lang="ja">
 	<head>
 		<meta charset="utf-8"/>
 		<title>Pe.Server.Core: Error</title>
 		{asset file='./error-display.css' include='true'}
-		{if PeServer\Core\Environment::isDevelopment() && $values.throwable !== null}
+		{if $environment->isDevelopment() && $values.throwable !== null}
 			{asset file='./highlight.php/default.css' include='true'}
 		{/if}
 	</head>
@@ -26,7 +26,7 @@
 					<dd><code>{get_class($values.throwable)}</code></dd>
 				{/if}
 
-				{if PeServer\Core\Environment::isDevelopment() && $values.throwable !== null}
+				{if $environment->isDevelopment() && $values.throwable !== null}
 					<dt>GET</dt>
 					<dd>
 						<details>
@@ -66,14 +66,14 @@
 				<dt>ソース</dt>
 				<dd>
 				<code>{$values.file}</code>:<code>{$values.line_number}</code>
-					{if PeServer\Core\Environment::isDevelopment() && $values.throwable !== null}
+					{if $environment->isDevelopment() && $values.throwable !== null}
 						{assign var="file" value=$values.cache[$values.file]}
 						{code language="php" numbers=$values.line_number}{$file nofilter}{/code}
 					{/if}
 				</dd>
 				{/if}
 
-				{if PeServer\Core\Environment::isDevelopment() && $values.throwable !== null}
+				{if $environment->isDevelopment() && $values.throwable !== null}
 					{$throwable = $values.throwable->getPrevious()}
 					{if $throwable}
 						<dt>ラップされた例外</dt>
@@ -167,7 +167,7 @@
 			</dl>
 		</main>
 
-		{if PeServer\Core\Environment::isDevelopment() && $values.throwable !== null}
+		{if $environment->isDevelopment() && $values.throwable !== null}
 			<script>
 
 			function scrollHighlight(sourceElement) {

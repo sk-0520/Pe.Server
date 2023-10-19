@@ -34,10 +34,10 @@ class ManagementConfigurationEditLogic extends PageLogicBase
 
 	protected function startup(LogicCallMode $callMode): void
 	{
-		$settingName = Path::setEnvironmentName('setting.json', Environment::get());
+		$settingName = Path::setEnvironmentName('setting.json', $this->environment->get());
 		$this->settingPath = Path::combine($this->config->settingDirectoryPath, $settingName);
 
-		$this->setValue('env_name', Environment::get());
+		$this->setValue('env_name', $this->environment->get());
 		$this->setValue('path', $this->settingPath);
 
 		$this->registerParameterKeys([

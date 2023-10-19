@@ -46,7 +46,6 @@ class TestControllerClass extends TestClass
 	private function resetInitialize()
 	{
 		$classNames = [
-			Environment::class,
 			Logging::class,
 			I18n::class,
 		];

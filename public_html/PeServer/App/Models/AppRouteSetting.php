@@ -48,9 +48,9 @@ final class AppRouteSetting extends RouteSetting
 	private const PASSWORD_REMINDER_TOKEN = '[a-zA-Z0-9]{80}';
 	private const PLUGIN_ID = '\{?[a-fA-F0-9\-]{32,}\}?';
 
-	public function __construct()
+	public function __construct(Environment $environment)
 	{
-		$isProduction = Environment::isProduction();
+		$isProduction = $environment->isProduction();
 
 		$globalMiddleware = [];
 		$actionMiddleware = [];
