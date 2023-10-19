@@ -29,7 +29,7 @@
 		</dl>
 	</form>
 
-	{if \PeServer\Core\Environment::isDevelopment() }
+	{if $environment->isDevelopment() }
 		<form action="/account/login" method="post"  style="text-align: center; margin: 4em">
 			{csrf}
 			<input type="hidden" name="account_login_login_id" value="root" />

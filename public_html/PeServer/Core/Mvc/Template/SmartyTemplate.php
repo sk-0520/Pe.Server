@@ -73,6 +73,7 @@ class SmartyTemplate extends TemplateBase
 				'session' => TemplateStore::createSession($this->stores->session),
 				'temporary' => TemplateStore::createTemporary($this->stores->temporary),
 			],
+			'environment' => $this->environment
 		]);
 	}
 
