@@ -76,12 +76,10 @@ class CoreStartup
 	 */
 	protected function setupCommon(array $options, IDiRegisterContainer $container): void
 	{
-		setlocale(LC_ALL, 'C');
-		mb_language('uni');
-		date_default_timezone_set('Asia/Tokyo');
-		Environment::initialize('C', 'uni', $options['environment'], $options['revision']);
+		$environment = new Environment('C', 'uni', 'Asia/Tokyo', $options['environment'], $options['revision']);
 		Encoding::setDefaultEncoding(Encoding::getUtf8());
 
+		$container->registerValue($environment, Environment::class);
 		$container->registerValue($this->definedDirectory, DefinedDirectory::class);
 
 		$container->registerMapping(ILogProvider::class, LogProvider::class, DiItem::LIFECYCLE_SINGLETON);

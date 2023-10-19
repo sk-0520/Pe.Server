@@ -10,7 +10,7 @@ use PeServer\Core\Throws\Enforce;
 /**
  * 環境情報。
  */
-abstract class Environment
+class Environment
 {
 	#region variable
 	/**
@@ -25,11 +25,19 @@ abstract class Environment
 
 	#region function
 
-	public static function initialize(string $locale, string $language, string $environment, string $revision): void
-	{
+	public function __construct(
+		string $locale,
+		string $language,
+		string $timezone,
+		string $environment,
+		string $revision
+	) {
 		self::$initializeChecker ??= new InitializeChecker();
 		self::$initializeChecker->initialize();
 
+		setlocale(LC_ALL, $locale);
+		mb_language($language);
+		date_default_timezone_set($timezone);
 		//setlocale(LC_ALL, $locale);
 
 		self::$environment = $environment;

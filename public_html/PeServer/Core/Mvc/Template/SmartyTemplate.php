@@ -6,12 +6,13 @@ namespace PeServer\Core\Mvc\Template;
 
 require_once(__DIR__ . '/../../../Core/Libs/smarty/libs/Smarty.class.php');
 
-use Smarty;
+use PeServer\Core\Environment;
 use PeServer\Core\IO\Path;
 use PeServer\Core\Mvc\Template\Plugin\AssetFunction;
 use PeServer\Core\Mvc\Template\Plugin\BotTextImageFunction;
 use PeServer\Core\Mvc\Template\Plugin\CodeFunction;
 use PeServer\Core\Mvc\Template\Plugin\CsrfFunction;
+use PeServer\Core\Mvc\Template\Plugin\DumpModifier;
 use PeServer\Core\Mvc\Template\Plugin\InputHelperFunction;
 use PeServer\Core\Mvc\Template\Plugin\ITemplateBlockFunction;
 use PeServer\Core\Mvc\Template\Plugin\ITemplateFunction;
@@ -26,7 +27,7 @@ use PeServer\Core\Mvc\Template\TemplateParameter;
 use PeServer\Core\Mvc\Template\TemplateStore;
 use PeServer\Core\Store\Stores;
 use PeServer\Core\Throws\NotImplementedException;
-use PeServer\Core\Mvc\Template\Plugin\DumpModifier;
+use Smarty;
 
 class SmartyTemplate extends TemplateBase
 {
@@ -39,8 +40,11 @@ class SmartyTemplate extends TemplateBase
 
 	#endregion
 
-	public function __construct(TemplateOptions $options, protected Stores $stores)
-	{
+	public function __construct(
+		TemplateOptions $options,
+		protected Stores $stores,
+		protected Environment $environment
+	) {
 		parent::__construct($options);
 
 		$this->engine = new Smarty();
@@ -86,7 +90,8 @@ class SmartyTemplate extends TemplateBase
 			$this->options->rootDirectoryPath,
 			Path::combine($this->options->rootDirectoryPath, $this->options->baseDirectoryName),
 			$this->options->urlHelper,
-			$this->stores
+			$this->stores,
+			$this->environment
 		);
 		$showErrorMessagesFunction = new ShowErrorMessagesFunction($argument);
 		/** @var array<ITemplateFunction|ITemplateModifier> */
