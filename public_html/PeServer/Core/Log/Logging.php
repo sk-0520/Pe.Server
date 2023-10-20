@@ -33,13 +33,8 @@ class Logging
 
 	#region variable
 
-	private static string $requestId;
-	private static ?string $requestHost = null;
-
-	/**
-	 * 初期化チェック。
-	 */
-	private static InitializeChecker|null $initializeChecker = null;
+	private string $requestId;
+	private ?string $requestHost = null;
 
 	private SpecialStore $specialStore;
 
@@ -49,10 +44,7 @@ class Logging
 
 	public function __construct(SpecialStore $specialStore)
 	{
-		self::$initializeChecker ??= new InitializeChecker();
-		self::$initializeChecker->initialize();
-
-		self::$requestId = Cryptography::generateRandomBinary(self::LOG_REQUEST_ID_LENGTH)->toHex();
+		$this->requestId = Cryptography::generateRandomBinary(self::LOG_REQUEST_ID_LENGTH)->toHex();
 		$this->specialStore = $specialStore;
 	}
 
@@ -130,29 +122,29 @@ class Logging
 			return Text::EMPTY;
 		}
 
-		if (self::$requestHost !== null) {
-			return self::$requestHost;
+		if ($this->requestHost !== null) {
+			return $this->requestHost;
 		}
 
 		/** @var string */
 		$serverRemoteHost = $this->specialStore->getServer('REMOTE_HOST', Text::EMPTY);
 		if ($serverRemoteHost !== Text::EMPTY) {
-			return self::$requestHost = $serverRemoteHost;
+			return $this->requestHost = $serverRemoteHost;
 		}
 
 		/** @var string */
 		$serverRemoteIpAddr = $this->specialStore->getServer('REMOTE_ADDR', Text::EMPTY);
 		if ($serverRemoteIpAddr === Text::EMPTY) {
-			return self::$requestHost = Text::EMPTY;
+			return $this->requestHost = Text::EMPTY;
 		}
 
 		/** @var string|false */
 		$hostName = gethostbyaddr($serverRemoteIpAddr);
 		if ($hostName === false) {
-			return self::$requestHost = Text::EMPTY;
+			return $this->requestHost = Text::EMPTY;
 		}
 
-		return self::$requestHost = $hostName;
+		return $this->requestHost = $hostName;
 	}
 
 	/**
@@ -164,8 +156,6 @@ class Logging
 	 */
 	public function getLogParameters(DateTimeInterface $timestamp, SpecialStore $specialStore): array
 	{
-		InitializeChecker::throwIfNotInitialize(self::$initializeChecker);
-
 		return [
 			'TIMESTAMP' => $timestamp->format('c'),
 			'DATE' => $timestamp->format('Y-m-d'),
@@ -173,7 +163,7 @@ class Logging
 			'TIMEZONE' => $timestamp->format('P'),
 			'CLIENT_IP' => $specialStore->getServer('REMOTE_ADDR', Text::EMPTY),
 			'CLIENT_HOST' => self::getRemoteHost(),
-			'REQUEST_ID' => self::$requestId,
+			'REQUEST_ID' => $this->requestId,
 			'UA' => $specialStore->getServer('HTTP_USER_AGENT', Text::EMPTY),
 			'METHOD' => $specialStore->getServer('REQUEST_METHOD', Text::EMPTY),
 			'REQUEST' => $specialStore->getServer('REQUEST_URI', Text::EMPTY),
@@ -201,8 +191,6 @@ class Logging
 	 */
 	public function format(string $format, int $level, int $traceIndex, DateTimeInterface $timestamp, string $header, $message, ...$parameters): string
 	{
-		InitializeChecker::throwIfNotInitialize(self::$initializeChecker);
-
 		/** @var array<string,mixed>[] */
 		$backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS); // DEBUG_BACKTRACE_PROVIDE_OBJECT
 		/** @var array<string,mixed> */
