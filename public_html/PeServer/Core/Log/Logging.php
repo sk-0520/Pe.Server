@@ -138,7 +138,6 @@ class Logging
 			return $this->requestHost = Text::EMPTY;
 		}
 
-		/** @var string|false */
 		$hostName = gethostbyaddr($serverRemoteIpAddr);
 		if ($hostName === false) {
 			return $this->requestHost = Text::EMPTY;
