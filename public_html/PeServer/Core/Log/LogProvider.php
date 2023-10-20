@@ -6,6 +6,7 @@ namespace PeServer\Core\Log;
 
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\ILogProvider;
+use PeServer\Core\Log\Logging;
 use PeServer\Core\ReflectionUtility;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\NotImplementedException;
@@ -22,6 +23,11 @@ class LogProvider implements ILogProvider
 	private array $loggers = [];
 
 	#endregion
+
+	public function __construct(
+		private Logging $logging
+	) {
+	}
 
 	#region ILogProvider
 
@@ -64,7 +70,7 @@ class LogProvider implements ILogProvider
 
 		foreach ($this->loggers as $item) {
 			$options = new LogOptions($header, $baseTraceIndex, $item->level, $item->format, $item->configuration);
-			$result[] = ReflectionUtility::create($item->loggerClass, ILogger::class, $options);
+			$result[] = ReflectionUtility::create($item->loggerClass, ILogger::class, $this->logging, $options);
 		}
 
 		return $result;

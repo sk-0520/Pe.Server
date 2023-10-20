@@ -12,9 +12,9 @@ use PeServer\Core\Log\LogOptions;
  */
 final class XdebugLogger extends LoggerBase
 {
-	public function __construct(LogOptions $options)
+	public function __construct(Logging $logging, LogOptions $options)
 	{
-		parent::__construct($options);
+		parent::__construct($logging, $options);
 	}
 
 	#region LoggerBase

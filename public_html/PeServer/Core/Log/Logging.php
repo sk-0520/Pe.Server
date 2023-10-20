@@ -22,7 +22,7 @@ use PeServer\Core\TypeUtility;
 /**
  * ロガー生成・共通処理。
  */
-abstract class Logging
+class Logging
 {
 	#region define
 
@@ -41,25 +41,19 @@ abstract class Logging
 	 */
 	private static InitializeChecker|null $initializeChecker = null;
 
-	private static SpecialStore $specialStore;
+	private SpecialStore $specialStore;
 
 	#endregion
 
 	#region function
 
-	/**
-	 * 初期化。
-	 *
-	 * @param SpecialStore $specialStore
-	 * @return void
-	 */
-	public static function initialize(SpecialStore $specialStore)
+	public function __construct(SpecialStore $specialStore)
 	{
 		self::$initializeChecker ??= new InitializeChecker();
 		self::$initializeChecker->initialize();
 
 		self::$requestId = Cryptography::generateRandomBinary(self::LOG_REQUEST_ID_LENGTH)->toHex();
-		self::$specialStore = $specialStore;
+		$this->specialStore = $specialStore;
 	}
 
 	/**
@@ -129,7 +123,7 @@ abstract class Logging
 		return Text::dump(['message' => $message, 'parameters' => $parameters]);
 	}
 
-	private static function getRemoteHost(): string
+	private function getRemoteHost(): string
 	{
 		// @phpstan-ignore-next-line
 		if (!self::IS_ENABLED_HOST) {
@@ -141,13 +135,13 @@ abstract class Logging
 		}
 
 		/** @var string */
-		$serverRemoteHost = self::$specialStore->getServer('REMOTE_HOST', Text::EMPTY);
+		$serverRemoteHost = $this->specialStore->getServer('REMOTE_HOST', Text::EMPTY);
 		if ($serverRemoteHost !== Text::EMPTY) {
 			return self::$requestHost = $serverRemoteHost;
 		}
 
 		/** @var string */
-		$serverRemoteIpAddr = self::$specialStore->getServer('REMOTE_ADDR', Text::EMPTY);
+		$serverRemoteIpAddr = $this->specialStore->getServer('REMOTE_ADDR', Text::EMPTY);
 		if ($serverRemoteIpAddr === Text::EMPTY) {
 			return self::$requestHost = Text::EMPTY;
 		}
@@ -168,7 +162,7 @@ abstract class Logging
 	 * @param SpecialStore $specialStore
 	 * @return array{TIMESTAMP:string,DATE:string,TIME:string,TIMEZONE:string,CLIENT_IP:string,CLIENT_HOST:string,REQUEST_ID:string,UA:string,METHOD:string,REQUEST:string,SESSION:string|false}
 	 */
-	public static function getLogParameters(DateTimeInterface $timestamp, SpecialStore $specialStore): array
+	public function getLogParameters(DateTimeInterface $timestamp, SpecialStore $specialStore): array
 	{
 		InitializeChecker::throwIfNotInitialize(self::$initializeChecker);
 
@@ -205,7 +199,7 @@ abstract class Logging
 	 * @param mixed ...$parameters
 	 * @return string
 	 */
-	public static function format(string $format, int $level, int $traceIndex, DateTimeInterface $timestamp, string $header, $message, ...$parameters): string
+	public function format(string $format, int $level, int $traceIndex, DateTimeInterface $timestamp, string $header, $message, ...$parameters): string
 	{
 		InitializeChecker::throwIfNotInitialize(self::$initializeChecker);
 
@@ -221,7 +215,7 @@ abstract class Logging
 
 		/** @var array<string,string> */
 		$map = [
-			...self::getLogParameters($timestamp, self::$specialStore),
+			...self::getLogParameters($timestamp, $this->specialStore),
 			//-------------------
 			'FILE' => $filePath,
 			'FILE_NAME' => Path::getFileName($filePath),

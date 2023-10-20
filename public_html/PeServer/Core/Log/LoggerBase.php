@@ -19,6 +19,7 @@ abstract class LoggerBase implements ILogger
 	 * @param LogOptions $options
 	 */
 	protected function __construct(
+		protected Logging $logging,
 		/** @readonly */
 		protected LogOptions $options
 	) {
@@ -40,7 +41,7 @@ abstract class LoggerBase implements ILogger
 	 */
 	protected function format(int $level, int $traceIndex, $message, ...$parameters): string
 	{
-		return Logging::format($this->options->format, $level, $traceIndex + 1, new DateTimeImmutable(), $this->options->header, $message, ...$parameters);
+		return $this->logging->format($this->options->format, $level, $traceIndex + 1, new DateTimeImmutable(), $this->options->header, $message, ...$parameters);
 	}
 
 	/**
