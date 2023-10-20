@@ -11,6 +11,7 @@ use PeServer\Core\IO\File;
 use PeServer\Core\IO\IOUtility;
 use PeServer\Core\IO\Path;
 use PeServer\Core\Log\LoggerBase;
+use PeServer\Core\Log\Logging;
 use PeServer\Core\Log\LogOptions;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\Enforce;
@@ -49,9 +50,9 @@ class FileLogger extends LoggerBase
 	 *
 	 * @param LogOptions $options
 	 */
-	public function __construct(LogOptions $options)
+	public function __construct(Logging $logging, LogOptions $options)
 	{
-		parent::__construct($options);
+		parent::__construct($logging, $options);
 
 		$directoryPath = Arr::getOr($this->options->configuration, 'directory', '');
 		Enforce::throwIfNullOrWhiteSpace($directoryPath);

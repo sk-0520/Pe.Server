@@ -79,6 +79,9 @@ class CoreStartup
 		$environment = new Environment('C', 'uni', 'Asia/Tokyo', $options['environment'], $options['revision']);
 		Encoding::setDefaultEncoding(Encoding::getUtf8());
 
+		$logging = new Logging(Arr::getOr($options, 'special_store', new SpecialStore()));
+		$container->registerValue($logging, Logging::class);
+
 		$container->registerValue($environment, Environment::class);
 		$container->registerValue($this->definedDirectory, DefinedDirectory::class);
 
@@ -103,8 +106,6 @@ class CoreStartup
 		$container->registerClass(TemplateFactory::class); // こいつは Core からも使われる特殊な奴やねん
 		$container->registerMapping(IResponsePrinterFactory::class, ResponsePrinterFactory::class); // こいつも Core からも使われる特殊な奴やねん
 		//$container->registerClass(ResponsePrinterFactory::class);
-
-		Logging::initialize(Arr::getOr($options, 'special_store', new SpecialStore()));
 
 		// Core のセットアップ時点で死ぬようではもういいです
 		if (!$environment->isTest()) {

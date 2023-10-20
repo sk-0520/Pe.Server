@@ -46,7 +46,8 @@ class LoggerFactory extends DiFactoryBase implements ILoggerFactory
 				'{TIME} |{LEVEL}| <{HEADER}> {METHOD}: {MESSAGE} | {FILE_NAME}({LINE})',
 				[]
 			);
-			return new XdebugLogger($options);
+			$logging = $this->container->get(Logging::class);
+			return new XdebugLogger($logging, $options);
 		}
 
 		return null;

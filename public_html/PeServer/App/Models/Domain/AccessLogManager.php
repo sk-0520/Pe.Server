@@ -33,6 +33,7 @@ class AccessLogManager
 		private IDatabaseConnection $databaseConnection,
 		private AppConfiguration $appConfig,
 		private SpecialStore $specialStore,
+		private Logging $logging,
 		ILoggerFactory $loggerFactory
 	) {
 		$this->logger = $loggerFactory->createLogger($this);
@@ -47,7 +48,7 @@ class AccessLogManager
 		$filePath = Path::combine($this->appConfig->setting->accessLog->directory, date('Ymd') . '.log');
 		Directory::createParentDirectoryIfNotExists($filePath);
 
-		$logParams = Logging::getLogParameters(new DateTimeImmutable(), $this->specialStore);
+		$logParams = $this->logging->getLogParameters(new DateTimeImmutable(), $this->specialStore);
 		$logParams["RUNNING_TIME"] = microtime(true) - $this->specialStore->getServer('REQUEST_TIME_FLOAT', 0.0);
 
 		$data = $jsonSerializer->save($logParams);
