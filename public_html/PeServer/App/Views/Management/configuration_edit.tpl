@@ -9,7 +9,7 @@
 			<dt>setting.{$values.env_name}.json</dt>
 			<dt><code>{$values.path}</code></dt>
 			<dd>
-				{input_helper key="json" type="textarea" class="edit json" autofocus="true" required="true"}
+				{input_helper key="json" type="textarea" class="edit json editor" autofocus="true" required="true"}
 			</dd>
 			<dt class="action"></dt>
 			<dd class="action">
