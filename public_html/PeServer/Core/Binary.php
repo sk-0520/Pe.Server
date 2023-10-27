@@ -13,11 +13,9 @@ use Stringable;
 use TypeError;
 use PeServer\Core\Collections\ArrayAccessHelper;
 use PeServer\Core\Throws\ArgumentException;
-use PeServer\Core\Throws\FormatException;
 use PeServer\Core\Throws\IndexOutOfRangeException;
 use PeServer\Core\Throws\NotSupportedException;
 use PeServer\Core\Throws\NullByteStringException;
-use PeServer\Core\Throws\SerializeException;
 use PeServer\Core\Throws\BinaryException;
 use PeServer\Core\Throws\Throws;
 use ValueError;
@@ -34,25 +32,15 @@ use ValueError;
  */
 readonly final class Binary implements ArrayAccess, IteratorAggregate, Countable, Stringable
 {
-	#region variable
-
-	/**
-	 * 実体。
-	 *
-	 * @var string
-	 */
-	public readonly string $raw;
-
-	#endregion
-
 	/**
 	 * 生成。
 	 *
 	 * @param string $raw バイトデータとして扱う文字列。
 	 */
-	public function __construct(string $raw)
-	{
-		$this->raw = $raw;
+	public function __construct(
+		public readonly string $raw
+	) {
+		//NOP
 	}
 
 	#region function
