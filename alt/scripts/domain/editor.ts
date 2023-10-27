@@ -1,8 +1,13 @@
-import * as CodeMirror from 'codemirror';
+import {EditorView, basicSetup} from "codemirror"
+import {javascript} from "@codemirror/lang-javascript";
 import * as dom from '../core/dom';
 
 function attachTextArea(element: HTMLTextAreaElement): void {
-	CodeMirror.fromTextArea(element);
+	let view = new EditorView({
+		extensions: [basicSetup, javascript()],
+		parent: document.body
+	  });
+	console.assert(view);
 }
 
 export function boot() {
