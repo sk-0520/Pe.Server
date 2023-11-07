@@ -26,16 +26,16 @@
 						<th rowspan="2">Pe</th>
 						<th>Current</th>
 						<td>
-							<a href="https://github.com/sk-0520/Pe/actions">
-								<img class="page-user-index-ci {$environment->get()}" {if $environment->isProduction()} src="https://github.com/sk-0520/Pe/actions/workflows/build-works.yml/badge.svg" {/if} />
+							<a href="https://github.com/sk-0520/Pe/actions/workflows/build-ci-only.yml">
+								<img class="page-user-index-ci {$environment->get()}" {if $environment->isProduction()} src="https://github.com/sk-0520/Pe/actions/workflows/build-ci-only.yml/badge.svg" {/if} />
 							</a>
 						</td>
 					</tr>
 					<tr>
 						<th>Master</th>
 						<td>
-							<a href="https://github.com/sk-0520/Pe/actions?query=branch%3Amaster">
-								<img class="page-user-index-ci {$environment->get()}" {if $environment->isProduction()} src="https://github.com/sk-0520/Pe/actions/workflows/build-release.yml/badge.svg" {/if} />
+							<a href="https://github.com/sk-0520/Pe/actions/workflows/build-ci-cd.yml">
+								<img class="page-user-index-ci {$environment->get()}" {if $environment->isProduction()} src="https://github.com/sk-0520/Pe/actions/workflows/build-ci-cd.yml/badge.svg?branch=master" {/if} />
 							</a>
 						</td>
 					</tr>
