@@ -83,7 +83,7 @@ class ManagementMailSendLogic extends PageLogicBase
 			];
 		}
 
-		$this->writeAuditLogCurrentUser(AuditLog::ADMINISTRATOR_EXECUTE_PHP, [
+		$this->writeAuditLogCurrentUser(AuditLog::ADMINISTRATOR_SEND_EMAIL, [
 			'subject' => $mailSubject,
 			'mailTo' => $mailTo,
 			'body' => $mailBody,

@@ -70,8 +70,11 @@ abstract class Path
 	/**
 	 * ディレクトリパスを取得。
 	 *
+	 * `dirname` ラッパー。
+	 *
 	 * @param string $path
 	 * @return string
+	 * @see https://php.net/manual/function.dirname.php
 	 */
 	public static function getDirectoryPath(string $path): string
 	{
@@ -81,8 +84,11 @@ abstract class Path
 	/**
 	 * ファイル名を取得。
 	 *
+	 * `basename` ラッパー。
+	 *
 	 * @param string $path
 	 * @return string
+	 * @see https://php.net/manual/function.basename.php
 	 */
 	public static function getFileName(string $path): string
 	{
