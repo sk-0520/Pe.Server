@@ -154,6 +154,7 @@ class Encoding
 	 * `mb_internal_encoding` ラッパー
 	 *
 	 * @param Encoding $encoding
+	 * @throws ArgumentException
 	 * @see https://www.php.net/manual/function.mb-internal-encoding.php
 	 */
 	public static function setDefaultEncoding(Encoding $encoding): void
