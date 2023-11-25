@@ -111,7 +111,7 @@ abstract class TypeUtility
 	}
 
 	/**
-	 * 文字列を整数に変換。
+	 * 文字列を整数(0超過)に変換。
 	 *
 	 * @param string $input 文字列。
 	 * @return integer 変換後整数。
@@ -129,7 +129,7 @@ abstract class TypeUtility
 	}
 
 	/**
-	 * 文字列を整数に変換した結果を取得。
+	 * 文字列を整数(0超過)に変換した結果を取得。
 	 *
 	 * @param string $input 文字列。
 	 * @param integer|null $result 変換成功時の整数。
