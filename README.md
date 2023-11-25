@@ -2,7 +2,7 @@
 
 https://peserver.gq/
 
-可能な限り GAS でやってるけど無理なもんは無理。
+可能な限り GAS でやってたけどもう無理なんや。
 
 * 8.2 (サーバー側は 8.2.3)
   * https://sourceforge.net/projects/xampp/files/XAMPP%20Windows/8.2.0/
