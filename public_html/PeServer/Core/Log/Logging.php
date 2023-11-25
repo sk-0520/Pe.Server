@@ -190,7 +190,7 @@ class Logging
 	 */
 	public function format(string $format, int $level, int $traceIndex, DateTimeInterface $timestamp, string $header, $message, ...$parameters): string
 	{
-		/** @var array<string,mixed>[] */
+		/** @var array<string,array<string,mixed>>[] */
 		$backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS); // DEBUG_BACKTRACE_PROVIDE_OBJECT
 		/** @var array<string,mixed> */
 		$traceCaller = $backtrace[$traceIndex];

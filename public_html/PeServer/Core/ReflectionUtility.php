@@ -112,7 +112,7 @@ abstract class ReflectionUtility
 		}
 
 		if ($parameterType instanceof ReflectionUnionType) {
-			return $parameterType->getTypes();
+			return self::getTypes($parameterType);
 		}
 
 		return [];
