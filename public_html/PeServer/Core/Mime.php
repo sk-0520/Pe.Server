@@ -44,13 +44,17 @@ abstract class Mime
 	 */
 	public static function fromFileName(string $fileName): string
 	{
-		$result =  mime_content_type($fileName);
-		if ($result === false || Text::isNullOrEmpty($result)) {
+		if (Text::isNullOrWhiteSpace($fileName)) {
+			throw new ArgumentException($fileName);
+		}
+
+		$result = ErrorHandler::trapError(fn () =>  mime_content_type($fileName));
+		if (!$result->success || Text::isNullOrEmpty($result->value)) {
 			throw new ArgumentException($fileName);
 		}
 
 		/** @phpstan-var non-empty-string */
-		return $result;
+		return $result->value;
 	}
 
 	#endregion
