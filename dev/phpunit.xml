@@ -8,7 +8,7 @@
       <directory>../test/PeServerIT</directory>
     </testsuite>
     <testsuite name="st">
-      <file>../test/PeServerST/No0010_InitializeTest.php</file>
+      <file>../test/PeServerST/No_2_010_InitializeTest.php</file>
     </testsuite>
   </testsuites>
   <coverage/>

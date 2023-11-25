@@ -9,7 +9,7 @@ use PeServer\Core\Http\Client\HttpClientOptions;
 use PeServer\Core\Web\Url;
 use PeServerTest\TestClass;
 
-class No0010_InitializeTest extends TestClass
+class No_2_010_InitializeTest extends TestClass
 {
 	public function test() {
 		$hc = new HttpClient(new HttpClientOptions());
@@ -19,7 +19,6 @@ class No0010_InitializeTest extends TestClass
 
 		$administratorUrl = Url::parse(self::localServer('/api/development/administrator'));
 		$hc->post($administratorUrl);
-
 
 		$this->success();
 	}
