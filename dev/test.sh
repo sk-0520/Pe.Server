@@ -106,6 +106,7 @@ case "${TEST_MODE}" in
 		PUBLIC_DIR="${BASE_DIR}"
 		;;
 	*)
+		logger::error "TEST_MODE error!"
 		exit 255
 		;;
 esac
