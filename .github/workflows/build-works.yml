@@ -18,6 +18,7 @@ jobs:
         shell: bash
         run: ./dev/shell-test.sh
 
+
   build:
     needs: test-shell
 
@@ -86,6 +87,47 @@ jobs:
           name: public_html
           path: public_html.tar
 
+  build-matrix:
+    needs: test-shell
+
+    strategy:
+      matrix:
+        OS:
+          - windows-latest
+          - ubuntu-latest
+          - macos-latest
+
+    runs-on: ${{ matrix.OS }}
+
+    steps:
+      - name: <Checkout> Repository
+        uses: actions/checkout@v3
+
+      - name: <Setup> PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.php-versions }}
+          extensions: ${{ env.extensions }}
+          coverage: xdebug
+
+      - name: <Cache> Phar
+        uses: actions/cache@v3
+        with:
+          path: |
+            dev/*.phar.*
+            dev/bleedingEdge.neon
+            test/*.phar.*
+          key: phar-cache-${{ github.job }}-${{ hashFiles('dev/*.sh') }}
+
+      - name: <Build> back-end
+        shell: bash
+        run: ./dev/update-config.sh ${{ github.sha }}
+
+      - name: <Test> code
+        shell: bash
+        run: ./dev/code.sh
+
+
   code-backend:
     needs: test-shell
 
@@ -122,7 +164,14 @@ jobs:
   test-backend-st:
     needs: test-shell
 
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        OS:
+          - windows-latest
+          - ubuntu-latest
+          - macos-latest
+
+    runs-on: ${{ matrix.OS }}
 
     steps:
       - name: <Checkout> Repository
@@ -151,6 +200,7 @@ jobs:
       - name: <Test> back-end ST
         shell: bash
         run: ./dev/test.sh --mode st --ignore-coverage
+
 
   deploy:
     needs:
