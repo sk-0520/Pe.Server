@@ -170,14 +170,14 @@ jobs:
   test-backend-st:
     needs: test-shell
 
-    strategy:
-      matrix:
-        OS:
-          # - windows-latest
-          - ubuntu-latest
-          # - macos-latest
+    # strategy:
+    #   matrix:
+    #     OS:
+    #       # - windows-latest
+    #       - ubuntu-latest
+    #       # - macos-latest
 
-    runs-on: ${{ matrix.OS }}
+    runs-on: ubuntu-latest
 
     steps:
       - name: <Setup> Git
