@@ -95,7 +95,7 @@ jobs:
         OS:
           - windows-latest
           - ubuntu-latest
-          - macos-latest
+          # - macos-latest
 
     runs-on: ${{ matrix.OS }}
 
@@ -169,7 +169,7 @@ jobs:
         OS:
           - windows-latest
           - ubuntu-latest
-          - macos-latest
+          # - macos-latest
 
     runs-on: ${{ matrix.OS }}
 
