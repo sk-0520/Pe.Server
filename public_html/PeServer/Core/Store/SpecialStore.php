@@ -23,7 +23,7 @@ class SpecialStore
 	#region function
 
 	/**
-	 * $_SERVER から値取得。
+	 * `$_SERVER` から値取得。
 	 *
 	 * @template TValue
 	 * @param string $name インデックス名。
@@ -44,7 +44,7 @@ class SpecialStore
 	}
 
 	/**
-	 * $_SERVER に名前が存在するか。
+	 * `$_SERVER` に名前が存在するか。
 	 *
 	 * @param string $name
 	 * @return boolean
@@ -55,7 +55,7 @@ class SpecialStore
 	}
 
 	/**
-	 * $_SERVER の名前一覧取得。
+	 * `$_SERVER` の名前一覧取得。
 	 *
 	 * @return string[]
 	 */
@@ -65,7 +65,7 @@ class SpecialStore
 	}
 
 	/**
-	 * $_COOKIE から値取得。
+	 * `$_COOKIE` から値取得。
 	 *
 	 * @param string $name
 	 * @param string $fallbackValue
@@ -83,7 +83,7 @@ class SpecialStore
 	}
 
 	/**
-	 * $_COOKIE に名前が存在するか。
+	 * `$_COOKIE` に名前が存在するか。
 	 *
 	 * @param string $name
 	 * @return boolean
@@ -94,7 +94,7 @@ class SpecialStore
 	}
 
 	/**
-	 * $_COOKIE の名前一覧取得。
+	 * `$_COOKIE` の名前一覧取得。
 	 *
 	 * @return string[]
 	 */
@@ -104,7 +104,7 @@ class SpecialStore
 	}
 
 	/**
-	 * $_SESSION から値取得。
+	 * `$_SESSION` から値取得。
 	 *
 	 * @param string $name
 	 * @param string $fallbackValue
@@ -122,7 +122,7 @@ class SpecialStore
 	}
 
 	/**
-	 * $_SESSION に名前が存在するか。
+	 * `$_SESSION` に名前が存在するか。
 	 *
 	 * @param string $name
 	 * @return boolean
@@ -133,7 +133,7 @@ class SpecialStore
 	}
 
 	/**
-	 * $_SESSION の名前一覧取得。
+	 * `$_SESSION` の名前一覧取得。
 	 *
 	 * @return string[]
 	 */
@@ -185,7 +185,7 @@ class SpecialStore
 	}
 
 	/**
-	 * $_POST の名前一覧取得。
+	 * `$_POST` の名前一覧取得。
 	 *
 	 * @return string[]
 	 */
@@ -220,7 +220,7 @@ class SpecialStore
 	}
 
 	/**
-	 * $_FILES の名前一覧取得。
+	 * `$_FILES` の名前一覧取得。
 	 *
 	 * @return string[]
 	 */
