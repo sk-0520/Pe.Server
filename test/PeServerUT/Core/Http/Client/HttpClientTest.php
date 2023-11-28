@@ -148,6 +148,207 @@ class HttpClientTest extends TestClass
 		$this->fail();
 	}
 
+	public function test_put_data_echo()
+	{
+		$url = Url::parse(self::localServer('/Core/Http/Client/put-data-echo.php'));
+
+		$hc = new HttpClient(new HttpClientOptions());
+
+		$header1 = HttpHeader::createClientRequestHeader();
+		$header1->setContentType(ContentType::create('application/octet-stream', null));
+		$actual1 = $hc->put($url, $header1, null);
+		$this->assertSame('application/octet-stream', $actual1->header->getContentType()->mime);
+		$this->assertSame('', $actual1->content->raw);
+		$actual1->dispose();
+
+		$actual2 = $hc->put($url, null, new BinaryContent(new Binary("あ\0い\1う\2え\3お！\4"), 'text/binary-text'));
+		$this->assertSame('text/binary-text', $actual2->header->getContentType()->mime);
+		$this->assertSame("あ\0い\1う\2え\3お！\4", $actual2->content->raw);
+		$actual2->dispose();
+
+		$actual3 = $hc->put($url, null, new StringContent('かきくけこ？', 'text/plain-text'));
+		$this->assertSame('text/plain-text', $actual3->header->getContentType()->mime);
+		$this->assertSame('かきくけこ？', $actual3->content->raw);
+		$actual3->dispose();
+
+		$actual4 = $hc->put($url, null, new JsonContent(["a" => "A", "b" => [1, 2, 3]]));
+		$this->assertSame(Mime::JSON, $actual4->header->getContentType()->mime);
+		$this->assertSame(["a" => "A", "b" => [1, 2, 3]], (new JsonSerializer())->load($actual4->content));
+		$actual4->dispose();
+
+		$actual5 = HttpClient::request(new HttpClientRequest($url, HttpMethod::Put, null, new StringContent('さしすせそ！', 'mime/💩')), new HttpClientOptions());
+		$this->assertSame('mime/💩', $actual5->header->getContentType()->mime);
+		$this->assertSame("さしすせそ！", $actual5->content->raw);
+		$actual5->dispose();
+
+		$actual6 = HttpClient::request(new HttpClientRequest($url, HttpMethod::Put, null, new FormUrlEncodedContent(Dictionary::create(['KEY' => 'あ']))), new HttpClientOptions());
+		$this->assertSame(Mime::FORM, $actual6->header->getContentType()->mime);
+		$this->assertSame("KEY=%E3%81%82", $actual6->content->raw);
+	}
+
+	public static function provider_put_path_echo_405_throw()
+	{
+		return [
+			[HttpMethod::Get],
+			[HttpMethod::Head],
+			[HttpMethod::Post],
+			//[HttpMethod::Put],
+			[HttpMethod::Delete],
+			[HttpMethod::Connect],
+			[HttpMethod::Options],
+			[HttpMethod::Trace],
+			[HttpMethod::Patch],
+		];
+	}
+
+	/** @dataProvider provider_put_path_echo_405_throw */
+	public function test_put_data_echo_405_throw(HttpMethod $method)
+	{
+		$url = Url::parse(self::localServer('/Core/Http/Client/put-data-echo.php'));
+
+		$hc = new HttpClient(new HttpClientOptions());
+
+		$this->expectException(HttpClientRequestException::class);
+		$header = HttpHeader::createClientRequestHeader();
+		$header->setContentType(ContentType::create('application/octet-stream'));
+		$hc->send(new HttpClientRequest($url, $method, $header, null));
+		$this->fail();
+	}
+
+	public function test_patch_data_echo()
+	{
+		$url = Url::parse(self::localServer('/Core/Http/Client/patch-data-echo.php'));
+
+		$hc = new HttpClient(new HttpClientOptions());
+
+		$header1 = HttpHeader::createClientRequestHeader();
+		$header1->setContentType(ContentType::create('application/octet-stream', null));
+		$actual1 = $hc->patch($url, $header1, null);
+		$this->assertSame('application/octet-stream', $actual1->header->getContentType()->mime);
+		$this->assertSame('', $actual1->content->raw);
+		$actual1->dispose();
+
+		$actual2 = $hc->patch($url, null, new BinaryContent(new Binary("あ\0い\1う\2え\3お！\4"), 'text/binary-text'));
+		$this->assertSame('text/binary-text', $actual2->header->getContentType()->mime);
+		$this->assertSame("あ\0い\1う\2え\3お！\4", $actual2->content->raw);
+		$actual2->dispose();
+
+		$actual3 = $hc->patch($url, null, new StringContent('かきくけこ？', 'text/plain-text'));
+		$this->assertSame('text/plain-text', $actual3->header->getContentType()->mime);
+		$this->assertSame('かきくけこ？', $actual3->content->raw);
+		$actual3->dispose();
+
+		$actual4 = $hc->patch($url, null, new JsonContent(["a" => "A", "b" => [1, 2, 3]]));
+		$this->assertSame(Mime::JSON, $actual4->header->getContentType()->mime);
+		$this->assertSame(["a" => "A", "b" => [1, 2, 3]], (new JsonSerializer())->load($actual4->content));
+		$actual4->dispose();
+
+		$actual5 = HttpClient::request(new HttpClientRequest($url, HttpMethod::Patch, null, new StringContent('さしすせそ！', 'mime/💩')), new HttpClientOptions());
+		$this->assertSame('mime/💩', $actual5->header->getContentType()->mime);
+		$this->assertSame("さしすせそ！", $actual5->content->raw);
+		$actual5->dispose();
+
+		$actual6 = HttpClient::request(new HttpClientRequest($url, HttpMethod::Patch, null, new FormUrlEncodedContent(Dictionary::create(['KEY' => 'あ']))), new HttpClientOptions());
+		$this->assertSame(Mime::FORM, $actual6->header->getContentType()->mime);
+		$this->assertSame("KEY=%E3%81%82", $actual6->content->raw);
+	}
+
+	public static function provider_patch_path_echo_405_throw()
+	{
+		return [
+			[HttpMethod::Get],
+			[HttpMethod::Head],
+			[HttpMethod::Post],
+			[HttpMethod::Put],
+			[HttpMethod::Delete],
+			[HttpMethod::Connect],
+			[HttpMethod::Options],
+			[HttpMethod::Trace],
+			//[HttpMethod::Patch],
+		];
+	}
+
+	/** @dataProvider provider_patch_path_echo_405_throw */
+	public function test_patch_data_echo_405_throw(HttpMethod $method)
+	{
+		$url = Url::parse(self::localServer('/Core/Http/Client/patch-data-echo.php'));
+
+		$hc = new HttpClient(new HttpClientOptions());
+
+		$this->expectException(HttpClientRequestException::class);
+		$header = HttpHeader::createClientRequestHeader();
+		$header->setContentType(ContentType::create('application/octet-stream'));
+		$hc->send(new HttpClientRequest($url, $method, $header, null));
+		$this->fail();
+	}
+
+	public function test_delete_data_echo()
+	{
+		$url = Url::parse(self::localServer('/Core/Http/Client/delete-data-echo.php'));
+
+		$hc = new HttpClient(new HttpClientOptions());
+
+		$header1 = HttpHeader::createClientRequestHeader();
+		$header1->setContentType(ContentType::create('application/octet-stream', null));
+		$actual1 = $hc->delete($url, $header1, null);
+		$this->assertSame('application/octet-stream', $actual1->header->getContentType()->mime);
+		$this->assertSame('', $actual1->content->raw);
+		$actual1->dispose();
+
+		$actual2 = $hc->delete($url, null, new BinaryContent(new Binary("あ\0い\1う\2え\3お！\4"), 'text/binary-text'));
+		$this->assertSame('text/binary-text', $actual2->header->getContentType()->mime);
+		$this->assertSame("あ\0い\1う\2え\3お！\4", $actual2->content->raw);
+		$actual2->dispose();
+
+		$actual3 = $hc->delete($url, null, new StringContent('かきくけこ？', 'text/plain-text'));
+		$this->assertSame('text/plain-text', $actual3->header->getContentType()->mime);
+		$this->assertSame('かきくけこ？', $actual3->content->raw);
+		$actual3->dispose();
+
+		$actual4 = $hc->delete($url, null, new JsonContent(["a" => "A", "b" => [1, 2, 3]]));
+		$this->assertSame(Mime::JSON, $actual4->header->getContentType()->mime);
+		$this->assertSame(["a" => "A", "b" => [1, 2, 3]], (new JsonSerializer())->load($actual4->content));
+		$actual4->dispose();
+
+		$actual5 = HttpClient::request(new HttpClientRequest($url, HttpMethod::Delete, null, new StringContent('さしすせそ！', 'mime/💩')), new HttpClientOptions());
+		$this->assertSame('mime/💩', $actual5->header->getContentType()->mime);
+		$this->assertSame("さしすせそ！", $actual5->content->raw);
+		$actual5->dispose();
+
+		$actual6 = HttpClient::request(new HttpClientRequest($url, HttpMethod::Delete, null, new FormUrlEncodedContent(Dictionary::create(['KEY' => 'あ']))), new HttpClientOptions());
+		$this->assertSame(Mime::FORM, $actual6->header->getContentType()->mime);
+		$this->assertSame("KEY=%E3%81%82", $actual6->content->raw);
+	}
+
+	public static function provider_delete_path_echo_405_throw()
+	{
+		return [
+			[HttpMethod::Get],
+			[HttpMethod::Head],
+			[HttpMethod::Post],
+			[HttpMethod::Put],
+			//[HttpMethod::Delete],
+			[HttpMethod::Connect],
+			[HttpMethod::Options],
+			[HttpMethod::Trace],
+			[HttpMethod::Patch],
+		];
+	}
+
+	/** @dataProvider provider_delete_path_echo_405_throw */
+	public function test_delete_data_echo_405_throw(HttpMethod $method)
+	{
+		$url = Url::parse(self::localServer('/Core/Http/Client/delete-data-echo.php'));
+
+		$hc = new HttpClient(new HttpClientOptions());
+
+		$this->expectException(HttpClientRequestException::class);
+		$header = HttpHeader::createClientRequestHeader();
+		$header->setContentType(ContentType::create('application/octet-stream'));
+		$hc->send(new HttpClientRequest($url, $method, $header, null));
+		$this->fail();
+	}
+
 	public function test_redirect_success()
 	{
 		$redirectCount = 3;
