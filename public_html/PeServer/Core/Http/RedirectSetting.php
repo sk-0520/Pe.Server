@@ -12,7 +12,7 @@ use PeServer\Core\Web\Url;
  *
  * @immutable
  */
-class RedirectSetting
+readonly class RedirectSetting
 {
 	/**
 	 * 生成。
