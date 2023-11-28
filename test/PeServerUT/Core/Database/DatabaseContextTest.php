@@ -59,7 +59,7 @@ class DatabaseContextTest extends TestClass
 				$this->success();
 			}
 		});
-		$this->isFalse($transactionResult1);
+		$this->assertFalse($transactionResult1);
 
 		$transactionResult2 = $database->transaction(function ($context) {
 			try {
@@ -69,7 +69,7 @@ class DatabaseContextTest extends TestClass
 				$this->success();
 			}
 		});
-		$this->isFalse($transactionResult2);
+		$this->assertFalse($transactionResult2);
 	}
 
 	function test_beginTransaction()

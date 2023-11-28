@@ -52,12 +52,12 @@ class PagerFunction extends TemplateFunctionBase
 
 		$dom = new HtmlDocument();
 
-		$parent = $dom->addElement('ul');
+		$parent = $dom->addTagElement('ul');
 		$parent->addClass('pagination');
 
 		foreach ($shortcuts as $index => $shortcut) {
-			$item = $parent->addElement('li');
-			$link = $item->addElement('a');
+			$item = $parent->addTagElement('li');
+			$link = $item->addTagElement('a');
 
 			$item->addClass($shortcut->kind->value);
 

@@ -10,12 +10,14 @@ use PeServer\Core\Html\HtmlDocument;
 use PeServer\Core\Html\HtmlElementBase;
 use PeServer\Core\Html\HtmlXPath;
 use PeServer\Core\Text;
+use PeServer\Core\Throws\HtmlAttributeException;
 use PeServer\Core\Throws\HtmlDocumentException;
+use PeServer\Core\TypeUtility;
 
 /**
  * `DOMElement` ラッパー。
  */
-final class HtmlElement extends HtmlElementBase
+final class HtmlTagElement extends HtmlElementBase
 {
 	#region variable
 
@@ -35,6 +37,50 @@ final class HtmlElement extends HtmlElementBase
 
 	#endregion
 
+	public function hasAttribute(string $qualifiedName): bool
+	{
+		return $this->raw->hasAttribute($qualifiedName);
+	}
+
+	public function isAttribute(string $qualifiedName): bool
+	{
+		if ($this->tryGetAttribute($qualifiedName, $value)) {
+			return TypeUtility::parseBoolean($value);
+		}
+
+		return false;
+	}
+
+	public function getAttribute(string $qualifiedName): string
+	{
+		$attributeValue = $this->raw->getAttribute($qualifiedName);
+		if (Text::isNullOrEmpty($attributeValue)) {
+			throw new HtmlAttributeException();
+		}
+
+		return $attributeValue;
+	}
+
+	/**
+	 *
+	 * @param string $qualifiedName
+	 * @param string|null $result
+	 * @return bool
+	 * @phpstan-assert-if-true string $result
+	 */
+	public function tryGetAttribute(string $qualifiedName, string|null &$result): bool
+	{
+		$attributeValue = $this->raw->getAttribute($qualifiedName);
+		if (Text::isNullOrEmpty($attributeValue)) {
+			$result = null;
+			return false;
+		}
+
+		$result = $attributeValue;
+
+		return true;
+	}
+
 	/**
 	 * 属性設定
 	 *
@@ -46,7 +92,7 @@ final class HtmlElement extends HtmlElementBase
 	{
 		if (is_bool($value)) {
 			if ($value) {
-				$value = Text::EMPTY;
+				$value = 'on';
 			} else {
 				if ($this->raw->hasAttribute($qualifiedName)) {
 					$this->raw->removeAttribute($qualifiedName);

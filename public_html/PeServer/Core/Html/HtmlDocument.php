@@ -6,7 +6,7 @@ namespace PeServer\Core\Html;
 
 use DOMDocument;
 use DOMElement;
-use PeServer\Core\Html\HtmlElement;
+use PeServer\Core\Html\HtmlTagElement;
 use PeServer\Core\Html\HtmlElementBase;
 use PeServer\Core\Html\HtmlXPath;
 use PeServer\Core\Throws\HtmlDocumentException;
@@ -47,14 +47,14 @@ class HtmlDocument extends HtmlElementBase
 
 	#region function
 
-	public function importNode(HtmlElement $node): HtmlElement
+	public function importNode(HtmlTagElement $node): HtmlTagElement
 	{
 		/** @var DOMElement|false */
 		$importedNode = $this->raw->importNode($node->raw, true);
 		if ($importedNode === false) {
 			throw new HtmlDocumentException();
 		}
-		return new HtmlElement($this, $importedNode);
+		return new HtmlTagElement($this, $importedNode);
 	}
 
 	public function build(): string

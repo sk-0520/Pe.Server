@@ -109,7 +109,7 @@ class BotTextImageFunction extends TemplateFunctionBase
 		$image->dispose();
 
 		$dom = new HtmlDocument();
-		$img = $dom->addElement('img');
+		$img = $dom->addTagElement('img');
 		$img->setAttribute('src', $htmlSource);
 
 		$textHash = Cryptography::generateHashString(self::HASH_ALGORITHM, new Binary($text));

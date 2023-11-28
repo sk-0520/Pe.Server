@@ -130,7 +130,7 @@ class AssetFunction extends TemplateFunctionBase
 		if (Arr::tryGet($this->params, 'rel', $relValue)) {
 			switch ($relValue) {
 				case 'icon':
-					$element = $dom->addElement('link');
+					$element = $dom->addTagElement('link');
 					$element->setAttribute('href', $resourcePath);
 					$skipAttributes = array_merge($skipAttributes, ['href']);
 					break;
@@ -141,12 +141,12 @@ class AssetFunction extends TemplateFunctionBase
 			switch ($extension) {
 				case 'css':
 					if ($include) {
-						$element = $dom->addElement('style');
+						$element = $dom->addTagElement('style');
 
 						$content = File::readContent($filePath);
 						$element->addText($content->toString());
 					} else {
-						$element = $dom->addElement('link');
+						$element = $dom->addTagElement('link');
 
 						$element->setAttribute('rel', 'stylesheet');
 						$element->setAttribute('href', $resourcePath);
@@ -155,7 +155,7 @@ class AssetFunction extends TemplateFunctionBase
 					break;
 
 				case 'js':
-					$element = $dom->addElement('script');
+					$element = $dom->addTagElement('script');
 
 					if ($include) {
 						$content = File::readContent($filePath);
@@ -169,7 +169,7 @@ class AssetFunction extends TemplateFunctionBase
 				case 'png':
 				case 'jpeg':
 				case 'jpg':
-					$element = $dom->addElement('img');
+					$element = $dom->addTagElement('img');
 
 					$element->setAttribute('src', $resourcePath);
 					$skipAttributes = array_merge($skipAttributes, ['src']);

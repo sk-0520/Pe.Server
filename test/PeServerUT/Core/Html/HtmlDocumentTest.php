@@ -42,4 +42,11 @@ class HtmlDocumentTest extends TestClass
 		new HtmlDocument($html);
 		$this->fail();
 	}
+
+	public function test_addComment()
+	{
+		$doc = new HtmlDocument();
+		$actual = $doc->addComment('comment');
+		$this->assertSame('comment', $actual->get());
+	}
 }
