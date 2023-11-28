@@ -51,7 +51,7 @@ class ResponsePrinter
 			return Text::getByteCount($this->response->content);
 		}
 
-		return -1;
+		return ICallbackContent::UNKNOWN;
 	}
 
 	/**

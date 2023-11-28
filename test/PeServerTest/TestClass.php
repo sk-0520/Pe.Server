@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace PeServerTest;
 
+use ReflectionClass;
 use Exception;
 use PeServer\Core\DI\IDiContainer;
 use PeServer\Core\DI\IDiRegisterContainer;
-
+use ReflectionException;
 
 class TestClass extends \PHPUnit\Framework\TestCase
 {
@@ -70,5 +71,23 @@ class TestClass extends \PHPUnit\Framework\TestCase
 	protected function success()
 	{
 		$this->assertTrue(true);
+	}
+
+	/**
+	 * インスタンスメソッドの呼び出し。
+	 *
+	 * 非 `public` を呼び出す想定。
+	 *
+	 * @param object $object インスタンス。
+	 * @param string $method メソッド名。
+	 * @param array $params 引数。
+	 * @return mixed 結果。
+	 * @throws ReflectionException
+	 */
+	protected function callInstanceMethod(object $object, string $method, array $params = [])
+	{
+		$reflection = new ReflectionClass($object);
+		$method = $reflection->getMethod($method);
+		return $method->invokeArgs($object, $params);
 	}
 }
