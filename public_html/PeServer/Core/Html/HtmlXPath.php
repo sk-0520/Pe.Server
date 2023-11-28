@@ -29,7 +29,7 @@ class HtmlXPath
 	/**
 	 * @readonly
 	 */
-	public DOMXPath $path;
+	public readonly DOMXPath $path;
 
 	#endregion
 

@@ -14,13 +14,13 @@ abstract class HtmlNodeBase
 	/**
 	 * @readonly
 	 */
-	protected HtmlDocument $document;
+	protected readonly HtmlDocument $document;
 
 	/**
 	 * 生で使用する現在データ。
 	 * @readonly
 	 */
-	protected DOMNode $currentNode;
+	protected readonly DOMNode $currentNode;
 
 	#endregion
 

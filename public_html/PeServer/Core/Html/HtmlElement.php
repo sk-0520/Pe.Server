@@ -23,7 +23,7 @@ final class HtmlElement extends HtmlElementBase
 	 * 生で使用する用。
 	 * @readonly
 	 */
-	public DOMElement $raw;
+	public readonly DOMElement $raw;
 
 	#endregion
 

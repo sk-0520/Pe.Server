@@ -18,7 +18,7 @@ final class HtmlText extends HtmlNodeBase
 	/**
 	 * @readonly
 	 */
-	public DOMText $raw;
+	public readonly DOMText $raw;
 
 	#endregion
 

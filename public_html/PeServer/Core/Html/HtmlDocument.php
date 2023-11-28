@@ -26,30 +26,26 @@ class HtmlDocument extends HtmlElementBase
 	 * 生で使用する用。
 	 * @readonly
 	 */
-	public DOMDocument $raw;
+	public readonly DOMDocument $raw;
 
 	#endregion
 
-	public function __construct()
+	public function __construct(?string $html = null)
 	{
 		libxml_use_internal_errors(true);
 
 		$this->raw = new DOMDocument();
 		parent::__construct($this, $this->raw);
+
+		if ($html !== null) {
+			$result = Throws::wrap(ValueError::class, HtmlDocumentException::class, fn () => $this->raw->loadHTML($html));
+			if ($result == false) {
+				throw new HtmlDocumentException();
+			}
+		}
 	}
 
 	#region function
-
-	public static function load(string $html): HtmlDocument
-	{
-		$doc = new HtmlDocument();
-		$result = Throws::wrap(ValueError::class, HtmlDocumentException::class, fn() => $doc->raw->loadHTML($html));
-		if ($result == false) {
-			throw new HtmlDocumentException();
-		}
-
-		return $doc;
-	}
 
 	public function importNode(HtmlElement $node): HtmlElement
 	{
