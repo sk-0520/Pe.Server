@@ -6,6 +6,7 @@ namespace PeServerUT\Core\Html;
 
 use PeServer\Core\Html\HtmlDocument;
 use PeServer\Core\Throws\HtmlAttributeException;
+use PeServer\Core\Throws\HtmlDocumentException;
 use PeServerTest\TestClass;
 
 class HtmlTagElementTest extends TestClass
@@ -48,5 +49,48 @@ class HtmlTagElementTest extends TestClass
 
 		$element->setAttribute('attribute', false);
 		$this->assertFalse($element->isAttribute('attribute'));
+	}
+
+	public function test_attribute_throw()
+	{
+		$doc = new HtmlDocument();
+		$element = $doc->addTagElement('p');
+
+		$this->expectException(HtmlAttributeException::class);
+
+		$element->setAttribute('', '');
+
+		$this->fail();
+	}
+
+	public function test_classList()
+	{
+		$doc = new HtmlDocument();
+		$element = $doc->addTagElement('p');
+
+		$this->assertSame([], $element->getClassList());
+
+		$element->addClass('CLASS');
+		$this->assertSame(['CLASS'], $element->getClassList());
+
+		$element->addClass('CLASS');
+		$this->assertSame(['CLASS'], $element->getClassList());
+
+		$classes = $element->getClassList();
+		$classes[] = 'CLASS2';
+		$element->setClassList($classes);
+		$this->assertSame(['CLASS', 'CLASS2'], $element->getClassList());
+
+		$element->setClassList(['CLASS', 'CLASS2', 'CLASS2']);
+		$this->assertSame(['CLASS', 'CLASS2'], $element->getClassList());
+
+		$element->removeClass('CLASS');
+		$this->assertSame(['CLASS2'], $element->getClassList());
+
+		$element->removeClass('CLASS');
+		$this->assertSame(['CLASS2'], $element->getClassList());
+
+		$element->removeClass('CLASS2');
+		$this->assertSame([], $element->getClassList());
 	}
 }

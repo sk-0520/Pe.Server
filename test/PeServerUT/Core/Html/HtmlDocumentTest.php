@@ -43,10 +43,24 @@ class HtmlDocumentTest extends TestClass
 		$this->fail();
 	}
 
+	public function test_addTagElement()
+	{
+		$doc = new HtmlDocument();
+		$actual = $doc->addTagElement('element');
+		$this->assertSame('element', $actual->raw->tagName);
+	}
+
 	public function test_addComment()
 	{
 		$doc = new HtmlDocument();
 		$actual = $doc->addComment('comment');
 		$this->assertSame('comment', $actual->get());
+	}
+
+	public function test_addText()
+	{
+		$doc = new HtmlDocument();
+		$actual = $doc->addText('text');
+		$this->assertSame('text', $actual->get());
 	}
 }

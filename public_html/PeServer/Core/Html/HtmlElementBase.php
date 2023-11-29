@@ -7,7 +7,7 @@ namespace PeServer\Core\Html;
 use DOMNode;
 use PeServer\Core\Html\HtmlDocument;
 use PeServer\Core\Html\HtmlNodeBase;
-use PeServer\Core\Throws\HtmlDocumentException;
+use PeServer\Core\Throws\HtmlTagElementException;
 
 abstract class HtmlElementBase extends HtmlNodeBase
 {
@@ -18,11 +18,11 @@ abstract class HtmlElementBase extends HtmlNodeBase
 
 	#region function
 
-	public function createElement(string $tagName): HtmlTagElement
+	public function createTagElement(string $tagName): HtmlTagElement
 	{
 		$element = $this->document->raw->createElement($tagName);
 		if ($element === false) { // @phpstan-ignore-line
-			throw new HtmlDocumentException();
+			throw new HtmlTagElementException();
 		}
 
 		return new HtmlTagElement($this->document, $element);
@@ -32,7 +32,7 @@ abstract class HtmlElementBase extends HtmlNodeBase
 	{
 		$node = $this->document->raw->createTextNode($text);
 		if ($node === false) { // @phpstan-ignore-line
-			throw new HtmlDocumentException();
+			throw new HtmlTagElementException();
 		}
 
 		return new HtmlTextElement($this->document, $node);
@@ -42,7 +42,7 @@ abstract class HtmlElementBase extends HtmlNodeBase
 	{
 		$node = $this->document->raw->createComment($text);
 		if ($node === false) { // @phpstan-ignore-line
-			throw new HtmlDocumentException();
+			throw new HtmlTagElementException();
 		}
 
 		return new HtmlCommentElement($this->document, $node);
@@ -69,7 +69,7 @@ abstract class HtmlElementBase extends HtmlNodeBase
 	 */
 	public function addTagElement(string $tagName): HtmlTagElement
 	{
-		$node = $this->createElement($tagName);
+		$node = $this->createTagElement($tagName);
 
 		$this->appendChild($node);
 

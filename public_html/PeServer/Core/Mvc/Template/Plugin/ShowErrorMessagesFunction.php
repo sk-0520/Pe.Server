@@ -65,7 +65,7 @@ class ShowErrorMessagesFunction extends TemplateFunctionBase
 
 		$dom = new HtmlDocument();
 
-		$ulElement = $dom->createElement('ul');
+		$ulElement = $dom->createTagElement('ul');
 		$ulElement->setClassList($classes);
 
 		foreach ($errors as $key => $values) {

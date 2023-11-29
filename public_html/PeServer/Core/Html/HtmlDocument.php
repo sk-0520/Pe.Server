@@ -13,6 +13,8 @@ use PeServer\Core\Throws\HtmlDocumentException;
 use PeServer\Core\Throws\Throws;
 use ValueError;
 
+libxml_use_internal_errors(true);
+
 /**
  * `DOMDocument` ラッパー。
  *
@@ -32,8 +34,6 @@ class HtmlDocument extends HtmlElementBase
 
 	public function __construct(?string $html = null)
 	{
-		libxml_use_internal_errors(true);
-
 		$this->raw = new DOMDocument();
 		parent::__construct($this, $this->raw);
 

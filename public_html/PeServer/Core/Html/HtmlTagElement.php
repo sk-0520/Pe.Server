@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Html;
 
 use DOMElement;
+use Exception;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Html\HtmlDocument;
 use PeServer\Core\Html\HtmlElementBase;
@@ -12,7 +13,9 @@ use PeServer\Core\Html\HtmlXPath;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\HtmlAttributeException;
 use PeServer\Core\Throws\HtmlDocumentException;
+use PeServer\Core\Throws\Throws;
 use PeServer\Core\TypeUtility;
+use Throwable;
 
 /**
  * `DOMElement` ラッパー。
@@ -101,9 +104,13 @@ final class HtmlTagElement extends HtmlElementBase
 			}
 		}
 
-		$result = $this->raw->setAttribute($qualifiedName, $value);
-		if ($result === false) { // @phpstan-ignore-line
-			throw new HtmlDocumentException();
+		try {
+			$result = $this->raw->setAttribute($qualifiedName, $value);
+			if ($result === false) { // @phpstan-ignore-line
+				throw new HtmlAttributeException();
+			}
+		} catch (Throwable $ex) {
+			Throws::reThrow(HtmlAttributeException::class, $ex);
 		}
 	}
 
@@ -130,7 +137,7 @@ final class HtmlTagElement extends HtmlElementBase
 	 */
 	public function setClassList(array $classNames): void
 	{
-		$classValue = Text::join(' ', $classNames);
+		$classValue = Text::join(' ', Arr::toUnique($classNames));
 		$this->setAttribute('class', $classValue);
 	}
 
