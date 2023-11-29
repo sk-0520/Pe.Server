@@ -9,7 +9,7 @@ use DOMElement;
 use DOMDocument;
 use PeServer\Core\Regex;
 use PeServer\Core\OutputBuffer;
-use PeServer\Core\Html\HtmlElement;
+use PeServer\Core\Html\HtmlTagElement;
 use PeServer\Core\Html\HtmlDocument;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
@@ -35,16 +35,16 @@ class ManagementEnvironmentLogic extends PageLogicBase
 			phpinfo();
 		});
 
-		$phpDoc = HtmlDocument::load($rawPhpinfo->raw);
+		$phpDoc = new HtmlDocument($rawPhpinfo->raw);
 
 		$xpath = $phpDoc->path();
-		/** @var HtmlElement */
+		/** @var HtmlTagElement */
 		$srcStyle = $xpath->query('//html/head/style')[0];
-		/** @var HtmlElement */
+		/** @var HtmlTagElement */
 		$srcContent = $xpath->query('//html/body/div')[0];
 
 		$dom = new HtmlDocument();
-		$content = $dom->addElement('div');
+		$content = $dom->addTagElement('div');
 		$content->addClass('phpinfo');
 
 		$dstStyle = $dom->importNode($srcStyle);

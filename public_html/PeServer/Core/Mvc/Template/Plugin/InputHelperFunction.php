@@ -7,7 +7,7 @@ namespace PeServer\Core\Mvc\Template\Plugin;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Text;
 use PeServer\Core\TypeUtility;
-use PeServer\Core\Html\HtmlElement;
+use PeServer\Core\Html\HtmlTagElement;
 use PeServer\Core\Html\HtmlDocument;
 use PeServer\Core\Mvc\Template\Plugin\TemplateFunctionBase;
 use PeServer\Core\Mvc\Template\Plugin\TemplatePluginArgument;
@@ -44,21 +44,21 @@ class InputHelperFunction extends TemplateFunctionBase
 	 *
 	 * @param HtmlDocument $dom
 	 * @param string|string[]|bool|int $targetValue
-	 * @return HtmlElement
+	 * @return HtmlTagElement
 	 */
-	private function addMainElement(HtmlDocument $dom, mixed $targetValue): HtmlElement
+	private function addMainElement(HtmlDocument $dom, mixed $targetValue): HtmlTagElement
 	{
 		/** @var string */
 		$type = Arr::getOr($this->params, 'type', Text::EMPTY);
 
 		switch ($type) {
 			case 'textarea':
-				$element = $dom->addElement('textarea');
+				$element = $dom->addTagElement('textarea');
 				$element->addText(Text::toString($targetValue));
 				return $element;
 
 			default:
-				$element = $dom->addElement('input');
+				$element = $dom->addTagElement('input');
 				if (!Text::isNullOrWhiteSpace($type)) {
 					$element->setAttribute('type', $type);
 				}
@@ -67,7 +67,7 @@ class InputHelperFunction extends TemplateFunctionBase
 		}
 	}
 
-	private function setElementAttribute(HtmlElement $element, string $name, string $value): void
+	private function setElementAttribute(HtmlTagElement $element, string $name, string $value): void
 	{
 		$booleanAttrs = [
 			'readonly',

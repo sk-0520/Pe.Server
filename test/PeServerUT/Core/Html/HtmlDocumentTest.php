@@ -10,7 +10,7 @@ use PeServerTest\TestClass;
 
 class HtmlDocumentTest extends TestClass
 {
-	public function test_load()
+	public function test_constructor_html()
 	{
 		$tests = [
 			"a",
@@ -23,23 +23,44 @@ class HtmlDocumentTest extends TestClass
 			"<a><//a>",
 		];
 		foreach ($tests as $test) {
-			HtmlDocument::load($test);
+			new HtmlDocument($test);
 		}
 		$this->success();
 	}
 
-	public static function provider_load_throw()
+	public static function provider_constructor_html_throw()
 	{
 		return [
 			[''],
 		];
 	}
 
-	/** @dataProvider provider_load_throw */
-	public function test_load_throw($html)
+	/** @dataProvider provider_constructor_html_throw */
+	public function test_constructor_html_throw($html)
 	{
 		$this->expectException(HtmlDocumentException::class);
-		HtmlDocument::load($html);
+		new HtmlDocument($html);
 		$this->fail();
+	}
+
+	public function test_addTagElement()
+	{
+		$doc = new HtmlDocument();
+		$actual = $doc->addTagElement('element');
+		$this->assertSame('element', $actual->raw->tagName);
+	}
+
+	public function test_addComment()
+	{
+		$doc = new HtmlDocument();
+		$actual = $doc->addComment('comment');
+		$this->assertSame('comment', $actual->get());
+	}
+
+	public function test_addText()
+	{
+		$doc = new HtmlDocument();
+		$actual = $doc->addText('text');
+		$this->assertSame('text', $actual->get());
 	}
 }

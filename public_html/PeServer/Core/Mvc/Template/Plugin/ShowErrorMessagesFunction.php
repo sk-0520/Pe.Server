@@ -65,7 +65,7 @@ class ShowErrorMessagesFunction extends TemplateFunctionBase
 
 		$dom = new HtmlDocument();
 
-		$ulElement = $dom->createElement('ul');
+		$ulElement = $dom->createTagElement('ul');
 		$ulElement->setClassList($classes);
 
 		foreach ($errors as $key => $values) {
@@ -74,7 +74,7 @@ class ShowErrorMessagesFunction extends TemplateFunctionBase
 			}
 
 			foreach ($values as $value) {
-				$liElement = $ulElement->addElement('li');
+				$liElement = $ulElement->addTagElement('li');
 				$liElement->addClass('error');
 
 				$messageElement = $liElement->addText($value);
@@ -82,10 +82,10 @@ class ShowErrorMessagesFunction extends TemplateFunctionBase
 		}
 
 		if ($targetKey === Validator::COMMON) {
-			$commonElement = $dom->addElement('div');
+			$commonElement = $dom->addTagElement('div');
 			$commonElement->setClassList(['common', 'error']);
 
-			$messageElement = $commonElement->addElement('p');
+			$messageElement = $commonElement->addTagElement('p');
 			$messageElement->addText(I18n::message(I18n::COMMON_ERROR_TITLE));
 
 			if ($ulElement->raw->childElementCount) {

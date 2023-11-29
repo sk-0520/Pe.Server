@@ -41,7 +41,7 @@ class TypeUtilityTest extends TestClass
 			try {
 				TypeUtility::parseInteger($test);
 				$this->fail();
-			} catch(ParseException) {
+			} catch (ParseException) {
 				$this->success();
 			}
 		}
@@ -55,6 +55,102 @@ class TypeUtilityTest extends TestClass
 
 		$result2 = TypeUtility::tryParseInteger("abc", $actual2);
 		$this->assertFalse($result2);
+	}
+
+	public function test_parseUInteger()
+	{
+		$tests = [
+			new Data(0, '0'),
+			//new Data(-1, '-1'),
+			new Data(+1, '+1'),
+			new Data(123, '123 '),
+			new Data(456, ' 456'),
+			new Data(789, '  789 '),
+		];
+		foreach ($tests as $test) {
+			$actual = TypeUtility::parseUInteger(...$test->args);
+			$this->assertSame($test->expected, $actual, $test->str());
+		}
+	}
+
+	public function test_parseUInteger_throw()
+	{
+		$tests = [
+			'',
+			'1 1',
+			'1+1',
+			'1-1',
+			'--1',
+			'++1',
+			'-1',
+		];
+		foreach ($tests as $test) {
+			try {
+				TypeUtility::parseUInteger($test);
+				$this->fail();
+			} catch (ParseException) {
+				$this->success();
+			}
+		}
+	}
+
+	public function test_tryParseUInteger()
+	{
+		$result1 = TypeUtility::tryParseUInteger("123", $actual1);
+		$this->assertTrue($result1);
+		$this->assertSame(123, $actual1);
+
+		$result2 = TypeUtility::tryParseUInteger("-123", $actual2);
+		$this->assertFalse($result2);
+	}
+
+	public function test_parsePositiveInteger()
+	{
+		$tests = [
+			new Data(+1, '+1'),
+			new Data(123, '123 '),
+			new Data(456, ' 456'),
+			new Data(789, '  789 '),
+		];
+		foreach ($tests as $test) {
+			$actual = TypeUtility::parsePositiveInteger(...$test->args);
+			$this->assertSame($test->expected, $actual, $test->str());
+		}
+	}
+
+	public function test_parsePositiveInteger_throw()
+	{
+		$tests = [
+			'',
+			'1 1',
+			'1+1',
+			'1-1',
+			'--1',
+			'++1',
+			'-1',
+			'0',
+		];
+		foreach ($tests as $test) {
+			try {
+				TypeUtility::parsePositiveInteger($test);
+				$this->fail();
+			} catch (ParseException) {
+				$this->success();
+			}
+		}
+	}
+
+	public function test_tryParsePositiveInteger()
+	{
+		$result1 = TypeUtility::tryParsePositiveInteger("1", $actual1);
+		$this->assertTrue($result1);
+		$this->assertSame(1, $actual1);
+
+		$result2 = TypeUtility::tryParsePositiveInteger("0", $actual2);
+		$this->assertFalse($result2);
+
+		$result3 = TypeUtility::tryParsePositiveInteger("-1", $actual3);
+		$this->assertFalse($result3);
 	}
 
 	public function test_parseBoolean()

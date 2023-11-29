@@ -10,15 +10,16 @@ use PeServer\Core\Html\HtmlNodeBase;
 
 /**
  * `DOMText` ラッパー。
+ *
  */
-final class HtmlText extends HtmlNodeBase
+final class HtmlTextElement extends HtmlNodeBase
 {
 	#region variable
 
 	/**
 	 * @readonly
 	 */
-	public DOMText $raw;
+	public readonly DOMText $raw;
 
 	#endregion
 
@@ -27,4 +28,18 @@ final class HtmlText extends HtmlNodeBase
 		parent::__construct($document, $raw);
 		$this->raw = $raw;
 	}
+
+	#region function
+
+	public function get(): string
+	{
+		return $this->raw->textContent;
+	}
+
+	public function set(string $value): void
+	{
+		$this->raw->textContent = $value;
+	}
+
+	#endregion
 }

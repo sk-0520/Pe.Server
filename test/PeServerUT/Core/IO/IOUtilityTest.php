@@ -20,10 +20,34 @@ class IOUtilityTest extends TestClass
 		$state = IOUtility::getState(__FILE__);
 		$this->success();
 	}
+
 	function test_getState_throw()
 	{
 		$this->expectException(IOException::class);
+
 		IOUtility::getState(__FILE__ . "\0");
+		$this->fail();
+	}
+
+	public function test_clearCache_null()
+	{
+		IOUtility::clearCache(null);
+		$this->success();
+	}
+
+	static function provider_clearCache_throw()
+	{
+		return [
+			[''],
+			[' '],
+		];
+	}
+	/** @dataProvider provider_clearCache_throw */
+	public function test_clearCache_throw($input)
+	{
+		$this->expectException(IOException::class);
+
+		IOUtility::clearCache($input);
 		$this->fail();
 	}
 }

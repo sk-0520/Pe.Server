@@ -11,11 +11,11 @@ use DOMNode;
 use DOMNodeList;
 use DOMText;
 use DOMXPath;
-use PeServer\Core\Html\HtmlComment;
+use PeServer\Core\Html\HtmlCommentElement;
 use PeServer\Core\Html\HtmlDocument;
-use PeServer\Core\Html\HtmlElement;
+use PeServer\Core\Html\HtmlTagElement;
 use PeServer\Core\Html\HtmlNodeBase;
-use PeServer\Core\Html\HtmlText;
+use PeServer\Core\Html\HtmlTextElement;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\HtmlXPathException;
 
@@ -29,7 +29,7 @@ class HtmlXPath
 	/**
 	 * @readonly
 	 */
-	public DOMXPath $path;
+	public readonly DOMXPath $path;
 
 	#endregion
 
@@ -37,7 +37,7 @@ class HtmlXPath
 		/** @readonly */
 		private HtmlDocument $document,
 		/** @readonly */
-		private ?HtmlElement $element
+		private ?HtmlTagElement $element
 	) {
 		$this->path = new DOMXPath($document->raw);
 	}
@@ -59,11 +59,11 @@ class HtmlXPath
 		$result = [];
 		foreach ($nodeList as $node) {
 			if ($node instanceof DOMElement) {
-				$result[] = new HtmlElement($this->document, $node);
+				$result[] = new HtmlTagElement($this->document, $node);
 			} elseif ($node instanceof DOMText) {
-				$result[] = new HtmlText($this->document, $node);
+				$result[] = new HtmlTextElement($this->document, $node);
 			} elseif ($node instanceof DOMComment) {
-				$result[] = new HtmlComment($this->document, $node);
+				$result[] = new HtmlCommentElement($this->document, $node);
 			} elseif ($node instanceof DOMDocument) {
 				$result[] = new HtmlDocument();
 			} else {

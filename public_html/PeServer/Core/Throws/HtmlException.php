@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Throws;
 
-class HtmlDocumentException extends HtmlException
+use PeServer\Core\Throws\CoreException;
+
+class HtmlException extends CoreException
 {
 	use ThrowableTrait;
 }

@@ -45,7 +45,7 @@ class CsrfFunction extends TemplateFunctionBase
 
 		switch ($type) {
 			case 'id':
-				$element = $dom->addElement('meta');
+				$element = $dom->addTagElement('meta');
 
 				$element->setAttribute('id', Security::CSRF_REQUEST_ID);
 				$element->setAttribute('name', Security::CSRF_REQUEST_ID);
@@ -53,7 +53,7 @@ class CsrfFunction extends TemplateFunctionBase
 				break;
 
 			case 'name':
-				$element = $dom->addElement('input');
+				$element = $dom->addTagElement('input');
 
 				$element->setAttribute('type', 'hidden');
 				$element->setAttribute('name', Security::CSRF_REQUEST_KEY);

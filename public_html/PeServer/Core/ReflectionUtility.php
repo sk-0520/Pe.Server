@@ -112,7 +112,15 @@ abstract class ReflectionUtility
 		}
 
 		if ($parameterType instanceof ReflectionUnionType) {
-			return $parameterType->getTypes();
+			$result = [];
+
+			foreach ($parameterType->getTypes() as $type) {
+				if ($type instanceof ReflectionNamedType) {
+					$result[] = $type;
+				}
+			}
+
+			return $result;
 		}
 
 		return [];

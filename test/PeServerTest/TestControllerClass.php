@@ -55,7 +55,7 @@ class TestControllerClass extends TestClass
 		}
 	}
 
-	protected function call(HttpMethod $httpMethod, string $path, ?HttpHeader $httpHeader = null, ?array $body = null): TestHttpResponse
+	protected function call(HttpMethod $httpMethod, string $path, array $user = [], ?HttpHeader $httpHeader = null, ?array $body = null): TestHttpResponse
 	{
 		$this->resetInitialize();
 
@@ -90,10 +90,10 @@ class TestControllerClass extends TestClass
 		return new TestHttpResponse($response);
 	}
 
-	protected function assertStatus(HttpStatus $expected, HttpMethod $httpMethod, string $path, ?HttpHeader $httpHeader = null, ?array $body = null): void
+	protected function assertStatus(HttpStatus $expected, HttpMethod $httpMethod, string $path, array $user = [], ?HttpHeader $httpHeader = null, ?array $body = null): void
 	{
 		try {
-			$response = $this->call($httpMethod, $path, $httpHeader, $body);
+			$response = $this->call($httpMethod, $path, $user, $httpHeader, $body);
 			$this->assertSame($expected, $response->getHttpStatus());
 		} catch (HttpStatusException $ex) {
 			$this->assertSame($expected, $ex->status);
