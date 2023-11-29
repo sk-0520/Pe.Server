@@ -43,25 +43,25 @@
 						<li>
 							<form method="post" action="/management/delete-old-data">
 								{csrf}
-								<button class="link">不要データ削除処理</submit>
+								<button class="link">不要データ削除処理</button>
 							</form>
 						</li>
 						<li>
 							<form method="post" action="/management/vacuum-access-log">
 								{csrf}
-								<button class="link">アクセスログ整理</submit>
+								<button class="link">アクセスログ整理</button>
 							</form>
 						</li>
 						<li>
 							<form method="post" action="/management/cache-rebuild">
 								{csrf}
-								<button class="link">キャッシュ再構築</submit>
+								<button class="link">キャッシュ再構築</button>
 							</form>
 						</li>
 						<li>
 							<form method="post" action="/management/clear-deploy-progress">
 								{csrf}
-								<button class="link">デプロイ進捗ファイル破棄</submit>
+								<button class="link">デプロイ進捗ファイル破棄</button>
 							</form>
 						</li>
 						<li>
