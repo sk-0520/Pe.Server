@@ -33,9 +33,9 @@ class PointTest extends TestClass
 	public function test___toString()
 	{
 		$point1 = Point::empty();
-		$this->assertSame('PeServer\Core\Image\Point: 0,0', (string)$point1);
+		$this->assertSame('PeServer\Core\Image\Point(x:0,y:0)', (string)$point1);
 
 		$point2 = new Point(1, 2);
-		$this->assertSame('PeServer\Core\Image\Point: 1,2', (string)$point2);
+		$this->assertSame('PeServer\Core\Image\Point(x:1,y:2)', (string)$point2);
 	}
 }

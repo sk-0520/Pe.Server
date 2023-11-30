@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\IDisposable;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\NotImplementedException;
 use PeServer\Core\Throws\TypeException;
+use ReflectionClass;
 
 /**
  * コーディング上のあれ。
@@ -54,9 +56,30 @@ abstract class Code
 		}
 	}
 
+	/**
+	 * @deprecated toString2 に置き換え後、 toString に差し替える。
+	 */
 	public static function toString(object $obj, string $text): string
 	{
 		return get_class($obj) . ': ' . $text;
+	}
+
+	/**
+	 *
+	 * @param object $obj
+	 * @param string[] $propertyNames
+	 * @param string $separator
+	 * @return string
+	 */
+	public static function toString2(object $obj, array $propertyNames, string $separator = ','): string
+	{
+		$rc = new ReflectionClass($obj);
+
+		return
+			get_class($obj) .
+			'(' .
+			Text::join($separator, Arr::map($propertyNames, fn ($a) => $a . ':' . $rc->getProperty($a)->getValue($obj))) .
+			')';
 	}
 
 	#endregion
