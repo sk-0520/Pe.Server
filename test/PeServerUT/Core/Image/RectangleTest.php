@@ -42,4 +42,14 @@ class RectangleTest extends TestClass
 			$this->assertSame($test->size->height, $actual->size->height, (string)$actual->size->height);
 		}
 	}
+
+	public function test___toString()
+	{
+		$tests = [
+			new Data('PeServer\Core\Image\Rectangle(point:PeServer\Core\Image\Point(x:1,y:2),size:PeServer\Core\Image\Size(width:3,height:4))', new Rectangle(new Point(1, 2), new Size(3, 4))),
+		];
+		foreach ($tests as $test) {
+			$this->assertSame($test->expected, (string)$test->args[0]);
+		}
+	}
 }

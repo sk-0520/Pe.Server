@@ -127,7 +127,7 @@ class RgbColor implements IColor
 
 	public function __toString(): string
 	{
-		return Code::toString($this, Text::format('#%02x%02x%02x-%02x', $this->red, $this->green, $this->blue, $this->alpha));
+		return get_class($this) . ':' . Text::format('#%02x%02x%02x-%02x', $this->red, $this->green, $this->blue, $this->alpha);
 	}
 
 	#endregion

@@ -57,21 +57,13 @@ abstract class Code
 	}
 
 	/**
-	 * @deprecated toString2 に置き換え後、 toString に差し替える。
-	 */
-	public static function toString(object $obj, string $text): string
-	{
-		return get_class($obj) . ': ' . $text;
-	}
-
-	/**
 	 *
 	 * @param object $obj
 	 * @param string[] $propertyNames
 	 * @param string $separator
 	 * @return string
 	 */
-	public static function toString2(object $obj, array $propertyNames, string $separator = ','): string
+	public static function toString(object $obj, array $propertyNames, string $separator = ','): string
 	{
 		$rc = new ReflectionClass($obj);
 

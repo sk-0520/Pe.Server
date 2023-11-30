@@ -123,15 +123,12 @@ class Area implements Stringable
 	{
 		return Code::toString(
 			$this,
-			Text::join(
-				', ',
-				[
-					'leftTop: ' . $this->leftTop,
-					'leftBottom: ' . $this->leftBottom,
-					'rightBottom: ' . $this->rightBottom,
-					'rightTop: ' . $this->rightTop,
-				]
-			)
+			[
+				'leftTop',
+				'leftBottom',
+				'rightBottom',
+				'rightTop',
+			]
 		);
 	}
 

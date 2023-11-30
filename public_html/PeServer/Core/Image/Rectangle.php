@@ -52,7 +52,7 @@ class Rectangle implements Stringable
 
 	public function __toString(): string
 	{
-		return Code::toString($this, $this->point . ',' . $this->size);
+		return Code::toString($this, ['point', 'size']);
 	}
 
 	#endregion

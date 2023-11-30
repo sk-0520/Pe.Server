@@ -43,7 +43,7 @@ class Point implements Stringable
 
 	public function __toString(): string
 	{
-		return Code::toString2($this, ['x', 'y']);
+		return Code::toString($this, ['x', 'y']);
 	}
 
 	#endregion

@@ -56,7 +56,6 @@ class RgbColorTest extends TestClass
 		$this->fail();
 	}
 
-
 	public function test_serializable()
 	{
 		$tests = [

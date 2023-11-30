@@ -44,4 +44,10 @@ class SizeTest extends TestClass
 			$this->assertSame($test->height, $actual->height, (string)$actual->height);
 		}
 	}
+
+	public function test___toString()
+	{
+		$size = new Size(1, 2);
+		$this->assertSame('PeServer\Core\Image\Size(width:1,height:2)', (string)$size);
+	}
 }
