@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServerUT\Core\Html;
 
 use PeServer\Core\Html\HtmlDocument;
+use PeServer\Core\Throws\HtmlException;
 use PeServer\Core\Throws\HtmlDocumentException;
 use PeServerTest\TestClass;
 
@@ -41,6 +42,14 @@ class HtmlDocumentTest extends TestClass
 		$this->expectException(HtmlDocumentException::class);
 		new HtmlDocument($html);
 		$this->fail();
+	}
+
+	public function test_createTagElement_throw()
+	{
+		$doc = new HtmlDocument();
+
+		$this->expectException(HtmlException::class);
+		$doc->createTagElement('');
 	}
 
 	public function test_addTagElement()
