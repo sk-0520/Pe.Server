@@ -78,9 +78,8 @@ class DiRegisterContainer extends DiContainer implements IDiRegisterContainer
 
 		$registerId = $id;
 		if (Text::isNullOrWhiteSpace($registerId)) {
-			if ($value === null) {
-				throw new ArgumentNullException('$value');
-			}
+			ArgumentNullException::throwIfNull($value, '$value');
+
 			$registerId = TypeUtility::getType($value);
 		}
 

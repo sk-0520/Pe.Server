@@ -70,9 +70,7 @@ class TemporaryStore
 		if (Text::isNullOrWhiteSpace($options->savePath)) {
 			throw new ArgumentException('$options->savePath');
 		}
-		if ($options->cookie->span === null) {
-			throw new ArgumentNullException('$options->cookie->span');
-		}
+		ArgumentNullException::throwIfNull($options->cookie->span, '$options->cookie->span');
 	}
 
 	#region function

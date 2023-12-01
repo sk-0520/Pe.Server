@@ -39,9 +39,7 @@ class ResponseJson
 	 */
 	public static function success(mixed $data): ResponseJson
 	{
-		if ($data === null) {
-			throw new ArgumentNullException('$data');
-		}
+		ArgumentNullException::throwIfNull($data, '$data');
 
 		$result = new ResponseJson();
 		$result->data = $data;
