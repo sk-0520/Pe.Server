@@ -110,7 +110,7 @@ class AccountLoginLogic extends PageLogicBase
 			return;
 		}
 		// パスワードのアルゴリズムが古い場合に再設定する(業務ロジックのポリシー云々ではない)
-		$isNeedRehashPassword = Cryptography::needRehashPassword($user->currentPassword);
+		$isNeedRehashPassword = Cryptography::needsRehashPassword($user->currentPassword);
 		if ($isNeedRehashPassword) {
 			$info = Cryptography::getPasswordInformation($user->currentPassword);
 			$this->logger->info("[OLD] password needs rehash: {0}, {1}", $user->userId, $info);
