@@ -44,17 +44,19 @@ class AppCryptographyTest extends TestClass
 		}
 	}
 
-	// public function test_convertMarker()
-	// {
-	// 	/** @var AppCryptography */
-	// 	$appCryptography = $this->container()->new(AppCryptography::class);
+	public function test_convertMarker()
+	{
+		/** @var AppCryptography */
+		$appCryptography = $this->container()->new(AppCryptography::class);
 
-	// 	$tests = [
-	// 		new Data(0x439c2f4b, 'abc'),
-	// 	];
-	// 	foreach ($tests as $test) {
-	// 		$actual = $appCryptography->toMark(...$test->args);
-	// 		$this->assertSame($test->expected, $actual);
-	// 	}
-	// }
+		// CryptoSetting::pepper が付与されることに注意
+		$tests = [
+			new Data(0x233643e7, 'abc'),
+			new Data(0xb824c4a5, '🧶'),
+		];
+		foreach ($tests as $test) {
+			$actual = $appCryptography->toMark(...$test->args);
+			$this->assertSame($test->expected, $actual);
+		}
+	}
 }
