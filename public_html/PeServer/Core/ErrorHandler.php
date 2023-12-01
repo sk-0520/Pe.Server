@@ -42,7 +42,7 @@ class ErrorHandler
 	/** 登録済みか。 */
 	private bool $isRegistered = false;
 
-	#[Inject(TemplateFactory::class)] //@phpstan-ignore-next-line
+	#[Inject(TemplateFactory::class)] //@phpstan-ignore-next-line [INJECT]
 	private ITemplateFactory $templateFactory;
 
 	#[Inject] //@phpstan-ignore-next-line [INJECT]

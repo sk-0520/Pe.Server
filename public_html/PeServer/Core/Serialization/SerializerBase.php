@@ -11,6 +11,7 @@ use PeServer\Core\Serialization\ISerializer;
 use PeServer\Core\Throws\JsonDecodeException;
 use PeServer\Core\Throws\JsonEncodeException;
 use PeServer\Core\Throws\ParseException;
+use PeServer\Core\Throws\DeserializeException;
 use PeServer\Core\Throws\SerializeException;
 use PeServer\Core\Throws\Throws;
 
@@ -55,7 +56,7 @@ abstract class SerializerBase implements ISerializer
 		try {
 			return $this->loadImpl($value);
 		} catch (Throwable $ex) {
-			Throws::reThrow(SerializeException::class, $ex);
+			Throws::reThrow(DeserializeException::class, $ex);
 		}
 	}
 	#endregion
