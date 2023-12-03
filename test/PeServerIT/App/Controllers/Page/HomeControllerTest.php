@@ -12,33 +12,58 @@ use PeServer\Core\Collections\Collection;
 use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mime;
+use PeServerTest\CommonLoginTrait;
 use PeServerTest\MockStores;
 use PeServerTest\TestControllerClass;
 
 class HomeControllerTest extends TestControllerClass
 {
-	public function test_index_no_login()
+	#region common logion
+
+	use CommonLoginTrait;
+
+	public static function provider_COMMON_notLogin()
+	{
+		return self::_provider_notLogin([
+			'/',
+			'/about',
+			'/about/privacy',
+			'/about/contact',
+			'/favicon.ico',
+			'/robot.txt',
+		]);
+	}
+
+	public static function provider_COMMON_login()
+	{
+		return self::_provider_login([
+			'/',
+			'/about',
+			'/about/privacy',
+			'/about/contact',
+		]);
+	}
+
+	/** @dataProvider provider_COMMON_notLogin */
+	public function test_COMMON_notLogin(string $path)
+	{
+		$this->_test_notLogin($path);
+	}
+
+	/** @dataProvider provider_COMMON_login */
+	public function test_COMMON_login(string $path, string $level)
+	{
+		$this->_test_login($path, $level);
+	}
+
+	#endregion
+
+	public function test_index()
 	{
 		$actual = $this->call(HttpMethod::Get, '');
 		$this->assertSame(HttpStatus::OK, $actual->getHttpStatus());
 		$this->assertTrue($actual->isHtml());
 		$this->assertSame('トップ - Peサーバー', $actual->html->getTitle());
-
-		$this->assertCount(1, $actual->html->path()->collection('//header//li/a[@href = "/account/signup"]'));
-		$this->assertCount(0, $actual->html->path()->collection('//header//li/a[@href = "/account/user"]'));
-
-		$this->assertStatus(HttpStatus::OK, HttpMethod::Get, '/');
-	}
-
-	public function test_index_login()
-	{
-		$actual = $this->call(HttpMethod::Get, '', MockStores::account(UserLevel::USER));
-		$this->assertSame(HttpStatus::OK, $actual->getHttpStatus());
-		$this->assertTrue($actual->isHtml());
-		$this->assertSame('トップ - Peサーバー', $actual->html->getTitle());
-
-		$this->assertCount(0, $actual->html->path()->collection('//header//li/a[@href = "/account/signup"]'));
-		$this->assertCount(1, $actual->html->path()->collection('//header//li/a[@href = "/account/user"]'));
 
 		$this->assertStatus(HttpStatus::OK, HttpMethod::Get, '/');
 	}
