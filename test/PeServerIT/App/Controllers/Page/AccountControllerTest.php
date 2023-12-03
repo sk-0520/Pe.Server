@@ -16,8 +16,7 @@ class AccountControllerTest extends TestControllerClass
 	{
 		$actual = $this->call(HttpMethod::Get, '/account');
 		$this->assertSame(HttpStatus::OK, $actual->getHttpStatus());
-		$this->assertTrue($actual->isHtml());
-		$this->assertSame('ログイン - Peサーバー', $actual->html->getTitle());
+		$this->assertTitle('ログイン', $actual);
 
 		$this->assertStatus(HttpStatus::OK, HttpMethod::Get, '/account');
 	}
@@ -26,9 +25,6 @@ class AccountControllerTest extends TestControllerClass
 	{
 		$actual = $this->call(HttpMethod::Get, '/account/login');
 		$this->assertSame(HttpStatus::OK, $actual->getHttpStatus());
-		$this->assertTrue($actual->isHtml());
-		$this->assertSame('ログイン - Peサーバー', $actual->html->getTitle());
-
-		$this->assertStatus(HttpStatus::OK, HttpMethod::Get, '/account');
+		$this->assertTitle('ログイン', $actual);
 	}
 }

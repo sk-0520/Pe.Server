@@ -119,6 +119,11 @@ class TestControllerClass extends TestClass
 		}
 	}
 
+	protected function assertTitle(string $expected, TestHttpResponse $response): void
+	{
+		$this->assertTrue($response->isHtml());
+		$this->assertSame($expected . ' - Peサーバー', $response->html->getTitle());
+	}
 
 	#endregion
 }

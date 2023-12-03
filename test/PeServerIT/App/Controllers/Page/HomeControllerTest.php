@@ -62,8 +62,7 @@ class HomeControllerTest extends TestControllerClass
 	{
 		$actual = $this->call(HttpMethod::Get, '');
 		$this->assertSame(HttpStatus::OK, $actual->getHttpStatus());
-		$this->assertTrue($actual->isHtml());
-		$this->assertSame('トップ - Peサーバー', $actual->html->getTitle());
+		$this->assertTitle('トップ', $actual);
 
 		$this->assertStatus(HttpStatus::OK, HttpMethod::Get, '/');
 	}
@@ -72,32 +71,28 @@ class HomeControllerTest extends TestControllerClass
 	{
 		$actual = $this->call(HttpMethod::Get, '/about');
 		$this->assertSame(HttpStatus::OK, $actual->getHttpStatus());
-		$this->assertTrue($actual->isHtml());
-		$this->assertSame('問い合わせ - Peサーバー', $actual->html->getTitle());
+		$this->assertTitle('問い合わせ', $actual);
 	}
 
 	public function test_privacy()
 	{
 		$actual = $this->call(HttpMethod::Get, '/about/privacy');
 		$this->assertSame(HttpStatus::OK, $actual->getHttpStatus());
-		$this->assertTrue($actual->isHtml());
-		$this->assertSame('プライバシーポリシー - Peサーバー', $actual->html->getTitle());
+		$this->assertTitle('プライバシーポリシー', $actual);
 	}
 
 	public function test_contact()
 	{
 		$actual = $this->call(HttpMethod::Get, '/about/contact');
 		$this->assertSame(HttpStatus::OK, $actual->getHttpStatus());
-		$this->assertTrue($actual->isHtml());
-		$this->assertSame('問い合わせ - Peサーバー', $actual->html->getTitle());
+		$this->assertTitle('問い合わせ', $actual);
 	}
 
 	public function test_api_doc()
 	{
 		$actual = $this->call(HttpMethod::Get, '/api-doc');
 		$this->assertSame(HttpStatus::OK, $actual->getHttpStatus());
-		$this->assertTrue($actual->isHtml());
-		$this->assertSame('API - Peサーバー', $actual->html->getTitle());
+		$this->assertTitle('API', $actual);
 	}
 
 	public function test_wildcard_favicon_ico()
