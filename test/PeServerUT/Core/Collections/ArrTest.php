@@ -7,10 +7,10 @@ namespace PeServerUT\Core\Collections;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Collections\OrderBy;
 use PeServer\Core\Throws\ArgumentException;
-use PeServer\Core\Throws\TypeException;
 use PeServer\Core\Throws\KeyNotFoundException;
 use PeServerTest\Data;
 use PeServerTest\TestClass;
+use TypeError;
 
 class ArrTest extends TestClass
 {
@@ -73,7 +73,7 @@ class ArrTest extends TestClass
 
 	public function test_getOr_throw()
 	{
-		$this->expectException(TypeException::class);
+		$this->expectException(TypeError::class);
 
 		Arr::getOr(
 			['KEY' => 'string'],

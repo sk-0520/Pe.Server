@@ -10,7 +10,7 @@ use ReflectionProperty;
 use ReflectionType;
 use ReflectionUnionType;
 use PeServer\Core\Throws\ArgumentException;
-use PeServer\Core\Throws\TypeException;
+use TypeError;
 
 /**
  * 型とかそんなやつになんかするやつ。
@@ -29,24 +29,24 @@ abstract class ReflectionUtility
 	 * @phpstan-param class-string|object $baseClass
 	 * @return object 生成インスタンス。
 	 * @phpstan-return TObject
-	 * @throws TypeException 型おかしい。
+	 * @throws TypeError 型おかしい。
 	 */
 	public static function create(string $input, string|object $baseClass, mixed ...$parameters): object
 	{
 		if (!class_exists($input)) {
-			throw new TypeException();
+			throw new TypeError();
 		}
 
 		$input = new $input(...$parameters);
 
 		if (is_string($baseClass)) {
 			if (!is_a($input, $baseClass, false)) {
-				throw new TypeException();
+				throw new TypeError();
 			}
 		} else {
 			$baseClassName = get_class($baseClass);
 			if (!is_a($input, $baseClassName, false)) {
-				throw new TypeException();
+				throw new TypeError();
 			}
 		}
 

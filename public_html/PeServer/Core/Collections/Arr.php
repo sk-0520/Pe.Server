@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace PeServer\Core\Collections;
 
 use Countable;
+use TypeError;
 use PeServer\Core\Collections\OrderBy;
 use PeServer\Core\Cryptography;
 use PeServer\Core\ErrorHandler;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Throws\KeyNotFoundException;
-use PeServer\Core\Throws\TypeException;
 use PeServer\Core\TypeUtility;
 
 /**
@@ -68,7 +68,7 @@ class Arr
 					return $result; //@phpstan-ignore-line わっからん
 				}
 
-				throw new TypeException();
+				throw new TypeError();
 			}
 
 			return $result;
