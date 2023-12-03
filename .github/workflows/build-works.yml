@@ -8,7 +8,13 @@ env:
 
 jobs:
   test-shell:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        OS:
+          - ubuntu-latest
+          - windows-latest
+
+    runs-on: ${{ matrix.OS }}
 
     steps:
       - name: <Checkout> Repository
