@@ -11,6 +11,8 @@ use DOMNode;
 use DOMNodeList;
 use DOMText;
 use DOMXPath;
+use PeServer\Core\Collections\Arr;
+use PeServer\Core\Collections\Collection;
 use PeServer\Core\Html\HtmlCommentElement;
 use PeServer\Core\Html\HtmlDocument;
 use PeServer\Core\Html\HtmlTagElement;
@@ -74,6 +76,25 @@ class HtmlXPath
 	}
 
 	/**
+	 * 与えられた XPath 式を評価する
+	 *
+	 * https://www.php.net/manual/domxpath.query.php
+	 *
+	 * @param string $expression
+	 * @return HtmlNodeBase[]
+	 * @throws HtmlXPathException
+	 */
+	public function query(string $expression): array
+	{
+		$nodeList = $this->path->query($expression, $this->node());
+		if ($nodeList === false) {
+			throw new HtmlXPathException();
+		}
+
+		return $this->toArray($nodeList);
+	}
+
+	/**
 	 * 与えられた XPath 式を評価し、可能であれば結果を返す
 	 *
 	 * https://www.php.net/manual/domxpath.evaluate.php
@@ -92,24 +113,17 @@ class HtmlXPath
 		return $this->toArray($nodeList);
 	}
 
-
 	/**
-	 * 与えられた XPath 式を評価する
-	 *
-	 * https://www.php.net/manual/domxpath.query.php
+	 * `evaluate` 結果を `Collection` として返す。
 	 *
 	 * @param string $expression
-	 * @return HtmlNodeBase[]
+	 * @return Collection
+	 * @phpstan-return Collection<array-key, HtmlNodeBase>
 	 * @throws HtmlXPathException
 	 */
-	public function query(string $expression): array
+	public function collection(string $expression): Collection
 	{
-		$nodeList = $this->path->query($expression, $this->node());
-		if ($nodeList === false) {
-			throw new HtmlXPathException();
-		}
-
-		return $this->toArray($nodeList);
+		return Collection::from($this->evaluate($expression));
 	}
 
 	#endregion

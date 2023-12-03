@@ -51,7 +51,7 @@ class Arr
 	 * @phpstan-param TValue $fallbackValue
 	 * @return mixed 値。返却時にそれが成功しているか失敗しているかは不明なので厳密さが必要であれば tryGet を使用すること。
 	 * @phpstan-return TValue
-	 * @throws TypeException
+	 * @throws TypeError
 	 */
 	public static function getOr(?array $array, int|string $key, mixed $fallbackValue)
 	{

@@ -8,6 +8,9 @@ use Error;
 use PeServer\App\Models\AppErrorHandler;
 use PeServer\App\Models\AppRouting;
 use PeServer\App\Models\AppStartup;
+use PeServer\App\Models\AppConfiguration;
+use PeServer\App\Models\Data\SessionAccount;
+use PeServer\App\Models\SessionKey;
 use PeServer\Core\DefinedDirectory;
 use PeServer\Core\DI\DiItem;
 use PeServer\Core\DI\IDiRegisterContainer;
@@ -27,7 +30,8 @@ use PeServer\Core\Mvc\Result\IActionResult;
 use PeServer\Core\OutputBuffer;
 use PeServer\Core\Store\SpecialStore;
 use PeServer\Core\Store\StoreOptions;
-use PeServer\Core\Store\Stores;
+use PeServer\Core\Store\CookieStore;
+use PeServer\Core\Store\SessionStore;
 use PeServer\Core\Throws\HttpStatusException;
 use PeServer\Core\Web\UrlHelper;
 use PeServer\Core\Web\UrlQuery;
@@ -65,6 +69,7 @@ class TestControllerClass extends TestClass
 				__DIR__ . '/../../public_html'
 			)
 		);
+
 		$container = $startup->setup(
 			AppStartup::MODE_WEB,
 			[
@@ -74,6 +79,20 @@ class TestControllerClass extends TestClass
 				'url_helper' => new UrlHelper(''),
 			]
 		);
+
+		if ($stores->account instanceof SessionAccount) {
+			/** @var AppConfiguration */
+			$config = $container->get(AppConfiguration::class);
+			/** @var CookieStore */
+			$cookie = $container->get(CookieStore::class);
+			/** @var SessionStore */
+			$session = $container->get(SessionStore::class);
+
+			$cookie->set($config->setting->store->session->name, session_id());
+			$session->set(SessionKey::ACCOUNT, $stores->account);
+			// $_SESSION[$config->setting->store->session->name] = session_id();
+			// $_COOKIE[SessionKey::ACCOUNT] = $stores->account;
+		}
 
 		$container->remove(ResponsePrinter::class);
 		$container->add(ResponsePrinter::class, DiItem::class(TestResponsePrinter::class));
