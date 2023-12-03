@@ -8,6 +8,7 @@ env:
 
 jobs:
   test-shell:
+    name: "<Test> Shell"
     strategy:
       matrix:
         OS:
@@ -26,6 +27,7 @@ jobs:
 
 
   build:
+    name: "<Build> Application"
     needs: test-shell
 
     runs-on: ubuntu-latest
@@ -94,6 +96,7 @@ jobs:
           path: public_html.tar
 
   build-matrix:
+    name: "<Build> Application(Test)"
     needs: test-shell
 
     strategy:
@@ -138,6 +141,7 @@ jobs:
 
 
   code-backend:
+    name: "<Code> Backend"
     needs: test-shell
 
     runs-on: ubuntu-latest
@@ -174,6 +178,7 @@ jobs:
         run: ./dev/code.sh
 
   test-backend-st:
+    name: "<Test> Backend: ST"
     needs: test-shell
 
     # strategy:
@@ -218,6 +223,7 @@ jobs:
 
 
   deploy:
+    name: <Deploy> Application
     needs:
       - build
       - code-backend
