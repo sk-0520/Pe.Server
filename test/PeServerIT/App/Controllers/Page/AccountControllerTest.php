@@ -40,7 +40,7 @@ class AccountControllerTest extends TestControllerClass
 		$this->_test_notLogin($path);
 	}
 
-	public function test_index()
+	public function test_user()
 	{
 		$actual = $this->call(HttpMethod::Get, '/account', MockStores::account(UserLevel::USER), function (IDiContainer $container, $databaseContext) {
 			$usersEntityDao = new UsersEntityDao($databaseContext);
