@@ -70,7 +70,7 @@ class AccountControllerTest extends TestControllerClass
 		$this->assertTextElement(
 			UserLevel::toString(UserLevel::USER),
 			$actual->html->path()->collection(
-				"//dl[contains(@class, 'page-account-user')]/dt[contains(text(), '権限')]/following-sibling::dd[1][@data-role='value']"
+				"//dl[contains(@class, 'page-account-user')]/dt[contains(text(), '権限')]/following-sibling::dd[1]//*[@data-role='value']"
 			)->first()
 		);
 	}
