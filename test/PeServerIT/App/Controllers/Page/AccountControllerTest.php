@@ -56,15 +56,22 @@ class AccountControllerTest extends TestControllerClass
 		$this->assertTextElement(
 			MockStores::SESSION_ACCOUNT_USER_ID,
 			$actual->html->path()->collection(
-				"//dl[contains(@class, 'page-account-user')]/dt[contains(text(), 'ユーザーID')]/following-sibling::dd//*[@data-role='value']"
+				"//dl[contains(@class, 'page-account-user')]/dt[contains(text(), 'ユーザーID')]/following-sibling::dd[1]//*[@data-role='value']"
 			)->first()
 		);
 
 		$this->assertTextElement(
 			MockStores::SESSION_ACCOUNT_LOGIN_ID,
 			$actual->html->path()->collection(
-				"//dl[contains(@class, 'page-account-user')]/dt[contains(text(), 'ログインID')]/following-sibling::dd//*[@data-role='value']"
+				"//dl[contains(@class, 'page-account-user')]/dt[contains(text(), 'ログインID')]/following-sibling::dd[1]//*[@data-role='value']"
 			)->first()
 		);
+
+		// $this->assertTextElement(
+		// 	UserLevel::toString(UserLevel::USER),
+		// 	$actual->html->path()->collection(
+		// 		"//dl[contains(@class, 'page-account-user')]/dt[contains(text(), '権限')]/following-sibling::dd[1]//*[@data-role='value']"
+		// 	)->first()
+		// );
 	}
 }
