@@ -11,8 +11,11 @@ use PeServer\App\Models\AppStartup;
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\Data\SessionAccount;
 use PeServer\App\Models\SessionKey;
+use PeServer\App\Models\Setup\SetupRunner;
+use PeServer\Core\Binary;
 use PeServer\Core\DefinedDirectory;
 use PeServer\Core\DI\DiItem;
+use PeServer\Core\DI\IDiContainer;
 use PeServer\Core\DI\IDiRegisterContainer;
 use PeServer\Core\Environment;
 use PeServer\Core\Http\HttpHeader;
@@ -35,6 +38,12 @@ use PeServer\Core\Store\SessionStore;
 use PeServer\Core\Throws\HttpStatusException;
 use PeServer\Core\Web\UrlHelper;
 use PeServer\Core\Web\UrlQuery;
+use PeServer\Core\Database\IDatabaseConnection;
+use PeServer\Core\Database\IDatabaseContext;
+use PeServer\Core\IO\File;
+use PeServer\Core\Log\LoggerFactory;
+use PeServer\Core\Log\NullLogger;
+use PeServer\Core\Text;
 use PeServerTest\TestClass;
 use PeServerTest\TestDynamicSpecialStore;
 use PeServerTest\TestHttpResponse;
@@ -45,6 +54,12 @@ use ReflectionClass;
 
 class TestControllerClass extends TestClass
 {
+	#region property
+
+	protected IDiContainer $itContainer;
+
+	#endregion
+
 	#region function
 
 	private function resetInitialize()
@@ -59,6 +74,34 @@ class TestControllerClass extends TestClass
 		}
 	}
 
+	protected function resetDatabase(IDiContainer $container)
+	{
+		/** @var IDatabaseConnection */
+		$databaseConnection = $container->get(IDatabaseConnection::class);
+
+		$connectionSetting = $databaseConnection->getConnectionSetting();
+		$filePath = Text::replace($connectionSetting->dsn, 'sqlite:', Text::EMPTY);
+		if (File::exists($filePath)) {
+			File::removeFile($filePath);
+			// File::writeContent($filePath, new Binary(''));
+		}
+
+		$setupRunner = new SetupRunner(
+			$databaseConnection,
+			$container->get(AppConfiguration::class),
+			//$container->get(ILoggerFactory::class),
+			new class implements ILoggerFactory
+			{
+				public function createLogger(string|object $header, int $baseTraceIndex = 0): ILogger
+				{
+					return new NullLogger();
+				}
+			}
+		);
+
+		$setupRunner->execute();
+	}
+
 	protected function call(HttpMethod $httpMethod, string $path, MockStores $stores = new MockStores(), ?HttpHeader $httpHeader = null, ?array $body = null): TestHttpResponse
 	{
 		$this->resetInitialize();
@@ -70,7 +113,7 @@ class TestControllerClass extends TestClass
 			)
 		);
 
-		$container = $startup->setup(
+		$this->itContainer = $container = $startup->setup(
 			AppStartup::MODE_WEB,
 			[
 				'environment' => 'it',
@@ -90,12 +133,15 @@ class TestControllerClass extends TestClass
 
 			$cookie->set($config->setting->store->session->name, session_id());
 			$session->set(SessionKey::ACCOUNT, $stores->account);
-			// $_SESSION[$config->setting->store->session->name] = session_id();
-			// $_COOKIE[SessionKey::ACCOUNT] = $stores->account;
 		}
 
 		$container->remove(ResponsePrinter::class);
 		$container->add(ResponsePrinter::class, DiItem::class(TestResponsePrinter::class));
+
+		$useDatabase = 'useDatabase';
+		if (isset($this->$useDatabase) && $this->$useDatabase) {
+			$this->resetDatabase($container);
+		}
 
 		/** @var TestRoutingWithoutMiddleware */
 		$routing = $container->new(TestRoutingWithoutMiddleware::class);

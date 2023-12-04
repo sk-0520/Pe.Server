@@ -8,10 +8,14 @@ use PeServer\App\Controllers\Page\HomeController;
 use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mime;
+use PeServerTest\ItSetupDatabaseTrait;
+use PeServerTest\ItUseDatabase;
 use PeServerTest\TestControllerClass;
 
 class AccountControllerTest extends TestControllerClass
 {
+	use ItUseDatabase;
+
 	public function test_index()
 	{
 		$actual = $this->call(HttpMethod::Get, '/account');

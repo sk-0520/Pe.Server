@@ -114,7 +114,7 @@ esac
 case "${TEST_MODE}" in
 	it | uit)
 		APP_CONFIG_DIR="${BASE_DIR}/PeServer/config"
-		IT_CONFIG_FILE="setting.st.json"
+		IT_CONFIG_FILE="setting.it.json"
 		if [ ! -f "${APP_CONFIG_DIR}/${IT_CONFIG_FILE}" ] ; then
 			cp "${APP_CONFIG_DIR}/@${IT_CONFIG_FILE}" "${APP_CONFIG_DIR}/${IT_CONFIG_FILE}"
 		fi
