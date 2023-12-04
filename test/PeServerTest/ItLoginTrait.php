@@ -9,14 +9,14 @@ use PeServer\Core\Collections\Arr;
 use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Http\HttpStatus;
 
-trait CommonLoginTrait
+trait ItLoginTrait
 {
-	private static function _provider_notLogin(array $path)
+	private static function _provider_it_notLogin(array $path)
 	{
 		return [$path];
 	}
 
-	private static function _provider_login(array $path, $levels = [UserLevel::USER, UserLevel::ADMINISTRATOR])
+	private static function _provider_it_login(array $path, $levels = [UserLevel::USER, UserLevel::ADMINISTRATOR])
 	{
 		$result = [];
 

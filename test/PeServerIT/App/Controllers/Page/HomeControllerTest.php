@@ -12,7 +12,7 @@ use PeServer\Core\Collections\Collection;
 use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mime;
-use PeServerTest\CommonLoginTrait;
+use PeServerTest\ItLoginTrait;
 use PeServerTest\MockStores;
 use PeServerTest\TestControllerClass;
 
@@ -20,11 +20,11 @@ class HomeControllerTest extends TestControllerClass
 {
 	#region common logion
 
-	use CommonLoginTrait;
+	use ItLoginTrait;
 
-	public static function provider_COMMON_notLogin()
+	public static function provider_it_notLogin()
 	{
-		return self::_provider_notLogin([
+		return self::_provider_it_notLogin([
 			'/',
 			'/about',
 			'/about/privacy',
@@ -34,9 +34,9 @@ class HomeControllerTest extends TestControllerClass
 		]);
 	}
 
-	public static function provider_COMMON_login()
+	public static function provider_it_login()
 	{
-		return self::_provider_login([
+		return self::_provider_it_login([
 			'/',
 			'/about',
 			'/about/privacy',
@@ -44,14 +44,14 @@ class HomeControllerTest extends TestControllerClass
 		]);
 	}
 
-	/** @dataProvider provider_COMMON_notLogin */
-	public function test_COMMON_notLogin(string $path)
+	/** @dataProvider provider_it_notLogin */
+	public function test_it_notLogin(string $path)
 	{
 		$this->_test_notLogin($path);
 	}
 
-	/** @dataProvider provider_COMMON_login */
-	public function test_COMMON_login(string $path, string $level)
+	/** @dataProvider provider_it_login */
+	public function test_it_login(string $path, string $level)
 	{
 		$this->_test_login($path, $level);
 	}
