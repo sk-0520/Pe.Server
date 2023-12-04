@@ -40,6 +40,8 @@ use PeServer\Core\Web\UrlHelper;
 use PeServer\Core\Web\UrlQuery;
 use PeServer\Core\Database\IDatabaseConnection;
 use PeServer\Core\Database\IDatabaseContext;
+use PeServer\Core\Html\HtmlNodeBase;
+use PeServer\Core\Html\HtmlTextElement;
 use PeServer\Core\IO\File;
 use PeServer\Core\Log\LoggerFactory;
 use PeServer\Core\Log\NullLogger;
@@ -102,7 +104,7 @@ class TestControllerClass extends TestClass
 		$setupRunner->execute();
 	}
 
-	protected function call(HttpMethod $httpMethod, string $path, MockStores $stores = new MockStores(), ?HttpHeader $httpHeader = null, ?array $body = null): TestHttpResponse
+	protected function call(HttpMethod $httpMethod, string $path, MockStores $stores = new MockStores(), ?callable $setup = null, ?HttpHeader $httpHeader = null, ?array $body = null): TestHttpResponse
 	{
 		$this->resetInitialize();
 
@@ -143,6 +145,16 @@ class TestControllerClass extends TestClass
 			$this->resetDatabase($container);
 		}
 
+		if ($setup) {
+			/** @var IDatabaseConnection */
+			$databaseConnection = $container->get(IDatabaseConnection::class);
+			$database = $databaseConnection->open();
+			$database->transaction(function (IDatabaseContext $context) use ($setup, $container) {
+				$setup($container, $context);
+				return true;
+			});
+		}
+
 		/** @var TestRoutingWithoutMiddleware */
 		$routing = $container->new(TestRoutingWithoutMiddleware::class);
 		$routing->execute();
@@ -169,6 +181,17 @@ class TestControllerClass extends TestClass
 	{
 		$this->assertTrue($response->isHtml());
 		$this->assertSame($expected . ' - Peサーバー', $response->html->getTitle());
+	}
+
+	protected function assertTextElement(string $expected, HtmlNodeBase $node): void
+	{
+
+		if ($node instanceof HtmlTextElement) {
+			$actual = Text::trim($node->get());
+			$this->assertSame($expected, $actual);
+		} else {
+			$this->fail();
+		}
 	}
 
 	#endregion
