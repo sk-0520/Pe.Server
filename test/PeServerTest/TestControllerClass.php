@@ -41,6 +41,7 @@ use PeServer\Core\Web\UrlQuery;
 use PeServer\Core\Database\IDatabaseConnection;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\Html\HtmlNodeBase;
+use PeServer\Core\Html\HtmlTagElement;
 use PeServer\Core\Html\HtmlTextElement;
 use PeServer\Core\IO\File;
 use PeServer\Core\Log\LoggerFactory;
@@ -188,6 +189,9 @@ class TestControllerClass extends TestClass
 
 		if ($node instanceof HtmlTextElement) {
 			$actual = Text::trim($node->get());
+			$this->assertSame($expected, $actual);
+		} elseif ($node instanceof HtmlTagElement) {
+			$actual = Text::trim($node->raw->textContent);
 			$this->assertSame($expected, $actual);
 		} else {
 			$this->fail();
