@@ -110,6 +110,19 @@ case "${TEST_MODE}" in
 		;;
 esac
 
+# IT の場合 IT 用設定ファイルを使用するのでなければデフォルトを流用
+case "${TEST_MODE}" in
+	it | uit)
+		APP_CONFIG_DIR="${BASE_DIR}/PeServer/config"
+		IT_CONFIG_FILE="setting.st.json"
+		if [ ! -f "${APP_CONFIG_DIR}/${IT_CONFIG_FILE}" ] ; then
+			cp "${APP_CONFIG_DIR}/@${IT_CONFIG_FILE}" "${APP_CONFIG_DIR}/${IT_CONFIG_FILE}"
+		fi
+		;;
+	*)
+		;;
+esac
+
 cd ${PHPUNIT_BASE_DIR}/
 STORAGE="storage-${TEST_MODE}"
 if [[ -d "${STORAGE}" ]] ; then

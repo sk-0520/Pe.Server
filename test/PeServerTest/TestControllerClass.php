@@ -73,7 +73,7 @@ class TestControllerClass extends TestClass
 		$container = $startup->setup(
 			AppStartup::MODE_WEB,
 			[
-				'environment' => 'test',
+				'environment' => 'it',
 				'revision' => ':REVISION:',
 				'special_store' => new TestDynamicSpecialStore($httpMethod, $path, $httpHeader, $body),
 				'url_helper' => new UrlHelper(''),
