@@ -14,28 +14,28 @@
 		</dd>
 
 		<dt>権限</dt>
-		<dd>
-			<span data-role="value">{PeServer\App\Models\Domain\UserLevel::toString($values.user->level)}</span>
+		<dd data-role="value">
+			{PeServer\App\Models\Domain\UserLevel::toString($values.user->level)}
 		</dd>
 
 		<dt>名前</dt>
 		<dd data-role="value">
-			<span data-role="value">{$values.user->name}</span>
+			{$values.user->name}
 		</dd>
 
 		<dt>Webサイト</dt>
-		<dd>
+		<dd data-role="value">
 			{if PeServer\Core\Text::isNullOrWhiteSpace($values.user->website)}
-				<span class="mute" data-role="value">未登録</span>
+				<span class="mute">未登録</span>
 			{else}
 				<a href="{$values.user->website}" target="_blank" data-role="value">{$values.user->website}</a>
 			{/if}
 		</dd>
 
 		<dt>プラグイン</dt>
-		<dd>
+		<dd data-role="value">
 			{if empty($values.plugins)}
-				<span class="mute" data-role="value">未登録</span>
+				<span class="mute">未登録</span>
 			{else}
 				<ul>
 					{foreach from=$values.plugins item=item key=key name=name}

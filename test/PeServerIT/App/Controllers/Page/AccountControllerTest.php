@@ -70,7 +70,28 @@ class AccountControllerTest extends TestControllerClass
 		$this->assertTextElement(
 			UserLevel::toString(UserLevel::USER),
 			$actual->html->path()->collection(
-				"//dl[contains(@class, 'page-account-user')]/dt[contains(text(), '権限')]/following-sibling::dd[1]//*[@data-role='value']"
+				"//dl[contains(@class, 'page-account-user')]/dt[contains(text(), '権限')]/following-sibling::dd[1][@data-role='value']"
+			)->first()
+		);
+
+		$this->assertTextElement(
+			MockStores::SESSION_ACCOUNT_NAME,
+			$actual->html->path()->collection(
+				"//dl[contains(@class, 'page-account-user')]/dt[contains(text(), '名前')]/following-sibling::dd[1][@data-role='value']"
+			)->first()
+		);
+
+		$this->assertTextElement(
+			'w',
+			$actual->html->path()->collection(
+				"//dl[contains(@class, 'page-account-user')]/dt[contains(text(), 'Webサイト')]/following-sibling::dd[1][@data-role='value']"
+			)->first()
+		);
+
+		$this->assertTextElement(
+			'未登録',
+			$actual->html->path()->collection(
+				"//dl[contains(@class, 'page-account-user')]/dt[contains(text(), 'プラグイン')]/following-sibling::dd[1][@data-role='value']"
 			)->first()
 		);
 	}
