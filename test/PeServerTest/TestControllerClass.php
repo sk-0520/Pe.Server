@@ -13,6 +13,7 @@ use PeServer\App\Models\Data\SessionAccount;
 use PeServer\App\Models\SessionKey;
 use PeServer\App\Models\Setup\SetupRunner;
 use PeServer\Core\Binary;
+use PeServer\Core\Database\DatabaseUtility;
 use PeServer\Core\DefinedDirectory;
 use PeServer\Core\DI\DiItem;
 use PeServer\Core\DI\IDiContainer;
@@ -83,10 +84,12 @@ class TestControllerClass extends TestClass
 		$databaseConnection = $container->get(IDatabaseConnection::class);
 
 		$connectionSetting = $databaseConnection->getConnectionSetting();
-		$filePath = Text::replace($connectionSetting->dsn, 'sqlite:', Text::EMPTY);
-		if (File::exists($filePath)) {
-			File::removeFile($filePath);
-			// File::writeContent($filePath, new Binary(''));
+		if (DatabaseUtility::isSqliteMemoryMode($connectionSetting)) {
+		} else {
+			$filePath = DatabaseUtility::getSqliteFilePath($connectionSetting);
+			if (File::exists($filePath)) {
+				File::removeFile($filePath);
+			}
 		}
 
 		$setupRunner = new SetupRunner(

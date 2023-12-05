@@ -15,6 +15,7 @@ use PeServer\App\Models\Setup\Versions\SetupVersion_0006;
 use PeServer\App\Models\Setup\Versions\SetupVersionBase;
 use PeServer\App\Models\Setup\Versions\SetupVersionLast;
 use PeServer\Core\Collections\Arr;
+use PeServer\Core\Database\DatabaseUtility;
 use PeServer\Core\Database\IDatabaseConnection;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\IO\File;
@@ -63,7 +64,7 @@ class SetupRunner
 		$dbVersion = -1;
 		// SQLite を使うのは決定事項である！
 		$connectionSetting = $this->defaultConnection->getConnectionSetting();
-		$filePath = Text::replace($connectionSetting->dsn, 'sqlite:', Text::EMPTY);
+		$filePath = DatabaseUtility::getSqliteFilePath($connectionSetting);
 
 		if (File::exists($filePath)) {
 			$this->logger->info('DBあり: {0}', $filePath);
