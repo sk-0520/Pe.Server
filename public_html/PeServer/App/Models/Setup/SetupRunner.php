@@ -76,7 +76,8 @@ class SetupRunner
 				if (0 < $checkCount) {
 					$row = $context->queryFirstOrNull("select version from database_version");
 					if ($row !== null) {
-						$dbVersion = (int)$row->fields['version'];;
+						$dbVersion = (int)$row->fields['version'];
+						;
 					}
 				}
 			}
