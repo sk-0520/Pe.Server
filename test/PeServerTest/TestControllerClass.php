@@ -50,6 +50,7 @@ use PeServer\Core\IO\File;
 use PeServer\Core\Log\LoggerFactory;
 use PeServer\Core\Log\NullLogger;
 use PeServer\Core\Text;
+use PeServer\Core\Web\UrlPath;
 use PeServerTest\TestClass;
 use PeServerTest\TestDynamicSpecialStore;
 use PeServerTest\TestHttpResponse;
@@ -206,6 +207,22 @@ class TestControllerClass extends TestClass
 	{
 		$this->assertStatus(HttpStatus::OK, $response);
 	}
+
+	// //TODO: とりまつくっとくのです（リダイレクト周りのテストが死んでる）
+	// protected function assertRedirectPath(HttpStatus $status, UrlPath|string $path, ?UrlQuery $query = null, TestHttpResponse $response): void
+	// {
+	// 	assert($status->isRedirect());
+
+	// 	$this->assertStatus($status, $response);
+
+	// 	if (is_string($path)) {
+	// 		$path = new UrlPath($path);
+	// 	}
+
+	// 	$this->assertSame((string)$path, (string)$response->response->header->getRedirect()->url->path);
+	// 	$this->assertSame((string)$path, (string)$response->response->header->getRedirect()->url->path);
+	// }
+
 
 	protected function assertTitle(string $expected, TestHttpResponse $response): void
 	{
