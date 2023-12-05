@@ -22,6 +22,7 @@
 	"persistence": {
 		"default": {
 			"connection": "sqlite:$(BASE)/../../test/storage-it/data.sqlite3",
+			"_connection_memory": "sqlite::memory:",
 			"user": "",
 			"passwd": ""
 		}

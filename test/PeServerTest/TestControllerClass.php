@@ -13,6 +13,8 @@ use PeServer\App\Models\Data\SessionAccount;
 use PeServer\App\Models\SessionKey;
 use PeServer\App\Models\Setup\SetupRunner;
 use PeServer\Core\Binary;
+use PeServer\Core\Database\ConnectionSetting;
+use PeServer\Core\Database\DatabaseContext;
 use PeServer\Core\Database\DatabaseUtility;
 use PeServer\Core\DefinedDirectory;
 use PeServer\Core\DI\DiItem;
@@ -78,13 +80,37 @@ class TestControllerClass extends TestClass
 		}
 	}
 
-	protected function resetDatabase(IDiContainer $container)
+	protected function resetDatabase(IDiRegisterContainer $container): void
 	{
 		/** @var IDatabaseConnection */
 		$databaseConnection = $container->get(IDatabaseConnection::class);
 
 		$connectionSetting = $databaseConnection->getConnectionSetting();
 		if (DatabaseUtility::isSqliteMemoryMode($connectionSetting)) {
+			$databaseContext = $databaseConnection->open();
+
+			$container->remove(IDatabaseConnection::class);
+			$container->add(IDatabaseConnection::class, DiItem::factory(function () use ($connectionSetting, $databaseContext) {
+				return new class($connectionSetting, $databaseContext) implements IDatabaseConnection
+				{
+					public function __construct(private ConnectionSetting $connectionSetting, private DatabaseContext $databaseContext)
+					{
+						//NOP
+					}
+
+					public function getConnectionSetting(): ConnectionSetting
+					{
+						return $this->connectionSetting;
+					}
+					public function open(): DatabaseContext
+					{
+						return $this->databaseContext;
+					}
+				};
+			}), DiItem::LIFECYCLE_SINGLETON);
+
+			/** @var IDatabaseConnection */
+			$databaseConnection = $container->get(IDatabaseConnection::class);
 		} else {
 			$filePath = DatabaseUtility::getSqliteFilePath($connectionSetting);
 			if (File::exists($filePath)) {

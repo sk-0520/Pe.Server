@@ -33,7 +33,12 @@ readonly class ConnectionSetting
 		public ?array $options = null
 	) {
 		$values = Text::split($dsn, ':', 2);
-		$this->driver = $values[0];
-		$this->source = $values[1];
+		if(count($values) === 2) {
+			$this->driver = $values[0];
+			$this->source = $values[1];
+		} else {
+			$this->driver = '';
+			$this->source = '';
+		}
 	}
 }
