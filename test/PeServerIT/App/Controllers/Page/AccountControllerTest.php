@@ -50,7 +50,7 @@ class AccountControllerTest extends TestControllerClass
 			$userAuthenticationsEntityDao->insertUserAuthentication(MockStores::SESSION_ACCOUNT_USER_ID, 'p');
 		});
 
-		$this->assertSame(HttpStatus::OK, $actual->getHttpStatus());
+		$this->assertStatusOk($actual);
 		$this->assertTitle('ユーザー情報', $actual);
 
 		$this->assertTextElement(

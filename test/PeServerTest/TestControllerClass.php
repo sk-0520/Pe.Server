@@ -197,14 +197,14 @@ class TestControllerClass extends TestClass
 		return new TestHttpResponse($response);
 	}
 
-	protected function assertStatus(HttpStatus $expected, HttpMethod $httpMethod, string $path, MockStores $stores = new MockStores(), ?HttpHeader $httpHeader = null, ?array $body = null): void
+	protected function assertStatus(HttpStatus $expected, TestHttpResponse $response): void
 	{
-		try {
-			$response = $this->call($httpMethod, $path, $stores, $httpHeader, $body);
-			$this->assertSame($expected, $response->getHttpStatus());
-		} catch (HttpStatusException $ex) {
-			$this->assertSame($expected, $ex->status);
-		}
+		$this->assertSame($expected, $response->getHttpStatus());
+	}
+
+	protected function assertStatusOk(TestHttpResponse $response): void
+	{
+		$this->assertStatus(HttpStatus::OK, $response);
 	}
 
 	protected function assertTitle(string $expected, TestHttpResponse $response): void
@@ -215,7 +215,6 @@ class TestControllerClass extends TestClass
 
 	protected function assertTextElement(string $expected, HtmlNodeBase $node): void
 	{
-
 		if ($node instanceof HtmlTextElement) {
 			$actual = Text::trim($node->get());
 			$this->assertSame($expected, $actual);

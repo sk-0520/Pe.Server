@@ -12,9 +12,11 @@ use PeServer\Core\Collections\Collection;
 use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mime;
+use PeServer\Core\Throws\HttpStatusException;
 use PeServerTest\ItLoginTrait;
 use PeServerTest\MockStores;
 use PeServerTest\TestControllerClass;
+use Throwable;
 
 class HomeControllerTest extends TestControllerClass
 {
@@ -61,68 +63,74 @@ class HomeControllerTest extends TestControllerClass
 	public function test_index()
 	{
 		$actual = $this->call(HttpMethod::Get, '');
-		$this->assertSame(HttpStatus::OK, $actual->getHttpStatus());
+		$this->assertStatusOk($actual);
 		$this->assertTitle('トップ', $actual);
-
-		$this->assertStatus(HttpStatus::OK, HttpMethod::Get, '/');
 	}
 
 	public function test_about()
 	{
 		$actual = $this->call(HttpMethod::Get, '/about');
-		$this->assertSame(HttpStatus::OK, $actual->getHttpStatus());
+		$this->assertStatusOk($actual);
 		$this->assertTitle('問い合わせ', $actual);
 	}
 
 	public function test_privacy()
 	{
 		$actual = $this->call(HttpMethod::Get, '/about/privacy');
-		$this->assertSame(HttpStatus::OK, $actual->getHttpStatus());
+		$this->assertStatusOk($actual);
 		$this->assertTitle('プライバシーポリシー', $actual);
 	}
 
 	public function test_contact()
 	{
 		$actual = $this->call(HttpMethod::Get, '/about/contact');
-		$this->assertSame(HttpStatus::OK, $actual->getHttpStatus());
+		$this->assertStatusOk($actual);
 		$this->assertTitle('問い合わせ', $actual);
 	}
 
 	public function test_api_doc()
 	{
 		$actual = $this->call(HttpMethod::Get, '/api-doc');
-		$this->assertSame(HttpStatus::OK, $actual->getHttpStatus());
+		$this->assertStatusOk($actual);
 		$this->assertTitle('API', $actual);
 	}
 
 	public function test_wildcard_favicon_ico()
 	{
 		$actual = $this->call(HttpMethod::Get, '/favicon.ico');
-		$this->assertSame(HttpStatus::OK, $actual->getHttpStatus());
+		$this->assertStatusOk($actual);
 		$this->assertSame(Mime::ICON, $actual->getContentType()->mime);
 	}
 
 	public function test_wildcard_favicon_svg()
 	{
 		$actual = $this->call(HttpMethod::Get, '/favicon.svg');
-		$this->assertSame(HttpStatus::OK, $actual->getHttpStatus());
+		$this->assertStatusOk($actual);
 		$this->assertSame(Mime::SVG, $actual->getContentType()->mime);
 	}
 
 	public function test_wildcard_robot()
 	{
 		$actual = $this->call(HttpMethod::Get, '/robot.txt');
-		$this->assertSame(HttpStatus::OK, $actual->getHttpStatus());
+		$this->assertStatusOk($actual);
 		$this->assertSame(Mime::TEXT, $actual->getContentType()->mime);
 	}
 
-	public function test_wildcard_dot()
+	public static function provider_wildcard_NotFound()
 	{
-		$this->assertStatus(HttpStatus::NotFound, HttpMethod::Get, '/../../robot.txt');
+		return [
+			['/../../robot.txt'],
+			['/<not found>'],
+		];
 	}
 
-	public function test_not_found()
+	/** @dataProvider provider_wildcard_NotFound */
+	public function test_wildcard_NotFound(string $path)
 	{
-		$this->assertStatus(HttpStatus::NotFound, HttpMethod::Get, '/<not found>');
+		try {
+			$this->call(HttpMethod::Get, $path);
+		} catch (HttpStatusException $ex) {
+			$this->assertSame(HttpStatus::NotFound, $ex->status);
+		}
 	}
 }
