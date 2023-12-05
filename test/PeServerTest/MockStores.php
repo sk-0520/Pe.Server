@@ -7,7 +7,7 @@ namespace PeServerTest;
 use PeServer\App\Models\Data\SessionAccount;
 use PeServer\App\Models\Domain\UserState;
 
-class MockStores
+final class MockStores
 {
 	public const SESSION_ACCOUNT_USER_ID = 'session-account-user-id';
 	public const SESSION_ACCOUNT_LOGIN_ID = 'session-account-login-id';
@@ -17,6 +17,11 @@ class MockStores
 	public function __construct(
 		public SessionAccount|null $account = null
 	) {
+	}
+
+	public static function empty()
+	{
+		return new self(null);
 	}
 
 	public static function account(string $level, string $userId = self::SESSION_ACCOUNT_USER_ID, string $loginId = self::SESSION_ACCOUNT_LOGIN_ID, string $name = self::SESSION_ACCOUNT_NAME, $state = self::SESSION_ACCOUNT_STATE)
