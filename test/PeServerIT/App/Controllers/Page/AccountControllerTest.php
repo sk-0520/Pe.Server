@@ -95,4 +95,26 @@ class AccountControllerTest extends TestControllerClass
 			)->first()
 		);
 	}
+
+	public function test_login_get_notLogin()
+	{
+		$actual = $this->call(HttpMethod::Get, '/account/login');
+
+		$this->assertStatusOK($actual);
+		$this->assertTitle('ログイン', $actual);
+
+		$this->assertTextElement(
+			'',
+			$actual->html->path()->collection(
+				"//*[@id='content']/form[1][@action='/account/login']//*[contains(@class,'input')]//dt[text()='ログインID']/following-sibling::dd[1]"
+			)->first()
+		);
+
+		$this->assertTextElement(
+			'',
+			$actual->html->path()->collection(
+				"//*[@id='content']/form[1][@action='/account/login']//*[contains(@class,'input')]//dt[text()='パスワード']/following-sibling::dd[1]"
+			)->first()
+		);
+	}
 }
