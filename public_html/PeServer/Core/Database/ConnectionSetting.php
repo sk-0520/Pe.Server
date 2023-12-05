@@ -13,7 +13,15 @@ readonly class ConnectionSetting
 {
 	#region variable
 
+	/**
+	 * ドライバ。
+	 * @var string
+	 */
 	public string $driver;
+	/**
+	 * データソースからドライバを省いた文字列。
+	 * @var string
+	 */
 	public string $source;
 
 	#endregion
@@ -33,7 +41,7 @@ readonly class ConnectionSetting
 		public ?array $options = null
 	) {
 		$values = Text::split($dsn, ':', 2);
-		if(count($values) === 2) {
+		if (count($values) === 2) {
 			$this->driver = $values[0];
 			$this->source = $values[1];
 		} else {
