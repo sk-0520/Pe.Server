@@ -155,7 +155,7 @@ class AccountControllerTest extends TestControllerClass
 	public static function provider_login_post_notLogin_throw()
 	{
 		return [
-			[new ItMockStores()],
+			[ItMockStores::none()],
 			[ItMockStores::anonymous(false, false, false, false, false)],
 			[ItMockStores::anonymous(false, true, false, false, false)],
 			[ItMockStores::anonymous(false, false, true, false, false)],

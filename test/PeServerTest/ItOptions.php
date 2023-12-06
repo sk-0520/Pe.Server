@@ -9,10 +9,9 @@ use PeServer\Core\Http\HttpHeader;
 class ItOptions
 {
 	public function __construct(
-		public ItMockStores $stores = new ItMockStores(),
+		public ItMockStores $stores = new ItMockStores(null),
 		public ?HttpHeader $httpHeader = null,
 		public ?array $body = null
-	)
-	{
+	) {
 	}
 }

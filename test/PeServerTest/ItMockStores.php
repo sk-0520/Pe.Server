@@ -16,11 +16,11 @@ final class ItMockStores
 	public const SESSION_ACCOUNT_STATE = UserState::ENABLED;
 
 	public function __construct(
-		public SessionAccount|SessionAnonymous|null $account = null
+		public SessionAccount|SessionAnonymous|null $account
 	) {
 	}
 
-	public static function empty()
+	public static function none()
 	{
 		return new self(null);
 	}
