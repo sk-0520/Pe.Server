@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace PeServerTest;
 
 use PeServer\App\Models\Data\SessionAccount;
+use PeServer\App\Models\Data\SessionAnonymous;
 use PeServer\App\Models\Domain\UserState;
 
-final class MockStores
+final class ItMockStores
 {
 	public const SESSION_ACCOUNT_USER_ID = 'session-account-user-id';
 	public const SESSION_ACCOUNT_LOGIN_ID = 'session-account-login-id';
@@ -15,7 +16,7 @@ final class MockStores
 	public const SESSION_ACCOUNT_STATE = UserState::ENABLED;
 
 	public function __construct(
-		public SessionAccount|null $account = null
+		public SessionAccount|SessionAnonymous|null $account = null
 	) {
 	}
 
@@ -32,6 +33,17 @@ final class MockStores
 			$name,
 			$level,
 			$state
+		));
+	}
+
+	public static function anonymous(bool $login = false, bool $signup1 = false, bool $signup2 = false, bool $passwordReminder = false, bool $passwordReset = false)
+	{
+		return new self(new SessionAnonymous(
+			$login,
+			$signup1,
+			$signup2,
+			$passwordReminder,
+			$passwordReset,
 		));
 	}
 }

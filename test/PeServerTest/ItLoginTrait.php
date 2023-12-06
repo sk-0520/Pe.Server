@@ -41,7 +41,10 @@ trait ItLoginTrait
 
 	private function _test_login(string $path, string $userLevel)
 	{
-		$actual = $this->call(HttpMethod::Get, $path, MockStores::account($userLevel));
+		$options = new ItOptions(
+			stores: ItMockStores::account($userLevel)
+		);
+		$actual = $this->call(HttpMethod::Get, $path, $options);
 		$this->assertSame(HttpStatus::OK, $actual->getHttpStatus());
 		$this->assertTrue($actual->isHtml());
 

@@ -10,6 +10,7 @@ use PeServer\App\Models\AppRouting;
 use PeServer\App\Models\AppStartup;
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\Data\SessionAccount;
+use PeServer\App\Models\Data\SessionAnonymous;
 use PeServer\App\Models\SessionKey;
 use PeServer\App\Models\Setup\SetupRunner;
 use PeServer\Core\Binary;
@@ -135,7 +136,7 @@ class TestControllerClass extends TestClass
 		$setupRunner->execute();
 	}
 
-	protected function call(HttpMethod $httpMethod, string $path, MockStores $stores = new MockStores(), ?callable $setup = null, ?HttpHeader $httpHeader = null, ?array $body = null): TestHttpResponse
+	protected function call(HttpMethod $httpMethod, string $path, ItOptions $options = new ItOptions(), ?callable $setup = null): TestHttpResponse
 	{
 		$this->resetInitialize();
 
@@ -151,12 +152,12 @@ class TestControllerClass extends TestClass
 			[
 				'environment' => 'it',
 				'revision' => ':REVISION:',
-				'special_store' => new TestDynamicSpecialStore($httpMethod, $path, $httpHeader, $body),
+				'special_store' => new TestDynamicSpecialStore($httpMethod, $path, $options->httpHeader, $options->body),
 				'url_helper' => new UrlHelper(''),
 			]
 		);
 
-		if ($stores->account instanceof SessionAccount) {
+		if ($options->stores->account instanceof SessionAccount || $options->stores->account instanceof SessionAnonymous) {
 			/** @var AppConfiguration */
 			$config = $container->get(AppConfiguration::class);
 			/** @var CookieStore */
@@ -165,7 +166,13 @@ class TestControllerClass extends TestClass
 			$session = $container->get(SessionStore::class);
 
 			$cookie->set($config->setting->store->session->name, session_id());
-			$session->set(SessionKey::ACCOUNT, $stores->account);
+
+			if ($options->stores->account instanceof SessionAccount) {
+				$session->set(SessionKey::ACCOUNT, $options->stores->account);
+			} else {
+				assert($options->stores->account instanceof SessionAnonymous);
+				$session->set(SessionKey::ANONYMOUS, $options->stores->account);
+			}
 		}
 
 		$container->remove(ResponsePrinter::class);
@@ -174,16 +181,16 @@ class TestControllerClass extends TestClass
 		$useDatabase = 'useDatabase';
 		if (isset($this->$useDatabase) && $this->$useDatabase) {
 			$this->resetDatabase($container);
-		}
 
-		if ($setup) {
-			/** @var IDatabaseConnection */
-			$databaseConnection = $container->get(IDatabaseConnection::class);
-			$database = $databaseConnection->open();
-			$database->transaction(function (IDatabaseContext $context) use ($setup, $container) {
-				$setup($container, $context);
-				return true;
-			});
+			if ($setup) {
+				/** @var IDatabaseConnection */
+				$databaseConnection = $container->get(IDatabaseConnection::class);
+				$database = $databaseConnection->open();
+				$database->transaction(function (IDatabaseContext $context) use ($setup, $container) {
+					$setup($container, $context);
+					return true;
+				});
+			}
 		}
 
 		/** @var TestRoutingWithoutMiddleware */
@@ -230,7 +237,7 @@ class TestControllerClass extends TestClass
 		$this->assertSame($expected . ' - Peサーバー', $response->html->getTitle());
 	}
 
-	protected function assertTextElement(string $expected, HtmlNodeBase $node): void
+	protected function assertTextNode(string $expected, HtmlNodeBase $node): void
 	{
 		if ($node instanceof HtmlTextElement) {
 			$actual = Text::trim($node->get());
@@ -240,6 +247,22 @@ class TestControllerClass extends TestClass
 			$this->assertSame($expected, $actual);
 		} else {
 			$this->fail();
+		}
+	}
+
+	protected function assertVisibleCommonError(TestHttpResponse $response, array $errorItems)
+	{
+		$root = $response->html->path()->collection(
+			"//main/div[contains(@class, 'common') and contains(@class, 'error')]"
+		);
+		$this->assertSame(1, $root->count());
+
+		$nodes = $response->html->path()->collection(
+			"//main/div[contains(@class, 'common') and contains(@class, 'error')]//li[contains(@class, 'error')]"
+		)->toArray();
+		$this->assertSame(count($nodes), count($errorItems));
+		for ($i = 0; $i < count($nodes); $i++) {
+			$this->assertTextNode($errorItems[$i], $nodes[$i]);
 		}
 	}
 

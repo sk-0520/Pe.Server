@@ -14,7 +14,7 @@ use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mime;
 use PeServer\Core\Throws\HttpStatusException;
 use PeServerTest\ItLoginTrait;
-use PeServerTest\MockStores;
+use PeServerTest\ItMockStores;
 use PeServerTest\TestControllerClass;
 use Throwable;
 

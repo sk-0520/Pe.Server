@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServerTest;
 
-trait ItUseDatabase
+trait ItUseDatabaseTrait
 {
 	public bool $useDatabase = true;
 }
