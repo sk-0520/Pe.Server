@@ -67,42 +67,42 @@ class AccountControllerTest extends ItControllerClass
 			ItMockStores::SESSION_ACCOUNT_USER_ID,
 			$actual->html->path()->collection(
 				"//dl[contains(@class, 'page-account-user')]/dt[contains(text(), 'ユーザーID')]/following-sibling::dd[1]//*[@data-role='value']"
-			)->first()
+			)->single()
 		);
 
 		$this->assertTextNode(
 			ItMockStores::SESSION_ACCOUNT_LOGIN_ID,
 			$actual->html->path()->collection(
 				"//dl[contains(@class, 'page-account-user')]/dt[contains(text(), 'ログインID')]/following-sibling::dd[1]//*[@data-role='value']"
-			)->first()
+			)->single()
 		);
 
 		$this->assertTextNode(
 			UserLevel::toString(UserLevel::USER),
 			$actual->html->path()->collection(
 				"//dl[contains(@class, 'page-account-user')]/dt[contains(text(), '権限')]/following-sibling::dd[1][@data-role='value']"
-			)->first()
+			)->single()
 		);
 
 		$this->assertTextNode(
 			ItMockStores::SESSION_ACCOUNT_NAME,
 			$actual->html->path()->collection(
 				"//dl[contains(@class, 'page-account-user')]/dt[contains(text(), '名前')]/following-sibling::dd[1][@data-role='value']"
-			)->first()
+			)->single()
 		);
 
 		$this->assertTextNode(
 			'w',
 			$actual->html->path()->collection(
 				"//dl[contains(@class, 'page-account-user')]/dt[contains(text(), 'Webサイト')]/following-sibling::dd[1][@data-role='value']"
-			)->first()
+			)->single()
 		);
 
 		$this->assertTextNode(
 			'未登録',
 			$actual->html->path()->collection(
 				"//dl[contains(@class, 'page-account-user')]/dt[contains(text(), 'プラグイン')]/following-sibling::dd[1][@data-role='value']"
-			)->first()
+			)->single()
 		);
 	}
 
@@ -117,15 +117,25 @@ class AccountControllerTest extends ItControllerClass
 			'',
 			$actual->html->path()->collection(
 				"//*[@id='content']/form[1][@action='/account/login']//*[contains(@class,'input')]//dt[text()='ログインID']/following-sibling::dd[1]"
-			)->first()
+			)->single()
 		);
 
 		$this->assertTextNode(
 			'',
 			$actual->html->path()->collection(
 				"//*[@id='content']/form[1][@action='/account/login']//*[contains(@class,'input')]//dt[text()='パスワード']/following-sibling::dd[1]"
-			)->first()
+			)->single()
 		);
+	}
+
+	public function test_login_get_login()
+	{
+		$options = new ItOptions(
+			stores: ItMockStores::account(UserLevel::USER),
+		);
+
+		$actual = $this->call(HttpMethod::Get, '/account/login', $options);
+		$this->assertRedirectPath(HttpStatus::Found, '/account/user', null, $actual);
 	}
 
 	public static function provider_login_post_notLogin_throw()
@@ -180,14 +190,14 @@ class AccountControllerTest extends ItControllerClass
 			'',
 			$actual->html->path()->collection(
 				"//*[@id='content']/form[1][@action='/account/login']//*[contains(@class,'input')]//dt[text()='ログインID']/following-sibling::dd[1]"
-			)->first()
+			)->single()
 		);
 
 		$this->assertTextNode(
 			'',
 			$actual->html->path()->collection(
 				"//*[@id='content']/form[1][@action='/account/login']//*[contains(@class,'input')]//dt[text()='パスワード']/following-sibling::dd[1]"
-			)->first()
+			)->single()
 		);
 	}
 
@@ -217,14 +227,14 @@ class AccountControllerTest extends ItControllerClass
 			'',
 			$actual->html->path()->collection(
 				"//*[@id='content']/form[1][@action='/account/login']//*[contains(@class,'input')]//dt[text()='ログインID']/following-sibling::dd[1]"
-			)->first()
+			)->single()
 		);
 
 		$this->assertTextNode(
 			'',
 			$actual->html->path()->collection(
 				"//*[@id='content']/form[1][@action='/account/login']//*[contains(@class,'input')]//dt[text()='パスワード']/following-sibling::dd[1]"
-			)->first()
+			)->single()
 		);
 	}
 
@@ -256,14 +266,14 @@ class AccountControllerTest extends ItControllerClass
 			'',
 			$actual->html->path()->collection(
 				"//*[@id='content']/form[1][@action='/account/login']//*[contains(@class,'input')]//dt[text()='ログインID']/following-sibling::dd[1]"
-			)->first()
+			)->single()
 		);
 
 		$this->assertTextNode(
 			'',
 			$actual->html->path()->collection(
 				"//*[@id='content']/form[1][@action='/account/login']//*[contains(@class,'input')]//dt[text()='パスワード']/following-sibling::dd[1]"
-			)->first()
+			)->single()
 		);
 	}
 
@@ -285,5 +295,15 @@ class AccountControllerTest extends ItControllerClass
 		});
 
 		$this->assertRedirectPath(HttpStatus::Found, '/account', null, $actual);
+	}
+
+	public function test_login_post_login()
+	{
+		$options = new ItOptions(
+			stores: ItMockStores::account(UserLevel::USER),
+		);
+
+		$actual = $this->call(HttpMethod::Post, '/account/login', $options);
+		$this->assertRedirectPath(HttpStatus::Found, '/account/user', null, $actual);
 	}
 }
