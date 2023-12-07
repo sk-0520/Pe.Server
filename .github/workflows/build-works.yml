@@ -39,6 +39,7 @@ jobs:
         shell: bash
         run: ./dev/shell-test.sh
 
+
   build:
     name: "<Build> Application"
     needs: test-shell
@@ -150,7 +151,6 @@ jobs:
       - name: <Test> code
         shell: bash
         run: ./dev/code.sh
-
 
   code-backend:
     name: "<Code> Backend"
