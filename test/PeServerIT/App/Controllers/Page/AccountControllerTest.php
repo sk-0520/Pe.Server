@@ -244,7 +244,6 @@ class AccountControllerTest extends ItControllerClass
 		$options = new ItOptions(
 			stores: ItMockStores::account(UserLevel::USER),
 		);
-
 		$actual = $this->call(HttpMethod::Post, '/account/login', $options);
 		$this->assertRedirectPath(HttpStatus::Found, '/account/user', null, $actual);
 	}
@@ -253,6 +252,21 @@ class AccountControllerTest extends ItControllerClass
 	{
 		$actual = $this->call(HttpMethod::Get, '/account/logout');
 		$this->assertRedirectPath(HttpStatus::Found, ''/* リダイレクトは / を返してるけどまぁ */, null, $actual);
+	}
+
+	public function test_logout_login()
+	{
+		$options = new ItOptions(
+			stores: ItMockStores::account(UserLevel::USER),
+		);
+		$actual = $this->call(HttpMethod::Get, '/account/logout', $options, function (IDiContainer $container, IDatabaseContext $databaseContext) {
+			$usersEntityDao = new UsersEntityDao($databaseContext);
+			$userAuthenticationsEntityDao = new UserAuthenticationsEntityDao($databaseContext);
+
+			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, 'email', 0, 'w', 'd', 'n');
+			$userAuthenticationsEntityDao->insertUserAuthentication(ItMockStores::SESSION_ACCOUNT_USER_ID, Cryptography::hashPassword('@'));
+		});
+		$this->assertRedirectPath(HttpStatus::Found, '', null, $actual);
 	}
 
 	public function test_user()
