@@ -6,6 +6,8 @@ namespace PeServer\Core;
 
 use PeServer\Core\Binary;
 use PeServer\Core\Throws\ArchiveException;
+use PeServer\Core\Throws\Throws;
+use ValueError;
 
 /**
  * アーカイブ処理。
@@ -46,7 +48,7 @@ abstract class Archiver
 	 */
 	public static function compressGzip(Binary $data, int $level = -1, int $encoding = self::GZIP_DEFAULT): Binary
 	{
-		$result = gzencode($data->raw, $level, $encoding);
+		$result = Throws::wrap(ValueError::class, ArchiveException::class, fn() => gzencode($data->raw, $level, $encoding));
 		if ($result === false) {
 			throw new ArchiveException();
 		}
