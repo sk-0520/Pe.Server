@@ -8,6 +8,7 @@ use PeServer\Core\Encoding;
 use PeServer\Core\Throws\ArgumentException;
 use PeServerTest\Data;
 use PeServerTest\TestClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class EncodingTest extends TestClass
 {
@@ -75,5 +76,21 @@ class EncodingTest extends TestClass
 			$actual = $encoding->toString($binary);
 			$this->assertSame($test->expected, $actual);
 		}
+	}
+
+	public static function provider_getAliasNames()
+	{
+		return [
+			[['utf8'], 'UTF-8'],
+			[['utf8'], 'utf8'],
+		];
+	}
+
+	#[DataProvider('provider_getAliasNames')]
+	public function test_getAliasNames(array $expected, string $input)
+	{
+		$actual = Encoding::getAliasNames($input);
+		$this->assertSame(count($expected), count($actual));
+		$this->assertSame($expected, $actual);
 	}
 }
