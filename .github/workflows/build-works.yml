@@ -28,7 +28,6 @@ jobs:
       matrix:
         OS:
           - windows-latest
-          - macos-latest
 
     runs-on: ${{ matrix.OS }}
 
