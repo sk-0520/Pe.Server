@@ -28,6 +28,7 @@ use PeServer\Core\Web\Url;
 use PeServer\Core\Web\UrlQuery;
 use PeServerTest\Data;
 use PeServerTest\TestClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @group slow
@@ -67,7 +68,7 @@ class HttpClientTest extends TestClass
 		];
 	}
 
-	/** @dataProvider provider_get_path_echo_405_throw */
+	#[DataProvider('provider_get_path_echo_405_throw')]
 	public function test_get_path_echo_405_throw(HttpMethod $method)
 	{
 		$url = Url::parse(self::localServer('/Core/Http/Client/get-path-echo.php'));
@@ -134,7 +135,7 @@ class HttpClientTest extends TestClass
 		];
 	}
 
-	/** @dataProvider provider_post_path_echo_405_throw */
+	#[DataProvider('provider_post_path_echo_405_throw')]
 	public function test_post_data_echo_405_throw(HttpMethod $method)
 	{
 		$url = Url::parse(self::localServer('/Core/Http/Client/post-data-echo.php'));
@@ -201,7 +202,7 @@ class HttpClientTest extends TestClass
 		];
 	}
 
-	/** @dataProvider provider_put_path_echo_405_throw */
+	#[DataProvider('provider_put_path_echo_405_throw')]
 	public function test_put_data_echo_405_throw(HttpMethod $method)
 	{
 		$url = Url::parse(self::localServer('/Core/Http/Client/put-data-echo.php'));
@@ -268,7 +269,7 @@ class HttpClientTest extends TestClass
 		];
 	}
 
-	/** @dataProvider provider_patch_path_echo_405_throw */
+	#[DataProvider('provider_patch_path_echo_405_throw')]
 	public function test_patch_data_echo_405_throw(HttpMethod $method)
 	{
 		$url = Url::parse(self::localServer('/Core/Http/Client/patch-data-echo.php'));
@@ -335,7 +336,7 @@ class HttpClientTest extends TestClass
 		];
 	}
 
-	/** @dataProvider provider_delete_path_echo_405_throw */
+	#[DataProvider('provider_delete_path_echo_405_throw')]
 	public function test_delete_data_echo_405_throw(HttpMethod $method)
 	{
 		$url = Url::parse(self::localServer('/Core/Http/Client/delete-data-echo.php'));

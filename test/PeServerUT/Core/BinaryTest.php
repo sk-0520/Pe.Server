@@ -13,6 +13,7 @@ use PeServer\Core\Throws\NotSupportedException;
 use PeServer\Core\Throws\NullByteStringException;
 use PeServerTest\Data;
 use PeServerTest\TestClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class BinaryTest extends TestClass
 {
@@ -51,7 +52,7 @@ class BinaryTest extends TestClass
 		];
 	}
 
-	/** @dataProvider provider_isEquals */
+	#[DataProvider('provider_isEquals')]
 	public function test_isEquals($expected, $a, $b)
 	{
 		$aBin = new Binary($a);

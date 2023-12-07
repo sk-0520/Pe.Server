@@ -14,6 +14,7 @@ use \TypeError;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\Throws;
 use PeServerTest\TestClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class ThrowsTest extends TestClass
 {
@@ -27,7 +28,7 @@ class ThrowsTest extends TestClass
 		];
 	}
 
-	/** @dataProvider provider_wrap */
+	#[DataProvider('provider_wrap')]
 	function test_wrap($catch, $catchExceptions, $throwException, $callback)
 	{
 		try {

@@ -16,6 +16,7 @@ use PeServer\Core\OutputBuffer;
 use PeServer\Core\Text;
 use PeServerTest\TestClass;
 use PeServerTest\TestSetupSpecialStore;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class ResponsePrinterTest extends TestClass
 {
@@ -62,7 +63,7 @@ class ResponsePrinterTest extends TestClass
 		];
 	}
 
-	/** @dataProvider provider_getContentLength */
+	#[DataProvider('provider_getContentLength')]
 	function test_getContentLength(Binary|int $expected, $input)
 	{
 		$req = $this->createRequest();
@@ -111,7 +112,7 @@ class ResponsePrinterTest extends TestClass
 		];
 	}
 
-	/** @dataProvider provider_output */
+	#[DataProvider('provider_output')]
 	function test_output(Binary|null $expected, $input)
 	{
 		$req = $this->createRequest();

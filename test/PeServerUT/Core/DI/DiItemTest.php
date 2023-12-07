@@ -12,6 +12,7 @@ use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Throws\NotSupportedException;
 use PeServerTest\TestClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class DiItemTest extends TestClass
 {
@@ -37,7 +38,7 @@ class DiItemTest extends TestClass
 		];
 	}
 
-	/** @dataProvider provider_constructor_throw */
+	#[DataProvider('provider_constructor_throw')]
 	public function test_constructor_throw($exception, $lifecycle, $type, $data)
 	{
 		$this->expectException($exception);

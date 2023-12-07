@@ -9,6 +9,7 @@ use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\IndexOutOfRangeException;
 use PeServer\Core\TypeUtility;
 use PeServerTest\TestClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use TypeError;
 
 interface TestI {
@@ -179,7 +180,7 @@ class VectorTest extends TestClass
 		];
 	}
 
-	/** @dataProvider provider_offsetGet_throw */
+	#[DataProvider('provider_offsetGet_throw')]
 	function test_offsetGet_throw(int $index)
 	{
 		$list = Vector::create([1, 2, 3]);
@@ -216,7 +217,7 @@ class VectorTest extends TestClass
 		];
 	}
 
-	/** @dataProvider provider_offsetSet_throw */
+	#[DataProvider('provider_offsetSet_throw')]
 	function test_offsetSet_throw(int $index)
 	{
 		$list = Vector::create([1, 2, 3]);

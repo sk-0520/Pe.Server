@@ -11,6 +11,7 @@ use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\NotSupportedException;
 use PeServerTest\Data;
 use PeServerTest\TestClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class RgbColorTest extends TestClass
 {
@@ -48,7 +49,7 @@ class RgbColorTest extends TestClass
 		];
 	}
 
-	/** @dataProvider provider_fromHtmlColorCode_throw */
+	#[DataProvider('provider_fromHtmlColorCode_throw')]
 	public function test_fromHtmlColorCode_throw($arg)
 	{
 		$this->expectException(ArgumentException::class);

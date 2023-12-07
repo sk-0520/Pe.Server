@@ -10,6 +10,7 @@ use PeServer\Core\Throws\IndexOutOfRangeException;
 use PeServer\Core\Throws\KeyNotFoundException;
 use PeServer\Core\Throws\NotSupportedException;
 use PeServerTest\TestClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class CaseInsensitiveKeyArrayTest extends TestClass
 {
@@ -63,7 +64,7 @@ class CaseInsensitiveKeyArrayTest extends TestClass
 		];
 	}
 
-	/** @dataProvider provider_get_throw */
+	#[DataProvider('provider_get_throw')]
 	public function test_get_throw(mixed $offset, string $exception)
 	{
 		$ca = new CaseInsensitiveKeyArray([

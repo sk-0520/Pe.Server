@@ -16,6 +16,7 @@ use PeServer\Core\Throws\HttpStatusException;
 use PeServerTest\ItLoginTrait;
 use PeServerTest\ItMockStores;
 use PeServerTest\ItControllerClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Throwable;
 
 class HomeControllerTest extends ItControllerClass
@@ -46,13 +47,13 @@ class HomeControllerTest extends ItControllerClass
 		]);
 	}
 
-	/** @dataProvider provider_it_notLogin */
+	#[DataProvider('provider_it_notLogin')]
 	public function test_it_notLogin(string $path)
 	{
 		$this->_test_notLogin($path);
 	}
 
-	/** @dataProvider provider_it_login */
+	#[DataProvider('provider_it_login')]
 	public function test_it_login(string $path, string $level)
 	{
 		$this->_test_login($path, $level);
@@ -124,7 +125,7 @@ class HomeControllerTest extends ItControllerClass
 		];
 	}
 
-	/** @dataProvider provider_wildcard_NotFound */
+	#[DataProvider('provider_wildcard_NotFound')]
 	public function test_wildcard_NotFound(string $path)
 	{
 		try {

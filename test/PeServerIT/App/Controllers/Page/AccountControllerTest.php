@@ -41,7 +41,7 @@ class AccountControllerTest extends ItControllerClass
 		]);
 	}
 
-	/** @dataProvider provider_it_notLogin */
+	#[DataProvider('provider_it_notLogin')]
 	public function test_it_notLogin(string $path)
 	{
 		$this->_test_notLogin($path);
@@ -140,7 +140,7 @@ class AccountControllerTest extends ItControllerClass
 		];
 	}
 
-	/** @dataProvider provider_login_post_notLogin_throw */
+	#[DataProvider('provider_login_post_notLogin_throw')]
 	public function test_login_post_notLogin_throw(ItMockStores $input)
 	{
 		$options = new ItOptions(

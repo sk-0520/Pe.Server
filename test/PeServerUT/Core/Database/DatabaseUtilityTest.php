@@ -10,6 +10,7 @@ use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServerTest\Data;
 use PeServerTest\TestClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class DatabaseUtilityTest extends TestClass
 {
@@ -39,7 +40,7 @@ class DatabaseUtilityTest extends TestClass
 		];
 	}
 
-	/** @dataProvider provider_isSqliteMemoryMode */
+	#[DataProvider('provider_isSqliteMemoryMode')]
 	public function test_isSqliteMemoryMode(bool $expected, ConnectionSetting $cs)
 	{
 		$actual = DatabaseUtility::isSqliteMemoryMode($cs);
@@ -55,7 +56,7 @@ class DatabaseUtilityTest extends TestClass
 		];
 	}
 
-	/** @dataProvider provider_isSqliteMemoryMode_throw */
+	#[DataProvider('provider_isSqliteMemoryMode_throw')]
 	public function test_isSqliteMemoryMode_throw(ConnectionSetting $cs)
 	{
 		$this->expectException(InvalidOperationException::class);
@@ -74,7 +75,7 @@ class DatabaseUtilityTest extends TestClass
 		];
 	}
 
-	/** @dataProvider provider_getSqliteFilePath */
+	#[DataProvider('provider_getSqliteFilePath')]
 	public function test_getSqliteFilePath(string $expected, ConnectionSetting $cs)
 	{
 		$actual = DatabaseUtility::getSqliteFilePath($cs);
@@ -92,7 +93,7 @@ class DatabaseUtilityTest extends TestClass
 		];
 	}
 
-	/** @dataProvider provider_getSqliteFilePath_throw */
+	#[DataProvider('provider_getSqliteFilePath_throw')]
 	public function test_getSqliteFilePath_throw(string $expected, ConnectionSetting $cs)
 	{
 		$this->expectException($expected);

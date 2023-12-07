@@ -11,6 +11,7 @@ use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\CryptoException;
 use PeServerTest\Data;
 use PeServerTest\TestClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class CryptographyTest extends TestClass
 {
@@ -126,7 +127,7 @@ class CryptographyTest extends TestClass
 			['$characters: empty', 1, ''],
 		];
 	}
-	/** @dataProvider provider_generateRandomString_throw */
+	#[DataProvider('provider_generateRandomString_throw')]
 	public function test_generateRandomString_throw($expected, int $length, string $characters)
 	{
 		$this->expectException(ArgumentException::class);

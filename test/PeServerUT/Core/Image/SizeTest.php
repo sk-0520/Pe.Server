@@ -8,6 +8,7 @@ use PeServer\Core\Image\Size;
 use PeServer\Core\Throws\ArgumentException;
 use PeServerTest\Data;
 use PeServerTest\TestClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class SizeTest extends TestClass
 {
@@ -24,7 +25,7 @@ class SizeTest extends TestClass
 		];
 	}
 
-	/** @dataProvider provider_constructor_throw */
+	#[DataProvider('provider_constructor_throw')]
 	public function test_constructor_throw($width, $height)
 	{
 		$this->expectException(ArgumentException::class);

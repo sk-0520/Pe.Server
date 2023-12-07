@@ -10,6 +10,7 @@ use PeServer\Core\Throws\FormatException;
 use PeServer\Core\Time;
 use PeServerTest\Data;
 use PeServerTest\TestClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class TimeTest extends TestClass
 {
@@ -78,7 +79,7 @@ class TimeTest extends TestClass
 		];
 	}
 
-	/** @dataProvider provider_create_throw */
+	#[DataProvider('provider_create_throw')]
 	public function test_create_throw($input, $exception)
 	{
 		$this->expectException($exception);

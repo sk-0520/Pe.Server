@@ -11,6 +11,7 @@ use PeServer\Core\Throws\CryptoException;
 use PeServer\Core\Throws\IOException;
 use PeServerTest\Data;
 use PeServerTest\TestClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Throwable;
 
 class IOUtilityTest extends TestClass
@@ -42,7 +43,7 @@ class IOUtilityTest extends TestClass
 			[' '],
 		];
 	}
-	/** @dataProvider provider_clearCache_throw */
+	#[DataProvider('provider_clearCache_throw')]
 	public function test_clearCache_throw($input)
 	{
 		$this->expectException(IOException::class);

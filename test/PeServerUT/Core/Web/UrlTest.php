@@ -11,6 +11,7 @@ use PeServer\Core\Web\UrlPath;
 use PeServer\Core\Web\UrlQuery;
 use PeServerTest\Data;
 use PeServerTest\TestClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class UrlTest extends TestClass
 {
@@ -86,7 +87,7 @@ class UrlTest extends TestClass
 		];
 	}
 
-	/** @dataProvider provider_parse_throw */
+	#[DataProvider('provider_parse_throw')]
 	public function test_parse_throw($input)
 	{
 		$this->expectException(ParseException::class);

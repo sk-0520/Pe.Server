@@ -8,6 +8,7 @@ use PeServer\Core\Environment;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\EnvironmentException;
 use PeServerTest\TestClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class EnvironmentTest extends TestClass
 {
@@ -67,7 +68,7 @@ class EnvironmentTest extends TestClass
 		];
 	}
 
-	/** @dataProvider provider_getVariable_throw */
+	#[DataProvider('provider_getVariable_throw')]
 	public function test_getVariable_throw($input)
 	{
 		$this->expectException(ArgumentException::class);
@@ -87,7 +88,7 @@ class EnvironmentTest extends TestClass
 		];
 	}
 
-	/** @dataProvider provider_setVariable_throw */
+	#[DataProvider('provider_setVariable_throw')]
 	public function test_setVariable_throw($expected, $name, $value)
 	{
 		$this->expectException($expected['exception']);

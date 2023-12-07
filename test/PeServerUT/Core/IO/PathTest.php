@@ -9,6 +9,7 @@ use PeServer\Core\IO\Path;
 use PeServer\Core\Throws\ArgumentException;
 use PeServerTest\Data;
 use PeServerTest\TestClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class PathTest extends TestClass
 {
@@ -155,7 +156,7 @@ class PathTest extends TestClass
 		];
 	}
 
-	/** @dataProvider provider_setEnvironmentName_throw */
+	#[DataProvider('provider_setEnvironmentName_throw')]
 	public function test_setEnvironmentName_throw(mixed $path, mixed $environment, string $message)
 	{
 		$this->expectException(ArgumentException::class);

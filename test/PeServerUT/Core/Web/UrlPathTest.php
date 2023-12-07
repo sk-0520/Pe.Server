@@ -11,6 +11,7 @@ use PeServer\Core\Throws\NotSupportedException;
 use PeServer\Core\Web\UrlPath;
 use PeServerTest\Data;
 use PeServerTest\TestClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use TypeError;
 
 class UrlPathTest extends TestClass
@@ -23,7 +24,7 @@ class UrlPathTest extends TestClass
 		];
 	}
 
-	/** @dataProvider provider_constructor_throw */
+	#[DataProvider('provider_constructor_throw')]
 	public function test_constructor_throw(string $input)
 	{
 		$this->expectException(ArgumentException::class);
@@ -131,7 +132,7 @@ class UrlPathTest extends TestClass
 			[['a', 1], '$element[1]: not string'],
 		];
 	}
-	/** @dataProvider provider_add_throw */
+	#[DataProvider('provider_add_throw')]
 	public function test_add_throw($input, $message)
 	{
 		$path = new UrlPath('');
