@@ -9,11 +9,26 @@ env:
 jobs:
   test-shell:
     name: "<Test> Shell"
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: <Checkout> Repository
+        uses: actions/checkout@v3
+
+      - name: <Test> shell
+        shell: bash
+        run: ./dev/shell-test.sh
+
+  test-shell-os:
+    name: "<Test> Shell-OS"
+    needs: test-shell
+
     strategy:
       matrix:
         OS:
-          - ubuntu-latest
           - windows-latest
+          - macos-latest
 
     runs-on: ${{ matrix.OS }}
 
@@ -24,7 +39,6 @@ jobs:
       - name: <Test> shell
         shell: bash
         run: ./dev/shell-test.sh
-
 
   build:
     name: "<Build> Application"
