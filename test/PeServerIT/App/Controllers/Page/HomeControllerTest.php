@@ -15,10 +15,10 @@ use PeServer\Core\Mime;
 use PeServer\Core\Throws\HttpStatusException;
 use PeServerTest\ItLoginTrait;
 use PeServerTest\ItMockStores;
-use PeServerTest\TestControllerClass;
+use PeServerTest\ItControllerClass;
 use Throwable;
 
-class HomeControllerTest extends TestControllerClass
+class HomeControllerTest extends ItControllerClass
 {
 	#region common logion
 
@@ -99,21 +99,21 @@ class HomeControllerTest extends TestControllerClass
 	{
 		$actual = $this->call(HttpMethod::Get, '/favicon.ico');
 		$this->assertStatusOk($actual);
-		$this->assertSame(Mime::ICON, $actual->getContentType()->mime);
+		$this->assertMime(Mime::ICON, $actual);
 	}
 
 	public function test_wildcard_favicon_svg()
 	{
 		$actual = $this->call(HttpMethod::Get, '/favicon.svg');
 		$this->assertStatusOk($actual);
-		$this->assertSame(Mime::SVG, $actual->getContentType()->mime);
+		$this->assertMime(Mime::SVG, $actual);
 	}
 
 	public function test_wildcard_robot()
 	{
 		$actual = $this->call(HttpMethod::Get, '/robot.txt');
 		$this->assertStatusOk($actual);
-		$this->assertSame(Mime::TEXT, $actual->getContentType()->mime);
+		$this->assertMime(Mime::TEXT, $actual);
 	}
 
 	public static function provider_wildcard_NotFound()

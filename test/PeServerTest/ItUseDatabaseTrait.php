@@ -7,4 +7,5 @@ namespace PeServerTest;
 trait ItUseDatabaseTrait
 {
 	public bool $useDatabase = true;
+	public bool $enabledSetupUser = false;
 }

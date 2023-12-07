@@ -8,17 +8,17 @@ use PeServer\Core\Http\ContentType;
 use PeServer\Core\Http\HttpResponse;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mime;
-use PeServerTest\TestHtmlDocument;
+use PeServerTest\ItHtmlDocument;
 
-class TestHttpResponse
+class ItHttpResponse
 {
-	public readonly TestHtmlDocument|null $html;
+	public readonly ItHtmlDocument|null $html;
 
 	public function __construct(
 		public HttpResponse $response
 	) {
 		if ($this->isHtml()) {
-			$this->html = TestHtmlDocument::new($this->response->content);
+			$this->html = ItHtmlDocument::new($this->response->content);
 		} else {
 			$this->html = null;
 		}
@@ -39,12 +39,12 @@ class TestHttpResponse
 
 	public function isHtml(): bool
 	{
-		return $this->getContentType()->mime === Mime::HTML;
+		return $this->response->header->existsContentType() && $this->getContentType()->mime === Mime::HTML;
 	}
 
 	public function isJson(): bool
 	{
-		return $this->getContentType()->mime === Mime::JSON;
+		return $this->response->header->existsContentType() && $this->getContentType()->mime === Mime::JSON;
 	}
 
 	#endregion

@@ -8,7 +8,7 @@ use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Http\HttpResponse;
 use PeServer\Core\Http\ResponsePrinter;
 
-class TestResponsePrinter extends ResponsePrinter
+class ItResponsePrinter extends ResponsePrinter
 {
 	private static HttpResponse|null $test_response = null;
 

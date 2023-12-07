@@ -9,8 +9,10 @@ use PeServer\App\Models\AppErrorHandler;
 use PeServer\App\Models\AppRouting;
 use PeServer\App\Models\AppStartup;
 use PeServer\App\Models\AppConfiguration;
+use PeServer\App\Models\Dao\Entities\UsersEntityDao;
 use PeServer\App\Models\Data\SessionAccount;
 use PeServer\App\Models\Data\SessionAnonymous;
+use PeServer\App\Models\Domain\UserState;
 use PeServer\App\Models\SessionKey;
 use PeServer\App\Models\Setup\SetupRunner;
 use PeServer\Core\Binary;
@@ -53,14 +55,14 @@ use PeServer\Core\Log\NullLogger;
 use PeServer\Core\Text;
 use PeServer\Core\Web\UrlPath;
 use PeServerTest\TestClass;
-use PeServerTest\TestDynamicSpecialStore;
-use PeServerTest\TestHttpResponse;
+use PeServerTest\ItSpecialStore as ItSpecialStore;
+use PeServerTest\ItHttpResponse;
 use PeServerTest\TestRouting;
-use PeServerTest\TestRoutingWithoutMiddleware;
+use PeServerTest\ItRoutingWithoutMiddleware;
 use Reflection;
 use ReflectionClass;
 
-class TestControllerClass extends TestClass
+class ItControllerClass extends TestClass
 {
 	#region property
 
@@ -136,7 +138,7 @@ class TestControllerClass extends TestClass
 		$setupRunner->execute();
 	}
 
-	protected function call(HttpMethod $httpMethod, string $path, ItOptions $options = new ItOptions(), ?callable $setup = null): TestHttpResponse
+	protected function call(HttpMethod $httpMethod, string $path, ItOptions $options = new ItOptions(), ?callable $setup = null): ItHttpResponse
 	{
 		$this->resetInitialize();
 
@@ -152,7 +154,7 @@ class TestControllerClass extends TestClass
 			[
 				'environment' => 'it',
 				'revision' => ':REVISION:',
-				'special_store' => new TestDynamicSpecialStore($httpMethod, $path, $options->httpHeader, $options->body),
+				'special_store' => new ItSpecialStore($httpMethod, $path, $options->httpHeader, $options->body),
 				'url_helper' => new UrlHelper(''),
 			]
 		);
@@ -176,7 +178,7 @@ class TestControllerClass extends TestClass
 		}
 
 		$container->remove(ResponsePrinter::class);
-		$container->add(ResponsePrinter::class, DiItem::class(TestResponsePrinter::class));
+		$container->add(ResponsePrinter::class, DiItem::class(ItResponsePrinter::class));
 
 		$useDatabase = 'useDatabase';
 		if (isset($this->$useDatabase) && $this->$useDatabase) {
@@ -188,50 +190,65 @@ class TestControllerClass extends TestClass
 				$database = $databaseConnection->open();
 				$database->transaction(function (IDatabaseContext $context) use ($setup, $container) {
 					$setup($container, $context);
+
+					$enabledSetupUser = 'enabledSetupUser';
+					if(!$this->$enabledSetupUser) {
+						$usersEntityDao = new UsersEntityDao($context);
+						$usersEntityDao->updateUserState(
+							'00000000-0000-4000-0000-000000000000',
+							UserState::DISABLED
+						);
+					}
+
 					return true;
 				});
 			}
 		}
 
-		/** @var TestRoutingWithoutMiddleware */
-		$routing = $container->new(TestRoutingWithoutMiddleware::class);
+		/** @var ItRoutingWithoutMiddleware */
+		$routing = $container->new(ItRoutingWithoutMiddleware::class);
 		$routing->execute();
 
-		$response = TestResponsePrinter::getResponse();
+		$response = ItResponsePrinter::getResponse();
 		if ($response === null) {
 			throw new Error("例外とかミドルウェア系の失敗を取る術がないのです。かなしい");
 		}
 
-		return new TestHttpResponse($response);
+		return new ItHttpResponse($response);
 	}
 
-	protected function assertStatus(HttpStatus $expected, TestHttpResponse $response): void
+	protected function assertStatus(HttpStatus $expected, ItHttpResponse $response): void
 	{
 		$this->assertSame($expected, $response->getHttpStatus());
 	}
 
-	protected function assertStatusOk(TestHttpResponse $response): void
+	protected function assertStatusOk(ItHttpResponse $response): void
 	{
 		$this->assertStatus(HttpStatus::OK, $response);
 	}
 
-	// //TODO: とりまつくっとくのです（リダイレクト周りのテストが死んでる）
-	// protected function assertRedirectPath(HttpStatus $status, UrlPath|string $path, ?UrlQuery $query = null, TestHttpResponse $response): void
-	// {
-	// 	assert($status->isRedirect());
+	//TODO: とりまつくっとくのです（リダイレクト周りのテストが死んでる）
+	protected function assertRedirectPath(HttpStatus $status, UrlPath|string $path, UrlQuery|null $query, ItHttpResponse $response): void
+	{
+		$this->assertTrue($status->isRedirect());
 
-	// 	$this->assertStatus($status, $response);
+		$this->assertStatus($status, $response);
 
-	// 	if (is_string($path)) {
-	// 		$path = new UrlPath($path);
-	// 	}
+		if (is_string($path)) {
+			$path = new UrlPath($path);
+		}
 
-	// 	$this->assertSame((string)$path, (string)$response->response->header->getRedirect()->url->path);
-	// 	$this->assertSame((string)$path, (string)$response->response->header->getRedirect()->url->path);
-	// }
+		$this->assertSame((string)$path, (string)$response->response->header->getRedirect()->url->path);
+		$this->assertSame((string)$path, (string)$response->response->header->getRedirect()->url->path);
+	}
+
+	protected function assertMime(string $mime, ItHttpResponse $response): void
+	{
+		$this->assertSame($mime, $response->getContentType()->mime);
+	}
 
 
-	protected function assertTitle(string $expected, TestHttpResponse $response): void
+	protected function assertTitle(string $expected, ItHttpResponse $response): void
 	{
 		$this->assertTrue($response->isHtml());
 		$this->assertSame($expected . ' - Peサーバー', $response->html->getTitle());
@@ -250,7 +267,7 @@ class TestControllerClass extends TestClass
 		}
 	}
 
-	protected function assertVisibleCommonError(TestHttpResponse $response, array $errorItems)
+	protected function assertVisibleCommonError(ItHttpResponse $response, array $errorItems)
 	{
 		$root = $response->html->path()->collection(
 			"//main/div[contains(@class, 'common') and contains(@class, 'error')]"
