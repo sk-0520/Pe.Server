@@ -6,6 +6,7 @@ namespace PeServerUT\Core;
 
 use PeServer\Core\Encoding;
 use PeServer\Core\Throws\ArgumentException;
+use PeServer\Core\Throws\EncodingException;
 use PeServerTest\Data;
 use PeServerTest\TestClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -70,7 +71,7 @@ class EncodingTest extends TestClass
 			new Data('あ<い>う', 'UTF-32', 'あ<い>う'),
 			new Data('🥚🍳🐔💦', 'UTF-32', '🥚🍳🐔💦'),
 		];
-		foreach($tests as $test) {
+		foreach ($tests as $test) {
 			$encoding = new Encoding($test->args[0]);
 			$binary = $encoding->getBinary($test->args[1]);
 			$actual = $encoding->toString($binary);
@@ -92,5 +93,13 @@ class EncodingTest extends TestClass
 		$actual = Encoding::getAliasNames($input);
 		$this->assertSame(count($expected), count($actual));
 		$this->assertSame($expected, $actual);
+	}
+
+	public function test_getAliasNames_throw()
+	{
+		$this->expectException(EncodingException::class);
+
+		Encoding::getAliasNames('💩');
+		$this->fail();
 	}
 }

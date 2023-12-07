@@ -277,7 +277,7 @@ class Encoding
 	 */
 	public static function getAliasNames(string $encoding): array
 	{
-		$names = mb_encoding_aliases($encoding);
+		$names = Throws::wrap(ValueError::class, EncodingException::class, fn () => mb_encoding_aliases($encoding));
 		if ($names === false) { //@phpstan-ignore-line [PHP_VERSION]
 			throw new EncodingException($encoding);
 		}
