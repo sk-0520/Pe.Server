@@ -8,6 +8,7 @@ use PeServer\Core\DI\DiContainer;
 use PeServer\Core\DI\DiFactoryBase;
 use PeServer\Core\DI\DiFactoryTrait;
 use PeServer\Core\DI\IDiContainer;
+use PeServer\Core\Environment;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\ILoggerFactory;
 use PeServer\Core\Log\ILogProvider;
@@ -39,6 +40,11 @@ class LoggerFactory extends DiFactoryBase implements ILoggerFactory
 	private function createXdebugLogger(string $header, int $baseTraceIndex): ?XdebugLogger
 	{
 		if (function_exists('xdebug_is_debugger_active') && \xdebug_is_debugger_active()) {
+			// /** @var Environment */
+			// $environment = $this->container->get(Environment::class);
+			// if($environment->is('it')) {
+			// 	return null;
+			// }
 			$options = new LogOptions(
 				$header,
 				$baseTraceIndex,
