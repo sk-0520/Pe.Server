@@ -117,7 +117,7 @@ jobs:
         OS:
           - windows-latest
           - ubuntu-latest
-          # - macos-latest
+          - macos-latest
 
     runs-on: ${{ matrix.OS }}
 
@@ -144,9 +144,9 @@ jobs:
             test/*.phar.*
           key: phar-cache-${{ github.job }}-${{ hashFiles('dev/*.sh') }}
 
-      - name: <Build> back-end
-        shell: bash
-        run: ./dev/update-config.sh ${{ github.sha }}
+      # - name: <Build> back-end
+      #   shell: bash
+      #   run: ./dev/update-config.sh ${{ github.sha }}
 
       - name: <Test> code
         shell: bash
