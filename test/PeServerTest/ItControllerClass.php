@@ -239,7 +239,6 @@ class ItControllerClass extends TestClass
 		}
 
 		$this->assertSame((string)$path, (string)$response->response->header->getRedirect()->url->path);
-		$this->assertSame((string)$path, (string)$response->response->header->getRedirect()->url->path);
 	}
 
 	protected function assertMime(string $mime, ItHttpResponse $response): void

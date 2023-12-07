@@ -19,6 +19,7 @@ use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mime;
 use PeServer\Core\Throws\HttpStatusException;
+use PeServer\Core\Web\UrlPath;
 use PeServerTest\ItBody;
 use PeServerTest\ItLoginTrait;
 use PeServerTest\ItUseDatabaseTrait;
@@ -45,65 +46,6 @@ class AccountControllerTest extends ItControllerClass
 	public function test_it_notLogin(string $path)
 	{
 		$this->_test_notLogin($path);
-	}
-
-	public function test_user()
-	{
-		$options = new ItOptions(
-			stores: ItMockStores::account(UserLevel::USER),
-		);
-		$actual = $this->call(HttpMethod::Get, '/account', $options, function (IDiContainer $container, IDatabaseContext $databaseContext) {
-			$usersEntityDao = new UsersEntityDao($databaseContext);
-			$userAuthenticationsEntityDao = new UserAuthenticationsEntityDao($databaseContext);
-
-			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, 'email', 0, 'w', 'd', 'n');
-			$userAuthenticationsEntityDao->insertUserAuthentication(ItMockStores::SESSION_ACCOUNT_USER_ID, 'p');
-		});
-
-		$this->assertStatusOk($actual);
-		$this->assertTitle('ユーザー情報', $actual);
-
-		$this->assertTextNode(
-			ItMockStores::SESSION_ACCOUNT_USER_ID,
-			$actual->html->path()->collection(
-				"//dl[contains(@class, 'page-account-user')]/dt[contains(text(), 'ユーザーID')]/following-sibling::dd[1]//*[@data-role='value']"
-			)->single()
-		);
-
-		$this->assertTextNode(
-			ItMockStores::SESSION_ACCOUNT_LOGIN_ID,
-			$actual->html->path()->collection(
-				"//dl[contains(@class, 'page-account-user')]/dt[contains(text(), 'ログインID')]/following-sibling::dd[1]//*[@data-role='value']"
-			)->single()
-		);
-
-		$this->assertTextNode(
-			UserLevel::toString(UserLevel::USER),
-			$actual->html->path()->collection(
-				"//dl[contains(@class, 'page-account-user')]/dt[contains(text(), '権限')]/following-sibling::dd[1][@data-role='value']"
-			)->single()
-		);
-
-		$this->assertTextNode(
-			ItMockStores::SESSION_ACCOUNT_NAME,
-			$actual->html->path()->collection(
-				"//dl[contains(@class, 'page-account-user')]/dt[contains(text(), '名前')]/following-sibling::dd[1][@data-role='value']"
-			)->single()
-		);
-
-		$this->assertTextNode(
-			'w',
-			$actual->html->path()->collection(
-				"//dl[contains(@class, 'page-account-user')]/dt[contains(text(), 'Webサイト')]/following-sibling::dd[1][@data-role='value']"
-			)->single()
-		);
-
-		$this->assertTextNode(
-			'未登録',
-			$actual->html->path()->collection(
-				"//dl[contains(@class, 'page-account-user')]/dt[contains(text(), 'プラグイン')]/following-sibling::dd[1][@data-role='value']"
-			)->single()
-		);
 	}
 
 	public function test_login_get_notLogin()
@@ -305,5 +247,70 @@ class AccountControllerTest extends ItControllerClass
 
 		$actual = $this->call(HttpMethod::Post, '/account/login', $options);
 		$this->assertRedirectPath(HttpStatus::Found, '/account/user', null, $actual);
+	}
+
+	public function test_logout_notLogin()
+	{
+		$actual = $this->call(HttpMethod::Get, '/account/logout');
+		$this->assertRedirectPath(HttpStatus::Found, ''/* リダイレクトは / を返してるけどまぁ */, null, $actual);
+	}
+
+	public function test_user()
+	{
+		$options = new ItOptions(
+			stores: ItMockStores::account(UserLevel::USER),
+		);
+		$actual = $this->call(HttpMethod::Get, '/account', $options, function (IDiContainer $container, IDatabaseContext $databaseContext) {
+			$usersEntityDao = new UsersEntityDao($databaseContext);
+			$userAuthenticationsEntityDao = new UserAuthenticationsEntityDao($databaseContext);
+
+			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, 'email', 0, 'w', 'd', 'n');
+			$userAuthenticationsEntityDao->insertUserAuthentication(ItMockStores::SESSION_ACCOUNT_USER_ID, 'p');
+		});
+
+		$this->assertStatusOk($actual);
+		$this->assertTitle('ユーザー情報', $actual);
+
+		$this->assertTextNode(
+			ItMockStores::SESSION_ACCOUNT_USER_ID,
+			$actual->html->path()->collection(
+				"//dl[contains(@class, 'page-account-user')]/dt[contains(text(), 'ユーザーID')]/following-sibling::dd[1]//*[@data-role='value']"
+			)->single()
+		);
+
+		$this->assertTextNode(
+			ItMockStores::SESSION_ACCOUNT_LOGIN_ID,
+			$actual->html->path()->collection(
+				"//dl[contains(@class, 'page-account-user')]/dt[contains(text(), 'ログインID')]/following-sibling::dd[1]//*[@data-role='value']"
+			)->single()
+		);
+
+		$this->assertTextNode(
+			UserLevel::toString(UserLevel::USER),
+			$actual->html->path()->collection(
+				"//dl[contains(@class, 'page-account-user')]/dt[contains(text(), '権限')]/following-sibling::dd[1][@data-role='value']"
+			)->single()
+		);
+
+		$this->assertTextNode(
+			ItMockStores::SESSION_ACCOUNT_NAME,
+			$actual->html->path()->collection(
+				"//dl[contains(@class, 'page-account-user')]/dt[contains(text(), '名前')]/following-sibling::dd[1][@data-role='value']"
+			)->single()
+		);
+
+		$this->assertTextNode(
+			'w',
+			$actual->html->path()->collection(
+				"//dl[contains(@class, 'page-account-user')]/dt[contains(text(), 'Webサイト')]/following-sibling::dd[1][@data-role='value']"
+			)->single()
+		);
+
+		$this->assertTextNode(
+			'未登録',
+			$actual->html->path()->collection(
+				"//dl[contains(@class, 'page-account-user')]/dt[contains(text(), 'プラグイン')]/following-sibling::dd[1][@data-role='value']"
+			)->single()
+		);
 	}
 }
