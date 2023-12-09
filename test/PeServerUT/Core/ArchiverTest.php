@@ -25,4 +25,9 @@ class ArchiverTest extends TestClass
 		Archiver::compressGzip($a, 10);
 	}
 
+	public function test_extractGzip_throw() {
+		$a = new Binary('');
+		$this->expectException(ArchiveException::class);
+		Archiver::extractGzip($a);
+	}
 }
