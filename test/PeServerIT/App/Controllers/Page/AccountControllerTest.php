@@ -7,8 +7,10 @@ namespace PeServerIT\App\Controllers\Page;
 use PeServer\App\Controllers\Page\HomeController;
 use PeServer\App\Models\AppCryptography;
 use PeServer\App\Models\Dao\Domain\UserDomainDao;
+use PeServer\App\Models\Dao\Entities\PluginsEntityDao;
 use PeServer\App\Models\Dao\Entities\UserAuthenticationsEntityDao;
 use PeServer\App\Models\Dao\Entities\UsersEntityDao;
+use PeServer\App\Models\Domain\PluginState;
 use PeServer\App\Models\Domain\UserLevel;
 use PeServer\App\Models\Domain\UserState;
 use PeServer\Core\Cryptography;
@@ -28,6 +30,8 @@ use PeServerTest\ItOptions;
 use PeServerTest\ItControllerClass;
 use PeServerUT\Core\DI\C;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PeServer\Core\Html\HtmlTagElement;
+use PeServer\Core\Text;
 
 class AccountControllerTest extends ItControllerClass
 {
@@ -274,10 +278,8 @@ class AccountControllerTest extends ItControllerClass
 		);
 		$actual = $this->call(HttpMethod::Get, '/account', $options, function (IDiContainer $container, IDatabaseContext $databaseContext) {
 			$usersEntityDao = new UsersEntityDao($databaseContext);
-			$userAuthenticationsEntityDao = new UserAuthenticationsEntityDao($databaseContext);
 
 			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, 'email', 0, 'w', 'd', 'n');
-			$userAuthenticationsEntityDao->insertUserAuthentication(ItMockStores::SESSION_ACCOUNT_USER_ID, 'p');
 		});
 
 		$this->assertStatusOk($actual);
@@ -324,5 +326,93 @@ class AccountControllerTest extends ItControllerClass
 				"//dl[contains(@class, 'page-account-user')]/dt[contains(text(), 'プラグイン')]/following-sibling::dd[1][@data-role='value']"
 			)->single()
 		);
+	}
+
+	public function test_user_not_register_website()
+	{
+		$options = new ItOptions(
+			stores: ItMockStores::account(UserLevel::USER),
+		);
+		$actual = $this->call(HttpMethod::Get, '/account', $options, function (IDiContainer $container, IDatabaseContext $databaseContext) {
+			$usersEntityDao = new UsersEntityDao($databaseContext);
+
+			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, 'email', 0, '', 'd', 'n');
+		});
+
+		$this->assertStatusOk($actual);
+
+		$this->assertTextNode(
+			'未登録',
+			$actual->html->path()->collection(
+				"//dl[contains(@class, 'page-account-user')]/dt[contains(text(), 'Webサイト')]/following-sibling::dd[1][@data-role='value']"
+			)->single()
+		);
+	}
+
+	public function test_user_plugins()
+	{
+		$options = new ItOptions(
+			stores: ItMockStores::account(UserLevel::USER),
+		);
+		$actual = $this->call(HttpMethod::Get, '/account', $options, function (IDiContainer $container, IDatabaseContext $databaseContext) {
+			$usersEntityDao = new UsersEntityDao($databaseContext);
+			$pluginsEntityDao = new PluginsEntityDao($databaseContext);
+
+			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID . '-OTHER', ItMockStores::SESSION_ACCOUNT_LOGIN_ID . '-OTHER', UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, 'email', 0, 'w', 'd', 'n');
+			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, 'email', 0, 'w', 'd', 'n');
+
+			$pluginsEntityDao->insertPlugin('A0', ItMockStores::SESSION_ACCOUNT_USER_ID . '-OTHER', 'PLUGIN-A0', 'plugin-a0', PluginState::ENABLED, 'P-A0-D', '');
+			$pluginsEntityDao->insertPlugin('A2', ItMockStores::SESSION_ACCOUNT_USER_ID, 'PLUGIN-A2', 'plugin-a2', PluginState::ENABLED, 'P-A-D2', '');
+			$pluginsEntityDao->insertPlugin('A1', ItMockStores::SESSION_ACCOUNT_USER_ID, 'PLUGIN-A1', 'plugin-a1', PluginState::ENABLED, 'P-A-D1', '');
+			$pluginsEntityDao->insertPlugin('B0', ItMockStores::SESSION_ACCOUNT_USER_ID . '-OTHER', 'PLUGIN-B0', 'plugin-b0', PluginState::CHECK_FAILED, 'P-B0-D', '');
+			$pluginsEntityDao->insertPlugin('B2', ItMockStores::SESSION_ACCOUNT_USER_ID, 'PLUGIN-B2', 'plugin-b2', PluginState::CHECK_FAILED, 'P-B-D2', '');
+			$pluginsEntityDao->insertPlugin('B1', ItMockStores::SESSION_ACCOUNT_USER_ID, 'PLUGIN-B1', 'plugin-b1', PluginState::CHECK_FAILED, 'P-B-D1', '');
+			$pluginsEntityDao->insertPlugin('C0', ItMockStores::SESSION_ACCOUNT_USER_ID . '-OTHER', 'PLUGIN-C0', 'plugin-c0', PluginState::DISABLED, 'P-C0-D', '');
+			$pluginsEntityDao->insertPlugin('C2', ItMockStores::SESSION_ACCOUNT_USER_ID, 'PLUGIN-C2', 'plugin-c2', PluginState::DISABLED, 'P-C-D2', '');
+			$pluginsEntityDao->insertPlugin('C1', ItMockStores::SESSION_ACCOUNT_USER_ID, 'PLUGIN-C1', 'plugin-c1', PluginState::DISABLED, 'P-C-D1', '');
+		});
+
+		$this->assertStatusOk($actual);
+
+		$expectedItems = [
+			[
+				'id' => 'A1',
+				'name' => 'PLUGIN-A1',
+			],
+			[
+				'id' => 'A2',
+				'name' => 'PLUGIN-A2',
+			],
+			[
+				'id' => 'B1',
+				'name' => 'PLUGIN-B1',
+			],
+			[
+				'id' => 'B2',
+				'name' => 'PLUGIN-B2',
+			],
+			[
+				'id' => 'C1',
+				'name' => 'PLUGIN-C1',
+			],
+			[
+				'id' => 'C2',
+				'name' => 'PLUGIN-C2',
+			],
+		];
+
+		$actualItems = $actual->html->path()->collection(
+			"//dl[contains(@class, 'page-account-user')]/dt[contains(text(), 'プラグイン')]/following-sibling::dd[1][@data-role='value']//li//a"
+		)->toArray();
+
+		$this->assertCount(count($expectedItems), $actualItems);
+		for ($i = 0; $i < count($expectedItems); $i++) {
+			$expectedItem = $expectedItems[$i];
+			/** @var HtmlTagElement */
+			$actualItem = $actualItems[$i];
+
+			$this->assertStringEndsWith($expectedItem['id'], $actualItem->getAttribute('href'));
+			$this->assertTextNode($expectedItem['name'], $actualItem);
+		}
 	}
 }
