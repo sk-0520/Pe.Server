@@ -188,11 +188,10 @@ class ItControllerClass extends TestClass
 				/** @var IDatabaseConnection */
 				$databaseConnection = $container->get(IDatabaseConnection::class);
 				$database = $databaseConnection->open();
-				$database->transaction(function (IDatabaseContext $context) use ($setup, $container) {
+				$database->transaction(function (IDatabaseContext $context) use ($setup, $options, $container) {
 					$setup($container, $context);
 
-					$enabledSetupUser = 'enabledSetupUser';
-					if(!$this->$enabledSetupUser) {
+					if(!$options->stores->enabledSetupUser) {
 						$usersEntityDao = new UsersEntityDao($context);
 						$usersEntityDao->updateUserState(
 							'00000000-0000-4000-0000-000000000000',

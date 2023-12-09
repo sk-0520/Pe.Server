@@ -16,34 +16,41 @@ final class ItMockStores
 	public const SESSION_ACCOUNT_STATE = UserState::ENABLED;
 
 	public function __construct(
-		public SessionAccount|SessionAnonymous|null $account
+		public SessionAccount|SessionAnonymous|null $account,
+		public bool $enabledSetupUser
 	) {
 	}
 
 	public static function none()
 	{
-		return new self(null);
+		return new self(null, false);
 	}
 
-	public static function account(string $level, string $userId = self::SESSION_ACCOUNT_USER_ID, string $loginId = self::SESSION_ACCOUNT_LOGIN_ID, string $name = self::SESSION_ACCOUNT_NAME, $state = self::SESSION_ACCOUNT_STATE)
+	public static function account(string $level, string $userId = self::SESSION_ACCOUNT_USER_ID, string $loginId = self::SESSION_ACCOUNT_LOGIN_ID, string $name = self::SESSION_ACCOUNT_NAME, $state = self::SESSION_ACCOUNT_STATE, bool $enabledSetupUser = false)
 	{
-		return new self(new SessionAccount(
-			$userId,
-			$loginId,
-			$name,
-			$level,
-			$state
-		));
+		return new self(
+			new SessionAccount(
+				$userId,
+				$loginId,
+				$name,
+				$level,
+				$state
+			),
+			$enabledSetupUser
+		);
 	}
 
-	public static function anonymous(bool $login = false, bool $signup1 = false, bool $signup2 = false, bool $passwordReminder = false, bool $passwordReset = false)
+	public static function anonymous(bool $login = false, bool $signup1 = false, bool $signup2 = false, bool $passwordReminder = false, bool $passwordReset = false, bool $enabledSetupUser = false)
 	{
-		return new self(new SessionAnonymous(
-			$login,
-			$signup1,
-			$signup2,
-			$passwordReminder,
-			$passwordReset,
-		));
+		return new self(
+			new SessionAnonymous(
+				$login,
+				$signup1,
+				$signup2,
+				$passwordReminder,
+				$passwordReset,
+			),
+			$enabledSetupUser
+		);
 	}
 }

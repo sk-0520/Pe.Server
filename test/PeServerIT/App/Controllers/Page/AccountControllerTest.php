@@ -182,8 +182,6 @@ class AccountControllerTest extends ItControllerClass
 
 	public function test_login_post_failure_enabled_setup_user()
 	{
-		$this->enabledSetupUser = false;
-
 		$options = new ItOptions(
 			stores: ItMockStores::anonymous(login: true),
 			body: ItBody::form([
