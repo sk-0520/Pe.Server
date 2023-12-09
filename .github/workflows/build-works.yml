@@ -241,7 +241,7 @@ jobs:
       - code-backend
       - test-backend-st
 
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
 
     runs-on: ubuntu-latest
 
