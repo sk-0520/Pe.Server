@@ -7,7 +7,7 @@ namespace PeServer\Core\Http\Client;
 use Exception;
 use PeServer\Core\Binary;
 use PeServer\Core\Collections\Arr;
-use PeServer\Core\Collections\Collection;
+use PeServer\Core\Collections\Collections;
 use PeServer\Core\DisposerBase;
 use PeServer\Core\Http\Client\HttpClientOptions;
 use PeServer\Core\Http\Client\HttpClientRequest;

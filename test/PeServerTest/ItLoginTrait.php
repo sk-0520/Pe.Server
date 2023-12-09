@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace PeServerTest;
 
 use PeServer\App\Models\Domain\UserLevel;
-use PeServer\Core\Collections\Arr;
 use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Http\HttpStatus;
 
@@ -35,8 +34,8 @@ trait ItLoginTrait
 		$this->assertSame(HttpStatus::OK, $actual->getHttpStatus());
 		$this->assertTrue($actual->isHtml());
 
-		$this->assertCount(1, $actual->html->path()->collection('//header//li/a[@href = "/account/signup"]'));
-		$this->assertCount(0, $actual->html->path()->collection('//header//li/a[@href = "/account/user"]'));
+		$this->assertCount(1, $actual->html->path()->collections('//header//li/a[@href = "/account/signup"]'));
+		$this->assertCount(0, $actual->html->path()->collections('//header//li/a[@href = "/account/user"]'));
 	}
 
 	private function _test_login(string $path, string $userLevel)
@@ -48,7 +47,7 @@ trait ItLoginTrait
 		$this->assertSame(HttpStatus::OK, $actual->getHttpStatus());
 		$this->assertTrue($actual->isHtml());
 
-		$this->assertCount(0, $actual->html->path()->collection('//header//li/a[@href = "/account/signup"]'));
-		$this->assertCount(1, $actual->html->path()->collection('//header//li/a[@href = "/account/user"]'));
+		$this->assertCount(0, $actual->html->path()->collections('//header//li/a[@href = "/account/signup"]'));
+		$this->assertCount(1, $actual->html->path()->collections('//header//li/a[@href = "/account/user"]'));
 	}
 }

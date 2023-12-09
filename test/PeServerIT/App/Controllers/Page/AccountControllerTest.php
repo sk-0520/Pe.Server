@@ -61,14 +61,14 @@ class AccountControllerTest extends ItControllerClass
 
 		$this->assertTextNode(
 			'',
-			$actual->html->path()->collection(
+			$actual->html->path()->collections(
 				"//*[@id='content']/form[1][@action='/account/login']//*[contains(@class,'input')]//dt[text()='ログインID']/following-sibling::dd[1]"
 			)->single()
 		);
 
 		$this->assertTextNode(
 			'',
-			$actual->html->path()->collection(
+			$actual->html->path()->collections(
 				"//*[@id='content']/form[1][@action='/account/login']//*[contains(@class,'input')]//dt[text()='パスワード']/following-sibling::dd[1]"
 			)->single()
 		);
@@ -134,14 +134,14 @@ class AccountControllerTest extends ItControllerClass
 
 		$this->assertTextNode(
 			'',
-			$actual->html->path()->collection(
+			$actual->html->path()->collections(
 				"//*[@id='content']/form[1][@action='/account/login']//*[contains(@class,'input')]//dt[text()='ログインID']/following-sibling::dd[1]"
 			)->single()
 		);
 
 		$this->assertTextNode(
 			'',
-			$actual->html->path()->collection(
+			$actual->html->path()->collections(
 				"//*[@id='content']/form[1][@action='/account/login']//*[contains(@class,'input')]//dt[text()='パスワード']/following-sibling::dd[1]"
 			)->single()
 		);
@@ -171,14 +171,14 @@ class AccountControllerTest extends ItControllerClass
 
 		$this->assertTextNode(
 			'',
-			$actual->html->path()->collection(
+			$actual->html->path()->collections(
 				"//*[@id='content']/form[1][@action='/account/login']//*[contains(@class,'input')]//dt[text()='ログインID']/following-sibling::dd[1]"
 			)->single()
 		);
 
 		$this->assertTextNode(
 			'',
-			$actual->html->path()->collection(
+			$actual->html->path()->collections(
 				"//*[@id='content']/form[1][@action='/account/login']//*[contains(@class,'input')]//dt[text()='パスワード']/following-sibling::dd[1]"
 			)->single()
 		);
@@ -208,14 +208,14 @@ class AccountControllerTest extends ItControllerClass
 
 		$this->assertTextNode(
 			'',
-			$actual->html->path()->collection(
+			$actual->html->path()->collections(
 				"//*[@id='content']/form[1][@action='/account/login']//*[contains(@class,'input')]//dt[text()='ログインID']/following-sibling::dd[1]"
 			)->single()
 		);
 
 		$this->assertTextNode(
 			'',
-			$actual->html->path()->collection(
+			$actual->html->path()->collections(
 				"//*[@id='content']/form[1][@action='/account/login']//*[contains(@class,'input')]//dt[text()='パスワード']/following-sibling::dd[1]"
 			)->single()
 		);
@@ -287,42 +287,42 @@ class AccountControllerTest extends ItControllerClass
 
 		$this->assertTextNode(
 			ItMockStores::SESSION_ACCOUNT_USER_ID,
-			$actual->html->path()->collection(
+			$actual->html->path()->collections(
 				"//dl[contains(@class, 'page-account-user')]/dt[contains(text(), 'ユーザーID')]/following-sibling::dd[1]//*[@data-role='value']"
 			)->single()
 		);
 
 		$this->assertTextNode(
 			ItMockStores::SESSION_ACCOUNT_LOGIN_ID,
-			$actual->html->path()->collection(
+			$actual->html->path()->collections(
 				"//dl[contains(@class, 'page-account-user')]/dt[contains(text(), 'ログインID')]/following-sibling::dd[1]//*[@data-role='value']"
 			)->single()
 		);
 
 		$this->assertTextNode(
 			UserLevel::toString(UserLevel::USER),
-			$actual->html->path()->collection(
+			$actual->html->path()->collections(
 				"//dl[contains(@class, 'page-account-user')]/dt[contains(text(), '権限')]/following-sibling::dd[1][@data-role='value']"
 			)->single()
 		);
 
 		$this->assertTextNode(
 			ItMockStores::SESSION_ACCOUNT_NAME,
-			$actual->html->path()->collection(
+			$actual->html->path()->collections(
 				"//dl[contains(@class, 'page-account-user')]/dt[contains(text(), '名前')]/following-sibling::dd[1][@data-role='value']"
 			)->single()
 		);
 
 		$this->assertTextNode(
 			'w',
-			$actual->html->path()->collection(
+			$actual->html->path()->collections(
 				"//dl[contains(@class, 'page-account-user')]/dt[contains(text(), 'Webサイト')]/following-sibling::dd[1][@data-role='value']"
 			)->single()
 		);
 
 		$this->assertTextNode(
 			'未登録',
-			$actual->html->path()->collection(
+			$actual->html->path()->collections(
 				"//dl[contains(@class, 'page-account-user')]/dt[contains(text(), 'プラグイン')]/following-sibling::dd[1][@data-role='value']"
 			)->single()
 		);
@@ -343,7 +343,7 @@ class AccountControllerTest extends ItControllerClass
 
 		$this->assertTextNode(
 			'未登録',
-			$actual->html->path()->collection(
+			$actual->html->path()->collections(
 				"//dl[contains(@class, 'page-account-user')]/dt[contains(text(), 'Webサイト')]/following-sibling::dd[1][@data-role='value']"
 			)->single()
 		);
@@ -401,7 +401,7 @@ class AccountControllerTest extends ItControllerClass
 			],
 		];
 
-		$actualItems = $actual->html->path()->collection(
+		$actualItems = $actual->html->path()->collections(
 			"//dl[contains(@class, 'page-account-user')]/dt[contains(text(), 'プラグイン')]/following-sibling::dd[1][@data-role='value']//li//a"
 		)->toArray();
 

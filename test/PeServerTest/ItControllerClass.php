@@ -267,12 +267,12 @@ class ItControllerClass extends TestClass
 
 	protected function assertVisibleCommonError(ItHttpResponse $response, array $errorItems)
 	{
-		$root = $response->html->path()->collection(
+		$root = $response->html->path()->collections(
 			"//main/div[contains(@class, 'common') and contains(@class, 'error')]"
 		);
 		$this->assertSame(1, $root->count());
 
-		$nodes = $response->html->path()->collection(
+		$nodes = $response->html->path()->collections(
 			"//main/div[contains(@class, 'common') and contains(@class, 'error')]//li[contains(@class, 'error')]"
 		)->toArray();
 		$this->assertSame(count($nodes), count($errorItems));

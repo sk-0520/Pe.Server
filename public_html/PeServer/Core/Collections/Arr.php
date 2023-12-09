@@ -17,7 +17,7 @@ use PeServer\Core\TypeUtility;
 /**
  * 配列共通処理。
  *
- * 遅延処理が必要な場合 `Collections\Collection` を参照のこと。
+ * 遅延処理が必要な場合 `Collections\Collections` を参照のこと。
  */
 class Arr
 {

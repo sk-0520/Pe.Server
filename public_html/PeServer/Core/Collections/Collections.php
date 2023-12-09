@@ -28,7 +28,7 @@ use PeServer\Core\TypeUtility;
  * @phpstan-type PredicateAlias callable(TValue,TKey):(bool)
  * @implements IteratorAggregate<TKey,TValue>
  */
-class Collection implements IteratorAggregate
+class Collections implements IteratorAggregate
 {
 	/**
 	 * 生成。
