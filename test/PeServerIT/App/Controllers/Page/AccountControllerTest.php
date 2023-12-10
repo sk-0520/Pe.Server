@@ -187,12 +187,12 @@ class AccountControllerTest extends ItControllerClass
 			)->single()
 		);
 
-		// $context = $actual->openDB();
-		// $userAuditLogsEntityDao = new UserAuditLogsEntityDao($context);
-		// $logId = $userAuditLogsEntityDao->selectLastLogId();
-		// $auditResult = $context->querySingle('select * from user_audit_logs where sequence = :sequence', ['sequence' => $logId]);
-		// $this->assertSame(ItMockStores::SESSION_ACCOUNT_USER_ID, $auditResult->fields['user_id']);
-		// $this->assertSame(AuditLog::LOGIN_FAILED, $auditResult->fields['event']);
+		$context = $actual->openDB();
+		$userAuditLogsEntityDao = new UserAuditLogsEntityDao($context);
+		$logId = $userAuditLogsEntityDao->selectLastLogId();
+		$auditResult = $context->querySingle('select * from user_audit_logs where sequence = :sequence', ['sequence' => $logId]);
+		$this->assertSame(ItMockStores::SESSION_ACCOUNT_USER_ID, $auditResult->fields['user_id']);
+		$this->assertSame(AuditLog::LOGIN_FAILED, $auditResult->fields['event']);
 	}
 
 	public function test_login_post_failure_enabled_setup_user()
