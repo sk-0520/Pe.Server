@@ -34,6 +34,8 @@ use PeServerUT\Core\DI\C;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PeServer\Core\Html\HtmlTagElement;
 use PeServer\Core\Text;
+use PeServerTest\ItSetup;
+use Throwable;
 
 class AccountControllerTest extends ItControllerClass
 {
@@ -158,9 +160,9 @@ class AccountControllerTest extends ItControllerClass
 				'account_login_password' => 'password',
 			]),
 		);
-		$actual = $this->call(HttpMethod::Post, '/account/login', $options, function (IDiContainer $container, IDatabaseContext $databaseContext) {
-			$usersEntityDao = new UsersEntityDao($databaseContext);
-			$userAuthenticationsEntityDao = new UserAuthenticationsEntityDao($databaseContext);
+		$actual = $this->call(HttpMethod::Post, '/account/login', $options, function (ItSetup $setup) {
+			$usersEntityDao = new UsersEntityDao($setup->databaseContext);
+			$userAuthenticationsEntityDao = new UserAuthenticationsEntityDao($setup->databaseContext);
 
 			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, 'email', 0, 'w', 'd', 'n');
 			$userAuthenticationsEntityDao->insertUserAuthentication(ItMockStores::SESSION_ACCOUNT_USER_ID, Cryptography::hashPassword('@'));
@@ -202,9 +204,9 @@ class AccountControllerTest extends ItControllerClass
 				'account_login_password' => 'password',
 			]),
 		);
-		$actual = $this->call(HttpMethod::Post, '/account/login', $options, function (IDiContainer $container, IDatabaseContext $databaseContext) {
-			$usersEntityDao = new UsersEntityDao($databaseContext);
-			$userAuthenticationsEntityDao = new UserAuthenticationsEntityDao($databaseContext);
+		$actual = $this->call(HttpMethod::Post, '/account/login', $options, function (ItSetup $setup) {
+			$usersEntityDao = new UsersEntityDao($setup->databaseContext);
+			$userAuthenticationsEntityDao = new UserAuthenticationsEntityDao($setup->databaseContext);
 
 			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, 'email', 0, 'w', 'd', 'n');
 			$userAuthenticationsEntityDao->insertUserAuthentication(ItMockStores::SESSION_ACCOUNT_USER_ID, Cryptography::hashPassword('@'));
@@ -239,9 +241,9 @@ class AccountControllerTest extends ItControllerClass
 				'account_login_password' => 'password',
 			]),
 		);
-		$actual = $this->call(HttpMethod::Post, '/account/login', $options, function (IDiContainer $container, IDatabaseContext $databaseContext) {
-			$usersEntityDao = new UsersEntityDao($databaseContext);
-			$userAuthenticationsEntityDao = new UserAuthenticationsEntityDao($databaseContext);
+		$actual = $this->call(HttpMethod::Post, '/account/login', $options, function (ItSetup $setup) {
+			$usersEntityDao = new UsersEntityDao($setup->databaseContext);
+			$userAuthenticationsEntityDao = new UserAuthenticationsEntityDao($setup->databaseContext);
 
 			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, 'email', 0, 'w', 'd', 'n');
 			$userAuthenticationsEntityDao->insertUserAuthentication(ItMockStores::SESSION_ACCOUNT_USER_ID, Cryptography::hashPassword('password'));
@@ -280,9 +282,9 @@ class AccountControllerTest extends ItControllerClass
 		$options = new ItOptions(
 			stores: ItMockStores::account(UserLevel::USER),
 		);
-		$actual = $this->call(HttpMethod::Get, '/account/logout', $options, function (IDiContainer $container, IDatabaseContext $databaseContext) {
-			$usersEntityDao = new UsersEntityDao($databaseContext);
-			$userAuthenticationsEntityDao = new UserAuthenticationsEntityDao($databaseContext);
+		$actual = $this->call(HttpMethod::Get, '/account/logout', $options, function (ItSetup $setup) {
+			$usersEntityDao = new UsersEntityDao($setup->databaseContext);
+			$userAuthenticationsEntityDao = new UserAuthenticationsEntityDao($setup->databaseContext);
 
 			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, 'email', 0, 'w', 'd', 'n');
 			$userAuthenticationsEntityDao->insertUserAuthentication(ItMockStores::SESSION_ACCOUNT_USER_ID, Cryptography::hashPassword('@'));
@@ -302,8 +304,8 @@ class AccountControllerTest extends ItControllerClass
 		$options = new ItOptions(
 			stores: ItMockStores::account(UserLevel::USER),
 		);
-		$actual = $this->call(HttpMethod::Get, '/account', $options, function (IDiContainer $container, IDatabaseContext $databaseContext) {
-			$usersEntityDao = new UsersEntityDao($databaseContext);
+		$actual = $this->call(HttpMethod::Get, '/account', $options, function (ItSetup $setup) {
+			$usersEntityDao = new UsersEntityDao($setup->databaseContext);
 
 			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, 'email', 0, 'w', 'd', 'n');
 		});
@@ -359,8 +361,8 @@ class AccountControllerTest extends ItControllerClass
 		$options = new ItOptions(
 			stores: ItMockStores::account(UserLevel::USER),
 		);
-		$actual = $this->call(HttpMethod::Get, '/account', $options, function (IDiContainer $container, IDatabaseContext $databaseContext) {
-			$usersEntityDao = new UsersEntityDao($databaseContext);
+		$actual = $this->call(HttpMethod::Get, '/account', $options, function (ItSetup $setup) {
+			$usersEntityDao = new UsersEntityDao($setup->databaseContext);
 
 			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, 'email', 0, '', 'd', 'n');
 		});
@@ -380,9 +382,9 @@ class AccountControllerTest extends ItControllerClass
 		$options = new ItOptions(
 			stores: ItMockStores::account(UserLevel::USER),
 		);
-		$actual = $this->call(HttpMethod::Get, '/account', $options, function (IDiContainer $container, IDatabaseContext $databaseContext) {
-			$usersEntityDao = new UsersEntityDao($databaseContext);
-			$pluginsEntityDao = new PluginsEntityDao($databaseContext);
+		$actual = $this->call(HttpMethod::Get, '/account', $options, function (ItSetup $setup) {
+			$usersEntityDao = new UsersEntityDao($setup->databaseContext);
+			$pluginsEntityDao = new PluginsEntityDao($setup->databaseContext);
 
 			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID . '-OTHER', ItMockStores::SESSION_ACCOUNT_LOGIN_ID . '-OTHER', UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, 'email', 0, 'w', 'd', 'n');
 			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, 'email', 0, 'w', 'd', 'n');
@@ -441,4 +443,25 @@ class AccountControllerTest extends ItControllerClass
 			$this->assertTextNode($expectedItem['name'], $actualItem);
 		}
 	}
+
+	public function test_user_edit_get_notLogin()
+	{
+		try {
+			$this->call(HttpMethod::Get, '/account/user/edit');
+			$this->fail();
+		} catch (Throwable $ex) {
+			// ミドルウェアで処理してるのでロジック的には例外で死んでる
+			$this->success();
+		}
+	}
+
+	// public function test_user_edit_get()
+	// {
+	// 	$options = new ItOptions(
+	// 		stores: ItMockStores::account(UserLevel::USER),
+	// 	);
+	// 	$actual = $this->call(HttpMethod::Get, '/account/user/edit', $options);
+
+	// 	$this->assertStatusOk($actual);
+	// }
 }

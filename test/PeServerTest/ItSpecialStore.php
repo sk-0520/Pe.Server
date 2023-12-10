@@ -90,12 +90,20 @@ final class ItSpecialStore extends SpecialStore
 
 	private function containsMethodName(string $name): bool
 	{
+		if (!$this->body) {
+			return false;
+		}
+
 		assert($this->body->content instanceof Dictionary);
 		return isset($this->body->content[$name]);
 	}
 
 	private function getMethod(string $name, string $fallbackValue = Text::EMPTY): string
 	{
+		if (!$this->body) {
+			return $fallbackValue;
+		}
+
 		assert($this->body->content instanceof Dictionary);
 		$result = Arr::getOr($this->body->content->getArray(), $name, $fallbackValue);
 		return $result;
@@ -103,6 +111,10 @@ final class ItSpecialStore extends SpecialStore
 
 	private function tryMethodGet(string $name, ?string &$result): bool
 	{
+		if (!$this->body) {
+			return false;
+		}
+
 		assert($this->body->content instanceof Dictionary);
 		return Arr::tryGet($this->body->content->getArray(), $name, $result);
 	}

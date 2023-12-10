@@ -53,6 +53,16 @@ use PeServer\Core\IO\File;
 use PeServer\Core\Log\LoggerFactory;
 use PeServer\Core\Log\NullLogger;
 use PeServer\Core\Text;
+use PeServer\Core\Throws\ArgumentException;
+use PeServer\Core\Throws\DiContainerArgumentException;
+use PeServer\Core\Throws\RegexException;
+use PeServer\Core\Throws\DiContainerException;
+use PeServer\Core\Throws\NotImplementedException;
+use PeServer\Core\Throws\InvalidOperationException;
+use PeServer\Core\Throws\IOException;
+use PeServer\Core\Throws\SqlException;
+use PeServer\Core\Throws\DatabaseException;
+use PeServer\Core\Throws\OutputBufferException;
 use PeServer\Core\Web\UrlPath;
 use PeServerTest\TestClass;
 use PeServerTest\ItSpecialStore as ItSpecialStore;
@@ -61,6 +71,9 @@ use PeServerTest\TestRouting;
 use PeServerTest\ItRoutingWithoutMiddleware;
 use Reflection;
 use ReflectionClass;
+use TypeError;
+use Throwable;
+use ValueError;
 
 class ItControllerClass extends TestClass
 {
@@ -135,6 +148,14 @@ class ItControllerClass extends TestClass
 		$setupRunner->execute();
 	}
 
+	/**
+	 *
+	 * @param HttpMethod $httpMethod
+	 * @param string $path
+	 * @param ItOptions $options
+	 * @param null|callable(ItSetup) $setup
+	 * @return ItActual
+	 */
 	protected function call(HttpMethod $httpMethod, string $path, ItOptions $options = new ItOptions(), ?callable $setup = null): ItActual
 	{
 		$this->resetInitialize();
@@ -186,9 +207,9 @@ class ItControllerClass extends TestClass
 				$databaseConnection = $container->get(IDatabaseConnection::class);
 				$database = $databaseConnection->open();
 				$database->transaction(function (IDatabaseContext $context) use ($setup, $options, $container) {
-					$setup($container, $context);
+					$setup(new ItSetup($container, $context));
 
-					if(!$options->stores->enabledSetupUser) {
+					if (!$options->stores->enabledSetupUser) {
 						$usersEntityDao = new UsersEntityDao($context);
 						$usersEntityDao->updateUserState(
 							'00000000-0000-4000-0000-000000000000',
