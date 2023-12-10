@@ -56,10 +56,11 @@ final class HtmlTagElement extends HtmlElementBase
 
 	public function getAttribute(string $qualifiedName): string
 	{
-		$attributeValue = $this->raw->getAttribute($qualifiedName);
-		if (Text::isNullOrEmpty($attributeValue)) {
-			throw new HtmlAttributeException();
+		if(!$this->raw->hasAttribute($qualifiedName)) {
+			throw new HtmlAttributeException($qualifiedName);
 		}
+
+		$attributeValue = $this->raw->getAttribute($qualifiedName);
 
 		return $attributeValue;
 	}

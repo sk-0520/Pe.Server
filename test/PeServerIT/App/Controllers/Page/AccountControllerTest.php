@@ -134,7 +134,7 @@ class AccountControllerTest extends ItControllerClass
 		$this->assertStatusOK($actual);
 		$this->assertTitle('ログイン', $actual);
 
-		$this->assertVisibleCommonError($actual, ['ログインID/パスワードが正しくありません']);
+		$this->assertVisibleCommonError(['ログインID/パスワードが正しくありません'], $actual);
 
 		$this->assertTextNode(
 			'',
@@ -171,7 +171,7 @@ class AccountControllerTest extends ItControllerClass
 		$this->assertStatusOK($actual);
 		$this->assertTitle('ログイン', $actual);
 
-		$this->assertVisibleCommonError($actual, ['ログインID/パスワードが正しくありません']);
+		$this->assertVisibleCommonError(['ログインID/パスワードが正しくありません'], $actual);
 
 		$this->assertTextNode(
 			'',
@@ -215,7 +215,7 @@ class AccountControllerTest extends ItControllerClass
 		$this->assertStatusOK($actual);
 		$this->assertTitle('ログイン', $actual);
 
-		$this->assertVisibleCommonError($actual, ['ログインID/パスワードが正しくありません']);
+		$this->assertVisibleCommonError(['ログインID/パスワードが正しくありません'], $actual);
 
 		$this->assertTextNode(
 			'',
@@ -487,6 +487,71 @@ class AccountControllerTest extends ItControllerClass
 			$actual->html->path()->collections(
 				"//*[@name='account_edit_description']"
 			)->single()
+		);
+	}
+
+	public function test_user_edit_post_empty_name()
+	{
+		$options = new ItOptions(
+			stores: ItMockStores::account(UserLevel::USER),
+			body: ItBody::form([
+				'account_edit_name' => '',
+			])
+		);
+		$actual = $this->call(HttpMethod::Post, '/account/user/edit', $options, function (ItSetup $setup) {
+			$usersEntityDao = new UsersEntityDao($setup->databaseContext);
+
+			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, 'email', 0, 'w', 'd', 'n');
+		});
+
+		$this->assertStatusOk($actual);
+
+		$this->assertVisibleCommonError([], $actual);
+
+		$this->assertValue(
+			Text::EMPTY,
+			$actual->html->path()->collections(
+				"//*[@name='account_edit_name']"
+			)->single()
+		);
+		$this->assertVisibleTargetError(
+			['未入力です'],
+			"account_edit_name",
+			$actual
+		);
+
+		//URLが正しくありません
+	}
+
+	public function test_user_edit_post_invalid_url()
+	{
+		$options = new ItOptions(
+			stores: ItMockStores::account(UserLevel::USER),
+			body: ItBody::form([
+				'account_edit_name' => ItMockStores::SESSION_ACCOUNT_NAME,
+				'account_edit_website' => '123',
+			])
+		);
+		$actual = $this->call(HttpMethod::Post, '/account/user/edit', $options, function (ItSetup $setup) {
+			$usersEntityDao = new UsersEntityDao($setup->databaseContext);
+
+			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, 'email', 0, 'w', 'd', 'n');
+		});
+
+		$this->assertStatusOk($actual);
+
+		$this->assertVisibleCommonError([], $actual);
+
+		$this->assertValue(
+			ItMockStores::SESSION_ACCOUNT_NAME,
+			$actual->html->path()->collections(
+				"//*[@name='account_edit_name']"
+			)->single()
+		);
+		$this->assertVisibleTargetError(
+			['URLが正しくありません'],
+			"account_edit_website",
+			$actual
 		);
 	}
 }

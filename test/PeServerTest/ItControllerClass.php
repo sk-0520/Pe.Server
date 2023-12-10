@@ -69,6 +69,7 @@ use PeServerTest\ItSpecialStore as ItSpecialStore;
 use PeServerTest\ItActual;
 use PeServerTest\TestRouting;
 use PeServerTest\ItRoutingWithoutMiddleware;
+use PeServerTest\ItSetup;
 use Reflection;
 use ReflectionClass;
 use TypeError;
@@ -283,9 +284,10 @@ class ItControllerClass extends TestClass
 		}
 	}
 
-	protected function assertAttribute(string $expected, HtmlTagElement $element, string $attribute): void
+	protected function assertAttribute(string $expected, HtmlTagElement $element, string $attributeName): void
 	{
-		$this->assertSame($expected, $element->getAttribute($attribute));
+		$attributeValue = $element->getAttribute($attributeName);
+		$this->assertSame($expected, $attributeValue, $attributeValue);
 	}
 
 	protected function assertValue(string $expected, HtmlTagElement $element): void
@@ -298,19 +300,30 @@ class ItControllerClass extends TestClass
 		}
 	}
 
-	protected function assertVisibleCommonError(ItActual $response, array $errorItems)
+	protected function assertVisibleCommonError(array $errorItems, ItActual $response)
 	{
 		$root = $response->html->path()->collections(
 			"//main/div[contains(@class, 'common') and contains(@class, 'error')]"
 		);
-		$this->assertSame(1, $root->count());
+		$this->assertCount(1, $root);
 
-		$nodes = $response->html->path()->collections(
+		$targetElements = $response->html->path()->collections(
 			"//main/div[contains(@class, 'common') and contains(@class, 'error')]//li[contains(@class, 'error')]"
 		)->toArray();
-		$this->assertSame(count($nodes), count($errorItems));
-		for ($i = 0; $i < count($nodes); $i++) {
-			$this->assertTextNode($errorItems[$i], $nodes[$i]);
+		$this->assertSame(count($targetElements), count($errorItems));
+		for ($i = 0; $i < count($targetElements); $i++) {
+			$this->assertTextNode($errorItems[$i], $targetElements[$i]);
+		}
+	}
+
+	protected function assertVisibleTargetError(array $errorItems, string $name, ItActual $response)
+	{
+		$targetElements = $response->html->path()->collections(
+			"//main//form//*[@name='$name']//following-sibling::ul[contains(@class, 'value-error')]//li[contains(@class, 'error')]"
+		)->toArray();
+		$this->assertCount(count($errorItems), $targetElements);
+		for ($i = 0; $i < count($targetElements); $i++) {
+			$this->assertTextNode($errorItems[$i], $targetElements[$i]);
 		}
 	}
 
