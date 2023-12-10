@@ -8,7 +8,7 @@ use PeServer\App\Models\AppDatabaseCache;
 use PeServer\App\Models\Domain\Api\ApiLogicBase;
 use PeServer\App\Models\ResponseJson;
 use PeServer\Core\Collections\Arr;
-use PeServer\Core\Collections\Collection;
+use PeServer\Core\Collections\Collections;
 use PeServer\Core\Text;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
@@ -35,7 +35,7 @@ class PluginApiExistsLogic extends ApiLogicBase
 		$pluginName = Arr::getOr($json, 'plugin_name', Text::EMPTY);
 
 		$plugins = $this->dbCache->readPluginInformation();
-		$pluginCollection = Collection::from($plugins->items);
+		$pluginCollection = Collections::from($plugins->items);
 		$existsPluginId = $pluginCollection->any(function ($i) use ($pluginId) {
 			return Uuid::isEqualGuid($i->pluginId, $pluginId);
 		});

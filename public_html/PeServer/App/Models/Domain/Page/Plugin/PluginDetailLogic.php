@@ -9,7 +9,7 @@ use PeServer\App\Models\Cache\PluginCacheCategory;
 use PeServer\App\Models\Cache\PluginCacheItem;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\Core\Collections\Arr;
-use PeServer\Core\Collections\Collection;
+use PeServer\Core\Collections\Collections;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\Uuid;
@@ -30,12 +30,12 @@ class PluginDetailLogic extends PageLogicBase
 	{
 		$pluginInformation = $this->dbCache->readPluginInformation();
 		/** @var PluginCacheItem */
-		$plugin = Collection::from($pluginInformation->items)
+		$plugin = Collections::from($pluginInformation->items)
 			->first(function ($i) {
 				return Uuid::isEqualGuid($i->pluginId, $this->getRequest('plugin_id'));
 			});
 
-		$categories = Collection::from($pluginInformation->categories)
+		$categories = Collections::from($pluginInformation->categories)
 			->where(fn(PluginCacheCategory $i) => Arr::in($plugin->categoryIds, $i->categoryId))
 			->toArray()
 		;

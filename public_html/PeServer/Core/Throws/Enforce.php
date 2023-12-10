@@ -11,6 +11,7 @@ use PeServer\Core\Text;
 use PeServer\Core\Throws\EnforceClassNameError;
 use PeServer\Core\Throws\EnforceException;
 use PeServer\Core\Type;
+use TypeError;
 
 /**
  * 強制処理。
@@ -31,7 +32,7 @@ abstract class Enforce
 	{
 		try {
 			$exception = ReflectionUtility::create($exceptionClass, Throwable::class, $argument);
-		} catch (TypeException $ex) {
+		} catch (TypeError $ex) {
 			throw new EnforceClassNameError($exceptionClass);
 		}
 

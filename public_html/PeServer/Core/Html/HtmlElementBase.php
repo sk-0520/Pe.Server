@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace PeServer\Core\Html;
 
 use DOMNode;
+use DOMException;
 use PeServer\Core\Html\HtmlDocument;
 use PeServer\Core\Html\HtmlNodeBase;
+use PeServer\Core\Throws\HtmlException;
 use PeServer\Core\Throws\HtmlTagElementException;
+use PeServer\Core\Throws\Throws;
 
 abstract class HtmlElementBase extends HtmlNodeBase
 {
@@ -20,9 +23,14 @@ abstract class HtmlElementBase extends HtmlNodeBase
 
 	public function createTagElement(string $tagName): HtmlTagElement
 	{
-		$element = $this->document->raw->createElement($tagName);
+		try {
+			$element = $this->document->raw->createElement($tagName);
+		} catch (DOMException $ex) {
+			Throws::reThrow(HtmlException::class, $ex);
+		}
+
 		if ($element === false) { // @phpstan-ignore-line
-			throw new HtmlTagElementException();
+			throw new HtmlException();
 		}
 
 		return new HtmlTagElement($this->document, $element);
@@ -32,7 +40,7 @@ abstract class HtmlElementBase extends HtmlNodeBase
 	{
 		$node = $this->document->raw->createTextNode($text);
 		if ($node === false) { // @phpstan-ignore-line
-			throw new HtmlTagElementException();
+			throw new HtmlException();
 		}
 
 		return new HtmlTextElement($this->document, $node);
@@ -42,7 +50,7 @@ abstract class HtmlElementBase extends HtmlNodeBase
 	{
 		$node = $this->document->raw->createComment($text);
 		if ($node === false) { // @phpstan-ignore-line
-			throw new HtmlTagElementException();
+			throw new HtmlException();
 		}
 
 		return new HtmlCommentElement($this->document, $node);

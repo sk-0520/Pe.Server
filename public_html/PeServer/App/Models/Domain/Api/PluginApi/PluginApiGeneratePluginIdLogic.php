@@ -10,7 +10,7 @@ use PeServer\Core\Mvc\LogicParameter;
 use PeServer\App\Models\Domain\Api\ApiLogicBase;
 use PeServer\App\Models\ResponseJson;
 use PeServer\Core\Collections\Arr;
-use PeServer\Core\Collections\Collection;
+use PeServer\Core\Collections\Collections;
 use PeServer\Core\Uuid;
 
 class PluginApiGeneratePluginIdLogic extends ApiLogicBase
@@ -30,7 +30,7 @@ class PluginApiGeneratePluginIdLogic extends ApiLogicBase
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
 		$plugins = $this->dbCache->readPluginInformation();
-		$pluginCollection = Collection::from($plugins->items);
+		$pluginCollection = Collections::from($plugins->items);
 
 		$pluginId = Uuid::generateGuid();
 

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace PeServer\Core\Serialization;
 
 use PeServer\Core\Binary;
+use PeServer\Core\Throws\SerializeException;
+use PeServer\Core\Throws\DeserializeException;
 
 interface ISerializer
 {
@@ -15,6 +17,7 @@ interface ISerializer
 	 *
 	 * @param array<mixed>|object $value
 	 * @return Binary
+	 * @throws SerializeException
 	 */
 	public function save(array|object $value): Binary;
 
@@ -23,6 +26,7 @@ interface ISerializer
 	 *
 	 * @param Binary $value
 	 * @return array<mixed>|object
+	 * @throws DeserializeException
 	 */
 	public function load(Binary $value): array|object;
 

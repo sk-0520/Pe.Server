@@ -15,6 +15,7 @@ use PeServer\App\Models\Setup\Versions\SetupVersion_0006;
 use PeServer\App\Models\Setup\Versions\SetupVersionBase;
 use PeServer\App\Models\Setup\Versions\SetupVersionLast;
 use PeServer\Core\Collections\Arr;
+use PeServer\Core\Database\DatabaseUtility;
 use PeServer\Core\Database\IDatabaseConnection;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\IO\File;
@@ -63,18 +64,21 @@ class SetupRunner
 		$dbVersion = -1;
 		// SQLite を使うのは決定事項である！
 		$connectionSetting = $this->defaultConnection->getConnectionSetting();
-		$filePath = Text::replace($connectionSetting->dsn, 'sqlite:', Text::EMPTY);
 
-		if (File::exists($filePath)) {
-			$this->logger->info('DBあり: {0}', $filePath);
+		if (!DatabaseUtility::isSqliteMemoryMode($connectionSetting)) {
+			$filePath = DatabaseUtility::getSqliteFilePath($connectionSetting);
 
-			$context = $this->defaultConnection->open();
-			$checkCount = $context->selectSingleCount("select COUNT(*) from sqlite_master where sqlite_master.type='table' and sqlite_master.name='database_version'");
-			if (0 < $checkCount) {
-				$row = $context->queryFirstOrNull("select version from database_version");
-				if ($row !== null) {
-					$dbVersion = (int)$row->fields['version'];
-                    ;
+			if (File::exists($filePath)) {
+				$this->logger->info('DBあり: {0}', $filePath);
+
+				$context = $this->defaultConnection->open();
+				$checkCount = $context->selectSingleCount("select COUNT(*) from sqlite_master where sqlite_master.type='table' and sqlite_master.name='database_version'");
+				if (0 < $checkCount) {
+					$row = $context->queryFirstOrNull("select version from database_version");
+					if ($row !== null) {
+						$dbVersion = (int)$row->fields['version'];
+						;
+					}
 				}
 			}
 		}
@@ -86,7 +90,7 @@ class SetupRunner
 		$context->execute('PRAGMA foreign_keys = OFF;');
 
 		$context->transaction(function (IDatabaseContext $context) use ($dbVersion, &$newVersion) {
- // ええねん、SQLite しか使わん
+			// ええねん、SQLite しか使わん
 			$ioArg = new IOSetupArgument();
 			$dbArg = new DatabaseSetupArgument($context);
 

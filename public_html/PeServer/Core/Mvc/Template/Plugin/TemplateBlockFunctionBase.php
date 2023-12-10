@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Template\Plugin;
 
+use TypeError;
 use Smarty_Internal_Template;
 use PeServer\Core\Text;
-use PeServer\Core\Throws\TypeException;
 use PeServer\Core\Throws\NotSupportedException;
 use PeServer\Core\Mvc\Template\Plugin\TemplateFunctionBase;
 use PeServer\Core\Mvc\Template\Plugin\TemplatePluginArgument;
@@ -36,7 +36,7 @@ abstract class TemplateBlockFunctionBase extends TemplateFunctionBase implements
 		}
 
 		if (!is_string($content)) {
-			throw new TypeException();
+			throw new TypeError();
 		}
 
 		return $this->functionBlockBodyImpl((string)$content);

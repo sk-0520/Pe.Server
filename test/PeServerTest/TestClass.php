@@ -12,7 +12,11 @@ use ReflectionException;
 
 class TestClass extends \PHPUnit\Framework\TestCase
 {
-	/** テストコードで直接使用しないDIコンテナ */
+	/**
+	 * テストコードで直接使用しないDIコンテナ
+	 *
+	 * `self::container()` が諸々を肩代わりする。
+	 */
 	public static IDiContainer $_do_not_use_container_user_test;
 	/**
 	 * テスト設定。

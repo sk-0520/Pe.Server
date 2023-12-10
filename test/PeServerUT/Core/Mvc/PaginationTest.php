@@ -10,7 +10,7 @@ use PeServer\Core\Mvc\PageShortcutKind;
 use PeServer\Core\Mvc\Pagination;
 use PeServer\Core\Throws\ArgumentException;
 use PeServerTest\TestClass;
-
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class PaginationTest extends TestClass
 {
@@ -39,7 +39,7 @@ class PaginationTest extends TestClass
 			[3, 10, 21],
 		];
 	}
-	/** @dataProvider provider_constructor_shortcutTotalItemCount */
+	#[DataProvider('provider_constructor_shortcutTotalItemCount')]
 	public function test_constructor_shortcutTotalItemCount($expected, $itemCountInPage, $totalItemCount)
 	{
 		$pager = new Pagination(0, $itemCountInPage, $totalItemCount);
@@ -71,7 +71,7 @@ class PaginationTest extends TestClass
 		];
 	}
 
-	/** @dataProvider provider_getPageNumbers_count */
+	#[DataProvider('provider_getPageNumbers_count')]
 	public function test_getPageNumbers_count($expected, $currentPageNumber, $itemCountInPage, $totalItemCount, $shortcutMaxCount)
 	{
 		$pager = new Pagination($currentPageNumber, $itemCountInPage, $totalItemCount, shortcutMaxCount: $shortcutMaxCount);
@@ -132,7 +132,7 @@ class PaginationTest extends TestClass
 		];
 	}
 
-	/** @dataProvider provider_getPageNumbers_pageNumber */
+	#[DataProvider('provider_getPageNumbers_pageNumber')]
 	public function test_getPageNumbers_pageNumber($expected, $currentPageNumber, $itemCountInPage, $totalItemCount, $shortcutMaxCount)
 	{
 		$pager = new Pagination($currentPageNumber, $itemCountInPage, $totalItemCount, shortcutMaxCount: $shortcutMaxCount);

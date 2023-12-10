@@ -7,7 +7,7 @@ namespace PeServer\Core\Web;
 use Stringable;
 use PeServer\Core\Binary;
 use PeServer\Core\Collections\Arr;
-use PeServer\Core\Collections\Collection;
+use PeServer\Core\Collections\Collections;
 use PeServer\Core\Encoding;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;

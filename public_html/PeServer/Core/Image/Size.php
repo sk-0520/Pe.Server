@@ -39,7 +39,7 @@ class Size implements Stringable
 
 	public function __toString(): string
 	{
-		return Code::toString($this, $this->width . ',' . $this->height);
+		return Code::toString($this, ['width', 'height']);
 	}
 
 	#endregion

@@ -6,8 +6,10 @@ namespace PeServerUT\Core;
 
 use PeServer\Core\Encoding;
 use PeServer\Core\Throws\ArgumentException;
+use PeServer\Core\Throws\EncodingException;
 use PeServerTest\Data;
 use PeServerTest\TestClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class EncodingTest extends TestClass
 {
@@ -69,11 +71,35 @@ class EncodingTest extends TestClass
 			new Data('あ<い>う', 'UTF-32', 'あ<い>う'),
 			new Data('🥚🍳🐔💦', 'UTF-32', '🥚🍳🐔💦'),
 		];
-		foreach($tests as $test) {
+		foreach ($tests as $test) {
 			$encoding = new Encoding($test->args[0]);
 			$binary = $encoding->getBinary($test->args[1]);
 			$actual = $encoding->toString($binary);
 			$this->assertSame($test->expected, $actual);
 		}
+	}
+
+	public static function provider_getAliasNames()
+	{
+		return [
+			[['utf8'], 'UTF-8'],
+			[['utf8'], 'utf8'],
+		];
+	}
+
+	#[DataProvider('provider_getAliasNames')]
+	public function test_getAliasNames(array $expected, string $input)
+	{
+		$actual = Encoding::getAliasNames($input);
+		$this->assertSame(count($expected), count($actual));
+		$this->assertSame($expected, $actual);
+	}
+
+	public function test_getAliasNames_throw()
+	{
+		$this->expectException(EncodingException::class);
+
+		Encoding::getAliasNames('💩');
+		$this->fail();
 	}
 }

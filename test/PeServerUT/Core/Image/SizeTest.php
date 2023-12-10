@@ -8,6 +8,7 @@ use PeServer\Core\Image\Size;
 use PeServer\Core\Throws\ArgumentException;
 use PeServerTest\Data;
 use PeServerTest\TestClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class SizeTest extends TestClass
 {
@@ -24,7 +25,7 @@ class SizeTest extends TestClass
 		];
 	}
 
-	/** @dataProvider provider_constructor_throw */
+	#[DataProvider('provider_constructor_throw')]
 	public function test_constructor_throw($width, $height)
 	{
 		$this->expectException(ArgumentException::class);
@@ -43,5 +44,11 @@ class SizeTest extends TestClass
 			$this->assertSame($test->width, $actual->width, (string)$actual->width);
 			$this->assertSame($test->height, $actual->height, (string)$actual->height);
 		}
+	}
+
+	public function test___toString()
+	{
+		$size = new Size(1, 2);
+		$this->assertSame('PeServer\Core\Image\Size(width:1,height:2)', (string)$size);
 	}
 }

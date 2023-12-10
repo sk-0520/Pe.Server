@@ -12,6 +12,7 @@ use PeServer\Core\Web\UrlEncoding;
 use PeServer\Core\Web\UrlQuery;
 use PeServerTest\Data;
 use PeServerTest\TestClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class UrlQueryTest extends TestClass
 {
@@ -25,7 +26,7 @@ class UrlQueryTest extends TestClass
 		];
 	}
 
-	/** @dataProvider provider_constructor_throw */
+	#[DataProvider('provider_constructor_throw')]
 	public function test_constructor_throw($query)
 	{
 		$this->expectException(ArgumentException::class);
@@ -69,7 +70,7 @@ class UrlQueryTest extends TestClass
 		];
 	}
 
-	/** @dataProvider provider_from_throw */
+	#[DataProvider('provider_from_throw')]
 	public function test_from_throw($query)
 	{
 		$this->expectException(ArgumentException::class);

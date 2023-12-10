@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace PeServerUT\Core\Html;
 
 use PeServer\Core\Html\HtmlDocument;
+use PeServer\Core\Throws\HtmlException;
 use PeServer\Core\Throws\HtmlDocumentException;
 use PeServerTest\TestClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class HtmlDocumentTest extends TestClass
 {
@@ -35,12 +37,20 @@ class HtmlDocumentTest extends TestClass
 		];
 	}
 
-	/** @dataProvider provider_constructor_html_throw */
+	#[DataProvider('provider_constructor_html_throw')]
 	public function test_constructor_html_throw($html)
 	{
 		$this->expectException(HtmlDocumentException::class);
 		new HtmlDocument($html);
 		$this->fail();
+	}
+
+	public function test_createTagElement_throw()
+	{
+		$doc = new HtmlDocument();
+
+		$this->expectException(HtmlException::class);
+		$doc->createTagElement('');
 	}
 
 	public function test_addTagElement()

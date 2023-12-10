@@ -275,11 +275,11 @@ class Encoding
 	 * @return string[]
 	 * @see https://www.php.net/manual/function.mb-encoding-aliases.php
 	 */
-	public function getAliasNames(): array
+	public static function getAliasNames(string $encoding): array
 	{
-		$names = mb_encoding_aliases($this->name);
+		$names = Throws::wrap(ValueError::class, EncodingException::class, fn () => mb_encoding_aliases($encoding));
 		if ($names === false) { //@phpstan-ignore-line [PHP_VERSION]
-			throw new EncodingException($this->name);
+			throw new EncodingException($encoding);
 		}
 
 		return $names;

@@ -125,9 +125,7 @@ class Dictionary extends TypeArrayBase
 	 */
 	public function offsetSet(mixed $offset, mixed $value): void
 	{
-		if ($offset === null) {
-			throw new ArgumentNullException();
-		}
+		ArgumentNullException::throwIfNull($offset, '$offset');
 
 		$this->isValidType($value);
 

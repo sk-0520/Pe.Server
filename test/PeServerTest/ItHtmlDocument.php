@@ -10,7 +10,7 @@ use PeServer\Core\Http\ICallbackContent;
 use PeServer\Core\OutputBuffer;
 use PeServer\Core\Throws\HtmlDocumentException;
 
-class TestHtmlDocument extends HtmlDocument
+class ItHtmlDocument extends HtmlDocument
 {
 	public static function new(string|Binary|ICallbackContent|null $html): self
 	{

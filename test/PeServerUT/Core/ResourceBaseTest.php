@@ -15,6 +15,7 @@ use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\IOException;
 use PeServerTest\Data;
 use PeServerTest\TestClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class ResourceBaseTest extends TestClass
 {
@@ -33,7 +34,7 @@ class ResourceBaseTest extends TestClass
 		];
 	}
 
-	/** @dataProvider provider_constructor_type_throw */
+	#[DataProvider('provider_constructor_type_throw')]
 	public function test_constructor_type_throw($resource)
 	{
 		$this->expectException(TypeError::class);

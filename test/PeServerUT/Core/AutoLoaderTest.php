@@ -9,6 +9,7 @@ use PeServer\Core\Archiver;
 use PeServer\Core\AutoLoader;
 use PeServer\Core\Binary;
 use PeServerTest\TestClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class AutoLoaderTest extends TestClass
 {
@@ -157,7 +158,7 @@ class AutoLoaderTest extends TestClass
 			['\\Namespace\\', '\\Namespace\\'],
 		];
 	}
-	/** @dataProvider provider_add_throw */
+	#[DataProvider('provider_add_throw')]
 	public function test_add_throw(string $first, string $second)
 	{
 		$autoLoader = new AutoLoader();

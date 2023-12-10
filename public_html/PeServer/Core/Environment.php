@@ -6,6 +6,7 @@ namespace PeServer\Core;
 
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\Enforce;
+use PeServer\Core\Throws\EnvironmentException;
 
 /**
  * 環境情報。
@@ -59,26 +60,6 @@ class Environment
 	}
 
 	/**
-	 * 環境変数設定。
-	 *
-	 * `putenv` ラッパー。
-	 *
-	 * @param string $name
-	 * @phpstan-param non-empty-string $name
-	 * @param string $value
-	 * @return bool
-	 * @see https://www.php.net/manual/function.putenv.php
-	 */
-	public static function setVariable(string $name, string $value): bool
-	{
-		if (Text::isNullOrWhiteSpace($name)) { //@phpstan-ignore-line [DOCTYPE]
-			throw new ArgumentException($name);
-		}
-
-		return putenv($name . '=' . $value);
-	}
-
-	/**
 	 * 環境変数取得。
 	 *
 	 * `getenv` ラッパー。
@@ -100,6 +81,31 @@ class Environment
 		}
 
 		return $result;
+	}
+
+	/**
+	 * 環境変数設定。
+	 *
+	 * `putenv` ラッパー。
+	 *
+	 * @param string $name
+	 * @phpstan-param non-empty-string $name
+	 * @param string $value
+	 * @see https://www.php.net/manual/function.putenv.php
+	 */
+	public static function setVariable(string $name, string $value): void
+	{
+		if (Text::isNullOrWhiteSpace($name)) { //@phpstan-ignore-line [DOCTYPE]
+			throw new ArgumentException($name);
+		}
+		if (Text::contains($name, '=', false)) {
+			throw new EnvironmentException("\$name: $name");
+		}
+
+		if (!putenv($name . '=' . $value)) {
+			// 上の対応で多分ここには来ないんじゃないかなぁと思っている
+			throw new EnvironmentException("putenv: $name=$value");
+		}
 	}
 
 	#endregion

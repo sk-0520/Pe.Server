@@ -7,10 +7,10 @@ namespace PeServerUT\Core\Collections;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Collections\OrderBy;
 use PeServer\Core\Throws\ArgumentException;
-use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Throws\KeyNotFoundException;
 use PeServerTest\Data;
 use PeServerTest\TestClass;
+use TypeError;
 
 class ArrTest extends TestClass
 {
@@ -35,6 +35,7 @@ class ArrTest extends TestClass
 			new Data(20, [10, 20, 30], 1, -1),
 			new Data(30, [10, 20, 30], 2, -1),
 			new Data(-1, [10, 20, 30], 3, -1),
+			new Data(10, [10, 20, 30], 0, null),
 			new Data('A', ['a' => 'A', 'b' => 'B'], 'a', 'c'),
 			new Data('B', ['a' => 'A', 'b' => 'B'], 'b', 'c'),
 			new Data('c', ['a' => 'A', 'b' => 'B'], 'c', 'c'),
@@ -45,6 +46,43 @@ class ArrTest extends TestClass
 			$this->assertSame($test->expected, $actual, $test->str());
 		}
 	}
+
+	public function test_getOr_object_hit()
+	{
+		$actual = Arr::getOr([new LocalGetOr1(10), new LocalGetOr1(20), new LocalGetOr1(30)], 0, null);
+		$this->assertSame(10, $actual->value);
+	}
+
+	public function test_getOr_object_hit_sub_type()
+	{
+		$actual = Arr::getOr([new LocalGetOr1(10), new LocalGetOr2(20), new LocalGetOr1(30)], 1, new LocalGetOr1(40));
+		$this->assertSame(20, $actual->value);
+	}
+
+	public function test_getOr_object_no_hit_null()
+	{
+		$actual = Arr::getOr([new LocalGetOr1(10), new LocalGetOr1(20), new LocalGetOr1(30)], 3, null);
+		$this->assertNull($actual);
+	}
+
+	public function test_getOr_object_no_hit_fallback()
+	{
+		$actual = Arr::getOr([new LocalGetOr1(10), new LocalGetOr1(20), new LocalGetOr1(30)], 3, new LocalGetOr1(40));
+		$this->assertSame(40, $actual->value);
+	}
+
+	public function test_getOr_throw()
+	{
+		$this->expectException(TypeError::class);
+
+		Arr::getOr(
+			['KEY' => 'string'],
+			'KEY',
+			123
+		);
+		$this->fail();
+	}
+
 
 	public function test_tryGet()
 	{
@@ -261,7 +299,7 @@ class ArrTest extends TestClass
 	public function test_replace()
 	{
 		$tests = [
-			new Data([], [], []),
+			new Data([], [], [],),
 			new Data([2], [1], [2]),
 			new Data([2, 3], [1], [2, 3]),
 			new Data(['a' => 'A', 'b' => 'B'], ['a' => 'A'], ['b' => 'B']),
@@ -366,7 +404,6 @@ class ArrTest extends TestClass
 		$actual4 = Arr::map($input, 'PeServerUT\Core\Collections\map_function');
 		$this->assertSame('aa', $actual4['A']);
 		$this->assertSame('bb', $actual4[10]);
-
 	}
 
 	public function test_range()
@@ -492,4 +529,20 @@ class ArrTest extends TestClass
 function map_function($value, $key)
 {
 	return $value . $value;
+}
+
+class LocalGetOr1
+{
+	public function __construct(public int $value)
+	{
+		//NOP
+	}
+}
+
+class LocalGetOr2 extends LocalGetOr1
+{
+	public function __construct(public int $value)
+	{
+		parent::__construct($value);
+	}
 }

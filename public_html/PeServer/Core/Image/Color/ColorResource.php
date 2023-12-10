@@ -52,7 +52,7 @@ class ColorResource extends DisposerBase implements IColor
 
 	public function __toString(): string
 	{
-		return Code::toString($this, (string)$this->value);
+		return Code::toString($this, ['value']);
 	}
 
 	#endregion

@@ -16,7 +16,7 @@ use PeServer\Core\Mvc\RouteRequest;
 use PeServer\Core\Mvc\RouteSetting;
 use PeServer\Core\Store\Stores;
 
-class TestRoutingWithoutMiddleware extends AppRouting
+class ItRoutingWithoutMiddleware extends AppRouting
 {
 	/**
 	 * 生成。

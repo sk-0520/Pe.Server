@@ -5,19 +5,19 @@ declare(strict_types=1);
 namespace PeServer\Core\Collections;
 
 use Countable;
+use TypeError;
 use PeServer\Core\Collections\OrderBy;
 use PeServer\Core\Cryptography;
 use PeServer\Core\ErrorHandler;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Throws\KeyNotFoundException;
-use PeServer\Core\Throws\TypeException;
 use PeServer\Core\TypeUtility;
 
 /**
  * 配列共通処理。
  *
- * 遅延処理が必要な場合 `Collections\Collection` を参照のこと。
+ * 遅延処理が必要な場合 `Collections\Collections` を参照のこと。
  */
 class Arr
 {
@@ -51,7 +51,7 @@ class Arr
 	 * @phpstan-param TValue $fallbackValue
 	 * @return mixed 値。返却時にそれが成功しているか失敗しているかは不明なので厳密さが必要であれば tryGet を使用すること。
 	 * @phpstan-return TValue
-	 * @throws TypeException
+	 * @throws TypeError
 	 */
 	public static function getOr(?array $array, int|string $key, mixed $fallbackValue)
 	{
@@ -68,7 +68,7 @@ class Arr
 					return $result; //@phpstan-ignore-line わっからん
 				}
 
-				throw new TypeException();
+				throw new TypeError();
 			}
 
 			return $result;
