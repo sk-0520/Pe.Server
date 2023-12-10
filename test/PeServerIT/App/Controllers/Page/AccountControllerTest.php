@@ -151,22 +151,22 @@ class AccountControllerTest extends ItControllerClass
 		);
 	}
 
-	// public function test_login_post_failure()
-	// {
-	// 	$options = new ItOptions(
-	// 		stores: ItMockStores::anonymous(login: true),
-	// 		body: ItBody::form([
-	// 			'account_login_login_id' => ItMockStores::SESSION_ACCOUNT_LOGIN_ID,
-	// 			'account_login_password' => 'password',
-	// 		]),
-	// 	);
-	// 	$actual = $this->call(HttpMethod::Post, '/account/login', $options, function (ItSetup $setup) {
-	// 		$usersEntityDao = new UsersEntityDao($setup->databaseContext);
-	// 		$userAuthenticationsEntityDao = new UserAuthenticationsEntityDao($setup->databaseContext);
+	public function test_login_post_failure()
+	{
+		$options = new ItOptions(
+			stores: ItMockStores::anonymous(login: true),
+			body: ItBody::form([
+				'account_login_login_id' => ItMockStores::SESSION_ACCOUNT_LOGIN_ID,
+				'account_login_password' => 'password',
+			]),
+		);
+		$actual = $this->call(HttpMethod::Post, '/account/login', $options, function (ItSetup $setup) {
+			$usersEntityDao = new UsersEntityDao($setup->databaseContext);
+			$userAuthenticationsEntityDao = new UserAuthenticationsEntityDao($setup->databaseContext);
 
-	// 		$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, 'email', 0, 'w', 'd', 'n');
-	// 		$userAuthenticationsEntityDao->insertUserAuthentication(ItMockStores::SESSION_ACCOUNT_USER_ID, Cryptography::hashPassword('@'));
-	// 	});
+			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, 'email', 0, 'w', 'd', 'n');
+			$userAuthenticationsEntityDao->insertUserAuthentication(ItMockStores::SESSION_ACCOUNT_USER_ID, Cryptography::hashPassword('@'));
+		});
 
 	// 	$this->assertStatusOK($actual);
 	// 	$this->assertTitle('ログイン', $actual);
