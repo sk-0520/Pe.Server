@@ -251,12 +251,12 @@ class AccountControllerTest extends ItControllerClass
 
 		$this->assertRedirectPath(HttpStatus::Found, '/account', null, $actual);
 
-		// $context = $actual->openDB();
-		// $userAuditLogsEntityDao = new UserAuditLogsEntityDao($context);
-		// $logId = $userAuditLogsEntityDao->selectLastLogId();
-		// $auditResult = $context->querySingle('select * from user_audit_logs where sequence = :sequence', ['sequence' => $logId]);
-		// $this->assertSame(ItMockStores::SESSION_ACCOUNT_USER_ID, $auditResult->fields['user_id']);
-		// $this->assertSame(AuditLog::LOGIN_SUCCESS, $auditResult->fields['event']);
+		$context = $actual->openDB();
+		$userAuditLogsEntityDao = new UserAuditLogsEntityDao($context);
+		$logId = $userAuditLogsEntityDao->selectLastLogId();
+		$auditResult = $context->querySingle('select * from user_audit_logs where sequence = :sequence', ['sequence' => $logId]);
+		$this->assertSame(ItMockStores::SESSION_ACCOUNT_USER_ID, $auditResult->fields['user_id']);
+		$this->assertSame(AuditLog::LOGIN_SUCCESS, $auditResult->fields['event']);
 	}
 
 	public function test_login_post_login()
@@ -291,12 +291,12 @@ class AccountControllerTest extends ItControllerClass
 		});
 		$this->assertRedirectPath(HttpStatus::Found, '', null, $actual);
 
-		// $context = $actual->openDB();
-		// $userAuditLogsEntityDao = new UserAuditLogsEntityDao($context);
-		// $logId = $userAuditLogsEntityDao->selectLastLogId();
-		// $auditResult = $context->querySingle('select * from user_audit_logs where sequence = :sequence', ['sequence' => $logId]);
-		// $this->assertSame(ItMockStores::SESSION_ACCOUNT_USER_ID, $auditResult->fields['user_id']);
-		// $this->assertSame(AuditLog::LOGOUT, $auditResult->fields['event']);
+		$context = $actual->openDB();
+		$userAuditLogsEntityDao = new UserAuditLogsEntityDao($context);
+		$logId = $userAuditLogsEntityDao->selectLastLogId();
+		$auditResult = $context->querySingle('select * from user_audit_logs where sequence = :sequence', ['sequence' => $logId]);
+		$this->assertSame(ItMockStores::SESSION_ACCOUNT_USER_ID, $auditResult->fields['user_id']);
+		$this->assertSame(AuditLog::LOGOUT, $auditResult->fields['event']);
 	}
 
 	public function test_user()

@@ -15,6 +15,11 @@
 					"name": "log_{DATE}.log",
 					"count": 365
 				}
+			},
+			"xdebug": {
+				"logger_class": "PeServer\\Core\\Log\\XdebugLogger",
+				"level": 0,
+				"format": "{TIMESTAMP} |{LEVEL}| [{CLIENT_IP}:{CLIENT_HOST}] {REQUEST_ID}|{SESSION} <{UA}> {METHOD} {REQUEST} {FILE}({LINE}) {FUNCTION} -> {MESSAGE}"
 			}
 		},
 		"archive_size": 5242880
