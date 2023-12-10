@@ -455,13 +455,38 @@ class AccountControllerTest extends ItControllerClass
 		}
 	}
 
-	// public function test_user_edit_get()
-	// {
-	// 	$options = new ItOptions(
-	// 		stores: ItMockStores::account(UserLevel::USER),
-	// 	);
-	// 	$actual = $this->call(HttpMethod::Get, '/account/user/edit', $options);
+	public function test_user_edit_get()
+	{
+		$options = new ItOptions(
+			stores: ItMockStores::account(UserLevel::USER),
+		);
+		$actual = $this->call(HttpMethod::Get, '/account/user/edit', $options, function (ItSetup $setup) {
+			$usersEntityDao = new UsersEntityDao($setup->databaseContext);
 
-	// 	$this->assertStatusOk($actual);
-	// }
+			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, 'email', 0, 'w', 'd', 'n');
+		});
+
+		$this->assertStatusOk($actual);
+
+		$this->assertValue(
+			ItMockStores::SESSION_ACCOUNT_NAME,
+			$actual->html->path()->collections(
+				"//*[@name='account_edit_name']"
+			)->single()
+		);
+
+		$this->assertValue(
+			'w',
+			$actual->html->path()->collections(
+				"//*[@name='account_edit_website']"
+			)->single()
+		);
+
+		$this->assertValue(
+			'd',
+			$actual->html->path()->collections(
+				"//*[@name='account_edit_description']"
+			)->single()
+		);
+	}
 }

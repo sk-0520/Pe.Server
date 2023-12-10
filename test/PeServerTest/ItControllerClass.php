@@ -46,8 +46,8 @@ use PeServer\Core\Web\UrlHelper;
 use PeServer\Core\Web\UrlQuery;
 use PeServer\Core\Database\IDatabaseConnection;
 use PeServer\Core\Database\IDatabaseContext;
-use PeServer\Core\Html\HtmlNodeBase;
 use PeServer\Core\Html\HtmlTagElement;
+use PeServer\Core\Html\HtmlNodeBase;
 use PeServer\Core\Html\HtmlTextElement;
 use PeServer\Core\IO\File;
 use PeServer\Core\Log\LoggerFactory;
@@ -280,6 +280,21 @@ class ItControllerClass extends TestClass
 			$this->assertSame($expected, $actual);
 		} else {
 			$this->fail();
+		}
+	}
+
+	protected function assertAttribute(string $expected, HtmlTagElement $element, string $attribute): void
+	{
+		$this->assertSame($expected, $element->getAttribute($attribute));
+	}
+
+	protected function assertValue(string $expected, HtmlTagElement $element): void
+	{
+		if ($element->raw->tagName === 'input') {
+			$this->assertAttribute($expected, $element, 'value');
+		} else {
+			assert($element->raw->tagName === 'textarea');
+			$this->assertTextNode($expected, $element);
 		}
 	}
 
