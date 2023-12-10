@@ -5,5 +5,14 @@
 			"user": "",
 			"passwd": ""
 		}
+	},
+	"logging": {
+		"loggers": {
+			"xdebug": {
+				"logger_class": "PeServer\\Core\\Log\\XdebugLogger",
+				"level": 0,
+				"format": "{TIMESTAMP} |{LEVEL}| [{CLIENT_IP}:{CLIENT_HOST}] {REQUEST_ID}|{SESSION} <{UA}> {METHOD} {REQUEST} {FILE}({LINE}) {FUNCTION} -> {MESSAGE}"
+			}
+		}
 	}
 }
