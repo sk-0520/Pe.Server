@@ -56,7 +56,7 @@ use PeServer\Core\Text;
 use PeServer\Core\Web\UrlPath;
 use PeServerTest\TestClass;
 use PeServerTest\ItSpecialStore as ItSpecialStore;
-use PeServerTest\ItHttpResponse;
+use PeServerTest\ItActual;
 use PeServerTest\TestRouting;
 use PeServerTest\ItRoutingWithoutMiddleware;
 use Reflection;
@@ -65,9 +65,6 @@ use ReflectionClass;
 class ItControllerClass extends TestClass
 {
 	#region property
-
-	protected IDiContainer $itContainer;
-
 	#endregion
 
 	#region function
@@ -138,7 +135,7 @@ class ItControllerClass extends TestClass
 		$setupRunner->execute();
 	}
 
-	protected function call(HttpMethod $httpMethod, string $path, ItOptions $options = new ItOptions(), ?callable $setup = null): ItHttpResponse
+	protected function call(HttpMethod $httpMethod, string $path, ItOptions $options = new ItOptions(), ?callable $setup = null): ItActual
 	{
 		$this->resetInitialize();
 
@@ -149,7 +146,7 @@ class ItControllerClass extends TestClass
 			)
 		);
 
-		$this->itContainer = $container = $startup->setup(
+		$container = $startup->setup(
 			AppStartup::MODE_WEB,
 			[
 				'environment' => 'it',
@@ -213,21 +210,21 @@ class ItControllerClass extends TestClass
 			throw new Error("例外とかミドルウェア系の失敗を取る術がないのです。かなしい");
 		}
 
-		return new ItHttpResponse($response);
+		return new ItActual($response, $container);
 	}
 
-	protected function assertStatus(HttpStatus $expected, ItHttpResponse $response): void
+	protected function assertStatus(HttpStatus $expected, ItActual $response): void
 	{
 		$this->assertSame($expected, $response->getHttpStatus());
 	}
 
-	protected function assertStatusOk(ItHttpResponse $response): void
+	protected function assertStatusOk(ItActual $response): void
 	{
 		$this->assertStatus(HttpStatus::OK, $response);
 	}
 
 	//TODO: とりまつくっとくのです（リダイレクト周りのテストが死んでる）
-	protected function assertRedirectPath(HttpStatus $status, UrlPath|string $path, UrlQuery|null $query, ItHttpResponse $response): void
+	protected function assertRedirectPath(HttpStatus $status, UrlPath|string $path, UrlQuery|null $query, ItActual $response): void
 	{
 		$this->assertTrue($status->isRedirect());
 
@@ -240,13 +237,13 @@ class ItControllerClass extends TestClass
 		$this->assertSame((string)$path, (string)$response->response->header->getRedirect()->url->path);
 	}
 
-	protected function assertMime(string $mime, ItHttpResponse $response): void
+	protected function assertMime(string $mime, ItActual $response): void
 	{
 		$this->assertSame($mime, $response->getContentType()->mime);
 	}
 
 
-	protected function assertTitle(string $expected, ItHttpResponse $response): void
+	protected function assertTitle(string $expected, ItActual $response): void
 	{
 		$this->assertTrue($response->isHtml());
 		$this->assertSame($expected . ' - Peサーバー', $response->html->getTitle());
@@ -265,7 +262,7 @@ class ItControllerClass extends TestClass
 		}
 	}
 
-	protected function assertVisibleCommonError(ItHttpResponse $response, array $errorItems)
+	protected function assertVisibleCommonError(ItActual $response, array $errorItems)
 	{
 		$root = $response->html->path()->collections(
 			"//main/div[contains(@class, 'common') and contains(@class, 'error')]"

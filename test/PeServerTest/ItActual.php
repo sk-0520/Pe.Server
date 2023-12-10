@@ -4,18 +4,22 @@ declare(strict_types=1);
 
 namespace PeServerTest;
 
+use PeServer\Core\Database\IDatabaseConnection;
+use PeServer\Core\Database\IDatabaseContext;
+use PeServer\Core\DI\IDiContainer;
 use PeServer\Core\Http\ContentType;
 use PeServer\Core\Http\HttpResponse;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mime;
 use PeServerTest\ItHtmlDocument;
 
-class ItHttpResponse
+readonly class ItActual
 {
-	public readonly ItHtmlDocument|null $html;
+	public ItHtmlDocument|null $html;
 
 	public function __construct(
-		public HttpResponse $response
+		public HttpResponse $response,
+		public IDiContainer $container,
 	) {
 		if ($this->isHtml()) {
 			$this->html = ItHtmlDocument::new($this->response->content);
@@ -45,6 +49,14 @@ class ItHttpResponse
 	public function isJson(): bool
 	{
 		return $this->response->header->existsContentType() && $this->getContentType()->mime === Mime::JSON;
+	}
+
+	public function openDB(): IDatabaseContext
+	{
+		/** @var IDatabaseConnection */
+		$database = $this->container->get(IDatabaseConnection::class);
+
+		return $database->open();
 	}
 
 	#endregion

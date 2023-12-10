@@ -6,8 +6,10 @@ namespace PeServerIT\App\Controllers\Page;
 
 use PeServer\App\Controllers\Page\HomeController;
 use PeServer\App\Models\AppCryptography;
+use PeServer\App\Models\AuditLog;
 use PeServer\App\Models\Dao\Domain\UserDomainDao;
 use PeServer\App\Models\Dao\Entities\PluginsEntityDao;
+use PeServer\App\Models\Dao\Entities\UserAuditLogsEntityDao;
 use PeServer\App\Models\Dao\Entities\UserAuthenticationsEntityDao;
 use PeServer\App\Models\Dao\Entities\UsersEntityDao;
 use PeServer\App\Models\Domain\PluginState;
@@ -182,6 +184,13 @@ class AccountControllerTest extends ItControllerClass
 				"//*[@id='content']/form[1][@action='/account/login']//*[contains(@class,'input')]//dt[text()='パスワード']/following-sibling::dd[1]"
 			)->single()
 		);
+
+		$context = $actual->openDB();
+		$userAuditLogsEntityDao = new UserAuditLogsEntityDao($context);
+		$logId = $userAuditLogsEntityDao->selectLastLogId();
+		$auditResult = $context->querySingle('select * from user_audit_logs where sequence = :sequence', ['sequence' => $logId]);
+		$this->assertSame(ItMockStores::SESSION_ACCOUNT_USER_ID, $auditResult->fields['user_id']);
+		$this->assertSame(AuditLog::LOGIN_FAILED, $auditResult->fields['event']);
 	}
 
 	public function test_login_post_failure_enabled_setup_user()
@@ -239,6 +248,13 @@ class AccountControllerTest extends ItControllerClass
 		});
 
 		$this->assertRedirectPath(HttpStatus::Found, '/account', null, $actual);
+
+		$context = $actual->openDB();
+		$userAuditLogsEntityDao = new UserAuditLogsEntityDao($context);
+		$logId = $userAuditLogsEntityDao->selectLastLogId();
+		$auditResult = $context->querySingle('select * from user_audit_logs where sequence = :sequence', ['sequence' => $logId]);
+		$this->assertSame(ItMockStores::SESSION_ACCOUNT_USER_ID, $auditResult->fields['user_id']);
+		$this->assertSame(AuditLog::LOGIN_SUCCESS, $auditResult->fields['event']);
 	}
 
 	public function test_login_post_login()
@@ -254,6 +270,9 @@ class AccountControllerTest extends ItControllerClass
 	{
 		$actual = $this->call(HttpMethod::Get, '/account/logout');
 		$this->assertRedirectPath(HttpStatus::Found, ''/* リダイレクトは / を返してるけどまぁ */, null, $actual);
+
+		$context = $actual->openDB();
+		$this->assertSame(0, $context->selectSingleCount('select count(*) from user_audit_logs'));
 	}
 
 	public function test_logout_login()
@@ -269,6 +288,13 @@ class AccountControllerTest extends ItControllerClass
 			$userAuthenticationsEntityDao->insertUserAuthentication(ItMockStores::SESSION_ACCOUNT_USER_ID, Cryptography::hashPassword('@'));
 		});
 		$this->assertRedirectPath(HttpStatus::Found, '', null, $actual);
+
+		$context = $actual->openDB();
+		$userAuditLogsEntityDao = new UserAuditLogsEntityDao($context);
+		$logId = $userAuditLogsEntityDao->selectLastLogId();
+		$auditResult = $context->querySingle('select * from user_audit_logs where sequence = :sequence', ['sequence' => $logId]);
+		$this->assertSame(ItMockStores::SESSION_ACCOUNT_USER_ID, $auditResult->fields['user_id']);
+		$this->assertSame(AuditLog::LOGOUT, $auditResult->fields['event']);
 	}
 
 	public function test_user()
