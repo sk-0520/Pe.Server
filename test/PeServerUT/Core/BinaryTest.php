@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServerUT\Core;
 
-use \TypeError;
+use TypeError;
 use PeServer\Core\Binary;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\BinaryException;

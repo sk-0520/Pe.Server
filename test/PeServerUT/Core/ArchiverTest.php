@@ -19,13 +19,15 @@ class ArchiverTest extends TestClass
 		$this->assertSame($a->raw, $c->raw);
 	}
 
-	public function test_compressGzip_throw() {
+	public function test_compressGzip_throw()
+	{
 		$a = new Binary('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ');
 		$this->expectException(ArchiveException::class);
 		Archiver::compressGzip($a, 10);
 	}
 
-	public function test_extractGzip_throw() {
+	public function test_extractGzip_throw()
+	{
 		$a = new Binary('');
 		$this->expectException(ArchiveException::class);
 		Archiver::extractGzip($a);

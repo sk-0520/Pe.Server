@@ -6,8 +6,8 @@ namespace PeServerUT\Core;
 
 use PeServer\Core\IO\File;
 use PeServer\Core\IO\Path;
-use \stdClass;
-use \TypeError;
+use stdClass;
+use TypeError;
 use PeServer\Core\ResourceBase;
 use PeServer\Core\SizeConverter;
 use PeServer\Core\Stream;
@@ -38,7 +38,7 @@ class ResourceBaseTest extends TestClass
 	public function test_constructor_type_throw($resource)
 	{
 		$this->expectException(TypeError::class);
-		new class($resource) extends ResourceBase
+		new class ($resource) extends ResourceBase
 		{
 			public function __construct($resource)
 			{
@@ -65,7 +65,7 @@ class ResourceBaseTest extends TestClass
 		$resource = fopen($f, 'w');
 		fclose($resource);
 		try {
-			new class($resource) extends ResourceBase
+			new class ($resource) extends ResourceBase
 			{
 				public function __construct($resource)
 				{

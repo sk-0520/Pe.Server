@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServerUT\Core\Web;
 
-use \stdClass;
+use stdClass;
 use PeServer\Core\Encoding;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\InvalidOperationException;

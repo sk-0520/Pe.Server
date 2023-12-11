@@ -43,5 +43,4 @@ class DisposerBaseTest extends TestClass
 		$obj->method();
 		$this->fail();
 	}
-
 }

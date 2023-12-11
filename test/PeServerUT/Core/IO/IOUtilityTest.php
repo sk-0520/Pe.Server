@@ -16,13 +16,13 @@ use Throwable;
 
 class IOUtilityTest extends TestClass
 {
-	function test_getState()
+	public function test_getState()
 	{
 		$state = IOUtility::getState(__FILE__);
 		$this->success();
 	}
 
-	function test_getState_throw()
+	public function test_getState_throw()
 	{
 		$this->expectException(IOException::class);
 
@@ -36,7 +36,7 @@ class IOUtilityTest extends TestClass
 		$this->success();
 	}
 
-	static function provider_clearCache_throw()
+	public static function provider_clearCache_throw()
 	{
 		return [
 			[''],

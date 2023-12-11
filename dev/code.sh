@@ -72,7 +72,7 @@ if ! common::exists_option 'ignore-phpcs' ; then
 	fi
 
 
-	PHPCS_OPTIONS_DEFAULT="../public_html/PeServer --standard=phpcs_ruleset.xml"
+	PHPCS_OPTIONS_DEFAULT="../public_html/PeServer ../test/PeServer* --standard=phpcs_ruleset.xml"
 
 	if common::exists_option 'phpcs-fix' ; then
 		logger::info "!!修正処理実施!!"

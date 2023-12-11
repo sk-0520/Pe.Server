@@ -10,7 +10,7 @@ use PeServer\Core\Timer;
 
 class TimerTest extends TestClass
 {
-	function test_scenario()
+	public function test_scenario()
 	{
 		$timer = Timer::startNew();
 		$this->assertTrue($timer->isRunning());
@@ -20,6 +20,6 @@ class TimerTest extends TestClass
 		$timer->stop();
 		$this->assertFalse($timer->isRunning());
 		$y = $timer->getElapsed();
-		$this->assertLessThan($y,$x);
+		$this->assertLessThan($y, $x);
 	}
 }

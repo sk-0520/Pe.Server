@@ -35,5 +35,6 @@ class ItBody
 		return new self(
 			$map,
 			$enctype
-		);	}
+		);
+	}
 }

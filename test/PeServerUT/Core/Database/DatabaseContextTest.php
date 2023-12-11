@@ -23,20 +23,20 @@ use stdClass;
 
 class DatabaseContextTest extends TestClass
 {
-	function test_constructor()
+	public function test_constructor()
 	{
 		DB::memory();
 		$this->success();
 	}
 
-	function test_constructor_throw()
+	public function test_constructor_throw()
 	{
 		$this->expectException(DatabaseException::class);
 		new DatabaseContext(new ConnectionSetting('', '', '', null), new NullLogger());
 		$this->fail();
 	}
 
-	function test_transaction()
+	public function test_transaction()
 	{
 		$database = DB::memory();
 		$this->assertFalse($database->inTransaction());
@@ -72,7 +72,7 @@ class DatabaseContextTest extends TestClass
 		$this->assertFalse($transactionResult2);
 	}
 
-	function test_beginTransaction()
+	public function test_beginTransaction()
 	{
 		$database = DB::memory();
 		$this->assertFalse($database->inTransaction());
@@ -83,7 +83,7 @@ class DatabaseContextTest extends TestClass
 		$this->fail();
 	}
 
-	function test_commit()
+	public function test_commit()
 	{
 		$database = DB::memory();
 		$database->beginTransaction();
@@ -94,7 +94,7 @@ class DatabaseContextTest extends TestClass
 		$this->fail();
 	}
 
-	function test_rollback()
+	public function test_rollback()
 	{
 		$database = DB::memory();
 		$database->beginTransaction();
@@ -105,7 +105,7 @@ class DatabaseContextTest extends TestClass
 		$this->fail();
 	}
 
-	function test_escapeLike()
+	public function test_escapeLike()
 	{
 		$database = DB::memory();
 		$tests = [
@@ -121,7 +121,7 @@ class DatabaseContextTest extends TestClass
 		}
 	}
 
-	function test_escapeValue()
+	public function test_escapeValue()
 	{
 		$database = DB::memory();
 		$tests = [
@@ -135,7 +135,7 @@ class DatabaseContextTest extends TestClass
 		}
 	}
 
-	function test_fetch()
+	public function test_fetch()
 	{
 		$database = DB::memory();
 		$actual = $database->fetch(<<<SQL
@@ -170,7 +170,7 @@ class DatabaseContextTest extends TestClass
 		$this->fail();
 	}
 
-	function test_fetch_mapping()
+	public function test_fetch_mapping()
 	{
 		$database = DB::memory();
 		$result = $database->fetch(<<<SQL
@@ -207,7 +207,7 @@ class DatabaseContextTest extends TestClass
 		$this->fail();
 	}
 
-	function test_query()
+	public function test_query()
 	{
 		$database = DB::memory();
 		$actual = $database->query("select 'text' as COL");
@@ -217,7 +217,7 @@ class DatabaseContextTest extends TestClass
 		}
 	}
 
-	function test_query_mapping()
+	public function test_query_mapping()
 	{
 		$database = DB::memory();
 		$actual = $database->query("select 'text0' as text union all select 'text1' as text order by text");
@@ -227,7 +227,7 @@ class DatabaseContextTest extends TestClass
 		}
 	}
 
-	function test_query_parameter_throw()
+	public function test_query_parameter_throw()
 	{
 		$this->expectException(DatabaseException::class);
 		$database = DB::memory();
@@ -235,7 +235,7 @@ class DatabaseContextTest extends TestClass
 		$this->fail();
 	}
 
-	function test_query_sql_throw()
+	public function test_query_sql_throw()
 	{
 		$this->expectException(SqlException::class);
 		$database = DB::memory();
@@ -243,14 +243,14 @@ class DatabaseContextTest extends TestClass
 		$this->fail();
 	}
 
-	function test_queryFirst()
+	public function test_queryFirst()
 	{
 		$database = DB::memory();
 		$actual = $database->queryFirst("select 'text' as COL");
 		$this->assertSame(['COL' => 'text'], $actual->fields);
 	}
 
-	function test_queryFirst_throw()
+	public function test_queryFirst_throw()
 	{
 		$database = DB::memory();
 		$this->expectException(DatabaseException::class);
@@ -258,7 +258,7 @@ class DatabaseContextTest extends TestClass
 		$this->fail();
 	}
 
-	function test_queryFirst_mapping_class()
+	public function test_queryFirst_mapping_class()
 	{
 		$database = DB::memory();
 		$result = $database->queryFirst("select 'text' as text, 123 as number");
@@ -268,7 +268,7 @@ class DatabaseContextTest extends TestClass
 		$this->assertSame(123, $actual->number);
 	}
 
-	function test_queryFirst_mapping_object()
+	public function test_queryFirst_mapping_object()
 	{
 		$database = DB::memory();
 		$result = $database->queryFirst("select 'text' as text, 123 as number");
@@ -280,21 +280,21 @@ class DatabaseContextTest extends TestClass
 		$this->assertSame(123, $actual->number);
 	}
 
-	function test_queryFirstOrNull()
+	public function test_queryFirstOrNull()
 	{
 		$database = DB::memory();
 		$actual = $database->queryFirstOrNull("select 'text' as COL");
 		$this->assertSame(['COL' => 'text'], $actual->fields);
 	}
 
-	function test_queryFirstOrNull_null()
+	public function test_queryFirstOrNull_null()
 	{
 		$database = DB::memory();
 		$actual = $database->queryFirstOrNull("select 'text' as COL where 1 = 0");
 		$this->assertNull($actual);
 	}
 
-	function test_querySingle()
+	public function test_querySingle()
 	{
 		$database = DB::memory();
 		$actual = $database->querySingle(
@@ -318,7 +318,7 @@ class DatabaseContextTest extends TestClass
 		$this->assertSame(['COL' => 'text2'], $actual->fields);
 	}
 
-	function test_querySingle_throw_0()
+	public function test_querySingle_throw_0()
 	{
 		$database = DB::memory();
 		$this->expectException(DatabaseException::class);
@@ -343,7 +343,7 @@ class DatabaseContextTest extends TestClass
 		$this->fail();
 	}
 
-	function test_querySingle_throw_2()
+	public function test_querySingle_throw_2()
 	{
 		$database = DB::memory();
 		$this->expectException(DatabaseException::class);
@@ -370,7 +370,7 @@ class DatabaseContextTest extends TestClass
 		$this->fail();
 	}
 
-	function test_querySingleOrNull()
+	public function test_querySingleOrNull()
 	{
 		$database = DB::memory();
 		$actual = $database->querySingleOrNull(
@@ -394,7 +394,7 @@ class DatabaseContextTest extends TestClass
 		$this->assertSame(['COL' => 'text2'], $actual->fields);
 	}
 
-	function test_querySingleOrNull_0()
+	public function test_querySingleOrNull_0()
 	{
 		$database = DB::memory();
 		$actual = $database->querySingleOrNull(
@@ -418,7 +418,7 @@ class DatabaseContextTest extends TestClass
 		$this->assertNull($actual);
 	}
 
-	function test_querySingleOrNull_2()
+	public function test_querySingleOrNull_2()
 	{
 		$database = DB::memory();
 		$actual = $database->querySingleOrNull(
@@ -444,7 +444,7 @@ class DatabaseContextTest extends TestClass
 		$this->assertNull($actual);
 	}
 
-	function test_selectOrdered()
+	public function test_selectOrdered()
 	{
 		$database = DB::memory();
 		$actual = $database->selectOrdered(
@@ -470,7 +470,7 @@ class DatabaseContextTest extends TestClass
 		$this->assertSame(10, $actual->rows[2]['COL']);
 	}
 
-	function test_selectOrdered_throw()
+	public function test_selectOrdered_throw()
 	{
 		$database = DB::memory();
 		$this->expectException(SqlException::class);
@@ -494,7 +494,7 @@ class DatabaseContextTest extends TestClass
 		$this->fail();
 	}
 
-	function test_selectSingleCount()
+	public function test_selectSingleCount()
 	{
 		$database = DB::memory();
 		$actual = $database->selectSingleCount(
@@ -518,7 +518,7 @@ class DatabaseContextTest extends TestClass
 		$this->assertSame(3, $actual);
 	}
 
-	function test_selectSingleCount_name()
+	public function test_selectSingleCount_name()
 	{
 		$database = DB::memory();
 		$actual = $database->selectSingleCount(
@@ -542,7 +542,7 @@ class DatabaseContextTest extends TestClass
 		$this->assertSame(3, $actual);
 	}
 
-	function test_selectSingleCount_throw_sql()
+	public function test_selectSingleCount_throw_sql()
 	{
 		$database = DB::memory();
 		$this->expectException(DatabaseException::class);
@@ -568,7 +568,7 @@ class DatabaseContextTest extends TestClass
 		$this->fail();
 	}
 
-	function test_selectSingleCount_throw_count()
+	public function test_selectSingleCount_throw_count()
 	{
 		$database = DB::memory();
 		$this->expectException(SqlException::class);
@@ -576,7 +576,7 @@ class DatabaseContextTest extends TestClass
 		$this->fail();
 	}
 
-	function test_execute()
+	public function test_execute()
 	{
 		$database = DB::memory();
 		$actual1 = $database->execute('PRAGMA database_list');
@@ -601,7 +601,7 @@ class DatabaseContextTest extends TestClass
 		$this->assertSame(3, $actual7->getResultCount());
 	}
 
-	function test_insert()
+	public function test_insert()
 	{
 		$database = DB::memory();
 		$database->execute('create table TBL(COL integer)');
@@ -609,7 +609,7 @@ class DatabaseContextTest extends TestClass
 		$this->assertSame(1, $actual);
 	}
 
-	function test_insert_throw()
+	public function test_insert_throw()
 	{
 		$database = DB::memory();
 		$database->execute('create table TBL(COL integer)');
@@ -618,7 +618,7 @@ class DatabaseContextTest extends TestClass
 		$this->fail();
 	}
 
-	function test_insertSingle()
+	public function test_insertSingle()
 	{
 		$database = DB::memory();
 		$database->execute('create table TBL(COL integer)');
@@ -626,7 +626,7 @@ class DatabaseContextTest extends TestClass
 		$this->success();
 	}
 
-	function test_insertSingle_throw_sql()
+	public function test_insertSingle_throw_sql()
 	{
 		$database = DB::memory();
 		$database->execute('create table TBL(COL integer)');
@@ -635,7 +635,7 @@ class DatabaseContextTest extends TestClass
 		$this->fail();
 	}
 
-	function test_insertSingle_throw_2()
+	public function test_insertSingle_throw_2()
 	{
 		$database = DB::memory();
 		$database->execute('create table TBL(COL integer)');
@@ -644,7 +644,7 @@ class DatabaseContextTest extends TestClass
 		$this->fail();
 	}
 
-	function test_update()
+	public function test_update()
 	{
 		$database = DB::memory();
 		$database->execute('create table TBL(COL integer, VAL text)');
@@ -654,7 +654,7 @@ class DatabaseContextTest extends TestClass
 		$this->assertSame('BB', $database->querySingle('select VAL from TBL where COL = 20')->fields['VAL']);
 	}
 
-	function test_update_throw()
+	public function test_update_throw()
 	{
 		$database = DB::memory();
 		$database->execute('create table TBL(COL integer, VAL text)');
@@ -663,7 +663,7 @@ class DatabaseContextTest extends TestClass
 		$database->update('select * from TBL');
 	}
 
-	function test_updateByKey()
+	public function test_updateByKey()
 	{
 		$database = DB::memory();
 		$database->execute('create table TBL(COL integer, VAL text)');
@@ -673,7 +673,7 @@ class DatabaseContextTest extends TestClass
 		$this->assertSame('BB', $database->querySingle('select VAL from TBL where COL = 20')->fields['VAL']);
 	}
 
-	function test_updateByKey_throw()
+	public function test_updateByKey_throw()
 	{
 		$database = DB::memory();
 		$database->execute('create table TBL(COL integer, VAL text)');
@@ -682,7 +682,7 @@ class DatabaseContextTest extends TestClass
 		$database->updateByKey('update TBL set VAL = VAL || VAL');
 	}
 
-	function test_updateByKeyOrNothing()
+	public function test_updateByKeyOrNothing()
 	{
 		$database = DB::memory();
 		$database->execute('create table TBL(COL integer, VAL text)');
@@ -694,7 +694,7 @@ class DatabaseContextTest extends TestClass
 		$this->assertSame('BB', $database->querySingle('select VAL from TBL where COL = 20')->fields['VAL']);
 	}
 
-	function test_updateByKeyOrNothing_throw()
+	public function test_updateByKeyOrNothing_throw()
 	{
 		$database = DB::memory();
 		$database->execute('create table TBL(COL integer, VAL text)');
@@ -706,7 +706,7 @@ class DatabaseContextTest extends TestClass
 		$this->assertSame('B', $database->querySingle('select VAL from TBL where COL = 20')->fields['VAL']);
 	}
 
-	function test_delete()
+	public function test_delete()
 	{
 		$database = DB::memory();
 		$database->execute('create table TBL(COL integer, VAL text)');
@@ -715,7 +715,7 @@ class DatabaseContextTest extends TestClass
 		$this->assertSame(0, $database->selectSingleCount('select count(*) from TBL'));
 	}
 
-	function test_delete_throw()
+	public function test_delete_throw()
 	{
 		$database = DB::memory();
 		$database->execute('create table TBL(COL integer, VAL text)');
@@ -725,7 +725,7 @@ class DatabaseContextTest extends TestClass
 		$this->fail();
 	}
 
-	function test_deleteByKey()
+	public function test_deleteByKey()
 	{
 		$database = DB::memory();
 		$database->execute('create table TBL(COL integer, VAL text)');
@@ -735,7 +735,7 @@ class DatabaseContextTest extends TestClass
 		$this->assertNull($database->querySingleOrNull('select VAL from TBL where COL = 20'));
 	}
 
-	function test_deleteByKey_throw()
+	public function test_deleteByKey_throw()
 	{
 		$database = DB::memory();
 		$database->execute('create table TBL(COL integer, VAL text)');
@@ -745,7 +745,7 @@ class DatabaseContextTest extends TestClass
 		$this->fail();
 	}
 
-	function test_deleteByKeyOrNothing()
+	public function test_deleteByKeyOrNothing()
 	{
 		$database = DB::memory();
 		$database->execute('create table TBL(COL integer, VAL text)');
@@ -756,7 +756,7 @@ class DatabaseContextTest extends TestClass
 	}
 
 
-	function test_deleteByKeyOrNothing_throw()
+	public function test_deleteByKeyOrNothing_throw()
 	{
 		$database = DB::memory();
 		$database->execute('create table TBL(COL integer, VAL text)');

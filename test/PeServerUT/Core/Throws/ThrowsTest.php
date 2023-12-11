@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace PeServerUT\Core\Throws;
 
-use \Error;
-use \Exception;
-use \InvalidArgumentException;
-use \OutOfBoundsException;
-use \Throwable;
-use \UnexpectedValueException;
-use \TypeError;
+use Error;
+use Exception;
+use InvalidArgumentException;
+use OutOfBoundsException;
+use Throwable;
+use UnexpectedValueException;
+use TypeError;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\Throws;
 use PeServerTest\TestClass;
@@ -29,7 +29,7 @@ class ThrowsTest extends TestClass
 	}
 
 	#[DataProvider('provider_wrap')]
-	function test_wrap($catch, $catchExceptions, $throwException, $callback)
+	public function test_wrap($catch, $catchExceptions, $throwException, $callback)
 	{
 		try {
 			Throws::wrap($catchExceptions, $throwException, $callback);
@@ -55,7 +55,7 @@ class ThrowsTest extends TestClass
 		$this->fail();
 	}
 
-	function test_wrap_result()
+	public function test_wrap_result()
 	{
 		$a = Throws::wrap(Exception::class, Error::class, function () {
 		});
@@ -68,35 +68,35 @@ class ThrowsTest extends TestClass
 		$this->assertSame(1, $c);
 	}
 
-	function test_wrap_stringCatchClassName_throw()
+	public function test_wrap_stringCatchClassName_throw()
 	{
 		$this->expectException(TypeError::class);
 		Throws::wrap('X', Error::class, fn () => throw new Exception());
 		$this->fail();
 	}
 
-	function test_wrap_arrayCatchEmpty_throw()
+	public function test_wrap_arrayCatchEmpty_throw()
 	{
 		$this->expectException(TypeError::class);
 		Throws::wrap([], Error::class, fn () => throw new Exception());
 		$this->fail();
 	}
 
-	function test_wrap_arrayCatchClassName0_throw()
+	public function test_wrap_arrayCatchClassName0_throw()
 	{
 		$this->expectException(TypeError::class);
 		Throws::wrap(['X', Exception::class], Error::class, fn () => throw new Exception());
 		$this->fail();
 	}
 
-	function test_wrap_arrayCatchClassName1_throw()
+	public function test_wrap_arrayCatchClassName1_throw()
 	{
 		$this->expectException(TypeError::class);
 		Throws::wrap([Exception::class, 'X'], Error::class, fn () => throw new Exception());
 		$this->fail();
 	}
 
-	function test_wrap_throwException_throw()
+	public function test_wrap_throwException_throw()
 	{
 		$this->expectException(TypeError::class);
 		Throws::wrap(Exception::class, 'X', fn () => throw new Exception());

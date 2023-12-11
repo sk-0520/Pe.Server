@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace PeServerUT\Core\DI;
 
-use \stdClass;
-use \Throwable;
-use \TypeError;
+use stdClass;
+use Throwable;
+use TypeError;
 use PeServer\Core\DI\DiItem;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\InvalidOperationException;

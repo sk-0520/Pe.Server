@@ -107,7 +107,7 @@ class ItControllerClass extends TestClass
 
 			$container->remove(IDatabaseConnection::class);
 			$container->add(IDatabaseConnection::class, DiItem::factory(function () use ($connectionSetting, $databaseContext) {
-				return new class($connectionSetting, $databaseContext) implements IDatabaseConnection
+				return new class ($connectionSetting, $databaseContext) implements IDatabaseConnection
 				{
 					public function __construct(private ConnectionSetting $connectionSetting, private DatabaseContext $databaseContext)
 					{

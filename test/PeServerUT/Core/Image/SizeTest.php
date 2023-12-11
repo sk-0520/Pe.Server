@@ -12,7 +12,6 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 class SizeTest extends TestClass
 {
-
 	public static function provider_constructor_throw()
 	{
 		return [

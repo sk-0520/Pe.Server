@@ -30,7 +30,8 @@ class AreaTest extends TestClass
 		}
 	}
 
-	public function test___toString() {
+	public function test___toString()
+	{
 		$tests = [
 			new Data('PeServer\Core\Image\Area(leftTop:PeServer\Core\Image\Point(x:1,y:2),leftBottom:PeServer\Core\Image\Point(x:3,y:4),rightBottom:PeServer\Core\Image\Point(x:5,y:6),rightTop:PeServer\Core\Image\Point(x:7,y:8))', new Area(new Point(1, 2), new Point(3, 4), new Point(5, 6), new Point(7, 8))),
 		];
