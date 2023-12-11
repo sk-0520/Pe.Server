@@ -9,7 +9,6 @@ use PeServer\App\Models\AppCryptography;
 use PeServer\App\Models\AuditLog;
 use PeServer\App\Models\Dao\Domain\UserDomainDao;
 use PeServer\App\Models\Dao\Entities\PluginsEntityDao;
-use PeServer\App\Models\Dao\Entities\UserAuditLogsEntityDao;
 use PeServer\App\Models\Dao\Entities\UserAuthenticationsEntityDao;
 use PeServer\App\Models\Dao\Entities\UsersEntityDao;
 use PeServer\App\Models\Domain\PluginState;
@@ -188,9 +187,7 @@ class AccountControllerTest extends ItControllerClass
 		);
 
 		$context = $actual->openDB();
-		$userAuditLogsEntityDao = new UserAuditLogsEntityDao($context);
-		$logId = $userAuditLogsEntityDao->selectLastLogId();
-		$auditResult = $context->querySingle('select * from user_audit_logs where sequence = :sequence', ['sequence' => $logId]);
+		$auditResult = $context->querySingle('select * from user_audit_logs order by sequence desc');
 		$this->assertSame(ItMockStores::SESSION_ACCOUNT_USER_ID, $auditResult->fields['user_id']);
 		$this->assertSame(AuditLog::LOGIN_FAILED, $auditResult->fields['event']);
 	}
@@ -252,9 +249,7 @@ class AccountControllerTest extends ItControllerClass
 		$this->assertRedirectPath(HttpStatus::Found, '/account', null, $actual);
 
 		$context = $actual->openDB();
-		$userAuditLogsEntityDao = new UserAuditLogsEntityDao($context);
-		$logId = $userAuditLogsEntityDao->selectLastLogId();
-		$auditResult = $context->querySingle('select * from user_audit_logs where sequence = :sequence', ['sequence' => $logId]);
+		$auditResult = $context->querySingle('select * from user_audit_logs order by sequence desc');
 		$this->assertSame(ItMockStores::SESSION_ACCOUNT_USER_ID, $auditResult->fields['user_id']);
 		$this->assertSame(AuditLog::LOGIN_SUCCESS, $auditResult->fields['event']);
 	}
@@ -292,9 +287,7 @@ class AccountControllerTest extends ItControllerClass
 		$this->assertRedirectPath(HttpStatus::Found, '', null, $actual);
 
 		$context = $actual->openDB();
-		$userAuditLogsEntityDao = new UserAuditLogsEntityDao($context);
-		$logId = $userAuditLogsEntityDao->selectLastLogId();
-		$auditResult = $context->querySingle('select * from user_audit_logs where sequence = :sequence', ['sequence' => $logId]);
+		$auditResult = $context->querySingle('select * from user_audit_logs order by sequence desc');
 		$this->assertSame(ItMockStores::SESSION_ACCOUNT_USER_ID, $auditResult->fields['user_id']);
 		$this->assertSame(AuditLog::LOGOUT, $auditResult->fields['event']);
 	}
@@ -519,8 +512,6 @@ class AccountControllerTest extends ItControllerClass
 			"account_edit_name",
 			$actual
 		);
-
-		//URLが正しくありません
 	}
 
 	public function test_user_edit_post_invalid_url()
@@ -546,6 +537,58 @@ class AccountControllerTest extends ItControllerClass
 			ItMockStores::SESSION_ACCOUNT_NAME,
 			$actual->html->path()->collections(
 				"//*[@name='account_edit_name']"
+			)->single()
+		);
+
+		$this->assertValue(
+			'123',
+			$actual->html->path()->collections(
+				"//*[@name='account_edit_website']"
+			)->single()
+		);
+		$this->assertVisibleTargetError(
+			['URLが正しくありません'],
+			"account_edit_website",
+			$actual
+		);
+	}
+
+	public function test_user_edit_post_empty_name_invalid_url()
+	{
+		$options = new ItOptions(
+			stores: ItMockStores::account(UserLevel::USER),
+			body: ItBody::form([
+				'account_edit_name' => '',
+				'account_edit_website' => '123',
+			])
+		);
+
+		$actual = $this->call(HttpMethod::Post, '/account/user/edit', $options, function (ItSetup $setup) {
+			$usersEntityDao = new UsersEntityDao($setup->databaseContext);
+
+			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, 'email', 0, 'w', 'd', 'n');
+		});
+
+		$this->assertStatusOk($actual);
+
+		$this->assertVisibleCommonError([], $actual);
+
+		$this->assertValue(
+			Text::EMPTY,
+			$actual->html->path()->collections(
+				"//*[@name='account_edit_name']"
+			)->single()
+		);
+		$this->assertVisibleTargetError(
+			['未入力です'],
+			"account_edit_name",
+			$actual
+		);
+
+		$this->assertValue(
+			'123',
+			$actual->html->path()->collections(
+				"//*[@name='account_edit_website']"
 			)->single()
 		);
 		$this->assertVisibleTargetError(
