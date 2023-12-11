@@ -105,8 +105,7 @@ readonly class UrlPath implements ArrayAccess, Countable, IteratorAggregate, Str
 	/**
 	 * パスの各要素を取得。
 	 *
-	 * @return string[]
-	 * @phpstan-return non-empty-string[]
+	 * @return non-empty-string[]
 	 */
 	public function getElements(): array
 	{

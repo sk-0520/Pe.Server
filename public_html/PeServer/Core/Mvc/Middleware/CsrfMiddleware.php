@@ -44,8 +44,7 @@ class CsrfMiddleware implements IMiddleware
 	/**
 	 * CSRFとして有効なセッションキーを返す。
 	 *
-	 * @return string
-	 * @phpstan-return non-empty-string
+	 * @return non-empty-string
 	 */
 	protected function getSessionKey(): string
 	{
@@ -55,8 +54,7 @@ class CsrfMiddleware implements IMiddleware
 	/**
 	 * CSRFとして有効なヘッダ名を返す。
 	 *
-	 * @return string
-	 * @phpstan-return non-empty-string
+	 * @return non-empty-string
 	 */
 	protected function getHeaderName(): string
 	{
@@ -66,8 +64,7 @@ class CsrfMiddleware implements IMiddleware
 	/**
 	 * CSRFとして有効なリクエストキーを返す。
 	 *
-	 * @return string
-	 * @phpstan-return non-empty-string
+	 * @return non-empty-string
 	 */
 	protected function getRequestKey(): string
 	{

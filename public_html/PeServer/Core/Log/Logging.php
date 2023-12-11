@@ -222,8 +222,7 @@ class Logging
 	 * ヘッダ名生成。
 	 *
 	 * @param string|object $input
-	 * @return string
-	 * @phpstan-return non-empty-string
+	 * @return non-empty-string
 	 */
 	public static function toHeader(string|object $input): string
 	{
