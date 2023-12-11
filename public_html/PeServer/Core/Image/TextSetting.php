@@ -16,6 +16,7 @@ class TextSetting
 	 * @param VerticalAlignment $vertical
 	 * @param string $fontNameOrPath
 	 * @param float $angle
+	 * @codeCoverageIgnore
 	 */
 	public function __construct(
 		public HorizontalAlignment $horizontal,

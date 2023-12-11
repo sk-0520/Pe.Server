@@ -7,7 +7,7 @@ namespace PeServer\Core\Store;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Http\HttpHeader;
 use PeServer\Core\Http\HttpMethod;
-use PeServer\Core\Mvc\UploadFile;
+use PeServer\Core\Mvc\UploadedFile;
 use PeServer\Core\Text;
 use PeServer\Core\Web\Url;
 use PeServer\Core\Web\UrlPath;
@@ -199,20 +199,20 @@ class SpecialStore
 		return isset($_FILES[$name]);
 	}
 
-	public function getFile(string $name): UploadFile
+	public function getFile(string $name): UploadedFile
 	{
 		if (!isset($_FILES[$name])) {
-			return UploadFile::invalid($name);
+			return UploadedFile::invalid($name);
 		}
 
 		$file = $_FILES[$name];
-		return UploadFile::create($file);
+		return UploadedFile::create($file);
 	}
 
-	public function tryGetFile(string $name, ?UploadFile &$result): bool
+	public function tryGetFile(string $name, ?UploadedFile &$result): bool
 	{
 		if (Arr::tryGet($_FILES, $name, $file)) {
-			$result = UploadFile::create($file);
+			$result = UploadedFile::create($file);
 			return true;
 		}
 

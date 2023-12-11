@@ -6,7 +6,7 @@ namespace PeServer\Core\Http;
 
 use PeServer\Core\Http\HttpHeader;
 use PeServer\Core\Http\HttpMethod;
-use PeServer\Core\Mvc\UploadFile;
+use PeServer\Core\Mvc\UploadedFile;
 use PeServer\Core\Store\SpecialStore;
 use PeServer\Core\Throws\KeyNotFoundException;
 
@@ -111,7 +111,7 @@ class HttpRequest
 		throw new KeyNotFoundException("parameter not found: $name");
 	}
 
-	public function getFile(string $name): UploadFile
+	public function getFile(string $name): UploadedFile
 	{
 		return $this->specialStore->getFile($name);
 	}

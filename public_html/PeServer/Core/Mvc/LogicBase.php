@@ -21,7 +21,7 @@ use PeServer\Core\Mvc\IValidationReceiver;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\Mvc\Template\TemplateParameter;
-use PeServer\Core\Mvc\UploadFile;
+use PeServer\Core\Mvc\UploadedFile;
 use PeServer\Core\Mvc\Validator;
 use PeServer\Core\Store\CookieOptions;
 use PeServer\Core\Store\CookieStore;
@@ -167,7 +167,7 @@ abstract class LogicBase implements IValidationReceiver
 		return $value;
 	}
 
-	protected function getFile(string $key): UploadFile
+	protected function getFile(string $key): UploadedFile
 	{
 		if (!$this->request->exists($key, true)->exists) {
 			throw new KeyNotFoundException('$key: ' . $key);

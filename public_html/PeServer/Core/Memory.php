@@ -4,6 +4,13 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
+/**
+ * メモリ使用状況のあれこれ。
+ *
+ * 原則使用しない。
+ *
+ * @codeCoverageIgnore
+ */
 abstract class Memory
 {
 	#region function
