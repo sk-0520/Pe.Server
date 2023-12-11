@@ -358,8 +358,7 @@ abstract class LogicBase implements IValidationReceiver
 	/**
 	 * 応答HTTPヘッダ追加。
 	 *
-	 * @param string $name
-	 * @phpstan-param non-empty-string $name
+	 * @param non-empty-string $name
 	 * @param string $value
 	 * @return void
 	 */
@@ -402,8 +401,7 @@ abstract class LogicBase implements IValidationReceiver
 	/**
 	 * 応答データとして設定。
 	 *
-	 * @param string $key
-	 * @phpstan-param non-empty-string $key
+	 * @param non-empty-string $key
 	 * @param mixed $value
 	 * @return void
 	 * @throws ArgumentException 入力データとして未登録の場合に投げられる。

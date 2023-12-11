@@ -120,8 +120,7 @@ class Graphics extends DisposerBase
 	/**
 	 * ファイルから生成。
 	 *
-	 * @param string $path
-	 * @phpstan-param non-empty-string $path
+	 * @param non-empty-string $path
 	 * @return Graphics
 	 */
 	public static function open(string $path): self

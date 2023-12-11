@@ -25,8 +25,7 @@ class SessionOptions
 	/**
 	 * 生成。
 	 *
-	 * @param string $name セッション名。
-	 * @phpstan-param non-empty-string $name
+	 * @param non-empty-string $name セッション名。
 	 * @param string $savePath 保存場所。
 	 * @param CookieOptions $cookie クッキー設定。
 	 */

@@ -64,8 +64,7 @@ class Environment
 	 *
 	 * `getenv` ラッパー。
 	 *
-	 * @param string $name
-	 * @phpstan-param non-empty-string $name
+	 * @param non-empty-string $name
 	 * @return string|null 環境変数の値。取得できなかった場合に null。
 	 * @see https://www.php.net/manual/function.getenv.php
 	 */
@@ -88,8 +87,7 @@ class Environment
 	 *
 	 * `putenv` ラッパー。
 	 *
-	 * @param string $name
-	 * @phpstan-param non-empty-string $name
+	 * @param non-empty-string $name
 	 * @param string $value
 	 * @see https://www.php.net/manual/function.putenv.php
 	 */

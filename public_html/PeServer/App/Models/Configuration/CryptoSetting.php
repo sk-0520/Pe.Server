@@ -16,7 +16,7 @@ class CryptoSetting
 	/**
 	 * アルゴリズム。
 	 *
-	 * @phpstan-var non-empty-string
+	 * @var non-empty-string
 	 */
 	public string $algorithm;
 	public string $password;

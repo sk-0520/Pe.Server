@@ -189,10 +189,8 @@ abstract class Text
 	 * @param string $source 元文字列
 	 * @phpstan-param literal-string $source
 	 * @param array<string,string> $map 置き換え対象辞書
-	 * @param string $head プレースホルダー先頭
-	 * @phpstan-param non-empty-string $head
-	 * @param string $tail プレースホルダー終端
-	 * @phpstan-param non-empty-string $tail
+	 * @param non-empty-string $head プレースホルダー先頭
+	 * @param non-empty-string $tail プレースホルダー終端
 	 * @return string 置き換え後文字列
 	 * @throws StringException なんかもうあかんかった
 	 */
@@ -433,8 +431,7 @@ abstract class Text
 	 * `explode` ラッパー。
 	 *
 	 * @param string $value 対象文字列。
-	 * @param string $separator 分割対象文字列。
-	 * @phpstan-param non-empty-string $separator 分割対象文字列。
+	 * @param non-empty-string $separator 分割対象文字列。
 	 * @param integer $limit 分割数。
 	 * @return string[] 分割された文字列。
 	 * @throws ArgumentException 分割失敗(PHP8未満)
@@ -643,8 +640,7 @@ abstract class Text
 	/**
 	 * 文字列を文字の配列に変換。
 	 *
-	 * @param string $value
-	 * @phpstan-param non-empty-string $value
+	 * @param non-empty-string $value
 	 * @return string[]
 	 */
 	public static function toCharacters(string $value): array

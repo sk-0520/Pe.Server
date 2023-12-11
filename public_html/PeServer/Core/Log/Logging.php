@@ -181,8 +181,7 @@ class Logging
 	 * @param integer $level
 	 * @param integer $traceIndex
 	 * @phpstan-param UnsignedIntegerAlias $traceIndex
-	 * @param string $header
-	 * @phpstan-param non-empty-string $header
+	 * @param non-empty-string $header
 	 * @param mixed $message
 	 * @phpstan-param LogMessageAlias $message
 	 * @param mixed ...$parameters
