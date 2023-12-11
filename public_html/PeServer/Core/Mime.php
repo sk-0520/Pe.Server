@@ -37,8 +37,7 @@ abstract class Mime
 	 * `mime_content_type` ラッパー。
 	 *
 	 * @param string $fileName
-	 * @return string
-	 * @phpstan-return non-empty-string
+	 * @return non-empty-string
 	 * @throws ArgumentException
 	 * @see https://php.net/manual/function.mime-content-type.php
 	 */
