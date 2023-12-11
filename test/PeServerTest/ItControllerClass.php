@@ -18,6 +18,7 @@ use PeServer\App\Models\Setup\SetupRunner;
 use PeServer\Core\Binary;
 use PeServer\Core\Database\ConnectionSetting;
 use PeServer\Core\Database\DatabaseContext;
+use PeServer\Core\Database\DatabaseRowResult;
 use PeServer\Core\Database\DatabaseUtility;
 use PeServer\Core\DefinedDirectory;
 use PeServer\Core\DI\DiItem;
@@ -95,7 +96,7 @@ class ItControllerClass extends TestClass
 		}
 	}
 
-	protected function resetDatabase(IDiRegisterContainer $container): void
+	private function resetDatabase(IDiRegisterContainer $container): void
 	{
 		/** @var IDatabaseConnection */
 		$databaseConnection = $container->get(IDatabaseConnection::class);
@@ -233,6 +234,11 @@ class ItControllerClass extends TestClass
 		}
 
 		return new ItActual($response, $container);
+	}
+
+	protected function getMaybeLatestAuditLog(IDatabaseContext $context): DatabaseRowResult
+	{
+		return $context->querySingle('select * from user_audit_logs order by sequence desc');
 	}
 
 	protected function assertStatus(HttpStatus $expected, ItActual $response): void

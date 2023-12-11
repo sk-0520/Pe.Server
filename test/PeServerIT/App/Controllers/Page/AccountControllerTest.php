@@ -11,6 +11,7 @@ use PeServer\App\Models\Dao\Domain\UserDomainDao;
 use PeServer\App\Models\Dao\Entities\PluginsEntityDao;
 use PeServer\App\Models\Dao\Entities\UserAuthenticationsEntityDao;
 use PeServer\App\Models\Dao\Entities\UsersEntityDao;
+use PeServer\App\Models\Domain\AccountValidator;
 use PeServer\App\Models\Domain\PluginState;
 use PeServer\App\Models\Domain\UserLevel;
 use PeServer\App\Models\Domain\UserState;
@@ -187,7 +188,7 @@ class AccountControllerTest extends ItControllerClass
 		);
 
 		$context = $actual->openDB();
-		$auditResult = $context->querySingle('select * from user_audit_logs order by sequence desc');
+		$auditResult = $this->getMaybeLatestAuditLog($context);
 		$this->assertSame(ItMockStores::SESSION_ACCOUNT_USER_ID, $auditResult->fields['user_id']);
 		$this->assertSame(AuditLog::LOGIN_FAILED, $auditResult->fields['event']);
 	}
@@ -249,7 +250,7 @@ class AccountControllerTest extends ItControllerClass
 		$this->assertRedirectPath(HttpStatus::Found, '/account', null, $actual);
 
 		$context = $actual->openDB();
-		$auditResult = $context->querySingle('select * from user_audit_logs order by sequence desc');
+		$auditResult = $this->getMaybeLatestAuditLog($context);
 		$this->assertSame(ItMockStores::SESSION_ACCOUNT_USER_ID, $auditResult->fields['user_id']);
 		$this->assertSame(AuditLog::LOGIN_SUCCESS, $auditResult->fields['event']);
 	}
@@ -287,7 +288,7 @@ class AccountControllerTest extends ItControllerClass
 		$this->assertRedirectPath(HttpStatus::Found, '', null, $actual);
 
 		$context = $actual->openDB();
-		$auditResult = $context->querySingle('select * from user_audit_logs order by sequence desc');
+		$auditResult = $this->getMaybeLatestAuditLog($context);
 		$this->assertSame(ItMockStores::SESSION_ACCOUNT_USER_ID, $auditResult->fields['user_id']);
 		$this->assertSame(AuditLog::LOGOUT, $auditResult->fields['event']);
 	}
@@ -502,7 +503,7 @@ class AccountControllerTest extends ItControllerClass
 		$this->assertVisibleCommonError([], $actual);
 
 		$this->assertValue(
-			Text::EMPTY,
+			$options->body->content['account_edit_name'],
 			$actual->html->path()->collections(
 				"//*[@name='account_edit_name']"
 			)->single()
@@ -513,6 +514,49 @@ class AccountControllerTest extends ItControllerClass
 			$actual
 		);
 	}
+
+	public static function provider_user_edit_post_range_name()
+	{
+		return [
+			[Text::repeat('a', AccountValidator::USER_NAME_RANGE_MIN - 1)],
+			[Text::repeat('z', AccountValidator::USER_NAME_RANGE_MAX + 1)],
+			[Text::repeat('🫠', AccountValidator::USER_NAME_RANGE_MIN - 1)],
+			[Text::repeat('🫠', AccountValidator::USER_NAME_RANGE_MAX + 1)],
+		];
+	}
+
+	#[DataProvider('provider_user_edit_post_range_name')]
+	public function test_user_edit_post_range_name(string $name)
+	{
+		$options = new ItOptions(
+			stores: ItMockStores::account(UserLevel::USER),
+			body: ItBody::form([
+				'account_edit_name' => $name,
+			])
+		);
+		$actual = $this->call(HttpMethod::Post, '/account/user/edit', $options, function (ItSetup $setup) {
+			$usersEntityDao = new UsersEntityDao($setup->databaseContext);
+
+			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, 'email', 0, 'w', 'd', 'n');
+		});
+
+		$this->assertStatusOk($actual);
+
+		$this->assertVisibleCommonError([], $actual);
+
+		$this->assertValue(
+			$options->body->content['account_edit_name'],
+			$actual->html->path()->collections(
+				"//*[@name='account_edit_name']"
+			)->single()
+		);
+		$this->assertVisibleTargetError(
+			[Text::format('%d から %d 文字以内で入力してください', AccountValidator::USER_NAME_RANGE_MIN, AccountValidator::USER_NAME_RANGE_MAX)],
+			"account_edit_name",
+			$actual
+		);
+	}
+
 
 	public function test_user_edit_post_invalid_url()
 	{
@@ -534,14 +578,14 @@ class AccountControllerTest extends ItControllerClass
 		$this->assertVisibleCommonError([], $actual);
 
 		$this->assertValue(
-			ItMockStores::SESSION_ACCOUNT_NAME,
+			$options->body->content['account_edit_name'],
 			$actual->html->path()->collections(
 				"//*[@name='account_edit_name']"
 			)->single()
 		);
 
 		$this->assertValue(
-			'123',
+			$options->body->content['account_edit_website'],
 			$actual->html->path()->collections(
 				"//*[@name='account_edit_website']"
 			)->single()
@@ -562,7 +606,6 @@ class AccountControllerTest extends ItControllerClass
 				'account_edit_website' => '123',
 			])
 		);
-
 		$actual = $this->call(HttpMethod::Post, '/account/user/edit', $options, function (ItSetup $setup) {
 			$usersEntityDao = new UsersEntityDao($setup->databaseContext);
 
@@ -574,7 +617,7 @@ class AccountControllerTest extends ItControllerClass
 		$this->assertVisibleCommonError([], $actual);
 
 		$this->assertValue(
-			Text::EMPTY,
+			$options->body->content['account_edit_name'],
 			$actual->html->path()->collections(
 				"//*[@name='account_edit_name']"
 			)->single()
@@ -586,7 +629,7 @@ class AccountControllerTest extends ItControllerClass
 		);
 
 		$this->assertValue(
-			'123',
+			$options->body->content['account_edit_website'],
 			$actual->html->path()->collections(
 				"//*[@name='account_edit_website']"
 			)->single()
@@ -596,5 +639,62 @@ class AccountControllerTest extends ItControllerClass
 			"account_edit_website",
 			$actual
 		);
+	}
+
+	public static function provider_user_edit_post_submit()
+	{
+		return [
+			[
+				Text::repeat('🫠', AccountValidator::USER_NAME_RANGE_MIN),
+				'',
+				'',
+			],
+			[
+				Text::repeat('🫠', AccountValidator::USER_NAME_RANGE_MAX),
+				'',
+				'',
+			],
+			[
+				Text::repeat('🫠', AccountValidator::USER_NAME_RANGE_MIN),
+				'https://example.com',
+				'',
+			],
+			[
+				Text::repeat('🫠', AccountValidator::USER_NAME_RANGE_MIN),
+				'https://example.com',
+				Text::repeat('🫠', AccountValidator::USER_DESCRIPTION_LENGTH),
+			],
+		];
+	}
+
+	#[DataProvider('provider_user_edit_post_submit')]
+	public function test_user_edit_post_submit(string $name, string $url, string $description)
+	{
+		$options = new ItOptions(
+			stores: ItMockStores::account(UserLevel::USER),
+			body: ItBody::form([
+				'account_edit_name' => $name,
+				'account_edit_website' => $url,
+				'account_edit_description' => $description,
+			])
+		);
+		$actual = $this->call(HttpMethod::Post, '/account/user/edit', $options, function (ItSetup $setup) {
+			$usersEntityDao = new UsersEntityDao($setup->databaseContext);
+
+			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, 'email', 0, 'w', 'd', 'n');
+		});
+
+		$this->assertRedirectPath(HttpStatus::Found, 'account/user', null, $actual);
+
+		$context = $actual->openDB();
+		$auditResult = $this->getMaybeLatestAuditLog($context);
+		$this->assertSame(ItMockStores::SESSION_ACCOUNT_USER_ID, $auditResult->fields['user_id']);
+		$this->assertSame(AuditLog::USER_EDIT, $auditResult->fields['event']);
+
+		$usersEntityDao = new UsersEntityDao($context);
+		$userEditData = $usersEntityDao->selectUserEditData(ItMockStores::SESSION_ACCOUNT_USER_ID);
+		$this->assertSame($name, $userEditData->fields['name']);
+		$this->assertSame($url, $userEditData->fields['website']);
+		$this->assertSame($description, $userEditData->fields['description']);
 	}
 }
