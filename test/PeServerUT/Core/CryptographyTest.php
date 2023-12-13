@@ -19,7 +19,7 @@ class CryptographyTest extends TestClass
 	{
 		$this->expectException(CryptoException::class);
 
-		Cryptography::generateRandomInteger(1, 2);
+		Cryptography::generateRandomInteger(2, 1);
 		$this->fail();
 	}
 

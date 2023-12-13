@@ -326,7 +326,7 @@ class Arr
 		$result = [];
 		$keys = self::getKeys($array);
 		for ($i = 0; $i < $count; $i++) {
-			$index = Cryptography::generateRandomInteger($length - 1);
+			$index = Cryptography::generateRandomInteger(0, $length - 1);
 			$result[] = $keys[$index];
 		}
 

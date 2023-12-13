@@ -37,15 +37,16 @@ abstract class Cryptography
 	 *
 	 * `random_int` ラッパー。
 	 *
-	 * @param integer $max 最大値。
 	 * @param integer $min 最小値。
+	 * @param integer $max 最大値。
 	 * @return integer 乱数。
 	 * @throws CryptoException 失敗
 	 * @see https://www.php.net/manual/function.random-int.php
 	 */
-	public static function generateRandomInteger(int $max = PHP_INT_MAX, int $min = 0): int
+	public static function generateRandomInteger(int $min, int $max): int
 	{
 		try {
+			/** @disregard P1010 */
 			return random_int($min, $max);
 		} catch (Throwable $ex) {
 			Throws::reThrow(CryptoException::class, $ex);
@@ -104,7 +105,7 @@ abstract class Cryptography
 		$result = '';
 
 		for ($i = 0; $i < $length; $i++) {
-			$index = self::generateRandomInteger($max, $min);
+			$index = self::generateRandomInteger($min, $max);
 			$result .= $charactersArray[$index];
 		}
 
