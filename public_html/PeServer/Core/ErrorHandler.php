@@ -132,7 +132,7 @@ class ErrorHandler
 	/**
 	 * エラーを処理する。
 	 *
-	 * @param integer $errorNumber
+	 * @param int $errorNumber
 	 * @param string $errorMessage
 	 * @param string $errorFile
 	 * @param int $errorLineNumber
@@ -192,10 +192,10 @@ class ErrorHandler
 	 *
 	 * こいつが呼ばれた時点でもはや何もできない。
 	 *
-	 * @param integer $errorNumber
+	 * @param int $errorNumber
 	 * @param string $message
 	 * @param string $file
-	 * @param integer $lineNumber
+	 * @param int $lineNumber
 	 * @param Throwable|null $throwable
 	 * @return no-return
 	 * @SuppressWarnings(PHPMD.ExitExpression)
@@ -236,10 +236,10 @@ class ErrorHandler
 	/**
 	 * エラー取得処理（本体）。
 	 *
-	 * @param integer $errorNumber
+	 * @param int $errorNumber
 	 * @param string $message
 	 * @param string $file
-	 * @param integer $lineNumber
+	 * @param int $lineNumber
 	 * @param Throwable|null $throwable
 	 * @return void
 	 */
@@ -311,7 +311,7 @@ final class LocalPhpErrorReceiver extends DisposerBase
 	/**
 	 * エラーを処理する。
 	 *
-	 * @param integer $errorNumber
+	 * @param int $errorNumber
 	 * @param string $errorMessage
 	 * @param string $errorFile
 	 * @param int $errorLineNumber

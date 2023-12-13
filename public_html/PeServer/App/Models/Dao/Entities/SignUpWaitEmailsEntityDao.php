@@ -62,7 +62,7 @@ class SignUpWaitEmailsEntityDao extends DaoBase
 
 	/**
 	 * @template TFieldArray of array{mark_email:int,token:string,email:string}
-	 * @param integer $markEmail
+	 * @param int $markEmail
 	 * @phpstan-return DatabaseTableResult<TFieldArray>
 	 */
 	public function selectLikeEmails(int $markEmail): DatabaseTableResult

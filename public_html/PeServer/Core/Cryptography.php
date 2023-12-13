@@ -37,9 +37,9 @@ abstract class Cryptography
 	 *
 	 * `random_int` ラッパー。
 	 *
-	 * @param integer $min 最小値。
-	 * @param integer $max 最大値。
-	 * @return integer 乱数。
+	 * @param int $min 最小値。
+	 * @param int $max 最大値。
+	 * @return int 乱数。
 	 * @throws CryptoException 失敗
 	 * @see https://www.php.net/manual/function.random-int.php
 	 */
@@ -58,7 +58,7 @@ abstract class Cryptography
 	 *
 	 * `openssl_random_pseudo_bytes` ラッパー。
 	 *
-	 * @param integer $length バイト数。
+	 * @param int $length バイト数。
 	 * @phpstan-param positive-int $length
 	 * @return Binary バイナリデータ。
 	 * @throws ArgumentException 失敗
@@ -82,7 +82,7 @@ abstract class Cryptography
 	/**
 	 * ランダム文字列を生成。
 	 *
-	 * @param integer $length 文字列長。
+	 * @param int $length 文字列長。
 	 * @phpstan-param positive-int $length
 	 * @param non-empty-string $characters ランダム文字の元になる文字列。
 	 * @return string 文字列。

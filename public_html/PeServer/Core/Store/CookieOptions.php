@@ -75,7 +75,7 @@ class CookieOptions
 	/**
 	 * cookie の寿命を数値に変換。
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getExpires(): int
 	{

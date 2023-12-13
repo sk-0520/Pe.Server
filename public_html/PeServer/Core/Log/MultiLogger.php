@@ -51,10 +51,10 @@ final class MultiLogger implements ILogger
 	/**
 	 * 横流し処理。
 	 *
-	 * @param integer $level レベル。
+	 * @param int $level レベル。
 	 * @phpstan-param ILogger::LOG_LEVEL_* $level
-	 * @param integer $level
-	 * @param integer $traceIndex
+	 * @param int $level
+	 * @param int $traceIndex
 	 * @phpstan-param UnsignedIntegerAlias $traceIndex
 	 * @param mixed $message
 	 * @phpstan-param LogMessageAlias $message

@@ -54,7 +54,7 @@ class SessionStore
 	/**
 	 * セッション適用状態。
 	 *
-	 * @var integer
+	 * @var int
 	 * @phpstan-var self::APPLY_*
 	 */
 	private int $applyState = self::APPLY_NORMAL;
@@ -95,9 +95,9 @@ class SessionStore
 	/**
 	 * セッション適用状態を設定。
 	 *
-	 * @param integer $state
-	 * @return integer
+	 * @param int $state
 	 * @phpstan-param self::APPLY_* $state
+	 * @return int
 	 * @phpstan-return self::APPLY_*
 	 */
 	public function setApplyState(int $state): int

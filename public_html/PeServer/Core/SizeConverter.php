@@ -48,7 +48,7 @@ readonly class SizeConverter
 	 *
 	 * C#(Pe.Core)から移植。
 	 *
-	 * @param integer $byteSize
+	 * @param int $byteSize
 	 * @param string $sizeFormat {f_size} {i_size} {unit}
 	 * @phpstan-param literal-string $sizeFormat
 	 * @return string

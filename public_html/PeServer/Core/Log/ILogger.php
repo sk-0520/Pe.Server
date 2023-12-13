@@ -33,9 +33,9 @@ interface ILogger
 	 *
 	 * アプリケーション層で呼び出すことはない。
 	 *
-	 * @param integer $level ログレベル。
+	 * @param int $level ログレベル。
 	 * @phpstan-param self::LOG_LEVEL_* $level ログレベル。
-	 * @param integer $traceIndex 現在フレーム数。
+	 * @param int $traceIndex 現在フレーム数。
 	 * @phpstan-param UnsignedIntegerAlias $traceIndex
 	 * @param mixed $message メッセージかオブジェクト。
 	 * @phpstan-param LogMessageAlias $message

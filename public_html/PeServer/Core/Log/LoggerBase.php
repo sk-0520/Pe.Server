@@ -30,9 +30,9 @@ abstract class LoggerBase implements ILogger
 	/**
 	 * ログ書式適用。
 	 *
-	 * @param integer $level ログレベル
+	 * @param int $level ログレベル
 	 * @phpstan-param ILogger::LOG_LEVEL_* $level 有効レベル。
-	 * @param integer $traceIndex トレース位置。
+	 * @param int $traceIndex トレース位置。
 	 * @phpstan-param UnsignedIntegerAlias $traceIndex
 	 * @param mixed $message メッセージ。
 	 * @phpstan-param LogMessageAlias $message
@@ -47,9 +47,9 @@ abstract class LoggerBase implements ILogger
 	/**
 	 * ログ出力実装。
 	 *
-	 * @param integer $level ログレベル。
+	 * @param int $level ログレベル。
 	 * @phpstan-param self::LOG_LEVEL_* $level ログレベル。
-	 * @param integer $traceIndex 現在フレーム数。
+	 * @param int $traceIndex 現在フレーム数。
 	 * @phpstan-param UnsignedIntegerAlias $traceIndex
 	 * @param mixed $message メッセージかオブジェクト。
 	 * @phpstan-param LogMessageAlias $message

@@ -109,7 +109,7 @@ abstract class Text
 	 * `mb_strlen` ラッパー。
 	 *
 	 * @param string $value 対象文字列。
-	 * @return integer 文字数。
+	 * @return int 文字数。
 	 * @phpstan-return UnsignedIntegerAlias
 	 * @see https://www.php.net/manual/function.mb-strlen.php
 	 */
@@ -135,7 +135,7 @@ abstract class Text
 	 * `strlen` ラッパー。
 	 *
 	 * @param string $value 対象文字列。
-	 * @return integer バイト数。
+	 * @return int バイト数。
 	 * @phpstan-return UnsignedIntegerAlias
 	 * @see https://www.php.net/manual/function.strlen.php
 	 */
@@ -259,9 +259,9 @@ abstract class Text
 	 *
 	 * @param string $haystack 対象文字列。
 	 * @param string $needle 検索文字列。
-	 * @param integer $offset 開始文字数目。
+	 * @param int $offset 開始文字数目。
 	 * @phpstan-param UnsignedIntegerAlias $offset
-	 * @return integer 見つかった文字位置。見つかんない場合は `-1`
+	 * @return int 見つかった文字位置。見つかんない場合は `-1`
 	 * @phpstan-return UnsignedIntegerAlias|-1
 	 * @throws ArgumentException
 	 */
@@ -284,9 +284,9 @@ abstract class Text
 	 *
 	 * @param string $haystack 対象文字列。
 	 * @param string $needle 検索文字列。
-	 * @param integer $offset 終端文字数目。
+	 * @param int $offset 終端文字数目。
 	 * @phpstan-param UnsignedIntegerAlias $offset
-	 * @return integer 見つかった文字位置。見つかんない場合は `-1`
+	 * @return int 見つかった文字位置。見つかんない場合は `-1`
 	 * @phpstan-return UnsignedIntegerAlias|-1
 	 * @throws ArgumentException
 	 */
@@ -394,8 +394,8 @@ abstract class Text
 	 * 文字列部分切り出し。
 	 *
 	 * @param string $value 対象文字列。
-	 * @param integer $offset 開始文字数目。負数の場合は後ろから。
-	 * @param integer $length 抜き出す長さ。負数の場合は最後まで($offset)
+	 * @param int $offset 開始文字数目。負数の場合は後ろから。
+	 * @param int $length 抜き出す長さ。負数の場合は最後まで($offset)
 	 * @return string 切り抜き後文字列。
 	 */
 	public static function substring(string $value, int $offset, int $length = -1): string
@@ -432,7 +432,7 @@ abstract class Text
 	 *
 	 * @param string $value 対象文字列。
 	 * @param non-empty-string $separator 分割対象文字列。
-	 * @param integer $limit 分割数。
+	 * @param int $limit 分割数。
 	 * @return string[] 分割された文字列。
 	 * @throws ArgumentException 分割失敗(PHP8未満)
 	 * @throws \ValueError 分割失敗(PHP8以上)
@@ -621,7 +621,7 @@ abstract class Text
 	 * str_repeat ラッパー。
 	 *
 	 * @param string $value
-	 * @param integer $count
+	 * @param int $count
 	 * @phpstan-param UnsignedIntegerAlias $count
 	 * @return string
 	 * @throws ArgumentException 負数。
