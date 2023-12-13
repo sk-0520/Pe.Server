@@ -14,6 +14,11 @@ final class ItMockStores
 	public const SESSION_ACCOUNT_LOGIN_ID = 'session-account-login-id';
 	public const SESSION_ACCOUNT_NAME = 'session-account-name';
 	public const SESSION_ACCOUNT_STATE = UserState::ENABLED;
+	public const SESSION_ACCOUNT_EMAIL = self::SESSION_ACCOUNT_NAME . '@localhost.domain';
+	public const SESSION_ACCOUNT_MARKER = 0;
+	public const SESSION_ACCOUNT_WEBSITE = 'http://localhost';
+	public const SESSION_ACCOUNT_DESCRIPTION = 'description';
+	public const SESSION_ACCOUNT_NOTE = 'note';
 
 	public function __construct(
 		public SessionAccount|SessionAnonymous|null $account,

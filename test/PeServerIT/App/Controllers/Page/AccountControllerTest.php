@@ -8,6 +8,7 @@ use PeServer\App\Controllers\Page\HomeController;
 use PeServer\App\Models\AppCryptography;
 use PeServer\App\Models\AuditLog;
 use PeServer\App\Models\Dao\Domain\UserDomainDao;
+use PeServer\App\Models\Dao\Entities\ApiKeysEntityDao;
 use PeServer\App\Models\Dao\Entities\PluginsEntityDao;
 use PeServer\App\Models\Dao\Entities\UserAuthenticationsEntityDao;
 use PeServer\App\Models\Dao\Entities\UsersEntityDao;
@@ -164,7 +165,7 @@ class AccountControllerTest extends ItControllerClass
 			$usersEntityDao = new UsersEntityDao($setup->databaseContext);
 			$userAuthenticationsEntityDao = new UserAuthenticationsEntityDao($setup->databaseContext);
 
-			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, 'email', 0, 'w', 'd', 'n');
+			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, ItMockStores::SESSION_ACCOUNT_EMAIL, ItMockStores::SESSION_ACCOUNT_MARKER, ItMockStores::SESSION_ACCOUNT_WEBSITE, ItMockStores::SESSION_ACCOUNT_DESCRIPTION, ItMockStores::SESSION_ACCOUNT_NOTE);
 			$userAuthenticationsEntityDao->insertUserAuthentication(ItMockStores::SESSION_ACCOUNT_USER_ID, Cryptography::hashPassword('@'));
 		});
 
@@ -206,7 +207,7 @@ class AccountControllerTest extends ItControllerClass
 			$usersEntityDao = new UsersEntityDao($setup->databaseContext);
 			$userAuthenticationsEntityDao = new UserAuthenticationsEntityDao($setup->databaseContext);
 
-			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, 'email', 0, 'w', 'd', 'n');
+			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, ItMockStores::SESSION_ACCOUNT_EMAIL, ItMockStores::SESSION_ACCOUNT_MARKER, ItMockStores::SESSION_ACCOUNT_WEBSITE, ItMockStores::SESSION_ACCOUNT_DESCRIPTION, ItMockStores::SESSION_ACCOUNT_NOTE);
 			$userAuthenticationsEntityDao->insertUserAuthentication(ItMockStores::SESSION_ACCOUNT_USER_ID, Cryptography::hashPassword('@'));
 		});
 
@@ -243,7 +244,7 @@ class AccountControllerTest extends ItControllerClass
 			$usersEntityDao = new UsersEntityDao($setup->databaseContext);
 			$userAuthenticationsEntityDao = new UserAuthenticationsEntityDao($setup->databaseContext);
 
-			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, 'email', 0, 'w', 'd', 'n');
+			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, ItMockStores::SESSION_ACCOUNT_EMAIL, ItMockStores::SESSION_ACCOUNT_MARKER, ItMockStores::SESSION_ACCOUNT_WEBSITE, ItMockStores::SESSION_ACCOUNT_DESCRIPTION, ItMockStores::SESSION_ACCOUNT_NOTE);
 			$userAuthenticationsEntityDao->insertUserAuthentication(ItMockStores::SESSION_ACCOUNT_USER_ID, Cryptography::hashPassword('password'));
 		});
 
@@ -282,7 +283,7 @@ class AccountControllerTest extends ItControllerClass
 			$usersEntityDao = new UsersEntityDao($setup->databaseContext);
 			$userAuthenticationsEntityDao = new UserAuthenticationsEntityDao($setup->databaseContext);
 
-			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, 'email', 0, 'w', 'd', 'n');
+			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, ItMockStores::SESSION_ACCOUNT_EMAIL, ItMockStores::SESSION_ACCOUNT_MARKER, ItMockStores::SESSION_ACCOUNT_WEBSITE, ItMockStores::SESSION_ACCOUNT_DESCRIPTION, ItMockStores::SESSION_ACCOUNT_NOTE);
 			$userAuthenticationsEntityDao->insertUserAuthentication(ItMockStores::SESSION_ACCOUNT_USER_ID, Cryptography::hashPassword('@'));
 		});
 		$this->assertRedirectPath(HttpStatus::Found, '', null, $actual);
@@ -301,7 +302,7 @@ class AccountControllerTest extends ItControllerClass
 		$actual = $this->call(HttpMethod::Get, '/account', $options, function (ItSetup $setup) {
 			$usersEntityDao = new UsersEntityDao($setup->databaseContext);
 
-			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, 'email', 0, 'w', 'd', 'n');
+			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, ItMockStores::SESSION_ACCOUNT_EMAIL, ItMockStores::SESSION_ACCOUNT_MARKER, ItMockStores::SESSION_ACCOUNT_WEBSITE, ItMockStores::SESSION_ACCOUNT_DESCRIPTION, ItMockStores::SESSION_ACCOUNT_NOTE);
 		});
 
 		$this->assertStatusOk($actual);
@@ -336,7 +337,7 @@ class AccountControllerTest extends ItControllerClass
 		);
 
 		$this->assertTextNode(
-			'w',
+			ItMockStores::SESSION_ACCOUNT_WEBSITE,
 			$actual->html->path()->collections(
 				"//dl[contains(@class, 'page-account-user')]/dt[contains(text(), 'Webサイト')]/following-sibling::dd[1][@data-role='value']"
 			)->single()
@@ -380,8 +381,8 @@ class AccountControllerTest extends ItControllerClass
 			$usersEntityDao = new UsersEntityDao($setup->databaseContext);
 			$pluginsEntityDao = new PluginsEntityDao($setup->databaseContext);
 
-			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID . '-OTHER', ItMockStores::SESSION_ACCOUNT_LOGIN_ID . '-OTHER', UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, 'email', 0, 'w', 'd', 'n');
-			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, 'email', 0, 'w', 'd', 'n');
+			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID . '-OTHER', ItMockStores::SESSION_ACCOUNT_LOGIN_ID . '-OTHER', UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, ItMockStores::SESSION_ACCOUNT_EMAIL, ItMockStores::SESSION_ACCOUNT_MARKER, ItMockStores::SESSION_ACCOUNT_WEBSITE, ItMockStores::SESSION_ACCOUNT_DESCRIPTION, ItMockStores::SESSION_ACCOUNT_NOTE);
+			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, ItMockStores::SESSION_ACCOUNT_EMAIL, ItMockStores::SESSION_ACCOUNT_MARKER, ItMockStores::SESSION_ACCOUNT_WEBSITE, ItMockStores::SESSION_ACCOUNT_DESCRIPTION, ItMockStores::SESSION_ACCOUNT_NOTE);
 
 			$pluginsEntityDao->insertPlugin('A0', ItMockStores::SESSION_ACCOUNT_USER_ID . '-OTHER', 'PLUGIN-A0', 'plugin-a0', PluginState::ENABLED, 'P-A0-D', '');
 			$pluginsEntityDao->insertPlugin('A2', ItMockStores::SESSION_ACCOUNT_USER_ID, 'PLUGIN-A2', 'plugin-a2', PluginState::ENABLED, 'P-A-D2', '');
@@ -457,7 +458,7 @@ class AccountControllerTest extends ItControllerClass
 		$actual = $this->call(HttpMethod::Get, '/account/user/edit', $options, function (ItSetup $setup) {
 			$usersEntityDao = new UsersEntityDao($setup->databaseContext);
 
-			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, 'email', 0, 'w', 'd', 'n');
+			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, ItMockStores::SESSION_ACCOUNT_EMAIL, ItMockStores::SESSION_ACCOUNT_MARKER, ItMockStores::SESSION_ACCOUNT_WEBSITE, ItMockStores::SESSION_ACCOUNT_DESCRIPTION, ItMockStores::SESSION_ACCOUNT_NOTE);
 		});
 
 		$this->assertStatusOk($actual);
@@ -470,14 +471,14 @@ class AccountControllerTest extends ItControllerClass
 		);
 
 		$this->assertValue(
-			'w',
+			ItMockStores::SESSION_ACCOUNT_WEBSITE,
 			$actual->html->path()->collections(
 				"//*[@name='account_edit_website']"
 			)->single()
 		);
 
 		$this->assertValue(
-			'd',
+			ItMockStores::SESSION_ACCOUNT_DESCRIPTION,
 			$actual->html->path()->collections(
 				"//*[@name='account_edit_description']"
 			)->single()
@@ -495,7 +496,7 @@ class AccountControllerTest extends ItControllerClass
 		$actual = $this->call(HttpMethod::Post, '/account/user/edit', $options, function (ItSetup $setup) {
 			$usersEntityDao = new UsersEntityDao($setup->databaseContext);
 
-			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, 'email', 0, 'w', 'd', 'n');
+			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, ItMockStores::SESSION_ACCOUNT_EMAIL, ItMockStores::SESSION_ACCOUNT_MARKER, ItMockStores::SESSION_ACCOUNT_WEBSITE, ItMockStores::SESSION_ACCOUNT_DESCRIPTION, ItMockStores::SESSION_ACCOUNT_NOTE);
 		});
 
 		$this->assertStatusOk($actual);
@@ -537,7 +538,7 @@ class AccountControllerTest extends ItControllerClass
 		$actual = $this->call(HttpMethod::Post, '/account/user/edit', $options, function (ItSetup $setup) {
 			$usersEntityDao = new UsersEntityDao($setup->databaseContext);
 
-			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, 'email', 0, 'w', 'd', 'n');
+			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, ItMockStores::SESSION_ACCOUNT_EMAIL, ItMockStores::SESSION_ACCOUNT_MARKER, ItMockStores::SESSION_ACCOUNT_WEBSITE, ItMockStores::SESSION_ACCOUNT_DESCRIPTION, ItMockStores::SESSION_ACCOUNT_NOTE);
 		});
 
 		$this->assertStatusOk($actual);
@@ -570,7 +571,7 @@ class AccountControllerTest extends ItControllerClass
 		$actual = $this->call(HttpMethod::Post, '/account/user/edit', $options, function (ItSetup $setup) {
 			$usersEntityDao = new UsersEntityDao($setup->databaseContext);
 
-			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, 'email', 0, 'w', 'd', 'n');
+			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, ItMockStores::SESSION_ACCOUNT_EMAIL, ItMockStores::SESSION_ACCOUNT_MARKER, ItMockStores::SESSION_ACCOUNT_WEBSITE, ItMockStores::SESSION_ACCOUNT_DESCRIPTION, ItMockStores::SESSION_ACCOUNT_NOTE);
 		});
 
 		$this->assertStatusOk($actual);
@@ -609,7 +610,7 @@ class AccountControllerTest extends ItControllerClass
 		$actual = $this->call(HttpMethod::Post, '/account/user/edit', $options, function (ItSetup $setup) {
 			$usersEntityDao = new UsersEntityDao($setup->databaseContext);
 
-			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, 'email', 0, 'w', 'd', 'n');
+			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, ItMockStores::SESSION_ACCOUNT_EMAIL, ItMockStores::SESSION_ACCOUNT_MARKER, ItMockStores::SESSION_ACCOUNT_WEBSITE, ItMockStores::SESSION_ACCOUNT_DESCRIPTION, ItMockStores::SESSION_ACCOUNT_NOTE);
 		});
 
 		$this->assertStatusOk($actual);
@@ -674,14 +675,14 @@ class AccountControllerTest extends ItControllerClass
 			stores: ItMockStores::account(UserLevel::USER),
 			body: ItBody::form([
 				'account_edit_name' => $name,
-                'account_edit_website' => $url,
+				'account_edit_website' => $url,
 				'account_edit_description' => $description,
 			])
 		);
 		$actual = $this->call(HttpMethod::Post, '/account/user/edit', $options, function (ItSetup $setup) {
 			$usersEntityDao = new UsersEntityDao($setup->databaseContext);
 
-			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, 'email', 0, 'w', 'd', 'n');
+			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, ItMockStores::SESSION_ACCOUNT_EMAIL, ItMockStores::SESSION_ACCOUNT_MARKER, ItMockStores::SESSION_ACCOUNT_WEBSITE, ItMockStores::SESSION_ACCOUNT_DESCRIPTION, ItMockStores::SESSION_ACCOUNT_NOTE);
 		});
 
 		$this->assertRedirectPath(HttpStatus::Found, 'account/user', null, $actual);
@@ -696,5 +697,80 @@ class AccountControllerTest extends ItControllerClass
 		$this->assertSame($name, $userEditData->fields['name']);
 		$this->assertSame($url, $userEditData->fields['website']);
 		$this->assertSame($description, $userEditData->fields['description']);
+	}
+
+	public function test_user_api_get_empty()
+	{
+		$options = new ItOptions(
+			stores: ItMockStores::account(UserLevel::USER),
+		);
+		$actual = $this->call(HttpMethod::Get, '/account/user/api', $options, function (ItSetup $setup) {
+			$usersEntityDao = new UsersEntityDao($setup->databaseContext);
+
+			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, ItMockStores::SESSION_ACCOUNT_EMAIL, ItMockStores::SESSION_ACCOUNT_MARKER, ItMockStores::SESSION_ACCOUNT_WEBSITE, ItMockStores::SESSION_ACCOUNT_DESCRIPTION, ItMockStores::SESSION_ACCOUNT_NOTE);
+		});
+
+		$this->assertTextNode(
+			'APIキーを用いてAPIを実行することができます。',
+			$actual->html->path()->collections(
+				"//*[contains(@class, 'page-account-api')]//dt[contains(text(), '説明')]/following-sibling::dd[1]"
+			)->single()
+		);
+
+		$this->assertTextNode(
+			'APIキーは登録されていません。',
+			$actual->html->path()->collections(
+				"//*[contains(@class, 'page-account-api')]//dt[contains(text(), 'APIキー')]/following-sibling::dd[1]"
+			)->single()
+		);
+
+		$this->assertTextNode(
+			'登録',
+			$actual->html->path()->collections(
+				"//*[contains(@class, 'page-account-api')]//dd[contains(@class, 'action')]/button"
+			)->single()
+		);
+	}
+
+	public function test_user_api_get_exists()
+	{
+		$options = new ItOptions(
+			stores: ItMockStores::account(UserLevel::USER),
+		);
+		$actual = $this->call(HttpMethod::Get, '/account/user/api', $options, function (ItSetup $setup) {
+			$usersEntityDao = new UsersEntityDao($setup->databaseContext);
+			$apiKeysEntityDao = new ApiKeysEntityDao($setup->databaseContext);
+
+			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, ItMockStores::SESSION_ACCOUNT_EMAIL, ItMockStores::SESSION_ACCOUNT_MARKER, ItMockStores::SESSION_ACCOUNT_WEBSITE, ItMockStores::SESSION_ACCOUNT_DESCRIPTION, ItMockStores::SESSION_ACCOUNT_NOTE);
+			$apiKeysEntityDao->insertApiKey(ItMockStores::SESSION_ACCOUNT_USER_ID, 'KEY', 'SECRET');
+		});
+
+		$this->assertTextNode(
+			'APIキーを用いてAPIを実行することができます。',
+			$actual->html->path()->collections(
+				"//*[contains(@class, 'page-account-api')]//dt[contains(text(), '説明')]/following-sibling::dd[1]"
+			)->single()
+		);
+
+		$this->assertTextNode(
+			'KEY',
+			$actual->html->path()->collections(
+				"//*[contains(@class, 'page-account-api')]//dt[contains(text(), 'APIキー')]/following-sibling::dd[1]/table//tr[1]/td[1]"
+			)->single()
+		);
+
+		$this->assertCount(
+			0,
+			$actual->html->path()->collections(
+				"//*[contains(@class, 'page-account-api')]//dt[contains(text(), 'APIキー')]/following-sibling::dd[1]/table//tr[3]/td"
+			)
+		);
+
+		$this->assertTextNode(
+			'削除',
+			$actual->html->path()->collections(
+				"//*[contains(@class, 'page-account-api')]//dd[contains(@class, 'action')]/button"
+			)->single()
+		);
 	}
 }
