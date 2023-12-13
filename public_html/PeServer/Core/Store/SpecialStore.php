@@ -236,7 +236,7 @@ class SpecialStore
 
 	public function isHttps(): bool
 	{
-		return $this->getServer('HTTPS') === 'on';
+		return $this->getServer('HTTPS') === 'on'; //@phpstan-ignore-line [TIME]
 	}
 
 	public function isLocalhost(): bool
@@ -284,7 +284,7 @@ class SpecialStore
 		}
 
 		$query = $this->getServer('QUERY_STRING', Text::EMPTY);
-		if (Text::isNullOrEmpty($query)) {
+		if (Text::isNullOrEmpty($query)) { //@phpstan-ignore-line [TIME]
 			$query = null;
 		}
 

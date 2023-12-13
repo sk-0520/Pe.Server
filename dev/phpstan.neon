@@ -16,6 +16,7 @@ parameters:
   checkDynamicProperties: true
   inferPrivatePropertyTypeFromConstructor: true
   rememberPossiblyImpureFunctionValues: false
+  treatPhpDocTypesAsCertain: true
 
   # parallel:
   #   jobSize: 20

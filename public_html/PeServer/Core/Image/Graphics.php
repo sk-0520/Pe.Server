@@ -244,7 +244,6 @@ class Graphics extends DisposerBase
 			throw new GraphicsException();
 		}
 
-		//@phpstan-ignore-next-line ↑が false だけのはずなんだけど true を捕まえてる感じ
 		return new self($result, true);
 	}
 

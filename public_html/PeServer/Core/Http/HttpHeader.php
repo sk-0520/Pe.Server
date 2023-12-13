@@ -152,6 +152,9 @@ class HttpHeader
 		$result = [];
 
 		foreach ($this->headers as $name => $_) {
+			if (Text::isNullOrWhiteSpace($name)) {
+				continue;
+			}
 			$result[] = $name;
 		}
 
