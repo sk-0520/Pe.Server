@@ -14,6 +14,7 @@ use PeServer\App\Models\Dao\Entities\UserChangeWaitEmailsEntityDao;
 use PeServer\App\Models\Domain\AccountValidator;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\App\Models\SessionKey;
+use PeServer\Core\Cryptography;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\I18n;
 use PeServer\Core\Mail\EmailAddress;
@@ -135,7 +136,7 @@ class AccountUserEmailLogic extends PageLogicBase
 			'user_id' => $account->userId,
 			'email' => $this->cryptography->encrypt($email),
 			'mark_email' => $this->cryptography->toMark($email),
-			'token' => sprintf('%08d', random_int(0, 99999999)),
+			'token' => sprintf('%08d', Cryptography::generateRandomInteger(0, 99999999)),
 		];
 
 		$database = $this->openDatabase();
