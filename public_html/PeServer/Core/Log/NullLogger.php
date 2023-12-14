@@ -8,6 +8,8 @@ use PeServer\Core\Log\ILogger;
 
 /**
  * なんも出力しないロガー。
+ *
+ * @codeCoverageIgnore
  */
 final class NullLogger implements ILogger
 {

@@ -9,6 +9,8 @@ use PeServer\Core\Log\LogOptions;
 
 /**
  * XDebugロガー。
+ *
+ * @codeCoverageIgnore
  */
 final class XdebugLogger extends LoggerBase
 {

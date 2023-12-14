@@ -21,6 +21,7 @@ readonly class Attachment
 	 * @param Binary $data ファイルデータ。
 	 * @param string $mime まいむ。
 	 * @phpstan-param Mime::*|string $mime
+	 * @codeCoverageIgnore
 	 */
 	public function __construct(
 		public string $name,
