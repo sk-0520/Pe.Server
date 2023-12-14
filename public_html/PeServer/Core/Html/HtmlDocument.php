@@ -57,6 +57,12 @@ class HtmlDocument extends HtmlElementBase
 		return new HtmlTagElement($this, $importedNode);
 	}
 
+	/**
+	 * `DOMDocument::saveHTML` ラッパー。
+	 * @return string
+	 * @throws HtmlDocumentException
+	 * @see https://www.php.net/manual/domdocument.savehtml.php
+	 */
 	public function build(): string
 	{
 		$this->raw->normalize();
@@ -67,6 +73,20 @@ class HtmlDocument extends HtmlElementBase
 		}
 
 		return $html;
+	}
+
+	/**
+	 * `DOMDocument::saveHTMLFile` ラッパー。
+	 * @param string $path
+	 * @throws HtmlDocumentException
+	 * @see https://www.php.net/manual/domdocument.savehtmlfile.php
+	 */
+	public function save(string $path): void
+	{
+		$length = $this->raw->saveHTMLFile($path);
+		if ($length === false) {
+			throw new HtmlDocumentException();
+		}
 	}
 
 	#endregion
