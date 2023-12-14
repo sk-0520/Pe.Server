@@ -53,6 +53,8 @@ use PeServer\Core\Html\HtmlTextElement;
 use PeServer\Core\IO\File;
 use PeServer\Core\Log\LoggerFactory;
 use PeServer\Core\Log\NullLogger;
+use PeServer\Core\Mvc\Template\TemplateStore;
+use PeServer\Core\Store\TemporaryStore;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\DiContainerArgumentException;
@@ -158,7 +160,7 @@ class ItControllerClass extends TestClass
 	 * @param null|callable(ItSetup) $setup
 	 * @return ItActual
 	 */
-	protected function call(HttpMethod $httpMethod, string $path, ItOptions $options = new ItOptions(), ?callable $setup = null): ItActual
+	protected function call(HttpMethod $httpMethod, string $path, ItOptions $options = new ItOptions(), ?callable $setup = null, ItActual $previousActual = null): ItActual
 	{
 		$this->resetInitialize();
 
@@ -197,30 +199,53 @@ class ItControllerClass extends TestClass
 			}
 		}
 
+		if ($previousActual) {
+			/** @var AppConfiguration */
+			$config = $container->get(AppConfiguration::class);
+			/** @var CookieStore */
+			$cookie = $container->get(CookieStore::class);
+			/** @var TemporaryStore */
+			$currentTemporary = $container->get(TemporaryStore::class);
+			/** @var TemporaryStore */
+			$previousTemporary = $previousActual->container->get(TemporaryStore::class);
+
+			$reflection = new ReflectionClass(TemporaryStore::class);
+			$property = $reflection->getProperty('values');
+
+			$property->setValue($currentTemporary, $property->getValue($previousTemporary));
+		}
+
 		$container->remove(ResponsePrinter::class);
 		$container->add(ResponsePrinter::class, DiItem::class(ItResponsePrinter::class));
 
 		$useDatabase = 'useDatabase';
 		if (isset($this->$useDatabase) && $this->$useDatabase) {
-			$this->resetDatabase($container);
+			if (!$previousActual) {
+				$this->resetDatabase($container);
 
-			if ($setup) {
-				/** @var IDatabaseConnection */
-				$databaseConnection = $container->get(IDatabaseConnection::class);
-				$database = $databaseConnection->open();
-				$database->transaction(function (IDatabaseContext $context) use ($setup, $options, $container) {
-					$setup(new ItSetup($container, $context));
+				if ($setup) {
+					/** @var IDatabaseConnection */
+					$databaseConnection = $container->get(IDatabaseConnection::class);
+					$database = $databaseConnection->open();
+					$database->transaction(function (IDatabaseContext $context) use ($setup, $options, $container) {
+						$setup(new ItSetup($container, $context));
 
-					if (!$options->stores->enabledSetupUser) {
-						$usersEntityDao = new UsersEntityDao($context);
-						$usersEntityDao->updateUserState(
-							'00000000-0000-4000-0000-000000000000',
-							UserState::DISABLED
-						);
-					}
+						if (!$options->stores->enabledSetupUser) {
+							$usersEntityDao = new UsersEntityDao($context);
+							$usersEntityDao->updateUserState(
+								'00000000-0000-4000-0000-000000000000',
+								UserState::DISABLED
+							);
+						}
 
-					return true;
-				});
+						return true;
+					});
+				}
+			} else {
+				$previousDatabaseConnection = $previousActual->container->get(IDatabaseConnection::class);
+
+				$container->remove(IDatabaseConnection::class);
+				$container->add(IDatabaseConnection::class, DiItem::value($previousDatabaseConnection));
 			}
 		}
 

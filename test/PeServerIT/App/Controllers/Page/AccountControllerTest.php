@@ -710,6 +710,8 @@ class AccountControllerTest extends ItControllerClass
 			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, ItMockStores::SESSION_ACCOUNT_EMAIL, ItMockStores::SESSION_ACCOUNT_MARKER, ItMockStores::SESSION_ACCOUNT_WEBSITE, ItMockStores::SESSION_ACCOUNT_DESCRIPTION, ItMockStores::SESSION_ACCOUNT_NOTE);
 		});
 
+		$this->assertStatusOk($actual);
+
 		$this->assertTextNode(
 			'APIキーを用いてAPIを実行することができます。',
 			$actual->html->path()->collections(
@@ -745,6 +747,8 @@ class AccountControllerTest extends ItControllerClass
 			$apiKeysEntityDao->insertApiKey(ItMockStores::SESSION_ACCOUNT_USER_ID, 'KEY', 'SECRET');
 		});
 
+		$this->assertStatusOk($actual);
+
 		$this->assertTextNode(
 			'APIキーを用いてAPIを実行することができます。',
 			$actual->html->path()->collections(
@@ -772,5 +776,80 @@ class AccountControllerTest extends ItControllerClass
 				"//*[contains(@class, 'page-account-api')]//dd[contains(@class, 'action')]/button"
 			)->single()
 		);
+	}
+
+	public function test_user_api_register()
+	{
+		$options = new ItOptions(
+			stores: ItMockStores::account(UserLevel::USER),
+		);
+		$actual = $this->call(HttpMethod::Post, '/account/user/api', $options, function (ItSetup $setup) {
+			$usersEntityDao = new UsersEntityDao($setup->databaseContext);
+
+			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, ItMockStores::SESSION_ACCOUNT_EMAIL, ItMockStores::SESSION_ACCOUNT_MARKER, ItMockStores::SESSION_ACCOUNT_WEBSITE, ItMockStores::SESSION_ACCOUNT_DESCRIPTION, ItMockStores::SESSION_ACCOUNT_NOTE);
+		});
+
+		$this->assertRedirectPath(HttpStatus::Found, 'account/user/api', null, $actual);
+
+		$context = $actual->openDB();
+		$auditResult = $this->getMaybeLatestAuditLog($context);
+		$this->assertSame(ItMockStores::SESSION_ACCOUNT_USER_ID, $auditResult->fields['user_id']);
+		$this->assertSame(AuditLog::USER_API_KEY_REGISTER, $auditResult->fields['event']);
+
+		$apiKeysEntityDao = new ApiKeysEntityDao($context);
+		$apiKeyResult = $apiKeysEntityDao->selectApiKeyByUserId(ItMockStores::SESSION_ACCOUNT_USER_ID);
+		$apiKeys = [
+			'api_key' => $apiKeyResult->fields['api_key'],
+			'secret_key' => $apiKeyResult->fields['secret_key'],
+		];
+
+		// リダイレクト
+
+		$options2 = new ItOptions(
+			stores: ItMockStores::account(UserLevel::USER),
+		);
+		$actual2 = $this->call(HttpMethod::Get, '/account/user/api', $options2, null, $actual);
+
+		$this->assertStatusOk($actual2);
+
+		//$actual2->html->raw->saveHTMLFile("X:\\a.html");
+
+		$this->assertTextNode(
+			$apiKeys['api_key'],
+			$actual2->html->path()->collections(
+				"//*[contains(@class, 'page-account-api')]//dt[contains(text(), 'APIキー')]/following-sibling::dd[1]/table//tr[1]/td[1]"
+			)->single()
+		);
+
+		$this->assertTextNode(
+			$apiKeys['secret_key'],
+			$actual2->html->path()->collections(
+				"//*[contains(@class, 'page-account-api')]//dt[contains(text(), 'APIキー')]/following-sibling::dd[1]/table//tr[3]/td"
+			)->single()
+		);
+	}
+
+	public function test_user_api_unregister()
+	{
+		$options = new ItOptions(
+			stores: ItMockStores::account(UserLevel::USER),
+		);
+		$actual = $this->call(HttpMethod::Post, '/account/user/api', $options, function (ItSetup $setup) {
+			$usersEntityDao = new UsersEntityDao($setup->databaseContext);
+			$apiKeysEntityDao = new ApiKeysEntityDao($setup->databaseContext);
+
+			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, ItMockStores::SESSION_ACCOUNT_EMAIL, ItMockStores::SESSION_ACCOUNT_MARKER, ItMockStores::SESSION_ACCOUNT_WEBSITE, ItMockStores::SESSION_ACCOUNT_DESCRIPTION, ItMockStores::SESSION_ACCOUNT_NOTE);
+			$apiKeysEntityDao->insertApiKey(ItMockStores::SESSION_ACCOUNT_USER_ID, 'KEY', 'SECRET');
+		});
+
+		$this->assertRedirectPath(HttpStatus::Found, 'account/user/api', null, $actual);
+
+		$context = $actual->openDB();
+		$auditResult = $this->getMaybeLatestAuditLog($context);
+		$this->assertSame(ItMockStores::SESSION_ACCOUNT_USER_ID, $auditResult->fields['user_id']);
+		$this->assertSame(AuditLog::USER_API_KEY_UNREGISTER, $auditResult->fields['event']);
+
+		$apiKeysEntityDao = new ApiKeysEntityDao($context);
+		$this->assertFalse($apiKeysEntityDao->selectExistsApiKeyByUserId(ItMockStores::SESSION_ACCOUNT_USER_ID));
 	}
 }
