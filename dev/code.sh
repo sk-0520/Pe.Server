@@ -35,6 +35,7 @@ if ! common::exists_option 'ignore-phpstan' ; then
 	common::download_phar_if_not_exists "${PHPSTAN_FILE}" "${PHPSTAN_NAME}" "${PHPSTAN_URL}"
 	if [ "${COMMON_DOWNLOAD_PHAR_RESULT}" = "DOWNLOAD" ] ; then
 		curl --output "${PHPSTAN_BLEEDING_EDGE_NAME}" --location "${PHPSTAN_BLEEDING_EDGE_URL}"
+		cp "${PHPSTAN_FILE}" "${PHPSTAN_NAME}"
 	fi
 fi
 
