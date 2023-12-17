@@ -10,6 +10,7 @@ use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mvc\Template\ITemplateFactory;
 use PeServer\Core\Mvc\Template\TemplateParameter;
 use PeServer\Core\Web\UrlHelper;
+use PeServer\Core\WebSecurity;
 
 /**
  * アプリ用汎用テンプレート処理。
@@ -18,7 +19,8 @@ final class AppTemplate
 {
 	public function __construct(
 		private AppConfiguration $config,
-		private ITemplateFactory $templateFactory
+		private ITemplateFactory $templateFactory,
+		private WebSecurity $webSecurity,
 	) {
 	}
 
@@ -34,7 +36,7 @@ final class AppTemplate
 	 */
 	private function buildTemplate(string $baseName, string $templateName, array $params, HttpStatus $status): string
 	{
-		$template = $this->templateFactory->createTemplate(new AppTemplateOptions('template' . DIRECTORY_SEPARATOR . $baseName, new UrlHelper('')));
+		$template = $this->templateFactory->createTemplate(new AppTemplateOptions('template' . DIRECTORY_SEPARATOR . $baseName, new UrlHelper(''), $this->webSecurity));
 		$result = $template->build($templateName . '.tpl', new TemplateParameter($status, $params, []));
 
 		return $result;

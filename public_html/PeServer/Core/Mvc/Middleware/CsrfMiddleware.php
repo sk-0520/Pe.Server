@@ -12,7 +12,7 @@ use PeServer\Core\Mvc\Middleware\IMiddleware;
 use PeServer\Core\Mvc\Middleware\MiddlewareArgument;
 use PeServer\Core\Mvc\Middleware\MiddlewareResult;
 use PeServer\Core\Regex;
-use PeServer\Core\Security;
+use PeServer\Core\WebSecurity;
 use PeServer\Core\Throws\NotImplementedException;
 
 /**
@@ -34,6 +34,7 @@ class CsrfMiddleware implements IMiddleware
 	#endregion
 
 	public function __construct(
+		private WebSecurity $webSecurity,
 		private ILogger $logger,
 	) {
 		$this->regex = new Regex();
@@ -48,17 +49,17 @@ class CsrfMiddleware implements IMiddleware
 	 */
 	protected function getSessionKey(): string
 	{
-		return Security::CSRF_SESSION_KEY;
+		return $this->webSecurity->getCsrfKind(WebSecurity::CSRF_KIND_SESSION_KEY);
 	}
 
 	/**
-	 * CSRFとして有効なヘッダ名を返す。
+	 * CSRFとして有効なHTTPヘッダ名を返す。
 	 *
 	 * @return non-empty-string
 	 */
 	protected function getHeaderName(): string
 	{
-		return Security::CSRF_HEADER_NAME;
+		return $this->webSecurity->getCsrfKind(WebSecurity::CSRF_KIND_HEADER_NAME);
 	}
 
 	/**
@@ -68,7 +69,7 @@ class CsrfMiddleware implements IMiddleware
 	 */
 	protected function getRequestKey(): string
 	{
-		return Security::CSRF_REQUEST_KEY;
+		return $this->webSecurity->getCsrfKind(WebSecurity::CSRF_KIND_REQUEST_NAME);
 	}
 
 	/**

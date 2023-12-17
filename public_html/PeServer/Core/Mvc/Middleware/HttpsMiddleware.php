@@ -12,7 +12,7 @@ use PeServer\Core\Mvc\Middleware\IMiddleware;
 use PeServer\Core\Mvc\Middleware\MiddlewareArgument;
 use PeServer\Core\Mvc\Middleware\MiddlewareResult;
 use PeServer\Core\Regex;
-use PeServer\Core\Security;
+use PeServer\Core\WebSecurity;
 use PeServer\Core\Throws\NotImplementedException;
 
 /**

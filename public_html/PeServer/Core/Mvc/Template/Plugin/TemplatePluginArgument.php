@@ -12,6 +12,7 @@ use PeServer\Core\Store\SpecialStore;
 use PeServer\Core\Store\Stores;
 use PeServer\Core\Store\TemporaryStore;
 use PeServer\Core\Web\IUrlHelper;
+use PeServer\Core\WebSecurity;
 
 class TemplatePluginArgument
 {
@@ -22,6 +23,7 @@ class TemplatePluginArgument
 	 * @param string $rootDirectoryPath ルートディレクトリ。
 	 * @param string $baseDirectoryPath ベースディレクトリ。
 	 * @param IUrlHelper $urlHelper
+	 * @param WebSecurity $webSecurity
 	 * @param Environment $environment
 	 */
 	public function __construct(
@@ -29,6 +31,7 @@ class TemplatePluginArgument
 		public string $rootDirectoryPath,
 		public string $baseDirectoryPath,
 		public IUrlHelper $urlHelper,
+		public WebSecurity $webSecurity,
 		public Stores $stores,
 		public Environment $environment
 	) {

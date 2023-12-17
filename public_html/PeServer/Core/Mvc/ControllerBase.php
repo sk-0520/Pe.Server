@@ -28,6 +28,7 @@ use PeServer\Core\Web\Url;
 use PeServer\Core\Web\UrlPath;
 use PeServer\Core\Web\UrlQuery;
 use PeServer\Core\Web\UrlUtility;
+use PeServer\Core\WebSecurity;
 
 /**
  * コントローラ基底処理。
@@ -54,6 +55,8 @@ abstract class ControllerBase
 	protected ITemplateFactory $templateFactory;
 	/** @readonly */
 	protected IUrlHelper $urlHelper;
+	/** @readonly */
+	protected WebSecurity $webSecurity;
 
 	/** コントローラ内で今輝いてるロジック。よくないんよなぁ。 */
 	protected ?LogicBase $logic = null;
@@ -71,6 +74,7 @@ abstract class ControllerBase
 		$this->logicFactory = $argument->logicFactory;
 		$this->templateFactory = $argument->templateFactory;
 		$this->urlHelper = $argument->urlHelper;
+		$this->webSecurity = $argument->webSecurity;
 		$this->logger = $argument->logger;
 		$this->loggerFactory = $argument->loggerFactory;
 	}
@@ -196,9 +200,10 @@ abstract class ControllerBase
 		TemplateParameter $templateParameter,
 		array $headers,
 		ITemplateFactory $templateFactory,
-		IUrlHelper $urlHelper
+		IUrlHelper $urlHelper,
+		WebSecurity $webSecurity,
 	): ViewActionResult {
-		return new ViewActionResult($templateBaseName, $actionName, $templateParameter, $headers, $templateFactory, $urlHelper);
+		return new ViewActionResult($templateBaseName, $actionName, $templateParameter, $headers, $templateFactory, $urlHelper, $webSecurity);
 	}
 
 	/**
@@ -223,7 +228,7 @@ abstract class ControllerBase
 
 		$templateDirPath = Text::replace($controllerBaseName, '\\', DIRECTORY_SEPARATOR);
 
-		return $this->createViewActionResult($templateDirPath, $action, $parameter, $this->getResponseHeaders(), $this->templateFactory, $this->urlHelper);
+		return $this->createViewActionResult($templateDirPath, $action, $parameter, $this->getResponseHeaders(), $this->templateFactory, $this->urlHelper, $this->webSecurity);
 	}
 
 	/**

@@ -25,6 +25,7 @@ use PeServer\Core\Mvc\Template\TemplateParameter;
 use PeServer\Core\Serialization\JsonSerializer;
 use PeServer\Core\Text;
 use PeServer\Core\Web\IUrlHelper;
+use PeServer\Core\WebSecurity;
 use Throwable;
 
 final class AppErrorHandler extends ErrorHandler
@@ -43,6 +44,7 @@ final class AppErrorHandler extends ErrorHandler
 		private IResponsePrinterFactory $responsePrinterFactory,
 		private AppConfiguration $config,
 		private IUrlHelper $urlHelper,
+		private WebSecurity $webSecurity,
 		?JsonSerializer $jsonSerializer,
 		private Environment $environment,
 		ILogger $logger
@@ -126,6 +128,7 @@ final class AppErrorHandler extends ErrorHandler
 					$rootDir,
 					$baseDir,
 					$this->urlHelper,
+					$this->webSecurity,
 					Path::combine(Directory::getTemporaryDirectory(), 'PeServer-App')
 				);
 				$template = $this->templateFactory->createTemplate($options);

@@ -8,7 +8,7 @@ use PeServer\Core\Collections\Arr;
 use PeServer\Core\Html\HtmlDocument;
 use PeServer\Core\Mvc\Template\Plugin\TemplateFunctionBase;
 use PeServer\Core\Mvc\Template\Plugin\TemplatePluginArgument;
-use PeServer\Core\Security;
+use PeServer\Core\WebSecurity;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\NotImplementedException;
 
@@ -33,7 +33,7 @@ class CsrfFunction extends TemplateFunctionBase
 	{
 		// このタイミングではセッション処理完了を期待している
 
-		if (!$this->argument->stores->session->tryGet(Security::CSRF_SESSION_KEY, $csrfToken)) {
+		if (!$this->argument->stores->session->tryGet($this->argument->webSecurity->getCsrfKind(WebSecurity::CSRF_KIND_SESSION_KEY), $csrfToken)) {
 			return Text::EMPTY;
 		}
 		/** @var string $csrfToken */
@@ -47,8 +47,8 @@ class CsrfFunction extends TemplateFunctionBase
 			case 'id':
 				$element = $dom->addTagElement('meta');
 
-				$element->setAttribute('id', Security::CSRF_REQUEST_ID);
-				$element->setAttribute('name', Security::CSRF_REQUEST_ID);
+				$element->setAttribute('id', $this->argument->webSecurity->getCsrfKind(WebSecurity::CSRF_KIND_REQUEST_ID));
+				$element->setAttribute('name', $this->argument->webSecurity->getCsrfKind(WebSecurity::CSRF_KIND_REQUEST_ID));
 				$element->setAttribute('content', $csrfToken);
 				break;
 
@@ -56,7 +56,7 @@ class CsrfFunction extends TemplateFunctionBase
 				$element = $dom->addTagElement('input');
 
 				$element->setAttribute('type', 'hidden');
-				$element->setAttribute('name', Security::CSRF_REQUEST_KEY);
+				$element->setAttribute('name', $this->argument->webSecurity->getCsrfKind(WebSecurity::CSRF_KIND_REQUEST_NAME));
 				$element->setAttribute('value', $csrfToken);
 				break;
 

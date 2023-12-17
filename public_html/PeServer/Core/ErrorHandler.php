@@ -48,6 +48,9 @@ class ErrorHandler
 	#[Inject] //@phpstan-ignore-next-line [INJECT]
 	private IResponsePrinterFactory $responsePrinterFactory;
 
+	#[Inject] //@phpstan-ignore-next-line [INJECT]
+	private WebSecurity $webSecurity;
+
 	#endregion
 
 	public function __construct(
@@ -273,6 +276,7 @@ class ErrorHandler
 			__DIR__,
 			'template',
 			UrlHelper::none(),
+			$this->webSecurity,
 			Path::combine(Directory::getTemporaryDirectory(), 'PeServer-Core')
 		);
 		$template = $this->templateFactory->createTemplate($options);

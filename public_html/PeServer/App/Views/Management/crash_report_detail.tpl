@@ -53,6 +53,8 @@
 
 	<section>
 		<form method="post" action="/management/crash-report/{$values.detail->sequence}">
+			{csrf}
+
 			<h2>開発用</h2>
 			<dl class="input">
 				<dt>メモ</dt>
