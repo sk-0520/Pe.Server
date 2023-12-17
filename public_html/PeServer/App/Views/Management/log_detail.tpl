@@ -7,6 +7,7 @@
 			<ul class="inline">
 				<li>
 					<form method="post">
+						{csrf}
 						<button>ダウンロード</button>
 					</form>
 				</li>
