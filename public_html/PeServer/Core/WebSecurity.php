@@ -70,7 +70,7 @@ class WebSecurity
 
 		$algorithm = $this->getCsrfTokenHash();
 		$hash = Cryptography::generateHashString($algorithm, new Binary($sessionId));
-		if(Text::isNullOrEmpty($hash)) {
+		if (Text::isNullOrEmpty($hash)) {
 			throw new SessionException('CSRFトークン生成失敗');
 		}
 

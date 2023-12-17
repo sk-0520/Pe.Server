@@ -19,7 +19,7 @@ use PeServer\App\Controllers\Page\PluginController;
 use PeServer\App\Controllers\Page\ToolController;
 use PeServer\App\Models\Middleware\AccessLogMiddleware;
 use PeServer\App\Models\Middleware\AdministratorAccountFilterMiddleware;
-use PeServer\App\Models\Middleware\Api\ApiAcaoMiddleware;
+use PeServer\App\Models\Middleware\Api\ApiCorsMiddleware;
 use PeServer\App\Models\Middleware\Api\ApiAdministratorAccountFilterMiddleware;
 use PeServer\App\Models\Middleware\Api\ApiUserAccountFilterMiddleware;
 use PeServer\App\Models\Middleware\DevelopmentMiddleware;
@@ -189,19 +189,19 @@ final class AppRouteSetting extends RouteSetting
 					->addAction('initialize', HttpMethod::Post, 'initialize')
 					->addAction('administrator', HttpMethod::Post, 'administrator')
 				/* AUTO-FORMAT */,
-				(new Route('api/plugin', PluginApiController::class, [ApiAcaoMiddleware::class]))
+				(new Route('api/plugin', PluginApiController::class, [ApiCorsMiddleware::class]))
 					->addAction('exists', HttpMethod::Post, 'exists')
 					->addAction('generate-plugin-id', HttpMethod::gets(), 'generate_plugin_id')
 					->addAction('information', HttpMethod::Post, 'information')
 				/* AUTO-FORMAT */,
-				(new Route('api/application', ApplicationApiController::class, [ApiAcaoMiddleware::class]))
+				(new Route('api/application', ApplicationApiController::class, [ApiCorsMiddleware::class]))
 					->addAction('feedback', HttpMethod::Post, 'feedback')
 					->addAction('crash-report', HttpMethod::Post, 'crash_report')
 					->addAction('version/update', HttpMethod::Get, 'version_update')
 				/* AUTO-FORMAT */,
-				(new Route('api/account', AccountApiController::class, [ApiAcaoMiddleware::class, ApiUserAccountFilterMiddleware::class, ApiAdministratorAccountFilterMiddleware::class]))
+				(new Route('api/account', AccountApiController::class, [ApiCorsMiddleware::class, ApiUserAccountFilterMiddleware::class, ApiAdministratorAccountFilterMiddleware::class]))
 				/* AUTO-FORMAT */,
-				(new Route('api/administrator', AdministratorApiController::class, [ApiAcaoMiddleware::class, ApiAdministratorAccountFilterMiddleware::class]))
+				(new Route('api/administrator', AdministratorApiController::class, [ApiCorsMiddleware::class, ApiAdministratorAccountFilterMiddleware::class]))
 					->addAction('backup', HttpMethod::Post, 'backup')
 					->addAction('delete-old-data', HttpMethod::Post, 'delete_old_data')
 					->addAction('cache-rebuild', HttpMethod::Post, 'cache_rebuild')
