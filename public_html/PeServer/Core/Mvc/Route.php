@@ -42,8 +42,7 @@ class Route
 	/**
 	 * クラス完全名。
 	 *
-	 * @var string
-	 * @phpstan-var class-string<ControllerBase>
+	 * @var class-string<ControllerBase>
 	 * @readonly
 	 */
 	private string $className;
@@ -57,15 +56,13 @@ class Route
 	/**
 	 * ミドルウェア一覧。
 	 *
-	 * @var array<IMiddleware|string>
-	 * @phpstan-var array<IMiddleware|class-string<IMiddleware>>
+	 * @var array<IMiddleware|class-string<IMiddleware>>
 	 */
 	private array $baseMiddleware;
 	/**
 	 * 終了ミドルウェア一覧。
 	 *
-	 * @var array<IShutdownMiddleware|string>
-	 * @phpstan-var array<IShutdownMiddleware|class-string<IShutdownMiddleware>>
+	 * @var array<IShutdownMiddleware|class-string<IShutdownMiddleware>>
 	 */
 	private array $baseShutdownMiddleware;
 
@@ -77,12 +74,9 @@ class Route
 	 * ルーティング情報にコントローラを登録
 	 *
 	 * @param string $path URLとしてのパス。$this->excludeIndexPattern に一致しない場合に index アクションが自動登録される
-	 * @param string $className 使用されるクラス完全名
-	 * @phpstan-param class-string<ControllerBase> $className 使用されるクラス完全名
-	 * @param array<IMiddleware|string> $middleware ベースとなるミドルウェア。
-	 * @phpstan-param array<IMiddleware|class-string<IMiddleware>> $middleware
-	 * @param array<IShutdownMiddleware|string> $shutdownMiddleware ベースとなる終了ミドルウェア。
-	 * @phpstan-param array<IShutdownMiddleware|class-string<IShutdownMiddleware>> $shutdownMiddleware
+	 * @param class-string<ControllerBase> $className 使用されるクラス完全名
+	 * @param array<IMiddleware|class-string<IMiddleware>> $middleware ベースとなるミドルウェア。
+	 * @param array<IShutdownMiddleware|class-string<IShutdownMiddleware>> $shutdownMiddleware ベースとなる終了ミドルウェア。
 	 */
 	public function __construct(string $path, string $className, array $middleware = [], array $shutdownMiddleware = [])
 	{

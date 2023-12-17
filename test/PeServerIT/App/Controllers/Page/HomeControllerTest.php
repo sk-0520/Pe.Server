@@ -22,7 +22,6 @@ use Throwable;
 class HomeControllerTest extends ItControllerClass
 {
 	#region common logion
-
 	use ItLoginTrait;
 
 	public static function provider_it_notLogin()

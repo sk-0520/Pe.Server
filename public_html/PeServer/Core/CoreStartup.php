@@ -38,6 +38,8 @@ use PeServer\Core\Store\TemporaryStore;
 use PeServer\Core\Throws\NotImplementedException;
 use PeServer\Core\Web\IUrlHelper;
 use PeServer\Core\Web\UrlHelper;
+use PeServer\Core\WebSecurity;
+
 
 /**
  * スタートアップ処理。
@@ -84,6 +86,8 @@ class CoreStartup
 
 		$container->registerValue($environment, Environment::class);
 		$container->registerValue($this->definedDirectory, DefinedDirectory::class);
+
+		$container->registerClass(WebSecurity::class);
 
 		$container->registerMapping(ILogProvider::class, LogProvider::class, DiItem::LIFECYCLE_SINGLETON);
 		$container->registerMapping(ILoggerFactory::class, LoggerFactory::class);
@@ -133,10 +137,11 @@ class CoreStartup
 		/** @var SpecialStore */
 		$specialStore = Arr::getOr($options, 'special_store', new SpecialStore());
 		$container->registerValue($specialStore, SpecialStore::class);
-		$container->add(Stores::class, DiItem::factory(fn ($di) => new Stores($di->get(SpecialStore::class), StoreOptions::default()), DiItem::LIFECYCLE_SINGLETON));
+		$container->add(Stores::class, DiItem::factory(fn ($di) => new Stores($di->get(SpecialStore::class), StoreOptions::default(), $di->get(WebSecurity::class)), DiItem::LIFECYCLE_SINGLETON));
 		$container->add(CookieStore::class, DiItem::factory(fn ($di) => $di->get(Stores::class)->cookie));
 		$container->add(SessionStore::class, DiItem::factory(fn ($di) => $di->get(Stores::class)->session));
 		$container->add(TemporaryStore::class, DiItem::factory(fn ($di) => $di->get(Stores::class)->temporary));
+
 
 		$method = $specialStore->getRequestMethod();
 		$requestPath = new RequestPath($specialStore->getServer('REQUEST_URI'), $container->get(IUrlHelper::class));

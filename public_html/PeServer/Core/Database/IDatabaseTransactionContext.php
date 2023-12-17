@@ -45,8 +45,7 @@ interface IDatabaseTransactionContext extends IDatabaseContext, IDisposable
 	/**
 	 * トランザクションラップ処理。
 	 *
-	 * @param callable $callback 実際の処理。戻り値が真の場合にコミット、偽ならロールバック。
-	 * @phpstan-param callable(IDatabaseContext $context): (bool) $callback
+	 * @param callable(IDatabaseContext $context): bool $callback 実際の処理。戻り値が真の場合にコミット、偽ならロールバック。
 	 * @return bool コミットされたか。正常系としてのコミット・ロールバック処理の戻りであり、異常系は例外が投げられる。
 	 * @throws DatabaseException
 	 */

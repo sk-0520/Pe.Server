@@ -12,10 +12,12 @@ use PeServerTest\TestClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use TypeError;
 
-interface TestI {
-	function get(): string;
+interface TestI
+{
+	public function get(): string;
 }
-class TestA implements TestI {
+class TestA implements TestI
+{
 	public function __construct(
 		private string $var
 	) {
@@ -25,7 +27,8 @@ class TestA implements TestI {
 		return $this->var;
 	}
 }
-class TestB extends TestA {
+class TestB extends TestA
+{
 	public function __construct(
 		string $var
 	) {
@@ -34,7 +37,7 @@ class TestB extends TestA {
 }
 class VectorTest extends TestClass
 {
-	function test_create()
+	public function test_create()
 	{
 		$list1 = new Vector(TypeUtility::TYPE_INTEGER, null, true);
 		$this->assertSame(0, $list1->count());
@@ -43,7 +46,7 @@ class VectorTest extends TestClass
 		$this->assertSame(3, $list2->count());
 	}
 
-	function test_create_no_throw()
+	public function test_create_no_throw()
 	{
 		$list1 = Vector::create([5], false);
 		$this->assertSame(1, $list1->count());
@@ -54,14 +57,14 @@ class VectorTest extends TestClass
 		$this->assertSame(10, $list2[0]);
 	}
 
-	function test_create_throw()
+	public function test_create_throw()
 	{
 		$this->expectException(ArgumentException::class);
 		Vector::create([1 => 10], false);
 		$this->fail();
 	}
 
-	function test_add()
+	public function test_add()
 	{
 		/** @var Vector<int> */
 		$list = new Vector(TypeUtility::TYPE_INTEGER, null, true);
@@ -75,14 +78,14 @@ class VectorTest extends TestClass
 		$this->assertSame(2, $list[1]);
 	}
 
-	function test_add_type()
+	public function test_add_type()
 	{
 		$list1 = Vector::create([1], false);
 		$list1->add(2);
 		try {
 			$list1->add('3');
 			$this->fail();
-		} catch(TypeError $err) {
+		} catch (TypeError $err) {
 			$this->success();
 		}
 
@@ -91,23 +94,23 @@ class VectorTest extends TestClass
 
 		try {
 			$list2->add(new TestB('B'));
-		} catch(TypeError $err) {
+		} catch (TypeError $err) {
 			$this->success();
 		}
 
 		try {
-			$list2->add(new class('I') implements TestI {
+			$list2->add(new class ('I') implements TestI {
 				public function get(): string
 				{
 					return 'I';
 				}
 			});
-		} catch(TypeError $err) {
+		} catch (TypeError $err) {
 			$this->success();
 		}
 	}
 
-	function test_addRange()
+	public function test_addRange()
 	{
 		/** @var Vector<int> */
 		$list = Vector::create([1, 2, 3]);
@@ -122,7 +125,7 @@ class VectorTest extends TestClass
 		$this->assertSame(6, $list[5]);
 	}
 
-	function test_addRange_no_throw()
+	public function test_addRange_no_throw()
 	{
 		$list = Vector::create([1, 2, 3]);
 
@@ -131,7 +134,7 @@ class VectorTest extends TestClass
 		$this->assertSame(10, $list[3]);
 	}
 
-	function test_addRange_throw()
+	public function test_addRange_throw()
 	{
 		$list = Vector::create([1, 2, 3]);
 
@@ -140,7 +143,7 @@ class VectorTest extends TestClass
 		$this->fail();
 	}
 
-	function test_offsetExists()
+	public function test_offsetExists()
 	{
 		$list = Vector::create([1, 2, 3]);
 		$this->assertFalse(isset($list[-1]));
@@ -150,7 +153,7 @@ class VectorTest extends TestClass
 		$this->assertFalse(isset($list[3]));
 	}
 
-	function test_offsetGet()
+	public function test_offsetGet()
 	{
 		$list = Vector::create([1, 2, 3]);
 		$this->assertSame(1, $list[0]);
@@ -158,14 +161,14 @@ class VectorTest extends TestClass
 		$this->assertSame(3, $list[2]);
 	}
 
-	function test_offsetGet_null_throw()
+	public function test_offsetGet_null_throw()
 	{
 		$list = Vector::create([1, 2, 3]);
 		$this->expectException(TypeError::class);
 		$list[null];
 	}
 
-	function test_offsetGet_not_int_throw()
+	public function test_offsetGet_not_int_throw()
 	{
 		$list = Vector::create([1, 2, 3]);
 		$this->expectException(TypeError::class);
@@ -181,7 +184,7 @@ class VectorTest extends TestClass
 	}
 
 	#[DataProvider('provider_offsetGet_throw')]
-	function test_offsetGet_throw(int $index)
+	public function test_offsetGet_throw(int $index)
 	{
 		$list = Vector::create([1, 2, 3]);
 		$this->expectException(IndexOutOfRangeException::class);
@@ -189,7 +192,7 @@ class VectorTest extends TestClass
 		$this->fail();
 	}
 
-	function test_offsetSet()
+	public function test_offsetSet()
 	{
 		$list = Vector::create([1, 2, 3]);
 		$this->assertSame(1, $list[0]);
@@ -218,7 +221,7 @@ class VectorTest extends TestClass
 	}
 
 	#[DataProvider('provider_offsetSet_throw')]
-	function test_offsetSet_throw(int $index)
+	public function test_offsetSet_throw(int $index)
 	{
 		$list = Vector::create([1, 2, 3]);
 		$this->expectException(IndexOutOfRangeException::class);
@@ -226,7 +229,7 @@ class VectorTest extends TestClass
 		$this->fail();
 	}
 
-	function test_offsetUnset()
+	public function test_offsetUnset()
 	{
 		$list = Vector::create([1, 2, 3]);
 
@@ -240,7 +243,7 @@ class VectorTest extends TestClass
 		$this->assertSame(0, $list->count());
 	}
 
-	function test_offsetUnset_index_throw()
+	public function test_offsetUnset_index_throw()
 	{
 		$list = Vector::create([1, 2, 3]);
 		$this->expectException(IndexOutOfRangeException::class);
@@ -248,7 +251,7 @@ class VectorTest extends TestClass
 		$this->fail();
 	}
 
-	function test_offsetUnset_out_throw()
+	public function test_offsetUnset_out_throw()
 	{
 		$list = Vector::create([1, 2, 3]);
 		$this->expectException(IndexOutOfRangeException::class);
@@ -256,7 +259,7 @@ class VectorTest extends TestClass
 		$this->fail();
 	}
 
-	function test_getArray()
+	public function test_getArray()
 	{
 		$list = Vector::create([1, 2, 3]);
 		$array = $list->getArray();
@@ -274,7 +277,7 @@ class VectorTest extends TestClass
 		}
 	}
 
-	function test_getIterator()
+	public function test_getIterator()
 	{
 		$expected = [1, 2, 3];
 		$list = Vector::create($expected);

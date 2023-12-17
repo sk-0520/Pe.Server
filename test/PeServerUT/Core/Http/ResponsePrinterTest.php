@@ -30,7 +30,7 @@ class ResponsePrinterTest extends TestClass
 		);
 	}
 
-	static function provider_getContentLength()
+	public static function provider_getContentLength()
 	{
 		return [
 			[
@@ -64,7 +64,7 @@ class ResponsePrinterTest extends TestClass
 	}
 
 	#[DataProvider('provider_getContentLength')]
-	function test_getContentLength(Binary|int $expected, $input)
+	public function test_getContentLength(Binary|int $expected, $input)
 	{
 		$req = $this->createRequest();
 		$res = new HttpResponse();
@@ -79,7 +79,7 @@ class ResponsePrinterTest extends TestClass
 		}
 	}
 
-	static function provider_output()
+	public static function provider_output()
 	{
 		return [
 			[
@@ -113,7 +113,7 @@ class ResponsePrinterTest extends TestClass
 	}
 
 	#[DataProvider('provider_output')]
-	function test_output(Binary|null $expected, $input)
+	public function test_output(Binary|null $expected, $input)
 	{
 		$req = $this->createRequest();
 		$res = new HttpResponse();

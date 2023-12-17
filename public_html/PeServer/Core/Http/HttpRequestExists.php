@@ -30,7 +30,7 @@ class HttpRequestExists
 	 *
 	 * @param string $name パラメータ名。
 	 * @param boolean $exists 存在するか。
-	 * @param integer $kind 種別。
+	 * @param int $kind 種別。
 	 * @phpstan-param HttpRequestExists::KIND_* $kind 種別。
 	 */
 	public function __construct(

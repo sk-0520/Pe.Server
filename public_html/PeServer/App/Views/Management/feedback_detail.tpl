@@ -54,6 +54,8 @@
 
 	<section>
 		<form method="post" action="/management/feedback/{$values.detail->sequence}">
+			{csrf}
+
 			<h2>開発用</h2>
 			<dl class="input">
 				<dt>メモ</dt>

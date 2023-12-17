@@ -11,7 +11,8 @@ use PeServerTest\TestClass;
 
 class No_2_010_InitializeTest extends TestClass
 {
-	public function test() {
+	public function test()
+	{
 		$hc = new HttpClient(new HttpClientOptions());
 
 		$initializeUrl = Url::parse(self::localServer('/api/development/initialize'));

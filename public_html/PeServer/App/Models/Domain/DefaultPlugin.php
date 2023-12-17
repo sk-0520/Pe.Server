@@ -14,13 +14,10 @@ class DefaultPlugin
 	/**
 	 * 生成。
 	 *
-	 * @param string $pluginId
-	 * @phpstan-param non-empty-string $pluginId
-	 * @param string $pluginName
-	 * @phpstan-param non-empty-string $pluginName
-	 * @param string $checkUrl
-	 * @param string $projectUrl
-	 * @phpstan-param non-empty-string $projectUrl
+	 * @param non-empty-string $pluginId
+	 * @param non-empty-string $pluginName
+	 * @param non-empty-string $checkUrl
+	 * @param non-empty-string $projectUrl
 	 * @param string[] $descriptions
 	 * @param string[] $categories
 	 */
@@ -47,6 +44,7 @@ class DefaultPlugin
 			new self(
 				'4524fc23-ebb9-4c79-a26b-8f472c05095e',
 				'Pe.Plugins.DefaultTheme',
+				//@phpstan-ignore-next-line
 				'',
 				'https://github.com/sk-0520/Pe',
 				['本体同梱標準テーマ。', 'ダウンロード先なし。',],

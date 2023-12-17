@@ -63,7 +63,7 @@ final class AppCryptography
 	 * 一意性はないので暗号化データの絞り込みに使用する想定。
 	 *
 	 * @param string $data
-	 * @return integer
+	 * @return int
 	 */
 	public function toMark(string $data): int
 	{

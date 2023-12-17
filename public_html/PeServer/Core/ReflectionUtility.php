@@ -59,8 +59,7 @@ abstract class ReflectionUtility
 	 *
 	 * @param string|object $input
 	 * @phpstan-param class-string|object $input
-	 * @param string $method
-	 * @phpstan-param non-empty-string $method
+	 * @param non-empty-string $method
 	 */
 	public static function existsMethod(object|string $input, string $method): bool
 	{

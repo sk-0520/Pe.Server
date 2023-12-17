@@ -17,7 +17,7 @@ use PeServerTest\TestClass;
 
 class ImageInformationTest extends TestClass
 {
-	const DIR = __DIR__ . DIRECTORY_SEPARATOR . 'ImageInformationTest' . '.data' . DIRECTORY_SEPARATOR;
+	private const DIR = __DIR__ . DIRECTORY_SEPARATOR . 'ImageInformationTest' . '.data' . DIRECTORY_SEPARATOR;
 
 	public function test_load_bmp()
 	{

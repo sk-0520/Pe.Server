@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServerUT\Core;
 
-use \Error;
+use Error;
 use PeServer\Core\Archiver;
 use PeServer\Core\AutoLoader;
 use PeServer\Core\Binary;

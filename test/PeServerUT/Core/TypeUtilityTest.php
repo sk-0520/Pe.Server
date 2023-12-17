@@ -173,7 +173,7 @@ class TypeUtilityTest extends TestClass
 		}
 	}
 
-	function test_getType()
+	public function test_getType()
 	{
 		$tests = [
 			new Data(TypeUtility::TYPE_INTEGER, 1),

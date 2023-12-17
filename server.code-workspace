@@ -176,7 +176,8 @@
 			"santacodes.santacodes-region-viewer",
 			"aswinkumar863.smarty-template-support",
 			"yusukehirao.vscode-markuplint",
-			"timonwong.shellcheck"
+			"timonwong.shellcheck",
+			"sanderronde.phpstan-vscode"
 		],
 	}
 }

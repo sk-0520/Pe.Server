@@ -12,7 +12,7 @@ PPLINT_URL=https://github.com/php-parallel-lint/PHP-Parallel-Lint/releases/downl
 PPLINT_NAME=parallel-lint.phar
 PPLINT_FILE=${PPLINT_NAME}.${PPLINT_VERSION}
 
-PHPSTAN_VERSION=1.10.44
+PHPSTAN_VERSION=1.10.50
 PHPSTAN_URL=https://github.com/phpstan/phpstan/releases/download/${PHPSTAN_VERSION}/phpstan.phar
 PHPSTAN_NAME=phpstan.phar
 PHPSTAN_FILE=${PHPSTAN_NAME}.${PHPSTAN_VERSION}
@@ -35,6 +35,7 @@ if ! common::exists_option 'ignore-phpstan' ; then
 	common::download_phar_if_not_exists "${PHPSTAN_FILE}" "${PHPSTAN_NAME}" "${PHPSTAN_URL}"
 	if [ "${COMMON_DOWNLOAD_PHAR_RESULT}" = "DOWNLOAD" ] ; then
 		curl --output "${PHPSTAN_BLEEDING_EDGE_NAME}" --location "${PHPSTAN_BLEEDING_EDGE_URL}"
+		cp "${PHPSTAN_FILE}" "${PHPSTAN_NAME}"
 	fi
 fi
 
@@ -72,7 +73,7 @@ if ! common::exists_option 'ignore-phpcs' ; then
 	fi
 
 
-	PHPCS_OPTIONS_DEFAULT="../public_html/PeServer --standard=phpcs_ruleset.xml"
+	PHPCS_OPTIONS_DEFAULT="../public_html/PeServer ../test/PeServer* --standard=phpcs_ruleset.xml"
 
 	if common::exists_option 'phpcs-fix' ; then
 		logger::info "!!修正処理実施!!"

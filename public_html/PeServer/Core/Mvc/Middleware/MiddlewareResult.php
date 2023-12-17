@@ -36,7 +36,7 @@ abstract class MiddlewareResult
 	/**
 	 * 生成。
 	 *
-	 * @param integer $kind
+	 * @param int $kind
 	 * @phpstan-param self::RESULT_KIND_* $kind
 	 */
 	protected function __construct(

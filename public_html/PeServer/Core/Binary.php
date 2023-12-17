@@ -243,7 +243,7 @@ readonly final class Binary implements ArrayAccess, IteratorAggregate, Countable
 	 *
 	 * `strlen` ラッパー。
 	 *
-	 * @return integer
+	 * @return int
 	 * @phpstan-return UnsignedIntegerAlias
 	 * @see https://www.php.net/manual/function.strlen.php
 	 */

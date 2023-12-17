@@ -19,9 +19,9 @@ class ItHtmlDocument extends HtmlDocument
 		$doc = new self();
 		if (is_string($html)) {
 			$result = $doc->raw->loadHTML($html);
-		} else if ($html instanceof Binary) {
+		} elseif ($html instanceof Binary) {
 			$result = $doc->raw->loadHTML($html->raw);
-		} else if ($html instanceof ICallbackContent) {
+		} elseif ($html instanceof ICallbackContent) {
 			$result = $doc->raw->loadHTML(OutputBuffer::get(fn () => $html->output())->raw);
 		}
 		if ($result == false) {

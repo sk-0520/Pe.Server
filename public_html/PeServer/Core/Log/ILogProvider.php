@@ -37,8 +37,7 @@ interface ILogProvider
 	/**
 	 * ロガーの生成。
 	 *
-	 * @param string $header
-	 * @phpstan-param non-empty-string $header
+	 * @param non-empty-string $header
 	 * @param int $baseTraceIndex
 	 * @phpstan-param UnsignedIntegerAlias $baseTraceIndex
 	 * @return ILogger[]

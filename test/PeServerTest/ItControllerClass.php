@@ -18,6 +18,7 @@ use PeServer\App\Models\Setup\SetupRunner;
 use PeServer\Core\Binary;
 use PeServer\Core\Database\ConnectionSetting;
 use PeServer\Core\Database\DatabaseContext;
+use PeServer\Core\Database\DatabaseRowResult;
 use PeServer\Core\Database\DatabaseUtility;
 use PeServer\Core\DefinedDirectory;
 use PeServer\Core\DI\DiItem;
@@ -52,6 +53,8 @@ use PeServer\Core\Html\HtmlTextElement;
 use PeServer\Core\IO\File;
 use PeServer\Core\Log\LoggerFactory;
 use PeServer\Core\Log\NullLogger;
+use PeServer\Core\Mvc\Template\TemplateStore;
+use PeServer\Core\Store\TemporaryStore;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\DiContainerArgumentException;
@@ -69,6 +72,7 @@ use PeServerTest\ItSpecialStore as ItSpecialStore;
 use PeServerTest\ItActual;
 use PeServerTest\TestRouting;
 use PeServerTest\ItRoutingWithoutMiddleware;
+use PeServerTest\ItSetup;
 use Reflection;
 use ReflectionClass;
 use TypeError;
@@ -94,7 +98,7 @@ class ItControllerClass extends TestClass
 		}
 	}
 
-	protected function resetDatabase(IDiRegisterContainer $container): void
+	private function resetDatabase(IDiRegisterContainer $container): void
 	{
 		/** @var IDatabaseConnection */
 		$databaseConnection = $container->get(IDatabaseConnection::class);
@@ -105,7 +109,7 @@ class ItControllerClass extends TestClass
 
 			$container->remove(IDatabaseConnection::class);
 			$container->add(IDatabaseConnection::class, DiItem::factory(function () use ($connectionSetting, $databaseContext) {
-				return new class($connectionSetting, $databaseContext) implements IDatabaseConnection
+				return new class ($connectionSetting, $databaseContext) implements IDatabaseConnection
 				{
 					public function __construct(private ConnectionSetting $connectionSetting, private DatabaseContext $databaseContext)
 					{
@@ -156,7 +160,7 @@ class ItControllerClass extends TestClass
 	 * @param null|callable(ItSetup) $setup
 	 * @return ItActual
 	 */
-	protected function call(HttpMethod $httpMethod, string $path, ItOptions $options = new ItOptions(), ?callable $setup = null): ItActual
+	protected function call(HttpMethod $httpMethod, string $path, ItOptions $options = new ItOptions(), ?callable $setup = null, ItActual $previousActual = null): ItActual
 	{
 		$this->resetInitialize();
 
@@ -195,30 +199,53 @@ class ItControllerClass extends TestClass
 			}
 		}
 
+		if ($previousActual) {
+			/** @var AppConfiguration */
+			$config = $container->get(AppConfiguration::class);
+			/** @var CookieStore */
+			$cookie = $container->get(CookieStore::class);
+			/** @var TemporaryStore */
+			$currentTemporary = $container->get(TemporaryStore::class);
+			/** @var TemporaryStore */
+			$previousTemporary = $previousActual->container->get(TemporaryStore::class);
+
+			$reflection = new ReflectionClass(TemporaryStore::class);
+			$property = $reflection->getProperty('values');
+
+			$property->setValue($currentTemporary, $property->getValue($previousTemporary));
+		}
+
 		$container->remove(ResponsePrinter::class);
 		$container->add(ResponsePrinter::class, DiItem::class(ItResponsePrinter::class));
 
 		$useDatabase = 'useDatabase';
 		if (isset($this->$useDatabase) && $this->$useDatabase) {
-			$this->resetDatabase($container);
+			if (!$previousActual) {
+				$this->resetDatabase($container);
 
-			if ($setup) {
-				/** @var IDatabaseConnection */
-				$databaseConnection = $container->get(IDatabaseConnection::class);
-				$database = $databaseConnection->open();
-				$database->transaction(function (IDatabaseContext $context) use ($setup, $options, $container) {
-					$setup(new ItSetup($container, $context));
+				if ($setup) {
+					/** @var IDatabaseConnection */
+					$databaseConnection = $container->get(IDatabaseConnection::class);
+					$database = $databaseConnection->open();
+					$database->transaction(function (IDatabaseContext $context) use ($setup, $options, $container) {
+						$setup(new ItSetup($container, $context));
 
-					if (!$options->stores->enabledSetupUser) {
-						$usersEntityDao = new UsersEntityDao($context);
-						$usersEntityDao->updateUserState(
-							'00000000-0000-4000-0000-000000000000',
-							UserState::DISABLED
-						);
-					}
+						if (!$options->stores->enabledSetupUser) {
+							$usersEntityDao = new UsersEntityDao($context);
+							$usersEntityDao->updateUserState(
+								'00000000-0000-4000-0000-000000000000',
+								UserState::DISABLED
+							);
+						}
 
-					return true;
-				});
+						return true;
+					});
+				}
+			} else {
+				$previousDatabaseConnection = $previousActual->container->get(IDatabaseConnection::class);
+
+				$container->remove(IDatabaseConnection::class);
+				$container->add(IDatabaseConnection::class, DiItem::value($previousDatabaseConnection));
 			}
 		}
 
@@ -232,6 +259,11 @@ class ItControllerClass extends TestClass
 		}
 
 		return new ItActual($response, $container);
+	}
+
+	protected function getMaybeLatestAuditLog(IDatabaseContext $context): DatabaseRowResult
+	{
+		return $context->querySingle('select * from user_audit_logs order by sequence desc');
 	}
 
 	protected function assertStatus(HttpStatus $expected, ItActual $response): void
@@ -283,9 +315,10 @@ class ItControllerClass extends TestClass
 		}
 	}
 
-	protected function assertAttribute(string $expected, HtmlTagElement $element, string $attribute): void
+	protected function assertAttribute(string $expected, HtmlTagElement $element, string $attributeName): void
 	{
-		$this->assertSame($expected, $element->getAttribute($attribute));
+		$attributeValue = $element->getAttribute($attributeName);
+		$this->assertSame($expected, $attributeValue, $attributeValue);
 	}
 
 	protected function assertValue(string $expected, HtmlTagElement $element): void
@@ -298,19 +331,30 @@ class ItControllerClass extends TestClass
 		}
 	}
 
-	protected function assertVisibleCommonError(ItActual $response, array $errorItems)
+	protected function assertVisibleCommonError(array $errorItems, ItActual $response)
 	{
 		$root = $response->html->path()->collections(
 			"//main/div[contains(@class, 'common') and contains(@class, 'error')]"
 		);
-		$this->assertSame(1, $root->count());
+		$this->assertCount(1, $root);
 
-		$nodes = $response->html->path()->collections(
+		$targetElements = $response->html->path()->collections(
 			"//main/div[contains(@class, 'common') and contains(@class, 'error')]//li[contains(@class, 'error')]"
 		)->toArray();
-		$this->assertSame(count($nodes), count($errorItems));
-		for ($i = 0; $i < count($nodes); $i++) {
-			$this->assertTextNode($errorItems[$i], $nodes[$i]);
+		$this->assertSame(count($targetElements), count($errorItems));
+		for ($i = 0; $i < count($targetElements); $i++) {
+			$this->assertTextNode($errorItems[$i], $targetElements[$i]);
+		}
+	}
+
+	protected function assertVisibleTargetError(array $errorItems, string $name, ItActual $response)
+	{
+		$targetElements = $response->html->path()->collections(
+			"//main//form//*[@name='$name']//following-sibling::ul[contains(@class, 'value-error')]//li[contains(@class, 'error')]"
+		)->toArray();
+		$this->assertCount(count($errorItems), $targetElements);
+		for ($i = 0; $i < count($targetElements); $i++) {
+			$this->assertTextNode($errorItems[$i], $targetElements[$i]);
 		}
 	}
 

@@ -120,8 +120,7 @@ class Graphics extends DisposerBase
 	/**
 	 * ファイルから生成。
 	 *
-	 * @param string $path
-	 * @phpstan-param non-empty-string $path
+	 * @param non-empty-string $path
 	 * @return Graphics
 	 */
 	public static function open(string $path): self
@@ -245,7 +244,6 @@ class Graphics extends DisposerBase
 			throw new GraphicsException();
 		}
 
-		//@phpstan-ignore-next-line ↑が false だけのはずなんだけど true を捕まえてる感じ
 		return new self($result, true);
 	}
 

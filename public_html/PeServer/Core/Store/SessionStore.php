@@ -7,7 +7,7 @@ namespace PeServer\Core\Store;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\IO\Directory;
 use PeServer\Core\IO\IOUtility;
-use PeServer\Core\Security;
+use PeServer\Core\WebSecurity;
 use PeServer\Core\Store\CookieStores;
 use PeServer\Core\Store\SessionOptions;
 use PeServer\Core\Text;
@@ -54,7 +54,7 @@ class SessionStore
 	/**
 	 * セッション適用状態。
 	 *
-	 * @var integer
+	 * @var int
 	 * @phpstan-var self::APPLY_*
 	 */
 	private int $applyState = self::APPLY_NORMAL;
@@ -72,7 +72,7 @@ class SessionStore
 	 * @param SessionOptions $options セッション設定。
 	 * @param CookieStore $cookie Cookie 設定。
 	 */
-	public function __construct(SessionOptions $options, CookieStore $cookie)
+	public function __construct(SessionOptions $options, CookieStore $cookie, private WebSecurity $webSecurity)
 	{
 		if (Text::isNullOrWhiteSpace($options->name)) { //@phpstan-ignore-line [DOCTYPE]
 			throw new ArgumentException('$options->name');
@@ -95,9 +95,9 @@ class SessionStore
 	/**
 	 * セッション適用状態を設定。
 	 *
-	 * @param integer $state
-	 * @return integer
+	 * @param int $state
 	 * @phpstan-param self::APPLY_* $state
+	 * @return int
 	 * @phpstan-return self::APPLY_*
 	 */
 	public function setApplyState(int $state): int
@@ -111,8 +111,9 @@ class SessionStore
 
 	private function applyCore(): void
 	{
-		$csrfToken = Security::generateCsrfToken();
-		$this->set(Security::CSRF_SESSION_KEY, $csrfToken);
+		$csrfKey = $this->webSecurity->getCsrfKind(WebSecurity::CSRF_KIND_SESSION_KEY);
+		$csrfToken = $this->webSecurity->generateCsrfToken();
+		$this->set($csrfKey, $csrfToken);
 
 		$_SESSION = $this->values;
 

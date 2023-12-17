@@ -44,7 +44,6 @@ class LocalErrorDeserializeException extends DeserializeException
 
 class LocalErrorSerializer extends SerializerBase
 {
-
 	protected function saveImpl(array|object $value): Binary
 	{
 		throw new LocalErrorSerializerException();

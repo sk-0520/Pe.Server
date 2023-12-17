@@ -70,8 +70,7 @@ class HttpHeader
 	/**
 	 * HTTPヘッダ設定
 	 *
-	 * @param string $name ヘッダ名。
-	 * @phpstan-param non-empty-string $name
+	 * @param non-empty-string $name ヘッダ名。
 	 * @param string $value 値。
 	 * @throws ArgumentException ヘッダ名不正。
 	 */
@@ -85,8 +84,7 @@ class HttpHeader
 	/**
 	 * ヘッダに値一覧を設定。
 	 *
-	 * @param string $name ヘッダ名。
-	 * @phpstan-param non-empty-string $name
+	 * @param non-empty-string $name ヘッダ名。
 	 * @param string[] $values 値一覧。
 	 * @throws ArgumentException ヘッダ名不正。
 	 */
@@ -100,8 +98,7 @@ class HttpHeader
 	/**
 	 * ヘッダに値を追加。
 	 *
-	 * @param string $name ヘッダ名。
-	 * @phpstan-param non-empty-string $name
+	 * @param non-empty-string $name ヘッダ名。
 	 * @param string $value 値。
 	 * @throws ArgumentException HTTPヘッダ名不正。
 	 */
@@ -122,8 +119,7 @@ class HttpHeader
 	/**
 	 * ヘッダ名が存在するか。
 	 *
-	 * @param string $name ヘッダ名。
-	 * @phpstan-param non-empty-string $name
+	 * @param non-empty-string $name ヘッダ名。
 	 */
 	public function existsHeader(string $name): bool
 	{
@@ -149,14 +145,16 @@ class HttpHeader
 	/**
 	 * ヘッダ名一覧を取得。
 	 *
-	 * @return string[]
-	 * @phpstan-return non-empty-string[]
+	 * @return non-empty-string[]
 	 */
 	public function getHeaderNames(): array
 	{
 		$result = [];
 
 		foreach ($this->headers as $name => $_) {
+			if (Text::isNullOrWhiteSpace($name)) {
+				continue;
+			}
 			$result[] = $name;
 		}
 
@@ -166,8 +164,7 @@ class HttpHeader
 	/**
 	 * ヘッダの値を取得。
 	 *
-	 * @param string $name ヘッダ名。
-	 * @phpstan-param non-empty-string $name
+	 * @param non-empty-string $name ヘッダ名。
 	 * @return string[] 値一覧。
 	 * @throws KeyNotFoundException
 	 */
@@ -183,8 +180,7 @@ class HttpHeader
 	/**
 	 * ヘッダの削除。
 	 *
-	 * @param string $name ヘッダ名。
-	 * @phpstan-param non-empty-string $name
+	 * @param non-empty-string $name ヘッダ名。
 	 * @return bool 削除できたか。
 	 */
 	public function clearHeader(string $name): bool

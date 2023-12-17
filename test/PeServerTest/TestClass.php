@@ -17,6 +17,7 @@ class TestClass extends \PHPUnit\Framework\TestCase
 	 *
 	 * `self::container()` が諸々を肩代わりする。
 	 */
+	//phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
 	public static IDiContainer $_do_not_use_container_user_test;
 	/**
 	 * テスト設定。

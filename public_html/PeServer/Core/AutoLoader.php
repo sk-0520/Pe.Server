@@ -273,8 +273,7 @@ class AutoLoader
 	 * 本処理はエラーとか例外はやっちゃいけない。
 	 *
 	 * @param string $fullName
-	 * @return string|null ファイルが存在する場合はファイルパス。存在しない(担当じゃない)場合は `null` を返す。
-	 * @phpstan-return non-empty-string|null ファイルが存在する場合はファイルパス。存在しない(担当じゃない)場合は null を返す。
+	 * @return non-empty-string|null ファイルが存在する場合はファイルパス。存在しない(担当じゃない)場合は `null` を返す。
 	 */
 	protected function findIncludeFile(string $fullName): ?string
 	{

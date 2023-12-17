@@ -9,10 +9,10 @@ use PeServer\Core\Mvc\Middleware\IMiddleware;
 use PeServer\Core\Mvc\Middleware\MiddlewareArgument;
 use PeServer\Core\Mvc\Middleware\MiddlewareResult;
 
-class ApiAcaoMiddleware implements IMiddleware
+class ApiCorsMiddleware implements IMiddleware
 {
 	public function __construct()
-    {
+	{
 	}
 
 	#region IMiddleware

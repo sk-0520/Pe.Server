@@ -6,8 +6,8 @@ namespace PeServerUT\Core\IO;
 
 use PeServer\Core\Binary;
 use PeServer\Core\Encoding;
-use \stdClass;
-use \TypeError;
+use stdClass;
+use TypeError;
 use PeServer\Core\IO\File;
 use PeServer\Core\IO\Directory;
 use PeServer\Core\IO\IOUtility;
@@ -22,7 +22,7 @@ use PeServer\Core\Throws\ResourceInvalidException;
 use PeServerTest\Data;
 use PeServerTest\TestClass;
 use PHPUnit\Framework\Attributes\DataProvider;
-use \Throwable;
+use Throwable;
 
 class StreamTest extends TestClass
 {

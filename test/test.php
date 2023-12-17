@@ -62,7 +62,7 @@ $container = $startup->setup(
 	[
 		'environment' => 'test',
 		'revision' => ':REVISION:',
-		'special_store' => $isIntegrationTest ? new TestSetupSpecialStore(): new SpecialStore(),
+		'special_store' => $isIntegrationTest ? new TestSetupSpecialStore() : new SpecialStore(),
 		'url_helper' => new UrlHelper(''),
 	]
 );

@@ -37,15 +37,16 @@ abstract class Cryptography
 	 *
 	 * `random_int` ラッパー。
 	 *
-	 * @param integer $max 最大値。
-	 * @param integer $min 最小値。
-	 * @return integer 乱数。
+	 * @param int $min 最小値。
+	 * @param int $max 最大値。
+	 * @return int 乱数。
 	 * @throws CryptoException 失敗
 	 * @see https://www.php.net/manual/function.random-int.php
 	 */
-	public static function generateRandomInteger(int $max = PHP_INT_MAX, int $min = 0): int
+	public static function generateRandomInteger(int $min, int $max): int
 	{
 		try {
+			/** @disregard P1010 */
 			return random_int($min, $max);
 		} catch (Throwable $ex) {
 			Throws::reThrow(CryptoException::class, $ex);
@@ -57,7 +58,7 @@ abstract class Cryptography
 	 *
 	 * `openssl_random_pseudo_bytes` ラッパー。
 	 *
-	 * @param integer $length バイト数。
+	 * @param int $length バイト数。
 	 * @phpstan-param positive-int $length
 	 * @return Binary バイナリデータ。
 	 * @throws ArgumentException 失敗
@@ -81,10 +82,9 @@ abstract class Cryptography
 	/**
 	 * ランダム文字列を生成。
 	 *
-	 * @param integer $length 文字列長。
+	 * @param int $length 文字列長。
 	 * @phpstan-param positive-int $length
-	 * @param string $characters ランダム文字の元になる文字列。
-	 * @phpstan-param non-empty-string $characters
+	 * @param non-empty-string $characters ランダム文字の元になる文字列。
 	 * @return string 文字列。
 	 * @throws CryptoException 失敗
 	 */
@@ -105,7 +105,7 @@ abstract class Cryptography
 		$result = '';
 
 		for ($i = 0; $i < $length; $i++) {
-			$index = self::generateRandomInteger($max, $min);
+			$index = self::generateRandomInteger($min, $max);
 			$result .= $charactersArray[$index];
 		}
 
@@ -115,8 +115,7 @@ abstract class Cryptography
 	/**
 	 * 文字列を暗号化。
 	 *
-	 * @param string $algorithm 暗号化方法。
-	 * @phpstan-param non-empty-string $algorithm
+	 * @param non-empty-string $algorithm 暗号化方法。
 	 * @param string $rawValue 生文字列。
 	 * @param string $password パスワード。
 	 * @return string 暗号化された文字列。 アルゴリズム@IV@暗号化データ となる。
@@ -284,8 +283,7 @@ abstract class Cryptography
 	 *
 	 * `hash` ラッパー。
 	 *
-	 * @param string $algorithm
-	 * @phpstan-param non-empty-string $algorithm
+	 * @param non-empty-string $algorithm
 	 * @param Binary $binary 入力バイナリデータ。
 	 * @param array{seed?:?int} $options
 	 * @return string 文字列表現。
@@ -302,8 +300,7 @@ abstract class Cryptography
 	 *
 	 * `hash` ラッパー。
 	 *
-	 * @param string $algorithm アルゴリズム。
-	 * @phpstan-param non-empty-string $algorithm
+	 * @param non-empty-string $algorithm アルゴリズム。
 	 * @param Binary $binary 入力バイナリデータ。
 	 * @param array{seed?:?int} $options
 	 * @return Binary ハッシュバイナリ。

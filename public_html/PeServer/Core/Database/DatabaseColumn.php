@@ -58,7 +58,7 @@ class DatabaseColumn
 			Arr::getOr($meta, 'table', Text::EMPTY),
 			Arr::getOr($meta, 'native_type', Text::EMPTY),
 			Arr::getOr($meta, 'driver:decl_type', Text::EMPTY),
-			Arr::getOr($meta, 'pdo_type', -1), //@phpstan-ignore-line
+			Arr::getOr($meta, 'pdo_type', -1),
 			Arr::getOr($meta, 'flags', [])
 		);
 	}

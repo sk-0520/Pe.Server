@@ -58,5 +58,4 @@ class ContentTypeTest extends TestClass
 		$this->assertSame('UTF-32', $actual3->encoding->name);
 		$this->assertSame('***', $actual3->boundary);
 	}
-
 }

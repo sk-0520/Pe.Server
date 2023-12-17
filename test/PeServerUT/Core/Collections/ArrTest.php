@@ -299,7 +299,7 @@ class ArrTest extends TestClass
 	public function test_replace()
 	{
 		$tests = [
-			new Data([], [], [],),
+			new Data([], [], []),
 			new Data([2], [1], [2]),
 			new Data([2, 3], [1], [2, 3]),
 			new Data(['a' => 'A', 'b' => 'B'], ['a' => 'A'], ['b' => 'B']),

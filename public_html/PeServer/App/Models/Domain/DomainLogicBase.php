@@ -71,7 +71,7 @@ abstract class DomainLogicBase extends LogicBase
 	 * @param string $event
 	 * @param mixed|null $info
 	 * @param IDatabaseContext|null $context
-	 * @return integer
+	 * @return int
 	 */
 	private function writeAuditLogCore(string $userId, string $event, mixed $info, ?IDatabaseContext $context, ?ISerializer $serializer = null): int
 	{
@@ -120,7 +120,7 @@ abstract class DomainLogicBase extends LogicBase
 	 * @param string $event
 	 * @param array<mixed>|null $info
 	 * @param IDatabaseContext|null $context
-	 * @return integer
+	 * @return int
 	 */
 	protected function writeAuditLogTargetUser(string $userId, string $event, ?array $info = null, ?IDatabaseContext $context = null): int
 	{

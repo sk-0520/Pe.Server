@@ -20,7 +20,7 @@ use PeServer\Core\I18n;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\Mvc\Validator;
-use PeServer\Core\Security;
+use PeServer\Core\WebSecurity;
 use PeServer\Core\Text;
 
 class AccountLoginLogic extends PageLogicBase

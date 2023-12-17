@@ -22,7 +22,7 @@ class HtmlTagElementTest extends TestClass
 		$this->assertFalse($try1);
 
 		try {
-			$element->getAttribute('attribute');
+			$element->getAttribute('attribute-nothing');
 			$this->fail();
 		} catch (HtmlAttributeException) {
 			$this->success();

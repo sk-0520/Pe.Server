@@ -27,12 +27,10 @@ readonly class Url implements Stringable
 	 *
 	 * 基本的には `tryParse`/`parse` を使用する想定。
 	 *
-	 * @param string $scheme
-	 * @phpstan-param non-empty-string $scheme
+	 * @param non-empty-string $scheme
 	 * @param string $user
 	 * @param string $password
-	 * @param string $host
-	 * @phpstan-param non-empty-string $host
+	 * @param non-empty-string $host
 	 * @param int|null $port `null` は未指定
 	 * @phpstan-param int<0,65535>|null $port
 	 * @param UrlPath $path
@@ -141,8 +139,7 @@ readonly class Url implements Stringable
 	/**
 	 * スキームを変更。
 	 *
-	 * @param string $scheme
-	 * @phpstan-param non-empty-string $scheme
+	 * @param non-empty-string $scheme
 	 * @return self 変更された新規URL
 	 */
 	public function changeScheme(string $scheme): self
@@ -194,8 +191,7 @@ readonly class Url implements Stringable
 	/**
 	 * ホストを変更。
 	 *
-	 * @param string $host
-	 * @phpstan-param non-empty-string $host
+	 * @param non-empty-string $host
 	 * @return self 変更された新規URL
 	 */
 	public function changeHost(string $host): self

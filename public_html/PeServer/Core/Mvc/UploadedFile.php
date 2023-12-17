@@ -13,7 +13,7 @@ use PeServer\Core\Throws\NotSupportedException;
  *
  * @see https://www.php.net/manual/features.file-upload.post-method.php
  */
-class UploadFile
+class UploadedFile
 {
 	/**
 	 * 生成。
@@ -58,7 +58,7 @@ class UploadFile
 
 	public static function invalid(string $key): self
 	{
-		return new LocalInvalidUploadFile($key);
+		return new LocalInvalidUploadedFile($key);
 	}
 
 	/**
@@ -94,7 +94,7 @@ class UploadFile
 }
 
 //phpcs:ignore PSR1.Classes.ClassDeclaration.MultipleClasses
-class LocalInvalidUploadFile extends UploadFile
+class LocalInvalidUploadedFile extends UploadedFile
 {
 	public function __construct(
 		public readonly string $key

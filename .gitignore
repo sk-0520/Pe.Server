@@ -30,6 +30,7 @@ $*
 /public_html/log/
 /dev/extracts/*
 /dev/*.phar.*
+/dev/*.phar
 /dev/bleedingEdge.neon
 /test/.phpunit*
 /test/phpunit.phar.*

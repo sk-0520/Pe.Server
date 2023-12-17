@@ -151,7 +151,7 @@ class AccountSignupStep1Logic extends PageLogicBase
 		}
 
 		$tempToken = Cryptography::generateRandomBinary(10)->toHex();
-		$tempValue = sprintf('%04d', Cryptography::generateRandomInteger(9999));
+		$tempValue = sprintf('%04d', Cryptography::generateRandomInteger(0, 9999));
 		$this->pushTemporary(self::TEMP_TOKEN, [
 			'token' => $tempToken,
 			'value' => $tempValue,

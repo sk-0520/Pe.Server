@@ -48,7 +48,7 @@ abstract class File
 	 * ファイルサイズを取得。
 	 *
 	 * @param string $path
-	 * @return integer
+	 * @return int
 	 * @return UnsignedIntegerAlias
 	 * @see https://www.php.net/manual/function.filesize.php
 	 * @throws IOException

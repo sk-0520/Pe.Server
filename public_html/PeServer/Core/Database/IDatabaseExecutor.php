@@ -39,7 +39,7 @@ interface IDatabaseExecutor extends IDatabaseImplementation
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
-	 * @return integer 挿入件数。
+	 * @return int 挿入件数。
 	 * @throws DatabaseException
 	 * @throws SqlException 問い合わせ文の検証エラー
 	 */
@@ -65,7 +65,7 @@ interface IDatabaseExecutor extends IDatabaseImplementation
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
-	 * @return integer 更新件数。
+	 * @return int 更新件数。
 	 * @throws DatabaseException
 	 * @throws SqlException 問い合わせ文の検証エラー
 	 */
@@ -104,7 +104,7 @@ interface IDatabaseExecutor extends IDatabaseImplementation
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
-	 * @return integer 削除件数。
+	 * @return int 削除件数。
 	 * @throws DatabaseException
 	 * @throws SqlException 問い合わせ文の検証エラー
 	 */

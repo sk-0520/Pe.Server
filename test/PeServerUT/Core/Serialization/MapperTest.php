@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace PeServerUT\Core\Serialization;
 
-use \DateInterval;
-use \DateTimeImmutable;
-use \DateTimeInterface;
+use DateInterval;
+use DateTimeImmutable;
+use DateTimeInterface;
 use DateTime;
 use PeServer\Core\Serialization\Converter\DateIntervalConverter;
 use PeServer\Core\Serialization\Converter\DateTimeConverter;

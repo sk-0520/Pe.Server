@@ -30,7 +30,7 @@ class GeneratorIteratorTest extends TestClass
 		yield 'c';
 	}
 
-	function test_static_create()
+	public function test_static_create()
 	{
 		$expected = [0, 1, 2];
 
@@ -42,7 +42,7 @@ class GeneratorIteratorTest extends TestClass
 		$this->assertSame($expected, $actual2);
 	}
 
-	function test_instance_create()
+	public function test_instance_create()
 	{
 		$expected = ['a', 'b', 'c'];
 
@@ -54,7 +54,7 @@ class GeneratorIteratorTest extends TestClass
 		$this->assertSame($expected, $actual2);
 	}
 
-	function test_function_create()
+	public function test_function_create()
 	{
 		$expected = [10, 20, 30];
 
@@ -70,14 +70,14 @@ class GeneratorIteratorTest extends TestClass
 		$this->assertSame($expected, $actual2);
 	}
 
-	function test_create_callable_throw()
+	public function test_create_callable_throw()
 	{
 		$this->expectException(CallbackTypeError::class);
 		new GeneratorIterator('(^_^)');
 		$this->fail();
 	}
 
-	function test_create_generator_throw()
+	public function test_create_generator_throw()
 	{
 		$this->expectException(TypeError::class);
 		new GeneratorIterator(fn () => 1 + 1);

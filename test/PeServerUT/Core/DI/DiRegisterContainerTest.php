@@ -536,6 +536,7 @@ class DiRegisterContainerTest extends TestClass
 
 		$dc->registerMapping(I::class, A::class);
 
+		/** @disregard P1006 */
 		$actual = $dc->call(O_function::class);
 		$this->assertSame(A::class, $actual['i']::class);
 	}

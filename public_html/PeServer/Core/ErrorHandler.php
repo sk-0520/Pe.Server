@@ -48,6 +48,9 @@ class ErrorHandler
 	#[Inject] //@phpstan-ignore-next-line [INJECT]
 	private IResponsePrinterFactory $responsePrinterFactory;
 
+	#[Inject] //@phpstan-ignore-next-line [INJECT]
+	private WebSecurity $webSecurity;
+
 	#endregion
 
 	public function __construct(
@@ -132,7 +135,7 @@ class ErrorHandler
 	/**
 	 * エラーを処理する。
 	 *
-	 * @param integer $errorNumber
+	 * @param int $errorNumber
 	 * @param string $errorMessage
 	 * @param string $errorFile
 	 * @param int $errorLineNumber
@@ -192,10 +195,10 @@ class ErrorHandler
 	 *
 	 * こいつが呼ばれた時点でもはや何もできない。
 	 *
-	 * @param integer $errorNumber
+	 * @param int $errorNumber
 	 * @param string $message
 	 * @param string $file
-	 * @param integer $lineNumber
+	 * @param int $lineNumber
 	 * @param Throwable|null $throwable
 	 * @return no-return
 	 * @SuppressWarnings(PHPMD.ExitExpression)
@@ -236,10 +239,10 @@ class ErrorHandler
 	/**
 	 * エラー取得処理（本体）。
 	 *
-	 * @param integer $errorNumber
+	 * @param int $errorNumber
 	 * @param string $message
 	 * @param string $file
-	 * @param integer $lineNumber
+	 * @param int $lineNumber
 	 * @param Throwable|null $throwable
 	 * @return void
 	 */
@@ -273,6 +276,7 @@ class ErrorHandler
 			__DIR__,
 			'template',
 			UrlHelper::none(),
+			$this->webSecurity,
 			Path::combine(Directory::getTemporaryDirectory(), 'PeServer-Core')
 		);
 		$template = $this->templateFactory->createTemplate($options);
@@ -311,7 +315,7 @@ final class LocalPhpErrorReceiver extends DisposerBase
 	/**
 	 * エラーを処理する。
 	 *
-	 * @param integer $errorNumber
+	 * @param int $errorNumber
 	 * @param string $errorMessage
 	 * @param string $errorFile
 	 * @param int $errorLineNumber

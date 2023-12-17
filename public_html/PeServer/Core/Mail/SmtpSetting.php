@@ -9,6 +9,8 @@ use PeServer\Core\Mail\SendMode;
 
 /**
  * SMTP送信設定。
+ *
+ * @codeCoverageIgnore
  */
 readonly class SmtpSetting implements IMailSetting
 {
