@@ -37,6 +37,11 @@ class Area implements Stringable
 	/**
 	 * 配列から生成。
 	 *
+	 * 配列の元になる以下から呼び出される前提処理。
+	 *
+	 * * `Graphics::calculateTextArea`
+	 * * `Graphics::drawString`
+	 *
 	 * @param int[] $areaArray
 	 *   * 0 :左下角の X 座標
 	 *   * 1 :左下角の Y 座標
