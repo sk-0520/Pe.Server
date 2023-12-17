@@ -7,7 +7,7 @@ namespace PeServer\Core;
 use PeServer\Core\MiddlewareArgument;
 use PeServer\Core\Throws\SessionException;
 
-abstract class Security
+class Security
 {
 	#region define
 
@@ -27,7 +27,7 @@ abstract class Security
 	 * @return string
 	 * @throws SessionException セッションID取得失敗。
 	 */
-	public static function generateCsrfToken(): string
+	public function generateCsrfToken(): string
 	{
 		$sessionId = session_id();
 		if ($sessionId === false) {

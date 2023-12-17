@@ -72,7 +72,7 @@ class SessionStore
 	 * @param SessionOptions $options セッション設定。
 	 * @param CookieStore $cookie Cookie 設定。
 	 */
-	public function __construct(SessionOptions $options, CookieStore $cookie)
+	public function __construct(SessionOptions $options, CookieStore $cookie, private Security $webSecurity)
 	{
 		if (Text::isNullOrWhiteSpace($options->name)) { //@phpstan-ignore-line [DOCTYPE]
 			throw new ArgumentException('$options->name');
@@ -111,7 +111,7 @@ class SessionStore
 
 	private function applyCore(): void
 	{
-		$csrfToken = Security::generateCsrfToken();
+		$csrfToken = $this->webSecurity->generateCsrfToken();
 		$this->set(Security::CSRF_SESSION_KEY, $csrfToken);
 
 		$_SESSION = $this->values;

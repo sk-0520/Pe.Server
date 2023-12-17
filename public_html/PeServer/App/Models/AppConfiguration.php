@@ -11,6 +11,7 @@ use PeServer\Core\I18n;
 use PeServer\Core\IO\Directory;
 use PeServer\Core\IO\File;
 use PeServer\Core\IO\Path;
+use PeServer\Core\Security;
 use PeServer\Core\Serialization\Configuration;
 use PeServer\Core\Serialization\Mapper;
 use PeServer\Core\Store\SpecialStore;
@@ -72,7 +73,7 @@ class AppConfiguration
 	 * @param string $baseDirectoryPath `\PeServer\*` のルートディレクトリ
 	 * @param SpecialStore $specialStore
 	 */
-	public function __construct(string $rootDirectoryPath, string $baseDirectoryPath, IUrlHelper $urlHelper, SpecialStore $specialStore, Environment $environment)
+	public function __construct(string $rootDirectoryPath, string $baseDirectoryPath, IUrlHelper $urlHelper, Security $webSecurity, SpecialStore $specialStore, Environment $environment)
 	{
 		$this->settingDirectoryPath = Path::combine($baseDirectoryPath, 'config');
 
@@ -86,7 +87,7 @@ class AppConfiguration
 		Directory::setTemporaryDirectory($appSetting->cache->temporary);
 
 		$storeOptions = StoreConfiguration::build($appSetting->store);
-		$stores = new Stores($specialStore, $storeOptions);
+		$stores = new Stores($specialStore, $storeOptions, $webSecurity);
 
 		I18n::initialize($i18nConfig);
 
