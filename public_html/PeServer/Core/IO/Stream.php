@@ -43,7 +43,7 @@ class Stream extends ResourceBase
 
 	#region variable
 
-	/** 文字列として扱うエンコーディング。バイナリデータに対してあんまり当てにならん。 */
+	/** 文字列として扱うエンコーディング。(バイナリデータは気にしなくてよい) */
 	private Encoding $encoding;
 
 	/**
@@ -52,6 +52,12 @@ class Stream extends ResourceBase
 	 * 書き込み時に使用される(読み込み時は頑張る)
 	 */
 	public string $newLine = PHP_EOL;
+
+	/**
+	 * BOM 書き込みが行われたかどうか。
+	 * @var bool
+	 */
+	private bool $writtenBom = false;
 
 	#endregion
 
@@ -376,18 +382,21 @@ class Stream extends ResourceBase
 	/**
 	 * 現在のエンコーディングを使用してBOMを書き込み。
 	 *
-	 * * 現在位置に書き込む点に注意。
+	 * * 現在位置に書き込む点に注意(すでに書き込まれている場合は無視される)。
 	 * * エンコーディングがBOM情報を持っていれば出力されるためBOM不要な場合は使用しないこと。
 	 *
 	 * @return int 書き込まれたバイトサイズ。
+	 * @phpstan-return UnsignedIntegerAlias
 	 */
 	public function writeBom(): int
 	{
 		$this->throwIfDisposed();
 
 		$bom = $this->encoding->getByteOrderMark();
-		if ($bom->count()) {
-			return $this->writeBinary($bom);
+		if ($this->writtenBom && $bom->count()) {
+			$result =  $this->writeBinary($bom);
+			$this->writtenBom = true;
+			return $result;
 		}
 
 		return 0;
@@ -463,13 +472,17 @@ class Stream extends ResourceBase
 	/**
 	 * 現在のエンコーディングを使用してBOMを読み取る。
 	 *
-	 * * 現在位置から読み込む点に注意。
+	 * * 現在位置から読み込む点に注意(シーク位置が先頭以外であれば無視される)。
 	 * * 読み込まれた場合(エンコーディングがBOMを持っていて合致した場合)はその分読み進められる。
 	 *
 	 * @return bool BOMが読み込まれたか。
 	 */
 	public function readBom(): bool
 	{
+		if($this->getOffset() !== 0) {
+			return false;
+		}
+
 		$bom = $this->encoding->getByteOrderMark();
 		$bomLength = $bom->count();
 		if (!$bomLength) {
