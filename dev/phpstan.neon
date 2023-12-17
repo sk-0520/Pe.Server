@@ -29,6 +29,7 @@ parameters:
     - ../public_html/deploy
     - ../public_html/PeServer/data
     - ../public_html/PeServer/Core/Libs
+    - ../test
   scanFiles:
     - ../public_html/PeServer/Core/Libs/smarty/libs/Smarty.class.php
     - ../public_html/PeServer/Core/Libs/smarty/libs/sysplugins/smarty_internal_template.php
@@ -44,7 +45,7 @@ parameters:
   ignoreErrors:
     #入力なしの戻り値型強制できないのがつーらーいー
     - '/Template type TFieldArray of method PeServer\\.+::.+\(\) is not referenced in a parameter./'
-    #本体設定系はめっちゃくちゃなことをするので初期化系エラーは無視
+    #本体設定/DTO系はめっちゃくちゃなことをするので初期化系エラーは無視
     - '/Class PeServer\\App\\Models\\Configuration\\\w+Setting(Base)? has an uninitialized @readonly property \$\w+\. Assign it in the constructor\./'
     - '/@readonly property cannot have a default value\./'
 
