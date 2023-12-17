@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Store;
 
-use PeServer\Core\Security;
+use PeServer\Core\WebSecurity;
 use PeServer\Core\Store\CookieStore;
 use PeServer\Core\Store\SessionStore;
 use PeServer\Core\Store\SpecialStore;
@@ -37,7 +37,7 @@ class Stores
 	public function __construct(
 		public SpecialStore $special,
 		private StoreOptions $options,
-		Security $webSecurity
+		WebSecurity $webSecurity
 	) {
 		$this->special = $this->special;
 		$this->cookie = new CookieStore($this->special, $this->options->cookie);

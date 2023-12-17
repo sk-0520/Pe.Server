@@ -12,7 +12,7 @@ use PeServer\Core\Mvc\Middleware\IMiddleware;
 use PeServer\Core\Mvc\Middleware\MiddlewareArgument;
 use PeServer\Core\Mvc\Middleware\MiddlewareResult;
 use PeServer\Core\Regex;
-use PeServer\Core\Security;
+use PeServer\Core\WebSecurity;
 use PeServer\Core\Throws\NotImplementedException;
 
 /**
@@ -48,7 +48,7 @@ class CsrfMiddleware implements IMiddleware
 	 */
 	protected function getSessionKey(): string
 	{
-		return Security::CSRF_SESSION_KEY;
+		return WebSecurity::CSRF_SESSION_KEY;
 	}
 
 	/**
@@ -58,7 +58,7 @@ class CsrfMiddleware implements IMiddleware
 	 */
 	protected function getHeaderName(): string
 	{
-		return Security::CSRF_HEADER_NAME;
+		return WebSecurity::CSRF_HEADER_NAME;
 	}
 
 	/**
@@ -68,7 +68,7 @@ class CsrfMiddleware implements IMiddleware
 	 */
 	protected function getRequestKey(): string
 	{
-		return Security::CSRF_REQUEST_KEY;
+		return WebSecurity::CSRF_REQUEST_KEY;
 	}
 
 	/**

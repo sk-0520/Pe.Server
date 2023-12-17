@@ -34,7 +34,7 @@ use PeServer\Core\Mvc\RouteRequest;
 use PeServer\Core\Mvc\RouteSetting;
 use PeServer\Core\Mvc\Routing;
 use PeServer\Core\Mvc\Template\ITemplateFactory;
-use PeServer\Core\Security;
+use PeServer\Core\WebSecurity;
 use PeServer\Core\Store\SpecialStore;
 use PeServer\Core\Text;
 use PeServer\Core\Web\UrlHelper;
@@ -64,7 +64,7 @@ class AppStartup extends CoreStartup
 			$this->definedDirectory->public,
 			$this->definedDirectory->application,
 			Arr::getOr($options, 'url_helper', new UrlHelper('')),
-			$container->get(Security::class),
+			$container->get(WebSecurity::class),
 			Arr::getOr($options, 'special_store', new SpecialStore()),
 			$container->get(Environment::class)
 		);
