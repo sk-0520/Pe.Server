@@ -10,6 +10,7 @@ use PeServer\Core\Mail\EmailAddress;
 use PeServer\Core\Mail\EmailMessage;
 use PeServer\Core\Mail\IMailSetting;
 use PeServer\Core\Mail\SmtpSetting;
+use PeServer\Core\Mail\IDumpSetting;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\ArgumentNullException;
@@ -119,7 +120,7 @@ class Mailer
 	/**
 	 * アドレスを設定可能形式に変換。
 	 *
-	 * サービス側でトラップせずにこいつを拡張して開発中は知らんところに飛ばないように調整する。
+	 * サービス側でトラップせずにこいつを継承して開発中は知らんところに飛ばないように調整する。
 	 *
 	 * @param int $kind 種別
 	 * @phpstan-param self::ADDRESS_KIND_* $kind 種別
@@ -138,6 +139,8 @@ class Mailer
 
 	/**
 	 * 件名を調整。
+	 *
+	 * 件名にサービス付けるとかそんなところで継承して使用する想定。
 	 *
 	 * @param string $subject 元になる件名。
 	 * @return string
@@ -222,6 +225,12 @@ class Mailer
 			$client->SMTPAuth = $smtp->authentication;
 			$client->Username = $smtp->userName;
 			$client->Password = $smtp->password;
+		}
+
+		if ($this->setting instanceof IDumpSetting) {
+			if ($this->setting->isDryRun()) {
+				return;
+			}
 		}
 
 		$client->send();

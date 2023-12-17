@@ -8,4 +8,5 @@ enum SendMode: int
 {
 	case Unknown = 0;
 	case Smtp = 1;
+	case Dump = 2;
 }
