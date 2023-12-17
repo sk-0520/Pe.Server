@@ -45,10 +45,10 @@ class GraphicsTest extends TestClass
 
 		$graphics->setPixel(new Point(10, 10), new RgbColor(0xff, 0xff, 0xff));
 
-		$imageBinary = $graphics->exportImage(ImageSetting::png());
+		$imageBinary = $graphics->save(ImageSetting::png());
 
 		$newGraphics = Graphics::load($imageBinary);
-		$newImageBinary = $newGraphics->exportImage(ImageSetting::png());
+		$newImageBinary = $newGraphics->save(ImageSetting::png());
 
 		$this->assertSame($imageBinary->raw, $newImageBinary->raw);
 	}
