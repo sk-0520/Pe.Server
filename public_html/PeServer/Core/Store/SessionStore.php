@@ -111,8 +111,9 @@ class SessionStore
 
 	private function applyCore(): void
 	{
+		$csrfKey = $this->webSecurity->getCsrfKind(WebSecurity::CSRF_KIND_SESSION_KEY);
 		$csrfToken = $this->webSecurity->generateCsrfToken();
-		$this->set(WebSecurity::CSRF_SESSION_KEY, $csrfToken);
+		$this->set($csrfKey, $csrfToken);
 
 		$_SESSION = $this->values;
 

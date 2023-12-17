@@ -31,7 +31,8 @@ readonly final class AppViewActionResult extends ViewActionResult
 
 		$options = new AppTemplateOptions(
 			$this->templateBaseName,
-			$this->urlHelper
+			$this->urlHelper,
+			$this->webSecurity
 		);
 		$template = $this->templateFactory->createTemplate($options);
 

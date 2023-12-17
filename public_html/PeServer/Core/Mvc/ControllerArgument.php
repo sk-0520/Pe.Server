@@ -9,6 +9,7 @@ use PeServer\Core\Log\ILoggerFactory;
 use PeServer\Core\Mvc\Template\ITemplateFactory;
 use PeServer\Core\Store\Stores;
 use PeServer\Core\Web\IUrlHelper;
+use PeServer\Core\WebSecurity;
 
 /**
  * コントローラ生成時に使用される入力値。
@@ -26,6 +27,7 @@ readonly class ControllerArgument
 		public ILogicFactory $logicFactory,
 		public ITemplateFactory $templateFactory,
 		public IUrlHelper $urlHelper,
+		public WebSecurity $webSecurity,
 		public ILoggerFactory $loggerFactory,
 		public ILogger $logger,
 	) {

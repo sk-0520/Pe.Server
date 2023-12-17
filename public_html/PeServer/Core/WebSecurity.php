@@ -13,13 +13,13 @@ class WebSecurity
 
 	public const CSRF_KIND_SESSION_KEY = 1;
 	public const CSRF_KIND_REQUEST_ID = 2;
-	public const CSRF_KIND_REQUEST_KEY = 3;
+	public const CSRF_KIND_REQUEST_NAME = 3;
 	public const CSRF_KIND_HEADER_NAME = 4;
 
-	public const CSRF_SESSION_KEY = 'core__csrf';
-	public const CSRF_REQUEST_ID = 'core__csrf_id';
-	public const CSRF_REQUEST_KEY = 'core__csrf_name';
-	public const CSRF_HEADER_NAME = 'X-CSRF-TOKEN';
+	private const CSRF_SESSION_KEY = 'core__csrf';
+	private const CSRF_REQUEST_ID = 'core__csrf_id';
+	private const CSRF_REQUEST_NAME = 'core__csrf_name';
+	private const CSRF_HEADER_NAME = 'X-CSRF-TOKEN';
 
 	private const CSRF_HASH_ALGORITHM = 'sha256';
 
@@ -34,21 +34,21 @@ class WebSecurity
 	 *
 	 * @param int $kind
 	 * @phpstan-param self::CSRF_KIND_* $kind
-	 * @return string
+	 * @return non-empty-string
 	 */
 	public function getCsrfKind(int $kind): string
 	{
 		return match ($kind) {
 			self::CSRF_KIND_SESSION_KEY => self::CSRF_SESSION_KEY,
 			self::CSRF_KIND_REQUEST_ID => self::CSRF_REQUEST_ID,
-			self::CSRF_KIND_REQUEST_KEY => self::CSRF_REQUEST_KEY,
+			self::CSRF_KIND_REQUEST_NAME => self::CSRF_REQUEST_NAME,
 			self::CSRF_KIND_HEADER_NAME => self::CSRF_HEADER_NAME,
 		};
 	}
 
 	/**
 	 * CSRFトークンのハッシュアルゴリズム。
-	 * @return string
+	 * @return non-empty-string
 	 */
 	protected function getCsrfTokenHash(): string
 	{
@@ -58,7 +58,7 @@ class WebSecurity
 	/**
 	 * CSRFトークンを取得。
 	 *
-	 * @return string
+	 * @return non-empty-string
 	 * @throws SessionException セッションID取得失敗。
 	 */
 	public function generateCsrfToken(): string
@@ -68,7 +68,11 @@ class WebSecurity
 			throw new SessionException('セッションID取得失敗');
 		}
 
-		$hash = Cryptography::generateHashString(self::CSRF_HASH_ALGORITHM, new Binary($sessionId));
+		$algorithm = $this->getCsrfTokenHash();
+		$hash = Cryptography::generateHashString($algorithm, new Binary($sessionId));
+		if(Text::isNullOrEmpty($hash)) {
+			throw new SessionException('CSRFトークン生成失敗');
+		}
 
 		return $hash;
 	}

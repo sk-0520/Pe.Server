@@ -33,7 +33,7 @@ class CsrfFunction extends TemplateFunctionBase
 	{
 		// このタイミングではセッション処理完了を期待している
 
-		if (!$this->argument->stores->session->tryGet(WebSecurity::CSRF_SESSION_KEY, $csrfToken)) {
+		if (!$this->argument->stores->session->tryGet($this->argument->webSecurity->getCsrfKind(WebSecurity::CSRF_KIND_SESSION_KEY), $csrfToken)) {
 			return Text::EMPTY;
 		}
 		/** @var string $csrfToken */
@@ -47,8 +47,8 @@ class CsrfFunction extends TemplateFunctionBase
 			case 'id':
 				$element = $dom->addTagElement('meta');
 
-				$element->setAttribute('id', WebSecurity::CSRF_REQUEST_ID);
-				$element->setAttribute('name', WebSecurity::CSRF_REQUEST_ID);
+				$element->setAttribute('id', $this->argument->webSecurity->getCsrfKind(WebSecurity::CSRF_KIND_REQUEST_ID));
+				$element->setAttribute('name', $this->argument->webSecurity->getCsrfKind(WebSecurity::CSRF_KIND_REQUEST_ID));
 				$element->setAttribute('content', $csrfToken);
 				break;
 
@@ -56,7 +56,7 @@ class CsrfFunction extends TemplateFunctionBase
 				$element = $dom->addTagElement('input');
 
 				$element->setAttribute('type', 'hidden');
-				$element->setAttribute('name', WebSecurity::CSRF_REQUEST_KEY);
+				$element->setAttribute('name', $this->argument->webSecurity->getCsrfKind(WebSecurity::CSRF_KIND_REQUEST_NAME));
 				$element->setAttribute('value', $csrfToken);
 				break;
 
