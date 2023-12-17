@@ -298,7 +298,7 @@ class StreamTest extends TestClass
 
 		$actual = [];
 
-		while (!$stream->eof()) {
+		while (!$stream->isEnd()) {
 			$line = $stream->readLine($bufferSize);
 			$actual[] = $line;
 		}
@@ -322,7 +322,7 @@ class StreamTest extends TestClass
 
 		$actual = [];
 
-		while (!$stream->eof()) {
+		while (!$stream->isEnd()) {
 			$line = $stream->readLine($bufferSize);
 			$actual[] = $line;
 		}
