@@ -52,7 +52,6 @@ abstract class Mime
 			throw new ArgumentException($fileName);
 		}
 
-		/** @phpstan-var non-empty-string */
 		return $result->value;
 	}
 
