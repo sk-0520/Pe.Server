@@ -19,9 +19,9 @@ PHPSTAN_FILE=${PHPSTAN_NAME}.${PHPSTAN_VERSION}
 PHPSTAN_BLEEDING_EDGE_NAME=bleedingEdge.neon
 PHPSTAN_BLEEDING_EDGE_URL=https://raw.githubusercontent.com/phpstan/phpstan-src/${PHPSTAN_VERSION}/conf/bleedingEdge.neon
 
-PHPCODESNIFFER_VERSION=3.7.2
-PHPCODESNIFFER_S_URL=https://github.com/squizlabs/PHP_CodeSniffer/releases/download/${PHPCODESNIFFER_VERSION}/phpcs.phar
-PHPCODESNIFFER_BF_URL=https://github.com/squizlabs/PHP_CodeSniffer/releases/download/${PHPCODESNIFFER_VERSION}/phpcbf.phar
+PHPCODESNIFFER_VERSION=3.8.0
+PHPCODESNIFFER_S_URL=https://github.com/PHPCSStandards/PHP_CodeSniffer/releases/download/${PHPCODESNIFFER_VERSION}/phpcs.phar
+PHPCODESNIFFER_BF_URL=https://github.com/PHPCSStandards/PHP_CodeSniffer/releases/download/${PHPCODESNIFFER_VERSION}/phpcbf.phar
 PHPCODESNIFFER_S_NAME=phpcs.phar
 PHPCODESNIFFER_BF_NAME=phpcbf.phar
 PHPCODESNIFFER_S_FILE=${PHPCODESNIFFER_S_NAME}.${PHPCODESNIFFER_VERSION}
@@ -49,8 +49,6 @@ fi
 if ! common::exists_option 'ignore-pplint' ; then
 	php "${PPLINT_FILE}" ../public_html/PeServer --colors --show-deprecated --exclude ../public_html/PeServer/Core/Libs  --exclude ../public_html/PeServer/data
 fi
-
-#php "${PHPCSFIXER_FILE}" fix --dry-run --diff ../public_html/PeServer  "$@"
 
 if ! common::exists_option 'ignore-phpstan' ; then
 	php "${PHPSTAN_FILE}" analyze --configuration phpstan.neon
