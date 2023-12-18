@@ -14,7 +14,7 @@ use PeServer\Core\Text;
  *
  * @immutable
  */
-class Area implements Stringable
+readonly class Area implements Stringable
 {
 	/**
 	 * 生成

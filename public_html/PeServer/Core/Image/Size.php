@@ -13,7 +13,7 @@ use PeServer\Core\Throws\ArgumentException;
  *
  * @immutable
  */
-class Size implements Stringable
+readonly class Size implements Stringable
 {
 	/**
 	 * 生成
