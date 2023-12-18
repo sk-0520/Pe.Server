@@ -6,7 +6,7 @@ namespace PeServer\App\Models;
 
 use PeServer\Core\Mvc\Template\TemplateOptions;
 use PeServer\Core\Web\IUrlHelper;
-use PeServer\Core\WebSecurity;
+use PeServer\Core\Web\WebSecurity;
 
 class AppTemplateOptions extends TemplateOptions
 {

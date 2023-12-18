@@ -38,7 +38,7 @@ use PeServer\Core\Store\TemporaryStore;
 use PeServer\Core\Throws\NotImplementedException;
 use PeServer\Core\Web\IUrlHelper;
 use PeServer\Core\Web\UrlHelper;
-use PeServer\Core\WebSecurity;
+use PeServer\Core\Web\WebSecurity;
 
 
 /**

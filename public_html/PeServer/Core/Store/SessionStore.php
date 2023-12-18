@@ -7,7 +7,7 @@ namespace PeServer\Core\Store;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\IO\Directory;
 use PeServer\Core\IO\IOUtility;
-use PeServer\Core\WebSecurity;
+use PeServer\Core\Web\WebSecurity;
 use PeServer\Core\Store\CookieStores;
 use PeServer\Core\Store\SessionOptions;
 use PeServer\Core\Text;

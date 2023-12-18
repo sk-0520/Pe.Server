@@ -25,7 +25,7 @@ use PeServer\Core\Mvc\Template\TemplateParameter;
 use PeServer\Core\Serialization\JsonSerializer;
 use PeServer\Core\Text;
 use PeServer\Core\Web\IUrlHelper;
-use PeServer\Core\WebSecurity;
+use PeServer\Core\Web\WebSecurity;
 use Throwable;
 
 final class AppErrorHandler extends ErrorHandler

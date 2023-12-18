@@ -2,9 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core;
+namespace PeServer\Core\Web;
 
+use PeServer\Core\Binary;
+use PeServer\Core\Cryptography;
 use PeServer\Core\MiddlewareArgument;
+use PeServer\Core\Text;
 use PeServer\Core\Throws\SessionException;
 
 class WebSecurity

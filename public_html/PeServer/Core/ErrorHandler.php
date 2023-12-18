@@ -30,6 +30,7 @@ use PeServer\Core\Throws\InvalidErrorLevelError;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Throws\Throws;
 use PeServer\Core\Web\UrlHelper;
+use PeServer\Core\Web\WebSecurity;
 use Throwable;
 
 /**
