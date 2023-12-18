@@ -72,12 +72,12 @@ abstract class File
 	 */
 	public static function readContent(string $path): Binary
 	{
-		$content = file_get_contents($path);
-		if ($content === false) {
+		$result = ErrorHandler::trapError(fn () => file_get_contents($path));
+		if (!$result->success || $result->value === false) {
 			throw new IOException($path);
 		}
 
-		return new Binary($content);
+		return new Binary($result->value);
 	}
 
 	/**
@@ -92,12 +92,13 @@ abstract class File
 	private static function saveContent(string $path, Binary $data, bool $append): int
 	{
 		$flag = $append ? FILE_APPEND : 0;
-		$length = file_put_contents($path, $data->raw, LOCK_EX | $flag);
-		if ($length === false) {
+
+		$result = ErrorHandler::trapError(fn () => file_put_contents($path, $data->raw, LOCK_EX | $flag));
+		if (!$result->success || $result->value === false) {
 			throw new IOException($path);
 		}
 
-		return $length;
+		return $result->value;
 	}
 
 	/**

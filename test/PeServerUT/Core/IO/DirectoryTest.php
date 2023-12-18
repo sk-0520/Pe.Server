@@ -13,7 +13,8 @@ class DirectoryTest extends TestClass
 {
 	public function test_createDirectory()
 	{
-		$path = Path::combine(Directory::getTemporaryDirectory(), __FUNCTION__);
+		$testDir = $this->testDir();
+		$path = $testDir->newPath(__FUNCTION__);
 
 		$this->assertTrue(Directory::createDirectory($path));
 		$this->assertFalse(Directory::createDirectory($path));
@@ -21,7 +22,8 @@ class DirectoryTest extends TestClass
 
 	public function test_createDirectoryIfNotExists()
 	{
-		$path = Path::combine(Directory::getTemporaryDirectory(), __FUNCTION__);
+		$testDir = $this->testDir();
+		$path = $testDir->newPath(__FUNCTION__);
 
 		$this->assertTrue(Directory::createDirectoryIfNotExists($path));
 		$this->assertFalse(Directory::createDirectoryIfNotExists($path));
@@ -29,12 +31,12 @@ class DirectoryTest extends TestClass
 
 	public function test_createParentDirectoryIfNotExists()
 	{
-		$dir = Path::combine(Directory::getTemporaryDirectory(), __FUNCTION__);
-		$file = __FUNCTION__ . '.txt';
-		$path = Path::combine($dir,$file);
+		$testDir = $this->testDir();
+		$file = 'TEST' . DIRECTORY_SEPARATOR . __FUNCTION__ . '.txt';
+		$path = $testDir->newPath($file);
 
 		$this->assertTrue(Directory::createParentDirectoryIfNotExists($path));
-		$this->assertTrue(IOUtility::exists($dir));
+		$this->assertTrue(IOUtility::exists($testDir->path));
 		$this->assertFalse(IOUtility::exists($path));
 		$this->assertFalse(Directory::createParentDirectoryIfNotExists($path));
 	}

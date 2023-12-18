@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServerUT\Core\IO;
 
+use PeServer\Core\Binary;
 use PeServer\Core\Cryptography;
 use PeServer\Core\IO\Directory;
 use PeServer\Core\IO\File;
@@ -20,7 +21,8 @@ class FileTest extends TestClass
 {
 	public function test_createEmptyFileIfNotExists()
 	{
-		$path = Path::combine(Directory::getTemporaryDirectory(), __FUNCTION__);
+		$testDir = $this->testDir();
+		$path = $testDir->newPath(__FUNCTION__);
 
 		$this->assertFalse(File::exists($path));
 		File::createEmptyFileIfNotExists($path);
@@ -37,6 +39,37 @@ class FileTest extends TestClass
 		$this->expectException(IOException::class);
 		File::getFileSize(__FILE__ . "\0" . '/');
 		$this->fail();
+	}
+
+	public function test_readContent_writeContent()
+	{
+		$testDir = $this->testDir();
+		$name = __FUNCTION__;
+		$value = new Binary(__METHOD__);
+		$path = $testDir->newPath($name);
+
+		$this->assertCount(File::writeContent($path, $value), $value);
+		$this->assertSame($value->raw, File::readContent($path)->raw);
+	}
+
+	public function test_readContent_throw()
+	{
+		$testDir = $this->testDir();
+		$path = $testDir->newPath(__FUNCTION__);
+
+		$this->expectException(IOException::class);
+		File::readContent($path);
+	}
+
+	public function test_writeContent_throw()
+	{
+		$testDir = $this->testDir();
+		$name = "/"; //NOTE: いやまぁ、できるかもしれんけど
+		$value = new Binary(__METHOD__);
+		$path = $testDir->newPath($name);
+
+		$this->expectException(IOException::class);
+		File::writeContent($path, $value);
 	}
 
 	public function test_createTemporaryFileStream()
