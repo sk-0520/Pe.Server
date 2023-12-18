@@ -34,12 +34,13 @@ abstract class Directory
 	 *
 	 * @param string $directoryPath ディレクトリパス。
 	 * @param int $permissions
-	 * @return bool
+	 * @return bool 作成出来たか。
 	 * @see https://www.php.net/manual/function.mkdir.php
 	 */
 	public static function createDirectory(string $directoryPath, int $permissions = self::DIRECTORY_PERMISSIONS): bool
 	{
-		return mkdir($directoryPath, $permissions, true);
+		$result = ErrorHandler::trapError(fn() => mkdir($directoryPath, $permissions, true));
+		return $result->success && $result->value;
 	}
 
 	/**
@@ -48,7 +49,7 @@ abstract class Directory
 	 * ディレクトリは再帰的に作成される。
 	 *
 	 * @param string $directoryPath ディレクトリパス
-	 * @return bool
+	 * @return bool 作成出来たか。
 	 */
 	public static function createDirectoryIfNotExists(string $directoryPath, int $permissions = self::DIRECTORY_PERMISSIONS): bool
 	{
@@ -65,7 +66,7 @@ abstract class Directory
 	 * ディレクトリは再帰的に作成される。
 	 *
 	 * @param string $path 対象パス（メソッド自体はファイルパスとして使用することを前提としている）
-	 * @return bool
+	 * @return bool 作成されたか。
 	 */
 	public static function createParentDirectoryIfNotExists(string $path, int $permissions = self::DIRECTORY_PERMISSIONS): bool
 	{

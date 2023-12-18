@@ -39,7 +39,7 @@ abstract class IOUtility
 	 * @return boolean 存在するか。
 	 * @see https://www.php.net/manual/function.file-exists.php
 	 */
-	public static function existsItem(string $path): bool
+	public static function exists(string $path): bool
 	{
 		return file_exists($path);
 	}

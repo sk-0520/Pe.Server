@@ -36,12 +36,11 @@ abstract class File
 	 * `touch` ラッパー。
 	 *
 	 * @param string $path
-	 * @return bool
 	 * @see https://www.php.net/manual/function.touch.php
 	 */
-	public static function createEmptyFileIfNotExists(string $path): bool
+	public static function createEmptyFileIfNotExists(string $path): void
 	{
-		return touch($path);
+		touch($path);
 	}
 
 	/**
@@ -220,7 +219,7 @@ abstract class File
 	 */
 	public static function removeFileIfExists(string $filePath): bool
 	{
-		if (!IOUtility::existsItem($filePath)) {
+		if (!IOUtility::exists($filePath)) {
 			return false;
 		}
 
