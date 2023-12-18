@@ -205,9 +205,7 @@ abstract class Directory
 						return false;
 					}
 				} else {
-					if (!File::removeFile($file)) {
-						return false;
-					}
+					File::removeFile($file);
 				}
 			}
 		}

@@ -168,7 +168,7 @@ abstract class File
 	/**
 	 * ファイルが存在するか。
 	 *
-	 * self::existsItem より速い。
+	 * `IOUtility::exists` より速い。
 	 * `file_exists`より`is_file`の方が速いらすぃ
 	 *
 	 * `is_file` ラッパー。
@@ -199,17 +199,14 @@ abstract class File
 	 * ファイル削除。
 	 *
 	 * @param string $filePath ファイルパス。
-	 * @return boolean
 	 * @throws IOException
 	 */
-	public static function removeFile(string $filePath): bool
+	public static function removeFile(string $filePath): void
 	{
 		$result = ErrorHandler::trapError(fn () => unlink($filePath));
-		if (!$result->success) {
+		if (!$result->success || !$result->value) {
 			throw new IOException();
 		}
-
-		return $result->value;
 	}
 
 	/**

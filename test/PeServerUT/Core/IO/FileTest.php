@@ -61,6 +61,18 @@ class FileTest extends TestClass
 		File::readContent($path);
 	}
 
+	public function test_writeContent()
+	{
+		$testDir = $this->testDir();
+		$name = __FUNCTION__;
+		$path = $testDir->createFile($name, new Binary('ABC'));
+
+		$this->assertSame('ABC', File::readContent($path)->raw);
+
+		File::writeContent($path, new Binary('Z'));
+		$this->assertSame('Z', File::readContent($path)->raw);
+	}
+
 	public function test_writeContent_throw()
 	{
 		$testDir = $this->testDir();
@@ -70,6 +82,66 @@ class FileTest extends TestClass
 
 		$this->expectException(IOException::class);
 		File::writeContent($path, $value);
+	}
+
+	public function test_appendContent()
+	{
+		$testDir = $this->testDir();
+		$path = $testDir->newPath(__FUNCTION__);
+
+		$this->assertFalse(File::exists($path));
+
+		File::appendContent($path, new Binary(('abc')));
+		$this->assertTrue(File::exists($path));
+		$this->assertSame('abc', File::readContent($path)->raw);
+
+		File::appendContent($path, new Binary(('def')));
+		$this->assertSame('abcdef', File::readContent($path)->raw);
+	}
+
+	public function test_exists()
+	{
+		$testDir = $this->testDir();
+		$path = $testDir->newPath(__FUNCTION__);
+
+		$this->assertFalse(File::exists($path));
+		File::createEmptyFileIfNotExists($path);
+		$this->assertTrue(File::exists($path));
+	}
+
+	public function test_copy()
+	{
+		$testDir = $this->testDir();
+		$src = $testDir->newPath(__FUNCTION__ . '.src');
+		$dst = $testDir->newPath(__FUNCTION__ . '.dst');
+
+		$this->assertFalse(File::exists($dst));
+		File::writeContent($src, new Binary('abc'));
+		$this->assertTrue(File::copy($src, $dst));
+		$this->assertSame('abc', File::readContent($dst)->raw);
+
+		$this->assertTrue(File::exists($dst));
+		File::writeContent($src, new Binary('xyz'));
+		$this->assertTrue(File::copy($src, $dst));
+		$this->assertSame('xyz', File::readContent($dst)->raw);
+	}
+
+	public function test_removeFile()
+	{
+		$testDir = $this->testDir();
+		$path = $testDir->createFile(__FUNCTION__);
+
+		File::removeFile($path);
+		$this->assertFalse(File::exists($path));
+	}
+
+	public function test_removeFile_throw()
+	{
+		$testDir = $this->testDir();
+		$path = $testDir->newPath(__FUNCTION__);
+
+		$this->expectException(IOException::class);
+		File::removeFile($path);
 	}
 
 	public function test_createTemporaryFileStream()
