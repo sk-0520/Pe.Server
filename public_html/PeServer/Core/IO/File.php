@@ -54,7 +54,7 @@ abstract class File
 	 */
 	public static function getFileSize(string $path): int
 	{
-		$result = ErrorHandler::trapError(fn () => filesize($path));
+		$result = ErrorHandler::trap(fn () => filesize($path));
 		if (!$result->success || $result->value === false) {
 			throw new IOException();
 		}
@@ -72,7 +72,7 @@ abstract class File
 	 */
 	public static function readContent(string $path): Binary
 	{
-		$result = ErrorHandler::trapError(fn () => file_get_contents($path));
+		$result = ErrorHandler::trap(fn () => file_get_contents($path));
 		if (!$result->success || $result->value === false) {
 			throw new IOException($path);
 		}
@@ -93,7 +93,7 @@ abstract class File
 	{
 		$flag = $append ? FILE_APPEND : 0;
 
-		$result = ErrorHandler::trapError(fn () => file_put_contents($path, $data->raw, LOCK_EX | $flag));
+		$result = ErrorHandler::trap(fn () => file_put_contents($path, $data->raw, LOCK_EX | $flag));
 		if (!$result->success || $result->value === false) {
 			throw new IOException($path);
 		}
@@ -203,7 +203,7 @@ abstract class File
 	 */
 	public static function removeFile(string $filePath): void
 	{
-		$result = ErrorHandler::trapError(fn () => unlink($filePath));
+		$result = ErrorHandler::trap(fn () => unlink($filePath));
 		if (!$result->success || !$result->value) {
 			throw new IOException();
 		}
@@ -221,7 +221,7 @@ abstract class File
 			return false;
 		}
 
-		$result = ErrorHandler::trapError(fn () => unlink($filePath));
+		$result = ErrorHandler::trap(fn () => unlink($filePath));
 		if (!$result->success) {
 			return false;
 		}

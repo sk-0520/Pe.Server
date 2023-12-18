@@ -39,7 +39,7 @@ abstract class Directory
 	 */
 	public static function createDirectory(string $directoryPath, int $permissions = self::DIRECTORY_PERMISSIONS): bool
 	{
-		$result = ErrorHandler::trapError(fn() => mkdir($directoryPath, $permissions, true));
+		$result = ErrorHandler::trap(fn() => mkdir($directoryPath, $permissions, true));
 		return $result->success && $result->value;
 	}
 
@@ -210,7 +210,7 @@ abstract class Directory
 			}
 		}
 
-		$result = ErrorHandler::trapError(fn () => rmdir($directoryPath));
+		$result = ErrorHandler::trap(fn () => rmdir($directoryPath));
 		if (!$result->success) {
 			throw new IOException();
 		}

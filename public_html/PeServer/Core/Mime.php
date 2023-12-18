@@ -47,7 +47,7 @@ abstract class Mime
 			throw new ArgumentException($fileName);
 		}
 
-		$result = ErrorHandler::trapError(fn () =>  mime_content_type($fileName));
+		$result = ErrorHandler::trap(fn () =>  mime_content_type($fileName));
 		if (!$result->success || Text::isNullOrEmpty($result->value)) {
 			throw new ArgumentException($fileName);
 		}

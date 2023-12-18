@@ -101,7 +101,7 @@ class Stream extends ResourceBase
 			$mode .= 'b';
 		}
 
-		$result = ErrorHandler::trapError(fn () => fopen($path, $mode));
+		$result = ErrorHandler::trap(fn () => fopen($path, $mode));
 		if (!$result->success) {
 			throw new IOException($path);
 		}
@@ -252,7 +252,7 @@ class Stream extends ResourceBase
 	{
 		$this->throwIfDisposed();
 
-		$result = ErrorHandler::trapError(fn () => fstat($this->resource));
+		$result = ErrorHandler::trap(fn () => fstat($this->resource));
 		if (!$result->success) {
 			throw new IOException();
 		}

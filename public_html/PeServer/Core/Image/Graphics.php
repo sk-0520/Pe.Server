@@ -106,7 +106,7 @@ class Graphics extends DisposerBase
 			default => 'imagecreatefromstring'
 		};
 
-		$result = ErrorHandler::trapError(
+		$result = ErrorHandler::trap(
 			fn () => call_user_func($funcName, $binary->raw)
 		);
 

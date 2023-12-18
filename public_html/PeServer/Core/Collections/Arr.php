@@ -363,7 +363,7 @@ class Arr
 	 */
 	public static function flip(array $input): array
 	{
-		$result = ErrorHandler::trapError(fn () => array_flip($input));
+		$result = ErrorHandler::trap(fn () => array_flip($input));
 		if (!$result->success) {
 			throw new ArgumentException();
 		}

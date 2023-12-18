@@ -107,7 +107,7 @@ class Regex
 	 */
 	public function isMatch(string $input, string $pattern): bool
 	{
-		$result = ErrorHandler::trapError(fn () => preg_match($this->normalizePattern($pattern), $input));
+		$result = ErrorHandler::trap(fn () => preg_match($this->normalizePattern($pattern), $input));
 		if (!$result->success) {
 			throw new RegexException(preg_last_error_msg(), preg_last_error());
 		}
@@ -130,7 +130,7 @@ class Regex
 	public function matches(string $input, string $pattern): array
 	{
 		$matches = [];
-		$result = ErrorHandler::trapError(function () use ($pattern, $input, &$matches) {
+		$result = ErrorHandler::trap(function () use ($pattern, $input, &$matches) {
 			return preg_match_all($this->normalizePattern($pattern), $input, $matches, PREG_PATTERN_ORDER | PREG_OFFSET_CAPTURE);
 		});
 		if (!$result->success) {
@@ -191,7 +191,7 @@ class Regex
 			throw new ArgumentException();
 		}
 
-		$result = ErrorHandler::trapError(fn () => preg_replace($this->normalizePattern($pattern), $replacement, $source, $limit));
+		$result = ErrorHandler::trap(fn () => preg_replace($this->normalizePattern($pattern), $replacement, $source, $limit));
 		if (!$result->success) {
 			throw new RegexException(preg_last_error_msg(), preg_last_error());
 		}
