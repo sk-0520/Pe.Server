@@ -99,6 +99,19 @@ class TestClass extends \PHPUnit\Framework\TestCase
 		return $method->invokeArgs($object, $params);
 	}
 
+	protected function getProperty(object $object, string $name): mixed
+	{
+		$reflection = new ReflectionClass($object);
+		$property = $reflection->getProperty($name);
+		return $property->getValue($object);
+	}
+	protected function setProperty(object $object, string $name, mixed $value): void
+	{
+		$reflection = new ReflectionClass($object);
+		$property = $reflection->getProperty($name);
+		$property->setValue($object, $value);
+	}
+
 	protected function testDir(): TestDirectory
 	{
 		$stackTrace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 2)[1];

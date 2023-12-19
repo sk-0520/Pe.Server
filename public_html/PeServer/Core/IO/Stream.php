@@ -58,7 +58,9 @@ class Stream extends ResourceBase
 	#endregion
 
 	/**
-	 * 生成
+	 * 生成。
+	 *
+	 * 内部的にしか使わない。
 	 *
 	 * @param $resource ファイルリソース。
 	 * @param Encoding|null $encoding
@@ -87,7 +89,6 @@ class Stream extends ResourceBase
 	 * * `self::openMemory`
 	 * * `self::openTemporary`
 	 *
-	 * @pure
 	 * @param string $path ファイルパス。
 	 * @param string $mode `fopen:mode` を参照。
 	 * @param Encoding|null $encoding
@@ -241,6 +242,7 @@ class Stream extends ResourceBase
 				throw new ArgumentException('$byteSize: ' . $memoryByteSize);
 			}
 			if ($memoryByteSize) {
+				//cspell:disable-next-line
 				$path .= '/maxmemory:' . (string)$memoryByteSize;
 			}
 		}
@@ -378,12 +380,12 @@ class Stream extends ResourceBase
 	{
 		$this->throwIfDisposed();
 
-		$result = fwrite($this->resource, $data->raw, $byteSize);
-		if ($result === false) {
+		$result = ErrorHandler::trap(fn () => fwrite($this->resource, $data->raw, $byteSize));
+		if (!$result->success || $result->value === false) {
 			throw new StreamException();
 		}
 
-		return $result;
+		return $result->value;
 	}
 
 	/**
@@ -470,12 +472,12 @@ class Stream extends ResourceBase
 	{
 		$this->throwIfDisposed();
 
-		$result = fread($this->resource, $byteSize);
-		if ($result === false) {
+		$result = ErrorHandler::trap(fn () => fread($this->resource, $byteSize));
+		if (!$result->success || $result->value === false) {
 			throw new StreamException();
 		}
 
-		return new Binary($result);
+		return new Binary($result->value);
 	}
 
 	/**
