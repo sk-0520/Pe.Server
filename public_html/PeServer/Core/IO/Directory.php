@@ -39,7 +39,7 @@ abstract class Directory
 	 */
 	public static function createDirectory(string $directoryPath, int $permissions = self::DIRECTORY_PERMISSIONS): bool
 	{
-		$result = ErrorHandler::trap(fn() => mkdir($directoryPath, $permissions, true));
+		$result = ErrorHandler::trap(fn () => mkdir($directoryPath, $permissions, true));
 		return $result->success && $result->value;
 	}
 
@@ -100,10 +100,12 @@ abstract class Directory
 	{
 		/** @var string[] */
 		$files = [];
-		$items = scandir($directoryPath);
-		if ($items === false) {
+		$result = ErrorHandler::trap(fn () => scandir($directoryPath, SCANDIR_SORT_NONE));
+		// $items = scandir($directoryPath);
+		if (!$result->success || $result->value === false) {
 			return $files;
 		}
+		$items = $result->value;
 
 		foreach ($items as $item) {
 			if ($item === '.' || $item === '..') {

@@ -11,6 +11,7 @@ use PeServer\Core\IO\File;
 use PeServer\Core\IO\IOUtility;
 use PeServer\Core\IO\Path;
 use PeServer\Core\Text;
+use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\CryptoException;
 use PeServer\Core\Throws\IOException;
 use PeServerTest\Data;
@@ -135,13 +136,43 @@ class FileTest extends TestClass
 		$this->assertFalse(File::exists($path));
 	}
 
-	public function test_removeFile_throw()
+	public function test_removeFile_notFound_throw()
 	{
 		$testDir = $this->testDir();
 		$path = $testDir->newPath(__FUNCTION__);
 
 		$this->expectException(IOException::class);
 		File::removeFile($path);
+		$this->fail();
+	}
+
+	public function test_removeFile_dir_throw()
+	{
+		$testDir = $this->testDir();
+		$path = $testDir->createDirectory(__FUNCTION__);
+
+		$this->expectException(IOException::class);
+		File::removeFile($path);
+		$this->fail();
+	}
+
+	public function test_removeFileIfExists()
+	{
+		$testDir = $this->testDir();
+		$file = $testDir->createFile(__FUNCTION__);
+		$dir = $testDir->createDirectory(__FUNCTION__ . '-DIR');
+
+		$this->assertTrue(File::removeFileIfExists($file));
+		$this->assertFalse(File::exists($file));
+		$this->assertFalse(File::removeFileIfExists($file));
+		$this->assertFalse(File::removeFileIfExists($dir));
+	}
+
+	public function test_createUniqueFilePath_arg_throw()
+	{
+		$this->expectException(ArgumentException::class);
+		File::createUniqueFilePath('', '');
+		$this->fail();
 	}
 
 	public function test_createTemporaryFileStream()
