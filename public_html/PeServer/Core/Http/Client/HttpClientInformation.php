@@ -19,6 +19,7 @@ class HttpClientInformation
 	 * @param UrlEncoding $urlEncoding
 	 * @param HttpClientRequest $request
 	 * @param array<string,mixed> $rawItems
+	 * @codeCoverageIgnore
 	 */
 	public function __construct(
 		readonly protected UrlEncoding $urlEncoding,
