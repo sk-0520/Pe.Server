@@ -20,10 +20,7 @@ abstract class IOUtility
 	public static function getState(string $path): IOState
 	{
 		$result = ErrorHandler::trap(fn () => stat($path));
-		if (!$result->success) {
-			throw new IOException();
-		}
-		if ($result->value === false) {
+		if ($result->isFailureOrFalse()) {
 			throw new IOException();
 		}
 

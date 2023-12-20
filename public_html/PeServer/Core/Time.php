@@ -96,10 +96,7 @@ abstract class Time
 	private static function createConstructor(string $time): DateInterval
 	{
 		$result = ErrorHandler::trap(fn () => DateInterval::createFromDateString($time));
-		if (!$result->success) {
-			throw new FormatException($time);
-		}
-		if ($result->value === false) {
+		if ($result->isFailureOrFalse()) {
 			throw new FormatException($time);
 		}
 

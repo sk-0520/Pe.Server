@@ -102,7 +102,7 @@ abstract class Directory
 		$files = [];
 		$result = ErrorHandler::trap(fn () => scandir($directoryPath, SCANDIR_SORT_NONE));
 		// $items = scandir($directoryPath);
-		if (!$result->success || $result->value === false) {
+		if ($result->isFailureOrFalse()) {
 			return $files;
 		}
 		$items = $result->value;
@@ -213,7 +213,7 @@ abstract class Directory
 		}
 
 		$result = ErrorHandler::trap(fn () => rmdir($directoryPath));
-		if (!$result->success) {
+		if ($result->isFailureOrFalse()) {
 			throw new IOException();
 		}
 

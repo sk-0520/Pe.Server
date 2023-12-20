@@ -59,5 +59,24 @@ final readonly class ResultData
 		return new ResultData(false, null);
 	}
 
+	/**
+	 * 結果が失敗か失敗対象の値か。
+	 * @return bool
+	 */
+	public function isFailureOrFailValue(mixed $failValue): bool
+	{
+		return !$this->success || $this->value === $failValue;
+	}
+
+	/**
+	 * 結果が失敗か `false` か。
+	 * @return bool
+	 */
+	public function isFailureOrFalse(): bool
+	{
+		return $this->isFailureOrFailValue(false);
+	}
+
+
 	#endregion
 }

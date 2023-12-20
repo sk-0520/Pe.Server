@@ -108,10 +108,7 @@ class Regex
 	public function isMatch(string $input, string $pattern): bool
 	{
 		$result = ErrorHandler::trap(fn () => preg_match($this->normalizePattern($pattern), $input));
-		if (!$result->success) {
-			throw new RegexException(preg_last_error_msg(), preg_last_error());
-		}
-		if ($result->value === false) {
+		if ($result->isFailureOrFalse()) {
 			throw new RegexException(preg_last_error_msg(), preg_last_error());
 		}
 
@@ -133,10 +130,7 @@ class Regex
 		$result = ErrorHandler::trap(function () use ($pattern, $input, &$matches) {
 			return preg_match_all($this->normalizePattern($pattern), $input, $matches, PREG_PATTERN_ORDER | PREG_OFFSET_CAPTURE);
 		});
-		if (!$result->success) {
-			throw new RegexException(preg_last_error_msg(), preg_last_error());
-		}
-		if ($result->value === false) {
+		if ($result->isFailureOrFalse()) {
 			throw new RegexException(preg_last_error_msg(), preg_last_error());
 		}
 		if ($result->value === 0) {
@@ -192,10 +186,7 @@ class Regex
 		}
 
 		$result = ErrorHandler::trap(fn () => preg_replace($this->normalizePattern($pattern), $replacement, $source, $limit));
-		if (!$result->success) {
-			throw new RegexException(preg_last_error_msg(), preg_last_error());
-		}
-		if ($result->value === null) {
+		if ($result->isFailureOrFailValue(null)) {
 			throw new RegexException(preg_last_error_msg(), preg_last_error());
 		}
 

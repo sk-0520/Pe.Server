@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServerUT\Core\IO;
 
 use PeServer\Core\Cryptography;
+use PeServer\Core\IO\File;
 use PeServer\Core\IO\IOUtility;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\CryptoException;
@@ -50,5 +51,16 @@ class IOUtilityTest extends TestClass
 
 		IOUtility::clearCache($input);
 		$this->fail();
+	}
+
+	public function test_move_file()
+	{
+		$testDir = $this->testDir();
+		$src = $testDir->createFile(__FUNCTION__);
+		$dst = $src . '.dst';
+
+		IOUtility::move($src, $dst);
+		$this->assertFalse(File::exists($src));
+		$this->assertTrue(File::exists($dst));
 	}
 }

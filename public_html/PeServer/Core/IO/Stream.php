@@ -103,11 +103,8 @@ class Stream extends ResourceBase
 		}
 
 		$result = ErrorHandler::trap(fn () => fopen($path, $mode));
-		if (!$result->success) {
+		if ($result->isFailureOrFalse()) {
 			throw new IOException($path);
-		}
-		if ($result->value === false) {
-			throw new StreamException($path);
 		}
 
 		return new self($result->value, $encoding);
@@ -255,10 +252,7 @@ class Stream extends ResourceBase
 		$this->throwIfDisposed();
 
 		$result = ErrorHandler::trap(fn () => fstat($this->resource));
-		if (!$result->success) {
-			throw new IOException();
-		}
-		if ($result->value === false) {
+		if ($result->isFailureOrFalse()) {
 			throw new IOException();
 		}
 
@@ -381,7 +375,7 @@ class Stream extends ResourceBase
 		$this->throwIfDisposed();
 
 		$result = ErrorHandler::trap(fn () => fwrite($this->resource, $data->raw, $byteSize));
-		if (!$result->success || $result->value === false) {
+		if ($result->isFailureOrFalse()) {
 			throw new StreamException();
 		}
 
@@ -473,7 +467,7 @@ class Stream extends ResourceBase
 		$this->throwIfDisposed();
 
 		$result = ErrorHandler::trap(fn () => fread($this->resource, $byteSize));
-		if (!$result->success || $result->value === false) {
+		if ($result->isFailureOrFalse()) {
 			throw new StreamException();
 		}
 
