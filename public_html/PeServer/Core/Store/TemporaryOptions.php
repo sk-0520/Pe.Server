@@ -18,7 +18,7 @@ class TemporaryOptions
 	#region define
 
 	/** 一時データID保持Cookie名。 */
-	public const DEFAULT_NAME = 'PHPTEMPID';
+	public const DEFAULT_NAME = 'PHPTEMPID'; //cspell:disable-line
 
 	#endregion
 
