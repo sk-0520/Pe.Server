@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
-use PeServer\Core\Throws\ArgumentException;
+use PeServer\Core\Throws\MagicPropertyException;
 
 /**
  * 真の状態を保持する。
@@ -18,7 +18,7 @@ use PeServer\Core\Throws\ArgumentException;
  *  ていうよくやるやつが動かんかってん
  *
  * @property bool $state 真偽値を何も考えずに代入する。取得した際に一度でも偽が代入されていれば偽になる。
- * @property-read bool $last 最終設定値。
+ * @property-read bool $latest 最終設定値。
  */
 final class TrueKeeper
 {
@@ -26,7 +26,7 @@ final class TrueKeeper
 
 	private bool $state = true;
 
-	private bool $last = false;
+	private bool $latest = false;
 
 	#endregion
 
@@ -35,10 +35,10 @@ final class TrueKeeper
 	public function __set(string $name, bool $value): void
 	{
 		if ($name !== 'state') {
-			throw new ArgumentException();
+			throw new MagicPropertyException($name);
 		}
 
-		$this->last = $value;
+		$this->latest = $value;
 		if (!$value) {
 			$this->state = false;
 		}
@@ -49,11 +49,11 @@ final class TrueKeeper
 		if ($name === 'state') {
 			return $this->state;
 		}
-		if ($name === 'last') {
-			return $this->last;
+		if ($name === 'latest') {
+			return $this->latest;
 		}
 
-		throw new ArgumentException($name);
+			throw new MagicPropertyException($name);
 	}
 
 	#endregion
