@@ -28,6 +28,11 @@ class AdministratorApiDeleteOldDataLogic extends ApiLogicBase
 
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
+		// セッション掃除。
+		$sessionGcResult = session_gc();
+		$this->logger->info("session_gc: {0}", $sessionGcResult);
+
+		// アプリデータ削除
 		$this->appEraser->execute();
 
 		$this->writeAuditLogCurrentUser(AuditLog::API_ADMINISTRATOR_DELETE_OLD_DATA);
