@@ -68,7 +68,7 @@ abstract class Archiver
 	 */
 	public static function extractGzip(Binary $data): Binary
 	{
-		$result = ErrorHandler::trapError(fn () => gzdecode($data->raw));
+		$result = ErrorHandler::trap(fn () => gzdecode($data->raw));
 		if (!$result->success) {
 			throw new ArchiveException();
 		}

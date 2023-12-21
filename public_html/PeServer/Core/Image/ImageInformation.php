@@ -42,8 +42,8 @@ readonly class ImageInformation
 	 */
 	public static function load(string $filePath): ImageInformation
 	{
-		$result = ErrorHandler::trapError(fn () => getimagesize($filePath));
-		if (!$result->success || $result->value === false) {
+		$result = ErrorHandler::trap(fn () => getimagesize($filePath));
+		if ($result->isFailureOrFalse()) {
 			throw new ImageException($filePath);
 		}
 

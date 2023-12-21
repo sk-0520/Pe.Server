@@ -8,6 +8,9 @@ use ReflectionClass;
 use Exception;
 use PeServer\Core\DI\IDiContainer;
 use PeServer\Core\DI\IDiRegisterContainer;
+use PeServer\Core\IO\Directory;
+use PeServer\Core\IO\Path;
+use PeServer\Core\Text;
 use ReflectionException;
 
 class TestClass extends \PHPUnit\Framework\TestCase
@@ -94,5 +97,32 @@ class TestClass extends \PHPUnit\Framework\TestCase
 		$reflection = new ReflectionClass($object);
 		$method = $reflection->getMethod($method);
 		return $method->invokeArgs($object, $params);
+	}
+
+	protected function getProperty(object $object, string $name): mixed
+	{
+		$reflection = new ReflectionClass($object);
+		$property = $reflection->getProperty($name);
+		return $property->getValue($object);
+	}
+	protected function setProperty(object $object, string $name, mixed $value): void
+	{
+		$reflection = new ReflectionClass($object);
+		$property = $reflection->getProperty($name);
+		$property->setValue($object, $value);
+	}
+
+	protected function testDir(): TestDirectory
+	{
+		$stackTrace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 2)[1];
+		$class = Text::replace($stackTrace['class'], '\\', '/');
+		$function = $stackTrace['function'];
+
+		$tempDir = Directory::getTemporaryDirectory();
+
+		$dirPath = Path::combine($tempDir, $class, $function);
+		Directory::createDirectory($dirPath);
+
+		return new TestDirectory($dirPath);
 	}
 }

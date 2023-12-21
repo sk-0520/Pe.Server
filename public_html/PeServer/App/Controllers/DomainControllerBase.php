@@ -18,7 +18,7 @@ use PeServer\Core\Mvc\Template\TemplateParameter;
 use PeServer\Core\Web\IUrlHelper;
 use PeServer\Core\Web\UrlPath;
 use PeServer\Core\Web\UrlQuery;
-use PeServer\Core\WebSecurity;
+use PeServer\Core\Web\WebSecurity;
 
 abstract class DomainControllerBase extends ControllerBase
 {

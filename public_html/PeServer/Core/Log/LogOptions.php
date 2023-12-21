@@ -23,6 +23,7 @@ class LogOptions
 	 * @param string $format
 	 * @phpstan-param literal-string $format
 	 * @param array<string,mixed> $configuration
+	 * @codeCoverageIgnore
 	 */
 	public function __construct(
 		public string $header,

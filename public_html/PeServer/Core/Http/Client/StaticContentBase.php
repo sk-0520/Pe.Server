@@ -15,7 +15,7 @@ abstract class StaticContentBase extends HttpClientContentBase
 {
 	#region variable
 
-	readonly protected Binary $body;
+	protected readonly Binary $body;
 
 	#endregion
 

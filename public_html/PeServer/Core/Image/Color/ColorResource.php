@@ -17,8 +17,8 @@ use PeServer\Core\Text;
 class ColorResource extends DisposerBase implements IColor
 {
 	public function __construct(
-		private Graphics $graphics,
-		public int $value
+		private readonly Graphics $graphics,
+		public readonly int $value
 	) {
 	}
 

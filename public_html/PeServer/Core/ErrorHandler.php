@@ -30,6 +30,7 @@ use PeServer\Core\Throws\InvalidErrorLevelError;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Throws\Throws;
 use PeServer\Core\Web\UrlHelper;
+use PeServer\Core\Web\WebSecurity;
 use Throwable;
 
 /**
@@ -162,7 +163,7 @@ class ErrorHandler
 	 * @return ResultData 結果。補足できたかどうかの真偽値が成功状態に設定されるので処理の結果自体は呼び出し側で確認すること。
 	 * @phpstan-return ResultData<TValue>
 	 */
-	public static function trapError(callable $action, int $errorLevel = E_ALL): ResultData
+	public static function trap(callable $action, int $errorLevel = E_ALL): ResultData
 	{
 		return Code::using(new LocalPhpErrorReceiver($errorLevel), function (LocalPhpErrorReceiver $disposable) use ($action) {
 			$result = $action();

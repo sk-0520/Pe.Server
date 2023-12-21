@@ -91,7 +91,7 @@ class AssetFunction extends TemplateFunctionBase
 			if ($isProduction) {
 				$minimalPath = Path::setEnvironmentName($sourcePath, 'min');
 				$physicalPath = Path::combine(__DIR__, '..', '..', '..', '..', '..', $minimalPath);
-				if (IOUtility::existsItem($physicalPath)) {
+				if (IOUtility::exists($physicalPath)) {
 					$resourcePath = Text::replace($minimalPath, "\\", '/');
 				}
 			}
@@ -112,7 +112,7 @@ class AssetFunction extends TemplateFunctionBase
 			// @phpstan-ignore-next-line nullは全取得だからOK
 			foreach ($this->argument->engine->getTemplateDir(null) as $dir) {
 				$path = Path::combine($dir, $sourcePath);
-				if (IOUtility::existsItem($path)) {
+				if (IOUtility::exists($path)) {
 					$filePath = $path;
 					break;
 				}

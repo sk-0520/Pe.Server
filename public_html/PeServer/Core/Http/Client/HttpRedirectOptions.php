@@ -7,7 +7,6 @@ namespace PeServer\Core\Http\Client;
 /**
  * HttpClient リダイレクト設定データ。
  */
-
 readonly class HttpRedirectOptions
 {
 	#region define
@@ -23,6 +22,7 @@ readonly class HttpRedirectOptions
 	 * @param bool $isEnabled リダイレクトするか
 	 * @param int $count リダイレクト最大回数
 	 * @param bool $autoReferer リファラを付与するか
+	 * @codeCoverageIgnore
 	 */
 	public function __construct(
 		public bool $isEnabled = true,

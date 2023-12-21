@@ -10,7 +10,7 @@ use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mvc\Template\ITemplateFactory;
 use PeServer\Core\Mvc\Template\TemplateParameter;
 use PeServer\Core\Web\UrlHelper;
-use PeServer\Core\WebSecurity;
+use PeServer\Core\Web\WebSecurity;
 
 /**
  * アプリ用汎用テンプレート処理。

@@ -17,7 +17,7 @@ use PeServer\Core\Throws\NotSupportedException;
 /**
  * @immutable
  */
-class RgbColor implements IColor
+readonly class RgbColor implements IColor
 {
 	#region define
 

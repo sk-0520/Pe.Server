@@ -19,11 +19,8 @@ abstract class IOUtility
 
 	public static function getState(string $path): IOState
 	{
-		$result = ErrorHandler::trapError(fn () => stat($path));
-		if (!$result->success) {
-			throw new IOException();
-		}
-		if ($result->value === false) {
+		$result = ErrorHandler::trap(fn () => stat($path));
+		if ($result->isFailureOrFalse()) {
 			throw new IOException();
 		}
 
@@ -39,7 +36,7 @@ abstract class IOUtility
 	 * @return boolean 存在するか。
 	 * @see https://www.php.net/manual/function.file-exists.php
 	 */
-	public static function existsItem(string $path): bool
+	public static function exists(string $path): bool
 	{
 		return file_exists($path);
 	}

@@ -106,7 +106,7 @@ class Graphics extends DisposerBase
 			default => 'imagecreatefromstring'
 		};
 
-		$result = ErrorHandler::trapError(
+		$result = ErrorHandler::trap(
 			fn () => call_user_func($funcName, $binary->raw)
 		);
 
@@ -587,7 +587,7 @@ class Graphics extends DisposerBase
 		);
 	}
 
-	private function exportImageCore(ImageSetting $setting): Binary
+	private function saveCore(ImageSetting $setting): Binary
 	{
 		return OutputBuffer::get(fn () => match ($setting->imageType) {
 			ImageType::Png => imagepng($this->image, null, ...$setting->options()),
@@ -604,13 +604,13 @@ class Graphics extends DisposerBase
 	 * @param ImageSetting $setting
 	 * @return Binary
 	 */
-	public function exportImage(ImageSetting $setting): Binary
+	public function save(ImageSetting $setting): Binary
 	{
 		if ($setting->imageType == ImageType::Auto) {
 			throw new ArgumentException('ImageType::AUTO');
 		}
 
-		return $this->exportImageCore($setting);
+		return $this->saveCore($setting);
 	}
 
 	/**
@@ -619,13 +619,13 @@ class Graphics extends DisposerBase
 	 * @param ImageSetting $setting
 	 * @return string "data" URL scheme。
 	 */
-	public function exportHtmlSource(ImageSetting $setting): string
+	public function saveHtmlSource(ImageSetting $setting): string
 	{
 		if ($setting->imageType == ImageType::Auto) {
 			throw new ArgumentException('ImageType::AUTO');
 		}
 
-		$image = $this->exportImageCore($setting);
+		$image = $this->saveCore($setting);
 
 		$mime = match ($setting->imageType) {
 			default => $setting->imageType->toMime(),

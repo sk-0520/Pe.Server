@@ -105,7 +105,7 @@ class BotTextImageFunction extends TemplateFunctionBase
 		$image->fillRectangle($backgroundColor, $rectangle);
 		$image->drawText($text, $fontSize, $rectangle, $foregroundColor, $textSetting);
 
-		$htmlSource = $image->exportHtmlSource(ImageSetting::png());
+		$htmlSource = $image->saveHtmlSource(ImageSetting::png());
 		$image->dispose();
 
 		$dom = new HtmlDocument();

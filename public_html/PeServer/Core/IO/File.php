@@ -36,12 +36,11 @@ abstract class File
 	 * `touch` ラッパー。
 	 *
 	 * @param string $path
-	 * @return bool
 	 * @see https://www.php.net/manual/function.touch.php
 	 */
-	public static function createEmptyFileIfNotExists(string $path): bool
+	public static function createEmptyFileIfNotExists(string $path): void
 	{
-		return touch($path);
+		touch($path);
 	}
 
 	/**
@@ -55,8 +54,8 @@ abstract class File
 	 */
 	public static function getFileSize(string $path): int
 	{
-		$result = ErrorHandler::trapError(fn () => filesize($path));
-		if (!$result->success || $result->value === false) {
+		$result = ErrorHandler::trap(fn () => filesize($path));
+		if ($result->isFailureOrFalse()) {
 			throw new IOException();
 		}
 
@@ -73,12 +72,12 @@ abstract class File
 	 */
 	public static function readContent(string $path): Binary
 	{
-		$content = file_get_contents($path);
-		if ($content === false) {
+		$result = ErrorHandler::trap(fn () => file_get_contents($path));
+		if ($result->isFailureOrFalse()) {
 			throw new IOException($path);
 		}
 
-		return new Binary($content);
+		return new Binary($result->value);
 	}
 
 	/**
@@ -93,12 +92,13 @@ abstract class File
 	private static function saveContent(string $path, Binary $data, bool $append): int
 	{
 		$flag = $append ? FILE_APPEND : 0;
-		$length = file_put_contents($path, $data->raw, LOCK_EX | $flag);
-		if ($length === false) {
+
+		$result = ErrorHandler::trap(fn () => file_put_contents($path, $data->raw, LOCK_EX | $flag));
+		if ($result->isFailureOrFalse()) {
 			throw new IOException($path);
 		}
 
-		return $length;
+		return $result->value;
 	}
 
 	/**
@@ -168,7 +168,7 @@ abstract class File
 	/**
 	 * ファイルが存在するか。
 	 *
-	 * self::existsItem より速い。
+	 * `IOUtility::exists` より速い。
 	 * `file_exists`より`is_file`の方が速いらすぃ
 	 *
 	 * `is_file` ラッパー。
@@ -199,17 +199,14 @@ abstract class File
 	 * ファイル削除。
 	 *
 	 * @param string $filePath ファイルパス。
-	 * @return boolean
 	 * @throws IOException
 	 */
-	public static function removeFile(string $filePath): bool
+	public static function removeFile(string $filePath): void
 	{
-		$result = ErrorHandler::trapError(fn () => unlink($filePath));
-		if (!$result->success) {
+		$result = ErrorHandler::trap(fn () => unlink($filePath));
+		if ($result->isFailureOrFalse()) {
 			throw new IOException();
 		}
-
-		return $result->value;
 	}
 
 	/**
@@ -220,11 +217,11 @@ abstract class File
 	 */
 	public static function removeFileIfExists(string $filePath): bool
 	{
-		if (!IOUtility::existsItem($filePath)) {
+		if (!IOUtility::exists($filePath)) {
 			return false;
 		}
 
-		$result = ErrorHandler::trapError(fn () => unlink($filePath));
+		$result = ErrorHandler::trap(fn () => unlink($filePath));
 		if (!$result->success) {
 			return false;
 		}

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc\Template;
 
 use PeServer\Core\Web\IUrlHelper;
-use PeServer\Core\WebSecurity;
+use PeServer\Core\Web\WebSecurity;
 
 /**
  * テンプレート生成設定。

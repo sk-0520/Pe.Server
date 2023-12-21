@@ -9,7 +9,7 @@ use PeServer\Core\Log\ILoggerFactory;
 use PeServer\Core\Mvc\Template\ITemplateFactory;
 use PeServer\Core\Store\Stores;
 use PeServer\Core\Web\IUrlHelper;
-use PeServer\Core\WebSecurity;
+use PeServer\Core\Web\WebSecurity;
 
 /**
  * コントローラ生成時に使用される入力値。

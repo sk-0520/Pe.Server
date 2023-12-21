@@ -12,7 +12,7 @@ use PeServer\Core\Store\SpecialStore;
 use PeServer\Core\Store\Stores;
 use PeServer\Core\Store\TemporaryStore;
 use PeServer\Core\Web\IUrlHelper;
-use PeServer\Core\WebSecurity;
+use PeServer\Core\Web\WebSecurity;
 
 class TemplatePluginArgument
 {

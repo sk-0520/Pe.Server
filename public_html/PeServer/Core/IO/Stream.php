@@ -19,6 +19,8 @@ use PeServer\Core\Throws\IOException;
 use PeServer\Core\Throws\StreamException;
 
 /**
+ * ストリーム。
+ *
  * @phpstan-extends ResourceBase<mixed>
  */
 class Stream extends ResourceBase
@@ -43,7 +45,7 @@ class Stream extends ResourceBase
 
 	#region variable
 
-	/** 文字列として扱うエンコーディング。バイナリデータに対してあんまり当てにならん。 */
+	/** 文字列として扱うエンコーディング。(バイナリデータは気にしなくてよい) */
 	private Encoding $encoding;
 
 	/**
@@ -56,7 +58,9 @@ class Stream extends ResourceBase
 	#endregion
 
 	/**
-	 * 生成
+	 * 生成。
+	 *
+	 * 内部的にしか使わない。
 	 *
 	 * @param $resource ファイルリソース。
 	 * @param Encoding|null $encoding
@@ -75,6 +79,16 @@ class Stream extends ResourceBase
 	/**
 	 * `fopen` を使用してファイルストリームを生成。
 	 *
+	 * 原則以下の処理を使ってればよい。
+	 * * `self::create`
+	 * * `self::open`
+	 * * `self::openOrCreate`
+	 * * `self::openStandardInput`
+	 * * `self::openStandardOutput`
+	 * * `self::openStandardError`
+	 * * `self::openMemory`
+	 * * `self::openTemporary`
+	 *
 	 * @param string $path ファイルパス。
 	 * @param string $mode `fopen:mode` を参照。
 	 * @param Encoding|null $encoding
@@ -88,12 +102,9 @@ class Stream extends ResourceBase
 			$mode .= 'b';
 		}
 
-		$result = ErrorHandler::trapError(fn () => fopen($path, $mode));
-		if (!$result->success) {
+		$result = ErrorHandler::trap(fn () => fopen($path, $mode));
+		if ($result->isFailureOrFalse()) {
 			throw new IOException($path);
-		}
-		if ($result->value === false) {
-			throw new StreamException($path);
 		}
 
 		return new self($result->value, $encoding);
@@ -228,6 +239,7 @@ class Stream extends ResourceBase
 				throw new ArgumentException('$byteSize: ' . $memoryByteSize);
 			}
 			if ($memoryByteSize) {
+				//cspell:disable-next-line
 				$path .= '/maxmemory:' . (string)$memoryByteSize;
 			}
 		}
@@ -239,11 +251,8 @@ class Stream extends ResourceBase
 	{
 		$this->throwIfDisposed();
 
-		$result = ErrorHandler::trapError(fn () => fstat($this->resource));
-		if (!$result->success) {
-			throw new IOException();
-		}
-		if ($result->value === false) {
+		$result = ErrorHandler::trap(fn () => fstat($this->resource));
+		if ($result->isFailureOrFalse()) {
 			throw new IOException();
 		}
 
@@ -325,7 +334,7 @@ class Stream extends ResourceBase
 	 * @return bool
 	 * @see https://www.php.net/manual/function.feof.php
 	 */
-	public function eof(): bool
+	public function isEnd(): bool
 	{
 		if ($this->isDisposed()) {
 			return false;
@@ -365,25 +374,30 @@ class Stream extends ResourceBase
 	{
 		$this->throwIfDisposed();
 
-		$result = fwrite($this->resource, $data->raw, $byteSize);
-		if ($result === false) {
+		$result = ErrorHandler::trap(fn () => fwrite($this->resource, $data->raw, $byteSize));
+		if ($result->isFailureOrFalse()) {
 			throw new StreamException();
 		}
 
-		return $result;
+		return $result->value;
 	}
 
 	/**
 	 * 現在のエンコーディングを使用してBOMを書き込み。
 	 *
-	 * * 現在位置に書き込む点に注意。
+	 * * 現在位置に書き込む点に注意(シーク位置が先頭以外であれば無視される)。
 	 * * エンコーディングがBOM情報を持っていれば出力されるためBOM不要な場合は使用しないこと。
 	 *
 	 * @return int 書き込まれたバイトサイズ。
+	 * @phpstan-return UnsignedIntegerAlias
 	 */
 	public function writeBom(): int
 	{
 		$this->throwIfDisposed();
+
+		if ($this->getOffset() !== 0) {
+			return 0;
+		}
 
 		$bom = $this->encoding->getByteOrderMark();
 		if ($bom->count()) {
@@ -452,24 +466,30 @@ class Stream extends ResourceBase
 	{
 		$this->throwIfDisposed();
 
-		$result = fread($this->resource, $byteSize);
-		if ($result === false) {
+		$result = ErrorHandler::trap(fn () => fread($this->resource, $byteSize));
+		if ($result->isFailureOrFalse()) {
 			throw new StreamException();
 		}
 
-		return new Binary($result);
+		return new Binary($result->value);
 	}
 
 	/**
 	 * 現在のエンコーディングを使用してBOMを読み取る。
 	 *
-	 * * 現在位置から読み込む点に注意。
+	 * * 現在位置から読み込む点に注意(シーク位置が先頭以外であれば無視される)。
 	 * * 読み込まれた場合(エンコーディングがBOMを持っていて合致した場合)はその分読み進められる。
 	 *
 	 * @return bool BOMが読み込まれたか。
 	 */
 	public function readBom(): bool
 	{
+		$this->throwIfDisposed();
+
+		if ($this->getOffset() !== 0) {
+			return false;
+		}
+
 		$bom = $this->encoding->getByteOrderMark();
 		$bomLength = $bom->count();
 		if (!$bomLength) {
@@ -561,7 +581,7 @@ class Stream extends ResourceBase
 		$findLf = false;
 		$hasNewLine = false;
 
-		while (!$this->eof()) {
+		while (!$this->isEnd()) {
 			$binary = $this->readBinary($bufferByteSize);
 			$currentLength = $binary->count();
 			if (!$currentLength) {

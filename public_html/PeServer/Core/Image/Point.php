@@ -10,14 +10,8 @@ use PeServer\Core\Code;
 /**
  * 座標。
  */
-class Point implements Stringable
+readonly class Point implements Stringable
 {
-	#region variable
-
-	private static ?Point $emptyValue = null; //phpstan-ignore-line static
-
-	#endregion
-
 	/**
 	 * 生成
 	 *
@@ -29,15 +23,6 @@ class Point implements Stringable
 		public readonly int $y
 	) {
 	}
-
-	#region function
-
-	public static function empty(): Point
-	{
-		return self::$emptyValue ??= new Point(0, 0);
-	}
-
-	#endregion
 
 	#region Stringable
 

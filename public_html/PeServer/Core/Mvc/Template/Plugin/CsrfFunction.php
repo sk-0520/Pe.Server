@@ -8,7 +8,7 @@ use PeServer\Core\Collections\Arr;
 use PeServer\Core\Html\HtmlDocument;
 use PeServer\Core\Mvc\Template\Plugin\TemplateFunctionBase;
 use PeServer\Core\Mvc\Template\Plugin\TemplatePluginArgument;
-use PeServer\Core\WebSecurity;
+use PeServer\Core\Web\WebSecurity;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\NotImplementedException;
 

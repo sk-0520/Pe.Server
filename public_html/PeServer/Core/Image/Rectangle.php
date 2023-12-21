@@ -12,7 +12,7 @@ use PeServer\Core\Code;
  *
  * @immutable
  */
-class Rectangle implements Stringable
+readonly class Rectangle implements Stringable
 {
 	/**
 	 * 生成。

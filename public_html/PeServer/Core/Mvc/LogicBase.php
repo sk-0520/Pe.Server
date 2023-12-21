@@ -619,7 +619,6 @@ abstract class LogicBase implements IValidationReceiver
 		if (Text::isNullOrWhiteSpace($mime)) {
 			$mime = Mime::fromFileName($path);
 		}
-		/** @phpstan-var non-empty-string $mime */
 
 		$content = File::readContent($path);
 

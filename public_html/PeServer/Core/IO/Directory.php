@@ -34,12 +34,13 @@ abstract class Directory
 	 *
 	 * @param string $directoryPath ディレクトリパス。
 	 * @param int $permissions
-	 * @return bool
+	 * @return bool 作成出来たか。
 	 * @see https://www.php.net/manual/function.mkdir.php
 	 */
 	public static function createDirectory(string $directoryPath, int $permissions = self::DIRECTORY_PERMISSIONS): bool
 	{
-		return mkdir($directoryPath, $permissions, true);
+		$result = ErrorHandler::trap(fn () => mkdir($directoryPath, $permissions, true));
+		return $result->success && $result->value;
 	}
 
 	/**
@@ -48,7 +49,7 @@ abstract class Directory
 	 * ディレクトリは再帰的に作成される。
 	 *
 	 * @param string $directoryPath ディレクトリパス
-	 * @return bool
+	 * @return bool 作成出来たか。
 	 */
 	public static function createDirectoryIfNotExists(string $directoryPath, int $permissions = self::DIRECTORY_PERMISSIONS): bool
 	{
@@ -65,7 +66,7 @@ abstract class Directory
 	 * ディレクトリは再帰的に作成される。
 	 *
 	 * @param string $path 対象パス（メソッド自体はファイルパスとして使用することを前提としている）
-	 * @return bool
+	 * @return bool 作成されたか。
 	 */
 	public static function createParentDirectoryIfNotExists(string $path, int $permissions = self::DIRECTORY_PERMISSIONS): bool
 	{
@@ -99,10 +100,12 @@ abstract class Directory
 	{
 		/** @var string[] */
 		$files = [];
-		$items = scandir($directoryPath);
-		if ($items === false) {
+		$result = ErrorHandler::trap(fn () => scandir($directoryPath, SCANDIR_SORT_NONE));
+		// $items = scandir($directoryPath);
+		if ($result->isFailureOrFalse()) {
 			return $files;
 		}
+		$items = $result->value;
 
 		foreach ($items as $item) {
 			if ($item === '.' || $item === '..') {
@@ -204,15 +207,13 @@ abstract class Directory
 						return false;
 					}
 				} else {
-					if (!File::removeFile($file)) {
-						return false;
-					}
+					File::removeFile($file);
 				}
 			}
 		}
 
-		$result = ErrorHandler::trapError(fn () => rmdir($directoryPath));
-		if (!$result->success) {
+		$result = ErrorHandler::trap(fn () => rmdir($directoryPath));
+		if ($result->isFailureOrFalse()) {
 			throw new IOException();
 		}
 

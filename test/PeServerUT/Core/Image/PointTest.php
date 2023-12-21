@@ -10,13 +10,6 @@ use PeServer\Core\Image\Point;
 
 class PointTest extends TestClass
 {
-	public function test_empty()
-	{
-		$point = Point::empty();
-		$this->assertSame(0, $point->x);
-		$this->assertSame(0, $point->y);
-	}
-
 	public function test_serializable()
 	{
 		$tests = [
@@ -32,7 +25,7 @@ class PointTest extends TestClass
 
 	public function test___toString()
 	{
-		$point1 = Point::empty();
+		$point1 = new Point(0, 0);
 		$this->assertSame('PeServer\Core\Image\Point(x:0,y:0)', (string)$point1);
 
 		$point2 = new Point(1, 2);

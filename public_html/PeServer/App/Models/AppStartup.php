@@ -34,7 +34,7 @@ use PeServer\Core\Mvc\RouteRequest;
 use PeServer\Core\Mvc\RouteSetting;
 use PeServer\Core\Mvc\Routing;
 use PeServer\Core\Mvc\Template\ITemplateFactory;
-use PeServer\Core\WebSecurity;
+use PeServer\Core\Web\WebSecurity;
 use PeServer\Core\Store\SpecialStore;
 use PeServer\Core\Text;
 use PeServer\Core\Web\UrlHelper;

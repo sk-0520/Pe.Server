@@ -28,7 +28,7 @@ use PeServer\Core\Web\Url;
 use PeServer\Core\Web\UrlPath;
 use PeServer\Core\Web\UrlQuery;
 use PeServer\Core\Web\UrlUtility;
-use PeServer\Core\WebSecurity;
+use PeServer\Core\Web\WebSecurity;
 
 /**
  * コントローラ基底処理。

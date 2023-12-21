@@ -17,7 +17,7 @@ use PeServer\Core\TypeUtility;
 /**
  * PHP組み込みシリアライザー。
  */
-class BuiltinSerializer extends SerializerBase
+final class BuiltinSerializer extends SerializerBase
 {
 	#region SerializerBase
 

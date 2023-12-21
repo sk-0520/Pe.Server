@@ -14,7 +14,7 @@ use PeServer\Core\Mvc\Template\ITemplateFactory;
 use PeServer\Core\Mvc\Template\TemplateOptions;
 use PeServer\Core\Mvc\Template\TemplateParameter;
 use PeServer\Core\Web\IUrlHelper;
-use PeServer\Core\WebSecurity;
+use PeServer\Core\Web\WebSecurity;
 
 /**
  * 結果操作: View。

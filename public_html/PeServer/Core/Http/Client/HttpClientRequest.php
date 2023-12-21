@@ -11,6 +11,15 @@ use PeServer\Core\Web\Url;
 
 readonly class HttpClientRequest
 {
+	/**
+	 * 生成。
+	 *
+	 * @param Url $url
+	 * @param HttpMethod $method
+	 * @param null|HttpHeader $header
+	 * @param null|HttpClientContentBase $content
+	 * @codeCoverageIgnore
+	 */
 	public function __construct(
 		public Url $url,
 		public HttpMethod $method,
