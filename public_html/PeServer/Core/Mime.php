@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core;
 
 use PeServer\Core\Throws\ArgumentException;
+use PeServer\Core\Throws\FileNotFoundException;
 
 /**
  * まいむ。
@@ -32,13 +33,14 @@ abstract class Mime
 	#region function
 
 	/**
-	 * ファイル名からMIMEを取得。
+	 * ファイルからMIMEを取得。
 	 *
 	 * `mime_content_type` ラッパー。
 	 *
 	 * @param string $fileName
 	 * @return non-empty-string
 	 * @throws ArgumentException
+	 * @throws FileNotFoundException
 	 * @see https://php.net/manual/function.mime-content-type.php
 	 */
 	public static function fromFileName(string $fileName): string
@@ -49,7 +51,7 @@ abstract class Mime
 
 		$result = ErrorHandler::trap(fn () =>  mime_content_type($fileName));
 		if (!$result->success || Text::isNullOrEmpty($result->value)) {
-			throw new ArgumentException($fileName);
+			throw new FileNotFoundException($fileName);
 		}
 
 		return $result->value;
