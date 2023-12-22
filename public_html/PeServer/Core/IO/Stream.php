@@ -7,7 +7,7 @@ namespace PeServer\Core\IO;
 use PeServer\Core\Binary;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Encoding;
-use PeServer\Core\ErrorHandler;
+use PeServer\Core\Errors\ErrorHandler;
 use PeServer\Core\IO\File;
 use PeServer\Core\IO\IOUtility;
 use PeServer\Core\IO\StreamMetaData;

@@ -7,7 +7,7 @@ namespace PeServer\Core\Image;
 use GdImage;
 use PeServer\Core\Binary;
 use PeServer\Core\DisposerBase;
-use PeServer\Core\ErrorHandler;
+use PeServer\Core\Errors\ErrorHandler;
 use PeServer\Core\IDisposable;
 use PeServer\Core\Image\Alignment;
 use PeServer\Core\Image\Area;

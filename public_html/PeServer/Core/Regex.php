@@ -6,6 +6,7 @@ namespace PeServer\Core;
 
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Collections\OrderBy;
+use PeServer\Core\Errors\ErrorHandler;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\RegexDelimiterException;
 use PeServer\Core\Throws\RegexException;

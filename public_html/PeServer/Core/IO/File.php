@@ -9,7 +9,7 @@ use PeServer\Core\Binary;
 use PeServer\Core\Cryptography;
 use PeServer\Core\Encoding;
 use PeServer\Core\Environment;
-use PeServer\Core\ErrorHandler;
+use PeServer\Core\Errors\ErrorHandler;
 use PeServer\Core\IO\Directory;
 use PeServer\Core\IO\IOState;
 use PeServer\Core\IO\IOUtility;

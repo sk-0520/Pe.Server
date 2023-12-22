@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Image;
 
 use Exception;
-use PeServer\Core\ErrorHandler;
+use PeServer\Core\Errors\ErrorHandler;
 use PeServer\Core\Image\ImageType;
 use PeServer\Core\Image\Size;
 use PeServer\Core\Throws\Enforce;
