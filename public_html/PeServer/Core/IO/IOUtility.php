@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\IO;
 
-use PeServer\Core\ErrorHandler;
+use PeServer\Core\Errors\ErrorHandler;
 use PeServer\Core\IO\IOState;
 use PeServer\Core\ResultData;
 use PeServer\Core\Text;

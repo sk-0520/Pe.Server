@@ -12,7 +12,7 @@ use PeServer\Core\DI\IDiContainer;
 use PeServer\Core\DI\IDiRegisterContainer;
 use PeServer\Core\Encoding;
 use PeServer\Core\Environment;
-use PeServer\Core\ErrorHandler;
+use PeServer\Core\Errors\ErrorHandler;
 use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Http\IResponsePrinterFactory;
 use PeServer\Core\Http\RequestPath;

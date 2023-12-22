@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\IO;
 
 use PeServer\Core\Environment;
-use PeServer\Core\ErrorHandler;
+use PeServer\Core\Errors\ErrorHandler;
 use PeServer\Core\IO\File;
 use PeServer\Core\IO\Path;
 use PeServer\Core\ResultData;

@@ -8,7 +8,7 @@ use Countable;
 use TypeError;
 use PeServer\Core\Collections\OrderBy;
 use PeServer\Core\Cryptography;
-use PeServer\Core\ErrorHandler;
+use PeServer\Core\Errors\ErrorHandler;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Throws\KeyNotFoundException;

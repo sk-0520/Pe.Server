@@ -2,10 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core;
+namespace PeServer\Core\Errors;
 
+use PeServer\Core\Code;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\DI\Inject;
+use PeServer\Core\DisposerBase;
 use PeServer\Core\Http\HttpHeader;
 use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Http\HttpRequest;
@@ -23,8 +25,10 @@ use PeServer\Core\Mvc\Template\SmartyTemplate;
 use PeServer\Core\Mvc\Template\TemplateFactory;
 use PeServer\Core\Mvc\Template\TemplateOptions;
 use PeServer\Core\Mvc\Template\TemplateParameter;
+use PeServer\Core\ResultData;
 use PeServer\Core\Store\SpecialStore;
 use PeServer\Core\Store\Stores;
+use PeServer\Core\Text;
 use PeServer\Core\Throws\HttpStatusException;
 use PeServer\Core\Throws\InvalidErrorLevelError;
 use PeServer\Core\Throws\InvalidOperationException;
