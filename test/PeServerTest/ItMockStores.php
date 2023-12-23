@@ -12,6 +12,7 @@ final class ItMockStores
 {
 	public const SESSION_ACCOUNT_USER_ID = 'session-account-user-id';
 	public const SESSION_ACCOUNT_LOGIN_ID = 'session-account-login-id';
+	public const SESSION_ACCOUNT_PASSWORD = 'password';
 	public const SESSION_ACCOUNT_NAME = 'session-account-name';
 	public const SESSION_ACCOUNT_STATE = UserState::ENABLED;
 	public const SESSION_ACCOUNT_EMAIL = self::SESSION_ACCOUNT_NAME . '@localhost.domain';
