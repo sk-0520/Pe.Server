@@ -47,15 +47,6 @@ class ErrorHandler
 	/** 登録済みか。 */
 	private bool $isRegistered = false;
 
-	#[Inject(TemplateFactory::class)] //@phpstan-ignore-next-line [INJECT]
-	private ITemplateFactory $templateFactory;
-
-	#[Inject] //@phpstan-ignore-next-line [INJECT]
-	private IResponsePrinterFactory $responsePrinterFactory;
-
-	#[Inject] //@phpstan-ignore-next-line [INJECT]
-	private WebSecurity $webSecurity;
-
 	#endregion
 
 	public function __construct(
@@ -64,18 +55,6 @@ class ErrorHandler
 	}
 
 	#region function
-
-	/**
-	 * 抑制エラーコード指定。
-	 *
-	 * @return HttpStatus[]
-	 */
-	protected function getSuppressionStatusList(): array
-	{
-		return [
-			HttpStatus::NotFound,
-		];
-	}
 
 	/**
 	 * エラーハンドラの登録処理。
@@ -215,33 +194,6 @@ class ErrorHandler
 	}
 
 	/**
-	 * 検出できるソースファイル内容をすべて取得。
-	 *
-	 * @param string $file
-	 * @param Throwable|null $throwable
-	 * @return array<string,string>
-	 */
-	private function getFileContents(string $file, ?Throwable $throwable): array
-	{
-		$files = [
-			"$file" => File::readContent($file)->raw,
-		];
-
-		if ($throwable !== null) {
-			foreach ($throwable->getTrace() as $item) {
-				if (isset($item['file'])) {
-					$f = $item['file'];
-					if (!isset($files[$f])) {
-						$files[$f] = File::readContent($f)->raw;
-					}
-				}
-			}
-		}
-
-		return $files;
-	}
-
-	/**
 	 * エラー取得処理（本体）。
 	 *
 	 * @param int $errorNumber
@@ -262,35 +214,9 @@ class ErrorHandler
 			'file' => $file,
 			'line_number' => $lineNumber,
 			'throwable' => $throwable,
-			'cache' => $this->getFileContents($file, $throwable)
 		];
 
-		$isSuppressionStatus = false;
-		foreach ($this->getSuppressionStatusList() as $suppressionStatus) {
-			if ($response->status === $suppressionStatus) {
-				$isSuppressionStatus = true;
-				$this->logger->info('HTTP {0}: {1}', $suppressionStatus->value, $suppressionStatus->name);
-				break;
-			}
-		}
-		if (!$isSuppressionStatus) {
-			$this->logger->error($values);
-		}
-
-		$options = new TemplateOptions(
-			__DIR__,
-			'template',
-			UrlHelper::none(),
-			$this->webSecurity,
-			Path::combine(Directory::getTemporaryDirectory(), 'PeServer-Core')
-		);
-		$template = $this->templateFactory->createTemplate($options);
-
-		$response->content = $template->build('error-display.tpl', new TemplateParameter($response->status, $values, []));
-
-		$printer = $this->responsePrinterFactory->createResponsePrinter(HttpRequest::none(), $response);
-
-		$printer->execute();
+		var_dump($values);
 	}
 
 	#endregion

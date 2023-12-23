@@ -13,6 +13,7 @@ use PeServer\Core\DI\IDiRegisterContainer;
 use PeServer\Core\Encoding;
 use PeServer\Core\Environment;
 use PeServer\Core\Errors\ErrorHandler;
+use PeServer\Core\Errors\HttpErrorHandler;
 use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Http\IResponsePrinterFactory;
 use PeServer\Core\Http\RequestPath;
@@ -142,10 +143,13 @@ class CoreStartup
 		$container->add(SessionStore::class, DiItem::factory(fn ($di) => $di->get(Stores::class)->session));
 		$container->add(TemporaryStore::class, DiItem::factory(fn ($di) => $di->get(Stores::class)->temporary));
 
-
 		$method = $specialStore->getRequestMethod();
 		$requestPath = new RequestPath($specialStore->getServer('REQUEST_URI'), $container->get(IUrlHelper::class));
 		$container->registerValue(new RouteRequest($method, $requestPath));
+
+		/** @var HttpErrorHandler */
+		$httpErrorHandler = $container->new(HttpErrorHandler::class, [RequestPath::class => $requestPath]);
+		$httpErrorHandler->register();
 
 		$container->registerMapping(ILogicFactory::class, LogicFactory::class);
 	}
