@@ -66,6 +66,7 @@ use PeServer\Core\Throws\IOException;
 use PeServer\Core\Throws\SqlException;
 use PeServer\Core\Throws\DatabaseException;
 use PeServer\Core\Throws\OutputBufferException;
+use PeServer\Core\Web\Url;
 use PeServer\Core\Web\UrlPath;
 use PeServerTest\TestClass;
 use PeServerTest\ItSpecialStore as ItSpecialStore;
@@ -288,6 +289,15 @@ class ItControllerClass extends TestClass
 		}
 
 		$this->assertSame((string)$path, (string)$response->response->header->getRedirect()->url->path);
+	}
+
+	protected function assertRedirectUrl(HttpStatus $status, Url $url, ItActual $response): void
+	{
+		$this->assertTrue($status->isRedirect());
+
+		$this->assertStatus($status, $response);
+
+		$this->assertSame((string)$url, (string)$response->response->header->getRedirect()->url);
 	}
 
 	protected function assertMime(string $mime, ItActual $response): void
