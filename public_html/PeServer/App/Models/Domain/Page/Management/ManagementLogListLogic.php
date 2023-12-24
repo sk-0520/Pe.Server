@@ -12,8 +12,8 @@ use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
-use PeServer\Core\Collections\Arr;
-use PeServer\Core\Collections\Collections;
+use PeServer\Core\Collection\Arr;
+use PeServer\Core\Collection\Collections;
 
 class ManagementLogListLogic extends PageLogicBase
 {

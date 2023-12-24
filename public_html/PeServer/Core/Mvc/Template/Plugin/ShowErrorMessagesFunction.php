@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc\Template\Plugin;
 
 use PeServer\Core\I18n;
-use PeServer\Core\Collections\Arr;
+use PeServer\Core\Collection\Arr;
 use PeServer\Core\Text;
 use PeServer\Core\Mvc\Validator;
 use PeServer\Core\Html\HtmlDocument;

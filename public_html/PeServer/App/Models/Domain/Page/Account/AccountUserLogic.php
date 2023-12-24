@@ -12,7 +12,7 @@ use PeServer\App\Models\AppCryptography;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\App\Models\Dao\Entities\UsersEntityDao;
 use PeServer\App\Models\Dao\Entities\PluginsEntityDao;
-use PeServer\Core\Collections\Arr;
+use PeServer\Core\Collection\Arr;
 
 class AccountUserLogic extends PageLogicBase
 {

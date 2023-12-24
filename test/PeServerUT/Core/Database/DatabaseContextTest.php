@@ -7,7 +7,7 @@ namespace PeServerUT\Core\Database;
 use Exception;
 use PeServer\Core\Archiver;
 use PeServer\Core\Binary;
-use PeServer\Core\Collections\Arr;
+use PeServer\Core\Collection\Arr;
 use PeServer\Core\Database\ConnectionSetting;
 use PeServer\Core\Database\DatabaseContext;
 use PeServer\Core\Log\Logging;

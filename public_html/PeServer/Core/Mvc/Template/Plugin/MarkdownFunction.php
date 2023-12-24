@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Template\Plugin;
 
-use PeServer\Core\Collections\Arr;
+use PeServer\Core\Collection\Arr;
 use PeServer\Core\Mvc\Markdown;
 use PeServer\Core\Text;
 use PeServer\Core\TypeUtility;

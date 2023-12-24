@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Errors;
 
 use PeServer\Core\Code;
-use PeServer\Core\Collections\Arr;
+use PeServer\Core\Collection\Arr;
 use PeServer\Core\DI\Inject;
 use PeServer\Core\DisposerBase;
 use PeServer\Core\Http\HttpHeader;

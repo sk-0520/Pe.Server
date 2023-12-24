@@ -9,8 +9,8 @@ use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\App\Models\Domain\Api\ApiLogicBase;
 use PeServer\App\Models\ResponseJson;
-use PeServer\Core\Collections\Arr;
-use PeServer\Core\Collections\Collections;
+use PeServer\Core\Collection\Arr;
+use PeServer\Core\Collection\Collections;
 use PeServer\Core\Uuid;
 
 class PluginApiGeneratePluginIdLogic extends ApiLogicBase

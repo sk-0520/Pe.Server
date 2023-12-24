@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServerUT\Core\Collections;
 
-use PeServer\Core\Collections\CaseInsensitiveKeyArray;
+use PeServer\Core\Collection\CaseInsensitiveKeyArray;
 use PeServer\Core\Errors\ErrorHandler;
 use PeServer\Core\Throws\IndexOutOfRangeException;
 use PeServer\Core\Throws\KeyNotFoundException;

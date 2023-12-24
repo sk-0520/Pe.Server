@@ -14,7 +14,7 @@ use ReflectionProperty;
 use ReflectionType;
 use ReflectionUnionType;
 use TypeError;
-use PeServer\Core\Collections\Arr;
+use PeServer\Core\Collection\Arr;
 use PeServer\Core\DI\DiItem;
 use PeServer\Core\DI\Inject;
 use PeServer\Core\DI\IScopedDiContainer;

@@ -19,7 +19,7 @@ use PeServer\App\Models\Domain\AccountValidator;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\App\Models\Dao\Entities\UsersEntityDao;
 use PeServer\App\Models\Dao\Entities\UserAuthenticationsEntityDao;
-use PeServer\Core\Collections\Arr;
+use PeServer\Core\Collection\Arr;
 
 class ManagementSetupLogic extends PageLogicBase
 {

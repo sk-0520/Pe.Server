@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServerUT\Core\Collections;
 
 use ArrayIterator;
-use PeServer\Core\Collections\Collections;
+use PeServer\Core\Collection\Collections;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServerTest\Data;

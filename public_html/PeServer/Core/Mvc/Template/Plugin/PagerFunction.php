@@ -6,7 +6,7 @@ namespace PeServer\Core\Mvc\Template\Plugin;
 
 use Exception;
 use PeServer\Core\Code;
-use PeServer\Core\Collections\Arr;
+use PeServer\Core\Collection\Arr;
 use PeServer\Core\Html\HtmlDocument;
 use PeServer\Core\Mvc\PageShortcut;
 use PeServer\Core\Mvc\PageShortcutKind;

@@ -8,7 +8,7 @@ use PeServer\App\Models\Cache\PluginCache;
 use PeServer\App\Models\Cache\PluginCacheCategory;
 use PeServer\App\Models\Cache\PluginCacheItem;
 use PeServer\App\Models\Domain\PluginUrlKey;
-use PeServer\Core\Collections\Collections;
+use PeServer\Core\Collection\Collections;
 use PeServer\Core\Database\DaoBase;
 use PeServer\Core\Database\DaoTrait;
 use PeServer\Core\Database\IDatabaseContext;

@@ -11,7 +11,7 @@ use Iterator;
 use IteratorAggregate;
 use Stringable;
 use TypeError;
-use PeServer\Core\Collections\ArrayAccessHelper;
+use PeServer\Core\Collection\ArrayAccessHelper;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\IndexOutOfRangeException;
 use PeServer\Core\Throws\NotSupportedException;

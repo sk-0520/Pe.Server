@@ -6,7 +6,7 @@ namespace PeServer\Core\Log;
 
 use DateTimeImmutable;
 use DateTimeInterface;
-use PeServer\Core\Collections\Arr;
+use PeServer\Core\Collection\Arr;
 use PeServer\Core\Cryptography;
 use PeServer\Core\DI\DiItem;
 use PeServer\Core\DI\IDiContainer;

@@ -10,7 +10,7 @@ use PeServer\App\Models\AuditLog;
 use PeServer\App\Models\Domain\AppArchiver;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\Core\Binary;
-use PeServer\Core\Collections\Arr;
+use PeServer\Core\Collection\Arr;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\Environment;
 use PeServer\Core\IO\File;

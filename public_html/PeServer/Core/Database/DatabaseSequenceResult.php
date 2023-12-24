@@ -9,7 +9,7 @@ use Iterator;
 use PDOStatement;
 use Traversable;
 use IteratorIterator;
-use PeServer\Core\Collections\Arr;
+use PeServer\Core\Collection\Arr;
 use PeServer\Core\Database\DatabaseResultBase;
 use PeServer\Core\Serialization\IMapper;
 use PeServer\Core\Serialization\Mapper;

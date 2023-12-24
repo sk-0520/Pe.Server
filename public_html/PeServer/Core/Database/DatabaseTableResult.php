@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Database;
 
-use PeServer\Core\Collections\Arr;
+use PeServer\Core\Collection\Arr;
 use PeServer\Core\Database\DatabaseResultBase;
 use PeServer\Core\Serialization\IMapper;
 use PeServer\Core\Serialization\Mapper;
