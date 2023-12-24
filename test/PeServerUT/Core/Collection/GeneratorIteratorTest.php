@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServerUT\Core\Collections;
+namespace PeServerUT\Core\Collection;
 
 use function PHPUnit\Framework\assertSame;
 use PeServer\Core\Collection\GeneratorIterator;

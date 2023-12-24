@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServerUT\Core\Collections;
+namespace PeServerUT\Core\Collection;
 
 use PeServer\Core\Collection\Arr;
 use PeServer\Core\Collection\OrderBy;
@@ -401,7 +401,7 @@ class ArrTest extends TestClass
 		$this->assertSame('aa', $actual3['A']);
 		$this->assertSame('bb', $actual3[10]);
 
-		$actual4 = Arr::map($input, 'PeServerUT\Core\Collections\map_function');
+		$actual4 = Arr::map($input, 'PeServerUT\Core\Collection\map_function');
 		$this->assertSame('aa', $actual4['A']);
 		$this->assertSame('bb', $actual4[10]);
 	}
