@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core\Collections;
+namespace PeServer\Core\Collection;
 
 use ArrayIterator;
 use Iterator;

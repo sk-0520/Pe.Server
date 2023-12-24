@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Http;
 
-use PeServer\Core\Collections\Arr;
+use PeServer\Core\Collection\Arr;
 
 /**
  * HTTPステータスコード。

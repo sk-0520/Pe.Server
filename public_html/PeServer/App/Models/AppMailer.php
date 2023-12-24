@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models;
 
-use PeServer\Core\Collections\Arr;
+use PeServer\Core\Collection\Arr;
 use PeServer\Core\Environment;
 use PeServer\Core\Mail\EmailAddress;
 use PeServer\Core\Mail\Mailer;

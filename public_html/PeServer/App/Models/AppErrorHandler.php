@@ -7,6 +7,7 @@ namespace PeServer\App\Models;
 use PeServer\Core\DI\Inject;
 use PeServer\Core\Environment;
 use PeServer\Core\Errors\ErrorHandler;
+use PeServer\Core\Errors\HttpErrorHandler;
 use PeServer\Core\Http\ContentType;
 use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Http\HttpResponse;
@@ -28,7 +29,7 @@ use PeServer\Core\Web\IUrlHelper;
 use PeServer\Core\Web\WebSecurity;
 use Throwable;
 
-final class AppErrorHandler extends ErrorHandler
+final class AppErrorHandler extends HttpErrorHandler
 {
 	#region variable
 

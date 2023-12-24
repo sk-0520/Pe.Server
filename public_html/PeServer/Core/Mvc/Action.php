@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc;
 
-use PeServer\Core\Collections\Arr;
+use PeServer\Core\Collection\Arr;
 use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Mvc\ActionSetting;
 use PeServer\Core\Mvc\Middleware\IMiddleware;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core\Collections;
+namespace PeServer\Core\Collection;
 
 use AppendIterator;
 use ArrayIterator;
@@ -13,7 +13,7 @@ use Iterator;
 use IteratorAggregate;
 use LimitIterator;
 use Traversable;
-use PeServer\Core\Collections\Arr;
+use PeServer\Core\Collection\Arr;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\TypeUtility;

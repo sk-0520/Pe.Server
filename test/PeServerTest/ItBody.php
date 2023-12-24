@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace PeServerTest;
 
 use PeServer\Core\Binary;
-use PeServer\Core\Collections\Dictionary;
+use PeServer\Core\Collection\Dictionary;
+use PeServer\Core\Mime;
 use PeServer\Core\TypeUtility;
 
 class ItBody
 {
 	public function __construct(
-		public Dictionary|Binary $content,
+		public Dictionary|Binary|array $content,
 		public string $customContentType
 	) {
 	}
@@ -35,6 +36,16 @@ class ItBody
 		return new self(
 			$map,
 			$enctype
+		);
+	}
+
+	public static function json(
+		array $json,
+		string $mime = Mime::JSON
+	): self {
+		return new self(
+			$json,
+			$mime
 		);
 	}
 }

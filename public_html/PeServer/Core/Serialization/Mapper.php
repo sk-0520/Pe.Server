@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Serialization;
 
-use PeServer\Core\Collections\Arr;
+use PeServer\Core\Collection\Arr;
 use PeServer\Core\ReflectionUtility;
 use PeServer\Core\Serialization\Converter\TypeConverterBase;
 use PeServer\Core\Serialization\IMapper;

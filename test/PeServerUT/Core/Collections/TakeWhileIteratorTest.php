@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServerUT\Core\Collections;
 
 use ArrayIterator;
-use PeServer\Core\Collections\TakeWhileIterator;
+use PeServer\Core\Collection\TakeWhileIterator;
 use PeServer\Core\Throws\CallbackTypeError;
 use PeServerTest\TestClass;
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServerUT\Core\Mvc;
 
-use PeServer\Core\Collections\Arr;
+use PeServer\Core\Collection\Arr;
 use PeServer\Core\Mvc\PageShortcut;
 use PeServer\Core\Mvc\PageShortcutKind;
 use PeServer\Core\Mvc\Pagination;

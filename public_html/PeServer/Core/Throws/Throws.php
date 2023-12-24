@@ -6,7 +6,7 @@ namespace PeServer\Core\Throws;
 
 use Throwable;
 use TypeError;
-use PeServer\Core\Collections\Arr;
+use PeServer\Core\Collection\Arr;
 use PeServer\Core\ReflectionUtility;
 use PeServer\Core\Type;
 

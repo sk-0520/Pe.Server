@@ -10,7 +10,7 @@ use PeServer\App\Models\Configuration\CookieStoreSetting;
 use PeServer\App\Models\Configuration\SessionStoreSetting;
 use PeServer\App\Models\Configuration\StoreSetting;
 use PeServer\App\Models\Configuration\TemporaryStoreSetting;
-use PeServer\Core\Collections\Arr;
+use PeServer\Core\Collection\Arr;
 use PeServer\Core\Store\CookieOptions;
 use PeServer\Core\Store\SessionOptions;
 use PeServer\Core\Store\SpecialStore;

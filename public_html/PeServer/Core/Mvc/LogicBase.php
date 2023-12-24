@@ -7,7 +7,7 @@ namespace PeServer\Core\Mvc;
 use DateInterval;
 use DateTimeImmutable;
 use PeServer\Core\Binary;
-use PeServer\Core\Collections\Arr;
+use PeServer\Core\Collection\Arr;
 use PeServer\Core\Environment;
 use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Http\HttpStatus;

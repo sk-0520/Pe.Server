@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServerUT\Core\Http\Client;
 
 use PeServer\Core\Binary;
-use PeServer\Core\Collections\Dictionary;
+use PeServer\Core\Collection\Dictionary;
 use PeServer\Core\Encoding;
 use PeServer\Core\Http\Client\BinaryContent;
 use PeServer\Core\Http\Client\FormUrlEncodedContent;

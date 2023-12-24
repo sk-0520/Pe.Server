@@ -19,7 +19,7 @@ use PeServer\App\Models\AppUrl;
 use PeServer\App\Models\Domain\AccessLogManager;
 use PeServer\App\Models\Domain\AppArchiver;
 use PeServer\App\Models\Domain\AppEraser;
-use PeServer\Core\Collections\Arr;
+use PeServer\Core\Collection\Arr;
 use PeServer\Core\CoreStartup;
 use PeServer\Core\Database\IDatabaseConnection;
 use PeServer\Core\DefinedDirectory;

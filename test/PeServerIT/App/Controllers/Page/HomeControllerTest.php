@@ -8,7 +8,7 @@ use PeServer\App\Controllers\Page\HomeController;
 use PeServer\App\Models\Data\SessionAccount;
 use PeServer\App\Models\Domain\UserLevel;
 use PeServer\App\Models\Domain\UserState;
-use PeServer\Core\Collections\Collections;
+use PeServer\Core\Collection\Collections;
 use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mime;

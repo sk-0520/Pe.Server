@@ -852,4 +852,43 @@ class AccountControllerTest extends ItControllerClass
 		$apiKeysEntityDao = new ApiKeysEntityDao($context);
 		$this->assertFalse($apiKeysEntityDao->selectExistsApiKeyByUserId(ItMockStores::SESSION_ACCOUNT_USER_ID));
 	}
+
+	public function test_user_password_get()
+	{
+		$options = new ItOptions(
+			stores: ItMockStores::account(UserLevel::USER),
+		);
+		$actual = $this->call(HttpMethod::Get, '/account/user/password', $options, function (ItSetup $setup) {
+			$usersEntityDao = new UsersEntityDao($setup->databaseContext);
+			$userAuthenticationsEntityDao = new UserAuthenticationsEntityDao($setup->databaseContext);
+
+			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, ItMockStores::SESSION_ACCOUNT_EMAIL, ItMockStores::SESSION_ACCOUNT_MARKER, ItMockStores::SESSION_ACCOUNT_WEBSITE, ItMockStores::SESSION_ACCOUNT_DESCRIPTION, ItMockStores::SESSION_ACCOUNT_NOTE);
+			$userAuthenticationsEntityDao->insertUserAuthentication(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_PASSWORD);
+		});
+
+		$this->assertStatusOk($actual);
+
+		$this->assertTitle('パスワード変更', $actual);
+
+		$this->assertTextNode(
+			'',
+			$actual->html->path()->collections(
+				"//*[@id='account_password_current']"
+			)->single()
+		);
+
+		$this->assertTextNode(
+			'',
+			$actual->html->path()->collections(
+				"//*[@id='account_password_new']"
+			)->single()
+		);
+
+		$this->assertTextNode(
+			'',
+			$actual->html->path()->collections(
+				"//*[@id='account_password_confirm']"
+			)->single()
+		);
+	}
 }

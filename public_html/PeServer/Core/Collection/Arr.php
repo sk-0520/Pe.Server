@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core\Collections;
+namespace PeServer\Core\Collection;
 
 use Countable;
 use TypeError;
-use PeServer\Core\Collections\OrderBy;
+use PeServer\Core\Collection\OrderBy;
 use PeServer\Core\Cryptography;
 use PeServer\Core\Errors\ErrorHandler;
 use PeServer\Core\Throws\ArgumentException;

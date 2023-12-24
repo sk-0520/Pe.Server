@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
-use PeServer\Core\Collections\Arr;
+use PeServer\Core\Collection\Arr;
 
 /**
  * データ容量変換。

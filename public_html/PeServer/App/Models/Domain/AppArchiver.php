@@ -7,7 +7,7 @@ namespace PeServer\App\Models\Domain;
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\AppDatabaseConnection;
 use PeServer\Core\Archiver;
-use PeServer\Core\Collections\Arr;
+use PeServer\Core\Collection\Arr;
 use PeServer\Core\Environment;
 use PeServer\Core\IO\Directory;
 use PeServer\Core\IO\File;

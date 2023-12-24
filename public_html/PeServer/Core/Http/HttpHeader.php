@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace PeServer\Core\Http;
 
 use PeServer\Core\Binary;
-use PeServer\Core\Collections\Arr;
-use PeServer\Core\Collections\CaseInsensitiveKeyArray;
+use PeServer\Core\Collection\Arr;
+use PeServer\Core\Collection\CaseInsensitiveKeyArray;
 use PeServer\Core\Encoding;
 use PeServer\Core\Http\ContentType;
 use PeServer\Core\Http\HttpStatus;

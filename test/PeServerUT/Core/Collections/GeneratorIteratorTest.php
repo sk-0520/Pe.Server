@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServerUT\Core\Collections;
 
 use function PHPUnit\Framework\assertSame;
-use PeServer\Core\Collections\GeneratorIterator;
+use PeServer\Core\Collection\GeneratorIterator;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\CallbackTypeError;
 use PeServerTest\Data;

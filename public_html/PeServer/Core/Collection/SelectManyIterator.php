@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core\Collections;
+namespace PeServer\Core\Collection;
 
 use EmptyIterator;
 use Iterator;
-use PeServer\Core\Collections\TraverseUtility;
+use PeServer\Core\Collection\TraverseUtility;
 use PeServer\Core\Throws\CallbackTypeError;
 
 /**
