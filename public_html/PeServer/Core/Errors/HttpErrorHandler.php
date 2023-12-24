@@ -16,6 +16,7 @@ use PeServer\Core\Mvc\Template\ITemplateFactory;
 use PeServer\Core\Mvc\Template\TemplateFactory;
 use PeServer\Core\Mvc\Template\TemplateOptions;
 use PeServer\Core\Mvc\Template\TemplateParameter;
+use PeServer\Core\Throws\HttpStatusException;
 use PeServer\Core\Web\UrlHelper;
 use PeServer\Core\Web\WebSecurity;
 use Throwable;
@@ -74,6 +75,22 @@ class HttpErrorHandler extends ErrorHandler
 		return [
 			HttpStatus::NotFound,
 		];
+	}
+
+
+	/**
+	 * 例外からHTTP応答ステータスコードを取得する。
+	 *
+	 * @param Throwable|null $throwable
+	 * @return HttpStatus 設定されたHTTPステータスコード。
+	 */
+	final protected function getHttpStatus(?Throwable $throwable): HttpStatus
+	{
+		$status = $throwable instanceof HttpStatusException
+			? $throwable->status
+			: HttpStatus::ServiceUnavailable;
+
+		return $status;
 	}
 
 	protected function catchError(int $errorNumber, string $message, string $file, int $lineNumber, ?Throwable $throwable): void

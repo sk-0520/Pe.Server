@@ -160,21 +160,6 @@ class ErrorHandler
 	}
 
 	/**
-	 * 例外からHTTP応答ステータスコードを取得する。
-	 *
-	 * @param Throwable|null $throwable
-	 * @return HttpStatus 設定されたHTTPステータスコード。
-	 */
-	final protected function getHttpStatus(?Throwable $throwable): HttpStatus
-	{
-		$status = $throwable instanceof HttpStatusException
-			? $throwable->status
-			: HttpStatus::ServiceUnavailable;
-
-		return $status;
-	}
-
-	/**
 	 * エラー取得処理（呼び出し側）。
 	 *
 	 * こいつが呼ばれた時点でもはや何もできない。
@@ -205,9 +190,6 @@ class ErrorHandler
 	 */
 	protected function catchError(int $errorNumber, string $message, string $file, int $lineNumber, ?Throwable $throwable): void
 	{
-		$response = new HttpResponse();
-		$response->status = $this->getHttpStatus($throwable);
-
 		$values = [
 			'error_number' => $errorNumber,
 			'message' => $message,
