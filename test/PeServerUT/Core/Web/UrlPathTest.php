@@ -9,7 +9,6 @@ use PeServer\Core\Throws\IndexOutOfRangeException;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Throws\NotSupportedException;
 use PeServer\Core\Web\UrlPath;
-use PeServerTest\Data;
 use PeServerTest\TestClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use TypeError;
@@ -32,63 +31,71 @@ class UrlPathTest extends TestClass
 		$this->fail();
 	}
 
-	public function test_isValidElement()
+	public static function provider_isValidElement()
 	{
-		$tests = [
-			new Data(false, '/'),
-			new Data(false, '?'),
-			new Data(false, '#'),
+		return [
+			[false, '/'],
+			[false, '?'],
+			[false, '#'],
 
-			new Data(true, 'a'),
-			new Data(true, '1'),
+			[true, 'a'],
+			[true, '1'],
 
-			new Data(true, '!'),
-			new Data(true, '$'),
-			new Data(true, '&'),
-			new Data(true, "'"),
-			new Data(true, '('),
-			new Data(true, ')'),
-			new Data(true, '*'),
-			new Data(true, '+'),
-			new Data(true, ','),
-			new Data(true, ':'),
-			new Data(true, '@'),
-			new Data(true, ';'),
-			new Data(true, '='),
+			[true, '!'],
+			[true, '$'],
+			[true, '&'],
+			[true, "'"],
+			[true, '('],
+			[true, ')'],
+			[true, '*'],
+			[true, '+'],
+			[true, ','],
+			[true, ':'],
+			[true, '@'],
+			[true, ';'],
+			[true, '='],
 		];
-		foreach ($tests as $test) {
-			$actual = UrlPath::isValidElement(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
 	}
 
-	public function test_isEmpty()
+	#[DataProvider('provider_isValidElement')]
+	public function test_isValidElement(bool $expected, string $element)
 	{
-		$tests = [
-			new Data(true, ''),
-			new Data(true, ' '),
-			new Data(false, '/'),
-			new Data(false, 'a'),
-		];
-		foreach ($tests as $test) {
-			$actual = new UrlPath(...$test->args);
-			$this->assertSame($test->expected, $actual->isEmpty(), $test->str());
-		}
+		$actual = UrlPath::isValidElement($element);
+		$this->assertSame($expected, $actual);
 	}
 
-	public function test_getElements()
+	public static function provider_isEmpty()
 	{
-		$tests = [
-			new Data([], '/'),
-			new Data(['a'], 'a'),
-			new Data(['a', 'b'], 'a/b'),
-			new Data(['a', 'b'], '/a/b'),
-			new Data(['a', 'b'], '/a/b/'),
+		return [
+			[true, ''],
+			[true, ' '],
+			[false, '/'],
+			[false, 'a'],
 		];
-		foreach ($tests as $test) {
-			$actual = new UrlPath(...$test->args);
-			$this->assertSame($test->expected, $actual->getElements(), $test->str());
-		}
+	}
+
+	#[DataProvider('provider_isEmpty')]
+	public function test_isEmpty(bool $expected, string $path)
+	{
+		$actual = new UrlPath($path);
+		$this->assertSame($expected, $actual->isEmpty());
+	}
+
+	public static function provider_getElements()
+	{
+		return [
+			[[], '/'],
+			[['a'], 'a'],
+			[['a', 'b'], 'a/b'],
+			[['a', 'b'], '/a/b'],
+		];
+	}
+
+	#[DataProvider('provider_getElements')]
+	public function test_getElements(array $expected, string $path)
+	{
+		$actual = new UrlPath($path);
+		$this->assertSame($expected, $actual->getElements());
 	}
 
 	public function test_getElements_throw()
@@ -99,20 +106,23 @@ class UrlPathTest extends TestClass
 		$this->fail();
 	}
 
-	public function test_add()
+	public static function provider_add()
 	{
-		$tests = [
-			new Data([], '/', ''),
-			new Data(['b'], '/', 'b'),
-			new Data(['a', 'b', 'c'], 'a/b', 'c'),
-			new Data(['a', 'b', 'c'], 'a/b', ['c']),
-			new Data(['a', 'b', 'c', 'd'], 'a/b', ['c', 'd']),
+		return [
+			[[], '/', ''],
+			[['b'], '/', 'b'],
+			[['a', 'b', 'c'], 'a/b', 'c'],
+			[['a', 'b', 'c'], 'a/b', ['c']],
+			[['a', 'b', 'c', 'd'], 'a/b', ['c', 'd']],
 		];
-		foreach ($tests as $test) {
-			$path = new UrlPath($test->args[0]);
-			$actual = $path->add($test->args[1]);
-			$this->assertSame($test->expected, $actual->getElements(), $test->str());
-		}
+	}
+
+	#[DataProvider('provider_add')]
+	public function test_add(array $expected, string $path, string|array $element)
+	{
+		$path = new UrlPath($path);
+		$actual = $path->add($element);
+		$this->assertSame($expected, $actual->getElements());
 	}
 
 	public function test_add_empty()
@@ -142,24 +152,27 @@ class UrlPathTest extends TestClass
 		$this->fail();
 	}
 
-	public function test_toString()
+	public static function provider_toString()
 	{
-		$tests = [
-			new Data('', '', false),
-			new Data('/a/b', '/a//b', false),
-			new Data('/', '/', false),
+		return [
+			['', '', false],
+			['/a/b', '/a//b', false],
+			['/', '/', false],
 
-			new Data('', '', true),
-			new Data('/a/b/', '/a//b', true),
-			new Data('/', '/', true),
+			['', '', true],
+			['/a/b/', '/a//b', true],
+			['/', '/', true],
 		];
-		foreach ($tests as $test) {
-			$actual = new UrlPath($test->args[0]);
-			$this->assertSame($test->expected, $actual->toString($test->args[1]), $test->str());
-			if (!$test->args[1]) {
-				$this->assertSame($test->expected, (string)$actual, $test->str());
-				$this->assertSame($test->expected, strval($actual), $test->str());
-			}
+	}
+
+	#[DataProvider('provider_toString')]
+	public function test_toString($expected, string $path, bool $trailingSlash)
+	{
+		$actual = new UrlPath($path);
+		$this->assertSame($expected, $actual->toString($trailingSlash));
+		if (!$trailingSlash) {
+			$this->assertSame($expected, (string)$actual);
+			$this->assertSame($expected, strval($actual));
 		}
 	}
 
@@ -169,7 +182,6 @@ class UrlPathTest extends TestClass
 		$this->assertSame('a', $url[0]);
 		$this->assertSame('b', $url[1]);
 		$this->assertSame('c', $url[2]);
-
 
 		try {
 			$_ = $url['key'];

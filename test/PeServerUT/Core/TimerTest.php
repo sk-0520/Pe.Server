@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PeServerUT\Core;
 
-use PeServerTest\Data;
 use PeServerTest\TestClass;
 use PeServer\Core\Timer;
 

@@ -5,23 +5,26 @@ declare(strict_types=1);
 namespace PeServerUT\Core\Mail;
 
 use PeServer\Core\Mail\EmailAddress;
-use PeServerTest\Data;
 use PeServerTest\TestClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class EmailAddressTest extends TestClass
 {
-	public function test_construct()
+	public static function provider_construct()
 	{
-		$tests = [
-			new Data(new EmailAddress('', ''), '', ''),
-			new Data(new EmailAddress('addr', 'name'), 'addr', 'name'),
-			new Data(new EmailAddress('addr'), 'addr', ''),
-			new Data(new EmailAddress('addr'), 'addr', null),
+		return [
+			[new EmailAddress('', ''), '', ''],
+			[new EmailAddress('addr', 'name'), 'addr', 'name'],
+			[new EmailAddress('addr'), 'addr', ''],
+			[new EmailAddress('addr'), 'addr', null],
 		];
-		foreach ($tests as $test) {
-			$actual = new EmailAddress(...$test->args);
-			$this->assertSame($test->expected->address, $actual->address);
-			$this->assertSame($test->expected->name, $actual->name);
-		}
+	}
+
+	#[DataProvider('provider_construct')]
+	public function test_construct(EmailAddress $expected, string $address, ?string $name = null)
+	{
+		$actual = new EmailAddress($address, $name);
+		$this->assertSame($expected->address, $actual->address);
+		$this->assertSame($expected->name, $actual->name);
 	}
 }

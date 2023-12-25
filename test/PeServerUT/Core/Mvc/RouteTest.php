@@ -9,7 +9,6 @@ use PeServer\Core\Http\RequestPath;
 use PeServer\Core\Mvc\Route;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Web\UrlHelper;
-use PeServerTest\Data;
 use PeServerTest\TestClass;
 
 class RouteTest extends TestClass

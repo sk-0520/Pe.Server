@@ -11,7 +11,6 @@ use PeServer\Core\Throws\BinaryException;
 use PeServer\Core\Throws\IndexOutOfRangeException;
 use PeServer\Core\Throws\NotSupportedException;
 use PeServer\Core\Throws\NullByteStringException;
-use PeServerTest\Data;
 use PeServerTest\TestClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 
@@ -23,23 +22,26 @@ class BinaryTest extends TestClass
 		$this->assertSame("a\0b\0", $binary->raw);
 	}
 
-	public function test_getRange()
+	public static function provider_getRange()
 	{
-		$tests = [
-			new Data("\x01", "\x01", [0, 1]),
-			new Data("\x01", "\x01\x10", [0, 1]),
-			new Data("\x01\x10", "\x01\x10", [0, 2]),
-			new Data("\x01\x10\xff", "\x01\x10\xff", [0]),
-			new Data("\x10\xff", "\x01\x10\xff", [1]),
-			new Data("\x10", "\x01\x10\xff", [1, 1]),
-			new Data("\x10\xff", "\x01\x10\xff", [1, 4]),
-			new Data("", "\x01\x10\xff", [10, 4]),
+		return [
+			["\x01", "\x01", 0, 1],
+			["\x01", "\x01\x10", 0, 1],
+			["\x01\x10", "\x01\x10", 0, 2],
+			["\x01\x10\xff", "\x01\x10\xff", 0, null],
+			["\x10\xff", "\x01\x10\xff", 1, null],
+			["\x10", "\x01\x10\xff", 1, 1],
+			["\x10\xff", "\x01\x10\xff", 1, 4],
+			["", "\x01\x10\xff", 10, 4],
 		];
-		foreach ($tests as $test) {
-			$binary = new Binary($test->args[0]);
-			$actual = $binary->getRange(...$test->args[1]);
-			$this->assertSame($test->expected, $actual->raw, $test->str());
-		}
+	}
+
+	#[DataProvider('provider_getRange')]
+	public function test_getRange(string $expected, string $input, int $index, ?int $length)
+	{
+		$binary = new Binary($input);
+		$actual = $binary->getRange($index, $length);
+		$this->assertSame($expected, $actual->raw);
 	}
 
 
@@ -61,18 +63,21 @@ class BinaryTest extends TestClass
 		$this->assertSame($expected, $bBin->isEquals($aBin));
 	}
 
-	public function test_toHex()
+	public static function provider_toHex()
 	{
-		$tests = [
-			new Data("01", "\x01"),
-			new Data("0110", "\x01\x10"),
-			new Data("0110ff", "\x01\x10\xff"),
+		return [
+			["01", "\x01"],
+			["0110", "\x01\x10"],
+			["0110ff", "\x01\x10\xff"],
 		];
-		foreach ($tests as $test) {
-			$binary = new Binary(...$test->args);
-			$actual = $binary->toHex();
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
+	}
+
+	#[DataProvider('provider_toHex')]
+	public function test_toHex(string $expected, string $input)
+	{
+		$binary = new Binary($input);
+		$actual = $binary->toHex();
+		$this->assertSame($expected, $actual);
 	}
 
 	// public function test_convert()
@@ -104,20 +109,23 @@ class BinaryTest extends TestClass
 		$this->fail();
 	}
 
-	public function test_hasNull()
+	public static function provider_hasNull()
 	{
-		$tests = [
-			new Data(false, ""),
-			new Data(false, "abc"),
-			new Data(true, "\0abc"),
-			new Data(true, "abc\0"),
-			new Data(true, "a\0c"),
+		return [
+			[false, ""],
+			[false, "abc"],
+			[true, "\0abc"],
+			[true, "abc\0"],
+			[true, "a\0c"],
 		];
-		foreach ($tests as $test) {
-			$binary = new Binary(...$test->args);
-			$actual = $binary->hasNull();
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
+	}
+
+	#[DataProvider('provider_hasNull')]
+	public function test_hasNull(bool $expected, string $input)
+	{
+		$binary = new Binary($input);
+		$actual = $binary->hasNull();
+		$this->assertSame($expected, $actual);
 	}
 
 	public function test_toString()
@@ -219,16 +227,19 @@ class BinaryTest extends TestClass
 		$this->assertSame(4, $binary->count());
 	}
 
-	public function test___toString()
+	public static function provider___toString()
 	{
-		$tests = [
-			new Data("abc", "abc"),
-			new Data("00616263", "\0abc"),
+		return [
+			["abc", "abc"],
+			["00616263", "\0abc"],
 		];
-		foreach ($tests as $test) {
-			$binary = new Binary(...$test->args);
-			$actual = (string)$binary;
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
+	}
+
+	#[DataProvider('provider___toString')]
+	public function test___toString(string $expected, string $input)
+	{
+		$binary = new Binary($input);
+		$actual = (string)$binary;
+		$this->assertSame($expected, $actual);
 	}
 }

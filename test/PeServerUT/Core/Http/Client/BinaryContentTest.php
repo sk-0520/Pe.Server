@@ -9,7 +9,6 @@ use PeServer\Core\Encoding;
 use PeServer\Core\Http\Client\BinaryContent;
 use PeServer\Core\Mime;
 use PeServer\Core\Text;
-use PeServerTest\Data;
 use PeServerTest\TestClass;
 
 class BinaryContentTest extends TestClass

@@ -8,25 +8,27 @@ use PeServer\Core\Database\ConnectionSetting;
 use PeServer\Core\Database\DatabaseUtility;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\InvalidOperationException;
-use PeServerTest\Data;
 use PeServerTest\TestClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 class DatabaseUtilityTest extends TestClass
 {
-	public function test_isSqliteTest()
+	public static function provider_isSqliteTest()
 	{
-		$tests = [
-			new Data(false, new ConnectionSetting('', '', '')),
-			new Data(false, new ConnectionSetting('sqlite', '', '')),
-			new Data(false, new ConnectionSetting('sqlite/a.db', '', '')),
-			new Data(true, new ConnectionSetting('sqlite:a.db', '', '')),
-			new Data(true, new ConnectionSetting('sqlite:a.sqlite3', '', '')),
+		return [
+			[false, new ConnectionSetting('', '', '')],
+			[false, new ConnectionSetting('sqlite', '', '')],
+			[false, new ConnectionSetting('sqlite/a.db', '', '')],
+			[true, new ConnectionSetting('sqlite:a.db', '', '')],
+			[true, new ConnectionSetting('sqlite:a.sqlite3', '', '')],
 		];
-		foreach ($tests as $test) {
-			$actual = DatabaseUtility::isSqlite(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
+	}
+
+	#[DataProvider('provider_isSqliteTest')]
+	public function test_isSqliteTest(bool $expected, ConnectionSetting $connection)
+	{
+		$actual = DatabaseUtility::isSqlite($connection);
+		$this->assertSame($expected, $actual);
 	}
 
 	public static function provider_isSqliteMemoryMode()

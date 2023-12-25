@@ -4,14 +4,10 @@ declare(strict_types=1);
 
 namespace PeServerUT\Core\Collection;
 
-use function PHPUnit\Framework\assertSame;
 use PeServer\Core\Collection\GeneratorIterator;
-use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\CallbackTypeError;
-use PeServerTest\Data;
 
 use PeServerTest\TestClass;
-use PHPUnit\PhpParser\Node\Expr\StaticCall;
 use TypeError;
 
 class GeneratorIteratorTest extends TestClass

@@ -7,9 +7,9 @@ namespace PeServerUT\Core\Web;
 use PeServer\Core\Encoding;
 use PeServer\Core\Throws\ParseException;
 use PeServer\Core\Web\Url;
+use PeServer\Core\Web\UrlEncoding;
 use PeServer\Core\Web\UrlPath;
 use PeServer\Core\Web\UrlQuery;
-use PeServerTest\Data;
 use PeServerTest\TestClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 
@@ -256,42 +256,48 @@ class UrlTest extends TestClass
 		$this->assertNotSame($src->fragment, $new->fragment);
 	}
 
-	public function test_toString()
+	public static function provider_toString()
 	{
-		$tests = [
-			new Data('http://localhost', 'http://localhost'),
-			new Data('http://USER@localhost', 'http://USER@localhost'),
-			new Data('http://:PASS@localhost', 'http://:PASS@localhost'),
-			new Data('http://USER:PASS@localhost', 'http://USER:PASS@localhost'),
-			new Data('http://localhost:8888', 'http://localhost:8888'),
-			new Data('http://localhost/a', 'http://localhost/a'),
-			new Data('http://localhost/a?q=k', 'http://localhost/a?q=k'),
-			new Data('http://localhost/a?q=k&Q', 'http://localhost/a?q=k&Q'),
-			new Data('http://localhost/a?q=k&Q#f', 'http://localhost/a?q=k&Q#f'),
+		return [
+			['http://localhost', 'http://localhost'],
+			['http://USER@localhost', 'http://USER@localhost'],
+			['http://:PASS@localhost', 'http://:PASS@localhost'],
+			['http://USER:PASS@localhost', 'http://USER:PASS@localhost'],
+			['http://localhost:8888', 'http://localhost:8888'],
+			['http://localhost/a', 'http://localhost/a'],
+			['http://localhost/a?q=k', 'http://localhost/a?q=k'],
+			['http://localhost/a?q=k&Q', 'http://localhost/a?q=k&Q'],
+			['http://localhost/a?q=k&Q#f', 'http://localhost/a?q=k&Q#f'],
 		];
-		foreach ($tests as $test) {
-			$actual = Url::parse(...$test->args);
-			$this->assertSame($test->expected, $actual->toString(), $test->str());
-			$this->assertSame($test->expected, (string)$actual, $test->str());
-		}
 	}
 
-	public function test_toString_slash()
+	#[DataProvider('provider_toString')]
+	public function test_toString(string $expected, string $url, ?UrlEncoding $urlEncoding = null)
 	{
-		$tests = [
-			new Data('http://localhost/', 'http://localhost'),
-			new Data('http://USER@localhost/', 'http://USER@localhost'),
-			new Data('http://:PASS@localhost/', 'http://:PASS@localhost'),
-			new Data('http://USER:PASS@localhost/', 'http://USER:PASS@localhost'),
-			new Data('http://localhost:8888/', 'http://localhost:8888'),
-			new Data('http://localhost/a/', 'http://localhost/a'),
-			new Data('http://localhost/a/?q=k', 'http://localhost/a?q=k'),
-			new Data('http://localhost/a/?q=k&Q', 'http://localhost/a?q=k&Q'),
-			new Data('http://localhost/a/?q=k&Q#f', 'http://localhost/a?q=k&Q#f'),
+		$actual = Url::parse($url, $urlEncoding);
+		$this->assertSame($expected, $actual->toString());
+		$this->assertSame($expected, (string)$actual);
+	}
+
+	public static function provider_()
+	{
+		return [
+			['http://localhost/', 'http://localhost'],
+			['http://USER@localhost/', 'http://USER@localhost'],
+			['http://:PASS@localhost/', 'http://:PASS@localhost'],
+			['http://USER:PASS@localhost/', 'http://USER:PASS@localhost'],
+			['http://localhost:8888/', 'http://localhost:8888'],
+			['http://localhost/a/', 'http://localhost/a'],
+			['http://localhost/a/?q=k', 'http://localhost/a?q=k'],
+			['http://localhost/a/?q=k&Q', 'http://localhost/a?q=k&Q'],
+			['http://localhost/a/?q=k&Q#f', 'http://localhost/a?q=k&Q#f'],
 		];
-		foreach ($tests as $test) {
-			$actual = Url::parse(...$test->args);
-			$this->assertSame($test->expected, $actual->toString(trailingSlash:true), $test->str());
-		}
+	}
+
+	#[DataProvider('provider_')]
+	public function test_toString_slash(string $expected, string $url, ?UrlEncoding $urlEncoding = null)
+	{
+		$actual = Url::parse($url, $urlEncoding);
+		$this->assertSame($expected, $actual->toString(trailingSlash: true));
 	}
 }

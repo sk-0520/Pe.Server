@@ -10,7 +10,6 @@ use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Web\UrlEncoding;
 use PeServer\Core\Web\UrlQuery;
-use PeServerTest\Data;
 use PeServerTest\TestClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 
@@ -77,24 +76,27 @@ class UrlQueryTest extends TestClass
 		UrlQuery::from($query);
 	}
 
-	public function test_create_and_get()
+	public static function provider_create_and_get()
 	{
-		$tests = [
-			new Data(['a' => [null]], 'a'),
-			new Data(['a' => ['']], 'a='),
-			new Data(['a' => ['1']], 'a=1'),
-			new Data(['a' => ['1', '2']], 'a=1&a=2'),
-			new Data(['a' => ['1'], 'b' => ['2']], 'a=1&b=2'),
-			new Data(['💀' => ['👻']], '%F0%9F%92%80=%F0%9F%91%BB'),
-			new Data([], '=1'),
-			new Data(['a' => ['1']], 'a=1&=2'),
-			new Data(['a' => ['1']], '=0&a=1'),
-			new Data(['a' => ['=1']], 'a=%3D1'),
-			new Data(['a' => ['=1']], 'a==1'),
+		return [
+			[['a' => [null]], 'a'],
+			[['a' => ['']], 'a='],
+			[['a' => ['1']], 'a=1'],
+			[['a' => ['1', '2']], 'a=1&a=2'],
+			[['a' => ['1'], 'b' => ['2']], 'a=1&b=2'],
+			[['💀' => ['👻']], '%F0%9F%92%80=%F0%9F%91%BB'],
+			[[], '=1'],
+			[['a' => ['1']], 'a=1&=2'],
+			[['a' => ['1']], '=0&a=1'],
+			[['a' => ['=1']], 'a=%3D1'],
+			[['a' => ['=1']], 'a==1'],
 		];
-		foreach ($tests as $test) {
-			$this->assertEqualsWithInfo('配列の比較が微妙', $test->expected, (new UrlQuery(...$test->args))->getQuery(), $test->str());
-		}
+	}
+
+	#[DataProvider('provider_create_and_get')]
+	public function test_create_and_get(array $expected, string|array|null $query)
+	{
+			$this->assertEqualsWithInfo('配列の比較が微妙', $expected, (new UrlQuery($query))->getQuery());
 	}
 
 	public function test_empty()
@@ -111,25 +113,28 @@ class UrlQueryTest extends TestClass
 		$this->fail();
 	}
 
-	public function test_toString()
+	public static function provider_toString()
 	{
-		$tests = [
-			new Data('', null),
-			new Data('?', ''),
-			new Data('?a', 'a'),
-			new Data('?a=', 'a='),
-			new Data('?a=1', 'a=1'),
-			new Data('?a=1&a=2', 'a=1&a=2'),
-			new Data('?%F0%9F%92%80=%F0%9F%91%BB', '%F0%9F%92%80=%F0%9F%91%BB'),
-			new Data('?a=1', 'a=1&=2'),
-			new Data('?a=1', '=0&a=1'),
-			new Data('?a=%3D1', 'a=%3D1'),
-			new Data('?a=%3D1', 'a==1'),
+		return [
+			['', null],
+			['?', ''],
+			['?a', 'a'],
+			['?a=', 'a='],
+			['?a=1', 'a=1'],
+			['?a=1&a=2', 'a=1&a=2'],
+			['?%F0%9F%92%80=%F0%9F%91%BB', '%F0%9F%92%80=%F0%9F%91%BB'],
+			['?a=1', 'a=1&=2'],
+			['?a=1', '=0&a=1'],
+			['?a=%3D1', 'a=%3D1'],
+			['?a=%3D1', 'a==1'],
 		];
-		foreach ($tests as $test) {
-			$query = new UrlQuery(...$test->args);
-			$this->assertSame($test->expected, $query->toString(), $test->str());
-			$this->assertSame($test->expected, (string)$query, $test->str());
-		}
+	}
+
+	#[DataProvider('provider_toString')]
+	public function test_toString(string $expected, string|array|null $query)
+	{
+		$query = new UrlQuery($query);
+		$this->assertSame($expected, $query->toString());
+		$this->assertSame($expected, (string)$query);
 	}
 }

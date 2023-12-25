@@ -8,8 +8,8 @@ use PeServer\Core\Binary;
 use PeServer\Core\Encoding;
 use PeServer\Core\Http\Client\StringContent;
 use PeServer\Core\Text;
-use PeServerTest\Data;
 use PeServerTest\TestClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class StringContentTest extends TestClass
 {
@@ -20,38 +20,44 @@ class StringContentTest extends TestClass
 		$this->assertFalse($sc->toHeader()->existsContentType());
 	}
 
-	public function test_encoding()
+	public static function provider_encoding()
 	{
-		$tests = [
-			['input' => 'あいうえお', 'encoding' => Encoding::getDefaultEncoding()],
-			['input' => 'あいうえお', 'encoding' => Encoding::getShiftJis()],
-			['input' => 'あいうえお', 'encoding' => Encoding::getUtf8()],
-			['input' => 'あいうえお', 'encoding' => Encoding::getUtf16()],
-			['input' => 'あいうえお', 'encoding' => Encoding::getUtf32()],
+		return [
+			['あいうえお', Encoding::getDefaultEncoding()],
+			['あいうえお', Encoding::getShiftJis()],
+			['あいうえお', Encoding::getUtf8()],
+			['あいうえお', Encoding::getUtf16()],
+			['あいうえお', Encoding::getUtf32()],
 		];
-		foreach ($tests as $test) {
-			$sc = new StringContent($test['input'], Text::EMPTY, $test['encoding']);
+	}
 
-			$this->assertSame($test['input'], $test['encoding']->toString($sc->toBody()));
+	#[DataProvider('provider_encoding')]
+	public function test_encoding(string $input, Encoding $encoding)
+	{
+		$sc = new StringContent($input, Text::EMPTY, $encoding);
 
-			if ($test['encoding']->name === Encoding::getDefaultEncoding()->name) {
-				$this->assertSame($test['input'], $sc->toBody()->raw);
-			} else {
-				$this->assertNotSame($test['input'], $sc->toBody()->raw);
-			}
+		$this->assertSame($input, $encoding->toString($sc->toBody()));
+
+		if ($encoding->name === Encoding::getDefaultEncoding()->name) {
+			$this->assertSame($input, $sc->toBody()->raw);
+		} else {
+			$this->assertNotSame($input, $sc->toBody()->raw);
 		}
 	}
 
-	public function test_mime()
+	public static function provider_mime()
 	{
-		$tests = [
-			'abc',
-			'text/plain'
+		return [
+			['abc'],
+			['text/plain'],
 		];
-		foreach ($tests as $test) {
-			$sc = new StringContent(Text::EMPTY, $test);
+	}
 
-			$this->assertSame($test, $sc->toHeader()->getContentType()->mime);
-		}
+	#[DataProvider('provider_mime')]
+	public function test_mime(string $mime)
+	{
+		$sc = new StringContent(Text::EMPTY, $mime);
+
+		$this->assertSame($mime, $sc->toHeader()->getContentType()->mime);
 	}
 }

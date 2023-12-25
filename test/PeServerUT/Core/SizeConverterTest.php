@@ -5,23 +5,26 @@ declare(strict_types=1);
 namespace PeServerUT\Core;
 
 use PeServerTest\TestClass;
-use PeServerTest\Data;
 use PeServer\Core\SizeConverter;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class SizeConverterTest extends TestClass
 {
-	public function test_convertHumanReadableByte()
+	public static function provider_convertHumanReadableByte()
 	{
-		$tests = [
-			new Data('0 byte', 0),
-			new Data('1 byte', 1),
-			new Data('1023 byte', 1023),
-			new Data('1 KB', 1024),
+		return [
+			['0 byte', 0],
+			['1 byte', 1],
+			['1023 byte', 1023],
+			['1 KB', 1024],
 		];
-		foreach ($tests as $test) {
-			$sc = new SizeConverter();
-			$actual = $sc->convertHumanReadableByte(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
+	}
+
+	#[DataProvider('provider_convertHumanReadableByte')]
+	public function test_convertHumanReadableByte(string $expected, int $byteSize, string $sizeFormat = '{i_size} {unit}')
+	{
+		$sc = new SizeConverter();
+		$actual = $sc->convertHumanReadableByte($byteSize, $sizeFormat);
+		$this->assertSame($expected, $actual);
 	}
 }

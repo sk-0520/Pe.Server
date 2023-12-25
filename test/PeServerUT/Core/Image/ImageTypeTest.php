@@ -6,21 +6,24 @@ namespace PeServerUT\Core\Image;
 
 use PeServer\Core\Image\ImageType;
 use PeServer\Core\Throws\ImageException;
-use PeServerTest\Data;
 use PeServerTest\TestClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class ImageTypeTest extends TestClass
 {
-	public function test_toExtension()
+	public static function provider_toExtension()
 	{
-		$tests = [
-			new Data('jpeg', ImageType::Jpeg, false),
-			new Data('.jpeg', ImageType::Jpeg, true),
+		return [
+			['jpeg', ImageType::Jpeg, false],
+			['.jpeg', ImageType::Jpeg, true],
 		];
-		foreach ($tests as $test) {
-			$actual = $test->args[0]->toExtension($test->args[1]);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
+	}
+
+	#[DataProvider('provider_toExtension')]
+	public function test_toExtension(string $expected, ImageType $type, bool $dot)
+	{
+		$actual = $type->toExtension($dot);
+		$this->assertSame($expected, $actual);
 	}
 
 	public function test_toExtension_throw()

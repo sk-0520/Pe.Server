@@ -4,47 +4,54 @@ declare(strict_types=1);
 
 namespace PeServerUT\Core\Collection;
 
+use Countable;
 use PeServer\Core\Collection\Arr;
 use PeServer\Core\Collection\OrderBy;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\KeyNotFoundException;
-use PeServerTest\Data;
 use PeServerTest\TestClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use TypeError;
 
 class ArrTest extends TestClass
 {
-	public function test_isNullOrEmpty()
+	public static function provider_isNullOrEmpty()
 	{
-		$tests = [
-			new Data(true, null),
-			new Data(true, []),
-			new Data(false, [0]),
-			new Data(false, [0, 1]),
+		return [
+			[true, null],
+			[true, []],
+			[false, [0]],
+			[false, [0, 1]],
 		];
-		foreach ($tests as $test) {
-			$actual = Arr::isNullOrEmpty(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
 	}
 
-	public function test_getOr()
+	#[DataProvider('provider_isNullOrEmpty')]
+	public function test_isNullOrEmpty(bool $expected, ?array $array)
 	{
-		$tests = [
-			new Data(10, [10, 20, 30], 0, -1),
-			new Data(20, [10, 20, 30], 1, -1),
-			new Data(30, [10, 20, 30], 2, -1),
-			new Data(-1, [10, 20, 30], 3, -1),
-			new Data(10, [10, 20, 30], 0, null),
-			new Data('A', ['a' => 'A', 'b' => 'B'], 'a', 'c'),
-			new Data('B', ['a' => 'A', 'b' => 'B'], 'b', 'c'),
-			new Data('c', ['a' => 'A', 'b' => 'B'], 'c', 'c'),
-			new Data('c', ['a' => 'A', 'b' => 'B'], 'C', 'c'),
+		$actual = Arr::isNullOrEmpty($array);
+		$this->assertSame($expected, $actual);
+	}
+
+	public static function provider_getOr()
+	{
+		return [
+			[10, [10, 20, 30], 0, -1],
+			[20, [10, 20, 30], 1, -1],
+			[30, [10, 20, 30], 2, -1],
+			[-1, [10, 20, 30], 3, -1],
+			[10, [10, 20, 30], 0, null],
+			['A', ['a' => 'A', 'b' => 'B'], 'a', 'c'],
+			['B', ['a' => 'A', 'b' => 'B'], 'b', 'c'],
+			['c', ['a' => 'A', 'b' => 'B'], 'c', 'c'],
+			['c', ['a' => 'A', 'b' => 'B'], 'C', 'c',]
 		];
-		foreach ($tests as $test) {
-			$actual = Arr::getOr(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
+	}
+
+	#[DataProvider('provider_getOr')]
+	public function test_getOr($expected, ?array $array, int|string $key, mixed $fallbackValue)
+	{
+		$actual = Arr::getOr($array, $key, $fallbackValue);
+		$this->assertSame($expected, $actual);
 	}
 
 	public function test_getOr_object_hit()
@@ -83,77 +90,88 @@ class ArrTest extends TestClass
 		$this->fail();
 	}
 
-
-	public function test_tryGet()
+	public static function provider_tryGet()
 	{
-		$tests = [
-			new Data(['actual' => true, 'result' => 10], [10, 20, 30], 0),
-			new Data(['actual' => true, 'result' => 20], [10, 20, 30], 1),
-			new Data(['actual' => true, 'result' => 30], [10, 20, 30], 2),
-			new Data(['actual' => false, 'result' => 'ないんだわ'], [10, 20, 30], 3),
-			new Data(['actual' => true, 'result' => '123'], ['A' => '123', 'B' => '456', 'C' => '789'], 'A'),
-			new Data(['actual' => true, 'result' => '456'], ['A' => '123', 'B' => '456', 'C' => '789'], 'B'),
-			new Data(['actual' => true, 'result' => '789'], ['A' => '123', 'B' => '456', 'C' => '789'], 'C'),
-			new Data(['actual' => false, 'result' => 'ないんだわ'], ['A' => '123', 'B' => '456', 'C' => '789'], 0),
+		return [
+			[['actual' => true, 'result' => 10], [10, 20, 30], 0],
+			[['actual' => true, 'result' => 20], [10, 20, 30], 1],
+			[['actual' => true, 'result' => 30], [10, 20, 30], 2],
+			[['actual' => false, 'result' => 'ないんだわ'], [10, 20, 30], 3],
+			[['actual' => true, 'result' => '123'], ['A' => '123', 'B' => '456', 'C' => '789'], 'A'],
+			[['actual' => true, 'result' => '456'], ['A' => '123', 'B' => '456', 'C' => '789'], 'B'],
+			[['actual' => true, 'result' => '789'], ['A' => '123', 'B' => '456', 'C' => '789'], 'C'],
+			[['actual' => false, 'result' => 'ないんだわ'], ['A' => '123', 'B' => '456', 'C' => '789'], 0],
 		];
-		foreach ($tests as $test) {
-			$actual = Arr::tryGet($test->args[0], $test->args[1], $result);
-			$this->assertSame($test->expected['actual'], $actual, $test->str());
-			if ($actual) {
-				$this->assertSame($test->expected['result'], $result, $test->str());
-			}
+	}
+
+	#[DataProvider('provider_tryGet')]
+	public function test_tryGet($expected, ?array $array, int|string $key)
+	{
+		$actual = Arr::tryGet($array, $key, $result);
+		$this->assertSame($expected['actual'], $actual);
+		if ($actual) {
+			$this->assertSame($expected['result'], $result);
 		}
 	}
 
-	public function test_getCount()
+	public static function provider_getCount()
 	{
-		$tests = [
-			new Data(0, null),
-			new Data(0, []),
-			new Data(1, [0]),
-			new Data(1, ['A' => 0]),
-			new Data(2, ['A' => 0, 'B' => 1]),
-			new Data(3, ['A' => 0, 'B' => 1, 9]),
+		return [
+			[0, null],
+			[0, []],
+			[1, [0]],
+			[1, ['A' => 0]],
+			[2, ['A' => 0, 'B' => 1]],
+			[3, ['A' => 0, 'B' => 1, 9]],
 		];
-		foreach ($tests as $test) {
-			$actual = Arr::getCount(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
 	}
 
-	public function test_containsValue()
+	#[DataProvider('provider_getCount')]
+	public function test_getCount(int $expected, array|Countable|null $array)
+	{
+		$actual = Arr::getCount($array);
+		$this->assertSame($expected, $actual);
+	}
+
+	public static function provider_containsValue()
 	{
 		$input = [10, 20, 30, 40];
-		$tests = [
-			new Data(true, $input, 10),
-			new Data(true, $input, 20),
-			new Data(true, $input, 30),
-			new Data(true, $input, 40),
-			new Data(false, $input, -10),
-			new Data(false, $input, -20),
-			new Data(false, $input, -30),
-			new Data(false, $input, -40),
+		return [
+			[true, $input, 10],
+			[true, $input, 20],
+			[true, $input, 30],
+			[true, $input, 40],
+			[false, $input, -10],
+			[false, $input, -20],
+			[false, $input, -30],
+			[false, $input, -40],
 		];
-		foreach ($tests as $test) {
-			$actual = Arr::containsValue(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
 	}
 
-	public function test_existsKey()
+	#[DataProvider('provider_containsValue')]
+	public function test_containsValue(bool $expected, array $haystack, mixed $needle)
 	{
-		$tests = [
-			new Data(true, [100], 0),
-			new Data(true, [50 => 100], 50),
-			new Data(false, [50 => 100], 0),
-			new Data(false, ['A' => 100], 0),
-			new Data(true, ['A' => 100], 'A'),
-			new Data(false, ['A' => 100], 'B'),
+		$actual = Arr::containsValue($haystack, $needle);
+		$this->assertSame($expected, $actual);
+	}
+
+	public static function provider_existsKey()
+	{
+		return [
+			[true, [100], 0],
+			[true, [50 => 100], 50],
+			[false, [50 => 100], 0],
+			[false, ['A' => 100], 0],
+			[true, ['A' => 100], 'A'],
+			[false, ['A' => 100], 'B'],
 		];
-		foreach ($tests as $test) {
-			$actual = Arr::containsKey(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
+	}
+
+	#[DataProvider('provider_existsKey')]
+	public function test_existsKey(bool $expected, array $haystack, int|string $key)
+	{
+		$actual = Arr::containsKey($haystack, $key);
+		$this->assertSame($expected, $actual);
 	}
 
 	public function test_getKeys()
@@ -188,34 +206,40 @@ class ArrTest extends TestClass
 		}
 	}
 
-	public function test_in()
+	public static function provider_in()
 	{
-		$tests = [
-			new Data(true, [100], 100),
-			new Data(true, [50 => 100], 100),
-			new Data(false, [50 => 100], 50),
-			new Data(true, ['A' => 100], 100),
-			new Data(false, ['A' => 100], 'A'),
+		return [
+			[true, [100], 100],
+			[true, [50 => 100], 100],
+			[false, [50 => 100], 50],
+			[true, ['A' => 100], 100],
+			[false, ['A' => 100], 'A'],
 		];
-		foreach ($tests as $test) {
-			$actual = Arr::in(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
 	}
 
-	public function test_getFirstKey()
+	#[DataProvider('provider_in')]
+	public function test_in(bool $expected, array $haystack, mixed $needle)
 	{
-		$tests = [
-			new Data(0, [100]),
-			new Data(50, [50 => 100]),
-			new Data('A', ['A' => 100]),
-			new Data(0, [0, 'A' => 100]),
-			new Data('A', ['A' => 100, 0]),
+		$actual = Arr::in($haystack, $needle);
+		$this->assertSame($expected, $actual);
+	}
+
+	public static function provider_getFirstKey()
+	{
+		return [
+			[0, [100]],
+			[50, [50 => 100]],
+			['A', ['A' => 100]],
+			[0, [0, 'A' => 100]],
+			['A', ['A' => 100, 0]],
 		];
-		foreach ($tests as $test) {
-			$actual = Arr::getFirstKey(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
+	}
+
+	#[DataProvider('provider_getFirstKey')]
+	public function test_getFirstKey($expected, array $array)
+	{
+		$actual = Arr::getFirstKey($array);
+		$this->assertSame($expected, $actual);
 	}
 
 	public function test_getFirstKey_throw()
@@ -225,19 +249,22 @@ class ArrTest extends TestClass
 		$this->fail();
 	}
 
-	public function test_getLastKey()
+	public static function provider_getLastKey()
 	{
-		$tests = [
-			new Data(0, [100]),
-			new Data(50, [50 => 100]),
-			new Data('A', ['A' => 100]),
-			new Data('A', [0, 'A' => 100]),
-			new Data(0, ['A' => 100, 0]), // 0なんかぁ
+		return [
+			[0, [100]],
+			[50, [50 => 100]],
+			['A', ['A' => 100]],
+			['A', [0, 'A' => 100]],
+			[0, ['A' => 100, 0]], // 0なんかぁ
 		];
-		foreach ($tests as $test) {
-			$actual = Arr::getLastKey(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
+	}
+
+	#[DataProvider('provider_getLastKey')]
+	public function test_getLastKey($expected, array $array)
+	{
+		$actual = Arr::getLastKey($array);
+		$this->assertSame($expected, $actual);
 	}
 
 	public function test_getLastKey_throw()
@@ -247,80 +274,95 @@ class ArrTest extends TestClass
 		$this->fail();
 	}
 
-	public function test_isListImpl()
+	public static function provider_isListImpl()
 	{
-		$tests = [
-			new Data(true, []),
-			new Data(true, [100]),
-			new Data(true, [0 => 100]),
-			new Data(false, [1 => 100]),
-			new Data(false, [50 => 100]),
-			new Data(false, ['A' => 100]),
-			new Data(false, [0, 'A' => 100]),
-			new Data(false, ['A' => 100, 0]), // 0なんかぁ
+		return [
+			[true, []],
+			[true, [100]],
+			[true, [0 => 100]],
+			[false, [1 => 100]],
+			[false, [50 => 100]],
+			[false, ['A' => 100]],
+			[false, [0, 'A' => 100]],
+			[false, ['A' => 100, 0]],
 		];
-		foreach ($tests as $test) {
-			$actual = Arr::isListImpl(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
 	}
 
-	public function test_isList()
+	#[DataProvider('provider_isListImpl')]
+	public function test_isListImpl($expected, array $array)
 	{
-		$tests = [
-			new Data(true, []),
-			new Data(true, [100]),
-			new Data(true, [0 => 100]),
-			new Data(false, [1 => 100]),
-			new Data(false, [50 => 100]),
-			new Data(false, ['A' => 100]),
-			new Data(false, [0, 'A' => 100]),
-			new Data(false, ['A' => 100, 0]), // 0なんかぁ
-		];
-		foreach ($tests as $test) {
-			$actual = Arr::isList(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
+		$actual = Arr::isListImpl($array);
+		$this->assertSame($expected, $actual);
 	}
 
-	public function test_toUnique()
+	public static function provider_isList()
 	{
-		$tests = [
-			new Data([], []),
-			new Data([0], [0, 0]),
-			new Data([1, 2, 3], [1, 2, 3, 1, 2, 3, 3, 2, 1]),
+		return [
+			[true, []],
+			[true, [100]],
+			[true, [0 => 100]],
+			[false, [1 => 100]],
+			[false, [50 => 100]],
+			[false, ['A' => 100]],
+			[false, [0, 'A' => 100]],
+			[false, ['A' => 100, 0]], // 0なん]ぁ
 		];
-		foreach ($tests as $test) {
-			$actual = Arr::toUnique(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
 	}
 
-	public function test_replace()
+	#[DataProvider('provider_isList')]
+	public function test_isList(bool $expected, array $array)
 	{
-		$tests = [
-			new Data([], [], []),
-			new Data([2], [1], [2]),
-			new Data([2, 3], [1], [2, 3]),
-			new Data(['a' => 'A', 'b' => 'B'], ['a' => 'A'], ['b' => 'B']),
-		];
-		foreach ($tests as $test) {
-			$actual = Arr::replace(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
+		$actual = Arr::isList($array);
+		$this->assertSame($expected, $actual);
 	}
 
-	public function test_getRandomKeys()
+	public static function provider_toUnique()
 	{
-		$tests = [
-			new Data(1, [1], 1),
-			new Data(1, [1, 2, 3], 1),
-			new Data(2, [1, 2, 3], 2),
+		return [
+			[[], []],
+			[[0], [0, 0]],
+			[[1, 2, 3], [1, 2, 3, 1, 2, 3, 3, 2, 1]],
 		];
-		foreach ($tests as $test) {
-			$actual = Arr::getRandomKeys(...$test->args);
-			$this->assertSame($test->expected, Arr::getCount($actual), $test->str());
-		}
+	}
+
+	#[DataProvider('provider_toUnique')]
+	public function test_toUnique(array $expected, array $array)
+	{
+		$actual = Arr::toUnique($array);
+		$this->assertSame($expected, $actual);
+	}
+
+	public static function provider_replace()
+	{
+		return [
+			[[], [], [], true],
+			[[2], [1], [2], true],
+			[[2, 3], [1], [2, 3], true],
+			[['a' => 'A', 'b' => 'B'], ['a' => 'A'], ['b' => 'B'], true],
+		];
+	}
+
+	#[DataProvider('provider_replace')]
+	public function test_replace(array $expected, array $base, array $overwrite, bool $recursive)
+	{
+		$actual = Arr::replace($base, $overwrite, $recursive);
+		$this->assertSame($expected, $actual);
+	}
+
+	public static function provider_getRandomKeys()
+	{
+		return [
+			[1, [1], 1],
+			[1, [1, 2, 3], 1],
+			[2, [1, 2, 3], 2],
+		];
+	}
+
+	#[DataProvider('provider_getRandomKeys')]
+	public function test_getRandomKeys(int $expected, array $array, int $count)
+	{
+		$actual = Arr::getRandomKeys($array, $count);
+		$this->assertSame($expected, Arr::getCount($actual));
 	}
 
 	public function test_getRandomKeys_throw_1()
@@ -343,27 +385,33 @@ class ArrTest extends TestClass
 		$this->fail();
 	}
 
-	public function test_reverse()
+	public static function provider_reverse()
 	{
-		$tests = [
-			new Data([3, 2, 1], [1, 2, 3]),
+		return [
+			[[3, 2, 1], [1, 2, 3]],
 		];
-		foreach ($tests as $test) {
-			$actual = Arr::reverse(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
+	}
+
+	#[DataProvider('provider_reverse')]
+	public function test_reverse(array $expected, array $input)
+	{
+		$actual = Arr::reverse($input);
+		$this->assertSame($expected, $actual);
 	}
 
 
-	public function test_flip()
+	public static function provider_flip()
 	{
-		$tests = [
-			new Data([0 => 'a', 1 => 'b'], ['a' => 0, 'b' => 1]),
+		return [
+			[[0 => 'a', 1 => 'b'], ['a' => 0, 'b' => 1]],
 		];
-		foreach ($tests as $test) {
-			$actual = Arr::flip(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
+	}
+
+	#[DataProvider('provider_flip')]
+	public function test_flip(array $expected, array $input)
+	{
+		$actual = Arr::flip($input);
+		$this->assertSame($expected, $actual);
 	}
 
 	public function test_flip_throw()
@@ -406,23 +454,26 @@ class ArrTest extends TestClass
 		$this->assertSame('bb', $actual4[10]);
 	}
 
-	public function test_range()
+	public static function provider_range()
 	{
-		$tests = [
-			new Data([], 0, 0),
-			new Data([0], 0, 1),
-			new Data([1], 1, 1),
-			new Data([0, 1], 0, 2),
-			new Data([10], 10, 1),
-			new Data([10, 11], 10, 2),
-			new Data([], -10, 0),
-			new Data([-10], -10, 1),
-			new Data([-10, -9, -8], -10, 3),
+		return [
+			[[], 0, 0],
+			[[0], 0, 1],
+			[[1], 1, 1],
+			[[0, 1], 0, 2],
+			[[10], 10, 1],
+			[[10, 11], 10, 2],
+			[[], -10, 0],
+			[[-10], -10, 1],
+			[[-10, -9, -8], -10, 3],
 		];
-		foreach ($tests as $test) {
-			$actual = Arr::range(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
+	}
+
+	#[DataProvider('provider_range')]
+	public function test_range(array $expected, int $start, int $count)
+	{
+		$actual = Arr::range($start, $count);
+		$this->assertSame($expected, $actual);
 	}
 
 	public function test_range_throw()
@@ -432,18 +483,21 @@ class ArrTest extends TestClass
 		$this->fail();
 	}
 
-	public function test_repeat()
+	public static function provider_repeat()
 	{
-		$tests = [
-			new Data([], 0, 0),
-			new Data([0, 0, 0], 0, 3),
-			new Data([3, 3, 3], 3, 3),
-			new Data(['AZ', 'AZ'], 'AZ', 2),
+		return [
+			[[], 0, 0],
+			[[0, 0, 0], 0, 3],
+			[[3, 3, 3], 3, 3],
+			[['AZ', 'AZ'], 'AZ', 2],
 		];
-		foreach ($tests as $test) {
-			$actual = Arr::repeat(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
+	}
+
+	#[DataProvider('provider_repeat')]
+	public function test_repeat(array $expected, mixed $value, int $count)
+	{
+		$actual = Arr::repeat($value, $count);
+		$this->assertSame($expected, $actual);
 	}
 
 	public function test_repeat_throw()
@@ -453,76 +507,92 @@ class ArrTest extends TestClass
 		$this->fail();
 	}
 
-	public function test_sortByValue()
+	public static function provider_sortByValue()
 	{
-		$tests = [
-			new Data([], [], OrderBy::Ascending),
-			new Data([], [], OrderBy::Descending),
-			new Data([-1, 0, 1, 2], [2, 1, 0, -1], OrderBy::Ascending),
-			new Data([2, 1, 0, -1], [-1, 0, 1, 2], OrderBy::Descending),
-			new Data(['A', 'a', 'z'], ['z', 'A', 'a'], OrderBy::Ascending),
-			new Data(['z', 'a', 'A'], ['z', 'A', 'a'], OrderBy::Descending),
+		return [
+			[[], [], OrderBy::Ascending],
+			[[], [], OrderBy::Descending],
+			[[-1, 0, 1, 2], [2, 1, 0, -1], OrderBy::Ascending],
+			[[2, 1, 0, -1], [-1, 0, 1, 2], OrderBy::Descending],
+			[['A', 'a', 'z'], ['z', 'A', 'a'], OrderBy::Ascending],
+			[['z', 'a', 'A'], ['z', 'A', 'a'], OrderBy::Descending],
 		];
-		foreach ($tests as $test) {
-			$actual = Arr::sortByValue(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
 	}
 
-	public function test_sortByKey()
+	#[DataProvider('provider_sortByValue')]
+	public function test_sortByValue(array $expected, array $array, OrderBy $orderBy)
 	{
-		$tests = [
-			new Data([], [], OrderBy::Ascending),
-			new Data([], [], OrderBy::Descending),
-			new Data(['M' => '13', 'a' => 'Z', 'z' => 'A'], ['z' => 'A', 'M' => '13', 'a' => 'Z'], OrderBy::Ascending),
-			new Data(['z' => 'A', 'a' => 'Z', 'M' => '13'], ['z' => 'A', 'M' => '13', 'a' => 'Z'], OrderBy::Descending),
-		];
-		foreach ($tests as $test) {
-			$actual = Arr::sortByKey(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
+		$actual = Arr::sortByValue($array, $orderBy);
+		$this->assertSame($expected, $actual);
 	}
 
-	public function test_sortNaturalByValue()
+	public static function provider_sortByKey()
 	{
-		$tests = [
-			new Data([], [], false),
-			new Data([], [], true),
-			new Data(['A-100', 'a-1', 'a-200', 'b'], ['a-200', 'a-1', 'A-100', 'b'], false),
-			new Data(['a-1', 'A-100', 'a-200', 'b'], ['a-200', 'a-1', 'A-100', 'b'], true),
+		return [
+			[[], [], OrderBy::Ascending],
+			[[], [], OrderBy::Descending],
+			[['M' => '13', 'a' => 'Z', 'z' => 'A'], ['z' => 'A', 'M' => '13', 'a' => 'Z'], OrderBy::Ascending],
+			[['z' => 'A', 'a' => 'Z', 'M' => '13'], ['z' => 'A', 'M' => '13', 'a' => 'Z'], OrderBy::Descending],
 		];
-		foreach ($tests as $test) {
-			$actual = Arr::sortNaturalByValue(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
 	}
 
-	public function test_sortCallbackByValue()
+	#[DataProvider('provider_sortByKey')]
+	public function test_sortByKey(array $expected, array $array, OrderBy $orderBy)
 	{
-		$tests = [
-			new Data([], [], fn ($a, $b) => $a <=> $b),
-			new Data([1, 3, 10], [3, 10, 1], fn ($a, $b) => $a <=> $b),
-			new Data([10, 3, 1], [3, 10, 1], fn ($a, $b) => $b <=> $a),
-			new Data([['key' => 1], ['key' => 3], ['key' => 10]], [['key' => 3], ['key' => 10], ['key' => 1]], fn ($a, $b) => $a['key'] <=> $b['key']),
-			new Data([['key' => 10], ['key' => 3], ['key' => 1]], [['key' => 3], ['key' => 10], ['key' => 1]], fn ($a, $b) => $b['key'] <=> $a['key']),
-		];
-		foreach ($tests as $test) {
-			$actual = Arr::sortCallbackByValue(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
+		$actual = Arr::sortByKey($array, $orderBy);
+		$this->assertSame($expected, $actual);
 	}
 
-	public function test_sortCallbackByKey()
+	public static function provider_sortNaturalByValue()
 	{
-		$tests = [
-			new Data([], [], fn ($a, $b) => $a <=> $b),
-			new Data(['a' => 10, 'b' => 3, 'c' => 1], ['b' => 3, 'a' => 10, 'c' => 1], fn ($a, $b) => $a <=> $b),
-			new Data(['c' => 1, 'b' => 3, 'a' => 10], ['b' => 3, 'a' => 10, 'c' => 1], fn ($a, $b) => $b <=> $a),
+		return [
+			[[], [], false],
+			[[], [], true],
+			[['A-100', 'a-1', 'a-200', 'b'], ['a-200', 'a-1', 'A-100', 'b'], false],
+			[['a-1', 'A-100', 'a-200', 'b'], ['a-200', 'a-1', 'A-100', 'b'], true],
 		];
-		foreach ($tests as $test) {
-			$actual = Arr::sortCallbackByKey(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
+	}
+
+	#[DataProvider('provider_sortNaturalByValue')]
+	public function test_sortNaturalByValue(array $expected, array $array, bool $ignoreCase)
+	{
+		$actual = Arr::sortNaturalByValue($array, $ignoreCase);
+		$this->assertSame($expected, $actual);
+	}
+
+	public static function provider_sortCallbackByValue()
+	{
+		return [
+			[[], [], fn ($a, $b) => $a <=> $b],
+			[[1, 3, 10], [3, 10, 1], fn ($a, $b) => $a <=> $b],
+			[[10, 3, 1], [3, 10, 1], fn ($a, $b) => $b <=> $a],
+			[[['key' => 1], ['key' => 3], ['key' => 10]], [['key' => 3], ['key' => 10], ['key' => 1]], fn ($a, $b) => $a['key'] <=> $b['key']],
+			[[['key' => 10], ['key' => 3], ['key' => 1]], [['key' => 3], ['key' => 10], ['key' => 1]], fn ($a, $b) => $b['key'] <=> $a['key']],
+		];
+	}
+
+	#[DataProvider('provider_sortCallbackByValue')]
+	public function test_sortCallbackByValue(array $expected, array $array, callable $callback)
+	{
+		$actual = Arr::sortCallbackByValue($array, $callback);
+		$this->assertSame($expected, $actual);
+	}
+
+	public static function provider_sortCallbackByKey()
+	{
+		return [
+			[[], [], fn ($a, $b) => $a <=> $b],
+			[[], [], fn ($a, $b) => $a <=> $b],
+			[['a' => 10, 'b' => 3, 'c' => 1], ['b' => 3, 'a' => 10, 'c' => 1], fn ($a, $b) => $a <=> $b],
+			[['c' => 1, 'b' => 3, 'a' => 10], ['b' => 3, 'a' => 10, 'c' => 1], fn ($a, $b) => $b <=> $a],
+		];
+	}
+
+	#[DataProvider('provider_sortCallbackByKey')]
+	public function test_sortCallbackByKey(array $expected, array $array, callable $callback)
+	{
+		$actual = Arr::sortCallbackByKey($array, $callback);
+		$this->assertSame($expected, $actual);
 	}
 }
 

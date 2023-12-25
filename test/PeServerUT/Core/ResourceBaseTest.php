@@ -13,7 +13,6 @@ use PeServer\Core\SizeConverter;
 use PeServer\Core\Stream;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\IOException;
-use PeServerTest\Data;
 use PeServerTest\TestClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 

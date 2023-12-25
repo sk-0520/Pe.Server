@@ -7,71 +7,81 @@ namespace PeServerUT\Core;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\TrueKeeper;
 use PeServer\Core\Uuid;
-use PeServerTest\Data;
 use PeServerTest\TestClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class UuidTest extends TestClass
 {
-	public function test_isEqualGuid()
+	public static function provider_isEqualGuid()
 	{
 		$input = '70457e15-8928-4418-9b27-30bd46b1ae30';
-		$tests = [
-			new Data(true, $input, '70457e15-8928-4418-9b27-30bd46b1ae30'),
-			new Data(true, $input, '70457E15-8928-4418-9B27-30BD46B1AE30'),
 
-			new Data(true, $input, '70457e15892844189b2730bd46b1ae30'),
-			new Data(true, $input, '70457E15892844189B2730BD46B1AE30'),
+		return [
+			[true, $input, '70457e15-8928-4418-9b27-30bd46b1ae30'],
+			[true, $input, '70457E15-8928-4418-9B27-30BD46B1AE30'],
 
-			new Data(true, $input, '{70457e15-8928-4418-9b27-30bd46b1ae30}'),
-			new Data(true, $input, '{70457E15-8928-4418-9B27-30BD46B1AE30}'),
+			[true, $input, '70457e15892844189b2730bd46b1ae30'],
+			[true, $input, '70457E15892844189B2730BD46B1AE30'],
 
-			new Data(true, $input, '{70457e15892844189b2730bd46b1ae30}'),
-			new Data(true, $input, '{70457E15892844189B2730BD46B1AE30}'),
+			[true, $input, '{70457e15-8928-4418-9b27-30bd46b1ae30}'],
+			[true, $input, '{70457E15-8928-4418-9B27-30BD46B1AE30}'],
+
+			[true, $input, '{70457e15892844189b2730bd46b1ae30}'],
+			[true, $input, '{70457E15892844189B2730BD46B1AE30}'],
 		];
-		foreach ($tests as $test) {
-			$actual = Uuid::isEqualGuid(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
 	}
 
-	public function test_isGuid()
+	#[DataProvider('provider_isEqualGuid')]
+	public function test_isEqualGuid(bool $expected, string $a, string $b)
 	{
-		$tests = [
-			new Data(true, '70457e15-8928-4418-9b27-30bd46b1ae30'),
-			new Data(true, '70457E15-8928-4418-9B27-30BD46B1AE30'),
-			new Data(true, '70457e15892844189b2730bd46b1ae30'),
-			new Data(true, '70457E15892844189B2730BD46B1AE30'),
-			new Data(true, '{70457e15-8928-4418-9b27-30bd46b1ae30}'),
-			new Data(true, '{70457E15-8928-4418-9B27-30BD46B1AE30}'),
-			new Data(true, '{70457e15892844189b2730bd46b1ae30}'),
-			new Data(true, '{70457E15892844189B2730BD46B1AE30}'),
-			new Data(false, ''),
-			new Data(false, 'G0457e15-8928-4418-9b27-30bd46b1ae30'),
-		];
-		foreach ($tests as $test) {
-			$actual = Uuid::isGuid(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
+		$actual = Uuid::isEqualGuid($a, $b);
+		$this->assertSame($expected, $actual);
 	}
 
-	public function test_adjustGuid()
+	public static function provider_isGuid()
+	{
+		return [
+			[true, '70457e15-8928-4418-9b27-30bd46b1ae30'],
+			[true, '70457E15-8928-4418-9B27-30BD46B1AE30'],
+			[true, '70457e15892844189b2730bd46b1ae30'],
+			[true, '70457E15892844189B2730BD46B1AE30'],
+			[true, '{70457e15-8928-4418-9b27-30bd46b1ae30}'],
+			[true, '{70457E15-8928-4418-9B27-30BD46B1AE30}'],
+			[true, '{70457e15892844189b2730bd46b1ae30}'],
+			[true, '{70457E15892844189B2730BD46B1AE30}'],
+			[false, ''],
+			[false, 'G0457e15-8928-4418-9b27-30bd46b1ae30'],
+		];
+	}
+
+	#[DataProvider('provider_isGuid')]
+	public function test_isGuid(bool $expected, string $value)
+	{
+		$actual = Uuid::isGuid($value);
+		$this->assertSame($expected, $actual);
+	}
+
+	public static function provider_adjustGuid()
 	{
 		$expected = '70457e15-8928-4418-9b27-30bd46b1ae30';
 
-		$tests = [
-			new Data($expected, '70457e15-8928-4418-9b27-30bd46b1ae30'),
-			new Data($expected, '70457E15-8928-4418-9B27-30BD46B1AE30'),
-			new Data($expected, '70457e15892844189b2730bd46b1ae30'),
-			new Data($expected, '70457E15892844189B2730BD46B1AE30'),
-			new Data($expected, '{70457e15-8928-4418-9b27-30bd46b1ae30}'),
-			new Data($expected, '{70457E15-8928-4418-9B27-30BD46B1AE30}'),
-			new Data($expected, '{70457e15892844189b2730bd46b1ae30}'),
-			new Data($expected, '{70457E15892844189B2730BD46B1AE30}'),
+		return [
+			[$expected, '70457e15-8928-4418-9b27-30bd46b1ae30'],
+			[$expected, '70457E15-8928-4418-9B27-30BD46B1AE30'],
+			[$expected, '70457e15892844189b2730bd46b1ae30'],
+			[$expected, '70457E15892844189B2730BD46B1AE30'],
+			[$expected, '{70457e15-8928-4418-9b27-30bd46b1ae30}'],
+			[$expected, '{70457E15-8928-4418-9B27-30BD46B1AE30}'],
+			[$expected, '{70457e15892844189b2730bd46b1ae30}'],
+			[$expected, '{70457E15892844189B2730BD46B1AE30}'],
 		];
-		foreach ($tests as $test) {
-			$actual = Uuid::adjustGuid(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
+	}
+
+	#[DataProvider('provider_adjustGuid')]
+	public function test_adjustGuid(string $expected, string $value)
+	{
+		$actual = Uuid::adjustGuid($value);
+		$this->assertSame($expected, $actual);
 	}
 
 	public function test_adjustGuid_error_length()

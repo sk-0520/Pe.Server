@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace PeServerUT\App\Models;
 
 use PeServer\App\Models\AppCryptography;
-use PeServerTest\Data;
 use PeServerTest\TestClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class AppCryptographyTest extends TestClass
 {
@@ -44,19 +44,22 @@ class AppCryptographyTest extends TestClass
 		}
 	}
 
-	public function test_convertMarker()
+	public static function provider_convertMarker()
+	{
+		return [
+			[0x233643e7, 'abc'],
+			[0xb824c4a5, '🧶'],
+		];
+	}
+
+	#[DataProvider('provider_convertMarker')]
+	public function test_convertMarker($expected, string $data)
 	{
 		/** @var AppCryptography */
 		$appCryptography = $this->container()->new(AppCryptography::class);
 
 		// CryptoSetting::pepper が付与されることに注意
-		$tests = [
-			new Data(0x233643e7, 'abc'),
-			new Data(0xb824c4a5, '🧶'),
-		];
-		foreach ($tests as $test) {
-			$actual = $appCryptography->toMark(...$test->args);
-			$this->assertSame($test->expected, $actual);
-		}
+		$actual = $appCryptography->toMark($data);
+		$this->assertSame($expected, $actual);
 	}
 }

@@ -4,47 +4,51 @@ declare(strict_types=1);
 
 namespace PeServerUT\Core;
 
-use PeServerTest\Data;
 use PeServerTest\TestClass;
 use PeServer\Core\TypeUtility;
 use PeServer\Core\Throws\ParseException;
+use PHPUnit\Framework\Attributes\DataProvider;
+use stdClass;
 
 class TypeUtilityTest extends TestClass
 {
-	public function test_parseInteger()
+	public static function provider_parseInteger()
 	{
-		$tests = [
-			new Data(0, '0'),
-			new Data(-1, '-1'),
-			new Data(+1, '+1'),
-			new Data(123, '123 '),
-			new Data(456, ' 456'),
-			new Data(789, '  789 '),
+		return [
+			[0, '0'],
+			[-1, '-1'],
+			[+1, '+1'],
+			[123, '123 '],
+			[456, ' 456'],
+			[789, '  789 '],
 		];
-		foreach ($tests as $test) {
-			$actual = TypeUtility::parseInteger(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
 	}
 
-	public function test_parseInteger_throw()
+	#[DataProvider('provider_parseInteger')]
+	public function test_parseInteger(int $expected, string $input)
 	{
-		$tests = [
-			'',
-			'1 1',
-			'1+1',
-			'1-1',
-			'--1',
-			'++1',
+		$actual = TypeUtility::parseInteger($input);
+		$this->assertSame($expected, $actual);
+	}
+
+	public static function provider_parseInteger_throw()
+	{
+		return [
+			[''],
+			['1 1'],
+			['1+1'],
+			['1-1'],
+			['--1'],
+			['++1'],
 		];
-		foreach ($tests as $test) {
-			try {
-				TypeUtility::parseInteger($test);
-				$this->fail();
-			} catch (ParseException) {
-				$this->success();
-			}
-		}
+	}
+
+	#[DataProvider('provider_parseInteger_throw')]
+	public function test_parseInteger_throw(string $input)
+	{
+		$this->expectException(ParseException::class);
+		TypeUtility::parseInteger($input);
+		$this->fail();
 	}
 
 	public function test_tryParseInteger()
@@ -57,41 +61,44 @@ class TypeUtilityTest extends TestClass
 		$this->assertFalse($result2);
 	}
 
-	public function test_parseUInteger()
+	public static function provider_parseUInteger()
 	{
-		$tests = [
-			new Data(0, '0'),
-			//new Data(-1, '-1'),
-			new Data(+1, '+1'),
-			new Data(123, '123 '),
-			new Data(456, ' 456'),
-			new Data(789, '  789 '),
+		return [
+			[0, '0'],
+			//[-1, '-1'],
+			[+1, '+1'],
+			[123, '123 '],
+			[456, ' 456'],
+			[789, '  789 '],
 		];
-		foreach ($tests as $test) {
-			$actual = TypeUtility::parseUInteger(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
 	}
 
-	public function test_parseUInteger_throw()
+	#[DataProvider('provider_parseUInteger')]
+	public function test_parseUInteger(int $expected, string $input)
 	{
-		$tests = [
-			'',
-			'1 1',
-			'1+1',
-			'1-1',
-			'--1',
-			'++1',
-			'-1',
+		$actual = TypeUtility::parseUInteger($input);
+		$this->assertSame($expected, $actual);
+	}
+
+	public static function provider_parseUInteger_throw()
+	{
+		return [
+			[''],
+			['1 1'],
+			['1+1'],
+			['1-1'],
+			['--1'],
+			['++1'],
+			['-1'],
 		];
-		foreach ($tests as $test) {
-			try {
-				TypeUtility::parseUInteger($test);
-				$this->fail();
-			} catch (ParseException) {
-				$this->success();
-			}
-		}
+	}
+
+	#[DataProvider('provider_parseUInteger_throw')]
+	public function test_parseUInteger_throw(string $input)
+	{
+		$this->expectException(ParseException::class);
+		TypeUtility::parseUInteger($input);
+		$this->fail();
 	}
 
 	public function test_tryParseUInteger()
@@ -104,40 +111,43 @@ class TypeUtilityTest extends TestClass
 		$this->assertFalse($result2);
 	}
 
-	public function test_parsePositiveInteger()
+	public static function provider_parsePositiveInteger()
 	{
-		$tests = [
-			new Data(+1, '+1'),
-			new Data(123, '123 '),
-			new Data(456, ' 456'),
-			new Data(789, '  789 '),
+		return [
+			[+1, '+1'],
+			[123, '123 '],
+			[456, ' 456'],
+			[789, '  789 '],
 		];
-		foreach ($tests as $test) {
-			$actual = TypeUtility::parsePositiveInteger(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
 	}
 
-	public function test_parsePositiveInteger_throw()
+	#[DataProvider('provider_parsePositiveInteger')]
+	public function test_parsePositiveInteger(int $expected, string $input)
 	{
-		$tests = [
-			'',
-			'1 1',
-			'1+1',
-			'1-1',
-			'--1',
-			'++1',
-			'-1',
-			'0',
+		$actual = TypeUtility::parsePositiveInteger($input);
+		$this->assertSame($expected, $actual);
+	}
+
+	public static function provider_parsePositiveInteger_throw()
+	{
+		return [
+			[''],
+			['1 1'],
+			['1+1'],
+			['1-1'],
+			['--1'],
+			['++1'],
+			['-1'],
+			['0'],
 		];
-		foreach ($tests as $test) {
-			try {
-				TypeUtility::parsePositiveInteger($test);
-				$this->fail();
-			} catch (ParseException) {
-				$this->success();
-			}
-		}
+	}
+
+	#[DataProvider('provider_parsePositiveInteger_throw')]
+	public function test_parsePositiveInteger_throw(string $input)
+	{
+		$this->expectException(ParseException::class);
+		TypeUtility::parsePositiveInteger($input);
+		$this->fail();
 	}
 
 	public function test_tryParsePositiveInteger()
@@ -153,41 +163,47 @@ class TypeUtilityTest extends TestClass
 		$this->assertFalse($result3);
 	}
 
-	public function test_parseBoolean()
+	public static function provider_parseBoolean()
 	{
-		$tests = [
-			new Data(true, '1'),
-			new Data(true, 'true'),
-			new Data(true, 'TRUE'),
-			new Data(true, 'on'),
-			new Data(true, 'ok'),
-			new Data(true, true),
-			new Data(false, false),
-			new Data(false, 'abc'),
-			new Data(false, []),
-			new Data(true, [0]),
+		return [
+			[true, '1'],
+			[true, 'true'],
+			[true, 'TRUE'],
+			[true, 'on'],
+			[true, 'ok'],
+			[true, true],
+			[false, false],
+			[false, 'abc'],
+			[false, []],
+			[true, [0]],
 		];
-		foreach ($tests as $test) {
-			$actual = TypeUtility::parseBoolean(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
 	}
 
-	public function test_getType()
+	#[DataProvider('provider_parseBoolean')]
+	public function test_parseBoolean(bool $expected, mixed $input)
 	{
-		$tests = [
-			new Data(TypeUtility::TYPE_INTEGER, 1),
-			new Data(TypeUtility::TYPE_DOUBLE, 1.0),
-			new Data(TypeUtility::TYPE_STRING, ''),
-			new Data(TypeUtility::TYPE_NULL, null),
-			new Data(TypeUtility::TYPE_ARRAY, []),
-			new Data(TypeUtility::TYPE_ARRAY, [1, 2, 3]),
-			new Data(TypeUtility::TYPE_ARRAY, ['A' => 'B']),
-			new Data(self::class, $this),
+		$actual = TypeUtility::parseBoolean($input);
+		$this->assertSame($expected, $actual);
+	}
+
+	public static function provider_getType()
+	{
+		return [
+			[TypeUtility::TYPE_INTEGER, 1],
+			[TypeUtility::TYPE_DOUBLE, 1.0],
+			[TypeUtility::TYPE_STRING, ''],
+			[TypeUtility::TYPE_NULL, null],
+			[TypeUtility::TYPE_ARRAY, []],
+			[TypeUtility::TYPE_ARRAY, [1, 2, 3]],
+			[TypeUtility::TYPE_ARRAY, ['A' => 'B']],
+			[stdClass::class, new stdClass()],
 		];
-		foreach ($tests as $test) {
-			$actual = TypeUtility::getType(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
+	}
+
+	#[DataProvider('provider_getType')]
+	public function test_getType(string $expected, mixed $input)
+	{
+		$actual = TypeUtility::getType($input);
+		$this->assertSame($expected, $actual);
 	}
 }
