@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PeServerUT\Core\Collections;
+namespace PeServerUT\Core\Collection;
 
 use ArrayIterator;
 use PeServer\Core\Collection\Collections;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\InvalidOperationException;
-use PeServerTest\Data;
 use PeServerTest\TestClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use Traversable;
 use TypeError;
 
 class CollectionsTest extends TestClass
@@ -202,14 +203,14 @@ class CollectionsTest extends TestClass
 		$this->assertSame(6, Collections::from(function () {
 			foreach ([1, 2, 3, 4, 5, 6] as $v) {
 				yield $v;
-            }
+			}
 		})->count());
 
 		$this->assertSame(3, Collections::from([1, 2, 3, 4, 5, 6])->count(fn ($v) => ($v % 2) == 0));
 		$this->assertSame(3, Collections::from(function () {
 			foreach ([1, 2, 3, 4, 5, 6] as $v) {
 				yield $v;
-            }
+			}
 		})->count(fn ($v) => ($v % 2) == 0));
 	}
 
@@ -365,91 +366,106 @@ class CollectionsTest extends TestClass
 		$this->assertSame([0, 1, 2, 2, 3, 3, 4, 5, 5, 6], $range->takeWhile(fn ($v) => true)->toArray());
 	}
 
-	public function test_reverse()
+	public static function provider_reverse()
 	{
-		$tests = [
-			new Data([3, 2, 1], [1, 2, 3]),
-			new Data([3, 2, 1], Collections::from([1, 2, 3])),
-			new Data([3, 2, 1], Collections::from(new ArrayIterator([1, 2, 3]))),
+		return [
+			[[3, 2, 1], [1, 2, 3]],
+			[[3, 2, 1], Collections::from([1, 2, 3])],
+			[[3, 2, 1], Collections::from(new ArrayIterator([1, 2, 3]))],
 		];
-		foreach ($tests as $test) {
-			$items = Collections::from(...$test->args);
-			$this->assertSame($test->expected, $items->reverse()->toArray());
-			$this->assertSame($test->expected, $items->reverse()->toArray());
-
-			$a = $items->reverse()->reverse();
-			$b = $items->reverse()->reverse()->reverse()->reverse();
-
-			$this->assertSame($a->toArray(), $b->toArray());
-		}
 	}
 
-	public function test_aggregate()
+	#[DataProvider('provider_reverse')]
+	public function test_reverse(array $expected, Traversable|array|callable $sequence)
 	{
-		$tests = [
-			new Data(1, Collections::range(1, 1), fn ($result, $value, $key) => $result + $value),
-			new Data(3, Collections::range(1, 2), fn ($result, $value, $key) => $result + $value),
-			new Data(6, Collections::range(1, 3), fn ($result, $value, $key) => $result + $value),
+		$items = Collections::from($sequence);
+		$this->assertSame($expected, $items->reverse()->toArray());
+		$this->assertSame($expected, $items->reverse()->toArray());
 
-			new Data(11, Collections::range(1, 1), fn ($result, $value, $key) => $result + $value, 10),
-			new Data(13, Collections::range(1, 2), fn ($result, $value, $key) => $result + $value, 10),
-			new Data(16, Collections::range(1, 3), fn ($result, $value, $key) => $result + $value, 10),
+		$a = $items->reverse()->reverse();
+		$b = $items->reverse()->reverse()->reverse()->reverse();
 
-			new Data('[[[A]A]A]', Collections::repeat('A', 3), fn ($result, $value, $key) => '[' . $result . $value . ']', ''),
-			new Data('[[[xA]A]A]', Collections::repeat('A', 3), fn ($result, $value, $key) => '[' . $result . $value . ']', 'x'),
-		];
-		foreach ($tests as $test) {
-			$items = Collections::from($test->args[0]);
-			$actual = $items->aggregate($test->args[1], isset($test->args[2]) ? $test->args[2] : 0);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
+		$this->assertSame($a->toArray(), $b->toArray());
 	}
 
-	public function test_max()
+	public static function provider_aggregate()
 	{
-		$tests = [
-			new Data(3, [1, 2, 3]),
-			new Data(3, [3, 2, 1]),
+		return [
+			[1, Collections::range(1, 1), fn ($result, $value, $key) => $result + $value],
+			[3, Collections::range(1, 2), fn ($result, $value, $key) => $result + $value],
+			[6, Collections::range(1, 3), fn ($result, $value, $key) => $result + $value],
 
-			new Data(3, [new Value(i: 1), new Value(i: 2), new Value(i: 3)], fn ($i) => $i->i),
-			new Data(2.5, [new Value(f: 1.5), new Value(f: 2.5), new Value(f: 0.5)], fn ($i) => $i->f),
+			[11, Collections::range(1, 1), fn ($result, $value, $key) => $result + $value, 10],
+			[13, Collections::range(1, 2), fn ($result, $value, $key) => $result + $value, 10],
+			[16, Collections::range(1, 3), fn ($result, $value, $key) => $result + $value, 10],
+
+			['[[[A]A]A]', Collections::repeat('A', 3), fn ($result, $value, $key) => '[' . $result . $value . ']', ''],
+			['[[[xA]A]A]', Collections::repeat('A', 3), fn ($result, $value, $key) => '[' . $result . $value . ']', 'x'],
 		];
-		foreach ($tests as $test) {
-			$items = Collections::from($test->args[0]);
-			$actual = $items->max(isset($test->args[1]) ? $test->args[1] : null);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
 	}
 
-	public function test_min()
+	#[DataProvider('provider_aggregate')]
+	public function test_aggregate($expected, Traversable|array|callable $sequence, callable $callback, $initial = 0)
 	{
-		$tests = [
-			new Data(1, [1, 2, 3]),
-			new Data(1, [3, 2, 1]),
-
-			// new Data(1, [new Value(i: 1), new Value(i: 2), new Value(i: 3)], fn ($i) => $i->i),
-			// new Data(0.5, [new Value(f: 1.5), new Value(f: 2.5), new Value(f: 0.5)], fn ($i) => $i->f),
-		];
-		foreach ($tests as $test) {
-			$items = Collections::from($test->args[0]);
-			$actual = $items->min(isset($test->args[1]) ? $test->args[1] : null);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
+		$items = Collections::from($sequence);
+		$actual = $items->aggregate($callback, isset($initial) ? $initial : 0);
+		$this->assertSame($expected, $actual);
 	}
 
-	public function test_zip()
+	public static function provider_max()
 	{
-		$tests = [
-			new Data([['f' => 1, 's' => 10], ['f' => 2, 's' => 20]], [1, 2], [10, 20], fn ($items, $key) => ['f' => $items[0], 's' => $items[1]]),
-			new Data([['f' => 1, 's' => 10], ['f' => 2, 's' => 20]], [1, 2, 3], [10, 20], fn ($items, $key) => ['f' => $items[0], 's' => $items[1]]),
-			new Data([['f' => 1, 's' => 10], ['f' => 2, 's' => 20]], [1, 2], [10, 20, 30], fn ($items, $key) => ['f' => $items[0], 's' => $items[1]]),
+		return [
+			[3, [1, 2, 3]],
+			[3, [3, 2, 1]],
+
+			[3, [new Value(i: 1), new Value(i: 2), new Value(i: 3)], fn ($i) => $i->i],
+			[2.5, [new Value(f: 1.5), new Value(f: 2.5), new Value(f: 0.5)], fn ($i) => $i->f],
 		];
-		foreach ($tests as $test) {
-			$first = Collections::from($test->args[0]);
-			$second = Collections::from($test->args[1]);
-			$actual = $first->zip($second, $test->args[2])->toArray();
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
+	}
+
+	#[DataProvider('provider_max')]
+	public function test_max($expected, Traversable|array|callable $sequence, ?callable $callback = null)
+	{
+		$items = Collections::from($sequence);
+		$actual = $items->max($callback);
+		$this->assertSame($expected, $actual);
+	}
+
+	public static function provider_min()
+	{
+		return [
+			[1, [1, 2, 3]],
+			[1, [3, 2, 1]],
+
+			// 1, [new Value(i: 1), new Value(i: 2), new Value(i: 3)], fn ($i) => $i->i],
+			// 0.5, [new Value(f: 1.5), new Value(f: 2.5), new Value(f: 0.5)], fn ($i) => $i->f],
+		];
+	}
+
+	#[DataProvider('provider_min')]
+	public function test_min($expected, Traversable|array|callable $sequence, ?callable $callback = null)
+	{
+		$items = Collections::from($sequence);
+		$actual = $items->min($callback);
+		$this->assertSame($expected, $actual);
+	}
+
+	public static function provider_zip()
+	{
+		return [
+			[[['f' => 1, 's' => 10], ['f' => 2, 's' => 20]], [1, 2], [10, 20], fn ($items, $key) => ['f' => $items[0], 's' => $items[1]]],
+			[[['f' => 1, 's' => 10], ['f' => 2, 's' => 20]], [1, 2, 3], [10, 20], fn ($items, $key) => ['f' => $items[0], 's' => $items[1]]],
+			[[['f' => 1, 's' => 10], ['f' => 2, 's' => 20]], [1, 2], [10, 20, 30], fn ($items, $key) => ['f' => $items[0], 's' => $items[1]]],
+		];
+	}
+
+	#[DataProvider('provider_zip')]
+	public function test_zip(array $expected, Traversable|array|callable $sequence1, Traversable|array|callable $sequence2, callable $callback)
+	{
+		$first = Collections::from($sequence1);
+		$second = Collections::from($sequence2);
+		$actual = $first->zip($second, $callback)->toArray();
+		$this->assertSame($expected, $actual);
 	}
 }
 

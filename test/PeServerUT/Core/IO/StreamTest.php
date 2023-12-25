@@ -20,7 +20,6 @@ use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\IOException;
 use PeServer\Core\Throws\ResourceInvalidException;
 use PeServer\Core\Throws\StreamException;
-use PeServerTest\Data;
 use PeServerTest\TestClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use ReflectionClass;

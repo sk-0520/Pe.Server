@@ -16,9 +16,9 @@ use PeServer\Core\Throws\DatabaseException;
 use PeServer\Core\Throws\NotSupportedException;
 use PeServer\Core\Throws\SqlException;
 use PeServer\Core\Throws\TransactionException;
-use PeServerTest\Data;
 use PeServerTest\TestClass;
 use PeServerUT\Core\Database\DB;
+use PHPUnit\Framework\Attributes\DataProvider;
 use stdClass;
 
 class DatabaseContextTest extends TestClass
@@ -105,34 +105,42 @@ class DatabaseContextTest extends TestClass
 		$this->fail();
 	}
 
-	public function test_escapeLike()
+	public static function provider_escapeLike()
 	{
-		$database = DB::memory();
-		$tests = [
-			new Data("value", "value"),
-			new Data("10\\%", "10%"),
-			new Data("10\\\\", "10\\"),
-			new Data("10\\_", "10_"),
-			new Data("\\_10\\%", "_10%"),
+		return [
+			["value", "value"],
+			["10\\%", "10%"],
+			["10\\\\", "10\\"],
+			["10\\_", "10_"],
+			["\\_10\\%", "_10%"],
 		];
-		foreach ($tests as $test) {
-			$actual = $database->escapeLike(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
 	}
 
-	public function test_escapeValue()
+	#[DataProvider('provider_escapeLike')]
+	public function test_escapeLike(string $expected, string $value)
 	{
 		$database = DB::memory();
-		$tests = [
-			new Data("'value'", "value"),
-			new Data("null", null),
-			new Data("'a''a'", "a'a"),
+
+		$actual = $database->escapeLike($value);
+		$this->assertSame($expected, $actual);
+	}
+
+	public static function provider_escapeValue()
+	{
+		return [
+			["'value'", "value"],
+			["null", null],
+			["'a''a'", "a'a"],
 		];
-		foreach ($tests as $test) {
-			$actual = $database->escapeValue(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
+	}
+
+	#[DataProvider('provider_escapeValue')]
+	public function test_escapeValue(string $expected, mixed $value)
+	{
+		$database = DB::memory();
+
+		$actual = $database->escapeValue($value);
+		$this->assertSame($expected, $actual);
 	}
 
 	public function test_fetch()

@@ -11,7 +11,6 @@ use PeServer\Core\Http\Client\FormUrlEncodedContent;
 use PeServer\Core\Mime;
 use PeServer\Core\Text;
 use PeServer\Core\Web\UrlEncoding;
-use PeServerTest\Data;
 use PeServerTest\TestClass;
 
 class FormUrlEncodedContentTest extends TestClass

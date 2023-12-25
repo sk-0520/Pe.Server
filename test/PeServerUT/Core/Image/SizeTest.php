@@ -6,7 +6,6 @@ namespace PeServerUT\Core\Image;
 
 use PeServer\Core\Image\Size;
 use PeServer\Core\Throws\ArgumentException;
-use PeServerTest\Data;
 use PeServerTest\TestClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 
@@ -32,17 +31,20 @@ class SizeTest extends TestClass
 		$this->fail();
 	}
 
-	public function test_serializable()
+	public static function provider_serializable()
 	{
-		$tests = [
-			new Size(123, 456),
+		return [
+			[new Size(123, 456)],
 		];
-		foreach ($tests as $test) {
-			$s = serialize($test);
-			$actual = unserialize($s);
-			$this->assertSame($test->width, $actual->width, (string)$actual->width);
-			$this->assertSame($test->height, $actual->height, (string)$actual->height);
-		}
+	}
+
+	#[DataProvider('provider_serializable')]
+	public function test_serializable(Size $test)
+	{
+		$s = serialize($test);
+		$actual = unserialize($s);
+		$this->assertSame($test->width, $actual->width, (string)$actual->width);
+		$this->assertSame($test->height, $actual->height, (string)$actual->height);
 	}
 
 	public function test___toString()

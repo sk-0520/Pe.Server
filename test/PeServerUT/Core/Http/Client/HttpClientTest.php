@@ -26,7 +26,6 @@ use PeServer\Core\Throws\HttpClientRequestException;
 use PeServer\Core\Throws\HttpClientStatusException;
 use PeServer\Core\Web\Url;
 use PeServer\Core\Web\UrlQuery;
-use PeServerTest\Data;
 use PeServerTest\TestClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 

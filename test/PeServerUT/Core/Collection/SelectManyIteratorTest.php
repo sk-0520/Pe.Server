@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace PeServerUT\Core\Collections;
+namespace PeServerUT\Core\Collection;
 
 use ArrayIterator;
-use PeServer\Core\Collection\SelectIterator;
+use PeServer\Core\Collection\SelectManyIterator;
 use PeServer\Core\Throws\CallbackTypeError;
 use PeServerTest\TestClass;
 
-class SelectIteratorTest extends TestClass
+class SelectManyIteratorTest extends TestClass
 {
 	public function test_construct_throw()
 	{
 		$this->expectException(CallbackTypeError::class);
-		new SelectIterator(new ArrayIterator([]), '(^v^)');
+		new SelectManyIterator(new ArrayIterator([]), '(^v^)');
 		$this->fail();
 	}
 }

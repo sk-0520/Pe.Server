@@ -4,72 +4,81 @@ declare(strict_types=1);
 
 namespace PeServerUT\Core\Version;
 
-use PeServerTest\Data;
 use PeServerTest\TestClass;
 use PeServer\Core\Version\CliVersion;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class CliVersionTest extends TestClass
 {
-	public function test_toString()
+	public static function provider_toString()
 	{
-		$tests = [
-			new Data('1.0.0', 1),
-			new Data('1.2.0', 1, 2),
-			new Data('1.2.3', 1, 2, 3),
-			new Data('1.2.3.4', 1, 2, 3, 4),
-			new Data('1.2.3', 1, 2, 3, -1),
+		return [
+			['1.0.0', 1],
+			['1.2.0', 1, 2],
+			['1.2.3', 1, 2, 3],
+			['1.2.3.4', 1, 2, 3, 4],
+			['1.2.3', 1, 2, 3, -1],
 		];
-		foreach ($tests as $test) {
-			$actual = new CliVersion(...$test->args);
-			$this->assertSame($test->expected, $actual->toString(), $test->str());
-			$this->assertSame($test->expected, (string)$actual, $test->str());
-			$this->assertSame($test->expected, strval($actual), $test->str());
-		}
 	}
 
-	public function test_tryParse_success()
+	#[DataProvider('provider_toString')]
+	public function test_toString(string $expected, int $major, int $minor = 0, int $build = 0, int $revision = CliVersion::IGNORE_REVISION)
 	{
-		$tests = [
-			new Data('1.0.0', '1'),
-			new Data('1.0.0', '01'),
-			new Data('10.0.0', '10'),
-			new Data('1.2.0', '1.2'),
-			new Data('1.2.0', '1.02'),
-			new Data('1.20.0', '1.20'),
-			new Data('1.2.3', '1.2.3'),
-			new Data('1.2.3', '1.2.03'),
-			new Data('1.2.30', '1.2.30'),
-			new Data('1.2.3.4', '1.2.3.4'),
-			new Data('1.2.3.4', '1.2.3.04'),
-			new Data('1.2.3.40', '1.2.3.40'),
-		];
-		foreach ($tests as $test) {
-			$actual = CliVersion::tryParse($test->args[0], $result);
-			$this->assertTrue($actual, $test->str());
-			$this->assertSame($test->expected, $result->toString(), $test->str());
-			$this->assertSame($test->expected, (string)$result, $test->str());
-			$this->assertSame($test->expected, strval($result), $test->str());
-		}
+		$actual = new CliVersion($major, $minor, $build, $revision);
+		$this->assertSame($expected, $actual->toString());
+		$this->assertSame($expected, (string)$actual);
+		$this->assertSame($expected, strval($actual));
 	}
 
-	public function test_tryParse_failure()
+	public static function provider_tryParse_success()
 	{
-		$tests = [
-			null,
-			'',
-			'1a',
-			'a1',
-			'a',
-			'1.',
-			'1.a',
-			'a.2',
-			'1.2.',
-			'1.2.a',
-			'1.a.3',
+		return [
+			['1.0.0', '1'],
+			['1.0.0', '01'],
+			['10.0.0', '10'],
+			['1.2.0', '1.2'],
+			['1.2.0', '1.02'],
+			['1.20.0', '1.20'],
+			['1.2.3', '1.2.3'],
+			['1.2.3', '1.2.03'],
+			['1.2.30', '1.2.30'],
+			['1.2.3.4', '1.2.3.4'],
+			['1.2.3.4', '1.2.3.04'],
+			['1.2.3.40', '1.2.3.40'],
 		];
-		foreach ($tests as $test) {
-			$actual = CliVersion::tryParse($test, $_);
-			$this->assertFalse($actual);
-		}
+	}
+
+	#[DataProvider('provider_tryParse_success')]
+	public function test_tryParse_success(string $expected, string $s)
+	{
+		$actual = CliVersion::tryParse($s, $result);
+		$this->assertTrue($actual);
+		$this->assertSame($expected, $result->toString());
+		$this->assertSame($expected, (string)$result);
+		$this->assertSame($expected, strval($result));
+	}
+
+	public static function provider_tryParse_failure()
+	{
+		return [
+			[null],
+			[''],
+			['1a'],
+			['a1'],
+			['a'],
+			['1.'],
+			['1.a'],
+			['a.2'],
+			['1.2.'],
+			['1.2.a'],
+			['1.a.3'],
+		];
+	}
+
+	#[DataProvider('provider_tryParse_failure')]
+	public function test_tryParse_failure(?string $input)
+	{
+		$actual = CliVersion::tryParse($input, $_);
+		$this->assertFalse($actual);
 	}
 }

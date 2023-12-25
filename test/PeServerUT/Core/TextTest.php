@@ -4,128 +4,147 @@ declare(strict_types=1);
 
 namespace PeServerUT\Core;
 
-use PeServerTest\Data;
 use PeServerTest\TestClass;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class TextTest extends TestClass
 {
-	public function test_isNullOrEmpty()
+	public static function provider_isNullOrEmpty()
 	{
-		$tests = [
-			new Data(true, null),
-			new Data(true, ''),
-			new Data(false, ' '),
-			new Data(false, '0'),
-			new Data(false, 'abc'),
+		return [
+			[true, null],
+			[true, ''],
+			[false, ' '],
+			[false, '0'],
+			[false, 'abc'],
 		];
-		foreach ($tests as $test) {
-			$actual = Text::isNullOrEmpty(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str()); //@php-ignore-line
-		}
 	}
 
-	public function test_isNullOrWhiteSpace()
+	#[DataProvider('provider_isNullOrEmpty')]
+	public function test_isNullOrEmpty(bool $expected, ?string $s)
 	{
-		$tests = [
-			new Data(true, null),
-			new Data(true, ''),
-			new Data(true, ' '),
-			new Data(true, "\r"),
-			new Data(true, "\n"),
-			new Data(true, "\t"),
-			//全角 new Data(true, "　"),
-			new Data(false, '0'),
-			new Data(false, 'abc'),
-		];
-		foreach ($tests as $test) {
-			$actual = Text::isNullOrWhiteSpace(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
+		$actual = Text::isNullOrEmpty($s);
+		$this->assertSame($expected, $actual);
 	}
 
-	public function test_requireNotNullOrEmpty()
+	public static function provider_isNullOrWhiteSpace()
 	{
-		$tests = [
-			new Data('A', 'A', 'B'),
-			new Data('B', '', 'B'),
-			new Data(' ', ' ', 'B'),
-			new Data('B', null, 'B'),
+		return [
+			[true, null],
+			[true, ''],
+			[true, ' '],
+			[true, "\r"],
+			[true, "\n"],
+			[true, "\t"],
+			//全角 [true, "　"],
+			[false, '0'],
+			[false, 'abc'],
 		];
-		foreach ($tests as $test) {
-			$actual = Text::requireNotNullOrEmpty(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
 	}
 
-	public function test_requireNotNullOrWhiteSpace()
+	#[DataProvider('provider_isNullOrWhiteSpace')]
+	public function test_isNullOrWhiteSpace(bool $expected, ?string $s)
 	{
-		$tests = [
-			new Data('A', 'A', 'B'),
-			new Data('B', '', 'B'),
-			new Data('B', ' ', 'B'),
-			new Data('B', null, 'B'),
-		];
-		foreach ($tests as $test) {
-			$actual = Text::requireNotNullOrWhiteSpace(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
+		$actual = Text::isNullOrWhiteSpace($s);
+		$this->assertSame($expected, $actual);
 	}
 
-	public function test_getLength()
+	public static function provider_requireNotNullOrEmpty()
 	{
-		$tests = [
-			new Data(0, ''),
-			new Data(1, 'a'),
-			new Data(1, 'あ'),
-			new Data(1, '☃'),
-			new Data(1, "\0"),
-			new Data(2, "\0\0"),
-			new Data(3, "A\0\0"),
-			new Data(1, '⛄'),
-			new Data(1, '👭'),
-			new Data(5, '🧑‍🤝‍🧑'),
-			new Data(7, '👨‍👩‍👧‍👦'),
-
+		return [
+			['A', 'A', 'B'],
+			['B', '', 'B'],
+			[' ', ' ', 'B'],
+			['B', null, 'B'],
 		];
-		foreach ($tests as $test) {
-			$actual = Text::getLength(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
+	}
+
+	#[DataProvider('provider_requireNotNullOrEmpty')]
+	public function test_requireNotNullOrEmpty(string $expected, ?string $s, string $fallback)
+	{
+		$actual = Text::requireNotNullOrEmpty($s, $fallback);
+		$this->assertSame($expected, $actual);
+	}
+
+	public static function provider_requireNotNullOrWhiteSpace()
+	{
+		return [
+			['A', 'A', 'B'],
+			['B', '', 'B'],
+			['B', ' ', 'B'],
+			['B', null, 'B'],
+		];
+	}
+
+	#[DataProvider('provider_requireNotNullOrWhiteSpace')]
+	public function test_requireNotNullOrWhiteSpace(string $expected, ?string $s, string $fallback)
+	{
+		$actual = Text::requireNotNullOrWhiteSpace($s, $fallback);
+		$this->assertSame($expected, $actual);
+	}
+
+	public static function provider_getLength()
+	{
+		return [
+			[0, ''],
+			[1, 'a'],
+			[1, 'あ'],
+			[1, '☃'],
+			[1, "\0"],
+			[2, "\0\0"],
+			[3, "A\0\0"],
+			[1, '⛄'],
+			[1, '👭'],
+			[5, '🧑‍🤝‍🧑'],
+			[7, '👨‍👩‍👧‍👦'],
+		];
+	}
+
+	#[DataProvider('provider_getLength')]
+	public function test_getLength(int $expected, string $value)
+	{
+		$actual = Text::getLength($value);
+		$this->assertSame($expected, $actual);
 	}
 
 	/*
-	public function test_getCharacterLength()
+	public static function provider_getCharacterLength()
 	{
-		$tests = [
-			new Data(0, ''),
-			new Data(1, 'a'),
-			new Data(1, 'あ'),
-			new Data(1, '☃'),
-			new Data(1, '⛄'),
-			new Data(1, '👭'),
-			new Data(1, '🧑‍🤝‍🧑'),
-			new Data(1, '👨‍👩‍👧‍👦'),
-
+		return [
+			[0, ''],
+			[1, 'a'],
+			[1, 'あ'],
+			[1, '☃'],
+			[1, '⛄'],
+			[1, '👭'],
+			[1, '🧑‍🤝‍🧑'],
+			[1, '👨‍👩‍👧‍👦'],
 		];
-		foreach ($tests as $test) {
-			$actual = Text::getCharacterLength(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
+	}
+
+	#[DataProvider('provider_getCharacterLength')]
+	public function test_getCharacterLength(int $expected, string $value)
+	{
+		$actual = Text::getCharacterLength($value);
+		$this->assertSame($expected, $actual);
 	}
 	*/
 
-	public function test_fromCodePoint()
+	public static function provider_fromCodePoint()
 	{
-		$tests = [
-			new Data('A', 65),
-			new Data('AB', [65, 66]),
+		return [
+			['A', 65],
+			['AB', [65, 66]],
 		];
-		foreach ($tests as $test) {
-			$actual = Text::fromCodePoint(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
+	}
+
+	#[DataProvider('provider_fromCodePoint')]
+	public function test_fromCodePoint(string $expected, int|array $value)
+	{
+		$actual = Text::fromCodePoint($value);
+		$this->assertSame($expected, $actual);
 	}
 
 	public function test_fromCodePoint_array_throw()
@@ -144,48 +163,57 @@ class TextTest extends TestClass
 	}
 
 
-	public function test_replaceMap()
+	public static function provider_replaceMap()
 	{
-		$tests = [
-			new Data('abc', '{A}{B}{C}', ['A' => 'a', 'B' => 'b', 'C' => 'c',]),
-			new Data('', '{x}{y}{z}', ['A' => 'a', 'B' => 'b', 'C' => 'c',]),
-			new Data('a!?', '{A}{a}{!}', ['A' => 'a', 'a' => '!', '!' => '?',]),
-			new Data('(a)[a]<a>', '({A})[{A}]<{A}>', ['A' => 'a',]),
+		return [
+			['abc', '{A}{B}{C}', ['A' => 'a', 'B' => 'b', 'C' => 'c',]],
+			['', '{x}{y}{z}', ['A' => 'a', 'B' => 'b', 'C' => 'c',]],
+			['a!?', '{A}{a}{!}', ['A' => 'a', 'a' => '!', '!' => '?',]],
+			['(a)[a]<a>', '({A})[{A}]<{A}>', ['A' => 'a',]],
 		];
-		foreach ($tests as $test) {
-			$actual = Text::replaceMap(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
 	}
 
-	public function test_formatNumber()
+	#[DataProvider('provider_replaceMap')]
+	public function test_replaceMap(string $expected, string $source, array $map, string $head = '{', string $tail = '}')
 	{
-		$tests = [
-			new Data('123', 123),
-			new Data('1,234', 1234),
-		];
-		foreach ($tests as $test) {
-			$actual = Text::formatNumber(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
+		$actual = Text::replaceMap($source, $map, $head, $tail);
+		$this->assertSame($expected, $actual);
 	}
 
-	public function test_getPosition()
+	public static function provider_formatNumber()
 	{
-		$tests = [
-			new Data(0, 'abcあいう☃⛄', 'a'),
-			new Data(3, 'abcあいう☃⛄', 'あ'),
-			new Data(6, 'abcあいう☃⛄', '☃'),
-			new Data(7, 'abcあいう☃⛄', '⛄'),
-			new Data(-1, 'abcあいう☃⛄', '🐡'),
-
-			new Data(3, 'abcあいう☃⛄', 'あ', 3),
-			new Data(-1, 'abcあいう☃⛄', '☃', 7),
+		return [
+			['123', 123],
+			['1,234', 1234],
 		];
-		foreach ($tests as $test) {
-			$actual = Text::getPosition(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
+	}
+
+	#[DataProvider('provider_formatNumber')]
+	public function test_formatNumber(string $expected, int|float $number, int $decimals = 0, ?string $decimalSeparator = '.', ?string $thousandsSeparator = ',')
+	{
+		$actual = Text::formatNumber($number, $decimals, $decimalSeparator, $thousandsSeparator);
+		$this->assertSame($expected, $actual);
+	}
+
+	public static function provider_getPosition()
+	{
+		return [
+			[0, 'abcあいう☃⛄', 'a'],
+			[3, 'abcあいう☃⛄', 'あ'],
+			[6, 'abcあいう☃⛄', '☃'],
+			[7, 'abcあいう☃⛄', '⛄'],
+			[-1, 'abcあいう☃⛄', '🐡'],
+
+			[3, 'abcあいう☃⛄', 'あ', 3],
+			[-1, 'abcあいう☃⛄', '☃', 7],
+		];
+	}
+
+	#[DataProvider('provider_getPosition')]
+	public function test_getPosition(int $expected, string $haystack, string $needle, int $offset = 0)
+	{
+		$actual = Text::getPosition($haystack, $needle, $offset);
+		$this->assertSame($expected, $actual);
 	}
 
 	public function test_getPosition_throw()
@@ -202,144 +230,185 @@ class TextTest extends TestClass
 		$this->fail();
 	}
 
-	public function test_startsWith()
+	public static function provider_startsWith()
+	{
+		return [
+			[true, 'abc', '', false],
+			[true, 'abc', 'a', false],
+			[true, 'abc', 'ab', false],
+			[true, 'abc', 'abc', false],
+			[false, 'abc', 'abcd', false],
+
+			[false, 'abc', 'A', false],
+			[false, 'abc', 'AB', false],
+			[false, 'abc', 'ABC', false],
+			[false, 'abc', 'ABCD', false],
+
+			[true, 'abc', '', true],
+			[true, 'abc', 'A', true],
+			[true, 'abc', 'AB', true],
+			[true, 'abc', 'ABC', true],
+			[false, 'abc', 'ABCD', true],
+		];
+	}
+
+	#[DataProvider('provider_startsWith')]
+	public function test_startsWith(bool $expected, string $haystack, string $needle, bool $ignoreCase)
+	{
+		$actual = Text::startsWith($haystack, $needle, $ignoreCase);
+		$this->assertSame($expected, $actual);
+	}
+
+	public static function provider_endsWith()
+	{
+		return [
+			[true, 'abc', '', false],
+			[true, 'abc', 'c', false],
+			[true, 'abc', 'bc', false],
+			[true, 'abc', 'abc', false],
+			[false, 'abc', 'abcd', false],
+
+			[false, 'abc', 'C', false],
+			[false, 'abc', 'BC', false],
+			[false, 'abc', 'ABC', false],
+			[false, 'abc', 'ABCD', false],
+
+			[true, 'abc', '', true],
+			[true, 'abc', 'C', true],
+			[true, 'abc', 'BC', true],
+			[true, 'abc', 'ABC', true],
+			[false, 'abc', 'ABCD', true],
+		];
+	}
+
+	#[DataProvider('provider_endsWith')]
+	public function test_endsWith(bool $expected, string $haystack, string $needle, bool $ignoreCase)
 	{
 		$tests = [
-			new Data(true, 'abc', '', false),
-			new Data(true, 'abc', 'a', false),
-			new Data(true, 'abc', 'ab', false),
-			new Data(true, 'abc', 'abc', false),
-			new Data(false, 'abc', 'abcd', false),
+			[true, 'abc', '', false],
+			[true, 'abc', 'c', false],
+			[true, 'abc', 'bc', false],
+			[true, 'abc', 'abc', false],
+			[false, 'abc', 'abcd', false],
 
-			new Data(false, 'abc', 'A', false),
-			new Data(false, 'abc', 'AB', false),
-			new Data(false, 'abc', 'ABC', false),
-			new Data(false, 'abc', 'ABCD', false),
+			[false, 'abc', 'C', false],
+			[false, 'abc', 'BC', false],
+			[false, 'abc', 'ABC', false],
+			[false, 'abc', 'ABCD', false],
 
-			new Data(true, 'abc', '', true),
-			new Data(true, 'abc', 'A', true),
-			new Data(true, 'abc', 'AB', true),
-			new Data(true, 'abc', 'ABC', true),
-			new Data(false, 'abc', 'ABCD', true),
+			[true, 'abc', '', true],
+			[true, 'abc', 'C', true],
+			[true, 'abc', 'BC', true],
+			[true, 'abc', 'ABC', true],
+			[false, 'abc', 'ABCD', true],
 		];
 		foreach ($tests as $test) {
-			$actual = Text::startsWith(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
+			$actual = Text::endsWith($haystack, $needle, $ignoreCase);
+			$this->assertSame($expected, $actual);
 		}
 	}
 
-	public function test_endsWith()
+	public static function provider_contains()
 	{
-		$tests = [
-			new Data(true, 'abc', '', false),
-			new Data(true, 'abc', 'c', false),
-			new Data(true, 'abc', 'bc', false),
-			new Data(true, 'abc', 'abc', false),
-			new Data(false, 'abc', 'abcd', false),
+		return [
+			[true, 'abc', '', false],
+			[true, 'abc', 'b', false],
+			[true, 'abc', 'ab', false],
+			[true, 'abc', 'bc', false],
+			[true, 'abc', 'abc', false],
+			[false, 'abc', 'x', false],
+			[false, 'abc', 'abcd', false],
 
-			new Data(false, 'abc', 'C', false),
-			new Data(false, 'abc', 'BC', false),
-			new Data(false, 'abc', 'ABC', false),
-			new Data(false, 'abc', 'ABCD', false),
+			[true, 'abc', '', false],
+			[false, 'abc', 'B', false],
+			[false, 'abc', 'AB', false],
+			[false, 'abc', 'BC', false],
+			[false, 'abc', 'ABC', false],
+			[false, 'abc', 'X', false],
+			[false, 'abc', 'ABCD', false],
 
-			new Data(true, 'abc', '', true),
-			new Data(true, 'abc', 'C', true),
-			new Data(true, 'abc', 'BC', true),
-			new Data(true, 'abc', 'ABC', true),
-			new Data(false, 'abc', 'ABCD', true),
+			[true, 'abc', '', true],
+			[true, 'abc', 'B', true],
+			[true, 'abc', 'AB', true],
+			[true, 'abc', 'BC', true],
+			[true, 'abc', 'ABC', true],
+			[false, 'abc', 'X', true],
+			[false, 'abc', 'ABCD', true],
 		];
-		foreach ($tests as $test) {
-			$actual = Text::endsWith(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
 	}
 
-	public function test_contains()
+	#[DataProvider('provider_contains')]
+	public function test_contains(bool $expected, string $haystack, string $needle, bool $ignoreCase)
 	{
-		$tests = [
-			new Data(true, 'abc', '', false),
-			new Data(true, 'abc', 'b', false),
-			new Data(true, 'abc', 'ab', false),
-			new Data(true, 'abc', 'bc', false),
-			new Data(true, 'abc', 'abc', false),
-			new Data(false, 'abc', 'x', false),
-			new Data(false, 'abc', 'abcd', false),
-
-			new Data(true, 'abc', '', false),
-			new Data(false, 'abc', 'B', false),
-			new Data(false, 'abc', 'AB', false),
-			new Data(false, 'abc', 'BC', false),
-			new Data(false, 'abc', 'ABC', false),
-			new Data(false, 'abc', 'X', false),
-			new Data(false, 'abc', 'ABCD', false),
-
-			new Data(true, 'abc', '', true),
-			new Data(true, 'abc', 'B', true),
-			new Data(true, 'abc', 'AB', true),
-			new Data(true, 'abc', 'BC', true),
-			new Data(true, 'abc', 'ABC', true),
-			new Data(false, 'abc', 'X', true),
-			new Data(false, 'abc', 'ABCD', true),
-		];
-		foreach ($tests as $test) {
-			$actual = Text::contains(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
+		$actual = Text::contains($haystack, $needle, $ignoreCase);
+		$this->assertSame($expected, $actual);
 	}
 
-	public function test_substring(): void
+	public static function provider_substring()
 	{
-		$tests = [
-			new Data('abc', 'abcxyz', 0, 3),
-			new Data('xyz', 'abcxyz', 3, 3),
-			new Data('xyz', 'abcxyz', 3),
-			new Data('xy', 'abcxyz', -3, 2),
-			new Data('xyz', 'abcxyz', -3),
-			new Data('感☃🐎', 'あ感☃🐎', 1),
-			new Data('🐎', 'あ感☃🐎', 3),
+		return [
+			['abc', 'abcxyz', 0, 3],
+			['xyz', 'abcxyz', 3, 3],
+			['xyz', 'abcxyz', 3],
+			['xy', 'abcxyz', -3, 2],
+			['xyz', 'abcxyz', -3],
+			['感☃🐎', 'あ感☃🐎', 1],
+			['🐎', 'あ感☃🐎', 3],
 		];
-		foreach ($tests as $test) {
-			$actual = Text::substring(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
 	}
 
-	public function test_toLower()
+	#[DataProvider('provider_substring')]
+	public function test_substring(string $expected, string $value, int $offset, int $length = -1): void
 	{
-		$tests = [
-			new Data('a', 'A'),
-			new Data('a', 'a'),
-			new Data('aａ', 'aＡ'),
-		];
-		foreach ($tests as $test) {
-			$actual = Text::toLower(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
+		$actual = Text::substring($value, $offset, $length);
+		$this->assertSame($expected, $actual);
 	}
 
-	public function test_toUpper()
+	public static function provider_toLower()
 	{
-		$tests = [
-			new Data('A', 'a'),
-			new Data('A', 'A'),
-			new Data('AＡ', 'aａ'),
+		return [
+			['a', 'A'],
+			['a', 'a'],
+			['aａ', 'aＡ'],
 		];
-		foreach ($tests as $test) {
-			$actual = Text::toUpper(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
 	}
 
-	public function test_split()
+	#[DataProvider('provider_toLower')]
+	public function test_toLower(string $expected, string $value)
 	{
-		$tests = [
-			new Data(['a', 'b', 'c'], 'a,b,c', ','),
-			new Data(['a', 'b', 'c'], 'a::b::c', '::'),
+		$actual = Text::toLower($value);
+		$this->assertSame($expected, $actual);
+	}
+
+	public static function provider_toUpper()
+	{
+		return [
+			['A', 'a'],
+			['A', 'A'],
+			['AＡ', 'aａ'],
 		];
-		foreach ($tests as $test) {
-			$actual = Text::split(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
+	}
+
+	#[DataProvider('provider_toUpper')]
+	public function test_toUpper(string $expected, string $value)
+	{
+		$actual = Text::toUpper($value);
+		$this->assertSame($expected, $actual);
+	}
+
+	public static function provider_split()
+	{
+		return [
+			[['a', 'b', 'c'], 'a,b,c', ','],
+			[['a', 'b', 'c'], 'a::b::c', '::'],
+		];
+	}
+
+	#[DataProvider('provider_split')]
+	public function test_split(array $expected, string $value, string $separator, int $limit = PHP_INT_MAX)
+	{
+		$actual = Text::split($value, $separator, $limit);
+		$this->assertSame($expected, $actual);
 	}
 
 	public function test_split_throw()
@@ -350,102 +419,120 @@ class TextTest extends TestClass
 	}
 
 
-	public function test_splitLines()
+	public static function provider_splitLines()
 	{
-		$tests = [
-			new Data(['a', 'b', 'c'], "a\nb\nc"),
-			new Data(['a', 'b', 'c'], "a\rb\rc"),
-			new Data(['a', 'b', 'c'], "a\r\nb\r\nc"),
-			new Data(['a', 'b', '', 'c', ''], "a\rb\n\rc\r\n"),
+		return [
+			[['a', 'b', 'c'], "a\nb\nc"],
+			[['a', 'b', 'c'], "a\rb\rc"],
+			[['a', 'b', 'c'], "a\r\nb\r\nc"],
+			[['a', 'b', '', 'c', ''], "a\rb\n\rc\r\n"],
 		];
-		foreach ($tests as $test) {
-			$actual = Text::splitLines(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
 	}
 
-	public function test_join()
+	#[DataProvider('provider_splitLines')]
+	public function test_splitLines(array $expected, string $value)
 	{
-		$tests = [
-			new Data('abc', '', ['a', 'b', 'c']),
-			new Data('a,b,c', ',', ['a', 'b', 'c']),
-		];
-		foreach ($tests as $test) {
-			$actual = Text::join(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
+		$actual = Text::splitLines($value);
+		$this->assertSame($expected, $actual);
 	}
 
-	public function test_trim()
+	public static function provider_join()
 	{
-		$tests = [
-			new Data('a', 'a'),
-			new Data('a', ' a'),
-			new Data('a', 'a '),
-			new Data('a', ' a '),
-			new Data('あ', '　あ　'),
-			new Data('あ', 'あ　'),
-			new Data('あああ', 'あああ'),
-			new Data('⚽', '🥅⚽🥅', '🥅'),
-			new Data('かきくけこ', 'あいうえおかきくけこあいうえお', 'あ..お'),
+		return [
+			['abc', '', ['a', 'b', 'c']],
+			['a,b,c', ',', ['a', 'b', 'c']],
 		];
-		foreach ($tests as $test) {
-			$actual = Text::trim(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
 	}
 
-
-	public function test_trimStart()
+	#[DataProvider('provider_join')]
+	public function test_join(string $expected, string $separator, array $values)
 	{
-		$tests = [
-			new Data('a', 'a'),
-			new Data('a', ' a'),
-			new Data('a ', 'a '),
-			new Data('a ', ' a '),
-			new Data('あ　', '　あ　'),
-			new Data('⚽🥅', '🥅⚽🥅', '🥅'),
-		];
-		foreach ($tests as $test) {
-			$actual = Text::trimStart(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
+		$actual = Text::join($separator, $values);
+		$this->assertSame($expected, $actual);
 	}
 
-	public function test_trimEnd()
+	public static function provider_trim()
 	{
-		$tests = [
-			new Data('a', 'a'),
-			new Data(' a', ' a'),
-			new Data('a', 'a '),
-			new Data(' a', ' a '),
-			new Data('　あ', '　あ　'),
-			new Data('🥅⚽', '🥅⚽🥅', '🥅'),
+		return [
+			['a', 'a'],
+			['a', ' a'],
+			['a', 'a '],
+			['a', ' a '],
+			['あ', '　あ　'],
+			['あ', 'あ　'],
+			['あああ', 'あああ'],
+			['⚽', '🥅⚽🥅', '🥅'],
+			['かきくけこ', 'あいうえおかきくけこあいうえお', 'あ..お'],
 		];
-		foreach ($tests as $test) {
-			$actual = Text::trimEnd(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
 	}
 
-	public function test_replace()
+	#[DataProvider('provider_trim')]
+	public function test_trim(string $expected, string $value, string $characters = Text::TRIM_CHARACTERS)
 	{
-		$tests = [
-			new Data('Abcdef-Abcdef', 'abcdef-abcdef', 'a', 'A'),
-			new Data('abcxyz-abcxyz', 'abcdef-abcdef', 'def', 'xyz'),
-			new Data('🏇あｱ☃⛄', 'aあｱ☃⛄', 'a', '🏇'),
-			new Data('a🏇ｱ☃⛄', 'aあｱ☃⛄', 'あ', '🏇'),
-			new Data('aあ🏇☃⛄', 'aあｱ☃⛄', 'ｱ', '🏇'),
-			new Data('aあｱ🏇⛄', 'aあｱ☃⛄', '☃', '🏇'),
-			new Data('aあｱ☃🏇', 'aあｱ☃⛄', '⛄', '🏇'),
-			new Data('aあｱ🏇🏇', 'aあｱ☃⛄', ['☃', '⛄'], '🏇'),
-			new Data('aあｱ🏇🐎', 'aあｱ☃⛄', ['☃', '⛄'], ['🏇', '🐎']),
-		];
-		foreach ($tests as $test) {
-			$actual = Text::replace(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
+		$actual = Text::trim($value, $characters);
+		$this->assertSame($expected, $actual);
 	}
+
+	public static function provider_trimStart()
+	{
+		return [
+			['a', 'a'],
+			['a', ' a'],
+			['a ', 'a '],
+			['a ', ' a '],
+			['あ　', '　あ　'],
+			['⚽🥅', '🥅⚽🥅', '🥅'],
+		];
+	}
+
+	#[DataProvider('provider_trimStart')]
+	public function test_trimStart(string $expected, string $value, string $characters = Text::TRIM_CHARACTERS)
+	{
+		$actual = Text::trimStart($value, $characters);
+		$this->assertSame($expected, $actual);
+	}
+
+	public static function provider_trimEnd()
+	{
+		return [
+			['a', 'a'],
+			[' a', ' a'],
+			['a', 'a '],
+			[' a', ' a '],
+			['　あ', '　あ　'],
+			['🥅⚽', '🥅⚽🥅', '🥅'],
+		];
+	}
+
+	#[DataProvider('provider_trimEnd')]
+	public function test_trimEnd(string $expected, string $value, string $characters = Text::TRIM_CHARACTERS)
+	{
+		$actual = Text::trimEnd($value, $characters);
+		$this->assertSame($expected, $actual);
+	}
+
+	public static function provider_replace()
+	{
+		return [
+			['Abcdef-Abcdef', 'abcdef-abcdef', 'a', 'A'],
+			['abcxyz-abcxyz', 'abcdef-abcdef', 'def', 'xyz'],
+			['🏇あｱ☃⛄', 'aあｱ☃⛄', 'a', '🏇'],
+			['a🏇ｱ☃⛄', 'aあｱ☃⛄', 'あ', '🏇'],
+			['aあ🏇☃⛄', 'aあｱ☃⛄', 'ｱ', '🏇'],
+			['aあｱ🏇⛄', 'aあｱ☃⛄', '☃', '🏇'],
+			['aあｱ☃🏇', 'aあｱ☃⛄', '⛄', '🏇'],
+			['aあｱ🏇🏇', 'aあｱ☃⛄', ['☃', '⛄'], '🏇'],
+			['aあｱ🏇🐎', 'aあｱ☃⛄', ['☃', '⛄'], ['🏇', '🐎']],
+		];
+	}
+
+	#[DataProvider('provider_replace')]
+	public function test_replace(string $expected, string $source, string|array $oldValue, string|array $newValue)
+	{
+		$actual = Text::replace($source, $oldValue, $newValue);
+		$this->assertSame($expected, $actual);
+	}
+
 	public function test_replace_throw()
 	{
 		$this->expectException(ArgumentException::class);
@@ -454,29 +541,35 @@ class TextTest extends TestClass
 	}
 
 
-	public function test_replace_array()
+	public static function provider_replace_array()
 	{
-		$tests = [
-			new Data('______', 'ABCABC', ['A', 'B', 'C'], '_'),
-			new Data('___abc', 'ABCabc', ['A', 'B', 'C'], '_'),
+		return [
+			['______', 'ABCABC', ['A', 'B', 'C'], '_'],
+			['___abc', 'ABCabc', ['A', 'B', 'C'], '_'],
 		];
-		foreach ($tests as $test) {
-			$actual = Text::replace(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
 	}
 
-	public function test_repeat()
+	#[DataProvider('provider_replace_array')]
+	public function test_replace_array(string $expected, string $source, string|array $oldValue, string|array $newValue)
 	{
-		$tests = [
-			new Data('', 'a', 0),
-			new Data('a', 'a', 1),
-			new Data('aa', 'a', 2),
+		$actual = Text::replace($source, $oldValue, $newValue);
+		$this->assertSame($expected, $actual);
+	}
+
+	public static function provider_repeat()
+	{
+		return [
+			['', 'a', 0],
+			['a', 'a', 1],
+			['aa', 'a', 2],
 		];
-		foreach ($tests as $test) {
-			$actual = Text::repeat(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
+	}
+
+	#[DataProvider('provider_repeat')]
+	public function test_repeat(string $expected, string $value, int $count)
+	{
+		$actual = Text::repeat($value, $count);
+		$this->assertSame($expected, $actual);
 	}
 
 	public function test_repeat_throw()
@@ -486,18 +579,21 @@ class TextTest extends TestClass
 		$this->fail();
 	}
 
-	public function test_toCharacters()
+	public static function provider_toCharacters()
 	{
-		$tests = [
-			new Data([' '], ' '),
-			new Data(['a', 'b', 'c'], 'abc'),
-			new Data(['あ', 'い', 'う'], 'あいう'),
-			new Data(['☃', '⛄', '𩸽', '🏇'], '☃⛄𩸽🏇'),
+		return [
+			[[' '], ' '],
+			[['a', 'b', 'c'], 'abc'],
+			[['あ', 'い', 'う'], 'あいう'],
+			[['☃', '⛄', '𩸽', '🏇'], '☃⛄𩸽🏇'],
 		];
-		foreach ($tests as $test) {
-			$actual = Text::toCharacters(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
+	}
+
+	#[DataProvider('provider_toCharacters')]
+	public function test_toCharacters(array $expected, string $value)
+	{
+		$actual = Text::toCharacters($value);
+		$this->assertSame($expected, $actual);
 	}
 
 	public function test_toCharacters_throw()

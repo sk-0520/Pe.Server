@@ -7,143 +7,163 @@ namespace PeServerUT\Core\IO;
 use PeServer\Core\IO\PathParts;
 use PeServer\Core\IO\Path;
 use PeServer\Core\Throws\ArgumentException;
-use PeServerTest\Data;
 use PeServerTest\TestClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 class PathTest extends TestClass
 {
-	public function test_combine()
+	public static function provider_combine()
 	{
 		$sep = DIRECTORY_SEPARATOR;
-		$tests = [
-			new Data("a{$sep}b", "a", "b"),
-			new Data("a{$sep}b", "a", '', "b"),
-			new Data("a{$sep}b{$sep}c", '', "a", 'b', "c", ''),
-			new Data("{$sep}", "{$sep}"),
-			new Data("abc", 'abc'),
-			new Data("abc{$sep}def{$sep}GHI", 'abc', 'def', 'ghi', '..', '.', 'GHI'),
-			new Data("{$sep}abc{$sep}def{$sep}GHI", "{$sep}abc", 'def', 'ghi', '..', '.', 'GHI'),
+		return [
+			["a{$sep}b", "a", "b"],
+			["a{$sep}b", "a", '', "b"],
+			["a{$sep}b{$sep}c", '', "a", 'b', "c", ''],
+			["{$sep}", "{$sep}"],
+			["abc", 'abc'],
+			["abc{$sep}def{$sep}GHI", 'abc', 'def', 'ghi', '..', '.', 'GHI'],
+			["{$sep}abc{$sep}def{$sep}GHI", "{$sep}abc", 'def', 'ghi', '..', '.', 'GHI'],
 		];
-		foreach ($tests as $test) {
-			$actual = Path::combine(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
 	}
 
-	public function test_getDirectoryPath()
+	#[DataProvider('provider_combine')]
+	public function test_combine(string $expected, string $basePath, string ...$addPaths)
 	{
-		$tests = [
-			new Data(".", "name"),
-			new Data("path", "path/name"),
-			new Data("path1/path2", "path1/path2/name"),
-			new Data("/path1/path2", "/path1/path2/name"),
-		];
-		foreach ($tests as $test) {
-			$actual = Path::getDirectoryPath(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
+		$actual = Path::combine($basePath, ...$addPaths);
+		$this->assertSame($expected, $actual);
 	}
 
-	public function test_getFileName()
+	public static function provider_getDirectoryPath()
 	{
-		$tests = [
-			new Data("name", "name"),
-			new Data("name", "path/name"),
-			//new Data("name", "path\\name"), // winだけ？
-			new Data("", "/"),
-			new Data(".", "/."),
-			new Data("b", "a/b"),
-			new Data(".", "./"),
-			new Data(".", "./."),
-			new Data("..", "../"),
-			new Data("a", "../../a"),
+		return [
+			[".", "name"],
+			["path", "path/name"],
+			["path1/path2", "path1/path2/name"],
+			["/path1/path2", "/path1/path2/name"],
 		];
-		foreach ($tests as $test) {
-			$actual = Path::getFileName(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
 	}
 
-	public function test_getFileExtension()
+	#[DataProvider('provider_getDirectoryPath')]
+	public function test_getDirectoryPath(string $expected, string $path)
 	{
-		$tests = [
-			new Data("", "", false),
-			new Data("", "  ", false),
-			new Data("", ".", false),
-			new Data("txt", "a.txt", false),
-			new Data("txt", "a.b.txt", false),
-			new Data("txt", ".txt", false),
-			new Data("", "txt", false),
-
-			new Data("", "", true),
-			new Data("", "  ", true),
-			new Data(".", ".", true),
-			new Data(".txt", "a.txt", true),
-			new Data(".txt", "a.b.txt", true),
-			new Data(".txt", ".txt", true),
-			new Data("", "txt", true),
-		];
-		foreach ($tests as $test) {
-			$actual = Path::getFileExtension(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
+		$actual = Path::getDirectoryPath($path);
+		$this->assertSame($expected, $actual);
 	}
 
-	public function test_getFileNameWithoutExtension()
+	public static function provider_getFileName()
 	{
-		$tests = [
-			new Data("", ""),
-			new Data(" ", " "),
-			new Data("a", "a.b"),
-			new Data("a.b", "a.b.c"),
-			new Data("style", "style.css"),
-			new Data("style", "/dir/style.css"),
-			new Data("", ".htaccess"),
-			new Data("", "."),
-			new Data(".", ".."),
+		return [
+			["name", "name"],
+			["name", "path/name"],
+			//["name", "path\\name"], // winだけ？
+			["", "/"],
+			[".", "/."],
+			["b", "a/b"],
+			[".", "./"],
+			[".", "./."],
+			["..", "../"],
+			["a", "../../a"],
 		];
-		foreach ($tests as $test) {
-			$actual = Path::getFileNameWithoutExtension(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
 	}
 
-	public function test_toParts()
+	#[DataProvider('provider_getFileName')]
+	public function test_getFileName(string $expected, string $path)
 	{
-		$tests = [
-			new Data(new PathParts('/a', 'b.c', 'b', 'c'), '/a/b.c'),
-			new Data(new PathParts('.', 'a.b', 'a', 'b'), 'a.b'),
-			new Data(new PathParts('.', 'a', 'a', ''), 'a'),
-			new Data(new PathParts('.', '.htaccess', '', 'htaccess'), '.htaccess'),
-			new Data(new PathParts('/🍳/🚽', '💩.🚮', '💩', '🚮'), '/🍳/🚽/💩.🚮'),
-		];
-		foreach ($tests as $test) {
-			$actual = Path::toParts(...$test->args);
-			$this->assertSame($test->expected->directory, $actual->directory, $test->str());
-			$this->assertSame($test->expected->fileName, $actual->fileName, $test->str());
-			$this->assertSame($test->expected->fileNameWithoutExtension, $actual->fileNameWithoutExtension, $test->str());
-			$this->assertSame($test->expected->extension, $actual->extension, $test->str());
-		}
+		$actual = Path::getFileName($path);
+		$this->assertSame($expected, $actual);
 	}
 
-	public function test_setEnvironmentName()
+	public static function provider_getFileExtension()
 	{
-		$tests = [
-			new Data('name.env.ext', 'name.ext', 'env'),
-			new Data('.debug.env', '.env', 'debug'),
-			new Data('name-only.debug', 'name-only', 'debug'),
-			new Data('name.name.<ENV>.ext', 'name.name.ext', '<ENV>'),
-			new Data('.' . DIRECTORY_SEPARATOR . 'name.env.ext', './name.ext', 'env'),
-			new Data('..' . DIRECTORY_SEPARATOR . 'name.env.ext', '../name.ext', 'env'),
-			new Data(DIRECTORY_SEPARATOR . 'name.env.ext', '/name.ext', 'env'),
-			new Data('C:\\name.env.ext', 'C:\\name.ext', 'env'),
-			new Data('C:\\dir' . DIRECTORY_SEPARATOR . 'name.env.ext', 'C:\\dir/name.ext', 'env'),
+		return [
+			["", "", false],
+			["", "  ", false],
+			["", ".", false],
+			["txt", "a.txt", false],
+			["txt", "a.b.txt", false],
+			["txt", ".txt", false],
+			["", "txt", false],
+
+			["", "", true],
+			["", "  ", true],
+			[".", ".", true],
+			[".txt", "a.txt", true],
+			[".txt", "a.b.txt", true],
+			[".txt", ".txt", true],
+			["", "txt", true],
 		];
-		foreach ($tests as $test) {
-			$actual = Path::setEnvironmentName(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
+	}
+
+	#[DataProvider('provider_getFileExtension')]
+	public function test_getFileExtension(string $expected, string $path, bool $withDot = false)
+	{
+		$actual = Path::getFileExtension($path, $withDot);
+		$this->assertSame($expected, $actual);
+	}
+
+	public static function provider_getFileNameWithoutExtension()
+	{
+		return [
+			["", ""],
+			[" ", " "],
+			["a", "a.b"],
+			["a.b", "a.b.c"],
+			["style", "style.css"],
+			["style", "/dir/style.css"],
+			["", ".htaccess"],
+			["", "."],
+			[".", ".."],
+		];
+	}
+
+	#[DataProvider('provider_getFileNameWithoutExtension')]
+	public function test_getFileNameWithoutExtension(string $expected, string $path)
+	{
+		$actual = Path::getFileNameWithoutExtension($path);
+		$this->assertSame($expected, $actual);
+	}
+
+	public static function provider_toParts()
+	{
+		return [
+			[new PathParts('/a', 'b.c', 'b', 'c'), '/a/b.c'],
+			[new PathParts('.', 'a.b', 'a', 'b'), 'a.b'],
+			[new PathParts('.', 'a', 'a', ''), 'a'],
+			[new PathParts('.', '.htaccess', '', 'htaccess'), '.htaccess'],
+			[new PathParts('/🍳/🚽', '💩.🚮', '💩', '🚮'), '/🍳/🚽/💩.🚮'],
+		];
+	}
+
+	#[DataProvider('provider_toParts')]
+	public function test_toParts(PathParts $expected, string $path)
+	{
+		$actual = Path::toParts($path);
+		$this->assertSame($expected->directory, $actual->directory);
+		$this->assertSame($expected->fileName, $actual->fileName);
+		$this->assertSame($expected->fileNameWithoutExtension, $actual->fileNameWithoutExtension);
+		$this->assertSame($expected->extension, $actual->extension);
+	}
+
+	public static function provider_setEnvironmentName()
+	{
+		return [
+			['name.env.ext', 'name.ext', 'env'],
+			['.debug.env', '.env', 'debug'],
+			['name-only.debug', 'name-only', 'debug'],
+			['name.name.<ENV>.ext', 'name.name.ext', '<ENV>'],
+			['.' . DIRECTORY_SEPARATOR . 'name.env.ext', './name.ext', 'env'],
+			['..' . DIRECTORY_SEPARATOR . 'name.env.ext', '../name.ext', 'env'],
+			[DIRECTORY_SEPARATOR . 'name.env.ext', '/name.ext', 'env'],
+			['C:\\name.env.ext', 'C:\\name.ext', 'env'],
+			['C:\\dir' . DIRECTORY_SEPARATOR . 'name.env.ext', 'C:\\dir/name.ext', 'env'],
+		];
+	}
+
+	#[DataProvider('provider_setEnvironmentName')]
+	public function test_setEnvironmentName(string $expected, string $path, string $environment)
+	{
+		$actual = Path::setEnvironmentName($path, $environment);
+		$this->assertSame($expected, $actual);
 	}
 
 	public static function provider_setEnvironmentName_throw()

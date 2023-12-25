@@ -10,49 +10,55 @@ use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\RegexDelimiterException;
 use PeServer\Core\Throws\RegexException;
 use PeServer\Core\Throws\RegexPatternException;
-use PeServerTest\Data;
 use PeServerTest\TestClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class RegexTest extends TestClass
 {
-	public function test_normalizePattern_default()
+	public static function provider_normalizePattern_default()
 	{
-		$tests = [
-			new Data(true, 'abcde', '/a/'),
-			new Data(true, 'abcde', '(b)'),
-			new Data(true, 'abcde', '{c}'),
-			new Data(true, 'abcde', '[c]'),
-			new Data(true, 'abcde', '<d>'),
-			new Data(true, 'abcde', '/e/i'),
-			new Data(false, 'abcde', '/E/'),
-			new Data(true, 'abcde', '/E/i'),
-			new Data(true, 'abcde', '/E/i'),
+		return [
+			[true, 'abcde', '/a/'],
+			[true, 'abcde', '(b)'],
+			[true, 'abcde', '{c}'],
+			[true, 'abcde', '[c]'],
+			[true, 'abcde', '<d>'],
+			[true, 'abcde', '/e/i'],
+			[false, 'abcde', '/E/'],
+			[true, 'abcde', '/E/i'],
+			[true, 'abcde', '/E/i'],
 		];
-		foreach ($tests as $test) {
-			$regex = new Regex();
-			$actual = $regex->isMatch(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
 	}
 
-	public function test_normalizePattern_ascii()
+	#[DataProvider('provider_normalizePattern_default')]
+	public function test_normalizePattern_default(bool $expected, string $input, string $pattern)
 	{
-		$tests = [
-			new Data(true, 'abcde', '/a/'),
-			new Data(true, 'abcde', '(b)'),
-			new Data(true, 'abcde', '{c}'),
-			new Data(true, 'abcde', '[c]'),
-			new Data(true, 'abcde', '<d>'),
-			new Data(true, 'abcde', '/e/i'),
-			new Data(false, 'abcde', '/E/'),
-			new Data(true, 'abcde', '/E/i'),
-			new Data(true, 'abcde', '/E/i'),
+		$regex = new Regex();
+		$actual = $regex->isMatch($input, $pattern);
+		$this->assertSame($expected, $actual);
+	}
+
+	public static function provider_normalizePattern_ascii()
+	{
+		return [
+			[true, 'abcde', '/a/'],
+			[true, 'abcde', '(b)'],
+			[true, 'abcde', '{c}'],
+			[true, 'abcde', '[c]'],
+			[true, 'abcde', '<d>'],
+			[true, 'abcde', '/e/i'],
+			[false, 'abcde', '/E/'],
+			[true, 'abcde', '/E/i'],
+			[true, 'abcde', '/E/i'],
 		];
-		foreach ($tests as $test) {
-			$regex = new Regex(Encoding::getAscii());
-			$actual = $regex->isMatch(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
+	}
+
+	#[DataProvider('provider_normalizePattern_ascii')]
+	public function test_normalizePattern_ascii(bool $expected, string $input, string $pattern)
+	{
+		$regex = new Regex(Encoding::getAscii());
+		$actual = $regex->isMatch($input, $pattern);
+		$this->assertSame($expected, $actual);
 	}
 
 	public function test_normalizePattern_length_throw()
@@ -118,21 +124,24 @@ class RegexTest extends TestClass
 		$this->fail();
 	}
 
-	public function test_replace()
+	public static function provider_replace()
 	{
-		$tests = [
-			new Data('XbcABC', 'abcABC', '/a/', 'X'),
-			new Data('XbcXBC', 'abcABC', '/a/i', 'X'),
-			new Data('-a-bcABC', 'abcABC', '/(a)/', '-$1-'),
-			new Data('-a-bc-A-BC', 'abcABC', '/(a)/i', '-$1-'),
-			new Data('🥚🐣🐥🐓🔪🍗', '🥚🐣🐥🐓🍗', '/(🐓)/', '$1🔪'),
-			new Data('XbcABC', 'abcABC', '/a/i', 'X', 1),
+		return [
+			['XbcABC', 'abcABC', '/a/', 'X'],
+			['XbcXBC', 'abcABC', '/a/i', 'X'],
+			['-a-bcABC', 'abcABC', '/(a)/', '-$1-'],
+			['-a-bc-A-BC', 'abcABC', '/(a)/i', '-$1-'],
+			['🥚🐣🐥🐓🔪🍗', '🥚🐣🐥🐓🍗', '/(🐓)/', '$1🔪'],
+			['XbcABC', 'abcABC', '/a/i', 'X', 1],
 		];
-		foreach ($tests as $test) {
-			$regex = new Regex();
-			$actual = $regex->replace(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
+	}
+
+	#[DataProvider('provider_replace')]
+	public function test_replace(string $expected, string $source, string $pattern, string $replacement, int $limit = Regex::UNLIMITED)
+	{
+		$regex = new Regex();
+		$actual = $regex->replace($source, $pattern, $replacement, $limit);
+		$this->assertSame($expected, $actual);
 	}
 
 	public function test_replace_throw1()
@@ -151,30 +160,36 @@ class RegexTest extends TestClass
 		$this->fail();
 	}
 
-	public function test_replaceCallback_test()
+	public static function provider_replaceCallback_test()
 	{
-		$tests = [
-			new Data('[a]bcABC', 'abcABC', '/a/', fn ($m) => '[' . $m[0] . ']'),
-			new Data('[a]bc[A]BC', 'abcABC', '/a/i', fn ($m) => '[' . $m[0] . ']'),
-			new Data('[a]bcABC', 'abcABC', '/(?<NAME>a)/', fn ($m) => '[' . $m['NAME'] . ']'),
+		return [
+			['[a]bcABC', 'abcABC', '/a/', fn ($m) => '[' . $m[0] . ']'],
+			['[a]bc[A]BC', 'abcABC', '/a/i', fn ($m) => '[' . $m[0] . ']'],
+			['[a]bcABC', 'abcABC', '/(?<NAME>a)/', fn ($m) => '[' . $m['NAME'] . ']'],
 		];
-		foreach ($tests as $test) {
-			$regex = new Regex();
-			$actual = $regex->replaceCallback(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
 	}
 
-	public function test_split()
+	#[DataProvider('provider_replaceCallback_test')]
+	public function test_replaceCallback_test(string $expected, string $source, string $pattern, callable $replacement, int $limit = Regex::UNLIMITED)
 	{
-		$tests = [
-			new Data(['a', 'b', 'c'], 'a,b,c', '/,/'),
-			new Data(['1', '2', '3'], '1a2bc3', '/[a-z]+/'),
+		$regex = new Regex();
+		$actual = $regex->replaceCallback($source, $pattern, $replacement, $limit);
+		$this->assertSame($expected, $actual);
+	}
+
+	public static function provider_split()
+	{
+		return [
+			[['a', 'b', 'c'], 'a,b,c', '/,/'],
+			[['1', '2', '3'], '1a2bc3', '/[a-z]+/'],
 		];
-		foreach ($tests as $test) {
-			$regex = new Regex();
-			$actual = $regex->split(...$test->args);
-			$this->assertSame($test->expected, $actual, $test->str());
-		}
+	}
+
+	#[DataProvider('provider_split')]
+	public function test_split(array $expected, string $source, string $pattern)
+	{
+		$regex = new Regex();
+		$actual = $regex->split($source, $pattern);
+		$this->assertSame($expected, $actual);
 	}
 }

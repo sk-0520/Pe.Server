@@ -5,22 +5,25 @@ declare(strict_types=1);
 namespace PeServerUT\Core\Image;
 
 use PeServerTest\TestClass;
-use PeServerTest\Data;
 use PeServer\Core\Image\Point;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class PointTest extends TestClass
 {
-	public function test_serializable()
+	public static function provider_serializable()
 	{
-		$tests = [
-			new Point(123, 456),
+		return [
+			[new Point(123, 456)],
 		];
-		foreach ($tests as $test) {
-			$s = serialize($test);
-			$actual = unserialize($s);
-			$this->assertSame($test->x, $actual->x, (string)$actual->x);
-			$this->assertSame($test->y, $actual->y, (string)$actual->y);
-		}
+	}
+
+	#[DataProvider('provider_serializable')]
+	public function test_serializable(Point $test)
+	{
+		$s = serialize($test);
+		$actual = unserialize($s);
+		$this->assertSame($test->x, $actual->x, (string)$actual->x);
+		$this->assertSame($test->y, $actual->y, (string)$actual->y);
 	}
 
 	public function test___toString()

@@ -9,7 +9,6 @@ use PeServer\Core\Cryptography;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\CryptoException;
-use PeServerTest\Data;
 use PeServerTest\TestClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 
@@ -94,29 +93,32 @@ class CryptographyTest extends TestClass
 		$this->fail();
 	}
 
-	public function test_generateRandomString()
+	public static function provider_generateRandomString()
 	{
-		$tests = [
-			new Data(4, 4, 'a'),
-			new Data(4, 4, 'ab'),
-			new Data(4, 4, 'abc'),
-			new Data(4, 4, 'abcd'),
-			new Data(4, 4, 'abcde'),
-			new Data(4, 4, 'あ'),
-			new Data(4, 4, 'あい'),
-			new Data(4, 4, 'あいう'),
-			new Data(4, 4, 'あいうえ'),
-			new Data(4, 4, 'あいうえお'),
-			new Data(4, 4, '🐁'),
-			new Data(4, 4, '🐁🐄'),
-			new Data(4, 4, '🐁🐄🐅'),
-			new Data(4, 4, '🐁🐄🐅🐇'),
-			new Data(4, 4, '🐁🐄🐅🐇🐉'),
+		return [
+			[4, 4, 'a'],
+			[4, 4, 'ab'],
+			[4, 4, 'abc'],
+			[4, 4, 'abcd'],
+			[4, 4, 'abcde'],
+			[4, 4, 'あ'],
+			[4, 4, 'あい'],
+			[4, 4, 'あいう'],
+			[4, 4, 'あいうえ'],
+			[4, 4, 'あいうえお'],
+			[4, 4, '🐁'],
+			[4, 4, '🐁🐄'],
+			[4, 4, '🐁🐄🐅'],
+			[4, 4, '🐁🐄🐅🐇'],
+			[4, 4, '🐁🐄🐅🐇🐉'],
 		];
-		foreach ($tests as $test) {
-			$actual = Cryptography::generateRandomString(...$test->args);
-			$this->assertSame($test->expected, Text::getLength($actual), $test->str());
-		}
+	}
+
+	#[DataProvider('provider_generateRandomString')]
+	public function test_generateRandomString(int $expected, int $length, string $characters)
+	{
+		$actual = Cryptography::generateRandomString($length, $characters);
+		$this->assertSame($expected, Text::getLength($actual));
 	}
 
 	public static function provider_generateRandomString_throw()

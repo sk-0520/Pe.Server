@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServerUT\Core\Collections;
+namespace PeServerUT\Core\Collection;
 
 use PeServer\Core\Collection\CaseInsensitiveKeyArray;
 use PeServer\Core\Errors\ErrorHandler;
