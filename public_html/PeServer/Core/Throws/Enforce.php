@@ -26,9 +26,8 @@ abstract class Enforce
 	 * @param string $argument
 	 * @param string $exceptionClass
 	 * @phpstan-param class-string<Throwable> $exceptionClass
-	 * @return no-return
 	 */
-	private static function throwCore(string $argument, string $exceptionClass)
+	private static function throwCore(string $argument, string $exceptionClass): never
 	{
 		try {
 			$exception = ReflectionUtility::create($exceptionClass, Throwable::class, $argument);

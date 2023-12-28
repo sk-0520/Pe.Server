@@ -103,9 +103,8 @@ class ErrorHandler
 	 * 未ハンドル例外を処理する。
 	 *
 	 * @param Throwable $throwable
-	 * @return no-return
 	 */
-	final public function receiveException(Throwable $throwable)
+	final public function receiveException(Throwable $throwable): never
 	{
 		$this->catchErrorCore(
 			Throws::getErrorCode($throwable),
@@ -123,9 +122,8 @@ class ErrorHandler
 	 * @param string $errorMessage
 	 * @param string $errorFile
 	 * @param int $errorLineNumber
-	 * @return no-return
 	 */
-	final public function receiveError(int $errorNumber, string $errorMessage, string $errorFile, int $errorLineNumber/* , array $_ */)
+	final public function receiveError(int $errorNumber, string $errorMessage, string $errorFile, int $errorLineNumber/* , array $_ */): never
 	{
 		$this->catchErrorCore(
 			$errorNumber,
@@ -169,10 +167,9 @@ class ErrorHandler
 	 * @param string $file
 	 * @param int $lineNumber
 	 * @param Throwable|null $throwable
-	 * @return no-return
 	 * @SuppressWarnings(PHPMD.ExitExpression)
 	 */
-	private function catchErrorCore(int $errorNumber, string $message, string $file, int $lineNumber, ?Throwable $throwable)
+	private function catchErrorCore(int $errorNumber, string $message, string $file, int $lineNumber, ?Throwable $throwable): never
 	{
 		$this->catchError($errorNumber, $message, $file, $lineNumber, $throwable);
 		exit($errorNumber);

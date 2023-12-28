@@ -42,9 +42,8 @@ abstract class Throws
 	 * @param string $className 例外名。
 	 * @phpstan-param class-string<Throwable> $className 例外名。
 	 * @param Throwable $previous ラップする元の例外。
-	 * @return no-return
 	 */
-	public static function reThrow(string $className, Throwable $previous, string $message = null): void
+	public static function reThrow(string $className, Throwable $previous, string $message = null): never
 	{
 		$message = $message ?? $previous->getMessage();
 		$code = self::getErrorCode($previous);
