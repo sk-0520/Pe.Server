@@ -12,6 +12,9 @@ use PeServer\Core\Mvc\ControllerArgument;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\Result\IActionResult;
 
+/**
+ * [PAGE] ツールコントローラ。
+ */
 final class ToolController extends PageControllerBase
 {
 	public function __construct(ControllerArgument $argument)

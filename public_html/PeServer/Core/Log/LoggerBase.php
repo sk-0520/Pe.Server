@@ -9,7 +9,7 @@ use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\Logging;
 
 /**
- * ログ出力基盤。
+ * ログ出力基底。
  */
 abstract class LoggerBase implements ILogger
 {

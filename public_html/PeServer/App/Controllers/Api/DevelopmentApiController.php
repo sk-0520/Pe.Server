@@ -12,6 +12,11 @@ use PeServer\App\Controllers\Api\ApiControllerBase;
 use PeServer\App\Models\Domain\Api\DevelopmentApi\DevelopmentApiInitializeLogic;
 use PeServer\App\Models\Domain\Api\DevelopmentApi\DevelopmentApiAdministratorLogic;
 
+/**
+ * [API] 開発用コントローラ。
+ *
+ * こいつ自体は何もしないけどミドルウェアが `localhost` 以外を弾く。
+ */
 final class DevelopmentApiController extends ApiControllerBase
 {
 	public function __construct(ControllerArgument $argument)

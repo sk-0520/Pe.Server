@@ -7,7 +7,7 @@ namespace PeServer\Core;
 use PeServer\Core\Throws\ObjectDisposedException;
 
 /**
- * 解放処理用基盤クラス。
+ * 解放処理用基底クラス。
  */
 abstract class DisposerBase implements IDisposable
 {

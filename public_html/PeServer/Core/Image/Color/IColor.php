@@ -6,6 +6,9 @@ namespace PeServer\Core\Image\Color;
 
 use Stringable;
 
+/**
+ * GD関数ラッパー処理での色。
+ */
 interface IColor extends Stringable
 {
 	/** 不透明。 */

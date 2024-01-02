@@ -15,6 +15,11 @@ use PeServer\Core\Mvc\Result\IActionResult;
 use PeServer\Core\Mvc\Result\RedirectActionResult;
 use PeServer\Core\Throws\InvalidOperationException;
 
+/**
+ * [API] Peから呼び出されるコントローラ。
+ *
+ * 管理やら開発都合でなくユーザー用に外向いているのはこいつ(1)。
+ */
 class ApplicationApiController extends ApiControllerBase
 {
 	public function __construct(ControllerArgument $argument)

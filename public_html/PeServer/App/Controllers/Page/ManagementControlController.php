@@ -16,6 +16,9 @@ use PeServer\Core\Mvc\Result\IActionResult;
 use PeServer\Core\Mvc\Template\TemplateParameter;
 use PeServer\Core\Throws\InvalidOperationException;
 
+/**
+ * [PAGE] 管理者用操作コントローラ。
+ */
 final class ManagementControlController extends PageControllerBase
 {
 	public function __construct(ControllerArgument $argument)

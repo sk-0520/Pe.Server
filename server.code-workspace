@@ -159,7 +159,13 @@
 		"intelephense.rename.exclude": [
 			"**/vendor/**",
 			"**/Libs/**"
-		]
+		],
+		"intelephense.phpdoc.classTemplate": {
+			"summary": "$1",
+			"tags": [
+				""
+			]
+		}
 	},
 	"extensions": {
 		"recommendations": [

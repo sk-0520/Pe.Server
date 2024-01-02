@@ -15,6 +15,11 @@ use PeServer\Core\Mvc\ControllerArgument;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\Result\IActionResult;
 
+/**
+ * [API] 管理者用コントローラ。
+ *
+ * サイト管理的な処理を実施する重役。
+ */
 class AdministratorApiController extends ApiControllerBase
 {
 	public function __construct(ControllerArgument $argument)

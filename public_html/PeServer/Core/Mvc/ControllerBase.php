@@ -39,24 +39,16 @@ abstract class ControllerBase
 
 	/**
 	 * ロガー。
-	 * @readonly
 	 */
-	protected ILogger $logger;
+	protected readonly ILogger $logger;
 
-	/** @readonly */
-	protected ILoggerFactory $loggerFactory;
+	protected readonly ILoggerFactory $loggerFactory;
 
-	/** @readonly */
-	protected Stores $stores;
-
-	/** @readonly */
-	protected ILogicFactory $logicFactory;
-	/** @readonly */
-	protected ITemplateFactory $templateFactory;
-	/** @readonly */
-	protected IUrlHelper $urlHelper;
-	/** @readonly */
-	protected WebSecurity $webSecurity;
+	protected readonly Stores $stores;
+	protected readonly ILogicFactory $logicFactory;
+	protected readonly ITemplateFactory $templateFactory;
+	protected readonly IUrlHelper $urlHelper;
+	protected readonly WebSecurity $webSecurity;
 
 	/** コントローラ内で今輝いてるロジック。よくないんよなぁ。 */
 	protected ?LogicBase $logic = null;

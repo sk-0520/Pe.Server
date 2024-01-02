@@ -6,6 +6,11 @@ namespace PeServer\App\Controllers\Api;
 
 use PeServer\Core\Mvc\ControllerArgument;
 
+/**
+ * [API] アカウント用コントローラ。
+ *
+ * なーんも作ってないんだわ。
+ */
 class AccountApiController extends ApiControllerBase
 {
 	public function __construct(ControllerArgument $argument)

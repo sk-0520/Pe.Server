@@ -17,7 +17,9 @@ use PeServer\Core\TypeUtility;
 /**
  * 配列共通処理。
  *
- * 遅延処理が必要な場合 `Collections\Collections` を参照のこと。
+ * 遅延処理が必要な場合 `Collections` を参照のこと。
+ *
+ * @see \PeServer\Core\Collection\Collections
  */
 class Arr
 {
@@ -119,6 +121,8 @@ class Arr
 	/**
 	 * 配列に該当キーは存在するか。
 	 *
+	 * `array_key_exists` ラッパー。
+	 *
 	 * @param array<mixed> $haystack 対象配列。
 	 * @phpstan-param array<array-key,mixed> $haystack
 	 * @param int|string $key キー。
@@ -134,12 +138,14 @@ class Arr
 	/**
 	 * 配列に指定要素が存在するか。
 	 *
+	 * `array_search` ラッパー。
+	 *
 	 * @template TValue
 	 * @param array<mixed> $haystack 対象配列。
 	 * @phpstan-param TValue[] $haystack
 	 * @param mixed $needle 検索データ。
 	 * @phpstan-param TValue $needle
-	 * @return boolean
+	 * @return bool
 	 * @see https://www.php.net/manual/function.array-search.php
 	 */
 	public static function containsValue(array $haystack, mixed $needle): bool
@@ -148,6 +154,8 @@ class Arr
 	}
 
 	/**
+	 * 対象配列のキー一覧を取得。
+	 *
 	 * `array_keys` ラッパー。
 	 *
 	 * @param array<int|string,mixed> $array 対象配列。
@@ -162,10 +170,12 @@ class Arr
 	}
 
 	/**
+	 * 対象配列の値一覧を取得。
+	 *
 	 * `array_values` ラッパー。
 	 *
 	 * @template TValue
-	 * @param array<int|string,mixed> $array 対象配列。
+	 * @param array<mixed> $array 対象配列。
 	 * @phpstan-param array<array-key,TValue> $array
 	 * @return array<mixed>
 	 * @phpstan-return list<TValue>

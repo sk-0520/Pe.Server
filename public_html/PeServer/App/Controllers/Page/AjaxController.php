@@ -17,6 +17,9 @@ use PeServer\Core\Mvc\ControllerArgument;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\Result\IActionResult;
 
+/**
+ * [PAGE] ページ内の Ajax 処理統括コントローラ。
+ */
 final class AjaxController extends PageControllerBase
 {
 	public function __construct(ControllerArgument $argument)

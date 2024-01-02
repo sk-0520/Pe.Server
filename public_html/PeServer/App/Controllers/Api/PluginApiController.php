@@ -13,6 +13,11 @@ use PeServer\App\Models\Domain\Api\PluginApi\PluginApiExistsLogic;
 use PeServer\App\Models\Domain\Api\PluginApi\PluginApiInformationLogic;
 use PeServer\App\Models\Domain\Api\PluginApi\PluginApiGeneratePluginIdLogic;
 
+/**
+ * [API] Pe/プラグインから呼び出されるコントローラ。
+ *
+ * 管理やら開発都合でなくユーザー用に外向いているのはこいつ(2)。
+ */
 class PluginApiController extends ApiControllerBase
 {
 	public function __construct(ControllerArgument $argument)

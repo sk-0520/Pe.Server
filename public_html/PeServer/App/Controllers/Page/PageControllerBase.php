@@ -11,6 +11,9 @@ use PeServer\Core\Mvc\Result\ViewActionResult;
 use PeServer\App\Controllers\DomainControllerBase;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 
+/**
+ * [PAGE] ページ基底コントローラ。
+ */
 abstract class PageControllerBase extends DomainControllerBase
 {
 	protected function __construct(ControllerArgument $argument)

@@ -20,6 +20,9 @@ use PeServer\Core\Web\UrlPath;
 use PeServer\Core\Web\UrlQuery;
 use PeServer\Core\Web\WebSecurity;
 
+/**
+ * アプリケーションコントローラ基底処理。
+ */
 abstract class DomainControllerBase extends ControllerBase
 {
 	#region variable
