@@ -32,4 +32,43 @@ class OutputBufferTest extends TestClass
 
 		$ob->dispose();
 	}
+
+	public function test_ByteCount()
+	{
+		$ob = new OutputBuffer();
+
+		echo 'ABC';
+		$actual1 = $ob->getByteCount();
+		$this->assertSame(3, $actual1);
+
+		echo 'DEF';
+		$actual2 = $ob->getByteCount();
+		$this->assertSame(6, $actual2);
+
+		$ob->dispose();
+	}
+
+	public function test_nest_1()
+	{
+		$actualRoot = OutputBuffer::get(function () {
+			echo 'abc';
+			OutputBuffer::get(function () {
+				echo 'def';
+			});
+			echo 'ghi';
+		});
+		$this->assertSame('abcghi', $actualRoot->raw); //cspell:disable-line
+	}
+
+	public function test_nest_2()
+	{
+		$actualRoot = OutputBuffer::get(function () {
+			echo 'abc';
+			echo OutputBuffer::get(function () {
+				echo 'def';
+			})->raw;
+			echo 'ghi';
+		});
+		$this->assertSame('abcdefghi', $actualRoot->raw); //cspell:disable-line
+	}
 }
