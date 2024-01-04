@@ -257,7 +257,7 @@ abstract class LogicBase implements IValidationReceiver
 				$httpOnly = Arr::getOr($options, 'httpOnly', $this->stores->cookie->options->httpOnly);
 				/**
 				 * @var string
-				 * @phpstan-var 'Lax'|'lax'|'None'|'none'|'Strict'|'strict'
+				 * @phpstan-var CookieSameSiteAlias
 				 */
 				$sameSite = Arr::getOr($options, 'sameSite', $this->stores->cookie->options->sameSite);
 

@@ -44,7 +44,7 @@ class CookieOptions
 	 * 同じサイト。
 	 *
 	 * @var string
-	 * @phpstan-var 'Lax'|'lax'|'None'|'none'|'Strict'|'strict'
+	 * @phpstan-var CookieSameSiteAlias
 	 * @readonly
 	 */
 	public string $sameSite;
@@ -59,7 +59,7 @@ class CookieOptions
 	 * @param boolean $secure HTTPS に限定するか。
 	 * @param boolean $httpOnly HTTP リクエストのみで使用するか。
 	 * @param string $sameSite 同じサイト。
-	 * @phpstan-param 'Lax'|'lax'|'None'|'none'|'Strict'|'strict' $sameSite
+	 * @phpstan-param CookieSameSiteAlias $sameSite
 	 */
 	public function __construct(string $path, ?DateInterval $span, bool $secure, bool $httpOnly, string $sameSite)
 	{
