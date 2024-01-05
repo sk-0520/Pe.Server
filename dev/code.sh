@@ -83,8 +83,3 @@ if ! common::exists_option 'ignore-phpcs' ; then
 	#shellcheck disable=SC2086
 	php "${PHPCODESNIFFER_S_FILE}" ${PHPCS_OPTIONS_DEFAULT} ${PHPCS_OPTION_REPORT} ${PHPCS_OPTIONS_WARNIG} ${PHPCS_OPTIONS_CACHE}
 fi
-
-#set +e
-#php "${PHPMD_FILE}" ../public_html/PeServer text phpmd.xml "$@"
-#[PHPMD] php "${PHPMD_FILE}" ../public_html/PeServer ansi phpmd.xml "$@"
-#set -e
