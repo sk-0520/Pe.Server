@@ -16,6 +16,7 @@ class ResponsePrinterFactory extends DiFactoryBase implements IResponsePrinterFa
 
 	public function createResponsePrinter(HttpRequest $request, HttpResponse $response): ResponsePrinter
 	{
+		/** @var ResponsePrinter */
 		return $this->container->new(ResponsePrinter::class, [$request, $response]);
 	}
 
