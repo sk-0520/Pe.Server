@@ -43,7 +43,7 @@ class LoggerSetting
 	 *
 	 * @var array<string,mixed>
 	 */
-	public array $configuration = [];
+	public array $configuration = []; //@phpstan-ignore-line [CODE_READONLY]
 
 	#endregion
 }

@@ -22,7 +22,7 @@ class LoggingSetting
 	 * @var array<string,LoggerSetting>
 	 */
 	#[Mapping(arrayValueClassName: LoggerSetting::class)]
-	public array $loggers = [];
+	public array $loggers = []; //@phpstan-ignore-line [CODE_READONLY]
 
 	#[Mapping(name: 'archive_size')]
 	public int $archiveSize;

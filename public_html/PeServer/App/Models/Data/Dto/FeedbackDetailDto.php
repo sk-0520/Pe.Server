@@ -9,10 +9,6 @@ use PeServer\Core\Database\DtoBase;
 use PeServer\Core\Serialization\Mapping;
 use PeServer\Core\Text;
 
-/**
- * @immutable
- * @SuppressWarnings(PHPMD.TooManyFields)
- */
 class FeedbackDetailDto extends DtoBase
 {
 	#region variable

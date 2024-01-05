@@ -15,15 +15,15 @@ class CookieStoreSetting
 {
 	#region variable
 
-	public ?string $span = null;
-	public ?string $path = null;
-	public ?bool $secure = null;
-	public ?bool $httpOnly = null;
+	public ?string $span = null; //@phpstan-ignore-line [CODE_READONLY]
+	public ?string $path = null; //@phpstan-ignore-line [CODE_READONLY]
+	public ?bool $secure = null; //@phpstan-ignore-line [CODE_READONLY]
+	public ?bool $httpOnly = null; //@phpstan-ignore-line [CODE_READONLY]
 	/**
 	 * @var string|null
 	 * @phpstan-var CookieSameSiteAlias|null
 	 */
-	public ?string $sameSite = null;
+	public ?string $sameSite = null; //@phpstan-ignore-line [CODE_READONLY]
 
 	#endregion
 

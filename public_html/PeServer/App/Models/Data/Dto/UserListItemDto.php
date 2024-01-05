@@ -10,9 +10,6 @@ use PeServer\Core\Database\DtoBase;
 use PeServer\Core\Serialization\Mapping;
 use PeServer\Core\Text;
 
-/**
- * @immutable
- */
 class UserListItemDto extends DtoBase
 {
 	#region variable

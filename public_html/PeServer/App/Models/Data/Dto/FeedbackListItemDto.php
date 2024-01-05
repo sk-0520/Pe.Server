@@ -8,9 +8,6 @@ use DateTime;
 use PeServer\Core\Database\DtoBase;
 use PeServer\Core\Text;
 
-/**
- * @immutable
- */
 class FeedbackListItemDto extends DtoBase
 {
 	#region variable

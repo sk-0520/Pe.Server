@@ -13,8 +13,6 @@ use PeServer\Core\Text;
 
 /**
  * ユーザー情報。
- *
- * @immutable
  */
 class UserInformationDto extends DtoBase
 {

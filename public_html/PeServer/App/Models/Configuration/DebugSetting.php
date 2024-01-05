@@ -17,7 +17,7 @@ class DebugSetting
 	#region variable
 
 	#[Mapping(name: 'mail_overwrite_target')]
-	public string $mailOverwriteTarget = Text::EMPTY;
+	public string $mailOverwriteTarget = Text::EMPTY; //@phpstan-ignore-line [CODE_READONLY]
 
 	#endregion
 }
