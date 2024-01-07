@@ -18,6 +18,7 @@ use PeServer\Core\DI\IDiRegisterContainer;
 use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Http\RequestPath;
 use PeServer\Core\Mvc\RouteRequest;
+use PeServer\Core\Mvc\Routing;
 use PeServer\Core\Web\UrlHelper;
 
 $autoLoader = new AutoLoader(
@@ -64,5 +65,6 @@ $container = $startup->setup(
 /** @var IDiRegisterContainer */
 $scope = $container->new(IDiRegisterContainer::class);
 
+/** @var Routing */
 $routing = $scope->new(AppRouting::class); // new AppRouting($container->get(RouteRequest::class), new AppRouteSetting(), AppConfiguration::$stores);
 $routing->execute();
