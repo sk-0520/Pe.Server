@@ -45,6 +45,7 @@ final readonly class ResultData
 	 */
 	public static function createSuccess(mixed $value): ResultData
 	{
+		/** @var ResultData<TResultValue> */
 		return new ResultData(true, $value);
 	}
 
@@ -76,7 +77,6 @@ final readonly class ResultData
 	{
 		return $this->isFailureOrFailValue(false);
 	}
-
 
 	#endregion
 }
