@@ -72,6 +72,7 @@ final readonly class ResultData
 	/**
 	 * 結果が失敗か `false` か。
 	 * @return bool
+	 * @phpstan-assert-if-false TValue $this->value
 	 */
 	public function isFailureOrFalse(): bool
 	{

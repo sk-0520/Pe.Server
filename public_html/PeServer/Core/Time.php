@@ -101,6 +101,7 @@ abstract class Time
 			throw new FormatException($time);
 		}
 
+		assert($result->value !== false);
 		return $result->value;
 	}
 
