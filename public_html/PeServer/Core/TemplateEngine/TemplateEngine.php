@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core\Mvc\TemplateEngine;
+namespace PeServer\Core\TemplateEngine;
 
 use PeServer\Core\Collection\Vector;
 use PeServer\Core\TypeUtility;
