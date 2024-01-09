@@ -4,23 +4,23 @@ declare(strict_types=1);
 
 namespace PeServer\Core\TemplateEngine;
 
-use PeServer\Core\Binary;
 use PeServer\Core\Encoding;
 use PeServer\Core\TypeUtility;
 
-final class TemplatePlainVariableFilter extends TemplateVariableFilterBase
+class TemplateHtmlVariable extends TemplateVariableFilterBase
 {
 	public function __construct(
-		?Encoding $encoding = null
+		Encoding $encoding = null
 	) {
 		parent::__construct($encoding);
 	}
 
-	#region TemplateVariableFilterBase
+	#region
 
 	public function filter(mixed $value): string
 	{
-		return $this->getEncoding()->toString(new Binary(TypeUtility::toString($value)));
+		$s = TypeUtility::toString($value);
+		return htmlspecialchars($s, ENT_QUOTES, $this->getEncoding()->name);
 	}
 
 	#endregion
