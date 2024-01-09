@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core\TemplateEngine;
+namespace PeServer\Core\Mvc\TemplateEngine;
 
 use PeServer\Core\Encoding;
 
