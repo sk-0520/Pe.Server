@@ -11,10 +11,9 @@ use PeServer\Core\Text;
 /**
  * カラム情報。
  *
- * @immutable
  * @see https://www.php.net/manual/pdostatement.getcolumnmeta.php
  */
-class DatabaseColumn
+readonly class DatabaseColumn
 {
 	/**
 	 * 生成。

@@ -9,10 +9,8 @@ use PeServer\Core\Web\IUrlHelper;
 
 /**
  * 要求パス。
- *
- * @immutable
  */
-class RequestPath
+readonly class RequestPath
 {
 	#region variable
 

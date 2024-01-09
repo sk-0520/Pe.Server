@@ -9,8 +9,6 @@ use PeServer\Core\Code;
 
 /**
  * 矩形領域。
- *
- * @immutable
  */
 readonly class Rectangle implements Stringable
 {

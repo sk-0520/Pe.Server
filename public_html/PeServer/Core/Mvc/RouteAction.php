@@ -11,10 +11,8 @@ use PeServer\Core\Mvc\Middleware\IShutdownMiddleware;
 
 /**
  * ルーティングのアクション設定。
- *
- * @immutable
  */
-class RouteAction
+readonly class RouteAction
 {
 	/**
 	 * 生成。

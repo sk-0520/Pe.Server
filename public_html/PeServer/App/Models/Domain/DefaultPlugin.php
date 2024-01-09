@@ -6,10 +6,8 @@ namespace PeServer\App\Models\Domain;
 
 /**
  * 標準プラグイン。
- *
- * @immutable
  */
-class DefaultPlugin
+readonly class DefaultPlugin
 {
 	/**
 	 * 生成。

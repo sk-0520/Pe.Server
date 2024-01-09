@@ -12,9 +12,8 @@ use PeServer\Core\Mvc\Middleware\IMiddleware;
 use PeServer\Core\Mvc\Middleware\IShutdownMiddleware;
 
 /**
- * @immutable
  */
-class RouteRequest
+readonly class RouteRequest
 {
 	public function __construct(
 		public HttpMethod $method,

@@ -10,10 +10,8 @@ use PeServer\Core\Throws\ArgumentException;
 
 /**
  * 一時データ設定。
- *
- * @immutable
  */
-class TemporaryOptions
+readonly class TemporaryOptions
 {
 	#region define
 

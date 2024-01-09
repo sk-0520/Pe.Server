@@ -13,10 +13,8 @@ use PeServer\Core\Store\TemporaryOptions;
 
 /**
  * ストア設定。
- *
- * @immutable
  */
-class StoreOptions
+readonly class StoreOptions
 {
 	public function __construct(
 		public CookieOptions $cookie,

@@ -9,8 +9,6 @@ use PeServer\Core\Web\Url;
 
 /**
  * リダイレクト設定。
- *
- * @immutable
  */
 readonly class RedirectSetting
 {

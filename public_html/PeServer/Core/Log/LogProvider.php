@@ -81,11 +81,9 @@ class LogProvider implements ILogProvider
 
 /**
  * `LogProvider` 内で持ち運ぶロガー設定。
- *
- * @immutable
  */
 //phpcs:ignore PSR1.Classes.ClassDeclaration.MultipleClasses
-class LocalLogProviderItem
+readonly class LocalLogProviderItem
 {
 	/**
 	 * 生成

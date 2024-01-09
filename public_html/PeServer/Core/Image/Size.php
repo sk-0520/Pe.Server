@@ -10,8 +10,6 @@ use PeServer\Core\Throws\ArgumentException;
 
 /**
  * 幅と高さを持つ。
- *
- * @immutable
  */
 readonly class Size implements Stringable
 {

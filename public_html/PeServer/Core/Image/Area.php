@@ -11,8 +11,6 @@ use PeServer\Core\Text;
 
 /**
  * 上下左右の座標を保持。
- *
- * @immutable
  */
 readonly class Area implements Stringable
 {

@@ -42,7 +42,7 @@ use PeServer\Core\Text;
 /**
  * アプリルーティング設定。
  */
-final class AppRouteSetting extends RouteSetting
+final readonly class AppRouteSetting extends RouteSetting
 {
 	private const SIGNUP_TOKEN = '[a-zA-Z0-9]{80}';
 	private const PASSWORD_REMINDER_TOKEN = '[a-zA-Z0-9]{80}';

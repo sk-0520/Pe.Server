@@ -6,9 +6,8 @@ namespace PeServer\Core\Http;
 
 /**
  * HTTPリクエスト存在確認。
- * @immutable
  */
-class HttpRequestExists
+readonly class HttpRequestExists
 {
 	#region define
 

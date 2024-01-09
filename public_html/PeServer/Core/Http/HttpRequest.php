@@ -14,9 +14,8 @@ use PeServer\Core\Throws\KeyNotFoundException;
  * HTTPリクエストデータ。
  *
  * GET/POST/URLパラメータの値などはこいつから取得する。
- * @immutable
  */
-class HttpRequest
+readonly class HttpRequest
 {
 	/**
 	 * 生成。

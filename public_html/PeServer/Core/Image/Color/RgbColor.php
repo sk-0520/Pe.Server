@@ -15,7 +15,6 @@ use PeServer\Core\Throws\NotImplementedException;
 use PeServer\Core\Throws\NotSupportedException;
 
 /**
- * @immutable
  */
 readonly class RgbColor implements IColor
 {

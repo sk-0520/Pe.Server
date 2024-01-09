@@ -7,10 +7,9 @@ namespace PeServer\App\Models\Setup\Versions;
 use Attribute;
 
 /**
- * @immutable
  */
 #[Attribute(Attribute::TARGET_CLASS)]
-class Version
+readonly class Version
 {
 	public function __construct(
 		public int $version

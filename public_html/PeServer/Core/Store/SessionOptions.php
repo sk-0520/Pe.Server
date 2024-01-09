@@ -10,10 +10,8 @@ use PeServer\Core\Throws\ArgumentException;
 
 /**
  * セッション設定。
- *
- * @immutable
  */
-class SessionOptions
+readonly class SessionOptions
 {
 	#region define
 
@@ -37,9 +35,5 @@ class SessionOptions
 		if (Text::isNullOrWhiteSpace($name)) { //@phpstan-ignore-line [DOCTYPE]
 			throw new ArgumentException('$name');
 		}
-
-		$this->name = $name;
-		$this->savePath = $savePath;
-		$this->cookie = $cookie;
 	}
 }

@@ -12,10 +12,8 @@ use PeServer\Core\Store\TemporaryStore;
 
 /**
  * クッキーとかあれこれ一覧。
- *
- * @immutable
  */
-class Stores
+readonly class Stores
 {
 	#region variable
 
@@ -39,7 +37,6 @@ class Stores
 		private StoreOptions $options,
 		WebSecurity $webSecurity
 	) {
-		$this->special = $this->special;
 		$this->cookie = new CookieStore($this->special, $this->options->cookie);
 		$this->temporary = new TemporaryStore($this->options->temporary, $this->cookie);
 		$this->session = new SessionStore($this->options->session, $this->cookie, $webSecurity);

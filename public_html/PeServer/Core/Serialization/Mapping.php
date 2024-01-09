@@ -12,12 +12,10 @@ use PeServer\Core\Text;
  * マッピング設定。
  *
  * * ここに設定が集約される
- * * `FLAG_IGNORE` が設定されていない限り処理される
- *
- * @immutable
+ * * `self::FLAG_IGNORE` が設定されていない限り処理される
  */
 #[Attribute(Attribute::TARGET_PROPERTY)]
-class Mapping
+readonly class Mapping
 {
 	#region define
 
