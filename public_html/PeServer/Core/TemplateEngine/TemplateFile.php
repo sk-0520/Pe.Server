@@ -6,4 +6,8 @@ namespace PeServer\Core\TemplateEngine;
 
 class TemplateFile
 {
+	public function __construct(
+		public string $path
+	) {
+	}
 }
