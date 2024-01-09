@@ -20,10 +20,8 @@ abstract class DaoBase
 
 	/**
 	 * ロガー。
-	 *
-	 * @readonly
 	 */
-	protected ILogger $logger;
+	protected readonly ILogger $logger;
 
 	#endregion
 
@@ -33,8 +31,7 @@ abstract class DaoBase
 	 * @param IDatabaseContext $context 接続処理。
 	 */
 	protected function __construct(
-		/** @readonly */
-		protected IDatabaseContext $context
+		protected readonly IDatabaseContext $context
 	) {
 		$this->logger = new NullLogger();
 	}

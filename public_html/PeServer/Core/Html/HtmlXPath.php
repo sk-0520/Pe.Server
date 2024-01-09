@@ -29,17 +29,14 @@ class HtmlXPath
 	#region variable
 
 	/**
-	 * @readonly
 	 */
 	public readonly DOMXPath $path;
 
 	#endregion
 
 	public function __construct(
-		/** @readonly */
-		private HtmlDocument $document,
-		/** @readonly */
-		private ?HtmlTagElement $element
+		private readonly HtmlDocument $document,
+		private readonly ?HtmlTagElement $element
 	) {
 		$this->path = new DOMXPath($document->raw);
 	}

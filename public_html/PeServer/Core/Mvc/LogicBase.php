@@ -50,21 +50,18 @@ abstract class LogicBase implements IValidationReceiver
 
 	/**
 	 * ロジック開始日時。
-	 *
-	 * @readonly
 	 */
-	protected DateTimeImmutable $beginTimestamp;
+	protected readonly DateTimeImmutable $beginTimestamp;
 
 	/**
 	 * ロガー。
-	 * @readonly
 	 */
-	protected ILogger $logger;
+	protected readonly ILogger $logger;
+
 	/**
 	 * リクエストデータ。
-	 * @readonly
 	 */
-	private HttpRequest $request;
+	private readonly HttpRequest $request;
 
 	/**
 	 * HTTPステータスコード。
@@ -109,17 +106,15 @@ abstract class LogicBase implements IValidationReceiver
 	private ?DataContent $content = null;
 
 	/**
-	 * @readonly
 	 */
-	protected Stores $stores;
+	protected readonly Stores $stores;
 
 	protected readonly Environment $environment;
 
 	/**
 	 * 応答ヘッダ。
 	 *
-	 * @var array<string,string[]>
-	 * @phpstan-var array<non-empty-string,string[]>
+	 * @var array<non-empty-string,string[]>
 	 */
 	private array $responseHeaders = [];
 

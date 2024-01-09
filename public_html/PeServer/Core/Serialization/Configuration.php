@@ -28,11 +28,8 @@ class Configuration
 
 	/**
 	 * 環境。
-	 *
-	 * @var string
-	 * @readonly
 	 */
-	private string $environment;
+	private readonly string $environment;
 
 	#endregion
 

@@ -33,9 +33,8 @@ class Mailer
 	#region variable
 
 	/**
-	 * @readonly
 	 */
-	private IMailSetting $setting;
+	private readonly IMailSetting $setting;
 
 	public string $encoding  = self::DEFAULT_ENCODING;
 	public string $characterSet = self::DEFAULT_CHARACTER_SET;

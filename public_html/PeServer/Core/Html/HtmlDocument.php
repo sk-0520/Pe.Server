@@ -26,7 +26,6 @@ class HtmlDocument extends HtmlElementBase
 
 	/**
 	 * 生で使用する用。
-	 * @readonly
 	 */
 	public readonly DOMDocument $raw;
 

@@ -16,8 +16,7 @@ readonly class DownloadDataContent extends DataContent
 {
 	#region variable
 
-	/** @readonly */
-	public string $fileName;
+	public readonly string $fileName;
 
 	#endregion
 

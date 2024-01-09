@@ -35,18 +35,13 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 
 	/**
 	 * 接続処理。
-	 *
-	 * @readonly
 	 */
-	protected PDO $pdo;
+	protected readonly PDO $pdo;
 
 	/**
 	 * ロガー
-	 *
-	 * @var ILogger
-	 * @readonly
 	 */
-	protected ILogger $logger;
+	protected readonly ILogger $logger;
 
 	protected Regex $regex;
 

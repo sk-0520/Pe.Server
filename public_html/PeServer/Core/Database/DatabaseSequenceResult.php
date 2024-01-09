@@ -30,9 +30,8 @@ class DatabaseSequenceResult extends DatabaseResultBase implements Iterator
 	#region variable
 
 	/**
-	 * @readonly
 	 */
-	private Iterator $iterator;
+	private readonly Iterator $iterator;
 	/**
 	 * 影響件数。
 	 *

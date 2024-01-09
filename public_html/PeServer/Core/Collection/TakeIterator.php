@@ -30,8 +30,7 @@ class TakeIterator implements Iterator
 	 */
 	public function __construct(
 		private Iterator $iterator,
-		/** @readonly */
-		private int $count
+		private readonly int $count
 	) {
 	}
 

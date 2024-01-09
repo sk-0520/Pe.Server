@@ -18,36 +18,28 @@ class CookieOptions
 	 * パス
 	 *
 	 * @var string
-	 * @readonly
 	 */
-	public string $path;
+	public readonly string $path;
 	/**
 	 * 期限。
-	 *
-	 * 未設定で 0 扱い。
 	 */
 	public ?DateInterval $span;
 	/**
 	 * HTTPS に限定。
-	 *
-	 * @readonly
 	 */
-	public bool $secure;
+	public readonly bool $secure;
 	/**
 	 *  HTTP リクエストのみで使用。
-	 *
-	 * @readonly
 	 */
-	public bool $httpOnly;
+	public readonly bool $httpOnly;
 
 	/**
 	 * 同じサイト。
 	 *
 	 * @var string
 	 * @phpstan-var CookieSameSiteAlias
-	 * @readonly
 	 */
-	public string $sameSite;
+	public readonly string $sameSite;
 
 	#endregion
 

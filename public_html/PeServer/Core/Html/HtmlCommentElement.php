@@ -17,7 +17,6 @@ final class HtmlCommentElement extends HtmlNodeBase
 
 	/**
 	 * 生で使用する用。
-	 * @readonly
 	 */
 	public readonly DOMComment $raw;
 

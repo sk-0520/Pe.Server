@@ -17,7 +17,6 @@ final class HtmlTextElement extends HtmlNodeBase
 	#region variable
 
 	/**
-	 * @readonly
 	 */
 	public readonly DOMText $raw;
 

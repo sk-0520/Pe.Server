@@ -35,10 +35,8 @@ class SessionStore
 
 	#region variable
 
-	/** @readonly */
-	private SessionOptions $options;
-	/** @readonly */
-	private CookieStore $cookie;
+	private readonly SessionOptions $options;
+	private readonly CookieStore $cookie;
 
 	/**
 	 * セッション一時データ。

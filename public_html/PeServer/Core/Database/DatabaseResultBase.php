@@ -20,10 +20,8 @@ abstract class DatabaseResultBase
 	 * @phpstan-param UnsignedIntegerAlias $resultCount
 	 */
 	public function __construct(
-		/** @readonly */
-		public array $columns,
-		/** @readonly */
-		private int $resultCount
+		public readonly array $columns,
+		private readonly int $resultCount
 	) {
 	}
 

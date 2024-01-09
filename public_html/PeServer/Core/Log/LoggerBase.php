@@ -19,9 +19,8 @@ abstract class LoggerBase implements ILogger
 	 * @param LogOptions $options
 	 */
 	protected function __construct(
-		protected Logging $logging,
-		/** @readonly */
-		protected LogOptions $options
+		protected readonly Logging $logging,
+		protected readonly LogOptions $options
 	) {
 	}
 

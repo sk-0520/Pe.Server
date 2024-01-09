@@ -34,18 +34,14 @@ class Route
 
 	/**
 	 * ベースパス。
-	 *
-	 * @var string
-	 * @readonly
 	 */
-	private string $basePath;
+	private readonly string $basePath;
 	/**
 	 * クラス完全名。
 	 *
 	 * @var class-string<ControllerBase>
-	 * @readonly
 	 */
-	private string $className;
+	private readonly string $className;
 	/**
 	 * アクション一覧。
 	 *

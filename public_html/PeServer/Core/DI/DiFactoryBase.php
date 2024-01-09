@@ -19,8 +19,7 @@ abstract class DiFactoryBase
 	 * @param IDiContainer $container DIコンテナ。
 	 */
 	protected function __construct(
-		/** @readonly */
-		protected IDiContainer $container
+		protected readonly IDiContainer $container
 	) {
 	}
 }

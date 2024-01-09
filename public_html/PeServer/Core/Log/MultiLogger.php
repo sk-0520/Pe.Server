@@ -12,27 +12,6 @@ use PeServer\Core\Log\LoggerBase;
  */
 final class MultiLogger implements ILogger
 {
-	#region variable
-
-	/**
-	 * ロガー一覧。
-	 *
-	 * @var ILogger[]
-	 * @readonly
-	 */
-	private array $loggers;
-
-	/**
-	 * 基準位置。
-	 *
-	 * @var int
-	 * @phpstan-var UnsignedIntegerAlias
-	 * @readonly
-	 */
-	private int $baseTraceIndex;
-
-	#endregion
-
 	/**
 	 * 生成。
 	 *
@@ -40,10 +19,11 @@ final class MultiLogger implements ILogger
 	 * @phpstan-param UnsignedIntegerAlias $baseTraceIndex
 	 * @param ILogger[] $loggers ロガー一覧。
 	 */
-	public function __construct(int $baseTraceIndex, array $loggers)
-	{
-		$this->baseTraceIndex = $baseTraceIndex;
-		$this->loggers = $loggers;
+	public function __construct(
+		private readonly int $baseTraceIndex,
+		private readonly array $loggers
+	) {
+		//NOP
 	}
 
 	#region function

@@ -12,13 +12,11 @@ abstract class HtmlNodeBase
 	#region variable
 
 	/**
-	 * @readonly
 	 */
 	protected readonly HtmlDocument $document;
 
 	/**
 	 * 生で使用する現在データ。
-	 * @readonly
 	 */
 	protected readonly DOMNode $currentNode;
 

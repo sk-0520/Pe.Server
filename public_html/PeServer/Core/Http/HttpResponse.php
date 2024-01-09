@@ -27,9 +27,8 @@ class HttpResponse
 	 * 応答ヘッダ。
 	 *
 	 * @var HttpHeader
-	 * @readonly
 	 */
-	public HttpHeader $header;
+	public readonly HttpHeader $header;
 
 	#endregion
 

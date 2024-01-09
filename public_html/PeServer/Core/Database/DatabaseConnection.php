@@ -16,9 +16,8 @@ class DatabaseConnection implements IDatabaseConnection
 	 * @param ConnectionSetting $setting 接続設定。
 	 */
 	public function __construct(
-		/** @readonly */
-		protected ConnectionSetting $setting,
-		protected ILoggerFactory $loggerFactory
+		protected readonly ConnectionSetting $setting,
+		protected readonly ILoggerFactory $loggerFactory
 	) {
 	}
 

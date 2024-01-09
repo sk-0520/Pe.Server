@@ -48,10 +48,8 @@ class CookieStore
 	 * @param CookieOptions $options
 	 */
 	public function __construct(
-		/** @readonly */
-		protected SpecialStore $special,
-		/** @readonly */
-		public CookieOptions $options
+		protected readonly SpecialStore $special,
+		public readonly CookieOptions $options
 	) {
 	}
 

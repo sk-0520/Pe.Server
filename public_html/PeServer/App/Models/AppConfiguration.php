@@ -27,11 +27,8 @@ class AppConfiguration
 
 	/**
 	 * 設定データ。
-	 *
-	 * @var AppSetting
-	 * @readonly
 	 */
-	public AppSetting $setting;
+	public readonly AppSetting $setting;
 
 	/**
 	 * ルートディレクトリ。

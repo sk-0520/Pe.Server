@@ -59,10 +59,8 @@ class TemporaryStore
 	#endregion
 
 	public function __construct(
-		/** @readonly */
-		private TemporaryOptions $options,
-		/** @readonly */
-		private CookieStore $cookie
+		private readonly TemporaryOptions $options,
+		private readonly CookieStore $cookie
 	) {
 		if (Text::isNullOrWhiteSpace($options->name)) {
 			throw new ArgumentException('$options->name');

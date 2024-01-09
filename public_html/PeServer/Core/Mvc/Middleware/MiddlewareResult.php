@@ -40,8 +40,7 @@ abstract class MiddlewareResult
 	 * @phpstan-param self::RESULT_KIND_* $kind
 	 */
 	protected function __construct(
-		/** @readonly */
-		private int $kind
+		private readonly int $kind
 	) {
 	}
 

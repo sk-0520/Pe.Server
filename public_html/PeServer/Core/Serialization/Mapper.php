@@ -27,11 +27,8 @@ class Mapper implements IMapper
 
 	/**
 	 * 人畜無害なマッピング設定。
-	 *
-	 * @var Mapping
-	 * @readonly
 	 */
-	private Mapping $defaultMapping;
+	private readonly Mapping $defaultMapping;
 
 	#endregion
 

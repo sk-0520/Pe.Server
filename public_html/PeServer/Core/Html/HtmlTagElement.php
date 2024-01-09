@@ -26,7 +26,6 @@ final class HtmlTagElement extends HtmlElementBase
 
 	/**
 	 * 生で使用する用。
-	 * @readonly
 	 */
 	public readonly DOMElement $raw;
 
