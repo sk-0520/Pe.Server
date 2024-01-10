@@ -83,7 +83,6 @@ class DiRegisterContainer extends DiContainer implements IDiRegisterContainer
 			$registerId = TypeUtility::getType($value);
 		}
 
-		/** @phpstan-var non-empty-string $registerId */
 		$item = $this->remove($registerId);
 		if ($item !== null) {
 			$item->dispose();

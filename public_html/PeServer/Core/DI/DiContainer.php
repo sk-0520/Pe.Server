@@ -39,8 +39,7 @@ class DiContainer extends DisposerBase implements IDiContainer
 	/**
 	 * IDとの紐づけ。
 	 *
-	 * @var array<string,DiItem>
-	 * @phpstan-var array<class-string|non-empty-string,DiItem>
+	 * @var array<class-string|non-empty-string,DiItem>
 	 */
 	protected array $mapping = [];
 
@@ -51,8 +50,7 @@ class DiContainer extends DisposerBase implements IDiContainer
 	/**
 	 * 登録アイテムを具象クラス名も考慮して取得する。
 	 *
-	 * @param string $idOrClassName 登録アイテムID
-	 * @phpstan-param class-string|non-empty-string $idOrClassName
+	 * @param class-string|non-empty-string $idOrClassName 登録アイテムID
 	 * @param bool $mappingKeyOnly 真の場合は登録アイテムIDのみに限定。偽の場合、登録されている具象クラス名を考慮する。
 	 * @return DiItem|null
 	 */
@@ -101,7 +99,7 @@ class DiContainer extends DisposerBase implements IDiContainer
 	protected function getItemFromPropertyType(?ReflectionType $parameterType, bool $mappingKeyOnly): ?DiItem
 	{
 		foreach (ReflectionUtility::getTypes($parameterType) as $currentType) {
-			/** @phpstan-var class-string */
+			/** @var class-string */
 			$typeName = $currentType->getName();
 			$item = $this->getMappingItem($typeName, $mappingKeyOnly);
 			if ($item !== null) {
@@ -193,7 +191,6 @@ class DiContainer extends DisposerBase implements IDiContainer
 				/** @var Inject */
 				$attribute = $attributes[0]->newInstance();
 				if (!Text::isNullOrWhiteSpace($attribute->id)) {
-					/** @phpstan-var class-string */
 					$id = $attribute->id;
 					$item = $this->getMappingItem($id, $mappingKeyOnly);
 				}
@@ -227,8 +224,7 @@ class DiContainer extends DisposerBase implements IDiContainer
 	/**
 	 * クラス名からオブジェクトの生成。
 	 *
-	 * @param string $className
-	 * @phpstan-param class-string $className
+	 * @param class-string $className
 	 * @param array<int|string,mixed> $arguments `IDiContainer::new` 参照。
 	 * @param int $level 現在階層(0: 最初)
 	 * @param bool $mappingKeyOnly 真の場合は登録アイテムIDのみに限定。偽の場合、登録されている具象クラス名を考慮する。
@@ -287,7 +283,6 @@ class DiContainer extends DisposerBase implements IDiContainer
 				/** @var Inject */
 				$attribute = $attributes[0]->newInstance();
 				if (!Text::isNullOrWhiteSpace($attribute->id)) {
-					/** @phpstan-var class-string */
 					$id = $attribute->id;
 					$item = $this->getMappingItem($id, $mappingKeyOnly);
 				}
@@ -333,7 +328,7 @@ class DiContainer extends DisposerBase implements IDiContainer
 		$result = null;
 
 		if ($item->type === DiItem::TYPE_TYPE) {
-			/** @phpstan-var class-string */
+			/** @var class-string */
 			$className = (string)$item->data;
 			$result = $this->createFromClassName($className, $arguments, $level, $mappingKeyOnly, $callStack);
 		} else {
@@ -396,7 +391,7 @@ class DiContainer extends DisposerBase implements IDiContainer
 			return $this->create($item, $arguments, 0, false, [$item]);
 		}
 
-		/** @phpstan-var class-string $idOrClassName */
+		/** @var class-string $idOrClassName */
 		return $this->createFromClassName($idOrClassName, $arguments, 0, false, [DiItem::class($idOrClassName)]);
 	}
 

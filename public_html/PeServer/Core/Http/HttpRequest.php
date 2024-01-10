@@ -22,8 +22,7 @@ readonly class HttpRequest
 	 *
 	 * @param HttpMethod $httpMethod 要求メソッド。
 	 * @param HttpHeader $httpHeader 要求ヘッダ。
-	 * @param array<string,string> $urlParameters URLパラメータ。
-	 * @phpstan-param array<non-empty-string,string> $urlParameters URLパラメータ。
+	 * @param array<non-empty-string,string> $urlParameters URLパラメータ。
 	 */
 	public function __construct(
 		public SpecialStore $specialStore,

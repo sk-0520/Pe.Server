@@ -67,12 +67,9 @@ class DiItem extends DisposerBase
 	/**
 	 * 生成。
 	 *
-	 * @param int $lifecycle ライフサイクル。
-	 * @phpstan-param self::LIFECYCLE_* $lifecycle
-	 * @param int $type 登録種別。
-	 * @phpstan-param self::TYPE_* $type
-	 * @param string|mixed|callable $data 登録データ。
-	 * @phpstan-param class-string|mixed|callable(IDiContainer, DiItem[]):mixed $data
+	 * @param self::LIFECYCLE_* $lifecycle ライフサイクル。
+	 * @param self::TYPE_* $type 登録種別。
+	 * @param class-string|mixed|callable(IDiContainer, DiItem[]):mixed $data 登録データ。
 	 * @param bool $nonDisposal IDisposable 対象にするか。
 	 */
 	public function __construct(
@@ -182,10 +179,9 @@ class DiItem extends DisposerBase
 	 * 型: クラスとして生成。
 	 *
 	 * @template T
-	 * @param string $className
+	 * @param class-string $className
 	 * @phpstan-param class-string<T> $className
-	 * @param int $lifecycle
-	 * @phpstan-param self::LIFECYCLE_* $lifecycle
+	 * @param self::LIFECYCLE_* $lifecycle
 	 * @return self
 	 */
 	public static function class(string $className, int $lifecycle = self::LIFECYCLE_TRANSIENT): self
@@ -212,8 +208,7 @@ class DiItem extends DisposerBase
 	 * @template T
 	 * @param callable $factory
 	 * @phpstan-param callable(IDiContainer,DiItem[]):T $factory
-	 * @param int $lifecycle
-	 * @phpstan-param self::LIFECYCLE_* $lifecycle
+	 * @param self::LIFECYCLE_* $lifecycle
 	 * @return self
 	 */
 	public static function factory(callable $factory, int $lifecycle = self::LIFECYCLE_TRANSIENT): self

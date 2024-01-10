@@ -19,7 +19,7 @@ class LoggerSetting
 	/**
 	 * ロガークラス。
 	 *
-	 * @phpstan-var class-string<ILogger>
+	 * @var class-string<ILogger>
 	 */
 	#[Mapping(name: 'logger_class')]
 	public string $loggerClass;

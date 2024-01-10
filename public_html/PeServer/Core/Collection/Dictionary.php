@@ -25,9 +25,8 @@ class Dictionary extends TypeArrayBase
 	/**
 	 * 生成。
 	 *
-	 * @param string $type
-	 * @phpstan-param class-string|TypeUtility::TYPE_* $type
-	 * @param array $type
+	 * @param class-string|TypeUtility::TYPE_* $type
+	 * @param array $map
 	 * @phpstan-param array<string,TValue> $map
 	 */
 	public function __construct(string $type, array $map)
@@ -69,8 +68,7 @@ class Dictionary extends TypeArrayBase
 	 * 空データの生成。
 	 *
 	 * @template TTValue
-	 * @param string $type
-	 * @phpstan-param class-string|TypeUtility::TYPE_* $type
+	 * @param class-string|TypeUtility::TYPE_* $type
 	 * @return self
 	 * @phpstan-return self<TTValue>
 	 */
@@ -97,7 +95,6 @@ class Dictionary extends TypeArrayBase
 
 	/**
 	 * @param string $offset
-	 * @phpstan-param string $offset
 	 */
 	public function offsetExists(mixed $offset): bool
 	{

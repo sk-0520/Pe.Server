@@ -163,8 +163,7 @@ class Collections implements IteratorAggregate
 	 *
 	 * `Enumerable.ToList<TSource>` 的な。
 	 *
-	 * @param string $type
-	 * @phpstan-param class-string|TypeUtility::TYPE_* $type
+	 * @param class-string|TypeUtility::TYPE_* $type
 	 * @return Vector
 	 * @phpstan-return Vector<TValue>
 	 */
@@ -187,8 +186,7 @@ class Collections implements IteratorAggregate
 	 * @phpstan-param callable(TValue,TKey):string $keyFactory
 	 * @param callable $valueFactory 第1引数:値, 第1引数:キー(文字列変換済み), 戻り値:値。
 	 * @phpstan-param callable(TValue,TKey):TResult $valueFactory
-	 * @param string $type
-	 * @phpstan-param class-string|TypeUtility::TYPE_* $type
+	 * @param class-string|TypeUtility::TYPE_* $type
 	 * @return Dictionary
 	 * @phpstan-return Dictionary<TResult>
 	 */

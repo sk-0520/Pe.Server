@@ -24,8 +24,7 @@ interface ILogProvider
 	 * 追加。
 	 *
 	 * @param string $name
-	 * @param string $logger
-	 * @phpstan-param class-string<ILogger> $logger
+	 * @param class-string<ILogger> $logger
 	 * @param int $level
 	 * @phpstan-param ILogger::LOG_LEVEL_* $level
 	 * @param string $format

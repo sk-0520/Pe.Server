@@ -18,11 +18,9 @@ readonly class RouteAction
 	 * 生成。
 	 *
 	 * @param HttpStatus $status
-	 * @param string $className
-	 * @phpstan-param class-string<ControllerBase> $className
+	 * @param class-string<ControllerBase> $className
 	 * @param ActionSetting $actionSetting
-	 * @param array<string,string> $params パラメータ。
-	 * @phpstan-param array<non-empty-string,string> $params
+	 * @param array<non-empty-string,string> $params パラメータ。
 	 */
 	public function __construct(
 		public HttpStatus $status,

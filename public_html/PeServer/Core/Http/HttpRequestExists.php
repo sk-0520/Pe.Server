@@ -29,8 +29,7 @@ readonly class HttpRequestExists
 	 *
 	 * @param string $name パラメータ名。
 	 * @param boolean $exists 存在するか。
-	 * @param int $kind 種別。
-	 * @phpstan-param HttpRequestExists::KIND_* $kind 種別。
+	 * @param self::KIND_* $kind 種別。
 	 */
 	public function __construct(
 		public string $name,

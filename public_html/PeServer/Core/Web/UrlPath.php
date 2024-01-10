@@ -36,8 +36,7 @@ readonly class UrlPath implements ArrayAccess, Countable, IteratorAggregate, Str
 	 * `null` の場合はほんとになんもない(ホストの後の `/` もない)
 	 * 配列要素数が 0 の場合は `/` のみ
 	 *
-	 * @var string[]|null
-	 * @phpstan-var non-empty-string[]|null
+	 * @var non-empty-string[]|null
 	 */
 	private array|null $elements;
 

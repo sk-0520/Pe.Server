@@ -88,8 +88,7 @@ readonly class LocalLogProviderItem
 	/**
 	 * 生成
 	 *
-	 * @param string $loggerClass
-	 * @phpstan-param class-string<ILogger> $loggerClass
+	 * @param class-string<ILogger> $loggerClass
 	 * @param int $level
 	 * @phpstan-param ILogger::LOG_LEVEL_* $level
 	 * @param string $format

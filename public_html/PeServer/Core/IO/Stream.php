@@ -131,8 +131,7 @@ class Stream extends ResourceBase
 	 * 既存ファイルからファイルストリームを生成。
 	 *
 	 * @param string $path ファイルパス。
-	 * @param int $mode `self::MODE_*` を指定。 `self::MODE_CRETE`: ファイルが存在しない場合失敗する。
-	 * @phpstan-param self::MODE_* $mode
+	 * @param self::MODE_* $mode `self::MODE_*` を指定。 `self::MODE_CRETE`: ファイルが存在しない場合失敗する。
 	 * @param Encoding|null $encoding
 	 * @return self
 	 * @throws IOException

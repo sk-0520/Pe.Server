@@ -28,7 +28,7 @@ class SetupRunner
 	#region variable
 
 	/**
-	 * @phpstan-var class-string<SetupVersionBase>[]
+	 * @var class-string<SetupVersionBase>[]
 	 */
 	private array $versions;
 

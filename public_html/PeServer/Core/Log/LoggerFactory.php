@@ -26,41 +26,6 @@ class LoggerFactory extends DiFactoryBase implements ILoggerFactory
 {
 	use DiFactoryTrait;
 
-	#region function
-
-	// /**
-	//  * Xdebug出力用ロガー生成。
-	//  *
-	//  * @param string $header
-	//  * @phpstan-param non-empty-string $header
-	//  * @param int $baseTraceIndex
-	//  * @phpstan-param UnsignedIntegerAlias $baseTraceIndex
-	//  * @return XdebugLogger|null
-	//  */
-	// private function createXdebugLogger(string $header, int $baseTraceIndex): ?XdebugLogger
-	// {
-	// 	if (function_exists('xdebug_is_debugger_active') && \xdebug_is_debugger_active()) {
-	// 		// /** @var Environment */
-	// 		// $environment = $this->container->get(Environment::class);
-	// 		// if($environment->is('it')) {
-	// 		// 	return null;
-	// 		// }
-	// 		$options = new LogOptions(
-	// 			$header,
-	// 			$baseTraceIndex,
-	// 			ILogger::LOG_LEVEL_TRACE,
-	// 			'{TIME} |{LEVEL}| <{HEADER}> {METHOD}: {MESSAGE} | {FILE_NAME}({LINE})',
-	// 			[]
-	// 		);
-	// 		$logging = $this->container->get(Logging::class);
-	// 		return new XdebugLogger($logging, $options);
-	// 	}
-
-	// 	return null;
-	// }
-
-	#endregion
-
 	#region ILoggerFactory
 
 	public function createLogger(string|object $header, int $baseTraceIndex = 0): ILogger

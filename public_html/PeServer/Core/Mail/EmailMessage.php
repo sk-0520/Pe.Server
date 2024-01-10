@@ -41,8 +41,7 @@ class EmailMessage
 	/**
 	 * プレーンテキストを設定。
 	 *
-	 * @param string $value
-	 * @phpstan-param non-empty-string $value
+	 * @param non-empty-string $value
 	 * @return void
 	 */
 	public function setText(string $value): void
@@ -94,8 +93,7 @@ class EmailMessage
 	/**
 	 * HTMLを設定。
 	 *
-	 * @param string $value
-	 * @phpstan-param non-empty-string $value
+	 * @param non-empty-string $value
 	 * @return void
 	 */
 	public function setHtml(string $value): void

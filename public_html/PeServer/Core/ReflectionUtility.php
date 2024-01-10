@@ -23,10 +23,9 @@ abstract class ReflectionUtility
 	 * クラスオブジェクトの生成。
 	 *
 	 * @template TObject of object
-	 * @param string $input 生成クラス名。
+	 * @param class-string $input 生成クラス名。
 	 * @phpstan-param class-string<TObject> $input
-	 * @param string|object $baseClass 基底クラス。オブジェクトを渡した場合は生成クラスの型チェックに使用される。
-	 * @phpstan-param class-string|object $baseClass
+	 * @param class-string|object $baseClass 基底クラス。オブジェクトを渡した場合は生成クラスの型チェックに使用される。
 	 * @return object 生成インスタンス。
 	 * @phpstan-return TObject
 	 * @throws TypeError 型おかしい。
@@ -57,8 +56,7 @@ abstract class ReflectionUtility
 	/**
 	 * `method_exists` ラッパー。
 	 *
-	 * @param string|object $input
-	 * @phpstan-param class-string|object $input
+	 * @param class-string|object $input
 	 * @param non-empty-string $method
 	 */
 	public static function existsMethod(object|string $input, string $method): bool

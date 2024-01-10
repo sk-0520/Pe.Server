@@ -42,6 +42,9 @@ abstract class ControllerBase
 	 */
 	protected readonly ILogger $logger;
 
+	/**
+	 * ロガー生成器。
+	 */
 	protected readonly ILoggerFactory $loggerFactory;
 
 	protected readonly Stores $stores;
@@ -80,28 +83,10 @@ abstract class ControllerBase
 	 */
 	abstract protected function getSkipBaseName(): string;
 
-	// /**
-	//  * ロジック用パラメータ生成処理。
-	//  *
-	//  * @param string $logicName ロジック名
-	//  * @phpstan-param class-string<LogicBase> $logicName
-	//  * @param HttpRequest $request リクエストデータ
-	//  * @return LogicParameter
-	//  */
-	// protected function createParameter(string $logicName, HttpRequest $request): LogicParameter
-	// {
-	// 	return new LogicParameter(
-	// 		$request,
-	// 		$this->stores,
-	// 		Logging::create($logicName)
-	// 	);
-	// }
-
 	/**
 	 * ロジック生成処理。
 	 *
-	 * @param string $logicClass ロジック完全名。
-	 * @phpstan-param class-string<LogicBase> $logicClass
+	 * @param class-string<LogicBase> $logicClass ロジック完全名。
 	 * @param array<int|string,mixed> $arguments
 	 * @return LogicBase
 	 */
@@ -111,11 +96,7 @@ abstract class ControllerBase
 			throw new InvalidOperationException();
 		}
 
-		// $parameter = $this->createParameter($logicClass, $request);
-		// /** @var LogicBase */
-		// $logic = ReflectionUtility::create($logicClass, LogicBase::class, $parameter, ...$parameters);
-
-		$logic = $this->logicFactory->createLogic($logicClass, $arguments/*, ...$parameters*/);
+		$logic = $this->logicFactory->createLogic($logicClass, $arguments);
 
 		$this->logic = $logic;
 		return $logic;
@@ -124,12 +105,11 @@ abstract class ControllerBase
 	/**
 	 * ロジック側で生成された応答ヘッダを取得。
 	 *
-	 * @return array<string,string[]> 応答ヘッダ。ロジック未生成の場合は空の応答ヘッダを返す。
-	 * @phpstan-return array<non-empty-string,string[]> 応答ヘッダ。ロジック未生成の場合は空の応答ヘッダを返す。
+	 * @return array<non-empty-string,string[]> 応答ヘッダ。ロジック未生成の場合は空の応答ヘッダを返す。
 	 */
 	private function getResponseHeaders(): array
 	{
-		/** @phpstan-var array<non-empty-string,string[]> */
+		/** @var array<non-empty-string,string[]> */
 		$headers = [];
 
 		if ($this->logic !== null) {
@@ -175,13 +155,12 @@ abstract class ControllerBase
 	}
 
 	/**
-	 * Undocumented function
+	 * Viewを表示。
 	 *
-	 * @param string $templateBaseName
-	 * @param string $actionName
+	 * @param non-empty-string $templateBaseName
+	 * @param non-empty-string $actionName
 	 * @param TemplateParameter $templateParameter
-	 * @param array $headers
-	 * @phpstan-param array<non-empty-string,string[]> $headers
+	 * @param array<non-empty-string,string[]> $headers
 	 * @param ITemplateFactory $templateFactory
 	 * @param IUrlHelper $urlHelper
 	 * @return ViewActionResult
@@ -201,9 +180,8 @@ abstract class ControllerBase
 	/**
 	 * Viewを表示。
 	 *
-	 * @param string $controllerName コントローラ完全名。
-	 * @phpstan-param class-string<ControllerBase> $controllerName
-	 * @param string $action アクション名。
+	 * @param non-empty-string $controllerName コントローラ完全名。
+	 * @param non-empty-string $action アクション名。
 	 * @param TemplateParameter $parameter View連携データ。
 	 * @return ViewActionResult
 	 */
@@ -219,14 +197,17 @@ abstract class ControllerBase
 		$controllerBaseName = Text::substring($controllerClassName, 0, Text::getLength($controllerClassName) - Text::getLength($lastWord));
 
 		$templateDirPath = Text::replace($controllerBaseName, '\\', DIRECTORY_SEPARATOR);
+		assert($templateDirPath);
 
 		return $this->createViewActionResult($templateDirPath, $action, $parameter, $this->getResponseHeaders(), $this->templateFactory, $this->urlHelper, $this->webSecurity);
 	}
 
 	/**
-	 * Viewを表示
+	 * Viewを表示。
 	 *
-	 * @param string $action アクション名
+	 * `viewWithController` を調整すれば基本的にこれだけ使っておけばよい。
+	 *
+	 * @param non-empty-string $action アクション名。
 	 * @param TemplateParameter $parameter View連携データ。
 	 * @return ViewActionResult
 	 */

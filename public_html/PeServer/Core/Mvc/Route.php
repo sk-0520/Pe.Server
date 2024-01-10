@@ -122,11 +122,11 @@ class Route
 	 *
 	 * @template TMiddleware of IMiddleware|IShutdownMiddleware
 	 *
-	 * @param array<IMiddleware|IShutdownMiddleware|string> $baseMiddleware
+	 * @param array<IMiddleware|IShutdownMiddleware|class-string> $baseMiddleware
 	 * @phpstan-param array<TMiddleware|class-string<TMiddleware>> $baseMiddleware
-	 * @param array<IMiddleware|IShutdownMiddleware|string>|null $middleware
+	 * @param array<IMiddleware|IShutdownMiddleware|class-string>|null $middleware
 	 * @phpstan-param array<TMiddleware|class-string<TMiddleware>|self::CLEAR_MIDDLEWARE>|null $middleware
-	 * @return array<IMiddleware|IShutdownMiddleware|string>
+	 * @return array<IMiddleware|IShutdownMiddleware|class-string>
 	 * @phpstan-return array<TMiddleware|class-string<TMiddleware>>
 	 */
 	private static function combineMiddleware(array $baseMiddleware, ?array $middleware = null): array
@@ -194,8 +194,7 @@ class Route
 	 *
 	 * @param HttpMethod $httpMethod
 	 * @param Action $action
-	 * @param array<string,string> $urlParameters
-	 * @phpstan-param array<non-empty-string,string> $urlParameters
+	 * @param array<non-empty-string,string> $urlParameters
 	 * @return RouteAction
 	 */
 	private function getActionCore(HttpMethod $httpMethod, Action $action, array $urlParameters): RouteAction
@@ -305,7 +304,6 @@ class Route
 				foreach ($calcParameters as $calcParameter) {
 					$flatParameters[$calcParameter['name']] = $calcParameter['value'];
 				}
-				/** @phpstan-var array<non-empty-string,string> $flatParameters */
 
 				$result = $this->getActionCore($httpMethod, $action, $flatParameters);
 				if ($result->status === HttpStatus::None) {

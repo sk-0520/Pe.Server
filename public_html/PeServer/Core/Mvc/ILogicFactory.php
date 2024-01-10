@@ -14,7 +14,7 @@ interface ILogicFactory
 	 * ロジック生成。
 	 *
 	 * @template TLogicBase of LogicBase
-	 * @param string $logicClassName
+	 * @param non-empty-string $logicClassName
 	 * @phpstan-param class-string<TLogicBase> $logicClassName
 	 * @param array<int|string,mixed> $arguments
 	 * @return LogicBase

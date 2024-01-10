@@ -111,7 +111,7 @@ abstract class StoreConfiguration
 	{
 		$overwriteCookie = self::mergeCookie($setting->cookie, $cookie);
 
-		/** @phpstan-var non-empty-string $name */
+		/** @var non-empty-string $name */
 		$name = Text::requireNotNullOrWhiteSpace($setting->name, SessionOptions::DEFAULT_NAME);
 		$save = Text::requireNotNullOrWhiteSpace($setting->save, Text::EMPTY);
 

@@ -39,17 +39,6 @@ abstract class DomainControllerBase extends ControllerBase
 
 	#region ControllerBase
 
-	/**
-	 * Undocumented function
-	 *
-	 * @param string $templateBaseName
-	 * @param string $actionName
-	 * @param TemplateParameter $templateParameter
-	 * @param array $headers
-	 * @phpstan-param array<non-empty-string,string[]> $headers
-	 * @param ITemplateFactory $templateFactory
-	 * @param IUrlHelper $urlHelper
-	 */
 	protected function createViewActionResult(
 		string $templateBaseName,
 		string $actionName,

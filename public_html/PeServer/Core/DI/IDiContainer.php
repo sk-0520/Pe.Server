@@ -22,8 +22,7 @@ interface IDiContainer extends ContainerInterface
 	/**
 	 * 指定したIDが登録されているか。
 	 *
-	 * @param string $id
-	 * @phpstan-param class-string|non-empty-string $id
+	 * @param class-string|non-empty-string $id
 	 * @return bool
 	 */
 	public function has(string $id): bool; //@phpstan-ignore-line [TYPE_INTERFACE]
@@ -31,8 +30,7 @@ interface IDiContainer extends ContainerInterface
 	/**
 	 * 指定したIDのオブジェクトを取得。
 	 *
-	 * @param string $id
-	 * @phpstan-param class-string|non-empty-string $id
+	 * @param class-string|non-empty-string $id
 	 * @return mixed
 	 * @throws DiContainerException
 	 */
@@ -41,8 +39,7 @@ interface IDiContainer extends ContainerInterface
 	/**
 	 * クラス生成。
 	 *
-	 * @param string $idOrClassName
-	 * @phpstan-param class-string|non-empty-string $idOrClassName
+	 * @param class-string|non-empty-string $idOrClassName
 	 * @param array<int|string,mixed> $arguments 生成パラメータ指定。
 	 *  * int: 引数位置(0基点)。負数の場合で 0 に近い項目で割り当て可能(非`null`)なパラメータであれば順に消費されていく。
 	 *  * string: 先頭が `$` で始まる場合は引数名、それ以外は型名と判断。型名の場合は一致するごとに消費されていく。

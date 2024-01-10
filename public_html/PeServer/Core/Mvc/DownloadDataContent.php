@@ -23,7 +23,7 @@ readonly class DownloadDataContent extends DataContent
 	/**
 	 * 生成。
 	 *
-	 * @param string $mime
+	 * @param non-empty-string $mime
 	 * @phpstan-param non-empty-string|\PeServer\Core\Mime::* $mime
 	 * @param string|Binary $data
 	 */

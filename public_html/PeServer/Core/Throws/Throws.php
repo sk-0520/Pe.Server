@@ -39,8 +39,7 @@ abstract class Throws
 	/**
 	 * 例外の再スロー。
 	 *
-	 * @param string $className 例外名。
-	 * @phpstan-param class-string<Throwable> $className 例外名。
+	 * @param class-string<Throwable> $className 例外名。
 	 * @param Throwable $previous ラップする元の例外。
 	 */
 	public static function reThrow(string $className, Throwable $previous, string $message = null): never
@@ -57,10 +56,8 @@ abstract class Throws
 	 * 対象の例外を受け取った場合に指定した例外として再送出する。
 	 *
 	 * @template TResult
-	 * @param string|array<string> $catchExceptions 対象の例外名（複数ある場合は配列で指定）。
-	 * @phpstan-param class-string<Throwable>|non-empty-array<class-string<Throwable>> $catchExceptions
-	 * @param string $throwException 再送出する例外名。
-	 * @phpstan-param class-string<Throwable> $throwException
+	 * @param class-string<Throwable>|non-empty-array<class-string<Throwable>> $catchExceptions 対象の例外名（複数ある場合は配列で指定）。
+	 * @param class-string<Throwable> $throwException 再送出する例外名。
 	 * @param callable $callback 例外を発生させる可能性のある処理。
 	 * @phpstan-param callable():TResult $callback
 	 * @return mixed `$callback` が戻り値を持つ場合にその値。戻り値を持たない場合は `null`。

@@ -24,11 +24,10 @@ readonly class ViewActionResult implements IActionResult
 	/**
 	 * 生成。
 	 *
-	 * @param string $templateBaseName
-	 * @param string $actionName
+	 * @param non-empty-string $templateBaseName
+	 * @param non-empty-string $actionName
 	 * @param TemplateParameter $templateParameter
-	 * @param array<string,string[]> $headers
-	 * @phpstan-param array<non-empty-string,string[]> $headers
+	 * @param array<non-empty-string,string[]> $headers
 	 */
 	public function __construct(
 		protected string $templateBaseName,

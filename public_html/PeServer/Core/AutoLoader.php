@@ -108,8 +108,7 @@ class AutoLoader
 	/**
 	 * クラス名の調整。
 	 *
-	 * @param string $className
-	 * @phpstan-param class-string|string $className
+	 * @param class-string|string $className
 	 * @return string
 	 */
 	protected function adjustClassName(string $className): string

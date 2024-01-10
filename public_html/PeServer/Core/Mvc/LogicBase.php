@@ -83,8 +83,7 @@ abstract class LogicBase implements IValidationReceiver
 	/**
 	 * 要素設定がなされている場合に応答データのキーをこの項目に固定。
 	 *
-	 * @var string[]
-	 * @phpstan-var non-empty-string[]
+	 * @var non-empty-string[]
 	 */
 	private array $keys = [];
 
@@ -369,8 +368,7 @@ abstract class LogicBase implements IValidationReceiver
 	/**
 	 * パラメータキーの設定。
 	 *
-	 * @param string[] $keys
-	 * @phpstan-param non-empty-string[] $keys
+	 * @param non-empty-string[] $keys
 	 * @param bool $overwrite キー項目を要求データで上書きするか
 	 * @param bool $initialize キー情報を初期化するか
 	 * @return void
@@ -454,8 +452,7 @@ abstract class LogicBase implements IValidationReceiver
 	 * キーに対する一括検証処理。
 	 *
 	 * @param string $key
-	 * @param callable $callback
-	 * @phpstan-param callable(string,string):void $callback
+	 * @param callable(string,string):void $callback
 	 * @param array{default?:string,trim?:bool}|null $options オプション
 	 *   * default: 取得失敗時の値。
 	 *   * trim: 値をトリムするか。
@@ -551,8 +548,7 @@ abstract class LogicBase implements IValidationReceiver
 	/**
 	 * 応答ヘッダの取得。
 	 *
-	 * @return array<string,string[]>
-	 * @phpstan-return array<non-empty-string,string[]>
+	 * @return array<non-empty-string,string[]>
 	 */
 	public function getResponseHeaders(): array
 	{
@@ -592,7 +588,7 @@ abstract class LogicBase implements IValidationReceiver
 	/**
 	 * 応答データ設定。
 	 *
-	 * @param string $mime
+	 * @param non-empty-string $mime
 	 * @phpstan-param non-empty-string|\PeServer\Core\Mime::* $mime
 	 * @param string|array<mixed>|Binary $data
 	 * @return void
@@ -623,7 +619,7 @@ abstract class LogicBase implements IValidationReceiver
 	/**
 	 * ダウンロードデータ応答。
 	 *
-	 * @param string $mime
+	 * @param non-empty-string $mime
 	 * @phpstan-param non-empty-string|\PeServer\Core\Mime::* $mime
 	 * @param string $fileName
 	 * @param Binary $data

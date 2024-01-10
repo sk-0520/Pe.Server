@@ -16,8 +16,7 @@ readonly class Attachment
 	/**
 	 * 生成。
 	 *
-	 * @param string $name ファイル名。
-	 * @phpstan-param non-empty-string $name ファイル名。
+	 * @param non-empty-string $name ファイル名。
 	 * @param Binary $data ファイルデータ。
 	 * @param string $mime まいむ。
 	 * @phpstan-param Mime::*|string $mime

@@ -70,8 +70,7 @@ class Routing
 	 *
 	 * 登録の逆順に実行される。
 	 *
-	 * @var array<IShutdownMiddleware|string>
-	 * @phpstan-var array<IShutdownMiddleware|class-string<IShutdownMiddleware>>
+	 * @var array<IShutdownMiddleware|class-string<IShutdownMiddleware>>
 	 */
 	private array $shutdownMiddleware = [];
 
@@ -120,8 +119,7 @@ class Routing
 	/**
 	 * ミドルウェア取得。
 	 *
-	 * @param IMiddleware|string $middleware
-	 * @phpstan-param IMiddleware|class-string<IMiddleware> $middleware
+	 * @param IMiddleware|class-string<IMiddleware> $middleware
 	 * @return IMiddleware
 	 */
 	protected function getOrCreateMiddleware(IMiddleware|string $middleware): IMiddleware
@@ -138,8 +136,7 @@ class Routing
 	/**
 	 * 応答完了ミドルウェア取得。
 	 *
-	 * @param IShutdownMiddleware|string $middleware
-	 * @phpstan-param IShutdownMiddleware|class-string<IShutdownMiddleware> $middleware
+	 * @param IShutdownMiddleware|class-string<IShutdownMiddleware> $middleware
 	 * @return IShutdownMiddleware
 	 */
 	protected function getOrCreateShutdownMiddleware(IShutdownMiddleware|string $middleware): IShutdownMiddleware
@@ -158,8 +155,7 @@ class Routing
 	 *
 	 * @param RequestPath $requestPath
 	 * @param HttpRequest $request
-	 * @param IMiddleware|string $middleware
-	 * @phpstan-param IMiddleware|class-string<IMiddleware> $middleware
+	 * @param IMiddleware|class-string<IMiddleware> $middleware
 	 * @return bool 次のミドルウェアを実行してよいか
 	 */
 	private function handleBeforeMiddlewareCore(RequestPath $requestPath, HttpRequest $request, IMiddleware|string $middleware): bool
@@ -181,8 +177,7 @@ class Routing
 	/**
 	 * ミドルウェア(事前)をグワーッと処理。
 	 *
-	 * @param array<IMiddleware|string> $middleware
-	 * @phpstan-param array<IMiddleware|class-string<IMiddleware>> $middleware
+	 * @param array<IMiddleware|class-string<IMiddleware>> $middleware
 	 * @param HttpRequest $request
 	 * @return bool 後続処理は可能か
 	 */
@@ -230,10 +225,8 @@ class Routing
 	 * アクション実行。
 	 *
 	 * @param string $rawControllerName
-	 * @phpstan-param class-string<ControllerBase> $rawControllerName
 	 * @param ActionSetting $actionSetting
-	 * @param array<string,string> $urlParameters
-	 * @phpstan-param array<non-empty-string,string> $urlParameters
+	 * @param array<non-empty-string,string> $urlParameters
 	 * @return void
 	 */
 	private function executeAction(string $rawControllerName, ActionSetting $actionSetting, array $urlParameters): void

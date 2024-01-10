@@ -78,7 +78,7 @@ abstract class Utc
 	/**
 	 * パース処理。
 	 *
-	 * @param string $dateTimeClassName
+	 * @param class-string $dateTimeClassName
 	 * @phpstan-param class-string<DateTimeImmutable|DateTime> $dateTimeClassName
 	 * @param string|null $s
 	 * @param DateTimeImmutable|DateTime|null $result
