@@ -178,7 +178,7 @@ abstract class LogicBase implements IValidationReceiver
 	 */
 	protected function getRequestContent(): Binary
 	{
-		return File::readContent('php://input');
+		return $this->request->specialStore->getRequestContent();
 	}
 
 	/**
@@ -188,7 +188,7 @@ abstract class LogicBase implements IValidationReceiver
 	 */
 	protected function getRequestJson(): array
 	{
-		return File::readJsonFile('php://input');
+		return $this->request->specialStore->getRequestJson();
 	}
 
 	/**

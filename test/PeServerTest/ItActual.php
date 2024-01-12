@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServerTest;
 
+use PeServer\Core\Binary;
 use PeServer\Core\Database\IDatabaseConnection;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\DI\IDiContainer;
@@ -11,11 +12,13 @@ use PeServer\Core\Http\ContentType;
 use PeServer\Core\Http\HttpResponse;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mime;
+use PeServer\Core\Serialization\JsonSerializer;
 use PeServerTest\ItHtmlDocument;
 
 readonly class ItActual
 {
 	public ItHtmlDocument|null $html;
+	public array|null $json;
 
 	public function __construct(
 		public HttpResponse $response,
@@ -25,6 +28,17 @@ readonly class ItActual
 			$this->html = ItHtmlDocument::new($this->response->content);
 		} else {
 			$this->html = null;
+
+			if ($this->isJson()) {
+				$serializer = new JsonSerializer();
+				if (is_string($this->response->content)) {
+					$this->json = $serializer->load(new Binary($this->response->content));
+				} else if ($this->response->content instanceof Binary) {
+					$this->json = $serializer->load($this->response->content);
+				} else {
+					$this->json = null;
+				}
+			}
 		}
 	}
 

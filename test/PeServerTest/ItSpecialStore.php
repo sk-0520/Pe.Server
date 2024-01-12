@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServerTest;
 
+use PeServer\Core\Binary;
 use PeServer\Core\Collection\Arr;
 use PeServer\Core\Collection\Dictionary;
 use PeServer\Core\Http\HttpHeader;
@@ -82,6 +83,21 @@ final class ItSpecialStore extends SpecialStore
 	public function getPostNames(): array
 	{
 		return $this->getMethodNames();
+	}
+
+	public function getRequestContent(): Binary
+	{
+		return $this->body->content;
+	}
+
+	/**
+	 * 要求本文から JSON を取得。
+	 *
+	 * @return array<mixed>
+	 */
+	public function getRequestJson(): array
+	{
+		return $this->body->content;
 	}
 
 	#endregion

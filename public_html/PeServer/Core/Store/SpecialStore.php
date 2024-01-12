@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Store;
 
+use PeServer\Core\Binary;
 use PeServer\Core\Collection\Arr;
 use PeServer\Core\Http\HttpHeader;
 use PeServer\Core\Http\HttpMethod;
+use PeServer\Core\IO\File;
 use PeServer\Core\Mvc\UploadedFile;
 use PeServer\Core\Text;
 use PeServer\Core\Web\Url;
@@ -227,6 +229,26 @@ class SpecialStore
 	public function getFileNames(): array
 	{
 		return Arr::getKeys($_FILES);
+	}
+
+	/**
+	 * 要求本文の生データを取得。
+	 *
+	 * @return Binary
+	 */
+	public function getRequestContent(): Binary
+	{
+		return File::readContent('php://input');
+	}
+
+	/**
+	 * 要求本文から JSON を取得。
+	 *
+	 * @return array<mixed>
+	 */
+	public function getRequestJson(): array
+	{
+		return File::readJsonFile('php://input');
 	}
 
 	public function getServerName(): string
