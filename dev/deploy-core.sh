@@ -61,7 +61,7 @@ function msg()
 		* ) echo -ne "" ;;
 	esac
 
-	echo -n ${@:2:($#-1)}
+	echo -n "${@:2:($#-1)}"
 	echo -e "\e[m"
 }
 
@@ -70,7 +70,7 @@ function msg()
 function title()
 {
 	echo ''
-	echo $*
+	echo "$@"
 	echo ''
 }
 
@@ -96,8 +96,8 @@ function api
 		--request POST \
 		--header "X-API-KEY: ${SETTING_API_KEY}" \
 		--header "X-SECRET-KEY: ${SETTING_API_SECRET}" \
-		${@:2:($#-1)} \
-		${SETTING_API_URL}/${ENDPOINT_PATH}
+		"${@:2:($#-1)}" \
+		"${SETTING_API_URL}/${ENDPOINT_PATH}"
 	echo ""
 }
 
