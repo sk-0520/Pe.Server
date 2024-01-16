@@ -33,7 +33,7 @@ readonly class ItActual
 				$serializer = new JsonSerializer();
 				if (is_string($this->response->content)) {
 					$this->json = $serializer->load(new Binary($this->response->content));
-				} else if ($this->response->content instanceof Binary) {
+				} elseif ($this->response->content instanceof Binary) {
 					$this->json = $serializer->load($this->response->content);
 				} else {
 					$this->json = null;
