@@ -9,6 +9,7 @@ use PeServer\App\Models\AppErrorHandler;
 use PeServer\App\Models\AppRouting;
 use PeServer\App\Models\AppStartup;
 use PeServer\App\Models\AppConfiguration;
+use PeServer\App\Models\AppDatabaseCache;
 use PeServer\App\Models\Dao\Entities\UsersEntityDao;
 use PeServer\App\Models\Data\SessionAccount;
 use PeServer\App\Models\Data\SessionAnonymous;
@@ -110,7 +111,7 @@ class ItControllerClass extends TestClass
 
 			$container->remove(IDatabaseConnection::class);
 			$container->add(IDatabaseConnection::class, DiItem::factory(function () use ($connectionSetting, $databaseContext) {
-				return new class ($connectionSetting, $databaseContext) implements IDatabaseConnection
+				return new class($connectionSetting, $databaseContext) implements IDatabaseConnection
 				{
 					public function __construct(private ConnectionSetting $connectionSetting, private DatabaseContext $databaseContext)
 					{
@@ -220,6 +221,8 @@ class ItControllerClass extends TestClass
 		$container->add(ResponsePrinter::class, DiItem::class(ItResponsePrinter::class));
 
 		$useDatabase = 'useDatabase';
+		$useDatabaseCache = 'useDatabaseCache';
+		$databaseCached = false;
 		if (isset($this->$useDatabase) && $this->$useDatabase) {
 			if (!$previousActual) {
 				$this->resetDatabase($container);
@@ -248,6 +251,19 @@ class ItControllerClass extends TestClass
 				$container->remove(IDatabaseConnection::class);
 				$container->add(IDatabaseConnection::class, DiItem::value($previousDatabaseConnection));
 			}
+
+			if (isset($this->$useDatabaseCache) && $this->$useDatabaseCache) {
+				/** @var AppDatabaseCache */
+				$cache = $container->new(AppDatabaseCache::class);
+				$cache->exportAll();
+				$databaseCached = true;
+			}
+		}
+
+		if (!$databaseCached) {
+			/** @var AppDatabaseCache */
+			$cache = $container->new(AppDatabaseCache::class);
+			$cache->clearAll();
 		}
 
 		/** @var ItRoutingWithoutMiddleware */
