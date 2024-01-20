@@ -70,7 +70,7 @@ class PluginApiControllerTest extends ItControllerClass
 	}
 
 	#[DataProvider('provider_exists')]
-	public function test_exists(array $expected, ItBody  $input)
+	public function test_exists(array $expected, ItBody $input)
 	{
 		$options = new ItOptions(
 			body: $input
