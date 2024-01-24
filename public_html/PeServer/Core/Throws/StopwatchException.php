@@ -7,7 +7,7 @@ namespace PeServer\Core\Throws;
 use Throwable;
 use PeServer\Core\Throws\CoreException;
 
-class TimerException extends CoreException
+class StopwatchWException extends CoreException
 {
 	use ThrowableTrait;
 }

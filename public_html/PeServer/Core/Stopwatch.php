@@ -7,7 +7,7 @@ namespace PeServer\Core;
 use Stringable;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Throws\NotSupportedException;
-use PeServer\Core\Throws\TimerException;
+use PeServer\Core\Throws\StopwatchWException;
 
 /**
  * `HRTime\StopWatch` 的な。
@@ -150,7 +150,7 @@ class Stopwatch implements Stringable
 	{
 		$result = hrtime(true);
 		if ($result === false) { //@phpstan-ignore-line 失敗したら false 返ってくるっぽいんだけどなぁ
-			throw new TimerException();
+			throw new StopwatchWException();
 		}
 
 		return $result;
