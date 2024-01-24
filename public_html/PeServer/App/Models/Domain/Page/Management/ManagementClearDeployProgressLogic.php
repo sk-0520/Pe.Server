@@ -12,7 +12,7 @@ use PeServer\Core\IO\File;
 use PeServer\Core\IO\Path;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
-use PeServer\Core\Timer;
+use PeServer\Core\Stopwatch;
 
 class ManagementClearDeployProgressLogic extends PageLogicBase
 {
@@ -30,7 +30,7 @@ class ManagementClearDeployProgressLogic extends PageLogicBase
 
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
-		$stopwatch =  Timer::startNew();
+		$stopwatch =  Stopwatch::startNew();
 
 		$progressFilePath = Path::combine($this->appConfig->setting->cache->deploy, AdministratorApiDeployLogic::PROGRESS_FILE_NAME);
 		$this->logger->debug('$progressFilePath: {0}', $progressFilePath);

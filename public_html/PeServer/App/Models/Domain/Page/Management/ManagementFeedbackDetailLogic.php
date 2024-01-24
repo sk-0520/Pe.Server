@@ -16,7 +16,7 @@ use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\Throws\HttpStatusException;
-use PeServer\Core\Timer;
+use PeServer\Core\Stopwatch;
 
 class ManagementFeedbackDetailLogic extends PageLogicBase
 {

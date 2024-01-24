@@ -20,7 +20,7 @@ use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\HttpStatusException;
-use PeServer\Core\Timer;
+use PeServer\Core\Stopwatch;
 
 class ManagementCrashReportDetailLogic extends PageLogicBase
 {

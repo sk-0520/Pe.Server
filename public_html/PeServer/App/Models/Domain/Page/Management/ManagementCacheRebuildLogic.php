@@ -8,7 +8,7 @@ use PeServer\App\Models\AppDatabaseCache;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
-use PeServer\Core\Timer;
+use PeServer\Core\Stopwatch;
 
 class ManagementCacheRebuildLogic extends PageLogicBase
 {
@@ -24,7 +24,7 @@ class ManagementCacheRebuildLogic extends PageLogicBase
 
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
-		$stopwatch =  Timer::startNew();
+		$stopwatch =  Stopwatch::startNew();
 
 		$this->dbCache->exportAll();
 

@@ -9,7 +9,7 @@ use PeServer\App\Models\Domain\AccessLogManager;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
-use PeServer\Core\Timer;
+use PeServer\Core\Stopwatch;
 
 class ManagementVacuumAccessLogLogic extends PageLogicBase
 {
@@ -25,7 +25,7 @@ class ManagementVacuumAccessLogLogic extends PageLogicBase
 
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
-		$stopwatch =  Timer::startNew();
+		$stopwatch =  Stopwatch::startNew();
 
 		$this->accessLogManager->vacuum();
 

@@ -14,7 +14,7 @@ use PeServer\Core\Throws\TimerException;
  *
  * あと簡単な時間系処理のラッパー。
  */
-class Timer implements Stringable
+class Stopwatch implements Stringable
 {
 	#region variable
 
