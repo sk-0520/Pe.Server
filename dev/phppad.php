@@ -12,7 +12,7 @@ use PeServer\Core\IO\Path;
 use PeServer\Core\Memory;
 use PeServer\Core\SizeConverter;
 use PeServer\Core\Store\SpecialStore;
-use PeServer\Core\Timer;
+use PeServer\Core\Stopwatch;
 
 $autoLoader = new \PeServer\Core\AutoLoader(
 	[
@@ -27,9 +27,7 @@ $startup = new AppStartup(
 	new DefinedDirectory(
 		__DIR__ . '/../public_html/PeServer',
 		__DIR__ . '/../public_html'
-	),
-	'',
-	new SpecialStore()
+	)
 );
 $container = $startup->setup(
 	AppStartup::MODE_CLI,
@@ -42,7 +40,7 @@ Directory::setTemporaryDirectory(Path::combine(__DIR__, 'temp'));
 
 class Pad
 {
-	public static function puts($value): void
+	public static function puts(mixed $value): void
 	{
 		if (is_string($value) || is_int($value) || is_double($value)) {
 			echo $value . PHP_EOL;
@@ -57,7 +55,7 @@ class Pad
 		gc_collect_cycles();
 
 		$beginMemory = Memory::getUsage();
-		$sw = Timer::startNew();
+		$sw = Stopwatch::startNew();
 
 		$result = $callback();
 
@@ -90,7 +88,7 @@ class Pad
 		gc_collect_cycles();
 		$baseMemory = Memory::getUsage();
 
-		$sw = new Timer();
+		$sw = new Stopwatch();
 		for ($i = 0; $i < $count; $i++) {
 			gc_collect_cycles();
 
@@ -139,10 +137,10 @@ class Pad
 		$totalMemorySize = $sizeConverter->convertHumanReadableByte($totalMemory);
 		$avgMemorySize = $sizeConverter->convertHumanReadableByte($avgMemory);
 
-		$minTimeMs = Timer::nanoToMilliseconds($minTime);
-		$maxTimeMs = Timer::nanoToMilliseconds($maxTime);
-		$totalTimeMs = Timer::nanoToMilliseconds($totalTime);
-		$avgTimeMs = Timer::nanoToMilliseconds($avgTime);
+		$minTimeMs = Stopwatch::nanoToMilliseconds($minTime);
+		$maxTimeMs = Stopwatch::nanoToMilliseconds($maxTime);
+		$totalTimeMs = Stopwatch::nanoToMilliseconds($totalTime);
+		$avgTimeMs = Stopwatch::nanoToMilliseconds($avgTime);
 
 		self::puts(" (合計) 時間: $totalTimeMs msec, メモリ: $totalMemorySize");
 		self::puts(" (平均) 時間: $avgTimeMs msec, メモリ: $avgMemorySize");

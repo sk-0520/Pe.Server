@@ -56,6 +56,7 @@ class HttpHeader
 	 *
 	 * @param string $name ヘッダ名
 	 * @throws ArgumentException HTTPヘッダ名不正。
+	 * @phpstan-assert non-empty-string $name
 	 */
 	protected function throwIfInvalidHeaderName(string $name): void
 	{
@@ -76,7 +77,7 @@ class HttpHeader
 	 */
 	public function setValue(string $name, string $value): void
 	{
-		$this->throwIfInvalidHeaderName($name);
+		$this->throwIfInvalidHeaderName($name); //@phpstan-ignore-line [DOCTYPE]
 
 		$this->headers[$name] = [$value];
 	}
@@ -90,7 +91,7 @@ class HttpHeader
 	 */
 	public function setValues(string $name, array $values): void
 	{
-		$this->throwIfInvalidHeaderName($name);
+		$this->throwIfInvalidHeaderName($name); //@phpstan-ignore-line [DOCTYPE]
 
 		$this->headers[$name] = $values;
 	}
@@ -104,7 +105,7 @@ class HttpHeader
 	 */
 	public function addValue(string $name, string $value): void
 	{
-		$this->throwIfInvalidHeaderName($name);
+		$this->throwIfInvalidHeaderName($name); //@phpstan-ignore-line [DOCTYPE]
 
 		if (isset($this->headers[$name])) {
 			$array = $this->headers[$name];
@@ -152,9 +153,6 @@ class HttpHeader
 		$result = [];
 
 		foreach ($this->headers as $name => $_) {
-			if (Text::isNullOrWhiteSpace($name)) {
-				continue;
-			}
 			$result[] = $name;
 		}
 
@@ -185,7 +183,7 @@ class HttpHeader
 	 */
 	public function clearHeader(string $name): bool
 	{
-		$this->throwIfInvalidHeaderName($name);
+		$this->throwIfInvalidHeaderName($name); //@phpstan-ignore-line [DOCTYPE]
 
 		if (!isset($this->headers[$name])) {
 			return false;

@@ -99,6 +99,13 @@ class AppDatabaseCache
 		return File::exists($filePath);
 	}
 
+	private function clearCache(string $fileName): void
+	{
+		$filePath = Path::combine($this->cacheDirectoryPath, $fileName);
+		File::removeFileIfExists($filePath);
+	}
+
+
 	/**
 	 * ユーザー情報をキャッシュ出力。
 	 *
@@ -155,7 +162,7 @@ class AppDatabaseCache
 	 */
 	public function existsPluginInformation(): bool
 	{
-		return self::existsCache(self::PLUGIN_INFORMATION);
+		return $this->existsCache(self::PLUGIN_INFORMATION);
 	}
 
 	/**
@@ -165,7 +172,12 @@ class AppDatabaseCache
 	 */
 	public function readPluginInformation(): PluginCache
 	{
-		return self::readCache(self::PLUGIN_INFORMATION, PluginCache::class);
+		return $this->readCache(self::PLUGIN_INFORMATION, PluginCache::class);
+	}
+
+	private function clearPluginInformation(): void
+	{
+		$this->clearCache(self::PLUGIN_INFORMATION);
 	}
 
 	/**
@@ -173,7 +185,7 @@ class AppDatabaseCache
 	 */
 	public function existsUserInformation(): bool
 	{
-		return self::existsCache(self::USER_INFORMATION);
+		return $this->existsCache(self::USER_INFORMATION);
 	}
 
 	/**
@@ -183,7 +195,19 @@ class AppDatabaseCache
 	 */
 	public function readUserInformation(): UserCache
 	{
-		return self::readCache(self::USER_INFORMATION, UserCache::class);
+		return $this->readCache(self::USER_INFORMATION, UserCache::class);
+	}
+
+	private function clearUserInformation(): void
+	{
+		$this->clearCache(self::USER_INFORMATION);
+	}
+
+
+	public function clearAll(): void
+	{
+		$this->clearPluginInformation();
+		$this->clearUserInformation();
 	}
 
 	#endregion

@@ -25,7 +25,7 @@ abstract class Path
 	public static function normalize(string $path): string
 	{
 		$targetPath = Text::replace($path, ['/', '\\'], DIRECTORY_SEPARATOR);
-		$parts = array_filter(Text::split($targetPath, DIRECTORY_SEPARATOR), 'mb_strlen');
+		$parts = array_filter(Text::split($targetPath, DIRECTORY_SEPARATOR), fn($s) => (bool)mb_strlen($s));
 		$absolutes = [];
 		foreach ($parts as $part) {
 			if ($part === '.') {

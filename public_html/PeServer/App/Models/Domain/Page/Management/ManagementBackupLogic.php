@@ -9,7 +9,7 @@ use PeServer\App\Models\Domain\AppArchiver;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
-use PeServer\Core\Timer;
+use PeServer\Core\Stopwatch;
 
 class ManagementBackupLogic extends PageLogicBase
 {

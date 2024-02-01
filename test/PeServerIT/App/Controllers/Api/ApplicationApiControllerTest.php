@@ -19,11 +19,6 @@ class ApplicationApiControllerTest extends ItControllerClass
 {
 	use ItUseDatabaseTrait;
 
-	public function test_dummy()
-	{
-		$this->success();
-	}
-
 	// メールかぁ・・・・・
 	// 	public function test_feedback()
 	// 	{

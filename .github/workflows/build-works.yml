@@ -14,7 +14,7 @@ jobs:
 
     steps:
       - name: <Checkout> Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: <Test> shell
         shell: bash
@@ -33,7 +33,7 @@ jobs:
 
     steps:
       - name: <Checkout> Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: <Test> shell
         shell: bash
@@ -48,10 +48,10 @@ jobs:
 
     steps:
       - name: <Checkout> Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: <Add> Node/NPM
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version-file: ./.node-version
           cache: npm
@@ -67,7 +67,7 @@ jobs:
         run: npm ci
 
       - name: <Cache> Phar
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             dev/*.phar.*
@@ -104,7 +104,7 @@ jobs:
         run: tar cfv public_html.tar public_html
 
       - name: <Artifact> Application
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: public_html
           path: public_html.tar
@@ -126,7 +126,7 @@ jobs:
         run: git config --global core.autocrlf false
 
       - name: <Checkout> Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: <Setup> PHP
         uses: shivammathur/setup-php@v2
@@ -136,7 +136,7 @@ jobs:
           coverage: xdebug
 
       - name: <Cache> Phar
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             dev/*.phar.*
@@ -163,7 +163,7 @@ jobs:
         run: git config --global core.autocrlf false
 
       - name: <Checkout> Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: <Setup> PHP
         uses: shivammathur/setup-php@v2
@@ -173,7 +173,7 @@ jobs:
           coverage: xdebug
 
       - name: <Cache> Phar
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             dev/*.phar.*
@@ -207,7 +207,7 @@ jobs:
         run: git config --global core.autocrlf false
 
       - name: <Checkout> Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: <Setup> PHP
         uses: shivammathur/setup-php@v2
@@ -217,7 +217,7 @@ jobs:
           coverage: xdebug
 
       - name: <Cache> Phar
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             dev/*.phar.*
@@ -247,10 +247,10 @@ jobs:
 
     steps:
       - name: <Checkout> Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: <Download> Application
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: public_html
           path: archive_public_html

@@ -11,7 +11,7 @@ use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\Mvc\Pagination;
-use PeServer\Core\Timer;
+use PeServer\Core\Stopwatch;
 use PeServer\Core\TypeUtility;
 
 class ManagementFeedbackListLogic extends PageLogicBase
