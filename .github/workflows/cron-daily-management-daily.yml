@@ -5,6 +5,9 @@ on:
     - cron: "30 15 * * *"
   workflow_dispatch:
 
+env:
+  PE_SERVER_BASE_URL: https://peserver.site
+
 jobs:
   build:
 
@@ -19,7 +22,7 @@ jobs:
           --header "Referer: https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" \
           --header "X-API-KEY: ${{ secrets.PE_SERVER_API_KEY }}" \
           --header "X-SECRET-KEY: ${{ secrets.PE_SERVER_API_SECRET }}" \
-          https://peserver.gq/api/administrator/backup
+          ${{ env.PE_SERVER_BASE_URL }}/api/administrator/backup
 
       - name: Delete Old Data
         run: |
@@ -29,7 +32,7 @@ jobs:
           --header "Referer: https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" \
           --header "X-API-KEY: ${{ secrets.PE_SERVER_API_KEY }}" \
           --header "X-SECRET-KEY: ${{ secrets.PE_SERVER_API_SECRET }}" \
-          https://peserver.gq/api/administrator/delete-old-data
+          ${{ env.PE_SERVER_BASE_URL }}/api/administrator/delete-old-data
 
       - name: Vacuum Access Log
         run: |
@@ -39,7 +42,7 @@ jobs:
           --header "Referer: https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" \
           --header "X-API-KEY: ${{ secrets.PE_SERVER_API_KEY }}" \
           --header "X-SECRET-KEY: ${{ secrets.PE_SERVER_API_SECRET }}" \
-          https://peserver.gq/api/administrator/vacuum-access-log
+          ${{ env.PE_SERVER_BASE_URL }}/api/administrator/vacuum-access-log
 
       - name: Rebuild
         run:  |
@@ -49,5 +52,5 @@ jobs:
           --header "Referer: https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" \
           --header "X-API-KEY: ${{ secrets.PE_SERVER_API_KEY }}" \
           --header "X-SECRET-KEY: ${{ secrets.PE_SERVER_API_SECRET }}" \
-          https://peserver.gq/api/administrator/cache-rebuild
+          ${{ env.PE_SERVER_BASE_URL }}/api/administrator/cache-rebuild
 
