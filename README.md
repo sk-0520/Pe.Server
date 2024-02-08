@@ -1,6 +1,6 @@
 # Pe サーバー処理系
 
-https://peserver.gq/
+https://peserver.site/
 
 可能な限り GAS でやってたけどもう無理なんや。
 
