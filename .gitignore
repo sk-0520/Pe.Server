@@ -34,6 +34,6 @@ $*
 /dev/bleedingEdge.neon
 /test/.phpunit*
 /test/phpunit.phar.*
-/public_html/PeServer/Core/Libs/php-markdown/test
+/PeServer/Core/Libs/php-markdown/test
 /dev/.phpunit.cache
 /test/storage-*
