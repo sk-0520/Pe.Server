@@ -6,11 +6,11 @@ temp/
 /public_html/scripts/
 /public_html/styles/
 /public_html/public/
-/public_html/PeServer/data/
-/public_html/PeServer/config/setting.production.json
-/public_html/PeServer/config/setting.development.json
-/public_html/PeServer/config/setting.it.json
-/public_html/PeServer/config/setting.st.json
+/PeServer/data/
+/PeServer/config/setting.production.json
+/PeServer/config/setting.development.json
+/PeServer/config/setting.it.json
+/PeServer/config/setting.st.json
 /dev/local-*
 desktop.ini
 *.zip
