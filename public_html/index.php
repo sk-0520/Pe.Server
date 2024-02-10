@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer;
 
-require_once(__DIR__ . '/PeServer/Core/AutoLoader.php');
+require_once(__DIR__ . '/../PeServer/Core/AutoLoader.php');
 
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\AppRouteSetting;
@@ -23,7 +23,7 @@ use PeServer\Core\Web\UrlHelper;
 $autoLoader = new AutoLoader(
 	[
 		'PeServer' => [
-			'directory' => __DIR__ . DIRECTORY_SEPARATOR . 'PeServer',
+			'directory' => __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'PeServer',
 		]
 	]
 );
