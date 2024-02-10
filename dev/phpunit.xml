@@ -14,13 +14,13 @@
   <coverage/>
   <source>
     <include>
-      <directory suffix=".php">../public_html/PeServer</directory>
+      <directory suffix=".php">../PeServer</directory>
     </include>
     <exclude>
-      <directory>../public_html/deploy</directory>
-      <directory>../public_html/PeServer/data</directory>
-      <directory>../public_html/PeServer/Core/Libs</directory>
-      <file>../public_html/PeServer/App/Models/Domain/Api/DevelopmentApi/DevelopmentApiInitializeLogic.php</file>
+      <directory>../deploy</directory>
+      <directory>../PeServer/data</directory>
+      <directory>../PeServer/Core/Libs</directory>
+      <file>../PeServer/App/Models/Domain/Api/DevelopmentApi/DevelopmentApiInitializeLogic.php</file>
     </exclude>
   </source>
 </phpunit>

@@ -14,7 +14,7 @@ export APP_TEST_MODE="${TEST_MODE}"
 
 cd "$(cd "$(dirname "${0}")/../test"; pwd)"
 
-BASE_DIR=../public_html
+BASE_DIR=../
 
 LOCAL_HTTP_TEST="${LOCAL_HTTP_TEST:=localhost:8080}"
 LOCAL_HTTP_WAIT="${LOCAL_HTTP_WAIT:=1}"
