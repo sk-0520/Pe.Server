@@ -3,8 +3,8 @@
 	<arg value="sp"/>
 	<arg name="colors" />
 
-	<exclude-pattern>*/PeServer/Core/Libs/*</exclude-pattern>
-	<exclude-pattern>*/PeServer/data/*</exclude-pattern>
+	<exclude-pattern>PeServer/Core/Libs/*</exclude-pattern>
+	<exclude-pattern>PeServer/data/*</exclude-pattern>
 
 	<rule ref="Generic.PHP.RequireStrictTypes" />
 

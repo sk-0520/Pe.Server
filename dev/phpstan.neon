@@ -24,24 +24,24 @@ parameters:
   #   minimumNumberOfJobsPerProcess: 2
 
   paths:
-    - ../public_html
+    - ../PeServer
   excludePaths:
-    - ../public_html/deploy
-    - ../public_html/PeServer/data
-    - ../public_html/PeServer/Core/Libs
+    - ../PeServer/deploy
+    - ../PeServer/Core/Libs
+    - ../PeServer/data
     - ../test
   scanFiles:
-    - ../public_html/PeServer/Core/Libs/smarty/libs/Smarty.class.php
-    - ../public_html/PeServer/Core/Libs/smarty/libs/sysplugins/smarty_internal_template.php
-    - ../public_html/PeServer/Core/Libs/smarty/libs/sysplugins/smarty_internal_data.php
-    - ../public_html/PeServer/Core/Libs/PHPMailer/src/PHPMailer.php
-    - ../public_html/PeServer/Core/Libs/PHPMailer/src/SMTP.php
-    - ../public_html/PeServer/Core/Libs/php-markdown/Michelf/Markdown.php
-    - ../public_html/PeServer/Core/Libs/php-markdown/Michelf/MarkdownExtra.php
-    - ../public_html/PeServer/Core/Libs/php-markdown/Michelf/MarkdownInterface.php
-    - ../public_html/PeServer/Core/Libs/php-fig/container/src/ContainerExceptionInterface.php
-    - ../public_html/PeServer/Core/Libs/php-fig/container/src/ContainerInterface.php
-    - ../public_html/PeServer/Core/Libs/php-fig/container/src/NotFoundExceptionInterface.php
+    - ../PeServer/Core/Libs/smarty/libs/Smarty.class.php
+    - ../PeServer/Core/Libs/smarty/libs/sysplugins/smarty_internal_template.php
+    - ../PeServer/Core/Libs/smarty/libs/sysplugins/smarty_internal_data.php
+    - ../PeServer/Core/Libs/PHPMailer/src/PHPMailer.php
+    - ../PeServer/Core/Libs/PHPMailer/src/SMTP.php
+    - ../PeServer/Core/Libs/php-markdown/Michelf/Markdown.php
+    - ../PeServer/Core/Libs/php-markdown/Michelf/MarkdownExtra.php
+    - ../PeServer/Core/Libs/php-markdown/Michelf/MarkdownInterface.php
+    - ../PeServer/Core/Libs/php-fig/container/src/ContainerExceptionInterface.php
+    - ../PeServer/Core/Libs/php-fig/container/src/ContainerInterface.php
+    - ../PeServer/Core/Libs/php-fig/container/src/NotFoundExceptionInterface.php
   ignoreErrors:
     #入力なしの戻り値型強制できないのがつーらーいー
     - '/Template type TFieldArray of method PeServer\\.+::.+\(\) is not referenced in a parameter./'
