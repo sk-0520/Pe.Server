@@ -6,7 +6,7 @@
 	</paths>
 	<version number="3.0.0">
 		<api format="php">
-			<source dsn="../public_html">
+			<source dsn="../">
 				<path>PeServer</path>
 			</source>
 			<ignore hidden="true" symlinks="true">
