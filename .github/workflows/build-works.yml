@@ -260,6 +260,7 @@ jobs:
         shell: bash
         run: |
           cd archive_package
+          ls -al
           tar xvf archive_package.tar
 
       - name: <Deploy> Application
