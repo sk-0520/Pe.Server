@@ -169,7 +169,7 @@ class ItControllerClass extends TestClass
 		$startup = new AppStartup(
 			new DefinedDirectory(
 				__DIR__ . '/../..',
-				__DIR__ . 'public_html'
+				'public_html'
 			)
 		);
 

@@ -37,13 +37,17 @@ class AppConfiguration
 	 */
 	public string $rootDirectoryPath;
 	/**
-	 * アプリディレクトリ。
+	 * アプリケーションディレクトリ。
+	 *
+	 * `PeServer\*` を指すアプリコードの格納ルートディレクトリ。
 	 *
 	 * @var string
 	 */
 	public string $applicationDirectoryPath;
 	/**
 	 * 公開ディレクトリ。
+	 *
+	 * Webルート。
 	 *
 	 * @var string
 	 */
