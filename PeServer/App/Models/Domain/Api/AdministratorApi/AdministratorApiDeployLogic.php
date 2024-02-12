@@ -233,7 +233,7 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 		foreach ($expandFilePaths as $expandFilePath) {
 			$basePath = Text::substring($expandFilePath, Text::getLength($expandDirPath) + 1);
 			//TODO: #25 base の方を指す必要あり
-			$toPath = Path::combine($this->appConfig->rootDirectoryPath, $basePath);
+			$toPath = Path::combine($this->appConfig->baseDirectoryPath, $basePath);
 
 			//$this->logger->info('UPDATE: {0}', $toPath);
 
