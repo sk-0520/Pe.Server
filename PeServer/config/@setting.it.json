@@ -11,7 +11,7 @@
 				"level": 3,
 				"format": "{TIMESTAMP} |{LEVEL}| [{CLIENT_IP}:{CLIENT_HOST}] {REQUEST_ID}|{SESSION} <{UA}> {METHOD} {REQUEST} {FILE}({LINE}) {FUNCTION} -> {MESSAGE}",
 				"configuration": {
-					"directory": "$(BASE)/../test/storage-it/logs",
+					"directory": "$(ROOT)/test/storage-it/logs",
 					"name": "log_{DATE}.log",
 					"count": 365
 				}
@@ -26,7 +26,7 @@
 	},
 	"persistence": {
 		"default": {
-			"_connection": "sqlite:$(BASE)/../test/storage-it/data.sqlite3",
+			"_connection": "sqlite:$(ROOT)/test/storage-it/data.sqlite3",
 			"connection": "sqlite::memory:",
 			"user": "",
 			"passwd": ""
@@ -39,25 +39,25 @@
 		},
 		"session": {
 			"name": "pe-sid",
-			"save": "$(BASE)/../test/storage-it/store/session",
+			"save": "$(ROOT)/test/storage-it/store/session",
 			"cookie": {}
 		},
 		"temporary": {
 			"name": "pe-temp",
-			"save": "$(BASE)/../test/storage-it/store/temporary",
+			"save": "$(ROOT)/test/storage-it/store/temporary",
 			"cookie": {
 				"span": "PT3M"
 			}
 		}
 	},
 	"cache": {
-		"temporary": "$(BASE)/../test/storage-it/temp/buckets",
-		"database": "$(BASE)/../test/storage-it/database_cache",
-		"template": "$(BASE)/../test/storage-it/temp/template",
-		"backup": "$(BASE)/../test/storage-it/backups",
-		"deploy": "$(BASE)/../test/storage-it/temp/deploy"
+		"temporary": "$(ROOT)/test/storage-it/temp/buckets",
+		"database": "$(ROOT)/test/storage-it/database_cache",
+		"template": "$(ROOT)/test/storage-it/temp/template",
+		"backup": "$(ROOT)/test/storage-it/backups",
+		"deploy": "$(ROOT)/test/storage-it/temp/deploy"
 	},
 	"access_log": {
-		"directory": "$(BASE)/../test/storage-it/access_log"
+		"directory": "$(ROOT)/test/storage-it/access_log"
 	}
 }
