@@ -268,6 +268,7 @@ jobs:
         run: |
           cd archive_package/package
           zip -r package.zip .
+          ls
           ${{ github.workspace }}/dev/deploy.sh "${{ secrets.PE_SERVER_API_KEY }}" "${{ secrets.PE_SERVER_API_SECRET }}"
 
       - name: issue-25
