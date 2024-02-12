@@ -81,7 +81,7 @@ class AppConfiguration
 	public function __construct(string $rootDirectoryPath, string $publicDirectoryPath, IUrlHelper $urlHelper, WebSecurity $webSecurity, SpecialStore $specialStore, Environment $environment)
 	{
 		$this->rootDirectoryPath = $rootDirectoryPath;
-		$this->applicationDirectoryPath = Path::combine($this->rootDirectoryPath, 'public_html', 'PeServer'); //TODO: #25 対応時に public_html を外せばいいはず
+		$this->applicationDirectoryPath = Path::combine($this->rootDirectoryPath, 'PeServer');
 		$this->settingDirectoryPath = Path::combine($this->applicationDirectoryPath, 'config');
 		$this->publicDirectoryPath = $publicDirectoryPath;
 
