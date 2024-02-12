@@ -37,3 +37,4 @@ $*
 /PeServer/Core/Libs/php-markdown/test
 /dev/.phpunit.cache
 /test/storage-*
+/_backup_restore_/
