@@ -122,7 +122,7 @@ final class AppErrorHandler extends HttpErrorHandler
 				$response->header->addValue(ContentType::NAME, Mime::JSON);
 				$response->content = $this->jsonSerializer->save($json);
 			} else {
-				$rootDir = Path::combine($this->config->baseDirectoryPath, 'App', 'Views');
+				$rootDir = Path::combine($this->config->applicationDirectoryPath, 'App', 'Views');
 				$baseDir = Path::combine('template', 'page');
 
 				$options = new TemplateOptions(

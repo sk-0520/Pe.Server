@@ -12,11 +12,11 @@ readonly class DefinedDirectory
 	/**
 	 * 生成。
 	 *
-	 * @param string $application アプリケーションのディレクトリパス(アプリケーションが無ければ空)。
-	 * @param string $public 公開ディレクトリパス。(Webアプリとして使用しない場合は空)。
+	 * @param string $root アプリケーションのルートディレクトリ($HOME/app とか)。
+	 * @param string $public $homeから見た公開ディレクトリ相対パス。(Webアプリとして使用しない場合は空)。
 	 */
 	public function __construct(
-		public string $application,
+		public string $root,
 		public string $public
 	) {
 	}

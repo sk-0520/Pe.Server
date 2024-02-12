@@ -28,6 +28,7 @@ use PeServer\Core\DI\IDiRegisterContainer;
 use PeServer\Core\Environment;
 use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Http\RequestPath;
+use PeServer\Core\IO\Path;
 use PeServer\Core\Log\ILogProvider;
 use PeServer\Core\Mail\Mailer;
 use PeServer\Core\Mvc\RouteRequest;
@@ -60,9 +61,11 @@ class AppStartup extends CoreStartup
 
 		/** @var ILogProvider */
 		$logProvider = $container->get(ILogProvider::class);
+
+		$publicDir = Path::combine($this->definedDirectory->root, $this->definedDirectory->public);
 		$appConfig = new AppConfiguration(
-			$this->definedDirectory->public,
-			$this->definedDirectory->application,
+			$this->definedDirectory->root,
+			$publicDir,
 			Arr::getOr($options, 'url_helper', new UrlHelper('')),
 			$container->get(WebSecurity::class),
 			Arr::getOr($options, 'special_store', new SpecialStore()),
