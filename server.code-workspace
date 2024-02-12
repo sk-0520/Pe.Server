@@ -183,7 +183,8 @@
 			"aswinkumar863.smarty-template-support",
 			"yusukehirao.vscode-markuplint",
 			"timonwong.shellcheck",
-			"sanderronde.phpstan-vscode"
+			"sanderronde.phpstan-vscode",
+			"mads-hartmann.bash-ide-vscode"
 		],
 	}
 }
