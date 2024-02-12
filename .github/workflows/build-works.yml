@@ -101,13 +101,13 @@ jobs:
 
       - name: <Archive> Application
         shell: bash
-        run: tar cfv public_html.tar public_html
+        run: tar cfv package.tar public_html PeServer
 
       - name: <Artifact> Application
         uses: actions/upload-artifact@v4
         with:
-          name: public_html
-          path: public_html.tar
+          name: package
+          path: package.tar
 
   build-matrix:
     name: "<Build> Application(Test)"
@@ -241,7 +241,8 @@ jobs:
       - code-backend
       - test-backend-st
 
-    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+    #if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+    if: (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/#25-public_html') && github.event_name == 'push'
 
     runs-on: ubuntu-latest
 
@@ -252,18 +253,24 @@ jobs:
       - name: <Download> Application
         uses: actions/download-artifact@v4
         with:
-          name: public_html
-          path: archive_public_html
+          name: package
+          path: archive_package
 
       - name: <Expand> Application
         shell: bash
         run: |
-          cd archive_public_html
-          tar xvf public_html.tar
+          cd archive_package
+          tar xvf archive_package.tar
 
       - name: <Deploy> Application
         shell: bash
         run: |
-          cd archive_public_html/public_html
-          zip -r public_html.zip .
-          ${{ github.workspace }}/dev/deploy.sh "${{ secrets.PE_SERVER_API_KEY }}" "${{ secrets.PE_SERVER_API_SECRET }}"
+          cd archive_package/package
+          zip -r package.zip .
+          #${{ github.workspace }}/dev/deploy.sh "${{ secrets.PE_SERVER_API_KEY }}" "${{ secrets.PE_SERVER_API_SECRET }}"
+
+      - name: issue-25
+        uses: actions/upload-artifact@v4
+        with:
+          name: package.zip
+          path: archive_package/package/package.zip
