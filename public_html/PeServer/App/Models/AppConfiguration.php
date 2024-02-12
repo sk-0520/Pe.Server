@@ -37,13 +37,17 @@ class AppConfiguration
 	 */
 	public string $rootDirectoryPath;
 	/**
-	 * ベースディレクトリ。
-	 *
-	 * 基本的にこちらを使っておけば問題なし。
+	 * アプリディレクトリ。
 	 *
 	 * @var string
 	 */
-	public string $baseDirectoryPath;
+	public string $applicationDirectoryPath;
+	/**
+	 * 公開ディレクトリ。
+	 *
+	 * @var string
+	 */
+	public string $publicDirectoryPath;
 
 	/**
 	 * URL ベースパス。
@@ -66,16 +70,19 @@ class AppConfiguration
 	/**
 	 * 初期化。
 	 *
-	 * @param string $rootDirectoryPath 公開ルートディレクトリ
-	 * @param string $baseDirectoryPath `\PeServer\*` のルートディレクトリ
+	 * @param string $rootDirectoryPath アプリケーションのルートディレクトリ
+	 * @param string $publicDirectoryPath 公開ルートディレクトリ
 	 * @param SpecialStore $specialStore
 	 */
-	public function __construct(string $rootDirectoryPath, string $baseDirectoryPath, IUrlHelper $urlHelper, WebSecurity $webSecurity, SpecialStore $specialStore, Environment $environment)
+	public function __construct(string $rootDirectoryPath, string $publicDirectoryPath, IUrlHelper $urlHelper, WebSecurity $webSecurity, SpecialStore $specialStore, Environment $environment)
 	{
-		$this->settingDirectoryPath = Path::combine($baseDirectoryPath, 'config');
+		$this->rootDirectoryPath = $rootDirectoryPath;
+		$this->applicationDirectoryPath = Path::combine($this->rootDirectoryPath, 'public_html', 'PeServer'); //TODO: #25 対応時に public_html を外せばいいはず
+		$this->settingDirectoryPath = Path::combine($this->applicationDirectoryPath, 'config');
+		$this->publicDirectoryPath = $publicDirectoryPath;
 
-		$appConfig = $this->load($rootDirectoryPath, $baseDirectoryPath, $environment->get(), 'setting.json');
-		$i18nConfig = $this->load($rootDirectoryPath, $baseDirectoryPath, $environment->get(), 'i18n.json');
+		$appConfig = self::load($this->settingDirectoryPath, $this->rootDirectoryPath, $this->applicationDirectoryPath, $this->publicDirectoryPath, $environment->get(), 'setting.json');
+		$i18nConfig = self::load($this->settingDirectoryPath, $this->rootDirectoryPath, $this->applicationDirectoryPath, $this->publicDirectoryPath, $environment->get(), 'i18n.json');
 
 		$mapper = new Mapper();
 		$appSetting = new AppSetting();
@@ -89,8 +96,6 @@ class AppConfiguration
 		I18n::initialize($i18nConfig);
 
 		$this->setting = $appSetting;
-		$this->rootDirectoryPath = $rootDirectoryPath;
-		$this->baseDirectoryPath = $baseDirectoryPath;
 		$this->urlHelper = $urlHelper;
 		$this->stores = $stores;
 	}
@@ -101,20 +106,21 @@ class AppConfiguration
 	 * 設定ファイル読み込み。
 	 *
 	 * @param string $rootDirectoryPath
-	 * @param string $baseDirectoryPath
+	 * @param string $publicDirectoryPath
 	 * @param string $environment
 	 * @return array<mixed>
 	 */
-	private function load(string $rootDirectoryPath, string $baseDirectoryPath, string $environment, string $fileName): array
+	private static function load(string $settingDirectoryPath, string $rootDirectoryPath, string $applicationDirectoryPath, string $publicDirectoryPath, string $environment, string $fileName): array
 	{
 		$configuration = new Configuration($environment);
-		$setting = $configuration->load($this->settingDirectoryPath, $fileName);
+		$setting = $configuration->load($settingDirectoryPath, $fileName);
 
 		return $configuration->replace(
 			$setting,
 			[
 				'ROOT' => $rootDirectoryPath,
-				'BASE' => $baseDirectoryPath,
+				'APP' => $applicationDirectoryPath,
+				'PUBLIC' => $publicDirectoryPath,
 				'ENV' => $environment
 			],
 			'$(',

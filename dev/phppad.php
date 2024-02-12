@@ -25,8 +25,8 @@ $autoLoader->register();
 
 $startup = new AppStartup(
 	new DefinedDirectory(
-		__DIR__ . '/../public_html/PeServer',
-		__DIR__ . '/../public_html'
+		__DIR__ . '/..',
+		'/../public_html'
 	)
 );
 $container = $startup->setup(

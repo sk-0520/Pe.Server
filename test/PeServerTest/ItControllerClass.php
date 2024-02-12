@@ -168,8 +168,8 @@ class ItControllerClass extends TestClass
 
 		$startup = new AppStartup(
 			new DefinedDirectory(
-				__DIR__ . '/../../public_html/PeServer',
-				__DIR__ . '/../../public_html'
+				__DIR__ . '/../..',
+				__DIR__ . 'public_html'
 			)
 		);
 

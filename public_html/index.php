@@ -47,8 +47,8 @@ if ($isLocalhost) {
 
 $startup = new AppStartup(
 	new DefinedDirectory(
-		__DIR__ . '/PeServer',
-		__DIR__
+		__DIR__ . '/..',
+		'public_html'
 	)
 );
 $container = $startup->setup(

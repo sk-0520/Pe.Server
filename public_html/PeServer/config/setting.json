@@ -1,7 +1,7 @@
 {
 	"persistence": {
 		"default": {
-			"connection": "sqlite:$(BASE)/data/data.sqlite3",
+			"connection": "sqlite:$(APP)/data/data.sqlite3",
 			"user": "",
 			"password": ""
 		}
@@ -13,7 +13,7 @@
 				"level": 3,
 				"format": "{TIMESTAMP} |{LEVEL}| [{CLIENT_IP}:{CLIENT_HOST}] {REQUEST_ID}|{SESSION} <{UA}> {METHOD} {REQUEST} {FILE}({LINE}) {FUNCTION} -> {MESSAGE}",
 				"configuration": {
-					"directory": "$(BASE)/data/logs",
+					"directory": "$(APP)/data/logs",
 					"name": "log_{DATE}.log",
 					"count": 365
 				}
@@ -28,26 +28,26 @@
 		},
 		"session": {
 			"name": "pe-sid",
-			"save": "$(BASE)/data/store/session",
+			"save": "$(APP)/data/store/session",
 			"cookie": {}
 		},
 		"temporary": {
 			"name": "pe-temp",
-			"save": "$(BASE)/data/store/temporary",
+			"save": "$(APP)/data/store/temporary",
 			"cookie": {
 				"span": "PT3M"
 			}
 		}
 	},
 	"cache": {
-		"temporary": "$(BASE)/data/temp/buckets",
-		"database": "$(BASE)/data/database_cache",
-		"template": "$(BASE)/data/temp/template",
-		"backup": "$(BASE)/data/backups",
-		"deploy": "$(BASE)/data/temp/deploy"
+		"temporary": "$(APP)/data/temp/buckets",
+		"database": "$(APP)/data/database_cache",
+		"template": "$(APP)/data/temp/template",
+		"backup": "$(APP)/data/backups",
+		"deploy": "$(APP)/data/temp/deploy"
 	},
 	"access_log": {
-		"directory": "$(BASE)/data/access_log"
+		"directory": "$(APP)/data/access_log"
 	},
 	"crypto": {
 		"algorithm": "aes-256-cbc",
