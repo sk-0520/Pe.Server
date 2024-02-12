@@ -51,13 +51,13 @@
 		}
 	},
 	"cache": {
-		"temporary": "$(BASE)/../../test/storage-it/temp/buckets",
-		"database": "$(BASE)/../../test/storage-it/database_cache",
-		"template": "$(BASE)/../../test/storage-it/temp/template",
-		"backup": "$(BASE)/../../test/storage-it/backups",
-		"deploy": "$(BASE)/../../test/storage-it/temp/deploy"
+		"temporary": "$(ROOT)/test/storage-it/temp/buckets",
+		"database": "$(ROOT)/test/storage-it/database_cache",
+		"template": "$(ROOT)/test/storage-it/temp/template",
+		"backup": "$(ROOT)/test/storage-it/backups",
+		"deploy": "$(ROOT)/test/storage-it/temp/deploy"
 	},
 	"access_log": {
-		"directory": "$(BASE)/../../test/storage-it/access_log"
+		"directory": "$(ROOT)/../../test/storage-it/access_log"
 	}
 }
