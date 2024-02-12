@@ -47,7 +47,7 @@ if ! common::exists_option 'ignore-phpcs' ; then
 fi
 
 if ! common::exists_option 'ignore-pplint' ; then
-	php "${PPLINT_FILE}" ../public_html/PeServer --colors --show-deprecated --exclude ../public_html/PeServer/Core/Libs  --exclude ../public_html/PeServer/data
+	php "${PPLINT_FILE}" ../PeServer --colors --show-deprecated --exclude ../PeServer/Core/Libs  --exclude ../PeServer/data
 fi
 
 if ! common::exists_option 'ignore-phpstan' ; then
@@ -71,7 +71,7 @@ if ! common::exists_option 'ignore-phpcs' ; then
 	fi
 
 
-	PHPCS_OPTIONS_DEFAULT="../public_html/PeServer ../test/PeServer* --standard=phpcs_ruleset.xml"
+	PHPCS_OPTIONS_DEFAULT="../PeServer ../test/PeServer* --standard=phpcs_ruleset.xml"
 
 	if common::exists_option 'phpcs-fix' ; then
 		logger::info "!!修正処理実施!!"

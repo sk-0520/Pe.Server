@@ -9,7 +9,7 @@ error_reporting(E_ALL);
 
 $files = glob(__DIR__ . '/phpunit.phar.*');
 require_once($files[0]);
-require_once(__DIR__ . '/../public_html/PeServer/Core/AutoLoader.php');
+require_once(__DIR__ . '/../PeServer/Core/AutoLoader.php');
 
 use Exception;
 use PeServer\App\Models\AppStartup;
@@ -31,7 +31,7 @@ if (!is_string($appTestMode) || $appTestMode === '') {
 $autoLoader = new \PeServer\Core\AutoLoader(
 	[
 		'PeServer' => [
-			'directory' => __DIR__ . '/../public_html/PeServer',
+			'directory' => __DIR__ . '/../PeServer',
 		],
 		'PeServerTest' => [
 			'directory' => __DIR__ . '/PeServerTest',

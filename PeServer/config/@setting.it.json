@@ -58,6 +58,6 @@
 		"deploy": "$(ROOT)/test/storage-it/temp/deploy"
 	},
 	"access_log": {
-		"directory": "$(ROOT)/../../test/storage-it/access_log"
+		"directory": "$(ROOT)/test/storage-it/access_log"
 	}
 }
