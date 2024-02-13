@@ -170,7 +170,8 @@ class ItControllerClass extends TestClass
 			new DefinedDirectory(
 				__DIR__ . '/../..',
 				'public_html'
-			)
+			),
+			false
 		);
 
 		$container = $startup->setup(

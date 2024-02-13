@@ -19,7 +19,7 @@ BASE_DIR=../PeServer
 LOCAL_HTTP_TEST="${LOCAL_HTTP_TEST:=localhost:8080}"
 LOCAL_HTTP_WAIT="${LOCAL_HTTP_WAIT:=1}"
 
-PHPUNIT_VERSION=10.5.9
+PHPUNIT_VERSION=11.0.3
 PHPUNIT_URL=https://phar.phpunit.de/phpunit-${PHPUNIT_VERSION}.phar
 PHPUNIT_NAME=phpunit.phar
 PHPUNIT_FILE=${PHPUNIT_NAME}.${PHPUNIT_VERSION}
@@ -66,11 +66,6 @@ if ! common::exists_option 'ignore-coverage' ; then
 	PHPUNIT_OPTION_COVERAGE="--coverage-html ../public_html/public/coverage/php/${TEST_MODE}"
 fi
 
-COVERAGE_CACHE_OPTION=""
-if [[ -v COVERAGE_CACHE ]] ; then
-	COVERAGE_CACHE_OPTION="--coverage-cache ${COVERAGE_CACHE}"
-fi
-
 PUBLIC_DIR=../public_html
 TEST_SUITE="--testsuite ${TEST_MODE}"
 case "${TEST_MODE}" in
@@ -113,7 +108,7 @@ php -S "${LOCAL_HTTP_TEST}" -t "${PUBLIC_DIR}" > "http-${TEST_MODE}.log" 2>&1 &
 trap 'kill %1' 0
 sleep "${LOCAL_HTTP_WAIT}"
 #shellcheck disable=SC2086
-php "${PHPUNIT_FILE}" --configuration "../dev/phpunit.xml" ${TEST_SUITE} ${PHPUNIT_OPTION_COVERAGE} ${COVERAGE_CACHE_OPTION} ${PHPUNIT_OPTION_FILTER} ${PHPUNIT_OPTION_EXCLUDE_GROUP}
+php "${PHPUNIT_FILE}" --configuration "../dev/phpunit.xml" ${TEST_SUITE} ${PHPUNIT_OPTION_COVERAGE} ${PHPUNIT_OPTION_FILTER} ${PHPUNIT_OPTION_EXCLUDE_GROUP}
 
 if common::exists_option 'no-exit' ; then
 	read -r

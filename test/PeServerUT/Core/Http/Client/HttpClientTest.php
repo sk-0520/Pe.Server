@@ -28,10 +28,11 @@ use PeServer\Core\Web\Url;
 use PeServer\Core\Web\UrlQuery;
 use PeServerTest\TestClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
- * @group slow
  */
+#[Group('slow')]
 class HttpClientTest extends TestClass
 {
 	public function test_get_path_echo()

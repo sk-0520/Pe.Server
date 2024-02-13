@@ -46,11 +46,13 @@ class AppStartup extends CoreStartup
 	 * 初期化。
 	 *
 	 * @param DefinedDirectory $directory
+	 * @param bool $errorHandling
 	 */
 	public function __construct(
-		DefinedDirectory $directory
+		DefinedDirectory $directory,
+		bool $errorHandling = true
 	) {
-		parent::__construct($directory);
+		parent::__construct($directory, $errorHandling);
 	}
 
 	#region CoreStartup
@@ -112,9 +114,11 @@ class AppStartup extends CoreStartup
 		$container->add(RouteSetting::class, DiItem::value($container->new(AppRouteSetting::class)));
 		$container->registerMapping(Routing::class, AppRouting::class);
 
-		/** @var AppErrorHandler */
-		$appErrorHandler = $container->new(AppErrorHandler::class, [RequestPath::class => $requestPath]);
-		$appErrorHandler->register();
+		if ($this->errorHandling) {
+			/** @var AppErrorHandler */
+			$appErrorHandler = $container->new(AppErrorHandler::class, [RequestPath::class => $requestPath]);
+			$appErrorHandler->register();
+		}
 	}
 
 	#endregion
