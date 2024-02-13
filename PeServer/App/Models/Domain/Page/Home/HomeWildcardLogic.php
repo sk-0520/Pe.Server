@@ -34,7 +34,7 @@ class HomeWildcardLogic extends PageLogicBase
 		$unsafeRequestPath = $this->getRequest('path');
 
 		$requestFileName = Path::getFileName($unsafeRequestPath);
-		$assetsDirPath = Path::combine($this->config->publicDirectoryPath, 'assets');
+		$assetsDirPath = Path::combine($this->config->rootDirectoryPath, 'assets');
 		$targetPath = Path::combine($assetsDirPath, $requestFileName);
 
 		if (Text::startsWith($targetPath, $assetsDirPath, true)) {
