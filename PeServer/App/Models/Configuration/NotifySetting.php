@@ -16,6 +16,13 @@ class NotifySetting
 	#region variable
 
 	/**
+	 * メンテ送信先。
+	 *
+	 * @var string[]
+	 */
+	public array $maintenance;
+
+	/**
 	 * クラッシュレポート送信先。
 	 *
 	 * @var string[]

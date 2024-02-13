@@ -27,6 +27,7 @@ class ManagementBackupLogic extends PageLogicBase
 	{
 		$this->appArchiver->backup();
 		$this->appArchiver->rotate();
+		$this->appArchiver->sendLatestArchive(false);
 
 		$this->addTemporaryMessage('バックアップ完了');
 	}

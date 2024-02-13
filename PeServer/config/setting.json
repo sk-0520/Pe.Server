@@ -85,6 +85,9 @@
 				"release_version_endpoint": "https://api.github.com/repos/sk-0520/Pe/releases"
 			},
 			"notify": {
+				"maintenance": [
+					"maintenance@localhost.localdomain"
+				],
 				"crash_report": [
 					"crash_report@localhost.localdomain"
 				],

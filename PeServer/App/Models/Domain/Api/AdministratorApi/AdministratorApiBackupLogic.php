@@ -32,6 +32,8 @@ class AdministratorApiBackupLogic extends ApiLogicBase
 
 		$this->writeAuditLogCurrentUser(AuditLog::API_ADMINISTRATOR_BACKUP, ['size' => $size]);
 
+		$this->appArchiver->sendLatestArchive(true);
+
 		$this->setResponseJson(ResponseJson::success([
 			'size' => $size,
 		]));
