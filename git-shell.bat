@@ -1,3 +1,4 @@
+@echo off
 cd /d %~dp0
 
 set GIT_SSH=%PROGRAMFILES%\TortoiseGit\bin\TortoiseGitPlink.exe
