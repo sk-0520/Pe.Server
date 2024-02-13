@@ -61,9 +61,11 @@ class CoreStartup
 	 * 生成。
 	 *
 	 * @param DefinedDirectory $definedDirectory ディレクトリ定義。
+	 * @param bool $errorHandling エラーハンドリングを設定するか。テストで制御する目的のため原則未指定で良い。
 	 */
 	public function __construct(
-		protected DefinedDirectory $definedDirectory
+		protected DefinedDirectory $definedDirectory,
+		protected readonly bool $errorHandling = true
 	) {
 	}
 
@@ -112,8 +114,7 @@ class CoreStartup
 		$container->registerMapping(IResponsePrinterFactory::class, ResponsePrinterFactory::class); // こいつも Core からも使われる特殊な奴やねん
 		//$container->registerClass(ResponsePrinterFactory::class);
 
-		// Core のセットアップ時点で死ぬようではもういいです
-		if (!$environment->isTest()) {
+		if ($this->errorHandling) {
 			$errorHandler = $container->new(ErrorHandler::class);
 			$errorHandler->register();
 		}
@@ -147,9 +148,11 @@ class CoreStartup
 		$requestPath = new RequestPath($specialStore->getServer('REQUEST_URI'), $container->get(IUrlHelper::class));
 		$container->registerValue(new RouteRequest($method, $requestPath));
 
-		/** @var HttpErrorHandler */
-		$httpErrorHandler = $container->new(HttpErrorHandler::class, [RequestPath::class => $requestPath]);
-		$httpErrorHandler->register();
+		if ($this->errorHandling) {
+			/** @var HttpErrorHandler */
+			$httpErrorHandler = $container->new(HttpErrorHandler::class, [RequestPath::class => $requestPath]);
+			$httpErrorHandler->register();
+		}
 
 		$container->registerMapping(ILogicFactory::class, LogicFactory::class);
 	}

@@ -8,6 +8,7 @@ use Exception;
 use Throwable;
 use PeServer\Core\Binary;
 use PeServer\Core\Collection\Arr;
+use PeServer\Core\Errors\ErrorHandler;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\CryptoException;
@@ -123,28 +124,24 @@ abstract class Cryptography
 	 */
 	public static function encrypt(string $algorithm, string $rawValue, string $password): string
 	{
-		$ivLength = 0;
-		try {
-			$ivLength = openssl_cipher_iv_length($algorithm);
-		} catch (Exception $ex) {
-			Throws::reThrow(CryptoException::class, $ex, $algorithm);
-		}
-
-		if ($ivLength === false) {
+		$result = ErrorHandler::trap(fn() => openssl_cipher_iv_length($algorithm));
+		if ($result->isFailureOrFalse()) {
 			throw new CryptoException($algorithm);
 		}
+
+		$ivLength = $result->value;
 		if ($ivLength < 1) {
 			throw new CryptoException('$ivLength: ' . $ivLength);
 		}
 
 		$iv = self::generateRandomBinary($ivLength);
 
-		$encData = openssl_encrypt($rawValue, $algorithm, $password, self::OPTION, $iv->raw);
-		if ($encData === false) {
-			throw new CryptoException();
+		$result = ErrorHandler::trap(fn() => openssl_encrypt($rawValue, $algorithm, $password, self::OPTION, $iv->raw));
+		if ($result->isFailureOrFalse()) {
+			throw new CryptoException($algorithm);
 		}
 
-		return $algorithm . self::SEPARATOR . $iv->toBase64() . self::SEPARATOR . $encData;
+		return $algorithm . self::SEPARATOR . $iv->toBase64() . self::SEPARATOR . $result->value;
 	}
 
 	/**
@@ -165,19 +162,12 @@ abstract class Cryptography
 
 		$iv = Binary::fromBase64($ivBase64);
 
-		/** @var string|false */
-		$decData = false;
-		try {
-			$decData = openssl_decrypt($encData, $algorithm, $password, self::OPTION, $iv->raw);
-		} catch (Exception $ex) {
-			Throws::reThrow(CryptoException::class, $ex, $algorithm);
+		$result = ErrorHandler::trap(fn() => openssl_decrypt($encData, $algorithm, $password, self::OPTION, $iv->raw));
+		if ($result->isFailureOrFalse()) {
+			throw new CryptoException($algorithm);
 		}
 
-		if ($decData === false) {
-			throw new CryptoException();
-		}
-
-		return $decData;
+		return $result->value;
 	}
 
 	/**

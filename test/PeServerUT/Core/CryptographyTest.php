@@ -53,7 +53,7 @@ class CryptographyTest extends TestClass
 	public function test_enc_throw()
 	{
 		$this->expectException(CryptoException::class);
-		@Cryptography::encrypt('💩', 'ABC', 'a');
+		Cryptography::encrypt('💩', 'ABC', 'a');
 		$this->fail();
 	}
 
