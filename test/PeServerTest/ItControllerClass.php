@@ -21,7 +21,7 @@ use PeServer\Core\Database\ConnectionSetting;
 use PeServer\Core\Database\DatabaseContext;
 use PeServer\Core\Database\DatabaseRowResult;
 use PeServer\Core\Database\DatabaseUtility;
-use PeServer\Core\DefinedDirectory;
+use PeServer\Core\StartupOptions;
 use PeServer\Core\DI\DiItem;
 use PeServer\Core\DI\IDiContainer;
 use PeServer\Core\DI\IDiRegisterContainer;
@@ -167,11 +167,11 @@ class ItControllerClass extends TestClass
 		$this->resetInitialize();
 
 		$startup = new AppStartup(
-			new DefinedDirectory(
-				__DIR__ . '/../..',
-				'public_html'
-			),
-			false
+			new StartupOptions(
+				root: __DIR__ . '/../..',
+				public: 'public_html',
+				errorHandling: false
+			)
 		);
 
 		$container = $startup->setup(

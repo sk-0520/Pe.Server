@@ -13,7 +13,7 @@ use PeServer\App\Models\AppSpecialStore;
 use PeServer\App\Models\AppStartup;
 use PeServer\App\Models\Initializer;
 use PeServer\Core\AutoLoader;
-use PeServer\Core\DefinedDirectory;
+use PeServer\Core\StartupOptions;
 use PeServer\Core\DI\IDiRegisterContainer;
 use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Http\RequestPath;
@@ -46,9 +46,9 @@ if ($isLocalhost) {
 }
 
 $startup = new AppStartup(
-	new DefinedDirectory(
-		__DIR__ . '/..',
-		'public_html'
+	new StartupOptions(
+		root: __DIR__ . '/..',
+		public: 'public_html'
 	)
 );
 $container = $startup->setup(

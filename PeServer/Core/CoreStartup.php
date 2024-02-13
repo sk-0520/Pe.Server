@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core;
 
 use PeServer\Core\Collection\Arr;
-use PeServer\Core\DefinedDirectory;
+use PeServer\Core\StartupOptions;
 use PeServer\Core\DI\DiItem;
 use PeServer\Core\DI\DiRegisterContainer;
 use PeServer\Core\DI\IDiContainer;
@@ -60,12 +60,10 @@ class CoreStartup
 	/**
 	 * 生成。
 	 *
-	 * @param DefinedDirectory $definedDirectory ディレクトリ定義。
-	 * @param bool $errorHandling エラーハンドリングを設定するか。テストで制御する目的のため原則未指定で良い。
+	 * @param StartupOptions $startupOptions スタートアップオプション。
 	 */
 	public function __construct(
-		protected DefinedDirectory $definedDirectory,
-		protected readonly bool $errorHandling = true
+		protected StartupOptions $startupOptions
 	) {
 	}
 
@@ -88,7 +86,7 @@ class CoreStartup
 		$container->registerValue($logging, Logging::class);
 
 		$container->registerValue($environment, Environment::class);
-		$container->registerValue($this->definedDirectory, DefinedDirectory::class);
+		$container->registerValue($this->startupOptions, StartupOptions::class);
 
 		$container->registerClass(WebSecurity::class);
 
@@ -114,7 +112,7 @@ class CoreStartup
 		$container->registerMapping(IResponsePrinterFactory::class, ResponsePrinterFactory::class); // こいつも Core からも使われる特殊な奴やねん
 		//$container->registerClass(ResponsePrinterFactory::class);
 
-		if ($this->errorHandling) {
+		if ($this->startupOptions->errorHandling) {
 			$errorHandler = $container->new(ErrorHandler::class);
 			$errorHandler->register();
 		}
@@ -148,7 +146,7 @@ class CoreStartup
 		$requestPath = new RequestPath($specialStore->getServer('REQUEST_URI'), $container->get(IUrlHelper::class));
 		$container->registerValue(new RouteRequest($method, $requestPath));
 
-		if ($this->errorHandling) {
+		if ($this->startupOptions->errorHandling) {
 			/** @var HttpErrorHandler */
 			$httpErrorHandler = $container->new(HttpErrorHandler::class, [RequestPath::class => $requestPath]);
 			$httpErrorHandler->register();

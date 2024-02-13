@@ -22,7 +22,7 @@ use PeServer\App\Models\Domain\AppEraser;
 use PeServer\Core\Collection\Arr;
 use PeServer\Core\CoreStartup;
 use PeServer\Core\Database\IDatabaseConnection;
-use PeServer\Core\DefinedDirectory;
+use PeServer\Core\StartupOptions;
 use PeServer\Core\DI\DiItem;
 use PeServer\Core\DI\IDiRegisterContainer;
 use PeServer\Core\Environment;
@@ -45,14 +45,12 @@ class AppStartup extends CoreStartup
 	/**
 	 * 初期化。
 	 *
-	 * @param DefinedDirectory $directory
-	 * @param bool $errorHandling
+	 * @param StartupOptions $startupOptions
 	 */
 	public function __construct(
-		DefinedDirectory $directory,
-		bool $errorHandling = true
+		StartupOptions $startupOptions,
 	) {
-		parent::__construct($directory, $errorHandling);
+		parent::__construct($startupOptions);
 	}
 
 	#region CoreStartup
@@ -64,9 +62,9 @@ class AppStartup extends CoreStartup
 		/** @var ILogProvider */
 		$logProvider = $container->get(ILogProvider::class);
 
-		$publicDir = Path::combine($this->definedDirectory->root, $this->definedDirectory->public);
+		$publicDir = Path::combine($this->startupOptions->root, $this->startupOptions->public);
 		$appConfig = new AppConfiguration(
-			$this->definedDirectory->root,
+			$this->startupOptions->root,
 			$publicDir,
 			Arr::getOr($options, 'url_helper', new UrlHelper('')),
 			$container->get(WebSecurity::class),
@@ -114,7 +112,7 @@ class AppStartup extends CoreStartup
 		$container->add(RouteSetting::class, DiItem::value($container->new(AppRouteSetting::class)));
 		$container->registerMapping(Routing::class, AppRouting::class);
 
-		if ($this->errorHandling) {
+		if ($this->startupOptions->errorHandling) {
 			/** @var AppErrorHandler */
 			$appErrorHandler = $container->new(AppErrorHandler::class, [RequestPath::class => $requestPath]);
 			$appErrorHandler->register();

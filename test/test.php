@@ -13,7 +13,7 @@ require_once(__DIR__ . '/../PeServer/Core/AutoLoader.php');
 
 use Exception;
 use PeServer\App\Models\AppStartup;
-use PeServer\Core\DefinedDirectory;
+use PeServer\Core\StartupOptions;
 use PeServer\Core\DI\IDiContainer;
 use PeServer\Core\DI\IDiRegisterContainer;
 use PeServer\Core\IO\Directory;
@@ -52,9 +52,9 @@ $autoLoader->register();
 $isIntegrationTest = $appTestMode === 'it' || $appTestMode === 'uit';
 
 $startup = new AppStartup(
-	new DefinedDirectory(
-		__DIR__ . '/..',
-		'public_html'
+	new StartupOptions(
+		root: __DIR__ . '/..',
+		public: 'public_html'
 	)
 );
 $container = $startup->setup(

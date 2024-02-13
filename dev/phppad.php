@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 require_once(__DIR__ . '/../public_html/PeServer/Core/AutoLoader.php');
 
 use PeServer\App\Models\AppStartup;
-use PeServer\Core\DefinedDirectory;
+use PeServer\Core\StartupOptions;
 use PeServer\Core\IO\Directory;
 use PeServer\Core\IO\File;
 use PeServer\Core\IO\Path;
@@ -24,7 +24,7 @@ $autoLoader = new \PeServer\Core\AutoLoader(
 $autoLoader->register();
 
 $startup = new AppStartup(
-	new DefinedDirectory(
+	new StartupOptions(
 		__DIR__ . '/..',
 		'/../public_html'
 	)
