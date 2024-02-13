@@ -9,6 +9,7 @@ use PeServer\Core\Web\WebSecurity;
 
 /**
  * テンプレート生成設定。
+ * TODO: #26 で対応するの忘れてる, いまどうこうする気がないので塩漬けしたい
  */
 class TemplateOptions
 {
