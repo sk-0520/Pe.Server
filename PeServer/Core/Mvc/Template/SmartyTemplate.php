@@ -90,6 +90,7 @@ class SmartyTemplate extends TemplateBase
 			$this->engine,
 			$this->options->rootDirectoryPath,
 			Path::combine($this->options->rootDirectoryPath, $this->options->baseDirectoryName),
+			$this->options->programContext,
 			$this->options->urlHelper,
 			$this->options->webSecurity,
 			$this->stores,

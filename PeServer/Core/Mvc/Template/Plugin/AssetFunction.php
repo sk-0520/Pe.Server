@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Template\Plugin;
 
-use DOMElement;
 use PeServer\Core\Environment;
 use PeServer\Core\IO\IOUtility;
 use PeServer\Core\IO\Path;
@@ -13,6 +12,7 @@ use PeServer\Core\Collection\Arr;
 use PeServer\Core\Text;
 use PeServer\Core\TypeUtility;
 use PeServer\Core\Html\HtmlDocument;
+use PeServer\Core\Html\HtmlTagElement;
 use PeServer\Core\Throws\TemplateException;
 use PeServer\Core\Mvc\Template\Plugin\TemplateFunctionBase;
 use PeServer\Core\Mvc\Template\Plugin\TemplatePluginArgument;
@@ -124,7 +124,7 @@ class AssetFunction extends TemplateFunctionBase
 			'auto_size',
 			'include',
 		];
-		/** @var DOMElement|null */
+		/** @var HtmlTagElement|null */
 		$element = null;
 
 		if (Arr::tryGet($this->params, 'rel', $relValue)) {
