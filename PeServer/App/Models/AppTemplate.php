@@ -9,6 +9,7 @@ use PeServer\App\Models\AppTemplateOptions;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mvc\Template\ITemplateFactory;
 use PeServer\Core\Mvc\Template\TemplateParameter;
+use PeServer\Core\ProgramContext;
 use PeServer\Core\Web\UrlHelper;
 use PeServer\Core\Web\WebSecurity;
 
@@ -18,6 +19,7 @@ use PeServer\Core\Web\WebSecurity;
 final class AppTemplate
 {
 	public function __construct(
+		private ProgramContext $programContext,
 		private AppConfiguration $config,
 		private ITemplateFactory $templateFactory,
 		private WebSecurity $webSecurity,
@@ -36,7 +38,7 @@ final class AppTemplate
 	 */
 	private function buildTemplate(string $baseName, string $templateName, array $params, HttpStatus $status): string
 	{
-		$template = $this->templateFactory->createTemplate(new AppTemplateOptions('template' . DIRECTORY_SEPARATOR . $baseName, new UrlHelper(''), $this->webSecurity));
+		$template = $this->templateFactory->createTemplate(new AppTemplateOptions('template' . DIRECTORY_SEPARATOR . $baseName, $this->programContext, new UrlHelper(''), $this->webSecurity));
 		$result = $template->build($templateName . '.tpl', new TemplateParameter($status, $params, []));
 
 		return $result;

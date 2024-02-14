@@ -6,6 +6,7 @@ namespace PeServer\App\Models;
 
 use PeServer\App\Models\Configuration\AppSetting;
 use PeServer\Core\ArrayUtility;
+use PeServer\Core\ProgramContext;
 use PeServer\Core\Environment;
 use PeServer\Core\I18n;
 use PeServer\Core\IO\Directory;
@@ -25,33 +26,12 @@ class AppConfiguration
 {
 	#region variable
 
+	public readonly ProgramContext $context;
+
 	/**
 	 * 設定データ。
 	 */
 	public readonly AppSetting $setting;
-
-	/**
-	 * ルートディレクトリ。
-	 *
-	 * @var string
-	 */
-	public string $rootDirectoryPath;
-	/**
-	 * アプリケーションディレクトリ。
-	 *
-	 * `PeServer\*` を指すアプリコードの格納ルートディレクトリ。
-	 *
-	 * @var string
-	 */
-	public string $applicationDirectoryPath;
-	/**
-	 * 公開ディレクトリ。
-	 *
-	 * Webルート。
-	 *
-	 * @var string
-	 */
-	public string $publicDirectoryPath;
 
 	/**
 	 * URL ベースパス。
@@ -74,19 +54,17 @@ class AppConfiguration
 	/**
 	 * 初期化。
 	 *
-	 * @param string $rootDirectoryPath アプリケーションのルートディレクトリ
-	 * @param string $publicDirectoryPath 公開ルートディレクトリ
+	 * @param ProgramContext $programContext
 	 * @param SpecialStore $specialStore
 	 */
-	public function __construct(string $rootDirectoryPath, string $publicDirectoryPath, IUrlHelper $urlHelper, WebSecurity $webSecurity, SpecialStore $specialStore, Environment $environment)
+	public function __construct(ProgramContext $programContext, IUrlHelper $urlHelper, WebSecurity $webSecurity, SpecialStore $specialStore, Environment $environment)
 	{
-		$this->rootDirectoryPath = $rootDirectoryPath;
-		$this->applicationDirectoryPath = Path::combine($this->rootDirectoryPath, 'PeServer');
-		$this->settingDirectoryPath = Path::combine($this->applicationDirectoryPath, 'config');
-		$this->publicDirectoryPath = $publicDirectoryPath;
+		$this->context = $programContext;
 
-		$appConfig = self::load($this->settingDirectoryPath, $this->rootDirectoryPath, $this->applicationDirectoryPath, $this->publicDirectoryPath, $environment->get(), 'setting.json');
-		$i18nConfig = self::load($this->settingDirectoryPath, $this->rootDirectoryPath, $this->applicationDirectoryPath, $this->publicDirectoryPath, $environment->get(), 'i18n.json');
+		$this->settingDirectoryPath = Path::combine($this->context->applicationDirectory, 'config');
+
+		$appConfig = self::load($this->settingDirectoryPath, $this->context->rootDirectory, $this->context->applicationDirectory, $this->context->publicDirectory, $environment->get(), 'setting.json');
+		$i18nConfig = self::load($this->settingDirectoryPath, $this->context->rootDirectory, $this->context->applicationDirectory, $this->context->publicDirectory, $environment->get(), 'i18n.json');
 
 		$mapper = new Mapper();
 		$appSetting = new AppSetting();

@@ -34,8 +34,9 @@ class AppTemplateFactory extends TemplateFactory
 			$config = $this->container->get(AppConfiguration::class);
 
 			$customOptions = new TemplateOptions(
-				Path::combine($config->applicationDirectoryPath, 'App', 'Views'),
+				Path::combine($options->programContext->applicationDirectory, 'App', 'Views'),
 				$options->controllerName,
+				$options->programContext,
 				$options->urlHelper,
 				$options->webSecurity,
 				$config->setting->cache->template

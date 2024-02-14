@@ -13,6 +13,7 @@ use PeServer\Core\Mvc\Result\IActionResult;
 use PeServer\Core\Mvc\Template\ITemplateFactory;
 use PeServer\Core\Mvc\Template\TemplateOptions;
 use PeServer\Core\Mvc\Template\TemplateParameter;
+use PeServer\Core\ProgramContext;
 use PeServer\Core\Web\IUrlHelper;
 use PeServer\Core\Web\WebSecurity;
 
@@ -34,6 +35,7 @@ readonly class ViewActionResult implements IActionResult
 		protected string $actionName,
 		protected TemplateParameter $templateParameter,
 		protected array $headers,
+		protected ProgramContext $programContext,
 		protected ITemplateFactory $templateFactory,
 		protected IUrlHelper $urlHelper,
 		protected WebSecurity $webSecurity
@@ -58,6 +60,7 @@ readonly class ViewActionResult implements IActionResult
 		$options = new TemplateOptions(
 			__DIR__ . '/../../template',
 			'',
+			$this->programContext,
 			$this->urlHelper,
 			$this->webSecurity,
 			Path::combine(Directory::getTemporaryDirectory(), 'PeServer-Core', 'template')

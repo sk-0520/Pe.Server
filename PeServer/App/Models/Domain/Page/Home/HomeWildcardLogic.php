@@ -14,12 +14,13 @@ use PeServer\Core\Environment;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\IO\File;
 use PeServer\Core\Mime;
+use PeServer\Core\ProgramContext;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\HttpStatusException;
 
 class HomeWildcardLogic extends PageLogicBase
 {
-	public function __construct(LogicParameter $parameter, private AppConfiguration $config)
+	public function __construct(LogicParameter $parameter, private ProgramContext $programContext)
 	{
 		parent::__construct($parameter);
 	}
@@ -34,7 +35,7 @@ class HomeWildcardLogic extends PageLogicBase
 		$unsafeRequestPath = $this->getRequest('path');
 
 		$requestFileName = Path::getFileName($unsafeRequestPath);
-		$assetsDirPath = Path::combine($this->config->rootDirectoryPath, 'assets');
+		$assetsDirPath = Path::combine($this->programContext->rootDirectory, 'assets');
 		$targetPath = Path::combine($assetsDirPath, $requestFileName);
 
 		if (Text::startsWith($targetPath, $assetsDirPath, true)) {

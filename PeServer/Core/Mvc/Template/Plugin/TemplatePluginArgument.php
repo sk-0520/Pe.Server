@@ -20,8 +20,8 @@ class TemplatePluginArgument
 	 * 生成。
 	 *
 	 * @param Smarty $engine テンプレートエンジン。
-	 * @param string $rootDirectoryPath ルートディレクトリ。
-	 * @param string $baseDirectoryPath ベースディレクトリ。
+	 * @param string $rootDirectoryPath テンプレートファイルルートディレクトリのパス。
+	 * @param string $baseDirectoryPath テンプレートファイルベースディレクトリのパス。
 	 * @param IUrlHelper $urlHelper
 	 * @param WebSecurity $webSecurity
 	 * @param Environment $environment

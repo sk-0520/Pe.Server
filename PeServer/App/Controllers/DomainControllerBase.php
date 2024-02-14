@@ -15,6 +15,7 @@ use PeServer\Core\Mvc\Result\RedirectActionResult;
 use PeServer\Core\Mvc\Result\ViewActionResult;
 use PeServer\Core\Mvc\Template\ITemplateFactory;
 use PeServer\Core\Mvc\Template\TemplateParameter;
+use PeServer\Core\ProgramContext;
 use PeServer\Core\Web\IUrlHelper;
 use PeServer\Core\Web\UrlPath;
 use PeServer\Core\Web\UrlQuery;
@@ -44,11 +45,12 @@ abstract class DomainControllerBase extends ControllerBase
 		string $actionName,
 		TemplateParameter $templateParameter,
 		array $headers,
+		ProgramContext $programContext,
 		ITemplateFactory $templateFactory,
 		IUrlHelper $urlHelper,
 		WebSecurity $webSecurity
 	): ViewActionResult {
-		return new AppViewActionResult($templateBaseName, $actionName, $templateParameter, $headers, $templateFactory, $urlHelper, $webSecurity);
+		return new AppViewActionResult($templateBaseName, $actionName, $templateParameter, $headers, $programContext, $templateFactory, $urlHelper, $webSecurity);
 	}
 
 	protected function redirectPath(UrlPath|string $path, ?UrlQuery $query = null): RedirectActionResult

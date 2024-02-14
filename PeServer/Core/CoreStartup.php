@@ -19,6 +19,7 @@ use PeServer\Core\Http\IResponsePrinterFactory;
 use PeServer\Core\Http\RequestPath;
 use PeServer\Core\Http\ResponsePrinter;
 use PeServer\Core\Http\ResponsePrinterFactory;
+use PeServer\Core\IO\Path;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\ILoggerFactory;
 use PeServer\Core\Log\ILogProvider;
@@ -84,6 +85,13 @@ class CoreStartup
 
 		$logging = new Logging(Arr::getOr($options, 'special_store', new SpecialStore()));
 		$container->registerValue($logging, Logging::class);
+
+		$programContext = new ProgramContext(
+			$this->startupOptions->root,
+			Path::combine($this->startupOptions->root, 'PeServer'),
+			Path::combine($this->startupOptions->root, $this->startupOptions->public)
+		);
+		$container->registerValue($programContext, ProgramContext::class);
 
 		$container->registerValue($environment, Environment::class);
 		$container->registerValue($this->startupOptions, StartupOptions::class);

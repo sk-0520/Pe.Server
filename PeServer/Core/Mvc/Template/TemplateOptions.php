@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Template;
 
+use PeServer\Core\ProgramContext;
 use PeServer\Core\Web\IUrlHelper;
 use PeServer\Core\Web\WebSecurity;
 
@@ -27,6 +28,7 @@ class TemplateOptions
 	public function __construct(
 		public string $rootDirectoryPath,
 		public string $baseDirectoryName,
+		public ProgramContext $programContext,
 		public IUrlHelper $urlHelper,
 		public WebSecurity $webSecurity,
 		public string $temporaryDirectoryPath

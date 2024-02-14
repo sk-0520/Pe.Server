@@ -7,6 +7,7 @@ namespace PeServer\Core\Mvc;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\ILoggerFactory;
 use PeServer\Core\Mvc\Template\ITemplateFactory;
+use PeServer\Core\ProgramContext;
 use PeServer\Core\Store\Stores;
 use PeServer\Core\Web\IUrlHelper;
 use PeServer\Core\Web\WebSecurity;
@@ -24,6 +25,7 @@ readonly class ControllerArgument
 	 */
 	public function __construct(
 		public Stores $stores,
+		public ProgramContext $programContext,
 		public ILogicFactory $logicFactory,
 		public ITemplateFactory $templateFactory,
 		public IUrlHelper $urlHelper,

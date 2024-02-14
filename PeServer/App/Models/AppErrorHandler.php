@@ -23,6 +23,7 @@ use PeServer\Core\Mvc\Template\ITemplateFactory;
 use PeServer\Core\Mvc\Template\TemplateFactory;
 use PeServer\Core\Mvc\Template\TemplateOptions;
 use PeServer\Core\Mvc\Template\TemplateParameter;
+use PeServer\Core\ProgramContext;
 use PeServer\Core\Serialization\JsonSerializer;
 use PeServer\Core\Text;
 use PeServer\Core\Web\IUrlHelper;
@@ -43,7 +44,7 @@ final class AppErrorHandler extends HttpErrorHandler
 		RequestPath $requestPath,
 		TemplateFactory $templateFactory,
 		private IResponsePrinterFactory $responsePrinterFactory,
-		private AppConfiguration $config,
+		private ProgramContext $programContext,
 		private IUrlHelper $urlHelper,
 		private WebSecurity $webSecurity,
 		?JsonSerializer $jsonSerializer,
@@ -122,12 +123,13 @@ final class AppErrorHandler extends HttpErrorHandler
 				$response->header->addValue(ContentType::NAME, Mime::JSON);
 				$response->content = $this->jsonSerializer->save($json);
 			} else {
-				$rootDir = Path::combine($this->config->applicationDirectoryPath, 'App', 'Views');
+				$rootDir = Path::combine($this->programContext->applicationDirectory, 'App', 'Views');
 				$baseDir = Path::combine('template', 'page');
 
 				$options = new TemplateOptions(
 					$rootDir,
 					$baseDir,
+					$this->programContext,
 					$this->urlHelper,
 					$this->webSecurity,
 					Path::combine(Directory::getTemporaryDirectory(), 'PeServer-App')

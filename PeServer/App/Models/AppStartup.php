@@ -20,6 +20,7 @@ use PeServer\App\Models\Domain\AccessLogManager;
 use PeServer\App\Models\Domain\AppArchiver;
 use PeServer\App\Models\Domain\AppEraser;
 use PeServer\Core\Collection\Arr;
+use PeServer\Core\ProgramContext;
 use PeServer\Core\CoreStartup;
 use PeServer\Core\Database\IDatabaseConnection;
 use PeServer\Core\StartupOptions;
@@ -62,10 +63,8 @@ class AppStartup extends CoreStartup
 		/** @var ILogProvider */
 		$logProvider = $container->get(ILogProvider::class);
 
-		$publicDir = Path::combine($this->startupOptions->root, $this->startupOptions->public);
 		$appConfig = new AppConfiguration(
-			$this->startupOptions->root,
-			$publicDir,
+			$container->get(ProgramContext::class),
 			Arr::getOr($options, 'url_helper', new UrlHelper('')),
 			$container->get(WebSecurity::class),
 			Arr::getOr($options, 'special_store', new SpecialStore()),

@@ -16,6 +16,7 @@ use PeServer\Core\Mvc\Template\ITemplateFactory;
 use PeServer\Core\Mvc\Template\TemplateFactory;
 use PeServer\Core\Mvc\Template\TemplateOptions;
 use PeServer\Core\Mvc\Template\TemplateParameter;
+use PeServer\Core\ProgramContext;
 use PeServer\Core\Throws\HttpStatusException;
 use PeServer\Core\Web\UrlHelper;
 use PeServer\Core\Web\WebSecurity;
@@ -33,6 +34,9 @@ class HttpErrorHandler extends ErrorHandler
 
 	#[Inject] //@phpstan-ignore-next-line [INJECT]
 	private WebSecurity $webSecurity;
+
+	#[Inject] //@phpstan-ignore-next-line [INJECT]
+	private ProgramContext $programContext;
 
 	#endregion
 
@@ -122,6 +126,7 @@ class HttpErrorHandler extends ErrorHandler
 		$options = new TemplateOptions(
 			Path::combine(__DIR__, '..'),
 			'template',
+			$this->programContext,
 			UrlHelper::none(),
 			$this->webSecurity,
 			Path::combine(Directory::getTemporaryDirectory(), 'PeServer-Core')

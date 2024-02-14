@@ -19,6 +19,7 @@ use PeServer\Core\Mvc\Result\RedirectActionResult;
 use PeServer\Core\Mvc\Result\ViewActionResult;
 use PeServer\Core\Mvc\Template\ITemplateFactory;
 use PeServer\Core\Mvc\Template\TemplateParameter;
+use PeServer\Core\ProgramContext;
 use PeServer\Core\ReflectionUtility;
 use PeServer\Core\Store\Stores;
 use PeServer\Core\Text;
@@ -48,6 +49,7 @@ abstract class ControllerBase
 	protected readonly ILoggerFactory $loggerFactory;
 
 	protected readonly Stores $stores;
+	protected readonly ProgramContext $programContext;
 	protected readonly ILogicFactory $logicFactory;
 	protected readonly ITemplateFactory $templateFactory;
 	protected readonly IUrlHelper $urlHelper;
@@ -66,6 +68,7 @@ abstract class ControllerBase
 	protected function __construct(ControllerArgument $argument)
 	{
 		$this->stores = $argument->stores;
+		$this->programContext = $argument->programContext;
 		$this->logicFactory = $argument->logicFactory;
 		$this->templateFactory = $argument->templateFactory;
 		$this->urlHelper = $argument->urlHelper;
@@ -170,11 +173,12 @@ abstract class ControllerBase
 		string $actionName,
 		TemplateParameter $templateParameter,
 		array $headers,
+		ProgramContext $programContext,
 		ITemplateFactory $templateFactory,
 		IUrlHelper $urlHelper,
 		WebSecurity $webSecurity,
 	): ViewActionResult {
-		return new ViewActionResult($templateBaseName, $actionName, $templateParameter, $headers, $templateFactory, $urlHelper, $webSecurity);
+		return new ViewActionResult($templateBaseName, $actionName, $templateParameter, $headers, $programContext, $templateFactory, $urlHelper, $webSecurity);
 	}
 
 	/**
@@ -199,7 +203,7 @@ abstract class ControllerBase
 		$templateDirPath = Text::replace($controllerBaseName, '\\', DIRECTORY_SEPARATOR);
 		assert($templateDirPath);
 
-		return $this->createViewActionResult($templateDirPath, $action, $parameter, $this->getResponseHeaders(), $this->templateFactory, $this->urlHelper, $this->webSecurity);
+		return $this->createViewActionResult($templateDirPath, $action, $parameter, $this->getResponseHeaders(), $this->programContext, $this->templateFactory, $this->urlHelper, $this->webSecurity);
 	}
 
 	/**

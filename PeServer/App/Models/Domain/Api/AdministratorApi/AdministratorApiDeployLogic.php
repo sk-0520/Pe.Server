@@ -24,6 +24,7 @@ use PeServer\Core\IO\Path;
 use PeServer\Core\Log\ILoggerFactory;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
+use PeServer\Core\ProgramContext;
 use PeServer\Core\Serialization\BuiltinSerializer;
 use PeServer\Core\Serialization\JsonSerializer;
 use PeServer\Core\Text;
@@ -49,6 +50,7 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 
 	public function __construct(
 		LogicParameter $parameter,
+		private ProgramContext $programContext,
 		private AppConfiguration $appConfig,
 		private AppArchiver $appArchiver,
 		private AppDatabaseConnection $databaseConnection,
@@ -232,7 +234,7 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 		$expandFilePaths = Directory::getFiles($expandDirPath, true);
 		foreach ($expandFilePaths as $expandFilePath) {
 			$basePath = Text::substring($expandFilePath, Text::getLength($expandDirPath) + 1);
-			$toPath = Path::combine($this->appConfig->rootDirectoryPath, $basePath);
+			$toPath = Path::combine($this->programContext->rootDirectory, $basePath);
 
 			//$this->logger->info('UPDATE: {0}', $toPath);
 
