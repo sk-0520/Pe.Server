@@ -356,7 +356,7 @@ class DiContainer extends DisposerBase implements IDiContainer
 		return isset($this->mapping[$id]);
 	}
 
-	public function get(string $id): mixed //@phpstan-ignore-line [TYPE_INTERFACE]
+	public function get(string $id): object //@phpstan-ignore-line [TYPE_INTERFACE]
 	{
 		$this->throwIfDisposed();
 
@@ -369,7 +369,7 @@ class DiContainer extends DisposerBase implements IDiContainer
 		return $this->create($item, [], 0, false, [$item]);
 	}
 
-	public function new(string $idOrClassName, array $arguments = []): mixed
+	public function new(string $idOrClassName, array $arguments = []): object
 	{
 		$this->throwIfDisposed();
 

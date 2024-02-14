@@ -52,7 +52,7 @@ class DiRegisterContainerTest extends TestClass
 
 	public function test_get_value()
 	{
-		$expected = self::class;
+		$expected = new A();
 		$dc = new DiRegisterContainer();
 		$dc->add('ID', new DiItem(DiItem::LIFECYCLE_SINGLETON, DiItem::TYPE_VALUE, $expected));
 		$actual = $dc->get('ID');

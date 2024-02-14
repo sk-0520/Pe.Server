@@ -30,25 +30,29 @@ interface IDiContainer extends ContainerInterface
 	/**
 	 * 指定したIDのオブジェクトを取得。
 	 *
-	 * @param class-string|non-empty-string $id
-	 * @return mixed
+	 * @template T of object
+	 * @param class-string|class-string<T>|non-empty-string $id
+	 * @return object
+	 * @phpstan-return ($id is class-string<T> ? T: object)
 	 * @throws DiContainerException
 	 */
-	public function get(string $id): mixed; //@phpstan-ignore-line [TYPE_INTERFACE]
+	public function get(string $id): object; //@phpstan-ignore-line [TYPE_INTERFACE]
 
 	/**
 	 * クラス生成。
 	 *
-	 * @param class-string|non-empty-string $idOrClassName
+	 * @template T of object
+	 * @param class-string|class-string<T>|non-empty-string $idOrClassName
 	 * @param array<int|string,mixed> $arguments 生成パラメータ指定。
 	 *  * int: 引数位置(0基点)。負数の場合で 0 に近い項目で割り当て可能(非`null`)なパラメータであれば順に消費されていく。
 	 *  * string: 先頭が `$` で始まる場合は引数名、それ以外は型名と判断。型名の場合は一致するごとに消費されていく。
 	 *  * 引数位置指定が優先される
 	 *  * 未指定パラメータはDIコンテナ側で生成する
-	 * @return mixed
+	 * @return object
+	 * @phpstan-return ($idOrClassName is class-string<T> ? T: object)
 	 * @throws DiContainerArgumentException パラメータ指定さている場合に対象ID($idOrClassName)がシングルトン・値の場合に投げられる。
 	 */
-	public function new(string $idOrClassName, array $arguments = []): mixed;
+	public function new(string $idOrClassName, array $arguments = []): object;
 
 	/**
 	 * コールバックを実施。
