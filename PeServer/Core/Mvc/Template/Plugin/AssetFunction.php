@@ -89,8 +89,8 @@ class AssetFunction extends TemplateFunctionBase
 		$resourcePath = $sourcePath;
 		if (!$ignoreAsset) {
 			if ($isProduction) {
-				$minimalPath = Path::setEnvironmentName($sourcePath, 'min');
-				$physicalPath = Path::combine(__DIR__, '..', '..', '..', '..', '..', $minimalPath);
+				$minimalPath = Text::trim(Path::setEnvironmentName($sourcePath, 'min'));
+				$physicalPath = Path::combine($this->argument->programContext->publicDirectory, $minimalPath);
 				if (IOUtility::exists($physicalPath)) {
 					$resourcePath = Text::replace($minimalPath, "\\", '/');
 				}
