@@ -29,6 +29,8 @@ class JsonSerializer extends SerializerBase
 	public const LOAD_NONE = 0;
 	public const LOAD_DEFAULT = self::LOAD_NONE;
 
+	public const DEFAULT_DEPTH = 512;
+
 	#endregion
 
 	/**
@@ -44,7 +46,7 @@ class JsonSerializer extends SerializerBase
 	public function __construct(
 		protected int $saveOption = self::SAVE_DEFAULT,
 		protected int $loadOption = self::LOAD_DEFAULT,
-		protected int $depth = 512
+		protected int $depth = self::DEFAULT_DEPTH
 	) {
 	}
 
