@@ -101,7 +101,7 @@ jobs:
 
       - name: <Archive> Application
         shell: bash
-        run: tar cfv package.tar public_html PeServer
+        run: tar cfv package.tar assets public_html PeServer
 
       - name: <Artifact> Application
         uses: actions/upload-artifact@v4
@@ -241,8 +241,7 @@ jobs:
       - code-backend
       - test-backend-st
 
-    #if: github.ref == 'refs/heads/master' && github.event_name == 'push'
-    if: (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/#25-public_html') && github.event_name == 'push'
+    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
 
     runs-on: ubuntu-latest
 
