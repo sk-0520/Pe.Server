@@ -35,7 +35,7 @@ class AdministratorApiBackupLogic extends ApiLogicBase
 
 		// 日曜だけバックアップ送信でいいわ
 		$week = (int)$this->beginTimestamp->format('w');
-		if($week === 0) {
+		if ($week === 0) {
 			$this->appArchiver->sendLatestArchive(AdministratorApiBackupLogic::class, true);
 		}
 
