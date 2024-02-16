@@ -10,6 +10,7 @@ use PeServer\App\Models\Domain\AppArchiver;
 use PeServer\App\Models\ResponseJson;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
+use PeServer\Core\Utc;
 
 class AdministratorApiBackupLogic extends ApiLogicBase
 {
@@ -32,7 +33,11 @@ class AdministratorApiBackupLogic extends ApiLogicBase
 
 		$this->writeAuditLogCurrentUser(AuditLog::API_ADMINISTRATOR_BACKUP, ['size' => $size]);
 
-		$this->appArchiver->sendLatestArchive(true);
+		// 日曜だけバックアップ送信でいいわ
+		$week = (int)$this->beginTimestamp->format('w');
+		if($week === 0) {
+			$this->appArchiver->sendLatestArchive(AdministratorApiBackupLogic::class, true);
+		}
 
 		$this->setResponseJson(ResponseJson::success([
 			'size' => $size,

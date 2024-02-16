@@ -102,7 +102,7 @@ class AppArchiver
 		}
 	}
 
-	public function sendLatestArchive(bool $ignoreError): void
+	public function sendLatestArchive(string $subject, bool $ignoreError): void
 	{
 		$backupFiles = $this->getFiles();
 		if (Arr::isNullOrEmpty($backupFiles)) {
@@ -116,7 +116,7 @@ class AppArchiver
 		$backupFileName = Path::getFileName($backupFilePath);
 		assert(!Text::isNullOrWhiteSpace($backupFileName));
 
-		$this->mailer->subject = "[Backup] {$backupFileName}";
+		$this->mailer->subject = "[Backup] {$subject} {$backupFileName}";
 		$this->mailer->setMessage(new EmailMessage(
 			"バックアップ実施"
 		));
