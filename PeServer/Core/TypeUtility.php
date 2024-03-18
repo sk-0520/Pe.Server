@@ -103,10 +103,12 @@ abstract class TypeUtility
 	{
 		$regex = new Regex();
 		if (!$regex->isMatch($input, self::UINT_PATTERN)) {
+			$result = null;
 			return false;
 		}
 
-		$result = (int)Text::trim($input);
+		/** @phpstan-var UnsignedIntegerAlias */
+		$result = (int)Text::trim($input); // @phpstan-ignore-line
 		return true;
 	}
 

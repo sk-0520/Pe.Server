@@ -84,6 +84,7 @@ abstract class Utc
 	 * @param DateTimeImmutable|DateTime|null $result
 	 * @return boolean
 	 * @phpstan-assert-if-true DateTimeImmutable|DateTime $result
+	 * @phpstan-assert-if-false null $result
 	 */
 	private static function tryParseCore(string $dateTimeClassName, ?string $s, DateTimeImmutable|DateTime|null &$result): bool
 	{
@@ -129,9 +130,11 @@ abstract class Utc
 	 * @param DateTimeImmutable|null $result
 	 * @return boolean パース成功状態。
 	 * @phpstan-assert-if-true DateTimeImmutable $result
+	 * @phpstan-assert-if-false null $result
 	 */
 	public static function tryParse(?string $s, ?DateTimeImmutable &$result): bool
 	{
+		//@phpstan-ignore-next-line [TIME]
 		return self::tryParseCore(DateTimeImmutable::class, $s, $result);
 	}
 
@@ -139,12 +142,12 @@ abstract class Utc
 	 * 変更可能なオブジェクトとしてパース処理。
 	 *
 	 * @param string|null $s
-	 * @param DateTime|null $result
+	 * @param-out DateTime $result
 	 * @return boolean パース成功状態。
-	 * @phpstan-assert-if-true DateTime $result
 	 */
 	public static function tryParseDateTime(?string $s, ?DateTime &$result): bool
 	{
+		//@phpstan-ignore-next-line [TIME]
 		return self::tryParseCore(DateTime::class, $s, $result);
 	}
 

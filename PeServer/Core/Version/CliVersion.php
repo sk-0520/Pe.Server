@@ -9,7 +9,9 @@ use Stringable;
 use PeServer\Core\Collection\Arr;
 use PeServer\Core\Regex;
 use PeServer\Core\Text;
+use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\ParseException;
+use PeServer\Core\Throws\RegexException;
 use PeServer\Core\TypeUtility;
 
 /**
@@ -71,6 +73,16 @@ readonly class CliVersion implements Stringable
 
 	#region function
 
+	/**
+	 *
+	 * @param null|string $s
+	 * @param null|CliVersion $result
+	 * @return bool
+	 * @phpstan-assert-if-true CliVersion $result
+	 * @phpstan-assert-if-false null $result
+	 * @throws ArgumentException
+	 * @throws RegexException
+	 */
 	private static function tryParseCore(?string $s, ?CliVersion &$result): bool
 	{
 		if (Text::isNullOrWhiteSpace($s)) {
