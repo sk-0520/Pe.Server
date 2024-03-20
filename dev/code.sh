@@ -12,7 +12,7 @@ PPLINT_URL=https://github.com/php-parallel-lint/PHP-Parallel-Lint/releases/downl
 PPLINT_NAME=parallel-lint.phar
 PPLINT_FILE=${PPLINT_NAME}.${PPLINT_VERSION}
 
-PHPSTAN_VERSION=1.10.62
+PHPSTAN_VERSION=1.10.63
 PHPSTAN_URL=https://github.com/phpstan/phpstan/releases/download/${PHPSTAN_VERSION}/phpstan.phar
 PHPSTAN_NAME=phpstan.phar
 PHPSTAN_FILE=${PHPSTAN_NAME}.${PHPSTAN_VERSION}
