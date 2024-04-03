@@ -19,7 +19,7 @@ PHPSTAN_FILE=${PHPSTAN_NAME}.${PHPSTAN_VERSION}
 PHPSTAN_BLEEDING_EDGE_NAME=bleedingEdge.neon
 PHPSTAN_BLEEDING_EDGE_URL=https://raw.githubusercontent.com/phpstan/phpstan-src/${PHPSTAN_VERSION}/conf/bleedingEdge.neon
 
-PHPCODESNIFFER_VERSION=3.9.0
+PHPCODESNIFFER_VERSION=3.9.1
 PHPCODESNIFFER_S_URL=https://github.com/PHPCSStandards/PHP_CodeSniffer/releases/download/${PHPCODESNIFFER_VERSION}/phpcs.phar
 PHPCODESNIFFER_BF_URL=https://github.com/PHPCSStandards/PHP_CodeSniffer/releases/download/${PHPCODESNIFFER_VERSION}/phpcbf.phar
 PHPCODESNIFFER_S_NAME=phpcs.phar
