@@ -37,7 +37,10 @@ class ManagementVersionLogic extends PageLogicBase
 	{
 		$this->registerParameterKeys([
 			'version',
+			'release_url',
 		], true);
+
+		$this->setValue('release_url', $this->config->setting->api->releaseUrl);
 	}
 
 	protected function validateImpl(LogicCallMode $callMode): void
@@ -60,7 +63,6 @@ class ManagementVersionLogic extends PageLogicBase
 			$version = $peSettingEntityDao->selectPeSettingVersion();
 
 			$this->setValue('version', $version);
-
 			return;
 		}
 

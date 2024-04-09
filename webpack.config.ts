@@ -30,6 +30,7 @@ export default function (env: { [key: string]: string }, args: any): webpack.Con
 			"scripts/management_database_maintenance": path.join(inputDirectory, './scripts/entry/management_database_maintenance.ts'),
 			"scripts/management_feedback_list": path.join(inputDirectory, './scripts/entry/management_feedback_list.ts'),
 			"scripts/management_crash_report_list": path.join(inputDirectory, './scripts/entry/management_crash_report_list.ts'),
+			"scripts/management_version": path.join(inputDirectory, './scripts/entry/management_version.ts'),
 			// 共通スタイル
 			"styles/style": path.join(inputDirectory, './styles/style.scss'),
 		},

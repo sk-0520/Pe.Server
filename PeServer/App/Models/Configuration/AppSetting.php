@@ -33,6 +33,8 @@ class AppSetting
 
 	public MailSetting $mail;
 
+	public ApiSetting $api;
+
 	public DebugSetting $debug;
 
 	#endregion
