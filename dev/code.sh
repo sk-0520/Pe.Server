@@ -7,7 +7,7 @@ source shell/common.sh
 #shellcheck disable=SC2048,SC2086
 common::parse_options "ignore-pplint! ignore-phpstan! ignore-phpcs! phpcs-fix! phpcs:report phpcs:ignore-warning! phpcs:cache" $*
 
-PPLINT_VERSION=v1.3.2
+PPLINT_VERSION=v1.4.0
 PPLINT_URL=https://github.com/php-parallel-lint/PHP-Parallel-Lint/releases/download/${PPLINT_VERSION}/parallel-lint.phar
 PPLINT_NAME=parallel-lint.phar
 PPLINT_FILE=${PPLINT_NAME}.${PPLINT_VERSION}
