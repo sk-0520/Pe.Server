@@ -669,6 +669,7 @@ class DatabaseContextTest extends TestClass
 		$database->execute("insert into TBL(COL, VAL) values (10, 'A'), (20, 'B')");
 		$this->expectException(SqlException::class);
 		$database->update('select * from TBL');
+		$this->fail();
 	}
 
 	public function test_updateByKey()
@@ -688,6 +689,7 @@ class DatabaseContextTest extends TestClass
 		$database->execute("insert into TBL(COL, VAL) values (10, 'A'), (20, 'B')");
 		$this->expectException(DatabaseException::class);
 		$database->updateByKey('update TBL set VAL = VAL || VAL');
+		$this->fail();
 	}
 
 	public function test_updateByKeyOrNothing()
@@ -771,6 +773,7 @@ class DatabaseContextTest extends TestClass
 		$database->execute("insert into TBL(COL, VAL) values (10, 'A'), (20, 'B')");
 		$this->expectException(DatabaseException::class);
 		$database->deleteByKeyOrNothing('delete from TBL');
+		$this->fail();
 	}
 }
 
