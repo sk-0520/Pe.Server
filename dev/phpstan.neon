@@ -58,4 +58,4 @@ parameters:
     CookieSameSiteAlias: '"Lax"|"lax"|"None"|"none"|"Strict"|"strict"'
 
 includes:
-  - ./bleedingEdge.neon
+  - phar://phpstan.phar/conf/bleedingEdge.neon

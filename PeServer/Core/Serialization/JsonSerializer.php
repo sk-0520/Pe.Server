@@ -62,6 +62,7 @@ class JsonSerializer extends SerializerBase
 		return new Binary($json);
 	}
 
+	//@phpstan-ignore return.unusedType (objectは返らないけどインターフェイス的にこうなる)
 	protected function loadImpl(Binary $value): array|object
 	{
 		$value = json_decode($value->toString(), true, $this->depth, $this->loadOption | JSON_THROW_ON_ERROR);
