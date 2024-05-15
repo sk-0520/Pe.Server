@@ -12,12 +12,12 @@ PPLINT_URL=https://github.com/php-parallel-lint/PHP-Parallel-Lint/releases/downl
 PPLINT_NAME=parallel-lint.phar
 PPLINT_FILE=${PPLINT_NAME}.${PPLINT_VERSION}
 
-PHPSTAN_VERSION=1.10.67
+PHPSTAN_VERSION=1.11.1
 PHPSTAN_URL=https://github.com/phpstan/phpstan/releases/download/${PHPSTAN_VERSION}/phpstan.phar
 PHPSTAN_NAME=phpstan.phar
 PHPSTAN_FILE=${PHPSTAN_NAME}.${PHPSTAN_VERSION}
-PHPSTAN_BLEEDING_EDGE_NAME=bleedingEdge.neon
-PHPSTAN_BLEEDING_EDGE_URL=https://raw.githubusercontent.com/phpstan/phpstan-src/${PHPSTAN_VERSION}/conf/bleedingEdge.neon
+# PHPSTAN_BLEEDING_EDGE_NAME=bleedingEdge.neon
+# PHPSTAN_BLEEDING_EDGE_URL=https://raw.githubusercontent.com/phpstan/phpstan-src/${PHPSTAN_VERSION}/conf/bleedingEdge.neon
 
 PHPCODESNIFFER_VERSION=3.9.1
 PHPCODESNIFFER_S_URL=https://github.com/PHPCSStandards/PHP_CodeSniffer/releases/download/${PHPCODESNIFFER_VERSION}/phpcs.phar
@@ -34,7 +34,7 @@ fi
 if ! common::exists_option 'ignore-phpstan' ; then
 	common::download_phar_if_not_exists "${PHPSTAN_FILE}" "${PHPSTAN_NAME}" "${PHPSTAN_URL}"
 	if [ "${COMMON_DOWNLOAD_PHAR_RESULT}" = "DOWNLOAD" ] ; then
-		curl --output "${PHPSTAN_BLEEDING_EDGE_NAME}" --location "${PHPSTAN_BLEEDING_EDGE_URL}"
+		# curl --output "${PHPSTAN_BLEEDING_EDGE_NAME}" --location "${PHPSTAN_BLEEDING_EDGE_URL}"
 		cp "${PHPSTAN_FILE}" "${PHPSTAN_NAME}"
 	fi
 fi
@@ -51,7 +51,7 @@ if ! common::exists_option 'ignore-pplint' ; then
 fi
 
 if ! common::exists_option 'ignore-phpstan' ; then
-	php "${PHPSTAN_FILE}" analyze --configuration phpstan.neon
+	php "${PHPSTAN_FILE}" -v analyze --configuration phpstan.neon
 fi
 
 if ! common::exists_option 'ignore-phpcs' ; then
