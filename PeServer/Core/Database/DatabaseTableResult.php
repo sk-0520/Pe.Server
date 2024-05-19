@@ -37,7 +37,7 @@ class DatabaseTableResult extends DatabaseResultBase
 	 * レコード件数。
 	 *
 	 * @return int
-	 * @phpstan-return UnsignedIntegerAlias
+	 * @phpstan-return non-negative-int
 	 */
 	public function getRowsCount(): int
 	{

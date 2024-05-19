@@ -49,7 +49,6 @@ parameters:
     - '/Class PeServer\\App\\Models\\Configuration\\\w+Setting(Base)? has an uninitialized @readonly property \$\w+\. Assign it in the constructor\./'
 
   typeAliases:
-    UnsignedIntegerAlias: 'int<0, max>'
     LogMessageAlias: 'object|array<mixed>|null|literal-string'
     ServerStoreValueAlias: 'string|int|array<int|string|null>|object|null'
     DatabaseBindValueAlias: 'string|int|float|bool'

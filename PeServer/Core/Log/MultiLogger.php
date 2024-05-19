@@ -16,7 +16,7 @@ final class MultiLogger implements ILogger
 	 * 生成。
 	 *
 	 * @param int $baseTraceIndex
-	 * @phpstan-param UnsignedIntegerAlias $baseTraceIndex
+	 * @phpstan-param non-negative-int $baseTraceIndex
 	 * @param ILogger[] $loggers ロガー一覧。
 	 */
 	public function __construct(
@@ -35,7 +35,7 @@ final class MultiLogger implements ILogger
 	 * @phpstan-param ILogger::LOG_LEVEL_* $level
 	 * @param int $level
 	 * @param int $traceIndex
-	 * @phpstan-param UnsignedIntegerAlias $traceIndex
+	 * @phpstan-param non-negative-int $traceIndex
 	 * @param mixed $message
 	 * @phpstan-param LogMessageAlias $message
 	 * @param mixed ...$parameters

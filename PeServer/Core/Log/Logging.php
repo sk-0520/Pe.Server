@@ -180,7 +180,7 @@ class Logging
 	 * @phpstan-param ILogger::LOG_LEVEL_* $level 有効レベル。S
 	 * @param int $level
 	 * @param int $traceIndex
-	 * @phpstan-param UnsignedIntegerAlias $traceIndex
+	 * @phpstan-param non-negative-int $traceIndex
 	 * @param non-empty-string $header
 	 * @param mixed $message
 	 * @phpstan-param LogMessageAlias $message

@@ -37,7 +37,7 @@ class DatabaseSequenceResult extends DatabaseResultBase implements Iterator
 	 *
 	 * 行件数なのか影響件数なのかわけわかんなくなってきた。
 	 *
-	 * @phpstan-var UnsignedIntegerAlias
+	 * @phpstan-var non-negative-int
 	 */
 	private int $resultCount = 0;
 
@@ -93,7 +93,7 @@ class DatabaseSequenceResult extends DatabaseResultBase implements Iterator
 
 	/**
 	 * @return int
-	 * @phpstan-return UnsignedIntegerAlias
+	 * @phpstan-return non-negative-int
 	 */
 	public function key(): mixed
 	{
@@ -155,7 +155,7 @@ class LocalSequenceIterator extends DatabaseResultBase implements Iterator
 
 	/**
 	 * @return int
-	 * @phpstan-return UnsignedIntegerAlias
+	 * @phpstan-return non-negative-int
 	 */
 	public function key(): mixed
 	{

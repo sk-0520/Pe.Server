@@ -38,7 +38,7 @@ interface ILogProvider
 	 *
 	 * @param non-empty-string $header
 	 * @param int $baseTraceIndex
-	 * @phpstan-param UnsignedIntegerAlias $baseTraceIndex
+	 * @phpstan-param non-negative-int $baseTraceIndex
 	 * @return ILogger[]
 	 */
 	public function create(string $header, int $baseTraceIndex): array;

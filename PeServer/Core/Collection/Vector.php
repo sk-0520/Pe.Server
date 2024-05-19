@@ -14,7 +14,7 @@ use PeServer\Core\TypeUtility;
  * 一次元配列。
  *
  * @template TValue
- * @phpstan-extends TypeArrayBase<UnsignedIntegerAlias,TValue>
+ * @phpstan-extends TypeArrayBase<non-negative-int,TValue>
  */
 class Vector extends TypeArrayBase
 {
@@ -123,7 +123,7 @@ class Vector extends TypeArrayBase
 			$this->isValidType($value);
 		}
 
-		/** @phpstan-var array<UnsignedIntegerAlias,TValue> $items */
+		/** @phpstan-var array<non-negative-int,TValue> $items */
 		$this->items = array_merge($this->items, $items);
 
 		return $this;
@@ -135,7 +135,7 @@ class Vector extends TypeArrayBase
 
 	/**
 	 * @param int $offset
-	 * @phpstan-param UnsignedIntegerAlias $offset
+	 * @phpstan-param non-negative-int $offset
 	 */
 	public function offsetExists(mixed $offset): bool
 	{
@@ -145,7 +145,7 @@ class Vector extends TypeArrayBase
 	}
 	/**
 	 * @param int $offset
-	 * @phpstan-param UnsignedIntegerAlias $offset
+	 * @phpstan-param non-negative-int $offset
 	 * @phpstan-return TValue $value
 	 */
 	public function offsetGet(mixed $offset): mixed
@@ -160,7 +160,7 @@ class Vector extends TypeArrayBase
 	}
 	/**
 	 * @param int|null $offset
-	 * @phpstan-param UnsignedIntegerAlias|null $offset
+	 * @phpstan-param non-negative-int|null $offset
 	 * @phpstan-param TValue $value
 	 * @throws IndexOutOfRangeException
 	 */
@@ -179,7 +179,7 @@ class Vector extends TypeArrayBase
 	}
 	/**
 	 * @param int $offset
-	 * @phpstan-param UnsignedIntegerAlias $offset
+	 * @phpstan-param non-negative-int $offset
 	 */
 	public function offsetUnset(mixed $offset): void
 	{

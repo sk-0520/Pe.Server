@@ -60,7 +60,7 @@ class FileLogger extends LoggerBase
 		Enforce::throwIfNullOrWhiteSpace($baseFileName);
 		$this->baseFileName = $baseFileName;
 
-		/** @phpstan-var UnsignedIntegerAlias */
+		/** @phpstan-var non-negative-int */
 		$count = Arr::getOr($this->options->configuration, 'count', 0);
 		Enforce::throwIf(0 <= $count); //@phpstan-ignore-line [DOCTYPE]
 		$this->cleanup($count);
@@ -85,7 +85,7 @@ class FileLogger extends LoggerBase
 	 * 破棄処理内部実装。
 	 *
 	 * @param int $maxCount
-	 * @phpstan-param UnsignedIntegerAlias $maxCount
+	 * @phpstan-param non-negative-int $maxCount
 	 * @param string $filePattern
 	 */
 	private function cleanupCore(int $maxCount, string $filePattern): void
@@ -106,7 +106,7 @@ class FileLogger extends LoggerBase
 	 * 破棄処理。
 	 *
 	 * @param int $maxCount
-	 * @phpstan-param UnsignedIntegerAlias $maxCount
+	 * @phpstan-param non-negative-int $maxCount
 	 */
 	private function cleanup(int $maxCount): void
 	{

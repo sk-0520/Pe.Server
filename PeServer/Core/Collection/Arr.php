@@ -106,7 +106,7 @@ class Arr
 	 *
 	 * @param array<mixed>|Countable|null $array 対象配列。
 	 * @return int 件数。
-	 * @phpstan-return UnsignedIntegerAlias
+	 * @phpstan-return non-negative-int
 	 * @see https://www.php.net/manual/function.count.php
 	 */
 	public static function getCount(array|Countable|null $array): int
@@ -413,7 +413,7 @@ class Arr
 	 *
 	 * @param int $start 開始。
 	 * @param int $count 件数。
-	 * @phpstan-param UnsignedIntegerAlias $count
+	 * @phpstan-param non-negative-int $count
 	 * @return self
 	 * @phpstan-return list<int>
 	 */
@@ -439,7 +439,7 @@ class Arr
 	 * @param mixed $value 値。
 	 * @phpstan-param TRepeatValue $value
 	 * @param int $count 件数。
-	 * @phpstan-param UnsignedIntegerAlias $count
+	 * @phpstan-param non-negative-int $count
 	 * @return self
 	 * @phpstan-return list<TRepeatValue>
 	 * @see https://www.php.net/manual/function.array-fill.php

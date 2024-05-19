@@ -10,13 +10,13 @@ use Iterator;
  * repeat イテレータ。
  *
  * @template TValue
- * @implements Iterator<UnsignedIntegerAlias,TValue>
+ * @implements Iterator<non-negative-int,TValue>
  */
 class RepeatIterator implements Iterator
 {
 	#region variable
 
-	/** @phpstan-var UnsignedIntegerAlias */
+	/** @phpstan-var non-negative-int */
 	private int $key = 0;
 
 	#endregion
@@ -26,7 +26,7 @@ class RepeatIterator implements Iterator
 	 *
 	 * @param mixed $value
 	 * @param int $count
-	 * @phpstan-param UnsignedIntegerAlias $count
+	 * @phpstan-param non-negative-int $count
 	 */
 	public function __construct(
 		private mixed $value,
@@ -43,7 +43,7 @@ class RepeatIterator implements Iterator
 
 	/**
 	 * @return int
-	 * @phpstan-return UnsignedIntegerAlias
+	 * @phpstan-return non-negative-int
 	 */
 	public function key(): mixed
 	{

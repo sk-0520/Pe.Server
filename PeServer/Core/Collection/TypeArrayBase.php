@@ -89,7 +89,7 @@ abstract class TypeArrayBase implements ArrayAccess, Countable, IteratorAggregat
 
 	#region Countable
 
-	/** @phpstan-return UnsignedIntegerAlias */
+	/** @phpstan-return non-negative-int */
 	public function count(): int
 	{
 		return Arr::getCount($this->items);

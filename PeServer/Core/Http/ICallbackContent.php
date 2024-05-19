@@ -30,7 +30,7 @@ interface ICallbackContent
 	 * 出力長。
 	 *
 	 * @return int 0以上の場合は決定された出力byte数。不明な場合は `UNKNOWN`。
-	 * @phpstan-return UnsignedIntegerAlias|self::UNKNOWN
+	 * @phpstan-return non-negative-int|self::UNKNOWN
 	 * @see ICallbackContent::UNKNOWN
 	 */
 	public function getLength(): int;

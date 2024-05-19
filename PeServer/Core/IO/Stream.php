@@ -310,7 +310,7 @@ class Stream extends ResourceBase
 	 * 現在位置を取得。
 	 *
 	 * @return int
-	 * @return-param UnsignedIntegerAlias
+	 * @return-param non-negative-int
 	 * @throws StreamException
 	 * @see https://www.php.net/manual/function.ftell.php
 	 */
@@ -363,9 +363,9 @@ class Stream extends ResourceBase
 	 *
 	 * @param Binary $data データ。
 	 * @param int|null $byteSize 書き込みサイズ。
-	 * @phpstan-param UnsignedIntegerAlias|null $byteSize
+	 * @phpstan-param non-negative-int|null $byteSize
 	 * @return int 書き込んだバイトサイズ。
-	 * @phpstan-return UnsignedIntegerAlias
+	 * @phpstan-return non-negative-int
 	 * @throws StreamException
 	 * @see https://www.php.net/manual/function.fwrite.php
 	 */
@@ -388,7 +388,7 @@ class Stream extends ResourceBase
 	 * * エンコーディングがBOM情報を持っていれば出力されるためBOM不要な場合は使用しないこと。
 	 *
 	 * @return int 書き込まれたバイトサイズ。
-	 * @phpstan-return UnsignedIntegerAlias
+	 * @phpstan-return non-negative-int
 	 */
 	public function writeBom(): int
 	{
@@ -411,9 +411,9 @@ class Stream extends ResourceBase
 	 *
 	 * @param string $data データ。
 	 * @param int|null $count 文字数。
-	 * @phpstan-param UnsignedIntegerAlias|null $count
+	 * @phpstan-param non-negative-int|null $count
 	 * @return int 書き込まれたバイト数。
-	 * @phpstan-return UnsignedIntegerAlias
+	 * @phpstan-return non-negative-int
 	 */
 	public function writeString(string $data, ?int $count = null): int
 	{
@@ -445,7 +445,7 @@ class Stream extends ResourceBase
 	 *
 	 * @param string $data
 	 * @return int 書き込まれたバイト数。
-	 * @phpstan-return UnsignedIntegerAlias
+	 * @phpstan-return non-negative-int
 	 */
 	public function writeLine(string $data): int
 	{
@@ -456,7 +456,7 @@ class Stream extends ResourceBase
 	 * バイナリ読み込み。
 	 *
 	 * @param int $byteSize 読み込みバイトサイズ。
-	 * @phpstan-param UnsignedIntegerAlias $byteSize
+	 * @phpstan-param non-negative-int $byteSize
 	 * @return Binary 読み込んだデータ。
 	 * @throws StreamException
 	 * @see https://www.php.net/manual/function.fread.php
@@ -509,7 +509,7 @@ class Stream extends ResourceBase
 	 * 残りのストリームを全てバイナリとして読み込み。
 	 *
 	 * @param int|null $byteSize 読み込む最大バイト数。`null`で全て。
-	 * @phpstan-param UnsignedIntegerAlias|null $byteSize
+	 * @phpstan-param non-negative-int|null $byteSize
 	 * @param int $offset 読み込みを開始する前に移動する位置。
 	 * @return Binary
 	 * @throws StreamException

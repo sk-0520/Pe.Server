@@ -9,13 +9,13 @@ use Iterator;
 /**
  * range イテレータ。
  *
- * @implements Iterator<UnsignedIntegerAlias,int>
+ * @implements Iterator<non-negative-int,int>
  */
 class RangeIterator implements Iterator
 {
 	#region variable
 
-	/** @phpstan-var UnsignedIntegerAlias */
+	/** @phpstan-var non-negative-int */
 	private int $key = 0;
 	private int $current;
 
@@ -26,7 +26,7 @@ class RangeIterator implements Iterator
 	 *
 	 * @param int $start
 	 * @param int $count
-	 * @phpstan-param UnsignedIntegerAlias $count
+	 * @phpstan-param non-negative-int $count
 	 */
 	public function __construct(
 		private int $start,
@@ -44,7 +44,7 @@ class RangeIterator implements Iterator
 	}
 
 	/**
-	 * @phpstan-return UnsignedIntegerAlias
+	 * @phpstan-return non-negative-int
 	 */
 	public function key(): mixed
 	{

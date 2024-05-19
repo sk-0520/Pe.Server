@@ -110,7 +110,7 @@ abstract class Text
 	 *
 	 * @param string $value 対象文字列。
 	 * @return int 文字数。
-	 * @phpstan-return UnsignedIntegerAlias
+	 * @phpstan-return non-negative-int
 	 * @see https://www.php.net/manual/function.mb-strlen.php
 	 */
 	public static function getLength(string $value): int
@@ -136,7 +136,7 @@ abstract class Text
 	 *
 	 * @param string $value 対象文字列。
 	 * @return int バイト数。
-	 * @phpstan-return UnsignedIntegerAlias
+	 * @phpstan-return non-negative-int
 	 * @see https://www.php.net/manual/function.strlen.php
 	 */
 	public static function getByteCount(string $value): int
@@ -160,7 +160,7 @@ abstract class Text
 	 * `mb_chr` ラッパー。
 	 *
 	 * @param int|int[] $value
-	 * @phpstan-param UnsignedIntegerAlias|UnsignedIntegerAlias[] $value
+	 * @phpstan-param non-negative-int|non-negative-int[] $value
 	 * @return string
 	 * @see https://www.php.net/manual/function.mb-chr.php
 	 * @throws ArgumentException
@@ -260,14 +260,14 @@ abstract class Text
 	 * @param string $haystack 対象文字列。
 	 * @param string $needle 検索文字列。
 	 * @param int $offset 開始文字数目。
-	 * @phpstan-param UnsignedIntegerAlias $offset
+	 * @phpstan-param non-negative-int $offset
 	 * @return int 見つかった文字位置。見つかんない場合は `-1`
-	 * @phpstan-return UnsignedIntegerAlias|-1
+	 * @phpstan-return non-negative-int|-1
 	 * @throws ArgumentException
 	 */
 	public static function getPosition(string $haystack, string $needle, int $offset = 0): int
 	{
-		if ($offset < 0) { //@phpstan-ignore-line UnsignedIntegerAlias
+		if ($offset < 0) { //@phpstan-ignore-line non-negative-int
 			throw new ArgumentException('$offset');
 		}
 
@@ -285,9 +285,9 @@ abstract class Text
 	 * @param string $haystack 対象文字列。
 	 * @param string $needle 検索文字列。
 	 * @param int $offset 終端文字数目。
-	 * @phpstan-param UnsignedIntegerAlias $offset
+	 * @phpstan-param non-negative-int $offset
 	 * @return int 見つかった文字位置。見つかんない場合は `-1`
-	 * @phpstan-return UnsignedIntegerAlias|-1
+	 * @phpstan-return non-negative-int|-1
 	 * @throws ArgumentException
 	 */
 	public static function getLastPosition(string $haystack, string $needle, int $offset = 0): int
@@ -622,7 +622,7 @@ abstract class Text
 	 *
 	 * @param string $value
 	 * @param int $count
-	 * @phpstan-param UnsignedIntegerAlias $count
+	 * @phpstan-param non-negative-int $count
 	 * @return string
 	 * @throws ArgumentException 負数。
 	 * @see https://www.php.net/manual/function.str-repeat.php

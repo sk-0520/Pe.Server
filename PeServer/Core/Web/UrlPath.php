@@ -23,8 +23,8 @@ use TypeError;
 
 /**
  * URL のパス構成要素。
- * @implements ArrayAccess<UnsignedIntegerAlias,string>
- * @implements IteratorAggregate<UnsignedIntegerAlias,string>
+ * @implements ArrayAccess<non-negative-int,string>
+ * @implements IteratorAggregate<non-negative-int,string>
  */
 readonly class UrlPath implements ArrayAccess, Countable, IteratorAggregate, Stringable
 {
@@ -171,13 +171,13 @@ readonly class UrlPath implements ArrayAccess, Countable, IteratorAggregate, Str
 
 	/**
 	 * @param int $offset
-	 * @phpstan-param UnsignedIntegerAlias $offset
+	 * @phpstan-param non-negative-int $offset
 	 * @return bool
 	 * @see ArrayAccess::offsetExists
 	 */
 	public function offsetExists(mixed $offset): bool
 	{
-		if (!ArrayAccessHelper::offsetExistsUInt($offset)) { //@phpstan-ignore-line [DOCTYPE] UnsignedIntegerAlias
+		if (!ArrayAccessHelper::offsetExistsUInt($offset)) { //@phpstan-ignore-line [DOCTYPE] non-negative-int
 			return false;
 		}
 
@@ -190,7 +190,7 @@ readonly class UrlPath implements ArrayAccess, Countable, IteratorAggregate, Str
 
 	/**
 	 * @param int $offset
-	 * @phpstan-param UnsignedIntegerAlias $offset
+	 * @phpstan-param non-negative-int $offset
 	 * @return string
 	 * @throws TypeError
 	 * @throws IndexOutOfRangeException
@@ -198,7 +198,7 @@ readonly class UrlPath implements ArrayAccess, Countable, IteratorAggregate, Str
 	 */
 	public function offsetGet(mixed $offset): mixed
 	{
-		ArrayAccessHelper::offsetGetUInt($offset); //@phpstan-ignore-line [DOCTYPE] UnsignedIntegerAlias
+		ArrayAccessHelper::offsetGetUInt($offset); //@phpstan-ignore-line [DOCTYPE] non-negative-int
 
 		if ($this->isEmpty()) {
 			throw new IndexOutOfRangeException((string)$offset);
@@ -231,7 +231,7 @@ readonly class UrlPath implements ArrayAccess, Countable, IteratorAggregate, Str
 	 * Countable::count
 	 *
 	 * @return int
-	 * @phpstan-return UnsignedIntegerAlias
+	 * @phpstan-return non-negative-int
 	 */
 	public function count(): int
 	{

@@ -502,7 +502,7 @@ class Graphics extends DisposerBase
 	public static function calculateTextArea(string $text, float $fontSize, string $fontNameOrPath, float $angle): Area
 	{
 		$options = [];
-		/** @phpstan-var non-empty-array<UnsignedIntegerAlias>|false */
+		/** @phpstan-var non-empty-array<non-negative-int>|false */
 		$result = imageftbbox($fontSize, $angle, $fontNameOrPath, $text, $options);
 		if ($result === false) {
 			throw new GraphicsException();

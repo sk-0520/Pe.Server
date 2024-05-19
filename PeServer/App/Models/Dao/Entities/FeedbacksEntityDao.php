@@ -52,7 +52,7 @@ class FeedbacksEntityDao extends DaoBase
 	 * フィードバック ページ 全件数取得。
 	 *
 	 * @return int
-	 * @phpstan-return UnsignedIntegerAlias
+	 * @phpstan-return non-negative-int
 	 */
 	public function selectFeedbacksPageTotalCount(): int
 	{
@@ -74,9 +74,9 @@ class FeedbacksEntityDao extends DaoBase
 	 * フィードバック ページ 表示データ取得。
 	 *
 	 * @param int $index
-	 * @phpstan-param UnsignedIntegerAlias $index
+	 * @phpstan-param non-negative-int $index
 	 * @param int $count
-	 * @phpstan-param UnsignedIntegerAlias $count
+	 * @phpstan-param non-negative-int $count
 	 * @return FeedbackListItemDto[]
 	 */
 	public function selectFeedbacksPageItems(int $index, int $count): array
