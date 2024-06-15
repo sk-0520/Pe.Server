@@ -3,97 +3,94 @@
 
 // 手動 ---------------------
 
-
-
 // 自動 ---------------------
 
 /**
-* 未実装
+ * 未実装
  */
 export class NotImplementedError extends Error {
 	constructor(message?: string | undefined) {
 		super(message);
-		this.name = 'NotImplementedError';
+		this.name = "NotImplementedError";
 	}
 }
 
 /**
-* 実装が存在しない
+ * 実装が存在しない
  */
 export class NotSupportedError extends Error {
 	constructor(message?: string | undefined) {
 		super(message);
-		this.name = 'NotSupportedError';
+		this.name = "NotSupportedError";
 	}
 }
 
 /**
-* 不正処理
+ * 不正処理
  */
 export class InvalidOperationError extends Error {
 	constructor(message?: string | undefined) {
 		super(message);
-		this.name = 'InvalidOperationError';
+		this.name = "InvalidOperationError";
 	}
 }
 
 /**
-* 引数指定が異常
+ * 引数指定が異常
  */
 export class MismatchArgumentError extends Error {
 	constructor(message?: string | undefined) {
 		super(message);
-		this.name = 'MismatchArgumentError';
+		this.name = "MismatchArgumentError";
 	}
 }
 
 /**
-* 引数が無効
+ * 引数が無効
  */
 export class ArgumentError extends Error {
 	constructor(message?: string | undefined) {
 		super(message);
-		this.name = 'ArgumentError';
+		this.name = "ArgumentError";
 	}
 }
 
 /**
-* パース系処理失敗
+ * パース系処理失敗
  */
 export class ParseError extends Error {
 	constructor(message?: string | undefined) {
 		super(message);
-		this.name = 'ParseError';
+		this.name = "ParseError";
 	}
 }
 
 /**
-* DOM処理云々がダメ
+ * DOM処理云々がダメ
  */
 export class DomError extends Error {
 	constructor(message?: string | undefined) {
 		super(message);
-		this.name = 'DomError';
+		this.name = "DomError";
 	}
 }
 
 /**
-* 指定要素の型が合わない
+ * 指定要素の型が合わない
  */
 export class ElementTypeError extends DomError {
 	constructor(message?: string | undefined) {
 		super(message);
-		this.name = 'ElementTypeError';
+		this.name = "ElementTypeError";
 	}
 }
 
 /**
-* セレクタで要素が見つからない
+ * セレクタで要素が見つからない
  */
 export class NotFoundDomSelectorError extends DomError {
 	constructor(message?: string | undefined) {
 		super(message);
-		this.name = 'NotFoundDomSelectorError';
+		this.name = "NotFoundDomSelectorError";
 	}
 }
-

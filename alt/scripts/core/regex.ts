@@ -7,5 +7,5 @@ const escapeRegex = /[.*+?^${}()|[\]\\]/g;
  * @returns
  */
 export function escape(source: string): string {
-	return source.replace(escapeRegex, '\\$&');
+	return source.replace(escapeRegex, "\\$&");
 }
