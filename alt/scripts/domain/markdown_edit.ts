@@ -14,7 +14,7 @@ function register(selector: string) {
 		}
 		const resultElement = document.querySelector(resultSelector) as HTMLElement;
 		if (!resultElement) {
-			logger.warn("element: " + resultSelector);
+			logger.warn(`element: ${resultSelector}`);
 			continue;
 		}
 
@@ -46,7 +46,7 @@ async function applyAsync(
 
 	logger.debug(result);
 	if (!result.error) {
-		const markdownHtml = result.data["markdown"];
+		const markdownHtml = result.data.markdown;
 		targetElement.innerHTML = markdownHtml;
 	}
 }

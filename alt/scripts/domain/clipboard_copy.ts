@@ -110,11 +110,11 @@ function registerMarkdown(element: HTMLElement) {
 	const blockCopyElements = element.querySelectorAll<HTMLElement>("pre");
 
 	for (const inlineCopyElement of inlineCopyElements) {
-		inlineCopyElement.dataset["clipboard"] = "inline";
+		inlineCopyElement.dataset.clipboard = "inline";
 		registerInline(inlineCopyElement);
 	}
 	for (const blockCopyElement of blockCopyElements) {
-		blockCopyElement.dataset["clipboard"] = "block";
+		blockCopyElement.dataset.clipboard = "block";
 		registerBlock(blockCopyElement);
 	}
 }

@@ -44,7 +44,7 @@ function registerRow(trElement: HTMLTableRowElement) {
 	deleteElement.addEventListener(
 		"click",
 		async (ev) => {
-			if (confirm(pluginCategoryId + " を削除?")) {
+			if (confirm(`${pluginCategoryId} を削除?`)) {
 				const json = await ajax.communicateJsonAsync(
 					url.joinPath("/ajax/plugin-category", pluginCategoryId),
 					"DELETE",
@@ -62,8 +62,8 @@ function registerRow(trElement: HTMLTableRowElement) {
 
 function registerAdd() {
 	document
-		.getElementById("category_add_submit")!
-		.addEventListener("click", async (ev) => {
+		.getElementById("category_add_submit")
+		?.addEventListener("click", async (ev) => {
 			const categoryAddIdElement = document.getElementById(
 				"category_add_id",
 			) as HTMLInputElement;

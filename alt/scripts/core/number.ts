@@ -14,8 +14,8 @@ export function padding(input: number, width: number, c: string): string {
 	if (input < 0) {
 		throw new Error("input is negative");
 	}
-	if (c.length != 1) {
-		throw new Error("c.length is " + c.length);
+	if (c.length !== 1) {
+		throw new Error(`c.length is ${c.length}`);
 	}
 
 	const numberValue = input.toString();
@@ -39,7 +39,7 @@ export function padding(input: number, width: number, c: string): string {
 export function parseInt(input: string, radix?: number | undefined) {
 	const value = globalThis.Number.parseInt(input, radix);
 
-	if (isNaN(value)) {
+	if (Number.isNaN(value)) {
 		throw new throws.ParseError(`input: ${input}, radix: ${radix}`);
 	}
 
@@ -65,7 +65,7 @@ export function parseIntOr(
 
 	const value = globalThis.Number.parseInt(input, radix);
 
-	if (isNaN(value)) {
+	if (Number.isNaN(value)) {
 		return fallback;
 	}
 
@@ -81,7 +81,7 @@ export function parseIntOr(
 export function parseFloat(input: string) {
 	const value = globalThis.Number.parseFloat(input);
 
-	if (isNaN(value)) {
+	if (Number.isNaN(value)) {
 		throw new throws.ParseError(`input: ${input}`);
 	}
 
@@ -97,7 +97,7 @@ export function parseFloat(input: string) {
 export function parseFloatOr(input: string, fallback: number) {
 	const value = globalThis.Number.parseFloat(input);
 
-	if (isNaN(value)) {
+	if (Number.isNaN(value)) {
 		return fallback;
 	}
 

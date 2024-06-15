@@ -18,7 +18,7 @@ class LoggerImpl implements Logger {
 	}
 
 	private get name() {
-		return "[" + this._name + "]";
+		return `[${this._name}]`;
 	}
 
 	public trace(...args: any[]): void {

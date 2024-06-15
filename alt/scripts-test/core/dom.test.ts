@@ -135,8 +135,8 @@ describe("dom", () => {
 		const b = document.getElementById("b") as HTMLElement;
 		const c = document.getElementById("c") as HTMLElement;
 
-		expect(dom.getParentForm(a).dataset["key"]!).toBe("a");
-		expect(dom.getParentForm(b).dataset["key"]!).toBe("b");
+		expect(dom.getParentForm(a).dataset.key!).toBe("a");
+		expect(dom.getParentForm(b).dataset.key!).toBe("b");
 
 		expect(() => dom.getParentForm(c)).toThrowError(Error);
 	});

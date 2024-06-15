@@ -1,5 +1,5 @@
 function isSchemeUrl(url: string, protocols: ReadonlyArray<string>): boolean {
-	const starts = protocols.map((i) => i + "://");
+	const starts = protocols.map((i) => `${i}://`);
 
 	for (const start of starts) {
 		if (url.startsWith(start) && start.length < url.length) {
@@ -41,5 +41,5 @@ export function joinPath(
 	paths.push(...pathN);
 
 	//console.debug(base);
-	return base + "/" + paths.map((i) => chomp(i)).join("/");
+	return `${base}/${paths.map((i) => chomp(i)).join("/")}`;
 }

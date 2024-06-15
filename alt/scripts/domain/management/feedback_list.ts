@@ -16,7 +16,7 @@ function attachDelete(element: HTMLButtonElement): void {
 			},
 		});
 
-		if (dialogResult.action != dialog.DialogAction.Positive) {
+		if (dialogResult.action !== dialog.DialogAction.Positive) {
 			return;
 		}
 

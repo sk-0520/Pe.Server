@@ -494,9 +494,8 @@ export function toString(input: any): string {
 		case "object":
 			if (input === null) {
 				return "null";
-			} else {
-				break;
 			}
+			break;
 
 		case "undefined":
 			return "undefined";
@@ -508,5 +507,5 @@ export function toString(input: any): string {
 			break;
 	}
 
-	return input + "";
+	return `${input}`;
 }

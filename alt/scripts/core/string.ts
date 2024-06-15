@@ -120,7 +120,7 @@ export function replaceAllImpl(
 	if (searchValue instanceof RegExp) {
 		const flags = searchValue.flags.includes("g")
 			? searchValue.flags
-			: searchValue.flags + "g";
+			: `${searchValue.flags}g`;
 		return source.replace(new RegExp(searchValue.source, flags), replaceValue);
 	}
 

@@ -102,7 +102,7 @@ export class Dialog<T> {
 	}
 
 	private isString(arg: any): arg is string {
-		return typeof arg == "string";
+		return typeof arg === "string";
 	}
 
 	/** タブ移動抑制 */
@@ -133,14 +133,14 @@ export class Dialog<T> {
 			const tailElement = focusElements[focusElements.length - 1];
 
 			function focusTrapCore(ev: KeyboardEvent) {
-				if (ev.key != "Tab") {
+				if (ev.key !== "Tab") {
 					console.debug("タブ以外はブラウザに任せる");
 					return;
 				}
 
 				if (ev.shiftKey) {
 					// 戻る
-					if (document.activeElement == headElement) {
+					if (document.activeElement === headElement) {
 						ev.preventDefault();
 						tailElement.focus({ preventScroll: false });
 						return;
@@ -148,14 +148,14 @@ export class Dialog<T> {
 				} else {
 					// 進む
 					console.debug(document.activeElement);
-					if (document.activeElement == tailElement) {
+					if (document.activeElement === tailElement) {
 						ev.preventDefault();
 						headElement.focus({ preventScroll: false });
 						return;
 					}
 				}
 				if (!focusElements.includes(document.activeElement as HTMLElement)) {
-					console.debug("先頭強制選択: " + ev.currentTarget);
+					console.debug(`先頭強制選択: ${ev.currentTarget}`);
 					ev.preventDefault();
 					headElement.focus({ preventScroll: false });
 					return;
@@ -167,7 +167,7 @@ export class Dialog<T> {
 			window.addEventListener(
 				"keydown",
 				(ev) => {
-					if (ev.key == "Tab") {
+					if (ev.key === "Tab") {
 						ev.preventDefault();
 					}
 				},
@@ -181,7 +181,7 @@ export class Dialog<T> {
 		const dialogBackgroundElement = document.createElement("div");
 		dialogBackgroundElement.classList.add("background");
 
-		if (this.setting.button != ButtonType.None) {
+		if (this.setting.button !== ButtonType.None) {
 			dialogBackgroundElement.addEventListener(
 				"click",
 				(ev) =>
@@ -211,7 +211,7 @@ export class Dialog<T> {
 		dialogForegroundElement.appendChild(dialogContentElement);
 
 		// ボタン配置箇所
-		if (this.setting.button != ButtonType.None) {
+		if (this.setting.button !== ButtonType.None) {
 			const dialogButtonsElement = document.createElement("div");
 			dialogButtonsElement.classList.add("buttons");
 
@@ -301,7 +301,7 @@ export class Dialog<T> {
 		} else if (this.isString(this.setting.display)) {
 			const messageElement = document.createElement("p");
 			if (this.texts.autoBreak) {
-				var lines = this.setting.display.split(/\r?\n/);
+				const lines = this.setting.display.split(/\r?\n/);
 				for (let i = 0; i < lines.length; i++) {
 					const line = lines[i];
 					if (i) {
@@ -316,7 +316,7 @@ export class Dialog<T> {
 			}
 			this._contentElement = messageElement;
 		} else {
-			throw "error" + JSON.stringify(this.setting);
+			throw `error${JSON.stringify(this.setting)}`;
 		}
 
 		this.showCore(this._contentElement);
@@ -347,7 +347,7 @@ export class Dialog<T> {
 	}
 
 	public close(dialogResult: DialogResult<T>) {
-		var event = new CustomEvent<DialogResult<T>>(this._dialogEventName, {
+		const event = new CustomEvent<DialogResult<T>>(this._dialogEventName, {
 			detail: dialogResult,
 		});
 		this._dialogElement.dispatchEvent(event);

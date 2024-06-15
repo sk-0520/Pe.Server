@@ -30,7 +30,7 @@ class AjaxResultImpl<T> implements AjaxResult<T> {
 	readonly error?: AjaxError;
 
 	public constructor(obj: any) {
-		var value = obj as AjaxResult<T>;
+		const value = obj as AjaxResult<T>;
 		this.data = value.data;
 		this.error = value.error;
 	}
@@ -53,7 +53,7 @@ export async function communicateJsonAsync<T>(
 		"Content-Type": "application/json",
 	};
 	const csrfToken = getCsrfToken();
-	if (csrfToken && csrfToken.length) {
+	if (csrfToken?.length) {
 		headers[CsrfTokenHeader] = csrfToken;
 	}
 

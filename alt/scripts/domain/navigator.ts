@@ -8,7 +8,7 @@ function register() {
 	) as HTMLDetailsElement;
 
 	window
-		.matchMedia(responsive.mediaSet["phone"])
+		.matchMedia(responsive.mediaSet.phone)
 		.addEventListener("change", (ev) => {
 			resetMedia(ev.matches, detailsElement);
 		});

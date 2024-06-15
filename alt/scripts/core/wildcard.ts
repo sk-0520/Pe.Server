@@ -29,7 +29,7 @@ export default class Wildcard {
 
 		const c = string.replaceAll(b, "\\*", ".*");
 
-		this._regex = new RegExp("^" + c + "$");
+		this._regex = new RegExp(`^${c}$`);
 	}
 
 	//#region function

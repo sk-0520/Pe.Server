@@ -1,23 +1,22 @@
 function attachTableButton(tableButtonElement: HTMLButtonElement) {
 	tableButtonElement.addEventListener("click", (ev) => {
 		const tableButtonElement = ev.target as HTMLElement;
-		const tableName = tableButtonElement.dataset["table"] ?? "";
-		const columnsJson = tableButtonElement.dataset["columns"] ?? "";
+		const tableName = tableButtonElement.dataset.table ?? "";
+		const columnsJson = tableButtonElement.dataset.columns ?? "";
 		const columns = JSON.parse(columnsJson) as [];
 		const sqlLines = [
 			"select",
-			"	" + columns.map((i) => i["name"]).join(", "),
+			`	${columns.map((i) => i.name).join(", ")}`,
 			"from",
-			"	" + tableName,
+			`	${tableName}`,
 		];
-		if (columns.filter((i) => i["pk"]).length) {
+		if (columns.filter((i) => i.pk).length) {
 			sqlLines.push("order by");
 			sqlLines.push(
-				"	" +
-					columns
-						.filter((i) => i["pk"])
-						.map((i) => i["name"])
-						.join(", "),
+				`	${columns
+					.filter((i) => i.pk)
+					.map((i) => i.name)
+					.join(", ")}`,
 			);
 		}
 

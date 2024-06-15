@@ -252,7 +252,7 @@ export class DateTime {
 		second?: number,
 		millisecond?: number,
 	): DateTime {
-		return this.createCore(
+		return DateTime.createCore(
 			false,
 			year,
 			month,
@@ -306,7 +306,7 @@ export class DateTime {
 		second?: number,
 		millisecond?: number,
 	): DateTime {
-		return this.createCore(
+		return DateTime.createCore(
 			true,
 			year,
 			month,
@@ -389,7 +389,7 @@ export class DateTime {
 			.join("|");
 
 		return format.replace(
-			new RegExp("(" + pattern + ")", "g"),
+			new RegExp(`(${pattern})`, "g"),
 			(m) => map.get(m) ?? m,
 		);
 	}

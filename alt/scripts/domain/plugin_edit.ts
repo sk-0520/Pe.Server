@@ -2,7 +2,7 @@
 import * as ajax from "./ajax";
 
 async function generatePluginIdCoreAsync() {
-	var json = await ajax.communicateJsonAsync<{ plugin_id: string }>(
+	const json = await ajax.communicateJsonAsync<{ plugin_id: string }>(
 		"/api/plugin/generate-plugin-id",
 		"GET",
 	);

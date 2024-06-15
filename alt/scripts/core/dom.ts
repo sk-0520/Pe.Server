@@ -69,16 +69,16 @@ export function requireSelector<TElement extends Element = Element>(
 		if (selectors) {
 			if (types.isString(selectors)) {
 				throw new throws.MismatchArgumentError("selectors");
-			} else {
-				elementType = selectors;
 			}
+			elementType = selectors;
 		}
 		selectors = element;
 		element = null;
 	} else {
 		if (types.isUndefined(selectors)) {
 			throw new throws.MismatchArgumentError("selectors");
-		} else if (!types.isString(selectors)) {
+		}
+		if (!types.isString(selectors)) {
 			throw new throws.MismatchArgumentError("selectors");
 		}
 	}
@@ -136,16 +136,16 @@ export function requireSelectorAll<TElement extends Element = Element>(
 		if (selectors) {
 			if (types.isString(selectors)) {
 				throw new throws.MismatchArgumentError("selectors");
-			} else {
-				elementType = selectors;
 			}
+			elementType = selectors;
 		}
 		selectors = element;
 		element = null;
 	} else {
 		if (types.isUndefined(selectors)) {
 			throw new throws.MismatchArgumentError("selectors");
-		} else if (!types.isString(selectors)) {
+		}
+		if (!types.isString(selectors)) {
 			throw new throws.MismatchArgumentError("selectors");
 		}
 	}
@@ -521,6 +521,6 @@ export function moveElement(current: HTMLElement, isUp: boolean): void {
 	if (refElement) {
 		const newItem = isUp ? current : refElement;
 		const oldItem = isUp ? refElement : current;
-		current.parentElement!.insertBefore(newItem, oldItem);
+		current.parentElement?.insertBefore(newItem, oldItem);
 	}
 }
