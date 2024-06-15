@@ -4,6 +4,7 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
+		"lint:script": "biome ci alt",
 		"test:script": "jest",
 		"test": "npm-run-all --sequential test:script",
 		"build:debug": "webpack --mode=development --config=webpack.config.ts",
@@ -46,6 +47,7 @@
 		"last 2 versions"
 	],
 	"devDependencies": {
+		"@biomejs/biome": "1.8.1",
 		"@types/jest": "^29.5.12",
 		"@types/webpack": "^5.28.5",
 		"autoprefixer": "^10.4.19",
