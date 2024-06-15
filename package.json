@@ -5,6 +5,8 @@
 	"main": "index.js",
 	"scripts": {
 		"lint:script": "biome ci alt",
+		"lint-fix:script": "biome check alt --write",
+		"lint-fix:script-unsafe": "biome check alt --write --unsafe",
 		"test:script": "jest",
 		"test": "npm-run-all --sequential test:script",
 		"build:debug": "webpack --mode=development --config=webpack.config.ts",
