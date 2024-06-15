@@ -456,7 +456,7 @@ class Stream extends ResourceBase
 	 * バイナリ読み込み。
 	 *
 	 * @param int $byteSize 読み込みバイトサイズ。
-	 * @phpstan-param non-negative-int $byteSize
+	 * @phpstan-param positive-int $byteSize
 	 * @return Binary 読み込んだデータ。
 	 * @throws StreamException
 	 * @see https://www.php.net/manual/function.fread.php
