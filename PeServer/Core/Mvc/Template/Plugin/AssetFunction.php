@@ -74,7 +74,7 @@ class AssetFunction extends TemplateFunctionBase
 	protected function functionBodyImpl(): string
 	{
 		/** @var string */
-		$sourcePath = Arr::getOr($this->params, 'file', Text::EMPTY);
+		$sourcePath = $this->params['file'] ?? Text::EMPTY;
 		if (Text::isNullOrEmpty($sourcePath)) {
 			return Text::EMPTY;
 		}
@@ -104,8 +104,8 @@ class AssetFunction extends TemplateFunctionBase
 			$dom->addComment(Text::dump($this->params));
 		}
 
-		$autoSize = TypeUtility::parseBoolean(Arr::getOr($this->params, 'auto_size', 'false'));
-		$include = TypeUtility::parseBoolean(Arr::getOr($this->params, 'include', 'false'));
+		$autoSize = TypeUtility::parseBoolean($this->params['auto_size'] ?? false);
+		$include = TypeUtility::parseBoolean($this->params['include'] ?? false);
 
 		$filePath = Path::combine($this->argument->rootDirectoryPath, $sourcePath);
 		if (($autoSize || $include) || !FIle::exists($filePath)) {

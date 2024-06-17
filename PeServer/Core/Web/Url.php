@@ -62,7 +62,7 @@ readonly class Url implements Stringable
 	 */
 	private static function getDecodedValue(array $elements, string $key, ?string $default, UrlEncoding $urlEncoding): ?string
 	{
-		$rawElement = Arr::getOr($elements, $key, $default);
+		$rawElement = $elements[$key] ?? $default;
 		if (Text::isNullOrWhiteSpace($rawElement)) {
 			return $rawElement;
 		}
@@ -110,9 +110,9 @@ readonly class Url implements Stringable
 			$user,
 			$pass,
 			$elements['host'],
-			Arr::getOr($elements, 'port', null),
-			new UrlPath(Arr::getOr($elements, 'path', Text::EMPTY)),
-			new UrlQuery(Arr::getOr($elements, 'query', null), $urlEncoding),
+			$elements['port'] ?? null,
+			new UrlPath($elements['path'] ?? Text::EMPTY),
+			new UrlQuery($elements['query'] ?? null, $urlEncoding),
 			$fragment
 		);
 

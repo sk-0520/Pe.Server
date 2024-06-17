@@ -69,30 +69,30 @@ class BotTextImageFunction extends TemplateFunctionBase
 	private function functionBodyCore(): string
 	{
 		/** @var string */
-		$text = Arr::getOr($this->params, 'text', Text::EMPTY);
+		$text = $this->params['text'] ?? Text::EMPTY;
 		/** @var string */
-		$alt = Arr::getOr($this->params, 'alt', Text::EMPTY);
+		$alt = $this->params['alt'] ?? Text::EMPTY;
 		/**
 		 * @var int
 		 * @phpstan-var positive-int
 		 */
-		$width = (int)Arr::getOr($this->params, 'width', 100);
+		$width = (int)($this->params['width'] ?? 100);
 		/**
 		 * @var int
 		 * @phpstan-var positive-int
 		 */
-		$height = (int)Arr::getOr($this->params, 'height', 100);
+		$height = (int)($this->params['height'] ?? 100);
 		/** @var float */
-		$fontSize = (float)Arr::getOr($this->params, 'font-size', '12.5');
+		$fontSize = (float)($this->params['font-size'] ?? 12.5);
 		/** @var string */
-		$className = Arr::getOr($this->params, 'class', Text::EMPTY);
+		$className = $this->params['class'] ?? Text::EMPTY;
 		/** @var string */
-		$backgroundColorText = Arr::getOr($this->params, 'background-color', '#eeeeee');
+		$backgroundColorText = $this->params['background-color'] ?? '#eeeeee';
 		$backgroundColor = RgbColor::fromHtmlColorCode($backgroundColorText);
 		/** @var string */
-		$foregroundColorText = Arr::getOr($this->params, 'foreground-color', '#0f0f0f');
+		$foregroundColorText = $this->params['foreground-color'] ?? '#0f0f0f';
 		$foregroundColor = RgbColor::fromHtmlColorCode($foregroundColorText);
-		$obfuscateLevel = TypeUtility::parseBoolean(Arr::getOr($this->params, 'obfuscate-level', 0));
+		$obfuscateLevel = TypeUtility::parseBoolean($this->params['obfuscate-level'] ?? 0);
 
 		$size = new Size($width, $height);
 		$fontFilePath = CoreDefines::DEFAULT_FONT_FILE_PATH;

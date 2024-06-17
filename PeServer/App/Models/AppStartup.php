@@ -65,9 +65,9 @@ class AppStartup extends CoreStartup
 
 		$appConfig = new AppConfiguration(
 			$container->get(ProgramContext::class),
-			Arr::getOr($options, 'url_helper', new UrlHelper('')),
+			$options['url_helper'] ?? new UrlHelper(''),
 			$container->get(WebSecurity::class),
-			Arr::getOr($options, 'special_store', new SpecialStore()),
+			$options['special_store'] ?? new SpecialStore(),
 			$container->get(Environment::class)
 		);
 		$container->registerValue($appConfig);
@@ -104,7 +104,7 @@ class AppStartup extends CoreStartup
 		$method = HttpMethod::from(Text::toUpper(Text::trim($specialStore->getServer('REQUEST_METHOD'))));
 		$requestPath = new RequestPath(
 			$specialStore->getServer('REQUEST_URI'),
-			Arr::getOr($options, 'url_helper', new UrlHelper(''))
+			$options['url_helper'] ?? new UrlHelper('')
 		);
 		$container->registerValue(new RouteRequest($method, $requestPath));
 

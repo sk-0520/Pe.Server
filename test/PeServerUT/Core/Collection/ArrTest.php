@@ -32,64 +32,6 @@ class ArrTest extends TestClass
 		$this->assertSame($expected, $actual);
 	}
 
-	public static function provider_getOr()
-	{
-		return [
-			[10, [10, 20, 30], 0, -1],
-			[20, [10, 20, 30], 1, -1],
-			[30, [10, 20, 30], 2, -1],
-			[-1, [10, 20, 30], 3, -1],
-			[10, [10, 20, 30], 0, null],
-			['A', ['a' => 'A', 'b' => 'B'], 'a', 'c'],
-			['B', ['a' => 'A', 'b' => 'B'], 'b', 'c'],
-			['c', ['a' => 'A', 'b' => 'B'], 'c', 'c'],
-			['c', ['a' => 'A', 'b' => 'B'], 'C', 'c',]
-		];
-	}
-
-	#[DataProvider('provider_getOr')]
-	public function test_getOr($expected, ?array $array, int|string $key, mixed $fallbackValue)
-	{
-		$actual = Arr::getOr($array, $key, $fallbackValue);
-		$this->assertSame($expected, $actual);
-	}
-
-	public function test_getOr_object_hit()
-	{
-		$actual = Arr::getOr([new LocalGetOr1(10), new LocalGetOr1(20), new LocalGetOr1(30)], 0, null);
-		$this->assertSame(10, $actual->value);
-	}
-
-	public function test_getOr_object_hit_sub_type()
-	{
-		$actual = Arr::getOr([new LocalGetOr1(10), new LocalGetOr2(20), new LocalGetOr1(30)], 1, new LocalGetOr1(40));
-		$this->assertSame(20, $actual->value);
-	}
-
-	public function test_getOr_object_no_hit_null()
-	{
-		$actual = Arr::getOr([new LocalGetOr1(10), new LocalGetOr1(20), new LocalGetOr1(30)], 3, null);
-		$this->assertNull($actual);
-	}
-
-	public function test_getOr_object_no_hit_fallback()
-	{
-		$actual = Arr::getOr([new LocalGetOr1(10), new LocalGetOr1(20), new LocalGetOr1(30)], 3, new LocalGetOr1(40));
-		$this->assertSame(40, $actual->value);
-	}
-
-	public function test_getOr_throw()
-	{
-		$this->expectException(TypeError::class);
-
-		Arr::getOr(
-			['KEY' => 'string'],
-			'KEY',
-			123
-		);
-		$this->fail();
-	}
-
 	public static function provider_tryGet()
 	{
 		return [

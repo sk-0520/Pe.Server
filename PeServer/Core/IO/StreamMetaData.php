@@ -51,16 +51,16 @@ readonly class StreamMetaData
 	public static function createFromStream(array $values): self
 	{
 		return new self(
-			Arr::getOr($values, 'timed_out', false),
-			Arr::getOr($values, 'blocked', false),
-			Arr::getOr($values, 'eof', false),
+			$values['timed_out'] ?? false,
+			$values['blocked'] ?? false,
+			$values['eof'] ?? false,
 			(string)$values['stream_type'],
 			(string)$values['wrapper_type'],
 			(string)$values['mode'],
 			(bool)$values['seekable'],
 			(string)$values['uri'],
-			Arr::getOr($values, 'crypto', []),
-			Arr::getOr($values, 'wrapper_data', null),
+			$values['crypto'] ?? [],
+			$values['wrapper_data'] ?? null,
 			(int)$values['unread_bytes']
 		);
 	}

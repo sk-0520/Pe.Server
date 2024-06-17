@@ -71,8 +71,8 @@ class AccountSignupStep1Logic extends PageLogicBase
 		});
 
 		$temp = $this->popTemporary(self::TEMP_TOKEN);
-		$tempValue = Arr::getOr($temp, 'value', Text::EMPTY);
-		$tempToken = Arr::getOr($temp, 'token', Text::EMPTY);
+		$tempValue = $temp['value'] ?? Text::EMPTY;
+		$tempToken = $temp['token'] ?? Text::EMPTY;
 
 		$inputValue = $this->getRequest('account_signup_value');
 		$inputToken = $this->getRequest('account_signup_token');

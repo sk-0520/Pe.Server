@@ -49,7 +49,7 @@ class InputHelperFunction extends TemplateFunctionBase
 	private function addMainElement(HtmlDocument $dom, mixed $targetValue): HtmlTagElement
 	{
 		/** @var string */
-		$type = Arr::getOr($this->params, 'type', Text::EMPTY);
+		$type = $this->params['type'] ?? Text::EMPTY;
 
 		switch ($type) {
 			case 'textarea':
@@ -90,7 +90,7 @@ class InputHelperFunction extends TemplateFunctionBase
 	{
 		$targetKey = $this->params['key']; // 必須
 
-		$showAutoError = TypeUtility::parseBoolean(Arr::getOr($this->params, 'file', true));
+		$showAutoError = TypeUtility::parseBoolean($this->params['file'] ?? true);
 
 		$hasError = false;
 		if ($this->existsError()) {

@@ -50,14 +50,14 @@ readonly class DatabaseColumn
 	public static function create(array $meta): self
 	{
 		return new DatabaseColumn(
-			Arr::getOr($meta, 'name', Text::EMPTY),
-			Arr::getOr($meta, 'len', -1),
-			Arr::getOr($meta, 'precision', 0),
-			Arr::getOr($meta, 'table', Text::EMPTY),
-			Arr::getOr($meta, 'native_type', Text::EMPTY),
-			Arr::getOr($meta, 'driver:decl_type', Text::EMPTY),
-			Arr::getOr($meta, 'pdo_type', -1),
-			Arr::getOr($meta, 'flags', [])
+			$meta['name'] ?? Text::EMPTY,
+			$meta['len'] ?? -1,
+			$meta['precision'] ?? 0,
+			$meta['table'] ?? Text::EMPTY,
+			$meta['native_type'] ?? Text::EMPTY,
+			$meta['driver:decl_type'] ?? Text::EMPTY,
+			$meta['pdo_type'] ?? -1,
+			$meta['flags'] ?? []
 		);
 	}
 

@@ -30,7 +30,7 @@ class PluginApiInformationLogic extends ApiLogicBase
 	{
 		$json = $this->getRequestJson();
 		/** @var string[] */
-		$pluginIds = Arr::getOr($json, 'plugin_ids', []);
+		$pluginIds = $json['plugin_ids'];
 
 		$plugins = $this->dbCache->readPluginInformation();
 		/** @var array<string,array<mixed>> */

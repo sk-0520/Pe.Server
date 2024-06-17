@@ -52,16 +52,16 @@ class FileLogger extends LoggerBase
 	{
 		parent::__construct($logging, $options);
 
-		$directoryPath = Arr::getOr($this->options->configuration, 'directory', '');
+		$directoryPath = $this->options->configuration['directory'] ?? Text::EMPTY;
 		Enforce::throwIfNullOrWhiteSpace($directoryPath);
 		$this->directoryPath = $directoryPath;
 
-		$baseFileName = Code::toLiteralString(Arr::getOr($this->options->configuration, 'name', ''));
+		$baseFileName = Code::toLiteralString($this->options->configuration['name'] ?? Text::EMPTY);
 		Enforce::throwIfNullOrWhiteSpace($baseFileName);
 		$this->baseFileName = $baseFileName;
 
 		/** @phpstan-var non-negative-int */
-		$count = Arr::getOr($this->options->configuration, 'count', 0);
+		$count = $this->options->configuration['count'] ?? 0;
 		Enforce::throwIf(0 <= $count); //@phpstan-ignore-line [DOCTYPE]
 		$this->cleanup($count);
 	}

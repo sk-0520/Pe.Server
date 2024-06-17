@@ -28,14 +28,14 @@ class MarkdownFunction extends TemplateBlockFunctionBase
 	protected function functionBlockBodyImpl(string $content): string
 	{
 		/** @var string */
-		$className = Arr::getOr($this->params, 'class', Text::EMPTY);
+		$className = $this->params['class'] ?? Text::EMPTY;
 		if (Text::isNullOrWhiteSpace($className)) {
 			$className = 'markdown';
 		} elseif (!Text::contains($className, 'markdown', false)) {
 			$className = 'markdown ' . $className;
 		}
 
-		$isSafeMode = TypeUtility::parseBoolean(Arr::getOr($this->params, 'safe_mode', true));
+		$isSafeMode = TypeUtility::parseBoolean($this->params['safe_mode'] ?? true);
 
 		$markdown = new Markdown();
 		$markdown->setSafeMode($isSafeMode);

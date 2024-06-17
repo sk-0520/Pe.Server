@@ -35,9 +35,9 @@ class AjaxMarkdownLogic extends PageLogicBase
 
 		$json = $this->getRequestJson();
 
-		$isSafeMode = TypeUtility::parseBoolean(Arr::getOr($json, 'safe_mode', true));
+		$isSafeMode = TypeUtility::parseBoolean($json['safe_mode'] ?? true);
 		/** @var string */
-		$source = Arr::getOr($json, 'source', Text::EMPTY);
+		$source = $json['source'] ?? Text::EMPTY;
 		if ($account->level !== UserLevel::ADMINISTRATOR) {
 			$isSafeMode = true;
 		}

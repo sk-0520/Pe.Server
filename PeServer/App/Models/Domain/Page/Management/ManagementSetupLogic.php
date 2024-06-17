@@ -102,7 +102,7 @@ class ManagementSetupLogic extends PageLogicBase
 		$result = $database->transaction(function (IDatabaseContext $database) use ($currentUserInfo, $params, $userInfo) {
 			$accountValidator = new AccountValidator($this, $this->validator);
 
-			$loginId = Arr::getOr($params, 'login_id', Text::EMPTY);
+			$loginId = $params['login_id'];
 			if (!$accountValidator->isFreeLoginId($database, 'setting_setup_login_id', $loginId)) {
 				return false;
 			}
