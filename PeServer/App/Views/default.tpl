@@ -47,7 +47,7 @@
 				</li>
 				{assign var="account" value=$stores.session.account}
 				{if $account}
-					{if $account->level == 'SETUP')}
+					{if $account->level == 'SETUP'}
 						<li>
 							<a href="/management/setup">セットアップ</a>
 						</li>

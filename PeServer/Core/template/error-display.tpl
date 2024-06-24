@@ -145,7 +145,7 @@
 																</details>
 															{/foreach}
 														{else} *}
-															<code>{$arg}</code>
+															{* <code>{$arg}</code> *}
 														{* {/if} *}
 													</td>
 												</tr>
