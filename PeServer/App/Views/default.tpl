@@ -47,7 +47,7 @@
 				</li>
 				{assign var="account" value=$stores.session.account}
 				{if $account}
-					{if $account->level == 'SETUP'}
+					{if $account->level == constant('PeServer\\App\\Models\\Domain\\UserLevel::SETUP')}
 						<li>
 							<a href="/management/setup">セットアップ</a>
 						</li>
@@ -56,7 +56,7 @@
 							<a href="/account/user">ユーザー情報</a>
 						</li>
 					{/if}
-					{if $account->level == 'ADMINISTRATOR'}
+					{if $account->level == constant('PeServer\\App\\Models\\Domain\\UserLevel::ADMINISTRATOR')}
 						<li>
 							<a href="/management">管理</a>
 						</li>
