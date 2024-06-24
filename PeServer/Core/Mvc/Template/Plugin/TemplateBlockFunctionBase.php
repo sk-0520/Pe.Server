@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc\Template\Plugin;
 
 use TypeError;
-use Smarty_Internal_Template;
+use Smarty\Template;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\NotSupportedException;
 use PeServer\Core\Mvc\Template\Plugin\TemplateFunctionBase;
@@ -26,7 +26,7 @@ abstract class TemplateBlockFunctionBase extends TemplateFunctionBase implements
 
 	#region ITemplateBlockFunction
 
-	public function functionBlockBody(array $params, mixed $content, Smarty_Internal_Template $template, bool &$repeat): string
+	public function functionBlockBody(array $params, mixed $content, Template $template, bool &$repeat): string
 	{
 		if ($repeat) {
 			$this->params = $params;
@@ -51,7 +51,7 @@ abstract class TemplateBlockFunctionBase extends TemplateFunctionBase implements
 		throw new NotSupportedException();
 	}
 
-	final public function functionBody(array $params, Smarty_Internal_Template $smarty): string
+	final public function functionBody(array $params, Template $smarty): string
 	{
 		throw new NotSupportedException();
 	}

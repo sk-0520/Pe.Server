@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Template\Plugin;
 
-use Smarty_Internal_Template;
+use Smarty\Template;
 use PeServer\Core\Collection\Arr;
 use PeServer\Core\Mvc\Template\Plugin\TemplatePluginArgument;
 use PeServer\Core\Throws\InvalidOperationException;
@@ -27,10 +27,10 @@ abstract class TemplatePluginBase
 	/**
 	 * エラーが存在するか。
 	 *
-	 * @param Smarty_Internal_Template $smarty
+	 * @param Template $smarty
 	 * @return boolean
 	 */
-	protected function existsSmartyError(Smarty_Internal_Template $smarty): bool
+	protected function existsSmartyError(Template $smarty): bool
 	{
 		// @phpstan-ignore-next-line tpl_vars
 		if (!isset($smarty->tpl_vars['errors'])) {
@@ -48,10 +48,10 @@ abstract class TemplatePluginBase
 	/**
 	 * Undocumented function
 	 *
-	 * @param Smarty_Internal_Template $smarty
+	 * @param Template $smarty
 	 * @return array<string,string[]>
 	 */
-	protected function getSmartyErrors(Smarty_Internal_Template $smarty): array
+	protected function getSmartyErrors(Template $smarty): array
 	{
 		if ($this->existsSmartyError($smarty)) {
 			// @phpstan-ignore-next-line
@@ -61,7 +61,7 @@ abstract class TemplatePluginBase
 		throw new InvalidOperationException();
 	}
 
-	protected function existsSmartyValues(Smarty_Internal_Template $smarty): bool
+	protected function existsSmartyValues(Template $smarty): bool
 	{
 		// @phpstan-ignore-next-line tpl_vars
 		if (!isset($smarty->tpl_vars['values'])) {
@@ -74,10 +74,10 @@ abstract class TemplatePluginBase
 	/**
 	 * Undocumented function
 	 *
-	 * @param Smarty_Internal_Template $smarty
+	 * @param Template $smarty
 	 * @return array<string,string|string[]|bool|int|object>
 	 */
-	protected function getSmartyValues(Smarty_Internal_Template $smarty): array
+	protected function getSmartyValues(Template $smarty): array
 	{
 		if ($this->existsSmartyValues($smarty)) {
 			// @phpstan-ignore-next-line

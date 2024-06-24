@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Template\Plugin;
 
-use Smarty_Internal_Template;
+use Smarty\Template;
 use PeServer\Core\Mvc\Template\Plugin\ITemplateFunction;
 
 /**
@@ -26,10 +26,10 @@ interface ITemplateBlockFunction extends ITemplateFunction
 	 *
 	 * @param array<string,string> $params
 	 * @param mixed $content
-	 * @param Smarty_Internal_Template $template
+	 * @param Template $template
 	 * @return string HTML
 	 */
-	public function functionBlockBody(array $params, mixed $content, Smarty_Internal_Template $template, bool &$repeat): string;
+	public function functionBlockBody(array $params, mixed $content, Template $template, bool &$repeat): string;
 
 	#endregion
 }
