@@ -147,6 +147,8 @@
 														{else} *}
 															{* <code>{$arg}</code> *}
 														{* {/if} *}
+														{* {$arg|debug_print_var|nodefault:null} *}
+														<pre><code>{$arg|dump}</code></pre>
 													</td>
 												</tr>
 											{/foreach}
