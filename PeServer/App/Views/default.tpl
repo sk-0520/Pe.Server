@@ -31,8 +31,6 @@
 			{/if}
 			{show_error_messages}
 			<section id="content">
-	{$values|dump}
-
 				{block name='BODY'}{/block}
 			</section>
 		</main>

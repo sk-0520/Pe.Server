@@ -24,14 +24,18 @@ abstract class TemplatePluginBase
 
 	#region function
 
+
+
 	/**
 	 * エラーが存在するか。
 	 *
-	 * @param Template $smarty
+	 * @param Template $smartyTemplate
 	 * @return boolean
 	 */
-	protected function existsSmartyError(Template $smarty): bool
+	protected function existsSmartyError(Template $smartyTemplate): bool
 	{
+		$smarty = $smartyTemplate->getSmarty();
+
 		// @phpstan-ignore-next-line tpl_vars
 		if (!isset($smarty->tpl_vars['errors'])) {
 			return false;
@@ -48,12 +52,14 @@ abstract class TemplatePluginBase
 	/**
 	 * Undocumented function
 	 *
-	 * @param Template $smarty
+	 * @param Template $smartyTemplate
 	 * @return array<string,string[]>
 	 */
-	protected function getSmartyErrors(Template $smarty): array
+	protected function getSmartyErrors(Template $smartyTemplate): array
 	{
-		if ($this->existsSmartyError($smarty)) {
+		if ($this->existsSmartyError($smartyTemplate)) {
+			$smarty = $smartyTemplate->getSmarty();
+
 			// @phpstan-ignore-next-line
 			return $smarty->tpl_vars['errors']->value;
 		}
@@ -61,8 +67,10 @@ abstract class TemplatePluginBase
 		throw new InvalidOperationException();
 	}
 
-	protected function existsSmartyValues(Template $smarty): bool
+	protected function existsSmartyValues(Template $smartyTemplate): bool
 	{
+		$smarty = $smartyTemplate->getSmarty();
+
 		// @phpstan-ignore-next-line tpl_vars
 		if (!isset($smarty->tpl_vars['values'])) {
 			return false;
@@ -74,12 +82,13 @@ abstract class TemplatePluginBase
 	/**
 	 * Undocumented function
 	 *
-	 * @param Template $smarty
+	 * @param Template $smartyTemplate
 	 * @return array<string,string|string[]|bool|int|object>
 	 */
-	protected function getSmartyValues(Template $smarty): array
+	protected function getSmartyValues(Template $smartyTemplate): array
 	{
-		if ($this->existsSmartyValues($smarty)) {
+		if ($this->existsSmartyValues($smartyTemplate)) {
+			$smarty = $smartyTemplate->getSmarty();
 			// @phpstan-ignore-next-line
 			return $smarty->tpl_vars['values']->value;
 		}

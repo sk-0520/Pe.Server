@@ -30,7 +30,7 @@ abstract class TemplateBlockFunctionBase extends TemplateFunctionBase implements
 	{
 		if ($repeat) {
 			$this->params = $params;
-			$this->template = $template;
+			$this->smartyTemplate = $template;
 
 			return Text::EMPTY;
 		}
