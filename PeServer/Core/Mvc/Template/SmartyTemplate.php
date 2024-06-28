@@ -113,15 +113,15 @@ class SmartyTemplate extends TemplateBase
 			// 関数は重複できない
 			if ($plugin instanceof ITemplateBlockFunction) {
 				// @phpstan-ignore-next-line smarty
-				$this->engine->registerPlugin('block', $plugin->getFunctionName(), [$plugin, 'functionBlockBody']);
+				$this->engine->registerPlugin(Smarty::PLUGIN_BLOCK, $plugin->getFunctionName(), [$plugin, 'functionBlockBody']);
 			} elseif ($plugin instanceof ITemplateFunction) {
 				// @phpstan-ignore-next-line smarty
-				$this->engine->registerPlugin('function', $plugin->getFunctionName(), [$plugin, 'functionBody']);
+				$this->engine->registerPlugin(Smarty::PLUGIN_FUNCTION, $plugin->getFunctionName(), [$plugin, 'functionBody']);
 			}
 
 			if ($plugin instanceof ITemplateModifier) {
 				// @phpstan-ignore-next-line smarty
-				$this->engine->registerPlugin('modifier', $plugin->getModifierName(), [$plugin, 'modifierBody']);
+				$this->engine->registerPlugin(Smarty::PLUGIN_MODIFIER, $plugin->getModifierName(), [$plugin, 'modifierBody']);
 			}
 		}
 	}
