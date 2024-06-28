@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Template;
 
-require_once(__DIR__ . '/../../../Core/Libs/smarty/libs/Smarty.class.php');
-
 use PeServer\Core\Environment;
 use PeServer\Core\IO\Path;
 use PeServer\Core\Mvc\Template\Plugin\AssetFunction;

@@ -23,6 +23,9 @@ parameters:
   #   maximumNumberOfProcesses: 32
   #   minimumNumberOfJobsPerProcess: 2
 
+  # bootstrapFiles:
+  #   - ../PeServer/Core/AutoLoader.php
+
   paths:
     - ../PeServer
   excludePaths:
@@ -31,9 +34,11 @@ parameters:
     - ../PeServer/data
     - ../test
   scanFiles:
-    - ../PeServer/Core/Libs/smarty/libs/Smarty.class.php
-    - ../PeServer/Core/Libs/smarty/libs/sysplugins/smarty_internal_template.php
-    - ../PeServer/Core/Libs/smarty/libs/sysplugins/smarty_internal_data.php
+    - ../PeServer/Core/Libs/smarty/src/Smarty.php
+    - ../PeServer/Core/Libs/smarty/src/Template.php
+    - ../PeServer/Core/Libs/smarty/src/TemplateBase.php
+    - ../PeServer/Core/Libs/smarty/src/Data.php
+    - ../PeServer/Core/Libs/smarty/src/Variable.php
     - ../PeServer/Core/Libs/PHPMailer/src/PHPMailer.php
     - ../PeServer/Core/Libs/PHPMailer/src/SMTP.php
     - ../PeServer/Core/Libs/php-markdown/Michelf/Markdown.php
