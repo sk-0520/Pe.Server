@@ -24,8 +24,6 @@ abstract class TemplatePluginBase
 
 	#region function
 
-
-
 	/**
 	 * エラーが存在するか。
 	 *
@@ -36,7 +34,6 @@ abstract class TemplatePluginBase
 	{
 		$smarty = $smartyTemplate->getSmarty();
 
-		// @phpstan-ignore-next-line tpl_vars
 		if (!isset($smarty->tpl_vars['errors'])) {
 			return false;
 		}
@@ -60,7 +57,6 @@ abstract class TemplatePluginBase
 		if ($this->existsSmartyError($smartyTemplate)) {
 			$smarty = $smartyTemplate->getSmarty();
 
-			// @phpstan-ignore-next-line
 			return $smarty->tpl_vars['errors']->value;
 		}
 
@@ -71,7 +67,6 @@ abstract class TemplatePluginBase
 	{
 		$smarty = $smartyTemplate->getSmarty();
 
-		// @phpstan-ignore-next-line tpl_vars
 		if (!isset($smarty->tpl_vars['values'])) {
 			return false;
 		}
@@ -89,7 +84,6 @@ abstract class TemplatePluginBase
 	{
 		if ($this->existsSmartyValues($smartyTemplate)) {
 			$smarty = $smartyTemplate->getSmarty();
-			// @phpstan-ignore-next-line
 			return $smarty->tpl_vars['values']->value;
 		}
 
