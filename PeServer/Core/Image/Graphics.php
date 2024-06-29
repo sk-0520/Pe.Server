@@ -186,14 +186,9 @@ class Graphics extends DisposerBase
 		if ($width === false) { //@phpstan-ignore-line [PHP_VERSION]
 			throw new GraphicsException();
 		}
-		if ($width < 1) {
-			throw new GraphicsException();
-		}
+
 		$height = imagesy($this->image);
 		if ($height === false) { //@phpstan-ignore-line [PHP_VERSION]
-			throw new GraphicsException();
-		}
-		if ($height < 1) {
 			throw new GraphicsException();
 		}
 
