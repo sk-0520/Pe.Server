@@ -2,7 +2,7 @@
 {block name='TITLE'}Markdown{/block}
 {block name='BODY'}
 
-{markdown level=constant('PeServer\\App\\Models\\Domain\\UserLevel::ADMINISTRATOR') class='api'}
+{markdown level='administrator' class='api'}
 {literal}
 
 # 見出し1

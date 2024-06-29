@@ -36,7 +36,7 @@ class SpecialStore
 	 */
 	public function getServer(string $name, mixed $fallbackValue = Text::EMPTY): mixed
 	{
-		$result = Arr::getOr($_SERVER, $name, $fallbackValue);
+		$result = $_SERVER[$name] ?? $fallbackValue;
 		return $result;
 	}
 
@@ -75,7 +75,7 @@ class SpecialStore
 	 */
 	public function getCookie(string $name, string $fallbackValue = Text::EMPTY): string
 	{
-		$result = Arr::getOr($_COOKIE, $name, $fallbackValue);
+		$result = $_COOKIE[$name] ?? $fallbackValue;
 		return $result;
 	}
 
@@ -114,7 +114,7 @@ class SpecialStore
 	 */
 	public function getSession(string $name, string $fallbackValue = Text::EMPTY): string
 	{
-		$result = Arr::getOr($_SESSION, $name, $fallbackValue);
+		$result = $_SESSION[$name] ?? $fallbackValue;
 		return $result;
 	}
 
@@ -151,7 +151,7 @@ class SpecialStore
 
 	public function getGet(string $name, string $fallbackValue = Text::EMPTY): string
 	{
-		$result = Arr::getOr($_GET, $name, $fallbackValue);
+		$result = $_GET[$name] ?? $fallbackValue;
 		return $result;
 	}
 
@@ -177,7 +177,7 @@ class SpecialStore
 
 	public function getPost(string $name, string $fallbackValue = Text::EMPTY): string
 	{
-		$result = Arr::getOr($_POST, $name, $fallbackValue);
+		$result = $_POST[$name] ?? $fallbackValue;
 		return $result;
 	}
 

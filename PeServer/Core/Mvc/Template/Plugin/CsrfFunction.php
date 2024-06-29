@@ -39,7 +39,7 @@ class CsrfFunction extends TemplateFunctionBase
 		/** @var string $csrfToken */
 
 		/** @var string $type */
-		$type = Arr::getOr($this->params, 'type', 'name');
+		$type = $this->params['type'] ?? 'name';
 
 		$dom = new HtmlDocument();
 

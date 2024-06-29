@@ -85,10 +85,10 @@ class ErrorHandler
 			return;
 		}
 
-		$type = Arr::getOr($lastError, 'type', -1);
-		$message = Arr::getOr($lastError, 'message', Text::EMPTY);
-		$file = Arr::getOr($lastError, 'file', '<unknown>');
-		$line = Arr::getOr($lastError, 'line', 0);
+		$type = $lastError['type'];
+		$message = $lastError['message'];
+		$file = $lastError['file'];
+		$line = $lastError['line'];
 
 		$this->catchErrorCore(
 			$type,

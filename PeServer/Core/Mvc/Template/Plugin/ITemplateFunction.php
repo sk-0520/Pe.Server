@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Template\Plugin;
 
-use Smarty_Internal_Template;
+use Smarty\Template;
 
 /**
  * smarty 関数
@@ -24,10 +24,10 @@ interface ITemplateFunction
 	 * 関数処理出力。
 	 *
 	 * @param array<string,string> $params
-	 * @param Smarty_Internal_Template $smarty
+	 * @param Template $smarty
 	 * @return string HTML
 	 */
-	public function functionBody(array $params, Smarty_Internal_Template $smarty): string;
+	public function functionBody(array $params, Template $smarty): string;
 
 	#endregion
 }

@@ -22,7 +22,7 @@ class UploadedFile
 	 * @param string $uploadedFilePath アップロードされたファイルパス。パス自体はPHP管理下の一時ファイルパスとなる。
 	 * @param string $mime [信頼できない情報] アップロードされたファイルのMIME。
 	 * @param int $fileSize アップロードファイルサイズ。
-	 * @phpstan-param UnsignedIntegerAlias $fileSize
+	 * @phpstan-param non-negative-int $fileSize
 	 * @param int $errorCode エラーコード。
 	 */
 	public function __construct(
@@ -44,7 +44,7 @@ class UploadedFile
 	 */
 	public static function create(array $file): self
 	{
-		/** @phpstan-var UnsignedIntegerAlias */
+		/** @phpstan-var non-negative-int */
 		$size = (int)$file['size'];
 
 		return new self(

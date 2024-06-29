@@ -182,9 +182,9 @@ class AccountUserPluginLogic extends PageLogicBase
 				$this->setValue('account_plugin_description', $editMap->fields['description']);
 
 				$urlMap = $pluginUrlsEntityDao->selectUrls($pluginId);
-				$this->setValue('account_plugin_check_url', Arr::getOr($urlMap, PluginUrlKey::CHECK, Text::EMPTY));
-				$this->setValue('account_plugin_lp_url', Arr::getOr($urlMap, PluginUrlKey::LANDING, Text::EMPTY));
-				$this->setValue('account_plugin_project_url', Arr::getOr($urlMap, PluginUrlKey::PROJECT, Text::EMPTY));
+				$this->setValue('account_plugin_check_url', $urlMap[PluginUrlKey::CHECK] ?? Text::EMPTY);
+				$this->setValue('account_plugin_lp_url', $urlMap[PluginUrlKey::LANDING] ?? Text::EMPTY);
+				$this->setValue('account_plugin_project_url', $urlMap[PluginUrlKey::PROJECT] ?? Text::EMPTY);
 
 				$pluginCategoryMappings = $pluginCategoryMappingsEntityDao->selectPluginCategoriesByPluginId($pluginId);
 				$this->setValue('plugin_category_mappings', $pluginCategoryMappings);

@@ -76,7 +76,7 @@ abstract class TypeUtility
 	 *
 	 * @param string $input 文字列。
 	 * @return int 変換後整数。
-	 * @phpstan-return UnsignedIntegerAlias $result
+	 * @phpstan-return non-negative-int $result
 	 * @throws ParseException 変換できない文字列。
 	 */
 	public static function parseUInteger(string $input): int
@@ -86,7 +86,7 @@ abstract class TypeUtility
 			throw new ParseException($input);
 		}
 
-		/** @phpstan-var UnsignedIntegerAlias */
+		/** @phpstan-var non-negative-int */
 		return (int)Text::trim($input);
 	}
 
@@ -95,9 +95,9 @@ abstract class TypeUtility
 	 *
 	 * @param string $input 文字列。
 	 * @param int|null $result 変換成功時の整数。
-	 * @phpstan-param UnsignedIntegerAlias|null $result
+	 * @phpstan-param non-negative-int|null $result
 	 * @return boolean 変換成功状態。
-	 * @phpstan-assert-if-true UnsignedIntegerAlias $result
+	 * @phpstan-assert-if-true non-negative-int $result
 	 */
 	public static function tryParseUInteger(string $input, ?int &$result): bool
 	{
@@ -107,7 +107,7 @@ abstract class TypeUtility
 			return false;
 		}
 
-		/** @phpstan-var UnsignedIntegerAlias */
+		/** @phpstan-var non-negative-int */
 		$result = (int)Text::trim($input); // @phpstan-ignore-line
 		return true;
 	}

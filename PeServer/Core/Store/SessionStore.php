@@ -285,7 +285,7 @@ class SessionStore
 	 */
 	public function getOr(string $key, mixed $fallbackValue): mixed
 	{
-		return Arr::getOr($this->values, $key, $fallbackValue);
+		return $this->values[$key] ?? $fallbackValue;
 	}
 
 	/**

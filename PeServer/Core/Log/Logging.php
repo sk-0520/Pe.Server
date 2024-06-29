@@ -180,7 +180,7 @@ class Logging
 	 * @phpstan-param ILogger::LOG_LEVEL_* $level 有効レベル。S
 	 * @param int $level
 	 * @param int $traceIndex
-	 * @phpstan-param UnsignedIntegerAlias $traceIndex
+	 * @phpstan-param non-negative-int $traceIndex
 	 * @param non-empty-string $header
 	 * @param mixed $message
 	 * @phpstan-param LogMessageAlias $message
@@ -197,7 +197,7 @@ class Logging
 		$traceMethod = $backtrace[$traceIndex + 1];
 
 		/** @var string */
-		$filePath = Arr::getOr($traceCaller, 'file', Text::EMPTY);
+		$filePath = $traceCaller['file'] ?? Text::EMPTY;
 
 		/** @var array<string,string> */
 		$map = [
@@ -205,10 +205,10 @@ class Logging
 			//-------------------
 			'FILE' => $filePath,
 			'FILE_NAME' => Path::getFileName($filePath),
-			'LINE' => Arr::getOr($traceCaller, 'line', 0),
-			//'CLASS' => Arr::getOr($traceMethod, 'class', Text::EMPTY),
-			'FUNCTION' => Arr::getOr($traceMethod, 'function', Text::EMPTY),
-			//'ARGS' => Arr::getOr($traceMethod, 'args', Text::EMPTY),
+			'LINE' => $traceCaller['line'] ?? 0,
+			//'CLASS' => $traceMethod['class'] ?? Text::EMPTY,
+			'FUNCTION' => $traceMethod['function'] ?? Text::EMPTY,
+			//'ARGS' => $traceMethod['args'] ?? Text::EMPTY,
 			//-------------------
 			'LEVEL' => self::formatLevel($level),
 			'HEADER' => $header,

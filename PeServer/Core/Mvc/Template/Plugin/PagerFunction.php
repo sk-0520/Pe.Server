@@ -45,10 +45,10 @@ class PagerFunction extends TemplateFunctionBase
 		}
 		$href = Code::toLiteralString($href);
 
-		$jumpHead = Arr::getOr($this->params, 'jump-head', '<<');
-		$jumpTail = Arr::getOr($this->params, 'jump-tail', '>>');
-		$jumpPrev = Arr::getOr($this->params, 'jump-prev', '<');
-		$jumpNext = Arr::getOr($this->params, 'jump-next', '>');
+		$jumpHead = $this->params['jump-head'] ?? '<<';
+		$jumpTail = $this->params['jump-tail'] ?? '>>';
+		$jumpPrev = $this->params['jump-prev'] ?? '<';
+		$jumpNext = $this->params['jump-next'] ?? '>';
 
 		$dom = new HtmlDocument();
 

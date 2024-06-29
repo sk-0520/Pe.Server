@@ -31,8 +31,8 @@ class PluginApiExistsLogic extends ApiLogicBase
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
 		$json = $this->getRequestJson();
-		$pluginId = Arr::getOr($json, 'plugin_id', Text::EMPTY);
-		$pluginName = Arr::getOr($json, 'plugin_name', Text::EMPTY);
+		$pluginId = $json['plugin_id'] ?? Text::EMPTY;
+		$pluginName = $json['plugin_name'] ?? Text::EMPTY;
 
 		$plugins = $this->dbCache->readPluginInformation();
 		$pluginCollection = Collections::from($plugins->items);

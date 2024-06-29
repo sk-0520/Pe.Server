@@ -34,7 +34,7 @@ class UserAuditLogsEntityDao extends DaoBase
 	 *
 	 * @param string $userId
 	 * @return int
-	 * @phpstan-return UnsignedIntegerAlias
+	 * @phpstan-return non-negative-int
 	 */
 	public function selectAuditLogsPageTotalCountFromUserId(string $userId): int
 	{

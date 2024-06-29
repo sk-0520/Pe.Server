@@ -26,7 +26,7 @@ class TakeIterator implements Iterator
 	 *
 	 * @param Iterator $iterator
 	 * @param int $count
-	 * @phpstan-param UnsignedIntegerAlias $count
+	 * @phpstan-param non-negative-int $count
 	 */
 	public function __construct(
 		private Iterator $iterator,

@@ -26,7 +26,7 @@ class CodeFunction extends TemplateBlockFunctionBase
 
 	protected function functionBlockBodyImpl(string $content): string
 	{
-		$language = Arr::getOr($this->params, 'language', Text::EMPTY);
+		$language = $this->params['language'] ?? Text::EMPTY;
 		$numbers = (string)($this->params['numbers'] ?? '');
 
 		$codeHighlighter = new CodeHighlighter();

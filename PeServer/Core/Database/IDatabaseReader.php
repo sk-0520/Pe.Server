@@ -135,7 +135,7 @@ interface IDatabaseReader extends IDatabaseImplementation
 	 * @param array<string|int,string|int|bool>|null $parameters
 	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
 	 * @return int
-	 * @phpstan-return UnsignedIntegerAlias
+	 * @phpstan-return non-negative-int
 	 * @throws DatabaseException
 	 * @throws SqlException 問い合わせ文の検証エラー
 	 */

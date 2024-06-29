@@ -56,7 +56,8 @@ abstract class Throws
 	 * 対象の例外を受け取った場合に指定した例外として再送出する。
 	 *
 	 * @template TResult
-	 * @param class-string<Throwable>|non-empty-array<class-string<Throwable>> $catchExceptions 対象の例外名（複数ある場合は配列で指定）。
+	 * @param $catchExceptions 対象の例外名（複数ある場合は配列で指定）。
+	 * @phpstan-param class-string<Throwable>|non-empty-array<class-string<Throwable>> $catchExceptions 対象の例外名（複数ある場合は配列で指定）。
 	 * @param class-string<Throwable> $throwException 再送出する例外名。
 	 * @param callable $callback 例外を発生させる可能性のある処理。
 	 * @phpstan-param callable():TResult $callback

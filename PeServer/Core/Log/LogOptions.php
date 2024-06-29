@@ -17,7 +17,7 @@ class LogOptions
 	 *
 	 * @param non-empty-string $header
 	 * @param int $baseTraceIndex
-	 * @phpstan-param UnsignedIntegerAlias $baseTraceIndex
+	 * @phpstan-param non-negative-int $baseTraceIndex
 	 * @param int $level
 	 * @phpstan-param ILogger::LOG_LEVEL_* $level
 	 * @param string $format

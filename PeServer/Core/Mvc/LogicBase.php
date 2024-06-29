@@ -229,7 +229,7 @@ abstract class LogicBase implements IValidationReceiver
 	 *
 	 * @param string $key キー。
 	 * @param string $value 設定値。
-	 * @param CookieOptions|array{path:?string,span:?DateInterval,secure:?bool,httpOnly:?bool}|null $options オプション。
+	 * @param CookieOptions|array{path:?string,span:?DateInterval,secure:?bool,httpOnly:?bool,sameSite:?string}|null $options オプション。
 	 * @return void
 	 */
 	protected function setCookie(string $key, string $value, CookieOptions|array|null $options = null): void
@@ -242,18 +242,18 @@ abstract class LogicBase implements IValidationReceiver
 				$cookieOptions = $options;
 			} else {
 				/** @var string */
-				$path = Arr::getOr($options, 'path', $this->stores->cookie->options->path);
+				$path = $options['path'] ?? $this->stores->cookie->options->path;
 				/** @var \DateInterval|null */
-				$span = Arr::getOr($options, 'span', $this->stores->cookie->options->span);
+				$span = $options['span'] ?? $this->stores->cookie->options->span;
 				/** @var bool */
-				$secure = Arr::getOr($options, 'secure', $this->stores->cookie->options->secure);
+				$secure = $options['secure'] ?? $this->stores->cookie->options->secure;
 				/** @var bool */
-				$httpOnly = Arr::getOr($options, 'httpOnly', $this->stores->cookie->options->httpOnly);
+				$httpOnly = $options['httpOnly'] ?? $this->stores->cookie->options->httpOnly;
 				/**
 				 * @var string
 				 * @phpstan-var CookieSameSiteAlias
 				 */
-				$sameSite = Arr::getOr($options, 'sameSite', $this->stores->cookie->options->sameSite);
+				$sameSite = $options['sameSite'] ?? $this->stores->cookie->options->sameSite;
 
 				$cookieOptions = new CookieOptions(
 					$path,
@@ -461,9 +461,9 @@ abstract class LogicBase implements IValidationReceiver
 	protected function validation(string $key, callable $callback, ?array $options = null): void
 	{
 		/** @var string */
-		$default = Arr::getOr($options, 'default', Text::EMPTY);
+		$default = $options['default'] ?? Text::EMPTY;
 		/** @var bool */
-		$trim = Arr::getOr($options, 'trim', true);
+		$trim = $options['trim'] ?? true;
 
 		$value = $this->getRequest($key, $default, $trim);
 		$callback($key, $value);

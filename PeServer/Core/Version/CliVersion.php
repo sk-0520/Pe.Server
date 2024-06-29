@@ -30,13 +30,13 @@ readonly class CliVersion implements Stringable
 	 * 生成
 	 *
 	 * @param int $major
-	 * @phpstan-param UnsignedIntegerAlias $major
+	 * @phpstan-param non-negative-int $major
 	 * @param int $minor
-	 * @phpstan-param UnsignedIntegerAlias $minor
+	 * @phpstan-param non-negative-int $minor
 	 * @param int $build
-	 * @phpstan-param UnsignedIntegerAlias $build
+	 * @phpstan-param non-negative-int $build
 	 * @param int $revision
-	 * @phpstan-param self::IGNORE_REVISION|UnsignedIntegerAlias $revision
+	 * @phpstan-param self::IGNORE_REVISION|non-negative-int $revision
 	 */
 	public function __construct(int $major, int $minor = 0, int $build = 0, int $revision = self::IGNORE_REVISION)
 	{
@@ -50,22 +50,22 @@ readonly class CliVersion implements Stringable
 
 	/**
 	 * [1] メジャー バージョン。
-	 * @phpstan-var UnsignedIntegerAlias
+	 * @phpstan-var non-negative-int
 	 */
 	public int $major;
 	/**
 	 * [2] マイナー バージョン。
-	 * @phpstan-var UnsignedIntegerAlias
+	 * @phpstan-var non-negative-int
 	 */
 	public int $minor;
 	/**
 	 * [3] ビルド バージョン。
-	 * @phpstan-var UnsignedIntegerAlias
+	 * @phpstan-var non-negative-int
 	 */
 	public int $build;
 	/**
 	 * [4] リビジョン バージョン。
-	 * @phpstan-var -1|UnsignedIntegerAlias
+	 * @phpstan-var -1|non-negative-int
 	 */
 	public int $revision;
 

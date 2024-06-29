@@ -103,14 +103,14 @@ class Collections implements IteratorAggregate
 	 *
 	 * @param int $start 開始。
 	 * @param int $count 件数。
-	 * @phpstan-param UnsignedIntegerAlias $count
+	 * @phpstan-param non-negative-int $count
 	 * @return self
-	 * @phpstan-return self<UnsignedIntegerAlias,int>
+	 * @phpstan-return self<non-negative-int,int>
 	 */
 	public static function range(int $start, int $count): self
 	{
 		$iterator = new RangeIterator($start, $count);
-		/** @phpstan-var self<UnsignedIntegerAlias,int> */
+		/** @phpstan-var self<non-negative-int,int> */
 		return self::create($iterator);
 	}
 
@@ -121,14 +121,14 @@ class Collections implements IteratorAggregate
 	 * @param mixed $value 値。
 	 * @phpstan-param TRepeatValue $value
 	 * @param int $count 件数。
-	 * @phpstan-param UnsignedIntegerAlias $count
+	 * @phpstan-param non-negative-int $count
 	 * @return self
-	 * @phpstan-return self<UnsignedIntegerAlias,TRepeatValue>
+	 * @phpstan-return self<non-negative-int,TRepeatValue>
 	 */
 	public static function repeat(mixed $value, int $count): self
 	{
 		$iterator = new RepeatIterator($value, $count);
-		/** @phpstan-var self<UnsignedIntegerAlias,TRepeatValue> */
+		/** @phpstan-var self<non-negative-int,TRepeatValue> */
 		return self::create($iterator);
 	}
 
@@ -616,7 +616,7 @@ class Collections implements IteratorAggregate
 	 * [遅延] 先頭から指定数をバイパス。
 	 *
 	 * @param int $skipCount
-	 * @phpstan-param UnsignedIntegerAlias $skipCount
+	 * @phpstan-param non-negative-int $skipCount
 	 * @return self
 	 * @phpstan-return self<TKey,TValue>
 	 */
@@ -655,7 +655,7 @@ class Collections implements IteratorAggregate
 	 * [遅延] 先頭から指定された件数を返却。
 	 *
 	 * @param int $takeCount
-	 * @phpstan-param UnsignedIntegerAlias $takeCount
+	 * @phpstan-param non-negative-int $takeCount
 	 * @return self
 	 * @phpstan-return self<TKey,TValue>
 	 */

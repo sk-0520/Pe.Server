@@ -121,7 +121,7 @@ final class ItSpecialStore extends SpecialStore
 		}
 
 		assert($this->body->content instanceof Dictionary);
-		$result = Arr::getOr($this->body->content->getArray(), $name, $fallbackValue);
+		$result = $this->body->content->getArray()[$name] ?? $fallbackValue;
 		return $result;
 	}
 

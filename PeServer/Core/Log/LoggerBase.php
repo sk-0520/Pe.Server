@@ -32,7 +32,7 @@ abstract class LoggerBase implements ILogger
 	 * @param int $level ログレベル
 	 * @phpstan-param ILogger::LOG_LEVEL_* $level 有効レベル。
 	 * @param int $traceIndex トレース位置。
-	 * @phpstan-param UnsignedIntegerAlias $traceIndex
+	 * @phpstan-param non-negative-int $traceIndex
 	 * @param mixed $message メッセージ。
 	 * @phpstan-param LogMessageAlias $message
 	 * @param mixed ...$parameters パラメータ。
@@ -49,7 +49,7 @@ abstract class LoggerBase implements ILogger
 	 * @param int $level ログレベル。
 	 * @phpstan-param self::LOG_LEVEL_* $level ログレベル。
 	 * @param int $traceIndex 現在フレーム数。
-	 * @phpstan-param UnsignedIntegerAlias $traceIndex
+	 * @phpstan-param non-negative-int $traceIndex
 	 * @param mixed $message メッセージかオブジェクト。
 	 * @phpstan-param LogMessageAlias $message
 	 * @param mixed ...$parameters パラメータ（可変個）。$messageが文字列の場合はプレースホルダー {\d} に対して置き換え処理が行われるがその場合は所謂0始まり・抜けなしの配列を想定している。

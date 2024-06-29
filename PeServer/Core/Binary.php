@@ -27,8 +27,8 @@ use ValueError;
  * あとUTF8で動くこと前提。
  *
  * @phpstan-type Byte int<0,255>
- * @implements ArrayAccess<UnsignedIntegerAlias,Byte>
- * @implements IteratorAggregate<UnsignedIntegerAlias,Byte>
+ * @implements ArrayAccess<non-negative-int,Byte>
+ * @implements IteratorAggregate<non-negative-int,Byte>
  */
 readonly final class Binary implements ArrayAccess, IteratorAggregate, Countable, Stringable
 {
@@ -153,7 +153,7 @@ readonly final class Binary implements ArrayAccess, IteratorAggregate, Countable
 	 *
 	 * @param string $format
 	 * @param int $offset
-	 * @phpstan-param UnsignedIntegerAlias $offset
+	 * @phpstan-param non-negative-int $offset
 	 * @return array<mixed>
 	 * @see https://www.php.net/manual/function.unpack.php
 	 */
@@ -175,13 +175,13 @@ readonly final class Binary implements ArrayAccess, IteratorAggregate, Countable
 
 	/**
 	 * @param int $offset
-	 * @phpstan-param UnsignedIntegerAlias $offset
+	 * @phpstan-param non-negative-int $offset
 	 * @return bool
 	 * @see ArrayAccess::offsetExists
 	 */
 	public function offsetExists(mixed $offset): bool
 	{
-		if (!ArrayAccessHelper::offsetExistsUInt($offset)) { //@phpstan-ignore-line [DOCTYPE] UnsignedIntegerAlias
+		if (!ArrayAccessHelper::offsetExistsUInt($offset)) { //@phpstan-ignore-line [DOCTYPE] non-negative-int
 			return false;
 		}
 
@@ -194,7 +194,7 @@ readonly final class Binary implements ArrayAccess, IteratorAggregate, Countable
 
 	/**
 	 * @param int $offset
-	 * @phpstan-param UnsignedIntegerAlias $offset
+	 * @phpstan-param non-negative-int $offset
 	 * @return int
 	 * @phpstan-return Byte
 	 * @throws TypeError
@@ -203,7 +203,7 @@ readonly final class Binary implements ArrayAccess, IteratorAggregate, Countable
 	 */
 	public function offsetGet(mixed $offset): mixed
 	{
-		ArrayAccessHelper::offsetGetUInt($offset); //@phpstan-ignore-line [DOCTYPE] UnsignedIntegerAlias
+		ArrayAccessHelper::offsetGetUInt($offset); //@phpstan-ignore-line [DOCTYPE] non-negative-int
 
 		if (strlen($this->raw) <= $offset) {
 			throw new IndexOutOfRangeException((string)$offset);
@@ -244,7 +244,7 @@ readonly final class Binary implements ArrayAccess, IteratorAggregate, Countable
 	 * `strlen` ラッパー。
 	 *
 	 * @return int
-	 * @phpstan-return UnsignedIntegerAlias
+	 * @phpstan-return non-negative-int
 	 * @see https://www.php.net/manual/function.strlen.php
 	 */
 	public function count(): int

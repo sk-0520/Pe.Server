@@ -33,7 +33,7 @@ class ColorResource extends DisposerBase implements IColor
 	{
 		$colors = imagecolorsforindex($this->graphics->image, $this->value);
 
-		if (isset($colors['alpha']) && $colors['alpha'] === IColor::ALPHA_NONE) {
+		if ($colors['alpha'] === IColor::ALPHA_NONE) {
 			return new RgbColor($colors['red'], $colors['green'], $colors['blue']);
 		}
 

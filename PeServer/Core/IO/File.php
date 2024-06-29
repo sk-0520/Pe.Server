@@ -48,7 +48,7 @@ abstract class File
 	 *
 	 * @param string $path
 	 * @return int
-	 * @return UnsignedIntegerAlias
+	 * @phpstan-return non-negative-int
 	 * @see https://www.php.net/manual/function.filesize.php
 	 * @throws IOException
 	 */

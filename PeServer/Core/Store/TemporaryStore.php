@@ -145,7 +145,7 @@ class TemporaryStore
 		$json = File::readJsonFile($path);
 
 		/** @var string */
-		$timestamp = Arr::getOr($json, 'timestamp', Text::EMPTY);
+		$timestamp = $json['timestamp'] ?? Text::EMPTY;
 		if (Text::isNullOrWhiteSpace($timestamp)) {
 			return;
 		}
@@ -162,7 +162,7 @@ class TemporaryStore
 		}
 
 		/** @var array<string,mixed> */
-		$values = Arr::getOr($json, 'values', []);
+		$values = $json['values'] ?? [];
 		$this->values = array_replace($values, $this->values);
 	}
 

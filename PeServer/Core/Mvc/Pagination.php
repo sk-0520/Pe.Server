@@ -49,11 +49,11 @@ class Pagination
 	 * @param int $itemCountInPage ページ内アイテムの表示件数。
 	 * @phpstan-param positive-int $itemCountInPage
 	 * @param int $totalItemCount アイテム全件数。
-	 * @phpstan-param UnsignedIntegerAlias $totalItemCount
+	 * @phpstan-param non-negative-int $totalItemCount
 	 * @param bool $shortJump 直近(前後)へのリンク表示。
 	 * @param bool $longJump 全件数(最初と最後)へのリンク表示。
 	 * @param int $shortcutMaxCount ショートカットリンク表示数。
-	 * @phpstan-param UnsignedIntegerAlias $shortcutMaxCount ショートカットリンク表示数。
+	 * @phpstan-param non-negative-int $shortcutMaxCount ショートカットリンク表示数。
 	 */
 	public function __construct(
 		public int $currentPageNumber,

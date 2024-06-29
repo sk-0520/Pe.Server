@@ -161,10 +161,10 @@ abstract class Path
 		$parts = pathinfo($path);
 
 		$result = new PathParts(
-			Arr::getOr($parts, 'dirname', '.'),
-			Arr::getOr($parts, 'basename', Text::EMPTY),
-			Arr::getOr($parts, 'filename', Text::EMPTY),
-			Arr::getOr($parts, 'extension', Text::EMPTY)
+			$parts['dirname'],
+			$parts['basename'],
+			$parts['filename'],
+			$parts['extension'] ?? Text::EMPTY
 		);
 
 		return $result;

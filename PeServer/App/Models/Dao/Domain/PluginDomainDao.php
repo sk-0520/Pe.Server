@@ -112,6 +112,7 @@ class PluginDomainDao extends DaoBase
 					PluginUrlKey::PROJECT => $i['project_plugin_url'],
 					PluginUrlKey::LANDING => $i['lp_plugin_url'],
 				],
+				//@phpstan-ignore-next-line [TIME]
 				Collections::from($categoryIds->rows)
 					->selectMany(fn($i) => $i)
 					->toArray()

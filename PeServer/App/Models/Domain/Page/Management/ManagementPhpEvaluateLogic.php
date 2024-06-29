@@ -26,12 +26,16 @@ class ManagementPhpEvaluateLogic extends PageLogicBase
 			'executed',
 			'execute_statement',
 			'result',
+			'result_is_string',
 			'output',
+			'output_is_string',
 		], true);
 		$this->setValue('executed', false);
 		$this->setValue('execute_statement', null);
 		$this->setValue('result', null);
+		$this->setValue('result_is_string', false);
 		$this->setValue('output', null);
+		$this->setValue('output_is_string', false);
 	}
 
 	protected function validateImpl(LogicCallMode $callMode): void
@@ -66,11 +70,13 @@ class ManagementPhpEvaluateLogic extends PageLogicBase
 				$result = $this->evalStatement($executeStatement);
 			});
 			$this->setValue('output', $output);
+			$this->setValue('output_is_string', !$output->hasNull());
 		} catch (Throwable $ex) {
 			$this->setValue('output', $ex);
 			$output = (string)$ex;
 		}
 		$this->setValue('result', $result);
+		$this->setValue('result_is_string', is_string($result));
 
 		$this->writeAuditLogCurrentUser(AuditLog::ADMINISTRATOR_EXECUTE_PHP, [
 			'php' => $executeStatement,

@@ -17,7 +17,7 @@ abstract class DatabaseResultBase
 	 *
 	 * @param DatabaseColumn[] $columns カラム情報(取得成功したものだけ格納されている)。
 	 * @param int $resultCount 実行影響件数。
-	 * @phpstan-param UnsignedIntegerAlias $resultCount
+	 * @phpstan-param non-negative-int $resultCount
 	 */
 	public function __construct(
 		public readonly array $columns,
@@ -31,7 +31,7 @@ abstract class DatabaseResultBase
 	 * 実行影響件数を取得。
 	 *
 	 * @return int
-	 * @phpstan-return UnsignedIntegerAlias
+	 * @phpstan-return non-negative-int
 	 */
 	public function getResultCount(): int
 	{

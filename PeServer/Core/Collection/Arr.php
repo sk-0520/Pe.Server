@@ -46,44 +46,6 @@ class Arr
 	 *
 	 * @template TValue
 	 * @param array<int|string,mixed>|null $array 対象配列。
-	 * @phpstan-param array<array-key,mixed|TValue>|null $array
-	 * @param int|string $key キー。
-	 * @phpstan-param array-key $key
-	 * @param mixed $fallbackValue 失敗時に返却される値。
-	 * @phpstan-param TValue $fallbackValue
-	 * @return mixed 値。返却時にそれが成功しているか失敗しているかは不明なので厳密さが必要であれば tryGet を使用すること。
-	 * @phpstan-return TValue
-	 * @throws TypeError
-	 */
-	public static function getOr(?array $array, int|string $key, mixed $fallbackValue)
-	{
-		if ($array !== null && isset($array[$key])) {
-			$result = $array[$key];
-			if ($fallbackValue !== null) {
-				$resultType = TypeUtility::getType($result);
-				$fallbackValueType = TypeUtility::getType($fallbackValue);
-				if ($resultType === $fallbackValueType) {
-					return $result;
-				}
-				if (is_a($result, $fallbackValueType)) {
-					/** @var TValue */
-					return $result; //@phpstan-ignore-line わっからん
-				}
-
-				throw new TypeError();
-			}
-
-			return $result;
-		}
-
-		return $fallbackValue;
-	}
-
-	/**
-	 * 配列から値を取得する。
-	 *
-	 * @template TValue
-	 * @param array<int|string,mixed>|null $array 対象配列。
 	 * @phpstan-param array<array-key,TValue>|null $array
 	 * @param int|string $key キー。
 	 * @phpstan-param array-key $key
@@ -106,7 +68,7 @@ class Arr
 	 *
 	 * @param array<mixed>|Countable|null $array 対象配列。
 	 * @return int 件数。
-	 * @phpstan-return UnsignedIntegerAlias
+	 * @phpstan-return non-negative-int
 	 * @see https://www.php.net/manual/function.count.php
 	 */
 	public static function getCount(array|Countable|null $array): int
@@ -413,7 +375,7 @@ class Arr
 	 *
 	 * @param int $start 開始。
 	 * @param int $count 件数。
-	 * @phpstan-param UnsignedIntegerAlias $count
+	 * @phpstan-param non-negative-int $count
 	 * @return self
 	 * @phpstan-return list<int>
 	 */
@@ -439,7 +401,7 @@ class Arr
 	 * @param mixed $value 値。
 	 * @phpstan-param TRepeatValue $value
 	 * @param int $count 件数。
-	 * @phpstan-param UnsignedIntegerAlias $count
+	 * @phpstan-param non-negative-int $count
 	 * @return self
 	 * @phpstan-return list<TRepeatValue>
 	 * @see https://www.php.net/manual/function.array-fill.php

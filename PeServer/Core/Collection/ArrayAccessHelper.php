@@ -13,11 +13,11 @@ abstract class ArrayAccessHelper
 	#region function
 
 	/**
-	 * ArrayAccess::offsetExists で UnsignedIntegerAlias に限定
+	 * ArrayAccess::offsetExists で non-negative-int に限定
 	 *
 	 * @param mixed $offset
 	 * @return bool $offsetが有効
-	 * @phpstan-assert-if-true UnsignedIntegerAlias $offset
+	 * @phpstan-assert-if-true non-negative-int $offset
 	 */
 	public static function offsetExistsUInt(mixed $offset): bool
 	{
@@ -33,12 +33,12 @@ abstract class ArrayAccessHelper
 	}
 
 	/**
-	 * ArrayAccess::offsetGet で UnsignedIntegerAlias に限定(失敗時は例外)
+	 * ArrayAccess::offsetGet で non-negative-int に限定(失敗時は例外)
 	 *
 	 * @param mixed $offset
 	 * @throws TypeError 型がもうダメ。
 	 * @throws IndexOutOfRangeException 範囲外。
-	 * @phpstan-assert UnsignedIntegerAlias $offset
+	 * @phpstan-assert non-negative-int $offset
 	 */
 	public static function offsetGetUInt(mixed $offset): void
 	{
