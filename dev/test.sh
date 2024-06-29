@@ -69,14 +69,14 @@ fi
 PUBLIC_DIR=../public_html
 TEST_SUITE="--testsuite ${TEST_MODE}"
 case "${TEST_MODE}" in
-	ut | it)
+	ut | it )
 		PUBLIC_DIR="${PHPUNIT_BASE_DIR}/http-${TEST_MODE}"
 		;;
 	uit )
 		PUBLIC_DIR="${PHPUNIT_BASE_DIR}/http-ut"
 		TEST_SUITE="--testsuite ut,it"
 		;;
-	st)
+	st )
 		;;
 	*)
 		exit 255
@@ -85,11 +85,18 @@ esac
 
 # IT の場合 IT 用設定ファイルを使用するのでなければデフォルトを流用
 case "${TEST_MODE}" in
-	it | uit)
+	it | uit )
 		APP_CONFIG_DIR="${BASE_DIR}/config"
-		IT_CONFIG_FILE="setting.it.json"
-		if [ ! -f "${APP_CONFIG_DIR}/${IT_CONFIG_FILE}" ] ; then
-			cp "${APP_CONFIG_DIR}/@${IT_CONFIG_FILE}" "${APP_CONFIG_DIR}/${IT_CONFIG_FILE}"
+		TEST_CONFIG_FILE="setting.it.json"
+		if [ ! -f "${APP_CONFIG_DIR}/${TEST_CONFIG_FILE}" ] ; then
+			cp "${APP_CONFIG_DIR}/@${TEST_CONFIG_FILE}" "${APP_CONFIG_DIR}/${TEST_CONFIG_FILE}"
+		fi
+		;;
+	st )
+		APP_CONFIG_DIR="${BASE_DIR}/config"
+		TEST_CONFIG_FILE="setting.st.json"
+		if [ ! -f "${APP_CONFIG_DIR}/${TEST_CONFIG_FILE}" ] && [ -f "${APP_CONFIG_DIR}/@${TEST_CONFIG_FILE}" ] ; then
+			cp "${APP_CONFIG_DIR}/@${TEST_CONFIG_FILE}" "${APP_CONFIG_DIR}/${TEST_CONFIG_FILE}"
 		fi
 		;;
 	*)
