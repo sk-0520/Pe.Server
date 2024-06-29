@@ -36,5 +36,6 @@ $*
 /test/phpunit.phar.*
 /PeServer/Core/Libs/php-markdown/test
 /dev/.phpunit.cache
+/dev/.phpdoc
 /test/storage-*
 /_backup_restore_/

@@ -26,7 +26,8 @@
 			"*.lnk": true,
 			"**/PHPUnit/**": true,
 			"**/Libs/**": true,
-			"**/dev/extracts/**": true
+			"**/dev/extracts/**": true,
+			"**/dev/.phpdoc/**": true
 		},
 		"html.format.indentInnerHtml": true,
 		"html.format.wrapLineLength": 0,
