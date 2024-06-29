@@ -70,7 +70,7 @@ class ManagementPhpEvaluateLogic extends PageLogicBase
 				$result = $this->evalStatement($executeStatement);
 			});
 			$this->setValue('output', $output);
-			$this->setValue('output_is_string', is_string($output));
+			$this->setValue('output_is_string', !$output->hasNull());
 		} catch (Throwable $ex) {
 			$this->setValue('output', $ex);
 			$output = (string)$ex;

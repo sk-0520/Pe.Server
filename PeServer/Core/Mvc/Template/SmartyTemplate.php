@@ -25,7 +25,7 @@ use PeServer\Core\Mvc\Template\TemplateParameter;
 use PeServer\Core\Mvc\Template\TemplateStore;
 use PeServer\Core\Store\Stores;
 use PeServer\Core\Throws\NotImplementedException;
-use \Smarty\Smarty;
+use Smarty\Smarty;
 
 class SmartyTemplate extends TemplateBase
 {
