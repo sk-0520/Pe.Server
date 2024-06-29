@@ -25,7 +25,7 @@
 		<dl>
 			<dt>出力</dt>
 			<dd>
-				{if ($values.output instanceof \Stringable) || is_string($values.output) }
+				{if $values.output_is_string }
 					<pre data-clipboard="block">{$values.output}</pre>
 				{else}
 					<pre data-clipboard="block">{$values.output|dump}</pre>
@@ -34,7 +34,7 @@
 
 			<dt>結果</dt>
 			<dd>
-				{if ($values.result instanceof \Stringable) || is_string($values.result) }
+				{if $values.result_is_string }
 					<pre data-clipboard="block">{$values.result}</pre>
 				{elseif $values.result}
 					<pre data-clipboard="block">{$values.result|dump}</pre>

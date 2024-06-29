@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Template\Plugin;
 
-use Smarty_Internal_Template;
+use Smarty\Template;
 use PeServer\Core\Collection\Arr;
 use PeServer\Core\Mvc\Template\Plugin\TemplatePluginArgument;
 use PeServer\Core\Throws\InvalidOperationException;
@@ -27,12 +27,13 @@ abstract class TemplatePluginBase
 	/**
 	 * エラーが存在するか。
 	 *
-	 * @param Smarty_Internal_Template $smarty
+	 * @param Template $smartyTemplate
 	 * @return boolean
 	 */
-	protected function existsSmartyError(Smarty_Internal_Template $smarty): bool
+	protected function existsSmartyError(Template $smartyTemplate): bool
 	{
-		// @phpstan-ignore-next-line tpl_vars
+		$smarty = $smartyTemplate->getSmarty();
+
 		if (!isset($smarty->tpl_vars['errors'])) {
 			return false;
 		}
@@ -48,22 +49,24 @@ abstract class TemplatePluginBase
 	/**
 	 * Undocumented function
 	 *
-	 * @param Smarty_Internal_Template $smarty
+	 * @param Template $smartyTemplate
 	 * @return array<string,string[]>
 	 */
-	protected function getSmartyErrors(Smarty_Internal_Template $smarty): array
+	protected function getSmartyErrors(Template $smartyTemplate): array
 	{
-		if ($this->existsSmartyError($smarty)) {
-			// @phpstan-ignore-next-line
+		if ($this->existsSmartyError($smartyTemplate)) {
+			$smarty = $smartyTemplate->getSmarty();
+
 			return $smarty->tpl_vars['errors']->value;
 		}
 
 		throw new InvalidOperationException();
 	}
 
-	protected function existsSmartyValues(Smarty_Internal_Template $smarty): bool
+	protected function existsSmartyValues(Template $smartyTemplate): bool
 	{
-		// @phpstan-ignore-next-line tpl_vars
+		$smarty = $smartyTemplate->getSmarty();
+
 		if (!isset($smarty->tpl_vars['values'])) {
 			return false;
 		}
@@ -74,13 +77,13 @@ abstract class TemplatePluginBase
 	/**
 	 * Undocumented function
 	 *
-	 * @param Smarty_Internal_Template $smarty
+	 * @param Template $smartyTemplate
 	 * @return array<string,string|string[]|bool|int|object>
 	 */
-	protected function getSmartyValues(Smarty_Internal_Template $smarty): array
+	protected function getSmartyValues(Template $smartyTemplate): array
 	{
-		if ($this->existsSmartyValues($smarty)) {
-			// @phpstan-ignore-next-line
+		if ($this->existsSmartyValues($smartyTemplate)) {
+			$smarty = $smartyTemplate->getSmarty();
 			return $smarty->tpl_vars['values']->value;
 		}
 

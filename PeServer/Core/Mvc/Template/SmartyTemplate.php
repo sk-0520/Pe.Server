@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Template;
 
-require_once(__DIR__ . '/../../../Core/Libs/smarty/libs/Smarty.class.php');
-
 use PeServer\Core\Environment;
 use PeServer\Core\IO\Path;
 use PeServer\Core\Mvc\Template\Plugin\AssetFunction;
@@ -27,7 +25,7 @@ use PeServer\Core\Mvc\Template\TemplateParameter;
 use PeServer\Core\Mvc\Template\TemplateStore;
 use PeServer\Core\Store\Stores;
 use PeServer\Core\Throws\NotImplementedException;
-use Smarty;
+use Smarty\Smarty;
 
 class SmartyTemplate extends TemplateBase
 {
@@ -63,7 +61,6 @@ class SmartyTemplate extends TemplateBase
 
 	private function applyParameter(TemplateParameter $parameter): void
 	{
-		// @phpstan-ignore-next-line
 		$this->engine->assign([
 			'status' => $parameter->httpStatus,
 			'values' => $parameter->values,
@@ -80,7 +77,6 @@ class SmartyTemplate extends TemplateBase
 	public function build(string $templateName, TemplateParameter $parameter): string
 	{
 		$this->applyParameter($parameter);
-		// @phpstan-ignore-next-line
 		return $this->engine->fetch($templateName);
 	}
 
@@ -112,16 +108,13 @@ class SmartyTemplate extends TemplateBase
 		foreach ($plugins as $plugin) {
 			// 関数は重複できない
 			if ($plugin instanceof ITemplateBlockFunction) {
-				// @phpstan-ignore-next-line smarty
-				$this->engine->registerPlugin('block', $plugin->getFunctionName(), [$plugin, 'functionBlockBody']);
+				$this->engine->registerPlugin(Smarty::PLUGIN_BLOCK, $plugin->getFunctionName(), [$plugin, 'functionBlockBody']);
 			} elseif ($plugin instanceof ITemplateFunction) {
-				// @phpstan-ignore-next-line smarty
-				$this->engine->registerPlugin('function', $plugin->getFunctionName(), [$plugin, 'functionBody']);
+				$this->engine->registerPlugin(Smarty::PLUGIN_FUNCTION, $plugin->getFunctionName(), [$plugin, 'functionBody']);
 			}
 
 			if ($plugin instanceof ITemplateModifier) {
-				// @phpstan-ignore-next-line smarty
-				$this->engine->registerPlugin('modifier', $plugin->getModifierName(), [$plugin, 'modifierBody']);
+				$this->engine->registerPlugin(Smarty::PLUGIN_MODIFIER, $plugin->getModifierName(), [$plugin, 'modifierBody']);
 			}
 		}
 	}

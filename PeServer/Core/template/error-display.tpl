@@ -23,7 +23,7 @@
 
 				{if $show_exception}
 					<dt>例外</dt>
-					<dd><code>{get_class($values.throwable)}</code></dd>
+					<dd><code>{$values.throwable}</code></dd>
 				{/if}
 
 				{if $environment->isDevelopment() && $values.throwable !== null}
@@ -82,7 +82,7 @@
 							{while $throwable}
 								<dl style="margin-left: {$level++ * 10}px">
 									<dt>例外</dt>
-									<dd><code>{get_class($throwable)}</code></dd>
+									<dd><code>{$throwable}</code></dd>
 
 									<dt>エラーコード</dt>
 									<dd><code>{$throwable->value}</code></dd>
@@ -137,16 +137,18 @@
 												<tr class="args">
 													<td>arg: {$arg_index + 1}</td>
 													<td>
-														{if is_object($arg) || is_array($arg) }
+														{* {if is_object($arg) || is_array($arg) }
 															{foreach from=$arg item=values key=key}
 																<details>
 																	<summary>[{$key}] <code>{\PeServer\Core\TypeUtility::getType($values)}</code></summary>
 																	<pre class="argument">{$values|dump}</pre>
 																</details>
 															{/foreach}
-														{else}
-															<code>{$arg}</code>
-														{/if}
+														{else} *}
+															{* <code>{$arg}</code> *}
+														{* {/if} *}
+														{* {$arg|debug_print_var|nodefault:null} *}
+														<pre><code>{$arg|dump}</code></pre>
 													</td>
 												</tr>
 											{/foreach}

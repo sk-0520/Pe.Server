@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Template\Plugin;
 
-use Smarty_Internal_Template;
+use Smarty\Template;
 use PeServer\Core\Mvc\Template\Plugin\TemplatePluginBase;
 use PeServer\Core\Mvc\Template\Plugin\TemplatePluginArgument;
 
@@ -19,7 +19,7 @@ abstract class TemplateFunctionBase extends TemplatePluginBase implements ITempl
 	 */
 	protected array $params;
 
-	protected Smarty_Internal_Template $template;
+	protected Template $smartyTemplate;
 
 	#endregion
 
@@ -36,10 +36,10 @@ abstract class TemplateFunctionBase extends TemplatePluginBase implements ITempl
 
 	#region ITemplateBlockFunction
 
-	public function functionBody(array $params, Smarty_Internal_Template $template): string
+	public function functionBody(array $params, Template $smartyTemplate): string
 	{
 		$this->params = $params;
-		$this->template = $template;
+		$this->smartyTemplate = $smartyTemplate;
 
 		return $this->functionBodyImpl();
 	}
@@ -50,7 +50,7 @@ abstract class TemplateFunctionBase extends TemplatePluginBase implements ITempl
 
 	protected function existsError(): bool
 	{
-		return $this->existsSmartyError($this->template);
+		return $this->existsSmartyError($this->smartyTemplate);
 	}
 	/**
 	 * Undocumented function
@@ -59,12 +59,12 @@ abstract class TemplateFunctionBase extends TemplatePluginBase implements ITempl
 	 */
 	protected function getErrors(): array
 	{
-		return $this->getSmartyErrors($this->template);
+		return $this->getSmartyErrors($this->smartyTemplate);
 	}
 
 	protected function existsValues(): bool
 	{
-		return $this->existsSmartyValues($this->template);
+		return $this->existsSmartyValues($this->smartyTemplate);
 	}
 	/**
 	 * Undocumented function
@@ -73,7 +73,7 @@ abstract class TemplateFunctionBase extends TemplatePluginBase implements ITempl
 	 */
 	protected function getValues(): array
 	{
-		return $this->getSmartyValues($this->template);
+		return $this->getSmartyValues($this->smartyTemplate);
 	}
 
 	#endregion

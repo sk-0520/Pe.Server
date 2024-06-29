@@ -62,6 +62,10 @@ class AutoLoader
 			'PHPMailer\PHPMailer' => [
 				'directory' => $libs . 'PHPMailer/src',
 			],
+			// Smarty
+			'Smarty' => [
+				'directory' => $libs . 'smarty/src',
+			],
 			// Psr
 			'Psr\Container' => [
 				'directory' => $libs . 'php-fig/container/src',

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Template\Plugin;
 
-use Smarty;
+use Smarty\Smarty;
 use PeServer\Core\Environment;
 use PeServer\Core\ProgramContext;
 use PeServer\Core\Store\CookieStore;
