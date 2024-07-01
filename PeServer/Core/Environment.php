@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core;
 
 use PeServer\Core\Throws\ArgumentException;
-use PeServer\Core\Throws\Enforce;
+use PeServer\Core\Throws\Throws;
 use PeServer\Core\Throws\EnvironmentException;
 
 /**

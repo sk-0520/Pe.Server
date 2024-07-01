@@ -459,7 +459,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 	 * @param string $statement
 	 * @return void
 	 */
-	protected function enforceOrdered(string $statement): void
+	protected function throwIfInvalidOrdered(string $statement): void
 	{
 		if (!$this->regex->isMatch($statement, '/\\border\\s+by\\b/i')) {
 			throw new SqlException('order by');
@@ -472,7 +472,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 	 */
 	public function selectOrdered(string $statement, ?array $parameters = null): DatabaseTableResult
 	{
-		$this->enforceOrdered($statement);
+		$this->throwIfInvalidOrdered($statement);
 
 		/** @phpstan-var DatabaseTableResult<TFieldArray> */
 		$result = $this->query($statement, $parameters);
@@ -488,7 +488,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 	 * @param string $statement
 	 * @return void
 	 */
-	protected function enforceSingleCount(string $statement): void
+	protected function throwIfInvalidSingleCount(string $statement): void
 	{
 		if (!$this->regex->isMatch($statement, '/\\bselect\\s+count\\s*\\(/i')) {
 			throw new SqlException('select count');
@@ -497,7 +497,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 
 	public function selectSingleCount(string $statement, ?array $parameters = null): int
 	{
-		$this->enforceSingleCount($statement);
+		$this->throwIfInvalidSingleCount($statement);
 
 		/** @-var array<string,mixed> */
 		$result = $this->queryFirst($statement, $parameters);
@@ -532,7 +532,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 	 * @param string $statement
 	 * @return void
 	 */
-	protected function enforceInsert(string $statement): void
+	protected function throwIfInvalidInsert(string $statement): void
 	{
 		if (!$this->regex->isMatch($statement, '/\\binsert\\b/i')) {
 			throw new SqlException('insert');
@@ -541,13 +541,13 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 
 	public function insert(string $statement, ?array $parameters = null): int
 	{
-		$this->enforceInsert($statement);
+		$this->throwIfInvalidInsert($statement);
 		return $this->execute($statement, $parameters)->getResultCount();
 	}
 
 	public function insertSingle(string $statement, ?array $parameters = null): void
 	{
-		$this->enforceInsert($statement);
+		$this->throwIfInvalidInsert($statement);
 		$result = $this->execute($statement, $parameters);
 		if ($result->getResultCount() !== 1) {
 			throw new DatabaseException();
@@ -562,7 +562,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 	 * @param string $statement
 	 * @return void
 	 */
-	protected function enforceUpdate(string $statement): void
+	protected function throwIfInvalidUpdate(string $statement): void
 	{
 		if (!$this->regex->isMatch($statement, '/\\bupdate\\b/i')) {
 			throw new SqlException('update');
@@ -571,13 +571,13 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 
 	public function update(string $statement, ?array $parameters = null): int
 	{
-		$this->enforceUpdate($statement);
+		$this->throwIfInvalidUpdate($statement);
 		return $this->execute($statement, $parameters)->getResultCount();
 	}
 
 	public function updateByKey(string $statement, ?array $parameters = null): void
 	{
-		$this->enforceUpdate($statement);
+		$this->throwIfInvalidUpdate($statement);
 		$result = $this->execute($statement, $parameters);
 		if ($result->getResultCount() !== 1) {
 			throw new DatabaseException();
@@ -586,7 +586,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 
 	public function updateByKeyOrNothing(string $statement, ?array $parameters = null): bool
 	{
-		$this->enforceUpdate($statement);
+		$this->throwIfInvalidUpdate($statement);
 		$result = $this->execute($statement, $parameters);
 		if (1 < $result->getResultCount()) {
 			throw new DatabaseException();
@@ -603,7 +603,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 	 * @param string $statement
 	 * @return void
 	 */
-	protected function enforceDelete(string $statement): void
+	protected function throwIfInvalidDelete(string $statement): void
 	{
 		if (!$this->regex->isMatch($statement, '/\\bdelete\\b/i')) {
 			throw new SqlException('delete');
@@ -612,13 +612,13 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 
 	public function delete(string $statement, ?array $parameters = null): int
 	{
-		$this->enforceDelete($statement);
+		$this->throwIfInvalidDelete($statement);
 		return $this->execute($statement, $parameters)->getResultCount();
 	}
 
 	public function deleteByKey(string $statement, ?array $parameters = null): void
 	{
-		$this->enforceDelete($statement);
+		$this->throwIfInvalidDelete($statement);
 		$result = $this->execute($statement, $parameters);
 		if ($result->getResultCount() !== 1) {
 			throw new DatabaseException();
@@ -627,7 +627,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 
 	public function deleteByKeyOrNothing(string $statement, ?array $parameters = null): bool
 	{
-		$this->enforceDelete($statement);
+		$this->throwIfInvalidDelete($statement);
 		$result = $this->execute($statement, $parameters);
 		if (1 < $result->getResultCount()) {
 			throw new DatabaseException();

@@ -8,7 +8,7 @@ use Exception;
 use PeServer\Core\Errors\ErrorHandler;
 use PeServer\Core\Image\ImageType;
 use PeServer\Core\Image\Size;
-use PeServer\Core\Throws\Enforce;
+use PeServer\Core\Throws\Throws;
 use PeServer\Core\Throws\ImageException;
 
 /**
@@ -49,9 +49,9 @@ readonly class ImageInformation
 
 		$result = $result->value;
 
-		Enforce::throwIf(1 <= $result[0]);
-		Enforce::throwIf(1 <= $result[1]);
-		Enforce::throwIf(-1 <= $result[2] && $result[2] <= 18 && $result[2] !== 0);
+		Throws::throwIf(1 <= $result[0]);
+		Throws::throwIf(1 <= $result[1]);
+		Throws::throwIf(-1 <= $result[2] && $result[2] <= 18 && $result[2] !== 0);
 
 		return new ImageInformation(
 			new Size(
