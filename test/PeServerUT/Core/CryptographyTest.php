@@ -32,9 +32,9 @@ class CryptographyTest extends TestClass
 		$this->fail();
 	}
 
-	public function test_enc_dec()
+	public static function provider_enc_dec()
 	{
-		$tests = [
+		return [
 			['input' => 'abc', 'algorithm' => 'aes-128-cbc', 'password' => '123456'],
 			['input' => 'abc', 'algorithm' => 'aes-192-cbc', 'password' => '123456'],
 			['input' => 'abc', 'algorithm' => 'aes-256-cbc', 'password' => '123456'],
@@ -43,11 +43,14 @@ class CryptographyTest extends TestClass
 			// ['input' => 'abc', 'algorithm' => 'camellia-128-cbc', 'password' => '123456'],
 			// ['input' => 'abc', 'algorithm' => 'sm4-cbc', 'password' => '123456'],
 		];
-		foreach ($tests as $test) {
-			$enc = Cryptography::encrypt($test['algorithm'], $test['input'], $test['password']);
-			$dec = Cryptography::decrypt($enc, $test['password']);
-			$this->assertSame($test['input'], $dec, Text::dump(['test' => $test, 'enc' => $enc]));
-		}
+	}
+
+	#[DataProvider('provider_enc_dec')]
+	public function test_enc_dec($input, $algorithm, $password)
+	{
+		$enc = Cryptography::encrypt($algorithm, $input, $password);
+		$dec = Cryptography::decrypt($enc, $password);
+		$this->assertSame($input, $dec, Text::dump(['input' => $input, 'algorithm' => $algorithm, 'password' => $password, 'enc' => $enc]));
 	}
 
 	public function test_enc_throw()
