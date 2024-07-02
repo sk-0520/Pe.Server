@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace PeServer\Core\Throws;
 
 use Throwable;
-use PeServer\Core\Throws\CoreException;
+use PeServer\Core\Throws\CoreError;
 
-class EnforceException extends CoreException
+final class InvalidClassNameError extends CoreError
 {
 	use ThrowableTrait;
 }

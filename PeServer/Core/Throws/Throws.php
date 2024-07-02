@@ -8,6 +8,7 @@ use Throwable;
 use TypeError;
 use PeServer\Core\Collection\Arr;
 use PeServer\Core\ReflectionUtility;
+use PeServer\Core\Text;
 use PeServer\Core\Type;
 
 /**
@@ -92,6 +93,83 @@ abstract class Throws
 				}
 			}
 			throw $throwable;
+		}
+	}
+
+	/**
+	 * 例外ぶん投げ。
+	 *
+	 * @param string $argument
+	 * @param class-string<Throwable> $exceptionClass
+	 */
+	private static function throwCore(string $argument, string $exceptionClass): never
+	{
+		try {
+			$exception = ReflectionUtility::create($exceptionClass, Throwable::class, $argument);
+		} catch (TypeError $ex) {
+			throw new InvalidClassNameError($exceptionClass);
+		}
+
+		throw $exception;
+	}
+
+	/**
+	 * 偽の場合に例外。
+	 *
+	 * @param boolean $value
+	 * @param string $argument
+	 * @param class-string<Throwable> $exceptionClass
+	 * @return void
+	 */
+	public static function throwIf(bool $value, string $argument = '', string $exceptionClass = InvalidException::class): void
+	{
+		if (!$value) {
+			self::throwCore($argument, $exceptionClass);
+		}
+	}
+
+	/**
+	 * nullの場合に例外。
+	 *
+	 * @param mixed $value
+	 * @param string $argument
+	 * @param class-string<Throwable> $exceptionClass
+	 * @return void
+	 */
+	public static function throwIfNull(mixed $value, string $argument = '', string $exceptionClass = InvalidException::class): void
+	{
+		if ($value === null) {
+			self::throwCore($argument, $exceptionClass);
+		}
+	}
+
+	/**
+	 * 文字列がnullか空の場合に例外。
+	 *
+	 * @param string|null $value
+	 * @param string $argument
+	 * @param class-string<Throwable> $exceptionClass
+	 * @return void
+	 */
+	public static function throwIfNullOrEmpty(?string $value, string $argument = '', string $exceptionClass = InvalidException::class): void
+	{
+		if (Text::isNullOrEmpty($value)) {
+			self::throwCore($argument, $exceptionClass);
+		}
+	}
+
+	/**
+	 * 文字列がnullかホワイトスペースのみの場合に例外。
+	 *
+	 * @param string|null $value
+	 * @param string $argument
+	 * @param class-string<Throwable> $exceptionClass
+	 * @return void
+	 */
+	public static function throwIfNullOrWhiteSpace(?string $value, string $argument = '', string $exceptionClass = InvalidException::class): void
+	{
+		if (Text::isNullOrWhiteSpace($value)) {
+			self::throwCore($argument, $exceptionClass);
 		}
 	}
 

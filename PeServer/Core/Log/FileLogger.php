@@ -14,7 +14,7 @@ use PeServer\Core\Log\LoggerBase;
 use PeServer\Core\Log\Logging;
 use PeServer\Core\Log\LogOptions;
 use PeServer\Core\Text;
-use PeServer\Core\Throws\Enforce;
+use PeServer\Core\Throws\Throws;
 
 /**
  * ファイルロガー。
@@ -53,16 +53,16 @@ class FileLogger extends LoggerBase
 		parent::__construct($logging, $options);
 
 		$directoryPath = $this->options->configuration['directory'] ?? Text::EMPTY;
-		Enforce::throwIfNullOrWhiteSpace($directoryPath);
+		Throws::throwIfNullOrWhiteSpace($directoryPath);
 		$this->directoryPath = $directoryPath;
 
 		$baseFileName = Code::toLiteralString($this->options->configuration['name'] ?? Text::EMPTY);
-		Enforce::throwIfNullOrWhiteSpace($baseFileName);
+		Throws::throwIfNullOrWhiteSpace($baseFileName);
 		$this->baseFileName = $baseFileName;
 
 		/** @phpstan-var non-negative-int */
 		$count = $this->options->configuration['count'] ?? 0;
-		Enforce::throwIf(0 <= $count); //@phpstan-ignore-line [DOCTYPE]
+		Throws::throwIf(0 <= $count); //@phpstan-ignore-line [DOCTYPE]
 		$this->cleanup($count);
 	}
 

@@ -95,7 +95,7 @@ class Encoding
 	 */
 	public function __construct(string $name)
 	{
-		self::enforceEncodingName($name);
+		self::throwIfInvalidEncodingName($name);
 		$this->name = $name;
 	}
 
@@ -107,7 +107,7 @@ class Encoding
 	 * @param string $name
 	 * @throws ArgumentException 正しくない。
 	 */
-	private static function enforceEncodingName(string $name): void
+	private static function throwIfInvalidEncodingName(string $name): void
 	{
 		$names = self::getEncodingNames();
 		if (!Arr::containsValue($names, $name)) {

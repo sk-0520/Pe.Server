@@ -6,10 +6,9 @@ namespace PeServer\Core;
 
 use Throwable;
 use PeServer\Core\Throws\ArgumentException;
-use PeServer\Core\Throws\Enforce;
+use PeServer\Core\Throws\Throws;
 use PeServer\Core\Throws\RegexException;
 use PeServer\Core\Throws\StringException;
-use PeServer\Core\Throws\Throws;
 
 /**
  * 文字列操作。
@@ -196,8 +195,8 @@ abstract class Text
 	 */
 	public static function replaceMap(string $source, array $map, string $head = '{', string $tail = '}'): string
 	{
-		Enforce::throwIfNullOrEmpty($head, Text::EMPTY, StringException::class);
-		Enforce::throwIfNullOrEmpty($tail, Text::EMPTY, StringException::class);
+		Throws::throwIfNullOrEmpty($head, Text::EMPTY, StringException::class);
+		Throws::throwIfNullOrEmpty($tail, Text::EMPTY, StringException::class);
 
 		$regex = new Regex();
 		$escHead = $regex->escape($head);
