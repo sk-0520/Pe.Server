@@ -10,7 +10,7 @@ use PeServer\Core\Store\SessionStore;
 use PeServer\Core\Store\TemporaryStore;
 use PeServer\Core\Throws\NotImplementedException;
 
-abstract class TemplateStore implements ArrayAccess //@phpstan-ignore-line
+abstract class TemplateStore implements ArrayAccess //@phpstan-ignore-line missingType.generics
 {
 	#region function
 
