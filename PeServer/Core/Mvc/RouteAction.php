@@ -6,8 +6,6 @@ namespace PeServer\Core\Mvc;
 
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mvc\ControllerBase;
-use PeServer\Core\Mvc\Middleware\IMiddleware;
-use PeServer\Core\Mvc\Middleware\IShutdownMiddleware;
 
 /**
  * ルーティングのアクション設定。

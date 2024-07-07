@@ -182,8 +182,8 @@ class AssetFunction extends TemplateFunctionBase
 							$skipAttributes = array_merge($skipAttributes, ['width', 'height']);
 
 							if ($include) {
-								$content = file_get_contents($filePath);
-								$base64 = base64_encode($content); // @phpstan-ignore-line しんどい
+								$content = File::readContent($filePath);
+								$base64 = $content->toBase64();
 								$inline = 'data:' . $imageSize['mime'] . ';base64,' . $base64;
 								$element->setAttribute('src', $inline);
 							}

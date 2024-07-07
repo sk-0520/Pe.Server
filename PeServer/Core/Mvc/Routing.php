@@ -126,7 +126,6 @@ class Routing
 	{
 		if (is_string($middleware)) {
 			/** @var IMiddleware */
-			//$middleware = ReflectionUtility::create($middleware, IMiddleware::class);
 			$middleware = $this->serviceLocator->new($middleware);
 		}
 
@@ -143,7 +142,6 @@ class Routing
 	{
 		if (is_string($middleware)) {
 			/** @var IShutdownMiddleware */
-			//$middleware = ReflectionUtility::create($middleware, IShutdownMiddleware::class);
 			$middleware = $this->serviceLocator->new($middleware);
 		}
 

@@ -36,7 +36,7 @@ final class UserPluginEditFilterMiddleware implements IMiddleware
 				$pluginId = Uuid::adjustGuid($pluginId);
 				$database = $this->connection->open();
 				$pluginsEntityDao = new PluginsEntityDao($database);
-				//@phpstan-ignore-next-line $account->userId これ謎過ぎるなぁ
+				/** @var \PeServer\App\Models\Data\SessionAccount $account */
 				if ($pluginsEntityDao->selectIsUserPlugin($pluginId, $account->userId)) {
 					return MiddlewareResult::none();
 				}

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc;
 
 use PeServer\Core\Mvc\PageShortcutKind;
-use PeServer\Core\Throws\ArgumentException;
 
 /**
  * ページャのショートカット。
