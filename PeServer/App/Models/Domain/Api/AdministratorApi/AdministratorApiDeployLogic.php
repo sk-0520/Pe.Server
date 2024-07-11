@@ -43,7 +43,6 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 
 	public const PROGRESS_FILE_NAME = 'deploy.dat';
 	private const ARCHIVE_FILE_NAME = 'deploy.zip';
-	//private const ENABLED_RANGE_TIME = 'PT5M';
 	private const ENABLED_RANGE_TIME = 'P1M';
 
 	#endregion
@@ -253,6 +252,10 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 			$this->loggerFactory
 		);
 		$setupRunner->execute();
+
+		$this->logger->info('デプロイ進捗ファイル破棄');
+		$progressFilePath = Path::combine($this->appConfig->setting->cache->deploy, AdministratorApiDeployLogic::PROGRESS_FILE_NAME);
+		File::removeFile($progressFilePath);
 
 		return [
 			'success' => (string)true,
