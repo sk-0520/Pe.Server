@@ -76,6 +76,9 @@ class ManagementCrashReportDetailLogic extends PageLogicBase
 			$this->setValue('report', Text::EMPTY);
 		}
 
+		$this->setValue('developer_title', "[CR:$sequence]");
+		$this->setValue('developer_body', "[CR:$sequence]");
+
 		if ($callMode === LogicCallMode::Initialize) {
 			$this->setValue('developer-comment', $detail->developerComment);
 			return;
