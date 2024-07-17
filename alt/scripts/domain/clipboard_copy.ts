@@ -1,4 +1,4 @@
-//import * as dom from '../core/dom'
+import * as dom from '../core/dom'
 import * as clipboard from '../core/clipboard'
 
 function createClipboardBaseElement(): HTMLSpanElement {
@@ -86,6 +86,18 @@ function onMouseleaveBlockElement(event: MouseEvent) {
 	baseElement.remove();
 }
 
+function onClickDataElement(event: MouseEvent) {
+	event.preventDefault();
+
+	const element = <HTMLElement>event.currentTarget;
+	if (existsClipboardBaseElement(element)) {
+		return;
+	}
+
+	const value = dom.getDataset(element, 'clipboard-value');
+	clipboard.copyText(value);
+}
+
 function registerInline(element: HTMLElement) {
 	element.addEventListener('mouseover', onMouseOverInlineElement, false);
 	element.addEventListener('mouseleave', onMouseleaveInlineElement, false);
@@ -94,6 +106,10 @@ function registerInline(element: HTMLElement) {
 function registerBlock(element: HTMLElement) {
 	element.addEventListener('mouseover', onMouseOverBlockElement, false);
 	element.addEventListener('mouseleave', onMouseleaveBlockElement, false);
+}
+
+function registerData(element: HTMLElement) {
+	element.addEventListener('click', onClickDataElement, false);
 }
 
 function registerMarkdown(element: HTMLElement) {
@@ -112,17 +128,22 @@ function registerMarkdown(element: HTMLElement) {
 
 function register() {
 	const inlineCopyElements = document.querySelectorAll<HTMLElement>('[data-clipboard="inline"]');
-	for (const inlineCopyElement of inlineCopyElements) {
-		registerInline(inlineCopyElement);
+	for (const element of inlineCopyElements) {
+		registerInline(element);
 	}
 
 	const blockCopyElements = document.querySelectorAll<HTMLElement>('[data-clipboard="block"]');
-	for (const blockCopyElement of blockCopyElements) {
-		registerBlock(blockCopyElement);
+	for (const element of blockCopyElements) {
+		registerBlock(element);
+	}
+
+	const dataCopyElements = document.querySelectorAll<HTMLElement>('[data-clipboard="data"][data-clipboard-value]');
+	for (const element of dataCopyElements) {
+		registerData(element);
 	}
 
 	const markdownElements = document.querySelectorAll<HTMLElement>('section.markdown');
-	for(const markdownElement of markdownElements) {
+	for (const markdownElement of markdownElements) {
 		registerMarkdown(markdownElement);
 	}
 

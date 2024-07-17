@@ -7,6 +7,7 @@ namespace PeServer\App\Models\Domain\Page\Management;
 use Exception;
 use PeServer\App\Models\AppCryptography;
 use PeServer\App\Models\AppDatabaseCache;
+use PeServer\App\Models\AppUrl;
 use PeServer\App\Models\Dao\Domain\CrashReportDomainDao;
 use PeServer\App\Models\Dao\Entities\CrashReportCommentsEntityDao;
 use PeServer\App\Models\Dao\Entities\CrashReportsEntityDao;
@@ -14,6 +15,7 @@ use PeServer\App\Models\Domain\AppArchiver;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\Core\Archiver;
 use PeServer\Core\Binary;
+use PeServer\Core\Collection\Arr;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mvc\LogicCallMode;
@@ -21,10 +23,11 @@ use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\HttpStatusException;
 use PeServer\Core\Stopwatch;
+use PeServer\Core\Store\SpecialStore;
 
 class ManagementCrashReportDetailLogic extends PageLogicBase
 {
-	public function __construct(LogicParameter $parameter, private AppCryptography $appCryptography)
+	public function __construct(LogicParameter $parameter, private SpecialStore $specialStore, private AppCryptography $appCryptography)
 	{
 		parent::__construct($parameter);
 	}
@@ -75,6 +78,33 @@ class ManagementCrashReportDetailLogic extends PageLogicBase
 		} else {
 			$this->setValue('report', Text::EMPTY);
 		}
+
+		$this->setValue('developer_title', "[CR:$sequence] (edit title)");
+
+		$exception = $detail->exception;
+
+		$body = Text::replaceMap(
+			<<<STR
+{URL}
+
+{VERSION}
+
+```
+{EXCEPTION}
+```
+
+---
+
+(edit body)
+
+STR,
+			[
+				'URL' => $this->specialStore->getRequestUrl()->toString(),
+				'VERSION' => $detail->version,
+				'EXCEPTION' => $exception
+			]
+		);
+		$this->setValue('developer_body', $body);
 
 		if ($callMode === LogicCallMode::Initialize) {
 			$this->setValue('developer-comment', $detail->developerComment);
