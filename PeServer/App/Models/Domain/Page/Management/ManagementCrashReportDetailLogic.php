@@ -81,7 +81,7 @@ class ManagementCrashReportDetailLogic extends PageLogicBase
 
 		$this->setValue('developer_title', "[CR:$sequence] (edit title)");
 
-		$exception = Text::join(PHP_EOL, Arr::map(Text::splitLines($detail->exception), fn($a) => "> $a"));
+		$exception = $detail->exception;
 
 		$body = Text::replaceMap(
 			<<<STR

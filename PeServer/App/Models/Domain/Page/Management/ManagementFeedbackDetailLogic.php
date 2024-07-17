@@ -11,16 +11,19 @@ use PeServer\App\Models\Dao\Entities\FeedbackCommentsEntityDao;
 use PeServer\App\Models\Dao\Entities\FeedbacksEntityDao;
 use PeServer\App\Models\Domain\AppArchiver;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
+use PeServer\Core\Collection\Arr;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\Throws\HttpStatusException;
 use PeServer\Core\Stopwatch;
+use PeServer\Core\Store\SpecialStore;
+use PeServer\Core\Text;
 
 class ManagementFeedbackDetailLogic extends PageLogicBase
 {
-	public function __construct(LogicParameter $parameter)
+	public function __construct(LogicParameter $parameter, private SpecialStore $specialStore)
 	{
 		parent::__construct($parameter);
 	}
@@ -57,6 +60,31 @@ class ManagementFeedbackDetailLogic extends PageLogicBase
 		$detail = $feedbackDomainDao->selectFeedbackDetailBySequence($sequence);
 
 		$this->setValue('detail', $detail);
+
+		$this->setValue('developer_title', "[FB:$sequence] (edit title)");
+
+		$content = Text::join(PHP_EOL, Arr::map(Text::splitLines($detail->content), fn($a) => "> $a"));
+
+		$body = Text::replaceMap(
+			<<<STR
+{URL}
+
+{VERSION}
+
+{CONTENT}
+
+---
+
+(edit body)
+
+STR,
+			[
+				'URL' => (string)$this->specialStore->getRequestUrl(),
+				'VERSION' => $detail->version,
+				'CONTENT' => $content
+			]
+		);
+		$this->setValue('developer_body', $body);
 
 		if ($callMode === LogicCallMode::Initialize) {
 			$this->setValue('developer-comment', $detail->developerComment);
