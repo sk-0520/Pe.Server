@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Domain\Page\Management;
 
+use Exception;
 use PeServer\App\Models\AppDatabaseCache;
 use PeServer\App\Models\Domain\AppArchiver;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
@@ -27,8 +28,12 @@ class ManagementBackupLogic extends PageLogicBase
 	{
 		$this->appArchiver->backup();
 		$this->appArchiver->rotate();
-		$this->appArchiver->sendLatestArchive(ManagementBackupLogic::class, false);
-
-		$this->addTemporaryMessage('バックアップ完了');
+		try {
+			$this->appArchiver->sendLatestArchive(ManagementBackupLogic::class, false);
+			$this->addTemporaryMessage('バックアップ完了');
+		} catch (Exception $ex) {
+			$this->addTemporaryMessage('バックアップ中にエラーあり');
+			$this->addTemporaryMessage($ex->getMessage());
+		}
 	}
 }

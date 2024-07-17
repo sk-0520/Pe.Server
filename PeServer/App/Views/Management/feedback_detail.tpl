@@ -58,6 +58,18 @@
 
 			<h2>開発用</h2>
 			<dl class="input">
+				<dt>コピー</dt>
+				<dd>
+					<ul class="inline">
+						<li title="{$values.developer_title}">
+							<button data-clipboard="data" data-clipboard-value="{$values.developer_title}">件名</button>
+						</li>
+						<li title="{$values.developer_body}">
+							<button data-clipboard="data" data-clipboard-value="{$values.developer_body}">本文</button>
+						</li>
+					</ul>
+				</dd>
+
 				<dt>メモ</dt>
 				<dd>
 					{input_helper key='developer-comment' type="textarea" class="edit"}
