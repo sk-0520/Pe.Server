@@ -79,7 +79,7 @@ class ManagementFeedbackDetailLogic extends PageLogicBase
 
 STR,
 			[
-				'URL' => (string)$this->specialStore->getRequestUrl(),
+				'URL' => $this->specialStore->getRequestUrl()->toString(),
 				'VERSION' => $detail->version,
 				'CONTENT' => $content
 			]
