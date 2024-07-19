@@ -44,8 +44,7 @@ class ManagementCrashReportDetailLogic extends PageLogicBase
 				$seq = (int)$value;
 				$exists = $crashReportsEntityDao->selectExistsCrashReportsBySequence($seq);
 				if (!$exists) {
-					//TODO: HttpStatusException
-					throw new Exception('404');
+					throw new HttpStatusException(HttpStatus::NotFound);
 				}
 			} else {
 				throw new HttpStatusException(HttpStatus::BadRequest);
