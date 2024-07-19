@@ -7,7 +7,7 @@
 		<dd>{$values.detail->sequence}</dd>
 
 		<dt>タイムスタンプ</dt>
-		<dd>{$values.detail->timestamp}</dd>
+		<dd>{timestamp value=$values.detail->timestamp}</dd>
 
 		<dt>IPアドレス</dt>
 		<dd>{$values.detail->ipAddress}</dd>

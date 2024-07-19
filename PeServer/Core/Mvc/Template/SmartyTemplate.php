@@ -19,6 +19,7 @@ use PeServer\Core\Mvc\Template\Plugin\MarkdownFunction;
 use PeServer\Core\Mvc\Template\Plugin\PagerFunction;
 use PeServer\Core\Mvc\Template\Plugin\ShowErrorMessagesFunction;
 use PeServer\Core\Mvc\Template\Plugin\TemplatePluginArgument;
+use PeServer\Core\Mvc\Template\Plugin\TimestampFunction;
 use PeServer\Core\Mvc\Template\TemplateBase;
 use PeServer\Core\Mvc\Template\TemplateOptions;
 use PeServer\Core\Mvc\Template\TemplateParameter;
@@ -104,6 +105,7 @@ class SmartyTemplate extends TemplateBase
 			new CodeFunction($argument),
 			new PagerFunction($argument),
 			new DumpModifier($argument),
+			new TimestampFunction($argument),
 		];
 		foreach ($plugins as $plugin) {
 			// 関数は重複できない

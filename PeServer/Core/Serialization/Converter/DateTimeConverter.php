@@ -9,6 +9,7 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\InvalidOperationException;
+use PeServer\Core\Utc;
 use ReflectionNamedType;
 
 
@@ -24,21 +25,15 @@ class DateTimeConverter extends TypeConverterBase
 		$targetClassName = $type->getName();
 		switch ($targetClassName) {
 			case DateTimeImmutable::class:
-				if (is_string($raw) && !Text::isNullOrWhiteSpace($raw)) {
-					$result = DateTimeImmutable::createFromFormat(DateTimeImmutable::ISO8601_EXPANDED, $raw);
-					if ($result !== false) {
-						return $result;
-					}
+				if (is_string($raw) && !Text::isNullOrWhiteSpace($raw) && Utc::tryParse($raw, $result)) {
+					return $result;
 				}
 				break;
 
 			case DateTime::class:
 			case DateTimeInterface::class:
-				if (is_string($raw) && !Text::isNullOrWhiteSpace($raw)) {
-					$result = DateTime::createFromFormat(DateTimeImmutable::ISO8601_EXPANDED, $raw);
-					if ($result !== false) {
-						return $result;
-					}
+				if (is_string($raw) && !Text::isNullOrWhiteSpace($raw) && Utc::tryParseDateTime($raw, $result)) {
+					return $result;
 				}
 				break;
 

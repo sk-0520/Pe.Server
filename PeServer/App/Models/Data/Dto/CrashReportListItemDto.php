@@ -5,16 +5,20 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Data\Dto;
 
 use DateTime;
+use DateTimeInterface;
 use PeServer\Core\Database\DtoBase;
+use PeServer\Core\Serialization\Converter\DateTimeConverter;
 use PeServer\Core\Serialization\Mapping;
 use PeServer\Core\Text;
+use PeServer\Core\Utc;
 
 class CrashReportListItemDto extends DtoBase
 {
 	#region variable
 
 	public int $sequence = -1;
-	public string $timestamp = Text::EMPTY;
+	#[Mapping(converter: DateTimeConverter::class)]
+	public DateTimeInterface $timestamp;
 	public string $version = Text::EMPTY;
 	#[Mapping(name: 'exception_subject')]
 	public string $exceptionSubject = Text::EMPTY;

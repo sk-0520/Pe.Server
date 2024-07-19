@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Data\Dto;
 
 use DateTime;
+use DateTimeInterface;
 use PeServer\Core\Database\DtoBase;
+use PeServer\Core\Serialization\Converter\DateTimeConverter;
 use PeServer\Core\Serialization\Mapping;
 use PeServer\Core\Text;
 
@@ -15,7 +17,8 @@ class FeedbackDetailDto extends DtoBase
 
 	public int $sequence = -1;
 
-	public string $timestamp = Text::EMPTY;
+	#[Mapping(converter: DateTimeConverter::class)]
+	public DateTimeInterface $timestamp;
 
 	#[Mapping(name: 'ip_address')]
 	public string $ipAddress = Text::EMPTY;
