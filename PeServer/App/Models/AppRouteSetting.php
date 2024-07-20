@@ -175,6 +175,7 @@ final readonly class AppRouteSetting extends RouteSetting
 					->addAction('base64', HttpMethod::Post, 'base64_post')
 					->addAction('json', HttpMethod::Get, 'json_get')
 					->addAction('json', HttpMethod::Post, 'json_post')
+					->addAction('text', HttpMethod::Get, 'text_get')
 				/* AUTO-FORMAT */,
 				(new Route('ajax', AjaxController::class, [UserAccountFilterMiddleware::class]))
 					->addAction('markdown', HttpMethod::Post, 'markdown')

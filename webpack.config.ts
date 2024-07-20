@@ -24,6 +24,7 @@ export default function (env: { [key: string]: string }, args: any): webpack.Con
 			"scripts/script": path.join(inputDirectory, './scripts/entry/script.ts'),
 			"scripts/plugin_edit": path.join(inputDirectory, './scripts/entry/plugin_edit.ts'),
 			"scripts/user_edit": path.join(inputDirectory, './scripts/entry/user_edit.ts'),
+			"scripts/tool_text": path.join(inputDirectory, './scripts/entry/tool_text.ts'),
 			// 管理側
 			"scripts/management_plugin_category": path.join(inputDirectory, './scripts/entry/management_plugin_category.ts'),
 			"scripts/management_log_list": path.join(inputDirectory, './scripts/entry/management_log_list.ts'),

@@ -8,6 +8,7 @@ use PeServer\App\Controllers\Page\PageControllerBase;
 use PeServer\App\Models\Domain\Page\Tool\ToolBase64Logic;
 use PeServer\App\Models\Domain\Page\Tool\ToolJsonLogic;
 use PeServer\App\Models\Domain\Page\Tool\ToolIndexLogic;
+use PeServer\App\Models\Domain\Page\Tool\ToolTextLogic;
 use PeServer\Core\Mvc\ControllerArgument;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\Result\IActionResult;
@@ -62,6 +63,14 @@ final class ToolController extends PageControllerBase
 		$logic->run(LogicCallMode::Submit);
 
 		return $this->view('json', $logic->getViewData());
+	}
+
+	public function text_get(): IActionResult
+	{
+		$logic = $this->createLogic(ToolTextLogic::class);
+		$logic->run(LogicCallMode::Initialize);
+
+		return $this->view('text', $logic->getViewData());
 	}
 
 	#endregion
