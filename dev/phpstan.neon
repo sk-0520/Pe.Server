@@ -29,7 +29,6 @@ parameters:
   paths:
     - ../PeServer
   excludePaths:
-    - ../PeServer/deploy
     - ../PeServer/Core/Libs
     - ../PeServer/data
     - ../test
