@@ -29,9 +29,8 @@ parameters:
   paths:
     - ../PeServer
   excludePaths:
-    - ../PeServer/deploy
     - ../PeServer/Core/Libs
-    - ../PeServer/data
+    - ../PeServer/data(?)
     - ../test
   scanFiles:
     - ../PeServer/Core/Libs/smarty/src/Smarty.php

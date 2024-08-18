@@ -6,8 +6,8 @@
 		<dt>シーケンス</dt>
 		<dd>{$values.detail->sequence}</dd>
 
-		<dt>日時</dt>
-		<dd>{$values.detail->timestamp}</dd>
+		<dt>タイムスタンプ</dt>
+		<dd>{timestamp value=$values.detail->timestamp}</dd>
 
 		<dt>IPアドレス</dt>
 		<dd>{$values.detail->ipAddress}</dd>

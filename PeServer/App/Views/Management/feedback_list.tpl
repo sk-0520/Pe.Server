@@ -33,7 +33,7 @@
 				{foreach from=$values.items item=item key=key name=name}
 					<tr>
 						<td class="column-sequence">{$item->sequence}</td>
-						<td class="column-timestamp">{$item->timestamp}</td>
+						<td class="column-timestamp">{timestamp value=$item->timestamp format='Y-m-dTH:iP'}</td>
 						<td class="column-version">{$item->version}</td>
 						<td class="column-kind">{$item->kind}</td>
 						<td class="column-subject">{$item->subject}</td>

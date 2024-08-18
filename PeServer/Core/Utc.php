@@ -40,10 +40,16 @@ abstract class Utc
 	#region variable
 
 	private static ?DateTimeZone $timezone = null;
+	private static ?DateTimeInterface $empty = null;
 
 	#endregion
 
 	#region function
+
+	public static function getEmpty(): DateTimeInterface
+	{
+		return self::$empty ??= new DateTime('0001-01-01T00:00:00Z');
+	}
 
 	/**
 	 * タイムゾーン取得。
@@ -93,6 +99,7 @@ abstract class Utc
 		}
 
 		$formats = [
+			DateTimeInterface::ISO8601_EXPANDED,
 			self::UTC_FORMAT_01,
 			self::UTC_FORMAT_02,
 			self::UTC_FORMAT_03,

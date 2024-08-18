@@ -17,40 +17,40 @@ jobs:
       - name: Backup
         run: |
           curl \
-          --request POST \
-          --header "User-Agent: GitHub Actions" \
-          --header "Referer: https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" \
-          --header "X-API-KEY: ${{ secrets.PE_SERVER_API_KEY }}" \
-          --header "X-SECRET-KEY: ${{ secrets.PE_SERVER_API_SECRET }}" \
-          ${{ env.PE_SERVER_BASE_URL }}/api/administrator/backup
+            --request POST \
+            --header "User-Agent: GitHub Actions" \
+            --header "Referer: https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" \
+            --header "X-API-KEY: ${{ secrets.PE_SERVER_API_KEY }}" \
+            --header "X-SECRET-KEY: ${{ secrets.PE_SERVER_API_SECRET }}" \
+            ${{ env.PE_SERVER_BASE_URL }}/api/administrator/backup
 
       - name: Delete Old Data
         run: |
           curl \
-          --request POST \
-          --header "User-Agent: GitHub Actions" \
-          --header "Referer: https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" \
-          --header "X-API-KEY: ${{ secrets.PE_SERVER_API_KEY }}" \
-          --header "X-SECRET-KEY: ${{ secrets.PE_SERVER_API_SECRET }}" \
-          ${{ env.PE_SERVER_BASE_URL }}/api/administrator/delete-old-data
+            --request POST \
+            --header "User-Agent: GitHub Actions" \
+            --header "Referer: https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" \
+            --header "X-API-KEY: ${{ secrets.PE_SERVER_API_KEY }}" \
+            --header "X-SECRET-KEY: ${{ secrets.PE_SERVER_API_SECRET }}" \
+            ${{ env.PE_SERVER_BASE_URL }}/api/administrator/delete-old-data
 
       - name: Vacuum Access Log
         run: |
           curl \
-          --request POST \
-          --header "User-Agent: GitHub Actions" \
-          --header "Referer: https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" \
-          --header "X-API-KEY: ${{ secrets.PE_SERVER_API_KEY }}" \
-          --header "X-SECRET-KEY: ${{ secrets.PE_SERVER_API_SECRET }}" \
-          ${{ env.PE_SERVER_BASE_URL }}/api/administrator/vacuum-access-log
+            --request POST \
+            --header "User-Agent: GitHub Actions" \
+            --header "Referer: https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" \
+            --header "X-API-KEY: ${{ secrets.PE_SERVER_API_KEY }}" \
+            --header "X-SECRET-KEY: ${{ secrets.PE_SERVER_API_SECRET }}" \
+            ${{ env.PE_SERVER_BASE_URL }}/api/administrator/vacuum-access-log
 
       - name: Rebuild
         run:  |
           curl \
-          --request POST \
-          --header "User-Agent: GitHub Actions" \
-          --header "Referer: https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" \
-          --header "X-API-KEY: ${{ secrets.PE_SERVER_API_KEY }}" \
-          --header "X-SECRET-KEY: ${{ secrets.PE_SERVER_API_SECRET }}" \
-          ${{ env.PE_SERVER_BASE_URL }}/api/administrator/cache-rebuild
+            --request POST \
+            --header "User-Agent: GitHub Actions" \
+            --header "Referer: https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" \
+            --header "X-API-KEY: ${{ secrets.PE_SERVER_API_KEY }}" \
+            --header "X-SECRET-KEY: ${{ secrets.PE_SERVER_API_SECRET }}" \
+            ${{ env.PE_SERVER_BASE_URL }}/api/administrator/cache-rebuild
 
