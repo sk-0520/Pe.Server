@@ -116,11 +116,11 @@ export function replaceAllImpl(source: string, searchValue: string | RegExp, rep
 }
 
 export function replaceAll(source: string, searchValue: string | RegExp, replaceValue: string): string {
-	//if (!String.prototype.replaceAll) {
+	if (!("replaceAll" in String.prototype)) {
 		return replaceAllImpl(source, searchValue, replaceValue);
-	//}
+	}
 
-	//return source.replaceAll(searchValue, replaceValue);
+	return source.replaceAll(searchValue, replaceValue);
 }
 
 /**
