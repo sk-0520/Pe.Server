@@ -30,7 +30,7 @@ parameters:
     - ../PeServer
   excludePaths:
     - ../PeServer/Core/Libs
-    - ../PeServer/data
+    - ../PeServer/data(?)
     - ../test
   scanFiles:
     - ../PeServer/Core/Libs/smarty/src/Smarty.php
