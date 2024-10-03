@@ -184,8 +184,7 @@
 			"yusukehirao.vscode-markuplint",
 			"timonwong.shellcheck",
 			"sanderronde.phpstan-vscode",
-			"mads-hartmann.bash-ide-vscode",
-			"awwsky.region-marker"
+			"mads-hartmann.bash-ide-vscode"
 		],
 	}
 }
