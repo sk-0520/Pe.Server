@@ -383,7 +383,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 
 		/** @phpstan-var DatabaseRowResult<TFieldArray> */
 		$result = $this->convertRowResult($query);
-		if (Arr::isNullOrEmpty($result->fields)) { //@phpstan-ignore-line 本クラス内限定で空の可能性あり
+		if (Arr::isNullOrEmpty($result->fields)) {
 			throw new DatabaseException($this->getErrorMessage());
 		}
 
@@ -400,7 +400,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 
 		/** @phpstan-var DatabaseRowResult<TFieldArray> */
 		$result = $this->convertRowResult($query);
-		if (Arr::isNullOrEmpty($result->fields)) { //@phpstan-ignore-line 本クラス内限定で空の可能性あり
+		if (Arr::isNullOrEmpty($result->fields)) {
 			return null;
 		}
 
@@ -417,7 +417,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 
 		/** @phpstan-var DatabaseRowResult<TFieldArray> */
 		$result = $this->convertRowResult($query);
-		if (Arr::isNullOrEmpty($result->fields)) { //@phpstan-ignore-line 本クラス内限定で空の可能性あり
+		if (Arr::isNullOrEmpty($result->fields)) {
 			throw new DatabaseException($this->getErrorMessage());
 		}
 
@@ -439,7 +439,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 
 		/** @phpstan-var DatabaseRowResult<TFieldArray> */
 		$result = $this->convertRowResult($query);
-		if (Arr::isNullOrEmpty($result->fields)) { //@phpstan-ignore-line 本クラス内限定で空の可能性あり
+		if (Arr::isNullOrEmpty($result->fields)) {
 			return null;
 		}
 

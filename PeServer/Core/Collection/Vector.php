@@ -50,7 +50,7 @@ class Vector extends TypeArrayBase
 	 */
 	public static function create(array $items, bool $useValues = true): self
 	{
-		if (Arr::isNullOrEmpty($items)) { //@phpstan-ignore-line [DOCTYPE]
+		if (Arr::isNullOrEmpty($items)) {
 			throw new ArgumentException('$items');
 		}
 
