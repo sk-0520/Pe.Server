@@ -1,0 +1,7 @@
+
+services:
+  php:
+    build: ./images/php
+
+  web:
+    build: ./images/web
