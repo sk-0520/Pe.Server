@@ -19,8 +19,29 @@
 	// "customizations": {},
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	"forwardPorts": [8080, 80, 443],
-	"overrideCommand": false
+	"forwardPorts": [80, 443],
+	"overrideCommand": false,
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"bmewburn.vscode-intelephense-client",
+				"neilbrayfield.php-docblocker",
+				"editorconfig.editorconfig",
+				"mehedidracula.php-namespace-resolver",
+				"sibiraj-s.vscode-scss-formatter",
+				"formulahendry.auto-close-tag",
+				"mrmlnc.vscode-apache",
+				"kasik96.latte",
+				"xdebug.php-debug",
+				"santacodes.santacodes-region-viewer",
+				"aswinkumar863.smarty-template-support",
+				"yusukehirao.vscode-markuplint",
+				"timonwong.shellcheck",
+				"sanderronde.phpstan-vscode",
+				"mads-hartmann.bash-ide-vscode"
+			]
+		}
+	}
 
 	// Use 'postCreateCommand' to run commands after the container is created.
 	// "postCreateCommand": "sudo chmod a+x \"$(pwd)\" && sudo rm -rf /var/www/html && sudo ln -s \"$(pwd)\" /var/www/html"
