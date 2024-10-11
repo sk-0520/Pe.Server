@@ -7,8 +7,13 @@ WORKDIR /app
 COPY fs /
 
 RUN a2enmod rewrite && \
+	mkdir /app-data && chown www-data -R /app-data && \
 	apt update && \
 	apt-get install -y \
+		# dev
+		bash-completion git \
+		# node(setup)
+		# nodejs npm \
 		# GD
 		libpq-dev libfreetype6-dev libjpeg62-turbo-dev libpng-dev  \
 	&& \
@@ -17,4 +22,8 @@ RUN a2enmod rewrite && \
 	pecl install xdebug && \
 	docker-php-ext-enable xdebug
 
+# # node(version)
+# RUN npm install n -g && \
+# 	n 20.14.0 && \
+# 	apt-get purge -y nodejs npm
 

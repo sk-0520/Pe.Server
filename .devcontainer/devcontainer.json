@@ -38,13 +38,20 @@
 				"yusukehirao.vscode-markuplint",
 				"timonwong.shellcheck",
 				"sanderronde.phpstan-vscode",
-				"mads-hartmann.bash-ide-vscode"
+				"mads-hartmann.bash-ide-vscode",
+				"streetsidesoftware.code-spell-checker",
+				"EditorConfig.EditorConfig",
+				"Orta.vscode-jest",
+				"MehediDracula.php-namespace-resolver",
+				"SanderRonde.phpstan-vscode"
 			]
 		}
 	}
 
 	// Use 'postCreateCommand' to run commands after the container is created.
 	// "postCreateCommand": "sudo chmod a+x \"$(pwd)\" && sudo rm -rf /var/www/html && sudo ln -s \"$(pwd)\" /var/www/html"
+	// "postStartCommand": "npm ci",
+	// "postAttachCommand": "npm run build"
 
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
 	// "remoteUser": "root"
