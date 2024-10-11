@@ -2,6 +2,22 @@
 services:
   php:
     build: ./images/php
+    container_name: php-container
+    restart: always
+    volumes:
+      - socket:/var/run/php-fpm
+      - ../:/app
 
   web:
     build: ./images/web
+    container_name: web-container
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - socket:/var/run/php-fpm
+      - ../:/app
+
+volumes:
+  socket:
