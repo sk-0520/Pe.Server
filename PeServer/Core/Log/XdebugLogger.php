@@ -30,7 +30,7 @@ final class XdebugLogger extends LoggerBase
 
 	final protected function logImpl(int $level, int $traceIndex, $message, ...$parameters): void
 	{
-		if(!$this->xdebug) {
+		if (!$this->xdebug) {
 			return;
 		}
 
