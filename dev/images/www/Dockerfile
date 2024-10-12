@@ -27,3 +27,5 @@ RUN a2enmod rewrite && \
 # 	n 20.14.0 && \
 # 	apt-get purge -y nodejs npm
 
+EXPOSE 80
+EXPOSE 403
