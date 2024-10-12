@@ -71,7 +71,7 @@
 			".vscode-insiders"
 		],
 		"docker.commands.attach": "${containerCommand} exec -it ${containerId} bash",
-		"php.validate.executablePath": "dev/php.bat",
+		//"php.validate.executablePath": "dev/php.bat",
 		"intelephense.environment.phpVersion": "8.2.0",
 		"auto-close-tag.activationOnLanguage": [
 			"smarty"
