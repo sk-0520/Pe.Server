@@ -4,8 +4,6 @@ ENV APACHE_DOCUMENT_ROOT /app/public_html
 
 WORKDIR /app
 
-COPY fs /
-
 RUN a2enmod rewrite && \
 	mkdir /app-data && chown www-data -R /app-data && \
 	apt update && \
@@ -15,12 +13,15 @@ RUN a2enmod rewrite && \
 		# node(setup)
 		# nodejs npm \
 		# GD
-		libpq-dev libfreetype6-dev libjpeg62-turbo-dev libpng-dev  \
-	&& \
-	docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include && \
+		libpq-dev libfreetype6-dev libjpeg62-turbo-dev libpng-dev && \
+	pecl install xdebug
+
+COPY fs /
+
+RUN docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include && \
 	docker-php-ext-install -j$(nproc) gd && \
-	pecl install xdebug && \
 	docker-php-ext-enable xdebug
+
 
 # # node(version)
 # RUN npm install n -g && \

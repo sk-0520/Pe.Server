@@ -1,3 +1,6 @@
+volumes:
+  app-core-libs:
+    driver: 'local'
 
 services:
   www:
@@ -8,9 +11,18 @@ services:
       - 80:80
       - 443:443
     volumes:
+      # あらかじめ dev/images/www/setup.sh でライブラリ用ディレクトリを移送しておくこと
+      # PeServer/Core/Libs を更新した時とかも同じ
+      - type: volume
+        source: app-core-libs
+        target: /app/PeServer/Core/Libs
+      # アプリ おっそい
       - type: bind
         source: ../
         target: /app
+        consistency: cached
+      # 設定ディレクトリ
       - type: bind
         source: X:/
         target: /app-data
+        consistency: delegated
