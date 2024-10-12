@@ -8,5 +8,9 @@ services:
       - 80:80
       - 443:443
     volumes:
-      - ../:/app
-      - X:/:/app-data
+      - type: bind
+        source: ../
+        target: /app
+      - type: bind
+        source: X:/
+        target: /app-data
