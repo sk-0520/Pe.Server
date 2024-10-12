@@ -51,7 +51,7 @@ if ! common::exists_option 'ignore-pplint' ; then
 fi
 
 if ! common::exists_option 'ignore-phpstan' ; then
-	php "${PHPSTAN_FILE}" -v analyze --configuration phpstan.neon
+	php "${PHPSTAN_FILE}" -v analyze --configuration phpstan.neon --memory-limit=1G
 fi
 
 if ! common::exists_option 'ignore-phpcs' ; then
