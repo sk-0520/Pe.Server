@@ -118,6 +118,7 @@ final class HtmlTagElement extends HtmlElementBase
 	 * クラス一覧を取得。
 	 *
 	 * @return string[]
+	 * @phpstan-return list<string>
 	 */
 	public function getClassList(): array
 	{
@@ -130,7 +131,7 @@ final class HtmlTagElement extends HtmlElementBase
 	}
 
 	/**
-	 * Undocumented function
+	 * クラス一覧を設定。
 	 *
 	 * @param string[] $classNames
 	 * @return void

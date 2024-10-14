@@ -53,7 +53,7 @@ class HtmlXPath
 	}
 
 	//@phpstan-ignore-next-line
-	private function toArray(DOMNodeList $nodeList): array
+	private function toArrayCore(DOMNodeList $nodeList): array
 	{
 		$result = [];
 		foreach ($nodeList as $node) {
@@ -88,7 +88,7 @@ class HtmlXPath
 			throw new HtmlXPathException();
 		}
 
-		return $this->toArray($nodeList);
+		return $this->toArrayCore($nodeList);
 	}
 
 	/**
@@ -107,7 +107,7 @@ class HtmlXPath
 			throw new HtmlXPathException();
 		}
 
-		return $this->toArray($nodeList);
+		return $this->toArrayCore($nodeList);
 	}
 
 	/**

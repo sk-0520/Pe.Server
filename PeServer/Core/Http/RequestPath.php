@@ -24,6 +24,7 @@ readonly class RequestPath
 	 * / で分割されたパス一覧。
 	 *
 	 * @var string[]
+	 * @phpstan-var list<string>
 	 */
 	public array $tree;
 
@@ -36,9 +37,9 @@ readonly class RequestPath
 			//TODO: リバースプロキシとかの場合, form のアクション、各リソースへのパスの書き換え未考慮 必要に迫られたら考える
 		}
 
-		$reqs = Text::split($request, '?', 2);
+		$requestItems = Text::split($request, '?', 2);
 
-		$this->full = Text::trim($reqs[0], '/');
+		$this->full = Text::trim($requestItems[0], '/');
 		$this->tree = Text::split($this->full, '/');
 	}
 }

@@ -11,6 +11,7 @@ use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\EncodingException;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Throws\Throws;
+use Throwable;
 
 /**
  * エンコーディング処理。
@@ -234,12 +235,9 @@ class Encoding
 
 		try {
 			$output = mb_convert_encoding($input, $this->name, $default->name);
-			if ($output === false) { //@phpstan-ignore-line [PHP_VERSION]
-				throw new EncodingException();
-			}
 			return new Binary($output);
-		} catch (ValueError $err) {
-			Throws::reThrow(EncodingException::class, $err);
+		} catch (Throwable $ex) {
+			Throws::reThrow(EncodingException::class, $ex);
 		}
 	}
 
@@ -260,12 +258,9 @@ class Encoding
 
 		try {
 			$output = mb_convert_encoding($input->raw, $default->name, $this->name);
-			if ($output === false) { //@phpstan-ignore-line
-				throw new EncodingException();
-			}
 			return $output;
-		} catch (ValueError $err) {
-			Throws::reThrow(EncodingException::class, $err);
+		} catch (Throwable $ex) {
+			Throws::reThrow(EncodingException::class, $ex);
 		}
 	}
 
@@ -277,12 +272,12 @@ class Encoding
 	 */
 	public static function getAliasNames(string $encoding): array
 	{
-		$names = Throws::wrap(ValueError::class, EncodingException::class, fn () => mb_encoding_aliases($encoding));
-		if ($names === false) { //@phpstan-ignore-line [PHP_VERSION]
-			throw new EncodingException($encoding);
+		try {
+			$names = mb_encoding_aliases($encoding);
+			return $names;
+		} catch (Throwable $ex) {
+			Throws::reThrow(EncodingException::class, $ex);
 		}
-
-		return $names;
 	}
 
 	/**

@@ -196,6 +196,7 @@ class HttpHeader
 
 	/**
 	 * リダイレクト設定は存在するか。
+	 * @phpstan-assert-if-true RedirectSetting $this->redirect
 	 */
 	public function existsRedirect(): bool
 	{
@@ -267,7 +268,7 @@ class HttpHeader
 			throw new InvalidOperationException();
 		}
 
-		return $this->redirect; //@phpstan-ignore-line not null
+		return $this->redirect;
 	}
 
 	/**

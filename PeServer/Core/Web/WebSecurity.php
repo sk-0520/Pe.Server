@@ -8,7 +8,9 @@ use PeServer\Core\Binary;
 use PeServer\Core\Cryptography;
 use PeServer\Core\MiddlewareArgument;
 use PeServer\Core\Text;
+use PeServer\Core\Throws\CryptoException;
 use PeServer\Core\Throws\SessionException;
+use PeServer\Core\Throws\Throws;
 
 class WebSecurity
 {
@@ -72,9 +74,10 @@ class WebSecurity
 		}
 
 		$algorithm = $this->getCsrfTokenHash();
-		$hash = Cryptography::generateHashString($algorithm, new Binary($sessionId));
-		if (Text::isNullOrEmpty($hash)) {
-			throw new SessionException('CSRFトークン生成失敗');
+		try {
+			$hash = Cryptography::generateHashString($algorithm, new Binary($sessionId));
+		} catch (CryptoException $ex) {
+			Throws::reThrow(SessionException::class, $ex, 'CSRFトークン生成失敗');
 		}
 
 		return $hash;
