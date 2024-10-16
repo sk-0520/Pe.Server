@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 env:
-  PE_SERVER_BASE_URL: https://peserver.site
+  PE_SERVER_BASE_URL: https://pe.content-type-text.org
 
 jobs:
   build:
