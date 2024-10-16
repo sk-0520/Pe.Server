@@ -1,10 +1,11 @@
 ![license](https://img.shields.io/github/license/sk-0520/Pe.Server?style=flat)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/sk-0520/Pe.Server)
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=sk-0520_Pe.Server&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=sk-0520_Pe.Server)
-[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=sk-0520_Pe.Server&metric=bugs)](https://sonarcloud.io/summary/new_code?id=sk-0520_Pe.Server)
-[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=sk-0520_Pe.Server&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=sk-0520_Pe.Server)
-[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=sk-0520_Pe.Server&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=sk-0520_Pe.Server)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=sk-0520_Pe.Server&metric=alert_status)
+![Bugs](https://sonarcloud.io/api/project_badges/measure?project=sk-0520_Pe.Server&metric=bugs)
+![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=sk-0520_Pe.Server&metric=code_smells)
+![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=sk-0520_Pe.Server&metric=duplicated_lines_density)
+](https://sonarcloud.io/summary/new_code?id=sk-0520_Pe.Server)
 
 # Pe サーバー処理系
 

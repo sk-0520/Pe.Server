@@ -17,12 +17,23 @@ final class XdebugLogger extends LoggerBase
 	public function __construct(Logging $logging, LogOptions $options)
 	{
 		parent::__construct($logging, $options);
+		$this->xdebug = function_exists('xdebug_is_debugger_active');
 	}
+
+	#region property
+
+	private readonly bool $xdebug;
+
+	#endregion
 
 	#region LoggerBase
 
 	final protected function logImpl(int $level, int $traceIndex, $message, ...$parameters): void
 	{
+		if (!$this->xdebug) {
+			return;
+		}
+
 		if (!\xdebug_is_debugger_active()) {
 			return;
 		}

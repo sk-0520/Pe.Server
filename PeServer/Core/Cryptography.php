@@ -72,12 +72,12 @@ abstract class Cryptography
 			throw new ArgumentException('$length: ' . $length);
 		}
 
-		$result = openssl_random_pseudo_bytes($length);
-		if ($result === false) { //@phpstan-ignore-line [PHPVERSION]
-			throw new CryptoException();
+		try {
+			$result = openssl_random_pseudo_bytes($length);
+			return new Binary($result);
+		} catch (Throwable $ex) {
+			Throws::reThrow(CryptoException::class, $ex);
 		}
-
-		return new Binary($result);
 	}
 
 	/**
@@ -145,7 +145,7 @@ abstract class Cryptography
 	}
 
 	/**
-	 * Cryptography::encrypt で暗号化されたデータの復元。
+	 * `Cryptography::encrypt` で暗号化されたデータの復元。
 	 *
 	 * @param string $encValue 暗号化データ。
 	 * @param string $password パスワード。
@@ -223,7 +223,7 @@ abstract class Cryptography
 	/**
 	 * `password_algos` ラッパー。
 	 *
-	 * @return string[]
+	 * @return list<string>
 	 * @see https://www.php.net/manual/function.password-algos.php
 	 */
 	public static function getPasswordAlgorithms(): array
@@ -236,7 +236,7 @@ abstract class Cryptography
 	 *
 	 * `hash_algos` ラッパー。
 	 *
-	 * @return string[]
+	 * @return list<string>
 	 * @see https://www.php.net/manual/function.hash-algos.php
 	 */
 	public static function getHashAlgorithms(): array
@@ -251,7 +251,7 @@ abstract class Cryptography
 	 * @param string $algorithm
 	 * @param Binary $binary
 	 * @param array{seed?:?int} $options
-	 * @return string
+	 * @return non-empty-string
 	 */
 	private static function generateHashCore(bool $isBinary, string $algorithm, Binary $binary, array $options = []): string
 	{
@@ -276,7 +276,7 @@ abstract class Cryptography
 	 * @param non-empty-string $algorithm
 	 * @param Binary $binary 入力バイナリデータ。
 	 * @param array{seed?:?int} $options
-	 * @return string 文字列表現。
+	 * @return non-empty-string 文字列表現。
 	 * @throws CryptoException
 	 * @see https://www.php.net/manual/function.hash.php
 	 */

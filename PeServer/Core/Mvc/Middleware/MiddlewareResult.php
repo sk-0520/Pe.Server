@@ -28,7 +28,7 @@ abstract class MiddlewareResult
 	#region variable
 
 	/** 結果なしキャッシュ。 */
-	private static ?MiddlewareResult $none;
+	private static ?MiddlewareResult $none = null;
 
 	#endregion
 

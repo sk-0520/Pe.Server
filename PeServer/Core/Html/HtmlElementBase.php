@@ -11,6 +11,7 @@ use PeServer\Core\Html\HtmlNodeBase;
 use PeServer\Core\Throws\HtmlException;
 use PeServer\Core\Throws\HtmlTagElementException;
 use PeServer\Core\Throws\Throws;
+use Throwable;
 
 abstract class HtmlElementBase extends HtmlNodeBase
 {
@@ -38,22 +39,22 @@ abstract class HtmlElementBase extends HtmlNodeBase
 
 	public function createText(string $text): HtmlTextElement
 	{
-		$node = $this->document->raw->createTextNode($text);
-		if ($node === false) { // @phpstan-ignore-line
-			throw new HtmlException();
+		try {
+			$node = $this->document->raw->createTextNode($text);
+			return new HtmlTextElement($this->document, $node);
+		} catch (Throwable $ex) {
+			Throws::reThrow(HtmlException::class, $ex);
 		}
-
-		return new HtmlTextElement($this->document, $node);
 	}
 
 	public function createComment(string $text): HtmlCommentElement
 	{
-		$node = $this->document->raw->createComment($text);
-		if ($node === false) { // @phpstan-ignore-line
-			throw new HtmlException();
+		try {
+			$node = $this->document->raw->createComment($text);
+			return new HtmlCommentElement($this->document, $node);
+		} catch (Throwable $ex) {
+			Throws::reThrow(HtmlException::class, $ex);
 		}
-
-		return new HtmlCommentElement($this->document, $node);
 	}
 
 	public function appendChild(HtmlTagElement|HtmlTextElement|HtmlCommentElement|DOMNode $node): void

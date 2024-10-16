@@ -12,14 +12,14 @@ PPLINT_URL=https://github.com/php-parallel-lint/PHP-Parallel-Lint/releases/downl
 PPLINT_NAME=parallel-lint.phar
 PPLINT_FILE=${PPLINT_NAME}.${PPLINT_VERSION}
 
-PHPSTAN_VERSION=1.11.10
+PHPSTAN_VERSION=1.12.6
 PHPSTAN_URL=https://github.com/phpstan/phpstan/releases/download/${PHPSTAN_VERSION}/phpstan.phar
 PHPSTAN_NAME=phpstan.phar
 PHPSTAN_FILE=${PHPSTAN_NAME}.${PHPSTAN_VERSION}
 # PHPSTAN_BLEEDING_EDGE_NAME=bleedingEdge.neon
 # PHPSTAN_BLEEDING_EDGE_URL=https://raw.githubusercontent.com/phpstan/phpstan-src/${PHPSTAN_VERSION}/conf/bleedingEdge.neon
 
-PHPCODESNIFFER_VERSION=3.10.2
+PHPCODESNIFFER_VERSION=3.10.3
 PHPCODESNIFFER_S_URL=https://github.com/PHPCSStandards/PHP_CodeSniffer/releases/download/${PHPCODESNIFFER_VERSION}/phpcs.phar
 PHPCODESNIFFER_BF_URL=https://github.com/PHPCSStandards/PHP_CodeSniffer/releases/download/${PHPCODESNIFFER_VERSION}/phpcbf.phar
 PHPCODESNIFFER_S_NAME=phpcs.phar
@@ -51,7 +51,7 @@ if ! common::exists_option 'ignore-pplint' ; then
 fi
 
 if ! common::exists_option 'ignore-phpstan' ; then
-	php "${PHPSTAN_FILE}" -v analyze --configuration phpstan.neon
+	php "${PHPSTAN_FILE}" -v analyze --configuration phpstan.neon --memory-limit=1G
 fi
 
 if ! common::exists_option 'ignore-phpcs' ; then

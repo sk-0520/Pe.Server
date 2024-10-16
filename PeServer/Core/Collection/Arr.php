@@ -28,9 +28,11 @@ class Arr
 	/**
 	 * 配列が `null` か空か。
 	 *
+	 * @template TValue
 	 * @param array<mixed>|null $array 対象配列。
+	 * @phpstan-param array<TValue>|null $array 対象配列。
 	 * @return boolean `null` か空の場合に真。
-	 * @phpstan-assert-if-false non-empty-array $array
+	 * @phpstan-assert-if-false non-empty-array<TValue> $array
 	 */
 	public static function isNullOrEmpty(?array $array): bool
 	{
@@ -205,9 +207,11 @@ class Arr
 	/**
 	 * `isList` 実装。
 	 *
+	 * @template TValue
 	 * @param array<mixed> $array 対象配列。
+	 * @phpstan-param array<TValue> $array 対象配列。
 	 * @return bool
-	 * @phpstan-assert-if-true list $array
+	 * @phpstan-assert-if-true list<TValue> $array
 	 */
 	public static function isListImpl(array $array): bool
 	{
@@ -224,10 +228,12 @@ class Arr
 	/**
 	 * `array_is_list` ラッパー。
 	 *
+	 * @template TValue
 	 * @param array<mixed> $array 対象配列。
+	 * @phpstan-param array<TValue> $array 対象配列。
 	 * @return bool
 	 * @see https://www.php.net/manual/function.array-is-list.php#127044
-	 * @phpstan-assert-if-true list $array
+	 * @phpstan-assert-if-true list<TValue> $array
 	 */
 	public static function isList(array $array): bool
 	{

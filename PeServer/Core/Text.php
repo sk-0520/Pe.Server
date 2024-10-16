@@ -433,6 +433,7 @@ abstract class Text
 	 * @param non-empty-string $separator 分割対象文字列。
 	 * @param int $limit 分割数。
 	 * @return string[] 分割された文字列。
+	 * @phpstan-return list<string> 分割された文字列。
 	 * @throws ArgumentException 分割失敗(PHP8未満)
 	 * @throws \ValueError 分割失敗(PHP8以上)
 	 * @see https://www.php.net/manual/function.explode.php
@@ -453,6 +454,7 @@ abstract class Text
 	 *
 	 * @param string $value
 	 * @return string[]
+	 * @phpstan-return list<string>
 	 */
 	public static function splitLines(string $value): array
 	{
