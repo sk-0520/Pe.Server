@@ -1,7 +1,7 @@
 #!/bin/bash -ue
 cd "$(cd "$(dirname "${0}")"; pwd)"
 
-export SETTING_API_URL=https://peserver.site/api/administrator/deploy
+export SETTING_API_URL=https://pe.content-type-text.org/api/administrator/deploy
 export SETTING_SPLIT_SIZE=4MB
 export SETTING_LOG_LEVEL=t
 
