@@ -73,8 +73,8 @@
 			},
 			"return_email": "return@localhost.localdomain",
 			"families": {
-				"server_url": "https://peserver.site/",
-				"contact_url": "https://peserver.site/about/contact",
+				"server_url": "https://pe.content-type-text.org",
+				"contact_url": "https://pe.content-type-text.org/about/contact",
 				"app_project_url": "https://github.com/sk-0520/Pe",
 				"server_project_url": "https://github.com/sk-0520/Pe.Server",
 				"forum_url": "https://groups.google.com/g/pe_development",
