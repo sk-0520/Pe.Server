@@ -26,3 +26,16 @@ services:
         source: X:/
         target: /app-data
         consistency: delegated
+    depends_on:
+      - mail
+
+  mail:
+    image: axllent/mailpit:v1.20
+    container_name: mail-container
+    ports:
+      - 8025:8025
+      - 1025:1025
+    environment:
+      TZ: Asia/Tokyo
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
