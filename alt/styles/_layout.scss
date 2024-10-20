@@ -49,10 +49,7 @@ body {
 	background-color: $_base-background-color;
 	color: $_base-color;
 
-	height: calc(100% - #{variable.$pcAdvertisingHeight});
-	@include responsive.media($break) {
-		height: calc(100% - #{variable.$spAdvertisingHeight});
-	}
+	height: 100%;
 
 	main {
 		#title {
@@ -81,7 +78,7 @@ body {
 				width: calc(100% - #{variable.$spNavigationWidth});
 				height: variable.$spTitleHeight;
 				line-height: variable.$spTitleHeight;
-				margin-top: variable.$spAdvertisingHeight;
+				margin-top: 0;
 				padding-left: 0;
 				text-align: center;
 				box-shadow: none;
@@ -90,7 +87,7 @@ body {
 
 		#content {
 			margin-top: variable.$pcTitleHeight + variable.$pcHeaderHeight;
-			margin-bottom: variable.$pcFooterHeight + variable.$pcAdvertisingHeight;
+			margin-bottom: variable.$pcFooterHeight;
 			padding: 1rem 4rem 3rem;
 
 			@include responsive.media($break) {
@@ -181,7 +178,7 @@ body {
 			display: block;
 			height: variable.$spTitleHeight;
 			position: absolute;
-			top: variable.$spAdvertisingHeight;
+			top: 0;
 			right: 0;
 
 			details {
@@ -254,7 +251,7 @@ body {
 
 	footer {
 		position: fixed;
-		bottom: variable.$pcAdvertisingHeight;
+		bottom: 0;
 		left: 0;
 		right: 0;
 		height: variable.$pcFooterHeight;
@@ -272,40 +269,6 @@ body {
 		}
 
 		@include links();
-	}
-
-	#advertising {
-		position: fixed;
-		bottom: 0;
-		left: 0;
-		right: 0;
-		height: variable.$pcAdvertisingHeight;
-		text-align: center;
-		background-color: $_pc-footer-background-color;
-		color: $_base-color;
-
-		@include responsive.media($break) {
-			background-color: $_base-background-color;
-			position: absolute;
-			top: 0;
-			height: variable.$spAdvertisingHeight;
-		}
-
-		a {
-			&:link,
-			&:visited,
-			&:after,
-			&:hover,
-			&:active {
-				height: 0;
-				transition: none;
-			}
-
-			img {
-				max-width: 100%;
-				height: auto;
-			}
-		}
 	}
 }
 
