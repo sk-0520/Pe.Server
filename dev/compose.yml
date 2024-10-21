@@ -22,6 +22,7 @@ services:
         target: /app
         consistency: cached
       # 設定ディレクトリ
+      # うまいこと調整が必要
       - type: bind
         source: X:/
         target: /app-data
