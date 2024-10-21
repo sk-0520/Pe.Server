@@ -309,6 +309,8 @@ class AutoLoader
 	 * ファイル読み込み処理。
 	 *
 	 * @param string $fullName 完全名。
+	 * @SuppressWarnings("php:S2003")
+	 * @SuppressWarnings("php:S4833")
 	 */
 	private function load(string $fullName): void
 	{

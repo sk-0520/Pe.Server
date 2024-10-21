@@ -10,15 +10,22 @@ use PeServer\Core\AutoLoader;
 use PeServer\Core\Binary;
 use PeServerTest\TestClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\ExpectationFailedException;
 
 class AutoLoaderTest extends TestClass
 {
+	/**
+	 * @SuppressWarnings("php:S1848")
+	 */
 	public function test_constructor_empty()
 	{
 		new AutoLoader();
 		$this->success();
 	}
 
+	/**
+	 * @SuppressWarnings("php:S1848")
+	 */
 	public function test_constructor()
 	{
 		new AutoLoader([
