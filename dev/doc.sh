@@ -21,7 +21,7 @@ fi
 
 PHPDOC_OPTIONS_SETTING_GRAPHS=
 if common::exists_option 'phpdoc:setting-graphs' ; then
-	PHPDOC_OPTIONS_SETTING_GRAPHS="--setting=graphs.enabled=true"
+	PHPDOC_OPTIONS_SETTING_GRAPHS="--setting=graphs.enabled=true -vvv"
 fi
 
 php "${PHPDOC_FILE}" "${PHPDOC_OPTIONS_CACHE_PATH}" ${PHPDOC_OPTIONS_SETTING_GRAPHS}
