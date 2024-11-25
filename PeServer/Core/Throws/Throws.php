@@ -40,15 +40,17 @@ abstract class Throws
 	/**
 	 * 例外の再スロー。
 	 *
-	 * @param class-string<Throwable> $className 例外名。
+	 * @template TException of Throwable
+	 * @param string $className 例外名。
+	 * @phpstan-param class-string<TException> $className
 	 * @param Throwable $previous ラップする元の例外。
+	 * @throws TException
 	 */
 	public static function reThrow(string $className, Throwable $previous, string $message = null): never
 	{
 		$message = $message ?? $previous->getMessage();
 		$code = self::getErrorCode($previous);
 
-		/** @var Throwable */
 		$exception = ReflectionUtility::create($className, Throwable::class, $message, $code, $previous);
 		throw $exception;
 	}
