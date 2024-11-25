@@ -76,8 +76,6 @@ class ManagementDefaultPluginLogic extends PageLogicBase
 				$database->transaction(function (IDatabaseContext $context) use ($params) {
 
 					foreach ($params['plugins'] as $plugin) {
-						/** @var  $plugin array{item:DefaultPlugin,registered:bool}[] */
-
 						PluginUtility::removePlugin($context, $plugin['item']->pluginId);
 						$this->addTemporaryMessage('削除: ' . $plugin['item']->pluginName);
 					}
