@@ -1,6 +1,6 @@
 #!/bin/bash -ue
-
 cd "$(cd "$(dirname "${0}")"; pwd)"
+# cspell:ignore PHPDOC
 
 #shellcheck disable=SC1091
 source shell/common.sh

@@ -28,7 +28,7 @@ PHPUNIT_BASE_DIR=../test
 common::download_phar_if_not_exists "${PHPUNIT_BASE_DIR}/${PHPUNIT_FILE}" "${PHPUNIT_BASE_DIR}/${PHPUNIT_NAME}" "${PHPUNIT_URL}"
 
 if ! common::exists_option 'ignore-namespace' ; then
-	logger::info "[CHECKE NAMESPACE]"
+	logger::info "[CHECK NAMESPACE]"
 
 	NAMESPACE_ERROR=false
 

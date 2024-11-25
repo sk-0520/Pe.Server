@@ -1,6 +1,6 @@
 #!/bin/bash -ue
-
 cd "$(cd "$(dirname "${0}")"; pwd)"
+# cspell:ignore PPLINT PHPCODESNIFFER phpcbf ruleset
 
 #shellcheck disable=SC1091
 source shell/common.sh
@@ -60,9 +60,9 @@ if ! common::exists_option 'ignore-phpcs' ; then
 		PHPCS_OPTION_REPORT="$(common::get_option_value phpcs:report)"
 	fi
 
-	PHPCS_OPTIONS_WARNIG=
+	PHPCS_OPTIONS_WARNING=
 	if common::exists_option 'phpcs:ignore-warning' ; then
-		PHPCS_OPTIONS_WARNIG="--warning-severity=0"
+		PHPCS_OPTIONS_WARNING="--warning-severity=0"
 	fi
 
 	PHPCS_OPTIONS_CACHE=
@@ -81,5 +81,5 @@ if ! common::exists_option 'ignore-phpcs' ; then
 	fi
 
 	#shellcheck disable=SC2086
-	php "${PHPCODESNIFFER_S_FILE}" ${PHPCS_OPTIONS_DEFAULT} ${PHPCS_OPTION_REPORT} ${PHPCS_OPTIONS_WARNIG} ${PHPCS_OPTIONS_CACHE}
+	php "${PHPCODESNIFFER_S_FILE}" ${PHPCS_OPTIONS_DEFAULT} ${PHPCS_OPTION_REPORT} ${PHPCS_OPTIONS_WARNING} ${PHPCS_OPTIONS_CACHE}
 fi
