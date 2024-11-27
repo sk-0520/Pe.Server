@@ -287,6 +287,16 @@ class SpecialStore
 		return $this->getServer('HTTP_HOST', TEXT::EMPTY);
 	}
 
+	public function getQueryString(): string | null
+	{
+		if ($this->tryGetServer('QUERY_STRING', $result)) {
+			if (is_string($result)) {
+				return $result;
+			}
+		}
+		return null;
+	}
+
 	private function getServerUrlCore(bool $withPathInfo): Url
 	{
 		$isHttps = $this->isHttps();
@@ -303,11 +313,6 @@ class SpecialStore
 		}
 		if ($port !== '') {
 			$port = ":$port";
-		}
-
-		$query = $this->getServer('QUERY_STRING', Text::EMPTY);
-		if (Text::isNullOrEmpty($query)) { //@phpstan-ignore-line [TIME]
-			$query = null;
 		}
 
 		$url = $isHttps ? 'https://' : 'http://';
