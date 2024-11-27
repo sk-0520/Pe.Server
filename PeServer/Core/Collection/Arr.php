@@ -47,7 +47,7 @@ class Arr
 	 * 配列から値を取得する。
 	 *
 	 * @template TValue
-	 * @param array<int|string,mixed>|null $array 対象配列。
+	 * @param array<array-key,mixed>|null $array 対象配列。
 	 * @phpstan-param array<array-key,TValue>|null $array
 	 * @param int|string $key キー。
 	 * @phpstan-param array-key $key
@@ -122,9 +122,9 @@ class Arr
 	 *
 	 * `array_keys` ラッパー。
 	 *
-	 * @param array<int|string,mixed> $array 対象配列。
+	 * @param array<array-key,mixed> $array 対象配列。
 	 * @phpstan-param array<array-key,mixed> $array
-	 * @return array<int|string>
+	 * @return array<array-key>
 	 * @phpstan-return list<array-key>
 	 * @see https://www.php.net/manual/function.array-keys.php
 	 */
@@ -154,7 +154,7 @@ class Arr
 	 * `in_array` ラッパー。
 	 *
 	 * @template TValue
-	 * @param array<int|string,mixed> $haystack 対象配列。
+	 * @param array<array-key,mixed> $haystack 対象配列。
 	 * @phpstan-param array<array-key,TValue> $haystack
 	 * @param mixed $needle
 	 * @phpstan-param TValue $needle

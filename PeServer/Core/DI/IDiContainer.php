@@ -43,7 +43,7 @@ interface IDiContainer extends ContainerInterface
 	 *
 	 * @template T of object
 	 * @param class-string|class-string<T>|non-empty-string $idOrClassName
-	 * @param array<int|string,mixed> $arguments 生成パラメータ指定。
+	 * @param array<array-key,mixed> $arguments 生成パラメータ指定。
 	 *  * int: 引数位置(0基点)。負数の場合で 0 に近い項目で割り当て可能(非`null`)なパラメータであれば順に消費されていく。
 	 *  * string: 先頭が `$` で始まる場合は引数名、それ以外は型名と判断。型名の場合は一致するごとに消費されていく。
 	 *  * 引数位置指定が優先される
@@ -58,7 +58,7 @@ interface IDiContainer extends ContainerInterface
 	 * コールバックを実施。
 	 *
 	 * @param callable $callback
-	 * @param array<int|string,mixed> $arguments `new` を参照。
+	 * @param array<array-key,mixed> $arguments `new` を参照。
 	 * @return mixed
 	 */
 	public function call(callable $callback, array $arguments = []): mixed;

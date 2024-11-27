@@ -114,7 +114,7 @@ abstract class I18n
 	 * 初期化時に渡された文字列リソースから対象文言を取得する。
 	 *
 	 * @param string $key 文字列リソースのキー。/が存在する場合にキーから見つからない場合は階層構造として扱う。
-	 * @param array<int|string,int|string> $parameters
+	 * @param array<array-key,int|string> $parameters
 	 * @return string
 	 */
 	public static function message(string $key, array $parameters = []): string

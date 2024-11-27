@@ -122,8 +122,7 @@ class Regex
 	 * @param string $input
 	 * @param string $pattern
 	 * @phpstan-param literal-string $pattern
-	 * @return array<int|string,string>
-	 * @phpstan-return array<array-key,string>
+	 * @return array<array-key,string>
 	 */
 	public function matches(string $input, string $pattern): array
 	{

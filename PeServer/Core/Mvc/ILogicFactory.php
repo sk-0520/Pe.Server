@@ -16,7 +16,7 @@ interface ILogicFactory
 	 * @template TLogicBase of LogicBase
 	 * @param non-empty-string $logicClassName
 	 * @phpstan-param class-string<TLogicBase> $logicClassName
-	 * @param array<int|string,mixed> $arguments
+	 * @param array<array-key,mixed> $arguments
 	 * @return LogicBase
 	 * @phpstan-return TLogicBase
 	 */
