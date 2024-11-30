@@ -54,6 +54,11 @@
 			<ul>
 				<li>
 					<a href="/account/user/plugin">プラグイン登録</a>
+					<ul>
+						<li>
+							<a href="/account/user/plugin/temporary">仮登録</a>
+						</li>
+					</ul>
 				</li>
 				<li>
 					<a href="/account/user/edit">ユーザー編集</a>
