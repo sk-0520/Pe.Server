@@ -368,6 +368,8 @@ abstract class LogicBase implements IValidationReceiver
 	/**
 	 * パラメータキーの設定。
 	 *
+	 * TODO: これほんといらんかった系処理。消したい。
+	 *
 	 * @param non-empty-string[] $keys
 	 * @param bool $overwrite キー項目を要求データで上書きするか
 	 * @param bool $initialize キー情報を初期化するか

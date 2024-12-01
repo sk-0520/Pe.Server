@@ -4,7 +4,7 @@
 
 {block name='BODY'}
 
-	<form class="page-account-plugin" action="/account/user/plugin/temporary" method="post">
+	<form class="page-account-plugin" action="/account/user/plugin/reserve" method="post">
 		{csrf}
 
 		<dl class="input">
@@ -15,12 +15,12 @@
 				</ul>
 			</dt>
 			<dd>
-				{input_helper id='pg-plugin-id' key='account_plugin_temporary_plugin_id' type="text" class="edit"}
+				{input_helper id='pg-plugin-id' key='account_plugin_reserve_plugin_id' type="text" class="edit"}
 			</dd>
 
 			<dt>プラグイン内部名</dt>
 			<dd>
-				{input_helper key='account_plugin_plugin_temporary_name' type="text" class="edit"}
+				{input_helper key='account_plugin_reserve_plugin_name' type="text" class="edit"}
 			</dd>
 
 			<dt class="action"></dt>

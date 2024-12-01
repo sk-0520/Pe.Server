@@ -12,7 +12,7 @@ use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\Text;
 
-class AccountUserPluginTemporaryLogic extends PageLogicBase
+class AccountUserPluginReserveLogic extends PageLogicBase
 {
 	public function __construct(LogicParameter $parameter)
 	{
@@ -24,8 +24,8 @@ class AccountUserPluginTemporaryLogic extends PageLogicBase
 	protected function startup(LogicCallMode $callMode): void
 	{
 		$keys = [
-			'account_temporary_plugin_plugin_id',
-			'account_temporary_plugin_plugin_name',
+			'account_plugin_reserve_plugin_id',
+			'account_plugin_reserve_plugin_name',
 		];
 
 		$this->registerParameterKeys($keys, true);
@@ -43,14 +43,14 @@ class AccountUserPluginTemporaryLogic extends PageLogicBase
 			return;
 		}
 
-		$this->validation('account_plugin_plugin_id', function (string $key, string $value) {
+		$this->validation('account_plugin_reserve_plugin_id', function (string $key, string $value) {
 			$pluginValidator = new PluginValidator($this, $this->validator, $this->environment);
 			if ($pluginValidator->isPluginId($key, $value)) {
 				$database = $this->openDatabase();
 				$pluginValidator->isFreePluginId($database, $key, $value);
 			}
 		});
-		$this->validation('account_plugin_plugin_name', function (string $key, string $value) {
+		$this->validation('account_plugin_reserve_plugin_name', function (string $key, string $value) {
 			$pluginValidator = new PluginValidator($this, $this->validator, $this->environment);
 			if ($pluginValidator->isPluginName($key, $value)) {
 				$database = $this->openDatabase();
