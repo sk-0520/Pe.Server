@@ -1,5 +1,5 @@
 {extends file='default.tpl'}
-{block name='TITLE'}プラグイン 登録{/block}
+{block name='TITLE'}プラグイン 予約{/block}
 {block name='DEFAULT_SCRIPT'}{asset file='/scripts/plugin_edit.js'}{/block}
 
 {block name='BODY'}
