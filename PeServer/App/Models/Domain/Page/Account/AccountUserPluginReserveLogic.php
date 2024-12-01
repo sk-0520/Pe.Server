@@ -63,7 +63,6 @@ class AccountUserPluginReserveLogic extends PageLogicBase
 				$pluginValidator->isFreePluginName($database, $key, $value);
 			}
 		});
-
 	}
 
 	protected function executeImpl(LogicCallMode $callMode): void
@@ -105,7 +104,6 @@ class AccountUserPluginReserveLogic extends PageLogicBase
 		$this->addTemporaryMessage(I18n::message('message/flash/reserved_plugin'));
 
 		$this->dbCache->exportPluginInformation();
-
 	}
 
 	#endregion

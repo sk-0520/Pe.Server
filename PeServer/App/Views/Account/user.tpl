@@ -40,9 +40,29 @@
 				<ul>
 					{foreach from=$values.plugins item=item key=key name=name}
 						<li data-index={$key}>
-							<a href="/account/user/plugin/{$item.plugin_id}" title="{$item.display_name}">
+							{if $item.state === PeServer\App\Models\Domain\PluginState::ENABLED || $item.state === PeServer\App\Models\Domain\PluginState::RESERVED}
+								<a href="/account/user/plugin/{$item.plugin_id}" title="{$item.display_name}">
+									{$item.plugin_name}
+								</a>
+							{else}
 								{$item.plugin_name}
-							</a>
+							{/if}
+							<ul class="inline flat">
+								<li>
+									{if $item.state === PeServer\App\Models\Domain\PluginState::ENABLED}
+										[有効]
+									{elseif $item.state === PeServer\App\Models\Domain\PluginState::CHECK_FAILED}
+										[不明]
+									{elseif $item.state === PeServer\App\Models\Domain\PluginState::RESERVED}
+										[予約]
+									{elseif $item.state === PeServer\App\Models\Domain\PluginState::DISABLED}
+										[無効]
+									{/if}
+								</li>
+								<li>
+									b
+								</li>
+							</ul>
 						</li>
 					{/foreach}
 				</ul>
