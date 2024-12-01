@@ -98,9 +98,10 @@ class PluginsEntityDao extends DaoBase
 				plugins.user_id = :user_id
 			order by
 				case plugins.state
-					when 'enabled' then 1
-					when 'check_failed' then 2
-					when 'disabled' then 3
+					when 'enabled' then 10
+					when 'check_failed' then 20
+					when 'reserved' then 30
+					when 'disabled' then 40
 				end,
 				plugins.plugin_name
 
