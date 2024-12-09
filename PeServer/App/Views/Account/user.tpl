@@ -37,18 +37,18 @@
 			{if empty($values.plugins)}
 				<span class="mute">未登録</span>
 			{else}
-				<ul>
-					{foreach from=$values.plugins item=item key=key name=name}
-						<li data-index={$key}>
-							{if $item.state === PeServer\App\Models\Domain\PluginState::ENABLED || $item.state === PeServer\App\Models\Domain\PluginState::RESERVED}
-								<a href="/account/user/plugin/{$item.plugin_id}" title="{$item.display_name}">
-									{$item.plugin_name}
-								</a>
-							{else}
-								{$item.plugin_name}
-							{/if}
-							<ul class="inline flat">
-								<li>
+				<table>
+					<thead>
+						<tr>
+							<th>状態</th>
+							<th>プラグイン名</th>
+							<th>プラグインID</th>
+						</tr>
+					</thead>
+					<tbody>
+						{foreach from=$values.plugins item=item key=key name=name}
+							<tr>
+								<td>
 									{if $item.state === PeServer\App\Models\Domain\PluginState::ENABLED}
 										[有効]
 									{elseif $item.state === PeServer\App\Models\Domain\PluginState::CHECK_FAILED}
@@ -57,15 +57,26 @@
 										[予約]
 									{elseif $item.state === PeServer\App\Models\Domain\PluginState::DISABLED}
 										[無効]
+									{else}
+										[あかん]
 									{/if}
-								</li>
-								<li>
-									b
-								</li>
-							</ul>
-						</li>
-					{/foreach}
-				</ul>
+								</td>
+								<td>
+									{if $item.state === PeServer\App\Models\Domain\PluginState::ENABLED || $item.state === PeServer\App\Models\Domain\PluginState::RESERVED}
+										<a href="/account/user/plugin/{$item.plugin_id}" title="{$item.display_name}">
+											{$item.plugin_name}
+										</a>
+									{else}
+										{$item.plugin_name}
+									{/if}
+								</td>
+								<td>
+									<code data-clipboard="inline">{$item.plugin_id}</code>
+								</td>
+							</tr>
+						{/foreach}
+					</tbody>
+				</table>
 			{/if}
 		</dd>
 
