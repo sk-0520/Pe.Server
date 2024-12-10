@@ -70,8 +70,8 @@
 										{$item.plugin_name}
 									{/if}
 								</td>
-								<td>
-									<code data-clipboard="inline">{$item.plugin_id}</code>
+								<td data-clipboard="data" data-clipboard-value="{$item.plugin_id}">
+									<code>{$item.plugin_id}</code>
 								</td>
 							</tr>
 						{/foreach}
