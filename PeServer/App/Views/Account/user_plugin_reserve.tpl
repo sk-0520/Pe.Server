@@ -4,7 +4,7 @@
 
 {block name='BODY'}
 
-	<form class="page-account-plugin" action="/account/user/plugin/reserve" method="post">
+	<form class="page-account-plugin-reserve" action="/account/user/plugin/reserve" method="post">
 		{csrf}
 
 		<dl class="input">
