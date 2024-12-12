@@ -48,19 +48,19 @@
 					<tbody>
 						{foreach from=$values.plugins item=item key=key name=name}
 							<tr>
-								<td>
+								<th>
 									{if $item.state === PeServer\App\Models\Domain\PluginState::ENABLED}
-										[有効]
+										有効
 									{elseif $item.state === PeServer\App\Models\Domain\PluginState::CHECK_FAILED}
-										[不明]
+										不明
 									{elseif $item.state === PeServer\App\Models\Domain\PluginState::RESERVED}
-										[予約]
+										予約
 									{elseif $item.state === PeServer\App\Models\Domain\PluginState::DISABLED}
-										[無効]
+										無効
 									{else}
-										[あかん]
+										あかん
 									{/if}
-								</td>
+								</th>
 								<td>
 									{if $item.state === PeServer\App\Models\Domain\PluginState::ENABLED || $item.state === PeServer\App\Models\Domain\PluginState::RESERVED}
 										<a href="/account/user/plugin/{$item.plugin_id}" title="{$item.display_name}">
