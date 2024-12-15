@@ -42,6 +42,30 @@
 				{input_helper key='account_plugin_display_name' type="text" class="edit"}
 			</dd>
 
+			<dt>
+			</dt>
+			<dd>
+				<ul class="inline">
+					<li>
+						<label>
+							<input type="radio" name="account_plugin_state" value={PeServer\App\Models\Domain\PluginState::ENABLED} />
+						</label>
+					</li>
+					<li>
+						<label>
+							<input type="radio" name="account_plugin_state" value={PeServer\App\Models\Domain\PluginState::DISABLED} />
+						</label>
+					</li>
+					<li>
+						<label>
+							<input type="radio" name="account_plugin_state" value={PeServer\App\Models\Domain\PluginState::RESERVED} />
+						</label>
+					</li>
+				</ul>
+				{show_error_messages key='account_plugin_state'}
+			</dd>
+
+
 			<dt>バージョンチェックURL</dt>
 			<dd>
 				{input_helper key='account_plugin_check_url' type="url" class="edit"}

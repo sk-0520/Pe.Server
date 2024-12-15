@@ -124,5 +124,10 @@
 				"*": "管理者"
 			}
 		}
+	},
+	"attribute": {
+		"PeServer\\App\\Models\\Domain\\PluginState": {
+			"": ""
+		}
 	}
 }
