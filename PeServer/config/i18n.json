@@ -123,11 +123,20 @@
 			"administrator": {
 				"*": "管理者"
 			}
-		}
-	},
-	"attribute": {
-		"PeServer\\App\\Models\\Domain\\PluginState": {
-			"": ""
+		},
+		"plugin_state": {
+			"reserved": {
+				"*": "予約"
+			},
+			"enabled": {
+				"*": "有効"
+			},
+			"disabled": {
+				"*": "無効"
+			},
+			"check_failed": {
+				"*": "チェック失敗"
+			}
 		}
 	}
 }

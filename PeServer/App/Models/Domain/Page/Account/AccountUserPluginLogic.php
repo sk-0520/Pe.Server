@@ -61,14 +61,16 @@ class AccountUserPluginLogic extends PageLogicBase
 			'account_plugin_plugin_id',
 			'account_plugin_plugin_name',
 			'account_plugin_display_name',
+			'account_plugin_state',
 			'account_plugin_check_url',
 			'account_plugin_lp_url',
 			'account_plugin_project_url',
 			'account_plugin_description',
-			'account_plugin_state',
 			'plugin_categories',
 			'plugin_category_ids',
 			'plugin_category_mappings',
+			'plugin_state_items',
+			'plugin_state_editable_items',
 		];
 
 		$database = $this->openDatabase();
@@ -106,7 +108,7 @@ class AccountUserPluginLogic extends PageLogicBase
 				$map = $pluginsEntityDao->selectPluginIds($pluginId);
 				$this->setValue('account_plugin_plugin_id', $map->fields['plugin_id']);
 				$this->setValue('account_plugin_plugin_name', $map->fields['plugin_name']);
-				$this->setValue('account_plugin_state', $map->fields['plugin_name']);
+				$this->setValue('account_plugin_state', $map->fields['state']);
 			}
 		} else {
 			$this->setValue('account_plugin_state', Text::EMPTY);
@@ -136,6 +138,15 @@ class AccountUserPluginLogic extends PageLogicBase
 				}
 			});
 		}
+
+		$this->validation('account_plugin_plugin_id', function (string $key, string $value) {
+			$pluginValidator = new PluginValidator($this, $this->validator, $this->environment);
+			if ($pluginValidator->isPluginName($key, $value)) {
+				$database = $this->openDatabase();
+				$pluginValidator->isFreePluginName($database, $key, $value);
+			}
+		});
+
 
 		$this->validation('account_plugin_display_name', function (string $key, string $value) {
 			$pluginValidator = new PluginValidator($this, $this->validator, $this->environment);
@@ -179,6 +190,7 @@ class AccountUserPluginLogic extends PageLogicBase
 				$editMap = $pluginsEntityDao->selectEditPlugin($pluginId);
 				$this->setValue('account_plugin_plugin_name', $editMap->fields['plugin_name']);
 				$this->setValue('account_plugin_display_name', $editMap->fields['display_name']);
+				$this->setValue('account_plugin_state', $editMap->fields['state']);
 				$this->setValue('account_plugin_description', $editMap->fields['description']);
 
 				$urlMap = $pluginUrlsEntityDao->selectUrls($pluginId);
@@ -198,6 +210,7 @@ class AccountUserPluginLogic extends PageLogicBase
 		$params = [
 			'user_id' => $userInfo->userId,
 			'display_name' => $this->getRequest('account_plugin_display_name'),
+			'state' => $this->getRequest('account_plugin_state'),
 			'urls' => [
 				PluginUrlKey::CHECK => $this->getRequest('account_plugin_check_url'),
 				PluginUrlKey::LANDING => $this->getRequest('account_plugin_lp_url'),
@@ -218,6 +231,12 @@ class AccountUserPluginLogic extends PageLogicBase
 			$pluginsEntityDao = new PluginsEntityDao($context);
 			$pluginUrlsEntityDao = new PluginUrlsEntityDao($context);
 			$pluginCategoryMappingsEntityDao = new PluginCategoryMappingsEntityDao($context);
+
+			if (!$this->isRegister) {
+				/** @var PluginState::*|Text::EMPTY */
+				$pluginState = Text::EMPTY;
+			}
+
 
 			$pluginCategories = [];
 			foreach ($this->pluginCategories as $category) {
@@ -281,6 +300,8 @@ class AccountUserPluginLogic extends PageLogicBase
 	protected function cleanup(LogicCallMode $callMode): void
 	{
 		$this->setValue('plugin_categories', $this->pluginCategories);
+		$this->setValue('plugin_state_items', PluginState::getItems());
+		$this->setValue('plugin_state_editable_items', PluginState::getEditableItems());
 
 		$pluginCategoryIds = array_map(function ($i) {
 			return $i->pluginCategoryId;

@@ -46,21 +46,24 @@
 			</dt>
 			<dd>
 				<ul class="inline">
-					<li>
-						<label>
-							<input type="radio" name="account_plugin_state" value={PeServer\App\Models\Domain\PluginState::ENABLED} />
-						</label>
-					</li>
-					<li>
-						<label>
-							<input type="radio" name="account_plugin_state" value={PeServer\App\Models\Domain\PluginState::DISABLED} />
-						</label>
-					</li>
-					<li>
-						<label>
-							<input type="radio" name="account_plugin_state" value={PeServer\App\Models\Domain\PluginState::RESERVED} />
-						</label>
-					</li>
+					{foreach from=$values.plugin_state_items item=item key=key}
+						<li>
+							<label>
+								<input
+									type="radio"
+									name="account_plugin_state"
+									value="{$item}"
+									{if !$item|in_array:$values.plugin_state_editable_items}
+										disabled
+									{/if}
+									{if $item == $values.account_plugin_state}
+										checked
+									{/if}
+								/>
+								{PeServer\App\Models\Domain\PluginState::toString($item)}
+							</label>
+						</li>
+					{/foreach}
 				</ul>
 				{show_error_messages key='account_plugin_state'}
 			</dd>

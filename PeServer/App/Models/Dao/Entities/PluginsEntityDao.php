@@ -140,7 +140,7 @@ class PluginsEntityDao extends DaoBase
 	}
 
 	/**
-	 * @template TFieldArray of array{plugin_name:string,display_name:string,description:string}
+	 * @template TFieldArray of array{plugin_name:string,display_name:string,state:string,description:string}
 	 * @param string $pluginId
 	 * @phpstan-return DatabaseRowResult<TFieldArray>
 	 */
@@ -153,6 +153,7 @@ class PluginsEntityDao extends DaoBase
 			select
 				plugins.plugin_name,
 				plugins.display_name,
+				plugins.state,
 				plugins.description
 			from
 				plugins
