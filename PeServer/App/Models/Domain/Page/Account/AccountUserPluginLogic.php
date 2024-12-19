@@ -89,9 +89,9 @@ class AccountUserPluginLogic extends PageLogicBase
 
 		$this->registerParameterKeys($keys, true);
 
+
 		if (!$this->isRegister) {
 			$pluginId = Uuid::adjustGuid($this->getRequest('plugin_id'));
-
 			if ($callMode === LogicCallMode::Initialize) {
 				$this->setValue('account_plugin_plugin_id', $pluginId);
 				$this->setValue('from_account_plugin_plugin_id', $pluginId);
@@ -111,7 +111,6 @@ class AccountUserPluginLogic extends PageLogicBase
 				$this->setValue('account_plugin_state', $map->fields['state']);
 			}
 		} else {
-			$this->setValue('account_plugin_state', Text::EMPTY);
 			$this->setValue('plugin_category_mappings', []);
 		}
 	}
@@ -121,6 +120,8 @@ class AccountUserPluginLogic extends PageLogicBase
 		if ($callMode === LogicCallMode::Initialize) {
 			return;
 		}
+
+		$pluginId = Uuid::adjustGuid($this->getRequest('plugin_id'));
 
 		if ($this->isRegister) {
 			$this->validation('account_plugin_plugin_id', function (string $key, string $value) {
@@ -172,6 +173,16 @@ class AccountUserPluginLogic extends PageLogicBase
 			$pluginValidator = new PluginValidator($this, $this->validator, $this->environment);
 			$pluginValidator->isDescription($key, $value);
 		});
+
+		if (!$this->isRegister) {
+			$this->validation('account_plugin_state', function (string $key, string $value) use ($pluginId) {
+				$database = $this->openDatabase();
+				$pluginsEntityDao = new PluginsEntityDao($database);
+
+				$currentPlugin = $pluginsEntityDao->selectEditPlugin($pluginId);
+				$currentState = $currentPlugin->fields['state'];
+			});
+		}
 	}
 
 	protected function executeImpl(LogicCallMode $callMode): void
@@ -200,6 +211,8 @@ class AccountUserPluginLogic extends PageLogicBase
 
 				$pluginCategoryMappings = $pluginCategoryMappingsEntityDao->selectPluginCategoriesByPluginId($pluginId);
 				$this->setValue('plugin_category_mappings', $pluginCategoryMappings);
+			} else {
+				$this->setValue('account_plugin_state', PluginState::DISABLED);
 			}
 
 			return;
@@ -233,8 +246,10 @@ class AccountUserPluginLogic extends PageLogicBase
 			$pluginCategoryMappingsEntityDao = new PluginCategoryMappingsEntityDao($context);
 
 			if (!$this->isRegister) {
-				/** @var PluginState::*|Text::EMPTY */
-				$pluginState = Text::EMPTY;
+				$currentPlugin = $pluginsEntityDao->selectEditPlugin($params['plugin_id']);
+				if (Text::isNullOrEmpty($params['state'])) {
+					$currentPlugin = $currentPlugin->fields['state'];
+				}
 			}
 
 
@@ -300,7 +315,10 @@ class AccountUserPluginLogic extends PageLogicBase
 	protected function cleanup(LogicCallMode $callMode): void
 	{
 		$this->setValue('plugin_categories', $this->pluginCategories);
-		$this->setValue('plugin_state_items', PluginState::getItems());
+		$this->setValue(
+			'plugin_state_items',
+			$this->isRegister ? PluginState::getEditableItems() : PluginState::getItems()
+		);
 		$this->setValue('plugin_state_editable_items', PluginState::getEditableItems());
 
 		$pluginCategoryIds = array_map(function ($i) {
