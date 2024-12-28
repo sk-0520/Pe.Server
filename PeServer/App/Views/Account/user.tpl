@@ -62,13 +62,9 @@
 									{/if}
 								</th>
 								<td>
-									{if $item.state === PeServer\App\Models\Domain\PluginState::ENABLED || $item.state === PeServer\App\Models\Domain\PluginState::RESERVED}
-										<a href="/account/user/plugin/{$item.plugin_id}" title="{$item.display_name}">
-											{$item.plugin_name}
-										</a>
-									{else}
+									<a href="/account/user/plugin/{$item.plugin_id}" title="{$item.display_name}">
 										{$item.plugin_name}
-									{/if}
+									</a>
 								</td>
 								<td data-clipboard="data" data-clipboard-value="{$item.plugin_id}">
 									<code>{$item.plugin_id}</code>

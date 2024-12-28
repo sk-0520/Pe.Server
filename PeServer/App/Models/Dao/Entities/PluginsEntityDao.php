@@ -207,7 +207,7 @@ class PluginsEntityDao extends DaoBase
 		);
 	}
 
-	public function updateEditPlugin(string $pluginId, string $userId, string $displayName, string $description): void
+	public function updateEditPlugin(string $pluginId, string $userId, string $displayName, string $state, string $description): void
 	{
 		$this->context->updateByKey(
 			<<<SQL
@@ -216,6 +216,7 @@ class PluginsEntityDao extends DaoBase
 				plugins
 			set
 				display_name = :display_name,
+				state = :state,
 				description = :description
 			where
 				plugins.plugin_id = :plugin_id
@@ -227,6 +228,7 @@ class PluginsEntityDao extends DaoBase
 				'plugin_id' => $pluginId,
 				'user_id' => $userId,
 				'display_name' => $displayName,
+				'state' => $state,
 				'description' => $description,
 			]
 		);

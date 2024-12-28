@@ -245,10 +245,11 @@ class AccountUserPluginLogic extends PageLogicBase
 			$pluginUrlsEntityDao = new PluginUrlsEntityDao($context);
 			$pluginCategoryMappingsEntityDao = new PluginCategoryMappingsEntityDao($context);
 
+			$pluginState = $params['state'];
 			if (!$this->isRegister) {
 				$currentPlugin = $pluginsEntityDao->selectEditPlugin($params['plugin_id']);
 				if (Text::isNullOrEmpty($params['state'])) {
-					$currentPlugin = $currentPlugin->fields['state'];
+					$pluginState = $currentPlugin->fields['state'];
 				}
 			}
 
@@ -266,7 +267,7 @@ class AccountUserPluginLogic extends PageLogicBase
 					$params['user_id'],
 					$params['plugin_name'], //@phpstan-ignore-line
 					$params['display_name'],
-					PluginState::ENABLED,
+					$pluginState,
 					$params['description'],
 					Text::EMPTY
 				);
@@ -275,6 +276,7 @@ class AccountUserPluginLogic extends PageLogicBase
 					$params['plugin_id'],
 					$params['user_id'],
 					$params['display_name'],
+					$pluginState,
 					$params['description']
 				);
 			}
