@@ -62,7 +62,7 @@
 									{/if}
 								</th>
 								<td>
-									<a href="/account/user/plugin/{$item.plugin_id}" title="{$item.display_name}">
+									<a href="/account/user/plugin/{$item.plugin_id}" title="{$item.display_name}" >
 										{$item.plugin_name}
 									</a>
 								</td>

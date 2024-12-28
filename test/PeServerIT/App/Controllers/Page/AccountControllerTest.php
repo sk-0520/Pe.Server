@@ -435,10 +435,10 @@ class AccountControllerTest extends ItControllerClass
 			],
 		];
 
-		//$actual->html->save("x:\\a.html");
+		$actual->html->save("x:\\a.html");
 
 		$actualItems = $actual->html->path()->collections(
-			"//dl[contains(@class, 'page-account-user')]/dt[contains(text(), 'プラグイン')]/following-sibling::dd[1][@data-role='value']//li//a"
+			"//dl[contains(@class, 'page-account-user')]/dt[contains(text(), 'プラグイン')]/following-sibling::dd[1][@data-role='value']//tbody//tr/td/a"
 		)->toArray();
 
 		$this->assertCount(count($expectedItems), $actualItems);
