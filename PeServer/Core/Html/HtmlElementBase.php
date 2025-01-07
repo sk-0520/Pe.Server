@@ -30,7 +30,7 @@ abstract class HtmlElementBase extends HtmlNodeBase
 			Throws::reThrow(HtmlException::class, $ex);
 		}
 
-		if ($element === false) { // @phpstan-ignore-line
+		if ($element === false) {
 			throw new HtmlException();
 		}
 
