@@ -27,6 +27,9 @@
 		<dt>プラグイン表示名</dt>
 		<dd>{$values.plugin->displayName}</dd>
 
+		<dt>状態</dt>
+		<dd>{PeServer\App\Models\Domain\PluginState::toString($values.plugin->state)}</dd>
+
 		<!--
 	<dt></dt>
 	<dd></dd>

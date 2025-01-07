@@ -42,8 +42,7 @@
 				{input_helper key='account_plugin_display_name' type="text" class="edit"}
 			</dd>
 
-			<dt>
-			</dt>
+			<dt>状態</dt>
 			<dd>
 				<ul class="inline">
 					{foreach from=$values.plugin_state_items item=item key=key}
