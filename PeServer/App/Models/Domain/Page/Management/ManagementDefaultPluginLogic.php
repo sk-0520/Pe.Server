@@ -111,7 +111,7 @@ class ManagementDefaultPluginLogic extends PageLogicBase
 							$params['user_id'],
 							$plugin['item']->pluginName,
 							$plugin['item']->pluginName,
-							PluginState::ENABLED,
+							$plugin['item']->state,
 							Text::join("\n\n", $plugin['item']->descriptions),
 							'Pe専用プラグイン'
 						);

@@ -18,6 +18,8 @@ readonly class DefaultPlugin
 	 * @param non-empty-string $projectUrl
 	 * @param string[] $descriptions
 	 * @param string[] $categories
+	 * @param string $state
+	 * phpstan-param PluginState::*
 	 */
 	public function __construct(
 		public string $pluginId,
@@ -25,7 +27,8 @@ readonly class DefaultPlugin
 		public string $checkUrl,
 		public string $projectUrl,
 		public array $descriptions,
-		public array $categories
+		public array $categories,
+		public string $state
 	) {
 	}
 
@@ -46,7 +49,8 @@ readonly class DefaultPlugin
 				'',
 				'https://github.com/sk-0520/Pe',
 				['本体同梱標準テーマ。', 'ダウンロード先なし。',],
-				['theme',]
+				['theme',],
+				PluginState::ENABLED
 			),
 			new self(
 				'67f0fa7d-52d3-4889-b595-be3703b224eb',
@@ -55,6 +59,7 @@ readonly class DefaultPlugin
 				'https://github.com/sk-0520/Pe',
 				['テーマの参考実装。', 'テーマをプラグインとして扱うのが💩と教えてくれた偉大なる参考実装。',],
 				['theme',],
+				PluginState::ENABLED
 			),
 			new self(
 				'2e5c72c5-270f-4b05-afb9-c87f3966ecc5',
@@ -63,6 +68,7 @@ readonly class DefaultPlugin
 				'https://github.com/sk-0520/Pe',
 				['ランチャーボタン・ウィジェット・設定の参考実装。', '時計を表示する。',],
 				['utility',],
+				PluginState::ENABLED
 			),
 			new self(
 				'799ce8bd-8f49-4e8f-9e47-4d4873084081',
@@ -71,6 +77,7 @@ readonly class DefaultPlugin
 				'https://github.com/sk-0520/Pe',
 				['ウィジェット・バックグラウンドの参考実装。', 'xeyes のおめめ。',],
 				['toy',],
+				PluginState::ENABLED
 			),
 			new self(
 				'9dcf441d-9f8e-494f-89c1-814678bbc42c',
@@ -79,6 +86,7 @@ readonly class DefaultPlugin
 				'https://github.com/sk-0520/Pe',
 				['コマンド入力・設定の参考実装。', 'コマンド入力欄に入力された文字列をファイルパスとして扱う。',],
 				['file', 'search',],
+				PluginState::ENABLED
 			),
 			new self(
 				'4fa1a634-6b32-4762-8ae8-3e1cf6df9db1',
@@ -87,6 +95,7 @@ readonly class DefaultPlugin
 				'https://github.com/sk-0520/Pe',
 				['WebView ウィジェットの参考実装。', '常に IME 死んでるマン。',],
 				['utility',],
+				PluginState::DISABLED
 			),
 		];
 	}
