@@ -7,7 +7,7 @@ source shell/common.sh
 #shellcheck disable=SC2048,SC2086
 common::parse_options "phpdoc:cache-path phpdoc:setting-graphs!" $*
 
-PHPDOC_VERSION=v3.5.3
+PHPDOC_VERSION=v3.6.0
 PHPDOC_URL=https://github.com/phpDocumentor/phpDocumentor/releases/download/${PHPDOC_VERSION}/phpDocumentor.phar
 PHPDOC_NAME=phpdoc.phar
 PHPDOC_FILE=${PHPDOC_NAME}.${PHPDOC_VERSION}
