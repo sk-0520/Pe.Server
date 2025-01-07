@@ -48,3 +48,7 @@
 		@include clipboard-base;
 	}
 }
+
+[data-clipboard="data"][data-clipboard-value] {
+	cursor: pointer;
+}

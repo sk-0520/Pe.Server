@@ -393,6 +393,9 @@ class AccountControllerTest extends ItControllerClass
 			$pluginsEntityDao->insertPlugin('C0', ItMockStores::SESSION_ACCOUNT_USER_ID . '-OTHER', 'PLUGIN-C0', 'plugin-c0', PluginState::DISABLED, 'P-C0-D', '');
 			$pluginsEntityDao->insertPlugin('C2', ItMockStores::SESSION_ACCOUNT_USER_ID, 'PLUGIN-C2', 'plugin-c2', PluginState::DISABLED, 'P-C-D2', '');
 			$pluginsEntityDao->insertPlugin('C1', ItMockStores::SESSION_ACCOUNT_USER_ID, 'PLUGIN-C1', 'plugin-c1', PluginState::DISABLED, 'P-C-D1', '');
+			$pluginsEntityDao->insertPlugin('D0', ItMockStores::SESSION_ACCOUNT_USER_ID . '-OTHER', 'PLUGIN-D0', 'plugin-d0', PluginState::RESERVED, 'P-D0-D', '');
+			$pluginsEntityDao->insertPlugin('D2', ItMockStores::SESSION_ACCOUNT_USER_ID, 'PLUGIN-D2', 'plugin-d2', PluginState::RESERVED, 'P-D-D2', '');
+			$pluginsEntityDao->insertPlugin('D1', ItMockStores::SESSION_ACCOUNT_USER_ID, 'PLUGIN-D1', 'plugin-d1', PluginState::RESERVED, 'P-D-D1', '');
 		});
 
 		$this->assertStatusOk($actual);
@@ -415,6 +418,14 @@ class AccountControllerTest extends ItControllerClass
 				'name' => 'PLUGIN-B2',
 			],
 			[
+				'id' => 'D1',
+				'name' => 'PLUGIN-D1',
+			],
+			[
+				'id' => 'D2',
+				'name' => 'PLUGIN-D2',
+			],
+			[
 				'id' => 'C1',
 				'name' => 'PLUGIN-C1',
 			],
@@ -424,8 +435,10 @@ class AccountControllerTest extends ItControllerClass
 			],
 		];
 
+		$actual->html->save("x:\\a.html");
+
 		$actualItems = $actual->html->path()->collections(
-			"//dl[contains(@class, 'page-account-user')]/dt[contains(text(), 'プラグイン')]/following-sibling::dd[1][@data-role='value']//li//a"
+			"//dl[contains(@class, 'page-account-user')]/dt[contains(text(), 'プラグイン')]/following-sibling::dd[1][@data-role='value']//tbody//tr/td/a"
 		)->toArray();
 
 		$this->assertCount(count($expectedItems), $actualItems);

@@ -48,6 +48,9 @@
 			},
 			"update_plugin": {
 				"*": "プラグインを更新しました"
+			},
+			"reserved_plugin": {
+				"*": "プラグインを予約しました"
 			}
 		}
 	},
@@ -119,6 +122,20 @@
 			},
 			"administrator": {
 				"*": "管理者"
+			}
+		},
+		"plugin_state": {
+			"reserved": {
+				"*": "予約"
+			},
+			"enabled": {
+				"*": "有効"
+			},
+			"disabled": {
+				"*": "無効"
+			},
+			"check_failed": {
+				"*": "チェック失敗"
 			}
 		}
 	}
