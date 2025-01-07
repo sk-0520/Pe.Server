@@ -20,6 +20,7 @@ use PeServer\App\Models\Domain\Page\Account\AccountUserEmailLogic;
 use PeServer\App\Models\Domain\Page\Account\AccountUserLogic;
 use PeServer\App\Models\Domain\Page\Account\AccountUserPasswordLogic;
 use PeServer\App\Models\Domain\Page\Account\AccountUserPluginLogic;
+use PeServer\App\Models\Domain\Page\Account\AccountUserPluginReserveLogic;
 use PeServer\App\Models\Domain\UserLevel;
 use PeServer\App\Models\SessionKey;
 use PeServer\Core\Http\HttpRequest;
@@ -255,6 +256,27 @@ final class AccountController extends PageControllerBase
 	public function user_plugin_update_post(): IActionResult
 	{
 		return $this->user_plugin_post_core(false);
+	}
+
+	public function user_plugin_reserve_get(): IActionResult
+	{
+		$logic = $this->createLogic(AccountUserPluginReserveLogic::class);
+		$logic->run(LogicCallMode::Initialize);
+
+		return $this->view('user_plugin_reserve', $logic->getViewData());
+	}
+
+	public function user_plugin_reserve_post(): IActionResult
+	{
+		$logic = $this->createLogic(AccountUserPluginReserveLogic::class);
+		if ($logic->run(LogicCallMode::Submit)) {
+			if ($logic->tryGetResult('plugin_id', $pluginId)) {
+				return $this->redirectPath("account/user/plugin/$pluginId");
+			}
+			throw new InvalidOperationException();
+		}
+
+		return $this->view('user_plugin_reserve', $logic->getViewData());
 	}
 
 	public function user_audit_logs_top(): IActionResult

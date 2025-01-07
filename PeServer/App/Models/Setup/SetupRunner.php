@@ -103,7 +103,6 @@ class SetupRunner
 
 				$this->logger->info('VERSION: {0}', $version);
 
-				/** @var SetupVersionBase */
 				$setupVersion = new $version($this->appConfig, $this->loggerFactory);
 				$setupVersion->migrate($ioArg, $dbArg);
 				$newVersion = $ver;

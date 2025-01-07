@@ -47,7 +47,6 @@ class ApplicationApiController extends ApiControllerBase
 
 	public function version_update(): IActionResult
 	{
-		/** @var ApplicationApiVersionUpdateLogic */
 		$logic = $this->createLogic(ApplicationApiVersionUpdateLogic::class);
 		$logic->run(LogicCallMode::Submit);
 

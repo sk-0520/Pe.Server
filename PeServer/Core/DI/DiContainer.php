@@ -114,7 +114,7 @@ class DiContainer extends DisposerBase implements IDiContainer
 	 * 生成オブジェクトに対するパラメータ一覧を生成する。
 	 *
 	 * @param ReflectionFunctionAbstract $reflectionMethod
-	 * @param array<int|string,mixed> $arguments `IDiContainer::new` 参照。
+	 * @param array<array-key,mixed> $arguments `IDiContainer::new` 参照。
 	 * @param int $level 現在階層(0: 最初)
 	 * @param bool $mappingKeyOnly 真の場合は登録アイテムIDのみに限定。偽の場合、登録されている具象クラス名を考慮する。
 	 * @param DiItem[] $callStack
@@ -225,7 +225,7 @@ class DiContainer extends DisposerBase implements IDiContainer
 	 * クラス名からオブジェクトの生成。
 	 *
 	 * @param class-string $className
-	 * @param array<int|string,mixed> $arguments `IDiContainer::new` 参照。
+	 * @param array<array-key,mixed> $arguments `IDiContainer::new` 参照。
 	 * @param int $level 現在階層(0: 最初)
 	 * @param bool $mappingKeyOnly 真の場合は登録アイテムIDのみに限定。偽の場合、登録されている具象クラス名を考慮する。
 	 * @param DiItem[] $callStack
@@ -307,7 +307,7 @@ class DiContainer extends DisposerBase implements IDiContainer
 	 * 生成処理。
 	 *
 	 * @param DiItem $item
-	 * @param array<int|string,mixed> $arguments `IDiContainer::new` 参照。
+	 * @param array<array-key,mixed> $arguments `IDiContainer::new` 参照。
 	 * @param int $level 現在階層(0: 最初)
 	 * @param bool $mappingKeyOnly 真の場合は登録アイテムIDのみに限定。偽の場合、登録されている具象クラス名を考慮する。
 	 * @param DiItem[] $callStack

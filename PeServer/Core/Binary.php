@@ -51,6 +51,7 @@ readonly final class Binary implements ArrayAccess, IteratorAggregate, Countable
 	 * @param int $index
 	 * @param int|null $length
 	 * @return self
+	 * @see https://www.php.net/manual/function.substr.php
 	 */
 	public function getRange(int $index, ?int $length = null): self
 	{

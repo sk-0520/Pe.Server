@@ -19,7 +19,7 @@ BASE_DIR=../PeServer
 LOCAL_HTTP_TEST="${LOCAL_HTTP_TEST:=localhost:8080}"
 LOCAL_HTTP_WAIT="${LOCAL_HTTP_WAIT:=1}"
 
-PHPUNIT_VERSION=11.3.1
+PHPUNIT_VERSION=11.4.4
 PHPUNIT_URL=https://phar.phpunit.de/phpunit-${PHPUNIT_VERSION}.phar
 PHPUNIT_NAME=phpunit.phar
 PHPUNIT_FILE=${PHPUNIT_NAME}.${PHPUNIT_VERSION}
@@ -28,7 +28,7 @@ PHPUNIT_BASE_DIR=../test
 common::download_phar_if_not_exists "${PHPUNIT_BASE_DIR}/${PHPUNIT_FILE}" "${PHPUNIT_BASE_DIR}/${PHPUNIT_NAME}" "${PHPUNIT_URL}"
 
 if ! common::exists_option 'ignore-namespace' ; then
-	logger::info "[CHECKE NAMESPACE]"
+	logger::info "[CHECK NAMESPACE]"
 
 	NAMESPACE_ERROR=false
 

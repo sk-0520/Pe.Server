@@ -2,9 +2,6 @@ parameters:
   level: 8
   phpVersion: 80200
 
-  checkAlwaysTrueCheckTypeFunctionCall: true
-  checkAlwaysTrueInstanceof: true
-  checkAlwaysTrueStrictComparison: true
   checkExplicitMixedMissingReturn: true
   checkFunctionNameCase: true
   checkInternalClassCaseSensitivity: true
@@ -12,7 +9,6 @@ parameters:
   reportMaybesInPropertyPhpDocTypes: true
   reportStaticMethodSignatures: true
   checkTooWideReturnTypesInProtectedAndPublicMethods: true
-  checkGenericClassInNonGenericObjectType: true
   checkDynamicProperties: true
   inferPrivatePropertyTypeFromConstructor: true
   rememberPossiblyImpureFunctionValues: false
@@ -51,6 +47,7 @@ parameters:
     - '/Template type TFieldArray of method PeServer\\.+::.+\(\) is not referenced in a parameter./'
     #本体設定はめっちゃくちゃなことをするので初期化系エラーは無視
     - '/Class PeServer\\App\\Models\\Configuration\\\w+Setting(Base)? has an uninitialized @readonly property \$\w+\. Assign it in the constructor\./'
+    - '/PHPDoc tag @SuppressWarnings has invalid value/'
 
   typeAliases:
     LogMessageAlias: 'object|array<mixed>|null|literal-string'

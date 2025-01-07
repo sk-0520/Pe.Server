@@ -260,10 +260,6 @@ abstract class Cryptography
 		} catch (Throwable $ex) {
 			Throws::reThrow(CryptoException::class, $ex);
 		}
-		//$hash = hash($algorithm, $binary->raw, $isBinary);
-		if ($hash === false) { //@phpstan-ignore-line [PHP_VERSION]
-			throw new CryptoException();
-		}
 
 		return $hash;
 	}

@@ -98,9 +98,10 @@ class PluginsEntityDao extends DaoBase
 				plugins.user_id = :user_id
 			order by
 				case plugins.state
-					when 'enabled' then 1
-					when 'check_failed' then 2
-					when 'disabled' then 3
+					when 'enabled' then 10
+					when 'check_failed' then 20
+					when 'reserved' then 30
+					when 'disabled' then 40
 				end,
 				plugins.plugin_name
 
@@ -139,7 +140,7 @@ class PluginsEntityDao extends DaoBase
 	}
 
 	/**
-	 * @template TFieldArray of array{plugin_name:string,display_name:string,description:string}
+	 * @template TFieldArray of array{plugin_name:string,display_name:string,state:string,description:string}
 	 * @param string $pluginId
 	 * @phpstan-return DatabaseRowResult<TFieldArray>
 	 */
@@ -152,6 +153,7 @@ class PluginsEntityDao extends DaoBase
 			select
 				plugins.plugin_name,
 				plugins.display_name,
+				plugins.state,
 				plugins.description
 			from
 				plugins
@@ -205,7 +207,7 @@ class PluginsEntityDao extends DaoBase
 		);
 	}
 
-	public function updateEditPlugin(string $pluginId, string $userId, string $displayName, string $description): void
+	public function updateEditPlugin(string $pluginId, string $userId, string $displayName, string $state, string $description): void
 	{
 		$this->context->updateByKey(
 			<<<SQL
@@ -214,6 +216,7 @@ class PluginsEntityDao extends DaoBase
 				plugins
 			set
 				display_name = :display_name,
+				state = :state,
 				description = :description
 			where
 				plugins.plugin_id = :plugin_id
@@ -225,6 +228,7 @@ class PluginsEntityDao extends DaoBase
 				'plugin_id' => $pluginId,
 				'user_id' => $userId,
 				'display_name' => $displayName,
+				'state' => $state,
 				'description' => $description,
 			]
 		);

@@ -37,15 +37,42 @@
 			{if empty($values.plugins)}
 				<span class="mute">未登録</span>
 			{else}
-				<ul>
-					{foreach from=$values.plugins item=item key=key name=name}
-						<li data-index={$key}>
-							<a href="/account/user/plugin/{$item.plugin_id}" title="{$item.display_name}">
-								{$item.plugin_name}
-							</a>
-						</li>
-					{/foreach}
-				</ul>
+				<table>
+					<thead>
+						<tr>
+							<th>状態</th>
+							<th>プラグイン名</th>
+							<th>プラグインID</th>
+						</tr>
+					</thead>
+					<tbody>
+						{foreach from=$values.plugins item=item key=key name=name}
+							<tr>
+								<th>
+									{if $item.state === PeServer\App\Models\Domain\PluginState::ENABLED}
+										有効
+									{elseif $item.state === PeServer\App\Models\Domain\PluginState::CHECK_FAILED}
+										不明
+									{elseif $item.state === PeServer\App\Models\Domain\PluginState::RESERVED}
+										予約
+									{elseif $item.state === PeServer\App\Models\Domain\PluginState::DISABLED}
+										無効
+									{else}
+										あかん
+									{/if}
+								</th>
+								<td>
+									<a href="/account/user/plugin/{$item.plugin_id}" title="{$item.display_name}" >
+										{$item.plugin_name}
+									</a>
+								</td>
+								<td data-clipboard="data" data-clipboard-value="{$item.plugin_id}">
+									<code>{$item.plugin_id}</code>
+								</td>
+							</tr>
+						{/foreach}
+					</tbody>
+				</table>
 			{/if}
 		</dd>
 
@@ -54,6 +81,11 @@
 			<ul>
 				<li>
 					<a href="/account/user/plugin">プラグイン登録</a>
+					<ul>
+						<li>
+							<a href="/account/user/plugin/reserve">予約</a>
+						</li>
+					</ul>
 				</li>
 				<li>
 					<a href="/account/user/edit">ユーザー編集</a>

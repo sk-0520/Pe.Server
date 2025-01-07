@@ -89,9 +89,10 @@ abstract class ControllerBase
 	/**
 	 * ロジック生成処理。
 	 *
-	 * @param class-string<LogicBase> $logicClass ロジック完全名。
-	 * @param array<int|string,mixed> $arguments
-	 * @return LogicBase
+	 * @template TLogic of LogicBase
+	 * @param class-string<TLogic> $logicClass ロジック完全名。
+	 * @param array<array-key,mixed> $arguments
+	 * @return TLogic
 	 */
 	protected function createLogic(string $logicClass, array $arguments = []): LogicBase
 	{
