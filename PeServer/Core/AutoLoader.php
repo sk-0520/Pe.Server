@@ -66,6 +66,10 @@ class AutoLoader
 			'Smarty' => [
 				'directory' => $libs . 'smarty/src',
 			],
+			// Whoops
+			'Whoops' => [
+				'directory' => $libs . 'whoops/src',
+			],
 			// Psr
 			'Psr\Container' => [
 				'directory' => $libs . 'php-fig/container/src',
