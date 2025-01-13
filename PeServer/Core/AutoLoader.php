@@ -68,7 +68,7 @@ class AutoLoader
 			],
 			// Whoops
 			'Whoops' => [
-				'directory' => $libs . 'whoops/src',
+				'directory' => $libs . 'whoops/src/Whoops',
 			],
 			// Psr
 			'Psr\Container' => [
