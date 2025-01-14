@@ -51,8 +51,7 @@ class ErrorHandler
 
 	public function __construct(
 		protected readonly ILogger $logger
-	) {
-	}
+	) {}
 
 	#region function
 
@@ -69,11 +68,18 @@ class ErrorHandler
 			throw new InvalidOperationException();
 		}
 
+		$this->registerImpl();
+
+		$this->isRegistered = true;
+	}
+
+	protected function registerImpl(): void
+	{
 		register_shutdown_function([$this, 'receiveShutdown']);
 		set_exception_handler([$this, 'receiveException']);
 		set_error_handler([$this, 'receiveError']);
-		$this->isRegistered = true;
 	}
+
 
 	/**
 	 * シャットダウン処理でエラーがあれば処理する。

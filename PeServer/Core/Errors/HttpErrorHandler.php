@@ -141,4 +141,13 @@ class HttpErrorHandler extends ErrorHandler
 	}
 
 	#endregion
+
+	#region
+
+	protected function registerImpl(): void
+	{
+
+	}
+
+	#endregion
 }
