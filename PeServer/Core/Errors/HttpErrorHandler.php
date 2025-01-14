@@ -12,6 +12,7 @@ use PeServer\Core\Http\IResponsePrinterFactory;
 use PeServer\Core\IO\Directory;
 use PeServer\Core\IO\File;
 use PeServer\Core\IO\Path;
+use PeServer\Core\Log\ILogger;
 use PeServer\Core\Mvc\Template\ITemplateFactory;
 use PeServer\Core\Mvc\Template\TemplateFactory;
 use PeServer\Core\Mvc\Template\TemplateOptions;
@@ -24,6 +25,12 @@ use Throwable;
 
 class HttpErrorHandler extends ErrorHandler
 {
+	public function __construct(
+		ILogger $logger
+	) {
+		parent::__construct($logger);
+	}
+
 	#region ErrorHandler
 
 	protected function registerImpl(): void

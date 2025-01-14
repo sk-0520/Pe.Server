@@ -37,6 +37,7 @@ use PeServer\Core\Store\SpecialStore;
 use PeServer\Core\Store\StoreOptions;
 use PeServer\Core\Store\Stores;
 use PeServer\Core\Store\TemporaryStore;
+use PeServer\Core\Throws\DiContainerArgumentException;
 use PeServer\Core\Throws\NotImplementedException;
 use PeServer\Core\Web\IUrlHelper;
 use PeServer\Core\Web\UrlHelper;
@@ -69,6 +70,24 @@ class CoreStartup
 	}
 
 	#region function
+
+	/**
+	 *
+	 * @param string $mode
+	 * @param array{environment:string,revision:string,url_helper?:IUrlHelper,special_store?:SpecialStore} $options
+	 * @param IDiRegisterContainer $container
+	 */
+	protected function registerErrorHandler(string $mode, array $options, IDiRegisterContainer $container): void
+	{
+		if($mode !== self::MODE_WEB) {
+			return;
+		}
+
+		if ($this->startupOptions->errorHandling) {
+			$errorHandler = $container->new(ErrorHandler::class);
+			$errorHandler->register();
+		}
+	}
 
 	/**
 	 * 共通セットアップ処理。
@@ -120,10 +139,7 @@ class CoreStartup
 		$container->registerMapping(IResponsePrinterFactory::class, ResponsePrinterFactory::class); // こいつも Core からも使われる特殊な奴やねん
 		//$container->registerClass(ResponsePrinterFactory::class);
 
-		if ($this->startupOptions->errorHandling) {
-			$errorHandler = $container->new(ErrorHandler::class);
-			$errorHandler->register();
-		}
+
 	}
 
 	/**
@@ -149,16 +165,6 @@ class CoreStartup
 		$container->add(CookieStore::class, DiItem::factory(fn ($di) => $di->get(Stores::class)->cookie));
 		$container->add(SessionStore::class, DiItem::factory(fn ($di) => $di->get(Stores::class)->session));
 		$container->add(TemporaryStore::class, DiItem::factory(fn ($di) => $di->get(Stores::class)->temporary));
-
-		$method = $specialStore->getRequestMethod();
-		$requestPath = new RequestPath($specialStore->getServer('REQUEST_URI'), $container->get(IUrlHelper::class));
-		$container->registerValue(new RouteRequest($method, $requestPath));
-
-		if ($this->startupOptions->errorHandling) {
-			/** @var HttpErrorHandler */
-			$httpErrorHandler = $container->new(HttpErrorHandler::class, [RequestPath::class => $requestPath]);
-			$httpErrorHandler->register();
-		}
 
 		$container->registerMapping(ILogicFactory::class, LogicFactory::class);
 	}
@@ -233,6 +239,7 @@ class CoreStartup
 				throw new NotImplementedException($mode);
 		}
 
+		$this->registerErrorHandler($mode, $options, $container);
 		$this->setupCustom($options, $container);
 
 		return $container;
