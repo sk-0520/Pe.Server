@@ -73,11 +73,16 @@ class ErrorHandler
 		$this->isRegistered = true;
 	}
 
-	protected function registerImpl(): void
+	protected final function registerDefault(): void
 	{
 		register_shutdown_function([$this, 'receiveShutdown']);
 		set_exception_handler([$this, 'receiveException']);
 		set_error_handler([$this, 'receiveError']);
+	}
+
+	protected function registerImpl(): void
+	{
+		$this->registerDefault();
 	}
 
 

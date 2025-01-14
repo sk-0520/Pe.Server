@@ -36,6 +36,7 @@ parameters:
     - ../PeServer/Core/Libs/smarty/src/Variable.php
     - ../PeServer/Core/Libs/PHPMailer/src/PHPMailer.php
     - ../PeServer/Core/Libs/PHPMailer/src/SMTP.php
+    - ../PeServer/Core/Libs/whoops/src/Whoops/Handler/HandlerInterface.php
     - ../PeServer/Core/Libs/whoops/src/Whoops/Handler/Handler.php
     - ../PeServer/Core/Libs/whoops/src/Whoops/Handler/PrettyPageHandler.php
     - ../PeServer/Core/Libs/whoops/src/Whoops/Run.php
