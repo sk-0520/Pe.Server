@@ -84,11 +84,21 @@ enum HttpStatus: int
 
 	#region function
 
+	/**
+	 *
+	 * @return bool
+	 * @phpstan-pure
+	 */
 	public function isError(): bool
 	{
 		return 400 <= $this->value;
 	}
 
+	/**
+	 *
+	 * @return bool
+	 * @phpstan-pure
+	 */
 	public function isRedirect(): bool
 	{
 		$codes = [

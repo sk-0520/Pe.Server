@@ -23,6 +23,11 @@ class DatabaseConnection implements IDatabaseConnection
 
 	#region IDatabaseConnection
 
+	/**
+	 *
+	 * @return ConnectionSetting
+	 * @phpstan-pure
+	 */
 	public function getConnectionSetting(): ConnectionSetting
 	{
 		return $this->setting;

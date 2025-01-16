@@ -38,6 +38,7 @@ abstract class Text
 	 * @param string|null $s 対象文字列。
 	 * @return bool 真: `null`か空。
 	 * @phpstan-assert-if-false non-empty-string $s
+	 * @phpstan-pure
 	 */
 	public static function isNullOrEmpty(?string $s): bool
 	{
@@ -53,9 +54,9 @@ abstract class Text
 	}
 
 	/**
-	 * 文字列がnullかホワイトスペースのみで構築されているか
+	 * 文字列が `null` かホワイトスペースのみで構築されているか
 	 *
-	 * `TRIM_CHARACTERS` がホワイトスペースとして扱われる。
+	 * `self::TRIM_CHARACTERS` がホワイトスペースとして扱われる。
 	 *
 	 * @param string|null $s 対象文字列。
 	 * @return bool 真: nullかホワイトスペースのみ。
@@ -76,6 +77,7 @@ abstract class Text
 	 * @param string|null $s
 	 * @param string $fallback
 	 * @return string
+	 * @phpstan-pure
 	 */
 	public static function requireNotNullOrEmpty(?string $s, string $fallback): string
 	{
@@ -110,6 +112,7 @@ abstract class Text
 	 * @param string $value 対象文字列。
 	 * @return int 文字数。
 	 * @phpstan-return non-negative-int
+	 * @phpstan-pure
 	 * @see https://www.php.net/manual/function.mb-strlen.php
 	 */
 	public static function getLength(string $value): int
@@ -136,6 +139,7 @@ abstract class Text
 	 * @param string $value 対象文字列。
 	 * @return int バイト数。
 	 * @phpstan-return non-negative-int
+	 * @phpstan-pure
 	 * @see https://www.php.net/manual/function.strlen.php
 	 */
 	public static function getByteCount(string $value): int
@@ -232,6 +236,7 @@ abstract class Text
 	 * @return string
 	 * @see https://www.php.net/manual/function.sprintf.php
 	 * @see Text::replaceMap()
+	 * @phpstan-pure
 	 */
 	public static function format(string $format, string|int|float ...$values): string
 	{
@@ -246,6 +251,7 @@ abstract class Text
 	 * @param string|null $decimalSeparator 小数点を表す区切り文字
 	 * @param string|null $thousandsSeparator 千の位毎の区切り文字
 	 * @return string 置き換え後文字列
+	 * @phpstan-pure
 	 * @see https://www.php.net/manual/function.number-format.php
 	 */
 	public static function formatNumber(int|float $number, int $decimals = 0, ?string $decimalSeparator = '.', ?string $thousandsSeparator = ','): string
@@ -310,6 +316,7 @@ abstract class Text
 	 * @param string $needle 検索文字列。
 	 * @param boolean $ignoreCase 大文字小文字を無視するか。
 	 * @return boolean
+	 * @phpstan-pure
 	 */
 	public static function startsWith(string $haystack, string $needle, bool $ignoreCase): bool
 	{
@@ -339,6 +346,7 @@ abstract class Text
 	 * @param string $needle 検索文字列。
 	 * @param boolean $ignoreCase 大文字小文字を無視するか。
 	 * @return boolean
+	 * @phpstan-pure
 	 */
 	public static function endsWith(string $haystack, string $needle, bool $ignoreCase): bool
 	{
@@ -368,6 +376,7 @@ abstract class Text
 	 * @param string $needle 検索文字列。
 	 * @param boolean $ignoreCase 大文字小文字を無視するか。
 	 * @return boolean
+	 * @phpstan-pure
 	 */
 	public static function contains(string $haystack, string $needle, bool $ignoreCase): bool
 	{
@@ -396,6 +405,7 @@ abstract class Text
 	 * @param int $offset 開始文字数目。負数の場合は後ろから。
 	 * @param int $length 抜き出す長さ。負数の場合は最後まで($offset)
 	 * @return string 切り抜き後文字列。
+	 * @phpstan-pure
 	 */
 	public static function substring(string $value, int $offset, int $length = -1): string
 	{
@@ -407,6 +417,7 @@ abstract class Text
 	 *
 	 * @param string $value
 	 * @return string
+	 * @phpstan-pure
 	 */
 	public static function toLower(string $value): string
 	{
@@ -418,6 +429,7 @@ abstract class Text
 	 *
 	 * @param string $value
 	 * @return string
+	 * @phpstan-pure
 	 */
 	public static function toUpper(string $value): string
 	{
@@ -470,6 +482,7 @@ abstract class Text
 	 * @param string $separator
 	 * @param string[] $values
 	 * @return string
+	 * @phpstan-pure
 	 * @see https://www.php.net/manual/function.implode.php
 	 */
 	public static function join(string $separator, array $values): string
@@ -666,6 +679,7 @@ abstract class Text
 	 * @param mixed $raw
 	 * @param string $newline 配列の場合の改行(未指定時に `PHP_EOL`)
 	 * @return string
+	 * @phpstan-pure
 	 */
 	public static function toString(mixed $raw, string $newline = PHP_EOL): string
 	{

@@ -24,6 +24,7 @@ interface IDiContainer extends ContainerInterface
 	 *
 	 * @param class-string|non-empty-string $id
 	 * @return bool
+	 * @phpstan-pure
 	 */
 	public function has(string $id): bool; //@phpstan-ignore-line [TYPE_INTERFACE]
 

@@ -33,6 +33,7 @@ abstract class Time
 	 *
 	 * @param DateInterval $time
 	 * @return int
+	 * @phpstan-pure
 	 */
 	public static function getTotalSeconds(DateInterval $time): int
 	{
@@ -133,6 +134,12 @@ abstract class Time
 		return self::createConstructor($time);
 	}
 
+	/**
+	 *
+	 * @param DateInterval $time
+	 * @return non-empty-string
+	 * @phpstan-pure
+	 */
 	private static function toStringISO8601(DateInterval $time): string
 	{
 		$buffer = 'P';

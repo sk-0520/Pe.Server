@@ -33,6 +33,7 @@ class Arr
 	 * @phpstan-param array<TValue>|null $array 対象配列。
 	 * @return boolean `null` か空の場合に真。
 	 * @phpstan-assert-if-false non-empty-array<TValue> $array
+	 * @phpstan-pure
 	 */
 	public static function isNullOrEmpty(?array $array): bool
 	{
@@ -71,6 +72,7 @@ class Arr
 	 * @param array<mixed>|Countable|null $array 対象配列。
 	 * @return int 件数。
 	 * @phpstan-return non-negative-int
+	 * @phpstan-pure
 	 * @see https://www.php.net/manual/function.count.php
 	 */
 	public static function getCount(array|Countable|null $array): int
@@ -92,6 +94,7 @@ class Arr
 	 * @param int|string $key キー。
 	 * @phpstan-param array-key $key
 	 * @return bool
+	 * @phpstan-pure
 	 * @see https://www.php.net/manual/function.array-key-exists.php
 	 */
 	public static function containsKey(array $haystack, int|string $key): bool
@@ -110,6 +113,7 @@ class Arr
 	 * @param mixed $needle 検索データ。
 	 * @phpstan-param TValue $needle
 	 * @return bool
+	 * @phpstan-pure
 	 * @see https://www.php.net/manual/function.array-search.php
 	 */
 	public static function containsValue(array $haystack, mixed $needle): bool
@@ -126,6 +130,7 @@ class Arr
 	 * @phpstan-param array<array-key,mixed> $array
 	 * @return array<array-key>
 	 * @phpstan-return list<array-key>
+	 * @phpstan-pure
 	 * @see https://www.php.net/manual/function.array-keys.php
 	 */
 	public static function getKeys(array $array): array
@@ -143,6 +148,7 @@ class Arr
 	 * @phpstan-param array<array-key,TValue> $array
 	 * @return array<mixed>
 	 * @phpstan-return list<TValue>
+	 * @phpstan-pure
 	 * @see https://www.php.net/manual/function.array-values.php
 	 */
 	public static function getValues(array $array): array
@@ -159,6 +165,7 @@ class Arr
 	 * @param mixed $needle
 	 * @phpstan-param TValue $needle
 	 * @return boolean
+	 * @phpstan-pure
 	 * @see https://www.php.net/manual/function.in-array.php
 	 */
 	public static function in(array $haystack, mixed $needle): bool
@@ -172,8 +179,8 @@ class Arr
 	 * @param array<mixed> $array 対象配列。
 	 * @return int|string
 	 * @phpstan-return array-key
-	 * @see https://www.php.net/manual/function.array-key-first.php
 	 * @throws KeyNotFoundException
+	 * @see https://www.php.net/manual/function.array-key-first.php
 	 */
 	public static function getFirstKey(array $array): int|string
 	{
@@ -191,8 +198,8 @@ class Arr
 	 * @param array<mixed> $array 対象配列。
 	 * @return int|string
 	 * @phpstan-return array-key
-	 * @see https://www.php.net/manual/function.array-key-last.php
 	 * @throws KeyNotFoundException
+	 * @see https://www.php.net/manual/function.array-key-last.php
 	 */
 	public static function getLastKey(array $array): int|string
 	{
@@ -212,6 +219,7 @@ class Arr
 	 * @phpstan-param array<TValue> $array 対象配列。
 	 * @return bool
 	 * @phpstan-assert-if-true list<TValue> $array
+	 * @phpstan-pure
 	 */
 	public static function isListImpl(array $array): bool
 	{
@@ -234,6 +242,7 @@ class Arr
 	 * @return bool
 	 * @see https://www.php.net/manual/function.array-is-list.php#127044
 	 * @phpstan-assert-if-true list<TValue> $array
+	 * @phpstan-pure
 	 */
 	public static function isList(array $array): bool
 	{
@@ -253,6 +262,7 @@ class Arr
 	 * @param array<mixed> $array 対象配列。
 	 * @phpstan-param array<TKey,TValue> $array
 	 * @return array<mixed>
+	 * @phpstan-pure
 	 * @see https://www.php.net/manual/function.array-unique.php
 	 */
 	public static function toUnique(array $array): array
@@ -267,6 +277,7 @@ class Arr
 	 * @param array<mixed> $overwrite 上書きする配列。
 	 * @param bool $recursive 再帰的置き換えを行うか(`_recursive`呼び出し)。
 	 * @return array<mixed>
+	 * @phpstan-pure
 	 * @see https://www.php.net/manual/function.array-replace-recursive.php
 	 * @see https://www.php.net/manual/function.array-replace.php
 	 */
@@ -320,6 +331,7 @@ class Arr
 	 * @phpstan-param array<TKey,TValue> $input
 	 * @return array<mixed>
 	 * @phpstan-return array<TKey,TValue>
+	 * @phpstan-pure
 	 * @see https://www.php.net/manual/function.array-reverse.php
 	 */
 	public static function reverse(array $input): array

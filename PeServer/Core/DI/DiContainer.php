@@ -77,6 +77,13 @@ class DiContainer extends DisposerBase implements IDiContainer
 		return null;
 	}
 
+	/**
+	 *
+	 * @param null|ReflectionType $parameterType
+	 * @param mixed $value
+	 * @return bool
+	 * @phpstan-pure
+	 */
 	protected function canSetValue(?ReflectionType $parameterType, mixed $value): bool
 	{
 		if ($value === null) {

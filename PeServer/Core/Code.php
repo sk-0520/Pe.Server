@@ -25,6 +25,7 @@ abstract class Code
 	 *
 	 * @param string $s
 	 * @phpstan-return literal-string
+	 * @phpstan-pure
 	 */
 	public static function toLiteralString(string $s): string
 	{

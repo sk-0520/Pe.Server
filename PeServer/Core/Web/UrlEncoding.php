@@ -39,6 +39,7 @@ readonly class UrlEncoding
 	 *
 	 * @param Binary $input
 	 * @return string
+	 * @phpstan-pure
 	 * @see https://www.php.net/manual/function.urldecode.php
 	 * @see https://www.php.net/manual/function.rawurldecode.php
 	 */

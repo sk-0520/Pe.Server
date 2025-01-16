@@ -144,6 +144,7 @@ readonly class UrlQuery implements Stringable
 	 * @return bool
 	 * @phpstan-assert-if-true null $this->items
 	 * @phpstan-assert-if-false array<string,(string|null)[]> $this->items
+	 * @phpstan-pure
 	 */
 	public function isEmpty(): bool
 	{

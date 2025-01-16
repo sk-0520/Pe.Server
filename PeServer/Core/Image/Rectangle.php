@@ -26,19 +26,39 @@ readonly class Rectangle implements Stringable
 
 	#region function
 
+	/**
+	 *
+	 * @return int
+	 * @phpstan-pure
+	 */
 	public function left(): int
 	{
 		return $this->point->x;
 	}
+	/**
+	 *
+	 * @return int
+	 * @phpstan-pure
+	 */
 	public function top(): int
 	{
 		return $this->point->y;
 	}
 
+	/**
+	 *
+	 * @return int
+	 * @phpstan-pure
+	 */
 	public function right(): int
 	{
 		return $this->point->x + $this->size->width;
 	}
+	/**
+	 *
+	 * @return int
+	 * @phpstan-pure
+	 */
 	public function bottom(): int
 	{
 		return $this->point->y + $this->size->height;

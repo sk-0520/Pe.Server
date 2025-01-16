@@ -29,6 +29,7 @@ readonly class ImageSetting
 	 * オプション。
 	 *
 	 * @return mixed[]
+	 * @phpstan-pure
 	 */
 	public function options(): array
 	{

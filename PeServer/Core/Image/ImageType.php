@@ -45,6 +45,7 @@ enum ImageType: int
 	 *
 	 * @return string
 	 * @see https://www.php.net/manual/function.image-type-to-mime-type.php
+	 * @phpstan-pure
 	 */
 	public function toMime(): string
 	{

@@ -27,24 +27,50 @@ class Environment
 		date_default_timezone_set($timezone);
 	}
 
+	/**
+	 *
+	 * @return string
+	 * @phpstan-pure
+	 */
 	public function get(): string
 	{
 		return $this->environment;
 	}
 
+	/**
+	 *
+	 * @param string $environment
+	 * @return bool
+	 * @phpstan-pure
+	 */
 	public function is(string $environment): bool
 	{
 		return $this->environment === $environment;
 	}
 
+	/**
+	 *
+	 * @return bool
+	 * @phpstan-pure
+	 */
 	public function isProduction(): bool
 	{
 		return $this->is('production');
 	}
+	/**
+	 *
+	 * @return bool
+	 * @phpstan-pure
+	 */
 	public function isDevelopment(): bool
 	{
 		return $this->is('development');
 	}
+	/**
+	 *
+	 * @return bool
+	 * @phpstan-pure
+	 */
 	public function isTest(): bool
 	{
 		return $this->is('test');

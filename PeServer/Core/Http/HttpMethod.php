@@ -26,6 +26,7 @@ enum HttpMethod: string
 	 * 通常のGET的なやつ。
 	 *
 	 * @return self[] Get/Head。
+	 * @phpstan-pure
 	 */
 	public static function gets(): array
 	{

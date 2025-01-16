@@ -90,6 +90,7 @@ class Regex
 	 * @param string $s 正規表現パターン。
 	 * @param string|null $delimiter デリミタ(null: `/`)。
 	 * @return string
+	 * @phpstan-pure
 	 * @see https://www.php.net/manual/function.preg-quote.php
 	 */
 	public function escape(string $s, ?string $delimiter = null): string

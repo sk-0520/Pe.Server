@@ -75,6 +75,7 @@ abstract class Path
 	 * @param string $path
 	 * @return string
 	 * @see https://php.net/manual/function.dirname.php
+	 * @phpstan-pure
 	 */
 	public static function getDirectoryPath(string $path): string
 	{
@@ -88,6 +89,7 @@ abstract class Path
 	 *
 	 * @param string $path
 	 * @return string
+	 * @phpstan-pure
 	 * @see https://php.net/manual/function.basename.php
 	 */
 	public static function getFileName(string $path): string

@@ -64,6 +64,7 @@ abstract class ResourceBase extends DisposerBase
 	 *
 	 * @param string $resourceType
 	 * @return bool
+	 * @phpstan-pure
 	 */
 	abstract protected function isValidType(string $resourceType): bool;
 
