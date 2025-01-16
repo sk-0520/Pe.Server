@@ -36,7 +36,9 @@ class HttpErrorHandler extends ErrorHandler
 	protected function registerImpl(): void
 	{
 		$whoops = new \Whoops\Run();
-		$whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler());
+		$prettyPageHandler = new \Whoops\Handler\PrettyPageHandler();
+		$prettyPageHandler->setEditor('vscode');
+		$whoops->pushHandler($prettyPageHandler);
 		$whoops->register();
 	}
 
