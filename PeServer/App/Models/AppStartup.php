@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models;
 
+use Exception;
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\AppCryptography;
 use PeServer\App\Models\AppDatabaseCache;
@@ -27,6 +28,7 @@ use PeServer\Core\StartupOptions;
 use PeServer\Core\DI\DiItem;
 use PeServer\Core\DI\IDiRegisterContainer;
 use PeServer\Core\Environment;
+use PeServer\Core\Errors\HttpErrorHandler;
 use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Http\RequestPath;
 use PeServer\Core\IO\Path;
@@ -39,6 +41,7 @@ use PeServer\Core\Mvc\Template\ITemplateFactory;
 use PeServer\Core\Web\WebSecurity;
 use PeServer\Core\Store\SpecialStore;
 use PeServer\Core\Text;
+use PeServer\Core\Web\IUrlHelper;
 use PeServer\Core\Web\UrlHelper;
 
 class AppStartup extends CoreStartup
@@ -55,6 +58,29 @@ class AppStartup extends CoreStartup
 	}
 
 	#region CoreStartup
+
+	/**
+	 *
+	 * @param string $mode
+	 * @param array{environment:string,revision:string,url_helper?:IUrlHelper,special_store?:SpecialStore} $options
+	 * @param IDiRegisterContainer $container
+	 */
+	protected function registerErrorHandler(string $mode, array $options, IDiRegisterContainer $container): void
+	{
+		if ($mode !== self::MODE_WEB) {
+			return;
+		}
+
+		if ($this->startupOptions->errorHandling) {
+			$specialStore = $options['special_store'] ?? throw new Exception();
+			//$method = $specialStore->getRequestMethod();
+			$requestPath = new RequestPath($specialStore->getServer('REQUEST_URI'), $container->get(IUrlHelper::class));
+			//$container->registerValue(new RouteRequest($method, $requestPath));
+
+			$errorHandler = $container->new(AppErrorHandler::class, [RequestPath::class => $requestPath]);
+			$errorHandler->register();
+		}
+	}
 
 	protected function setupCommon(array $options, IDiRegisterContainer $container): void
 	{
@@ -110,12 +136,6 @@ class AppStartup extends CoreStartup
 
 		$container->add(RouteSetting::class, DiItem::value($container->new(AppRouteSetting::class)));
 		$container->registerMapping(Routing::class, AppRouting::class);
-
-		if ($this->startupOptions->errorHandling) {
-			/** @var AppErrorHandler */
-			$appErrorHandler = $container->new(AppErrorHandler::class, [RequestPath::class => $requestPath]);
-			$appErrorHandler->register();
-		}
 	}
 
 	#endregion

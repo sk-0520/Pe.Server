@@ -45,7 +45,7 @@ class ErrorHandler
 	#region variable
 
 	/** 登録済みか。 */
-	private bool $isRegistered = false;
+	private static bool $isRegistered = false;
 
 	#endregion
 
@@ -65,15 +65,27 @@ class ErrorHandler
 	 */
 	final public function register(): void
 	{
-		if ($this->isRegistered) {
+		if (self::$isRegistered) {
 			throw new InvalidOperationException();
 		}
 
+		$this->registerImpl();
+
+		self::$isRegistered = true;
+	}
+
+	final protected function registerDefault(): void
+	{
 		register_shutdown_function([$this, 'receiveShutdown']);
 		set_exception_handler([$this, 'receiveException']);
 		set_error_handler([$this, 'receiveError']);
-		$this->isRegistered = true;
 	}
+
+	protected function registerImpl(): void
+	{
+		$this->registerDefault();
+	}
+
 
 	/**
 	 * シャットダウン処理でエラーがあれば処理する。
