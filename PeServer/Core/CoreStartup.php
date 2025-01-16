@@ -79,7 +79,7 @@ class CoreStartup
 	 */
 	protected function registerErrorHandler(string $mode, array $options, IDiRegisterContainer $container): void
 	{
-		if($mode !== self::MODE_WEB) {
+		if ($mode !== self::MODE_WEB) {
 			return;
 		}
 
@@ -138,8 +138,6 @@ class CoreStartup
 		$container->registerClass(TemplateFactory::class); // こいつは Core からも使われる特殊な奴やねん
 		$container->registerMapping(IResponsePrinterFactory::class, ResponsePrinterFactory::class); // こいつも Core からも使われる特殊な奴やねん
 		//$container->registerClass(ResponsePrinterFactory::class);
-
-
 	}
 
 	/**

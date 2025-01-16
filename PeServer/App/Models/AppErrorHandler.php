@@ -133,7 +133,7 @@ final class AppErrorHandler extends HttpErrorHandler
 		}
 
 		if ($isJson) {
-			if(!$this->environment->isProduction()) {
+			if (!$this->environment->isProduction()) {
 				unset($values['error_number']);
 				unset($values['message']);
 				unset($values['throwable']);
