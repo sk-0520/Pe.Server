@@ -52,7 +52,6 @@ class SessionStore
 	/**
 	 * セッション適用状態。
 	 *
-	 * @var int
 	 * @phpstan-var self::APPLY_*
 	 */
 	private int $applyState = self::APPLY_NORMAL;

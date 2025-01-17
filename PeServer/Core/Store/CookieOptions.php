@@ -17,7 +17,7 @@ class CookieOptions
 	/**
 	 * パス
 	 *
-	 * @var string
+	 * @var non-empty-string
 	 */
 	public readonly string $path;
 	/**
@@ -46,7 +46,7 @@ class CookieOptions
 	/**
 	 * 生成。
 	 *
-	 * @param string $path パス。
+	 * @param non-empty-string $path パス。
 	 * @param DateInterval|null $span 期間。
 	 * @param boolean $secure HTTPS に限定するか。
 	 * @param boolean $httpOnly HTTP リクエストのみで使用するか。

@@ -28,7 +28,7 @@ readonly class StoreOptions
 	public static function default(): self
 	{
 		$tempDirPath = Directory::getTemporaryDirectory();
-		$cookieOption = new CookieOptions('', null, true, true, 'Lax');
+		$cookieOption = new CookieOptions('./cookie', null, true, true, 'Lax');
 
 		return new self(
 			$cookieOption,

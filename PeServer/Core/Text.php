@@ -59,7 +59,7 @@ abstract class Text
 	 * `self::TRIM_CHARACTERS` がホワイトスペースとして扱われる。
 	 *
 	 * @param string|null $s 対象文字列。
-	 * @return bool 真: nullかホワイトスペースのみ。
+	 * @return bool 真: `null` かホワイトスペースのみ。
 	 * @phpstan-assert-if-false non-empty-string $s
 	 */
 	public static function isNullOrWhiteSpace(?string $s): bool
@@ -75,8 +75,8 @@ abstract class Text
 	 * 文字列が `null` か空の場合に代替文字列を返す。
 	 *
 	 * @param string|null $s
-	 * @param string $fallback
-	 * @return string
+	 * @param non-empty-string $fallback
+	 * @return non-empty-string
 	 * @phpstan-pure
 	 */
 	public static function requireNotNullOrEmpty(?string $s, string $fallback): string
@@ -89,11 +89,11 @@ abstract class Text
 	}
 
 	/**
-	 * 文字列がnullかホワイトスペースのみで構築されている場合に代替文字列を返す。
+	 * 文字列が `null` かホワイトスペースのみで構築されている場合に代替文字列を返す。
 	 *
 	 * @param string|null $s
-	 * @param string $fallback
-	 * @return string
+	 * @param non-empty-string $fallback
+	 * @return non-empty-string
 	 */
 	public static function requireNotNullOrWhiteSpace(?string $s, string $fallback): string
 	{

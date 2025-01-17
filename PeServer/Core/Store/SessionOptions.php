@@ -17,6 +17,7 @@ readonly class SessionOptions
 
 	/** セッションID保持Cookie名。 */
 	public const DEFAULT_NAME = 'PHPSESSID';
+	public const DEFAULT_PATH = './session';
 
 	#endregion
 
