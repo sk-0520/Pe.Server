@@ -18,11 +18,6 @@ abstract class DaoBase
 {
 	#region variable
 
-	/**
-	 * ロガー。
-	 */
-	protected readonly ILogger $logger;
-
 	#endregion
 
 	/**
@@ -31,8 +26,9 @@ abstract class DaoBase
 	 * @param IDatabaseContext $context 接続処理。
 	 */
 	protected function __construct(
-		protected readonly IDatabaseContext $context
+		protected readonly IDatabaseContext $context,
+		protected readonly ILogger $logger
 	) {
-		$this->logger = new NullLogger();
+		// nop
 	}
 }
