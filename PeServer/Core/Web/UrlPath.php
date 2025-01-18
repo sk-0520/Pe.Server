@@ -76,6 +76,12 @@ readonly class UrlPath implements ArrayAccess, Countable, IteratorAggregate, Str
 		return new self(Text::join('/', $elements));
 	}
 
+	/**
+	 *
+	 * @param string $element
+	 * @return bool
+	 * @phpstan-pure
+	 */
 	public static function isValidElement(string $element): bool
 	{
 		$invalids = ['/', '?', '#'];
@@ -95,6 +101,7 @@ readonly class UrlPath implements ArrayAccess, Countable, IteratorAggregate, Str
 	 * @return bool
 	 * @phpstan-assert-if-true null $this->elements
 	 * @phpstan-assert-if-false string[] $this->elements
+	 * @phpstan-pure
 	 */
 	public function isEmpty(): bool
 	{

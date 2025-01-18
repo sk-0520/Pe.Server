@@ -29,6 +29,11 @@ readonly class PathParts implements Stringable
 
 	#region function
 
+	/**
+	 *
+	 * @return string
+	 * @phpstan-pure
+	 */
 	public function toString(): string
 	{
 		return $this->directory . DIRECTORY_SEPARATOR . $this->fileName;

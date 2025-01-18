@@ -54,6 +54,7 @@ class Logging
 	 * @param int $level
 	 * @phpstan-param ILogger::LOG_LEVEL_* $level
 	 * @return string
+	 * @phpstan-pure
 	 */
 	private static function formatLevel(int $level): string
 	{

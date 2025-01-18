@@ -66,6 +66,10 @@ class AutoLoader
 			'Smarty' => [
 				'directory' => $libs . 'smarty/src',
 			],
+			// Whoops
+			'Whoops' => [
+				'directory' => $libs . 'whoops/src/Whoops',
+			],
 			// Psr
 			'Psr\Container' => [
 				'directory' => $libs . 'php-fig/container/src',
@@ -85,6 +89,7 @@ class AutoLoader
 	 * @phpstan-param NamespacePrefixAlias $namespacePrefix
 	 * @return string
 	 * @phpstan-return NamespacePrefixAlias
+	 * @phpstan-pure
 	 */
 	protected function adjustNamespacePrefix(string $namespacePrefix): string
 	{
@@ -114,6 +119,7 @@ class AutoLoader
 	 *
 	 * @param class-string|string $className
 	 * @return string
+	 * @phpstan-pure
 	 */
 	protected function adjustClassName(string $className): string
 	{
@@ -224,6 +230,7 @@ class AutoLoader
 	 * @param string $namespacePrefix
 	 * @return array<string,mixed>|null 見つからなかった場合は `null` を返す。
 	 * @phpstan-return EnabledMappingIncludesAlias|null
+	 * @phpstan-pure
 	 */
 	final public function get(string $namespacePrefix): ?array
 	{

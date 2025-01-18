@@ -64,6 +64,7 @@ readonly final class Binary implements ArrayAccess, IteratorAggregate, Countable
 	 *
 	 * @param self $target 対象バイナリ。
 	 * @return bool 等しいか。
+	 * @phpstan-pure
 	 */
 	public function isEquals(self $target): bool
 	{
@@ -76,6 +77,7 @@ readonly final class Binary implements ArrayAccess, IteratorAggregate, Countable
 	 * `bin2hex` ラッパー。
 	 *
 	 * @return string `[0-9a-f]{2}*` で構成された文字列。
+	 * @phpstan-pure
 	 * @see https://www.php.net/manual/function.bin2hex.php
 	 */
 	public function toHex(): string
@@ -94,6 +96,7 @@ readonly final class Binary implements ArrayAccess, IteratorAggregate, Countable
 	 * `base64_encode` ラッパー。
 	 *
 	 * @return string
+	 * @phpstan-pure
 	 * @see https://www.php.net/manual/function.base64-encode.php
 	 */
 	public function toBase64(): string
@@ -125,6 +128,7 @@ readonly final class Binary implements ArrayAccess, IteratorAggregate, Countable
 	 * NULLバイトを持つか。
 	 *
 	 * @return boolean NULLバイトを持つ。
+	 * @phpstan-pure
 	 */
 	public function hasNull(): bool
 	{

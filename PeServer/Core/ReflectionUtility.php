@@ -82,6 +82,7 @@ abstract class ReflectionUtility
 	 * @phpstan-param ReflectionClass<T> $current
 	 * @param int $filter
 	 * @return ReflectionProperty[]
+	 * @phpstan-pure
 	 */
 	public static function getAllProperties(ReflectionClass $current, int $filter = ReflectionProperty::IS_PUBLIC | ReflectionProperty::IS_PROTECTED | ReflectionProperty::IS_PRIVATE): array
 	{
@@ -101,6 +102,7 @@ abstract class ReflectionUtility
 	 *
 	 * @param ReflectionType|null $parameterType
 	 * @return ReflectionNamedType[]
+	 * @phpstan-pure
 	 */
 	public static function getTypes(?ReflectionType $parameterType): array
 	{

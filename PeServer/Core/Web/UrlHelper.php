@@ -24,6 +24,11 @@ class UrlHelper implements IUrlHelper
 
 	#region IUrlHelper
 
+	/**
+	 *
+	 * @return string
+	 * @phpstan-pure
+	 */
 	public function getBasePath(): string
 	{
 		return $this->basePath;

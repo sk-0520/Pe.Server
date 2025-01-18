@@ -66,6 +66,7 @@ readonly class RgbColor implements IColor
 	 * @param bool $isAlpha
 	 * @return int
 	 * @phpstan-return ($isAlpha is true ? int<IColor::ALPHA_NONE,IColor::ALPHA_FULL>: int<self::RGB_MINIMUM,self::RGB_MAXIMUM>)
+	 * @phpstan-pure
 	 */
 	private static function fromHex(string $s, bool $isAlpha/* 0-127に制限が必要 */): int
 	{

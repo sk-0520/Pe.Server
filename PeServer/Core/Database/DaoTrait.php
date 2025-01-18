@@ -12,8 +12,9 @@ use PeServer\Core\Log\NullLogger;
 trait DaoTrait
 {
 	public function __construct(
-		IDatabaseContext $context
+		IDatabaseContext $context,
+		ILogger $logger = new NullLogger()
 	) {
-		parent::__construct($context);
+		parent::__construct($context, $logger);
 	}
 }

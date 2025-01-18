@@ -14,7 +14,8 @@ RUN a2enmod rewrite && \
 		# nodejs npm \
 		# GD
 		libpq-dev libfreetype6-dev libjpeg62-turbo-dev libpng-dev && \
-	pecl install xdebug
+	pecl install xdebug \
+	rm --force --recursive /app/PeServer/Core/Libs
 
 COPY fs /
 

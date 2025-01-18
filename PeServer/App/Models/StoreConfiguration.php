@@ -113,7 +113,7 @@ abstract class StoreConfiguration
 
 		/** @var non-empty-string $name */
 		$name = Text::requireNotNullOrWhiteSpace($setting->name, SessionOptions::DEFAULT_NAME);
-		$save = Text::requireNotNullOrWhiteSpace($setting->save, Text::EMPTY);
+		$save = Text::requireNotNullOrWhiteSpace($setting->save, SessionOptions::DEFAULT_PATH);
 
 		$options = new SessionOptions(
 			$name,

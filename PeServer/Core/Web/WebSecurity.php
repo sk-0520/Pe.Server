@@ -40,6 +40,7 @@ class WebSecurity
 	 * @param int $kind
 	 * @phpstan-param self::CSRF_KIND_* $kind
 	 * @return non-empty-string
+	 * @phpstan-pure
 	 */
 	public function getCsrfKind(int $kind): string
 	{
@@ -54,6 +55,7 @@ class WebSecurity
 	/**
 	 * CSRFトークンのハッシュアルゴリズム。
 	 * @return non-empty-string
+	 * @phpstan-pure
 	 */
 	protected function getCsrfTokenHash(): string
 	{

@@ -66,6 +66,7 @@ readonly class Area implements Stringable
 	 * 左辺のX軸を取得。
 	 *
 	 * @return int
+	 * @phpstan-pure
 	 */
 	public function left(): int
 	{
@@ -75,6 +76,7 @@ readonly class Area implements Stringable
 	 * 上辺のY軸を取得。
 	 *
 	 * @return int
+	 * @phpstan-pure
 	 */
 	public function top(): int
 	{
@@ -84,6 +86,7 @@ readonly class Area implements Stringable
 	 * 右辺のX軸を取得。
 	 *
 	 * @return int
+	 * @phpstan-pure
 	 */
 	public function right(): int
 	{
@@ -93,6 +96,7 @@ readonly class Area implements Stringable
 	 * 下辺のY軸を取得。
 	 *
 	 * @return int
+	 * @phpstan-pure
 	 */
 	public function bottom(): int
 	{
@@ -103,6 +107,7 @@ readonly class Area implements Stringable
 	 * 幅を取得。
 	 *
 	 * @return int
+	 * @phpstan-pure
 	 */
 	public function width(): int
 	{
@@ -112,6 +117,7 @@ readonly class Area implements Stringable
 	 * 高さを取得。
 	 *
 	 * @return int
+	 * @phpstan-pure
 	 */
 	public function height(): int
 	{

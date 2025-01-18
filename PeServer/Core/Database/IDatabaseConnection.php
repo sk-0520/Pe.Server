@@ -17,6 +17,7 @@ interface IDatabaseConnection
 	 * DB接続情報を取得。
 	 *
 	 * @return ConnectionSetting
+	 * @phpstan-pure
 	 */
 	public function getConnectionSetting(): ConnectionSetting;
 

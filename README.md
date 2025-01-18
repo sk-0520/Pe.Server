@@ -33,3 +33,18 @@ PHPStan 検出を抑制する場合はなるべくコメントを書くように
 | `PHP_VERSION` | PHPバージョンとかでなんか挙動が変わった系とかの別に残しててもいいじゃん的な |
 | `TYPE_INTERFACE` | 外部の型と合わせるための互換記述 |
 | `CODE_READONLY` | 読み取り専用と言いつつあくまでコード上だけの規則 |
+
+# Docker (実験中)
+
+* PHP 実行処理
+  * `dev/php.bat`
+  * `dev/php`
+* アプリ起動
+  * PeServer/Core/Libs の更新
+    * `docker volume rm dev_app-core-libs` (まぁいろいろ消して)
+    * `dev/images/www/setup.sh`
+    * `cd dev`
+    * `docker compose build --no-cache`
+    * たまに実行する程度で良し
+  * `cd dev`
+  * `docker compose up`

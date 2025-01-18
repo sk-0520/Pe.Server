@@ -68,6 +68,7 @@ class CaseInsensitiveKeyArray implements ArrayAccess, Countable, IteratorAggrega
 	 *
 	 * @param string $offset
 	 * @return string
+	 * @phpstan-pure
 	 */
 	public function toMapKey(string $offset): string
 	{
@@ -83,6 +84,7 @@ class CaseInsensitiveKeyArray implements ArrayAccess, Countable, IteratorAggrega
 	 *
 	 * @param string|int $offset
 	 * @return bool
+	 * @phpstan-pure
 	 */
 	public function offsetExists(mixed $offset): bool
 	{

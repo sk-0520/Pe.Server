@@ -229,7 +229,7 @@ abstract class LogicBase implements IValidationReceiver
 	 *
 	 * @param string $key キー。
 	 * @param string $value 設定値。
-	 * @param CookieOptions|array{path:?string,span:?DateInterval,secure:?bool,httpOnly:?bool,sameSite:?string}|null $options オプション。
+	 * @param CookieOptions|array{path:?non-empty-string,span:?DateInterval,secure:?bool,httpOnly:?bool,sameSite:?CookieSameSiteAlias}|null $options オプション。
 	 * @return void
 	 */
 	protected function setCookie(string $key, string $value, CookieOptions|array|null $options = null): void
@@ -241,18 +241,10 @@ abstract class LogicBase implements IValidationReceiver
 			if ($options instanceof CookieOptions) {
 				$cookieOptions = $options;
 			} else {
-				/** @var string */
 				$path = $options['path'] ?? $this->stores->cookie->options->path;
-				/** @var \DateInterval|null */
 				$span = $options['span'] ?? $this->stores->cookie->options->span;
-				/** @var bool */
 				$secure = $options['secure'] ?? $this->stores->cookie->options->secure;
-				/** @var bool */
 				$httpOnly = $options['httpOnly'] ?? $this->stores->cookie->options->httpOnly;
-				/**
-				 * @var string
-				 * @phpstan-var CookieSameSiteAlias
-				 */
 				$sameSite = $options['sameSite'] ?? $this->stores->cookie->options->sameSite;
 
 				$cookieOptions = new CookieOptions(

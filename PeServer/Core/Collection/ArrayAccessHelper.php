@@ -18,6 +18,7 @@ abstract class ArrayAccessHelper
 	 * @param mixed $offset
 	 * @return bool $offsetが有効
 	 * @phpstan-assert-if-true non-negative-int $offset
+	 * @phpstan-pure
 	 */
 	public static function offsetExistsUInt(mixed $offset): bool
 	{
