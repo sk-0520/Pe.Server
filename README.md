@@ -48,3 +48,8 @@ PHPStan 検出を抑制する場合はなるべくコメントを書くように
     * たまに実行する程度で良し
   * `cd dev`
   * `docker compose up`
+  * Web:
+    * http://localhost
+  * Email
+    * http://localhost:8025
+    * smtp:1025
