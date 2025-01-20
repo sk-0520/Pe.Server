@@ -29,6 +29,6 @@ abstract class DaoBase
 		protected readonly IDatabaseContext $context,
 		protected readonly ILogger $logger
 	) {
-		// nop
+		//NOP
 	}
 }
