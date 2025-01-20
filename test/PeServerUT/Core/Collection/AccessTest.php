@@ -33,6 +33,7 @@ class AccessTest extends TestClass
 		$this->fail();
 	}
 
+
 	public function test_getInteger()
 	{
 		$actual = Access::getInteger([10], 0);
@@ -52,6 +53,7 @@ class AccessTest extends TestClass
 		Access::getInteger(['10'], 0);
 		$this->fail();
 	}
+
 
 	public function test_getFloat()
 	{
@@ -73,6 +75,7 @@ class AccessTest extends TestClass
 		$this->fail();
 	}
 
+
 	public function test_getString()
 	{
 		$actual = Access::getString(['str'], 0);
@@ -92,6 +95,7 @@ class AccessTest extends TestClass
 		Access::getString([10], 0);
 		$this->fail();
 	}
+
 
 	public function test_getArray()
 	{
@@ -114,5 +118,62 @@ class AccessTest extends TestClass
 	}
 
 
+	public function test_getObject()
+	{
+		$actual1 = Access::getObject([new AccessTestA1()], 0);
+		$this->assertInstanceOf(AccessTestA1::class, $actual1);
+
+		$actual2 = Access::getObject([new AccessTestA2()], 0);
+		$this->assertInstanceOf(AccessTestA2::class, $actual2);
+
+		$actual1_2 = Access::getObject([new AccessTestA2()], 0);
+		$this->assertInstanceOf(AccessTestA1::class, $actual1_2);
+
+		$actual2_2 = Access::getObject([new AccessTestA1()], 0);
+		$this->assertNotInstanceOf(AccessTestA2::class, $actual2_2);
+
+		$actual1_3 = Access::getObject([new AccessTestA2()], 0, AccessTestA1::class);
+		$this->assertInstanceOf(AccessTestA1::class, $actual1_3);
+		$this->assertInstanceOf(AccessTestA2::class, $actual1_3);
+
+		$actual2_3 = Access::getObject([new AccessTestA2()], 0, AccessTestA2::class);
+		$this->assertInstanceOf(AccessTestA1::class, $actual2_3);
+		$this->assertInstanceOf(AccessTestA2::class, $actual2_3);
+
+		$actual1_4 = Access::getObject([new AccessTestA1()], 0, AccessTestA1::class);
+		$this->assertInstanceOf(AccessTestA1::class, $actual1_4);
+		$this->assertNotInstanceOf(AccessTestA2::class, $actual1_4);
+
+		$this->expectException(AccessValueTypeException::class);
+		Access::getObject([new AccessTestB()], 0, AccessTestA1::class);
+		$this->fail();
+	}
+
+	public function test_getObject_key_throw()
+	{
+		$this->expectException(AccessKeyNotFoundException::class);
+		Access::getObject(['array'], 1);
+		$this->fail();
+	}
+
+	public function test_getObject_type_throw()
+	{
+		$this->expectException(AccessValueTypeException::class);
+		Access::getObject([10], 0);
+		$this->fail();
+	}
+
 	#endregion
+}
+
+class AccessTestA1
+{
+}
+
+class AccessTestA2 extends AccessTestA1
+{
+}
+
+class AccessTestB
+{
 }
