@@ -283,7 +283,6 @@ class AccountUserPluginLogic extends PageLogicBase
 			}
 
 			$pluginUrlsEntityDao->deleteByPluginId($params['plugin_id']);
-			/** @var array<string,string> */
 			$urls = $params['urls'];
 			foreach ($urls as $k => $v) {
 				$pluginUrlsEntityDao->insertUrl($params['plugin_id'], $k, $v);
