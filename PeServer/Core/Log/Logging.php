@@ -118,7 +118,7 @@ class Logging
 
 	private function getRemoteHost(): string
 	{
-		// @phpstan-ignore-next-line
+		// @phpstan-ignore-next-line [DEBUG]
 		if (!self::IS_ENABLED_HOST) {
 			return Text::EMPTY;
 		}
