@@ -73,7 +73,7 @@ class AccessTest extends TestClass
 		$this->fail();
 	}
 
-	public function test_geString()
+	public function test_getString()
 	{
 		$actual = Access::getString(['str'], 0);
 		$this->assertSame('str', $actual);
@@ -92,6 +92,27 @@ class AccessTest extends TestClass
 		Access::getString([10], 0);
 		$this->fail();
 	}
+
+	public function test_getArray()
+	{
+		$actual = Access::getArray([['array']], 0);
+		$this->assertSame(['array'], $actual);
+	}
+
+	public function test_getArray_key_throw()
+	{
+		$this->expectException(AccessKeyNotFoundException::class);
+		Access::getArray(['array'], 1);
+		$this->fail();
+	}
+
+	public function test_getArray_type_throw()
+	{
+		$this->expectException(AccessValueTypeException::class);
+		Access::getArray([10], 0);
+		$this->fail();
+	}
+
 
 	#endregion
 }

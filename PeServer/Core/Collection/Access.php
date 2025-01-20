@@ -15,8 +15,7 @@ class Access
 	/**
 	 * 生値を取得する。
 	 *
-	 * @param array $array
-	 * @phpstan-param array<mixed> $array
+	 * @param array<mixed> $array
 	 * @param array-key $key
 	 * @return mixed
 	 * @throws AccessKeyNotFoundException キーが見つからない。
@@ -30,10 +29,14 @@ class Access
 		throw new AccessKeyNotFoundException("key = $key");
 	}
 
+	private static function throwInvalidType(string|int $key, mixed $value): never
+	{
+		throw new AccessValueTypeException("$key is " . TypeUtility::getType($value));
+	}
+
 	/**
 	 *
-	 * @param array $array
-	 * @phpstan-param array<mixed> $array
+	 * @param array<mixed> $array
 	 * @param string|int $key
 	 * @param array-key $key
 	 * @return int
@@ -47,13 +50,12 @@ class Access
 			return $value;
 		}
 
-		throw new AccessValueTypeException("$key is " . TypeUtility::getType($value));
+		self::throwInvalidType($key, $value);
 	}
 
 	/**
 	 *
-	 * @param array $array
-	 * @phpstan-param array<mixed> $array
+	 * @param array<mixed> $array
 	 * @param string|int $key
 	 * @param array-key $key
 	 * @return float
@@ -67,13 +69,12 @@ class Access
 			return $value;
 		}
 
-		throw new AccessValueTypeException("$key is " . TypeUtility::getType($value));
+		self::throwInvalidType($key, $value);
 	}
 
 	/**
 	 *
-	 * @param array $array
-	 * @phpstan-param array<mixed> $array
+	 * @param array<mixed> $array
 	 * @param string|int $key
 	 * @param array-key $key
 	 * @return string
@@ -87,7 +88,26 @@ class Access
 			return $value;
 		}
 
-		throw new AccessValueTypeException("$key is " . TypeUtility::getType($value));
+		self::throwInvalidType($key, $value);
+	}
+
+	/**
+	 *
+	 * @param array<mixed> $array
+	 * @param string|int $key
+	 * @param array-key $key
+	 * @return array<mixed>
+	 * @throws AccessKeyNotFoundException キーが見つからない。
+	 * @throws AccessValueTypeException
+	 */
+	public static function getArray(array $array, string|int $key): array
+	{
+		$value = self::getValue($array, $key);
+		if (is_array($value)) {
+			return $value;
+		}
+
+		self::throwInvalidType($key, $value);
 	}
 
 	#endregion
