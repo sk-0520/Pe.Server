@@ -97,26 +97,6 @@ class AccessTest extends TestClass
 	}
 
 
-	public function test_getArray()
-	{
-		$actual = Access::getArray([['array']], 0);
-		$this->assertSame(['array'], $actual);
-	}
-
-	public function test_getArray_key_throw()
-	{
-		$this->expectException(AccessKeyNotFoundException::class);
-		Access::getArray(['array'], 1);
-		$this->fail();
-	}
-
-	public function test_getArray_type_throw()
-	{
-		$this->expectException(AccessValueTypeException::class);
-		Access::getArray([10], 0);
-		$this->fail();
-	}
-
 
 	public function test_getObject()
 	{
@@ -160,6 +140,26 @@ class AccessTest extends TestClass
 	{
 		$this->expectException(AccessValueTypeException::class);
 		Access::getObject([10], 0);
+		$this->fail();
+	}
+
+	public function test_getArray()
+	{
+		$actual = Access::getArray([['array']], 0);
+		$this->assertSame(['array'], $actual);
+	}
+
+	public function test_getArray_key_throw()
+	{
+		$this->expectException(AccessKeyNotFoundException::class);
+		Access::getArray(['array'], 1);
+		$this->fail();
+	}
+
+	public function test_getArray_type_throw()
+	{
+		$this->expectException(AccessValueTypeException::class);
+		Access::getArray([10], 0);
 		$this->fail();
 	}
 

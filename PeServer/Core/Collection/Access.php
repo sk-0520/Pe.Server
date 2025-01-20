@@ -91,24 +91,6 @@ class Access
 
 	/**
 	 *
-	 * @param array<mixed> $array
-	 * @param array-key $key
-	 * @return array<mixed>
-	 * @throws AccessKeyNotFoundException キーが見つからない。
-	 * @throws AccessValueTypeException
-	 */
-	public static function getArray(array $array, string|int $key): array
-	{
-		$value = self::getValue($array, $key);
-		if (is_array($value)) {
-			return $value;
-		}
-
-		self::throwInvalidType($key, $value);
-	}
-
-	/**
-	 *
 	 * @template T of object
 	 * @param array<mixed> $array
 	 * @param array-key $key
@@ -133,6 +115,25 @@ class Access
 
 		self::throwInvalidType($key, $value);
 	}
+
+	/**
+	 *
+	 * @param array<mixed> $array
+	 * @param array-key $key
+	 * @return array<mixed>
+	 * @throws AccessKeyNotFoundException キーが見つからない。
+	 * @throws AccessValueTypeException
+	 */
+	public static function getArray(array $array, string|int $key): array
+	{
+		$value = self::getValue($array, $key);
+		if (is_array($value)) {
+			return $value;
+		}
+
+		self::throwInvalidType($key, $value);
+	}
+
 
 	#endregion
 }
