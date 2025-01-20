@@ -9,6 +9,9 @@ namespace PeServer\App\Models\Domain;
  */
 readonly class DefaultPlugin
 {
+	private const DEFAULT_PROJECT_URL = 'https://github.com/sk-0520/Pe';
+	private const DEFAULT_CHECK_URL = self::DEFAULT_PROJECT_URL . '/releases/download/<VERSION>';
+
 	/**
 	 * 生成。
 	 *
@@ -19,7 +22,7 @@ readonly class DefaultPlugin
 	 * @param string[] $descriptions
 	 * @param string[] $categories
 	 * @param string $state
-	 * phpstan-param PluginState::*
+	 * @phpstan-param PluginState::* $state
 	 */
 	public function __construct(
 		public string $pluginId,
@@ -47,7 +50,7 @@ readonly class DefaultPlugin
 				'Pe.Plugins.DefaultTheme',
 				//@phpstan-ignore-next-line
 				'',
-				'https://github.com/sk-0520/Pe',
+				self::DEFAULT_PROJECT_URL,
 				['本体同梱標準テーマ。', 'ダウンロード先なし。',],
 				['theme',],
 				PluginState::ENABLED
@@ -55,8 +58,8 @@ readonly class DefaultPlugin
 			new self(
 				'67f0fa7d-52d3-4889-b595-be3703b224eb',
 				'Pe.Plugins.Reference.ClassicTheme',
-				'https://github.com/sk-0520/Pe/releases/download/<VERSION>/update-Pe.Plugins.Reference.ClassicTheme.json',
-				'https://github.com/sk-0520/Pe',
+				self::DEFAULT_CHECK_URL . '/update-Pe.Plugins.Reference.ClassicTheme.json',
+				self::DEFAULT_PROJECT_URL,
 				['テーマの参考実装。', 'テーマをプラグインとして扱うのが💩と教えてくれた偉大なる参考実装。',],
 				['theme',],
 				PluginState::ENABLED
@@ -64,8 +67,8 @@ readonly class DefaultPlugin
 			new self(
 				'2e5c72c5-270f-4b05-afb9-c87f3966ecc5',
 				'Pe.Plugins.Reference.Clock',
-				'https://github.com/sk-0520/Pe/releases/download/<VERSION>/update-Pe.Plugins.Reference.Clock.json',
-				'https://github.com/sk-0520/Pe',
+				self::DEFAULT_CHECK_URL . '/update-Pe.Plugins.Reference.Clock.json',
+				self::DEFAULT_PROJECT_URL,
 				['ランチャーボタン・ウィジェット・設定の参考実装。', '時計を表示する。',],
 				['utility',],
 				PluginState::ENABLED
@@ -73,8 +76,8 @@ readonly class DefaultPlugin
 			new self(
 				'799ce8bd-8f49-4e8f-9e47-4d4873084081',
 				'Pe.Plugins.Reference.Eyes',
-				'https://github.com/sk-0520/Pe/releases/download/<VERSION>/update-Pe.Plugins.Reference.Eyes.json',
-				'https://github.com/sk-0520/Pe',
+				self::DEFAULT_CHECK_URL . '/update-Pe.Plugins.Reference.Eyes.json',
+				self::DEFAULT_PROJECT_URL,
 				['ウィジェット・バックグラウンドの参考実装。', 'xeyes のおめめ。',],
 				['toy',],
 				PluginState::ENABLED
@@ -82,8 +85,8 @@ readonly class DefaultPlugin
 			new self(
 				'9dcf441d-9f8e-494f-89c1-814678bbc42c',
 				'Pe.Plugins.Reference.FileFinder',
-				'https://github.com/sk-0520/Pe/releases/download/<VERSION>/update-Pe.Plugins.Reference.FileFinder.json',
-				'https://github.com/sk-0520/Pe',
+				self::DEFAULT_CHECK_URL . '/update-Pe.Plugins.Reference.FileFinder.json',
+				self::DEFAULT_PROJECT_URL,
 				['コマンド入力・設定の参考実装。', 'コマンド入力欄に入力された文字列をファイルパスとして扱う。',],
 				['file', 'search',],
 				PluginState::ENABLED
@@ -91,8 +94,8 @@ readonly class DefaultPlugin
 			new self(
 				'4fa1a634-6b32-4762-8ae8-3e1cf6df9db1',
 				'Pe.Plugins.Reference.Html',
-				'https://github.com/sk-0520/Pe/releases/download/<VERSION>/update-Pe.Plugins.Reference.Html.json',
-				'https://github.com/sk-0520/Pe',
+				self::DEFAULT_CHECK_URL . '/update-Pe.Plugins.Reference.Html.json',
+				self::DEFAULT_PROJECT_URL,
 				['WebView ウィジェットの参考実装。', '常に IME 死んでるマン。',],
 				['utility',],
 				PluginState::DISABLED
