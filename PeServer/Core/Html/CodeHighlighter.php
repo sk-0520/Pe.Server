@@ -50,10 +50,10 @@ class CodeHighlighter
 	private function toLines(string $language, string $source): array
 	{
 		if (!Text::isNullOrWhiteSpace($language)) {
-			$hl = new Highlighter(); //@phpstan-ignore-line Highlighter
+			$hl = new Highlighter();
 			try {
-				$highlighted = $hl->highlight($language, $source); //@phpstan-ignore-line highlight
-				$lines = \HighlightUtilities\splitCodeIntoArray($highlighted->value); //@phpstan-ignore-line splitCodeIntoArray
+				$highlighted = $hl->highlight($language, $source);
+				$lines = \HighlightUtilities\splitCodeIntoArray($highlighted->value);
 				if ($lines !== false) {
 					return $lines;
 				}
