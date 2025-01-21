@@ -9,6 +9,9 @@ use PeServer\Core\Throws\AccessKeyNotFoundException;
 use PeServer\Core\Throws\AccessValueTypeException;
 use PeServer\Core\TypeUtility;
 
+/**
+ * 配列から特定の型のデータ取得を行う。
+ */
 class Access
 {
 	#region function
