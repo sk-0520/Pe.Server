@@ -34,7 +34,7 @@ class ManagementDatabaseDownloadLogic extends PageLogicBase
 
 	protected function validateImpl(LogicCallMode $callMode): void
 	{
-		//nop
+		//NOP
 	}
 
 

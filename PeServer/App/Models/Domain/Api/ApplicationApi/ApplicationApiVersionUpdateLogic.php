@@ -42,7 +42,7 @@ class ApplicationApiVersionUpdateLogic extends ApiLogicBase
 
 	protected function validateImpl(LogicCallMode $callMode): void
 	{
-		//nop
+		//NOP
 	}
 
 	protected function executeImpl(LogicCallMode $callMode): void
