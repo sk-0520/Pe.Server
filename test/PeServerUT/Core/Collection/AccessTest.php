@@ -76,7 +76,6 @@ class AccessTest extends TestClass
 		$this->fail();
 	}
 
-
 	public function test_getFloat()
 	{
 		$actual = Access::getFloat([10.0], 0);
@@ -96,7 +95,6 @@ class AccessTest extends TestClass
 		Access::getFloat([10], 0);
 		$this->fail();
 	}
-
 
 	public function test_getString()
 	{
@@ -183,31 +181,31 @@ class AccessTest extends TestClass
 		$this->fail();
 	}
 
-	public function test_getBools()
+	public function test_getArrayOfBool()
 	{
-		$actual = Access::getBools([[true, false, true]], 0);
+		$actual = Access::getArrayOfBool([[true, false, true]], 0);
 		$this->assertSame([true, false, true], $actual);
 
-		$this->isEmpty(Access::getBools([[]], 0));
+		$this->isEmpty(Access::getArrayOfBool([[]], 0));
 	}
 
 	#[TestWith([[[true, 10]], 0])]
 	#[TestWith([[[10, true]], 0])]
 	#[TestWith([[[true, 'str']], 0])]
 	#[TestWith([[[true, null]], 0])]
-	public function test_getBools_type_throw(array $array, string|int $key)
+	public function test_getArrayOfBool_type_throw(array $array, string|int $key)
 	{
 		$this->expectException(AccessValueTypeException::class);
-		Access::getBools($array, $key);
+		Access::getArrayOfBool($array, $key);
 		$this->fail();
 	}
 
-	public function test_getIntegers()
+	public function test_getArrayOfInteger()
 	{
-		$actual = Access::getIntegers([[1, 2, 3]], 0);
+		$actual = Access::getArrayOfInteger([[1, 2, 3]], 0);
 		$this->assertSame([1, 2, 3], $actual);
 
-		$this->isEmpty(Access::getIntegers([[]], 0));
+		$this->isEmpty(Access::getArrayOfInteger([[]], 0));
 	}
 
 	#[TestWith([[[3.14, 10]], 0])]
@@ -215,19 +213,19 @@ class AccessTest extends TestClass
 	#[TestWith([[[10, true]], 0])]
 	#[TestWith([[[10, 'str']], 0])]
 	#[TestWith([[[10, null]], 0])]
-	public function test_getIntegers_type_throw(array $array, string|int $key)
+	public function test_getArrayOfInteger_type_throw(array $array, string|int $key)
 	{
 		$this->expectException(AccessValueTypeException::class);
-		Access::getIntegers($array, $key);
+		Access::getArrayOfInteger($array, $key);
 		$this->fail();
 	}
 
-	public function test_getFloats()
+	public function test_getArrayOfFloat()
 	{
-		$actual = Access::getFloats([[1.0, 2.0, 3.0]], 0);
+		$actual = Access::getArrayOfFloat([[1.0, 2.0, 3.0]], 0);
 		$this->assertSame([1.0, 2.0, 3.0], $actual);
 
-		$this->isEmpty(Access::getFloats([[]], 0));
+		$this->isEmpty(Access::getArrayOfFloat([[]], 0));
 	}
 
 	#[TestWith([[[3.14, 10]], 0])]
@@ -235,19 +233,19 @@ class AccessTest extends TestClass
 	#[TestWith([[[3.14, true]], 0])]
 	#[TestWith([[[3.14, 'str']], 0])]
 	#[TestWith([[[3.14, null]], 0])]
-	public function test_getFloats_type_throw(array $array, string|int $key)
+	public function test_getArrayOfFloat_type_throw(array $array, string|int $key)
 	{
 		$this->expectException(AccessValueTypeException::class);
-		Access::getFloats($array, $key);
+		Access::getArrayOfFloat($array, $key);
 		$this->fail();
 	}
 
-	public function test_getStrings()
+	public function test_getArrayOfString()
 	{
-		$actual = Access::getStrings([['a', 'b', 'c']], 0);
+		$actual = Access::getArrayOfString([['a', 'b', 'c']], 0);
 		$this->assertSame(['a', 'b', 'c'], $actual);
 
-		$this->isEmpty(Access::getStrings([[]], 0));
+		$this->isEmpty(Access::getArrayOfString([[]], 0));
 	}
 
 	#[TestWith([[['str', 10]], 0])]
@@ -255,25 +253,25 @@ class AccessTest extends TestClass
 	#[TestWith([[['str', true]], 0])]
 	#[TestWith([[['str', 3.14]], 0])]
 	#[TestWith([[['str', null]], 0])]
-	public function test_getStrings_type_throw(array $array, string|int $key)
+	public function test_getArrayOfString_type_throw(array $array, string|int $key)
 	{
 		$this->expectException(AccessValueTypeException::class);
-		Access::getStrings($array, $key);
+		Access::getArrayOfString($array, $key);
 		$this->fail();
 	}
 
-	public function test_getObjects()
+	public function test_getArrayOfObject()
 	{
-		$actual = Access::getObjects([[new AccessTestA1(), new AccessTestA1(), new AccessTestA1()]], 0);
+		$actual = Access::getArrayOfObject([[new AccessTestA1(), new AccessTestA1(), new AccessTestA1()]], 0);
 		$this->assertEqualsWithInfo('オブジェクト比較なので緩い比較', [new AccessTestA1(), new AccessTestA1(), new AccessTestA1()], $actual);
 
-		$this->isEmpty(Access::getObjects([[]], 0));
+		$this->isEmpty(Access::getArrayOfObject([[]], 0));
 	}
 
-	public function test_getObjects_type_throw()
+	public function test_getArrayOfObject_type_throw()
 	{
 		$this->expectException(AccessValueTypeException::class);
-		Access::getObjects([[new AccessTestA1(), null]], 0);
+		Access::getArrayOfObject([[new AccessTestA1(), null]], 0);
 		$this->fail();
 	}
 

@@ -175,7 +175,7 @@ class Access
 	 * @throws AccessKeyNotFoundException キーが見つからない。
 	 * @throws AccessValueTypeException
 	 */
-	public static function getBools(array $array, string|int $key): array
+	public static function getArrayOfBool(array $array, string|int $key): array
 	{
 		$values = self::getArray($array, $key);
 		foreach ($values as $key => $value) {
@@ -195,7 +195,7 @@ class Access
 	 * @throws AccessKeyNotFoundException キーが見つからない。
 	 * @throws AccessValueTypeException
 	 */
-	public static function getIntegers(array $array, string|int $key): array
+	public static function getArrayOfInteger(array $array, string|int $key): array
 	{
 		$values = self::getArray($array, $key);
 		foreach ($values as $key => $value) {
@@ -215,7 +215,7 @@ class Access
 	 * @throws AccessKeyNotFoundException キーが見つからない。
 	 * @throws AccessValueTypeException
 	 */
-	public static function getFloats(array $array, string|int $key): array
+	public static function getArrayOfFloat(array $array, string|int $key): array
 	{
 		$values = self::getArray($array, $key);
 		foreach ($values as $key => $value) {
@@ -235,7 +235,7 @@ class Access
 	 * @throws AccessKeyNotFoundException キーが見つからない。
 	 * @throws AccessValueTypeException
 	 */
-	public static function getStrings(array $array, string|int $key): array
+	public static function getArrayOfString(array $array, string|int $key): array
 	{
 		$values = self::getArray($array, $key);
 		foreach ($values as $key => $value) {
@@ -246,7 +246,6 @@ class Access
 
 		return $values;
 	}
-
 
 	/**
 	 *
@@ -259,7 +258,7 @@ class Access
 	 * @throws AccessKeyNotFoundException キーが見つからない。
 	 * @throws AccessValueTypeException
 	 */
-	public static function getObjects(array $array, string|int $key, ?string $className = null): array
+	public static function getArrayOfObject(array $array, string|int $key, ?string $className = null): array
 	{
 		$values = self::getArray($array, $key);
 		foreach ($values as $key => $value) {
