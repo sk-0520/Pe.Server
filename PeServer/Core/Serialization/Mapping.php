@@ -13,6 +13,7 @@ use PeServer\Core\Text;
  *
  * * ここに設定が集約される
  * * `self::FLAG_IGNORE` が設定されていない限り処理される
+ * @codeCoverageIgnore
  */
 #[Attribute(Attribute::TARGET_PROPERTY)]
 readonly class Mapping
