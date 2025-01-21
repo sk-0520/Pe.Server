@@ -39,6 +39,24 @@ class Access
 	 *
 	 * @param array<mixed> $array
 	 * @param array-key $key
+	 * @return bool
+	 * @throws AccessKeyNotFoundException キーが見つからない。
+	 * @throws AccessValueTypeException
+	 */
+	public static function getBool(array $array, string|int $key): bool
+	{
+		$value = self::getValue($array, $key);
+		if (is_bool($value)) {
+			return $value;
+		}
+
+		self::throwInvalidType($key, $value);
+	}
+
+	/**
+	 *
+	 * @param array<mixed> $array
+	 * @param array-key $key
 	 * @return int
 	 * @throws AccessKeyNotFoundException キーが見つからない。
 	 * @throws AccessValueTypeException
@@ -92,6 +110,27 @@ class Access
 	/**
 	 *
 	 * @template T of object
+	 * @param mixed $value
+	 * @param null|string|class-string<T> $className
+	 * @return bool
+	 * @phpstan-assert-if-true ($className is class-string<T> ? T: object) $value
+	 */
+	private static function isObject(mixed $value, ?string $className): bool // @phpstan-ignore method.templateTypeNotInParameter
+	{
+		if (!is_object($value)) {
+			return false;
+		}
+
+		if ($className === null) {
+			return true;
+		}
+
+		return is_a($value, $className, true);
+	}
+
+	/**
+	 *
+	 * @template T of object
 	 * @param array<mixed> $array
 	 * @param array-key $key
 	 * @param string|class-string<T> $className
@@ -100,17 +139,11 @@ class Access
 	 * @throws AccessKeyNotFoundException キーが見つからない。
 	 * @throws AccessValueTypeException
 	 */
-	public static function getObject(array $array, string|int $key, string $className = ''): object
+	public static function getObject(array $array, string|int $key, ?string $className = null): object
 	{
 		$value = self::getValue($array, $key);
-		if (is_object($value)) {
-			if ($className === Text::EMPTY) {
-				return $value;
-			}
-
-			if (is_a($value, $className, true)) {
-				return $value;
-			}
+		if (self::isObject($value, $className)) {
+			return $value;
 		}
 
 		self::throwInvalidType($key, $value);
@@ -134,6 +167,109 @@ class Access
 		self::throwInvalidType($key, $value);
 	}
 
+	/**
+	 *
+	 * @param array<mixed> $array
+	 * @param array-key $key
+	 * @return bool[]
+	 * @throws AccessKeyNotFoundException キーが見つからない。
+	 * @throws AccessValueTypeException
+	 */
+	public static function getBools(array $array, string|int $key): array
+	{
+		$values = self::getArray($array, $key);
+		foreach ($values as $key => $value) {
+			if (!is_bool($value)) {
+				self::throwInvalidType($key, $value);
+			}
+		}
+
+		return $values;
+	}
+
+	/**
+	 *
+	 * @param array<mixed> $array
+	 * @param array-key $key
+	 * @return int[]
+	 * @throws AccessKeyNotFoundException キーが見つからない。
+	 * @throws AccessValueTypeException
+	 */
+	public static function getIntegers(array $array, string|int $key): array
+	{
+		$values = self::getArray($array, $key);
+		foreach ($values as $key => $value) {
+			if (!is_integer($value)) {
+				self::throwInvalidType($key, $value);
+			}
+		}
+
+		return $values;
+	}
+
+	/**
+	 *
+	 * @param array<mixed> $array
+	 * @param array-key $key
+	 * @return float[]
+	 * @throws AccessKeyNotFoundException キーが見つからない。
+	 * @throws AccessValueTypeException
+	 */
+	public static function getFloats(array $array, string|int $key): array
+	{
+		$values = self::getArray($array, $key);
+		foreach ($values as $key => $value) {
+			if (!is_float($value)) {
+				self::throwInvalidType($key, $value);
+			}
+		}
+
+		return $values;
+	}
+
+	/**
+	 *
+	 * @param array<mixed> $array
+	 * @param array-key $key
+	 * @return string[]
+	 * @throws AccessKeyNotFoundException キーが見つからない。
+	 * @throws AccessValueTypeException
+	 */
+	public static function getStrings(array $array, string|int $key): array
+	{
+		$values = self::getArray($array, $key);
+		foreach ($values as $key => $value) {
+			if (!is_string($value)) {
+				self::throwInvalidType($key, $value);
+			}
+		}
+
+		return $values;
+	}
+
+
+	/**
+	 *
+	 * @template T of object
+	 * @param array<mixed> $array
+	 * @param array-key $key
+	 * @param null|string|class-string<T> $className
+	 * @return object[]
+	 * @phpstan-return ($className is class-string<T> ? T[]: object[])
+	 * @throws AccessKeyNotFoundException キーが見つからない。
+	 * @throws AccessValueTypeException
+	 */
+	public static function getObjects(array $array, string|int $key, ?string $className = null): array
+	{
+		$values = self::getArray($array, $key);
+		foreach ($values as $key => $value) {
+			if (!self::isObject($value, $className)) {
+				self::throwInvalidType($key, $value);
+			}
+		}
+
+		return $values;
+	}
 
 	#endregion
 }
