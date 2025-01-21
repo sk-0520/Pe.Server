@@ -99,16 +99,14 @@ readonly class Url implements Stringable
 			return false;
 		}
 
-		/** @var string */
 		$user = self::getDecodedValue($elements, 'user', Text::EMPTY, $urlEncoding);
-		/** @var string */
 		$pass = self::getDecodedValue($elements, 'pass', Text::EMPTY, $urlEncoding);
 		$fragment = self::getDecodedValue($elements, 'fragment', null, $urlEncoding);
 
 		$result = new self(
 			$elements['scheme'],
-			$user,
-			$pass,
+			$user ?? Text::EMPTY,
+			$pass ?? Text::EMPTY,
 			$elements['host'],
 			$elements['port'] ?? null,
 			new UrlPath($elements['path'] ?? Text::EMPTY),

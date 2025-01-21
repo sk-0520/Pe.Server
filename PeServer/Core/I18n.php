@@ -69,8 +69,7 @@ abstract class I18n
 	 */
 	private static function getFlatMessage(array $array, string $locale): string|null
 	{
-		if (isset($array[$locale])) {
-			/** @var string */
+		if (isset($array[$locale]) && is_string($array[$locale])) {
 			return $array[$locale];
 		}
 
@@ -88,7 +87,6 @@ abstract class I18n
 			return self::getFlatMessage(self::$i18nConfiguration[$key], $locale);
 		}
 
-		/** @var array<string,string|array<string,mixed>> */
 		$leaf = self::$i18nConfiguration;
 		$tree = Text::split($key, '/');
 		foreach ($tree as $node) {

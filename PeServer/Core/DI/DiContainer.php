@@ -195,7 +195,6 @@ class DiContainer extends DisposerBase implements IDiContainer
 			// 属性指定
 			$attributes = $parameter->getAttributes(Inject::class);
 			if (!Arr::isNullOrEmpty($attributes)) {
-				/** @var Inject */
 				$attribute = $attributes[0]->newInstance();
 				if (!Text::isNullOrWhiteSpace($attribute->id)) {
 					$id = $attribute->id;

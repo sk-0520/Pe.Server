@@ -125,7 +125,6 @@ class Routing
 	protected function getOrCreateMiddleware(IMiddleware|string $middleware): IMiddleware
 	{
 		if (is_string($middleware)) {
-			/** @var IMiddleware */
 			$middleware = $this->serviceLocator->new($middleware);
 		}
 
@@ -141,7 +140,6 @@ class Routing
 	protected function getOrCreateShutdownMiddleware(IShutdownMiddleware|string $middleware): IShutdownMiddleware
 	{
 		if (is_string($middleware)) {
-			/** @var IShutdownMiddleware */
 			$middleware = $this->serviceLocator->new($middleware);
 		}
 
@@ -256,10 +254,8 @@ class Routing
 		/** @var IActionResult|null */
 		$actionResult = null;
 		$output = OutputBuffer::get(function () use ($controllerArgument, $controllerName, $actionSetting, &$actionResult) {
-			/** @var ControllerBase */
 			$controller = $this->serviceLocator->new($controllerName, [ControllerArgument::class => $controllerArgument]);
 			$methodName = $actionSetting->controllerMethod;
-			/** @var IActionResult */
 			$actionResult = $this->serviceLocator->call([$controller, $methodName]); //@phpstan-ignore-line callable
 		});
 		// 標準出力は闇に葬る
@@ -270,7 +266,6 @@ class Routing
 		$this->stores->apply();
 
 		// 最終出力
-		/** @var IActionResult $actionResult */
 		$response = $actionResult->createResponse();
 		if (!$this->handleAfterMiddleware($request, $response)) {
 			return;

@@ -499,11 +499,9 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 	{
 		$this->throwIfInvalidSingleCount($statement);
 
-		/** @-var array<string,mixed> */
 		$result = $this->queryFirst($statement, $parameters);
 		$val = strval(current($result->fields));
-		if (TypeUtility::tryParseInteger($val, $count)) {
-			/** @var non-negative-int */
+		if (TypeUtility::tryParseUInteger($val, $count)) {
 			return $count;
 		}
 
