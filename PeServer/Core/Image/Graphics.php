@@ -47,7 +47,7 @@ class Graphics extends DisposerBase
 	private bool $antiAlias;
 
 	private function __construct(
-		private GdImage $image,
+		public GdImage $image,
 		private bool $isEnabledAlpha
 	) {
 		$this->thickness = self::DEFAULT_THICKNESS;
@@ -341,7 +341,9 @@ class Graphics extends DisposerBase
 			public function __construct(
 				private Graphics $graphics,
 				private int $restoreThickness
-			) {}
+			) {
+				//NOP
+			}
 
 			protected function disposeImpl(): void
 			{
