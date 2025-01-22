@@ -41,16 +41,15 @@ class Graphics extends DisposerBase
 	public const CURRENT_THICKNESS = -1;
 	public const DEFAULT_THICKNESS = 1;
 
-	public GdImage $image;
 	/** @phpstan-var positive-int */
 	private int $thickness;
 	/** @phpstan-ignore-next-line */
 	private bool $antiAlias;
 
-	private function __construct(GdImage $image, bool $isEnabledAlpha)
-	{
-		$this->image = $image;
-
+	private function __construct(
+		private GdImage $image,
+		private bool $isEnabledAlpha
+	) {
 		$this->thickness = self::DEFAULT_THICKNESS;
 		imagesetthickness($this->image, $this->thickness);
 
@@ -107,7 +106,7 @@ class Graphics extends DisposerBase
 		};
 
 		$result = ErrorHandler::trap(
-			fn () => call_user_func($funcName, $binary->raw)
+			fn() => call_user_func($funcName, $binary->raw)
 		);
 
 		if (!$result->success) {
@@ -233,7 +232,7 @@ class Graphics extends DisposerBase
 	{
 		$result = $this->doColor(
 			$backgroundColor,
-			fn ($attachedColor) => imagerotate($this->image, $angle, $attachedColor)
+			fn($attachedColor) => imagerotate($this->image, $angle, $attachedColor)
 		);
 		if ($result === false) {
 			throw new GraphicsException();
@@ -281,7 +280,7 @@ class Graphics extends DisposerBase
 	{
 		$result = $this->doColor(
 			$color,
-			fn ($attachedColor) => imagesetpixel(
+			fn($attachedColor) => imagesetpixel(
 				$this->image,
 				$point->x,
 				$point->y,
@@ -342,8 +341,7 @@ class Graphics extends DisposerBase
 			public function __construct(
 				private Graphics $graphics,
 				private int $restoreThickness
-			) {
-			}
+			) {}
 
 			protected function disposeImpl(): void
 			{
@@ -434,7 +432,7 @@ class Graphics extends DisposerBase
 	{
 		$result = $this->doColor(
 			$color,
-			fn ($attachedColor) => imagefilledrectangle(
+			fn($attachedColor) => imagefilledrectangle(
 				$this->image,
 				$rectangle->left(),
 				$rectangle->top(),
@@ -465,7 +463,7 @@ class Graphics extends DisposerBase
 		try {
 			$result = $this->doColor(
 				$color,
-				fn ($attachedColor) => imagerectangle(
+				fn($attachedColor) => imagerectangle(
 					$this->image,
 					$rectangle->left(),
 					$rectangle->top(),
@@ -524,7 +522,7 @@ class Graphics extends DisposerBase
 	{
 		$result = $this->doColor(
 			$color,
-			fn ($attachedColor) => imagettftext(
+			fn($attachedColor) => imagettftext(
 				$this->image,
 				$fontSize,
 				$setting->angle,
@@ -584,7 +582,7 @@ class Graphics extends DisposerBase
 
 	private function saveCore(ImageSetting $setting): Binary
 	{
-		return OutputBuffer::get(fn () => match ($setting->imageType) {
+		return OutputBuffer::get(fn() => match ($setting->imageType) {
 			ImageType::Png => imagepng($this->image, null, ...$setting->options()),
 			ImageType::Jpeg => imagejpeg($this->image, null, ...$setting->options()),
 			ImageType::Webp => imagewebp($this->image, null, ...$setting->options()),
@@ -632,5 +630,26 @@ class Graphics extends DisposerBase
 		$result = $data . $body;
 
 		return $result;
+	}
+
+	/**
+	 * 画像の複製。
+	 *
+	 * @return Graphics
+	 * @throws GraphicsException
+	 */
+	public function clone(): self
+	{
+		$size = $this->getSize();
+
+		$result = imagecreatetruecolor($size->width, $size->height);
+		if ($result === false) {
+			throw new GraphicsException('imagecreatetruecolor');
+		}
+		if (!imagecopy($result, $this->image, 0, 0, 0, 0, $size->width, $size->height)) {
+			throw new GraphicsException('imagecopy');
+		}
+
+		return new self($result, $this->isEnabledAlpha);
 	}
 }
