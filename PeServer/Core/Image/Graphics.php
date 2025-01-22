@@ -639,6 +639,8 @@ class Graphics extends DisposerBase
 	 *
 	 * @return Graphics
 	 * @throws GraphicsException
+	 * @see https://www.php.net/manual/function.imagecreatetruecolor.php
+	 * @see https://www.php.net/manual/function.imagecopy.php
 	 */
 	public function clone(): self
 	{
