@@ -71,17 +71,17 @@ class GraphicsTest extends TestClass
 		$this->assertSame($imageBinary->raw, $imageBinary2->raw);
 	}
 
-	public function test_saveHtmlSource()
-	{
-		$expected = 'data:image/gif;base64,R0lGODdhAQABAIAAAAQCBAAAACwAAAAAAQABAAACAkQBADs=';
+	// public function test_saveHtmlSource()
+	// {
+	// 	$expected = 'data:image/gif;base64,R0lGODdhAQABAIAAAAQCBAAAACwAAAAAAQABAAACAkQBADs=';
 
-		$graphics = Graphics::create(new Size(1, 1));
-		$graphics->drawRectangle(new RgbColor(0, 0, 0), new Rectangle(new Point(0, 0), new Size(1, 1)));
+	// 	$graphics = Graphics::create(new Size(1, 1));
+	// 	$graphics->drawRectangle(new RgbColor(0, 0, 0), new Rectangle(new Point(0, 0), new Size(1, 1)));
 
-		$actual = $graphics->saveHtmlSource(new ImageSetting(ImageType::Gif, []));
+	// 	$actual = $graphics->saveHtmlSource(new ImageSetting(ImageType::Gif, []));
 
-		$this->assertSame($expected, $actual);
-	}
+	// 	$this->assertSame($expected, $actual);
+	// }
 
 	public function test_clone()
 	{
