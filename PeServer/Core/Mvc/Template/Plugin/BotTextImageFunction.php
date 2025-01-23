@@ -99,7 +99,6 @@ class BotTextImageFunction extends TemplateFunctionBase
 		$textSetting = new TextSetting(HorizontalAlignment::Center, VerticalAlignment::Center, $fontFilePath, 0);
 
 		$image = Graphics::create($size);
-		$image->setDpi(new Size(300, 300));
 
 		$rectangle = new Rectangle(new Point(0, 0), $size);
 		$image->fillRectangle($backgroundColor, $rectangle);

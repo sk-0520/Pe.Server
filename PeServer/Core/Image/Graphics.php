@@ -588,6 +588,7 @@ class Graphics extends DisposerBase
 			ImageType::Png => imagepng($this->image, null, ...$setting->options()),
 			ImageType::Jpeg => imagejpeg($this->image, null, ...$setting->options()),
 			ImageType::Webp => imagewebp($this->image, null, ...$setting->options()),
+			ImageType::Gif => imagegif($this->image, null, ...$setting->options()),
 			ImageType::Bmp => imagebmp($this->image, null, ...$setting->options()), //cspell:disable-line
 			default  => throw new NotImplementedException(),
 		});

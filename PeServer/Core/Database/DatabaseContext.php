@@ -43,7 +43,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 	 */
 	protected readonly ILogger $logger;
 
-	protected Regex $regex;
+	private Regex $regex;
 
 	#endregion
 
