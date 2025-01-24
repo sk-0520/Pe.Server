@@ -260,6 +260,9 @@ class UrlTest extends TestClass
 	{
 		return [
 			['http://localhost', 'http://localhost'],
+			['http://localhost', 'http://localhost:80'],
+			['https://localhost', 'https://localhost:443'],
+			['http://localhost:443', 'http://localhost:443'],
 			['http://USER@localhost', 'http://USER@localhost'],
 			['http://:PASS@localhost', 'http://:PASS@localhost'],
 			['http://USER:PASS@localhost', 'http://USER:PASS@localhost'],
@@ -279,7 +282,7 @@ class UrlTest extends TestClass
 		$this->assertSame($expected, (string)$actual);
 	}
 
-	public static function provider_()
+	public static function provider_toString_slash()
 	{
 		return [
 			['http://localhost/', 'http://localhost'],
@@ -294,7 +297,7 @@ class UrlTest extends TestClass
 		];
 	}
 
-	#[DataProvider('provider_')]
+	#[DataProvider('provider_toString_slash')]
 	public function test_toString_slash(string $expected, string $url, ?UrlEncoding $urlEncoding = null)
 	{
 		$actual = Url::parse($url, $urlEncoding);
