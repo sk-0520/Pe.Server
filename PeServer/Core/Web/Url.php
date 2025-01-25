@@ -46,7 +46,9 @@ readonly class Url implements Stringable
 		public UrlPath $path,
 		public UrlQuery $query,
 		public ?string $fragment
-	) {}
+	) {
+		//NOP
+	}
 
 	#region
 
@@ -307,19 +309,13 @@ readonly class Url implements Stringable
 
 		$work .= $this->host;
 		if ($this->port !== null) {
-			switch ($this->port) {
-				case 80:
-					if ($this->scheme === 'http') {
-						break;
-					}
-
-				case 443:
-					if ($this->scheme === 'https') {
-						break;
-					}
-
-				default:
-					$work .= ':' . (string)$this->port;
+			$needsPort = match ($this->port) {
+				80 => $this->scheme !== 'http',
+				443 => $this->scheme !== 'https',
+				default => true,
+			};
+			if ($needsPort) {
+				$work .= ':' . (string)$this->port;
 			}
 		}
 		if ($this->path->isEmpty() && $trailingSlash) {
