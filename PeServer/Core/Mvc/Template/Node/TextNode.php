@@ -6,7 +6,7 @@ namespace PeServer\Core\Mvc\Template\Node;
 
 use PeServer\Core\Throws\NotImplementedException;
 
-final readonly class TextNode implements INode
+final readonly class TextNode extends NodeBase
 {
 	#region define
 
@@ -21,16 +21,11 @@ final readonly class TextNode implements INode
 		//NOP
 	}
 
-	#region INode
+	#region NodeBase
 
 	public function toString(int $level): string
 	{
 		return $this->content;
-	}
-
-	public function __toString(): string
-	{
-		return $this->toString(0);
 	}
 
 	#endregion

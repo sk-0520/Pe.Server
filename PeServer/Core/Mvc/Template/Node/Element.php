@@ -6,7 +6,7 @@ namespace PeServer\Core\Mvc\Template\Node;
 
 use PeServer\Core\Throws\NotImplementedException;
 
-readonly class Element implements INode
+readonly class Element extends NodeBase
 {
 	#region variable
 
@@ -31,7 +31,7 @@ readonly class Element implements INode
 	) {
 		if ($children instanceof INode) {
 			$this->children = [$children];
-		} else if (is_array($children)) {
+		} elseif (is_array($children)) {
 			$this->children = $children;
 		} else {
 			$this->children = [new TextNode($children)];
@@ -43,11 +43,6 @@ readonly class Element implements INode
 	public function toString(int $level): string
 	{
 		throw new NotImplementedException();
-	}
-
-	public function __toString(): string
-	{
-		return $this->toString(0);
 	}
 
 	#endregion
