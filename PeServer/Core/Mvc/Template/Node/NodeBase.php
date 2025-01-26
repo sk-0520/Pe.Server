@@ -7,7 +7,7 @@ namespace PeServer\Core\Mvc\Template\Node;
 use PeServer\Core\Throws\NotImplementedException;
 use Stringable;
 
-readonly abstract class NodeBase implements INode
+abstract class NodeBase implements INode
 {
 	#region INode
 
