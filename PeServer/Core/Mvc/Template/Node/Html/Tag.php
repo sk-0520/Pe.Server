@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc\Template\Node\Html;
 
 use PeServer\Core\Mvc\Template\Node\Element;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HtmlAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLHtmlAttributes;
 use PeServer\Core\Mvc\Template\Node\INode;
 use PeServer\Core\Mvc\Template\Node\Html\HTMLElement;
 
@@ -13,17 +15,17 @@ class Tag
 	#region function
 
 	/**
+	 * HTML
 	 *
-	 * @param HtmlAttributes $attributes
+	 * @param HTMLHtmlAttributes $attributes
 	 * @param INode[] $children
 	 * @param array<mixed> $children
 	 * @param array<string,mixed> $props
-	 * @return HTMLElement
+	 * @return HTMLHtmlElement
 	 */
-	public function html(HtmlAttributes $attributes = new HtmlAttributes([]), array $children = [], array $props = []): HTMLElement
+	public function html(HTMLHtmlAttributes $attributes = new HTMLHtmlAttributes(), array $children = [], array $props = []): HTMLHtmlElement
 	{
-		return new HTMLElement(
-			"html",
+		return new HTMLHtmlElement(
 			$attributes,
 			$children,
 			$props
