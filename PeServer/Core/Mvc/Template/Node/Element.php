@@ -22,20 +22,14 @@ readonly class Element extends NodeBase
 	 *
 	 * @param string $tagName
 	 * @param array<string,string> $attributes
-	 * @param INode[]|INode|string $children
+	 * @param INode[] $children
 	 */
 	protected function __construct(
 		protected string $tagName,
 		protected array $attributes = [],
-		array|INode|string $children = []
+		array $children = []
 	) {
-		if ($children instanceof INode) {
-			$this->children = [$children];
-		} elseif (is_array($children)) {
-			$this->children = $children;
-		} else {
-			$this->children = [new TextNode($children)];
-		}
+		$this->children = $children;
 	}
 
 	#region INode
