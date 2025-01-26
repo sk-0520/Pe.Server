@@ -5,26 +5,27 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc\Template\Node\Html;
 
 use PeServer\Core\Mvc\Template\Node\Element;
+use PeServer\Core\Mvc\Template\Node\ElementOptions;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HtmlAttributes;
 use PeServer\Core\Mvc\Template\Node\INode;
-use PeServer\Core\Throws\NotImplementedException;
 
 class HTMLElement extends Element
 {
 	/**
 	 * 生成。
 	 *
-	 * @param string $tagName
 	 * @param HtmlAttributes $attributes
-	 * @param array<string,mixed> $props
 	 * @param INode[] $children
+	 * @param array<string,mixed> $props
+	 * @param HtmlElementOptions $options
 	 */
-	public function __construct(
+	protected function __construct(
 		string $tagName,
-		HtmlAttributes $attributes = new HtmlAttributes(),
-		array $children = [],
-		array $props = []
-	) {
-		parent::__construct($tagName, $attributes, $children, $props);
+		HtmlAttributes $attributes,
+		array $children,
+		array $props,
+		HtmlElementOptions $options
+    ) {
+		parent::__construct($tagName, $attributes, $children, $props, $options);
 	}
 }
