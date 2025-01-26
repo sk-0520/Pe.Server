@@ -6,7 +6,7 @@ namespace PeServer\Core\Mvc\Template\Node;
 
 use PeServer\Core\Throws\NotImplementedException;
 
-final readonly class TextNode extends NodeBase
+class TextNode extends NodeBase
 {
 	#region define
 

@@ -7,7 +7,7 @@ namespace PeServer\Core\Mvc\Template\Node;
 use PeServer\Core\Throws\NotImplementedException;
 use PeServer\Core\Mvc\Template\Node\Attributes;
 
-readonly class Element extends NodeBase
+class Element extends NodeBase
 {
 	#region variable
 
