@@ -60,7 +60,41 @@ parameters:
     globa-alias-server-store-value: 'string|int|array<int|string|null>|object|null'
     globa-alias-database-bind-value: 'string|int|float|bool'
     globa-alias-database-field-array: 'non-empty-array<array-key,mixed>'
-    HtmlTagAttributeAlias: 'array{class?:string,id?:string,name?:string}'
+    HtmlTagAttributeAlias: '''
+      array{
+        accesskey?: non-empty-string,
+        autocapitalize?: "off"|"none"|"on"|"sentences"|"words"|"characters",
+        autofocus?: "autofocus"|string,
+        class?: non-empty-string,
+        contenteditable?: boolean|"true"|"false"|"plaintext-only",
+        data?: array<non-empty-string, non-empty-string|null>,
+        dir?: "ltr"|"rtl"|"auto",
+        draggable?: bool|"true"|"false",
+        enterkeyhint?: "enter"|"done"|"go"|"next"|"previous"|"search"|"send",
+        exportparts?: non-empty-string,
+        hidden?: "hidden"|"until-found"|null,
+        id?: non-empty-string,
+        inert?: null,
+        inputmode?: "none"|"text"|"decimal"|"numeric"|"tel"|"search"|"email"|"url",
+        itemid?: non-empty-string,
+        itemprop?: non-empty-string,
+        itemref?: non-empty-string,
+        itemscope?: string|null,
+        itemtype?: non-empty-string,
+        lang?: non-empty-string,
+        nonce?: string,
+        part?: non-empty-string,
+        popover?: non-empty-string,
+        role?: non-empty-string,
+        slot?: null,
+        spellcheck?: bool|"true"|"false",
+        style?: string,
+        tabindex?: int,
+        title?: string,
+        translate?: bool|"yes"|"no",
+        name?: non-empty-string,
+      }
+    '''
 
 includes:
   - phar://phpstan.phar/conf/bleedingEdge.neon
