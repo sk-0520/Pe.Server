@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core\Mvc\Template\Node\Html;
+namespace PeServer\Core\Mvc\Template\Node\Html\Attribute;
 
 use PeServer\Core\Collection\Arr;
 use PeServer\Core\Mvc\Template\Node\Attributes;
@@ -37,6 +37,8 @@ class HtmlAttributes extends Attributes
 		parent::__construct($attr);
 	}
 
+	#region function
+
 	public function toValue(string $key, bool|int|string|null $value): string|null
 	{
 		if (is_int($value)) {
@@ -50,4 +52,6 @@ class HtmlAttributes extends Attributes
 
 		return $value;
 	}
+
+	#endregion
 }
