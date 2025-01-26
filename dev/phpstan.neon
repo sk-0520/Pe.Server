@@ -60,6 +60,7 @@ parameters:
     globa-alias-server-store-value: 'string|int|array<int|string|null>|object|null'
     globa-alias-database-bind-value: 'string|int|float|bool'
     globa-alias-database-field-array: 'non-empty-array<array-key,mixed>'
+    HtmlTagAttributeAlias: 'array{class?:string,id?:string,name?:string}&array<string,string>'
 
 includes:
   - phar://phpstan.phar/conf/bleedingEdge.neon

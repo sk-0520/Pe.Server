@@ -23,11 +23,13 @@ readonly class Element extends NodeBase
 	 * @param string $tagName
 	 * @param array<string,string> $attributes
 	 * @param INode[] $children
+	 * @param array<string,mixed> $props
 	 */
 	protected function __construct(
 		protected string $tagName,
 		protected array $attributes = [],
-		array $children = []
+		array $children = [],
+		protected array $props = []
 	) {
 		$this->children = $children;
 	}
