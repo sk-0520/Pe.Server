@@ -14,14 +14,13 @@ abstract class Tag
 
 	/**
 	 *
-	 * @param array<string,string> $attributes
-	 * @phpstan-param HtmlTagAttributeAlias $attributes
+	 * @param HtmlAttributes $attributes
 	 * @param INode[] $children
 	 * @param array<mixed> $children
 	 * @param array<string,mixed> $props
 	 * @return HTMLElement
 	 */
-	public static function html(array $attributes = [], array $children = [], array $props = []): HTMLElement
+	public static function html(HtmlAttributes $attributes = new HtmlAttributes([]), array $children = [], array $props = []): HTMLElement
 	{
 		return new HTMLElement(
 			"html",

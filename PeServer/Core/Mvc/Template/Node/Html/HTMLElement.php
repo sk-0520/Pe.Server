@@ -13,14 +13,13 @@ readonly class HTMLElement extends Element
 	/**
 	 *
 	 * @param string $tagName
-	 * @param array<string,string> $attributes
-	 * @phpstan-param HtmlTagAttributeAlias $attributes
+	 * @param HtmlAttributes $attributes
 	 * @param array<string,mixed> $props
 	 * @param INode[] $children
 	 */
 	public function __construct(
 		string $tagName,
-		array $attributes = [],
+		HtmlAttributes $attributes = new HtmlAttributes(),
 		array $children = [],
 		array $props = []
 	) {
