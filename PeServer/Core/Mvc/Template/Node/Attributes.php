@@ -11,7 +11,7 @@ class Attributes
 	/**
 	 * 生成。
 	 *
-	 * @param array<string,string> $map
+	 * @param array<string,string|null> $map
 	 */
 	public function __construct(public array $map)
 	{
