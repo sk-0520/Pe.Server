@@ -63,7 +63,7 @@ parameters:
     FormatAlias: 'string|int|float'
     FieldArrayAlias: 'non-empty-array<array-key,mixed>'
     CookieSameSiteAlias: '"Lax"|"lax"|"None"|"none"|"Strict"|"strict"'
-    HtmlTagAttributeAlias: 'array{class?:string,id?:string,name?:string}&array<string,string>'
+    HtmlTagAttributeAlias: 'array{class?:string,id?:string,name?:string}'
 
 includes:
   - phar://phpstan.phar/conf/bleedingEdge.neon
