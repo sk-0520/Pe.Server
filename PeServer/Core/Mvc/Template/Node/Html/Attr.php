@@ -15,7 +15,7 @@ class Attr
 	/**
 	 * HTML 属性。
 	 *
-	 * @param array<string,string> $attributes
+	 * @param array<string,int|bool|string|null> $attributes
 	 * @phpstan-param array{}&HtmlTagAttributeAlias $attributes
 	 *
 	 * @return HtmlAttributes
