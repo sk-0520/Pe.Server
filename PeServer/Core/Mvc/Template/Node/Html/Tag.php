@@ -8,7 +8,7 @@ use PeServer\Core\Mvc\Template\Node\Element;
 use PeServer\Core\Mvc\Template\Node\INode;
 use PeServer\Core\Mvc\Template\Node\Html\HTMLElement;
 
-abstract class Tag
+class Tag
 {
 	#region function
 
@@ -20,7 +20,7 @@ abstract class Tag
 	 * @param array<string,mixed> $props
 	 * @return HTMLElement
 	 */
-	public static function html(HtmlAttributes $attributes = new HtmlAttributes([]), array $children = [], array $props = []): HTMLElement
+	public function html(HtmlAttributes $attributes = new HtmlAttributes([]), array $children = [], array $props = []): HTMLElement
 	{
 		return new HTMLElement(
 			"html",

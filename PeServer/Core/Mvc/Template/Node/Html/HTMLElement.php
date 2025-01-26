@@ -8,7 +8,7 @@ use PeServer\Core\Mvc\Template\Node\Element;
 use PeServer\Core\Mvc\Template\Node\INode;
 use PeServer\Core\Throws\NotImplementedException;
 
-readonly class HTMLElement extends Element
+class HTMLElement extends Element
 {
 	/**
 	 *

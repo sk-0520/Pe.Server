@@ -7,7 +7,7 @@ namespace PeServer\Core\Mvc\Template;
 use PeServer\Core\Environment;
 use PeServer\Core\Store\Stores;
 
-class PeServerTemplate extends TemplateBase
+class NodeTemplate extends TemplateBase
 {
 	public function __construct(
 		TemplateOptions $options,
