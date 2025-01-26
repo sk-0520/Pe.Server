@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Template\Node\Html;
 
-use PeServer\Core\Mvc\Template\Node\Element;
-use PeServer\Core\Mvc\Template\Node\Html\Attribute\HtmlAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLHtmlAttributes;
 use PeServer\Core\Mvc\Template\Node\INode;
-use PeServer\Core\Throws\NotImplementedException;
 
 class HTMLHtmlElement extends HTMLElement
 {
@@ -24,6 +21,6 @@ class HTMLHtmlElement extends HTMLElement
 		array $children = [],
 		array $props = []
 	) {
-		parent::__construct("html", $attributes, $children, $props);
+		parent::__construct("html", $attributes, $children, $props, HtmlElementOptions::block());
 	}
 }

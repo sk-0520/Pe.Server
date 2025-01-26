@@ -6,20 +6,25 @@ namespace PeServer\Core\Mvc\Template\Node\Html;
 
 use PeServer\Core\Mvc\Template\Node\Element;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HtmlAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLHeadAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLHtmlAttributes;
 use PeServer\Core\Mvc\Template\Node\INode;
 use PeServer\Core\Mvc\Template\Node\Html\HTMLElement;
 
+/**
+ * 簡易生成処理。
+ *
+ * 具象クラスじゃなくてこっちで型判定する方針。
+ */
 class Tag
 {
 	#region function
 
 	/**
-	 * HTML
+	 * <html>
 	 *
 	 * @param HTMLHtmlAttributes $attributes
 	 * @param INode[] $children
-	 * @param array<mixed> $children
 	 * @param array<string,mixed> $props
 	 * @return HTMLHtmlElement
 	 */
@@ -31,6 +36,24 @@ class Tag
 			$props
 		);
 	}
+
+	/**
+	 * `<head>`
+	 *
+	 * @param HTMLHeadAttributes $attributes
+	 * @param INode[] $children
+	 * @param array<string,mixed> $props
+	 * @return HTMLHeadElement
+	 */
+	public function head(HTMLHeadAttributes $attributes = new HTMLHeadAttributes(), array $children = [], array $props = []): HTMLHeadElement
+	{
+		return new HTMLHeadElement(
+			$attributes,
+			$children,
+			$props
+		);
+	}
+
 
 	#endregion
 }

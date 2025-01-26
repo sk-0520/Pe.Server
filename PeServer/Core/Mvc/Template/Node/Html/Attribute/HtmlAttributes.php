@@ -4,11 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Template\Node\Html\Attribute;
 
-use PeServer\Core\Collection\Arr;
 use PeServer\Core\Mvc\Template\Node\Attributes;
-use PeServer\Core\Mvc\Template\Node\Element;
-use PeServer\Core\Mvc\Template\Node\INode;
-use PeServer\Core\Mvc\Template\Node\Html\HTMLElement;
 
 class HtmlAttributes extends Attributes
 {
