@@ -6,6 +6,7 @@ namespace PeServer\Core\Mvc\Template\Node\Html;
 
 use PeServer\Core\Mvc\Template\Node\Element;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HtmlAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLBodyAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLHeadAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLHtmlAttributes;
 use PeServer\Core\Mvc\Template\Node\INode;
@@ -24,7 +25,7 @@ class Tag
 	 * <html>
 	 *
 	 * @param HTMLHtmlAttributes $attributes
-	 * @param INode[] $children
+	 * @param array<HTMLHeadElement|HTMLBodyElement> $children
 	 * @param array<string,mixed> $props
 	 * @return HTMLHtmlElement
 	 */
@@ -54,6 +55,23 @@ class Tag
 		);
 	}
 
+
+	/**
+	 * `<body>`
+	 *
+	 * @param HTMLBodyAttributes $attributes
+	 * @param INode[] $children
+	 * @param array<string,mixed> $props
+	 * @return HTMLBodyElement
+	 */
+	public function body(HTMLBodyAttributes $attributes = new HTMLBodyAttributes(), array $children = [], array $props = []): HTMLBodyElement
+	{
+		return new HTMLBodyElement(
+			$attributes,
+			$children,
+			$props
+		);
+	}
 
 	#endregion
 }
