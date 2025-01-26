@@ -61,6 +61,7 @@ parameters:
     global-alias-server-store-value: 'string|int|array<int|string|null>|object|null'
     global-alias-database-bind-value: 'string|int|float|bool'
     global-alias-database-field-array: 'non-empty-array<array-key,mixed>'
+    HtmlTagAttributeAlias: 'array{class?:string,id?:string,name?:string}&array<string,string>'
 
 includes:
   - phar://phpstan.phar/conf/bleedingEdge.neon
