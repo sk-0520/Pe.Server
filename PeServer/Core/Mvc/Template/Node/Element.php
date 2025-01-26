@@ -27,10 +27,11 @@ class Element extends NodeBase
 	 * @param array<string,mixed> $props
 	 */
 	protected function __construct(
-		protected string $tagName,
-		protected Attributes $attributes = new Attributes([]),
-		array $children = [],
-		protected array $props = []
+		protected readonly string $tagName,
+		protected Attributes $attributes,
+		array $children,
+		protected readonly array $props,
+		protected readonly ElementOptions $options
 	) {
 		$this->children = $children;
 	}

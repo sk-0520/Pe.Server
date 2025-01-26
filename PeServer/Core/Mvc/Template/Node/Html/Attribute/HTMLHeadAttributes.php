@@ -6,13 +6,13 @@ namespace PeServer\Core\Mvc\Template\Node\Html\Attribute;
 
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HtmlAttributes;
 
-class HTMLHtmlAttributes extends HtmlAttributes
+class HTMLHeadAttributes extends HtmlAttributes
 {
 	/**
 	 * 生成。
 	 *
 	 * @param array<string,int|bool|string> $attributes
-	 * @phpstan-param array{xmlns?: non-empty-string}&HtmlTagAttributeAlias $attributes
+	 * @phpstan-param array{}&HtmlTagAttributeAlias $attributes
 	 */
 	public function __construct(array $attributes = [])
 	{
