@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc\Template\Node;
 
 use PeServer\Core\Throws\NotImplementedException;
+use PeServer\Core\Mvc\Template\Node\Attributes;
 
 readonly class Element extends NodeBase
 {
@@ -21,13 +22,13 @@ readonly class Element extends NodeBase
 	/**
 	 *
 	 * @param string $tagName
-	 * @param array<string,string> $attributes
+	 * @param Attributes $attributes
 	 * @param INode[] $children
 	 * @param array<string,mixed> $props
 	 */
 	protected function __construct(
 		protected string $tagName,
-		protected array $attributes = [],
+		protected Attributes $attributes = new Attributes([]),
 		array $children = [],
 		protected array $props = []
 	) {
