@@ -22,6 +22,6 @@ class HTMLBodyElement extends HTMLElement
 		array $children = [],
 		object $props = new stdClass()
 	) {
-		parent::__construct("body", $attributes, $children, $props, HtmlElementOptions::block());
+		parent::__construct("body", $attributes, $children, $props, HtmlElementOptions::block(false));
 	}
 }

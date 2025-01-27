@@ -63,6 +63,8 @@ parameters:
     FormatAlias: 'string|int|float'
     FieldArrayAlias: 'non-empty-array<array-key,mixed>'
     CookieSameSiteAlias: '"Lax"|"lax"|"None"|"none"|"Strict"|"strict"'
+    RFC5646Alias: 'non-empty-string'
+    MediaQueryAlias: 'non-empty-string'
     HtmlTagAttributeAlias: '''
       array{
         accesskey?: non-empty-string,

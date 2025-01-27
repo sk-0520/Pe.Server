@@ -11,21 +11,32 @@ use PeServer\Core\Mvc\Template\Node\INode;
 class HtmlElementOptions extends ElementOptions
 {
 	public function __construct(
+		bool $isInline,
 		bool $selfClosing
 	) {
-		parent::__construct($selfClosing);
+		parent::__construct($isInline, $selfClosing);
 	}
 
 	#region function
 
-	public static function block(): self
+	/**
+	 * ブロック要素。
+	 * @param bool $selfClosing 自己終了タグか。
+	 * @return HtmlElementOptions
+	 */
+	public static function block(bool $selfClosing): self
 	{
-		return new HtmlElementOptions(false);
+		return new HtmlElementOptions(false, $selfClosing);
 	}
 
-	public static function inline(): self
+	/**
+	 * インライン要素。
+	 * @param bool $selfClosing 自己終了タグか。
+	 * @return HtmlElementOptions
+	 */
+	public static function inline(bool $selfClosing): self
 	{
-		return new HtmlElementOptions(true);
+		return new HtmlElementOptions(true, $selfClosing);
 	}
 
 	#endregion

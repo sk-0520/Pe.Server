@@ -12,10 +12,12 @@ class ElementOptions
 	/**
 	 * 生成。
 	 *
+	 * @param bool $isInline インライン要素か。
 	 * @param bool $selfClosing 自己終了タグか。
 	 */
 	protected function __construct(
-		public bool $selfClosing = false
+		public bool $isInline,
+		public bool $selfClosing
 	) {
 		//NOP
 	}
