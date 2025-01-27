@@ -6,17 +6,21 @@ namespace PeServer\Core\Mvc\Template\Node\Html;
 
 use PeServer\Core\Mvc\Template\Node\Element;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HtmlAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLBaseAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLBodyAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLHeadAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLHtmlAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLLinkAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLMetaAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLScriptAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLStyleAttributes;
 use PeServer\Core\Mvc\Template\Node\INode;
 use PeServer\Core\Mvc\Template\Node\Html\HTMLElement;
+use PeServer\Core\Mvc\Template\Node\TextNode;
 use stdClass;
 
 /**
  * 簡易生成処理。
- *
- * 具象クラスじゃなくてこっちで型判定する方針。
  */
 class Tag
 {
@@ -56,6 +60,78 @@ class Tag
 		);
 	}
 
+	/**
+	 * `<title>`
+	 *
+	 * @param HtmlAttributes $attributes
+	 * @param INode $child
+	 * @param object $props
+	 * @return HTMLTitleElement
+	 */
+	public function title(HtmlAttributes $attributes = new HtmlAttributes(), INode $child = new TextNode(""), object $props = new stdClass()): HTMLTitleElement
+	{
+		return new HTMLTitleElement(
+			$attributes,
+			$child,
+			$props
+		);
+	}
+
+	/**
+	 * `<base>`
+	 *
+	 * @param HTMLBaseAttributes $attributes
+	 * @param object $props
+	 * @return HTMLBaseElement
+	 */
+	public function base(HTMLBaseAttributes $attributes = new HTMLBaseAttributes(), object $props = new stdClass()): HTMLBaseElement
+	{
+		return new HTMLBaseElement(
+			$attributes,
+			$props
+		);
+	}
+
+	/**
+	 * `<link>`
+	 *
+	 * @param HTMLLinkAttributes $attributes
+	 * @param object $props
+	 * @return HTMLLinkElement
+	 */
+	public function link(HTMLLinkAttributes $attributes = new HTMLLinkAttributes(), object $props = new stdClass()): HTMLLinkElement
+	{
+		return new HTMLLinkElement(
+			$attributes,
+			$props
+		);
+	}
+
+	public function style(HTMLStyleAttributes $attributes = new HTMLStyleAttributes(), INode $child = new TextNode(''), object $props = new stdClass()): HTMLStyleElement
+	{
+		return new HTMLStyleElement(
+			$attributes,
+			$child,
+			$props
+		);
+	}
+
+	public function script(HTMLScriptAttributes $attributes = new HTMLScriptAttributes(), INode $child = new TextNode(''), object $props = new stdClass()): HTMLScriptElement
+	{
+		return new HTMLScriptElement(
+			$attributes,
+			$child,
+			$props
+		);
+	}
+
+	public function meta(HTMLMetaAttributes $attributes = new HTMLMetaAttributes(), object $props = new stdClass()): HTMLMetaElement
+	{
+		return new HTMLMetaElement(
+			$attributes,
+			$props
+		);
+	}
 
 	/**
 	 * `<body>`

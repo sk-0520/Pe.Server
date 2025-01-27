@@ -14,14 +14,14 @@ class HTMLHtmlElement extends HTMLElement
 	 * 生成。
 	 *
 	 * @param HTMLHtmlAttributes $attributes
-	 * @param object $props
 	 * @param INode[] $children
+	 * @param object $props
 	 */
 	public function __construct(
 		HTMLHtmlAttributes $attributes = new HTMLHtmlAttributes(),
 		array $children = [],
 		object $props = new stdClass()
 	) {
-		parent::__construct("html", $attributes, $children, $props, HtmlElementOptions::block());
+		parent::__construct("html", $attributes, $children, $props, HtmlElementOptions::block(false));
 	}
 }

@@ -61,6 +61,8 @@ parameters:
     global-alias-server-store-value: 'string|int|array<int|string|null>|object|null'
     global-alias-database-bind-value: 'string|int|float|bool'
     global-alias-database-field-array: 'non-empty-array<array-key,mixed>'
+    RFC5646Alias: 'non-empty-string'
+    MediaQueryAlias: 'non-empty-string'
     HtmlTagAttributeAlias: '''
       array{
         accesskey?: non-empty-string,
