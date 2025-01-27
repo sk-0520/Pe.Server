@@ -16,16 +16,16 @@ class HTMLElement extends Element
 	 *
 	 * @param HtmlAttributes $attributes
 	 * @param INode[] $children
-	 * @param array<string,mixed> $props
+	 * @param object $props
 	 * @param HtmlElementOptions $options
 	 */
 	protected function __construct(
 		string $tagName,
 		HtmlAttributes $attributes,
 		array $children,
-		array $props,
+		object $props,
 		HtmlElementOptions $options
-    ) {
+	) {
 		parent::__construct($tagName, $attributes, $children, $props, $options);
 	}
 }
