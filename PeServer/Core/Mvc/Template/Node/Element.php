@@ -48,7 +48,7 @@ class Element extends NodeBase
 		//TODO: とりあえずえいやで作るので必要に応じて後で対応する
 
 		$hasAttributes = 0 < count($this->attributes->map);
-		$hasChildren = empty($this->children);
+		$hasChildren = !empty($this->children);
 
 		$result = "<";
 		$result .= $this->tagName;
@@ -69,7 +69,7 @@ class Element extends NodeBase
 
 			if ($hasChildren) {
 				foreach ($this->children as $child) {
-					$child->toString($level + 1);
+					$result .= $child->toString($level + 1);
 				}
 			}
 
