@@ -27,11 +27,59 @@ class Element extends NodeBase
 		$this->children = $children;
 	}
 
+	#region function
+
+	protected function toAttributeString(string $key, string|null $value): string
+	{
+		$result = $key;
+		if($value !== null) {
+			$result .= "=\"{$value}\"";
+		}
+
+		return $result;
+	}
+
+	#endregion
+
 	#region INode
 
 	public function toString(int $level): string
 	{
-		throw new NotImplementedException();
+		//TODO: とりあえずえいやで作るので必要に応じて後で対応する
+
+		$hasAttributes = 0 < count($this->attributes->map);
+		$hasChildren = empty($this->children);
+
+		$result = "<";
+		$result .= $this->tagName;
+
+		if ($hasAttributes) {
+			ksort($this->attributes->map);
+			foreach($this->attributes->map as $key => $value) {
+				$result .= " ";
+				$result .= $this->toAttributeString($key, $value);
+			}
+		}
+
+
+		if ($this->options->selfClosing) {
+			$result .= " />";
+		} else {
+			$result .= ">";
+
+			if ($hasChildren) {
+				foreach ($this->children as $child) {
+					$child->toString($level + 1);
+				}
+			}
+
+			$result .= "</";
+			$result .= $this->tagName;
+			$result .= ">";
+		}
+
+
+		return $result;
 	}
 
 	#endregion
