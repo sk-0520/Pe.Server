@@ -15,7 +15,7 @@ class ElementOptions
 	 * @param bool $isInline インライン要素か。
 	 * @param bool $selfClosing 自己終了タグか。
 	 */
-	protected function __construct(
+	public function __construct(
 		public bool $isInline,
 		public bool $selfClosing
 	) {

@@ -6,6 +6,7 @@ namespace PeServer\Core\Mvc\Template\Node\Html;
 
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLLinkAttributes;
 use PeServer\Core\Mvc\Template\Node\INode;
+use PeServer\Core\Mvc\Template\Node\Props;
 use stdClass;
 
 class HTMLLinkElement extends HTMLElement
@@ -14,11 +15,11 @@ class HTMLLinkElement extends HTMLElement
 	 * 生成。
 	 *
 	 * @param HTMLLinkAttributes $attributes
-	 * @param object $props
+	 * @param Props $props
 	 */
 	public function __construct(
 		HTMLLinkAttributes $attributes = new HTMLLinkAttributes(),
-		object $props = new stdClass()
+		Props $props = new Props()
 	) {
 		parent::__construct(
 			"link",
