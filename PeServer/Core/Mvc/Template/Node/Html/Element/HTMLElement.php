@@ -19,7 +19,7 @@ class HTMLElement extends Element
 	 * @param object $props
 	 * @param HtmlElementOptions $options
 	 */
-	protected function __construct(
+	function __construct(
 		string $tagName,
 		HtmlAttributes $attributes,
 		array $children,

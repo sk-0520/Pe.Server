@@ -14,6 +14,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLLinkAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLMetaAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLScriptAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLStyleAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLTemplateAttributes;
 use PeServer\Core\Mvc\Template\Node\INode;
 use PeServer\Core\Mvc\Template\Node\Html\HTMLElement;
 use PeServer\Core\Mvc\Template\Node\TextNode;
@@ -129,6 +130,42 @@ class Tag
 	{
 		return new HTMLMetaElement(
 			$attributes,
+			$props
+		);
+	}
+
+	/**
+	 * `<noscript>`
+	 *
+	 * @param HTMLAttributes $attributes
+	 * @param INode[] $children
+	 * @param object $props
+	 * @return HTMLElement
+	 */
+	public function noscript(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], object $props = new stdClass()): HTMLElement
+	{
+		return new HTMLElement(
+			"noscript",
+			$attributes,
+			$children,
+			$props,
+			HtmlElementOptions::block(false)
+		);
+	}
+
+	/**
+	 * `<template>`
+	 *
+	 * @param HTMLTemplateAttributes $attributes
+	 * @param INode[] $children
+	 * @param object $props
+	 * @return HTMLTemplateElement
+	 */
+	public function template(HTMLTemplateAttributes $attributes = new HTMLTemplateAttributes(), array $children = [], object $props = new stdClass()): HTMLTemplateElement
+	{
+		return new HTMLTemplateElement(
+			$attributes,
+			$children,
 			$props
 		);
 	}

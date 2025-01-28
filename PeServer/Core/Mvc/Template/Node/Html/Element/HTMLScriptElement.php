@@ -24,6 +24,12 @@ class HTMLScriptElement extends HTMLElement
 		INode $child = new TextNode(""),
 		object $props = new stdClass()
 	) {
-		parent::__construct("script", $attributes, [$child], $props, HtmlElementOptions::block(false));
+		parent::__construct(
+			"script",
+			$attributes,
+			[$child],
+			$props,
+			HtmlElementOptions::block(false)
+		);
 	}
 }

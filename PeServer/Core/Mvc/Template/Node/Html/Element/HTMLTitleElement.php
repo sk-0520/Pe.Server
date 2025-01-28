@@ -23,6 +23,12 @@ class HTMLTitleElement extends HTMLElement
 		INode $child = new TextNode(""),
 		object $props = new stdClass()
 	) {
-		parent::__construct("title", $attributes, [$child], $props, HtmlElementOptions::inline(false));
+		parent::__construct(
+			"title",
+			$attributes,
+			[$child],
+			$props,
+			HtmlElementOptions::inline(false)
+		);
 	}
 }
