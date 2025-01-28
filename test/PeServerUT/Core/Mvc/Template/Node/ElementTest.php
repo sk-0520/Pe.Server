@@ -8,6 +8,7 @@ use PeServer\Core\Mvc\Template\Node\Attributes;
 use PeServer\Core\Mvc\Template\Node\ElementOptions;
 use PeServer\Core\Mvc\Template\Node\Element;
 use PeServer\Core\Mvc\Template\Node\Props;
+use PeServer\Core\Mvc\Template\Node\TextNode;
 use PeServerTest\TestClass;
 
 class HTMLElementTest extends TestClass
@@ -35,6 +36,15 @@ class HTMLElementTest extends TestClass
 		$this->assertSame("<name key=\"value\" name-only />", $actual);
 	}
 
+	public function test___toString_selfClosing_child()
+	{
+		$element = new Element("name", new Attributes([]), [
+			new Element("child", new Attributes([]), [], new Props(), new ElementOptions(false, true))
+		], new Props(), new ElementOptions(false, true));
+		$actual = (string)$element;
+		$this->assertSame("<name />", $actual);
+	}
+
 	public function test___toString_not_selfClosing_no_attr()
 	{
 		$element = new Element("name", new Attributes([]), [], new Props(), new ElementOptions(false, false));
@@ -50,5 +60,23 @@ class HTMLElementTest extends TestClass
 		]), [], new Props(), new ElementOptions(false, false));
 		$actual = (string)$element;
 		$this->assertSame("<name key=\"value\" name-only></name>", $actual);
+	}
+
+	public function test___toString_not_selfClosing_child_1()
+	{
+		$element = new Element("name", new Attributes([]), [
+			new Element("child", new Attributes([]), [], new Props(), new ElementOptions(false, true))
+		], new Props(), new ElementOptions(false, false));
+		$actual = (string)$element;
+		$this->assertSame("<name><child /></name>", $actual);
+	}
+
+	public function test___toString_not_selfClosing_child_2()
+	{
+		$element = new Element("name", new Attributes([]), [
+			new Element("child", new Attributes([]), [new TextNode("text")], new Props(), new ElementOptions(false, false))
+		], new Props(), new ElementOptions(false, false));
+		$actual = (string)$element;
+		$this->assertSame("<name><child>text</child></name>", $actual);
 	}
 }
