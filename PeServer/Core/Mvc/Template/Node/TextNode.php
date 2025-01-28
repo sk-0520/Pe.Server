@@ -26,7 +26,7 @@ class TextNode extends NodeBase
 
 	public function toString(int $level): string
 	{
-		return match($this->escape) {
+		return match ($this->escape) {
 			self::ESCAPE_RAW => $this->content,
 			default => htmlspecialchars($this->content, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5),
 		};
