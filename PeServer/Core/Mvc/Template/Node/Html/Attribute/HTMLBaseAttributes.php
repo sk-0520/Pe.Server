@@ -11,7 +11,7 @@ class HTMLBaseAttributes extends HtmlAttributes
 	/**
 	 * 生成。
 	 *
-	 * @param array<string,int|bool|string> $attributes
+	 * @param array<string,int|bool|string|null> $attributes
 	 * @phpstan-param array{
 	 * 	href?:non-empty-string,
 	 * 	target?:non-empty-string|"_self"|"_blank"|"_parent"|"_top"
