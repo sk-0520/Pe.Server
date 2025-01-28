@@ -11,7 +11,7 @@ class HtmlAttributes extends Attributes
 	/**
 	 * 生成。
 	 *
-	 * @param array<string,int|bool|string> $attributes
+	 * @param array<string,int|bool|string|null> $attributes
 	 * @phpstan-param HtmlTagAttributeAlias $attributes
 	 */
 	public function __construct(array $attributes = [])
