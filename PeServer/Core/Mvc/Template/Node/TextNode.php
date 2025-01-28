@@ -10,7 +10,7 @@ class TextNode extends NodeBase
 {
 	#region define
 
-	public const ESCAPE_NONE = 0;
+	public const ESCAPE_RAW = 0;
 	public const ESCAPE_DEFAULT = 1;
 
 	#endregion
@@ -26,7 +26,10 @@ class TextNode extends NodeBase
 
 	public function toString(int $level): string
 	{
-		return $this->content;
+		return match($this->escape) {
+			self::ESCAPE_RAW => $this->content,
+			default => htmlspecialchars($this->content, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5),
+		};
 	}
 
 	#endregion
