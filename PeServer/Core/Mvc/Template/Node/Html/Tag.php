@@ -17,6 +17,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLStyleAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLTemplateAttributes;
 use PeServer\Core\Mvc\Template\Node\INode;
 use PeServer\Core\Mvc\Template\Node\Html\HTMLElement;
+use PeServer\Core\Mvc\Template\Node\Props;
 use PeServer\Core\Mvc\Template\Node\TextNode;
 use stdClass;
 
@@ -32,10 +33,10 @@ class Tag
 	 *
 	 * @param HTMLHtmlAttributes $attributes
 	 * @param array<HTMLHeadElement|HTMLBodyElement> $children
-	 * @param object $props
+	 * @param Props $props
 	 * @return HTMLHtmlElement
 	 */
-	public function html(HTMLHtmlAttributes $attributes = new HTMLHtmlAttributes(), array $children = [], object $props = new stdClass()): HTMLHtmlElement
+	public function html(HTMLHtmlAttributes $attributes = new HTMLHtmlAttributes(), array $children = [], Props $props = new Props()): HTMLHtmlElement
 	{
 		return new HTMLHtmlElement(
 			$attributes,
@@ -49,10 +50,10 @@ class Tag
 	 *
 	 * @param HTMLHeadAttributes $attributes
 	 * @param INode[] $children
-	 * @param object $props
+	 * @param Props $props
 	 * @return HTMLHeadElement
 	 */
-	public function head(HTMLHeadAttributes $attributes = new HTMLHeadAttributes(), array $children = [], object $props = new stdClass()): HTMLHeadElement
+	public function head(HTMLHeadAttributes $attributes = new HTMLHeadAttributes(), array $children = [], Props $props = new Props()): HTMLHeadElement
 	{
 		return new HTMLHeadElement(
 			$attributes,
@@ -66,10 +67,10 @@ class Tag
 	 *
 	 * @param HtmlAttributes $attributes
 	 * @param INode $child
-	 * @param object $props
+	 * @param Props $props
 	 * @return HTMLTitleElement
 	 */
-	public function title(HtmlAttributes $attributes = new HtmlAttributes(), INode $child = new TextNode(""), object $props = new stdClass()): HTMLTitleElement
+	public function title(HtmlAttributes $attributes = new HtmlAttributes(), INode $child = new TextNode(""), Props $props = new Props()): HTMLTitleElement
 	{
 		return new HTMLTitleElement(
 			$attributes,
@@ -82,10 +83,10 @@ class Tag
 	 * `<base>`
 	 *
 	 * @param HTMLBaseAttributes $attributes
-	 * @param object $props
+	 * @param Props $props
 	 * @return HTMLBaseElement
 	 */
-	public function base(HTMLBaseAttributes $attributes = new HTMLBaseAttributes(), object $props = new stdClass()): HTMLBaseElement
+	public function base(HTMLBaseAttributes $attributes = new HTMLBaseAttributes(), Props $props = new Props()): HTMLBaseElement
 	{
 		return new HTMLBaseElement(
 			$attributes,
@@ -97,10 +98,10 @@ class Tag
 	 * `<link>`
 	 *
 	 * @param HTMLLinkAttributes $attributes
-	 * @param object $props
+	 * @param Props $props
 	 * @return HTMLLinkElement
 	 */
-	public function link(HTMLLinkAttributes $attributes = new HTMLLinkAttributes(), object $props = new stdClass()): HTMLLinkElement
+	public function link(HTMLLinkAttributes $attributes = new HTMLLinkAttributes(), Props $props = new Props()): HTMLLinkElement
 	{
 		return new HTMLLinkElement(
 			$attributes,
@@ -108,7 +109,7 @@ class Tag
 		);
 	}
 
-	public function style(HTMLStyleAttributes $attributes = new HTMLStyleAttributes(), INode $child = new TextNode(''), object $props = new stdClass()): HTMLStyleElement
+	public function style(HTMLStyleAttributes $attributes = new HTMLStyleAttributes(), INode $child = new TextNode(''), Props $props = new Props()): HTMLStyleElement
 	{
 		return new HTMLStyleElement(
 			$attributes,
@@ -117,7 +118,7 @@ class Tag
 		);
 	}
 
-	public function script(HTMLScriptAttributes $attributes = new HTMLScriptAttributes(), INode $child = new TextNode(''), object $props = new stdClass()): HTMLScriptElement
+	public function script(HTMLScriptAttributes $attributes = new HTMLScriptAttributes(), INode $child = new TextNode(''), Props $props = new Props()): HTMLScriptElement
 	{
 		return new HTMLScriptElement(
 			$attributes,
@@ -126,7 +127,7 @@ class Tag
 		);
 	}
 
-	public function meta(HTMLMetaAttributes $attributes = new HTMLMetaAttributes(), object $props = new stdClass()): HTMLMetaElement
+	public function meta(HTMLMetaAttributes $attributes = new HTMLMetaAttributes(), Props $props = new Props()): HTMLMetaElement
 	{
 		return new HTMLMetaElement(
 			$attributes,
@@ -139,10 +140,10 @@ class Tag
 	 *
 	 * @param HTMLAttributes $attributes
 	 * @param INode[] $children
-	 * @param object $props
+	 * @param Props $props
 	 * @return HTMLElement
 	 */
-	public function noscript(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], object $props = new stdClass()): HTMLElement
+	public function noscript(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
 	{
 		return new HTMLElement(
 			"noscript",
@@ -158,10 +159,10 @@ class Tag
 	 *
 	 * @param HTMLTemplateAttributes $attributes
 	 * @param INode[] $children
-	 * @param object $props
+	 * @param Props $props
 	 * @return HTMLTemplateElement
 	 */
-	public function template(HTMLTemplateAttributes $attributes = new HTMLTemplateAttributes(), array $children = [], object $props = new stdClass()): HTMLTemplateElement
+	public function template(HTMLTemplateAttributes $attributes = new HTMLTemplateAttributes(), array $children = [], Props $props = new Props()): HTMLTemplateElement
 	{
 		return new HTMLTemplateElement(
 			$attributes,
@@ -175,10 +176,10 @@ class Tag
 	 *
 	 * @param HTMLBodyAttributes $attributes
 	 * @param INode[] $children
-	 * @param object $props
+	 * @param Props $props
 	 * @return HTMLBodyElement
 	 */
-	public function body(HTMLBodyAttributes $attributes = new HTMLBodyAttributes(), array $children = [], object $props = new stdClass()): HTMLBodyElement
+	public function body(HTMLBodyAttributes $attributes = new HTMLBodyAttributes(), array $children = [], Props $props = new Props()): HTMLBodyElement
 	{
 		return new HTMLBodyElement(
 			$attributes,

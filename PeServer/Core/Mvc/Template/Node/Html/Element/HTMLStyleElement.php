@@ -7,6 +7,7 @@ namespace PeServer\Core\Mvc\Template\Node\Html;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HtmlAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLStyleAttributes;
 use PeServer\Core\Mvc\Template\Node\INode;
+use PeServer\Core\Mvc\Template\Node\Props;
 use PeServer\Core\Mvc\Template\Node\TextNode;
 use stdClass;
 
@@ -17,12 +18,12 @@ class HTMLStyleElement extends HTMLElement
 	 *
 	 * @param HTMLStyleAttributes $attributes
 	 * @param INode $child
-	 * @param object $props
+	 * @param Props $props
 	 */
 	public function __construct(
 		HTMLStyleAttributes $attributes = new HTMLStyleAttributes(),
 		INode $child = new TextNode(""),
-		object $props = new stdClass()
+		Props $props = new Props()
 	) {
 		parent::__construct(
 			"style",
