@@ -6,6 +6,7 @@ namespace PeServer\Core\Mvc\Template\Node\Html;
 
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLHeadAttributes;
 use PeServer\Core\Mvc\Template\Node\INode;
+use PeServer\Core\Mvc\Template\Node\Props;
 use stdClass;
 
 class HTMLHeadElement extends HTMLElement
@@ -15,12 +16,12 @@ class HTMLHeadElement extends HTMLElement
 	 *
 	 * @param HTMLHeadAttributes $attributes
 	 * @param INode[] $children
-	 * @param object $props
+	 * @param Props $props
 	 */
 	public function __construct(
 		HTMLHeadAttributes $attributes = new HTMLHeadAttributes(),
 		array $children = [],
-		object $props = new stdClass()
+		Props $props = new Props()
 	) {
 		parent::__construct(
 			"head",
