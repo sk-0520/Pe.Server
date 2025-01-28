@@ -20,6 +20,12 @@ class HTMLBaseElement extends HTMLElement
 		HTMLBaseAttributes $attributes = new HTMLBaseAttributes(),
 		object $props = new stdClass()
 	) {
-		parent::__construct("base", $attributes, [], $props, HtmlElementOptions::inline(true));
+		parent::__construct(
+			"base",
+			$attributes,
+			[],
+			$props,
+			HtmlElementOptions::inline(true)
+		);
 	}
 }

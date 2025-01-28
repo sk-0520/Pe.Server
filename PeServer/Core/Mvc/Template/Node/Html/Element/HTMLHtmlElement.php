@@ -22,6 +22,12 @@ class HTMLHtmlElement extends HTMLElement
 		array $children = [],
 		object $props = new stdClass()
 	) {
-		parent::__construct("html", $attributes, $children, $props, HtmlElementOptions::block(false));
+		parent::__construct(
+			"html",
+			$attributes,
+			$children,
+			$props,
+			HtmlElementOptions::block(false)
+		);
 	}
 }
