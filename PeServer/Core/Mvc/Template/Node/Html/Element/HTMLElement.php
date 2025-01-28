@@ -8,22 +8,24 @@ use PeServer\Core\Mvc\Template\Node\Element;
 use PeServer\Core\Mvc\Template\Node\ElementOptions;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HtmlAttributes;
 use PeServer\Core\Mvc\Template\Node\INode;
+use PeServer\Core\Mvc\Template\Node\Props;
 
 class HTMLElement extends Element
 {
 	/**
 	 * 生成。
 	 *
+	 * @param non-empty-string $tagName
 	 * @param HtmlAttributes $attributes
 	 * @param INode[] $children
-	 * @param object $props
+	 * @param Props $props
 	 * @param HtmlElementOptions $options
 	 */
-	function __construct(
+	public function __construct(
 		string $tagName,
 		HtmlAttributes $attributes,
 		array $children,
-		object $props,
+		Props $props,
 		HtmlElementOptions $options
 	) {
 		parent::__construct($tagName, $attributes, $children, $props, $options);
