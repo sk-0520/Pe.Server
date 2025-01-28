@@ -9,29 +9,20 @@ use PeServer\Core\Mvc\Template\Node\Attributes;
 
 class Element extends NodeBase
 {
-	#region variable
-
 	/**
 	 *
-	 * @var INode[]
-	 */
-	protected array $children;
-
-	#endregion
-
-	/**
-	 *
-	 * @param string $tagName
+	 * @param non-empty-string $tagName
 	 * @param Attributes $attributes
 	 * @param INode[] $children
-	 * @param object $props
+	 * @param Props $props
+	 * @param ElementOptions $options
 	 */
-	protected function __construct(
-		protected readonly string $tagName,
-		protected Attributes $attributes,
-		array $children,
-		protected readonly object $props,
-		protected readonly ElementOptions $options
+	public function __construct(
+		public readonly string $tagName,
+		public Attributes $attributes,
+		public array $children,
+		public readonly Props $props,
+		public readonly ElementOptions $options
 	) {
 		$this->children = $children;
 	}
