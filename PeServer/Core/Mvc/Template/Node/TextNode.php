@@ -10,6 +10,7 @@ class TextNode extends NodeBase
 {
 	#region define
 
+	public const ESCAPE_NONE = 0;
 	public const ESCAPE_DEFAULT = 1;
 
 	#endregion
