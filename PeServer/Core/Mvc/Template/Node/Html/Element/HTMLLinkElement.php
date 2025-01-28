@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core\Mvc\Template\Node\Html;
+namespace PeServer\Core\Mvc\Template\Node\Html\Element;
 
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLLinkAttributes;
 use PeServer\Core\Mvc\Template\Node\INode;

@@ -2,12 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core\Mvc\Template\Node\Html;
+namespace PeServer\Core\Mvc\Template\Node\Html\Element;
 
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLHtmlAttributes;
 use PeServer\Core\Mvc\Template\Node\INode;
 use PeServer\Core\Mvc\Template\Node\Props;
-use stdClass;
 
 class HTMLHtmlElement extends HTMLElement
 {
