@@ -20,6 +20,12 @@ class HTMLLinkElement extends HTMLElement
 		HTMLLinkAttributes $attributes = new HTMLLinkAttributes(),
 		object $props = new stdClass()
 	) {
-		parent::__construct("link", $attributes, [], $props, HtmlElementOptions::inline(true));
+		parent::__construct(
+			"link",
+			$attributes,
+			[],
+			$props,
+			HtmlElementOptions::inline(true)
+		);
 	}
 }

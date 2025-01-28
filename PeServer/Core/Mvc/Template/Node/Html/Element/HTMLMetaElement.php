@@ -20,6 +20,12 @@ class HTMLMetaElement extends HTMLElement
 		HTMLMetaAttributes $attributes = new HTMLMetaAttributes(),
 		object $props = new stdClass()
 	) {
-		parent::__construct("meta", $attributes, [], $props, HtmlElementOptions::inline(true));
+		parent::__construct(
+			"meta",
+			$attributes,
+			[],
+			$props,
+			HtmlElementOptions::inline(true)
+		);
 	}
 }
