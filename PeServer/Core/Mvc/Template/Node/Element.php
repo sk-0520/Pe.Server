@@ -32,7 +32,7 @@ class Element extends NodeBase
 	protected function toAttributeString(string $key, string|null $value): string
 	{
 		$result = $key;
-		if($value !== null) {
+		if ($value !== null) {
 			$result .= "=\"{$value}\"";
 		}
 
@@ -55,7 +55,7 @@ class Element extends NodeBase
 
 		if ($hasAttributes) {
 			ksort($this->attributes->map);
-			foreach($this->attributes->map as $key => $value) {
+			foreach ($this->attributes->map as $key => $value) {
 				$result .= " ";
 				$result .= $this->toAttributeString($key, $value);
 			}
