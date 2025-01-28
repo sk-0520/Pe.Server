@@ -11,7 +11,7 @@ class HTMLLinkAttributes extends HtmlAttributes
 	/**
 	 * 生成。
 	 *
-	 * @param array<string,int|bool|string> $attributes
+	 * @param array<string,int|bool|string|null> $attributes
 	 * @phpstan-param array{
 	 * 	as?: "audio"|"document"|"embed"|"fetch"|"font"|"image"|"object"|"script"|"style"|"track"|"video"|"worker",
 	 * 	crossorigin?: "anonymous"|"use-credentials",
