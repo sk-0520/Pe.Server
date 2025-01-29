@@ -38,6 +38,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLMetaElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLQuoteElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLScriptElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLStyleElement;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLTableCaptionElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLTemplateElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLTitleElement;
 use PeServer\Core\Mvc\Template\Node\INode;
@@ -456,6 +457,24 @@ class Tag
 	public function canvas(HTMLCanvasAttributes $attributes = new HTMLCanvasAttributes(), array $children = [], Props $props = new Props()): HTMLCanvasElement
 	{
 		return new HTMLCanvasElement(
+			$attributes,
+			$children,
+			$props
+		);
+	}
+
+
+	/**
+	 * `<caption>`
+	 *
+	 * @param HTMLAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLTableCaptionElement
+	 */
+	public function caption(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLTableCaptionElement
+	{
+		return new HTMLTableCaptionElement(
 			$attributes,
 			$children,
 			$props
