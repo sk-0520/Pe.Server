@@ -499,6 +499,24 @@ class Tag
 		);
 	}
 
+	/**
+	 * `<code>`
+	 *
+	 * @param HTMLAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLElement
+	 */
+	public function code(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	{
+		return new HTMLElement(
+			"code",
+			$attributes,
+			$children,
+			$props,
+			HtmlElementOptions::inline(false)
+		);
+	}
 
 	#endregion
 }
