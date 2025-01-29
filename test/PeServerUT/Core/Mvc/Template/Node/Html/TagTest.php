@@ -214,6 +214,16 @@ class TagTest extends TestClass
 		$this->assertSame('<col />', (string)$actual);
 	}
 
+	public function test_colgroup()
+	{
+		$tag = new Tag();
+		$actual = $tag->colgroup();
+		$this->assertSame('<colgroup></colgroup>', (string)$actual);
+	}
+
+
+
+
 
 	#endregion
 }
