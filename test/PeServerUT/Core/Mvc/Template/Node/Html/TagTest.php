@@ -130,5 +130,12 @@ class TagTest extends TestClass
 		$this->assertSame('<aside></aside>', (string)$actual);
 	}
 
+	public function test_audio()
+	{
+		$tag = new Tag();
+		$actual = $tag->audio();
+		$this->assertSame('<audio></audio>', (string)$actual);
+	}
+
 	#endregion
 }
