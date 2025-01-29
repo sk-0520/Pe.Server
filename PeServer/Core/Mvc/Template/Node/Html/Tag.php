@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc\Template\Node\Html;
 
 use PeServer\Core\Mvc\Template\Node\Element;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLAnchorAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HtmlAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLBaseAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLBodyAttributes;
@@ -15,6 +16,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLMetaAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLScriptAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLStyleAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLTemplateAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLAnchorElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLBaseElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLBodyElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLElement;
@@ -193,6 +195,23 @@ class Tag
 	public function body(HTMLBodyAttributes $attributes = new HTMLBodyAttributes(), array $children = [], Props $props = new Props()): HTMLBodyElement
 	{
 		return new HTMLBodyElement(
+			$attributes,
+			$children,
+			$props
+		);
+	}
+
+	/**
+	 * `<a>`
+	 *
+	 * @param HTMLAnchorAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLAnchorElement
+	 */
+	public function anchor(HTMLAnchorAttributes $attributes = new HTMLAnchorAttributes(), array $children = [], Props $props = new Props()): HTMLAnchorElement
+	{
+		return new HTMLAnchorElement(
 			$attributes,
 			$children,
 			$props
