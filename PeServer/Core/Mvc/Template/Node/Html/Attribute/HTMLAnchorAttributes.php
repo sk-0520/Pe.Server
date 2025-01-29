@@ -15,6 +15,12 @@ class HTMLAnchorAttributes extends HtmlAttributes
 	 * @phpstan-param array{
 	 * 	download?: null,
 	 * 	href?: non-empty-string,
+	 * 	hreflang?: RFC5646Alias,
+	 * 	ping?: non-empty-string,
+	 * 	referrerpolicy?: "no-referrer"|"no-referrer-when-downgrade"|"origin"|"origin-when-cross-origin"|"same-origin"|"strict-origin"|"strict-origin-when-cross-origin"|"unsafe-url",
+	 * 	rel?: non-empty-string,
+	 * 	target?:non-empty-string|"_self"|"_blank"|"_parent"|"_top"|"_unfencedTop",
+	 * 	type?: non-empty-string,
 	 * }&HtmlTagAttributeAlias $attributes
 	 */
 	public function __construct(array $attributes = [])
