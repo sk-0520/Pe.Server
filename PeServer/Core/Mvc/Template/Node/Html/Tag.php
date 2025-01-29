@@ -41,6 +41,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLScriptElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLStyleElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLTableCaptionElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLTableColElement;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLTableColGroupElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLTemplateElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLTitleElement;
 use PeServer\Core\Mvc\Template\Node\INode;
@@ -524,14 +525,12 @@ class Tag
 	 * `<code>`
 	 *
 	 * @param HTMLTableColAttributes $attributes
-	 * @param INode[] $children
 	 * @param Props $props
 	 * @return HTMLTableColElement
 	 */
-	public function col(HTMLTableColAttributes $attributes = new HTMLTableColAttributes(), array $children = [], Props $props = new Props()): HTMLTableColElement
+	public function col(HTMLTableColAttributes $attributes = new HTMLTableColAttributes(), Props $props = new Props()): HTMLTableColElement
 	{
 		return new HTMLTableColElement(
-			"col",
 			$attributes,
 			$props
 		);
@@ -543,13 +542,13 @@ class Tag
 	 * @param HTMLTableColAttributes $attributes
 	 * @param INode[] $children
 	 * @param Props $props
-	 * @return HTMLTableColElement
+	 * @return HTMLTableColGroupElement
 	 */
-	public function colgroup(HTMLTableColAttributes $attributes = new HTMLTableColAttributes(), array $children = [], Props $props = new Props()): HTMLTableColElement
+	public function colgroup(HTMLTableColAttributes $attributes = new HTMLTableColAttributes(), array $children = [], Props $props = new Props()): HTMLTableColGroupElement
 	{
-		return new HTMLTableColElement(
-			"colgroup",
+		return new HTMLTableColGroupElement(
 			$attributes,
+			$children,
 			$props
 		);
 	}
