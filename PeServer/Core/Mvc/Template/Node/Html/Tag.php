@@ -18,6 +18,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLHeadAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLHtmlAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLLinkAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLMetaAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLModAttribute;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLQuoteAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLScriptAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLStyleAttributes;
@@ -47,6 +48,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLTableColElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLTableColGroupElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLTemplateElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLTitleElement;
+use PeServer\Core\Mvc\Template\Node\Html\Element\IHTMLModElement;
 use PeServer\Core\Mvc\Template\Node\INode;
 use PeServer\Core\Mvc\Template\Node\Props;
 use PeServer\Core\Mvc\Template\Node\TextNode;
@@ -609,6 +611,27 @@ class Tag
 		);
 	}
 
+	/**
+	 * `<dd>`
+	 *
+	 * @param HTMLModAttribute $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLElement&IHTMLModElement
+	 */
+	public function del(HTMLModAttribute $attributes = new HTMLModAttribute(), array $children = [], Props $props = new Props()): HTMLElement&IHTMLModElement
+	{
+		return new class(
+			"del",
+			$attributes,
+			$children,
+			$props,
+			HtmlElementOptions::block(false)
+
+		) extends HTMLElement implements IHTMLModElement {
+
+		};
+	}
 
 
 
