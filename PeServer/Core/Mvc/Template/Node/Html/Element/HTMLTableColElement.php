@@ -12,15 +12,17 @@ class HTMLTableColElement extends HTMLElement
 	/**
 	 * 生成。
 	 *
+	 * @param "col"|"colgroup" $tagName,
 	 * @param HTMLTableColAttributes $attributes
 	 * @param Props $props
 	 */
 	public function __construct(
+		string $tagName,
 		HTMLTableColAttributes $attributes = new HTMLTableColAttributes(),
 		Props $props = new Props()
 	) {
 		parent::__construct(
-			"col",
+			$tagName,
 			$attributes,
 			[],
 			$props,

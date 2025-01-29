@@ -531,10 +531,29 @@ class Tag
 	public function col(HTMLTableColAttributes $attributes = new HTMLTableColAttributes(), array $children = [], Props $props = new Props()): HTMLTableColElement
 	{
 		return new HTMLTableColElement(
+			"col",
 			$attributes,
 			$props
 		);
 	}
+
+	/**
+	 * `<colgroup>`
+	 *
+	 * @param HTMLTableColAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLTableColElement
+	 */
+	public function colgroup(HTMLTableColAttributes $attributes = new HTMLTableColAttributes(), array $children = [], Props $props = new Props()): HTMLTableColElement
+	{
+		return new HTMLTableColElement(
+			"colgroup",
+			$attributes,
+			$props
+		);
+	}
+
 
 	#endregion
 }
