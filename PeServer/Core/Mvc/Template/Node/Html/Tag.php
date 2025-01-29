@@ -38,6 +38,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLDataElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLDataListElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLDetailsElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLDialogElement;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLDivElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HtmlElementOptions;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLHeadElement;
@@ -688,6 +689,22 @@ class Tag
 		);
 	}
 
+	/**
+	 * `<div>`
+	 *
+	 * @param HtmlAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLDivElement
+	 */
+	public function div(HtmlAttributes $attributes = new HtmlAttributes(), array $children = [], Props $props = new Props()): HTMLDivElement
+	{
+		return new HTMLDivElement(
+			$attributes,
+			$children,
+			$props
+		);
+	}
 
 
 
