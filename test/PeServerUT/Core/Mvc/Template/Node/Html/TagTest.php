@@ -270,5 +270,20 @@ class TagTest extends TestClass
 		$this->assertSame('<dialog></dialog>', (string)$actual);
 	}
 
+	public function test_dl()
+	{
+		$tag = new Tag();
+		$actual = $tag->dl();
+		$this->assertSame('<dl></dl>', (string)$actual);
+	}
+
+
+
+
+
+
+
+
+
 	#endregion
 }

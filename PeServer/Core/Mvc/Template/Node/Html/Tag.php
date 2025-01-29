@@ -39,6 +39,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLDataListElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLDetailsElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLDialogElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLDivElement;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLDListElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HtmlElementOptions;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLHeadElement;
@@ -706,6 +707,22 @@ class Tag
 		);
 	}
 
+	/**
+	 * `<div>`
+	 *
+	 * @param HtmlAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLDListElement
+	 */
+	public function dl(HtmlAttributes $attributes = new HtmlAttributes(), array $children = [], Props $props = new Props()): HTMLDListElement
+	{
+		return new HTMLDListElement(
+			$attributes,
+			$children,
+			$props
+		);
+	}
 
 
 
