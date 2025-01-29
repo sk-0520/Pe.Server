@@ -20,6 +20,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLMetaAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLQuoteAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLScriptAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLStyleAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLTableColAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLTemplateAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLAnchorElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLAreaElement;
@@ -39,6 +40,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLQuoteElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLScriptElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLStyleElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLTableCaptionElement;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLTableColElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLTemplateElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLTitleElement;
 use PeServer\Core\Mvc\Template\Node\INode;
@@ -515,6 +517,22 @@ class Tag
 			$children,
 			$props,
 			HtmlElementOptions::inline(false)
+		);
+	}
+
+	/**
+	 * `<code>`
+	 *
+	 * @param HTMLTableColAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLTableColElement
+	 */
+	public function col(HTMLTableColAttributes $attributes = new HTMLTableColAttributes(), array $children = [], Props $props = new Props()): HTMLTableColElement
+	{
+		return new HTMLTableColElement(
+			$attributes,
+			$props
 		);
 	}
 
