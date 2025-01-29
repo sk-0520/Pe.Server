@@ -724,6 +724,26 @@ class Tag
 		);
 	}
 
+	/**
+	 * `<dt>`
+	 *
+	 * @param HTMLAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLElement
+	 */
+	public function dt(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	{
+		return new HTMLElement(
+			"dt",
+			$attributes,
+			$children,
+			$props,
+			HtmlElementOptions::inline(false)
+		);
+	}
+
+
 
 
 	#endregion
