@@ -24,6 +24,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLAreaElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLAudioElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLBaseElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLBodyElement;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLBrElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HtmlElementOptions;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLHeadElement;
@@ -408,6 +409,20 @@ class Tag
 		);
 	}
 
+	/**
+	 * `<blockquote>`
+	 *
+	 * @param HTMLAttributes $attributes
+	 * @param Props $props
+	 * @return HTMLBrElement
+	 */
+	public function br(HTMLAttributes $attributes = new HTMLAttributes(), Props $props = new Props()): HTMLBrElement
+	{
+		return new HTMLBrElement(
+			$attributes,
+			$props
+		);
+	}
 
 
 
