@@ -15,6 +15,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLHeadAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLHtmlAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLLinkAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLMetaAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLQuoteAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLScriptAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLStyleAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLTemplateAttributes;
@@ -29,6 +30,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLHeadElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLHtmlElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLLinkElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLMetaElement;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLQuoteElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLScriptElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLStyleElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLTemplateElement;
@@ -388,6 +390,27 @@ class Tag
 			HtmlElementOptions::inline(false)
 		);
 	}
+
+	/**
+	 * `<blockquote>`
+	 *
+	 * @param HTMLQuoteAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLQuoteElement
+	 */
+	public function blockquote(HTMLQuoteAttributes $attributes = new HTMLQuoteAttributes(), array $children = [], Props $props = new Props()): HTMLQuoteElement
+	{
+		return new HTMLQuoteElement(
+			$attributes,
+			$children,
+			$props
+		);
+	}
+
+
+
+
 
 	#endregion
 }
