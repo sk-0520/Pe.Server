@@ -32,6 +32,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLBrElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLButtonElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLCanvasElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLDataElement;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLDataListElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HtmlElementOptions;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLHeadElement;
@@ -572,6 +573,22 @@ class Tag
 		);
 	}
 
+	/**
+	 * `<data>`
+	 *
+	 * @param HTMLDataAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLDataListElement
+	 */
+	public function datalist(HTMLDataAttributes $attributes = new HTMLDataAttributes(), array $children = [], Props $props = new Props()): HTMLDataListElement
+	{
+		return new HTMLDataListElement(
+			$attributes,
+			$children,
+			$props
+		);
+	}
 
 	#endregion
 }
