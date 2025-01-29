@@ -370,5 +370,24 @@ class Tag
 		);
 	}
 
+	/**
+	 * `<bdo>`
+	 *
+	 * @param HTMLAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLElement
+	 */
+	public function bdo(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	{
+		return new HTMLElement(
+			"bdo",
+			$attributes,
+			$children,
+			$props,
+			HtmlElementOptions::inline(false)
+		);
+	}
+
 	#endregion
 }
