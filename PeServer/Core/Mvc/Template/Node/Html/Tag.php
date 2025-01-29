@@ -213,7 +213,7 @@ class Tag
 	 * @param Props $props
 	 * @return HTMLAnchorElement
 	 */
-	public function anchor(HTMLAnchorAttributes $attributes = new HTMLAnchorAttributes(), array $children = [], Props $props = new Props()): HTMLAnchorElement
+	public function a(HTMLAnchorAttributes $attributes = new HTMLAnchorAttributes(), array $children = [], Props $props = new Props()): HTMLAnchorElement
 	{
 		return new HTMLAnchorElement(
 			$attributes,
@@ -329,6 +329,25 @@ class Tag
 			$attributes,
 			$children,
 			$props
+		);
+	}
+
+	/**
+	 * `<b>`
+	 *
+	 * @param HTMLAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLElement
+	 */
+	public function b(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	{
+		return new HTMLElement(
+			"b",
+			$attributes,
+			$children,
+			$props,
+			HtmlElementOptions::inline(false)
 		);
 	}
 
