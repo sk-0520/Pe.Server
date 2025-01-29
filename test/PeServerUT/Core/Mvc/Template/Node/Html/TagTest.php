@@ -186,6 +186,12 @@ class TagTest extends TestClass
 		$this->assertSame('<canvas></canvas>', (string)$actual);
 	}
 
+	public function test_caption()
+	{
+		$tag = new Tag();
+		$actual = $tag->caption();
+		$this->assertSame('<caption></caption>', (string)$actual);
+	}
 
 	#endregion
 }
