@@ -242,6 +242,12 @@ class TagTest extends TestClass
 		$this->assertSame('<dd></dd>', (string)$actual);
 	}
 
+	public function test_del()
+	{
+		$tag = new Tag();
+		$actual = $tag->del();
+		$this->assertSame('<del></del>', (string)$actual);
+	}
 
 
 
