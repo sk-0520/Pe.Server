@@ -8,6 +8,7 @@ use PeServer\Core\Mvc\Template\Node\Element;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLAnchorAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLAreaAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HtmlAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLAudioAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLBaseAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLBodyAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLHeadAttributes;
@@ -19,6 +20,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLStyleAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLTemplateAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLAnchorElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLAreaElement;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLAudioElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLBaseElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLBodyElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLElement;
@@ -310,6 +312,23 @@ class Tag
 			$children,
 			$props,
 			HtmlElementOptions::block(false)
+		);
+	}
+
+	/**
+	 * `<area>`
+	 *
+	 * @param HTMLAudioAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLAudioElement
+	 */
+	public function audio(HTMLAudioAttributes $attributes = new HTMLAudioAttributes(), array $children = [], Props $props = new Props()): HTMLAudioElement
+	{
+		return new HTMLAudioElement(
+			$attributes,
+			$children,
+			$props
 		);
 	}
 
