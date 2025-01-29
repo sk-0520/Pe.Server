@@ -463,7 +463,6 @@ class Tag
 		);
 	}
 
-
 	/**
 	 * `<caption>`
 	 *
@@ -480,6 +479,26 @@ class Tag
 			$props
 		);
 	}
+
+	/**
+	 * `<bdo>`
+	 *
+	 * @param HTMLAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLElement
+	 */
+	public function cite(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	{
+		return new HTMLElement(
+			"cite",
+			$attributes,
+			$children,
+			$props,
+			HtmlElementOptions::inline(false)
+		);
+	}
+
 
 	#endregion
 }
