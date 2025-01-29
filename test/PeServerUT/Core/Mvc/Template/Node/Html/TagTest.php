@@ -108,5 +108,13 @@ class TagTest extends TestClass
 		$actual = $tag->address();
 		$this->assertSame('<address></address>', (string)$actual);
 	}
+
+	public function test_area()
+	{
+		$tag = new Tag();
+		$actual = $tag->area();
+		$this->assertSame('<area />', (string)$actual);
+	}
+
 	#endregion
 }
