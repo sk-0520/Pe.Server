@@ -193,5 +193,15 @@ class TagTest extends TestClass
 		$this->assertSame('<caption></caption>', (string)$actual);
 	}
 
+	public function test_cite()
+	{
+		$tag = new Tag();
+		$actual = $tag->cite();
+		$this->assertSame('<cite></cite>', (string)$actual);
+	}
+
+
+
+
 	#endregion
 }
