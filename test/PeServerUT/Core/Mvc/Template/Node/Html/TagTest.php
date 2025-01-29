@@ -88,5 +88,13 @@ class TagTest extends TestClass
 		$this->assertSame('<body></body>', (string)$actual);
 	}
 
+	public function test_anchor()
+	{
+		$tag = new Tag();
+		$actual = $tag->anchor();
+		$this->assertSame('<a></a>', (string)$actual);
+	}
+
+
 	#endregion
 }
