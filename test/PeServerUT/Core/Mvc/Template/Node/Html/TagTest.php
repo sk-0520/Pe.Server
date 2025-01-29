@@ -88,10 +88,10 @@ class TagTest extends TestClass
 		$this->assertSame('<body></body>', (string)$actual);
 	}
 
-	public function test_anchor()
+	public function test_a()
 	{
 		$tag = new Tag();
-		$actual = $tag->anchor();
+		$actual = $tag->a();
 		$this->assertSame('<a></a>', (string)$actual);
 	}
 
@@ -135,6 +135,13 @@ class TagTest extends TestClass
 		$tag = new Tag();
 		$actual = $tag->audio();
 		$this->assertSame('<audio></audio>', (string)$actual);
+	}
+
+	public function test_b()
+	{
+		$tag = new Tag();
+		$actual = $tag->b();
+		$this->assertSame('<b></b>', (string)$actual);
 	}
 
 	#endregion
