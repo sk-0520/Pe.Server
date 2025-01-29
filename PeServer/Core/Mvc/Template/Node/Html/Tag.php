@@ -6,6 +6,7 @@ namespace PeServer\Core\Mvc\Template\Node\Html;
 
 use PeServer\Core\Mvc\Template\Node\Element;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLAnchorAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLAreaAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HtmlAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLBaseAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLBodyAttributes;
@@ -17,6 +18,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLScriptAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLStyleAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLTemplateAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLAnchorElement;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLAreaElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLBaseElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLBodyElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLElement;
@@ -253,6 +255,24 @@ class Tag
 			$children,
 			$props,
 			HtmlElementOptions::block(false)
+		);
+	}
+
+
+	/**
+	 * `<area>`
+	 *
+	 * @param HTMLAreaAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLAreaElement
+	 */
+	public function area(HTMLAreaAttributes $attributes = new HTMLAreaAttributes(), array $children = [], Props $props = new Props()): HTMLAreaElement
+	{
+		return new HTMLAreaElement(
+			$attributes,
+			$children,
+			$props
 		);
 	}
 
