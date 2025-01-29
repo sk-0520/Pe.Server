@@ -11,6 +11,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\HtmlAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLAudioAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLBaseAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLBodyAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLButtonAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLHeadAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLHtmlAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLLinkAttributes;
@@ -25,6 +26,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLAudioElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLBaseElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLBodyElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLBrElement;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLButtonElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HtmlElementOptions;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLHeadElement;
@@ -424,7 +426,22 @@ class Tag
 		);
 	}
 
-
+	/**
+	 * `<button>`
+	 *
+	 * @param HTMLButtonAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLButtonElement
+	 */
+	public function button(HTMLButtonAttributes $attributes = new HTMLButtonAttributes(), array $children = [], Props $props = new Props()): HTMLButtonElement
+	{
+		return new HTMLButtonElement(
+			$attributes,
+			$children,
+			$props
+		);
+	}
 
 
 	#endregion

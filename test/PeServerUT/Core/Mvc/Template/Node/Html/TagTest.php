@@ -165,5 +165,21 @@ class TagTest extends TestClass
 		$this->assertSame('<br />', (string)$actual);
 	}
 
+	public function test_blockquote()
+	{
+		$tag = new Tag();
+		$actual = $tag->blockquote();
+		$this->assertSame('<blockquote></blockquote>', (string)$actual);
+	}
+
+	public function test_button()
+	{
+		$tag = new Tag();
+		$actual = $tag->button();
+		$this->assertSame('<button></button>', (string)$actual);
+	}
+
+
+
 	#endregion
 }
