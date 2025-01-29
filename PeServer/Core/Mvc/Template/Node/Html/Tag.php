@@ -12,6 +12,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLAudioAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLBaseAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLBodyAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLButtonAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLCanvasAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLHeadAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLHtmlAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLLinkAttributes;
@@ -27,6 +28,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLBaseElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLBodyElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLBrElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLButtonElement;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLCanvasElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HtmlElementOptions;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLHeadElement;
@@ -443,6 +445,22 @@ class Tag
 		);
 	}
 
+	/**
+	 * `<canvas>`
+	 *
+	 * @param HTMLCanvasAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLCanvasElement
+	 */
+	public function canvas(HTMLCanvasAttributes $attributes = new HTMLCanvasAttributes(), array $children = [], Props $props = new Props()): HTMLCanvasElement
+	{
+		return new HTMLCanvasElement(
+			$attributes,
+			$children,
+			$props
+		);
+	}
 
 	#endregion
 }
