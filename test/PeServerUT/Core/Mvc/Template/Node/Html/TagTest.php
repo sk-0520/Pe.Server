@@ -228,6 +228,12 @@ class TagTest extends TestClass
 		$this->assertSame('<data></data>', (string)$actual);
 	}
 
+	public function test_datalist()
+	{
+		$tag = new Tag();
+		$actual = $tag->datalist();
+		$this->assertSame('<datalist></datalist>', (string)$actual);
+	}
 
 
 
