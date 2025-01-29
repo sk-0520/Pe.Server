@@ -76,6 +76,18 @@ class TestClass extends \PHPUnit\Framework\TestCase
 		parent::assertNotEquals($expected, $actual, $message);
 	}
 
+	protected function assertArrayContainsValue(mixed $expected, int|string $key, array|\ArrayAccess $array)
+	{
+		$this->assertArrayHasKey($key, $array);
+		$this->assertSame($expected, $array[$key]);
+	}
+
+	protected function assertArrayNotContainsValue(mixed $expected, int|string $key, array|\ArrayAccess $array)
+	{
+		$this->assertArrayNotHasKey($key, $array);
+		$this->assertNotSame($expected, $array[$key]);
+	}
+
 	protected function success()
 	{
 		$this->assertTrue(true);

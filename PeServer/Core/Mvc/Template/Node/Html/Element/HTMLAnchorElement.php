@@ -27,7 +27,7 @@ class HTMLAnchorElement extends HTMLElement
 			$attributes,
 			$children,
 			$props,
-			HtmlElementOptions::inline(true)
+			HtmlElementOptions::inline(false)
 		);
 	}
 }
