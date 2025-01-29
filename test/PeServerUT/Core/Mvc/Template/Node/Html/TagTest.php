@@ -200,6 +200,12 @@ class TagTest extends TestClass
 		$this->assertSame('<cite></cite>', (string)$actual);
 	}
 
+	public function test_code()
+	{
+		$tag = new Tag();
+		$actual = $tag->code();
+		$this->assertSame('<code></code>', (string)$actual);
+	}
 
 
 
