@@ -151,5 +151,12 @@ class TagTest extends TestClass
 		$this->assertSame('<bdi></bdi>', (string)$actual);
 	}
 
+	public function test_bdo()
+	{
+		$tag = new Tag();
+		$actual = $tag->bdo();
+		$this->assertSame('<bdo></bdo>', (string)$actual);
+	}
+
 	#endregion
 }
