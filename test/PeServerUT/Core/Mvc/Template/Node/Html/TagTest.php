@@ -256,6 +256,12 @@ class TagTest extends TestClass
 		$this->assertSame('<details></details>', (string)$actual);
 	}
 
+	public function test_dfn()
+	{
+		$tag = new Tag();
+		$actual = $tag->dfn();
+		$this->assertSame('<dfn></dfn>', (string)$actual);
+	}
 
 
 	#endregion
