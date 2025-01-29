@@ -116,5 +116,12 @@ class TagTest extends TestClass
 		$this->assertSame('<area />', (string)$actual);
 	}
 
+	public function test_article()
+	{
+		$tag = new Tag();
+		$actual = $tag->article();
+		$this->assertSame('<article></article>', (string)$actual);
+	}
+
 	#endregion
 }
