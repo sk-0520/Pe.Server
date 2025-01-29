@@ -15,6 +15,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLButtonAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLCanvasAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLDataAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLDetailsAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLDialogAttribute;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLHeadAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLHtmlAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLLinkAttributes;
@@ -36,6 +37,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLCanvasElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLDataElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLDataListElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLDetailsElement;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLDialogElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HtmlElementOptions;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLHeadElement;
@@ -669,6 +671,22 @@ class Tag
 		);
 	}
 
+	/**
+	 * `<dd>`
+	 *
+	 * @param HTMLDialogAttribute $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLDialogElement
+	 */
+	public function dialog(HTMLDialogAttribute $attributes = new HTMLDialogAttribute(), array $children = [], Props $props = new Props()): HTMLDialogElement
+	{
+		return new HTMLDialogElement(
+			$attributes,
+			$children,
+			$props
+		);
+	}
 
 
 

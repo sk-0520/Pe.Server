@@ -263,6 +263,12 @@ class TagTest extends TestClass
 		$this->assertSame('<dfn></dfn>', (string)$actual);
 	}
 
+	public function test_dialog()
+	{
+		$tag = new Tag();
+		$actual = $tag->dialog();
+		$this->assertSame('<dialog></dialog>', (string)$actual);
+	}
 
 	#endregion
 }
