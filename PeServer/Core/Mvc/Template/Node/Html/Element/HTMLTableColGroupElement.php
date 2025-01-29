@@ -8,7 +8,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLTableColAttributes;
 use PeServer\Core\Mvc\Template\Node\INode;
 use PeServer\Core\Mvc\Template\Node\Props;
 
-class HTMLTableColGroupElement extends HTMLElement
+class HTMLTableColGroupElement extends HTMLElement implements IHTMLTableColElement
 {
 	/**
 	 * 生成。

@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc\Template\Node\Html\Attribute;
 
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HtmlAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Element\IHTMLTableColElement;
 
-class HTMLTableColAttributes extends HtmlAttributes
+class HTMLTableColAttributes extends HtmlAttributes implements IHTMLTableColElement
 {
 	/**
 	 * 生成。
