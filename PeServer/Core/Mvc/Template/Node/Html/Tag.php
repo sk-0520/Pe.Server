@@ -13,6 +13,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLBaseAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLBodyAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLButtonAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLCanvasAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLDataAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLHeadAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLHtmlAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLLinkAttributes;
@@ -30,6 +31,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLBodyElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLBrElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLButtonElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLCanvasElement;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLDataElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HtmlElementOptions;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLHeadElement;
@@ -547,6 +549,23 @@ class Tag
 	public function colgroup(HTMLTableColAttributes $attributes = new HTMLTableColAttributes(), array $children = [], Props $props = new Props()): HTMLTableColGroupElement
 	{
 		return new HTMLTableColGroupElement(
+			$attributes,
+			$children,
+			$props
+		);
+	}
+
+	/**
+	 * `<data>`
+	 *
+	 * @param HTMLDataAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLDataElement
+	 */
+	public function data(HTMLDataAttributes $attributes = new HTMLDataAttributes(), array $children = [], Props $props = new Props()): HTMLDataElement
+	{
+		return new HTMLDataElement(
 			$attributes,
 			$children,
 			$props

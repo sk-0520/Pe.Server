@@ -10,7 +10,7 @@ use PeServer\Core\Mvc\Template\Node\INode;
 use PeServer\Core\Mvc\Template\Node\Props;
 use PeServer\Core\Mvc\Template\Node\TextNode;
 
-interface IHTMLTableColElement extends HTMLElement
+interface IHTMLTableColElement
 {
 	//NOP
 }
