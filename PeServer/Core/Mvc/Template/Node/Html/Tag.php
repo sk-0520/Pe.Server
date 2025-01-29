@@ -247,7 +247,7 @@ class Tag
 	 * @param Props $props
 	 * @return HTMLElement
 	 */
-	public function address(HTMLAttributes $attributes = new HTMLAnchorAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	public function address(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
 	{
 		return new HTMLElement(
 			"address",
@@ -257,7 +257,6 @@ class Tag
 			HtmlElementOptions::block(false)
 		);
 	}
-
 
 	/**
 	 * `<area>`
@@ -273,6 +272,25 @@ class Tag
 			$attributes,
 			$children,
 			$props
+		);
+	}
+
+	/**
+	 * `<article>`
+	 *
+	 * @param HTMLAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLElement
+	 */
+	public function article(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	{
+		return new HTMLElement(
+			"article",
+			$attributes,
+			$children,
+			$props,
+			HtmlElementOptions::block(false)
 		);
 	}
 
