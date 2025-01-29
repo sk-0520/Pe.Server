@@ -123,5 +123,12 @@ class TagTest extends TestClass
 		$this->assertSame('<article></article>', (string)$actual);
 	}
 
+	public function test_aside()
+	{
+		$tag = new Tag();
+		$actual = $tag->aside();
+		$this->assertSame('<aside></aside>', (string)$actual);
+	}
+
 	#endregion
 }
