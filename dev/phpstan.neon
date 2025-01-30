@@ -62,6 +62,8 @@ parameters:
     globa-alias-database-field-array: 'non-empty-array<array-key,mixed>'
     RFC5646Alias: 'non-empty-string'
     MediaQueryAlias: 'non-empty-string'
+    PermissionsPolicyAlias: 'non-empty-string'
+    ReferrerPolicyAlias: '"no-referrer"|"no-referrer-when-downgrade"|"origin"|"origin-when-cross-origin"|"same-origin"|"strict-origin"|"strict-origin-when-cross-origin"|"unsafe-url"'
     HtmlTagAttributeAlias: '''
       array{
         accesskey?: non-empty-string,
