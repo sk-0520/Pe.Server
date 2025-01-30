@@ -36,6 +36,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLOListAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLOptGroupAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLOptionAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLOutputAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLProgressAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLQuoteAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLScriptAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLStyleAttributes;
@@ -80,6 +81,10 @@ use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLOListElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLOptGroupElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLOptionElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLOutputElement;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLParagraphElement;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLPictureElement;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLPreElement;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLProgressElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLQuoteElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLScriptElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLStyleElement;
@@ -1406,6 +1411,87 @@ class Tag
 			$props
 		);
 	}
+
+	/**
+	 * `<output>`
+	 *
+	 * @param HtmlAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLParagraphElement
+	 */
+	public function p(HtmlAttributes $attributes = new HtmlAttributes(), array $children = [], Props $props = new Props()): HTMLParagraphElement
+	{
+		return new HTMLParagraphElement(
+			$attributes,
+			$children,
+			$props
+		);
+	}
+
+	/**
+	 * `<picture>`
+	 *
+	 * @param HtmlAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLPictureElement
+	 */
+	public function picture(HtmlAttributes $attributes = new HtmlAttributes(), array $children = [], Props $props = new Props()): HTMLPictureElement
+	{
+		return new HTMLPictureElement(
+			$attributes,
+			$children,
+			$props
+		);
+	}
+
+	/**
+	 * `<pre>`
+	 *
+	 * @param HtmlAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLPreElement
+	 */
+	public function pre(HtmlAttributes $attributes = new HtmlAttributes(), array $children = [], Props $props = new Props()): HTMLPreElement
+	{
+		return new HTMLPreElement(
+			$attributes,
+			$children,
+			$props
+		);
+	}
+
+	/**
+	 * `<progress>`
+	 *
+	 * @param HTMLProgressAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLProgressElement
+	 */
+	public function progress(HTMLProgressAttributes $attributes = new HTMLProgressAttributes(), array $children = [], Props $props = new Props()): HTMLProgressElement
+	{
+		return new HTMLProgressElement(
+			$attributes,
+			$children,
+			$props
+		);
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	#endregion
 }
