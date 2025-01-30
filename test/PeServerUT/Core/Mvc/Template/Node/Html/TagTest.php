@@ -263,6 +263,13 @@ class TagTest extends TestClass
 		$this->assertSame('<dfn></dfn>', (string)$actual);
 	}
 
+	public function test_div()
+	{
+		$tag = new Tag();
+		$actual = $tag->div();
+		$this->assertSame('<div></div>', (string)$actual);
+	}
+
 	public function test_dialog()
 	{
 		$tag = new Tag();
@@ -284,8 +291,54 @@ class TagTest extends TestClass
 		$this->assertSame('<dt></dt>', (string)$actual);
 	}
 
+	public function test_em()
+	{
+		$tag = new Tag();
+		$actual = $tag->em();
+		$this->assertSame('<em></em>', (string)$actual);
+	}
 
+	public function test_embed()
+	{
+		$tag = new Tag();
+		$actual = $tag->embed();
+		$this->assertSame('<embed />', (string)$actual);
+	}
 
+	public function test_fieldset()
+	{
+		$tag = new Tag();
+		$actual = $tag->fieldset();
+		$this->assertSame('<fieldset></fieldset>', (string)$actual);
+	}
+
+	public function test_figcaption()
+	{
+		$tag = new Tag();
+		$actual = $tag->figcaption();
+		$this->assertSame('<figcaption></figcaption>', (string)$actual);
+	}
+
+	public function test_figure()
+	{
+		$tag = new Tag();
+		$actual = $tag->figure();
+		$this->assertSame('<figure></figure>', (string)$actual);
+	}
+
+	public function test_footer()
+	{
+		$tag = new Tag();
+		$actual = $tag->footer();
+		$this->assertSame('<footer></footer>', (string)$actual);
+	}
+
+	public function test_form()
+	{
+		$tag = new Tag();
+		$actual = $tag->form();
+		$this->assertSame('<form></form>', (string)$actual);
+	}
 
 
 
