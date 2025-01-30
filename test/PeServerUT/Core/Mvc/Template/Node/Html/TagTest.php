@@ -596,6 +596,12 @@ class TagTest extends TestClass
 		$this->assertSame("<progress></progress>", (string)$actual);
 	}
 
+	public function test_q()
+	{
+		$tag = new Tag();
+		$actual = $tag->q();
+		$this->assertSame("<q></q>", (string)$actual);
+	}
 
 
 

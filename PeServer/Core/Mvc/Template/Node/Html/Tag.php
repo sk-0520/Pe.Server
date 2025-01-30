@@ -97,7 +97,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Element\IHTMLModElement;
 use PeServer\Core\Mvc\Template\Node\INode;
 use PeServer\Core\Mvc\Template\Node\Props;
 use PeServer\Core\Mvc\Template\Node\TextNode;
-
+use Smarty\FunctionHandler\HtmlOptions;
 
 /**
  * 簡易生成処理。
@@ -463,7 +463,8 @@ class Tag
 		return new HTMLQuoteElement(
 			$attributes,
 			$children,
-			$props
+			$props,
+			HtmlElementOptions::block(false)
 		);
 	}
 
@@ -1481,6 +1482,23 @@ class Tag
 	}
 
 
+	/**
+	 * `<blockquote>`
+	 *
+	 * @param HTMLQuoteAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLQuoteElement
+	 */
+	public function q(HTMLQuoteAttributes $attributes = new HTMLQuoteAttributes(), array $children = [], Props $props = new Props()): HTMLQuoteElement
+	{
+		return new HTMLQuoteElement(
+			$attributes,
+			$children,
+			$props,
+			HtmlElementOptions::inline(false)
+		);
+	}
 
 
 
