@@ -4,32 +4,30 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Template\Node\Html\Element;
 
-use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLQuoteAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLOutputAttributes;
 use PeServer\Core\Mvc\Template\Node\INode;
 use PeServer\Core\Mvc\Template\Node\Props;
 
-class HTMLQuoteElement extends HTMLElement
+class HTMLOutputElement extends HTMLElement
 {
 	/**
 	 * 生成。
 	 *
-	 * @param HTMLQuoteAttributes $attributes
+	 * @param HTMLOutputAttributes $attributes
 	 * @param INode[] $children
 	 * @param Props $props
-	 * @param HtmlElementOptions $options
 	 */
 	public function __construct(
-		HTMLQuoteAttributes $attributes = new HTMLQuoteAttributes(),
+		HTMLOutputAttributes $attributes = new HTMLOutputAttributes(),
 		array $children = [],
-		Props $props = new Props(),
-		HtmlElementOptions $options = new HtmlElementOptions(false, false)
+		Props $props = new Props()
 	) {
 		parent::__construct(
-			"blockquote",
+			"output",
 			$attributes,
 			$children,
 			$props,
-			$options
+			HtmlElementOptions::block(false)
 		);
 	}
 }
