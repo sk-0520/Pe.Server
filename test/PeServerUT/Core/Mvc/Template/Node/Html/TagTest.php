@@ -491,10 +491,40 @@ class TagTest extends TestClass
 		$this->assertSame("<li></li>", (string)$actual);
 	}
 
+	public function test_main()
+	{
+		$tag = new Tag();
+		$actual = $tag->main();
+		$this->assertSame("<main></main>", (string)$actual);
+	}
 
+	public function test_map()
+	{
+		$tag = new Tag();
+		$actual = $tag->map();
+		$this->assertSame("<map></map>", (string)$actual);
+	}
 
+	public function test_mark()
+	{
+		$tag = new Tag();
+		$actual = $tag->mark();
+		$this->assertSame("<mark></mark>", (string)$actual);
+	}
 
+	public function test_menu()
+	{
+		$tag = new Tag();
+		$actual = $tag->menu();
+		$this->assertSame("<menu></menu>", (string)$actual);
+	}
 
+	public function test_meter()
+	{
+		$tag = new Tag();
+		$actual = $tag->meter();
+		$this->assertSame("<meter></meter>", (string)$actual);
+	}
 
 
 

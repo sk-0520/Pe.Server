@@ -29,6 +29,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLLabelAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLLIAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLLinkAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLMetaAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLMeterAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLModAttribute;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLQuoteAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLScriptAttributes;
@@ -65,7 +66,10 @@ use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLLabelElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLLegendElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLLIElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLLinkElement;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLMapElement;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLMenuElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLMetaElement;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLMeterElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLQuoteElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLScriptElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLStyleElement;
@@ -1200,10 +1204,94 @@ class Tag
 		);
 	}
 
+	/**
+	 * `<main>`
+	 *
+	 * @param HTMLAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLElement
+	 */
+	public function main(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	{
+		return new HTMLElement(
+			"main",
+			$attributes,
+			$children,
+			$props,
+			HtmlElementOptions::block(false)
+		);
+	}
 
+	/**
+	 * `<main>`
+	 *
+	 * @param HtmlAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLMapElement
+	 */
+	public function map(HtmlAttributes $attributes = new HtmlAttributes(), array $children = [], Props $props = new Props()): HTMLMapElement
+	{
+		return new HTMLMapElement(
+			$attributes,
+			$children,
+			$props
+		);
+	}
 
+	/**
+	 * `<mark>`
+	 *
+	 * @param HTMLAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLElement
+	 */
+	public function mark(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	{
+		return new HTMLElement(
+			"mark",
+			$attributes,
+			$children,
+			$props,
+			HtmlElementOptions::inline(false)
+		);
+	}
 
+	/**
+	 * `<menu>`
+	 *
+	 * @param HtmlAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLMenuElement
+	 */
+	public function menu(HtmlAttributes $attributes = new HtmlAttributes(), array $children = [], Props $props = new Props()): HTMLMenuElement
+	{
+		return new HTMLMenuElement(
+			$attributes,
+			$children,
+			$props
+		);
+	}
 
+	/**
+	 * `<menu>`
+	 *
+	 * @param HTMLMeterAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLMeterElement
+	 */
+	public function meter(HTMLMeterAttributes $attributes = new HTMLMeterAttributes(), array $children = [], Props $props = new Props()): HTMLMeterElement
+	{
+		return new HTMLMeterElement(
+			$attributes,
+			$children,
+			$props
+		);
+	}
 
 
 
