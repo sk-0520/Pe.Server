@@ -526,6 +526,12 @@ class TagTest extends TestClass
 		$this->assertSame("<meter></meter>", (string)$actual);
 	}
 
+	public function test_nav()
+	{
+		$tag = new Tag();
+		$actual = $tag->nav();
+		$this->assertSame("<nav></nav>", (string)$actual);
+	}
 
 
 
