@@ -463,6 +463,12 @@ class TagTest extends TestClass
 		$this->assertSame("<ins></ins>", (string)$actual);
 	}
 
+	public function test_kbd()
+	{
+		$tag = new Tag();
+		$actual = $tag->kbd();
+		$this->assertSame("<kbd></kbd>", (string)$actual);
+	}
 
 
 

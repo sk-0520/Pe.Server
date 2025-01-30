@@ -14,7 +14,7 @@ class HTMLInsAttributes extends HtmlAttributes
 	 * @param array<string,int|bool|string|null> $attributes
 	 * @phpstan-param array{
 	 * 	cit?: non-empty-string,
-	 * 	datetime: non-empty-string,
+	 * 	datetime?: non-empty-string,
 	 * }&HtmlTagAttributeAlias $attributes
 	 */
 	public function __construct(array $attributes = [])
