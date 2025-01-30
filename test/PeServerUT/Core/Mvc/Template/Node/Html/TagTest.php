@@ -533,9 +533,40 @@ class TagTest extends TestClass
 		$this->assertSame("<nav></nav>", (string)$actual);
 	}
 
+	public function test_object()
+	{
+		$tag = new Tag();
+		$actual = $tag->object();
+		$this->assertSame("<object></object>", (string)$actual);
+	}
 
+	public function test_ol()
+	{
+		$tag = new Tag();
+		$actual = $tag->ol();
+		$this->assertSame("<ol></ol>", (string)$actual);
+	}
 
+	public function test_optgroup()
+	{
+		$tag = new Tag();
+		$actual = $tag->optgroup();
+		$this->assertSame("<optgroup></optgroup>", (string)$actual);
+	}
 
+	public function test_option()
+	{
+		$tag = new Tag();
+		$actual = $tag->option();
+		$this->assertSame("<option></option>", (string)$actual);
+	}
+
+	public function test_output()
+	{
+		$tag = new Tag();
+		$actual = $tag->output();
+		$this->assertSame("<output></output>", (string)$actual);
+	}
 
 	#endregion
 }
