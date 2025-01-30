@@ -1293,6 +1293,24 @@ class Tag
 		);
 	}
 
+	/**
+	 * `<nav>`
+	 *
+	 * @param HTMLAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLElement
+	 */
+	public function nav(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	{
+		return new HTMLElement(
+			"nav",
+			$attributes,
+			$children,
+			$props,
+			HtmlElementOptions::block(false)
+		);
+	}
 
 
 
