@@ -470,6 +470,35 @@ class TagTest extends TestClass
 		$this->assertSame("<kbd></kbd>", (string)$actual);
 	}
 
+	public function test_label()
+	{
+		$tag = new Tag();
+		$actual = $tag->label();
+		$this->assertSame("<label></label>", (string)$actual);
+	}
+
+	public function test_legend()
+	{
+		$tag = new Tag();
+		$actual = $tag->legend();
+		$this->assertSame("<legend></legend>", (string)$actual);
+	}
+
+	public function test_li()
+	{
+		$tag = new Tag();
+		$actual = $tag->li();
+		$this->assertSame("<li></li>", (string)$actual);
+	}
+
+
+
+
+
+
+
+
+
 
 
 	#endregion
