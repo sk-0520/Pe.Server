@@ -65,6 +65,8 @@ parameters:
     CookieSameSiteAlias: '"Lax"|"lax"|"None"|"none"|"Strict"|"strict"'
     RFC5646Alias: 'non-empty-string'
     MediaQueryAlias: 'non-empty-string'
+    PermissionsPolicyAlias: 'non-empty-string'
+    ReferrerPolicyAlias: '"no-referrer"|"no-referrer-when-downgrade"|"origin"|"origin-when-cross-origin"|"same-origin"|"strict-origin"|"strict-origin-when-cross-origin"|"unsafe-url"'
     HtmlTagAttributeAlias: '''
       array{
         accesskey?: non-empty-string,
