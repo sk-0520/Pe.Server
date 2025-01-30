@@ -568,5 +568,46 @@ class TagTest extends TestClass
 		$this->assertSame("<output></output>", (string)$actual);
 	}
 
+	public function test_p()
+	{
+		$tag = new Tag();
+		$actual = $tag->p();
+		$this->assertSame("<p></p>", (string)$actual);
+	}
+
+	public function test_picture()
+	{
+		$tag = new Tag();
+		$actual = $tag->picture();
+		$this->assertSame("<picture></picture>", (string)$actual);
+	}
+
+	public function test_pre()
+	{
+		$tag = new Tag();
+		$actual = $tag->pre();
+		$this->assertSame("<pre></pre>", (string)$actual);
+	}
+
+	public function test_progress()
+	{
+		$tag = new Tag();
+		$actual = $tag->progress();
+		$this->assertSame("<progress></progress>", (string)$actual);
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	#endregion
 }
