@@ -31,6 +31,11 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLLinkAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLMetaAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLMeterAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLModAttribute;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLObjectAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLOListAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLOptGroupAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLOptionAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLOutputAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLQuoteAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLScriptAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLStyleAttributes;
@@ -70,6 +75,11 @@ use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLMapElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLMenuElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLMetaElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLMeterElement;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLObjectElement;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLOListElement;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLOptGroupElement;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLOptionElement;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLOutputElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLQuoteElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLScriptElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLStyleElement;
@@ -1312,7 +1322,90 @@ class Tag
 		);
 	}
 
+	/**
+	 * `<object>`
+	 *
+	 * @param HTMLObjectAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLObjectElement
+	 */
+	public function object(HTMLObjectAttributes $attributes = new HTMLObjectAttributes(), array $children = [], Props $props = new Props()): HTMLObjectElement
+	{
+		return new HTMLObjectElement(
+			$attributes,
+			$children,
+			$props
+		);
+	}
 
+	/**
+	 * `<ol>`
+	 *
+	 * @param HTMLOListAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLOListElement
+	 */
+	public function ol(HTMLOListAttributes $attributes = new HTMLOListAttributes(), array $children = [], Props $props = new Props()): HTMLOListElement
+	{
+		return new HTMLOListElement(
+			$attributes,
+			$children,
+			$props
+		);
+	}
+
+	/**
+	 * `<optgroup>`
+	 *
+	 * @param HTMLOptGroupAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLOptGroupElement
+	 */
+	public function optgroup(HTMLOptGroupAttributes $attributes = new HTMLOptGroupAttributes(), array $children = [], Props $props = new Props()): HTMLOptGroupElement
+	{
+		return new HTMLOptGroupElement(
+			$attributes,
+			$children,
+			$props
+		);
+	}
+
+	/**
+	 * `<option>`
+	 *
+	 * @param HTMLOptionAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLOptionElement
+	 */
+	public function option(HTMLOptionAttributes $attributes = new HTMLOptionAttributes(), array $children = [], Props $props = new Props()): HTMLOptionElement
+	{
+		return new HTMLOptionElement(
+			$attributes,
+			$children,
+			$props
+		);
+	}
+
+	/**
+	 * `<output>`
+	 *
+	 * @param HTMLOutputAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLOutputElement
+	 */
+	public function output(HTMLOutputAttributes $attributes = new HTMLOutputAttributes(), array $children = [], Props $props = new Props()): HTMLOutputElement
+	{
+		return new HTMLOutputElement(
+			$attributes,
+			$children,
+			$props
+		);
+	}
 
 	#endregion
 }
