@@ -25,6 +25,8 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLIFrameAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLImageAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLInputAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLInsAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLLabelAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLLIAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLLinkAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLMetaAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLModAttribute;
@@ -59,6 +61,9 @@ use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLHtmlElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLIFrameElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLImageElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLInputElement;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLLabelElement;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLLegendElement;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLLIElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLLinkElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLMetaElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLQuoteElement;
@@ -1125,7 +1130,6 @@ class Tag
 		};
 	}
 
-
 	/**
 	 * `<i>`
 	 *
@@ -1144,6 +1148,64 @@ class Tag
 			HtmlElementOptions::block(false)
 		);
 	}
+
+	/**
+	 * `<label>`
+	 *
+	 * @param HTMLLabelAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLLabelElement
+	 */
+	public function label(HTMLLabelAttributes $attributes = new HTMLLabelAttributes(), array $children = [], Props $props = new Props()): HTMLLabelElement
+	{
+		return new HTMLLabelElement(
+			$attributes,
+			$children,
+			$props
+		);
+	}
+
+	/**
+	 * `<legend>`
+	 *
+	 * @param HTMLAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLLegendElement
+	 */
+	public function legend(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLLegendElement
+	{
+		return new HTMLLegendElement(
+			$attributes,
+			$children,
+			$props
+		);
+	}
+
+	/**
+	 * `<li>`
+	 *
+	 * @param HTMLLIAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLLIElement
+	 */
+	public function li(HTMLLIAttributes $attributes = new HTMLLIAttributes(), array $children = [], Props $props = new Props()): HTMLLIElement
+	{
+		return new HTMLLIElement(
+			$attributes,
+			$children,
+			$props
+		);
+	}
+
+
+
+
+
+
+
 
 
 	#endregion
