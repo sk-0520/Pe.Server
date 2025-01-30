@@ -1102,7 +1102,6 @@ class Tag
 		);
 	}
 
-
 	/**
 	 * `<i>`
 	 *
@@ -1125,6 +1124,27 @@ class Tag
 			//NOP
 		};
 	}
+
+
+	/**
+	 * `<i>`
+	 *
+	 * @param HTMLInsAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLElement
+	 */
+	public function kbd(HTMLInsAttributes $attributes = new HTMLInsAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	{
+		return new HTMLElement(
+			"kbd",
+			$attributes,
+			$children,
+			$props,
+			HtmlElementOptions::block(false)
+		);
+	}
+
 
 	#endregion
 }
