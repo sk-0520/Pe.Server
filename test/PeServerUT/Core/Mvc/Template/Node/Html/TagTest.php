@@ -428,10 +428,40 @@ class TagTest extends TestClass
 		$this->assertSame("<hr />", (string)$actual);
 	}
 
+	public function test_i()
+	{
+		$tag = new Tag();
+		$actual = $tag->i();
+		$this->assertSame("<i></i>", (string)$actual);
+	}
 
+	public function test_iframe()
+	{
+		$tag = new Tag();
+		$actual = $tag->iframe();
+		$this->assertSame("<iframe></iframe>", (string)$actual);
+	}
 
+	public function test_img()
+	{
+		$tag = new Tag();
+		$actual = $tag->img();
+		$this->assertSame("<img />", (string)$actual);
+	}
 
+	public function test_input()
+	{
+		$tag = new Tag();
+		$actual = $tag->input();
+		$this->assertSame("<input />", (string)$actual);
+	}
 
+	public function test_ins()
+	{
+		$tag = new Tag();
+		$actual = $tag->ins();
+		$this->assertSame("<ins></ins>", (string)$actual);
+	}
 
 
 

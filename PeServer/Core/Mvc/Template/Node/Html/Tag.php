@@ -21,6 +21,10 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLFieldSetAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLFormAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLHeadAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLHtmlAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLIFrameAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLImageAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLInputAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLInsAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLLinkAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLMetaAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLModAttribute;
@@ -52,6 +56,9 @@ use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLHeadElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLHeadingElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLHRElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLHtmlElement;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLIFrameElement;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLImageElement;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLInputElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLLinkElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLMetaElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLQuoteElement;
@@ -1029,10 +1036,95 @@ class Tag
 		);
 	}
 
+	/**
+	 * `<i>`
+	 *
+	 * @param HTMLAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLElement
+	 */
+	public function i(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	{
+		return new HTMLElement(
+			"i",
+			$attributes,
+			$children,
+			$props,
+			HtmlElementOptions::inline(false)
+		);
+	}
+
+	/**
+	 * `<iframe>`
+	 *
+	 * @param HTMLIFrameAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLIFrameElement
+	 */
+	public function iframe(HTMLIFrameAttributes $attributes = new HTMLIFrameAttributes(), array $children = [], Props $props = new Props()): HTMLIFrameElement
+	{
+		return new HTMLIFrameElement(
+			$attributes,
+			$children,
+			$props
+		);
+	}
+
+	/**
+	 * `<img>`
+	 *
+	 * @param HTMLImageAttributes $attributes
+	 * @param Props $props
+	 * @return HTMLImageElement
+	 */
+	public function img(HTMLImageAttributes $attributes = new HTMLImageAttributes(), Props $props = new Props()): HTMLImageElement
+	{
+		return new HTMLImageElement(
+			$attributes,
+			$props
+		);
+	}
+
+	/**
+	 * `<input>`
+	 *
+	 * @param HTMLInputAttributes $attributes
+	 * @param Props $props
+	 * @return HTMLInputElement
+	 */
+	public function input(HTMLInputAttributes $attributes = new HTMLInputAttributes(), Props $props = new Props()): HTMLInputElement
+	{
+		return new HTMLInputElement(
+			$attributes,
+			$props
+		);
+	}
 
 
-
-
+	/**
+	 * `<i>`
+	 *
+	 * @param HTMLInsAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLElement&IHTMLModElement
+	 */
+	public function ins(HTMLInsAttributes $attributes = new HTMLInsAttributes(), array $children = [], Props $props = new Props()): HTMLElement&IHTMLModElement
+	{
+		//phpcs:ignore PSR12.Classes.AnonClassDeclaration.SpaceAfterKeyword
+		return new class(
+			"ins",
+			$attributes,
+			$children,
+			$props,
+			HtmlElementOptions::block(false)
+		) extends HTMLElement implements IHTMLModElement
+		{
+			//NOP
+		};
+	}
 
 	#endregion
 }

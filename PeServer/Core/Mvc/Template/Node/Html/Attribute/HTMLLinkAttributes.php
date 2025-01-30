@@ -23,7 +23,7 @@ class HTMLLinkAttributes extends HtmlAttributes
 	 * 	imagesrcset?: non-empty-string,
 	 * 	integrity?: non-empty-string,
 	 * 	media?: MediaQueryAlias,
-	 * 	referrerpolicy?: "no-referrer"|"no-referrer-when-downgrade"|"origin"|"origin-when-cross-origin"|"unsafe-url",
+	 * 	referrerpolicy?: ReferrerPolicyAlias,
 	 * 	rel?: non-empty-string,
 	 * 	sizes?: non-empty-string,
 	 * 	type?: non-empty-string,
