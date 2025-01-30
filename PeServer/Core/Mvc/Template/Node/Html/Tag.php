@@ -49,6 +49,8 @@ use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLEmbedElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLFieldSetElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLFormElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLHeadElement;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLHeadingElement;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLHRElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLHtmlElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLLinkElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLMetaElement;
@@ -633,13 +635,16 @@ class Tag
 	 */
 	public function del(HTMLModAttribute $attributes = new HTMLModAttribute(), array $children = [], Props $props = new Props()): HTMLElement&IHTMLModElement
 	{
-		return new class (
+		//phpcs:ignore PSR12.Classes.AnonClassDeclaration.SpaceAfterKeyword
+		return new class(
 			"del",
 			$attributes,
 			$children,
 			$props,
 			HtmlElementOptions::block(false)
-		) extends HTMLElement implements IHTMLModElement {
+		) extends HTMLElement implements IHTMLModElement
+		{
+			//NOP
 		};
 	}
 
@@ -874,9 +879,155 @@ class Tag
 		);
 	}
 
+	/**
+	 * `<h*>`
+	 *
+	 * @param 1|2|3|4|5|6 $level
+	 * @param HtmlAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLHeadingElement
+	 */
+	public function h(int $level, HtmlAttributes $attributes = new HtmlAttributes(), array $children = [], Props $props = new Props()): HTMLHeadingElement
+	{
+		return new HTMLHeadingElement(
+			$level,
+			$attributes,
+			$children,
+			$props
+		);
+	}
 
+	/**
+	 * `<h1>`
+	 *
+	 * @param HtmlAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLHeadingElement
+	 */
+	public function h1(HtmlAttributes $attributes = new HtmlAttributes(), array $children = [], Props $props = new Props()): HTMLHeadingElement
+	{
+		return $this->h(1, $attributes, $children, $props);
+	}
 
+	/**
+	 * `<h2>`
+	 *
+	 * @param HtmlAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLHeadingElement
+	 */
+	public function h2(HtmlAttributes $attributes = new HtmlAttributes(), array $children = [], Props $props = new Props()): HTMLHeadingElement
+	{
+		return $this->h(2, $attributes, $children, $props);
+	}
 
+	/**
+	 * `<h3>`
+	 *
+	 * @param HtmlAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLHeadingElement
+	 */
+	public function h3(HtmlAttributes $attributes = new HtmlAttributes(), array $children = [], Props $props = new Props()): HTMLHeadingElement
+	{
+		return $this->h(3, $attributes, $children, $props);
+	}
+
+	/**
+	 * `<h4>`
+	 *
+	 * @param HtmlAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLHeadingElement
+	 */
+	public function h4(HtmlAttributes $attributes = new HtmlAttributes(), array $children = [], Props $props = new Props()): HTMLHeadingElement
+	{
+		return $this->h(4, $attributes, $children, $props);
+	}
+
+	/**
+	 * `<h5>`
+	 *
+	 * @param HtmlAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLHeadingElement
+	 */
+	public function h5(HtmlAttributes $attributes = new HtmlAttributes(), array $children = [], Props $props = new Props()): HTMLHeadingElement
+	{
+		return $this->h(5, $attributes, $children, $props);
+	}
+
+	/**
+	 * `<h6>`
+	 *
+	 * @param HtmlAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLHeadingElement
+	 */
+	public function h6(HtmlAttributes $attributes = new HtmlAttributes(), array $children = [], Props $props = new Props()): HTMLHeadingElement
+	{
+		return $this->h(6, $attributes, $children, $props);
+	}
+
+	/**
+	 * `<header>`
+	 *
+	 * @param HTMLAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLElement
+	 */
+	public function header(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	{
+		return new HTMLElement(
+			"header",
+			$attributes,
+			$children,
+			$props,
+			HtmlElementOptions::block(false)
+		);
+	}
+
+	/**
+	 * `<header>`
+	 *
+	 * @param HTMLAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLElement
+	 */
+	public function hgroup(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	{
+		return new HTMLElement(
+			"hgroup",
+			$attributes,
+			$children,
+			$props,
+			HtmlElementOptions::block(false)
+		);
+	}
+
+	/**
+	 * `<hr>`
+	 *
+	 * @param HTMLAttributes $attributes
+	 * @param Props $props
+	 * @return HTMLHRElement
+	 */
+	public function hr(HTMLAttributes $attributes = new HTMLAttributes(), Props $props = new Props()): HTMLHRElement
+	{
+		return new HTMLHRElement(
+			$attributes,
+			$props
+		);
+	}
 
 
 

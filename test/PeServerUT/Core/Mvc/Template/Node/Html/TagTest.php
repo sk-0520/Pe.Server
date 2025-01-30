@@ -6,6 +6,8 @@ namespace PeServerUT\Core\Mvc\Template\Node\Html;
 
 use PeServerTest\TestClass;
 use PeServer\Core\Mvc\Template\Node\Html\Tag;
+use PeServer\Core\Throws\ArgumentException;
+use PHPUnit\Framework\Attributes\TestWith;
 
 class TagTest extends TestClass
 {
@@ -339,6 +341,95 @@ class TagTest extends TestClass
 		$actual = $tag->form();
 		$this->assertSame('<form></form>', (string)$actual);
 	}
+
+	#[TestWith(['h1', 1])]
+	#[TestWith(['h2', 2])]
+	#[TestWith(['h3', 3])]
+	#[TestWith(['h4', 4])]
+	#[TestWith(['h5', 5])]
+	#[TestWith(['h6', 6])]
+	public function test_h(string $expected, int $level)
+	{
+		$tag = new Tag();
+		$actual = $tag->h($level);
+		$this->assertSame("<{$expected}></{$expected}>", (string)$actual);
+	}
+
+	#[TestWith([0])]
+	#[TestWith([7])]
+	public function test_h_throw(int $level)
+	{
+		$tag = new Tag();
+		$this->expectException(ArgumentException::class);
+		$tag->h($level);
+		$this->fail();
+	}
+
+	public function test_h1()
+	{
+		$tag = new Tag();
+		$actual = $tag->h1();
+		$this->assertSame("<h1></h1>", (string)$actual);
+	}
+
+	public function test_h2()
+	{
+		$tag = new Tag();
+		$actual = $tag->h2();
+		$this->assertSame("<h2></h2>", (string)$actual);
+	}
+
+	public function test_h3()
+	{
+		$tag = new Tag();
+		$actual = $tag->h3();
+		$this->assertSame("<h3></h3>", (string)$actual);
+	}
+
+	public function test_h4()
+	{
+		$tag = new Tag();
+		$actual = $tag->h4();
+		$this->assertSame("<h4></h4>", (string)$actual);
+	}
+
+	public function test_h5()
+	{
+		$tag = new Tag();
+		$actual = $tag->h5();
+		$this->assertSame("<h5></h5>", (string)$actual);
+	}
+
+	public function test_6()
+	{
+		$tag = new Tag();
+		$actual = $tag->h6();
+		$this->assertSame("<h6></h6>", (string)$actual);
+	}
+
+	public function test_header()
+	{
+		$tag = new Tag();
+		$actual = $tag->header();
+		$this->assertSame("<header></header>", (string)$actual);
+	}
+
+	public function test_hgroup()
+	{
+		$tag = new Tag();
+		$actual = $tag->hgroup();
+		$this->assertSame("<hgroup></hgroup>", (string)$actual);
+	}
+
+	public function test_hr()
+	{
+		$tag = new Tag();
+		$actual = $tag->hr();
+		$this->assertSame("<hr />", (string)$actual);
+	}
+
+
+
 
 
 
