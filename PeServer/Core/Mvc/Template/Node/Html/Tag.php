@@ -16,6 +16,9 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLCanvasAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLDataAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLDetailsAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLDialogAttribute;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLEmbedAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLFieldSetAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLFormAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLHeadAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLHtmlAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLLinkAttributes;
@@ -42,6 +45,9 @@ use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLDivElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLDListElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HtmlElementOptions;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLEmbedElement;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLFieldSetElement;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLFormElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLHeadElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLHtmlElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLLinkElement;
@@ -742,6 +748,137 @@ class Tag
 			HtmlElementOptions::inline(false)
 		);
 	}
+
+	/**
+	 * `<em>`
+	 *
+	 * @param HTMLAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLElement
+	 */
+	public function em(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	{
+		return new HTMLElement(
+			"em",
+			$attributes,
+			$children,
+			$props,
+			HtmlElementOptions::inline(false)
+		);
+	}
+
+	/**
+	 * `<embed>`
+	 *
+	 * @param HTMLEmbedAttributes $attributes
+	 * @param Props $props
+	 * @return HTMLEmbedElement
+	 */
+	public function embed(HTMLEmbedAttributes $attributes = new HTMLEmbedAttributes(), Props $props = new Props()): HTMLEmbedElement
+	{
+		return new HTMLEmbedElement(
+			$attributes,
+			$props
+		);
+	}
+
+	/**
+	 * `<fieldset>`
+	 *
+	 * @param HTMLFieldSetAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLFieldSetElement
+	 */
+	public function fieldset(HTMLFieldSetAttributes $attributes = new HTMLFieldSetAttributes(), array $children = [], Props $props = new Props()): HTMLFieldSetElement
+	{
+		return new HTMLFieldSetElement(
+			$attributes,
+			$children,
+			$props
+		);
+	}
+
+	/**
+	 * `<figcaption>`
+	 *
+	 * @param HTMLAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLElement
+	 */
+	public function figcaption(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	{
+		return new HTMLElement(
+			"figcaption",
+			$attributes,
+			$children,
+			$props,
+			HtmlElementOptions::inline(false)
+		);
+	}
+
+	/**
+	 * `<figure>`
+	 *
+	 * @param HTMLAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLElement
+	 */
+	public function figure(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	{
+		return new HTMLElement(
+			"figure",
+			$attributes,
+			$children,
+			$props,
+			HtmlElementOptions::block(false)
+		);
+	}
+
+	/**
+	 * `<footer>`
+	 *
+	 * @param HTMLAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLElement
+	 */
+	public function footer(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	{
+		return new HTMLElement(
+			"footer",
+			$attributes,
+			$children,
+			$props,
+			HtmlElementOptions::block(false)
+		);
+	}
+
+	/**
+	 * `<form>`
+	 *
+	 * @param HTMLFormAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLFormElement
+	 */
+	public function form(HTMLFormAttributes $attributes = new HTMLFormAttributes(), array $children = [], Props $props = new Props()): HTMLFormElement
+	{
+		return new HTMLFormElement(
+			$attributes,
+			$children,
+			$props
+		);
+	}
+
+
+
+
+
+
 
 
 
