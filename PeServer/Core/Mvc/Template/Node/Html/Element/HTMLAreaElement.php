@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc\Template\Node\Html\Element;
 
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLAreaAttributes;
-use PeServer\Core\Mvc\Template\Node\INode;
+use PeServer\Core\Mvc\Template\Node\Html\Content\HtmlContent;
 use PeServer\Core\Mvc\Template\Node\Props;
 
 class HTMLAreaElement extends HTMLElement
@@ -14,18 +14,18 @@ class HTMLAreaElement extends HTMLElement
 	 * 生成。
 	 *
 	 * @param HTMLAreaAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 */
 	public function __construct(
 		HTMLAreaAttributes $attributes = new HTMLAreaAttributes(),
-		array $children = [],
+		HtmlContent $content = new HtmlContent(),
 		Props $props = new Props()
 	) {
 		parent::__construct(
 			"area",
 			$attributes,
-			$children,
+			$content,
 			$props,
 			HtmlElementOptions::inline(true)
 		);

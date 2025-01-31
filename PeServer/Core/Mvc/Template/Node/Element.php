@@ -13,18 +13,18 @@ class Element extends NodeBase
 	 *
 	 * @param non-empty-string $tagName
 	 * @param Attributes $attributes
-	 * @param INode[] $children
+	 * @param Content $content
 	 * @param Props $props
 	 * @param ElementOptions $options
 	 */
 	public function __construct(
 		public readonly string $tagName,
 		public Attributes $attributes,
-		public array $children,
+		public Content $content,
 		public readonly Props $props,
 		public readonly ElementOptions $options
 	) {
-		$this->children = $children;
+		//NOP
 	}
 
 	#region function
@@ -48,7 +48,7 @@ class Element extends NodeBase
 		//TODO: とりあえずえいやで作るので必要に応じて後で対応する
 
 		$hasAttributes = 0 < count($this->attributes->map);
-		$hasChildren = !empty($this->children);
+		$hasChildren = !empty($this->content->values);
 
 		$result = "<";
 		$result .= $this->tagName;
@@ -68,7 +68,7 @@ class Element extends NodeBase
 			$result .= ">";
 
 			if ($hasChildren) {
-				foreach ($this->children as $child) {
+				foreach ($this->content->values as $child) {
 					$result .= $child->toString($level + 1);
 				}
 			}

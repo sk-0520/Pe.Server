@@ -6,7 +6,7 @@ namespace PeServer\Core\Mvc\Template\Node\Html\Element;
 
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HtmlAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLTemplateAttributes;
-use PeServer\Core\Mvc\Template\Node\INode;
+use PeServer\Core\Mvc\Template\Node\Html\Content\HtmlContent;
 use PeServer\Core\Mvc\Template\Node\Props;
 use PeServer\Core\Mvc\Template\Node\TextNode;
 
@@ -16,18 +16,18 @@ class HTMLTemplateElement extends HTMLElement
 	 * 生成。
 	 *
 	 * @param HTMLTemplateAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 */
 	public function __construct(
 		HTMLTemplateAttributes $attributes = new HTMLTemplateAttributes(),
-		array $children = [],
+		HtmlContent $content = new HtmlContent(),
 		Props $props = new Props()
 	) {
 		parent::__construct(
 			"template",
 			$attributes,
-			$children,
+			$content,
 			$props,
 			HtmlElementOptions::block(false)
 		);

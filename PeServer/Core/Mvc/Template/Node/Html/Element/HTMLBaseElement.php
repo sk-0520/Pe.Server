@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc\Template\Node\Html\Element;
 
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLBaseAttributes;
-use PeServer\Core\Mvc\Template\Node\INode;
+use PeServer\Core\Mvc\Template\Node\NoneContent;
 use PeServer\Core\Mvc\Template\Node\Props;
-use stdClass;
 
 class HTMLBaseElement extends HTMLElement
 {
@@ -24,7 +23,7 @@ class HTMLBaseElement extends HTMLElement
 		parent::__construct(
 			"base",
 			$attributes,
-			[],
+			new NoneContent(),
 			$props,
 			HtmlElementOptions::inline(true)
 		);

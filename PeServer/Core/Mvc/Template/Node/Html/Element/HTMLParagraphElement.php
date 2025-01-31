@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc\Template\Node\Html\Element;
 
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HtmlAttributes;
-use PeServer\Core\Mvc\Template\Node\INode;
+use PeServer\Core\Mvc\Template\Node\Html\Content\HtmlContent;
 use PeServer\Core\Mvc\Template\Node\Props;
 
 class HTMLParagraphElement extends HTMLElement
@@ -14,18 +14,18 @@ class HTMLParagraphElement extends HTMLElement
 	 * 生成。
 	 *
 	 * @param HtmlAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 */
 	public function __construct(
 		HtmlAttributes $attributes = new HtmlAttributes(),
-		array $children = [],
+		HtmlContent $content = new HtmlContent(),
 		Props $props = new Props()
 	) {
 		parent::__construct(
 			"p",
 			$attributes,
-			$children,
+			$content,
 			$props,
 			HtmlElementOptions::block(false)
 		);
