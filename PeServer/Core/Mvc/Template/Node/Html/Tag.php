@@ -53,6 +53,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLTemplateAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLTextAreaAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLTimeAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLTrackAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLUListAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLAnchorElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLAreaElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLAudioElement;
@@ -115,6 +116,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLTextAreaElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLTimeElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLTitleElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLTrackElement;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLUListElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\IHTMLModElement;
 use PeServer\Core\Mvc\Template\Node\INode;
 use PeServer\Core\Mvc\Template\Node\Props;
@@ -1991,9 +1993,41 @@ class Tag
 		);
 	}
 
+	/**
+	 * `<u>`
+	 *
+	 * @param HTMLAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLElement
+	 */
+	public function u(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	{
+		return new HTMLElement(
+			"u",
+			$attributes,
+			$children,
+			$props,
+			HtmlElementOptions::inline(false)
+		);
+	}
 
-
-
+	/**
+	 * `<ul>`
+	 *
+	 * @param HTMLUListAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLUListElement
+	 */
+	public function ul(HTMLUListAttributes $attributes = new HTMLUListAttributes(), array $children = [], Props $props = new Props()): HTMLUListElement
+	{
+		return new HTMLUListElement(
+			$attributes,
+			$children,
+			$props
+		);
+	}
 
 
 
