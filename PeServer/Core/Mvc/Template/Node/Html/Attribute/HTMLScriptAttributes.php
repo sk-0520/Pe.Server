@@ -15,7 +15,7 @@ class HTMLScriptAttributes extends HtmlAttributes
 	 * @phpstan-param array{
 	 * 	async?: empty-string,
 	 * 	blocking?: "render",
-	 * 	crossorigin?: empty-string,
+	 * 	crossorigin?: CrossOriginAlias,
 	 * 	fetchpriority?: "high"|"low"|"auto",
 	 * 	integrity? : empty-string,
 	 * 	nomodule? : empty-string,

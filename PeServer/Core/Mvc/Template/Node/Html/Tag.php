@@ -54,6 +54,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLTextAreaAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLTimeAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLTrackAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLUListAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLVideoAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLAnchorElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLAreaElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLAudioElement;
@@ -117,6 +118,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLTimeElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLTitleElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLTrackElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLUListElement;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLVideoElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\IHTMLModElement;
 use PeServer\Core\Mvc\Template\Node\INode;
 use PeServer\Core\Mvc\Template\Node\Props;
@@ -2029,7 +2031,41 @@ class Tag
 		);
 	}
 
+	/**
+	 * `<var>`
+	 *
+	 * @param HTMLAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLElement
+	 */
+	public function var(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	{
+		return new HTMLElement(
+			"var",
+			$attributes,
+			$children,
+			$props,
+			HtmlElementOptions::inline(false)
+		);
+	}
 
+	/**
+	 * `<video>`
+	 *
+	 * @param HTMLVideoAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLVideoElement
+	 */
+	public function video(HTMLVideoAttributes $attributes = new HTMLVideoAttributes(), array $children = [], Props $props = new Props()): HTMLVideoElement
+	{
+		return new HTMLVideoElement(
+			$attributes,
+			$children,
+			$props
+		);
+	}
 
 
 
