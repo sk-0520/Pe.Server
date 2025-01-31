@@ -39,6 +39,9 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLOutputAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLProgressAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLQuoteAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLScriptAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLSelectAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLSlotAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLSourceAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLStyleAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLTableColAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLTemplateAttributes;
@@ -87,6 +90,10 @@ use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLPreElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLProgressElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLQuoteElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLScriptElement;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLSelectElement;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLSlotElement;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLSourceElement;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLSpanElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLStyleElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLTableCaptionElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLTableColElement;
@@ -1520,7 +1527,7 @@ class Tag
 	}
 
 	/**
-	 * `<rp>`
+	 * `<rt>`
 	 *
 	 * @param HTMLAttributes $attributes
 	 * @param INode[] $children
@@ -1539,7 +1546,7 @@ class Tag
 	}
 
 	/**
-	 * `<rp>`
+	 * `<ruby>`
 	 *
 	 * @param HTMLAttributes $attributes
 	 * @param INode[] $children
@@ -1556,6 +1563,255 @@ class Tag
 			HtmlElementOptions::inline(false)
 		);
 	}
+
+	/**
+	 * `<s>`
+	 *
+	 * @param HTMLAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLElement
+	 */
+	public function s(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	{
+		return new HTMLElement(
+			"s",
+			$attributes,
+			$children,
+			$props,
+			HtmlElementOptions::inline(false)
+		);
+	}
+
+	/**
+	 * `<s>`
+	 *
+	 * @param HTMLAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLElement
+	 */
+	public function samp(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	{
+		return new HTMLElement(
+			"samp",
+			$attributes,
+			$children,
+			$props,
+			HtmlElementOptions::inline(false)
+		);
+	}
+
+	/**
+	 * `<search>`
+	 *
+	 * @param HTMLAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLElement
+	 */
+	public function search(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	{
+		return new HTMLElement(
+			"search",
+			$attributes,
+			$children,
+			$props,
+			HtmlElementOptions::block(false)
+		);
+	}
+
+	/**
+	 * `<section>`
+	 *
+	 * @param HTMLAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLElement
+	 */
+	public function section(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	{
+		return new HTMLElement(
+			"section",
+			$attributes,
+			$children,
+			$props,
+			HtmlElementOptions::block(false)
+		);
+	}
+
+	/**
+	 * `<select>`
+	 *
+	 * @param HTMLSelectAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLSelectElement
+	 */
+	public function select(HTMLSelectAttributes $attributes = new HTMLSelectAttributes(), array $children = [], Props $props = new Props()): HTMLSelectElement
+	{
+		return new HTMLSelectElement(
+			$attributes,
+			$children,
+			$props,
+		);
+	}
+
+	/**
+	 * `<slot>`
+	 *
+	 * @param HTMLSlotAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLSlotElement
+	 */
+	public function slot(HTMLSlotAttributes $attributes = new HTMLSlotAttributes(), array $children = [], Props $props = new Props()): HTMLSlotElement
+	{
+		return new HTMLSlotElement(
+			$attributes,
+			$children,
+			$props,
+		);
+	}
+
+	/**
+	 * `<small>`
+	 *
+	 * @param HTMLAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLElement
+	 */
+	public function small(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	{
+		return new HTMLElement(
+			"small",
+			$attributes,
+			$children,
+			$props,
+			HtmlElementOptions::block(false)
+		);
+	}
+
+	/**
+	 * `<source>`
+	 *
+	 * @param HTMLSourceAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLSourceElement
+	 */
+	public function source(HTMLSourceAttributes $attributes = new HTMLSourceAttributes(), array $children = [], Props $props = new Props()): HTMLSourceElement
+	{
+		return new HTMLSourceElement(
+			$attributes,
+			$children,
+			$props,
+		);
+	}
+
+	/**
+	 * `<span>`
+	 *
+	 * @param HTMLAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLSpanElement
+	 */
+	public function span(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLSpanElement
+	{
+		return new HTMLSpanElement(
+			$attributes,
+			$children,
+			$props,
+		);
+	}
+
+	/**
+	 * `<strong>`
+	 *
+	 * @param HTMLAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLElement
+	 */
+	public function strong(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	{
+		return new HTMLElement(
+			"strong",
+			$attributes,
+			$children,
+			$props,
+			HtmlElementOptions::inline(false)
+		);
+	}
+
+	/**
+	 * `<sub>`
+	 *
+	 * @param HTMLAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLElement
+	 */
+	public function sub(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	{
+		return new HTMLElement(
+			"sub",
+			$attributes,
+			$children,
+			$props,
+			HtmlElementOptions::inline(false)
+		);
+	}
+
+	/**
+	 * `<summary>`
+	 *
+	 * @param HTMLAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLElement
+	 */
+	public function summary(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	{
+		return new HTMLElement(
+			"summary",
+			$attributes,
+			$children,
+			$props,
+			HtmlElementOptions::block(false)
+		);
+	}
+
+	/**
+	 * `<sup>`
+	 *
+	 * @param HTMLAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLElement
+	 */
+	public function sup(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	{
+		return new HTMLElement(
+			"sup",
+			$attributes,
+			$children,
+			$props,
+			HtmlElementOptions::inline(false)
+		);
+	}
+
+
+
+
+
+
+
+
+
+
 
 
 
