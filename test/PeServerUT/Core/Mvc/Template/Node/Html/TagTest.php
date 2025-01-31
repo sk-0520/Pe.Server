@@ -603,9 +603,26 @@ class TagTest extends TestClass
 		$this->assertSame("<q></q>", (string)$actual);
 	}
 
+	public function test_rp()
+	{
+		$tag = new Tag();
+		$actual = $tag->rp();
+		$this->assertSame("<rp></rp>", (string)$actual);
+	}
 
+	public function test_rt()
+	{
+		$tag = new Tag();
+		$actual = $tag->rt();
+		$this->assertSame("<rt></rt>", (string)$actual);
+	}
 
-
+	public function test_ruby()
+	{
+		$tag = new Tag();
+		$actual = $tag->ruby();
+		$this->assertSame("<ruby></ruby>", (string)$actual);
+	}
 
 
 
