@@ -799,7 +799,19 @@ class TagTest extends TestClass
 		$this->assertSame("<ul></ul>", (string)$actual);
 	}
 
+	public function test_var()
+	{
+		$tag = new Tag();
+		$actual = $tag->var();
+		$this->assertSame("<var></var>", (string)$actual);
+	}
 
+	public function test_video()
+	{
+		$tag = new Tag();
+		$actual = $tag->video();
+		$this->assertSame("<video></video>", (string)$actual);
+	}
 
 
 
