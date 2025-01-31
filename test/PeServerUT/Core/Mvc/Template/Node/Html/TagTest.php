@@ -813,17 +813,12 @@ class TagTest extends TestClass
 		$this->assertSame("<video></video>", (string)$actual);
 	}
 
-
-
-
-
-
-
-
-
-
-
-
+	public function test_wbr()
+	{
+		$tag = new Tag();
+		$actual = $tag->wbr();
+		$this->assertSame("<wbr></wbr>", (string)$actual);
+	}
 
 	#endregion
 }
