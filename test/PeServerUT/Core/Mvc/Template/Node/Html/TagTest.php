@@ -785,7 +785,19 @@ class TagTest extends TestClass
 		$this->assertSame("<track />", (string)$actual);
 	}
 
+	public function test_u()
+	{
+		$tag = new Tag();
+		$actual = $tag->u();
+		$this->assertSame("<u></u>", (string)$actual);
+	}
 
+	public function test_ul()
+	{
+		$tag = new Tag();
+		$actual = $tag->ul();
+		$this->assertSame("<ul></ul>", (string)$actual);
+	}
 
 
 
