@@ -715,6 +715,81 @@ class TagTest extends TestClass
 		$this->assertSame("<sup></sup>", (string)$actual);
 	}
 
+	public function test_table()
+	{
+		$tag = new Tag();
+		$actual = $tag->table();
+		$this->assertSame("<table></table>", (string)$actual);
+	}
+
+	public function test_tbody()
+	{
+		$tag = new Tag();
+		$actual = $tag->tbody();
+		$this->assertSame("<tbody></tbody>", (string)$actual);
+	}
+
+	public function test_td()
+	{
+		$tag = new Tag();
+		$actual = $tag->td();
+		$this->assertSame("<td></td>", (string)$actual);
+	}
+
+	public function test_textarea()
+	{
+		$tag = new Tag();
+		$actual = $tag->textarea();
+		$this->assertSame("<textarea></textarea>", (string)$actual);
+	}
+
+	public function test_tfoot()
+	{
+		$tag = new Tag();
+		$actual = $tag->tfoot();
+		$this->assertSame("<tfoot></tfoot>", (string)$actual);
+	}
+
+	public function test_th()
+	{
+		$tag = new Tag();
+		$actual = $tag->th();
+		$this->assertSame("<th></th>", (string)$actual);
+	}
+
+	public function test_thead()
+	{
+		$tag = new Tag();
+		$actual = $tag->thead();
+		$this->assertSame("<thead></thead>", (string)$actual);
+	}
+
+	public function test_time()
+	{
+		$tag = new Tag();
+		$actual = $tag->time();
+		$this->assertSame("<time></time>", (string)$actual);
+	}
+
+	public function test_tr()
+	{
+		$tag = new Tag();
+		$actual = $tag->tr();
+		$this->assertSame("<tr></tr>", (string)$actual);
+	}
+
+	public function test_track()
+	{
+		$tag = new Tag();
+		$actual = $tag->track();
+		$this->assertSame("<track />", (string)$actual);
+	}
+
+
+
+
+
+
 
 
 
