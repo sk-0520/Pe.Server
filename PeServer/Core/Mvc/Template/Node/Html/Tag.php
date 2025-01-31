@@ -43,8 +43,16 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLSelectAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLSlotAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLSourceAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLStyleAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLTableAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLTableColAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLTableDataCellAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLTableHeadCellAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLTableHeaderCellAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLTableRowAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLTemplateAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLTextAreaAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLTimeAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLTrackAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLAnchorElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLAreaElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLAudioElement;
@@ -96,10 +104,17 @@ use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLSourceElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLSpanElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLStyleElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLTableCaptionElement;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLTableCellElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLTableColElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLTableColGroupElement;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLTableElement;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLTableRowElement;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLTableSectionElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLTemplateElement;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLTextAreaElement;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLTimeElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLTitleElement;
+use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLTrackElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\IHTMLModElement;
 use PeServer\Core\Mvc\Template\Node\INode;
 use PeServer\Core\Mvc\Template\Node\Props;
@@ -1802,6 +1817,196 @@ class Tag
 			HtmlElementOptions::inline(false)
 		);
 	}
+
+	/**
+	 * `<table>`
+	 *
+	 * @param HTMLTableAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLTableElement
+	 */
+	public function table(HTMLTableAttributes $attributes = new HTMLTableAttributes(), array $children = [], Props $props = new Props()): HTMLTableElement
+	{
+		return new HTMLTableElement(
+			$attributes,
+			$children,
+			$props,
+		);
+	}
+
+	/**
+	 * `<tbody>`
+	 *
+	 * @param HTMLAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLTableSectionElement
+	 */
+	public function tbody(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLTableSectionElement
+	{
+		return new HTMLTableSectionElement(
+			"tbody",
+			$attributes,
+			$children,
+			$props,
+		);
+	}
+
+	/**
+	 * `<td>`
+	 *
+	 * @param HTMLTableDataCellAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLTableCellElement
+	 */
+	public function td(HTMLTableDataCellAttributes $attributes = new HTMLTableDataCellAttributes(), array $children = [], Props $props = new Props()): HTMLTableCellElement
+	{
+		return new HTMLTableCellElement(
+			"td",
+			$attributes,
+			$children,
+			$props,
+		);
+	}
+
+	/**
+	 * `<textarea>`
+	 *
+	 * @param HTMLTextAreaAttributes $attributes
+	 * @param TextNode $child
+	 * @param Props $props
+	 * @return HTMLTextAreaElement
+	 */
+	public function textarea(HTMLTextAreaAttributes $attributes = new HTMLTextAreaAttributes(), TextNode $child = new TextNode(""), Props $props = new Props()): HTMLTextAreaElement
+	{
+		return new HTMLTextAreaElement(
+			$attributes,
+			$child,
+			$props,
+		);
+	}
+
+	/**
+	 * `<tfoot>`
+	 *
+	 * @param HTMLAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLTableSectionElement
+	 */
+	public function tfoot(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLTableSectionElement
+	{
+		return new HTMLTableSectionElement(
+			"tfoot",
+			$attributes,
+			$children,
+			$props,
+		);
+	}
+
+	/**
+	 * `<th>`
+	 *
+	 * @param HTMLTableHeaderCellAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLTableCellElement
+	 */
+	public function th(HTMLTableHeaderCellAttributes $attributes = new HTMLTableHeaderCellAttributes(), array $children = [], Props $props = new Props()): HTMLTableCellElement
+	{
+		return new HTMLTableCellElement(
+			"th",
+			$attributes,
+			$children,
+			$props,
+		);
+	}
+
+	/**
+	 * `<thead>`
+	 *
+	 * @param HTMLAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLTableSectionElement
+	 */
+	public function thead(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLTableSectionElement
+	{
+		return new HTMLTableSectionElement(
+			"thead",
+			$attributes,
+			$children,
+			$props,
+		);
+	}
+
+	/**
+	 * `<time>`
+	 *
+	 * @param HTMLTimeAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLTimeElement
+	 */
+	public function time(HTMLTimeAttributes $attributes = new HTMLTimeAttributes(), array $children = [], Props $props = new Props()): HTMLTimeElement
+	{
+		return new HTMLTimeElement(
+			$attributes,
+			$children,
+			$props,
+		);
+	}
+
+	/**
+	 * `<tr>`
+	 *
+	 * @param HTMLTableRowAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLTableRowElement
+	 */
+	public function tr(HTMLTableRowAttributes $attributes = new HTMLTableRowAttributes(), array $children = [], Props $props = new Props()): HTMLTableRowElement
+	{
+		return new HTMLTableRowElement(
+			$attributes,
+			$children,
+			$props,
+		);
+	}
+
+	/**
+	 * `<tr>`
+	 *
+	 * @param HTMLTrackAttributes $attributes
+	 * @param Props $props
+	 * @return HTMLTrackElement
+	 */
+	public function track(HTMLTrackAttributes $attributes = new HTMLTrackAttributes(), Props $props = new Props()): HTMLTrackElement
+	{
+		return new HTMLTrackElement(
+			$attributes,
+			$props,
+		);
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
