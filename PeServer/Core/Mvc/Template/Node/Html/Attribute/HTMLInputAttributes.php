@@ -16,7 +16,6 @@ class HTMLInputAttributes extends HtmlAttributes
 	 * @phpstan-param array{
 	 * 	accept?: non-empty-string,
 	 * 	alt?: non-empty-string,
-	 * 	autofocus?: null,
 	 * 	capture?: "user"|"environment",
 	 * 	checked?: null,
 	 * 	dirname?: non-empty-string,
@@ -49,7 +48,6 @@ class HTMLInputAttributes extends HtmlAttributes
 	 * 	value?: int|float|string,
 	 * 	width?: int,
 	 * }&HtmlTagAttributeAlias $attributes
-	 * @phpstan-ignore missingType.iterableValue, parameter.unresolvableType
 	 */
 	public function __construct(array $attributes = [])
 	{

@@ -64,11 +64,12 @@ parameters:
     MediaQueryAlias: 'non-empty-string'
     PermissionsPolicyAlias: 'non-empty-string'
     ReferrerPolicyAlias: '"no-referrer"|"no-referrer-when-downgrade"|"origin"|"origin-when-cross-origin"|"same-origin"|"strict-origin"|"strict-origin-when-cross-origin"|"unsafe-url"'
+    AutocompleteAlias: '"on"|"off"|non-empty-string'
     HtmlTagAttributeAlias: '''
       array{
         accesskey?: non-empty-string,
         autocapitalize?: "off"|"none"|"on"|"sentences"|"words"|"characters",
-        autofocus?: "autofocus"|string,
+        autofocus?: null,
         class?: non-empty-string,
         contenteditable?: boolean|"plaintext-only",
         data?: array<non-empty-string, int|bool|string|null>,

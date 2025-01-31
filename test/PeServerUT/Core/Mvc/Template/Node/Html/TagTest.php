@@ -624,6 +624,100 @@ class TagTest extends TestClass
 		$this->assertSame("<ruby></ruby>", (string)$actual);
 	}
 
+	public function test_s()
+	{
+		$tag = new Tag();
+		$actual = $tag->s();
+		$this->assertSame("<s></s>", (string)$actual);
+	}
+
+	public function test_samp()
+	{
+		$tag = new Tag();
+		$actual = $tag->samp();
+		$this->assertSame("<samp></samp>", (string)$actual);
+	}
+
+	public function test_search()
+	{
+		$tag = new Tag();
+		$actual = $tag->search();
+		$this->assertSame("<search></search>", (string)$actual);
+	}
+
+	public function test_section()
+	{
+		$tag = new Tag();
+		$actual = $tag->section();
+		$this->assertSame("<section></section>", (string)$actual);
+	}
+
+	public function test_select()
+	{
+		$tag = new Tag();
+		$actual = $tag->select();
+		$this->assertSame("<select></select>", (string)$actual);
+	}
+
+	public function test_slot()
+	{
+		$tag = new Tag();
+		$actual = $tag->slot();
+		$this->assertSame("<slot></slot>", (string)$actual);
+	}
+
+	public function test_small()
+	{
+		$tag = new Tag();
+		$actual = $tag->small();
+		$this->assertSame("<small></small>", (string)$actual);
+	}
+
+	public function test_source()
+	{
+		$tag = new Tag();
+		$actual = $tag->source();
+		$this->assertSame("<source></source>", (string)$actual);
+	}
+
+	public function test_span()
+	{
+		$tag = new Tag();
+		$actual = $tag->span();
+		$this->assertSame("<span></span>", (string)$actual);
+	}
+
+	public function test_strong()
+	{
+		$tag = new Tag();
+		$actual = $tag->strong();
+		$this->assertSame("<strong></strong>", (string)$actual);
+	}
+
+	public function test_sub()
+	{
+		$tag = new Tag();
+		$actual = $tag->sub();
+		$this->assertSame("<sub></sub>", (string)$actual);
+	}
+
+	public function test_summary()
+	{
+		$tag = new Tag();
+		$actual = $tag->summary();
+		$this->assertSame("<summary></summary>", (string)$actual);
+	}
+
+	public function test_sup()
+	{
+		$tag = new Tag();
+		$actual = $tag->sup();
+		$this->assertSame("<sup></sup>", (string)$actual);
+	}
+
+
+
+
 
 
 
