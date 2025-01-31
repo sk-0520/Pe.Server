@@ -13,7 +13,6 @@ class HTMLButtonAttributes extends HtmlAttributes
 	 *
 	 * @param array<string,int|bool|string|null> $attributes
 	 * @phpstan-param array{
-	 * 	autofocus?: null,
 	 * 	disabled?: null,
 	 * 	form?: non-empty-string,
 	 * 	formaction?: non-empty-string,
@@ -27,7 +26,7 @@ class HTMLButtonAttributes extends HtmlAttributes
 	 * 	value?: int|bool|string,
 	 * }&HtmlTagAttributeAlias $attributes,
 	 */
-	public function __construct(array $attributes = []) // @phpstan-ignore-line
+	public function __construct(array $attributes = [])
 	{
 		parent::__construct($attributes);
 	}

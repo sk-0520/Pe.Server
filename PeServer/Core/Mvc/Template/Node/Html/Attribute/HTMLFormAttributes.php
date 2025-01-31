@@ -14,7 +14,7 @@ class HTMLFormAttributes extends HtmlAttributes
 	 * @param array<string,int|bool|string|null> $attributes
 	 * @phpstan-param array{
 	 * 	accept-charset?: non-empty-string,
-	 * 	autocomplete?: "on"|"off",
+	 * 	autocomplete?: AutocompleteAlias,
 	 * 	rel?: non-empty-string,
 	 * 	action?: non-empty-string,
 	 * 	enctype?: "application/x-www-form-urlencoded"|"multipart/form-data"|"text/plain",

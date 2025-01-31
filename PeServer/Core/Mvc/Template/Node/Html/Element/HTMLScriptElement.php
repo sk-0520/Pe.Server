@@ -9,7 +9,6 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLScriptAttributes;
 use PeServer\Core\Mvc\Template\Node\INode;
 use PeServer\Core\Mvc\Template\Node\Props;
 use PeServer\Core\Mvc\Template\Node\TextNode;
-use stdClass;
 
 class HTMLScriptElement extends HTMLElement
 {
