@@ -13,23 +13,23 @@ class HTMLQuoteElement extends HTMLElement
 	/**
 	 * 生成。
 	 *
+	 * @param bool $short
 	 * @param HTMLQuoteAttributes $attributes
 	 * @param INode[] $children
 	 * @param Props $props
-	 * @param HtmlElementOptions $options
 	 */
 	public function __construct(
+		bool $short,
 		HTMLQuoteAttributes $attributes = new HTMLQuoteAttributes(),
 		array $children = [],
-		Props $props = new Props(),
-		HtmlElementOptions $options = new HtmlElementOptions(false, false)
+		Props $props = new Props()
 	) {
 		parent::__construct(
-			"blockquote",
+			$short ? "q" : "blockquote",
 			$attributes,
 			$children,
 			$props,
-			$options
+			new HtmlElementOptions($short, false)
 		);
 	}
 }

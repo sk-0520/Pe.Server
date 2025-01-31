@@ -461,10 +461,10 @@ class Tag
 	public function blockquote(HTMLQuoteAttributes $attributes = new HTMLQuoteAttributes(), array $children = [], Props $props = new Props()): HTMLQuoteElement
 	{
 		return new HTMLQuoteElement(
+			false,
 			$attributes,
 			$children,
-			$props,
-			HtmlElementOptions::block(false)
+			$props
 		);
 	}
 
@@ -1493,6 +1493,25 @@ class Tag
 	public function q(HTMLQuoteAttributes $attributes = new HTMLQuoteAttributes(), array $children = [], Props $props = new Props()): HTMLQuoteElement
 	{
 		return new HTMLQuoteElement(
+			true,
+			$attributes,
+			$children,
+			$props
+		);
+	}
+
+	/**
+	 * `<rp>`
+	 *
+	 * @param HTMLAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLElement
+	 */
+	public function rp(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	{
+		return new HTMLElement(
+			"rp",
 			$attributes,
 			$children,
 			$props,
@@ -1500,9 +1519,43 @@ class Tag
 		);
 	}
 
+	/**
+	 * `<rp>`
+	 *
+	 * @param HTMLAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLElement
+	 */
+	public function rt(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	{
+		return new HTMLElement(
+			"rt",
+			$attributes,
+			$children,
+			$props,
+			HtmlElementOptions::inline(false)
+		);
+	}
 
-
-
+	/**
+	 * `<rp>`
+	 *
+	 * @param HTMLAttributes $attributes
+	 * @param INode[] $children
+	 * @param Props $props
+	 * @return HTMLElement
+	 */
+	public function ruby(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	{
+		return new HTMLElement(
+			"ruby",
+			$attributes,
+			$children,
+			$props,
+			HtmlElementOptions::inline(false)
+		);
+	}
 
 
 
