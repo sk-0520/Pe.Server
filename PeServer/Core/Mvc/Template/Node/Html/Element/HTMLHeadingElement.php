@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc\Template\Node\Html\Element;
 
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HtmlAttributes;
-use PeServer\Core\Mvc\Template\Node\INode;
+use PeServer\Core\Mvc\Template\Node\Html\Content\HtmlContent;
 use PeServer\Core\Mvc\Template\Node\Props;
 use PeServer\Core\Throws\ArgumentException;
 
@@ -16,13 +16,13 @@ class HTMLHeadingElement extends HTMLElement
 	 *
 	 * @param 1|2|3|4|5|6 $level
 	 * @param HtmlAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 */
 	public function __construct(
 		int $level,
 		HtmlAttributes $attributes = new HtmlAttributes(),
-		array $children = [],
+		HtmlContent $content = new HtmlContent(),
 		Props $props = new Props()
 	) {
 		//@phpstan-ignore smaller.alwaysFalse, smaller.alwaysFalse, booleanOr.alwaysFalse
@@ -33,7 +33,7 @@ class HTMLHeadingElement extends HTMLElement
 		parent::__construct(
 			"h" . (string)$level,
 			$attributes,
-			$children,
+			$content,
 			$props,
 			HtmlElementOptions::block(false)
 		);

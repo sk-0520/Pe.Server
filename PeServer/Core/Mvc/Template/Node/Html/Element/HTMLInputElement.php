@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc\Template\Node\Html\Element;
 
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLInputAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Content\HtmlNoneContent;
+use PeServer\Core\Mvc\Template\Node\NoneContent;
 use PeServer\Core\Mvc\Template\Node\Props;
 
 class HTMLInputElement extends HTMLElement
@@ -22,7 +24,7 @@ class HTMLInputElement extends HTMLElement
 		parent::__construct(
 			"input",
 			$attributes,
-			[],
+			new NoneContent(),
 			$props,
 			HtmlElementOptions::inline(true)
 		);

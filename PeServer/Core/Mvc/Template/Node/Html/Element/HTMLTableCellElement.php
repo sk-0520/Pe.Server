@@ -6,7 +6,7 @@ namespace PeServer\Core\Mvc\Template\Node\Html\Element;
 
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLTableDataCellAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLTableHeaderCellAttributes;
-use PeServer\Core\Mvc\Template\Node\INode;
+use PeServer\Core\Mvc\Template\Node\Html\Content\HtmlContent;
 use PeServer\Core\Mvc\Template\Node\Props;
 
 /**  */
@@ -17,13 +17,13 @@ class HTMLTableCellElement extends HTMLElement
 	 *
 	 * @param "td"|"th" $tagName
 	 * @param HTMLTableDataCellAttributes|HTMLTableHeaderCellAttributes|null $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 */
 	public function __construct(
 		string $tagName,
 		HTMLTableDataCellAttributes|HTMLTableHeaderCellAttributes|null $attributes = null,
-		array $children = [],
+		HtmlContent $content = new HtmlContent(),
 		Props $props = new Props()
 	) {
 		parent::__construct(
@@ -32,7 +32,7 @@ class HTMLTableCellElement extends HTMLElement
 				"td" => new HTMLTableDataCellAttributes(),
 				"th" => new HTMLTableHeaderCellAttributes(),
 			},
-			$children,
+			$content,
 			$props,
 			HtmlElementOptions::block(false)
 		);
