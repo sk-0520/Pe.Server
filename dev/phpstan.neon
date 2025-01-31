@@ -65,6 +65,7 @@ parameters:
     PermissionsPolicyAlias: 'non-empty-string'
     ReferrerPolicyAlias: '"no-referrer"|"no-referrer-when-downgrade"|"origin"|"origin-when-cross-origin"|"same-origin"|"strict-origin"|"strict-origin-when-cross-origin"|"unsafe-url"'
     AutocompleteAlias: '"on"|"off"|non-empty-string'
+    CrossOriginAlias: '"anonymous"|"use-credentials"'
     HtmlTagAttributeAlias: '''
       array{
         accesskey?: non-empty-string,
