@@ -15,7 +15,7 @@ class HTMLImageAttributes extends HtmlAttributes
 	 * @phpstan-param array{
 	 * 	alt?: non-empty-string,
 	 * 	decoding?: "sync"|"async"|"auto",
-	 * 	crossorigin?: "anonymous"|"use-credentials"|null,
+	 * 	crossorigin?: CrossOriginAlias,
 	 * 	elementtiming?: non-empty-string,
 	 * 	fetchpriority?: "high"|"low"|"auto",
 	 * 	height?: int,

@@ -14,7 +14,7 @@ class HTMLLinkAttributes extends HtmlAttributes
 	 * @param array<string,int|bool|string|null> $attributes
 	 * @phpstan-param array{
 	 * 	as?: "audio"|"document"|"embed"|"fetch"|"font"|"image"|"object"|"script"|"style"|"track"|"video"|"worker",
-	 * 	crossorigin?: "anonymous"|"use-credentials",
+	 * 	crossorigin?: CrossOriginAlias,
 	 * 	disabled?: bool|null|"false",
 	 * 	fetchpriority?: "high"|"low"|"auto",
 	 * 	href?: non-empty-string,
