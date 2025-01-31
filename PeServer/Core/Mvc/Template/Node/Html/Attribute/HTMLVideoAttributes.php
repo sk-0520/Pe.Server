@@ -6,27 +6,26 @@ namespace PeServer\Core\Mvc\Template\Node\Html\Attribute;
 
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HtmlAttributes;
 
-class HTMLImageAttributes extends HtmlAttributes
+class HTMLVideoAttributes extends HtmlAttributes
 {
 	/**
 	 * 生成。
 	 *
 	 * @param array<string,int|bool|string|null> $attributes
 	 * @phpstan-param array{
-	 * 	alt?: non-empty-string,
-	 * 	decoding?: "sync"|"async"|"auto",
+	 * 	autoplay?: null,
+	 * 	controls?: null,
+	 * 	controlslist?: "nodownload"|"nofullscreen"|"noremoteplayback",
 	 * 	crossorigin?: CrossOriginAlias,
-	 * 	elementtiming?: non-empty-string,
-	 * 	fetchpriority?: "high"|"low"|"auto",
-	 * 	height?: int,
-	 * 	ismap?: null,
-	 * 	loading?: "eager"|"lazy",
-	 * 	referrerpolicy?: ReferrerPolicyAlias,
-	 * 	sizes?: non-empty-string,
+	 * 	disableremoteplayback?: null,
+	 * 	height?: non-negative-int,
+	 * 	loop?: null,
+	 * 	muted?: null,
+	 * 	playsinline?: null,
+	 * 	poster?: non-empty-string,
+	 * 	preload?: "none"|"metadata"|"auto",
 	 * 	src?: non-empty-string,
-	 * 	srcset?: non-empty-string,
-	 * 	width?: int,
-	 * 	usemap?: string,
+	 * 	width?: non-negative-int,
 	 * }&HtmlTagAttributeAlias $attributes
 	 */
 	public function __construct(array $attributes = [])

@@ -16,7 +16,7 @@ class HTMLAudioAttributes extends HtmlAttributes
 	 * 	autoplay?: null,
 	 * 	controls?: null,
 	 * 	controlslist?: "nodownload"|"nofullscreen"|"noremoteplayback",
-	 * 	crossorigin?: "anonymous"|"use-credentials",
+	 * 	crossorigin?: CrossOriginAlias,
 	 * 	disableremoteplayback?: null,
 	 * 	loop?: null,
 	 * 	muted?: bool,
