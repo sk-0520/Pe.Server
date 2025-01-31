@@ -120,8 +120,9 @@ use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLTrackElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLUListElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\HTMLVideoElement;
 use PeServer\Core\Mvc\Template\Node\Html\Element\IHTMLModElement;
-use PeServer\Core\Mvc\Template\Node\INode;
+use PeServer\Core\Mvc\Template\Node\Html\Content\HtmlContent;
 use PeServer\Core\Mvc\Template\Node\Props;
+use PeServer\Core\Mvc\Template\Node\TextContent;
 use PeServer\Core\Mvc\Template\Node\TextNode;
 use Smarty\FunctionHandler\HtmlOptions;
 
@@ -136,15 +137,15 @@ class Tag
 	 * <html>
 	 *
 	 * @param HTMLHtmlAttributes $attributes
-	 * @param array<HTMLHeadElement|HTMLBodyElement> $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLHtmlElement
 	 */
-	public function html(HTMLHtmlAttributes $attributes = new HTMLHtmlAttributes(), array $children = [], Props $props = new Props()): HTMLHtmlElement
+	public function html(HTMLHtmlAttributes $attributes = new HTMLHtmlAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLHtmlElement
 	{
 		return new HTMLHtmlElement(
 			$attributes,
-			$children,
+			$content,
 			$props
 		);
 	}
@@ -153,15 +154,15 @@ class Tag
 	 * `<head>`
 	 *
 	 * @param HTMLHeadAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLHeadElement
 	 */
-	public function head(HTMLHeadAttributes $attributes = new HTMLHeadAttributes(), array $children = [], Props $props = new Props()): HTMLHeadElement
+	public function head(HTMLHeadAttributes $attributes = new HTMLHeadAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLHeadElement
 	{
 		return new HTMLHeadElement(
 			$attributes,
-			$children,
+			$content,
 			$props
 		);
 	}
@@ -170,15 +171,15 @@ class Tag
 	 * `<title>`
 	 *
 	 * @param HtmlAttributes $attributes
-	 * @param INode $child
+	 * @param TextContent $content
 	 * @param Props $props
 	 * @return HTMLTitleElement
 	 */
-	public function title(HtmlAttributes $attributes = new HtmlAttributes(), INode $child = new TextNode(""), Props $props = new Props()): HTMLTitleElement
+	public function title(HtmlAttributes $attributes = new HtmlAttributes(), TextContent $content = new TextContent(""), Props $props = new Props()): HTMLTitleElement
 	{
 		return new HTMLTitleElement(
 			$attributes,
-			$child,
+			$content,
 			$props
 		);
 	}
@@ -213,20 +214,20 @@ class Tag
 		);
 	}
 
-	public function style(HTMLStyleAttributes $attributes = new HTMLStyleAttributes(), INode $child = new TextNode(''), Props $props = new Props()): HTMLStyleElement
+	public function style(HTMLStyleAttributes $attributes = new HTMLStyleAttributes(), TextContent $content = new TextContent(), Props $props = new Props()): HTMLStyleElement
 	{
 		return new HTMLStyleElement(
 			$attributes,
-			$child,
+			$content,
 			$props
 		);
 	}
 
-	public function script(HTMLScriptAttributes $attributes = new HTMLScriptAttributes(), INode $child = new TextNode(''), Props $props = new Props()): HTMLScriptElement
+	public function script(HTMLScriptAttributes $attributes = new HTMLScriptAttributes(), TextContent $content = new TextContent(), Props $props = new Props()): HTMLScriptElement
 	{
 		return new HTMLScriptElement(
 			$attributes,
-			$child,
+			$content,
 			$props
 		);
 	}
@@ -243,16 +244,16 @@ class Tag
 	 * `<noscript>`
 	 *
 	 * @param HTMLAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLElement
 	 */
-	public function noscript(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	public function noscript(HTMLAttributes $attributes = new HTMLAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLElement
 	{
 		return new HTMLElement(
 			"noscript",
 			$attributes,
-			$children,
+			$content,
 			$props,
 			HtmlElementOptions::block(false)
 		);
@@ -262,15 +263,15 @@ class Tag
 	 * `<template>`
 	 *
 	 * @param HTMLTemplateAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLTemplateElement
 	 */
-	public function template(HTMLTemplateAttributes $attributes = new HTMLTemplateAttributes(), array $children = [], Props $props = new Props()): HTMLTemplateElement
+	public function template(HTMLTemplateAttributes $attributes = new HTMLTemplateAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLTemplateElement
 	{
 		return new HTMLTemplateElement(
 			$attributes,
-			$children,
+			$content,
 			$props
 		);
 	}
@@ -279,15 +280,15 @@ class Tag
 	 * `<body>`
 	 *
 	 * @param HTMLBodyAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLBodyElement
 	 */
-	public function body(HTMLBodyAttributes $attributes = new HTMLBodyAttributes(), array $children = [], Props $props = new Props()): HTMLBodyElement
+	public function body(HTMLBodyAttributes $attributes = new HTMLBodyAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLBodyElement
 	{
 		return new HTMLBodyElement(
 			$attributes,
-			$children,
+			$content,
 			$props
 		);
 	}
@@ -296,15 +297,15 @@ class Tag
 	 * `<a>`
 	 *
 	 * @param HTMLAnchorAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLAnchorElement
 	 */
-	public function a(HTMLAnchorAttributes $attributes = new HTMLAnchorAttributes(), array $children = [], Props $props = new Props()): HTMLAnchorElement
+	public function a(HTMLAnchorAttributes $attributes = new HTMLAnchorAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLAnchorElement
 	{
 		return new HTMLAnchorElement(
 			$attributes,
-			$children,
+			$content,
 			$props
 		);
 	}
@@ -313,16 +314,16 @@ class Tag
 	 * `<abbr>`
 	 *
 	 * @param HTMLAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLElement
 	 */
-	public function abbr(HTMLAttributes $attributes = new HTMLAnchorAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	public function abbr(HTMLAttributes $attributes = new HTMLAnchorAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLElement
 	{
 		return new HTMLElement(
 			"abbr",
 			$attributes,
-			$children,
+			$content,
 			$props,
 			HtmlElementOptions::inline(false)
 		);
@@ -332,16 +333,16 @@ class Tag
 	 * `<abbr>`
 	 *
 	 * @param HTMLAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLElement
 	 */
-	public function address(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	public function address(HTMLAttributes $attributes = new HTMLAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLElement
 	{
 		return new HTMLElement(
 			"address",
 			$attributes,
-			$children,
+			$content,
 			$props,
 			HtmlElementOptions::block(false)
 		);
@@ -351,15 +352,15 @@ class Tag
 	 * `<area>`
 	 *
 	 * @param HTMLAreaAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLAreaElement
 	 */
-	public function area(HTMLAreaAttributes $attributes = new HTMLAreaAttributes(), array $children = [], Props $props = new Props()): HTMLAreaElement
+	public function area(HTMLAreaAttributes $attributes = new HTMLAreaAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLAreaElement
 	{
 		return new HTMLAreaElement(
 			$attributes,
-			$children,
+			$content,
 			$props
 		);
 	}
@@ -368,16 +369,16 @@ class Tag
 	 * `<article>`
 	 *
 	 * @param HTMLAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLElement
 	 */
-	public function article(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	public function article(HTMLAttributes $attributes = new HTMLAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLElement
 	{
 		return new HTMLElement(
 			"article",
 			$attributes,
-			$children,
+			$content,
 			$props,
 			HtmlElementOptions::block(false)
 		);
@@ -387,16 +388,16 @@ class Tag
 	 * `<aside>`
 	 *
 	 * @param HTMLAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLElement
 	 */
-	public function aside(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	public function aside(HTMLAttributes $attributes = new HTMLAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLElement
 	{
 		return new HTMLElement(
 			"aside",
 			$attributes,
-			$children,
+			$content,
 			$props,
 			HtmlElementOptions::block(false)
 		);
@@ -406,15 +407,15 @@ class Tag
 	 * `<area>`
 	 *
 	 * @param HTMLAudioAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLAudioElement
 	 */
-	public function audio(HTMLAudioAttributes $attributes = new HTMLAudioAttributes(), array $children = [], Props $props = new Props()): HTMLAudioElement
+	public function audio(HTMLAudioAttributes $attributes = new HTMLAudioAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLAudioElement
 	{
 		return new HTMLAudioElement(
 			$attributes,
-			$children,
+			$content,
 			$props
 		);
 	}
@@ -423,16 +424,16 @@ class Tag
 	 * `<b>`
 	 *
 	 * @param HTMLAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLElement
 	 */
-	public function b(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	public function b(HTMLAttributes $attributes = new HTMLAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLElement
 	{
 		return new HTMLElement(
 			"b",
 			$attributes,
-			$children,
+			$content,
 			$props,
 			HtmlElementOptions::inline(false)
 		);
@@ -442,16 +443,16 @@ class Tag
 	 * `<bdi>`
 	 *
 	 * @param HTMLAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLElement
 	 */
-	public function bdi(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	public function bdi(HTMLAttributes $attributes = new HTMLAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLElement
 	{
 		return new HTMLElement(
 			"bdi",
 			$attributes,
-			$children,
+			$content,
 			$props,
 			HtmlElementOptions::inline(false)
 		);
@@ -461,16 +462,16 @@ class Tag
 	 * `<bdo>`
 	 *
 	 * @param HTMLAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLElement
 	 */
-	public function bdo(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	public function bdo(HTMLAttributes $attributes = new HTMLAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLElement
 	{
 		return new HTMLElement(
 			"bdo",
 			$attributes,
-			$children,
+			$content,
 			$props,
 			HtmlElementOptions::inline(false)
 		);
@@ -480,16 +481,16 @@ class Tag
 	 * `<blockquote>`
 	 *
 	 * @param HTMLQuoteAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLQuoteElement
 	 */
-	public function blockquote(HTMLQuoteAttributes $attributes = new HTMLQuoteAttributes(), array $children = [], Props $props = new Props()): HTMLQuoteElement
+	public function blockquote(HTMLQuoteAttributes $attributes = new HTMLQuoteAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLQuoteElement
 	{
 		return new HTMLQuoteElement(
 			false,
 			$attributes,
-			$children,
+			$content,
 			$props
 		);
 	}
@@ -513,15 +514,15 @@ class Tag
 	 * `<button>`
 	 *
 	 * @param HTMLButtonAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLButtonElement
 	 */
-	public function button(HTMLButtonAttributes $attributes = new HTMLButtonAttributes(), array $children = [], Props $props = new Props()): HTMLButtonElement
+	public function button(HTMLButtonAttributes $attributes = new HTMLButtonAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLButtonElement
 	{
 		return new HTMLButtonElement(
 			$attributes,
-			$children,
+			$content,
 			$props
 		);
 	}
@@ -530,15 +531,15 @@ class Tag
 	 * `<canvas>`
 	 *
 	 * @param HTMLCanvasAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLCanvasElement
 	 */
-	public function canvas(HTMLCanvasAttributes $attributes = new HTMLCanvasAttributes(), array $children = [], Props $props = new Props()): HTMLCanvasElement
+	public function canvas(HTMLCanvasAttributes $attributes = new HTMLCanvasAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLCanvasElement
 	{
 		return new HTMLCanvasElement(
 			$attributes,
-			$children,
+			$content,
 			$props
 		);
 	}
@@ -547,15 +548,15 @@ class Tag
 	 * `<caption>`
 	 *
 	 * @param HTMLAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLTableCaptionElement
 	 */
-	public function caption(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLTableCaptionElement
+	public function caption(HTMLAttributes $attributes = new HTMLAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLTableCaptionElement
 	{
 		return new HTMLTableCaptionElement(
 			$attributes,
-			$children,
+			$content,
 			$props
 		);
 	}
@@ -564,16 +565,16 @@ class Tag
 	 * `<bdo>`
 	 *
 	 * @param HTMLAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLElement
 	 */
-	public function cite(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	public function cite(HTMLAttributes $attributes = new HTMLAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLElement
 	{
 		return new HTMLElement(
 			"cite",
 			$attributes,
-			$children,
+			$content,
 			$props,
 			HtmlElementOptions::inline(false)
 		);
@@ -583,16 +584,16 @@ class Tag
 	 * `<code>`
 	 *
 	 * @param HTMLAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLElement
 	 */
-	public function code(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	public function code(HTMLAttributes $attributes = new HTMLAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLElement
 	{
 		return new HTMLElement(
 			"code",
 			$attributes,
-			$children,
+			$content,
 			$props,
 			HtmlElementOptions::inline(false)
 		);
@@ -617,15 +618,15 @@ class Tag
 	 * `<colgroup>`
 	 *
 	 * @param HTMLTableColAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLTableColGroupElement
 	 */
-	public function colgroup(HTMLTableColAttributes $attributes = new HTMLTableColAttributes(), array $children = [], Props $props = new Props()): HTMLTableColGroupElement
+	public function colgroup(HTMLTableColAttributes $attributes = new HTMLTableColAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLTableColGroupElement
 	{
 		return new HTMLTableColGroupElement(
 			$attributes,
-			$children,
+			$content,
 			$props
 		);
 	}
@@ -634,15 +635,15 @@ class Tag
 	 * `<data>`
 	 *
 	 * @param HTMLDataAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLDataElement
 	 */
-	public function data(HTMLDataAttributes $attributes = new HTMLDataAttributes(), array $children = [], Props $props = new Props()): HTMLDataElement
+	public function data(HTMLDataAttributes $attributes = new HTMLDataAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLDataElement
 	{
 		return new HTMLDataElement(
 			$attributes,
-			$children,
+			$content,
 			$props
 		);
 	}
@@ -651,15 +652,15 @@ class Tag
 	 * `<data>`
 	 *
 	 * @param HTMLDataAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLDataListElement
 	 */
-	public function datalist(HTMLDataAttributes $attributes = new HTMLDataAttributes(), array $children = [], Props $props = new Props()): HTMLDataListElement
+	public function datalist(HTMLDataAttributes $attributes = new HTMLDataAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLDataListElement
 	{
 		return new HTMLDataListElement(
 			$attributes,
-			$children,
+			$content,
 			$props
 		);
 	}
@@ -668,16 +669,16 @@ class Tag
 	 * `<dd>`
 	 *
 	 * @param HTMLAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLElement
 	 */
-	public function dd(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	public function dd(HTMLAttributes $attributes = new HTMLAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLElement
 	{
 		return new HTMLElement(
 			"dd",
 			$attributes,
-			$children,
+			$content,
 			$props,
 			HtmlElementOptions::block(false)
 		);
@@ -687,17 +688,17 @@ class Tag
 	 * `<dd>`
 	 *
 	 * @param HTMLModAttribute $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLElement&IHTMLModElement
 	 */
-	public function del(HTMLModAttribute $attributes = new HTMLModAttribute(), array $children = [], Props $props = new Props()): HTMLElement&IHTMLModElement
+	public function del(HTMLModAttribute $attributes = new HTMLModAttribute(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLElement&IHTMLModElement
 	{
 		//phpcs:ignore PSR12.Classes.AnonClassDeclaration.SpaceAfterKeyword
 		return new class(
 			"del",
 			$attributes,
-			$children,
+			$content,
 			$props,
 			HtmlElementOptions::block(false)
 		) extends HTMLElement implements IHTMLModElement
@@ -710,15 +711,15 @@ class Tag
 	 * `<dd>`
 	 *
 	 * @param HTMLDetailsAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLDetailsElement
 	 */
-	public function details(HTMLDetailsAttributes $attributes = new HTMLDetailsAttributes(), array $children = [], Props $props = new Props()): HTMLDetailsElement
+	public function details(HTMLDetailsAttributes $attributes = new HTMLDetailsAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLDetailsElement
 	{
 		return new HTMLDetailsElement(
 			$attributes,
-			$children,
+			$content,
 			$props
 		);
 	}
@@ -727,16 +728,16 @@ class Tag
 	 * `<dd>`
 	 *
 	 * @param HTMLAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLElement
 	 */
-	public function dfn(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	public function dfn(HTMLAttributes $attributes = new HTMLAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLElement
 	{
 		return new HTMLElement(
 			"dfn",
 			$attributes,
-			$children,
+			$content,
 			$props,
 			HtmlElementOptions::inline(false)
 		);
@@ -746,15 +747,15 @@ class Tag
 	 * `<dd>`
 	 *
 	 * @param HTMLDialogAttribute $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLDialogElement
 	 */
-	public function dialog(HTMLDialogAttribute $attributes = new HTMLDialogAttribute(), array $children = [], Props $props = new Props()): HTMLDialogElement
+	public function dialog(HTMLDialogAttribute $attributes = new HTMLDialogAttribute(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLDialogElement
 	{
 		return new HTMLDialogElement(
 			$attributes,
-			$children,
+			$content,
 			$props
 		);
 	}
@@ -763,15 +764,15 @@ class Tag
 	 * `<div>`
 	 *
 	 * @param HtmlAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLDivElement
 	 */
-	public function div(HtmlAttributes $attributes = new HtmlAttributes(), array $children = [], Props $props = new Props()): HTMLDivElement
+	public function div(HtmlAttributes $attributes = new HtmlAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLDivElement
 	{
 		return new HTMLDivElement(
 			$attributes,
-			$children,
+			$content,
 			$props
 		);
 	}
@@ -780,15 +781,15 @@ class Tag
 	 * `<div>`
 	 *
 	 * @param HtmlAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLDListElement
 	 */
-	public function dl(HtmlAttributes $attributes = new HtmlAttributes(), array $children = [], Props $props = new Props()): HTMLDListElement
+	public function dl(HtmlAttributes $attributes = new HtmlAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLDListElement
 	{
 		return new HTMLDListElement(
 			$attributes,
-			$children,
+			$content,
 			$props
 		);
 	}
@@ -797,16 +798,16 @@ class Tag
 	 * `<dt>`
 	 *
 	 * @param HTMLAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLElement
 	 */
-	public function dt(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	public function dt(HTMLAttributes $attributes = new HTMLAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLElement
 	{
 		return new HTMLElement(
 			"dt",
 			$attributes,
-			$children,
+			$content,
 			$props,
 			HtmlElementOptions::inline(false)
 		);
@@ -816,16 +817,16 @@ class Tag
 	 * `<em>`
 	 *
 	 * @param HTMLAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLElement
 	 */
-	public function em(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	public function em(HTMLAttributes $attributes = new HTMLAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLElement
 	{
 		return new HTMLElement(
 			"em",
 			$attributes,
-			$children,
+			$content,
 			$props,
 			HtmlElementOptions::inline(false)
 		);
@@ -850,15 +851,15 @@ class Tag
 	 * `<fieldset>`
 	 *
 	 * @param HTMLFieldSetAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLFieldSetElement
 	 */
-	public function fieldset(HTMLFieldSetAttributes $attributes = new HTMLFieldSetAttributes(), array $children = [], Props $props = new Props()): HTMLFieldSetElement
+	public function fieldset(HTMLFieldSetAttributes $attributes = new HTMLFieldSetAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLFieldSetElement
 	{
 		return new HTMLFieldSetElement(
 			$attributes,
-			$children,
+			$content,
 			$props
 		);
 	}
@@ -867,16 +868,16 @@ class Tag
 	 * `<figcaption>`
 	 *
 	 * @param HTMLAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLElement
 	 */
-	public function figcaption(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	public function figcaption(HTMLAttributes $attributes = new HTMLAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLElement
 	{
 		return new HTMLElement(
 			"figcaption",
 			$attributes,
-			$children,
+			$content,
 			$props,
 			HtmlElementOptions::inline(false)
 		);
@@ -886,16 +887,16 @@ class Tag
 	 * `<figure>`
 	 *
 	 * @param HTMLAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLElement
 	 */
-	public function figure(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	public function figure(HTMLAttributes $attributes = new HTMLAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLElement
 	{
 		return new HTMLElement(
 			"figure",
 			$attributes,
-			$children,
+			$content,
 			$props,
 			HtmlElementOptions::block(false)
 		);
@@ -905,16 +906,16 @@ class Tag
 	 * `<footer>`
 	 *
 	 * @param HTMLAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLElement
 	 */
-	public function footer(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	public function footer(HTMLAttributes $attributes = new HTMLAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLElement
 	{
 		return new HTMLElement(
 			"footer",
 			$attributes,
-			$children,
+			$content,
 			$props,
 			HtmlElementOptions::block(false)
 		);
@@ -924,15 +925,15 @@ class Tag
 	 * `<form>`
 	 *
 	 * @param HTMLFormAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLFormElement
 	 */
-	public function form(HTMLFormAttributes $attributes = new HTMLFormAttributes(), array $children = [], Props $props = new Props()): HTMLFormElement
+	public function form(HTMLFormAttributes $attributes = new HTMLFormAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLFormElement
 	{
 		return new HTMLFormElement(
 			$attributes,
-			$children,
+			$content,
 			$props
 		);
 	}
@@ -942,16 +943,16 @@ class Tag
 	 *
 	 * @param 1|2|3|4|5|6 $level
 	 * @param HtmlAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLHeadingElement
 	 */
-	public function h(int $level, HtmlAttributes $attributes = new HtmlAttributes(), array $children = [], Props $props = new Props()): HTMLHeadingElement
+	public function h(int $level, HtmlAttributes $attributes = new HtmlAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLHeadingElement
 	{
 		return new HTMLHeadingElement(
 			$level,
 			$attributes,
-			$children,
+			$content,
 			$props
 		);
 	}
@@ -960,94 +961,94 @@ class Tag
 	 * `<h1>`
 	 *
 	 * @param HtmlAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLHeadingElement
 	 */
-	public function h1(HtmlAttributes $attributes = new HtmlAttributes(), array $children = [], Props $props = new Props()): HTMLHeadingElement
+	public function h1(HtmlAttributes $attributes = new HtmlAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLHeadingElement
 	{
-		return $this->h(1, $attributes, $children, $props);
+		return $this->h(1, $attributes, $content, $props);
 	}
 
 	/**
 	 * `<h2>`
 	 *
 	 * @param HtmlAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLHeadingElement
 	 */
-	public function h2(HtmlAttributes $attributes = new HtmlAttributes(), array $children = [], Props $props = new Props()): HTMLHeadingElement
+	public function h2(HtmlAttributes $attributes = new HtmlAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLHeadingElement
 	{
-		return $this->h(2, $attributes, $children, $props);
+		return $this->h(2, $attributes, $content, $props);
 	}
 
 	/**
 	 * `<h3>`
 	 *
 	 * @param HtmlAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLHeadingElement
 	 */
-	public function h3(HtmlAttributes $attributes = new HtmlAttributes(), array $children = [], Props $props = new Props()): HTMLHeadingElement
+	public function h3(HtmlAttributes $attributes = new HtmlAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLHeadingElement
 	{
-		return $this->h(3, $attributes, $children, $props);
+		return $this->h(3, $attributes, $content, $props);
 	}
 
 	/**
 	 * `<h4>`
 	 *
 	 * @param HtmlAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLHeadingElement
 	 */
-	public function h4(HtmlAttributes $attributes = new HtmlAttributes(), array $children = [], Props $props = new Props()): HTMLHeadingElement
+	public function h4(HtmlAttributes $attributes = new HtmlAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLHeadingElement
 	{
-		return $this->h(4, $attributes, $children, $props);
+		return $this->h(4, $attributes, $content, $props);
 	}
 
 	/**
 	 * `<h5>`
 	 *
 	 * @param HtmlAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLHeadingElement
 	 */
-	public function h5(HtmlAttributes $attributes = new HtmlAttributes(), array $children = [], Props $props = new Props()): HTMLHeadingElement
+	public function h5(HtmlAttributes $attributes = new HtmlAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLHeadingElement
 	{
-		return $this->h(5, $attributes, $children, $props);
+		return $this->h(5, $attributes, $content, $props);
 	}
 
 	/**
 	 * `<h6>`
 	 *
 	 * @param HtmlAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLHeadingElement
 	 */
-	public function h6(HtmlAttributes $attributes = new HtmlAttributes(), array $children = [], Props $props = new Props()): HTMLHeadingElement
+	public function h6(HtmlAttributes $attributes = new HtmlAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLHeadingElement
 	{
-		return $this->h(6, $attributes, $children, $props);
+		return $this->h(6, $attributes, $content, $props);
 	}
 
 	/**
 	 * `<header>`
 	 *
 	 * @param HTMLAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLElement
 	 */
-	public function header(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	public function header(HTMLAttributes $attributes = new HTMLAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLElement
 	{
 		return new HTMLElement(
 			"header",
 			$attributes,
-			$children,
+			$content,
 			$props,
 			HtmlElementOptions::block(false)
 		);
@@ -1057,16 +1058,16 @@ class Tag
 	 * `<header>`
 	 *
 	 * @param HTMLAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLElement
 	 */
-	public function hgroup(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	public function hgroup(HTMLAttributes $attributes = new HTMLAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLElement
 	{
 		return new HTMLElement(
 			"hgroup",
 			$attributes,
-			$children,
+			$content,
 			$props,
 			HtmlElementOptions::block(false)
 		);
@@ -1091,16 +1092,16 @@ class Tag
 	 * `<i>`
 	 *
 	 * @param HTMLAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLElement
 	 */
-	public function i(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	public function i(HTMLAttributes $attributes = new HTMLAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLElement
 	{
 		return new HTMLElement(
 			"i",
 			$attributes,
-			$children,
+			$content,
 			$props,
 			HtmlElementOptions::inline(false)
 		);
@@ -1110,15 +1111,15 @@ class Tag
 	 * `<iframe>`
 	 *
 	 * @param HTMLIFrameAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLIFrameElement
 	 */
-	public function iframe(HTMLIFrameAttributes $attributes = new HTMLIFrameAttributes(), array $children = [], Props $props = new Props()): HTMLIFrameElement
+	public function iframe(HTMLIFrameAttributes $attributes = new HTMLIFrameAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLIFrameElement
 	{
 		return new HTMLIFrameElement(
 			$attributes,
-			$children,
+			$content,
 			$props
 		);
 	}
@@ -1157,17 +1158,17 @@ class Tag
 	 * `<i>`
 	 *
 	 * @param HTMLInsAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLElement&IHTMLModElement
 	 */
-	public function ins(HTMLInsAttributes $attributes = new HTMLInsAttributes(), array $children = [], Props $props = new Props()): HTMLElement&IHTMLModElement
+	public function ins(HTMLInsAttributes $attributes = new HTMLInsAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLElement&IHTMLModElement
 	{
 		//phpcs:ignore PSR12.Classes.AnonClassDeclaration.SpaceAfterKeyword
 		return new class(
 			"ins",
 			$attributes,
-			$children,
+			$content,
 			$props,
 			HtmlElementOptions::block(false)
 		) extends HTMLElement implements IHTMLModElement
@@ -1180,16 +1181,16 @@ class Tag
 	 * `<i>`
 	 *
 	 * @param HTMLInsAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLElement
 	 */
-	public function kbd(HTMLInsAttributes $attributes = new HTMLInsAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	public function kbd(HTMLInsAttributes $attributes = new HTMLInsAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLElement
 	{
 		return new HTMLElement(
 			"kbd",
 			$attributes,
-			$children,
+			$content,
 			$props,
 			HtmlElementOptions::block(false)
 		);
@@ -1199,15 +1200,15 @@ class Tag
 	 * `<label>`
 	 *
 	 * @param HTMLLabelAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLLabelElement
 	 */
-	public function label(HTMLLabelAttributes $attributes = new HTMLLabelAttributes(), array $children = [], Props $props = new Props()): HTMLLabelElement
+	public function label(HTMLLabelAttributes $attributes = new HTMLLabelAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLLabelElement
 	{
 		return new HTMLLabelElement(
 			$attributes,
-			$children,
+			$content,
 			$props
 		);
 	}
@@ -1216,15 +1217,15 @@ class Tag
 	 * `<legend>`
 	 *
 	 * @param HTMLAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLLegendElement
 	 */
-	public function legend(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLLegendElement
+	public function legend(HTMLAttributes $attributes = new HTMLAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLLegendElement
 	{
 		return new HTMLLegendElement(
 			$attributes,
-			$children,
+			$content,
 			$props
 		);
 	}
@@ -1233,15 +1234,15 @@ class Tag
 	 * `<li>`
 	 *
 	 * @param HTMLLIAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLLIElement
 	 */
-	public function li(HTMLLIAttributes $attributes = new HTMLLIAttributes(), array $children = [], Props $props = new Props()): HTMLLIElement
+	public function li(HTMLLIAttributes $attributes = new HTMLLIAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLLIElement
 	{
 		return new HTMLLIElement(
 			$attributes,
-			$children,
+			$content,
 			$props
 		);
 	}
@@ -1250,16 +1251,16 @@ class Tag
 	 * `<main>`
 	 *
 	 * @param HTMLAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLElement
 	 */
-	public function main(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	public function main(HTMLAttributes $attributes = new HTMLAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLElement
 	{
 		return new HTMLElement(
 			"main",
 			$attributes,
-			$children,
+			$content,
 			$props,
 			HtmlElementOptions::block(false)
 		);
@@ -1269,15 +1270,15 @@ class Tag
 	 * `<main>`
 	 *
 	 * @param HtmlAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLMapElement
 	 */
-	public function map(HtmlAttributes $attributes = new HtmlAttributes(), array $children = [], Props $props = new Props()): HTMLMapElement
+	public function map(HtmlAttributes $attributes = new HtmlAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLMapElement
 	{
 		return new HTMLMapElement(
 			$attributes,
-			$children,
+			$content,
 			$props
 		);
 	}
@@ -1286,16 +1287,16 @@ class Tag
 	 * `<mark>`
 	 *
 	 * @param HTMLAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLElement
 	 */
-	public function mark(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	public function mark(HTMLAttributes $attributes = new HTMLAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLElement
 	{
 		return new HTMLElement(
 			"mark",
 			$attributes,
-			$children,
+			$content,
 			$props,
 			HtmlElementOptions::inline(false)
 		);
@@ -1305,15 +1306,15 @@ class Tag
 	 * `<menu>`
 	 *
 	 * @param HtmlAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLMenuElement
 	 */
-	public function menu(HtmlAttributes $attributes = new HtmlAttributes(), array $children = [], Props $props = new Props()): HTMLMenuElement
+	public function menu(HtmlAttributes $attributes = new HtmlAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLMenuElement
 	{
 		return new HTMLMenuElement(
 			$attributes,
-			$children,
+			$content,
 			$props
 		);
 	}
@@ -1322,15 +1323,15 @@ class Tag
 	 * `<menu>`
 	 *
 	 * @param HTMLMeterAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLMeterElement
 	 */
-	public function meter(HTMLMeterAttributes $attributes = new HTMLMeterAttributes(), array $children = [], Props $props = new Props()): HTMLMeterElement
+	public function meter(HTMLMeterAttributes $attributes = new HTMLMeterAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLMeterElement
 	{
 		return new HTMLMeterElement(
 			$attributes,
-			$children,
+			$content,
 			$props
 		);
 	}
@@ -1339,16 +1340,16 @@ class Tag
 	 * `<nav>`
 	 *
 	 * @param HTMLAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLElement
 	 */
-	public function nav(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	public function nav(HTMLAttributes $attributes = new HTMLAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLElement
 	{
 		return new HTMLElement(
 			"nav",
 			$attributes,
-			$children,
+			$content,
 			$props,
 			HtmlElementOptions::block(false)
 		);
@@ -1358,15 +1359,15 @@ class Tag
 	 * `<object>`
 	 *
 	 * @param HTMLObjectAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLObjectElement
 	 */
-	public function object(HTMLObjectAttributes $attributes = new HTMLObjectAttributes(), array $children = [], Props $props = new Props()): HTMLObjectElement
+	public function object(HTMLObjectAttributes $attributes = new HTMLObjectAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLObjectElement
 	{
 		return new HTMLObjectElement(
 			$attributes,
-			$children,
+			$content,
 			$props
 		);
 	}
@@ -1375,15 +1376,15 @@ class Tag
 	 * `<ol>`
 	 *
 	 * @param HTMLOListAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLOListElement
 	 */
-	public function ol(HTMLOListAttributes $attributes = new HTMLOListAttributes(), array $children = [], Props $props = new Props()): HTMLOListElement
+	public function ol(HTMLOListAttributes $attributes = new HTMLOListAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLOListElement
 	{
 		return new HTMLOListElement(
 			$attributes,
-			$children,
+			$content,
 			$props
 		);
 	}
@@ -1392,15 +1393,15 @@ class Tag
 	 * `<optgroup>`
 	 *
 	 * @param HTMLOptGroupAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLOptGroupElement
 	 */
-	public function optgroup(HTMLOptGroupAttributes $attributes = new HTMLOptGroupAttributes(), array $children = [], Props $props = new Props()): HTMLOptGroupElement
+	public function optgroup(HTMLOptGroupAttributes $attributes = new HTMLOptGroupAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLOptGroupElement
 	{
 		return new HTMLOptGroupElement(
 			$attributes,
-			$children,
+			$content,
 			$props
 		);
 	}
@@ -1409,15 +1410,15 @@ class Tag
 	 * `<option>`
 	 *
 	 * @param HTMLOptionAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLOptionElement
 	 */
-	public function option(HTMLOptionAttributes $attributes = new HTMLOptionAttributes(), array $children = [], Props $props = new Props()): HTMLOptionElement
+	public function option(HTMLOptionAttributes $attributes = new HTMLOptionAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLOptionElement
 	{
 		return new HTMLOptionElement(
 			$attributes,
-			$children,
+			$content,
 			$props
 		);
 	}
@@ -1426,15 +1427,15 @@ class Tag
 	 * `<output>`
 	 *
 	 * @param HTMLOutputAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLOutputElement
 	 */
-	public function output(HTMLOutputAttributes $attributes = new HTMLOutputAttributes(), array $children = [], Props $props = new Props()): HTMLOutputElement
+	public function output(HTMLOutputAttributes $attributes = new HTMLOutputAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLOutputElement
 	{
 		return new HTMLOutputElement(
 			$attributes,
-			$children,
+			$content,
 			$props
 		);
 	}
@@ -1443,15 +1444,15 @@ class Tag
 	 * `<output>`
 	 *
 	 * @param HtmlAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLParagraphElement
 	 */
-	public function p(HtmlAttributes $attributes = new HtmlAttributes(), array $children = [], Props $props = new Props()): HTMLParagraphElement
+	public function p(HtmlAttributes $attributes = new HtmlAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLParagraphElement
 	{
 		return new HTMLParagraphElement(
 			$attributes,
-			$children,
+			$content,
 			$props
 		);
 	}
@@ -1460,15 +1461,15 @@ class Tag
 	 * `<picture>`
 	 *
 	 * @param HtmlAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLPictureElement
 	 */
-	public function picture(HtmlAttributes $attributes = new HtmlAttributes(), array $children = [], Props $props = new Props()): HTMLPictureElement
+	public function picture(HtmlAttributes $attributes = new HtmlAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLPictureElement
 	{
 		return new HTMLPictureElement(
 			$attributes,
-			$children,
+			$content,
 			$props
 		);
 	}
@@ -1477,15 +1478,15 @@ class Tag
 	 * `<pre>`
 	 *
 	 * @param HtmlAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLPreElement
 	 */
-	public function pre(HtmlAttributes $attributes = new HtmlAttributes(), array $children = [], Props $props = new Props()): HTMLPreElement
+	public function pre(HtmlAttributes $attributes = new HtmlAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLPreElement
 	{
 		return new HTMLPreElement(
 			$attributes,
-			$children,
+			$content,
 			$props
 		);
 	}
@@ -1494,15 +1495,15 @@ class Tag
 	 * `<progress>`
 	 *
 	 * @param HTMLProgressAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLProgressElement
 	 */
-	public function progress(HTMLProgressAttributes $attributes = new HTMLProgressAttributes(), array $children = [], Props $props = new Props()): HTMLProgressElement
+	public function progress(HTMLProgressAttributes $attributes = new HTMLProgressAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLProgressElement
 	{
 		return new HTMLProgressElement(
 			$attributes,
-			$children,
+			$content,
 			$props
 		);
 	}
@@ -1512,16 +1513,16 @@ class Tag
 	 * `<blockquote>`
 	 *
 	 * @param HTMLQuoteAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLQuoteElement
 	 */
-	public function q(HTMLQuoteAttributes $attributes = new HTMLQuoteAttributes(), array $children = [], Props $props = new Props()): HTMLQuoteElement
+	public function q(HTMLQuoteAttributes $attributes = new HTMLQuoteAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLQuoteElement
 	{
 		return new HTMLQuoteElement(
 			true,
 			$attributes,
-			$children,
+			$content,
 			$props
 		);
 	}
@@ -1530,16 +1531,16 @@ class Tag
 	 * `<rp>`
 	 *
 	 * @param HTMLAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLElement
 	 */
-	public function rp(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	public function rp(HTMLAttributes $attributes = new HTMLAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLElement
 	{
 		return new HTMLElement(
 			"rp",
 			$attributes,
-			$children,
+			$content,
 			$props,
 			HtmlElementOptions::inline(false)
 		);
@@ -1549,16 +1550,16 @@ class Tag
 	 * `<rt>`
 	 *
 	 * @param HTMLAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLElement
 	 */
-	public function rt(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	public function rt(HTMLAttributes $attributes = new HTMLAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLElement
 	{
 		return new HTMLElement(
 			"rt",
 			$attributes,
-			$children,
+			$content,
 			$props,
 			HtmlElementOptions::inline(false)
 		);
@@ -1568,16 +1569,16 @@ class Tag
 	 * `<ruby>`
 	 *
 	 * @param HTMLAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLElement
 	 */
-	public function ruby(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	public function ruby(HTMLAttributes $attributes = new HTMLAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLElement
 	{
 		return new HTMLElement(
 			"ruby",
 			$attributes,
-			$children,
+			$content,
 			$props,
 			HtmlElementOptions::inline(false)
 		);
@@ -1587,16 +1588,16 @@ class Tag
 	 * `<s>`
 	 *
 	 * @param HTMLAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLElement
 	 */
-	public function s(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	public function s(HTMLAttributes $attributes = new HTMLAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLElement
 	{
 		return new HTMLElement(
 			"s",
 			$attributes,
-			$children,
+			$content,
 			$props,
 			HtmlElementOptions::inline(false)
 		);
@@ -1606,16 +1607,16 @@ class Tag
 	 * `<s>`
 	 *
 	 * @param HTMLAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLElement
 	 */
-	public function samp(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	public function samp(HTMLAttributes $attributes = new HTMLAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLElement
 	{
 		return new HTMLElement(
 			"samp",
 			$attributes,
-			$children,
+			$content,
 			$props,
 			HtmlElementOptions::inline(false)
 		);
@@ -1625,16 +1626,16 @@ class Tag
 	 * `<search>`
 	 *
 	 * @param HTMLAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLElement
 	 */
-	public function search(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	public function search(HTMLAttributes $attributes = new HTMLAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLElement
 	{
 		return new HTMLElement(
 			"search",
 			$attributes,
-			$children,
+			$content,
 			$props,
 			HtmlElementOptions::block(false)
 		);
@@ -1644,16 +1645,16 @@ class Tag
 	 * `<section>`
 	 *
 	 * @param HTMLAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLElement
 	 */
-	public function section(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	public function section(HTMLAttributes $attributes = new HTMLAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLElement
 	{
 		return new HTMLElement(
 			"section",
 			$attributes,
-			$children,
+			$content,
 			$props,
 			HtmlElementOptions::block(false)
 		);
@@ -1663,15 +1664,15 @@ class Tag
 	 * `<select>`
 	 *
 	 * @param HTMLSelectAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLSelectElement
 	 */
-	public function select(HTMLSelectAttributes $attributes = new HTMLSelectAttributes(), array $children = [], Props $props = new Props()): HTMLSelectElement
+	public function select(HTMLSelectAttributes $attributes = new HTMLSelectAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLSelectElement
 	{
 		return new HTMLSelectElement(
 			$attributes,
-			$children,
+			$content,
 			$props,
 		);
 	}
@@ -1680,15 +1681,15 @@ class Tag
 	 * `<slot>`
 	 *
 	 * @param HTMLSlotAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLSlotElement
 	 */
-	public function slot(HTMLSlotAttributes $attributes = new HTMLSlotAttributes(), array $children = [], Props $props = new Props()): HTMLSlotElement
+	public function slot(HTMLSlotAttributes $attributes = new HTMLSlotAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLSlotElement
 	{
 		return new HTMLSlotElement(
 			$attributes,
-			$children,
+			$content,
 			$props,
 		);
 	}
@@ -1697,16 +1698,16 @@ class Tag
 	 * `<small>`
 	 *
 	 * @param HTMLAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLElement
 	 */
-	public function small(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	public function small(HTMLAttributes $attributes = new HTMLAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLElement
 	{
 		return new HTMLElement(
 			"small",
 			$attributes,
-			$children,
+			$content,
 			$props,
 			HtmlElementOptions::block(false)
 		);
@@ -1716,15 +1717,15 @@ class Tag
 	 * `<source>`
 	 *
 	 * @param HTMLSourceAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLSourceElement
 	 */
-	public function source(HTMLSourceAttributes $attributes = new HTMLSourceAttributes(), array $children = [], Props $props = new Props()): HTMLSourceElement
+	public function source(HTMLSourceAttributes $attributes = new HTMLSourceAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLSourceElement
 	{
 		return new HTMLSourceElement(
 			$attributes,
-			$children,
+			$content,
 			$props,
 		);
 	}
@@ -1733,15 +1734,15 @@ class Tag
 	 * `<span>`
 	 *
 	 * @param HTMLAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLSpanElement
 	 */
-	public function span(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLSpanElement
+	public function span(HTMLAttributes $attributes = new HTMLAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLSpanElement
 	{
 		return new HTMLSpanElement(
 			$attributes,
-			$children,
+			$content,
 			$props,
 		);
 	}
@@ -1750,16 +1751,16 @@ class Tag
 	 * `<strong>`
 	 *
 	 * @param HTMLAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLElement
 	 */
-	public function strong(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	public function strong(HTMLAttributes $attributes = new HTMLAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLElement
 	{
 		return new HTMLElement(
 			"strong",
 			$attributes,
-			$children,
+			$content,
 			$props,
 			HtmlElementOptions::inline(false)
 		);
@@ -1769,16 +1770,16 @@ class Tag
 	 * `<sub>`
 	 *
 	 * @param HTMLAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLElement
 	 */
-	public function sub(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	public function sub(HTMLAttributes $attributes = new HTMLAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLElement
 	{
 		return new HTMLElement(
 			"sub",
 			$attributes,
-			$children,
+			$content,
 			$props,
 			HtmlElementOptions::inline(false)
 		);
@@ -1788,16 +1789,16 @@ class Tag
 	 * `<summary>`
 	 *
 	 * @param HTMLAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLElement
 	 */
-	public function summary(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	public function summary(HTMLAttributes $attributes = new HTMLAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLElement
 	{
 		return new HTMLElement(
 			"summary",
 			$attributes,
-			$children,
+			$content,
 			$props,
 			HtmlElementOptions::block(false)
 		);
@@ -1807,16 +1808,16 @@ class Tag
 	 * `<sup>`
 	 *
 	 * @param HTMLAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLElement
 	 */
-	public function sup(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	public function sup(HTMLAttributes $attributes = new HTMLAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLElement
 	{
 		return new HTMLElement(
 			"sup",
 			$attributes,
-			$children,
+			$content,
 			$props,
 			HtmlElementOptions::inline(false)
 		);
@@ -1826,15 +1827,15 @@ class Tag
 	 * `<table>`
 	 *
 	 * @param HTMLTableAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLTableElement
 	 */
-	public function table(HTMLTableAttributes $attributes = new HTMLTableAttributes(), array $children = [], Props $props = new Props()): HTMLTableElement
+	public function table(HTMLTableAttributes $attributes = new HTMLTableAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLTableElement
 	{
 		return new HTMLTableElement(
 			$attributes,
-			$children,
+			$content,
 			$props,
 		);
 	}
@@ -1843,16 +1844,16 @@ class Tag
 	 * `<tbody>`
 	 *
 	 * @param HTMLAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLTableSectionElement
 	 */
-	public function tbody(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLTableSectionElement
+	public function tbody(HTMLAttributes $attributes = new HTMLAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLTableSectionElement
 	{
 		return new HTMLTableSectionElement(
 			"tbody",
 			$attributes,
-			$children,
+			$content,
 			$props,
 		);
 	}
@@ -1861,16 +1862,16 @@ class Tag
 	 * `<td>`
 	 *
 	 * @param HTMLTableDataCellAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLTableCellElement
 	 */
-	public function td(HTMLTableDataCellAttributes $attributes = new HTMLTableDataCellAttributes(), array $children = [], Props $props = new Props()): HTMLTableCellElement
+	public function td(HTMLTableDataCellAttributes $attributes = new HTMLTableDataCellAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLTableCellElement
 	{
 		return new HTMLTableCellElement(
 			"td",
 			$attributes,
-			$children,
+			$content,
 			$props,
 		);
 	}
@@ -1879,15 +1880,15 @@ class Tag
 	 * `<textarea>`
 	 *
 	 * @param HTMLTextAreaAttributes $attributes
-	 * @param TextNode $child
+	 * @param TextContent $content
 	 * @param Props $props
 	 * @return HTMLTextAreaElement
 	 */
-	public function textarea(HTMLTextAreaAttributes $attributes = new HTMLTextAreaAttributes(), TextNode $child = new TextNode(""), Props $props = new Props()): HTMLTextAreaElement
+	public function textarea(HTMLTextAreaAttributes $attributes = new HTMLTextAreaAttributes(), TextContent $content = new TextContent(""), Props $props = new Props()): HTMLTextAreaElement
 	{
 		return new HTMLTextAreaElement(
 			$attributes,
-			$child,
+			$content,
 			$props,
 		);
 	}
@@ -1896,16 +1897,16 @@ class Tag
 	 * `<tfoot>`
 	 *
 	 * @param HTMLAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLTableSectionElement
 	 */
-	public function tfoot(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLTableSectionElement
+	public function tfoot(HTMLAttributes $attributes = new HTMLAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLTableSectionElement
 	{
 		return new HTMLTableSectionElement(
 			"tfoot",
 			$attributes,
-			$children,
+			$content,
 			$props,
 		);
 	}
@@ -1914,16 +1915,16 @@ class Tag
 	 * `<th>`
 	 *
 	 * @param HTMLTableHeaderCellAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLTableCellElement
 	 */
-	public function th(HTMLTableHeaderCellAttributes $attributes = new HTMLTableHeaderCellAttributes(), array $children = [], Props $props = new Props()): HTMLTableCellElement
+	public function th(HTMLTableHeaderCellAttributes $attributes = new HTMLTableHeaderCellAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLTableCellElement
 	{
 		return new HTMLTableCellElement(
 			"th",
 			$attributes,
-			$children,
+			$content,
 			$props,
 		);
 	}
@@ -1932,16 +1933,16 @@ class Tag
 	 * `<thead>`
 	 *
 	 * @param HTMLAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLTableSectionElement
 	 */
-	public function thead(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLTableSectionElement
+	public function thead(HTMLAttributes $attributes = new HTMLAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLTableSectionElement
 	{
 		return new HTMLTableSectionElement(
 			"thead",
 			$attributes,
-			$children,
+			$content,
 			$props,
 		);
 	}
@@ -1950,15 +1951,15 @@ class Tag
 	 * `<time>`
 	 *
 	 * @param HTMLTimeAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLTimeElement
 	 */
-	public function time(HTMLTimeAttributes $attributes = new HTMLTimeAttributes(), array $children = [], Props $props = new Props()): HTMLTimeElement
+	public function time(HTMLTimeAttributes $attributes = new HTMLTimeAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLTimeElement
 	{
 		return new HTMLTimeElement(
 			$attributes,
-			$children,
+			$content,
 			$props,
 		);
 	}
@@ -1967,15 +1968,15 @@ class Tag
 	 * `<tr>`
 	 *
 	 * @param HTMLTableRowAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLTableRowElement
 	 */
-	public function tr(HTMLTableRowAttributes $attributes = new HTMLTableRowAttributes(), array $children = [], Props $props = new Props()): HTMLTableRowElement
+	public function tr(HTMLTableRowAttributes $attributes = new HTMLTableRowAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLTableRowElement
 	{
 		return new HTMLTableRowElement(
 			$attributes,
-			$children,
+			$content,
 			$props,
 		);
 	}
@@ -1999,16 +2000,16 @@ class Tag
 	 * `<u>`
 	 *
 	 * @param HTMLAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLElement
 	 */
-	public function u(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	public function u(HTMLAttributes $attributes = new HTMLAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLElement
 	{
 		return new HTMLElement(
 			"u",
 			$attributes,
-			$children,
+			$content,
 			$props,
 			HtmlElementOptions::inline(false)
 		);
@@ -2018,15 +2019,15 @@ class Tag
 	 * `<ul>`
 	 *
 	 * @param HTMLUListAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLUListElement
 	 */
-	public function ul(HTMLUListAttributes $attributes = new HTMLUListAttributes(), array $children = [], Props $props = new Props()): HTMLUListElement
+	public function ul(HTMLUListAttributes $attributes = new HTMLUListAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLUListElement
 	{
 		return new HTMLUListElement(
 			$attributes,
-			$children,
+			$content,
 			$props
 		);
 	}
@@ -2035,16 +2036,16 @@ class Tag
 	 * `<var>`
 	 *
 	 * @param HTMLAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLElement
 	 */
-	public function var(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	public function var(HTMLAttributes $attributes = new HTMLAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLElement
 	{
 		return new HTMLElement(
 			"var",
 			$attributes,
-			$children,
+			$content,
 			$props,
 			HtmlElementOptions::inline(false)
 		);
@@ -2054,15 +2055,15 @@ class Tag
 	 * `<video>`
 	 *
 	 * @param HTMLVideoAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLVideoElement
 	 */
-	public function video(HTMLVideoAttributes $attributes = new HTMLVideoAttributes(), array $children = [], Props $props = new Props()): HTMLVideoElement
+	public function video(HTMLVideoAttributes $attributes = new HTMLVideoAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLVideoElement
 	{
 		return new HTMLVideoElement(
 			$attributes,
-			$children,
+			$content,
 			$props
 		);
 	}
@@ -2071,16 +2072,16 @@ class Tag
 	 * `<wbr>`
 	 *
 	 * @param HTMLAttributes $attributes
-	 * @param INode[] $children
+	 * @param HtmlContent $content
 	 * @param Props $props
 	 * @return HTMLElement
 	 */
-	public function wbr(HTMLAttributes $attributes = new HTMLAttributes(), array $children = [], Props $props = new Props()): HTMLElement
+	public function wbr(HTMLAttributes $attributes = new HTMLAttributes(), HtmlContent $content = new HtmlContent(), Props $props = new Props()): HTMLElement
 	{
 		return new HTMLElement(
 			"wbr",
 			$attributes,
-			$children,
+			$content,
 			$props,
 			HtmlElementOptions::inline(false)
 		);
