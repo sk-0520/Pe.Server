@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc\Template\Node\Html\Element;
 
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLTrackAttributes;
-use PeServer\Core\Mvc\Template\Node\INode;
+use PeServer\Core\Mvc\Template\Node\NoneContent;
 use PeServer\Core\Mvc\Template\Node\Props;
 
 class HTMLTrackElement extends HTMLElement
@@ -23,7 +23,7 @@ class HTMLTrackElement extends HTMLElement
 		parent::__construct(
 			"track",
 			$attributes,
-			[],
+			new NoneContent(),
 			$props,
 			HtmlElementOptions::inline(true)
 		);

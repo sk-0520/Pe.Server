@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc\Template\Node\Html\Element;
 
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HtmlAttributes;
-use PeServer\Core\Mvc\Template\Node\INode;
+use PeServer\Core\Mvc\Template\Node\Html\Content\HtmlContent;
 use PeServer\Core\Mvc\Template\Node\Props;
 
 class HTMLTableSectionElement extends HTMLElement
@@ -15,19 +15,19 @@ class HTMLTableSectionElement extends HTMLElement
 	 *
 	 * @param "tbody"|"thead"|"tfoot" $tagName
 	 * @param HtmlAttributes $attributes
-	 * @param INode[] $children,
+	 * @param HtmlContent $content,
 	 * @param Props $props
 	 */
 	public function __construct(
 		string $tagName,
 		HtmlAttributes $attributes = new HtmlAttributes(),
-		array $children = [],
+		HtmlContent $content = new HtmlContent(),
 		Props $props = new Props()
 	) {
 		parent::__construct(
 			$tagName,
 			$attributes,
-			$children,
+			$content,
 			$props,
 			HtmlElementOptions::block(false)
 		);
