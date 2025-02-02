@@ -15,18 +15,16 @@ class HTMLIFrameElement extends HTMLElement
 	 *
 	 * @param HTMLIFrameAttributes $attributes
 	 * @param HtmlContent $content
-	 * @param Props $props
+
 	 */
 	public function __construct(
 		HTMLIFrameAttributes $attributes = new HTMLIFrameAttributes(),
 		HtmlContent $content = new HtmlContent(),
-		Props $props = new Props()
 	) {
 		parent::__construct(
 			"iframe",
 			$attributes,
 			$content,
-			$props,
 			HtmlElementOptions::block(false)
 		);
 	}

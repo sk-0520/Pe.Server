@@ -15,18 +15,16 @@ class HTMLSlotElement extends HTMLElement
 	 *
 	 * @param HTMLSlotAttributes $attributes
 	 * @param HtmlContent $content
-	 * @param Props $props
+
 	 */
 	public function __construct(
 		HTMLSlotAttributes $attributes = new HTMLSlotAttributes(),
 		HtmlContent $content = new HtmlContent(),
-		Props $props = new Props()
 	) {
 		parent::__construct(
 			"slot",
 			$attributes,
 			$content,
-			$props,
 			HtmlElementOptions::inline(false)
 		);
 	}

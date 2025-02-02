@@ -15,18 +15,16 @@ class HTMLTableColGroupElement extends HTMLElement implements IHTMLTableColEleme
 	 *
 	 * @param HTMLTableColAttributes $attributes
 	 * @param HtmlContent $content,
-	 * @param Props $props
+
 	 */
 	public function __construct(
 		HTMLTableColAttributes $attributes = new HTMLTableColAttributes(),
 		HtmlContent $content = new HtmlContent(),
-		Props $props = new Props()
 	) {
 		parent::__construct(
 			"colgroup",
 			$attributes,
 			$content,
-			$props,
 			HtmlElementOptions::block(false)
 		);
 	}

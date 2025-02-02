@@ -21,16 +21,14 @@ class HTMLElement extends Element
 	 * @param non-empty-string $tagName
 	 * @param HtmlAttributes $attributes
 	 * @param HtmlContent|NoneContent|TextContent $content
-	 * @param Props $props
 	 * @param HtmlElementOptions $options
 	 */
 	public function __construct(
 		string $tagName,
 		HtmlAttributes $attributes,
 		HtmlContent|NoneContent|TextContent $content,
-		Props $props,
 		HtmlElementOptions $options
 	) {
-		parent::__construct($tagName, $attributes, $content, $props, $options);
+		parent::__construct($tagName, $attributes, $content, $options);
 	}
 }

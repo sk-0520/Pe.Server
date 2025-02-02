@@ -15,18 +15,16 @@ class HTMLDataElement extends HTMLElement
 	 *
 	 * @param HTMLDataAttributes $attributes
 	 * @param HtmlContent $content
-	 * @param Props $props
+
 	 */
 	public function __construct(
 		HTMLDataAttributes $attributes = new HTMLDataAttributes(),
 		HtmlContent $content = new HtmlContent(),
-		Props $props = new Props()
 	) {
 		parent::__construct(
 			"data",
 			$attributes,
 			$content,
-			$props,
 			HtmlElementOptions::inline(false)
 		);
 	}

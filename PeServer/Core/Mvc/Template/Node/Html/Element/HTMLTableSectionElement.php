@@ -16,19 +16,17 @@ class HTMLTableSectionElement extends HTMLElement
 	 * @param "tbody"|"thead"|"tfoot" $tagName
 	 * @param HtmlAttributes $attributes
 	 * @param HtmlContent $content,
-	 * @param Props $props
+
 	 */
 	public function __construct(
 		string $tagName,
 		HtmlAttributes $attributes = new HtmlAttributes(),
 		HtmlContent $content = new HtmlContent(),
-		Props $props = new Props()
 	) {
 		parent::__construct(
 			$tagName,
 			$attributes,
 			$content,
-			$props,
 			HtmlElementOptions::block(false)
 		);
 	}

@@ -15,18 +15,16 @@ class HTMLOListElement extends HTMLElement
 	 *
 	 * @param HTMLOListAttributes $attributes
 	 * @param HtmlContent $content
-	 * @param Props $props
+
 	 */
 	public function __construct(
 		HTMLOListAttributes $attributes = new HTMLOListAttributes(),
 		HtmlContent $content = new HtmlContent(),
-		Props $props = new Props()
 	) {
 		parent::__construct(
 			"ol",
 			$attributes,
 			$content,
-			$props,
 			HtmlElementOptions::block(false)
 		);
 	}

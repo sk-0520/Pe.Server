@@ -16,19 +16,17 @@ class HTMLQuoteElement extends HTMLElement
 	 * @param bool $short
 	 * @param HTMLQuoteAttributes $attributes
 	 * @param HtmlContent $content
-	 * @param Props $props
+
 	 */
 	public function __construct(
 		bool $short,
 		HTMLQuoteAttributes $attributes = new HTMLQuoteAttributes(),
 		HtmlContent $content = new HtmlContent(),
-		Props $props = new Props()
 	) {
 		parent::__construct(
 			$short ? "q" : "blockquote",
 			$attributes,
 			$content,
-			$props,
 			new HtmlElementOptions($short, false)
 		);
 	}

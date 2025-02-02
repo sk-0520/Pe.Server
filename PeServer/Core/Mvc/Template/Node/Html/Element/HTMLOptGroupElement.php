@@ -15,18 +15,16 @@ class HTMLOptGroupElement extends HTMLElement
 	 *
 	 * @param HTMLOptGroupAttributes $attributes
 	 * @param HtmlContent $content
-	 * @param Props $props
+
 	 */
 	public function __construct(
 		HTMLOptGroupAttributes $attributes = new HTMLOptGroupAttributes(),
 		HtmlContent $content = new HtmlContent(),
-		Props $props = new Props()
 	) {
 		parent::__construct(
 			"optgroup",
 			$attributes,
 			$content,
-			$props,
 			HtmlElementOptions::block(false)
 		);
 	}

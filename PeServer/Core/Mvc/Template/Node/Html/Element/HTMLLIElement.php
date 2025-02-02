@@ -15,18 +15,16 @@ class HTMLLIElement extends HTMLElement
 	 *
 	 * @param HTMLLIAttributes $attributes
 	 * @param HtmlContent $content
-	 * @param Props $props
+
 	 */
 	public function __construct(
 		HTMLLIAttributes $attributes = new HTMLLIAttributes(),
 		HtmlContent $content = new HtmlContent(),
-		Props $props = new Props()
 	) {
 		parent::__construct(
 			"li",
 			$attributes,
 			$content,
-			$props,
 			HtmlElementOptions::block(false)
 		);
 	}

@@ -15,18 +15,16 @@ class HTMLSourceElement extends HTMLElement
 	 *
 	 * @param HTMLSourceAttributes $attributes
 	 * @param HtmlContent $content
-	 * @param Props $props
+
 	 */
 	public function __construct(
 		HTMLSourceAttributes $attributes = new HTMLSourceAttributes(),
 		HtmlContent $content = new HtmlContent(),
-		Props $props = new Props()
 	) {
 		parent::__construct(
 			"source",
 			$attributes,
 			$content,
-			$props,
 			HtmlElementOptions::inline(false)
 		);
 	}

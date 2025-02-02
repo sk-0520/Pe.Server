@@ -15,18 +15,16 @@ class HTMLTimeElement extends HTMLElement
 	 *
 	 * @param HTMLTimeAttributes $attributes
 	 * @param HtmlContent $content,
-	 * @param Props $props
+
 	 */
 	public function __construct(
 		HTMLTimeAttributes $attributes = new HTMLTimeAttributes(),
 		HtmlContent $content = new HtmlContent(),
-		Props $props = new Props()
 	) {
 		parent::__construct(
 			"time",
 			$attributes,
 			$content,
-			$props,
 			HtmlElementOptions::inline(false)
 		);
 	}

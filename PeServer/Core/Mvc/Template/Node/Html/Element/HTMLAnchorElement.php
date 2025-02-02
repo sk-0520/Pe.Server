@@ -15,18 +15,16 @@ class HTMLAnchorElement extends HTMLElement
 	 *
 	 * @param HTMLAnchorAttributes $attributes
 	 * @param HtmlContent $content
-	 * @param Props $props
+
 	 */
 	public function __construct(
 		HTMLAnchorAttributes $attributes = new HTMLAnchorAttributes(),
 		HtmlContent $content = new HtmlContent(),
-		Props $props = new Props()
 	) {
 		parent::__construct(
 			"a",
 			$attributes,
 			$content,
-			$props,
 			HtmlElementOptions::inline(false)
 		);
 	}

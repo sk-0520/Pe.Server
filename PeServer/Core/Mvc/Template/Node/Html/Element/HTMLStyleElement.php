@@ -19,18 +19,16 @@ class HTMLStyleElement extends HTMLElement
 	 *
 	 * @param HTMLStyleAttributes $attributes
 	 * @param TextContent $content
-	 * @param Props $props
+
 	 */
 	public function __construct(
 		HTMLStyleAttributes $attributes = new HTMLStyleAttributes(),
 		TextContent $content = new TextContent(""),
-		Props $props = new Props()
 	) {
 		parent::__construct(
 			"style",
 			$attributes,
 			$content,
-			$props,
 			HtmlElementOptions::block(false)
 		);
 	}
