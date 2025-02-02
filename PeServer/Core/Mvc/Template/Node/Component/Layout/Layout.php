@@ -16,19 +16,23 @@ use PeServer\Core\Throws\NotImplementedException;
 
 class Layout extends ComponentBase
 {
-	public function __construct(Content $content, LayoutProps $props, Tag $tag)
+	public function __construct(Content $content, public LayoutProps $props, Tag $tag)
 	{
 		parent::__construct($content, $props, $tag);
 	}
 
+	#region ComponentBase
 
 	protected function build(): INode
 	{
 		return $this->tag->html(
 			new HTMLHtmlAttributes([
-				"lang" => $this->props->language
+				"lang" => 0.1 //$this->props->language
+				//"xmlns" => ""
 			]),
 			new HtmlContent()
 		);
 	}
+
+	#endregion
 }
