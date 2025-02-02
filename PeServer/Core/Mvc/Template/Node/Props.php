@@ -7,6 +7,7 @@ namespace PeServer\Core\Mvc\Template\Node;
 use PeServer\Core\Throws\NotImplementedException;
 use Stringable;
 
-class Props
+readonly class Props
 {
+	//NOP
 }
