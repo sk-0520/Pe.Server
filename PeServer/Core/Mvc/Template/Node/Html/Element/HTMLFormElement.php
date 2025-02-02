@@ -15,18 +15,16 @@ class HTMLFormElement extends HTMLElement
 	 *
 	 * @param HTMLFormAttributes $attributes
 	 * @param HtmlContent $content
-	 * @param Props $props
+
 	 */
 	public function __construct(
 		HTMLFormAttributes $attributes = new HTMLFormAttributes(),
 		HtmlContent $content = new HtmlContent(),
-		Props $props = new Props()
 	) {
 		parent::__construct(
 			"form",
 			$attributes,
 			$content,
-			$props,
 			HtmlElementOptions::block(false)
 		);
 	}

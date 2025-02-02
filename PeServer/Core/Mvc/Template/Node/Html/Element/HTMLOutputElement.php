@@ -15,18 +15,16 @@ class HTMLOutputElement extends HTMLElement
 	 *
 	 * @param HTMLOutputAttributes $attributes
 	 * @param HtmlContent $content
-	 * @param Props $props
+
 	 */
 	public function __construct(
 		HTMLOutputAttributes $attributes = new HTMLOutputAttributes(),
 		HtmlContent $content = new HtmlContent(),
-		Props $props = new Props()
 	) {
 		parent::__construct(
 			"output",
 			$attributes,
 			$content,
-			$props,
 			HtmlElementOptions::block(false)
 		);
 	}

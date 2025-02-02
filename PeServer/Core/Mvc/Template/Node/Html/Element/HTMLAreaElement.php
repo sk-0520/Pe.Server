@@ -15,18 +15,16 @@ class HTMLAreaElement extends HTMLElement
 	 *
 	 * @param HTMLAreaAttributes $attributes
 	 * @param HtmlContent $content
-	 * @param Props $props
+
 	 */
 	public function __construct(
 		HTMLAreaAttributes $attributes = new HTMLAreaAttributes(),
 		HtmlContent $content = new HtmlContent(),
-		Props $props = new Props()
 	) {
 		parent::__construct(
 			"area",
 			$attributes,
 			$content,
-			$props,
 			HtmlElementOptions::inline(true)
 		);
 	}
