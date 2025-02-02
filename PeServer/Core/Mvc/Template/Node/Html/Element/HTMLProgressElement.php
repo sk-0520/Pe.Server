@@ -15,18 +15,16 @@ class HTMLProgressElement extends HTMLElement
 	 *
 	 * @param HTMLProgressAttributes $attributes
 	 * @param HtmlContent $content
-	 * @param Props $props
+
 	 */
 	public function __construct(
 		HTMLProgressAttributes $attributes = new HTMLProgressAttributes(),
 		HtmlContent $content = new HtmlContent(),
-		Props $props = new Props()
 	) {
 		parent::__construct(
 			"progress",
 			$attributes,
 			$content,
-			$props,
 			HtmlElementOptions::inline(false)
 		);
 	}

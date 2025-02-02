@@ -14,17 +14,15 @@ class HTMLBaseElement extends HTMLElement
 	 * 生成。
 	 *
 	 * @param HTMLBaseAttributes $attributes
-	 * @param Props $props
+
 	 */
 	public function __construct(
 		HTMLBaseAttributes $attributes = new HTMLBaseAttributes(),
-		Props $props = new Props()
 	) {
 		parent::__construct(
 			"base",
 			$attributes,
 			new NoneContent(),
-			$props,
 			HtmlElementOptions::inline(true)
 		);
 	}

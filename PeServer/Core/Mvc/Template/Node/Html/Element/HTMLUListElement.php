@@ -15,18 +15,16 @@ class HTMLUListElement extends HTMLElement
 	 *
 	 * @param HTMLUListAttributes $attributes
 	 * @param HtmlContent $content
-	 * @param Props $props
+
 	 */
 	public function __construct(
 		HTMLUListAttributes $attributes = new HTMLUListAttributes(),
 		HtmlContent $content = new HtmlContent(),
-		Props $props = new Props()
 	) {
 		parent::__construct(
 			"ul",
 			$attributes,
 			$content,
-			$props,
 			HtmlElementOptions::block(false)
 		);
 	}

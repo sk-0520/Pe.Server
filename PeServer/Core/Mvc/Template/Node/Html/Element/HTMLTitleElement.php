@@ -18,18 +18,16 @@ class HTMLTitleElement extends HTMLElement
 	 *
 	 * @param HtmlAttributes $attributes
 	 * @param TextContent $content
-	 * @param Props $props
+
 	 */
 	public function __construct(
 		HtmlAttributes $attributes = new HtmlAttributes(),
 		TextContent $content = new TextContent(""),
-		Props $props = new Props()
 	) {
 		parent::__construct(
 			"title",
 			$attributes,
 			$content,
-			$props,
 			HtmlElementOptions::inline(false)
 		);
 	}
