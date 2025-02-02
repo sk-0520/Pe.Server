@@ -15,18 +15,16 @@ class HTMLTableRowElement extends HTMLElement
 	 *
 	 * @param HTMLTableRowAttributes $attributes
 	 * @param HtmlContent $content,
-	 * @param Props $props
+
 	 */
 	public function __construct(
 		HTMLTableRowAttributes $attributes = new HTMLTableRowAttributes(),
 		HtmlContent $content = new HtmlContent(),
-		Props $props = new Props()
 	) {
 		parent::__construct(
 			"tr",
 			$attributes,
 			$content,
-			$props,
 			HtmlElementOptions::block(false)
 		);
 	}

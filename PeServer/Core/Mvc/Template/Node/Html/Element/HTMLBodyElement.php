@@ -16,18 +16,16 @@ class HTMLBodyElement extends HTMLElement
 	 *
 	 * @param HTMLBodyAttributes $attributes
 	 * @param HtmlContent $content
-	 * @param Props $props
+
 	 */
 	public function __construct(
 		HTMLBodyAttributes $attributes = new HTMLBodyAttributes(),
 		HtmlContent $content = new HtmlContent(),
-		Props $props = new Props()
 	) {
 		parent::__construct(
 			"body",
 			$attributes,
 			$content,
-			$props,
 			HtmlElementOptions::block(false)
 		);
 	}

@@ -14,17 +14,15 @@ class HTMLHRElement extends HTMLElement
 	 * 生成。
 	 *
 	 * @param HtmlAttributes $attributes
-	 * @param Props $props
+
 	 */
 	public function __construct(
 		HtmlAttributes $attributes = new HtmlAttributes(),
-		Props $props = new Props()
 	) {
 		parent::__construct(
 			"hr",
 			$attributes,
 			new NoneContent(),
-			$props,
 			HtmlElementOptions::inline(true)
 		);
 	}

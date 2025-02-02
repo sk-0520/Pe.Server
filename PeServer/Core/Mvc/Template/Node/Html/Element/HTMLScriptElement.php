@@ -17,18 +17,16 @@ class HTMLScriptElement extends HTMLElement
 	 *
 	 * @param HTMLScriptAttributes $attributes
 	 * @param TextContent $content
-	 * @param Props $props
+
 	 */
 	public function __construct(
 		HTMLScriptAttributes $attributes = new HTMLScriptAttributes(),
 		TextContent $content = new TextContent(""),
-		Props $props = new Props()
 	) {
 		parent::__construct(
 			"script",
 			$attributes,
 			$content,
-			$props,
 			HtmlElementOptions::block(false)
 		);
 	}

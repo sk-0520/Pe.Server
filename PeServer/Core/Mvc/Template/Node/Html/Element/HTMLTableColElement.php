@@ -15,17 +15,15 @@ class HTMLTableColElement extends HTMLElement
 	 * 生成。
 	 *
 	 * @param HTMLTableColAttributes $attributes
-	 * @param Props $props
+
 	 */
 	public function __construct(
 		HTMLTableColAttributes $attributes = new HTMLTableColAttributes(),
-		Props $props = new Props()
 	) {
 		parent::__construct(
 			"col",
 			$attributes,
 			new NoneContent(),
-			$props,
 			HtmlElementOptions::inline(true)
 		);
 	}

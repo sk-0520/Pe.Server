@@ -15,18 +15,16 @@ class HTMLObjectElement extends HTMLElement
 	 *
 	 * @param HTMLObjectAttributes $attributes
 	 * @param HtmlContent $content
-	 * @param Props $props
+
 	 */
 	public function __construct(
 		HTMLObjectAttributes $attributes = new HTMLObjectAttributes(),
 		HtmlContent $content = new HtmlContent(),
-		Props $props = new Props()
 	) {
 		parent::__construct(
 			"object",
 			$attributes,
 			$content,
-			$props,
 			HtmlElementOptions::block(false)
 		);
 	}

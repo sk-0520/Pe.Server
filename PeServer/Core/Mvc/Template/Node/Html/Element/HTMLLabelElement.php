@@ -15,18 +15,16 @@ class HTMLLabelElement extends HTMLElement
 	 *
 	 * @param HTMLLabelAttributes $attributes
 	 * @param HtmlContent $content
-	 * @param Props $props
+
 	 */
 	public function __construct(
 		HTMLLabelAttributes $attributes = new HTMLLabelAttributes(),
 		HtmlContent $content = new HtmlContent(),
-		Props $props = new Props()
 	) {
 		parent::__construct(
 			"label",
 			$attributes,
 			$content,
-			$props,
 			HtmlElementOptions::inline(false)
 		);
 	}

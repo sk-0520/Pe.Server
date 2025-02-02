@@ -17,18 +17,16 @@ class HTMLTemplateElement extends HTMLElement
 	 *
 	 * @param HTMLTemplateAttributes $attributes
 	 * @param HtmlContent $content
-	 * @param Props $props
+
 	 */
 	public function __construct(
 		HTMLTemplateAttributes $attributes = new HTMLTemplateAttributes(),
 		HtmlContent $content = new HtmlContent(),
-		Props $props = new Props()
 	) {
 		parent::__construct(
 			"template",
 			$attributes,
 			$content,
-			$props,
 			HtmlElementOptions::block(false)
 		);
 	}

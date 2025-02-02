@@ -14,17 +14,15 @@ class HTMLEmbedElement extends HTMLElement
 	 * 生成。
 	 *
 	 * @param HTMLEmbedAttributes $attributes
-	 * @param Props $props
+
 	 */
 	public function __construct(
 		HTMLEmbedAttributes $attributes = new HTMLEmbedAttributes(),
-		Props $props = new Props()
 	) {
 		parent::__construct(
 			"embed",
 			$attributes,
 			new NoneContent(),
-			$props,
 			HtmlElementOptions::block(true)
 		);
 	}

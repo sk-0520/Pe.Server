@@ -15,18 +15,16 @@ class HTMLMeterElement extends HTMLElement
 	 *
 	 * @param HTMLMeterAttributes $attributes
 	 * @param HtmlContent $content
-	 * @param Props $props
+
 	 */
 	public function __construct(
 		HTMLMeterAttributes $attributes = new HTMLMeterAttributes(),
 		HtmlContent $content = new HtmlContent(),
-		Props $props = new Props()
 	) {
 		parent::__construct(
 			"meter",
 			$attributes,
 			$content,
-			$props,
 			HtmlElementOptions::inline(false)
 		);
 	}

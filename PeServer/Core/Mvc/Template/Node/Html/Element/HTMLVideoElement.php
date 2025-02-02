@@ -15,18 +15,16 @@ class HTMLVideoElement extends HTMLElement
 	 *
 	 * @param HTMLVideoAttributes $attributes
 	 * @param HtmlContent $content
-	 * @param Props $props
+
 	 */
 	public function __construct(
 		HTMLVideoAttributes $attributes = new HTMLVideoAttributes(),
 		HtmlContent $content = new HtmlContent(),
-		Props $props = new Props()
 	) {
 		parent::__construct(
 			"video",
 			$attributes,
 			$content,
-			$props,
 			HtmlElementOptions::block(false)
 		);
 	}

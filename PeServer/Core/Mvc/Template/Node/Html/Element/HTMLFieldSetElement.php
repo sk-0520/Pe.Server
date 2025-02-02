@@ -15,18 +15,16 @@ class HTMLFieldSetElement extends HTMLElement
 	 *
 	 * @param HTMLFieldSetAttributes $attributes
 	 * @param HtmlContent $content
-	 * @param Props $props
+
 	 */
 	public function __construct(
 		HTMLFieldSetAttributes $attributes = new HTMLFieldSetAttributes(),
 		HtmlContent $content = new HtmlContent(),
-		Props $props = new Props()
 	) {
 		parent::__construct(
 			"fieldset",
 			$attributes,
 			$content,
-			$props,
 			HtmlElementOptions::block(false)
 		);
 	}

@@ -15,18 +15,16 @@ class HTMLSpanElement extends HTMLElement
 	 *
 	 * @param HtmlAttributes $attributes
 	 * @param HtmlContent $content
-	 * @param Props $props
+
 	 */
 	public function __construct(
 		HtmlAttributes $attributes = new HtmlAttributes(),
 		HtmlContent $content = new HtmlContent(),
-		Props $props = new Props()
 	) {
 		parent::__construct(
 			"span",
 			$attributes,
 			$content,
-			$props,
 			HtmlElementOptions::inline(false)
 		);
 	}

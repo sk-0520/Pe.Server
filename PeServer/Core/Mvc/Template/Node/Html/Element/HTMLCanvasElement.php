@@ -15,18 +15,16 @@ class HTMLCanvasElement extends HTMLElement
 	 *
 	 * @param HTMLCanvasAttributes $attributes
 	 * @param HtmlContent $content
-	 * @param Props $props
+
 	 */
 	public function __construct(
 		HTMLCanvasAttributes $attributes = new HTMLCanvasAttributes(),
 		HtmlContent $content = new HtmlContent(),
-		Props $props = new Props()
 	) {
 		parent::__construct(
 			"canvas",
 			$attributes,
 			$content,
-			$props,
 			HtmlElementOptions::block(false)
 		);
 	}

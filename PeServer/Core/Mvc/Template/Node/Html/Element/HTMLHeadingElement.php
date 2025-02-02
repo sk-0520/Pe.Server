@@ -17,13 +17,12 @@ class HTMLHeadingElement extends HTMLElement
 	 * @param 1|2|3|4|5|6 $level
 	 * @param HtmlAttributes $attributes
 	 * @param HtmlContent $content
-	 * @param Props $props
+
 	 */
 	public function __construct(
 		int $level,
 		HtmlAttributes $attributes = new HtmlAttributes(),
 		HtmlContent $content = new HtmlContent(),
-		Props $props = new Props()
 	) {
 		//@phpstan-ignore smaller.alwaysFalse, smaller.alwaysFalse, booleanOr.alwaysFalse
 		if ($level < 1 || 6 < $level) {
@@ -34,7 +33,6 @@ class HTMLHeadingElement extends HTMLElement
 			"h" . (string)$level,
 			$attributes,
 			$content,
-			$props,
 			HtmlElementOptions::block(false)
 		);
 	}

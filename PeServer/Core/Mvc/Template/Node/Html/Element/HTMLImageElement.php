@@ -14,17 +14,15 @@ class HTMLImageElement extends HTMLElement
 	 * 生成。
 	 *
 	 * @param HTMLImageAttributes $attributes
-	 * @param Props $props
+
 	 */
 	public function __construct(
 		HTMLImageAttributes $attributes = new HTMLImageAttributes(),
-		Props $props = new Props()
 	) {
 		parent::__construct(
 			"img",
 			$attributes,
 			new NoneContent(),
-			$props,
 			HtmlElementOptions::inline(true)
 		);
 	}

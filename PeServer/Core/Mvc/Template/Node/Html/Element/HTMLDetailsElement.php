@@ -15,18 +15,16 @@ class HTMLDetailsElement extends HTMLElement
 	 *
 	 * @param HTMLDetailsAttributes $attributes
 	 * @param HtmlContent $content
-	 * @param Props $props
+
 	 */
 	public function __construct(
 		HTMLDetailsAttributes $attributes = new HTMLDetailsAttributes(),
 		HtmlContent $content = new HtmlContent(),
-		Props $props = new Props()
 	) {
 		parent::__construct(
 			"details",
 			$attributes,
 			$content,
-			$props,
 			HtmlElementOptions::block(false)
 		);
 	}

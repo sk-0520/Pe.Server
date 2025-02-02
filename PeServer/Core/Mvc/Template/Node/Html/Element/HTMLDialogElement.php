@@ -15,18 +15,16 @@ class HTMLDialogElement extends HTMLElement
 	 *
 	 * @param HTMLDialogAttribute $attributes
 	 * @param HtmlContent $content
-	 * @param Props $props
+
 	 */
 	public function __construct(
 		HTMLDialogAttribute $attributes = new HTMLDialogAttribute(),
 		HtmlContent $content = new HtmlContent(),
-		Props $props = new Props()
 	) {
 		parent::__construct(
 			"dialog",
 			$attributes,
 			$content,
-			$props,
 			HtmlElementOptions::block(false)
 		);
 	}
