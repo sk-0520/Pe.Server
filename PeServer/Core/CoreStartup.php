@@ -178,6 +178,7 @@ class CoreStartup
 	protected function setupCliService(array $options, IDiRegisterContainer $container): void
 	{
 		//NOP
+		$container->add(IDiRegisterContainer::class, DiItem::factory(fn ($dc) => $dc->clone()));
 	}
 
 	/**

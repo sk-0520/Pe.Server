@@ -2,13 +2,17 @@
 
 declare(strict_types=1);
 
-namespace PeServer;
+
+namespace PeServer\App\Cli;
 
 require_once(__DIR__ . '/../../Core/AutoLoader.php');
 
+use Error;
 use PeServer\App\Models\AppStartup;
 use PeServer\Core\AutoLoader;
 use PeServer\Core\StartupOptions;
+
+error_reporting(E_ALL);
 
 $autoLoader = new AutoLoader(
 	[
@@ -21,19 +25,36 @@ $autoLoader->register(false);
 
 $startup = new AppStartup(
 	new StartupOptions(
-		root: __DIR__ . '/../..',
+		root: __DIR__ . '/../../..',
 		public: 'public_html'
 	)
 );
 
-echo "aaa\n";
+$options = getopt("", [
+	"mode:",
+	"class:",
+]);
+if ($options === false) {
+	throw new Error("options");
+}
+if(!isset($options["class"]) || !is_string($options["class"]) || strlen($options["class"]) === 0) {
+	throw new Error("options: class");
+}
+
+var_dump($options);
 
 $container = $startup->setup(
 	AppStartup::MODE_CLI,
 	[
-		'environment' => $isLocalhost ? ($appTestMode !== '' ? $appTestMode : 'development') : 'production',
+		'environment' => match ($options["mode"]) {
+			"production" => "production",
+			default => "development"
+		},
 		'revision' => ':REVISION:',
-		'special_store' => $specialStore,
-		'url_helper' => $urlHelper,
 	]
 );
+
+/** @var CliApplicationBase */
+$app = $container->new($options['class']);
+$app->execute();
+exit($app->exitCode);
