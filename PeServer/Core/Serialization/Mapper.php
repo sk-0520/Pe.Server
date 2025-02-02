@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Serialization;
 
+use ArrayAccess;
 use PeServer\Core\Collection\Arr;
 use PeServer\Core\ReflectionUtility;
 use PeServer\Core\Serialization\Converter\TypeConverterBase;
@@ -42,7 +43,7 @@ class Mapper implements IMapper
 	/**
 	 * @SuppressWarnings(PHPMD.CyclomaticComplexity)
 	 */
-	public function mapping(array $source, object $destination): void
+	public function mapping(array|ArrayAccess $source, object $destination): void
 	{
 		$destReflection = new ReflectionClass($destination);
 		$properties = ReflectionUtility::getAllProperties($destReflection);

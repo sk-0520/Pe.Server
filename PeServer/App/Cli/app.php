@@ -11,6 +11,10 @@ use Error;
 use PeServer\App\Models\AppStartup;
 use PeServer\Core\AutoLoader;
 use PeServer\Core\StartupOptions;
+use PeServer\Core\Cli\CliApplicationBase;
+use PeServer\Core\Cli\CliOptions;
+use PeServer\Core\Cli\LongOptionKey;
+use PeServer\Core\Cli\ParameterKind;
 
 error_reporting(E_ALL);
 
@@ -30,14 +34,15 @@ $startup = new AppStartup(
 	)
 );
 
-$options = getopt("", [
-	"mode:",
-	"class:",
+$options = new CliOptions([
+	new LongOptionKey("mode", ParameterKind::NeedValue),
+	new LongOptionKey("class", ParameterKind::NeedValue),
 ]);
-if ($options === false) {
-	throw new Error("options");
+if (!isset($options->data["class"])) {
+	throw new Error("options: class");
 }
-if(!isset($options["class"]) || !is_string($options["class"]) || strlen($options["class"]) === 0) {
+$applicationClassName = $options->data["class"];
+if (!is_string($applicationClassName) || strlen($applicationClassName) === 0) {
 	throw new Error("options: class");
 }
 
@@ -46,7 +51,7 @@ var_dump($options);
 $container = $startup->setup(
 	AppStartup::MODE_CLI,
 	[
-		'environment' => match ($options["mode"]) {
+		'environment' => match ($options->data["mode"]) {
 			"production" => "production",
 			default => "development"
 		},
@@ -55,6 +60,6 @@ $container = $startup->setup(
 );
 
 /** @var CliApplicationBase */
-$app = $container->new($options['class']);
+$app = $container->new($applicationClassName);
 $app->execute();
 exit($app->exitCode);

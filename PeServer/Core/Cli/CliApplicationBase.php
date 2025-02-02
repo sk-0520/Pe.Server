@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\App\Cli;
+namespace PeServer\Core\Cli;
 
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\ILoggerFactory;

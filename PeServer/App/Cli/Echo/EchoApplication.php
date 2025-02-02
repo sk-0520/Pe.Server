@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace PeServer\App\Cli\Echo;
 
-use PeServer\App\Cli\CliApplicationBase;
+use PeServer\Core\Cli\CliApplicationBase;
+use PeServer\Core\Log\ILoggerFactory;
 
 class EchoApplication extends CliApplicationBase
 {
-	public function __construct(private EchoParameter $parameter)
+	public function __construct(public EchoParameter $parameter, ILoggerFactory $loggerFactory)
 	{
-		//NOP
+		parent::__construct($loggerFactory);
 	}
 
 	#region CliApplicationBase
