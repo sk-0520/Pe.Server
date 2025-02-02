@@ -15,18 +15,16 @@ class HTMLAudioElement extends HTMLElement
 	 *
 	 * @param HTMLAudioAttributes $attributes
 	 * @param HtmlContent $content
-	 * @param Props $props
+
 	 */
 	public function __construct(
 		HTMLAudioAttributes $attributes = new HTMLAudioAttributes(),
 		HtmlContent $content = new HtmlContent(),
-		Props $props = new Props()
 	) {
 		parent::__construct(
 			"audio",
 			$attributes,
 			$content,
-			$props,
 			HtmlElementOptions::block(false)
 		);
 	}

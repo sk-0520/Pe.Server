@@ -15,18 +15,16 @@ class HTMLOptionElement extends HTMLElement
 	 *
 	 * @param HTMLOptionAttributes $attributes
 	 * @param HtmlContent $content
-	 * @param Props $props
+
 	 */
 	public function __construct(
 		HTMLOptionAttributes $attributes = new HTMLOptionAttributes(),
 		HtmlContent $content = new HtmlContent(),
-		Props $props = new Props()
 	) {
 		parent::__construct(
 			"option",
 			$attributes,
 			$content,
-			$props,
 			HtmlElementOptions::block(false)
 		);
 	}

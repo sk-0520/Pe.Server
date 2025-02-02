@@ -15,18 +15,16 @@ class HTMLButtonElement extends HTMLElement
 	 *
 	 * @param HTMLButtonAttributes $attributes
 	 * @param HtmlContent $content
-	 * @param Props $props
+
 	 */
 	public function __construct(
 		HTMLButtonAttributes $attributes = new HTMLButtonAttributes(),
 		HtmlContent $content = new HtmlContent(),
-		Props $props = new Props()
 	) {
 		parent::__construct(
 			"button",
 			$attributes,
 			$content,
-			$props,
 			HtmlElementOptions::inline(false)
 		);
 	}

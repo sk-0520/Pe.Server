@@ -16,7 +16,7 @@ class Comment extends NodeBase
 	 */
 	public function __construct(public string $value)
 	{
-		if(Text::contains($value, "--", false)) {
+		if (Text::contains($value, "--", false)) {
 			throw new ArgumentException('--');
 		}
 	}
