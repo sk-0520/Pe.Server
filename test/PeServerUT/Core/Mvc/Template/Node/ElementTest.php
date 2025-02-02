@@ -8,7 +8,6 @@ use PeServer\Core\Mvc\Template\Node\Attributes;
 use PeServer\Core\Mvc\Template\Node\Content;
 use PeServer\Core\Mvc\Template\Node\ElementOptions;
 use PeServer\Core\Mvc\Template\Node\Element;
-use PeServer\Core\Mvc\Template\Node\Html\Content\HtmlContent;
 use PeServer\Core\Mvc\Template\Node\NoneContent;
 use PeServer\Core\Mvc\Template\Node\Props;
 use PeServer\Core\Mvc\Template\Node\TextNode;
@@ -18,13 +17,13 @@ class HTMLElementTest extends TestClass
 {
 	public function test_constructor()
 	{
-		$actual = new Element("name", new Attributes([]), new HtmlContent([]), new Props(), new ElementOptions(false, false));
+		$actual = new Element("name", new Attributes([]), new Content([]), new Props(), new ElementOptions(false, false));
 		$this->assertSame("name", $actual->tagName);
 	}
 
 	public function test___toString_selfClosing_no_attr()
 	{
-		$element = new Element("name", new Attributes([]), new HtmlContent([]), new Props(), new ElementOptions(false, true));
+		$element = new Element("name", new Attributes([]), new Content([]), new Props(), new ElementOptions(false, true));
 		$actual = (string)$element;
 		$this->assertSame("<name />", $actual);
 	}
@@ -41,8 +40,8 @@ class HTMLElementTest extends TestClass
 
 	public function test___toString_selfClosing_child()
 	{
-		$element = new Element("name", new Attributes([]), new HtmlContent([
-			new Element("child", new Attributes([]), new HtmlContent([]), new Props(), new ElementOptions(false, true))
+		$element = new Element("name", new Attributes([]), new Content([
+			new Element("child", new Attributes([]), new Content([]), new Props(), new ElementOptions(false, true))
 		]), new Props(), new ElementOptions(false, true));
 		$actual = (string)$element;
 		$this->assertSame("<name />", $actual);
@@ -50,7 +49,7 @@ class HTMLElementTest extends TestClass
 
 	public function test___toString_not_selfClosing_no_attr()
 	{
-		$element = new Element("name", new Attributes([]), new HtmlContent([]), new Props(), new ElementOptions(false, false));
+		$element = new Element("name", new Attributes([]), new Content([]), new Props(), new ElementOptions(false, false));
 		$actual = (string)$element;
 		$this->assertSame("<name></name>", $actual);
 	}
@@ -69,7 +68,7 @@ class HTMLElementTest extends TestClass
 	{
 		$element = new Element("name", new Attributes([]), new Content(
 			[
-				new Element("child", new Attributes([]), new HtmlContent([]), new Props(), new ElementOptions(false, true))
+				new Element("child", new Attributes([]), new Content([]), new Props(), new ElementOptions(false, true))
 			]
 		), new Props(), new ElementOptions(false, false));
 		$actual = (string)$element;
