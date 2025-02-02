@@ -13,8 +13,24 @@ use PeServer\Core\Throws\NotImplementedException;
 
 readonly class LayoutProps extends Props
 {
+	/**
+	 *
+	 * @param null|string $language
+	 * @param null|array<string,string> $meta
+	 * @param null|string $title
+	 * @param null|string $defaultStylePath
+	 * @param null|string $defaultScriptPath
+	 * @param null|string[] $customStylePaths
+	 * @param null|string[] $customScriptPath
+	 */
 	public function __construct(
-		public string $language,
+		public ?string $language,
+		public ?array $meta,
+		public ?string $title,
+		public ?string $defaultStylePath,
+		public ?string $defaultScriptPath,
+		public ?array $customStylePaths,
+		public ?array $customScriptPath,
 	) {
 		//NOP
 	}

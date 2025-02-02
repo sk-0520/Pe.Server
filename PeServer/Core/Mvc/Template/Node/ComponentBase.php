@@ -17,17 +17,15 @@ abstract class ComponentBase extends NodeBase
 	/**
 	 * 生成
 	 * @template TContent of Content
-	 * @template TProps of Props
 	 * @param Content $content
 	 * @phpstan-param TContent $content
-	 * @param Props $props
-	 * @phpstan-param TProps $props
+	 * @param Props $baseProps
 	 * @param Tag $tag
 	 */
 	public function __construct(
-		public Content $content,
-		public readonly Props $props,
-		public readonly Tag $tag
+		protected Content $content,
+		protected readonly Props $baseProps,
+		protected readonly Tag $tag
 	) {
 		//NOP
 	}
