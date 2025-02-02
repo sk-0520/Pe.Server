@@ -18,13 +18,12 @@ class HTMLTableCellElement extends HTMLElement
 	 * @param "td"|"th" $tagName
 	 * @param HTMLTableDataCellAttributes|HTMLTableHeaderCellAttributes|null $attributes
 	 * @param HtmlContent $content
-	 * @param Props $props
+
 	 */
 	public function __construct(
 		string $tagName,
 		HTMLTableDataCellAttributes|HTMLTableHeaderCellAttributes|null $attributes = null,
 		HtmlContent $content = new HtmlContent(),
-		Props $props = new Props()
 	) {
 		parent::__construct(
 			$tagName,
@@ -33,7 +32,6 @@ class HTMLTableCellElement extends HTMLElement
 				"th" => new HTMLTableHeaderCellAttributes(),
 			},
 			$content,
-			$props,
 			HtmlElementOptions::block(false)
 		);
 	}

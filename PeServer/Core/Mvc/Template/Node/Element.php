@@ -14,14 +14,12 @@ class Element extends NodeBase
 	 * @param non-empty-string $tagName
 	 * @param Attributes $attributes
 	 * @param Content $content
-	 * @param Props $props
 	 * @param ElementOptions $options
 	 */
 	public function __construct(
 		public readonly string $tagName,
 		public Attributes $attributes,
 		public Content $content,
-		public readonly Props $props,
 		public readonly ElementOptions $options
 	) {
 		//NOP

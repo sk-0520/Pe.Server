@@ -17,13 +17,13 @@ class HTMLElementTest extends TestClass
 {
 	public function test_constructor()
 	{
-		$actual = new Element("name", new Attributes([]), new Content([]), new Props(), new ElementOptions(false, false));
+		$actual = new Element("name", new Attributes([]), new Content([]), new ElementOptions(false, false));
 		$this->assertSame("name", $actual->tagName);
 	}
 
 	public function test___toString_selfClosing_no_attr()
 	{
-		$element = new Element("name", new Attributes([]), new Content([]), new Props(), new ElementOptions(false, true));
+		$element = new Element("name", new Attributes([]), new Content([]), new ElementOptions(false, true));
 		$actual = (string)$element;
 		$this->assertSame("<name />", $actual);
 	}
@@ -33,7 +33,7 @@ class HTMLElementTest extends TestClass
 		$element = new Element("name", new Attributes([
 			"key" => "value",
 			"name-only" => null,
-		]), new NoneContent(), new Props(), new ElementOptions(false, true));
+		]), new NoneContent(), new ElementOptions(false, true));
 		$actual = (string)$element;
 		$this->assertSame("<name key=\"value\" name-only />", $actual);
 	}
@@ -41,15 +41,15 @@ class HTMLElementTest extends TestClass
 	public function test___toString_selfClosing_child()
 	{
 		$element = new Element("name", new Attributes([]), new Content([
-			new Element("child", new Attributes([]), new Content([]), new Props(), new ElementOptions(false, true))
-		]), new Props(), new ElementOptions(false, true));
+			new Element("child", new Attributes([]), new Content([]), new ElementOptions(false, true))
+		]), new ElementOptions(false, true));
 		$actual = (string)$element;
 		$this->assertSame("<name />", $actual);
 	}
 
 	public function test___toString_not_selfClosing_no_attr()
 	{
-		$element = new Element("name", new Attributes([]), new Content([]), new Props(), new ElementOptions(false, false));
+		$element = new Element("name", new Attributes([]), new Content([]), new ElementOptions(false, false));
 		$actual = (string)$element;
 		$this->assertSame("<name></name>", $actual);
 	}
@@ -59,7 +59,7 @@ class HTMLElementTest extends TestClass
 		$element = new Element("name", new Attributes([
 			"key" => "value",
 			"name-only" => null,
-		]), new NoneContent(), new Props(), new ElementOptions(false, false));
+		]), new NoneContent(), new ElementOptions(false, false));
 		$actual = (string)$element;
 		$this->assertSame("<name key=\"value\" name-only></name>", $actual);
 	}
@@ -68,9 +68,9 @@ class HTMLElementTest extends TestClass
 	{
 		$element = new Element("name", new Attributes([]), new Content(
 			[
-				new Element("child", new Attributes([]), new Content([]), new Props(), new ElementOptions(false, true))
+				new Element("child", new Attributes([]), new Content([]), new ElementOptions(false, true))
 			]
-		), new Props(), new ElementOptions(false, false));
+		), new ElementOptions(false, false));
 		$actual = (string)$element;
 		$this->assertSame("<name><child /></name>", $actual);
 	}
@@ -78,8 +78,8 @@ class HTMLElementTest extends TestClass
 	public function test___toString_not_selfClosing_child_2()
 	{
 		$element = new Element("name", new Attributes([]), new Content([
-			new Element("child", new Attributes([]), new Content([new TextNode("text")]), new Props(), new ElementOptions(false, false))
-		]), new Props(), new ElementOptions(false, false));
+			new Element("child", new Attributes([]), new Content([new TextNode("text")]), new ElementOptions(false, false))
+		]), new ElementOptions(false, false));
 		$actual = (string)$element;
 		$this->assertSame("<name><child>text</child></name>", $actual);
 	}
