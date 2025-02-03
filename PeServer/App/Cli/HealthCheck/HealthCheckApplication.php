@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace PeServer\App\Cli\HealthCheck;
 
-use PeServer\Core\Cli\CliApplicationBase;
+use PeServer\App\Cli\AppApplicationBase;
+use PeServer\App\Models\AppDatabaseConnection;
+use PeServer\App\Models\Dao\Entities\PeSettingEntityDao;
+use PeServer\Core\Environment;
 use PeServer\Core\Log\ILoggerFactory;
 
-class HealthCheckApplication extends CliApplicationBase
+class HealthCheckApplication extends AppApplicationBase
 {
-	public function __construct(public HealthCheckParameter $parameter, ILoggerFactory $loggerFactory)
+	public function __construct(public HealthCheckParameter $parameter, private Environment $environment, ILoggerFactory $loggerFactory)
 	{
 		parent::__construct($loggerFactory);
 	}
@@ -19,6 +22,14 @@ class HealthCheckApplication extends CliApplicationBase
 	public function execute(): void
 	{
 		$this->logger->info("echo {0}", $this->parameter->echo);
+
+		$this->logger->info("app version: {0}", $this->environment->getRevision());
+
+		$database = $this->openDatabase();
+		$peSettingEntityDao = new PeSettingEntityDao($database);
+		$peVersion = $peSettingEntityDao->selectPeSettingVersion();
+		$this->logger->info("pe version: {0}", $peVersion);
+
 	}
 
 	#endregion
