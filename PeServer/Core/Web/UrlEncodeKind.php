@@ -6,6 +6,7 @@ namespace PeServer\Core\Web;
 
 /**
  * URLエンコード方式。
+ * @codeCoverageIgnore
  */
 enum UrlEncodeKind: int
 {

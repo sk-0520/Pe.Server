@@ -221,6 +221,14 @@ class AccountUserPluginLogic extends PageLogicBase
 		$userInfo = $this->requireSession(SessionKey::ACCOUNT);
 
 		$params = [
+			'plugin_id' => $this->isRegister
+				? Uuid::adjustGuid($this->getRequest('account_plugin_plugin_id'))
+				: Uuid::adjustGuid($this->getRequest('plugin_id'))
+			,
+			'plugin_name' => $this->isRegister
+				? $this->getRequest('account_plugin_plugin_name')
+				: Text::EMPTY
+			,
 			'user_id' => $userInfo->userId,
 			'display_name' => $this->getRequest('account_plugin_display_name'),
 			'state' => $this->getRequest('account_plugin_state'),
@@ -231,13 +239,6 @@ class AccountUserPluginLogic extends PageLogicBase
 			],
 			'description' => $this->getRequest('account_plugin_description'),
 		];
-
-		if ($this->isRegister) {
-			$params['plugin_id'] = Uuid::adjustGuid($this->getRequest('account_plugin_plugin_id'));
-			$params['plugin_name'] = $this->getRequest('account_plugin_plugin_name');
-		} else {
-			$params['plugin_id'] = Uuid::adjustGuid($this->getRequest('plugin_id'));
-		}
 
 		$database = $this->openDatabase();
 		$database->transaction(function (IDatabaseContext $context) use ($params) {
@@ -265,7 +266,7 @@ class AccountUserPluginLogic extends PageLogicBase
 				$pluginsEntityDao->insertPlugin(
 					$params['plugin_id'],
 					$params['user_id'],
-					$params['plugin_name'], //@phpstan-ignore-line
+					$params['plugin_name'],
 					$params['display_name'],
 					$pluginState,
 					$params['description'],
@@ -282,7 +283,6 @@ class AccountUserPluginLogic extends PageLogicBase
 			}
 
 			$pluginUrlsEntityDao->deleteByPluginId($params['plugin_id']);
-			/** @var array<string,string> */
 			$urls = $params['urls'];
 			foreach ($urls as $k => $v) {
 				$pluginUrlsEntityDao->insertUrl($params['plugin_id'], $k, $v);
@@ -296,7 +296,6 @@ class AccountUserPluginLogic extends PageLogicBase
 			}
 
 			if ($this->isRegister) {
-				//@phpstan-ignore-next-line
 				$this->writeAuditLogCurrentUser(AuditLog::USER_PLUGIN_REGISTER, ['plugin_id' => $params['plugin_id'], 'plugin_name' => $params['plugin_name']], $context);
 			} else {
 				$this->writeAuditLogCurrentUser(AuditLog::USER_PLUGIN_UPDATE, ['plugin_id' => $params['plugin_id']], $context);

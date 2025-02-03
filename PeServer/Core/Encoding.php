@@ -145,7 +145,7 @@ class Encoding
 				throw new InvalidOperationException();
 			}
 
-			return self::$defaultEncoding = new Encoding($name);
+			return self::$defaultEncoding = new self($name);
 		}
 
 		return self::$defaultEncoding;
@@ -175,7 +175,7 @@ class Encoding
 	 */
 	public static function getAscii(): Encoding
 	{
-		return new Encoding(self::ENCODE_ASCII);
+		return new self(self::ENCODE_ASCII);
 	}
 
 	/**
@@ -185,7 +185,7 @@ class Encoding
 	 */
 	public static function getUtf8(): Encoding
 	{
-		return new Encoding(self::ENCODE_UTF8);
+		return new self(self::ENCODE_UTF8);
 	}
 
 	/**
@@ -195,7 +195,7 @@ class Encoding
 	 */
 	public static function getUtf16(): Encoding
 	{
-		return new Encoding(self::ENCODE_UTF16_DEFAULT);
+		return new self(self::ENCODE_UTF16_DEFAULT);
 	}
 
 	/**
@@ -205,7 +205,7 @@ class Encoding
 	 */
 	public static function getUtf32(): Encoding
 	{
-		return new Encoding(self::ENCODE_UTF32_DEFAULT);
+		return new self(self::ENCODE_UTF32_DEFAULT);
 	}
 
 	/**
@@ -215,7 +215,7 @@ class Encoding
 	 */
 	public static function getShiftJis(): Encoding
 	{
-		return new Encoding(self::ENCODE_SJIS_DEFAULT);
+		return new self(self::ENCODE_SJIS_DEFAULT);
 	}
 
 	/**

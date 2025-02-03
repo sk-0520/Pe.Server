@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\App\Models;
 
 use Exception;
+use PeServer\App\Cli\HealthCheck\HealthCheckParameter;
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\AppCryptography;
 use PeServer\App\Models\AppDatabaseCache;
@@ -20,6 +21,9 @@ use PeServer\App\Models\AppUrl;
 use PeServer\App\Models\Domain\AccessLogManager;
 use PeServer\App\Models\Domain\AppArchiver;
 use PeServer\App\Models\Domain\AppEraser;
+use PeServer\Core\Cli\CommandLine;
+use PeServer\Core\Cli\LongOptionKey;
+use PeServer\Core\Cli\ParameterKind;
 use PeServer\Core\Collection\Arr;
 use PeServer\Core\ProgramContext;
 use PeServer\Core\CoreStartup;
@@ -38,6 +42,7 @@ use PeServer\Core\Mvc\RouteRequest;
 use PeServer\Core\Mvc\RouteSetting;
 use PeServer\Core\Mvc\Routing;
 use PeServer\Core\Mvc\Template\ITemplateFactory;
+use PeServer\Core\Serialization\Mapper;
 use PeServer\Core\Web\WebSecurity;
 use PeServer\Core\Store\SpecialStore;
 use PeServer\Core\Text;
@@ -136,6 +141,29 @@ class AppStartup extends CoreStartup
 
 		$container->add(RouteSetting::class, DiItem::value($container->new(AppRouteSetting::class)));
 		$container->registerMapping(Routing::class, AppRouting::class);
+	}
+
+	protected function setupCliService(array $options, IDiRegisterContainer $container): void
+	{
+		parent::setupCliService($options, $container);
+
+		$container->add(
+			HealthCheckParameter::class,
+			new DiItem(
+				DiItem::LIFECYCLE_SINGLETON,
+				DiItem::TYPE_FACTORY,
+				function ($di) {
+					$options = new CommandLine([
+						new LongOptionKey("echo", ParameterKind::NeedValue),
+					]);
+					$parsedResult = $options->parseArgv();
+					$result = new HealthCheckParameter();
+					$mapper = new Mapper();
+					$mapper->mapping($parsedResult, $result);
+					return $result;
+				}
+			)
+		);
 	}
 
 	#endregion

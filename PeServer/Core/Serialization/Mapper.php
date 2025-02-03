@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Serialization;
 
+use ArrayAccess;
 use PeServer\Core\Collection\Arr;
 use PeServer\Core\ReflectionUtility;
 use PeServer\Core\Serialization\Converter\TypeConverterBase;
@@ -42,10 +43,11 @@ class Mapper implements IMapper
 	/**
 	 * @SuppressWarnings(PHPMD.CyclomaticComplexity)
 	 */
-	public function mapping(array $source, object $destination): void
+	public function mapping(array|ArrayAccess $source, object $destination): void
 	{
 		$destReflection = new ReflectionClass($destination);
 		$properties = ReflectionUtility::getAllProperties($destReflection);
+		$ignoreKeys = [];
 
 		foreach ($properties as $property) {
 			$property->setAccessible(true);
@@ -79,8 +81,12 @@ class Mapper implements IMapper
 				continue;
 			}
 
+			if (isset($ignoreKeys[$keyName])) {
+				continue;
+			}
+
 			$sourceValue = $source[$keyName];
-			unset($source[$keyName]); //対象キーは不要なので破棄
+			$ignoreKeys[$keyName] = true; //対象キーは不要なので破棄
 			$sourceType = TypeUtility::getType($sourceValue);
 			$propertyTypes = ReflectionUtility::getTypes($property->getType());
 			foreach ($propertyTypes as $propertyType) {

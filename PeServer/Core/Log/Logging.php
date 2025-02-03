@@ -85,7 +85,6 @@ class Logging
 		}
 
 		if (is_string($message) && !Arr::isNullOrEmpty($parameters) && array_keys($parameters)[0] === 0) {
-			/** @var string[] */
 			$values = array_map(function ($value) {
 				if (is_string($value)) {
 					return $value;
@@ -118,7 +117,7 @@ class Logging
 
 	private function getRemoteHost(): string
 	{
-		// @phpstan-ignore-next-line
+		// @phpstan-ignore-next-line [DEBUG]
 		if (!self::IS_ENABLED_HOST) {
 			return Text::EMPTY;
 		}
@@ -192,9 +191,7 @@ class Logging
 	{
 		/** @var array<string,array<string,mixed>>[] */
 		$backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS); // DEBUG_BACKTRACE_PROVIDE_OBJECT
-		/** @var array<string,mixed> */
 		$traceCaller = $backtrace[$traceIndex];
-		/** @var array<string,mixed> */
 		$traceMethod = $backtrace[$traceIndex + 1];
 
 		/** @var string */

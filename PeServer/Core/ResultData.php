@@ -61,7 +61,8 @@ final readonly class ResultData
 
 	/**
 	 * 結果が失敗か失敗対象の値か。
-	 * @return bool
+	 * @param mixed $failValue 失敗の対象とする値。
+	 * @return bool 真: 失敗。
 	 * @phpstan-pure
 	 */
 	public function isFailureOrFailValue(mixed $failValue): bool
@@ -71,7 +72,7 @@ final readonly class ResultData
 
 	/**
 	 * 結果が失敗か `false` か。
-	 * @return bool
+	 * @return bool 真: 失敗。
 	 * @phpstan-pure
 	 */
 	public function isFailureOrFalse(): bool

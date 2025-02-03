@@ -19,12 +19,12 @@ class ToolIndexLogic extends PageLogicBase
 
 	protected function validateImpl(LogicCallMode $callMode): void
 	{
-		//nop
+		//NOP
 	}
 
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
-		//nop
+		//NOP
 	}
 
 	#endregion

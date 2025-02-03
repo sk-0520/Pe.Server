@@ -99,7 +99,6 @@ class BotTextImageFunction extends TemplateFunctionBase
 		$textSetting = new TextSetting(HorizontalAlignment::Center, VerticalAlignment::Center, $fontFilePath, 0);
 
 		$image = Graphics::create($size);
-		$image->setDpi(new Size(300, 300));
 
 		$rectangle = new Rectangle(new Point(0, 0), $size);
 		$image->fillRectangle($backgroundColor, $rectangle);
@@ -111,6 +110,8 @@ class BotTextImageFunction extends TemplateFunctionBase
 		$dom = new HtmlDocument();
 		$img = $dom->addTagElement('img');
 		$img->setAttribute('src', $htmlSource);
+		$img->setAttribute('width', (string)$width);
+		$img->setAttribute('height', (string)$height);
 
 		$textHash = Cryptography::generateHashString(self::HASH_ALGORITHM, new Binary($text));
 		$img->setAttribute('data-hash', $textHash);

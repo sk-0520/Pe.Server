@@ -156,7 +156,6 @@ class CoreStartup
 
 		$container->registerValue($options['url_helper'] ?? new UrlHelper(''), IUrlHelper::class);
 
-		/** @var SpecialStore */
 		$specialStore = $options['special_store'] ?? new SpecialStore();
 		$container->registerValue($specialStore, SpecialStore::class);
 		$container->add(Stores::class, DiItem::factory(fn ($di) => new Stores($di->get(SpecialStore::class), StoreOptions::default(), $di->get(WebSecurity::class)), DiItem::LIFECYCLE_SINGLETON));
@@ -179,6 +178,7 @@ class CoreStartup
 	protected function setupCliService(array $options, IDiRegisterContainer $container): void
 	{
 		//NOP
+		$container->add(IDiRegisterContainer::class, DiItem::factory(fn ($dc) => $dc->clone()));
 	}
 
 	/**

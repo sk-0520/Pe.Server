@@ -9,6 +9,7 @@ use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\AuditLog;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\Core\Code;
+use PeServer\Core\Collection\Access;
 use PeServer\Core\Collection\Arr;
 use PeServer\Core\Database\DatabaseTableResult;
 use PeServer\Core\Database\IDatabaseContext;
@@ -30,7 +31,7 @@ class ManagementDatabaseMaintenanceLogic extends PageLogicBase
 	 *
 	 * @param IDatabaseContext $context
 	 * @param array<mixed> $row
-	 * @return array{name:string,sql:string,table:array{columns:array<mixed>}}
+	 * @return array{name:string,sql:string,columns:array<mixed>}
 	 */
 	private function getTableInfo(IDatabaseContext $context, array $row): array
 	{
@@ -39,11 +40,10 @@ class ManagementDatabaseMaintenanceLogic extends PageLogicBase
 			"PRAGMA table_info('$name')"
 		);
 
-		//@phpstan-ignore-next-line
 		return [
-			'name' => (string)$row['name'],
-			'sql' => (string)$row['sql'],
-			'columns' => $columns->rows,
+			'name' => Access::getString($row, 'name'),
+			'sql' => Access::getString($row, 'sql'),
+			'columns' => $columns->rows
 		];
 	}
 
