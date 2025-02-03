@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Serialization;
 
+use ArrayAccess;
 use PeServer\Core\Throws\MapperKeyNotFoundException;
 use PeServer\Core\Throws\MapperTypeException;
 
@@ -23,12 +24,12 @@ interface IMapper
 	/**
 	 * 配列データをオブジェクトにマッピング。
 	 *
-	 * @param array<string,mixed> $source 元データ。
+	 * @param array<string,mixed>|ArrayAccess<string,mixed> $source 元データ。
 	 * @param object $destination マッピング先
 	 * @throws MapperKeyNotFoundException キーが見つからない(`Mapping::FLAG_EXCEPTION_NOT_FOUND_KEY`)。
 	 * @throws MapperTypeException 型変換がもう無理(`Mapping::FLAG_EXCEPTION_TYPE_MISMATCH`)。
 	 */
-	public function mapping(array $source, object $destination): void;
+	public function mapping(array|ArrayAccess $source, object $destination): void;
 
 	/**
 	 * オブジェクトデータを配列に変換。
