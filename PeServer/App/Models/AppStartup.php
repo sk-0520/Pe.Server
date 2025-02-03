@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\App\Models;
 
 use Exception;
-use PeServer\App\Cli\Echo\EchoParameter;
+use PeServer\App\Cli\HealthCheck\HealthCheckParameter;
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\AppCryptography;
 use PeServer\App\Models\AppDatabaseCache;
@@ -148,16 +148,16 @@ class AppStartup extends CoreStartup
 		parent::setupCliService($options, $container);
 
 		$container->add(
-			EchoParameter::class,
+			HealthCheckParameter::class,
 			new DiItem(
 				DiItem::LIFECYCLE_SINGLETON,
 				DiItem::TYPE_FACTORY,
 				function ($di) {
 					$options = new CommandLine([
-						new LongOptionKey("input", ParameterKind::NeedValue),
+						new LongOptionKey("echo", ParameterKind::NeedValue),
 					]);
 					$parsedResult = $options->parseArgv();
-					$result = new EchoParameter();
+					$result = new HealthCheckParameter();
 					$mapper = new Mapper();
 					$mapper->mapping($parsedResult, $result);
 					return $result;
