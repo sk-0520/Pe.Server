@@ -8,5 +8,5 @@ enum ParameterKind
 {
 	case NeedValue;
 	case OptionValue;
-	case KeyOnly;
+	case Switch;
 }

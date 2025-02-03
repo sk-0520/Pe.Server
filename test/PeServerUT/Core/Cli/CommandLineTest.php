@@ -36,8 +36,8 @@ class CommandLineTest extends TestClass
 		$this->expectException(ArgumentException::class);
 		$this->expectExceptionMessage('$longOptions: KEY');
 		new CommandLine([
-			new LongOptionKey("KEY", ParameterKind::KeyOnly),
-			new LongOptionKey("KEY", ParameterKind::KeyOnly),
+			new LongOptionKey("KEY", ParameterKind::Switch),
+			new LongOptionKey("KEY", ParameterKind::Switch),
 		]);
 		$this->fail();
 	}
@@ -47,9 +47,9 @@ class CommandLineTest extends TestClass
 		$commandline = new CommandLine([
 			new LongOptionKey("abc", ParameterKind::NeedValue),
 			new LongOptionKey("def", ParameterKind::OptionValue),
-			new LongOptionKey("efg", ParameterKind::KeyOnly),
+			new LongOptionKey("efg", ParameterKind::Switch),
 			new LongOptionKey("hij", ParameterKind::OptionValue),
-			new LongOptionKey("klm", ParameterKind::KeyOnly),
+			new LongOptionKey("klm", ParameterKind::Switch),
 		]);
 
 		$actual = $commandline->parse([
@@ -66,7 +66,7 @@ class CommandLineTest extends TestClass
 		$this->assertSame("ABC", $actual->keyValues["abc"]);
 		$this->assertSame("DEF", $actual->keyValues["def"]);
 		$this->assertArrayNotHasKey("hij", $actual->keyValues);
-		$this->assertTrue(Arr::in($actual->keyOnly, "efg"));
+		$this->assertTrue(Arr::in($actual->switches, "efg"));
 
 		$this->assertArrayHasKey("abc", $actual);
 		$this->assertArrayHasKey("def", $actual);

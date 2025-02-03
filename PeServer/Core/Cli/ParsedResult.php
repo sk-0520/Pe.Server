@@ -6,6 +6,7 @@ namespace PeServer\Core\Cli;
 
 use ArrayAccess;
 use PeServer\Core\Collection\Arr;
+use PeServer\Core\Throws\KeyNotFoundException;
 use PeServer\Core\Throws\NotImplementedException;
 use TypeError;
 
@@ -18,16 +19,33 @@ readonly class ParsedResult implements ArrayAccess
 	/**
 	 *
 	 * @param string $command
-	 * @param non-empty-string[] $keyOnly
+	 * @param non-empty-string[] $switches
 	 * @param array<non-empty-string,string> $keyValues
 	 */
 	public function __construct(
 		public string $command,
-		public array $keyOnly,
+		public array $switches,
 		public array $keyValues,
 	) {
 		//NOP
 	}
+
+	#region function
+
+	public function getValue(string $key): string
+	{
+		if (!isset($this->keyValues[$key])) {
+			throw new KeyNotFoundException($key);
+		}
+		return $this->keyValues[$key];
+	}
+
+	public function hasSwitch(string $key): bool
+	{
+		return Arr::in($this->switches, $key);
+	}
+
+	#endregion
 
 	#region ArrayAccess
 
@@ -48,7 +66,7 @@ readonly class ParsedResult implements ArrayAccess
 			return true;
 		}
 
-		return Arr::in($this->keyOnly, $offset);
+		return Arr::in($this->switches, $offset);
 	}
 
 	/**
@@ -68,7 +86,7 @@ readonly class ParsedResult implements ArrayAccess
 			return $this->keyValues[$offset];
 		}
 
-		return Arr::in($this->keyOnly, $offset);
+		return Arr::in($this->switches, $offset);
 	}
 	public function offsetSet(mixed $offset, mixed $value): void
 	{

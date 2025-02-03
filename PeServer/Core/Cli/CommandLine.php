@@ -73,7 +73,7 @@ class CommandLine
 		$app = $arguments[0];
 
 		/** @var non-empty-string[] */
-		$keyOnly = [];
+		$switches = [];
 		/** @var array<non-empty-string,string> */
 		$keyValues = [];
 
@@ -85,8 +85,8 @@ class CommandLine
 				if (isset($this->longOptions[$longOptionKey])) {
 					$longOption = $this->longOptions[$longOptionKey];
 
-					if ($longOption->kind === ParameterKind::KeyOnly) {
-						$keyOnly[] = $longOption->key;
+					if ($longOption->kind === ParameterKind::Switch) {
+						$switches[] = $longOption->key;
 						continue;
 					}
 
@@ -102,7 +102,7 @@ class CommandLine
 			}
 		}
 
-		return new ParsedResult($app, $keyOnly, $keyValues);
+		return new ParsedResult($app, $switches, $keyValues);
 	}
 
 	#endregion
