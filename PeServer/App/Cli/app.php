@@ -45,7 +45,7 @@ $parsedResult = $options->parseArgv();
 var_dump($parsedResult);
 
 $applicationClassName = $parsedResult->getValue("class");
-if(Text::isNullOrWhiteSpace($applicationClassName)) {
+if (Text::isNullOrWhiteSpace($applicationClassName)) {
 	throw new Exception("class");
 }
 

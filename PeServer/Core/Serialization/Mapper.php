@@ -81,7 +81,7 @@ class Mapper implements IMapper
 				continue;
 			}
 
-			if(isset($ignoreKeys[$keyName])) {
+			if (isset($ignoreKeys[$keyName])) {
 				continue;
 			}
 
