@@ -8,6 +8,7 @@ namespace PeServer\App\Cli;
 require_once(__DIR__ . '/../../Core/AutoLoader.php');
 
 use Error;
+use Exception;
 use PeServer\App\Models\AppStartup;
 use PeServer\Core\AutoLoader;
 use PeServer\Core\StartupOptions;
@@ -15,6 +16,7 @@ use PeServer\Core\Cli\CliApplicationBase;
 use PeServer\Core\Cli\CommandLine;
 use PeServer\Core\Cli\LongOptionKey;
 use PeServer\Core\Cli\ParameterKind;
+use PeServer\Core\Text;
 
 error_reporting(E_ALL);
 
@@ -34,32 +36,31 @@ $startup = new AppStartup(
 	)
 );
 
-// $options = new CommandLine([
-// 	new LongOptionKey("mode", ParameterKind::NeedValue),
-// 	new LongOptionKey("class", ParameterKind::NeedValue),
-// ]);
-// if (!isset($options->data["class"])) {
-// 	throw new Error("options: class");
-// }
-// $applicationClassName = $options->data["class"];
-// if (!is_string($applicationClassName) || strlen($applicationClassName) === 0) {
-// 	throw new Error("options: class");
-// }
+$options = new CommandLine([
+	new LongOptionKey("mode", ParameterKind::NeedValue),
+	new LongOptionKey("class", ParameterKind::NeedValue),
+]);
+$parsedResult = $options->parseArgv();
 
-// var_dump($options);
+var_dump($parsedResult);
 
-// $container = $startup->setup(
-// 	AppStartup::MODE_CLI,
-// 	[
-// 		'environment' => match ($options->data["mode"]) {
-// 			"production" => "production",
-// 			default => "development"
-// 		},
-// 		'revision' => ':REVISION:',
-// 	]
-// );
+$applicationClassName = $parsedResult->getValue("class");
+if(Text::isNullOrWhiteSpace($applicationClassName)) {
+	throw new Exception("class");
+}
 
-// /** @var CliApplicationBase */
-// $app = $container->new($applicationClassName);
-// $app->execute();
-// exit($app->exitCode);
+$container = $startup->setup(
+	AppStartup::MODE_CLI,
+	[
+		'environment' => match ($parsedResult->getValue("mode")) {
+			"production" => "production",
+			default => "development"
+		},
+		'revision' => ':REVISION:',
+	]
+);
+
+/** @var CliApplicationBase */
+$app = $container->new($applicationClassName);
+$app->execute();
+exit($app->exitCode);

@@ -156,9 +156,10 @@ class AppStartup extends CoreStartup
 					$options = new CommandLine([
 						new LongOptionKey("input", ParameterKind::NeedValue),
 					]);
+					$parsedResult = $options->parseArgv();
 					$result = new EchoParameter();
 					$mapper = new Mapper();
-					//$mapper->mapping($options->data, $result);
+					$mapper->mapping($parsedResult, $result);
 					return $result;
 				}
 			)

@@ -47,6 +47,7 @@ class Mapper implements IMapper
 	{
 		$destReflection = new ReflectionClass($destination);
 		$properties = ReflectionUtility::getAllProperties($destReflection);
+		$ignoreKeys = [];
 
 		foreach ($properties as $property) {
 			$property->setAccessible(true);
@@ -80,8 +81,12 @@ class Mapper implements IMapper
 				continue;
 			}
 
+			if(isset($ignoreKeys[$keyName])) {
+				continue;
+			}
+
 			$sourceValue = $source[$keyName];
-			unset($source[$keyName]); //対象キーは不要なので破棄
+			$ignoreKeys[$keyName] = true; //対象キーは不要なので破棄
 			$sourceType = TypeUtility::getType($sourceValue);
 			$propertyTypes = ReflectionUtility::getTypes($property->getType());
 			foreach ($propertyTypes as $propertyType) {
