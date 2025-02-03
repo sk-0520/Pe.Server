@@ -21,7 +21,7 @@ use PeServer\App\Models\AppUrl;
 use PeServer\App\Models\Domain\AccessLogManager;
 use PeServer\App\Models\Domain\AppArchiver;
 use PeServer\App\Models\Domain\AppEraser;
-use PeServer\Core\Cli\CliOptions;
+use PeServer\Core\Cli\CommandLine;
 use PeServer\Core\Cli\LongOptionKey;
 use PeServer\Core\Cli\ParameterKind;
 use PeServer\Core\Collection\Arr;
@@ -152,18 +152,17 @@ class AppStartup extends CoreStartup
 			new DiItem(
 				DiItem::LIFECYCLE_SINGLETON,
 				DiItem::TYPE_FACTORY,
-				function($di) {
-					$options = new CliOptions([
+				function ($di) {
+					$options = new CommandLine([
 						new LongOptionKey("input", ParameterKind::NeedValue),
 					]);
 					$result = new EchoParameter();
 					$mapper = new Mapper();
-					$mapper->mapping($options->data, $result);
-return $result;
+					//$mapper->mapping($options->data, $result);
+					return $result;
 				}
 			)
 		);
-
 	}
 
 	#endregion

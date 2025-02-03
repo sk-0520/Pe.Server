@@ -12,7 +12,7 @@ use PeServer\App\Models\AppStartup;
 use PeServer\Core\AutoLoader;
 use PeServer\Core\StartupOptions;
 use PeServer\Core\Cli\CliApplicationBase;
-use PeServer\Core\Cli\CliOptions;
+use PeServer\Core\Cli\CommandLine;
 use PeServer\Core\Cli\LongOptionKey;
 use PeServer\Core\Cli\ParameterKind;
 
@@ -34,32 +34,32 @@ $startup = new AppStartup(
 	)
 );
 
-$options = new CliOptions([
-	new LongOptionKey("mode", ParameterKind::NeedValue),
-	new LongOptionKey("class", ParameterKind::NeedValue),
-]);
-if (!isset($options->data["class"])) {
-	throw new Error("options: class");
-}
-$applicationClassName = $options->data["class"];
-if (!is_string($applicationClassName) || strlen($applicationClassName) === 0) {
-	throw new Error("options: class");
-}
+// $options = new CommandLine([
+// 	new LongOptionKey("mode", ParameterKind::NeedValue),
+// 	new LongOptionKey("class", ParameterKind::NeedValue),
+// ]);
+// if (!isset($options->data["class"])) {
+// 	throw new Error("options: class");
+// }
+// $applicationClassName = $options->data["class"];
+// if (!is_string($applicationClassName) || strlen($applicationClassName) === 0) {
+// 	throw new Error("options: class");
+// }
 
-var_dump($options);
+// var_dump($options);
 
-$container = $startup->setup(
-	AppStartup::MODE_CLI,
-	[
-		'environment' => match ($options->data["mode"]) {
-			"production" => "production",
-			default => "development"
-		},
-		'revision' => ':REVISION:',
-	]
-);
+// $container = $startup->setup(
+// 	AppStartup::MODE_CLI,
+// 	[
+// 		'environment' => match ($options->data["mode"]) {
+// 			"production" => "production",
+// 			default => "development"
+// 		},
+// 		'revision' => ':REVISION:',
+// 	]
+// );
 
-/** @var CliApplicationBase */
-$app = $container->new($applicationClassName);
-$app->execute();
-exit($app->exitCode);
+// /** @var CliApplicationBase */
+// $app = $container->new($applicationClassName);
+// $app->execute();
+// exit($app->exitCode);
