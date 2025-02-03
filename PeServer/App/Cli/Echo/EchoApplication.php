@@ -18,7 +18,7 @@ class EchoApplication extends CliApplicationBase
 
 	public function execute(): void
 	{
-		$this->logger->info("ECHO");
+		$this->logger->info("ECHO {0}", $this->parameter->input);
 	}
 
 	#endregion
