@@ -23,7 +23,7 @@ class ConsoleLogger extends LoggerBase
 {
 	#region define
 
-	const FORMAT = "{TIMESTAMP} |{LEVEL}| {FILE}({LINE}) {FUNCTION} -> {MESSAGE}" . PHP_EOL;
+	const FORMAT = "{TIMESTAMP} |{LEVEL}| {REQUEST_ID} {FILE}({LINE}) {FUNCTION} -> {MESSAGE}" . PHP_EOL;
 
 	#endregion
 
