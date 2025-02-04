@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Cli\HealthCheck;
 
+use Error;
 use PeServer\App\Cli\AppApplicationBase;
 use PeServer\App\Models\AppDatabaseConnection;
 use PeServer\App\Models\Dao\Entities\PeSettingEntityDao;
@@ -29,6 +30,8 @@ class HealthCheckApplication extends AppApplicationBase
 		$peSettingEntityDao = new PeSettingEntityDao($database);
 		$peVersion = $peSettingEntityDao->selectPeSettingVersion();
 		$this->logger->info("pe version: {0}", $peVersion);
+
+		throw new Error("error");
 	}
 
 	#endregion

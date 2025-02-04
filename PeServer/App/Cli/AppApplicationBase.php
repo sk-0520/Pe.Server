@@ -67,6 +67,8 @@ abstract class AppApplicationBase extends CliApplicationBase
 				new EmailAddress($email),
 			];
 
+			$this->logger->info("{0}", $this->mailer);
+
 			try {
 				$this->mailer->send();
 			} catch (Exception $ex) {
