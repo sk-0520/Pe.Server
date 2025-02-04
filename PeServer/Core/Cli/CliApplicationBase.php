@@ -35,9 +35,7 @@ abstract class CliApplicationBase
 
 	public function execute(): void
 	{
-		$classFullName = TypeUtility::getType($this);
-		$lastIndex = Text::getLastPosition($classFullName, "\\");
-		$className = Text::substring($classFullName, $lastIndex + 1);
+		$className = TypeUtility::getSimpleClassName($this);
 
 		$this->logger->info("<{0}> start", $className);
 		try {

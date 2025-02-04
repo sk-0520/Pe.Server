@@ -58,7 +58,7 @@ abstract class AppApplicationBase extends CliApplicationBase
 
 	protected function failure(): void
 	{
-		$this->mailer->customSubjectHeader = "[CRON] " . TypeUtility::getType($this);
+		$this->mailer->customSubjectHeader = "[CRON-ERROR] " . TypeUtility::getSimpleClassName($this);
 		$this->mailer->setMessage(new EmailMessage(
 			Text::join(PHP_EOL, StaticRamLogger::$logs)
 		));

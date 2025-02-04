@@ -25,6 +25,7 @@ use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\Serialization\JsonSerializer;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\NotImplementedException;
+use Throwable;
 
 class ApplicationApiCrashReportLogic extends ApiLogicBase
 {
@@ -125,7 +126,7 @@ class ApplicationApiCrashReportLogic extends ApiLogicBase
 
 			try {
 				$this->mailer->send();
-			} catch (Exception $ex) {
+			} catch (Throwable $ex) {
 				// メール送信は開発側の都合なのでエラーならログに記録するのみ
 				$this->logger->error($ex);
 			}

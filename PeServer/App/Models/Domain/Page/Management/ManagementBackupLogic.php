@@ -11,6 +11,7 @@ use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\Stopwatch;
+use Throwable;
 
 class ManagementBackupLogic extends PageLogicBase
 {
@@ -31,7 +32,7 @@ class ManagementBackupLogic extends PageLogicBase
 		try {
 			$this->appArchiver->sendLatestArchive(ManagementBackupLogic::class, false);
 			$this->addTemporaryMessage('バックアップ完了');
-		} catch (Exception $ex) {
+		} catch (Throwable $ex) {
 			$this->addTemporaryMessage('バックアップ中にエラーあり');
 			$this->addTemporaryMessage($ex->getMessage());
 		}

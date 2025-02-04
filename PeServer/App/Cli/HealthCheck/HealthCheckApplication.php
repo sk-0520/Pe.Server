@@ -30,8 +30,6 @@ class HealthCheckApplication extends AppApplicationBase
 		$peSettingEntityDao = new PeSettingEntityDao($database);
 		$peVersion = $peSettingEntityDao->selectPeSettingVersion();
 		$this->logger->info("pe version: {0}", $peVersion);
-
-		throw new Error("error");
 	}
 
 	#endregion

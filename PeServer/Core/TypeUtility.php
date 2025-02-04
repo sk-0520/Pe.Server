@@ -190,6 +190,24 @@ abstract class TypeUtility
 	}
 
 	/**
+	 * クラス名のみを取得。
+	 *
+	 * @param object $object
+	 * @return string
+	 */
+	public static function getSimpleClassName(object $object): string
+	{
+		$classFullName = self::getType($object);
+		$lastIndex = Text::getLastPosition($classFullName, "\\");
+		if ($lastIndex === -1) {
+			return $classFullName;
+		}
+
+		$className = Text::substring($classFullName, $lastIndex + 1);
+		return $className;
+	}
+
+	/**
 	 * NULL を許容する型か。
 	 *
 	 * NULL 許容型ではないことに注意。
