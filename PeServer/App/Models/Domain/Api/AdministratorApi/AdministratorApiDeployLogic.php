@@ -248,7 +248,7 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 		$cronShellDir = Path::combine($this->programContext->applicationDirectory, "cron");
 		$cronShellFiles = Directory::getFiles($cronShellDir, true);
 		foreach ($cronShellFiles as $cronShellFile) {
-			if(Path::getFileExtension($cronShellFile) === 'sh') {
+			if (Path::getFileExtension($cronShellFile) === 'sh') {
 				$this->logger->info('権限変更: {0}', $cronShellFile);
 				IOUtility::changePermission($cronShellFile, 0744);
 			}
