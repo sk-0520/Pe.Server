@@ -4,12 +4,20 @@ declare(strict_types=1);
 
 namespace PeServer\App\Cli;
 
+use Exception;
+use PeServer\App\Models\AppConfiguration;
+use PeServer\Core\Mail\Mailer;
 use PeServer\Core\Cli\CliApplicationBase;
 use PeServer\Core\Database\DatabaseContext;
 use PeServer\Core\Database\IDatabaseConnection;
 use PeServer\Core\DI\Inject;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\ILoggerFactory;
+use PeServer\Core\Log\StaticRamLogger;
+use PeServer\Core\Mail\EmailAddress;
+use PeServer\Core\Mail\EmailMessage;
+use PeServer\Core\Text;
+use PeServer\Core\TypeUtility;
 
 abstract class AppApplicationBase extends CliApplicationBase
 {
@@ -17,6 +25,12 @@ abstract class AppApplicationBase extends CliApplicationBase
 
 	#[Inject] //@phpstan-ignore-next-line [INJECT]
 	private IDatabaseConnection $databaseConnection;
+
+	#[Inject] //@phpstan-ignore-next-line [INJECT]
+	private AppConfiguration $config;
+
+	#[Inject] //@phpstan-ignore-next-line [INJECT]
+	private Mailer $mailer;
 
 	#endregion
 
@@ -35,6 +49,30 @@ abstract class AppApplicationBase extends CliApplicationBase
 	protected function openDatabase(): DatabaseContext
 	{
 		return $this->databaseConnection->open();
+	}
+
+	#endregion
+
+	#region CliApplicationBase
+
+	protected function failure(): void
+	{
+		$this->mailer->subject = "[CRON] " . TypeUtility::getType($this);
+		$this->mailer->setMessage(new EmailMessage(
+			Text::join(PHP_EOL, StaticRamLogger::$logs)
+		));
+
+		foreach ($this->config->setting->config->address->notify->maintenance as $email) {
+			$this->mailer->toAddresses = [
+				new EmailAddress($email),
+			];
+
+			try {
+				$this->mailer->send();
+			} catch (Exception $ex) {
+				$this->logger->error($ex);
+			}
+		}
 	}
 
 	#endregion

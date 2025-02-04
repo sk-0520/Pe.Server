@@ -27,6 +27,7 @@ use PeServer\Core\Log\ILogProvider;
 use PeServer\Core\Log\LoggerFactory;
 use PeServer\Core\Log\Logging;
 use PeServer\Core\Log\LogProvider;
+use PeServer\Core\Log\StaticRamLogger;
 use PeServer\Core\Mvc\ILogicFactory;
 use PeServer\Core\Mvc\LogicFactory;
 use PeServer\Core\Mvc\RouteRequest;
@@ -185,6 +186,14 @@ class CoreStartup
 			ConsoleLogger::class,
 			ILogger::LOG_LEVEL_TRACE,
 			ConsoleLogger::FORMAT,
+			[]
+		);
+
+		$logProvider->add(
+			"static-ram",
+			StaticRamLogger::class,
+			ILogger::LOG_LEVEL_TRACE,
+			StaticRamLogger::FORMAT,
 			[]
 		);
 
