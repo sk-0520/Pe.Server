@@ -246,11 +246,12 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 		}
 
 		$cronShellDir = Path::combine($this->programContext->applicationDirectory, "cron");
-		$this->logger->info("cronShellDir: {0}", $cronShellDir);
 		$cronShellFiles = Directory::getFiles($cronShellDir, true);
 		foreach ($cronShellFiles as $cronShellFile) {
-			$this->logger->info('権限変更: {0}', $cronShellFile);
-			IOUtility::changePermission($cronShellFile, 0744);
+			if(Path::getFileExtension($cronShellFile) === 'sh') {
+				$this->logger->info('権限変更: {0}', $cronShellFile);
+				IOUtility::changePermission($cronShellFile, 0744);
+			}
 		}
 
 		$this->logger->info('各種マイグレーション実施');
