@@ -245,7 +245,8 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 			File::copy($expandFilePath, $toPath);
 		}
 
-		$cronShellDir = Path::combine($this->programContext->applicationDirectory, "PeServer", "cron");
+		$cronShellDir = Path::combine($this->programContext->applicationDirectory, "cron");
+		$this->logger->info("cronShellDir: {0}", $cronShellDir);
 		$cronShellFiles = Directory::getFiles($cronShellDir, true);
 		foreach ($cronShellFiles as $cronShellFile) {
 			$this->logger->info('権限変更: {0}', $cronShellFile);
