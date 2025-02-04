@@ -17,11 +17,11 @@ class HealthCheckApplication extends AppApplicationBase
 		parent::__construct($loggerFactory);
 	}
 
-	#region CliApplicationBase
+	#region AppApplicationBase
 
-	public function execute(): void
+	public function executeImpl(): void
 	{
-		$this->logger->info("echo {0}", $this->parameter->echo);
+		$this->logger->info("input {0}", $this->parameter->echo);
 
 		$this->logger->info("app version: {0}", $this->environment->getRevision());
 

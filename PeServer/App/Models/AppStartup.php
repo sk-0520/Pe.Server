@@ -36,6 +36,8 @@ use PeServer\Core\Errors\HttpErrorHandler;
 use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Http\RequestPath;
 use PeServer\Core\IO\Path;
+use PeServer\Core\Log\ConsoleLogger;
+use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\ILogProvider;
 use PeServer\Core\Mail\Mailer;
 use PeServer\Core\Mvc\RouteRequest;
@@ -146,6 +148,17 @@ class AppStartup extends CoreStartup
 	protected function setupCliService(array $options, IDiRegisterContainer $container): void
 	{
 		parent::setupCliService($options, $container);
+
+		/** @var ILogProvider */
+		$logProvider = $container->get(ILogProvider::class);
+		$logProvider->clear("console");
+		$logProvider->add(
+			"console",
+			ConsoleLogger::class,
+			ILogger::LOG_LEVEL_INFORMATION,
+			ConsoleLogger::FORMAT,
+			[]
+		);
 
 		$container->add(
 			HealthCheckParameter::class,

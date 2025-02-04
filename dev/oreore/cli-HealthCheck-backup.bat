@@ -7,6 +7,6 @@ cd
 
 pushd ..\..\
 cd
-php PeServer\App\Cli\app.php --mode development --class "PeServer\App\Cli\HealthCheck\HealthCheckApplication" --echo "なんだこれ"
+php PeServer\App\Cli\app.php --mode development --class "PeServer\App\Cli\HealthCheck\HealthCheckApplication" --echo "%DATE% %TIME%"
 popd
 

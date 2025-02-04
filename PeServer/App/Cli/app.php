@@ -16,6 +16,7 @@ use PeServer\Core\Cli\CliApplicationBase;
 use PeServer\Core\Cli\CommandLine;
 use PeServer\Core\Cli\LongOptionKey;
 use PeServer\Core\Cli\ParameterKind;
+use PeServer\Core\Log\ILogger;
 use PeServer\Core\Text;
 
 error_reporting(E_ALL);
@@ -41,8 +42,6 @@ $options = new CommandLine([
 	new LongOptionKey("class", ParameterKind::NeedValue),
 ]);
 $parsedResult = $options->parseArgv();
-
-var_dump($parsedResult);
 
 $applicationClassName = $parsedResult->getValue("class");
 if (Text::isNullOrWhiteSpace($applicationClassName)) {
