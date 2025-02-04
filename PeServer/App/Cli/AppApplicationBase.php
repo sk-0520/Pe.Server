@@ -18,6 +18,7 @@ use PeServer\Core\Mail\EmailAddress;
 use PeServer\Core\Mail\EmailMessage;
 use PeServer\Core\Text;
 use PeServer\Core\TypeUtility;
+use Throwable;
 
 abstract class AppApplicationBase extends CliApplicationBase
 {
@@ -71,7 +72,7 @@ abstract class AppApplicationBase extends CliApplicationBase
 
 			try {
 				$this->mailer->send();
-			} catch (Exception $ex) {
+			} catch (Throwable $ex) {
 				$this->logger->error($ex);
 			}
 		}
