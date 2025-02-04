@@ -78,6 +78,21 @@ abstract class IOUtility
 		return \rename($fromPath, $toPath);
 	}
 
+	/**
+	 * パーミッション変更。
+	 *
+	 * NOTE: ファイルだけなのかディレクトリも適用可能なのかわからんのでこのクラスに入れてる。
+	 *
+	 * @param string $path
+	 * @param int $permission
+	 * @return bool
+	 */
+	public static function changePermission(string $path, int $permission): bool
+	{
+		$result = ErrorHandler::trap(fn() => \chmod($path, $permission));
+		return $result->success;
+	}
+
 
 	#endregion
 }

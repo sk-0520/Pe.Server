@@ -245,6 +245,13 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 			File::copy($expandFilePath, $toPath);
 		}
 
+		$cronShellDir = Path::combine($this->programContext->applicationDirectory, "PeServer", "cron");
+		$cronShellFiles = Directory::getFiles($cronShellDir, true);
+		foreach ($cronShellFiles as $cronShellFile) {
+			$this->logger->info('権限変更: {0}', $cronShellFile);
+			IOUtility::changePermission($cronShellFile, 0744);
+		}
+
 		$this->logger->info('各種マイグレーション実施');
 		$setupRunner = new SetupRunner(
 			$this->databaseConnection,
