@@ -6,7 +6,7 @@ namespace PeServer\App\Cli;
 
 use Exception;
 use PeServer\App\Models\AppConfiguration;
-use PeServer\Core\Mail\Mailer;
+use PeServer\App\Models\AppMailer;
 use PeServer\Core\Cli\CliApplicationBase;
 use PeServer\Core\Database\DatabaseContext;
 use PeServer\Core\Database\IDatabaseConnection;
@@ -30,7 +30,7 @@ abstract class AppApplicationBase extends CliApplicationBase
 	private AppConfiguration $config;
 
 	#[Inject] //@phpstan-ignore-next-line [INJECT]
-	private Mailer $mailer;
+	private AppMailer $mailer;
 
 	#endregion
 
@@ -57,7 +57,7 @@ abstract class AppApplicationBase extends CliApplicationBase
 
 	protected function failure(): void
 	{
-		$this->mailer->subject = "[CRON] " . TypeUtility::getType($this);
+		$this->mailer->customSubjectHeader = "[CRON] " . TypeUtility::getType($this);
 		$this->mailer->setMessage(new EmailMessage(
 			Text::join(PHP_EOL, StaticRamLogger::$logs)
 		));
