@@ -206,4 +206,16 @@ class TypeUtilityTest extends TestClass
 		$actual = TypeUtility::getType($input);
 		$this->assertSame($expected, $actual);
 	}
+
+	public function test_getSimpleClassName_namespace()
+	{
+		$actual = TypeUtility::getSimpleClassName($this);
+		$this->assertSame("TypeUtilityTest", $actual);
+	}
+
+	public function test_getSimpleClassName_flat()
+	{
+		$actual = TypeUtility::getSimpleClassName(new stdClass);
+		$this->assertSame("stdClass", $actual);
+	}
 }
