@@ -20,6 +20,7 @@ use PeServer\Core\Http\RequestPath;
 use PeServer\Core\Http\ResponsePrinter;
 use PeServer\Core\Http\ResponsePrinterFactory;
 use PeServer\Core\IO\Path;
+use PeServer\Core\Log\ConsoleLogger;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\ILoggerFactory;
 use PeServer\Core\Log\ILogProvider;
@@ -66,8 +67,7 @@ class CoreStartup
 	 */
 	public function __construct(
 		protected StartupOptions $startupOptions
-	) {
-	}
+	) {}
 
 	#region function
 
@@ -150,18 +150,18 @@ class CoreStartup
 	 */
 	protected function setupWebService(array $options, IDiRegisterContainer $container): void
 	{
-		$container->add(IDiRegisterContainer::class, DiItem::factory(fn ($dc) => $dc->clone()));
+		$container->add(IDiRegisterContainer::class, DiItem::factory(fn($dc) => $dc->clone()));
 		$container->remove(IDiContainer::class);
-		$container->add(IDiContainer::class, DiItem::factory(fn ($dc) => $dc->get(IDiRegisterContainer::class)));
+		$container->add(IDiContainer::class, DiItem::factory(fn($dc) => $dc->get(IDiRegisterContainer::class)));
 
 		$container->registerValue($options['url_helper'] ?? new UrlHelper(''), IUrlHelper::class);
 
 		$specialStore = $options['special_store'] ?? new SpecialStore();
 		$container->registerValue($specialStore, SpecialStore::class);
-		$container->add(Stores::class, DiItem::factory(fn ($di) => new Stores($di->get(SpecialStore::class), StoreOptions::default(), $di->get(WebSecurity::class)), DiItem::LIFECYCLE_SINGLETON));
-		$container->add(CookieStore::class, DiItem::factory(fn ($di) => $di->get(Stores::class)->cookie));
-		$container->add(SessionStore::class, DiItem::factory(fn ($di) => $di->get(Stores::class)->session));
-		$container->add(TemporaryStore::class, DiItem::factory(fn ($di) => $di->get(Stores::class)->temporary));
+		$container->add(Stores::class, DiItem::factory(fn($di) => new Stores($di->get(SpecialStore::class), StoreOptions::default(), $di->get(WebSecurity::class)), DiItem::LIFECYCLE_SINGLETON));
+		$container->add(CookieStore::class, DiItem::factory(fn($di) => $di->get(Stores::class)->cookie));
+		$container->add(SessionStore::class, DiItem::factory(fn($di) => $di->get(Stores::class)->session));
+		$container->add(TemporaryStore::class, DiItem::factory(fn($di) => $di->get(Stores::class)->temporary));
 
 		$container->registerMapping(ILogicFactory::class, LogicFactory::class);
 	}
@@ -177,8 +177,17 @@ class CoreStartup
 	 */
 	protected function setupCliService(array $options, IDiRegisterContainer $container): void
 	{
-		//NOP
-		$container->add(IDiRegisterContainer::class, DiItem::factory(fn ($dc) => $dc->clone()));
+		/** @var ILogProvider */
+		$logProvider = $container->get(ILogProvider::class);
+		$logProvider->add(
+			"console",
+			ConsoleLogger::class,
+			ILogger::LOG_LEVEL_TRACE,
+			ConsoleLogger::FORMAT,
+			[]
+		);
+
+		$container->add(IDiRegisterContainer::class, DiItem::factory(fn($dc) => $dc->clone()));
 	}
 
 	/**
