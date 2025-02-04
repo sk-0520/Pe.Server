@@ -2,6 +2,6 @@
 
 cd "$(cd "$(dirname "${0}")"; pwd)"
 
-. "php.sh"
+. "cronrc"
 
-"${PHP}" /home/ctto/domains/pe.content-type-text.org/PeServer/App/Cli/app.php --mode production --class "PeServer\App\Cli\HealthCheck\HealthCheckApplication" --echo "CRON!"
+"${PHP}" "${APP_DIR}/App/Cli/app.php" --mode production --class "PeServer\App\Cli\HealthCheck\HealthCheckApplication" --echo "CRON!"

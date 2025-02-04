@@ -1,3 +1,5 @@
 #!/bin/bash -ue
 
-export PHP=/usr/local/php82/bin/php82
+export PHP="/usr/local/php82/bin/php82"
+export ROOT_DIR="/home/ctto/domains/pe.content-type-text.org"
+export APP_DIR="${ROOT_DIR}/PeServer"
