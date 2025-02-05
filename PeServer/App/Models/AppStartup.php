@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\App\Models;
 
 use Exception;
+use PeServer\App\Cli\Daily\DailyParameter;
 use PeServer\App\Cli\HealthCheck\HealthCheckParameter;
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\AppCryptography;
@@ -50,6 +51,7 @@ use PeServer\Core\Store\SpecialStore;
 use PeServer\Core\Text;
 use PeServer\Core\Web\IUrlHelper;
 use PeServer\Core\Web\UrlHelper;
+use stdClass;
 
 class AppStartup extends CoreStartup
 {
@@ -149,6 +151,8 @@ class AppStartup extends CoreStartup
 	{
 		parent::setupCliService($options, $container);
 
+		$container->registerValue(new SpecialStore(), SpecialStore::class);
+
 		/** @var ILogProvider */
 		$logProvider = $container->get(ILogProvider::class);
 		$logProvider->clear("console");
@@ -174,6 +178,25 @@ class AppStartup extends CoreStartup
 					$mapper = new Mapper();
 					$mapper->mapping($parsedResult, $result);
 					return $result;
+				}
+			)
+		);
+
+		$container->add(
+			DailyParameter::class,
+			new DiItem(
+				DiItem::LIFECYCLE_SINGLETON,
+				DiItem::TYPE_FACTORY,
+				function ($di) {
+					// $options = new CommandLine([
+					// 	new LongOptionKey("echo", ParameterKind::NeedValue),
+					// ]);
+					// $parsedResult = $options->parseArgv();
+					// $result = new HealthCheckParameter();
+					// $mapper = new Mapper();
+					// $mapper->mapping($parsedResult, $result);
+					// return $result;
+					return new DailyParameter();
 				}
 			)
 		);
