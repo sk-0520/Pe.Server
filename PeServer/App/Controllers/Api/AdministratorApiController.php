@@ -26,14 +26,6 @@ class AdministratorApiController extends ApiControllerBase
 		parent::__construct($argument);
 	}
 
-	public function delete_old_data(): IActionResult
-	{
-		$logic = $this->createLogic(AdministratorApiDeleteOldDataLogic::class);
-		$logic->run(LogicCallMode::Submit);
-
-		return $this->data($logic->getContent());
-	}
-
 	public function vacuum_access_log(): IActionResult
 	{
 		$logic = $this->createLogic(AdministratorApiVacuumAccessLogLogic::class);

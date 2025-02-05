@@ -9,6 +9,7 @@ use PeServer\App\Cli\AppApplicationBase;
 use PeServer\App\Models\AppDatabaseConnection;
 use PeServer\App\Models\Dao\Entities\PeSettingEntityDao;
 use PeServer\App\Models\Domain\AppArchiver;
+use PeServer\App\Models\Domain\AppEraser;
 use PeServer\Core\Environment;
 use PeServer\Core\Log\ILoggerFactory;
 
@@ -18,6 +19,7 @@ class DailyApplication extends AppApplicationBase
 	public function __construct(
 		public DailyParameter $parameter,
 		private AppArchiver $appArchiver,
+		private AppEraser $appEraser,
 		ILoggerFactory $loggerFactory
 	) {
 		parent::__construct($loggerFactory);
@@ -39,11 +41,24 @@ class DailyApplication extends AppApplicationBase
 		}
 	}
 
-	private function deleteOldData(): void {}
+	private function deleteOldData(): void
+	{
+		// セッション動かしてないので無理
+		// // セッション掃除。
+		// $sessionGcResult = session_gc();
+		// $this->logger->info("session_gc: {0}", $sessionGcResult);
 
-	private function vacuumAccessLog(): void {}
+		// アプリデータ削除
+		$this->appEraser->execute();
+	}
 
-	private function rebuild(): void {}
+	private function vacuumAccessLog(): void
+	{
+	}
+
+	private function rebuild(): void
+	{
+	}
 
 	#endregion
 
