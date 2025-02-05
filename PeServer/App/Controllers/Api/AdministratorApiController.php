@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace PeServer\App\Controllers\Api;
 
 use PeServer\App\Models\Domain\Api\AdministratorApi\AdministratorApiCacheRebuildLogic;
-use PeServer\App\Models\Domain\Api\AdministratorApi\AdministratorApiDeleteOldDataLogic;
 use PeServer\App\Models\Domain\Api\AdministratorApi\AdministratorApiDeployLogic;
 use PeServer\App\Models\Domain\Api\AdministratorApi\AdministratorApiPeVersionLogic;
-use PeServer\App\Models\Domain\Api\AdministratorApi\AdministratorApiVacuumAccessLogLogic;
 use PeServer\App\Models\Domain\AppArchiver;
 use PeServer\Core\Mvc\ControllerArgument;
 use PeServer\Core\Mvc\LogicCallMode;
@@ -24,14 +22,6 @@ class AdministratorApiController extends ApiControllerBase
 	public function __construct(ControllerArgument $argument)
 	{
 		parent::__construct($argument);
-	}
-
-	public function vacuum_access_log(): IActionResult
-	{
-		$logic = $this->createLogic(AdministratorApiVacuumAccessLogLogic::class);
-		$logic->run(LogicCallMode::Submit);
-
-		return $this->data($logic->getContent());
 	}
 
 	public function cache_rebuild(): IActionResult

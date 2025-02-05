@@ -51,6 +51,7 @@ use PeServer\Core\Store\SpecialStore;
 use PeServer\Core\Text;
 use PeServer\Core\Web\IUrlHelper;
 use PeServer\Core\Web\UrlHelper;
+use stdClass;
 
 class AppStartup extends CoreStartup
 {
@@ -149,6 +150,8 @@ class AppStartup extends CoreStartup
 	protected function setupCliService(array $options, IDiRegisterContainer $container): void
 	{
 		parent::setupCliService($options, $container);
+
+		$container->registerValue(new SpecialStore(), SpecialStore::class);
 
 		/** @var ILogProvider */
 		$logProvider = $container->get(ILogProvider::class);

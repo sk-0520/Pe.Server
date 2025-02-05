@@ -8,6 +8,7 @@ use Error;
 use PeServer\App\Cli\AppApplicationBase;
 use PeServer\App\Models\AppDatabaseConnection;
 use PeServer\App\Models\Dao\Entities\PeSettingEntityDao;
+use PeServer\App\Models\Domain\AccessLogManager;
 use PeServer\App\Models\Domain\AppArchiver;
 use PeServer\App\Models\Domain\AppEraser;
 use PeServer\Core\Environment;
@@ -20,6 +21,7 @@ class DailyApplication extends AppApplicationBase
 		public DailyParameter $parameter,
 		private AppArchiver $appArchiver,
 		private AppEraser $appEraser,
+		private AccessLogManager $accessLogManager,
 		ILoggerFactory $loggerFactory
 	) {
 		parent::__construct($loggerFactory);
@@ -54,6 +56,7 @@ class DailyApplication extends AppApplicationBase
 
 	private function vacuumAccessLog(): void
 	{
+		$this->accessLogManager->vacuum();
 	}
 
 	private function rebuild(): void
