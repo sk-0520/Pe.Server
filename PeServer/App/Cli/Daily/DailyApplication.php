@@ -6,6 +6,7 @@ namespace PeServer\App\Cli\Daily;
 
 use Error;
 use PeServer\App\Cli\AppApplicationBase;
+use PeServer\App\Models\AppDatabaseCache;
 use PeServer\App\Models\AppDatabaseConnection;
 use PeServer\App\Models\Dao\Entities\PeSettingEntityDao;
 use PeServer\App\Models\Domain\AccessLogManager;
@@ -22,6 +23,7 @@ class DailyApplication extends AppApplicationBase
 		private AppArchiver $appArchiver,
 		private AppEraser $appEraser,
 		private AccessLogManager $accessLogManager,
+		private AppDatabaseCache $appDatabaseCache,
 		ILoggerFactory $loggerFactory
 	) {
 		parent::__construct($loggerFactory);
@@ -61,6 +63,8 @@ class DailyApplication extends AppApplicationBase
 
 	private function rebuild(): void
 	{
+		$executedItems = $this->appDatabaseCache->exportAll();
+		$this->logger->info("{0}", $executedItems);
 	}
 
 	#endregion

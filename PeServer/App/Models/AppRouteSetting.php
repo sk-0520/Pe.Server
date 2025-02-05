@@ -204,7 +204,6 @@ final readonly class AppRouteSetting extends RouteSetting
 				(new Route('api/account', AccountApiController::class, [ApiCorsMiddleware::class, ApiUserAccountFilterMiddleware::class, ApiAdministratorAccountFilterMiddleware::class]))
 				/* AUTO-FORMAT */,
 				(new Route('api/administrator', AdministratorApiController::class, [ApiCorsMiddleware::class, ApiAdministratorAccountFilterMiddleware::class]))
-					->addAction('cache-rebuild', HttpMethod::Post, 'cache_rebuild')
 					->addAction('deploy/:mode@.+', HttpMethod::Post, 'deploy')
 					->addAction('pe/version', HttpMethod::Post, 'pe_version')
 				/* AUTO-FORMAT */,

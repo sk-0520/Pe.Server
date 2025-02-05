@@ -24,14 +24,6 @@ class AdministratorApiController extends ApiControllerBase
 		parent::__construct($argument);
 	}
 
-	public function cache_rebuild(): IActionResult
-	{
-		$logic = $this->createLogic(AdministratorApiCacheRebuildLogic::class);
-		$logic->run(LogicCallMode::Submit);
-
-		return $this->data($logic->getContent());
-	}
-
 	public function deploy(): IActionResult
 	{
 		$logic = $this->createLogic(AdministratorApiDeployLogic::class);
