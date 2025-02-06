@@ -7,6 +7,18 @@ env:
   extensions: sqlite3, mbstring, zip, xml, gd, xdebug
 
 jobs:
+  code-shell:
+    name: "<Code> Shell"
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: <Checkout> Repository
+        uses: actions/checkout@v4
+
+      - name: <Test> shellcheck
+        uses: ludeeus/action-shellcheck@master
+
   test-shell:
     name: "<Test> Shell"
 
