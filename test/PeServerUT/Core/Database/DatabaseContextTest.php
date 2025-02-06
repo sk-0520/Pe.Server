@@ -13,6 +13,7 @@ use PeServer\Core\Database\DatabaseContext;
 use PeServer\Core\Log\Logging;
 use PeServer\Core\Log\NullLogger;
 use PeServer\Core\Throws\DatabaseException;
+use PeServer\Core\Throws\DatabaseInvalidQueryException;
 use PeServer\Core\Throws\NotSupportedException;
 use PeServer\Core\Throws\SqlException;
 use PeServer\Core\Throws\TransactionException;
@@ -78,7 +79,7 @@ class DatabaseContextTest extends TestClass
 				$this->fail();
 			});
 			$this->assertFalse($transactionResult2);
-		} catch(DatabaseException $ex) {
+		} catch (DatabaseException $ex) {
 			$this->assertInstanceOf(LocalOreOreException::class, $ex->getPrevious());
 		}
 	}
@@ -272,7 +273,7 @@ class DatabaseContextTest extends TestClass
 	public function test_queryFirst_throw()
 	{
 		$database = DB::memory();
-		$this->expectException(DatabaseException::class);
+		$this->expectException(DatabaseInvalidQueryException::class);
 		$database->queryFirst("select 'text' as COL where 1 = 0");
 		$this->fail();
 	}
@@ -340,7 +341,7 @@ class DatabaseContextTest extends TestClass
 	public function test_querySingle_throw_0()
 	{
 		$database = DB::memory();
-		$this->expectException(DatabaseException::class);
+		$this->expectException(DatabaseInvalidQueryException::class);
 		$database->querySingle(
 			<<<SQL
 
@@ -564,7 +565,7 @@ class DatabaseContextTest extends TestClass
 	public function test_selectSingleCount_throw_sql()
 	{
 		$database = DB::memory();
-		$this->expectException(DatabaseException::class);
+		$this->expectException(SqlException::class);
 		$database->selectSingleCount(
 			<<<SQL
 
@@ -587,11 +588,31 @@ class DatabaseContextTest extends TestClass
 		$this->fail();
 	}
 
-	public function test_selectSingleCount_throw_count()
+	public function test_selectSingleCount_throw_data()
 	{
 		$database = DB::memory();
-		$this->expectException(SqlException::class);
-		$database->selectSingleCount("select 'text' as COL");
+		$this->expectException(DatabaseInvalidQueryException::class);
+		$database->selectSingleCount(
+			<<<SQL
+			/*
+			select count(*) as COL_NAME
+			*/
+
+			select
+				"text" as COL_NAME
+			from
+				(
+					select 0 as COL
+					union all
+					select 10 as COL
+					union all
+					select -10 as COL
+				)
+			order by
+					COL
+
+			SQL
+		);
 		$this->fail();
 	}
 
@@ -658,7 +679,7 @@ class DatabaseContextTest extends TestClass
 	{
 		$database = DB::memory();
 		$database->execute('create table TBL(COL integer)');
-		$this->expectException(DatabaseException::class);
+		$this->expectException(DatabaseInvalidQueryException::class);
 		$database->insertSingle('insert into TBL(COL) values (10), (20)');
 		$this->fail();
 	}
@@ -698,7 +719,7 @@ class DatabaseContextTest extends TestClass
 		$database = DB::memory();
 		$database->execute('create table TBL(COL integer, VAL text)');
 		$database->execute("insert into TBL(COL, VAL) values (10, 'A'), (20, 'B')");
-		$this->expectException(DatabaseException::class);
+		$this->expectException(DatabaseInvalidQueryException::class);
 		$database->updateByKey('update TBL set VAL = VAL || VAL');
 		$this->fail();
 	}
@@ -715,7 +736,7 @@ class DatabaseContextTest extends TestClass
 		$this->assertSame('BB', $database->querySingle('select VAL from TBL where COL = 20')->fields['VAL']);
 	}
 
-	public function test_updateByKeyOrNothing_throw()
+	public function test_updateByKeyOrNothing_0()
 	{
 		$database = DB::memory();
 		$database->execute('create table TBL(COL integer, VAL text)');
@@ -725,6 +746,17 @@ class DatabaseContextTest extends TestClass
 		$this->assertFalse($actual);
 		$this->assertSame('A', $database->querySingle('select VAL from TBL where COL = 10')->fields['VAL']);
 		$this->assertSame('B', $database->querySingle('select VAL from TBL where COL = 20')->fields['VAL']);
+	}
+
+	public function test_updateByKeyOrNothing_throw()
+	{
+		$database = DB::memory();
+		$database->execute('create table TBL(COL integer, VAL text)');
+		$database->execute("insert into TBL(COL, VAL) values (10, 'A'), (20, 'B')");
+
+		$this->expectException(DatabaseInvalidQueryException::class);
+		$database->updateByKeyOrNothing('update TBL set VAL = 30');
+		$this->fail();
 	}
 
 	public function test_delete()
@@ -761,7 +793,7 @@ class DatabaseContextTest extends TestClass
 		$database = DB::memory();
 		$database->execute('create table TBL(COL integer, VAL text)');
 		$database->execute("insert into TBL(COL, VAL) values (10, 'A'), (20, 'B')");
-		$this->expectException(DatabaseException::class);
+		$this->expectException(DatabaseInvalidQueryException::class);
 		$database->deleteByKey('delete from TBL where COL = 30');
 		$this->fail();
 	}
@@ -782,7 +814,7 @@ class DatabaseContextTest extends TestClass
 		$database = DB::memory();
 		$database->execute('create table TBL(COL integer, VAL text)');
 		$database->execute("insert into TBL(COL, VAL) values (10, 'A'), (20, 'B')");
-		$this->expectException(DatabaseException::class);
+		$this->expectException(DatabaseInvalidQueryException::class);
 		$database->deleteByKeyOrNothing('delete from TBL');
 		$this->fail();
 	}
@@ -819,5 +851,4 @@ class Mapping_queryFirst_mapping
 
 class LocalOreOreException extends Exception
 {
-
 }
