@@ -71,6 +71,16 @@ class DatabaseContextTest extends TestClass
 			}
 		});
 		$this->assertFalse($transactionResult2);
+
+		try {
+			$database->transaction(function ($context) {
+				throw new LocalOreOreException();
+				$this->fail();
+			});
+			$this->assertFalse($transactionResult2);
+		} catch(DatabaseException $ex) {
+			$this->assertInstanceOf(LocalOreOreException::class, $ex->getPrevious());
+		}
 	}
 
 	public function test_beginTransaction()
@@ -805,4 +815,9 @@ class Mapping_queryFirst_mapping
 	public int $number;
 
 	#endregion
+}
+
+class LocalOreOreException extends Exception
+{
+
 }
