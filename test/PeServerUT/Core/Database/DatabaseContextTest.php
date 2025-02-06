@@ -53,6 +53,7 @@ class DatabaseContextTest extends TestClass
 
 		$transactionResult1 = $database->transaction(function ($context) {
 			try {
+				/** @disregard P1013 */
 				$context->beginTransaction();
 				$this->fail();
 			} catch (TransactionException) {
