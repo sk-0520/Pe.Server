@@ -18,6 +18,8 @@ jobs:
 
       - name: <Test> shellcheck
         uses: ludeeus/action-shellcheck@master
+        with:
+          ignore_paths: ./PeServer/Core/Libs/**
 
   test-shell:
     name: "<Test> Shell"
