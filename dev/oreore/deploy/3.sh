@@ -7,5 +7,3 @@ curl -X POST \
 	-H "X-SECRET-KEY: ${DEPLOY_API_SEC}" \
 	${URL_BASE}/prepare
 
-
-

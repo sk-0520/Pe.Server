@@ -9,5 +9,3 @@ curl -X POST \
 	-H "X-SECRET-KEY: ${DEPLOY_API_SEC}" \
 	${URL_BASE}/upload --form "file=@$FILE" --form "sequence=0"
 
-
-

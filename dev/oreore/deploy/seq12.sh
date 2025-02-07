@@ -2,9 +2,8 @@
 
 echo 1
 ./1.sh
-echo 
+echo
 
 echo 2
 ./2.sh
-echo 
-
+echo
