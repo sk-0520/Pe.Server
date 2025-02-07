@@ -121,10 +121,12 @@ title "[DEPLOY] アップロード"
 msg i "分割バイト数: ${SETTING_SPLIT_SIZE}"
 split --bytes="${SETTING_SPLIT_SIZE}" --numeric-suffixes=1 --suffix-length=8 "${SETTING_ARCHIVE_FILE_NAME}" "${LOCAL_FILES_DIR}/"
 INDEX=0
+#わかってるけど処理的にすぐには変えられん
+#shellcheck disable=SC2006,SC2045
 for PART_FILE in `ls -1 -v "${LOCAL_FILES_DIR}/"`; do
 	msg i "ファイル: {INDEX} - ${LOCAL_FILES_DIR}/${PART_FILE}"
 	api upload \
-		-F file=@${LOCAL_FILES_DIR}/${PART_FILE} \
+		-F "file=@${LOCAL_FILES_DIR}/${PART_FILE}" \
 		-F sequence=${INDEX}
 
 	INDEX=$((INDEX+1))
