@@ -110,7 +110,7 @@ if [[ -d "${STORAGE}" ]] ; then
 fi
 mkdir "${STORAGE}"
 
-echo $PUBLIC_DIR
+echo "$PUBLIC_DIR"
 php -S "${LOCAL_HTTP_TEST}" -t "${PUBLIC_DIR}" > "http-${TEST_MODE}.log" 2>&1 &
 trap 'kill %1' 0
 sleep "${LOCAL_HTTP_WAIT}"
