@@ -9,7 +9,7 @@ use PeServer\App\Models\SessionKey;
 use PeServer\Core\DI\IDiRegisterContainer;
 use PeServer\Core\Environment;
 use PeServer\Core\Http\HttpMethod;
-use PeServer\Core\Http\IResponsePrinterFactory;
+use PeServer\Core\Mvc\IResponsePrinterFactory;
 use PeServer\Core\Http\RequestPath;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\ILoggerFactory;

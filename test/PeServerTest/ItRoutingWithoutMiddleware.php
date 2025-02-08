@@ -9,7 +9,7 @@ use PeServer\Core\DI\IDiRegisterContainer;
 use PeServer\Core\Environment;
 use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Http\HttpResponse;
-use PeServer\Core\Http\IResponsePrinterFactory;
+use PeServer\Core\Mvc\IResponsePrinterFactory;
 use PeServer\Core\Http\ResponsePrinter;
 use PeServer\Core\Log\ILoggerFactory;
 use PeServer\Core\Mvc\RouteRequest;

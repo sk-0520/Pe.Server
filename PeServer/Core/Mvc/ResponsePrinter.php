@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core\Http;
+namespace PeServer\Core\Mvc;
 
 use PeServer\Core\Binary;
 use PeServer\Core\Http\HttpMethod;
+use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Http\HttpResponse;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Http\ICallbackContent;

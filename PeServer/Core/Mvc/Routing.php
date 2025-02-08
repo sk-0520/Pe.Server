@@ -12,9 +12,7 @@ use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Http\HttpResponse;
 use PeServer\Core\Http\HttpStatus;
-use PeServer\Core\Http\IResponsePrinterFactory;
 use PeServer\Core\Http\RequestPath;
-use PeServer\Core\Http\ResponsePrinter;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\ILoggerFactory;
 use PeServer\Core\Log\Logging;
@@ -25,6 +23,8 @@ use PeServer\Core\Mvc\Middleware\IMiddleware;
 use PeServer\Core\Mvc\Middleware\IShutdownMiddleware;
 use PeServer\Core\Mvc\Middleware\MiddlewareArgument;
 use PeServer\Core\Mvc\Middleware\MiddlewareResult;
+use PeServer\Core\Mvc\IResponsePrinterFactory;
+use PeServer\Core\Mvc\ResponsePrinter;
 use PeServer\Core\Mvc\Result\IActionResult;
 use PeServer\Core\Mvc\RouteAction;
 use PeServer\Core\Mvc\RouteRequest;
@@ -271,7 +271,8 @@ class Routing
 			return;
 		}
 
-		$printer = $this->serviceLocator->new(ResponsePrinter::class, [$request, $response]);
+		//$printer = $this->serviceLocator->new(ResponsePrinter::class, [$request, $response]);
+		$printer = $this->responsePrinterFactory->createResponsePrinter($request, $response);
 		$printer->execute();
 	}
 

@@ -2,12 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core\Http;
+namespace PeServer\Core\Mvc;
+
+use PeServer\Core\Http\HttpRequest;
+use PeServer\Core\Http\HttpResponse;
 
 /**
  * ResponsePrinter生成器。
  *
- * @see \PeServer\Core\Http\ResponsePrinter
+ * @see \PeServer\Core\Mvc\ResponsePrinter
  *
  */
 interface IResponsePrinterFactory
