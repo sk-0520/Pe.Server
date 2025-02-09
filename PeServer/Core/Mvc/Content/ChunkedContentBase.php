@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core\Mvc;
+namespace PeServer\Core\Mvc\Content;
 
 use Iterator;
 use PeServer\Core\Binary;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Http\ICallbackContent;
 use PeServer\Core\Mime;
-use PeServer\Core\Mvc\DataContent;
+use PeServer\Core\Mvc\Content\DataContent;
 
 /**
  * チャンク基底処理。

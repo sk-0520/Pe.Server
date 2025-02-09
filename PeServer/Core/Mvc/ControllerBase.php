@@ -10,7 +10,7 @@ use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\ILoggerFactory;
 use PeServer\Core\Log\Logging;
 use PeServer\Core\Mvc\ControllerArgument;
-use PeServer\Core\Mvc\DataContent;
+use PeServer\Core\Mvc\Content\DataContent;
 use PeServer\Core\Mvc\LogicBase;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\Mvc\Result\DataActionResult;

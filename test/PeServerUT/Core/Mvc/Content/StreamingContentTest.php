@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace PeServerUT\Core\Mvc;
+namespace PeServerUT\Core\Mvc\Content;
 
 use Iterator;
 use PeServer\Core\Binary;
 use PeServer\Core\Mime;
-use PeServer\Core\Mvc\ChunkedContentBase;
-use PeServer\Core\Mvc\StreamingContent;
+use PeServer\Core\Mvc\Content\ChunkedContentBase;
+use PeServer\Core\Mvc\Content\StreamingContent;
 use PeServer\Core\OutputBuffer;
 use PeServerTest\TestClass;
 
