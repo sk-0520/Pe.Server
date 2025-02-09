@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc;
 
+use Closure;
+use Iterator;
 use DateInterval;
 use DateTimeImmutable;
 use PeServer\Core\Binary;
@@ -16,8 +18,10 @@ use PeServer\Core\IO\File;
 use PeServer\Core\IO\IOUtility;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Mime;
+use PeServer\Core\Mvc\Content\ChunkedContentBase;
 use PeServer\Core\Mvc\Content\DataContent;
 use PeServer\Core\Mvc\Content\DownloadDataContent;
+use PeServer\Core\Mvc\Content\StreamingContent;
 use PeServer\Core\Mvc\IValidationReceiver;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
@@ -103,7 +107,7 @@ abstract class LogicBase implements IValidationReceiver
 	/**
 	 * 応答データ。
 	 */
-	private ?DataContent $content = null;
+	private DataContent|ChunkedContentBase|null $content = null;
 
 	/**
 	 */
@@ -626,18 +630,35 @@ abstract class LogicBase implements IValidationReceiver
 	}
 
 	/**
+	 * ストリーミングデータ応答。
+	 *
+	 * @param Closure(): Iterator<Binary> $callback
+	 * @param non-empty-string $mime
+	 * @phpstan-param non-empty-string|\PeServer\Core\Mime::* $mime
+	 * @return void
+	 */
+	final protected function setStreamingContent(Closure $callback, string $mime = Mime::STREAM): void
+	{
+		$this->content = new StreamingContent($callback, $mime);
+	}
+
+	/**
 	 * 応答データ取得。
 	 *
 	 * @return DataContent
 	 * @throws InvalidOperationException 応答データ未設定
 	 */
-	public function getContent(): DataContent
+	public function getContent(): DataContent|ChunkedContentBase
 	{
 		if ($this->content === null) {
 			throw new InvalidOperationException();
 		}
 
 		if ($this->content instanceof DownloadDataContent) {
+			return $this->content;
+		}
+
+		if ($this->content instanceof ChunkedContentBase) {
 			return $this->content;
 		}
 

@@ -9,6 +9,7 @@ use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\ILoggerFactory;
 use PeServer\Core\Log\Logging;
+use PeServer\Core\Mvc\Content\ChunkedContentBase;
 use PeServer\Core\Mvc\ControllerArgument;
 use PeServer\Core\Mvc\Content\DataContent;
 use PeServer\Core\Mvc\LogicBase;
@@ -226,10 +227,10 @@ abstract class ControllerBase
 	/**
 	 * データ応答。
 	 *
-	 * @param DataContent $content
+	 * @param DataContent|ChunkedContentBase $content
 	 * @return DataActionResult
 	 */
-	protected function data(DataContent $content): DataActionResult
+	protected function data(DataContent|ChunkedContentBase $content): DataActionResult
 	{
 		return new DataActionResult($content);
 	}
