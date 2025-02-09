@@ -38,6 +38,7 @@ use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Throws\KeyNotFoundException;
+use PeServer\Core\Throws\NotSupportedException;
 use PeServer\Core\Utc;
 
 /**
@@ -648,7 +649,7 @@ abstract class LogicBase implements IValidationReceiver
 	 * @return DataContent
 	 * @throws InvalidOperationException 応答データ未設定
 	 */
-	public function getContent(): DataContent|ChunkedContentBase
+	public function getContent(): DataContent
 	{
 		if ($this->content === null) {
 			throw new InvalidOperationException();
@@ -658,11 +659,20 @@ abstract class LogicBase implements IValidationReceiver
 			return $this->content;
 		}
 
+		if ($this->content instanceof DataContent) {
+			return new DataContent($this->httpResponseStatus, $this->content->mime, $this->content->data);
+		}
+
+		throw new NotSupportedException();
+	}
+
+	public function getChunked(): ChunkedContentBase
+	{
 		if ($this->content instanceof ChunkedContentBase) {
 			return $this->content;
 		}
 
-		return new DataContent($this->httpResponseStatus, $this->content->mime, $this->content->data);
+		throw new NotSupportedException();
 	}
 
 	/**
