@@ -90,6 +90,8 @@ readonly class DataActionResult implements IActionResult
 
 		$response->header->setContentType(ContentType::create($this->content->mime));
 
+		//NOTE: ChunkedContentBase
+
 		if ($this->content instanceof DownloadDataContent) {
 			$fileName = urlencode($this->content->fileName);
 			$response->header->addValue('Content-Disposition', "attachment; filename*=UTF-8''$fileName");
