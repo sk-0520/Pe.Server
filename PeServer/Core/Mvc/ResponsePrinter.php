@@ -108,6 +108,7 @@ class ResponsePrinter
 			return;
 		}
 
+		flush();
 		$this->output();
 	}
 
