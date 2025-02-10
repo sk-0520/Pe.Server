@@ -10,6 +10,7 @@ use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Http\HttpResponse;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Http\ICallbackContent;
+use PeServer\Core\OutputBuffer;
 use PeServer\Core\Text;
 
 /**
@@ -28,8 +29,7 @@ class ResponsePrinter
 	public function __construct(
 		protected readonly HttpRequest $request,
 		protected readonly HttpResponse $response
-	) {
-	}
+	) {}
 
 	#region function
 
@@ -107,6 +107,11 @@ class ResponsePrinter
 			// HEAD 処理は出力を抑制
 			return;
 		}
+
+		if (OutputBuffer::getLevel() <= 1) {
+			OutputBuffer::flush();
+		}
+		flush();
 
 		$this->output();
 	}

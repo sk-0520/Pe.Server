@@ -67,6 +67,7 @@
 		<h2>dev</h2>
 		<ul>
 			<li><a href="/dev/exception">exception</a></li>
+			<li><a href="/dev/streaming">streaming</a></li>
 		</ul>
 	{/if}
 

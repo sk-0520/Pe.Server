@@ -15,6 +15,7 @@ use PeServer\Core\Mime;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\SizeConverter;
+use PeServer\Core\Text;
 use PeServer\Core\Throws\HttpStatusException;
 
 class ManagementControlBackupDownloadLogic extends PageLogicBase
@@ -35,6 +36,10 @@ class ManagementControlBackupDownloadLogic extends PageLogicBase
 		$safeFileName = Path::getFileName($unsafeFileName);
 		if ($safeFileName !== $unsafeFileName) {
 			$this->logger->warn('これはもう攻撃: {0}', $unsafeFileName);
+			throw new HttpStatusException(HttpStatus::NotFound);
+		}
+		if (Text::isNullOrWhiteSpace($safeFileName)) {
+			$this->logger->warn('ファイル名とれなんだ: {0}', $safeFileName);
 			throw new HttpStatusException(HttpStatus::NotFound);
 		}
 
