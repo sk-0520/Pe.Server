@@ -54,8 +54,7 @@ abstract class ChunkedContentBase extends DataContentBase implements ICallbackCo
 			flush();
 		}
 
-		echo "0\r\n";
-		echo "\r\n";
+		echo "0\r\n\r\n";
 	}
 
 	#endregion
