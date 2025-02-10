@@ -29,7 +29,8 @@ class ResponsePrinter
 	public function __construct(
 		protected readonly HttpRequest $request,
 		protected readonly HttpResponse $response
-	) {}
+	) {
+	}
 
 	#region function
 

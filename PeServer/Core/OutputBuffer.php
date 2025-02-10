@@ -107,7 +107,7 @@ class OutputBuffer extends DisposerBase
 	public static function flush(): void
 	{
 		$result = ErrorHandler::trap("ob_flush");
-		if($result->isFailureOrFalse()) {
+		if ($result->isFailureOrFalse()) {
 			throw new OutputBufferException('ob_flush');
 		}
 	}
