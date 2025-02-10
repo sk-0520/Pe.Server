@@ -22,9 +22,9 @@ abstract class ChunkedContentBase extends DataContentBase implements ICallbackCo
 	 * @param non-empty-string $mime
 	 * @phpstan-param non-empty-string|\PeServer\Core\Mime::* $mime
 	 */
-	public function __construct(public string $mime)
+	public function __construct(string $mime)
 	{
-		//NOP
+		parent::__construct(HttpStatus::OK, $mime);
 	}
 
 	#region function

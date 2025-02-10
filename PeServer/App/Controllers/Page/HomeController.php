@@ -12,7 +12,10 @@ use PeServer\App\Models\Domain\Page\Home\HomeContactLogic;
 use PeServer\App\Models\Domain\Page\Home\HomeIndexLogic;
 use PeServer\App\Models\Domain\Page\Home\HomePrivacyLogic;
 use PeServer\App\Models\Domain\Page\Home\HomeWildcardLogic;
+use PeServer\Core\Binary;
 use PeServer\Core\Http\HttpRequest;
+use PeServer\Core\Mime;
+use PeServer\Core\Mvc\Content\StreamingContent;
 use PeServer\Core\Mvc\ControllerArgument;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\Result\IActionResult;
@@ -78,5 +81,17 @@ final class HomeController extends PageControllerBase
 	public function exception(): IActionResult
 	{
 		throw new Exception();
+	}
+
+	public function streaming(): IActionResult
+	{
+		return $this->data(new StreamingContent(function() {
+			usleep(500);
+			yield new Binary("abc");
+			usleep(500);
+			yield new Binary("def");
+			usleep(500);
+			yield new Binary("ghi");
+		}, Mime::TEXT));
 	}
 }
