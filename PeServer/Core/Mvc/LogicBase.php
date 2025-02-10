@@ -16,11 +16,14 @@ use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\I18n;
 use PeServer\Core\IO\File;
 use PeServer\Core\IO\IOUtility;
+use PeServer\Core\IO\Path;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Mime;
 use PeServer\Core\Mvc\Content\ChunkedContentBase;
 use PeServer\Core\Mvc\Content\DataContent;
+use PeServer\Core\Mvc\Content\DataContentBase;
 use PeServer\Core\Mvc\Content\DownloadDataContent;
+use PeServer\Core\Mvc\Content\StaticDataContent;
 use PeServer\Core\Mvc\Content\StreamingContent;
 use PeServer\Core\Mvc\IValidationReceiver;
 use PeServer\Core\Mvc\LogicCallMode;
@@ -108,7 +111,7 @@ abstract class LogicBase implements IValidationReceiver
 	/**
 	 * 応答データ。
 	 */
-	private DataContent|ChunkedContentBase|null $content = null;
+	private DataContentBase|null $content = null;
 
 	/**
 	 */
@@ -593,9 +596,9 @@ abstract class LogicBase implements IValidationReceiver
 	 * @param string|array<mixed>|Binary $data
 	 * @return void
 	 */
-	protected function setContent(string $mime, $data): void
+	protected function setContent(string $mime, string|array|Binary $data): void
 	{
-		$this->content = new DataContent(HttpStatus::None, $mime, $data);
+		$this->content = new StaticDataContent(HttpStatus::OK, $mime, $data);
 	}
 
 	/**
@@ -612,8 +615,12 @@ abstract class LogicBase implements IValidationReceiver
 		}
 
 		$content = File::readContent($path);
+		$fileName = Path::getFileName($path);
+		if (Text::isNullOrWhiteSpace($fileName)) {
+			throw new InvalidOperationException();
+		}
 
-		$this->content = new DataContent(HttpStatus::None, $mime, $content->raw);
+		$this->content = new DownloadDataContent($mime, $fileName, $content->raw);
 	}
 
 	/**
@@ -621,7 +628,7 @@ abstract class LogicBase implements IValidationReceiver
 	 *
 	 * @param non-empty-string $mime
 	 * @phpstan-param non-empty-string|\PeServer\Core\Mime::* $mime
-	 * @param string $fileName
+	 * @param non-empty-string $fileName
 	 * @param Binary $data
 	 * @return void
 	 */
@@ -646,38 +653,30 @@ abstract class LogicBase implements IValidationReceiver
 	/**
 	 * 応答データ取得。
 	 *
-	 * @return DataContent
+	 * @return DataContentBase
 	 * @throws InvalidOperationException 応答データ未設定
 	 */
-	public function getContent(): DataContent
+	public function getContent(): DataContentBase
 	{
-		if ($this->content === null) {
-			throw new InvalidOperationException();
-		}
-
-		if ($this->content instanceof DownloadDataContent) {
+		if ($this->content instanceof DataContentBase) {
 			return $this->content;
 		}
 
-		if ($this->content instanceof DataContent) {
-			return $this->content;
-		}
-
-		throw new NotSupportedException();
+		throw new InvalidOperationException();
 	}
 
-	public function getChunked(): ChunkedContentBase
-	{
-		if ($this->content === null) {
-			throw new InvalidOperationException();
-		}
+	// public function getChunked(): ChunkedContentBase
+	// {
+	// 	if ($this->content === null) {
+	// 		throw new InvalidOperationException();
+	// 	}
 
-		if ($this->content instanceof ChunkedContentBase) {
-			return $this->content;
-		}
+	// 	if ($this->content instanceof ChunkedContentBase) {
+	// 		return $this->content;
+	// 	}
 
-		throw new NotSupportedException();
-	}
+	// 	throw new NotSupportedException();
+	// }
 
 	/**
 	 * ロジック結果に指定キー項目が存在するか。

@@ -14,7 +14,7 @@ use PeServer\Core\Mvc\Content\DataContent;
 /**
  * チャンク基底処理。
  */
-abstract class ChunkedContentBase implements ICallbackContent
+abstract class ChunkedContentBase extends DataContentBase implements ICallbackContent
 {
 	/**
 	 * 生成。
