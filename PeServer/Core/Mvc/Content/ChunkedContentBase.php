@@ -48,6 +48,7 @@ abstract class ChunkedContentBase extends DataContentBase implements ICallbackCo
 			echo (string)$binary->count() . "\r\n";
 			echo $binary->raw . "\r\n";
 			flush();
+			ob_flush();
 		}
 
 		echo "0\r\n";

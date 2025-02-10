@@ -109,6 +109,8 @@ class ResponsePrinter
 		}
 
 		flush();
+		ob_flush();
+
 		$this->output();
 	}
 
