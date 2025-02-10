@@ -660,7 +660,7 @@ abstract class LogicBase implements IValidationReceiver
 		}
 
 		if ($this->content instanceof DataContent) {
-			return new DataContent($this->httpResponseStatus, $this->content->mime, $this->content->data);
+			return $this->content;
 		}
 
 		throw new NotSupportedException();
@@ -668,6 +668,10 @@ abstract class LogicBase implements IValidationReceiver
 
 	public function getChunked(): ChunkedContentBase
 	{
+		if ($this->content === null) {
+			throw new InvalidOperationException();
+		}
+
 		if ($this->content instanceof ChunkedContentBase) {
 			return $this->content;
 		}
