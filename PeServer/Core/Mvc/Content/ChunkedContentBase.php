@@ -10,6 +10,7 @@ use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Http\ICallbackContent;
 use PeServer\Core\Mime;
 use PeServer\Core\Mvc\Content\DataContent;
+use PeServer\Core\OutputBuffer;
 
 /**
  * チャンク基底処理。
@@ -45,10 +46,12 @@ abstract class ChunkedContentBase extends DataContentBase implements ICallbackCo
 	{
 		$iterator = $this->getIterator();
 		foreach ($iterator as $binary) {
-			echo (string)$binary->count() . "\r\n";
-			echo $binary->raw . "\r\n";
+			echo (string)$binary->count() . "\r\n"
+				. $binary->raw . "\r\n";
+			if (OutputBuffer::getLevel() <= 1) {
+				OutputBuffer::flush();
+			}
 			flush();
-			ob_flush();
 		}
 
 		echo "0\r\n";
