@@ -18,7 +18,7 @@
 				{foreach from=$values.log_files item=item}
 					<li>
 						<button class="pg-delete" title="削除" data-name={$item.name}>🗑️</button>
-						<a href="/management/log/{$item.name}">{$item.name}</a>
+						<a class="monospace" href="/management/log/{$item.name}">{$item.name}</a>
 						<span title="{$item.size} byte">{$item.human_size}</span>
 					</li>
 				{foreachelse}
