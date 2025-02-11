@@ -35,7 +35,7 @@ class AccountUserAuditLogDownloadLogic extends PageLogicBase
 	#region define
 
 	//public const RAW_LOG_COUNT = 5;
-	public const RAW_LOG_COUNT = 1024;
+	public const RAW_LOG_COUNT = 50;
 
 	#endregion
 
