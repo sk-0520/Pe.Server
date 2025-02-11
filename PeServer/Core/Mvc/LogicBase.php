@@ -636,11 +636,7 @@ abstract class LogicBase implements IValidationReceiver
 	 */
 	final protected function setDownloadContent(string $mime, string $fileName, Binary|Stream $data): void
 	{
-		if ($data instanceof Stream) {
-			$this->content = new StreamContent($data, $fileName, $mime);
-		} else {
-			$this->content = new DownloadDataContent($mime, $fileName, $data);
-		}
+		$this->content = new DownloadDataContent($mime, $fileName, $data);
 	}
 
 	/**

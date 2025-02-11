@@ -8,6 +8,7 @@ use PeServer\Core\Binary;
 use PeServer\Core\Http\ContentType;
 use PeServer\Core\Http\HttpResponse;
 use PeServer\Core\Http\ICallbackContent;
+use PeServer\Core\IO\Stream;
 use PeServer\Core\Mime;
 use PeServer\Core\Mvc\Content\DataContent;
 use PeServer\Core\Mvc\Content\DataContentBase;
@@ -70,8 +71,12 @@ readonly class DataActionResult implements IActionResult
 		return $this->convertJsonCore($content->data);
 	}
 
-	private function convertRaw(StaticDataContent $content): string
+	private function convertRaw(StaticDataContent $content): string|Stream
 	{
+		if ($content->data instanceof Stream) {
+			return $content->data;
+		}
+
 		if ($content->data instanceof Binary) {
 			return $content->data->raw;
 		}
@@ -101,15 +106,12 @@ readonly class DataActionResult implements IActionResult
 			$response->header->addValue('X-Content-Type-Options', 'nosniff');
 			$response->header->addValue('Connection', 'close');
 			if ($this->content instanceof StaticDataContent) {
-				if ($this->content->data instanceof Binary) {
-					$response->header->addValue('Content-Length', (string)$this->content->data->count());
-				} elseif (is_string($this->content->data)) {
-					$response->header->addValue('Content-Length', (string)strlen($this->content->data));
-				}
 				$response->content = $this->convertRaw($this->content);
 			}
-		} else {
-			if ($this->content instanceof StaticDataContent) {
+		} elseif ($this->content instanceof StaticDataContent) {
+			if ($this->content->data instanceof Stream) {
+				$response->content = $this->convertRaw($this->content);
+			} else {
 				$response->content = match ($this->content->mime) {
 					Mime::TEXT => $this->convertText($this->content),
 					Mime::JSON => $this->convertJson($this->content),
@@ -119,7 +121,10 @@ readonly class DataActionResult implements IActionResult
 		}
 
 		if ($this->content instanceof ICallbackContent) {
-			$response->header->addValue('Transfer-Encoding', "chunked");
+			if (0 <= $this->content->getLength()) {
+				$response->header->addValue('Transfer-Encoding', "chunked");
+			}
+
 			$response->content = $this->content;
 		}
 

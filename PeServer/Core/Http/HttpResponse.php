@@ -8,6 +8,7 @@ use PeServer\Core\Binary;
 use PeServer\Core\Http\HttpHeader;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Http\ICallbackContent;
+use PeServer\Core\IO\Stream;
 
 /**
  * HTTP応答データ。
@@ -35,9 +36,9 @@ class HttpResponse
 	/**
 	 * 応答本文。
 	 *
-	 * @var string|Binary|ICallbackContent|null
+	 * @var string|Binary|ICallbackContent|Stream|null
 	 */
-	public string|Binary|ICallbackContent|null $content = null;
+	public string|Binary|ICallbackContent|Stream|null $content = null;
 
 	public function __construct()
 	{

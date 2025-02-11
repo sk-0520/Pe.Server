@@ -10,8 +10,10 @@ use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Http\HttpResponse;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Http\ICallbackContent;
+use PeServer\Core\IO\Stream;
 use PeServer\Core\OutputBuffer;
 use PeServer\Core\Text;
+use PeServer\Core\Throws\Throws;
 
 /**
  * HTTPレスポンス出力処理。
@@ -30,6 +32,7 @@ class ResponsePrinter
 		protected readonly HttpRequest $request,
 		protected readonly HttpResponse $response
 	) {
+		//NOP
 	}
 
 	#region function
@@ -47,6 +50,14 @@ class ResponsePrinter
 			if (0 <= $length) {
 				return $length;
 			}
+		} elseif ($this->response->content instanceof Stream) {
+			$currentOffset = $this->response->content->getOffset();
+			$this->response->content->seekTail();
+			$lastOffset = $this->response->content->getOffset();
+			$length = $lastOffset - $currentOffset;
+			assert(0 <= $length);
+			$this->response->content->seek($currentOffset, Stream::WHENCE_SET);
+			return $length;
 		} elseif ($this->response->content instanceof Binary) {
 			return $this->response->content->count();
 		} elseif (is_string($this->response->content)) {
@@ -64,6 +75,13 @@ class ResponsePrinter
 		if ($this->response->content instanceof ICallbackContent) {
 			// 処理は自分で出力を頑張ること
 			$this->response->content->output();
+		} elseif ($this->response->content instanceof Stream) {
+			$chunkSize = 4 * 1024;
+			while (!$this->response->content->isEnd()) {
+				$chunk = $this->response->content->readBinary($chunkSize);
+				echo $chunk->raw;
+			}
+			$this->response->content->dispose();
 		} elseif ($this->response->content instanceof Binary) {
 			echo $this->response->content->raw;
 		} else {
