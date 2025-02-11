@@ -89,6 +89,19 @@ class AppTemporary
 	}
 
 	/**
+	 * ログDLディレクトリのパスを取得。
+	 *
+	 * 存在しなければ作成する。
+	 *
+	 * @param string|null $userId ユーザーIDが付与された場合はそのユーザーのディレクトリとなる。
+	 * @return string
+	 */
+	public function getLogDownloadDirectory(?string $userId): string
+	{
+		return $this->getDirectory("logs", $userId);
+	}
+
+	/**
 	 * 一時的ファイル名を適当に作成。
 	 *
 	 * @param DateTimeInterface $timestamp
