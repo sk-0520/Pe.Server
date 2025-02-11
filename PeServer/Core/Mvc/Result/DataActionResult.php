@@ -99,8 +99,8 @@ readonly class DataActionResult implements IActionResult
 			$fileName = urlencode($this->content->getFileName());
 			$response->header->addValue('Content-Disposition', "attachment; filename*=UTF-8''$fileName");
 			$response->header->addValue('X-Content-Type-Options', 'nosniff');
+			$response->header->addValue('Connection', 'close');
 			if ($this->content instanceof StaticDataContent) {
-				$response->header->addValue('Connection', 'close');
 				if ($this->content->data instanceof Binary) {
 					$response->header->addValue('Content-Length', (string)$this->content->data->count());
 				} elseif (is_string($this->content->data)) {
