@@ -27,7 +27,7 @@ class AccountUserAuditLogDownloadLogic extends PageLogicBase
 {
 	#region define
 
-	public const RAW_LOG_SIZE = 1; //2 * 1024 * 1024;
+	public const RAW_LOG_SIZE = 2 * 1024 * 1024;
 
 	#endregion
 

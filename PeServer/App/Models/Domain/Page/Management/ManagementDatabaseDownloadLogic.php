@@ -14,8 +14,10 @@ use PeServer\Core\Collection\Arr;
 use PeServer\Core\Database\DatabaseTableResult;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\Http\HttpStatus;
+use PeServer\Core\IO\Directory;
 use PeServer\Core\IO\File;
 use PeServer\Core\IO\Path;
+use PeServer\Core\IO\Stream;
 use PeServer\Core\Mime;
 use PeServer\Core\Mvc\DownloadFileContent;
 use PeServer\Core\Mvc\LogicCallMode;
@@ -24,6 +26,8 @@ use PeServer\Core\Mvc\Validator;
 use PeServer\Core\Regex;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\HttpStatusException;
+use PeServer\Core\Throws\InvalidOperationException;
+use ZipArchive;
 
 class ManagementDatabaseDownloadLogic extends PageLogicBase
 {
@@ -44,21 +48,29 @@ class ManagementDatabaseDownloadLogic extends PageLogicBase
 			throw new HttpStatusException(HttpStatus::InternalServerError);
 		}
 
+		$userInfo = $this->getAuditUserInfo();
+		if ($userInfo === null) {
+			throw new InvalidOperationException();
+		}
+		$userId = $userInfo->getUserId();
+
+		$workDirPath = Path::combine($this->config->setting->cache->temporary, "database", $userId);
+		Directory::createDirectory($workDirPath);
+		$zipFilePath = Path::combine($workDirPath, $this->beginTimestamp->format('Y-m-d\_His') . ".zip");
+		$zipArchive = new ZipArchive();
+		$zipArchive->open($zipFilePath, ZipArchive::CREATE | ZipArchive::EXCL);
+
 		$target = AppDatabaseConnection::getSqliteFilePath($this->config->setting->persistence->default->connection);
 		$name = Path::getFileName($target);
-		$content = File::readContent($target);
-
-		$archive = [
-			'mime' => Mime::GZ,
-			'name' => "$name.gz",
-			'content' => Archiver::compressGzip($content, 9),
-		];
+		$zipArchive->addFile($target, $name);
+		$zipArchive->close();
 
 		$this->writeAuditLogCurrentUser(AuditLog::ADMINISTRATOR_DOWNLOAD_DATABASE, [
 			"path" => $target,
-			"size" => $content->count(),
+			"size" => File::getFileSize($target),
 		]);
 
-		$this->setDownloadContent($archive['mime'], $archive['name'], $archive['content']);
+		$stream = Stream::open($zipFilePath, Stream::MODE_READ);
+		$this->setDownloadContent(Mime::ZIP, "database.zip", $stream);
 	}
 }
