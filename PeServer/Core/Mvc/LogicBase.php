@@ -636,11 +636,7 @@ abstract class LogicBase implements IValidationReceiver
 	 */
 	final protected function setDownloadContent(string $mime, string $fileName, Binary|Stream $data): void
 	{
-		if ($data instanceof Stream) {
-			$this->content = new StreamContent($data, $fileName, $mime);
-		} else {
-			$this->content = new DownloadDataContent($mime, $fileName, $data);
-		}
+		$this->content = new DownloadDataContent($mime, $fileName, $data);
 	}
 
 	/**
@@ -670,19 +666,6 @@ abstract class LogicBase implements IValidationReceiver
 
 		throw new InvalidOperationException();
 	}
-
-	// public function getChunked(): ChunkedContentBase
-	// {
-	// 	if ($this->content === null) {
-	// 		throw new InvalidOperationException();
-	// 	}
-
-	// 	if ($this->content instanceof ChunkedContentBase) {
-	// 		return $this->content;
-	// 	}
-
-	// 	throw new NotSupportedException();
-	// }
 
 	/**
 	 * ロジック結果に指定キー項目が存在するか。

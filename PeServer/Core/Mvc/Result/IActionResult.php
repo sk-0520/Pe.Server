@@ -15,6 +15,8 @@ interface IActionResult
 
 	/**
 	 * 結果操作からHTTPレスポンスを生成。
+	 *
+	 * 共通的なものは `ResponsePrinter` で実装する方針。
 	 */
 	public function createResponse(): HttpResponse;
 

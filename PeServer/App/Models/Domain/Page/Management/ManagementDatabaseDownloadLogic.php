@@ -7,8 +7,10 @@ namespace PeServer\App\Models\Domain\Page\Management;
 use Throwable;
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\AppDatabaseConnection;
+use PeServer\App\Models\AppTemporary;
 use PeServer\App\Models\AuditLog;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
+use PeServer\Core\ArchiveEntry;
 use PeServer\Core\Archiver;
 use PeServer\Core\Collection\Arr;
 use PeServer\Core\Database\DatabaseTableResult;
@@ -19,6 +21,7 @@ use PeServer\Core\IO\File;
 use PeServer\Core\IO\Path;
 use PeServer\Core\IO\Stream;
 use PeServer\Core\Mime;
+use PeServer\Core\Mvc\Content\FileCleanupStream;
 use PeServer\Core\Mvc\DownloadFileContent;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
@@ -31,7 +34,7 @@ use ZipArchive;
 
 class ManagementDatabaseDownloadLogic extends PageLogicBase
 {
-	public function __construct(LogicParameter $parameter, private AppConfiguration $config)
+	public function __construct(LogicParameter $parameter, private AppConfiguration $appConfig, private AppTemporary $appTemporary)
 	{
 		parent::__construct($parameter);
 	}
@@ -54,23 +57,27 @@ class ManagementDatabaseDownloadLogic extends PageLogicBase
 		}
 		$userId = $userInfo->getUserId();
 
-		$workDirPath = Path::combine($this->config->setting->cache->temporary, "database", $userId);
-		Directory::createDirectory($workDirPath);
-		$zipFilePath = Path::combine($workDirPath, $this->beginTimestamp->format('Y-m-d\_His') . ".zip");
-		$zipArchive = new ZipArchive();
-		$zipArchive->open($zipFilePath, ZipArchive::CREATE | ZipArchive::EXCL);
+		$workDirPath = $this->appTemporary->getDatabaseDownloadDirectory($userId);
+		$this->logger->info("database temp dir: {0}", $workDirPath);
+		$zipFilePath = Path::combine($workDirPath, $this->appTemporary->createFileName($this->beginTimestamp, "zip"));
 
-		$target = AppDatabaseConnection::getSqliteFilePath($this->config->setting->persistence->default->connection);
+		$target = AppDatabaseConnection::getSqliteFilePath($this->appConfig->setting->persistence->default->connection);
 		$name = Path::getFileName($target);
-		$zipArchive->addFile($target, $name);
-		$zipArchive->close();
+
+		Archiver::compressZip(
+			$zipFilePath,
+			[
+				// @phpstan-ignore argument.type, argument.type
+				new ArchiveEntry($target, $name)
+			]
+		);
 
 		$this->writeAuditLogCurrentUser(AuditLog::ADMINISTRATOR_DOWNLOAD_DATABASE, [
 			"path" => $target,
 			"size" => File::getFileSize($target),
 		]);
 
-		$stream = Stream::open($zipFilePath, Stream::MODE_READ);
+		$stream = FileCleanupStream::read($zipFilePath);
 		$this->setDownloadContent(Mime::ZIP, "database.zip", $stream);
 	}
 }
