@@ -16,6 +16,8 @@ use PeServer\Core\Mvc\Content\DataContent;
 
 /**
  * `Stream` 処理。
+ *
+ * TODO: 用途的に実ファイルのダウンロードなので ChunkedContentBase である意味はない
  */
 class StreamContent extends ChunkedContentBase implements IDownloadContent
 {
