@@ -14,13 +14,6 @@ use PeServer\Core\Mvc\Content\StaticDataContent;
  */
 class DownloadDataContent extends StaticDataContent implements IDownloadContent
 {
-	#region variable
-
-	/** @var non-empty-string */
-	private readonly string $fileName;
-
-	#endregion
-
 	/**
 	 * 生成。
 	 *
@@ -29,10 +22,9 @@ class DownloadDataContent extends StaticDataContent implements IDownloadContent
 	 * @param non-empty-string $fileName
 	 * @param string|Binary $data
 	 */
-	public function __construct(string $mime, string $fileName, string|Binary $data)
+	public function __construct(string $mime, private readonly string $fileName, string|Binary $data)
 	{
 		parent::__construct(HttpStatus::OK, $mime, $data);
-		$this->fileName = $fileName;
 	}
 
 	#region IDownloadContent
