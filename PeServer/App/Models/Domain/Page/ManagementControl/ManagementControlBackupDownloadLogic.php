@@ -11,12 +11,14 @@ use PeServer\Core\Collection\OrderBy;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\IO\File;
 use PeServer\Core\IO\Path;
+use PeServer\Core\IO\Stream;
 use PeServer\Core\Mime;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\SizeConverter;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\HttpStatusException;
+use PeServer\Core\Mvc\Content\FileCleanupStream;
 
 class ManagementControlBackupDownloadLogic extends PageLogicBase
 {
@@ -48,6 +50,7 @@ class ManagementControlBackupDownloadLogic extends PageLogicBase
 			throw new HttpStatusException(HttpStatus::NotFound);
 		}
 
-		$this->setDownloadContent(Mime::ZIP, $safeFileName, File::readContent($filePath));
+		$stream = Stream::open($filePath, Stream::MODE_READ);
+		$this->setDownloadContent(Mime::ZIP, $safeFileName, $stream);
 	}
 }

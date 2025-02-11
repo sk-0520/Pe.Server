@@ -14,14 +14,19 @@ use PeServer\Core\Text;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\App\Models\AppConfiguration;
+use PeServer\App\Models\AppTemporary;
 use PeServer\Core\Throws\FileNotFoundException;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
+use PeServer\App\Models\SessionKey;
+use PeServer\Core\ArchiveEntry;
+use PeServer\Core\Mvc\Content\FileCleanupStream;
+use PeServer\Core\Throws\InvalidOperationException;
 
 ini_set('memory_limit', '-1');
 
 class ManagementLogDetailLogic extends PageLogicBase
 {
-	public function __construct(LogicParameter $parameter, private AppConfiguration $config)
+	public function __construct(LogicParameter $parameter, private AppConfiguration $config, private AppTemporary $appTemporary)
 	{
 		parent::__construct($parameter);
 	}
@@ -51,9 +56,26 @@ class ManagementLogDetailLogic extends PageLogicBase
 		if ($archiveSize <= $fileSize || $callMode === LogicCallMode::Submit) {
 			$this->result['download'] = true;
 
-			$compressed = Archiver::compressGzip($binary, 9);
+			$userInfo = $this->getAuditUserInfo();
+			if ($userInfo === null) {
+				throw new InvalidOperationException();
+			}
+			$userId = $userInfo->getUserId();
 
-			$this->setDownloadContent(Mime::GZ, $fileName . '.gz', $compressed);
+			$workDirPath = $this->appTemporary->getLogDownloadDirectory($userId);
+			$zipFileName = Path::getFileNameWithoutExtension($fileName);
+			$zipPath = Path::combine($workDirPath, "{$zipFileName}.zip");
+
+			Archiver::compressZip(
+				$zipPath,
+				[
+					// @phpstan-ignore argument.type, argument.type
+					new ArchiveEntry($filePath, $fileName)
+				]
+			);
+
+			$stream = FileCleanupStream::read($zipPath);
+			$this->setDownloadContent(Mime::ZIP, "{$zipFileName}.zip", $stream);
 		} else {
 			$this->setValue('log_name', $fileName);
 			$this->setValue('log_file', $filePath);
