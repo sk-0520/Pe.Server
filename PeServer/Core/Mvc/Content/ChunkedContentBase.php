@@ -46,7 +46,12 @@ abstract class ChunkedContentBase extends DataContentBase implements ICallbackCo
 	{
 		$iterator = $this->getIterator();
 		foreach ($iterator as $binary) {
-			echo (string)$binary->count() . "\r\n"
+			if ($binary->count() === 0) {
+				continue;
+			}
+
+			$chunkSize = dechex($binary->count());
+			echo $chunkSize . "\r\n"
 				. $binary->raw . "\r\n";
 			if (OutputBuffer::getLevel() <= 1) {
 				OutputBuffer::flush();

@@ -32,6 +32,7 @@ class ChunkedContentBaseTest extends TestClass
 				yield new Binary("abc");
 				yield new Binary("defghi");
 				yield new Binary("jklmnoopq");
+				yield new Binary("rstuvwxyz012");
 			}
 
 			#endregion
@@ -40,7 +41,7 @@ class ChunkedContentBaseTest extends TestClass
 		$this->assertSame(ICallbackContent::UNKNOWN, $obj->getLength());
 		$this->assertSame(Mime::TEXT, $obj->mime);
 		$actual = OutputBuffer::get(fn() => $obj->output());
-		$this->assertSame("3\r\nabc\r\n6\r\ndefghi\r\n9\r\njklmnoopq\r\n0\r\n\r\n", $actual->raw);
+		$this->assertSame("3\r\nabc\r\n6\r\ndefghi\r\n9\r\njklmnoopq\r\nc\r\nrstuvwxyz012\r\n0\r\n\r\n", $actual->raw);
 	}
 
 	#endregion

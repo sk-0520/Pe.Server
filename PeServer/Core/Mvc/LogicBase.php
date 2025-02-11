@@ -17,6 +17,7 @@ use PeServer\Core\I18n;
 use PeServer\Core\IO\File;
 use PeServer\Core\IO\IOUtility;
 use PeServer\Core\IO\Path;
+use PeServer\Core\IO\Stream;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Mime;
 use PeServer\Core\Mvc\Content\ChunkedContentBase;
@@ -24,6 +25,7 @@ use PeServer\Core\Mvc\Content\DataContent;
 use PeServer\Core\Mvc\Content\DataContentBase;
 use PeServer\Core\Mvc\Content\DownloadDataContent;
 use PeServer\Core\Mvc\Content\StaticDataContent;
+use PeServer\Core\Mvc\Content\StreamContent;
 use PeServer\Core\Mvc\Content\StreamingContent;
 use PeServer\Core\Mvc\IValidationReceiver;
 use PeServer\Core\Mvc\LogicCallMode;
@@ -629,12 +631,16 @@ abstract class LogicBase implements IValidationReceiver
 	 * @param non-empty-string $mime
 	 * @phpstan-param non-empty-string|\PeServer\Core\Mime::* $mime
 	 * @param non-empty-string $fileName
-	 * @param Binary $data
+	 * @param Binary|Stream $data
 	 * @return void
 	 */
-	final protected function setDownloadContent(string $mime, string $fileName, Binary $data): void
+	final protected function setDownloadContent(string $mime, string $fileName, Binary|Stream $data): void
 	{
-		$this->content = new DownloadDataContent($mime, $fileName, $data);
+		if ($data instanceof Stream) {
+			$this->content = new StreamContent($data, $fileName, $mime);
+		} else {
+			$this->content = new DownloadDataContent($mime, $fileName, $data);
+		}
 	}
 
 	/**
