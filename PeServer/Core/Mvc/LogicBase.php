@@ -667,19 +667,6 @@ abstract class LogicBase implements IValidationReceiver
 		throw new InvalidOperationException();
 	}
 
-	// public function getChunked(): ChunkedContentBase
-	// {
-	// 	if ($this->content === null) {
-	// 		throw new InvalidOperationException();
-	// 	}
-
-	// 	if ($this->content instanceof ChunkedContentBase) {
-	// 		return $this->content;
-	// 	}
-
-	// 	throw new NotSupportedException();
-	// }
-
 	/**
 	 * ロジック結果に指定キー項目が存在するか。
 	 *

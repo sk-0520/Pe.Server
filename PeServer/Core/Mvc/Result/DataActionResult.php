@@ -121,10 +121,6 @@ readonly class DataActionResult implements IActionResult
 		}
 
 		if ($this->content instanceof ICallbackContent) {
-			if (0 <= $this->content->getLength()) {
-				$response->header->addValue('Transfer-Encoding', "chunked");
-			}
-
 			$response->content = $this->content;
 		}
 

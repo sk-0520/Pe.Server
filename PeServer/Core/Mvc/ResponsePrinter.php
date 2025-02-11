@@ -116,10 +116,12 @@ class ResponsePrinter
 			return;
 		}
 
-		// ヘッダ: Content-Length
+		// ヘッダ: Content-Length/Transfer-Encoding
 		$contentLength = $this->getContentLength();
 		if (0 <= $contentLength) {
 			header('Content-Length: ' . $contentLength);
+		} else {
+			header('Transfer-Encoding: chunked');
 		}
 
 		if ($this->request->httpMethod === HttpMethod::Head) {
