@@ -14,6 +14,7 @@ use PeServer\Core\IO\File;
 use PeServer\Core\IO\Path;
 use PeServer\Core\IO\Stream;
 use PeServer\Core\Mime;
+use PeServer\Core\Mvc\Content\FileCleanupStream;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\Mvc\Pagination;
@@ -27,7 +28,8 @@ class AccountUserAuditLogDownloadLogic extends PageLogicBase
 {
 	#region define
 
-	public const RAW_LOG_SIZE = 2 * 1024 * 1024;
+	public const RAW_LOG_SIZE = 1;
+	//public const RAW_LOG_SIZE = 2 * 1024 * 1024;
 
 	#endregion
 
@@ -81,7 +83,7 @@ class AccountUserAuditLogDownloadLogic extends PageLogicBase
 			$zipArchive->addFile($auditFilePath, "{$baseFileName}.log");
 			$zipArchive->close();
 			File::removeFile($auditFilePath);
-			$data = Stream::open($zipFilePath, Stream::MODE_READ);
+			$data = FileCleanupStream::read($zipFilePath);
 			$this->setDownloadContent(Mime::ZIP, "audit-log.zip", $data);
 		}
 	}

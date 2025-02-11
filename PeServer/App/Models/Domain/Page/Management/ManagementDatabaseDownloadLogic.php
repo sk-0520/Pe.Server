@@ -19,6 +19,7 @@ use PeServer\Core\IO\File;
 use PeServer\Core\IO\Path;
 use PeServer\Core\IO\Stream;
 use PeServer\Core\Mime;
+use PeServer\Core\Mvc\Content\FileCleanupStream;
 use PeServer\Core\Mvc\DownloadFileContent;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
@@ -70,7 +71,7 @@ class ManagementDatabaseDownloadLogic extends PageLogicBase
 			"size" => File::getFileSize($target),
 		]);
 
-		$stream = Stream::open($zipFilePath, Stream::MODE_READ);
+		$stream = FileCleanupStream::read($zipFilePath);
 		$this->setDownloadContent(Mime::ZIP, "database.zip", $stream);
 	}
 }
