@@ -123,6 +123,7 @@ class AppStartup extends CoreStartup
 		$container->registerClass(AppEmailInformation::class);
 		$container->registerClass(AppUrl::class);
 		$container->registerClass(AccessLogManager::class);
+		$container->registerClass(AppTemporary::class);
 	}
 
 	protected function setupWebService(array $options, IDiRegisterContainer $container): void

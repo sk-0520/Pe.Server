@@ -6,6 +6,7 @@ namespace PeServer\Core\Mvc\Content;
 
 use PeServer\Core\Binary;
 use PeServer\Core\Http\HttpStatus;
+use PeServer\Core\IO\Stream;
 use PeServer\Core\Mime;
 use PeServer\Core\Mvc\Content\StaticDataContent;
 
@@ -20,10 +21,13 @@ class DownloadDataContent extends StaticDataContent implements IDownloadContent
 	 * @param non-empty-string $mime
 	 * @phpstan-param non-empty-string|\PeServer\Core\Mime::* $mime
 	 * @param non-empty-string $fileName
-	 * @param string|Binary $data
+	 * @param string|array<mixed>|Binary|Stream $data
 	 */
-	public function __construct(string $mime, private readonly string $fileName, string|Binary $data)
-	{
+	public function __construct(
+		string $mime,
+		private readonly string $fileName,
+		string|array|Binary|Stream $data
+	) {
 		parent::__construct(HttpStatus::OK, $mime, $data);
 	}
 

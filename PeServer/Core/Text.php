@@ -199,8 +199,8 @@ abstract class Text
 	 */
 	public static function replaceMap(string $source, array $map, string $head = '{', string $tail = '}'): string
 	{
-		Throws::throwIfNullOrEmpty($head, Text::EMPTY, StringException::class);
-		Throws::throwIfNullOrEmpty($tail, Text::EMPTY, StringException::class);
+		Throws::throwIfNullOrEmpty($head, Text::EMPTY, StringException::class); // @phpstan-ignore staticMethod.alreadyNarrowedType
+		Throws::throwIfNullOrEmpty($tail, Text::EMPTY, StringException::class); // @phpstan-ignore staticMethod.alreadyNarrowedType
 
 		$regex = new Regex();
 		$escHead = $regex->escape($head);

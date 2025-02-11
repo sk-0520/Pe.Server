@@ -9,6 +9,7 @@ use PeServer\Core\Errors\ErrorHandler;
 use PeServer\Core\Throws\ArchiveException;
 use PeServer\Core\Throws\Throws;
 use ValueError;
+use ZipArchive;
 
 /**
  * アーカイブ処理。
@@ -49,7 +50,7 @@ abstract class Archiver
 	 */
 	public static function compressGzip(Binary $data, int $level = -1, int $encoding = self::GZIP_DEFAULT): Binary
 	{
-		$result = Throws::wrap(ValueError::class, ArchiveException::class, fn () => gzencode($data->raw, $level, $encoding));
+		$result = Throws::wrap(ValueError::class, ArchiveException::class, fn() => gzencode($data->raw, $level, $encoding));
 		if ($result === false) {
 			throw new ArchiveException();
 		}
@@ -69,12 +70,43 @@ abstract class Archiver
 	 */
 	public static function extractGzip(Binary $data): Binary
 	{
-		$result = ErrorHandler::trap(fn () => gzdecode($data->raw));
+		$result = ErrorHandler::trap(fn() => gzdecode($data->raw));
 		if (!$result->success) {
 			throw new ArchiveException();
 		}
 
 		return new Binary($result->value);
+	}
+
+
+	/**
+	 * 簡易ZIPファイル作成処理。
+	 *
+	 * @param string $zipPath ZIPファイルの作成先パス。
+	 * @param ArchiveEntry[] $entryFiles
+	 * @throws ArchiveException ZIPファイルを新規作成できない
+	 */
+	public static function compressZip(string $zipPath, array $entryFiles): void
+	{
+		$zipArchive = new ZipArchive();
+		$zipErrorCode = 0;
+		// 空ファイルで Using empty file as ZipArchive is deprecated が出るため trap で抑制
+		ErrorHandler::trap(function () use ($zipArchive, $zipPath, &$zipErrorCode) {
+			$zipErrorCode = $zipArchive->open($zipPath, ZipArchive::CREATE | ZipArchive::EXCL | ZipArchive::CHECKCONS);
+			return $zipErrorCode;
+		});
+		if ($zipErrorCode !== true) {
+			throw new ArchiveException("code: {$zipErrorCode}");
+		}
+		if (empty($entryFiles)) {
+			throw new ArchiveException('empty: $entryFiles');
+		}
+
+		foreach ($entryFiles as $entryFile) {
+			$zipArchive->addFile($entryFile->path, $entryFile->entry);
+		}
+
+		$zipArchive->close();
 	}
 
 	#endregion

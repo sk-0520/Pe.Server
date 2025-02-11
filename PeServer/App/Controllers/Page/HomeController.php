@@ -109,9 +109,11 @@ final class HomeController extends PageControllerBase
 			$this->wait();
 			yield new Binary("abc");
 			$this->wait();
-			yield new Binary("def");
+			yield new Binary("defghi");
 			$this->wait();
-			yield new Binary("ghi");
+			yield new Binary("jklmnoopq");
+			$this->wait();
+			yield new Binary("rstuvwxyz012");
 		}, Mime::TEXT));
 	}
 }

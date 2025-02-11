@@ -152,6 +152,7 @@ abstract class Throws
 	 * @param string $argument
 	 * @param class-string<Throwable> $exceptionClass
 	 * @return void
+	 * @phpstan-assert non-empty-string $value
 	 */
 	public static function throwIfNullOrEmpty(?string $value, string $argument = '', string $exceptionClass = InvalidException::class): void
 	{
@@ -167,6 +168,7 @@ abstract class Throws
 	 * @param string $argument
 	 * @param class-string<Throwable> $exceptionClass
 	 * @return void
+	 * @phpstan-assert non-empty-string $value
 	 */
 	public static function throwIfNullOrWhiteSpace(?string $value, string $argument = '', string $exceptionClass = InvalidException::class): void
 	{

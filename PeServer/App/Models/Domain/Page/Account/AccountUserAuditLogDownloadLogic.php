@@ -5,19 +5,26 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Domain\Page\Account;
 
 use PeServer\App\Models\AppConfiguration;
+use PeServer\App\Models\AppTemporary;
 use PeServer\App\Models\Configuration\AppSetting;
 use PeServer\App\Models\Dao\Entities\UserAuditLogsEntityDao;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
+use PeServer\Core\ArchiveEntry;
 use PeServer\Core\Archiver;
+use PeServer\Core\Binary;
+use PeServer\Core\Collection\Arr;
+use PeServer\Core\Collection\Collections;
 use PeServer\Core\IO\Directory;
 use PeServer\Core\IO\File;
 use PeServer\Core\IO\Path;
 use PeServer\Core\IO\Stream;
 use PeServer\Core\Mime;
+use PeServer\Core\Mvc\Content\FileCleanupStream;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\LogicParameter;
 use PeServer\Core\Mvc\Pagination;
 use PeServer\Core\Serialization\JsonSerializer;
+use PeServer\Core\Text;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\TypeUtility;
 use PeServer\Core\Utc;
@@ -27,11 +34,12 @@ class AccountUserAuditLogDownloadLogic extends PageLogicBase
 {
 	#region define
 
-	public const RAW_LOG_SIZE = 2 * 1024 * 1024;
+	//public const RAW_LOG_COUNT = 5;
+	public const RAW_LOG_COUNT = 1024;
 
 	#endregion
 
-	public function __construct(LogicParameter $parameter, private AppConfiguration $appConfig)
+	public function __construct(LogicParameter $parameter, private AppTemporary $appTemporary)
 	{
 		parent::__construct($parameter);
 	}
@@ -63,25 +71,45 @@ class AccountUserAuditLogDownloadLogic extends PageLogicBase
 		$userAuditLogsEntityDao = new UserAuditLogsEntityDao($database);
 
 		$result = $userAuditLogsEntityDao->selectAuditLogsFromUserId($userId);
-		$jsonSerializer = new JsonSerializer();
-		$items = $jsonSerializer->save($result->rows);
 
-		if ($items->count() < self::RAW_LOG_SIZE) {
+		if (count($result->rows) < self::RAW_LOG_COUNT) {
+			$jsonSerializer = new JsonSerializer();
+			$items = $jsonSerializer->save($result->rows);
 			$this->setDownloadContent(Mime::JSON, "audit-log.json", $items);
 		} else {
-			$dirPath = Path::combine($this->appConfig->setting->cache->temporary, "audit", $userId);
-			Directory::createDirectory($dirPath);
-			$this->logger->info("audit temp dir: {0}", $dirPath);
-			$baseFileName = $userId . "_" .  $this->beginTimestamp->format('Y-m-d\_His');
-			$auditFilePath = Path::combine($dirPath, "{$baseFileName}.log");
-			$zipFilePath = Path::combine($dirPath, "{$baseFileName}.zip");
-			File::writeContent($auditFilePath, $items);
-			$zipArchive = new ZipArchive();
-			$zipArchive->open($zipFilePath, ZipArchive::CREATE | ZipArchive::EXCL);
-			$zipArchive->addFile($auditFilePath, "{$baseFileName}.log");
-			$zipArchive->close();
+			$workDirPath = $this->appTemporary->getDatabaseDownloadDirectory($userId);
+			$this->logger->info("audit temp dir: {0}", $workDirPath);
+			$auditFilePath = Path::combine($workDirPath, $this->appTemporary->createFileName($this->beginTimestamp, "json"));
+			$zipFilePath = Path::combine($workDirPath, $this->appTemporary->createFileName($this->beginTimestamp, "zip"));
+
+			// JSONを一旦ファイルに出力する
+			// なんでこんな面倒な処理してるかというと、データが多くなると PHP 側がメモリ不足で落ちる
+			// とりあえずロジックで何とかする方針で組んだが、どうにもならんくなったら PHP 設定を変更する
+			$jsonSerializer = new JsonSerializer();
+			File::writeContent($auditFilePath, new Binary("[" . PHP_EOL));
+			foreach ($result->rows as $i => $row) {
+				if (0 < $i) {
+					File::appendContent($auditFilePath, new Binary("," . PHP_EOL));
+				}
+				$json = $jsonSerializer->save($row);
+				$nestObject = Text::join(
+					PHP_EOL,
+					Arr::map(Text::splitLines($json->raw), fn($a) => "    " . $a)
+				);
+				File::appendContent($auditFilePath, new Binary($nestObject));
+			}
+			File::appendContent($auditFilePath, new Binary(PHP_EOL . "]" . PHP_EOL));
+
+			Archiver::compressZip(
+				$zipFilePath,
+				[
+					// @phpstan-ignore argument.type
+					new ArchiveEntry($auditFilePath, "audit-log.json")
+				]
+			);
 			File::removeFile($auditFilePath);
-			$data = Stream::open($zipFilePath, Stream::MODE_READ);
+
+			$data = FileCleanupStream::read($zipFilePath);
 			$this->setDownloadContent(Mime::ZIP, "audit-log.zip", $data);
 		}
 	}
