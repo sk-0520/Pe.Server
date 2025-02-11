@@ -51,6 +51,8 @@ abstract class DisposerBase implements IDisposable
 	 *
 	 * 継承先で継承元を呼び出すこと。
 	 *
+	 * `isDisposed` が真の場合のみ呼び出されるため本処理内で判定は不要。
+	 *
 	 * @return void
 	 */
 	protected function disposeImpl(): void
