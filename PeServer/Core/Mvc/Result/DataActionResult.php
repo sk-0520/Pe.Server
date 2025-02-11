@@ -7,9 +7,13 @@ namespace PeServer\Core\Mvc\Result;
 use PeServer\Core\Binary;
 use PeServer\Core\Http\ContentType;
 use PeServer\Core\Http\HttpResponse;
+use PeServer\Core\Http\ICallbackContent;
 use PeServer\Core\Mime;
-use PeServer\Core\Mvc\DataContent;
-use PeServer\Core\Mvc\DownloadDataContent;
+use PeServer\Core\Mvc\Content\DataContent;
+use PeServer\Core\Mvc\Content\DataContentBase;
+use PeServer\Core\Mvc\Content\DownloadDataContent;
+use PeServer\Core\Mvc\Content\IDownloadContent;
+use PeServer\Core\Mvc\Content\StaticDataContent;
 use PeServer\Core\Mvc\Result\IActionResult;
 use PeServer\Core\Serialization\Json;
 use PeServer\Core\Serialization\JsonSerializer;
@@ -31,10 +35,10 @@ readonly class DataActionResult implements IActionResult
 	/**
 	 * 生成。
 	 *
-	 * @param DataContent $content
+	 * @param DataContentBase $content
 	 */
 	public function __construct(
-		private DataContent $content,
+		private DataContentBase $content,
 		?JsonSerializer $jsonSerializer = null
 	) {
 		$this->jsonSerializer = $jsonSerializer ?? new JsonSerializer();
@@ -42,7 +46,7 @@ readonly class DataActionResult implements IActionResult
 
 	#region function
 
-	private function convertText(DataContent $content): string
+	private function convertText(StaticDataContent $content): string
 	{
 		return Text::toString($content->data);
 	}
@@ -60,12 +64,13 @@ readonly class DataActionResult implements IActionResult
 		return $result->toString();
 	}
 
-	private function convertJson(DataContent $content): string
+	private function convertJson(StaticDataContent $content): string
 	{
-		return $this->convertJsonCore($content->data); //@phpstan-ignore-line json array
+		assert(is_array($content->data));
+		return $this->convertJsonCore($content->data);
 	}
 
-	private function convertRaw(DataContent $content): string
+	private function convertRaw(StaticDataContent $content): string
 	{
 		if ($content->data instanceof Binary) {
 			return $content->data->raw;
@@ -90,19 +95,32 @@ readonly class DataActionResult implements IActionResult
 
 		$response->header->setContentType(ContentType::create($this->content->mime));
 
-		if ($this->content instanceof DownloadDataContent) {
-			$fileName = urlencode($this->content->fileName);
+		if ($this->content instanceof IDownloadContent) {
+			$fileName = urlencode($this->content->getFileName());
 			$response->header->addValue('Content-Disposition', "attachment; filename*=UTF-8''$fileName");
-			$response->header->addValue('Content-Length', (string)$this->content->data->count()); //@phpstan-ignore-line DownloadDataContent
 			$response->header->addValue('X-Content-Type-Options', 'nosniff');
 			$response->header->addValue('Connection', 'close');
-			$response->content = $this->convertRaw($this->content);
+			if ($this->content instanceof StaticDataContent) {
+				if ($this->content->data instanceof Binary) {
+					$response->header->addValue('Content-Length', (string)$this->content->data->count());
+				} elseif (is_string($this->content->data)) {
+					$response->header->addValue('Content-Length', (string)strlen($this->content->data));
+				}
+				$response->content = $this->convertRaw($this->content);
+			}
 		} else {
-			$response->content = match ($this->content->mime) {
-				Mime::TEXT => $this->convertText($this->content),
-				Mime::JSON => $this->convertJson($this->content),
-				default => $this->convertRaw($this->content),
-			};
+			if ($this->content instanceof StaticDataContent) {
+				$response->content = match ($this->content->mime) {
+					Mime::TEXT => $this->convertText($this->content),
+					Mime::JSON => $this->convertJson($this->content),
+					default => $this->convertRaw($this->content),
+				};
+			}
+		}
+
+		if ($this->content instanceof ICallbackContent) {
+			$response->header->addValue('Transfer-Encoding', "chunked");
+			$response->content = $this->content;
 		}
 
 		return $response;

@@ -81,11 +81,14 @@ abstract class IOUtility
 	/**
 	 * パーミッション変更。
 	 *
+	 * `chmod` ラッパー。
+	 *
 	 * NOTE: ファイルだけなのかディレクトリも適用可能なのかわからんのでこのクラスに入れてる。
 	 *
 	 * @param string $path
 	 * @param int $permission
 	 * @return bool
+	 * @see https://php.net/manual/function.chmod.php
 	 */
 	public static function changePermission(string $path, int $permission): bool
 	{

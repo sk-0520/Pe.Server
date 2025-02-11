@@ -12,10 +12,15 @@ use PeServer\App\Models\Domain\Page\Home\HomeContactLogic;
 use PeServer\App\Models\Domain\Page\Home\HomeIndexLogic;
 use PeServer\App\Models\Domain\Page\Home\HomePrivacyLogic;
 use PeServer\App\Models\Domain\Page\Home\HomeWildcardLogic;
+use PeServer\Core\Binary;
 use PeServer\Core\Http\HttpRequest;
+use PeServer\Core\Http\HttpStatus;
+use PeServer\Core\Mime;
+use PeServer\Core\Mvc\Content\StreamingContent;
 use PeServer\Core\Mvc\ControllerArgument;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\Result\IActionResult;
+use PeServer\Core\Mvc\Template\TemplateParameter;
 
 /**
  * [PAGE] ホームコントローラ。
@@ -78,5 +83,35 @@ final class HomeController extends PageControllerBase
 	public function exception(): IActionResult
 	{
 		throw new Exception();
+	}
+
+	public function streaming_html(): IActionResult
+	{
+		return $this->view(
+			'dev_streaming',
+			new TemplateParameter(
+				HttpStatus::OK,
+				[],
+				[]
+			)
+		);
+	}
+
+	private function wait(): void
+	{
+		//usleep(500);
+		sleep(1);
+	}
+
+	public function streaming_ajax(): IActionResult
+	{
+		return $this->data(new StreamingContent(function () {
+			$this->wait();
+			yield new Binary("abc");
+			$this->wait();
+			yield new Binary("def");
+			$this->wait();
+			yield new Binary("ghi");
+		}, Mime::TEXT));
 	}
 }

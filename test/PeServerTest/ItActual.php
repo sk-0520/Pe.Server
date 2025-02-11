@@ -18,6 +18,7 @@ use PeServerTest\ItHtmlDocument;
 readonly class ItActual
 {
 	public ItHtmlDocument|null $html;
+	public string|null $text;
 	public array|null $json;
 
 	public function __construct(
@@ -58,6 +59,11 @@ readonly class ItActual
 	public function isHtml(): bool
 	{
 		return $this->response->header->existsContentType() && $this->getContentType()->mime === Mime::HTML;
+	}
+
+	public function isText(): bool
+	{
+		return $this->response->header->existsContentType() && $this->getContentType()->mime === Mime::TEXT;
 	}
 
 	public function isJson(): bool

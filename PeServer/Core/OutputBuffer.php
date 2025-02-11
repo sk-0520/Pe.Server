@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core;
 
 use PeServer\Core\Binary;
+use PeServer\Core\Errors\ErrorHandler;
 use PeServer\Core\Throws\OutputBufferException;
 
 /**
@@ -85,6 +86,29 @@ class OutputBuffer extends DisposerBase
 			return $self->getContents();
 		} finally {
 			$self->dispose();
+		}
+	}
+
+	/**
+	 * `ob_get_level` ラッパー。
+	 *
+	 * @see https://php.net/manual/function.ob-get-level.php
+	 */
+	public static function getLevel(): int
+	{
+		return ob_get_level();
+	}
+
+	/**
+	 * `ob_flush` ラッパー。
+	 *
+	 * @see https://php.net/manual/function.ob-flush.php
+	 */
+	public static function flush(): void
+	{
+		$result = ErrorHandler::trap("ob_flush");
+		if ($result->isFailureOrFalse()) {
+			throw new OutputBufferException('ob_flush');
 		}
 	}
 

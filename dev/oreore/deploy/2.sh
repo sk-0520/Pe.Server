@@ -1,5 +1,6 @@
 #!/bin/bash -ue
 
+# shellcheck disable=SC1091
 . ./@env.sh
 
 FILE=public_html.zip
@@ -7,7 +8,7 @@ FILE=public_html.zip
 curl -X POST \
 	-H "X-API-KEY: ${DEPLOY_API_KEY}" \
 	-H "X-SECRET-KEY: ${DEPLOY_API_SEC}" \
-	${URL_BASE}/upload --form "file=@$FILE" --form "sequence=0"
-
-
+	"${URL_BASE}/upload" \
+	--form "file=@$FILE" \
+	--form "sequence=0"
 

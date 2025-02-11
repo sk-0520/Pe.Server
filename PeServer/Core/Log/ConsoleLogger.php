@@ -18,6 +18,10 @@ use PeServer\Core\Throws\Throws;
 
 /**
  * コンソールロガー。
+ *
+ * CLI モードで使用する想定。
+ *
+ * @codeCoverageIgnore
  */
 class ConsoleLogger extends LoggerBase
 {

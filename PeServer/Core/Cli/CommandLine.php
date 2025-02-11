@@ -44,7 +44,7 @@ class CommandLine
 			$this->longOptions[$longOption->key] = $longOption;
 		}
 
-		if (count($this->longOptions) === 0) {
+		if (empty($this->longOptions)) {
 			throw new ArgumentException('$longOptions: 0');
 		}
 	}

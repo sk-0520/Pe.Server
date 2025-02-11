@@ -30,7 +30,6 @@ use PeServer\Core\Http\HttpHeader;
 use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Http\HttpResponse;
 use PeServer\Core\Http\HttpStatus;
-use PeServer\Core\Http\ResponsePrinter;
 use PeServer\Core\I18n;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\ILoggerFactory;
@@ -51,9 +50,13 @@ use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\Html\HtmlTagElement;
 use PeServer\Core\Html\HtmlNodeBase;
 use PeServer\Core\Html\HtmlTextElement;
+use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\IO\File;
 use PeServer\Core\Log\LoggerFactory;
 use PeServer\Core\Log\NullLogger;
+use PeServer\Core\Mvc\IResponsePrinterFactory;
+use PeServer\Core\Mvc\ResponsePrinter;
+use PeServer\Core\Mvc\ResponsePrinterFactory;
 use PeServer\Core\Mvc\Template\TemplateStore;
 use PeServer\Core\Store\TemporaryStore;
 use PeServer\Core\Text;
@@ -111,7 +114,8 @@ class ItControllerClass extends TestClass
 
 			$container->remove(IDatabaseConnection::class);
 			$container->add(IDatabaseConnection::class, DiItem::factory(function () use ($connectionSetting, $databaseContext) {
-				return new class ($connectionSetting, $databaseContext) implements IDatabaseConnection
+				//phpcs:ignore PSR12.Classes.AnonClassDeclaration.SpaceAfterKeyword
+				return new class($connectionSetting, $databaseContext) implements IDatabaseConnection
 				{
 					public function __construct(private ConnectionSetting $connectionSetting, private DatabaseContext $databaseContext)
 					{
@@ -218,8 +222,19 @@ class ItControllerClass extends TestClass
 			$property->setValue($currentTemporary, $property->getValue($previousTemporary));
 		}
 
-		$container->remove(ResponsePrinter::class);
-		$container->add(ResponsePrinter::class, DiItem::class(ItResponsePrinter::class));
+		$container->remove(IResponsePrinterFactory::class);
+		//phpcs:ignore PSR12.Classes.AnonClassDeclaration.SpaceAfterKeyword
+		$container->add(IResponsePrinterFactory::class, DiItem::factory(fn(IDiContainer $diContainer) => new class($diContainer) extends ResponsePrinterFactory {
+			public function __construct(IDiContainer $container)
+			{
+				parent::__construct($container);
+			}
+
+			public function createResponsePrinter(HttpRequest $request, HttpResponse $response): ResponsePrinter
+			{
+				return $this->container->new(ItResponsePrinter::class, [$request, $response]);
+			}
+		}));
 
 		$useDatabase = 'useDatabase';
 		$useDatabaseCache = 'useDatabaseCache';

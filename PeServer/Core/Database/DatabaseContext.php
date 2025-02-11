@@ -20,6 +20,7 @@ use PeServer\Core\Log\ILogger;
 use PeServer\Core\Regex;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\DatabaseException;
+use PeServer\Core\Throws\DatabaseInvalidQueryException;
 use PeServer\Core\Throws\NotImplementedException;
 use PeServer\Core\Throws\SqlException;
 use PeServer\Core\Throws\Throws;
@@ -384,7 +385,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 		/** @phpstan-var DatabaseRowResult<TFieldArray> */
 		$result = $this->convertRowResult($query);
 		if (Arr::isNullOrEmpty($result->fields)) {
-			throw new DatabaseException($this->getErrorMessage());
+			throw new DatabaseInvalidQueryException($this->getErrorMessage());
 		}
 
 		return $result;
@@ -418,12 +419,12 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 		/** @phpstan-var DatabaseRowResult<TFieldArray> */
 		$result = $this->convertRowResult($query);
 		if (Arr::isNullOrEmpty($result->fields)) {
-			throw new DatabaseException($this->getErrorMessage());
+			throw new DatabaseInvalidQueryException($this->getErrorMessage());
 		}
 
 		$next = $query->fetch();
 		if ($next !== false) {
-			throw new DatabaseException($this->getErrorMessage());
+			throw new DatabaseInvalidQueryException($this->getErrorMessage());
 		}
 
 		return $result;
@@ -505,7 +506,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 			return $count;
 		}
 
-		throw new DatabaseException();
+		throw new DatabaseInvalidQueryException();
 	}
 
 	/**
@@ -548,7 +549,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 		$this->throwIfInvalidInsert($statement);
 		$result = $this->execute($statement, $parameters);
 		if ($result->getResultCount() !== 1) {
-			throw new DatabaseException();
+			throw new DatabaseInvalidQueryException();
 		}
 	}
 
@@ -578,7 +579,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 		$this->throwIfInvalidUpdate($statement);
 		$result = $this->execute($statement, $parameters);
 		if ($result->getResultCount() !== 1) {
-			throw new DatabaseException();
+			throw new DatabaseInvalidQueryException();
 		}
 	}
 
@@ -587,7 +588,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 		$this->throwIfInvalidUpdate($statement);
 		$result = $this->execute($statement, $parameters);
 		if (1 < $result->getResultCount()) {
-			throw new DatabaseException();
+			throw new DatabaseInvalidQueryException();
 		}
 
 		return $result->getResultCount() === 1;
@@ -619,7 +620,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 		$this->throwIfInvalidDelete($statement);
 		$result = $this->execute($statement, $parameters);
 		if ($result->getResultCount() !== 1) {
-			throw new DatabaseException();
+			throw new DatabaseInvalidQueryException();
 		}
 	}
 
@@ -628,7 +629,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 		$this->throwIfInvalidDelete($statement);
 		$result = $this->execute($statement, $parameters);
 		if (1 < $result->getResultCount()) {
-			throw new DatabaseException();
+			throw new DatabaseInvalidQueryException();
 		}
 
 		return $result->getResultCount() === 1;

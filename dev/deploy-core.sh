@@ -41,8 +41,10 @@ function getLogLevel()
 function msg()
 {
 	local LEVEL=$1 # T/D/I/W/E
-	local MSG_LEVEL=$(getLogLevel ${LEVEL})
-	local DEF_LEVEL=$(getLogLevel ${SETTING_LOG_LEVEL})
+	local MSG_LEVEL
+	MSG_LEVEL="$(getLogLevel "${LEVEL}")"
+	local DEF_LEVEL
+	DEF_LEVEL="$(getLogLevel "${SETTING_LOG_LEVEL}")"
 
 	# echo "!!!!!!!!!!: $LEVEL < $SETTING_LOG_LEVEL"
 	# echo "XXXXXXXXXX: $MSG_LEVEL < $DEF_LEVEL"
@@ -79,11 +81,11 @@ function title()
 function cleanupDir
 {
 	local DIR_PATH=$1
-	if [ -d ${DIR_PATH} ] ; then
-		rm -rf ${DIR_PATH}
-		mkdir ${DIR_PATH}
+	if [ -d "${DIR_PATH}" ] ; then
+		rm -rf "${DIR_PATH}"
+		mkdir "${DIR_PATH}"
 	else
-		mkdir ${DIR_PATH}
+		mkdir "${DIR_PATH}"
 	fi
 }
 
@@ -103,37 +105,39 @@ function api
 
 #-----------------------------------------------
 
-title [LOCAL] ディレクトリクリア
+title "[LOCAL] ディレクトリクリア"
 
 msg i ${LOCAL_TEMP_DIR}
 cleanupDir ${LOCAL_TEMP_DIR}
 msg i ${LOCAL_FILES_DIR}
 cleanupDir ${LOCAL_FILES_DIR}
 
-title [DEPLOY] スタートアップ
+title "[DEPLOY] スタートアップ"
 
 api startup
 
-title [DEPLOY] アップロード
+title "[DEPLOY] アップロード"
 
 msg i "分割バイト数: ${SETTING_SPLIT_SIZE}"
 split --bytes="${SETTING_SPLIT_SIZE}" --numeric-suffixes=1 --suffix-length=8 "${SETTING_ARCHIVE_FILE_NAME}" "${LOCAL_FILES_DIR}/"
 INDEX=0
-for PART_FILE in `ls -1 -v ${LOCAL_FILES_DIR}/`; do
+#わかってるけど処理的にすぐには変えられん
+#shellcheck disable=SC2006,SC2045
+for PART_FILE in `ls -1 -v "${LOCAL_FILES_DIR}/"`; do
 	msg i "ファイル: {INDEX} - ${LOCAL_FILES_DIR}/${PART_FILE}"
 	api upload \
-		-F file=@${LOCAL_FILES_DIR}/${PART_FILE} \
+		-F "file=@${LOCAL_FILES_DIR}/${PART_FILE}" \
 		-F sequence=${INDEX}
 
 	INDEX=$((INDEX+1))
 done
 
 
-title [DEPLOY] 準備
+title "[DEPLOY] 準備"
 
 api prepare
 
-title [DEPLOY] 更新
+title "[DEPLOY] 更新"
 
 api update
 

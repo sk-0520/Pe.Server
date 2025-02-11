@@ -6,13 +6,17 @@ namespace PeServer\Core\Mvc;
 
 use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Http\HttpStatus;
+use PeServer\Core\IO\Stream;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\ILoggerFactory;
 use PeServer\Core\Log\Logging;
+use PeServer\Core\Mvc\Content\ChunkedContentBase;
 use PeServer\Core\Mvc\ControllerArgument;
-use PeServer\Core\Mvc\DataContent;
+use PeServer\Core\Mvc\Content\DataContent;
+use PeServer\Core\Mvc\Content\DataContentBase;
 use PeServer\Core\Mvc\LogicBase;
 use PeServer\Core\Mvc\LogicParameter;
+use PeServer\Core\Mvc\Result\ChunkedActionResult;
 use PeServer\Core\Mvc\Result\DataActionResult;
 use PeServer\Core\Mvc\Result\IActionResult;
 use PeServer\Core\Mvc\Result\RedirectActionResult;
@@ -226,13 +230,24 @@ abstract class ControllerBase
 	/**
 	 * データ応答。
 	 *
-	 * @param DataContent $content
+	 * @param DataContentBase $content
 	 * @return DataActionResult
 	 */
-	protected function data(DataContent $content): DataActionResult
+	protected function data(DataContentBase $content): DataActionResult
 	{
 		return new DataActionResult($content);
 	}
+
+	// /**
+	//  * 分割データ応答。
+	//  *
+	//  * @param ChunkedContentBase $content
+	//  * @return ChunkedActionResult
+	//  */
+	// protected function chunk(ChunkedContentBase $content): ChunkedActionResult
+	// {
+	// 	return new ChunkedActionResult($content);
+	// }
 
 	#endregion
 }

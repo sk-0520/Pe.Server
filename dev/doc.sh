@@ -24,4 +24,5 @@ if common::exists_option 'phpdoc:setting-graphs' ; then
 	PHPDOC_OPTIONS_SETTING_GRAPHS="--setting=graphs.enabled=true -vvv"
 fi
 
+# shellcheck disable=SC2086
 php "${PHPDOC_FILE}" "${PHPDOC_OPTIONS_CACHE_PATH}" ${PHPDOC_OPTIONS_SETTING_GRAPHS}

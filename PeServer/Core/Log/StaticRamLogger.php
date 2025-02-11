@@ -18,6 +18,8 @@ use PeServer\Core\Throws\Throws;
 
 /**
  * RAMため込み。
+ *
+ * @codeCoverageIgnore
  */
 final class StaticRamLogger extends LoggerBase
 {
