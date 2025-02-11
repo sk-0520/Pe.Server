@@ -85,12 +85,18 @@ class AccountUserAuditLogDownloadLogic extends PageLogicBase
 			// JSONを一旦ファイルに出力する
 			// なんでこんな面倒な処理してるかというと、データが多くなると PHP 側がメモリ不足で落ちる
 			// とりあえずロジックで何とかする方針で組んだが、どうにもならんくなったら PHP 設定を変更する
+			// 2025-05-11 追記: DB 周りのログがえっぐいことがわかったので 2KB 制限追加, どうしても確認したいのであれば DB 自体を DL すること
+			$textLength = 2 * 1024;
 			$jsonSerializer = new JsonSerializer();
 			File::writeContent($auditFilePath, new Binary("[" . PHP_EOL));
 			foreach ($result->rows as $i => $row) {
 				if (0 < $i) {
 					File::appendContent($auditFilePath, new Binary("," . PHP_EOL));
 				}
+				$row["info"] = $textLength < Text::getLength($row["info"])
+					? Text::substring($row["info"], 0, $textLength) . "...<省略>"
+					: $row["info"]
+				;
 				$json = $jsonSerializer->save($row);
 				$nestObject = Text::join(
 					PHP_EOL,
