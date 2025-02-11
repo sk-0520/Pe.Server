@@ -52,7 +52,7 @@ class ArchiverTest extends TestClass
 	public function test_compressZip_throw_dummy_exists()
 	{
 		$dir = $this->testDir();
-		$path = $dir->createFile("a.zip", new Binary("PK\05\06\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00")); // 7zipで空のZIP作ったデータ
+		$path = $dir->createFile("a.zip", new Binary("PK\x05\x06\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00")); // 7zipで空のZIP作ったデータ
 		$this->expectException(ArchiveException::class);
 		$this->expectExceptionMessage("code: " . (string)ZipArchive::ER_EXISTS);
 		Archiver::compressZip($path, []);
