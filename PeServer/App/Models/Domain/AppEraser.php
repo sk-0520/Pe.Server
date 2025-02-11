@@ -36,7 +36,7 @@ class AppEraser
     {
 		$database = $this->databaseConnection->open();
 
-		$this->logger->info('未実装', $this->config);
+		$this->logger->info('[未実装] 不要ファイル削除', $this->config);
 
 		$this->logger->debug('キュッとする処理だけ対応');
 		$database->execute('reindex');
