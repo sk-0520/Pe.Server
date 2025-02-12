@@ -51,7 +51,7 @@ class TextTest extends TestClass
 		$this->assertSame($expected, $actual);
 	}
 
-	public static function provider_requireNotNullOrEmpty()
+	public static function provider_ensureIfNotNullOrEmpty()
 	{
 		return [
 			['A', 'A', 'B'],
@@ -61,14 +61,14 @@ class TextTest extends TestClass
 		];
 	}
 
-	#[DataProvider('provider_requireNotNullOrEmpty')]
-	public function test_requireNotNullOrEmpty(string $expected, ?string $s, string $fallback)
+	#[DataProvider('provider_ensureIfNotNullOrEmpty')]
+	public function test_ensureIfNotNullOrEmpty(string $expected, ?string $s, string $fallback)
 	{
-		$actual = Text::requireNotNullOrEmpty($s, $fallback);
+		$actual = Text::ensureIfNotNullOrEmpty($s, $fallback);
 		$this->assertSame($expected, $actual);
 	}
 
-	public static function provider_requireNotNullOrWhiteSpace()
+	public static function provider_ensureIfNotNullOrWhiteSpace()
 	{
 		return [
 			['A', 'A', 'B'],
@@ -78,10 +78,10 @@ class TextTest extends TestClass
 		];
 	}
 
-	#[DataProvider('provider_requireNotNullOrWhiteSpace')]
-	public function test_requireNotNullOrWhiteSpace(string $expected, ?string $s, string $fallback)
+	#[DataProvider('provider_ensureIfNotNullOrWhiteSpace')]
+	public function test_ensureIfNotNullOrWhiteSpace(string $expected, ?string $s, string $fallback)
 	{
-		$actual = Text::requireNotNullOrWhiteSpace($s, $fallback);
+		$actual = Text::ensureIfNotNullOrWhiteSpace($s, $fallback);
 		$this->assertSame($expected, $actual);
 	}
 

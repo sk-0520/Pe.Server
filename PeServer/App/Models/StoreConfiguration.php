@@ -36,11 +36,11 @@ abstract class StoreConfiguration
 		// $baseSetting = new CookieStoreSetting($base);
 
 		return new CookieOptions(
-			Text::requireNotNullOrWhiteSpace($setting->path, $base->path),
+			Text::ensureIfNotNullOrWhiteSpace($setting->path, $base->path),
 			Text::isNullOrWhiteSpace($setting->span) ? $base->span : Time::create($setting->span),
 			$setting->secure === null ? $base->secure : $setting->secure,
 			$setting->httpOnly === null ? $base->httpOnly : $setting->httpOnly,
-			Text::requireNotNullOrWhiteSpace($setting->sameSite, $base->sameSite) //@phpstan-ignore-line not null
+			Text::ensureIfNotNullOrWhiteSpace($setting->sameSite, $base->sameSite) //@phpstan-ignore-line not null
 		);
 	}
 
@@ -58,11 +58,11 @@ abstract class StoreConfiguration
 			$span = Time::create($setting->span);
 		}
 
-		$path = Text::requireNotNullOrWhiteSpace($setting->path, '/');
+		$path = Text::ensureIfNotNullOrWhiteSpace($setting->path, '/');
 		$secure = $setting->secure === null ? false : $setting->secure;
 		$httpOnly = $setting->httpOnly === null ? true : $setting->httpOnly;
 		/** @phpstan-var CookieSameSiteAlias */
-		$sameSite = Text::requireNotNullOrWhiteSpace($setting->sameSite, 'None');
+		$sameSite = Text::ensureIfNotNullOrWhiteSpace($setting->sameSite, 'None');
 
 		$options = new CookieOptions(
 			$path,
@@ -89,8 +89,8 @@ abstract class StoreConfiguration
 			$overwriteCookie->span = new DateInterval('PT30M');
 		}
 
-		$name = Text::requireNotNullOrWhiteSpace($setting->name, 'TEMP');
-		$save = Text::requireNotNullOrWhiteSpace($setting->save, './temp');
+		$name = Text::ensureIfNotNullOrWhiteSpace($setting->name, 'TEMP');
+		$save = Text::ensureIfNotNullOrWhiteSpace($setting->save, './temp');
 		$options = new TemporaryOptions(
 			$name,
 			$save,
@@ -111,8 +111,8 @@ abstract class StoreConfiguration
 	{
 		$overwriteCookie = self::mergeCookie($setting->cookie, $cookie);
 
-		$name = Text::requireNotNullOrWhiteSpace($setting->name, SessionOptions::DEFAULT_NAME);
-		$save = Text::requireNotNullOrWhiteSpace($setting->save, SessionOptions::DEFAULT_PATH);
+		$name = Text::ensureIfNotNullOrWhiteSpace($setting->name, SessionOptions::DEFAULT_NAME);
+		$save = Text::ensureIfNotNullOrWhiteSpace($setting->save, SessionOptions::DEFAULT_PATH);
 
 		$options = new SessionOptions(
 			$name,

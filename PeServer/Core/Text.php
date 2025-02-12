@@ -79,7 +79,7 @@ abstract class Text
 	 * @return non-empty-string
 	 * @phpstan-pure
 	 */
-	public static function requireNotNullOrEmpty(?string $s, string $fallback): string
+	public static function ensureIfNotNullOrEmpty(?string $s, string $fallback): string
 	{
 		if (self::isNullOrEmpty($s)) {
 			return $fallback;
@@ -95,7 +95,7 @@ abstract class Text
 	 * @param non-empty-string $fallback
 	 * @return non-empty-string
 	 */
-	public static function requireNotNullOrWhiteSpace(?string $s, string $fallback): string
+	public static function ensureIfNotNullOrWhiteSpace(?string $s, string $fallback): string
 	{
 		if (self::isNullOrWhiteSpace($s)) {
 			return $fallback;
