@@ -226,7 +226,7 @@ class Stream extends ResourceBase
 	/**
 	 * 一時メモリストリームを開く。
 	 *
-	 * @param int|null $memoryByteSize 指定した値を超過した際に一時ファイルに置き換わる。`null`の場合は 2MB(`php://temp` 参照のこと)。
+	 * @param positive-int|null $memoryByteSize 指定した値を超過した際に一時ファイルに置き換わる。`null`の場合は 2MB(`php://temp` 参照のこと)。
 	 * @param Encoding|null $encoding
 	 * @return static
 	 */
@@ -235,13 +235,13 @@ class Stream extends ResourceBase
 		$path = 'php://temp';
 
 		if ($memoryByteSize !== null) {
+			// [DOCTYPE]
+			// @phpstan-ignore smaller.alwaysFalse
 			if ($memoryByteSize < 0) {
 				throw new ArgumentException('$byteSize: ' . $memoryByteSize);
 			}
-			if ($memoryByteSize) {
-				//cspell:disable-next-line
-				$path .= '/maxmemory:' . (string)$memoryByteSize;
-			}
+			//cspell:disable-next-line
+			$path .= '/maxmemory:' . (string)$memoryByteSize;
 		}
 
 		return static::new($path, 'r+', $encoding);
