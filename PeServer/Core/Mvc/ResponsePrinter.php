@@ -11,6 +11,7 @@ use PeServer\Core\Http\HttpResponse;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Http\ICallbackContent;
 use PeServer\Core\IO\Stream;
+use PeServer\Core\Mvc\Content\StreamingContent;
 use PeServer\Core\OutputBuffer;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\Throws;
@@ -22,6 +23,13 @@ use PeServer\Core\Throws\Throws;
  */
 class ResponsePrinter
 {
+	#region
+
+	/** @var positive-int */
+	public int $chunkSize = 4 * 1024;
+
+	#endregion
+
 	/**
 	 * 生成。
 	 *
@@ -51,13 +59,16 @@ class ResponsePrinter
 				return $length;
 			}
 		} elseif ($this->response->content instanceof Stream) {
-			$currentOffset = $this->response->content->getOffset();
-			$this->response->content->seekTail();
-			$lastOffset = $this->response->content->getOffset();
-			$length = $lastOffset - $currentOffset;
-			assert(0 <= $length);
-			$this->response->content->seek($currentOffset, Stream::WHENCE_SET);
-			return $length;
+			$meta = $this->response->content->getMetaData();
+			if ($meta->seekable) {
+				$currentOffset = $this->response->content->getOffset();
+				$this->response->content->seekTail();
+				$lastOffset = $this->response->content->getOffset();
+				$length = $lastOffset - $currentOffset;
+				assert(0 <= $length);
+				$this->response->content->seek($currentOffset, Stream::WHENCE_HEAD);
+				return $length;
+			}
 		} elseif ($this->response->content instanceof Binary) {
 			return $this->response->content->count();
 		} elseif (is_string($this->response->content)) {
@@ -70,16 +81,27 @@ class ResponsePrinter
 	/**
 	 * 応答本文出力処理。
 	 */
-	private function output(): void
+	private function output(bool $lengthIsContentLength): void
 	{
 		if ($this->response->content instanceof ICallbackContent) {
 			// 処理は自分で出力を頑張ること
 			$this->response->content->output();
 		} elseif ($this->response->content instanceof Stream) {
-			$chunkSize = 4 * 1024;
-			while (!$this->response->content->isEnd()) {
-				$chunk = $this->response->content->readBinary($chunkSize);
-				echo $chunk->raw;
+			if ($lengthIsContentLength) {
+				while (!$this->response->content->isEnd()) {
+					$chunk = $this->response->content->readBinary($this->chunkSize);
+					echo $chunk->raw;
+				}
+			} else {
+				// phpstan で検知されるので変数化
+				$stream = $this->response->content;
+				$content = new StreamingContent(function () use ($stream) {
+					while (!$stream->isEnd()) {
+						$chunk = $stream->readBinary($this->chunkSize);
+						yield $chunk;
+					}
+				});
+				$content->output();
 			}
 			$this->response->content->dispose();
 		} elseif ($this->response->content instanceof Binary) {
@@ -118,7 +140,8 @@ class ResponsePrinter
 
 		// ヘッダ: Content-Length/Transfer-Encoding
 		$contentLength = $this->getContentLength();
-		if (0 <= $contentLength) {
+		$lengthIsContentLength = 0 <= $contentLength;
+		if ($lengthIsContentLength) {
 			header('Content-Length: ' . $contentLength);
 		} else {
 			header('Transfer-Encoding: chunked');
@@ -134,7 +157,7 @@ class ResponsePrinter
 		}
 		flush();
 
-		$this->output();
+		$this->output($lengthIsContentLength);
 	}
 
 	#endregion

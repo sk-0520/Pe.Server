@@ -11,6 +11,8 @@ use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Http\HttpResponse;
 use PeServer\Core\Http\ICallbackContent;
+use PeServer\Core\IO\Stream;
+use PeServer\Core\IO\StreamMetaData;
 use PeServer\Core\Mvc\ResponsePrinter;
 use PeServer\Core\OutputBuffer;
 use PeServer\Core\Text;
@@ -32,21 +34,34 @@ class ResponsePrinterTest extends TestClass
 
 	public static function provider_getContentLength()
 	{
+		$seekableStream = Stream::openMemory();
+		$seekableStream->writeBinary(new Binary("123"));
+		$seekableStream->seekHead();
+
 		return [
 			[
-				ICallbackContent::UNKNOWN, null,
+				ICallbackContent::UNKNOWN,
+				null,
 			],
 			[
-				new Binary('abc'), 'abc',
+				3,
+				'abc',
 			],
 			[
-				new Binary('あいう'), 'あいう', // utf8 前提テスト
+				(new Binary('あいう'))->count(),
+				'あいう', // utf8 前提テスト
 			],
 			[
-				new Binary("\x00\xff"), new Binary("\x00\xff"),
+				2,
+				new Binary("\x00\xff"),
 			],
 			[
-				new Binary("abc"), new class implements ICallbackContent
+				3,
+				$seekableStream,
+			],
+			[
+				3,
+				new class implements ICallbackContent
 				{
 					public function output(): void
 					{
@@ -64,7 +79,7 @@ class ResponsePrinterTest extends TestClass
 	}
 
 	#[DataProvider('provider_getContentLength')]
-	public function test_getContentLength(Binary|int $expected, $input)
+	public function test_getContentLength($expected, $input)
 	{
 		$req = $this->createRequest();
 		$res = new HttpResponse();
@@ -72,30 +87,39 @@ class ResponsePrinterTest extends TestClass
 
 		$rp = new ResponsePrinter($req, $res);
 		$actual = $this->callInstanceMethod($rp, 'getContentLength');
-		if ($expected instanceof Binary) {
-			$this->assertSame($expected->count(), $actual);
-		} else {
-			$this->assertSame($expected, $actual);
-		}
+		$this->assertSame($expected, $actual);
 	}
 
 	public static function provider_output()
 	{
+		$seekableStream = Stream::openMemory();
+		$seekableStream->writeBinary(new Binary("123"));
+		$seekableStream->seekHead();
+
 		return [
 			[
-				new Binary(''), null,
+				new Binary(''),
+				null,
 			],
 			[
-				new Binary('abc'), 'abc',
+				new Binary('abc'),
+				'abc',
 			],
 			[
-				new Binary('あいう'), 'あいう', // utf8 前提テスト
+				new Binary('あいう'),
+				'あいう', // utf8 前提テスト
 			],
 			[
-				new Binary("\x00\xff"), new Binary("\x00\xff"),
+				new Binary("\x00\xff"),
+				new Binary("\x00\xff"),
 			],
 			[
-				new Binary("abc"), new class implements ICallbackContent
+				new Binary("123"),
+				$seekableStream,
+			],
+			[
+				new Binary("abc"),
+				new class implements ICallbackContent
 				{
 					public function output(): void
 					{
@@ -113,18 +137,54 @@ class ResponsePrinterTest extends TestClass
 	}
 
 	#[DataProvider('provider_output')]
-	public function test_output(Binary|null $expected, $input)
+	public function test_output(Binary $expected, $input)
 	{
 		$req = $this->createRequest();
 		$res = new HttpResponse();
 		$res->content = $input;
 
 		$rp = new ResponsePrinter($req, $res);
-		$actual = OutputBuffer::get(fn () => $this->callInstanceMethod($rp, 'output'));
-		if ($expected instanceof Binary) {
-			$this->assertSame($expected->raw, $actual->raw);
-		} else {
-			$this->assertSame($expected, $actual->raw);
-		}
+		$actual = OutputBuffer::get(fn() => $rp->execute());
+		$this->assertSame($expected->raw, $actual->raw);
 	}
+
+	public function test_output_unseeable()
+	{
+		$stream = LocalUnseekableStream::init(new Binary("abc"));
+
+		$req = $this->createRequest();
+		$res = new HttpResponse();
+		$res->content = $stream;
+
+		$rp = new ResponsePrinter($req, $res);
+		$actual = OutputBuffer::get(fn() => $rp->execute());
+		$this->assertSame("3\r\nabc\r\n0\r\n\r\n", $actual->raw);
+	}
+}
+
+
+final class LocalUnseekableStream extends Stream
+{
+	public static function init(?Binary $input = null): self
+	{
+		$stream = self::openMemory();
+
+		if ($input !== null) {
+			$stream->writeBinary($input);
+			$stream->seekHead();
+		}
+
+		return $stream;
+	}
+
+	#region Stream
+
+	public function getMetaData(): StreamMetaData
+	{
+		$values = stream_get_meta_data($this->resource);
+		$values["seekable"] = false;
+		return StreamMetaData::createFromStream($values);
+	}
+
+	#endregion
 }

@@ -81,6 +81,16 @@ class TestClass extends \PHPUnit\Framework\TestCase
 		$this->assertTrue(true);
 	}
 
+	protected function callConstructor(string $className, array $params = [])
+	{
+		$reflection = new ReflectionClass($className);
+		$constructor = $reflection->getConstructor();
+		$constructor->setAccessible(true);
+		$object = $reflection->newInstanceWithoutConstructor();
+		$constructor->invokeArgs($object, $params);
+		return $object;
+	}
+
 	/**
 	 * インスタンスメソッドの呼び出し。
 	 *
