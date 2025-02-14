@@ -233,6 +233,18 @@ class StreamTest extends TestClass
 		Stream::openTemporary(-1);
 	}
 
+
+	public function test_createTemporaryFile()
+	{
+		try {
+			$stream = Stream::createTemporaryFile();
+			$stream->dispose();
+			$this->success();
+		} catch (Throwable $ex) {
+			$this->fail($ex->__toString());
+		}
+	}
+
 	public function test_getState()
 	{
 		$stream = Stream::open(__FILE__, Stream::MODE_READ);

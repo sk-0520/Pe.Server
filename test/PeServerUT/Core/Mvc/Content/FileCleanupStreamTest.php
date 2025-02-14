@@ -75,6 +75,13 @@ class FileCleanupStreamTest extends TestClass
 		FileCleanupStream::openTemporary();
 	}
 
+	public function test_createTemporaryFile_throw()
+	{
+		$this->expectException(NotSupportedException::class);
+		$stream = FileCleanupStream::createTemporaryFile();
+	}
+
+
 	public function test_read_throw()
 	{
 		$dir = $this->testDir();

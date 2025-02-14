@@ -269,35 +269,5 @@ abstract class File
 		return self::createUniqueFilePath(Directory::getTemporaryDirectory(), $prefix);
 	}
 
-	/**
-	 * 一時ファイルのストリーム作成。
-	 *
-	 * メモリ・一時ファイル兼メモリのストリームを使用する場合は、
-	 * `Stream::openMemory`, `Stream::openTemporary` を参照のこと。
-	 *
-	 * `tmpfile` ラッパー。
-	 *
-	 * @param Encoding|null $encoding
-	 * @return Stream
-	 * @throws IOException
-	 * @see https://www.php.net/manual/function.tmpfile.php
-	 */
-	public static function createTemporaryFileStream(?Encoding $encoding = null): Stream
-	{
-		$resource = tmpfile();
-		if ($resource === false) {
-			throw new IOException();
-		}
-
-		//phpcs:ignore PSR12.Classes.AnonClassDeclaration.SpaceAfterKeyword
-		return new class($resource, $encoding) extends Stream
-		{
-			public function __construct($resource, ?Encoding $encoding = null)
-			{
-				parent::__construct($resource, $encoding);
-			}
-		};
-	}
-
 	#endregion
 }

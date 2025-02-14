@@ -76,6 +76,12 @@ final class FileCleanupStream extends Stream
 		throw new NotSupportedException();
 	}
 
+	public static function createTemporaryFile(?Encoding $encoding = null): static
+	{
+		throw new NotSupportedException();
+	}
+
+
 	protected function disposeImpl(): void
 	{
 		$canRemove = $this->isEnd();

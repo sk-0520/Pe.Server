@@ -247,6 +247,30 @@ class Stream extends ResourceBase
 		return static::new($path, 'r+', $encoding);
 	}
 
+	/**
+	 * 一時ファイルのストリーム作成。
+	 *
+	 * メモリ・一時ファイル兼メモリのストリームを使用する場合は、
+	 * `self::openMemory`, `self::openTemporary` を参照のこと。
+	 *
+	 * `tmpfile` ラッパー。
+	 *
+	 * @param Encoding|null $encoding
+	 * @return static
+	 * @throws IOException
+	 * @see https://www.php.net/manual/function.tmpfile.php
+	 */
+	public static function createTemporaryFile(?Encoding $encoding = null): static
+	{
+		$resource = tmpfile();
+		if ($resource === false) {
+			throw new IOException();
+		}
+
+		// @phpstan-ignore new.static
+		return new static($resource, $encoding);
+	}
+
 	public function getState(): IOState
 	{
 		$this->throwIfDisposed();

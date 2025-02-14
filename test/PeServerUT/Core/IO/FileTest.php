@@ -99,6 +99,31 @@ class FileTest extends TestClass
 		$this->assertSame('abcdef', File::readContent($path)->raw);
 	}
 
+	public function test_readJsonFile()
+	{
+		$dir = $this->testDir();
+		$path = $dir->createFile(
+			"a.json",
+			new Binary('{ "int": 123, "string": "text" }')
+		);
+		$actual = File::readJsonFile($path);
+		$this->assertSame(123, $actual["int"]);
+		$this->assertSame("text", $actual["string"]);
+	}
+
+	public function test_JsonFile()
+	{
+		$dir = $this->testDir();
+
+		$path = $dir->newPath("a.json");
+		File::writeJsonFile($path, [ "int" => 123, "string" => "text" ]);
+
+		$actual = File::readJsonFile($path);
+		$this->assertSame(123, $actual["int"]);
+		$this->assertSame("text", $actual["string"]);
+	}
+
+
 	public function test_exists()
 	{
 		$testDir = $this->testDir();
@@ -172,16 +197,5 @@ class FileTest extends TestClass
 		$this->expectException(ArgumentException::class);
 		File::createUniqueFilePath('', '');
 		$this->fail();
-	}
-
-	public function test_createTemporaryFileStream()
-	{
-		try {
-			$stream = File::createTemporaryFileStream();
-			$stream->dispose();
-			$this->success();
-		} catch (Throwable $ex) {
-			$this->fail($ex->__toString());
-		}
 	}
 }
