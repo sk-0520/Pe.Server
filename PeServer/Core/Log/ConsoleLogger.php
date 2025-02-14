@@ -27,7 +27,7 @@ class ConsoleLogger extends LoggerBase
 {
 	#region define
 
-	public const FORMAT = "{TIMESTAMP} |{LEVEL}| {REQUEST_ID} {FILE}({LINE}) {FUNCTION} -> {MESSAGE}" . PHP_EOL;
+	public const FORMAT = "{TIMESTAMP} |{LEVEL}| {REQUEST_ID} {FILE}({LINE}) {FUNCTION} -> {MESSAGE}" ;
 
 	#endregion
 
@@ -50,7 +50,7 @@ class ConsoleLogger extends LoggerBase
 	protected function logImpl(int $level, int $traceIndex, $message, ...$parameters): void
 	{
 		$logMessage = $this->format($level, $traceIndex + 1, $message, ...$parameters);
-		echo $logMessage;
+		echo $logMessage, PHP_EOL;
 	}
 
 	#endregion

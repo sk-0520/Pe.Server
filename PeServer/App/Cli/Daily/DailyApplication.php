@@ -84,6 +84,8 @@ class DailyApplication extends AppApplicationBase
 
 		$this->logger->info("Rebuild");
 		$this->rebuild();
+
+		throw new Error;
 	}
 
 	#endregion

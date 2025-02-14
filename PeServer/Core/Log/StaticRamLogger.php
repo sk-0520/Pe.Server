@@ -25,7 +25,7 @@ final class StaticRamLogger extends LoggerBase
 {
 	#region define
 
-	public const FORMAT = "{TIMESTAMP} |{LEVEL}| {FILE}({LINE}) {FUNCTION} -> {MESSAGE}" . PHP_EOL;
+	public const FORMAT = "{TIMESTAMP} |{LEVEL}| {FILE}({LINE}) {FUNCTION} -> {MESSAGE}";
 
 	#endregion
 
