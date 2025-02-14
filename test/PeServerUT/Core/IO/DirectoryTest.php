@@ -145,6 +145,67 @@ class DirectoryTest extends TestClass
 		$this->assertSame("a{$sep}b{$sep}z", $actual2[2]);
 	}
 
+	public function test_find()
+	{
+		$testDir = $this->testDir();
+		$this->makeTree($testDir->path);
+
+		$expected = ["a.txt"];
+		$actual =  Arr::map(Directory::find($testDir->path, "*.txt"), fn($a) => Text::replace($a, "\\", "/"));
+		$expecteds = Arr::map($expected, fn($a) => Text::replace(Path::combine($testDir->path, $a), "\\", "/"));
+		$this->assertEqualsWithInfo("キーは知らん", $expecteds, $actual);
+	}
+
+	public function test_removeDirectory_default()
+	{
+		$testDir = $this->testDir();
+
+		Directory::removeDirectory($testDir->path);
+
+		$actual = Directory::getChildren($testDir->path, true);
+
+		$this->assertEmpty($actual);
+	}
+
+	public function test_removeDirectory_recursive()
+	{
+		$testDir = $this->testDir();
+		$this->makeTree($testDir->path);
+
+		Directory::removeDirectory($testDir->path, true);
+
+		$actual = Directory::getChildren($testDir->path, true);
+
+		$this->assertEmpty($actual);
+	}
+
+	public function test_removeDirectory_throw()
+	{
+		$testDir = $this->testDir();
+		$this->makeTree($testDir->path);
+
+		$this->expectException(IOException::class);
+		Directory::removeDirectory($testDir->path);
+		$this->fail();
+	}
+
+	public function test_cleanupDirectory_none()
+	{
+		$testDir = $this->testDir();
+		Directory::cleanupDirectory($testDir->path);
+		$this->assertEmpty(Directory::getChildren($testDir->path, true));
+	}
+
+
+	public function test_cleanupDirectory_files()
+	{
+		$testDir = $this->testDir();
+		$this->makeTree($testDir->path);
+
+		Directory::cleanupDirectory($testDir->path);
+		$this->assertEmpty(Directory::getChildren($testDir->path, true));
+	}
+
 	public function test_WorkingDirectory()
 	{
 		$actual1 = Directory::getCurrentWorkingDirectory();
