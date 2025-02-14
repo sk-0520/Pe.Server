@@ -81,6 +81,14 @@ class TestClass extends \PHPUnit\Framework\TestCase
 		$this->assertTrue(true);
 	}
 
+	/**
+	 * コンストラクタの呼び出し。
+	 *
+	 * 非 `public` を呼び出す想定。
+	 *
+	 * @param string $className
+	 * @param array $params
+	 */
 	protected function callConstructor(string $className, array $params = [])
 	{
 		$reflection = new ReflectionClass($className);
@@ -106,23 +114,51 @@ class TestClass extends \PHPUnit\Framework\TestCase
 	{
 		$reflection = new ReflectionClass($object);
 		$method = $reflection->getMethod($method);
+		$method->setAccessible(true);
 		return $method->invokeArgs($object, $params);
 	}
 
+	/**
+	 * セッター処理。
+	 *
+	 * 非 `public` を呼び出す想定。
+	 *
+	 * @param object $object
+	 * @param string $name プロパティ名。
+	 * @return mixed
+	 */
 	protected function getProperty(object $object, string $name): mixed
 	{
 		$reflection = new ReflectionClass($object);
 		$property = $reflection->getProperty($name);
+		$property->setAccessible(true);
 		return $property->getValue($object);
 	}
+
+	/**
+	 * ゲッター処理。
+	 *
+	 * 非 `public` を呼び出す想定。
+	 *
+	 * @param object $object
+	 * @param string $name プロパティ名。
+	 * @param mixed $value
+	 */
 	protected function setProperty(object $object, string $name, mixed $value): void
 	{
 		$reflection = new ReflectionClass($object);
 		$property = $reflection->getProperty($name);
+		$property->setAccessible(true);
 		$property->setValue($object, $value);
 	}
 
-	protected function testDir(): TestDirectory
+	/**
+	 * テストメソッド内専用ディレクトリを作成。
+	 *
+	 * @param array-key $pattern
+	 * @return TestDirectory
+	 */
+	protected function testDir(int|string $pattern = null): TestDirectory
 	{
 		$stackTrace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 2)[1];
 		$class = Text::replace($stackTrace['class'], '\\', '/');
@@ -131,6 +167,9 @@ class TestClass extends \PHPUnit\Framework\TestCase
 		$tempDir = Directory::getTemporaryDirectory();
 
 		$dirPath = Path::combine($tempDir, $class, $function);
+		if ($pattern !== null) {
+			Path::combine($dirPath, (string)$pattern);
+		}
 		Directory::createDirectory($dirPath);
 
 		return new TestDirectory($dirPath);
