@@ -14,7 +14,8 @@ class TestDirectory
 {
 	public function __construct(
 		public string $path
-	) {}
+	) {
+	}
 
 	/**
 	 * テストメソッド内ファイル名を生成。

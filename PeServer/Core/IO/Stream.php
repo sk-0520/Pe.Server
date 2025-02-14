@@ -46,7 +46,7 @@ class Stream extends ResourceBase
 	#region variable
 
 	/** 文字列として扱うエンコーディング。(バイナリデータは気にしなくてよい) */
-	protected Encoding $encoding;
+	public readonly Encoding $encoding;
 
 	/**
 	 * 改行文字。

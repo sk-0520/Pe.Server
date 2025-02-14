@@ -6,7 +6,10 @@ namespace PeServer\Core;
 
 use PeServer\Core\Collection\Arr;
 use PeServer\Core\IDisposable;
+use PeServer\Core\IO\File;
+use PeServer\Core\IO\Stream;
 use PeServer\Core\Throws\ArgumentException;
+use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Throws\NotImplementedException;
 use PeServer\Core\Throws\TypeException;
 use ReflectionClass;
@@ -58,6 +61,44 @@ abstract class Code
 	}
 
 	/**
+	 * 変数名を取得。
+	 *
+	 * TODO: 一行一項目の制限になるし字句・構文解析してるわけじゃないから改行とかコメントとか💩。
+	 *
+	 * @param mixed $var
+	 * @param int $level
+	 * @param Encoding|null $encoding
+	 * @return string
+	 */
+	public static function nameof(mixed $var, int $level = 1, ?Encoding $encoding = null): string
+	{
+		$trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, $level)[$level - 1];
+		$file = $trace["file"] ?? throw new InvalidOperationException("file");
+		$line = $trace["line"] ?? throw new InvalidOperationException("line");
+
+		$stream = Stream::open($file, Stream::MODE_READ, $encoding);
+		$streamLine = 1;
+		try {
+			while (!$stream->isEnd()) {
+				$lineValue = $stream->readLine();
+				if ($line === $streamLine++) {
+					$regex = new Regex($stream->encoding);
+					$matches = $regex->matches($lineValue, '/Code::(nameof\(\s*\$(?<NAME>\w+)\s*\))/');
+					if (Arr::isNullOrEmpty($matches)) {
+						throw new InvalidOperationException($lineValue);
+					}
+					$varName = $matches["NAME"];
+					return '$' . $varName;
+				}
+			}
+		} finally {
+			$stream->dispose();
+		}
+
+		throw new InvalidOperationException();
+	}
+
+	/**
 	 *
 	 * @param object $obj
 	 * @param string[] $propertyNames
@@ -71,7 +112,7 @@ abstract class Code
 		return
 			get_class($obj) .
 			'(' .
-			Text::join($separator, Arr::map($propertyNames, fn ($a) => $a . ':' . $rc->getProperty($a)->getValue($obj))) .
+			Text::join($separator, Arr::map($propertyNames, fn($a) => $a . ':' . $rc->getProperty($a)->getValue($obj))) .
 			')';
 	}
 
