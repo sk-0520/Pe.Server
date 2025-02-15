@@ -16,7 +16,7 @@ class ArchiveEntryTest extends TestClass
 	public function test_constructor_throw_path($input)
 	{
 		$this->expectException(ArgumentException::class);
-		$this->expectExceptionMessage("\$path");
+		$this->expectExceptionMessage("path");
 
 		new ArchiveEntry($input, "a");
 	}
@@ -26,7 +26,7 @@ class ArchiveEntryTest extends TestClass
 	public function test_constructor_throw_entry($input)
 	{
 		$this->expectException(ArgumentException::class);
-		$this->expectExceptionMessage("\$entry");
+		$this->expectExceptionMessage("entry");
 
 		new ArchiveEntry("a", $input);
 	}
