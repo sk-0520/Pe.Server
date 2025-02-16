@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace PeServerUT\Core\Collection;
 
+use ArrayAccess;
 use PeServer\Core\Collection\Access;
 use PeServer\Core\Throws\AccessInvalidLogicalTypeException;
 use PeServer\Core\Throws\AccessKeyNotFoundException;
 use PeServer\Core\Throws\AccessValueTypeException;
+use PeServer\Core\Throws\NotImplementedException;
 use PeServerTest\TestClass;
 use PHPUnit\Framework\Attributes\TestWith;
 
@@ -31,6 +33,26 @@ class AccessTest extends TestClass
 	{
 		$this->expectException(AccessKeyNotFoundException::class);
 		Access::getValue($array, $key);
+		$this->fail();
+	}
+
+	#[TestWith([10, 0])]
+	#[TestWith(['a', 1])]
+	#[TestWith(['value', 'key'])]
+	public function test_getValue_arrayAccess(mixed $expected, string|int $key)
+	{
+		$array = new LocalArrayAccess();
+		$actual = Access::getValue($array, $key);
+		$this->assertSame($expected, $actual);
+	}
+
+	#[TestWith([2])]
+	#[TestWith(['none'])]
+	public function test_getValue_arrayAccess_throw(string|int $key)
+	{
+		$array = new LocalArrayAccess();
+		$this->expectException(AccessKeyNotFoundException::class);
+		Access::getValue($array, 'none');
 		$this->fail();
 	}
 
@@ -371,6 +393,40 @@ class AccessTest extends TestClass
 		$this->expectException(AccessValueTypeException::class);
 		Access::getArrayOfObject([[new AccessTestA1(), null]], 0);
 		$this->fail();
+	}
+
+	#endregion
+}
+
+class LocalArrayAccess implements ArrayAccess
+{
+	private array $array = [
+		10,
+		'a',
+		'key' => 'value',
+		'none' => null
+	];
+
+	#region ArrayAccess
+
+	public function offsetExists(mixed $offset): bool
+	{
+		return isset($this->array[$offset]);
+	}
+
+	public function offsetGet(mixed $offset): mixed
+	{
+		return $this->array[$offset];
+	}
+
+	public function offsetSet(mixed $offset, mixed $value): void
+	{
+		throw new NotImplementedException();
+	}
+
+	public function offsetUnset(mixed $offset): void
+	{
+		throw new NotImplementedException();
 	}
 
 	#endregion

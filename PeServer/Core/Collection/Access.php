@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Collection;
 
+use ArrayAccess;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\AccessInvalidLogicalTypeException;
 use PeServer\Core\Throws\AccessKeyNotFoundException;
@@ -18,17 +19,25 @@ class Access
 	#region function
 
 	/**
-	 * 配列から生値を取得する。
+	 * 配列(的なもの)から生値を取得する。
 	 *
-	 * @param array<mixed> $array
+	 * `ArrayAccess` を渡した場合、 `array_key_exists` が使用できないため値が `null` の場合に少し挙動が違う点に注意。
+	 *
+	 * @param array<mixed>|ArrayAccess<array-key,mixed> $array
 	 * @param array-key $key
 	 * @return mixed
 	 * @throws AccessKeyNotFoundException キーが見つからない。
 	 */
-	public static function getValue(array $array, string|int $key): mixed
+	public static function getValue(array|ArrayAccess $array, string|int $key): mixed
 	{
-		if (array_key_exists($key, $array)) {
-			return $array[$key];
+		if (is_array($array)) {
+			if (array_key_exists($key, $array)) {
+				return $array[$key];
+			}
+		} else {
+			if (isset($array[$key])) {
+				return $array[$key];
+			}
 		}
 
 		throw new AccessKeyNotFoundException("key = $key");
@@ -60,13 +69,13 @@ class Access
 
 	/**
 	 * 配列から `bool` 値を取得。
-	 * @param array<mixed> $array
+	 * @param array<mixed>|ArrayAccess<array-key,mixed> $array
 	 * @param array-key $key
 	 * @return bool
 	 * @throws AccessKeyNotFoundException キーが見つからない。
 	 * @throws AccessValueTypeException 値の方が違う。
 	 */
-	public static function getBool(array $array, string|int $key): bool
+	public static function getBool(array|ArrayAccess $array, string|int $key): bool
 	{
 		$value = self::getValue($array, $key);
 		if (is_bool($value)) {
@@ -78,13 +87,13 @@ class Access
 
 	/**
 	 * 配列から `int` 値を取得。
-	 * @param array<mixed> $array
+	 * @param array<mixed>|ArrayAccess<array-key,mixed> $array
 	 * @param array-key $key
 	 * @return int
 	 * @throws AccessKeyNotFoundException キーが見つからない。
 	 * @throws AccessValueTypeException 値の方が違う。
 	 */
-	public static function getInteger(array $array, string|int $key): int
+	public static function getInteger(array|ArrayAccess $array, string|int $key): int
 	{
 		$value = self::getValue($array, $key);
 		if (is_integer($value)) {
@@ -96,14 +105,14 @@ class Access
 
 	/**
 	 * 配列から 0 を含む整数値を取得。
-	 * @param array<mixed> $array
+	 * @param array<mixed>|ArrayAccess<array-key,mixed> $array
 	 * @param array-key $key
 	 * @return int
 	 * @phpstan-return non-negative-int
 	 * @throws AccessKeyNotFoundException キーが見つからない。
 	 * @throws AccessInvalidLogicalTypeException 値の方が違う。
 	 */
-	public static function getUInteger(array $array, string|int $key): int
+	public static function getUInteger(array|ArrayAccess $array, string|int $key): int
 	{
 		$result = self::getInteger($array, $key);
 		if ($result < 0) {
@@ -115,14 +124,14 @@ class Access
 
 	/**
 	 * 配列から 0 超過の整数値を取得。
-	 * @param array<mixed> $array
+	 * @param array<mixed>|ArrayAccess<array-key,mixed> $array
 	 * @param array-key $key
 	 * @return int
 	 * @phpstan-return positive-int
 	 * @throws AccessKeyNotFoundException キーが見つからない。
 	 * @throws AccessInvalidLogicalTypeException 値の方が違う。
 	 */
-	public static function getPositiveInteger(array $array, string|int $key): int
+	public static function getPositiveInteger(array|ArrayAccess $array, string|int $key): int
 	{
 		$result = self::getInteger($array, $key);
 		if ($result <= 0) {
@@ -134,13 +143,13 @@ class Access
 
 	/**
 	 * 配列から `float` 値を取得。
-	 * @param array<mixed> $array
+	 * @param array<mixed>|ArrayAccess<array-key,mixed> $array
 	 * @param array-key $key
 	 * @return float
 	 * @throws AccessKeyNotFoundException キーが見つからない。
 	 * @throws AccessValueTypeException 値の方が違う。
 	 */
-	public static function getFloat(array $array, string|int $key): float
+	public static function getFloat(array|ArrayAccess $array, string|int $key): float
 	{
 		$value = self::getValue($array, $key);
 		if (is_float($value)) {
@@ -152,13 +161,13 @@ class Access
 
 	/**
 	 * 配列から `string` 値を取得。
-	 * @param array<mixed> $array
+	 * @param array<mixed>|ArrayAccess<array-key,mixed> $array
 	 * @param array-key $key
 	 * @return string
 	 * @throws AccessKeyNotFoundException キーが見つからない。
 	 * @throws AccessValueTypeException 値の方が違う。
 	 */
-	public static function getString(array $array, string|int $key): string
+	public static function getString(array|ArrayAccess $array, string|int $key): string
 	{
 		$value = self::getValue($array, $key);
 		if (is_string($value)) {
@@ -192,7 +201,7 @@ class Access
 	/**
 	 * 配列から `object` 値を取得。
 	 * @template T of object
-	 * @param array<mixed> $array
+	 * @param array<mixed>|ArrayAccess<array-key,mixed> $array
 	 * @param array-key $key
 	 * @param string|class-string<T> $className
 	 * @return object
@@ -200,7 +209,7 @@ class Access
 	 * @throws AccessKeyNotFoundException キーが見つからない。
 	 * @throws AccessValueTypeException 値の方が違う。
 	 */
-	public static function getObject(array $array, string|int $key, ?string $className = null): object
+	public static function getObject(array|ArrayAccess $array, string|int $key, ?string $className = null): object
 	{
 		$value = self::getValue($array, $key);
 		if (self::isObject($value, $className)) {
@@ -212,13 +221,13 @@ class Access
 
 	/**
 	 * 配列から配列を取得。
-	 * @param array<mixed> $array
+	 * @param array<mixed>|ArrayAccess<array-key,mixed> $array
 	 * @param array-key $key
 	 * @return array<mixed>
 	 * @throws AccessKeyNotFoundException キーが見つからない。
 	 * @throws AccessValueTypeException 値の方が違う。
 	 */
-	public static function getArray(array $array, string|int $key): array
+	public static function getArray(array|ArrayAccess $array, string|int $key): array
 	{
 		$value = self::getValue($array, $key);
 		if (is_array($value)) {
@@ -230,13 +239,13 @@ class Access
 
 	/**
 	 * 配列から `bool` 配列を取得。
-	 * @param array<mixed> $array
+	 * @param array<mixed>|ArrayAccess<array-key,mixed> $array
 	 * @param array-key $key
 	 * @return bool[]
 	 * @throws AccessKeyNotFoundException キーが見つからない。
 	 * @throws AccessValueTypeException 値の方が違う。
 	 */
-	public static function getArrayOfBool(array $array, string|int $key): array
+	public static function getArrayOfBool(array|ArrayAccess $array, string|int $key): array
 	{
 		$values = self::getArray($array, $key);
 		foreach ($values as $key => $value) {
@@ -250,13 +259,13 @@ class Access
 
 	/**
 	 * 配列から `int` 配列を取得。
-	 * @param array<mixed> $array
+	 * @param array<mixed>|ArrayAccess<array-key,mixed> $array
 	 * @param array-key $key
 	 * @return int[]
 	 * @throws AccessKeyNotFoundException キーが見つからない。
 	 * @throws AccessValueTypeException 値の方が違う。
 	 */
-	public static function getArrayOfInteger(array $array, string|int $key): array
+	public static function getArrayOfInteger(array|ArrayAccess $array, string|int $key): array
 	{
 		$values = self::getArray($array, $key);
 		foreach ($values as $key => $value) {
@@ -270,14 +279,14 @@ class Access
 
 	/**
 	 * 配列から 0 を含む整数値配列を取得。
-	 * @param array<mixed> $array
+	 * @param array<mixed>|ArrayAccess<array-key,mixed> $array
 	 * @param array-key $key
 	 * @return int[]
 	 * @phpstan-return non-negative-int[]
 	 * @throws AccessKeyNotFoundException キーが見つからない。
 	 * @throws AccessValueTypeException 値の方が違う。
 	 */
-	public static function getArrayOfUInteger(array $array, string|int $key): array
+	public static function getArrayOfUInteger(array|ArrayAccess $array, string|int $key): array
 	{
 		$values = self::getArray($array, $key);
 		foreach ($values as $key => $value) {
@@ -294,14 +303,14 @@ class Access
 
 	/**
 	 * 配列から 0 超過の整数値配列を取得。
-	 * @param array<mixed> $array
+	 * @param array<mixed>|ArrayAccess<array-key,mixed> $array
 	 * @param array-key $key
 	 * @return int[]
 	 * @phpstan-return positive-int[]
 	 * @throws AccessKeyNotFoundException キーが見つからない。
 	 * @throws AccessValueTypeException 値の方が違う。
 	 */
-	public static function getArrayOfPositiveInteger(array $array, string|int $key): array
+	public static function getArrayOfPositiveInteger(array|ArrayAccess $array, string|int $key): array
 	{
 		$values = self::getArray($array, $key);
 		foreach ($values as $key => $value) {
@@ -318,13 +327,13 @@ class Access
 
 	/**
 	 * 配列から `float` 配列を取得。
-	 * @param array<mixed> $array
+	 * @param array<mixed>|ArrayAccess<array-key,mixed> $array
 	 * @param array-key $key
 	 * @return float[]
 	 * @throws AccessKeyNotFoundException キーが見つからない。
 	 * @throws AccessValueTypeException 値の方が違う。
 	 */
-	public static function getArrayOfFloat(array $array, string|int $key): array
+	public static function getArrayOfFloat(array|ArrayAccess $array, string|int $key): array
 	{
 		$values = self::getArray($array, $key);
 		foreach ($values as $key => $value) {
@@ -338,13 +347,13 @@ class Access
 
 	/**
 	 * 配列から `string` 配列を取得。
-	 * @param array<mixed> $array
+	 * @param array<mixed>|ArrayAccess<array-key,mixed> $array
 	 * @param array-key $key
 	 * @return string[]
 	 * @throws AccessKeyNotFoundException キーが見つからない。
 	 * @throws AccessValueTypeException 値の方が違う。
 	 */
-	public static function getArrayOfString(array $array, string|int $key): array
+	public static function getArrayOfString(array|ArrayAccess $array, string|int $key): array
 	{
 		$values = self::getArray($array, $key);
 		foreach ($values as $key => $value) {
@@ -359,7 +368,7 @@ class Access
 	/**
 	 * 配列から `object` 配列を取得。
 	 * @template T of object
-	 * @param array<mixed> $array
+	 * @param array<mixed>|ArrayAccess<array-key,mixed> $array
 	 * @param array-key $key
 	 * @param null|string|class-string<T> $className
 	 * @return object[]
@@ -367,7 +376,7 @@ class Access
 	 * @throws AccessKeyNotFoundException キーが見つからない。
 	 * @throws AccessValueTypeException 値の方が違う。
 	 */
-	public static function getArrayOfObject(array $array, string|int $key, ?string $className = null): array
+	public static function getArrayOfObject(array|ArrayAccess $array, string|int $key, ?string $className = null): array
 	{
 		$values = self::getArray($array, $key);
 		foreach ($values as $key => $value) {
