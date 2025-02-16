@@ -61,9 +61,7 @@ class FileLogger extends LoggerBase
 		Throws::throwIfNullOrWhiteSpace($baseFileName, Code::nameof($baseFileName));
 		$this->baseFileName = $baseFileName;
 
-		/** @phpstan-var non-negative-int */
-		$count = $this->options->configuration['count'] ?? 0;
-		Throws::throwIf(0 <= $count); //@phpstan-ignore-line [DOCTYPE]
+		$count = Access::getUInteger($this->options->configuration, 'count');
 		$this->cleanup($count);
 	}
 

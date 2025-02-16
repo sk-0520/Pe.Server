@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Collection;
 
 use PeServer\Core\Text;
+use PeServer\Core\Throws\AccessInvalidLogicalTypeException;
 use PeServer\Core\Throws\AccessKeyNotFoundException;
 use PeServer\Core\Throws\AccessValueTypeException;
 use PeServer\Core\TypeUtility;
@@ -46,6 +47,18 @@ class Access
 	}
 
 	/**
+	 * `AccessInvalidLogicalTypeException` ヘルパー。
+	 * @param string|int $key 添え字。
+	 * @param mixed $value 値。
+	 * @return never
+	 * @throws AccessInvalidLogicalTypeException 値の方が違う。 ただこれを投げるだけ。
+	 */
+	private static function throwInvalidLogicalType(string|int $key, mixed $value): never
+	{
+		throw new AccessInvalidLogicalTypeException("$key is " . TypeUtility::getType($value));
+	}
+
+	/**
 	 * 配列から `bool` 値を取得。
 	 * @param array<mixed> $array
 	 * @param array-key $key
@@ -79,6 +92,44 @@ class Access
 		}
 
 		self::throwInvalidType($key, $value);
+	}
+
+	/**
+	 * 配列から 0 を含む整数値を取得。
+	 * @param array<mixed> $array
+	 * @param array-key $key
+	 * @return int
+	 * @phpstan-return non-negative-int
+	 * @throws AccessKeyNotFoundException キーが見つからない。
+	 * @throws AccessInvalidLogicalTypeException 値の方が違う。
+	 */
+	public static function getUInteger(array $array, string|int $key): int
+	{
+		$result = self::getInteger($array, $key);
+		if ($result < 0) {
+			self::throwInvalidLogicalType($key, $result);
+		}
+
+		return $result;
+	}
+
+	/**
+	 * 配列から 0 超過の整数値を取得。
+	 * @param array<mixed> $array
+	 * @param array-key $key
+	 * @return int
+	 * @phpstan-return positive-int
+	 * @throws AccessKeyNotFoundException キーが見つからない。
+	 * @throws AccessInvalidLogicalTypeException 値の方が違う。
+	 */
+	public static function getPositiveInteger(array $array, string|int $key): int
+	{
+		$result = self::getInteger($array, $key);
+		if ($result <= 0) {
+			self::throwInvalidLogicalType($key, $result);
+		}
+
+		return $result;
 	}
 
 	/**
@@ -211,6 +262,54 @@ class Access
 		foreach ($values as $key => $value) {
 			if (!is_integer($value)) {
 				self::throwInvalidType($key, $value);
+			}
+		}
+
+		return $values;
+	}
+
+	/**
+	 * 配列から 0 を含む整数値配列を取得。
+	 * @param array<mixed> $array
+	 * @param array-key $key
+	 * @return int[]
+	 * @phpstan-return non-negative-int[]
+	 * @throws AccessKeyNotFoundException キーが見つからない。
+	 * @throws AccessValueTypeException 値の方が違う。
+	 */
+	public static function getArrayOfUInteger(array $array, string|int $key): array
+	{
+		$values = self::getArray($array, $key);
+		foreach ($values as $key => $value) {
+			if (!is_integer($value)) {
+				self::throwInvalidType($key, $value);
+			}
+			if ($value < 0) {
+				self::throwInvalidLogicalType($key, $value);
+			}
+		}
+
+		return $values;
+	}
+
+	/**
+	 * 配列から 0 超過の整数値配列を取得。
+	 * @param array<mixed> $array
+	 * @param array-key $key
+	 * @return int[]
+	 * @phpstan-return positive-int[]
+	 * @throws AccessKeyNotFoundException キーが見つからない。
+	 * @throws AccessValueTypeException 値の方が違う。
+	 */
+	public static function getArrayOfPositiveInteger(array $array, string|int $key): array
+	{
+		$values = self::getArray($array, $key);
+		foreach ($values as $key => $value) {
+			if (!is_integer($value)) {
+				self::throwInvalidType($key, $value);
+			}
+			if ($value <= 0) {
+				self::throwInvalidLogicalType($key, $value);
 			}
 		}
 

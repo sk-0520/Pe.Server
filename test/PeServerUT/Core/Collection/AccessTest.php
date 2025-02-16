@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServerUT\Core\Collection;
 
 use PeServer\Core\Collection\Access;
+use PeServer\Core\Throws\AccessInvalidLogicalTypeException;
 use PeServer\Core\Throws\AccessKeyNotFoundException;
 use PeServer\Core\Throws\AccessValueTypeException;
 use PeServerTest\TestClass;
@@ -73,6 +74,60 @@ class AccessTest extends TestClass
 	{
 		$this->expectException(AccessValueTypeException::class);
 		Access::getInteger(['10'], 0);
+		$this->fail();
+	}
+
+	public function test_getUInteger()
+	{
+		$actual = Access::getUInteger([10], 0);
+		$this->assertSame(10, $actual);
+	}
+
+	public function test_getUInteger_key_throw()
+	{
+		$this->expectException(AccessKeyNotFoundException::class);
+		Access::getUInteger([10], 1);
+		$this->fail();
+	}
+
+	public function test_getUInteger_type_throw()
+	{
+		$this->expectException(AccessValueTypeException::class);
+		Access::getUInteger(['10'], 0);
+		$this->fail();
+	}
+
+	public function test_getUInteger_type_throw_negative()
+	{
+		$this->expectException(AccessInvalidLogicalTypeException::class);
+		Access::getUInteger([-1], 0);
+		$this->fail();
+	}
+
+	public function test_getPositiveInteger()
+	{
+		$actual = Access::getPositiveInteger([10], 0);
+		$this->assertSame(10, $actual);
+	}
+
+	public function test_getPositiveInteger_key_throw()
+	{
+		$this->expectException(AccessKeyNotFoundException::class);
+		Access::getPositiveInteger([10], 1);
+		$this->fail();
+	}
+
+	public function test_getPositiveInteger_type_throw()
+	{
+		$this->expectException(AccessValueTypeException::class);
+		Access::getPositiveInteger(['10'], 0);
+		$this->fail();
+	}
+
+	public function test_getPositiveInteger_type_throw_negative()
+	{
+		$this->expectException(AccessInvalidLogicalTypeException::class);
+		Access::getPositiveInteger([0], 0);
 		$this->fail();
 	}
 
@@ -217,6 +272,49 @@ class AccessTest extends TestClass
 	{
 		$this->expectException(AccessValueTypeException::class);
 		Access::getArrayOfInteger($array, $key);
+		$this->fail();
+	}
+
+	public function test_getArrayOfUInteger()
+	{
+		$actual = Access::getArrayOfUInteger([[0, 1, 2, 3]], 0);
+		$this->assertSame([0, 1, 2, 3], $actual);
+
+		$this->isEmpty(Access::getArrayOfUInteger([[]], 0));
+	}
+
+	#[TestWith([AccessInvalidLogicalTypeException::class, [[-1]], 0])]
+	#[TestWith([AccessValueTypeException::class, [[3.14, 10]], 0])]
+	#[TestWith([AccessValueTypeException::class, [[10, 3.14]], 0])]
+	#[TestWith([AccessValueTypeException::class, [[10, true]], 0])]
+	#[TestWith([AccessValueTypeException::class, [[10, 'str']], 0])]
+	#[TestWith([AccessValueTypeException::class, [[10, null]], 0])]
+	public function test_getArrayOfUInteger_type_throw(string $expectedException, array $array, string|int $key)
+	{
+		$this->expectException($expectedException);
+		Access::getArrayOfUInteger($array, $key);
+		$this->fail();
+	}
+
+
+	public function test_getArrayOfPositiveInteger()
+	{
+		$actual = Access::getArrayOfPositiveInteger([[1, 2, 3]], 0);
+		$this->assertSame([1, 2, 3], $actual);
+
+		$this->isEmpty(Access::getArrayOfPositiveInteger([[]], 0));
+	}
+
+	#[TestWith([AccessInvalidLogicalTypeException::class, [[0]], 0])]
+	#[TestWith([AccessValueTypeException::class, [[3.14, 10]], 0])]
+	#[TestWith([AccessValueTypeException::class, [[10, 3.14]], 0])]
+	#[TestWith([AccessValueTypeException::class, [[10, true]], 0])]
+	#[TestWith([AccessValueTypeException::class, [[10, 'str']], 0])]
+	#[TestWith([AccessValueTypeException::class, [[10, null]], 0])]
+	public function test_getArrayOfPositiveInteger_type_throw(string $expectedException, array $array, string|int $key)
+	{
+		$this->expectException($expectedException);
+		Access::getArrayOfPositiveInteger($array, $key);
 		$this->fail();
 	}
 
