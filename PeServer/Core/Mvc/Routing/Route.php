@@ -16,7 +16,7 @@ use PeServer\Core\Http\RequestPath;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\ILoggerFactory;
 use PeServer\Core\Log\Logging;
-use PeServer\Core\Mvc\ActionSetting;
+use PeServer\Core\Mvc\Action\ActionSetting;
 use PeServer\Core\Mvc\ControllerArgument;
 use PeServer\Core\Mvc\ControllerBase;
 use PeServer\Core\Mvc\Middleware\IMiddleware;
