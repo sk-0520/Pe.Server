@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core\Mvc;
+namespace PeServer\Core\Mvc\Logic;
 
 use PeServer\Core\Regex;
 use PeServer\Core\Text;
-use PeServer\Core\Mvc\IValidationReceiver;
+use PeServer\Core\Mvc\Logic\IValidationReceiver;
 
 /**
  * 共通検証処理。

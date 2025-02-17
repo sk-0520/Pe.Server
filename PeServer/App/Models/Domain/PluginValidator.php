@@ -8,10 +8,10 @@ use PeServer\Core\I18n;
 use PeServer\Core\Uuid;
 use PeServer\Core\TrueKeeper;
 use PeServer\Core\Environment;
-use PeServer\Core\Mvc\Validator;
+use PeServer\Core\Mvc\Logic\Validator;
 use PeServer\Core\Text;
 use PeServer\Core\Database\DatabaseContext;
-use PeServer\Core\Mvc\IValidationReceiver;
+use PeServer\Core\Mvc\Logic\IValidationReceiver;
 use PeServer\App\Models\Domain\ValidatorBase;
 use PeServer\App\Models\Dao\Entities\PluginsEntityDao;
 

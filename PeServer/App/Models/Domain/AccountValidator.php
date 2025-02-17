@@ -6,9 +6,9 @@ namespace PeServer\App\Models\Domain;
 
 use PeServer\Core\I18n;
 use PeServer\Core\TrueKeeper;
-use PeServer\Core\Mvc\Validator;
+use PeServer\Core\Mvc\Logic\Validator;
 use PeServer\Core\Text;
-use PeServer\Core\Mvc\IValidationReceiver;
+use PeServer\Core\Mvc\Logic\IValidationReceiver;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\App\Models\Domain\ValidatorBase;
 use PeServer\App\Models\Dao\Entities\UsersEntityDao;
