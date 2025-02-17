@@ -5,84 +5,53 @@ declare(strict_types=1);
 namespace PeServerTest;
 
 use Error;
-use PeServer\App\Models\AppErrorHandler;
-use PeServer\App\Models\AppRoute;
-use PeServer\App\Models\AppStartup;
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\AppDatabaseCache;
+use PeServer\App\Models\AppStartup;
 use PeServer\App\Models\Dao\Entities\UsersEntityDao;
 use PeServer\App\Models\Data\SessionAccount;
 use PeServer\App\Models\Data\SessionAnonymous;
 use PeServer\App\Models\Domain\UserState;
 use PeServer\App\Models\SessionKey;
 use PeServer\App\Models\Setup\SetupRunner;
-use PeServer\Core\Binary;
 use PeServer\Core\Database\ConnectionSetting;
 use PeServer\Core\Database\DatabaseContext;
 use PeServer\Core\Database\DatabaseRowResult;
 use PeServer\Core\Database\DatabaseUtility;
-use PeServer\Core\StartupOptions;
+use PeServer\Core\Database\IDatabaseConnection;
+use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\DI\DiItem;
 use PeServer\Core\DI\IDiContainer;
 use PeServer\Core\DI\IDiRegisterContainer;
-use PeServer\Core\Environment;
-use PeServer\Core\Http\HttpHeader;
+use PeServer\Core\Html\HtmlNodeBase;
+use PeServer\Core\Html\HtmlTagElement;
+use PeServer\Core\Html\HtmlTextElement;
 use PeServer\Core\Http\HttpMethod;
+use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Http\HttpResponse;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\I18n;
+use PeServer\Core\IO\File;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\ILoggerFactory;
-use PeServer\Core\Log\Logging;
-use PeServer\Core\Mvc\Controller\ControllerArgument;
-use PeServer\Core\Mvc\ControllerBase;
-use PeServer\Core\Mvc\Result\IActionResult;
-use PeServer\Core\OutputBuffer;
-use PeServer\Core\Store\SpecialStore;
-use PeServer\Core\Store\StoreOptions;
+use PeServer\Core\Log\NullLogger;
+use PeServer\Core\Mvc\Response\IResponsePrinterFactory;
+use PeServer\Core\Mvc\Response\ResponsePrinter;
+use PeServer\Core\Mvc\Response\ResponsePrinterFactory;
+use PeServer\Core\StartupOptions;
 use PeServer\Core\Store\CookieStore;
 use PeServer\Core\Store\SessionStore;
-use PeServer\Core\Throws\HttpStatusException;
-use PeServer\Core\Web\UrlHelper;
-use PeServer\Core\Web\UrlQuery;
-use PeServer\Core\Database\IDatabaseConnection;
-use PeServer\Core\Database\IDatabaseContext;
-use PeServer\Core\Html\HtmlTagElement;
-use PeServer\Core\Html\HtmlNodeBase;
-use PeServer\Core\Html\HtmlTextElement;
-use PeServer\Core\Http\HttpRequest;
-use PeServer\Core\IO\File;
-use PeServer\Core\Log\LoggerFactory;
-use PeServer\Core\Log\NullLogger;
-use PeServer\Core\Mvc\IResponsePrinterFactory;
-use PeServer\Core\Mvc\Response\ResponsePrinter;
-use PeServer\Core\Mvc\ResponsePrinterFactory;
-use PeServer\Core\Mvc\Template\TemplateStore;
 use PeServer\Core\Store\TemporaryStore;
 use PeServer\Core\Text;
-use PeServer\Core\Throws\ArgumentException;
-use PeServer\Core\Throws\DiContainerArgumentException;
-use PeServer\Core\Throws\RegexException;
-use PeServer\Core\Throws\DiContainerException;
-use PeServer\Core\Throws\NotImplementedException;
-use PeServer\Core\Throws\InvalidOperationException;
-use PeServer\Core\Throws\IOException;
-use PeServer\Core\Throws\SqlException;
-use PeServer\Core\Throws\DatabaseException;
-use PeServer\Core\Throws\OutputBufferException;
 use PeServer\Core\Web\Url;
+use PeServer\Core\Web\UrlHelper;
 use PeServer\Core\Web\UrlPath;
-use PeServerTest\TestClass;
-use PeServerTest\ItSpecialStore as ItSpecialStore;
+use PeServer\Core\Web\UrlQuery;
 use PeServerTest\ItActual;
-use PeServerTest\TestRouting;
-use PeServerTest\ItRouteWithoutMiddleware;
-use PeServerTest\ItSetup;
-use Reflection;
+use PeServerTest\ItOptions;
+use PeServerTest\TestClass;
 use ReflectionClass;
-use TypeError;
-use Throwable;
-use ValueError;
+
 
 class ItControllerClass extends TestClass
 {
@@ -126,6 +95,7 @@ class ItControllerClass extends TestClass
 					{
 						return $this->connectionSetting;
 					}
+
 					public function open(): DatabaseContext
 					{
 						return $this->databaseContext;
