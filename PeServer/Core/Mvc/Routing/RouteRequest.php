@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core\Mvc;
+namespace PeServer\Core\Mvc\Routing;
 
 use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Http\RequestPath;

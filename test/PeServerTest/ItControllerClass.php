@@ -6,7 +6,7 @@ namespace PeServerTest;
 
 use Error;
 use PeServer\App\Models\AppErrorHandler;
-use PeServer\App\Models\AppRouting;
+use PeServer\App\Models\AppRoute;
 use PeServer\App\Models\AppStartup;
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\AppDatabaseCache;
@@ -34,7 +34,7 @@ use PeServer\Core\I18n;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\ILoggerFactory;
 use PeServer\Core\Log\Logging;
-use PeServer\Core\Mvc\ControllerArgument;
+use PeServer\Core\Mvc\Controller\ControllerArgument;
 use PeServer\Core\Mvc\ControllerBase;
 use PeServer\Core\Mvc\Result\IActionResult;
 use PeServer\Core\OutputBuffer;
@@ -55,7 +55,7 @@ use PeServer\Core\IO\File;
 use PeServer\Core\Log\LoggerFactory;
 use PeServer\Core\Log\NullLogger;
 use PeServer\Core\Mvc\IResponsePrinterFactory;
-use PeServer\Core\Mvc\ResponsePrinter;
+use PeServer\Core\Mvc\Response\ResponsePrinter;
 use PeServer\Core\Mvc\ResponsePrinterFactory;
 use PeServer\Core\Mvc\Template\TemplateStore;
 use PeServer\Core\Store\TemporaryStore;
@@ -76,7 +76,7 @@ use PeServerTest\TestClass;
 use PeServerTest\ItSpecialStore as ItSpecialStore;
 use PeServerTest\ItActual;
 use PeServerTest\TestRouting;
-use PeServerTest\ItRoutingWithoutMiddleware;
+use PeServerTest\ItRouteWithoutMiddleware;
 use PeServerTest\ItSetup;
 use Reflection;
 use ReflectionClass;
@@ -282,9 +282,9 @@ class ItControllerClass extends TestClass
 			$cache->clearAll();
 		}
 
-		/** @var ItRoutingWithoutMiddleware */
-		$routing = $container->new(ItRoutingWithoutMiddleware::class);
-		$routing->execute();
+		/** @var ItRouteWithoutMiddleware */
+		$route = $container->new(ItRouteWithoutMiddleware::class);
+		$route->execute();
 
 		$response = ItResponsePrinter::getResponse();
 		if ($response === null) {

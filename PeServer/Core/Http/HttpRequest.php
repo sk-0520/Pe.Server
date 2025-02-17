@@ -6,7 +6,7 @@ namespace PeServer\Core\Http;
 
 use PeServer\Core\Http\HttpHeader;
 use PeServer\Core\Http\HttpMethod;
-use PeServer\Core\Mvc\UploadedFile;
+use PeServer\Core\Mvc\Logic\UploadedFile;
 use PeServer\Core\Store\SpecialStore;
 use PeServer\Core\Throws\KeyNotFoundException;
 

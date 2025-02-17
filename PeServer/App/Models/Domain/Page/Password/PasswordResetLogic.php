@@ -22,8 +22,8 @@ use PeServer\Core\Cryptography;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\I18n;
-use PeServer\Core\Mvc\LogicCallMode;
-use PeServer\Core\Mvc\LogicParameter;
+use PeServer\Core\Mvc\Logic\LogicCallMode;
+use PeServer\Core\Mvc\Logic\LogicParameter;
 use PeServer\Core\Text;
 
 class PasswordResetLogic extends PageLogicBase

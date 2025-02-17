@@ -13,8 +13,8 @@ use PeServer\App\Models\Data\SessionAccount;
 use PeServer\App\Models\SessionKey;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\I18n;
-use PeServer\Core\Mvc\LogicCallMode;
-use PeServer\Core\Mvc\LogicParameter;
+use PeServer\Core\Mvc\Logic\LogicCallMode;
+use PeServer\Core\Mvc\Logic\LogicParameter;
 
 class AccountUserEditLogic extends PageLogicBase
 {

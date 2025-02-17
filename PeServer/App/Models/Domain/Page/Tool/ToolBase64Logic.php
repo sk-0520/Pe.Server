@@ -6,8 +6,8 @@ namespace PeServer\App\Models\Domain\Page\Tool;
 
 use Exception;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
-use PeServer\Core\Mvc\LogicCallMode;
-use PeServer\Core\Mvc\LogicParameter;
+use PeServer\Core\Mvc\Logic\LogicCallMode;
+use PeServer\Core\Mvc\Logic\LogicParameter;
 
 class ToolBase64Logic extends PageLogicBase
 {

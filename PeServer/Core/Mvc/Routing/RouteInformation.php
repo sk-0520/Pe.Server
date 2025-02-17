@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core\Mvc;
+namespace PeServer\Core\Mvc\Routing;
 
 use PeServer\Core\Collection\Arr;
 use PeServer\Core\Code;
 use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Http\RequestPath;
-use PeServer\Core\Mvc\Action;
-use PeServer\Core\Mvc\ControllerBase;
+use PeServer\Core\Mvc\Action\Action;
+use PeServer\Core\Mvc\Action\ActionSetting;
+use PeServer\Core\Mvc\Controller\ControllerBase;
 use PeServer\Core\Mvc\Middleware\IMiddleware;
 use PeServer\Core\Mvc\Middleware\IShutdownMiddleware;
-use PeServer\Core\Mvc\RouteAction;
 use PeServer\Core\Regex;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
@@ -21,7 +21,7 @@ use PeServer\Core\Throws\ArgumentException;
 /**
  * ルーティング情報。
  */
-class Route
+class RouteInformation
 {
 	#region define
 
@@ -164,9 +164,9 @@ class Route
 	 * @phpstan-param array<IMiddleware|class-string<IMiddleware>|self::CLEAR_MIDDLEWARE>|null $middleware
 	 * @param array<IShutdownMiddleware|string>|null $shutdownMiddleware 専用終了ミドルウェア。 第一要素が CLEAR_MIDDLEWARE であれば既存のミドルウェアを破棄する。nullの場合はコンストラクタで渡されたミドルウェアが使用される。
 	 * @phpstan-param array<IShutdownMiddleware|class-string<IShutdownMiddleware>|self::CLEAR_MIDDLEWARE>|null $shutdownMiddleware
-	 * @return Route
+	 * @return RouteInformation
 	 */
-	public function addAction(string $actionName, HttpMethod|array $httpMethod, string $methodName, ?array $middleware = null, ?array $shutdownMiddleware = null): Route
+	public function addAction(string $actionName, HttpMethod|array $httpMethod, string $methodName, ?array $middleware = null, ?array $shutdownMiddleware = null): RouteInformation
 	{
 		if (Text::isNullOrWhiteSpace($methodName)) {
 			throw new ArgumentException('$methodName');

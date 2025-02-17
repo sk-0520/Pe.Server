@@ -8,8 +8,8 @@ use Exception;
 use PeServer\App\Models\AppDatabaseCache;
 use PeServer\App\Models\Domain\AppArchiver;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
-use PeServer\Core\Mvc\LogicCallMode;
-use PeServer\Core\Mvc\LogicParameter;
+use PeServer\Core\Mvc\Logic\LogicCallMode;
+use PeServer\Core\Mvc\Logic\LogicParameter;
 use PeServer\Core\Stopwatch;
 use Throwable;
 

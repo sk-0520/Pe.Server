@@ -26,10 +26,10 @@ use PeServer\Core\Log\LoggerFactory;
 use PeServer\Core\Log\Logging;
 use PeServer\Core\Log\LogProvider;
 use PeServer\Core\Log\StaticRamLogger;
-use PeServer\Core\Mvc\ILogicFactory;
-use PeServer\Core\Mvc\IResponsePrinterFactory;
-use PeServer\Core\Mvc\LogicFactory;
-use PeServer\Core\Mvc\ResponsePrinterFactory;
+use PeServer\Core\Mvc\Logic\ILogicFactory;
+use PeServer\Core\Mvc\Logic\LogicFactory;
+use PeServer\Core\Mvc\Response\IResponsePrinterFactory;
+use PeServer\Core\Mvc\Response\ResponsePrinterFactory;
 use PeServer\Core\Mvc\RouteRequest;
 use PeServer\Core\Mvc\Template\ITemplateFactory;
 use PeServer\Core\Mvc\Template\TemplateFactory;
@@ -69,6 +69,7 @@ class CoreStartup
 	public function __construct(
 		protected StartupOptions $startupOptions
 	) {
+		//NOP
 	}
 
 	#region function

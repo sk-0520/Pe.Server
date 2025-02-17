@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core\Mvc;
+namespace PeServer\Core\Mvc\Routing;
 
 use PeServer\Core\Mvc\Middleware\IMiddleware;
 use PeServer\Core\Mvc\Middleware\IShutdownMiddleware;
@@ -19,7 +19,7 @@ readonly class RouteSetting
 	 * @param array<IMiddleware|class-string<IMiddleware>> $actionMiddleware アクション適用ミドルウェア。
 	 * @param array<IShutdownMiddleware|class-string<IShutdownMiddleware>> $globalShutdownMiddleware 全体適用応答完了後ミドルウェア。
 	 * @param array<IShutdownMiddleware|class-string<IShutdownMiddleware>> $actionShutdownMiddleware アクション適用応答完了後ミドルウェア。
-	 * @param Route[] $routes ルーティング一覧。
+	 * @param RouteInformation[] $routes ルーティング一覧。
 	 */
 	public function __construct(
 		public array $globalMiddleware,

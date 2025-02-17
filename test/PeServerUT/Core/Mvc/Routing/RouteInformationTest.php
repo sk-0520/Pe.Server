@@ -2,35 +2,35 @@
 
 declare(strict_types=1);
 
-namespace PeServerUT\Core\Mvc;
+namespace PeServerUT\Core\Mvc\Routing;
 
 use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Http\RequestPath;
-use PeServer\Core\Mvc\Route;
+use PeServer\Core\Mvc\Routing\RouteInformation;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Web\UrlHelper;
 use PeServerTest\TestClass;
 
-class RouteTest extends TestClass
+class RouteInformationTest extends TestClass
 {
 	public function test_construct_exception_slash()
 	{
 		$this->expectException(ArgumentException::class);
-		new Route('/', 'ClassName');
+		new RouteInformation('/', 'ClassName');
 		$this->fail();
 	}
 
 	public function test_construct_exception_start()
 	{
 		$this->expectException(ArgumentException::class);
-		new Route('/root', 'ClassName');
+		new RouteInformation('/root', 'ClassName');
 		$this->fail();
 	}
 
 	public function test_construct_exception_end()
 	{
 		$this->expectException(ArgumentException::class);
-		new Route('root/', 'ClassName');
+		new RouteInformation('root/', 'ClassName');
 		$this->fail();
 	}
 
@@ -99,7 +99,7 @@ class RouteTest extends TestClass
 			],
 		];
 		foreach ($tests as $test) {
-			$route = new Route(...$test['route']);
+			$route = new RouteInformation(...$test['route']);
 			foreach ($test['actions'] as $action) {
 				$route->addAction(...$action);
 			}

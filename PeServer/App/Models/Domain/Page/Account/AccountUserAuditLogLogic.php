@@ -6,8 +6,8 @@ namespace PeServer\App\Models\Domain\Page\Account;
 
 use PeServer\App\Models\Dao\Entities\UserAuditLogsEntityDao;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
-use PeServer\Core\Mvc\LogicCallMode;
-use PeServer\Core\Mvc\LogicParameter;
+use PeServer\Core\Mvc\Logic\LogicCallMode;
+use PeServer\Core\Mvc\Logic\LogicParameter;
 use PeServer\Core\Mvc\Pagination;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\TypeUtility;

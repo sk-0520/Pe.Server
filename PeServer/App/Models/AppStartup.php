@@ -15,7 +15,7 @@ use PeServer\App\Models\AppEmailInformation;
 use PeServer\App\Models\AppErrorHandler;
 use PeServer\App\Models\AppMailer;
 use PeServer\App\Models\AppRouteSetting;
-use PeServer\App\Models\AppRouting;
+use PeServer\App\Models\AppRoute;
 use PeServer\App\Models\AppTemplate;
 use PeServer\App\Models\AppTemplateFactory;
 use PeServer\App\Models\AppUrl;
@@ -41,9 +41,9 @@ use PeServer\Core\Log\ConsoleLogger;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\ILogProvider;
 use PeServer\Core\Mail\Mailer;
-use PeServer\Core\Mvc\RouteRequest;
-use PeServer\Core\Mvc\RouteSetting;
-use PeServer\Core\Mvc\Routing;
+use PeServer\Core\Mvc\Routing\Route;
+use PeServer\Core\Mvc\Routing\RouteRequest;
+use PeServer\Core\Mvc\Routing\RouteSetting;
 use PeServer\Core\Mvc\Template\ITemplateFactory;
 use PeServer\Core\Serialization\Mapper;
 use PeServer\Core\Web\WebSecurity;
@@ -145,7 +145,7 @@ class AppStartup extends CoreStartup
 		$container->registerValue(new RouteRequest($method, $requestPath));
 
 		$container->add(RouteSetting::class, DiItem::value($container->new(AppRouteSetting::class)));
-		$container->registerMapping(Routing::class, AppRouting::class);
+		$container->registerMapping(Route::class, AppRoute::class);
 	}
 
 	protected function setupCliService(array $options, IDiRegisterContainer $container): void

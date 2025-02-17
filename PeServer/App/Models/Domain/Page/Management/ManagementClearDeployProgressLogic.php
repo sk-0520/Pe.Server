@@ -10,8 +10,8 @@ use PeServer\App\Models\Domain\Api\AdministratorApi\AdministratorApiDeployLogic;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\Core\IO\File;
 use PeServer\Core\IO\Path;
-use PeServer\Core\Mvc\LogicCallMode;
-use PeServer\Core\Mvc\LogicParameter;
+use PeServer\Core\Mvc\Logic\LogicCallMode;
+use PeServer\Core\Mvc\Logic\LogicParameter;
 use PeServer\Core\Stopwatch;
 
 class ManagementClearDeployProgressLogic extends PageLogicBase

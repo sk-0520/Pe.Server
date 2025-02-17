@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServerUT\Core\Mvc;
+namespace PeServerUT\Core\Mvc\Response;
 
 use PeServer\Core\Binary;
 use PeServer\Core\Http\Client\StringContent;
@@ -13,7 +13,7 @@ use PeServer\Core\Http\HttpResponse;
 use PeServer\Core\Http\ICallbackContent;
 use PeServer\Core\IO\Stream;
 use PeServer\Core\IO\StreamMetaData;
-use PeServer\Core\Mvc\ResponsePrinter;
+use PeServer\Core\Mvc\Response\ResponsePrinter;
 use PeServer\Core\OutputBuffer;
 use PeServer\Core\Text;
 use PeServerTest\TestClass;

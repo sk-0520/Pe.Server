@@ -18,8 +18,8 @@ use PeServer\Core\Mail\Attachment;
 use PeServer\Core\Mail\EmailAddress;
 use PeServer\Core\Mail\EmailMessage;
 use PeServer\Core\Mime;
-use PeServer\Core\Mvc\LogicCallMode;
-use PeServer\Core\Mvc\LogicParameter;
+use PeServer\Core\Mvc\Logic\LogicCallMode;
+use PeServer\Core\Mvc\Logic\LogicParameter;
 use PeServer\Core\Throws\NotImplementedException;
 
 class ApplicationApiFeedbackLogic extends ApiLogicBase

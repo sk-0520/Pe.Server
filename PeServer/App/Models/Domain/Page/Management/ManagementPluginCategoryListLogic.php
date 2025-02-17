@@ -6,8 +6,8 @@ namespace PeServer\App\Models\Domain\Page\Management;
 
 use PeServer\Core\IO\IOUtility;
 use PeServer\Core\SizeConverter;
-use PeServer\Core\Mvc\LogicCallMode;
-use PeServer\Core\Mvc\LogicParameter;
+use PeServer\Core\Mvc\Logic\LogicCallMode;
+use PeServer\Core\Mvc\Logic\LogicParameter;
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\App\Models\Dao\Entities\PluginCategoriesEntityDao;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core\Mvc;
+namespace PeServer\Core\Mvc\Logic;
 
 use Closure;
 use Iterator;
@@ -27,12 +27,12 @@ use PeServer\Core\Mvc\Content\DownloadDataContent;
 use PeServer\Core\Mvc\Content\StaticDataContent;
 use PeServer\Core\Mvc\Content\StreamContent;
 use PeServer\Core\Mvc\Content\StreamingContent;
-use PeServer\Core\Mvc\IValidationReceiver;
-use PeServer\Core\Mvc\LogicCallMode;
-use PeServer\Core\Mvc\LogicParameter;
+use PeServer\Core\Mvc\Logic\IValidationReceiver;
+use PeServer\Core\Mvc\Logic\LogicCallMode;
+use PeServer\Core\Mvc\Logic\LogicParameter;
 use PeServer\Core\Mvc\Template\TemplateParameter;
-use PeServer\Core\Mvc\UploadedFile;
-use PeServer\Core\Mvc\Validator;
+use PeServer\Core\Mvc\Logic\UploadedFile;
+use PeServer\Core\Mvc\Logic\Validator;
 use PeServer\Core\Store\CookieOptions;
 use PeServer\Core\Store\CookieStore;
 use PeServer\Core\Store\SessionStore;

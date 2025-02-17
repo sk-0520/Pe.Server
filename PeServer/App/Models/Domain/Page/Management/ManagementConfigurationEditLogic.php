@@ -15,8 +15,8 @@ use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\Environment;
 use PeServer\Core\IO\File;
 use PeServer\Core\IO\Path;
-use PeServer\Core\Mvc\LogicCallMode;
-use PeServer\Core\Mvc\LogicParameter;
+use PeServer\Core\Mvc\Logic\LogicCallMode;
+use PeServer\Core\Mvc\Logic\LogicParameter;
 use PeServer\Core\Serialization\JsonSerializer;
 use PeServer\Core\Text;
 

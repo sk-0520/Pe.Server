@@ -10,8 +10,8 @@ use PeServer\Core\Collection\Arr;
 use PeServer\Core\Collection\OrderBy;
 use PeServer\Core\IO\File;
 use PeServer\Core\IO\Path;
-use PeServer\Core\Mvc\LogicCallMode;
-use PeServer\Core\Mvc\LogicParameter;
+use PeServer\Core\Mvc\Logic\LogicCallMode;
+use PeServer\Core\Mvc\Logic\LogicParameter;
 use PeServer\Core\SizeConverter;
 
 class ManagementControlBackupListLogic extends PageLogicBase

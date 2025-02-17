@@ -9,17 +9,17 @@ use PeServer\App\Models\SessionKey;
 use PeServer\Core\DI\IDiRegisterContainer;
 use PeServer\Core\Environment;
 use PeServer\Core\Http\HttpMethod;
-use PeServer\Core\Mvc\IResponsePrinterFactory;
+use PeServer\Core\Mvc\Response\IResponsePrinterFactory;
 use PeServer\Core\Http\RequestPath;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\ILoggerFactory;
-use PeServer\Core\Mvc\RouteRequest;
-use PeServer\Core\Mvc\RouteSetting;
-use PeServer\Core\Mvc\Routing;
+use PeServer\Core\Mvc\Routing\Route;
+use PeServer\Core\Mvc\Routing\RouteRequest;
+use PeServer\Core\Mvc\Routing\RouteSetting;
 use PeServer\Core\Store\StoreOptions;
 use PeServer\Core\Store\Stores;
 
-class AppRouting extends Routing
+class AppRoute extends Route
 {
 	/**
 	 * 生成。

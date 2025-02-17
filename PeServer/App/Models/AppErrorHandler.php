@@ -20,7 +20,7 @@ use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\Logging;
 use PeServer\Core\Log\NullLogger;
 use PeServer\Core\Mime;
-use PeServer\Core\Mvc\IResponsePrinterFactory;
+use PeServer\Core\Mvc\Response\IResponsePrinterFactory;
 use PeServer\Core\Mvc\Template\ITemplateFactory;
 use PeServer\Core\Mvc\Template\TemplateFactory;
 use PeServer\Core\Mvc\Template\TemplateOptions;

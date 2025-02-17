@@ -10,8 +10,8 @@ use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\App\Models\ResponseJson;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\IO\Path;
-use PeServer\Core\Mvc\LogicCallMode;
-use PeServer\Core\Mvc\LogicParameter;
+use PeServer\Core\Mvc\Logic\LogicCallMode;
+use PeServer\Core\Mvc\Logic\LogicParameter;
 use PeServer\Core\Throws\FileNotFoundException;
 
 class AjaxCrashReportDeleteLogic extends PageLogicBase

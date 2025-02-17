@@ -10,8 +10,8 @@ use PeServer\App\Models\ResponseJson;
 use PeServer\Core\Collection\Arr;
 use PeServer\Core\Collection\Collections;
 use PeServer\Core\Text;
-use PeServer\Core\Mvc\LogicCallMode;
-use PeServer\Core\Mvc\LogicParameter;
+use PeServer\Core\Mvc\Logic\LogicCallMode;
+use PeServer\Core\Mvc\Logic\LogicParameter;
 use PeServer\Core\Uuid;
 
 class PluginApiExistsLogic extends ApiLogicBase

@@ -9,7 +9,7 @@ use PeServer\Core\Collection\Arr;
 use PeServer\Core\Http\HttpHeader;
 use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\IO\File;
-use PeServer\Core\Mvc\UploadedFile;
+use PeServer\Core\Mvc\Logic\UploadedFile;
 use PeServer\Core\Text;
 use PeServer\Core\Web\Url;
 use PeServer\Core\Web\UrlPath;

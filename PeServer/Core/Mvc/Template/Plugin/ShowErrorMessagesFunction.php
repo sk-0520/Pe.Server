@@ -7,7 +7,7 @@ namespace PeServer\Core\Mvc\Template\Plugin;
 use PeServer\Core\I18n;
 use PeServer\Core\Collection\Arr;
 use PeServer\Core\Text;
-use PeServer\Core\Mvc\Validator;
+use PeServer\Core\Mvc\Logic\Validator;
 use PeServer\Core\Html\HtmlDocument;
 use PeServer\Core\Mvc\Template\Plugin\TemplateFunctionBase;
 use PeServer\Core\Mvc\Template\Plugin\TemplatePluginArgument;

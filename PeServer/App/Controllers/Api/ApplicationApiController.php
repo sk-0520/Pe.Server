@@ -9,8 +9,8 @@ use PeServer\App\Models\Domain\Api\ApplicationApi\ApplicationApiCrashReportLogic
 use PeServer\App\Models\Domain\Api\ApplicationApi\ApplicationApiFeedbackLogic;
 use PeServer\App\Models\Domain\Api\ApplicationApi\ApplicationApiVersionUpdateLogic;
 use PeServer\Core\Http\HttpStatus;
-use PeServer\Core\Mvc\ControllerArgument;
-use PeServer\Core\Mvc\LogicCallMode;
+use PeServer\Core\Mvc\Controller\ControllerArgument;
+use PeServer\Core\Mvc\Logic\LogicCallMode;
 use PeServer\Core\Mvc\Result\IActionResult;
 use PeServer\Core\Mvc\Result\RedirectActionResult;
 use PeServer\Core\Throws\InvalidOperationException;

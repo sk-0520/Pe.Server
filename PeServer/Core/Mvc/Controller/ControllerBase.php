@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core\Mvc;
+namespace PeServer\Core\Mvc\Controller;
 
 use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Http\HttpStatus;
@@ -11,11 +11,12 @@ use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\ILoggerFactory;
 use PeServer\Core\Log\Logging;
 use PeServer\Core\Mvc\Content\ChunkedContentBase;
-use PeServer\Core\Mvc\ControllerArgument;
 use PeServer\Core\Mvc\Content\DataContent;
 use PeServer\Core\Mvc\Content\DataContentBase;
-use PeServer\Core\Mvc\LogicBase;
-use PeServer\Core\Mvc\LogicParameter;
+use PeServer\Core\Mvc\Controller\ControllerArgument;
+use PeServer\Core\Mvc\Logic\ILogicFactory;
+use PeServer\Core\Mvc\Logic\LogicBase;
+use PeServer\Core\Mvc\Logic\LogicParameter;
 use PeServer\Core\Mvc\Result\ChunkedActionResult;
 use PeServer\Core\Mvc\Result\DataActionResult;
 use PeServer\Core\Mvc\Result\IActionResult;

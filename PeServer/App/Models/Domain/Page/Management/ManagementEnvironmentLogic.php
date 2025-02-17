@@ -11,8 +11,8 @@ use PeServer\Core\Regex;
 use PeServer\Core\OutputBuffer;
 use PeServer\Core\Html\HtmlTagElement;
 use PeServer\Core\Html\HtmlDocument;
-use PeServer\Core\Mvc\LogicCallMode;
-use PeServer\Core\Mvc\LogicParameter;
+use PeServer\Core\Mvc\Logic\LogicCallMode;
+use PeServer\Core\Mvc\Logic\LogicParameter;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 
 class ManagementEnvironmentLogic extends PageLogicBase

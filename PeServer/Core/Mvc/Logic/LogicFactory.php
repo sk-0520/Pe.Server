@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core\Mvc;
+namespace PeServer\Core\Mvc\Logic;
 
 use PeServer\Core\DI\DiFactoryBase;
 use PeServer\Core\DI\DiFactoryTrait;
 use PeServer\Core\DI\IDiContainer;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\LoggerFactory;
-use PeServer\Core\Mvc\LogicParameter;
+use PeServer\Core\Mvc\Logic\LogicParameter;
 
 class LogicFactory extends DiFactoryBase implements ILogicFactory
 {

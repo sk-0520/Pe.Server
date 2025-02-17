@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServerTest;
 
-use PeServer\App\Models\AppRouting;
+use PeServer\App\Models\AppRoute;
 use PeServer\Core\DI\IDiRegisterContainer;
 use PeServer\Core\Environment;
 use PeServer\Core\Http\HttpRequest;
@@ -12,11 +12,11 @@ use PeServer\Core\Http\HttpResponse;
 use PeServer\Core\Mvc\IResponsePrinterFactory;
 use PeServer\Core\Http\ResponsePrinter;
 use PeServer\Core\Log\ILoggerFactory;
-use PeServer\Core\Mvc\RouteRequest;
-use PeServer\Core\Mvc\RouteSetting;
+use PeServer\Core\Mvc\Routing\RouteRequest;
+use PeServer\Core\Mvc\Routing\RouteSetting;
 use PeServer\Core\Store\Stores;
 
-class ItRoutingWithoutMiddleware extends AppRouting
+class ItRouteWithoutMiddleware extends AppRoute
 {
 	/**
 	 * 生成。
@@ -29,7 +29,7 @@ class ItRoutingWithoutMiddleware extends AppRouting
 		parent::__construct($routeRequest, $routeSetting, $stores, $environment, $responsePrinterFactory, $loggerFactory, $serviceLocator);
 	}
 
-	#region AppRouting
+	#region Approute
 
 	protected function handleBeforeMiddleware(array $middleware, HttpRequest $request): bool
 	{

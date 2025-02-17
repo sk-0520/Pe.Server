@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Controllers\Api;
 
-use PeServer\Core\Mvc\ControllerArgument;
+use PeServer\Core\Mvc\Controller\ControllerArgument;
 use PeServer\App\Controllers\DomainControllerBase;
 
 /**
