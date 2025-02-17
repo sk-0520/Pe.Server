@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core\Mvc;
+namespace PeServer\Core\Mvc\Routing;
 
 use PeServer\Core\Collection\Arr;
 use PeServer\Core\DI\IDiRegisterContainer;
@@ -26,9 +26,9 @@ use PeServer\Core\Mvc\Middleware\MiddlewareResult;
 use PeServer\Core\Mvc\IResponsePrinterFactory;
 use PeServer\Core\Mvc\ResponsePrinter;
 use PeServer\Core\Mvc\Result\IActionResult;
-use PeServer\Core\Mvc\RouteAction;
-use PeServer\Core\Mvc\RouteRequest;
-use PeServer\Core\Mvc\RouteSetting;
+use PeServer\Core\Mvc\Routing\RouteAction;
+use PeServer\Core\Mvc\Routing\RouteRequest;
+use PeServer\Core\Mvc\Routing\RouteSetting;
 use PeServer\Core\OutputBuffer;
 use PeServer\Core\ReflectionUtility;
 use PeServer\Core\Store\Stores;

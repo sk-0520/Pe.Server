@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core\Mvc;
+namespace PeServer\Core\Mvc\Routing;
 
 use PeServer\Core\Collection\Arr;
 use PeServer\Core\Code;
@@ -10,10 +10,10 @@ use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Http\RequestPath;
 use PeServer\Core\Mvc\Action;
+use PeServer\Core\Mvc\ActionSetting;
 use PeServer\Core\Mvc\ControllerBase;
 use PeServer\Core\Mvc\Middleware\IMiddleware;
 use PeServer\Core\Mvc\Middleware\IShutdownMiddleware;
-use PeServer\Core\Mvc\RouteAction;
 use PeServer\Core\Regex;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;

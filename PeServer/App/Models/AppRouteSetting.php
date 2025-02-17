@@ -35,8 +35,8 @@ use PeServer\Core\Mvc\Middleware\CsrfMiddleware;
 use PeServer\Core\Mvc\Middleware\HttpsMiddleware;
 use PeServer\Core\Mvc\Middleware\PerformanceMiddleware;
 use PeServer\Core\Mvc\Middleware\PerformanceShutdownMiddleware;
-use PeServer\Core\Mvc\RouteInformation;
-use PeServer\Core\Mvc\RouteSetting;
+use PeServer\Core\Mvc\Routing\RouteInformation;
+use PeServer\Core\Mvc\Routing\RouteSetting;
 use PeServer\Core\Text;
 
 /**

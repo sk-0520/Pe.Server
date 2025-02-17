@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace PeServerUT\Core\Mvc;
+namespace PeServerUT\Core\Mvc\Routing;
 
 use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Http\RequestPath;
-use PeServer\Core\Mvc\RouteInformation;
+use PeServer\Core\Mvc\Routing\RouteInformation;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Web\UrlHelper;
 use PeServerTest\TestClass;
 
-class RouteTest extends TestClass
+class RouteInformationTest extends TestClass
 {
 	public function test_construct_exception_slash()
 	{

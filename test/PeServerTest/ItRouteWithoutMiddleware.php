@@ -12,8 +12,8 @@ use PeServer\Core\Http\HttpResponse;
 use PeServer\Core\Mvc\IResponsePrinterFactory;
 use PeServer\Core\Http\ResponsePrinter;
 use PeServer\Core\Log\ILoggerFactory;
-use PeServer\Core\Mvc\RouteRequest;
-use PeServer\Core\Mvc\RouteSetting;
+use PeServer\Core\Mvc\Routing\RouteRequest;
+use PeServer\Core\Mvc\Routing\RouteSetting;
 use PeServer\Core\Store\Stores;
 
 class ItRouteWithoutMiddleware extends AppRoute
