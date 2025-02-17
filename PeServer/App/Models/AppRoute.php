@@ -15,11 +15,11 @@ use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\ILoggerFactory;
 use PeServer\Core\Mvc\RouteRequest;
 use PeServer\Core\Mvc\RouteSetting;
-use PeServer\Core\Mvc\Routing;
+use PeServer\Core\Mvc\Route;
 use PeServer\Core\Store\StoreOptions;
 use PeServer\Core\Store\Stores;
 
-class AppRouting extends Routing
+class AppRoute extends Route
 {
 	/**
 	 * 生成。

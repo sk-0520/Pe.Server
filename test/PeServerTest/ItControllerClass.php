@@ -6,7 +6,7 @@ namespace PeServerTest;
 
 use Error;
 use PeServer\App\Models\AppErrorHandler;
-use PeServer\App\Models\AppRouting;
+use PeServer\App\Models\AppRoute;
 use PeServer\App\Models\AppStartup;
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\AppDatabaseCache;
@@ -76,7 +76,7 @@ use PeServerTest\TestClass;
 use PeServerTest\ItSpecialStore as ItSpecialStore;
 use PeServerTest\ItActual;
 use PeServerTest\TestRouting;
-use PeServerTest\ItRoutingWithoutMiddleware;
+use PeServerTest\ItRouteWithoutMiddleware;
 use PeServerTest\ItSetup;
 use Reflection;
 use ReflectionClass;
@@ -282,9 +282,9 @@ class ItControllerClass extends TestClass
 			$cache->clearAll();
 		}
 
-		/** @var ItRoutingWithoutMiddleware */
-		$routing = $container->new(ItRoutingWithoutMiddleware::class);
-		$routing->execute();
+		/** @var ItRouteWithoutMiddleware */
+		$route = $container->new(ItRouteWithoutMiddleware::class);
+		$route->execute();
 
 		$response = ItResponsePrinter::getResponse();
 		if ($response === null) {

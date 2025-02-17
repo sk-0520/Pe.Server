@@ -35,7 +35,7 @@ use PeServer\Core\Mvc\Middleware\CsrfMiddleware;
 use PeServer\Core\Mvc\Middleware\HttpsMiddleware;
 use PeServer\Core\Mvc\Middleware\PerformanceMiddleware;
 use PeServer\Core\Mvc\Middleware\PerformanceShutdownMiddleware;
-use PeServer\Core\Mvc\Route;
+use PeServer\Core\Mvc\RouteInformation;
 use PeServer\Core\Mvc\RouteSetting;
 use PeServer\Core\Text;
 
@@ -82,7 +82,7 @@ final readonly class AppRouteSetting extends RouteSetting
 			$globalShutdownMiddleware,
 			$actionShutdownMiddleware,
 			[
-				(new Route(Text::EMPTY, HomeController::class))
+				(new RouteInformation(Text::EMPTY, HomeController::class))
 					->addAction('about', HttpMethod::gets(), 'about')
 					->addAction('about/privacy', HttpMethod::gets(), 'privacy')
 					->addAction('about/contact', HttpMethod::gets(), 'contact_get')
@@ -93,7 +93,7 @@ final readonly class AppRouteSetting extends RouteSetting
 					->addAction('dev/streaming/ajax', HttpMethod::gets(), 'streaming_ajax', [DevelopmentMiddleware::class])
 					->addAction(':path@[a-zA-z0-9_\(\)\-]+\.[a-zA-z0-9_\(\)\-]+', HttpMethod::gets(), 'wildcard')
 				/* AUTO-FORMAT */,
-				(new Route('account', AccountController::class))
+				(new RouteInformation('account', AccountController::class))
 					->addAction('login', HttpMethod::gets(), 'login_get')
 					->addAction('login', HttpMethod::Post, 'login_post', [CsrfMiddleware::class])
 					->addAction('logout', HttpMethod::gets(), 'logout')
@@ -121,19 +121,19 @@ final readonly class AppRouteSetting extends RouteSetting
 					->addAction('user/audit-logs/page/:page_number@\d++', HttpMethod::Get, 'user_audit_logs_page', [UserAccountFilterMiddleware::class])
 					->addAction('user/audit-logs/download', HttpMethod::Get, 'user_audit_logs_download', [UserAccountFilterMiddleware::class])
 				/* AUTO-FORMAT */,
-				(new Route('password', PasswordController::class, [NotLoginMiddleware::class]))
+				(new RouteInformation('password', PasswordController::class, [NotLoginMiddleware::class]))
 					->addAction('reminder', HttpMethod::gets(), 'reminder_get')
 					->addAction('reminder', HttpMethod::Post, 'reminder_post', [CsrfMiddleware::class])
 					->addAction('reminding/:token@' . self::PASSWORD_REMINDER_TOKEN, HttpMethod::Get, 'reminding')
 					->addAction('reset/:token@' . self::PASSWORD_REMINDER_TOKEN, HttpMethod::Get, 'reset_get')
 					->addAction('reset/:token@' . self::PASSWORD_REMINDER_TOKEN, HttpMethod::Post, 'reset_post', [CsrfMiddleware::class])
 				/* AUTO-FORMAT */,
-				(new Route('plugin', PluginController::class))
+				(new RouteInformation('plugin', PluginController::class))
 					->addAction(':plugin_id@' . self::PLUGIN_ID, HttpMethod::gets(), 'detail', [PluginIdMiddleware::class])
 				/* AUTO-FORMAT */,
-				(new Route('management', ManagementController::class, [AdministratorAccountFilterMiddleware::class]))
-					->addAction('setup', HttpMethod::Get, 'setup_get', [Route::CLEAR_MIDDLEWARE, SetupAccountFilterMiddleware::class])
-					->addAction('setup', HttpMethod::Post, 'setup_post', [Route::CLEAR_MIDDLEWARE, SetupAccountFilterMiddleware::class])
+				(new RouteInformation('management', ManagementController::class, [AdministratorAccountFilterMiddleware::class]))
+					->addAction('setup', HttpMethod::Get, 'setup_get', [RouteInformation::CLEAR_MIDDLEWARE, SetupAccountFilterMiddleware::class])
+					->addAction('setup', HttpMethod::Post, 'setup_post', [RouteInformation::CLEAR_MIDDLEWARE, SetupAccountFilterMiddleware::class])
 					->addAction('environment', HttpMethod::Get, 'environment')
 					->addAction('configuration', HttpMethod::Get, 'configuration')
 					->addAction('configuration/edit', HttpMethod::Get, 'configuration_edit_get')
@@ -169,18 +169,18 @@ final readonly class AppRouteSetting extends RouteSetting
 					->addAction('log/:log_name@\w+\.log', HttpMethod::Post, 'log_detail_post', [CsrfMiddleware::class])
 					->addAction('markdown', HttpMethod::Get, 'markdown')
 				/* AUTO-FORMAT */,
-				(new Route('management/control', ManagementControlController::class, [AdministratorAccountFilterMiddleware::class]))
+				(new RouteInformation('management/control', ManagementControlController::class, [AdministratorAccountFilterMiddleware::class]))
 					->addAction('user', HttpMethod::Get, 'user_list_get')
 					->addAction('backup', HttpMethod::Get, 'backup_list_get')
 					->addAction('backup/:file_name@\w+\.zip', HttpMethod::Get, 'backup_detail_get')
 				/* AUTO-FORMAT */,
-				(new Route('tool', ToolController::class))
+				(new RouteInformation('tool', ToolController::class))
 					->addAction('base64', HttpMethod::Get, 'base64_get')
 					->addAction('base64', HttpMethod::Post, 'base64_post')
 					->addAction('json', HttpMethod::Get, 'json_get')
 					->addAction('json', HttpMethod::Post, 'json_post')
 				/* AUTO-FORMAT */,
-				(new Route('ajax', AjaxController::class, [UserAccountFilterMiddleware::class]))
+				(new RouteInformation('ajax', AjaxController::class, [UserAccountFilterMiddleware::class]))
 					->addAction('markdown', HttpMethod::Post, 'markdown')
 					->addAction('plugin-category', HttpMethod::Post, 'plugin_category_post', [CsrfMiddleware::class, AdministratorAccountFilterMiddleware::class])
 					->addAction('plugin-category/:plugin_category_id@.+', HttpMethod::Patch, 'plugin_category_patch', [CsrfMiddleware::class, AdministratorAccountFilterMiddleware::class])
@@ -189,23 +189,23 @@ final readonly class AppRouteSetting extends RouteSetting
 					->addAction('feedback/:sequence@\d++', HttpMethod::Delete, 'feedback_delete', [CsrfMiddleware::class, AdministratorAccountFilterMiddleware::class])
 					->addAction('crash-report/:sequence@\d++', HttpMethod::Delete, 'crash_report_delete', [CsrfMiddleware::class, AdministratorAccountFilterMiddleware::class])
 				/* AUTO-FORMAT */,
-				(new Route('api/development', DevelopmentApiController::class, [DevelopmentMiddleware::class]))
+				(new RouteInformation('api/development', DevelopmentApiController::class, [DevelopmentMiddleware::class]))
 					->addAction('initialize', HttpMethod::Post, 'initialize')
 					->addAction('administrator', HttpMethod::Post, 'administrator')
 				/* AUTO-FORMAT */,
-				(new Route('api/plugin', PluginApiController::class, [ApiCorsMiddleware::class]))
+				(new RouteInformation('api/plugin', PluginApiController::class, [ApiCorsMiddleware::class]))
 					->addAction('exists', HttpMethod::Post, 'exists')
 					->addAction('generate-plugin-id', HttpMethod::gets(), 'generate_plugin_id')
 					->addAction('information', HttpMethod::Post, 'information')
 				/* AUTO-FORMAT */,
-				(new Route('api/application', ApplicationApiController::class, [ApiCorsMiddleware::class]))
+				(new RouteInformation('api/application', ApplicationApiController::class, [ApiCorsMiddleware::class]))
 					->addAction('feedback', HttpMethod::Post, 'feedback')
 					->addAction('crash-report', HttpMethod::Post, 'crash_report')
 					->addAction('version/update', HttpMethod::Get, 'version_update')
 				/* AUTO-FORMAT */,
-				(new Route('api/account', AccountApiController::class, [ApiCorsMiddleware::class, ApiUserAccountFilterMiddleware::class, ApiAdministratorAccountFilterMiddleware::class]))
+				(new RouteInformation('api/account', AccountApiController::class, [ApiCorsMiddleware::class, ApiUserAccountFilterMiddleware::class, ApiAdministratorAccountFilterMiddleware::class]))
 				/* AUTO-FORMAT */,
-				(new Route('api/administrator', AdministratorApiController::class, [ApiCorsMiddleware::class, ApiAdministratorAccountFilterMiddleware::class]))
+				(new RouteInformation('api/administrator', AdministratorApiController::class, [ApiCorsMiddleware::class, ApiAdministratorAccountFilterMiddleware::class]))
 					->addAction('deploy/:mode@.+', HttpMethod::Post, 'deploy')
 					->addAction('pe/version', HttpMethod::Post, 'pe_version')
 				/* AUTO-FORMAT */,

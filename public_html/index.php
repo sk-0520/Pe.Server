@@ -8,7 +8,7 @@ require_once(__DIR__ . '/../PeServer/Core/AutoLoader.php');
 
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\AppRouteSetting;
-use PeServer\App\Models\AppRouting;
+use PeServer\App\Models\AppRoute;
 use PeServer\App\Models\AppSpecialStore;
 use PeServer\App\Models\AppStartup;
 use PeServer\App\Models\Initializer;
@@ -64,5 +64,5 @@ $container = $startup->setup(
 /** @var IDiRegisterContainer */
 $scope = $container->new(IDiRegisterContainer::class);
 
-$routing = $scope->new(AppRouting::class); // new AppRouting($container->get(RouteRequest::class), new AppRouteSetting(), AppConfiguration::$stores);
-$routing->execute();
+$route = $scope->new(AppRoute::class); // new AppRouting($container->get(RouteRequest::class), new AppRouteSetting(), AppConfiguration::$stores);
+$route->execute();
