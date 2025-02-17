@@ -193,6 +193,35 @@ class AccessTest extends TestClass
 		$this->fail();
 	}
 
+	#[TestWith([" ", " ", false])]
+	#[TestWith([" a ", " a ", false])]
+	#[TestWith(["a", " a ", true])]
+	public function test_getNonEmptyString(string $expected, string $input, bool $trim)
+	{
+		$actual = Access::getNonEmptyString([$input], 0, $trim);
+		$this->assertSame($expected, $actual);
+	}
+
+	public function test_getNonEmptyString_default()
+	{
+		$actual = Access::getNonEmptyString([" a b c "], 0);
+		$this->assertSame("a b c", $actual);
+	}
+
+	public function test_getNonEmptyString_key_throw()
+	{
+		$this->expectException(AccessKeyNotFoundException::class);
+		Access::getNonEmptyString([' str '], 1);
+		$this->fail();
+	}
+
+	public function test_getNonEmptyString_type_throw_empty()
+	{
+		$this->expectException(AccessInvalidLogicalTypeException::class);
+		Access::getNonEmptyString([" "], 0);
+		$this->fail();
+	}
+
 	public function test_getObject()
 	{
 		$actual1 = Access::getObject([new AccessTestA1()], 0);
@@ -318,7 +347,6 @@ class AccessTest extends TestClass
 		$this->fail();
 	}
 
-
 	public function test_getArrayOfPositiveInteger()
 	{
 		$actual = Access::getArrayOfPositiveInteger([[1, 2, 3]], 0);
@@ -377,6 +405,27 @@ class AccessTest extends TestClass
 	{
 		$this->expectException(AccessValueTypeException::class);
 		Access::getArrayOfString($array, $key);
+		$this->fail();
+	}
+
+	public function test_getArrayOfNonEmptyString()
+	{
+		$actual = Access::getArrayOfNonEmptyString([[" a", "b ", " c "]], 0);
+		$this->assertSame(["a", "b", "c"], $actual);
+
+		$this->isEmpty(Access::getArrayOfNonEmptyString([[]], 0));
+	}
+
+	#[TestWith([AccessInvalidLogicalTypeException::class, [[" "]], 0])]
+	#[TestWith([AccessValueTypeException::class, [[3.14, 10]], 0])]
+	#[TestWith([AccessValueTypeException::class, [[10, 3.14]], 0])]
+	#[TestWith([AccessValueTypeException::class, [[10, true]], 0])]
+	#[TestWith([AccessValueTypeException::class, [[10, 'str']], 0])]
+	#[TestWith([AccessValueTypeException::class, [[10, null]], 0])]
+	public function test_getArrayOfNonEmptyString_type_throw(string $expectedException, array $array, string|int $key)
+	{
+		$this->expectException($expectedException);
+		Access::getArrayOfNonEmptyString($array, $key);
 		$this->fail();
 	}
 

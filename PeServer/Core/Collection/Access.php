@@ -178,6 +178,29 @@ class Access
 	}
 
 	/**
+	 * 配列から 非空文字列 値を取得。
+	 * @param array<mixed>|ArrayAccess<array-key,mixed> $array
+	 * @param array-key $key
+	 * @param bool $trim 文字列をトリムするか。
+	 * @return non-empty-string
+	 * @throws AccessKeyNotFoundException キーが見つからない。
+	 * @throws AccessValueTypeException 値の方が違う。
+	 */
+	public static function getNonEmptyString(array|ArrayAccess $array, string|int $key, bool $trim = true): string
+	{
+		$value = self::getString($array, $key);
+		if ($trim) {
+			$value = Text::trim($value);
+		}
+
+		if (Text::isNullOrEmpty($value)) {
+			self::throwInvalidLogicalType($key, $value);
+		}
+
+		return $value;
+	}
+
+	/**
 	 * `object` 判定。
 	 * @template T of object
 	 * @param mixed $value
@@ -363,6 +386,40 @@ class Access
 		}
 
 		return $values;
+	}
+
+	/**
+	 * 配列から 非空文字列 配列を取得。
+	 * @param array<mixed>|ArrayAccess<array-key,mixed> $array
+	 * @param array-key $key
+	 * @param bool $trim 文字列をトリムするか。
+	 * @return non-empty-string[]
+	 * @throws AccessKeyNotFoundException キーが見つからない。
+	 * @throws AccessValueTypeException 値の方が違う。
+	 */
+	public static function getArrayOfNonEmptyString(array|ArrayAccess $array, string|int $key, bool $trim = true): array
+	{
+		$values = self::getArray($array, $key);
+		foreach ($values as $key => $value) {
+			if (!is_string($value)) {
+				self::throwInvalidType($key, $value);
+			}
+		}
+
+		$result = [];
+		foreach ($values as $key => $value) {
+			if ($trim) {
+				$value = Text::trim($value);
+			}
+
+			if (Text::isNullOrEmpty($value)) {
+				self::throwInvalidLogicalType($key, $value);
+			}
+
+			$result[$key] = $value;
+		}
+
+		return $result;
 	}
 
 	/**
