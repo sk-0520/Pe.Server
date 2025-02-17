@@ -7,7 +7,7 @@ namespace PeServer\App\Controllers\Api;
 use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Mvc\Result\IActionResult;
 use PeServer\Core\Mvc\LogicCallMode;
-use PeServer\Core\Mvc\ControllerArgument;
+use PeServer\Core\Mvc\Controller\ControllerArgument;
 use PeServer\App\Controllers\Api\ApiControllerBase;
 use PeServer\App\Models\Domain\Api\PluginApi\PluginApiExistsLogic;
 use PeServer\App\Models\Domain\Api\PluginApi\PluginApiInformationLogic;

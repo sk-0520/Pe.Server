@@ -13,7 +13,7 @@ use PeServer\App\Models\Domain\Page\Ajax\AjaxPluginCategoryCreateLogic;
 use PeServer\App\Models\Domain\Page\Ajax\AjaxPluginCategoryDeleteLogic;
 use PeServer\App\Models\Domain\Page\Ajax\AjaxPluginCategoryUpdateLogic;
 use PeServer\Core\Http\HttpRequest;
-use PeServer\Core\Mvc\ControllerArgument;
+use PeServer\Core\Mvc\Controller\ControllerArgument;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\Result\IActionResult;
 

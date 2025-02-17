@@ -6,7 +6,7 @@ namespace PeServer\App\Controllers\Page;
 
 use PeServer\App\Models\SessionKey;
 use PeServer\Core\Mvc\Template\TemplateParameter;
-use PeServer\Core\Mvc\ControllerArgument;
+use PeServer\Core\Mvc\Controller\ControllerArgument;
 use PeServer\Core\Mvc\Result\ViewActionResult;
 use PeServer\App\Controllers\DomainControllerBase;
 use PeServer\App\Models\Domain\Page\PageLogicBase;

@@ -30,7 +30,7 @@ use PeServer\App\Models\Domain\Page\Management\ManagementVacuumAccessLogLogic;
 use PeServer\App\Models\Domain\Page\Management\ManagementVersionLogic;
 use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Http\HttpStatus;
-use PeServer\Core\Mvc\ControllerArgument;
+use PeServer\Core\Mvc\Controller\ControllerArgument;
 use PeServer\Core\Mvc\LogicCallMode;
 use PeServer\Core\Mvc\Result\IActionResult;
 use PeServer\Core\Mvc\Template\TemplateParameter;

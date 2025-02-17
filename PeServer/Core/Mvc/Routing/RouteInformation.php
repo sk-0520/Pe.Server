@@ -11,7 +11,7 @@ use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Http\RequestPath;
 use PeServer\Core\Mvc\Action\Action;
 use PeServer\Core\Mvc\Action\ActionSetting;
-use PeServer\Core\Mvc\ControllerBase;
+use PeServer\Core\Mvc\Controller\ControllerBase;
 use PeServer\Core\Mvc\Middleware\IMiddleware;
 use PeServer\Core\Mvc\Middleware\IShutdownMiddleware;
 use PeServer\Core\Regex;

@@ -6,7 +6,7 @@ namespace PeServer\Core\Mvc\Routing;
 
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mvc\Action\ActionSetting;
-use PeServer\Core\Mvc\ControllerBase;
+use PeServer\Core\Mvc\Controller\ControllerBase;
 
 /**
  * ルーティングのアクション設定。
