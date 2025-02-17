@@ -25,7 +25,7 @@ use PeServer\App\Models\Domain\UserLevel;
 use PeServer\App\Models\SessionKey;
 use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Mvc\Controller\ControllerArgument;
-use PeServer\Core\Mvc\LogicCallMode;
+use PeServer\Core\Mvc\Logic\LogicCallMode;
 use PeServer\Core\Mvc\Result\IActionResult;
 use PeServer\Core\Throws\InvalidOperationException;
 

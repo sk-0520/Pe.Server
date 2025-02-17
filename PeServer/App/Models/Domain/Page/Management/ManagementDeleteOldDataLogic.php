@@ -7,8 +7,8 @@ namespace PeServer\App\Models\Domain\Page\Management;
 use PeServer\App\Models\AppDatabaseCache;
 use PeServer\App\Models\Domain\AppEraser;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
-use PeServer\Core\Mvc\LogicCallMode;
-use PeServer\Core\Mvc\LogicParameter;
+use PeServer\Core\Mvc\Logic\LogicCallMode;
+use PeServer\Core\Mvc\Logic\LogicParameter;
 use PeServer\Core\Stopwatch;
 
 class ManagementDeleteOldDataLogic extends PageLogicBase

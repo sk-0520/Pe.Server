@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Domain\Api\PluginApi;
 
 use PeServer\App\Models\AppDatabaseCache;
-use PeServer\Core\Mvc\LogicCallMode;
-use PeServer\Core\Mvc\LogicParameter;
+use PeServer\Core\Mvc\Logic\LogicCallMode;
+use PeServer\Core\Mvc\Logic\LogicParameter;
 use PeServer\App\Models\Domain\Api\ApiLogicBase;
 use PeServer\App\Models\ResponseJson;
 use PeServer\Core\Collection\Arr;

@@ -10,8 +10,8 @@ use PeServer\App\Models\Cache\PluginCacheItem;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\Core\Collection\Arr;
 use PeServer\Core\Collection\Collections;
-use PeServer\Core\Mvc\LogicCallMode;
-use PeServer\Core\Mvc\LogicParameter;
+use PeServer\Core\Mvc\Logic\LogicCallMode;
+use PeServer\Core\Mvc\Logic\LogicParameter;
 use PeServer\Core\Uuid;
 
 class PluginDetailLogic extends PageLogicBase

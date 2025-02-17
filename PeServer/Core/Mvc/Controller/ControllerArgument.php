@@ -6,7 +6,7 @@ namespace PeServer\Core\Mvc\Controller;
 
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\ILoggerFactory;
-use PeServer\Core\Mvc\ILogicFactory;
+use PeServer\Core\Mvc\Logic\ILogicFactory;
 use PeServer\Core\Mvc\Template\ITemplateFactory;
 use PeServer\Core\ProgramContext;
 use PeServer\Core\Store\Stores;

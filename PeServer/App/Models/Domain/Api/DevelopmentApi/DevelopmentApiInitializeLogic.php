@@ -14,8 +14,8 @@ use PeServer\Core\Log\ILoggerFactory;
 use PeServer\Core\Log\Logging;
 use PeServer\Core\Mime;
 use PeServer\Core\Mvc\ILogicFactory;
-use PeServer\Core\Mvc\LogicCallMode;
-use PeServer\Core\Mvc\LogicParameter;
+use PeServer\Core\Mvc\Logic\LogicCallMode;
+use PeServer\Core\Mvc\Logic\LogicParameter;
 
 class DevelopmentApiInitializeLogic extends ApiLogicBase
 {

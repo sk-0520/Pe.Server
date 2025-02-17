@@ -10,7 +10,7 @@ use PeServer\App\Models\Domain\Page\Password\PasswordReminderLogic;
 use PeServer\App\Models\Domain\Page\Password\PasswordRemindingLogic;
 use PeServer\App\Models\Domain\Page\Password\PasswordResetLogic;
 use PeServer\Core\Mvc\Controller\ControllerArgument;
-use PeServer\Core\Mvc\LogicCallMode;
+use PeServer\Core\Mvc\Logic\LogicCallMode;
 use PeServer\Core\Mvc\Result\IActionResult;
 use PeServer\Core\Throws\InvalidOperationException;
 

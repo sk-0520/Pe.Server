@@ -6,9 +6,9 @@ namespace PeServer\App\Models\Domain\Api\DevelopmentApi;
 
 use PeServer\Core\Mime;
 use PeServer\Core\Cryptography;
-use PeServer\Core\Mvc\LogicCallMode;
+use PeServer\Core\Mvc\Logic\LogicCallMode;
 use PeServer\App\Models\ResponseJson;
-use PeServer\Core\Mvc\LogicParameter;
+use PeServer\Core\Mvc\Logic\LogicParameter;
 use PeServer\App\Models\AppCryptography;
 use PeServer\App\Models\Domain\UserLevel;
 use PeServer\App\Models\Domain\UserState;

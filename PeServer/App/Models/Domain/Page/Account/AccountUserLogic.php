@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Domain\Page\Account;
 
 use PeServer\Core\Text;
-use PeServer\Core\Mvc\LogicCallMode;
-use PeServer\Core\Mvc\LogicParameter;
+use PeServer\Core\Mvc\Logic\LogicCallMode;
+use PeServer\Core\Mvc\Logic\LogicParameter;
 use PeServer\App\Models\SessionKey;
 use PeServer\App\Models\AppCryptography;
 use PeServer\App\Models\Domain\Page\PageLogicBase;

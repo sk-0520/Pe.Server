@@ -6,7 +6,7 @@ namespace PeServer\App\Controllers\Page;
 
 use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Mvc\Result\IActionResult;
-use PeServer\Core\Mvc\LogicCallMode;
+use PeServer\Core\Mvc\Logic\LogicCallMode;
 use PeServer\Core\Mvc\Controller\ControllerArgument;
 use PeServer\App\Controllers\Page\PageControllerBase;
 use PeServer\App\Models\Domain\Page\Plugin\PluginIndexLogic;

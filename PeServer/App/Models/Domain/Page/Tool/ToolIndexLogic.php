@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Domain\Page\Tool;
 
 use PeServer\App\Models\Domain\Page\PageLogicBase;
-use PeServer\Core\Mvc\LogicCallMode;
-use PeServer\Core\Mvc\LogicParameter;
+use PeServer\Core\Mvc\Logic\LogicCallMode;
+use PeServer\Core\Mvc\Logic\LogicParameter;
 
 class ToolIndexLogic extends PageLogicBase
 {

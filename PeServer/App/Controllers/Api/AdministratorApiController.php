@@ -9,7 +9,7 @@ use PeServer\App\Models\Domain\Api\AdministratorApi\AdministratorApiDeployLogic;
 use PeServer\App\Models\Domain\Api\AdministratorApi\AdministratorApiPeVersionLogic;
 use PeServer\App\Models\Domain\AppArchiver;
 use PeServer\Core\Mvc\Controller\ControllerArgument;
-use PeServer\Core\Mvc\LogicCallMode;
+use PeServer\Core\Mvc\Logic\LogicCallMode;
 use PeServer\Core\Mvc\Result\IActionResult;
 
 /**

@@ -8,7 +8,7 @@ use PeServer\App\Models\Domain\DomainLogicBase;
 use PeServer\App\Models\IAuditUserInfo;
 use PeServer\App\Models\Data\SessionAccount;
 use PeServer\App\Models\SessionKey;
-use PeServer\Core\Mvc\LogicParameter;
+use PeServer\Core\Mvc\Logic\LogicParameter;
 
 abstract class PageLogicBase extends DomainLogicBase
 {

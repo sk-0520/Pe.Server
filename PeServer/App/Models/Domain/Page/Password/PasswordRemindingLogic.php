@@ -13,8 +13,8 @@ use PeServer\App\Models\Domain\Page\SessionAnonymousTrait;
 use PeServer\App\Models\SessionKey;
 use PeServer\Core\Collection\Arr;
 use PeServer\Core\Http\HttpStatus;
-use PeServer\Core\Mvc\LogicCallMode;
-use PeServer\Core\Mvc\LogicParameter;
+use PeServer\Core\Mvc\Logic\LogicCallMode;
+use PeServer\Core\Mvc\Logic\LogicParameter;
 use PeServer\Core\Text;
 
 class PasswordRemindingLogic extends PageLogicBase

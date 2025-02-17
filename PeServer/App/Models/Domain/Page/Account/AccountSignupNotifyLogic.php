@@ -12,8 +12,8 @@ use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\App\Models\Domain\Page\SessionAnonymousTrait;
 use PeServer\App\Models\SessionKey;
 use PeServer\Core\Http\HttpStatus;
-use PeServer\Core\Mvc\LogicCallMode;
-use PeServer\Core\Mvc\LogicParameter;
+use PeServer\Core\Mvc\Logic\LogicCallMode;
+use PeServer\Core\Mvc\Logic\LogicParameter;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\HttpStatusException;
 

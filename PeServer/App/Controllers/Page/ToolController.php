@@ -9,7 +9,7 @@ use PeServer\App\Models\Domain\Page\Tool\ToolBase64Logic;
 use PeServer\App\Models\Domain\Page\Tool\ToolJsonLogic;
 use PeServer\App\Models\Domain\Page\Tool\ToolIndexLogic;
 use PeServer\Core\Mvc\Controller\ControllerArgument;
-use PeServer\Core\Mvc\LogicCallMode;
+use PeServer\Core\Mvc\Logic\LogicCallMode;
 use PeServer\Core\Mvc\Result\IActionResult;
 
 /**
