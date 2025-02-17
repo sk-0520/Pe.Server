@@ -55,7 +55,7 @@ use PeServer\Core\IO\File;
 use PeServer\Core\Log\LoggerFactory;
 use PeServer\Core\Log\NullLogger;
 use PeServer\Core\Mvc\IResponsePrinterFactory;
-use PeServer\Core\Mvc\ResponsePrinter;
+use PeServer\Core\Mvc\Response\ResponsePrinter;
 use PeServer\Core\Mvc\ResponsePrinterFactory;
 use PeServer\Core\Mvc\Template\TemplateStore;
 use PeServer\Core\Store\TemporaryStore;

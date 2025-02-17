@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core\Mvc;
+namespace PeServer\Core\Mvc\Response;
 
 use PeServer\Core\DI\DiFactoryBase;
 use PeServer\Core\DI\DiFactoryTrait;

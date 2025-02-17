@@ -6,7 +6,7 @@ namespace PeServerTest;
 
 use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Http\HttpResponse;
-use PeServer\Core\Mvc\ResponsePrinter;
+use PeServer\Core\Mvc\Response\ResponsePrinter;
 
 class ItResponsePrinter extends ResponsePrinter
 {

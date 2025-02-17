@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core\Mvc;
+namespace PeServer\Core\Mvc\Response;
 
 use PeServer\Core\Binary;
 use PeServer\Core\Http\HttpMethod;

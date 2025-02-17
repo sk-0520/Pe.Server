@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core\Mvc;
+namespace PeServer\Core\Mvc\Response;
 
 use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Http\HttpResponse;
@@ -10,7 +10,7 @@ use PeServer\Core\Http\HttpResponse;
 /**
  * ResponsePrinter生成器。
  *
- * @see \PeServer\Core\Mvc\ResponsePrinter
+ * @see \PeServer\Core\Mvc\Response\ResponsePrinter
  *
  */
 interface IResponsePrinterFactory
