@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Log;
 
 use PeServer\Core\Code;
+use PeServer\Core\Collection\Access;
 use PeServer\Core\Collection\Arr;
 use PeServer\Core\IO\Directory;
 use PeServer\Core\IO\File;
@@ -52,17 +53,15 @@ class FileLogger extends LoggerBase
 	{
 		parent::__construct($logging, $options);
 
-		$directoryPath = $this->options->configuration['directory'] ?? Text::EMPTY;
-		Throws::throwIfNullOrWhiteSpace($directoryPath);
+		$directoryPath = Access::getString($this->options->configuration, 'directory');
+		Throws::throwIfNullOrWhiteSpace($directoryPath, Code::nameof($directoryPath));
 		$this->directoryPath = $directoryPath;
 
-		$baseFileName = Code::toLiteralString($this->options->configuration['name'] ?? Text::EMPTY);
-		Throws::throwIfNullOrWhiteSpace($baseFileName);
+		$baseFileName = Code::toLiteralString(Access::getString($this->options->configuration, 'name'));
+		Throws::throwIfNullOrWhiteSpace($baseFileName, Code::nameof($baseFileName));
 		$this->baseFileName = $baseFileName;
 
-		/** @phpstan-var non-negative-int */
-		$count = $this->options->configuration['count'] ?? 0;
-		Throws::throwIf(0 <= $count); //@phpstan-ignore-line [DOCTYPE]
+		$count = Access::getUInteger($this->options->configuration, 'count');
 		$this->cleanup($count);
 	}
 

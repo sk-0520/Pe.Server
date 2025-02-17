@@ -17,11 +17,23 @@ class TestDirectory
 	) {
 	}
 
+	/**
+	 * テストメソッド内ファイル名を生成。
+	 *
+	 * @param string $name
+	 * @return string ファイルパス。
+	 */
 	public function newPath(string $name): string
 	{
 		return Path::combine($this->path, $name);
 	}
 
+	/**
+	 * テストメソッド内ディレクトリを生成。
+	 *
+	 * @param string $name
+	 * @return string ディレクトリパス。
+	 */
 	public function createDirectory(string $name): string
 	{
 		$path = $this->newPath($name);
@@ -30,6 +42,13 @@ class TestDirectory
 		return $path;
 	}
 
+	/**
+	 * テストメソッド内ファイルを生成。
+	 *
+	 * @param string $name
+	 * @param Binary|null $data
+	 * @return string ファイルパス。
+	 */
 	public function createFile(string $name, ?Binary $data = null): string
 	{
 		$path = $this->newPath($name);
@@ -43,6 +62,12 @@ class TestDirectory
 		return $path;
 	}
 
+	/**
+	 * テストメソッド内ストリームを生成。
+	 *
+	 * @param string $name
+	 * @return string ファイルパス。
+	 */
 	public function createStream(string $name): Stream
 	{
 		$path = $this->newPath($name);

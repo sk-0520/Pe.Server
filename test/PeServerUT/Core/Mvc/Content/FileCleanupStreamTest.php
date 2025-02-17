@@ -13,12 +13,74 @@ use PeServer\Core\Mvc\Content\ChunkedContentBase;
 use PeServer\Core\Mvc\Content\FileCleanupStream;
 use PeServer\Core\OutputBuffer;
 use PeServer\Core\Throws\IOException;
+use PeServer\Core\Throws\NotSupportedException;
 use PeServer\Core\Throws\StreamException;
 use PeServerTest\TestClass;
 
 class FileCleanupStreamTest extends TestClass
 {
 	#region function
+
+	public function test_new_throw()
+	{
+		$this->expectException(NotSupportedException::class);
+		FileCleanupStream::new("", "");
+	}
+
+	public function test_create_throw()
+	{
+		$this->expectException(NotSupportedException::class);
+		FileCleanupStream::create("");
+	}
+
+	public function test_open_throw()
+	{
+		$this->expectException(NotSupportedException::class);
+		FileCleanupStream::open("", FileCleanupStream::MODE_READ);
+	}
+
+	public function test_openOrCreate_throw()
+	{
+		$this->expectException(NotSupportedException::class);
+		FileCleanupStream::openOrCreate("", FileCleanupStream::MODE_READ);
+	}
+
+	public function test_openStandardInput_throw()
+	{
+		$this->expectException(NotSupportedException::class);
+		FileCleanupStream::openStandardInput();
+	}
+
+	public function test_openStandardOutput_throw()
+	{
+		$this->expectException(NotSupportedException::class);
+		FileCleanupStream::openStandardOutput();
+	}
+
+	public function test_openStandardError_throw()
+	{
+		$this->expectException(NotSupportedException::class);
+		FileCleanupStream::openStandardError();
+	}
+
+	public function test_openMemory_throw()
+	{
+		$this->expectException(NotSupportedException::class);
+		FileCleanupStream::openMemory();
+	}
+
+	public function test_openTemporary_throw()
+	{
+		$this->expectException(NotSupportedException::class);
+		FileCleanupStream::openTemporary();
+	}
+
+	public function test_createTemporaryFile_throw()
+	{
+		$this->expectException(NotSupportedException::class);
+		$stream = FileCleanupStream::createTemporaryFile();
+	}
+
 
 	public function test_read_throw()
 	{

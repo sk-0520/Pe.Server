@@ -30,8 +30,8 @@ class AppArchiver
 {
 	#region define
 
-	/** 保持ファイル数。 */
-	private const MAX_COUNT = 180;
+	/** 保持ファイル数。 半年分と適当にやる分 180 個, 理屈の上で 1 年分じゃないぞー */
+	private const MAX_COUNT = 183 + 180;
 
 	#endregion
 

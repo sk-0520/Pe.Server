@@ -54,7 +54,7 @@ abstract class File
 	 */
 	public static function getFileSize(string $path): int
 	{
-		$result = ErrorHandler::trap(fn () => filesize($path));
+		$result = ErrorHandler::trap(fn() => filesize($path));
 		if ($result->isFailureOrFalse()) {
 			throw new IOException();
 		}
@@ -72,7 +72,7 @@ abstract class File
 	 */
 	public static function readContent(string $path): Binary
 	{
-		$result = ErrorHandler::trap(fn () => file_get_contents($path));
+		$result = ErrorHandler::trap(fn() => file_get_contents($path));
 		if ($result->isFailureOrFalse()) {
 			throw new IOException($path);
 		}
@@ -93,7 +93,7 @@ abstract class File
 	{
 		$flag = $append ? FILE_APPEND : 0;
 
-		$result = ErrorHandler::trap(fn () => file_put_contents($path, $data->raw, LOCK_EX | $flag));
+		$result = ErrorHandler::trap(fn() => file_put_contents($path, $data->raw, LOCK_EX | $flag));
 		if ($result->isFailureOrFalse()) {
 			throw new IOException($path);
 		}
@@ -203,7 +203,7 @@ abstract class File
 	 */
 	public static function removeFile(string $filePath): void
 	{
-		$result = ErrorHandler::trap(fn () => unlink($filePath));
+		$result = ErrorHandler::trap(fn() => unlink($filePath));
 		if ($result->isFailureOrFalse()) {
 			throw new IOException();
 		}
@@ -221,7 +221,7 @@ abstract class File
 			return false;
 		}
 
-		$result = ErrorHandler::trap(fn () => unlink($filePath));
+		$result = ErrorHandler::trap(fn() => unlink($filePath));
 		if (!$result->success) {
 			return false;
 		}
@@ -267,29 +267,6 @@ abstract class File
 		}
 
 		return self::createUniqueFilePath(Directory::getTemporaryDirectory(), $prefix);
-	}
-
-	/**
-	 * 一時ファイルのストリーム作成。
-	 *
-	 * メモリ・一時ファイル兼メモリのストリームを使用する場合は、
-	 * `Stream::openMemory`, `Stream::openTemporary` を参照のこと。
-	 *
-	 * `tmpfile` ラッパー。
-	 *
-	 * @param Encoding|null $encoding
-	 * @return Stream
-	 * @throws IOException
-	 * @see https://www.php.net/manual/function.tmpfile.php
-	 */
-	public static function createTemporaryFileStream(?Encoding $encoding = null): Stream
-	{
-		$resource = tmpfile();
-		if ($resource === false) {
-			throw new IOException();
-		}
-
-		return new Stream($resource, $encoding);
 	}
 
 	#endregion

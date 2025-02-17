@@ -9,6 +9,8 @@ use PeServer\Core\Errors\ErrorHandler;
 use PeServer\Core\IO\File;
 use PeServer\Core\IO\Stream;
 use PeServer\Core\Throws\IOException;
+use PeServer\Core\Throws\NotImplementedException;
+use PeServer\Core\Throws\NotSupportedException;
 
 /**
  * 処理終了後に該当ファイルを削除するストリーム。
@@ -53,6 +55,32 @@ final class FileCleanupStream extends Stream
 	#endregion
 
 	#region Stream
+
+	public static function new(string $path, string $mode, ?Encoding $encoding = null): static
+	{
+		throw new NotSupportedException();
+	}
+
+	public static function openStandardInput(?Encoding $encoding = null): self
+	{
+		throw new NotSupportedException();
+	}
+
+	public static function openStandardOutput(?Encoding $encoding = null): self
+	{
+		throw new NotSupportedException();
+	}
+
+	public static function openStandardError(?Encoding $encoding = null): self
+	{
+		throw new NotSupportedException();
+	}
+
+	public static function createTemporaryFile(?Encoding $encoding = null): static
+	{
+		throw new NotSupportedException();
+	}
+
 
 	protected function disposeImpl(): void
 	{

@@ -22,7 +22,7 @@ readonly class ArchiveEntry
 		public string $path,
 		public string $entry
 	) {
-		Throws::throwIfNullOrWhiteSpace($path, '$path', ArgumentException::class); // @phpstan-ignore staticMethod.alreadyNarrowedType
-		Throws::throwIfNullOrWhiteSpace($entry, '$entry', ArgumentException::class); // @phpstan-ignore staticMethod.alreadyNarrowedType
+		Throws::throwIfNullOrWhiteSpace($path, Code::nameof($path), ArgumentException::class); // @phpstan-ignore staticMethod.alreadyNarrowedType
+		Throws::throwIfNullOrWhiteSpace($entry, Code::nameof($entry), ArgumentException::class); // @phpstan-ignore staticMethod.alreadyNarrowedType
 	}
 }

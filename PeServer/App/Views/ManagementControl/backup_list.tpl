@@ -13,7 +13,7 @@
 			<ol>
 				{foreach from=$values.items item=item}
 					<li>
-						<a href="/management/control/backup/{$item.name}">{$item.name}</a>
+						<a class="monospace" href="/management/control/backup/{$item.name}">{$item.name}</a>
 						<span title="{$item.size} byte">{$item.human_size}</span>
 					</li>
 				{foreachelse}

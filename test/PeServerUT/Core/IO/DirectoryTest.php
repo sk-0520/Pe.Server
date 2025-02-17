@@ -12,6 +12,7 @@ use PeServer\Core\IO\File;
 use PeServer\Core\IO\IOUtility;
 use PeServer\Core\IO\Path;
 use PeServer\Core\Text;
+use PeServer\Core\Throws\IOException;
 
 class DirectoryTest extends TestClass
 {
@@ -88,12 +89,12 @@ class DirectoryTest extends TestClass
 		$testDir = $this->testDir();
 		$this->makeTree($testDir->path);
 
-		$actual1 = Arr::sortByValue(Arr::map(Directory::getChildren($testDir->path, false), fn ($a) => Text::substring($a, Text::getLength($testDir->path) + 1)), OrderBy::Ascending);
+		$actual1 = Arr::sortByValue(Arr::map(Directory::getChildren($testDir->path, false), fn($a) => Text::substring($a, Text::getLength($testDir->path) + 1)), OrderBy::Ascending);
 		$this->assertCount(2, $actual1);
 		$this->assertSame('a', $actual1[0]);
 		$this->assertSame('a.txt', $actual1[1]);
 
-		$actual2 = Arr::sortByValue(Arr::map(Directory::getChildren($testDir->path, true), fn ($a) => Text::substring($a, Text::getLength($testDir->path) + 1)), OrderBy::Ascending);
+		$actual2 = Arr::sortByValue(Arr::map(Directory::getChildren($testDir->path, true), fn($a) => Text::substring($a, Text::getLength($testDir->path) + 1)), OrderBy::Ascending);
 		$this->assertCount(6, $actual2);
 		$this->assertSame('a', $actual2[0]);
 		$this->assertSame('a.txt', $actual2[1]);
@@ -116,11 +117,11 @@ class DirectoryTest extends TestClass
 		$testDir = $this->testDir();
 		$this->makeTree($testDir->path);
 
-		$actual1 = Arr::sortByValue(Arr::map(Directory::getFiles($testDir->path, false), fn ($a) => Text::substring($a, Text::getLength($testDir->path) + 1)), OrderBy::Ascending);
+		$actual1 = Arr::sortByValue(Arr::map(Directory::getFiles($testDir->path, false), fn($a) => Text::substring($a, Text::getLength($testDir->path) + 1)), OrderBy::Ascending);
 		$this->assertCount(1, $actual1);
 		$this->assertSame('a.txt', $actual1[0]);
 
-		$actual2 = Arr::sortByValue(Arr::map(Directory::getFiles($testDir->path, true), fn ($a) => Text::substring($a, Text::getLength($testDir->path) + 1)), OrderBy::Ascending);
+		$actual2 = Arr::sortByValue(Arr::map(Directory::getFiles($testDir->path, true), fn($a) => Text::substring($a, Text::getLength($testDir->path) + 1)), OrderBy::Ascending);
 		$this->assertCount(3, $actual2);
 		$this->assertSame('a.txt', $actual2[0]);
 		$this->assertSame("a{$sep}b.txt", $actual2[1]);
@@ -133,14 +134,104 @@ class DirectoryTest extends TestClass
 		$testDir = $this->testDir();
 		$this->makeTree($testDir->path);
 
-		$actual1 = Arr::sortByValue(Arr::map(Directory::getDirectories($testDir->path, false), fn ($a) => Text::substring($a, Text::getLength($testDir->path) + 1)), OrderBy::Ascending);
+		$actual1 = Arr::sortByValue(Arr::map(Directory::getDirectories($testDir->path, false), fn($a) => Text::substring($a, Text::getLength($testDir->path) + 1)), OrderBy::Ascending);
 		$this->assertCount(1, $actual1);
 		$this->assertSame('a', $actual1[0]);
 
-		$actual2 = Arr::sortByValue(Arr::map(Directory::getDirectories($testDir->path, true), fn ($a) => Text::substring($a, Text::getLength($testDir->path) + 1)), OrderBy::Ascending);
+		$actual2 = Arr::sortByValue(Arr::map(Directory::getDirectories($testDir->path, true), fn($a) => Text::substring($a, Text::getLength($testDir->path) + 1)), OrderBy::Ascending);
 		$this->assertCount(3, $actual2);
 		$this->assertSame('a', $actual2[0]);
 		$this->assertSame("a{$sep}b", $actual2[1]);
 		$this->assertSame("a{$sep}b{$sep}z", $actual2[2]);
+	}
+
+	public function test_find()
+	{
+		$testDir = $this->testDir();
+		$this->makeTree($testDir->path);
+
+		$expected = ["a.txt"];
+		$actual =  Arr::map(Directory::find($testDir->path, "*.txt"), fn($a) => Text::replace($a, "\\", "/"));
+		$expecteds = Arr::map($expected, fn($a) => Text::replace(Path::combine($testDir->path, $a), "\\", "/"));
+		$this->assertEqualsWithInfo("キーは知らん", $expecteds, $actual);
+	}
+
+	public function test_removeDirectory_default()
+	{
+		$testDir = $this->testDir();
+
+		Directory::removeDirectory($testDir->path);
+
+		$actual = Directory::getChildren($testDir->path, true);
+
+		$this->assertEmpty($actual);
+	}
+
+	public function test_removeDirectory_recursive()
+	{
+		$testDir = $this->testDir();
+		$this->makeTree($testDir->path);
+
+		Directory::removeDirectory($testDir->path, true);
+
+		$actual = Directory::getChildren($testDir->path, true);
+
+		$this->assertEmpty($actual);
+	}
+
+	public function test_removeDirectory_throw()
+	{
+		$testDir = $this->testDir();
+		$this->makeTree($testDir->path);
+
+		$this->expectException(IOException::class);
+		Directory::removeDirectory($testDir->path);
+		$this->fail();
+	}
+
+	public function test_cleanupDirectory_none()
+	{
+		$testDir = $this->testDir();
+		Directory::cleanupDirectory($testDir->path);
+		$this->assertEmpty(Directory::getChildren($testDir->path, true));
+	}
+
+
+	public function test_cleanupDirectory_files()
+	{
+		$testDir = $this->testDir();
+		$this->makeTree($testDir->path);
+
+		Directory::cleanupDirectory($testDir->path);
+		$this->assertEmpty(Directory::getChildren($testDir->path, true));
+	}
+
+	public function test_WorkingDirectory()
+	{
+		$actual1 = Directory::getCurrentWorkingDirectory();
+		try {
+			Directory::setWorkingDirectory("");
+			$this->fail();
+		} catch (IOException) {
+			$this->success();
+		}
+		$actual2 = Directory::getCurrentWorkingDirectory();
+		$this->assertSame($actual1, $actual2);
+	}
+
+	public function test_changeWorkingDirectory()
+	{
+		$dir = $this->testDir();
+		$path = $dir->createDirectory("NEW");
+
+		$actual1 = Directory::getCurrentWorkingDirectory();
+
+		$working = Directory::changeWorkingDirectory($path);
+		$actual2 = Directory::getCurrentWorkingDirectory();
+		$this->assertSame($path, $actual2);
+		$working->dispose();
+
+		$actual3 = Directory::getCurrentWorkingDirectory();
+		$this->assertSame($actual1, $actual3);
 	}
 }

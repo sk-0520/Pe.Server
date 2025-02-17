@@ -44,7 +44,7 @@ class StreamTest extends TestClass
 		$path = File::createTemporaryFilePath();
 		try {
 			$resource = fopen($path, 'w');
-			$actual = new Stream($resource);
+			$actual = $this->callConstructor(Stream::class, [$resource]);
 			$actual->dispose();
 			$this->assertTrue((bool)$resource);
 			$this->assertSame('Unknown', get_resource_type($resource));
@@ -233,6 +233,18 @@ class StreamTest extends TestClass
 		Stream::openTemporary(-1);
 	}
 
+
+	public function test_createTemporaryFile()
+	{
+		try {
+			$stream = Stream::createTemporaryFile();
+			$stream->dispose();
+			$this->success();
+		} catch (Throwable $ex) {
+			$this->fail($ex->__toString());
+		}
+	}
+
 	public function test_getState()
 	{
 		$stream = Stream::open(__FILE__, Stream::MODE_READ);
@@ -379,7 +391,7 @@ class StreamTest extends TestClass
 		if ($data->count()) {
 			$stream->writeBinary($data);
 		}
-		$stream->seek($start, Stream::WHENCE_SET);
+		$stream->seek($start, Stream::WHENCE_HEAD);
 
 		$actual = $stream->readBom();
 

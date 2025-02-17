@@ -110,7 +110,7 @@ class AppTemporary
 	 */
 	public function createFileName(DateTimeInterface $timestamp, string $extension): string
 	{
-		$random = Cryptography::generateRandomString(16);
+		$random = Cryptography::generateRandomString(16, Cryptography::FILE_RANDOM_STRING);
 		return $timestamp->format('Y-m-d\_His') . "_" . $random . "." . $extension;
 	}
 

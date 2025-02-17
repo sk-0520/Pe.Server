@@ -34,8 +34,8 @@ class Stream extends ResourceBase
 	/** 読み書きモード。 */
 	public const MODE_EDIT = 3;
 
-	/** シーク位置: 絶対値。 */
-	public const WHENCE_SET = SEEK_SET;
+	/** シーク位置: 先頭。 */
+	public const WHENCE_HEAD = SEEK_SET;
 	/** シーク位置: 現在位置。 */
 	public const WHENCE_CURRENT = SEEK_CUR;
 	/** シーク位置: 末尾(設定値は負数となる)。 */
@@ -46,7 +46,7 @@ class Stream extends ResourceBase
 	#region variable
 
 	/** 文字列として扱うエンコーディング。(バイナリデータは気にしなくてよい) */
-	protected Encoding $encoding;
+	public readonly Encoding $encoding;
 
 	/**
 	 * 改行文字。
@@ -65,7 +65,7 @@ class Stream extends ResourceBase
 	 * @param $resource ファイルリソース。
 	 * @param Encoding|null $encoding
 	 */
-	public function __construct(
+	protected function __construct(
 		$resource,
 		?Encoding $encoding = null
 	) {
@@ -80,34 +80,35 @@ class Stream extends ResourceBase
 	 * `fopen` を使用してファイルストリームを生成。
 	 *
 	 * 原則以下の処理を使ってればよい。
-	 * * `self::create`
-	 * * `self::open`
-	 * * `self::openOrCreate`
-	 * * `self::openStandardInput`
-	 * * `self::openStandardOutput`
-	 * * `self::openStandardError`
-	 * * `self::openMemory`
-	 * * `self::openTemporary`
+	 * * `static::create`
+	 * * `static::open`
+	 * * `static::openOrCreate`
+	 * * `static::openStandardInput`
+	 * * `static::openStandardOutput`
+	 * * `static::openStandardError`
+	 * * `static::openMemory`
+	 * * `static::openTemporary`
 	 *
 	 * @param string $path ファイルパス。
 	 * @param string $mode `fopen:mode` を参照。
 	 * @param Encoding|null $encoding
-	 * @return self
+	 * @return static
 	 * @throws IOException
 	 * @see https://www.php.net/manual/function.fopen.php
 	 */
-	public static function new(string $path, string $mode, ?Encoding $encoding = null): self
+	public static function new(string $path, string $mode, ?Encoding $encoding = null): static
 	{
 		if (strpos($mode, 'b', 0) === false) {
 			$mode .= 'b';
 		}
 
-		$result = ErrorHandler::trap(fn () => fopen($path, $mode));
+		$result = ErrorHandler::trap(fn() => fopen($path, $mode));
 		if ($result->isFailureOrFalse()) {
 			throw new IOException($path);
 		}
 
-		return new self($result->value, $encoding);
+		// @phpstan-ignore new.static
+		return new static($result->value, $encoding);
 	}
 
 	/**
@@ -115,16 +116,16 @@ class Stream extends ResourceBase
 	 *
 	 * @param string $path ファイルパス。
 	 * @param Encoding|null $encoding
-	 * @return self
+	 * @return static
 	 * @throws IOException 既にファイルが存在する。
 	 */
-	public static function create(string $path, ?Encoding $encoding = null): self
+	public static function create(string $path, ?Encoding $encoding = null): static
 	{
 		if (File::exists($path)) {
 			throw new IOException($path);
 		}
 
-		return self::new($path, 'x+', $encoding);
+		return static::new($path, 'x+', $encoding);
 	}
 
 	/**
@@ -133,10 +134,10 @@ class Stream extends ResourceBase
 	 * @param string $path ファイルパス。
 	 * @param self::MODE_* $mode `self::MODE_*` を指定。 `self::MODE_CRETE`: ファイルが存在しない場合失敗する。
 	 * @param Encoding|null $encoding
-	 * @return self
+	 * @return static
 	 * @throws IOException
 	 */
-	public static function open(string $path, int $mode, ?Encoding $encoding = null): self
+	public static function open(string $path, int $mode, ?Encoding $encoding = null): static
 	{
 		$openMode = match ($mode) {
 			self::MODE_READ => 'r',
@@ -150,7 +151,7 @@ class Stream extends ResourceBase
 			}
 		}
 
-		return self::new($path, $openMode, $encoding);
+		return static::new($path, $openMode, $encoding);
 	}
 
 	/**
@@ -160,10 +161,10 @@ class Stream extends ResourceBase
 	 * @param int $mode `self::MODE_*` を指定。 `self::MODE_CRETE`: ファイルが存在しない場合に空ファイルが作成される(読むしかできないけど開ける。意味があるかは知らん)。
 	 * @phpstan-param self::MODE_* $mode
 	 * @param Encoding|null $encoding
-	 * @return self
+	 * @return static
 	 * @throws IOException
 	 */
-	public static function openOrCreate(string $path, int $mode, ?Encoding $encoding = null): self
+	public static function openOrCreate(string $path, int $mode, ?Encoding $encoding = null): static
 	{
 		$openMode = match ($mode) {
 			self::MODE_READ => 'r',
@@ -177,7 +178,7 @@ class Stream extends ResourceBase
 			}
 		}
 
-		return self::new($path, $openMode, $encoding);
+		return static::new($path, $openMode, $encoding);
 	}
 
 	/**
@@ -215,42 +216,66 @@ class Stream extends ResourceBase
 	 * メモリストリームを開く。
 	 *
 	 * @param Encoding|null $encoding
-	 * @return self
+	 * @return static
 	 */
-	public static function openMemory(?Encoding $encoding = null): self
+	public static function openMemory(?Encoding $encoding = null): static
 	{
-		return self::new('php://memory', 'r+', $encoding);
+		return static::new('php://memory', 'r+', $encoding);
 	}
 
 	/**
 	 * 一時メモリストリームを開く。
 	 *
-	 * @param int|null $memoryByteSize 指定した値を超過した際に一時ファイルに置き換わる。`null`の場合は 2MB(`php://temp` 参照のこと)。
+	 * @param positive-int|null $memoryByteSize 指定した値を超過した際に一時ファイルに置き換わる。`null`の場合は 2MB(`php://temp` 参照のこと)。
 	 * @param Encoding|null $encoding
-	 * @return self
+	 * @return static
 	 */
-	public static function openTemporary(?int $memoryByteSize = null, ?Encoding $encoding = null): self
+	public static function openTemporary(?int $memoryByteSize = null, ?Encoding $encoding = null): static
 	{
 		$path = 'php://temp';
 
 		if ($memoryByteSize !== null) {
+			// [DOCTYPE]
+			// @phpstan-ignore smaller.alwaysFalse
 			if ($memoryByteSize < 0) {
 				throw new ArgumentException('$byteSize: ' . $memoryByteSize);
 			}
-			if ($memoryByteSize) {
-				//cspell:disable-next-line
-				$path .= '/maxmemory:' . (string)$memoryByteSize;
-			}
+			//cspell:disable-next-line
+			$path .= '/maxmemory:' . (string)$memoryByteSize;
 		}
 
-		return self::new($path, 'r+', $encoding);
+		return static::new($path, 'r+', $encoding);
+	}
+
+	/**
+	 * 一時ファイルのストリーム作成。
+	 *
+	 * メモリ・一時ファイル兼メモリのストリームを使用する場合は、
+	 * `self::openMemory`, `self::openTemporary` を参照のこと。
+	 *
+	 * `tmpfile` ラッパー。
+	 *
+	 * @param Encoding|null $encoding
+	 * @return static
+	 * @throws IOException
+	 * @see https://www.php.net/manual/function.tmpfile.php
+	 */
+	public static function createTemporaryFile(?Encoding $encoding = null): static
+	{
+		$resource = tmpfile();
+		if ($resource === false) {
+			throw new IOException();
+		}
+
+		// @phpstan-ignore new.static
+		return new static($resource, $encoding);
 	}
 
 	public function getState(): IOState
 	{
 		$this->throwIfDisposed();
 
-		$result = ErrorHandler::trap(fn () => fstat($this->resource));
+		$result = ErrorHandler::trap(fn() => fstat($this->resource));
 		if ($result->isFailureOrFalse()) {
 			throw new IOException();
 		}
@@ -373,7 +398,7 @@ class Stream extends ResourceBase
 	{
 		$this->throwIfDisposed();
 
-		$result = ErrorHandler::trap(fn () => fwrite($this->resource, $data->raw, $byteSize));
+		$result = ErrorHandler::trap(fn() => fwrite($this->resource, $data->raw, $byteSize));
 		if ($result->isFailureOrFalse()) {
 			throw new StreamException();
 		}
@@ -465,7 +490,7 @@ class Stream extends ResourceBase
 	{
 		$this->throwIfDisposed();
 
-		$result = ErrorHandler::trap(fn () => fread($this->resource, $byteSize));
+		$result = ErrorHandler::trap(fn() => fread($this->resource, $byteSize));
 		if ($result->isFailureOrFalse()) {
 			throw new StreamException();
 		}
@@ -628,7 +653,7 @@ class Stream extends ResourceBase
 			if ($findLf) {
 				$dropWidth += $newlineWidth;
 			}
-			$this->seek($startOffset + $totalCount, self::WHENCE_SET);
+			$this->seek($startOffset + $totalCount, self::WHENCE_HEAD);
 			$raw = substr($totalBuffer, 0, $totalCount - $dropWidth);
 			$str = $this->encoding->toString(new Binary($raw));
 

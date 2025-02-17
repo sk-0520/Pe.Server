@@ -22,7 +22,6 @@ use PeServer\Core\ArchiveEntry;
 use PeServer\Core\Mvc\Content\FileCleanupStream;
 use PeServer\Core\Throws\InvalidOperationException;
 
-ini_set('memory_limit', '-1');
 
 class ManagementLogDetailLogic extends PageLogicBase
 {

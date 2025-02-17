@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace PeServer\Core\IO;
 
+use PeServer\Core\DisposerBase;
 use PeServer\Core\Environment;
 use PeServer\Core\Errors\ErrorHandler;
+use PeServer\Core\IDisposable;
 use PeServer\Core\IO\File;
 use PeServer\Core\IO\Path;
 use PeServer\Core\ResultData;
@@ -39,7 +41,7 @@ abstract class Directory
 	 */
 	public static function createDirectory(string $directoryPath, int $permissions = self::DIRECTORY_PERMISSIONS): bool
 	{
-		$result = ErrorHandler::trap(fn () => mkdir($directoryPath, $permissions, true));
+		$result = ErrorHandler::trap(fn() => mkdir($directoryPath, $permissions, true));
 		return $result->success && $result->value;
 	}
 
@@ -100,7 +102,7 @@ abstract class Directory
 	{
 		/** @var string[] */
 		$files = [];
-		$result = ErrorHandler::trap(fn () => scandir($directoryPath, SCANDIR_SORT_NONE));
+		$result = ErrorHandler::trap(fn() => scandir($directoryPath, SCANDIR_SORT_NONE));
 		// $items = scandir($directoryPath);
 		if ($result->isFailureOrFalse()) {
 			return $files;
@@ -212,7 +214,7 @@ abstract class Directory
 			}
 		}
 
-		$result = ErrorHandler::trap(fn () => rmdir($directoryPath));
+		$result = ErrorHandler::trap(fn() => rmdir($directoryPath));
 		if ($result->isFailureOrFalse()) {
 			throw new IOException();
 		}
@@ -262,6 +264,76 @@ abstract class Directory
 	public static function getTemporaryDirectory(): string
 	{
 		return sys_get_temp_dir();
+	}
+
+	/**
+	 * 現在の作業ディレクトリを取得。
+	 *
+	 * `getcwd` ラッパー。
+	 *
+	 * @return string
+	 * @throws IOException
+	 * @see https://www.php.net/manual/function.getcwd.php
+	 */
+	public static function getCurrentWorkingDirectory(): string
+	{
+		$result = ErrorHandler::trap(fn() => \getcwd());
+		if ($result->isFailureOrFalse()) {
+			throw new IOException();
+		}
+
+		return $result->value;
+	}
+
+	/**
+	 * 作業ディレクトリの変更。
+	 *
+	 * @param string $path
+	 * @throws IOException
+	 * @see https://www.php.net/manual/function.chdir.php
+	 */
+	public static function setWorkingDirectory(string $path): void
+	{
+		$result = ErrorHandler::trap(fn() => \chdir($path));
+		if ($result->isFailureOrFalse()) {
+			throw new IOException();
+		}
+	}
+
+	/**
+	 * 一時的な作業ディレクトリの変更。
+	 *
+	 * @param string $path
+	 * @return IDisposable
+	 */
+	public static function changeWorkingDirectory(string $path): IDisposable
+	{
+		return new LocalRestoreWorkingDirectory($path);
+	}
+
+	#endregion
+}
+
+//phpcs:ignore PSR1.Classes.ClassDeclaration.MultipleClasses
+final class LocalRestoreWorkingDirectory extends DisposerBase
+{
+	#region variable
+
+	private readonly string $restorePath;
+
+	#endregion
+
+	public function __construct(string $directoryPath)
+	{
+		$this->restorePath = Directory::getCurrentWorkingDirectory();
+		Directory::setWorkingDirectory($directoryPath);
+	}
+
+	#region DisposerBase
+
+	protected function disposeImpl(): void
+	{
+		Directory::setWorkingDirectory($this->restorePath);
 	}
 
 	#endregion
