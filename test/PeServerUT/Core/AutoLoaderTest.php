@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServerUT\Core;
 
 use Error;
-use PeServer\Core\Archiver;
+use PeServer\Core\Archive\Archiver;
 use PeServer\Core\AutoLoader;
 use PeServer\Core\Binary;
 use PeServerTest\TestClass;

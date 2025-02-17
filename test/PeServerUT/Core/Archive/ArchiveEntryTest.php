@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PeServerUT\Core;
+namespace PeServerUT\Core\Archive;
 
-use PeServer\Core\ArchiveEntry;
+use PeServer\Core\Archive\ArchiveEntry;
 use PeServer\Core\Throws\ArgumentException;
 use PeServerTest\TestClass;
 use PHPUnit\Framework\Attributes\TestWith;

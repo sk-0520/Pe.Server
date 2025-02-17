@@ -8,7 +8,7 @@ use Exception;
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\AppDatabaseConnection;
 use PeServer\App\Models\AppMailer;
-use PeServer\Core\Archiver;
+use PeServer\Core\Archive\Archiver;
 use PeServer\Core\Binary;
 use PeServer\Core\Collection\Arr;
 use PeServer\Core\Environment;

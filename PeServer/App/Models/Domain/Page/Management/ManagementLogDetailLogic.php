@@ -7,7 +7,7 @@ namespace PeServer\App\Models\Domain\Page\Management;
 use ZipArchive;
 use PeServer\Core\Mime;
 use PeServer\Core\Binary;
-use PeServer\Core\Archiver;
+use PeServer\Core\Archive\Archiver;
 use PeServer\Core\IO\File;
 use PeServer\Core\IO\Path;
 use PeServer\Core\Text;
@@ -18,7 +18,7 @@ use PeServer\App\Models\AppTemporary;
 use PeServer\Core\Throws\FileNotFoundException;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\App\Models\SessionKey;
-use PeServer\Core\ArchiveEntry;
+use PeServer\Core\Archive\ArchiveEntry;
 use PeServer\Core\Mvc\Content\FileCleanupStream;
 use PeServer\Core\Throws\InvalidOperationException;
 

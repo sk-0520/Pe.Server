@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core;
+namespace PeServer\Core\Archive;
 
+use PeServer\Core\Code;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\Throws;
 

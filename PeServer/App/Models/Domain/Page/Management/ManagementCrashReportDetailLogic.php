@@ -13,7 +13,7 @@ use PeServer\App\Models\Dao\Entities\CrashReportCommentsEntityDao;
 use PeServer\App\Models\Dao\Entities\CrashReportsEntityDao;
 use PeServer\App\Models\Domain\AppArchiver;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
-use PeServer\Core\Archiver;
+use PeServer\Core\Archive\Archiver;
 use PeServer\Core\Binary;
 use PeServer\Core\Collection\Arr;
 use PeServer\Core\Database\IDatabaseContext;

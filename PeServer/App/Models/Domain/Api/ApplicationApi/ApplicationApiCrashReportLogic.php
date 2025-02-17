@@ -14,7 +14,7 @@ use PeServer\App\Models\Dao\Entities\CrashReportsEntityDao;
 use PeServer\App\Models\Dao\Entities\SequenceEntityDao;
 use PeServer\App\Models\Domain\Api\ApiLogicBase;
 use PeServer\App\Models\ResponseJson;
-use PeServer\Core\Archiver;
+use PeServer\Core\Archive\Archiver;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\Mail\Attachment;
 use PeServer\Core\Mail\EmailAddress;

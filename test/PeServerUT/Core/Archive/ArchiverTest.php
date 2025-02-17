@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PeServerUT\Core;
+namespace PeServerUT\Core\Archive;
 
-use PeServer\Core\ArchiveEntry;
-use PeServer\Core\Archiver;
+use PeServer\Core\Archive\Archiver;
+use PeServer\Core\Archive\ArchiveEntry;
 use PeServer\Core\Binary;
 use PeServer\Core\IO\Directory;
 use PeServer\Core\IO\Path;
