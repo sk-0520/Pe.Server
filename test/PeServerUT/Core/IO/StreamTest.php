@@ -427,11 +427,12 @@ class StreamTest extends TestClass
 		$stream->writeString('GHI');
 
 		$stream->seekHead();
+		$stream->bufferSize = $bufferSize;
 
 		$actual = [];
 
 		while (!$stream->isEnd()) {
-			$line = $stream->readLine($bufferSize);
+			$line = $stream->readLine();
 			$actual[] = $line;
 		}
 
@@ -451,11 +452,12 @@ class StreamTest extends TestClass
 		$stream->writeLine('GHI');
 
 		$stream->seekHead();
+		$stream->bufferSize = $bufferSize;
 
 		$actual = [];
 
 		while (!$stream->isEnd()) {
-			$line = $stream->readLine($bufferSize);
+			$line = $stream->readLine();
 			$actual[] = $line;
 		}
 
@@ -467,13 +469,5 @@ class StreamTest extends TestClass
 		$stream = Stream::openTemporary();
 		$actual = $stream->readLine();
 		$this->assertEmpty("", $actual);
-	}
-
-	public function test_readLine_throw()
-	{
-		$stream = Stream::openTemporary();
-		$this->expectException(ArgumentException::class);
-		$stream->readLine(0);
-		$this->fail();
 	}
 }
