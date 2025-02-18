@@ -435,12 +435,10 @@ class Stream extends ResourceBase
 	 * 文字列書き込み。
 	 *
 	 * @param string $data データ。
-	 * @param int|null $count 文字数。
-	 * @phpstan-param non-negative-int|null $count
 	 * @return int 書き込まれたバイト数。
 	 * @phpstan-return non-negative-int
 	 */
-	public function writeString(string $data, ?int $count = null): int
+	public function writeString(string $data): int
 	{
 		$this->throwIfDisposed();
 
@@ -448,21 +446,7 @@ class Stream extends ResourceBase
 			return 0;
 		}
 
-		if ($count === null) {
-			return $this->writeBinary($this->encoding->getBinary($data));
-		}
-
-		if ($count === 0) {
-			return 0;
-		}
-
-		$dataLength = Text::getLength($data);
-		if ($dataLength <= $count) {
-			return $this->writeBinary($this->encoding->getBinary($data));
-		}
-
-		$s = Text::substring($data, 0, $count);
-		return $this->writeBinary($this->encoding->getBinary($s));
+		return $this->writeBinary($this->encoding->getBinary($data));
 	}
 
 	/**
