@@ -578,7 +578,7 @@ class Stream extends ResourceBase
 	 *
 	 * @param int $bufferByteSize 1回読み進めるにあたり予め取得するサイズ。このサイズが改行(CR,LF)のサイズより小さい場合は改行(CR,LF)のサイズが設定される(1指定のutf16とか)
 	 * @phpstan-param positive-int $bufferByteSize
-	 * @return string
+	 * @return string 読み込んだ行。末尾まで読み込み済みでも空文字列となるため isEnd なりで確認をすること。
 	 */
 	public function readLine(int $bufferByteSize = 1024): string
 	{

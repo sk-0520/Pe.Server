@@ -462,6 +462,13 @@ class StreamTest extends TestClass
 		$this->assertSame(['ABC', 'DEF', 'GHI', ''], $actual);
 	}
 
+	public function test_readLine_empty()
+	{
+		$stream = Stream::openTemporary();
+		$actual = $stream->readLine();
+		$this->assertEmpty("", $actual);
+	}
+
 	public function test_readLine_throw()
 	{
 		$stream = Stream::openTemporary();
