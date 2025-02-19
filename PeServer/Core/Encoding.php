@@ -65,7 +65,7 @@ class Encoding
 	/**
 	 * キャッシュされたエンコーディング名一覧。
 	 *
-	 * @var string[]|null
+	 * @var non-empty-string[]|null
 	 */
 	protected static ?array $cacheNames = null;
 
@@ -83,6 +83,7 @@ class Encoding
 
 	/**
 	 * エンコード名。
+	 * @var non-empty-string|Encoding::ENCODE_*
 	 */
 	public readonly string $name;
 
@@ -123,7 +124,7 @@ class Encoding
 	 *
 	 * `mb_list_encodings` ラッパー。
 	 *
-	 * @return string[]
+	 * @return non-empty-string[]
 	 * @see https://www.php.net/manual/function.mb-list-encodings.php
 	 */
 	public static function getEncodingNames(): array
@@ -166,6 +167,44 @@ class Encoding
 		}
 
 		self::$defaultEncoding = $encoding;
+	}
+
+	public function isEqualsName(string $name): bool
+	{
+		if ($name === $this->name) {
+			return true;
+		}
+
+		try {
+			$targetAlias = self::getAliasNames($name);
+			$currentAlias = self::getAliasNames($this->name);
+
+			foreach ($targetAlias as $targetName) {
+				if (Arr::in($currentAlias, $targetName)) {
+					return true;
+				}
+			}
+		} catch (EncodingException) {
+			// これ以外の例外はもうわかんねんだわ
+		}
+
+		return false;
+	}
+
+	public function isEquals(Encoding $encoding): bool
+	{
+		return $this->isEqualsName($encoding->name);
+	}
+
+	/**
+	 * デフォルトのエンコーディングか。
+	 *
+	 * @return bool
+	 */
+	public function isDefault(): bool
+	{
+		$default = self::getDefaultEncoding();
+		return $this->isEquals($default);
 	}
 
 	/**
@@ -301,11 +340,11 @@ class Encoding
 		//wikipedia の bom 見たけどわからん。
 		//TODO: 定義しているエンコーディングともあわんし、どうしたもんか
 		$bomMap = [
-			'UTF-8' => "\xEF\xBB\xBF",
-			'UTF-16BE' => "\xFE\xFF",
-			'UTF-16LE' => "\xFF\xFE",
-			'UTF-32BE' => "\x00\x00\xFE\xFF",
-			'UTF-32LE' => "\xFF\xFE\x00\x00",
+			self::ENCODE_UTF8 => "\xEF\xBB\xBF",
+			self::ENCODE_UTF16_BE => "\xFE\xFF",
+			self::ENCODE_UTF16_LE => "\xFF\xFE",
+			self::ENCODE_UTF32_BE => "\x00\x00\xFE\xFF",
+			self::ENCODE_UTF32_LE => "\xFF\xFE\x00\x00",
 		];
 
 		if (isset($bomMap[$this->name])) {
