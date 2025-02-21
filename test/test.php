@@ -63,7 +63,6 @@ $container = $startup->setup(
 	new AppStartupOption(
 		'test',
 		':REVISION:',
-		new UrlHelper(''),
 		$isIntegrationTest ? new TestSetupSpecialStore() : new SpecialStore()
 	)
 );

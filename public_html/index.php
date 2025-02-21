@@ -58,7 +58,6 @@ $container = $startup->setup(
 	new AppStartupOption(
 		$isLocalhost ? ($appTestMode !== '' ? $appTestMode : 'development') : 'production',
 		':REVISION:',
-		$urlHelper,
 		$specialStore
 	)
 );

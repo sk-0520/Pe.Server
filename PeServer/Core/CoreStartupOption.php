@@ -6,15 +6,22 @@ namespace PeServer\Core;
 
 use PeServer\Core\Store\SpecialStore;
 use PeServer\Core\Web\IUrlHelper;
+use PeServer\Core\Web\UrlHelper;
 
 readonly class CoreStartupOption
 {
+	#region variable
+
+	public IUrlHelper $urlHelper;
+
+	#endregion
+
 	public function __construct(
 		public string $environment,
 		public string $revision,
-		public IUrlHelper|null $urlHelper,
-		public SpecialStore|null $specialStore
+		public SpecialStore|null $specialStore,
+		IUrlHelper|null $urlHelper
 	) {
-		//NOP
+		$this->urlHelper = $urlHelper ?? new UrlHelper('');
 	}
 }

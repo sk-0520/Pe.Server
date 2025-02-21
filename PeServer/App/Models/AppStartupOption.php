@@ -13,9 +13,9 @@ readonly class AppStartupOption extends CoreStartupOption
 	public function __construct(
 		string $environment,
 		string $revision,
-		IUrlHelper|null $urlHelper,
-		SpecialStore|null $specialStore
+		SpecialStore|null $specialStore,
+		IUrlHelper|null $urlHelper = null
 	) {
-		parent::__construct($environment, $revision, $urlHelper, $specialStore);
+		parent::__construct($environment, $revision, $specialStore, $urlHelper);
 	}
 }

@@ -154,7 +154,6 @@ class ItControllerClass extends TestClass
 			new AppStartupOption(
 				"it",
 				':REVISION:',
-				new UrlHelper(''),
 				new ItSpecialStore($httpMethod, $path, $options->httpHeader, $options->body)
 			)
 		);
