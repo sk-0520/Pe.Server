@@ -11,8 +11,10 @@ use PeServer\App\Models\AppRouteSetting;
 use PeServer\App\Models\AppRoute;
 use PeServer\App\Models\AppSpecialStore;
 use PeServer\App\Models\AppStartup;
+use PeServer\App\Models\AppStartupOption;
 use PeServer\App\Models\Initializer;
 use PeServer\Core\AutoLoader;
+use PeServer\Core\CoreStartupOption;
 use PeServer\Core\StartupOptions;
 use PeServer\Core\DI\IDiRegisterContainer;
 use PeServer\Core\Http\HttpMethod;
@@ -53,12 +55,12 @@ $startup = new AppStartup(
 );
 $container = $startup->setup(
 	AppStartup::MODE_WEB,
-	[
-		'environment' => $isLocalhost ? ($appTestMode !== '' ? $appTestMode : 'development') : 'production',
-		'revision' => ':REVISION:',
-		'special_store' => $specialStore,
-		'url_helper' => $urlHelper,
-	]
+	new AppStartupOption(
+		$isLocalhost ? ($appTestMode !== '' ? $appTestMode : 'development') : 'production',
+		':REVISION:',
+		$urlHelper,
+		$specialStore
+	)
 );
 
 /** @var IDiRegisterContainer */
