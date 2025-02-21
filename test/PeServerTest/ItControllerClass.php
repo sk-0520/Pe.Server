@@ -8,6 +8,7 @@ use Error;
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\AppDatabaseCache;
 use PeServer\App\Models\AppStartup;
+use PeServer\App\Models\AppStartupOption;
 use PeServer\App\Models\Dao\Entities\UsersEntityDao;
 use PeServer\App\Models\Data\SessionAccount;
 use PeServer\App\Models\Data\SessionAnonymous;
@@ -150,12 +151,12 @@ class ItControllerClass extends TestClass
 
 		$container = $startup->setup(
 			AppStartup::MODE_WEB,
-			[
-				'environment' => 'it',
-				'revision' => ':REVISION:',
-				'special_store' => new ItSpecialStore($httpMethod, $path, $options->httpHeader, $options->body),
-				'url_helper' => new UrlHelper(''),
-			]
+			new AppStartupOption(
+				"it",
+				':REVISION:',
+				new UrlHelper(''),
+				new ItSpecialStore($httpMethod, $path, $options->httpHeader, $options->body)
+			)
 		);
 
 		if ($options->stores->account instanceof SessionAccount || $options->stores->account instanceof SessionAnonymous) {
