@@ -90,7 +90,6 @@ final readonly class AppRouteSetting extends RouteSetting
 					->addAction('api-doc', HttpMethod::gets(), 'api')
 					->addAction('dev/exception', HttpMethod::gets(), 'exception', [DevelopmentMiddleware::class])
 					->addAction('dev/streaming', HttpMethod::gets(), 'streaming_html', [DevelopmentMiddleware::class])
-					->addAction('dev/streaming/ajax', HttpMethod::gets(), 'streaming_ajax', [DevelopmentMiddleware::class])
 					->addAction(':path@[a-zA-z0-9_\(\)\-]+\.[a-zA-z0-9_\(\)\-]+', HttpMethod::gets(), 'wildcard')
 				/* AUTO-FORMAT */,
 				(new RouteInformation('account', AccountController::class))
@@ -188,6 +187,9 @@ final readonly class AppRouteSetting extends RouteSetting
 					->addAction('log/:log_name@\w+\.log', HttpMethod::Delete, 'log_delete', [CsrfMiddleware::class, AdministratorAccountFilterMiddleware::class])
 					->addAction('feedback/:sequence@\d++', HttpMethod::Delete, 'feedback_delete', [CsrfMiddleware::class, AdministratorAccountFilterMiddleware::class])
 					->addAction('crash-report/:sequence@\d++', HttpMethod::Delete, 'crash_report_delete', [CsrfMiddleware::class, AdministratorAccountFilterMiddleware::class])
+					->addAction('dev/streaming_chunk', HttpMethod::gets(), 'dev_streaming_chunk', [RouteInformation::CLEAR_MIDDLEWARE, DevelopmentMiddleware::class])
+					->addAction('dev/streaming_sse/text', HttpMethod::gets(), 'dev_streaming_sse_text', [RouteInformation::CLEAR_MIDDLEWARE, DevelopmentMiddleware::class])
+					->addAction('dev/streaming_sse/json', HttpMethod::gets(), 'dev_streaming_sse_json', [RouteInformation::CLEAR_MIDDLEWARE, DevelopmentMiddleware::class])
 				/* AUTO-FORMAT */,
 				(new RouteInformation('api/development', DevelopmentApiController::class, [DevelopmentMiddleware::class]))
 					->addAction('initialize', HttpMethod::Post, 'initialize')

@@ -11,7 +11,8 @@ use PeServer\Core\Http\HttpResponse;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Http\ICallbackContent;
 use PeServer\Core\IO\Stream;
-use PeServer\Core\Mvc\Content\StreamingContent;
+use PeServer\Core\Mvc\Content\CallbackChunkedContent;
+use PeServer\Core\Mvc\Content\EventStreamContentBase;
 use PeServer\Core\OutputBuffer;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\Throws;
@@ -95,7 +96,7 @@ class ResponsePrinter
 			} else {
 				// phpstan で検知されるので変数化
 				$stream = $this->response->content;
-				$content = new StreamingContent(function () use ($stream) {
+				$content = new CallbackChunkedContent(function () use ($stream) {
 					while (!$stream->isEnd()) {
 						$chunk = $stream->readBinary($this->chunkSize);
 						yield $chunk;
@@ -138,13 +139,18 @@ class ResponsePrinter
 			return;
 		}
 
-		// ヘッダ: Content-Length/Transfer-Encoding
+		// ヘッダ
 		$contentLength = $this->getContentLength();
 		$lengthIsContentLength = 0 <= $contentLength;
 		if ($lengthIsContentLength) {
 			header('Content-Length: ' . $contentLength);
 		} else {
-			header('Transfer-Encoding: chunked');
+			if ($this->response->content instanceof EventStreamContentBase) {
+				header("X-Accel-Buffering: no");
+				header("Cache-Control: no-cache");
+			} else {
+				header('Transfer-Encoding: chunked');
+			}
 		}
 
 		if ($this->request->httpMethod === HttpMethod::Head) {
@@ -152,10 +158,7 @@ class ResponsePrinter
 			return;
 		}
 
-		if (OutputBuffer::getLevel() <= 1) {
-			OutputBuffer::flush();
-		}
-		flush();
+		OutputBuffer::httpFlush();
 
 		$this->output($lengthIsContentLength);
 	}

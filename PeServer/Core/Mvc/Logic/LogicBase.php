@@ -26,7 +26,7 @@ use PeServer\Core\Mvc\Content\DataContentBase;
 use PeServer\Core\Mvc\Content\DownloadDataContent;
 use PeServer\Core\Mvc\Content\StaticDataContent;
 use PeServer\Core\Mvc\Content\StreamContent;
-use PeServer\Core\Mvc\Content\StreamingContent;
+use PeServer\Core\Mvc\Content\CallbackChunkedContent;
 use PeServer\Core\Mvc\Logic\IValidationReceiver;
 use PeServer\Core\Mvc\Logic\LogicCallMode;
 use PeServer\Core\Mvc\Logic\LogicParameter;
@@ -649,7 +649,7 @@ abstract class LogicBase implements IValidationReceiver
 	 */
 	final protected function setStreamingContent(Closure $callback, string $mime = Mime::STREAM): void
 	{
-		$this->content = new StreamingContent($callback, $mime);
+		$this->content = new CallbackChunkedContent($callback, $mime);
 	}
 
 	/**

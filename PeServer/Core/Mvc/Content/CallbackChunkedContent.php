@@ -16,7 +16,7 @@ use PeServer\Core\Mvc\Content\DataContent;
 /**
  * イテレータ処理。
  */
-class StreamingContent extends ChunkedContentBase
+class CallbackChunkedContent extends ChunkedContentBase
 {
 	/**
 	 * 生成。

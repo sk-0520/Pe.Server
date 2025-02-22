@@ -112,6 +112,19 @@ class OutputBuffer extends DisposerBase
 		}
 	}
 
+	/**
+	 * HTTP 応答時のどばーってやつ。
+	 *
+	 * ライブラリ側で使用するだけなので基本的に考慮する必要なし。
+	 */
+	public static function httpFlush(): void
+	{
+		if (self::getLevel() <= 1) {
+			self::flush();
+		}
+		flush();
+	}
+
 	#endregion
 
 	#region DisposerBase

@@ -37,9 +37,9 @@ class JsonSerializer extends SerializerBase
 	 * 生成。
 	 *
 	 * @param int $saveOption
-	 * @phpstan-param self::SAVE_* $saveOption
+	 * @phpstan-param int-mask-of<self::SAVE_*> $saveOption
 	 * @param int $loadOption
-	 * @phpstan-param self::LOAD_* $loadOption
+	 * @phpstan-param int-mask-of<self::LOAD_*> $loadOption
 	 * @param int $depth
 	 * @phpstan-param positive-int $depth
 	 */
@@ -48,6 +48,7 @@ class JsonSerializer extends SerializerBase
 		protected int $loadOption = self::LOAD_DEFAULT,
 		protected int $depth = self::DEFAULT_DEPTH
 	) {
+		//NOP
 	}
 
 	#region SerializerBase

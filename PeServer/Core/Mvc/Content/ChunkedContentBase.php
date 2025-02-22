@@ -53,10 +53,7 @@ abstract class ChunkedContentBase extends DataContentBase implements ICallbackCo
 			$chunkSize = dechex($binary->count());
 			echo $chunkSize . "\r\n"
 				. $binary->raw . "\r\n";
-			if (OutputBuffer::getLevel() <= 1) {
-				OutputBuffer::flush();
-			}
-			flush();
+			OutputBuffer::httpFlush();
 		}
 
 		echo "0\r\n\r\n";
