@@ -13,6 +13,7 @@ require_once(__DIR__ . '/../PeServer/Core/AutoLoader.php');
 
 use Exception;
 use PeServer\App\Models\AppStartup;
+use PeServer\App\Models\AppStartupOption;
 use PeServer\Core\StartupOptions;
 use PeServer\Core\DI\IDiContainer;
 use PeServer\Core\DI\IDiRegisterContainer;
@@ -59,12 +60,11 @@ $startup = new AppStartup(
 );
 $container = $startup->setup(
 	AppStartup::MODE_TEST,
-	[
-		'environment' => 'test',
-		'revision' => ':REVISION:',
-		'special_store' => $isIntegrationTest ? new TestSetupSpecialStore() : new SpecialStore(),
-		'url_helper' => new UrlHelper(''),
-	]
+	new AppStartupOption(
+		'test',
+		':REVISION:',
+		$isIntegrationTest ? new TestSetupSpecialStore() : new SpecialStore()
+	)
 );
 Directory::setTemporaryDirectory(Path::combine(__DIR__, "/storage-$appTestMode/temp"));
 TestClass::$_do_not_use_container_user_test = $container;
