@@ -126,7 +126,6 @@ class DiContainer extends DisposerBase implements IDiContainer
 	 * @param bool $mappingKeyOnly 真の場合は登録アイテムIDのみに限定。偽の場合、登録されている具象クラス名を考慮する。
 	 * @param DiItem[] $callStack
 	 * @return array<mixed>
-	 * @SuppressWarnings(PHPMD.CyclomaticComplexity)
 	 */
 	protected function generateParameterValues(ReflectionFunctionAbstract $reflectionMethod, array $arguments, int $level, bool $mappingKeyOnly, array $callStack): array
 	{

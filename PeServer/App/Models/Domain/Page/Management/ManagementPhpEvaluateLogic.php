@@ -89,7 +89,6 @@ class ManagementPhpEvaluateLogic extends PageLogicBase
 	 *
 	 * @param string $statement
 	 * @return mixed
-	 * @SuppressWarnings(PHPMD.EvalExpression)
 	 */
 	private function evalStatement(string $statement): mixed
 	{

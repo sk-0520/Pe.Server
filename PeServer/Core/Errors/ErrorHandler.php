@@ -179,7 +179,6 @@ class ErrorHandler
 	 * @param string $file
 	 * @param int $lineNumber
 	 * @param Throwable|null $throwable
-	 * @SuppressWarnings(PHPMD.ExitExpression)
 	 */
 	private function catchErrorCore(int $errorNumber, string $message, string $file, int $lineNumber, ?Throwable $throwable): never
 	{

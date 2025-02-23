@@ -40,9 +40,6 @@ class Mapper implements IMapper
 
 	#region IMapper
 
-	/**
-	 * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-	 */
 	public function mapping(array|ArrayAccess $source, object $destination): void
 	{
 		$destReflection = new ReflectionClass($destination);

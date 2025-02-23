@@ -9,9 +9,6 @@ use PeServer\App\Models\Setup\IOSetupArgument;
 use PeServer\Core\Code;
 use PeServer\Core\Regex;
 
-/**
- * @SuppressWarnings(PHPMD.CamelCaseClassName)
- */
 #[Version(0)]
 class SetupVersion_0000 extends SetupVersionBase //phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 {
@@ -26,7 +23,6 @@ class SetupVersion_0000 extends SetupVersionBase //phpcs:ignore Squiz.Classes.Va
 	 * Undocumented function
 	 *
 	 * @param DatabaseSetupArgument $argument
-	 * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
 	 */
 	protected function migrateDatabase(DatabaseSetupArgument $argument): void
 	{

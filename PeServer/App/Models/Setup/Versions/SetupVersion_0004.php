@@ -7,9 +7,6 @@ namespace PeServer\App\Models\Setup\Versions;
 use PeServer\App\Models\Setup\DatabaseSetupArgument;
 use PeServer\App\Models\Setup\IOSetupArgument;
 
-/**
- * @SuppressWarnings(PHPMD.CamelCaseClassName)
- */
 #[Version(4)]
 class SetupVersion_0004 extends SetupVersionBase //phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 {
