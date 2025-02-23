@@ -44,5 +44,39 @@ class ChunkedContentBaseTest extends TestClass
 		$this->assertSame("3\r\nabc\r\n6\r\ndefghi\r\n9\r\njklmnoopq\r\nc\r\nrstuvwxyz012\r\n0\r\n\r\n", $actual->raw);
 	}
 
+
+	public function test_output_empty()
+	{
+		$obj = new class extends ChunkedContentBase
+		{
+			public function __construct()
+			{
+				parent::__construct(Mime::TEXT);
+			}
+
+			#region ChunkedContentBase
+
+			protected function getIterator(): Iterator
+			{
+				yield new Binary("");
+				yield new Binary("abc");
+				yield new Binary("");
+				yield new Binary("defghi");
+				yield new Binary("");
+				yield new Binary("jklmnoopq");
+				yield new Binary("");
+				yield new Binary("rstuvwxyz012");
+				yield new Binary("");
+			}
+
+			#endregion
+		};
+
+		$this->assertSame(ICallbackContent::UNKNOWN, $obj->getLength());
+		$this->assertSame(Mime::TEXT, $obj->mime);
+		$actual = OutputBuffer::get(fn() => $obj->output());
+		$this->assertSame("3\r\nabc\r\n6\r\ndefghi\r\n9\r\njklmnoopq\r\nc\r\nrstuvwxyz012\r\n0\r\n\r\n", $actual->raw);
+	}
+
 	#endregion
 }
