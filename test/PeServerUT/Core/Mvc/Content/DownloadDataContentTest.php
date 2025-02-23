@@ -19,7 +19,6 @@ class DownloadDataContentTest extends TestClass
 		$this->assertSame("MIME", $actual->mime);
 		$this->assertSame("FILE-NAME", $actual->getFileName());
 		$this->assertSame("DATA", $actual->data);
-
 	}
 
 	#endregion

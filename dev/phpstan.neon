@@ -54,7 +54,6 @@ parameters:
     - '/Template type TFieldArray of method PeServer\\.+::.+\(\) is not referenced in a parameter./'
     #本体設定はめっちゃくちゃなことをするので初期化系エラーは無視
     - '/Class PeServer\\App\\Models\\Configuration\\\w+Setting(Base)? has an uninitialized @readonly property \$\w+\. Assign it in the constructor\./'
-    - '/PHPDoc tag @SuppressWarnings has invalid value/'
 
   typeAliases:
     LogMessageAlias: 'object|array<mixed>|null|literal-string'

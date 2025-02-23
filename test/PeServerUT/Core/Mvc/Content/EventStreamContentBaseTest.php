@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServerUT\Core\Mvc\Content;
 
+use EmptyIterator;
 use Iterator;
 use PeServer\Core\Mvc\Content\EventStreamContentBase;
 use PeServer\Core\Mvc\Content\IDownloadContent;
@@ -18,7 +19,7 @@ class EventStreamContentBaseTest extends TestClass
 		new class extends EventStreamContentBase {
 			protected function getIterator(): Iterator
 			{
-				yield from [];
+				return new EmptyIterator();
 			}
 		};
 
@@ -28,7 +29,7 @@ class EventStreamContentBaseTest extends TestClass
 		new class extends EventStreamContentBase implements IDownloadContent {
 			protected function getIterator(): Iterator
 			{
-				yield from [];
+				return new EmptyIterator();
 			}
 			public function getFileName(): string
 			{
