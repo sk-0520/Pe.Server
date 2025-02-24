@@ -9,6 +9,8 @@ use PeServer\Core\Log\LoggerBase;
 
 /**
  * 複数出力ロガー。
+ *
+ * @phpstan-import-type MessageAlias from ILogger
  */
 final class MultiLogger implements ILogger
 {
@@ -37,7 +39,7 @@ final class MultiLogger implements ILogger
 	 * @param int $traceIndex
 	 * @phpstan-param non-negative-int $traceIndex
 	 * @param mixed $message
-	 * @phpstan-param globa-alias-log-message $message
+	 * @phpstan-param MessageAlias $message
 	 * @param mixed ...$parameters
 	 */
 	private function logImpl(int $level, int $traceIndex, $message, ...$parameters): void
