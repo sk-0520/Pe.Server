@@ -37,7 +37,7 @@ final class MultiLogger implements ILogger
 	 * @param int $traceIndex
 	 * @phpstan-param non-negative-int $traceIndex
 	 * @param mixed $message
-	 * @phpstan-param LogMessageAlias $message
+	 * @phpstan-param globa-alias-log-message $message
 	 * @param mixed ...$parameters
 	 */
 	private function logImpl(int $level, int $traceIndex, $message, ...$parameters): void

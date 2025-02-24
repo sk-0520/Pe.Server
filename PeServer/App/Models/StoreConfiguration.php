@@ -61,7 +61,7 @@ abstract class StoreConfiguration
 		$path = Text::ensureIfNotNullOrWhiteSpace($setting->path, '/');
 		$secure = $setting->secure === null ? false : $setting->secure;
 		$httpOnly = $setting->httpOnly === null ? true : $setting->httpOnly;
-		/** @phpstan-var CookieSameSiteAlias */
+		/** @phpstan-var globa-alias-cookie-same-site */
 		$sameSite = Text::ensureIfNotNullOrWhiteSpace($setting->sameSite, 'None');
 
 		$options = new CookieOptions(

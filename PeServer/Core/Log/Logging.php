@@ -71,7 +71,7 @@ class Logging
 	 * メッセージ書式適用。
 	 *
 	 * @param mixed $message
-	 * @phpstan-param LogMessageAlias $message
+	 * @phpstan-param globa-alias-log-message $message
 	 * @param mixed ...$parameters
 	 * @return string
 	 */
@@ -183,7 +183,7 @@ class Logging
 	 * @phpstan-param non-negative-int $traceIndex
 	 * @param non-empty-string $header
 	 * @param mixed $message
-	 * @phpstan-param LogMessageAlias $message
+	 * @phpstan-param globa-alias-log-message $message
 	 * @param mixed ...$parameters
 	 * @return string
 	 */

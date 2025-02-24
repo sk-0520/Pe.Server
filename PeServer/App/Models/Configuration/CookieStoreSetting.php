@@ -21,7 +21,7 @@ class CookieStoreSetting
 	public ?bool $httpOnly = null; //@phpstan-ignore-line [CODE_READONLY]
 	/**
 	 * @var string|null
-	 * @phpstan-var CookieSameSiteAlias|null
+	 * @phpstan-var globa-alias-cookie-same-site|null
 	 */
 	public ?string $sameSite = null; //@phpstan-ignore-line [CODE_READONLY]
 

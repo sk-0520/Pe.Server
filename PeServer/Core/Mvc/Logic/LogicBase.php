@@ -240,7 +240,7 @@ abstract class LogicBase implements IValidationReceiver
 	 *
 	 * @param string $key キー。
 	 * @param string $value 設定値。
-	 * @param CookieOptions|array{path:?non-empty-string,span:?DateInterval,secure:?bool,httpOnly:?bool,sameSite:?CookieSameSiteAlias}|null $options オプション。
+	 * @param CookieOptions|array{path:?non-empty-string,span:?DateInterval,secure:?bool,httpOnly:?bool,sameSite:?globa-alias-cookie-same-site}|null $options オプション。
 	 * @return void
 	 */
 	protected function setCookie(string $key, string $value, CookieOptions|array|null $options = null): void

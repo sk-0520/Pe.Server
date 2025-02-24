@@ -22,7 +22,7 @@ use PeServer\Core\Throws\Throws;
  * データは保持されない点に注意。
  * `foreach` 一回回したら終了。
  *
- * @template TFieldArray of FieldArrayAlias
+ * @template TFieldArray of globa-alias-field-array
  * @implements Iterator<TFieldArray>
  */
 class DatabaseSequenceResult extends DatabaseResultBase implements Iterator
@@ -123,7 +123,7 @@ class DatabaseSequenceResult extends DatabaseResultBase implements Iterator
 }
 
 /**
- * @template TFieldArray of FieldArrayAlias
+ * @template TFieldArray of globa-alias-field-array
  * @template TObject of object
  * @implements Iterator<TObject>
  */

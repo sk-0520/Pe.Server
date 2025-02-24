@@ -21,11 +21,11 @@ interface IDatabaseExecutor extends IDatabaseImplementation
 	/**
 	 * 実行処理。
 	 *
-	 * @template TFieldArray of FieldArrayAlias
+	 * @template TFieldArray of globa-alias-field-array
 	 * @param string $statement
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
-	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
+	 * @phpstan-param array<array-key,globa-alias-database-bind-value>|null $parameters
 	 * @return DatabaseTableResult
 	 * @phpstan-return DatabaseTableResult<TFieldArray>
 	 * @throws DatabaseException
@@ -38,7 +38,7 @@ interface IDatabaseExecutor extends IDatabaseImplementation
 	 * @param string $statement
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
-	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
+	 * @phpstan-param array<array-key,globa-alias-database-bind-value>|null $parameters
 	 * @return int 挿入件数。
 	 * @throws DatabaseException
 	 * @throws SqlException 問い合わせ文の検証エラー
@@ -51,7 +51,7 @@ interface IDatabaseExecutor extends IDatabaseImplementation
 	 * @param string $statement
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
-	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
+	 * @phpstan-param array<array-key,globa-alias-database-bind-value>|null $parameters
 	 * @return void
 	 * @throws DatabaseException
 	 * @throws SqlException 問い合わせ文の検証エラー
@@ -64,7 +64,7 @@ interface IDatabaseExecutor extends IDatabaseImplementation
 	 * @param string $statement
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
-	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
+	 * @phpstan-param array<array-key,globa-alias-database-bind-value>|null $parameters
 	 * @return int 更新件数。
 	 * @throws DatabaseException
 	 * @throws SqlException 問い合わせ文の検証エラー
@@ -77,7 +77,7 @@ interface IDatabaseExecutor extends IDatabaseImplementation
 	 * @param string $statement
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
-	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
+	 * @phpstan-param array<array-key,globa-alias-database-bind-value>|null $parameters
 	 * @return void
 	 * @throws DatabaseException
 	 * @throws SqlException 問い合わせ文の検証エラー
@@ -90,7 +90,7 @@ interface IDatabaseExecutor extends IDatabaseImplementation
 	 * @param string $statement
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
-	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
+	 * @phpstan-param array<array-key,globa-alias-database-bind-value>|null $parameters
 	 * @return boolean 更新できたか。
 	 * @throws DatabaseException
 	 * @throws SqlException 問い合わせ文の検証エラー
@@ -103,7 +103,7 @@ interface IDatabaseExecutor extends IDatabaseImplementation
 	 * @param string $statement
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
-	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
+	 * @phpstan-param array<array-key,globa-alias-database-bind-value>|null $parameters
 	 * @return int 削除件数。
 	 * @throws DatabaseException
 	 * @throws SqlException 問い合わせ文の検証エラー
@@ -116,7 +116,7 @@ interface IDatabaseExecutor extends IDatabaseImplementation
 	 * @param string $statement
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
-	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
+	 * @phpstan-param array<array-key,globa-alias-database-bind-value>|null $parameters
 	 * @return void
 	 * @throws DatabaseException
 	 * @throws SqlException 問い合わせ文の検証エラー
@@ -129,7 +129,7 @@ interface IDatabaseExecutor extends IDatabaseImplementation
 	 * @param string $statement
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
-	 * @phpstan-param array<array-key,DatabaseBindValueAlias>|null $parameters
+	 * @phpstan-param array<array-key,globa-alias-database-bind-value>|null $parameters
 	 * @return boolean 削除できたか。
 	 * @throws DatabaseException
 	 * @throws SqlException 問い合わせ文の検証エラー
