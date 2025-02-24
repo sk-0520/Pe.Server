@@ -21,6 +21,8 @@ use PeServer\Core\TypeUtility;
 
 /**
  * ロガー生成・共通処理。
+ *
+ * @phpstan-import-type MessageAlias from ILogger
  */
 class Logging
 {
@@ -71,7 +73,7 @@ class Logging
 	 * メッセージ書式適用。
 	 *
 	 * @param mixed $message
-	 * @phpstan-param LogMessageAlias $message
+	 * @phpstan-param MessageAlias $message
 	 * @param mixed ...$parameters
 	 * @return string
 	 */
@@ -183,7 +185,7 @@ class Logging
 	 * @phpstan-param non-negative-int $traceIndex
 	 * @param non-empty-string $header
 	 * @param mixed $message
-	 * @phpstan-param LogMessageAlias $message
+	 * @phpstan-param MessageAlias $message
 	 * @param mixed ...$parameters
 	 * @return string
 	 */
