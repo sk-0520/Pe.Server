@@ -22,7 +22,7 @@ interface IDatabaseReader extends IDatabaseImplementation
 	/**
 	 * 問い合わせを逐次実行。
 	 *
-	 * @template TFieldArray of globa-alias-field-array
+	 * @template TFieldArray of globa-alias-database-field-array
 	 * @param string $statement
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
@@ -36,7 +36,7 @@ interface IDatabaseReader extends IDatabaseImplementation
 	/**
 	 * 問い合わせを実行。
 	 *
-	 * @template TFieldArray of globa-alias-field-array
+	 * @template TFieldArray of globa-alias-database-field-array
 	 * @param string $statement
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
@@ -51,7 +51,7 @@ interface IDatabaseReader extends IDatabaseImplementation
 	/**
 	 * 問い合わせの最初のデータを取得。
 	 *
-	 * @template TFieldArray of globa-alias-field-array
+	 * @template TFieldArray of globa-alias-database-field-array
 	 * @param string $statement
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
@@ -66,7 +66,7 @@ interface IDatabaseReader extends IDatabaseImplementation
 	/**
 	 * 問い合わせの最初のデータを取得。存在しない場合に `null` を返す。
 	 *
-	 * @template TFieldArray of globa-alias-field-array
+	 * @template TFieldArray of globa-alias-database-field-array
 	 * @param string $statement
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
@@ -81,7 +81,7 @@ interface IDatabaseReader extends IDatabaseImplementation
 	/**
 	 * 1件だけの問い合わせを実行。
 	 *
-	 * @template TFieldArray of globa-alias-field-array
+	 * @template TFieldArray of globa-alias-database-field-array
 	 * @param string $statement
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
@@ -96,7 +96,7 @@ interface IDatabaseReader extends IDatabaseImplementation
 	/**
 	 * 1件だけの問い合わせを実行。存在しない場合に `null` を返す
 	 *
-	 * @template TFieldArray of globa-alias-field-array
+	 * @template TFieldArray of globa-alias-database-field-array
 	 * @param string $statement
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
@@ -113,7 +113,7 @@ interface IDatabaseReader extends IDatabaseImplementation
 	 *
 	 * 単純な文字列処理のため無理な時は無理。
 	 *
-	 * @template TFieldArray of globa-alias-field-array
+	 * @template TFieldArray of globa-alias-database-field-array
 	 * @param string $statement
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters

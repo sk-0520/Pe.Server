@@ -58,7 +58,7 @@ parameters:
   typeAliases:
     globa-alias-server-store-value: 'string|int|array<int|string|null>|object|null'
     globa-alias-database-bind-value: 'string|int|float|bool'
-    globa-alias-field-array: 'non-empty-array<array-key,mixed>'
+    globa-alias-database-field-array: 'non-empty-array<array-key,mixed>'
 
 includes:
   - phar://phpstan.phar/conf/bleedingEdge.neon

@@ -43,7 +43,7 @@ abstract class DatabaseResultBase
 	 *
 	 * 上位でとりあえずいい感じにしとく感じで。
 	 *
-	 * @template TFieldArray of globa-alias-field-array
+	 * @template TFieldArray of globa-alias-database-field-array
 	 * @template TObject of object
 	 * @param array $fields
 	 * @phpstan-param TFieldArray $fields
