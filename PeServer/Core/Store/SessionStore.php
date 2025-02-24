@@ -246,7 +246,7 @@ class SessionStore
 	 *
 	 * @param string $key
 	 * @param mixed $value
-	 * @phpstan-param globa-alias-log-server-store-value $value
+	 * @phpstan-param globa-alias-server-store-value $value
 	 * @return void
 	 */
 	public function set(string $key, mixed $value): void
@@ -277,9 +277,9 @@ class SessionStore
 	 *
 	 * @param string $key
 	 * @param mixed $fallbackValue
-	 * @phpstan-param globa-alias-log-server-store-value $fallbackValue
+	 * @phpstan-param globa-alias-server-store-value $fallbackValue
 	 * @return mixed 取得データ。
-	 * @phpstan-return globa-alias-log-server-store-value
+	 * @phpstan-return globa-alias-server-store-value
 	 */
 	public function getOr(string $key, mixed $fallbackValue): mixed
 	{
@@ -291,7 +291,7 @@ class SessionStore
 	 *
 	 * @param string $key
 	 * @param mixed $result
-	 * @phpstan-param globa-alias-log-server-store-value $result
+	 * @phpstan-param globa-alias-server-store-value $result
 	 * @return boolean 取得できたか。
 	 */
 	public function tryGet(string $key, mixed &$result): bool
