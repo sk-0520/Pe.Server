@@ -45,7 +45,6 @@ class HomeWildcardLogic extends PageLogicBase
 			}
 		}
 
-
 		throw new HttpStatusException(HttpStatus::NotFound, $unsafeRequestPath);
 	}
 }
