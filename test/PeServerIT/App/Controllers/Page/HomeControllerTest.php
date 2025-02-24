@@ -109,9 +109,9 @@ class HomeControllerTest extends ItControllerClass
 		$this->assertMime(Mime::SVG, $actual);
 	}
 
-	public function test_wildcard_robot()
+	public function test_wildcard_robots()
 	{
-		$actual = $this->call(HttpMethod::Get, '/robot.txt');
+		$actual = $this->call(HttpMethod::Get, '/robots.txt');
 		$this->assertStatusOk($actual);
 		$this->assertMime(Mime::TEXT, $actual);
 	}
