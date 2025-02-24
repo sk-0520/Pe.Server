@@ -48,6 +48,28 @@ abstract class Time
 		return $totalSeconds;
 	}
 
+
+	/**
+	 * 全体ミリ秒を取得。
+	 *
+	 * @param DateInterval $time
+	 * @return float
+	 * @phpstan-pure
+	 */
+	public static function getTotalMilliseconds(DateInterval $time): float
+	{
+		$totalSeconds
+			= ($time->f)
+			+ ($time->s * 1000)
+			+ ($time->i * 1000 * 60)
+			+ ($time->h * 1000 * 60 * 60)
+			+ ($time->d * 1000 * 60 * 60 * 24)
+			+ ($time->m * 1000 * 60 * 60 * 24 * 30)
+			+ ($time->y * 1000 * 60 * 60 * 24 * 365);
+
+		return $totalSeconds;
+	}
+
 	/**
 	 * 全体秒から時間を生成。
 	 *
@@ -70,7 +92,7 @@ abstract class Time
 
 	private static function createISO8601(string $time): DateInterval
 	{
-		return Throws::wrap(Exception::class, FormatException::class, fn () => new DateInterval($time));
+		return Throws::wrap(Exception::class, FormatException::class, fn() => new DateInterval($time));
 	}
 
 	private static function createReadable(string $time, ?Encoding $encoding = null): DateInterval
@@ -97,7 +119,7 @@ abstract class Time
 
 	private static function createConstructor(string $time): DateInterval
 	{
-		$result = ErrorHandler::trap(fn () => DateInterval::createFromDateString($time));
+		$result = ErrorHandler::trap(fn() => DateInterval::createFromDateString($time));
 		if ($result->isFailureOrFalse()) {
 			throw new FormatException($time);
 		}

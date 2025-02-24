@@ -14,6 +14,42 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 class TimeTest extends TestClass
 {
+	public static function provider_getTotalSeconds()
+	{
+		return [
+			[0, new DateInterval("PT0S")],
+			[1, new DateInterval("PT1S")],
+			[60, new DateInterval("PT1M")],
+			[60 * 60, new DateInterval("PT1H")],
+			[24 * 60 * 60, new DateInterval("P1D")],
+		];
+	}
+
+	#[DataProvider('provider_getTotalSeconds')]
+	public function test_getTotalSeconds(int $expected, DateInterval $time)
+	{
+		$actual = Time::getTotalSeconds($time);
+		$this->assertSame($expected, $actual);
+	}
+
+	public static function provider_getTotalMilliseconds()
+	{
+		return [
+			[0, new DateInterval("PT0S")],
+			[1 * 1000, new DateInterval("PT1S")],
+			[60 * 1000, new DateInterval("PT1M")],
+			[60 * 60 * 1000, new DateInterval("PT1H")],
+			[24 * 60 * 60 * 1000, new DateInterval("P1D")],
+		];
+	}
+
+	#[DataProvider('provider_getTotalMilliseconds')]
+	public function test_getTotalMilliseconds(float $expected, DateInterval $time)
+	{
+		$actual = Time::getTotalMilliseconds($time);
+		$this->assertSame($expected, $actual);
+	}
+
 	public static function provider_create_ISO8601()
 	{
 		return [

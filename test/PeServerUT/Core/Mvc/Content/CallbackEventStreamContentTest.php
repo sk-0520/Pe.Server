@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServerUT\Core\Mvc\Content;
 
 use Closure;
+use DateInterval;
 use Iterator;
 use PeServer\Core\Binary;
 use PeServer\Core\Http\ICallbackContent;
@@ -76,15 +77,48 @@ class CallbackEventStreamContentTest extends TestClass
 		$this->assertSame("data: 1\r\ndata: 2\r\n\r\ndata: 1\r\ndata: 2\r\ndata: 3\r\n\r\ndata: 1\r\ndata: 2\r\ndata: 3\r\ndata: 4\r\n\r\ndata: <DONE>\r\n\r\n", $actual->raw);
 	}
 
-	public function test_output_message()
+	public function test_output_message_event()
 	{
 		$obj = new CallbackEventStreamContent(function () {
-			yield new EventStreamMessage("text", event: "EVENT", id: "ID", retr: 123);
+			yield new EventStreamMessage("text", event: "EVENT");
 		});
 
 		$this->assertSame(Mime::EVENT_STREAM, $obj->mime);
 		$actual = OutputBuffer::get(fn() => $obj->output());
-		$this->assertSame("event: EVENT\r\nid: ID\r\nretr: 123\r\ndata: text\r\n\r\ndata: <DONE>\r\n\r\n", $actual->raw);
+		$this->assertSame("event: EVENT\r\ndata: text\r\n\r\ndata: <DONE>\r\n\r\n", $actual->raw);
+	}
+
+	public function test_output_message_id()
+	{
+		$obj = new CallbackEventStreamContent(function () {
+			yield new EventStreamMessage("text", id: "ID");
+		});
+
+		$this->assertSame(Mime::EVENT_STREAM, $obj->mime);
+		$actual = OutputBuffer::get(fn() => $obj->output());
+		$this->assertSame("id: ID\r\ndata: text\r\n\r\ndata: <DONE>\r\n\r\n", $actual->raw);
+	}
+
+	public function test_output_message_retry()
+	{
+		$obj = new CallbackEventStreamContent(function () {
+			yield new EventStreamMessage("text", retry: new DateInterval("PT2S"));
+		});
+
+		$this->assertSame(Mime::EVENT_STREAM, $obj->mime);
+		$actual = OutputBuffer::get(fn() => $obj->output());
+		$this->assertSame("retry: 2000\r\ndata: text\r\n\r\ndata: <DONE>\r\n\r\n", $actual->raw);
+	}
+
+	public function test_output_message_all()
+	{
+		$obj = new CallbackEventStreamContent(function () {
+			yield new EventStreamMessage("text", event: "EVENT", id: "ID", retry: new DateInterval("PT1S"));
+		});
+
+		$this->assertSame(Mime::EVENT_STREAM, $obj->mime);
+		$actual = OutputBuffer::get(fn() => $obj->output());
+		$this->assertSame("event: EVENT\r\nid: ID\r\nretry: 1000\r\ndata: text\r\n\r\ndata: <DONE>\r\n\r\n", $actual->raw);
 	}
 
 	public function test_output_array()
@@ -119,5 +153,7 @@ class CallbackEventStreamContentTest extends TestClass
 		$actual = OutputBuffer::get(fn() => $obj->output());
 		$this->assertSame("data: {\"number\":123,\"string\":\"abc\",\"array\":[1,2,3],\"obj\":{\"key\":\"value\"}}\r\n\r\ndata: <DONE>\r\n\r\n", $actual->raw);
 	}
+
+
 	#endregion
 }

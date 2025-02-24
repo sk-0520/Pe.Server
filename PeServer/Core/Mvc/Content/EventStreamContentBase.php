@@ -14,6 +14,8 @@ use PeServer\Core\OutputBuffer;
 use PeServer\Core\Serialization\JsonSerializer;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\NotSupportedException;
+use PeServer\Core\Time;
+use PeServer\Core\TypeUtility;
 
 abstract class EventStreamContentBase extends DataContentBase implements ICallbackContent
 {
@@ -75,8 +77,9 @@ abstract class EventStreamContentBase extends DataContentBase implements ICallba
 			if ($message->id !== null) {
 				$this->outputContent("id", new Binary($message->id));
 			}
-			if ($message->id !== null) {
-				$this->outputContent("retr", new Binary((string)$message->retr));
+			if ($message->retry !== null) {
+				$ms = (string)round(Time::getTotalMilliseconds($message->retry));
+				$this->outputContent("retry", new Binary($ms));
 			}
 
 			if (is_array($message->data) || is_object($message->data)) {
