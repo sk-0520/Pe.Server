@@ -11,8 +11,6 @@ class EventStreamMessage
 	/**
 	 * 生成。
 	 *
-	 * NOTE: コメントは別に。。。
-	 *
 	 * @param string|array<mixed>|object $data
 	 * @param string|null $event
 	 * @param string|null $id

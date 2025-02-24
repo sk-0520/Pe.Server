@@ -14,6 +14,7 @@ use PeServer\Core\OutputBuffer;
 use PeServer\Core\Serialization\JsonSerializer;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\NotSupportedException;
+use PeServer\Core\Throws\Throws;
 use PeServer\Core\Time;
 use PeServer\Core\TypeUtility;
 
@@ -71,25 +72,34 @@ abstract class EventStreamContentBase extends DataContentBase implements ICallba
 	{
 		$iterator = $this->getIterator();
 		foreach ($iterator as $message) {
-			if ($message->event !== null) {
-				$this->outputContent("event", new Binary($message->event));
-			}
-			if ($message->id !== null) {
-				$this->outputContent("id", new Binary($message->id));
-			}
-			if ($message->retry !== null) {
-				$ms = (string)round(Time::getTotalMilliseconds($message->retry));
-				$this->outputContent("retry", new Binary($ms));
-			}
-
-			if (is_array($message->data) || is_object($message->data)) {
-				$dataBinary = $this->jsonSerializer->save($message->data);
-				$this->outputContent("data", $dataBinary);
-			} else {
+			if ($message instanceof EventStreamCommentMessage) {
+				assert(is_string($message->data));
 				$lines = Text::splitLines($message->data);
 				foreach ($lines as $line) {
 					$dataBinary = new Binary($line);
+					$this->outputContent(Text::EMPTY, $dataBinary);
+				}
+			} else {
+				if ($message->event !== null) {
+					$this->outputContent("event", new Binary($message->event));
+				}
+				if ($message->id !== null) {
+					$this->outputContent("id", new Binary($message->id));
+				}
+				if ($message->retry !== null) {
+					$ms = (string)round(Time::getTotalMilliseconds($message->retry));
+					$this->outputContent("retry", new Binary($ms));
+				}
+
+				if (is_array($message->data) || is_object($message->data)) {
+					$dataBinary = $this->jsonSerializer->save($message->data);
 					$this->outputContent("data", $dataBinary);
+				} else {
+					$lines = Text::splitLines($message->data);
+					foreach ($lines as $line) {
+						$dataBinary = new Binary($line);
+						$this->outputContent("data", $dataBinary);
+					}
 				}
 			}
 

@@ -13,6 +13,7 @@ use PeServer\Core\Mime;
 use PeServer\Core\Mvc\Content\ChunkedContentBase;
 use PeServer\Core\Mvc\Content\CallbackChunkedContent;
 use PeServer\Core\Mvc\Content\CallbackEventStreamContent;
+use PeServer\Core\Mvc\Content\EventStreamCommentMessage;
 use PeServer\Core\Mvc\Content\EventStreamMessage;
 use PeServer\Core\Mvc\Content\IDownloadContent;
 use PeServer\Core\OutputBuffer;
@@ -154,6 +155,40 @@ class CallbackEventStreamContentTest extends TestClass
 		$this->assertSame("data: {\"number\":123,\"string\":\"abc\",\"array\":[1,2,3],\"obj\":{\"key\":\"value\"}}\r\n\r\ndata: <DONE>\r\n\r\n", $actual->raw);
 	}
 
+	public function test_output_comment_1()
+	{
+		$obj = new CallbackEventStreamContent(function () {
+			yield new EventStreamCommentMessage("text");
+		});
+
+		$this->assertSame(Mime::EVENT_STREAM, $obj->mime);
+		$actual = OutputBuffer::get(fn() => $obj->output());
+		$this->assertSame(": text\r\n\r\ndata: <DONE>\r\n\r\n", $actual->raw);
+	}
+
+	public function test_output_comment_2()
+	{
+		$obj = new CallbackEventStreamContent(function () {
+			yield new EventStreamCommentMessage("text1\r\ntext2");
+		});
+
+		$this->assertSame(Mime::EVENT_STREAM, $obj->mime);
+		$actual = OutputBuffer::get(fn() => $obj->output());
+		$this->assertSame(": text1\r\n: text2\r\n\r\ndata: <DONE>\r\n\r\n", $actual->raw);
+	}
+
+	public function test_output_comment_data_comment()
+	{
+		$obj = new CallbackEventStreamContent(function () {
+			yield new EventStreamCommentMessage("text1\r\ntext2");
+			yield new EventStreamMessage("text3");
+			yield new EventStreamCommentMessage("text4");
+		});
+
+		$this->assertSame(Mime::EVENT_STREAM, $obj->mime);
+		$actual = OutputBuffer::get(fn() => $obj->output());
+		$this->assertSame(": text1\r\n: text2\r\n\r\ndata: text3\r\n\r\n: text4\r\n\r\ndata: <DONE>\r\n\r\n", $actual->raw);
+	}
 
 	#endregion
 }
