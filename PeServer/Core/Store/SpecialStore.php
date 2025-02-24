@@ -17,8 +17,6 @@ use PeServer\Core\Web\UrlQuery;
 
 /**
  * $_SERVER, $_COOKIE, $_SESSION 読み込みアクセス。
- *
- * @SuppressWarnings(PHPMD.Superglobals)
  */
 class SpecialStore
 {

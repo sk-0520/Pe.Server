@@ -10,6 +10,7 @@ require_once(__DIR__ . '/../../Core/AutoLoader.php');
 use Error;
 use Exception;
 use PeServer\App\Models\AppStartup;
+use PeServer\App\Models\AppStartupOption;
 use PeServer\Core\AutoLoader;
 use PeServer\Core\StartupOptions;
 use PeServer\Core\Cli\CliApplicationBase;
@@ -50,13 +51,15 @@ if (Text::isNullOrWhiteSpace($applicationClassName)) {
 
 $container = $startup->setup(
 	AppStartup::MODE_CLI,
-	[
-		'environment' => match ($parsedResult->getValue("mode")) {
+	new AppStartupOption(
+		match ($parsedResult->getValue("mode")) {
 			"production" => "production",
 			default => "development"
 		},
-		'revision' => ':REVISION:',
-	]
+		':REVISION:',
+		null,
+		null
+	)
 );
 
 /** @var CliApplicationBase */

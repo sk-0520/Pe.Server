@@ -16,7 +16,7 @@ use PeServer\Core\Binary;
 use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mime;
-use PeServer\Core\Mvc\Content\StreamingContent;
+use PeServer\Core\Mvc\Content\CallbackChunkedContent;
 use PeServer\Core\Mvc\Controller\ControllerArgument;
 use PeServer\Core\Mvc\Logic\LogicCallMode;
 use PeServer\Core\Mvc\Result\IActionResult;
@@ -95,25 +95,5 @@ final class HomeController extends PageControllerBase
 				[]
 			)
 		);
-	}
-
-	private function wait(): void
-	{
-		//usleep(500);
-		sleep(1);
-	}
-
-	public function streaming_ajax(): IActionResult
-	{
-		return $this->data(new StreamingContent(function () {
-			$this->wait();
-			yield new Binary("abc");
-			$this->wait();
-			yield new Binary("defghi");
-			$this->wait();
-			yield new Binary("jklmnoopq");
-			$this->wait();
-			yield new Binary("rstuvwxyz012");
-		}, Mime::TEXT));
 	}
 }

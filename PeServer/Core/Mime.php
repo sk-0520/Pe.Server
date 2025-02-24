@@ -28,6 +28,7 @@ abstract class Mime
 	public const ICON = 'image/vnd.microsoft.icon';
 	public const SQLITE3 = 'application/x-sqlite3';
 	public const SVG = 'image/svg+xml';
+	public const EVENT_STREAM = 'text/event-stream';
 
 	#endregion
 

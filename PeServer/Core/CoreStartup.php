@@ -77,10 +77,10 @@ class CoreStartup
 	/**
 	 *
 	 * @param string $mode
-	 * @param array{environment:string,revision:string,url_helper?:IUrlHelper,special_store?:SpecialStore} $options
+	 * @param CoreStartupOption $options
 	 * @param IDiRegisterContainer $container
 	 */
-	protected function registerErrorHandler(string $mode, array $options, IDiRegisterContainer $container): void
+	protected function registerErrorHandler(string $mode, CoreStartupOption $options, IDiRegisterContainer $container): void
 	{
 		if ($mode !== self::MODE_WEB) {
 			return;
@@ -97,15 +97,15 @@ class CoreStartup
 	 *
 	 * 拡張する場合は先に親を呼び出して、子の方で登録(再登録)を行うこと。
 	 *
-	 * @param array{environment:string,revision:string,url_helper?:IUrlHelper,special_store?:SpecialStore} $options
+	 * @param CoreStartupOption $options
 	 * @param IDiRegisterContainer $container
 	 */
-	protected function setupCommon(array $options, IDiRegisterContainer $container): void
+	protected function setupCommon(CoreStartupOption $options, IDiRegisterContainer $container): void
 	{
-		$environment = new Environment('C', 'uni', 'Asia/Tokyo', $options['environment'], $options['revision']);
+		$environment = new Environment('C', 'uni', 'Asia/Tokyo', $options->environment, $options->revision);
 		Encoding::setDefaultEncoding(Encoding::getUtf8());
 
-		$logging = new Logging($options['special_store'] ?? new SpecialStore());
+		$logging = new Logging($options->specialStore ?? new SpecialStore());
 		$container->registerValue($logging, Logging::class);
 
 		$programContext = new ProgramContext(
@@ -148,18 +148,18 @@ class CoreStartup
 	 *
 	 * 拡張する場合は先に親を呼び出して、子の方で登録(再登録)を行うこと。
 	 *
-	 * @param array{environment:string,revision:string,url_helper?:IUrlHelper,special_store?:SpecialStore} $options
+	 * @param CoreStartupOption $options
 	 * @param IDiRegisterContainer $container
 	 */
-	protected function setupWebService(array $options, IDiRegisterContainer $container): void
+	protected function setupWebService(CoreStartupOption $options, IDiRegisterContainer $container): void
 	{
 		$container->add(IDiRegisterContainer::class, DiItem::factory(fn($dc) => $dc->clone()));
 		$container->remove(IDiContainer::class);
 		$container->add(IDiContainer::class, DiItem::factory(fn($dc) => $dc->get(IDiRegisterContainer::class)));
 
-		$container->registerValue($options['url_helper'] ?? new UrlHelper(''), IUrlHelper::class);
+		$container->registerValue($options -> urlHelper ?? new UrlHelper(''), IUrlHelper::class);
 
-		$specialStore = $options['special_store'] ?? new SpecialStore();
+		$specialStore = $options->specialStore  ?? new SpecialStore();
 		$container->registerValue($specialStore, SpecialStore::class);
 		$container->add(Stores::class, DiItem::factory(fn($di) => new Stores($di->get(SpecialStore::class), StoreOptions::default(), $di->get(WebSecurity::class)), DiItem::LIFECYCLE_SINGLETON));
 		$container->add(CookieStore::class, DiItem::factory(fn($di) => $di->get(Stores::class)->cookie));
@@ -175,10 +175,10 @@ class CoreStartup
 	 * つかわんよ。
 	 * 拡張する場合は先に親を呼び出して、子の方で登録(再登録)を行うこと。
 	 *
-	 * @param array{environment:string,revision:string,url_helper?:IUrlHelper,special_store?:SpecialStore} $options
+	 * @param CoreStartupOption $options
 	 * @param IDiRegisterContainer $container
 	 */
-	protected function setupCliService(array $options, IDiRegisterContainer $container): void
+	protected function setupCliService(CoreStartupOption $options, IDiRegisterContainer $container): void
 	{
 		/** @var ILogProvider */
 		$logProvider = $container->get(ILogProvider::class);
@@ -206,10 +206,10 @@ class CoreStartup
 	 *
 	 * 拡張する場合は先に親を呼び出して、子の方で登録(再登録)を行うこと。
 	 *
-	 * @param array{environment:string,revision:string,url_helper?:IUrlHelper,special_store?:SpecialStore} $options
+	 * @param CoreStartupOption $options
 	 * @param IDiRegisterContainer $container
 	 */
-	protected function setupTestService(array $options, IDiRegisterContainer $container): void
+	protected function setupTestService(CoreStartupOption $options, IDiRegisterContainer $container): void
 	{
 		//NOP
 	}
@@ -219,10 +219,10 @@ class CoreStartup
 	 *
 	 * Coreでは何もしないので拡張側で好きにどうぞ。
 	 *
-	 * @param array{environment:string,revision:string,url_helper?:IUrlHelper,special_store?:SpecialStore} $options
+	 * @param CoreStartupOption $options
 	 * @param IDiRegisterContainer $container
 	 */
-	protected function setupCustom(array $options, IDiRegisterContainer $container): void
+	protected function setupCustom(CoreStartupOption $options, IDiRegisterContainer $container): void
 	{
 		//NOP
 	}
@@ -231,10 +231,10 @@ class CoreStartup
 	 * セットアップ処理。
 	 *
 	 * @param string $mode
-	 * @param array{environment:string,revision:string,url_helper?:IUrlHelper,special_store?:SpecialStore} $options
+	 * @param CoreStartupOption $options
 	 * @return IDiRegisterContainer
 	 */
-	public function setup(string $mode, array $options): IDiRegisterContainer
+	public function setup(string $mode, CoreStartupOption $options): IDiRegisterContainer
 	{
 		$container = new DiRegisterContainer();
 

@@ -123,11 +123,11 @@ class TestClass extends \PHPUnit\Framework\TestCase
 	 *
 	 * 非 `public` を呼び出す想定。
 	 *
-	 * @param object $object
+	 * @param object|string $object
 	 * @param string $name プロパティ名。
 	 * @return mixed
 	 */
-	protected function getProperty(object $object, string $name): mixed
+	protected function getProperty(object|string $object, string $name): mixed
 	{
 		$reflection = new ReflectionClass($object);
 		$property = $reflection->getProperty($name);
@@ -140,11 +140,11 @@ class TestClass extends \PHPUnit\Framework\TestCase
 	 *
 	 * 非 `public` を呼び出す想定。
 	 *
-	 * @param object $object
+	 * @param object|string $object
 	 * @param string $name プロパティ名。
 	 * @param mixed $value
 	 */
-	protected function setProperty(object $object, string $name, mixed $value): void
+	protected function setProperty(object|string $object, string $name, mixed $value): void
 	{
 		$reflection = new ReflectionClass($object);
 		$property = $reflection->getProperty($name);

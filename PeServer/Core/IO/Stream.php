@@ -55,6 +55,13 @@ class Stream extends ResourceBase
 	 */
 	public string $newLine = PHP_EOL;
 
+	/**
+	 * バッファサイズ。
+	 *
+	 * @var positive-int
+	 */
+	public $bufferSize = 1024;
+
 	#endregion
 
 	/**
@@ -435,12 +442,10 @@ class Stream extends ResourceBase
 	 * 文字列書き込み。
 	 *
 	 * @param string $data データ。
-	 * @param int|null $count 文字数。
-	 * @phpstan-param non-negative-int|null $count
 	 * @return int 書き込まれたバイト数。
 	 * @phpstan-return non-negative-int
 	 */
-	public function writeString(string $data, ?int $count = null): int
+	public function writeString(string $data): int
 	{
 		$this->throwIfDisposed();
 
@@ -448,21 +453,7 @@ class Stream extends ResourceBase
 			return 0;
 		}
 
-		if ($count === null) {
-			return $this->writeBinary($this->encoding->getBinary($data));
-		}
-
-		if ($count === 0) {
-			return 0;
-		}
-
-		$dataLength = Text::getLength($data);
-		if ($dataLength <= $count) {
-			return $this->writeBinary($this->encoding->getBinary($data));
-		}
-
-		$s = Text::substring($data, 0, $count);
-		return $this->writeBinary($this->encoding->getBinary($s));
+		return $this->writeBinary($this->encoding->getBinary($data));
 	}
 
 	/**
@@ -576,25 +567,15 @@ class Stream extends ResourceBase
 	 * * 位置を進めたり戻したりするので操作可能なストリームで処理すること。
 	 * * エンコーディングにより復元不可の可能性あり。
 	 *
-	 * @param int $bufferByteSize 1回読み進めるにあたり予め取得するサイズ。このサイズが改行(CR,LF)のサイズより小さい場合は改行(CR,LF)のサイズが設定される(1指定のutf16とか)
-	 * @phpstan-param positive-int $bufferByteSize
-	 * @return string
+	 * @return string 読み込んだ行。末尾まで読み込み済みでも空文字列となるため isEnd なりで確認をすること。
 	 */
-	public function readLine(int $bufferByteSize = 1024): string
+	public function readLine(): string
 	{
 		$this->throwIfDisposed();
-
-		if ($bufferByteSize < 1) { //@phpstan-ignore-line [DOCTYPE]
-			throw new ArgumentException('$bufferByteSize');
-		}
 
 		$cr = $this->encoding->getBinary("\r")->raw;
 		$lf = $this->encoding->getBinary("\n")->raw;
 		$newlineWidth = strlen($cr);
-
-		if ($bufferByteSize < $newlineWidth) {
-			$bufferByteSize = $newlineWidth;
-		}
 
 		$startOffset = $this->getOffset();
 
@@ -606,7 +587,7 @@ class Stream extends ResourceBase
 		$hasNewLine = false;
 
 		while (!$this->isEnd()) {
-			$binary = $this->readBinary($bufferByteSize);
+			$binary = $this->readBinary($this->bufferSize);
 			$currentLength = $binary->count();
 			if (!$currentLength) {
 				break;

@@ -23,7 +23,6 @@ class Markdown
 
 	#endregion
 
-	/** @SuppressWarnings(PHPMD.MissingImport) */
 	public function __construct()
 	{
 		$this->parser = new \Michelf\MarkdownExtra();

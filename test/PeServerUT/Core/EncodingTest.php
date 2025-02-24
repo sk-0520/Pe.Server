@@ -9,6 +9,7 @@ use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\EncodingException;
 use PeServerTest\TestClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\TestWith;
 
 class EncodingTest extends TestClass
 {
@@ -80,6 +81,61 @@ class EncodingTest extends TestClass
 		$actual = $encoding->toString($binary);
 		$this->assertSame($expected, $actual);
 	}
+
+	#[TestWith([true, "UTF-8", "UTF-8"])]
+	#[TestWith([true, "UTF-8", "utf-8"])]
+	#[TestWith([true, "UTF-8", "utf8"])]
+	#[TestWith([false, "UTF-8", "UTF_8"])]
+	public function test_isEqualsName(bool $expected, string $encodingName, string $target)
+	{
+		$encoding = new Encoding($encodingName);
+		$actual = $encoding->isEqualsName($target);
+		$this->assertSame($expected, $actual);
+	}
+
+	#[TestWith([true, "UTF-8", "UTF-8"])]
+	#[TestWith([false, "UTF-8", "UTF-16"])]
+	public function test_isEquals(bool $expected, string $encodingName, string $target)
+	{
+		$encoding = new Encoding($encodingName);
+		$actual = $encoding->isEquals(new Encoding($target));
+		$this->assertSame($expected, $actual);
+	}
+
+	#[TestWith([true, "UTF-8", "UTF-8"])]
+	#[TestWith([false, "UTF-16", "UTF-8"])]
+	#[TestWith([true, "UTF-16", "UTF-16"])]
+	#[TestWith([true, "UTF-16LE", "UTF-16LE"])]
+	#[TestWith([true, "UTF-16BE", "UTF-16BE"])]
+	#[TestWith([false, "UTF-16", "UTF-16BE"])]
+	public function test_isDefault(bool $expected, string $defaultName, string $encodingName)
+	{
+		$restoreEncoding = Encoding::getDefaultEncoding();
+		try {
+			Encoding::setDefaultEncoding(new Encoding($defaultName));
+			$currentEncoding = new Encoding($encodingName);
+			$this->assertSame($expected, $currentEncoding->isDefault());
+		} finally {
+			Encoding::setDefaultEncoding($restoreEncoding);
+		}
+	}
+
+	public function test_defaultEncoding()
+	{
+		$restoreEncoding = Encoding::getDefaultEncoding();
+		try {
+			Encoding::setDefaultEncoding(Encoding::getUtf16());
+			$this->setProperty(Encoding::class, "defaultEncoding", null);
+			$this->assertFalse(Encoding::getDefaultEncoding()->isEqualsName(Encoding::getAscii()->name));
+			$this->assertFalse(Encoding::getDefaultEncoding()->isEqualsName(Encoding::getUtf8()->name));
+			$this->assertTrue(Encoding::getDefaultEncoding()->isEqualsName(Encoding::getUtf16()->name));
+			$this->assertFalse(Encoding::getDefaultEncoding()->isEqualsName(Encoding::getUtf32()->name));
+			$this->assertFalse(Encoding::getDefaultEncoding()->isEqualsName(Encoding::getShiftJis()->name));
+		} finally {
+			Encoding::setDefaultEncoding($restoreEncoding);
+		}
+	}
+
 
 	public static function provider_getAliasNames()
 	{

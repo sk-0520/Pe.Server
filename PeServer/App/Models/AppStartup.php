@@ -28,6 +28,7 @@ use PeServer\Core\Cli\ParameterKind;
 use PeServer\Core\Collection\Arr;
 use PeServer\Core\ProgramContext;
 use PeServer\Core\CoreStartup;
+use PeServer\Core\CoreStartupOption;
 use PeServer\Core\Database\IDatabaseConnection;
 use PeServer\Core\StartupOptions;
 use PeServer\Core\DI\DiItem;
@@ -71,17 +72,17 @@ class AppStartup extends CoreStartup
 	/**
 	 *
 	 * @param string $mode
-	 * @param array{environment:string,revision:string,url_helper?:IUrlHelper,special_store?:SpecialStore} $options
+	 * @param CoreStartupOption $options
 	 * @param IDiRegisterContainer $container
 	 */
-	protected function registerErrorHandler(string $mode, array $options, IDiRegisterContainer $container): void
+	protected function registerErrorHandler(string $mode, CoreStartupOption $options, IDiRegisterContainer $container): void
 	{
 		if ($mode !== self::MODE_WEB) {
 			return;
 		}
 
 		if ($this->startupOptions->errorHandling) {
-			$specialStore = $options['special_store'] ?? throw new Exception();
+			$specialStore = $options->specialStore ?? throw new Exception();
 			//$method = $specialStore->getRequestMethod();
 			$requestPath = new RequestPath($specialStore->getServer('REQUEST_URI'), $container->get(IUrlHelper::class));
 			//$container->registerValue(new RouteRequest($method, $requestPath));
@@ -91,7 +92,7 @@ class AppStartup extends CoreStartup
 		}
 	}
 
-	protected function setupCommon(array $options, IDiRegisterContainer $container): void
+	protected function setupCommon(CoreStartupOption $options, IDiRegisterContainer $container): void
 	{
 		parent::setupCommon($options, $container);
 
@@ -100,9 +101,9 @@ class AppStartup extends CoreStartup
 
 		$appConfig = new AppConfiguration(
 			$container->get(ProgramContext::class),
-			$options['url_helper'] ?? new UrlHelper(''),
+			$options->urlHelper ?? new UrlHelper(''),
 			$container->get(WebSecurity::class),
-			$options['special_store'] ?? new SpecialStore(),
+			$options->specialStore ?? new SpecialStore(),
 			$container->get(Environment::class)
 		);
 		$container->registerValue($appConfig);
@@ -126,7 +127,7 @@ class AppStartup extends CoreStartup
 		$container->registerClass(AppTemporary::class);
 	}
 
-	protected function setupWebService(array $options, IDiRegisterContainer $container): void
+	protected function setupWebService(CoreStartupOption $options, IDiRegisterContainer $container): void
 	{
 		parent::setupWebService($options, $container);
 
@@ -140,7 +141,7 @@ class AppStartup extends CoreStartup
 		$method = HttpMethod::from(Text::toUpper(Text::trim($specialStore->getServer('REQUEST_METHOD'))));
 		$requestPath = new RequestPath(
 			$specialStore->getServer('REQUEST_URI'),
-			$options['url_helper'] ?? new UrlHelper('')
+			$options->urlHelper ?? new UrlHelper('')
 		);
 		$container->registerValue(new RouteRequest($method, $requestPath));
 
@@ -148,7 +149,7 @@ class AppStartup extends CoreStartup
 		$container->registerMapping(Route::class, AppRoute::class);
 	}
 
-	protected function setupCliService(array $options, IDiRegisterContainer $container): void
+	protected function setupCliService(CoreStartupOption $options, IDiRegisterContainer $container): void
 	{
 		parent::setupCliService($options, $container);
 
