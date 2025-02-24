@@ -232,7 +232,7 @@ abstract class Text
 	 *
 	 * @param string $format
 	 * @param mixed ...$values
-	 * @phpstan-param globa-alias-format ...$values
+	 * @phpstan-param string|int|float ...$values
 	 * @return string
 	 * @see https://www.php.net/manual/function.sprintf.php
 	 * @see Text::replaceMap()
