@@ -10,6 +10,7 @@ use PeServer\Core\Store\CookieOptions;
  * Cookie設定。
  *
  * @immutable
+ * @phpstan-import-type SameSiteAlias from CookieOptions
  */
 class CookieStoreSetting
 {
@@ -21,7 +22,7 @@ class CookieStoreSetting
 	public ?bool $httpOnly = null; //@phpstan-ignore-line [CODE_READONLY]
 	/**
 	 * @var string|null
-	 * @phpstan-var globa-alias-cookie-same-site|null
+	 * @phpstan-var SameSiteAlias|null
 	 */
 	public ?string $sameSite = null; //@phpstan-ignore-line [CODE_READONLY]
 

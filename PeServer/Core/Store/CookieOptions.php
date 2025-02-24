@@ -9,6 +9,8 @@ use DateTimeImmutable;
 
 /**
  * Cookie 設定。
+ *
+ * @phpstan-type SameSiteAlias "Lax"|"lax"|"None"|"none"|"Strict"|"strict"
  */
 class CookieOptions
 {
@@ -37,7 +39,7 @@ class CookieOptions
 	 * 同じサイト。
 	 *
 	 * @var string
-	 * @phpstan-var globa-alias-cookie-same-site
+	 * @phpstan-var SameSiteAlias
 	 */
 	public readonly string $sameSite;
 
@@ -51,7 +53,7 @@ class CookieOptions
 	 * @param boolean $secure HTTPS に限定するか。
 	 * @param boolean $httpOnly HTTP リクエストのみで使用するか。
 	 * @param string $sameSite 同じサイト。
-	 * @phpstan-param globa-alias-cookie-same-site $sameSite
+	 * @phpstan-param SameSiteAlias $sameSite
 	 */
 	public function __construct(string $path, ?DateInterval $span, bool $secure, bool $httpOnly, string $sameSite)
 	{

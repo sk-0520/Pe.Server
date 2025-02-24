@@ -19,6 +19,9 @@ use PeServer\Core\Store\TemporaryOptions;
 use PeServer\Core\Text;
 use PeServer\Core\Time;
 
+/**
+ * @phpstan-import-type SameSiteAlias from CookieOptions
+ */
 abstract class StoreConfiguration
 {
 	#region function
@@ -61,7 +64,7 @@ abstract class StoreConfiguration
 		$path = Text::ensureIfNotNullOrWhiteSpace($setting->path, '/');
 		$secure = $setting->secure === null ? false : $setting->secure;
 		$httpOnly = $setting->httpOnly === null ? true : $setting->httpOnly;
-		/** @phpstan-var globa-alias-cookie-same-site */
+		/** @phpstan-var SameSiteAlias */
 		$sameSite = Text::ensureIfNotNullOrWhiteSpace($setting->sameSite, 'None');
 
 		$options = new CookieOptions(
