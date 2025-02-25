@@ -5,10 +5,10 @@ $settings = [
 		'pattern' => '..\\..\\test\\phpunit.phar.*',
 		'output' => '..\\extracts\\PHPUnit',
 	],
-	// [
-	// 	'pattern' => '..\\phpstan.phar.*',
-	// 	'output' => '..\\extracts\\phpstan',
-	// ],
+	[
+		'pattern' => '..\\phpstan.phar.*',
+		'output' => '..\\extracts\\phpstan',
+	],
 ];
 
 foreach($settings as $setting) {
