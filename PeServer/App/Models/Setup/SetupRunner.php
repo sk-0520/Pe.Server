@@ -32,6 +32,11 @@ class SetupRunner
 	 */
 	private array $versions;
 
+		/**
+	 * @var class-string<SetupVersionBase>[]
+	 */
+	private array $sessionVersions;
+
 	private ILogger $logger;
 
 	#endregion
