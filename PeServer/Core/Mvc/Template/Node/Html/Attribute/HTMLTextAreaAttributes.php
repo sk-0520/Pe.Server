@@ -13,7 +13,7 @@ class HTMLTextAreaAttributes extends HtmlAttributes
 	 *
 	 * @param array<string,int|bool|string|null> $attributes
 	 * @phpstan-param array{
-	 * 	autocomplete?: AutocompleteAlias,
+	 * 	autocomplete?: globa-alias-autocomplete,
 	 * 	autofocus?: null,
 	 * 	cols?: non-negative-int,
 	 * 	dirname?: non-empty-string,
@@ -27,7 +27,7 @@ class HTMLTextAreaAttributes extends HtmlAttributes
 	 * 	rows?: non-negative-int,
 	 * 	spellcheck?: bool|"default",
 	 * 	wrap?: "hard"|"soft",
-	 * }&HtmlTagAttributeAlias $attributes
+	 * }&globa-alias-html-tag-attribute $attributes
 	 */
 	public function __construct(array $attributes = [])
 	{

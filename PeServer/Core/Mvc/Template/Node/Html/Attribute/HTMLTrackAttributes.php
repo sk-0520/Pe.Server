@@ -17,8 +17,8 @@ class HTMLTrackAttributes extends HtmlAttributes
 	 * 	kind?: "subtitles"|"captions"|"descriptions"|"chapters"|"metadata",
 	 * 	label?: non-empty-string,
 	 * 	src?: null,
-	 * 	srclang?: RFC5646Alias,
-	 * }&HtmlTagAttributeAlias $attributes
+	 * 	srclang?: globa-alias-rfc-5646,
+	 * }&globa-alias-html-tag-attribute $attributes
 	 */
 	public function __construct(array $attributes = [])
 	{

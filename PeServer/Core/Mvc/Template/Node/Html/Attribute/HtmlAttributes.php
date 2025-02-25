@@ -12,7 +12,7 @@ class HtmlAttributes extends Attributes
 	 * 生成。
 	 *
 	 * @param array<string,int|bool|string|null> $attributes
-	 * @phpstan-param HtmlTagAttributeAlias $attributes
+	 * @phpstan-param globa-alias-html-tag-attribute $attributes
 	 */
 	public function __construct(array $attributes = [])
 	{

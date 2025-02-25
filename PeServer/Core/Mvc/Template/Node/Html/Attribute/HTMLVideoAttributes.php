@@ -16,7 +16,7 @@ class HTMLVideoAttributes extends HtmlAttributes
 	 * 	autoplay?: null,
 	 * 	controls?: null,
 	 * 	controlslist?: "nodownload"|"nofullscreen"|"noremoteplayback",
-	 * 	crossorigin?: CrossOriginAlias,
+	 * 	crossorigin?: globa-alias-cross-origin,
 	 * 	disableremoteplayback?: null,
 	 * 	height?: non-negative-int,
 	 * 	loop?: null,
@@ -26,7 +26,7 @@ class HTMLVideoAttributes extends HtmlAttributes
 	 * 	preload?: "none"|"metadata"|"auto",
 	 * 	src?: non-empty-string,
 	 * 	width?: non-negative-int,
-	 * }&HtmlTagAttributeAlias $attributes
+	 * }&globa-alias-html-tag-attribute $attributes
 	 */
 	public function __construct(array $attributes = [])
 	{

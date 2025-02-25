@@ -15,7 +15,7 @@ class HTMLOptGroupAttributes extends HtmlAttributes
 	 * @phpstan-param array{
 	 * 	disabled?: null,
 	 * 	label?: non-empty-string,
-	 * }&HtmlTagAttributeAlias $attributes
+	 * }&globa-alias-html-tag-attribute $attributes
 	 */
 	public function __construct(array $attributes = [])
 	{

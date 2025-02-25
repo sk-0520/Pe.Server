@@ -15,7 +15,7 @@ class HTMLBaseAttributes extends HtmlAttributes
 	 * @phpstan-param array{
 	 * 	href?:non-empty-string,
 	 * 	target?:non-empty-string|"_self"|"_blank"|"_parent"|"_top"
-	 * }&HtmlTagAttributeAlias $attributes
+	 * }&globa-alias-html-tag-attribute $attributes
 	 */
 	public function __construct(array $attributes = [])
 	{

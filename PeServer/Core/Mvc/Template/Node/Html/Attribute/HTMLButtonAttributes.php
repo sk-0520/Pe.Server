@@ -24,7 +24,7 @@ class HTMLButtonAttributes extends HtmlAttributes
 	 * 	popovertargetaction?: "hide"|"show"|"toggle",
 	 * 	type?: "submit"|"reset"|"button",
 	 * 	value?: int|bool|string,
-	 * }&HtmlTagAttributeAlias $attributes,
+	 * }&globa-alias-html-tag-attribute $attributes,
 	 */
 	public function __construct(array $attributes = [])
 	{

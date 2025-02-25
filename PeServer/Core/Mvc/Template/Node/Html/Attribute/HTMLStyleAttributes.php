@@ -13,9 +13,9 @@ class HTMLStyleAttributes extends HtmlAttributes
 	 *
 	 * @param array<string,int|bool|string|null> $attributes
 	 * @phpstan-param array{
-	 * 	media?: MediaQueryAlias,
+	 * 	media?: globa-alias-media-query,
 	 * 	nonce?: empty-string,
-	 * }&HtmlTagAttributeAlias $attributes
+	 * }&globa-alias-html-tag-attribute $attributes
 	 */
 	public function __construct(array $attributes = [])
 	{

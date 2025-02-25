@@ -18,7 +18,7 @@ class HTMLTableHeaderCellAttributes extends HtmlAttributes
 	 * 	headers?: non-empty-string,
 	 * 	rowspan?: non-negative-int,
 	 * 	scope?: "row"|"col"|"rowgroup"|"colgroup",
-	 * }&HtmlTagAttributeAlias $attributes
+	 * }&globa-alias-html-tag-attribute $attributes
 	 */
 	public function __construct(array $attributes = [])
 	{

@@ -17,7 +17,7 @@ class HTMLTemplateAttributes extends HtmlAttributes
 	 * 	shadowrootclonable?: null,
 	 * 	shadowrootdelegatesfocus?: bool,
 	 * 	shadowrootclonable?: null,
-	 * }&HtmlTagAttributeAlias $attributes
+	 * }&globa-alias-html-tag-attribute $attributes
 	 */
 	public function __construct(array $attributes = [])
 	{
