@@ -15,7 +15,7 @@ class HTMLFieldSetAttributes extends HtmlAttributes
 	 * @phpstan-param array{
 	 * 	disabled?: null,
 	 * 	form?: non-empty-string,
-	 * }&HtmlTagAttributeAlias $attributes
+	 * }&globa-alias-html-tag-attribute $attributes
 	 */
 	public function __construct(array $attributes = [])
 	{

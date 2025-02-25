@@ -12,7 +12,7 @@ class HTMLHeadAttributes extends HtmlAttributes
 	 * 生成。
 	 *
 	 * @param array<string,int|bool|string|null> $attributes
-	 * @phpstan-param array{}&HtmlTagAttributeAlias $attributes
+	 * @phpstan-param array{}&globa-alias-html-tag-attribute $attributes
 	 */
 	public function __construct(array $attributes = [])
 	{

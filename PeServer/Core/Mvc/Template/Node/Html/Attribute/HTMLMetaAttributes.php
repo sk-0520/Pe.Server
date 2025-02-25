@@ -16,7 +16,7 @@ class HTMLMetaAttributes extends HtmlAttributes
 	 * 	charset?: non-empty-string,
 	 * 	content?: non-empty-string,
 	 * 	http-equiv?: "content-security-policy"|"content-type"|"default-style",
-	 * }&HtmlTagAttributeAlias $attributes
+	 * }&globa-alias-html-tag-attribute $attributes
 	 */
 	public function __construct(array $attributes = [])
 	{

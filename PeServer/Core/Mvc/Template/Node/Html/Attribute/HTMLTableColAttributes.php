@@ -15,7 +15,7 @@ class HTMLTableColAttributes extends HtmlAttributes implements IHTMLTableColElem
 	 * @param array<string,int|bool|string|null> $attributes
 	 * @phpstan-param array{
 	 * 	span?: positive-int,
-	 * }&HtmlTagAttributeAlias $attributes
+	 * }&globa-alias-html-tag-attribute $attributes
 	 */
 	public function __construct(array $attributes = [])
 	{
