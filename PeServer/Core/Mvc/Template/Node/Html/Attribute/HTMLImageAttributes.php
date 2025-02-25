@@ -15,19 +15,19 @@ class HTMLImageAttributes extends HtmlAttributes
 	 * @phpstan-param array{
 	 * 	alt?: non-empty-string,
 	 * 	decoding?: "sync"|"async"|"auto",
-	 * 	crossorigin?: CrossOriginAlias,
+	 * 	crossorigin?: globa-alias-cross-origin,
 	 * 	elementtiming?: non-empty-string,
 	 * 	fetchpriority?: "high"|"low"|"auto",
 	 * 	height?: int,
 	 * 	ismap?: null,
 	 * 	loading?: "eager"|"lazy",
-	 * 	referrerpolicy?: ReferrerPolicyAlias,
+	 * 	referrerpolicy?: globa-alias-referrer-policy,
 	 * 	sizes?: non-empty-string,
 	 * 	src?: non-empty-string,
 	 * 	srcset?: non-empty-string,
 	 * 	width?: int,
 	 * 	usemap?: string,
-	 * }&HtmlTagAttributeAlias $attributes
+	 * }&globa-alias-html-tag-attribute $attributes
 	 */
 	public function __construct(array $attributes = [])
 	{

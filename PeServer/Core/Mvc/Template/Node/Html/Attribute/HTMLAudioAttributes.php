@@ -16,13 +16,13 @@ class HTMLAudioAttributes extends HtmlAttributes
 	 * 	autoplay?: null,
 	 * 	controls?: null,
 	 * 	controlslist?: "nodownload"|"nofullscreen"|"noremoteplayback",
-	 * 	crossorigin?: CrossOriginAlias,
+	 * 	crossorigin?: globa-alias-cross-origin,
 	 * 	disableremoteplayback?: null,
 	 * 	loop?: null,
 	 * 	muted?: bool,
 	 * 	preload?: "none"|"metadata"|"auto",
 	 * 	src?: non-empty-string,
-	 * }&HtmlTagAttributeAlias $attributes
+	 * }&globa-alias-html-tag-attribute $attributes
 	 */
 	public function __construct(array $attributes = [])
 	{

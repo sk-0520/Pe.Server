@@ -13,15 +13,15 @@ class HTMLIFrameAttributes extends HtmlAttributes
 	 *
 	 * @param array<string,int|bool|string|null> $attributes
 	 * @phpstan-param array{
-	 * 	allow?: PermissionsPolicyAlias,
+	 * 	allow?: globa-alias-permissions-policy,
 	 * 	height?: 150,
 	 * 	loading?: "eager"|"lazy",
-	 * 	referrerpolicy?: ReferrerPolicyAlias,
+	 * 	referrerpolicy?: globa-alias-referrer-policy,
 	 * 	sandbox?: non-empty-string,
 	 * 	src?: non-empty-string,
 	 * 	srcdoc?: non-empty-string,
 	 * 	width?: int,
-	 * }&HtmlTagAttributeAlias $attributes
+	 * }&globa-alias-html-tag-attribute $attributes
 	 */
 	public function __construct(array $attributes = [])
 	{

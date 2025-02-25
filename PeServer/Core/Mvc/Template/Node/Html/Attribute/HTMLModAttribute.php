@@ -15,7 +15,7 @@ class HTMLModAttribute extends HtmlAttributes
 	 * @phpstan-param array{
 	 * 	cite?: non-empty-string,
 	 * 	datetime?: non-empty-string,
-	 * }&HtmlTagAttributeAlias $attributes
+	 * }&globa-alias-html-tag-attribute $attributes
 	 */
 	public function __construct(array $attributes = [])
 	{

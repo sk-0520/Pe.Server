@@ -17,10 +17,10 @@ class HTMLSourceAttributes extends HtmlAttributes
 	 * 	src?: non-empty-string,
 	 * 	srcset?: non-empty-string,
 	 * 	sizes?: non-empty-string,
-	 * 	media?: MediaQueryAlias,
+	 * 	media?: globa-alias-media-query,
 	 * 	height?: int,
 	 * 	width?: int,
-	 * }&HtmlTagAttributeAlias $attributes
+	 * }&globa-alias-html-tag-attribute $attributes
 	 */
 	public function __construct(array $attributes = [])
 	{

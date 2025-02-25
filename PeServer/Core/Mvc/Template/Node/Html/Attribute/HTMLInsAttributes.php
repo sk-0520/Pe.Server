@@ -15,7 +15,7 @@ class HTMLInsAttributes extends HtmlAttributes
 	 * @phpstan-param array{
 	 * 	cit?: non-empty-string,
 	 * 	datetime?: non-empty-string,
-	 * }&HtmlTagAttributeAlias $attributes
+	 * }&globa-alias-html-tag-attribute $attributes
 	 */
 	public function __construct(array $attributes = [])
 	{
