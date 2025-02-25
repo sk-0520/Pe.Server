@@ -19,7 +19,7 @@ class HTMLObjectAttributes extends HtmlAttributes
 	 * 	type?: non-empty-string,
 	 * 	usemap?: non-empty-string,
 	 * 	width?: int,
-	 * }&HtmlTagAttributeAlias $attributes
+	 * }&globa-alias-html-tag-attribute $attributes
 	 * @phpstan-ignore missingType.iterableValue, parameter.unresolvableType
 	 */
 	public function __construct(array $attributes = [])

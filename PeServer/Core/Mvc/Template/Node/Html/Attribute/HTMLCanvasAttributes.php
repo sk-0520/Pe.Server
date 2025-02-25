@@ -15,7 +15,7 @@ class HTMLCanvasAttributes extends HtmlAttributes
 	 * @phpstan-param array{
 	 * 	height?: positive-int,
 	 * 	width?: positive-int,
-	 * }&HtmlTagAttributeAlias $attributes
+	 * }&globa-alias-html-tag-attribute $attributes
 	 */
 	public function __construct(array $attributes = [])
 	{

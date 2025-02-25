@@ -17,7 +17,7 @@ class HTMLOptionAttributes extends HtmlAttributes
 	 * 	label?: non-empty-string,
 	 * 	selected?: non-empty-string,
 	 * 	value?: int|bool|string,
-	 * }&HtmlTagAttributeAlias $attributes
+	 * }&globa-alias-html-tag-attribute $attributes
 	 */
 	public function __construct(array $attributes = [])
 	{

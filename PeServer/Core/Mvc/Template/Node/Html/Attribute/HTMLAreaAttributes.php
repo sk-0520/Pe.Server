@@ -17,12 +17,12 @@ class HTMLAreaAttributes extends HtmlAttributes
 	 * 	coords?: "rect"|"circle"|"poly",
 	 * 	download?: null,
 	 * 	href?: non-empty-string,
-	 * 	hreflang?: RFC5646Alias,
+	 * 	hreflang?: globa-alias-rfc-5646,
 	 * 	ping?: non-empty-string,
 	 * 	rel?: non-empty-string,
 	 * 	shape?: non-empty-string,
 	 * 	target?:non-empty-string|"_self"|"_blank"|"_parent"|"_top",
-	 * }&HtmlTagAttributeAlias $attributes
+	 * }&globa-alias-html-tag-attribute $attributes
 	 */
 	public function __construct(array $attributes = [])
 	{

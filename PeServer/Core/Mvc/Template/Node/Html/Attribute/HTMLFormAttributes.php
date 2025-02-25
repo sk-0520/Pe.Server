@@ -14,14 +14,14 @@ class HTMLFormAttributes extends HtmlAttributes
 	 * @param array<string,int|bool|string|null> $attributes
 	 * @phpstan-param array{
 	 * 	accept-charset?: non-empty-string,
-	 * 	autocomplete?: AutocompleteAlias,
+	 * 	autocomplete?: globa-alias-autocomplete,
 	 * 	rel?: non-empty-string,
 	 * 	action?: non-empty-string,
 	 * 	enctype?: "application/x-www-form-urlencoded"|"multipart/form-data"|"text/plain",
 	 * 	method?: "post"|"get"|"dialog",
 	 * 	novalidate?: null,
 	 * 	target?: "_self"|"_blank"|"_parent"|"_top"|"_unfencedTop",
-	 * }&HtmlTagAttributeAlias $attributes
+	 * }&globa-alias-html-tag-attribute $attributes
 	 */
 	public function __construct(array $attributes = [])
 	{

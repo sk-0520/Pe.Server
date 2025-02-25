@@ -14,7 +14,7 @@ class HTMLQuoteAttributes extends HtmlAttributes
 	 * @param array<string,int|bool|string|null> $attributes
 	 * @phpstan-param array{
 	 * 	cite?: non-empty-string,
-	 * }&HtmlTagAttributeAlias $attributes
+	 * }&globa-alias-html-tag-attribute $attributes
 	 */
 	public function __construct(array $attributes = [])
 	{

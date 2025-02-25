@@ -19,7 +19,7 @@ class HTMLMeterAttributes extends HtmlAttributes
 	 * 	low?: int|float,
 	 * 	high?: int|float,
 	 * 	form?: non-empty-string,
-	 * }&HtmlTagAttributeAlias $attributes
+	 * }&globa-alias-html-tag-attribute $attributes
 	 */
 	public function __construct(array $attributes = [])
 	{

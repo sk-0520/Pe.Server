@@ -15,13 +15,13 @@ class HTMLScriptAttributes extends HtmlAttributes
 	 * @phpstan-param array{
 	 * 	async?: empty-string,
 	 * 	blocking?: "render",
-	 * 	crossorigin?: CrossOriginAlias,
+	 * 	crossorigin?: globa-alias-cross-origin,
 	 * 	fetchpriority?: "high"|"low"|"auto",
 	 * 	integrity? : empty-string,
 	 * 	nomodule? : empty-string,
 	 * 	nonce?: empty-string,
-	 * 	referrerpolicy?: ReferrerPolicyAlias
-	 * }&HtmlTagAttributeAlias $attributes
+	 * 	referrerpolicy?: globa-alias-referrer-policy
+	 * }&globa-alias-html-tag-attribute $attributes
 	 */
 	public function __construct(array $attributes = [])
 	{

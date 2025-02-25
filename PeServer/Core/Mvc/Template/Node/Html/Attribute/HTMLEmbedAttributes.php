@@ -17,7 +17,7 @@ class HTMLEmbedAttributes extends HtmlAttributes
 	 * 	src?: non-empty-string,
 	 * 	type?: non-empty-string,
 	 * 	width?: int,
-	 * }&HtmlTagAttributeAlias $attributes
+	 * }&globa-alias-html-tag-attribute $attributes
 	 */
 	public function __construct(array $attributes = [])
 	{
