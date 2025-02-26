@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Store;
 
+use PeServer\Core\Log\ILoggerFactory;
+use PeServer\Core\Log\LoggerFactory;
+use PeServer\Core\Mvc\Logic\ILogicFactory;
 use PeServer\Core\Web\WebSecurity;
 use PeServer\Core\Store\CookieStore;
 use PeServer\Core\Store\SessionStore;
@@ -35,11 +38,12 @@ readonly class Stores
 	public function __construct(
 		public SpecialStore $special,
 		private StoreOptions $options,
-		WebSecurity $webSecurity
+		WebSecurity $webSecurity,
+		ILoggerFactory $loggerFactory
 	) {
 		$this->cookie = new CookieStore($this->special, $this->options->cookie);
 		$this->temporary = new TemporaryStore($this->options->temporary, $this->cookie);
-		$this->session = new SessionStore($this->options->session, $this->cookie, $webSecurity);
+		$this->session = new SessionStore($this->options->session, $this->cookie, $webSecurity, $loggerFactory);
 	}
 
 	#region function

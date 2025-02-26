@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Setup;
 
 use PeServer\App\Models\AppConfiguration;
+use PeServer\App\Models\Setup\Versions\Session\SessionSetupVersionBase;
 use PeServer\App\Models\Setup\Versions\Session\SessionSetupVersion_0000;
-use PeServer\App\Models\Setup\Versions\SessionSetupVersionLast;
+use PeServer\App\Models\Setup\Versions\Session\SessionSetupVersionLast;
 use PeServer\App\Models\Setup\Versions\SetupVersion_0000;
 use PeServer\App\Models\Setup\Versions\SetupVersion_0001;
 use PeServer\App\Models\Setup\Versions\SetupVersion_0002;
@@ -37,7 +38,7 @@ class SetupRunner
 	private array $versions;
 
 	/**
-	 * @var class-string<SetupVersionBase>[]
+	 * @var class-string<SessionSetupVersionBase>[]
 	 */
 	private array $sessionVersions;
 
@@ -65,7 +66,7 @@ class SetupRunner
 		// 定義ミス対応としてバージョン間並べ替え（ミスるな）
 		$this->versions = Arr::sortCallbackByValue($versions, fn($a, $b) => SetupVersionBase::getVersion($a) <=> SetupVersionBase::getVersion($b));
 
-		/** @var class-string<SetupVersionBase>[] */
+		/** @var class-string<SessionSetupVersionBase>[] */
 		$sessionVersions = [
 			SessionSetupVersion_0000::class,
 		];
@@ -121,7 +122,7 @@ class SetupRunner
 					continue;
 				}
 
-				$this->logger->info('<{0}> VERSION: {1}', $mode, $version);
+				$this->logger->info('<{0}> VERSION: {1}', $mode, $ver);
 
 				$setupVersion = new $version($this->appConfig, $this->loggerFactory);
 				$setupVersion->migrate($ioArg, $dbArg);

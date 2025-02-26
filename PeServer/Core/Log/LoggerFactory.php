@@ -52,5 +52,22 @@ class LoggerFactory extends DiFactoryBase implements ILoggerFactory
 		return new MultiLogger($baseTraceIndex, $loggers);
 	}
 
+	#region function
+
+	public static function createNullFactory(): ILoggerFactory
+	{
+		//phpcs:ignore PSR12.Classes.AnonClassDeclaration.SpaceAfterKeyword
+		return new class() implements ILoggerFactory
+		{
+			public function createLogger(string|object $header, int $baseTraceIndex = 0): ILogger
+			{
+				return new NullLogger();
+			}
+		};
+	}
+
+
+	#endregion
+
 	#endregion
 }

@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace PeServer\App\Models\Setup\Versions;
+namespace PeServer\App\Models\Setup\Versions\Session;
 
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\Setup\DatabaseSetupArgument;
 use PeServer\App\Models\Setup\IOSetupArgument;
 use PeServer\App\Models\Setup\Versions\Session\SessionSetupVersionBase;
+use PeServer\App\Models\Setup\Versions\Version;
 use PeServer\Core\IO\Directory;
 use PeServer\Core\Log\ILoggerFactory;
 
