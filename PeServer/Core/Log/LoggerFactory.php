@@ -66,8 +66,5 @@ class LoggerFactory extends DiFactoryBase implements ILoggerFactory
 		};
 	}
 
-
-	#endregion
-
 	#endregion
 }

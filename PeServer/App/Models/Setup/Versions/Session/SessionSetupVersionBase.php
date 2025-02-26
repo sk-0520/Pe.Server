@@ -26,14 +26,14 @@ abstract class SessionSetupVersionBase extends SetupVersionBase
 
 	#region variable
 
-	protected function migrateIOSystem(IOSetupArgument $argument): void
+	final protected function migrateIOSystem(IOSetupArgument $argument): void
 	{
 		throw new NotSupportedException();
 	}
 
 	abstract protected function migrateDatabase(DatabaseSetupArgument $argument): void;
 
-	public final function migrate(IOSetupArgument $ioSetup, DatabaseSetupArgument $database): void
+	final public function migrate(IOSetupArgument $ioSetup, DatabaseSetupArgument $database): void
 	{
 		$this->migrateDatabase($database);
 	}

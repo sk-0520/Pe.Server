@@ -16,11 +16,6 @@ class SessionSetupVersion_0000 extends SessionSetupVersionBase //phpcs:ignore Sq
 {
 	#region SetupVersionBase
 
-	protected function migrateIOSystem(IOSetupArgument $argument): void
-	{
-		//NOP
-	}
-
 	/**
 	 * Undocumented function
 	 *
@@ -38,12 +33,12 @@ class SessionSetupVersion_0000 extends SessionSetupVersionBase //phpcs:ignore Sq
 			;
 
 			create table
-				[session] -- セッションデータ
+				[sessions] -- セッションデータ
 				(
 					[session_id] text not null, -- セッションID
 					[create_timestamp] text not null, -- 作成日(UTC)
 					[update_timestamp] text not null, -- 更新日(UTC)
-					[data] json not null,
+					[data] text not null,
 					primary key([session_id])
 				)
 			;

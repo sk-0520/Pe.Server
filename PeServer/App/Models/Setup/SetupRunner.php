@@ -81,7 +81,7 @@ class SetupRunner
 	 * @param IDatabaseConnection $connection
 	 * @param class-string<SetupVersionBase>[] $versions
 	 */
-	private function executeCore(string $mode, IDatabaseConnection $connection, array $versions,  string $lastVersion): void
+	private function executeCore(string $mode, IDatabaseConnection $connection, array $versions, string $lastVersion): void
 	{
 		$dbVersion = -1;
 		// SQLite を使うのは決定事項である！
@@ -98,7 +98,8 @@ class SetupRunner
 				if (0 < $checkCount) {
 					$row = $context->queryFirstOrNull("select version from database_version");
 					if ($row !== null) {
-						$dbVersion = (int)$row->fields['version'];;
+						$dbVersion = (int)$row->fields['version'];
+						;
 					}
 				}
 			}
