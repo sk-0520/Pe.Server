@@ -36,8 +36,8 @@ class SessionSetupVersion_0000 extends SessionSetupVersionBase //phpcs:ignore Sq
 				[sessions] -- セッションデータ
 				(
 					[session_id] text not null, -- セッションID
-					[create_timestamp] text not null, -- 作成日(UTC)
-					[update_timestamp] text not null, -- 更新日(UTC)
+					[created_timestamp] text not null, -- 作成日(UTC)
+					[updated_timestamp] text not null, -- 更新日(UTC)
 					[data] text not null,
 					primary key([session_id])
 				)

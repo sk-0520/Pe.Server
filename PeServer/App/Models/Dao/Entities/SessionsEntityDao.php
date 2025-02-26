@@ -50,29 +50,29 @@ class SessionsEntityDao extends DaoBase
 				sessions
 				(
 					session_id,
-					create_timestamp,
-					update_timestamp,
+					created_timestamp,
+					updated_timestamp,
 					data
 				)
 				values
 				(
 					:session_id,
-					:create_timestamp,
-					:update_timestamp,
+					:created_timestamp,
+					:updated_timestamp,
 					:data
 				)
 				on
 					conflict(session_id)
 				do update
 					set
-						update_timestamp = :update_timestamp,
+						updated_timestamp = :updated_timestamp,
 						data = :data
 
 			SQL,
 			[
 				"session_id" => $sessionId,
-				"create_timestamp" => Utc::toString($updatedTimestamp),
-				"update_timestamp" => Utc::toString($updatedTimestamp),
+				"created_timestamp" => Utc::toString($updatedTimestamp),
+				"updated_timestamp" => Utc::toString($updatedTimestamp),
 				"data" => $data,
 			]
 		);
