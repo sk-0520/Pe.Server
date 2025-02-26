@@ -26,11 +26,14 @@ readonly class SessionOptions
 	 *
 	 * @param non-empty-string $name セッション名。
 	 * @param string $savePath 保存場所。
+	 * @param string $handler セッションハンドラー。
+	 * @phpstan-param "file"|"sqlite" $handler セッションハンドラー。
 	 * @param CookieOptions $cookie クッキー設定。
 	 */
 	public function __construct(
 		public string $name,
 		public string $savePath,
+		public ?string $handler,
 		public CookieOptions $cookie
 	) {
 		if (Text::isNullOrWhiteSpace($name)) { //@phpstan-ignore-line [DOCTYPE]

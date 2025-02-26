@@ -187,6 +187,9 @@ class SessionStore
 			session_save_path($this->options->savePath);
 		}
 
+		if($this->options->handler === 'sqlite') {
+		}
+
 		$sessionOption = [
 			'lifetime' => $this->options->cookie->getExpires(),
 			'path' => $this->options->cookie->path,

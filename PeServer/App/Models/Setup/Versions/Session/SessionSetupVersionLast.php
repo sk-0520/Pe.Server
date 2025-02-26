@@ -7,11 +7,12 @@ namespace PeServer\App\Models\Setup\Versions;
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\Setup\DatabaseSetupArgument;
 use PeServer\App\Models\Setup\IOSetupArgument;
+use PeServer\App\Models\Setup\Versions\Session\SessionSetupVersionBase;
 use PeServer\Core\IO\Directory;
 use PeServer\Core\Log\ILoggerFactory;
 
 #[Version(-1)]
-class SessionSetupVersionLast extends SetupVersionBase
+class SessionSetupVersionLast extends SessionSetupVersionBase
 {
 	public function __construct(
 		private int $oldVersion,
@@ -22,13 +23,7 @@ class SessionSetupVersionLast extends SetupVersionBase
 		parent::__construct($appConfig, $loggerFactory);
 	}
 
-	#region SetupVersionBase
-
-	protected function migrateIOSystem(IOSetupArgument $argument): void
-	{
-		$this->logger->info('テンプレートキャッシュ全削除: {0}', $this->appConfig->setting->cache->template);
-		Directory::cleanupDirectory($this->appConfig->setting->cache->template);
-	}
+	#region SessionSetupVersionBase
 
 	protected function migrateDatabase(DatabaseSetupArgument $argument): void
 	{
