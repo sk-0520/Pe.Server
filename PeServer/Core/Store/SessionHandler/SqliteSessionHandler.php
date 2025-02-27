@@ -10,6 +10,7 @@ use PeServer\Core\Database\ConnectionSetting;
 use PeServer\Core\Database\DatabaseConnection;
 use PeServer\Core\Database\DatabaseContext;
 use PeServer\Core\Database\IDatabaseConnection;
+use PeServer\Core\IO\Directory;
 use PeServer\Core\IO\Path;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\ILoggerFactory;
@@ -46,6 +47,7 @@ class SqliteSessionHandler implements SessionHandlerInterface
 
 	public static function createConnection(string $dir, string|null $name, ILoggerFactory $loggerFactory): IDatabaseConnection
 	{
+		Directory::createDirectoryIfNotExists($dir);
 		$sessionPath = Path::combine($dir, Text::ensureIfNotNullOrWhiteSpace($name, self::FILE_NAME));
 		$connectionSetting = new ConnectionSetting(
 			"sqlite:{$sessionPath}",
@@ -99,7 +101,7 @@ class SqliteSessionHandler implements SessionHandlerInterface
 
 		$dao = new SessionsEntityDao($this->context, $this->logger);
 
-		$result = $dao->selectBySessionId($id);
+		$result = $dao->selectSessionDataBySessionId($id);
 
 		if ($result === null) {
 			return "";
@@ -116,7 +118,7 @@ class SqliteSessionHandler implements SessionHandlerInterface
 
 		$dao = new SessionsEntityDao($this->context, $this->logger);
 
-		$dao->upsertBySessionId($id, $data, Utc::create());
+		$dao->upsertSessionDataBySessionId($id, $data, Utc::create());
 
 		return true;
 	}

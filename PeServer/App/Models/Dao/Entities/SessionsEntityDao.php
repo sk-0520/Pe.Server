@@ -16,7 +16,7 @@ class SessionsEntityDao extends DaoBase
 
 	#region function
 
-	public function selectBySessionId(string $sessionId): string|null
+	public function selectSessionDataBySessionId(string $sessionId): string|null
 	{
 		$result = $this->context->queryFirstOrNull(
 			<<<SQL
@@ -41,7 +41,7 @@ class SessionsEntityDao extends DaoBase
 		return $result->fields["data"];
 	}
 
-	public function upsertBySessionId(string $sessionId, string $data, DateTimeInterface $updatedTimestamp): void
+	public function upsertSessionDataBySessionId(string $sessionId, string $data, DateTimeInterface $updatedTimestamp): void
 	{
 		$this->context->execute(
 			<<<SQL
@@ -50,29 +50,29 @@ class SessionsEntityDao extends DaoBase
 				sessions
 				(
 					session_id,
-					created_timestamp,
-					updated_timestamp,
+					created_epoch,
+					updated_epoch,
 					data
 				)
 				values
 				(
 					:session_id,
-					:created_timestamp,
-					:updated_timestamp,
+					:created_epoch,
+					:updated_epoch,
 					:data
 				)
 				on
 					conflict(session_id)
 				do update
 					set
-						updated_timestamp = :updated_timestamp,
+						created_epoch = :updated_epoch,
 						data = :data
 
 			SQL,
 			[
 				"session_id" => $sessionId,
-				"created_timestamp" => Utc::toString($updatedTimestamp),
-				"updated_timestamp" => Utc::toString($updatedTimestamp),
+				"created_epoch" => $updatedTimestamp->getTimestamp(),
+				"updated_epoch" => $updatedTimestamp->getTimestamp(),
 				"data" => $data,
 			]
 		);
