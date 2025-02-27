@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Configuration;
 
+use PeServer\Core\Store\ISessionHandlerFactory;
+
 /**
  * ストレージが必要なストア系設定。
  *
@@ -16,9 +18,9 @@ abstract class StorageStoreSettingBase
 	public string $name;
 	public string $save;
 	/**
-	 * @var "file"|"sqlite"
+	 * @var ?class-string<ISessionHandlerFactory>
 	 */
-	public string $handler;
+	public ?string $handlerFactory;
 	public CookieStoreSetting $cookie;
 
 	#endregion

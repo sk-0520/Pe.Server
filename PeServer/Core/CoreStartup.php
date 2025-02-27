@@ -161,7 +161,7 @@ class CoreStartup
 
 		$specialStore = $options->specialStore  ?? new SpecialStore();
 		$container->registerValue($specialStore, SpecialStore::class);
-		$container->add(Stores::class, DiItem::factory(fn($di) => new Stores($di->get(SpecialStore::class), StoreOptions::default(), $di->get(WebSecurity::class), $di->get(ILoggerFactory::class)), DiItem::LIFECYCLE_SINGLETON));
+		$container->add(Stores::class, DiItem::factory(fn($di) => new Stores($di->get(SpecialStore::class), StoreOptions::default(), $di->get(WebSecurity::class)), DiItem::LIFECYCLE_SINGLETON));
 		$container->add(CookieStore::class, DiItem::factory(fn($di) => $di->get(Stores::class)->cookie));
 		$container->add(SessionStore::class, DiItem::factory(fn($di) => $di->get(Stores::class)->session));
 		$container->add(TemporaryStore::class, DiItem::factory(fn($di) => $di->get(Stores::class)->temporary));

@@ -58,7 +58,7 @@ class AppConfiguration
 	 * @param ProgramContext $programContext
 	 * @param SpecialStore $specialStore
 	 */
-	public function __construct(ProgramContext $programContext, IUrlHelper $urlHelper, WebSecurity $webSecurity, SpecialStore $specialStore, Environment $environment, ILoggerFactory $loggerFactory)
+	public function __construct(ProgramContext $programContext, IUrlHelper $urlHelper, WebSecurity $webSecurity, SpecialStore $specialStore, Environment $environment)
 	{
 		$this->context = $programContext;
 
@@ -74,7 +74,7 @@ class AppConfiguration
 		Directory::setTemporaryDirectory($appSetting->cache->temporary);
 
 		$storeOptions = StoreConfiguration::build($appSetting->store);
-		$stores = new Stores($specialStore, $storeOptions, $webSecurity, $loggerFactory);
+		$stores = new Stores($specialStore, $storeOptions, $webSecurity);
 
 		I18n::initialize($i18nConfig);
 

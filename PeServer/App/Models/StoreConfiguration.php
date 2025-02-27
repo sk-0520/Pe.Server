@@ -18,6 +18,7 @@ use PeServer\Core\Store\StoreOptions;
 use PeServer\Core\Store\TemporaryOptions;
 use PeServer\Core\Text;
 use PeServer\Core\Time;
+use PeServer\Core\Store\ISessionHandlerFactory;
 
 /**
  * @phpstan-import-type SameSiteAlias from CookieOptions
@@ -119,7 +120,7 @@ abstract class StoreConfiguration
 		$options = new SessionOptions(
 			$name,
 			$save,
-			$setting->handler,
+			$setting->handlerFactory,
 			$overwriteCookie
 		);
 

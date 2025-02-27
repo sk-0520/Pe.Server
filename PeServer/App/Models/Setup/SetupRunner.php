@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Setup;
 
 use PeServer\App\Models\AppConfiguration;
+use PeServer\App\Models\SessionHandler\SqliteSessionHandler;
 use PeServer\App\Models\Setup\Versions\Session\SessionSetupVersionBase;
 use PeServer\App\Models\Setup\Versions\Session\SessionSetupVersion_0000;
 use PeServer\App\Models\Setup\Versions\Session\SessionSetupVersionLast;
@@ -25,7 +26,7 @@ use PeServer\Core\IO\File;
 use PeServer\Core\IO\Path;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\ILoggerFactory;
-use PeServer\Core\Store\SessionHandler\SqliteSessionHandler;
+use PeServer\Core\Store\ISessionHandlerFactory;
 use PeServer\Core\Text;
 
 class SetupRunner
@@ -149,7 +150,7 @@ class SetupRunner
 	{
 		$this->executeCore("DB:DEFAULT", $this->defaultConnection, $this->versions, SetupVersionLast::class);
 
-		if ($this->appConfig->setting->store->session->handler === 'sqlite') {
+		if ($this->appConfig->setting->store->session->handlerFactory === ISessionHandlerFactory::class) {
 			$connection = SqliteSessionHandler::createConnection($this->appConfig->setting->store->session->save, null, $this->loggerFactory);
 			$this->executeCore("DB:SESSION", $connection, $this->sessionVersions, SessionSetupVersionLast::class);
 		}

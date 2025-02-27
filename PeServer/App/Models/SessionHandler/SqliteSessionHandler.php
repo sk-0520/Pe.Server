@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core\Store\SessionHandler;
+namespace PeServer\App\Models\SessionHandler;
 
 use PeServer\App\Models\Dao\Entities\SessionsEntityDao;
 use PeServer\Core\Binary;
