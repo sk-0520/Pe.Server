@@ -195,7 +195,7 @@ class SessionStore
 
 		if (!Text::isNullOrWhiteSpace($this->options->handlerFactory) && class_exists($this->options->handlerFactory)) {
 			/** @var ISessionHandlerFactory */
-			$factory = new $this->options->handlerFactory;//ReflectionUtility::create($this->options->handlerFactory, ISessionHandlerFactory::class);
+			$factory = new $this->options->handlerFactory();//ReflectionUtility::create($this->options->handlerFactory, ISessionHandlerFactory::class);
 			// $sqliteHandler = new SqliteSessionHandler(
 			// 	SqliteSessionHandler::createConnection($this->options->savePath, null, $this->loggerFactory),
 			// 	LoggerFactory::createNullFactory()
