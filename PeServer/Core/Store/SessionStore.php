@@ -223,6 +223,7 @@ class SessionStore
 		if (!$this->isStarted) {
 			throw new InvalidOperationException();
 		}
+		session_regenerate_id();
 	}
 
 	/**

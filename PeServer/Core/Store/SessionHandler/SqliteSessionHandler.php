@@ -160,6 +160,8 @@ class SqliteSessionHandler implements SessionHandlerInterface, SessionUpdateTime
 			return false;
 		}
 
+		$this->logger->info("SESSION GC: {0}", $max_lifetime);
+
 		$now = Utc::create();
 		$safeTime = $now->sub(Time::createFromSeconds($max_lifetime));
 

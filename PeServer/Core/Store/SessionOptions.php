@@ -33,7 +33,7 @@ readonly class SessionOptions
 	public function __construct(
 		public string $name,
 		public string $savePath,
-		public ?string $handler,
+		public string $handler,
 		public CookieOptions $cookie
 	) {
 		if (Text::isNullOrWhiteSpace($name)) { //@phpstan-ignore-line [DOCTYPE]
