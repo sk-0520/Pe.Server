@@ -33,7 +33,7 @@ readonly class StoreOptions
 		return new self(
 			$cookieOption,
 			new TemporaryOptions(TemporaryOptions::DEFAULT_NAME, Path::combine($tempDirPath, TemporaryOptions::DEFAULT_NAME), $cookieOption),
-			new SessionOptions(SessionOptions::DEFAULT_NAME, Path::combine($tempDirPath, SessionOptions::DEFAULT_NAME), $cookieOption)
+			new SessionOptions(SessionOptions::DEFAULT_NAME, Path::combine($tempDirPath, SessionOptions::DEFAULT_NAME), "file", $cookieOption)
 		);
 	}
 

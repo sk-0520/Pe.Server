@@ -18,6 +18,7 @@ class SessionOptionsTest extends TestClass
 		new SessionOptions(
 			' ',
 			'savePath',
+			"file",
 			new CookieOptions('/', null, false, true, 'lax')
 		);
 	}

@@ -119,6 +119,7 @@ abstract class StoreConfiguration
 		$options = new SessionOptions(
 			$name,
 			$save,
+			$setting->handler,
 			$overwriteCookie
 		);
 

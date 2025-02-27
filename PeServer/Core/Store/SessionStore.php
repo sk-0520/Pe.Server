@@ -7,8 +7,12 @@ namespace PeServer\Core\Store;
 use PeServer\Core\Collection\Arr;
 use PeServer\Core\IO\Directory;
 use PeServer\Core\IO\IOUtility;
+use PeServer\Core\Log\ILoggerFactory;
+use PeServer\Core\Log\LoggerFactory;
+use PeServer\Core\Log\NullLogger;
 use PeServer\Core\Web\WebSecurity;
 use PeServer\Core\Store\CookieStores;
+use PeServer\Core\Store\SessionHandler\SqliteSessionHandler;
 use PeServer\Core\Store\SessionOptions;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
@@ -68,7 +72,7 @@ class SessionStore
 	 * @param SessionOptions $options セッション設定。
 	 * @param CookieStore $cookie Cookie 設定。
 	 */
-	public function __construct(SessionOptions $options, CookieStore $cookie, private WebSecurity $webSecurity)
+	public function __construct(SessionOptions $options, CookieStore $cookie, private WebSecurity $webSecurity, private ILoggerFactory $loggerFactory)
 	{
 		if (Text::isNullOrWhiteSpace($options->name)) { //@phpstan-ignore-line [DOCTYPE]
 			throw new ArgumentException('$options->name');
@@ -187,6 +191,14 @@ class SessionStore
 			session_save_path($this->options->savePath);
 		}
 
+		if ($this->options->handler === 'sqlite') {
+			$sqliteHandler = new SqliteSessionHandler(
+				SqliteSessionHandler::createConnection($this->options->savePath, null, $this->loggerFactory),
+				LoggerFactory::createNullFactory()
+			);
+			session_set_save_handler($sqliteHandler);
+		}
+
 		$sessionOption = [
 			'lifetime' => $this->options->cookie->getExpires(),
 			'path' => $this->options->cookie->path,
@@ -211,6 +223,7 @@ class SessionStore
 		if (!$this->isStarted) {
 			throw new InvalidOperationException();
 		}
+		session_regenerate_id();
 	}
 
 	/**

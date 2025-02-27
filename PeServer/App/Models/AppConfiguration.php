@@ -12,6 +12,7 @@ use PeServer\Core\I18n;
 use PeServer\Core\IO\Directory;
 use PeServer\Core\IO\File;
 use PeServer\Core\IO\Path;
+use PeServer\Core\Log\ILoggerFactory;
 use PeServer\Core\Web\WebSecurity;
 use PeServer\Core\Serialization\Configuration;
 use PeServer\Core\Serialization\Mapper;
@@ -57,7 +58,7 @@ class AppConfiguration
 	 * @param ProgramContext $programContext
 	 * @param SpecialStore $specialStore
 	 */
-	public function __construct(ProgramContext $programContext, IUrlHelper $urlHelper, WebSecurity $webSecurity, SpecialStore $specialStore, Environment $environment)
+	public function __construct(ProgramContext $programContext, IUrlHelper $urlHelper, WebSecurity $webSecurity, SpecialStore $specialStore, Environment $environment, ILoggerFactory $loggerFactory)
 	{
 		$this->context = $programContext;
 
@@ -73,7 +74,7 @@ class AppConfiguration
 		Directory::setTemporaryDirectory($appSetting->cache->temporary);
 
 		$storeOptions = StoreConfiguration::build($appSetting->store);
-		$stores = new Stores($specialStore, $storeOptions, $webSecurity);
+		$stores = new Stores($specialStore, $storeOptions, $webSecurity, $loggerFactory);
 
 		I18n::initialize($i18nConfig);
 

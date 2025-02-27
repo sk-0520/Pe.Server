@@ -15,6 +15,10 @@ abstract class StorageStoreSettingBase
 
 	public string $name;
 	public string $save;
+	/**
+	 * @var "file"|"sqlite"
+	 */
+	public string $handler;
 	public CookieStoreSetting $cookie;
 
 	#endregion
