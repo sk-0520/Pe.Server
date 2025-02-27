@@ -19,11 +19,13 @@ use PeServer\Core\Serialization\ISerializer;
 use PeServer\Core\Serialization\JsonSerializer;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\NotImplementedException;
+use PeServer\Core\Time;
 use PeServer\Core\Utc;
 use SessionHandlerInterface;
+use SessionUpdateTimestampHandlerInterface;
 use Throwable;
 
-class SqliteSessionHandler implements SessionHandlerInterface
+class SqliteSessionHandler implements SessionHandlerInterface, SessionUpdateTimestampHandlerInterface
 {
 	#region define
 
@@ -45,6 +47,14 @@ class SqliteSessionHandler implements SessionHandlerInterface
 
 	#region function
 
+	/**
+	 * DB接続の生成。
+	 *
+	 * @param string $dir ディレクトリパス。
+	 * @param string|null $name ファイル名。空の場合は `self::FILE_NAME` が使用される。
+	 * @param ILoggerFactory $loggerFactory
+	 * @return IDatabaseConnection
+	 */
 	public static function createConnection(string $dir, string|null $name, ILoggerFactory $loggerFactory): IDatabaseConnection
 	{
 		Directory::createDirectoryIfNotExists($dir);
@@ -66,31 +76,21 @@ class SqliteSessionHandler implements SessionHandlerInterface
 		try {
 			$this->context = $this->connection->open();
 			return true;
-		} catch (Throwable) {
-			return false;
-		}
-	}
-
-	public function close(): bool
-	{
-		if ($this->context !== null) {
-			$this->context->dispose();
-			return true;
+		} catch (Throwable $ex) {
+			$this->logger->error($ex);
 		}
 
 		return false;
 	}
 
-	public function destroy(string $id): bool
+	public function close(): bool
 	{
-		$this->logger->debug("destroy");
-		throw new NotImplementedException();
-	}
+		if ($this->context === null) {
+			return false;
+		}
 
-	public function gc(int $max_lifetime): int|false
-	{
-		$this->logger->debug("gc");
-		throw new NotImplementedException();
+		$this->context->dispose();
+		return true;
 	}
 
 	public function read(string $id): string|false
@@ -99,15 +99,21 @@ class SqliteSessionHandler implements SessionHandlerInterface
 			return false;
 		}
 
-		$dao = new SessionsEntityDao($this->context, $this->logger);
+		try {
+			$dao = new SessionsEntityDao($this->context, $this->logger);
 
-		$result = $dao->selectSessionDataBySessionId($id);
+			$result = $dao->selectSessionDataBySessionId($id);
 
-		if ($result === null) {
-			return "";
+			if ($result === null) {
+				return "";
+			}
+
+			return $result;
+		} catch (Throwable $ex) {
+			$this->logger->error($ex);
 		}
 
-		return $result;
+		return false;
 	}
 
 	public function write(string $id, string $data): bool
@@ -116,11 +122,92 @@ class SqliteSessionHandler implements SessionHandlerInterface
 			return false;
 		}
 
-		$dao = new SessionsEntityDao($this->context, $this->logger);
+		try {
+			$dao = new SessionsEntityDao($this->context, $this->logger);
 
-		$dao->upsertSessionDataBySessionId($id, $data, Utc::create());
+			$dao->upsertSessionDataBySessionId($id, $data, Utc::create());
 
-		return true;
+			return true;
+		} catch (Throwable $ex) {
+			$this->logger->error($ex);
+		}
+
+		return false;
+	}
+
+	public function destroy(string $id): bool
+	{
+		if ($this->context === null) {
+			return false;
+		}
+
+		try {
+			$dao = new SessionsEntityDao($this->context, $this->logger);
+
+			$dao->deleteSessionBySessionId($id);
+
+			return true;
+		} catch (Throwable $ex) {
+			$this->logger->error($ex);
+		}
+
+		return false;
+	}
+
+	public function gc(int $max_lifetime): int|false
+	{
+		if ($this->context === null) {
+			return false;
+		}
+
+		$now = Utc::create();
+		$safeTime = $now->sub(Time::createFromSeconds($max_lifetime));
+
+		try {
+			$dao = new SessionsEntityDao($this->context, $this->logger);
+			return $dao->deleteOldSessions($safeTime);
+		} catch (Throwable $ex) {
+			$this->logger->error($ex);
+		}
+
+		return false;
+	}
+
+
+	#endregion
+
+	#region SessionUpdateTimestampHandlerInterface
+
+	public function validateId(string $id): bool
+	{
+		if ($this->context === null) {
+			return false;
+		}
+
+		try {
+			$dao = new SessionsEntityDao($this->context, $this->logger);
+			return $dao->selectExistsBySessionId($id);
+		} catch (Throwable $ex) {
+			$this->logger->error($ex);
+		}
+
+		return false;
+	}
+
+	public function updateTimestamp(string $id, string $data): bool
+	{
+		if ($this->context === null) {
+			return false;
+		}
+
+		try {
+			$dao = new SessionsEntityDao($this->context, $this->logger);
+			return $dao->updateSessionBySessionId($id, $data, Utc::create());
+		} catch (Throwable $ex) {
+			$this->logger->error($ex);
+		}
+
+		return false;
 	}
 
 	#endregion

@@ -16,6 +16,25 @@ class SessionsEntityDao extends DaoBase
 
 	#region function
 
+	public function selectExistsBySessionId(string $sessionId): bool
+	{
+		return 1 === $this->context->selectSingleCount(
+			<<<SQL
+
+			select
+				count(*)
+			from
+				sessions
+			where
+				sessions.session_id = :session_id
+
+			SQL,
+			[
+				"session_id" => $sessionId
+			]
+		);
+	}
+
 	public function selectSessionDataBySessionId(string $sessionId): string|null
 	{
 		$result = $this->context->queryFirstOrNull(
@@ -77,6 +96,63 @@ class SessionsEntityDao extends DaoBase
 			]
 		);
 	}
+
+	public function updateSessionBySessionId(string $sessionId, string $data, DateTimeInterface $updatedTimestamp): bool
+	{
+		return $this->context->updateByKeyOrNothing(
+			<<<SQL
+
+			update
+				sessions
+			set
+				updated_epoch = :updated_epoch,
+				data = :data
+			where
+				session_id = :session_id
+
+			SQL,
+			[
+				"session_id" => $sessionId,
+				"updated_epoch" => $updatedTimestamp->getTimestamp(),
+				"data" => $data,
+			]
+		);
+	}
+
+	public function deleteSessionBySessionId(string $sessionId): bool
+	{
+		return $this->context->deleteByKeyOrNothing(
+			<<<SQL
+
+			delete from
+				sessions
+			where
+				sessions.session_id = :session_id
+
+			SQL,
+			[
+				"session_id" => $sessionId,
+			]
+		);
+	}
+
+	public function deleteOldSessions(DateTimeInterface $safeTimestamp): int
+	{
+		return $this->context->delete(
+			<<<SQL
+
+			delete from
+				sessions
+			where
+				sessions.updated_epoch < updated_epoch
+
+			SQL,
+			[
+				"updated_epoch" => $safeTimestamp->getTimestamp(),
+			]
+		);
+	}
+
 
 	#endregion
 }
