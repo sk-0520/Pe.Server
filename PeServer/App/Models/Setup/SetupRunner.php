@@ -150,9 +150,11 @@ class SetupRunner
 	{
 		$this->executeCore("DB:DEFAULT", $this->defaultConnection, $this->versions, SetupVersionLast::class);
 
-		if ($this->appConfig->setting->store->session->handlerFactory === ISessionHandlerFactory::class) {
-			$connection = SqliteSessionHandler::createConnection($this->appConfig->setting->store->session->save, null, $this->loggerFactory);
-			$this->executeCore("DB:SESSION", $connection, $this->sessionVersions, SessionSetupVersionLast::class);
+		if(!Text::isNullOrWhiteSpace($this->appConfig->setting->store->session->handlerFactory)) {
+			if(class_exists($this->appConfig->setting->store->session->handlerFactory)) {
+				$connection = SqliteSessionHandler::createConnection($this->appConfig->setting->store->session->save, null, $this->loggerFactory);
+				$this->executeCore("DB:SESSION", $connection, $this->sessionVersions, SessionSetupVersionLast::class);
+			}
 		}
 	}
 
