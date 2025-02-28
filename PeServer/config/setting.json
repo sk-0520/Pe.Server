@@ -29,7 +29,7 @@
 		"session": {
 			"name": "pe-sid",
 			"save": "$(APP)/data/store/session",
-			"handlerFactory": "PeServer\\App\\Models\\SessionHandler\\SqliteSessionHandlerFactory",
+			"handlerFactory": "",
 			"cookie": {}
 		},
 		"temporary": {
