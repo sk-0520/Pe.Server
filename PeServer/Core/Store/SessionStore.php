@@ -200,7 +200,8 @@ class SessionStore
 			// 	SqliteSessionHandler::createConnection($this->options->savePath, null, $this->loggerFactory),
 			// 	LoggerFactory::createNullFactory()
 			// );
-			session_set_save_handler($factory->create());
+			$handler = $factory->create($this->options);
+			session_set_save_handler($handler);
 		}
 
 		$sessionOption = [

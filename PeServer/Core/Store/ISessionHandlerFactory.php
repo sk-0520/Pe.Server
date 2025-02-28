@@ -8,5 +8,5 @@ use SessionHandlerInterface;
 
 interface ISessionHandlerFactory
 {
-	public function create(): SessionHandlerInterface;
+	public function create(SessionOptions $options): SessionHandlerInterface;
 }
