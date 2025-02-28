@@ -7,13 +7,19 @@ namespace PeServer\Core\Store;
 use PeServer\Core\Collection\Arr;
 use PeServer\Core\IO\Directory;
 use PeServer\Core\IO\IOUtility;
+use PeServer\Core\Log\ILoggerFactory;
+use PeServer\Core\Log\LoggerFactory;
+use PeServer\Core\Log\NullLogger;
+use PeServer\Core\ReflectionUtility;
 use PeServer\Core\Web\WebSecurity;
 use PeServer\Core\Store\CookieStores;
+use PeServer\Core\Store\SessionHandler\SqliteSessionHandler;
 use PeServer\Core\Store\SessionOptions;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Throws\NotImplementedException;
+use PeServer\Core\TypeUtility;
 
 /**
  * セッション管理処理。
@@ -187,6 +193,17 @@ class SessionStore
 			session_save_path($this->options->savePath);
 		}
 
+		if (SessionHandlerFactoryUtility::isFactory($this->options->handlerFactory)) {
+			/** @var ISessionHandlerFactory */
+			$factory = new $this->options->handlerFactory();//ReflectionUtility::create($this->options->handlerFactory, ISessionHandlerFactory::class);
+			// $sqliteHandler = new SqliteSessionHandler(
+			// 	SqliteSessionHandler::createConnection($this->options->savePath, null, $this->loggerFactory),
+			// 	LoggerFactory::createNullFactory()
+			// );
+			$handler = $factory->create($this->options);
+			session_set_save_handler($handler);
+		}
+
 		$sessionOption = [
 			'lifetime' => $this->options->cookie->getExpires(),
 			'path' => $this->options->cookie->path,
@@ -211,6 +228,7 @@ class SessionStore
 		if (!$this->isStarted) {
 			throw new InvalidOperationException();
 		}
+		session_regenerate_id();
 	}
 
 	/**
@@ -246,7 +264,7 @@ class SessionStore
 	 *
 	 * @param string $key
 	 * @param mixed $value
-	 * @phpstan-param ServerStoreValueAlias $value
+	 * @phpstan-param globa-alias-server-store-value $value
 	 * @return void
 	 */
 	public function set(string $key, mixed $value): void
@@ -277,9 +295,9 @@ class SessionStore
 	 *
 	 * @param string $key
 	 * @param mixed $fallbackValue
-	 * @phpstan-param ServerStoreValueAlias $fallbackValue
+	 * @phpstan-param globa-alias-server-store-value $fallbackValue
 	 * @return mixed 取得データ。
-	 * @phpstan-return ServerStoreValueAlias
+	 * @phpstan-return globa-alias-server-store-value
 	 */
 	public function getOr(string $key, mixed $fallbackValue): mixed
 	{
@@ -291,7 +309,7 @@ class SessionStore
 	 *
 	 * @param string $key
 	 * @param mixed $result
-	 * @phpstan-param ServerStoreValueAlias $result
+	 * @phpstan-param globa-alias-server-store-value $result
 	 * @return boolean 取得できたか。
 	 */
 	public function tryGet(string $key, mixed &$result): bool

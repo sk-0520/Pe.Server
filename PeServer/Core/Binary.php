@@ -26,9 +26,9 @@ use ValueError;
  * ソース上の型を明示するだけの目的で、効率とかは特になにもない。
  * あとUTF8で動くこと前提。
  *
- * @phpstan-type Byte int<0,255>
- * @implements ArrayAccess<non-negative-int,Byte>
- * @implements IteratorAggregate<non-negative-int,Byte>
+ * @phpstan-type ByteAlias int<0,255>
+ * @implements ArrayAccess<non-negative-int,ByteAlias>
+ * @implements IteratorAggregate<non-negative-int,ByteAlias>
  */
 readonly final class Binary implements ArrayAccess, IteratorAggregate, Countable, Stringable
 {
@@ -200,7 +200,7 @@ readonly final class Binary implements ArrayAccess, IteratorAggregate, Countable
 	 * @param int $offset
 	 * @phpstan-param non-negative-int $offset
 	 * @return int
-	 * @phpstan-return Byte
+	 * @phpstan-return ByteAlias
 	 * @throws TypeError
 	 * @throws IndexOutOfRangeException
 	 * @see ArrayAccess::offsetGet
@@ -213,7 +213,7 @@ readonly final class Binary implements ArrayAccess, IteratorAggregate, Countable
 			throw new IndexOutOfRangeException((string)$offset);
 		}
 
-		/** @phpstan-var Byte */
+		/** @phpstan-var ByteAlias */
 		return ord($this->raw[$offset]);
 	}
 

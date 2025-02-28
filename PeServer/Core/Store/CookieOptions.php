@@ -6,9 +6,13 @@ namespace PeServer\Core\Store;
 
 use DateInterval;
 use DateTimeImmutable;
+use PeServer\Core\Collection\Arr;
+use PeServer\Core\Throws\ArgumentException;
 
 /**
  * Cookie 設定。
+ *
+ * @phpstan-type SameSiteAlias "Lax"|"lax"|"None"|"none"|"Strict"|"strict"
  */
 class CookieOptions
 {
@@ -37,7 +41,7 @@ class CookieOptions
 	 * 同じサイト。
 	 *
 	 * @var string
-	 * @phpstan-var CookieSameSiteAlias
+	 * @phpstan-var SameSiteAlias
 	 */
 	public readonly string $sameSite;
 
@@ -51,7 +55,6 @@ class CookieOptions
 	 * @param boolean $secure HTTPS に限定するか。
 	 * @param boolean $httpOnly HTTP リクエストのみで使用するか。
 	 * @param string $sameSite 同じサイト。
-	 * @phpstan-param CookieSameSiteAlias $sameSite
 	 */
 	public function __construct(string $path, ?DateInterval $span, bool $secure, bool $httpOnly, string $sameSite)
 	{
@@ -59,7 +62,11 @@ class CookieOptions
 		$this->span = $span;
 		$this->secure = $secure;
 		$this->httpOnly = $httpOnly;
-		$this->sameSite = $sameSite;
+		if (self::isSameSite($sameSite)) {
+			$this->sameSite = $sameSite;
+		} else {
+			throw new ArgumentException('$sameSite is ' . $sameSite);
+		}
 	}
 
 	#region function
@@ -81,6 +88,19 @@ class CookieOptions
 		$result = $endTime->getTimestamp() - $reference->getTimestamp();
 
 		return $result + time();
+	}
+
+	/**
+	 * SameSite 判定。
+	 *
+	 * @param string $value
+	 * @return bool
+	 * @phpstan-assert-if-true SameSiteAlias $value
+	 */
+	public static function isSameSite(string $value): bool
+	{
+		$ss = ["Lax", "lax", "None", "none", "Strict", "strict"];
+		return Arr::in($ss, $value);
 	}
 
 	#endregion

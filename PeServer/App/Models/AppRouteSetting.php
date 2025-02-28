@@ -90,7 +90,7 @@ final readonly class AppRouteSetting extends RouteSetting
 					->addAction('api-doc', HttpMethod::gets(), 'api')
 					->addAction('dev/exception', HttpMethod::gets(), 'exception', [DevelopmentMiddleware::class])
 					->addAction('dev/streaming', HttpMethod::gets(), 'streaming_html', [DevelopmentMiddleware::class])
-					->addAction(':path@[a-zA-z0-9_\(\)\-]+\.[a-zA-z0-9_\(\)\-]+', HttpMethod::gets(), 'wildcard')
+					->addAction(':path@[a-zA-Z0-9_\-]+\.[a-zA-Z0-9]+', HttpMethod::gets(), 'wildcard')
 				/* AUTO-FORMAT */,
 				(new RouteInformation('account', AccountController::class))
 					->addAction('login', HttpMethod::gets(), 'login_get')

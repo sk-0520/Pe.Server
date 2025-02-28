@@ -41,6 +41,7 @@ use PeServer\Core\IO\Path;
 use PeServer\Core\Log\ConsoleLogger;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\ILogProvider;
+use PeServer\Core\Log\LoggerFactory;
 use PeServer\Core\Mail\Mailer;
 use PeServer\Core\Mvc\Routing\Route;
 use PeServer\Core\Mvc\Routing\RouteRequest;

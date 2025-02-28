@@ -18,7 +18,11 @@ use PeServer\Core\Store\StoreOptions;
 use PeServer\Core\Store\TemporaryOptions;
 use PeServer\Core\Text;
 use PeServer\Core\Time;
+use PeServer\Core\Store\ISessionHandlerFactory;
 
+/**
+ * @phpstan-import-type SameSiteAlias from CookieOptions
+ */
 abstract class StoreConfiguration
 {
 	#region function
@@ -40,7 +44,7 @@ abstract class StoreConfiguration
 			Text::isNullOrWhiteSpace($setting->span) ? $base->span : Time::create($setting->span),
 			$setting->secure === null ? $base->secure : $setting->secure,
 			$setting->httpOnly === null ? $base->httpOnly : $setting->httpOnly,
-			Text::ensureIfNotNullOrWhiteSpace($setting->sameSite, $base->sameSite) //@phpstan-ignore-line not null
+			Text::ensureIfNotNullOrWhiteSpace($setting->sameSite, $base->sameSite)
 		);
 	}
 
@@ -61,7 +65,6 @@ abstract class StoreConfiguration
 		$path = Text::ensureIfNotNullOrWhiteSpace($setting->path, '/');
 		$secure = $setting->secure === null ? false : $setting->secure;
 		$httpOnly = $setting->httpOnly === null ? true : $setting->httpOnly;
-		/** @phpstan-var CookieSameSiteAlias */
 		$sameSite = Text::ensureIfNotNullOrWhiteSpace($setting->sameSite, 'None');
 
 		$options = new CookieOptions(
@@ -69,7 +72,7 @@ abstract class StoreConfiguration
 			$span,
 			$secure,
 			$httpOnly,
-			(string)$sameSite
+			$sameSite
 		);
 
 		return $options;
@@ -117,6 +120,7 @@ abstract class StoreConfiguration
 		$options = new SessionOptions(
 			$name,
 			$save,
+			$setting->handlerFactory,
 			$overwriteCookie
 		);
 

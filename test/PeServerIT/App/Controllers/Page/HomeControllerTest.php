@@ -109,9 +109,9 @@ class HomeControllerTest extends ItControllerClass
 		$this->assertMime(Mime::SVG, $actual);
 	}
 
-	public function test_wildcard_robot()
+	public function test_wildcard_robots()
 	{
-		$actual = $this->call(HttpMethod::Get, '/robot.txt');
+		$actual = $this->call(HttpMethod::Get, '/robots.txt');
 		$this->assertStatusOk($actual);
 		$this->assertMime(Mime::TEXT, $actual);
 	}
@@ -119,7 +119,8 @@ class HomeControllerTest extends ItControllerClass
 	public static function provider_wildcard_NotFound()
 	{
 		return [
-			['/../../robot.txt'],
+			['/../../robots.txt'],
+			['robot.txt/../../text.txt'],
 			['/<not found>'],
 		];
 	}
@@ -129,8 +130,11 @@ class HomeControllerTest extends ItControllerClass
 	{
 		try {
 			$this->call(HttpMethod::Get, $path);
+			$this->fail();
 		} catch (HttpStatusException $ex) {
 			$this->assertSame(HttpStatus::NotFound, $ex->status);
+		} catch (Throwable $ex) {
+			$this->fail((string)$ex);
 		}
 	}
 }

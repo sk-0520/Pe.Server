@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Store;
 
+use PeServer\Core\Log\ILoggerFactory;
+use PeServer\Core\Log\LoggerFactory;
+use PeServer\Core\Mvc\Logic\ILogicFactory;
 use PeServer\Core\Web\WebSecurity;
 use PeServer\Core\Store\CookieStore;
 use PeServer\Core\Store\SessionStore;

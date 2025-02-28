@@ -12,6 +12,7 @@ use PeServer\Core\I18n;
 use PeServer\Core\IO\Directory;
 use PeServer\Core\IO\File;
 use PeServer\Core\IO\Path;
+use PeServer\Core\Log\ILoggerFactory;
 use PeServer\Core\Web\WebSecurity;
 use PeServer\Core\Serialization\Configuration;
 use PeServer\Core\Serialization\Mapper;

@@ -29,6 +29,7 @@
 		"session": {
 			"name": "pe-sid",
 			"save": "$(APP)/data/store/session",
+			"handlerFactory": "",
 			"cookie": {}
 		},
 		"temporary": {

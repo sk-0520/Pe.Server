@@ -56,12 +56,9 @@ parameters:
     - '/Class PeServer\\App\\Models\\Configuration\\\w+Setting(Base)? has an uninitialized @readonly property \$\w+\. Assign it in the constructor\./'
 
   typeAliases:
-    LogMessageAlias: 'object|array<mixed>|null|literal-string'
-    ServerStoreValueAlias: 'string|int|array<int|string|null>|object|null'
-    DatabaseBindValueAlias: 'string|int|float|bool'
-    FormatAlias: 'string|int|float'
-    FieldArrayAlias: 'non-empty-array<array-key,mixed>'
-    CookieSameSiteAlias: '"Lax"|"lax"|"None"|"none"|"Strict"|"strict"'
+    globa-alias-server-store-value: 'string|int|array<int|string|null>|object|null'
+    globa-alias-database-bind-value: 'string|int|float|bool'
+    globa-alias-database-field-array: 'non-empty-array<array-key,mixed>'
 
 includes:
   - phar://phpstan.phar/conf/bleedingEdge.neon

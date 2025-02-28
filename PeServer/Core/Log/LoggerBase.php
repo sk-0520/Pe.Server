@@ -10,6 +10,8 @@ use PeServer\Core\Log\Logging;
 
 /**
  * ログ出力基底。
+ *
+ * @phpstan-import-type MessageAlias from ILogger
  */
 abstract class LoggerBase implements ILogger
 {
@@ -34,7 +36,7 @@ abstract class LoggerBase implements ILogger
 	 * @param int $traceIndex トレース位置。
 	 * @phpstan-param non-negative-int $traceIndex
 	 * @param mixed $message メッセージ。
-	 * @phpstan-param LogMessageAlias $message
+	 * @phpstan-param MessageAlias $message
 	 * @param mixed ...$parameters パラメータ。
 	 * @return string
 	 */
@@ -51,7 +53,7 @@ abstract class LoggerBase implements ILogger
 	 * @param int $traceIndex 現在フレーム数。
 	 * @phpstan-param non-negative-int $traceIndex
 	 * @param mixed $message メッセージかオブジェクト。
-	 * @phpstan-param LogMessageAlias $message
+	 * @phpstan-param MessageAlias $message
 	 * @param mixed ...$parameters パラメータ（可変個）。$messageが文字列の場合はプレースホルダー {\d} に対して置き換え処理が行われるがその場合は所謂0始まり・抜けなしの配列を想定している。
 	 * @return void
 	 */
