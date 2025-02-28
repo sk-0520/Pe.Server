@@ -105,8 +105,7 @@ class AppStartup extends CoreStartup
 			$options->urlHelper ?? new UrlHelper(''),
 			$container->get(WebSecurity::class),
 			$options->specialStore ?? new SpecialStore(),
-			$container->get(Environment::class),
-			LoggerFactory::createNullFactory()
+			$container->get(Environment::class)
 		);
 		$container->registerValue($appConfig);
 

@@ -38,12 +38,11 @@ readonly class Stores
 	public function __construct(
 		public SpecialStore $special,
 		private StoreOptions $options,
-		WebSecurity $webSecurity,
-		ILoggerFactory $loggerFactory
+		WebSecurity $webSecurity
 	) {
 		$this->cookie = new CookieStore($this->special, $this->options->cookie);
 		$this->temporary = new TemporaryStore($this->options->temporary, $this->cookie);
-		$this->session = new SessionStore($this->options->session, $this->cookie, $webSecurity, $loggerFactory);
+		$this->session = new SessionStore($this->options->session, $this->cookie, $webSecurity);
 	}
 
 	#region function

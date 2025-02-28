@@ -7,6 +7,7 @@ namespace PeServer\Core\Store;
 use PeServer\Core\Text;
 use PeServer\Core\Store\CookieOptions;
 use PeServer\Core\Throws\ArgumentException;
+use PeServer\Core\Store\ISessionHandlerFactory;
 
 /**
  * セッション設定。
@@ -26,14 +27,13 @@ readonly class SessionOptions
 	 *
 	 * @param non-empty-string $name セッション名。
 	 * @param string $savePath 保存場所。
-	 * @param string $handler セッションハンドラー。
-	 * @phpstan-param "file"|"sqlite" $handler セッションハンドラー。
+	 * @param ?class-string<ISessionHandlerFactory> $handlerFactory セッションハンドラー。
 	 * @param CookieOptions $cookie クッキー設定。
 	 */
 	public function __construct(
 		public string $name,
 		public string $savePath,
-		public string $handler,
+		public ?string $handlerFactory,
 		public CookieOptions $cookie
 	) {
 		if (Text::isNullOrWhiteSpace($name)) { //@phpstan-ignore-line [DOCTYPE]

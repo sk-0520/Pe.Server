@@ -50,6 +50,22 @@ class SessionSetupVersion_0000 extends SessionSetupVersionBase //phpcs:ignore Sq
 				)
 			;
 
+			create view
+				view_sessions
+			as
+				select
+					sessions.session_id,
+					datetime(sessions.created_epoch, 'unixepoch') || 'Z' as created_timestamp,
+					datetime(sessions.updated_epoch, 'unixepoch') || 'Z' as updated_timestamp,
+					sessions.data
+				from
+					sessions
+				order by
+					sessions.updated_epoch,
+					sessions.created_epoch,
+					sessions.session_id
+			;
+
 		SQL;
 
 		foreach ($this->splitStatements($statements) as $statement) {
