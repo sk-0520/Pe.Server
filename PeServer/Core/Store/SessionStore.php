@@ -193,7 +193,7 @@ class SessionStore
 			session_save_path($this->options->savePath);
 		}
 
-		if (!Text::isNullOrWhiteSpace($this->options->handlerFactory) && class_exists($this->options->handlerFactory)) {
+		if (SessionHandlerFactoryUtility::isFactory($this->options->handlerFactory)) {
 			/** @var ISessionHandlerFactory */
 			$factory = new $this->options->handlerFactory();//ReflectionUtility::create($this->options->handlerFactory, ISessionHandlerFactory::class);
 			// $sqliteHandler = new SqliteSessionHandler(

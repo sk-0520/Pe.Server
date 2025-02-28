@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServerUT\Core\Throws;
+namespace PeServerUT\Core\Store;
 
 use Error;
 use PeServer\Core\Store\CookieOptions;

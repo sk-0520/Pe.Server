@@ -27,6 +27,7 @@ use PeServer\Core\IO\Path;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\ILoggerFactory;
 use PeServer\Core\Store\ISessionHandlerFactory;
+use PeServer\Core\Store\SessionHandlerFactoryUtility;
 use PeServer\Core\Text;
 
 class SetupRunner
@@ -150,11 +151,9 @@ class SetupRunner
 	{
 		$this->executeCore("DB:DEFAULT", $this->defaultConnection, $this->versions, SetupVersionLast::class);
 
-		if(!Text::isNullOrWhiteSpace($this->appConfig->setting->store->session->handlerFactory)) {
-			if(class_exists($this->appConfig->setting->store->session->handlerFactory)) {
-				$connection = SqliteSessionHandler::createConnection($this->appConfig->setting->store->session->save, null, $this->loggerFactory);
-				$this->executeCore("DB:SESSION", $connection, $this->sessionVersions, SessionSetupVersionLast::class);
-			}
+		if (SessionHandlerFactoryUtility::isFactory($this->appConfig->setting->store->session->handlerFactory)) {
+			$connection = SqliteSessionHandler::createConnection($this->appConfig->setting->store->session->save, null, $this->loggerFactory);
+			$this->executeCore("DB:SESSION", $connection, $this->sessionVersions, SessionSetupVersionLast::class);
 		}
 	}
 
