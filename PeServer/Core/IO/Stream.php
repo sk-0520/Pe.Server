@@ -465,38 +465,6 @@ class Stream extends ResourceBase
 	}
 
 	/**
-	 * 現在のエンコーディングを使用してBOMを読み取る。
-	 *
-	 * * 現在位置から読み込む点に注意(シーク位置が先頭以外であれば無視される)。
-	 * * 読み込まれた場合(エンコーディングがBOMを持っていて合致した場合)はその分読み進められる。
-	 *
-	 * @return bool BOMが読み込まれたか。
-	 */
-	public function readBom(): bool
-	{
-		$this->throwIfDisposed();
-
-		if ($this->getOffset() !== 0) {
-			return false;
-		}
-
-		$bom = $this->encoding->getByteOrderMark();
-		$bomLength = $bom->count();
-		if (!$bomLength) {
-			return false;
-		}
-
-		$readBuffer = $this->readBinary($bomLength);
-
-		if ($bom->isEquals($readBuffer)) {
-			return true;
-		}
-
-		$this->seek(-$readBuffer->count(), self::WHENCE_CURRENT);
-		return false;
-	}
-
-	/**
 	 * 残りのストリームを全てバイナリとして読み込み。
 	 *
 	 * @param int|null $byteSize 読み込む最大バイト数。`null`で全て。
