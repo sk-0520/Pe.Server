@@ -279,10 +279,15 @@ jobs:
           mkdir package
           tar xvf package.tar -C package
 
+
+
       - name: <Deploy> Application
-        shell: bash
-        run: |
-          cd archive_package/package
-          zip -r package.zip .
-          ls
-          ${{ github.workspace }}/dev/deploy.sh ${{ github.workspace }}/archive_package/package/package.zip "${{ secrets.PE_SERVER_API_KEY }}" "${{ secrets.PE_SERVER_API_SECRET }}"
+        uses: nick-fields/retry@v3
+        with:
+          max_attempts: 2
+          shell: bash
+          command: |
+            cd archive_package/package
+            zip -r package.zip .
+            ls
+            ${{ github.workspace }}/dev/deploy.sh ${{ github.workspace }}/archive_package/package/package.zip "${{ secrets.PE_SERVER_API_KEY }}" "${{ secrets.PE_SERVER_API_SECRET }}"
