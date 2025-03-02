@@ -7,6 +7,7 @@ namespace PeServer\Core\IO;
 use PeServer\Core\Binary;
 use PeServer\Core\DisposerBase;
 use PeServer\Core\Encoding;
+use PeServer\Core\SizeConverter;
 use PeServer\Core\Text;
 
 class StreamReader extends DisposerBase
@@ -107,6 +108,11 @@ class StreamReader extends DisposerBase
 		$cr = $this->encoding->getBinary("\r")->raw;
 		$lf = $this->encoding->getBinary("\n")->raw;
 		$newlineWidth = strlen($cr);
+		assert(0 < $newlineWidth);
+
+		// バッファは最低限 CR+LF を満たし、その倍数であること
+		$sizeConverter = new SizeConverter();
+		$bufferSize = $sizeConverter->ceiling(\max($newlineWidth * 2, $this->bufferSize), $newlineWidth * 2);
 
 		$startOffset = $this->stream->getOffset();
 
@@ -118,7 +124,7 @@ class StreamReader extends DisposerBase
 		$hasNewLine = false;
 
 		while (!$this->stream->isEnd()) {
-			$binary = $this->stream->readBinary($this->bufferSize);
+			$binary = $this->stream->readBinary($bufferSize);
 			$currentLength = $binary->count();
 			if (!$currentLength) {
 				break;

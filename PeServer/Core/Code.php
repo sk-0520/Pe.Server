@@ -9,6 +9,7 @@ use PeServer\Core\Collection\Arr;
 use PeServer\Core\IDisposable;
 use PeServer\Core\IO\File;
 use PeServer\Core\IO\Stream;
+use PeServer\Core\IO\StreamReader;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Throws\NotImplementedException;
@@ -79,19 +80,20 @@ abstract class Code
 		$lineNumber = Access::getInteger($trace, "line");
 
 		$stream = Stream::open($file, Stream::MODE_READ, $encoding);
+		$reader = new StreamReader($stream, $encoding ?? Encoding::getUtf8()); // ソースは UTF8 でしょ。。。
 		$streamLineNumber = 1;
 		/** @var string|null */
 		$sourceLine = null;
 		try {
-			while (!$stream->isEnd()) {
-				$lineValue = $stream->readLine();
+			while (!$reader->isEnd()) {
+				$lineValue = $reader->readLine();
 				if ($lineNumber === $streamLineNumber++) {
 					$sourceLine = Text::trim($lineValue);
 					break;
 				}
 			}
 		} finally {
-			$stream->dispose();
+			$reader->dispose();
 		}
 		if ($sourceLine === null) {
 			throw new InvalidOperationException();
