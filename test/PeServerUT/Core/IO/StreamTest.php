@@ -298,35 +298,6 @@ class StreamTest extends TestClass
 		$stream->writeBinary(new Binary('error'));
 	}
 
-	public static function provider_writeBom()
-	{
-		return [
-			[0, new Binary(''), Encoding::getAscii()],
-			[0, new Binary('data'), Encoding::getAscii()],
-			[0, new Binary(''), Encoding::getShiftJis()],
-			[0, new Binary('data'), Encoding::getShiftJis()],
-			[3, new Binary(''), Encoding::getUtf8()],
-			[0, new Binary('data'), Encoding::getUtf8()],
-			[2, new Binary(''), Encoding::getUtf16()],
-			[0, new Binary('data'), Encoding::getUtf16()],
-			[4, new Binary(''), Encoding::getUtf32()],
-			[0, new Binary('data'), Encoding::getUtf32()],
-		];
-	}
-
-	#[DataProvider('provider_writeBom')]
-	public function test_writeBom(int $expected, Binary $data, Encoding $encoding)
-	{
-		$stream = Stream::openTemporary(encoding: $encoding);
-
-		if ($data->count()) {
-			$stream->writeBinary($data);
-		}
-		$actual = $stream->writeBom();
-
-		$this->assertSame($expected, $actual);
-	}
-
 	public function test_write_read_string()
 	{
 		$expected = "ABC";

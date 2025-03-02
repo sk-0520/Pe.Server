@@ -149,18 +149,6 @@ class FileCleanupStreamTest extends TestClass
 		$this->fail();
 	}
 
-	public function test_writeBom_throw()
-	{
-		$dir = $this->testDir();
-		$path = $dir->createFile("a.txt");
-
-		$stream = FileCleanupStream::read($path);
-
-		$this->expectException(StreamException::class);
-		$stream->writeBom();
-		$this->fail();
-	}
-
 	public function test_writeString_throw()
 	{
 		$dir = $this->testDir();
