@@ -9,6 +9,7 @@ use PeServer\Core\Collection\Arr;
 use PeServer\Core\IDisposable;
 use PeServer\Core\IO\File;
 use PeServer\Core\IO\Stream;
+use PeServer\Core\IO\StreamReader;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Throws\NotImplementedException;
@@ -69,7 +70,7 @@ abstract class Code
 	 *
 	 * @param mixed $var
 	 * @param int $level
-	 * @param Encoding|null $encoding
+	 * @param Encoding|null $encoding ソースのエンコーディング。
 	 * @return non-empty-string
 	 */
 	public static function nameof(mixed $var, int $level = 1, ?Encoding $encoding = null): string
@@ -78,26 +79,28 @@ abstract class Code
 		$file = Access::getString($trace, "file");
 		$lineNumber = Access::getInteger($trace, "line");
 
-		$stream = Stream::open($file, Stream::MODE_READ, $encoding);
-		$streamLineNumber = 1;
+		$stream = Stream::open($file, Stream::MODE_READ);
+		$reader = new StreamReader($stream, $encoding ?? Encoding::getUtf8());
+		$sourceLineNumber = 1;
 		/** @var string|null */
 		$sourceLine = null;
 		try {
-			while (!$stream->isEnd()) {
-				$lineValue = $stream->readLine();
-				if ($lineNumber === $streamLineNumber++) {
+			while (!$reader->isEnd()) {
+				$lineValue = $reader->readLine();
+				if ($lineNumber === $sourceLineNumber++) {
 					$sourceLine = Text::trim($lineValue);
 					break;
 				}
 			}
 		} finally {
-			$stream->dispose();
+			$reader->dispose();
 		}
 		if ($sourceLine === null) {
 			throw new InvalidOperationException();
 		}
 
-		$regex = new Regex($stream->encoding);
+		// Regex で扱うのはソースではなく内部のエンコーディングなので引数 $encoding は考えなくていい
+		$regex = new Regex();
 		$symbolMatches = $regex->matches($sourceLine, '/\bCode\s*::\s*nameof\s*\(\s*(?<SYMBOL>.+?)\s*\)/' . 'n');
 		if (isset($symbolMatches[2])) {
 			// 同じ行に nameof があるとダメなんだわ

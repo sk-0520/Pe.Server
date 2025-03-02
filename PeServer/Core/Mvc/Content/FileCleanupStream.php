@@ -27,9 +27,8 @@ final class FileCleanupStream extends Stream
 	private function __construct(
 		public readonly string $path,
 		$resource,
-		?Encoding $encoding = null
 	) {
-		parent::__construct($resource, $encoding);
+		parent::__construct($resource);
 	}
 
 	#region function
@@ -38,10 +37,9 @@ final class FileCleanupStream extends Stream
 	 * これだけ使うのです。
 	 *
 	 * @param string $path
-	 * @param Encoding|null $encoding
 	 * @return self
 	 */
-	public static function read(string $path, ?Encoding $encoding = null): self
+	public static function read(string $path): self
 	{
 		$mode = "rb";
 		$result = ErrorHandler::trap(fn() => fopen($path, $mode));
@@ -49,7 +47,7 @@ final class FileCleanupStream extends Stream
 			throw new IOException($path);
 		}
 
-		return new self($path, $result->value, $encoding);
+		return new self($path, $result->value);
 	}
 
 	#endregion

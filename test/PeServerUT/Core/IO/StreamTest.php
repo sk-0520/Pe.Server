@@ -298,56 +298,12 @@ class StreamTest extends TestClass
 		$stream->writeBinary(new Binary('error'));
 	}
 
-	public static function provider_writeBom()
-	{
-		return [
-			[0, new Binary(''), Encoding::getAscii()],
-			[0, new Binary('data'), Encoding::getAscii()],
-			[0, new Binary(''), Encoding::getShiftJis()],
-			[0, new Binary('data'), Encoding::getShiftJis()],
-			[3, new Binary(''), Encoding::getUtf8()],
-			[0, new Binary('data'), Encoding::getUtf8()],
-			[2, new Binary(''), Encoding::getUtf16()],
-			[0, new Binary('data'), Encoding::getUtf16()],
-			[4, new Binary(''), Encoding::getUtf32()],
-			[0, new Binary('data'), Encoding::getUtf32()],
-		];
-	}
-
-	#[DataProvider('provider_writeBom')]
-	public function test_writeBom(int $expected, Binary $data, Encoding $encoding)
-	{
-		$stream = Stream::openTemporary(encoding: $encoding);
-
-		if ($data->count()) {
-			$stream->writeBinary($data);
-		}
-		$actual = $stream->writeBom();
-
-		$this->assertSame($expected, $actual);
-	}
-
-	public function test_write_read_string()
-	{
-		$expected = "ABC";
-
-		$stream = Stream::openTemporary();
-
-		$writeLength = $stream->writeString($expected);
-		$this->assertSame(Text::getByteCount($expected), $writeLength);
-
-		$stream->seekHead();
-
-		$actual = $stream->readStringContents(Text::getByteCount($expected));
-		$this->assertSame($expected, $actual);
-	}
-
 	public function test_readBinary()
 	{
 		$testDir = $this->testDir();
 		$path = $testDir->createFile(__FUNCTION__);
 		$stream = Stream::open($path, Stream::MODE_EDIT);
-		$stream->writeString('ABCDEFG');
+		$stream->writeBinary(new Binary('ABCDEFG'));
 		$stream->seekHead();
 
 		$actual = $stream->readBinary(3);
@@ -362,112 +318,5 @@ class StreamTest extends TestClass
 
 		$this->expectException(StreamException::class);
 		$stream->readBinary(100);
-	}
-
-	public static function provider_readBom()
-	{
-		return [
-			[false, new Binary(''), 0, Encoding::getAscii()],
-			[false, new Binary('A'), 1, Encoding::getAscii()],
-			[false, new Binary("\xEF"), 0, Encoding::getUtf8()],
-			[false, new Binary("\xEF\xBB"), 0, Encoding::getUtf8()],
-			[true, new Binary("\xEF\xBB\xBF"), 0, Encoding::getUtf8()],
-			[true, new Binary("\xFE\xFF"), 0, new Encoding(Encoding::ENCODE_UTF16_BE)],
-			[false, new Binary("\xFF\xFE"), 0, new Encoding(Encoding::ENCODE_UTF16_BE)],
-			[true, new Binary("\xFF\xFE"), 0, new Encoding(Encoding::ENCODE_UTF16_LE)],
-			[false, new Binary("\xFE\xFF"), 0, new Encoding(Encoding::ENCODE_UTF16_LE)],
-			[true, new Binary("\x00\x00\xFE\xFF"), 0, new Encoding(Encoding::ENCODE_UTF32_BE)],
-			[false, new Binary("\xFF\xFE\x00\x00"), 0, new Encoding(Encoding::ENCODE_UTF32_BE)],
-			[true, new Binary("\xFF\xFE\x00\x00"), 0, new Encoding(Encoding::ENCODE_UTF32_LE)],
-			[false, new Binary("\x00\x00\xFE\xFF"), 0, new Encoding(Encoding::ENCODE_UTF32_LE)],
-		];
-	}
-
-	#[DataProvider('provider_readBom')]
-	public function test_readBom(bool $expected, Binary $data, int $start, Encoding $encoding)
-	{
-		$stream = Stream::openTemporary(encoding: $encoding);
-
-		if ($data->count()) {
-			$stream->writeBinary($data);
-		}
-		$stream->seek($start, Stream::WHENCE_HEAD);
-
-		$actual = $stream->readBom();
-
-		$this->assertSame($expected, $actual);
-	}
-
-	public static function provider_readLine_bufferSize()
-	{
-		return [
-			[1],
-			[2],
-			[3],
-			[4],
-			[5],
-			[6],
-			[7],
-			[8],
-			[512],
-			[1024],
-		];
-	}
-
-	#[DataProvider('provider_readLine_bufferSize')]
-	public function test_readLine_lastNoNewline($bufferSize)
-	{
-		$stream = Stream::openTemporary();
-
-		$stream->newLine = "\r\n";
-		$stream->writeLine('ABC');
-		$stream->newLine = "\r";
-		$stream->writeLine('DEF');
-		$stream->newLine = "\n";
-		$stream->writeString('GHI');
-
-		$stream->seekHead();
-		$stream->bufferSize = $bufferSize;
-
-		$actual = [];
-
-		while (!$stream->isEnd()) {
-			$line = $stream->readLine();
-			$actual[] = $line;
-		}
-
-		$this->assertSame(['ABC', 'DEF', 'GHI'], $actual);
-	}
-
-	#[DataProvider('provider_readLine_bufferSize')]
-	public function test_readLine_lastNewline($bufferSize)
-	{
-		$stream = Stream::openTemporary();
-
-		$stream->newLine = "\r\n";
-		$stream->writeLine('ABC');
-		$stream->newLine = "\r";
-		$stream->writeLine('DEF');
-		$stream->newLine = "\n";
-		$stream->writeLine('GHI');
-
-		$stream->seekHead();
-		$stream->bufferSize = $bufferSize;
-
-		$actual = [];
-
-		while (!$stream->isEnd()) {
-			$line = $stream->readLine();
-			$actual[] = $line;
-		}
-
-		$this->assertSame(['ABC', 'DEF', 'GHI', ''], $actual);
-	}
-
-	public function test_readLine_empty()
-	{
-		$stream = Stream::openTemporary();
-		$actual = $stream->readLine();
-		$this->assertEmpty("", $actual);
 	}
 }

@@ -43,42 +43,17 @@ class Stream extends ResourceBase
 
 	#endregion
 
-	#region variable
-
-	/** 文字列として扱うエンコーディング。(バイナリデータは気にしなくてよい) */
-	public readonly Encoding $encoding;
-
-	/**
-	 * 改行文字。
-	 *
-	 * 書き込み時に使用される(読み込み時は頑張る)
-	 */
-	public string $newLine = PHP_EOL;
-
-	/**
-	 * バッファサイズ。
-	 *
-	 * @var positive-int
-	 */
-	public $bufferSize = 1024;
-
-	#endregion
-
 	/**
 	 * 生成。
 	 *
 	 * 内部的にしか使わない。
 	 *
 	 * @param $resource ファイルリソース。
-	 * @param Encoding|null $encoding
 	 */
 	protected function __construct(
-		$resource,
-		?Encoding $encoding = null
+		$resource
 	) {
 		parent::__construct($resource);
-
-		$this->encoding = $encoding ?? Encoding::getDefaultEncoding();
 	}
 
 	#region function
@@ -115,7 +90,7 @@ class Stream extends ResourceBase
 		}
 
 		// @phpstan-ignore new.static
-		return new static($result->value, $encoding);
+		return new static($result->value);
 	}
 
 	/**
@@ -132,7 +107,7 @@ class Stream extends ResourceBase
 			throw new IOException($path);
 		}
 
-		return static::new($path, 'x+', $encoding);
+		return static::new($path, 'x+');
 	}
 
 	/**
@@ -158,7 +133,7 @@ class Stream extends ResourceBase
 			}
 		}
 
-		return static::new($path, $openMode, $encoding);
+		return static::new($path, $openMode);
 	}
 
 	/**
@@ -167,11 +142,10 @@ class Stream extends ResourceBase
 	 * @param string $path ファイルパス。
 	 * @param int $mode `self::MODE_*` を指定。 `self::MODE_CRETE`: ファイルが存在しない場合に空ファイルが作成される(読むしかできないけど開ける。意味があるかは知らん)。
 	 * @phpstan-param self::MODE_* $mode
-	 * @param Encoding|null $encoding
 	 * @return static
 	 * @throws IOException
 	 */
-	public static function openOrCreate(string $path, int $mode, ?Encoding $encoding = null): static
+	public static function openOrCreate(string $path, int $mode): static
 	{
 		$openMode = match ($mode) {
 			self::MODE_READ => 'r',
@@ -185,59 +159,54 @@ class Stream extends ResourceBase
 			}
 		}
 
-		return static::new($path, $openMode, $encoding);
+		return static::new($path, $openMode);
 	}
 
 	/**
 	 * 標準エラーストリームを開く。
 	 *
-	 * @param Encoding|null $encoding
 	 * @return self
 	 */
-	public static function openStandardInput(?Encoding $encoding = null): self
+	public static function openStandardInput(): self
 	{
-		return new LocalNoReleaseStream(STDIN, $encoding);
+		return new LocalNoReleaseStream(STDIN);
 	}
 	/**
 	 * 標準出力ストリームを開く。
 	 *
-	 * @param Encoding|null $encoding
 	 * @return self
 	 */
-	public static function openStandardOutput(?Encoding $encoding = null): self
+	public static function openStandardOutput(): self
 	{
-		return new LocalNoReleaseStream(STDOUT, $encoding);
+		return new LocalNoReleaseStream(STDOUT);
 	}
 	/**
 	 * 標準エラーストリームを開く。
 	 *
-	 * @param Encoding|null $encoding
 	 * @return self
 	 */
-	public static function openStandardError(?Encoding $encoding = null): self
+	public static function openStandardError(): self
 	{
-		return new LocalNoReleaseStream(STDERR, $encoding);
+		return new LocalNoReleaseStream(STDERR);
 	}
 
 	/**
 	 * メモリストリームを開く。
 	 *
-	 * @param Encoding|null $encoding
 	 * @return static
 	 */
-	public static function openMemory(?Encoding $encoding = null): static
+	public static function openMemory(): static
 	{
-		return static::new('php://memory', 'r+', $encoding);
+		return static::new('php://memory', 'r+');
 	}
 
 	/**
 	 * 一時メモリストリームを開く。
 	 *
 	 * @param positive-int|null $memoryByteSize 指定した値を超過した際に一時ファイルに置き換わる。`null`の場合は 2MB(`php://temp` 参照のこと)。
-	 * @param Encoding|null $encoding
 	 * @return static
 	 */
-	public static function openTemporary(?int $memoryByteSize = null, ?Encoding $encoding = null): static
+	public static function openTemporary(?int $memoryByteSize = null): static
 	{
 		$path = 'php://temp';
 
@@ -251,7 +220,7 @@ class Stream extends ResourceBase
 			$path .= '/maxmemory:' . (string)$memoryByteSize;
 		}
 
-		return static::new($path, 'r+', $encoding);
+		return static::new($path, 'r+');
 	}
 
 	/**
@@ -262,12 +231,11 @@ class Stream extends ResourceBase
 	 *
 	 * `tmpfile` ラッパー。
 	 *
-	 * @param Encoding|null $encoding
 	 * @return static
 	 * @throws IOException
 	 * @see https://www.php.net/manual/function.tmpfile.php
 	 */
-	public static function createTemporaryFile(?Encoding $encoding = null): static
+	public static function createTemporaryFile(): static
 	{
 		$resource = tmpfile();
 		if ($resource === false) {
@@ -275,7 +243,7 @@ class Stream extends ResourceBase
 		}
 
 		// @phpstan-ignore new.static
-		return new static($resource, $encoding);
+		return new static($resource);
 	}
 
 	public function getState(): IOState
@@ -414,61 +382,6 @@ class Stream extends ResourceBase
 	}
 
 	/**
-	 * 現在のエンコーディングを使用してBOMを書き込み。
-	 *
-	 * * 現在位置に書き込む点に注意(シーク位置が先頭以外であれば無視される)。
-	 * * エンコーディングがBOM情報を持っていれば出力されるためBOM不要な場合は使用しないこと。
-	 *
-	 * @return int 書き込まれたバイトサイズ。
-	 * @phpstan-return non-negative-int
-	 */
-	public function writeBom(): int
-	{
-		$this->throwIfDisposed();
-
-		if ($this->getOffset() !== 0) {
-			return 0;
-		}
-
-		$bom = $this->encoding->getByteOrderMark();
-		if ($bom->count()) {
-			return $this->writeBinary($bom);
-		}
-
-		return 0;
-	}
-
-	/**
-	 * 文字列書き込み。
-	 *
-	 * @param string $data データ。
-	 * @return int 書き込まれたバイト数。
-	 * @phpstan-return non-negative-int
-	 */
-	public function writeString(string $data): int
-	{
-		$this->throwIfDisposed();
-
-		if (!Text::getByteCount($data)) {
-			return 0;
-		}
-
-		return $this->writeBinary($this->encoding->getBinary($data));
-	}
-
-	/**
-	 * 文字列を改行付きで書き込み。
-	 *
-	 * @param string $data
-	 * @return int 書き込まれたバイト数。
-	 * @phpstan-return non-negative-int
-	 */
-	public function writeLine(string $data): int
-	{
-		return $this->writeString($data . $this->newLine);
-	}
-
-	/**
 	 * バイナリ読み込み。
 	 *
 	 * @param int $byteSize 読み込みバイトサイズ。
@@ -487,38 +400,6 @@ class Stream extends ResourceBase
 		}
 
 		return new Binary($result->value);
-	}
-
-	/**
-	 * 現在のエンコーディングを使用してBOMを読み取る。
-	 *
-	 * * 現在位置から読み込む点に注意(シーク位置が先頭以外であれば無視される)。
-	 * * 読み込まれた場合(エンコーディングがBOMを持っていて合致した場合)はその分読み進められる。
-	 *
-	 * @return bool BOMが読み込まれたか。
-	 */
-	public function readBom(): bool
-	{
-		$this->throwIfDisposed();
-
-		if ($this->getOffset() !== 0) {
-			return false;
-		}
-
-		$bom = $this->encoding->getByteOrderMark();
-		$bomLength = $bom->count();
-		if (!$bomLength) {
-			return false;
-		}
-
-		$readBuffer = $this->readBinary($bomLength);
-
-		if ($bom->isEquals($readBuffer)) {
-			return true;
-		}
-
-		$this->seek(-$readBuffer->count(), self::WHENCE_CURRENT);
-		return false;
 	}
 
 	/**
@@ -541,107 +422,6 @@ class Stream extends ResourceBase
 		}
 
 		return new Binary($result);
-	}
-
-	/**
-	 * 残りのストリームを全て文字列として読み込み。
-	 *
-	 * エンコーディングにより復元不可の可能性あり。
-	 *
-	 * @return string
-	 * @throws StreamException
-	 */
-	public function readStringContents(): string
-	{
-		$result = $this->readBinaryContents();
-		if (!$result->count()) {
-			return Text::EMPTY;
-		}
-
-		return $this->encoding->toString($result);
-	}
-
-	/**
-	 * 現在のストリーム位置から1行分のデータを取得。
-	 *
-	 * * 位置を進めたり戻したりするので操作可能なストリームで処理すること。
-	 * * エンコーディングにより復元不可の可能性あり。
-	 *
-	 * @return string 読み込んだ行。末尾まで読み込み済みでも空文字列となるため isEnd なりで確認をすること。
-	 */
-	public function readLine(): string
-	{
-		$this->throwIfDisposed();
-
-		$cr = $this->encoding->getBinary("\r")->raw;
-		$lf = $this->encoding->getBinary("\n")->raw;
-		$newlineWidth = strlen($cr);
-
-		$startOffset = $this->getOffset();
-
-		$totalCount = 0;
-		$totalBuffer = '';
-
-		$findCr = false;
-		$findLf = false;
-		$hasNewLine = false;
-
-		while (!$this->isEnd()) {
-			$binary = $this->readBinary($this->bufferSize);
-			$currentLength = $binary->count();
-			if (!$currentLength) {
-				break;
-			}
-
-			$currentBuffer = $binary->raw;
-			$currentOffset = 0;
-
-			while ($currentOffset < $currentLength) {
-				if (!$findCr) {
-					$findCr = !substr_compare($currentBuffer, $cr, $currentOffset, $newlineWidth, false);
-					if (!$findCr) {
-						$findLf = !substr_compare($currentBuffer, $lf, $currentOffset, $newlineWidth, false);
-					}
-					$currentOffset += $newlineWidth;
-				}
-				if ($findLf) {
-					$hasNewLine = true;
-					break;
-				}
-				if ($findCr && $currentOffset < $currentLength) {
-					$findLf = !substr_compare($currentBuffer, $lf, $currentOffset, $newlineWidth, false);
-					if ($findLf) {
-						$currentOffset += $newlineWidth;
-					}
-					$hasNewLine = true;
-					break;
-				}
-			}
-
-			$totalBuffer .= $currentBuffer;
-			$totalCount += $currentOffset;
-
-			if ($hasNewLine) {
-				break;
-			}
-		}
-
-		if ($hasNewLine) {
-			$dropWidth = 0;
-			if ($findCr) {
-				$dropWidth += $newlineWidth;
-			}
-			if ($findLf) {
-				$dropWidth += $newlineWidth;
-			}
-			$this->seek($startOffset + $totalCount, self::WHENCE_HEAD);
-			$raw = substr($totalBuffer, 0, $totalCount - $dropWidth);
-			$str = $this->encoding->toString(new Binary($raw));
-
-			return $str;
-		}
-
-		return $this->encoding->toString(new Binary($totalBuffer));
 	}
 
 	#endregion
@@ -668,13 +448,11 @@ class LocalNoReleaseStream extends Stream
 	 * 生成
 	 *
 	 * @param $resource ファイルリソース。
-	 * @param Encoding|null $encoding
 	 */
 	public function __construct(
-		$resource,
-		?Encoding $encoding = null
+		$resource
 	) {
-		parent::__construct($resource, $encoding);
+		parent::__construct($resource);
 	}
 
 	protected function release(): void
