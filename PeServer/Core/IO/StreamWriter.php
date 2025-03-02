@@ -27,6 +27,31 @@ class StreamWriter extends DisposerBase
 	#region function
 
 	/**
+	 * 現在のエンコーディングを使用してBOMを書き込み。
+	 *
+	 * * 現在位置に書き込む点に注意(シーク位置が先頭以外であれば無視される)。
+	 * * エンコーディングがBOM情報を持っていれば出力されるためBOM不要な場合は使用しないこと。
+	 *
+	 * @return int 書き込まれたバイトサイズ。
+	 * @phpstan-return non-negative-int
+	 */
+	public function writeBom(): int
+	{
+		$this->throwIfDisposed();
+
+		if ($this->stream->getOffset() !== 0) {
+			return 0;
+		}
+
+		$bom = $this->encoding->getByteOrderMark();
+		if ($bom->count()) {
+			return $this->stream->writeBinary($bom);
+		}
+
+		return 0;
+	}
+
+	/**
 	 * 文字列書き込み。
 	 *
 	 * @param string $s データ。
@@ -45,7 +70,7 @@ class StreamWriter extends DisposerBase
 		return $this->stream->writeBinary($data);
 	}
 
-		/**
+	/**
 	 * 文字列を改行付きで書き込み。
 	 *
 	 * @param string $s
