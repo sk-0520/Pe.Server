@@ -17,7 +17,7 @@ class StreamReaderTest extends TestClass
 
 	public function test_constructor_leaveOpen_default()
 	{
-		$stream = Stream::openTemporary(encoding: Encoding::getDefaultEncoding());
+		$stream = Stream::openTemporary();
 		$reader = new StreamReader($stream, Encoding::getDefaultEncoding());
 
 		$reader->dispose();
@@ -28,7 +28,7 @@ class StreamReaderTest extends TestClass
 
 	public function test_constructor_leaveOpen_close()
 	{
-		$stream = Stream::openTemporary(encoding: Encoding::getDefaultEncoding());
+		$stream = Stream::openTemporary();
 		$reader = new StreamReader($stream, Encoding::getDefaultEncoding(), false);
 
 		$reader->dispose();
@@ -39,7 +39,7 @@ class StreamReaderTest extends TestClass
 
 	public function test_constructor_leaveOpen_open()
 	{
-		$stream = Stream::openTemporary(encoding: Encoding::getDefaultEncoding());
+		$stream = Stream::openTemporary();
 		$reader = new StreamReader($stream, Encoding::getDefaultEncoding(), true);
 
 		$reader->dispose();
@@ -61,7 +61,7 @@ class StreamReaderTest extends TestClass
 	#[DataProvider('provider_isEnd')]
 	public function test_isEnd(array $readCounts, string $init, Encoding $encoding)
 	{
-		$stream = Stream::openTemporary(encoding: $encoding);
+		$stream = Stream::openTemporary();
 		$stream->writeBinary($encoding->getBinary($init));
 		$stream->seekHead();
 
@@ -100,7 +100,7 @@ class StreamReaderTest extends TestClass
 	#[DataProvider('provider_readBom')]
 	public function test_readBom(bool $expected, Binary $init, int $start, Encoding $encoding)
 	{
-		$stream = Stream::openTemporary(encoding: $encoding);
+		$stream = Stream::openTemporary();
 		$reader = new StreamReader($stream, $encoding);
 
 		if ($init->count()) {
@@ -139,7 +139,7 @@ class StreamReaderTest extends TestClass
 	#[DataProvider('provider_readStringContents')]
 	public function test_readStringContents(string $expected, string $init, int $start, Encoding $encoding)
 	{
-		$stream = Stream::openTemporary(encoding: $encoding);
+		$stream = Stream::openTemporary();
 		$reader = new StreamReader($stream, $encoding);
 
 		$data = $encoding->getBinary($init);

@@ -70,7 +70,7 @@ abstract class Code
 	 *
 	 * @param mixed $var
 	 * @param int $level
-	 * @param Encoding|null $encoding
+	 * @param Encoding|null $encoding ソースのエンコーディング。
 	 * @return non-empty-string
 	 */
 	public static function nameof(mixed $var, int $level = 1, ?Encoding $encoding = null): string
@@ -79,8 +79,8 @@ abstract class Code
 		$file = Access::getString($trace, "file");
 		$lineNumber = Access::getInteger($trace, "line");
 
-		$stream = Stream::open($file, Stream::MODE_READ, $encoding);
-		$reader = new StreamReader($stream, $encoding ?? Encoding::getUtf8()); // ソースは UTF8 でしょ。。。
+		$stream = Stream::open($file, Stream::MODE_READ);
+		$reader = new StreamReader($stream, $encoding ?? Encoding::getUtf8());
 		$streamLineNumber = 1;
 		/** @var string|null */
 		$sourceLine = null;
@@ -99,7 +99,8 @@ abstract class Code
 			throw new InvalidOperationException();
 		}
 
-		$regex = new Regex($stream->encoding);
+		// Regex で扱うのはソースではなく内部のエンコーディングなので引数 $encoding は考えなくていい
+		$regex = new Regex();
 		$symbolMatches = $regex->matches($sourceLine, '/\bCode\s*::\s*nameof\s*\(\s*(?<SYMBOL>.+?)\s*\)/' . 'n');
 		if (isset($symbolMatches[2])) {
 			// 同じ行に nameof があるとダメなんだわ

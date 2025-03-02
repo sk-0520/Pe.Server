@@ -17,7 +17,7 @@ class StreamWriterTest extends TestClass
 
 	public function test_constructor_leaveOpen_default()
 	{
-		$stream = Stream::openTemporary(encoding: Encoding::getDefaultEncoding());
+		$stream = Stream::openTemporary();
 		$writer = new StreamWriter($stream, Encoding::getDefaultEncoding());
 
 		$writer->dispose();
@@ -28,7 +28,7 @@ class StreamWriterTest extends TestClass
 
 	public function test_constructor_leaveOpen_close()
 	{
-		$stream = Stream::openTemporary(encoding: Encoding::getDefaultEncoding());
+		$stream = Stream::openTemporary();
 		$writer = new StreamWriter($stream, Encoding::getDefaultEncoding(), false);
 
 		$writer->dispose();
@@ -39,7 +39,7 @@ class StreamWriterTest extends TestClass
 
 	public function test_constructor_leaveOpen_open()
 	{
-		$stream = Stream::openTemporary(encoding: Encoding::getDefaultEncoding());
+		$stream = Stream::openTemporary();
 		$writer = new StreamWriter($stream, Encoding::getDefaultEncoding(), true);
 
 		$writer->dispose();
@@ -67,7 +67,7 @@ class StreamWriterTest extends TestClass
 	#[DataProvider('provider_writeBom')]
 	public function test_writeBom(int $expected, Binary $init, Encoding $encoding)
 	{
-		$stream = Stream::openTemporary(encoding: $encoding);
+		$stream = Stream::openTemporary();
 		$writer = new StreamWriter($stream, $encoding);
 
 		if ($init->count()) {
@@ -100,7 +100,7 @@ class StreamWriterTest extends TestClass
 	#[DataProvider('provider_writeString')]
 	public function test_writeString(int $expected, string $s, Encoding $encoding)
 	{
-		$stream = Stream::openTemporary(encoding: $encoding);
+		$stream = Stream::openTemporary();
 		$writer = new StreamWriter($stream, $encoding);
 
 		$actualLength = $writer->writeString($s);
@@ -114,7 +114,7 @@ class StreamWriterTest extends TestClass
 	public function test_writeString_ascii_emoji()
 	{
 		$encoding = Encoding::getAscii();
-		$stream = Stream::openTemporary(encoding: $encoding);
+		$stream = Stream::openTemporary();
 		$writer = new StreamWriter($stream, $encoding);
 
 		$actualLength = $writer->writeString("🐎");
@@ -160,7 +160,7 @@ class StreamWriterTest extends TestClass
 	#[DataProvider('provider_writeLine')]
 	public function test_writeLine(int $expected, string $s, string $newLine, Encoding $encoding)
 	{
-		$stream = Stream::openTemporary(encoding: $encoding);
+		$stream = Stream::openTemporary();
 		$writer = new StreamWriter($stream, $encoding);
 		$writer->newLine = $newLine;
 

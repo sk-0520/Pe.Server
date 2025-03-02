@@ -43,42 +43,17 @@ class Stream extends ResourceBase
 
 	#endregion
 
-	#region variable
-
-	/** 文字列として扱うエンコーディング。(バイナリデータは気にしなくてよい) */
-	public readonly Encoding $encoding;
-
-	/**
-	 * 改行文字。
-	 *
-	 * 書き込み時に使用される(読み込み時は頑張る)
-	 */
-	public string $newLine = PHP_EOL;
-
-	/**
-	 * バッファサイズ。
-	 *
-	 * @var positive-int
-	 */
-	public $bufferSize = 1024;
-
-	#endregion
-
 	/**
 	 * 生成。
 	 *
 	 * 内部的にしか使わない。
 	 *
 	 * @param $resource ファイルリソース。
-	 * @param Encoding|null $encoding
 	 */
 	protected function __construct(
-		$resource,
-		?Encoding $encoding = null
+		$resource
 	) {
 		parent::__construct($resource);
-
-		$this->encoding = $encoding ?? Encoding::getDefaultEncoding();
 	}
 
 	#region function
@@ -115,7 +90,7 @@ class Stream extends ResourceBase
 		}
 
 		// @phpstan-ignore new.static
-		return new static($result->value, $encoding);
+		return new static($result->value);
 	}
 
 	/**
@@ -132,7 +107,7 @@ class Stream extends ResourceBase
 			throw new IOException($path);
 		}
 
-		return static::new($path, 'x+', $encoding);
+		return static::new($path, 'x+');
 	}
 
 	/**
@@ -158,7 +133,7 @@ class Stream extends ResourceBase
 			}
 		}
 
-		return static::new($path, $openMode, $encoding);
+		return static::new($path, $openMode);
 	}
 
 	/**
@@ -167,11 +142,10 @@ class Stream extends ResourceBase
 	 * @param string $path ファイルパス。
 	 * @param int $mode `self::MODE_*` を指定。 `self::MODE_CRETE`: ファイルが存在しない場合に空ファイルが作成される(読むしかできないけど開ける。意味があるかは知らん)。
 	 * @phpstan-param self::MODE_* $mode
-	 * @param Encoding|null $encoding
 	 * @return static
 	 * @throws IOException
 	 */
-	public static function openOrCreate(string $path, int $mode, ?Encoding $encoding = null): static
+	public static function openOrCreate(string $path, int $mode): static
 	{
 		$openMode = match ($mode) {
 			self::MODE_READ => 'r',
@@ -185,59 +159,54 @@ class Stream extends ResourceBase
 			}
 		}
 
-		return static::new($path, $openMode, $encoding);
+		return static::new($path, $openMode);
 	}
 
 	/**
 	 * 標準エラーストリームを開く。
 	 *
-	 * @param Encoding|null $encoding
 	 * @return self
 	 */
-	public static function openStandardInput(?Encoding $encoding = null): self
+	public static function openStandardInput(): self
 	{
-		return new LocalNoReleaseStream(STDIN, $encoding);
+		return new LocalNoReleaseStream(STDIN);
 	}
 	/**
 	 * 標準出力ストリームを開く。
 	 *
-	 * @param Encoding|null $encoding
 	 * @return self
 	 */
-	public static function openStandardOutput(?Encoding $encoding = null): self
+	public static function openStandardOutput(): self
 	{
-		return new LocalNoReleaseStream(STDOUT, $encoding);
+		return new LocalNoReleaseStream(STDOUT);
 	}
 	/**
 	 * 標準エラーストリームを開く。
 	 *
-	 * @param Encoding|null $encoding
 	 * @return self
 	 */
-	public static function openStandardError(?Encoding $encoding = null): self
+	public static function openStandardError(): self
 	{
-		return new LocalNoReleaseStream(STDERR, $encoding);
+		return new LocalNoReleaseStream(STDERR);
 	}
 
 	/**
 	 * メモリストリームを開く。
 	 *
-	 * @param Encoding|null $encoding
 	 * @return static
 	 */
-	public static function openMemory(?Encoding $encoding = null): static
+	public static function openMemory(): static
 	{
-		return static::new('php://memory', 'r+', $encoding);
+		return static::new('php://memory', 'r+');
 	}
 
 	/**
 	 * 一時メモリストリームを開く。
 	 *
 	 * @param positive-int|null $memoryByteSize 指定した値を超過した際に一時ファイルに置き換わる。`null`の場合は 2MB(`php://temp` 参照のこと)。
-	 * @param Encoding|null $encoding
 	 * @return static
 	 */
-	public static function openTemporary(?int $memoryByteSize = null, ?Encoding $encoding = null): static
+	public static function openTemporary(?int $memoryByteSize = null): static
 	{
 		$path = 'php://temp';
 
@@ -251,7 +220,7 @@ class Stream extends ResourceBase
 			$path .= '/maxmemory:' . (string)$memoryByteSize;
 		}
 
-		return static::new($path, 'r+', $encoding);
+		return static::new($path, 'r+');
 	}
 
 	/**
@@ -262,12 +231,11 @@ class Stream extends ResourceBase
 	 *
 	 * `tmpfile` ラッパー。
 	 *
-	 * @param Encoding|null $encoding
 	 * @return static
 	 * @throws IOException
 	 * @see https://www.php.net/manual/function.tmpfile.php
 	 */
-	public static function createTemporaryFile(?Encoding $encoding = null): static
+	public static function createTemporaryFile(): static
 	{
 		$resource = tmpfile();
 		if ($resource === false) {
@@ -275,7 +243,7 @@ class Stream extends ResourceBase
 		}
 
 		// @phpstan-ignore new.static
-		return new static($resource, $encoding);
+		return new static($resource);
 	}
 
 	public function getState(): IOState
@@ -480,13 +448,11 @@ class LocalNoReleaseStream extends Stream
 	 * 生成
 	 *
 	 * @param $resource ファイルリソース。
-	 * @param Encoding|null $encoding
 	 */
 	public function __construct(
-		$resource,
-		?Encoding $encoding = null
+		$resource
 	) {
-		parent::__construct($resource, $encoding);
+		parent::__construct($resource);
 	}
 
 	protected function release(): void
