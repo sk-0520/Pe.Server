@@ -286,6 +286,7 @@ jobs:
         with:
           max_attempts: 2
           timeout_seconds: 300
+          retry_on: error
           shell: bash
           command: |
             cd archive_package/package
