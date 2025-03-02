@@ -298,21 +298,6 @@ class StreamTest extends TestClass
 		$stream->writeBinary(new Binary('error'));
 	}
 
-	public function test_write_read_string()
-	{
-		$expected = "ABC";
-
-		$stream = Stream::openTemporary();
-
-		$writeLength = $stream->writeString($expected);
-		$this->assertSame(Text::getByteCount($expected), $writeLength);
-
-		$stream->seekHead();
-
-		$actual = $stream->readStringContents(Text::getByteCount($expected));
-		$this->assertSame($expected, $actual);
-	}
-
 	public function test_readBinary()
 	{
 		$testDir = $this->testDir();

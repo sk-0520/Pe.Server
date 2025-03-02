@@ -487,24 +487,6 @@ class Stream extends ResourceBase
 	}
 
 	/**
-	 * 残りのストリームを全て文字列として読み込み。
-	 *
-	 * エンコーディングにより復元不可の可能性あり。
-	 *
-	 * @return string
-	 * @throws StreamException
-	 */
-	public function readStringContents(): string
-	{
-		$result = $this->readBinaryContents();
-		if (!$result->count()) {
-			return Text::EMPTY;
-		}
-
-		return $this->encoding->toString($result);
-	}
-
-	/**
 	 * 現在のストリーム位置から1行分のデータを取得。
 	 *
 	 * * 位置を進めたり戻したりするので操作可能なストリームで処理すること。

@@ -15,6 +15,39 @@ class StreamReaderTest extends TestClass
 {
 	#region function
 
+	public function test_constructor_leaveOpen_default()
+	{
+		$stream = Stream::openTemporary(encoding: Encoding::getDefaultEncoding());
+		$reader = new StreamReader($stream, Encoding::getDefaultEncoding());
+
+		$reader->dispose();
+
+		$this->assertTrue($reader->isDisposed());
+		$this->assertTrue($stream->isDisposed());
+	}
+
+	public function test_constructor_leaveOpen_close()
+	{
+		$stream = Stream::openTemporary(encoding: Encoding::getDefaultEncoding());
+		$reader = new StreamReader($stream, Encoding::getDefaultEncoding(), false);
+
+		$reader->dispose();
+
+		$this->assertTrue($reader->isDisposed());
+		$this->assertTrue($stream->isDisposed());
+	}
+
+	public function test_constructor_leaveOpen_open()
+	{
+		$stream = Stream::openTemporary(encoding: Encoding::getDefaultEncoding());
+		$reader = new StreamReader($stream, Encoding::getDefaultEncoding(), true);
+
+		$reader->dispose();
+
+		$this->assertTrue($reader->isDisposed());
+		$this->assertFalse($stream->isDisposed());
+	}
+
 	public static function provider_readBom()
 	{
 		return [
@@ -47,6 +80,44 @@ class StreamReaderTest extends TestClass
 
 		$actual = $reader->readBom();
 
+		$this->assertSame($expected, $actual);
+	}
+
+	public static function provider_readStringContents()
+	{
+		return [
+			["", "", 0, Encoding::getAscii()],
+			["", "", 0, Encoding::getUtf8()],
+			["", "", 0, Encoding::getUtf16()],
+			["", "", 0, Encoding::getUtf32()],
+
+			["abc", "abc", 0, Encoding::getAscii()],
+			["abc", "abc", 0, Encoding::getUtf8()],
+			["abc", "abc", 0, Encoding::getUtf16()],
+			["abc", "abc", 0, Encoding::getUtf32()],
+
+			["🐎", "🐎", 0, Encoding::getUtf8()],
+			["🐎", "🐎", 0, Encoding::getUtf16()],
+			["🐎", "🐎", 0, Encoding::getUtf32()],
+
+			["いう", "あいう", 3, Encoding::getUtf8()],
+			["いう", "あいう", 2, Encoding::getUtf16()],
+			["いう", "あいう", 4, Encoding::getUtf32()],
+		];
+	}
+
+	#[DataProvider('provider_readStringContents')]
+	public function test_readStringContents(string $expected, string $init, int $start, Encoding $encoding)
+	{
+		$stream = Stream::openTemporary(encoding: $encoding);
+		$reader = new StreamReader($stream, $encoding);
+
+		$data = $encoding->getBinary($init);
+		$stream->writeBinary($data);
+
+		$stream->seek($start, Stream::WHENCE_HEAD);
+
+		$actual = $reader->readStringContents();
 		$this->assertSame($expected, $actual);
 	}
 
