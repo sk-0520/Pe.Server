@@ -130,9 +130,7 @@ abstract class Cryptography
 		}
 
 		$ivLength = $result->value;
-		if ($ivLength < 1) {
-			throw new CryptoException('$ivLength: ' . $ivLength);
-		}
+		assert(0 < $ivLength); // こんなんきちんと考慮する必要ないわ
 
 		$iv = self::generateRandomBinary($ivLength);
 
