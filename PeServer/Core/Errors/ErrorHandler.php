@@ -51,8 +51,7 @@ class ErrorHandler
 
 	public function __construct(
 		protected readonly ILogger $logger
-	) {
-	}
+	) {}
 
 	#region function
 
@@ -162,7 +161,7 @@ class ErrorHandler
 			$result = $action();
 			if ($disposable->isError) {
 				/** @phpstan-var ResultData<TValue> */
-				return ResultData::createFailure();
+				return ResultData::createFailure($disposable->error);
 			}
 
 			return ResultData::createSuccess($result);
@@ -216,12 +215,15 @@ class ErrorHandler
 final class LocalPhpErrorReceiver extends DisposerBase
 {
 	public bool $isError = false;
+	public ErrorData|null $error;
 
 	public function __construct(int $errorLevel)
 	{
 		if (!$errorLevel) {
 			throw new InvalidErrorLevelError();
 		}
+
+		$this->error = null;
 
 		set_error_handler([$this, 'receiveError'], $errorLevel);
 	}
@@ -245,6 +247,7 @@ final class LocalPhpErrorReceiver extends DisposerBase
 	final public function receiveError(int $errorNumber, string $errorMessage, string $errorFile, int $errorLineNumber): bool
 	{
 		$this->isError = true;
+		$this->error = new ErrorData($errorNumber, $errorMessage, $errorFile, $errorLineNumber);
 		return $this->isError;
 	}
 }
