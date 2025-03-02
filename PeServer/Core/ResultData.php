@@ -90,6 +90,23 @@ final readonly class ResultData
 		return $this->isFailureOrFailValue(false);
 	}
 
+	public function exceptionMessage(string $fallback = ''): string
+	{
+		if ($this->error) {
+			return $this->error->message;
+		}
+
+		return $fallback;
+	}
+
+	public function exceptionCode(int $fallback = -1): int
+	{
+		if ($this->error) {
+			return $this->error->code;
+		}
+
+		return $fallback;
+	}
 
 	#endregion
 }

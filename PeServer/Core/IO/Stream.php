@@ -375,7 +375,7 @@ class Stream extends ResourceBase
 
 		$result = ErrorHandler::trap(fn() => fwrite($this->resource, $data->raw, $byteSize));
 		if ($result->isFailureOrFalse()) {
-			throw new StreamException($result->error ? $result->error->message : '');
+			throw new StreamException($result->exceptionMessage());
 		}
 
 		return $result->value;

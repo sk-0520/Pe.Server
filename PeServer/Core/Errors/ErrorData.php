@@ -9,7 +9,7 @@ use PeServer\Core\Throws\InvalidOperationException;
 readonly final class ErrorData
 {
 	public function __construct(
-		public int $type,
+		public int $code,
 		public string $message,
 		public string $file,
 		public int $line,
