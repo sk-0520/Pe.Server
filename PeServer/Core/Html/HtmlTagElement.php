@@ -6,7 +6,7 @@ namespace PeServer\Core\Html;
 
 use DOMElement;
 use Exception;
-use PeServer\Core\Collection\Arr;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Html\HtmlDocument;
 use PeServer\Core\Html\HtmlElementBase;
 use PeServer\Core\Html\HtmlXPath;

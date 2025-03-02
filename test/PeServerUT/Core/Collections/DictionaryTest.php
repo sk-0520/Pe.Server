@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PeServerUT\Core\Collection;
+namespace PeServerUT\Core\Collections;
 
 use stdClass;
 use TypeError;
-use PeServer\Core\Collection\Dictionary;
+use PeServer\Core\Collections\Dictionary;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\ArgumentNullException;
 use PeServer\Core\Throws\IndexOutOfRangeException;

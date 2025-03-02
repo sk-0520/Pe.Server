@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
-use PeServer\Core\Collection\Access;
-use PeServer\Core\Collection\Arr;
+use PeServer\Core\Collections\Access;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\IDisposable;
 use PeServer\Core\IO\File;
 use PeServer\Core\IO\Stream;

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PeServerUT\Core\Collection;
+namespace PeServerUT\Core\Collections;
 
-use PeServer\Core\Collection\GeneratorIterator;
+use PeServer\Core\Collections\GeneratorIterator;
 use PeServer\Core\Throws\CallbackTypeError;
 
 use PeServerTest\TestClass;

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PeServerUT\Core\Collection;
+namespace PeServerUT\Core\Collections;
 
 use ArrayAccess;
-use PeServer\Core\Collection\Access;
+use PeServer\Core\Collections\Access;
 use PeServer\Core\Throws\AccessInvalidLogicalTypeException;
 use PeServer\Core\Throws\AccessKeyNotFoundException;
 use PeServer\Core\Throws\AccessValueTypeException;

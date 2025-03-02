@@ -10,7 +10,7 @@ use PeServer\App\Models\Cache\PluginCacheCategory;
 use PeServer\App\Models\Cache\PluginCacheItem;
 use PeServer\App\Models\Data\Dto\CrashReportDetailDto;
 use PeServer\App\Models\Domain\PluginUrlKey;
-use PeServer\Core\Collection\Collections;
+use PeServer\Core\Collections\Collection;
 use PeServer\Core\Database\DaoBase;
 use PeServer\Core\Database\DaoTrait;
 use PeServer\Core\Database\IDatabaseContext;

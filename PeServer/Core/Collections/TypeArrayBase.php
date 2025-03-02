@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core\Collection;
+namespace PeServer\Core\Collections;
 
 use ArrayAccess;
 use ArrayIterator;
@@ -10,7 +10,7 @@ use Countable;
 use IteratorAggregate;
 use Traversable;
 use TypeError;
-use PeServer\Core\Collection\Arr;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\TypeUtility;
 
 /**

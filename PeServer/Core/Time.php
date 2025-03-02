@@ -6,7 +6,7 @@ namespace PeServer\Core;
 
 use DateInterval;
 use Exception;
-use PeServer\Core\Collection\Arr;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Errors\ErrorHandler;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\FormatException;

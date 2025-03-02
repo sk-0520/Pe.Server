@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PeServerUT\Core\Collection;
+namespace PeServerUT\Core\Collections;
 
-use PeServer\Core\Collection\Vector;
+use PeServer\Core\Collections\Vector;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\IndexOutOfRangeException;
 use PeServer\Core\TypeUtility;

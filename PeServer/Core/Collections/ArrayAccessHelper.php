@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core\Collection;
+namespace PeServer\Core\Collections;
 
 use PeServer\Core\Throws\IndexOutOfRangeException;
 use PeServer\Core\TypeUtility;

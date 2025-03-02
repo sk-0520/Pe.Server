@@ -9,7 +9,7 @@ use PeServer\App\Models\Dao\Domain\UserDomainDao;
 use PeServer\App\Models\Domain\DomainLogicBase;
 use PeServer\App\Models\HttpHeaderName;
 use PeServer\App\Models\IAuditUserInfo;
-use PeServer\Core\Collection\Arr;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\DI\Inject;
 use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Mvc\Logic\LogicCallMode;

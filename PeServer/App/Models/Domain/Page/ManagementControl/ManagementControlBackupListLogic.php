@@ -6,8 +6,8 @@ namespace PeServer\App\Models\Domain\Page\ManagementControl;
 
 use PeServer\App\Models\Domain\AppArchiver;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
-use PeServer\Core\Collection\Arr;
-use PeServer\Core\Collection\OrderBy;
+use PeServer\Core\Collections\Arr;
+use PeServer\Core\Collections\OrderBy;
 use PeServer\Core\IO\File;
 use PeServer\Core\IO\Path;
 use PeServer\Core\Mvc\Logic\LogicCallMode;

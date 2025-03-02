@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Log;
 
 use PeServer\Core\Code;
-use PeServer\Core\Collection\Arr;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\IO\Directory;
 use PeServer\Core\IO\File;
 use PeServer\Core\IO\IOUtility;

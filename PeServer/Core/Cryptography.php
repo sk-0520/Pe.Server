@@ -7,7 +7,7 @@ namespace PeServer\Core;
 use Exception;
 use Throwable;
 use PeServer\Core\Binary;
-use PeServer\Core\Collection\Arr;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Errors\ErrorHandler;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core\Collection;
+namespace PeServer\Core\Collections;
 
 use AppendIterator;
 use ArrayIterator;
@@ -13,7 +13,7 @@ use Iterator;
 use IteratorAggregate;
 use LimitIterator;
 use Traversable;
-use PeServer\Core\Collection\Arr;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\TypeUtility;
@@ -28,7 +28,7 @@ use PeServer\Core\TypeUtility;
  * @phpstan-type PredicateAlias callable(TValue,TKey):(bool)
  * @implements IteratorAggregate<TKey,TValue>
  */
-final class Collections implements IteratorAggregate
+final class Collection implements IteratorAggregate
 {
 	/**
 	 * 生成。

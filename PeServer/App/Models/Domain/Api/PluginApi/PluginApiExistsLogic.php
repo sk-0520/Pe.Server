@@ -7,8 +7,8 @@ namespace PeServer\App\Models\Domain\Api\PluginApi;
 use PeServer\App\Models\AppDatabaseCache;
 use PeServer\App\Models\Domain\Api\ApiLogicBase;
 use PeServer\App\Models\ResponseJson;
-use PeServer\Core\Collection\Arr;
-use PeServer\Core\Collection\Collections;
+use PeServer\Core\Collections\Arr;
+use PeServer\Core\Collections\Collection;
 use PeServer\Core\Text;
 use PeServer\Core\Mvc\Logic\LogicCallMode;
 use PeServer\Core\Mvc\Logic\LogicParameter;
@@ -35,7 +35,7 @@ class PluginApiExistsLogic extends ApiLogicBase
 		$pluginName = $json['plugin_name'] ?? Text::EMPTY;
 
 		$plugins = $this->dbCache->readPluginInformation();
-		$pluginCollection = Collections::from($plugins->items);
+		$pluginCollection = Collection::from($plugins->items);
 		$existsPluginId = $pluginCollection->any(function ($i) use ($pluginId) {
 			return Uuid::isEqualGuid($i->pluginId, $pluginId);
 		});

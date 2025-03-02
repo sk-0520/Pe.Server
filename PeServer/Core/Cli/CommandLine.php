@@ -6,7 +6,7 @@ namespace PeServer\Core\Cli;
 
 use ArrayAccess;
 use Countable;
-use PeServer\Core\Collection\Arr;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\CommandLineException;

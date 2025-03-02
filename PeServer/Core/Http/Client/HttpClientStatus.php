@@ -6,7 +6,7 @@ namespace PeServer\Core\Http\Client;
 
 use CurlHandle;
 use PeServer\Core\Binary;
-use PeServer\Core\Collection\Dictionary;
+use PeServer\Core\Collections\Dictionary;
 use PeServer\Core\Encoding;
 use PeServer\Core\Http\HttpHeader;
 use PeServer\Core\Text;

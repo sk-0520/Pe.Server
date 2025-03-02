@@ -12,8 +12,8 @@ use PeServer\Core\Mvc\Logic\LogicCallMode;
 use PeServer\Core\Mvc\Logic\LogicParameter;
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
-use PeServer\Core\Collection\Arr;
-use PeServer\Core\Collection\Collections;
+use PeServer\Core\Collections\Arr;
+use PeServer\Core\Collections\Collection;
 
 class ManagementLogListLogic extends PageLogicBase
 {
@@ -37,7 +37,7 @@ class ManagementLogListLogic extends PageLogicBase
 		$logFiles = array_filter($files, function ($i) use ($targetExt) {
 			return Path::getFileExtension($i) === $targetExt;
 		});
-		$logFiles = Collections::from(Arr::sortNaturalByValue($logFiles, true))
+		$logFiles = Collection::from(Arr::sortNaturalByValue($logFiles, true))
 			->select(function ($i) {
 				$sizeConverter = new SizeConverter();
 				$size = File::getFileSize($i);

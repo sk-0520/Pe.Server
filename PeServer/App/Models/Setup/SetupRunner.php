@@ -18,7 +18,7 @@ use PeServer\App\Models\Setup\Versions\SetupVersion_0005;
 use PeServer\App\Models\Setup\Versions\SetupVersion_0006;
 use PeServer\App\Models\Setup\Versions\SetupVersionBase;
 use PeServer\App\Models\Setup\Versions\SetupVersionLast;
-use PeServer\Core\Collection\Arr;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Database\DatabaseUtility;
 use PeServer\Core\Database\IDatabaseConnection;
 use PeServer\Core\Database\IDatabaseContext;

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core\Collection;
+namespace PeServer\Core\Collections;
 
 use TypeError;
-use PeServer\Core\Collection\Arr;
-use PeServer\Core\Collection\TypeArrayBase;
+use PeServer\Core\Collections\Arr;
+use PeServer\Core\Collections\TypeArrayBase;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\ArgumentNullException;
 use PeServer\Core\Throws\IndexOutOfRangeException;

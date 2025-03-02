@@ -9,7 +9,7 @@ use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\Dao\Entities\AccessLogsEntityDao;
 use PeServer\App\Models\Data\Dto\AccessLogDto;
 use PeServer\Core\Binary;
-use PeServer\Core\Collection\Arr;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Database\IDatabaseConnection;
 use PeServer\Core\IO\Directory;
 use PeServer\Core\IO\File;

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\IO;
 
 use PeServer\Core\Binary;
-use PeServer\Core\Collection\Arr;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Encoding;
 use PeServer\Core\Errors\ErrorHandler;
 use PeServer\Core\IO\File;

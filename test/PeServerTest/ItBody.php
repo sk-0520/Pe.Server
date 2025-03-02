@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServerTest;
 
 use PeServer\Core\Binary;
-use PeServer\Core\Collection\Dictionary;
+use PeServer\Core\Collections\Dictionary;
 use PeServer\Core\Mime;
 use PeServer\Core\TypeUtility;
 

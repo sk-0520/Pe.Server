@@ -6,7 +6,7 @@ namespace PeServer\Core\Mvc\Template\Plugin;
 
 use Throwable;
 use PeServer\Core\Image\Alignment;
-use PeServer\Core\Collection\Arr;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Binary;
 use PeServer\Core\CoreDefines;
 use PeServer\Core\Cryptography;
