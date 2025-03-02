@@ -81,13 +81,13 @@ abstract class Code
 
 		$stream = Stream::open($file, Stream::MODE_READ);
 		$reader = new StreamReader($stream, $encoding ?? Encoding::getUtf8());
-		$streamLineNumber = 1;
+		$sourceLineNumber = 1;
 		/** @var string|null */
 		$sourceLine = null;
 		try {
 			while (!$reader->isEnd()) {
 				$lineValue = $reader->readLine();
-				if ($lineNumber === $streamLineNumber++) {
+				if ($lineNumber === $sourceLineNumber++) {
 					$sourceLine = Text::trim($lineValue);
 					break;
 				}

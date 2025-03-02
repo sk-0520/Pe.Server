@@ -21,6 +21,11 @@ class StreamReader extends DisposerBase
 	 */
 	public $bufferSize = 1024;
 
+	private Binary $newLineCr;
+	private Binary $newLineLf;
+	/** @var positive-int */
+	private int $newlineWidth;
+
 	#endregion
 
 	public function __construct(
@@ -28,7 +33,12 @@ class StreamReader extends DisposerBase
 		protected Encoding $encoding,
 		private bool $leaveOpen = false
 	) {
-		//NOP
+		$this->newLineCr = $this->encoding->getBinary("\r");
+		$this->newLineLf = $this->encoding->getBinary("\n");
+
+		$newlineWidth = $this->newLineCr->count();
+		assert(0 < $newlineWidth);
+		$this->newlineWidth = $newlineWidth;
 	}
 
 	#region function
@@ -98,6 +108,7 @@ class StreamReader extends DisposerBase
 	 *
 	 * * 位置を進めたり戻したりするので操作可能なストリームで処理すること。
 	 * * エンコーディングにより復元不可の可能性あり。
+	 * * fgets をエンコーディンに依存しない形で対応したかっただけなのになんだこれは。
 	 *
 	 * @return string 読み込んだ行。末尾まで読み込み済みでも空文字列となるため isEnd なりで確認をすること。
 	 */
@@ -105,11 +116,9 @@ class StreamReader extends DisposerBase
 	{
 		$this->throwIfDisposed();
 
-		$cr = $this->encoding->getBinary("\r")->raw;
-		$lf = $this->encoding->getBinary("\n")->raw;
-		$newlineWidth = strlen($cr);
-		assert(0 < $newlineWidth);
-
+		$cr = $this->newLineCr->raw;
+		$lf = $this->newLineLf->raw;
+		$newlineWidth = $this->newlineWidth;
 		// バッファは最低限 CR+LF を満たし、その倍数であること
 		$sizeConverter = new SizeConverter();
 		$bufferSize = $sizeConverter->ceiling(\max($newlineWidth * 2, $this->bufferSize), $newlineWidth * 2);
