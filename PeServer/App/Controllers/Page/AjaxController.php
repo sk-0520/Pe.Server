@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Controllers\Page;
 
+use Exception;
 use PeServer\App\Controllers\Page\PageControllerBase;
 use PeServer\App\Models\Domain\Page\Ajax\AjaxCrashReportDeleteLogic;
 use PeServer\App\Models\Domain\Page\Ajax\AjaxFeedbackDeleteLogic;
@@ -86,6 +87,11 @@ final class AjaxController extends PageControllerBase
 		$logic->run(LogicCallMode::Submit);
 
 		return $this->data($logic->getContent());
+	}
+
+	public function dev_exception_json(): IActionResult
+	{
+		throw new Exception();
 	}
 
 

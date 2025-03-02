@@ -187,6 +187,7 @@ final readonly class AppRouteSetting extends RouteSetting
 					->addAction('log/:log_name@\w+\.log', HttpMethod::Delete, 'log_delete', [CsrfMiddleware::class, AdministratorAccountFilterMiddleware::class])
 					->addAction('feedback/:sequence@\d++', HttpMethod::Delete, 'feedback_delete', [CsrfMiddleware::class, AdministratorAccountFilterMiddleware::class])
 					->addAction('crash-report/:sequence@\d++', HttpMethod::Delete, 'crash_report_delete', [CsrfMiddleware::class, AdministratorAccountFilterMiddleware::class])
+					->addAction('dev/exception/json', HttpMethod::gets(), 'dev_exception_json', [RouteInformation::CLEAR_MIDDLEWARE, DevelopmentMiddleware::class])
 					->addAction('dev/streaming_chunk', HttpMethod::gets(), 'dev_streaming_chunk', [RouteInformation::CLEAR_MIDDLEWARE, DevelopmentMiddleware::class])
 					->addAction('dev/streaming_sse/text', HttpMethod::gets(), 'dev_streaming_sse_text', [RouteInformation::CLEAR_MIDDLEWARE, DevelopmentMiddleware::class])
 					->addAction('dev/streaming_sse/json', HttpMethod::gets(), 'dev_streaming_sse_json', [RouteInformation::CLEAR_MIDDLEWARE, DevelopmentMiddleware::class])

@@ -66,7 +66,12 @@
 	{if $environment->isDevelopment()}
 		<h2>dev</h2>
 		<ul>
-			<li><a href="/dev/exception">exception</a></li>
+			<li>
+				<a href="/dev/exception">exception</a>
+				<ul>
+					<li><a href="/ajax/dev/exception/json">json</a></li>
+				</ul>
+			</li>
 			<li><a href="/dev/streaming">streaming</a></li>
 		</ul>
 	{/if}
