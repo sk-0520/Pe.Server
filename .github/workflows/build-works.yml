@@ -285,6 +285,7 @@ jobs:
         uses: nick-fields/retry@v3
         with:
           max_attempts: 2
+          timeout_seconds: 300
           shell: bash
           command: |
             cd archive_package/package
