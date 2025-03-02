@@ -48,6 +48,36 @@ class StreamReaderTest extends TestClass
 		$this->assertFalse($stream->isDisposed());
 	}
 
+	public static function provider_isEnd()
+	{
+		return [
+			[[1, 1, 1], "abc", Encoding::getAscii()],
+			[[1, 1, 1], "abc", Encoding::getUtf8()],
+			[[2, 2, 2], "abc", Encoding::getUtf16()],
+			[[4, 4, 4], "abc", Encoding::getUtf32()],
+		];
+	}
+
+	#[DataProvider('provider_isEnd')]
+	public function test_isEnd(array $readCounts, string $init, Encoding $encoding)
+	{
+		$stream = Stream::openTemporary(encoding: $encoding);
+		$stream->writeBinary($encoding->getBinary($init));
+		$stream->seekHead();
+
+		$reader = new StreamReader($stream, $encoding);
+
+		foreach ($readCounts as $readCount) {
+			$this->assertFalse($reader->isEnd());
+			$actualRead = $stream->readBinary($readCount);
+			$this->assertSame($readCount, $actualRead->count());
+		}
+
+		$actualLast = $stream->readBinary(1);
+		$this->assertSame(0, $actualLast->count());
+		$this->assertTrue($reader->isEnd());
+	}
+
 	public static function provider_readBom()
 	{
 		return [
