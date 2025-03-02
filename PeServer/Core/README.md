@@ -32,6 +32,9 @@ Webアプリのコア部分。
   * `smarty`
     * LGPL 3
     * https://www.smarty.net/
+  * `whoops`
+    * MIT
+    * https://github.com/filp/whoops
 * font
   * `migmix`
     * IPAフォントライセンスv1.0
