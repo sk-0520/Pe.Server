@@ -33,6 +33,17 @@ class StreamReader extends DisposerBase
 	#region function
 
 	/**
+	 * EOF か
+	 *
+	 * @return bool
+	 * @see Stream::isEnd()
+	 */
+	public function isEnd(): bool
+	{
+		return $this->stream->isEnd();
+	}
+
+	/**
 	 * 現在のエンコーディングを使用してBOMを読み取る。
 	 *
 	 * * 現在位置から読み込む点に注意(シーク位置が先頭以外であれば無視される)。
