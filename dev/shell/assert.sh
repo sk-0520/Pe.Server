@@ -114,7 +114,7 @@ function assert::is_success
 	fi
 }
 
-# 戻り値が成功(!0)
+# 戻り値が失敗(!0)
 #
 # 以下の使用を想定している
 # assert::is_failuer $?

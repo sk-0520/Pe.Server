@@ -72,7 +72,7 @@ function test_options_value_error
 
 function test_options_switch
 {
-	common::parse_options 'abc switch!' --abc ABC --switch
+	common::parse_options 'abc switch?' --abc ABC --switch
 	if common::exists_option switch ; then
 		assert::success
 	else

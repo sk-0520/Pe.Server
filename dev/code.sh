@@ -5,7 +5,7 @@ cd "$(cd "$(dirname "${0}")"; pwd)"
 #shellcheck disable=SC1091
 source shell/common.sh
 #shellcheck disable=SC2048,SC2086
-common::parse_options "ignore-pplint! ignore-phpstan! ignore-phpcs! phpcs-fix! phpcs:report phpcs:ignore-warning! phpcs:cache" $*
+common::parse_options "ignore-pplint? ignore-phpstan! ignore-phpcs? phpcs-fix? phpcs:report phpcs:ignore-warning? phpcs:cache" $*
 
 PPLINT_VERSION=v1.4.0
 PPLINT_URL=https://github.com/php-parallel-lint/PHP-Parallel-Lint/releases/download/${PPLINT_VERSION}/parallel-lint.phar
