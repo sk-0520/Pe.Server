@@ -151,5 +151,85 @@ class StreamReaderTest extends TestClass
 		$this->assertSame($expected, $actual);
 	}
 
+	public static function provider_readLine()
+	{
+		return [
+			[1, Encoding::getUtf8()],
+			[2, Encoding::getUtf8()],
+			[3, Encoding::getUtf8()],
+			[4, Encoding::getUtf8()],
+			[5, Encoding::getUtf8()],
+			[6, Encoding::getUtf8()],
+			[7, Encoding::getUtf8()],
+			[8, Encoding::getUtf8()],
+			[512, Encoding::getUtf8()],
+			[1024, Encoding::getUtf8()],
+		];
+	}
+
+	#[DataProvider('provider_readLine')]
+	public function test_readLine_lastNoNewline($bufferSize, Encoding $encoding)
+	{
+		$stream = Stream::openTemporary();
+
+		$stream->writeBinary($encoding->getBinary("ABC\r\n"));
+		$stream->writeBinary($encoding->getBinary("DEF\r"));
+		$stream->writeBinary($encoding->getBinary("GHI"));
+
+		$stream->seekHead();
+
+		$reader = new StreamReader($stream, $encoding);
+		$reader->bufferSize = $bufferSize;
+
+		$actual = [];
+
+		while (!$reader->isEnd()) {
+			$line = $reader->readLine();
+			$actual[] = $line;
+		}
+
+		$this->assertSame(['ABC', 'DEF', 'GHI'], $actual, $encoding->name);
+	}
+
+	#[DataProvider('provider_readLine')]
+	public function test_readLine_lastNewline($bufferSize, Encoding $encoding)
+	{
+		$stream = Stream::openTemporary();
+
+		$stream->writeBinary($encoding->getBinary("ABC\r\n"));
+		$stream->writeBinary($encoding->getBinary("DEF\r"));
+		$stream->writeBinary($encoding->getBinary("GHI\n"));
+
+		$stream->seekHead();
+
+		$reader = new StreamReader($stream, $encoding);
+		$reader->bufferSize = $bufferSize;
+
+		$actual = [];
+
+		while (!$reader->isEnd()) {
+			$line = $reader->readLine();
+			$actual[] = $line;
+		}
+
+		$this->assertSame(['ABC', 'DEF', 'GHI', ''], $actual, $encoding->name);
+	}
+
+	public static function provider_readLine_empty()
+	{
+		return [
+			[Encoding::getUtf8()],
+		];
+	}
+
+	#[DataProvider('provider_readLine_empty')]
+	public function test_readLine_empty(Encoding $encoding)
+	{
+		$stream = Stream::openTemporary();
+		$reader = new StreamReader($stream, $encoding);
+		$actual = $reader->readLine();
+		$this->assertEmpty("", $actual);
+	}
+
 	#endregion
 }

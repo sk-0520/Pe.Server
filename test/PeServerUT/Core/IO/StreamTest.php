@@ -303,7 +303,7 @@ class StreamTest extends TestClass
 		$testDir = $this->testDir();
 		$path = $testDir->createFile(__FUNCTION__);
 		$stream = Stream::open($path, Stream::MODE_EDIT);
-		$stream->writeString('ABCDEFG');
+		$stream->writeBinary(new Binary('ABCDEFG'));
 		$stream->seekHead();
 
 		$actual = $stream->readBinary(3);
@@ -318,78 +318,5 @@ class StreamTest extends TestClass
 
 		$this->expectException(StreamException::class);
 		$stream->readBinary(100);
-	}
-
-	public static function provider_readLine_bufferSize()
-	{
-		return [
-			[1],
-			[2],
-			[3],
-			[4],
-			[5],
-			[6],
-			[7],
-			[8],
-			[512],
-			[1024],
-		];
-	}
-
-	#[DataProvider('provider_readLine_bufferSize')]
-	public function test_readLine_lastNoNewline($bufferSize)
-	{
-		$stream = Stream::openTemporary();
-
-		$stream->newLine = "\r\n";
-		$stream->writeLine('ABC');
-		$stream->newLine = "\r";
-		$stream->writeLine('DEF');
-		$stream->newLine = "\n";
-		$stream->writeString('GHI');
-
-		$stream->seekHead();
-		$stream->bufferSize = $bufferSize;
-
-		$actual = [];
-
-		while (!$stream->isEnd()) {
-			$line = $stream->readLine();
-			$actual[] = $line;
-		}
-
-		$this->assertSame(['ABC', 'DEF', 'GHI'], $actual);
-	}
-
-	#[DataProvider('provider_readLine_bufferSize')]
-	public function test_readLine_lastNewline($bufferSize)
-	{
-		$stream = Stream::openTemporary();
-
-		$stream->newLine = "\r\n";
-		$stream->writeLine('ABC');
-		$stream->newLine = "\r";
-		$stream->writeLine('DEF');
-		$stream->newLine = "\n";
-		$stream->writeLine('GHI');
-
-		$stream->seekHead();
-		$stream->bufferSize = $bufferSize;
-
-		$actual = [];
-
-		while (!$stream->isEnd()) {
-			$line = $stream->readLine();
-			$actual[] = $line;
-		}
-
-		$this->assertSame(['ABC', 'DEF', 'GHI', ''], $actual);
-	}
-
-	public function test_readLine_empty()
-	{
-		$stream = Stream::openTemporary();
-		$actual = $stream->readLine();
-		$this->assertEmpty("", $actual);
 	}
 }

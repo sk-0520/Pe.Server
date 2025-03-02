@@ -414,36 +414,6 @@ class Stream extends ResourceBase
 	}
 
 	/**
-	 * 文字列書き込み。
-	 *
-	 * @param string $data データ。
-	 * @return int 書き込まれたバイト数。
-	 * @phpstan-return non-negative-int
-	 */
-	public function writeString(string $data): int
-	{
-		$this->throwIfDisposed();
-
-		if (!Text::getByteCount($data)) {
-			return 0;
-		}
-
-		return $this->writeBinary($this->encoding->getBinary($data));
-	}
-
-	/**
-	 * 文字列を改行付きで書き込み。
-	 *
-	 * @param string $data
-	 * @return int 書き込まれたバイト数。
-	 * @phpstan-return non-negative-int
-	 */
-	public function writeLine(string $data): int
-	{
-		return $this->writeString($data . $this->newLine);
-	}
-
-	/**
 	 * バイナリ読み込み。
 	 *
 	 * @param int $byteSize 読み込みバイトサイズ。
@@ -484,89 +454,6 @@ class Stream extends ResourceBase
 		}
 
 		return new Binary($result);
-	}
-
-	/**
-	 * 現在のストリーム位置から1行分のデータを取得。
-	 *
-	 * * 位置を進めたり戻したりするので操作可能なストリームで処理すること。
-	 * * エンコーディングにより復元不可の可能性あり。
-	 *
-	 * @return string 読み込んだ行。末尾まで読み込み済みでも空文字列となるため isEnd なりで確認をすること。
-	 */
-	public function readLine(): string
-	{
-		$this->throwIfDisposed();
-
-		$cr = $this->encoding->getBinary("\r")->raw;
-		$lf = $this->encoding->getBinary("\n")->raw;
-		$newlineWidth = strlen($cr);
-
-		$startOffset = $this->getOffset();
-
-		$totalCount = 0;
-		$totalBuffer = '';
-
-		$findCr = false;
-		$findLf = false;
-		$hasNewLine = false;
-
-		while (!$this->isEnd()) {
-			$binary = $this->readBinary($this->bufferSize);
-			$currentLength = $binary->count();
-			if (!$currentLength) {
-				break;
-			}
-
-			$currentBuffer = $binary->raw;
-			$currentOffset = 0;
-
-			while ($currentOffset < $currentLength) {
-				if (!$findCr) {
-					$findCr = !substr_compare($currentBuffer, $cr, $currentOffset, $newlineWidth, false);
-					if (!$findCr) {
-						$findLf = !substr_compare($currentBuffer, $lf, $currentOffset, $newlineWidth, false);
-					}
-					$currentOffset += $newlineWidth;
-				}
-				if ($findLf) {
-					$hasNewLine = true;
-					break;
-				}
-				if ($findCr && $currentOffset < $currentLength) {
-					$findLf = !substr_compare($currentBuffer, $lf, $currentOffset, $newlineWidth, false);
-					if ($findLf) {
-						$currentOffset += $newlineWidth;
-					}
-					$hasNewLine = true;
-					break;
-				}
-			}
-
-			$totalBuffer .= $currentBuffer;
-			$totalCount += $currentOffset;
-
-			if ($hasNewLine) {
-				break;
-			}
-		}
-
-		if ($hasNewLine) {
-			$dropWidth = 0;
-			if ($findCr) {
-				$dropWidth += $newlineWidth;
-			}
-			if ($findLf) {
-				$dropWidth += $newlineWidth;
-			}
-			$this->seek($startOffset + $totalCount, self::WHENCE_HEAD);
-			$raw = substr($totalBuffer, 0, $totalCount - $dropWidth);
-			$str = $this->encoding->toString(new Binary($raw));
-
-			return $str;
-		}
-
-		return $this->encoding->toString(new Binary($totalBuffer));
 	}
 
 	#endregion
