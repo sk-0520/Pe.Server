@@ -9,7 +9,7 @@ use PeServer\Core\Mvc\Logic\LogicCallMode;
 use PeServer\Core\Mvc\Logic\LogicParameter;
 use PeServer\App\Models\Domain\Api\ApiLogicBase;
 use PeServer\App\Models\ResponseJson;
-use PeServer\Core\Collection\Arr;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Uuid;
 
 class PluginApiInformationLogic extends ApiLogicBase

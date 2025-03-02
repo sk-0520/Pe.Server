@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
-use PeServer\Core\Collection\Arr;
+use PeServer\Core\Collections\Arr;
+use PeServer\Core\Throws\ArgumentException;
 
 /**
  * データ容量変換。
@@ -24,7 +25,15 @@ readonly class SizeConverter
 	 * @var string[]
 	 */
 	public const UNITS = [
-		'byte', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB',
+		'byte',
+		'KB',
+		'MB',
+		'GB',
+		'TB',
+		'PB',
+		'EB',
+		'ZB',
+		'YB',
 	];
 
 	#endregion
@@ -67,6 +76,29 @@ readonly class SizeConverter
 			'i_size' => strval($size),
 			'unit' => $this->units[$order]
 		]);
+	}
+
+	/**
+	 * 基底の倍数に切り上げ。
+	 *
+	 * @param int $input 入力値。
+	 * @param positive-int $base 基底の倍数。
+	 * @return positive-int
+	 */
+	public function ceiling(int $input, int $base): int
+	{
+		// @phpstan-ignore smaller.alwaysFalse
+		if ($base < 1) {
+			throw new ArgumentException(Code::nameof($base));
+		}
+		if ($input < 1) {
+			return $base;
+		}
+
+		$raw = ceil($input / $base) * $base;
+		$result = (int)$raw;
+		assert(0 < $result);
+		return $result;
 	}
 
 	#endregion

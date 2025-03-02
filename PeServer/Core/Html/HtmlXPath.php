@@ -11,8 +11,8 @@ use DOMNode;
 use DOMNodeList;
 use DOMText;
 use DOMXPath;
-use PeServer\Core\Collection\Arr;
-use PeServer\Core\Collection\Collections as Collections;
+use PeServer\Core\Collections\Arr;
+use PeServer\Core\Collections\Collection as Collection;
 use PeServer\Core\Html\HtmlCommentElement;
 use PeServer\Core\Html\HtmlDocument;
 use PeServer\Core\Html\HtmlTagElement;
@@ -114,13 +114,13 @@ class HtmlXPath
 	 * `evaluate` 結果を `Collections` として返す。
 	 *
 	 * @param string $expression
-	 * @return Collections
-	 * @phpstan-return Collections<array-key, HtmlNodeBase>
+	 * @return Collection
+	 * @phpstan-return Collection<array-key, HtmlNodeBase>
 	 * @throws HtmlXPathException
 	 */
-	public function collections(string $expression): Collections
+	public function collections(string $expression): Collection
 	{
-		return Collections::from($this->evaluate($expression));
+		return Collection::from($this->evaluate($expression));
 	}
 
 	#endregion

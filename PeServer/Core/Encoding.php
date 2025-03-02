@@ -6,7 +6,7 @@ namespace PeServer\Core;
 
 use ValueError;
 use PeServer\Core\Binary;
-use PeServer\Core\Collection\Arr;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\EncodingException;
 use PeServer\Core\Throws\InvalidOperationException;

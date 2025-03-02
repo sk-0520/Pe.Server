@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\IO;
 
-use PeServer\Core\Collection\Arr;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\IO\PathParts;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;

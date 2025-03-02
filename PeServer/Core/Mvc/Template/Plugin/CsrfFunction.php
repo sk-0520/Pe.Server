@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Template\Plugin;
 
-use PeServer\Core\Collection\Arr;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Html\HtmlDocument;
 use PeServer\Core\Mvc\Template\Plugin\TemplateFunctionBase;
 use PeServer\Core\Mvc\Template\Plugin\TemplatePluginArgument;

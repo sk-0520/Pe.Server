@@ -16,6 +16,7 @@ use PeServer\Core\Throws\MagicPropertyException;
  *  $v &= true
  *  $v &= false
  *  ていうよくやるやつが動かんかってん
+ *  ようよう考えるとこれもまぁ習慣としておかしなことしてんなぁ
  *
  * @property bool $state 真偽値を何も考えずに代入する。取得した際に一度でも偽が代入されていれば偽になる。
  * @property-read bool $latest 最終設定値。

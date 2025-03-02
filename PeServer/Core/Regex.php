@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
-use PeServer\Core\Collection\Arr;
-use PeServer\Core\Collection\OrderBy;
+use PeServer\Core\Collections\Arr;
+use PeServer\Core\Collections\OrderBy;
 use PeServer\Core\Errors\ErrorHandler;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\RegexDelimiterException;
@@ -26,7 +26,6 @@ class Regex
 
 	#region variable
 
-	private static ?Encoding $firstDefaultEncoding = null;
 	private readonly Encoding $encoding;
 
 	#endregion
@@ -34,18 +33,11 @@ class Regex
 	/**
 	 * 生成。
 	 *
-	 * @param Encoding|null $encoding UTF-8の場合 /pattern/u の u を追加する用。標準エンコーディング(mb_internal_encoding: 基本UTF-8)を想定。
+	 * @param Encoding|null $encoding UTF-8の場合 /pattern/u の u を追加する用。標準エンコーディング(mb_internal_encoding ≒ Encoding::getDefaultEncoding: 基本UTF-8)を想定。
 	 */
 	public function __construct(?Encoding $encoding = null)
 	{
-		if ($encoding === null) {
-			if (self::$firstDefaultEncoding === null) {
-				self::$firstDefaultEncoding = Encoding::getDefaultEncoding();
-			}
-			$this->encoding = self::$firstDefaultEncoding;
-		} else {
-			$this->encoding = $encoding;
-		}
+		$this->encoding = $encoding ?? Encoding::getDefaultEncoding();
 	}
 
 	#region function
@@ -109,7 +101,7 @@ class Regex
 	 */
 	public function isMatch(string $input, string $pattern): bool
 	{
-		$result = ErrorHandler::trap(fn () => preg_match($this->normalizePattern($pattern), $input));
+		$result = ErrorHandler::trap(fn() => preg_match($this->normalizePattern($pattern), $input));
 		if ($result->isFailureOrFalse()) {
 			throw new RegexException(preg_last_error_msg(), preg_last_error());
 		}
@@ -186,7 +178,7 @@ class Regex
 			throw new ArgumentException();
 		}
 
-		$result = ErrorHandler::trap(fn () => preg_replace($this->normalizePattern($pattern), $replacement, $source, $limit));
+		$result = ErrorHandler::trap(fn() => preg_replace($this->normalizePattern($pattern), $replacement, $source, $limit));
 		if ($result->isFailureOrFailValue(null)) {
 			throw new RegexException(preg_last_error_msg(), preg_last_error());
 		}

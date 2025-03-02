@@ -11,7 +11,7 @@ use Iterator;
 use IteratorAggregate;
 use Stringable;
 use TypeError;
-use PeServer\Core\Collection\ArrayAccessHelper;
+use PeServer\Core\Collections\ArrayAccessHelper;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\IndexOutOfRangeException;
 use PeServer\Core\Throws\NotSupportedException;
@@ -46,10 +46,12 @@ readonly final class Binary implements ArrayAccess, IteratorAggregate, Countable
 	#region function
 
 	/**
+	 * 指定した範囲のバイナリを取得。
+	 *
 	 * `substr` ラッパー。
 	 *
-	 * @param int $index
-	 * @param int|null $length
+	 * @param int $index `substr` 準拠。
+	 * @param int|null $length `substr` 準拠。
 	 * @return self
 	 * @see https://www.php.net/manual/function.substr.php
 	 */

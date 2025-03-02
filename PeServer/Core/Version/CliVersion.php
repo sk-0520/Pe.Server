@@ -6,7 +6,7 @@ namespace PeServer\Core\Version;
 
 use Exception;
 use Stringable;
-use PeServer\Core\Collection\Arr;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Regex;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;

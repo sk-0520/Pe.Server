@@ -16,7 +16,7 @@ use PeServer\App\Models\Domain\DefaultPlugin;
 use PeServer\App\Models\Domain\PeVersionUpdater;
 use PeServer\App\Models\Domain\PluginUrlKey;
 use PeServer\App\Models\ResponseJson;
-use PeServer\Core\Collection\Arr;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\Mvc\Logic\LogicCallMode;
 use PeServer\Core\Mvc\Logic\LogicParameter;

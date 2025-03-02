@@ -6,7 +6,7 @@ namespace PeServer\Core\Image\Color;
 
 use Stringable;
 use PeServer\Core\Code;
-use PeServer\Core\Collection\Arr;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Image\Color\IColor;
 use PeServer\Core\Regex;
 use PeServer\Core\Text;

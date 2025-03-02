@@ -16,7 +16,7 @@ use PeServer\App\Models\Domain\AppArchiver;
 use PeServer\App\Models\ResponseJson;
 use PeServer\App\Models\Setup\SetupRunner;
 use PeServer\Core\Binary;
-use PeServer\Core\Collection\Arr;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\IO\Directory;
 use PeServer\Core\IO\File;
 use PeServer\Core\IO\IOUtility;

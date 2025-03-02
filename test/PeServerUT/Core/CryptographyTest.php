@@ -53,10 +53,11 @@ class CryptographyTest extends TestClass
 		$this->assertSame($input, $dec, Text::dump(['input' => $input, 'algorithm' => $algorithm, 'password' => $password, 'enc' => $enc]));
 	}
 
-	public function test_enc_throw()
+	public function test_encrypt_throw_algorithm()
 	{
 		$this->expectException(CryptoException::class);
-		Cryptography::encrypt('💩', 'ABC', 'a');
+		$this->expectExceptionMessage('🔑');
+		Cryptography::encrypt('🔑', '💩', 'a');
 		$this->fail();
 	}
 

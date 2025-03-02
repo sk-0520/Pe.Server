@@ -9,7 +9,7 @@ use PeServer\App\Models\Data\Dto\FeedbackListItemDto;
 use PeServer\App\Models\Data\FeedbackDetail;
 use PeServer\App\Models\Data\FeedbackListItem;
 use PeServer\Core\Binary;
-use PeServer\Core\Collection\Collections;
+use PeServer\Core\Collections\Collection;
 use PeServer\Core\Database\DaoBase;
 use PeServer\Core\Database\DaoTrait;
 use PeServer\Core\Database\DatabaseRowResult;

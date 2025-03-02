@@ -11,7 +11,7 @@ use PeServer\App\Models\Dao\Entities\FeedbackCommentsEntityDao;
 use PeServer\App\Models\Dao\Entities\FeedbacksEntityDao;
 use PeServer\App\Models\Domain\AppArchiver;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
-use PeServer\Core\Collection\Arr;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mvc\Logic\LogicCallMode;

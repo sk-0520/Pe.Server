@@ -8,7 +8,7 @@ use PeServer\App\Models\AppDatabaseCache;
 use PeServer\App\Models\Cache\PluginCache;
 use PeServer\App\Models\Cache\PluginCacheItem;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
-use PeServer\Core\Collection\Arr;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Mvc\Logic\LogicCallMode;
 use PeServer\Core\Mvc\Logic\LogicParameter;
 use PeServer\Core\Mvc\Validator;

@@ -9,7 +9,7 @@ use PDO;
 use PDOException;
 use PDOStatement;
 use Throwable;
-use PeServer\Core\Collection\Arr;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Database\ConnectionSetting;
 use PeServer\Core\Database\DatabaseColumn;
 use PeServer\Core\Database\DatabaseSequenceResult;

@@ -9,9 +9,9 @@ use ArrayIterator;
 use Countable;
 use Iterator;
 use IteratorAggregate;
-use PeServer\Core\Collection\Arr;
-use PeServer\Core\Collection\ArrayAccessHelper;
-use PeServer\Core\Collection\Collections;
+use PeServer\Core\Collections\Arr;
+use PeServer\Core\Collections\ArrayAccessHelper;
+use PeServer\Core\Collections\Collection;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\IndexOutOfRangeException;
@@ -48,7 +48,7 @@ readonly class UrlPath implements ArrayAccess, Countable, IteratorAggregate, Str
 			$this->elements = null;
 		} else {
 			/** @phpstan-var non-empty-string[] */
-			$elements = Collections::from(Text::split($path, '/'))
+			$elements = Collection::from(Text::split($path, '/'))
 				->select(fn ($a) => Text::trim($a, '/'))
 				->where(fn ($a) => !Text::isNullOrWhiteSpace($a))
 				->toArray();

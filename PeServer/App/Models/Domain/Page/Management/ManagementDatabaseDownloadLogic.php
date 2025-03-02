@@ -12,7 +12,7 @@ use PeServer\App\Models\AuditLog;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\Core\Archive\ArchiveEntry;
 use PeServer\Core\Archive\Archiver;
-use PeServer\Core\Collection\Arr;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Database\DatabaseTableResult;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\Http\HttpStatus;

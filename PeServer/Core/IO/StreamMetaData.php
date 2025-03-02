@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\IO;
 
-use PeServer\Core\Collection\Arr;
+use PeServer\Core\Collections\Arr;
 
 /**
  * `stream_get_meta_data`

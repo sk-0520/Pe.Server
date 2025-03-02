@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PeServerUT\Core\IO;
 
-use PeServer\Core\Collection\Arr;
-use PeServer\Core\Collection\OrderBy;
+use PeServer\Core\Collections\Arr;
+use PeServer\Core\Collections\OrderBy;
 use PeServerTest\TestClass;
 use PeServer\Core\IO\Directory;
 use PeServer\Core\IO\File;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
-use PeServer\Core\Collection\Arr;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\StartupOptions;
 use PeServer\Core\DI\DiItem;
 use PeServer\Core\DI\DiRegisterContainer;

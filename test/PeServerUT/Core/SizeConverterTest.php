@@ -6,7 +6,9 @@ namespace PeServerUT\Core;
 
 use PeServerTest\TestClass;
 use PeServer\Core\SizeConverter;
+use PeServer\Core\Throws\ArgumentException;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\TestWith;
 
 class SizeConverterTest extends TestClass
 {
@@ -26,5 +28,36 @@ class SizeConverterTest extends TestClass
 		$sc = new SizeConverter();
 		$actual = $sc->convertHumanReadableByte($byteSize, $sizeFormat);
 		$this->assertSame($expected, $actual);
+	}
+
+	#[TestWith([2, 0, 2])]
+	#[TestWith([2, 1, 2])]
+	#[TestWith([2, 2, 2])]
+	#[TestWith([4, 3, 2])]
+	#[TestWith([4, 4, 2])]
+	#[TestWith([8, 7, 2])]
+	#[TestWith([8, 8, 2])]
+	#[TestWith([10, 9, 2])]
+	#[TestWith([8, 0, 8])]
+	#[TestWith([8, 1, 8])]
+	#[TestWith([8, 7, 8])]
+	#[TestWith([8, 8, 8])]
+	#[TestWith([16, 9, 8])]
+	#[TestWith([16, 15, 8])]
+	#[TestWith([16, 16, 8])]
+	#[TestWith([24, 17, 8])]
+	public function test_ceiling(int $expected, int $input, int $base)
+	{
+		$sc = new SizeConverter();
+		$actual = $sc->ceiling($input, $base);
+		$this->assertSame($expected, $actual);
+	}
+
+	public function test_ceiling_throw()
+	{
+		$sc = new SizeConverter();
+		$this->expectException(ArgumentException::class);
+		$this->expectExceptionMessage("base");
+		$sc->ceiling(2, 0);
 	}
 }

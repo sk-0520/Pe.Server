@@ -10,7 +10,7 @@ use PeServer\App\Models\AppDatabaseConnection;
 use PeServer\App\Models\AppMailer;
 use PeServer\Core\Archive\Archiver;
 use PeServer\Core\Binary;
-use PeServer\Core\Collection\Arr;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Environment;
 use PeServer\Core\IO\Directory;
 use PeServer\Core\IO\File;

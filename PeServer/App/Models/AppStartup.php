@@ -25,7 +25,7 @@ use PeServer\App\Models\Domain\AppEraser;
 use PeServer\Core\Cli\CommandLine;
 use PeServer\Core\Cli\LongOptionKey;
 use PeServer\Core\Cli\ParameterKind;
-use PeServer\Core\Collection\Arr;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\ProgramContext;
 use PeServer\Core\CoreStartup;
 use PeServer\Core\CoreStartupOption;

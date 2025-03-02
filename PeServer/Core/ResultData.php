@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
+use PeServer\Core\Errors\ErrorData;
+
 /**
  * 結果データ。
  *
@@ -24,12 +26,20 @@ final readonly class ResultData
 	 */
 	public mixed $value;
 
+	/**
+	 * 失敗時のエラー内容。
+	 *
+	 * @var ErrorData
+	 */
+	public ErrorData|null $error;
+
 	#endregion
 
-	private function __construct(bool $success, mixed $value)
+	private function __construct(bool $success, mixed $value, ErrorData|null $error)
 	{
 		$this->success = $success;
 		$this->value = $value;
+		$this->error = $error;
 	}
 
 	#region function
@@ -45,7 +55,7 @@ final readonly class ResultData
 	 */
 	public static function createSuccess(mixed $value): ResultData
 	{
-		return new ResultData(true, $value);
+		return new ResultData(true, $value, null);
 	}
 
 	/**
@@ -54,9 +64,9 @@ final readonly class ResultData
 	 * @return ResultData
 	 * @phpstan-return ResultData<mixed>
 	 */
-	public static function createFailure(): ResultData
+	public static function createFailure(ErrorData|null $error): ResultData
 	{
-		return new ResultData(false, null);
+		return new ResultData(false, null, $error);
 	}
 
 	/**
@@ -80,6 +90,23 @@ final readonly class ResultData
 		return $this->isFailureOrFailValue(false);
 	}
 
+	public function exceptionMessage(string $fallback = ''): string
+	{
+		if ($this->error) {
+			return $this->error->message;
+		}
+
+		return $fallback;
+	}
+
+	public function exceptionCode(int $fallback = -1): int
+	{
+		if ($this->error) {
+			return $this->error->code;
+		}
+
+		return $fallback;
+	}
 
 	#endregion
 }

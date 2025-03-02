@@ -38,7 +38,6 @@ final class AppErrorHandler extends HttpErrorHandler
 {
 	#region variable
 
-	private RequestPath $requestPath;
 	private JsonSerializer $jsonSerializer;
 	private ITemplateFactory $templateFactory;
 
@@ -55,7 +54,7 @@ final class AppErrorHandler extends HttpErrorHandler
 		private Environment $environment,
 		ILogger $logger
 	) {
-		parent::__construct($logger);
+		parent::__construct($requestPath, $logger);
 
 		$this->requestPath = $requestPath;
 		$this->templateFactory = $templateFactory;

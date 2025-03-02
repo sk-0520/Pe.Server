@@ -6,7 +6,7 @@ namespace PeServer\Core\Store;
 
 use DateInterval;
 use DateTimeImmutable;
-use PeServer\Core\Collection\Arr;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Throws\ArgumentException;
 
 /**

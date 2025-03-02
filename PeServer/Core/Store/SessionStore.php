@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Store;
 
-use PeServer\Core\Collection\Arr;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\IO\Directory;
 use PeServer\Core\IO\IOUtility;
 use PeServer\Core\Log\ILoggerFactory;
