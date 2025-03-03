@@ -191,9 +191,14 @@ function assert::test
 
 	assert::_call_enable_function "${FUNCTION_STARTUP}"
 
+	local TEST_COUNTER
+	TEST_COUNTER=0
+	local TEST_COUNT
+	TEST_COUNT=$(echo "${TEST_FUNCS}" | wc -l)
 	for FUNC in ${TEST_FUNCS} ; do
 		_ASSERT_CURRENT_SUCCESS=true
 		_ASSERT_CURRENT_FUNCTION="${FUNC}"
+		TEST_COUNTER=$((TEST_COUNTER + 1))
 
 		assert::_call_enable_function "${FUNCTION_SETUP}" "${FUNC}"
 
@@ -203,9 +208,9 @@ function assert::test
 		${FUNC} > /dev/null 2> "${TEMP_MESSAGE}"
 
 		if [ ${_ASSERT_CURRENT_SUCCESS} = true ] ; then
-			assert::_write_success "✅ ${FUNC}"
+			assert::_write_success "✅ (${TEST_COUNTER}/${TEST_COUNT}) ${FUNC}"
 		else
-			assert::_write_error "❌ ${FUNC}"
+			assert::_write_error "❌ (${TEST_COUNTER}/${TEST_COUNT}) ${FUNC}"
 		fi
 		assert::_write_break
 		set -e
