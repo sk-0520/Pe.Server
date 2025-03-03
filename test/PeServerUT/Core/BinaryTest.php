@@ -151,6 +151,12 @@ class BinaryTest extends TestClass
 		$this->fail();
 	}
 
+	public function test_fromArray()
+	{
+		$actual = Binary::fromArray("C*", [115, 116, 114]);
+		$this->assertSame("str", $actual->raw);
+	}
+
 	public function test_toArray()
 	{
 		$binary = new Binary("str");
