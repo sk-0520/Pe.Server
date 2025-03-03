@@ -146,6 +146,43 @@ class LoggingTest extends TestClass
 		);
 	}
 
+	public function test_formatMessage_int_message_single_none_parameters()
+	{
+		$actual = $this->callStaticMethod(Logging::class, "formatMessage", [123]);
+		$this->assertSame(
+			"int(123)
+",
+			$actual
+		);
+	}
+
+	public function test_formatMessage_str_message_single_none_parameters()
+	{
+		$actual = $this->callStaticMethod(Logging::class, "formatMessage", ["abc"]);
+		$this->assertSame(
+			"abc",
+			$actual
+		);
+	}
+
+	public function test_formatMessage_int_message_single_single_parameters()
+	{
+		$actual = $this->callStaticMethod(Logging::class, "formatMessage", [123, 456]);
+		$this->assertSame(
+			"array(2) {
+  [\"message\"]=>
+  int(123)
+  [\"parameters\"]=>
+  array(1) {
+    [0]=>
+    int(456)
+  }
+}
+",
+			$actual
+		);
+	}
+
 	#endregion
 }
 
@@ -154,5 +191,7 @@ class LocalObj
 	public string $str = "STR";
 	public int $number = 123;
 
-	public function method(): void {}
+	public function method(): void
+	{
+	}
 }
