@@ -17,12 +17,17 @@ abstract class MigrationBase
 
 	#endregion
 
-	public function __construct(protected ILoggerFactory $loggerFactory)
+	public function __construct(protected int $version, protected ILoggerFactory $loggerFactory)
 	{
 		$this->logger = $loggerFactory->createLogger($this);
 	}
 
 	#region function
+
+	// public function getCurrentVersion(): int
+	// {
+	// 	return self::getVersion($this);
+	// }
 
 	/**
 	 * DB問い合わせ文の分割。

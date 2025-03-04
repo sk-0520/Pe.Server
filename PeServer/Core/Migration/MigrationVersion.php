@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Setup;
 
 use Attribute;
+use ReflectionClass;
 
 /**
  * セットアップ処理で使用されるバージョン情報。
@@ -22,4 +23,28 @@ readonly class MigrationVersion
 	) {
 		//NOP
 	}
+
+	#region function
+
+	/**
+	 * [汎用] バージョン取得
+	 *
+	 * @template T of object
+	 * @param string|object $objectOrClassName
+	 * @phpstan-param class-string<T>|T $objectOrClassName
+	 * @return int
+	 */
+	public static function getVersion(string|object $objectOrClassName): int
+	{
+		$rc = new ReflectionClass($objectOrClassName);
+		$attrs = $rc->getAttributes(static::class);
+		$attr = $attrs[0];
+
+		/** @var MigrationVersion */
+		$obj = $attr->newInstance();
+
+		return $obj->version;
+	}
+
+	#endregion
 }
