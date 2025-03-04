@@ -13,30 +13,31 @@ use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\ILoggerFactory;
 use PeServer\Core\Regex;
+use PeServer\Core\Setup\MigrationArgument;
+use PeServer\Core\Setup\MigrationBase;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\NotSupportedException;
 use PeServer\Core\Setup\MigrationVersion;
 use ReflectionClass;
 
-abstract class SessionSetupVersionBase extends SetupVersionBase
+abstract class SessionSetupVersionBase extends MigrationBase
 {
-	public function __construct(protected AppConfiguration $appConfig, ILoggerFactory $loggerFactory)
+	public function __construct(int $version, ILoggerFactory $loggerFactory)
 	{
-		parent::__construct($appConfig, $loggerFactory);
+		parent::__construct($version, $loggerFactory);
 	}
 
-	#region variable
+	#region function
 
-	final protected function migrateIOSystem(IOSetupArgument $argument): void
+	abstract protected function migrateDatabase(MigrationArgument $argument): void;
+
+	#endregion
+
+	#region MigrationBase
+
+	final public function migrate(MigrationArgument $argument): void
 	{
-		throw new NotSupportedException();
-	}
-
-	abstract protected function migrateDatabase(DatabaseSetupArgument $argument): void;
-
-	final public function migrate(IOSetupArgument $ioSetup, DatabaseSetupArgument $database): void
-	{
-		$this->migrateDatabase($database);
+		$this->migrateDatabase($argument);
 	}
 
 	#endregion

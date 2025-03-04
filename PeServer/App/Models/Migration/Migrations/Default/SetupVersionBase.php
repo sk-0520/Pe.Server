@@ -12,88 +12,33 @@ use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\ILoggerFactory;
 use PeServer\Core\Regex;
+use PeServer\Core\Setup\MigrationArgument;
+use PeServer\Core\Setup\MigrationBase;
 use PeServer\Core\Text;
 use PeServer\Core\Setup\MigrationVersion;
 use ReflectionClass;
 
-abstract class SetupVersionBase
+abstract class SetupVersionBase extends MigrationBase
 {
-	#region variable
-
-	protected ILogger $logger;
-
-	#endregion
-
-	public function __construct(protected AppConfiguration $appConfig, ILoggerFactory $loggerFactory)
+	public function __construct(int $version, ILoggerFactory $loggerFactory)
 	{
-		$this->logger = $loggerFactory->createLogger($this);
+		parent::__construct($version, $loggerFactory);
 	}
-
-	#region variable
-
-	/**
-	 * [汎用] バージョン取得
-	 *
-	 * @template T of object
-	 * @param string|object $objectOrClassName
-	 * @phpstan-param class-string<T>|T $objectOrClassName
-	 * @return int
-	 */
-	public static function getVersion(string|object $objectOrClassName): int
-	{
-		$rc = new ReflectionClass($objectOrClassName);
-		$attrs = $rc->getAttributes(Version::class);
-		$attr = $attrs[0];
-
-		/** @var Version */
-		$version = $attr->newInstance();
-
-		return $version->version;
-	}
-
-	public function getCurrentVersion(): int
-	{
-		return self::getVersion($this);
-	}
-
-	#endregion
 
 	#region function
 
-	/**
-	 * DB問い合わせ文の分割。
-	 *
-	 * @param string $multiStatement
-	 * @return string[]
-	 * @phpstan-return literal-string[]
-	 */
-	protected function splitStatements(string $multiStatement): array
+	abstract protected function migrateIOSystem(MigrationArgument $argument): void;
+
+	abstract protected function migrateDatabase(MigrationArgument $argument): void;
+
+	#endregion
+
+	#region MigrationBase
+
+	final public function migrate(MigrationArgument $argument): void
 	{
-		$regex = new Regex();
-
-		$statements =  $regex->split($multiStatement, '/^\s*;\s*$/m');
-		/** @phpstan-var literal-string[] */
-		$result = [];
-		foreach ($statements as $statement) {
-			if (Text::isNullOrWhiteSpace($statement)) {
-				continue;
-			}
-
-			$result[] = $statement;
-		}
-
-		/** @phpstan-var literal-string[] $result */
-		return $result;
-	}
-
-	abstract protected function migrateIOSystem(IOSetupArgument $argument): void;
-
-	abstract protected function migrateDatabase(DatabaseSetupArgument $argument): void;
-
-	public function migrate(IOSetupArgument $ioSetup, DatabaseSetupArgument $database): void
-	{
-		$this->migrateIOSystem($ioSetup);
-		$this->migrateDatabase($database);
+		$this->migrateIOSystem($argument);
+		$this->migrateDatabase($argument);
 	}
 
 	#endregion
