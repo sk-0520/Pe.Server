@@ -10,6 +10,7 @@ use PeServer\App\Models\Setup\Versions\SetupVersionBase;
 use PeServer\App\Models\Setup\Versions\Version;
 use PeServer\Core\Code;
 use PeServer\Core\Regex;
+use PeServer\Core\Setup\MigrationArgument;
 use PeServer\Core\Setup\MigrationVersion;
 
 #[MigrationVersion(0)]
@@ -17,12 +18,7 @@ class SessionSetupVersion_0000 extends SessionSetupVersionBase //phpcs:ignore Sq
 {
 	#region SetupVersionBase
 
-	/**
-	 * Undocumented function
-	 *
-	 * @param DatabaseSetupArgument $argument
-	 */
-	protected function migrateDatabase(DatabaseSetupArgument $argument): void
+	protected function migrateDatabase(MigrationArgument $argument): void
 	{
 		$statements = <<<SQL
 
@@ -70,7 +66,7 @@ class SessionSetupVersion_0000 extends SessionSetupVersionBase //phpcs:ignore Sq
 		SQL;
 
 		foreach ($this->splitStatements($statements) as $statement) {
-			$argument->default->execute($statement);
+			$argument->context->execute($statement);
 		}
 	}
 

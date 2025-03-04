@@ -9,26 +9,22 @@ use PeServer\App\Models\Setup\IOSetupArgument;
 use PeServer\Core\Setup\MigrationVersion;
 use PeServer\Core\Code;
 use PeServer\Core\Regex;
+use PeServer\Core\Setup\MigrationArgument;
 
 #[MigrationVersion(0)]
 class SetupVersion_0000 extends SetupVersionBase //phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 {
 	#region SetupVersionBase
 
-	protected function migrateIOSystem(IOSetupArgument $argument): void
+	protected function migrateIOSystem(MigrationArgument $argument): void
 	{
 		//NOP
 	}
 
-	/**
-	 * Undocumented function
-	 *
-	 * @param DatabaseSetupArgument $argument
-	 */
-	protected function migrateDatabase(DatabaseSetupArgument $argument): void
+	protected function migrateDatabase(MigrationArgument $argument): void
 	{
 		//TODO: 全削除処理
-		$tableNameResult = $argument->default->query(
+		$tableNameResult = $argument->context->query(
 			<<<SQL
 
 			select
@@ -45,7 +41,7 @@ class SetupVersion_0000 extends SetupVersionBase //phpcs:ignore Squiz.Classes.Va
 
 		foreach ($tableNameResult->rows as $tableNameRow) {
 			$tableName = $tableNameRow['name'];
-			$argument->default->execute(Code::toLiteralString("drop table $tableName"));
+			$argument->context->execute(Code::toLiteralString("drop table $tableName"));
 		}
 
 		//TODO: 暗号化とかとか
@@ -227,8 +223,8 @@ class SetupVersion_0000 extends SetupVersionBase //phpcs:ignore Squiz.Classes.Va
 				)
 				values
 				(
-					{$argument->default->escapeValue($userId)},
-					{$argument->default->escapeValue($loginId)},
+					{$argument->context->escapeValue($userId)},
+					{$argument->context->escapeValue($loginId)},
 					'setup',
 					'enabled',
 					'setup user',
@@ -249,9 +245,9 @@ class SetupVersion_0000 extends SetupVersionBase //phpcs:ignore Squiz.Classes.Va
 				)
 				values
 				(
-					{$argument->default->escapeValue($userId)},
+					{$argument->context->escapeValue($userId)},
 					'',
-					{$argument->default->escapeValue($encPassword)}
+					{$argument->context->escapeValue($encPassword)}
 				)
 			;
 
@@ -278,7 +274,7 @@ class SetupVersion_0000 extends SetupVersionBase //phpcs:ignore Squiz.Classes.Va
 		SQL;
 
 		foreach ($this->splitStatements($statements) as $statement) {
-			$argument->default->execute($statement);
+			$argument->context->execute($statement);
 		}
 
 		$this->logger->info('SETUP LOG');

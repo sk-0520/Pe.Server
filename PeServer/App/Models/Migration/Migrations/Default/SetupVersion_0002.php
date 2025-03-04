@@ -6,6 +6,7 @@ namespace PeServer\App\Models\Migration\Migrations\Default;
 
 use PeServer\App\Models\Setup\DatabaseSetupArgument;
 use PeServer\App\Models\Setup\IOSetupArgument;
+use PeServer\Core\Setup\MigrationArgument;
 use PeServer\Core\Setup\MigrationVersion;
 
 #[MigrationVersion(2)]
@@ -13,12 +14,12 @@ class SetupVersion_0002 extends SetupVersionBase //phpcs:ignore Squiz.Classes.Va
 {
 	#region SetupVersionBase
 
-	protected function migrateIOSystem(IOSetupArgument $argument): void
+	protected function migrateIOSystem(MigrationArgument $argument): void
 	{
 		//NOP
 	}
 
-	protected function migrateDatabase(DatabaseSetupArgument $argument): void
+	protected function migrateDatabase(MigrationArgument $argument): void
 	{
 		$statements = <<<SQL
 
@@ -78,7 +79,7 @@ class SetupVersion_0002 extends SetupVersionBase //phpcs:ignore Squiz.Classes.Va
 		SQL;
 
 		foreach ($this->splitStatements($statements) as $statement) {
-			$argument->default->execute($statement);
+			$argument->context->execute($statement);
 		}
 	}
 
