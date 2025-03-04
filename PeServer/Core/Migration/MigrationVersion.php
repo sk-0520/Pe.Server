@@ -10,7 +10,7 @@ use Attribute;
  * セットアップ処理で使用されるバージョン情報。
  */
 #[Attribute(Attribute::TARGET_CLASS)]
-readonly class SetupVersion
+readonly class MigrationVersion
 {
 	/**
 	 * 生成。
