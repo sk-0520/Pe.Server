@@ -35,7 +35,7 @@ trait LastMigrationTrait
 			);
 		} else {
 			$this->logger->info("UPDATE");
-			$context->updateByKey(
+			$updateResult = $context->updateByKeyOrNothing(
 				<<<SQL
 
 				update
