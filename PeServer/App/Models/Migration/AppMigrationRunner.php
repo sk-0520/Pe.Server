@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\App\Models\Setup;
+namespace PeServer\App\Models\Migration;
 
 use PeServer\App\Models\Migration\Migrations\Default\SetupVersionBase;
 use PeServer\App\Models\Migration\Migrations\Default\SetupVersion_0000;
@@ -18,7 +18,7 @@ use PeServer\App\Models\Migration\Migrations\Session\SessionSetupVersion_0000;
 use PeServer\App\Models\Migration\Migrations\Session\SessionSetupVersionLast;
 use PeServer\Core\Database\IDatabaseConnection;
 use PeServer\Core\Log\ILoggerFactory;
-use PeServer\Core\Setup\SqliteMigrationRunnerBase;
+use PeServer\Core\Migration\SqliteMigrationRunnerBase;
 
 /**  */
 class AppMigrationRunner extends SqliteMigrationRunnerBase

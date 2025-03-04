@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core\Setup;
+namespace PeServer\Core\Migration;
 
 use PeServer\Core\Database\IDatabaseConnection;
 use PeServer\Core\Database\IDatabaseContext;

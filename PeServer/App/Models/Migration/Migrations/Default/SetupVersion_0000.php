@@ -6,14 +6,17 @@ namespace PeServer\App\Models\Migration\Migrations\Default;
 
 use PeServer\App\Models\Setup\DatabaseSetupArgument;
 use PeServer\App\Models\Setup\IOSetupArgument;
-use PeServer\Core\Setup\MigrationVersion;
+use PeServer\Core\Migration\MigrationVersion;
 use PeServer\Core\Code;
 use PeServer\Core\Regex;
-use PeServer\Core\Setup\MigrationArgument;
+use PeServer\Core\Migration\MigrationArgument;
+use PeServer\Core\Migration\MigrationTrait;
 
 #[MigrationVersion(0)]
 class SetupVersion_0000 extends SetupVersionBase //phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 {
+	use MigrationTrait;
+
 	#region SetupVersionBase
 
 	protected function migrateIOSystem(MigrationArgument $argument): void

@@ -6,9 +6,8 @@ namespace PeServer\App\Models\Domain\Api\DevelopmentApi;
 
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\Domain\Api\ApiLogicBase;
+use PeServer\App\Models\Migration\AppMigrationRunnerFactory;
 use PeServer\App\Models\ResponseJson;
-use PeServer\App\Models\Setup\AppMigrationRunnerFactory;
-use PeServer\App\Models\Setup\SetupRunner;
 use PeServer\Core\Database\IDatabaseConnection;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\ILoggerFactory;

@@ -10,12 +10,15 @@ use PeServer\App\Models\Setup\Versions\SetupVersionBase;
 use PeServer\App\Models\Setup\Versions\Version;
 use PeServer\Core\Code;
 use PeServer\Core\Regex;
-use PeServer\Core\Setup\MigrationArgument;
-use PeServer\Core\Setup\MigrationVersion;
+use PeServer\Core\Migration\MigrationArgument;
+use PeServer\Core\Migration\MigrationTrait;
+use PeServer\Core\Migration\MigrationVersion;
 
 #[MigrationVersion(0)]
 class SessionSetupVersion_0000 extends SessionSetupVersionBase //phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 {
+	use MigrationTrait;
+
 	#region SetupVersionBase
 
 	protected function migrateDatabase(MigrationArgument $argument): void

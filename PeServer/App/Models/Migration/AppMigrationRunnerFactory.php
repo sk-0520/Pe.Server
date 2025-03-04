@@ -2,17 +2,20 @@
 
 declare(strict_types=1);
 
-namespace PeServer\App\Models\Setup;
+namespace PeServer\App\Models\Migration;
 
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\AppDatabaseConnection;
 use PeServer\App\Models\SessionHandler\SqliteSessionHandler;
 use PeServer\Core\DI\DiFactoryBase;
+use PeServer\Core\DI\DiFactoryTrait;
 use PeServer\Core\Log\ILoggerFactory;
 use PeServer\Core\Store\SessionHandlerFactoryUtility;
 
 class AppMigrationRunnerFactory extends DiFactoryBase
 {
+	use DiFactoryTrait;
+
 	#region function
 
 	public function create(): AppMigrationRunner

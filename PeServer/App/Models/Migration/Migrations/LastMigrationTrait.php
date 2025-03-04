@@ -10,9 +10,47 @@ trait LastMigrationTrait
 {
 	#region function
 
-	private function updateLastDatabase(IDatabaseContext $context): void
+	private function updateLastDatabase(int $version, IDatabaseContext $context): void
 	{
-		//あとで
+		$existsDatabaseVersion = $context->selectSingleCount("select COUNT(*) from sqlite_master where sqlite_master.type='table' and sqlite_master.name='database_version'");
+		if ($existsDatabaseVersion === 0) {
+			$this->logger->info("INIT");
+			$context->insertSingle(
+				<<<SQL
+
+				insert into
+					database_version
+					(
+						version
+					)
+					values
+					(
+						:version
+					)
+
+				SQL,
+				[
+					'version' => $version,
+				]
+			);
+		} else {
+			$this->logger->info("UPDATE");
+			$context->updateByKey(
+				<<<SQL
+
+				update
+					database_version
+				set
+					version = :version
+				where
+					version < :version
+
+				SQL,
+				[
+					'version' => $version,
+				]
+			);
+		}
 	}
 
 	#endregion

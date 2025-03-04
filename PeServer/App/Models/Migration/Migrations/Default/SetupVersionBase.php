@@ -13,18 +13,16 @@ use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\ILoggerFactory;
 use PeServer\Core\Regex;
-use PeServer\Core\Setup\MigrationArgument;
-use PeServer\Core\Setup\MigrationBase;
+use PeServer\Core\Migration\MigrationArgument;
+use PeServer\Core\Migration\MigrationBase;
+use PeServer\Core\Migration\MigrationTrait;
 use PeServer\Core\Text;
-use PeServer\Core\Setup\MigrationVersion;
+use PeServer\Core\Migration\MigrationVersion;
 use ReflectionClass;
 
 abstract class SetupVersionBase extends AppMigrationBase
 {
-	public function __construct(int $version, ILoggerFactory $loggerFactory)
-	{
-		parent::__construct($version, $loggerFactory);
-	}
+	use MigrationTrait;
 
 	#region function
 
