@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\App\Models\Setup\Versions\Session;
+namespace PeServer\App\Models\Migration\Migrations\Session;
 
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\Setup\DatabaseSetupArgument;
@@ -11,8 +11,9 @@ use PeServer\App\Models\Setup\Versions\Session\SessionSetupVersionBase;
 use PeServer\App\Models\Setup\Versions\Version;
 use PeServer\Core\IO\Directory;
 use PeServer\Core\Log\ILoggerFactory;
+use PeServer\Core\Setup\MigrationVersion;
 
-#[Version(-1)]
+#[MigrationVersion(-1)]
 class SessionSetupVersionLast extends SessionSetupVersionBase
 {
 	public function __construct(

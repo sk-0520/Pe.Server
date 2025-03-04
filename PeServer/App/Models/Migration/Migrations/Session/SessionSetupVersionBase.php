@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\App\Models\Setup\Versions\Session;
+namespace PeServer\App\Models\Migration\Migrations\Session;
 
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\Setup\DatabaseSetupArgument;
@@ -15,6 +15,7 @@ use PeServer\Core\Log\ILoggerFactory;
 use PeServer\Core\Regex;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\NotSupportedException;
+use PeServer\Core\Setup\MigrationVersion;
 use ReflectionClass;
 
 abstract class SessionSetupVersionBase extends SetupVersionBase

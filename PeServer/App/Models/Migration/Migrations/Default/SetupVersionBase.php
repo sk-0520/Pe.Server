@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\App\Models\Setup\Versions;
+namespace PeServer\App\Models\Migration\Migrations\Default;
 
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\Setup\DatabaseSetupArgument;
@@ -13,6 +13,7 @@ use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\ILoggerFactory;
 use PeServer\Core\Regex;
 use PeServer\Core\Text;
+use PeServer\Core\Setup\MigrationVersion;
 use ReflectionClass;
 
 abstract class SetupVersionBase

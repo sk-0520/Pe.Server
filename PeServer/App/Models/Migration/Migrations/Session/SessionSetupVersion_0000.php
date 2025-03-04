@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\App\Models\Setup\Versions\Session;
+namespace PeServer\App\Models\Migration\Migrations\Session;
 
 use PeServer\App\Models\Setup\DatabaseSetupArgument;
 use PeServer\App\Models\Setup\IOSetupArgument;
@@ -10,8 +10,9 @@ use PeServer\App\Models\Setup\Versions\SetupVersionBase;
 use PeServer\App\Models\Setup\Versions\Version;
 use PeServer\Core\Code;
 use PeServer\Core\Regex;
+use PeServer\Core\Setup\MigrationVersion;
 
-#[Version(0)]
+#[MigrationVersion(0)]
 class SessionSetupVersion_0000 extends SessionSetupVersionBase //phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 {
 	#region SetupVersionBase

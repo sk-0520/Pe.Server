@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PeServer\App\Models\Setup\Versions;
+namespace PeServer\App\Models\Migration\Migrations\Default;
 
 use PeServer\App\Models\Setup\DatabaseSetupArgument;
 use PeServer\App\Models\Setup\IOSetupArgument;
+use PeServer\Core\Setup\MigrationVersion;
 use PeServer\Core\Code;
 use PeServer\Core\Regex;
 
-#[Version(0)]
+#[MigrationVersion(0)]
 class SetupVersion_0000 extends SetupVersionBase //phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 {
 	#region SetupVersionBase
