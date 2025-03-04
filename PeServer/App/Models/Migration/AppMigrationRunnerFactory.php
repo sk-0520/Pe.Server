@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Setup;
 
 use PeServer\App\Models\AppConfiguration;
+use PeServer\App\Models\AppDatabaseConnection;
+use PeServer\App\Models\SessionHandler\SqliteSessionHandler;
 use PeServer\Core\DI\DiFactoryBase;
 use PeServer\Core\Log\ILoggerFactory;
+use PeServer\Core\Store\SessionHandlerFactoryUtility;
 
 class AppMigrationRunnerFactory extends DiFactoryBase
 {
@@ -14,7 +17,16 @@ class AppMigrationRunnerFactory extends DiFactoryBase
 
 	public function create(): AppMigrationRunner
 	{
-		return $this->container->new(AppMigrationRunner::class);
+		$defaultConnection = $this->container->new(AppDatabaseConnection::class);
+		$loggerFactory = $this->container->new(ILoggerFactory::class);
+		$sessionConnection = null;
+		/** @var AppConfiguration */
+		$appConfig = $this->container->new(AppConfiguration::class);
+		if(SessionHandlerFactoryUtility::isFactory($appConfig->setting->store->session->handlerFactory)) {
+ 			$sessionConnection = SqliteSessionHandler::createConnection($appConfig->setting->store->session->save, null, $loggerFactory);
+		}
+
+		return new AppMigrationRunner($defaultConnection, $sessionConnection, $loggerFactory);
 	}
 
 	#endregion

@@ -4,41 +4,41 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Setup;
 
-use PeServer\App\Models\AppConfiguration;
-use PeServer\App\Models\SessionHandler\SqliteSessionHandler;
-use PeServer\App\Models\Setup\Versions\Session\SessionSetupVersionBase;
-use PeServer\App\Models\Setup\Versions\Session\SessionSetupVersion_0000;
-use PeServer\App\Models\Setup\Versions\Session\SessionSetupVersionLast;
-use PeServer\App\Models\Setup\Versions\SetupVersion_0000;
-use PeServer\App\Models\Setup\Versions\SetupVersion_0001;
-use PeServer\App\Models\Setup\Versions\SetupVersion_0002;
-use PeServer\App\Models\Setup\Versions\SetupVersion_0003;
-use PeServer\App\Models\Setup\Versions\SetupVersion_0004;
-use PeServer\App\Models\Setup\Versions\SetupVersion_0005;
-use PeServer\App\Models\Setup\Versions\SetupVersion_0006;
-use PeServer\App\Models\Setup\Versions\SetupVersionBase;
-use PeServer\App\Models\Setup\Versions\SetupVersionLast;
-use PeServer\Core\Collections\Arr;
-use PeServer\Core\Database\DatabaseUtility;
+use PeServer\App\Models\Migration\Migrations\Default\SetupVersionBase;
+use PeServer\App\Models\Migration\Migrations\Default\SetupVersion_0000;
+use PeServer\App\Models\Migration\Migrations\Default\SetupVersion_0001;
+use PeServer\App\Models\Migration\Migrations\Default\SetupVersion_0002;
+use PeServer\App\Models\Migration\Migrations\Default\SetupVersion_0003;
+use PeServer\App\Models\Migration\Migrations\Default\SetupVersion_0004;
+use PeServer\App\Models\Migration\Migrations\Default\SetupVersion_0005;
+use PeServer\App\Models\Migration\Migrations\Default\SetupVersion_0006;
+use PeServer\App\Models\Migration\Migrations\Default\SetupVersionLast;
+use PeServer\App\Models\Migration\Migrations\Session\SessionSetupVersionBase;
+use PeServer\App\Models\Migration\Migrations\Session\SessionSetupVersion_0000;
+use PeServer\App\Models\Migration\Migrations\Session\SessionSetupVersionLast;
 use PeServer\Core\Database\IDatabaseConnection;
-use PeServer\Core\Database\IDatabaseContext;
-use PeServer\Core\IO\File;
-use PeServer\Core\IO\Path;
-use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\ILoggerFactory;
 use PeServer\Core\Setup\SqliteMigrationRunnerBase;
-use PeServer\Core\Store\ISessionHandlerFactory;
-use PeServer\Core\Store\SessionHandlerFactoryUtility;
-use PeServer\Core\Text;
 
+/**  */
 class AppMigrationRunner extends SqliteMigrationRunnerBase
 {
 	#region variable
 
-	/** @var class-string<MigrationBase> */
-	private array $defaultMigrations = [];
-	/** @var class-string<MigrationBase> */
-	private array $sessionMigrations = [];
+	/** @var class-string<SetupVersionBase>[] */
+	private array $defaultMigrations = [
+		SetupVersion_0000::class,
+		SetupVersion_0001::class,
+		SetupVersion_0002::class,
+		SetupVersion_0003::class,
+		SetupVersion_0004::class,
+		SetupVersion_0005::class,
+		SetupVersion_0006::class,
+	];
+	/** @var class-string<SessionSetupVersionBase>[] */
+	private array $sessionMigrations = [
+		SessionSetupVersion_0000::class
+	];
 
 	#endregion
 

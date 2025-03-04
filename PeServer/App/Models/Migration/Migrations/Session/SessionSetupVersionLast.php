@@ -25,46 +25,46 @@ class SessionSetupVersionLast extends SessionSetupVersionBase
 	protected function migrateDatabase(MigrationArgument $argument): void
 	{
 		$this->updateLastDatabase($argument->context);
-		if ($this->oldVersion === $this->newVersion) {
-			return;
-		}
+		// if ($this->oldVersion === $this->newVersion) {
+		// 	return;
+		// }
 
-		if ($this->oldVersion === -1) {
-			$argument->default->insertSingle(
-				<<<SQL
+		// if ($this->oldVersion === -1) {
+		// 	$argument->default->insertSingle(
+		// 		<<<SQL
 
-				insert into
-					database_version
-					(
-						version
-					)
-					values
-					(
-						:version
-					)
+		// 		insert into
+		// 			database_version
+		// 			(
+		// 				version
+		// 			)
+		// 			values
+		// 			(
+		// 				:version
+		// 			)
 
-				SQL,
-				[
-					'version' => $this->newVersion,
-				]
-			);
-		} else {
-			$argument->default->updateByKey(
-				<<<SQL
+		// 		SQL,
+		// 		[
+		// 			'version' => $this->newVersion,
+		// 		]
+		// 	);
+		// } else {
+		// 	$argument->default->updateByKey(
+		// 		<<<SQL
 
-				update
-					database_version
-				set
-					version = :version
-				where
-					version < :version
+		// 		update
+		// 			database_version
+		// 		set
+		// 			version = :version
+		// 		where
+		// 			version < :version
 
-				SQL,
-				[
-					'version' => $this->newVersion,
-				]
-			);
-		}
+		// 		SQL,
+		// 		[
+		// 			'version' => $this->newVersion,
+		// 		]
+		// 	);
+		// }
 	}
 
 	#endregion

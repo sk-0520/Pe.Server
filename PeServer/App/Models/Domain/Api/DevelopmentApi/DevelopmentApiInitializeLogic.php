@@ -7,6 +7,7 @@ namespace PeServer\App\Models\Domain\Api\DevelopmentApi;
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\Domain\Api\ApiLogicBase;
 use PeServer\App\Models\ResponseJson;
+use PeServer\App\Models\Setup\AppMigrationRunnerFactory;
 use PeServer\App\Models\Setup\SetupRunner;
 use PeServer\Core\Database\IDatabaseConnection;
 use PeServer\Core\Log\ILogger;
@@ -21,9 +22,7 @@ class DevelopmentApiInitializeLogic extends ApiLogicBase
 {
 	public function __construct(
 		LogicParameter $parameter,
-		private AppConfiguration $config,
-		private IDatabaseConnection $connection,
-		private ILoggerFactory $loggerFactory
+		private AppMigrationRunnerFactory $migrationRunnerFactory
 	) {
 		parent::__construct($parameter);
 	}
@@ -37,11 +36,8 @@ class DevelopmentApiInitializeLogic extends ApiLogicBase
 
 	protected function executeImpl(LogicCallMode $callMode): void
 	{
-		$setupRunner = new SetupRunner(
-			$this->connection,
-			$this->config,
-			$this->loggerFactory
-		);
+
+		$setupRunner = $this->migrationRunnerFactory->create();
 
 		$setupRunner->execute();
 
