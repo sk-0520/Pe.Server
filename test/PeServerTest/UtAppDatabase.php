@@ -14,6 +14,9 @@ use PeServer\Core\DisposerBase;
 use PeServer\Core\Log\LoggerFactory;
 use PeServerUT\Core\Database\DB;
 
+/**
+ * ユニットテストにおけるアプリケーション層DB構築処理を担当。
+ */
 class UtAppDatabase extends DisposerBase
 {
 	public LocalDatabaseConnection $default;
