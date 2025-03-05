@@ -54,12 +54,12 @@ function test_options_value_case_required
 	assert::is_success $?
 
 	local RETRUN_CODE_1
-	common::parse_options 'abc|A|B|C!' || RETRUN_CODE_1=$?
-	assert::is_failuer ${RETRUN_CODE_1}
+	RETRUN_CODE_1="$(common::parse_options 'abc|A|B|C!')"
+	assert::is_failuer "${RETRUN_CODE_1}"
 
 	local RETRUN_CODE_2
-	common::parse_options 'abc|A|B|C!' --abc 'D' || RETRUN_CODE_2=$?
-	assert::is_failuer ${RETRUN_CODE_2}
+	RETRUN_CODE_2="$(common::parse_options 'abc|A|B|C!' --abc 'D')"
+	assert::is_failuer "${RETRUN_CODE_2}"
 }
 
 function test_options_value_error
@@ -72,7 +72,7 @@ function test_options_value_error
 
 function test_options_switch
 {
-	common::parse_options 'abc switch!' --abc ABC --switch
+	common::parse_options 'abc switch?' --abc ABC --switch
 	if common::exists_option switch ; then
 		assert::success
 	else

@@ -1,5 +1,5 @@
 #!/bin/bash -ue
-# 共通処理まとめない無理だこれ
+# 共通処理まとめないと無理だこれ
 #
 # * 使用側から `source common.sh` で取り込まれることを想定している
 # * 二重に読み込まれることは想定していない
@@ -21,15 +21,15 @@ declare -A _COMMON_OPTIONS=()
 #
 # 以下の使用を想定している
 # #shellcheck disable=SC2048,SC2086
-# common::parse_options "name required# switch!" $*
+# common::parse_options "name required! switch?" $*
 #
 # 引数:
 #   1:  コマンドライン引数定義( "" でまとめる想定)
-#       終端 # で必須
-#       終端 ! でスイッチ
+#       終端 ! で必須
+#       終端 ? でスイッチ
 #       非スイッチの場合に|で区切られたものが受付可能な値に制限する
 #       option|a|b  -> option は a と b のみを受け付ける
-#       option|a|b# -> option は a と b のみを受け付ける(オプション指定必須)
+#       option|a|b! -> option は a と b のみを受け付ける(オプション指定必須)
 #   2*: コマンドライン引数実体
 function common::parse_options
 {
@@ -49,10 +49,10 @@ function common::parse_options
 		local SWITCH=false
 		local KEY=
 
-		if [[ "$LAST" = "#" ]] ; then
+		if [[ "$LAST" = "!" ]] ; then
 			REQUIRE=true
 			KEY=${ITEM:0:-1}
-		elif [[ "$LAST" = "!" ]] ; then
+		elif [[ "$LAST" = "?" ]] ; then
 			SWITCH=true
 			KEY=${ITEM:0:-1}
 		else

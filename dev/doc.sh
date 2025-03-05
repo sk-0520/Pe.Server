@@ -5,7 +5,7 @@ cd "$(cd "$(dirname "${0}")"; pwd)"
 #shellcheck disable=SC1091
 source shell/common.sh
 #shellcheck disable=SC2048,SC2086
-common::parse_options "phpdoc:cache-path phpdoc:setting-graphs!" $*
+common::parse_options "phpdoc:cache-path phpdoc:setting-graphs?" $*
 
 PHPDOC_VERSION=v3.6.0
 PHPDOC_URL=https://github.com/phpDocumentor/phpDocumentor/releases/download/${PHPDOC_VERSION}/phpDocumentor.phar

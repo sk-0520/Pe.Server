@@ -118,6 +118,26 @@ class TestClass extends \PHPUnit\Framework\TestCase
 		return $method->invokeArgs($object, $params);
 	}
 
+
+	/**
+	 * インスタンスメソッドの呼び出し。
+	 *
+	 * 非 `public` を呼び出す想定。
+	 *
+	 * @param string $className クラス名。
+	 * @param string $method メソッド名。
+	 * @param array $params 引数。
+	 * @return mixed 結果。
+	 * @throws ReflectionException
+	 */
+	protected function callStaticMethod(string $className, string $method, array $params = [])
+	{
+		$reflection = new ReflectionClass($className);
+		$method = $reflection->getMethod($method);
+		$method->setAccessible(true);
+		return $method->invokeArgs(null, $params);
+	}
+
 	/**
 	 * セッター処理。
 	 *

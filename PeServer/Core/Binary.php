@@ -12,6 +12,7 @@ use IteratorAggregate;
 use Stringable;
 use TypeError;
 use PeServer\Core\Collections\ArrayAccessHelper;
+use PeServer\Core\Errors\ErrorHandler;
 use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\IndexOutOfRangeException;
 use PeServer\Core\Throws\NotSupportedException;
@@ -151,6 +152,26 @@ readonly final class Binary implements ArrayAccess, IteratorAggregate, Countable
 		}
 
 		return $this->raw;
+	}
+
+	/**
+	 * 配列からバイナリ化。
+	 *
+	 * `pack` ラッパー。
+	 *
+	 * @param string $format
+	 * @param array<mixed> $values
+	 * @return self
+	 * @see https://www.php.net/manual/function.pack.php
+	 */
+	public static function fromArray(string $format, array $values): self
+	{
+		$data = ErrorHandler::trap(fn() => \pack($format, ...$values));
+		if ($data->isFailureOrFalse()) {
+			throw new BinaryException();
+		}
+
+		return new self($data->value);
 	}
 
 	/**

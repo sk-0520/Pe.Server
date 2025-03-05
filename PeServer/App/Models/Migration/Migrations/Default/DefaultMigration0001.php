@@ -2,22 +2,25 @@
 
 declare(strict_types=1);
 
-namespace PeServer\App\Models\Setup\Versions;
+namespace PeServer\App\Models\Migration\Migrations\Default;
 
-use PeServer\App\Models\Setup\DatabaseSetupArgument;
-use PeServer\App\Models\Setup\IOSetupArgument;
+use PeServer\Core\Migration\MigrationArgument;
+use PeServer\Core\Migration\MigrationTrait;
+use PeServer\Core\Migration\MigrationVersion;
 
-#[Version(1)]
-class SetupVersion_0001 extends SetupVersionBase //phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
+#[MigrationVersion(1)]
+class DefaultMigration0001 extends DefaultMigrationBase //phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 {
-	#region SetupVersionBase
+	use MigrationTrait;
 
-	protected function migrateIOSystem(IOSetupArgument $argument): void
+	#region DefaultMigrationBase
+
+	protected function migrateIOSystem(MigrationArgument $argument): void
 	{
 		//NOP
 	}
 
-	protected function migrateDatabase(DatabaseSetupArgument $argument): void
+	protected function migrateDatabase(MigrationArgument $argument): void
 	{
 		$statements = <<<SQL
 
@@ -41,7 +44,7 @@ class SetupVersion_0001 extends SetupVersionBase //phpcs:ignore Squiz.Classes.Va
 		SQL;
 
 		foreach ($this->splitStatements($statements) as $statement) {
-			$argument->default->execute($statement);
+			$argument->context->execute($statement);
 		}
 	}
 

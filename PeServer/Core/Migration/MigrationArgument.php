@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PeServer\App\Models\Setup;
+namespace PeServer\Core\Migration;
 
 use PeServer\Core\Database\IDatabaseContext;
 
-class DatabaseSetupArgument
+class MigrationArgument
 {
 	public function __construct(
-		public IDatabaseContext $default
+		public IDatabaseContext $context
 	) {
+		//NOP
 	}
 }

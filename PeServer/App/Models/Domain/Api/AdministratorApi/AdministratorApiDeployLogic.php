@@ -13,8 +13,8 @@ use PeServer\App\Models\AppDatabaseConnection;
 use PeServer\App\Models\AuditLog;
 use PeServer\App\Models\Domain\Api\ApiLogicBase;
 use PeServer\App\Models\Domain\AppArchiver;
+use PeServer\App\Models\Migration\AppMigrationRunnerFactory;
 use PeServer\App\Models\ResponseJson;
-use PeServer\App\Models\Setup\SetupRunner;
 use PeServer\Core\Binary;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\IO\Directory;
@@ -52,8 +52,7 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 		private ProgramContext $programContext,
 		private AppConfiguration $appConfig,
 		private AppArchiver $appArchiver,
-		private AppDatabaseConnection $databaseConnection,
-		private ILoggerFactory $loggerFactory
+		private AppMigrationRunnerFactory $migrationRunnerFactory
 	) {
 		parent::__construct($parameter);
 	}
@@ -255,11 +254,8 @@ class AdministratorApiDeployLogic extends ApiLogicBase
 		}
 
 		$this->logger->info('各種マイグレーション実施');
-		$setupRunner = new SetupRunner(
-			$this->databaseConnection,
-			$this->appConfig,
-			$this->loggerFactory
-		);
+		$setupRunner = $this->migrationRunnerFactory->create();
+
 		$setupRunner->execute();
 
 		$this->logger->info('デプロイ進捗ファイル破棄');
