@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Migration;
 
-use PeServer\App\Models\Migration\Migrations\Default\SetupVersionBase;
-use PeServer\App\Models\Migration\Migrations\Default\SetupVersion_0000;
-use PeServer\App\Models\Migration\Migrations\Default\SetupVersion_0001;
-use PeServer\App\Models\Migration\Migrations\Default\SetupVersion_0002;
-use PeServer\App\Models\Migration\Migrations\Default\SetupVersion_0003;
-use PeServer\App\Models\Migration\Migrations\Default\SetupVersion_0004;
-use PeServer\App\Models\Migration\Migrations\Default\SetupVersion_0005;
-use PeServer\App\Models\Migration\Migrations\Default\SetupVersion_0006;
-use PeServer\App\Models\Migration\Migrations\Default\SetupVersionLast;
-use PeServer\App\Models\Migration\Migrations\Session\SessionSetupVersionBase;
-use PeServer\App\Models\Migration\Migrations\Session\SessionSetupVersion_0000;
-use PeServer\App\Models\Migration\Migrations\Session\SessionSetupVersionLast;
+use PeServer\App\Models\Migration\Migrations\Default\DefaultMigrationBase;
+use PeServer\App\Models\Migration\Migrations\Default\DefaultMigration0000;
+use PeServer\App\Models\Migration\Migrations\Default\DefaultMigration0001;
+use PeServer\App\Models\Migration\Migrations\Default\DefaultMigration0002;
+use PeServer\App\Models\Migration\Migrations\Default\DefaultMigration0003;
+use PeServer\App\Models\Migration\Migrations\Default\DefaultMigration0004;
+use PeServer\App\Models\Migration\Migrations\Default\DefaultMigration0005;
+use PeServer\App\Models\Migration\Migrations\Default\DefaultMigration0006;
+use PeServer\App\Models\Migration\Migrations\Default\DefaultMigrationLast;
+use PeServer\App\Models\Migration\Migrations\Session\SessionMigrationBase;
+use PeServer\App\Models\Migration\Migrations\Session\SessionMigration0000;
+use PeServer\App\Models\Migration\Migrations\Session\SessionMigrationLast;
 use PeServer\Core\Database\IDatabaseConnection;
 use PeServer\Core\Log\ILoggerFactory;
 use PeServer\Core\Migration\SqliteMigrationRunnerBase;
@@ -25,19 +25,19 @@ class AppMigrationRunner extends SqliteMigrationRunnerBase
 {
 	#region variable
 
-	/** @var class-string<SetupVersionBase>[] */
+	/** @var class-string<DefaultMigrationBase>[] */
 	private array $defaultMigrations = [
-		SetupVersion_0000::class,
-		SetupVersion_0001::class,
-		SetupVersion_0002::class,
-		SetupVersion_0003::class,
-		SetupVersion_0004::class,
-		SetupVersion_0005::class,
-		SetupVersion_0006::class,
+		DefaultMigration0000::class,
+		DefaultMigration0001::class,
+		DefaultMigration0002::class,
+		DefaultMigration0003::class,
+		DefaultMigration0004::class,
+		DefaultMigration0005::class,
+		DefaultMigration0006::class,
 	];
-	/** @var class-string<SessionSetupVersionBase>[] */
+	/** @var class-string<SessionMigrationBase>[] */
 	private array $sessionMigrations = [
-		SessionSetupVersion_0000::class
+		SessionMigration0000::class
 	];
 
 	#endregion
@@ -54,10 +54,10 @@ class AppMigrationRunner extends SqliteMigrationRunnerBase
 
 	public function execute(): void
 	{
-		$this->executeCore("DB:DEFAULT", $this->defaultConnection, $this->defaultMigrations, SetupVersionLast::class);
+		$this->executeCore("DB:DEFAULT", $this->defaultConnection, $this->defaultMigrations, DefaultMigrationLast::class);
 
 		if ($this->sessionConnection !== null) {
-			$this->executeCore("DB:SESSION", $this->sessionConnection, $this->sessionMigrations, SessionSetupVersionLast::class);
+			$this->executeCore("DB:SESSION", $this->sessionConnection, $this->sessionMigrations, SessionMigrationLast::class);
 		}
 	}
 

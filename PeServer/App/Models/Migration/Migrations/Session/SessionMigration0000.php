@@ -15,7 +15,7 @@ use PeServer\Core\Migration\MigrationTrait;
 use PeServer\Core\Migration\MigrationVersion;
 
 #[MigrationVersion(0)]
-class SessionSetupVersion_0000 extends SessionSetupVersionBase //phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
+class SessionMigration0000 extends SessionMigrationBase //phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 {
 	use MigrationTrait;
 

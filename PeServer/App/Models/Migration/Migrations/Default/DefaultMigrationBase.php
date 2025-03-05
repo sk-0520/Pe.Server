@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PeServer\App\Models\Migration\Migrations\Session;
+namespace PeServer\App\Models\Migration\Migrations\Default;
 
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\Migration\Migrations\AppMigrationBase;
 use PeServer\App\Models\Setup\DatabaseSetupArgument;
 use PeServer\App\Models\Setup\IOSetupArgument;
-use PeServer\App\Models\Setup\Versions\SetupVersionBase;
 use PeServer\App\Models\Setup\Versions\Version;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\Log\ILogger;
@@ -18,15 +17,16 @@ use PeServer\Core\Migration\MigrationArgument;
 use PeServer\Core\Migration\MigrationBase;
 use PeServer\Core\Migration\MigrationTrait;
 use PeServer\Core\Text;
-use PeServer\Core\Throws\NotSupportedException;
 use PeServer\Core\Migration\MigrationVersion;
 use ReflectionClass;
 
-abstract class SessionSetupVersionBase extends AppMigrationBase
+abstract class DefaultMigrationBase extends AppMigrationBase
 {
 	use MigrationTrait;
 
 	#region function
+
+	abstract protected function migrateIOSystem(MigrationArgument $argument): void;
 
 	abstract protected function migrateDatabase(MigrationArgument $argument): void;
 
@@ -36,6 +36,7 @@ abstract class SessionSetupVersionBase extends AppMigrationBase
 
 	final public function migrate(MigrationArgument $argument): void
 	{
+		$this->migrateIOSystem($argument);
 		$this->migrateDatabase($argument);
 	}
 

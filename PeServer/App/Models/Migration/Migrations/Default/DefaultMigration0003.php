@@ -10,8 +10,8 @@ use PeServer\Core\Migration\MigrationArgument;
 use PeServer\Core\Migration\MigrationTrait;
 use PeServer\Core\Migration\MigrationVersion;
 
-#[MigrationVersion(1)]
-class SetupVersion_0001 extends SetupVersionBase //phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
+#[MigrationVersion(3)]
+class DefaultMigration0003 extends DefaultMigrationBase //phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 {
 	use MigrationTrait;
 
@@ -26,22 +26,22 @@ class SetupVersion_0001 extends SetupVersionBase //phpcs:ignore Squiz.Classes.Va
 	{
 		$statements = <<<SQL
 
-		drop table
-			[access_keys]
-		;
-
 		create table
-			[api_keys]
+			[pe_setting]
 			(
-				[api_key] text not null, -- APIキー
-				[user_id] text not null, -- ユーザーID
-				[secret_key] text not null, -- シークレットキー
-				[created_timestamp] datetime not null, -- 作成日
-				primary key([api_key]),
-				unique([api_key], [user_id]),
-				foreign key ([user_id]) references users([user_id])
+				[version] text not null
 			)
 		;
+
+		insert into
+			[pe_setting]
+			(
+				[version]
+			)
+			values
+			(
+				'0.00.000'
+			)
 
 		SQL;
 

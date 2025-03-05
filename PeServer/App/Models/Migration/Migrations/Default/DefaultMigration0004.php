@@ -11,7 +11,7 @@ use PeServer\Core\Migration\MigrationTrait;
 use PeServer\Core\Migration\MigrationVersion;
 
 #[MigrationVersion(4)]
-class SetupVersion_0004 extends SetupVersionBase //phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
+class DefaultMigration0004 extends DefaultMigrationBase //phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 {
 	use MigrationTrait;
 
