@@ -22,6 +22,7 @@ use PeServer\App\Models\AppUrl;
 use PeServer\App\Models\Domain\AccessLogManager;
 use PeServer\App\Models\Domain\AppArchiver;
 use PeServer\App\Models\Domain\AppEraser;
+use PeServer\App\Models\Migration\AppMigrationRunnerFactory;
 use PeServer\Core\Cli\CommandLine;
 use PeServer\Core\Cli\LongOptionKey;
 use PeServer\Core\Cli\ParameterKind;
@@ -126,6 +127,7 @@ class AppStartup extends CoreStartup
 		$container->registerClass(AppUrl::class);
 		$container->registerClass(AccessLogManager::class);
 		$container->registerClass(AppTemporary::class);
+		$container->registerClass(AppMigrationRunnerFactory::class);
 	}
 
 	protected function setupWebService(CoreStartupOption $options, IDiRegisterContainer $container): void

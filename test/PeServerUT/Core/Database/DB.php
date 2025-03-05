@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace PeServerUT\Core\Database;
 
 use PeServer\Core\Database\ConnectionSetting;
+use PeServer\Core\Database\DatabaseConnection;
 use PeServer\Core\Database\DatabaseContext;
+use PeServer\Core\Database\IDatabaseConnection;
+use PeServer\Core\Log\LoggerFactory;
 use PeServer\Core\Log\Logging;
 use PeServer\Core\Log\NullLogger;
 
@@ -20,5 +23,10 @@ class DB
 	public static function memory(): DatabaseContext
 	{
 		return new DatabaseContext(new ConnectionSetting('sqlite::memory:', '', '', null), new NullLogger());
+	}
+
+	public static function memoryConnection(): IDatabaseConnection
+	{
+		return new DatabaseConnection(new ConnectionSetting('sqlite::memory:', '', '', null), LoggerFactory::createNullFactory());
 	}
 }
