@@ -65,7 +65,7 @@ abstract class MigrationRunnerBase
 				$newVersion = $migrationVersion;
 			}
 
-			if ($version <= $newVersion) {
+			if ($version < $newVersion) {
 				/** @var MigrationBase */
 				$setupLastVersion = new $lastMigrationClass($newVersion, $this->loggerFactory);
 				$setupLastVersion->migrate($argument);
