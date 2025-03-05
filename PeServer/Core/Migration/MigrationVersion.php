@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Migration;
 
 use Attribute;
+use PeServer\Core\Throws\ArgumentException;
 use ReflectionClass;
 
 /**
@@ -38,6 +39,9 @@ readonly class MigrationVersion
 	{
 		$rc = new ReflectionClass($objectOrClassName);
 		$attrs = $rc->getAttributes(static::class);
+		if(empty($attrs)) {
+			throw new ArgumentException("not found " . self::class);
+		}
 		$attr = $attrs[0];
 
 		/** @var MigrationVersion */

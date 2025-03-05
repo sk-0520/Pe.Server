@@ -44,6 +44,8 @@ abstract class MigrationBase
 		/** @phpstan-var literal-string[] */
 		$result = [];
 		foreach ($statements as $statement) {
+			$statement = Text::trim($statement);
+
 			if (Text::isNullOrWhiteSpace($statement)) {
 				continue;
 			}
