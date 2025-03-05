@@ -17,7 +17,9 @@ use PeServer\App\Models\Migration\Migrations\Session\SessionMigrationBase;
 use PeServer\App\Models\Migration\Migrations\Session\SessionMigration0000;
 use PeServer\App\Models\Migration\Migrations\Session\SessionMigrationLast;
 use PeServer\Core\Database\IDatabaseConnection;
+use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\Log\ILoggerFactory;
+use PeServer\Core\Migration\MigrationVersion;
 use PeServer\Core\Migration\SqliteMigrationRunnerBase;
 
 /**  */
@@ -51,6 +53,19 @@ class AppMigrationRunner extends SqliteMigrationRunnerBase
 	}
 
 	#region SqliteMigrationRunnerBase
+
+	protected function getCurrentVersionCore(string $mode, IDatabaseContext $context): int
+	{
+		$checkCount = $context->selectSingleCount("select COUNT(*) from sqlite_master where sqlite_master.type='table' and sqlite_master.name='database_version'");
+		if (0 < $checkCount) {
+			$row = $context->queryFirstOrNull("select version from database_version");
+			if ($row !== null) {
+				return (int)$row->fields['version'];;
+			}
+		}
+
+		return MigrationVersion::INITIAL_VERSION;
+	}
 
 	public function execute(): void
 	{

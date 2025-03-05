@@ -14,6 +14,12 @@ use ReflectionClass;
 #[Attribute(Attribute::TARGET_CLASS)]
 readonly class MigrationVersion
 {
+	#region define
+
+	public const INITIAL_VERSION = -1;
+
+	#endregion
+
 	/**
 	 * 生成。
 	 *

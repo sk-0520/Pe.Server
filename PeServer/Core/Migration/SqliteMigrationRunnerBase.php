@@ -13,11 +13,17 @@ use PeServer\Core\Log\ILoggerFactory;
 
 abstract class SqliteMigrationRunnerBase extends MigrationRunnerBase
 {
+	#region function
+
+	protected abstract function getCurrentVersionCore(string $mode, IDatabaseContext $context): int;
+
+	#endregion
+
 	#region MigrationRunnerBase
 
 	protected function getCurrentVersion(string $mode, IDatabaseConnection $connection): int
 	{
-		$version = -1;
+		$version = MigrationVersion::INITIAL_VERSION;
 
 		// SQLite を使うのは決定事項である！
 		$connectionSetting = $connection->getConnectionSetting();
@@ -29,13 +35,8 @@ abstract class SqliteMigrationRunnerBase extends MigrationRunnerBase
 				$this->logger->info('<{0}> DBあり: {1}', $mode, $filePath);
 
 				$context = $connection->open();
-				$checkCount = $context->selectSingleCount("select COUNT(*) from sqlite_master where sqlite_master.type='table' and sqlite_master.name='database_version'");
-				if (0 < $checkCount) {
-					$row = $context->queryFirstOrNull("select version from database_version");
-					if ($row !== null) {
-						$version = (int)$row->fields['version'];;
-					}
-				}
+
+				$version = $this->getCurrentVersionCore($mode, $context);
 			}
 		}
 
