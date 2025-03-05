@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Migration;
 
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Database\IDatabaseConnection;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\ILoggerFactory;
+use PeServer\Core\Throws\ArgumentException;
 
 abstract class MigrationRunnerBase
 {
@@ -38,6 +40,16 @@ abstract class MigrationRunnerBase
 	 */
 	protected function executeCore(string $mode, IDatabaseConnection $connection, array $migrationClasses, string $lastMigrationClass): void
 	{
+		$sortedMigrationClasses = Arr::sortCallbackByValue($migrationClasses, fn($a, $b) => MigrationVersion::getVersion($a) <=> MigrationVersion::getVersion($b));
+		$length = count($migrationClasses);
+		for ($i = 0; $i < $length; $i++) {
+			$migrationClass = $migrationClasses[$i];
+			$sortedMigrationClass = $sortedMigrationClasses[$i];
+			if ($migrationClass !== $sortedMigrationClass) {
+				throw new ArgumentException("index: {$i}");
+			}
+		}
+
 		$version = $this->getCurrentVersion($mode, $connection);
 
 		$this->logger->info('<{0}> マイグレーションバージョン: {1}', $mode, $version);
