@@ -45,7 +45,7 @@ readonly class MigrationVersion
 	{
 		$rc = new ReflectionClass($objectOrClassName);
 		$attrs = $rc->getAttributes(static::class);
-		if(empty($attrs)) {
+		if (empty($attrs)) {
 			throw new ArgumentException("not found " . self::class);
 		}
 		$attr = $attrs[0];

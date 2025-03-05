@@ -6,9 +6,6 @@ namespace PeServer\App\Models\Migration\Migrations\Default;
 
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\Migration\Migrations\AppMigrationBase;
-use PeServer\App\Models\Setup\DatabaseSetupArgument;
-use PeServer\App\Models\Setup\IOSetupArgument;
-use PeServer\App\Models\Setup\Versions\Version;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Log\ILoggerFactory;
@@ -32,7 +29,7 @@ abstract class DefaultMigrationBase extends AppMigrationBase
 
 	#endregion
 
-	#region MigrationBase
+	#region AppMigrationBase
 
 	final public function migrate(MigrationArgument $argument): void
 	{

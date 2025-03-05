@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Migration\Migrations\Session;
 
-use PeServer\App\Models\Setup\DatabaseSetupArgument;
-use PeServer\App\Models\Setup\IOSetupArgument;
-use PeServer\App\Models\Setup\Versions\SetupVersionBase;
-use PeServer\App\Models\Setup\Versions\Version;
 use PeServer\Core\Code;
 use PeServer\Core\Regex;
 use PeServer\Core\Migration\MigrationArgument;
@@ -19,7 +15,7 @@ class SessionMigration0000 extends SessionMigrationBase //phpcs:ignore Squiz.Cla
 {
 	use MigrationTrait;
 
-	#region SetupVersionBase
+	#region SessionMigrationBase
 
 	protected function migrateDatabase(MigrationArgument $argument): void
 	{

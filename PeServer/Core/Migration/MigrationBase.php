@@ -57,7 +57,7 @@ abstract class MigrationBase
 		return $result;
 	}
 
-	public abstract function migrate(MigrationArgument $argument): void;
+	abstract public function migrate(MigrationArgument $argument): void;
 
 	#endregion
 }

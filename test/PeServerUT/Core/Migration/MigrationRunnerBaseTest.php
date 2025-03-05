@@ -83,7 +83,9 @@ class MigrationRunnerBaseTest extends TestClass
 	#endregion
 }
 
-class LocalMigrationRunnerBaseTestClassLast {}
+class LocalMigrationRunnerBaseTestClassLast
+{
+}
 
 #[MigrationVersion(1)]
 class LocalMigrationRunnerBaseTestClass1

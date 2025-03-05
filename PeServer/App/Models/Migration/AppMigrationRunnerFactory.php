@@ -25,7 +25,7 @@ class AppMigrationRunnerFactory extends DiFactoryBase
 		$sessionConnection = null;
 		/** @var AppConfiguration */
 		$appConfig = $this->container->new(AppConfiguration::class);
-		if(SessionHandlerFactoryUtility::isFactory($appConfig->setting->store->session->handlerFactory)) {
+		if (SessionHandlerFactoryUtility::isFactory($appConfig->setting->store->session->handlerFactory)) {
  			$sessionConnection = SqliteSessionHandler::createConnection($appConfig->setting->store->session->save, null, $loggerFactory);
 		}
 

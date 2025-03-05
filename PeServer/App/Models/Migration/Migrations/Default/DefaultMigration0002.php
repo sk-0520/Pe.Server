@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models\Migration\Migrations\Default;
 
-use PeServer\App\Models\Setup\DatabaseSetupArgument;
-use PeServer\App\Models\Setup\IOSetupArgument;
 use PeServer\Core\Migration\MigrationArgument;
 use PeServer\Core\Migration\MigrationTrait;
 use PeServer\Core\Migration\MigrationVersion;
@@ -15,7 +13,7 @@ class DefaultMigration0002 extends DefaultMigrationBase //phpcs:ignore Squiz.Cla
 {
 	use MigrationTrait;
 
-	#region SetupVersionBase
+	#region DefaultMigrationBase
 
 	protected function migrateIOSystem(MigrationArgument $argument): void
 	{

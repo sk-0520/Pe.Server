@@ -15,7 +15,7 @@ abstract class SqliteMigrationRunnerBase extends MigrationRunnerBase
 {
 	#region function
 
-	protected abstract function getCurrentVersionCore(string $mode, IDatabaseContext $context): int;
+	abstract protected function getCurrentVersionCore(string $mode, IDatabaseContext $context): int;
 
 	#endregion
 

@@ -16,7 +16,6 @@ use PeServer\App\Models\Domain\UserState;
 use PeServer\App\Models\Migration\AppMigrationRunner;
 use PeServer\App\Models\Migration\AppMigrationRunnerFactory;
 use PeServer\App\Models\SessionKey;
-use PeServer\App\Models\Setup\SetupRunner;
 use PeServer\Core\Database\ConnectionSetting;
 use PeServer\Core\Database\DatabaseConnection;
 use PeServer\Core\Database\DatabaseContext;
