@@ -19,7 +19,9 @@ use PeServerUT\Core\Database\DB;
  */
 class UtAppDatabase extends DisposerBase
 {
+	/** 通常接続先 */
 	public LocalDatabaseConnection $default;
+	/** セッション接続先 */
 	public LocalDatabaseConnection $session;
 
 	public function __construct()
