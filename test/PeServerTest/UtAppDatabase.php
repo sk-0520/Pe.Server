@@ -47,4 +47,3 @@ class UtAppDatabase extends DisposerBase
 
 	#endregion
 }
-

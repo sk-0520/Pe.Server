@@ -40,7 +40,8 @@ class SqliteMigrationRunnerBaseTestClass extends SqliteMigrationRunnerBase
 		if (0 < $checkCount) {
 			$row = $context->queryFirstOrNull("select v from Version");
 			if ($row !== null) {
-				return (int)$row->fields['v'];;
+				return (int)$row->fields['v'];
+				;
 			}
 		}
 
