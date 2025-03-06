@@ -96,7 +96,7 @@ class Vector extends TypeArrayBase
 	 */
 	public function add(mixed $value): self
 	{
-		$this->isValidType($value);
+		$this->validateType($value);
 
 		$this->items[] = $value;
 
@@ -120,7 +120,7 @@ class Vector extends TypeArrayBase
 		}
 
 		foreach ($items as $key => $value) {
-			$this->isValidType($value);
+			$this->validateType($value);
 		}
 
 		/** @phpstan-var array<non-negative-int,TValue> $items */

@@ -34,7 +34,7 @@ class Dictionary extends TypeArrayBase
 		parent::__construct($type);
 
 		foreach ($map as $key => $value) {
-			$this->isValidType($value);
+			$this->validateType($value);
 			$this->items[$key] = $value;
 		}
 	}
@@ -124,7 +124,7 @@ class Dictionary extends TypeArrayBase
 	{
 		ArgumentNullException::throwIfNull($offset, '$offset');
 
-		$this->isValidType($value);
+		$this->validateType($value);
 
 		$this->items[$offset] = $value;
 	}
