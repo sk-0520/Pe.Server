@@ -20,14 +20,14 @@ use PeServerUT\Core\Database\DB;
 class UtAppDatabase extends DisposerBase
 {
 	/** 通常接続先 */
-	public LocalDatabaseConnection $default;
+	public KeepDatabaseConnection $default;
 	/** セッション接続先 */
-	public LocalDatabaseConnection $session;
+	public KeepDatabaseConnection $session;
 
 	public function __construct()
 	{
-		$this->default = new LocalDatabaseConnection();
-		$this->session = new LocalDatabaseConnection();
+		$this->default = new KeepDatabaseConnection();
+		$this->session = new KeepDatabaseConnection();
 
 		$migrationRunner = new AppMigrationRunner(
 			$this->default,
@@ -48,46 +48,3 @@ class UtAppDatabase extends DisposerBase
 	#endregion
 }
 
-//phpcs:ignore PSR1.Classes.ClassDeclaration.MultipleClasses
-class LocalDatabaseConnection extends DisposerBase implements IDatabaseConnection
-{
-	#region variable
-
-	private DatabaseConnection $connection;
-	private DatabaseContext|null $context = null;
-
-	#endregion
-
-	#region IDatabaseConnection
-
-	public function __construct()
-	{
-		$this->connection = DB::memoryConnection();
-	}
-
-	public function getConnectionSetting(): ConnectionSetting
-	{
-		return $this->connection->getConnectionSetting();
-	}
-
-	public function open(): DatabaseContext
-	{
-		$this->throwIfDisposed();
-
-		return $this->context ??= $this->connection->open();
-	}
-
-	#endregion
-
-	#region DisposerBase
-
-	protected function disposeImpl(): void
-	{
-		$this->context->dispose();
-		$this->context = null;
-
-		parent::disposeImpl();
-	}
-
-	#endregion
-}

@@ -11,6 +11,7 @@ use PeServer\Core\Database\IDatabaseConnection;
 use PeServer\Core\Log\LoggerFactory;
 use PeServer\Core\Log\Logging;
 use PeServer\Core\Log\NullLogger;
+use PeServerTest\KeepDatabaseConnection;
 
 /** テスト用DB処理 */
 class DB
@@ -28,5 +29,10 @@ class DB
 	public static function memoryConnection(): IDatabaseConnection
 	{
 		return new DatabaseConnection(new ConnectionSetting('sqlite::memory:', '', '', null), LoggerFactory::createNullFactory());
+	}
+
+	public static function memoryKeepConnection(): KeepDatabaseConnection
+	{
+		return new KeepDatabaseConnection();
 	}
 }
