@@ -21,8 +21,8 @@ class LoggerBaseTest extends TestClass
 	#[TestWith(["1", "{0}", 1])]
 	public function test_format(string $expected, string $message, ...$parameters)
 	{
-		$specialStoreMock = $this->createMock(SpecialStore::class);
-		$specialStoreMock
+		$mockSpecialStore = $this->createMock(SpecialStore::class);
+		$mockSpecialStore
 			->method("getServer")
 			->willReturnMap([
 				["REMOTE_ADDR", "<REMOTE_ADDR>"],
@@ -37,7 +37,7 @@ class LoggerBaseTest extends TestClass
 		$mock = $this->getMockBuilder(LoggerBase::class)
 			->setConstructorArgs([
 				new Logging(
-					$specialStoreMock
+					$mockSpecialStore
 				),
 				new LogOptions(self::class, 1, 0, "{MESSAGE}", [])
 			])
