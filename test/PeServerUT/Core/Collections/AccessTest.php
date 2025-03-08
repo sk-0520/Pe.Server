@@ -292,7 +292,7 @@ class AccessTest extends TestClass
 		$actual = Access::getArrayOfBool([[true, false, true]], 0);
 		$this->assertSame([true, false, true], $actual);
 
-		$this->isEmpty(Access::getArrayOfBool([[]], 0));
+		$this->assertEmpty(Access::getArrayOfBool([[]], 0));
 	}
 
 	#[TestWith([[[true, 10]], 0])]
@@ -311,7 +311,7 @@ class AccessTest extends TestClass
 		$actual = Access::getArrayOfInteger([[1, 2, 3]], 0);
 		$this->assertSame([1, 2, 3], $actual);
 
-		$this->isEmpty(Access::getArrayOfInteger([[]], 0));
+		$this->assertEmpty(Access::getArrayOfInteger([[]], 0));
 	}
 
 	#[TestWith([[[3.14, 10]], 0])]
@@ -331,7 +331,7 @@ class AccessTest extends TestClass
 		$actual = Access::getArrayOfUInteger([[0, 1, 2, 3]], 0);
 		$this->assertSame([0, 1, 2, 3], $actual);
 
-		$this->isEmpty(Access::getArrayOfUInteger([[]], 0));
+		$this->assertEmpty(Access::getArrayOfUInteger([[]], 0));
 	}
 
 	#[TestWith([AccessInvalidLogicalTypeException::class, [[-1]], 0])]
@@ -352,7 +352,7 @@ class AccessTest extends TestClass
 		$actual = Access::getArrayOfPositiveInteger([[1, 2, 3]], 0);
 		$this->assertSame([1, 2, 3], $actual);
 
-		$this->isEmpty(Access::getArrayOfPositiveInteger([[]], 0));
+		$this->assertEmpty(Access::getArrayOfPositiveInteger([[]], 0));
 	}
 
 	#[TestWith([AccessInvalidLogicalTypeException::class, [[0]], 0])]
@@ -373,7 +373,7 @@ class AccessTest extends TestClass
 		$actual = Access::getArrayOfFloat([[1.0, 2.0, 3.0]], 0);
 		$this->assertSame([1.0, 2.0, 3.0], $actual);
 
-		$this->isEmpty(Access::getArrayOfFloat([[]], 0));
+		$this->assertEmpty(Access::getArrayOfFloat([[]], 0));
 	}
 
 	#[TestWith([[[3.14, 10]], 0])]
@@ -393,7 +393,7 @@ class AccessTest extends TestClass
 		$actual = Access::getArrayOfString([['a', 'b', 'c']], 0);
 		$this->assertSame(['a', 'b', 'c'], $actual);
 
-		$this->isEmpty(Access::getArrayOfString([[]], 0));
+		$this->assertEmpty(Access::getArrayOfString([[]], 0));
 	}
 
 	#[TestWith([[['str', 10]], 0])]
@@ -413,7 +413,7 @@ class AccessTest extends TestClass
 		$actual = Access::getArrayOfNonEmptyString([[" a", "b ", " c "]], 0);
 		$this->assertSame(["a", "b", "c"], $actual);
 
-		$this->isEmpty(Access::getArrayOfNonEmptyString([[]], 0));
+		$this->assertEmpty(Access::getArrayOfNonEmptyString([[]], 0));
 	}
 
 	#[TestWith([AccessInvalidLogicalTypeException::class, [[" "]], 0])]
@@ -434,7 +434,7 @@ class AccessTest extends TestClass
 		$actual = Access::getArrayOfObject([[new AccessTestA1(), new AccessTestA1(), new AccessTestA1()]], 0);
 		$this->assertEqualsWithInfo('オブジェクト比較なので緩い比較', [new AccessTestA1(), new AccessTestA1(), new AccessTestA1()], $actual);
 
-		$this->isEmpty(Access::getArrayOfObject([[]], 0));
+		$this->assertEmpty(Access::getArrayOfObject([[]], 0));
 	}
 
 	public function test_getArrayOfObject_type_throw()
