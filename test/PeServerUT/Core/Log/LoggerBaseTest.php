@@ -21,8 +21,8 @@ class LoggerBaseTest extends TestClass
 	#[TestWith(["1", "{0}", 1])]
 	public function test_format(string $expected, string $message, ...$parameters)
 	{
-		$mockSpecialStore = $this->createMock(SpecialStore::class);
-		$mockSpecialStore
+		$stubSpecialStore = $this->createStub(SpecialStore::class);
+		$stubSpecialStore
 			->method("getServer")
 			->willReturnMap([
 				["REMOTE_ADDR", "<REMOTE_ADDR>"],
@@ -34,16 +34,25 @@ class LoggerBaseTest extends TestClass
 			])
 		;
 
-		$mock = $this->getMockBuilder(LoggerBase::class)
-			->setConstructorArgs([
-				new Logging(
-					$mockSpecialStore
-				),
-				new LogOptions(self::class, 1, 0, "{MESSAGE}", [])
-			])
-			->getMock();
+		$obj = new class(
+			new Logging(
+				$stubSpecialStore
+			),
+			new LogOptions(self::class, 1, 0, "{MESSAGE}", [])
+		) extends LoggerBase
+		{
+			public function __construct(Logging $logging, LogOptions $options)
+			{
+				parent::__construct($logging, $options);
+			}
 
-		$actual = $this->callInstanceMethod($mock, "format", [ILogger::LOG_LEVEL_TRACE, 0, $message, ...$parameters]);
+			protected function logImpl(int $level, int $traceIndex, $message, ...$parameters): void
+			{
+				assert(false);
+			}
+		};
+
+		$actual = $this->callInstanceMethod($obj, "format", [ILogger::LOG_LEVEL_TRACE, 0, $message, ...$parameters]);
 		$this->assertSame($expected, $actual);
 	}
 
@@ -56,7 +65,7 @@ class LoggerBaseTest extends TestClass
 	{
 		$mock = $this->getMockBuilder(LoggerBase::class)
 			->setConstructorArgs([
-				new Logging($this->createMock(SpecialStore::class)),
+				new Logging($this->createStub(SpecialStore::class)),
 				new LogOptions(self::class, 1, $level, "{MESSAGE}", [])
 			])
 			->onlyMethods(["logImpl"])
@@ -77,7 +86,7 @@ class LoggerBaseTest extends TestClass
 	{
 		$mock = $this->getMockBuilder(LoggerBase::class)
 			->setConstructorArgs([
-				new Logging($this->createMock(SpecialStore::class)),
+				new Logging($this->createStub(SpecialStore::class)),
 				new LogOptions(self::class, 1, $level, "{MESSAGE}", [])
 			])
 			->onlyMethods(["logImpl"])
@@ -98,7 +107,7 @@ class LoggerBaseTest extends TestClass
 	{
 		$mock = $this->getMockBuilder(LoggerBase::class)
 			->setConstructorArgs([
-				new Logging($this->createMock(SpecialStore::class)),
+				new Logging($this->createStub(SpecialStore::class)),
 				new LogOptions(self::class, 1, $level, "{MESSAGE}", [])
 			])
 			->onlyMethods(["logImpl"])
@@ -119,7 +128,7 @@ class LoggerBaseTest extends TestClass
 	{
 		$mock = $this->getMockBuilder(LoggerBase::class)
 			->setConstructorArgs([
-				new Logging($this->createMock(SpecialStore::class)),
+				new Logging($this->createStub(SpecialStore::class)),
 				new LogOptions(self::class, 1, $level, "{MESSAGE}", [])
 			])
 			->onlyMethods(["logImpl"])
@@ -140,7 +149,7 @@ class LoggerBaseTest extends TestClass
 	{
 		$mock = $this->getMockBuilder(LoggerBase::class)
 			->setConstructorArgs([
-				new Logging($this->createMock(SpecialStore::class)),
+				new Logging($this->createStub(SpecialStore::class)),
 				new LogOptions(self::class, 1, $level, "{MESSAGE}", [])
 			])
 			->onlyMethods(["logImpl"])
