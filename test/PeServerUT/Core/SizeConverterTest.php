@@ -30,6 +30,20 @@ class SizeConverterTest extends TestClass
 		$this->assertSame($expected, $actual);
 	}
 
+	#[TestWith(["0 byte", 0])]
+	#[TestWith(["1 KB", 1024])]
+	#[TestWith(["1 MB", 1024 * 1024])]
+	#[TestWith(["10 MB", 10 * 1024 * 1024])]
+	#[TestWith(["1024 MB", 1024 * 1024 * 1024])]
+	#[TestWith(["2048 MB", 2 * 1024 * 1024 * 1024])]
+	public function test_convertHumanReadableByte_limit(string $expected, int $byteSize, string $sizeFormat = '{i_size} {unit}')
+	{
+		$sc = new SizeConverter(1024, ["byte", "KB", "MB"]);
+		$actual = $sc->convertHumanReadableByte($byteSize, $sizeFormat);
+		$this->assertSame($expected, $actual);
+	}
+
+
 	#[TestWith([2, 0, 2])]
 	#[TestWith([2, 1, 2])]
 	#[TestWith([2, 2, 2])]
