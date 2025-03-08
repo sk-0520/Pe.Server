@@ -34,7 +34,7 @@ class LoggerBaseTest extends TestClass
 			])
 		;
 
-		$obj = new class(
+		$obj = new class (
 			new Logging(
 				$stubSpecialStore
 			),

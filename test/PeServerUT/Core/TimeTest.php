@@ -89,9 +89,9 @@ class TimeTest extends TestClass
 	#[DataProvider('provider_create_Readable')]
 	public function test_create_Readable(string $expected, string $time, ?Encoding $encoding = null)
 	{
-		$actual = Time::create($time, $encoding);
-		$timestamp = $actual->format('%Y/%M/%D %H:%I:%S');
-		$this->assertSame($expected, $timestamp);
+		$obj = Time::create($time, $encoding);
+		$actual = $obj->format('%Y/%M/%D %H:%I:%S');
+		$this->assertSame($expected, $actual);
 	}
 
 	public static function provider_create_Constructor()
@@ -105,9 +105,25 @@ class TimeTest extends TestClass
 	#[DataProvider('provider_create_Constructor')]
 	public function test_create_Constructor(string $expected, string $time, ?Encoding $encoding = null)
 	{
-		$actual = Time::create($time, $encoding);
-		$timestamp = $actual->format('%Y/%M/%D %H:%I:%S');
-		$this->assertSame($expected, $timestamp);
+		$obj = Time::create($time, $encoding);
+		$actual = $obj->format('%Y/%M/%D %H:%I:%S');
+		$this->assertSame($expected, $actual);
+	}
+
+	public static function provider_compare()
+	{
+		return [
+			[0, new DateInterval("P2D"), new DateInterval("P2D")],
+			[-1, new DateInterval("P1D"), new DateInterval("P2D")],
+			[+1, new DateInterval("P2D"), new DateInterval("P1D")],
+		];
+	}
+
+	#[DataProvider('provider_compare')]
+	public function test_compare($expected, DateInterval $a, DateInterval $b)
+	{
+		$actual = Time::compare($a, $b);
+		$this->assertSame($expected, $actual);
 	}
 
 	public static function provider_create_throw()

@@ -9,7 +9,20 @@ use PeServer\Core\Stopwatch;
 
 class StopwatchTest extends TestClass
 {
-	public function test_scenario()
+	public function test_scenario_1()
+	{
+		$stopwatch = Stopwatch::startNew();
+		$this->assertTrue($stopwatch->isRunning());
+		usleep(100);
+		$x = $stopwatch->getNanosecondsElapsed();
+		usleep(100);
+		$stopwatch->stop();
+		$this->assertFalse($stopwatch->isRunning());
+		$y = $stopwatch->getNanosecondsElapsed();
+		$this->assertLessThan($y, $x);
+	}
+
+	public function test_scenario_2()
 	{
 		$stopwatch = Stopwatch::startNew();
 		$this->assertTrue($stopwatch->isRunning());
@@ -19,6 +32,9 @@ class StopwatchTest extends TestClass
 		$stopwatch->stop();
 		$this->assertFalse($stopwatch->isRunning());
 		$y = $stopwatch->getElapsed();
-		$this->assertLessThan($y, $x);
+
+		$now = new \DateTimeImmutable();
+
+		$this->assertLessThan($now->add($y), $now->add($x));
 	}
 }

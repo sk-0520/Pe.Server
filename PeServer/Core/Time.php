@@ -127,6 +127,13 @@ abstract class Time
 		return $result->value;
 	}
 
+	public static function compare(DateInterval $a, DateInterval $b): int
+	{
+		$current = Utc::create();
+
+		return $current->add($a) <=> $current->add($b);
+	}
+
 	/**
 	 * 文字列から時間を生成。
 	 *

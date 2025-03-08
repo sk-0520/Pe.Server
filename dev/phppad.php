@@ -101,7 +101,7 @@ class Pad
 				$sw->stop();
 
 				$useMemory = $endMemory - $baseMemory;
-				$useTime = $sw->getElapsed();
+				$useTime = $sw->getNanosecondsElapsed();
 
 				if ($useMemory < $minMemory) {
 					$minMemory = $useMemory;
