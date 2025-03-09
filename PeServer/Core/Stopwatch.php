@@ -164,7 +164,7 @@ class Stopwatch implements Stringable
 	 */
 	public static function getUnixMicroTime(): float
 	{
-		return microtime(true);
+		return \microtime(true);
 	}
 
 	//@phpstan-ignore-next-line 32bit(笑)
