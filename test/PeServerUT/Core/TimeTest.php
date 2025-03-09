@@ -11,6 +11,7 @@ use PeServer\Core\Throws\FormatException;
 use PeServer\Core\Time;
 use PeServerTest\TestClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\TestWith;
 
 class TimeTest extends TestClass
 {
@@ -147,6 +148,18 @@ class TimeTest extends TestClass
 		$this->expectException($exception);
 		Time::create($input);
 		$this->fail();
+	}
+
+	#[TestWith([0.0, 0])]
+	#[TestWith([0.000000001, 1])]
+	#[TestWith([0.000001, 1000])]
+	#[TestWith([0.001, 1000000])]
+	#[TestWith([1.0, 1000000000])]
+	#[TestWith([2.0, 2000000000])]
+	public function test_nanosecondsToFloat($exception, int $nanoseconds)
+	{
+		$actual = Time::nanosecondsToFloat($nanoseconds);
+		$this->assertSame($exception, $actual);
 	}
 
 	public static function provider_toString_ISO8601()

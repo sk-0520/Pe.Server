@@ -51,6 +51,7 @@ final readonly class AppRouteSetting extends RouteSetting
 	public function __construct(Environment $environment)
 	{
 		$isProduction = $environment->isProduction();
+		// $isProduction = true;
 
 		$globalMiddleware = [];
 		$actionMiddleware = [];

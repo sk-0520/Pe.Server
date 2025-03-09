@@ -114,12 +114,11 @@ class Stopwatch implements Stringable
 	public function getElapsed(): DateInterval
 	{
 		$nano = $this->getNanosecondsElapsed();
-		$fnano = self::nanosecondsToFloat($nano);
-		$usec = $fnano * 1000;
+		$fnano = Time::nanosecondsToFloat($nano);
 
 		// TODO: 結構適当なんでいつか直す
-		$s = (int)$usec;
-		$f = 0 < $s ? $s - $usec : $usec;
+		$s = (int)$fnano;
+		$f = 0 < $s ? $s - $fnano : $fnano;
 		$f = (string)$f;
 		if (Text::contains($f, ".", false)) {
 			$f = Text::trimStart(Text::split((string)$f, ".")[1], "0");
@@ -139,7 +138,7 @@ class Stopwatch implements Stringable
 	 */
 	public function toString(): string
 	{
-		return self::nanosecondsToFloat($this->getNanosecondsElapsed()) . ' sec';
+		return Time::nanosecondsToFloat($this->getNanosecondsElapsed()) . ' sec';
 	}
 
 	/**
@@ -195,21 +194,6 @@ class Stopwatch implements Stringable
 	public static function getCurrentTime(): int
 	{
 		return self::getCurrentTime64();
-	}
-
-	/**
-	 * 整数ナノ秒を浮動小数点数ナノ秒に変換
-	 *
-	 * @param int $nanosecounds
-	 * @return float (秒.ナノ秒)
-	 */
-	public static function nanosecondsToFloat(int $nanosecounds): float
-	{
-		if ($nanosecounds === 0) {
-			return 0;
-		}
-
-		return $nanosecounds / 1e+9;
 	}
 
 	#endregion
