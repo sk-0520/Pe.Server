@@ -20,7 +20,7 @@ abstract class AuthenticationMiddlewareBase implements IMiddleware
 
 	#region function
 
-	abstract protected function filter(MiddlewareArgument $argument): MiddlewareResult;
+	abstract protected function authenticate(MiddlewareArgument $argument): MiddlewareResult;
 
 	#endregion
 
@@ -28,7 +28,7 @@ abstract class AuthenticationMiddlewareBase implements IMiddleware
 
 	final public function handleBefore(MiddlewareArgument $argument): MiddlewareResult
 	{
-		return $this->filter($argument);
+		return $this->authenticate($argument);
 	}
 
 	public function handleAfter(MiddlewareArgument $argument, HttpResponse $response): MiddlewareResult
