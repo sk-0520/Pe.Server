@@ -68,7 +68,7 @@ class TemporaryStore
 		if (Text::isNullOrWhiteSpace($options->savePath)) {
 			throw new ArgumentException('$options->savePath');
 		}
-		ArgumentNullException::throwIfNull($options->cookie->span, '$options->cookie->span');
+		// ArgumentNullException::throwIfNull($options->cookie->span, '$options->cookie->span');
 	}
 
 	#region function
@@ -152,8 +152,11 @@ class TemporaryStore
 		if (!Utc::tryParse($timestamp, $datetime)) {
 			return;
 		}
-		/** @var \DateInterval */
+		/** @var \DateInterval|null */
 		$span = $this->options->cookie->span;
+		if ($span === null) {
+			return;
+		}
 		$saveTimestamp = $datetime->add($span);
 		$currentTimestamp = Utc::create();
 

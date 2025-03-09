@@ -61,7 +61,7 @@ abstract class TypeArrayBase implements ArrayAccess, Countable, IteratorAggregat
 
 	abstract protected function throwIfInvalidOffset(mixed $offset): void;
 
-	protected function isValidType(mixed $value): void
+	protected function validateType(mixed $value): void
 	{
 		if ($value === null) {
 			if (!TypeUtility::isNullable($this->type)) {

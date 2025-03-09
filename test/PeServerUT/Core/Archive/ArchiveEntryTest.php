@@ -19,6 +19,7 @@ class ArchiveEntryTest extends TestClass
 		$this->expectExceptionMessage("path");
 
 		new ArchiveEntry($input, "a");
+		$this->fail();
 	}
 
 	#[TestWith([""])]
@@ -29,5 +30,6 @@ class ArchiveEntryTest extends TestClass
 		$this->expectExceptionMessage("entry");
 
 		new ArchiveEntry("a", $input);
+		$this->fail();
 	}
 }

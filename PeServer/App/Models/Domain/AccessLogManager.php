@@ -49,7 +49,7 @@ class AccessLogManager
 		Directory::createParentDirectoryIfNotExists($filePath);
 
 		$logParams = $this->logging->getLogParameters(new DateTimeImmutable(), $this->specialStore);
-		$logParams["RUNNING_TIME"] = microtime(true) - $this->specialStore->getServer('REQUEST_TIME_FLOAT', 0.0);
+		$logParams["RUNNING_TIME"] = \microtime(true) - $this->specialStore->getServer('REQUEST_TIME_FLOAT', 0.0);
 
 		$data = $jsonSerializer->save($logParams);
 		$log = new Binary($data . PHP_EOL);

@@ -14,15 +14,20 @@ use PeServer\Core\DisposerBase;
 use PeServer\Core\Log\LoggerFactory;
 use PeServerUT\Core\Database\DB;
 
+/**
+ * ユニットテストにおけるアプリケーション層DB構築処理を担当。
+ */
 class UtAppDatabase extends DisposerBase
 {
-	public LocalDatabaseConnection $default;
-	public LocalDatabaseConnection $session;
+	/** 通常接続先 */
+	public KeepDatabaseConnection $default;
+	/** セッション接続先 */
+	public KeepDatabaseConnection $session;
 
 	public function __construct()
 	{
-		$this->default = new LocalDatabaseConnection();
-		$this->session = new LocalDatabaseConnection();
+		$this->default = new KeepDatabaseConnection();
+		$this->session = new KeepDatabaseConnection();
 
 		$migrationRunner = new AppMigrationRunner(
 			$this->default,
@@ -38,50 +43,6 @@ class UtAppDatabase extends DisposerBase
 	{
 		$this->default->dispose();
 		$this->session->dispose();
-	}
-
-	#endregion
-}
-
-//phpcs:ignore PSR1.Classes.ClassDeclaration.MultipleClasses
-class LocalDatabaseConnection extends DisposerBase implements IDatabaseConnection
-{
-	#region variable
-
-	private DatabaseConnection $connection;
-	private DatabaseContext|null $context = null;
-
-	#endregion
-
-	#region IDatabaseConnection
-
-	public function __construct()
-	{
-		$this->connection = DB::memoryConnection();
-	}
-
-	public function getConnectionSetting(): ConnectionSetting
-	{
-		return $this->connection->getConnectionSetting();
-	}
-
-	public function open(): DatabaseContext
-	{
-		$this->throwIfDisposed();
-
-		return $this->context ??= $this->connection->open();
-	}
-
-	#endregion
-
-	#region DisposerBase
-
-	protected function disposeImpl(): void
-	{
-		$this->context->dispose();
-		$this->context = null;
-
-		parent::disposeImpl();
 	}
 
 	#endregion

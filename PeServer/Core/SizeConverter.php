@@ -70,6 +70,9 @@ readonly class SizeConverter
 		while ($size >= $this->kbSize && ++$order < $unitCount) {
 			$size = $size / $this->kbSize;
 		}
+		if ($unitCount <= $order) {
+			$order = $unitCount - 1;
+		}
 
 		return Text::replaceMap($sizeFormat, [
 			'f_size' => strval(round($size, 2)),

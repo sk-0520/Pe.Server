@@ -11,6 +11,7 @@ use PeServer\Core\Throws\FormatException;
 use PeServer\Core\Time;
 use PeServerTest\TestClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\TestWith;
 
 class TimeTest extends TestClass
 {
@@ -89,9 +90,9 @@ class TimeTest extends TestClass
 	#[DataProvider('provider_create_Readable')]
 	public function test_create_Readable(string $expected, string $time, ?Encoding $encoding = null)
 	{
-		$actual = Time::create($time, $encoding);
-		$timestamp = $actual->format('%Y/%M/%D %H:%I:%S');
-		$this->assertSame($expected, $timestamp);
+		$obj = Time::create($time, $encoding);
+		$actual = $obj->format('%Y/%M/%D %H:%I:%S');
+		$this->assertSame($expected, $actual);
 	}
 
 	public static function provider_create_Constructor()
@@ -105,9 +106,25 @@ class TimeTest extends TestClass
 	#[DataProvider('provider_create_Constructor')]
 	public function test_create_Constructor(string $expected, string $time, ?Encoding $encoding = null)
 	{
-		$actual = Time::create($time, $encoding);
-		$timestamp = $actual->format('%Y/%M/%D %H:%I:%S');
-		$this->assertSame($expected, $timestamp);
+		$obj = Time::create($time, $encoding);
+		$actual = $obj->format('%Y/%M/%D %H:%I:%S');
+		$this->assertSame($expected, $actual);
+	}
+
+	public static function provider_compare()
+	{
+		return [
+			[0, new DateInterval("P2D"), new DateInterval("P2D")],
+			[-1, new DateInterval("P1D"), new DateInterval("P2D")],
+			[+1, new DateInterval("P2D"), new DateInterval("P1D")],
+		];
+	}
+
+	#[DataProvider('provider_compare')]
+	public function test_compare($expected, DateInterval $a, DateInterval $b)
+	{
+		$actual = Time::compare($a, $b);
+		$this->assertSame($expected, $actual);
 	}
 
 	public static function provider_create_throw()
@@ -131,6 +148,18 @@ class TimeTest extends TestClass
 		$this->expectException($exception);
 		Time::create($input);
 		$this->fail();
+	}
+
+	#[TestWith([0.0, 0])]
+	#[TestWith([0.000000001, 1])]
+	#[TestWith([0.000001, 1000])]
+	#[TestWith([0.001, 1000000])]
+	#[TestWith([1.0, 1000000000])]
+	#[TestWith([2.0, 2000000000])]
+	public function test_nanosecondsToFloat($exception, int $nanoseconds)
+	{
+		$actual = Time::nanosecondsToFloat($nanoseconds);
+		$this->assertSame($exception, $actual);
 	}
 
 	public static function provider_toString_ISO8601()

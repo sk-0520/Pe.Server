@@ -127,6 +127,29 @@ abstract class Time
 		return $result->value;
 	}
 
+	public static function compare(DateInterval $a, DateInterval $b): int
+	{
+		$current = Utc::create();
+
+		return $current->add($a) <=> $current->add($b);
+	}
+
+
+	/**
+	 * 整数ナノ秒を浮動小数点数ナノ秒に変換
+	 *
+	 * @param int $nanosecounds
+	 * @return float (秒.ナノ秒)
+	 */
+	public static function nanosecondsToFloat(int $nanosecounds): float
+	{
+		if ($nanosecounds === 0) {
+			return 0.0;
+		}
+
+		return $nanosecounds / 1e+9;
+	}
+
 	/**
 	 * 文字列から時間を生成。
 	 *

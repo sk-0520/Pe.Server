@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
+use DateInterval;
 use Stringable;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Throws\NotSupportedException;
@@ -86,12 +87,14 @@ class Stopwatch implements Stringable
 	/**
 	 * 現在の経過時間(ナノ秒)を取得。
 	 *
+	 * `self::getElapsed` を原則使用する想定。
+	 *
 	 * * 計測中であれば計測開始からの経過時間
 	 * * 計測終了であれば計測開始からの計測終了までの経過時間。
 	 *
 	 * @return int
 	 */
-	public function getElapsed(): int
+	public function getNanosecondsElapsed(): int
 	{
 		if ($this->isRunning) {
 			return self::getCurrentTime() - $this->startTime;
@@ -101,13 +104,41 @@ class Stopwatch implements Stringable
 	}
 
 	/**
+	 * 現在の経過時間を取得。
+	 *
+	 * * 計測中であれば計測開始からの経過時間
+	 * * 計測終了であれば計測開始からの計測終了までの経過時間。
+	 *
+	 * @return DateInterval
+	 */
+	public function getElapsed(): DateInterval
+	{
+		$nano = $this->getNanosecondsElapsed();
+		$fnano = Time::nanosecondsToFloat($nano);
+
+		// TODO: 結構適当なんでいつか直す
+		$s = (int)$fnano;
+		$f = 0 < $s ? $s - $fnano : $fnano;
+		$f = (string)$f;
+		if (Text::contains($f, ".", false)) {
+			$f = Text::trimStart(Text::split((string)$f, ".")[1], "0");
+		}
+
+		$result = DateInterval::createFromDateString("{$s} second {$f} microseconds");
+		if ($result === false) {
+			throw new StopwatchWException();
+		}
+		return $result;
+	}
+
+	/**
 	 * ミリ秒として文字列化。
 	 *
 	 * @return string
 	 */
 	public function toString(): string
 	{
-		return self::nanoToMilliseconds($this->getElapsed()) . ' msec';
+		return Time::nanosecondsToFloat($this->getNanosecondsElapsed()) . ' sec';
 	}
 
 	/**
@@ -133,7 +164,7 @@ class Stopwatch implements Stringable
 	 */
 	public static function getUnixMicroTime(): float
 	{
-		return microtime(true);
+		return \microtime(true);
 	}
 
 	//@phpstan-ignore-next-line 32bit(笑)
@@ -163,11 +194,6 @@ class Stopwatch implements Stringable
 	public static function getCurrentTime(): int
 	{
 		return self::getCurrentTime64();
-	}
-
-	public static function nanoToMilliseconds(int $nanoSec): float
-	{
-		return $nanoSec / 1e+6;
 	}
 
 	#endregion

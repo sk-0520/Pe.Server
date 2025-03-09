@@ -8,6 +8,8 @@ use PeServer\Core\Http\HttpResponse;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Mvc\Middleware\MiddlewareArgument;
 use PeServer\Core\Mvc\Middleware\MiddlewareResult;
+use PeServer\Core\Stopwatch;
+use PeServer\Core\Time;
 
 /**
  * ある区間からの測定処理。
@@ -19,29 +21,31 @@ final class PerformanceMiddleware implements IMiddleware
 {
 	#region variable
 
-	private float $beforeMsec;
+	private Stopwatch $stopwatch;
 
 	#endregion
 
 	public function __construct(
 		private ILogger $logger
 	) {
+		$this->stopwatch = new Stopwatch();
 	}
 
 	#region IMiddleware
 
 	public function handleBefore(MiddlewareArgument $argument): MiddlewareResult
 	{
-		$this->beforeMsec = microtime(true);
+		$this->stopwatch->start();
 
 		return MiddlewareResult::none();
 	}
 
 	public function handleAfter(MiddlewareArgument $argument, HttpResponse $response): MiddlewareResult
 	{
-		$afterMsec = microtime(true);
+		$this->stopwatch->stop();
 
-		$this->logger->info('action {0} ms', $afterMsec - $this->beforeMsec);
+		$span = $this->stopwatch->getNanosecondsElapsed();
+		$this->logger->info('action {0} sec', Time::nanosecondsToFloat($span));
 
 		return MiddlewareResult::none();
 	}
