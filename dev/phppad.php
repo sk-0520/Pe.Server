@@ -5,6 +5,7 @@ error_reporting(E_ALL);
 require_once(__DIR__ . '/../public_html/PeServer/Core/AutoLoader.php');
 
 use PeServer\App\Models\AppStartup;
+use PeServer\App\Models\AppStartupOption;
 use PeServer\Core\StartupOptions;
 use PeServer\Core\IO\Directory;
 use PeServer\Core\IO\File;
@@ -31,10 +32,12 @@ $startup = new AppStartup(
 );
 $container = $startup->setup(
 	AppStartup::MODE_CLI,
-	[
-		'environment' => 'temp',
-		'revision' => ':REVISION:',
-	]
+	new AppStartupOption(
+		'temp',
+		':REVISION:',
+		null,
+		null
+	)
 );
 Directory::setTemporaryDirectory(Path::combine(__DIR__, 'temp'));
 
@@ -137,15 +140,15 @@ class Pad
 		$totalMemorySize = $sizeConverter->convertHumanReadableByte($totalMemory);
 		$avgMemorySize = $sizeConverter->convertHumanReadableByte($avgMemory);
 
-		$minTimeMs = Stopwatch::nanoToMilliseconds($minTime);
-		$maxTimeMs = Stopwatch::nanoToMilliseconds($maxTime);
-		$totalTimeMs = Stopwatch::nanoToMilliseconds($totalTime);
-		$avgTimeMs = Stopwatch::nanoToMilliseconds($avgTime);
+		$minTime = Stopwatch::nanosecondsToFloat($minTime);
+		$maxTime = Stopwatch::nanosecondsToFloat($maxTime);
+		$totalTime = Stopwatch::nanosecondsToFloat($totalTime);
+		$avgTime = Stopwatch::nanosecondsToFloat($avgTime);
 
-		self::puts(" (合計) 時間: $totalTimeMs msec, メモリ: $totalMemorySize");
-		self::puts(" (平均) 時間: $avgTimeMs msec, メモリ: $avgMemorySize");
-		self::puts(" (最小) 時間: $minTimeMs msec, メモリ: $minMemorySize");
-		self::puts(" (最大) 時間: $maxTimeMs msec, メモリ: $maxMemorySize");
+		self::puts(" (合計) 時間: $totalTime sec, メモリ: $totalMemorySize");
+		self::puts(" (平均) 時間: $avgTime sec, メモリ: $avgMemorySize");
+		self::puts(" (最小) 時間: $minTime sec, メモリ: $minMemorySize");
+		self::puts(" (最大) 時間: $maxTime sec, メモリ: $maxMemorySize");
 
 		return $result;
 	}

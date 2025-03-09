@@ -114,7 +114,8 @@ class Stopwatch implements Stringable
 	public function getElapsed(): DateInterval
 	{
 		$nano = $this->getNanosecondsElapsed();
-		$usec = self::nanoToMicrosecounds($nano);
+		$fnano = self::nanosecondsToFloat($nano);
+		$usec = $fnano * 1000;
 
 		// TODO: 結構適当なんでいつか直す
 		$s = (int)$usec;
@@ -138,7 +139,7 @@ class Stopwatch implements Stringable
 	 */
 	public function toString(): string
 	{
-		return self::nanoToMilliseconds($this->getNanosecondsElapsed()) . ' msec';
+		return self::nanosecondsToFloat($this->getNanosecondsElapsed()) . ' sec';
 	}
 
 	/**
@@ -196,14 +197,19 @@ class Stopwatch implements Stringable
 		return self::getCurrentTime64();
 	}
 
-	public static function nanoToMicrosecounds(int $nanoSec): float
+	/**
+	 * 整数ナノ秒を浮動小数点数ナノ秒に変換
+	 *
+	 * @param int $nanosecounds
+	 * @return float (秒.ナノ秒)
+	 */
+	public static function nanosecondsToFloat(int $nanosecounds): float
 	{
-		return $nanoSec / 1e+9;
-	}
+		if ($nanosecounds === 0) {
+			return 0;
+		}
 
-	public static function nanoToMilliseconds(int $nanoSec): float
-	{
-		return $nanoSec / 1e+6;
+		return $nanosecounds / 1e+9;
 	}
 
 	#endregion
