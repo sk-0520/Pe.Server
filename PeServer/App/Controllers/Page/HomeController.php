@@ -80,6 +80,18 @@ final class HomeController extends PageControllerBase
 		return $this->data($logic->getContent());
 	}
 
+	public function basic(): IActionResult
+	{
+		return $this->view(
+			'basic',
+			new TemplateParameter(
+				HttpStatus::OK,
+				[],
+				[]
+			)
+		);
+	}
+
 	public function exception(): IActionResult
 	{
 		throw new Exception();

@@ -72,6 +72,7 @@
 					<li><a href="/ajax/dev/exception/json">json</a></li>
 				</ul>
 			</li>
+			<li><a href="/dev/auth/basic">basic</a></li>
 			<li><a href="/dev/streaming">streaming</a></li>
 		</ul>
 	{/if}

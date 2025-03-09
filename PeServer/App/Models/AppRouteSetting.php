@@ -31,6 +31,7 @@ use PeServer\App\Models\Middleware\UserAccountFilterMiddleware;
 use PeServer\App\Models\Middleware\UserPluginEditFilterMiddleware;
 use PeServer\Core\Environment;
 use PeServer\Core\Http\HttpMethod;
+use PeServer\Core\Mvc\Middleware\Authentication\BasicAuthenticationMiddleware;
 use PeServer\Core\Mvc\Middleware\CsrfMiddleware;
 use PeServer\Core\Mvc\Middleware\HttpsMiddleware;
 use PeServer\Core\Mvc\Middleware\PerformanceMiddleware;
@@ -90,6 +91,7 @@ final readonly class AppRouteSetting extends RouteSetting
 					->addAction('api-doc', HttpMethod::gets(), 'api')
 					->addAction('dev/exception', HttpMethod::gets(), 'exception', [DevelopmentMiddleware::class])
 					->addAction('dev/streaming', HttpMethod::gets(), 'streaming_html', [DevelopmentMiddleware::class])
+					->addAction('dev/auth/basic', HttpMethod::gets(), 'basic', [BasicAuthenticationMiddleware::class])
 					->addAction(':path@[a-zA-Z0-9_\-]+\.[a-zA-Z0-9]+', HttpMethod::gets(), 'wildcard')
 				/* AUTO-FORMAT */,
 				(new RouteInformation('account', AccountController::class))
