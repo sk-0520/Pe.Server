@@ -15,6 +15,8 @@ use PeServer\Core\Database\DatabaseColumn;
 use PeServer\Core\Database\DatabaseSequenceResult;
 use PeServer\Core\Database\DatabaseTableResult;
 use PeServer\Core\Database\IDatabaseTransactionContext;
+use PeServer\Core\Database\Management\DatabaseManagement;
+use PeServer\Core\Database\Management\IDatabaseManagement;
 use PeServer\Core\DisposerBase;
 use PeServer\Core\Log\ILogger;
 use PeServer\Core\Regex;
@@ -344,6 +346,11 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 		}
 
 		return $this->pdo->quote($value);
+	}
+
+	public function getManagement(): IDatabaseManagement
+	{
+		return new DatabaseManagement($this);
 	}
 
 	/**
