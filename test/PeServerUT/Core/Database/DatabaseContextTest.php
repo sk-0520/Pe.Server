@@ -859,4 +859,6 @@ class Mapping_queryFirst_mapping
 	#endregion
 }
 
-class LocalOreOreException extends Exception {}
+class LocalOreOreException extends Exception
+{
+}
