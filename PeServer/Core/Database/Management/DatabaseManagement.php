@@ -39,9 +39,17 @@ class DatabaseManagement implements IDatabaseManagement
 
 		return Arr::map(
 			$rows->rows,
-			fn($row) =>  new DatabaseInformation($row['name'])
+			fn($row) => new DatabaseInformationItem($row['name'])
 		);
 	}
+
+	public function getSchemaItems(DatabaseInformationItem $databaseItem): array
+	{
+		return [
+			new DatabaseSchemaItem($databaseItem, $databaseItem->name, $databaseItem->name == "main")
+		];
+	}
+
 
 	#endregion
 }

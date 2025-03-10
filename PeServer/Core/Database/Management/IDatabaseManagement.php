@@ -14,9 +14,18 @@ interface IDatabaseManagement
 	/**
 	 * DB 内のデータベース一覧を取得。
 	 *
-	 * @return DatabaseInformation[]
+	 * @return DatabaseInformationItem[]
 	 */
 	public function getDatabaseItems(): array;
+
+	/**
+	 * スキーマ一覧を取得。
+	 *
+	 * @param DatabaseInformationItem $databaseItem 対象データベース。
+	 * @return DatabaseSchemaItem[]
+	 */
+	public function getSchemaItems(DatabaseInformationItem $databaseItem): array;
+
 
 	#endregion
 }
