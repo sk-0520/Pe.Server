@@ -20,7 +20,7 @@ readonly class DatabaseResourceItem
 	#endregion
 
 	/**
-	 * Undocumented function
+	 * 生成。
 	 *
 	 * @param DatabaseSchemaItem $schema
 	 * @param string $name

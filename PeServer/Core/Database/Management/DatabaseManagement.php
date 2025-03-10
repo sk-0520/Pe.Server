@@ -50,6 +50,23 @@ class DatabaseManagement implements IDatabaseManagement
 		];
 	}
 
+	// public function getResourceItems(DatabaseSchemaItem $schemaItem, int $kinds): array
+	// {
+	// 	$kindItems = [];
+
+	// 	if(($kinds & DatabaseResourceItem::KIND_TABLE) === DatabaseResourceItem::KIND_TABLE) {
+	// 		$kindItems[] = "table";
+	// 	}
+	// 	if(($kinds & DatabaseResourceItem::KIND_VIEW) === DatabaseResourceItem::KIND_VIEW) {
+	// 		$kindItems[] = "view";
+	// 	}
+	// 	if(($kinds & DatabaseResourceItem::KIND_INDEX) === DatabaseResourceItem::KIND_INDEX) {
+	// 		$kindItems[] = "index";
+	// 	}
+
+	// 	return [];
+	// }
+
 
 	#endregion
 }

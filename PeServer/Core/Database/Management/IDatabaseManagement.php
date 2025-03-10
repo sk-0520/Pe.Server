@@ -26,6 +26,15 @@ interface IDatabaseManagement
 	 */
 	public function getSchemaItems(DatabaseInformationItem $databaseItem): array;
 
+	// /**
+	//  * スキーマのリソースを取得。
+	//  *
+	//  * @param DatabaseSchemaItem $schemaItem
+	//  * @param int $kinds
+	//  * @phpstan-param int-mask-of<DatabaseSchemaItem::KIND_*> $kinds
+	//  * @return DatabaseResourceItem[]
+	//  */
+	// public function getResourceItems(DatabaseSchemaItem $schemaItem, int $kinds): array;
 
 	#endregion
 }
