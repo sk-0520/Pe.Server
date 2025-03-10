@@ -54,13 +54,13 @@ class DatabaseManagement implements IDatabaseManagement
 	{
 		$kindItems = [];
 
-		if(($kinds & DatabaseResourceItem::KIND_TABLE) === DatabaseResourceItem::KIND_TABLE) {
+		if (($kinds & DatabaseResourceItem::KIND_TABLE) === DatabaseResourceItem::KIND_TABLE) {
 			$kindItems[] = "table";
 		}
-		if(($kinds & DatabaseResourceItem::KIND_VIEW) === DatabaseResourceItem::KIND_VIEW) {
+		if (($kinds & DatabaseResourceItem::KIND_VIEW) === DatabaseResourceItem::KIND_VIEW) {
 			$kindItems[] = "view";
 		}
-		if(($kinds & DatabaseResourceItem::KIND_INDEX) === DatabaseResourceItem::KIND_INDEX) {
+		if (($kinds & DatabaseResourceItem::KIND_INDEX) === DatabaseResourceItem::KIND_INDEX) {
 			$kindItems[] = "index";
 		}
 

@@ -31,7 +31,7 @@ interface IDatabaseManagement
 	 *
 	 * @param DatabaseSchemaItem $schemaItem
 	 * @param int $kinds
-	 * @phpstan-param int-mask-of<DatabaseSchemaItem::KIND_*> $kinds
+	 * @phpstan-param int-mask-of<DatabaseResourceItem::KIND_*> $kinds
 	 * @return DatabaseResourceItem[]
 	 */
 	public function getResourceItems(DatabaseSchemaItem $schemaItem, int $kinds): array;
