@@ -34,6 +34,7 @@ class ManagementDatabaseMaintenanceLogic extends ManagementDatabaseBase
 	protected function startup(LogicCallMode $callMode): void
 	{
 		$this->registerParameterKeys([
+			"database",
 			'database_maintenance_statement',
 			'executed',
 			'result',
@@ -42,7 +43,7 @@ class ManagementDatabaseMaintenanceLogic extends ManagementDatabaseBase
 		$this->setValue('executed', false);
 		$this->setValue('result', null);
 
-		$database = $this->getTargetDatabase();
+		$database = $this->getTargetContext();
 		$management = $database->getManagement();
 
 		$db = Collection::from($management->getDatabaseItems())->first(fn($a) => $a->name === "main");
@@ -77,7 +78,7 @@ class ManagementDatabaseMaintenanceLogic extends ManagementDatabaseBase
 
 		$statement = $this->getRequest('database_maintenance_statement');
 
-		$database = $this->getTargetDatabase();
+		$database = $this->getTargetContext();
 		$result = null;
 		try {
 			$database->transaction(function (IDatabaseContext $context) use (&$result, $statement) {

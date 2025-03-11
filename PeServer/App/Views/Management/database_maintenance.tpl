@@ -6,14 +6,14 @@
 	<h2>メンテ</h2>
 	<ul>
 		<li>
-			<a href="/management/database-download">
+			<a href="/management/database-download/{$values.database}">
 				ダウンロード
 			</a>
 		</li>
 	</ul>
 
 	<h2>入力</h2>
-	<form class="page-setting-database-maintenance" action="/management/database-maintenance" method="post">
+	<form class="page-setting-database-maintenance" action="/management/database-maintenance/{$values.database}" method="post">
 		{csrf}
 
 		<dl class="input">

@@ -13,7 +13,9 @@ use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\Core\Archive\ArchiveEntry;
 use PeServer\Core\Archive\Archiver;
 use PeServer\Core\Collections\Arr;
+use PeServer\Core\Database\DatabaseConnection;
 use PeServer\Core\Database\DatabaseTableResult;
+use PeServer\Core\Database\DatabaseUtility;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\DI\IDiContainer;
 use PeServer\Core\Http\HttpStatus;
@@ -62,7 +64,10 @@ class ManagementDatabaseDownloadLogic extends ManagementDatabaseBase
 		$this->logger->info("database temp dir: {0}", $workDirPath);
 		$zipFilePath = Path::combine($workDirPath, $this->appTemporary->createFileName($this->beginTimestamp, "zip"));
 
-		$target = AppDatabaseConnection::getSqliteFilePath($this->appConfig->setting->persistence->default->connection);
+		$downloadBaseName = $this->getTargetDatabaseId();
+		$connection = $this->getTargetDatabaseConnection();
+		$target = DatabaseUtility::getSqliteFilePath($connection->getConnectionSetting());
+		//$target = AppDatabaseConnection::getSqliteFilePath($this->appConfig->setting->persistence->default->connection);
 		$name = Path::getFileName($target);
 
 		Archiver::compressZip(
@@ -79,6 +84,6 @@ class ManagementDatabaseDownloadLogic extends ManagementDatabaseBase
 		]);
 
 		$stream = FileCleanupStream::read($zipFilePath);
-		$this->setDownloadContent(Mime::ZIP, "database.zip", $stream);
+		$this->setDownloadContent(Mime::ZIP, "database-{$downloadBaseName}.zip", $stream);
 	}
 }
