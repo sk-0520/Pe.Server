@@ -51,21 +51,8 @@ abstract class ManagementDatabaseBase extends PageLogicBase
 
 	protected function getTargetContext(): DatabaseContext
 	{
-		$targetDatabase = $this->getTargetDatabaseId();
-
-		switch ($targetDatabase) {
-			case "main":
-				return $this->openDatabase();
-
-			case "session":
-				if (SessionHandlerFactoryUtility::isFactory($this->appConfig->setting->store->session->handlerFactory)) {
-					$sessionConnection = SqliteSessionHandler::createConnection($this->appConfig->setting->store->session->save, null, LoggerFactory::createNullFactory());
-					return $sessionConnection->open();
-				}
-
-			default:
-				throw new NotImplementedException($targetDatabase);
-		}
+		$connection = $this->getTargetDatabaseConnection();
+		return $connection->open();
 	}
 
 	#endregion
