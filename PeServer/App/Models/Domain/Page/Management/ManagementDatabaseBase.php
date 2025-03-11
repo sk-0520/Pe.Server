@@ -43,10 +43,13 @@ abstract class ManagementDatabaseBase extends PageLogicBase
 					$sessionConnection = SqliteSessionHandler::createConnection($this->appConfig->setting->store->session->save, null, LoggerFactory::createNullFactory());
 					return $sessionConnection;
 				}
+				break;
 
 			default:
-				throw new NotImplementedException($targetDatabase);
+				break;
 		}
+
+		throw new NotImplementedException($targetDatabase);
 	}
 
 	protected function getTargetContext(): DatabaseContext
