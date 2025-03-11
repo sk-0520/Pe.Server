@@ -81,7 +81,7 @@ class DatabaseManagementTest extends TestClass
 		$db = $management->getDatabaseItems();
 		$schemaItem = $management->getSchemaItems($db[0])[0];
 
-		$resourceItems = $management->GetResourceItems($schemaItem, 0);
+		$resourceItems = $management->getResourceItems($schemaItem, 0);
 
 		$this->assertEmpty($resourceItems);
 	}
@@ -94,7 +94,7 @@ class DatabaseManagementTest extends TestClass
 		$db = $management->getDatabaseItems();
 		$schemaItem = $management->getSchemaItems($db[0])[0];
 
-		$resourceItems = $management->GetResourceItems($schemaItem, DatabaseResourceItem::KIND_ALL);
+		$resourceItems = $management->getResourceItems($schemaItem, DatabaseResourceItem::KIND_ALL);
 
 		$this->assertEmpty($resourceItems);
 	}
@@ -109,7 +109,7 @@ class DatabaseManagementTest extends TestClass
 		$db = $management->getDatabaseItems();
 		$schemaItem = $management->getSchemaItems($db[0])[0];
 
-		$resourceItems = $management->GetResourceItems($schemaItem, DatabaseResourceItem::KIND_ALL);
+		$resourceItems = $management->getResourceItems($schemaItem, DatabaseResourceItem::KIND_ALL);
 
 		$this->assertCount(1, $resourceItems);
 
@@ -130,7 +130,7 @@ class DatabaseManagementTest extends TestClass
 		$db = $management->getDatabaseItems();
 		$schemaItem = $management->getSchemaItems($db[0])[0];
 
-		$resourceItems = Collection::from($management->GetResourceItems($schemaItem, DatabaseResourceItem::KIND_ALL));
+		$resourceItems = Collection::from($management->getResourceItems($schemaItem, DatabaseResourceItem::KIND_ALL));
 
 		$this->assertLessThanOrEqual(2, $resourceItems->count());
 
@@ -160,7 +160,7 @@ class DatabaseManagementTest extends TestClass
 		$db = $management->getDatabaseItems();
 		$schemaItem = $management->getSchemaItems($db[0])[0];
 
-		$resourceItems = Collection::from($management->GetResourceItems($schemaItem, DatabaseResourceItem::KIND_ALL));
+		$resourceItems = Collection::from($management->getResourceItems($schemaItem, DatabaseResourceItem::KIND_ALL));
 
 		$this->assertCount(2, $resourceItems);
 
@@ -184,7 +184,7 @@ class DatabaseManagementTest extends TestClass
 		$db = $management->getDatabaseItems();
 		$schemaItem = $management->getSchemaItems($db[0])[0];
 
-		$resourceItems = Collection::from($management->GetResourceItems($schemaItem, DatabaseResourceItem::KIND_ALL));
+		$resourceItems = Collection::from($management->getResourceItems($schemaItem, DatabaseResourceItem::KIND_ALL));
 
 		$this->assertCount(2, $resourceItems);
 
@@ -207,7 +207,7 @@ class DatabaseManagementTest extends TestClass
 		$db = $management->getDatabaseItems();
 		$schemaItem = $management->getSchemaItems($db[0])[0];
 
-		$resourceItem = $management->GetResourceItems($schemaItem, DatabaseResourceItem::KIND_TABLE)[0];
+		$resourceItem = $management->getResourceItems($schemaItem, DatabaseResourceItem::KIND_TABLE)[0];
 
 		$invalidResource = new DatabaseResourceItem(
 			$resourceItem->schema,
