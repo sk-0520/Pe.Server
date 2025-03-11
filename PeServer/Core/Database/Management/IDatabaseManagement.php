@@ -36,5 +36,13 @@ interface IDatabaseManagement
 	 */
 	public function getResourceItems(DatabaseSchemaItem $schemaItem, int $kinds): array;
 
+	/**
+	 * テーブルリソースからカラム情報の取得。
+	 *
+	 * @param DatabaseResourceItem $tableResource
+	 * @return DatabaseColumnItem[]
+	 */
+	public function getColumns(DatabaseResourceItem $tableResource): array;
+
 	#endregion
 }

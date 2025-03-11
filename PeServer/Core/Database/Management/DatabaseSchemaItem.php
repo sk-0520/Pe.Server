@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Database\Management;
 
 /**
- * データベース情報。
+ * スキーマ情報。
  */
 readonly class DatabaseSchemaItem
 {

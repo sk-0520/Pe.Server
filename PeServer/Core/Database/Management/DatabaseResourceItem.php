@@ -7,6 +7,9 @@ namespace PeServer\Core\Database\Management;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Database\IDatabaseContext;
 
+/**
+ * リソース情報。
+ */
 readonly class DatabaseResourceItem
 {
 	#region define
