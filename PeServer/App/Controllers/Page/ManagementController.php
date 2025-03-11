@@ -48,7 +48,16 @@ final class ManagementController extends PageControllerBase
 
 	public function index(): IActionResult
 	{
-		return $this->view('index', new TemplateParameter(HttpStatus::OK, [], []));
+		$databases = [];
+
+		$databases["session"] = [
+			"target" => "session",
+			"display" => "セッション",
+		];
+
+		return $this->view('index', new TemplateParameter(HttpStatus::OK, [
+			"databases" => $databases
+		], []));
 	}
 
 	public function setup_get(): IActionResult

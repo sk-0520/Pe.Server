@@ -86,7 +86,14 @@
 		<li>
 			実行
 			<ul>
-				<li><a href="/management/database-maintenance">DBメンテナンス</a> (<a href="/management/database-download">DL</a>)</li>
+				<li>
+					<a href="/management/database-maintenance/main">メインDBメンテナンス</a> (<a href="/management/database-download/main">DL</a>)
+					{foreach from=$values.databases item=item key=key name=name}
+						<ul>
+							<li><a href="/management/database-maintenance/{$item.target}">{$item.display}DBメンテナンス</a> (<a href="/management/database-download/{$item.target}">DL</a>)</li>
+						</ul>
+					{/foreach}
+				</li>
 				<li><a href="/management/php-evaluate">PHP実行</a></li>
 				<li><a href="/management/mail-send">メール送信</a></li>
 			</ul>

@@ -32,11 +32,11 @@ use PeServer\Core\Throws\HttpStatusException;
 use PeServer\Core\Throws\InvalidOperationException;
 use ZipArchive;
 
-class ManagementDatabaseDownloadLogic extends PageLogicBase
+class ManagementDatabaseDownloadLogic extends ManagementDatabaseBase
 {
-	public function __construct(LogicParameter $parameter, private AppConfiguration $appConfig, private AppTemporary $appTemporary)
+	public function __construct(LogicParameter $parameter, AppConfiguration $appConfig, private AppTemporary $appTemporary)
 	{
-		parent::__construct($parameter);
+		parent::__construct($parameter, $appConfig);
 	}
 
 	protected function validateImpl(LogicCallMode $callMode): void

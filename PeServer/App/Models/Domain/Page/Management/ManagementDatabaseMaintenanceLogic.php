@@ -21,11 +21,11 @@ use PeServer\Core\Mvc\Validator;
 use PeServer\Core\Regex;
 use PeServer\Core\Text;
 
-class ManagementDatabaseMaintenanceLogic extends PageLogicBase
+class ManagementDatabaseMaintenanceLogic extends ManagementDatabaseBase
 {
-	public function __construct(LogicParameter $parameter)
+	public function __construct(LogicParameter $parameter, AppConfiguration $appConfig)
 	{
-		parent::__construct($parameter);
+		parent::__construct($parameter, $appConfig);
 	}
 
 	//[PageLogicBase]
