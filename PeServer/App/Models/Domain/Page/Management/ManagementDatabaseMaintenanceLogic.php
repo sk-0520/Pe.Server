@@ -11,8 +11,10 @@ use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\Core\Code;
 use PeServer\Core\Collections\Access;
 use PeServer\Core\Collections\Arr;
+use PeServer\Core\Collections\Collection;
 use PeServer\Core\Database\DatabaseTableResult;
 use PeServer\Core\Database\IDatabaseContext;
+use PeServer\Core\Database\Management\DatabaseResourceItem;
 use PeServer\Core\Mvc\Logic\LogicCallMode;
 use PeServer\Core\Mvc\Logic\LogicParameter;
 use PeServer\Core\Mvc\Validator;
@@ -24,27 +26,6 @@ class ManagementDatabaseMaintenanceLogic extends PageLogicBase
 	public function __construct(LogicParameter $parameter)
 	{
 		parent::__construct($parameter);
-	}
-
-	/**
-	 * テーブル情報取得。
-	 *
-	 * @param IDatabaseContext $context
-	 * @param array<mixed> $row
-	 * @return array{name:string,sql:string,columns:array<mixed>}
-	 */
-	private function getTableInfo(IDatabaseContext $context, array $row): array
-	{
-		$name = Code::toLiteralString($row['name']);
-		$columns = $context->query(
-			"PRAGMA table_info('$name')"
-		);
-
-		return [
-			'name' => Access::getString($row, 'name'),
-			'sql' => Access::getString($row, 'sql'),
-			'columns' => $columns->rows
-		];
 	}
 
 	//[PageLogicBase]
@@ -61,24 +42,18 @@ class ManagementDatabaseMaintenanceLogic extends PageLogicBase
 		$this->setValue('result', null);
 
 		$database = $this->openDatabase();
-		$schemas = $database->query(
-			<<<SQL
+		$management = $database->getManagement();
 
-			select
-				*
-			from
-				sqlite_master
-			where
-				type = 'table'
-			order by
-				name
+		$db = Collection::from($management->getDatabaseItems())->first(fn($a) => $a->name === "main");
+		$schema = Collection::from($management->getSchemaItems($db))->first();
+		$targets = $management->getResourceItems($schema, DatabaseResourceItem::KIND_TABLE | DatabaseResourceItem::KIND_VIEW);
 
-			SQL
-		);
+		$tables = Arr::map($targets, fn($a) => [
+			'name' => $a->name,
+			'source' => $a->source,
+			'columns' => $management->getColumns($a)
+		]);
 
-		$tables = array_map(function ($i) use ($database) {
-			return $this->getTableInfo($database, $i);
-		}, $schemas->rows);
 		$this->setValue('tables', $tables);
 	}
 

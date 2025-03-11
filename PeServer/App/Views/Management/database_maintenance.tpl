@@ -67,7 +67,6 @@
 			<h3>影響件数</h3>
 			<pre>{$values.result->getResultCount()}</pre>
 
-
 		{else}
 			<h2>結果: エラー</h2>
 			<pre data-clipboard="block">{$values.result}</pre>
