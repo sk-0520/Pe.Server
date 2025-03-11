@@ -1,5 +1,5 @@
 {extends file='default.tpl'}
-{block name='TITLE'}DBメンテナンス{/block}
+{block name='TITLE'}DBメンテナンス({$values.database}){/block}
 {block name='DEFAULT_SCRIPT'}{asset file='/scripts/management_database_maintenance.js'}{/block}
 {block name='BODY'}
 

@@ -35,7 +35,7 @@ abstract class ManagementDatabaseBase extends PageLogicBase
 		$targetDatabase = $this->getTargetDatabaseId();
 
 		switch ($targetDatabase) {
-			case "main":
+			case "default":
 				return $this->databaseConnection;
 
 			case "session":

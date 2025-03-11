@@ -87,7 +87,7 @@
 			実行
 			<ul>
 				<li>
-					<a href="/management/database-maintenance/main">メインDBメンテナンス</a> (<a href="/management/database-download/main">DL</a>)
+					<a href="/management/database-maintenance/default">メインDBメンテナンス</a> (<a href="/management/database-download/default">DL</a>)
 					{foreach from=$values.databases item=item key=key name=name}
 						<ul>
 							<li><a href="/management/database-maintenance/{$item.target}">{$item.display}DBメンテナンス</a> (<a href="/management/database-download/{$item.target}">DL</a>)</li>
