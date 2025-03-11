@@ -15,6 +15,7 @@ use PeServer\Core\Collections\Collection;
 use PeServer\Core\Database\DatabaseTableResult;
 use PeServer\Core\Database\IDatabaseContext;
 use PeServer\Core\Database\Management\DatabaseResourceItem;
+use PeServer\Core\DI\IDiContainer;
 use PeServer\Core\Mvc\Logic\LogicCallMode;
 use PeServer\Core\Mvc\Logic\LogicParameter;
 use PeServer\Core\Mvc\Validator;
@@ -41,12 +42,12 @@ class ManagementDatabaseMaintenanceLogic extends ManagementDatabaseBase
 		$this->setValue('executed', false);
 		$this->setValue('result', null);
 
-		$database = $this->openDatabase();
+		$database = $this->getTargetDatabase();
 		$management = $database->getManagement();
 
 		$db = Collection::from($management->getDatabaseItems())->first(fn($a) => $a->name === "main");
 		$schema = Collection::from($management->getSchemaItems($db))->first();
-		$targets = $management->getResourceItems($schema, DatabaseResourceItem::KIND_TABLE | DatabaseResourceItem::KIND_VIEW);
+		$targets = $management->getResourceItems($schema, DatabaseResourceItem::KIND_TABLE);
 
 		$tables = Arr::map($targets, fn($a) => [
 			'name' => $a->name,
@@ -76,7 +77,7 @@ class ManagementDatabaseMaintenanceLogic extends ManagementDatabaseBase
 
 		$statement = $this->getRequest('database_maintenance_statement');
 
-		$database = $this->openDatabase();
+		$database = $this->getTargetDatabase();
 		$result = null;
 		try {
 			$database->transaction(function (IDatabaseContext $context) use (&$result, $statement) {
