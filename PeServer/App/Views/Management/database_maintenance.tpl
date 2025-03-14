@@ -22,7 +22,7 @@
 			<dd>
 				{input_helper key='database_maintenance_statement' type="textarea" class="edit" required="true"}
 				<details id="tables" {$values.tables_open === 'true' ? "open": ""}>
-					<summary>TABLE</summary>
+					<summary>TABLE/VIEW</summary>
 					<ul class="inline">
 						{foreach from=$values.tables item=item key=key name=name}
 							<li class="inline">

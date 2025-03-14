@@ -55,7 +55,7 @@ class ManagementDatabaseMaintenanceLogic extends ManagementDatabaseBase
 
 		$db = Collection::from($management->getDatabaseItems())->first(fn($a) => $a->name === "main");
 		$schema = Collection::from($management->getSchemaItems($db))->first();
-		$targets = $management->getResourceItems($schema, DatabaseResourceItem::KIND_TABLE);
+		$targets = $management->getResourceItems($schema, DatabaseResourceItem::KIND_TABLE | DatabaseResourceItem::KIND_VIEW);
 
 		$tables = Arr::map($targets, fn($a) => [
 			'name' => $a->name,
