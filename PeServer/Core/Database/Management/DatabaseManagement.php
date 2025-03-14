@@ -185,8 +185,8 @@ class DatabaseManagement implements IDatabaseManagement
 
 	public function getColumns(DatabaseResourceItem $tableResource): array
 	{
-		if ($tableResource->kind !== DatabaseResourceItem::KIND_TABLE) {
-			throw new ArgumentException("not table");
+		if (!($tableResource->kind & (DatabaseResourceItem::KIND_TABLE | DatabaseResourceItem::KIND_VIEW))) {
+			throw new ArgumentException("not table/view");
 		}
 
 		$tableName = $this->context->escapeValue($tableResource->name);
