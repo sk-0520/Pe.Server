@@ -32,7 +32,6 @@ class AppMigrationRunnerFactory extends DiFactoryBase
 				$sessionConnection = SqliteSessionHandler::createConnection($appConfig->setting->store->session->save, null, $loggerFactory);
 			}
 
-			throw new InvalidOperationException($appConfig->setting->store->session->handlerFactory);
 		}
 
 		return new AppMigrationRunner($defaultConnection, $sessionConnection, $loggerFactory);
