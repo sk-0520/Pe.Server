@@ -14,6 +14,7 @@ use PeServer\Core\DI\IDiContainer;
 use PeServer\Core\Log\LoggerFactory;
 use PeServer\Core\Mvc\Logic\LogicParameter;
 use PeServer\Core\Store\SessionHandlerFactoryUtility;
+use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Throws\NotImplementedException;
 
 abstract class ManagementDatabaseBase extends PageLogicBase
@@ -40,8 +41,12 @@ abstract class ManagementDatabaseBase extends PageLogicBase
 
 			case "session":
 				if (SessionHandlerFactoryUtility::isFactory($this->appConfig->setting->store->session->handlerFactory)) {
-					$sessionConnection = SqliteSessionHandler::createConnection($this->appConfig->setting->store->session->save, null, LoggerFactory::createNullFactory());
-					return $sessionConnection;
+					if (SqliteSessionHandlerFactory::isSqliteFactory($this->appConfig->setting->store->session->handlerFactory)) {
+						$sessionConnection = SqliteSessionHandler::createConnection($this->appConfig->setting->store->session->save, null, LoggerFactory::createNullFactory());
+						return $sessionConnection;
+					}
+
+					throw new InvalidOperationException($this->appConfig->setting->store->session->handlerFactory);
 				}
 				break;
 
