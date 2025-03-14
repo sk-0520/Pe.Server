@@ -10,6 +10,7 @@ use PeServer\Core\Binary;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Database\ConnectionSetting;
 use PeServer\Core\Database\DatabaseContext;
+use PeServer\Core\Database\Management\IDatabaseManagement;
 use PeServer\Core\Log\Logging;
 use PeServer\Core\Log\NullLogger;
 use PeServer\Core\Throws\DatabaseException;
@@ -153,6 +154,15 @@ class DatabaseContextTest extends TestClass
 
 		$actual = $database->escapeValue($value);
 		$this->assertSame($expected, $actual);
+	}
+
+	public function test_getManagement()
+	{
+		$database = DB::memory();
+
+		$actual = $database->getManagement($database);
+
+		$this->assertInstanceOf(IDatabaseManagement::class, $actual);
 	}
 
 	public function test_fetch()

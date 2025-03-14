@@ -14,6 +14,30 @@ use PeServer\Core\Store\SessionOptions;
 
 class SqliteSessionHandlerFactory implements ISessionHandlerFactory
 {
+	#region function
+
+	/**
+	 * `SqliteSessionHandlerFactory` か。
+	 *
+	 * @param class-string<ISessionHandlerFactory> $name
+	 * @return bool
+	 * @assert-if-true class-string<SqliteSessionHandlerFactory> $name
+	 */
+	public static function isSqliteFactory(string $name)
+	{
+		if (!class_exists($name)) {
+			return false;
+		}
+
+		if ($name === SqliteSessionHandlerFactory::class) {
+			return true;
+		}
+
+		return is_subclass_of($name, SqliteSessionHandlerFactory::class);
+	}
+
+	#endregion
+
 	#region ISessionHandlerFactory
 
 	public function create(SessionOptions $options): SqliteSessionHandler

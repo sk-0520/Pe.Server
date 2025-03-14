@@ -1,26 +1,27 @@
 {extends file='default.tpl'}
-{block name='TITLE'}DBメンテナンス{/block}
+{block name='TITLE'}DBメンテナンス({$values.database}){/block}
 {block name='DEFAULT_SCRIPT'}{asset file='/scripts/management_database_maintenance.js'}{/block}
 {block name='BODY'}
 
 	<h2>メンテ</h2>
 	<ul>
 		<li>
-			<a href="/management/database-download">
+			<a href="/management/database-download/{$values.database}">
 				ダウンロード
 			</a>
 		</li>
 	</ul>
 
 	<h2>入力</h2>
-	<form class="page-setting-database-maintenance" action="/management/database-maintenance" method="post">
+	<form class="page-setting-database-maintenance" action="/management/database-maintenance/{$values.database}" method="post">
 		{csrf}
+		<input id="tables_open" name="tables_open" type="hidden" value="{$values.tables_open}" />
 
 		<dl class="input">
 			<dt>SQL</dt>
 			<dd>
 				{input_helper key='database_maintenance_statement' type="textarea" class="edit" required="true"}
-				<details id=tables>
+				<details id="tables" {$values.tables_open === 'true' ? "open": ""}>
 					<summary>TABLE</summary>
 					<ul class="inline">
 						{foreach from=$values.tables item=item key=key name=name}
@@ -67,16 +68,22 @@
 			<h3>影響件数</h3>
 			<pre>{$values.result->getResultCount()}</pre>
 
-
 		{else}
 			<h2>結果: エラー</h2>
 			<pre data-clipboard="block">{$values.result}</pre>
-			<details>
-				<summary>詳細ダンプ</summary>
-				<pre data-clipboard="block">{$values.result|dump}</pre>
-			</details>
-			</pre>
 		{/if}
 	{/if}
 
+{/block}
+
+{block name='SCRIPTS'}
+	<script>
+		window.addEventListener('load', () => {
+			const tablesOpenElement = document.getElementById('tables_open');
+			const tablesElement = document.getElementById('tables');
+			tablesElement.addEventListener("toggle", ev => {
+				tablesOpenElement.value = tablesElement.open;
+			})
+		});
+	</script>
 {/block}

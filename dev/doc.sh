@@ -7,7 +7,7 @@ source shell/common.sh
 #shellcheck disable=SC2048,SC2086
 common::parse_options "phpdoc:cache-path phpdoc:setting-graphs?" $*
 
-PHPDOC_VERSION=v3.6.0
+PHPDOC_VERSION=v3.7.1
 PHPDOC_URL=https://github.com/phpDocumentor/phpDocumentor/releases/download/${PHPDOC_VERSION}/phpDocumentor.phar
 PHPDOC_NAME=phpdoc.phar
 PHPDOC_FILE=${PHPDOC_NAME}.${PHPDOC_VERSION}
@@ -21,6 +21,8 @@ fi
 
 PHPDOC_OPTIONS_SETTING_GRAPHS=
 if common::exists_option 'phpdoc:setting-graphs' ; then
+	# export PHPDOC_PLANTUML_SERVER=http://www.plantuml.com/plantuml/svg/
+	# export PHPDOC_PLANTUML=plantuml-server
 	PHPDOC_OPTIONS_SETTING_GRAPHS="--setting=graphs.enabled=true -vvv"
 fi
 

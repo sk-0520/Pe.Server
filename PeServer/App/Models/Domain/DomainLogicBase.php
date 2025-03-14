@@ -24,8 +24,8 @@ use PeServer\Core\Text;
 
 abstract class DomainLogicBase extends LogicBase
 {
-	#[Inject] //@phpstan-ignore-next-line [INJECT]
-	private IDatabaseConnection $databaseConnection;
+	#[Inject]
+	protected IDatabaseConnection $databaseConnection;
 
 	public function __construct(LogicParameter $parameter)
 	{

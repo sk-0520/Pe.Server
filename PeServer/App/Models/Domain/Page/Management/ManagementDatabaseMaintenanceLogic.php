@@ -11,40 +11,22 @@ use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\Core\Code;
 use PeServer\Core\Collections\Access;
 use PeServer\Core\Collections\Arr;
+use PeServer\Core\Collections\Collection;
 use PeServer\Core\Database\DatabaseTableResult;
 use PeServer\Core\Database\IDatabaseContext;
+use PeServer\Core\Database\Management\DatabaseResourceItem;
+use PeServer\Core\DI\IDiContainer;
 use PeServer\Core\Mvc\Logic\LogicCallMode;
 use PeServer\Core\Mvc\Logic\LogicParameter;
 use PeServer\Core\Mvc\Validator;
 use PeServer\Core\Regex;
 use PeServer\Core\Text;
 
-class ManagementDatabaseMaintenanceLogic extends PageLogicBase
+class ManagementDatabaseMaintenanceLogic extends ManagementDatabaseBase
 {
-	public function __construct(LogicParameter $parameter)
+	public function __construct(LogicParameter $parameter, AppConfiguration $appConfig)
 	{
-		parent::__construct($parameter);
-	}
-
-	/**
-	 * テーブル情報取得。
-	 *
-	 * @param IDatabaseContext $context
-	 * @param array<mixed> $row
-	 * @return array{name:string,sql:string,columns:array<mixed>}
-	 */
-	private function getTableInfo(IDatabaseContext $context, array $row): array
-	{
-		$name = Code::toLiteralString($row['name']);
-		$columns = $context->query(
-			"PRAGMA table_info('$name')"
-		);
-
-		return [
-			'name' => Access::getString($row, 'name'),
-			'sql' => Access::getString($row, 'sql'),
-			'columns' => $columns->rows
-		];
+		parent::__construct($parameter, $appConfig);
 	}
 
 	//[PageLogicBase]
@@ -52,33 +34,35 @@ class ManagementDatabaseMaintenanceLogic extends PageLogicBase
 	protected function startup(LogicCallMode $callMode): void
 	{
 		$this->registerParameterKeys([
+			"tables_open",
+			"database",
 			'database_maintenance_statement',
 			'executed',
 			'result',
 			'tables',
 		], true);
+
+		$this->setValue(
+			'tables_open',
+			$this->getRequest("tables_open") === "true"
+				? "true" : "false"
+		);
 		$this->setValue('executed', false);
 		$this->setValue('result', null);
 
-		$database = $this->openDatabase();
-		$schemas = $database->query(
-			<<<SQL
+		$database = $this->getTargetContext();
+		$management = $database->getManagement();
 
-			select
-				*
-			from
-				sqlite_master
-			where
-				type = 'table'
-			order by
-				name
+		$db = Collection::from($management->getDatabaseItems())->first(fn($a) => $a->name === "main");
+		$schema = Collection::from($management->getSchemaItems($db))->first();
+		$targets = $management->getResourceItems($schema, DatabaseResourceItem::KIND_TABLE);
 
-			SQL
-		);
+		$tables = Arr::map($targets, fn($a) => [
+			'name' => $a->name,
+			'source' => $a->source,
+			'columns' => $management->getColumns($a)
+		]);
 
-		$tables = array_map(function ($i) use ($database) {
-			return $this->getTableInfo($database, $i);
-		}, $schemas->rows);
 		$this->setValue('tables', $tables);
 	}
 
@@ -101,7 +85,7 @@ class ManagementDatabaseMaintenanceLogic extends PageLogicBase
 
 		$statement = $this->getRequest('database_maintenance_statement');
 
-		$database = $this->openDatabase();
+		$database = $this->getTargetContext();
 		$result = null;
 		try {
 			$database->transaction(function (IDatabaseContext $context) use (&$result, $statement) {
@@ -116,6 +100,7 @@ class ManagementDatabaseMaintenanceLogic extends PageLogicBase
 				return true;
 			});
 		} catch (Throwable $ex) {
+			ini_set('memory_limit', '-1');
 			$result = $ex;
 		}
 

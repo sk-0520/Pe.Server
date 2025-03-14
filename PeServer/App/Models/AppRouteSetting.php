@@ -47,6 +47,7 @@ final readonly class AppRouteSetting extends RouteSetting
 	private const SIGNUP_TOKEN = '[a-zA-Z0-9]{80}';
 	private const PASSWORD_REMINDER_TOKEN = '[a-zA-Z0-9]{80}';
 	private const PLUGIN_ID = '\{?[a-fA-F0-9\-]{32,}\}?';
+	private const DATABASE_TARGET = '(default|session)';
 
 	public function __construct(Environment $environment)
 	{
@@ -139,9 +140,9 @@ final readonly class AppRouteSetting extends RouteSetting
 					->addAction('configuration/edit', HttpMethod::Post, 'configuration_edit_post', [CsrfMiddleware::class])
 					->addAction('backup', HttpMethod::Post, 'backup', [CsrfMiddleware::class])
 					->addAction('delete-old-data', HttpMethod::Post, 'delete_old_data', [CsrfMiddleware::class])
-					->addAction('database-maintenance', HttpMethod::Get, 'database_maintenance_get')
-					->addAction('database-maintenance', HttpMethod::Post, 'database_maintenance_post', [CsrfMiddleware::class])
-					->addAction('database-download', HttpMethod::Get, 'database_download_get')
+					->addAction('database-maintenance/:database@' . self::DATABASE_TARGET, HttpMethod::Get, 'database_maintenance_get')
+					->addAction('database-maintenance/:database@' . self::DATABASE_TARGET, HttpMethod::Post, 'database_maintenance_post', [CsrfMiddleware::class])
+					->addAction('database-download/:database@' . self::DATABASE_TARGET, HttpMethod::Get, 'database_download_get')
 					->addAction('mail-send', HttpMethod::Get, 'mail_send_get')
 					->addAction('mail-send', HttpMethod::Post, 'mail_send_post')
 					->addAction('php-evaluate', HttpMethod::Get, 'php_evaluate_get')

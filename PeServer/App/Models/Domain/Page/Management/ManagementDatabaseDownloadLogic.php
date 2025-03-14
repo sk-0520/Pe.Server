@@ -13,8 +13,11 @@ use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\Core\Archive\ArchiveEntry;
 use PeServer\Core\Archive\Archiver;
 use PeServer\Core\Collections\Arr;
+use PeServer\Core\Database\DatabaseConnection;
 use PeServer\Core\Database\DatabaseTableResult;
+use PeServer\Core\Database\DatabaseUtility;
 use PeServer\Core\Database\IDatabaseContext;
+use PeServer\Core\DI\IDiContainer;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\IO\Directory;
 use PeServer\Core\IO\File;
@@ -32,11 +35,11 @@ use PeServer\Core\Throws\HttpStatusException;
 use PeServer\Core\Throws\InvalidOperationException;
 use ZipArchive;
 
-class ManagementDatabaseDownloadLogic extends PageLogicBase
+class ManagementDatabaseDownloadLogic extends ManagementDatabaseBase
 {
-	public function __construct(LogicParameter $parameter, private AppConfiguration $appConfig, private AppTemporary $appTemporary)
+	public function __construct(LogicParameter $parameter, AppConfiguration $appConfig, private AppTemporary $appTemporary)
 	{
-		parent::__construct($parameter);
+		parent::__construct($parameter, $appConfig);
 	}
 
 	protected function validateImpl(LogicCallMode $callMode): void
@@ -61,7 +64,10 @@ class ManagementDatabaseDownloadLogic extends PageLogicBase
 		$this->logger->info("database temp dir: {0}", $workDirPath);
 		$zipFilePath = Path::combine($workDirPath, $this->appTemporary->createFileName($this->beginTimestamp, "zip"));
 
-		$target = AppDatabaseConnection::getSqliteFilePath($this->appConfig->setting->persistence->default->connection);
+		$downloadBaseName = $this->getTargetDatabaseId();
+		$connection = $this->getTargetDatabaseConnection();
+		$target = DatabaseUtility::getSqliteFilePath($connection->getConnectionSetting());
+		//$target = AppDatabaseConnection::getSqliteFilePath($this->appConfig->setting->persistence->default->connection);
 		$name = Path::getFileName($target);
 
 		Archiver::compressZip(
@@ -78,6 +84,6 @@ class ManagementDatabaseDownloadLogic extends PageLogicBase
 		]);
 
 		$stream = FileCleanupStream::read($zipFilePath);
-		$this->setDownloadContent(Mime::ZIP, "database.zip", $stream);
+		$this->setDownloadContent(Mime::ZIP, "database-{$downloadBaseName}.zip", $stream);
 	}
 }

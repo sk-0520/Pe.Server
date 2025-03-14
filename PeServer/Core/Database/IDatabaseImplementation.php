@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Database;
 
+use PeServer\Core\Database\Management\IDatabaseManagement;
+
 /**
  * DB実装処理。
  */
@@ -26,6 +28,13 @@ interface IDatabaseImplementation
 	 * @return string
 	 */
 	public function escapeValue(mixed $value): string;
+
+	/**
+	 * DB実装管理処理の取得。
+	 *
+	 * @return IDatabaseManagement
+	 */
+	public function getManagement(): IDatabaseManagement;
 
 	#endregion
 }
