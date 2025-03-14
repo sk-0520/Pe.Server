@@ -29,7 +29,7 @@ class SqliteSessionHandlerFactory implements ISessionHandlerFactory
 			return false;
 		}
 
-		if($name === SqliteSessionHandlerFactory::class) {
+		if ($name === SqliteSessionHandlerFactory::class) {
 			return true;
 		}
 

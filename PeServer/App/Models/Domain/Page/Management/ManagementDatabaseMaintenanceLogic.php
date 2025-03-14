@@ -34,12 +34,19 @@ class ManagementDatabaseMaintenanceLogic extends ManagementDatabaseBase
 	protected function startup(LogicCallMode $callMode): void
 	{
 		$this->registerParameterKeys([
+			"tables_open",
 			"database",
 			'database_maintenance_statement',
 			'executed',
 			'result',
 			'tables',
 		], true);
+
+		$this->setValue(
+			'tables_open',
+			$this->getRequest("tables_open") === "true"
+				? "true" : "false"
+		);
 		$this->setValue('executed', false);
 		$this->setValue('result', null);
 
@@ -93,6 +100,7 @@ class ManagementDatabaseMaintenanceLogic extends ManagementDatabaseBase
 				return true;
 			});
 		} catch (Throwable $ex) {
+			ini_set('memory_limit', '-1');
 			$result = $ex;
 		}
 

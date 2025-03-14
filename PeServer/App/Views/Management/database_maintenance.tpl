@@ -15,12 +15,13 @@
 	<h2>入力</h2>
 	<form class="page-setting-database-maintenance" action="/management/database-maintenance/{$values.database}" method="post">
 		{csrf}
+		<input id="tables_open" name="tables_open" type="hidden" value="{$values.tables_open}" />
 
 		<dl class="input">
 			<dt>SQL</dt>
 			<dd>
 				{input_helper key='database_maintenance_statement' type="textarea" class="edit" required="true"}
-				<details id=tables>
+				<details id="tables" {$values.tables_open === 'true' ? "open": ""}>
 					<summary>TABLE</summary>
 					<ul class="inline">
 						{foreach from=$values.tables item=item key=key name=name}
@@ -70,12 +71,19 @@
 		{else}
 			<h2>結果: エラー</h2>
 			<pre data-clipboard="block">{$values.result}</pre>
-			<details>
-				<summary>詳細ダンプ</summary>
-				<pre data-clipboard="block">{$values.result|dump}</pre>
-			</details>
-			</pre>
 		{/if}
 	{/if}
 
+{/block}
+
+{block name='SCRIPTS'}
+	<script>
+		window.addEventListener('load', () => {
+			const tablesOpenElement = document.getElementById('tables_open');
+			const tablesElement = document.getElementById('tables');
+			tablesElement.addEventListener("toggle", ev => {
+				tablesOpenElement.value = tablesElement.open;
+			})
+		});
+	</script>
 {/block}
