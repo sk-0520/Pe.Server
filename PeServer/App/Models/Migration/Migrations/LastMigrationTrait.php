@@ -13,11 +13,21 @@ trait LastMigrationTrait
 
 	private function updateLastDatabase(int $version, IDatabaseContext $context): void
 	{
+		$this->logger->info("DELETE");
+		$context->delete(
+			<<<SQL
+
+			delete from
+				database_version
+
+			SQL
+		);
+
 		$this->logger->info("UPDATE");
 		$result = $context->execute(
 			<<<SQL
 
-			replace into
+			insert into
 				database_version
 				(
 					version
