@@ -186,7 +186,8 @@
 			"timonwong.shellcheck",
 			"sanderronde.phpstan-vscode",
 			"mads-hartmann.bash-ide-vscode",
-			"github.vscode-github-actions"
+			"github.vscode-github-actions",
+			"biomejs.biome"
 		],
 	}
 }
