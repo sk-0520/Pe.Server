@@ -207,32 +207,5 @@ abstract class TypeUtility
 		return $className;
 	}
 
-	/**
-	 * NULL を許容する型か。
-	 *
-	 * NULL 許容型ではないことに注意。
-	 *
-	 * @param string $type
-	 * @return bool
-	 */
-	public static function isNullable(string $type): bool
-	{
-		// if($type[0] === '?') {
-		// 	return true;
-		// }
-		return match ($type) {
-			self::TYPE_BOOLEAN => false,
-			self::TYPE_INTEGER => false,
-			self::TYPE_DOUBLE => false,
-			self::TYPE_STRING => true,
-			self::TYPE_ARRAY => true,
-			self::TYPE_OBJECT => true,
-			self::TYPE_RESOURCE => true,
-			self::TYPE_RESOURCE_CLOSED => true,
-			self::TYPE_NULL => true,
-			default => true,
-		};
-	}
-
 	#endregion
 }

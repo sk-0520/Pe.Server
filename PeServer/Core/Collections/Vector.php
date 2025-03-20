@@ -26,10 +26,11 @@ class Vector extends TypeArrayBase
 	 * @param array $items
 	 * @phpstan-param array<array-key,TValue> $items
 	 * @param bool $useValues
+	 * @param bool $isNullable
 	 */
-	public function __construct(string $type, ?array $items, bool $useValues)
+	public function __construct(string $type, ?array $items, bool $useValues, bool $isNullable)
 	{
-		parent::__construct($type);
+		parent::__construct($type, $isNullable);
 
 		if (!Arr::isNullOrEmpty($items)) {
 			$this->addRange($items, $useValues);
@@ -45,10 +46,11 @@ class Vector extends TypeArrayBase
 	 * @param array $items 配列。
 	 * @phpstan-param non-empty-array<TTValue> $items
 	 * @param bool $useValues
+	 * @param bool $isNullable
 	 * @return self
 	 * @phpstan-return self<TTValue>
 	 */
-	public static function create(array $items, bool $useValues = true): self
+	public static function create(array $items, bool $useValues = true, bool $isNullable = false): self
 	{
 		if (Arr::isNullOrEmpty($items)) {
 			throw new ArgumentException('$items');
@@ -58,7 +60,7 @@ class Vector extends TypeArrayBase
 		$firstValue = $items[$firstKey];
 
 		$type = TypeUtility::getType($firstValue);
-		return new self($type, $items, $useValues);
+		return new self($type, $items, $useValues, $isNullable);
 	}
 
 	/**
@@ -67,12 +69,13 @@ class Vector extends TypeArrayBase
 	 * @template TTValue
 	 * @param string $type
 	 * @phpstan-param class-string|TypeUtility::TYPE_* $type
+	 * @param bool $isNullable
 	 * @return self
 	 * @phpstan-return self<TTValue>
 	 */
-	public static function empty(string $type): self //@phpstan-ignore-line わかんね
+	public static function empty(string $type, bool $isNullable = false): self //@phpstan-ignore-line わかんね
 	{
-		return new self($type, [], false);
+		return new self($type, [], false, $isNullable);
 	}
 
 	protected function throwIfInvalidOffset(mixed $offset): void

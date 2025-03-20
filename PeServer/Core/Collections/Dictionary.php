@@ -28,10 +28,11 @@ class Dictionary extends TypeArrayBase
 	 * @param class-string|TypeUtility::TYPE_* $type
 	 * @param array $map
 	 * @phpstan-param array<string,TValue> $map
+	 * @param bool $isNullable
 	 */
-	public function __construct(string $type, array $map)
+	public function __construct(string $type, array $map, bool $isNullable)
 	{
-		parent::__construct($type);
+		parent::__construct($type, $isNullable);
 
 		foreach ($map as $key => $value) {
 			$this->validateType($value);
@@ -47,10 +48,11 @@ class Dictionary extends TypeArrayBase
 	 * @template TTValue
 	 * @param array $map 配列。
 	 * @phpstan-param non-empty-array<string,TTValue> $map
+	 * @param bool $isNullable
 	 * @return self
 	 * @phpstan-return self<TTValue>
 	 */
-	public static function create(array $map): self
+	public static function create(array $map, bool $isNullable = false): self
 	{
 		if (Arr::isNullOrEmpty($map)) {
 			throw new ArgumentException('$map');
@@ -61,7 +63,7 @@ class Dictionary extends TypeArrayBase
 
 		$type = TypeUtility::getType($firstValue);
 
-		return new self($type, $map);
+		return new self($type, $map, $isNullable);
 	}
 
 	/**
@@ -69,12 +71,13 @@ class Dictionary extends TypeArrayBase
 	 *
 	 * @template TTValue
 	 * @param class-string|TypeUtility::TYPE_* $type
+	 * @param bool $isNullable
 	 * @return self
 	 * @phpstan-return self<TTValue>
 	 */
-	public static function empty(string $type): self //@phpstan-ignore-line TTValue
+	public static function empty(string $type, bool $isNullable = false): self //@phpstan-ignore-line TTValue
 	{
-		return new self($type, []);
+		return new self($type, [], $isNullable);
 	}
 
 	protected function throwIfInvalidOffset(mixed $offset): void

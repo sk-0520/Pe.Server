@@ -219,19 +219,4 @@ class TypeUtilityTest extends TestClass
 		$actual = TypeUtility::getSimpleClassName(new stdClass());
 		$this->assertSame("stdClass", $actual);
 	}
-
-	#[TestWith([false, TypeUtility::TYPE_BOOLEAN])]
-	#[TestWith([false, TypeUtility::TYPE_INTEGER])]
-	#[TestWith([false, TypeUtility::TYPE_DOUBLE])]
-	#[TestWith([true, TypeUtility::TYPE_STRING])]
-	#[TestWith([true, TypeUtility::TYPE_ARRAY])]
-	#[TestWith([true, TypeUtility::TYPE_OBJECT])]
-	#[TestWith([true, TypeUtility::TYPE_RESOURCE])]
-	#[TestWith([true, TypeUtility::TYPE_RESOURCE_CLOSED])]
-	#[TestWith([true, TypeUtility::TYPE_NULL])]
-	public function test_isNullable(bool $expected, string $type)
-	{
-		$actual = TypeUtility::isNullable($type);
-		$this->assertSame($expected, $actual);
-	}
 }
