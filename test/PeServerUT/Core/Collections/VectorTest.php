@@ -39,7 +39,7 @@ class VectorTest extends TestClass
 {
 	public function test_create()
 	{
-		$list1 = new Vector(TypeUtility::TYPE_INTEGER, null, true);
+		$list1 = new Vector(TypeUtility::TYPE_INTEGER, null, true, false);
 		$this->assertSame(0, $list1->count());
 
 		$list2 = Vector::create([1, 2, 3]);
@@ -67,7 +67,7 @@ class VectorTest extends TestClass
 	public function test_add()
 	{
 		/** @var Vector<int> */
-		$list = new Vector(TypeUtility::TYPE_INTEGER, null, true);
+		$list = new Vector(TypeUtility::TYPE_INTEGER, null, true, false);
 
 		$list->add(1);
 		$this->assertSame(1, $list->count());

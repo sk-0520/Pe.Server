@@ -28,7 +28,7 @@ class ItBody
 			);
 		}
 
-		$map = new Dictionary(TypeUtility::TYPE_STRING, []);
+		$map = new Dictionary(TypeUtility::TYPE_STRING, [], false);
 		foreach ($body as $key => $value) {
 			$map[$key] = (string)$value;
 		}

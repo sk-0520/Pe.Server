@@ -8,6 +8,7 @@ use PeServerTest\TestClass;
 use PeServer\Core\TypeUtility;
 use PeServer\Core\Throws\ParseException;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\TestWith;
 use stdClass;
 
 class TypeUtilityTest extends TestClass

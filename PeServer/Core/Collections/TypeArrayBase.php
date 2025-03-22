@@ -40,10 +40,13 @@ abstract class TypeArrayBase implements ArrayAccess, Countable, IteratorAggregat
 	 *
 	 * @param string $type
 	 * @phpstan-param class-string|TypeUtility::TYPE_* $type
+	 * @param bool $isNullable NULL を許容するか。
 	 */
 	protected function __construct(
-		protected string $type
+		protected string $type,
+		protected bool $isNullable = false
 	) {
+		//NOP
 	}
 
 	#region function
@@ -64,10 +67,9 @@ abstract class TypeArrayBase implements ArrayAccess, Countable, IteratorAggregat
 	protected function validateType(mixed $value): void
 	{
 		if ($value === null) {
-			if (!TypeUtility::isNullable($this->type)) {
-				throw new TypeError('$value');
+			if (!$this->isNullable) {
+				throw new TypeError('not null');
 			}
-			return;
 		}
 
 		$type = TypeUtility::getType($value);
