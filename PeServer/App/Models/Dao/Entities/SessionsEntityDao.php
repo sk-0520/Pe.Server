@@ -144,7 +144,7 @@ class SessionsEntityDao extends DaoBase
 			delete from
 				sessions
 			where
-				sessions.updated_epoch < updated_epoch
+				sessions.updated_epoch < :updated_epoch
 
 			SQL,
 			[
