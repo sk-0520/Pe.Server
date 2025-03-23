@@ -11,7 +11,8 @@
 		"build": "npm-run-all --sequential build:debug build:release",
 		"watch": "webpack --watch --cache --mode=development --config=webpack.config.ts",
 		"serve": "rspack serve",
-		"build2": "rspack build",
+		"build-develop": "rspack build --watch --nodeEnv development",
+		"build-release": "rspack build",
 		"npm-check": "ncu",
 		"npm-update": "ncu -u && npm install"
 	},

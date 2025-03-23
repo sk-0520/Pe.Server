@@ -7,7 +7,11 @@ const isProduction = process.env.NODE_ENV === 'production';
 const inputDirectory = path.resolve(__dirname, 'alt');
 const outputDirectory = path.resolve(__dirname, 'public_html');
 
+console.log({isProduction});
+
 export default defineConfig({
+	mode: isProduction ? 'production' : 'development',
+
 	// 名前に親ディレクトリを含めること(JS/CSSごちゃまぜ回避方法不明)
 	entry: {
 		// 共通スクリプト
@@ -26,9 +30,9 @@ export default defineConfig({
 	},
 
 	output: {
-		filename: isProduction
-			? '[name].min.js'
-			: '[name].js',
+		assetModuleFilename: isProduction
+			? '[name].min[ext]'
+			: '[name][ext]',
 		path: outputDirectory
 	},
 
