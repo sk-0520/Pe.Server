@@ -51,9 +51,47 @@ export default defineConfig({
 	// 	],
 	//   },
 
+	resolve: {
+		extensions: [
+			'...', '.ts',
+		]
+	},
+
+	module: {
+		rules: [
+			{
+				test: /\.ts$/,
+				exclude: [/node_modules/],
+				loader: 'builtin:swc-loader',
+				options: {
+					jsc: {
+						parser: {
+							syntax: 'typescript',
+						},
+					},
+				},
+			},
+			{
+				test: /\.(sass|scss)$/,
+				use: [
+					rspack.CssExtractRspackPlugin.loader,
+					{ loader: 'css-loader' },
+					{ loader: 'postcss-loader' },
+					{ loader: 'sass-loader' },
+				],
+			},
+		],
+	},
+
 
 	plugins: [
 		new rspack.DefinePlugin({
+		}),
+		new rspack.CssExtractRspackPlugin({
+			filename: isProduction
+				? '[name].min.css'
+				: '[name].css'
+			,
 		}),
 	],
 })
