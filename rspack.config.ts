@@ -32,6 +32,10 @@ export default defineConfig({
 		path: outputDirectory
 	},
 
+	// devServer: {
+	// 	// the configuration of the development server
+	// 	port: 8080
+	// },
 
 	// module: {
 	// 	rules: [
