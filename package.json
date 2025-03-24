@@ -4,6 +4,7 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
+		"lint:type": "tsc --noEmit",
 		"test:script": "jest",
 		"test": "npm-run-all --sequential test:script",
 		"watch": "rspack build --nodeEnv development --watch",
