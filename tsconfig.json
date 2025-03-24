@@ -18,7 +18,8 @@
 		"target": "es2021",
 		"isolatedModules": true,
 		"types": [
-			"@rspack/core/module"
+			"@rspack/core/module",
+			"@types/jest"
 		]
 	},
 	"lib": [
@@ -26,11 +27,15 @@
 		"dom",
 		"dom.iterable"
 	],
-	"typeRoots" : [
+	"typeRoots": [
 		"./node_modules/@types"
+	],
+	"include": [
+		"alt/**/*"
 	],
 	"exclude": [
 		"./node_modules",
-		"./public_html/scripts"
+		"./public_html/scripts",
+		"**/*.test.ts"
 	]
 }

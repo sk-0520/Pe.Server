@@ -7,7 +7,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 const inputDirectory = path.resolve(__dirname, 'alt');
 const outputDirectory = path.resolve(__dirname, 'public_html');
 
-console.log({isProduction});
+console.log({ isProduction });
 
 export default defineConfig({
 	mode: isProduction ? 'production' : 'development',
@@ -30,15 +30,20 @@ export default defineConfig({
 	},
 
 	output: {
-		assetModuleFilename: isProduction
-			? '[name].min[ext]'
-			: '[name][ext]',
+		filename: isProduction
+			? '[name].min.js'
+			: '[name].js',
 		path: outputDirectory
+	},
+
+	devServer: {
+		watchFiles: ['public/**/*'],
+		port: 8080
 	},
 
 	// devServer: {
 	// 	// the configuration of the development server
-	// 	port: 8080
+	// 	// port: 8080
 	// },
 
 	// module: {
@@ -101,5 +106,11 @@ export default defineConfig({
 				: '[name].css'
 			,
 		}),
+		...(isProduction
+			? []
+			: [
+				new rspack.HotModuleReplacementPlugin()
+			])
+
 	],
 })
