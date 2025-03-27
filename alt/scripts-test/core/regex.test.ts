@@ -1,11 +1,11 @@
-import * as regex from '../../scripts/core/regex';
+import * as regex from "../../scripts/core/regex";
 
-describe('regex', () => {
+describe("regex", () => {
 	test.each([
-		["\\*", '*'],
-		["\\.", '.'],
-		["\\*\\*", '**'],
-	])('escape', (expected: string, pattern: string) => {
+		["\\*", "*"],
+		["\\.", "."],
+		["\\*\\*", "**"],
+	])("escape", (expected: string, pattern: string) => {
 		expect(regex.escape(pattern)).toBe(expected);
 	});
 });

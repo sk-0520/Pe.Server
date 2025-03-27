@@ -1,4 +1,4 @@
-import * as number from './number';
+import * as number from "./number";
 
 /**
  * 時間を扱う。
@@ -6,14 +6,12 @@ import * as number from './number';
  * 細かいのは時間できたときに、うん。
  */
 export class TimeSpan {
-
 	/**
 	 * 生成。
 	 *
 	 * @param _ticks ミリ秒。
 	 */
-	private constructor(private _ticks: number) {
-	}
+	private constructor(private _ticks: number) {}
 
 	//#region property
 
@@ -78,26 +76,27 @@ export class TimeSpan {
 
 export enum DayOfWeek {
 	Sunday = 0,
-	Monday,
-	Tuesday,
-	Wednesday,
-	Thursday,
-	Friday,
-	Saturday,
+	Monday = 1,
+	Tuesday = 2,
+	Wednesday = 3,
+	Thursday = 4,
+	Friday = 5,
+	Saturday = 6,
 }
 
 /**
  * UTC周り多分間違ってる。
  */
 export class DateTime {
-
 	/**
 	 * 生成。
 	 *
 	 * @param _timestamp タイムスタンプ。
 	 */
-	private constructor(private readonly _timestamp: Date, private readonly _isUtc: boolean) {
-	}
+	private constructor(
+		private readonly _timestamp: Date,
+		private readonly _isUtc: boolean,
+	) {}
 
 	//#region property
 
@@ -108,58 +107,48 @@ export class DateTime {
 	public get year(): number {
 		return this.isUtc
 			? this._timestamp.getUTCFullYear()
-			: this._timestamp.getFullYear()
-			;
+			: this._timestamp.getFullYear();
 	}
 
 	public get month(): number {
 		const month = this.isUtc
 			? this._timestamp.getUTCMonth()
-			: this._timestamp.getMonth()
-			;
+			: this._timestamp.getMonth();
 		return month + 1;
 	}
 
 	public get day(): number {
 		return this.isUtc
 			? this._timestamp.getUTCDate()
-			: this._timestamp.getDate()
-			;
+			: this._timestamp.getDate();
 	}
 
 	public get dayOfWeek(): DayOfWeek {
-		return this.isUtc
-			? this._timestamp.getUTCDay()
-			: this._timestamp.getDay()
-			;
+		return this.isUtc ? this._timestamp.getUTCDay() : this._timestamp.getDay();
 	}
 
 	public get hour(): number {
 		return this.isUtc
 			? this._timestamp.getUTCHours()
-			: this._timestamp.getHours()
-			;
+			: this._timestamp.getHours();
 	}
 
 	public get minute(): number {
 		return this.isUtc
 			? this._timestamp.getUTCMinutes()
-			: this._timestamp.getMinutes()
-			;
+			: this._timestamp.getMinutes();
 	}
 
 	public get second(): number {
 		return this.isUtc
 			? this._timestamp.getUTCSeconds()
-			: this._timestamp.getSeconds()
-			;
+			: this._timestamp.getSeconds();
 	}
 
 	public get millisecond(): number {
 		return this.isUtc
 			? this._timestamp.getUTCMilliseconds()
-			: this._timestamp.getMilliseconds()
-			;
+			: this._timestamp.getMilliseconds();
 	}
 
 	//#endregion
@@ -172,22 +161,37 @@ export class DateTime {
 
 	public static utcNow(): DateTime {
 		const now = new Date();
-		const utc = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds(), now.getMilliseconds());
+		const utc = Date.UTC(
+			now.getFullYear(),
+			now.getMonth(),
+			now.getDate(),
+			now.getHours(),
+			now.getMinutes(),
+			now.getSeconds(),
+			now.getMilliseconds(),
+		);
 		return new DateTime(new Date(utc), true);
 	}
 
-	private static createCore(isUtc: boolean, year: number, month: number, day: number, hour?: number, minute?: number, second?: number, millisecond?: number): DateTime {
+	private static createCore(
+		isUtc: boolean,
+		year: number,
+		month: number,
+		day: number,
+		hour?: number,
+		minute?: number,
+		second?: number,
+		millisecond?: number,
+	): DateTime {
 		let date: Date | null = null;
 		if (hour === undefined) {
 			date = isUtc
 				? new Date(Date.UTC(year, month - 1, day))
-				: new Date(year, month - 1, day)
-				;
+				: new Date(year, month - 1, day);
 		} else if (minute === undefined) {
 			date = isUtc
 				? new Date(Date.UTC(year, month - 1, day, hour))
-				: new Date(year, month - 1, day, hour)
-				;
+				: new Date(year, month - 1, day, hour);
 		} else if (second === undefined) {
 			date = isUtc
 				? new Date(Date.UTC(year, month - 1, day, hour, minute))
@@ -195,13 +199,13 @@ export class DateTime {
 		} else if (millisecond === undefined) {
 			date = isUtc
 				? new Date(Date.UTC(year, month - 1, day, hour, minute, second))
-				: new Date(year, month - 1, day, hour, minute, second)
-				;
+				: new Date(year, month - 1, day, hour, minute, second);
 		} else {
 			date = isUtc
-				? new Date(Date.UTC(year, month - 1, day, hour, minute, second, millisecond))
-				: new Date(year, month - 1, day, hour, minute, second, millisecond)
-				;
+				? new Date(
+						Date.UTC(year, month - 1, day, hour, minute, second, millisecond),
+					)
+				: new Date(year, month - 1, day, hour, minute, second, millisecond);
 		}
 		return new DateTime(date, isUtc);
 	}
@@ -209,23 +213,109 @@ export class DateTime {
 	//#region create
 
 	public static create(year: number, month: number, day: number): DateTime;
-	public static create(year: number, month: number, day: number, hour: number): DateTime;
-	public static create(year: number, month: number, day: number, hour: number, minute: number): DateTime;
-	public static create(year: number, month: number, day: number, hour: number, minute: number, second: number): DateTime;
-	public static create(year: number, month: number, day: number, hour: number, minute: number, second: number, millisecond: number): DateTime;
-	public static create(year: number, month: number, day: number, hour?: number, minute?: number, second?: number, millisecond?: number): DateTime {
-		return this.createCore(false, year, month, day, hour, minute, second, millisecond);
+	public static create(
+		year: number,
+		month: number,
+		day: number,
+		hour: number,
+	): DateTime;
+	public static create(
+		year: number,
+		month: number,
+		day: number,
+		hour: number,
+		minute: number,
+	): DateTime;
+	public static create(
+		year: number,
+		month: number,
+		day: number,
+		hour: number,
+		minute: number,
+		second: number,
+	): DateTime;
+	public static create(
+		year: number,
+		month: number,
+		day: number,
+		hour: number,
+		minute: number,
+		second: number,
+		millisecond: number,
+	): DateTime;
+	public static create(
+		year: number,
+		month: number,
+		day: number,
+		hour?: number,
+		minute?: number,
+		second?: number,
+		millisecond?: number,
+	): DateTime {
+		return DateTime.createCore(
+			false,
+			year,
+			month,
+			day,
+			hour,
+			minute,
+			second,
+			millisecond,
+		);
 	}
 	//#endregion
 
 	//#region createUtc
 	public static createUtc(year: number, month: number, day: number): DateTime;
-	public static createUtc(year: number, month: number, day: number, hour: number): DateTime;
-	public static createUtc(year: number, month: number, day: number, hour: number, minute: number): DateTime;
-	public static createUtc(year: number, month: number, day: number, hour: number, minute: number, second: number): DateTime;
-	public static createUtc(year: number, month: number, day: number, hour: number, minute: number, second: number, millisecond: number): DateTime;
-	public static createUtc(year: number, month: number, day: number, hour?: number, minute?: number, second?: number, millisecond?: number): DateTime {
-		return this.createCore(true, year, month, day, hour, minute, second, millisecond);
+	public static createUtc(
+		year: number,
+		month: number,
+		day: number,
+		hour: number,
+	): DateTime;
+	public static createUtc(
+		year: number,
+		month: number,
+		day: number,
+		hour: number,
+		minute: number,
+	): DateTime;
+	public static createUtc(
+		year: number,
+		month: number,
+		day: number,
+		hour: number,
+		minute: number,
+		second: number,
+	): DateTime;
+	public static createUtc(
+		year: number,
+		month: number,
+		day: number,
+		hour: number,
+		minute: number,
+		second: number,
+		millisecond: number,
+	): DateTime;
+	public static createUtc(
+		year: number,
+		month: number,
+		day: number,
+		hour?: number,
+		minute?: number,
+		second?: number,
+		millisecond?: number,
+	): DateTime {
+		return DateTime.createCore(
+			true,
+			year,
+			month,
+			day,
+			hour,
+			minute,
+			second,
+			millisecond,
+		);
 	}
 	//#endregion
 
@@ -258,13 +348,13 @@ export class DateTime {
 		}
 
 		switch (format) {
-			case 'U':
+			case "U":
 				return this._timestamp.toUTCString();
 
-			case 'S':
+			case "S":
 				return this._timestamp.toString();
 
-			case 'L':
+			case "L":
 				return this._timestamp.toLocaleString();
 
 			default:
@@ -275,37 +365,34 @@ export class DateTime {
 			//['y', (this.year.toString())],
 			//['yy', number.padding(this.year - 2000, 2, '0')],
 			//['yyy', number.padding(this.year, 3, '0')],
-			['yyyy', number.padding(this.year, 4, '0')],
-			['yyyyy', number.padding(this.year, 5, '0')],
+			["yyyy", number.padding(this.year, 4, "0")],
+			["yyyyy", number.padding(this.year, 5, "0")],
 
+			["M", this.month.toString()],
+			["MM", number.padding(this.month, 2, "0")],
 
-			['M', this.month.toString()],
-			['MM', number.padding(this.month, 2, '0')],
+			["d", this.day.toString()],
+			["dd", number.padding(this.day, 2, "0")],
 
-			['d', this.day.toString()],
-			['dd', number.padding(this.day, 2, '0')],
+			["H", this.hour.toString()],
+			["HH", number.padding(this.hour, 2, "0")],
 
-			['H', this.hour.toString()],
-			['HH', number.padding(this.hour, 2, '0')],
+			["m", this.minute.toString()],
+			["mm", number.padding(this.minute, 2, "0")],
 
-			['m', this.minute.toString()],
-			['mm', number.padding(this.minute, 2, '0')],
-
-			['s', this.second.toString()],
-			['ss', number.padding(this.second, 2, '0')],
+			["s", this.second.toString()],
+			["ss", number.padding(this.second, 2, "0")],
 		]);
 
 		const pattern = Array.from(map.keys())
 			.sort((a, b) => b.length - a.length)
-			.join('|')
-			;
+			.join("|");
 
 		return format.replace(
-			new RegExp('(' + pattern + ')', 'g'),
-			m => map.get(m) ?? m
+			new RegExp(`(${pattern})`, "g"),
+			(m) => map.get(m) ?? m,
 		);
 	}
 
 	//#endregion
 }
-

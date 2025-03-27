@@ -1,4 +1,3 @@
-
 export interface Logger {
 	trace(message?: any, ...optionalParams: any[]): void;
 	debug(message?: any, ...optionalParams: any[]): void;
@@ -12,7 +11,6 @@ export function create(name: string): Logger {
 }
 
 class LoggerImpl implements Logger {
-
 	private _name: string;
 
 	constructor(name: string) {
@@ -20,7 +18,7 @@ class LoggerImpl implements Logger {
 	}
 
 	private get name() {
-		return '[' + this._name + ']';
+		return `[${this._name}]`;
 	}
 
 	public trace(...args: any[]): void {

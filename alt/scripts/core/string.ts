@@ -1,5 +1,5 @@
-import * as types from './types';
-import * as regex from './regex';
+import * as types from "./types";
+import * as regex from "./regex";
 
 /**
  * 非空文字列(ホワイトスペース構成は除く)か。
@@ -45,7 +45,10 @@ const TrimCharacters: ReadonlySet<string> = new Set([
  * @param characters
  * @returns
  */
-export function trimStart(s: string, characters: ReadonlySet<string> | null = null): string {
+export function trimStart(
+	s: string,
+	characters: ReadonlySet<string> | null = null,
+): string {
 	characters ??= TrimCharacters;
 
 	if (!characters.size) {
@@ -60,7 +63,7 @@ export function trimStart(s: string, characters: ReadonlySet<string> | null = nu
 		return s.substring(i);
 	}
 
-	return '';
+	return "";
 }
 
 /**
@@ -69,7 +72,10 @@ export function trimStart(s: string, characters: ReadonlySet<string> | null = nu
  * @param characters
  * @returns
  */
-export function trimEnd(s: string, characters: ReadonlySet<string> | null = null): string {
+export function trimEnd(
+	s: string,
+	characters: ReadonlySet<string> | null = null,
+): string {
 	characters ??= TrimCharacters;
 
 	if (!characters.size) {
@@ -84,7 +90,7 @@ export function trimEnd(s: string, characters: ReadonlySet<string> | null = null
 		return s.substring(0, s.length - i);
 	}
 
-	return '';
+	return "";
 }
 
 /**
@@ -93,7 +99,10 @@ export function trimEnd(s: string, characters: ReadonlySet<string> | null = null
  * @param characters
  * @returns
  */
-export function trim(s: string, characters: ReadonlySet<string> | null = null): string {
+export function trim(
+	s: string,
+	characters: ReadonlySet<string> | null = null,
+): string {
 	characters ??= TrimCharacters;
 
 	if (!characters.size) {
@@ -103,19 +112,29 @@ export function trim(s: string, characters: ReadonlySet<string> | null = null): 
 	return trimEnd(trimStart(s, characters), characters);
 }
 
-export function replaceAllImpl(source: string, searchValue: string | RegExp, replaceValue: string): string {
+export function replaceAllImpl(
+	source: string,
+	searchValue: string | RegExp,
+	replaceValue: string,
+): string {
 	if (searchValue instanceof RegExp) {
-		const flags = searchValue.flags.includes('g')
+		const flags = searchValue.flags.includes("g")
 			? searchValue.flags
-			: searchValue.flags + 'g'
-			;
+			: `${searchValue.flags}g`;
 		return source.replace(new RegExp(searchValue.source, flags), replaceValue);
 	}
 
-	return source.replace(new RegExp(regex.escape(searchValue), 'g'), replaceValue);
+	return source.replace(
+		new RegExp(regex.escape(searchValue), "g"),
+		replaceValue,
+	);
 }
 
-export function replaceAll(source: string, searchValue: string | RegExp, replaceValue: string): string {
+export function replaceAll(
+	source: string,
+	searchValue: string | RegExp,
+	replaceValue: string,
+): string {
 	if (!("replaceAll" in String.prototype)) {
 		return replaceAllImpl(source, searchValue, replaceValue);
 	}
@@ -141,15 +160,15 @@ export function toBoolean(s: string | null | undefined): boolean {
 		return false;
 	}
 
-	return s.toLowerCase() === 'true';
+	return s.toLowerCase() === "true";
 }
 
-export const enum MatchMode {
-	Partial,
-	Forward,
-	Backward,
-	Perfect,
-	Regex,
+export enum MatchMode {
+	Partial = 0,
+	Forward = 1,
+	Backward = 2,
+	Perfect = 3,
+	Regex = 4,
 }
 
 export interface MatchResult {
@@ -190,14 +209,13 @@ class MatchResultImpl {
 
 	public get regex(): RegExp {
 		if (!this._regex) {
-			throw new Error('regex');
+			throw new Error("regex");
 		}
 
 		return this._regex;
 	}
 
 	//#endregion
-
 
 	//#region function
 
@@ -216,7 +234,11 @@ class MatchResultImpl {
 	//#endregion
 }
 
-function matchPartial(input: string, pattern: string, ignoreCase: boolean): MatchResultImpl {
+function matchPartial(
+	input: string,
+	pattern: string,
+	ignoreCase: boolean,
+): MatchResultImpl {
 	let index = -1;
 	if (ignoreCase) {
 		index = input.toLowerCase().indexOf(pattern.toLowerCase());
@@ -230,7 +252,11 @@ function matchPartial(input: string, pattern: string, ignoreCase: boolean): Matc
 	return MatchResultImpl.none();
 }
 
-function matchForward(input: string, pattern: string, ignoreCase: boolean): MatchResultImpl {
+function matchForward(
+	input: string,
+	pattern: string,
+	ignoreCase: boolean,
+): MatchResultImpl {
 	if (ignoreCase) {
 		if (input.toLowerCase().startsWith(pattern.toLowerCase())) {
 			return MatchResultImpl.matchedPlain();
@@ -244,7 +270,11 @@ function matchForward(input: string, pattern: string, ignoreCase: boolean): Matc
 	return MatchResultImpl.none();
 }
 
-function matchBackward(input: string, pattern: string, ignoreCase: boolean): MatchResultImpl {
+function matchBackward(
+	input: string,
+	pattern: string,
+	ignoreCase: boolean,
+): MatchResultImpl {
 	if (ignoreCase) {
 		if (input.toLowerCase().endsWith(pattern.toLowerCase())) {
 			return MatchResultImpl.matchedPlain();
@@ -258,7 +288,11 @@ function matchBackward(input: string, pattern: string, ignoreCase: boolean): Mat
 	return MatchResultImpl.none();
 }
 
-function matchPerfect(input: string, pattern: string, ignoreCase: boolean): MatchResultImpl {
+function matchPerfect(
+	input: string,
+	pattern: string,
+	ignoreCase: boolean,
+): MatchResultImpl {
 	if (ignoreCase) {
 		if (input.toLowerCase() === pattern.toLowerCase()) {
 			return MatchResultImpl.matchedPlain();
@@ -272,21 +306,30 @@ function matchPerfect(input: string, pattern: string, ignoreCase: boolean): Matc
 	return MatchResultImpl.none();
 }
 
-function matchRegex(input: string, pattern: string, ignoreCase: boolean): MatchResultImpl {
-	const flags = ignoreCase ? 'gi' : 'g';
+function matchRegex(
+	input: string,
+	pattern: string,
+	ignoreCase: boolean,
+): MatchResultImpl {
+	const flags = ignoreCase ? "gi" : "g";
 	try {
 		const regex = new RegExp(pattern, flags);
 		if (regex.test(input)) {
 			return MatchResultImpl.matchedRegex(regex);
 		}
 	} catch (ex) {
-		console.warn('matchRegex', ex);
+		console.warn("matchRegex", ex);
 	}
 
 	return MatchResultImpl.none();
 }
 
-export function match(input: string, pattern: string, ignoreCase: boolean, mode: MatchMode): MatchResult {
+export function match(
+	input: string,
+	pattern: string,
+	ignoreCase: boolean,
+	mode: MatchMode,
+): MatchResult {
 	switch (mode) {
 		case MatchMode.Partial:
 			return matchPartial(input, pattern, ignoreCase);

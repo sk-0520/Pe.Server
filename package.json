@@ -4,12 +4,16 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"lint:type": "tsc --noEmit",
+		"lint:script": "biome check .",
+		"lint": "npm-run-all --sequential lint:script",
+		"test:type": "tsc --noEmit",
 		"test:script": "jest",
-		"test": "npm-run-all --sequential test:script",
+		"test": "npm-run-all --sequential test:type test:script",
 		"watch": "rspack build --nodeEnv development --watch",
 		"build-develop": "rspack build --nodeEnv development",
 		"build": "rspack build --nodeEnv production",
+		"lint-script-fix": "biome check --write .",
+		"lint-script-fix-unsafe": "biome check --write --unsafe .",
 		"npm-check": "ncu",
 		"npm-update": "ncu -u && npm install"
 	},
@@ -46,6 +50,7 @@
 		"last 2 versions"
 	],
 	"devDependencies": {
+		"@biomejs/biome": "1.9.4",
 		"@rspack/cli": "^1.2.8",
 		"@rspack/core": "^1.2.8",
 		"@types/jest": "^29.5.14",
