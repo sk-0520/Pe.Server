@@ -17,6 +17,7 @@
 		"sourceMap": true,
 		"target": "es2021",
 		"isolatedModules": true,
+		"moduleResolution": "node"
 	},
 	"lib": [
 		"es2020",
