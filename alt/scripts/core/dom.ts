@@ -70,9 +70,12 @@ export function requireSelector<TElement extends Element = Element>(
 			if (types.isString(selectors)) {
 				throw new throws.MismatchArgumentError("selectors");
 			}
+			// biome-ignore lint/style/noParameterAssign: しんどい
 			elementType = selectors;
 		}
+		// biome-ignore lint/style/noParameterAssign: しんどい
 		selectors = element;
+		// biome-ignore lint/style/noParameterAssign: しんどい
 		element = null;
 	} else {
 		if (types.isUndefined(selectors)) {
@@ -137,9 +140,12 @@ export function requireSelectorAll<TElement extends Element = Element>(
 			if (types.isString(selectors)) {
 				throw new throws.MismatchArgumentError("selectors");
 			}
+			// biome-ignore lint/style/noParameterAssign: しんどい
 			elementType = selectors;
 		}
+		// biome-ignore lint/style/noParameterAssign: しんどい
 		selectors = element;
+		// biome-ignore lint/style/noParameterAssign: しんどい
 		element = null;
 	} else {
 		if (types.isUndefined(selectors)) {
@@ -227,12 +233,12 @@ export function cloneTemplate(element: HTMLTemplateElement): DocumentFragment;
 export function cloneTemplate(
 	input: string | HTMLTemplateElement,
 ): DocumentFragment {
-	if (typeof input === "string") {
-		const element = requireSelector(input, HTMLTemplateElement);
-		input = element;
-	}
+	const element =
+		typeof input === "string"
+			? requireSelector(input, HTMLTemplateElement)
+			: input;
 
-	const result = input.content.cloneNode(true);
+	const result = element.content.cloneNode(true);
 
 	return result as DocumentFragment;
 }
@@ -304,28 +310,26 @@ export function attach(
 	position: AttachPosition,
 	node: Node | NodeFactory,
 ): Node {
-	if (isNodeFactory(node)) {
-		node = node.element;
-	}
+	const workNode = isNodeFactory(node) ? node.element : node;
 
 	switch (position) {
 		case AttachPosition.Last:
-			return parent.appendChild(node);
+			return parent.appendChild(workNode);
 
 		case AttachPosition.First:
-			return parent.insertBefore(node, parent.firstChild);
+			return parent.insertBefore(workNode, parent.firstChild);
 
 		case AttachPosition.Previous:
 			if (!parent.parentNode) {
 				throw new TypeError("parent.parentNode");
 			}
-			return parent.parentNode.insertBefore(node, parent);
+			return parent.parentNode.insertBefore(workNode, parent);
 
 		case AttachPosition.Next:
 			if (!parent.parentNode) {
 				throw new TypeError("parent.parentNode");
 			}
-			return parent.parentNode.insertBefore(node, parent.nextSibling);
+			return parent.parentNode.insertBefore(workNode, parent.nextSibling);
 
 		default:
 			throw new throws.NotImplementedError();
@@ -403,11 +407,12 @@ export function toCustomKey(
 	removeDataAttributeBegin = true,
 ): string {
 	const dataHead = "data-";
-	if (removeDataAttributeBegin && kebab.startsWith(dataHead)) {
-		kebab = kebab.substring(dataHead.length);
-	}
+	const workKebab =
+		removeDataAttributeBegin && kebab.startsWith(dataHead)
+			? kebab.substring(dataHead.length)
+			: kebab;
 
-	return kebab
+	return workKebab
 		.split("-")
 		.map((item, index) =>
 			index
@@ -488,15 +493,13 @@ export function equalTagName(
 	element: Element,
 	value: string | Element,
 ): boolean {
-	if (!types.isString(value)) {
-		value = value.tagName;
-	}
+	const workValue = !types.isString(value) ? value.tagName : value;
 
-	if (element.tagName === value) {
+	if (element.tagName === workValue) {
 		return true;
 	}
 
-	return element.tagName.toUpperCase() === value.toUpperCase();
+	return element.tagName.toUpperCase() === workValue.toUpperCase();
 }
 
 /**
