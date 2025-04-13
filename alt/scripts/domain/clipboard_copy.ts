@@ -28,11 +28,11 @@ function onMouseOverInlineElement(event: MouseEvent) {
 	copyButtonElement.setAttribute("title", "コピー");
 	copyButtonElement.addEventListener(
 		"click",
-		(_) => {
+		async (_) => {
 			// 実装設計の問題だけど先に消しとかないとテキストが💩
 			baseElement.remove();
 
-			clipboard.copyText(element.textContent ?? "");
+			await clipboard.copyText(element.textContent ?? "");
 
 			const newBaseElement = createClipboardBaseElement();
 			newBaseElement.textContent = "✔";
@@ -50,7 +50,7 @@ function onMouseOverInlineElement(event: MouseEvent) {
 function onMouseleaveInlineElement(event: MouseEvent) {
 	const element = <HTMLElement>event.currentTarget;
 
-	const baseElement = element.querySelector(".pg-clipboard-base")!;
+	const baseElement = dom.requireSelector(element, ".pg-clipboard-base");
 	baseElement.remove();
 }
 
@@ -68,11 +68,11 @@ function onMouseOverBlockElement(event: MouseEvent) {
 	copyButtonElement.setAttribute("title", "コピー");
 	copyButtonElement.addEventListener(
 		"click",
-		(_) => {
+		async (_) => {
 			// 実装設計の問題だけど先に消しとかないとテキストが💩
 			baseElement.remove();
 
-			clipboard.copyText(element.textContent ?? "");
+			await clipboard.copyText(element.textContent ?? "");
 
 			const newBaseElement = createClipboardBaseElement();
 			newBaseElement.textContent = "✔";
@@ -90,7 +90,7 @@ function onMouseOverBlockElement(event: MouseEvent) {
 function onMouseleaveBlockElement(event: MouseEvent) {
 	const element = <HTMLElement>event.currentTarget;
 
-	const baseElement = element.querySelector(".pg-clipboard-base")!;
+	const baseElement = dom.requireSelector(element, ".pg-clipboard-base");
 	baseElement.remove();
 }
 
