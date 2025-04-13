@@ -101,7 +101,7 @@ export function isArray<T>(arg: unknown): arg is Array<T> {
  * @param arg
  * @returns
  */
-export function isObject(arg: unknown): arg is Object {
+export function isObject(arg: unknown): arg is object {
 	return arg !== null && typeof arg === "object" && !Array.isArray(arg);
 }
 
@@ -110,6 +110,7 @@ export function isObject(arg: unknown): arg is Object {
  * @param arg
  * @returns
  */
+// biome-ignore lint/complexity/noBannedTypes: <explanation>
 export function isFunction<T extends Function>(arg: unknown): arg is T {
 	return typeof arg === "function";
 }
@@ -242,7 +243,7 @@ export function hasBoolean(
 export function hasObject(
 	obj: unknown,
 	key: PropertyKey,
-): obj is Record<PropertyKey, Object> {
+): obj is Record<PropertyKey, object> {
 	return hasProperty(obj, key) && isObject(obj[key]);
 }
 
@@ -265,6 +266,7 @@ export function hasArray<T>(
  * @param key プロパティ名。
  * @returns
  */
+// biome-ignore lint/complexity/noBannedTypes: どうすりゃいいのか分からん
 export function hasFunction<T extends Function>(
 	obj: unknown,
 	key: PropertyKey,
@@ -474,13 +476,15 @@ export function flatClone<
 
 	const result = Object.fromEntries([...properties].map((i) => [i, source[i]]));
 
-	return result as any as TResult;
+	return result as unknown as TResult;
 }
 
+// biome-ignore lint/complexity/noBannedTypes: どうすりゃいいのか分からん
 export function nameof(name: Function): string;
 export function nameof<T extends object>(
 	name: Extract<keyof T, string>,
 ): string;
+// biome-ignore lint/complexity/noBannedTypes: どうすりゃいいのか分からん
 export function nameof<T>(name: Extract<keyof T, string> | Function): string {
 	if (typeof name === "function") {
 		return name.name;
@@ -489,7 +493,8 @@ export function nameof<T>(name: Extract<keyof T, string> | Function): string {
 	return name;
 }
 
-export function toString(input: any): string {
+// biome-ignore lint/suspicious/noShadowRestrictedNames: 使ってないしなぁ
+export function toString(input: unknown): string {
 	switch (typeof input) {
 		case "object":
 			if (input === null) {
