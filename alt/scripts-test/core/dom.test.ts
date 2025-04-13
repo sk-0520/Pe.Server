@@ -11,9 +11,9 @@ describe("dom", () => {
 			<span id="id2">id2:1</span>
 		`;
 
-		expect(dom.requireElementById("id1").textContent!).toBe("id1:1");
-		expect(dom.requireElementById("id2").textContent!).toBe("id2:1");
-		expect(dom.requireElementById("id2", HTMLSpanElement).textContent!).toBe(
+		expect(dom.requireElementById("id1").textContent).toBe("id1:1");
+		expect(dom.requireElementById("id2").textContent).toBe("id2:1");
+		expect(dom.requireElementById("id2", HTMLSpanElement).textContent).toBe(
 			"id2:1",
 		);
 
@@ -33,21 +33,21 @@ describe("dom", () => {
 			</div>
 		`;
 
-		expect(dom.requireSelector('[data-name="x"]').textContent!).toBe("X1");
-		expect(dom.requireSelector('[name="x"]').textContent!).toBe("X2");
+		expect(dom.requireSelector('[data-name="x"]').textContent).toBe("X1");
+		expect(dom.requireSelector('[name="x"]').textContent).toBe("X2");
 
-		expect(() => dom.requireSelector(".x")).toThrowError(
+		expect(() => dom.requireSelector(".x")).toThrow(
 			throws.NotFoundDomSelectorError,
 		);
 		expect(() =>
 			dom.requireSelector('[data-name="x"]', HTMLSpanElement),
-		).toThrowError(throws.ElementTypeError);
+		).toThrow(throws.ElementTypeError);
 
 		const rootDiv = dom.requireSelector("div");
-		expect(dom.requireSelector(rootDiv, "div").textContent!).toBe("X1");
+		expect(dom.requireSelector(rootDiv, "div").textContent).toBe("X1");
 		expect(() =>
 			dom.requireSelector(rootDiv, "div", HTMLSpanElement),
-		).toThrowError(throws.ElementTypeError);
+		).toThrow(throws.ElementTypeError);
 	});
 
 	test("requireSelectorAll", () => {
@@ -135,8 +135,8 @@ describe("dom", () => {
 		const b = document.getElementById("b") as HTMLElement;
 		const c = document.getElementById("c") as HTMLElement;
 
-		expect(dom.getParentForm(a).dataset.key!).toBe("a");
-		expect(dom.getParentForm(b).dataset.key!).toBe("b");
+		expect(dom.getParentForm(a).dataset.key).toBe("a");
+		expect(dom.getParentForm(b).dataset.key).toBe("b");
 
 		expect(() => dom.getParentForm(c)).toThrowError(Error);
 	});
@@ -184,7 +184,7 @@ describe("dom", () => {
 				<div id="C">C</div>
 			</div>
 		`;
-		const root = document.getElementById("root")!;
+		const root = dom.requireElementById("root");
 
 		const div = document.createElement("div");
 		div.textContent = "*";
@@ -204,7 +204,7 @@ describe("dom", () => {
 				<div id="C">C</div>
 			</div>
 		`;
-		const root = document.getElementById("root")!;
+		const root = dom.requireElementById("root");
 
 		const div = document.createElement("div");
 		div.textContent = "*";
@@ -224,8 +224,8 @@ describe("dom", () => {
 				<div id="C">C</div>
 			</div>
 		`;
-		const root = document.getElementById("root")!;
-		const center = document.getElementById("B")!;
+		const root = dom.requireElementById("root");
+		const center = dom.requireElementById("B");
 
 		const div = document.createElement("div");
 		div.textContent = "*";
@@ -245,8 +245,8 @@ describe("dom", () => {
 				<div id="C">C</div>
 			</div>
 		`;
-		const root = document.getElementById("root")!;
-		const center = document.getElementById("B")!;
+		const root = dom.requireElementById("root");
+		const center = dom.requireElementById("B");
 
 		const div = document.createElement("div");
 		div.textContent = "*";
@@ -262,7 +262,7 @@ describe("dom", () => {
 		document.body.innerHTML = `
 			<div id="root"></div>
 		`;
-		const root = document.getElementById("root")!;
+		const root = dom.requireElementById("root");
 
 		const p = dom.createFactory("p");
 		p.createText("HEAD");
@@ -284,7 +284,7 @@ describe("dom", () => {
 			<div id="id" data-a="A" data-a-sub="SUB" data-empty=""></div>
 		`;
 
-		const element = document.getElementById("id")!;
+		const element = dom.requireElementById("id");
 
 		expect(dom.getDataset(element, "a")).toBe("A");
 		expect(dom.getDataset(element, "a-sub")).toBe("SUB");
@@ -302,7 +302,7 @@ describe("dom", () => {
 			<div id="id" data-a="A" data-a-sub="SUB" data-empty=""></div>
 		`;
 
-		const element = document.getElementById("id")!;
+		const element = dom.requireElementById("id");
 
 		expect(dom.getDatasetOr(element, "a", "X")).toBe("A");
 		expect(dom.getDatasetOr(element, "a-sub", "X")).toBe("SUB");
@@ -320,7 +320,7 @@ describe("dom", () => {
 			<div id="id"></div>
 		`;
 
-		const element = document.getElementById("id")!;
+		const element = dom.requireElementById("id");
 
 		expect(dom.equalTagName(element, "div")).toBeTruthy();
 		expect(dom.equalTagName(element, "DIV")).toBeTruthy();
