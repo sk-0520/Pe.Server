@@ -45,9 +45,9 @@ describe("dom", () => {
 
 		const rootDiv = dom.requireSelector("div");
 		expect(dom.requireSelector(rootDiv, "div").textContent).toBe("X1");
-		expect(() =>
-			dom.requireSelector(rootDiv, "div", HTMLSpanElement),
-		).toThrow(throws.ElementTypeError);
+		expect(() => dom.requireSelector(rootDiv, "div", HTMLSpanElement)).toThrow(
+			throws.ElementTypeError,
+		);
 	});
 
 	test("requireSelectorAll", () => {
