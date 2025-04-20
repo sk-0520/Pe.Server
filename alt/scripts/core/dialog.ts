@@ -330,7 +330,7 @@ export class Dialog<T> {
 			if (this._displayParentElement) {
 				const contentElement = this._contentElement as HTMLElement;
 				contentElement.remove();
-				this._displayParentElement.appendChild(contentElement!);
+				this._displayParentElement.appendChild(contentElement);
 			}
 
 			if (this._prevStyle) {
