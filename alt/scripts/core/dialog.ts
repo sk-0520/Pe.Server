@@ -93,15 +93,21 @@ export class Dialog<T> {
 		this._dialogElement.classList.add("dialog");
 	}
 
-	private isHtmlElement(arg: any): arg is HTMLElement {
-		return arg && arg instanceof HTMLElement;
+	private isHtmlElement(arg: unknown): arg is HTMLElement {
+		return arg instanceof HTMLElement;
 	}
 
-	private isDisplayFactory(arg: any): arg is DisplayFactory<T> {
-		return arg && arg.apply !== undefined;
+	private isDisplayFactory(arg: unknown): arg is DisplayFactory<T> {
+		if (typeof arg !== "object") {
+			return false;
+		}
+		if (!arg) {
+			return false;
+		}
+		return "apply" in arg && typeof arg.apply === "function";
 	}
 
-	private isString(arg: any): arg is string {
+	private isString(arg: unknown): arg is string {
 		return typeof arg === "string";
 	}
 
