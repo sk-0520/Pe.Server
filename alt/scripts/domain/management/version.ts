@@ -19,7 +19,7 @@ export function boot() {
 		});
 		const json = await response.json();
 		console.debug(json);
-		const versions = json.map((a: { name: any; tag_name: any }) => ({
+		const versions = json.map((a: { name: string; tag_name: string }) => ({
 			name: a.name,
 			tag_name: a.tag_name,
 		}));

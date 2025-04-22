@@ -12,7 +12,7 @@ export interface AjaxError {
 	/** 内部使用エラー内容データ */
 	code: string;
 	/** 対象ごとのエラー詳細 */
-	info: any;
+	info: unknown;
 }
 
 /**
@@ -29,7 +29,7 @@ class AjaxResultImpl<T> implements AjaxResult<T> {
 	readonly data: T;
 	readonly error?: AjaxError;
 
-	public constructor(obj: any) {
+	public constructor(obj: unknown) {
 		const value = obj as AjaxResult<T>;
 		this.data = value.data;
 		this.error = value.error;
@@ -40,14 +40,14 @@ class AjaxResultImpl<T> implements AjaxResult<T> {
 	}
 }
 
-export function toResult<T>(obj: any): AjaxResult<T> {
+export function toResult<T>(obj: unknown): AjaxResult<T> {
 	return new AjaxResultImpl<T>(obj);
 }
 
 export async function communicateJsonAsync<T>(
 	url: string,
 	method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
-	json?: any,
+	json?: object,
 ): Promise<AjaxResult<T>> {
 	const headers: { [name: string]: string } = {
 		"Content-Type": "application/json",

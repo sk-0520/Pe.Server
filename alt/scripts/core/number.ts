@@ -36,6 +36,7 @@ export function padding(input: number, width: number, c: string): string {
  * @returns 整数。
  * @throws {throws.ParseError} パース失敗。
  */
+// biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
 export function parseInt(input: string, radix?: number | undefined) {
 	const value = globalThis.Number.parseInt(input, radix);
 
@@ -78,6 +79,7 @@ export function parseIntOr(
  * @returns 実数。
  * @throws {throws.ParseError} パース失敗。
  */
+// biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
 export function parseFloat(input: string) {
 	const value = globalThis.Number.parseFloat(input);
 

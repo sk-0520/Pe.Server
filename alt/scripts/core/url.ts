@@ -26,8 +26,9 @@ export function joinPath(
 	path1: string,
 	...pathN: ReadonlyArray<string>
 ): string {
-	while (base.endsWith("/")) {
-		base = base.substring(0, base.length - 1);
+	let workBase = base;
+	while (workBase.endsWith("/")) {
+		workBase = workBase.substring(0, workBase.length - 1);
 	}
 
 	function chomp(s: string): string {
@@ -40,6 +41,6 @@ export function joinPath(
 	const paths = [path1];
 	paths.push(...pathN);
 
-	//console.debug(base);
-	return `${base}/${paths.map((i) => chomp(i)).join("/")}`;
+	//console.debug(workBase);
+	return `${workBase}/${paths.map((i) => chomp(i)).join("/")}`;
 }

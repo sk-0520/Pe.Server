@@ -45,18 +45,15 @@ const TrimCharacters: ReadonlySet<string> = new Set([
  * @param characters
  * @returns
  */
-export function trimStart(
-	s: string,
-	characters: ReadonlySet<string> | null = null,
-): string {
-	characters ??= TrimCharacters;
+export function trimStart(s: string, characters?: ReadonlySet<string>): string {
+	const workCharacters = characters ?? TrimCharacters;
 
-	if (!characters.size) {
+	if (!workCharacters.size) {
 		return s;
 	}
 
 	for (let i = 0; i < s.length; i++) {
-		if (characters.has(s[i])) {
+		if (workCharacters.has(s[i])) {
 			continue;
 		}
 
@@ -72,18 +69,15 @@ export function trimStart(
  * @param characters
  * @returns
  */
-export function trimEnd(
-	s: string,
-	characters: ReadonlySet<string> | null = null,
-): string {
-	characters ??= TrimCharacters;
+export function trimEnd(s: string, characters?: ReadonlySet<string>): string {
+	const workCharacters = characters ?? TrimCharacters;
 
-	if (!characters.size) {
+	if (!workCharacters.size) {
 		return s;
 	}
 
 	for (let i = 0; i < s.length; i++) {
-		if (characters.has(s[s.length - i - 1])) {
+		if (workCharacters.has(s[s.length - i - 1])) {
 			continue;
 		}
 
@@ -99,17 +93,14 @@ export function trimEnd(
  * @param characters
  * @returns
  */
-export function trim(
-	s: string,
-	characters: ReadonlySet<string> | null = null,
-): string {
-	characters ??= TrimCharacters;
+export function trim(s: string, characters?: ReadonlySet<string>): string {
+	const workCharacters = characters ?? TrimCharacters;
 
-	if (!characters.size) {
+	if (!workCharacters.size) {
 		return s;
 	}
 
-	return trimEnd(trimStart(s, characters), characters);
+	return trimEnd(trimStart(s, workCharacters), workCharacters);
 }
 
 export function replaceAllImpl(

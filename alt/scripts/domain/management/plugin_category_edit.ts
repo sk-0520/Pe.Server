@@ -103,9 +103,8 @@ function registerAdd() {
 }
 
 function register() {
-	const categoryItemsElement = document.getElementById("category_items")!;
-	const trElements =
-		categoryItemsElement.querySelectorAll<HTMLTableRowElement>("tr");
+	const categoryItemsElement = dom.requireElementById("category_items");
+	const trElements = dom.requireSelectorAll(categoryItemsElement, "tr");
 
 	for (const trElement of trElements) {
 		registerRow(trElement);
