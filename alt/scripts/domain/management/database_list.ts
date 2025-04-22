@@ -1,9 +1,14 @@
+interface ColumnsJson {
+	name: string;
+	pk: string;
+}
+
 function attachTableButton(tableButtonElement: HTMLButtonElement) {
 	tableButtonElement.addEventListener("click", (ev) => {
 		const tableButtonElement = ev.target as HTMLElement;
 		const tableName = tableButtonElement.dataset.table ?? "";
 		const columnsJson = tableButtonElement.dataset.columns ?? "";
-		const columns = JSON.parse(columnsJson) as [];
+		const columns = JSON.parse(columnsJson) as Array<ColumnsJson>;
 		const sqlLines = [
 			"select",
 			`	${columns.map((i) => i.name).join(", ")}`,
