@@ -121,7 +121,9 @@ class AccountUserPluginLogic extends PageLogicBase
 			return;
 		}
 
-		$pluginId = Uuid::adjustGuid($this->getRequest('plugin_id'));
+		if (!$this->isRegister) {
+			$pluginId = Uuid::adjustGuid($this->getRequest('plugin_id'));
+		}
 
 		if ($this->isRegister) {
 			$this->validation('account_plugin_plugin_id', function (string $key, string $value) {
@@ -175,6 +177,7 @@ class AccountUserPluginLogic extends PageLogicBase
 		});
 
 		if (!$this->isRegister) {
+			// @phpstan-ignore variable.undefined
 			$this->validation('account_plugin_state', function (string $key, string $value) use ($pluginId) {
 				$database = $this->openDatabase();
 				$pluginsEntityDao = new PluginsEntityDao($database);
