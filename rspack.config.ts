@@ -7,7 +7,7 @@ const isProduction = process.env.NODE_ENV === "production";
 const inputDirectory = path.resolve(__dirname, "alt");
 const outputDirectory = path.resolve(__dirname, "public_html");
 
-console.log({ isProduction });
+//console.log({ isProduction });
 
 export default defineConfig({
 	mode: isProduction ? "production" : "development",
@@ -60,10 +60,11 @@ export default defineConfig({
 
 	devtool: isProduction ? false : "source-map",
 
-	devServer: {
-		watchFiles: ["public/**/*"],
-		port: 8080,
-	},
+	// devServer: {
+	// 	watchFiles: ["alt/scripts/**/*","alt/styles/**/*"],
+	// 	static: ['public_html/scripts','public_html/styles'],
+	// 	port: 8080,
+	// },
 
 	// devServer: {
 	// 	// the configuration of the development server
