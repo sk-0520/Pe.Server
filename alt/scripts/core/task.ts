@@ -1,4 +1,4 @@
-import { TimeSpan } from './time';
+import type { TimeSpan } from "./time";
 
 /**
  * 非同期待機
@@ -8,7 +8,7 @@ import { TimeSpan } from './time';
 export function sleepAsync(timeSpan: TimeSpan): Promise<void> {
 	return new Promise((resolve, _) => {
 		setTimeout(() => {
-			resolve()
+			resolve();
 		}, timeSpan.totalMilliseconds);
 	});
 }

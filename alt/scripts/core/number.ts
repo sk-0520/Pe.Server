@@ -1,4 +1,4 @@
-import * as throws from '../core/throws';
+import * as throws from "../core/throws";
 
 /**
  * 数値埋め処理。
@@ -12,10 +12,10 @@ import * as throws from '../core/throws';
  */
 export function padding(input: number, width: number, c: string): string {
 	if (input < 0) {
-		throw new Error('input is negative');
+		throw new Error("input is negative");
 	}
-	if (c.length != 1) {
-		throw new Error('c.length is ' + c.length);
+	if (c.length !== 1) {
+		throw new Error(`c.length is ${c.length}`);
 	}
 
 	const numberValue = input.toString();
@@ -36,10 +36,11 @@ export function padding(input: number, width: number, c: string): string {
  * @returns 整数。
  * @throws {throws.ParseError} パース失敗。
  */
+// biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
 export function parseInt(input: string, radix?: number | undefined) {
-	const value = globalThis.parseInt(input, radix);
+	const value = globalThis.Number.parseInt(input, radix);
 
-	if (isNaN(value)) {
+	if (Number.isNaN(value)) {
 		throw new throws.ParseError(`input: ${input}, radix: ${radix}`);
 	}
 
@@ -54,14 +55,18 @@ export function parseInt(input: string, radix?: number | undefined) {
  * @returns 整数。
  * @throws {throws.ArgumentError} `fallback` が整数ではない。
  */
-export function parseIntOr(input: string, fallback: number, radix?: number | undefined) {
+export function parseIntOr(
+	input: string,
+	fallback: number,
+	radix?: number | undefined,
+) {
 	if (!Number.isInteger(fallback)) {
-		throw new throws.ArgumentError('fallback: Number.isInteger');
+		throw new throws.ArgumentError("fallback: Number.isInteger");
 	}
 
-	const value = globalThis.parseInt(input, radix);
+	const value = globalThis.Number.parseInt(input, radix);
 
-	if (isNaN(value)) {
+	if (Number.isNaN(value)) {
 		return fallback;
 	}
 
@@ -74,10 +79,11 @@ export function parseIntOr(input: string, fallback: number, radix?: number | und
  * @returns 実数。
  * @throws {throws.ParseError} パース失敗。
  */
+// biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
 export function parseFloat(input: string) {
-	const value = globalThis.parseFloat(input);
+	const value = globalThis.Number.parseFloat(input);
 
-	if (isNaN(value)) {
+	if (Number.isNaN(value)) {
 		throw new throws.ParseError(`input: ${input}`);
 	}
 
@@ -91,9 +97,9 @@ export function parseFloat(input: string) {
  * @returns 実数。
  */
 export function parseFloatOr(input: string, fallback: number) {
-	const value = globalThis.parseFloat(input);
+	const value = globalThis.Number.parseFloat(input);
 
-	if (isNaN(value)) {
+	if (Number.isNaN(value)) {
 		return fallback;
 	}
 

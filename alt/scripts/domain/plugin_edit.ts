@@ -1,14 +1,19 @@
 //import * as dom from '../core/dom'
-import * as ajax from './ajax'
+import * as ajax from "./ajax";
 
 async function generatePluginIdCoreAsync() {
-	var json = await ajax.communicateJsonAsync<{ plugin_id: string }>('/api/plugin/generate-plugin-id', 'GET');
+	const json = await ajax.communicateJsonAsync<{ plugin_id: string }>(
+		"/api/plugin/generate-plugin-id",
+		"GET",
+	);
 	if (json.error) {
 		alert(json);
 		return;
 	}
 
-	const pluginIdElement = document.getElementById('pg-plugin-id') as HTMLInputElement;
+	const pluginIdElement = document.getElementById(
+		"pg-plugin-id",
+	) as HTMLInputElement;
 	pluginIdElement.value = json.data.plugin_id;
 }
 
@@ -18,7 +23,7 @@ async function generatePluginIdAsync(ev: Event) {
 		element.disabled = true;
 
 		await generatePluginIdCoreAsync();
-	} catch(ex) {
+	} catch (ex) {
 		console.error(ex);
 		alert(ex);
 	} finally {
@@ -27,9 +32,9 @@ async function generatePluginIdAsync(ev: Event) {
 }
 
 function register() {
-	const autoGenElement = document.getElementById('pg-plugin-id-auto-generate');
-	if(autoGenElement) {
-		autoGenElement.addEventListener('click', generatePluginIdAsync, false);
+	const autoGenElement = document.getElementById("pg-plugin-id-auto-generate");
+	if (autoGenElement) {
+		autoGenElement.addEventListener("click", generatePluginIdAsync, false);
 	}
 }
 

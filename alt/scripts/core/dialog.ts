@@ -1,22 +1,22 @@
-import * as task from './task';
-import * as time from './time';
+import * as task from "./task";
+import type * as time from "./time";
 
 export enum ButtonType {
 	/**
 	 * 閉じるボタンのみ。
 	 * 背景押下でも閉じる。
 	 * */
-	Close,
+	Close = 0,
 	/**
 	 * ボタン無し。
 	 * 背景押下は無反応。
 	 */
-	None,
+	None = 1,
 	/**
 	 * 肯定・否定ボタン。
 	 * 背景押下は否定ボタンと同じ。
 	 */
-	YesNo,
+	YesNo = 2,
 }
 
 /**
@@ -26,11 +26,11 @@ export enum DialogAction {
 	/**
 	 * 否定。
 	 */
-	Negative,
+	Negative = 0,
 	/**
 	 * 肯定。
 	 */
-	Positive,
+	Positive = 1,
 }
 
 /**
@@ -40,23 +40,23 @@ export interface DialogResult<T> {
 	/**
 	 * 操作。
 	 */
-	action: DialogAction,
+	action: DialogAction;
 	/**
 	 * データ。
 	 */
-	data: T | null,
+	data: T | null;
 }
 
-export type DisplayFactory<T> = ((() => Node)) | ((closer: (dialogResult: DialogResult<T>) => void) => Node);
+export type DisplayFactory<T> =
+	| (() => Node)
+	| ((closer: (dialogResult: DialogResult<T>) => void) => Node);
 
 export interface DialogSetting<T> {
 	/** ボタン種別 */
-	button: ButtonType,
+	button: ButtonType;
 	/** 表示要素 */
-	display: string | HTMLElement | DisplayFactory<T>,
+	display: string | HTMLElement | DisplayFactory<T>;
 }
-
-
 
 export class Dialog<T> {
 	readonly setting: DialogSetting<T>;
@@ -70,44 +70,50 @@ export class Dialog<T> {
 
 	private _prevStyle?: {
 		body: {
-			overflow: string,
-		},
+			overflow: string;
+		};
 	};
 
 	public texts = {
 		autoBreak: true,
 		button: {
-			close: '閉じる',
-			yes: 'はい',
-			no: 'いいえ',
-		}
-	}
+			close: "閉じる",
+			yes: "はい",
+			no: "いいえ",
+		},
+	};
 
-	private readonly _dialogEventName = 'dialog-submit';
+	private readonly _dialogEventName = "dialog-submit";
 
 	constructor(setting: DialogSetting<T>) {
 		this.setting = setting;
 
-		this._dialogElement = document.createElement('div');
-		this._dialogElement.classList.add('pg-dialog');
-		this._dialogElement.classList.add('dialog');
+		this._dialogElement = document.createElement("div");
+		this._dialogElement.classList.add("pg-dialog");
+		this._dialogElement.classList.add("dialog");
 	}
 
-	private isHtmlElement(arg: any): arg is HTMLElement {
-		return arg && arg instanceof HTMLElement;
+	private isHtmlElement(arg: unknown): arg is HTMLElement {
+		return arg instanceof HTMLElement;
 	}
 
-	private isDisplayFactory(arg: any): arg is DisplayFactory<T> {
-		return arg && arg.apply !== undefined;
+	private isDisplayFactory(arg: unknown): arg is DisplayFactory<T> {
+		if (typeof arg !== "object") {
+			return false;
+		}
+		if (!arg) {
+			return false;
+		}
+		return "apply" in arg && typeof arg.apply === "function";
 	}
 
-	private isString(arg: any): arg is String {
-		return typeof arg == 'string';
+	private isString(arg: unknown): arg is string {
+		return typeof arg === "string";
 	}
 
 	/** タブ移動抑制 */
 	private focusTrap(parentElement: HTMLElement) {
-		this._callerFocusElement = document.activeElement as HTMLElement
+		this._callerFocusElement = document.activeElement as HTMLElement;
 		if (this._callerFocusElement) {
 			this._callerFocusElement.blur();
 		}
@@ -123,91 +129,112 @@ export class Dialog<T> {
 			'iframe:not([tabindex="-1"])',
 			'[tabindex]:not([tabindex="-1"])',
 			'[contentEditable=true]:not([tabindex="-1"])',
-		].join(',');
-		const focusElements = Array.from(parentElement.querySelectorAll<HTMLElement>(selector))
-			.sort(i => i.tabIndex)
-			;
+		].join(",");
+		const focusElements = Array.from(
+			parentElement.querySelectorAll<HTMLElement>(selector),
+		).sort((i) => i.tabIndex);
 
 		if (focusElements.length) {
 			const headElement = focusElements[0];
 			const tailElement = focusElements[focusElements.length - 1];
 
 			function focusTrapCore(ev: KeyboardEvent) {
-				if (ev.key != 'Tab') {
-					console.debug('タブ以外はブラウザに任せる');
+				if (ev.key !== "Tab") {
+					console.debug("タブ以外はブラウザに任せる");
 					return;
 				}
 
 				if (ev.shiftKey) {
 					// 戻る
-					if (document.activeElement == headElement) {
+					if (document.activeElement === headElement) {
 						ev.preventDefault();
-						tailElement.focus({ preventScroll: false, });
-						return
+						tailElement.focus({ preventScroll: false });
+						return;
 					}
 				} else {
 					// 進む
 					console.debug(document.activeElement);
-					if (document.activeElement == tailElement) {
+					if (document.activeElement === tailElement) {
 						ev.preventDefault();
-						headElement.focus({ preventScroll: false, });
-						return
+						headElement.focus({ preventScroll: false });
+						return;
 					}
 				}
 				if (!focusElements.includes(document.activeElement as HTMLElement)) {
-					console.debug('先頭強制選択: ' + ev.currentTarget);
+					console.debug(`先頭強制選択: ${ev.currentTarget}`);
 					ev.preventDefault();
-					headElement.focus({ preventScroll: false, });
+					headElement.focus({ preventScroll: false });
 					return;
 				}
 			}
-			window.addEventListener('keydown', focusTrapCore, false);
+			window.addEventListener("keydown", focusTrapCore, false);
 		} else {
-			parentElement.focus({ preventScroll: true, });
-			window.addEventListener('keydown', ev => {
-				if (ev.key == 'Tab') {
-					ev.preventDefault();
-				}
-			}, false);
+			parentElement.focus({ preventScroll: true });
+			window.addEventListener(
+				"keydown",
+				(ev) => {
+					if (ev.key === "Tab") {
+						ev.preventDefault();
+					}
+				},
+				false,
+			);
 		}
 	}
 
 	private showCore(contentElement: Node) {
 		// 背景
-		const dialogBackgroundElement = document.createElement('div');
-		dialogBackgroundElement.classList.add('background');
+		const dialogBackgroundElement = document.createElement("div");
+		dialogBackgroundElement.classList.add("background");
 
-		if (this.setting.button != ButtonType.None) {
-			dialogBackgroundElement.addEventListener('click', ev => this.executeClose({ action: DialogAction.Negative, data: null }, ev), false);
+		if (this.setting.button !== ButtonType.None) {
+			dialogBackgroundElement.addEventListener(
+				"click",
+				(ev) =>
+					this.executeClose({ action: DialogAction.Negative, data: null }, ev),
+				false,
+			);
 		} else {
-			dialogBackgroundElement.classList.add('ignore-click');
+			dialogBackgroundElement.classList.add("ignore-click");
 		}
 
 		// 前景
-		const dialogForegroundElement = document.createElement('div');
-		dialogForegroundElement.classList.add('foreground');
-		dialogForegroundElement.addEventListener('click', ev => ev.stopPropagation(), false);
+		const dialogForegroundElement = document.createElement("div");
+		dialogForegroundElement.classList.add("foreground");
+		dialogForegroundElement.addEventListener(
+			"click",
+			(ev) => ev.stopPropagation(),
+			false,
+		);
 
 		dialogBackgroundElement.appendChild(dialogForegroundElement);
 
 		// 表示要素設定箇所
-		const dialogContentElement = document.createElement('div');
-		dialogContentElement.classList.add('content');
+		const dialogContentElement = document.createElement("div");
+		dialogContentElement.classList.add("content");
 		dialogContentElement.appendChild(contentElement);
 
 		dialogForegroundElement.appendChild(dialogContentElement);
 
 		// ボタン配置箇所
-		if (this.setting.button != ButtonType.None) {
-			const dialogButtonsElement = document.createElement('div');
-			dialogButtonsElement.classList.add('buttons');
+		if (this.setting.button !== ButtonType.None) {
+			const dialogButtonsElement = document.createElement("div");
+			dialogButtonsElement.classList.add("buttons");
 
 			switch (this.setting.button) {
 				case ButtonType.Close: {
-					const closeButtonElement = document.createElement('button');
+					const closeButtonElement = document.createElement("button");
 					closeButtonElement.textContent = this.texts.button.close;
-					closeButtonElement.classList.add('close');
-					closeButtonElement.addEventListener('click', ev => this.executeClose({ action: DialogAction.Negative, data: null }, ev), false);
+					closeButtonElement.classList.add("close");
+					closeButtonElement.addEventListener(
+						"click",
+						(ev) =>
+							this.executeClose(
+								{ action: DialogAction.Negative, data: null },
+								ev,
+							),
+						false,
+					);
 
 					dialogButtonsElement.appendChild(closeButtonElement);
 
@@ -215,15 +242,31 @@ export class Dialog<T> {
 				}
 
 				case ButtonType.YesNo: {
-					const yesButtonElement = document.createElement('button');
+					const yesButtonElement = document.createElement("button");
 					yesButtonElement.textContent = this.texts.button.yes;
-					yesButtonElement.classList.add('yes');
-					yesButtonElement.addEventListener('click', ev => this.executeClose({ action: DialogAction.Positive, data: null }, ev), false);
+					yesButtonElement.classList.add("yes");
+					yesButtonElement.addEventListener(
+						"click",
+						(ev) =>
+							this.executeClose(
+								{ action: DialogAction.Positive, data: null },
+								ev,
+							),
+						false,
+					);
 
-					const noButtonElement = document.createElement('button');
+					const noButtonElement = document.createElement("button");
 					noButtonElement.textContent = this.texts.button.no;
-					noButtonElement.classList.add('no');
-					noButtonElement.addEventListener('click', ev => this.executeClose({ action: DialogAction.Negative, data: null }, ev), false);
+					noButtonElement.classList.add("no");
+					noButtonElement.addEventListener(
+						"click",
+						(ev) =>
+							this.executeClose(
+								{ action: DialogAction.Negative, data: null },
+								ev,
+							),
+						false,
+					);
 
 					dialogButtonsElement.appendChild(yesButtonElement);
 					dialogButtonsElement.appendChild(noButtonElement);
@@ -231,7 +274,7 @@ export class Dialog<T> {
 				}
 
 				default:
-					throw 'assert';
+					throw "assert";
 			}
 
 			dialogForegroundElement.appendChild(dialogButtonsElement);
@@ -244,9 +287,9 @@ export class Dialog<T> {
 		this._prevStyle = {
 			body: {
 				overflow: document.body.style.overflow,
-			}
+			},
 		};
-		document.body.style.overflow = 'hidden';
+		document.body.style.overflow = "hidden";
 	}
 
 	private executeClose(dialogResult: DialogResult<T>, ev: Event) {
@@ -262,13 +305,13 @@ export class Dialog<T> {
 		} else if (this.isDisplayFactory(this.setting.display)) {
 			this._contentElement = this.setting.display(this.close.bind(this));
 		} else if (this.isString(this.setting.display)) {
-			const messageElement = document.createElement('p');
+			const messageElement = document.createElement("p");
 			if (this.texts.autoBreak) {
-				var lines = this.setting.display.split(/\r?\n/);
+				const lines = this.setting.display.split(/\r?\n/);
 				for (let i = 0; i < lines.length; i++) {
 					const line = lines[i];
 					if (i) {
-						const breakElement = document.createElement('br');
+						const breakElement = document.createElement("br");
 						messageElement.appendChild(breakElement);
 					}
 					const lineNode = document.createTextNode(line);
@@ -279,22 +322,21 @@ export class Dialog<T> {
 			}
 			this._contentElement = messageElement;
 		} else {
-			throw 'error' + JSON.stringify(this.setting);
+			throw `error${JSON.stringify(this.setting)}`;
 		}
 
 		this.showCore(this._contentElement);
 
 		return new Promise<DialogResult<T>>((resolve, reject) => {
-			this._dialogElement.addEventListener(this._dialogEventName, ev => {
+			this._dialogElement.addEventListener(this._dialogEventName, (ev) => {
 				const ce = ev as CustomEvent<DialogResult<T>>;
 				resolve(ce.detail);
 			});
 		}).finally(() => {
-
 			if (this._displayParentElement) {
 				const contentElement = this._contentElement as HTMLElement;
 				contentElement.remove();
-				this._displayParentElement.appendChild(contentElement!);
+				this._displayParentElement.appendChild(contentElement);
 			}
 
 			if (this._prevStyle) {
@@ -302,23 +344,26 @@ export class Dialog<T> {
 			}
 
 			if (this._callerFocusElement) {
-				this._callerFocusElement.focus({ preventScroll: true, });
+				this._callerFocusElement.focus({ preventScroll: true });
 			}
 
 			this._dialogElement.remove();
-			this._dialogElement.textContent = '';
-
+			this._dialogElement.textContent = "";
 		});
 	}
 
 	public close(dialogResult: DialogResult<T>) {
-		var event = new CustomEvent<DialogResult<T>>(this._dialogEventName, { detail: dialogResult });
+		const event = new CustomEvent<DialogResult<T>>(this._dialogEventName, {
+			detail: dialogResult,
+		});
 		this._dialogElement.dispatchEvent(event);
 	}
 }
 
 /** 基本的にこれだけ使用しておけばOK */
-export function showAsync<T>(setting: DialogSetting<T>): Promise<DialogResult<T>> {
+export function showAsync<T>(
+	setting: DialogSetting<T>,
+): Promise<DialogResult<T>> {
 	const dialog = new Dialog<T>(setting);
 	return dialog.showAsync();
 }
@@ -329,25 +374,26 @@ export function show(setting: DialogSetting<void>) {
 	dialog.showAsync();
 }
 
-
 /**
  * 待機中ダイアログを表示
  * @param busyTimeMs 表示するまでの時間(ミリ秒)
  */
-export async function busyAsync(busyTimeMs: time.TimeSpan): Promise<{ dialog: Dialog<void>, result: Promise<DialogResult<void>> }> {
+export async function busyAsync(
+	busyTimeMs: time.TimeSpan,
+): Promise<{ dialog: Dialog<void>; result: Promise<DialogResult<void>> }> {
 	await task.sleepAsync(busyTimeMs);
 
 	const dlg = new Dialog<void>({
 		button: ButtonType.None,
 		display: () => {
-			const contentElement = document.createElement('div');
-			contentElement.classList.add('busy');
+			const contentElement = document.createElement("div");
+			contentElement.classList.add("busy");
 
-			const iconElement = document.createElement('div');
-			iconElement.classList.add('icon');
+			const iconElement = document.createElement("div");
+			iconElement.classList.add("icon");
 
-			const messageElement = document.createElement('p');
-			messageElement.classList.add('message');
+			const messageElement = document.createElement("p");
+			messageElement.classList.add("message");
 
 			contentElement.appendChild(iconElement);
 			contentElement.appendChild(messageElement);

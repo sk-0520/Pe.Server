@@ -6,6 +6,7 @@ const escapeRegex = /[.*+?^${}()|[\]\\]/g;
  * @param source
  * @returns
  */
+// biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
 export function escape(source: string): string {
-	return source.replace(escapeRegex, '\\$&');
+	return source.replace(escapeRegex, "\\$&");
 }

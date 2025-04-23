@@ -1,0 +1,27 @@
+{
+	"$schema": "https://biomejs.dev/schemas/1.8.3/schema.json",
+	"organizeImports": {
+		"enabled": false
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true,
+			"complexity": {
+				"noStaticOnlyClass": "off"
+			},
+			"a11y": {
+				"useValidAnchor": "off",
+				"useKeyWithClickEvents": "off",
+				"noSvgWithoutTitle": "off"
+			}
+		}
+	},
+	"files": {
+		"ignore": ["*.json", "PeServer/Core/Libs"]
+	},
+	"vcs": {
+		"enabled": true,
+		"clientKind": "git"
+	}
+}
