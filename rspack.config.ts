@@ -58,6 +58,8 @@ export default defineConfig({
 		path: outputDirectory,
 	},
 
+	devtool: isProduction ? false : "source-map",
+
 	devServer: {
 		watchFiles: ["public/**/*"],
 		port: 8080,
