@@ -105,6 +105,7 @@ class DatabaseSequenceResult extends DatabaseResultBase implements Iterator
 	 */
 	public function current(): mixed
 	{
+		/** @var TFieldArray */
 		return $this->iterator->current();
 	}
 
@@ -169,6 +170,7 @@ class LocalSequenceIterator extends DatabaseResultBase implements Iterator
 	{
 		$fields = $this->sequence->current();
 		/** @var TObject */
+		/** @disregard P1006 */
 		return $this->mappingImpl($fields, $this->className, $this->mapper);
 	}
 
