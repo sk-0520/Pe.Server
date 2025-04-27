@@ -72,9 +72,7 @@
 		"docker.commands.attach": "${containerCommand} exec -it ${containerId} bash",
 		//"php.validate.executablePath": "dev/php.bat",
 		"intelephense.environment.phpVersion": "8.2.0",
-		"auto-close-tag.activationOnLanguage": [
-			"smarty"
-		],
+		"auto-close-tag.activationOnLanguage": ["smarty"],
 		"intelephense.stubs": [
 			"apache",
 			"bcmath",
@@ -158,15 +156,40 @@
 		"namespaceResolver.sortOnSave": false,
 		"php-docblocker.returnVoid": false,
 		"intelephense.format.braces": "psr12",
-		"intelephense.rename.exclude": [
-			"**/vendor/**",
-			"**/Libs/**"
-		],
+		"intelephense.rename.exclude": ["**/vendor/**", "**/Libs/**"],
 		"intelephense.phpdoc.classTemplate": {
 			"summary": "$1",
-			"tags": [
-				""
-			]
+			"tags": [""]
+		},
+		"editor.codeActionsOnSave": {
+			"quickfix.biome": "always",
+			"source.organizeImports.biome": "always"
+		},
+		"[javascript]": {
+			"editor.defaultFormatter": "biomejs.biome"
+		},
+		"[javascriptreact]": {
+			"editor.defaultFormatter": "biomejs.biome"
+		},
+		"[typescript]": {
+			"editor.defaultFormatter": "biomejs.biome"
+		},
+		"[typescriptreact]": {
+			"editor.defaultFormatter": "biomejs.biome"
+		},
+		"[json]": {
+			"editor.quickSuggestions": {
+				"strings": true
+			},
+			"editor.suggest.insertMode": "replace",
+			"editor.defaultFormatter": "vscode.json-language-features"
+		},
+		"[jsonc]": {
+			"editor.quickSuggestions": {
+				"strings": true
+			},
+			"editor.suggest.insertMode": "replace",
+			"editor.defaultFormatter": "vscode.json-language-features"
 		}
 	},
 	"extensions": {
@@ -188,6 +211,6 @@
 			"mads-hartmann.bash-ide-vscode",
 			"github.vscode-github-actions",
 			"biomejs.biome"
-		],
+		]
 	}
 }

@@ -1,5 +1,5 @@
-import * as regex from './regex';
-import * as string from './string';
+import * as regex from "./regex";
+import * as string from "./string";
 
 /**
  * ワイルドカード処理。
@@ -25,19 +25,11 @@ export default class Wildcard {
 		// 	;
 		const a = regex.escape(pattern);
 
-		const b = string.replaceAll(
-			a,
-			"\\?",
-			'.'
-		);
+		const b = string.replaceAll(a, "\\?", ".");
 
-		const c = string.replaceAll(
-			b,
-			"\\*",
-			'.*'
-		);
+		const c = string.replaceAll(b, "\\*", ".*");
 
-		this._regex = new RegExp('^' + c + '$');
+		this._regex = new RegExp(`^${c}$`);
 	}
 
 	//#region function

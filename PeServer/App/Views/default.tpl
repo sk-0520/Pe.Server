@@ -105,16 +105,6 @@
 		</footer>
 		{block name='DEFAULT_SCRIPT'}{asset file='/scripts/script.js'}{/block}
 		{block name='SCRIPTS'}{/block}
-		{if $environment->isDevelopment() }
-			<script>
-				{* DOMContentLoaded やら普通にぶっこむ系だと通常表示におけるブラウザ待機時間が目に付くので load でいいのです *}
-				window.addEventListener('load', (event) => {
-					const script = document.createElement('script');
-					script.src = 'http://localhost:35729/livereload.js';
-					document.body.appendChild(script);
-				});
-			</script>
-		{/if}
 	</body>
 
 </html>

@@ -92,6 +92,10 @@ jobs:
             test/*.phar.*
           key: phar-cache-${{ github.job }}-${{ hashFiles('dev/*.sh') }}
 
+      - name: <Lint> front-end
+        shell: bash
+        run: npm run lint
+
       - name: <Build> front-end
         shell: bash
         run: npm run build

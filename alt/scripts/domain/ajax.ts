@@ -1,7 +1,7 @@
 //import * as dom from './dom';
 
-const CsrfTokenHeader: string = 'X-CSRF-TOKEN';
-const CsrfTokenId: string = 'core__csrf_id';
+const CsrfTokenHeader: string = "X-CSRF-TOKEN";
+const CsrfTokenId: string = "core__csrf_id";
 
 /**
  * AJAX 処理エラー時の返却データ構造
@@ -12,7 +12,7 @@ export interface AjaxError {
 	/** 内部使用エラー内容データ */
 	code: string;
 	/** 対象ごとのエラー詳細 */
-	info: any;
+	info: unknown;
 }
 
 /**
@@ -25,13 +25,12 @@ export interface AjaxResult<T> {
 	error?: AjaxError;
 }
 
-class AjaxResultImpl<T> implements AjaxResult<T>
-{
+class AjaxResultImpl<T> implements AjaxResult<T> {
 	readonly data: T;
 	readonly error?: AjaxError;
 
-	public constructor(obj: any) {
-		var value = obj as AjaxResult<T>;
+	public constructor(obj: unknown) {
+		const value = obj as AjaxResult<T>;
 		this.data = value.data;
 		this.error = value.error;
 	}
@@ -41,26 +40,30 @@ class AjaxResultImpl<T> implements AjaxResult<T>
 	}
 }
 
-export function toResult<T>(obj: any): AjaxResult<T> {
+export function toResult<T>(obj: unknown): AjaxResult<T> {
 	return new AjaxResultImpl<T>(obj);
 }
 
-export async function communicateJsonAsync<T>(url: string, method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE', json?: any): Promise<AjaxResult<T>> {
+export async function communicateJsonAsync<T>(
+	url: string,
+	method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
+	json?: object,
+): Promise<AjaxResult<T>> {
 	const headers: { [name: string]: string } = {
-		'Content-Type': 'application/json'
+		"Content-Type": "application/json",
 	};
 	const csrfToken = getCsrfToken();
-	if (csrfToken && csrfToken.length) {
+	if (csrfToken?.length) {
 		headers[CsrfTokenHeader] = csrfToken;
 	}
 
 	const data: RequestInit = {
 		method: method,
-		mode: 'cors',
-		cache: 'no-cache',
-		credentials: 'same-origin',
+		mode: "cors",
+		cache: "no-cache",
+		credentials: "same-origin",
 		headers: headers,
-		redirect: 'follow',
+		redirect: "follow",
 	};
 	if (json) {
 		data.body = JSON.stringify(json);
@@ -73,6 +76,8 @@ export async function communicateJsonAsync<T>(url: string, method: 'GET' | 'POST
 }
 
 export function getCsrfToken(): string {
-	const metaElement = document.getElementById(CsrfTokenId) as HTMLMetaElement | null;
-	return metaElement?.content ?? '';
+	const metaElement = document.getElementById(
+		CsrfTokenId,
+	) as HTMLMetaElement | null;
+	return metaElement?.content ?? "";
 }

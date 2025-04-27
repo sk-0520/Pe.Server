@@ -1,5 +1,5 @@
-import * as types from './types';
-import * as throws from './throws';
+import * as types from "./types";
+import * as throws from "./throws";
 
 /**
  * ID から要素取得を強制。
@@ -10,7 +10,10 @@ import * as throws from './throws';
  * @throws {throws.NotFoundDomSelectorError} セレクタから要素が見つからない
  * @throws {throws.ElementTypeError} 要素に指定された型が合わない
  */
-export function requireElementById<THtmlElement extends HTMLElement>(elementId: string, elementType?: types.Constructor<THtmlElement>): THtmlElement {
+export function requireElementById<THtmlElement extends HTMLElement>(
+	elementId: string,
+	elementType?: types.Constructor<THtmlElement>,
+): THtmlElement {
 	const result = document.getElementById(elementId);
 	if (!result) {
 		throw new throws.NotFoundDomSelectorError(elementId);
@@ -18,7 +21,9 @@ export function requireElementById<THtmlElement extends HTMLElement>(elementId: 
 
 	if (elementType) {
 		if (!types.instanceOf(result, elementType)) {
-			throw new throws.ElementTypeError(`${result.constructor.name} != ${elementType.prototype.constructor.name}`);
+			throw new throws.ElementTypeError(
+				`${result.constructor.name} != ${elementType.prototype.constructor.name}`,
+			);
 		}
 	}
 
@@ -32,28 +37,52 @@ export function requireElementById<THtmlElement extends HTMLElement>(elementId: 
  * @param selectors
  * @returns
  */
-export function requireSelector<K extends keyof HTMLElementTagNameMap>(element: ParentNode, selectors: K): HTMLElementTagNameMap[K];
-export function requireSelector<K extends keyof HTMLElementTagNameMap>(selectors: K): HTMLElementTagNameMap[K];
-export function requireSelector<K extends keyof SVGElementTagNameMap>(element: ParentNode, selectors: K): SVGElementTagNameMap[K];
-export function requireSelector<K extends keyof SVGElementTagNameMap>(selectors: K): SVGElementTagNameMap[K];
-export function requireSelector<TElement extends Element = Element>(selectors: string, elementType?: types.Constructor<TElement>): TElement;
-export function requireSelector<TElement extends Element = Element>(element: ParentNode, selectors: string, elementType?: types.Constructor<TElement>): TElement;
-export function requireSelector<TElement extends Element = Element>(element: ParentNode | string | null, selectors?: string | types.Constructor<TElement>, elementType?: types.Constructor<TElement>): TElement {
+export function requireSelector<K extends keyof HTMLElementTagNameMap>(
+	element: ParentNode,
+	selectors: K,
+): HTMLElementTagNameMap[K];
+export function requireSelector<K extends keyof HTMLElementTagNameMap>(
+	selectors: K,
+): HTMLElementTagNameMap[K];
+export function requireSelector<K extends keyof SVGElementTagNameMap>(
+	element: ParentNode,
+	selectors: K,
+): SVGElementTagNameMap[K];
+export function requireSelector<K extends keyof SVGElementTagNameMap>(
+	selectors: K,
+): SVGElementTagNameMap[K];
+export function requireSelector<TElement extends Element = Element>(
+	selectors: string,
+	elementType?: types.Constructor<TElement>,
+): TElement;
+export function requireSelector<TElement extends Element = Element>(
+	element: ParentNode,
+	selectors: string,
+	elementType?: types.Constructor<TElement>,
+): TElement;
+export function requireSelector<TElement extends Element = Element>(
+	element: ParentNode | string | null,
+	selectors?: string | types.Constructor<TElement>,
+	elementType?: types.Constructor<TElement>,
+): TElement {
 	if (types.isString(element)) {
 		if (selectors) {
 			if (types.isString(selectors)) {
-				throw new throws.MismatchArgumentError('selectors');
-			} else {
-				elementType = selectors;
+				throw new throws.MismatchArgumentError("selectors");
 			}
+			// biome-ignore lint/style/noParameterAssign: しんどい
+			elementType = selectors;
 		}
+		// biome-ignore lint/style/noParameterAssign: しんどい
 		selectors = element;
+		// biome-ignore lint/style/noParameterAssign: しんどい
 		element = null;
 	} else {
 		if (types.isUndefined(selectors)) {
-			throw new throws.MismatchArgumentError('selectors');
-		} else if (!types.isString(selectors)) {
-			throw new throws.MismatchArgumentError('selectors');
+			throw new throws.MismatchArgumentError("selectors");
+		}
+		if (!types.isString(selectors)) {
+			throw new throws.MismatchArgumentError("selectors");
 		}
 	}
 
@@ -64,7 +93,9 @@ export function requireSelector<TElement extends Element = Element>(element: Par
 
 	if (elementType) {
 		if (!types.instanceOf(result, elementType)) {
-			throw new throws.ElementTypeError(`${result.constructor.name} != ${elementType.prototype.constructor.name}`);
+			throw new throws.ElementTypeError(
+				`${result.constructor.name} != ${elementType.prototype.constructor.name}`,
+			);
 		}
 	}
 
@@ -76,28 +107,52 @@ export function requireSelector<TElement extends Element = Element>(element: Par
  * @param element
  * @param selectors
  */
-export function requireSelectorAll<K extends keyof HTMLElementTagNameMap>(element: ParentNode, selectors: K): NodeListOf<HTMLElementTagNameMap[K]>;
-export function requireSelectorAll<K extends keyof HTMLElementTagNameMap>(selectors: K): NodeListOf<HTMLElementTagNameMap[K]>;
-export function requireSelectorAll<K extends keyof SVGElementTagNameMap>(element: ParentNode, selectors: K): NodeListOf<SVGElementTagNameMap[K]>;
-export function requireSelectorAll<K extends keyof SVGElementTagNameMap>(selectors: K): NodeListOf<SVGElementTagNameMap[K]>;
-export function requireSelectorAll<TElement extends Element = Element>(selectors: string, elementType?: types.Constructor<TElement>): NodeListOf<TElement>;
-export function requireSelectorAll<TElement extends Element = Element>(element: ParentNode, selectors: string, elementType?: types.Constructor<TElement>): NodeListOf<TElement>;
-export function requireSelectorAll<TElement extends Element = Element>(element: ParentNode | string | null, selectors?: string | types.Constructor<TElement>, elementType?: types.Constructor<TElement>): NodeListOf<TElement> {
+export function requireSelectorAll<K extends keyof HTMLElementTagNameMap>(
+	element: ParentNode,
+	selectors: K,
+): NodeListOf<HTMLElementTagNameMap[K]>;
+export function requireSelectorAll<K extends keyof HTMLElementTagNameMap>(
+	selectors: K,
+): NodeListOf<HTMLElementTagNameMap[K]>;
+export function requireSelectorAll<K extends keyof SVGElementTagNameMap>(
+	element: ParentNode,
+	selectors: K,
+): NodeListOf<SVGElementTagNameMap[K]>;
+export function requireSelectorAll<K extends keyof SVGElementTagNameMap>(
+	selectors: K,
+): NodeListOf<SVGElementTagNameMap[K]>;
+export function requireSelectorAll<TElement extends Element = Element>(
+	selectors: string,
+	elementType?: types.Constructor<TElement>,
+): NodeListOf<TElement>;
+export function requireSelectorAll<TElement extends Element = Element>(
+	element: ParentNode,
+	selectors: string,
+	elementType?: types.Constructor<TElement>,
+): NodeListOf<TElement>;
+export function requireSelectorAll<TElement extends Element = Element>(
+	element: ParentNode | string | null,
+	selectors?: string | types.Constructor<TElement>,
+	elementType?: types.Constructor<TElement>,
+): NodeListOf<TElement> {
 	if (types.isString(element)) {
 		if (selectors) {
 			if (types.isString(selectors)) {
-				throw new throws.MismatchArgumentError('selectors');
-			} else {
-				elementType = selectors;
+				throw new throws.MismatchArgumentError("selectors");
 			}
+			// biome-ignore lint/style/noParameterAssign: しんどい
+			elementType = selectors;
 		}
+		// biome-ignore lint/style/noParameterAssign: しんどい
 		selectors = element;
+		// biome-ignore lint/style/noParameterAssign: しんどい
 		element = null;
 	} else {
 		if (types.isUndefined(selectors)) {
-			throw new throws.MismatchArgumentError('selectors');
-		} else if (!types.isString(selectors)) {
-			throw new throws.MismatchArgumentError('selectors');
+			throw new throws.MismatchArgumentError("selectors");
+		}
+		if (!types.isString(selectors)) {
+			throw new throws.MismatchArgumentError("selectors");
 		}
 	}
 
@@ -109,7 +164,9 @@ export function requireSelectorAll<TElement extends Element = Element>(element: 
 	if (elementType) {
 		for (const elm of result) {
 			if (!types.instanceOf(elm, elementType)) {
-				throw new throws.ElementTypeError(`elm ${elm} != ${elementType.prototype.constructor.name}`);
+				throw new throws.ElementTypeError(
+					`elm ${elm} != ${elementType.prototype.constructor.name}`,
+				);
 			}
 		}
 	}
@@ -124,10 +181,24 @@ export function requireSelectorAll<TElement extends Element = Element>(element: 
  * @param element
  * @returns
  */
-export function requireClosest<K extends keyof HTMLElementTagNameMap>(element: Element, selectors: K): HTMLElementTagNameMap[K];
-export function requireClosest<K extends keyof SVGElementTagNameMap>(element: Element, selectors: K): SVGElementTagNameMap[K];
-export function requireClosest<E extends Element = Element>(element: Element, selectors: string, elementType?: types.Constructor<E>): E;
-export function requireClosest<TElement extends Element = Element>(element: Element, selectors: string, elementType?: types.Constructor<TElement>): Element {
+export function requireClosest<K extends keyof HTMLElementTagNameMap>(
+	element: Element,
+	selectors: K,
+): HTMLElementTagNameMap[K];
+export function requireClosest<K extends keyof SVGElementTagNameMap>(
+	element: Element,
+	selectors: K,
+): SVGElementTagNameMap[K];
+export function requireClosest<E extends Element = Element>(
+	element: Element,
+	selectors: string,
+	elementType?: types.Constructor<E>,
+): E;
+export function requireClosest<TElement extends Element = Element>(
+	element: Element,
+	selectors: string,
+	elementType?: types.Constructor<TElement>,
+): Element {
 	const result = element.closest(selectors);
 	if (!result) {
 		throw new throws.NotFoundDomSelectorError(selectors);
@@ -135,7 +206,9 @@ export function requireClosest<TElement extends Element = Element>(element: Elem
 
 	if (elementType) {
 		if (!types.instanceOf(result, elementType)) {
-			throw new throws.ElementTypeError(`${result.constructor.name} != ${elementType.prototype.constructor.name}`);
+			throw new throws.ElementTypeError(
+				`${result.constructor.name} != ${elementType.prototype.constructor.name}`,
+			);
 		}
 	}
 
@@ -148,7 +221,7 @@ export function requireClosest<TElement extends Element = Element>(element: Elem
  * @returns
  */
 export function getParentForm(element: Element): HTMLFormElement {
-	return requireClosest(element, 'form');
+	return requireClosest(element, "form");
 }
 
 /**
@@ -157,13 +230,15 @@ export function getParentForm(element: Element): HTMLFormElement {
  */
 export function cloneTemplate(selectors: string): DocumentFragment;
 export function cloneTemplate(element: HTMLTemplateElement): DocumentFragment;
-export function cloneTemplate(input: string | HTMLTemplateElement): DocumentFragment {
-	if (typeof input === 'string') {
-		const element = requireSelector(input, HTMLTemplateElement);
-		input = element;
-	}
+export function cloneTemplate(
+	input: string | HTMLTemplateElement,
+): DocumentFragment {
+	const element =
+		typeof input === "string"
+			? requireSelector(input, HTMLTemplateElement)
+			: input;
 
-	const result = input.content.cloneNode(true);
+	const result = element.content.cloneNode(true);
 
 	return result as DocumentFragment;
 }
@@ -174,11 +249,23 @@ export function cloneTemplate(input: string | HTMLTemplateElement): DocumentFrag
  * @param tagName
  * @param options
  */
-export function createFactory<K extends keyof HTMLElementTagNameMap>(tagName: K, options?: ElementCreationOptions): TagFactory<HTMLElementTagNameMap[K]>;
+export function createFactory<K extends keyof HTMLElementTagNameMap>(
+	tagName: K,
+	options?: ElementCreationOptions,
+): TagFactory<HTMLElementTagNameMap[K]>;
 /** @deprecated */
-export function createFactory<K extends keyof HTMLElementDeprecatedTagNameMap>(tagName: K, options?: ElementCreationOptions): TagFactory<HTMLElementDeprecatedTagNameMap[K]>;
-export function createFactory<THTMLElement extends HTMLElement>(tagName: string, options?: ElementCreationOptions): TagFactory<THTMLElement>;
-export function createFactory(tagName: string, options?: ElementCreationOptions): TagFactory<HTMLElement> {
+export function createFactory<K extends keyof HTMLElementDeprecatedTagNameMap>(
+	tagName: K,
+	options?: ElementCreationOptions,
+): TagFactory<HTMLElementDeprecatedTagNameMap[K]>;
+export function createFactory<THTMLElement extends HTMLElement>(
+	tagName: string,
+	options?: ElementCreationOptions,
+): TagFactory<THTMLElement>;
+export function createFactory(
+	tagName: string,
+	options?: ElementCreationOptions,
+): TagFactory<HTMLElement> {
 	const element = document.createElement(tagName, options);
 	return new TagFactory(element);
 }
@@ -186,15 +273,15 @@ export function createFactory(tagName: string, options?: ElementCreationOptions)
 /**
  * 要素の追加位置。
  */
-export const enum AttachPosition {
+export enum AttachPosition {
 	/** 最後。 */
-	Last,
+	Last = 0,
 	/** 最初。 */
-	First,
+	First = 1,
 	/** 直前。 */
-	Previous,
+	Previous = 2,
 	/** 直後。 */
-	Next,
+	Next = 3,
 }
 
 /**
@@ -203,32 +290,46 @@ export const enum AttachPosition {
  * @param position 位置。
  * @param factory 追加する要素。
  */
-export function attach(parent: Element, position: AttachPosition, factory: NodeFactory): Node;
-export function attach<TElement extends Element = Element>(parent: Element, position: AttachPosition, factory: TagFactory<TElement>): TElement;
-export function attach(parent: Element, position: AttachPosition, node: Node): Node;
-export function attach(parent: Element, position: AttachPosition, node: Node | NodeFactory): Node {
-	if (isNodeFactory(node)) {
-		node = node.element;
-	}
+export function attach(
+	parent: Element,
+	position: AttachPosition,
+	factory: NodeFactory,
+): Node;
+export function attach<TElement extends Element = Element>(
+	parent: Element,
+	position: AttachPosition,
+	factory: TagFactory<TElement>,
+): TElement;
+export function attach(
+	parent: Element,
+	position: AttachPosition,
+	node: Node,
+): Node;
+export function attach(
+	parent: Element,
+	position: AttachPosition,
+	node: Node | NodeFactory,
+): Node {
+	const workNode = isNodeFactory(node) ? node.element : node;
 
 	switch (position) {
 		case AttachPosition.Last:
-			return parent.appendChild(node);
+			return parent.appendChild(workNode);
 
 		case AttachPosition.First:
-			return parent.insertBefore(node, parent.firstChild);
+			return parent.insertBefore(workNode, parent.firstChild);
 
 		case AttachPosition.Previous:
 			if (!parent.parentNode) {
-				throw new TypeError('parent.parentNode');
+				throw new TypeError("parent.parentNode");
 			}
-			return parent.parentNode.insertBefore(node, parent);
+			return parent.parentNode.insertBefore(workNode, parent);
 
 		case AttachPosition.Next:
 			if (!parent.parentNode) {
-				throw new TypeError('parent.parentNode');
+				throw new TypeError("parent.parentNode");
 			}
-			return parent.parentNode.insertBefore(node, parent.nextSibling);
+			return parent.parentNode.insertBefore(workNode, parent.nextSibling);
 
 		default:
 			throw new throws.NotImplementedError();
@@ -236,7 +337,7 @@ export function attach(parent: Element, position: AttachPosition, node: Node | N
 }
 
 function isNodeFactory(arg: unknown): arg is NodeFactory {
-	return types.hasObject(arg, 'element');
+	return types.hasObject(arg, "element");
 }
 
 /**
@@ -254,22 +355,32 @@ export interface NodeFactory {
  * テキストノード生成処理。
  */
 export class TextFactory implements NodeFactory {
-	constructor(public readonly element: Text) {
-	}
+	constructor(public readonly element: Text) {}
 }
 
 /**
  * 要素生成処理。
  */
 export class TagFactory<TElement extends Element> implements NodeFactory {
-	constructor(public readonly element: TElement) {
-	}
+	constructor(public readonly element: TElement) {}
 
-	public createTag<K extends keyof HTMLElementTagNameMap>(tagName: K, options?: ElementCreationOptions): TagFactory<HTMLElementTagNameMap[K]>;
+	public createTag<K extends keyof HTMLElementTagNameMap>(
+		tagName: K,
+		options?: ElementCreationOptions,
+	): TagFactory<HTMLElementTagNameMap[K]>;
 	/** @deprecated */
-	public createTag<K extends keyof HTMLElementDeprecatedTagNameMap>(tagName: K, options?: ElementCreationOptions): TagFactory<HTMLElementDeprecatedTagNameMap[K]>;
-	public createTag<THTMLElement extends HTMLElement>(tagName: string, options?: ElementCreationOptions): TagFactory<THTMLElement>;
-	public createTag(tagName: string, options?: ElementCreationOptions): TagFactory<HTMLElement> {
+	public createTag<K extends keyof HTMLElementDeprecatedTagNameMap>(
+		tagName: K,
+		options?: ElementCreationOptions,
+	): TagFactory<HTMLElementDeprecatedTagNameMap[K]>;
+	public createTag<THTMLElement extends HTMLElement>(
+		tagName: string,
+		options?: ElementCreationOptions,
+	): TagFactory<THTMLElement>;
+	public createTag(
+		tagName: string,
+		options?: ElementCreationOptions,
+	): TagFactory<HTMLElement> {
 		const createdElement = document.createElement(tagName, options);
 		this.element.appendChild(createdElement);
 
@@ -286,27 +397,29 @@ export class TagFactory<TElement extends Element> implements NodeFactory {
 	}
 }
 
-
 /**
  * カスタムデータ属性のケバブ名を dataset アクセス可能な名前に変更
  * @param kebab データ属性名。
  * @param removeDataAttributeBegin 先頭の `data-`* を破棄するか。
  */
-export function toCustomKey(kebab: string, removeDataAttributeBegin: boolean = true): string {
+export function toCustomKey(
+	kebab: string,
+	removeDataAttributeBegin = true,
+): string {
+	const dataHead = "data-";
+	const workKebab =
+		removeDataAttributeBegin && kebab.startsWith(dataHead)
+			? kebab.substring(dataHead.length)
+			: kebab;
 
-	const dataHead = 'data-';
-	if (removeDataAttributeBegin && kebab.startsWith(dataHead)) {
-		kebab = kebab.substring(dataHead.length);
-	}
-
-	return kebab
-		.split('-')
-		.map((item, index) => index
-			? item.charAt(0).toUpperCase() + item.slice(1).toLowerCase()
-			: item.toLowerCase()
+	return workKebab
+		.split("-")
+		.map((item, index) =>
+			index
+				? item.charAt(0).toUpperCase() + item.slice(1).toLowerCase()
+				: item.toLowerCase(),
 		)
-		.join('')
-		;
+		.join("");
 }
 
 /**
@@ -317,7 +430,11 @@ export function toCustomKey(kebab: string, removeDataAttributeBegin: boolean = t
  * @param removeDataAttributeBegin 先頭の `data-` を破棄するか。
  * @returns
  */
-export function getDataset(element: HTMLOrSVGElement, dataKey: string, removeDataAttributeBegin: boolean = true): string {
+export function getDataset(
+	element: HTMLOrSVGElement,
+	dataKey: string,
+	removeDataAttributeBegin = true,
+): string {
 	const key = toCustomKey(dataKey, removeDataAttributeBegin);
 	const value = element.dataset[key];
 	if (types.isUndefined(value)) {
@@ -336,7 +453,12 @@ export function getDataset(element: HTMLOrSVGElement, dataKey: string, removeDat
  * @param removeDataAttributeBegin 先頭の `data-`* を破棄するか。
  * @returns
  */
-export function getDatasetOr(element: HTMLOrSVGElement, dataKey: string, fallback: string, removeDataAttributeBegin: boolean = true): string {
+export function getDatasetOr(
+	element: HTMLOrSVGElement,
+	dataKey: string,
+	fallback: string,
+	removeDataAttributeBegin = true,
+): string {
 	const key = toCustomKey(dataKey, removeDataAttributeBegin);
 	const value = element.dataset[key];
 	if (types.isUndefined(value)) {
@@ -346,7 +468,17 @@ export function getDatasetOr(element: HTMLOrSVGElement, dataKey: string, fallbac
 	return value;
 }
 
-type HtmlTagName = Uppercase<keyof HTMLElementTagNameMap | keyof HTMLElementDeprecatedTagNameMap | keyof SVGElementTagNameMap> | Lowercase<keyof HTMLElementTagNameMap | keyof HTMLElementDeprecatedTagNameMap | keyof SVGElementTagNameMap>;
+type HtmlTagName =
+	| Uppercase<
+			| keyof HTMLElementTagNameMap
+			| keyof HTMLElementDeprecatedTagNameMap
+			| keyof SVGElementTagNameMap
+	  >
+	| Lowercase<
+			| keyof HTMLElementTagNameMap
+			| keyof HTMLElementDeprecatedTagNameMap
+			| keyof SVGElementTagNameMap
+	  >;
 /**
  * 要素のタグ名の一致判定。
  *
@@ -356,17 +488,18 @@ type HtmlTagName = Uppercase<keyof HTMLElementTagNameMap | keyof HTMLElementDepr
  */
 export function equalTagName(element: Element, value: HtmlTagName): boolean;
 export function equalTagName(element: Element, value: string): boolean;
-export function equalTagName(element: Element, value: Element): boolean
-export function equalTagName(element: Element, value: string | Element): boolean {
-	if (!types.isString(value)) {
-		value = value.tagName;
-	}
+export function equalTagName(element: Element, value: Element): boolean;
+export function equalTagName(
+	element: Element,
+	value: string | Element,
+): boolean {
+	const workValue = !types.isString(value) ? value.tagName : value;
 
-	if (element.tagName === value) {
+	if (element.tagName === workValue) {
 		return true;
 	}
 
-	return element.tagName.toUpperCase() === value.toUpperCase();
+	return element.tagName.toUpperCase() === workValue.toUpperCase();
 }
 
 /**
@@ -377,13 +510,11 @@ export function equalTagName(element: Element, value: string | Element): boolean
 export function moveElement(current: HTMLElement, isUp: boolean): void {
 	const refElement = isUp
 		? current.previousElementSibling
-		: current.nextElementSibling
-		;
+		: current.nextElementSibling;
 
 	if (refElement) {
 		const newItem = isUp ? current : refElement;
 		const oldItem = isUp ? refElement : current;
-		current.parentElement!.insertBefore(newItem, oldItem);
+		current.parentElement?.insertBefore(newItem, oldItem);
 	}
 }
-
