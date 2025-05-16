@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
+use Error;
 use ValueError;
 use PeServer\Core\Binary;
 use PeServer\Core\Collections\Arr;
@@ -11,6 +12,7 @@ use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\EncodingException;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Throws\Throws;
+use Smarty\Extension\CoreExtension;
 use Throwable;
 
 /**
@@ -274,6 +276,9 @@ class Encoding
 
 		try {
 			$output = mb_convert_encoding($input, $this->name, $default->name);
+			if ($output === false) {
+				throw new EncodingException();
+			}
 			return new Binary($output);
 		} catch (Throwable $ex) {
 			Throws::reThrow(EncodingException::class, $ex);
@@ -297,6 +302,9 @@ class Encoding
 
 		try {
 			$output = mb_convert_encoding($input->raw, $default->name, $this->name);
+			if ($output === false) {
+				throw new EncodingException();
+			}
 			return $output;
 		} catch (Throwable $ex) {
 			Throws::reThrow(EncodingException::class, $ex);
