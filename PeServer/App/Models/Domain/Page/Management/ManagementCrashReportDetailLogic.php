@@ -78,7 +78,8 @@ class ManagementCrashReportDetailLogic extends PageLogicBase
 			$this->setValue('report', Text::EMPTY);
 		}
 
-		$this->setValue('developer_title', "[CR:$sequence] (edit title)");
+		$title = Text::splitLines($detail->exception)[0] ?? "(edit title)";
+		$this->setValue('developer_title', "[CR:$sequence] $title");
 
 		$exception = $detail->exception;
 
@@ -86,7 +87,7 @@ class ManagementCrashReportDetailLogic extends PageLogicBase
 			<<<STR
 {URL}
 
-{VERSION}
+Version: `{VERSION}`
 
 ```
 {EXCEPTION}
