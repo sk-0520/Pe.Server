@@ -60,7 +60,8 @@ class ManagementFeedbackDetailLogic extends PageLogicBase
 
 		$this->setValue('detail', $detail);
 
-		$this->setValue('developer_title', "[FB:$sequence] (edit title)");
+		$title = $detail->subject;
+		$this->setValue('developer_title', "[FB:$sequence] $title");
 
 		$content = Text::join(PHP_EOL, Arr::map(Text::splitLines($detail->content), fn($a) => "> $a"));
 
@@ -68,7 +69,7 @@ class ManagementFeedbackDetailLogic extends PageLogicBase
 			<<<STR
 {URL}
 
-{VERSION}
+Version: `{VERSION}`
 
 {CONTENT}
 
