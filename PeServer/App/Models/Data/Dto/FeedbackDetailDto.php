@@ -51,7 +51,7 @@ class FeedbackDetailDto extends DtoBase
 	public string $developerComment = Text::EMPTY;
 
 	#[Mapping(name: 'developer_status')]
-	public ReportStatus $developerStatus;
+	public ReportStatus $developerStatus = ReportStatus::None;
 
 
 	#endregion
