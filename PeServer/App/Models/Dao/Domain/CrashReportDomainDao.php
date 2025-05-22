@@ -27,7 +27,23 @@ class CrashReportDomainDao extends DaoBase
 			<<<SQL
 
 			select
-				crash_reports.*,
+				crash_reports.sequence,
+
+				crash_reports.timestamp,
+				crash_reports.ip_address,
+
+				crash_reports.version,
+				crash_reports.revision,
+				crash_reports.build,
+				crash_reports.user_id,
+
+				crash_reports.exception,
+
+				crash_reports.email,
+				crash_reports.comment,
+
+				crash_reports.report,
+
 				nullif(crash_report_comments.comment, '') as developer_comment
 			from
 				crash_reports
