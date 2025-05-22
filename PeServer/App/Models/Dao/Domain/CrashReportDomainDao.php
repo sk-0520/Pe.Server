@@ -45,7 +45,8 @@ class CrashReportDomainDao extends DaoBase
 
 				crash_reports.report,
 
-				nullif(crash_report_comments.comment, '') as developer_comment
+				nullif(crash_report_comments.comment, '') as developer_comment,
+				nullif(crash_report_status.status, 'none') as developer_status
 			from
 				crash_reports
 				left join
@@ -54,6 +55,13 @@ class CrashReportDomainDao extends DaoBase
 					(
 						crash_report_comments.crash_report_sequence = crash_reports.sequence
 					)
+				left join
+					crash_report_status
+					on
+					(
+						crash_report_status.crash_report_sequence = crash_reports.sequence
+					)
+
 			where
 				crash_reports.sequence = :sequence
 

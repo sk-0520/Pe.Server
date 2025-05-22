@@ -52,7 +52,8 @@ class FeedbackDomainDao extends DaoBase
 				feedbacks.subject,
 				feedbacks.content,
 
-				nullif(feedback_comments.comment, '') as developer_comment
+				nullif(feedback_comments.comment, '') as developer_comment,
+				nullif(feedback_status.status, 'none') as developer_status
 			from
 				feedbacks
 				left join
@@ -61,6 +62,12 @@ class FeedbackDomainDao extends DaoBase
 					(
 						feedback_comments.feedback_sequence = feedbacks.sequence
 					)
+			left join
+				feedback_status
+				on
+				(
+					feedback_status.feedback_sequence = feedbacks.sequence
+				)
 
 			where
 				sequence = :sequence
