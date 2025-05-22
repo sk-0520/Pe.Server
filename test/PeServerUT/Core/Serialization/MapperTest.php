@@ -88,6 +88,14 @@ class MapperTest extends TestClass
 		$this->assertSame(123, $actual->child->int);
 	}
 
+	public function test_mapping_EnumClass() {
+				$mapper = new Mapper();
+		$actual = new EnumClass();
+		$mapper->mapping([], $actual);
+
+		$this->assertSame(EnumInt::Int0, $actual->int0);
+	}
+
 	public function test_mapping_AttrName()
 	{
 		$mapper = new Mapper();
@@ -311,6 +319,30 @@ class NestNull
 	public ?NestChild $child;
 }
 
+enum EnumInt: int
+{
+	case Int0 = 0;
+	case Int1 = 1;
+	case Int2 = 2;
+}
+
+enum EnumString: string
+{
+	case String0 = "";
+	case String1 = "abc";
+	case String2 = "xyz";
+}
+
+class EnumClass
+{
+	public EnumInt $int0;
+	public EnumInt $int1;
+	public EnumInt $int2;
+
+	public EnumString $string0;
+	public EnumString $string1;
+	public EnumString $string2;
+}
 
 class AttrName
 {
