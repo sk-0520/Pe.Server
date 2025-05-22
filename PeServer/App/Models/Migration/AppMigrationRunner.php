@@ -12,6 +12,7 @@ use PeServer\App\Models\Migration\Migrations\Default\DefaultMigration0003;
 use PeServer\App\Models\Migration\Migrations\Default\DefaultMigration0004;
 use PeServer\App\Models\Migration\Migrations\Default\DefaultMigration0005;
 use PeServer\App\Models\Migration\Migrations\Default\DefaultMigration0006;
+use PeServer\App\Models\Migration\Migrations\Default\DefaultMigration0007;
 use PeServer\App\Models\Migration\Migrations\Default\DefaultMigrationLast;
 use PeServer\App\Models\Migration\Migrations\Session\SessionMigrationBase;
 use PeServer\App\Models\Migration\Migrations\Session\SessionMigration0000;
@@ -37,6 +38,7 @@ class AppMigrationRunner extends SqliteMigrationRunnerBase
 		DefaultMigration0004::class,
 		DefaultMigration0005::class,
 		DefaultMigration0006::class,
+		DefaultMigration0007::class,
 	];
 	/** @var class-string<SessionMigrationBase>[] */
 	private array $sessionMigrations = [
