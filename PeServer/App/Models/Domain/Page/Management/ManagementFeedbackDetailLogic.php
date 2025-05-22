@@ -9,6 +9,7 @@ use PeServer\App\Models\AppDatabaseCache;
 use PeServer\App\Models\Dao\Domain\FeedbackDomainDao;
 use PeServer\App\Models\Dao\Entities\FeedbackCommentsEntityDao;
 use PeServer\App\Models\Dao\Entities\FeedbacksEntityDao;
+use PeServer\App\Models\Data\ReportStatus;
 use PeServer\App\Models\Domain\AppArchiver;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\Core\Collections\Arr;
@@ -58,6 +59,7 @@ class ManagementFeedbackDetailLogic extends PageLogicBase
 
 		$detail = $feedbackDomainDao->selectFeedbackDetailBySequence($sequence);
 
+		$this->setValue('report_status', ReportStatus::toArray());
 		$this->setValue('detail', $detail);
 
 		$title = $detail->subject;
