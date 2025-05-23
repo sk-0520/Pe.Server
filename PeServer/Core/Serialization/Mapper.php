@@ -16,6 +16,7 @@ use PeServer\Core\Throws\MapperTypeException;
 use PeServer\Core\Throws\NotImplementedException;
 use PeServer\Core\TypeUtility;
 use ReflectionClass;
+use ReflectionEnum;
 use ReflectionNamedType;
 use TypeError;
 
@@ -90,9 +91,31 @@ class Mapper implements IMapper
 				$nestTypeName = $propertyType->getName();
 				$isArrayObject = $nestTypeName === TypeUtility::TYPE_ARRAY && class_exists($mapping->arrayValueClassName);
 
-				if ($sourceType === $nestTypeName && !$isArrayObject) {
-					$property->setValue($destination, $sourceValue);
-					continue 2; // loop: $properties
+				if (!$isArrayObject) {
+					if ($sourceType === $nestTypeName) {
+						$property->setValue($destination, $sourceValue);
+						continue 2; // loop: $properties
+					}
+
+					if (enum_exists($nestTypeName)) {
+						$destEnum = new ReflectionEnum($nestTypeName);
+						$destCases = $destEnum->getCases();
+						foreach ($destCases as $destCase) {
+							$enumValue = $destCase->getValue();
+							if (is_string($sourceValue) && Text::toUpper($enumValue->name) === Text::toUpper($sourceValue)) {
+								$property->setValue($destination, $enumValue);
+								continue 3; // loop: $properties
+							}
+
+							if ($enumValue->value === $sourceValue) {
+								$property->setValue($destination, $enumValue);
+								continue 3; // loop: $properties
+							}
+						}
+
+						$property->setValue($destination, $destCases[0]->getValue());
+						continue 2; // loop: $properties
+					}
 				}
 
 				if ($sourceType === TypeUtility::TYPE_ARRAY) {
@@ -149,7 +172,7 @@ class Mapper implements IMapper
 			// 型一致せずにここまで来たので可能な限り元の型に合わせる
 			if (($mapping->flags & Mapping::FLAG_EXCEPTION_TYPE_MISMATCH) === Mapping::FLAG_EXCEPTION_TYPE_MISMATCH) {
 				// ただし型変換失敗例外指定の場合は全部諦める
-				throw new MapperTypeException($keyName . '(' . $sourceType . '): ' . Text::join('|', Arr::map($propertyTypes, fn (ReflectionNamedType $p) => $p->getName())));
+				throw new MapperTypeException($keyName . '(' . $sourceType . '): ' . Text::join('|', Arr::map($propertyTypes, fn(ReflectionNamedType $p) => $p->getName())));
 			}
 
 			foreach ($propertyTypes as $propertyType) {
