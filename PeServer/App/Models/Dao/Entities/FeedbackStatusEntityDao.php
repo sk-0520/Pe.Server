@@ -41,7 +41,6 @@ class FeedbackStatusEntityDao extends DaoBase
 						status = :status
 
 			SQL,
-
 			[
 				"feedback_sequence" => $sequence,
 				"status" => $status->value

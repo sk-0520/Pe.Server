@@ -107,7 +107,7 @@ class Mapper implements IMapper
 								continue 3; // loop: $properties
 							}
 
-							if ($enumValue->value === $sourceValue) {
+							if (property_exists($enumValue, "value") && $enumValue->value === $sourceValue) {
 								$property->setValue($destination, $enumValue);
 								continue 3; // loop: $properties
 							}

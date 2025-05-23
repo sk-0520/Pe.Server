@@ -88,7 +88,8 @@ class MapperTest extends TestClass
 		$this->assertSame(123, $actual->child->int);
 	}
 
-	public function test_mapping_EnumClass() {
+	public function test_mapping_EnumClass()
+	{
 		$mapper = new Mapper();
 		$actual = new EnumClass();
 		$mapper->mapping([

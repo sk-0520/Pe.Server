@@ -41,7 +41,6 @@ class CrashReportStatusEntityDao extends DaoBase
 						status = :status
 
 			SQL,
-
 			[
 				"crash_report_sequence" => $sequence,
 				"status" => $status->value
