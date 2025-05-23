@@ -48,67 +48,6 @@ class FeedbacksEntityDao extends DaoBase
 		);
 	}
 
-	/**
-	 * フィードバック ページ 全件数取得。
-	 *
-	 * @return int
-	 * @phpstan-return non-negative-int
-	 */
-	public function selectFeedbacksPageTotalCount(): int
-	{
-		return $this->context->selectSingleCount(
-			<<<SQL
-
-			select
-				count(*)
-			from
-				feedbacks
-				feedbacks
-
-			SQL
-		);
-	}
-
-
-	/**
-	 * フィードバック ページ 表示データ取得。
-	 *
-	 * @param int $index
-	 * @phpstan-param non-negative-int $index
-	 * @param int $count
-	 * @phpstan-param non-negative-int $count
-	 * @return FeedbackListItemDto[]
-	 */
-	public function selectFeedbacksPageItems(int $index, int $count): array
-	{
-		$result = $this->context->selectOrdered(
-			<<<SQL
-
-			select
-				feedbacks.sequence,
-				feedbacks.timestamp,
-				feedbacks.version,
-				feedbacks.kind,
-				feedbacks.subject
-			from
-				feedbacks
-			order by
-				feedbacks.timestamp desc,
-				feedbacks.sequence desc
-			limit
-				:count
-			offset
-				:index
-
-			SQL,
-			[
-				'index' => $index,
-				'count' => $count,
-			]
-		);
-
-		return $result->mapping(FeedbackListItemDto::class);
-	}
 
 	public function insertFeedbacks(
 		string $ipAddress,

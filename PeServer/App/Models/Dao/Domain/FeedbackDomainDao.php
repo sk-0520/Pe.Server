@@ -10,6 +10,7 @@ use PeServer\App\Models\Cache\PluginCacheCategory;
 use PeServer\App\Models\Cache\PluginCacheItem;
 use PeServer\App\Models\Data\Dto\CrashReportDetailDto;
 use PeServer\App\Models\Data\Dto\FeedbackDetailDto;
+use PeServer\App\Models\Data\Dto\FeedbackListItemDto;
 use PeServer\App\Models\Domain\PluginUrlKey;
 use PeServer\Core\Collections\Collection;
 use PeServer\Core\Database\DaoBase;
@@ -51,7 +52,8 @@ class FeedbackDomainDao extends DaoBase
 				feedbacks.subject,
 				feedbacks.content,
 
-				nullif(feedback_comments.comment, '') as developer_comment
+				COALESCE(feedback_comments.comment, '') as developer_comment,
+				COALESCE(feedback_status.status, 'none') as developer_status
 			from
 				feedbacks
 				left join
@@ -60,6 +62,12 @@ class FeedbackDomainDao extends DaoBase
 					(
 						feedback_comments.feedback_sequence = feedbacks.sequence
 					)
+			left join
+				feedback_status
+				on
+				(
+					feedback_status.feedback_sequence = feedbacks.sequence
+				)
 
 			where
 				sequence = :sequence
@@ -71,6 +79,68 @@ class FeedbackDomainDao extends DaoBase
 		);
 
 		return $result->mapping(FeedbackDetailDto::class);
+	}
+
+		/**
+         * フィードバック ページ 全件数取得。
+         *
+         * @return int
+         * @phpstan-return non-negative-int
+         */
+	public function selectFeedbacksPageTotalCount(): int
+	{
+		return $this->context->selectSingleCount(
+			<<<SQL
+
+			select
+				count(*)
+			from
+				feedbacks
+				feedbacks
+
+			SQL
+		);
+	}
+
+
+	/**
+	 * フィードバック ページ 表示データ取得。
+	 *
+	 * @param int $index
+	 * @phpstan-param non-negative-int $index
+	 * @param int $count
+	 * @phpstan-param non-negative-int $count
+	 * @return FeedbackListItemDto[]
+	 */
+	public function selectFeedbacksPageItems(int $index, int $count): array
+	{
+		$result = $this->context->selectOrdered(
+			<<<SQL
+
+			select
+				feedbacks.sequence,
+				feedbacks.timestamp,
+				feedbacks.version,
+				feedbacks.kind,
+				feedbacks.subject
+			from
+				feedbacks
+			order by
+				feedbacks.timestamp desc,
+				feedbacks.sequence desc
+			limit
+				:count
+			offset
+				:index
+
+			SQL,
+			[
+				'index' => $index,
+				'count' => $count,
+			]
+		);
+
+		return $result->mapping(FeedbackListItemDto::class);
 	}
 
 	#endregion

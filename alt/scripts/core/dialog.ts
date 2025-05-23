@@ -98,7 +98,7 @@ export class Dialog<T> {
 	}
 
 	private isDisplayFactory(arg: unknown): arg is DisplayFactory<T> {
-		if (typeof arg !== "object") {
+		if (typeof arg !== "function") {
 			return false;
 		}
 		if (!arg) {

@@ -70,6 +70,16 @@
 					</ul>
 				</dd>
 
+				<dt>状態</dt>
+				<dd>
+					{foreach from=$values.report_status item=item}
+						<label>
+							<input name="developer-status" type="radio" value="{$item->value}" {if $item === $values.detail->developerStatus} checked {/if} />
+							{PeServer\App\Models\Data\ReportStatus::toString($item)}
+						</label>
+					{/foreach}
+				</dd>
+
 				<dt>メモ</dt>
 				<dd>
 					{input_helper key='developer-comment' type="textarea" class="edit"}

@@ -88,6 +88,31 @@ class MapperTest extends TestClass
 		$this->assertSame(123, $actual->child->int);
 	}
 
+	public function test_mapping_EnumClass()
+	{
+		$mapper = new Mapper();
+		$actual = new EnumClass();
+		$mapper->mapping([
+			'int0' => 'int0',
+			'int1' => 'Int1',
+			'int2' => 2,
+			'string0' => '',
+			'string1' => 'String1',
+			'string2' => 'xyz',
+			'AAA' => 1,
+			'BBB' => 'Int2',
+		], $actual);
+
+		$this->assertSame(EnumInt::Int0, $actual->int0);
+		$this->assertSame(EnumInt::Int1, $actual->int1);
+		$this->assertSame(EnumInt::Int2, $actual->int2);
+		$this->assertSame(EnumString::String0, $actual->string0);
+		$this->assertSame(EnumString::String1, $actual->string1);
+		$this->assertSame(EnumString::String2, $actual->string2);
+		$this->assertSame(EnumInt::Int1, $actual->alias1);
+		$this->assertSame(EnumInt::Int2, $actual->alias2);
+	}
+
 	public function test_mapping_AttrName()
 	{
 		$mapper = new Mapper();
@@ -311,6 +336,36 @@ class NestNull
 	public ?NestChild $child;
 }
 
+enum EnumInt: int
+{
+	case Int0 = 0;
+	case Int1 = 1;
+	case Int2 = 2;
+}
+
+enum EnumString: string
+{
+	case String0 = "";
+	case String1 = "abc";
+	case String2 = "xyz";
+}
+
+class EnumClass
+{
+	public EnumInt $int0;
+	public EnumInt $int1;
+	public EnumInt $int2;
+
+	public EnumString $string0;
+	public EnumString $string1;
+	public EnumString $string2;
+
+	#[Mapping('AAA')]
+	public EnumInt $alias1;
+
+	#[Mapping('BBB')]
+	public EnumInt $alias2;
+}
 
 class AttrName
 {

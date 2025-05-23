@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\App\Models\Domain\Page\Management;
 
 use PeServer\App\Models\AppDatabaseCache;
+use PeServer\App\Models\Dao\Domain\CrashReportDomainDao;
 use PeServer\App\Models\Dao\Entities\CrashReportsEntityDao;
 use PeServer\App\Models\Domain\AppArchiver;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
@@ -43,12 +44,12 @@ class ManagementCrashReportListLogic extends PageLogicBase
 		}
 
 		$database = $this->openDatabase();
-		$feedbacksEntityDao = new CrashReportsEntityDao($database);
+		$crashReportDomainDao = new CrashReportDomainDao($database);
 
-		$totalCount = $feedbacksEntityDao->selectCrashReportsPageTotalCount();
+		$totalCount = $crashReportDomainDao->selectCrashReportsPageTotalCount();
 
 		$pagination = new Pagination($pageNumber, self::ITEM_COUNT_IN_PAGE, $totalCount);
-		$items = $feedbacksEntityDao->selectCrashReportsPageItems(($pagination->currentPageNumber - 1) * $pagination->itemCountInPage, $pagination->itemCountInPage);
+		$items = $crashReportDomainDao->selectCrashReportsPageItems(($pagination->currentPageNumber - 1) * $pagination->itemCountInPage, $pagination->itemCountInPage);
 
 		$this->setValue('items', $items);
 		$this->setValue('pager', $pagination);

@@ -6,6 +6,7 @@ namespace PeServer\App\Models\Data\Dto;
 
 use DateTime;
 use DateTimeInterface;
+use PeServer\App\Models\Data\ReportStatus;
 use PeServer\Core\Database\DtoBase;
 use PeServer\Core\Serialization\Converter\DateTimeConverter;
 use PeServer\Core\Serialization\Mapping;
@@ -40,6 +41,9 @@ class CrashReportDetailDto extends DtoBase
 
 	#[Mapping(name: 'developer_comment')]
 	public string $developerComment = Text::EMPTY;
+
+	#[Mapping(name: 'developer_status')]
+	public ReportStatus $developerStatus;
 
 	#endregion
 }
