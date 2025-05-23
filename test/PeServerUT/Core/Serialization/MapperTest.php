@@ -98,6 +98,8 @@ class MapperTest extends TestClass
 			'string0' => '',
 			'string1' => 'String1',
 			'string2' => 'xyz',
+			'AAA' => 1,
+			'BBB' => 'Int2',
 		], $actual);
 
 		$this->assertSame(EnumInt::Int0, $actual->int0);
@@ -106,6 +108,8 @@ class MapperTest extends TestClass
 		$this->assertSame(EnumString::String0, $actual->string0);
 		$this->assertSame(EnumString::String1, $actual->string1);
 		$this->assertSame(EnumString::String2, $actual->string2);
+		$this->assertSame(EnumInt::Int1, $actual->alias1);
+		$this->assertSame(EnumInt::Int2, $actual->alias2);
 	}
 
 	public function test_mapping_AttrName()
@@ -354,6 +358,12 @@ class EnumClass
 	public EnumString $string0;
 	public EnumString $string1;
 	public EnumString $string2;
+
+	#[Mapping('AAA')]
+	public EnumInt $alias1;
+
+	#[Mapping('BBB')]
+	public EnumInt $alias2;
 }
 
 class AttrName

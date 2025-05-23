@@ -45,8 +45,8 @@ class CrashReportDomainDao extends DaoBase
 
 				crash_reports.report,
 
-				nullif(crash_report_comments.comment, '') as developer_comment,
-				nullif(crash_report_status.status, 'none') as developer_status
+				COALESCE(crash_report_comments.comment, '') as developer_comment,
+				COALESCE(crash_report_status.status, 'none') as developer_status
 			from
 				crash_reports
 				left join
