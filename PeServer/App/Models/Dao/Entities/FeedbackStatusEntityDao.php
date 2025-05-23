@@ -31,7 +31,7 @@ class FeedbackStatusEntityDao extends DaoBase
 				)
 				values
 				(
-					:sequence,
+					:feedback_sequence,
 					:status
 				)
 				on
@@ -43,8 +43,26 @@ class FeedbackStatusEntityDao extends DaoBase
 			SQL,
 
 			[
-				"sequence" => $sequence,
+				"feedback_sequence" => $sequence,
 				"status" => $status->value
+			]
+		);
+	}
+
+	public function deleteFeedbackStatusBySequence(int $sequence): bool
+	{
+		return $this->context->deleteByKeyOrNothing(
+			<<<SQL
+
+			delete
+			from
+				feedback_status
+			where
+				feedback_sequence = :feedback_sequence
+
+			SQL,
+			[
+				"feedback_sequence" => $sequence,
 			]
 		);
 	}

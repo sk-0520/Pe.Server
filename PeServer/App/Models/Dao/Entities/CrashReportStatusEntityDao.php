@@ -31,7 +31,7 @@ class CrashReportStatusEntityDao extends DaoBase
 				)
 				values
 				(
-					:sequence,
+					:crash_report_sequence,
 					:status
 				)
 				on
@@ -43,8 +43,26 @@ class CrashReportStatusEntityDao extends DaoBase
 			SQL,
 
 			[
-				"sequence" => $sequence,
+				"crash_report_sequence" => $sequence,
 				"status" => $status->value
+			]
+		);
+	}
+
+	public function deleteCrashReportStatusBySequence(int $sequence): bool
+	{
+		return $this->context->deleteByKeyOrNothing(
+			<<<SQL
+
+			delete
+			from
+				crash_report_status
+			where
+				crash_report_sequence = :crash_report_sequence
+
+			SQL,
+			[
+				'crash_report_sequence' => $sequence,
 			]
 		);
 	}
