@@ -75,6 +75,7 @@
 					{foreach from=$values.report_status item=item}
 						<label>
 							<input
+								name="developer-status"
 								type="radio"
 								value="{$item->value}"
 								{if $item === $values.detail->developerStatus}

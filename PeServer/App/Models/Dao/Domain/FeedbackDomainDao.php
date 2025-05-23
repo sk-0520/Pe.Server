@@ -53,7 +53,7 @@ class FeedbackDomainDao extends DaoBase
 				feedbacks.content,
 
 				COALESCE(feedback_comments.comment, '') as developer_comment,
-				COALESCE(feedback_status.status, 'working') as developer_status
+				COALESCE(feedback_status.status, 'none') as developer_status
 			from
 				feedbacks
 				left join
