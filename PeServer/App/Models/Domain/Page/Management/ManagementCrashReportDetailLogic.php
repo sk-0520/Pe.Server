@@ -11,6 +11,8 @@ use PeServer\App\Models\AppUrl;
 use PeServer\App\Models\Dao\Domain\CrashReportDomainDao;
 use PeServer\App\Models\Dao\Entities\CrashReportCommentsEntityDao;
 use PeServer\App\Models\Dao\Entities\CrashReportsEntityDao;
+use PeServer\App\Models\Dao\Entities\CrashReportStatusEntityDao;
+use PeServer\App\Models\Data\ReportStatus;
 use PeServer\App\Models\Domain\AppArchiver;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
 use PeServer\Core\Archive\Archiver;
@@ -62,6 +64,7 @@ class ManagementCrashReportDetailLogic extends PageLogicBase
 
 		$detail = $crashReportDomainDao->selectCrashReportsDetail($sequence);
 
+		$this->setValue('report_status', ReportStatus::toArray());
 		$this->setValue('detail', $detail);
 		if (Text::isNullOrWhiteSpace($detail->email)) {
 			$this->setValue('email', Text::EMPTY);
@@ -112,15 +115,19 @@ STR,
 		}
 
 		$developerComment = (string)$this->getRequest('developer-comment');
+		$developerStatus = ReportStatus::from($this->getRequest('developer-status'));
 
-		$result = $database->transaction(function (IDatabaseContext $context) use ($sequence, $developerComment) {
+		$result = $database->transaction(function (IDatabaseContext $context) use ($sequence, $developerComment, $developerStatus) {
 			$crashReportCommentsEntityDao = new CrashReportCommentsEntityDao($context);
+			$crashReportStatusEntityDao = new CrashReportStatusEntityDao($context);
 
 			if ($crashReportCommentsEntityDao->selectExistsCrashReportCommentsBySequence($sequence)) {
 				$crashReportCommentsEntityDao->updateCrashReportComments($sequence, $developerComment);
 			} else {
 				$crashReportCommentsEntityDao->insertCrashReportComments($sequence, $developerComment);
 			}
+
+			$crashReportStatusEntityDao->upsertCrashReportStatus($sequence, $developerStatus);
 
 			return true;
 		});
