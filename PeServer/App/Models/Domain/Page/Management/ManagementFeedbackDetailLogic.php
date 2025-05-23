@@ -9,6 +9,7 @@ use PeServer\App\Models\AppDatabaseCache;
 use PeServer\App\Models\Dao\Domain\FeedbackDomainDao;
 use PeServer\App\Models\Dao\Entities\FeedbackCommentsEntityDao;
 use PeServer\App\Models\Dao\Entities\FeedbacksEntityDao;
+use PeServer\App\Models\Dao\Entities\FeedbackStatusEntityDao;
 use PeServer\App\Models\Data\ReportStatus;
 use PeServer\App\Models\Domain\AppArchiver;
 use PeServer\App\Models\Domain\Page\PageLogicBase;
@@ -94,15 +95,19 @@ STR,
 		}
 
 		$developerComment = (string)$this->getRequest('developer-comment');
+		$developerStatus = ReportStatus::from($this->getRequest('developer-status'));
 
-		$result = $database->transaction(function (IDatabaseContext $context) use ($sequence, $developerComment) {
+		$result = $database->transaction(function (IDatabaseContext $context) use ($sequence, $developerComment, $developerStatus) {
 			$feedbackCommentsEntityDao = new FeedbackCommentsEntityDao($context);
+			$feedbackStatusEntityDao = new FeedbackStatusEntityDao($context);
 
 			if ($feedbackCommentsEntityDao->selectExistsFeedbackCommentsBySequence($sequence)) {
 				$feedbackCommentsEntityDao->updateFeedbackComments($sequence, $developerComment);
 			} else {
 				$feedbackCommentsEntityDao->insertFeedbackComments($sequence, $developerComment);
 			}
+
+			$feedbackStatusEntityDao->upsertFeedbackStatus($sequence, $developerStatus);
 
 			return true;
 		});

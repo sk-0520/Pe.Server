@@ -27,7 +27,8 @@ class DefaultMigration0007 extends DefaultMigrationBase //phpcs:ignore Squiz.Cla
 		create table
 			[report_status]
 			(
-				[value] text not null
+				[value] text not null,
+				primary key([value])
 			)
 		;
 
@@ -56,9 +57,9 @@ class DefaultMigration0007 extends DefaultMigrationBase //phpcs:ignore Squiz.Cla
 			(
 				[feedback_sequence] integer not null,
 				[status] text not null,
+				primary key([feedback_sequence]),
 				foreign key([feedback_sequence]) references [feedbacks]([sequence]),
-				foreign key([status]) references [report_status]([value]),
-				primary key([feedback_sequence])
+				foreign key([status]) references [report_status]([value])
 			)
 		;
 
@@ -67,9 +68,9 @@ class DefaultMigration0007 extends DefaultMigrationBase //phpcs:ignore Squiz.Cla
 			(
 				[crash_report_sequence]	integer not null,
 				[status] text not null,
+				primary key([crash_report_sequence]),
 				foreign key([crash_report_sequence]) references [crash_reports]([sequence]),
-				foreign key([status]) references [report_status]([value]),
-				primary key([crash_report_sequence])
+				foreign key([status]) references [report_status]([value])
 			)
 		;
 
