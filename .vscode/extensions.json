@@ -1,0 +1,21 @@
+{
+	"recommendations": [
+		"bmewburn.vscode-intelephense-client",
+		"neilbrayfield.php-docblocker",
+		"editorconfig.editorconfig",
+		"mehedidracula.php-namespace-resolver",
+		"sibiraj-s.vscode-scss-formatter",
+		"formulahendry.auto-close-tag",
+		"mrmlnc.vscode-apache",
+		"kasik96.latte",
+		"xdebug.php-debug",
+		"santacodes.santacodes-region-viewer",
+		"aswinkumar863.smarty-template-support",
+		"yusukehirao.vscode-markuplint",
+		"timonwong.shellcheck",
+		"sanderronde.phpstan-vscode",
+		"mads-hartmann.bash-ide-vscode",
+		"github.vscode-github-actions",
+		"biomejs.biome"
+	]
+}

@@ -1,0 +1,194 @@
+{
+	"files.exclude": {
+		"**/bin": true,
+		"**/obj": true,
+		".vs": true,
+		"dist/": true,
+		"Output": true,
+		"*.lnk": true
+	},
+	"files.watcherExclude": {
+		"**/.git/objects/**": true,
+		"**/.git/subtree-cache/**": true,
+		"**/node_modules/*/**": true,
+		".vs": true,
+		".vscode": true,
+		"**/dist/**": true,
+		"**/bin/**": true,
+		"**/obj/**": true,
+		"*.lnk": true,
+		"**/PHPUnit/**": true,
+		"**/Libs/**": true,
+		"**/dev/extracts/**": true,
+		"**/dev/.phpdoc/**": true
+	},
+	"html.format.indentInnerHtml": true,
+	"html.format.wrapLineLength": 0,
+	"cSpell.words": [
+		"Acao",
+		"autoincrement",
+		"autoload",
+		"cachebuster",
+		"checkAlwaysTrueInstanceof",
+		"CyclomaticComplexity",
+		"endregion",
+		"httponly",
+		"IFNULL",
+		"intelephense",
+		"LINQ",
+		"loginid",
+		"Michelf",
+		"migmix",
+		"NEIGHBOUR",
+		"nosniff",
+		"ondrej",
+		"phar",
+		"phpcs",
+		"PHPSESSID",
+		"phpstan",
+		"phpunit",
+		"samesite",
+		"SJIS",
+		"Stringable",
+		"sysplugins",
+		"XDEBUG"
+	],
+	"cSpell.ignorePaths": [
+		"package-lock.json",
+		"node_modules",
+		"*.code-workspace",
+		"vscode-extension",
+		".git/objects",
+		".vscode",
+		".vscode-insiders"
+	],
+	"docker.commands.attach": "${containerCommand} exec -it ${containerId} bash",
+	//"php.validate.executablePath": "dev/php.bat",
+	"intelephense.environment.phpVersion": "8.2.0",
+	"auto-close-tag.activationOnLanguage": [
+		"smarty"
+	],
+	"intelephense.stubs": [
+		"apache",
+		"bcmath",
+		"bz2",
+		"calendar",
+		"com_dotnet",
+		"Core",
+		"ctype",
+		"curl",
+		"date",
+		"dba",
+		"dom",
+		"enchant",
+		"exif",
+		"FFI",
+		"fileinfo",
+		"filter",
+		"fpm",
+		"ftp",
+		"gd",
+		"gettext",
+		"gmp",
+		"hash",
+		"iconv",
+		"imap",
+		"intl",
+		"json",
+		"ldap",
+		"libxml",
+		"mbstring",
+		"meta",
+		"mysqli",
+		"oci8",
+		"odbc",
+		"openssl",
+		"pcntl",
+		"pcre",
+		"PDO",
+		"pdo_ibm",
+		"pdo_mysql",
+		"pdo_pgsql",
+		"pdo_sqlite",
+		"pgsql",
+		"Phar",
+		"posix",
+		"pspell",
+		"readline",
+		"Reflection",
+		"session",
+		"shmop",
+		"SimpleXML",
+		"snmp",
+		"soap",
+		"sockets",
+		"sodium",
+		"SPL",
+		"sqlite3",
+		"standard",
+		"superglobals",
+		"sysvmsg",
+		"sysvsem",
+		"sysvshm",
+		"tidy",
+		"tokenizer",
+		"xml",
+		"xmlreader",
+		"xmlrpc",
+		"xmlwriter",
+		"xsl",
+		"Zend OPcache",
+		"zip",
+		"zlib",
+		"xdebug"
+	],
+	"php.suggest.basic": false,
+	"php.validate.enable": false,
+	"intelephense.phpdoc.returnVoid": false,
+	"namespaceResolver.sortNatural": false,
+	"namespaceResolver.sortAlphabetically": true,
+	"php-docblocker.useShortNames": true,
+	"namespaceResolver.sortOnSave": false,
+	"php-docblocker.returnVoid": false,
+	"intelephense.format.braces": "psr12",
+	"intelephense.rename.exclude": [
+		"**/vendor/**",
+		"**/Libs/**"
+	],
+	"intelephense.phpdoc.classTemplate": {
+		"summary": "$1",
+		"tags": [
+			""
+		]
+	},
+	"editor.codeActionsOnSave": {
+		"quickfix.biome": "always",
+		"source.organizeImports.biome": "always"
+	},
+	"[javascript]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"[javascriptreact]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"[typescript]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"[typescriptreact]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"[json]": {
+		"editor.quickSuggestions": {
+			"strings": true
+		},
+		"editor.suggest.insertMode": "replace",
+		"editor.defaultFormatter": "vscode.json-language-features"
+	},
+	"[jsonc]": {
+		"editor.quickSuggestions": {
+			"strings": true
+		},
+		"editor.suggest.insertMode": "replace",
+		"editor.defaultFormatter": "vscode.json-language-features"
+	}
+}
