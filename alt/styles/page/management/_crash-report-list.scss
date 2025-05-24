@@ -8,12 +8,17 @@
 			text-align: right;
 		}
 
+		.column-status {
+			text-align: center;
+		}
+
 		.column-version {
 			text-align: center;
 		}
 
 		.column-exception-subject {
 			text-align: left;
+			overflow-wrap: break-word;
 		}
 
 		.column-detail {

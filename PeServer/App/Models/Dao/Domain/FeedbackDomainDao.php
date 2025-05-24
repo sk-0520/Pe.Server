@@ -62,12 +62,12 @@ class FeedbackDomainDao extends DaoBase
 					(
 						feedback_comments.feedback_sequence = feedbacks.sequence
 					)
-			left join
-				feedback_status
-				on
-				(
-					feedback_status.feedback_sequence = feedbacks.sequence
-				)
+				left join
+					feedback_status
+					on
+					(
+						feedback_status.feedback_sequence = feedbacks.sequence
+					)
 
 			where
 				sequence = :sequence
@@ -81,12 +81,12 @@ class FeedbackDomainDao extends DaoBase
 		return $result->mapping(FeedbackDetailDto::class);
 	}
 
-		/**
-         * フィードバック ページ 全件数取得。
-         *
-         * @return int
-         * @phpstan-return non-negative-int
-         */
+	/**
+	 * フィードバック ページ 全件数取得。
+	 *
+	 * @return int
+	 * @phpstan-return non-negative-int
+	 */
 	public function selectFeedbacksPageTotalCount(): int
 	{
 		return $this->context->selectSingleCount(
@@ -120,11 +120,19 @@ class FeedbackDomainDao extends DaoBase
 			select
 				feedbacks.sequence,
 				feedbacks.timestamp,
+				COALESCE(feedback_status.status, 'none') as developer_status,
 				feedbacks.version,
 				feedbacks.kind,
 				feedbacks.subject
 			from
 				feedbacks
+			left join
+				feedback_status
+				on
+				(
+					feedback_status.feedback_sequence = feedbacks.sequence
+				)
+
 			order by
 				feedbacks.timestamp desc,
 				feedbacks.sequence desc

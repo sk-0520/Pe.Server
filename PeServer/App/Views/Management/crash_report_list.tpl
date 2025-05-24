@@ -22,6 +22,7 @@
 				<tr>
 					<th class="column-sequence">*</th>
 					<th class="column-timestamp">日時</th>
+					<th class="column-status">状態</th>
 					<th class="column-version">バージョン</th>
 					<th class="column-exception-subject">例外</th>
 					<th class="column-detail">詳細</th>
@@ -33,6 +34,7 @@
 					<tr>
 						<td class="column-sequence">{$item->sequence}</td>
 						<td class="column-timestamp">{timestamp value=$item->timestamp format='Y-m-dTH:iP'}</td>
+						<td class="column-status">{PeServer\App\Models\Data\ReportStatus::toString($item->developerStatus)}</td>
 						<td class="column-version">{$item->version}</td>
 						<td class="column-exception-subject">{$item->exceptionSubject}</td>
 						<td class="column-detail"><a href="/management/crash-report/{$item->sequence}">詳細</a></td>

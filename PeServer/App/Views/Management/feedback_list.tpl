@@ -22,6 +22,7 @@
 				<tr>
 					<th class="column-sequence">*</th>
 					<th class="column-timestamp">日時</th>
+					<th class="column-status">状態</th>
 					<th class="column-version">バージョン</th>
 					<th class="column-kind">種類</th>
 					<th class="column-subject">件名</th>
@@ -34,6 +35,7 @@
 					<tr>
 						<td class="column-sequence">{$item->sequence}</td>
 						<td class="column-timestamp">{timestamp value=$item->timestamp format='Y-m-dTH:iP'}</td>
+						<td class="column-status">{PeServer\App\Models\Data\ReportStatus::toString($item->developerStatus)}</td>
 						<td class="column-version">{$item->version}</td>
 						<td class="column-kind">{$item->kind}</td>
 						<td class="column-subject">{$item->subject}</td>
