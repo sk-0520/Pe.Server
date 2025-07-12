@@ -1,7 +1,13 @@
 {
-	"$schema": "https://biomejs.dev/schemas/1.8.3/schema.json",
-	"organizeImports": {
-		"enabled": false
+	"$schema": "https://biomejs.dev/schemas/2.1.1/schema.json",
+	"assist": {
+		"enabled": true,
+		"actions": {
+			"recommended": true,
+			"source": {
+				"organizeImports": "on"
+			}
+		}
 	},
 	"linter": {
 		"enabled": true,
@@ -18,7 +24,10 @@
 		}
 	},
 	"files": {
-		"ignore": ["*.json", "PeServer/Core/Libs"]
+		"includes": ["*/alt/**/*"]
+	},
+	"formatter": {
+		"useEditorconfig": true
 	},
 	"vcs": {
 		"enabled": true,

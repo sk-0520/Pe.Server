@@ -36,7 +36,7 @@ describe("number", () => {
 		["a", undefined],
 		["f", 10],
 	])("parseInt-throws", (input: string, radix: number | undefined) => {
-		expect(() => number.parseInt(input, radix)).toThrowError(throws.ParseError);
+		expect(() => number.parseInt(input, radix)).toThrow(throws.ParseError);
 	});
 
 	test.each([
@@ -61,7 +61,7 @@ describe("number", () => {
 	);
 
 	test("parseIntOr-ParseError", () => {
-		expect(() => number.parseIntOr("10", 1.5)).toThrowError(
+		expect(() => number.parseIntOr("10", 1.5)).toThrow(
 			throws.ArgumentError,
 		);
 	});

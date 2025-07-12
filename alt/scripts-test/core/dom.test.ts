@@ -17,10 +17,10 @@ describe("dom", () => {
 			"id2:1",
 		);
 
-		expect(() => dom.requireElementById("id3")).toThrowError(
+		expect(() => dom.requireElementById("id3")).toThrow(
 			throws.NotFoundDomSelectorError,
 		);
-		expect(() => dom.requireElementById("id2", HTMLDivElement)).toThrowError(
+		expect(() => dom.requireElementById("id2", HTMLDivElement)).toThrow(
 			throws.ElementTypeError,
 		);
 	});
@@ -74,7 +74,7 @@ describe("dom", () => {
 		expect(dom.requireSelectorAll("div *").length).toBe(3);
 		expect(dom.requireSelectorAll("div div").length).toBe(2);
 
-		expect(() => dom.requireSelectorAll("div *", HTMLDivElement)).toThrowError(
+		expect(() => dom.requireSelectorAll("div *", HTMLDivElement)).toThrow(
 			throws.ElementTypeError,
 		);
 		expect(dom.requireSelectorAll("div *", HTMLElement).length).toBe(3);
@@ -108,12 +108,12 @@ describe("dom", () => {
 		expect(dom.requireClosest(d, "#a > div").id).toBe("b");
 		expect(dom.requireClosest(d, "#a > div > div").id).toBe("c");
 
-		expect(() => dom.requireClosest(d, "#a span")).toThrowError(
+		expect(() => dom.requireClosest(d, "#a span")).toThrow(
 			throws.NotFoundDomSelectorError,
 		);
 
 		expect(dom.requireClosest(a, "*", HTMLDivElement).id).toBe("a");
-		expect(() => dom.requireClosest(a, "*", HTMLSpanElement)).toThrowError(
+		expect(() => dom.requireClosest(a, "*", HTMLSpanElement)).toThrow(
 			throws.ElementTypeError,
 		);
 	});
@@ -138,7 +138,7 @@ describe("dom", () => {
 		expect(dom.getParentForm(a).dataset.key).toBe("a");
 		expect(dom.getParentForm(b).dataset.key).toBe("b");
 
-		expect(() => dom.getParentForm(c)).toThrowError(Error);
+		expect(() => dom.getParentForm(c)).toThrow(Error);
 	});
 
 	test("cloneTemplate", () => {
@@ -156,7 +156,7 @@ describe("dom", () => {
 		const b2 = dom.cloneTemplate("#a");
 		expect(b2.querySelector("[name]")?.getAttribute("name")).toBe("a");
 
-		expect(() => dom.cloneTemplate("#error")).toThrowError(
+		expect(() => dom.cloneTemplate("#error")).toThrow(
 			throws.ElementTypeError,
 		);
 	});
@@ -293,8 +293,8 @@ describe("dom", () => {
 		expect(dom.getDataset(element, "data-a-sub")).toBe("SUB");
 
 		expect(dom.getDataset(element, "empty")).toBe("");
-		expect(() => dom.getDataset(element, "data-a", false)).toThrowError(Error);
-		expect(() => dom.getDataset(element, "b")).toThrowError(Error);
+		expect(() => dom.getDataset(element, "data-a", false)).toThrow(Error);
+		expect(() => dom.getDataset(element, "b")).toThrow(Error);
 	});
 
 	test("getDatasetOr", () => {
