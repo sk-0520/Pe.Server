@@ -52,6 +52,7 @@ class Vector extends TypeArrayBase
 	 */
 	public static function create(array $items, bool $useValues = true, bool $isNullable = false): self
 	{
+		// @phpstan-ignore staticMethod.impossibleType
 		if (Arr::isNullOrEmpty($items)) {
 			throw new ArgumentException('$items');
 		}

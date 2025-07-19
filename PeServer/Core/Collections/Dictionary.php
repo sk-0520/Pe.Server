@@ -54,6 +54,7 @@ class Dictionary extends TypeArrayBase
 	 */
 	public static function create(array $map, bool $isNullable = false): self
 	{
+		// @phpstan-ignore staticMethod.impossibleType
 		if (Arr::isNullOrEmpty($map)) {
 			throw new ArgumentException('$map');
 		}
