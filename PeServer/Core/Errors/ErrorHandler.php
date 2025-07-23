@@ -78,6 +78,7 @@ class ErrorHandler
 	{
 		register_shutdown_function([$this, 'receiveShutdown']);
 		set_exception_handler([$this, 'receiveException']);
+		// @phpstan-ignore deadCode.unreachable
 		set_error_handler([$this, 'receiveError']);
 	}
 
