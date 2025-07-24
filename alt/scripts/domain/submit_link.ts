@@ -1,5 +1,5 @@
-import * as dom from "../core/dom";
 import * as dialog from "../core/dialog";
+import * as dom from "../core/dom";
 
 function attachSubmit(element: HTMLButtonElement): void {
 	if (element.dataset.dialog === "disabled") {

@@ -16,6 +16,10 @@
 			"complexity": {
 				"noStaticOnlyClass": "off"
 			},
+			"correctness": {
+				"noUnusedFunctionParameters": "off",
+				"noUnusedVariables": "off"
+			},
 			"a11y": {
 				"useValidAnchor": "off",
 				"useKeyWithClickEvents": "off",
@@ -24,7 +28,7 @@
 		}
 	},
 	"files": {
-		"includes": ["*/alt/**/*"]
+		"includes": ["alt/**/*.ts"]
 	},
 	"formatter": {
 		"useEditorconfig": true

@@ -36,8 +36,8 @@ describe("url", () => {
 		expect(url.joinPath("/a/b", "/c/", "d/", "/e")).toBe("/a/b/c/d/e");
 		expect(url.joinPath("/a/b/", "/c/", "d/", "/e")).toBe("/a/b/c/d/e");
 		expect(url.joinPath("/a///////", "b")).toBe("/a/b");
-		expect(url.joinPath("a", "/////b", "c/////////", "///////d////////")).toBe(
-			"a/b/c/d",
-		);
+		expect(
+			url.joinPath("a", "/////b", "c/////////", "///////d////////"),
+		).toBe("a/b/c/d");
 	});
 });

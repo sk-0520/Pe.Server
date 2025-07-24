@@ -160,7 +160,11 @@ export class Dialog<T> {
 						return;
 					}
 				}
-				if (!focusElements.includes(document.activeElement as HTMLElement)) {
+				if (
+					!focusElements.includes(
+						document.activeElement as HTMLElement,
+					)
+				) {
 					console.debug(`先頭強制選択: ${ev.currentTarget}`);
 					ev.preventDefault();
 					headElement.focus({ preventScroll: false });
@@ -191,7 +195,10 @@ export class Dialog<T> {
 			dialogBackgroundElement.addEventListener(
 				"click",
 				(ev) =>
-					this.executeClose({ action: DialogAction.Negative, data: null }, ev),
+					this.executeClose(
+						{ action: DialogAction.Negative, data: null },
+						ev,
+					),
 				false,
 			);
 		} else {
@@ -328,10 +335,13 @@ export class Dialog<T> {
 		this.showCore(this._contentElement);
 
 		return new Promise<DialogResult<T>>((resolve, reject) => {
-			this._dialogElement.addEventListener(this._dialogEventName, (ev) => {
-				const ce = ev as CustomEvent<DialogResult<T>>;
-				resolve(ce.detail);
-			});
+			this._dialogElement.addEventListener(
+				this._dialogEventName,
+				(ev) => {
+					const ce = ev as CustomEvent<DialogResult<T>>;
+					resolve(ce.detail);
+				},
+			);
 		}).finally(() => {
 			if (this._displayParentElement) {
 				const contentElement = this._contentElement as HTMLElement;

@@ -1,5 +1,5 @@
-import * as dom from "../core/dom";
 import * as clipboard from "../core/clipboard";
+import * as dom from "../core/dom";
 
 function createClipboardBaseElement(): HTMLSpanElement {
 	const baseElement = document.createElement("span");

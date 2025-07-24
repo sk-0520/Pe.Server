@@ -1,7 +1,9 @@
 // まぁまぁ適当さ加減がやばい
-import type * as ajax from "./ajax";
+
 import * as dom from "../core/dom";
 import * as logging from "../core/logging";
+import type * as ajax from "./ajax";
+
 const logger = logging.create("markdown_edit");
 
 function register(selector: string) {
@@ -12,7 +14,9 @@ function register(selector: string) {
 			logger.warn("markdown-result");
 			continue;
 		}
-		const resultElement = document.querySelector(resultSelector) as HTMLElement;
+		const resultElement = document.querySelector(
+			resultSelector,
+		) as HTMLElement;
 		if (!resultElement) {
 			logger.warn(`element: ${resultSelector}`);
 			continue;

@@ -1,5 +1,5 @@
-import * as types from "./types";
 import * as regex from "./regex";
+import * as types from "./types";
 
 /**
  * 非空文字列(ホワイトスペース構成は除く)か。
@@ -112,7 +112,10 @@ export function replaceAllImpl(
 		const flags = searchValue.flags.includes("g")
 			? searchValue.flags
 			: `${searchValue.flags}g`;
-		return source.replace(new RegExp(searchValue.source, flags), replaceValue);
+		return source.replace(
+			new RegExp(searchValue.source, flags),
+			replaceValue,
+		);
 	}
 
 	return source.replace(
