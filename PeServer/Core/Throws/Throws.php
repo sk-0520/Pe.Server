@@ -118,10 +118,9 @@ abstract class Throws
 	/**
 	 * 偽の場合に例外。
 	 *
-	 * @param boolean $value
-	 * @param string $argument
-	 * @param class-string<Throwable> $exceptionClass
-	 * @return void
+	 * @param boolean $value 検証値
+	 * @param string $argument 引数名
+	 * @param class-string<Throwable> $exceptionClass 例外クラス
 	 */
 	public static function throwIf(bool $value, string $argument = '', string $exceptionClass = InvalidException::class): void
 	{
@@ -136,7 +135,6 @@ abstract class Throws
 	 * @param mixed $value
 	 * @param string $argument
 	 * @param class-string<Throwable> $exceptionClass
-	 * @return void
 	 */
 	public static function throwIfNull(mixed $value, string $argument = '', string $exceptionClass = InvalidException::class): void
 	{
@@ -151,7 +149,6 @@ abstract class Throws
 	 * @param string|null $value
 	 * @param string $argument
 	 * @param class-string<Throwable> $exceptionClass
-	 * @return void
 	 * @phpstan-assert non-empty-string $value
 	 */
 	public static function throwIfNullOrEmpty(?string $value, string $argument = '', string $exceptionClass = InvalidException::class): void
@@ -167,7 +164,6 @@ abstract class Throws
 	 * @param string|null $value
 	 * @param string $argument
 	 * @param class-string<Throwable> $exceptionClass
-	 * @return void
 	 * @phpstan-assert non-empty-string $value
 	 */
 	public static function throwIfNullOrWhiteSpace(?string $value, string $argument = '', string $exceptionClass = InvalidException::class): void
