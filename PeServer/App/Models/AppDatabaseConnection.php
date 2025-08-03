@@ -31,7 +31,7 @@ class AppDatabaseConnection extends DatabaseConnection
 	#region DatabaseConnection
 
 	public static function getSqliteFilePath(string $connection): string
-    {
+	{
 		list($db, $target) = Text::split($connection, ':', 2);
 
 		if ($db !== 'sqlite') {

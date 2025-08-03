@@ -18,7 +18,6 @@ interface IShutdownMiddleware
 	 * 応答完了処理。
 	 *
 	 * @param MiddlewareArgument $argument ミドルウェアの入力パラメータ。
-	 * @return void
 	 */
 	public function handleShutdown(MiddlewareArgument $argument): void;
 

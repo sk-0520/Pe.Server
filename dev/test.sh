@@ -3,8 +3,7 @@
 pushd "$(cd "$(dirname "${0}")"; pwd)"
 	#shellcheck disable=SC1091
 	source shell/common.sh
-	#shellcheck disable=SC2048,SC2086
-	common::parse_options 'mode|ut|it|st|uit! no-exit? ignore-namespace? ignore-coverage? phpunit:filter phpunit:exclude-group' $*
+	common::parse_options 'mode|ut|it|st|uit! no-exit? ignore-namespace? ignore-coverage? phpunit:filter phpunit:exclude-group' "$@"
 popd
 
 TEST_MODE="$(common::get_option_value mode)"
@@ -19,7 +18,7 @@ BASE_DIR=../PeServer
 LOCAL_HTTP_TEST="${LOCAL_HTTP_TEST:=localhost:8080}"
 LOCAL_HTTP_WAIT="${LOCAL_HTTP_WAIT:=1}"
 
-PHPUNIT_VERSION=11.4.4
+PHPUNIT_VERSION=11.5.27
 PHPUNIT_URL=https://phar.phpunit.de/phpunit-${PHPUNIT_VERSION}.phar
 PHPUNIT_NAME=phpunit.phar
 PHPUNIT_FILE=${PHPUNIT_NAME}.${PHPUNIT_VERSION}

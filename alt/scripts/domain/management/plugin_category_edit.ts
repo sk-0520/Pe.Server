@@ -1,6 +1,6 @@
 import * as dom from "../../core/dom";
-import * as ajax from "../ajax";
 import * as url from "../../core/url";
+import * as ajax from "../ajax";
 
 function registerRow(trElement: HTMLTableRowElement) {
 	const pluginCategoryId = dom.getDataset(trElement, "plugin-category-id");
@@ -75,8 +75,10 @@ function registerAdd() {
 			) as HTMLInputElement;
 
 			const categoryId = categoryAddIdElement.value.trim();
-			const categoryDisplayName = categoryAddDisplayNameElement.value.trim();
-			const categoryAddDescription = categoryAddDescriptionElement.value.trim();
+			const categoryDisplayName =
+				categoryAddDisplayNameElement.value.trim();
+			const categoryAddDescription =
+				categoryAddDescriptionElement.value.trim();
 
 			if (!categoryId.length) {
 				return;

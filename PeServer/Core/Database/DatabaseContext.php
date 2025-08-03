@@ -62,7 +62,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 		$this->logger = $logger;
 		$this->regex = new Regex();
 
-		$this->pdo = Throws::wrap(PDOException::class, DatabaseException::class, fn () => new PDO($setting->dsn, $setting->user, $setting->password, $setting->options));
+		$this->pdo = Throws::wrap(PDOException::class, DatabaseException::class, fn() => new PDO($setting->dsn, $setting->user, $setting->password, $setting->options));
 		$this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); //cspell:disable-line
 		$this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC); //cspell:disable-line
 	}
@@ -173,7 +173,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 	 *
 	 * データが存在しない場合、`DatabaseRowResult->field` はから配列となるが、あくまで `Database` 内限定のデータ状態となる。
 	 *
-	 * @template TFieldArray of globa-alias-database-field-array
+	 * @template TFieldArray of global-alias-database-field-array
 	 * @param PDOStatement $pdoStatement
 	 * @return DatabaseRowResult
 	 * @phpstan-return DatabaseRowResult<TFieldArray>
@@ -196,7 +196,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 	/**
 	 * データセットに変換。
 	 *
-	 * @template TFieldArray of globa-alias-database-field-array
+	 * @template TFieldArray of global-alias-database-field-array
 	 * @param PDOStatement $pdoStatement
 	 * @return DatabaseTableResult
 	 * @phpstan-return DatabaseTableResult<TFieldArray>
@@ -221,7 +221,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 	/**
 	 * 逐次データセットに変換。
 	 *
-	 * @template TFieldArray of globa-alias-database-field-array
+	 * @template TFieldArray of global-alias-database-field-array
 	 * @param PDOStatement $pdoStatement
 	 * @return DatabaseSequenceResult
 	 * @phpstan-return DatabaseSequenceResult<TFieldArray>
@@ -354,7 +354,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 	}
 
 	/**
-	 * @template TFieldArray of globa-alias-database-field-array
+	 * @template TFieldArray of global-alias-database-field-array
 	 * @phpstan-return DatabaseSequenceResult<TFieldArray>
 	 */
 	public function fetch(string $statement, ?array $parameters = null): DatabaseSequenceResult
@@ -368,7 +368,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 	}
 
 	/**
-	 * @template TFieldArray of globa-alias-database-field-array
+	 * @template TFieldArray of global-alias-database-field-array
 	 * @phpstan-return DatabaseTableResult<TFieldArray>
 	 */
 	public function query(string $statement, ?array $parameters = null): DatabaseTableResult
@@ -382,7 +382,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 	}
 
 	/**
-	 * @template TFieldArray of globa-alias-database-field-array
+	 * @template TFieldArray of global-alias-database-field-array
 	 * @phpstan-return DatabaseRowResult<TFieldArray>
 	 */
 	public function queryFirst(string $statement, ?array $parameters = null): DatabaseRowResult
@@ -399,7 +399,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 	}
 
 	/**
-	 * @template TFieldArray of globa-alias-database-field-array
+	 * @template TFieldArray of global-alias-database-field-array
 	 * @phpstan-return DatabaseRowResult<TFieldArray>
 	 */
 	public function queryFirstOrNull(string $statement, ?array $parameters = null): ?DatabaseRowResult
@@ -416,7 +416,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 	}
 
 	/**
-	 * @template TFieldArray of globa-alias-database-field-array
+	 * @template TFieldArray of global-alias-database-field-array
 	 * @phpstan-return DatabaseRowResult<TFieldArray>
 	 */
 	public function querySingle(string $statement, ?array $parameters = null): DatabaseRowResult
@@ -438,7 +438,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 	}
 
 	/**
-	 * @template TFieldArray of globa-alias-database-field-array
+	 * @template TFieldArray of global-alias-database-field-array
 	 * @phpstan-return DatabaseRowResult<TFieldArray>
 	 */
 	public function querySingleOrNull(string $statement, ?array $parameters = null): ?DatabaseRowResult
@@ -475,7 +475,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 	}
 
 	/**
-	 * @template TFieldArray of globa-alias-database-field-array
+	 * @template TFieldArray of global-alias-database-field-array
 	 * @phpstan-return DatabaseTableResult<TFieldArray>
 	 */
 	public function selectOrdered(string $statement, ?array $parameters = null): DatabaseTableResult
@@ -517,7 +517,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 	}
 
 	/**
-	 * @template TFieldArray of globa-alias-database-field-array
+	 * @template TFieldArray of global-alias-database-field-array
 	 * @phpstan-return DatabaseTableResult<TFieldArray>
 	 */
 	public function execute(string $statement, ?array $parameters = null): DatabaseTableResult

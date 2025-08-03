@@ -22,7 +22,7 @@ use PeServer\Core\Throws\Throws;
  * データは保持されない点に注意。
  * `foreach` 一回回したら終了。
  *
- * @template TFieldArray of globa-alias-database-field-array
+ * @template TFieldArray of global-alias-database-field-array
  * @implements Iterator<TFieldArray>
  */
 class DatabaseSequenceResult extends DatabaseResultBase implements Iterator
@@ -88,7 +88,7 @@ class DatabaseSequenceResult extends DatabaseResultBase implements Iterator
 
 	public function rewind(): void
 	{
-		Throws::wrap(Error::class, NotSupportedException::class, fn () => $this->iterator->rewind());
+		Throws::wrap(Error::class, NotSupportedException::class, fn() => $this->iterator->rewind());
 	}
 
 	/**
@@ -124,7 +124,7 @@ class DatabaseSequenceResult extends DatabaseResultBase implements Iterator
 }
 
 /**
- * @template TFieldArray of globa-alias-database-field-array
+ * @template TFieldArray of global-alias-database-field-array
  * @template TObject of object
  * @implements Iterator<TObject>
  */
@@ -145,6 +145,7 @@ class LocalSequenceIterator extends DatabaseResultBase implements Iterator
 		private string $className,
 		private IMapper $mapper
 	) {
+		//NOP
 	}
 
 	#region Iterator

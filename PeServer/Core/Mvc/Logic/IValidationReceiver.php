@@ -13,7 +13,6 @@ interface IValidationReceiver
 	 *
 	 * @param string $key
 	 * @param string $message
-	 * @return void
 	 */
 	public function receiveErrorMessage(string $key, string $message): void;
 
@@ -23,7 +22,6 @@ interface IValidationReceiver
 	 * @param string $key
 	 * @param int $kind
 	 * @param array<array-key,int|string> $parameters
-	 * @return void
 	 */
 	public function receiveErrorKind(string $key, int $kind, array $parameters): void;
 

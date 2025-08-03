@@ -35,7 +35,7 @@ abstract class File
 	 *
 	 * `touch` ラッパー。
 	 *
-	 * @param string $path
+	 * @param string $path ファイルパス
 	 * @see https://www.php.net/manual/function.touch.php
 	 */
 	public static function createEmptyFileIfNotExists(string $path): void
@@ -262,7 +262,7 @@ abstract class File
 	public static function createTemporaryFilePath(string $prefix = ''): string
 	{
 		if (Text::isNullOrWhiteSpace($prefix)) {
-			$prefixLength = PHP_OS === 'Windows' ? 3 : 64;
+			$prefixLength = PHP_OS_FAMILY === 'Windows' ? 3 : 64;
 			$prefix = Cryptography::generateRandomString($prefixLength, Cryptography::FILE_RANDOM_STRING);
 		}
 

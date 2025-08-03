@@ -167,7 +167,7 @@ class Mailer
 		$fromAddress = $this->convertAddress(self::ADDRESS_KIND_FROM, $this->fromAddress);
 		$client->setFrom($fromAddress->address, $fromAddress->name);
 		if (Text::isNullOrWhiteSpace($client->Sender)) {
-			$client->Sender = $client->$this->fromAddress['address'];
+			$client->Sender = $this->fromAddress->address;
 		}
 
 

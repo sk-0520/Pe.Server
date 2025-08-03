@@ -110,7 +110,7 @@ export function isObject(arg: unknown): arg is object {
  * @param arg
  * @returns
  */
-// biome-ignore lint/complexity/noBannedTypes: <explanation>
+// biome-ignore lint/complexity/noBannedTypes: Function が分からん
 export function isFunction<T extends Function>(arg: unknown): arg is T {
 	return typeof arg === "function";
 }
@@ -126,7 +126,10 @@ export function hasProperty(
 	key: PropertyKey,
 ): arg is Record<PropertyKey, unknown> {
 	return (
-		arg !== undefined && arg !== null && typeof arg === "object" && key in arg
+		arg !== undefined &&
+		arg !== null &&
+		typeof arg === "object" &&
+		key in arg
 	);
 }
 
@@ -358,7 +361,7 @@ export function filterTArray<T>(
 		return [];
 	}
 
-	const result = new Array<T>();
+	const result: T[] = [];
 	for (const item of arg) {
 		if (guard(item)) {
 			result.push(item);
@@ -441,9 +444,9 @@ export function getProperties<T extends object>(obj: T): Set<keyof T> {
 			break;
 		}
 
-		const currentPropertyNames = Object.getOwnPropertyNames(prototype) as Array<
-			keyof T
-		>;
+		const currentPropertyNames = Object.getOwnPropertyNames(
+			prototype,
+		) as Array<keyof T>;
 		const targets = currentPropertyNames.filter((i) => {
 			const descriptor = Object.getOwnPropertyDescriptor(prototype, i);
 			return i !== "__proto__" && descriptor?.get instanceof Function;
@@ -474,7 +477,9 @@ export function flatClone<
 >(source: TSource): TResult {
 	const properties = getProperties(source);
 
-	const result = Object.fromEntries([...properties].map((i) => [i, source[i]]));
+	const result = Object.fromEntries(
+		[...properties].map((i) => [i, source[i]]),
+	);
 
 	return result as unknown as TResult;
 }

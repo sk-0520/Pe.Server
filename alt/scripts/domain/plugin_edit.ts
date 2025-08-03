@@ -32,7 +32,9 @@ async function generatePluginIdAsync(ev: Event) {
 }
 
 function register() {
-	const autoGenElement = document.getElementById("pg-plugin-id-auto-generate");
+	const autoGenElement = document.getElementById(
+		"pg-plugin-id-auto-generate",
+	);
 	if (autoGenElement) {
 		autoGenElement.addEventListener("click", generatePluginIdAsync, false);
 	}

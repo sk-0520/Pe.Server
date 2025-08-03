@@ -1,4 +1,4 @@
-import { TimeSpan, DateTime } from "../../scripts/core/time";
+import { DateTime, TimeSpan } from "../../scripts/core/time";
 
 describe("time", () => {
 	describe("TimeSpan", () => {
@@ -33,7 +33,9 @@ describe("time", () => {
 
 		test("totalMilliseconds", () => {
 			expect(TimeSpan.fromMilliseconds(0).totalMilliseconds).toBe(0);
-			expect(TimeSpan.fromMilliseconds(1_000).totalMilliseconds).toBe(1_000);
+			expect(TimeSpan.fromMilliseconds(1_000).totalMilliseconds).toBe(
+				1_000,
+			);
 		});
 
 		test("totalMilliseconds", () => {
@@ -57,9 +59,13 @@ describe("time", () => {
 		});
 
 		test("equals", () => {
-			expect(TimeSpan.fromDays(0).equals(TimeSpan.fromDays(0))).toBeTruthy();
 			expect(
-				TimeSpan.fromMilliseconds(0).equals(TimeSpan.fromMilliseconds(1)),
+				TimeSpan.fromDays(0).equals(TimeSpan.fromDays(0)),
+			).toBeTruthy();
+			expect(
+				TimeSpan.fromMilliseconds(0).equals(
+					TimeSpan.fromMilliseconds(1),
+				),
 			).toBeFalsy();
 		});
 
@@ -116,7 +122,16 @@ describe("time", () => {
 			[2000, 1, 2, 3, 0, 0, 0, DateTime.createUtc(2000, 1, 2, 3)],
 			[2000, 1, 2, 3, 4, 0, 0, DateTime.createUtc(2000, 1, 2, 3, 4)],
 			[2000, 1, 2, 3, 4, 5, 0, DateTime.createUtc(2000, 1, 2, 3, 4, 5)],
-			[2000, 1, 2, 3, 4, 5, 6, DateTime.createUtc(2000, 1, 2, 3, 4, 5, 6)],
+			[
+				2000,
+				1,
+				2,
+				3,
+				4,
+				5,
+				6,
+				DateTime.createUtc(2000, 1, 2, 3, 4, 5, 6),
+			],
 		])(
 			"createUtc",
 			(
@@ -185,8 +200,16 @@ describe("time", () => {
 
 		test.each([
 			[0, DateTime.createUtc(2000, 1, 2), DateTime.createUtc(2000, 1, 2)],
-			[-1, DateTime.createUtc(2000, 1, 2), DateTime.createUtc(2000, 1, 3)],
-			[+1, DateTime.createUtc(2000, 1, 2), DateTime.createUtc(2000, 1, 1)],
+			[
+				-1,
+				DateTime.createUtc(2000, 1, 2),
+				DateTime.createUtc(2000, 1, 3),
+			],
+			[
+				+1,
+				DateTime.createUtc(2000, 1, 2),
+				DateTime.createUtc(2000, 1, 1),
+			],
 		])("compare", (expected, a, b) => {
 			const actual = a.compare(b);
 			if (actual < 0) {

@@ -6,6 +6,7 @@ namespace PeServer\App\Models\Data\Dto;
 
 use DateTime;
 use DateTimeInterface;
+use PeServer\App\Models\Data\ReportStatus;
 use PeServer\Core\Database\DtoBase;
 use PeServer\Core\Serialization\Converter\DateTimeConverter;
 use PeServer\Core\Serialization\Mapping;
@@ -19,6 +20,8 @@ class FeedbackListItemDto extends DtoBase
 
 	#[Mapping(converter: DateTimeConverter::class)]
 	public DateTimeInterface $timestamp;
+	#[Mapping(name: 'developer_status')]
+	public ReportStatus $developerStatus = ReportStatus::None;
 	public string $version = Text::EMPTY;
 	public string $kind = Text::EMPTY;
 	public string $subject = Text::EMPTY;

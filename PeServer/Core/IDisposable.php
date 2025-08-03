@@ -22,8 +22,6 @@ interface IDisposable
 
 	/**
 	 * 解放処理。
-	 *
-	 * @return void
 	 */
 	public function dispose(): void;
 

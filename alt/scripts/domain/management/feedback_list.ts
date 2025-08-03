@@ -1,7 +1,7 @@
 import * as dialog from "../../core/dialog";
 import * as dom from "../../core/dom";
-import * as ajax from "../ajax";
 import * as url from "../../core/url";
+import * as ajax from "../ajax";
 
 function attachDelete(element: HTMLButtonElement): void {
 	element.addEventListener("click", async (ev) => {
@@ -9,7 +9,9 @@ function attachDelete(element: HTMLButtonElement): void {
 			button: dialog.ButtonType.YesNo,
 			display: () => {
 				const template =
-					dom.requireElementById<HTMLTemplateElement>("pg-delete-dialog");
+					dom.requireElementById<HTMLTemplateElement>(
+						"pg-delete-dialog",
+					);
 				const work = dom.cloneTemplate(template);
 
 				return work;

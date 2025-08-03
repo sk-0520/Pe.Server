@@ -6,6 +6,7 @@ namespace PeServer\App\Models\Data\Dto;
 
 use DateTime;
 use DateTimeInterface;
+use PeServer\App\Models\Data\ReportStatus;
 use PeServer\Core\Database\DtoBase;
 use PeServer\Core\Serialization\Converter\DateTimeConverter;
 use PeServer\Core\Serialization\Mapping;
@@ -22,6 +23,8 @@ class CrashReportListItemDto extends DtoBase
 	public string $version = Text::EMPTY;
 	#[Mapping(name: 'exception_subject')]
 	public string $exceptionSubject = Text::EMPTY;
+	#[Mapping(name: 'developer_status')]
+	public ReportStatus $developerStatus = ReportStatus::None;
 
 	#endregion
 }

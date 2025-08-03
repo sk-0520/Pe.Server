@@ -4,22 +4,21 @@ cd "$(cd "$(dirname "${0}")"; pwd)"
 
 #shellcheck disable=SC1091
 source shell/common.sh
-#shellcheck disable=SC2048,SC2086
-common::parse_options "ignore-pplint? ignore-phpstan? ignore-phpcs? phpcs-fix? phpcs:report phpcs:ignore-warning? phpcs:cache" $*
+common::parse_options "ignore-pplint? ignore-phpstan? ignore-phpcs? phpcs-fix? phpcs:report phpcs:ignore-warning? phpcs:cache" "$@"
 
 PPLINT_VERSION=v1.4.0
 PPLINT_URL=https://github.com/php-parallel-lint/PHP-Parallel-Lint/releases/download/${PPLINT_VERSION}/parallel-lint.phar
 PPLINT_NAME=parallel-lint.phar
 PPLINT_FILE=${PPLINT_NAME}.${PPLINT_VERSION}
 
-PHPSTAN_VERSION=2.1.16
+PHPSTAN_VERSION=2.1.21
 PHPSTAN_URL=https://github.com/phpstan/phpstan/releases/download/${PHPSTAN_VERSION}/phpstan.phar
 PHPSTAN_NAME=phpstan.phar
 PHPSTAN_FILE=${PHPSTAN_NAME}.${PHPSTAN_VERSION}
 # PHPSTAN_BLEEDING_EDGE_NAME=bleedingEdge.neon
 # PHPSTAN_BLEEDING_EDGE_URL=https://raw.githubusercontent.com/phpstan/phpstan-src/${PHPSTAN_VERSION}/conf/bleedingEdge.neon
 
-PHPCODESNIFFER_VERSION=3.12.2
+PHPCODESNIFFER_VERSION=3.13.2
 PHPCODESNIFFER_S_URL=https://github.com/PHPCSStandards/PHP_CodeSniffer/releases/download/${PHPCODESNIFFER_VERSION}/phpcs.phar
 PHPCODESNIFFER_BF_URL=https://github.com/PHPCSStandards/PHP_CodeSniffer/releases/download/${PHPCODESNIFFER_VERSION}/phpcbf.phar
 PHPCODESNIFFER_S_NAME=phpcs.phar

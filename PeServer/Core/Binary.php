@@ -135,7 +135,7 @@ readonly final class Binary implements ArrayAccess, IteratorAggregate, Countable
 	 */
 	public function hasNull(): bool
 	{
-		$nullIndex = mb_strpos($this->raw, "\0");
+		$nullIndex = strpos($this->raw, "\0");
 		return $nullIndex !== false;
 	}
 

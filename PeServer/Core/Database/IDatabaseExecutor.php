@@ -21,7 +21,7 @@ interface IDatabaseExecutor extends IDatabaseImplementation
 	/**
 	 * 実行処理。
 	 *
-	 * @template TFieldArray of globa-alias-database-field-array
+	 * @template TFieldArray of global-alias-database-field-array
 	 * @param string $statement
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters

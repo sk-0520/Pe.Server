@@ -12,7 +12,7 @@ use PeServer\Core\Serialization\Mapper;
 /**
  * 問い合わせ結果。
  *
- * @template TFieldArray of globa-alias-database-field-array
+ * @template TFieldArray of global-alias-database-field-array
  * @immutable
  */
 class DatabaseTableResult extends DatabaseResultBase

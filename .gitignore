@@ -40,3 +40,4 @@ $*
 /test/storage-*
 /_backup_restore_/
 /dev/images/www/fs/app
+pe-server.code-workspace

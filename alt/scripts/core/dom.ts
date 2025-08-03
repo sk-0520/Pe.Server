@@ -1,5 +1,5 @@
-import * as types from "./types";
 import * as throws from "./throws";
+import * as types from "./types";
 
 /**
  * ID から要素取得を強制。
@@ -70,12 +70,9 @@ export function requireSelector<TElement extends Element = Element>(
 			if (types.isString(selectors)) {
 				throw new throws.MismatchArgumentError("selectors");
 			}
-			// biome-ignore lint/style/noParameterAssign: しんどい
 			elementType = selectors;
 		}
-		// biome-ignore lint/style/noParameterAssign: しんどい
 		selectors = element;
-		// biome-ignore lint/style/noParameterAssign: しんどい
 		element = null;
 	} else {
 		if (types.isUndefined(selectors)) {
@@ -140,12 +137,9 @@ export function requireSelectorAll<TElement extends Element = Element>(
 			if (types.isString(selectors)) {
 				throw new throws.MismatchArgumentError("selectors");
 			}
-			// biome-ignore lint/style/noParameterAssign: しんどい
 			elementType = selectors;
 		}
-		// biome-ignore lint/style/noParameterAssign: しんどい
 		selectors = element;
-		// biome-ignore lint/style/noParameterAssign: しんどい
 		element = null;
 	} else {
 		if (types.isUndefined(selectors)) {

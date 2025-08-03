@@ -111,6 +111,7 @@ class CrashReportDomainDao extends DaoBase
 			select
 				crash_reports.sequence,
 				crash_reports.timestamp,
+				COALESCE(crash_report_status.status, 'none') as developer_status,
 				crash_reports.version,
 				REPLACE(REPLACE(crash_reports.exception, CHAR(13, 10), CHAR(10)), CHAR(13), CHAR(10)) as exception_lf,
 				case INSTR(REPLACE(REPLACE(crash_reports.exception, CHAR(13, 10), CHAR(10)), CHAR(13), CHAR(10)), CHAR(10))
@@ -121,6 +122,12 @@ class CrashReportDomainDao extends DaoBase
 				end as exception_subject
 			from
 				crash_reports
+				left join
+					crash_report_status
+					on
+					(
+						crash_report_status.crash_report_sequence = crash_reports.sequence
+					)
 			order by
 				crash_reports.timestamp desc,
 				crash_reports.sequence desc

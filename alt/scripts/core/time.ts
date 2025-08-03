@@ -124,7 +124,9 @@ export class DateTime {
 	}
 
 	public get dayOfWeek(): DayOfWeek {
-		return this.isUtc ? this._timestamp.getUTCDay() : this._timestamp.getDay();
+		return this.isUtc
+			? this._timestamp.getUTCDay()
+			: this._timestamp.getDay();
 	}
 
 	public get hour(): number {
@@ -203,9 +205,25 @@ export class DateTime {
 		} else {
 			date = isUtc
 				? new Date(
-						Date.UTC(year, month - 1, day, hour, minute, second, millisecond),
+						Date.UTC(
+							year,
+							month - 1,
+							day,
+							hour,
+							minute,
+							second,
+							millisecond,
+						),
 					)
-				: new Date(year, month - 1, day, hour, minute, second, millisecond);
+				: new Date(
+						year,
+						month - 1,
+						day,
+						hour,
+						minute,
+						second,
+						millisecond,
+					);
 		}
 		return new DateTime(date, isUtc);
 	}
