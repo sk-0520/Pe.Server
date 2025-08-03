@@ -190,5 +190,15 @@
 		},
 		"editor.suggest.insertMode": "replace",
 		"editor.defaultFormatter": "vscode.json-language-features"
+	},
+	"[php]": {
+		"editor.defaultFormatter": "bmewburn.vscode-intelephense-client",
+		"editor.codeActionsOnSave": {
+			"source.organizeImports": "always",
+			"source": "always"
+		},
+		"editor.formatOnSave": true,
+		"editor.formatOnType": true,
+		"editor.suggest.insertMode": "replace"
 	}
 }

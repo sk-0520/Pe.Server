@@ -23,6 +23,7 @@ abstract class DatabaseResultBase
 		public readonly array $columns,
 		private readonly int $resultCount
 	) {
+		//NOP
 	}
 
 	#region function
@@ -43,7 +44,7 @@ abstract class DatabaseResultBase
 	 *
 	 * 上位でとりあえずいい感じにしとく感じで。
 	 *
-	 * @template TFieldArray of globa-alias-database-field-array
+	 * @template TFieldArray of global-alias-database-field-array
 	 * @template TObject of object
 	 * @param array $fields
 	 * @phpstan-param TFieldArray $fields

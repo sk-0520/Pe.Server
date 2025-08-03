@@ -28,5 +28,6 @@ class PluginCacheItem
 		public array $urls,
 		public array $categoryIds
 	) {
+		//NOP
 	}
 }
