@@ -195,7 +195,7 @@ class SessionStore
 
 		if (SessionHandlerFactoryUtility::isFactory($this->options->handlerFactory)) {
 			/** @var ISessionHandlerFactory */
-			$factory = new $this->options->handlerFactory();//ReflectionUtility::create($this->options->handlerFactory, ISessionHandlerFactory::class);
+			$factory = new $this->options->handlerFactory(); //ReflectionUtility::create($this->options->handlerFactory, ISessionHandlerFactory::class);
 			// $sqliteHandler = new SqliteSessionHandler(
 			// 	SqliteSessionHandler::createConnection($this->options->savePath, null, $this->loggerFactory),
 			// 	LoggerFactory::createNullFactory()
@@ -264,7 +264,7 @@ class SessionStore
 	 *
 	 * @param string $key
 	 * @param mixed $value
-	 * @phpstan-param globa-alias-server-store-value $value
+	 * @phpstan-param global-alias-server-store-value $value
 	 * @return void
 	 */
 	public function set(string $key, mixed $value): void
@@ -295,9 +295,9 @@ class SessionStore
 	 *
 	 * @param string $key
 	 * @param mixed $fallbackValue
-	 * @phpstan-param globa-alias-server-store-value $fallbackValue
+	 * @phpstan-param global-alias-server-store-value $fallbackValue
 	 * @return mixed 取得データ。
-	 * @phpstan-return globa-alias-server-store-value
+	 * @phpstan-return global-alias-server-store-value
 	 */
 	public function getOr(string $key, mixed $fallbackValue): mixed
 	{
@@ -309,7 +309,7 @@ class SessionStore
 	 *
 	 * @param string $key
 	 * @param mixed $result
-	 * @phpstan-param globa-alias-server-store-value $result
+	 * @phpstan-param global-alias-server-store-value $result
 	 * @return boolean 取得できたか。
 	 */
 	public function tryGet(string $key, mixed &$result): bool

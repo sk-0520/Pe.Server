@@ -48,5 +48,5 @@ class SqliteSessionHandlerFactory implements ISessionHandlerFactory
 		return $handler;
 	}
 
-	#endrgieon
+	#endregion
 }

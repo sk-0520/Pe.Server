@@ -16,9 +16,9 @@ readonly class DatabaseResourceItem
 
 	public const KIND_TABLE = 0x01;
 	public const KIND_VIEW = 0x02;
-	public const KIND_MATERIALIZEDVIEW = 0x04;
+	public const KIND_MATERIALIZED_VIEW = 0x04;
 	public const KIND_INDEX = 0x08;
-	public const KIND_ALL = self::KIND_TABLE | self::KIND_VIEW | self::KIND_MATERIALIZEDVIEW | self::KIND_INDEX;
+	public const KIND_ALL = self::KIND_TABLE | self::KIND_VIEW | self::KIND_MATERIALIZED_VIEW | self::KIND_INDEX;
 
 	#endregion
 

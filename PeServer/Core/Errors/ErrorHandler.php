@@ -51,8 +51,7 @@ class ErrorHandler
 
 	public function __construct(
 		protected readonly ILogger $logger
-	) {
-	}
+	) {}
 
 	#region function
 
@@ -207,6 +206,8 @@ class ErrorHandler
 			'throwable' => $throwable,
 		];
 
+		// 本クラスにおいては CLI 実行の可能性もあるためダンプ出力する。
+		// Web 実行は HttpErrorHandler で処理する想定(切り替えは CoreStartup を参照)。
 		var_dump($values);
 	}
 
