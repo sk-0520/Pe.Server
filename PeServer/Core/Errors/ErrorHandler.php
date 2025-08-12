@@ -51,7 +51,9 @@ class ErrorHandler
 
 	public function __construct(
 		protected readonly ILogger $logger
-	) {}
+	) {
+		//NOP
+	}
 
 	#region function
 
