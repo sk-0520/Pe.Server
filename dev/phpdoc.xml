@@ -4,6 +4,9 @@
 	<paths>
 		<output>../public_html/public/api-doc</output>
 	</paths>
+	<settings>
+		<graphs.enabled>true</graphs.enabled>
+	</settings>
 	<version number="3.0.0">
 		<api format="php">
 			<source dsn="../">
