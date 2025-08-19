@@ -67,6 +67,11 @@ jobs:
       - name: <Install> Library
         run: sudo apt-get update && sudo apt-get install -y graphviz plantuml default-jre
 
+      - name: test
+        run: |
+          which plantuml
+          plantuml -version
+
       - name: <Add> Node/NPM
         uses: actions/setup-node@v4
         with:
