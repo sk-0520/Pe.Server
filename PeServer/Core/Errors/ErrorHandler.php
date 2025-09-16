@@ -136,7 +136,7 @@ class ErrorHandler
 	 * @param string $errorFile
 	 * @param int $errorLineNumber
 	 */
-	private function receiveError(int $errorNumber, string $errorMessage, string $errorFile, int $errorLineNumber/* , array $_ */): never
+	final public function receiveError(int $errorNumber, string $errorMessage, string $errorFile, int $errorLineNumber/* , array $_ */): never
 	{
 		$this->catchErrorCore(
 			$errorNumber,
@@ -229,7 +229,7 @@ final class LocalPhpErrorReceiver extends DisposerBase
 
 		$this->error = null;
 
-		set_error_handler([$this, 'receiveError'], $errorLevel);
+		set_error_handler([$this, 'receiveErrorCore'], $errorLevel);
 	}
 
 	protected function disposeImpl(): void
@@ -248,7 +248,7 @@ final class LocalPhpErrorReceiver extends DisposerBase
 	 * @param int $errorLineNumber
 	 * @return true
 	 */
-	private function receiveError(int $errorNumber, string $errorMessage, string $errorFile, int $errorLineNumber): bool
+	public function receiveErrorCore(int $errorNumber, string $errorMessage, string $errorFile, int $errorLineNumber): bool
 	{
 		$this->isError = true;
 		$this->error = new ErrorData($errorNumber, $errorMessage, $errorFile, $errorLineNumber);

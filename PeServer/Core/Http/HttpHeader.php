@@ -331,6 +331,8 @@ class LocalHttpClientRequestHeader extends HttpHeader
 //phpcs:ignore PSR1.Classes.ClassDeclaration.MultipleClasses
 class LocalClientResponseHttpHeader extends LocalHttpClientRequestHeader
 {
+	private bool $initialized = false;
+
 	public function __construct(Binary $responseHeader, Encoding $encoding)
 	{
 		parent::__construct();
@@ -353,11 +355,14 @@ class LocalClientResponseHttpHeader extends LocalHttpClientRequestHeader
 				$this->setValue($name, isset($kv[1]) ? Text::trim($kv[1]) : Text::EMPTY);
 			}
 		}
+		$this->initialized = true;
 	}
 
 	protected function throwIfInvalidHeaderName(string $name): void
 	{
-		throw new NotSupportedException();
+		if ($this->initialized) {
+			throw new NotSupportedException();
+		}
 	}
 }
 
