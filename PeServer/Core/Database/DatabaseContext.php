@@ -84,7 +84,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 	 *
 	 * @param PDOStatement $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
-	 * @phpstan-param array<array-key,globa-alias-database-bind-value>|null $parameters
+	 * @phpstan-param array<array-key,global-alias-database-bind-value>|null $parameters
 	 * @return void
 	 */
 	private function setParameters(PDOStatement $statement, ?array $parameters): void
@@ -103,7 +103,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 	 *
 	 * @param string $statement
 	 * @phpstan-param literal-string $statement
-	 * @phpstan-param array<array-key,globa-alias-database-bind-value>|null $parameters
+	 * @phpstan-param array<array-key,global-alias-database-bind-value>|null $parameters
 	 * @return PDOStatement
 	 * @throws SqlException 実行失敗。
 	 */
@@ -171,7 +171,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 	/**
 	 * 単一行データに変換。
 	 *
-	 * データが存在しない場合、`DatabaseRowResult->field` はから配列となるが、あくまで `Database` 内限定のデータ状態となる。
+	 * データが存在しない場合、`DatabaseRowResult->fields` はから配列となるが、あくまで `Database` 内限定のデータ状態となる。
 	 *
 	 * @template TFieldArray of global-alias-database-field-array
 	 * @param PDOStatement $pdoStatement

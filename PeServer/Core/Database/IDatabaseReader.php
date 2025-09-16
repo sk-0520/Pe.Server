@@ -26,7 +26,7 @@ interface IDatabaseReader extends IDatabaseImplementation
 	 * @param string $statement
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
-	 * @phpstan-param array<array-key,globa-alias-database-bind-value>|null $parameters
+	 * @phpstan-param array<array-key,global-alias-database-bind-value>|null $parameters
 	 * @return DatabaseSequenceResult
 	 * @phpstan-return DatabaseSequenceResult<TFieldArray>
 	 * @throws SqlException 問い合わせ文の検証エラー
@@ -40,7 +40,7 @@ interface IDatabaseReader extends IDatabaseImplementation
 	 * @param string $statement
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
-	 * @phpstan-param array<array-key,globa-alias-database-bind-value>|null $parameters
+	 * @phpstan-param array<array-key,global-alias-database-bind-value>|null $parameters
 	 * @return DatabaseTableResult
 	 * @phpstan-return DatabaseTableResult<TFieldArray>
 	 * @throws DatabaseException
@@ -55,7 +55,7 @@ interface IDatabaseReader extends IDatabaseImplementation
 	 * @param string $statement
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
-	 * @phpstan-param array<array-key,globa-alias-database-bind-value>|null $parameters
+	 * @phpstan-param array<array-key,global-alias-database-bind-value>|null $parameters
 	 * @return DatabaseRowResult
 	 * @phpstan-return DatabaseRowResult<TFieldArray>
 	 * @throws DatabaseException
@@ -70,7 +70,7 @@ interface IDatabaseReader extends IDatabaseImplementation
 	 * @param string $statement
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
-	 * @phpstan-param array<array-key,globa-alias-database-bind-value>|null $parameters
+	 * @phpstan-param array<array-key,global-alias-database-bind-value>|null $parameters
 	 * @return DatabaseRowResult|null
 	 * @phpstan-return DatabaseRowResult<TFieldArray>|null
 	 * @throws DatabaseException
@@ -85,7 +85,7 @@ interface IDatabaseReader extends IDatabaseImplementation
 	 * @param string $statement
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
-	 * @phpstan-param array<array-key,globa-alias-database-bind-value>|null $parameters
+	 * @phpstan-param array<array-key,global-alias-database-bind-value>|null $parameters
 	 * @return DatabaseRowResult
 	 * @phpstan-return DatabaseRowResult<TFieldArray>
 	 * @throws DatabaseException
@@ -100,7 +100,7 @@ interface IDatabaseReader extends IDatabaseImplementation
 	 * @param string $statement
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
-	 * @phpstan-param array<array-key,globa-alias-database-bind-value>|null $parameters
+	 * @phpstan-param array<array-key,global-alias-database-bind-value>|null $parameters
 	 * @return DatabaseRowResult|null
 	 * @phpstan-return DatabaseRowResult<TFieldArray>|null
 	 * @throws DatabaseException
@@ -117,7 +117,7 @@ interface IDatabaseReader extends IDatabaseImplementation
 	 * @param string $statement
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
-	 * @phpstan-param array<array-key,globa-alias-database-bind-value>|null $parameters
+	 * @phpstan-param array<array-key,global-alias-database-bind-value>|null $parameters
 	 * @return DatabaseTableResult
 	 * @phpstan-return DatabaseTableResult<TFieldArray>
 	 * @throws DatabaseException
@@ -133,7 +133,7 @@ interface IDatabaseReader extends IDatabaseImplementation
 	 * @param string $statement
 	 * @phpstan-param literal-string $statement
 	 * @param array<string|int,string|int|bool>|null $parameters
-	 * @phpstan-param array<array-key,globa-alias-database-bind-value>|null $parameters
+	 * @phpstan-param array<array-key,global-alias-database-bind-value>|null $parameters
 	 * @return int
 	 * @phpstan-return non-negative-int
 	 * @throws DatabaseException

@@ -154,7 +154,7 @@ abstract class Path
 	 * @throws ArgumentException
 	 * @see https://php.net/manual/function.pathinfo.php
 	 */
-	public static function toParts(string $path): PathParts
+	public static function split(string $path): PathParts
 	{
 		if (Text::isNullOrWhiteSpace($path)) {
 			throw new ArgumentException('$path');
@@ -191,7 +191,7 @@ abstract class Path
 			throw new ArgumentException('$environment');
 		}
 
-		$parts = self::toParts($path);
+		$parts = self::split($path);
 
 		$name = Text::isNullOrEmpty($parts->extension)
 			? $parts->fileNameWithoutExtension . '.' . $environment

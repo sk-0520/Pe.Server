@@ -52,6 +52,7 @@ class ErrorHandler
 	public function __construct(
 		protected readonly ILogger $logger
 	) {
+		//NOP
 	}
 
 	#region function
@@ -78,7 +79,6 @@ class ErrorHandler
 	{
 		register_shutdown_function([$this, 'receiveShutdown']);
 		set_exception_handler([$this, 'receiveException']);
-		// @phpstan-ignore deadCode.unreachable
 		set_error_handler([$this, 'receiveError']);
 	}
 
@@ -207,6 +207,8 @@ class ErrorHandler
 			'throwable' => $throwable,
 		];
 
+		// 本クラスにおいては CLI 実行の可能性もあるためダンプ出力する。
+		// Web 実行は HttpErrorHandler で処理する想定(切り替えは CoreStartup を参照)。
 		var_dump($values);
 	}
 
@@ -227,7 +229,7 @@ final class LocalPhpErrorReceiver extends DisposerBase
 
 		$this->error = null;
 
-		set_error_handler([$this, 'receiveError'], $errorLevel);
+		set_error_handler([$this, 'receiveErrorCore'], $errorLevel);
 	}
 
 	protected function disposeImpl(): void
@@ -244,9 +246,9 @@ final class LocalPhpErrorReceiver extends DisposerBase
 	 * @param string $errorMessage
 	 * @param string $errorFile
 	 * @param int $errorLineNumber
-	 * @return bool
+	 * @return true
 	 */
-	final public function receiveError(int $errorNumber, string $errorMessage, string $errorFile, int $errorLineNumber): bool
+	public function receiveErrorCore(int $errorNumber, string $errorMessage, string $errorFile, int $errorLineNumber): bool
 	{
 		$this->isError = true;
 		$this->error = new ErrorData($errorNumber, $errorMessage, $errorFile, $errorLineNumber);

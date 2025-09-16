@@ -40,7 +40,7 @@ class TemporaryStore
 	 * 一時データ。
 	 *
 	 * @var array<string,mixed>
-	 * @phpstan-var array<string,globa-alias-server-store-value>
+	 * @phpstan-var array<string,global-alias-server-store-value>
 	 */
 	private array $values = [];
 
@@ -174,7 +174,7 @@ class TemporaryStore
 	 *
 	 * @param string $key
 	 * @param mixed $value
-	 * @phpstan-param globa-alias-server-store-value $value
+	 * @phpstan-param global-alias-server-store-value $value
 	 * @return void
 	 */
 	public function push(string $key, mixed $value): void
@@ -195,7 +195,7 @@ class TemporaryStore
 	 *
 	 * @param string $key
 	 * @return mixed
-	 * @phpstan-return globa-alias-server-store-value
+	 * @phpstan-return global-alias-server-store-value
 	 */
 	public function peek(string $key): mixed
 	{
@@ -214,7 +214,7 @@ class TemporaryStore
 	 *
 	 * @param string $key
 	 * @return mixed
-	 * @phpstan-return globa-alias-server-store-value
+	 * @phpstan-return global-alias-server-store-value
 	 */
 	public function pop(string $key): mixed
 	{

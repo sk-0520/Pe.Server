@@ -355,6 +355,7 @@ class LocalClientResponseHttpHeader extends LocalHttpClientRequestHeader
 				$this->setValue($name, isset($kv[1]) ? Text::trim($kv[1]) : Text::EMPTY);
 			}
 		}
+		$this->initialized = true;
 	}
 
 	protected function throwIfInvalidHeaderName(string $name): void

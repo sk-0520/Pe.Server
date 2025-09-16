@@ -123,7 +123,7 @@ class PathTest extends TestClass
 		$this->assertSame($expected, $actual);
 	}
 
-	public static function provider_toParts()
+	public static function provider_split()
 	{
 		return [
 			[new PathParts('/a', 'b.c', 'b', 'c'), '/a/b.c'],
@@ -134,10 +134,10 @@ class PathTest extends TestClass
 		];
 	}
 
-	#[DataProvider('provider_toParts')]
-	public function test_toParts(PathParts $expected, string $path)
+	#[DataProvider('provider_split')]
+	public function test_split(PathParts $expected, string $path)
 	{
-		$actual = Path::toParts($path);
+		$actual = Path::split($path);
 		$this->assertSame($expected->directory, $actual->directory);
 		$this->assertSame($expected->fileName, $actual->fileName);
 		$this->assertSame($expected->fileNameWithoutExtension, $actual->fileNameWithoutExtension);
@@ -187,7 +187,7 @@ class PathTest extends TestClass
 	public function test_toParts_empty_throw()
 	{
 		$this->expectException(ArgumentException::class);
-		Path::toParts('');
+		Path::split('');
 		$this->fail();
 	}
 }

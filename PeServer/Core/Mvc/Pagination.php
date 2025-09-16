@@ -68,6 +68,7 @@ class Pagination
 		}
 
 		if (!$totalItemCount) {
+			// @phpstan-ignore assign.readOnlyPropertyByPhpDoc
 			$this->currentPageNumber = self::FIRST_PAGE_NUMBER;
 			$this->shortcutTotalItemCount = 0;
 		} else {
@@ -75,6 +76,7 @@ class Pagination
 			if ($this->shortcutTotalItemCount <= $this->currentPageNumber) {
 				$this->currentPageNumber = $this->shortcutTotalItemCount; //@phpstan-ignore-line [DOCTYPE]
 			} elseif (!$this->currentPageNumber) { //@phpstan-ignore-line [DOCTYPE]
+				// @phpstan-ignore assign.readOnlyPropertyByPhpDoc
 				$this->currentPageNumber = self::FIRST_PAGE_NUMBER;
 			}
 		}

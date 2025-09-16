@@ -17,7 +17,7 @@ readonly final class ErrorData
 		//NOP
 	}
 
-	#region functino
+	#region function
 
 	/**
 	 * `get_last_error` から生成。
