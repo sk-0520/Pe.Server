@@ -331,8 +331,6 @@ class LocalHttpClientRequestHeader extends HttpHeader
 //phpcs:ignore PSR1.Classes.ClassDeclaration.MultipleClasses
 class LocalClientResponseHttpHeader extends LocalHttpClientRequestHeader
 {
-	private bool $initialized = false;
-
 	public function __construct(Binary $responseHeader, Encoding $encoding)
 	{
 		parent::__construct();
@@ -359,9 +357,7 @@ class LocalClientResponseHttpHeader extends LocalHttpClientRequestHeader
 
 	protected function throwIfInvalidHeaderName(string $name): void
 	{
-		if ($this->initialized) {
-			throw new NotSupportedException();
-		}
+		throw new NotSupportedException();
 	}
 }
 

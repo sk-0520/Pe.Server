@@ -191,7 +191,7 @@ class Logging
 	 */
 	public function format(string $format, int $level, int $traceIndex, DateTimeInterface $timestamp, string $header, $message, ...$parameters): string
 	{
-		/** @var array<string,array<string,mixed>>[] */
+		/** @var list<array{function: string, line?: int, file?: string, class?: class-string, type?: '->'|'::', args?: list<mixed>, object?: object}> */
 		$backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS); // DEBUG_BACKTRACE_PROVIDE_OBJECT
 		$traceCaller = $backtrace[$traceIndex];
 		$traceMethod = $backtrace[$traceIndex + 1];
@@ -207,7 +207,7 @@ class Logging
 			'FILE_NAME' => Path::getFileName($filePath),
 			'LINE' => $traceCaller['line'] ?? 0,
 			//'CLASS' => $traceMethod['class'] ?? Text::EMPTY,
-			'FUNCTION' => $traceMethod['function'] ?? Text::EMPTY,
+			'FUNCTION' => $traceMethod['function'],
 			//'ARGS' => $traceMethod['args'] ?? Text::EMPTY,
 			//-------------------
 			'LEVEL' => self::formatLevel($level),

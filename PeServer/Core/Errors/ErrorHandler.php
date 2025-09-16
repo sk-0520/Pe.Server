@@ -136,7 +136,7 @@ class ErrorHandler
 	 * @param string $errorFile
 	 * @param int $errorLineNumber
 	 */
-	final public function receiveError(int $errorNumber, string $errorMessage, string $errorFile, int $errorLineNumber/* , array $_ */): never
+	private function receiveError(int $errorNumber, string $errorMessage, string $errorFile, int $errorLineNumber/* , array $_ */): never
 	{
 		$this->catchErrorCore(
 			$errorNumber,
@@ -246,9 +246,9 @@ final class LocalPhpErrorReceiver extends DisposerBase
 	 * @param string $errorMessage
 	 * @param string $errorFile
 	 * @param int $errorLineNumber
-	 * @return bool
+	 * @return true
 	 */
-	final public function receiveError(int $errorNumber, string $errorMessage, string $errorFile, int $errorLineNumber): bool
+	private function receiveError(int $errorNumber, string $errorMessage, string $errorFile, int $errorLineNumber): bool
 	{
 		$this->isError = true;
 		$this->error = new ErrorData($errorNumber, $errorMessage, $errorFile, $errorLineNumber);
