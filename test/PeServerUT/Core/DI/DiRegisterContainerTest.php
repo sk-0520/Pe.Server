@@ -212,7 +212,7 @@ class DiRegisterContainerTest extends TestClass
 	public function test_get_factory_G()
 	{
 		$dc = new DiRegisterContainer();
-		$dc->add(G::class, DiItem::factory(fn () => new G(10)));
+		$dc->add(G::class, DiItem::factory(fn() => new G(10)));
 		$actual = $dc->get(G::class);
 
 		$this->assertSame(10, $actual->num);
@@ -547,30 +547,33 @@ class DiRegisterContainerTest extends TestClass
 
 		$dc->registerMapping(I::class, A::class);
 
-		$actual1 = $dc->call(fn (I $i) => ['i' => $i]);
+		$actual1 = $dc->call(fn(I $i) => ['i' => $i]);
 		$this->assertSame(A::class, $actual1['i']::class);
 
-		$actual2 = $dc->call(fn (#[Inject(EI::class)] I $i) => ['i' => $i]);
+		$actual2 = $dc->call(fn(#[Inject(EI::class)] I $i) => ['i' => $i]);
 		$this->assertSame(A::class, $actual2['i']::class);
 
 		$dc->registerMapping(EI::class, EI::class);
-		$actual3 = $dc->call(fn (#[Inject(EI::class)] I $i) => ['i' => $i]);
+		$actual3 = $dc->call(fn(#[Inject(EI::class)] I $i) => ['i' => $i]);
 		$this->assertSame(EI::class, $actual3['i']::class);
 	}
 }
 
 interface I
 {
+	//NOP
 }
 
 class A implements I
 {
+	//NOP
 }
 
 class A0 extends A
 {
 	public function __construct()
 	{
+		//NOP
 	}
 }
 
@@ -578,6 +581,7 @@ class B
 {
 	public function __construct(public I $i)
 	{
+		//NOP
 	}
 }
 
@@ -585,30 +589,36 @@ class C
 {
 	public function __construct(public B $b, public A $a, public I $i)
 	{
+		//NOP
 	}
 }
 
 class D1
 {
+	//NOP
 }
 class D2
 {
+	//NOP
 }
 class D
 {
 	public function __construct(public D1|D2 $union)
 	{
+		//NOP
 	}
 }
 
 class EI implements I
 {
+	//NOP
 }
 
 class E
 {
 	public function __construct(#[Inject(EI::class)] public I $i)
 	{
+		//NOP
 	}
 }
 
@@ -616,6 +626,7 @@ class F
 {
 	public function __construct(public I $i)
 	{
+		//NOP
 	}
 }
 
@@ -623,6 +634,7 @@ class G
 {
 	public function __construct(public int $num)
 	{
+		//NOP
 	}
 }
 
@@ -632,6 +644,7 @@ class H
 		public I $i,
 		public B $b
 	) {
+		//NOP
 	}
 }
 
@@ -641,6 +654,7 @@ class J
 		public I $i,
 		public ?B $b
 	) {
+		//NOP
 	}
 }
 
@@ -650,6 +664,7 @@ class K
 		public I $i,
 		public int|B $b = 123
 	) {
+		//NOP
 	}
 }
 
@@ -660,6 +675,7 @@ class L
 		#[Inject(F::class)]
 		public int|B|F $b = 123
 	) {
+		//NOP
 	}
 }
 
@@ -675,9 +691,11 @@ class N
 		public H $h,
 		public E $e
 	) {
+		//NOP
 	}
 }
 
+//phpcs:ignore Squiz.Classes.ValidClassName.NotPascalCase
 class O_instance
 {
 	public function method(I $i)
@@ -686,6 +704,7 @@ class O_instance
 	}
 }
 
+//phpcs:ignore Squiz.Classes.ValidClassName.NotPascalCase
 class O_static
 {
 	public static function method(I $i)
@@ -705,6 +724,7 @@ class P
 		public I $i1,
 		public I $i2
 	) {
+		//NOP
 	}
 }
 
@@ -716,5 +736,6 @@ class Q
 		public int|I|B $i3,
 		public int|I|B $i4
 	) {
+		//NOP
 	}
 }

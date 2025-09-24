@@ -10,15 +10,19 @@ use PeServer\Core\Http\HttpStatus;
 
 trait ItLoginTrait
 {
-	//phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps, PSR2.Methods.MethodDeclaration.Underscore
+	//phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps, PSR2.Methods.MethodDeclaration.Underscore
 	private static function _provider_it_notLogin(array $path)
 	{
+		//phpcs:enable
+
 		return [$path];
 	}
 
-	//phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps, PSR2.Methods.MethodDeclaration.Underscore
+	//phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps, PSR2.Methods.MethodDeclaration.Underscore
 	private static function _provider_it_login(array $path, $levels = [UserLevel::USER, UserLevel::ADMINISTRATOR])
 	{
+		//phpcs:enable
+
 		$result = [];
 
 		foreach ($path as $p) {
@@ -30,9 +34,11 @@ trait ItLoginTrait
 		return $result;
 	}
 
-	//phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps, PSR2.Methods.MethodDeclaration.Underscore
+	//phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps, PSR2.Methods.MethodDeclaration.Underscore
 	private function _test_notLogin(string $path)
 	{
+		//phpcs:enable
+
 		$actual = $this->call(HttpMethod::Get, $path);
 		$this->assertSame(HttpStatus::OK, $actual->getHttpStatus());
 		$this->assertTrue($actual->isHtml());
@@ -41,9 +47,11 @@ trait ItLoginTrait
 		$this->assertCount(0, $actual->html->path()->collections('//header//li/a[@href = "/account/user"]'));
 	}
 
-	//phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps, PSR2.Methods.MethodDeclaration.Underscore
+	//phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps, PSR2.Methods.MethodDeclaration.Underscore
 	private function _test_login(string $path, string $userLevel)
 	{
+		//phpcs:enable
+
 		$options = new ItOptions(
 			stores: ItMockStores::account($userLevel)
 		);

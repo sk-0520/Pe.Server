@@ -9,6 +9,7 @@ use PeServer\Core\Http\Client\HttpClientOptions;
 use PeServer\Core\Web\Url;
 use PeServerTest\TestClass;
 
+//phpcs:ignore Squiz.Classes.ValidClassName.NotPascalCase
 class No_2_010_InitializeTest extends TestClass
 {
 	public function test()

@@ -47,42 +47,56 @@ class ScopedDiContainerTest extends TestClass
 	}
 }
 
+//phpcs:ignore Squiz.Classes.ValidClassName.NotPascalCase
 interface SD_I_1
 {
+	//NOP
 }
 
+//phpcs:ignore Squiz.Classes.ValidClassName.NotPascalCase
 class SD_C_1 implements SD_I_1
 {
+	//NOP
 }
 
+//phpcs:ignore Squiz.Classes.ValidClassName.NotPascalCase
 class SD_C_1_2 implements SD_I_1
 {
+	//NOP
 }
 
+//phpcs:ignore Squiz.Classes.ValidClassName.NotPascalCase
 class SD_C_2
 {
 	public function __construct(
 		public SD_I_1 $i
 	) {
+		//NOP
 	}
 }
 
+//phpcs:ignore Squiz.Classes.ValidClassName.NotPascalCase
 interface SD_C_3
 {
+	//NOP
 }
 
+//phpcs:ignore Squiz.Classes.ValidClassName.NotPascalCase
 class SD_C_3_1
 {
 	public function __construct(
 		public SD_I_1 $i
 	) {
+		//NOP
 	}
 }
 
+//phpcs:ignore Squiz.Classes.ValidClassName.NotPascalCase
 class SD_C_3_2
 {
 	public function __construct(
 		public SD_I_1 $i
 	) {
+		//NOP
 	}
 }

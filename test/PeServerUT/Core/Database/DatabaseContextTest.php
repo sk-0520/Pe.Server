@@ -830,6 +830,7 @@ class DatabaseContextTest extends TestClass
 	}
 }
 
+//phpcs:ignore Squiz.Classes.ValidClassName.NotPascalCase
 class Mapping_fetch_mapping
 {
 	#region variable
@@ -840,6 +841,7 @@ class Mapping_fetch_mapping
 	#endregion
 }
 
+//phpcs:ignore Squiz.Classes.ValidClassName.NotPascalCase
 class Mapping_query_mapping
 {
 	#region variable
@@ -849,6 +851,7 @@ class Mapping_query_mapping
 	#endregion
 }
 
+//phpcs:ignore Squiz.Classes.ValidClassName.NotPascalCase
 class Mapping_queryFirst_mapping
 {
 	#region variable
@@ -861,4 +864,5 @@ class Mapping_queryFirst_mapping
 
 class LocalOreOreException extends Exception
 {
+	//NOP
 }
