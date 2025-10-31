@@ -236,7 +236,7 @@ function common::download_phar_if_not_exists
 	local DOWNLOAD_URL=${3}
 
 	if [ ! -f "${FILE_PATH}" ] ; then
-		logger::info "DONWLOAD: ${BASE_NAME} ${DOWNLOAD_URL}"
+		logger::info "DOWNLOAD: ${BASE_NAME} ${DOWNLOAD_URL}"
 
 		rm --force "${BASE_NAME}".*
 		curl --output "${FILE_PATH}" --location "${DOWNLOAD_URL}"
