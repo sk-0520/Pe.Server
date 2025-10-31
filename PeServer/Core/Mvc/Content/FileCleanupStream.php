@@ -54,6 +54,9 @@ final class FileCleanupStream extends Stream
 
 	#region Stream
 
+	/**
+	 * @throws NotSupportedException
+	 */
 	public static function new(string $path, string $mode, ?Encoding $encoding = null): static
 	{
 		throw new NotSupportedException();
@@ -74,6 +77,9 @@ final class FileCleanupStream extends Stream
 		throw new NotSupportedException();
 	}
 
+	/**
+	 * @throws NotSupportedException
+	 */
 	public static function createTemporaryFile(?Encoding $encoding = null): static
 	{
 		throw new NotSupportedException();
