@@ -24,12 +24,11 @@ describe("number", () => {
 		[10, "10", undefined],
 		[10, "10.5", undefined],
 		[0xf, "f", 16],
-	])(
-		"parseInt",
-		(expected: number, input: string, radix: number | undefined) => {
-			expect(number.parseInt(input, radix)).toBe(expected);
-		},
-	);
+	])("parseInt", (expected: number, input: string, radix:
+		| number
+		| undefined) => {
+		expect(number.parseInt(input, radix)).toBe(expected);
+	});
 
 	test.each([
 		["", undefined],
@@ -48,17 +47,11 @@ describe("number", () => {
 		[10, "10", 42, undefined],
 		[0xf, "f", 42, 16],
 		[42, "a", 42, undefined],
-	])(
-		"parseIntOr",
-		(
-			expected: number,
-			input: string,
-			fallback: number,
-			radix: number | undefined,
-		) => {
-			expect(number.parseIntOr(input, fallback, radix)).toBe(expected);
-		},
-	);
+	])("parseIntOr", (expected: number, input: string, fallback: number, radix:
+		| number
+		| undefined) => {
+		expect(number.parseIntOr(input, fallback, radix)).toBe(expected);
+	});
 
 	test("parseIntOr-ParseError", () => {
 		expect(() => number.parseIntOr("10", 1.5)).toThrow(
