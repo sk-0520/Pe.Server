@@ -49,8 +49,8 @@ readonly class UrlPath implements ArrayAccess, Countable, IteratorAggregate, Str
 		} else {
 			/** @phpstan-var non-empty-string[] */
 			$elements = Collection::from(Text::split($path, '/'))
-				->select(fn ($a) => Text::trim($a, '/'))
-				->where(fn ($a) => !Text::isNullOrWhiteSpace($a))
+				->select(fn($a) => Text::trim($a, '/'))
+				->where(fn($a) => !Text::isNullOrWhiteSpace($a))
 				->toArray();
 
 			foreach ($elements as $element) {
@@ -253,6 +253,9 @@ readonly class UrlPath implements ArrayAccess, Countable, IteratorAggregate, Str
 
 	#region IteratorAggregate
 
+	/**
+	 * @phpstan-return Iterator<non-negative-int,string>
+	 */
 	public function getIterator(): Iterator
 	{
 		return new ArrayIterator($this->elements ?? []);

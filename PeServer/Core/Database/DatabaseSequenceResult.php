@@ -20,7 +20,7 @@ use PeServer\Core\Throws\Throws;
  * 逐次問い合わせ結果。
  *
  * データは保持されない点に注意。
- * `foreach` 一回回したら終了。
+ * `foreach` 一度回したら終了。
  *
  * @template TFieldArray of global-alias-database-field-array
  * @implements Iterator<TFieldArray>
@@ -30,6 +30,7 @@ class DatabaseSequenceResult extends DatabaseResultBase implements Iterator
 	#region variable
 
 	/**
+	 * @phpstan-var Iterator<TFieldArray>
 	 */
 	private readonly Iterator $iterator;
 	/**
@@ -52,6 +53,8 @@ class DatabaseSequenceResult extends DatabaseResultBase implements Iterator
 	) {
 		parent::__construct($columns, 0);
 
+		// わっからん！
+		//@phpstan-ignore assign.propertyType
 		$this->iterator = new IteratorIterator($pdoStatement);
 		$this->resultCount = 0;
 	}

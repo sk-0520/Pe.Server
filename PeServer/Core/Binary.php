@@ -187,7 +187,7 @@ readonly final class Binary implements ArrayAccess, IteratorAggregate, Countable
 	 */
 	public function toArray(string $format, int $offset = 0): array
 	{
-		$result = Throws::wrap(ValueError::class, BinaryException::class, fn () => unpack($format, $this->raw, $offset));
+		$result = Throws::wrap(ValueError::class, BinaryException::class, fn() => unpack($format, $this->raw, $offset));
 		if ($result === false) {
 			throw new BinaryException();
 		}
@@ -256,8 +256,12 @@ readonly final class Binary implements ArrayAccess, IteratorAggregate, Countable
 
 	#region IteratorAggregate
 
+	/**
+	 * @phpstan-return Iterator<non-negative-int,ByteAlias>
+	 */
 	public function getIterator(): Iterator
 	{
+		//@phpstan-ignore return.type
 		return new ArrayIterator(str_split($this->raw));
 	}
 

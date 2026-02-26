@@ -20,6 +20,9 @@ class GeneratorIterator implements Iterator
 {
 	#region variable
 
+	/**
+	 * @phpstan-var Generator<TKey,TValue>
+	 * */
 	private Generator $generator;
 
 	#endregion

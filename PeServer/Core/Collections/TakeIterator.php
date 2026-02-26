@@ -25,6 +25,7 @@ class TakeIterator implements Iterator
 	 * 生成
 	 *
 	 * @param Iterator $iterator
+	 * @phpstan-param Iterator<TKey,TValue> $iterator
 	 * @param int $count
 	 * @phpstan-param non-negative-int $count
 	 */
@@ -32,6 +33,7 @@ class TakeIterator implements Iterator
 		private Iterator $iterator,
 		private readonly int $count
 	) {
+		//nop
 	}
 
 	#region Iterator

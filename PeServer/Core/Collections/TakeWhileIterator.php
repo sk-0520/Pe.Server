@@ -27,6 +27,7 @@ class TakeWhileIterator implements Iterator
 	 * 生成
 	 *
 	 * @param Iterator $iterator
+	 * @phpstan-param Iterator<TKey,TValue> $iterator
 	 * @param mixed $callback
 	 * @phpstan-param callable(TValue,TKey):(bool) $callback
 	 */
