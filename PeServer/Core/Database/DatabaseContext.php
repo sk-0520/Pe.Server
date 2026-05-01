@@ -190,7 +190,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 			return new DatabaseRowResult($columns, $resultCount, []); //@phpstan-ignore-line 空データを本クラス内のみ許容
 		}
 
-		return new DatabaseRowResult($columns, $resultCount, $row); //@phpstan-ignore-line 空じゃないでしょ・・・
+		return new DatabaseRowResult($columns, $resultCount, $row);
 	}
 
 	/**

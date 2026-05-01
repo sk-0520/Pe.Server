@@ -77,12 +77,12 @@ abstract class Throws
 		}
 
 		foreach ($catchExceptions as $key => $catchException) {
-			if (!is_subclass_of($catchException, Throwable::class)) { //@phpstan-ignore-line [DOCTYPE] class-string<Throwable>
+			if (!is_subclass_of($catchException, Throwable::class)) {
 				throw new TypeError('$catchException[' . $key . ']: ' . $catchException);
 			}
 		}
 
-		if (!is_subclass_of($throwException, Throwable::class)) { //@phpstan-ignore-line [DOCTYPE] class-string<Throwable>
+		if (!is_subclass_of($throwException, Throwable::class)) {
 			throw new TypeError('$throwException');
 		}
 

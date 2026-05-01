@@ -54,7 +54,6 @@ class DatabaseSequenceResult extends DatabaseResultBase implements Iterator
 		parent::__construct($columns, 0);
 
 		// わっからん！
-		//@phpstan-ignore assign.propertyType
 		$this->iterator = new IteratorIterator($pdoStatement);
 		$this->resultCount = 0;
 	}
