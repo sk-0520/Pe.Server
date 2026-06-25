@@ -40,6 +40,7 @@ class DailyApplication extends AppApplicationBase
 
 		// 日曜だけバックアップ送信でいいわ
 		$week = (int)$this->beginTimestamp->format('w');
+		$this->logger->info("week: {0}", $week); // メールが飛んでない疑惑
 		if ($week === 0) {
 			$this->appArchiver->sendLatestArchive("backup", true);
 		}
