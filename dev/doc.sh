@@ -6,7 +6,7 @@ cd "$(cd "$(dirname "${0}")"; pwd)"
 source shell/common.sh
 common::parse_options "phpdoc:cache-path phpdoc:setting-graphs?" "$@"
 
-PHPDOC_VERSION=v3.9.1
+PHPDOC_VERSION=v3.10.0
 PHPDOC_URL=https://github.com/phpDocumentor/phpDocumentor/releases/download/${PHPDOC_VERSION}/phpDocumentor.phar
 PHPDOC_NAME=phpdoc.phar
 PHPDOC_FILE=${PHPDOC_NAME}.${PHPDOC_VERSION}

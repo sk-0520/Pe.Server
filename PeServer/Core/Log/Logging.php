@@ -153,7 +153,7 @@ class Logging
 	 *
 	 * @param DateTimeInterface $timestamp
 	 * @param SpecialStore $specialStore
-	 * @return array{TIMESTAMP:string,DATE:string,TIME:string,TIMEZONE:string,CLIENT_IP:string,CLIENT_HOST:string,REQUEST_ID:string,UA:string,METHOD:string,REQUEST:string,SESSION:string|false}
+	 * @return array{TIMESTAMP:string,DATE:string,TIME:string,TIMEZONE:string,CLIENT_IP:string,CLIENT_HOST:string,REQUEST_ID:string,UA:string,METHOD:string,REQUEST:string,SESSION:string|false,REFERER:string}
 	 */
 	public function getLogParameters(DateTimeInterface $timestamp, SpecialStore $specialStore): array
 	{

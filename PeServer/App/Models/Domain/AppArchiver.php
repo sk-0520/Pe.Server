@@ -107,6 +107,7 @@ class AppArchiver
 		$backupFiles = $this->getFiles();
 		if (Arr::isNullOrEmpty($backupFiles)) {
 			if ($ignoreError) {
+				$this->logger->warn("No backup files found.");
 				return;
 			}
 			throw new InvalidOperationException();
