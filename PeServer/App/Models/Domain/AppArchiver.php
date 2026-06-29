@@ -104,7 +104,10 @@ class AppArchiver
 
 	public function sendLatestArchive(string $subject, bool $ignoreError): void
 	{
+		$this->logger->info("sendLatestArchive: {0}", $subject);
 		$backupFiles = $this->getFiles();
+
+		$this->logger->info("backupFiles: {0}", Arr::getCount($backupFiles));
 		if (Arr::isNullOrEmpty($backupFiles)) {
 			if ($ignoreError) {
 				$this->logger->warn("No backup files found.");
@@ -113,8 +116,11 @@ class AppArchiver
 			throw new InvalidOperationException();
 		}
 
+		$this->logger->info("count");
 		$backupFilePath = $backupFiles[count($backupFiles) - 1];
+		$this->logger->info("backupFilePath: {0}", $backupFilePath);
 		$backupFileName = Path::getFileName($backupFilePath);
+		$this->logger->info("backupFileName: {0}", $backupFileName);
 		assert(!Text::isNullOrWhiteSpace($backupFileName));
 
 		$this->mailer->subject = "[Backup] {$subject} {$backupFileName}";
