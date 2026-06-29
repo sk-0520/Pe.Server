@@ -42,6 +42,7 @@ class DailyApplication extends AppApplicationBase
 		$week = (int)$this->beginTimestamp->format('w');
 		$this->logger->info("week: {0}", $week); // メールが飛んでない疑惑
 		if ($week === 0) {
+			$this->logger->info("weekly!");
 			$this->appArchiver->sendLatestArchive("backup", true);
 		}
 	}
