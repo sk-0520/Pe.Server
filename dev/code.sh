@@ -46,10 +46,12 @@ if ! common::exists_option 'ignore-phpcs' ; then
 fi
 
 if ! common::exists_option 'ignore-pplint' ; then
+	logger::info "pplint"
 	php "${PPLINT_FILE}" ../PeServer --colors --show-deprecated --exclude ../PeServer/Core/Libs  --exclude ../PeServer/data
 fi
 
 if ! common::exists_option 'ignore-phpstan' ; then
+	logger::info "phpstan"
 	php "${PHPSTAN_FILE}" -v analyze --configuration phpstan.neon --memory-limit=1G
 fi
 
@@ -79,6 +81,7 @@ if ! common::exists_option 'ignore-phpcs' ; then
 		php "${PHPCODESNIFFER_BF_FILE}" ${PHPCS_OPTIONS_DEFAULT}
 	fi
 
+	logger::info "phpcs"
 	#shellcheck disable=SC2086
 	php "${PHPCODESNIFFER_S_FILE}" ${PHPCS_OPTIONS_DEFAULT} ${PHPCS_OPTION_REPORT} ${PHPCS_OPTIONS_WARNING} ${PHPCS_OPTIONS_CACHE}
 fi

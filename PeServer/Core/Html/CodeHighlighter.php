@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Html;
 
-require_once(__DIR__ . DIRECTORY_SEPARATOR . '../Libs/highlight.php/HighlightUtilities/functions.php');
+require_once(__DIR__ . '/../Libs/highlight.php/HighlightUtilities/functions.php');
 
 use DomainException;
 use Highlight\Highlighter;
@@ -33,8 +33,8 @@ class CodeHighlighter
 
 		if (!Text::isNullOrWhiteSpace($value)) {
 			$numberStrings = Text::split($value, ',');
-			$numberValues = array_filter($numberStrings, fn ($s) => TypeUtility::tryParseInteger(Text::trim($s), $unused));
-			$lineNumbers = array_map(fn ($s) => (int)Text::trim($s), $numberValues);
+			$numberValues = array_filter($numberStrings, fn($s) => TypeUtility::tryParseInteger(Text::trim($s), $unused));
+			$lineNumbers = array_map(fn($s) => (int)Text::trim($s), $numberValues);
 		}
 
 		return $lineNumbers;
