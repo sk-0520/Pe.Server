@@ -82,10 +82,6 @@ class CoreStartup
 	 */
 	protected function registerErrorHandler(string $mode, CoreStartupOption $options, IDiRegisterContainer $container): void
 	{
-		if ($mode !== self::MODE_WEB) {
-			return;
-		}
-
 		if ($this->startupOptions->errorHandling) {
 			$errorHandler = $container->new(ErrorHandler::class);
 			$errorHandler->register();
@@ -157,7 +153,7 @@ class CoreStartup
 		$container->remove(IDiContainer::class);
 		$container->add(IDiContainer::class, DiItem::factory(fn($dc) => $dc->get(IDiRegisterContainer::class)));
 
-		$container->registerValue($options -> urlHelper ?? new UrlHelper(''), IUrlHelper::class);
+		$container->registerValue($options->urlHelper ?? new UrlHelper(''), IUrlHelper::class);
 
 		$specialStore = $options->specialStore  ?? new SpecialStore();
 		$container->registerValue($specialStore, SpecialStore::class);
