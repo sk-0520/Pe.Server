@@ -92,12 +92,12 @@ class PasswordResetLogic extends PageLogicBase
 
 			$userId = $usersEntityDao->selectUserIdByLoginId($loginId);
 			if ($userId === null) {
-				$this->logger->warn('not fount loginId: {}', $userId);
+				$this->logger->warn('not found loginId: {}', $loginId);
 				return false;
 			}
 
 			if (!$userAuthenticationsEntityDao->selectExistsToken($token, $this->config->setting->config->confirm->passwordReminderEmailMinutes)) {
-				$this->logger->warn('not fount token: {}, userId: {}', $token, $userId);
+				$this->logger->warn('not found token: {}, userId: {}', $token, $userId);
 				return false;
 			}
 

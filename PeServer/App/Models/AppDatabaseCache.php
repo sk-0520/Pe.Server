@@ -55,7 +55,7 @@ class AppDatabaseCache
 	}
 
 	/**
-	 * オブジェクトをキャシュデータとして出力。
+	 * オブジェクトをキャッシュデータとして出力。
 	 *
 	 * @param string $fileName
 	 * @param object $object
@@ -71,7 +71,7 @@ class AppDatabaseCache
 	}
 
 	/**
-	 * キャシュデータをオブジェクトとして読み込み。
+	 * キャッシュデータをオブジェクトとして読み込み。
 	 *
 	 * @template T of object
 	 * @param string $fileName
