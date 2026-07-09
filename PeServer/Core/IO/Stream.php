@@ -255,6 +255,7 @@ class Stream extends ResourceBase
 			throw new IOException();
 		}
 
+		/** @disregard P1006 */
 		return IOState::createFromStat($result->value);
 	}
 
@@ -378,6 +379,7 @@ class Stream extends ResourceBase
 			throw new StreamException($result->exceptionMessage());
 		}
 
+		/** @disregard P1006 */
 		return $result->value;
 	}
 
@@ -399,6 +401,7 @@ class Stream extends ResourceBase
 			throw new StreamException();
 		}
 
+		/** @disregard P1006 */
 		return new Binary($result->value);
 	}
 

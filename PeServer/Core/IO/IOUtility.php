@@ -19,11 +19,12 @@ abstract class IOUtility
 
 	public static function getState(string $path): IOState
 	{
-		$result = ErrorHandler::trap(fn () => stat($path));
+		$result = ErrorHandler::trap(fn() => stat($path));
 		if ($result->isFailureOrFalse()) {
 			throw new IOException();
 		}
 
+		/** @disregard P1006 */
 		return IOState::createFromStat($result->value);
 	}
 

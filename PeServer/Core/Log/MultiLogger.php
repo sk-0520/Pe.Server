@@ -10,6 +10,8 @@ use PeServer\Core\Log\LoggerBase;
 /**
  * 複数出力ロガー。
  *
+ * 内部的に使用する。
+ *
  * @phpstan-import-type MessageAlias from ILogger
  */
 final class MultiLogger implements ILogger

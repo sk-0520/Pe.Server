@@ -113,6 +113,7 @@ class Graphics extends DisposerBase
 			throw new GraphicsException();
 		}
 
+		/** @disregard P1006 */
 		return new self($result->value, true);
 	}
 

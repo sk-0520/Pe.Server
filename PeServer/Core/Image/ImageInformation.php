@@ -42,17 +42,21 @@ readonly class ImageInformation
 	 */
 	public static function load(string $filePath): ImageInformation
 	{
-		$result = ErrorHandler::trap(fn () => getimagesize($filePath));
+		$result = ErrorHandler::trap(fn() => getimagesize($filePath));
 		if ($result->isFailureOrFalse()) {
 			throw new ImageException($filePath);
 		}
 
 		$result = $result->value;
 
+		/** @disregard P1006 */
 		Throws::throwIf(1 <= $result[0]);
+		/** @disregard P1006 */
 		Throws::throwIf(1 <= $result[1]);
+		/** @disregard P1006 */
 		Throws::throwIf(-1 <= $result[2] && $result[2] <= 18 && $result[2] !== 0);
 
+		/** @disregard P1006 */
 		return new ImageInformation(
 			new Size(
 				$result[0],

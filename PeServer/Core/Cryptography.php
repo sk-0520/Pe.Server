@@ -132,6 +132,7 @@ abstract class Cryptography
 		$ivLength = $result->value;
 		assert(0 < $ivLength); // こんなんきちんと考慮する必要ないわ
 
+		/** @disregard P1006 */
 		$iv = self::generateRandomBinary($ivLength);
 
 		$result = ErrorHandler::trap(fn() => openssl_encrypt($rawValue, $algorithm, $password, self::OPTION, $iv->raw));
@@ -139,6 +140,7 @@ abstract class Cryptography
 			throw new CryptoException($algorithm);
 		}
 
+		/** @disregard P1006 */
 		return $algorithm . self::SEPARATOR . $iv->toBase64() . self::SEPARATOR . $result->value;
 	}
 
@@ -165,6 +167,7 @@ abstract class Cryptography
 			throw new CryptoException($algorithm);
 		}
 
+		/** @disregard P1006 */
 		return $result->value;
 	}
 

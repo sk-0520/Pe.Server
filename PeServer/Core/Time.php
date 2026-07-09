@@ -124,6 +124,7 @@ abstract class Time
 			throw new FormatException($time);
 		}
 
+		/** @disregard P1006 */
 		return $result->value;
 	}
 

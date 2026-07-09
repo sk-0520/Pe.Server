@@ -109,6 +109,7 @@ abstract class Directory
 		}
 		$items = $result->value;
 
+		/** @disregard P1006 */
 		foreach ($items as $item) {
 			if ($item === '.' || $item === '..') {
 				continue;
@@ -219,6 +220,7 @@ abstract class Directory
 			throw new IOException();
 		}
 
+		/** @disregard P1006 */
 		return $result->value;
 	}
 
@@ -282,6 +284,7 @@ abstract class Directory
 			throw new IOException();
 		}
 
+		/** @disregard P1006 */
 		return $result->value;
 	}
 

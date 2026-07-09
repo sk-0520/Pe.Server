@@ -75,6 +75,7 @@ abstract class Archiver
 			throw new ArchiveException();
 		}
 
+		/** @disregard P1006 */
 		return new Binary($result->value);
 	}
 

@@ -51,11 +51,13 @@ abstract class Mime
 			throw new ArgumentException($fileName);
 		}
 
-		$result = ErrorHandler::trap(fn () =>  mime_content_type($fileName));
+		$result = ErrorHandler::trap(fn() =>  mime_content_type($fileName));
+		/** @disregard P1006 */
 		if (!$result->success || Text::isNullOrEmpty($result->value)) {
 			throw new FileNotFoundException($fileName);
 		}
 
+		/** @disregard P1006 */
 		return $result->value;
 	}
 

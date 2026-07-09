@@ -59,6 +59,7 @@ abstract class File
 			throw new IOException();
 		}
 
+		/** @disregard P1006 */
 		return $result->value;
 	}
 
@@ -77,6 +78,7 @@ abstract class File
 			throw new IOException($path);
 		}
 
+		/** @disregard P1006 */
 		return new Binary($result->value);
 	}
 
@@ -98,6 +100,7 @@ abstract class File
 			throw new IOException($path);
 		}
 
+		/** @disregard P1006 */
 		return $result->value;
 	}
 
@@ -226,6 +229,7 @@ abstract class File
 			return false;
 		}
 
+		/** @disregard P1006 */
 		return $result->value;
 	}
 

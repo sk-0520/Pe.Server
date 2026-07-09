@@ -183,6 +183,7 @@ class Regex
 			throw new RegexException(preg_last_error_msg(), preg_last_error());
 		}
 
+		/** @disregard P1006 */
 		return $result->value;
 	}
 
