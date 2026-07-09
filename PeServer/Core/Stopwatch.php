@@ -114,15 +114,8 @@ class Stopwatch implements Stringable
 	public function getElapsed(): DateInterval
 	{
 		$nano = $this->getNanosecondsElapsed();
-		$fnano = Time::nanosecondsToFloat($nano);
-
-		// TODO: 結構適当なんでいつか直す
-		$s = (int)$fnano;
-		$f = 0 < $s ? $s - $fnano : $fnano;
-		$f = (string)$f;
-		if (Text::contains($f, ".", false)) {
-			$f = Text::trimStart(Text::split((string)$f, ".")[1], "0");
-		}
+		$s = intdiv($nano, 1_000_000_000);
+		$f = intdiv($nano % 1_000_000_000, 1_000);
 
 		$result = DateInterval::createFromDateString("{$s} second {$f} microseconds");
 		if ($result === false) {
