@@ -31,13 +31,18 @@ class HtmlDocument extends HtmlElementBase
 
 	#endregion
 
+	/**
+	 * 生成。
+	 *
+	 * @param non-empty-string|null $html
+	 */
 	public function __construct(?string $html = null)
 	{
 		$this->raw = new DOMDocument();
 		parent::__construct($this, $this->raw);
 
 		if ($html !== null) {
-			$result = Throws::wrap(ValueError::class, HtmlDocumentException::class, fn () => $this->raw->loadHTML($html));
+			$result = Throws::wrap(ValueError::class, HtmlDocumentException::class, fn() => $this->raw->loadHTML($html));
 			if ($result == false) {
 				throw new HtmlDocumentException();
 			}
@@ -76,7 +81,7 @@ class HtmlDocument extends HtmlElementBase
 
 	/**
 	 * `DOMDocument::saveHTMLFile` ラッパー。
-	 * @param string $path
+	 * @param non-empty-string $path
 	 * @throws HtmlDocumentException
 	 * @see https://www.php.net/manual/domdocument.savehtmlfile.php
 	 */
