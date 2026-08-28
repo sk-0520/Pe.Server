@@ -80,6 +80,7 @@ class AppStartup extends CoreStartup
 	protected function registerErrorHandler(string $mode, CoreStartupOption $options, IDiRegisterContainer $container): void
 	{
 		if ($mode !== self::MODE_WEB) {
+			parent::registerErrorHandler($mode, $options, $container);
 			return;
 		}
 
