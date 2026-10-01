@@ -39,6 +39,7 @@ final class Collection implements IteratorAggregate
 	private function __construct(
 		private Iterator $iterator
 	) {
+		//nop
 	}
 
 	#region function
@@ -195,13 +196,17 @@ final class Collection implements IteratorAggregate
 		/** @phpstan-var array<string,TResult> */
 		$buffer = [];
 
-		foreach ($this->iterator as $key => $value) {
+		foreach (
+			$this->iterator as $key => $value
+		) {
 			$convertedKey = $key;
 			if (!is_string($key)) {
 				$convertedKey = TypeUtility::toString($key);
 			}
 
+			// @phpstan-ignore argument.type
 			$k = call_user_func($keyFactory, $value, $convertedKey);
+			// @phpstan-ignore argument.type
 			$v = call_user_func($valueFactory, $value, $convertedKey);
 
 			if (isset($buffer[$k])) {

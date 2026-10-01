@@ -282,7 +282,7 @@ class SpecialStore
 
 	public function getHost(): string
 	{
-		return $this->getServer('HTTP_HOST', TEXT::EMPTY);
+		return $this->getServer('HTTP_HOST', Text::EMPTY);
 	}
 
 	public function getQueryString(): string | null

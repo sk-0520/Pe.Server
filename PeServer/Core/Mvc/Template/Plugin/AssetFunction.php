@@ -105,7 +105,7 @@ class AssetFunction extends TemplateFunctionBase
 		$include = TypeUtility::parseBoolean($this->params['include'] ?? false);
 
 		$filePath = Path::combine($this->argument->rootDirectoryPath, $sourcePath);
-		if (($autoSize || $include) || !FIle::exists($filePath)) {
+		if (($autoSize || $include) || !File::exists($filePath)) {
 			// @phpstan-ignore-next-line nullは全取得だからOK
 			foreach ($this->argument->engine->getTemplateDir(null) as $dir) {
 				$path = Path::combine($dir, $sourcePath);
