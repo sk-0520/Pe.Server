@@ -9,7 +9,7 @@
 
 # Pe サーバー処理系
 
-https://pe.content-type-text.org/
+https://pe.content-type-text.net
 
 可能な限り GAS でやってたけどもう無理なんや。
 
