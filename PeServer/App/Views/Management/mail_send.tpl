@@ -6,14 +6,14 @@
 		{csrf}
 
 		<dl class="input">
-			<dt>件名</dt>
-			<dd>
-				{input_helper key='mail_subject' type="text" class="edit" required="true"}
-			</dd>
-
 			<dt>宛先</dt>
 			<dd>
 				{input_helper key='mail_to' type="email" class="edit" required="true"}
+			</dd>
+
+			<dt>件名</dt>
+			<dd>
+				{input_helper key='mail_subject' type="text" class="edit" required="true"}
 			</dd>
 
 			<dt>本文</dt>
