@@ -139,7 +139,7 @@ abstract class File
 	 * @throws IOException
 	 * @throws ParseException パース失敗。
 	 */
-	public static function readJsonFile(string $path, JsonSerializer $jsonSerializer = null): array
+	public static function readJsonFile(string $path, ?JsonSerializer $jsonSerializer = null): array
 	{
 		$content = self::readContent($path);
 

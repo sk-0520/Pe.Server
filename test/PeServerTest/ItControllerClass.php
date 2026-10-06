@@ -136,9 +136,9 @@ class ItControllerClass extends TestClass
 	 * @param string $path
 	 * @param ItOptions $options
 	 * @param null|callable(ItSetup) $setup
-	 * @return ItActual
+	 * @return ItActual|null
 	 */
-	protected function call(HttpMethod $httpMethod, string $path, ItOptions $options = new ItOptions(), ?callable $setup = null, ItActual $previousActual = null): ItActual
+	protected function call(HttpMethod $httpMethod, string $path, ItOptions $options = new ItOptions(), ?callable $setup = null, ?ItActual $previousActual = null): ItActual
 	{
 		$this->resetInitialize();
 

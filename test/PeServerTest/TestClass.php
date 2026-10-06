@@ -178,7 +178,7 @@ class TestClass extends \PHPUnit\Framework\TestCase
 	 * @param array-key $pattern
 	 * @return TestDirectory
 	 */
-	protected function testDir(int|string $pattern = null): TestDirectory
+	protected function testDir(int|string|null $pattern = null): TestDirectory
 	{
 		$stackTrace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 2)[1];
 		$class = Text::replace($stackTrace['class'], '\\', '/');

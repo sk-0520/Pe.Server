@@ -118,6 +118,7 @@ class Stopwatch implements Stringable
 		$f = intdiv($nano % 1_000_000_000, 1_000);
 
 		$result = DateInterval::createFromDateString("{$s} second {$f} microseconds");
+		// @phpstan-ignore identical.alwaysFalse
 		if ($result === false) {
 			throw new StopwatchWException();
 		}

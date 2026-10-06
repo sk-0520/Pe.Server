@@ -31,7 +31,7 @@ abstract class EventStreamContentBase extends DataContentBase implements ICallba
 	/**
 	 * 生成。
 	 */
-	public function __construct(JsonSerializer $jsonSerializer = null)
+	public function __construct(?JsonSerializer $jsonSerializer = null)
 	{
 		if ($this instanceof IDownloadContent) {
 			throw new NotSupportedException("IDownloadContent");

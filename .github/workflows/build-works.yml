@@ -3,7 +3,7 @@ name: Build Works
 on: push
 
 env:
-  php-versions: '8.2'
+  php-versions: '8.4'
   extensions: sqlite3, mbstring, zip, xml, gd, xdebug
 
 jobs:
