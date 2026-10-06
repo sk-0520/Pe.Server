@@ -24,7 +24,7 @@ class CallbackEventStreamContent extends EventStreamContentBase
 	 *
 	 * @param Closure(): Iterator<EventStreamMessage> $callback
 	 */
-	public function __construct(private Closure $callback, JsonSerializer $jsonSerializer = null)
+	public function __construct(private Closure $callback, ?JsonSerializer $jsonSerializer = null)
 	{
 		parent::__construct($jsonSerializer);
 	}

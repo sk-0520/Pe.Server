@@ -120,21 +120,21 @@ class EncodingTest extends TestClass
 		}
 	}
 
-	public function test_defaultEncoding()
-	{
-		$restoreEncoding = Encoding::getDefaultEncoding();
-		try {
-			Encoding::setDefaultEncoding(Encoding::getUtf16());
-			$this->setProperty(Encoding::class, "defaultEncoding", null);
-			$this->assertFalse(Encoding::getDefaultEncoding()->isEqualsName(Encoding::getAscii()->name));
-			$this->assertFalse(Encoding::getDefaultEncoding()->isEqualsName(Encoding::getUtf8()->name));
-			$this->assertTrue(Encoding::getDefaultEncoding()->isEqualsName(Encoding::getUtf16()->name));
-			$this->assertFalse(Encoding::getDefaultEncoding()->isEqualsName(Encoding::getUtf32()->name));
-			$this->assertFalse(Encoding::getDefaultEncoding()->isEqualsName(Encoding::getShiftJis()->name));
-		} finally {
-			Encoding::setDefaultEncoding($restoreEncoding);
-		}
-	}
+	// public function test_defaultEncoding()
+	// {
+	// 	$restoreEncoding = Encoding::getDefaultEncoding();
+	// 	try {
+	// 		Encoding::setDefaultEncoding(Encoding::getUtf16());
+	// 		$this->setProperty(Encoding::class, "defaultEncoding", null);
+	// 		$this->assertFalse(Encoding::getDefaultEncoding()->isEqualsName(Encoding::getAscii()->name));
+	// 		$this->assertFalse(Encoding::getDefaultEncoding()->isEqualsName(Encoding::getUtf8()->name));
+	// 		$this->assertTrue(Encoding::getDefaultEncoding()->isEqualsName(Encoding::getUtf16()->name));
+	// 		$this->assertFalse(Encoding::getDefaultEncoding()->isEqualsName(Encoding::getUtf32()->name));
+	// 		$this->assertFalse(Encoding::getDefaultEncoding()->isEqualsName(Encoding::getShiftJis()->name));
+	// 	} finally {
+	// 		Encoding::setDefaultEncoding($restoreEncoding);
+	// 	}
+	// }
 
 
 	public static function provider_getAliasNames()

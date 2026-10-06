@@ -51,6 +51,7 @@ class CookieStore
 		protected readonly SpecialStore $special,
 		public readonly CookieOptions $options
 	) {
+		//NOP
 	}
 
 	#region function
@@ -102,7 +103,7 @@ class CookieStore
 	 * @param CookieOptions|null $options nullの場合コンストラクタで渡された設定値が使用される
 	 * @return void
 	 */
-	public function set(string $key, string $value, CookieOptions $options = null): void
+	public function set(string $key, string $value, ?CookieOptions $options = null): void
 	{
 		$this->values[$key] = new LocalCookieData($value, $options ?? $this->options);
 
@@ -176,5 +177,6 @@ final class LocalCookieData
 		public string $value,
 		public CookieOptions $options
 	) {
+		//NOP
 	}
 }

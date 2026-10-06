@@ -42,7 +42,7 @@ class DatabaseRowResult extends DatabaseResultBase
 	 * @return object
 	 * @phpstan-return TObject
 	 */
-	public function mapping(string|object $classNameOrObject, IMapper $mapper = null): object
+	public function mapping(string|object $classNameOrObject, ?IMapper $mapper = null): object
 	{
 		return $this->mappingImpl($this->fields, $classNameOrObject, $mapper ?? new Mapper());
 	}

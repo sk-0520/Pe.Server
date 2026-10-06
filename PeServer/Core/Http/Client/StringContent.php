@@ -16,7 +16,7 @@ final class StringContent extends BinaryContent
 	public function __construct(
 		string $string,
 		string $mime = Text::EMPTY,
-		Encoding $encoding = null
+		?Encoding $encoding = null
 	) {
 		$encoding = $encoding ?? Encoding::getDefaultEncoding();
 		$body = $encoding->getBinary($string);

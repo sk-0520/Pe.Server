@@ -382,7 +382,7 @@ final class Collection implements IteratorAggregate
 	 * @phpstan-param PredicateAlias|null $callback
 	 * @return int
 	 */
-	public function count(callable $callback = null): int
+	public function count(?callable $callback = null): int
 	{
 		if ($callback === null) {
 			if ($this->iterator instanceof Countable) {
@@ -730,7 +730,7 @@ final class Collection implements IteratorAggregate
 	 * @return mixed
 	 * @phpstan-return TValue|null
 	 */
-	public function max(callable $callback = null): mixed
+	public function max(?callable $callback = null): mixed
 	{
 		/** @phpstan-var TValue|null */
 		$result = PHP_INT_MIN;
@@ -761,7 +761,7 @@ final class Collection implements IteratorAggregate
 	 * @return mixed
 	 * @phpstan-return TValue|null
 	 */
-	public function min(callable $callback = null): mixed
+	public function min(?callable $callback = null): mixed
 	{
 		/** @phpstan-var TValue|null */
 		$result = PHP_INT_MAX;

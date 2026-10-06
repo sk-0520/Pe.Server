@@ -52,7 +52,7 @@ class CaseInsensitiveKeyArray implements ArrayAccess, Countable, IteratorAggrega
 	 * @param array<string,string|int>|null $input
 	 * @phpstan-param array<array-key,TValue>|null $input
 	 */
-	public function __construct(array $input = null)
+	public function __construct(?array $input = null)
 	{
 		if ($input !== null) {
 			foreach ($input as $key => $value) {

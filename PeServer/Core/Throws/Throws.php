@@ -46,7 +46,7 @@ abstract class Throws
 	 * @param Throwable $previous ラップする元の例外。
 	 * @throws TException
 	 */
-	public static function reThrow(string $className, Throwable $previous, string $message = null): never
+	public static function reThrow(string $className, Throwable $previous, ?string $message = null): never
 	{
 		$message = $message ?? $previous->getMessage();
 		$code = self::getErrorCode($previous);

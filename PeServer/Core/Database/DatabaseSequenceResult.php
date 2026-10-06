@@ -70,7 +70,7 @@ class DatabaseSequenceResult extends DatabaseResultBase implements Iterator
 	 * @return Iterator
 	 * @phpstan-return Iterator<TObject>
 	 */
-	public function mapping(string $className, IMapper $mapper = null): Iterator
+	public function mapping(string $className, ?IMapper $mapper = null): Iterator
 	{
 		return new LocalSequenceIterator($this, $className, $mapper ?? new Mapper());
 	}

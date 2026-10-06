@@ -257,11 +257,16 @@ abstract class Cryptography
 	private static function generateHashCore(bool $isBinary, string $algorithm, Binary $binary, array $options = []): string
 	{
 		try {
-			$hash = hash($algorithm, $binary->raw, $isBinary, $options);
+			$result = ErrorHandler::trap(fn() => hash($algorithm, $binary->raw, $isBinary, $options));
+			if ($result->isFailureOrFalse()) {
+				throw new CryptoException("Failed to generate hash(" . $algorithm . ").");
+			}
+			$hash = $result->value;
 		} catch (Throwable $ex) {
 			Throws::reThrow(CryptoException::class, $ex);
 		}
 
+		/** @disregard P1006 */
 		return $hash;
 	}
 

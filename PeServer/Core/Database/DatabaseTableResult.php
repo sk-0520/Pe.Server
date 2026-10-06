@@ -54,7 +54,7 @@ class DatabaseTableResult extends DatabaseResultBase
 	 * @return array
 	 * @phpstan-return TObject[]
 	 */
-	public function mapping(string $className, IMapper $mapper = null): array
+	public function mapping(string $className, ?IMapper $mapper = null): array
 	{
 		$result = [];
 		$instanceMapper = $mapper ?? new Mapper();

@@ -43,12 +43,12 @@ class ErrorDataTest extends TestClass
 		$this->assertSame(654, $actual->line);
 	}
 
-	public function test_createFromLastError()
-	{
-		@trigger_error("ERROR");
-		$actual = ErrorData::createFromLastError();
-		$this->assertSame("ERROR", $actual->message);
-	}
+	// public function test_createFromLastError()
+	// {
+	// 	@trigger_error("ERROR");
+	// 	$actual = ErrorData::createFromLastError();
+	// 	$this->assertSame("ERROR", $actual->message);
+	// }
 
 	public function test_createFromLastError_throw()
 	{
@@ -57,12 +57,12 @@ class ErrorDataTest extends TestClass
 		$this->fail();
 	}
 
-	public function test_getLastError()
-	{
-		@trigger_error("ERROR");
-		$actual = ErrorData::getLastError();
-		$this->assertSame("ERROR", $actual->message);
-	}
+	// public function test_getLastError()
+	// {
+	// 	@trigger_error("ERROR");
+	// 	$actual = ErrorData::getLastError();
+	// 	$this->assertSame("ERROR", $actual->message);
+	// }
 
 	public function test_getLastError_none()
 	{

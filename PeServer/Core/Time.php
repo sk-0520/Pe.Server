@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core;
 
 use DateInterval;
+use DateMalformedIntervalStringException;
 use Exception;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Errors\ErrorHandler;
@@ -119,10 +120,15 @@ abstract class Time
 
 	private static function createConstructor(string $time): DateInterval
 	{
-		$result = ErrorHandler::trap(fn() => DateInterval::createFromDateString($time));
-		if ($result->isFailureOrFalse()) {
-			throw new FormatException($time);
+		try {
+			$result = ErrorHandler::trap(fn() => DateInterval::createFromDateString($time));
+			if ($result->isFailureOrFalse()) {
+				throw new FormatException($time);
+			}
+		} catch (DateMalformedIntervalStringException $ex) {
+			Throws::reThrow(FormatException::class, $ex);
 		}
+
 
 		/** @disregard P1006 */
 		return $result->value;
