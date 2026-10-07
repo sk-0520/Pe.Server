@@ -15,7 +15,13 @@ trait ItLoginTrait
 	{
 		//phpcs:enable
 
-		return [$path];
+		$result = [];
+
+		foreach ($path as $p) {
+			$result[] = [$p];
+		}
+
+		return $result;
 	}
 
 	//phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps, PSR2.Methods.MethodDeclaration.Underscore

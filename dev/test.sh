@@ -3,7 +3,7 @@
 pushd "$(cd "$(dirname "${0}")"; pwd)"
 	#shellcheck disable=SC1091
 	source shell/common.sh
-	common::parse_options 'mode|ut|it|st|uit! no-exit? ignore-namespace? ignore-coverage? phpunit:filter phpunit:exclude-group' "$@"
+	common::parse_options 'mode|ut|it|st|uit! no-exit? ignore-namespace? ignore-coverage? phpunit:filter phpunit:exclude-group phpunit:display? phpunit:migrate?' "$@"
 popd
 
 TEST_MODE="$(common::get_option_value mode)"
@@ -18,7 +18,7 @@ BASE_DIR=../PeServer
 LOCAL_HTTP_TEST="${LOCAL_HTTP_TEST:=localhost:8080}"
 LOCAL_HTTP_WAIT="${LOCAL_HTTP_WAIT:=1}"
 
-PHPUNIT_VERSION=11.5.56
+PHPUNIT_VERSION=13.4.1
 PHPUNIT_URL=https://phar.phpunit.de/phpunit-${PHPUNIT_VERSION}.phar
 PHPUNIT_NAME=phpunit.phar
 PHPUNIT_FILE=${PHPUNIT_NAME}.${PHPUNIT_VERSION}
@@ -64,6 +64,17 @@ PHPUNIT_OPTION_COVERAGE=
 if ! common::exists_option 'ignore-coverage' ; then
 	PHPUNIT_OPTION_COVERAGE="--coverage-html ../public_html/public/coverage/php/${TEST_MODE}"
 fi
+
+PHPUNIT_OPTION_DISPLAY=
+if common::exists_option 'phpunit:display' ; then
+	PHPUNIT_OPTION_DISPLAY="--display-all-issues"
+fi
+
+PHPUNIT_OPTION_MIGRATE=
+if common::exists_option 'phpunit:migrate' ; then
+	PHPUNIT_OPTION_MIGRATE="--migrate-configuration"
+fi
+
 
 PUBLIC_DIR=../public_html
 TEST_SUITE="--testsuite ${TEST_MODE}"
@@ -114,7 +125,14 @@ php -S "${LOCAL_HTTP_TEST}" -t "${PUBLIC_DIR}" > "http-${TEST_MODE}.log" 2>&1 &
 trap 'kill %1' 0
 sleep "${LOCAL_HTTP_WAIT}"
 #shellcheck disable=SC2086
-php "${PHPUNIT_FILE}" --configuration "../dev/phpunit.xml" ${TEST_SUITE} ${PHPUNIT_OPTION_COVERAGE} ${PHPUNIT_OPTION_FILTER} ${PHPUNIT_OPTION_EXCLUDE_GROUP}
+php "${PHPUNIT_FILE}" \
+	--configuration "../dev/phpunit.xml" \
+	${TEST_SUITE} \
+	${PHPUNIT_OPTION_COVERAGE} \
+	${PHPUNIT_OPTION_FILTER} \
+	${PHPUNIT_OPTION_EXCLUDE_GROUP} \
+	${PHPUNIT_OPTION_DISPLAY} \
+	${PHPUNIT_OPTION_MIGRATE}
 
 if common::exists_option 'no-exit' ; then
 	read -r
