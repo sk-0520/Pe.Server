@@ -123,7 +123,7 @@ class Vector extends TypeArrayBase
 			throw new ArgumentException('$items');
 		}
 
-		foreach ($items as $key => $value) {
+		foreach ($items as $value) {
 			$this->validateType($value);
 		}
 

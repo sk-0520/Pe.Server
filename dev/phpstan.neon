@@ -55,7 +55,8 @@ parameters:
     - '/Template type TFieldArray of method PeServer\\.+::.+\(\) is not referenced in a parameter./'
     #本体設定はめっちゃくちゃなことをするので初期化系エラーは無視
     - '/Class PeServer\\App\\Models\\Configuration\\\w+Setting(Base)? has an uninitialized @readonly property \$\w+\. Assign it in the constructor\./'
-
+    -
+      identifier: method.unusedParameter
   typeAliases:
     global-alias-server-store-value: 'string|int|array<int|string|null>|object|null'
     global-alias-database-bind-value: 'string|int|float|bool'

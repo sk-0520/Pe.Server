@@ -131,7 +131,6 @@ class RouteInformation
 	 */
 	private static function combineMiddleware(array $baseMiddleware, ?array $middleware = null): array
 	{
-		$customMiddleware = null;
 		if (Arr::getCount($middleware)) {
 			$customMiddleware = [];
 			foreach ($middleware as $index => $mw) { // @phpstan-ignore-line Arr::getCount

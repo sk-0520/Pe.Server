@@ -416,7 +416,7 @@ final class Collection implements IteratorAggregate
 	public function first(?callable $callback = null): mixed
 	{
 		if ($callback === null) {
-			foreach ($this->iterator as $key => $value) {
+			foreach ($this->iterator as $value) {
 				return $value;
 			}
 		} else {
@@ -443,7 +443,7 @@ final class Collection implements IteratorAggregate
 	public function firstOr(mixed $notFound, ?callable $callback = null): mixed
 	{
 		if ($callback === null) {
-			foreach ($this->iterator as $key => $value) {
+			foreach ($this->iterator as $value) {
 				return $value;
 			}
 		} else {
@@ -473,7 +473,7 @@ final class Collection implements IteratorAggregate
 		$current = null;
 
 		if ($callback === null) {
-			foreach ($this->iterator as $key => $value) {
+			foreach ($this->iterator as $value) {
 				$isFound = true;
 				$current = $value;
 			}
@@ -511,7 +511,7 @@ final class Collection implements IteratorAggregate
 		$current = null;
 
 		if ($callback === null) {
-			foreach ($this->iterator as $key => $value) {
+			foreach ($this->iterator as $value) {
 				$isFound = true;
 				$current = $value;
 			}
@@ -547,7 +547,7 @@ final class Collection implements IteratorAggregate
 		$current = null;
 
 		if ($callback === null) {
-			foreach ($this->iterator as $key => $value) {
+			foreach ($this->iterator as $value) {
 				if ($isFound) {
 					throw new InvalidOperationException();
 				}
@@ -591,7 +591,7 @@ final class Collection implements IteratorAggregate
 		$current = null;
 
 		if ($callback === null) {
-			foreach ($this->iterator as $key => $value) {
+			foreach ($this->iterator as $value) {
 				if ($isFound) {
 					throw new InvalidOperationException();
 				}
@@ -736,7 +736,7 @@ final class Collection implements IteratorAggregate
 		$result = PHP_INT_MIN;
 
 		if ($callback === null) {
-			foreach ($this->iterator as $key => $value) {
+			foreach ($this->iterator as $value) {
 				if ($result < $value) {
 					$result = $value;
 				}
@@ -767,7 +767,7 @@ final class Collection implements IteratorAggregate
 		$result = PHP_INT_MAX;
 
 		if ($callback === null) {
-			foreach ($this->iterator as $key => $value) {
+			foreach ($this->iterator as $value) {
 				if ($value < $result) {
 					$result = $value;
 				}

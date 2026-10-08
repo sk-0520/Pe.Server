@@ -74,9 +74,6 @@ class Configuration
 		$environmentFilePath = Path::combine($directoryPath, $environmentFileName);
 
 		/** @var array<mixed> */
-		$configuration = [];
-
-		/** @var array<mixed> */
 		$baseConfiguration = File::readJsonFile($baseFilePath);
 		if (File::exists($environmentFilePath)) {
 			/** @var array<mixed> */

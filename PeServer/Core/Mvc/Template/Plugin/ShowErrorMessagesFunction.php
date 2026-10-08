@@ -77,7 +77,7 @@ class ShowErrorMessagesFunction extends TemplateFunctionBase
 				$liElement = $ulElement->addTagElement('li');
 				$liElement->addClass('error');
 
-				$messageElement = $liElement->addText($value);
+				$liElement->addText($value);
 			}
 		}
 

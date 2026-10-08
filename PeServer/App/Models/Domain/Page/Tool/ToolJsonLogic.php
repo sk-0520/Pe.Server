@@ -55,9 +55,7 @@ class ToolJsonLogic extends PageLogicBase
 
 		$input = $this->getRequest('tool_json_input');
 		$kind = $this->getRequest('tool_json_kind');
-		$result = '';
 
-		$json = null;
 		try {
 			$json = json_decode($input, true, 1024, JSON_THROW_ON_ERROR);
 		} catch (Exception $ex) {

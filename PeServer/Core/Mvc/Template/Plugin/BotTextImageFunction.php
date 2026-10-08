@@ -92,6 +92,7 @@ class BotTextImageFunction extends TemplateFunctionBase
 		/** @var string */
 		$foregroundColorText = $this->params['foreground-color'] ?? '#0f0f0f';
 		$foregroundColor = RgbColor::fromHtmlColorCode($foregroundColorText);
+		// @phpstan-ignore variable.unused
 		$obfuscateLevel = TypeUtility::parseBoolean($this->params['obfuscate-level'] ?? 0);
 
 		$size = new Size($width, $height);

@@ -132,7 +132,7 @@ class DiContainer extends DisposerBase implements IDiContainer
 		$result = [];
 
 		$canDynamicArgument = !empty($arguments);
-		$dynamicArgumentKeys = $canDynamicArgument ? array_filter($arguments, fn ($k) => is_int($k) && $k < 0, ARRAY_FILTER_USE_KEY) : [];
+		$dynamicArgumentKeys = $canDynamicArgument ? array_filter($arguments, fn($k) => is_int($k) && $k < 0, ARRAY_FILTER_USE_KEY) : [];
 		if ($canDynamicArgument && !empty($dynamicArgumentKeys)) {
 			$dynamicArgumentKeys = array_keys($dynamicArgumentKeys);
 			rsort($dynamicArgumentKeys, SORT_NUMERIC);
@@ -329,8 +329,6 @@ class DiContainer extends DisposerBase implements IDiContainer
 		if ($item->lifecycle === DiItem::LIFECYCLE_SINGLETON && $item->hasSingletonValue()) {
 			return $item->getSingletonValue();
 		}
-
-		$result = null;
 
 		if ($item->type === DiItem::TYPE_TYPE) {
 			/** @var class-string */

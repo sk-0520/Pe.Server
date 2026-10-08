@@ -97,9 +97,6 @@ class Pagination
 			return [];
 		}
 
-		/** @phpstan-var positive-int[] */
-		$pageNumbers = [];
-
 		if ($this->shortcutTotalItemCount <= $this->shortcutMaxCount) {
 			// ショートカット全件がショートカット設定数以下は全件を指定する
 			$pageNumbers = Arr::range(self::FIRST_PAGE_NUMBER, $this->shortcutTotalItemCount);

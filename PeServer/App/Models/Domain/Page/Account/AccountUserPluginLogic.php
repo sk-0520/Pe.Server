@@ -183,6 +183,7 @@ class AccountUserPluginLogic extends PageLogicBase
 				$pluginsEntityDao = new PluginsEntityDao($database);
 
 				$currentPlugin = $pluginsEntityDao->selectEditPlugin($pluginId);
+				// @phpstan-ignore variable.unused
 				$currentState = $currentPlugin->fields['state'];
 			});
 		}
@@ -226,12 +227,10 @@ class AccountUserPluginLogic extends PageLogicBase
 		$params = [
 			'plugin_id' => $this->isRegister
 				? Uuid::adjustGuid($this->getRequest('account_plugin_plugin_id'))
-				: Uuid::adjustGuid($this->getRequest('plugin_id'))
-			,
+				: Uuid::adjustGuid($this->getRequest('plugin_id')),
 			'plugin_name' => $this->isRegister
 				? $this->getRequest('account_plugin_plugin_name')
-				: Text::EMPTY
-			,
+				: Text::EMPTY,
 			'user_id' => $userInfo->userId,
 			'display_name' => $this->getRequest('account_plugin_display_name'),
 			'state' => $this->getRequest('account_plugin_state'),
@@ -258,12 +257,13 @@ class AccountUserPluginLogic extends PageLogicBase
 			}
 
 
-			$pluginCategories = [];
-			foreach ($this->pluginCategories as $category) {
-				if (TypeUtility::parseBoolean($this->getRequest('plugin_category_' . $category->pluginCategoryId))) {
-					$pluginCategories[] = $category->pluginCategoryId;
-				}
-			}
+			//TODO: $this->pluginCategories とごっちゃになっている可能性あり
+			// $pluginCategories = [];
+			// foreach ($this->pluginCategories as $category) {
+			// 	if (TypeUtility::parseBoolean($this->getRequest('plugin_category_' . $category->pluginCategoryId))) {
+			// 		$pluginCategories[] = $category->pluginCategoryId;
+			// 	}
+			// }
 
 			if ($this->isRegister) {
 				$pluginsEntityDao->insertPlugin(

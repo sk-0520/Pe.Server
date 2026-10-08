@@ -40,14 +40,6 @@ class AccountUserLogic extends PageLogicBase
 		$userInfoData = $usersEntityDao->selectUserInfoData($userInfo->userId);
 		$userPlugins = $pluginsEntityDao->selectPluginByUserId($userInfo->userId);
 
-		$map = [
-			'user_id' => 'account_user_id',
-			'login_id' => 'account_user_login_id',
-			'level' => 'account_user_level',
-			'name' => 'account_user_name',
-			'website' => 'account_user_website',
-		];
-
 		$this->setValue('user', $userInfoData);
 		$this->setValue('plugins', $userPlugins->rows);
 	}

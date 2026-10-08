@@ -55,7 +55,6 @@ class ToolBase64Logic extends PageLogicBase
 
 		$input = $this->getRequest('tool_base64_input');
 		$kind = $this->getRequest('tool_base64_kind');
-		$result = '';
 
 		switch ($kind) {
 			case 'encode':
