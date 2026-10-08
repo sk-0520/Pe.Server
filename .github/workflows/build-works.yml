@@ -261,6 +261,8 @@ jobs:
       - build
       - code-backend
       - test-backend-st
+      - build-matrix
+      - test-shell-os
 
     if: github.ref == 'refs/heads/master' && github.event_name == 'push'
 
