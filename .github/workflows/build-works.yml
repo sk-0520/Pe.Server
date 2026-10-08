@@ -36,7 +36,9 @@ jobs:
 
   test-shell-os:
     name: "<Test> Shell-OS"
-    needs: test-shell
+    needs:
+      - code-shell
+      - test-shell
 
     strategy:
       matrix:
@@ -56,7 +58,9 @@ jobs:
 
   build:
     name: "<Build> Application"
-    needs: test-shell
+    needs:
+      - code-shell
+      - test-shell
 
     runs-on: ubuntu-latest
 
@@ -132,7 +136,9 @@ jobs:
 
   build-matrix:
     name: "<Build> Application(Test)"
-    needs: test-shell
+    needs:
+      - code-shell
+      - test-shell
 
     strategy:
       matrix:
@@ -175,7 +181,9 @@ jobs:
 
   code-backend:
     name: "<Code> Backend"
-    needs: test-shell
+    needs:
+      - code-shell
+      - test-shell
 
     runs-on: ubuntu-latest
 
