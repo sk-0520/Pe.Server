@@ -1,0 +1,58 @@
+{
+	// プロジェクト全体のスペルチェック設定ファイルです
+	"version": "0.2",
+	"language": "ja",
+	"dictionaries": [
+		"php",
+		"bash",
+		"css",
+		"typescript",
+		"react",
+		"node",
+		"powershell",
+		"softwareTerms",
+		"en-US",
+		"ja-jp"
+	],
+	"ignorePaths": [
+		"package-lock.json",
+		"node_modules",
+		"*.code-workspace",
+		"vscode-extension",
+		".git/objects",
+		".vscode",
+		".vscode-insiders"
+	],
+	"ignoreRegExpList": [
+		"//\\s*biome-ignore\\s+lint/.*"
+	],
+	"words": [
+		"Acao",
+		"autoincrement",
+		"autoload",
+		"cachebuster",
+		"checkAlwaysTrueInstanceof",
+		"CyclomaticComplexity",
+		"endregion",
+		"httponly",
+		"IFNULL",
+		"intelephense",
+		"LINQ",
+		"loginid",
+		"Michelf",
+		"migmix",
+		"NEIGHBOUR",
+		"nosniff",
+		"ondrej",
+		"phar",
+		"phpcs",
+		"PHPSESSID",
+		"phpstan",
+		"phpunit",
+		"samesite",
+		"SJIS",
+		"Stringable",
+		"sysplugins",
+		"XDEBUG"
+	]
+}
