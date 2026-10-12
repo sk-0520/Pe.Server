@@ -1,5 +1,6 @@
 ---
 name: windows-local-php
+applyTo: "**/*.php"
 description: Windows ローカル開発時の PHP 環境設定に関するスキル。
 ---
 
