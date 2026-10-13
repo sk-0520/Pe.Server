@@ -4,7 +4,7 @@ cd "$(cd "$(dirname "${0}")"; pwd)"
 
 #shellcheck disable=SC1091
 source shell/common.sh
-common::parse_options "ignore-pplint? ignore-phpstan? ignore-phpcs? phpcs-fix? phpcs:report phpcs:ignore-warning? phpcs:cache" "$@"
+common::parse_options "ignore-pplint? ignore-phpstan? ignore-phpcs? phpcs:fix? phpcs:report phpcs:ignore-warning? phpcs:cache" "$@"
 
 PPLINT_VERSION=v1.4.0
 PPLINT_URL=https://github.com/php-parallel-lint/PHP-Parallel-Lint/releases/download/${PPLINT_VERSION}/parallel-lint.phar
@@ -74,7 +74,7 @@ if ! common::exists_option 'ignore-phpcs' ; then
 
 	PHPCS_OPTIONS_DEFAULT="../PeServer ../test/PeServer* --standard=phpcs_ruleset.xml"
 
-	if common::exists_option 'phpcs-fix' ; then
+	if common::exists_option 'phpcs:fix' ; then
 		logger::info "!!修正処理実施!!"
 
 		#shellcheck disable=SC2086
