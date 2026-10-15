@@ -5,20 +5,20 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc\Template\Node;
 
 use PeServer\Core\Throws\NotImplementedException;
-use PeServer\Core\Mvc\Template\Node\Attributes;
+use PeServer\Core\Mvc\Template\Node\AttributesBase;
 
 class Element extends NodeBase
 {
 	/**
 	 *
 	 * @param non-empty-string $tagName
-	 * @param Attributes $attributes
+	 * @param AttributesBase $attributes
 	 * @param Content $content
 	 * @param ElementOptions $options
 	 */
 	public function __construct(
 		public readonly string $tagName,
-		public Attributes $attributes,
+		public AttributesBase $attributes,
 		public Content $content,
 		public readonly ElementOptions $options
 	) {
@@ -27,15 +27,6 @@ class Element extends NodeBase
 
 	#region function
 
-	protected function toAttributeString(string $key, string|null $value): string
-	{
-		$result = $key;
-		if ($value !== null) {
-			$result .= "=\"{$value}\"";
-		}
-
-		return $result;
-	}
 
 	#endregion
 
@@ -45,18 +36,14 @@ class Element extends NodeBase
 	{
 		//TODO: とりあえずえいやで作るので必要に応じて後で対応する
 
-		$hasAttributes = 0 < count($this->attributes->map);
 		$hasChildren = !empty($this->content->values);
 
 		$result = "<";
 		$result .= $this->tagName;
 
-		if ($hasAttributes) {
-			ksort($this->attributes->map);
-			foreach ($this->attributes->map as $key => $value) {
-				$result .= " ";
-				$result .= $this->toAttributeString($key, $value);
-			}
+		foreach ($this->attributes->getNames() as $name) {
+			$result .= " ";
+			$result .= $this->attributes->buildName($name);
 		}
 
 
