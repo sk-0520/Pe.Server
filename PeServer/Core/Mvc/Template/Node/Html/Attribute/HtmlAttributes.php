@@ -10,6 +10,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Autocapitalize;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Autocorrect;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Contenteditable;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Direction;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\InputMode;
 use PeServer\Core\Mvc\Template\Node\AttributeValue;
 use PeServer\Core\ReflectionUtility;
 use ReflectionClass;
@@ -40,6 +41,15 @@ class HtmlAttributes extends AttributesBase
 		public readonly bool|AttributeValue $draggable = AttributeValue::Unspecified,
 		public readonly string|AttributeValue $enterkeyhint = AttributeValue::Unspecified,
 		public readonly bool|string|AttributeValue $hidden = AttributeValue::Unspecified,
+		public readonly string|AttributeValue $id = AttributeValue::Unspecified,
+		public readonly bool|AttributeValue $inert = AttributeValue::Unspecified,
+		public readonly InputMode|AttributeValue $inputmode = AttributeValue::Unspecified,
+		public readonly string|AttributeValue $is = AttributeValue::Unspecified,
+		public readonly string|AttributeValue $itemid = AttributeValue::Unspecified,
+		public readonly string|AttributeValue $itemprop = AttributeValue::Unspecified,
+		public readonly string|AttributeValue $itemref = AttributeValue::Unspecified,
+		public readonly string|AttributeValue $itemtype = AttributeValue::Unspecified,
+		public readonly string|AttributeValue $lang = AttributeValue::Unspecified,
 	) {
 		//NOP
 	}
