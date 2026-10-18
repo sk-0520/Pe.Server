@@ -17,6 +17,7 @@ use PeServer\Core\ReflectionUtility;
 use ReflectionClass;
 use ReflectionProperty;
 use Iterator;
+use Override;
 
 //TODO: Data-*
 
@@ -75,7 +76,7 @@ class HtmlGlobalAttributes extends AttributesBase
 
 	#region AttributesBase
 
-	#[\Override]
+	#[Override]
 	public function getNames(): Iterator
 	{
 		$reflection = new ReflectionClass($this);
@@ -89,7 +90,8 @@ class HtmlGlobalAttributes extends AttributesBase
 		}
 	}
 
-	public function buildName(string $name): string
+	#[Override]
+	public function build(string $name): string
 	{
 		throw new \PeServer\Core\Throws\NotImplementedException();
 	}

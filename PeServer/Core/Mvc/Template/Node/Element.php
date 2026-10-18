@@ -43,7 +43,7 @@ class Element extends NodeBase
 
 		foreach ($this->attributes->getNames() as $name) {
 			$result .= " ";
-			$result .= $this->attributes->buildName($name);
+			$result .= $this->attributes->build($name);
 		}
 
 
