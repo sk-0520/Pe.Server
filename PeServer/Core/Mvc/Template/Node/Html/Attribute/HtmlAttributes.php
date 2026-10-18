@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Template\Node\Html\Attribute;
 
-use PeServer\Core\Collections\Arr;
 use PeServer\Core\Mvc\Template\Node\AttributesBase;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Autocapitalize;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Autocorrect;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Contenteditable;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Direction;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\InputMode;
-use PeServer\Core\Mvc\Template\Node\AttributeValue;
 use PeServer\Core\ReflectionUtility;
 use ReflectionClass;
 use ReflectionProperty;
@@ -22,7 +20,7 @@ use Iterator;
 class HtmlAttributes extends AttributesBase
 {
 	public function __construct(
-		public readonly string|AttributeValue $accesskey = AttributeValue::Unspecified,
+		public readonly string|null $accesskey = null,
 		/**
 		 * anchor はグローバル属性で、位置指定要素とアンカー要素を関連付けるために使用されます。この属性の値は、位置指定要素をアンカーする要素の id の値です。その後、 CSS アンカー位置指定を使用して要素の位置指定を行うことができます。
 		 *
@@ -31,25 +29,26 @@ class HtmlAttributes extends AttributesBase
 		 * @deprecated
 		 * @see https://developer.mozilla.org/docs/Web/HTML/Reference/Global_attributes/anchor
 		 */
-		public readonly string|AttributeValue $anchor = AttributeValue::Unspecified,
-		public readonly Autocapitalize|AttributeValue $autocapitalize = AttributeValue::Unspecified,
-		public readonly Autocorrect|AttributeValue $autocorrect = AttributeValue::Unspecified,
-		public readonly bool|AttributeValue $autofocus  = AttributeValue::Unspecified,
-		public readonly string|AttributeValue $class = AttributeValue::Unspecified,
-		public readonly Contenteditable|AttributeValue $contenteditable = AttributeValue::Unspecified,
-		public readonly Direction|AttributeValue $dir = AttributeValue::Unspecified,
-		public readonly bool|AttributeValue $draggable = AttributeValue::Unspecified,
-		public readonly string|AttributeValue $enterkeyhint = AttributeValue::Unspecified,
-		public readonly bool|string|AttributeValue $hidden = AttributeValue::Unspecified,
-		public readonly string|AttributeValue $id = AttributeValue::Unspecified,
-		public readonly bool|AttributeValue $inert = AttributeValue::Unspecified,
-		public readonly InputMode|AttributeValue $inputmode = AttributeValue::Unspecified,
-		public readonly string|AttributeValue $is = AttributeValue::Unspecified,
-		public readonly string|AttributeValue $itemid = AttributeValue::Unspecified,
-		public readonly string|AttributeValue $itemprop = AttributeValue::Unspecified,
-		public readonly string|AttributeValue $itemref = AttributeValue::Unspecified,
-		public readonly string|AttributeValue $itemtype = AttributeValue::Unspecified,
-		public readonly string|AttributeValue $lang = AttributeValue::Unspecified,
+		public readonly string|null $anchor = null,
+		public readonly Autocapitalize|null $autocapitalize = null,
+		public readonly Autocorrect|null $autocorrect = null,
+		public readonly bool|null $autofocus = null,
+		public readonly string|null $class = null,
+		public readonly Contenteditable|null $contenteditable = null,
+		public readonly Direction|null $dir = null,
+		public readonly bool|null $draggable = null,
+		public readonly string|null $enterkeyhint = null,
+		public readonly bool|string|null $hidden = null,
+		public readonly string|null $id = null,
+		public readonly bool|null $inert = null,
+		public readonly InputMode|null $inputmode = null,
+		public readonly string|null $is = null,
+		public readonly string|null $itemid = null,
+		public readonly string|null $itemprop = null,
+		public readonly string|null $itemref = null,
+		public readonly string|null $itemtype = null,
+		public readonly string|null $lang = null,
+		public readonly string|null $nonce = null,
 	) {
 		//NOP
 	}
@@ -62,13 +61,14 @@ class HtmlAttributes extends AttributesBase
 
 	#region AttributesBase
 
+	#[\Override]
 	public function getNames(): Iterator
 	{
 		$reflection = new ReflectionClass($this);
 		$properties = ReflectionUtility::getAllProperties($reflection, ReflectionProperty::IS_PUBLIC);
 		foreach ($properties as $property) {
 			$value = $property->getRawValue($this);
-			if ($value === AttributeValue::Unspecified) {
+			if ($value === null) {
 				continue;
 			}
 			yield $property->getName();
