@@ -10,6 +10,9 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Autocorrect;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Contenteditable;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Direction;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\InputMode;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Popover;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Translate;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\VirtualKeyboardPolicy;
 use PeServer\Core\ReflectionUtility;
 use ReflectionClass;
 use ReflectionProperty;
@@ -17,7 +20,7 @@ use Iterator;
 
 //TODO: Data-*
 
-class HtmlAttributes extends AttributesBase
+class HtmlGlobalAttributes extends AttributesBase
 {
 	public function __construct(
 		public readonly string|null $accesskey = null,
@@ -49,6 +52,17 @@ class HtmlAttributes extends AttributesBase
 		public readonly string|null $itemtype = null,
 		public readonly string|null $lang = null,
 		public readonly string|null $nonce = null,
+		public readonly string|null $part = null,
+		public readonly Popover|null $popover = null,
+		public readonly string|null $role = null,
+		public readonly string|null $slot = null,
+		public readonly bool|null $spellcheck = null,
+		public readonly string|null $style = null,
+		public readonly int|null $tabindex = null,
+		public readonly string|null $title  = null,
+		public readonly Translate|null $translate = null,
+		public readonly VirtualKeyboardPolicy|null $virtualkeyboardpolicy = null,
+		public readonly bool|null $writingsuggestions  = null,
 	) {
 		//NOP
 	}
