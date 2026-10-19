@@ -29,6 +29,15 @@ class DataAttributes extends AttributesBase implements Stringable, ArrayAccess
 		//NOP
 	}
 
+	#region function
+
+	public function isEmpty(): bool
+	{
+		return Arr::isNullOrEmpty($this->attributes);
+	}
+
+	#endregion
+
 	#region AttributesBase
 
 	#[Override]

@@ -19,7 +19,9 @@ use ReflectionClass;
 use ReflectionProperty;
 use Iterator;
 use Override;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Mvc\Template\Node\AttributeValueMark;
+use PeServer\Core\Text;
 
 //TODO: Data-*
 
@@ -86,9 +88,14 @@ class HtmlGlobalAttributes extends AttributesBase
 		$properties = ReflectionUtility::getAllProperties($reflection, ReflectionProperty::IS_PUBLIC);
 		foreach ($properties as $property) {
 			$value = $property->getRawValue($this);
+
 			if ($value === null) {
 				continue;
 			}
+			if ($value instanceof DataAttributes && $value->isEmpty()) {
+				continue;
+			}
+
 			yield $property->getName();
 		}
 	}
@@ -96,7 +103,15 @@ class HtmlGlobalAttributes extends AttributesBase
 	#[Override]
 	public function build(string $name, AttributeValueMark $mark = AttributeValueMark::DoubleQuote): string
 	{
-		throw new \PeServer\Core\Throws\NotImplementedException();
+		if ($name === 'data' && $this->data !== null) {
+			$dataResult = [];
+			foreach ($this->data->getNames() as $names) {
+				$dataResult[] = $this->data->build($names, $mark);
+			}
+			return Text::join(' ', $dataResult);
+		}
+
+		return $this->buildCommon($name, $this->$name, $mark);
 	}
 
 
