@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Template\Node;
 
+use BackedEnum;
 use Iterator;
 use PeServer\Core\Text;
+use UnitEnum;
+use InvalidArgumentException;
 
 abstract class AttributesBase
 {
@@ -23,25 +26,42 @@ abstract class AttributesBase
 		return $value;
 	}
 
-	protected function toValue(string $value, AttributeValueMark $mark = AttributeValueMark::DoubleQuote): string
+	protected function quoteValue(string $value, AttributeValueMark $mark = AttributeValueMark::DoubleQuote): string
 	{
 		$work = $this->escapeValue($value, $mark);
 		return $mark->value . $work . $mark->value;
 	}
 
-	protected function buildCommon(string $name, string|int|float|bool $value): string
+	protected function prepareEnum(UnitEnum $enum): string
 	{
-		$work = $value;
-
-		if (is_int($work)) {
-			$work = (string)$work;
-		} elseif (is_float($work)) {
-			$work = (string)$work;
-		} elseif (is_bool($work)) {
-			$work = $work ? 'true' : 'false';
+		if ($enum instanceof BackedEnum && is_string($enum->value)) {
+			return $enum->value;
 		}
 
-		return $name . '=' . $this->toValue($work);
+		return $enum->name;
+	}
+
+	protected function prepareValue(string|int|float|bool|UnitEnum $value): string
+	{
+		if (is_string($value)) {
+			return $value;
+		} elseif (is_int($value) || is_float($value)) {
+			return (string)$value;
+		} elseif ($value instanceof UnitEnum) {
+			return $this->prepareEnum($value);
+		} elseif (is_bool($value)) {
+			return $value ? 'true' : 'false';
+		}
+
+		// @phpstan-ignore deadCode.unreachable
+		throw new InvalidArgumentException('Unsupported value type.');
+	}
+
+	protected function buildCommon(string $name, string|int|float|bool|UnitEnum $value, AttributeValueMark $mark = AttributeValueMark::DoubleQuote): string
+	{
+		$work = $this->prepareValue($value);
+
+		return $name . '=' . $this->quoteValue($work, $mark);
 	}
 
 	/**
