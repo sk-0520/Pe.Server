@@ -15,7 +15,6 @@ use UnitEnum;
 
 class AttributesBaseTest extends TestClass
 {
-
 	public static function provider_escapeValue()
 	{
 		return [

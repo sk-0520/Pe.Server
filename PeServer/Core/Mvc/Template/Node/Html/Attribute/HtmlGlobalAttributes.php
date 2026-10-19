@@ -65,10 +65,10 @@ class HtmlGlobalAttributes extends AttributesBase
 		public readonly bool|null $spellcheck = null,
 		public readonly string|null $style = null,
 		public readonly int|null $tabindex = null,
-		public readonly string|null $title  = null,
+		public readonly string|null $title = null,
 		public readonly Translate|null $translate = null,
 		public readonly VirtualKeyboardPolicy|null $virtualkeyboardpolicy = null,
-		public readonly bool|null $writingsuggestions  = null,
+		public readonly bool|null $writingsuggestions = null,
 	) {
 		//NOP
 	}
