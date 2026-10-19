@@ -2,6 +2,7 @@
 
 namespace PeServer\Core\Mvc\Template\Node\Html\Attribute;
 
+use PeServer\Core\Mvc\Template\Node\AttributeValueMark;
 use ArrayAccess;
 use Iterator;
 use PeServer\Core\Collections\Arr;
@@ -39,9 +40,10 @@ class DataAttributes extends AttributesBase implements Stringable, ArrayAccess
 	}
 
 	#[Override]
-	public function build(string $name): string
+	public function build(string $name, AttributeValueMark $mark = AttributeValueMark::DoubleQuote): string
 	{
-		throw new \PeServer\Core\Throws\NotImplementedException();
+		$attr = $this->attributes[$name];
+		return 'data-' . $name . '=' . $this->quoteValue($attr, $mark);
 	}
 
 

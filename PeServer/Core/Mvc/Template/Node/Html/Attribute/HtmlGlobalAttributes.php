@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Template\Node\Html\Attribute;
 
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\DataAttributes;
 use PeServer\Core\Mvc\Template\Node\AttributesBase;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Autocapitalize;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Autocorrect;
@@ -18,6 +19,7 @@ use ReflectionClass;
 use ReflectionProperty;
 use Iterator;
 use Override;
+use PeServer\Core\Mvc\Template\Node\AttributeValueMark;
 
 //TODO: Data-*
 
@@ -39,6 +41,7 @@ class HtmlGlobalAttributes extends AttributesBase
 		public readonly bool|null $autofocus = null,
 		public readonly string|null $class = null,
 		public readonly Contenteditable|null $contenteditable = null,
+		public readonly DataAttributes|null $data = null,
 		public readonly Direction|null $dir = null,
 		public readonly bool|null $draggable = null,
 		public readonly string|null $enterkeyhint = null,
@@ -91,7 +94,7 @@ class HtmlGlobalAttributes extends AttributesBase
 	}
 
 	#[Override]
-	public function build(string $name): string
+	public function build(string $name, AttributeValueMark $mark = AttributeValueMark::DoubleQuote): string
 	{
 		throw new \PeServer\Core\Throws\NotImplementedException();
 	}

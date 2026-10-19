@@ -26,7 +26,7 @@ abstract class AttributesBase
 		return $value;
 	}
 
-	protected function quoteValue(string $value, AttributeValueMark $mark = AttributeValueMark::DoubleQuote): string
+	protected function quoteValue(string $value, AttributeValueMark $mark): string
 	{
 		$work = $this->escapeValue($value, $mark);
 		return $mark->value . $work . $mark->value;
@@ -57,7 +57,7 @@ abstract class AttributesBase
 		throw new InvalidArgumentException('Unsupported value type.');
 	}
 
-	protected function buildCommon(string $name, string|int|float|bool|UnitEnum $value, AttributeValueMark $mark = AttributeValueMark::DoubleQuote): string
+	protected function buildCommon(string $name, string|int|float|bool|UnitEnum $value, AttributeValueMark $mark): string
 	{
 		$work = $this->prepareValue($value);
 
@@ -79,7 +79,7 @@ abstract class AttributesBase
 	 * @phpstan-param non-empty-string $name
 	 * @return string
 	 */
-	abstract public function build(string $name): string;
+	abstract public function build(string $name, AttributeValueMark $mark = AttributeValueMark::DoubleQuote): string;
 
 	#endregion
 }

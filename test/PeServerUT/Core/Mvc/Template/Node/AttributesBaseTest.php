@@ -135,7 +135,7 @@ final class LocalAttributes extends AttributesBase
 	}
 
 	#[Override]
-	public function build(string $name): string
+	public function build(string $name, AttributeValueMark $mark = AttributeValueMark::DoubleQuote): string
 	{
 		throw new NotImplementedException();
 	}
