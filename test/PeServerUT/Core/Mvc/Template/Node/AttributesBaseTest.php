@@ -8,9 +8,11 @@ use Iterator;
 use Override;
 use PeServer\Core\Mvc\Template\Node\AttributesBase;
 use PeServer\Core\Mvc\Template\Node\AttributeValueMark;
+use PeServer\Core\Mvc\Template\Node\BuildName;
 use PeServer\Core\Throws\NotImplementedException;
 use PeServerTest\TestClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use ReflectionException;
 use UnitEnum;
 
 class AttributesBaseTest extends TestClass
@@ -82,6 +84,74 @@ class AttributesBaseTest extends TestClass
 		$this->assertSame($expected, $actual);
 	}
 
+	public static function provider_buildNameByReflection()
+	{
+		return [
+			[
+				null,
+				new class() extends LocalAttributes {
+					public string $property = "value";
+				},
+				"property"
+			],
+			// [
+			// 	"PROPERTY",
+			// 	new class() extends LocalAttributes {
+			// 		#[BuildName("PROPERTY")]
+			// 		public string $property = "value";
+			// 	},
+			// 	"property"
+			// ],
+		];
+	}
+
+	#[DataProvider('provider_buildNameByReflection')]
+	public function test_buildNameByReflection(string|null $expected, LocalAttributes $attributes, string $name)
+	{
+		$actual = $attributes->local_buildNameByReflection($name);
+		$this->assertSame($expected, $actual);
+	}
+
+	public function test_buildNameByReflection_throw()
+	{
+		$test = new LocalAttributes();
+		$this->expectException(ReflectionException::class);
+		$test->local_buildNameByReflection("non_existent_property");
+	}
+
+	public static function provider_buildName()
+	{
+		return [
+			[
+				"property",
+				new class() extends LocalAttributes {},
+				"property"
+			],
+			[
+				"property",
+				new class() extends LocalAttributes {
+					public string $property = "value";
+				},
+				"property"
+			],
+			[
+				"PROPERTY",
+				new class() extends LocalAttributes {
+					#[BuildName("PROPERTY")]
+					public string $property = "value";
+				},
+				"property"
+			],
+		];
+	}
+
+	#[DataProvider('provider_buildName')]
+	public function test_buildName(string $expected, LocalAttributes $attributes, string $name)
+	{
+		$actual = $attributes->local_buildName($name);
+		$this->assertSame($expected, $actual);
+	}
+
 	public static function provider_buildCommon()
 	{
 		return [
@@ -99,7 +169,7 @@ class AttributesBaseTest extends TestClass
 	}
 }
 
-final class LocalAttributes extends AttributesBase
+class LocalAttributes extends AttributesBase
 {
 	#region function
 
@@ -116,6 +186,16 @@ final class LocalAttributes extends AttributesBase
 	public function local_prepareValue(string|int|float|bool|UnitEnum $value): string
 	{
 		return $this->prepareValue($value);
+	}
+
+	public function local_buildNameByReflection(string $name): string|null
+	{
+		return $this->buildNameByReflection($name);
+	}
+
+	public function local_buildName(string $name): string
+	{
+		return $this->buildName($name);
 	}
 
 	public function local_buildCommon(string $name, string|int|float|bool|UnitEnum $value, AttributeValueMark $mark = AttributeValueMark::DoubleQuote): string

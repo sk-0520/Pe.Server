@@ -9,6 +9,8 @@ use Iterator;
 use PeServer\Core\Text;
 use UnitEnum;
 use InvalidArgumentException;
+use PeServer\Core\Collections\Arr;
+use ReflectionProperty;
 
 abstract class AttributesBase
 {
@@ -57,11 +59,37 @@ abstract class AttributesBase
 		throw new InvalidArgumentException('Unsupported value type.');
 	}
 
+	protected function buildNameByReflection(string $name): string|null
+	{
+		$property = new ReflectionProperty($this, $name);
+		$attributes = $property->getAttributes(BuildName::class);
+		if (!Arr::isNullOrEmpty($attributes)) {
+			$instance = $attributes[0]->newInstance();
+			return $instance->name;
+		}
+
+		return null;
+	}
+
+	protected function buildName(string $name): string
+	{
+		if (property_exists($this, $name)) {
+			$result = $this->buildNameByReflection($name);
+			if ($result !== null) {
+				return $result;
+			}
+		}
+
+		return $name;
+	}
+
+
 	protected function buildCommon(string $name, string|int|float|bool|UnitEnum $value, AttributeValueMark $mark): string
 	{
-		$work = $this->prepareValue($value);
+		$workName = $this->buildName($name);
+		$workValue = $this->prepareValue($value);
 
-		return $name . '=' . $this->quoteValue($work, $mark);
+		return $workName . '=' . $this->quoteValue($workValue, $mark);
 	}
 
 	/**

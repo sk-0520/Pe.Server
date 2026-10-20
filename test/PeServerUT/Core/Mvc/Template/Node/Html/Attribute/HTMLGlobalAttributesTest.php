@@ -6,7 +6,7 @@ namespace PeServerUT\Core\Mvc\Template\Node\Html\Attribute;
 
 use PeServer\Core\Mvc\Template\Node\AttributeValueMark;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\DataAttributes;
-use PeServer\Core\Mvc\Template\Node\Html\Attribute\HtmlGlobalAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLGlobalAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Autocapitalize;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Autocorrect;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Contenteditable;
@@ -18,41 +18,41 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\VirtualKeyboardPolicy;
 use PeServerTest\TestClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 
-class HtmlGlobalAttributesTest extends TestClass
+class HTMLGlobalAttributesTest extends TestClass
 {
 	public static function provider_getNames()
 	{
 		return [
 			[
 				[],
-				new HtmlGlobalAttributes(),
+				new HTMLGlobalAttributes(),
 			],
 			[
 				['id'],
-				new HtmlGlobalAttributes(data: new DataAttributes(), id: 'test'),
+				new HTMLGlobalAttributes(data: new DataAttributes(), id: 'test'),
 			],
 			[
 				[
 					'accesskey',
 					'anchor',
-					'autocapitalize',
-					'autocorrect',
-					'autofocus',
-					'class',
-					'contenteditable',
+					'autoCapitalize',
+					'autoCorrect',
+					'autoFocus',
+					'className',
+					'contentEditable',
 					'data',
 					'dir',
 					'draggable',
-					'enterkeyhint',
+					'enterKeyHint',
 					'hidden',
 					'id',
 					'inert',
-					'inputmode',
+					'inputMode',
 					'is',
-					'itemid',
-					'itemprop',
-					'itemref',
-					'itemtype',
+					'itemId',
+					'itemProp',
+					'itemRef',
+					'itemType',
 					'lang',
 					'nonce',
 					'part',
@@ -61,33 +61,33 @@ class HtmlGlobalAttributesTest extends TestClass
 					'slot',
 					'spellcheck',
 					'style',
-					'tabindex',
+					'tabIndex',
 					'title',
 					'translate',
-					'virtualkeyboardpolicy',
-					'writingsuggestions',
+					'virtualKeyboardPolicy',
+					'writingSuggestions',
 				],
-				new HtmlGlobalAttributes(
+				new HTMLGlobalAttributes(
 					accesskey: '',
 					anchor: 'anchor-id',
-					autocapitalize: Autocapitalize::Sentences,
-					autocorrect: Autocorrect::Off,
-					autofocus: false,
-					class: 'example',
-					contenteditable: Contenteditable::True,
+					autoCapitalize: Autocapitalize::Sentences,
+					autoCorrect: Autocorrect::Off,
+					autoFocus: false,
+					className: 'example',
+					contentEditable: Contenteditable::True,
 					data: new DataAttributes(['test' => 'value']),
 					dir: Direction::LeftToRight,
 					draggable: false,
-					enterkeyhint: 'go',
+					enterKeyHint: 'go',
 					hidden: false,
 					id: 'element-id',
 					inert: false,
-					inputmode: InputMode::Text,
+					inputMode: InputMode::Text,
 					is: 'custom-element',
-					itemid: 'item-id',
-					itemprop: 'name',
-					itemref: 'reference',
-					itemtype: 'type',
+					itemId: 'item-id',
+					itemProp: 'name',
+					itemRef: 'reference',
+					itemType: 'type',
 					lang: 'ja',
 					nonce: 'nonce-value',
 					part: 'part-name',
@@ -96,11 +96,11 @@ class HtmlGlobalAttributesTest extends TestClass
 					slot: 'slot-name',
 					spellcheck: false,
 					style: 'color: red',
-					tabindex: 0,
+					tabIndex: 0,
 					title: 'title',
 					translate: Translate::No,
-					virtualkeyboardpolicy: VirtualKeyboardPolicy::Manual,
-					writingsuggestions: false,
+					virtualKeyboardPolicy: VirtualKeyboardPolicy::Manual,
+					writingSuggestions: false,
 				),
 			],
 		];
@@ -118,38 +118,38 @@ class HtmlGlobalAttributesTest extends TestClass
 		return [
 			[
 				'id="example"',
-				new HtmlGlobalAttributes(id: 'example'),
+				new HTMLGlobalAttributes(id: 'example'),
 				'id',
 				AttributeValueMark::DoubleQuote,
 			],
 			[
 				"id='it&#39;s'",
-				new HtmlGlobalAttributes(id: "it's"),
+				new HTMLGlobalAttributes(id: "it's"),
 				'id',
 				AttributeValueMark::SingleQuote,
 			],
 			[
 				'hidden="false"',
-				new HtmlGlobalAttributes(hidden: false),
+				new HTMLGlobalAttributes(hidden: false),
 				'hidden',
 				AttributeValueMark::DoubleQuote,
 			],
 			[
 				'tabindex="-1"',
-				new HtmlGlobalAttributes(tabindex: -1),
-				'tabindex',
+				new HTMLGlobalAttributes(tabIndex: -1),
+				'tabIndex',
 				AttributeValueMark::DoubleQuote,
 			],
 			[
 				'dir="rtl"',
-				new HtmlGlobalAttributes(dir: Direction::RightToLeft),
+				new HTMLGlobalAttributes(dir: Direction::RightToLeft),
 				'dir',
 				AttributeValueMark::DoubleQuote,
 			],
 			[
 				'autocorrect=""',
-				new HtmlGlobalAttributes(autocorrect: Autocorrect::Default),
-				'autocorrect',
+				new HtmlGlobalAttributes(autoCorrect: Autocorrect::Default),
+				'autoCorrect',
 				AttributeValueMark::DoubleQuote,
 			],
 			[
