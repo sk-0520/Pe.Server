@@ -53,6 +53,7 @@
 		"SJIS",
 		"Stringable",
 		"sysplugins",
-		"XDEBUG"
+		"XDEBUG",
+		"disregard",
 	]
 }

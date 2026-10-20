@@ -22,11 +22,13 @@ use Override;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Mvc\Template\Node\AttributeValueMark;
 use PeServer\Core\Mvc\Template\Node\BuildName;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Bcp47;
 use PeServer\Core\Mvc\Template\Node\Html\HtmlDeprecated;
 use PeServer\Core\Text;
 
 class HTMLGlobalAttributes extends AttributesBase
 {
+	/** @SuppressWarnings("php:S107") */
 	public function __construct(
 		public readonly string|null $accesskey = null,
 		/**
@@ -65,7 +67,7 @@ class HTMLGlobalAttributes extends AttributesBase
 		public readonly string|null $itemRef = null,
 		#[BuildName('itemtype')]
 		public readonly string|null $itemType = null,
-		public readonly string|null $lang = null,
+		public readonly Bcp47|null $lang = null,
 		public readonly string|null $nonce = null,
 		public readonly string|null $part = null,
 		public readonly Popover|null $popover = null,

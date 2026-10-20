@@ -9,6 +9,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\DataAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLGlobalAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Autocapitalize;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Autocorrect;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Bcp47;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Contenteditable;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Direction;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\InputMode;
@@ -88,7 +89,7 @@ class HTMLGlobalAttributesTest extends TestClass
 					itemProp: 'name',
 					itemRef: 'reference',
 					itemType: 'type',
-					lang: 'ja',
+					lang: Bcp47::Japanese,
 					nonce: 'nonce-value',
 					part: 'part-name',
 					popover: Popover::Auto,
