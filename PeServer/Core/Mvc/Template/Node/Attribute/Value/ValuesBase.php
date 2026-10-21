@@ -44,6 +44,11 @@ readonly abstract class ValuesBase implements IAttributeValue
 		return (string)$value;
 	}
 
+	protected function getSeparator(): string
+	{
+		return " ";
+	}
+
 	#endregion
 
 	#region IAttributeValue
@@ -51,7 +56,7 @@ readonly abstract class ValuesBase implements IAttributeValue
 	public function toValue(): string
 	{
 		$results = Arr::map($this->values, fn($a) => $this->convertValue($a));
-		return Text::join(' ', $results);
+		return Text::join($this->getSeparator(), $results);
 	}
 
 	#endregion

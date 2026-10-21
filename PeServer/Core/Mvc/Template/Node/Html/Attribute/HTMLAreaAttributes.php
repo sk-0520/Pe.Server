@@ -46,7 +46,6 @@ class HTMLAreaAttributes extends HTMLGlobalAttributes
 		 * @phpstan-var Target|non-empty-string|null
 		 */
 		public readonly Target|string|null $target = null,
-		public readonly string|null $type = null,
 		#region HTMLGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,

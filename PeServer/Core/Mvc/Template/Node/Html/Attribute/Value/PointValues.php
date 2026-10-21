@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Template\Node\Html\Attribute\Value;
 
+use Override;
 use PeServer\Core\Mvc\Template\Node\Attribute\Value\ValuesBase;
 
 use PeServer\Core\Image\Point;
@@ -27,6 +28,7 @@ readonly class PointValues extends ValuesBase
 	 * @param Point $value
 	 * @return string
 	 */
+	#[Override]
 	protected function convertValue(string|int|float|object $value): string
 	{
 		if ($value instanceof Point) {
@@ -34,6 +36,12 @@ readonly class PointValues extends ValuesBase
 		}
 
 		throw new \InvalidArgumentException('Value must be an instance of Point.');
+	}
+
+	#[Override]
+	protected function getSeparator(): string
+	{
+		return ',';
 	}
 
 	#endregion
