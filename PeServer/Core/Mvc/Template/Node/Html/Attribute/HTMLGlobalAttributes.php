@@ -4,27 +4,29 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Template\Node\Html\Attribute;
 
-use PeServer\Core\Mvc\Template\Node\Html\Attribute\DataAttributes;
+use Iterator;
+use Override;
+use PeServer\Core\Collections\Arr;
 use PeServer\Core\Mvc\Template\Node\AttributesBase;
+use PeServer\Core\Mvc\Template\Node\AttributeValueMark;
+use PeServer\Core\Mvc\Template\Node\BuildName;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\DataAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Autocapitalize;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Autocorrect;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Bcp47;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Contenteditable;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Direction;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\InputMode;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Popover;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Translate;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\VirtualKeyboardPolicy;
+use PeServer\Core\Mvc\Template\Node\Html\BuildAttributeNameOnly;
+use PeServer\Core\Mvc\Template\Node\Html\HtmlDeprecated;
 use PeServer\Core\ReflectionUtility;
+use PeServer\Core\Text;
 use ReflectionClass;
 use ReflectionProperty;
-use Iterator;
-use Override;
-use PeServer\Core\Collections\Arr;
-use PeServer\Core\Mvc\Template\Node\AttributeValueMark;
-use PeServer\Core\Mvc\Template\Node\BuildName;
-use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Bcp47;
-use PeServer\Core\Mvc\Template\Node\Html\HtmlDeprecated;
-use PeServer\Core\Text;
+use UnitEnum;
 
 class HTMLGlobalAttributes extends AttributesBase
 {
@@ -89,11 +91,38 @@ class HTMLGlobalAttributes extends AttributesBase
 
 	#region function
 
+	protected function getNameOnlyAttribute(ReflectionProperty $property, bool $value): BuildAttributeNameOnly|null
+	{
+		$attributes = $property->getAttributes(BuildAttributeNameOnly::class);
+		if (!Arr::isNullOrEmpty($attributes)) {
+			$instance = $attributes[0]->newInstance();
+			return $instance;
+		}
 
+		return null;
+	}
 
 	#endregion
 
 	#region AttributesBase
+
+	protected function buildCommon(string $name, string|int|float|bool|UnitEnum $value, AttributeValueMark $mark): string
+	{
+		if (property_exists($this, $name)) {
+			$property = new ReflectionProperty($this, $name);
+
+			if (is_bool($value)) {
+				$nameOnlyAttribute = $this->getNameOnlyAttribute($property, $value);
+				if ($nameOnlyAttribute !== null) {
+					$showName = $nameOnlyAttribute->condition === $value;
+					$workName = $this->buildNameByReflection($property);
+					return $showName ? ($workName ?? $name) : '';
+				}
+			}
+		}
+
+		return parent::buildCommon($name, $value, $mark);
+	}
 
 	#[Override]
 	public function getNames(): Iterator

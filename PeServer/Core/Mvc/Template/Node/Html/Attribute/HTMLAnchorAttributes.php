@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Template\Node\Html\Attribute;
 
+use Override;
 use PeServer\Core\Mvc\Template\Node\AttributeValueMark;
 use PeServer\Core\Mvc\Template\Node\BuildName;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\DataAttributes;
@@ -19,6 +20,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\ReferrerPolicy;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Target;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Translate;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\VirtualKeyboardPolicy;
+use PeServer\Core\Mvc\Template\Node\Html\BuildAttributeNameOnly;
 use PeServer\Core\Mvc\Template\Node\Html\HtmlDeprecated;
 use UnitEnum;
 
@@ -26,13 +28,14 @@ class HTMLAnchorAttributes extends HTMLGlobalAttributes
 {
 	/** @SuppressWarnings("php:S107") */
 	public function __construct(
+		#[BuildAttributeNameOnly()]
 		public readonly bool|null $download = null,
 		public readonly string|null $href = null,
 		public readonly Bcp47|null $hreflang = null,
 		#[BuildName("interestforeign")]
 		#[HtmlDeprecated(HtmlDeprecated::REASON_NON_STANDARD | HtmlDeprecated::REASON_EXPERIMENTAL)]
 		public readonly string|null $interestForeign = null,
-		public readonly bool|null $ping = null,
+		public readonly string|null $ping = null,
 		public readonly ReferrerPolicy|null $referrerpolicy = null,
 		public readonly Rel|null $rel = null,
 		/**
@@ -40,7 +43,7 @@ class HTMLAnchorAttributes extends HTMLGlobalAttributes
 		 */
 		public readonly Target|string|null $target = null,
 		public readonly string|null $type = null,
-		// HTMLGlobalAttributes ---
+		#region HTMLGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,
 		Autocapitalize|null $autoCapitalize = null,
@@ -74,7 +77,7 @@ class HTMLAnchorAttributes extends HTMLGlobalAttributes
 		Translate|null $translate = null,
 		VirtualKeyboardPolicy|null $virtualKeyboardPolicy = null,
 		bool|null $writingSuggestions = null,
-		// HTMLGlobalAttributes ---
+		#endregion
 	) {
 		parent::__construct(
 			accesskey: $accesskey,
@@ -114,18 +117,6 @@ class HTMLAnchorAttributes extends HTMLGlobalAttributes
 	}
 
 	#region HTMLGlobalAttributes
-
-	protected function buildCommon(string $name, string|int|float|bool|UnitEnum $value, AttributeValueMark $mark = AttributeValueMark::DoubleQuote): string
-	{
-		if ($name === 'download') {
-			return $value ? 'download' : '';
-		}
-		if ($name === 'ping') {
-			return $value ? 'ping' : '';
-		}
-
-		return parent::buildCommon($name, $value, $mark);
-	}
 
 	#endregion
 }

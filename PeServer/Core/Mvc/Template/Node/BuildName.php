@@ -7,11 +7,11 @@ namespace PeServer\Core\Mvc\Template\Node;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_PROPERTY | Attribute::TARGET_PARAMETER)]
-class BuildName
+readonly class BuildName
 {
 	public function __construct(
 		/** @var non-empty-string */
-		public readonly string $name
+		public string $name
 	) {
 		//NOP
 	}

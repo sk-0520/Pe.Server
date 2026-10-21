@@ -13,6 +13,7 @@ use PeServer\Core\Throws\NotImplementedException;
 use PeServerTest\TestClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use ReflectionException;
+use ReflectionProperty;
 use UnitEnum;
 
 class AttributesBaseTest extends TestClass
@@ -89,7 +90,7 @@ class AttributesBaseTest extends TestClass
 		return [
 			[
 				null,
-				new class () extends LocalAttributes {
+				new class() extends LocalAttributes {
 					public string $property = "value";
 				},
 				"property"
@@ -108,15 +109,9 @@ class AttributesBaseTest extends TestClass
 	#[DataProvider('provider_buildNameByReflection')]
 	public function test_buildNameByReflection(string|null $expected, LocalAttributes $attributes, string $name)
 	{
-		$actual = $attributes->local_buildNameByReflection($name);
+		$property = new ReflectionProperty($attributes, $name);
+		$actual = $attributes->local_buildNameByReflection($property);
 		$this->assertSame($expected, $actual);
-	}
-
-	public function test_buildNameByReflection_throw()
-	{
-		$test = new LocalAttributes();
-		$this->expectException(ReflectionException::class);
-		$test->local_buildNameByReflection("non_existent_property");
 	}
 
 	public static function provider_buildName()
@@ -124,20 +119,19 @@ class AttributesBaseTest extends TestClass
 		return [
 			[
 				"property",
-				new class () extends LocalAttributes {
-				},
+				new class() extends LocalAttributes {},
 				"property"
 			],
 			[
 				"property",
-				new class () extends LocalAttributes {
+				new class() extends LocalAttributes {
 					public string $property = "value";
 				},
 				"property"
 			],
 			[
 				"PROPERTY",
-				new class () extends LocalAttributes {
+				new class() extends LocalAttributes {
 					#[BuildName("PROPERTY")]
 					public string $property = "value";
 				},
@@ -189,9 +183,9 @@ class LocalAttributes extends AttributesBase
 		return $this->prepareValue($value);
 	}
 
-	public function local_buildNameByReflection(string $name): string|null
+	public function local_buildNameByReflection(ReflectionProperty $property): string|null
 	{
-		return $this->buildNameByReflection($name);
+		return $this->buildNameByReflection($property);
 	}
 
 	public function local_buildName(string $name): string

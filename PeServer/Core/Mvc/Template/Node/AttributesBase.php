@@ -59,9 +59,8 @@ abstract class AttributesBase
 		throw new InvalidArgumentException('Unsupported value type.');
 	}
 
-	protected function buildNameByReflection(string $name): string|null
+	protected function buildNameByReflection(ReflectionProperty $property): string|null
 	{
-		$property = new ReflectionProperty($this, $name);
 		$attributes = $property->getAttributes(BuildName::class);
 		if (!Arr::isNullOrEmpty($attributes)) {
 			$instance = $attributes[0]->newInstance();
@@ -74,7 +73,7 @@ abstract class AttributesBase
 	protected function buildName(string $name): string
 	{
 		if (property_exists($this, $name)) {
-			$result = $this->buildNameByReflection($name);
+			$result = $this->buildNameByReflection(new ReflectionProperty($this, $name));
 			if ($result !== null) {
 				return $result;
 			}
