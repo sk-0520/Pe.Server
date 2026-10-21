@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core\Mvc\Template\Node\Html\Attribute\Value;
+namespace PeServer\Core\Mvc\Template\Node\Attribute\Value;
 
 use PeServer\Core\Text;
 use PeServer\Core\Collections\Arr;

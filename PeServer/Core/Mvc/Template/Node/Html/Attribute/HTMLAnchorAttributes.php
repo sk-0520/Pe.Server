@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Template\Node\Html\Attribute;
 
-use Override;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\AttributeNames;
 use PeServer\Core\Mvc\Template\Node\Attribute\BuildName;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\DataAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Autocapitalize;
@@ -21,7 +21,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Translate;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\VirtualKeyboardPolicy;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\BuildAttributeNameOnly;
 use PeServer\Core\Mvc\Template\Node\Html\HtmlDeprecated;
-use UnitEnum;
+use PeServer\Core\Mvc\Template\Node\Attribute\Value\StringValues;
 
 class HTMLAnchorAttributes extends HTMLGlobalAttributes
 {
@@ -31,10 +31,10 @@ class HTMLAnchorAttributes extends HTMLGlobalAttributes
 		public readonly bool|null $download = null,
 		public readonly string|null $href = null,
 		public readonly Bcp47|null $hreflang = null,
-		#[BuildName("interestforeign")]
+		#[BuildName(AttributeNames::INTEREST_FOREIGN)]
 		#[HtmlDeprecated(HtmlDeprecated::REASON_NON_STANDARD | HtmlDeprecated::REASON_EXPERIMENTAL)]
 		public readonly string|null $interestForeign = null,
-		public readonly string|null $ping = null,
+		public readonly string|StringValues|null $ping = null,
 		public readonly ReferrerPolicy|null $referrerpolicy = null,
 		public readonly Rel|null $rel = null,
 		/**

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core\Mvc\Template\Node\Html\Attribute\Value;
+namespace PeServer\Core\Mvc\Template\Node\Attribute\Value;
 
-use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\ValuesBase;
+use PeServer\Core\Mvc\Template\Node\Attribute\Value\ValuesBase;
 
 /**
  * @extends ValuesBase<string>

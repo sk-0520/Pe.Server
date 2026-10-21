@@ -22,23 +22,23 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\ReferrerPolicy;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Rel;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Target;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\BuildAttributeNameOnly;
-use UnitEnum;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\PointValues;
+use PeServer\Core\Mvc\Template\Node\Attribute\Value\StringValues;
 
 class HTMLAreaAttributes extends HTMLGlobalAttributes
 {
 	/** @SuppressWarnings("php:S107") */
 	public function __construct(
 		public readonly string|null $alt = null,
-		/** @var string|array<\PeServer\Core\Image\Point>|null */
-		public readonly string|array|null $coords = null,
+		public readonly string|PointValues|null $coords = null,
 		#[BuildAttributeNameOnly()]
 		public readonly bool|null $download = null,
 		public readonly string|null $href = null,
 		public readonly Bcp47|null $hreflang = null,
-		#[BuildName("interestforeign")]
+		#[BuildName(AttributeNames::INTEREST_FOREIGN)]
 		#[HtmlDeprecated(HtmlDeprecated::REASON_NON_STANDARD | HtmlDeprecated::REASON_EXPERIMENTAL)]
 		public readonly string|null $interestForeign = null,
-		public readonly string|null $ping = null,
+		public readonly string|StringValues|null $ping = null,
 		public readonly ReferrerPolicy|null $referrerpolicy = null,
 		public readonly Rel|null $rel = null,
 		public readonly Shape|null $shape = null,
