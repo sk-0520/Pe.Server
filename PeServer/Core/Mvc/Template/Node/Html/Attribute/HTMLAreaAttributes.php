@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Template\Node\Html\Attribute;
 
-use Override;
 use PeServer\Core\Mvc\Template\Node\Attribute\BuildName;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\DataAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Shape;
