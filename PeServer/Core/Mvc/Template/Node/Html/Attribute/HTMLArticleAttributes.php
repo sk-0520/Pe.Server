@@ -15,11 +15,11 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Popover;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Translate;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\VirtualKeyboardPolicy;
 
-class HTMLArticleAttributes extends HTMLGlobalAttributes
+class HTMLArticleAttributes extends HtmlGlobalAttributes
 {
 	/** @SuppressWarnings("php:S107") */
 	public function __construct(
-		#region HTMLGlobalAttributes
+		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,
 		Autocapitalize|null $autoCapitalize = null,
@@ -92,7 +92,7 @@ class HTMLArticleAttributes extends HTMLGlobalAttributes
 		);
 	}
 
-	#region HTMLGlobalAttributes
+	#region HtmlGlobalAttributes
 
 	#endregion
 }

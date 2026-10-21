@@ -23,7 +23,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\BuildAttributeNameOnly;
 use PeServer\Core\Mvc\Template\Node\Html\HtmlDeprecated;
 use PeServer\Core\Mvc\Template\Node\Attribute\Value\StringValues;
 
-class HTMLAnchorAttributes extends HTMLGlobalAttributes
+class HTMLAnchorAttributes extends HtmlGlobalAttributes
 {
 	/** @SuppressWarnings("php:S107") */
 	public function __construct(
@@ -42,7 +42,7 @@ class HTMLAnchorAttributes extends HTMLGlobalAttributes
 		 */
 		public readonly Target|string|null $target = null,
 		public readonly string|null $type = null,
-		#region HTMLGlobalAttributes
+		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,
 		Autocapitalize|null $autoCapitalize = null,
@@ -115,7 +115,7 @@ class HTMLAnchorAttributes extends HTMLGlobalAttributes
 		);
 	}
 
-	#region HTMLGlobalAttributes
+	#region HtmlGlobalAttributes
 
 	#endregion
 }

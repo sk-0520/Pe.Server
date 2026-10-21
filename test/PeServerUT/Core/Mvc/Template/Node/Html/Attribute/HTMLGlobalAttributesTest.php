@@ -6,7 +6,7 @@ namespace PeServerUT\Core\Mvc\Template\Node\Html\Attribute;
 
 use PeServer\Core\Mvc\Template\Node\Attribute\AttributeValueMark;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\DataAttributes;
-use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLGlobalAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HtmlGlobalAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Autocapitalize;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Autocorrect;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Bcp47;
@@ -19,18 +19,18 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\VirtualKeyboardPolicy;
 use PeServerTest\TestClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 
-class HTMLGlobalAttributesTest extends TestClass
+class HtmlGlobalAttributesTest extends TestClass
 {
 	public static function provider_getNames()
 	{
 		return [
 			[
 				[],
-				new HTMLGlobalAttributes(),
+				new HtmlGlobalAttributes(),
 			],
 			[
 				['id'],
-				new HTMLGlobalAttributes(data: new DataAttributes(), id: 'test'),
+				new HtmlGlobalAttributes(data: new DataAttributes(), id: 'test'),
 			],
 			[
 				[
@@ -68,7 +68,7 @@ class HTMLGlobalAttributesTest extends TestClass
 					'virtualKeyboardPolicy',
 					'writingSuggestions',
 				],
-				new HTMLGlobalAttributes(
+				new HtmlGlobalAttributes(
 					accesskey: '',
 					anchor: 'anchor-id',
 					autoCapitalize: Autocapitalize::Sentences,
@@ -119,31 +119,31 @@ class HTMLGlobalAttributesTest extends TestClass
 		return [
 			[
 				'id="example"',
-				new HTMLGlobalAttributes(id: 'example'),
+				new HtmlGlobalAttributes(id: 'example'),
 				'id',
 				AttributeValueMark::DoubleQuote,
 			],
 			[
 				"id='it&#39;s'",
-				new HTMLGlobalAttributes(id: "it's"),
+				new HtmlGlobalAttributes(id: "it's"),
 				'id',
 				AttributeValueMark::SingleQuote,
 			],
 			[
 				'hidden="false"',
-				new HTMLGlobalAttributes(hidden: false),
+				new HtmlGlobalAttributes(hidden: false),
 				'hidden',
 				AttributeValueMark::DoubleQuote,
 			],
 			[
 				'tabindex="-1"',
-				new HTMLGlobalAttributes(tabIndex: -1),
+				new HtmlGlobalAttributes(tabIndex: -1),
 				'tabIndex',
 				AttributeValueMark::DoubleQuote,
 			],
 			[
 				'dir="rtl"',
-				new HTMLGlobalAttributes(dir: Direction::RightToLeft),
+				new HtmlGlobalAttributes(dir: Direction::RightToLeft),
 				'dir',
 				AttributeValueMark::DoubleQuote,
 			],

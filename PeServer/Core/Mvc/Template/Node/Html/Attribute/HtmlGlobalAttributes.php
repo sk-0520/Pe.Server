@@ -29,7 +29,7 @@ use ReflectionClass;
 use ReflectionProperty;
 use UnitEnum;
 
-class HTMLGlobalAttributes extends AttributesBase
+class HtmlGlobalAttributes extends AttributesBase
 {
 	/** @SuppressWarnings("php:S107") */
 	public function __construct(

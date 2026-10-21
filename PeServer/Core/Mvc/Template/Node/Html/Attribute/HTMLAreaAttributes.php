@@ -24,7 +24,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\BuildAttributeNameOnly;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\PointValues;
 use PeServer\Core\Mvc\Template\Node\Attribute\Value\StringValues;
 
-class HTMLAreaAttributes extends HTMLGlobalAttributes
+class HTMLAreaAttributes extends HtmlGlobalAttributes
 {
 	/** @SuppressWarnings("php:S107") */
 	public function __construct(
@@ -45,7 +45,7 @@ class HTMLAreaAttributes extends HTMLGlobalAttributes
 		 * @phpstan-var Target|non-empty-string|null
 		 */
 		public readonly Target|string|null $target = null,
-		#region HTMLGlobalAttributes
+		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,
 		Autocapitalize|null $autoCapitalize = null,
@@ -118,7 +118,7 @@ class HTMLAreaAttributes extends HTMLGlobalAttributes
 		);
 	}
 
-	#region HTMLGlobalAttributes
+	#region HtmlGlobalAttributes
 
 	#endregion
 }
