@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Template\Node;
 
+use PeServer\Core\Mvc\Template\Node\Attribute\AttributesBase;
 use PeServer\Core\Throws\NotImplementedException;
-use PeServer\Core\Mvc\Template\Node\AttributesBase;
 
 class Element extends NodeBase
 {

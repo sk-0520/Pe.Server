@@ -7,7 +7,7 @@ namespace PeServerUT\Core\Mvc\Template\Node\Html\Attribute;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\DataAttributes;
 use PeServerTest\TestClass;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PeServer\Core\Mvc\Template\Node\AttributeValueMark;
+use PeServer\Core\Mvc\Template\Node\Attribute\AttributeValueMark;
 
 class DataAttributesTest extends TestClass
 {

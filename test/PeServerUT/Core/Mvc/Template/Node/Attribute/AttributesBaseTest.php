@@ -6,9 +6,9 @@ namespace PeServerUT\Core\Mvc\Template\Node;
 
 use Iterator;
 use Override;
-use PeServer\Core\Mvc\Template\Node\AttributesBase;
-use PeServer\Core\Mvc\Template\Node\AttributeValueMark;
-use PeServer\Core\Mvc\Template\Node\BuildName;
+use PeServer\Core\Mvc\Template\Node\Attribute\AttributesBase;
+use PeServer\Core\Mvc\Template\Node\Attribute\AttributeValueMark;
+use PeServer\Core\Mvc\Template\Node\Attribute\BuildName;
 use PeServer\Core\Throws\NotImplementedException;
 use PeServerTest\TestClass;
 use PHPUnit\Framework\Attributes\DataProvider;

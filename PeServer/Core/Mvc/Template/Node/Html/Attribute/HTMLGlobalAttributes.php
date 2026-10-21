@@ -7,9 +7,10 @@ namespace PeServer\Core\Mvc\Template\Node\Html\Attribute;
 use Iterator;
 use Override;
 use PeServer\Core\Collections\Arr;
-use PeServer\Core\Mvc\Template\Node\AttributesBase;
-use PeServer\Core\Mvc\Template\Node\AttributeValueMark;
-use PeServer\Core\Mvc\Template\Node\BuildName;
+use PeServer\Core\Mvc\Template\Node\Attribute\AttributesBase;
+use PeServer\Core\Mvc\Template\Node\Attribute\AttributeValueMark;
+use PeServer\Core\Mvc\Template\Node\Attribute\Value\IAttributeValue;
+use PeServer\Core\Mvc\Template\Node\Attribute\BuildName;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\DataAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Autocapitalize;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Autocorrect;
@@ -20,7 +21,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\InputMode;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Popover;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Translate;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\VirtualKeyboardPolicy;
-use PeServer\Core\Mvc\Template\Node\Html\BuildAttributeNameOnly;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\BuildAttributeNameOnly;
 use PeServer\Core\Mvc\Template\Node\Html\HtmlDeprecated;
 use PeServer\Core\ReflectionUtility;
 use PeServer\Core\Text;
@@ -95,8 +96,7 @@ class HTMLGlobalAttributes extends AttributesBase
 	{
 		$attributes = $property->getAttributes(BuildAttributeNameOnly::class);
 		if (!Arr::isNullOrEmpty($attributes)) {
-			$instance = $attributes[0]->newInstance();
-			return $instance;
+			return $attributes[0]->newInstance();
 		}
 
 		return null;
@@ -106,7 +106,7 @@ class HTMLGlobalAttributes extends AttributesBase
 
 	#region AttributesBase
 
-	protected function buildCommon(string $name, string|int|float|bool|UnitEnum $value, AttributeValueMark $mark): string
+	protected function buildCommon(string $name, string|int|float|bool|UnitEnum|IAttributeValue $value, AttributeValueMark $mark): string
 	{
 		if (property_exists($this, $name)) {
 			$property = new ReflectionProperty($this, $name);

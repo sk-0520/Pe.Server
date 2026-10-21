@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc\Template\Node\Html\Attribute;
 
 use Override;
-use PeServer\Core\Mvc\Template\Node\AttributeValueMark;
-use PeServer\Core\Mvc\Template\Node\BuildName;
+use PeServer\Core\Mvc\Template\Node\Attribute\BuildName;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\DataAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Autocapitalize;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Autocorrect;
@@ -20,7 +19,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\ReferrerPolicy;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Target;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Translate;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\VirtualKeyboardPolicy;
-use PeServer\Core\Mvc\Template\Node\Html\BuildAttributeNameOnly;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\BuildAttributeNameOnly;
 use PeServer\Core\Mvc\Template\Node\Html\HtmlDeprecated;
 use UnitEnum;
 

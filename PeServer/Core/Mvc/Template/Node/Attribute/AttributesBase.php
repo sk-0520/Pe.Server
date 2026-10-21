@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core\Mvc\Template\Node;
+namespace PeServer\Core\Mvc\Template\Node\Attribute;
 
 use BackedEnum;
 use Iterator;
@@ -11,6 +11,9 @@ use UnitEnum;
 use InvalidArgumentException;
 use PeServer\Core\Collections\Arr;
 use ReflectionProperty;
+use PeServer\Core\Mvc\Template\Node\Attribute\AttributeValueMark;
+use PeServer\Core\Mvc\Template\Node\Attribute\Value\IAttributeValue;
+use PeServer\Core\Mvc\Template\Node\Attribute\BuildName;
 
 abstract class AttributesBase
 {
@@ -43,7 +46,7 @@ abstract class AttributesBase
 		return $enum->name;
 	}
 
-	protected function prepareValue(string|int|float|bool|UnitEnum $value): string
+	protected function prepareValue(string|int|float|bool|UnitEnum|IAttributeValue $value): string
 	{
 		if (is_string($value)) {
 			return $value;
@@ -51,6 +54,8 @@ abstract class AttributesBase
 			return (string)$value;
 		} elseif ($value instanceof UnitEnum) {
 			return $this->prepareEnum($value);
+		} elseif ($value instanceof IAttributeValue) {
+			return $value->toValue();
 		} elseif (is_bool($value)) {
 			return $value ? 'true' : 'false';
 		}
@@ -83,7 +88,7 @@ abstract class AttributesBase
 	}
 
 
-	protected function buildCommon(string $name, string|int|float|bool|UnitEnum $value, AttributeValueMark $mark): string
+	protected function buildCommon(string $name, string|int|float|bool|UnitEnum|IAttributeValue $value, AttributeValueMark $mark): string
 	{
 		$workName = $this->buildName($name);
 		$workValue = $this->prepareValue($value);

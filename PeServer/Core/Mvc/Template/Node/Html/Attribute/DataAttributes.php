@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Template\Node\Html\Attribute;
 
-use PeServer\Core\Mvc\Template\Node\AttributeValueMark;
 use ArrayAccess;
 use Iterator;
 use PeServer\Core\Collections\Arr;
-use PeServer\Core\Mvc\Template\Node\AttributesBase;
 use PeServer\Core\Text;
 use Stringable;
 use Override;
-
+use PeServer\Core\Mvc\Template\Node\Attribute\AttributesBase;
+use PeServer\Core\Mvc\Template\Node\Attribute\AttributeValueMark;
 
 /**
  * data-* 属性。

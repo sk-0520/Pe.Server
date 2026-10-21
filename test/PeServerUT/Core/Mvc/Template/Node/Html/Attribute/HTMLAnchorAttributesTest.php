@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PeServerUT\Core\Mvc\Template\Node\Html\Attribute;
 
-use PeServer\Core\Mvc\Template\Node\AttributeValueMark;
+use PeServer\Core\Mvc\Template\Node\Attribute\AttributeValueMark;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLAnchorAttributes;
 use PeServerTest\TestClass;
 use PHPUnit\Framework\Attributes\DataProvider;
