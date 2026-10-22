@@ -10,9 +10,10 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\BuildAttributeNameOnly;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\DataAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\AutoCapitalize;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\AutoCorrect;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\ControlsListValues;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Bcp47;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\ContentEditable;
-use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\ControlLists;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\ControlsList as ControlsList;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\CrossOrigin;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Direction;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\InputMode;
@@ -31,7 +32,8 @@ class HTMLAudioAttributes extends HtmlGlobalAttributes
 		readonly bool|null $autoPlay = null,
 		#[BuildAttributeNameOnly()]
 		readonly bool|null $controls = null,
-		readonly ControlLists|null $controlslist = null,
+		#[BuildName("controlslist")]
+		readonly ControlsList|ControlsListValues|null $controlsList = null,
 		#[BuildName(AttributeNames::CROSS_ORIGIN)]
 		readonly CrossOrigin|null $crossOrigin = null,
 		#[BuildAttributeNameOnly()]
