@@ -41,7 +41,7 @@ class HTMLAudioAttributesTest extends TestClass
 	#[DataProvider('provider_controlsList')]
 	public function test_controlsList(string $expected, ControlsList|ControlsListValues $controlsList)
 	{
-		$attributes = new HTMLAudioAttributes(autoPlay: true, controlsList: $controlsList);
+		$attributes = new HTMLAudioAttributes(controlsList: $controlsList);
 		$actual = $attributes->build("controlsList");
 		$this->assertSame($expected, $actual);
 	}

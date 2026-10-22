@@ -22,6 +22,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Popover;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Preload;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Translate;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\VirtualKeyboardPolicy;
+use PeServer\Core\Mvc\Template\Node\Html\HtmlDeprecated;
 
 class HTMLAudioAttributes extends HtmlGlobalAttributes
 {
@@ -39,6 +40,7 @@ class HTMLAudioAttributes extends HtmlGlobalAttributes
 		#[BuildAttributeNameOnly()]
 		#[BuildName("disableremoteplayback")]
 		readonly bool|null $disableRemotePlayback = null,
+		#[HtmlDeprecated(HtmlDeprecated::REASON_EXPERIMENTAL)]
 		readonly Loading|null $loading = null,
 		#[BuildAttributeNameOnly()]
 		public bool|null $loop = null,
