@@ -6,7 +6,7 @@ namespace PeServer\Core\Mvc\Template\Node\Html;
 
 use Attribute;
 
-#[Attribute(Attribute::TARGET_PROPERTY | Attribute::TARGET_PARAMETER)]
+#[Attribute(Attribute::TARGET_PROPERTY | Attribute::TARGET_PARAMETER | Attribute::TARGET_CLASS | Attribute::TARGET_CLASS_CONSTANT)]
 class HtmlDeprecated
 {
 	#region define

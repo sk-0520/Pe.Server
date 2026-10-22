@@ -46,6 +46,7 @@ class HtmlGlobalAttributes extends AttributesBase
 		#[BuildName('autocorrect')]
 		public readonly AutoCorrect|null $autoCorrect = null,
 		#[BuildName('autofocus')]
+		#[BuildAttributeNameOnly()]
 		public readonly bool|null $autoFocus = null,
 		#[BuildName('class')]
 		public readonly string|null $className = null,
