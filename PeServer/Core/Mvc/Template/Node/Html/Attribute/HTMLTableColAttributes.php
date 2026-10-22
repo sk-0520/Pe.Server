@@ -6,24 +6,20 @@ namespace PeServer\Core\Mvc\Template\Node\Html\Attribute;
 
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\DataAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\AutoCapitalize;
-use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Align;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\AutoCorrect;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Bcp47;
-use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Clear;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\ContentEditable;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Direction;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\InputMode;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Popover;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Translate;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\VirtualKeyboardPolicy;
-use PeServer\Core\Mvc\Template\Node\Html\HtmlDeprecated;
 
-class HTMLCaptionAttributes extends HtmlGlobalAttributes
+class HTMLTableColAttributes extends HtmlGlobalAttributes
 {
 	/** @SuppressWarnings("php:S107") */
 	public function __construct(
-		#[HtmlDeprecated(HtmlDeprecated::REASON_OBSOLETE)]
-		public readonly Align|null $align = null,
+		public readonly int|null $span = null,
 		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,
