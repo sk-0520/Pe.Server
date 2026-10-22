@@ -7,11 +7,11 @@ namespace PeServer\Core\Mvc\Template\Node\Html\Attribute;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\AttributeNames;
 use PeServer\Core\Mvc\Template\Node\Attribute\BuildName;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\DataAttributes;
-use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Autocapitalize;
-use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Autocorrect;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\AutoCapitalize;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\AutoCorrect;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Rel;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Bcp47;
-use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Contenteditable;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\ContentEditable;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Direction;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\InputMode;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Popover;
@@ -45,11 +45,11 @@ class HTMLAnchorAttributes extends HtmlGlobalAttributes
 		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,
-		Autocapitalize|null $autoCapitalize = null,
-		Autocorrect|null $autoCorrect = null,
+		AutoCapitalize|null $autoCapitalize = null,
+		AutoCorrect|null $autoCorrect = null,
 		bool|null $autoFocus = null,
 		string|null $className = null,
-		Contenteditable|null $contentEditable = null,
+		ContentEditable|null $contentEditable = null,
 		DataAttributes|null $data = null,
 		Direction|null $dir = null,
 		bool|null $draggable = null,

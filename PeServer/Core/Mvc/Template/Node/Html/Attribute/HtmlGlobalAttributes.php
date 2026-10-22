@@ -12,10 +12,10 @@ use PeServer\Core\Mvc\Template\Node\Attribute\AttributeValueMark;
 use PeServer\Core\Mvc\Template\Node\Attribute\Value\IAttributeValue;
 use PeServer\Core\Mvc\Template\Node\Attribute\BuildName;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\DataAttributes;
-use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Autocapitalize;
-use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Autocorrect;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\AutoCapitalize;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\AutoCorrect;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Bcp47;
-use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Contenteditable;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\ContentEditable;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Direction;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\InputMode;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Popover;
@@ -42,15 +42,15 @@ class HtmlGlobalAttributes extends AttributesBase
 		#[HtmlDeprecated(HtmlDeprecated::REASON_OBSOLETE | HtmlDeprecated::REASON_EXPERIMENTAL)]
 		public readonly string|null $anchor = null,
 		#[BuildName('autocapitalize')]
-		public readonly Autocapitalize|null $autoCapitalize = null,
+		public readonly AutoCapitalize|null $autoCapitalize = null,
 		#[BuildName('autocorrect')]
-		public readonly Autocorrect|null $autoCorrect = null,
+		public readonly AutoCorrect|null $autoCorrect = null,
 		#[BuildName('autofocus')]
 		public readonly bool|null $autoFocus = null,
 		#[BuildName('class')]
 		public readonly string|null $className = null,
 		#[BuildName('contenteditable')]
-		public readonly Contenteditable|null $contentEditable = null,
+		public readonly ContentEditable|null $contentEditable = null,
 		public readonly DataAttributes|null $data = null,
 		public readonly Direction|null $dir = null,
 		public readonly bool|null $draggable = null,

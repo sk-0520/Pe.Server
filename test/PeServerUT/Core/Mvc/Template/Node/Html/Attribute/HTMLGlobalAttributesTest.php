@@ -7,10 +7,10 @@ namespace PeServerUT\Core\Mvc\Template\Node\Html\Attribute;
 use PeServer\Core\Mvc\Template\Node\Attribute\AttributeValueMark;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\DataAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HtmlGlobalAttributes;
-use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Autocapitalize;
-use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Autocorrect;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\AutoCapitalize;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\AutoCorrect;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Bcp47;
-use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Contenteditable;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\ContentEditable;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Direction;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\InputMode;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Popover;
@@ -71,11 +71,11 @@ class HtmlGlobalAttributesTest extends TestClass
 				new HtmlGlobalAttributes(
 					accesskey: '',
 					anchor: 'anchor-id',
-					autoCapitalize: Autocapitalize::Sentences,
-					autoCorrect: Autocorrect::Off,
+					autoCapitalize: AutoCapitalize::Sentences,
+					autoCorrect: AutoCorrect::Off,
 					autoFocus: false,
 					className: 'example',
-					contentEditable: Contenteditable::True,
+					contentEditable: ContentEditable::True,
 					data: new DataAttributes(['test' => 'value']),
 					dir: Direction::LeftToRight,
 					draggable: false,
@@ -149,7 +149,7 @@ class HtmlGlobalAttributesTest extends TestClass
 			],
 			[
 				'autocorrect=""',
-				new HtmlGlobalAttributes(autoCorrect: Autocorrect::Default),
+				new HtmlGlobalAttributes(autoCorrect: AutoCorrect::Default),
 				'autoCorrect',
 				AttributeValueMark::DoubleQuote,
 			],
