@@ -29,6 +29,7 @@ class HTMLAnchorAttributes extends HtmlGlobalAttributes
 	public function __construct(
 		#[BuildAttributeNameOnly()]
 		public readonly bool|null $download = null,
+		/** @var non-empty-string|null */
 		public readonly string|null $href = null,
 		public readonly Bcp47|null $hreflang = null,
 		#[BuildName(AttributeNames::INTEREST_FOREIGN)]
