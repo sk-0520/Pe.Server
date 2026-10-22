@@ -46,7 +46,7 @@ abstract class AttributesBase
 		return $enum->name;
 	}
 
-	protected function prepareValue(string|int|float|bool|UnitEnum|IAttributeValue $value): string
+	protected function prepareValue(string $name, string|int|float|bool|UnitEnum|IAttributeValue $value): string
 	{
 		if (is_string($value)) {
 			return $value;
@@ -57,6 +57,15 @@ abstract class AttributesBase
 		} elseif ($value instanceof IAttributeValue) {
 			return $value->toValue();
 		} elseif (is_bool($value)) {
+			if (property_exists($this, $name)) {
+				$property = new ReflectionProperty($this, $name);
+				$attributes = $property->getAttributes(BuildAttributeBool::class);
+				if (!Arr::isNullOrEmpty($attributes)) {
+					$instance = $attributes[0]->newInstance();
+					return $value ? $instance->true : $instance->false;
+				}
+			}
+
 			return $value ? 'true' : 'false';
 		}
 
@@ -91,7 +100,7 @@ abstract class AttributesBase
 	protected function buildCommon(string $name, string|int|float|bool|UnitEnum|IAttributeValue $value, AttributeValueMark $mark): string
 	{
 		$workName = $this->buildName($name);
-		$workValue = $this->prepareValue($value);
+		$workValue = $this->prepareValue($name, $value);
 
 		return $workName . '=' . $this->quoteValue($workValue, $mark);
 	}

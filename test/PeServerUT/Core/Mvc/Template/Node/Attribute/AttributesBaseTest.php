@@ -81,7 +81,7 @@ class AttributesBaseTest extends TestClass
 	public function test_prepareValue(string $expected, string|int|float|bool|UnitEnum $value)
 	{
 		$test = new LocalAttributes();
-		$actual = $test->local_prepareValue($value);
+		$actual = $test->local_prepareValue('', $value);
 		$this->assertSame($expected, $actual);
 	}
 
@@ -90,7 +90,7 @@ class AttributesBaseTest extends TestClass
 		return [
 			[
 				null,
-				new class () extends LocalAttributes {
+				new class() extends LocalAttributes {
 					public string $property = "value";
 				},
 				"property"
@@ -119,20 +119,19 @@ class AttributesBaseTest extends TestClass
 		return [
 			[
 				"property",
-				new class () extends LocalAttributes {
-				},
+				new class() extends LocalAttributes {},
 				"property"
 			],
 			[
 				"property",
-				new class () extends LocalAttributes {
+				new class() extends LocalAttributes {
 					public string $property = "value";
 				},
 				"property"
 			],
 			[
 				"PROPERTY",
-				new class () extends LocalAttributes {
+				new class() extends LocalAttributes {
 					#[BuildName("PROPERTY")]
 					public string $property = "value";
 				},
@@ -179,9 +178,9 @@ class LocalAttributes extends AttributesBase
 		return $this->quoteValue($value, $mark);
 	}
 
-	public function local_prepareValue(string|int|float|bool|UnitEnum $value): string
+	public function local_prepareValue(string $name, string|int|float|bool|UnitEnum $value): string
 	{
-		return $this->prepareValue($value);
+		return $this->prepareValue($name, $value);
 	}
 
 	public function local_buildNameByReflection(ReflectionProperty $property): string|null
