@@ -12,13 +12,19 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\ContentEditable;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Direction;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\InputMode;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Popover;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Target;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Translate;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\VirtualKeyboardPolicy;
 
-class HTMLAbbrAttributes extends HtmlGlobalAttributes
+class HTMLBaseAttributes extends HtmlGlobalAttributes
 {
 	/** @SuppressWarnings("php:S107") */
 	public function __construct(
+		public readonly string|null $href = null,
+		/**
+		 * @phpstan-var Target|non-empty-string|null
+		 */
+		public readonly Target|string|null $target = null,
 		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,
