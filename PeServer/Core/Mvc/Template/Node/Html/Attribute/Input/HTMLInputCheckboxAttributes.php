@@ -93,7 +93,7 @@ class HTMLInputCheckboxAttributes extends HTMLInputAttributes
 			disabled: $disabled,
 			form: $form,
 			list: $list,
-			type: InputType::Button,
+			type: InputType::Checkbox,
 			name: $name,
 			value: $value,
 
