@@ -25,6 +25,7 @@ class HTMLFieldsetAttributes extends HtmlGlobalAttributes
 		public readonly string|null $form = null,
 		/** @var non-empty-string|null */
 		public readonly string|null $name = null,
+
 		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,

@@ -24,6 +24,7 @@ class HTMLDelAttributes extends HtmlGlobalAttributes
 	public function __construct(
 		/** @var non-empty-string|null */
 		public readonly string|null $xmlns = null,
+
 		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,

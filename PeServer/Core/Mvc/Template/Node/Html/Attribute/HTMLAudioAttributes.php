@@ -49,6 +49,7 @@ class HTMLAudioAttributes extends HtmlGlobalAttributes
 		readonly Preload|null $preload = null,
 		/** @var non-empty-string|null */
 		readonly string|null $src = null,
+
 		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,

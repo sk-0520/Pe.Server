@@ -28,6 +28,7 @@ class HTMLCanvasAttributes extends HtmlGlobalAttributes
 		#[BuildName("moz-opaque")]
 		public readonly bool|null $mozOpaque = null,
 		public readonly int|float|null $width = null,
+
 		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,
