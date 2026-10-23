@@ -9,6 +9,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\FormMethod;
 
 use PeServer\Core\Mvc\Template\Node\Attribute\BuildAttributeBool;
 use PeServer\Core\Mvc\Template\Node\Attribute\BuildName;
+use PeServer\Core\Mvc\Template\Node\Attribute\Value\IAttributeValue;
 use PeServer\Core\Mvc\Template\Node\Attribute\Value\StringValues;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\DataAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\AutoCapitalize;
@@ -30,17 +31,6 @@ class HTMLInputAttributes extends HtmlGlobalAttributes
 {
 	/** @SuppressWarnings("php:S107") */
 	public function __construct(
-		/** @var non-empty-string|null */
-		public readonly string|null $accept = null,
-		public readonly string|null $alt = null,
-		#[BuildName("autocomplete")]
-		#[BuildAttributeBool('yes', 'no')]
-		public readonly bool|StringValues|null $autoComplete = null,
-		public readonly Captcha|null $captcha = null,
-		#[BuildAttributeNameOnly()]
-		public readonly bool|null $checked = null,
-		// TODO: あんま理解できていない
-		public readonly string|null $dirname = null,
 		#[BuildAttributeNameOnly()]
 		public readonly bool|null $disabled = null,
 		/** @var non-empty-string|null */
@@ -59,8 +49,11 @@ class HTMLInputAttributes extends HtmlGlobalAttributes
 		public readonly Target|null $formTarget = null,
 		/** @var non-empty-string|null */
 		public readonly string|null $list = null,
-		// max まわり
+		// max まわりは InputType に依存するので継承クラスで対応
 		public readonly InputType|null $type = null,
+		/** @var non-empty-string|null */
+		public readonly string|null $name = null,
+		public readonly string|int|float|bool|IAttributeValue|null $value = null,
 
 		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
