@@ -38,8 +38,8 @@ class HTMLInputNumberAttributes extends HTMLInputAttributes
 	 * @SuppressWarnings("php:S107")
 	 */
 	public function __construct(
-		public readonly int|float|null $min = null,
 		public readonly int|float|null $max = null,
+		public readonly int|float|null $min = null,
 		#[BuildName("readonly")]
 		#[BuildAttributeNameOnly()]
 		public readonly bool|null $readOnly = null,
