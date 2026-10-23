@@ -37,17 +37,6 @@ class HTMLInputAttributes extends HtmlGlobalAttributes
 		public readonly string|null $form = null,
 		#[BuildName("formaction")]
 		/** @var non-empty-string|null */
-		public readonly string|null $formAction = null,
-		#[BuildName("formenctype")]
-		public readonly FormEncType|null $formEnctype = null,
-		#[BuildName("formmethod")]
-		public readonly FormMethod|null $formMethod = null,
-		#[BuildAttributeNameOnly()]
-		#[BuildName("formnovalidate")]
-		public readonly bool|null $formNoValidate = null,
-		#[BuildName("formtarget")]
-		public readonly Target|null $formTarget = null,
-		/** @var non-empty-string|null */
 		public readonly string|null $list = null,
 		// max まわりは InputType に依存するので継承クラスで対応
 		public readonly InputType|null $type = null,

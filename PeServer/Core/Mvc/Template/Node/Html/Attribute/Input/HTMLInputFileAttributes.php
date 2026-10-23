@@ -28,7 +28,6 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Target;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Translate;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\VirtualKeyboardPolicy;
 
-/**  */
 class HTMLInputFileAttributes extends HTMLInputAttributes
 {
 	/**
@@ -47,11 +46,6 @@ class HTMLInputFileAttributes extends HTMLInputAttributes
 		#region HTMLInputAttributes
 		bool|null $disabled = null,
 		string|null $form = null,
-		string|null $formAction = null,
-		FormEncType|null $formEnctype = null,
-		FormMethod|null $formMethod = null,
-		bool|null $formNoValidate = null,
-		Target|null $formTarget = null,
 		string|null $list = null,
 		string|null $name = null,
 		string|int|float|bool|IAttributeValue|null $value = null,
@@ -96,11 +90,6 @@ class HTMLInputFileAttributes extends HTMLInputAttributes
 		parent::__construct(
 			disabled: $disabled,
 			form: $form,
-			formAction: $formAction,
-			formEnctype: $formEnctype,
-			formMethod: $formMethod,
-			formNoValidate: $formNoValidate,
-			formTarget: $formTarget,
 			list: $list,
 			type: InputType::File,
 			name: $name,
