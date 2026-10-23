@@ -38,6 +38,8 @@ class HTMLInputHiddenAttributes extends HTMLInputAttributes
 	 * @SuppressWarnings("php:S107")
 	 */
 	public function __construct(
+		public readonly Direction|null $dirname = null,
+
 		#region HTMLInputAttributes
 		bool|null $disabled = null,
 		string|null $form = null,
