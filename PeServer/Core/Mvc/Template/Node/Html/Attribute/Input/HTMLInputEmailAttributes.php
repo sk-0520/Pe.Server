@@ -45,6 +45,11 @@ class HTMLInputEmailAttributes extends HTMLInputAttributes
 		public readonly int|null $minLength = null,
 		public readonly string|null $pattern = null,
 		public readonly string|null $placeholder = null,
+		#[BuildName("readonly")]
+		#[BuildAttributeNameOnly()]
+		public readonly bool|null $readOnly = null,
+		#[BuildAttributeNameOnly()]
+		public readonly bool|null $required = null,
 		/** @var positive-int|null $size */
 		public readonly int|null $size = null,
 

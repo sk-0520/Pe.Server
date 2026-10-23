@@ -42,6 +42,11 @@ class HTMLInputDateAttributes extends HTMLInputAttributes
 	public function __construct(
 		public readonly DateOnlyValue|null $max = null,
 		public readonly DateOnlyValue|null $min = null,
+		#[BuildName("readonly")]
+		#[BuildAttributeNameOnly()]
+		public readonly bool|null $readOnly = null,
+		#[BuildAttributeNameOnly()]
+		public readonly bool|null $required = null,
 		public readonly int|null $step = null,
 
 		#region HTMLInputAttributes

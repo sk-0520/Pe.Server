@@ -44,6 +44,11 @@ class HTMLInputMonthAttributes extends HTMLInputAttributes
 	public function __construct(
 		public readonly DateMonthValue|null $max = null,
 		public readonly DateMonthValue|null $min = null,
+		#[BuildName("readonly")]
+		#[BuildAttributeNameOnly()]
+		public readonly bool|null $readOnly = null,
+		#[BuildAttributeNameOnly()]
+		public readonly bool|null $required = null,
 		public readonly int|null $step = null,
 
 		#region HTMLInputAttributes

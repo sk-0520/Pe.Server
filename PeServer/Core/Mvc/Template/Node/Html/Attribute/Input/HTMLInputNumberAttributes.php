@@ -40,6 +40,11 @@ class HTMLInputNumberAttributes extends HTMLInputAttributes
 	public function __construct(
 		public readonly int|float|null $min = null,
 		public readonly int|float|null $max = null,
+		#[BuildName("readonly")]
+		#[BuildAttributeNameOnly()]
+		public readonly bool|null $readOnly = null,
+		#[BuildAttributeNameOnly()]
+		public readonly bool|null $required = null,
 		public readonly int|float|null $step = null,
 		public readonly string|null $placeholder = null,
 

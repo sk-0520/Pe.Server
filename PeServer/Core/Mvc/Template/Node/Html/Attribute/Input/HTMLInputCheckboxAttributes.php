@@ -42,6 +42,8 @@ class HTMLInputCheckboxAttributes extends HTMLInputAttributes
 		#[BuildAttributeNameOnly()]
 		public readonly bool|null $checked,
 		#[BuildAttributeNameOnly()]
+		public readonly bool|null $required = null,
+		#[BuildAttributeNameOnly()]
 		#[HtmlDeprecated(HtmlDeprecated::REASON_EXPERIMENTAL)]
 		public readonly bool|null $switch = null,
 
