@@ -93,7 +93,7 @@ class HTMLInputDateTimeLocalAttributes extends HTMLInputAttributes
 			disabled: $disabled,
 			form: $form,
 			list: $list,
-			type: InputType::Date,
+			type: InputType::DateTimeLocal,
 			name: $name,
 			value: $value,
 
