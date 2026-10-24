@@ -4,18 +4,29 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Template\Node;
 
-use PeServer\Core\Mvc\Template\Node\Html\Content\HtmlContent;
-
 class Content
 {
+	#region variable
+
+	/**
+	 * @var INode[]
+	 */
+	public array $nodes;
+
+	#endregion
+
 	/**
 	 * 生成。
 	 *
-	 * @param INode[] $values
+	 * @param INode[] $nodes
 	 */
 	public function __construct(
-		public array $values = [],
+		INode|array $nodes
 	) {
-		//NOP
+		if ($nodes instanceof INode) {
+			$this->nodes = [$nodes];
+		} else {
+			$this->nodes = $nodes;
+		}
 	}
 }

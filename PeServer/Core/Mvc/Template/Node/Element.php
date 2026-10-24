@@ -32,11 +32,11 @@ class Element extends NodeBase
 
 	#region INode
 
-	public function toString(int $level): string
+	public function toString(int $level, NodeOptions $options): string
 	{
 		//TODO: とりあえずえいやで作るので必要に応じて後で対応する
 
-		$hasChildren = !empty($this->content->values);
+		$hasChildren = !empty($this->content->nodes);
 
 		$result = "<";
 		$result .= $this->tagName;
@@ -53,8 +53,8 @@ class Element extends NodeBase
 			$result .= ">";
 
 			if ($hasChildren) {
-				foreach ($this->content->values as $child) {
-					$result .= $child->toString($level + 1);
+				foreach ($this->content->nodes as $child) {
+					$result .= $child->toString($level + 1, $options);
 				}
 			}
 

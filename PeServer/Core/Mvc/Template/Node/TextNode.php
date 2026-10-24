@@ -24,7 +24,7 @@ class TextNode extends NodeBase
 
 	#region NodeBase
 
-	public function toString(int $level): string
+	public function toString(int $level, NodeOptions $options): string
 	{
 		return match ($this->escape) {
 			self::ESCAPE_RAW => $this->content,

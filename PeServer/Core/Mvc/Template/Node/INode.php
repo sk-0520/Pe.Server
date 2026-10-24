@@ -10,7 +10,7 @@ interface INode extends Stringable
 {
 	#region function
 
-	public function toString(int $level): string;
+	public function toString(int $level, NodeOptions $options): string;
 
 	#endregion
 }

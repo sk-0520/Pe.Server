@@ -22,7 +22,7 @@ class Comment extends NodeBase
 
 	#region NodeBase
 
-	public function toString(int $level): string
+	public function toString(int $level, NodeOptions $options): string
 	{
 		$lines = Text::splitLines($this->value);
 		if (count($lines) === 1) {

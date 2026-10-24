@@ -11,6 +11,6 @@ final class NoneContent extends Content
 	 */
 	public function __construct()
 	{
-		parent::__construct();
+		parent::__construct([]);
 	}
 }
