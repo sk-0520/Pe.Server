@@ -1,0 +1,130 @@
+<?php
+
+declare(strict_types=1);
+
+namespace PeServer\Core\Mvc\Template\Node\Html\Attribute;
+
+use PeServer\Core\Mvc\Template\Node\Attribute\BuildAttributeBool;
+use PeServer\Core\Mvc\Template\Node\Attribute\BuildName;
+use PeServer\Core\Mvc\Template\Node\Attribute\Value\StringValues;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\DataAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\AutoCapitalize;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\AutoCorrect;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\AutoComplete;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\ShadowRootMode;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Bcp47;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\ContentEditable;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Direction;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\InputMode;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Popover;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Translate;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\VirtualKeyboardPolicy;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Wrap;
+
+class HTMLTextAreaAttributes extends HtmlGlobalAttributes
+{
+	/** @SuppressWarnings("php:S107") */
+	public function __construct(
+		public readonly AutoComplete|StringValues|null $autoComplete = null,
+		/** @var positive-int|null */
+		public readonly int|null $cols = null,
+		public readonly Direction|null $dirname = null,
+		#[BuildAttributeBool()]
+		public readonly bool|null $disabled = null,
+		/** @var non-empty-string|null */
+		public readonly string|null $form = null,
+		/** @var non-negative-int|null */
+		#[BuildName('maxlength')]
+		public readonly int|null $maxLength = null,
+		/** @var non-negative-int|null */
+		#[BuildName('minlength')]
+		public readonly int|null $minLength = null,
+		/** @var non-empty-string|null */
+		public readonly string|null $name = null,
+		public readonly string|null $placeholder = null,
+		#[BuildName('readonly')]
+		#[BuildAttributeBool()]
+		public readonly bool|null $readOnly = null,
+		#[BuildAttributeBool()]
+		public readonly bool|null $required = null,
+		/** @var positive-int|null */
+		public readonly int|null $rows = null,
+		public readonly Wrap|null $wrap = null,
+
+		#region HtmlGlobalAttributes
+		string|null $accesskey = null,
+		string|null $anchor = null,
+		AutoCapitalize|null $autoCapitalize = null,
+		AutoCorrect|null $autoCorrect = null,
+		bool|null $autoFocus = null,
+		string|null $className = null,
+		ContentEditable|null $contentEditable = null,
+		DataAttributes|null $data = null,
+		Direction|null $dir = null,
+		bool|null $draggable = null,
+		string|null $enterKeyHint = null,
+		bool|string|null $hidden = null,
+		string|null $id = null,
+		bool|null $inert = null,
+		InputMode|null $inputMode = null,
+		string|null $is = null,
+		string|null $itemId = null,
+		string|null $itemProp = null,
+		string|null $itemRef = null,
+		string|null $itemType = null,
+		Bcp47|null $lang = null,
+		string|null $nonce = null,
+		string|null $part = null,
+		Popover|null $popover = null,
+		string|null $role = null,
+		string|null $slot = null,
+		bool|null $spellcheck = null,
+		string|null $style = null,
+		int|null $tabIndex = null,
+		string|null $title = null,
+		Translate|null $translate = null,
+		VirtualKeyboardPolicy|null $virtualKeyboardPolicy = null,
+		bool|null $writingSuggestions = null,
+		#endregion
+	) {
+		parent::__construct(
+			accesskey: $accesskey,
+			anchor: $anchor,
+			autoCapitalize: $autoCapitalize,
+			autoCorrect: $autoCorrect,
+			autoFocus: $autoFocus,
+			className: $className,
+			contentEditable: $contentEditable,
+			data: $data,
+			dir: $dir,
+			draggable: $draggable,
+			enterKeyHint: $enterKeyHint,
+			hidden: $hidden,
+			id: $id,
+			inert: $inert,
+			inputMode: $inputMode,
+			is: $is,
+			itemId: $itemId,
+			itemProp: $itemProp,
+			itemRef: $itemRef,
+			itemType: $itemType,
+			lang: $lang,
+			nonce: $nonce,
+			part: $part,
+			popover: $popover,
+			role: $role,
+			slot: $slot,
+			spellcheck: $spellcheck,
+			style: $style,
+			tabIndex: $tabIndex,
+			title: $title,
+			translate: $translate,
+			virtualKeyboardPolicy: $virtualKeyboardPolicy,
+			writingSuggestions: $writingSuggestions
+		);
+	}
+
+	#region HtmlGlobalAttributes
+
+	#endregion
+}
