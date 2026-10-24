@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc\Template\Node\Html\Attribute;
 
 use PeServer\Core\Mvc\Template\Node\Attribute\BuildName;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Blocking;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\DataAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\AutoCapitalize;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\LinkAs;
@@ -27,8 +28,7 @@ class HTMLLinkAttributes extends HtmlGlobalAttributes
 	/** @SuppressWarnings("php:S107") */
 	public function __construct(
 		public readonly LinkAs|null $as = null,
-		/** @var "render"|null */
-		public readonly string|null $blocking = null,
+		public readonly Blocking|null $blocking = null,
 		#[BuildAttributeNameOnly()]
 		public readonly bool|null $disabled = null,
 		public readonly FetchPriority|null $fetchpriority = null,
