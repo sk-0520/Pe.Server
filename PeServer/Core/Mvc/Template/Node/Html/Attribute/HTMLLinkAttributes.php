@@ -7,6 +7,9 @@ namespace PeServer\Core\Mvc\Template\Node\Html\Attribute;
 use PeServer\Core\Mvc\Template\Node\Attribute\BuildName;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\DataAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\AutoCapitalize;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\LinkAs;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\FetchPriority;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Rel;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\AutoCorrect;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Bcp47;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\ContentEditable;
@@ -14,6 +17,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\DateTimeValue;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Direction;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\InputMode;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Popover;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\ReferrerPolicy;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Target;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Translate;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\VirtualKeyboardPolicy;
@@ -22,7 +26,27 @@ class HTMLLinkAttributes extends HtmlGlobalAttributes
 {
 	/** @SuppressWarnings("php:S107") */
 	public function __construct(
-		public readonly int|null $value = null,
+		public readonly LinkAs|null $as = null,
+		/** @var "render"|null */
+		public readonly string|null $blocking = null,
+		#[BuildAttributeNameOnly()]
+		public readonly bool|null $disabled = null,
+		public readonly FetchPriority|null $fetchpriority = null,
+		/** @var non-empty-string|null */
+		public readonly string|null $href = null,
+		#[BuildName('hreflang')]
+		public readonly Bcp47|null $hrefLang = null,
+		#[BuildName('imagesizes')]
+		public readonly string|null $imageSizes = null,
+		#[BuildName('imagesrcset')]
+		public readonly string|null $imageSrcSet = null,
+		/** @var non-empty-string|null */
+		public readonly string|null $integrity = null,
+		public readonly string|null $media = null,
+		public readonly ReferrerPolicy|null $referrerPolicy = null,
+		public readonly Rel|null $rel = null,
+		public readonly string|null $sizes = null,
+		public readonly string|null $type = null,
 
 		#region HtmlGlobalAttributes
 		string|null $accesskey = null,

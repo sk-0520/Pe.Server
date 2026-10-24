@@ -33,7 +33,8 @@ class HTMLAreaAttributes extends HtmlGlobalAttributes
 		#[BuildAttributeNameOnly()]
 		public readonly bool|null $download = null,
 		public readonly string|null $href = null,
-		public readonly Bcp47|null $hreflang = null,
+		#[BuildName('hreflang')]
+		public readonly Bcp47|null $hrefLang = null,
 		#[BuildName(AttributeNames::INTEREST_FOREIGN)]
 		#[HtmlDeprecated(HtmlDeprecated::REASON_NON_STANDARD | HtmlDeprecated::REASON_EXPERIMENTAL)]
 		public readonly string|null $interestForeign = null,
