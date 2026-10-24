@@ -52,6 +52,7 @@ class DataAttributes extends AttributesBase implements Stringable, ArrayAccess
 	#[Override]
 	public function build(string $name, AttributeValueMark $mark = AttributeValueMark::DoubleQuote): string
 	{
+		//TODO: $name が無検証のため、属性名として使える文字に制限する(動的キーでの属性注入対策)
 		$attr = $this->attributes[$name];
 		return 'data-' . $name . '=' . $this->quoteValue($attr, $mark);
 	}

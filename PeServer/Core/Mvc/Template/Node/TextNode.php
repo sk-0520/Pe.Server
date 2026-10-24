@@ -19,8 +19,8 @@ class TextNode extends NodeBase
 	#endregion
 
 	public function __construct(
-		public string $content,
-		public int $escape = self::ESCAPE_DEFAULT,
+		public readonly string $content,
+		public readonly int $escape = self::ESCAPE_DEFAULT,
 	) {
 		//NOP
 	}

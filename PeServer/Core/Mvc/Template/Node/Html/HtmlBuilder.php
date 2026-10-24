@@ -76,9 +76,11 @@ use PeServer\Core\Mvc\Template\Node\Html\HtmlElement;
 use PeServer\Core\Mvc\Template\Node\INode;
 use PeServer\Core\Mvc\Template\Node\NodeBuilder;
 use PeServer\Core\Mvc\Template\Node\NoneNode;
+use PeServer\Core\Throws\ArgumentException;
 
 class HtmlBuilder extends NodeBuilder
 {
+	//TODO: void 要素の子が `new NoneNode()` と `NoneNode::get()` で混在しているので統一する
 	#region define
 
 	public const HTML_VERSION_5 = "5.0";
@@ -129,7 +131,7 @@ class HtmlBuilder extends NodeBuilder
 		return new HtmlElement(
 			'area',
 			$attributes,
-			new NoneNode(),
+			NoneNode::get(),
 			new ElementOptions(isInline: false, selfClosing: true)
 		);
 	}
@@ -180,7 +182,7 @@ class HtmlBuilder extends NodeBuilder
 		return new HtmlElement(
 			'base',
 			$attributes,
-			new NoneNode(),
+			NoneNode::get(),
 			new ElementOptions(isInline: true, selfClosing: true)
 		);
 	}
@@ -230,7 +232,7 @@ class HtmlBuilder extends NodeBuilder
 		return new HtmlElement(
 			'br',
 			$attributes,
-			new NoneNode(),
+			NoneNode::get(),
 			new ElementOptions(isInline: true, selfClosing: true)
 		);
 	}
@@ -290,7 +292,7 @@ class HtmlBuilder extends NodeBuilder
 		return new HtmlElement(
 			'col',
 			$attributes,
-			new NoneNode(),
+			NoneNode::get(),
 			new ElementOptions(isInline: true, selfClosing: true)
 		);
 	}
@@ -420,7 +422,7 @@ class HtmlBuilder extends NodeBuilder
 		return new HtmlElement(
 			'embed',
 			$attributes,
-			new NoneNode(),
+			NoneNode::get(),
 			new ElementOptions(isInline: true, selfClosing: true)
 		);
 	}
@@ -560,7 +562,7 @@ class HtmlBuilder extends NodeBuilder
 		return new HtmlElement(
 			'hr',
 			$attributes,
-			new NoneNode(),
+			NoneNode::get(),
 			new ElementOptions(isInline: false, selfClosing: true)
 		);
 	}
@@ -600,7 +602,7 @@ class HtmlBuilder extends NodeBuilder
 		return new HtmlElement(
 			'img',
 			$attributes,
-			new NoneNode(),
+			NoneNode::get(),
 			new ElementOptions(isInline: true, selfClosing: true)
 		);
 	}
@@ -610,7 +612,7 @@ class HtmlBuilder extends NodeBuilder
 		return new HtmlElement(
 			'input',
 			$attributes,
-			new NoneNode(),
+			NoneNode::get(),
 			new ElementOptions(isInline: true, selfClosing: true)
 		);
 	}
@@ -762,7 +764,7 @@ class HtmlBuilder extends NodeBuilder
 		return new HtmlElement(
 			'link',
 			$attributes,
-			new NoneNode(),
+			NoneNode::get(),
 			new ElementOptions(isInline: true, selfClosing: true)
 		);
 	}
@@ -812,7 +814,7 @@ class HtmlBuilder extends NodeBuilder
 		return new HtmlElement(
 			'meta',
 			$attributes,
-			new NoneNode(),
+			NoneNode::get(),
 			new ElementOptions(isInline: true, selfClosing: true)
 		);
 	}
@@ -997,13 +999,18 @@ class HtmlBuilder extends NodeBuilder
 		);
 	}
 
-	public function script(HTMLScriptAttributes $attributes, INode $children): HtmlElement
+	public function script(HTMLScriptAttributes $attributes, ScriptSourceNode|null $children = null): HtmlElement
 	{
+		if ($children !== null && !$children->isAllowedType($attributes->type)) {
+			throw new ArgumentException('type');
+		}
+		//TODO: src 指定時は本文を空にする(仕様上 src と本文は両立しない)
+
 		return new HtmlElement(
 			'script',
 			$attributes,
-			$children,
-			new ElementOptions(isInline: false, selfClosing: false, rawText: true)
+			$children ?? NoneNode::get(),
+			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
 
@@ -1062,7 +1069,7 @@ class HtmlBuilder extends NodeBuilder
 		return new HtmlElement(
 			'source',
 			$attributes,
-			new NoneNode(),
+			NoneNode::get(),
 			new ElementOptions(isInline: false, selfClosing: true)
 		);
 	}
@@ -1087,13 +1094,13 @@ class HtmlBuilder extends NodeBuilder
 		);
 	}
 
-	public function style(HTMLStyleAttributes $attributes, INode $children): HtmlElement
+	public function style(HTMLStyleAttributes $attributes, CssSourceNode|null $children = null): HtmlElement
 	{
 		return new HtmlElement(
 			'style',
 			$attributes,
-			$children,
-			new ElementOptions(isInline: false, selfClosing: false, rawText: true)
+			$children ?? NoneNode::get(),
+			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
 
@@ -1169,6 +1176,7 @@ class HtmlBuilder extends NodeBuilder
 
 	public function textarea(HTMLTextAreaAttributes $attributes, INode $children): HtmlElement
 	{
+		//TODO: RCDATA 要素なので子はテキストのみに制限する(ESCAPE_RAW も不可)
 		return new HtmlElement(
 			'textarea',
 			$attributes,
@@ -1219,6 +1227,7 @@ class HtmlBuilder extends NodeBuilder
 
 	public function title(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
+		//TODO: RCDATA 要素なので子はテキストのみに制限する(ESCAPE_RAW も不可)
 		return new HtmlElement(
 			'title',
 			$attributes,
@@ -1242,7 +1251,7 @@ class HtmlBuilder extends NodeBuilder
 		return new HtmlElement(
 			'track',
 			$attributes,
-			new NoneNode(),
+			NoneNode::get(),
 			new ElementOptions(isInline: true, selfClosing: true)
 		);
 	}
@@ -1292,7 +1301,7 @@ class HtmlBuilder extends NodeBuilder
 		return new HtmlElement(
 			'wbr',
 			$attributes,
-			new NoneNode(),
+			NoneNode::get(),
 			new ElementOptions(isInline: true, selfClosing: true)
 		);
 	}

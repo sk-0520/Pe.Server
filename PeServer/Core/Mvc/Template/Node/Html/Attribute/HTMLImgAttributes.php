@@ -36,7 +36,7 @@ class HTMLImgAttributes extends HtmlGlobalAttributes
 		public readonly FetchPriority|null $fetchPriority = null,
 		public readonly int|null $height = null,
 		#[BuildAttributeNameOnly()]
-		#[BuildName('isMap')]
+		#[BuildName('ismap')]
 		public readonly bool|null $ismap = null,
 		public readonly Loading|null $loading = null,
 		public readonly ReferrerPolicy|null $referrerPolicy = null,

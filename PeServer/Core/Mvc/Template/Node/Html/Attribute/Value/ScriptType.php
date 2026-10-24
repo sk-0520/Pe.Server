@@ -8,6 +8,7 @@ use PeServer\Core\Mvc\Template\Node\Html\HtmlDeprecated;
 
 enum ScriptType: string
 {
+	case json = 'application/json';
 	case importmap = 'importmap';
 	case module = 'module';
 	#[HtmlDeprecated(HtmlDeprecated::REASON_EXPERIMENTAL)]

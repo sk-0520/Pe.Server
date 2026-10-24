@@ -20,11 +20,15 @@ class JsonSerializer extends SerializerBase
 {
 	#region define
 
+	public const SAVE_DEFAULT = self::SAVE_PRETTY | self::SAVE_UNESCAPED_UNICODE;
 	public const SAVE_NONE = 0;
 	public const SAVE_PRETTY = JSON_PRETTY_PRINT;
 	public const SAVE_UNESCAPED_SLASHES = JSON_UNESCAPED_SLASHES;
 	public const SAVE_UNESCAPED_UNICODE = JSON_UNESCAPED_UNICODE;
-	public const SAVE_DEFAULT = self::SAVE_PRETTY | self::SAVE_UNESCAPED_UNICODE;
+	public const SAVE_HEX_TAG = JSON_HEX_TAG;
+	public const SAVE_HEX_AMP = JSON_HEX_AMP;
+	public const SAVE_HEX_APOS = JSON_HEX_APOS;
+	public const SAVE_HEX_QUOT = JSON_HEX_QUOT;
 
 	public const LOAD_NONE = 0;
 	public const LOAD_DEFAULT = self::LOAD_NONE;
@@ -56,9 +60,6 @@ class JsonSerializer extends SerializerBase
 	protected function saveImpl(array|object $value): Binary
 	{
 		$json = json_encode($value, $this->saveOption | JSON_THROW_ON_ERROR, $this->depth);
-		if ($json == false) {
-			throw new Exception(json_last_error_msg(), json_last_error());
-		}
 
 		return new Binary($json);
 	}

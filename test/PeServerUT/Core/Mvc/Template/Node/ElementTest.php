@@ -15,7 +15,7 @@ use PeServer\Core\Mvc\Template\Node\BuildOptions;
 use PeServer\Core\Mvc\Template\Node\Fragment;
 use PeServer\Core\Mvc\Template\Node\ElementOptions;
 use PeServer\Core\Mvc\Template\Node\Element;
-use PeServer\Core\Mvc\Template\Node\TextContent;
+use PeServer\Core\Mvc\Template\Node\INode;
 
 class ElementTest extends TestClass
 {
@@ -33,7 +33,7 @@ class ElementTest extends TestClass
 	}
 
 	#[DataProvider('provider_toString')]
-	public function test_toString(string $expected, Fragment $content, ElementOptions $options): void
+	public function test_toString(string $expected, INode $content, ElementOptions $options): void
 	{
 		$test = new LocalSimleElement($content, $options);
 
@@ -43,9 +43,9 @@ class ElementTest extends TestClass
 
 class LocalSimleElement extends Element
 {
-	public function __construct(Fragment $content, ElementOptions $options)
+	public function __construct(INode $content, ElementOptions $options)
 	{
-		parent::__construct("tag", new class() extends AttributesBase {
+		parent::__construct("tag", new class () extends AttributesBase {
 			public function getNames(): Iterator
 			{
 				yield "attr";

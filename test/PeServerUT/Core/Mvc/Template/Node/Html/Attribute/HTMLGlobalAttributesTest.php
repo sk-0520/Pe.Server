@@ -130,8 +130,14 @@ class HtmlGlobalAttributesTest extends TestClass
 				AttributeValueMark::SingleQuote,
 			],
 			[
-				'hidden="false"',
+				'',
 				new HtmlGlobalAttributes(hidden: false),
+				'hidden',
+				AttributeValueMark::DoubleQuote,
+			],
+			[
+				'hidden',
+				new HtmlGlobalAttributes(hidden: true),
 				'hidden',
 				AttributeValueMark::DoubleQuote,
 			],

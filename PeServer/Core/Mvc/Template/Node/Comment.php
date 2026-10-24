@@ -14,7 +14,7 @@ class Comment extends NodeBase
 	/**
 	 * 生成。
 	 */
-	public function __construct(public string $value)
+	public function __construct(readonly public string $value)
 	{
 		if (Text::contains($value, "--", false)) {
 			throw new ArgumentException('--');

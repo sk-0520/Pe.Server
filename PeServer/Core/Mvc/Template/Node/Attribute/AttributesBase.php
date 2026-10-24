@@ -29,6 +29,7 @@ abstract class AttributesBase
 		};
 	}
 
+	//TODO: href/src/action/formaction などの URL 系属性で `javascript:` 等のスキームを検証していない
 	protected function quoteValue(string $value, AttributeValueMark $mark): string
 	{
 		$work = $this->escapeValue($value, $mark);

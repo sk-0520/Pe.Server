@@ -30,25 +30,25 @@ class HTMLAudioAttributes extends HtmlGlobalAttributes
 	public function __construct(
 		#[BuildAttributeNameOnly()]
 		#[BuildName("autoplay")]
-		readonly bool|null $autoPlay = null,
+		public readonly bool|null $autoPlay = null,
 		#[BuildAttributeNameOnly()]
-		readonly bool|null $controls = null,
+		public readonly bool|null $controls = null,
 		#[BuildName("controlslist")]
-		readonly ControlsList|ControlsListValues|null $controlsList = null,
+		public readonly ControlsList|ControlsListValues|null $controlsList = null,
 		#[BuildName(AttributeNames::CROSS_ORIGIN)]
-		readonly CrossOrigin|null $crossOrigin = null,
+		public readonly CrossOrigin|null $crossOrigin = null,
 		#[BuildAttributeNameOnly()]
 		#[BuildName("disableremoteplayback")]
-		readonly bool|null $disableRemotePlayback = null,
+		public readonly bool|null $disableRemotePlayback = null,
 		#[HtmlDeprecated(HtmlDeprecated::REASON_EXPERIMENTAL)]
-		readonly Loading|null $loading = null,
+		public readonly Loading|null $loading = null,
 		#[BuildAttributeNameOnly()]
-		public bool|null $loop = null,
+		public readonly bool|null $loop = null,
 		#[BuildAttributeNameOnly()]
-		public bool|null $muted = null,
-		readonly Preload|null $preload = null,
+		public readonly bool|null $muted = null,
+		public readonly Preload|null $preload = null,
 		/** @var non-empty-string|null */
-		readonly string|null $src = null,
+		public readonly string|null $src = null,
 		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,

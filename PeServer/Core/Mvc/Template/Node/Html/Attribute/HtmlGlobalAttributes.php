@@ -57,8 +57,10 @@ class HtmlGlobalAttributes extends AttributesBase
 		public readonly bool|null $draggable = null,
 		#[BuildName('enterkeyhint')]
 		public readonly string|null $enterKeyHint = null,
+		#[BuildAttributeNameOnly()]
 		public readonly bool|string|null $hidden = null,
 		public readonly string|null $id = null,
+		#[BuildAttributeNameOnly()]
 		public readonly bool|null $inert = null,
 		#[BuildName('inputmode')]
 		public readonly InputMode|null $inputMode = null,
@@ -107,6 +109,8 @@ class HtmlGlobalAttributes extends AttributesBase
 
 	#region AttributesBase
 
+	//TODO: #[Override] が未付与
+	//TODO: getNames/buildCommon が要素ごとにリフレクションを使うため、クラス単位でメタデータをキャッシュする
 	protected function buildCommon(string $name, string|int|float|bool|UnitEnum|IAttributeValue $value, AttributeValueMark $mark): string
 	{
 		if (property_exists($this, $name)) {
