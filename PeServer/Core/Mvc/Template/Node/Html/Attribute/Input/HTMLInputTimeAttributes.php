@@ -14,6 +14,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\BuildAttributeNameOnly;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\DataAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLInputAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\AutoCapitalize;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\AutoComplete;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\AutoCorrect;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Bcp47;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Captcha;
@@ -43,6 +44,7 @@ class HTMLInputTimeAttributes extends HTMLInputAttributes
 	 * @SuppressWarnings("php:S107")
 	 */
 	public function __construct(
+		public readonly AutoComplete|StringValues|null $autoComplete = null,
 		public readonly TimeValue|null $max = null,
 		public readonly TimeValue|null $min = null,
 		#[BuildName("readonly")]

@@ -39,9 +39,9 @@ class HTMLInputButtonAttributes extends HTMLInputAttributes
 	 */
 	public function __construct(
 		#[BuildName("popovertarget")]
-		public readonly Popover|null $popovertarget,
+		public readonly Popover|null $popoverTarget,
 		#[BuildName("popovertargetaction")]
-		public readonly PopoverTargetAction|null $popovertargetaction,
+		public readonly PopoverTargetAction|null $popoverTargetAction,
 		#region HTMLInputAttributes
 		bool|null $disabled = null,
 		string|null $form = null,
