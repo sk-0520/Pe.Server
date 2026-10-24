@@ -8,11 +8,11 @@ abstract class NodeBase implements INode
 {
 	#region INode
 
-	abstract public function toString(int $level, NodeOptions $options): string;
+	abstract public function toString(int $level, BuildOptions $buildOptions): string;
 
 	public function __toString(): string
 	{
-		return $this->toString(0, NodeOptions::default());
+		return $this->toString(0, BuildOptions::default());
 	}
 
 	#endregion

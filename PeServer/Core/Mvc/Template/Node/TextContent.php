@@ -8,12 +8,12 @@ final class TextContent extends Content
 {
 	/**
 	 *
-	 * @param string $value
+	 * @param string $text
 	 *
 	 */
 	public function __construct(
-		public string $value = "",
+		string|TextNode $text
 	) {
-		//NOP
+		parent::__construct([$text instanceof TextNode ? $text : new TextNode($text)]);
 	}
 }

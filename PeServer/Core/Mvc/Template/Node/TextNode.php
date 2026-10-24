@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Template\Node;
 
+use PeServer\Core\Collections\Arr;
+use PeServer\Core\Text;
 use PeServer\Core\Throws\NotImplementedException;
 
 class TextNode extends NodeBase
 {
 	#region define
 
-	public const ESCAPE_RAW = 0;
-	public const ESCAPE_DEFAULT = 1;
+	public const ESCAPE_DEFAULT = 0;
+	public const ESCAPE_RAW = 1;
 
 	#endregion
 
@@ -24,7 +26,7 @@ class TextNode extends NodeBase
 
 	#region NodeBase
 
-	public function toString(int $level, NodeOptions $options): string
+	public function toString(int $level, BuildOptions $buildOptions): string
 	{
 		return match ($this->escape) {
 			self::ESCAPE_RAW => $this->content,

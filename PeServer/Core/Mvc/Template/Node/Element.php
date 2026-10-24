@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc\Template\Node;
 
 use PeServer\Core\Mvc\Template\Node\Attribute\AttributesBase;
+use PeServer\Core\Text;
 use PeServer\Core\Throws\NotImplementedException;
 
 class Element extends NodeBase
@@ -27,14 +28,35 @@ class Element extends NodeBase
 
 	#region function
 
+	/**
+	 * インデント文字列を取得。
+	 *
+	 * @param non-negative-int $level
+	 * @param BuildOptions $buildOptions
+	 * @return string
+	 */
+	protected function getIndent(int $level, BuildOptions $buildOptions): string
+	{
+		$hasIndent = ($buildOptions->format & BuildOptions::FORMAT_INDENT) === BuildOptions::FORMAT_INDENT;
+		return $hasIndent ? Text::repeat($buildOptions->indent, $level) : '';
+	}
+
+	protected function needNewline(ElementOptions $options, BuildOptions $buildOptions): bool
+	{
+		if ($options->isInline) {
+			return false;
+		}
+		return ($buildOptions->format & BuildOptions::FORMAT_NEWLINE) === BuildOptions::FORMAT_NEWLINE;
+	}
 
 	#endregion
 
 	#region INode
 
-	public function toString(int $level, NodeOptions $options): string
+	public function toString(int $level, BuildOptions $buildOptions): string
 	{
 		//TODO: とりあえずえいやで作るので必要に応じて後で対応する
+		// インデントや改行は面倒
 
 		$hasChildren = !empty($this->content->nodes);
 
@@ -53,16 +75,17 @@ class Element extends NodeBase
 			$result .= ">";
 
 			if ($hasChildren) {
+				$childBuffer = '';
 				foreach ($this->content->nodes as $child) {
-					$result .= $child->toString($level + 1, $options);
+					$childBuffer .= $child->toString($level + 1, $buildOptions);
 				}
+				$result .= $childBuffer;
 			}
 
 			$result .= "</";
 			$result .= $this->tagName;
 			$result .= ">";
 		}
-
 
 		return $result;
 	}
