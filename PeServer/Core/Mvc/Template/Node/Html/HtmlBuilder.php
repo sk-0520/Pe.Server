@@ -6,7 +6,6 @@ namespace PeServer\Core\Mvc\Template\Node\Html;
 
 use Override;
 use PeServer\Core\Mvc\Template\Node\BuildOptions;
-use PeServer\Core\Mvc\Template\Node\Content;
 use PeServer\Core\Mvc\Template\Node\ElementOptions;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLAnchorAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLAreaAttributes;
@@ -76,7 +75,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\Input\HTMLInputUrlAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\HtmlElement;
 use PeServer\Core\Mvc\Template\Node\INode;
 use PeServer\Core\Mvc\Template\Node\NodeBuilder;
-use PeServer\Core\Mvc\Template\Node\NoneContent;
+use PeServer\Core\Mvc\Template\Node\NoneNode;
 
 class HtmlBuilder extends NodeBuilder
 {
@@ -95,32 +94,32 @@ class HtmlBuilder extends NodeBuilder
 
 	#region function
 
-	public function a(HTMLAnchorAttributes $attributes, Content $content): HtmlElement
+	public function a(HTMLAnchorAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'a',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: true, selfClosing: false)
 		);
 	}
 
-	public function abbr(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function abbr(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'abbr',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: true, selfClosing: false)
 		);
 	}
 
-	public function address(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function address(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'address',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
@@ -130,48 +129,48 @@ class HtmlBuilder extends NodeBuilder
 		return new HtmlElement(
 			'area',
 			$attributes,
-			new NoneContent(),
+			new NoneNode(),
 			new ElementOptions(isInline: false, selfClosing: true)
 		);
 	}
 
-	public function article(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function article(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'article',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
 
-	public function aside(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function aside(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'aside',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
 
-	public function audio(HTMLAudioAttributes $attributes, Content $content): HtmlElement
+	public function audio(HTMLAudioAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'audio',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: true, selfClosing: false)
 		);
 	}
 
 
-	public function b(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function b(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'b',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: true, selfClosing: false)
 		);
 	}
@@ -181,47 +180,47 @@ class HtmlBuilder extends NodeBuilder
 		return new HtmlElement(
 			'base',
 			$attributes,
-			new NoneContent(),
+			new NoneNode(),
 			new ElementOptions(isInline: true, selfClosing: true)
 		);
 	}
 
-	public function bdi(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function bdi(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'bdi',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: true, selfClosing: false)
 		);
 	}
 
-	public function bdo(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function bdo(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'bdo',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: true, selfClosing: false)
 		);
 	}
 
-	public function blockquote(HTMLQuoteAttributes $attributes, Content $content): HtmlElement
+	public function blockquote(HTMLQuoteAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'blockquote',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
 
-	public function body(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function body(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'body',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
@@ -231,57 +230,57 @@ class HtmlBuilder extends NodeBuilder
 		return new HtmlElement(
 			'br',
 			$attributes,
-			new NoneContent(),
+			new NoneNode(),
 			new ElementOptions(isInline: true, selfClosing: true)
 		);
 	}
 
-	public function button(HTMLButtonAttributes $attributes, Content $content): HtmlElement
+	public function button(HTMLButtonAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'button',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: true, selfClosing: false)
 		);
 	}
 
-	public function canvas(HTMLCanvasAttributes $attributes, Content $content): HtmlElement
+	public function canvas(HTMLCanvasAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'canvas',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: true, selfClosing: false)
 		);
 	}
 
-	public function caption(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function caption(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'caption',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
 
-	public function cite(HTMLQuoteAttributes $attributes, Content $content): HtmlElement
+	public function cite(HTMLQuoteAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'cite',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: true, selfClosing: false)
 		);
 	}
 
-	public function code(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function code(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'code',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: true, selfClosing: false)
 		);
 	}
@@ -291,127 +290,127 @@ class HtmlBuilder extends NodeBuilder
 		return new HtmlElement(
 			'col',
 			$attributes,
-			new NoneContent(),
+			new NoneNode(),
 			new ElementOptions(isInline: true, selfClosing: true)
 		);
 	}
 
-	public function colgroup(HTMLTableColGroupAttributes $attributes, Content $content): HtmlElement
+	public function colgroup(HTMLTableColGroupAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'colgroup',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
 
-	public function data(HTMLDataAttributes $attributes, Content $content): HtmlElement
+	public function data(HTMLDataAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'data',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: true, selfClosing: false)
 		);
 	}
 
-	public function datalist(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function datalist(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'datalist',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
 
-	public function dd(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function dd(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'dd',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
 
-	public function del(HTMLDelAttributes $attributes, Content $content): HtmlElement
+	public function del(HTMLDelAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'del',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: true, selfClosing: false)
 		);
 	}
 
-	public function details(HTMLDetailsAttributes $attributes, Content $content): HtmlElement
+	public function details(HTMLDetailsAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'details',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
 
-	public function dfn(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function dfn(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'dfn',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: true, selfClosing: false)
 		);
 	}
 
-	public function dialog(HTMLDialogAttributes $attributes, Content $content): HtmlElement
+	public function dialog(HTMLDialogAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'dialog',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
 
-	public function div(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function div(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'div',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
 
-	public function dl(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function dl(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'dl',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
 
-	public function dt(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function dt(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'dt',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
 
-	public function em(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function em(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'em',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: true, selfClosing: false)
 		);
 	}
@@ -421,57 +420,57 @@ class HtmlBuilder extends NodeBuilder
 		return new HtmlElement(
 			'embed',
 			$attributes,
-			new NoneContent(),
+			new NoneNode(),
 			new ElementOptions(isInline: true, selfClosing: true)
 		);
 	}
 
-	public function fieldset(HTMLFieldsetAttributes $attributes, Content $content): HtmlElement
+	public function fieldset(HTMLFieldsetAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'fieldset',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
 
-	public function figcaption(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function figcaption(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'figcaption',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
 
-	public function figure(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function figure(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'figure',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
 
-	public function footer(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function footer(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'footer',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
 
-	public function form(HTMLFormAttributes $attributes, Content $content): HtmlElement
+	public function form(HTMLFormAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'form',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
@@ -481,77 +480,77 @@ class HtmlBuilder extends NodeBuilder
 	 *
 	 * @param int<1,6> $level
 	 * @param HtmlGlobalAttributes $attributes
-	 * @param Content $content
+	 * @param INode $children
 	 * @return HtmlElement
 	 */
-	public function heading(int $level, HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function heading(int $level, HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'h' . $level,
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
 
 	#region heading
-	public function h1(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function h1(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
-		return $this->heading(1, $attributes, $content);
+		return $this->heading(1, $attributes, $children);
 	}
 
-	public function h2(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function h2(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
-		return $this->heading(2, $attributes, $content);
+		return $this->heading(2, $attributes, $children);
 	}
 
-	public function h3(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function h3(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
-		return $this->heading(3, $attributes, $content);
+		return $this->heading(3, $attributes, $children);
 	}
 
-	public function h4(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function h4(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
-		return $this->heading(4, $attributes, $content);
+		return $this->heading(4, $attributes, $children);
 	}
 
-	public function h5(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function h5(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
-		return $this->heading(5, $attributes, $content);
+		return $this->heading(5, $attributes, $children);
 	}
 
-	public function h6(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function h6(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
-		return $this->heading(6, $attributes, $content);
+		return $this->heading(6, $attributes, $children);
 	}
 	#endregion
 
-	public function head(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function head(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'head',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
 
-	public function header(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function header(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'header',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
 
-	public function hgroup(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function hgroup(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'hgroup',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
@@ -561,37 +560,37 @@ class HtmlBuilder extends NodeBuilder
 		return new HtmlElement(
 			'hr',
 			$attributes,
-			new NoneContent(),
+			new NoneNode(),
 			new ElementOptions(isInline: false, selfClosing: true)
 		);
 	}
 
-	public function html(HTMLHtmlAttributes $attributes, Content $content): HtmlElement
+	public function html(HTMLHtmlAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'html',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
 
-	public function i(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function i(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'i',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: true, selfClosing: false)
 		);
 	}
 
-	public function iframe(HTMLIframeAttributes $attributes, Content $content): HtmlElement
+	public function iframe(HTMLIframeAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'iframe',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: true, selfClosing: false)
 		);
 	}
@@ -601,7 +600,7 @@ class HtmlBuilder extends NodeBuilder
 		return new HtmlElement(
 			'img',
 			$attributes,
-			new NoneContent(),
+			new NoneNode(),
 			new ElementOptions(isInline: true, selfClosing: true)
 		);
 	}
@@ -611,7 +610,7 @@ class HtmlBuilder extends NodeBuilder
 		return new HtmlElement(
 			'input',
 			$attributes,
-			new NoneContent(),
+			new NoneNode(),
 			new ElementOptions(isInline: true, selfClosing: true)
 		);
 	}
@@ -707,53 +706,53 @@ class HtmlBuilder extends NodeBuilder
 	// }
 	#endregion
 
-	public function ins(HTMLInsAttributes $attributes, Content $content): HtmlElement
+	public function ins(HTMLInsAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'ins',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: true, selfClosing: false)
 		);
 	}
 
 
-	public function kbd(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function kbd(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'kbd',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: true, selfClosing: false)
 		);
 	}
 
-	public function label(HTMLLabelAttributes $attributes, Content $content): HtmlElement
+	public function label(HTMLLabelAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'label',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: true, selfClosing: false)
 		);
 	}
 
-	public function legend(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function legend(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'legend',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: true, selfClosing: false)
 		);
 	}
 
-	public function li(HTMLLiAttributes $attributes, Content $content): HtmlElement
+	public function li(HTMLLiAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'li',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
@@ -763,47 +762,47 @@ class HtmlBuilder extends NodeBuilder
 		return new HtmlElement(
 			'link',
 			$attributes,
-			new NoneContent(),
+			new NoneNode(),
 			new ElementOptions(isInline: true, selfClosing: true)
 		);
 	}
 
-	public function main(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function main(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'main',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
 
-	public function map(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function map(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'map',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
 
-	public function mark(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function mark(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'mark',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: true, selfClosing: false)
 		);
 	}
 
-	public function menu(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function menu(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'menu',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
@@ -813,247 +812,247 @@ class HtmlBuilder extends NodeBuilder
 		return new HtmlElement(
 			'meta',
 			$attributes,
-			new NoneContent(),
+			new NoneNode(),
 			new ElementOptions(isInline: true, selfClosing: true)
 		);
 	}
 
-	public function meter(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function meter(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'meter',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: true, selfClosing: false)
 		);
 	}
 
-	public function nav(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function nav(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'nav',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
 
-	public function noscript(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function noscript(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'noscript',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
 
-	public function object(HTMLObjectAttributes $attributes, Content $content): HtmlElement
+	public function object(HTMLObjectAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'object',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
 
-	public function ol(HTMLOlAttributes $attributes, Content $content): HtmlElement
+	public function ol(HTMLOlAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'ol',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
 
-	public function optgroup(HTMLOptgroupAttributes $attributes, Content $content): HtmlElement
+	public function optgroup(HTMLOptgroupAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'optgroup',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
 
-	public function option(HTMLOptionAttributes $attributes, Content $content): HtmlElement
+	public function option(HTMLOptionAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'option',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
 
-	public function output(HTMLOutputAttributes $attributes, Content $content): HtmlElement
+	public function output(HTMLOutputAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'output',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
 
-	public function p(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function p(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'p',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
 
-	public function picture(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function picture(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'picture',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
 
-	public function pre(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function pre(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'pre',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
 
-	public function progress(HTMLProgressAttributes $attributes, Content $content): HtmlElement
+	public function progress(HTMLProgressAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'progress',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
 
-	public function q(HTMLQuoteAttributes $attributes, Content $content): HtmlElement
+	public function q(HTMLQuoteAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'q',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: true, selfClosing: false)
 		);
 	}
 
-	public function rp(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function rp(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'rp',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: true, selfClosing: false)
 		);
 	}
 
-	public function rt(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function rt(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'rt',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: true, selfClosing: false)
 		);
 	}
 
-	public function ruby(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function ruby(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'ruby',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
 
-	public function s(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function s(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			's',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: true, selfClosing: false)
 		);
 	}
 
-	public function samp(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function samp(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'samp',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: true, selfClosing: false)
 		);
 	}
 
-	public function script(HTMLScriptAttributes $attributes, Content $content): HtmlElement
+	public function script(HTMLScriptAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'script',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false, rawText: true)
 		);
 	}
 
-	public function search(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function search(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'search',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
 
-	public function section(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function section(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'section',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
 
-	public function select(HTMLSelectAttributes $attributes, Content $content): HtmlElement
+	public function select(HTMLSelectAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'select',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
 
-	public function slot(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function slot(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'slot',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: true, selfClosing: false)
 		);
 	}
 
-	public function small(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function small(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'small',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: true, selfClosing: false)
 		);
 	}
@@ -1063,177 +1062,177 @@ class HtmlBuilder extends NodeBuilder
 		return new HtmlElement(
 			'source',
 			$attributes,
-			new NoneContent(),
+			new NoneNode(),
 			new ElementOptions(isInline: false, selfClosing: true)
 		);
 	}
 
-	public function span(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function span(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'span',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: true, selfClosing: false)
 		);
 	}
 
-	public function strong(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function strong(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'strong',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: true, selfClosing: false)
 		);
 	}
 
-	public function style(HTMLStyleAttributes $attributes, Content $content): HtmlElement
+	public function style(HTMLStyleAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'style',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false, rawText: true)
 		);
 	}
 
-	public function sub(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function sub(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'sub',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: true, selfClosing: false)
 		);
 	}
 
-	public function summary(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function summary(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'summary',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
 
-	public function sup(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function sup(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'sup',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: true, selfClosing: false)
 		);
 	}
 
-	public function table(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function table(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'table',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
 
-	public function tbody(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function tbody(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'tbody',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
 
-	public function td(HTMLTableCellAttributes $attributes, Content $content): HtmlElement
+	public function td(HTMLTableCellAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'td',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
 
-	public function template(HTMLTemplateAttributes $attributes, Content $content): HtmlElement
+	public function template(HTMLTemplateAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'template',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
 
-	public function textarea(HTMLTextAreaAttributes $attributes, Content $content): HtmlElement
+	public function textarea(HTMLTextAreaAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'textarea',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
 
-	public function tfoot(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function tfoot(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'tfoot',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
 
-	public function th(HTMLTableHeaderCellAttributes $attributes, Content $content): HtmlElement
+	public function th(HTMLTableHeaderCellAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'th',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
 
-	public function thead(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function thead(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'thead',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
 
-	public function time(HTMLTimeAttributes $attributes, Content $content): HtmlElement
+	public function time(HTMLTimeAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'time',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: true, selfClosing: false)
 		);
 	}
 
-	public function title(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function title(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'title',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: true, selfClosing: false)
 		);
 	}
 
-	public function tr(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function tr(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'tr',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
@@ -1243,47 +1242,47 @@ class HtmlBuilder extends NodeBuilder
 		return new HtmlElement(
 			'track',
 			$attributes,
-			new NoneContent(),
+			new NoneNode(),
 			new ElementOptions(isInline: true, selfClosing: true)
 		);
 	}
 
-	public function u(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function u(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'u',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: true, selfClosing: false)
 		);
 	}
 
-	public function ul(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function ul(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'ul',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: false, selfClosing: false)
 		);
 	}
 
-	public function var(HtmlGlobalAttributes $attributes, Content $content): HtmlElement
+	public function var(HtmlGlobalAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'var',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: true, selfClosing: false)
 		);
 	}
 
-	public function video(HTMLVideoAttributes $attributes, Content $content): HtmlElement
+	public function video(HTMLVideoAttributes $attributes, INode $children): HtmlElement
 	{
 		return new HtmlElement(
 			'video',
 			$attributes,
-			$content,
+			$children,
 			new ElementOptions(isInline: true, selfClosing: false)
 		);
 	}
@@ -1293,7 +1292,7 @@ class HtmlBuilder extends NodeBuilder
 		return new HtmlElement(
 			'wbr',
 			$attributes,
-			new NoneContent(),
+			new NoneNode(),
 			new ElementOptions(isInline: true, selfClosing: true)
 		);
 	}

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Template\Node;
 
+use Override;
 use PeServer\Core\Mvc\Template\Node\Attribute\AttributesBase;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
@@ -15,13 +16,13 @@ class Element extends NodeBase
 	 *
 	 * @param non-empty-string $tagName
 	 * @param AttributesBase $attributes
-	 * @param Content $content
+	 * @param INode $children
 	 * @param ElementOptions $options
 	 */
 	public function __construct(
 		public readonly string $tagName,
 		public AttributesBase $attributes,
-		public Content $content,
+		public INode $children,
 		public readonly ElementOptions $options
 	) {
 		//NOP
@@ -74,12 +75,19 @@ class Element extends NodeBase
 
 	#region INode
 
+	#[Override]
+	public function hasChildren(): bool
+	{
+		return $this->children->hasChildren();
+	}
+
+	#[Override]
 	public function toString(int $level, BuildOptions $buildOptions): string
 	{
 		//TODO: とりあえずえいやで作るので必要に応じて後で対応する
 		// インデントや改行は面倒
 
-		$hasChildren = !empty($this->content->nodes);
+		$hasChildren = $this->hasChildren();
 
 		$result = "<";
 		$result .= $this->tagName;
@@ -93,20 +101,13 @@ class Element extends NodeBase
 			$result .= $attribute;
 		}
 
-
 		if ($this->options->selfClosing) {
 			$result .= " />";
 		} else {
 			$result .= ">";
 
 			if ($hasChildren) {
-				$childBuffer = '';
-				foreach ($this->content->nodes as $child) {
-					$childBuffer .= $this->options->rawText
-						? $this->buildRawTextChild($child, $level, $buildOptions)
-						: $child->toString($level + 1, $buildOptions);
-				}
-				$result .= $childBuffer;
+				$result .= $this->children->toString($level + 1, $buildOptions);
 			}
 
 			$result .= "</";

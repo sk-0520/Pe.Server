@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Template\Node;
 
+use Override;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\ArgumentException;
@@ -22,6 +23,13 @@ class Comment extends NodeBase
 
 	#region NodeBase
 
+	#[Override]
+	public function hasChildren(): bool
+	{
+		return !Text::isNullOrEmpty($this->value);
+	}
+
+	#[Override]
 	public function toString(int $level, BuildOptions $buildOptions): string
 	{
 		$lines = Text::splitLines($this->value);

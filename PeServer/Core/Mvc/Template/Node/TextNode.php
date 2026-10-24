@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\Core\Mvc\Template\Node;
 
+use Override;
 use PeServer\Core\Collections\Arr;
 use PeServer\Core\Text;
 use PeServer\Core\Throws\NotImplementedException;
@@ -26,6 +27,14 @@ class TextNode extends NodeBase
 
 	#region NodeBase
 
+	#[Override]
+	public function hasChildren(): bool
+	{
+		return !Text::isNullOrEmpty($this->content);
+	}
+
+
+	#[Override]
 	public function toString(int $level, BuildOptions $buildOptions): string
 	{
 		return match ($this->escape) {

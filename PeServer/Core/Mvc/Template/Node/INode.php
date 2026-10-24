@@ -10,6 +10,8 @@ interface INode extends Stringable
 {
 	#region function
 
+	public function hasChildren(): bool;
+
 	/**
 	 *
 	 * @param non-negative-int $level
