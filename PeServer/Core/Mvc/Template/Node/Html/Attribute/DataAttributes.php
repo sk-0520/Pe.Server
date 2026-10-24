@@ -97,7 +97,7 @@ class DataAttributes extends AttributesBase implements Stringable, ArrayAccess
 	{
 		$parts = [];
 		foreach ($this->attributes as $key => $value) {
-			$parts[] = 'data-' . $key . '="' . $value . '"';
+			$parts[] = $this->build((string)$key);
 		}
 
 		return Text::join('', $parts);

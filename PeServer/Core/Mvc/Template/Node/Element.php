@@ -6,6 +6,7 @@ namespace PeServer\Core\Mvc\Template\Node;
 
 use PeServer\Core\Mvc\Template\Node\Attribute\AttributesBase;
 use PeServer\Core\Text;
+use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\NotImplementedException;
 
 class Element extends NodeBase
@@ -49,6 +50,26 @@ class Element extends NodeBase
 		return ($buildOptions->format & BuildOptions::FORMAT_NEWLINE) === BuildOptions::FORMAT_NEWLINE;
 	}
 
+	/**
+	 * script/style など生テキスト要素の子ノードを出力。
+	 *
+	 * テキストはエスケープせず出力するが、要素を終了させる記述が含まれる場合は例外とする。
+	 *
+	 * @param non-negative-int $level
+	 */
+	protected function buildRawTextChild(INode $child, int $level, BuildOptions $buildOptions): string
+	{
+		if (!($child instanceof TextNode)) {
+			return $child->toString($level + 1, $buildOptions);
+		}
+
+		if (preg_match('/<\/' . preg_quote($this->tagName, '/') . '|<!--/i', $child->content) === 1) {
+			throw new ArgumentException('content');
+		}
+
+		return $child->content;
+	}
+
 	#endregion
 
 	#region INode
@@ -64,8 +85,12 @@ class Element extends NodeBase
 		$result .= $this->tagName;
 
 		foreach ($this->attributes->getNames() as $name) {
+			$attribute = $this->attributes->build($name);
+			if ($attribute === '') {
+				continue;
+			}
 			$result .= " ";
-			$result .= $this->attributes->build($name);
+			$result .= $attribute;
 		}
 
 
@@ -77,7 +102,9 @@ class Element extends NodeBase
 			if ($hasChildren) {
 				$childBuffer = '';
 				foreach ($this->content->nodes as $child) {
-					$childBuffer .= $child->toString($level + 1, $buildOptions);
+					$childBuffer .= $this->options->rawText
+						? $this->buildRawTextChild($child, $level, $buildOptions)
+						: $child->toString($level + 1, $buildOptions);
 				}
 				$result .= $childBuffer;
 			}

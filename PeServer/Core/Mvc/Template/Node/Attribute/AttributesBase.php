@@ -21,14 +21,12 @@ abstract class AttributesBase
 
 	protected function escapeValue(string $value, AttributeValueMark $mark): string
 	{
-		if (Text::contains($value, $mark->value, false)) {
-			return match ($mark) {
-				AttributeValueMark::DoubleQuote => str_replace('"', '&quot;', $value),
-				AttributeValueMark::SingleQuote => str_replace("'", '&#39;', $value),
-			};
-		}
+		$work = strtr($value, ['&' => '&amp;', '<' => '&lt;', '>' => '&gt;']);
 
-		return $value;
+		return match ($mark) {
+			AttributeValueMark::DoubleQuote => str_replace('"', '&quot;', $work),
+			AttributeValueMark::SingleQuote => str_replace("'", '&#39;', $work),
+		};
 	}
 
 	protected function quoteValue(string $value, AttributeValueMark $mark): string

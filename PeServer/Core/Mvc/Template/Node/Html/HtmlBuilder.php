@@ -125,13 +125,13 @@ class HtmlBuilder extends NodeBuilder
 		);
 	}
 
-	public function area(HTMLAreaAttributes $attributes, Content $content): HtmlElement
+	public function area(HTMLAreaAttributes $attributes): HtmlElement
 	{
 		return new HtmlElement(
 			'area',
 			$attributes,
-			$content,
-			new ElementOptions(isInline: false, selfClosing: false)
+			new NoneContent(),
+			new ElementOptions(isInline: false, selfClosing: true)
 		);
 	}
 
@@ -176,12 +176,12 @@ class HtmlBuilder extends NodeBuilder
 		);
 	}
 
-	public function base(HTMLBaseAttributes $attributes, Content $content): HtmlElement
+	public function base(HTMLBaseAttributes $attributes): HtmlElement
 	{
 		return new HtmlElement(
 			'base',
 			$attributes,
-			$content,
+			new NoneContent(),
 			new ElementOptions(isInline: true, selfClosing: true)
 		);
 	}
@@ -226,12 +226,12 @@ class HtmlBuilder extends NodeBuilder
 		);
 	}
 
-	public function br(HTMLBrAttributes $attributes, Content $content): HtmlElement
+	public function br(HTMLBrAttributes $attributes): HtmlElement
 	{
 		return new HtmlElement(
 			'br',
 			$attributes,
-			$content,
+			new NoneContent(),
 			new ElementOptions(isInline: true, selfClosing: true)
 		);
 	}
@@ -286,12 +286,12 @@ class HtmlBuilder extends NodeBuilder
 		);
 	}
 
-	public function col(HTMLTableColAttributes $attributes, Content $content): HtmlElement
+	public function col(HTMLTableColAttributes $attributes): HtmlElement
 	{
 		return new HtmlElement(
 			'col',
 			$attributes,
-			$content,
+			new NoneContent(),
 			new ElementOptions(isInline: true, selfClosing: true)
 		);
 	}
@@ -416,12 +416,12 @@ class HtmlBuilder extends NodeBuilder
 		);
 	}
 
-	public function embed(HTMLEmbedAttributes $attributes, Content $content): HtmlElement
+	public function embed(HTMLEmbedAttributes $attributes): HtmlElement
 	{
 		return new HtmlElement(
 			'embed',
 			$attributes,
-			$content,
+			new NoneContent(),
 			new ElementOptions(isInline: true, selfClosing: true)
 		);
 	}
@@ -1004,7 +1004,7 @@ class HtmlBuilder extends NodeBuilder
 			'script',
 			$attributes,
 			$content,
-			new ElementOptions(isInline: false, selfClosing: false)
+			new ElementOptions(isInline: false, selfClosing: false, rawText: true)
 		);
 	}
 
@@ -1058,13 +1058,13 @@ class HtmlBuilder extends NodeBuilder
 		);
 	}
 
-	public function source(HTMLSourceAttributes $attributes, Content $content): HtmlElement
+	public function source(HTMLSourceAttributes $attributes): HtmlElement
 	{
 		return new HtmlElement(
 			'source',
 			$attributes,
-			$content,
-			new ElementOptions(isInline: false, selfClosing: false)
+			new NoneContent(),
+			new ElementOptions(isInline: false, selfClosing: true)
 		);
 	}
 
@@ -1094,7 +1094,7 @@ class HtmlBuilder extends NodeBuilder
 			'style',
 			$attributes,
 			$content,
-			new ElementOptions(isInline: false, selfClosing: false)
+			new ElementOptions(isInline: false, selfClosing: false, rawText: true)
 		);
 	}
 
@@ -1238,12 +1238,12 @@ class HtmlBuilder extends NodeBuilder
 		);
 	}
 
-	public function track(HTMLTrackAttributes $attributes, Content $content): HtmlElement
+	public function track(HTMLTrackAttributes $attributes): HtmlElement
 	{
 		return new HtmlElement(
 			'track',
 			$attributes,
-			$content,
+			new NoneContent(),
 			new ElementOptions(isInline: true, selfClosing: true)
 		);
 	}
