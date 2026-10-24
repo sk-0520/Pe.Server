@@ -44,7 +44,7 @@ class LocalSimleElement extends Element
 {
 	public function __construct(Content $content, ElementOptions $options)
 	{
-		parent::__construct("tag", new class() extends AttributesBase {
+		parent::__construct("tag", new class () extends AttributesBase {
 			public function getNames(): Iterator
 			{
 				yield "attr";

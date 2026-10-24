@@ -18,7 +18,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Translate;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\VirtualKeyboardPolicy;
 
 /**  */
-class HTMLDelAttributes extends HtmlGlobalAttributes
+class HTMLHtmlAttributes extends HtmlGlobalAttributes
 {
 	/** @SuppressWarnings("php:S107") */
 	public function __construct(
