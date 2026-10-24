@@ -42,7 +42,6 @@ class HTMLInputButtonAttributes extends HTMLInputAttributes
 		public readonly Popover|null $popovertarget,
 		#[BuildName("popovertargetaction")]
 		public readonly PopoverTargetAction|null $popovertargetaction,
-
 		#region HTMLInputAttributes
 		bool|null $disabled = null,
 		string|null $form = null,
@@ -50,7 +49,6 @@ class HTMLInputButtonAttributes extends HTMLInputAttributes
 		string|null $name = null,
 		string|int|float|bool|IAttributeValue|null $value = null,
 		#endregion
-
 		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,
@@ -94,7 +92,6 @@ class HTMLInputButtonAttributes extends HTMLInputAttributes
 			type: InputType::Button,
 			name: $name,
 			value: $value,
-
 			accesskey: $accesskey,
 			anchor: $anchor,
 			autoCapitalize: $autoCapitalize,

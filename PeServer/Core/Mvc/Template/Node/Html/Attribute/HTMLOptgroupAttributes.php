@@ -30,7 +30,6 @@ class HTMLOptgroupAttributes extends HtmlGlobalAttributes
 		public readonly bool|null $disabled = null,
 		/** @var non-empty-string|null */
 		public readonly string|null $label = null,
-
 		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,

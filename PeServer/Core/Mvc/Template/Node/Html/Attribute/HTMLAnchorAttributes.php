@@ -44,7 +44,6 @@ class HTMLAnchorAttributes extends HtmlGlobalAttributes
 		 */
 		public readonly Target|string|null $target = null,
 		public readonly string|null $type = null,
-
 		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,

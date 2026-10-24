@@ -45,7 +45,6 @@ class HTMLInputResetAttributes extends HTMLInputAttributes
 		string|null $name = null,
 		string|int|float|bool|IAttributeValue|null $value = null,
 		#endregion
-
 		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,
@@ -89,7 +88,6 @@ class HTMLInputResetAttributes extends HTMLInputAttributes
 			type: InputType::Reset,
 			name: $name,
 			value: $value,
-
 			accesskey: $accesskey,
 			anchor: $anchor,
 			autoCapitalize: $autoCapitalize,

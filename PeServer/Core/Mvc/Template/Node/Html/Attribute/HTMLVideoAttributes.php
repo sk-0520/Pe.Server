@@ -61,7 +61,6 @@ class HTMLVideoAttributes extends HtmlGlobalAttributes
 		readonly string|null $src = null,
 		/** @var non-negative-int|null */
 		public int|null $width = null,
-
 		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,

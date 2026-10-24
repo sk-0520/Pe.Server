@@ -40,7 +40,6 @@ class HTMLInputRadioAttributes extends HTMLInputAttributes
 	public function __construct(
 		#[BuildAttributeNameOnly()]
 		public readonly bool|null $checked = null,
-
 		#region HTMLInputAttributes
 		bool|null $disabled = null,
 		string|null $form = null,
@@ -48,7 +47,6 @@ class HTMLInputRadioAttributes extends HTMLInputAttributes
 		string|null $name = null,
 		string|int|float|bool|IAttributeValue|null $value = null,
 		#endregion
-
 		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,
@@ -92,7 +90,6 @@ class HTMLInputRadioAttributes extends HTMLInputAttributes
 			type: InputType::Radio,
 			name: $name,
 			value: $value,
-
 			accesskey: $accesskey,
 			anchor: $anchor,
 			autoCapitalize: $autoCapitalize,

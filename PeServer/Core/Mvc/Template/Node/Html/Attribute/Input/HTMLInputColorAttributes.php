@@ -44,7 +44,6 @@ class HTMLInputColorAttributes extends HTMLInputAttributes
 		public readonly bool|null $alpha,
 		#[BuildName("colorspace")]
 		public readonly string|null $colorSpace,
-
 		#region HTMLInputAttributes
 		bool|null $disabled = null,
 		string|null $form = null,
@@ -52,7 +51,6 @@ class HTMLInputColorAttributes extends HTMLInputAttributes
 		string|null $name = null,
 		string|int|float|bool|IAttributeValue|null $value = null,
 		#endregion
-
 		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,
@@ -96,7 +94,6 @@ class HTMLInputColorAttributes extends HTMLInputAttributes
 			type: InputType::Color,
 			name: $name,
 			value: $value,
-
 			accesskey: $accesskey,
 			anchor: $anchor,
 			autoCapitalize: $autoCapitalize,

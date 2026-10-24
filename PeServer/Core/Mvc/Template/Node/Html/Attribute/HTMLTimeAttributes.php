@@ -30,7 +30,6 @@ class HTMLTimeAttributes extends HtmlGlobalAttributes
 	/** @SuppressWarnings("php:S107") */
 	public function __construct(
 		public readonly DateTimeValueBase|null $dateTime = null,
-
 		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,

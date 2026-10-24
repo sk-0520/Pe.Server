@@ -50,7 +50,6 @@ class HTMLInputMonthAttributes extends HTMLInputAttributes
 		#[BuildAttributeNameOnly()]
 		public readonly bool|null $required = null,
 		public readonly int|null $step = null,
-
 		#region HTMLInputAttributes
 		bool|null $disabled = null,
 		string|null $form = null,
@@ -58,7 +57,6 @@ class HTMLInputMonthAttributes extends HTMLInputAttributes
 		string|null $name = null,
 		string|int|float|bool|IAttributeValue|null $value = null,
 		#endregion
-
 		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,
@@ -102,7 +100,6 @@ class HTMLInputMonthAttributes extends HTMLInputAttributes
 			type: InputType::Month,
 			name: $name,
 			value: $value,
-
 			accesskey: $accesskey,
 			anchor: $anchor,
 			autoCapitalize: $autoCapitalize,

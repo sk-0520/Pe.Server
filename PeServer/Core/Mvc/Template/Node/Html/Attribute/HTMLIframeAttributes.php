@@ -42,7 +42,6 @@ class HTMLIframeAttributes extends HtmlGlobalAttributes
 		public readonly string|null $src = null,
 		/** @var non-empty-string|null */
 		public readonly string|null $srcdoc = null,
-
 		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,

@@ -42,7 +42,6 @@ class HTMLFormAttributes extends HtmlGlobalAttributes
 		 * @phpstan-var Target|non-empty-string|null
 		 */
 		public readonly Target|string|null $target = null,
-
 		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,

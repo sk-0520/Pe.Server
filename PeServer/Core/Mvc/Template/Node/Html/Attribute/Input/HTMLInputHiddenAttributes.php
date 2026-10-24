@@ -39,7 +39,6 @@ class HTMLInputHiddenAttributes extends HTMLInputAttributes
 	 */
 	public function __construct(
 		public readonly Direction|null $dirname = null,
-
 		#region HTMLInputAttributes
 		bool|null $disabled = null,
 		string|null $form = null,
@@ -47,7 +46,6 @@ class HTMLInputHiddenAttributes extends HTMLInputAttributes
 		string|null $name = null,
 		string|int|float|bool|IAttributeValue|null $value = null,
 		#endregion
-
 		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,
@@ -91,7 +89,6 @@ class HTMLInputHiddenAttributes extends HTMLInputAttributes
 			type: InputType::Hidden,
 			name: $name,
 			value: $value,
-
 			accesskey: $accesskey,
 			anchor: $anchor,
 			autoCapitalize: $autoCapitalize,

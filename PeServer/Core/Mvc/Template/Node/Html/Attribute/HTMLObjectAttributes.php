@@ -36,7 +36,6 @@ class HTMLObjectAttributes extends HtmlGlobalAttributes
 		/** @var non-empty-string|null */
 		public readonly string|null $type = null,
 		public readonly int|null $width = null,
-
 		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,

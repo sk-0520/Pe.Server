@@ -31,7 +31,6 @@ class HTMLSlotAttributes extends HtmlGlobalAttributes
 	public function __construct(
 		/** @var non-empty-string|null */
 		public readonly string|null $name = null,
-
 		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,

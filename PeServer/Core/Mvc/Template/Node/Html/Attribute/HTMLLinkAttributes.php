@@ -47,7 +47,6 @@ class HTMLLinkAttributes extends HtmlGlobalAttributes
 		public readonly Rel|null $rel = null,
 		public readonly string|null $sizes = null,
 		public readonly string|null $type = null,
-
 		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,

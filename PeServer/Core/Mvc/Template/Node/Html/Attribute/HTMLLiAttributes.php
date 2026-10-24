@@ -23,7 +23,6 @@ class HTMLLiAttributes extends HtmlGlobalAttributes
 	/** @SuppressWarnings("php:S107") */
 	public function __construct(
 		public readonly int|null $value = null,
-
 		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,

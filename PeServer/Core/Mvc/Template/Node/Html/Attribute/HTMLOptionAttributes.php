@@ -34,7 +34,6 @@ class HTMLOptionAttributes extends HtmlGlobalAttributes
 		#[BuildAttributeNameOnly()]
 		public readonly bool|null $selected = null,
 		public readonly string|int|float|bool|IAttributeValue|null $value = null,
-
 		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,

@@ -31,7 +31,6 @@ class HTMLStyleAttributes extends HtmlGlobalAttributes
 	public function __construct(
 		public readonly Blocking|null $blocking = null,
 		public readonly string|null $media = null,
-
 		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,

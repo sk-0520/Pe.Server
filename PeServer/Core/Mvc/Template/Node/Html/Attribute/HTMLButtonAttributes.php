@@ -63,7 +63,6 @@ class HTMLButtonAttributes extends HtmlGlobalAttributes
 		public readonly PopoverTargetAction|null $popoverTargetAction = null,
 		public readonly ButtonType|null $type = null,
 		public readonly string|int|float|bool|IAttributeValue|null $value = null,
-
 		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,

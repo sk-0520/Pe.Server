@@ -44,7 +44,6 @@ class HTMLScriptAttributes extends HtmlGlobalAttributes
 		/** @var non-empty-string|null */
 		public readonly string|null $src = null,
 		public readonly ScriptType|null $type = null,
-
 		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,

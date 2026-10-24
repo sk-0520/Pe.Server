@@ -59,7 +59,6 @@ class HTMLInputImageAttributes extends HTMLInputAttributes
 		public readonly string|null $src = null,
 		/** @var int|null */
 		public readonly int|null $width = null,
-
 		#region HTMLInputAttributes
 		bool|null $disabled = null,
 		string|null $form = null,
@@ -67,7 +66,6 @@ class HTMLInputImageAttributes extends HTMLInputAttributes
 		string|null $name = null,
 		string|int|float|bool|IAttributeValue|null $value = null,
 		#endregion
-
 		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,
@@ -111,7 +109,6 @@ class HTMLInputImageAttributes extends HTMLInputAttributes
 			type: InputType::Image,
 			name: $name,
 			value: $value,
-
 			accesskey: $accesskey,
 			anchor: $anchor,
 			autoCapitalize: $autoCapitalize,

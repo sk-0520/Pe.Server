@@ -42,7 +42,6 @@ class HTMLInputRangeAttributes extends HTMLInputAttributes
 		public readonly int|float|null $min = null,
 		#[BuildAttributeNameOnly()]
 		public readonly int|float|null $step = null,
-
 		#region HTMLInputAttributes
 		bool|null $disabled = null,
 		string|null $form = null,
@@ -50,7 +49,6 @@ class HTMLInputRangeAttributes extends HTMLInputAttributes
 		string|null $name = null,
 		string|int|float|bool|IAttributeValue|null $value = null,
 		#endregion
-
 		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,
@@ -94,7 +92,6 @@ class HTMLInputRangeAttributes extends HTMLInputAttributes
 			type: InputType::Range,
 			name: $name,
 			value: $value,
-
 			accesskey: $accesskey,
 			anchor: $anchor,
 			autoCapitalize: $autoCapitalize,

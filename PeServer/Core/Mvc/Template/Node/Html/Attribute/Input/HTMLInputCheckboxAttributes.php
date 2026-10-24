@@ -46,7 +46,6 @@ class HTMLInputCheckboxAttributes extends HTMLInputAttributes
 		#[BuildAttributeNameOnly()]
 		#[HtmlDeprecated(HtmlDeprecated::REASON_EXPERIMENTAL)]
 		public readonly bool|null $switch = null,
-
 		#region HTMLInputAttributes
 		bool|null $disabled = null,
 		string|null $form = null,
@@ -54,7 +53,6 @@ class HTMLInputCheckboxAttributes extends HTMLInputAttributes
 		string|null $name = null,
 		string|int|float|bool|IAttributeValue|null $value = null,
 		#endregion
-
 		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,
@@ -98,7 +96,6 @@ class HTMLInputCheckboxAttributes extends HTMLInputAttributes
 			type: InputType::Checkbox,
 			name: $name,
 			value: $value,
-
 			accesskey: $accesskey,
 			anchor: $anchor,
 			autoCapitalize: $autoCapitalize,

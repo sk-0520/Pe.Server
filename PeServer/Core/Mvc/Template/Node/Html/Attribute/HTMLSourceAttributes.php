@@ -38,7 +38,6 @@ class HTMLSourceAttributes extends HtmlGlobalAttributes
 		public readonly string|null $media = null,
 		public readonly int|null $height = null,
 		public readonly int|null $width = null,
-
 		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,

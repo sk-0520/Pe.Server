@@ -43,7 +43,6 @@ class HTMLInputAttributes extends HtmlGlobalAttributes
 		/** @var non-empty-string|null */
 		public readonly string|null $name = null,
 		public readonly string|int|float|bool|IAttributeValue|null $value = null,
-
 		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,

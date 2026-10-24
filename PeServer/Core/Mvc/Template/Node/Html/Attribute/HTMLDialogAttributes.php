@@ -27,7 +27,6 @@ class HTMLDialogAttributes extends HtmlGlobalAttributes
 		public readonly ClosedBy|null $closedBy = null,
 		#[BuildAttributeNameOnly()]
 		public readonly bool|null $open = null,
-
 		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,

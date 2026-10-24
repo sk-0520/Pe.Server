@@ -12,7 +12,7 @@ class TimeValue implements IAttributeValue
 	public readonly DateInterval $value;
 
 	public function __construct(
-		string|DateInterval  $value
+		string|DateInterval $value
 	) {
 		if (is_string($value)) {
 			$this->value = new DateInterval($value);

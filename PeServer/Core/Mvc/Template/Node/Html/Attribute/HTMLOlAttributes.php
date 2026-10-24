@@ -31,7 +31,6 @@ class HTMLOlAttributes extends HtmlGlobalAttributes
 		public readonly int|null $start = null,
 		/** @var "1"|"a"|"A"|"i"|"I"|null */
 		public readonly string|null $type = null,
-
 		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,

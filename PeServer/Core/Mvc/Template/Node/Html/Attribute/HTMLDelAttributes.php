@@ -27,7 +27,6 @@ class HTMLDelAttributes extends HtmlGlobalAttributes
 		public readonly string|null $cite = null,
 		#[BuildName('datetime')]
 		public readonly DateTimeValue|null $datetime = null,
-
 		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,

@@ -30,19 +30,18 @@ class HTMLSelectAttributes extends HtmlGlobalAttributes
 	/** @SuppressWarnings("php:S107") */
 	public function __construct(
 		public readonly AutoComplete|StringValues|null $autoComplete = null,
-		#[BuildAttributeBool()]
+		#[BuildAttributeNameOnly()]
 		public readonly bool|null $disabled = null,
 		/** @var non-empty-string|null */
 		public readonly string|null $form = null,
-		#[BuildAttributeBool()]
+		#[BuildAttributeNameOnly()]
 		public readonly bool|null $multiple = null,
 		/** @var non-empty-string|null */
 		public readonly string|null $name = null,
-		#[BuildAttributeBool()]
+		#[BuildAttributeNameOnly()]
 		public readonly bool|null $required = null,
 		/** @var positive-int|null */
 		public readonly int|null $size = null,
-
 		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,

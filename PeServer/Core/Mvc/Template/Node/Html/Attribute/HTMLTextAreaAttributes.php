@@ -29,7 +29,7 @@ class HTMLTextAreaAttributes extends HtmlGlobalAttributes
 		/** @var positive-int|null */
 		public readonly int|null $cols = null,
 		public readonly Direction|null $dirname = null,
-		#[BuildAttributeBool()]
+		#[BuildAttributeNameOnly()]
 		public readonly bool|null $disabled = null,
 		/** @var non-empty-string|null */
 		public readonly string|null $form = null,
@@ -43,14 +43,13 @@ class HTMLTextAreaAttributes extends HtmlGlobalAttributes
 		public readonly string|null $name = null,
 		public readonly string|null $placeholder = null,
 		#[BuildName('readonly')]
-		#[BuildAttributeBool()]
+		#[BuildAttributeNameOnly()]
 		public readonly bool|null $readOnly = null,
-		#[BuildAttributeBool()]
+		#[BuildAttributeNameOnly()]
 		public readonly bool|null $required = null,
 		/** @var positive-int|null */
 		public readonly int|null $rows = null,
 		public readonly Wrap|null $wrap = null,
-
 		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,

@@ -42,7 +42,6 @@ class HTMLInputFileAttributes extends HTMLInputAttributes
 		public readonly Captcha|null $captcha = null,
 		#[BuildAttributeNameOnly()]
 		public readonly bool|null $multiple = null,
-
 		#region HTMLInputAttributes
 		bool|null $disabled = null,
 		string|null $form = null,
@@ -50,7 +49,6 @@ class HTMLInputFileAttributes extends HTMLInputAttributes
 		string|null $name = null,
 		string|int|float|bool|IAttributeValue|null $value = null,
 		#endregion
-
 		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,
@@ -94,7 +92,6 @@ class HTMLInputFileAttributes extends HTMLInputAttributes
 			type: InputType::File,
 			name: $name,
 			value: $value,
-
 			accesskey: $accesskey,
 			anchor: $anchor,
 			autoCapitalize: $autoCapitalize,

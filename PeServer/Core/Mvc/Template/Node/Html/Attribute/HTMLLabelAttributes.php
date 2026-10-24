@@ -25,7 +25,6 @@ class HTMLLabelAttributes extends HtmlGlobalAttributes
 		/** @var non-empty-string|null */
 		#[BuildName('for')]
 		public readonly string|null $htmlFor = null,
-
 		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,

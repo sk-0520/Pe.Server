@@ -37,8 +37,6 @@ class HTMLTemplateAttributes extends HtmlGlobalAttributes
 		#[BuildAttributeNameOnly()]
 		public readonly bool|null $shadowRootDelegatesFocus = null,
 		// TODO: わからん、正しいのか、HTMLで構築するときに使うのか、なんもわからん
-
-
 		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,

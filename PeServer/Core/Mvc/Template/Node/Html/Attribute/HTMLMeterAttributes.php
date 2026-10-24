@@ -32,7 +32,6 @@ class HTMLMeterAttributes extends HtmlGlobalAttributes
 		public readonly int|float|null $low = null,
 		public readonly int|float|null $high = null,
 		public readonly int|float|null $optimum = null,
-
 		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,

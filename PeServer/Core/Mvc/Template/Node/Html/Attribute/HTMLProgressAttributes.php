@@ -29,7 +29,6 @@ class HTMLProgressAttributes extends HtmlGlobalAttributes
 	public function __construct(
 		public readonly int|float|null $max = null,
 		public readonly int|float|null $value = null,
-
 		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,

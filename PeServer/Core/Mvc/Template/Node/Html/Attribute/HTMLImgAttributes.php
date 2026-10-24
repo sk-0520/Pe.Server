@@ -48,7 +48,6 @@ class HTMLImgAttributes extends HtmlGlobalAttributes
 		// $srcset = null,
 		public readonly int|null $width = null,
 		public readonly string|null $usemap = null,
-
 		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc\Template\Node\Html\Attribute;
 
 use PeServer\Core\Mvc\Template\Node\Attribute\BuildName;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\CharSet;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\DataAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\AutoCapitalize;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\LinkAs;
@@ -26,14 +27,13 @@ class HTMLMetaAttributes extends HtmlGlobalAttributes
 {
 	/** @SuppressWarnings("php:S107") */
 	public function __construct(
-		public readonly string|null $charset = null,
+		public readonly CharSet|null $charset = null,
 		public readonly string|null $content = null,
 		#[BuildName('http-equiv')]
 		public readonly string|null $httpEquiv = null,
 		public readonly string|null $media = null,
 		/** @var non-empty-string|null */
 		public readonly string|null $name = null,
-
 		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,

@@ -90,7 +90,7 @@ class AttributesBaseTest extends TestClass
 		return [
 			[
 				null,
-				new class() extends LocalAttributes {
+				new class () extends LocalAttributes {
 					public string $property = "value";
 				},
 				"property"
@@ -119,19 +119,20 @@ class AttributesBaseTest extends TestClass
 		return [
 			[
 				"property",
-				new class() extends LocalAttributes {},
+				new class () extends LocalAttributes {
+				},
 				"property"
 			],
 			[
 				"property",
-				new class() extends LocalAttributes {
+				new class () extends LocalAttributes {
 					public string $property = "value";
 				},
 				"property"
 			],
 			[
 				"PROPERTY",
-				new class() extends LocalAttributes {
+				new class () extends LocalAttributes {
 					#[BuildName("PROPERTY")]
 					public string $property = "value";
 				},

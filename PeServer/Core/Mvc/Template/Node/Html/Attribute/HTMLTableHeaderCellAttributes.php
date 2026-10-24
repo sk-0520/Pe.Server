@@ -28,13 +28,11 @@ class HTMLTableHeaderCellAttributes extends HTMLTableCellAttributes
 	public function __construct(
 		public readonly string|null $abbr = null,
 		public readonly TableHeaderScope|null $scope = null,
-
 		#region HTMLTableHeadAttributes
 		int|null $colSpan = null,
 		StringValues|null $headers = null,
 		int|null $rowSpan = null,
 		#endregion
-
 		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,
@@ -75,7 +73,6 @@ class HTMLTableHeaderCellAttributes extends HTMLTableCellAttributes
 			colSpan: $colSpan,
 			headers: $headers,
 			rowSpan: $rowSpan,
-
 			accesskey: $accesskey,
 			anchor: $anchor,
 			autoCapitalize: $autoCapitalize,

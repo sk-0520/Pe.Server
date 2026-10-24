@@ -23,7 +23,6 @@ class HTMLBrAttributes extends HtmlGlobalAttributes
 	public function __construct(
 		#[HtmlDeprecated(HtmlDeprecated::REASON_OBSOLETE)]
 		public readonly Clear|null $clear = null,
-
 		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,

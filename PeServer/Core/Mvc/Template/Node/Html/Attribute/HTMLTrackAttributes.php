@@ -30,7 +30,7 @@ class HTMLTrackAttributes extends HtmlGlobalAttributes
 {
 	/** @SuppressWarnings("php:S107") */
 	public function __construct(
-		#[BuildAttributeBool()]
+		#[BuildAttributeNameOnly()]
 		public readonly bool|null $default = null,
 		public readonly TrackKind|null $kind = null,
 		public readonly string|null $label = null,
@@ -38,7 +38,6 @@ class HTMLTrackAttributes extends HtmlGlobalAttributes
 		public readonly string|null $src = null,
 		#[BuildName('srclang')]
 		public readonly Bcp47|null $srcLang = null,
-
 		#region HtmlGlobalAttributes
 		string|null $accesskey = null,
 		string|null $anchor = null,
