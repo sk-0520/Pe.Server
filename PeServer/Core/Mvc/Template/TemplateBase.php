@@ -11,7 +11,7 @@ use PeServer\Core\Mvc\Template\TemplateParameter;
  *
  * 初期化の呼び出しが必須。
  */
-abstract class TemplateBase
+abstract class TemplateBase implements ITemplate
 {
 	protected function __construct(
 		protected TemplateOptions $options
@@ -20,13 +20,6 @@ abstract class TemplateBase
 
 	#region function
 
-	/**
-	 * View描画処理。
-	 *
-	 * @param string $templateName テンプレート名。
-	 * @param TemplateParameter $parameter パラメータ。
-	 * @return string
-	 */
 	abstract public function build(string $templateName, TemplateParameter $parameter): string;
 
 	#endregion

@@ -8,6 +8,7 @@ use PeServer\App\Models\AppTemplateOptions;
 use PeServer\Core\DI\DiFactoryBase;
 use PeServer\Core\DI\DiFactoryTrait;
 use PeServer\Core\DI\IDiContainer;
+use PeServer\Core\Mvc\Template\ITemplate;
 use PeServer\Core\IO\Directory;
 use PeServer\Core\IO\Path;
 use PeServer\Core\Mvc\Template\ITemplateFactory;
@@ -26,7 +27,7 @@ class AppTemplateFactory extends TemplateFactory
 	/**
 	 * @param TemplateOptions $options めっちゃかえるで。
 	 */
-	public function createTemplate(TemplateOptions $options): TemplateBase
+	public function createTemplate(TemplateOptions $options): ITemplate
 	{
 		$customOptions = $options;
 		if ($options instanceof AppTemplateOptions) {

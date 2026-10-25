@@ -10,6 +10,13 @@ interface ITemplate
 {
 	#region function
 
+	/**
+	 * View描画処理。
+	 *
+	 * @param string $templateName テンプレート名。
+	 * @param TemplateParameter $parameter パラメータ。
+	 * @return string
+	 */
 	public function build(string $templateName, TemplateParameter $parameter): string;
 
 	#endregion

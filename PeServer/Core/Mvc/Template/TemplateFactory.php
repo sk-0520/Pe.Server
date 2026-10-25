@@ -17,7 +17,7 @@ class TemplateFactory extends DiFactoryBase implements ITemplateFactory
 
 	#region ITemplateFactory
 
-	public function createTemplate(TemplateOptions $options): TemplateBase
+	public function createTemplate(TemplateOptions $options): ITemplate
 	{
 		return $this->container->new(SmartyTemplate::class, [TemplateOptions::class => $options]);
 	}

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc\Template\Node;
 
 use Override;
+use PeServer\Core\Mvc\Template\Node\BuildOptions;
 
 /**
  * @template TProps of Props
