@@ -6,11 +6,10 @@ namespace PeServer\Core\Mvc\Template\Node;
 
 use PeServer\Core\DI\DiFactoryTrait;
 use PeServer\Core\DI\DiFactoryBase;
-use PeServer\Core\Mvc\Template\Node\Attribute\AttributesBase;
-use PeServer\Core\Text;
-use PeServer\Core\Throws\NotImplementedException;
-use PeServer\Core\Mvc\Template\Node\INode;
 use PeServer\Core\Mvc\Template\Node\ComponentBase;
+use PeServer\Core\Mvc\Template\Node\Html\HtmlBuilder;
+use PeServer\Core\Mvc\Template\Node\Html\HtmlComponentBase;
+use PeServer\Core\Mvc\Template\Node\XmlBuilder;
 
 class NodeComponentFactory extends DiFactoryBase
 {
@@ -26,8 +25,16 @@ class NodeComponentFactory extends DiFactoryBase
 	 * @return ComponentBase
 	 * @phpstan-return TComponent
 	 */
-	public function create(string $component): ComponentBase
+	public function create(string $component, Props $props): ComponentBase
 	{
-		throw new NotImplementedException();
+		$builder = is_subclass_of($component, HtmlComponentBase::class)
+			? new HtmlBuilder()
+			: new XmlBuilder();
+		$arguments = [
+			'$props' => $props,
+			get_class($builder) => $builder
+		];
+
+		return $this->container->new($component, $arguments);
 	}
 }
