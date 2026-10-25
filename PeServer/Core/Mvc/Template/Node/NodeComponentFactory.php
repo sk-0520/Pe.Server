@@ -22,17 +22,20 @@ class NodeComponentFactory extends DiFactoryBase
 	 * @template TComponent of \PeServer\Core\Mvc\Template\Node\ComponentBase<TProps>
 	 * @param string $component
 	 * @phpstan-param class-string<TComponent> $component
+	 * @param Props $props
+	 * @phpstan-param TProps $props
 	 * @return ComponentBase
 	 * @phpstan-return TComponent
 	 */
 	public function create(string $component, Props $props): ComponentBase
 	{
+		// Html 系以外は Xml をフォールバックとする
 		$builder = is_subclass_of($component, HtmlComponentBase::class)
 			? new HtmlBuilder()
 			: new XmlBuilder();
 		$arguments = [
-			'$props' => $props,
-			get_class($builder) => $builder
+			-1 => $props,
+			$builder::class => $builder,
 		];
 
 		return $this->container->new($component, $arguments);
