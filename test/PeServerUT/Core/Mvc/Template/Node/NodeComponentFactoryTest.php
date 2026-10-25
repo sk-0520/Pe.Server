@@ -16,6 +16,33 @@ use PeServer\Core\Mvc\Template\Node\Props;
 use PeServer\Core\Mvc\Template\Node\XmlBuilder;
 use PeServerTest\TestClass;
 
+class NodeComponentFactoryTest extends TestClass
+{
+	public function test_create_html(): void
+	{
+		$factory = new NodeComponentFactory(new DiContainer());
+		$props = new LocalFactoryProps('a');
+
+		$actual = $factory->create(LocalFactoryHtmlComponent::class, $props);
+
+		$this->assertInstanceOf(LocalFactoryHtmlComponent::class, $actual);
+		$this->assertSame($props, $actual->props);
+		$this->assertInstanceOf(HtmlBuilder::class, $actual->getBuilder());
+	}
+
+	public function test_create_xml_fallback(): void
+	{
+		$factory = new NodeComponentFactory(new DiContainer());
+		$props = new LocalFactoryProps('a');
+
+		$actual = $factory->create(LocalFactoryXmlComponent::class, $props);
+
+		$this->assertInstanceOf(LocalFactoryXmlComponent::class, $actual);
+		$this->assertSame($props, $actual->props);
+		$this->assertInstanceOf(XmlBuilder::class, $actual->builder);
+	}
+}
+
 readonly class LocalFactoryProps extends Props
 {
 	public function __construct(public string $value)
@@ -60,32 +87,5 @@ class LocalFactoryXmlComponent extends ComponentBase
 	protected function getNode(): INode
 	{
 		return NoneNode::get();
-	}
-}
-
-class NodeComponentFactoryTest extends TestClass
-{
-	public function test_create_html(): void
-	{
-		$factory = new NodeComponentFactory(new DiContainer());
-		$props = new LocalFactoryProps('a');
-
-		$actual = $factory->create(LocalFactoryHtmlComponent::class, $props);
-
-		$this->assertInstanceOf(LocalFactoryHtmlComponent::class, $actual);
-		$this->assertSame($props, $actual->props);
-		$this->assertInstanceOf(HtmlBuilder::class, $actual->getBuilder());
-	}
-
-	public function test_create_xml_fallback(): void
-	{
-		$factory = new NodeComponentFactory(new DiContainer());
-		$props = new LocalFactoryProps('a');
-
-		$actual = $factory->create(LocalFactoryXmlComponent::class, $props);
-
-		$this->assertInstanceOf(LocalFactoryXmlComponent::class, $actual);
-		$this->assertSame($props, $actual->props);
-		$this->assertInstanceOf(XmlBuilder::class, $actual->builder);
 	}
 }
