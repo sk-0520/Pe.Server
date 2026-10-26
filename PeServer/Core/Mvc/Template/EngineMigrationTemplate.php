@@ -6,6 +6,7 @@ namespace PeServer\Core\Mvc\Template;
 
 use Override;
 use PeServer\Core\DI\IDiContainer;
+use PeServer\Core\Mvc\Template\Node\ComponentBase;
 use PeServer\Core\Mvc\Template\Node\NodeComponentFactory;
 
 /**
@@ -31,13 +32,12 @@ class EngineMigrationTemplate extends TemplateBase
 	#[Override]
 	public function build(string $templateName, TemplateParameter $parameter): string
 	{
-		$component = $this->components[TemplateEngineMigrationFactory::toKey($this->options, $templateName)] ?? null;
-		if ($component !== null) {
+		if (is_subclass_of($templateName, ComponentBase::class)) {
 			$template = $this->container->new(NodeTemplate::class, [
 				TemplateOptions::class => $this->options,
 				NodeComponentFactory::class => new NodeComponentFactory($this->container),
 			]);
-			return $template->build($component, $parameter);
+			return $template->build($templateName, $parameter);
 		}
 
 		$template = $this->container->new(SmartyTemplate::class, [TemplateOptions::class => $this->options]);

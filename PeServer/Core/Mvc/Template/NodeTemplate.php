@@ -32,15 +32,11 @@ class NodeTemplate extends TemplateBase
 	 * 描画。
 	 *
 	 * @param string $templateName 描画する `ComponentBase` のクラス名。
-	 * @phpstan-param class-string<ComponentBase<PageProps>> $templateName
 	 */
 	#[Override]
 	public function build(string $templateName, TemplateParameter $parameter): string
 	{
-		if (!is_subclass_of($templateName, ComponentBase::class)) {
-			throw new ArgumentException('templateName');
-		}
-
+		// @phpstan-ignore argument.type, argument.templateType
 		$component = $this->componentFactory->create($templateName, new PageProps($parameter, $this->stores, $this->environment));
 		$builder = is_subclass_of($templateName, HtmlComponentBase::class) ? new HtmlBuilder() : new XmlBuilder();
 
