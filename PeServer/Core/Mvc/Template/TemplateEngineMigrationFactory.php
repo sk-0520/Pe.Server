@@ -20,48 +20,12 @@ class TemplateEngineMigrationFactory extends TemplateFactory
 {
 	use DiFactoryTrait;
 
-	#region variable
-
-	/**
-	 * @var array<string,class-string>
-	 */
-	private array $components = [];
-
-	#endregion
-
-	#region function
-
-	/**
-	 * テンプレートキーを生成。
-	 *
-	 * @param TemplateOptions $options
-	 * @param string $templateName `ITemplate::build` に渡されるテンプレート名。
-	 */
-	public static function toKey(TemplateOptions $options, string $templateName): string
-	{
-		return $options->baseDirectoryName . '/' . $templateName;
-	}
-
-	/**
-	 * Node で描画するテンプレートを登録。
-	 *
-	 * @param string $baseDirectoryName `TemplateOptions::$baseDirectoryName`
-	 * @param string $templateName 例: `index.tpl`
-	 * @param class-string<ComponentBase<PageProps>> $component
-	 */
-	public function registerComponent(string $baseDirectoryName, string $templateName, string $component): void
-	{
-		$this->components[$baseDirectoryName . '/' . $templateName] = $component;
-	}
-
-	#endregion
-
 	#region TemplateFactory
 
 	#[Override]
 	public function createTemplate(TemplateOptions $options): ITemplate
 	{
-		return new EngineMigrationTemplate($options, $this->container, $this->components);
+		return new EngineMigrationTemplate($options, $this->container);
 	}
 
 	#endregion

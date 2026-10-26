@@ -16,13 +16,10 @@ class EngineMigrationTemplate extends TemplateBase
 {
 	/**
 	 * 生成。
-	 *
-	 * @param array<string,class-string> $components テンプレートキー(`baseDirectoryName/templateName`) => コンポーネントクラス名
 	 */
 	public function __construct(
 		TemplateOptions $options,
-		protected IDiContainer $container,
-		protected array $components
+		protected IDiContainer $container
 	) {
 		parent::__construct($options);
 	}
