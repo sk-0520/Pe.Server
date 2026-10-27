@@ -48,11 +48,11 @@ class Fragment extends NodeBase
 	}
 
 	#[Override]
-	public function toString(int $level, BuildOptions $buildOptions): string
+	public function build(int $level, BuildOptions $buildOptions): string
 	{
 		$result = '';
 		foreach ($this->nodes as $node) {
-			$result .= $node->toString($level, $buildOptions);
+			$result .= $node->build($level, $buildOptions);
 		}
 		return $result;
 	}

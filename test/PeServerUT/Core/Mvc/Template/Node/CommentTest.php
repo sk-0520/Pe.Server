@@ -26,10 +26,10 @@ class CommentTest extends TestClass
 	}
 
 	#[DataProvider('provider_toString')]
-	public function test_toString(string $expected, string $value): void
+	public function test_build(string $expected, string $value): void
 	{
 		$test = new Comment($value);
-		$this->assertSame($expected, $test->toString(0, BuildOptions::default()));
+		$this->assertSame($expected, $test->build(0, BuildOptions::default()));
 		$this->assertSame($expected, (string)$test);
 	}
 

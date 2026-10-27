@@ -142,7 +142,7 @@ class HtmlBuilderTest extends TestClass
 	public function test_script_json_empty_string_value(): void
 	{
 		$node = new JsonDataNode(['']);
-		$this->assertSame('[""]', $node->toString(0, BuildOptions::default()));
+		$this->assertSame('[""]', $node->build(0, BuildOptions::default()));
 	}
 
 	public function test_style(): void
@@ -161,9 +161,9 @@ class HtmlBuilderTest extends TestClass
 	public function test_source_inject_regex(): void
 	{
 		$regex = new Regex(Encoding::getUtf8());
-		$this->assertSame('a { }', (new CssSourceNode('a { }', $regex))->toString(0, BuildOptions::default()));
-		$this->assertSame('a', (new JavaScriptSourceNode('a', $regex))->toString(0, BuildOptions::default()));
-		$this->assertSame('{"a":1}', (new JsonDataNode(['a' => 1], null, $regex))->toString(0, BuildOptions::default()));
+		$this->assertSame('a { }', (new CssSourceNode('a { }', $regex))->build(0, BuildOptions::default()));
+		$this->assertSame('a', (new JavaScriptSourceNode('a', $regex))->build(0, BuildOptions::default()));
+		$this->assertSame('{"a":1}', (new JsonDataNode(['a' => 1], null, $regex))->build(0, BuildOptions::default()));
 
 		$this->expectException(ArgumentException::class);
 		new CssSourceNode('a</style>', $regex);

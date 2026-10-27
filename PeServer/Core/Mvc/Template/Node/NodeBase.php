@@ -15,11 +15,11 @@ abstract class NodeBase implements INode
 	abstract public function hasChildren(): bool;
 
 	#[Override]
-	abstract public function toString(int $level, BuildOptions $buildOptions): string;
+	abstract public function build(int $level, BuildOptions $buildOptions): string;
 
 	public function __toString(): string
 	{
-		return $this->toString(0, BuildOptions::default());
+		return $this->build(0, BuildOptions::default());
 	}
 
 	#endregion

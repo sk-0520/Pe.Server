@@ -8,17 +8,27 @@ use Override;
 use PeServer\Core\Mvc\Template\Node\BuildOptions;
 
 /**
+ * 各ノードをコンポーネントとして部品化する。
+ *
  * @template TProps of Props
  */
 abstract class ComponentBase extends NodeBase
 {
 	#region variable
 
+	/**
+	 * 自ノード。
+	 *
+	 * @var INode|null
+	 */
 	private INode|null $node = null;
 
 	#endregion
 
 	/**
+	 * 生成。
+	 *
+	 * @param Props $props プロパティ。
 	 * @phpstan-param TProps $props
 	 */
 	protected function __construct(public readonly Props $props)
@@ -51,9 +61,9 @@ abstract class ComponentBase extends NodeBase
 	}
 
 	#[Override]
-	public function toString(int $level, BuildOptions $buildOptions): string
+	public function build(int $level, BuildOptions $buildOptions): string
 	{
-		return $this->getCachedNode()->toString($level, $buildOptions);
+		return $this->getCachedNode()->build($level, $buildOptions);
 	}
 
 	#endregion

@@ -35,7 +35,7 @@ class TextNode extends NodeBase
 
 
 	#[Override]
-	public function toString(int $level, BuildOptions $buildOptions): string
+	public function build(int $level, BuildOptions $buildOptions): string
 	{
 		return match ($this->escape) {
 			self::ESCAPE_RAW => $this->content,

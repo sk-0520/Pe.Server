@@ -15,10 +15,10 @@ class NoneNodeTest extends TestClass
 		$this->assertSame(NoneNode::get(), NoneNode::get());
 	}
 
-	public function test_toString(): void
+	public function test_build(): void
 	{
 		$test = NoneNode::get();
-		$this->assertSame('', $test->toString(0, BuildOptions::default()));
+		$this->assertSame('', $test->build(0, BuildOptions::default()));
 		$this->assertSame('', (string)$test);
 		$this->assertFalse($test->hasChildren());
 	}

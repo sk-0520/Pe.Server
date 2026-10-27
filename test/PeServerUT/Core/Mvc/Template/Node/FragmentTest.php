@@ -12,43 +12,43 @@ use PeServerTest\TestClass;
 
 class FragmentTest extends TestClass
 {
-	public function test_toString_single_node(): void
+	public function test_build_single_node(): void
 	{
 		$test = new Fragment(new TextNode('a'));
-		$this->assertSame('a', $test->toString(0, BuildOptions::default()));
+		$this->assertSame('a', $test->build(0, BuildOptions::default()));
 		$this->assertTrue($test->hasChildren());
 	}
 
-	public function test_toString_multiple_nodes_in_order(): void
+	public function test_build_multiple_nodes_in_order(): void
 	{
 		$test = new Fragment([
 			new TextNode('a'),
 			new TextNode('<b>', TextNode::ESCAPE_RAW),
 			new TextNode('&'),
 		]);
-		$this->assertSame('a<b>&amp;', $test->toString(0, BuildOptions::default()));
+		$this->assertSame('a<b>&amp;', $test->build(0, BuildOptions::default()));
 		$this->assertSame('a<b>&amp;', (string)$test);
 	}
 
-	public function test_toString_nested(): void
+	public function test_build_nested(): void
 	{
 		$test = new Fragment([
 			new TextNode('a'),
 			new Fragment([new TextNode('b'), new TextNode('c')]),
 		]);
-		$this->assertSame('abc', $test->toString(0, BuildOptions::default()));
+		$this->assertSame('abc', $test->build(0, BuildOptions::default()));
 	}
 
-	public function test_toString_empty(): void
+	public function test_build_empty(): void
 	{
 		$test = new Fragment([]);
-		$this->assertSame('', $test->toString(0, BuildOptions::default()));
+		$this->assertSame('', $test->build(0, BuildOptions::default()));
 		$this->assertFalse($test->hasChildren());
 	}
 
-	public function test_toString_none_node(): void
+	public function test_build_none_node(): void
 	{
 		$test = new Fragment([NoneNode::get(), new TextNode('a')]);
-		$this->assertSame('a', $test->toString(0, BuildOptions::default()));
+		$this->assertSame('a', $test->build(0, BuildOptions::default()));
 	}
 }

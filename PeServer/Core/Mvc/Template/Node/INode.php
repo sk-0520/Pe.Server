@@ -10,15 +10,19 @@ interface INode extends Stringable
 {
 	#region function
 
+	/**
+	 * 子ノードが存在するか。
+	 */
 	public function hasChildren(): bool;
 
 	/**
+	 * 文字列化。
 	 *
-	 * @param non-negative-int $level
-	 * @param BuildOptions $buildOptions
+	 * @param non-negative-int $level インデントレベル。
+	 * @param BuildOptions $buildOptions ビルドオプション。
 	 * @return string
 	 */
-	public function toString(int $level, BuildOptions $buildOptions): string;
+	public function build(int $level, BuildOptions $buildOptions): string;
 
 	#endregion
 }

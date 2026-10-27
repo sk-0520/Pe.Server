@@ -13,7 +13,7 @@ use PeServer\Core\Mvc\Template\Node\BuildOptions;
 
 class TextNodeTest extends TestClass
 {
-	public static function provider_toString(): array
+	public static function provider_build(): array
 	{
 		return [
 			['text', 'text', TextNode::ESCAPE_DEFAULT, BuildOptions::default()],
@@ -21,11 +21,11 @@ class TextNodeTest extends TestClass
 			['<b>text</b>', '<b>text</b>', TextNode::ESCAPE_RAW, BuildOptions::default()],
 		];
 	}
-	#[DataProvider('provider_toString')]
-	public function test_toString(string $expected, string $text, int $escape, BuildOptions $buildOptions): void
+	#[DataProvider('provider_build')]
+	public function test_build(string $expected, string $text, int $escape, BuildOptions $buildOptions): void
 	{
 		$test = new TextNode($text, $escape);
-		$actual = $test->toString(0, $buildOptions);
+		$actual = $test->build(0, $buildOptions);
 		$this->assertSame($expected, $actual);
 	}
 }

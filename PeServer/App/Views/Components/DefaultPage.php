@@ -37,6 +37,7 @@ class DefaultPage extends HtmlComponentBase
 							name: 'viewport',
 							content: 'width=device-width, initial-scale=1.0',
 						)),
+						/** @disregard P1014 */
 						$this->props->customHeadNode,
 
 						$this->html->title(new HtmlGlobalAttributes(), new Fragment([])),

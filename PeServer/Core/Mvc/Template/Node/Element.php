@@ -62,7 +62,7 @@ class Element extends NodeBase
 	}
 
 	#[Override]
-	public function toString(int $level, BuildOptions $buildOptions): string
+	public function build(int $level, BuildOptions $buildOptions): string
 	{
 		//TODO: とりあえずえいやで作るので必要に応じて後で対応する
 		// インデントや改行は面倒
@@ -87,7 +87,7 @@ class Element extends NodeBase
 			$result .= ">";
 
 			if ($hasChildren) {
-				$result .= $this->children->toString($level + 1, $buildOptions);
+				$result .= $this->children->build($level + 1, $buildOptions);
 			}
 
 			$result .= "</";

@@ -30,7 +30,7 @@ class Comment extends NodeBase
 	}
 
 	#[Override]
-	public function toString(int $level, BuildOptions $buildOptions): string
+	public function build(int $level, BuildOptions $buildOptions): string
 	{
 		$lines = Text::splitLines($this->value);
 		if (count($lines) === 1) {

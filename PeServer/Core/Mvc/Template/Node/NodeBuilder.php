@@ -14,7 +14,7 @@ class NodeBuilder
 
 	public function build(INode $node, ?BuildOptions $buildOptions = null): string
 	{
-		return $node->toString(0, $buildOptions ?? BuildOptions::default());
+		return $node->build(0, $buildOptions ?? BuildOptions::default());
 	}
 
 	#endregion

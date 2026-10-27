@@ -47,7 +47,7 @@ abstract class SourceNode extends NodeBase
 	}
 
 	#[Override]
-	public function toString(int $level, BuildOptions $buildOptions): string
+	public function build(int $level, BuildOptions $buildOptions): string
 	{
 		return $this->source;
 	}
