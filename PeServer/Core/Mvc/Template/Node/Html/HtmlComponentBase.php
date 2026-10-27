@@ -16,7 +16,7 @@ abstract class HtmlComponentBase extends ComponentBase
 	/**
 	 * @phpstan-param TProps $props
 	 */
-	protected function __construct(Props $props, protected readonly HtmlBuilder $builder)
+	protected function __construct(Props $props, protected readonly HtmlBuilder $html)
 	{
 		parent::__construct($props);
 	}

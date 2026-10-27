@@ -37,7 +37,7 @@ class LocalGreetingComponent extends HtmlComponentBase
 	protected function getNode(): INode
 	{
 		$this->count++;
-		return $this->builder->div(new HtmlGlobalAttributes(), new TextNode($this->props->name));
+		return $this->html->div(new HtmlGlobalAttributes(), new TextNode($this->props->name));
 	}
 }
 

@@ -69,7 +69,7 @@ class LocalFactoryHtmlComponent extends HtmlComponentBase
 
 	public function getBuilder(): object
 	{
-		return $this->builder;
+		return $this->html;
 	}
 }
 
