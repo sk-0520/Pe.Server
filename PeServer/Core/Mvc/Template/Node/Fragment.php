@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc\Template\Node;
 
 use Override;
+use PeServer\Core\Collections\Arr;
 
 class Fragment extends NodeBase
 {
@@ -20,7 +21,7 @@ class Fragment extends NodeBase
 	/**
 	 * 生成。
 	 *
-	 * @param INode[] $nodes
+	 * @param INode|array<INode|null> $nodes
 	 */
 	public function __construct(
 		INode|array $nodes
@@ -28,7 +29,13 @@ class Fragment extends NodeBase
 		if ($nodes instanceof INode) {
 			$this->nodes = [$nodes];
 		} else {
-			$this->nodes = $nodes;
+			$filteredNodes = [];
+			foreach ($nodes as $node) {
+				if ($node !== null) {
+					$filteredNodes[] = $node;
+				}
+			}
+			$this->nodes = $filteredNodes;
 		}
 	}
 
