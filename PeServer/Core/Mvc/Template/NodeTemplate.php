@@ -37,7 +37,7 @@ class NodeTemplate extends TemplateBase
 	{
 		// @phpstan-ignore argument.type, argument.templateType
 		$component = $this->componentFactory->create($templateName, new RootProps($parameter, $this->stores, $this->environment));
-		$builder = is_subclass_of($templateName, HtmlComponentBase::class) ? new HtmlBuilder() : new XmlBuilder();
+		$builder = $this->componentFactory->getBuilder($templateName);
 
 		return $builder->build($component);
 	}

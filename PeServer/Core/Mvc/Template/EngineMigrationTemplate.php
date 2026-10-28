@@ -38,7 +38,7 @@ class EngineMigrationTemplate extends TemplateBase
 		}
 
 		$template = $this->container->new(SmartyTemplate::class, [TemplateOptions::class => $this->options]);
-		return $template->build($templateName, $parameter);
+		return $template->build($templateName . '.tpl', $parameter);
 	}
 
 	#endregion

@@ -13,7 +13,7 @@ trait RootHtmlComponentTrait
 	 * @param RootProps $props
 	 * @param HtmlBuilder $builder
 	 */
-	protected function __construct(RootProps $props, HtmlBuilder $builder)
+	public function __construct(RootProps $props, HtmlBuilder $builder)
 	{
 		parent::__construct($props, $builder);
 	}

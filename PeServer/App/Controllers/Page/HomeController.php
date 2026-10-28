@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace PeServer\App\Controllers\Page;
 
 use Exception;
-use IndexPage;
 use PeServer\App\Controllers\Page\PageControllerBase;
 use PeServer\App\Models\Domain\Page\Home\HomeAboutLogic;
 use PeServer\App\Models\Domain\Page\Home\HomeApiDocumentLogic;
@@ -13,6 +12,7 @@ use PeServer\App\Models\Domain\Page\Home\HomeContactLogic;
 use PeServer\App\Models\Domain\Page\Home\HomeIndexLogic;
 use PeServer\App\Models\Domain\Page\Home\HomePrivacyLogic;
 use PeServer\App\Models\Domain\Page\Home\HomeWildcardLogic;
+use PeServer\App\Views\Pages\Home\IndexPage;
 use PeServer\Core\Binary;
 use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Http\HttpStatus;

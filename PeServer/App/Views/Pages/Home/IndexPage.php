@@ -2,6 +2,11 @@
 
 declare(strict_types=1);
 
+namespace PeServer\App\Views\Pages\Home;
+
+use Override;
+use PeServer\App\Views\Components\Pages\Default\DefaultPage;
+use PeServer\App\Views\Components\Pages\Default\DefaultPageProps;
 use PeServer\Core\Mvc\Template\Node\Html\HtmlComponentTrait;
 use PeServer\Core\Mvc\Template\Node\Html\RootHtmlComponentBase;
 use PeServer\Core\Mvc\Template\Node\Html\RootHtmlComponentTrait;
@@ -22,7 +27,10 @@ class IndexPage extends RootHtmlComponentBase
 	#[Override]
 	protected function getNode(): INode
 	{
-		throw new \Exception('Not implemented');
+		return new DefaultPage(
+			new DefaultPageProps(),
+			$this->html
+		);
 	}
 
 	#endregion

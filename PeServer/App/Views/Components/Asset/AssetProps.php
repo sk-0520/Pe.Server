@@ -14,7 +14,6 @@ readonly class AssetProps extends Props
 		public bool|null $autoSize = null,
 		public bool|null $include = null,
 		public Rel|null $rel = null,
-
 	) {
 		//NOP
 	}

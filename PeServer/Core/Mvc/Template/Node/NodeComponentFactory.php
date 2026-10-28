@@ -15,6 +15,30 @@ class NodeComponentFactory extends DiFactoryBase
 {
 	use DiFactoryTrait;
 
+	#region variable
+
+	/** @var array<string,HtmlBuilder|XmlBuilder> */
+	private array $cache = [];
+
+	#endregion
+
+	#region function
+
+	public function getBuilder(string $component): HtmlBuilder|XmlBuilder
+	{
+		if (isset($this->cache[$component])) {
+			return $this->cache[$component];
+		}
+
+		// Html 系以外は Xml をフォールバックとする
+		$builder = is_subclass_of($component, HtmlComponentBase::class)
+			? new HtmlBuilder()
+			: new XmlBuilder();
+
+		$this->cache[$component] = $builder;
+		return $builder;
+	}
+
 	/**
 	 * ノードテンプレートを実体化。
 	 *
@@ -29,10 +53,7 @@ class NodeComponentFactory extends DiFactoryBase
 	 */
 	public function create(string $component, Props $props): ComponentBase
 	{
-		// Html 系以外は Xml をフォールバックとする
-		$builder = is_subclass_of($component, HtmlComponentBase::class)
-			? new HtmlBuilder()
-			: new XmlBuilder();
+		$builder = $this->getBuilder($component);
 		$arguments = [
 			-1 => $props,
 			$builder::class => $builder,
@@ -40,4 +61,6 @@ class NodeComponentFactory extends DiFactoryBase
 
 		return $this->container->new($component, $arguments);
 	}
+
+	#endregion
 }
