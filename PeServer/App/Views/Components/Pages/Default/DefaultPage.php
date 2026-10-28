@@ -13,6 +13,8 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\CharSet;
 use PeServer\Core\Mvc\Template\Node\Html\HtmlComponentBase;
 use PeServer\Core\Mvc\Template\Node\Html\HtmlComponentTrait;
 use PeServer\Core\Mvc\Template\Node\INode;
+use PeServer\Core\Mvc\Template\Node\TextNode;
+use PeServer\Core\Text;
 
 /**
  * @extends HtmlComponentBase<\PeServer\App\Views\Components\Pages\Default\DefaultPageProps>
@@ -40,7 +42,14 @@ class DefaultPage extends HtmlComponentBase
 						)),
 						$this->props->customHeadNode,
 
-						$this->html->title(new HtmlGlobalAttributes(), new Fragment([])),
+						$this->html->title(
+							new HtmlGlobalAttributes(),
+							new TextNode(
+								Text::isNullOrEmpty($this->props->title)
+									? 'Peサーバー'
+									: $this->props->title . " - Peサーバー"
+							)
+						),
 					]),
 				),
 				$this->html->body(
