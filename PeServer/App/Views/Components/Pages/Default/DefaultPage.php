@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\App\Views\Components;
+namespace PeServer\App\Views\Components\Pages\Default;
 
 use Override;
 use PeServer\Core\Mvc\Template\Node\Fragment;
@@ -15,10 +15,11 @@ use PeServer\Core\Mvc\Template\Node\Html\HtmlComponentTrait;
 use PeServer\Core\Mvc\Template\Node\INode;
 
 /**
- * @extends HtmlComponentBase<\PeServer\App\Views\Components\DefaultPageProps>
+ * @extends HtmlComponentBase<\PeServer\App\Views\Components\Pages\Default\DefaultPageProps>
  */
 class DefaultPage extends HtmlComponentBase
 {
+	/** @template-use HtmlComponentTrait<\PeServer\App\Views\Components\Pages\Default\DefaultPageProps> */
 	use HtmlComponentTrait;
 
 	#[Override]
@@ -37,7 +38,6 @@ class DefaultPage extends HtmlComponentBase
 							name: 'viewport',
 							content: 'width=device-width, initial-scale=1.0',
 						)),
-						/** @disregard P1014 */
 						$this->props->customHeadNode,
 
 						$this->html->title(new HtmlGlobalAttributes(), new Fragment([])),

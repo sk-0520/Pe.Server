@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\App\Controllers\Page;
 
 use Exception;
+use IndexPage;
 use PeServer\App\Controllers\Page\PageControllerBase;
 use PeServer\App\Models\Domain\Page\Home\HomeAboutLogic;
 use PeServer\App\Models\Domain\Page\Home\HomeApiDocumentLogic;
@@ -38,6 +39,14 @@ final class HomeController extends PageControllerBase
 		$logic->run(LogicCallMode::Initialize);
 
 		return $this->view('index', $logic->getViewData());
+	}
+
+	public function index2(): IActionResult
+	{
+		$logic = $this->createLogic(HomeIndexLogic::class);
+		$logic->run(LogicCallMode::Initialize);
+
+		return $this->view(IndexPage::class, $logic->getViewTemplateParameter());
 	}
 
 	public function privacy(): IActionResult

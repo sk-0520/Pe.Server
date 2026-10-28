@@ -28,8 +28,7 @@ abstract class ComponentBase extends NodeBase
 	/**
 	 * 生成。
 	 *
-	 * @param Props $props プロパティ。
-	 * @phpstan-param TProps $props
+	 * @param TProps $props プロパティ。
 	 */
 	protected function __construct(public readonly Props $props)
 	{
