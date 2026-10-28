@@ -13,11 +13,11 @@ use PeServer\Core\IO\Path;
 use PeServer\Core\Mvc\Template\ITemplateFactory;
 use PeServer\Core\Mvc\Template\SmartyTemplate;
 use PeServer\Core\Mvc\Template\TemplateBase;
-use PeServer\Core\Mvc\Template\TemplateEngineMigrationFactory;
+use PeServer\Core\Mvc\Template\TemplateFactory;
 use PeServer\Core\Mvc\Template\TemplateOptions;
 use PeServer\Core\Throws\NotImplementedException;
 
-class AppTemplateFactory extends TemplateEngineMigrationFactory
+class AppTemplateFactory extends TemplateFactory
 {
 	#region TemplateFactory
 

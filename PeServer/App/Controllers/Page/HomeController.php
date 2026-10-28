@@ -46,7 +46,7 @@ final class HomeController extends PageControllerBase
 		$logic = $this->createLogic(HomeIndexLogic::class);
 		$logic->run(LogicCallMode::Initialize);
 
-		return $this->view(IndexPage::class, $logic->getViewTemplateParameter());
+		return $this->view(IndexPage::class, $logic->getViewData());
 	}
 
 	public function privacy(): IActionResult

@@ -13,7 +13,7 @@ description: "Pe.Server プロジェクトでのテンプレートエンジン�
 
 * SmartyTemplate(Smarty) と NodeTemplate(独自実装) が共存している状態で開発が進んでいる
 * 元々 Smarty を使用していたが、 PHP 自体を devContainer で開発するとファイル IO が遅くなるため、独自実装のに舵を切った背景がある
-* TemplateEngineMigrationFactory, EngineMigrationTemplate が移行期間中の共存テンプレートとなる
+* EngineMigrationTemplate が移行期間中の共存テンプレートとなる
 * 置き換え
   1. Smarty テンプレート(View)を独自実装テンプレート(View)に置き換える
   2. React による UI 構築

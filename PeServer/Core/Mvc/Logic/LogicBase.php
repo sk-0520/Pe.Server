@@ -576,14 +576,6 @@ abstract class LogicBase implements IValidationReceiver
 		);
 	}
 
-	public function getViewTemplateParameter(): TemplateParameter
-	{
-		return new TemplateParameter(
-			$this->httpResponseStatus,
-			$this->values,
-			$this->errors
-		);
-	}
 
 	final protected function setTextContent(string $data): void
 	{

@@ -84,6 +84,7 @@ final readonly class AppRouteSetting extends RouteSetting
 			$actionShutdownMiddleware,
 			[
 				(new RouteInformation(Text::EMPTY, HomeController::class))
+					->addAction('index2', HttpMethod::gets(), 'index2')
 					->addAction('about', HttpMethod::gets(), 'about')
 					->addAction('about/privacy', HttpMethod::gets(), 'privacy')
 					->addAction('about/contact', HttpMethod::gets(), 'contact_get')

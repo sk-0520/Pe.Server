@@ -6,11 +6,10 @@ namespace PeServer\Core\Mvc\Template;
 
 use Override;
 use PeServer\Core\Environment;
-use PeServer\Core\Mvc\Template\Node\ComponentBase;
+use PeServer\Core\Mvc\Template\Node\RootProps;
 use PeServer\Core\Mvc\Template\Node\Html\HtmlBuilder;
 use PeServer\Core\Mvc\Template\Node\Html\HtmlComponentBase;
 use PeServer\Core\Mvc\Template\Node\NodeComponentFactory;
-use PeServer\Core\Mvc\Template\Node\PageProps;
 use PeServer\Core\Mvc\Template\Node\XmlBuilder;
 use PeServer\Core\Mvc\Template\TemplateOptions;
 use PeServer\Core\Mvc\Template\TemplateParameter;
@@ -37,7 +36,7 @@ class NodeTemplate extends TemplateBase
 	public function build(string $templateName, TemplateParameter $parameter): string
 	{
 		// @phpstan-ignore argument.type, argument.templateType
-		$component = $this->componentFactory->create($templateName, new PageProps($parameter, $this->stores, $this->environment));
+		$component = $this->componentFactory->create($templateName, new RootProps($parameter, $this->stores, $this->environment));
 		$builder = is_subclass_of($templateName, HtmlComponentBase::class) ? new HtmlBuilder() : new XmlBuilder();
 
 		return $builder->build($component);

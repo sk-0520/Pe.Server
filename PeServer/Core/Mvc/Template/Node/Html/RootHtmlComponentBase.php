@@ -8,11 +8,17 @@ use PeServer\Core\Mvc\Template\Node\ComponentBase;
 use PeServer\Core\Mvc\Template\Node\RootProps;
 
 /**
- * @template TProps of RootProps
- * @extends ComponentBase<TProps>
+ * @template TRootProps of RootProps
+ * @extends ComponentBase<TRootProps>
  */
 abstract class RootHtmlComponentBase extends ComponentBase
 {
-	/** @template-use HtmlComponentTrait<TProps> */
-	use HtmlComponentTrait;
+	/**
+	 * @param TRootProps $props
+	 * @param HtmlBuilder $builder
+	 */
+	protected function __construct(RootProps $props, readonly protected HtmlBuilder $builder)
+	{
+		parent::__construct($props);
+	}
 }

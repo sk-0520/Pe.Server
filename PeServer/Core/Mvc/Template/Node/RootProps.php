@@ -10,13 +10,10 @@ use PeServer\Core\Store\Stores;
 
 /**
  * ページコンポーネントへ渡す共通 Props。
- *
- * @template TTemplateParameter of TemplateParameter
  */
 readonly class RootProps extends Props
 {
 	public function __construct(
-		/** @param TTemplateParameter $parameter */
 		public TemplateParameter $parameter,
 		public Stores $stores,
 		public Environment $environment
