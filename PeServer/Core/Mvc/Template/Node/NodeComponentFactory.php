@@ -55,6 +55,8 @@ class NodeComponentFactory extends DiFactoryBase
 			? HtmlNodeContext::class
 			: XmlNodeContext::class;
 
+		//ここでcontextを作成するべし
+
 		return $this->container->new($nodeContextClassName, [
 			-1 => $builder,
 		]);
