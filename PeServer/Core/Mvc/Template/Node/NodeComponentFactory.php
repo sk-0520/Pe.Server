@@ -56,6 +56,7 @@ class NodeComponentFactory extends DiFactoryBase
 			: XmlNodeContext::class;
 
 		//ここでcontextを作成するべし
+		// あれ これコンテキスト作る場所か？ あーわからん
 
 		return $this->container->new($nodeContextClassName, [
 			-1 => $builder,
