@@ -2,9 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PeServer\Core\Mvc\Template\Node;
+namespace PeServer\Core\Mvc\Template\Node\Xml;
 
 use Override;
+use PeServer\Core\Mvc\Template\Node\INode;
+use PeServer\Core\Mvc\Template\Node\NodeBuilder;
+use PeServer\Core\Mvc\Template\Node\BuildOptions;
 use PeServer\Core\Encoding;
 use PeServer\Core\Mvc\Template\Node\Attribute\AttributesBase;
 use PeServer\Core\Text;

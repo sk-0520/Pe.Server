@@ -7,9 +7,12 @@ namespace PeServer\Core\Mvc\Template\Node;
 use PeServer\Core\DI\DiFactoryTrait;
 use PeServer\Core\DI\DiFactoryBase;
 use PeServer\Core\Mvc\Template\Node\ComponentBase;
+use PeServer\Core\Mvc\Template\Node\NodeContext;
+use PeServer\Core\Mvc\Template\Node\Html\HtmlNodeContext;
+use PeServer\Core\Mvc\Template\Node\Xml\XmlNodeContext;
 use PeServer\Core\Mvc\Template\Node\Html\HtmlBuilder;
 use PeServer\Core\Mvc\Template\Node\Html\HtmlComponentBase;
-use PeServer\Core\Mvc\Template\Node\XmlBuilder;
+use PeServer\Core\Mvc\Template\Node\Xml\XmlBuilder;
 
 class NodeComponentFactory extends DiFactoryBase
 {
@@ -40,6 +43,24 @@ class NodeComponentFactory extends DiFactoryBase
 	}
 
 	/**
+	 * コンポーネントに対応するノードコンテキストを作成する。
+	 *
+	 * @param string $component
+	 * @return HtmlNodeContext|XmlNodeContext
+	 */
+	public function createContext(string $component): HtmlNodeContext|XmlNodeContext
+	{
+		$builder = $this->getBuilder($component);
+		$nodeContextClassName = $builder instanceof HtmlBuilder
+			? HtmlNodeContext::class
+			: XmlNodeContext::class;
+
+		return $this->container->new($nodeContextClassName, [
+			-1 => $builder,
+		]);
+	}
+
+	/**
 	 * ノードテンプレートを実体化。
 	 *
 	 * @template TProps of \PeServer\Core\Mvc\Template\Node\Props
@@ -53,10 +74,8 @@ class NodeComponentFactory extends DiFactoryBase
 	 */
 	public function create(string $component, Props $props): ComponentBase
 	{
-		$builder = $this->getBuilder($component);
 		$arguments = [
 			-1 => $props,
-			$builder::class => $builder,
 		];
 
 		return $this->container->new($component, $arguments);

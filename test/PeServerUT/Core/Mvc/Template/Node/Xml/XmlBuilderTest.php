@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace PeServerUT\Core\Mvc\Template\Node;
+namespace PeServerUT\Core\Mvc\Template\Node\Xml;
 
 use PeServer\Core\Encoding;
 use PeServer\Core\Mvc\Template\Node\BuildOptions;
 use PeServer\Core\Mvc\Template\Node\NodeBuilder;
 use PeServer\Core\Mvc\Template\Node\TextNode;
-use PeServer\Core\Mvc\Template\Node\XmlBuilder;
+use PeServer\Core\Mvc\Template\Node\Xml\XmlBuilder;
 use PeServerTest\TestClass;
 
 class XmlBuilderTest extends TestClass

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\App\Views\Components\Asset;
 
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Rel;
+use PeServer\Core\Mvc\Template\Node\NodeContext;
 use PeServer\Core\Mvc\Template\Node\Props;
 
 readonly class AssetProps extends Props

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc\Template\Node\Html;
 
 use PeServer\Core\Mvc\Template\Node\Html\HtmlComponentBase;
-use PeServer\Core\Mvc\Template\Node\Html\HtmlBuilder;
+use PeServer\Core\Mvc\Template\Node\Html\HtmlNodeContext;
 use PeServer\Core\Mvc\Template\Node\RootProps;
 
 /**
@@ -16,10 +16,10 @@ abstract class RootHtmlComponentBase extends HtmlComponentBase
 {
 	/**
 	 * @param TRootProps $props
-	 * @param HtmlBuilder $builder
+	 * @param HtmlNodeContext $context
 	 */
-	protected function __construct(RootProps $props, HtmlBuilder $builder)
+	protected function __construct(RootProps $props, HtmlNodeContext $context)
 	{
-		parent::__construct($props, $builder);
+		parent::__construct($props, $context);
 	}
 }

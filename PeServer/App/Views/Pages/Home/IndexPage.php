@@ -16,7 +16,8 @@ use PeServer\Core\Mvc\Template\TemplateParameter;
 use PeServer\Core\Mvc\Template\TemplateRenderer;
 
 /**
- * @extends RootHtmlComponentBase<RootProps>
+ * @template TRootProps of \PeServer\Core\Mvc\Template\Node\RootProps
+ * @extends RootHtmlComponentBase<TRootProps>
  */
 class IndexPage extends RootHtmlComponentBase
 {
@@ -29,7 +30,7 @@ class IndexPage extends RootHtmlComponentBase
 	{
 		return new DefaultPage(
 			new DefaultPageProps(),
-			$this->html
+			$this->context
 		);
 	}
 
