@@ -10,7 +10,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\ScriptType;
 /**
  * script 要素の中身。
  */
-abstract class ScriptSourceNode extends SourceNode
+abstract class ScriptSourceNodeBase extends SourceNode
 {
 	protected function __construct(string $source, ?Regex $regex = null)
 	{

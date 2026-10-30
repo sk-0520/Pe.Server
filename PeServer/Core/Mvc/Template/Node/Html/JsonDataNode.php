@@ -16,7 +16,7 @@ use PeServer\Core\Throws\SerializeException;
  * 既定のシリアライザーでは `<` `>` `&` `'` `"` が常にエスケープされる。
  * 注入されたシリアライザーの出力が script 要素を壊す場合は、`SourceNode` の検査で例外となる。
  */
-class JsonDataNode extends ScriptSourceNode
+class JsonDataNode extends ScriptSourceNodeBase
 {
 	#region define
 

@@ -999,7 +999,7 @@ class HtmlBuilder extends NodeBuilder
 		);
 	}
 
-	public function script(HTMLScriptAttributes $attributes, ScriptSourceNode|null $children = null): HtmlElement
+	public function script(HTMLScriptAttributes $attributes, ScriptSourceNodeBase|null $children = null): HtmlElement
 	{
 		if ($children !== null && !$children->isAllowedType($attributes->type)) {
 			throw new ArgumentException('type');

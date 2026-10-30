@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace PeServer\Core;
 
-use Throwable;
 use PeServer\Core\Throws\ArgumentException;
-use PeServer\Core\Throws\Throws;
 use PeServer\Core\Throws\RegexException;
 use PeServer\Core\Throws\StringException;
+use PeServer\Core\Throws\Throws;
+use Throwable;
+use UnitEnum;
 
 /**
  * 文字列操作。
@@ -597,7 +598,7 @@ abstract class Text
 	{
 		//return print_r($value, true);
 
-		$val = OutputBuffer::get(fn () => var_dump($value));
+		$val = OutputBuffer::get(fn() => var_dump($value));
 		if ($val->hasNull()) {
 			return $val->toBase64();
 		}
@@ -689,6 +690,10 @@ abstract class Text
 
 		if (is_array($raw)) {
 			return self::join($newline, $raw);
+		}
+
+		if ($raw instanceof UnitEnum) {
+			return $raw->name;
 		}
 
 		return strval($raw);

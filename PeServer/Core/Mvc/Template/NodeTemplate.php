@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc\Template;
 
 use Override;
+use PeServer\Core\Mvc\Template\Node\Xml\XmlNodeContext;
 use PeServer\Core\Environment;
 use PeServer\Core\Mvc\Template\Node\ComponentBase;
 use PeServer\Core\Mvc\Template\Node\Html\HtmlBuilder;
@@ -31,20 +32,21 @@ class NodeTemplate extends TemplateBase
 
 	/**
 	 * 描画。
-	 *
 	 * @param string $templateName 描画する `ComponentBase` のクラス名。
+	 * @param TemplateParameter $parameter
 	 */
 	#[Override]
 	public function build(string $templateName, TemplateParameter $parameter): string
 	{
-		/* @var class-string<ComponentBase> $templateName */
 		$context = $this->componentFactory->createContext($templateName);
 
+		// 色々辛い
 		// @phpstan-ignore argument.templateType
 		$component = $this->componentFactory->create(
 			// @phpstan-ignore argument.type
 			$templateName,
-			new RootProps($parameter, $context)
+			new RootProps($parameter),
+			$context
 		);
 
 		return $context->builder->build($component);

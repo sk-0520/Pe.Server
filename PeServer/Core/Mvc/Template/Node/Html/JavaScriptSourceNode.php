@@ -11,7 +11,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\ScriptType;
 /**
  * 実行される JavaScript(クラシックスクリプトまたはモジュール)。
  */
-class JavaScriptSourceNode extends ScriptSourceNode
+class JavaScriptSourceNode extends ScriptSourceNodeBase
 {
 	public function __construct(string $source, ?Regex $regex = null)
 	{

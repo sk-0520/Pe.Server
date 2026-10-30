@@ -7,7 +7,7 @@ namespace PeServer\Core\Mvc\Template\Node;
 use PeServer\Core\DI\DiFactoryTrait;
 use PeServer\Core\DI\DiFactoryBase;
 use PeServer\Core\Mvc\Template\Node\ComponentBase;
-use PeServer\Core\Mvc\Template\Node\NodeContext;
+use PeServer\Core\Mvc\Template\Node\NodeContextBase;
 use PeServer\Core\Mvc\Template\Node\Html\HtmlNodeContext;
 use PeServer\Core\Mvc\Template\Node\Xml\XmlNodeContext;
 use PeServer\Core\Mvc\Template\Node\Html\HtmlBuilder;
@@ -72,13 +72,15 @@ class NodeComponentFactory extends DiFactoryBase
 	 * @phpstan-param class-string<TComponent> $component
 	 * @param Props $props
 	 * @phpstan-param TProps $props
+	 * @param NodeContextBase $context
 	 * @return ComponentBase
 	 * @phpstan-return TComponent
 	 */
-	public function create(string $component, Props $props): ComponentBase
+	public function create(string $component, Props $props, NodeContextBase $context): ComponentBase
 	{
 		$arguments = [
 			-1 => $props,
+			-2 => $context,
 		];
 
 		return $this->container->new($component, $arguments);
