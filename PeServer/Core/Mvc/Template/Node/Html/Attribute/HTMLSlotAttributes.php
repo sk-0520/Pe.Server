@@ -37,7 +37,7 @@ class HTMLSlotAttributes extends HtmlGlobalAttributes
 		AutoCapitalize|null $autoCapitalize = null,
 		AutoCorrect|null $autoCorrect = null,
 		bool|null $autoFocus = null,
-		string|null $className = null,
+		string|StringValues|null $className = null,
 		ContentEditable|null $contentEditable = null,
 		DataAttributes|null $data = null,
 		Direction|null $dir = null,

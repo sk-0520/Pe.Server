@@ -29,7 +29,9 @@ class IndexPage extends RootHtmlComponentBase
 	protected function getNode(): INode
 	{
 		return new DefaultPage(
-			new DefaultPageProps(),
+			new DefaultPageProps(
+				parameter: $this->props->parameter
+			),
 			$this->context
 		);
 	}

@@ -7,9 +7,12 @@ namespace PeServer\App\Views\Components\Pages\Default;
 use Override;
 use PeServer\App\Views\Components\Asset\Asset;
 use PeServer\App\Views\Components\Asset\AssetProps;
+use PeServer\Core\Collections\Arr;
+use PeServer\Core\Mvc\Template\Node\Attribute\Value\StringValues;
 use PeServer\Core\Mvc\Template\Node\Fragment;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HtmlGlobalAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLHtmlAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLLiAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLMetaAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLScriptAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\CharSet;
@@ -76,8 +79,48 @@ class DefaultPage extends HtmlComponentBase
 					new HtmlGlobalAttributes(),
 					new Fragment([
 						$this->context->builder->main(
-							new HtmlGlobalAttributes(),
-							new Fragment([])
+							new HtmlGlobalAttributes(
+								id: "main"
+							),
+							new Fragment([
+								$this->context->builder->h1(
+									new HtmlGlobalAttributes(),
+									new Fragment([
+										new TextNode(
+											// ページのタイトル(!=title)は原則必要なのでフォールバックは行わない
+											$this->props->title ?? Text::EMPTY
+										),
+										$this->context->environment->isDevelopment()
+											? $this->context->builder->span(
+												new HtmlGlobalAttributes(
+													className: "mute",
+													style: "margin-left: 1em;",
+												),
+												new TextNode('(dev)')
+											)
+											: null
+									]),
+								),
+								isset($this->props->parameter->values["temp_messages"]) && !Arr::isNullOrEmpty($this->props->parameter->values["temp_messages"])
+									? $this->context->builder->div(
+										new HtmlGlobalAttributes(
+											className: new StringValues(["common", "messages"])
+										),
+										$this->context->builder->ul(
+											new HtmlGlobalAttributes(),
+											new Fragment(
+												Arr::map(
+													$this->props->parameter->values["temp_messages"],
+													fn($a) => $this->context->builder->li(
+														new HTMLLiAttributes(),
+														new TextNode($a)
+													)
+												)
+											)
+										)
+									)
+									: null,
+							])
 						),
 						new Asset(
 							new AssetProps(

@@ -16,6 +16,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Popover;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Translate;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\VirtualKeyboardPolicy;
 use PeServer\Core\Mvc\Template\Node\Html\HtmlDeprecated;
+use PeServer\Core\Mvc\Template\Node\Attribute\Value\StringValues;
 
 class HTMLBrAttributes extends HtmlGlobalAttributes
 {
@@ -29,7 +30,7 @@ class HTMLBrAttributes extends HtmlGlobalAttributes
 		AutoCapitalize|null $autoCapitalize = null,
 		AutoCorrect|null $autoCorrect = null,
 		bool|null $autoFocus = null,
-		string|null $className = null,
+		string|StringValues|null $className = null,
 		ContentEditable|null $contentEditable = null,
 		DataAttributes|null $data = null,
 		Direction|null $dir = null,

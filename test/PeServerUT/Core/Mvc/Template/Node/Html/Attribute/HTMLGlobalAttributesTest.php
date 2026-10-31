@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServerUT\Core\Mvc\Template\Node\Html\Attribute;
 
 use PeServer\Core\Mvc\Template\Node\Attribute\AttributeValueMark;
+use PeServer\Core\Mvc\Template\Node\Attribute\Value\StringValues;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\DataAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HtmlGlobalAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\AutoCapitalize;
@@ -117,6 +118,18 @@ class HtmlGlobalAttributesTest extends TestClass
 	public static function provider_build()
 	{
 		return [
+			[
+				"class=\"example\"",
+				new HtmlGlobalAttributes(className: 'example'),
+				'className',
+				AttributeValueMark::DoubleQuote
+			],
+			[
+				"class=\"example1 example2\"",
+				new HtmlGlobalAttributes(className: new StringValues(['example1', 'example2'])),
+				'className',
+				AttributeValueMark::DoubleQuote
+			],
 			[
 				'id="example"',
 				new HtmlGlobalAttributes(id: 'example'),

@@ -44,6 +44,11 @@ readonly abstract class ValuesBase implements IAttributeValue
 		return (string)$value;
 	}
 
+	/**
+	 * セパレータを取得。
+	 *
+	 * @return string デフォルト(ValuesBase)ではスペース。
+	 */
 	protected function getSeparator(): string
 	{
 		return " ";

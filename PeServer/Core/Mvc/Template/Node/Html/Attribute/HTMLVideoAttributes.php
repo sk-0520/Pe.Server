@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServer\Core\Mvc\Template\Node\Html\Attribute;
 
 use PeServer\Core\Mvc\Template\Node\Attribute\BuildName;
+use PeServer\Core\Mvc\Template\Node\Attribute\Value\StringValues;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\AttributeNames;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\BuildAttributeNameOnly;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\DataAttributes;
@@ -13,7 +14,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\AutoCorrect;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\ControlsListValues;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Bcp47;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\ContentEditable;
-use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\ControlsList as ControlsList;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\ControlsList;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\CrossOrigin;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Direction;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\InputMode;
@@ -67,7 +68,7 @@ class HTMLVideoAttributes extends HtmlGlobalAttributes
 		AutoCapitalize|null $autoCapitalize = null,
 		AutoCorrect|null $autoCorrect = null,
 		bool|null $autoFocus = null,
-		string|null $className = null,
+		string|StringValues|null $className = null,
 		ContentEditable|null $contentEditable = null,
 		DataAttributes|null $data = null,
 		Direction|null $dir = null,

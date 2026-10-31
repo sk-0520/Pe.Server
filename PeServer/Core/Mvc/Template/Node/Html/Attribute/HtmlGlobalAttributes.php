@@ -11,6 +11,7 @@ use PeServer\Core\Mvc\Template\Node\Attribute\AttributesBase;
 use PeServer\Core\Mvc\Template\Node\Attribute\AttributeValueMark;
 use PeServer\Core\Mvc\Template\Node\Attribute\Value\IAttributeValue;
 use PeServer\Core\Mvc\Template\Node\Attribute\BuildName;
+use PeServer\Core\Mvc\Template\Node\Attribute\Value\StringValues;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\DataAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\AutoCapitalize;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\AutoCorrect;
@@ -49,7 +50,7 @@ class HtmlGlobalAttributes extends AttributesBase
 		#[BuildAttributeNameOnly()]
 		public readonly bool|null $autoFocus = null,
 		#[BuildName('class')]
-		public readonly string|null $className = null,
+		public readonly string|StringValues|null $className = null,
 		#[BuildName('contenteditable')]
 		public readonly ContentEditable|null $contentEditable = null,
 		public readonly DataAttributes|null $data = null,

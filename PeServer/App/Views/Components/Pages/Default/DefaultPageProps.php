@@ -11,10 +11,12 @@ use PeServer\Core\Mvc\Template\Node\Html\CssSourceNode;
 use PeServer\Core\Mvc\Template\Node\Html\ScriptSourceNodeBase;
 use PeServer\Core\Mvc\Template\Node\INode;
 use PeServer\Core\Mvc\Template\Node\Props;
+use PeServer\Core\Mvc\Template\TemplateParameter;
 
 readonly class DefaultPageProps extends Props
 {
 	public function __construct(
+		public TemplateParameter $parameter,
 		public Bcp47 $lang = Bcp47::Japanese,
 		public string|null $title = null,
 		public INode|null $customHeadNode = null,
