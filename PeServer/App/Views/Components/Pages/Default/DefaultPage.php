@@ -120,6 +120,7 @@ class DefaultPage extends HtmlComponentBase
 										)
 									)
 									: null,
+
 							])
 						),
 						new Asset(
