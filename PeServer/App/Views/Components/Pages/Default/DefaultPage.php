@@ -147,6 +147,10 @@ class DefaultPage extends HtmlComponentBase
 								)
 							])
 						),
+						// nav
+						// header
+						// footer
+						//---
 						new Asset(
 							new AssetProps(
 								file: $this->props->defaultScriptPath ?? "/scripts/script.js",
