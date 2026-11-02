@@ -7,9 +7,13 @@ namespace PeServer\App\Views\Components\Pages\Default;
 use Override;
 use PeServer\App\Views\Components\Asset\Asset;
 use PeServer\App\Views\Components\Asset\AssetProps;
+use PeServer\App\Views\Components\ShowErrorMessages\ShowErrorMessages;
+use PeServer\App\Views\Components\ShowErrorMessages\ShowErrorMessagesProps;
 use PeServer\Core\Collections\Arr;
+use PeServer\Core\Mvc\Logic\Validator;
 use PeServer\Core\Mvc\Template\Node\Attribute\Value\StringValues;
 use PeServer\Core\Mvc\Template\Node\Fragment;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\DataAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HtmlGlobalAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLHtmlAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLLiAttributes;
@@ -101,6 +105,7 @@ class DefaultPage extends HtmlComponentBase
 											: null
 									]),
 								),
+								// temp_messages
 								isset($this->props->parameter->values["temp_messages"]) && !Arr::isNullOrEmpty($this->props->parameter->values["temp_messages"])
 									? $this->context->builder->div(
 										new HtmlGlobalAttributes(
@@ -111,16 +116,27 @@ class DefaultPage extends HtmlComponentBase
 											new Fragment(
 												Arr::map(
 													$this->props->parameter->values["temp_messages"],
-													fn($a) => $this->context->builder->li(
-														new HTMLLiAttributes(),
-														new TextNode($a)
+													fn($value, $key) => $this->context->builder->li(
+														new HTMLLiAttributes(
+															data: new DataAttributes([
+																$key => $value
+															])
+														),
+														new TextNode($value)
 													)
 												)
 											)
 										)
 									)
 									: null,
-
+								// show_error_messages
+								new ShowErrorMessages(
+									new ShowErrorMessagesProps(
+										messages: $this->props->parameter->values["error_messages"] ?? [],
+										key: Validator::COMMON,
+									),
+									$this->context
+								)
 							])
 						),
 						new Asset(

@@ -12,8 +12,10 @@ use PeServer\Core\Mvc\Template\Node\Props;
 readonly class ShowErrorMessagesProps extends Props
 {
 	public function __construct(
-		public string $key,
 		/** @var string[] */
 		public array $messages,
-	) {}
+		public string $key = Validator::COMMON,
+	) {
+		//NOP
+	}
 }
