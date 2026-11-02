@@ -27,6 +27,7 @@ use PeServer\Core\Mvc\Template\Node\Html\HtmlComponentTrait;
 use PeServer\Core\Mvc\Template\Node\Html\HtmlNodeContext;
 use PeServer\Core\Mvc\Template\Node\Html\JavaScriptSourceNode;
 use PeServer\Core\Mvc\Template\Node\INode;
+use PeServer\Core\Mvc\Template\Node\NoneNode;
 use PeServer\Core\Mvc\Template\Node\TextNode;
 use PeServer\Core\Text;
 
@@ -136,6 +137,13 @@ class DefaultPage extends HtmlComponentBase
 										key: Validator::COMMON,
 									),
 									$this->context
+								),
+								// {block name='BODY'}
+								$this->context->builder->section(
+									new HtmlGlobalAttributes(
+										id: "content"
+									),
+									$this->props->children ?? NoneNode::get()
 								)
 							])
 						),
