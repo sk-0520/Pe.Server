@@ -40,13 +40,17 @@ class AccountControllerTest extends ItControllerClass
 		return self::_provider_it_notLogin([
 			'/account',
 			'/account/login',
+			'/account/index2',
+			'/account/login2',
+			'/account2',
+			'/account2/login',
 		]);
 	}
 
 	#[DataProvider('provider_it_notLogin')]
 	public function test_it_notLogin(string $path)
 	{
-		$this->_test_notLogin($path, '2');
+		$this->_test_notLogin($path, '/account2');
 	}
 
 	public function test_login_get_notLogin()
@@ -59,14 +63,14 @@ class AccountControllerTest extends ItControllerClass
 		$this->assertTextNode(
 			'',
 			$actual->html->path()->collections(
-				"//*[@id='content']/form[1][@action='/account/login2']//*[contains(@class,'input')]//dt[text()='ログインID']/following-sibling::dd[1]"
+				"//*[@id='content']/form[1][@action='/account2/login']//*[contains(@class,'input')]//dt[text()='ログインID']/following-sibling::dd[1]"
 			)->single()
 		);
 
 		$this->assertTextNode(
 			'',
 			$actual->html->path()->collections(
-				"//*[@id='content']/form[1][@action='/account/login2']//*[contains(@class,'input')]//dt[text()='パスワード']/following-sibling::dd[1]"
+				"//*[@id='content']/form[1][@action='/account2/login']//*[contains(@class,'input')]//dt[text()='パスワード']/following-sibling::dd[1]"
 			)->single()
 		);
 	}
@@ -78,26 +82,26 @@ class AccountControllerTest extends ItControllerClass
 		);
 
 		$actual = $this->call(HttpMethod::Get, '/account/login', $options);
-		$this->assertRedirectPath(HttpStatus::Found, '/account/user2', null, $actual);
+		$this->assertRedirectPath(HttpStatus::Found, '/account2/user', null, $actual);
 	}
 
 	public function test_login_get2_notLogin()
 	{
-		$actual = $this->call(HttpMethod::Get, '/account/login2');
+		$actual = $this->call(HttpMethod::Get, '/account2/login');
 
 		$this->assertStatusOK($actual);
 		$this->assertTitle('ログイン', $actual);
 		$this->assertCount(1, $actual->html->path()->collections(
-			"//*[@id='content']/form[@action='/account/login2']//input[@name='account_login_login_id']"
+			"//*[@id='content']/form[@action='/account2/login']//input[@name='account_login_login_id']"
 		));
 	}
 
 	public function test_login_get2_login()
 	{
 		$options = new ItOptions(stores: ItMockStores::account(UserLevel::USER));
-		$actual = $this->call(HttpMethod::Get, '/account/login2', $options);
+		$actual = $this->call(HttpMethod::Get, '/account2/login', $options);
 
-		$this->assertRedirectPath(HttpStatus::Found, '/account/user2', null, $actual);
+		$this->assertRedirectPath(HttpStatus::Found, '/account2/user', null, $actual);
 	}
 
 	public static function provider_login_post_notLogin_throw()
@@ -151,14 +155,14 @@ class AccountControllerTest extends ItControllerClass
 		$this->assertTextNode(
 			'',
 			$actual->html->path()->collections(
-				"//*[@id='content']/form[1][@action='/account/login2']//*[contains(@class,'input')]//dt[text()='ログインID']/following-sibling::dd[1]"
+				"//*[@id='content']/form[1][@action='/account2/login']//*[contains(@class,'input')]//dt[text()='ログインID']/following-sibling::dd[1]"
 			)->single()
 		);
 
 		$this->assertTextNode(
 			'',
 			$actual->html->path()->collections(
-				"//*[@id='content']/form[1][@action='/account/login2']//*[contains(@class,'input')]//dt[text()='パスワード']/following-sibling::dd[1]"
+				"//*[@id='content']/form[1][@action='/account2/login']//*[contains(@class,'input')]//dt[text()='パスワード']/following-sibling::dd[1]"
 			)->single()
 		);
 	}
@@ -189,14 +193,14 @@ class AccountControllerTest extends ItControllerClass
 		$this->assertTextNode(
 			'',
 			$actual->html->path()->collections(
-				"//*[@id='content']/form[1][@action='/account/login2']//*[contains(@class,'input')]//dt[text()='ログインID']/following-sibling::dd[1]"
+				"//*[@id='content']/form[1][@action='/account2/login']//*[contains(@class,'input')]//dt[text()='ログインID']/following-sibling::dd[1]"
 			)->single()
 		);
 
 		$this->assertTextNode(
 			'',
 			$actual->html->path()->collections(
-				"//*[@id='content']/form[1][@action='/account/login2']//*[contains(@class,'input')]//dt[text()='パスワード']/following-sibling::dd[1]"
+				"//*[@id='content']/form[1][@action='/account2/login']//*[contains(@class,'input')]//dt[text()='パスワード']/following-sibling::dd[1]"
 			)->single()
 		);
 
@@ -231,14 +235,14 @@ class AccountControllerTest extends ItControllerClass
 		$this->assertTextNode(
 			'',
 			$actual->html->path()->collections(
-				"//*[@id='content']/form[1][@action='/account/login2']//*[contains(@class,'input')]//dt[text()='ログインID']/following-sibling::dd[1]"
+				"//*[@id='content']/form[1][@action='/account2/login']//*[contains(@class,'input')]//dt[text()='ログインID']/following-sibling::dd[1]"
 			)->single()
 		);
 
 		$this->assertTextNode(
 			'',
 			$actual->html->path()->collections(
-				"//*[@id='content']/form[1][@action='/account/login2']//*[contains(@class,'input')]//dt[text()='パスワード']/following-sibling::dd[1]"
+				"//*[@id='content']/form[1][@action='/account2/login']//*[contains(@class,'input')]//dt[text()='パスワード']/following-sibling::dd[1]"
 			)->single()
 		);
 	}
@@ -247,7 +251,7 @@ class AccountControllerTest extends ItControllerClass
 	{
 		return [
 			['/account/login'],
-			['/account/login2'],
+			['/account2/login'],
 		];
 	}
 
@@ -269,7 +273,7 @@ class AccountControllerTest extends ItControllerClass
 			$userAuthenticationsEntityDao->insertUserAuthentication(ItMockStores::SESSION_ACCOUNT_USER_ID, Cryptography::hashPassword('password'));
 		});
 
-		$this->assertRedirectPath(HttpStatus::Found, '/account/index2', null, $actual);
+		$this->assertRedirectPath(HttpStatus::Found, '/account2', null, $actual);
 
 		$context = $actual->openDB();
 		$auditResult = $this->getMaybeLatestAuditLog($context);
@@ -284,7 +288,7 @@ class AccountControllerTest extends ItControllerClass
 			stores: ItMockStores::account(UserLevel::USER),
 		);
 		$actual = $this->call(HttpMethod::Post, $path, $options);
-		$this->assertRedirectPath(HttpStatus::Found, '/account/user2', null, $actual);
+		$this->assertRedirectPath(HttpStatus::Found, '/account2/user', null, $actual);
 	}
 
 	#[DataProvider('provider_login_post_empty_input')]
@@ -297,13 +301,13 @@ class AccountControllerTest extends ItControllerClass
 				'account_login_password' => $password,
 			]),
 		);
-		$actual = $this->call(HttpMethod::Post, '/account/login2', $options);
+		$actual = $this->call(HttpMethod::Post, '/account2/login', $options);
 
 		$this->assertStatusOK($actual);
 		$this->assertTitle('ログイン', $actual);
 		$this->assertVisibleCommonError(['ログインID/パスワードが正しくありません'], $actual);
 		$this->assertCount(1, $actual->html->path()->collections(
-			"//*[@id='content']/form[@action='/account/login2']//input[@name='account_login_login_id']"
+			"//*[@id='content']/form[@action='/account2/login']//input[@name='account_login_login_id']"
 		));
 	}
 
@@ -311,7 +315,7 @@ class AccountControllerTest extends ItControllerClass
 	public function test_login_post2_notLogin_throw(ItMockStores $input)
 	{
 		$this->expectException(HttpStatusException::class);
-		$this->call(HttpMethod::Post, '/account/login2', new ItOptions(stores: $input));
+		$this->call(HttpMethod::Post, '/account2/login', new ItOptions(stores: $input));
 	}
 
 	public function test_logout_notLogin()
@@ -505,7 +509,7 @@ class AccountControllerTest extends ItControllerClass
 	{
 		return [
 			['/account/user/edit'],
-			['/account/user/edit2'],
+			['/account2/user/edit'],
 		];
 	}
 
@@ -532,7 +536,7 @@ class AccountControllerTest extends ItControllerClass
 		$this->assertStatusOk($actual);
 		$this->assertTitle('ユーザー情報 編集', $actual);
 		$this->assertCount(1, $actual->html->path()->collections(
-			"//form[@class='page-account-user'][@action='/account/user/edit2'][@method='post']"
+			"//form[@class='page-account-user'][@action='/account2/user/edit'][@method='post']"
 		));
 		$this->assertCount(1, $actual->html->path()->collections(
 			"//script[contains(@src, '/scripts/user_edit.js')]"
@@ -579,7 +583,7 @@ class AccountControllerTest extends ItControllerClass
 
 		$this->assertVisibleCommonError([], $actual);
 		$this->assertCount(1, $actual->html->path()->collections(
-			"//form[@action='/account/user/edit2']//input[@name='account_edit_name'][contains(@class, 'error')]"
+			"//form[@action='/account2/user/edit']//input[@name='account_edit_name'][contains(@class, 'error')]"
 		));
 
 		$this->assertValue(
@@ -776,7 +780,7 @@ class AccountControllerTest extends ItControllerClass
 			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, ItMockStores::SESSION_ACCOUNT_EMAIL, ItMockStores::SESSION_ACCOUNT_MARKER, ItMockStores::SESSION_ACCOUNT_WEBSITE, ItMockStores::SESSION_ACCOUNT_DESCRIPTION, ItMockStores::SESSION_ACCOUNT_NOTE);
 		});
 
-		$this->assertRedirectPath(HttpStatus::Found, 'account/user2', null, $actual);
+		$this->assertRedirectPath(HttpStatus::Found, 'account2/user', null, $actual);
 
 		$context = $actual->openDB();
 		$auditResult = $this->getMaybeLatestAuditLog($context);
@@ -807,7 +811,7 @@ class AccountControllerTest extends ItControllerClass
 		$this->assertStatusOk($actual);
 		$this->assertVisibleCommonError([], $actual);
 		$this->assertCount(1, $actual->html->path()->collections(
-			"//form[@action='/account/user/edit2']//textarea[@name='account_edit_description'][contains(@class, 'error')]/following-sibling::ul[contains(@class, 'value-error')]/li"
+			"//form[@action='/account2/user/edit']//textarea[@name='account_edit_description'][contains(@class, 'error')]/following-sibling::ul[contains(@class, 'value-error')]/li"
 		));
 		$this->assertValue(
 			$description,
@@ -909,7 +913,7 @@ class AccountControllerTest extends ItControllerClass
 			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, ItMockStores::SESSION_ACCOUNT_EMAIL, ItMockStores::SESSION_ACCOUNT_MARKER, ItMockStores::SESSION_ACCOUNT_WEBSITE, ItMockStores::SESSION_ACCOUNT_DESCRIPTION, ItMockStores::SESSION_ACCOUNT_NOTE);
 		});
 
-		$this->assertRedirectPath(HttpStatus::Found, 'account/user/api2', null, $actual);
+		$this->assertRedirectPath(HttpStatus::Found, 'account2/user/api', null, $actual);
 
 		$context = $actual->openDB();
 		$auditResult = $this->getMaybeLatestAuditLog($context);
@@ -962,7 +966,7 @@ class AccountControllerTest extends ItControllerClass
 			$apiKeysEntityDao->insertApiKey(ItMockStores::SESSION_ACCOUNT_USER_ID, 'KEY', 'SECRET');
 		});
 
-		$this->assertRedirectPath(HttpStatus::Found, 'account/user/api2', null, $actual);
+		$this->assertRedirectPath(HttpStatus::Found, 'account2/user/api', null, $actual);
 
 		$context = $actual->openDB();
 		$auditResult = $this->getMaybeLatestAuditLog($context);

@@ -57,7 +57,7 @@ class AccountUserAuditLogsPage extends AccountPageBase
 				$b->thead(new HtmlGlobalAttributes(), $b->tr(new HtmlGlobalAttributes(), new Fragment($headers))),
 				$b->tbody(new HtmlGlobalAttributes(), new Fragment($rows)),
 			])),
-			new Pager(new PagerProps($pager, '/account/user/audit-logs2/page/<page_number>'), $this->context),
+			new Pager(new PagerProps($pager, '/account2/user/audit-logs/page/<page_number>'), $this->context),
 		]));
 	}
 }

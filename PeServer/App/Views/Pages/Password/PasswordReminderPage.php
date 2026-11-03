@@ -47,7 +47,7 @@ class PasswordReminderPage extends RootHtmlComponentBase
 			parameter: $p,
 			title: 'パスワード再設定',
 			children: $b->form(
-				new HTMLFormAttributes(action: '/password/reminder2', method: FormMethod::Post, className: 'page-password-reminder'),
+				new HTMLFormAttributes(action: '/password2/reminder', method: FormMethod::Post, className: 'page-password-reminder'),
 				new Fragment([
 					new Csrf(new CsrfProps(), $this->context),
 					$b->dl(new HtmlGlobalAttributes(className: 'input'), new Fragment([

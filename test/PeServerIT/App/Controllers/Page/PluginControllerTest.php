@@ -46,16 +46,22 @@ class PluginControllerTest extends ItControllerClass
 		};
 	}
 
-	public function test_index_sorted_and_escaped(): void
+	public static function provider_index(): array
 	{
-		$actual = $this->call(HttpMethod::Get, '/plugin/index2', new ItOptions(), $this->setupCache(new PluginCache([], [
+		return [['/plugin2'], ['/plugin/index2']];
+	}
+
+	#[DataProvider('provider_index')]
+	public function test_index_sorted_and_escaped(string $path): void
+	{
+		$actual = $this->call(HttpMethod::Get, $path, new ItOptions(), $this->setupCache(new PluginCache([], [
 			$this->plugin(self::ID, 'z-plugin', 'First <plugin>'),
 			$this->plugin(self::OTHER_ID, 'a-plugin', 'Second & plugin'),
 		])));
 		$this->assertStatusOK($actual);
 		$this->assertTitle('プラグイン', $actual);
 		$this->assertCount(1, $actual->html->path()->collections("//*[@id='node-template-indicator']"));
-		$this->assertTextNode('Second & plugin', $actual->html->path()->collections("//*[@id='content']/ul/li[1]/a[@href='/plugin/detail2/" . self::OTHER_ID . "']")->single());
+		$this->assertTextNode('Second & plugin', $actual->html->path()->collections("//*[@id='content']/ul/li[1]/a[@href='/plugin2/" . self::OTHER_ID . "']")->single());
 		$this->assertTextNode('First <plugin>', $actual->html->path()->collections("//*[@id='content']/ul/li[2]/a")->single());
 		$this->assertCount(0, $actual->html->path()->collections("//*[@id='content']//plugin"));
 		$this->assertCount(0, $actual->html->path()->collections("//*[@id='content']//a[@href='/management/default-plugin']"));
@@ -63,7 +69,7 @@ class PluginControllerTest extends ItControllerClass
 
 	public function test_index_missing_cache(): void
 	{
-		$actual = $this->call(HttpMethod::Get, '/plugin/index2', new ItOptions(), $this->setupCache(null));
+		$actual = $this->call(HttpMethod::Get, '/plugin2', new ItOptions(), $this->setupCache(null));
 		$this->assertStatusOK($actual);
 		$this->assertVisibleCommonError(['プラグインなし', 'この状態は原則ありえない(標準プラグインすら未登録状態)'], $actual);
 		$this->assertTextNode('標準プラグイン', $actual->html->path()->collections("//*[@id='content']/p/a[@href='/management/default-plugin']")->single());
@@ -72,7 +78,7 @@ class PluginControllerTest extends ItControllerClass
 
 	public function test_index_empty_cache(): void
 	{
-		$actual = $this->call(HttpMethod::Get, '/plugin/index2', new ItOptions(), $this->setupCache(new PluginCache([], [])));
+		$actual = $this->call(HttpMethod::Get, '/plugin2', new ItOptions(), $this->setupCache(new PluginCache([], [])));
 		$this->assertStatusOK($actual);
 		$this->assertCount(0, $actual->html->path()->collections("//*[@id='content']/ul/li"));
 		$this->assertCount(0, $actual->html->path()->collections("//*[@id='content']//a[@href='/management/default-plugin']"));
@@ -81,22 +87,23 @@ class PluginControllerTest extends ItControllerClass
 	public static function provider_detail(): array
 	{
 		return [
-			[PluginState::ENABLED, true],
-			[PluginState::DISABLED, false],
-			[PluginState::RESERVED, false],
-			[PluginState::CHECK_FAILED, false],
+			['/plugin2/', PluginState::ENABLED, true],
+			['/plugin2/', PluginState::DISABLED, false],
+			['/plugin2/', PluginState::RESERVED, false],
+			['/plugin2/', PluginState::CHECK_FAILED, false],
+			['/plugin/detail2/', PluginState::ENABLED, true],
 		];
 	}
 
 	#[DataProvider('provider_detail')]
-	public function test_detail(string $state, bool $hasCategories): void
+	public function test_detail(string $base, string $state, bool $hasCategories): void
 	{
 		$categories = $hasCategories ? [
 			new PluginCacheCategory('a', 'Z category', ''),
 			new PluginCacheCategory('other', 'Not mapped', ''),
 			new PluginCacheCategory('b', 'A <category>', ''),
 		] : [];
-		$actual = $this->call(HttpMethod::Get, '/plugin/detail2/' . strtoupper(self::ID), new ItOptions(), $this->setupCache(new PluginCache(
+		$actual = $this->call(HttpMethod::Get, $base . strtoupper(self::ID), new ItOptions(), $this->setupCache(new PluginCache(
 			$categories, [$this->plugin(self::ID, 'internal<&"', 'Display <plugin>', $state)]
 		)));
 		$this->assertStatusOK($actual);

@@ -111,7 +111,7 @@ class AccountUserPluginPage extends AccountPageBase
 		$nodes[] = $this->submit('登録');
 		return $this->layout(
 			$register ? 'プラグイン 登録' : 'プラグイン 編集: ' . Text::toString($v['account_plugin_plugin_name']),
-			$this->form('/account/user/plugin2' . ($register ? '' : '/' . Text::toString($v['from_account_plugin_plugin_id'])), 'page-account-plugin', new Fragment([
+			$this->form('/account2/user/plugin' . ($register ? '' : '/' . Text::toString($v['from_account_plugin_plugin_id'])), 'page-account-plugin', new Fragment([
 				!$register ? $b->inputHidden(new HTMLInputHiddenAttributes(
 					name: 'from_account_plugin_plugin_id',
                     value: Text::toString($v['from_account_plugin_plugin_id'])

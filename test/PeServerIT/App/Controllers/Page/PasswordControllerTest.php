@@ -36,9 +36,9 @@ class PasswordControllerTest extends ItControllerClass
 
 	private const TOKEN = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';
 
-	public static function provider_suffix(): array
+	public static function provider_routes(): array
 	{
-		return [[''], ['2']];
+		return [['/password', ''], ['/password', '2'], ['/password2', '']];
 	}
 
 	private function seed(ItSetup $setup): void
@@ -55,7 +55,7 @@ class PasswordControllerTest extends ItControllerClass
 
 	private function assertForm(string $path, ItActual $actual): void
 	{
-		$path = preg_replace('#^/password/(reminder|reset)(?=/|$)#', '/password/${1}2', $path);
+		$path = preg_replace('#^/password/(reminder|reset)2?(?=/|$)#', '/password2/${1}', $path);
 		$this->assertCount(1, $actual->html->path()->collections("//form[@action='$path'][@method='post']"));
 		$name = $actual->container->get(WebSecurity::class)->getCsrfKind(WebSecurity::CSRF_KIND_REQUEST_NAME);
 		$this->assertCount(1, $actual->html->path()->collections("//form//input[@name='$name'][@type='hidden']"));
@@ -63,10 +63,10 @@ class PasswordControllerTest extends ItControllerClass
 		$this->assertCount(1, $actual->html->path()->collections("//*[@id='node-template-indicator']"));
 	}
 
-	#[DataProvider('provider_suffix')]
-	public function test_reminder_get(string $suffix): void
+	#[DataProvider('provider_routes')]
+	public function test_reminder_get(string $base, string $suffix): void
 	{
-		$path = '/password/reminder' . $suffix;
+		$path = "$base/reminder$suffix";
 		$actual = $this->call(HttpMethod::Get, $path);
 		$this->assertStatusOK($actual);
 		$this->assertTitle('パスワード再設定', $actual);
@@ -77,10 +77,10 @@ class PasswordControllerTest extends ItControllerClass
 		$this->assertTrue($anonymous->passwordReminder);
 	}
 
-	#[DataProvider('provider_suffix')]
-	public function test_reminder_empty(string $suffix): void
+	#[DataProvider('provider_routes')]
+	public function test_reminder_empty(string $base, string $suffix): void
 	{
-		$path = '/password/reminder' . $suffix;
+		$path = "$base/reminder$suffix";
 		$actual = $this->call(HttpMethod::Post, $path, new ItOptions(
 			stores: ItMockStores::anonymous(passwordReminder: true),
 			body: ItBody::form(['reminder_login_id' => ''])
@@ -91,8 +91,8 @@ class PasswordControllerTest extends ItControllerClass
 		$this->assertCount(1, $actual->html->path()->collections("//input[@name='reminder_login_id'][contains(@class,'error')]/following-sibling::ul/li"));
 	}
 
-	#[DataProvider('provider_suffix')]
-	public function test_reminder_send_and_notify(string $suffix): void
+	#[DataProvider('provider_routes')]
+	public function test_reminder_send_and_notify(string $base, string $suffix): void
 	{
 		$mailer = $this->createMock(Mailer::class);
 		$message = null;
@@ -100,7 +100,7 @@ class PasswordControllerTest extends ItControllerClass
 		$mailer->expects($this->once())->method('setMessage')->willReturnCallback(function (EmailMessage $value) use (&$message): void {
 			$message = $value;
 		});
-		$sent = $this->call(HttpMethod::Post, '/password/reminder' . $suffix, new ItOptions(
+		$sent = $this->call(HttpMethod::Post, "$base/reminder$suffix", new ItOptions(
 			stores: ItMockStores::anonymous(passwordReminder: true),
 			body: ItBody::form(['reminder_login_id' => 'reset-user'])
 		), function (ItSetup $setup) use ($mailer): void {
@@ -115,13 +115,13 @@ class PasswordControllerTest extends ItControllerClass
 		$this->assertMatchesRegularExpression('/^[a-zA-Z0-9]{80}$/', $token);
 		$this->assertNotSame(self::TOKEN, $token);
 		$this->assertNotEmpty($row['reminder_timestamp']);
-		$this->assertRedirectPath(HttpStatus::Found, "password/reminding2/$token", null, $sent);
+		$this->assertRedirectPath(HttpStatus::Found, "password2/reminding/$token", null, $sent);
 		$this->assertInstanceOf(EmailMessage::class, $message);
-		$this->assertStringContainsString("/password/reset2/$token", $message->getHtml());
+		$this->assertStringContainsString("/password2/reset/$token", $message->getHtml());
 		$this->assertSame('reset@example.com', $mailer->toAddresses[0]->address);
 		$this->assertSame(AuditLog::USER_PASSWORD_REMINDER_TOKEN, $this->getMaybeLatestAuditLog($sent->openDB())->fields['event']);
 
-		$notify = $this->call(HttpMethod::Get, "/password/reminding$suffix/$token", new ItOptions(
+		$notify = $this->call(HttpMethod::Get, "$base/reminding$suffix/$token", new ItOptions(
 			stores: ItMockStores::anonymous(passwordReminder: true)
 		), null, $sent);
 		$this->assertStatusOK($notify);
@@ -129,7 +129,7 @@ class PasswordControllerTest extends ItControllerClass
 		$this->assertTextNode('パスワード再発行メールを送信しました。', $notify->html->path()->collections("//*[@id='content']/p[1]")->single());
 		$this->assertCount(1, $notify->html->path()->collections("//section[@class='email-information']"));
 
-		$resetPath = "/password/reset$suffix/$token";
+		$resetPath = "$base/reset$suffix/$token";
 		$reset = $this->call(HttpMethod::Get, $resetPath, previousActual: $notify);
 		$this->assertStatusOK($reset);
 		$this->assertForm($resetPath, $reset);
@@ -149,15 +149,15 @@ class PasswordControllerTest extends ItControllerClass
 		$this->assertFalse($dao->selectExistsToken($token, 60));
 	}
 
-	#[DataProvider('provider_suffix')]
-	public function test_reminder_unknown_login(string $suffix): void
+	#[DataProvider('provider_routes')]
+	public function test_reminder_unknown_login(string $base, string $suffix): void
 	{
 		$mailer = $this->createMock(Mailer::class);
 		$mailer->expects($this->once())->method('send');
 		$mailer->expects($this->once())->method('setMessage')->with($this->callback(
 			fn(EmailMessage $message) => $message->hasText() && !$message->hasHtml()
 		));
-		$actual = $this->call(HttpMethod::Post, '/password/reminder' . $suffix, new ItOptions(
+		$actual = $this->call(HttpMethod::Post, "$base/reminder$suffix", new ItOptions(
 			stores: ItMockStores::anonymous(passwordReminder: true),
 			body: ItBody::form(['reminder_login_id' => 'not-registered'])
 		), function (ItSetup $setup) use ($mailer): void {
@@ -168,10 +168,10 @@ class PasswordControllerTest extends ItControllerClass
 		$this->assertStringStartsWith('<SPAM-REMINDER>', $mailer->subject);
 	}
 
-	#[DataProvider('provider_suffix')]
-	public function test_reset_get(string $suffix): void
+	#[DataProvider('provider_routes')]
+	public function test_reset_get(string $base, string $suffix): void
 	{
-		$path = "/password/reset$suffix/" . self::TOKEN;
+		$path = "$base/reset$suffix/" . self::TOKEN;
 		$actual = $this->call(HttpMethod::Get, $path);
 		$this->assertStatusOK($actual);
 		$this->assertTitle('パスワード再発行最終工程', $actual);
@@ -183,10 +183,10 @@ class PasswordControllerTest extends ItControllerClass
 		$this->assertTrue($anonymous->passwordReset);
 	}
 
-	#[DataProvider('provider_suffix')]
-	public function test_reset_invalid(string $suffix): void
+	#[DataProvider('provider_routes')]
+	public function test_reset_invalid(string $base, string $suffix): void
 	{
-		$path = "/password/reset$suffix/" . self::TOKEN;
+		$path = "$base/reset$suffix/" . self::TOKEN;
 		$actual = $this->call(HttpMethod::Post, $path, new ItOptions(
 			stores: ItMockStores::anonymous(passwordReset: true),
 			body: ItBody::form([
@@ -202,10 +202,10 @@ class PasswordControllerTest extends ItControllerClass
 		$this->assertCount(2, $actual->html->path()->collections("//input[@type='password'][@value=''][contains(@class,'error')]/following-sibling::ul"));
 	}
 
-	#[DataProvider('provider_suffix')]
-	public function test_reset_success(string $suffix): void
+	#[DataProvider('provider_routes')]
+	public function test_reset_success(string $base, string $suffix): void
 	{
-		$actual = $this->call(HttpMethod::Post, "/password/reset$suffix/" . self::TOKEN, new ItOptions(
+		$actual = $this->call(HttpMethod::Post, "$base/reset$suffix/" . self::TOKEN, new ItOptions(
 			stores: ItMockStores::anonymous(passwordReset: true),
 			body: ItBody::form([
 				'reminder_login_id' => 'reset-user',
@@ -227,12 +227,20 @@ class PasswordControllerTest extends ItControllerClass
 	{
 		return [
 			[HttpMethod::Post, '/password/reminder'],
-			[HttpMethod::Post, '/password/reminder2'],
+			[HttpMethod::Post, '/password2/reminder'],
 			[HttpMethod::Get, '/password/reminding/' . self::TOKEN],
-			[HttpMethod::Get, '/password/reminding2/' . self::TOKEN],
+			[HttpMethod::Get, '/password2/reminding/' . self::TOKEN],
 			[HttpMethod::Post, '/password/reset/' . self::TOKEN],
-			[HttpMethod::Post, '/password/reset2/' . self::TOKEN],
+			[HttpMethod::Post, '/password2/reset/' . self::TOKEN],
 		];
+	}
+
+	public function test_root2(): void
+	{
+		$actual = $this->call(HttpMethod::Get, '/password2');
+		$this->assertStatusOK($actual);
+		$this->assertTitle('パスワード再設定', $actual);
+		$this->assertForm('/password2/reminder', $actual);
 	}
 
 	#[DataProvider('provider_missing_session')]

@@ -2,6 +2,13 @@
 
 このファイルは作業の引き継ぎ用。確定した設計方針は [テンプレート移植](./TEMPLATE-MIGRATION.md)、全体の入口は [AGENT.md](./AGENT.md) を参照する。記録は現在のコードより優先しない。
 
+## 2026-11-03: 移植済み画面の 2 系統をルートグループへ統一
+
+* 新側を `/index2`、`/account2/...`、`/password2/...`、`/plugin2/...` に統一した。入口だけでなく配下も既存の末尾 2 アクションへ接続し、リンク・フォーム・ページャー・DL・成功時遷移・登録／再設定メール内 URL を揃えた。経路一覧は [テンプレート移植](./TEMPLATE-MIGRATION.md) を参照する。
+* 以前の `/account/user2`、`/password/reset2/{token}`、`/plugin/detail2/{plugin_id}` 等は互換経路として残した。旧 `/plugin` と `/plugin/{plugin_id}` は Smarty のまま。account/password の旧 URL を Node へ委譲する過去の明示指示は維持し、新規の切り替えはしていない。未移植画面・Ajax/API・メール本文の Smarty は変更していない。
+* 単体 16 件・1059 assertions、統合 206 件・1469 assertions が成功。新ルート・旧ルート・互換経路、画面、POST、メール、完了遷移を検証した。認証・CSRF・所有者フィルター等はルート単体で登録構成を確認し、ミドルウェアを省く統合基盤での実効性検証とは区別する。
+* 対象 PHPStan はコード指摘なし。既存の未使用 ignoreErrors 3 件のみで終了コード 1。ブラウザ・実メール送信は未確認。
+
 ## 2026-11-03: account・password の旧 URL も NodeTemplate へ切り替え
 
 * 利用者からパスワード変更後に旧 user へ戻ると報告があり、確認のうえ「旧URLも含めて、account/*・password/* をすべてNodeTemplate版にする」と明示された。[AccountController](../PeServer/App/Controllers/Page/AccountController.php) と [PasswordController](../PeServer/App/Controllers/Page/PasswordController.php) の旧 Web アクションを対応する末尾 2 のアクションへ委譲した。以下の過去記録にある旧 Smarty 経路維持は、この切り替えで更新された。

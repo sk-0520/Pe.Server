@@ -32,7 +32,7 @@ class AccountUserEmailPage extends AccountPageBase
 			$b->section(new HtmlGlobalAttributes(className: 'page-account-email-edit'), new Fragment([
 				$b->h2(new HtmlGlobalAttributes(), new TextNode('変更前処理')),
 				$b->p(new HtmlGlobalAttributes(), new TextNode('変更先メールアドレスに変更用トークンを送信します。')),
-				$this->form('/account/user/email2', '', new Fragment([
+				$this->form('/account2/user/email', '', new Fragment([
 					$b->inputHidden(new HTMLInputHiddenAttributes(name: 'account_email_mode', value: 'edit')),
 					$b->dl(new HtmlGlobalAttributes(className: 'input'), new Fragment([
 						$this->input('変更先メールアドレス', 'account_email_email', InputHelperType::Email, true),
@@ -45,7 +45,7 @@ class AccountUserEmailPage extends AccountPageBase
 			$nodes[] = $b->section(new HtmlGlobalAttributes(className: 'page-account-email-confirm'), new Fragment([
 				$b->h2(new HtmlGlobalAttributes(), new TextNode('変更後処理')),
 				$b->p(new HtmlGlobalAttributes(), new TextNode('変更用トークン入力待ちです。')),
-				$this->form('/account/user/email2', '', new Fragment([
+				$this->form('/account2/user/email', '', new Fragment([
 					$b->inputHidden(new HTMLInputHiddenAttributes(name: 'account_email_mode', value: 'confirm')),
 					$b->dl(new HtmlGlobalAttributes(className: 'input'), new Fragment([
 						$b->dt(new HtmlGlobalAttributes(), new TextNode('待機中メールアドレス')),

@@ -50,7 +50,7 @@ class AccountSignupStep1Page extends RootHtmlComponentBase
 			parameter: $parameter,
 			title: 'ユーザー登録 1/2',
 			children: $this->context->builder->form(
-				new HTMLFormAttributes(action: '/account/signup2', method: FormMethod::Post, className: 'page-account-sign-up'),
+				new HTMLFormAttributes(action: '/account2/signup', method: FormMethod::Post, className: 'page-account-sign-up'),
 				new Fragment([
 					new Csrf(new CsrfProps(), $this->context),
 					$this->context->builder->inputHidden(new HTMLInputHiddenAttributes(

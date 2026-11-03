@@ -113,24 +113,41 @@ public function __construct(array $attributes = [])
 * [Code](../PeServer/Core/Mvc/Template/Node/Html/Components/Code/Code.php) は既存 CodeHighlighter に委譲する。監査ログは従来どおり language=json を指定する。未指定・未対応の言語に対する旧ハイライターのフォールバックは未エスケープのため、任意の未加工入力を安全に表示できる汎用エスケープ部品とは扱わない。
 * [BotTextImage](../PeServer/Core/Mvc/Template/Node/Html/Components/BotTextImage/BotTextImage.php) は認証トークンの画像生成プラグインの移植版。画像生成は Core の Graphics を使用し、PNG の data URL と文字列の SHA-256 を出力する。旧版の難読化は未実装であり、移植によって bot 対策を強化したものではない。
 
+### 新側ルートグループ
+
+入口だけでなく配下のルートも `2` 系統として登録する。新側で生成するリンク・フォーム・成功時リダイレクト・メール内 URL は次に統一し、アクションは既存の末尾 `2` のメソッドを使う。
+
+| 画面 | NodeTemplate の経路 |
+|---|---|
+| トップ | `/index2` |
+| アカウント入口 | `/account2`（匿名はログイン、ログイン済みはユーザー情報） |
+| ログイン・ログアウト・登録 | `/account2/login`、`/account2/logout`、`/account2/signup`、`/account2/signup/notify`、`/account2/signup/{token}` |
+| ユーザー情報・編集・設定 | `/account2/user`、`/account2/user/edit`、`/account2/user/api`、`/account2/user/password`、`/account2/user/email` |
+| プラグイン登録・編集・予約 | `/account2/user/plugin`、`/account2/user/plugin/{plugin_id}`、`/account2/user/plugin/reserve` |
+| 監査ログ | `/account2/user/audit-logs`、`/account2/user/audit-logs/page/{page_number}`、`/account2/user/audit-logs/download` |
+| パスワード再設定 | `/password2`（開始画面）、`/password2/reminder`、`/password2/reminding/{token}`、`/password2/reset/{token}` |
+| 公開プラグイン | `/plugin2`、`/plugin2/{plugin_id}` |
+
+既存の `/account/index2`、`/account/user2`、`/password/reset2/{token}`、`/plugin/index2`、`/plugin/detail2/{plugin_id}` 等は互換経路として維持する。動的 ID・トークンに `2` を付けたり、新グループ内でさらに `2` を重ねたりしない。共通ヘッダー・フッターのトップリンクは `/index2`、Node 版トップのプラグインリンクは `/plugin2` を使う。未移植の管理・案内・ツール画面や共有 Ajax/API は変更しない。
+
 ### アカウントの経路
 
-* Web 画面は `/account/index2`、`/account/user2`、既存末尾セグメントに 2 を付けた経路を使う。プラグイン編集は `/account/user/plugin2/{plugin_id}`、監査ログのページ指定は `/account/user/audit-logs2/page/{page_number}` とし、動的値そのものには 2 を付けない。DL は `/account/user/audit-logs/download2`。
+* Web 画面は上記 `/account2` グループを使う。ログイン成功後は `/account2`、登録メールのリンクは `/account2/signup/{token}` へ向ける。
 * フォーム・ユーザー操作リンク・ログイン後の遷移は 2 系統に揃える。利用者の方針により NodeTemplate の共通ヘッダーのアカウントリンクは常に 2 系統を使い、ページごとの切り替えフラグは設けない。
 * 利用者の明示的な切り替え指示により、旧 URL も旧アクションから対応する末尾 2 のアクションへ委譲し、Web 画面はすべて NodeTemplate で描画する。旧 URL と 2 付き URL は両方利用できるが、旧 URL からのフォーム送信先・メール内リンク・成功遷移も 2 系統になる。Smarty の Web テンプレートはソースを残すだけで、これらの経路からは使用しない。
-* ユーザー編集・パスワード変更・メール変更確定後は `/account/user2`、登録完了・ログアウト後は `/index2` へ遷移する。セットアップ・管理への遷移と業務 Logic、ミドルウェアの登録構成は維持する。メール本文・メールレイアウトは引き続き Smarty に残す。
+* ユーザー編集・パスワード変更・メール変更確定後は `/account2/user`、登録完了・ログアウト後は `/index2` へ遷移する。セットアップ・管理への遷移と業務 Logic、ミドルウェアの登録構成は維持する。メール本文・メールレイアウトは引き続き Smarty に残す。
 * 並行確認中の識別用に DefaultPage は全環境で画面右上へ `2` を固定表示する。Smarty 側には表示しない。旧トップと Node 版トップの開発環境限定メニューには `/index2` へのリンクを置く。
 * 統合テスト基盤はミドルウェアを省略する。ルートの単体テストで登録構成を別途確認し、統合テスト成功を認証・CSRF の実効性確認とは扱わない。また previousActual を渡した呼び出しでは setup コールバックが実行されないため、メール送信を伴うテストはその呼び出し自身でモックを登録できる構成にする。
 
 ### パスワード再発行の経路
 
-* `/password/reminder2`（GET・HEAD・POST）、`/password/reminding2/{token}`（GET）、`/password/reset2/{token}`（GET・POST）を使用する。旧 URL も同じ NodeTemplate 版へ委譲する。業務 Logic は維持し、再設定成功後は `/index2` へ遷移する。
-* ログインの再発行リンクとフォームは 2 系統へ向ける。PasswordReminderLogic の resetPath は既定 `password/reset` だが、旧 URL を含むすべてのリマインダー POST は `password/reset2` を渡し、Smarty で生成するメール内 URL も新系統に揃える。
+* `/password2`（GET・HEAD）は開始画面を表示し、フォーム送信は `/password2/reminder`（GET・HEAD・POST）へ向ける。通知は `/password2/reminding/{token}`（GET）、再設定は `/password2/reset/{token}`（GET・POST）を使用する。旧 URL も同じ NodeTemplate 版へ委譲する。業務 Logic は維持し、再設定成功後は `/index2` へ遷移する。
+* ログインの再発行リンクとフォームは 2 系統へ向ける。PasswordReminderLogic の resetPath は既定 `password/reset` だが、旧 URL を含むすべてのリマインダー POST は `password2/reset` を渡し、Smarty で生成するメール内 URL も新系統に揃える。
 * メール送信は既存 DI の Mailer → AppMailer マッピングを使う。テストでは Mailer を差し替えて外部へ送信せず、本文の Smarty 生成とリンクを確認する。NotLoginMiddleware と POST の CsrfMiddleware は旧経路と同じ構成で登録する。
 
 ### プラグイン画面
 
-プラグインは既存の一覧 `/plugin` と詳細 `/plugin/{plugin_id}` を Smarty のまま残し、NodeTemplate 版を一覧 `/plugin/index2`・詳細 `/plugin/detail2/{plugin_id}` として並走させる。Node 版一覧の詳細リンクも 2 系統へ向ける。PluginIndexLogic・PluginDetailLogic のキャッシュ取得・並べ替えと PluginIdMiddleware は維持し、ページは PluginCacheItem・PluginCacheCategory を描画する。説明は共通 Markdown 部品へ委譲する。管理側の標準プラグイン登録リンクは既存経路のままとする。
+プラグインは既存の一覧 `/plugin` と詳細 `/plugin/{plugin_id}` を Smarty のまま残し、NodeTemplate 版を一覧 `/plugin2`・詳細 `/plugin2/{plugin_id}` として並走させる。Node 版一覧の詳細リンクも 2 系統へ向ける。以前の `/plugin/index2`・`/plugin/detail2/{plugin_id}` も引き続き利用できる。PluginIndexLogic・PluginDetailLogic のキャッシュ取得・並べ替えと PluginIdMiddleware は維持し、ページは PluginCacheItem・PluginCacheCategory を描画する。説明は共通 Markdown 部品へ委譲する。管理側の標準プラグイン登録リンクは既存経路のままとする。
 
 ### 手順
 
@@ -151,7 +168,7 @@ PowerShell でリポジトリルートから、例えばトップページのテ
 $root = (Get-Location).Path
 $phpunit = (Get-ChildItem -LiteralPath "$root\test" -Filter 'phpunit.phar.*' -File | Select-Object -First 1).FullName
 $env:APP_TEST_MODE = 'ut'
-& "$root\dev\oreore\php-shell.bat" $phpunit --configuration "$root\dev\phpunit.xml" "$root\test\PeServerUT\App\Views\Pages\Home\IndexPageTest.php"
+& "$root\dev\oreore\php-shell.bat" $phpunit --configuration "$root\dev\phpunit.xml" "$root\test\PeServerUT\App\Views\Pages\Home\HomeIndexPageTest.php"
 ```
 
 `APP_TEST_MODE` は [テストの bootstrap](../test/test.php) が要求する。同じシェル呼び出し内で設定する。関連 Node テストは [Node テストディレクトリ](../test/PeServerUT/Core/Mvc/Template/Node/) を指定できる。

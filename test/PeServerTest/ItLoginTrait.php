@@ -41,7 +41,7 @@ trait ItLoginTrait
 	}
 
 	//phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps, PSR2.Methods.MethodDeclaration.Underscore
-	private function _test_notLogin(string $path, string $accountSuffix = '')
+	private function _test_notLogin(string $path, string $accountPath = '/account')
 	{
 		//phpcs:enable
 
@@ -49,13 +49,13 @@ trait ItLoginTrait
 		$this->assertSame(HttpStatus::OK, $actual->getHttpStatus());
 		$this->assertTrue($actual->isHtml());
 
-		$this->assertCount(1, $actual->html->path()->collections('//header//li/a[@href = "/account/signup' . $accountSuffix . '"]'));
-		$this->assertCount(0, $actual->html->path()->collections('//header//li/a[@href = "/account/user' . $accountSuffix . '"]'));
-		$this->assertCount(1, $actual->html->path()->collections('//header//li/a[@href = "/account/login' . $accountSuffix . '"]'));
+		$this->assertCount(1, $actual->html->path()->collections('//header//li/a[@href = "' . $accountPath . '/signup"]'));
+		$this->assertCount(0, $actual->html->path()->collections('//header//li/a[@href = "' . $accountPath . '/user"]'));
+		$this->assertCount(1, $actual->html->path()->collections('//header//li/a[@href = "' . $accountPath . '/login"]'));
 	}
 
 	//phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps, PSR2.Methods.MethodDeclaration.Underscore
-	private function _test_login(string $path, string $userLevel, string $accountSuffix = '')
+	private function _test_login(string $path, string $userLevel, string $accountPath = '/account')
 	{
 		//phpcs:enable
 
@@ -66,8 +66,8 @@ trait ItLoginTrait
 		$this->assertSame(HttpStatus::OK, $actual->getHttpStatus());
 		$this->assertTrue($actual->isHtml());
 
-		$this->assertCount(0, $actual->html->path()->collections('//header//li/a[@href = "/account/signup' . $accountSuffix . '"]'));
-		$this->assertCount(1, $actual->html->path()->collections('//header//li/a[@href = "/account/user' . $accountSuffix . '"]'));
-		$this->assertCount(1, $actual->html->path()->collections('//header//li/a[@href = "/account/logout' . $accountSuffix . '"]'));
+		$this->assertCount(0, $actual->html->path()->collections('//header//li/a[@href = "' . $accountPath . '/signup"]'));
+		$this->assertCount(1, $actual->html->path()->collections('//header//li/a[@href = "' . $accountPath . '/user"]'));
+		$this->assertCount(1, $actual->html->path()->collections('//header//li/a[@href = "' . $accountPath . '/logout"]'));
 	}
 }

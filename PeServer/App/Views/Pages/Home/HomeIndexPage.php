@@ -51,7 +51,7 @@ class HomeIndexPage extends RootHtmlComponentBase
 							$this->context->builder->li(
 								new HTMLLiAttributes(),
 								$this->context->builder->a(
-									new HTMLAnchorAttributes(href: '/plugin'),
+									new HTMLAnchorAttributes(href: '/plugin2'),
 									new TextNode('プラグイン')
 								)
 							),

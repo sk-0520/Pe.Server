@@ -52,14 +52,14 @@ class HomeControllerTest extends ItControllerClass
 	#[DataProvider('provider_it_notLogin')]
 	public function test_it_notLogin(string $path)
 	{
-		$this->_test_notLogin($path, $path === '/index2' ? '2' : '');
+		$this->_test_notLogin($path, $path === '/index2' ? '/account2' : '/account');
 		$this->assertTemplateIndicator($path);
 	}
 
 	#[DataProvider('provider_it_login')]
 	public function test_it_login(string $path, string $level)
 	{
-		$this->_test_login($path, $level, $path === '/index2' ? '2' : '');
+		$this->_test_login($path, $level, $path === '/index2' ? '/account2' : '/account');
 	}
 
 	#endregion
@@ -70,6 +70,9 @@ class HomeControllerTest extends ItControllerClass
 		$indicators = $actual->html->path()->collections("//*[@id='node-template-indicator']");
 		$this->assertCount($path === '/index2' ? 1 : 0, $indicators);
 		if ($path === '/index2') {
+			$this->assertCount(1, $actual->html->path()->collections("//*[@id='content']//a[@href='/plugin2']"));
+			$this->assertCount(1, $actual->html->path()->collections("//header//a[@href='/index2']"));
+			$this->assertCount(1, $actual->html->path()->collections("//footer//a[@href='/index2']"));
 			$indicator = $indicators->single();
 			$this->assertTextNode('2', $indicator);
 			$this->assertSame('NodeTemplate', $indicator->getAttribute('title'));

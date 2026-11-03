@@ -59,7 +59,7 @@ class HomeIndexPageTest extends TestClass
 		$this->assertStringContainsString('<p>Pe のサーバーが必要な処理。</p>', $html);
 		foreach (
 			[
-				'/plugin' => 'プラグイン',
+				'/plugin2' => 'プラグイン',
 				'/api-doc' => 'API',
 				'/public/api-doc/' => 'Doc: PeServer',
 				'/public/coverage/php/uit/' => 'Code Coverage: PeServer',

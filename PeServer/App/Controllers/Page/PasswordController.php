@@ -66,10 +66,10 @@ final class PasswordController extends PageControllerBase
 
 	public function reminder_post2(): IActionResult
 	{
-		$logic = $this->createLogic(PasswordReminderLogic::class, ['$resetPath' => 'password/reset2']);
+		$logic = $this->createLogic(PasswordReminderLogic::class, ['$resetPath' => 'password2/reset']);
 		if ($logic->run(LogicCallMode::Submit)) {
 			if ($logic->tryGetResult('token', $token)) {
-				return $this->redirectPath("password/reminding2/$token");
+				return $this->redirectPath("password2/reminding/$token");
 			}
 			throw new InvalidOperationException();
 		}

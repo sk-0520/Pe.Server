@@ -66,7 +66,7 @@ class AccountSignupStep2Page extends RootHtmlComponentBase
 			title: 'ユーザー登録 2/2',
 			children: $this->context->builder->form(
 				new HTMLFormAttributes(
-					action: '/account/signup2/' . Text::toString($parameter->values['token']),
+					action: '/account2/signup/' . Text::toString($parameter->values['token']),
 					method: FormMethod::Post,
 					className: 'page-account-sign-up',
 				),

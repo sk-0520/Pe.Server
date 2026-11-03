@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServerUT\App\Models;
 
 use PeServer\App\Controllers\Page\AccountController;
+use PeServer\App\Controllers\Page\HomeController;
 use PeServer\App\Controllers\Page\PasswordController;
 use PeServer\App\Controllers\Page\PluginController;
 use PeServer\App\Models\AppRouteSetting;
@@ -23,6 +24,38 @@ use PeServerTest\TestClass;
 
 class AppRouteSettingTest extends TestClass
 {
+	public function test_node_root_routes(): void
+	{
+		$setting = new AppRouteSetting($this->createStub(Environment::class));
+		$urlHelper = $this->createStub(IUrlHelper::class);
+		foreach ([
+			['/index2', HomeController::class, 'index2', []],
+			['/account2', AccountController::class, 'index2', []],
+			['/plugin2', PluginController::class, 'index2', []],
+			['/password2', PasswordController::class, 'reminder_get2', [NotLoginMiddleware::class]],
+		] as [$path, $class, $methodName, $middleware]) {
+			foreach ([HttpMethod::Get, HttpMethod::Head, HttpMethod::Post] as $method) {
+				$matches = [];
+				foreach ($setting->routes as $route) {
+					$action = $route->getAction($method, new RequestPath($path, $urlHelper));
+					if ($action !== null && $action->status === HttpStatus::None) {
+						$matches[] = $action;
+					}
+				}
+				if ($method === HttpMethod::Post) {
+					$this->assertCount(0, $matches);
+					continue;
+				}
+				$this->assertCount(1, $matches);
+				$this->assertSame($class, $matches[0]->className);
+				$this->assertSame($methodName, $matches[0]->actionSetting->controllerMethod);
+				$this->assertTrue(method_exists($class, $methodName));
+				$this->assertSame([], $matches[0]->params);
+				$this->assertSame($middleware, $matches[0]->actionSetting->actionMiddleware);
+			}
+		}
+	}
+
 	public function test_plugin_routes(): void
 	{
 		$setting = new AppRouteSetting($this->createStub(Environment::class));
@@ -33,6 +66,8 @@ class AppRouteSettingTest extends TestClass
 			'/plugin/' . $id => 'detail',
 			'/plugin/index2' => 'index2',
 			'/plugin/detail2/' . $id => 'detail2',
+			'/plugin2' => 'index2',
+			'/plugin2/' . $id => 'detail2',
 		] as $path => $methodName) {
 			foreach ([HttpMethod::Get, HttpMethod::Head, HttpMethod::Post] as $method) {
 				$matches = [];
@@ -61,11 +96,11 @@ class AppRouteSettingTest extends TestClass
 		$setting = new AppRouteSetting($this->createStub(Environment::class));
 		$urlHelper = $this->createStub(IUrlHelper::class);
 		$token = str_repeat('a', 80);
-		foreach (['', '2'] as $suffix) {
+		foreach ([['/password', '', ''], ['/password', '2', '2'], ['/password2', '', '2']] as [$base, $suffix, $actionSuffix]) {
 			foreach (['reminder', 'reminding', 'reset'] as $stage) {
 				foreach ([HttpMethod::Get, HttpMethod::Head, HttpMethod::Post] as $method) {
 					$matches = [];
-					$path = "/password/$stage$suffix" . ($stage === 'reminder' ? '' : '/' . $token);
+					$path = "$base/$stage$suffix" . ($stage === 'reminder' ? '' : '/' . $token);
 					foreach ($setting->routes as $route) {
 						$action = $route->getAction($method, new RequestPath($path, $urlHelper));
 						if ($action !== null && $action->status === HttpStatus::None) {
@@ -79,7 +114,7 @@ class AppRouteSettingTest extends TestClass
 					$this->assertCount(1, $matches);
 					$action = $matches[0];
 					$this->assertSame(PasswordController::class, $action->className);
-					$this->assertSame($stage . ($stage === 'reminding' ? '' : ($method === HttpMethod::Post ? '_post' : '_get')) . $suffix, $action->actionSetting->controllerMethod);
+					$this->assertSame($stage . ($stage === 'reminding' ? '' : ($method === HttpMethod::Post ? '_post' : '_get')) . $actionSuffix, $action->actionSetting->controllerMethod);
 					$this->assertSame($stage === 'reminder' ? [] : ['token' => $token], $action->params);
 					$this->assertSame($method === HttpMethod::Post
 						? [NotLoginMiddleware::class, CsrfMiddleware::class]
@@ -96,6 +131,7 @@ class AppRouteSettingTest extends TestClass
 		$id = '12345678-1234-4234-8234-123456789abc';
 		$routes = [
 			['', 'index2', 'index', [], [], false, false],
+			['login', 'login2', 'login', [], [], true, false],
 			['logout', 'logout2', 'logout', [], [], false, false],
 			['user', 'user2', 'user', [UserAccountFilterMiddleware::class], [], false, false],
 			['user/api', 'user/api2', 'user_api', [UserAccountFilterMiddleware::class], [], true, false],
@@ -109,11 +145,11 @@ class AppRouteSettingTest extends TestClass
 			['user/audit-logs/download', 'user/audit-logs/download2', 'user_audit_logs_download', [UserAccountFilterMiddleware::class], [], false, true],
 		];
 		foreach ($routes as [$oldPath, $newPath, $name, $middleware, $params, $hasPost, $getOnly]) {
-			foreach ([$oldPath => '', $newPath => '2'] as $path => $suffix) {
+			foreach (['/account/' . $oldPath => '', '/account/' . $newPath => '2', '/account2/' . $oldPath => '2'] as $path => $suffix) {
 				foreach ([HttpMethod::Get, HttpMethod::Head, HttpMethod::Post] as $method) {
 					$matches = [];
 					foreach ($setting->routes as $route) {
-						$action = $route->getAction($method, new RequestPath('/account/' . $path, $urlHelper));
+						$action = $route->getAction($method, new RequestPath($path, $urlHelper));
 						if ($action !== null && $action->status === HttpStatus::None) {
 							$matches[] = $action;
 						}
@@ -122,7 +158,7 @@ class AppRouteSettingTest extends TestClass
 						$this->assertCount(0, $matches);
 						continue;
 					}
-					$this->assertCount(1, $matches, $method->value . ' /account/' . $path);
+					$this->assertCount(1, $matches, $method->value . ' ' . $path);
 					$action = $matches[0];
 					$this->assertSame(AccountController::class, $action->className);
 					$this->assertSame($name . ($hasPost ? ($method === HttpMethod::Post ? '_post' : '_get') : '') . $suffix, $action->actionSetting->controllerMethod);
@@ -141,7 +177,7 @@ class AppRouteSettingTest extends TestClass
 		$setting = new AppRouteSetting($this->createStub(Environment::class));
 		$urlHelper = $this->createStub(IUrlHelper::class);
 		$token = str_repeat('a', 80);
-		foreach (['', '2'] as $suffix) {
+		foreach (['/account/signup' => '', '/account/signup2' => '2', '/account2/signup' => '2'] as $base => $suffix) {
 			foreach (['' => 'step1', '/notify' => 'notify', '/' . $token => 'step2'] as $tail => $stage) {
 				foreach ([HttpMethod::Get, HttpMethod::Head, HttpMethod::Post] as $method) {
 					if ($stage === 'notify' && $method === HttpMethod::Post) {
@@ -149,7 +185,7 @@ class AppRouteSettingTest extends TestClass
 					}
 					$matches = [];
 					foreach ($setting->routes as $route) {
-						$action = $route->getAction($method, new RequestPath('/account/signup' . $suffix . $tail, $urlHelper));
+						$action = $route->getAction($method, new RequestPath($base . $tail, $urlHelper));
 						if ($action !== null && $action->status === HttpStatus::None) {
 							$matches[] = $action;
 						}
@@ -179,9 +215,9 @@ class AppRouteSettingTest extends TestClass
 	{
 		$setting = new AppRouteSetting($this->createStub(Environment::class));
 		$urlHelper = $this->createStub(IUrlHelper::class);
-		foreach (['', '2'] as $suffix) {
+		foreach (['/account/user/edit' => '', '/account/user/edit2' => '2', '/account2/user/edit' => '2'] as $url => $suffix) {
 			foreach ([HttpMethod::Get, HttpMethod::Head, HttpMethod::Post] as $method) {
-				$path = new RequestPath('/account/user/edit' . $suffix, $urlHelper);
+				$path = new RequestPath($url, $urlHelper);
 				$matches = [];
 				foreach ($setting->routes as $route) {
 					$action = $route->getAction($method, $path);
