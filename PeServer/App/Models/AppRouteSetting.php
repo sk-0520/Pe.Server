@@ -108,6 +108,8 @@ final readonly class AppRouteSetting extends RouteSetting
 					->addAction('user', HttpMethod::gets(), 'user', [UserAccountFilterMiddleware::class])
 					->addAction('user/edit', HttpMethod::gets(), 'user_edit_get', [UserAccountFilterMiddleware::class])
 					->addAction('user/edit', HttpMethod::Post, 'user_edit_post', [UserAccountFilterMiddleware::class, CsrfMiddleware::class])
+					->addAction('user/edit2', HttpMethod::gets(), 'user_edit_get2', [UserAccountFilterMiddleware::class])
+					->addAction('user/edit2', HttpMethod::Post, 'user_edit_post2', [UserAccountFilterMiddleware::class, CsrfMiddleware::class])
 					->addAction('user/api', HttpMethod::gets(), 'user_api_get', [UserAccountFilterMiddleware::class])
 					->addAction('user/api', HttpMethod::Post, 'user_api_post', [UserAccountFilterMiddleware::class, CsrfMiddleware::class])
 					->addAction('user/password', HttpMethod::gets(), 'user_password_get', [UserAccountFilterMiddleware::class])

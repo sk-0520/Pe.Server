@@ -13,6 +13,18 @@
 * 利用者から login2 でエラーが表示されないとの報告を受け、DefaultPage の共通エラー参照を `parameter->errors[Validator::COMMON]` に修正した。空入力とパスワード不一致でエラー文言が表示される統合テストを追加し、修正前の 4 件失敗、修正後の新旧ログイン 29 件・116 assertions 成功を確認した。対象 PHPStan もエラーなし。
 * 続いて利用者の指示で、ShowErrorMessagesProps を `errors` 全体と対象 `key` を受け取る契約に変更した。DefaultPage と AccountLoginPage の両方を更新し、対象キーの抽出をコンポーネント内へ集約した。項目別エラーのみでも共通見出しを出す旧版の挙動も復元した。単体 9 件・85 assertions、統合 29 件・116 assertions が成功。対象 PHPStan のコード診断はなく、既存の未使用 ignoreErrors 3 件のみで終了コードは失敗となった。
 
+## 2026-11-03: ユーザー情報編集の並行移植
+
+* 属性・Props の選択肢を文字列リテラル型にするか enum にするかの指針を、[テンプレート移植](./TEMPLATE-MIGRATION.md#属性props-の選択肢の型) に記録した。CsrfProps の判断を全体へ一般化しない。InputHelper の type は InputHelperType enum へ変更し、ページ・描画分岐・テストも更新した。将来の対応型追加時に必要な変更面も同文書に記載した。
+
+* [AccountUserEditPage](../PeServer/App/Views/Pages/Account/AccountUserEditPage.php) を [user_edit.tpl](../PeServer/App/Views/Account/user_edit.tpl) から移植した。`/account/user/edit2` の GET・HEAD → `user_edit_get2`、POST → `user_edit_post2` を追加し、フォームの送信先も edit2 に揃えた。元の edit 経路は維持した。
+* 既存の AccountUserEditLogic を再利用し、ユーザー権限フィルターと POST の CSRF ミドルウェアを元経路と同じ構成で登録した。成功時は従来どおり account/user へ遷移する。タブの DOM 構造、Markdown の初期プレビュー、更新先の data 属性、user_edit.js の読み込みも維持した。
+* Core に [InputHelper](../PeServer/Core/Mvc/Template/Node/Html/Components/InputHelper/InputHelper.php) を追加した。TemplateParameter と対象 key から値を復元し、エラー class と項目別メッセージを付与する。今回使用する text・url・textarea と className・required・data・autoError に対応する部分移植であり、旧版の任意属性・全入力型の移植完了とは扱わない。ログインページの入力処理は今回切り替えていない。
+* 旧 InputHelperFunction はコメント上の auto_error を実際には file で参照していた。新部品は型付きの autoError を使い、未指定は従来と同じ自動表示とした。旧プラグインは変更していない。
+* Core に [Markdown](../PeServer/Core/Mvc/Template/Node/Html/Components/Markdown/Markdown.php) を追加し、既存の Core/Mvc/Markdown に処理を委譲した。class 補完、section ラッパー、変換済み HTML の出力を移植した。既存パーサーの safeMode はフラグを保持するだけであり、今回サニタイズを追加・保証したわけではない。
+* 新旧経路の編集関連統合テスト 28 件・188 assertions が成功した。初期値、名前の必須・文字数、URL 不正、複数項目エラー、説明の上限超過、値の復元とプレビュー、更新成功・監査・DB 保存を確認した。実ブラウザでの確認は未実施。
+* 共通部品・アカウントページ・ルート設定の単体テスト 38 件・252 assertions が成功した。統合テスト基盤は ItRouteWithoutMiddleware を使用するため、ミドルウェアは実行しない。ルート設定の単体テストで GET・HEAD・POST の接続と権限・CSRF の登録を別途確認した。対象 PHPStan はコード診断なし、既存の未使用 ignoreErrors 3 件のみ。
+
 ## 2026-11-03: Asset コンポーネントの Core 移動
 
 * [Asset](../PeServer/Core/Mvc/Template/Node/Html/Components/Asset/Asset.php) と [Props](../PeServer/Core/Mvc/Template/Node/Html/Components/Asset/AssetProps.php) も App から Core の `Template/Node/Html/Components` へ移動し、DefaultPage の参照を更新した。移動に伴う表示挙動の変更はない。

@@ -54,5 +54,4 @@ class CsrfTest extends TestClass
 	{
 		$this->assertSame($expected, $this->render($props, $hasToken));
 	}
-
 }

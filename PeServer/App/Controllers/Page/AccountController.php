@@ -24,6 +24,7 @@ use PeServer\App\Models\Domain\Page\Account\AccountUserPluginReserveLogic;
 use PeServer\App\Models\Domain\UserLevel;
 use PeServer\App\Models\SessionKey;
 use PeServer\App\Views\Pages\Account\AccountLoginPage;
+use PeServer\App\Views\Pages\Account\AccountUserEditPage;
 use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Mvc\Controller\ControllerArgument;
 use PeServer\Core\Mvc\Logic\LogicCallMode;
@@ -192,6 +193,24 @@ final class AccountController extends PageControllerBase
 		}
 
 		return $this->view('user_edit', $logic->getViewData());
+	}
+
+	public function user_edit_get2(): IActionResult
+	{
+		$logic = $this->createLogic(AccountUserEditLogic::class);
+		$logic->run(LogicCallMode::Initialize);
+
+		return $this->view(AccountUserEditPage::class, $logic->getViewData());
+	}
+
+	public function user_edit_post2(): IActionResult
+	{
+		$logic = $this->createLogic(AccountUserEditLogic::class);
+		if ($logic->run(LogicCallMode::Submit)) {
+			return $this->redirectPath('account/user');
+		}
+
+		return $this->view(AccountUserEditPage::class, $logic->getViewData());
 	}
 
 	public function user_api_get(): IActionResult

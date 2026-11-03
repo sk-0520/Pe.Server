@@ -95,6 +95,20 @@ public function __construct(array $attributes = [])
 
 ## 移植・検証の進め方
 
+### 属性・Props の選択肢の型
+
+* PHPStan の文字列リテラル型と enum は一律にどちらかへ統一しない。ファイル IO に伴う読み込み負荷、既定引数でカバーできる利用、継承などでの共通性、呼び出し頻度、IDE 補完の使いやすさを踏まえて選ぶ。コード量や利用範囲の変化に応じて見直す。
+* [CsrfProps](../PeServer/Core/Mvc/Template/Node/Html/Components/Csrf/CsrfProps.php) の `'name'|'id'` は範囲が閉じ、原則として既定引数で利用できるため、型定義用ファイルの追加読み込みを避ける選択とした。enum 全般を避ける指示ではない。
+* クラス継承などで共通項となるものや呼び出しの多いものは、IDE 支援も考慮して enum などで定義してよい。[InputHelperType](../PeServer/Core/Mvc/Template/Node/Html/Components/InputHelper/InputHelperType.php) はその対象。HTML の input type と違って textarea も含むため、既存 InputType とは別の型にする。
+* 将来 InputHelper の対応型を増やす際は、enum のケースだけでなく型付き属性との対応、描画分岐、値の復元、項目別エラー、呼び出し側とテストを一緒に拡張する。未対応型を先に列挙しない。
+
+### 入力と Markdown の共通部品
+
+* [InputHelper](../PeServer/Core/Mvc/Template/Node/Html/Components/InputHelper/InputHelper.php) は TemplateParameter と key を受け取り、値の復元・エラー class・ShowErrorMessages による項目別表示をまとめる。現時点の対応型は text・url・textarea。任意属性や他の入力型が必要になったら、型付き属性による検証を維持して拡張する。旧プラグインの属性配列へ戻さない。
+* [Markdown](../PeServer/Core/Mvc/Template/Node/Html/Components/Markdown/Markdown.php) は MarkdownFunction の移植版。既存パーサーの結果を HTML として section 内へ出力する。safeMode の指定は既存パーサーへ渡すが、既存実装にはサニタイズの保証はない。単なる TextNode への入力を未変換のまま RAW 出力してはならない。
+
+### 手順
+
 1. 元 tpl、利用プラグイン、対応コンポーネント、呼び出し元を読む。既存の部品を再利用する。
 2. 共通レイアウトとページ本文を分け、URL、ラベル、属性、環境別分岐を維持する。意図した変更は上記の例外と区別する。
 3. フォームは CSRF、入力属性、値の復元、パスワードの扱い、共通／項目別エラーを確認する。成功画面だけでなく失敗後の再表示と POST の検証も行う。

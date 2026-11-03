@@ -19,6 +19,7 @@ use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Text;
 use PeServer\Core\Html\HtmlTagElement;
 use PeServer\Core\Throws\HttpStatusException;
+use PeServer\Core\Throws\KeyNotFoundException;
 use PeServerTest\ItBody;
 use PeServerTest\ItControllerClass;
 use PeServerTest\ItLoginTrait;
@@ -500,29 +501,42 @@ class AccountControllerTest extends ItControllerClass
 		}
 	}
 
-	public function test_user_edit_get_notLogin()
+	public static function provider_user_edit_paths(): array
 	{
-		try {
-			$this->call(HttpMethod::Get, '/account/user/edit');
-			$this->fail();
-		} catch (Throwable $ex) {
-			// ミドルウェアで処理してるのでロジック的には例外で死んでる
-			$this->success();
-		}
+		return [
+			['/account/user/edit'],
+			['/account/user/edit2'],
+		];
 	}
 
-	public function test_user_edit_get()
+	#[DataProvider('provider_user_edit_paths')]
+	public function test_user_edit_get_notLogin(string $path)
+	{
+		// 統合テスト基盤ではミドルウェアを実行しない。
+		$this->expectException(KeyNotFoundException::class);
+		$this->call(HttpMethod::Get, $path);
+	}
+
+	#[DataProvider('provider_user_edit_paths')]
+	public function test_user_edit_get(string $path)
 	{
 		$options = new ItOptions(
 			stores: ItMockStores::account(UserLevel::USER),
 		);
-		$actual = $this->call(HttpMethod::Get, '/account/user/edit', $options, function (ItSetup $setup) {
+		$actual = $this->call(HttpMethod::Get, $path, $options, function (ItSetup $setup) {
 			$usersEntityDao = new UsersEntityDao($setup->databaseContext);
 
 			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, ItMockStores::SESSION_ACCOUNT_EMAIL, ItMockStores::SESSION_ACCOUNT_MARKER, ItMockStores::SESSION_ACCOUNT_WEBSITE, ItMockStores::SESSION_ACCOUNT_DESCRIPTION, ItMockStores::SESSION_ACCOUNT_NOTE);
 		});
 
 		$this->assertStatusOk($actual);
+		$this->assertTitle('ユーザー情報 編集', $actual);
+		$this->assertCount(1, $actual->html->path()->collections(
+			"//form[@class='page-account-user'][@action='$path'][@method='post']"
+		));
+		$this->assertCount(1, $actual->html->path()->collections(
+			"//script[contains(@src, '/scripts/user_edit.js')]"
+		));
 
 		$this->assertValue(
 			ItMockStores::SESSION_ACCOUNT_NAME,
@@ -546,7 +560,8 @@ class AccountControllerTest extends ItControllerClass
 		);
 	}
 
-	public function test_user_edit_post_empty_name()
+	#[DataProvider('provider_user_edit_paths')]
+	public function test_user_edit_post_empty_name(string $path)
 	{
 		$options = new ItOptions(
 			stores: ItMockStores::account(UserLevel::USER),
@@ -554,7 +569,7 @@ class AccountControllerTest extends ItControllerClass
 				'account_edit_name' => '',
 			])
 		);
-		$actual = $this->call(HttpMethod::Post, '/account/user/edit', $options, function (ItSetup $setup) {
+		$actual = $this->call(HttpMethod::Post, $path, $options, function (ItSetup $setup) {
 			$usersEntityDao = new UsersEntityDao($setup->databaseContext);
 
 			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, ItMockStores::SESSION_ACCOUNT_EMAIL, ItMockStores::SESSION_ACCOUNT_MARKER, ItMockStores::SESSION_ACCOUNT_WEBSITE, ItMockStores::SESSION_ACCOUNT_DESCRIPTION, ItMockStores::SESSION_ACCOUNT_NOTE);
@@ -563,6 +578,9 @@ class AccountControllerTest extends ItControllerClass
 		$this->assertStatusOk($actual);
 
 		$this->assertVisibleCommonError([], $actual);
+		$this->assertCount(1, $actual->html->path()->collections(
+			"//form[@action='$path']//input[@name='account_edit_name'][contains(@class, 'error')]"
+		));
 
 		$this->assertValue(
 			$options->body->content['account_edit_name'],
@@ -579,16 +597,21 @@ class AccountControllerTest extends ItControllerClass
 
 	public static function provider_user_edit_post_range_name()
 	{
-		return [
+		$names = [
 			[Text::repeat('a', AccountValidator::USER_NAME_RANGE_MIN - 1)],
 			[Text::repeat('z', AccountValidator::USER_NAME_RANGE_MAX + 1)],
 			[Text::repeat('🫠', AccountValidator::USER_NAME_RANGE_MIN - 1)],
 			[Text::repeat('🫠', AccountValidator::USER_NAME_RANGE_MAX + 1)],
 		];
+		foreach (self::provider_user_edit_paths() as [$path]) {
+			foreach ($names as [$name]) {
+				yield [$path, $name];
+			}
+		}
 	}
 
 	#[DataProvider('provider_user_edit_post_range_name')]
-	public function test_user_edit_post_range_name(string $name)
+	public function test_user_edit_post_range_name(string $path, string $name)
 	{
 		$options = new ItOptions(
 			stores: ItMockStores::account(UserLevel::USER),
@@ -596,7 +619,7 @@ class AccountControllerTest extends ItControllerClass
 				'account_edit_name' => $name,
 			])
 		);
-		$actual = $this->call(HttpMethod::Post, '/account/user/edit', $options, function (ItSetup $setup) {
+		$actual = $this->call(HttpMethod::Post, $path, $options, function (ItSetup $setup) {
 			$usersEntityDao = new UsersEntityDao($setup->databaseContext);
 
 			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, ItMockStores::SESSION_ACCOUNT_EMAIL, ItMockStores::SESSION_ACCOUNT_MARKER, ItMockStores::SESSION_ACCOUNT_WEBSITE, ItMockStores::SESSION_ACCOUNT_DESCRIPTION, ItMockStores::SESSION_ACCOUNT_NOTE);
@@ -620,7 +643,8 @@ class AccountControllerTest extends ItControllerClass
 	}
 
 
-	public function test_user_edit_post_invalid_url()
+	#[DataProvider('provider_user_edit_paths')]
+	public function test_user_edit_post_invalid_url(string $path)
 	{
 		$options = new ItOptions(
 			stores: ItMockStores::account(UserLevel::USER),
@@ -629,7 +653,7 @@ class AccountControllerTest extends ItControllerClass
 				'account_edit_website' => '123',
 			])
 		);
-		$actual = $this->call(HttpMethod::Post, '/account/user/edit', $options, function (ItSetup $setup) {
+		$actual = $this->call(HttpMethod::Post, $path, $options, function (ItSetup $setup) {
 			$usersEntityDao = new UsersEntityDao($setup->databaseContext);
 
 			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, ItMockStores::SESSION_ACCOUNT_EMAIL, ItMockStores::SESSION_ACCOUNT_MARKER, ItMockStores::SESSION_ACCOUNT_WEBSITE, ItMockStores::SESSION_ACCOUNT_DESCRIPTION, ItMockStores::SESSION_ACCOUNT_NOTE);
@@ -659,7 +683,8 @@ class AccountControllerTest extends ItControllerClass
 		);
 	}
 
-	public function test_user_edit_post_empty_name_invalid_url()
+	#[DataProvider('provider_user_edit_paths')]
+	public function test_user_edit_post_empty_name_invalid_url(string $path)
 	{
 		$options = new ItOptions(
 			stores: ItMockStores::account(UserLevel::USER),
@@ -668,7 +693,7 @@ class AccountControllerTest extends ItControllerClass
 				'account_edit_website' => '123',
 			])
 		);
-		$actual = $this->call(HttpMethod::Post, '/account/user/edit', $options, function (ItSetup $setup) {
+		$actual = $this->call(HttpMethod::Post, $path, $options, function (ItSetup $setup) {
 			$usersEntityDao = new UsersEntityDao($setup->databaseContext);
 
 			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, ItMockStores::SESSION_ACCOUNT_EMAIL, ItMockStores::SESSION_ACCOUNT_MARKER, ItMockStores::SESSION_ACCOUNT_WEBSITE, ItMockStores::SESSION_ACCOUNT_DESCRIPTION, ItMockStores::SESSION_ACCOUNT_NOTE);
@@ -705,7 +730,7 @@ class AccountControllerTest extends ItControllerClass
 
 	public static function provider_user_edit_post_submit()
 	{
-		return [
+		$values = [
 			[
 				Text::repeat('🫠', AccountValidator::USER_NAME_RANGE_MIN),
 				'',
@@ -727,10 +752,15 @@ class AccountControllerTest extends ItControllerClass
 				Text::repeat('🫠', AccountValidator::USER_DESCRIPTION_LENGTH),
 			],
 		];
+		foreach (self::provider_user_edit_paths() as [$path]) {
+			foreach ($values as [$name, $url, $description]) {
+				yield [$path, $name, $url, $description];
+			}
+		}
 	}
 
 	#[DataProvider('provider_user_edit_post_submit')]
-	public function test_user_edit_post_submit(string $name, string $url, string $description)
+	public function test_user_edit_post_submit(string $path, string $name, string $url, string $description)
 	{
 		$options = new ItOptions(
 			stores: ItMockStores::account(UserLevel::USER),
@@ -740,7 +770,7 @@ class AccountControllerTest extends ItControllerClass
 				'account_edit_description' => $description,
 			])
 		);
-		$actual = $this->call(HttpMethod::Post, '/account/user/edit', $options, function (ItSetup $setup) {
+		$actual = $this->call(HttpMethod::Post, $path, $options, function (ItSetup $setup) {
 			$usersEntityDao = new UsersEntityDao($setup->databaseContext);
 
 			$usersEntityDao->insertUser(ItMockStores::SESSION_ACCOUNT_USER_ID, ItMockStores::SESSION_ACCOUNT_LOGIN_ID, UserLevel::USER, UserState::ENABLED, ItMockStores::SESSION_ACCOUNT_NAME, ItMockStores::SESSION_ACCOUNT_EMAIL, ItMockStores::SESSION_ACCOUNT_MARKER, ItMockStores::SESSION_ACCOUNT_WEBSITE, ItMockStores::SESSION_ACCOUNT_DESCRIPTION, ItMockStores::SESSION_ACCOUNT_NOTE);
@@ -758,6 +788,35 @@ class AccountControllerTest extends ItControllerClass
 		$this->assertSame($name, $userEditData->fields['name']);
 		$this->assertSame($url, $userEditData->fields['website']);
 		$this->assertSame($description, $userEditData->fields['description']);
+	}
+
+	#[DataProvider('provider_user_edit_paths')]
+	public function test_user_edit_post_long_description(string $path)
+	{
+		$description = Text::repeat('a', AccountValidator::USER_DESCRIPTION_LENGTH + 1);
+		$options = new ItOptions(
+			stores: ItMockStores::account(UserLevel::USER),
+			body: ItBody::form([
+				'account_edit_name' => ItMockStores::SESSION_ACCOUNT_NAME,
+				'account_edit_website' => 'https://example.com',
+				'account_edit_description' => $description,
+			])
+		);
+		$actual = $this->call(HttpMethod::Post, $path, $options);
+
+		$this->assertStatusOk($actual);
+		$this->assertVisibleCommonError([], $actual);
+		$this->assertCount(1, $actual->html->path()->collections(
+			"//form[@action='$path']//textarea[@name='account_edit_description'][contains(@class, 'error')]/following-sibling::ul[contains(@class, 'value-error')]/li"
+		));
+		$this->assertValue(
+			$description,
+			$actual->html->path()->collections("//*[@name='account_edit_description']")->single()
+		);
+		$this->assertTextNode(
+			$description,
+			$actual->html->path()->collections("//section[contains(@class, 'markdown-browser')]/p")->single()
+		);
 	}
 
 	public function test_user_api_get_empty()
