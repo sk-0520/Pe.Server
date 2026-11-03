@@ -80,6 +80,25 @@ class AccountControllerTest extends ItControllerClass
 		$this->assertRedirectPath(HttpStatus::Found, '/account/user', null, $actual);
 	}
 
+	public function test_login_get2_notLogin()
+	{
+		$actual = $this->call(HttpMethod::Get, '/account/login2');
+
+		$this->assertStatusOK($actual);
+		$this->assertTitle('ログイン', $actual);
+		$this->assertCount(1, $actual->html->path()->collections(
+			"//*[@id='content']/form[@action='/account/login2']//input[@name='account_login_login_id']"
+		));
+	}
+
+	public function test_login_get2_login()
+	{
+		$options = new ItOptions(stores: ItMockStores::account(UserLevel::USER));
+		$actual = $this->call(HttpMethod::Get, '/account/login2', $options);
+
+		$this->assertRedirectPath(HttpStatus::Found, '/account/user', null, $actual);
+	}
+
 	public static function provider_login_post_notLogin_throw()
 	{
 		return [
@@ -143,7 +162,8 @@ class AccountControllerTest extends ItControllerClass
 		);
 	}
 
-	public function test_login_post_failure()
+	#[DataProvider('provider_login_paths')]
+	public function test_login_post_failure(string $path)
 	{
 		$options = new ItOptions(
 			stores: ItMockStores::anonymous(login: true),
@@ -152,7 +172,7 @@ class AccountControllerTest extends ItControllerClass
 				'account_login_password' => 'password',
 			]),
 		);
-		$actual = $this->call(HttpMethod::Post, '/account/login', $options, function (ItSetup $setup) {
+		$actual = $this->call(HttpMethod::Post, $path, $options, function (ItSetup $setup) {
 			$usersEntityDao = new UsersEntityDao($setup->databaseContext);
 			$userAuthenticationsEntityDao = new UserAuthenticationsEntityDao($setup->databaseContext);
 
@@ -168,14 +188,14 @@ class AccountControllerTest extends ItControllerClass
 		$this->assertTextNode(
 			'',
 			$actual->html->path()->collections(
-				"//*[@id='content']/form[1][@action='/account/login']//*[contains(@class,'input')]//dt[text()='ログインID']/following-sibling::dd[1]"
+				"//*[@id='content']/form[1][@action='$path']//*[contains(@class,'input')]//dt[text()='ログインID']/following-sibling::dd[1]"
 			)->single()
 		);
 
 		$this->assertTextNode(
 			'',
 			$actual->html->path()->collections(
-				"//*[@id='content']/form[1][@action='/account/login']//*[contains(@class,'input')]//dt[text()='パスワード']/following-sibling::dd[1]"
+				"//*[@id='content']/form[1][@action='$path']//*[contains(@class,'input')]//dt[text()='パスワード']/following-sibling::dd[1]"
 			)->single()
 		);
 
@@ -222,7 +242,16 @@ class AccountControllerTest extends ItControllerClass
 		);
 	}
 
-	public function test_login_post_success()
+	public static function provider_login_paths(): array
+	{
+		return [
+			['/account/login'],
+			['/account/login2'],
+		];
+	}
+
+	#[DataProvider('provider_login_paths')]
+	public function test_login_post_success(string $path)
 	{
 		$options = new ItOptions(
 			stores: ItMockStores::anonymous(login: true),
@@ -231,7 +260,7 @@ class AccountControllerTest extends ItControllerClass
 				'account_login_password' => 'password',
 			]),
 		);
-		$actual = $this->call(HttpMethod::Post, '/account/login', $options, function (ItSetup $setup) {
+		$actual = $this->call(HttpMethod::Post, $path, $options, function (ItSetup $setup) {
 			$usersEntityDao = new UsersEntityDao($setup->databaseContext);
 			$userAuthenticationsEntityDao = new UserAuthenticationsEntityDao($setup->databaseContext);
 
@@ -247,13 +276,41 @@ class AccountControllerTest extends ItControllerClass
 		$this->assertSame(AuditLog::LOGIN_SUCCESS, $auditResult->fields['event']);
 	}
 
-	public function test_login_post_login()
+	#[DataProvider('provider_login_paths')]
+	public function test_login_post_login(string $path)
 	{
 		$options = new ItOptions(
 			stores: ItMockStores::account(UserLevel::USER),
 		);
-		$actual = $this->call(HttpMethod::Post, '/account/login', $options);
+		$actual = $this->call(HttpMethod::Post, $path, $options);
 		$this->assertRedirectPath(HttpStatus::Found, '/account/user', null, $actual);
+	}
+
+	#[DataProvider('provider_login_post_empty_input')]
+	public function test_login_post2_empty_input(string $loginId, string $password)
+	{
+		$options = new ItOptions(
+			stores: ItMockStores::anonymous(login: true),
+			body: ItBody::form([
+				'account_login_login_id' => $loginId,
+				'account_login_password' => $password,
+			]),
+		);
+		$actual = $this->call(HttpMethod::Post, '/account/login2', $options);
+
+		$this->assertStatusOK($actual);
+		$this->assertTitle('ログイン', $actual);
+		$this->assertVisibleCommonError(['ログインID/パスワードが正しくありません'], $actual);
+		$this->assertCount(1, $actual->html->path()->collections(
+			"//*[@id='content']/form[@action='/account/login2']//input[@name='account_login_login_id']"
+		));
+	}
+
+	#[DataProvider('provider_login_post_notLogin_throw')]
+	public function test_login_post2_notLogin_throw(ItMockStores $input)
+	{
+		$this->expectException(HttpStatusException::class);
+		$this->call(HttpMethod::Post, '/account/login2', new ItOptions(stores: $input));
 	}
 
 	public function test_logout_notLogin()

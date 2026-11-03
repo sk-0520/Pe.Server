@@ -31,7 +31,12 @@ class ShowErrorMessages extends HtmlComponentBase
 	#[Override]
 	protected function getNode(): INode
 	{
-		if (Arr::isNullOrEmpty($this->props->messages)) {
+		if (Arr::isNullOrEmpty($this->props->errors)) {
+			return NoneNode::get();
+		}
+
+		$messages = $this->props->errors[$this->props->key] ?? [];
+		if ($this->props->key !== Validator::COMMON && Arr::isNullOrEmpty($messages)) {
 			return NoneNode::get();
 		}
 
@@ -48,7 +53,7 @@ class ShowErrorMessages extends HtmlComponentBase
 			),
 			new Fragment(
 				Arr::map(
-					$this->props->messages,
+					$messages,
 					fn($a) => $this->context->builder->li(
 						new HTMLLiAttributes(
 							className: "error"
@@ -73,7 +78,7 @@ class ShowErrorMessages extends HtmlComponentBase
 						new HtmlGlobalAttributes(),
 						new TextNode(I18n::message(I18n::COMMON_ERROR_TITLE))
 					),
-					$ulElement
+					Arr::isNullOrEmpty($messages) ? NoneNode::get() : $ulElement
 				]
 			)
 		);

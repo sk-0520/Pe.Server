@@ -89,9 +89,9 @@ public function __construct(array $attributes = [])
 ## エラー表示の注意点
 
 * [ShowErrorMessagesFunction](../PeServer/Core/Mvc/Template/Plugin/ShowErrorMessagesFunction.php) が Smarty プラグイン、[ShowErrorMessages](../PeServer/Core/Mvc/Template/Node/Html/Components/ShowErrorMessages/ShowErrorMessages.php) と [Props](../PeServer/Core/Mvc/Template/Node/Html/Components/ShowErrorMessages/ShowErrorMessagesProps.php) が移植版。いずれも Core 所属。移植版が存在しないという前提で再実装しない。
-* 旧版は全エラーから対象キーを抽出する。移植版の `messages` は `string[]` であり、渡された一覧を描画する。`key` は共通／項目別の表示を切り替える。
+* 旧版・移植版とも全エラーから対象キーを抽出する。移植版には `errors`（`array<string,string[]>`）全体と対象 `key` を渡す。呼び出し側で対象キーの一覧に絞り込まない。
 * [TemplateParameter](../PeServer/Core/Mvc/Template/TemplateParameter.php) の `errors` と `values` は別のデータ。呼び出し側の受け渡しまで調べる。表示コンポーネントだけの修正で移植完了としない。
-* 項目別エラーしかない場合の共通見出しの挙動差は保留中。旧版コード上の分析と実際の画面確認を区別する。詳細は [MEMORY.md](./MEMORY.md)。
+* 共通表示では全エラーが空なら何も出さず、項目別エラーしかない場合も共通見出しを出す。共通メッセージが空ならリストは出さない。旧版に合わせた挙動を単体テストで検証済み。実際の画面確認とは区別する。詳細は [MEMORY.md](./MEMORY.md)。
 
 ## 移植・検証の進め方
 

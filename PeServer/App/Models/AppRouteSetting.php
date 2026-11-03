@@ -96,7 +96,9 @@ final readonly class AppRouteSetting extends RouteSetting
 				/* AUTO-FORMAT */,
 				(new RouteInformation('account', AccountController::class))
 					->addAction('login', HttpMethod::gets(), 'login_get')
+					->addAction('login2', HttpMethod::gets(), 'login_get2')
 					->addAction('login', HttpMethod::Post, 'login_post', [CsrfMiddleware::class])
+					->addAction('login2', HttpMethod::Post, 'login_post2', [CsrfMiddleware::class])
 					->addAction('logout', HttpMethod::gets(), 'logout')
 					->addAction('signup', HttpMethod::gets(), 'signup_step1_get', [NotLoginMiddleware::class])
 					->addAction('signup', HttpMethod::Post, 'signup_step1_post', [NotLoginMiddleware::class, CsrfMiddleware::class])

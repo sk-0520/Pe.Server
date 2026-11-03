@@ -144,7 +144,7 @@ class DefaultPage extends HtmlComponentBase
 								// show_error_messages
 								new ShowErrorMessages(
 									new ShowErrorMessagesProps(
-										messages: $this->props->parameter->values["error_messages"] ?? [],
+										errors: $this->props->parameter->errors,
 										key: Validator::COMMON,
 									),
 									$this->context

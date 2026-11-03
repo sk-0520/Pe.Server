@@ -44,7 +44,10 @@ class ShowErrorMessagesTest extends TestClass
 	public function test_common(): void
 	{
 		$title = htmlspecialchars(I18n::message(I18n::COMMON_ERROR_TITLE), ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5);
-		$actual = $this->render(new ShowErrorMessagesProps(['<message>', 'second'], Validator::COMMON));
+		$actual = $this->render(new ShowErrorMessagesProps([
+			Validator::COMMON => ['<message>', 'second'],
+			'email' => ['field message'],
+		], Validator::COMMON));
 
 		$this->assertSame(
 			'<div class="common error"><p>' . $title . '</p><ul class="errors common-error"><li class="error">&lt;message&gt;</li><li class="error">second</li></ul></div>',
@@ -54,8 +57,36 @@ class ShowErrorMessagesTest extends TestClass
 
 	public function test_field(): void
 	{
-		$actual = $this->render(new ShowErrorMessagesProps(['<message>'], 'email'));
+		$actual = $this->render(new ShowErrorMessagesProps([
+			Validator::COMMON => ['common message'],
+			'email' => ['<message>'],
+			'password' => ['other field message'],
+		], 'email'));
 
 		$this->assertSame('<ul class="errors value-error"><li class="error">&lt;message&gt;</li></ul>', $actual);
+	}
+
+	public function test_missing_or_empty_field(): void
+	{
+		$this->assertSame('', $this->render(new ShowErrorMessagesProps([
+			Validator::COMMON => ['common message'],
+		], 'email')));
+		$this->assertSame('', $this->render(new ShowErrorMessagesProps([
+			'email' => [],
+		], 'email')));
+	}
+
+	public function test_common_heading_without_common_messages(): void
+	{
+		$title = htmlspecialchars(I18n::message(I18n::COMMON_ERROR_TITLE), ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5);
+		$expected = '<div class="common error"><p>' . $title . '</p></div>';
+
+		$this->assertSame($expected, $this->render(new ShowErrorMessagesProps([
+			'email' => ['field message'],
+		])));
+		$this->assertSame($expected, $this->render(new ShowErrorMessagesProps([
+			Validator::COMMON => [],
+			'email' => ['field message'],
+		])));
 	}
 }

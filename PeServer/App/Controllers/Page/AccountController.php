@@ -23,6 +23,7 @@ use PeServer\App\Models\Domain\Page\Account\AccountUserPluginLogic;
 use PeServer\App\Models\Domain\Page\Account\AccountUserPluginReserveLogic;
 use PeServer\App\Models\Domain\UserLevel;
 use PeServer\App\Models\SessionKey;
+use PeServer\App\Views\Pages\Account\AccountLoginPage;
 use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Mvc\Controller\ControllerArgument;
 use PeServer\Core\Mvc\Logic\LogicCallMode;
@@ -60,6 +61,18 @@ final class AccountController extends PageControllerBase
 		return $this->view('login', $logic->getViewData());
 	}
 
+	public function login_get2(): IActionResult
+	{
+		if ($this->isLoggedIn()) {
+			return $this->redirectPath('account/user');
+		}
+
+		$logic = $this->createLogic(AccountLoginLogic::class);
+		$logic->run(LogicCallMode::Initialize);
+
+		return $this->view(AccountLoginPage::class, $logic->getViewData());
+	}
+
 	public function login_post(): IActionResult
 	{
 		if ($this->isLoggedIn()) {
@@ -79,6 +92,27 @@ final class AccountController extends PageControllerBase
 		}
 
 		return $this->view('login', $logic->getViewData());
+	}
+
+	public function login_post2(): IActionResult
+	{
+		if ($this->isLoggedIn()) {
+			return $this->redirectPath('account/user');
+		}
+
+		$logic = $this->createLogic(AccountLoginLogic::class);
+		if ($logic->run(LogicCallMode::Submit)) {
+			if ($this->stores->session->tryGet(SessionKey::ACCOUNT, $account)) {
+				/** @var SessionAccount $account */
+				if ($account->level === UserLevel::SETUP) {
+					return $this->redirectPath('management/setup');
+				}
+			}
+
+			return $this->redirectPath('/account');
+		}
+
+		return $this->view(AccountLoginPage::class, $logic->getViewData());
 	}
 
 	public function logout(): IActionResult
