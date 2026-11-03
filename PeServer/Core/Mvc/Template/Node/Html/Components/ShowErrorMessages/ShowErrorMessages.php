@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\App\Views\Components\ShowErrorMessages;
+namespace PeServer\Core\Mvc\Template\Node\Html\Components\ShowErrorMessages;
 
 use Override;
 use PeServer\Core\Collections\Arr;
@@ -19,11 +19,11 @@ use PeServer\Core\Mvc\Template\Node\NoneNode;
 use PeServer\Core\Mvc\Template\Node\TextNode;
 
 /**
- * @extends HtmlComponentBase<\PeServer\App\Views\Components\ShowErrorMessages\ShowErrorMessagesProps>
+ * @extends HtmlComponentBase<\PeServer\Core\Mvc\Template\Node\Html\Components\ShowErrorMessages\ShowErrorMessagesProps>
  */
 class ShowErrorMessages extends HtmlComponentBase
 {
-	/** @template-use HtmlComponentTrait<\PeServer\App\Views\Components\ShowErrorMessages\ShowErrorMessagesProps> */
+	/** @template-use HtmlComponentTrait<\PeServer\Core\Mvc\Template\Node\Html\Components\ShowErrorMessages\ShowErrorMessagesProps> */
 	use HtmlComponentTrait;
 
 	#region HtmlComponentBase

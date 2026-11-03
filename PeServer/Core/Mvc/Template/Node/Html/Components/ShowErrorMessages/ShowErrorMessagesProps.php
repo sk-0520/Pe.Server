@@ -2,11 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PeServer\App\Views\Components\ShowErrorMessages;
+namespace PeServer\Core\Mvc\Template\Node\Html\Components\ShowErrorMessages;
 
 use PeServer\Core\Mvc\Logic\Validator;
-use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Rel;
-use PeServer\Core\Mvc\Template\Node\NodeContextBase;
 use PeServer\Core\Mvc\Template\Node\Props;
 
 readonly class ShowErrorMessagesProps extends Props

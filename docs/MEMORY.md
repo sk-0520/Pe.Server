@@ -2,6 +2,12 @@
 
 このファイルは作業の引き継ぎ用。確定した設計方針は [テンプレート移植](./TEMPLATE-MIGRATION.md)、全体の入口は [AGENT.md](./AGENT.md) を参照する。記録は現在のコードより優先しない。
 
+## 2026-11-03: エラー表示コンポーネントの Core 移動
+
+* 移植版の [ShowErrorMessages](../PeServer/Core/Mvc/Template/Node/Html/Components/ShowErrorMessages/ShowErrorMessages.php) と [Props](../PeServer/Core/Mvc/Template/Node/Html/Components/ShowErrorMessages/ShowErrorMessagesProps.php) を App から Core の `Template/Node/Html/Components` へ移動し、DefaultPage の参照を更新した。Smarty プラグインと表示挙動は変更していない。
+* 空・共通・項目別エラー表示のテストを追加し、トップページのテストと合わせて 6 テスト・77 assertions が成功した。
+* 対象を絞った PHPStan 解析ではコードの診断はなかったが、全体設定の未使用 ignoreErrors 3 件により終了コードは失敗となった。
+
 ## 2026-11-03: TemplateEngine2 の調査
 
 * 旧ブランチ先端 `66a83b11` の関連履歴を checkout せず確認した。詳細・コミット根拠は [テンプレート移植の履歴調査](./TEMPLATE-MIGRATION.md#templateengine2-の履歴調査)。

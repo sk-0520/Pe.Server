@@ -76,7 +76,7 @@ public function __construct(array $attributes = [])
 * [EngineMigrationTemplate](../PeServer/Core/Mvc/Template/EngineMigrationTemplate.php) はテンプレート名が `ComponentBase` の派生クラスなら NodeTemplate、それ以外なら SmartyTemplate を選ぶ。Node への移植だけで全ページが切り替わるわけではない。
 * [DefaultPage](../PeServer/App/Views/Components/Pages/Default/DefaultPage.php) は共通レイアウト。[DefaultPageProps](../PeServer/App/Views/Components/Pages/Default/DefaultPageProps.php) の `children` が `<section id="content">` に入る。
 * [IndexPage](../PeServer/App/Views/Pages/Home/IndexPage.php) は本文移植の例。ただしフォームの手本ではない。
-* プラグインは [Smarty プラグイン群](../PeServer/Core/Mvc/Template/Plugin/) と [App のコンポーネント群](../PeServer/App/Views/Components/) を比較する。見た目だけでなく入力・出力の形と責務を確認する。
+* プラグインは [Smarty プラグイン群](../PeServer/Core/Mvc/Template/Plugin/)、[Core の HTML コンポーネント群](../PeServer/Core/Mvc/Template/Node/Html/Components/)、[App のコンポーネント群](../PeServer/App/Views/Components/) を比較する。見た目だけでなく入力・出力の形と責務を確認する。
 * `Core` は再利用可能なライブラリであり `App` に依存させない。詳細は [PHP スキル](../.github/skills/php/SKILL.md) に従う。
 
 ## default で意図した差分
@@ -88,7 +88,7 @@ public function __construct(array $attributes = [])
 
 ## エラー表示の注意点
 
-* [ShowErrorMessagesFunction](../PeServer/Core/Mvc/Template/Plugin/ShowErrorMessagesFunction.php) が Smarty プラグイン、[ShowErrorMessages](../PeServer/App/Views/Components/ShowErrorMessages/ShowErrorMessages.php) と [Props](../PeServer/App/Views/Components/ShowErrorMessages/ShowErrorMessagesProps.php) が移植版。移植版が存在しないという前提で再実装しない。
+* [ShowErrorMessagesFunction](../PeServer/Core/Mvc/Template/Plugin/ShowErrorMessagesFunction.php) が Smarty プラグイン、[ShowErrorMessages](../PeServer/Core/Mvc/Template/Node/Html/Components/ShowErrorMessages/ShowErrorMessages.php) と [Props](../PeServer/Core/Mvc/Template/Node/Html/Components/ShowErrorMessages/ShowErrorMessagesProps.php) が移植版。いずれも Core 所属。移植版が存在しないという前提で再実装しない。
 * 旧版は全エラーから対象キーを抽出する。移植版の `messages` は `string[]` であり、渡された一覧を描画する。`key` は共通／項目別の表示を切り替える。
 * [TemplateParameter](../PeServer/Core/Mvc/Template/TemplateParameter.php) の `errors` と `values` は別のデータ。呼び出し側の受け渡しまで調べる。表示コンポーネントだけの修正で移植完了としない。
 * 項目別エラーしかない場合の共通見出しの挙動差は保留中。旧版コード上の分析と実際の画面確認を区別する。詳細は [MEMORY.md](./MEMORY.md)。
