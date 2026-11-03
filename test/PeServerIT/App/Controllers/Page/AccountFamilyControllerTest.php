@@ -32,7 +32,7 @@ use PeServerTest\ItSetup;
 use PeServerTest\ItUseDatabaseTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
 
-class AccountFamily2ControllerTest extends ItControllerClass
+class AccountFamilyControllerTest extends ItControllerClass
 {
 	use ItUseDatabaseTrait;
 
@@ -70,22 +70,13 @@ class AccountFamily2ControllerTest extends ItControllerClass
 		return [
 			['/account', 'ユーザー情報', null],
 			['/account/user', 'ユーザー情報', null],
-			['/account/user/api', 'APIキー登録', '/account2/user/api'],
-			['/account/user/password', 'パスワード変更', '/account2/user/password'],
-			['/account/user/email', 'メールアドレス変更', '/account2/user/email'],
-			['/account/user/plugin', 'プラグイン 登録', '/account2/user/plugin'],
-			['/account/user/plugin/reserve', 'プラグイン 予約', '/account2/user/plugin/reserve'],
+			['/account/user/api', 'APIキー登録', '/account/user/api'],
+			['/account/user/password', 'パスワード変更', '/account/user/password'],
+			['/account/user/email', 'メールアドレス変更', '/account/user/email'],
+			['/account/user/plugin', 'プラグイン 登録', '/account/user/plugin'],
+			['/account/user/plugin/reserve', 'プラグイン 予約', '/account/user/plugin/reserve'],
 			['/account/user/audit-logs', '監査ログ', null],
 			['/account/user/audit-logs/page/2', '監査ログ', null],
-			['/account2', 'ユーザー情報', null],
-			['/account2/user', 'ユーザー情報', null],
-			['/account2/user/api', 'APIキー登録', '/account2/user/api'],
-			['/account2/user/password', 'パスワード変更', '/account2/user/password'],
-			['/account2/user/email', 'メールアドレス変更', '/account2/user/email'],
-			['/account2/user/plugin', 'プラグイン 登録', '/account2/user/plugin'],
-			['/account2/user/plugin/reserve', 'プラグイン 予約', '/account2/user/plugin/reserve'],
-			['/account2/user/audit-logs', '監査ログ', null],
-			['/account2/user/audit-logs/page/2', '監査ログ', null],
 		];
 	}
 
@@ -95,9 +86,9 @@ class AccountFamily2ControllerTest extends ItControllerClass
 		$actual = $this->call(HttpMethod::Get, $path, $this->options(), $this->seed(...));
 		$this->assertStatusOK($actual);
 		$this->assertTitle($title, $actual);
-		$this->assertCount(1, $actual->html->path()->collections("//*[@id='node-template-indicator']"));
-		$this->assertCount(1, $actual->html->path()->collections("//header//a[@href='/account2/user']"));
-		$this->assertCount(1, $actual->html->path()->collections("//header//a[@href='/account2/logout']"));
+		$this->assertCount(0, $actual->html->path()->collections("//*[@id='node-template-indicator']"));
+		$this->assertCount(1, $actual->html->path()->collections("//header//a[@href='/account/user']"));
+		$this->assertCount(1, $actual->html->path()->collections("//header//a[@href='/account/logout']"));
 		if ($action !== null) {
 			$this->assertCount(1, $actual->html->path()->collections("//form[@action='$action'][@method='post']"));
 			$csrfName = $actual->container->get(WebSecurity::class)->getCsrfKind(WebSecurity::CSRF_KIND_REQUEST_NAME);
@@ -112,18 +103,18 @@ class AccountFamily2ControllerTest extends ItControllerClass
 
 	public function test_index_anonymous_and_logout(): void
 	{
-		$actual = $this->call(HttpMethod::Get, '/account2');
+		$actual = $this->call(HttpMethod::Get, '/account');
 		$this->assertStatusOK($actual);
 		$this->assertTitle('ログイン', $actual);
-		$this->assertCount(1, $actual->html->path()->collections("//header//a[@href='/account2/signup']"));
-		$actual = $this->call(HttpMethod::Get, '/account2/logout', $this->options(), $this->seed(...));
-		$this->assertRedirectPath(HttpStatus::Found, '/index2', null, $actual);
+		$this->assertCount(1, $actual->html->path()->collections("//header//a[@href='/account/signup']"));
+		$actual = $this->call(HttpMethod::Get, '/account/logout', $this->options(), $this->seed(...));
+		$this->assertRedirectPath(HttpStatus::Found, '', null, $actual);
 		$this->assertSame(AuditLog::LOGOUT, $this->getMaybeLatestAuditLog($actual->openDB())->fields['event']);
 	}
 
 	public function test_user_plugins_and_links(): void
 	{
-		$actual = $this->call(HttpMethod::Get, '/account2/user', $this->options(), function (ItSetup $setup): void {
+		$actual = $this->call(HttpMethod::Get, '/account/user', $this->options(), function (ItSetup $setup): void {
 			$this->seed($setup);
 			(new PluginsEntityDao($setup->databaseContext))->insertPlugin(
 				self::PLUGIN_ID,
@@ -135,31 +126,31 @@ class AccountFamily2ControllerTest extends ItControllerClass
                 ''
 			);
 		});
-		$this->assertCount(1, $actual->html->path()->collections("//a[@href='/account2/user/plugin/" . self::PLUGIN_ID . "'][@title='Plugin <name>']"));
+		$this->assertCount(1, $actual->html->path()->collections("//a[@href='/account/user/plugin/" . self::PLUGIN_ID . "'][@title='Plugin <name>']"));
 		foreach (['edit', 'api', 'email', 'password', 'plugin', 'plugin/reserve', 'audit-logs', 'audit-logs/download'] as $tail) {
-			$this->assertCount(1, $actual->html->path()->collections("//*[@id='content']//a[@href='/account2/user/$tail']"));
+			$this->assertCount(1, $actual->html->path()->collections("//*[@id='content']//a[@href='/account/user/$tail']"));
 		}
 		$this->assertTextNode('Test <User>', $actual->html->path()->collections("//dt[text()='名前']/following-sibling::dd[1]")->single());
 	}
 
 	public function test_api_cycle(): void
 	{
-		$created = $this->call(HttpMethod::Post, '/account2/user/api', $this->options(), $this->seed(...));
-		$this->assertRedirectPath(HttpStatus::Found, 'account2/user/api', null, $created);
+		$created = $this->call(HttpMethod::Post, '/account/user/api', $this->options(), $this->seed(...));
+		$this->assertRedirectPath(HttpStatus::Found, 'account/user/api', null, $created);
 		$key = (new ApiKeysEntityDao($created->openDB()))->selectApiKeyByUserId(ItMockStores::SESSION_ACCOUNT_USER_ID)->fields;
-		$shown = $this->call(HttpMethod::Get, '/account2/user/api', $this->options(), null, $created);
+		$shown = $this->call(HttpMethod::Get, '/account/user/api', $this->options(), null, $created);
 		$this->assertTitle('APIキー確認', $shown);
 		$this->assertTextNode($key['secret_key'], $shown->html->path()->collections("//tbody/tr[3]/td/pre")->single());
-		$again = $this->call(HttpMethod::Get, '/account2/user/api', $this->options(), null, $shown);
+		$again = $this->call(HttpMethod::Get, '/account/user/api', $this->options(), null, $shown);
 		$this->assertCount(0, $again->html->path()->collections("//tbody/tr[3]"));
-		$deleted = $this->call(HttpMethod::Post, '/account2/user/api', $this->options(), null, $again);
-		$this->assertRedirectPath(HttpStatus::Found, 'account2/user/api', null, $deleted);
+		$deleted = $this->call(HttpMethod::Post, '/account/user/api', $this->options(), null, $again);
+		$this->assertRedirectPath(HttpStatus::Found, 'account/user/api', null, $deleted);
 		$this->assertFalse((new ApiKeysEntityDao($deleted->openDB()))->selectExistsApiKeyByUserId(ItMockStores::SESSION_ACCOUNT_USER_ID));
 	}
 
 	public static function provider_routes(): array
 	{
-		return [['/account', ''], ['/account', '2'], ['/account2', '']];
+		return [['/account', '']];
 	}
 
 	#[DataProvider('provider_routes')]
@@ -172,20 +163,20 @@ class AccountFamily2ControllerTest extends ItControllerClass
 		]), $this->seed(...));
 		$this->assertStatusOK($bad);
 		$this->assertVisibleCommonError([], $bad);
-		$this->assertCount(1, $bad->html->path()->collections("//form[@action='/account2/user/password']"));
+		$this->assertCount(1, $bad->html->path()->collections("//form[@action='/account/user/password']"));
 		$this->assertCount(3, $bad->html->path()->collections("//input[@type='password'][@value=''][contains(@class,'error')]/following-sibling::ul"));
 		$good = $this->call(HttpMethod::Post, "$base/user/password$suffix", $this->options([
 			'account_password_current' => 'password123',
 			'account_password_new' => 'newpassword123',
 			'account_password_confirm' => 'newpassword123',
 		]), null, $bad);
-		$this->assertRedirectPath(HttpStatus::Found, 'account2/user', null, $good);
+		$this->assertRedirectPath(HttpStatus::Found, 'account/user', null, $good);
 		$password = (new UserAuthenticationsEntityDao($good->openDB()))->selectPassword(ItMockStores::SESSION_ACCOUNT_USER_ID)->fields['current_password'];
 		$this->assertTrue(Cryptography::verifyPassword('newpassword123', $password));
 		$this->assertSame(AuditLog::USER_PASSWORD_CHANGE, $this->getMaybeLatestAuditLog($good->openDB())->fields['event']);
-		$user = $this->call(HttpMethod::Get, '/account2/user', $this->options(), null, $good);
+		$user = $this->call(HttpMethod::Get, '/account/user', $this->options(), null, $good);
 		$this->assertStatusOK($user);
-		$this->assertCount(1, $user->html->path()->collections("//*[@id='node-template-indicator']"));
+		$this->assertCount(0, $user->html->path()->collections("//*[@id='node-template-indicator']"));
 	}
 
 	#[DataProvider('provider_routes')]
@@ -201,9 +192,9 @@ class AccountFamily2ControllerTest extends ItControllerClass
 			$this->assertInstanceOf(IDiRegisterContainer::class, $setup->container);
 			$setup->container->registerValue($mailer, Mailer::class);
 		});
-		$this->assertRedirectPath(HttpStatus::Found, 'account2/user/email', null, $sent);
+		$this->assertRedirectPath(HttpStatus::Found, 'account/user/email', null, $sent);
 		$waiting = $this->call(HttpMethod::Get, "$base/user/email$suffix", $this->options(), null, $sent);
-		$this->assertCount(2, $waiting->html->path()->collections("//form[@action='/account2/user/email']"));
+		$this->assertCount(2, $waiting->html->path()->collections("//form[@action='/account/user/email']"));
 		$this->assertTextNode('new@example.com', $waiting->html->path()->collections("//section[@class='page-account-email-confirm']//code")->single());
 		$time = $waiting->html->path()->collections("//section[@class='page-account-email-confirm']//time")->single();
 		$this->assertSame($time->raw->textContent, $time->getAttribute('datetime'));
@@ -234,7 +225,7 @@ class AccountFamily2ControllerTest extends ItControllerClass
 			$this->assertInstanceOf(IDiRegisterContainer::class, $setup->container);
 			$setup->container->registerValue($mailer, Mailer::class);
 		});
-		$this->assertRedirectPath(HttpStatus::Found, 'account2/user', null, $confirmed);
+		$this->assertRedirectPath(HttpStatus::Found, 'account/user', null, $confirmed);
 		$this->assertSame(0, $confirmed->openDB()->selectSingleCount('select count(*) from user_change_wait_emails'));
 		$email = $confirmed->openDB()->querySingle('select email from users where user_id = :user_id', ['user_id' => ItMockStores::SESSION_ACCOUNT_USER_ID])->fields['email'];
 		$this->assertSame('new@example.com', $confirmed->container->get(AppCryptography::class)->decrypt($email));
@@ -243,9 +234,9 @@ class AccountFamily2ControllerTest extends ItControllerClass
 	public static function provider_invalid_forms(): array
 	{
 		return [
-			['/account2/user/email', ['account_email_mode' => 'edit', 'account_email_email' => 'invalid'], 'account_email_email'],
-			['/account2/user/plugin', ['account_plugin_plugin_id' => 'invalid'], 'account_plugin_plugin_id'],
-			['/account2/user/plugin/reserve', ['account_plugin_reserve_plugin_id' => 'invalid'], 'account_plugin_reserve_plugin_id'],
+			['/account/user/email', ['account_email_mode' => 'edit', 'account_email_email' => 'invalid'], 'account_email_email'],
+			['/account/user/plugin', ['account_plugin_plugin_id' => 'invalid'], 'account_plugin_plugin_id'],
+			['/account/user/plugin/reserve', ['account_plugin_reserve_plugin_id' => 'invalid'], 'account_plugin_reserve_plugin_id'],
 		];
 	}
 
@@ -266,12 +257,12 @@ class AccountFamily2ControllerTest extends ItControllerClass
 			'account_plugin_reserve_plugin_id' => self::PLUGIN_ID,
 			'account_plugin_reserve_plugin_name' => 'test-plugin',
 		]), $this->seed(...));
-		$this->assertRedirectPath(HttpStatus::Found, 'account2/user/plugin/' . self::PLUGIN_ID, null, $actual);
+		$this->assertRedirectPath(HttpStatus::Found, 'account/user/plugin/' . self::PLUGIN_ID, null, $actual);
 		$this->assertSame(PluginState::RESERVED, (new PluginsEntityDao($actual->openDB()))->selectEditPlugin(self::PLUGIN_ID)->fields['state']);
 		$edit = $this->call(HttpMethod::Get, "$base/user/plugin$suffix/" . self::PLUGIN_ID, $this->options(), null, $actual);
 		$this->assertTitle('プラグイン 編集: test-plugin', $edit);
-		$this->assertCount(1, $edit->html->path()->collections("//form[@action='/account2/user/plugin/" . self::PLUGIN_ID . "']"));
-		$this->assertCount(1, $edit->html->path()->collections("//*[@id='node-template-indicator']"));
+		$this->assertCount(1, $edit->html->path()->collections("//form[@action='/account/user/plugin/" . self::PLUGIN_ID . "']"));
+		$this->assertCount(0, $edit->html->path()->collections("//*[@id='node-template-indicator']"));
 		$this->assertCount(2, $edit->html->path()->collections("//form//input[@readonly]"));
 		$this->assertCount(1, $edit->html->path()->collections("//input[@id='pg-plugin-id'][@name='account_plugin_plugin_id']"));
 		$this->assertCount(1, $edit->html->path()->collections("//input[@name='account_plugin_state'][@value='reserved'][@disabled][@checked]"));
@@ -313,7 +304,7 @@ class AccountFamily2ControllerTest extends ItControllerClass
 	public function test_plugin_register_and_update(string $base, string $suffix): void
 	{
 		$created = $this->call(HttpMethod::Post, "$base/user/plugin$suffix", $this->options($this->pluginBody()), $this->seed(...));
-		$this->assertRedirectPath(HttpStatus::Found, 'account2/user/plugin/' . self::PLUGIN_ID, null, $created);
+		$this->assertRedirectPath(HttpStatus::Found, 'account/user/plugin/' . self::PLUGIN_ID, null, $created);
 		$edit = $this->call(HttpMethod::Get, "$base/user/plugin$suffix/" . self::PLUGIN_ID, $this->options(), null, $created);
 		$this->assertCount(1, $edit->html->path()->collections("//input[@name='plugin_category_test-category'][@checked]"));
 		$this->assertTextNode('preview', $edit->html->path()->collections("//section[@class='markdown markdown-browser']//strong")->single());
@@ -322,7 +313,7 @@ class AccountFamily2ControllerTest extends ItControllerClass
 		$body['account_plugin_display_name'] = 'Updated';
 		unset($body['plugin_category_test-category']);
 		$updated = $this->call(HttpMethod::Post, "$base/user/plugin$suffix/" . self::PLUGIN_ID, $this->options($body), null, $edit);
-		$this->assertRedirectPath(HttpStatus::Found, 'account2/user/plugin/' . self::PLUGIN_ID, null, $updated);
+		$this->assertRedirectPath(HttpStatus::Found, 'account/user/plugin/' . self::PLUGIN_ID, null, $updated);
 		$this->assertSame('Updated', (new PluginsEntityDao($updated->openDB()))->selectEditPlugin(self::PLUGIN_ID)->fields['display_name']);
 		$this->assertSame([], (new PluginCategoryMappingsEntityDao($updated->openDB()))->selectPluginCategoriesByPluginId(self::PLUGIN_ID));
 	}
@@ -338,11 +329,11 @@ class AccountFamily2ControllerTest extends ItControllerClass
 			}
 		});
 		$this->assertCount(10, $first->html->path()->collections("//table/tbody/tr"));
-		$this->assertCount(1, $first->html->path()->collections("//ul[@class='pagination']//a[@href='/account2/user/audit-logs/page/2'][text()='2']"));
+		$this->assertCount(1, $first->html->path()->collections("//ul[@class='pagination']//a[@href='/account/user/audit-logs/page/2'][text()='2']"));
 		$this->assertCount(10, $first->html->path()->collections("//td[@data-clipboard='block']/pre/code"));
 		$second = $this->call(HttpMethod::Get, "$base/user/audit-logs$suffix/page/2", $this->options(), null, $first);
 		$this->assertCount(2, $second->html->path()->collections("//table/tbody/tr"));
-		$download = $this->call(HttpMethod::Get, '/account2/user/audit-logs/download', $this->options(), null, $second);
+		$download = $this->call(HttpMethod::Get, '/account/user/audit-logs/download', $this->options(), null, $second);
 		$this->assertStatusOK($download);
 		$this->assertCount(12, $download->json);
 		$legacy = $this->call(HttpMethod::Get, '/account/user/audit-logs/download', $this->options(), null, $second);

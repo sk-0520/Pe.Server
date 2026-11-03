@@ -27,36 +27,7 @@ final class PasswordController extends PageControllerBase
 		parent::__construct($argument);
 	}
 
-	// public function index(): IActionResult
-	// {
-	// }
-
 	public function reminder_get(): IActionResult
-	{
-		return $this->reminder_get2();
-	}
-
-	public function reminder_post(): IActionResult
-	{
-		return $this->reminder_post2();
-	}
-
-	public function reminding(): IActionResult
-	{
-		return $this->reminding2();
-	}
-
-	public function reset_get(): IActionResult
-	{
-		return $this->reset_get2();
-	}
-
-	public function reset_post(): IActionResult
-	{
-		return $this->reset_post2();
-	}
-
-	public function reminder_get2(): IActionResult
 	{
 		$logic = $this->createLogic(PasswordReminderLogic::class);
 		$logic->run(LogicCallMode::Initialize);
@@ -64,12 +35,12 @@ final class PasswordController extends PageControllerBase
 		return $this->view(PasswordReminderPage::class, $logic->getViewData());
 	}
 
-	public function reminder_post2(): IActionResult
+	public function reminder_post(): IActionResult
 	{
-		$logic = $this->createLogic(PasswordReminderLogic::class, ['$resetPath' => 'password2/reset']);
+		$logic = $this->createLogic(PasswordReminderLogic::class);
 		if ($logic->run(LogicCallMode::Submit)) {
 			if ($logic->tryGetResult('token', $token)) {
-				return $this->redirectPath("password2/reminding/$token");
+				return $this->redirectPath("password/reminding/$token");
 			}
 			throw new InvalidOperationException();
 		}
@@ -77,7 +48,7 @@ final class PasswordController extends PageControllerBase
 		return $this->view(PasswordReminderPage::class, $logic->getViewData());
 	}
 
-	public function reminding2(): IActionResult
+	public function reminding(): IActionResult
 	{
 		$logic = $this->createLogic(PasswordRemindingLogic::class);
 		$logic->run(LogicCallMode::Initialize);
@@ -85,7 +56,7 @@ final class PasswordController extends PageControllerBase
 		return $this->view(PasswordRemindingPage::class, $logic->getViewData());
 	}
 
-	public function reset_get2(): IActionResult
+	public function reset_get(): IActionResult
 	{
 		$logic = $this->createLogic(PasswordResetLogic::class);
 		$logic->run(LogicCallMode::Initialize);
@@ -93,11 +64,11 @@ final class PasswordController extends PageControllerBase
 		return $this->view(PasswordResetPage::class, $logic->getViewData());
 	}
 
-	public function reset_post2(): IActionResult
+	public function reset_post(): IActionResult
 	{
 		$logic = $this->createLogic(PasswordResetLogic::class);
 		if ($logic->run(LogicCallMode::Submit)) {
-			return $this->redirectPath('/index2');
+			return $this->redirectPath('/');
 		}
 
 		return $this->view(PasswordResetPage::class, $logic->getViewData());

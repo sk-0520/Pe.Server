@@ -37,7 +37,7 @@ class PasswordReminderLogic extends PageLogicBase
 {
 	use SessionAnonymousTrait;
 
-	public function __construct(LogicParameter $parameter, private AppConfiguration $config, private AppCryptography $cryptography, private Mailer $mailer, private AppTemplate $appTemplate, private AppEmailInformation $appEmailInformation, private AppUrl $appUrl, private string $resetPath = 'password/reset')
+	public function __construct(LogicParameter $parameter, private AppConfiguration $config, private AppCryptography $cryptography, private Mailer $mailer, private AppTemplate $appTemplate, private AppEmailInformation $appEmailInformation, private AppUrl $appUrl)
 	{
 		parent::__construct($parameter);
 	}
@@ -104,7 +104,7 @@ class PasswordReminderLogic extends PageLogicBase
 		if ($result) {
 			$rawEmail = $this->cryptography->decrypt($email);
 
-			$url = $this->appUrl->addPublicUrl(new UrlPath("$this->resetPath/$token"));
+			$url = $this->appUrl->addPublicUrl(new UrlPath("password/reset/$token"));
 
 			$subject = I18n::message('subject/password_reminder_token');
 			$values = [

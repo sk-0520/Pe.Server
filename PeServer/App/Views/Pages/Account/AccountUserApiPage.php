@@ -58,7 +58,7 @@ class AccountUserApiPage extends AccountPageBase
 				$b->tbody(new HtmlGlobalAttributes(), new Fragment($rows)),
 			]));
 		return $this->layout($register ? 'APIキー登録' : 'APIキー確認', $this->form(
-            '/account2/user/api',
+            '/account/user/api',
             'page-account-api',
 			$b->dl(new HtmlGlobalAttributes(className: 'input'), new Fragment([
 				$b->dt(new HtmlGlobalAttributes(), new TextNode('説明')),

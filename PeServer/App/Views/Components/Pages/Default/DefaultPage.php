@@ -92,14 +92,6 @@ class DefaultPage extends HtmlComponentBase
 				$this->context->builder->body(
 					new HtmlGlobalAttributes(),
 					new Fragment([
-						$this->context->builder->span(
-							new HtmlGlobalAttributes(
-								id: 'node-template-indicator',
-								title: 'NodeTemplate',
-								style: 'position: fixed; top: 0; right: 0; z-index: 9999; padding: 0.1em 0.4em; background: #222; color: #fff; pointer-events: none;',
-							),
-							new TextNode('2')
-						),
 						$this->context->builder->main(
 							new HtmlGlobalAttributes(
 								id: "main"
@@ -195,7 +187,7 @@ class DefaultPage extends HtmlComponentBase
 										new HTMLLiAttributes(),
 										$this->context->builder->a(
 											new HTMLAnchorAttributes(
-												href: "/index2"
+												href: "/"
 											),
 											new TextNode("トップ")
 										),
@@ -216,7 +208,7 @@ class DefaultPage extends HtmlComponentBase
 													new HTMLLiAttributes(),
 													$this->context->builder->a(
 														new HTMLAnchorAttributes(
-															href: "/account2/user"
+															href: "/account/user"
 														),
 														new TextNode("ユーザー情報")
 													)
@@ -236,7 +228,7 @@ class DefaultPage extends HtmlComponentBase
 												new HTMLLiAttributes(),
 												$this->context->builder->a(
 													new HTMLAnchorAttributes(
-														href: "/account2/logout"
+														href: "/account/logout"
 													),
 													new TextNode("ログアウト")
 												)
@@ -247,7 +239,7 @@ class DefaultPage extends HtmlComponentBase
 												new HTMLLiAttributes(),
 												$this->context->builder->a(
 													new HTMLAnchorAttributes(
-														href: "/account2/login"
+														href: "/account/login"
 													),
 													new TextNode("ログイン")
 												)
@@ -256,7 +248,7 @@ class DefaultPage extends HtmlComponentBase
 												new HTMLLiAttributes(),
 												$this->context->builder->a(
 													new HTMLAnchorAttributes(
-														href: "/account2/signup"
+														href: "/account/signup"
 													),
 													new TextNode("ユーザー登録")
 												)
@@ -275,7 +267,7 @@ class DefaultPage extends HtmlComponentBase
 										new HTMLLiAttributes(),
 										$this->context->builder->a(
 											new HTMLAnchorAttributes(
-												href: "/index2"
+												href: "/"
 											),
 											new TextNode("トップページ")
 										)

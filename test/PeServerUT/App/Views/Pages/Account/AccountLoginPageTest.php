@@ -73,7 +73,7 @@ class AccountLoginPageTest extends TestClass
 		$xpath = new DOMXPath($dom);
 		$formCount = $environmentName === 'development' ? 3 : 1;
 		$this->assertSame($formCount, $xpath->query('//form')->length);
-		$this->assertSame($formCount, $xpath->query('//form[@action="/account2/login"][@method="post"]')->length);
+		$this->assertSame($formCount, $xpath->query('//form[@action="/account/login"][@method="post"]')->length);
 		$tokens = $xpath->query('//input[@name="' . $security->getCsrfKind(WebSecurity::CSRF_KIND_REQUEST_NAME) . '"]/@value');
 		$this->assertSame($hasToken ? $formCount : 0, $tokens->length);
 		foreach ($tokens as $token) {
@@ -89,7 +89,7 @@ class AccountLoginPageTest extends TestClass
 		$this->assertSame(2, $xpath->query('//ul[@class="errors value-error"]/li[@class="error"]')->length);
 		$this->assertSame('invalid <id>', $xpath->evaluate('string((//ul[@class="errors value-error"]/li)[1])'));
 		$this->assertSame(1, $xpath->query('//dt[@class="action"]')->length);
-		$this->assertSame(1, $xpath->query('//a[@href="/password2/reminder"]')->length);
+		$this->assertSame(1, $xpath->query('//a[@href="/password/reminder"]')->length);
 		$this->assertSame($environmentName === 'development' ? 2 : 0, $xpath->query('//button[@class="link"][@data-dialog="disabled"]')->length);
 	}
 }

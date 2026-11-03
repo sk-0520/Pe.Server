@@ -59,7 +59,7 @@ class HomeIndexPageTest extends TestClass
 		$this->assertStringContainsString('<p>Pe のサーバーが必要な処理。</p>', $html);
 		foreach (
 			[
-				'/plugin2' => 'プラグイン',
+				'/plugin' => 'プラグイン',
 				'/api-doc' => 'API',
 				'/public/api-doc/' => 'Doc: PeServer',
 				'/public/coverage/php/uit/' => 'Code Coverage: PeServer',
@@ -87,7 +87,9 @@ class HomeIndexPageTest extends TestClass
 		}
 		$this->assertSame($production ? 4 : 0, substr_count($html, 'src='));
 		$this->assertSame(4, substr_count($html, 'class="page-user-index-ci ' . $environmentName . '"'));
-		foreach (['<h2>dev</h2>', '<a href="/index2">index2</a>', '/dev/exception', '/ajax/dev/exception/json', '/dev/streaming'] as $value) {
+		$this->assertStringNotContainsString('/index2', $html);
+		$this->assertStringNotContainsString('node-template-indicator', $html);
+		foreach (['<h2>dev</h2>', '/dev/exception', '/ajax/dev/exception/json', '/dev/streaming'] as $value) {
 			if ($development) {
 				$this->assertStringContainsString($value, $html);
 			} else {

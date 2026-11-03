@@ -21,7 +21,7 @@ class AccountUserPasswordPage extends AccountPageBase
 	protected function getNode(): INode
 	{
 		return $this->layout('パスワード変更', $this->form(
-            '/account2/user/password',
+            '/account/user/password',
             'page-account-password',
 			$this->context->builder->dl(new HtmlGlobalAttributes(className: 'input'), new Fragment([
 				$this->input('現在パスワード', 'account_password_current', InputHelperType::Password, true),

@@ -66,7 +66,7 @@ class AccountUserEditPageTest extends TestClass
 		$dom = new HtmlDocument();
 		$this->assertTrue($dom->raw->loadHTML('<?xml encoding="UTF-8"><html><body>' . $html . '</body></html>'));
 		$xpath = new DOMXPath($dom->raw);
-		$this->assertSame(1, $xpath->query('//form[@action="/account2/user/edit"][@method="post"][@class="page-account-user"]')->length);
+		$this->assertSame(1, $xpath->query('//form[@action="/account/user/edit"][@method="post"][@class="page-account-user"]')->length);
 		$this->assertSame(1, $xpath->query('//input[@id="account_edit_name"][@type="text"][@required]')->length);
 		$this->assertSame(1, $xpath->query('//input[@id="account_edit_website"][@type="url"]')->length);
 		$this->assertSame($parameter->values['account_edit_name'], $xpath->evaluate('string(//input[@name="account_edit_name"]/@value)'));

@@ -51,7 +51,7 @@ class HomeIndexPage extends RootHtmlComponentBase
 							$this->context->builder->li(
 								new HTMLLiAttributes(),
 								$this->context->builder->a(
-									new HTMLAnchorAttributes(href: '/plugin2'),
+									new HTMLAnchorAttributes(href: '/plugin'),
 									new TextNode('プラグイン')
 								)
 							),
@@ -226,13 +226,6 @@ class HomeIndexPage extends RootHtmlComponentBase
 							$this->context->builder->ul(
 								new HtmlGlobalAttributes(),
 								new Fragment([
-									$this->context->builder->li(
-										new HTMLLiAttributes(),
-										$this->context->builder->a(
-											new HTMLAnchorAttributes(href: '/index2'),
-											new TextNode('index2')
-										)
-									),
 									$this->context->builder->li(
 										new HTMLLiAttributes(),
 										new Fragment([

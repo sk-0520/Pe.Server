@@ -63,7 +63,7 @@ class PasswordResetPage extends RootHtmlComponentBase
 			title: 'パスワード再発行最終工程',
 			children: $b->form(
 				new HTMLFormAttributes(
-					action: '/password2/reset/' . Text::toString($p->values['token']),
+					action: '/password/reset/' . Text::toString($p->values['token']),
 					method: FormMethod::Post, className: 'page-password-reset',
 				),
 				new Fragment([

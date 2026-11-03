@@ -66,7 +66,7 @@ class AccountUserPage extends AccountPageBase
 			$rows[] = $b->tr(new HtmlGlobalAttributes(), new Fragment([
 				$b->th(new HTMLTableHeaderCellAttributes(), new TextNode($state)),
 				$b->td(new HTMLTableCellAttributes(), $b->a(
-					new HTMLAnchorAttributes(href: '/account2/user/plugin/' . $plugin['plugin_id'], title: $plugin['display_name']),
+					new HTMLAnchorAttributes(href: '/account/user/plugin/' . $plugin['plugin_id'], title: $plugin['display_name']),
                     new TextNode($plugin['plugin_name'])
                 )),
 				$b->td(
@@ -90,17 +90,17 @@ class AccountUserPage extends AccountPageBase
 			]))
         );
 		$links = [
-			'/account2/user/edit' => 'ユーザー編集',
-			'/account2/user/api' => 'API設定',
-			'/account2/user/email' => 'メールアドレス変更',
-			'/account2/user/password' => 'パスワード変更',
+			'/account/user/edit' => 'ユーザー編集',
+			'/account/user/api' => 'API設定',
+			'/account/user/email' => 'メールアドレス変更',
+			'/account/user/password' => 'パスワード変更',
 		];
 		$items = [
 			$b->li(new HTMLLiAttributes(), new Fragment([
-				$b->a(new HTMLAnchorAttributes(href: '/account2/user/plugin'), new TextNode('プラグイン登録')),
+				$b->a(new HTMLAnchorAttributes(href: '/account/user/plugin'), new TextNode('プラグイン登録')),
 				$b->ul(new HtmlGlobalAttributes(), $b->li(
                     new HTMLLiAttributes(),
-                    $b->a(new HTMLAnchorAttributes(href: '/account2/user/plugin/reserve'), new TextNode('予約'))
+                    $b->a(new HTMLAnchorAttributes(href: '/account/user/plugin/reserve'), new TextNode('予約'))
                 )),
 			])),
 		];
@@ -108,9 +108,9 @@ class AccountUserPage extends AccountPageBase
 			$items[] = $b->li(new HTMLLiAttributes(), $b->a(new HTMLAnchorAttributes(href: $href), new TextNode($label)));
 		}
 		$items[] = $b->li(new HTMLLiAttributes(), new Fragment([
-			$b->a(new HTMLAnchorAttributes(href: '/account2/user/audit-logs'), new TextNode('監査ログ')),
+			$b->a(new HTMLAnchorAttributes(href: '/account/user/audit-logs'), new TextNode('監査ログ')),
 			new TextNode(' ('),
-			$b->a(new HTMLAnchorAttributes(href: '/account2/user/audit-logs/download'), new TextNode('DL')),
+			$b->a(new HTMLAnchorAttributes(href: '/account/user/audit-logs/download'), new TextNode('DL')),
 			new TextNode(')'),
 		]));
 		$nodes[] = $b->dt(new HtmlGlobalAttributes(className: 'action'), new TextNode('各種操作'));

@@ -38,14 +38,6 @@ final class HomeController extends PageControllerBase
 		$logic = $this->createLogic(HomeIndexLogic::class);
 		$logic->run(LogicCallMode::Initialize);
 
-		return $this->view('index', $logic->getViewData());
-	}
-
-	public function index2(): IActionResult
-	{
-		$logic = $this->createLogic(HomeIndexLogic::class);
-		$logic->run(LogicCallMode::Initialize);
-
 		return $this->view(HomeIndexPage::class, $logic->getViewData());
 	}
 

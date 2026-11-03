@@ -48,7 +48,7 @@ class PluginControllerTest extends ItControllerClass
 
 	public static function provider_index(): array
 	{
-		return [['/plugin2'], ['/plugin/index2']];
+		return [['/plugin']];
 	}
 
 	#[DataProvider('provider_index')]
@@ -60,8 +60,8 @@ class PluginControllerTest extends ItControllerClass
 		])));
 		$this->assertStatusOK($actual);
 		$this->assertTitle('プラグイン', $actual);
-		$this->assertCount(1, $actual->html->path()->collections("//*[@id='node-template-indicator']"));
-		$this->assertTextNode('Second & plugin', $actual->html->path()->collections("//*[@id='content']/ul/li[1]/a[@href='/plugin2/" . self::OTHER_ID . "']")->single());
+		$this->assertCount(0, $actual->html->path()->collections("//*[@id='node-template-indicator']"));
+		$this->assertTextNode('Second & plugin', $actual->html->path()->collections("//*[@id='content']/ul/li[1]/a[@href='/plugin/" . self::OTHER_ID . "']")->single());
 		$this->assertTextNode('First <plugin>', $actual->html->path()->collections("//*[@id='content']/ul/li[2]/a")->single());
 		$this->assertCount(0, $actual->html->path()->collections("//*[@id='content']//plugin"));
 		$this->assertCount(0, $actual->html->path()->collections("//*[@id='content']//a[@href='/management/default-plugin']"));
@@ -69,7 +69,7 @@ class PluginControllerTest extends ItControllerClass
 
 	public function test_index_missing_cache(): void
 	{
-		$actual = $this->call(HttpMethod::Get, '/plugin2', new ItOptions(), $this->setupCache(null));
+		$actual = $this->call(HttpMethod::Get, '/plugin', new ItOptions(), $this->setupCache(null));
 		$this->assertStatusOK($actual);
 		$this->assertVisibleCommonError(['プラグインなし', 'この状態は原則ありえない(標準プラグインすら未登録状態)'], $actual);
 		$this->assertTextNode('標準プラグイン', $actual->html->path()->collections("//*[@id='content']/p/a[@href='/management/default-plugin']")->single());
@@ -78,7 +78,7 @@ class PluginControllerTest extends ItControllerClass
 
 	public function test_index_empty_cache(): void
 	{
-		$actual = $this->call(HttpMethod::Get, '/plugin2', new ItOptions(), $this->setupCache(new PluginCache([], [])));
+		$actual = $this->call(HttpMethod::Get, '/plugin', new ItOptions(), $this->setupCache(new PluginCache([], [])));
 		$this->assertStatusOK($actual);
 		$this->assertCount(0, $actual->html->path()->collections("//*[@id='content']/ul/li"));
 		$this->assertCount(0, $actual->html->path()->collections("//*[@id='content']//a[@href='/management/default-plugin']"));
@@ -87,11 +87,10 @@ class PluginControllerTest extends ItControllerClass
 	public static function provider_detail(): array
 	{
 		return [
-			['/plugin2/', PluginState::ENABLED, true],
-			['/plugin2/', PluginState::DISABLED, false],
-			['/plugin2/', PluginState::RESERVED, false],
-			['/plugin2/', PluginState::CHECK_FAILED, false],
-			['/plugin/detail2/', PluginState::ENABLED, true],
+			['/plugin/', PluginState::ENABLED, true],
+			['/plugin/', PluginState::DISABLED, false],
+			['/plugin/', PluginState::RESERVED, false],
+			['/plugin/', PluginState::CHECK_FAILED, false],
 		];
 	}
 
@@ -108,7 +107,7 @@ class PluginControllerTest extends ItControllerClass
 		)));
 		$this->assertStatusOK($actual);
 		$this->assertTitle('プラグイン: Display <plugin>', $actual);
-		$this->assertCount(1, $actual->html->path()->collections("//*[@id='node-template-indicator']"));
+		$this->assertCount(0, $actual->html->path()->collections("//*[@id='node-template-indicator']"));
 		$this->assertTextNode(self::ID, $actual->html->path()->collections("//dt[text()='プラグインID']/following-sibling::dd[1]/code[@data-clipboard='inline']")->single());
 		$this->assertTextNode('internal<&"', $actual->html->path()->collections("//dt[text()='プラグイン内部名']/following-sibling::dd[1]/code[@data-clipboard='inline']")->single());
 		$this->assertTextNode('Display <plugin>', $actual->html->path()->collections("//dt[text()='プラグイン表示名']/following-sibling::dd[1]")->single());
@@ -125,7 +124,7 @@ class PluginControllerTest extends ItControllerClass
 
 	}
 
-	public function test_old_routes_keep_smarty(): void
+	public function test_canonical_routes_use_node(): void
 	{
 		$data = new PluginCache([], [$this->plugin(self::ID, 'internal', 'Display name')]);
 		$index = $this->call(HttpMethod::Get, '/plugin', new ItOptions(), $this->setupCache($data));

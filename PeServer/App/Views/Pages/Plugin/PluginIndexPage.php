@@ -35,7 +35,7 @@ class PluginIndexPage extends RootHtmlComponentBase
 		$items = [];
 		foreach ($plugins as $plugin) {
 			$items[] = $b->li(new HTMLLiAttributes(), $b->a(
-				new HTMLAnchorAttributes(href: '/plugin2/' . $plugin->pluginId),
+				new HTMLAnchorAttributes(href: '/plugin/' . $plugin->pluginId),
 				new TextNode($plugin->displayName)
 			));
 		}

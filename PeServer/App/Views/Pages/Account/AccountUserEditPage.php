@@ -46,7 +46,7 @@ class AccountUserEditPage extends RootHtmlComponentBase
 				defaultScriptPath: '/scripts/user_edit.js',
 				children: $this->context->builder->form(
 					new HTMLFormAttributes(
-						action: '/account2/user/edit',
+						action: '/account/user/edit',
 						method: FormMethod::Post,
 						className: 'page-account-user'
 					),

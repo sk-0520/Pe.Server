@@ -28,7 +28,7 @@ class AccountUserPluginReservePage extends AccountPageBase
 	{
 		$b = $this->context->builder;
 		return $this->layout('プラグイン 予約', $this->form(
-            '/account2/user/plugin/reserve',
+            '/account/user/plugin/reserve',
             'page-account-plugin-reserve',
 			$b->dl(new HtmlGlobalAttributes(className: 'input'), new Fragment([
 				$b->dt(new HtmlGlobalAttributes(), new Fragment([

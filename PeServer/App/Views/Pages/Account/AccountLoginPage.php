@@ -48,7 +48,7 @@ class AccountLoginPage extends RootHtmlComponentBase
 	private function getDevelopmentLogin(string $loginId, string $password, string $label, string $style): INode
 	{
 		return $this->context->builder->form(
-			new HTMLFormAttributes(action: '/account2/login', method: FormMethod::Post, style: $style),
+			new HTMLFormAttributes(action: '/account/login', method: FormMethod::Post, style: $style),
 			new Fragment([
 				new Csrf(new CsrfProps(), $this->context),
 				$this->context->builder->inputHidden(new HTMLInputHiddenAttributes(
@@ -80,7 +80,7 @@ class AccountLoginPage extends RootHtmlComponentBase
 				children: new Fragment([
 					$this->context->builder->form(
 						new HTMLFormAttributes(
-							action: '/account2/login',
+							action: '/account/login',
 							method: FormMethod::Post,
 							className: 'page-account-login'
 						),
@@ -140,7 +140,7 @@ class AccountLoginPage extends RootHtmlComponentBase
 										$this->context->builder->p(
 											new HtmlGlobalAttributes(),
 											$this->context->builder->a(
-												new HTMLAnchorAttributes(href: '/password2/reminder'),
+												new HTMLAnchorAttributes(href: '/password/reminder'),
 												new TextNode('パスワードを忘れた場合はこちら')
 											)
 										)

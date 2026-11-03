@@ -38,7 +38,7 @@ class AccountSignupStep1Logic extends PageLogicBase
 
 	private const TEMP_TOKEN = 'sign_up_token';
 
-	public function __construct(LogicParameter $parameter, private AppConfiguration $config, private AppCryptography $cryptography, private Mailer $mailer, private AppTemplate $appTemplate, private AppEmailInformation $appEmailInformation, private AppUrl $appUrl, private string $signupPath = 'account/signup')
+	public function __construct(LogicParameter $parameter, private AppConfiguration $config, private AppCryptography $cryptography, private Mailer $mailer, private AppTemplate $appTemplate, private AppEmailInformation $appEmailInformation, private AppUrl $appUrl)
 	{
 		parent::__construct($parameter);
 	}
@@ -126,7 +126,7 @@ class AccountSignupStep1Logic extends PageLogicBase
 		});
 
 
-		$url = $this->appUrl->addPublicUrl(new UrlPath("$this->signupPath/$token"));
+		$url = $this->appUrl->addPublicUrl(new UrlPath("account/signup/$token"));
 
 		$subject = I18n::message('subject/sign_up_step1');
 		$values = [
