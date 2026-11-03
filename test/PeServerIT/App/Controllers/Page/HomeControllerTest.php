@@ -66,8 +66,10 @@ class HomeControllerTest extends ItControllerClass
 	{
 		$actual = $this->call(HttpMethod::Get, $path);
 		$indicators = $actual->html->path()->collections("//*[@id='node-template-indicator']");
-		$this->assertCount(0, $indicators);
+		$this->assertCount($path === '/' ? 1 : 0, $indicators);
 		if ($path === '/') {
+			$this->assertTextNode('2', $indicators->single());
+			$this->assertCount(1, $actual->html->path()->collections("//body/span[@id='node-template-indicator'][@title='NodeTemplate'][contains(@style,'position: fixed; top: 0; right: 0;')]"));
 			$this->assertCount(1, $actual->html->path()->collections("//*[@id='content']//a[@href='/plugin']"));
 			$this->assertCount(1, $actual->html->path()->collections("//header//a[@href='/']"));
 			$this->assertCount(1, $actual->html->path()->collections("//footer//a[@href='/']"));

@@ -86,7 +86,7 @@ class AccountFamilyControllerTest extends ItControllerClass
 		$actual = $this->call(HttpMethod::Get, $path, $this->options(), $this->seed(...));
 		$this->assertStatusOK($actual);
 		$this->assertTitle($title, $actual);
-		$this->assertCount(0, $actual->html->path()->collections("//*[@id='node-template-indicator']"));
+		$this->assertCount(1, $actual->html->path()->collections("//*[@id='node-template-indicator'][@title='NodeTemplate'][text()='2']"));
 		$this->assertCount(1, $actual->html->path()->collections("//header//a[@href='/account/user']"));
 		$this->assertCount(1, $actual->html->path()->collections("//header//a[@href='/account/logout']"));
 		if ($action !== null) {
@@ -176,7 +176,7 @@ class AccountFamilyControllerTest extends ItControllerClass
 		$this->assertSame(AuditLog::USER_PASSWORD_CHANGE, $this->getMaybeLatestAuditLog($good->openDB())->fields['event']);
 		$user = $this->call(HttpMethod::Get, '/account/user', $this->options(), null, $good);
 		$this->assertStatusOK($user);
-		$this->assertCount(0, $user->html->path()->collections("//*[@id='node-template-indicator']"));
+		$this->assertCount(1, $user->html->path()->collections("//*[@id='node-template-indicator'][@title='NodeTemplate'][text()='2']"));
 	}
 
 	#[DataProvider('provider_routes')]
@@ -262,7 +262,7 @@ class AccountFamilyControllerTest extends ItControllerClass
 		$edit = $this->call(HttpMethod::Get, "$base/user/plugin$suffix/" . self::PLUGIN_ID, $this->options(), null, $actual);
 		$this->assertTitle('プラグイン 編集: test-plugin', $edit);
 		$this->assertCount(1, $edit->html->path()->collections("//form[@action='/account/user/plugin/" . self::PLUGIN_ID . "']"));
-		$this->assertCount(0, $edit->html->path()->collections("//*[@id='node-template-indicator']"));
+		$this->assertCount(1, $edit->html->path()->collections("//*[@id='node-template-indicator'][@title='NodeTemplate'][text()='2']"));
 		$this->assertCount(2, $edit->html->path()->collections("//form//input[@readonly]"));
 		$this->assertCount(1, $edit->html->path()->collections("//input[@id='pg-plugin-id'][@name='account_plugin_plugin_id']"));
 		$this->assertCount(1, $edit->html->path()->collections("//input[@name='account_plugin_state'][@value='reserved'][@disabled][@checked]"));

@@ -67,7 +67,7 @@ class PasswordControllerTest extends ItControllerClass
 		$name = $actual->container->get(WebSecurity::class)->getCsrfKind(WebSecurity::CSRF_KIND_REQUEST_NAME);
 		$this->assertCount(1, $actual->html->path()->collections("//form//input[@name='$name'][@type='hidden']"));
 		$this->assertCount(1, $actual->html->path()->collections("//section[@class='email-information']"));
-		$this->assertCount(0, $actual->html->path()->collections("//*[@id='node-template-indicator']"));
+		$this->assertCount(1, $actual->html->path()->collections("//*[@id='node-template-indicator'][@title='NodeTemplate'][text()='2']"));
 	}
 
 	#[DataProvider('provider_routes')]

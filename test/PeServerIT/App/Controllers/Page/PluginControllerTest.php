@@ -60,7 +60,7 @@ class PluginControllerTest extends ItControllerClass
 		])));
 		$this->assertStatusOK($actual);
 		$this->assertTitle('プラグイン', $actual);
-		$this->assertCount(0, $actual->html->path()->collections("//*[@id='node-template-indicator']"));
+		$this->assertCount(1, $actual->html->path()->collections("//*[@id='node-template-indicator'][@title='NodeTemplate'][text()='2']"));
 		$this->assertTextNode('Second & plugin', $actual->html->path()->collections("//*[@id='content']/ul/li[1]/a[@href='/plugin/" . self::OTHER_ID . "']")->single());
 		$this->assertTextNode('First <plugin>', $actual->html->path()->collections("//*[@id='content']/ul/li[2]/a")->single());
 		$this->assertCount(0, $actual->html->path()->collections("//*[@id='content']//plugin"));
@@ -108,7 +108,7 @@ class PluginControllerTest extends ItControllerClass
 		)));
 		$this->assertStatusOK($actual);
 		$this->assertTitle('プラグイン: Display <plugin>', $actual);
-		$this->assertCount(0, $actual->html->path()->collections("//*[@id='node-template-indicator']"));
+		$this->assertCount(1, $actual->html->path()->collections("//*[@id='node-template-indicator'][@title='NodeTemplate'][text()='2']"));
 		$this->assertTextNode(self::ID, $actual->html->path()->collections("//dt[text()='プラグインID']/following-sibling::dd[1]/code[@data-clipboard='inline']")->single());
 		$this->assertTextNode('internal<&"', $actual->html->path()->collections("//dt[text()='プラグイン内部名']/following-sibling::dd[1]/code[@data-clipboard='inline']")->single());
 		$this->assertTextNode('Display <plugin>', $actual->html->path()->collections("//dt[text()='プラグイン表示名']/following-sibling::dd[1]")->single());
@@ -130,13 +130,13 @@ class PluginControllerTest extends ItControllerClass
 		$index = $this->call(HttpMethod::Get, '/plugin', new ItOptions(), $this->setupCache($data));
 		$this->assertStatusOK($index);
 		$this->assertTitle('プラグイン', $index);
-		$this->assertCount(0, $index->html->path()->collections("//*[@id='node-template-indicator']"));
+		$this->assertCount(1, $index->html->path()->collections("//*[@id='node-template-indicator'][@title='NodeTemplate'][text()='2']"));
 		$this->assertTextNode('Display name', $index->html->path()->collections("//*[@id='content']/ul/li/a[@href='/plugin/" . self::ID . "']")->single());
 
 		$detail = $this->call(HttpMethod::Get, '/plugin/' . self::ID, new ItOptions(), $this->setupCache($data));
 		$this->assertStatusOK($detail);
 		$this->assertTitle('プラグイン: Display name', $detail);
-		$this->assertCount(0, $detail->html->path()->collections("//*[@id='node-template-indicator']"));
+		$this->assertCount(1, $detail->html->path()->collections("//*[@id='node-template-indicator'][@title='NodeTemplate'][text()='2']"));
 		$this->assertTextNode('internal', $detail->html->path()->collections("//code[@data-clipboard='inline'][text()='internal']")->single());
 	}
 }

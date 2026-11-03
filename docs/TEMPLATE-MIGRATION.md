@@ -128,7 +128,7 @@ public function __construct(array $attributes = [])
 | パスワード再設定 | `/password`（開始画面）、`/password/reminder`、`/password/reminding/{token}`、`/password/reset/{token}` |
 | 公開プラグイン | `/plugin`、`/plugin/{plugin_id}` |
 
-利用者の明示的な承認により `/index2`、`/account2/...`、`/password2/...`、`/plugin2/...` と旧来の `/account/user2`、`/password/reset2/{token}`、`/plugin/detail2/{plugin_id}` 等はすべて撤去した。互換経路・リダイレクトは残さず、送信済みの `2` 付き登録／再設定メールのリンクも利用できない。必要なら正式経路からメールを再発行する。右上の `2` とトップの比較用開発リンクも撤去した。未移植の管理・案内・ツール画面や共有 Ajax/API は変更しない。
+利用者の明示的な承認により `/index2`、`/account2/...`、`/password2/...`、`/plugin2/...` と旧来の `/account/user2`、`/password/reset2/{token}`、`/plugin/detail2/{plugin_id}` 等はすべて撤去した。互換経路・リダイレクトは残さず、送信済みの `2` 付き登録／再設定メールのリンクも利用できない。必要なら正式経路からメールを再発行する。トップの比較用開発リンクも撤去した。右上の `2` は E2E で NodeTemplate を識別するため復旧し、共通の DefaultPage で環境を問わず表示する（`id="node-template-indicator"`、`title="NodeTemplate"`）。Smarty 画面には表示しない。未移植の管理・案内・ツール画面や共有 Ajax/API は変更しない。
 
 ### アカウントの経路
 

@@ -15,7 +15,7 @@ description: "Pe.Server プロジェクトでのテンプレートエンジン�
 * 元々 Smarty を使用していたが、 PHP 自体を devContainer で開発するとファイル IO が遅くなるため、独自実装のに舵を切った背景がある
 * EngineMigrationTemplate が移行期間中の共存テンプレートとなる
 * 未移植画面を並行移植するときは、新しい NodeTemplate 側のルート・アクションに `2` を付与し、旧 Smarty 側を維持して新旧比較できる状態にする。画面内リンク・フォーム送信先・成功時遷移も対応する系統へ揃える。
-* トップ・account・password・plugin は利用者の承認により正式 URL `/`、`/account/...`、`/password/...`、`/plugin/...` の NodeTemplate 版へ一本化済み。この範囲の `2` 付き URL・アクション・右上の識別表示・開発用リンクは撤去した。互換経路は残さず、送信済みの `2` 付きメールリンクも利用できない。新たに生成するリンク・フォーム・メール URL は正式 URL を使う。未移植の管理・案内・ツール画面、Ajax/API、Smarty のメール本文は変更しない。詳細は [テンプレート移植](../../../docs/TEMPLATE-MIGRATION.md) を参照する。
+* トップ・account・password・plugin は利用者の承認により正式 URL `/`、`/account/...`、`/password/...`、`/plugin/...` の NodeTemplate 版へ一本化済み。この範囲の `2` 付き URL・アクション・開発用リンクは撤去した。右上の `2`（`id="node-template-indicator"`）は E2E で NodeTemplate を識別するため共通の DefaultPage に復旧し、環境を問わず表示する。互換経路は残さず、送信済みの `2` 付きメールリンクも利用できない。新たに生成するリンク・フォーム・メール URL は正式 URL を使う。未移植の管理・案内・ツール画面、Ajax/API、Smarty のメール本文は変更しない。詳細は [テンプレート移植](../../../docs/TEMPLATE-MIGRATION.md) を参照する。
 * 既存 URL の切り替えは利用者が明示的に指示した範囲に限定する。特定の画面群への切り替え指示を、他の画面群へ適用しない。
 * 置き換え
   1. Smarty テンプレート(View)を独自実装テンプレート(View)に置き換える
