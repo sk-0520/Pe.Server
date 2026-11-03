@@ -83,7 +83,7 @@ public function __construct(array $attributes = [])
 
 * 旧 [default.tpl](../PeServer/App/Views/default.tpl) の `<!--nobanner-->` は無料サーバー時代の残骸であり不要。移植・復元しない。
 * Matomo は旧版の「開発環境以外・head 内」から「本番環境のみ・body 末尾」へ意図的に変更した。互換性修正として戻さない。
-* Asset のダンプコメントは開発環境の確認用途として許容されている。
+* [Asset](../PeServer/Core/Mvc/Template/Node/Html/Components/Asset/Asset.php) と [Props](../PeServer/Core/Mvc/Template/Node/Html/Components/Asset/AssetProps.php) は Core 所属。ダンプコメントは開発環境の確認用途として許容されている。
 * `temp_messages` の data 属性は変更を試した後、利用者の指示で `[$key => $value]` に戻した。旧版の `data-index` と同等であるとの合意ではない。今後の変更時は用途を確認する。
 
 ## エラー表示の注意点

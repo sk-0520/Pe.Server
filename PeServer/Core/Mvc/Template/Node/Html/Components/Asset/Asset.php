@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PeServer\App\Views\Components\Asset;
+namespace PeServer\Core\Mvc\Template\Node\Html\Components\Asset;
 
 use Override;
 use PeServer\Core\DI\Inject;
@@ -29,11 +29,11 @@ use PeServer\Core\Text;
 use PeServer\Core\Throws\NotImplementedException;
 
 /**
- * @extends HtmlComponentBase<\PeServer\App\Views\Components\Asset\AssetProps>
+ * @extends HtmlComponentBase<\PeServer\Core\Mvc\Template\Node\Html\Components\Asset\AssetProps>
  */
 class Asset extends HtmlComponentBase
 {
-	/** @template-use HtmlComponentTrait<\PeServer\App\Views\Components\Asset\AssetProps> */
+	/** @template-use HtmlComponentTrait<\PeServer\Core\Mvc\Template\Node\Html\Components\Asset\AssetProps> */
 	use HtmlComponentTrait;
 
 	#region function

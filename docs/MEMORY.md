@@ -2,6 +2,11 @@
 
 このファイルは作業の引き継ぎ用。確定した設計方針は [テンプレート移植](./TEMPLATE-MIGRATION.md)、全体の入口は [AGENT.md](./AGENT.md) を参照する。記録は現在のコードより優先しない。
 
+## 2026-11-03: Asset コンポーネントの Core 移動
+
+* [Asset](../PeServer/Core/Mvc/Template/Node/Html/Components/Asset/Asset.php) と [Props](../PeServer/Core/Mvc/Template/Node/Html/Components/Asset/AssetProps.php) も App から Core の `Template/Node/Html/Components` へ移動し、DefaultPage の参照を更新した。移動に伴う表示挙動の変更はない。
+* 追加したテストで、クエリ付き favicon の MIME が `application/octet-stream` になる既存挙動を発見した。今回の移動とは無関係のため変更していない。
+
 ## 2026-11-03: エラー表示コンポーネントの Core 移動
 
 * 移植版の [ShowErrorMessages](../PeServer/Core/Mvc/Template/Node/Html/Components/ShowErrorMessages/ShowErrorMessages.php) と [Props](../PeServer/Core/Mvc/Template/Node/Html/Components/ShowErrorMessages/ShowErrorMessagesProps.php) を App から Core の `Template/Node/Html/Components` へ移動し、DefaultPage の参照を更新した。Smarty プラグインと表示挙動は変更していない。
