@@ -27,7 +27,7 @@ use PeServer\Core\Mvc\Template\TemplateRenderer;
  * @template TRootProps of \PeServer\Core\Mvc\Template\Node\RootProps
  * @extends RootHtmlComponentBase<TRootProps>
  */
-class IndexPage extends RootHtmlComponentBase
+class HomeIndexPage extends RootHtmlComponentBase
 {
 	use RootHtmlComponentTrait;
 

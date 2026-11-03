@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PeServerUT\App\Views\Pages\Home;
 
 use PeServer\App\Views\Components\Pages\Default\DefaultPage;
-use PeServer\App\Views\Pages\Home\IndexPage;
+use PeServer\App\Views\Pages\Home\HomeIndexPage;
 use PeServer\Core\Environment;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mvc\Template\Node\BuildOptions;
@@ -20,7 +20,7 @@ use PeServer\Core\Web\WebSecurity;
 use PeServerTest\TestClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 
-class IndexPageTest extends TestClass
+class HomeIndexPageTest extends TestClass
 {
 	public static function provider_children(): array
 	{
@@ -46,7 +46,7 @@ class IndexPageTest extends TestClass
 			new WebSecurity(),
 			new HtmlBuilder()
 		);
-		$page = new IndexPage(
+		$page = new HomeIndexPage(
 			new RootProps(new TemplateParameter(HttpStatus::OK, [], [])),
 			$context
 		);
@@ -58,14 +58,14 @@ class IndexPageTest extends TestClass
 
 		$this->assertStringContainsString('<p>Pe のサーバーが必要な処理。</p>', $html);
 		foreach (
-            [
-			'/plugin' => 'プラグイン',
-			'/api-doc' => 'API',
-			'/public/api-doc/' => 'Doc: PeServer',
-			'/public/coverage/php/uit/' => 'Code Coverage: PeServer',
-			'/public/coverage/script/lcov-report/' => 'Code Coverage: Script',
-			'/tool' => 'ツールとか',
-            ] as $href => $label
+			[
+				'/plugin' => 'プラグイン',
+				'/api-doc' => 'API',
+				'/public/api-doc/' => 'Doc: PeServer',
+				'/public/coverage/php/uit/' => 'Code Coverage: PeServer',
+				'/public/coverage/script/lcov-report/' => 'Code Coverage: Script',
+				'/tool' => 'ツールとか',
+			] as $href => $label
 		) {
 			$this->assertStringContainsString('<a href="' . $href . '">' . $label . '</a>', $html);
 		}
@@ -73,12 +73,12 @@ class IndexPageTest extends TestClass
 		$this->assertStringContainsString('<th rowspan="2">Pe</th>', $html);
 		$this->assertStringContainsString('<th rowspan="2">Pe.Server</th>', $html);
 		foreach (
-            [
-			'https://github.com/sk-0520/Pe/actions/workflows/build-ci-only.yml' => 'https://github.com/sk-0520/Pe/actions/workflows/build-ci-only.yml/badge.svg',
-			'https://github.com/sk-0520/Pe/actions/workflows/build-ci-cd.yml' => 'https://github.com/sk-0520/Pe/actions/workflows/build-ci-cd.yml/badge.svg?branch=master',
-			'https://github.com/sk-0520/Pe.Server/actions' => 'https://github.com/sk-0520/Pe.Server/actions/workflows/build-works.yml/badge.svg',
-			'https://github.com/sk-0520/Pe.Server/actions?query=branch%3Amaster' => 'https://github.com/sk-0520/Pe.Server/actions/workflows/build-works.yml/badge.svg?branch=master',
-            ] as $href => $src
+			[
+				'https://github.com/sk-0520/Pe/actions/workflows/build-ci-only.yml' => 'https://github.com/sk-0520/Pe/actions/workflows/build-ci-only.yml/badge.svg',
+				'https://github.com/sk-0520/Pe/actions/workflows/build-ci-cd.yml' => 'https://github.com/sk-0520/Pe/actions/workflows/build-ci-cd.yml/badge.svg?branch=master',
+				'https://github.com/sk-0520/Pe.Server/actions' => 'https://github.com/sk-0520/Pe.Server/actions/workflows/build-works.yml/badge.svg',
+				'https://github.com/sk-0520/Pe.Server/actions?query=branch%3Amaster' => 'https://github.com/sk-0520/Pe.Server/actions/workflows/build-works.yml/badge.svg?branch=master',
+			] as $href => $src
 		) {
 			$this->assertStringContainsString('<a href="' . $href . '"><img', $html);
 			if ($production) {

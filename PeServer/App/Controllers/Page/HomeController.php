@@ -12,7 +12,7 @@ use PeServer\App\Models\Domain\Page\Home\HomeContactLogic;
 use PeServer\App\Models\Domain\Page\Home\HomeIndexLogic;
 use PeServer\App\Models\Domain\Page\Home\HomePrivacyLogic;
 use PeServer\App\Models\Domain\Page\Home\HomeWildcardLogic;
-use PeServer\App\Views\Pages\Home\IndexPage;
+use PeServer\App\Views\Pages\Home\HomeIndexPage;
 use PeServer\Core\Binary;
 use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Http\HttpStatus;
@@ -46,7 +46,7 @@ final class HomeController extends PageControllerBase
 		$logic = $this->createLogic(HomeIndexLogic::class);
 		$logic->run(LogicCallMode::Initialize);
 
-		return $this->view(IndexPage::class, $logic->getViewData());
+		return $this->view(HomeIndexPage::class, $logic->getViewData());
 	}
 
 	public function privacy(): IActionResult
