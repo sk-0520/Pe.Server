@@ -7,6 +7,8 @@ namespace PeServer\Core\Mvc\Template\Node\Html\Components\InputHelper;
 use Override;
 use PeServer\Core\Mvc\Template\Node\Fragment;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLTextAreaAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\Input\HTMLInputEmailAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\Input\HTMLInputPasswordAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Input\HTMLInputTextAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Input\HTMLInputUrlAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Components\ShowErrorMessages\ShowErrorMessages;
@@ -36,6 +38,22 @@ class InputHelper extends HtmlComponentBase
 		}
 
 		$input = match ($this->props->type) {
+			InputHelperType::Email => $this->context->builder->inputEmail(new HTMLInputEmailAttributes(
+				id: $key,
+				name: $key,
+				value: $value,
+				className: $className,
+				required: $this->props->required,
+				data: $this->props->data,
+			)),
+			InputHelperType::Password => $this->context->builder->inputPassword(new HTMLInputPasswordAttributes(
+				id: $key,
+				name: $key,
+				value: $value,
+				className: $className,
+				required: $this->props->required,
+				data: $this->props->data,
+			)),
 			InputHelperType::Text => $this->context->builder->inputText(new HTMLInputTextAttributes(
 				id: $key,
 				name: $key,

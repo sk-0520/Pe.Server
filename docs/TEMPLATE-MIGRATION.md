@@ -10,6 +10,7 @@
 * View の冗長さ・Props の増加は主に App 側の責務として扱い、React 移行までのコストとして受け入れる。それだけを理由に Core を再設計しない。属性定義の凍結やコード生成の採用は決定されていない。
 * 整形用のホワイトスペースを出さないのは意図した挙動。表示に必要な空白は明示的なテキストノード、レイアウト上の間隔は CSS で扱う。旧テンプレートの改行・空白への依存に注意する。
 * 性能改善より移植と動作確認を先に進める。ブラウザの応答時間はアプリ全体と通信を含むため、テンプレート単体の速度として扱わない。
+* メール本文・メール用レイアウトは当面 Smarty 依存のまま残す。メールクライアント向けの HTML4 互換性が必要になる可能性があるため、Web 画面の NodeTemplate 移植と一緒に切り替えない。HTML4 が必須かどうかの調査完了を意味するものではない。
 
 ## TemplateEngine2 の履歴調査
 
@@ -104,8 +105,9 @@ public function __construct(array $attributes = [])
 
 ### 入力と Markdown の共通部品
 
-* [InputHelper](../PeServer/Core/Mvc/Template/Node/Html/Components/InputHelper/InputHelper.php) は TemplateParameter と key を受け取り、値の復元・エラー class・ShowErrorMessages による項目別表示をまとめる。現時点の対応型は text・url・textarea。任意属性や他の入力型が必要になったら、型付き属性による検証を維持して拡張する。旧プラグインの属性配列へ戻さない。
+* [InputHelper](../PeServer/Core/Mvc/Template/Node/Html/Components/InputHelper/InputHelper.php) は TemplateParameter と key を受け取り、値の復元・エラー class・ShowErrorMessages による項目別表示をまとめる。現時点の対応型は text・email・password・url・textarea。任意属性や他の入力型が必要になったら、型付き属性による検証を維持して拡張する。旧プラグインの属性配列へ戻さない。パスワードを再表示しないページでは、既存どおり Logic 側で表示値を空にする。
 * [Markdown](../PeServer/Core/Mvc/Template/Node/Html/Components/Markdown/Markdown.php) は MarkdownFunction の移植版。既存パーサーの結果を HTML として section 内へ出力する。safeMode の指定は既存パーサーへ渡すが、既存実装にはサニタイズの保証はない。単なる TextNode への入力を未変換のまま RAW 出力してはならない。
+* [BotTextImage](../PeServer/Core/Mvc/Template/Node/Html/Components/BotTextImage/BotTextImage.php) は認証トークンの画像生成プラグインの移植版。画像生成は Core の Graphics を使用し、PNG の data URL と文字列の SHA-256 を出力する。旧版の難読化は未実装であり、移植によって bot 対策を強化したものではない。
 
 ### 手順
 

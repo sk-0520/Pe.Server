@@ -45,9 +45,13 @@ class InputHelperTest extends TestClass
 	{
 		return [
 			[InputHelperType::Text, false, true],
+			[InputHelperType::Email, false, true],
+			[InputHelperType::Password, false, true],
 			[InputHelperType::Url, false, true],
 			[InputHelperType::Textarea, false, true],
 			[InputHelperType::Text, true, true],
+			[InputHelperType::Email, true, true],
+			[InputHelperType::Password, true, true],
 			[InputHelperType::Url, true, true],
 			[InputHelperType::Textarea, true, true],
 			[InputHelperType::Textarea, true, false],

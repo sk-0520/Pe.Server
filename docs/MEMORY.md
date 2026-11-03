@@ -2,6 +2,17 @@
 
 このファイルは作業の引き継ぎ用。確定した設計方針は [テンプレート移植](./TEMPLATE-MIGRATION.md)、全体の入口は [AGENT.md](./AGENT.md) を参照する。記録は現在のコードより優先しない。
 
+## 2026-11-03: ユーザー登録の並行移植
+
+* 登録開始・通知・本登録の Web 画面を [AccountSignupStep1Page](../PeServer/App/Views/Pages/Account/AccountSignupStep1Page.php)、[AccountSignupNotifyPage](../PeServer/App/Views/Pages/Account/AccountSignupNotifyPage.php)、[AccountSignupStep2Page](../PeServer/App/Views/Pages/Account/AccountSignupStep2Page.php) に移植した。`/account/signup2`、`/account/signup2/notify`、`/account/signup2/{token}` と対応する末尾 2 のアクションを追加した。元の signup 経路は維持した。
+* 新系統の開始 POST だけ AccountSignupStep1Logic に signupPath を渡し、通知メール内の本登録 URL も signup2 に揃えた。未指定の旧系統は従来の signup のまま。NotLoginMiddleware、SignupStep2FilterMiddleware、POST の CsrfMiddleware は元経路と同じ構成で登録した。
+* InputHelperType に Email・Password と対応する型付き属性による描画分岐を追加した。値の復元方針は既存と同じ。登録ステップ 2 のパスワードを空にする責務は AccountSignupStep2Logic に残した。
+* Core に [BotTextImage](../PeServer/Core/Mvc/Template/Node/Html/Components/BotTextImage/BotTextImage.php) を追加し、旧 BotTextImageFunction の画像生成・寸法・文字サイズ・色・alt・class・data-hash を移植した。旧版で未実装の難読化は追加していない。画像リソースは finally で破棄する。
+* メール受信案内の include は App の [EmailInformation](../PeServer/App/Views/Components/EmailInformation/EmailInformation.php) に移植した。旧 signup_step1.tpl の認証トークン欄の `<dd>` 閉じ忘れは、新ページのノード構造では正しく閉じる。
+* 利用者の指示によりメール本文・メール用レイアウトは Smarty のまま残した。成功経路の統合テストで AppTemplate と EngineMigrationTemplate による拡張子の二重付与を検出し、[AppTemplate](../PeServer/App/Models/AppTemplate.php) から `.tpl` の付与を除去した。メール送信自体はテストでモックし、外部へ送信していない。
+* 共通部品・アカウントページ・ルート設定の単体テスト 45 件・374 assertions、新旧の登録統合テスト 16 件・138 assertions が成功した。PNG の形式・寸法・hash、入力型・エスケープ、CSRF hidden、入力エラー、トークン再生成、メール内 URL、通知、メールアドレス不一致、登録・パスワードハッシュ・監査・ログイン状態を確認した。ミドルウェアは統合基盤で実行されないため、ルート単体テストで登録構成を確認した。実ブラウザ・実メール配信は未確認。
+* 対象 PHPStan は、変更前から存在する AccountSignupStep1Logic の未使用 `$config`（property.onlyWritten）1 件と、既存の未使用 ignoreErrors 3 件で終了コードが失敗となった。新規部品の型指摘は修正済み。無関係な未使用プロパティや全体設定は変更していない。
+
 ## 2026-11-03: ログイン GET・POST の並行移植
 
 * [AccountLoginPage](../PeServer/App/Views/Pages/Account/AccountLoginPage.php) を実装し、`/account/login2` の GET → `login_get2`、POST → `login_post2` から接続した。既存の `/account/login` の GET と POST は切り替えていない。

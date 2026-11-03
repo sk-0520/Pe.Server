@@ -39,7 +39,7 @@ final class AppTemplate
 	private function buildTemplate(string $baseName, string $templateName, array $params, HttpStatus $status): string
 	{
 		$template = $this->templateFactory->createTemplate(new AppTemplateOptions('template' . DIRECTORY_SEPARATOR . $baseName, $this->programContext, new UrlHelper(''), $this->webSecurity));
-		$result = $template->build($templateName . '.tpl', new TemplateParameter($status, $params, []));
+		$result = $template->build($templateName, new TemplateParameter($status, $params, []));
 
 		return $result;
 	}

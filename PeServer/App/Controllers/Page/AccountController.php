@@ -24,6 +24,9 @@ use PeServer\App\Models\Domain\Page\Account\AccountUserPluginReserveLogic;
 use PeServer\App\Models\Domain\UserLevel;
 use PeServer\App\Models\SessionKey;
 use PeServer\App\Views\Pages\Account\AccountLoginPage;
+use PeServer\App\Views\Pages\Account\AccountSignupNotifyPage;
+use PeServer\App\Views\Pages\Account\AccountSignupStep1Page;
+use PeServer\App\Views\Pages\Account\AccountSignupStep2Page;
 use PeServer\App\Views\Pages\Account\AccountUserEditPage;
 use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Mvc\Controller\ControllerArgument;
@@ -168,6 +171,50 @@ final class AccountController extends PageControllerBase
 		return $this->view('signup_step2', $logic->getViewData());
 	}
 
+
+	public function signup_step1_get2(): IActionResult
+	{
+		$logic = $this->createLogic(AccountSignupStep1Logic::class);
+		$logic->run(LogicCallMode::Initialize);
+
+		return $this->view(AccountSignupStep1Page::class, $logic->getViewData());
+	}
+
+	public function signup_step1_post2(): IActionResult
+	{
+		$logic = $this->createLogic(AccountSignupStep1Logic::class, ['$signupPath' => 'account/signup2']);
+		if ($logic->run(LogicCallMode::Submit)) {
+			return $this->redirectPath('account/signup2/notify');
+		}
+
+		return $this->view(AccountSignupStep1Page::class, $logic->getViewData());
+	}
+
+	public function signup_notify2(): IActionResult
+	{
+		$logic = $this->createLogic(AccountSignupNotifyLogic::class);
+		$logic->run(LogicCallMode::Initialize);
+
+		return $this->view(AccountSignupNotifyPage::class, $logic->getViewData());
+	}
+
+	public function signup_step2_get2(): IActionResult
+	{
+		$logic = $this->createLogic(AccountSignupStep2Logic::class);
+		$logic->run(LogicCallMode::Initialize);
+
+		return $this->view(AccountSignupStep2Page::class, $logic->getViewData());
+	}
+
+	public function signup_step2_post2(): IActionResult
+	{
+		$logic = $this->createLogic(AccountSignupStep2Logic::class);
+		if ($logic->run(LogicCallMode::Submit)) {
+			return $this->redirectPath('/');
+		}
+
+		return $this->view(AccountSignupStep2Page::class, $logic->getViewData());
+	}
 
 	public function user(): IActionResult
 	{
