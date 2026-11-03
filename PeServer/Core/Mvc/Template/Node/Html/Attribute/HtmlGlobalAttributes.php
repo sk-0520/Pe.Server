@@ -135,7 +135,15 @@ class HtmlGlobalAttributes extends AttributesBase
 	{
 		$reflection = new ReflectionClass($this);
 		$properties = ReflectionUtility::getAllProperties($reflection, ReflectionProperty::IS_PUBLIC);
+		$names = [];
 		foreach ($properties as $property) {
+			$name = $property->getName();
+			if (isset($names[$name])) {
+				// 子側を優先し、継承元で重複する同名プロパティは除外する。
+				continue;
+			}
+			$names[$name] = true;
+
 			$value = $property->getRawValue($this);
 
 			if ($value === null) {
@@ -145,7 +153,7 @@ class HtmlGlobalAttributes extends AttributesBase
 				continue;
 			}
 
-			yield $property->getName();
+			yield $name;
 		}
 	}
 

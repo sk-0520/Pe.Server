@@ -67,8 +67,6 @@ class Element extends NodeBase
 		//TODO: とりあえずえいやで作るので必要に応じて後で対応する
 		// インデントや改行は面倒
 
-		$hasChildren = $this->hasChildren();
-
 		$result = "<";
 		$result .= $this->tagName;
 
@@ -86,9 +84,7 @@ class Element extends NodeBase
 		} else {
 			$result .= ">";
 
-			if ($hasChildren) {
-				$result .= $this->children->build($level + 1, $buildOptions);
-			}
+			$result .= $this->children->build($level + 1, $buildOptions);
 
 			$result .= "</";
 			$result .= $this->tagName;

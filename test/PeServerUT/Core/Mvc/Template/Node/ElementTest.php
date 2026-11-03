@@ -29,6 +29,8 @@ class ElementTest extends TestClass
 			['<tag attr="value"></tag>', NoneNode::get(), new ElementOptions(false, false)],
 			['<tag attr="value">aaa</tag>', new TextNode("aaa"), new ElementOptions(false, false)],
 			['<tag attr="value"><tag attr="value">bbb</tag></tag>', new Fragment(new LocalSimleElement(new TextNode("bbb"), new ElementOptions(false, false))), new ElementOptions(false, false)],
+			['<tag attr="value"><tag attr="value" /></tag>', new LocalSimleElement(NoneNode::get(), new ElementOptions(true, true)), new ElementOptions(false, false)],
+			['<tag attr="value"><tag attr="value"></tag></tag>', new LocalSimleElement(NoneNode::get(), new ElementOptions(false, false)), new ElementOptions(false, false)],
 		];
 	}
 

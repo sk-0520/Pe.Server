@@ -8,6 +8,7 @@ use PeServer\Core\Mvc\Template\Node\Attribute\AttributeValueMark;
 use PeServer\Core\Mvc\Template\Node\Attribute\Value\StringValues;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\DataAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HtmlGlobalAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLHtmlAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\AutoCapitalize;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\AutoCorrect;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\Bcp47;
@@ -32,6 +33,20 @@ class HtmlGlobalAttributesTest extends TestClass
 			[
 				['id'],
 				new HtmlGlobalAttributes(data: new DataAttributes(), id: 'test'),
+			],
+			[
+				['lang'],
+				new HTMLHtmlAttributes(lang: Bcp47::Japanese),
+			],
+			[
+				['customAttribute', 'id'],
+				new ChildHtmlGlobalAttributes(id: 'test'),
+			],
+			[
+				[],
+				new class extends ParentHtmlGlobalAttributes {
+					public string|null $customAttribute = null;
+				},
 			],
 			[
 				[
@@ -115,6 +130,17 @@ class HtmlGlobalAttributesTest extends TestClass
 		$this->assertSame($expected, $actual);
 	}
 
+	public function test_getNames_childPriority(): void
+	{
+		$test = new ChildHtmlGlobalAttributes();
+		$actual = [];
+		foreach ($test->getNames() as $name) {
+			$actual[] = $test->build($name);
+		}
+
+		$this->assertSame(['customAttribute="child"'], $actual);
+	}
+
 	public static function provider_build()
 	{
 		return [
@@ -193,4 +219,14 @@ class HtmlGlobalAttributesTest extends TestClass
 		$actual = $test->build($name, $mark);
 		$this->assertSame($expected, $actual);
 	}
+}
+
+class ParentHtmlGlobalAttributes extends HtmlGlobalAttributes
+{
+	public string|null $customAttribute = 'parent';
+}
+
+class ChildHtmlGlobalAttributes extends ParentHtmlGlobalAttributes
+{
+	public string|null $customAttribute = 'child';
 }

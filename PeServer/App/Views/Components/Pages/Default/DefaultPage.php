@@ -50,7 +50,9 @@ class DefaultPage extends HtmlComponentBase
 		$account = $this->context->stores->session->getOr('account', null);
 
 		return $this->context->builder->html(
-			new HTMLHtmlAttributes(),
+			new HTMLHtmlAttributes(
+				lang: $this->props->lang
+			),
 			new Fragment([
 				$this->context->builder->head(
 					new HtmlGlobalAttributes(),
@@ -96,7 +98,9 @@ class DefaultPage extends HtmlComponentBase
 							),
 							new Fragment([
 								$this->context->builder->h1(
-									new HtmlGlobalAttributes(),
+									new HtmlGlobalAttributes(
+										id: "title"
+									),
 									new Fragment([
 										new TextNode(
 											// ページのタイトル(!=title)は原則必要なのでフォールバックは行わない
