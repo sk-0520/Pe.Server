@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace PeServer\App\Views\Components\Pages\Default;
 
 use Override;
+use PeServer\App\Models\Data\SessionAccount;
+use PeServer\App\Models\Domain\UserLevel;
 use PeServer\App\Views\Components\Asset\Asset;
 use PeServer\App\Views\Components\Asset\AssetProps;
 use PeServer\App\Views\Components\ShowErrorMessages\ShowErrorMessages;
@@ -14,6 +16,8 @@ use PeServer\Core\Mvc\Logic\Validator;
 use PeServer\Core\Mvc\Template\Node\Attribute\Value\StringValues;
 use PeServer\Core\Mvc\Template\Node\Fragment;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\DataAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLAnchorAttributes;
+use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLDetailsAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HtmlGlobalAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLHtmlAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLLiAttributes;
@@ -42,6 +46,9 @@ class DefaultPage extends HtmlComponentBase
 	#[Override]
 	protected function getNode(): INode
 	{
+		/** @var SessionAccount|null $account */
+		$account = $this->context->stores->session->getOr('account', null);
+
 		return $this->context->builder->html(
 			new HTMLHtmlAttributes(),
 			new Fragment([
@@ -148,8 +155,131 @@ class DefaultPage extends HtmlComponentBase
 							])
 						),
 						// nav
+						$this->context->builder->nav(
+							new HtmlGlobalAttributes(),
+							$this->context->builder->details(
+								new HTMLDetailsAttributes(),
+								new Fragment([
+									$this->context->builder->summary(
+										new HtmlGlobalAttributes(),
+										NoneNode::get()
+									),
+									$this->context->builder->div(
+										new HtmlGlobalAttributes(
+											className: "menu"
+										),
+										NoneNode::get()
+									)
+								])
+							)
+						),
 						// header
+						$this->context->builder->header(
+							new HtmlGlobalAttributes(),
+							$this->context->builder->ul(
+								new HtmlGlobalAttributes(),
+								new Fragment([
+									$this->context->builder->li(
+										new HTMLLiAttributes(),
+										$this->context->builder->a(
+											new HTMLAnchorAttributes(
+												href: "/"
+											),
+											new TextNode("トップ")
+										),
+									),
+									$account !== null
+										? new Fragment([
+											$account->level === UserLevel::SETUP
+												? $this->context->builder->li(
+													new HTMLLiAttributes(),
+													$this->context->builder->a(
+														new HTMLAnchorAttributes(
+															href: "/management/setup"
+														),
+														new TextNode("セットアップ")
+													)
+												)
+												: $this->context->builder->li(
+													new HTMLLiAttributes(),
+													$this->context->builder->a(
+														new HTMLAnchorAttributes(
+															href: "/account/user"
+														),
+														new TextNode("ユーザー情報")
+													)
+												),
+											$account->level === UserLevel::ADMINISTRATOR
+												? $this->context->builder->li(
+													new HTMLLiAttributes(),
+													$this->context->builder->a(
+														new HTMLAnchorAttributes(
+															href: "/management"
+														),
+														new TextNode("管理")
+													)
+												)
+												: null,
+											$this->context->builder->li(
+												new HTMLLiAttributes(),
+												$this->context->builder->a(
+													new HTMLAnchorAttributes(
+														href: "/account/logout"
+													),
+													new TextNode("ログアウト")
+												)
+											)
+										])
+										: new Fragment([
+											$this->context->builder->li(
+												new HTMLLiAttributes(),
+												$this->context->builder->a(
+													new HTMLAnchorAttributes(
+														href: "/account/login"
+													),
+													new TextNode("ログイン")
+												)
+											),
+											$this->context->builder->li(
+												new HTMLLiAttributes(),
+												$this->context->builder->a(
+													new HTMLAnchorAttributes(
+														href: "/account/signup"
+													),
+													new TextNode("ユーザー登録")
+												)
+											),
+										])
+								])
+							)
+						),
 						// footer
+						$this->context->builder->footer(
+							new HtmlGlobalAttributes(),
+							$this->context->builder->ul(
+								new HtmlGlobalAttributes(),
+								new Fragment([
+									$this->context->builder->li(
+										new HTMLLiAttributes(),
+										$this->context->builder->a(
+											new HTMLAnchorAttributes(
+												href: "/"
+											),
+											new TextNode("トップページ")
+										)
+									),
+									$this->context->builder->li(
+										new HTMLLiAttributes(),
+										$this->context->builder->a(
+											new HTMLAnchorAttributes(
+												href: "/about"
+											),
+											new TextNode("このサイトについて")
+										)
+									)
+								])
+							)
+						),
 						//---
 						new Asset(
 							new AssetProps(
