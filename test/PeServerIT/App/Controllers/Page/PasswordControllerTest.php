@@ -45,8 +45,16 @@ class PasswordControllerTest extends ItControllerClass
 	{
 		$crypto = $setup->container->get(AppCryptography::class);
 		(new UsersEntityDao($setup->databaseContext))->insertUser(
-			ItMockStores::SESSION_ACCOUNT_USER_ID, 'reset-user', UserLevel::USER, UserState::ENABLED, 'Reset User',
-			$crypto->encrypt('reset@example.com'), $crypto->toMark('reset@example.com'), '', '', ''
+			ItMockStores::SESSION_ACCOUNT_USER_ID,
+            'reset-user',
+            UserLevel::USER,
+            UserState::ENABLED,
+            'Reset User',
+			$crypto->encrypt('reset@example.com'),
+            $crypto->toMark('reset@example.com'),
+            '',
+            '',
+            ''
 		);
 		$dao = new UserAuthenticationsEntityDao($setup->databaseContext);
 		$dao->insertUserAuthentication(ItMockStores::SESSION_ACCOUNT_USER_ID, Cryptography::hashPassword('old-password123'));
@@ -143,7 +151,8 @@ class PasswordControllerTest extends ItControllerClass
 		$this->assertRedirectPath(HttpStatus::Found, '', null, $updated);
 		$dao = new UserAuthenticationsEntityDao($updated->openDB());
 		$this->assertTrue(Cryptography::verifyPassword(
-			'mail-link-password123', $dao->selectPassword(ItMockStores::SESSION_ACCOUNT_USER_ID)->fields['current_password']
+			'mail-link-password123',
+            $dao->selectPassword(ItMockStores::SESSION_ACCOUNT_USER_ID)->fields['current_password']
 		));
 		$this->assertFalse($dao->selectExistsToken($token, 60));
 	}

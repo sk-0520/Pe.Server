@@ -28,12 +28,14 @@ class AppRouteSettingTest extends TestClass
 	{
 		$setting = new AppRouteSetting($this->createStub(Environment::class));
 		$urlHelper = $this->createStub(IUrlHelper::class);
-		foreach ([
+		foreach (
+            [
 			['/', HomeController::class, 'index', []],
 			['/account', AccountController::class, 'index', []],
 			['/plugin', PluginController::class, 'index', []],
 			['/password', PasswordController::class, 'reminder_get', [NotLoginMiddleware::class]],
-		] as [$path, $class, $methodName, $middleware]) {
+            ] as [$path, $class, $methodName, $middleware]
+		) {
 			foreach ([HttpMethod::Get, HttpMethod::Head, HttpMethod::Post] as $method) {
 				$matches = [];
 				foreach ($setting->routes as $route) {
@@ -61,10 +63,12 @@ class AppRouteSettingTest extends TestClass
 		$setting = new AppRouteSetting($this->createStub(Environment::class));
 		$urlHelper = $this->createStub(IUrlHelper::class);
 		$id = '12345678-1234-4234-8234-123456789abc';
-		foreach ([
+		foreach (
+            [
 			'/plugin' => 'index',
 			'/plugin/' . $id => 'detail',
-		] as $path => $methodName) {
+            ] as $path => $methodName
+		) {
 			foreach ([HttpMethod::Get, HttpMethod::Head, HttpMethod::Post] as $method) {
 				$matches = [];
 				foreach ($setting->routes as $route) {
@@ -245,10 +249,12 @@ class AppRouteSettingTest extends TestClass
 			'/password/reminder2', '/password/reminding2/' . $token, '/password/reset2/' . $token,
 			'/plugin2', '/plugin2/' . $id, '/plugin/index2', '/plugin/detail2/' . $id,
 		];
-		foreach ([
+		foreach (
+            [
 			'user', 'user/edit', 'user/api', 'user/password', 'user/email', 'user/plugin',
 			'user/plugin/reserve', 'user/audit-logs', 'user/audit-logs/download',
-		] as $tail) {
+            ] as $tail
+		) {
 			$paths[] = '/account2/' . $tail;
 			$paths[] = '/account/' . $tail . '2';
 		}

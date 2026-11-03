@@ -44,19 +44,27 @@ class PasswordResetPage extends RootHtmlComponentBase
 		/** @var AppEmailInformation $email */
 		$email = $p->values['email'];
 		$nodes = [];
-		foreach ([
+		foreach (
+            [
 			['ログインID', 'reminder_login_id', InputHelperType::Text],
 			['新規パスワード', 'reminder_password_new', InputHelperType::Password],
 			['新規パスワード(確認用)', 'reminder_password_confirm', InputHelperType::Password],
-		] as [$label, $key, $type]) {
+            ] as [$label, $key, $type]
+		) {
 			$nodes[] = $b->dt(new HtmlGlobalAttributes(), new TextNode($label));
 			$nodes[] = $b->dd(new HtmlGlobalAttributes(), new InputHelper(new InputHelperProps(
-				parameter: $p, key: $key, type: $type, className: 'edit', required: true,
+				parameter: $p,
+                key: $key,
+                type: $type,
+                className: 'edit',
+                required: true,
 			), $this->context));
 		}
 		$nodes[] = $b->dt(new HtmlGlobalAttributes(className: 'action'), NoneNode::get());
-		$nodes[] = $b->dd(new HtmlGlobalAttributes(className: 'action'),
-			$b->button(new HTMLButtonAttributes(), new TextNode('再発行')));
+		$nodes[] = $b->dd(
+            new HtmlGlobalAttributes(className: 'action'),
+            $b->button(new HTMLButtonAttributes(), new TextNode('再発行'))
+        );
 		$nodes[] = $b->dd(new HtmlGlobalAttributes(), new EmailInformation(new EmailInformationProps($email), $this->context));
 		return new DefaultPage(new DefaultPageProps(
 			parameter: $p,
@@ -64,7 +72,8 @@ class PasswordResetPage extends RootHtmlComponentBase
 			children: $b->form(
 				new HTMLFormAttributes(
 					action: '/password/reset/' . Text::toString($p->values['token']),
-					method: FormMethod::Post, className: 'page-password-reset',
+					method: FormMethod::Post,
+                    className: 'page-password-reset',
 				),
 				new Fragment([
 					new Csrf(new CsrfProps(), $this->context),

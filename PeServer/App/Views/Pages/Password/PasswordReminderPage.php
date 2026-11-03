@@ -53,12 +53,17 @@ class PasswordReminderPage extends RootHtmlComponentBase
 					$b->dl(new HtmlGlobalAttributes(className: 'input'), new Fragment([
 						$b->dt(new HtmlGlobalAttributes(), new TextNode('ログインID')),
 						$b->dd(new HtmlGlobalAttributes(), new InputHelper(new InputHelperProps(
-							parameter: $p, key: 'reminder_login_id', type: InputHelperType::Text,
-							className: 'edit', required: true,
+							parameter: $p,
+                            key: 'reminder_login_id',
+                            type: InputHelperType::Text,
+							className: 'edit',
+                            required: true,
 						), $this->context)),
 						$b->dt(new HtmlGlobalAttributes(className: 'action'), NoneNode::get()),
-						$b->dd(new HtmlGlobalAttributes(className: 'action'),
-							$b->button(new HTMLButtonAttributes(), new TextNode('再発行'))),
+						$b->dd(
+                            new HtmlGlobalAttributes(className: 'action'),
+                            $b->button(new HTMLButtonAttributes(), new TextNode('再発行'))
+                        ),
 						$b->dd(new HtmlGlobalAttributes(), new EmailInformation(new EmailInformationProps($email), $this->context)),
 					])),
 				])

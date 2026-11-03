@@ -103,7 +103,8 @@ class PluginControllerTest extends ItControllerClass
 			new PluginCacheCategory('b', 'A <category>', ''),
 		] : [];
 		$actual = $this->call(HttpMethod::Get, $base . strtoupper(self::ID), new ItOptions(), $this->setupCache(new PluginCache(
-			$categories, [$this->plugin(self::ID, 'internal<&"', 'Display <plugin>', $state)]
+			$categories,
+            [$this->plugin(self::ID, 'internal<&"', 'Display <plugin>', $state)]
 		)));
 		$this->assertStatusOK($actual);
 		$this->assertTitle('プラグイン: Display <plugin>', $actual);
@@ -121,7 +122,6 @@ class PluginControllerTest extends ItControllerClass
 		} else {
 			$this->assertTextNode('プラグインカテゴリ未登録', $actual->html->path()->collections("//dt[text()='カテゴリ']/following-sibling::dd[1]/span[@class='mute']")->single());
 		}
-
 	}
 
 	public function test_canonical_routes_use_node(): void
