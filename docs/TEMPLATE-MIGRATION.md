@@ -6,10 +6,70 @@
 
 * Smarty から PHP のノードツリーによる NodeTemplate へ移植し、その後 React による UI 構築へ進む。背景には devContainer でのファイル IO の遅さがあるが、NodeTemplate の方が常に高速であることを保証するものではない。
 * 独自のテンプレート構文を追加せず、PHP のみで HTML を構築する。
-* `HTMLxxxAttributes` は型検証のための意図的な設計。利用者は当初、グローバル属性とタグ専用属性を属性クラスなしで PHPStan に検証させようとしたが、両者を組み合わせたチェックを実現できず、現在の方式を採用した。試行錯誤は `TemplateEngine2` ブランチにあるとの利用者説明がある。履歴自体は本記録では未調査。
+* `HTMLxxxAttributes` は型検証のための意図的な設計。利用者は当初、グローバル属性とタグ専用属性を属性クラスなしで PHPStan に検証させようとしたが、両者を組み合わせたチェックを実現できず、現在の方式を採用した。`TemplateEngine2` の履歴では、属性クラス導入後も配列の交差型で検証を試している。以下の履歴調査と再現結果を参照。
 * View の冗長さ・Props の増加は主に App 側の責務として扱い、React 移行までのコストとして受け入れる。それだけを理由に Core を再設計しない。属性定義の凍結やコード生成の採用は決定されていない。
 * 整形用のホワイトスペースを出さないのは意図した挙動。表示に必要な空白は明示的なテキストノード、レイアウト上の間隔は CSS で扱う。旧テンプレートの改行・空白への依存に注意する。
 * 性能改善より移植と動作確認を先に進める。ブラウザの応答時間はアプリ全体と通信を含むため、テンプレート単体の速度として扱わない。
+
+## TemplateEngine2 の履歴調査
+
+2026-11-03 にローカルの `TemplateEngine2`（先端 `66a83b1188d80e238a9877338144b7191dc7893c`）を調査した。`TemplateEngine3` との共通祖先は `120ad838`、そこから旧ブランチ先端までは 81 コミット。checkout はせず、関連ファイルの履歴と差分を読んだ。
+
+### 型付きの配列から専用クラスへの試行
+
+| コミット | ソースから確認した変更 |
+|---|---|
+| `1e5c5e52` | `Tag::html()` に属性配列を直接渡す構造。共通属性を `HtmlTagAttributeAlias` に定義し、当初は `array{class?:string,id?:string,name?:string}&array<string,string>` としていた。 |
+| `89659833` | 共通属性から汎用 `array<string,string>` との交差を外す。`Attr::html()` 側では `array{}&HtmlTagAttributeAlias` を使用。 |
+| `b35b0029` | 共通属性 shape を `lang`、`data`、bool 属性等へ拡充。`HtmlAttributes` で文字列化と `data-*` 展開を実装。 |
+| `a1180952` | `Attr` を削除し、専用 `HTMLHtmlAttributes` を導入。ただしコンストラクタは `array` のままで、検証は `array{xmlns?: non-empty-string}&HtmlTagAttributeAlias` に依存。 |
+| `698e5a65` | 多数の専用 Element の引数を子ノード配列から `HtmlContent` 等へ変更。単に属性だけでなく、ツリーの組み立て方も試行していた。 |
+| `c4866f4c` | タグの Element から Props を取り除き、ComponentBase 側へ分離。HTML 属性とコンポーネント用 Props の責務を分けた。 |
+| `d064d2cc` → `05eefa7d` | Layout/Props を追加し、コンストラクタのテンプレート型で Props を扱う案から、Layout に具体的な `LayoutProps` を再宣言する案へ変更。後者には `"lang" => 0.1` が残り、コミットメッセージにも PHPStan が属性を検知しない旨がある。 |
+| `66a83b11` | 型エイリアス名を変更。配列 shape の交差による属性検証も `"lang" => 0.1` も残っている。 |
+
+特に確認する過去ファイル（パスは当該コミットのもの。現ブランチの同名クラスと混同しない）:
+
+* `PeServer/Core/Mvc/Template/Node/Html/Attribute/HTMLHtmlAttributes.php`
+* `PeServer/Core/Mvc/Template/Node/Html/Attribute/HTMLAnchorAttributes.php`
+* `PeServer/Core/Mvc/Template/Node/Html/Tag.php`
+* `PeServer/Core/Mvc/Template/Node/Component/Layout/Layout.php`
+* `PeServer/Core/Mvc/Template/Node/ComponentBase.php`
+* `dev/phpstan.neon`
+
+旧版も既に `Tag::a(HTMLAnchorAttributes, HtmlContent): HTMLAnchorElement` のような専用 Element/属性クラス構成だった。ただし「クラスが存在すること」と「属性名・値を PHP の引数型で検証できること」は別である。
+
+### 属性の交差型の再現確認
+
+手元の PHPStan 2.3.1、PHP 対象 8.4、level 8 の独立した最小設定で、旧版の共通属性 alias と交差の形を切り出して解析した。これは旧ブランチ全体のテストや、当時使用していたツール環境の完全再現ではない。
+
+```php
+/** @phpstan-param array{xmlns?: non-empty-string}&globa-alias-html-tag-attribute $attributes */
+public function __construct(array $attributes = [])
+```
+
+共通属性 alias は `lang?: non-empty-string` を含む。しかしこの交差型を `PHPStan\dumpType` で確認すると、推論結果は `array{xmlns?: non-empty-string}` になり、`lang` の制約が落ちた。
+
+| 検証する引数型 | `lang => 0.1` | `xmlns => 0.1` |
+|---|---|---|
+| 共通属性 alias 単体 | 型エラー | 対象外 |
+| 専用 shape `&` 共通属性 alias（旧版の順序） | **引数型エラーなし** | 型エラー |
+| 共通属性 alias `&` 専用 shape（順序を逆転） | 型エラー | **引数型エラーなし** |
+| 一つの shape に `lang` と `xmlns` を列挙 | 型エラー | 型エラー |
+
+* より小さい `array{lang?: non-empty-string}&array{xmlns?: non-empty-string}` でも推論結果が左側だけになることを確認した。単なる alias の名称間違いとは切り分けられる。
+* 一つにまとめた shape でも、今回の検証では未知キー `langg` を引数エラーとして検出しなかった。既知キーの値検証と、未知キーの拒否は別の要件。
+* 対照として enum 型の `lang` 引数を持つクラスでは、`lang: 0.1` と未知の名前付き引数 `langg:` の両方を検出した。現在の設計に近い検証境界である。
+* 正常値も含む 15 ケースの引数診断を照合した。意図的な不正入力と `dumpType` を含む検証なので、「PHPStan 全体がエラーなし」という意味ではない。
+* `globa-alias-*` は旧版に残る実際の綴りで、`global` の末尾 `l` が抜けた typo。履歴の引用・再現ではそのまま用いた。履歴は変更していない。
+
+### 現方式を評価するときの注意
+
+* 現在の [HTMLHtmlAttributes](../PeServer/Core/Mvc/Template/Node/Html/Attribute/HTMLHtmlAttributes.php) は、配列 shape の交差ではなく `Bcp47|null $lang` 等の型付き引数で入力を受ける。PHPStan の検証に加えて PHP 自体の引数契約が働く。
+* 一方、[HtmlBuilder](../PeServer/Core/Mvc/Template/Node/Html/HtmlBuilder.php) は多くのタグで共通の `HtmlElement` を生成する。旧版の専用 Element 群をそのまま維持しているわけではない。
+* 型付き Props の伝播も課題だった。現在の [ComponentBase](../PeServer/Core/Mvc/Template/Node/ComponentBase.php) はクラスレベルの `TProps` を持つ。旧版の IDE 上の不具合そのものは再現しておらず、コミットの記述とコード上の変更を根拠としている。
+* したがって「属性クラスをなくして交差型に戻せば簡単」という提案は、過去の検出漏れを再び持ち込む可能性がある。再検討時は **共通属性と専用属性双方の不正値、未知キー、IDE 補完、Props の具体型保持** を検証してから判断する。
+* この結果は「PHPStan の交差型が一般に使えない」という主張ではない。ここで使った optional な array shape の組み合わせと、上記ツール条件で確認した限界である。
 
 ## 実装の入口
 
