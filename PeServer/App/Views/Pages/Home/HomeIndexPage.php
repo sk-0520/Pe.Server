@@ -228,6 +228,13 @@ class HomeIndexPage extends RootHtmlComponentBase
 								new Fragment([
 									$this->context->builder->li(
 										new HTMLLiAttributes(),
+										$this->context->builder->a(
+											new HTMLAnchorAttributes(href: '/index2'),
+											new TextNode('index2')
+										)
+									),
+									$this->context->builder->li(
+										new HTMLLiAttributes(),
 										new Fragment([
 											$this->context->builder->a(
 												new HTMLAnchorAttributes(href: '/dev/exception'),

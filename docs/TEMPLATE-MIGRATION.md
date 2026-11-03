@@ -105,9 +105,27 @@ public function __construct(array $attributes = [])
 
 ### 入力と Markdown の共通部品
 
-* [InputHelper](../PeServer/Core/Mvc/Template/Node/Html/Components/InputHelper/InputHelper.php) は TemplateParameter と key を受け取り、値の復元・エラー class・ShowErrorMessages による項目別表示をまとめる。現時点の対応型は text・email・password・url・textarea。任意属性や他の入力型が必要になったら、型付き属性による検証を維持して拡張する。旧プラグインの属性配列へ戻さない。パスワードを再表示しないページでは、既存どおり Logic 側で表示値を空にする。
+* [InputHelper](../PeServer/Core/Mvc/Template/Node/Html/Components/InputHelper/InputHelper.php) は TemplateParameter と key を受け取り、値の復元・エラー class・ShowErrorMessages による項目別表示をまとめる。現時点の対応型は text・email・password・url・textarea。id の上書きと readOnly は型付き Props で指定し、値・エラー・name の参照元は引き続き key とする。任意属性や他の入力型が必要になったら、型付き属性による検証を維持して拡張する。旧プラグインの属性配列へ戻さない。パスワードを再表示しないページでは、既存どおり Logic 側で表示値を空にする。
 * [Markdown](../PeServer/Core/Mvc/Template/Node/Html/Components/Markdown/Markdown.php) は MarkdownFunction の移植版。既存パーサーの結果を HTML として section 内へ出力する。safeMode の指定は既存パーサーへ渡すが、既存実装にはサニタイズの保証はない。単なる TextNode への入力を未変換のまま RAW 出力してはならない。
+* [MarkdownEditor](../PeServer/Core/Mvc/Template/Node/Html/Components/MarkdownEditor/MarkdownEditor.php) はユーザー編集・プラグイン編集で共通の入力／プレビュータブをまとめる。既存 JavaScript が利用する id、radio の name、data-markdown-result を維持する。現在は 1 ページに 1 個の利用を前提とする。
+* [Pager](../PeServer/Core/Mvc/Template/Node/Html/Components/Pager/Pager.php) は Pagination のショートカットを描画し、href の `<page_number>` を置換する。disabled・current の class、disabled リンクの href 省略と tabindex、移動ラベルは旧プラグインの契約を維持する。
+* [Code](../PeServer/Core/Mvc/Template/Node/Html/Components/Code/Code.php) は既存 CodeHighlighter に委譲する。監査ログは従来どおり language=json を指定する。未指定・未対応の言語に対する旧ハイライターのフォールバックは未エスケープのため、任意の未加工入力を安全に表示できる汎用エスケープ部品とは扱わない。
 * [BotTextImage](../PeServer/Core/Mvc/Template/Node/Html/Components/BotTextImage/BotTextImage.php) は認証トークンの画像生成プラグインの移植版。画像生成は Core の Graphics を使用し、PNG の data URL と文字列の SHA-256 を出力する。旧版の難読化は未実装であり、移植によって bot 対策を強化したものではない。
+
+### アカウントの経路
+
+* Web 画面は `/account/index2`、`/account/user2`、既存末尾セグメントに 2 を付けた経路を使う。プラグイン編集は `/account/user/plugin2/{plugin_id}`、監査ログのページ指定は `/account/user/audit-logs2/page/{page_number}` とし、動的値そのものには 2 を付けない。DL は `/account/user/audit-logs/download2`。
+* フォーム・ユーザー操作リンク・ログイン後の遷移は 2 系統に揃える。利用者の方針により NodeTemplate の共通ヘッダーのアカウントリンクは常に 2 系統を使い、ページごとの切り替えフラグは設けない。
+* 利用者の明示的な切り替え指示により、旧 URL も旧アクションから対応する末尾 2 のアクションへ委譲し、Web 画面はすべて NodeTemplate で描画する。旧 URL と 2 付き URL は両方利用できるが、旧 URL からのフォーム送信先・メール内リンク・成功遷移も 2 系統になる。Smarty の Web テンプレートはソースを残すだけで、これらの経路からは使用しない。
+* ユーザー編集・パスワード変更・メール変更確定後は `/account/user2`、登録完了・ログアウト後は `/index2` へ遷移する。セットアップ・管理への遷移と業務 Logic、ミドルウェアの登録構成は維持する。メール本文・メールレイアウトは引き続き Smarty に残す。
+* 並行確認中の識別用に DefaultPage は全環境で画面右上へ `2` を固定表示する。Smarty 側には表示しない。旧トップと Node 版トップの開発環境限定メニューには `/index2` へのリンクを置く。
+* 統合テスト基盤はミドルウェアを省略する。ルートの単体テストで登録構成を別途確認し、統合テスト成功を認証・CSRF の実効性確認とは扱わない。また previousActual を渡した呼び出しでは setup コールバックが実行されないため、メール送信を伴うテストはその呼び出し自身でモックを登録できる構成にする。
+
+### パスワード再発行の経路
+
+* `/password/reminder2`（GET・HEAD・POST）、`/password/reminding2/{token}`（GET）、`/password/reset2/{token}`（GET・POST）を使用する。旧 URL も同じ NodeTemplate 版へ委譲する。業務 Logic は維持し、再設定成功後は `/index2` へ遷移する。
+* ログインの再発行リンクとフォームは 2 系統へ向ける。PasswordReminderLogic の resetPath は既定 `password/reset` だが、旧 URL を含むすべてのリマインダー POST は `password/reset2` を渡し、Smarty で生成するメール内 URL も新系統に揃える。
+* メール送信は既存 DI の Mailer → AppMailer マッピングを使う。テストでは Mailer を差し替えて外部へ送信せず、本文の Smarty 生成とリンクを確認する。NotLoginMiddleware と POST の CsrfMiddleware は旧経路と同じ構成で登録する。
 
 ### 手順
 

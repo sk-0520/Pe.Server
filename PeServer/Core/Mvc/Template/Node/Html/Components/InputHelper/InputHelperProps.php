@@ -19,6 +19,8 @@ readonly class InputHelperProps extends Props
 		public bool $required = false,
 		public DataAttributes|null $data = null,
 		public bool $autoError = true,
+		public string|null $id = null,
+		public bool $readOnly = false,
 	) {
 		//NOP
 	}

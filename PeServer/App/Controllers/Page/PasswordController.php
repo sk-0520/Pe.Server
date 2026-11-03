@@ -9,6 +9,9 @@ use PeServer\App\Controllers\Page\PageControllerBase;
 use PeServer\App\Models\Domain\Page\Password\PasswordReminderLogic;
 use PeServer\App\Models\Domain\Page\Password\PasswordRemindingLogic;
 use PeServer\App\Models\Domain\Page\Password\PasswordResetLogic;
+use PeServer\App\Views\Pages\Password\PasswordReminderPage;
+use PeServer\App\Views\Pages\Password\PasswordRemindingPage;
+use PeServer\App\Views\Pages\Password\PasswordResetPage;
 use PeServer\Core\Mvc\Controller\ControllerArgument;
 use PeServer\Core\Mvc\Logic\LogicCallMode;
 use PeServer\Core\Mvc\Result\IActionResult;
@@ -30,48 +33,73 @@ final class PasswordController extends PageControllerBase
 
 	public function reminder_get(): IActionResult
 	{
-		$logic = $this->createLogic(PasswordReminderLogic::class);
-		$logic->run(LogicCallMode::Initialize);
-
-		return $this->view('reminder', $logic->getViewData());
+		return $this->reminder_get2();
 	}
 
 	public function reminder_post(): IActionResult
 	{
-		$logic = $this->createLogic(PasswordReminderLogic::class);
-		if ($logic->run(LogicCallMode::Submit)) {
-			if ($logic->tryGetResult('token', $token)) {
-				return $this->redirectPath("password/reminding/$token");
-			}
-			throw new InvalidOperationException();
-		}
-
-		return $this->view('reminder', $logic->getViewData());
+		return $this->reminder_post2();
 	}
 
 	public function reminding(): IActionResult
 	{
-		$logic = $this->createLogic(PasswordRemindingLogic::class);
-		$logic->run(LogicCallMode::Initialize);
-
-		return $this->view('reminding', $logic->getViewData());
+		return $this->reminding2();
 	}
 
 	public function reset_get(): IActionResult
 	{
-		$logic = $this->createLogic(PasswordResetLogic::class);
-		$logic->run(LogicCallMode::Initialize);
-
-		return $this->view('reset', $logic->getViewData());
+		return $this->reset_get2();
 	}
 
 	public function reset_post(): IActionResult
 	{
-		$logic = $this->createLogic(PasswordResetLogic::class);
+		return $this->reset_post2();
+	}
+
+	public function reminder_get2(): IActionResult
+	{
+		$logic = $this->createLogic(PasswordReminderLogic::class);
+		$logic->run(LogicCallMode::Initialize);
+
+		return $this->view(PasswordReminderPage::class, $logic->getViewData());
+	}
+
+	public function reminder_post2(): IActionResult
+	{
+		$logic = $this->createLogic(PasswordReminderLogic::class, ['$resetPath' => 'password/reset2']);
 		if ($logic->run(LogicCallMode::Submit)) {
-			return $this->redirectPath("");
+			if ($logic->tryGetResult('token', $token)) {
+				return $this->redirectPath("password/reminding2/$token");
+			}
+			throw new InvalidOperationException();
 		}
 
-		return $this->view('reset', $logic->getViewData());
+		return $this->view(PasswordReminderPage::class, $logic->getViewData());
+	}
+
+	public function reminding2(): IActionResult
+	{
+		$logic = $this->createLogic(PasswordRemindingLogic::class);
+		$logic->run(LogicCallMode::Initialize);
+
+		return $this->view(PasswordRemindingPage::class, $logic->getViewData());
+	}
+
+	public function reset_get2(): IActionResult
+	{
+		$logic = $this->createLogic(PasswordResetLogic::class);
+		$logic->run(LogicCallMode::Initialize);
+
+		return $this->view(PasswordResetPage::class, $logic->getViewData());
+	}
+
+	public function reset_post2(): IActionResult
+	{
+		$logic = $this->createLogic(PasswordResetLogic::class);
+		if ($logic->run(LogicCallMode::Submit)) {
+			return $this->redirectPath('/index2');
+		}
+
+		return $this->view(PasswordResetPage::class, $logic->getViewData());
 	}
 }

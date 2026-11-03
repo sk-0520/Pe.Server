@@ -66,6 +66,7 @@
 	{if $environment->isDevelopment()}
 		<h2>dev</h2>
 		<ul>
+			<li><a href="/index2">index2</a></li>
 			<li>
 				<a href="/dev/exception">exception</a>
 				<ul>

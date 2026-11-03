@@ -28,6 +28,7 @@ class HomeControllerTest extends ItControllerClass
 	{
 		return self::_provider_it_notLogin([
 			'/',
+			'/index2',
 			'/about',
 			'/about/privacy',
 			'/about/contact',
@@ -41,6 +42,7 @@ class HomeControllerTest extends ItControllerClass
 	{
 		return self::_provider_it_login([
 			'/',
+			'/index2',
 			'/about',
 			'/about/privacy',
 			'/about/contact',
@@ -50,16 +52,32 @@ class HomeControllerTest extends ItControllerClass
 	#[DataProvider('provider_it_notLogin')]
 	public function test_it_notLogin(string $path)
 	{
-		$this->_test_notLogin($path);
+		$this->_test_notLogin($path, $path === '/index2' ? '2' : '');
+		$this->assertTemplateIndicator($path);
 	}
 
 	#[DataProvider('provider_it_login')]
 	public function test_it_login(string $path, string $level)
 	{
-		$this->_test_login($path, $level);
+		$this->_test_login($path, $level, $path === '/index2' ? '2' : '');
 	}
 
 	#endregion
+
+	private function assertTemplateIndicator(string $path): void
+	{
+		$actual = $this->call(HttpMethod::Get, $path);
+		$indicators = $actual->html->path()->collections("//*[@id='node-template-indicator']");
+		$this->assertCount($path === '/index2' ? 1 : 0, $indicators);
+		if ($path === '/index2') {
+			$indicator = $indicators->single();
+			$this->assertTextNode('2', $indicator);
+			$this->assertSame('NodeTemplate', $indicator->getAttribute('title'));
+			foreach (['position: fixed', 'top: 0', 'right: 0', 'pointer-events: none'] as $style) {
+				$this->assertStringContainsString($style, $indicator->getAttribute('style'));
+			}
+		}
+	}
 
 	public function test_index()
 	{

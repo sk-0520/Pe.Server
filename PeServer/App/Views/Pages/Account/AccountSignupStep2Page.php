@@ -56,8 +56,10 @@ class AccountSignupStep2Page extends RootHtmlComponentBase
 			), $this->context));
 		}
 		$nodes[] = $this->context->builder->dt(new HtmlGlobalAttributes(className: 'action'), NoneNode::get());
-		$nodes[] = $this->context->builder->dd(new HtmlGlobalAttributes(className: 'action'),
-			$this->context->builder->button(new HTMLButtonAttributes(), new TextNode('登録')));
+		$nodes[] = $this->context->builder->dd(
+            new HtmlGlobalAttributes(className: 'action'),
+            $this->context->builder->button(new HTMLButtonAttributes(), new TextNode('登録'))
+        );
 
 		return new DefaultPage(new DefaultPageProps(
 			parameter: $parameter,

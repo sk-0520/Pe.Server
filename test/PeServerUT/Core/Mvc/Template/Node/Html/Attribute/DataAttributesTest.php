@@ -30,6 +30,10 @@ class DataAttributesTest extends TestClass
 				['a', "b"],
 				new DataAttributes(["a" => "A", "b" => "B"]),
 			],
+			[
+				['0', '-1'],
+				new DataAttributes(['0' => 'first', '-1' => 'previous']),
+			],
 		];
 	}
 
@@ -63,5 +67,13 @@ class DataAttributesTest extends TestClass
 	{
 		$actual = $test->build($name, $mark);
 		$this->assertSame($expected, $actual);
+	}
+
+	public function test_numeric_names_build_as_global_attributes(): void
+	{
+		$attributes = new \PeServer\Core\Mvc\Template\Node\Html\Attribute\HtmlGlobalAttributes(
+			data: new DataAttributes(['0' => 'message', '-1' => '<previous>'])
+		);
+		$this->assertSame('data-0="message" data--1="&lt;previous&gt;"', $attributes->build('data'));
 	}
 }

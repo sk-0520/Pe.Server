@@ -44,9 +44,9 @@ class DataAttributes extends AttributesBase implements Stringable, ArrayAccess
 	#[Override]
 	public function getNames(): Iterator
 	{
-		// non-empty-string でやんす
-		// @phpstan-ignore generator.valueType
-		yield from Arr::getKeys($this->attributes);
+		foreach ($this->attributes as $name => $value) {
+			yield (string)$name;
+		}
 	}
 
 	#[Override]

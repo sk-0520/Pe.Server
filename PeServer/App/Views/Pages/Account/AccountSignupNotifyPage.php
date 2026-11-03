@@ -36,11 +36,17 @@ class AccountSignupNotifyPage extends RootHtmlComponentBase
 			parameter: $this->props->parameter,
 			title: 'ユーザー登録 メール通知',
 			children: new Fragment([
-				$this->context->builder->p(new HtmlGlobalAttributes(),
-					$this->context->builder->strong(new HtmlGlobalAttributes(),
-						new TextNode('アカウント登録用URLを入力されたメールアドレスに送信しました。'))),
-				$this->context->builder->p(new HtmlGlobalAttributes(),
-					new TextNode('送信されたアカウント登録用URLは一定時間で無効化されます。')),
+				$this->context->builder->p(
+                    new HtmlGlobalAttributes(),
+					$this->context->builder->strong(
+                        new HtmlGlobalAttributes(),
+                        new TextNode('アカウント登録用URLを入力されたメールアドレスに送信しました。')
+                    )
+                ),
+				$this->context->builder->p(
+                    new HtmlGlobalAttributes(),
+                    new TextNode('送信されたアカウント登録用URLは一定時間で無効化されます。')
+                ),
 				$this->context->builder->hr(new HtmlGlobalAttributes()),
 				new EmailInformation(new EmailInformationProps($email), $this->context),
 			])

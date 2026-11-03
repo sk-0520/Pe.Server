@@ -89,7 +89,7 @@ class AccountLoginPageTest extends TestClass
 		$this->assertSame(2, $xpath->query('//ul[@class="errors value-error"]/li[@class="error"]')->length);
 		$this->assertSame('invalid <id>', $xpath->evaluate('string((//ul[@class="errors value-error"]/li)[1])'));
 		$this->assertSame(1, $xpath->query('//dt[@class="action"]')->length);
-		$this->assertSame(1, $xpath->query('//a[@href="/password/reminder"]')->length);
+		$this->assertSame(1, $xpath->query('//a[@href="/password/reminder2"]')->length);
 		$this->assertSame($environmentName === 'development' ? 2 : 0, $xpath->query('//button[@class="link"][@data-dialog="disabled"]')->length);
 	}
 }

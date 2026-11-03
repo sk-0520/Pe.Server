@@ -91,10 +91,14 @@ class AccountSignupStep1Page extends RootHtmlComponentBase
 							), $this->context),
 						])),
 						$this->context->builder->dt(new HtmlGlobalAttributes(className: 'action'), new TextNode('確認')),
-						$this->context->builder->dd(new HtmlGlobalAttributes(className: 'action'),
-							$this->context->builder->button(new HTMLButtonAttributes(), new TextNode('メール送信'))),
-						$this->context->builder->dd(new HtmlGlobalAttributes(),
-							new EmailInformation(new EmailInformationProps($email), $this->context)),
+						$this->context->builder->dd(
+                            new HtmlGlobalAttributes(className: 'action'),
+                            $this->context->builder->button(new HTMLButtonAttributes(), new TextNode('メール送信'))
+                        ),
+						$this->context->builder->dd(
+                            new HtmlGlobalAttributes(),
+                            new EmailInformation(new EmailInformationProps($email), $this->context)
+                        ),
 					])),
 				])
 			)

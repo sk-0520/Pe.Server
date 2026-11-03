@@ -77,6 +77,7 @@ class InputHelperTest extends TestClass
 		));
 		$target = $type === InputHelperType::Textarea ? '//textarea' : '//input[@type="' . $type->value . '"]';
 		$this->assertSame(1, $xpath->query($target . '[@id="field"][@name="field"][@required]')->length);
+		$this->assertSame(0, $xpath->query($target . '[@readonly]')->length);
 		$this->assertSame($value, $xpath->evaluate('string(' . $target . ($type === InputHelperType::Textarea ? ')' : '/@value)')));
 		$this->assertSame($hasError ? 'edit markdown-editor error' : 'edit markdown-editor', $xpath->evaluate('string(' . $target . '/@class)'));
 		$this->assertSame('.markdown-browser', $xpath->evaluate('string(' . $target . '/@data-markdown-result)'));
@@ -96,5 +97,24 @@ class InputHelperTest extends TestClass
 		$this->assertSame('', $xpath->evaluate('string(//input/@value)'));
 		$this->assertSame('error', $xpath->evaluate('string(//input/@class)'));
 		$this->assertSame(0, $xpath->query('//input[@required]')->length);
+	}
+
+	public static function provider_type(): array
+	{
+		return array_map(fn(InputHelperType $type) => [$type], InputHelperType::cases());
+	}
+
+	#[DataProvider('provider_type')]
+	public function test_id_override_and_readonly(InputHelperType $type): void
+	{
+		$xpath = $this->render(new InputHelperProps(
+			parameter: new TemplateParameter(HttpStatus::OK, ['field' => 'value'], []),
+			key: 'field',
+			type: $type,
+			id: 'custom-id',
+			readOnly: true,
+		));
+		$target = $type === InputHelperType::Textarea ? '//textarea' : '//input';
+		$this->assertSame(1, $xpath->query($target . '[@id="custom-id"][@name="field"][@readonly]')->length);
 	}
 }

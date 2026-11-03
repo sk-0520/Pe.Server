@@ -7,7 +7,6 @@ namespace PeServer\App\Models\Domain\Page\Password;
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\AppCryptography;
 use PeServer\App\Models\AppEmailInformation;
-use PeServer\App\Models\AppMailer;
 use PeServer\App\Models\AppTemplate;
 use PeServer\App\Models\AppUrl;
 use PeServer\App\Models\AuditLog;
@@ -26,6 +25,7 @@ use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\I18n;
 use PeServer\Core\Mail\EmailAddress;
 use PeServer\Core\Mail\EmailMessage;
+use PeServer\Core\Mail\Mailer;
 use PeServer\Core\Mvc\Logic\LogicCallMode;
 use PeServer\Core\Mvc\Logic\LogicParameter;
 use PeServer\Core\Serialization\JsonSerializer;
@@ -37,7 +37,7 @@ class PasswordReminderLogic extends PageLogicBase
 {
 	use SessionAnonymousTrait;
 
-	public function __construct(LogicParameter $parameter, private AppConfiguration $config, private AppCryptography $cryptography, private AppMailer $mailer, private AppTemplate $appTemplate, private AppEmailInformation $appEmailInformation, private AppUrl $appUrl)
+	public function __construct(LogicParameter $parameter, private AppConfiguration $config, private AppCryptography $cryptography, private Mailer $mailer, private AppTemplate $appTemplate, private AppEmailInformation $appEmailInformation, private AppUrl $appUrl, private string $resetPath = 'password/reset')
 	{
 		parent::__construct($parameter);
 	}
@@ -104,7 +104,7 @@ class PasswordReminderLogic extends PageLogicBase
 		if ($result) {
 			$rawEmail = $this->cryptography->decrypt($email);
 
-			$url = $this->appUrl->addPublicUrl(new UrlPath("password/reset/$token"));
+			$url = $this->appUrl->addPublicUrl(new UrlPath("$this->resetPath/$token"));
 
 			$subject = I18n::message('subject/password_reminder_token');
 			$values = [

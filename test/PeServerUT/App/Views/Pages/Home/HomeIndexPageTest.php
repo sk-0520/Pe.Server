@@ -87,7 +87,7 @@ class HomeIndexPageTest extends TestClass
 		}
 		$this->assertSame($production ? 4 : 0, substr_count($html, 'src='));
 		$this->assertSame(4, substr_count($html, 'class="page-user-index-ci ' . $environmentName . '"'));
-		foreach (['<h2>dev</h2>', '/dev/exception', '/ajax/dev/exception/json', '/dev/streaming'] as $value) {
+		foreach (['<h2>dev</h2>', '<a href="/index2">index2</a>', '/dev/exception', '/ajax/dev/exception/json', '/dev/streaming'] as $value) {
 			if ($development) {
 				$this->assertStringContainsString($value, $html);
 			} else {

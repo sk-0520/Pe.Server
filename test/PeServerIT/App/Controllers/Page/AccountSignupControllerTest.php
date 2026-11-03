@@ -42,7 +42,7 @@ class AccountSignupControllerTest extends ItControllerClass
 		$actual = $this->call(HttpMethod::Get, $path);
 		$this->assertStatusOK($actual);
 		$this->assertTitle('ユーザー登録 1/2', $actual);
-		$this->assertCount(1, $actual->html->path()->collections("//form[@action='$path'][@method='post']"));
+		$this->assertCount(1, $actual->html->path()->collections("//form[@action='/account/signup2'][@method='post']"));
 		$this->assertCount(1, $actual->html->path()->collections("//input[@type='email'][@name='account_signup_email'][@required]"));
 		$this->assertCount(1, $actual->html->path()->collections("//img[@class='token'][@width='56'][@height='28']"));
 		$this->assertCount(2, $actual->html->path()->collections("//section[@class='email-information']//code[@data-clipboard='inline']"));
@@ -65,7 +65,7 @@ class AccountSignupControllerTest extends ItControllerClass
 		$this->assertStatusOK($actual);
 		$this->assertTitle('ユーザー登録 1/2', $actual);
 		$this->assertVisibleCommonError([], $actual);
-		$this->assertCount(2, $actual->html->path()->collections("//form[@action='$path']//ul[contains(@class,'value-error')]"));
+		$this->assertCount(2, $actual->html->path()->collections("//form[@action='/account/signup2']//ul[contains(@class,'value-error')]"));
 		$this->assertValue('invalid<&"', $actual->html->path()->collections("//input[@name='account_signup_email']")->single());
 		$this->assertValue('', $actual->html->path()->collections("//input[@name='account_signup_value']")->single());
 		$temporary = $actual->container->get(TemporaryStore::class)->peek('sign_up_token');
@@ -94,13 +94,13 @@ class AccountSignupControllerTest extends ItControllerClass
 			$setup->container->registerValue($mailer, Mailer::class);
 			$setup->container->get(TemporaryStore::class)->push('sign_up_token', ['token' => 'test-token', 'value' => '0123']);
 		});
-		$this->assertRedirectPath(HttpStatus::Found, ltrim($path, '/') . '/notify', null, $actual);
+		$this->assertRedirectPath(HttpStatus::Found, 'account/signup2/notify', null, $actual);
 		$pending = $actual->openDB()->querySingle('select token, email from sign_up_wait_emails');
 		$token = $pending->fields['token'];
 		$this->assertSame(80, strlen($token));
 		$this->assertSame('signup@example.com', $actual->container->get(AppCryptography::class)->decrypt($pending->fields['email']));
 		$this->assertInstanceOf(EmailMessage::class, $message);
-		$this->assertStringContainsString($path . '/' . $token, $message->getHtml());
+		$this->assertStringContainsString('/account/signup2/' . $token, $message->getHtml());
 		$this->assertSame('signup@example.com', $mailer->toAddresses[0]->address);
 
 		$notify = $this->call(HttpMethod::Get, $path . '/notify', new ItOptions(stores: ItMockStores::anonymous(signup1: true)));
@@ -117,7 +117,7 @@ class AccountSignupControllerTest extends ItControllerClass
 		$actual = $this->call(HttpMethod::Get, $path . '/' . $token);
 		$this->assertStatusOK($actual);
 		$this->assertTitle('ユーザー登録 2/2', $actual);
-		$this->assertCount(1, $actual->html->path()->collections("//form[@action='$path/$token'][@method='post']"));
+		$this->assertCount(1, $actual->html->path()->collections("//form[@action='/account/signup2/$token'][@method='post']"));
 		$this->assertCount(5, $actual->html->path()->collections("//form//input[@required]"));
 		$this->assertCount(2, $actual->html->path()->collections("//form//input[@type='password'][@value='']"));
 	}
@@ -139,7 +139,7 @@ class AccountSignupControllerTest extends ItControllerClass
 		$this->assertStatusOK($actual);
 		$this->assertTitle('ユーザー登録 2/2', $actual);
 		$this->assertVisibleCommonError([], $actual);
-		$this->assertCount(5, $actual->html->path()->collections("//form[@action='$path/$token']//ul[contains(@class, 'value-error')]"));
+		$this->assertCount(5, $actual->html->path()->collections("//form[@action='/account/signup2/$token']//ul[contains(@class, 'value-error')]"));
 		$this->assertCount(2, $actual->html->path()->collections("//input[@type='password'][@value=''][contains(@class,'error')]"));
 		$this->assertValue('<bad>', $actual->html->path()->collections("//input[@name='account_signup_login_id']")->single());
 		$this->assertValue('invalid<&"', $actual->html->path()->collections("//input[@name='account_signup_email']")->single());
@@ -161,13 +161,17 @@ class AccountSignupControllerTest extends ItControllerClass
 		), function (ItSetup $setup) use ($token): void {
 			$crypto = $setup->container->get(AppCryptography::class);
 			(new SignUpWaitEmailsEntityDao($setup->databaseContext))->insertEmail(
-				$token, $crypto->encrypt('signup@example.com'), $crypto->toMark('signup@example.com'), '127.0.0.1', 'test'
+				$token,
+                $crypto->encrypt('signup@example.com'),
+                $crypto->toMark('signup@example.com'),
+                '127.0.0.1',
+                'test'
 			);
 		});
 		$this->assertStatusOK($actual);
 		$this->assertVisibleCommonError([], $actual);
 		$this->assertCount(1, $actual->html->path()->collections(
-			"//form[@action='$path/$token']//input[@name='account_signup_email'][contains(@class,'error')]/following-sibling::ul[contains(@class,'value-error')]/li"
+			"//form[@action='/account/signup2/$token']//input[@name='account_signup_email'][contains(@class,'error')]/following-sibling::ul[contains(@class,'value-error')]/li"
 		));
 		$this->assertCount(2, $actual->html->path()->collections("//input[@type='password'][@value='']"));
 		$this->assertSame(1, $actual->openDB()->selectSingleCount('select count(*) from sign_up_wait_emails'));
@@ -197,10 +201,14 @@ class AccountSignupControllerTest extends ItControllerClass
 			$setup->container->registerValue($mailer, Mailer::class);
 			$crypto = $setup->container->get(AppCryptography::class);
 			(new SignUpWaitEmailsEntityDao($setup->databaseContext))->insertEmail(
-				$token, $crypto->encrypt('signup@example.com'), $crypto->toMark('signup@example.com'), '127.0.0.1', 'test'
+				$token,
+                $crypto->encrypt('signup@example.com'),
+                $crypto->toMark('signup@example.com'),
+                '127.0.0.1',
+                'test'
 			);
 		});
-		$this->assertRedirectPath(HttpStatus::Found, '', null, $actual);
+		$this->assertRedirectPath(HttpStatus::Found, '/index2', null, $actual);
 		$database = $actual->openDB();
 		$user = $database->querySingle("select user_id, name from users where login_id = 'signup-user'");
 		$this->assertSame('Signup User', $user->fields['name']);

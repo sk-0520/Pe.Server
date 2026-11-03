@@ -2,7 +2,34 @@
 
 このファイルは作業の引き継ぎ用。確定した設計方針は [テンプレート移植](./TEMPLATE-MIGRATION.md)、全体の入口は [AGENT.md](./AGENT.md) を参照する。記録は現在のコードより優先しない。
 
+## 2026-11-03: account・password の旧 URL も NodeTemplate へ切り替え
+
+* 利用者からパスワード変更後に旧 user へ戻ると報告があり、確認のうえ「旧URLも含めて、account/*・password/* をすべてNodeTemplate版にする」と明示された。[AccountController](../PeServer/App/Controllers/Page/AccountController.php) と [PasswordController](../PeServer/App/Controllers/Page/PasswordController.php) の旧 Web アクションを対応する末尾 2 のアクションへ委譲した。以下の過去記録にある旧 Smarty 経路維持は、この切り替えで更新された。
+* 既存 URL と 2 付き URL はどちらも利用できる。旧 URL で直接 POST しても、失敗再表示は NodeTemplate、フォーム・成功遷移・メール内リンクは 2 系統になる。重複する旧描画処理とプラグイン用 private helper は除去した。Smarty の Web テンプレート自体は削除せず、メールは引き続き Smarty を使う。
+* パスワード変更・編集・メール確定後は user2、登録完了・ログアウト・パスワード再設定後は index2 へ遷移する。セットアップ・管理への遷移、業務 Logic とルート・ミドルウェア構成は変更していない。
+* 統合 143 件・1005 assertions、ルート単体 4 件・454 assertions が成功した。旧 URL を含むパスワード変更後の user2 描画、各画面の識別表示、フォーム・成功遷移・メール内リンクを確認した。対象コントローラの PHPStan はエラーなし。実ブラウザ確認は未実施。ミドルウェアの実効性は統合基盤では検証していない。
+
+## 2026-11-03: パスワード再発行の並行移植
+
+* 開始・メール送信案内・再設定の 3 画面を [パスワードページ群](../PeServer/App/Views/Pages/Password/) に移植し、[PasswordController](../PeServer/App/Controllers/Page/PasswordController.php) から接続した。`/password/reminder2`、`/password/reminding2/{token}`、`/password/reset2/{token}` を追加し、旧経路・業務処理・成功後のトップ遷移は維持した。
+* [AccountLoginPage](../PeServer/App/Views/Pages/Account/AccountLoginPage.php) の再発行リンクを reminder2 へ変更した。PasswordReminderLogic に既定 `password/reset` の resetPath を追加し、新 POST だけ `password/reset2` を渡す。メール本文は Smarty のまま、リンクだけ新系統に揃える。
+* メール依存は既存の Mailer → AppMailer マッピングへ合わせ、統合テストで Mailer を差し替えた。外部メール送信は行わず、Smarty の本文生成と送信先・再設定 URL を検証した。
+* 単体 8 件・531 assertions、統合 20 件・160 assertions が成功した。新旧の画面、フォーム・CSRF hidden、入力エラー、ログイン ID のエスケープと再表示、パスワード非復元、匿名セッションの前提条件、未知のログイン ID に対する既存通知処理、メール URL からの再設定完了・パスワードハッシュ・トークン消去・監査を確認した。ルートのメソッド・トークンパラメーター・NotLogin／CSRF の登録構成は単体テストで確認した。統合基盤はミドルウェアを省略するため、認証・CSRF の実効性確認とは扱わない。実ブラウザ・実メール配信は未確認。
+* 対象 PHPStan は変更コードへの指摘なし。既存の未使用 ignoreErrors 3 件だけで終了コードが失敗となる。無関係な設定・既存業務処理は修正していない。
+
+## 2026-11-03: アカウント全画面の並行移植
+
+* 残るユーザー情報、APIキー、パスワード、メール変更、プラグイン登録・編集・予約、監査ログを [アカウントページ群](../PeServer/App/Views/Pages/Account/) に追加した。[AccountController](../PeServer/App/Controllers/Page/AccountController.php) と [ルート設定](../PeServer/App/Models/AppRouteSetting.php) に末尾 2 の経路・アクションを追加し、旧経路は維持した。入口は `/account/index2`、ログイン済みユーザー情報は `/account/user2`。ログアウトと監査ログ DL も 2 の別経路から既存処理へ委譲する。
+* 新画面のフォーム・操作リンク・共通ヘッダーメニュー・成功遷移を 2 系統に揃えた。既存の login2・edit2 の成功遷移も新系統へ更新した。当初追加した accountFamily2 フラグは、利用者の「NodeTemplate を使う処理では 2 に寄せていい」という方針により撤去し、NodeTemplate の共通ヘッダーは常に 2 系統へ向ける。Smarty 側とセットアップ・管理・トップページへの既存遷移は変更しない。
+* Core に [Pager](../PeServer/Core/Mvc/Template/Node/Html/Components/Pager/Pager.php) と [Code](../PeServer/Core/Mvc/Template/Node/Html/Components/Code/Code.php) を追加した。[MarkdownEditor](../PeServer/Core/Mvc/Template/Node/Html/Components/MarkdownEditor/MarkdownEditor.php) でユーザー編集とプラグイン編集の同一タブを共有する。InputHelper の id 上書き・readOnly を追加し、name・値・エラーの参照キーは従来どおり維持した。
+* 成功後のフラッシュメッセージで数値キーが DataAttributes.build に int として渡るエラーを検出した。[DataAttributes](../PeServer/Core/Mvc/Template/Node/Html/Attribute/DataAttributes.php) の getNames がキーを文字列として列挙するように修正した。DefaultPage の `[$key => $value]` 指定は変更せず、数値文字列・負数のキーによる属性生成を回帰テストした。
+* 旧 [user_api.tpl](../PeServer/App/Views/Account/user_api.tpl) の td に対する誤った th 閉じタグは、新ノード構造で正しく閉じる。メール本文・メールレイアウトは Smarty のまま残した。
+* 単体 65 件・746 assertions、新旧のログイン・signup・アカウント統合 107 件・688 assertions が成功した。新画面の描画、CSRF hidden の出力、全ルートのメソッド・パラメーター・ミドルウェア登録、入力エラー再表示と値復元、APIキー作成・削除とシークレットの一度だけ表示、パスワード更新、メール変更要求・不正トークン・確認、プラグイン登録・編集・予約とカテゴリー保存、Markdown プレビュー、監査ログのページング・DL を確認した。最終のメールテストでは Mailer をモックし、本文の Smarty 生成は実行した。実ブラウザ・実メール配信は未確認。統合基盤ではミドルウェアを省略するため、認証・CSRF の実効性を検証したとの扱いにはしない。
+* 対象 PHPStan の変更コードへの診断はない。既存 ignoreErrors の未使用 3 件だけで終了コードは失敗となる。無関係な設定の変更・抑制追加は行っていない。差分の空白検査も成功した。
+
 ## 2026-11-03: ユーザー登録の並行移植
+
+利用者が新規登録フローの実動を確認済み（「おー 動いた」）。以下の実装時点の記録にある実ブラウザ未確認は、その後の確認で更新された。
 
 * 登録開始・通知・本登録の Web 画面を [AccountSignupStep1Page](../PeServer/App/Views/Pages/Account/AccountSignupStep1Page.php)、[AccountSignupNotifyPage](../PeServer/App/Views/Pages/Account/AccountSignupNotifyPage.php)、[AccountSignupStep2Page](../PeServer/App/Views/Pages/Account/AccountSignupStep2Page.php) に移植した。`/account/signup2`、`/account/signup2/notify`、`/account/signup2/{token}` と対応する末尾 2 のアクションを追加した。元の signup 経路は維持した。
 * 新系統の開始 POST だけ AccountSignupStep1Logic に signupPath を渡し、通知メール内の本登録 URL も signup2 に揃えた。未指定の旧系統は従来の signup のまま。NotLoginMiddleware、SignupStep2FilterMiddleware、POST の CsrfMiddleware は元経路と同じ構成で登録した。
@@ -25,6 +52,8 @@
 * 続いて利用者の指示で、ShowErrorMessagesProps を `errors` 全体と対象 `key` を受け取る契約に変更した。DefaultPage と AccountLoginPage の両方を更新し、対象キーの抽出をコンポーネント内へ集約した。項目別エラーのみでも共通見出しを出す旧版の挙動も復元した。単体 9 件・85 assertions、統合 29 件・116 assertions が成功。対象 PHPStan のコード診断はなく、既存の未使用 ignoreErrors 3 件のみで終了コードは失敗となった。
 
 ## 2026-11-03: ユーザー情報編集の並行移植
+
+利用者が編集画面の軽い実動確認済み。後続のアカウント全画面移植では、成功先を user2 に変更した。
 
 * 属性・Props の選択肢を文字列リテラル型にするか enum にするかの指針を、[テンプレート移植](./TEMPLATE-MIGRATION.md#属性props-の選択肢の型) に記録した。CsrfProps の判断を全体へ一般化しない。InputHelper の type は InputHelperType enum へ変更し、ページ・描画分岐・テストも更新した。将来の対応型追加時に必要な変更面も同文書に記載した。
 

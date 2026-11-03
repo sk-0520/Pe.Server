@@ -140,7 +140,7 @@ class AccountLoginPage extends RootHtmlComponentBase
 										$this->context->builder->p(
 											new HtmlGlobalAttributes(),
 											$this->context->builder->a(
-												new HTMLAnchorAttributes(href: '/password/reminder'),
+												new HTMLAnchorAttributes(href: '/password/reminder2'),
 												new TextNode('パスワードを忘れた場合はこちら')
 											)
 										)
