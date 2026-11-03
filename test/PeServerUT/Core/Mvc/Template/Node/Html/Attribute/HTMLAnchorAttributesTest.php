@@ -17,11 +17,14 @@ class HTMLAnchorAttributesTest extends TestClass
 		return [
 			['download', true],
 			['', false],
+			['download="crash-report-1.json"', 'crash-report-1.json'],
+			['download="report&quot;&lt;&amp;.json"', 'report"<&.json'],
+			['download=""', ''],
 		];
 	}
 
 	#[DataProvider('provide_download')]
-	public function test_download(string $expected, bool $download): void
+	public function test_download(string $expected, bool|string $download): void
 	{
 		$test = new HTMLAnchorAttributes(download: $download);
 		$actual = $test->build('download', AttributeValueMark::DoubleQuote);

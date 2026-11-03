@@ -299,7 +299,9 @@ class DefaultPage extends HtmlComponentBase
 							),
 							$this->context
 						),
-						$this->props->customScriptCode,
+						$this->props->customScriptCode !== null
+							? $this->context->builder->script(new HTMLScriptAttributes(), $this->props->customScriptCode)
+							: null,
 						$this->context->environment->isProduction()
 							? $this->context->builder->script(
 								new HTMLScriptAttributes(),

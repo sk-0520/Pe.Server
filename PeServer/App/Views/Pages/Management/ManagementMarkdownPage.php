@@ -1,0 +1,113 @@
+<?php
+
+declare(strict_types=1);
+
+namespace PeServer\App\Views\Pages\Management;
+
+use Override;
+use PeServer\Core\Mvc\Template\Node\Html\Components\Markdown\Markdown;
+use PeServer\Core\Mvc\Template\Node\Html\Components\Markdown\MarkdownProps;
+use PeServer\Core\Mvc\Template\Node\INode;
+use PeServer\Core\Mvc\Template\Node\RootProps;
+
+/**
+ * @template TRootProps of RootProps
+ * @extends ManagementPageBase<TRootProps>
+ */
+class ManagementMarkdownPage extends ManagementPageBase
+{
+	#[Override]
+	protected function getNode(): INode
+	{
+		return $this->layout('Markdown', new Markdown(new MarkdownProps(<<<'MARKDOWN'
+			# 見出し1
+			## 見出し2
+			### 見出し3
+			#### 見出し4
+			##### 見出し5
+			###### 見出し6
+
+			---
+
+			1. OL 1
+			1. OL 2
+			   1. OL 2-1
+			   1. OL 2-2
+			1. OL 3
+
+			---
+
+			* UL 1
+			* UL 2
+			   * UL 2-1
+			   * UL 2-2
+			* UL 3
+
+			---
+
+			dt 1
+			:   dd 1
+
+			dt 2
+			:   dd 2
+
+			---
+
+			*em*
+
+			---
+
+			**strong**
+
+			---
+
+			これは `inline code` だよ！
+
+			---
+
+			```
+			block code 1
+			block code 2
+			block code 3
+			```
+
+			---
+
+			```c
+			size_t strlen(const char* s)
+			{
+				if(!s) {
+					puts("DEBUG: NULL!");
+					return 0;
+				}
+
+				size_t length = 0; // variable
+
+				while(*s++) {
+					/*
+					increment
+					*/
+					length += 1;
+				}
+
+				return length;
+			}
+			```
+
+			(動くかは知らん)
+
+			---
+			| table  | left | center | right |
+			|--------|:-----|:------:|------:|
+			| TABLE  | LEFT | CENTER | RIGHT |
+			| EMPTY  |      | B<br>R |       |
+			| `CODE` | 12   | 34     | 56    |
+
+			---
+
+			---
+
+			---
+			MARKDOWN, 'api'), $this->context));
+	}
+}
