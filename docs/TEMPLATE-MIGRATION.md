@@ -6,6 +6,7 @@
 
 * Smarty から PHP のノードツリーによる NodeTemplate へ移植し、その後 React による UI 構築へ進む。背景には devContainer でのファイル IO の遅さがあるが、NodeTemplate の方が常に高速であることを保証するものではない。
 * 独自のテンプレート構文を追加せず、PHP のみで HTML を構築する。
+* 移行期間中は新しい NodeTemplate 側のルート・アクションに `2` を付与し、旧 Smarty 側のルート・描画を残して新旧比較できる状態を維持する。新側の画面内リンク・フォーム送信先・成功時遷移も対応する `2` 系統へ揃える。既存 URL の切り替えは利用者が明示した範囲だけに限定し、account/password への個別指示を他の画面群へ一般化しない。
 * `HTMLxxxAttributes` は型検証のための意図的な設計。利用者は当初、グローバル属性とタグ専用属性を属性クラスなしで PHPStan に検証させようとしたが、両者を組み合わせたチェックを実現できず、現在の方式を採用した。`TemplateEngine2` の履歴では、属性クラス導入後も配列の交差型で検証を試している。以下の履歴調査と再現結果を参照。
 * View の冗長さ・Props の増加は主に App 側の責務として扱い、React 移行までのコストとして受け入れる。それだけを理由に Core を再設計しない。属性定義の凍結やコード生成の採用は決定されていない。
 * 整形用のホワイトスペースを出さないのは意図した挙動。表示に必要な空白は明示的なテキストノード、レイアウト上の間隔は CSS で扱う。旧テンプレートの改行・空白への依存に注意する。
@@ -126,6 +127,10 @@ public function __construct(array $attributes = [])
 * `/password/reminder2`（GET・HEAD・POST）、`/password/reminding2/{token}`（GET）、`/password/reset2/{token}`（GET・POST）を使用する。旧 URL も同じ NodeTemplate 版へ委譲する。業務 Logic は維持し、再設定成功後は `/index2` へ遷移する。
 * ログインの再発行リンクとフォームは 2 系統へ向ける。PasswordReminderLogic の resetPath は既定 `password/reset` だが、旧 URL を含むすべてのリマインダー POST は `password/reset2` を渡し、Smarty で生成するメール内 URL も新系統に揃える。
 * メール送信は既存 DI の Mailer → AppMailer マッピングを使う。テストでは Mailer を差し替えて外部へ送信せず、本文の Smarty 生成とリンクを確認する。NotLoginMiddleware と POST の CsrfMiddleware は旧経路と同じ構成で登録する。
+
+### プラグイン画面
+
+プラグインは既存の一覧 `/plugin` と詳細 `/plugin/{plugin_id}` を Smarty のまま残し、NodeTemplate 版を一覧 `/plugin/index2`・詳細 `/plugin/detail2/{plugin_id}` として並走させる。Node 版一覧の詳細リンクも 2 系統へ向ける。PluginIndexLogic・PluginDetailLogic のキャッシュ取得・並べ替えと PluginIdMiddleware は維持し、ページは PluginCacheItem・PluginCacheCategory を描画する。説明は共通 Markdown 部品へ委譲する。管理側の標準プラグイン登録リンクは既存経路のままとする。
 
 ### 手順
 

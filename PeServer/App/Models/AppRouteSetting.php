@@ -163,6 +163,8 @@ final readonly class AppRouteSetting extends RouteSetting
 				/* AUTO-FORMAT */,
 				(new RouteInformation('plugin', PluginController::class))
 					->addAction(':plugin_id@' . self::PLUGIN_ID, HttpMethod::gets(), 'detail', [PluginIdMiddleware::class])
+					->addAction('index2', HttpMethod::gets(), 'index2')
+					->addAction('detail2/:plugin_id@' . self::PLUGIN_ID, HttpMethod::gets(), 'detail2', [PluginIdMiddleware::class])
 				/* AUTO-FORMAT */,
 				(new RouteInformation('management', ManagementController::class, [AdministratorAccountFilterMiddleware::class]))
 					->addAction('setup', HttpMethod::Get, 'setup_get', [RouteInformation::CLEAR_MIDDLEWARE, SetupAccountFilterMiddleware::class])

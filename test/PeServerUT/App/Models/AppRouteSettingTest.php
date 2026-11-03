@@ -6,11 +6,13 @@ namespace PeServerUT\App\Models;
 
 use PeServer\App\Controllers\Page\AccountController;
 use PeServer\App\Controllers\Page\PasswordController;
+use PeServer\App\Controllers\Page\PluginController;
 use PeServer\App\Models\AppRouteSetting;
 use PeServer\App\Models\Middleware\UserAccountFilterMiddleware;
 use PeServer\App\Models\Middleware\NotLoginMiddleware;
 use PeServer\App\Models\Middleware\SignupStep2FilterMiddleware;
 use PeServer\App\Models\Middleware\UserPluginEditFilterMiddleware;
+use PeServer\App\Models\Middleware\PluginIdMiddleware;
 use PeServer\Core\Environment;
 use PeServer\Core\Http\HttpMethod;
 use PeServer\Core\Http\HttpStatus;
@@ -21,6 +23,39 @@ use PeServerTest\TestClass;
 
 class AppRouteSettingTest extends TestClass
 {
+	public function test_plugin_routes(): void
+	{
+		$setting = new AppRouteSetting($this->createStub(Environment::class));
+		$urlHelper = $this->createStub(IUrlHelper::class);
+		$id = '12345678-1234-4234-8234-123456789abc';
+		foreach ([
+			'/plugin' => 'index',
+			'/plugin/' . $id => 'detail',
+			'/plugin/index2' => 'index2',
+			'/plugin/detail2/' . $id => 'detail2',
+		] as $path => $methodName) {
+			foreach ([HttpMethod::Get, HttpMethod::Head, HttpMethod::Post] as $method) {
+				$matches = [];
+				foreach ($setting->routes as $route) {
+					$action = $route->getAction($method, new RequestPath($path, $urlHelper));
+					if ($action !== null && $action->status === HttpStatus::None) {
+						$matches[] = $action;
+					}
+				}
+				if ($method === HttpMethod::Post) {
+					$this->assertCount(0, $matches);
+					continue;
+				}
+				$this->assertCount(1, $matches);
+				$this->assertSame(PluginController::class, $matches[0]->className);
+				$this->assertSame($methodName, $matches[0]->actionSetting->controllerMethod);
+				$isDetail = $methodName === 'detail' || $methodName === 'detail2';
+				$this->assertSame($isDetail ? ['plugin_id' => $id] : [], $matches[0]->params);
+				$this->assertSame($isDetail ? [PluginIdMiddleware::class] : [], $matches[0]->actionSetting->actionMiddleware);
+			}
+		}
+	}
+
 	public function test_password_routes(): void
 	{
 		$setting = new AppRouteSetting($this->createStub(Environment::class));
