@@ -2,6 +2,11 @@
 
 このファイルは作業の引き継ぎ用。確定した設計方針は [テンプレート移植](./TEMPLATE-MIGRATION.md)、全体の入口は [AGENT.md](./AGENT.md) を参照する。記録は現在のコードより優先しない。
 
+## 2026-11-04: 登録メールをNodeTemplateへ切替
+
+* `AppTemplate::createNodeMailTemplate()` と `AppEmailTemplateBuilder` による生成を維持し、アカウント登録のStep1確認URLメール・Step2完了通知の送信をNodeTemplateへ切り替えた。他のメールは未切替。HTMLメール6種は `TextNode`・HTML_EMAIL Builder、フィードバック／クラッシュレポートのテキスト2種は `TextBuilder` で生成する。
+* AccountSignup統合テスト8件・72 assertions、メール生成単体5件・65 assertions、PHPStan全体が成功。統合テストではMailerをモックし、Node本文のDOCTYPE・style・URL／ログインIDを確認する。後日、利用者がローカルSMTPトラップで確認URL通知と登録完了通知を受信し、確認URLから登録フォームを表示、登録完了後のログイン状態を確認した。実メールクライアント全般の互換性を保証するものではない。
+
 ## 2026-11-04: Home・Tool・エラー画面の NodeTemplate 移行
 
 * 利用者の指示で Home の案内・API・開発用 Streaming と Tool の全画面を既存 URL のまま NodeTemplate に切り替えた。フォーム action・入力名・値復元・エラー表示、業務 Logic、Streaming 用 Ajax 経路は維持し、旧 Home・Tool Smarty テンプレート 8 ファイルを削除した。

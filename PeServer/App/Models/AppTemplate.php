@@ -6,6 +6,7 @@ namespace PeServer\App\Models;
 
 use PeServer\App\Models\AppConfiguration;
 use PeServer\App\Models\AppTemplateOptions;
+use PeServer\App\Views\Emails\AppEmailTemplateBuilder;
 use PeServer\Core\Http\HttpStatus;
 use PeServer\Core\Mvc\Template\ITemplateFactory;
 use PeServer\Core\Mvc\Template\TemplateParameter;
@@ -54,6 +55,37 @@ final class AppTemplate
 	 */
 	public function createMailTemplate(string $templateName, string $subject, array $params): string
 	{
+		$params = $this->addMailAppValues($subject, $params);
+
+		return $this->buildTemplate('email', $templateName, $params, HttpStatus::None);
+	}
+
+	/**
+	 * NodeTemplate によるメール用テンプレートの作成。
+	 *
+	 * 現在の送信経路と比較するための並行生成用。
+	 *
+	 * @param string $templateName
+	 * @param string $subject
+	 * @param array<string,mixed> $params
+	 * @return string
+	 */
+	public function createNodeMailTemplate(string $templateName, string $subject, array $params): string
+	{
+		$params = $this->addMailAppValues($subject, $params);
+
+		return (new AppEmailTemplateBuilder())->build($templateName, $subject, $params);
+	}
+
+	/**
+	 * メールテンプレート共通のアプリ情報を設定。
+	 *
+	 * @param string $subject
+	 * @param array<string,mixed> $params
+	 * @return array<string,mixed>
+	 */
+	private function addMailAppValues(string $subject, array $params): array
+	{
 		$families = $this->config->setting->config->address->families;
 
 		$params['app'] = [
@@ -66,7 +98,7 @@ final class AppTemplate
 			'website_url' => $families->websiteUrl,
 		];
 
-		return $this->buildTemplate('email', $templateName, $params, HttpStatus::None);
+		return $params;
 	}
 
 	#endregion

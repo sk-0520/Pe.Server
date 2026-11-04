@@ -132,7 +132,7 @@ class AccountSignupStep1Logic extends PageLogicBase
 		$values = [
 			'url' => $url->toString(),
 		];
-		$html = $this->appTemplate->createMailTemplate('mail_signup_step1', $subject, $values);
+		$html = $this->appTemplate->createNodeMailTemplate('mail_signup_step1', $subject, $values);
 
 		$this->mailer->toAddresses = [
 			new EmailAddress($email),

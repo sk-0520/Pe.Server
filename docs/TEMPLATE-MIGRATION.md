@@ -149,7 +149,7 @@ public function __construct(array $attributes = [])
 * 既存 URL、業務 Logic、フォーム action・入力名・値復元・エラー表示、Streaming 用 Ajax URL は維持した。旧 Home・Tool Smarty テンプレート 8 ファイルは参照がないことを確認して削除した。
 * Home・Tool の統合テスト 30 件・178 assertions が成功。画面 GET、ツール POST の成功・入力エラー、NodeTemplate 識別表示、Streaming 用 DOM を確認した。統合テストはミドルウェアの実効性や実ブラウザでの Streaming を保証しない。
 * エラー画面は `ErrorPage` を追加し、AppErrorHandler の HTML 応答を NodeTemplate に切り替えた。ステータス、エラー番号、メッセージを維持し、既定メッセージとテキストエスケープを単体テスト 2 件・10 assertions で確認した。JSON 応答とメールテンプレートは変更していない。
-* Web の Smarty 描画はなくなり、AppErrorHandler のエラー画面も NodeTemplate を使う。メール本文・メールレイアウトは Smarty のまま。管理画面の旧 `.tpl` は比較資料として残るが、現在の管理画面描画には使わない。
+* Web の Smarty 描画はなくなり、AppErrorHandler のエラー画面も NodeTemplate を使う。アカウント登録のStep1確認URLメール・Step2完了通知は `AppTemplate::createNodeMailTemplate()` に切り替えた。ほかのメール送信は引き続きSmartyで、Node版はHTML 6種を `TextNode` と HTML_EMAIL Builder、テキスト2種を `TextBuilder` で生成する。登録メール2種はローカルSMTPトラップで受信し、確認URLから登録フォーム表示、登録完了後のログイン状態まで確認した。実メールクライアント全般の互換性を保証するものではない。管理画面の旧 `.tpl` は比較資料として残るが、現在の管理画面描画には使わない。
 
 ### プラグイン画面
 

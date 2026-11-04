@@ -1320,7 +1320,7 @@ class HtmlBuilder extends NodeBuilder
 		if ($this->version === self::HTML_VERSION_5) {
 			$docType = '<!DOCTYPE html>';
 		} elseif ($this->version === self::HTML_VERSION_EMAIL) {
-			$docType = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">";
+			$docType = '<!DOCTYPE html>';
 		} else {
 			throw new InvalidOperationException("Unsupported HTML version: " . $this->version);
 		}

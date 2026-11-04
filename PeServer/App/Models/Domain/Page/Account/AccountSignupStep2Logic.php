@@ -167,7 +167,7 @@ class AccountSignupStep2Logic extends PageLogicBase
 			'name' => $params['user_name'],
 			'login_id' => $params['login_id'],
 		];
-		$html = $this->appTemplate->createMailTemplate('mail_signup_step2', $subject, $values);
+		$html = $this->appTemplate->createNodeMailTemplate('mail_signup_step2', $subject, $values);
 
 		$this->mailer->toAddresses = [
 			new EmailAddress($email, $params['user_name']),
