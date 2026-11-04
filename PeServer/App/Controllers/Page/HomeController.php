@@ -12,7 +12,12 @@ use PeServer\App\Models\Domain\Page\Home\HomeContactLogic;
 use PeServer\App\Models\Domain\Page\Home\HomeIndexLogic;
 use PeServer\App\Models\Domain\Page\Home\HomePrivacyLogic;
 use PeServer\App\Models\Domain\Page\Home\HomeWildcardLogic;
+use PeServer\App\Views\Pages\Home\HomeAboutPage;
+use PeServer\App\Views\Pages\Home\HomeApiPage;
+use PeServer\App\Views\Pages\Home\HomeContactPage;
 use PeServer\App\Views\Pages\Home\HomeIndexPage;
+use PeServer\App\Views\Pages\Home\HomePrivacyPage;
+use PeServer\App\Views\Pages\Home\HomeStreamingPage;
 use PeServer\Core\Binary;
 use PeServer\Core\Http\HttpRequest;
 use PeServer\Core\Http\HttpStatus;
@@ -46,7 +51,7 @@ final class HomeController extends PageControllerBase
 		$logic = $this->createLogic(HomePrivacyLogic::class);
 		$logic->run(LogicCallMode::Initialize);
 
-		return $this->view('privacy', $logic->getViewData());
+		return $this->view(HomePrivacyPage::class, $logic->getViewData());
 	}
 
 	public function contact_get(): IActionResult
@@ -54,7 +59,7 @@ final class HomeController extends PageControllerBase
 		$logic = $this->createLogic(HomeContactLogic::class);
 		$logic->run(LogicCallMode::Initialize);
 
-		return $this->view('contact', $logic->getViewData());
+		return $this->view(HomeContactPage::class, $logic->getViewData());
 	}
 
 	public function about(): IActionResult
@@ -62,7 +67,7 @@ final class HomeController extends PageControllerBase
 		$logic = $this->createLogic(HomeAboutLogic::class);
 		$logic->run(LogicCallMode::Initialize);
 
-		return $this->view('about', $logic->getViewData());
+		return $this->view(HomeAboutPage::class, $logic->getViewData());
 	}
 
 	public function api(): IActionResult
@@ -70,7 +75,7 @@ final class HomeController extends PageControllerBase
 		$logic = $this->createLogic(HomeApiDocumentLogic::class);
 		$logic->run(LogicCallMode::Initialize);
 
-		return $this->view('api', $logic->getViewData());
+		return $this->view(HomeApiPage::class, $logic->getViewData());
 	}
 
 	public function wildcard(): IActionResult
@@ -89,12 +94,8 @@ final class HomeController extends PageControllerBase
 	public function streaming_html(): IActionResult
 	{
 		return $this->view(
-			'dev_streaming',
-			new TemplateParameter(
-				HttpStatus::OK,
-				[],
-				[]
-			)
+			HomeStreamingPage::class,
+			new TemplateParameter(HttpStatus::OK, [], [])
 		);
 	}
 }

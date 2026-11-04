@@ -6,7 +6,7 @@
 
 * Smarty から PHP のノードツリーによる NodeTemplate へ移植し、その後 React による UI 構築へ進む。背景には devContainer でのファイル IO の遅さがあるが、NodeTemplate の方が常に高速であることを保証するものではない。
 * 独自のテンプレート構文を追加せず、PHP のみで HTML を構築する。
-* 未移植画面の並行移植では NodeTemplate 側のルート・アクションに `2` を付与し、旧 Smarty 側を残して比較する。正式 URL への切り替えと比較用経路の撤去は利用者が明示した範囲だけに限定する。トップ・account・password・plugin は切り替えと `2` 系統の撤去が承認済みであり、以下の正式経路を使う。その後、管理画面も利用者の移行指示により既存の `/management/...` で NodeTemplate へ切り替えた。
+* 未移植画面の並行移植では NodeTemplate 側のルート・アクションに `2` を付与し、旧 Smarty 側を残して比較する。正式 URL への切り替えと比較用経路の撤去は利用者が明示した範囲だけに限定する。トップ・account・password・plugin は切り替えと `2` 系統の撤去が承認済みであり、以下の正式経路を使う。その後、管理画面と Home の案内・Tool 画面も利用者の指示により既存 URL で NodeTemplate へ切り替えた。
 * `HTMLxxxAttributes` は型検証のための意図的な設計。利用者は当初、グローバル属性とタグ専用属性を属性クラスなしで PHPStan に検証させようとしたが、両者を組み合わせたチェックを実現できず、現在の方式を採用した。`TemplateEngine2` の履歴では、属性クラス導入後も配列の交差型で検証を試している。以下の履歴調査と再現結果を参照。
 * View の冗長さ・Props の増加は主に App 側の責務として扱い、React 移行までのコストとして受け入れる。それだけを理由に Core を再設計しない。属性定義の凍結やコード生成の採用は決定されていない。
 * 整形用のホワイトスペースを出さないのは意図した挙動。表示に必要な空白は明示的なテキストノード、レイアウト上の間隔は CSS で扱う。旧テンプレートの改行・空白への依存に注意する。
@@ -128,12 +128,12 @@ public function __construct(array $attributes = [])
 | パスワード再設定 | `/password`（開始画面）、`/password/reminder`、`/password/reminding/{token}`、`/password/reset/{token}` |
 | 公開プラグイン | `/plugin`、`/plugin/{plugin_id}` |
 
-利用者の明示的な承認により `/index2`、`/account2/...`、`/password2/...`、`/plugin2/...` と旧来の `/account/user2`、`/password/reset2/{token}`、`/plugin/detail2/{plugin_id}` 等はすべて撤去した。互換経路・リダイレクトは残さず、送信済みの `2` 付き登録／再設定メールのリンクも利用できない。必要なら正式経路からメールを再発行する。トップの比較用開発リンクも撤去した。右上の `2` は E2E で NodeTemplate を識別するため復旧し、共通の DefaultPage で環境を問わず表示する（`id="node-template-indicator"`、`title="NodeTemplate"`）。Smarty 画面には表示しない。未移植の管理・案内・ツール画面や共有 Ajax/API は変更しない。
+利用者の明示的な承認により `/index2`、`/account2/...`、`/password2/...`、`/plugin2/...` と旧来の `/account/user2`、`/password/reset2/{token}`、`/plugin/detail2/{plugin_id}` 等はすべて撤去した。互換経路・リダイレクトは残さず、送信済みの `2` 付き登録／再設定メールのリンクも利用できない。必要なら正式経路からメールを再発行する。トップの比較用開発リンクも撤去した。右上の `2` は E2E で NodeTemplate を識別するため復旧し、共通の DefaultPage で環境を問わず表示する（`id="node-template-indicator"`、`title="NodeTemplate"`）。Smarty 画面には表示しない。共有 Ajax/API の実装は画面移植では変更しない。
 
 ### アカウントの経路
 
 * Web 画面は `/account` グループを使う。ログイン成功後は `/account`、登録メールのリンクは `/account/signup/{token}` へ向ける。
-* フォーム・ユーザー操作リンク・共通ヘッダーも正式経路を使い、ページごとの切り替えフラグは設けない。末尾 `2` アクションへの委譲は除去し、通常名のアクションから NodeTemplate を描画する。移植済みのトップ・account・password・plugin に対応する旧 Smarty Web テンプレート 18 ファイルは参照がないことを確認して削除した。未移植画面・メールのテンプレート、共通レイアウト・Smarty プラグイン・業務 Logic は引き続き使用するため残す。
+* フォーム・ユーザー操作リンク・共通ヘッダーも正式経路を使い、ページごとの切り替えフラグは設けない。末尾 `2` アクションへの委譲は除去し、通常名のアクションから NodeTemplate を描画する。移植済みのトップ・account・password・plugin に対応する旧 Smarty Web テンプレート 18 ファイルは参照がないことを確認して削除した。Smarty のメールテンプレート、エラー画面、共通レイアウト・Smarty プラグイン・業務 Logic は引き続き使用する。
 * ユーザー編集・パスワード変更・メール変更確定後は `/account/user`、登録完了・ログアウト後は `/` へ遷移する。セットアップ・管理への遷移と業務 Logic、ミドルウェアの登録構成は維持する。メール本文・メールレイアウトは引き続き Smarty に残す。
 * 統合テスト基盤はミドルウェアを省略する。ルートの単体テストで登録構成を別途確認し、統合テスト成功を認証・CSRF の実効性確認とは扱わない。また previousActual を渡した呼び出しでは setup コールバックが実行されないため、メール送信を伴うテストはその呼び出し自身でモックを登録できる構成にする。
 
@@ -142,6 +142,13 @@ public function __construct(array $attributes = [])
 * `/password`（GET・HEAD）は開始画面を表示し、フォーム送信は `/password/reminder`（GET・HEAD・POST）へ向ける。通知は `/password/reminding/{token}`（GET）、再設定は `/password/reset/{token}`（GET・POST）を使用する。業務 Logic は維持し、再設定成功後は `/` へ遷移する。
 * ログインの再発行リンク・フォーム・Smarty で生成するメール内 URL も正式経路を使う。
 * メール送信は既存 DI の Mailer → AppMailer マッピングを使う。テストでは Mailer を差し替えて外部へ送信せず、本文の Smarty 生成とリンクを確認する。NotLoginMiddleware と POST の CsrfMiddleware は旧経路と同じ構成で登録する。
+
+### Home・Tool 画面
+
+* Home の案内（`/about`、`/about/privacy`、`/about/contact`）、API 説明（`/api-doc`）、開発用 Streaming（`/dev/streaming`）と、Tool（`/tool`、`/tool/base64`、`/tool/json`）を NodeTemplate へ移植した。トップ `/` は既に NodeTemplate。
+* 既存 URL、業務 Logic、フォーム action・入力名・値復元・エラー表示、Streaming 用 Ajax URL は維持した。旧 Home・Tool Smarty テンプレート 8 ファイルは参照がないことを確認して削除した。
+* Home・Tool の統合テスト 30 件・171 assertions が成功。画面 GET、ツール POST の成功・入力エラー、NodeTemplate 識別表示、Streaming 用 DOM を確認した。統合テストはミドルウェアの実効性や実ブラウザでの Streaming を保証しない。
+* Web の Smarty 描画は AppErrorHandler のエラー画面に残る。メール本文も Smarty のまま。管理画面の旧 `.tpl` は比較資料として残るが、現在の管理画面描画には使わない。
 
 ### プラグイン画面
 

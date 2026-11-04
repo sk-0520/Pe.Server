@@ -2,6 +2,11 @@
 
 このファイルは作業の引き継ぎ用。確定した設計方針は [テンプレート移植](./TEMPLATE-MIGRATION.md)、全体の入口は [AGENT.md](./AGENT.md) を参照する。記録は現在のコードより優先しない。
 
+## 2026-11-04: Home・Tool の NodeTemplate 移行
+
+* 利用者の指示で Home の案内・API・開発用 Streaming と Tool の全画面を既存 URL のまま NodeTemplate に切り替えた。フォーム action・入力名・値復元・エラー表示、業務 Logic、Streaming 用 Ajax 経路は維持し、旧 Home・Tool Smarty テンプレート 8 ファイルを削除した。
+* Home・Tool の統合テスト 30 件・171 assertions が成功。実ブラウザでの Streaming 動作は未確認。Smarty のメール本文と AppErrorHandler のエラー画面は引き続き Smarty。管理画面の旧 `.tpl` は比較用に残っている。
+
 ## 2026-11-03: 管理画面の NodeTemplate 移行
 
 * 利用者の指示で管理・管理操作の全 20 画面を既存 URL のまま NodeTemplate に切り替えた。右上の `2` は識別用に維持する。業務 Logic・ルート・認可／CSRF・Ajax・ダウンロードは変更しない。旧 Smarty ソースは未参照の比較資料として残す。
