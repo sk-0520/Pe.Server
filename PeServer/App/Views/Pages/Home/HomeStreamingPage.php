@@ -15,7 +15,11 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\ButtonType;
 use PeServer\Core\Mvc\Template\Node\Html\JavaScriptSourceNode;
 use PeServer\Core\Mvc\Template\Node\INode;
 use PeServer\Core\Mvc\Template\Node\TextNode;
+use PeServer\Core\Mvc\Template\Node\RootProps;
 
+/**
+ * @extends HomePageBase<RootProps>
+ */
 class HomeStreamingPage extends HomePageBase
 {
 	#[Override]

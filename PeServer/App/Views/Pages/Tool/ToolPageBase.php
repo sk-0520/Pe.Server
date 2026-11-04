@@ -30,7 +30,8 @@ use PeServer\Core\Mvc\Template\Node\RootProps;
 use PeServer\Core\Mvc\Template\Node\TextNode;
 
 /**
- * @extends RootHtmlComponentBase<RootProps>
+ * @template TRootProps of RootProps
+ * @extends RootHtmlComponentBase<TRootProps>
  */
 abstract class ToolPageBase extends RootHtmlComponentBase
 {

@@ -18,7 +18,8 @@ use PeServer\Core\Mvc\Template\Node\TextNode;
 use PeServer\Core\Text;
 
 /**
- * @extends RootHtmlComponentBase<RootProps>
+ * @template TRootProps of RootProps
+ * @extends RootHtmlComponentBase<TRootProps>
  */
 class ErrorPage extends RootHtmlComponentBase
 {

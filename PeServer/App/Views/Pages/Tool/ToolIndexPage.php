@@ -10,9 +10,13 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLAnchorAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLBrAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLLiAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HtmlGlobalAttributes;
+use PeServer\Core\Mvc\Template\Node\RootProps;
 use PeServer\Core\Mvc\Template\Node\INode;
 use PeServer\Core\Mvc\Template\Node\TextNode;
 
+/**
+ * @extends ToolPageBase<RootProps>
+ */
 class ToolIndexPage extends ToolPageBase
 {
 	#[Override]

@@ -7,7 +7,11 @@ namespace PeServer\App\Views\Pages\Tool;
 use Override;
 use PeServer\Core\Mvc\Template\Node\Fragment;
 use PeServer\Core\Mvc\Template\Node\INode;
+use PeServer\Core\Mvc\Template\Node\RootProps;
 
+/**
+ * @extends ToolPageBase<RootProps>
+ */
 class ToolJsonPage extends ToolPageBase
 {
 	#[Override]

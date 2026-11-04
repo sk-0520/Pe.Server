@@ -5,9 +5,13 @@ declare(strict_types=1);
 namespace PeServer\App\Views\Pages\Tool;
 
 use Override;
+use PeServer\Core\Mvc\Template\Node\RootProps;
 use PeServer\Core\Mvc\Template\Node\Fragment;
 use PeServer\Core\Mvc\Template\Node\INode;
 
+/**
+ * @extends ToolPageBase<RootProps>
+ */
 class ToolBase64Page extends ToolPageBase
 {
 	#[Override]

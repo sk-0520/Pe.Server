@@ -12,7 +12,8 @@ use PeServer\Core\Mvc\Template\Node\INode;
 use PeServer\Core\Mvc\Template\Node\RootProps;
 
 /**
- * @extends RootHtmlComponentBase<RootProps>
+ * @template TRootProps of RootProps
+ * @extends RootHtmlComponentBase<TRootProps>
  */
 abstract class HomePageBase extends RootHtmlComponentBase
 {

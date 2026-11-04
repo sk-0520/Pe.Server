@@ -12,9 +12,13 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLTableCellAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLTableHeaderCellAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HtmlGlobalAttributes;
 use PeServer\Core\Mvc\Template\Node\INode;
+use PeServer\Core\Mvc\Template\Node\RootProps;
 use PeServer\Core\Mvc\Template\Node\TextNode;
 use PeServer\Core\Text;
 
+/**
+ * @extends HomePageBase<RootProps>
+ */
 class HomeApiPage extends HomePageBase
 {
 	#[Override]

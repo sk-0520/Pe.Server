@@ -91,5 +91,4 @@ class ToolControllerTest extends ItControllerClass
 		$this->assertCount(1, $indicators);
 		$this->assertTextNode('2', $indicators->single());
 	}
-
 }

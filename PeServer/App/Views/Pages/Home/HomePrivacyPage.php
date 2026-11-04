@@ -8,7 +8,11 @@ use Override;
 use PeServer\Core\Mvc\Template\Node\Html\Components\Markdown\Markdown;
 use PeServer\Core\Mvc\Template\Node\Html\Components\Markdown\MarkdownProps;
 use PeServer\Core\Mvc\Template\Node\INode;
+use PeServer\Core\Mvc\Template\Node\RootProps;
 
+/**
+ * @extends HomePageBase<RootProps>
+ */
 class HomePrivacyPage extends HomePageBase
 {
 	#[Override]
