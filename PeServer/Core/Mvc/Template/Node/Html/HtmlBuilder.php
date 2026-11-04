@@ -77,6 +77,7 @@ use PeServer\Core\Mvc\Template\Node\INode;
 use PeServer\Core\Mvc\Template\Node\NodeBuilder;
 use PeServer\Core\Mvc\Template\Node\NoneNode;
 use PeServer\Core\Throws\ArgumentException;
+use PeServer\Core\Throws\InvalidOperationException;
 
 class HtmlBuilder extends NodeBuilder
 {
@@ -84,15 +85,18 @@ class HtmlBuilder extends NodeBuilder
 	#region define
 
 	public const HTML_VERSION_5 = "5.0";
+	public const HTML_VERSION_EMAIL = "email";
 
 	#endregion
 
-	#region variable
-
-	/** @var self::HTML_VERSION_* */
-	public string $version = self::HTML_VERSION_5;
-
-	#endregion
+	public function __construct(
+		/**
+		 * @var self::HTML_VERSION_*
+		 */
+		public string $version = self::HTML_VERSION_5
+	) {
+		//NOP
+	}
 
 	#region function
 
@@ -1313,8 +1317,22 @@ class HtmlBuilder extends NodeBuilder
 	#[Override]
 	public function build(INode $node, ?BuildOptions $buildOptions = null): string
 	{
-		$docType = '<!DOCTYPE html>' . PHP_EOL;
-		return $docType . parent::build($node, $buildOptions);
+		if ($this->version === self::HTML_VERSION_5) {
+			$docType = '<!DOCTYPE html>';
+		} elseif ($this->version === self::HTML_VERSION_EMAIL) {
+			$docType = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">";
+		} else {
+			throw new InvalidOperationException("Unsupported HTML version: " . $this->version);
+		}
+		$docType .= PHP_EOL;
+
+		$options = $buildOptions ?? BuildOptions::default();
+		$htmlBuildOptions = new HtmlBuildOptions(
+			format: $options->format,
+			indent: $options->indent,
+			version: $this->version
+		);
+		return $docType . parent::build($node, $htmlBuildOptions);
 	}
 
 	#endregion

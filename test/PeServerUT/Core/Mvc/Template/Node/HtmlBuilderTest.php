@@ -7,6 +7,7 @@ namespace PeServerUT\Core\Mvc\Template\Node;
 use PeServer\Core\Encoding;
 use PeServer\Core\Mvc\Template\Node\BuildOptions;
 use PeServer\Core\Mvc\Template\Node\Fragment;
+use PeServer\Core\Mvc\Template\Node\NodeBase;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\DataAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLAreaAttributes;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HTMLBrAttributes;
@@ -21,6 +22,7 @@ use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\CharSet;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\Value\ScriptType;
 use PeServer\Core\Mvc\Template\Node\Html\CssSourceNode;
 use PeServer\Core\Mvc\Template\Node\Html\HtmlBuilder;
+use PeServer\Core\Mvc\Template\Node\Html\HtmlBuildOptions;
 use PeServer\Core\Mvc\Template\Node\Html\JavaScriptSourceNode;
 use PeServer\Core\Mvc\Template\Node\Html\JsonDataNode;
 use PeServer\Core\Mvc\Template\Node\TextNode;
@@ -28,6 +30,7 @@ use PeServer\Core\Regex;
 use PeServer\Core\Serialization\JsonSerializer;
 use PeServer\Core\Throws\ArgumentException;
 use PeServerTest\TestClass;
+use Override;
 
 class HtmlBuilderTest extends TestClass
 {
@@ -41,6 +44,34 @@ class HtmlBuilderTest extends TestClass
 			new TextNode('x')
 		);
 		$this->assertSame(self::DOCTYPE . '<div id="a">x</div>', $h->build($node));
+	}
+
+	public function test_build_passes_version_dependent_options_to_node(): void
+	{
+		$node = new class extends NodeBase {
+			public ?HtmlBuildOptions $buildOptions = null;
+
+			#[Override]
+			public function hasChildren(): bool
+			{
+				return false;
+			}
+
+			#[Override]
+			public function build(int $level, BuildOptions $buildOptions): string
+			{
+				$this->buildOptions = $buildOptions instanceof HtmlBuildOptions ? $buildOptions : null;
+				return '';
+			}
+		};
+		$builder = new HtmlBuilder(HtmlBuilder::HTML_VERSION_EMAIL);
+
+		$builder->build($node, new BuildOptions(BuildOptions::FORMAT_NONE, '  '));
+
+		$this->assertNotNull($node->buildOptions);
+		$this->assertSame(HtmlBuilder::HTML_VERSION_EMAIL, $node->buildOptions->version);
+		$this->assertSame(BuildOptions::FORMAT_NONE, $node->buildOptions->format);
+		$this->assertSame('  ', $node->buildOptions->indent);
 	}
 
 	public function test_attribute_escape(): void
