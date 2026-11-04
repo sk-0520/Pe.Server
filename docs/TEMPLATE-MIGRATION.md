@@ -133,7 +133,7 @@ public function __construct(array $attributes = [])
 ### アカウントの経路
 
 * Web 画面は `/account` グループを使う。ログイン成功後は `/account`、登録メールのリンクは `/account/signup/{token}` へ向ける。
-* フォーム・ユーザー操作リンク・共通ヘッダーも正式経路を使い、ページごとの切り替えフラグは設けない。末尾 `2` アクションへの委譲は除去し、通常名のアクションから NodeTemplate を描画する。移植済みのトップ・account・password・plugin に対応する旧 Smarty Web テンプレート 18 ファイルは参照がないことを確認して削除した。Smarty のメールテンプレート、エラー画面、共通レイアウト・Smarty プラグイン・業務 Logic は引き続き使用する。
+* フォーム・ユーザー操作リンク・共通ヘッダーも正式経路を使い、ページごとの切り替えフラグは設けない。末尾 `2` アクションへの委譲は除去し、通常名のアクションから NodeTemplate を描画する。移植済みのトップ・account・password・plugin に対応する旧 Smarty Web テンプレート 18 ファイルは参照がないことを確認して削除した。Smarty のメールテンプレート、共通レイアウト・Smarty プラグイン・業務 Logic は引き続き使用する。
 * ユーザー編集・パスワード変更・メール変更確定後は `/account/user`、登録完了・ログアウト後は `/` へ遷移する。セットアップ・管理への遷移と業務 Logic、ミドルウェアの登録構成は維持する。メール本文・メールレイアウトは引き続き Smarty に残す。
 * 統合テスト基盤はミドルウェアを省略する。ルートの単体テストで登録構成を別途確認し、統合テスト成功を認証・CSRF の実効性確認とは扱わない。また previousActual を渡した呼び出しでは setup コールバックが実行されないため、メール送信を伴うテストはその呼び出し自身でモックを登録できる構成にする。
 
@@ -147,8 +147,9 @@ public function __construct(array $attributes = [])
 
 * Home の案内（`/about`、`/about/privacy`、`/about/contact`）、API 説明（`/api-doc`）、開発用 Streaming（`/dev/streaming`）と、Tool（`/tool`、`/tool/base64`、`/tool/json`）を NodeTemplate へ移植した。トップ `/` は既に NodeTemplate。
 * 既存 URL、業務 Logic、フォーム action・入力名・値復元・エラー表示、Streaming 用 Ajax URL は維持した。旧 Home・Tool Smarty テンプレート 8 ファイルは参照がないことを確認して削除した。
-* Home・Tool の統合テスト 30 件・171 assertions が成功。画面 GET、ツール POST の成功・入力エラー、NodeTemplate 識別表示、Streaming 用 DOM を確認した。統合テストはミドルウェアの実効性や実ブラウザでの Streaming を保証しない。
-* Web の Smarty 描画は AppErrorHandler のエラー画面に残る。メール本文も Smarty のまま。管理画面の旧 `.tpl` は比較資料として残るが、現在の管理画面描画には使わない。
+* Home・Tool の統合テスト 30 件・178 assertions が成功。画面 GET、ツール POST の成功・入力エラー、NodeTemplate 識別表示、Streaming 用 DOM を確認した。統合テストはミドルウェアの実効性や実ブラウザでの Streaming を保証しない。
+* エラー画面は `ErrorPage` を追加し、AppErrorHandler の HTML 応答を NodeTemplate に切り替えた。ステータス、エラー番号、メッセージを維持し、既定メッセージとテキストエスケープを単体テスト 2 件・10 assertions で確認した。JSON 応答とメールテンプレートは変更していない。
+* Web の Smarty 描画はなくなり、AppErrorHandler のエラー画面も NodeTemplate を使う。メール本文・メールレイアウトは Smarty のまま。管理画面の旧 `.tpl` は比較資料として残るが、現在の管理画面描画には使わない。
 
 ### プラグイン画面
 
