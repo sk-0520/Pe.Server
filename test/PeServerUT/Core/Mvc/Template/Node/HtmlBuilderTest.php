@@ -104,6 +104,22 @@ class HtmlBuilderTest extends TestClass
 		$this->assertStringEndsWith('<br />', $h->build($h->br(new HTMLBrAttributes())));
 	}
 
+	public function test_email_void_elements_without_self_closing_slash(): void
+	{
+		$h = new HtmlBuilder(HtmlBuilder::HTML_VERSION_EMAIL);
+		$node = $h->div(new HtmlGlobalAttributes(), new Fragment([
+			$h->br(new HTMLBrAttributes(className: 'line')),
+			$h->meta(new HTMLMetaAttributes(charset: CharSet::Utf8)),
+			$h->img(new HTMLImgAttributes(src: 'a.png')),
+		]));
+
+		$this->assertStringEndsWith(
+			'<div><br class="line"><meta charset="UTF-8"><img src="a.png"></div>',
+			$h->build($node)
+		);
+		$this->assertSame('<br />', (string)$h->br(new HTMLBrAttributes()));
+	}
+
 	public function test_script_bool(): void
 	{
 		$h = new HtmlBuilder();

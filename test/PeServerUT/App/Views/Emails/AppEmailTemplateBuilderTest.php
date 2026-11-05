@@ -84,7 +84,7 @@ class AppEmailTemplateBuilderTest extends TestClass
 		]);
 
 		$this->assertStringContainsString('<html lang="ja">', $html);
-		$this->assertStringContainsString('<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />', $html);
+		$this->assertStringContainsString('<meta content="text/html; charset=utf-8" http-equiv="Content-Type">', $html);
 		$this->assertStringContainsString('<h1>ユーザー登録用URL通知</h1>', $html);
 		$this->assertStringContainsString('<p class="header">自動送信のため返信しないでください</p>', $html);
 		$this->assertStringNotContainsString('<ul class="header">自動送信のため返信しないでください</ul>', $html);

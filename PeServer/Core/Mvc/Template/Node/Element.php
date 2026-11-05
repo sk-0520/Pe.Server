@@ -51,6 +51,30 @@ class Element extends NodeBase
 		return ($buildOptions->format & BuildOptions::FORMAT_NEWLINE) === BuildOptions::FORMAT_NEWLINE;
 	}
 
+	protected function buildAttribute(string $tagName, ElementOptions $options, BuildOptions $buildOptions): string
+	{
+		$result = '';
+		foreach ($this->attributes->getNames() as $name) {
+			$attribute = $this->attributes->build($name);
+			if ($attribute === '') {
+				continue;
+			}
+			$result .= ' ' . $attribute;
+		}
+
+		return $result;
+	}
+
+	protected function buildStartTag(string $tagName, string $builtAttributes, ElementOptions $options, BuildOptions $buildOptions): string
+	{
+		return '<' . $tagName . $builtAttributes . ($options->selfClosing ? ' />' : '>');
+	}
+
+	protected function buildEndTag(string $tagName, ElementOptions $options, BuildOptions $buildOptions): string
+	{
+		return $options->selfClosing ? '' : '</' . $tagName . '>';
+	}
+
 	#endregion
 
 	#region INode
@@ -64,32 +88,14 @@ class Element extends NodeBase
 	#[Override]
 	public function build(int $level, BuildOptions $buildOptions): string
 	{
-		//TODO: とりあえずえいやで作るので必要に応じて後で対応する
-		// インデントや改行は面倒
+		$attributes = $this->buildAttribute($this->tagName, $this->options, $buildOptions);
+		$result = $this->buildStartTag($this->tagName, $attributes, $this->options, $buildOptions);
 
-		$result = "<";
-		$result .= $this->tagName;
-
-		foreach ($this->attributes->getNames() as $name) {
-			$attribute = $this->attributes->build($name);
-			if ($attribute === '') {
-				continue;
-			}
-			$result .= " ";
-			$result .= $attribute;
-		}
-
-		if ($this->options->selfClosing) {
-			$result .= " />";
-		} else {
-			$result .= ">";
-
+		if (!$this->options->selfClosing) {
 			$result .= $this->children->build($level + 1, $buildOptions);
-
-			$result .= "</";
-			$result .= $this->tagName;
-			$result .= ">";
 		}
+
+		$result .= $this->buildEndTag($this->tagName, $this->options, $buildOptions);
 
 		return $result;
 	}

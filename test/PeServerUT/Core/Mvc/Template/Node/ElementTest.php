@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PeServerUT\Core\Mvc\Template\Node;
 
 use Iterator;
+use Override;
 use PeServer\Core\Mvc\Template\Node\NoneNode;
 use PeServerTest\TestClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -40,6 +41,48 @@ class ElementTest extends TestClass
 		$test = new LocalSimleElement($content, $options);
 
 		$this->assertSame($expected, (string)$test);
+	}
+
+	public function test_build_uses_overridden_tag_methods(): void
+	{
+		foreach ([false, true] as $selfClosing) {
+			$options = new ElementOptions(true, $selfClosing);
+			$buildOptions = BuildOptions::default();
+			$element = new class(new TextNode('child'), $options) extends LocalSimleElement {
+				public array $calls = [];
+
+				#[Override]
+				protected function buildAttribute(string $tagName, ElementOptions $options, BuildOptions $buildOptions): string
+				{
+					$this->calls[] = ['attribute', $tagName, $options, $buildOptions];
+					return parent::buildAttribute($tagName, $options, $buildOptions) . ' extra="yes"';
+				}
+
+				#[Override]
+				protected function buildStartTag(string $tagName, string $builtAttributes, ElementOptions $options, BuildOptions $buildOptions): string
+				{
+					$this->calls[] = ['start', $tagName, $options, $buildOptions];
+					return '[' . parent::buildStartTag($tagName, $builtAttributes, $options, $buildOptions);
+				}
+
+				#[Override]
+				protected function buildEndTag(string $tagName, ElementOptions $options, BuildOptions $buildOptions): string
+				{
+					$this->calls[] = ['end', $tagName, $options, $buildOptions];
+					return parent::buildEndTag($tagName, $options, $buildOptions) . ']';
+				}
+			};
+
+			$this->assertSame(
+				$selfClosing ? '[<tag attr="value" extra="yes" />]' : '[<tag attr="value" extra="yes">child</tag>]',
+				$element->build(0, $buildOptions)
+			);
+			$this->assertSame([
+				['attribute', 'tag', $options, $buildOptions],
+				['start', 'tag', $options, $buildOptions],
+				['end', 'tag', $options, $buildOptions],
+			], $element->calls);
+		}
 	}
 }
 
