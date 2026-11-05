@@ -184,7 +184,10 @@ class AccountFamilyControllerTest extends ItControllerClass
 	{
 		$mailer = $this->createMock(Mailer::class);
 		$mailer->expects($this->once())->method('send');
-		$mailer->expects($this->once())->method('setMessage')->with($this->callback(fn(EmailMessage $message) => $message->hasHtml()));
+		$message = null;
+		$mailer->expects($this->once())->method('setMessage')->willReturnCallback(function (EmailMessage $value) use (&$message): void {
+			$message = $value;
+		});
 		$sent = $this->call(HttpMethod::Post, "$base/user/email$suffix", $this->options([
 			'account_email_mode' => 'edit', 'account_email_email' => 'new@example.com',
 		]), function (ItSetup $setup) use ($mailer): void {
@@ -193,6 +196,13 @@ class AccountFamilyControllerTest extends ItControllerClass
 			$setup->container->registerValue($mailer, Mailer::class);
 		});
 		$this->assertRedirectPath(HttpStatus::Found, 'account/user/email', null, $sent);
+		$this->assertInstanceOf(EmailMessage::class, $message);
+		$this->assertStringStartsWith('<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">' . PHP_EOL, $message->getHtml());
+		$this->assertStringContainsString('<BR>', $message->getHtml());
+		$this->assertStringContainsString('メールアドレス変更確認', $message->getHtml());
+		$this->assertStringContainsString('<CODE>', $message->getHtml());
+		$this->assertStringNotContainsString('array(2)', $message->getHtml());
+		$this->assertSame('new@example.com', $mailer->toAddresses[0]->address);
 		$waiting = $this->call(HttpMethod::Get, "$base/user/email$suffix", $this->options(), null, $sent);
 		$this->assertCount(2, $waiting->html->path()->collections("//form[@action='/account/user/email']"));
 		$this->assertTextNode('new@example.com', $waiting->html->path()->collections("//section[@class='page-account-email-confirm']//code")->single());
@@ -210,7 +220,10 @@ class AccountFamilyControllerTest extends ItControllerClass
 	{
 		$mailer = $this->createMock(Mailer::class);
 		$mailer->expects($this->exactly(2))->method('send');
-		$mailer->expects($this->exactly(2))->method('setMessage')->with($this->callback(fn(EmailMessage $message) => $message->hasHtml()));
+		$messages = [];
+		$mailer->expects($this->exactly(2))->method('setMessage')->willReturnCallback(function (EmailMessage $value) use (&$messages): void {
+			$messages[] = $value;
+		});
 		$confirmed = $this->call(HttpMethod::Post, "$base/user/email$suffix", $this->options([
 			'account_email_mode' => 'confirm', 'account_email_token' => '12345678',
 		]), function (ItSetup $setup) use ($mailer): void {
@@ -226,6 +239,14 @@ class AccountFamilyControllerTest extends ItControllerClass
 			$setup->container->registerValue($mailer, Mailer::class);
 		});
 		$this->assertRedirectPath(HttpStatus::Found, 'account/user', null, $confirmed);
+		$this->assertCount(2, $messages);
+		foreach ($messages as $message) {
+			$this->assertStringStartsWith('<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">' . PHP_EOL, $message->getHtml());
+			$this->assertStringContainsString('<BR>', $message->getHtml());
+			$this->assertStringNotContainsString('array(2)', $message->getHtml());
+		}
+		$this->assertStringContainsString('今後はこのメールアドレスにメール配信が行われます。', $messages[0]->getHtml());
+		$this->assertStringContainsString('<CODE>new@example.com</CODE>', $messages[1]->getHtml());
 		$this->assertSame(0, $confirmed->openDB()->selectSingleCount('select count(*) from user_change_wait_emails'));
 		$email = $confirmed->openDB()->querySingle('select email from users where user_id = :user_id', ['user_id' => ItMockStores::SESSION_ACCOUNT_USER_ID])->fields['email'];
 		$this->assertSame('new@example.com', $confirmed->container->get(AppCryptography::class)->decrypt($email));

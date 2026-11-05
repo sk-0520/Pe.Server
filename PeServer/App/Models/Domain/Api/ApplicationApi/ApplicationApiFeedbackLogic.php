@@ -115,7 +115,7 @@ class ApplicationApiFeedbackLogic extends ApiLogicBase
 		$subject = $this->requestJson['subject'];
 		$this->mailer->customSubjectHeader = '[Pe-Feedback]';
 		$this->mailer->subject = "$sequence: $subject";
-		$message = $this->appTemplate->createMailTemplate('feedback_email', $this->mailer->subject, $this->requestJson);
+		$message = $this->appTemplate->createNodeMailTemplate('feedback_email', $this->mailer->subject, $this->requestJson);
 		$this->mailer->setMessage(new EmailMessage($message));
 		$this->mailer->attachments[] = new Attachment("feedback-$sequence.json", $this->getRequestContent(), Mime::JSON);
 		foreach ($feedbackEmails as $feedbackEmail) {

@@ -63,7 +63,7 @@ final class AppTemplate
 	/**
 	 * NodeTemplate によるメール用テンプレートの作成。
 	 *
-	 * 現在の送信経路と比較するための並行生成用。
+	 * HTMLメールとプレーンテキストメールの送信本文を生成する。
 	 *
 	 * @param string $templateName
 	 * @param string $subject

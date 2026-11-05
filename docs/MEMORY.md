@@ -2,6 +2,11 @@
 
 このファイルは作業の引き継ぎ用。確定した設計方針は [テンプレート移植](./TEMPLATE-MIGRATION.md)、全体の入口は [AGENT.md](./AGENT.md) を参照する。記録は現在のコードより優先しない。
 
+## 2026-11-05: 全メールの送信本文をNode生成へ切替
+
+* 登録・パスワード再設定に続き、メール変更3種類とフィードバック／クラッシュレポートの送信本文を `createNodeMailTemplate()` に切り替えた。Appから旧 `createMailTemplate()` への呼び出しはなくなった。Smarty基盤・旧テンプレートの撤去は未実施。
+* メール変更の統合テスト2件・34 assertions、全メール生成の単体テスト5件・65 assertions、PHPStan全体が成功。API通知メールは生成単体テストによる確認であり、実送信やAPI送信経路の統合確認は未実施。
+
 ## 2026-11-04: 登録メールをNodeTemplateへ切替
 
 * `AppTemplate::createNodeMailTemplate()` と `AppEmailTemplateBuilder` による生成を維持し、アカウント登録のStep1確認URLメール・Step2完了通知の送信をNodeTemplateへ切り替えた。他のメールは未切替。HTMLメール6種は `TextNode`・HTML_EMAIL Builder、フィードバック／クラッシュレポートのテキスト2種は `TextBuilder` で生成する。

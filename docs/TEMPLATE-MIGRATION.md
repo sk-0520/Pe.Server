@@ -13,7 +13,7 @@
 * `Element::build()` は属性・開始タグ・終了タグの生成を protected の `buildAttribute()`・`buildStartTag()`・`buildEndTag()` に委譲する。継承先は各処理を上書きでき、自己終了要素では子を描画しない。属性文字列は各属性の先頭に空白を含む。
 * `HtmlElement` はメール用の `HtmlBuildOptions` では開始・終了タグ名を大文字化し、空要素を `<BR>` の形で出力する。属性名・値・本文は変換しない。通常のHTML・汎用Elementのタグ名や `<br />` 型の出力は維持する。
 * 性能改善より移植と動作確認を先に進める。ブラウザの応答時間はアプリ全体と通信を含むため、テンプレート単体の速度として扱わない。
-* HTMLメールはWeb画面とは別に扱い、Node生成ではメール用DOCTYPEとして HTML 4.01 Strict（`<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">`）を出力する。登録メールはNode生成へ切り替え済みで、他メールにはSmartyの送信経路が残る。DOCTYPEの選択とローカルSMTPトラップでの確認は、メールクライアント全般の互換性を保証しない。
+* HTMLメールはWeb画面とは別に扱い、Node生成ではメール用DOCTYPEとして HTML 4.01 Strict（`<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">`）を出力する。メール8種類の送信本文はすべてNode生成へ切り替え済み。DOCTYPEの選択とローカルSMTPトラップでの確認は、メールクライアント全般の互換性を保証しない。
 
 ## TemplateEngine2 の履歴調査
 
@@ -135,8 +135,8 @@ public function __construct(array $attributes = [])
 ### アカウントの経路
 
 * Web 画面は `/account` グループを使う。ログイン成功後は `/account`、登録メールのリンクは `/account/signup/{token}` へ向ける。
-* フォーム・ユーザー操作リンク・共通ヘッダーも正式経路を使い、ページごとの切り替えフラグは設けない。末尾 `2` アクションへの委譲は除去し、通常名のアクションから NodeTemplate を描画する。移植済みのトップ・account・password・plugin に対応する旧 Smarty Web テンプレート 18 ファイルは参照がないことを確認して削除した。Smarty のメールテンプレート、共通レイアウト・Smarty プラグイン・業務 Logic は引き続き使用する。
-* ユーザー編集・パスワード変更・メール変更確定後は `/account/user`、登録完了・ログアウト後は `/` へ遷移する。セットアップ・管理への遷移と業務 Logic、ミドルウェアの登録構成は維持する。メール本文・メールレイアウトは引き続き Smarty に残す。
+* フォーム・ユーザー操作リンク・共通ヘッダーも正式経路を使い、ページごとの切り替えフラグは設けない。末尾 `2` アクションへの委譲は除去し、通常名のアクションから NodeTemplate を描画する。移植済みのトップ・account・password・plugin に対応する旧 Smarty Web テンプレート 18 ファイルは参照がないことを確認して削除した。旧メールテンプレート・共通レイアウト・Smarty基盤は残存するが、Appの送信本文生成には使用しない。
+* ユーザー編集・パスワード変更・メール変更確定後は `/account/user`、登録完了・ログアウト後は `/` へ遷移する。セットアップ・管理への遷移と業務 Logic、ミドルウェアの登録構成は維持する。メール変更の確認トークン・新旧アドレスへの完了通知もNode生成する。
 * 統合テスト基盤はミドルウェアを省略する。ルートの単体テストで登録構成を別途確認し、統合テスト成功を認証・CSRF の実効性確認とは扱わない。また previousActual を渡した呼び出しでは setup コールバックが実行されないため、メール送信を伴うテストはその呼び出し自身でモックを登録できる構成にする。
 
 ### パスワード再発行の経路
@@ -151,7 +151,7 @@ public function __construct(array $attributes = [])
 * 既存 URL、業務 Logic、フォーム action・入力名・値復元・エラー表示、Streaming 用 Ajax URL は維持した。旧 Home・Tool Smarty テンプレート 8 ファイルは参照がないことを確認して削除した。
 * Home・Tool の統合テスト 30 件・178 assertions が成功。画面 GET、ツール POST の成功・入力エラー、NodeTemplate 識別表示、Streaming 用 DOM を確認した。統合テストはミドルウェアの実効性や実ブラウザでの Streaming を保証しない。
 * エラー画面は `ErrorPage` を追加し、AppErrorHandler の HTML 応答を NodeTemplate に切り替えた。ステータス、エラー番号、メッセージを維持し、既定メッセージとテキストエスケープを単体テスト 2 件・10 assertions で確認した。JSON 応答とメールテンプレートは変更していない。
-* Web の Smarty 描画はなくなり、AppErrorHandler のエラー画面も NodeTemplate を使う。アカウント登録のStep1確認URLメール・Step2完了通知とパスワード再設定URL通知は `AppTemplate::createNodeMailTemplate()` に切り替えた。ほかのメール送信は引き続きSmartyで、Node版はHTML 6種を `TextNode` と HTML_EMAIL Builder、テキスト2種を `TextBuilder` で生成する。登録メール2種はローカルSMTPトラップで受信し、確認URLから登録フォーム表示、登録完了後のログイン状態まで確認した。実メールクライアント全般の互換性を保証するものではない。管理画面の旧 `.tpl` は比較資料として残るが、現在の管理画面描画には使わない。
+* Web の Smarty 描画はなくなり、AppErrorHandler のエラー画面も NodeTemplate を使う。メール8種類の送信本文はすべて `AppTemplate::createNodeMailTemplate()` に切り替えた。HTML 6種を `TextNode` とメールモードの `HtmlBuilder`、テキスト2種を `TextBuilder` で生成する。宛先・件名・添付とHTML／テキストの区別は維持する。登録メール2種はローカルSMTPトラップで受信し、確認URLから登録フォーム表示、登録完了後のログイン状態まで確認した。実メールクライアント全般の互換性を保証するものではない。Smarty基盤と旧 `.tpl` は残るが、現在のApp画面・メール本文生成には使わない。
 
 ### プラグイン画面
 
