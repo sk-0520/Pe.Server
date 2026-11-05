@@ -269,18 +269,30 @@ CSS;
 	 */
 	private function buildFeedback(array $values): string
 	{
-		$lines = [
-			'バージョン: ' . $this->getString($values, 'version'),
-			'リビジョン: ' . $this->getString($values, 'revision'),
-			'ビルド: ' . $this->getString($values, 'build'),
-			'----------------------',
-			'件名:' . $this->getString($values, 'subject'),
-			'件名:' . $this->getString($values, 'kind'),
-			'内容:',
-			$this->getString($values, 'content'),
-		];
-
-		return $this->buildPlainText(implode(PHP_EOL, $lines) . PHP_EOL);
+		$builder = $this->createTextBuilder();
+		return $builder->build(new Fragment([
+			$builder->text('バージョン: '),
+			$builder->text($this->getString($values, 'version')),
+			$builder->break(),
+			$builder->text('リビジョン: '),
+			$builder->text($this->getString($values, 'revision')),
+			$builder->break(),
+			$builder->text('ビルド: '),
+			$builder->text($this->getString($values, 'build')),
+			$builder->break(),
+			$builder->text('----------------------'),
+			$builder->break(),
+			$builder->text('件名:'),
+			$builder->text($this->getString($values, 'subject')),
+			$builder->break(),
+			$builder->text('件名:'),
+			$builder->text($this->getString($values, 'kind')),
+			$builder->break(),
+			$builder->text('内容:'),
+			$builder->break(),
+			$builder->text($this->getString($values, 'content')),
+			$builder->break(),
+		]));
 	}
 
 	/**
@@ -288,29 +300,40 @@ CSS;
 	 */
 	private function buildCrashReport(array $values): string
 	{
-		$lines = [];
+		$builder = $this->createTextBuilder();
+		$commentNode = null;
 		$comment = $values['comment'] ?? '';
 		if (!is_string($comment)) {
 			throw new InvalidOperationException('Invalid email template value: comment');
 		}
 		if (!empty($comment)) {
-			$lines = [
-				'コメント:',
-				$comment,
-				'----------------------',
-			];
+			$commentNode = new Fragment([
+				$builder->text('コメント:'),
+				$builder->break(),
+				$builder->text($comment),
+				$builder->break(),
+				$builder->text('----------------------'),
+				$builder->break(),
+			]);
 		}
-		$lines = [
-			...$lines,
-			'バージョン: ' . $this->getString($values, 'version'),
-			'リビジョン: ' . $this->getString($values, 'revision'),
-			'ビルド: ' . $this->getString($values, 'build'),
-			'----------------------',
-			'例外:',
-			$this->getString($values, 'exception'),
-		];
-
-		return $this->buildPlainText(implode(PHP_EOL, $lines) . PHP_EOL);
+		return $builder->build(new Fragment([
+			$commentNode,
+			$builder->text('バージョン: '),
+			$builder->text($this->getString($values, 'version')),
+			$builder->break(),
+			$builder->text('リビジョン: '),
+			$builder->text($this->getString($values, 'revision')),
+			$builder->break(),
+			$builder->text('ビルド: '),
+			$builder->text($this->getString($values, 'build')),
+			$builder->break(),
+			$builder->text('----------------------'),
+			$builder->break(),
+			$builder->text('例外:'),
+			$builder->break(),
+			$builder->text($this->getString($values, 'exception')),
+			$builder->break(),
+		]));
 	}
 
 	private function createHtmlBuilder(): HtmlBuilder
@@ -401,10 +424,9 @@ CSS;
 		);
 	}
 
-	private function buildPlainText(string $content): string
+	private function createTextBuilder(): TextBuilder
 	{
-		$builder = new TextBuilder(new TextNodeOptions(PHP_EOL));
-		return $builder->build($builder->text($content));
+		return new TextBuilder(new TextNodeOptions(PHP_EOL));
 	}
 
 	/**

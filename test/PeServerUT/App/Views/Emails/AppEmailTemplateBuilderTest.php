@@ -103,9 +103,9 @@ class AppEmailTemplateBuilderTest extends TestClass
 			'version' => '1.0',
 			'revision' => 'abc',
 			'build' => '42',
-			'subject' => 'feedback subject',
+			'subject' => '<feedback> & "subject"',
 			'kind' => 'question',
-			'content' => "first\r\nsecond",
+			'content' => "first\r\n\rsecond\n<last> & \"text\"\n",
 		]);
 
 		$this->assertSame(
@@ -114,11 +114,14 @@ class AppEmailTemplateBuilderTest extends TestClass
 				'リビジョン: abc',
 				'ビルド: 42',
 				'----------------------',
-				'件名:feedback subject',
+				'件名:<feedback> & "subject"',
 				'件名:question',
 				'内容:',
 				'first',
+				'',
 				'second',
+				'<last> & "text"',
+				'',
 				'',
 			]),
 			$html
@@ -136,12 +139,32 @@ class AppEmailTemplateBuilderTest extends TestClass
 		];
 
 		$withoutComment = $builder->build('crash_report_email', '件名', $values);
-		$this->assertStringStartsWith('バージョン: 1.0' . PHP_EOL, $withoutComment);
-		$this->assertStringContainsString('例外:' . PHP_EOL . 'Error' . PHP_EOL . 'at example', $withoutComment);
-		$this->assertStringNotContainsString('コメント:', $withoutComment);
+		$expected = implode(PHP_EOL, [
+			'バージョン: 1.0',
+			'リビジョン: abc',
+			'ビルド: 42',
+			'----------------------',
+			'例外:',
+			'Error',
+			'at example',
+			'',
+		]);
+		$this->assertSame($expected, $withoutComment);
+		$this->assertSame($expected, $builder->build('crash_report_email', '件名', [...$values, 'comment' => '']));
+		$this->assertSame($expected, $builder->build('crash_report_email', '件名', [...$values, 'comment' => '0']));
 
-		$withComment = $builder->build('crash_report_email', '件名', [...$values, 'comment' => 'reported']);
-		$this->assertStringStartsWith('コメント:' . PHP_EOL . 'reported' . PHP_EOL, $withComment);
+		$withComment = $builder->build('crash_report_email', '件名', [...$values, 'comment' => "<reported>\r\n& \"comment\"\r"]);
+		$this->assertSame(
+			implode(PHP_EOL, [
+				'コメント:',
+				'<reported>',
+				'& "comment"',
+				'',
+				'----------------------',
+				'',
+			]) . $expected,
+			$withComment
+		);
 	}
 
 	public function test_build_throws_for_unknown_template(): void
