@@ -114,10 +114,29 @@ class HtmlBuilderTest extends TestClass
 		]));
 
 		$this->assertStringEndsWith(
-			'<div><br class="line"><meta charset="UTF-8"><img src="a.png"></div>',
+			'<DIV><BR class="line"><META charset="UTF-8"><IMG src="a.png"></DIV>',
 			$h->build($node)
 		);
 		$this->assertSame('<br />', (string)$h->br(new HTMLBrAttributes()));
+	}
+
+	public function test_email_uppercases_only_tag_names_without_mutating_node(): void
+	{
+		$email = new HtmlBuilder(HtmlBuilder::HTML_VERSION_EMAIL);
+		$html = new HtmlBuilder();
+		$node = $email->div(
+			new HtmlGlobalAttributes(className: 'mixedCase', title: 'lowercase'),
+			new TextNode('Mixed case <br>')
+		);
+
+		$this->assertStringEndsWith(
+			'<DIV class="mixedCase" title="lowercase">Mixed case &lt;br&gt;</DIV>',
+			$email->build($node)
+		);
+		$this->assertSame(
+			self::DOCTYPE . '<div class="mixedCase" title="lowercase">Mixed case &lt;br&gt;</div>',
+			$html->build($node)
+		);
 	}
 
 	public function test_script_bool(): void

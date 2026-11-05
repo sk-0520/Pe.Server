@@ -51,6 +51,11 @@ class Element extends NodeBase
 		return ($buildOptions->format & BuildOptions::FORMAT_NEWLINE) === BuildOptions::FORMAT_NEWLINE;
 	}
 
+	protected function buildBuildTagName(string $tagName, ElementOptions $options, BuildOptions $buildOptions): string
+	{
+		return $tagName;
+	}
+
 	protected function buildAttribute(string $tagName, ElementOptions $options, BuildOptions $buildOptions): string
 	{
 		$result = '';
@@ -88,14 +93,15 @@ class Element extends NodeBase
 	#[Override]
 	public function build(int $level, BuildOptions $buildOptions): string
 	{
-		$attributes = $this->buildAttribute($this->tagName, $this->options, $buildOptions);
-		$result = $this->buildStartTag($this->tagName, $attributes, $this->options, $buildOptions);
+		$tagName = $this->buildBuildTagName($this->tagName, $this->options, $buildOptions);
+		$attributes = $this->buildAttribute($tagName, $this->options, $buildOptions);
+		$result = $this->buildStartTag($tagName, $attributes, $this->options, $buildOptions);
 
 		if (!$this->options->selfClosing) {
 			$result .= $this->children->build($level + 1, $buildOptions);
 		}
 
-		$result .= $this->buildEndTag($this->tagName, $this->options, $buildOptions);
+		$result .= $this->buildEndTag($tagName, $this->options, $buildOptions);
 
 		return $result;
 	}

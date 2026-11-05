@@ -60,9 +60,10 @@ class AppEmailTemplateBuilderTest extends TestClass
 			$html = $builder->build($templateName, '件名', array_replace_recursive($baseValues, $values));
 
 			$this->assertStringStartsWith('<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">', $html, $templateName);
-			$this->assertStringContainsString('<title>件名 - メール</title>', $html, $templateName);
+			$this->assertStringContainsString('<TITLE>件名 - メール</TITLE>', $html, $templateName);
 			$this->assertStringContainsString('class="content"', $html, $templateName);
-			$this->assertStringContainsString('<style>', $html, $templateName);
+			$this->assertStringContainsString('<STYLE>', $html, $templateName);
+			$this->assertDoesNotMatchRegularExpression('/<\/?[a-z]/', $html, $templateName);
 			$this->assertStringContainsString($expectedBody, $html, $templateName);
 			$this->assertStringContainsString('問い合わせ', $html, $templateName);
 			$this->assertStringNotContainsString('{$values.', $html, $templateName);
@@ -83,15 +84,15 @@ class AppEmailTemplateBuilderTest extends TestClass
 			],
 		]);
 
-		$this->assertStringContainsString('<html lang="ja">', $html);
-		$this->assertStringContainsString('<meta content="text/html; charset=utf-8" http-equiv="Content-Type">', $html);
-		$this->assertStringContainsString('<h1>ユーザー登録用URL通知</h1>', $html);
-		$this->assertStringContainsString('<p class="header">自動送信のため返信しないでください</p>', $html);
-		$this->assertStringNotContainsString('<ul class="header">自動送信のため返信しないでください</ul>', $html);
-		$this->assertStringContainsString('<div class="content">', $html);
-		$this->assertStringContainsString('<div class="main" style="text-align:center">', $html);
+		$this->assertStringContainsString('<HTML lang="ja">', $html);
+		$this->assertStringContainsString('<META content="text/html; charset=utf-8" http-equiv="Content-Type">', $html);
+		$this->assertStringContainsString('<H1>ユーザー登録用URL通知</H1>', $html);
+		$this->assertStringContainsString('<P class="header">自動送信のため返信しないでください</P>', $html);
+		$this->assertStringNotContainsString('<UL class="header">自動送信のため返信しないでください</UL>', $html);
+		$this->assertStringContainsString('<DIV class="content">', $html);
+		$this->assertStringContainsString('<DIV class="main" style="text-align:center">', $html);
 		$this->assertStringContainsString('http://localhost/account/signup/example-token', $html);
-		$this->assertStringContainsString('<ul class="footer">', $html);
+		$this->assertStringContainsString('<UL class="footer">', $html);
 		$this->assertStringContainsString('https://groups.google.com/g/pe_development', $html);
 		$this->assertStringNotContainsString('xmlns="http://www.w3.org/1999/xhtml"', $html);
 	}

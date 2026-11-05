@@ -101,7 +101,7 @@ class AccountSignupControllerTest extends ItControllerClass
 		$this->assertSame('signup@example.com', $actual->container->get(AppCryptography::class)->decrypt($pending->fields['email']));
 		$this->assertInstanceOf(EmailMessage::class, $message);
 		$this->assertStringStartsWith('<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">' . PHP_EOL, $message->getHtml());
-		$this->assertStringContainsString('<style>', $message->getHtml());
+		$this->assertStringContainsString('<STYLE>', $message->getHtml());
 		$this->assertStringNotContainsString('array(2)', $message->getHtml());
 		$this->assertStringContainsString('/account/signup/' . $token, $message->getHtml());
 		$this->assertSame('signup@example.com', $mailer->toAddresses[0]->address);
@@ -191,7 +191,7 @@ class AccountSignupControllerTest extends ItControllerClass
 			fn(EmailMessage $message) =>
 			str_starts_with($message->getHtml(), '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">' . PHP_EOL)
 				&& str_contains($message->getHtml(), 'signup-user')
-				&& str_contains($message->getHtml(), '<style>')
+				&& str_contains($message->getHtml(), '<STYLE>')
 		));
 		$actual = $this->call(HttpMethod::Post, $path . '/' . $token, new ItOptions(
 			stores: ItMockStores::anonymous(signup2: true),

@@ -124,6 +124,11 @@ class PasswordControllerTest extends ItControllerClass
 		$this->assertNotEmpty($row['reminder_timestamp']);
 		$this->assertRedirectPath(HttpStatus::Found, "password/reminding/$token", null, $sent);
 		$this->assertInstanceOf(EmailMessage::class, $message);
+		$this->assertStringStartsWith('<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">' . PHP_EOL, $message->getHtml());
+		$this->assertStringContainsString('<HTML lang="ja">', $message->getHtml());
+		$this->assertStringContainsString('<STYLE>', $message->getHtml());
+		$this->assertStringContainsString('<CODE>reset-user</CODE>', $message->getHtml());
+		$this->assertStringNotContainsString('array(2)', $message->getHtml());
 		$this->assertStringContainsString("/password/reset/$token", $message->getHtml());
 		$this->assertSame('reset@example.com', $mailer->toAddresses[0]->address);
 		$this->assertSame(AuditLog::USER_PASSWORD_REMINDER_TOKEN, $this->getMaybeLatestAuditLog($sent->openDB())->fields['event']);

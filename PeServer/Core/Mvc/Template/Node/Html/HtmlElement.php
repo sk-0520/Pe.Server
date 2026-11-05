@@ -10,6 +10,7 @@ use PeServer\Core\Mvc\Template\Node\INode;
 use PeServer\Core\Mvc\Template\Node\Element;
 use PeServer\Core\Mvc\Template\Node\ElementOptions;
 use PeServer\Core\Mvc\Template\Node\Html\Attribute\HtmlGlobalAttributes;
+use PeServer\Core\Text;
 
 class HtmlElement extends Element
 {
@@ -23,6 +24,16 @@ class HtmlElement extends Element
 	}
 
 	#region Element
+
+	#[Override]
+	protected function buildBuildTagName(string $tagName, ElementOptions $options, BuildOptions $buildOptions): string
+	{
+		if ($buildOptions instanceof HtmlBuildOptions && $buildOptions->version === HtmlBuilder::HTML_VERSION_EMAIL) {
+			return Text::toUpper($tagName);
+		}
+
+		return parent::buildBuildTagName($tagName, $options, $buildOptions);
+	}
 
 	#[Override]
 	protected function buildStartTag(string $tagName, string $builtAttributes, ElementOptions $options, BuildOptions $buildOptions): string

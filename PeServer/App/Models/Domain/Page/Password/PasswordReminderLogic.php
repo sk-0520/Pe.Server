@@ -111,7 +111,7 @@ class PasswordReminderLogic extends PageLogicBase
 				'login_id' => $loginId,
 				'url' => $url->toString(),
 			];
-			$html = $this->appTemplate->createMailTemplate('password_reminder_token', $subject, $values);
+			$html = $this->appTemplate->createNodeMailTemplate('password_reminder_token', $subject, $values);
 
 			$this->mailer->toAddresses = [
 				new EmailAddress($rawEmail),

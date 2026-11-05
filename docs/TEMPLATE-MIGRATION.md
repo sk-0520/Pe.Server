@@ -11,7 +11,7 @@
 * View の冗長さ・Props の増加は主に App 側の責務として扱い、React 移行までのコストとして受け入れる。それだけを理由に Core を再設計しない。属性定義の凍結やコード生成の採用は決定されていない。
 * 整形用のホワイトスペースを出さないのは意図した挙動。表示に必要な空白は明示的なテキストノード、レイアウト上の間隔は CSS で扱う。旧テンプレートの改行・空白への依存に注意する。
 * `Element::build()` は属性・開始タグ・終了タグの生成を protected の `buildAttribute()`・`buildStartTag()`・`buildEndTag()` に委譲する。継承先は各処理を上書きでき、自己終了要素では子を描画しない。属性文字列は各属性の先頭に空白を含む。
-* `HtmlElement` はメール用の `HtmlBuildOptions` では空要素を `<br>` の形で出力する。通常のHTML・汎用Elementの `<br />` 型の出力は維持する。
+* `HtmlElement` はメール用の `HtmlBuildOptions` では開始・終了タグ名を大文字化し、空要素を `<BR>` の形で出力する。属性名・値・本文は変換しない。通常のHTML・汎用Elementのタグ名や `<br />` 型の出力は維持する。
 * 性能改善より移植と動作確認を先に進める。ブラウザの応答時間はアプリ全体と通信を含むため、テンプレート単体の速度として扱わない。
 * HTMLメールはWeb画面とは別に扱い、Node生成ではメール用DOCTYPEとして HTML 4.01 Strict（`<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">`）を出力する。登録メールはNode生成へ切り替え済みで、他メールにはSmartyの送信経路が残る。DOCTYPEの選択とローカルSMTPトラップでの確認は、メールクライアント全般の互換性を保証しない。
 
@@ -142,8 +142,8 @@ public function __construct(array $attributes = [])
 ### パスワード再発行の経路
 
 * `/password`（GET・HEAD）は開始画面を表示し、フォーム送信は `/password/reminder`（GET・HEAD・POST）へ向ける。通知は `/password/reminding/{token}`（GET）、再設定は `/password/reset/{token}`（GET・POST）を使用する。業務 Logic は維持し、再設定成功後は `/` へ遷移する。
-* ログインの再発行リンク・フォーム・Smarty で生成するメール内 URL も正式経路を使う。
-* メール送信は既存 DI の Mailer → AppMailer マッピングを使う。テストでは Mailer を差し替えて外部へ送信せず、本文の Smarty 生成とリンクを確認する。NotLoginMiddleware と POST の CsrfMiddleware は旧経路と同じ構成で登録する。
+* ログインの再発行リンク・フォーム・メール内 URL も正式経路を使う。再設定URL通知は `createNodeMailTemplate()` から `AppEmailTemplateBuilder` で生成する。
+* メール送信は既存 DI の Mailer → AppMailer マッピングを使う。テストでは Mailer を差し替えて外部へ送信せず、HTML4のDOCTYPE・大文字タグ・ログインID・再設定リンクを確認する。NotLoginMiddleware と POST の CsrfMiddleware は旧経路と同じ構成で登録する。
 
 ### Home・Tool 画面
 
@@ -151,7 +151,7 @@ public function __construct(array $attributes = [])
 * 既存 URL、業務 Logic、フォーム action・入力名・値復元・エラー表示、Streaming 用 Ajax URL は維持した。旧 Home・Tool Smarty テンプレート 8 ファイルは参照がないことを確認して削除した。
 * Home・Tool の統合テスト 30 件・178 assertions が成功。画面 GET、ツール POST の成功・入力エラー、NodeTemplate 識別表示、Streaming 用 DOM を確認した。統合テストはミドルウェアの実効性や実ブラウザでの Streaming を保証しない。
 * エラー画面は `ErrorPage` を追加し、AppErrorHandler の HTML 応答を NodeTemplate に切り替えた。ステータス、エラー番号、メッセージを維持し、既定メッセージとテキストエスケープを単体テスト 2 件・10 assertions で確認した。JSON 応答とメールテンプレートは変更していない。
-* Web の Smarty 描画はなくなり、AppErrorHandler のエラー画面も NodeTemplate を使う。アカウント登録のStep1確認URLメール・Step2完了通知は `AppTemplate::createNodeMailTemplate()` に切り替えた。ほかのメール送信は引き続きSmartyで、Node版はHTML 6種を `TextNode` と HTML_EMAIL Builder、テキスト2種を `TextBuilder` で生成する。登録メール2種はローカルSMTPトラップで受信し、確認URLから登録フォーム表示、登録完了後のログイン状態まで確認した。実メールクライアント全般の互換性を保証するものではない。管理画面の旧 `.tpl` は比較資料として残るが、現在の管理画面描画には使わない。
+* Web の Smarty 描画はなくなり、AppErrorHandler のエラー画面も NodeTemplate を使う。アカウント登録のStep1確認URLメール・Step2完了通知とパスワード再設定URL通知は `AppTemplate::createNodeMailTemplate()` に切り替えた。ほかのメール送信は引き続きSmartyで、Node版はHTML 6種を `TextNode` と HTML_EMAIL Builder、テキスト2種を `TextBuilder` で生成する。登録メール2種はローカルSMTPトラップで受信し、確認URLから登録フォーム表示、登録完了後のログイン状態まで確認した。実メールクライアント全般の互換性を保証するものではない。管理画面の旧 `.tpl` は比較資料として残るが、現在の管理画面描画には使わない。
 
 ### プラグイン画面
 
