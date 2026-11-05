@@ -4,6 +4,8 @@
 
 ## 2026-11-05: Smarty依存の撤去
 
+* 本番公開後、利用者の承認により共通DefaultPageの右上の移行識別表示 `2` を全環境から撤去。関連統合テストを表示なしの検証へ更新した。
+
 * 利用者によるSmarty本体削除に続き、コード側の専用プラグイン・TemplateStore・SmartyTemplate・EngineMigrationTemplate・旧メール生成メソッドと旧テンプレート33枚を撤去。オートロードとPHPStanの依存登録も削除した。TemplateFactoryはNodeTemplateを直接生成し、CoreのViewActionResultは拡張子を付けずにコンポーネント名を渡す。
 * 利用者が全メール8種類をローカルSMTPトラップで受信済み。HTML6通を復号して全321タグの大文字化、HTML4 StrictのDOCTYPEと空要素形式を確認。テキストメールはTextBuilderでラベル・値・改行・任意コメント節を明示し、単体テストで完全一致を確認した。
 * 撤去後の検証は単体31件・106 assertions、Home・Management・AccountSignup・AccountFamily・Passwordの統合114件・776 assertions、PHPStan全体が成功。アプリケーションのコード・テスト・PHPStan設定にSmarty参照は残らず、旧テンプレートも残存なし。利用者のElementTest変更は維持した。

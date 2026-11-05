@@ -92,14 +92,6 @@ class DefaultPage extends HtmlComponentBase
 				$this->context->builder->body(
 					new HtmlGlobalAttributes(),
 					new Fragment([
-						$this->context->builder->span(
-							new HtmlGlobalAttributes(
-								id: 'node-template-indicator',
-								title: 'NodeTemplate',
-								style: 'position: fixed; top: 0; right: 0; z-index: 9999; padding: 0.1em 0.4em; background: #222; color: #fff; pointer-events: none;',
-							),
-							new TextNode('2')
-						),
 						$this->context->builder->main(
 							new HtmlGlobalAttributes(
 								id: "main"

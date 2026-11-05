@@ -88,7 +88,6 @@ class ToolControllerTest extends ItControllerClass
 	private function assertNodeTemplate(ItActual $actual): void
 	{
 		$indicators = $actual->html->path()->collections("//*[@id='node-template-indicator']");
-		$this->assertCount(1, $indicators);
-		$this->assertTextNode('2', $indicators->single());
+		$this->assertCount(0, $indicators);
 	}
 }

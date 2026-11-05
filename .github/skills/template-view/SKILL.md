@@ -11,6 +11,8 @@ description: "Pe.Server プロジェクトでのテンプレートエンジン�
 
 ## 開発過渡期
 
+* 2026-11-05: Smarty撤去・本番公開後、利用者の承認により右上の移行識別表示 `2` は全環境から撤去した。以下の復旧・表示に関する記述は移行時の経緯であり、再追加しない。統合テストも識別表示が存在しないことを確認する。
+
 * Web画面・エラー画面・メール8種類はNode生成へ移行済み。Smarty本体・専用プラグイン・旧テンプレート・移行用フォールバックは撤去した。
 * `TemplateFactory` は `NodeTemplate` を直接生成する。描画には `ComponentBase` 派生クラス名を渡し、ファイル名や拡張子を付けない。メールは `AppTemplate::createNodeMailTemplate()` から `AppEmailTemplateBuilder` を使う。
 * 元々 Smarty を使用していたが、 PHP 自体を devContainer で開発するとファイル IO が遅くなるため、独自実装に舵を切った背景がある。

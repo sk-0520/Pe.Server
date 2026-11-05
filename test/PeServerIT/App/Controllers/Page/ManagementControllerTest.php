@@ -120,7 +120,7 @@ class ManagementControllerTest extends ItControllerClass
 
 	private function assertNode(ItActual $actual): void
 	{
-		$this->assertCount(1, $actual->html->path()->collections("//span[@id='node-template-indicator'][@title='NodeTemplate'][text()='2']"));
+		$this->assertCount(0, $actual->html->path()->collections("//*[@id='node-template-indicator']"));
 	}
 
 	private function assertCsrf(ItActual $actual): void

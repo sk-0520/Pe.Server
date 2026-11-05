@@ -2,6 +2,7 @@
 
 ## 現在の構成（2026-11-05）
 
+* 本番公開後、利用者の承認により右上の移行識別表示 `2`（`node-template-indicator`）は全環境から撤去した。統合テストは識別表示が存在しないことを確認する。以下の復旧・表示に関する記述は移行時の記録であり、再追加しない。
 * Web・エラー画面・メール8種類はすべてNode生成。利用者の指示によりSmarty依存を撤去した。
 * `TemplateFactory` は `NodeTemplate` を直接生成する。`EngineMigrationTemplate` とSmartyフォールバック、旧メール生成メソッド、専用プラグイン、TemplateStore、旧テンプレート33枚、オートロード登録とPHPStanの参照設定は削除した。
 * Coreの `ViewActionResult` もコンポーネントのクラス名をそのまま渡す。メールは `createNodeMailTemplate()` を維持する。テンプレート設定の共通APIは今回再設計しない。
