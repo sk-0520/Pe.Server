@@ -10,7 +10,7 @@ interface ITemplateFactory
 {
 	#region function
 
-	public function createTemplate(TemplateOptions $options): TemplateBase;
+	public function createTemplate(TemplateOptions $options): ITemplate;
 
 	#endregion
 }

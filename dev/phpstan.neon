@@ -29,11 +29,6 @@ parameters:
     - ../PeServer/data(?)
     - ../test
   scanFiles:
-    - ../PeServer/Core/Libs/smarty/src/Smarty.php
-    - ../PeServer/Core/Libs/smarty/src/Template.php
-    - ../PeServer/Core/Libs/smarty/src/TemplateBase.php
-    - ../PeServer/Core/Libs/smarty/src/Data.php
-    - ../PeServer/Core/Libs/smarty/src/Variable.php
     - ../PeServer/Core/Libs/PHPMailer/src/PHPMailer.php
     - ../PeServer/Core/Libs/PHPMailer/src/SMTP.php
     - ../PeServer/Core/Libs/highlight.php/Highlight/Highlighter.php
@@ -55,7 +50,8 @@ parameters:
     - '/Template type TFieldArray of method PeServer\\.+::.+\(\) is not referenced in a parameter./'
     #本体設定はめっちゃくちゃなことをするので初期化系エラーは無視
     - '/Class PeServer\\App\\Models\\Configuration\\\w+Setting(Base)? has an uninitialized @readonly property \$\w+\. Assign it in the constructor\./'
-
+    -
+      identifier: method.unusedParameter
   typeAliases:
     global-alias-server-store-value: 'string|int|array<int|string|null>|object|null'
     global-alias-database-bind-value: 'string|int|float|bool'

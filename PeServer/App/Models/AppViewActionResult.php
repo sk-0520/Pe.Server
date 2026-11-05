@@ -37,7 +37,7 @@ readonly final class AppViewActionResult extends ViewActionResult
 		);
 		$template = $this->templateFactory->createTemplate($options);
 
-		$response->content = $template->build($this->actionName . '.tpl', $this->templateParameter);
+		$response->content = $template->build($this->actionName, $this->templateParameter);
 
 		return $response;
 	}

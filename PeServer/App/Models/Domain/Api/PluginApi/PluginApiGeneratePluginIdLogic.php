@@ -34,7 +34,6 @@ class PluginApiGeneratePluginIdLogic extends ApiLogicBase
 
 		$pluginId = Uuid::generateGuid();
 
-		$existsPluginId = true;
 		do {
 			$existsPluginId = $pluginCollection->any(function ($i) use ($pluginId) {
 				return Uuid::isEqualGuid($i->pluginId, $pluginId);

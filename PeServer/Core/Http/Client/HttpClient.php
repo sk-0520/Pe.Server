@@ -28,6 +28,7 @@ class HttpClient extends DisposerBase
 	public function __construct(
 		private HttpClientOptions $options
 	) {
+		//NOP
 	}
 
 	#region function
@@ -166,12 +167,6 @@ class HttpClient extends DisposerBase
 		$response = curl_exec($curlHandle);
 		$clientStatus = HttpClientStatus::create($curlHandle);
 		$information = HttpClientInformation::create($this->options->urlEncoding, $request, $curlHandle);
-		$aaa = $information->getEffectiveUrl();
-
-		/** @var HttpHeader|null */
-		$responseHeader = null;
-		/** @var Binary|null */
-		$responseContent = null;
 
 		if ($response === false) {
 			$responseContent = new Binary(Text::EMPTY);

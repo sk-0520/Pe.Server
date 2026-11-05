@@ -29,9 +29,6 @@ Webアプリのコア部分。
     * https://github.com/PHPMailer/PHPMailer/
   * `php-markdown`
     * https://michelf.ca/projects/php-markdown/
-  * `smarty`
-    * LGPL 3
-    * https://www.smarty.net/
   * `whoops`
     * MIT
     * https://github.com/filp/whoops

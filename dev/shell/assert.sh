@@ -96,7 +96,7 @@ function assert::success
 	:
 }
 
-function assert::failuer {
+function assert::failure {
 	assert::_set_error
 	assert::_output_error "${BASH_LINENO[0]}: ${FUNCNAME[0]}"
 }
@@ -117,8 +117,8 @@ function assert::is_success
 # 戻り値が失敗(!0)
 #
 # 以下の使用を想定している
-# assert::is_failuer $?
-function assert::is_failuer
+# assert::is_failure $?
+function assert::is_failure
 {
 	if [[ "${1}" == '0' ]] ; then
 		assert::_set_error

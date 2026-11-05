@@ -29,12 +29,12 @@ class HttpsMiddlewareTest extends TestClass
 		$arg = new MiddlewareArgument(
 			new RequestPath("", new UrlHelper("")),
 			new Stores(
-				$this->createMock(SpecialStore::class),
+				$this->createStub(SpecialStore::class),
 				StoreOptions::default(),
-				$this->createMock(WebSecurity::class)
+				$this->createStub(WebSecurity::class)
 			),
-			$this->createMock(Environment::class),
-			$this->createMock(HttpRequest::class)
+			$this->createStub(Environment::class),
+			$this->createStub(HttpRequest::class)
 		);
 
 		$actual = $obj->handleBefore($arg);
@@ -43,8 +43,8 @@ class HttpsMiddlewareTest extends TestClass
 
 	public function test_handleBefore_https()
 	{
-		$mockSpecialStore = $this->createMock(SpecialStore::class);
-		$mockSpecialStore ->method("isHttps")->willReturn(true);
+		$mockSpecialStore = $this->createStub(SpecialStore::class);
+		$mockSpecialStore->method("isHttps")->willReturn(true);
 
 		$obj = new HttpsMiddleware(new NullLogger());
 		$arg = new MiddlewareArgument(
@@ -52,10 +52,10 @@ class HttpsMiddlewareTest extends TestClass
 			new Stores(
 				$mockSpecialStore,
 				StoreOptions::default(),
-				$this->createMock(WebSecurity::class)
+				$this->createStub(WebSecurity::class)
 			),
-			$this->createMock(Environment::class),
-			$this->createMock(HttpRequest::class)
+			$this->createStub(Environment::class),
+			$this->createStub(HttpRequest::class)
 		);
 
 		$actual = $obj->handleBefore($arg);
@@ -68,15 +68,15 @@ class HttpsMiddlewareTest extends TestClass
 		$arg = new MiddlewareArgument(
 			new RequestPath("", new UrlHelper("")),
 			new Stores(
-				$this->createMock(SpecialStore::class),
+				$this->createStub(SpecialStore::class),
 				StoreOptions::default(),
-				$this->createMock(WebSecurity::class)
+				$this->createStub(WebSecurity::class)
 			),
-			$this->createMock(Environment::class),
-			$this->createMock(HttpRequest::class)
+			$this->createStub(Environment::class),
+			$this->createStub(HttpRequest::class)
 		);
 
-		$actual = $obj->handleAfter($arg, $this->createMock(HttpResponse::class));
+		$actual = $obj->handleAfter($arg, $this->createStub(HttpResponse::class));
 
 		$this->assertSame(MiddlewareResult::none(), $actual);
 	}

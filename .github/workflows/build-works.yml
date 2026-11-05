@@ -36,11 +36,14 @@ jobs:
 
   test-shell-os:
     name: "<Test> Shell-OS"
-    needs: test-shell
+    needs:
+      - code-shell
+      - test-shell
 
     strategy:
       matrix:
-        OS:
+        OS: &matrix_os
+          - ubuntu-latest
           - windows-latest
 
     runs-on: ${{ matrix.OS }}
@@ -49,6 +52,13 @@ jobs:
       - name: <Checkout> Repository
         uses: actions/checkout@v7
 
+      - name: <Setup> Bash
+        if: matrix.OS == 'macos-latest'
+        shell: bash
+        run: &macos_bash |
+          brew install bash
+          echo "/usr/local/bin" >> $GITHUB_PATH
+
       - name: <Test> shell
         shell: bash
         run: ./dev/shell-test.sh
@@ -56,7 +66,9 @@ jobs:
 
   build:
     name: "<Build> Application"
-    needs: test-shell
+    needs:
+      - code-shell
+      - test-shell
 
     runs-on: ubuntu-latest
 
@@ -130,15 +142,15 @@ jobs:
           name: package
           path: package.tar
 
-  build-matrix:
+  build-os:
     name: "<Build> Application(Test)"
-    needs: test-shell
+    needs:
+      - code-shell
+      - test-shell
 
     strategy:
       matrix:
-        OS:
-          - windows-latest
-          - ubuntu-latest
+        OS: *matrix_os
 
     runs-on: ${{ matrix.OS }}
 
@@ -168,6 +180,10 @@ jobs:
       # - name: <Build> back-end
       #   shell: bash
       #   run: ./dev/update-config.sh ${{ github.sha }}
+      - name: <Setup> Bash
+        if: matrix.OS == 'macos-latest'
+        shell: bash
+        run: *macos_bash
 
       - name: <Test> code
         shell: bash
@@ -175,7 +191,9 @@ jobs:
 
   code-backend:
     name: "<Code> Backend"
-    needs: test-shell
+    needs:
+      - code-shell
+      - test-shell
 
     runs-on: ubuntu-latest
 
@@ -214,14 +232,12 @@ jobs:
     name: "<Test> Backend: ST"
     needs: test-shell
 
-    # strategy:
-    #   matrix:
-    #     OS:
-    #       # - windows-latest
-    #       - ubuntu-latest
-    #       # - macos-latest
+    strategy:
+      matrix:
+        OS: #*matrix_os // windowsおちる
+          - ubuntu-latest
 
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.OS }}
 
     steps:
       - name: <Setup> Git
@@ -261,6 +277,8 @@ jobs:
       - build
       - code-backend
       - test-backend-st
+      - build-os
+      - test-shell-os
 
     if: github.ref == 'refs/heads/master' && github.event_name == 'push'
 

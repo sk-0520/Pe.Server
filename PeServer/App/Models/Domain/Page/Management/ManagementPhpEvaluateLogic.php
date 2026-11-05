@@ -63,8 +63,6 @@ class ManagementPhpEvaluateLogic extends PageLogicBase
 		$this->setValue('executed', true);
 		$this->setValue('execute_statement', $executeStatement);
 
-		$output = Text::EMPTY;
-
 		try {
 			$output = OutputBuffer::get(function () use ($executeStatement, &$result) {
 				$result = $this->evalStatement($executeStatement);

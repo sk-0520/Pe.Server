@@ -39,9 +39,9 @@ function test_options_value_case
 	common::parse_options 'abc|A|B|C'
 	assert::is_success $?
 
-	local RETRUN_CODE
-	common::parse_options 'abc|A|B|C' --abc 'D' || RETRUN_CODE=$?
-	assert::is_failuer ${RETRUN_CODE}
+	local RETURN_CODE
+	common::parse_options 'abc|A|B|C' --abc 'D' || RETURN_CODE=$?
+	assert::is_failure ${RETURN_CODE}
 }
 
 function test_options_value_case_required
@@ -53,13 +53,13 @@ function test_options_value_case_required
 	common::parse_options 'abc|A|B|C!' --abc 'C'
 	assert::is_success $?
 
-	local RETRUN_CODE_1
-	RETRUN_CODE_1="$(common::parse_options 'abc|A|B|C!')"
-	assert::is_failuer "${RETRUN_CODE_1}"
+	local RETURN_CODE_1
+	RETURN_CODE_1="$(common::parse_options 'abc|A|B|C!')"
+	assert::is_failure "${RETURN_CODE_1}"
 
-	local RETRUN_CODE_2
-	RETRUN_CODE_2="$(common::parse_options 'abc|A|B|C!' --abc 'D')"
-	assert::is_failuer "${RETRUN_CODE_2}"
+	local RETURN_CODE_2
+	RETURN_CODE_2="$(common::parse_options 'abc|A|B|C!' --abc 'D')"
+	assert::is_failure "${RETURN_CODE_2}"
 }
 
 function test_options_value_error
@@ -67,7 +67,7 @@ function test_options_value_error
 	common::parse_options 'abc' --abc ABC
 	local RESULT
 	RESULT=$(common::get_option_value xyz)
-	assert::is_failuer $?
+	assert::is_failure $?
 }
 
 function test_options_switch
@@ -76,19 +76,19 @@ function test_options_switch
 	if common::exists_option switch ; then
 		assert::success
 	else
-		assert::failuer
+		assert::failure
 	fi
 
-	local RETRUN_CODE
-	common::get_option_value switch || RETRUN_CODE=$?
-	assert::is_failuer ${RETRUN_CODE}
+	local RETURN_CODE
+	common::get_option_value switch || RETURN_CODE=$?
+	assert::is_failure ${RETURN_CODE}
 }
 
 function test_options_switch_error
 {
-	local RETRUN_CODE
-	common::parse_options 'switch|a|b!' --switch || RETRUN_CODE=$?
-	assert::is_failuer ${RETRUN_CODE}
+	local RETURN_CODE
+	common::parse_options 'switch|a|b!' --switch || RETURN_CODE=$?
+	assert::is_failure ${RETURN_CODE}
 }
 
 #--------------------------------

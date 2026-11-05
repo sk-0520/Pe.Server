@@ -111,9 +111,6 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 	{
 		$this->throwIfDisposed();
 
-		/** @var PDOStatement|false|null */
-		$query = null;
-
 		try {
 			$query = $this->pdo->prepare($statement);
 			if ($query === false) {
@@ -190,6 +187,7 @@ class DatabaseContext extends DisposerBase implements IDatabaseTransactionContex
 			return new DatabaseRowResult($columns, $resultCount, []); //@phpstan-ignore-line 空データを本クラス内のみ許容
 		}
 
+		/** @disregard P1006 */
 		return new DatabaseRowResult($columns, $resultCount, $row);
 	}
 

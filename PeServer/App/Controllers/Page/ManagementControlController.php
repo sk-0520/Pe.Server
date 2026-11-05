@@ -15,6 +15,8 @@ use PeServer\Core\Mvc\Logic\LogicCallMode;
 use PeServer\Core\Mvc\Result\IActionResult;
 use PeServer\Core\Mvc\Template\TemplateParameter;
 use PeServer\Core\Throws\InvalidOperationException;
+use PeServer\App\Views\Pages\ManagementControl\ManagementControlUserListPage;
+use PeServer\App\Views\Pages\ManagementControl\ManagementControlBackupListPage;
 
 /**
  * [PAGE] 管理者用操作コントローラ。
@@ -31,7 +33,7 @@ final class ManagementControlController extends PageControllerBase
 		$logic = $this->createLogic(ManagementControlUserListLogic::class);
 		$logic->run(LogicCallMode::Initialize);
 
-		return $this->view('user_list', $logic->getViewData());
+		return $this->view(ManagementControlUserListPage::class, $logic->getViewData());
 	}
 
 	public function backup_list_get(): IActionResult
@@ -39,7 +41,7 @@ final class ManagementControlController extends PageControllerBase
 		$logic = $this->createLogic(ManagementControlBackupListLogic::class);
 		$logic->run(LogicCallMode::Initialize);
 
-		return $this->view('backup_list', $logic->getViewData());
+		return $this->view(ManagementControlBackupListPage::class, $logic->getViewData());
 	}
 
 	public function backup_detail_get(): IActionResult

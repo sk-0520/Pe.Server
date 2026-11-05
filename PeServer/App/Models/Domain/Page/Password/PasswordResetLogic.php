@@ -82,7 +82,7 @@ class PasswordResetLogic extends PageLogicBase
 		$userId = Text::EMPTY;
 
 		$database = $this->openDatabase();
-		$result = $database->transaction(function (IDatabaseContext $context) use (&$userId) {
+		$database->transaction(function (IDatabaseContext $context) use (&$userId) {
 			$usersEntityDao = new UsersEntityDao($context);
 			$userAuthenticationsEntityDao = new UserAuthenticationsEntityDao($context);
 

@@ -15,6 +15,6 @@ echo.
 echo --MEMO--
 echo  --ignore-phpstan
 echo  --ignore-phpcs
-echo  --phpcs-fix
+echo  --phpcs:fix
 echo  --phpcs:report [full,checkstyle,csv,summary]
 echo  --phpcs:ignore-warning

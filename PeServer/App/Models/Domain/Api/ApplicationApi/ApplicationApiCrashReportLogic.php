@@ -116,7 +116,7 @@ class ApplicationApiCrashReportLogic extends ApiLogicBase
 
 		$this->mailer->customSubjectHeader = '[Pe-CrashReport]';
 		$this->mailer->subject = "$sequence: $exception";
-		$message = $this->appTemplate->createMailTemplate('crash_report_email', $this->mailer->subject, $requestJson);
+		$message = $this->appTemplate->createNodeMailTemplate('crash_report_email', $this->mailer->subject, $requestJson);
 		$this->mailer->setMessage(new EmailMessage($message));
 		$this->mailer->attachments[] = new Attachment("report-$sequence.json", $this->getRequestContent(), Mime::JSON);
 		foreach ($crashReportEmails as $crashReportEmail) {

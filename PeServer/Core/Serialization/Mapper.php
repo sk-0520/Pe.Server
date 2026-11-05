@@ -129,8 +129,6 @@ class Mapper implements IMapper
 							continue;
 						}
 
-						$nestDestination = null;
-
 						if ($isArrayObject) {
 							$nestDestination = [];
 						} elseif (class_exists($nestTypeName)) {

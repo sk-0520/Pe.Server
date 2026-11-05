@@ -8,6 +8,9 @@ use PeServer\App\Controllers\Page\PageControllerBase;
 use PeServer\App\Models\Domain\Page\Tool\ToolBase64Logic;
 use PeServer\App\Models\Domain\Page\Tool\ToolJsonLogic;
 use PeServer\App\Models\Domain\Page\Tool\ToolIndexLogic;
+use PeServer\App\Views\Pages\Tool\ToolBase64Page;
+use PeServer\App\Views\Pages\Tool\ToolIndexPage;
+use PeServer\App\Views\Pages\Tool\ToolJsonPage;
 use PeServer\Core\Mvc\Controller\ControllerArgument;
 use PeServer\Core\Mvc\Logic\LogicCallMode;
 use PeServer\Core\Mvc\Result\IActionResult;
@@ -29,7 +32,7 @@ final class ToolController extends PageControllerBase
 		$logic = $this->createLogic(ToolIndexLogic::class);
 		$logic->run(LogicCallMode::Initialize);
 
-		return $this->view('index', $logic->getViewData());
+		return $this->view(ToolIndexPage::class, $logic->getViewData());
 	}
 
 	public function base64_get(): IActionResult
@@ -37,7 +40,7 @@ final class ToolController extends PageControllerBase
 		$logic = $this->createLogic(ToolBase64Logic::class);
 		$logic->run(LogicCallMode::Initialize);
 
-		return $this->view('base64', $logic->getViewData());
+		return $this->view(ToolBase64Page::class, $logic->getViewData());
 	}
 
 	public function base64_post(): IActionResult
@@ -45,7 +48,7 @@ final class ToolController extends PageControllerBase
 		$logic = $this->createLogic(ToolBase64Logic::class);
 		$logic->run(LogicCallMode::Submit);
 
-		return $this->view('base64', $logic->getViewData());
+		return $this->view(ToolBase64Page::class, $logic->getViewData());
 	}
 
 	public function json_get(): IActionResult
@@ -53,7 +56,7 @@ final class ToolController extends PageControllerBase
 		$logic = $this->createLogic(ToolJsonLogic::class);
 		$logic->run(LogicCallMode::Initialize);
 
-		return $this->view('json', $logic->getViewData());
+		return $this->view(ToolJsonPage::class, $logic->getViewData());
 	}
 
 	public function json_post(): IActionResult
@@ -61,7 +64,7 @@ final class ToolController extends PageControllerBase
 		$logic = $this->createLogic(ToolJsonLogic::class);
 		$logic->run(LogicCallMode::Submit);
 
-		return $this->view('json', $logic->getViewData());
+		return $this->view(ToolJsonPage::class, $logic->getViewData());
 	}
 
 	#endregion

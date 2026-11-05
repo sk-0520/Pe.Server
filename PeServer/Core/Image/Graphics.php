@@ -207,7 +207,6 @@ class Graphics extends DisposerBase
 	 */
 	public function scale(int|Size $size, ScaleMode $scaleMode): self
 	{
-		$result = false;
 		if (is_int($size)) {
 			$result = imagescale($this->image, $size, -1, $scaleMode->value);
 		} else {

@@ -89,7 +89,7 @@ abstract class Throws
 		try {
 			return $callback();
 		} catch (Throwable $throwable) {
-			foreach ($catchExceptions as $key => $catchException) {
+			foreach ($catchExceptions as $catchException) {
 				if (is_a($throwable, $catchException)) {
 					self::reThrow($throwException, $throwable);
 				}
