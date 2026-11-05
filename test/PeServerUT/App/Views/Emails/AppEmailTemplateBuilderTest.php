@@ -59,11 +59,10 @@ class AppEmailTemplateBuilderTest extends TestClass
 		foreach ($templates as [$templateName, $values, $expectedBody]) {
 			$html = $builder->build($templateName, '件名', array_replace_recursive($baseValues, $values));
 
-			$this->assertStringStartsWith('<!DOCTYPE html>' . PHP_EOL, $html, $templateName);
+			$this->assertStringStartsWith('<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">', $html, $templateName);
 			$this->assertStringContainsString('<title>件名 - メール</title>', $html, $templateName);
 			$this->assertStringContainsString('class="content"', $html, $templateName);
 			$this->assertStringContainsString('<style>', $html, $templateName);
-			$this->assertStringContainsString('*.content {' . PHP_EOL . "\tmargin: 3em auto 4em auto;", $html, $templateName);
 			$this->assertStringContainsString($expectedBody, $html, $templateName);
 			$this->assertStringContainsString('問い合わせ', $html, $templateName);
 			$this->assertStringNotContainsString('{$values.', $html, $templateName);

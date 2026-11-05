@@ -100,7 +100,7 @@ class AccountSignupControllerTest extends ItControllerClass
 		$this->assertSame(80, strlen($token));
 		$this->assertSame('signup@example.com', $actual->container->get(AppCryptography::class)->decrypt($pending->fields['email']));
 		$this->assertInstanceOf(EmailMessage::class, $message);
-		$this->assertStringStartsWith('<!DOCTYPE html>' . PHP_EOL, $message->getHtml());
+		$this->assertStringStartsWith('<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">' . PHP_EOL, $message->getHtml());
 		$this->assertStringContainsString('<style>', $message->getHtml());
 		$this->assertStringNotContainsString('array(2)', $message->getHtml());
 		$this->assertStringContainsString('/account/signup/' . $token, $message->getHtml());
@@ -165,10 +165,10 @@ class AccountSignupControllerTest extends ItControllerClass
 			$crypto = $setup->container->get(AppCryptography::class);
 			(new SignUpWaitEmailsEntityDao($setup->databaseContext))->insertEmail(
 				$token,
-                $crypto->encrypt('signup@example.com'),
-                $crypto->toMark('signup@example.com'),
-                '127.0.0.1',
-                'test'
+				$crypto->encrypt('signup@example.com'),
+				$crypto->toMark('signup@example.com'),
+				'127.0.0.1',
+				'test'
 			);
 		});
 		$this->assertStatusOK($actual);
@@ -189,7 +189,7 @@ class AccountSignupControllerTest extends ItControllerClass
 		$mailer->expects($this->once())->method('send');
 		$mailer->expects($this->once())->method('setMessage')->with($this->callback(
 			fn(EmailMessage $message) =>
-				str_starts_with($message->getHtml(), '<!DOCTYPE html>' . PHP_EOL)
+			str_starts_with($message->getHtml(), '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">' . PHP_EOL)
 				&& str_contains($message->getHtml(), 'signup-user')
 				&& str_contains($message->getHtml(), '<style>')
 		));
@@ -208,10 +208,10 @@ class AccountSignupControllerTest extends ItControllerClass
 			$crypto = $setup->container->get(AppCryptography::class);
 			(new SignUpWaitEmailsEntityDao($setup->databaseContext))->insertEmail(
 				$token,
-                $crypto->encrypt('signup@example.com'),
-                $crypto->toMark('signup@example.com'),
-                '127.0.0.1',
-                'test'
+				$crypto->encrypt('signup@example.com'),
+				$crypto->toMark('signup@example.com'),
+				'127.0.0.1',
+				'test'
 			);
 		});
 		$this->assertRedirectPath(HttpStatus::Found, '', null, $actual);

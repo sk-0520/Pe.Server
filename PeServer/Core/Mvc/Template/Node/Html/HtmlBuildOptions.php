@@ -14,6 +14,7 @@ readonly class HtmlBuildOptions extends BuildOptions
 	public function __construct(
 		int $format,
 		string $indent,
+		/** @var HtmlBuilder::HTML_VERSION_* */
 		public string $version
 	) {
 		parent::__construct($format, $indent);
