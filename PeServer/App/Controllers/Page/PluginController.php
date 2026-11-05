@@ -11,6 +11,8 @@ use PeServer\Core\Mvc\Controller\ControllerArgument;
 use PeServer\App\Controllers\Page\PageControllerBase;
 use PeServer\App\Models\Domain\Page\Plugin\PluginIndexLogic;
 use PeServer\App\Models\Domain\Page\Plugin\PluginDetailLogic;
+use PeServer\App\Views\Pages\Plugin\PluginIndexPage;
+use PeServer\App\Views\Pages\Plugin\PluginDetailPage;
 
 /**
  * [PAGE] プラグインコントローラ。
@@ -27,7 +29,7 @@ final class PluginController extends PageControllerBase
 		$logic = $this->createLogic(PluginIndexLogic::class);
 		$logic->run(LogicCallMode::Initialize);
 
-		return $this->view('index', $logic->getViewData());
+		return $this->view(PluginIndexPage::class, $logic->getViewData());
 	}
 
 	public function detail(): IActionResult
@@ -35,6 +37,6 @@ final class PluginController extends PageControllerBase
 		$logic = $this->createLogic(PluginDetailLogic::class);
 		$logic->run(LogicCallMode::Initialize);
 
-		return $this->view('detail', $logic->getViewData());
+		return $this->view(PluginDetailPage::class, $logic->getViewData());
 	}
 }

@@ -67,7 +67,7 @@ readonly class ViewActionResult implements IActionResult
 		);
 		$template = $this->templateFactory->createTemplate($options);
 
-		$response->content = $template->build($this->actionName . '.tpl', $this->templateParameter);
+		$response->content = $template->build($this->actionName, $this->templateParameter);
 
 		return $response;
 	}

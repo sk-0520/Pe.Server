@@ -21,7 +21,7 @@ use Throwable;
 
 class HomeControllerTest extends ItControllerClass
 {
-	#region common logion
+	#region common login
 	use ItLoginTrait;
 
 	public static function provider_it_notLogin()
@@ -51,15 +51,31 @@ class HomeControllerTest extends ItControllerClass
 	public function test_it_notLogin(string $path)
 	{
 		$this->_test_notLogin($path);
+		$this->assertTemplateIndicator($path);
 	}
 
 	#[DataProvider('provider_it_login')]
 	public function test_it_login(string $path, string $level)
 	{
 		$this->_test_login($path, $level);
+		$this->assertTemplateIndicator($path);
 	}
 
 	#endregion
+
+	private function assertTemplateIndicator(string $path): void
+	{
+		$actual = $this->call(HttpMethod::Get, $path);
+		$indicators = $actual->html->path()->collections("//*[@id='node-template-indicator']");
+		$this->assertCount(1, $indicators);
+		$this->assertTextNode('2', $indicators->single());
+		if ($path === '/') {
+			$this->assertCount(1, $actual->html->path()->collections("//body/span[@id='node-template-indicator'][@title='NodeTemplate'][contains(@style,'position: fixed; top: 0; right: 0;')]"));
+			$this->assertCount(1, $actual->html->path()->collections("//*[@id='content']//a[@href='/plugin']"));
+			$this->assertCount(1, $actual->html->path()->collections("//header//a[@href='/']"));
+			$this->assertCount(1, $actual->html->path()->collections("//footer//a[@href='/']"));
+		}
+	}
 
 	public function test_index()
 	{
@@ -73,6 +89,8 @@ class HomeControllerTest extends ItControllerClass
 		$actual = $this->call(HttpMethod::Get, '/about');
 		$this->assertStatusOk($actual);
 		$this->assertTitle('問い合わせ', $actual);
+		$this->assertCount(1, $actual->html->path()->collections("//*[@id='content']//a[@href='/about/privacy']"));
+		$this->assertCount(1, $actual->html->path()->collections("//*[@id='content']//a[@href='/about/contact']"));
 	}
 
 	public function test_privacy()
@@ -80,6 +98,7 @@ class HomeControllerTest extends ItControllerClass
 		$actual = $this->call(HttpMethod::Get, '/about/privacy');
 		$this->assertStatusOk($actual);
 		$this->assertTitle('プライバシーポリシー', $actual);
+		$this->assertCount(1, $actual->html->path()->collections("//*[@id='content']//section[contains(@class,'markdown')][contains(@class,'privacy')]"));
 	}
 
 	public function test_contact()
@@ -87,6 +106,8 @@ class HomeControllerTest extends ItControllerClass
 		$actual = $this->call(HttpMethod::Get, '/about/contact');
 		$this->assertStatusOk($actual);
 		$this->assertTitle('問い合わせ', $actual);
+		$this->assertTextNode('問い合わせフォームは作る気力なくて課題の方へどうぞ。', $actual->html->path()->collections("//*[@id='content']/p")->single());
+		$this->assertCount(2, $actual->html->path()->collections("//*[@id='content']//ul/li/a"));
 	}
 
 	public function test_api_doc()
@@ -94,6 +115,21 @@ class HomeControllerTest extends ItControllerClass
 		$actual = $this->call(HttpMethod::Get, '/api-doc');
 		$this->assertStatusOk($actual);
 		$this->assertTitle('API', $actual);
+		$this->assertTemplateIndicator('/api-doc');
+		$this->assertCount(1, $actual->html->path()->collections("//*[@id='content']//a[text()='Pe.Server']"));
+		$this->assertCount(2, $actual->html->path()->collections("//*[@id='content']//table/tbody/tr"));
+	}
+
+	public function test_streaming_html(): void
+	{
+		$actual = $this->call(HttpMethod::Get, '/dev/streaming');
+		$this->assertStatusOk($actual);
+		$this->assertTitle('開発用: streaming', $actual);
+		$this->assertTemplateIndicator('/dev/streaming');
+		foreach (['chunk_start', 'chunk_output', 'sse_text_start', 'sse_text_output', 'sse_json_start', 'sse_json_output'] as $id) {
+			$this->assertCount(1, $actual->html->path()->collections("//*[@id='$id']"));
+		}
+		$this->assertCount(1, $actual->html->path()->collections("//script[contains(text(),'/ajax/dev/streaming_sse/json')]"));
 	}
 
 	public function test_wildcard_favicon_ico()

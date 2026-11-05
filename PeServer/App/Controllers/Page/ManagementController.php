@@ -35,6 +35,24 @@ use PeServer\Core\Mvc\Logic\LogicCallMode;
 use PeServer\Core\Mvc\Result\IActionResult;
 use PeServer\Core\Mvc\Template\TemplateParameter;
 use PeServer\Core\Throws\InvalidOperationException;
+use PeServer\App\Views\Pages\Management\ManagementIndexPage;
+use PeServer\App\Views\Pages\Management\ManagementSetupPage;
+use PeServer\App\Views\Pages\Management\ManagementEnvironmentPage;
+use PeServer\App\Views\Pages\Management\ManagementConfigurationPage;
+use PeServer\App\Views\Pages\Management\ManagementConfigurationEditPage;
+use PeServer\App\Views\Pages\Management\ManagementDatabaseMaintenancePage;
+use PeServer\App\Views\Pages\Management\ManagementMailSendPage;
+use PeServer\App\Views\Pages\Management\ManagementPhpEvaluatePage;
+use PeServer\App\Views\Pages\Management\ManagementDefaultPluginPage;
+use PeServer\App\Views\Pages\Management\ManagementFeedbackListPage;
+use PeServer\App\Views\Pages\Management\ManagementFeedbackDetailPage;
+use PeServer\App\Views\Pages\Management\ManagementCrashReportListPage;
+use PeServer\App\Views\Pages\Management\ManagementCrashReportDetailPage;
+use PeServer\App\Views\Pages\Management\ManagementVersionPage;
+use PeServer\App\Views\Pages\Management\ManagementPluginCategoryPage;
+use PeServer\App\Views\Pages\Management\ManagementLogListPage;
+use PeServer\App\Views\Pages\Management\ManagementLogDetailPage;
+use PeServer\App\Views\Pages\Management\ManagementMarkdownPage;
 
 /**
  * [PAGE] 管理者用コントローラ。
@@ -55,7 +73,7 @@ final class ManagementController extends PageControllerBase
 			"display" => "セッション",
 		];
 
-		return $this->view('index', new TemplateParameter(HttpStatus::OK, [
+		return $this->view(ManagementIndexPage::class, new TemplateParameter(HttpStatus::OK, [
 			"databases" => $databases
 		], []));
 	}
@@ -65,7 +83,7 @@ final class ManagementController extends PageControllerBase
 		$logic = $this->createLogic(ManagementSetupLogic::class);
 		$logic->run(LogicCallMode::Initialize);
 
-		return $this->view('setup', $logic->getViewData());
+		return $this->view(ManagementSetupPage::class, $logic->getViewData());
 	}
 
 	public function setup_post(): IActionResult
@@ -75,7 +93,7 @@ final class ManagementController extends PageControllerBase
 			return $this->redirectPath('/');
 		}
 
-		return $this->view('setup', $logic->getViewData());
+		return $this->view(ManagementSetupPage::class, $logic->getViewData());
 	}
 
 	public function environment(): IActionResult
@@ -83,7 +101,7 @@ final class ManagementController extends PageControllerBase
 		$logic = $this->createLogic(ManagementEnvironmentLogic::class);
 		$logic->run(LogicCallMode::Initialize);
 
-		return $this->view('environment', $logic->getViewData());
+		return $this->view(ManagementEnvironmentPage::class, $logic->getViewData());
 	}
 
 	public function configuration(): IActionResult
@@ -91,7 +109,7 @@ final class ManagementController extends PageControllerBase
 		$logic = $this->createLogic(ManagementConfigurationLogic::class);
 		$logic->run(LogicCallMode::Initialize);
 
-		return $this->view('configuration', $logic->getViewData());
+		return $this->view(ManagementConfigurationPage::class, $logic->getViewData());
 	}
 
 	public function configuration_edit_get(): IActionResult
@@ -99,7 +117,7 @@ final class ManagementController extends PageControllerBase
 		$logic = $this->createLogic(ManagementConfigurationEditLogic::class);
 		$logic->run(LogicCallMode::Initialize);
 
-		return $this->view('configuration_edit', $logic->getViewData());
+		return $this->view(ManagementConfigurationEditPage::class, $logic->getViewData());
 	}
 
 	public function configuration_edit_post(): IActionResult
@@ -109,7 +127,7 @@ final class ManagementController extends PageControllerBase
 			return $this->redirectPath('management/configuration/edit');
 		}
 
-		return $this->view('configuration_edit', $logic->getViewData());
+		return $this->view(ManagementConfigurationEditPage::class, $logic->getViewData());
 	}
 
 	public function backup(): IActionResult
@@ -133,13 +151,13 @@ final class ManagementController extends PageControllerBase
 		$logic = $this->createLogic(ManagementDatabaseMaintenanceLogic::class);
 		$logic->run(LogicCallMode::Initialize);
 
-		return $this->view('database_maintenance', $logic->getViewData());
+		return $this->view(ManagementDatabaseMaintenancePage::class, $logic->getViewData());
 	}
 	public function database_maintenance_post(): IActionResult
 	{
 		$logic = $this->createLogic(ManagementDatabaseMaintenanceLogic::class);
 		$logic->run(LogicCallMode::Submit);
-		return $this->view('database_maintenance', $logic->getViewData());
+		return $this->view(ManagementDatabaseMaintenancePage::class, $logic->getViewData());
 	}
 	public function database_download_get(): IActionResult
 	{
@@ -152,7 +170,7 @@ final class ManagementController extends PageControllerBase
 	{
 		$logic = $this->createLogic(ManagementMailSendLogic::class);
 		$logic->run(LogicCallMode::Initialize);
-		return $this->view('mail_send', $logic->getViewData());
+		return $this->view(ManagementMailSendPage::class, $logic->getViewData());
 	}
 	public function mail_send_post(): IActionResult
 	{
@@ -161,7 +179,7 @@ final class ManagementController extends PageControllerBase
 			return $this->redirectPath('management/mail-send');
 		}
 
-		return $this->view('mail_send', $logic->getViewData());
+		return $this->view(ManagementMailSendPage::class, $logic->getViewData());
 	}
 
 	public function php_evaluate_get(): IActionResult
@@ -169,13 +187,13 @@ final class ManagementController extends PageControllerBase
 		$logic = $this->createLogic(ManagementPhpEvaluateLogic::class);
 		$logic->run(LogicCallMode::Initialize);
 
-		return $this->view('php_evaluate', $logic->getViewData());
+		return $this->view(ManagementPhpEvaluatePage::class, $logic->getViewData());
 	}
 	public function php_evaluate_post(): IActionResult
 	{
 		$logic = $this->createLogic(ManagementPhpEvaluateLogic::class);
 		$logic->run(LogicCallMode::Submit);
-		return $this->view('php_evaluate', $logic->getViewData());
+		return $this->view(ManagementPhpEvaluatePage::class, $logic->getViewData());
 	}
 
 	public function default_plugin_get(): IActionResult
@@ -183,7 +201,7 @@ final class ManagementController extends PageControllerBase
 		$logic = $this->createLogic(ManagementDefaultPluginLogic::class);
 		$logic->run(LogicCallMode::Initialize);
 
-		return $this->view('default_plugin', $logic->getViewData());
+		return $this->view(ManagementDefaultPluginPage::class, $logic->getViewData());
 	}
 
 	public function default_plugin_post(): IActionResult
@@ -193,7 +211,7 @@ final class ManagementController extends PageControllerBase
 			return $this->redirectPath('management/default-plugin');
 		}
 
-		return $this->view('default_plugin', $logic->getViewData());
+		return $this->view(ManagementDefaultPluginPage::class, $logic->getViewData());
 	}
 
 	public function cache_rebuild(): IActionResult
@@ -225,7 +243,7 @@ final class ManagementController extends PageControllerBase
 		$logic = $this->createLogic(ManagementFeedbackListLogic::class);
 		$logic->run(LogicCallMode::Initialize);
 
-		return $this->view('feedback_list', $logic->getViewData());
+		return $this->view(ManagementFeedbackListPage::class, $logic->getViewData());
 	}
 
 	public function feedback_list_page(): IActionResult
@@ -233,7 +251,7 @@ final class ManagementController extends PageControllerBase
 		$logic = $this->createLogic(ManagementFeedbackListLogic::class);
 		$logic->run(LogicCallMode::Submit);
 
-		return $this->view('feedback_list', $logic->getViewData());
+		return $this->view(ManagementFeedbackListPage::class, $logic->getViewData());
 	}
 
 	public function feedback_detail_get(): IActionResult
@@ -241,7 +259,7 @@ final class ManagementController extends PageControllerBase
 		$logic = $this->createLogic(ManagementFeedbackDetailLogic::class);
 		$logic->run(LogicCallMode::Initialize);
 
-		return $this->view('feedback_detail', $logic->getViewData());
+		return $this->view(ManagementFeedbackDetailPage::class, $logic->getViewData());
 	}
 
 	public function feedback_detail_post(): IActionResult
@@ -254,7 +272,7 @@ final class ManagementController extends PageControllerBase
 			throw new InvalidOperationException();
 		}
 
-		return $this->view('feedback_detail', $logic->getViewData());
+		return $this->view(ManagementFeedbackDetailPage::class, $logic->getViewData());
 	}
 
 	public function crash_report_list_top(): IActionResult
@@ -262,7 +280,7 @@ final class ManagementController extends PageControllerBase
 		$logic = $this->createLogic(ManagementCrashReportListLogic::class);
 		$logic->run(LogicCallMode::Initialize);
 
-		return $this->view('crash_report_list', $logic->getViewData());
+		return $this->view(ManagementCrashReportListPage::class, $logic->getViewData());
 	}
 
 	public function crash_report_list_page(): IActionResult
@@ -270,7 +288,7 @@ final class ManagementController extends PageControllerBase
 		$logic = $this->createLogic(ManagementCrashReportListLogic::class);
 		$logic->run(LogicCallMode::Submit);
 
-		return $this->view('crash_report_list', $logic->getViewData());
+		return $this->view(ManagementCrashReportListPage::class, $logic->getViewData());
 	}
 
 	public function crash_report_detail_get(): IActionResult
@@ -278,7 +296,7 @@ final class ManagementController extends PageControllerBase
 		$logic = $this->createLogic(ManagementCrashReportDetailLogic::class);
 		$logic->run(LogicCallMode::Initialize);
 
-		return $this->view('crash_report_detail', $logic->getViewData());
+		return $this->view(ManagementCrashReportDetailPage::class, $logic->getViewData());
 	}
 
 	public function crash_report_detail_post(): IActionResult
@@ -291,7 +309,7 @@ final class ManagementController extends PageControllerBase
 			throw new InvalidOperationException();
 		}
 
-		return $this->view('crash_report_detail', $logic->getViewData());
+		return $this->view(ManagementCrashReportDetailPage::class, $logic->getViewData());
 	}
 
 	public function version_get(): IActionResult
@@ -299,7 +317,7 @@ final class ManagementController extends PageControllerBase
 		$logic = $this->createLogic(ManagementVersionLogic::class);
 		$logic->run(LogicCallMode::Initialize);
 
-		return $this->view('version', $logic->getViewData());
+		return $this->view(ManagementVersionPage::class, $logic->getViewData());
 	}
 
 	public function version_post(): IActionResult
@@ -309,7 +327,7 @@ final class ManagementController extends PageControllerBase
 			return $this->redirectPath('management/version');
 		}
 
-		return $this->view('version', $logic->getViewData());
+		return $this->view(ManagementVersionPage::class, $logic->getViewData());
 	}
 
 	public function plugin_category_get(): IActionResult
@@ -317,7 +335,7 @@ final class ManagementController extends PageControllerBase
 		$logic = $this->createLogic(ManagementPluginCategoryListLogic::class);
 		$logic->run(LogicCallMode::Initialize);
 
-		return $this->view('plugin_category', $logic->getViewData());
+		return $this->view(ManagementPluginCategoryPage::class, $logic->getViewData());
 	}
 
 	public function log_list(): IActionResult
@@ -325,7 +343,7 @@ final class ManagementController extends PageControllerBase
 		$logic = $this->createLogic(ManagementLogListLogic::class);
 		$logic->run(LogicCallMode::Initialize);
 
-		return $this->view('log_list', $logic->getViewData());
+		return $this->view(ManagementLogListPage::class, $logic->getViewData());
 	}
 
 	public function log_detail_get(): IActionResult
@@ -337,7 +355,7 @@ final class ManagementController extends PageControllerBase
 			return $this->data($logic->getContent());
 		}
 
-		return $this->view('log_detail', $logic->getViewData());
+		return $this->view(ManagementLogDetailPage::class, $logic->getViewData());
 	}
 
 	public function log_detail_post(): IActionResult
@@ -353,6 +371,6 @@ final class ManagementController extends PageControllerBase
 		$logic = $this->createLogic(ManagementMarkdownLogic::class);
 		$logic->run(LogicCallMode::Initialize);
 
-		return $this->view('markdown', $logic->getViewData());
+		return $this->view(ManagementMarkdownPage::class, $logic->getViewData());
 	}
 }

@@ -122,6 +122,7 @@ final readonly class AppRouteSetting extends RouteSetting
 					->addAction('user/audit-logs/download', HttpMethod::Get, 'user_audit_logs_download', [UserAccountFilterMiddleware::class])
 				/* AUTO-FORMAT */,
 				(new RouteInformation('password', PasswordController::class, [NotLoginMiddleware::class]))
+					->addAction(Text::EMPTY, HttpMethod::gets(), 'reminder_get')
 					->addAction('reminder', HttpMethod::gets(), 'reminder_get')
 					->addAction('reminder', HttpMethod::Post, 'reminder_post', [CsrfMiddleware::class])
 					->addAction('reminding/:token@' . self::PASSWORD_REMINDER_TOKEN, HttpMethod::Get, 'reminding')

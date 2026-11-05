@@ -62,10 +62,6 @@ class AutoLoader
 			'PHPMailer\PHPMailer' => [
 				'directory' => $libs . 'PHPMailer/src',
 			],
-			// Smarty
-			'Smarty' => [
-				'directory' => $libs . 'smarty/src',
-			],
 			// Whoops
 			'Whoops' => [
 				'directory' => $libs . 'whoops/src/Whoops',

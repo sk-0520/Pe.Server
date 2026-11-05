@@ -576,6 +576,7 @@ abstract class LogicBase implements IValidationReceiver
 		);
 	}
 
+
 	final protected function setTextContent(string $data): void
 	{
 		$this->setContent(Mime::TEXT, $data);

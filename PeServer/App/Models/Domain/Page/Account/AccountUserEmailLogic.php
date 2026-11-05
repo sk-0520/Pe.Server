@@ -158,7 +158,7 @@ class AccountUserEmailLogic extends PageLogicBase
 			'name' => $account->name,
 			'token' => $params['token'],
 		];
-		$html = $this->appTemplate->createMailTemplate('change_email_token', $subject, $values);
+		$html = $this->appTemplate->createNodeMailTemplate('change_email_token', $subject, $values);
 
 		$this->mailer->toAddresses = [
 			new EmailAddress($email, $account->name),
@@ -239,7 +239,7 @@ class AccountUserEmailLogic extends PageLogicBase
 				'new_email' => $this->defaultValues['wait_email'],
 				'old_email' => $this->defaultValues['email'],
 			];
-			$html = $this->appTemplate->createMailTemplate($item['template'], $subject, $values);
+			$html = $this->appTemplate->createNodeMailTemplate($item['template'], $subject, $values);
 
 			$this->mailer->toAddresses = [
 				new EmailAddress($item['email'], $account->name),

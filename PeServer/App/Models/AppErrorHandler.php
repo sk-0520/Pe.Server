@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PeServer\App\Models;
 
+use PeServer\App\Views\Pages\Error\ErrorPage;
 use PeServer\Core\DI\Inject;
 use PeServer\Core\Environment;
 use PeServer\Core\Errors\ErrorHandler;
@@ -164,7 +165,7 @@ final class AppErrorHandler extends HttpErrorHandler
 				Path::combine(Directory::getTemporaryDirectory(), 'PeServer-App')
 			);
 			$template = $this->templateFactory->createTemplate($options);
-			$response->content =  $template->build('error.tpl', new TemplateParameter($response->status, $values, []));
+			$response->content = $template->build(ErrorPage::class, new TemplateParameter($response->status, $values, []));
 		}
 
 		$printer = $this->responsePrinterFactory->createResponsePrinter(HttpRequest::none(), $response);
