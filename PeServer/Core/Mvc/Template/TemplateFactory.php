@@ -7,10 +7,7 @@ namespace PeServer\Core\Mvc\Template;
 use Override;
 use PeServer\Core\DI\DiFactoryBase;
 use PeServer\Core\DI\DiFactoryTrait;
-use PeServer\Core\DI\IDiContainer;
-use PeServer\Core\Mvc\Template\SmartyTemplate;
-use PeServer\Core\Mvc\Template\TemplateBase;
-use PeServer\Core\Mvc\Template\TemplateOptions;
+use PeServer\Core\Mvc\Template\Node\NodeComponentFactory;
 
 class TemplateFactory extends DiFactoryBase implements ITemplateFactory
 {
@@ -18,15 +15,13 @@ class TemplateFactory extends DiFactoryBase implements ITemplateFactory
 
 	#region ITemplateFactory
 
-	// public function createTemplate(TemplateOptions $options): ITemplate
-	// {
-	// 	return $this->container->new(SmartyTemplate::class, [TemplateOptions::class => $options]);
-	// }
-
 	#[Override]
 	public function createTemplate(TemplateOptions $options): ITemplate
 	{
-		return new EngineMigrationTemplate($options, $this->container);
+		return $this->container->new(NodeTemplate::class, [
+			TemplateOptions::class => $options,
+			NodeComponentFactory::class => new NodeComponentFactory($this->container),
+		]);
 	}
 
 	#endregion

@@ -1,5 +1,12 @@
 # テンプレート移植
 
+## 現在の構成（2026-11-05）
+
+* Web・エラー画面・メール8種類はすべてNode生成。利用者の指示によりSmarty依存を撤去した。
+* `TemplateFactory` は `NodeTemplate` を直接生成する。`EngineMigrationTemplate` とSmartyフォールバック、旧メール生成メソッド、専用プラグイン、TemplateStore、旧テンプレート33枚、オートロード登録とPHPStanの参照設定は削除した。
+* Coreの `ViewActionResult` もコンポーネントのクラス名をそのまま渡す。メールは `createNodeMailTemplate()` を維持する。テンプレート設定の共通APIは今回再設計しない。
+* 利用者がローカルSMTPトラップで全8種類を受信した。HTML6通は復号した本文の開始・終了タグ計321個がすべて大文字で、HTML4 StrictのDOCTYPE・空要素のスラッシュなしを確認した。以下の移植過程にあるSmarty残存の記述は当時の記録。
+
 ## 採用方針と経緯
 
 以下は 2026-11-03 までの利用者との会話で確認した方針。未検証の性能予測やエージェントの提案とは区別する。
@@ -75,6 +82,20 @@ public function __construct(array $attributes = [])
 * したがって「属性クラスをなくして交差型に戻せば簡単」という提案は、過去の検出漏れを再び持ち込む可能性がある。再検討時は **共通属性と専用属性双方の不正値、未知キー、IDE 補完、Props の具体型保持** を検証してから判断する。
 * この結果は「PHPStan の交差型が一般に使えない」という主張ではない。ここで使った optional な array shape の組み合わせと、上記ツール条件で確認した限界である。
 
+### Unsealed array shape の再調査（2026-11-05）
+
+PHPStan 2.2で[unsealed array shape](https://phpstan.org/blog/phpstan-2-2-unsealed-array-shapes-safer-array-keys)が導入されている。手元の2.3.1、level 8、PHP 8.4、bleeding edgeを明示した独立設定で再確認した。上の過去の推論結果とは設定条件を区別する。
+
+| 引数型 | 正常な両属性 | `lang => 0.1` | `href => 0.1` | 未知キー `langg` |
+|---|---|---|---|---|
+| `array{lang?: non-empty-string}&array{href?: non-empty-string}` | 拒否（推論は `array{}`） | 拒否 | 拒否 | 未検証 |
+| `array{lang?: non-empty-string, ...}&array{href?: non-empty-string, ...}` | 受理 | 拒否 | 拒否 | **受理** |
+| `array{lang?: non-empty-string, href?: non-empty-string}` | 受理 | 拒否 | 拒否 | 拒否 |
+
+* 開いたshape同士の交差では両属性の制約を保持できる。一方、`...`は未知キーを許すため属性名のtypo検出はできない。閉じたshapeの交差はキー集合のマージではない。
+* 属性クラス廃止は未決定。共通定義の合成と未知キー拒否を両立するには、閉じたshapeの生成やPHPStan拡張など別の手段も検討が必要。IDE補完・型エイリアス経由・Props伝播はこの再調査では未検証。
+* 利用者は月1回程度の再調査を許容している。次回目安は2026-12-05以降。共通属性と専用属性の合成・双方の値検証・未知キー拒否が両立できるようになったら報告する。単独の閉じたshapeで未知キーを拒否できるだけでは達成としない。自動実行・通知の予約機能はないため、本プロジェクトでの作業時に確認する運用とする。
+
 ## 実装の入口
 
 * [EngineMigrationTemplate](../PeServer/Core/Mvc/Template/EngineMigrationTemplate.php) はテンプレート名が `ComponentBase` の派生クラスなら NodeTemplate、それ以外なら SmartyTemplate を選ぶ。Node への移植だけで全ページが切り替わるわけではない。
@@ -135,7 +156,7 @@ public function __construct(array $attributes = [])
 ### アカウントの経路
 
 * Web 画面は `/account` グループを使う。ログイン成功後は `/account`、登録メールのリンクは `/account/signup/{token}` へ向ける。
-* フォーム・ユーザー操作リンク・共通ヘッダーも正式経路を使い、ページごとの切り替えフラグは設けない。末尾 `2` アクションへの委譲は除去し、通常名のアクションから NodeTemplate を描画する。移植済みのトップ・account・password・plugin に対応する旧 Smarty Web テンプレート 18 ファイルは参照がないことを確認して削除した。旧メールテンプレート・共通レイアウト・Smarty基盤は残存するが、Appの送信本文生成には使用しない。
+* フォーム・ユーザー操作リンク・共通ヘッダーも正式経路を使い、ページごとの切り替えフラグは設けない。末尾 `2` アクションへの委譲は除去し、通常名のアクションから NodeTemplate を描画する。移植済みのトップ・account・password・plugin に対応する旧 Smarty Web テンプレート 18 ファイルは参照がないことを確認して削除した。その後、残存していた旧メールテンプレート・共通レイアウト・Smarty基盤も撤去した。
 * ユーザー編集・パスワード変更・メール変更確定後は `/account/user`、登録完了・ログアウト後は `/` へ遷移する。セットアップ・管理への遷移と業務 Logic、ミドルウェアの登録構成は維持する。メール変更の確認トークン・新旧アドレスへの完了通知もNode生成する。
 * 統合テスト基盤はミドルウェアを省略する。ルートの単体テストで登録構成を別途確認し、統合テスト成功を認証・CSRF の実効性確認とは扱わない。また previousActual を渡した呼び出しでは setup コールバックが実行されないため、メール送信を伴うテストはその呼び出し自身でモックを登録できる構成にする。
 
@@ -151,7 +172,7 @@ public function __construct(array $attributes = [])
 * 既存 URL、業務 Logic、フォーム action・入力名・値復元・エラー表示、Streaming 用 Ajax URL は維持した。旧 Home・Tool Smarty テンプレート 8 ファイルは参照がないことを確認して削除した。
 * Home・Tool の統合テスト 30 件・178 assertions が成功。画面 GET、ツール POST の成功・入力エラー、NodeTemplate 識別表示、Streaming 用 DOM を確認した。統合テストはミドルウェアの実効性や実ブラウザでの Streaming を保証しない。
 * エラー画面は `ErrorPage` を追加し、AppErrorHandler の HTML 応答を NodeTemplate に切り替えた。ステータス、エラー番号、メッセージを維持し、既定メッセージとテキストエスケープを単体テスト 2 件・10 assertions で確認した。JSON 応答とメールテンプレートは変更していない。
-* Web の Smarty 描画はなくなり、AppErrorHandler のエラー画面も NodeTemplate を使う。メール8種類の送信本文はすべて `AppTemplate::createNodeMailTemplate()` に切り替えた。HTML 6種を `TextNode` とメールモードの `HtmlBuilder`、テキスト2種を `TextBuilder` で生成する。テキスト本文は完成文字列を渡すのではなく、ラベル・値を `text()`、区切りや末尾の改行を `break()`、任意のコメント節を `Fragment` で明示する。値内の改行は `PHP_EOL` に正規化し、HTMLエスケープは行わない。宛先・件名・添付とHTML／テキストの区別は維持する。登録メール2種はローカルSMTPトラップで受信し、確認URLから登録フォーム表示、登録完了後のログイン状態まで確認した。実メールクライアント全般の互換性を保証するものではない。Smarty基盤と旧 `.tpl` は残るが、現在のApp画面・メール本文生成には使わない。
+* Web の Smarty 描画はなくなり、AppErrorHandler のエラー画面も NodeTemplate を使う。メール8種類の送信本文はすべて `AppTemplate::createNodeMailTemplate()` に切り替えた。HTML 6種を `TextNode` とメールモードの `HtmlBuilder`、テキスト2種を `TextBuilder` で生成する。テキスト本文は完成文字列を渡すのではなく、ラベル・値を `text()`、区切りや末尾の改行を `break()`、任意のコメント節を `Fragment` で明示する。値内の改行は `PHP_EOL` に正規化し、HTMLエスケープは行わない。宛先・件名・添付とHTML／テキストの区別は維持する。登録メール2種はローカルSMTPトラップで受信し、確認URLから登録フォーム表示、登録完了後のログイン状態まで確認した。実メールクライアント全般の互換性を保証するものではない。Smarty基盤と旧テンプレートも撤去済み。
 
 ### プラグイン画面
 
@@ -159,9 +180,9 @@ public function __construct(array $attributes = [])
 
 ### 管理画面
 
-* `/management` 配下の 18 画面と `/management/control` 配下のユーザー・バックアップ一覧を NodeTemplate へ移植した。既存 URL のまま通常名アクションから Node ページを描画し、移行用 URL は追加しない。右上の `2` で識別する。旧 Smarty ソースは比較資料として残るが、この範囲の描画には使わない。
+* `/management` 配下の 18 画面と `/management/control` 配下のユーザー・バックアップ一覧を NodeTemplate へ移植した。既存 URL のまま通常名アクションから Node ページを描画し、移行用 URL は追加しない。右上の `2` で識別する。旧 Smarty ソースは移植時に比較資料として残し、その後撤去した。
 * 対象は管理トップ、セットアップ、環境情報、設定表示・編集、DB メンテナンス、メール送信、PHP 実行、標準プラグイン、カテゴリ、バージョン、フィードバック一覧・詳細、クラッシュレポート一覧・詳細、ログ一覧・詳細、Markdown、ユーザー一覧、バックアップ一覧。
-* 業務 Logic、管理者／セットアップの認可、CSRF ミドルウェア、成功時リダイレクト、Ajax/API、ダウンロード経路は変更しない。セットアップの従来の CSRF 構成も維持する。メール本文は引き続き Smarty。既存 JavaScript の ID・data 属性・専用スクリプトを維持する。
+* 業務 Logic、管理者／セットアップの認可、CSRF ミドルウェア、成功時リダイレクト、Ajax/API、ダウンロード経路は変更しない。セットアップの従来の CSRF 構成も維持する。メール本文は管理画面移植時にはSmartyを維持し、その後Node生成へ移行した。既存 JavaScript の ID・data 属性・専用スクリプトを維持する。
 * DB のテーブル開閉用インラインスクリプトを動かすため、DefaultPage の customScriptCode を script 要素で囲む。クラッシュレポートの保存ファイル名を保つため、HTMLAnchorAttributes の download は bool に加えて文字列も許容する。例外・コメントは plaintext の Code 部品でタグを文字として表示する。
 * 管理画面の統合テスト 49 件を追加し、全 20 画面の GET、入力エラー、SQL／PHP の結果表示、レポート保存・ページング、JavaScript 用 DOM、ダウンロード応答を検証した。phpinfo は CLI で HTML にならないため固定 HTML、ログ・バックアップは固定データ、メール成功・ダウンロード・SQL エラー表示は Logic のモックを使う。実送信や実ファイル操作の確認とは扱わない。ミドルウェアは統合基盤で省略されるため、認証・CSRF の実効性や実ブラウザでの管理操作の保証ではない。
 * 旧 Markdown 見本は番号付きリストを UL、箇条書きを OL と記していたため、移植先では表記を訂正した。旧レポート一覧の `span` に対する誤った `</em>` も正しい閉じタグになった。

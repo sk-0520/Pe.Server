@@ -48,7 +48,7 @@ class ElementTest extends TestClass
 		foreach ([false, true] as $selfClosing) {
 			$options = new ElementOptions(true, $selfClosing);
 			$buildOptions = BuildOptions::default();
-			$element = new class(new TextNode('child'), $options) extends LocalSimleElement {
+			$element = new class (new TextNode('child'), $options) extends LocalSimleElement {
 				public array $calls = [];
 
 				#[Override]

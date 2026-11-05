@@ -12,7 +12,6 @@ use PeServer\Core\Throws\ArgumentException;
 use PeServer\Core\Throws\EncodingException;
 use PeServer\Core\Throws\InvalidOperationException;
 use PeServer\Core\Throws\Throws;
-use Smarty\Extension\CoreExtension;
 use Throwable;
 
 /**

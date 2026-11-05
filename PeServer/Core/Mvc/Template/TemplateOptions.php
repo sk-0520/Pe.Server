@@ -17,7 +17,7 @@ class TemplateOptions
 	/**
 	 * 生成。
 	 *
-	 * 注釈の元になるパス: `__DIR__\template\base\template.tpl`
+	 * テンプレートに渡すアプリケーションのパス・実行コンテキスト。
 	 *
 	 * @param string $rootDirectoryPath テンプレートファイル配置ディレクトリのルートパス。(※ `__DIR__\template`)
 	 * @param string $baseDirectoryName テンプレートファイルベースディレクトリの名前。(※ `name`)

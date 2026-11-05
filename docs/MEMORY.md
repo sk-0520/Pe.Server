@@ -2,6 +2,12 @@
 
 このファイルは作業の引き継ぎ用。確定した設計方針は [テンプレート移植](./TEMPLATE-MIGRATION.md)、全体の入口は [AGENT.md](./AGENT.md) を参照する。記録は現在のコードより優先しない。
 
+## 2026-11-05: Smarty依存の撤去
+
+* 利用者によるSmarty本体削除に続き、コード側の専用プラグイン・TemplateStore・SmartyTemplate・EngineMigrationTemplate・旧メール生成メソッドと旧テンプレート33枚を撤去。オートロードとPHPStanの依存登録も削除した。TemplateFactoryはNodeTemplateを直接生成し、CoreのViewActionResultは拡張子を付けずにコンポーネント名を渡す。
+* 利用者が全メール8種類をローカルSMTPトラップで受信済み。HTML6通を復号して全321タグの大文字化、HTML4 StrictのDOCTYPEと空要素形式を確認。テキストメールはTextBuilderでラベル・値・改行・任意コメント節を明示し、単体テストで完全一致を確認した。
+* 撤去後の検証は単体31件・106 assertions、Home・Management・AccountSignup・AccountFamily・Passwordの統合114件・776 assertions、PHPStan全体が成功。アプリケーションのコード・テスト・PHPStan設定にSmarty参照は残らず、旧テンプレートも残存なし。利用者のElementTest変更は維持した。
+
 ## 2026-11-05: 全メールの送信本文をNode生成へ切替
 
 * 登録・パスワード再設定に続き、メール変更3種類とフィードバック／クラッシュレポートの送信本文を `createNodeMailTemplate()` に切り替えた。Appから旧 `createMailTemplate()` への呼び出しはなくなった。Smarty基盤・旧テンプレートの撤去は未実施。
