@@ -16,10 +16,22 @@ class Comment extends NodeBase
 	 */
 	public function __construct(readonly public string $value)
 	{
-		if (Text::contains($value, "--", false)) {
-			throw new ArgumentException('--');
-		}
+		//NOP
 	}
+
+	#region function
+
+	protected function escapeComment(string $value): string
+	{
+		if (Text::contains($value, "--", false)) {
+			// コメントとして - 連続が許容されないので − 連続に差し替える
+			return Text::replace($value, "--", "−−");
+		}
+
+		return $value;
+	}
+
+	#endregion
 
 	#region NodeBase
 
@@ -40,14 +52,14 @@ class Comment extends NodeBase
 				return "<!-- -->";
 			}
 
-			return "<!-- {$line} -->";
+			return "<!-- {$this->escapeComment($line)} -->";
 		}
 
 		return Text::join(
 			PHP_EOL,
 			[
 				"<!--",
-				...Arr::map($lines, fn($a) => Text::trim($a)),
+				...Arr::map($lines, fn($a) => $this->escapeComment(Text::trim($a))),
 				"-->",
 			]
 		);

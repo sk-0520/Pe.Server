@@ -6,7 +6,6 @@ namespace PeServerUT\Core\Mvc\Template\Node;
 
 use PeServer\Core\Mvc\Template\Node\BuildOptions;
 use PeServer\Core\Mvc\Template\Node\Comment;
-use PeServer\Core\Throws\ArgumentException;
 use PeServerTest\TestClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 
@@ -20,6 +19,10 @@ class CommentTest extends TestClass
 			['<!-- -->', ''],
 			['<!-- -->', '   '],
 			['<!-- <b>&</b> -->', '<b>&</b>'],
+			['<!-- −− -->', '--'],
+			['<!-- a−−b -->', 'a--b'],
+			['<!-- a−−>b -->', 'a-->b'],
+			['<!-- −−!> -->', '--!>'],
 			['<!--' . PHP_EOL . 'a' . PHP_EOL . 'b' . PHP_EOL . '-->', 'a' . PHP_EOL . 'b'],
 			['<!--' . PHP_EOL . 'a' . PHP_EOL . 'b' . PHP_EOL . '-->', '  a  ' . PHP_EOL . '  b  '],
 		];
@@ -37,22 +40,5 @@ class CommentTest extends TestClass
 	{
 		$this->assertTrue((new Comment('a'))->hasChildren());
 		$this->assertFalse((new Comment(''))->hasChildren());
-	}
-
-	public static function provider_toString_throw(): array
-	{
-		return [
-			['--'],
-			['a--b'],
-			['a-->b'],
-			['--!>'],
-		];
-	}
-
-	#[DataProvider('provider_toString_throw')]
-	public function test_construct_throw(string $value): void
-	{
-		$this->expectException(ArgumentException::class);
-		new Comment($value);
 	}
 }
