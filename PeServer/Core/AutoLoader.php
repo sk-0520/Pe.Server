@@ -246,7 +246,7 @@ class AutoLoader
 	 *
 	 * @param bool $prepend キューの先頭に登録するか。
 	 * @return void
-	 * @throws Error 登録ディレクトが存在しない
+	 * @throws Error 登録ディレクトリが存在しない
 	 * @see https://www.php.net/manual/function.spl-autoload-register.php
 	 */
 	public function register(bool $prepend = false): void
