@@ -40,11 +40,11 @@ class HtmlGlobalAttributesTest extends TestClass
 			],
 			[
 				['customAttribute', 'id'],
-				new ChildHtmlGlobalAttributes(id: 'test'),
+				new LocalChildHtmlGlobalAttributes(id: 'test'),
 			],
 			[
 				[],
-				new class extends ParentHtmlGlobalAttributes {
+				new class extends LocalParentHtmlGlobalAttributes {
 					public string|null $customAttribute = null;
 				},
 			],
@@ -132,7 +132,7 @@ class HtmlGlobalAttributesTest extends TestClass
 
 	public function test_getNames_childPriority(): void
 	{
-		$test = new ChildHtmlGlobalAttributes();
+		$test = new LocalChildHtmlGlobalAttributes();
 		$actual = [];
 		foreach ($test->getNames() as $name) {
 			$actual[] = $test->build($name);
@@ -221,12 +221,12 @@ class HtmlGlobalAttributesTest extends TestClass
 	}
 }
 
-class ParentHtmlGlobalAttributes extends HtmlGlobalAttributes
+class LocalParentHtmlGlobalAttributes extends HtmlGlobalAttributes
 {
 	public string|null $customAttribute = 'parent';
 }
 
-class ChildHtmlGlobalAttributes extends ParentHtmlGlobalAttributes
+class LocalChildHtmlGlobalAttributes extends LocalParentHtmlGlobalAttributes
 {
 	public string|null $customAttribute = 'child';
 }

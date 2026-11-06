@@ -29,16 +29,16 @@ class ElementTest extends TestClass
 			['<tag attr="value"></tag>', NoneNode::get(), new ElementOptions(true, false)],
 			['<tag attr="value"></tag>', NoneNode::get(), new ElementOptions(false, false)],
 			['<tag attr="value">aaa</tag>', new TextNode("aaa"), new ElementOptions(false, false)],
-			['<tag attr="value"><tag attr="value">bbb</tag></tag>', new Fragment(new LocalSimleElement(new TextNode("bbb"), new ElementOptions(false, false))), new ElementOptions(false, false)],
-			['<tag attr="value"><tag attr="value" /></tag>', new LocalSimleElement(NoneNode::get(), new ElementOptions(true, true)), new ElementOptions(false, false)],
-			['<tag attr="value"><tag attr="value"></tag></tag>', new LocalSimleElement(NoneNode::get(), new ElementOptions(false, false)), new ElementOptions(false, false)],
+			['<tag attr="value"><tag attr="value">bbb</tag></tag>', new Fragment(new LocalSimpleElement(new TextNode("bbb"), new ElementOptions(false, false))), new ElementOptions(false, false)],
+			['<tag attr="value"><tag attr="value" /></tag>', new LocalSimpleElement(NoneNode::get(), new ElementOptions(true, true)), new ElementOptions(false, false)],
+			['<tag attr="value"><tag attr="value"></tag></tag>', new LocalSimpleElement(NoneNode::get(), new ElementOptions(false, false)), new ElementOptions(false, false)],
 		];
 	}
 
 	#[DataProvider('provider_toString')]
 	public function test_toString(string $expected, INode $content, ElementOptions $options): void
 	{
-		$test = new LocalSimleElement($content, $options);
+		$test = new LocalSimpleElement($content, $options);
 
 		$this->assertSame($expected, (string)$test);
 	}
@@ -48,7 +48,7 @@ class ElementTest extends TestClass
 		foreach ([false, true] as $selfClosing) {
 			$options = new ElementOptions(true, $selfClosing);
 			$buildOptions = BuildOptions::default();
-			$element = new class (new TextNode('child'), $options) extends LocalSimleElement {
+			$element = new class (new TextNode('child'), $options) extends LocalSimpleElement {
 				public array $calls = [];
 
 				#[Override]
@@ -86,7 +86,7 @@ class ElementTest extends TestClass
 	}
 }
 
-class LocalSimleElement extends Element
+class LocalSimpleElement extends Element
 {
 	public function __construct(INode $content, ElementOptions $options)
 	{

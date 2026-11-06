@@ -224,32 +224,32 @@ class AccessTest extends TestClass
 
 	public function test_getObject()
 	{
-		$actual1 = Access::getObject([new AccessTestA1()], 0);
-		$this->assertInstanceOf(AccessTestA1::class, $actual1);
+		$actual1 = Access::getObject([new LocalAccessTestA1()], 0);
+		$this->assertInstanceOf(LocalAccessTestA1::class, $actual1);
 
-		$actual2 = Access::getObject([new AccessTestA2()], 0);
-		$this->assertInstanceOf(AccessTestA2::class, $actual2);
+		$actual2 = Access::getObject([new LocalAccessTestA2()], 0);
+		$this->assertInstanceOf(LocalAccessTestA2::class, $actual2);
 
-		$actual1_2 = Access::getObject([new AccessTestA2()], 0);
-		$this->assertInstanceOf(AccessTestA1::class, $actual1_2);
+		$actual1_2 = Access::getObject([new LocalAccessTestA2()], 0);
+		$this->assertInstanceOf(LocalAccessTestA1::class, $actual1_2);
 
-		$actual2_2 = Access::getObject([new AccessTestA1()], 0);
-		$this->assertNotInstanceOf(AccessTestA2::class, $actual2_2);
+		$actual2_2 = Access::getObject([new LocalAccessTestA1()], 0);
+		$this->assertNotInstanceOf(LocalAccessTestA2::class, $actual2_2);
 
-		$actual1_3 = Access::getObject([new AccessTestA2()], 0, AccessTestA1::class);
-		$this->assertInstanceOf(AccessTestA1::class, $actual1_3);
-		$this->assertInstanceOf(AccessTestA2::class, $actual1_3);
+		$actual1_3 = Access::getObject([new LocalAccessTestA2()], 0, LocalAccessTestA1::class);
+		$this->assertInstanceOf(LocalAccessTestA1::class, $actual1_3);
+		$this->assertInstanceOf(LocalAccessTestA2::class, $actual1_3);
 
-		$actual2_3 = Access::getObject([new AccessTestA2()], 0, AccessTestA2::class);
-		$this->assertInstanceOf(AccessTestA1::class, $actual2_3);
-		$this->assertInstanceOf(AccessTestA2::class, $actual2_3);
+		$actual2_3 = Access::getObject([new LocalAccessTestA2()], 0, LocalAccessTestA2::class);
+		$this->assertInstanceOf(LocalAccessTestA1::class, $actual2_3);
+		$this->assertInstanceOf(LocalAccessTestA2::class, $actual2_3);
 
-		$actual1_4 = Access::getObject([new AccessTestA1()], 0, AccessTestA1::class);
-		$this->assertInstanceOf(AccessTestA1::class, $actual1_4);
-		$this->assertNotInstanceOf(AccessTestA2::class, $actual1_4);
+		$actual1_4 = Access::getObject([new LocalAccessTestA1()], 0, LocalAccessTestA1::class);
+		$this->assertInstanceOf(LocalAccessTestA1::class, $actual1_4);
+		$this->assertNotInstanceOf(LocalAccessTestA2::class, $actual1_4);
 
 		$this->expectException(AccessValueTypeException::class);
-		Access::getObject([new AccessTestB()], 0, AccessTestA1::class);
+		Access::getObject([new LocalAccessTestB()], 0, LocalAccessTestA1::class);
 		$this->fail();
 	}
 
@@ -431,8 +431,8 @@ class AccessTest extends TestClass
 
 	public function test_getArrayOfObject()
 	{
-		$actual = Access::getArrayOfObject([[new AccessTestA1(), new AccessTestA1(), new AccessTestA1()]], 0);
-		$this->assertEqualsWithInfo('オブジェクト比較なので緩い比較', [new AccessTestA1(), new AccessTestA1(), new AccessTestA1()], $actual);
+		$actual = Access::getArrayOfObject([[new LocalAccessTestA1(), new LocalAccessTestA1(), new LocalAccessTestA1()]], 0);
+		$this->assertEqualsWithInfo('オブジェクト比較なので緩い比較', [new LocalAccessTestA1(), new LocalAccessTestA1(), new LocalAccessTestA1()], $actual);
 
 		$this->assertEmpty(Access::getArrayOfObject([[]], 0));
 	}
@@ -440,7 +440,7 @@ class AccessTest extends TestClass
 	public function test_getArrayOfObject_type_throw()
 	{
 		$this->expectException(AccessValueTypeException::class);
-		Access::getArrayOfObject([[new AccessTestA1(), null]], 0);
+		Access::getArrayOfObject([[new LocalAccessTestA1(), null]], 0);
 		$this->fail();
 	}
 
@@ -481,17 +481,17 @@ class LocalArrayAccess implements ArrayAccess
 	#endregion
 }
 
-class AccessTestA1
+class LocalAccessTestA1
 {
 	//NOP
 }
 
-class AccessTestA2 extends AccessTestA1
+class LocalAccessTestA2 extends LocalAccessTestA1
 {
 	//NOP
 }
 
-class AccessTestB
+class LocalAccessTestB
 {
 	//NOP
 }

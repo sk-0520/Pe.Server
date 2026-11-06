@@ -27,7 +27,7 @@ class SqliteMigrationRunnerBaseTest extends TestClass
 	#endregion
 }
 
-class SqliteMigrationRunnerBaseTestClass extends SqliteMigrationRunnerBase
+class LocalSqliteMigrationRunnerBase extends SqliteMigrationRunnerBase
 {
 	public function __construct(private int $version)
 	{

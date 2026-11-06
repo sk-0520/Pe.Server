@@ -22,7 +22,7 @@ class MapperTest extends TestClass
 	public function test_mapping_Normal()
 	{
 		$mapper = new Mapper();
-		$actual1 = new Normal();
+		$actual1 = new LocalNormal();
 		$mapper->mapping([
 			'public' => 10,
 			'protected' => 'string',
@@ -43,7 +43,7 @@ class MapperTest extends TestClass
 	public function test_mapping_TypeChange_normal()
 	{
 		$mapper = new Mapper();
-		$actual = new TypeChange();
+		$actual = new LocalTypeChange();
 		$mapper->mapping([
 			'int' => '10',
 		], $actual);
@@ -53,7 +53,7 @@ class MapperTest extends TestClass
 	public function test_mapping_TypeChange_TSURAI()
 	{
 		$mapper = new Mapper();
-		$actual = new TypeChange();
+		$actual = new LocalTypeChange();
 		$mapper->mapping([
 			'int' => 'A',
 		], $actual);
@@ -63,7 +63,7 @@ class MapperTest extends TestClass
 	public function test_mapping_NestInstance()
 	{
 		$mapper = new Mapper();
-		$actual = new NestInstance();
+		$actual = new LocalNestInstance();
 		$mapper->mapping([
 			'value' => 'value',
 			'child' => [
@@ -77,7 +77,7 @@ class MapperTest extends TestClass
 	public function test_mapping_NestNull()
 	{
 		$mapper = new Mapper();
-		$actual = new NestNull();
+		$actual = new LocalNestNull();
 		$mapper->mapping([
 			'value' => 'value',
 			'child' => [
@@ -91,7 +91,7 @@ class MapperTest extends TestClass
 	public function test_mapping_EnumClass()
 	{
 		$mapper = new Mapper();
-		$actual = new EnumClass();
+		$actual = new LocalEnumClass();
 		$mapper->mapping([
 			'int0' => 'int0',
 			'int1' => 'Int1',
@@ -103,20 +103,20 @@ class MapperTest extends TestClass
 			'BBB' => 'Int2',
 		], $actual);
 
-		$this->assertSame(EnumInt::Int0, $actual->int0);
-		$this->assertSame(EnumInt::Int1, $actual->int1);
-		$this->assertSame(EnumInt::Int2, $actual->int2);
-		$this->assertSame(EnumString::String0, $actual->string0);
-		$this->assertSame(EnumString::String1, $actual->string1);
-		$this->assertSame(EnumString::String2, $actual->string2);
-		$this->assertSame(EnumInt::Int1, $actual->alias1);
-		$this->assertSame(EnumInt::Int2, $actual->alias2);
+		$this->assertSame(LocalEnumInt::Int0, $actual->int0);
+		$this->assertSame(LocalEnumInt::Int1, $actual->int1);
+		$this->assertSame(LocalEnumInt::Int2, $actual->int2);
+		$this->assertSame(LocalEnumString::String0, $actual->string0);
+		$this->assertSame(LocalEnumString::String1, $actual->string1);
+		$this->assertSame(LocalEnumString::String2, $actual->string2);
+		$this->assertSame(LocalEnumInt::Int1, $actual->alias1);
+		$this->assertSame(LocalEnumInt::Int2, $actual->alias2);
 	}
 
 	public function test_mapping_AttrName()
 	{
 		$mapper = new Mapper();
-		$actual = new AttrName();
+		$actual = new LocalAttrName();
 		$mapper->mapping([
 			'💩' => 'NAME!',
 			'value' => 'VALUE!',
@@ -128,7 +128,7 @@ class MapperTest extends TestClass
 	public function test_mapping_AttrIgnore()
 	{
 		$mapper = new Mapper();
-		$actual = new AttrIgnore();
+		$actual = new LocalAttrIgnore();
 		$mapper->mapping([
 			'ignore' => 'IGNORE!',
 			'value' => 'VALUE!',
@@ -140,7 +140,7 @@ class MapperTest extends TestClass
 	public function test_mapping_NotAttrNameNotFound()
 	{
 		$mapper = new Mapper();
-		$actual = new NotAttrNameNotFound();
+		$actual = new LocalNotAttrNameNotFound();
 		$mapper->mapping([
 			'abc' => 'VALUE!',
 		], $actual);
@@ -150,7 +150,7 @@ class MapperTest extends TestClass
 	public function test_mapping_AttrNameNotFound_throw()
 	{
 		$mapper = new Mapper();
-		$actual = new AttrNameNotFound();
+		$actual = new LocalAttrNameNotFound();
 		$this->expectException(MapperKeyNotFoundException::class);
 		$mapper->mapping([
 			'abc' => 'VALUE!',
@@ -161,7 +161,7 @@ class MapperTest extends TestClass
 	public function test_mapping_AttrObjectInstanceOnly()
 	{
 		$mapper = new Mapper();
-		$actual = new AttrObjectInstanceOnly();
+		$actual = new LocalAttrObjectInstanceOnly();
 
 		$this->assertNull($actual->child);
 		$mapper->mapping([
@@ -171,7 +171,7 @@ class MapperTest extends TestClass
 		], $actual);
 		$this->assertNull($actual->child);
 
-		$actual->child = new NestChild();
+		$actual->child = new LocalNestChild();
 		$actual->child->int = 456;
 		$mapper->mapping([
 			'child' => [
@@ -185,7 +185,7 @@ class MapperTest extends TestClass
 	public function test_mapping_AttrTypeMismatch_throw()
 	{
 		$mapper = new Mapper();
-		$actual = new AttrTypeMismatch();
+		$actual = new LocalAttrTypeMismatch();
 		$this->expectException(MapperTypeException::class);
 		$mapper->mapping([
 			'int' => 'string',
@@ -196,7 +196,7 @@ class MapperTest extends TestClass
 	public function test_mapping_AttrTypeArrayValue()
 	{
 		$mapper = new Mapper();
-		$actual = new AttrTypeArrayValue();
+		$actual = new LocalAttrTypeArrayValue();
 		$mapper->mapping([
 			'array' => [
 				'key1' => [
@@ -210,11 +210,11 @@ class MapperTest extends TestClass
 			],
 		], $actual);
 
-		$this->assertSame(ArrayValue::class, $actual->array['key1']::class);
+		$this->assertSame(LocalArrayValue::class, $actual->array['key1']::class);
 		$this->assertSame(10, $actual->array['key1']->int);
 		$this->assertSame('STRING', $actual->array['key1']->string);
 
-		$this->assertSame(ArrayValue::class, $actual->array['key2']::class);
+		$this->assertSame(LocalArrayValue::class, $actual->array['key2']::class);
 		$this->assertSame(20, $actual->array['key2']->int);
 		$this->assertSame('STRSTR', $actual->array['key2']->string);
 	}
@@ -222,7 +222,7 @@ class MapperTest extends TestClass
 	public function test_mapping_AttrTypeListArrayValue()
 	{
 		$mapper = new Mapper();
-		$actual = new AttrTypeListArrayValue();
+		$actual = new LocalAttrTypeListArrayValue();
 		$mapper->mapping([
 			'array' => [
 				'key1' => [
@@ -236,11 +236,11 @@ class MapperTest extends TestClass
 			],
 		], $actual);
 
-		$this->assertSame(ArrayValue::class, $actual->array[0]::class);
+		$this->assertSame(LocalArrayValue::class, $actual->array[0]::class);
 		$this->assertSame(10, $actual->array[0]->int);
 		$this->assertSame('STRING', $actual->array[0]->string);
 
-		$this->assertSame(ArrayValue::class, $actual->array[1]::class);
+		$this->assertSame(LocalArrayValue::class, $actual->array[1]::class);
 		$this->assertSame(20, $actual->array[1]->int);
 		$this->assertSame('STRSTR', $actual->array[1]->string);
 	}
@@ -248,7 +248,7 @@ class MapperTest extends TestClass
 	public function test_AttrTypeArrayNest()
 	{
 		$mapper = new Mapper();
-		$actual = new AttrTypeArrayNest();
+		$actual = new LocalAttrTypeArrayNest();
 		$mapper->mapping([
 			'array' => [
 				'k1' => [
@@ -266,18 +266,18 @@ class MapperTest extends TestClass
 			]
 		], $actual);
 
-		$this->assertSame(NestArrayValue::class, $actual->array['k1']::class);
+		$this->assertSame(LocalNestArrayValue::class, $actual->array['k1']::class);
 		$this->assertSame(999, $actual->array['k1']->value->int);
 		$this->assertSame('K1', $actual->array['k1']->value->string);
 
-		$this->assertSame(NestArrayValue::class, $actual->array['k2']::class);
+		$this->assertSame(LocalNestArrayValue::class, $actual->array['k2']::class);
 		$this->assertSame(-999, $actual->array['k2']->value->int);
 		$this->assertSame('K2', $actual->array['k2']->value->string);
 	}
 
 	public function test_TypeConverter()
 	{
-		$actual = new DateTimeClass();
+		$actual = new LocalDateTimeClass();
 		$mapper = new Mapper();
 		$mapper->mapping([
 			'datetime' => '2022-10-04T19:46:12+09:00',
@@ -293,7 +293,7 @@ class MapperTest extends TestClass
 	}
 }
 
-class Normal
+class LocalNormal
 {
 	public int $public = 1;
 	protected string $protected = 's';
@@ -309,131 +309,131 @@ class Normal
 	}
 }
 
-class TypeChange
+class LocalTypeChange
 {
 	public int $int = -1;
 }
 
-class NestChild
+class LocalNestChild
 {
 	public int $int;
 }
 
-class NestInstance
+class LocalNestInstance
 {
 	public string $value;
-	public NestChild $child;
+	public LocalNestChild $child;
 
 	public function __construct()
 	{
-		$this->child = new NestChild();
+		$this->child = new LocalNestChild();
 	}
 }
 
-class NestNull
+class LocalNestNull
 {
 	public string $value;
-	public ?NestChild $child;
+	public ?LocalNestChild $child;
 }
 
-enum EnumInt: int
+enum LocalEnumInt: int
 {
 	case Int0 = 0;
 	case Int1 = 1;
 	case Int2 = 2;
 }
 
-enum EnumString: string
+enum LocalEnumString: string
 {
 	case String0 = "";
 	case String1 = "abc";
 	case String2 = "xyz";
 }
 
-class EnumClass
+class LocalEnumClass
 {
-	public EnumInt $int0;
-	public EnumInt $int1;
-	public EnumInt $int2;
+	public LocalEnumInt $int0;
+	public LocalEnumInt $int1;
+	public LocalEnumInt $int2;
 
-	public EnumString $string0;
-	public EnumString $string1;
-	public EnumString $string2;
+	public LocalEnumString $string0;
+	public LocalEnumString $string1;
+	public LocalEnumString $string2;
 
 	#[Mapping('AAA')]
-	public EnumInt $alias1;
+	public LocalEnumInt $alias1;
 
 	#[Mapping('BBB')]
-	public EnumInt $alias2;
+	public LocalEnumInt $alias2;
 }
 
-class AttrName
+class LocalAttrName
 {
 	#[Mapping('💩')]
 	public string $name = 'name?';
 	public string $value = 'value?';
 }
 
-class AttrIgnore
+class LocalAttrIgnore
 {
 	#[Mapping(flags: Mapping::FLAG_IGNORE)]
 	public string $ignore = 'ignore?';
 	public string $value = 'value?';
 }
 
-class NotAttrNameNotFound
+class LocalNotAttrNameNotFound
 {
 	public string $value = 'value?';
 }
 
-class AttrNameNotFound
+class LocalAttrNameNotFound
 {
 	#[Mapping(flags: Mapping::FLAG_EXCEPTION_NOT_FOUND_KEY)]
 	public string $value = 'value?';
 }
 
-class AttrObjectInstanceOnly
+class LocalAttrObjectInstanceOnly
 {
 	#[Mapping(flags: Mapping::FLAG_OBJECT_INSTANCE_ONLY)]
-	public ?NestChild $child = null;
+	public ?LocalNestChild $child = null;
 }
 
-class AttrTypeMismatch
+class LocalAttrTypeMismatch
 {
 	#[Mapping(flags: Mapping::FLAG_EXCEPTION_TYPE_MISMATCH)]
 	public int $int;
 }
 
-class ArrayValue
+class LocalArrayValue
 {
 	public int $int = 0;
 	public string $string = 'string';
 }
 
-class AttrTypeArrayValue
+class LocalAttrTypeArrayValue
 {
-	#[Mapping(arrayValueClassName: ArrayValue::class)]
+	#[Mapping(arrayValueClassName: LocalArrayValue::class)]
 	public array $array;
 }
 
-class AttrTypeListArrayValue
+class LocalAttrTypeListArrayValue
 {
-	#[Mapping(flags: Mapping::FLAG_LIST_ARRAY_VALUES, arrayValueClassName: ArrayValue::class)]
+	#[Mapping(flags: Mapping::FLAG_LIST_ARRAY_VALUES, arrayValueClassName: LocalArrayValue::class)]
 	public array $array;
 }
 
-class NestArrayValue
+class LocalNestArrayValue
 {
-	public ArrayValue $value;
+	public LocalArrayValue $value;
 }
 
-class AttrTypeArrayNest
+class LocalAttrTypeArrayNest
 {
-	#[Mapping(arrayValueClassName: NestArrayValue::class)]
+	#[Mapping(arrayValueClassName: LocalNestArrayValue::class)]
 	public array $array = [];
 }
 
-class DateTimeClass
+class LocalDateTimeClass
 {
 	#[Mapping(converter: DateTimeConverter::class)]
 	public DateTime $datetime;

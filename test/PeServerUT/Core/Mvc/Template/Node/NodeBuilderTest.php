@@ -14,8 +14,8 @@ class NodeBuilderTest extends TestClass
 {
 	public function test_build_passes_extended_build_options_to_node(): void
 	{
-		$node = new CustomOptionsCaptureNode();
-		$buildOptions = new ExtendedBuildOptions('value');
+		$node = new LocalCustomOptionsCaptureNode();
+		$buildOptions = new LocalExtendedBuildOptions('value');
 
 		(new NodeBuilder())->build($node, $buildOptions);
 
@@ -24,7 +24,7 @@ class NodeBuilderTest extends TestClass
 	}
 }
 
-readonly class ExtendedBuildOptions extends BuildOptions
+readonly class LocalExtendedBuildOptions extends BuildOptions
 {
 	public function __construct(public string $customValue)
 	{
@@ -32,7 +32,7 @@ readonly class ExtendedBuildOptions extends BuildOptions
 	}
 }
 
-class CustomOptionsCaptureNode extends NodeBase
+class LocalCustomOptionsCaptureNode extends NodeBase
 {
 	public ?BuildOptions $received = null;
 

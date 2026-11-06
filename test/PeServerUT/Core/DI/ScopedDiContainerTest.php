@@ -16,11 +16,11 @@ class ScopedDiContainerTest extends TestClass
 	{
 		$dc = new DiRegisterContainer();
 
-		$dc->registerMapping(SD_I_1::class, SD_C_1::class);
-		$actual1 = $dc->get(SD_I_1::class);
+		$dc->registerMapping(LocalScopedDiI1::class, LocalScopedDiC1::class);
+		$actual1 = $dc->get(LocalScopedDiI1::class);
 
 		$sc = new ScopedDiContainer($dc);
-		$actual2 = $sc->get(SD_I_1::class);
+		$actual2 = $sc->get(LocalScopedDiI1::class);
 
 		$this->assertSame($actual1::class, $actual2::class);
 	}
@@ -47,55 +47,48 @@ class ScopedDiContainerTest extends TestClass
 	}
 }
 
-//phpcs:ignore Squiz.Classes.ValidClassName.NotPascalCase
-interface SD_I_1
+interface LocalScopedDiI1
 {
 	//NOP
 }
 
-//phpcs:ignore Squiz.Classes.ValidClassName.NotPascalCase
-class SD_C_1 implements SD_I_1
+class LocalScopedDiC1 implements LocalScopedDiI1
 {
 	//NOP
 }
 
-//phpcs:ignore Squiz.Classes.ValidClassName.NotPascalCase
-class SD_C_1_2 implements SD_I_1
+class LocalScopedDiC12 implements LocalScopedDiI1
 {
 	//NOP
 }
 
-//phpcs:ignore Squiz.Classes.ValidClassName.NotPascalCase
-class SD_C_2
+class LocalScopedDiC2
 {
 	public function __construct(
-		public SD_I_1 $i
+		public LocalScopedDiI1 $i
 	) {
 		//NOP
 	}
 }
 
-//phpcs:ignore Squiz.Classes.ValidClassName.NotPascalCase
-interface SD_C_3
+interface LocalScopedDiC3
 {
 	//NOP
 }
 
-//phpcs:ignore Squiz.Classes.ValidClassName.NotPascalCase
-class SD_C_3_1
+class LocalScopedDiC31
 {
 	public function __construct(
-		public SD_I_1 $i
+		public LocalScopedDiI1 $i
 	) {
 		//NOP
 	}
 }
 
-//phpcs:ignore Squiz.Classes.ValidClassName.NotPascalCase
-class SD_C_3_2
+class LocalScopedDiC32
 {
 	public function __construct(
-		public SD_I_1 $i
+		public LocalScopedDiI1 $i
 	) {
 		//NOP
 	}

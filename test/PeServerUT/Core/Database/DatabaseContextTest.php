@@ -221,7 +221,7 @@ class DatabaseContextTest extends TestClass
 
 		SQL);
 
-		$actual = $result->mapping(Mapping_fetch_mapping::class);
+		$actual = $result->mapping(LocalMappingFetch::class);
 
 		$this->assertSame('id', $result->columns[0]->name);
 		$this->assertSame('value', $result->columns[1]->name);
@@ -252,7 +252,7 @@ class DatabaseContextTest extends TestClass
 		$database = DB::memory();
 		$actual = $database->query("select 'text0' as text union all select 'text1' as text order by text");
 		$this->assertSame(2, $actual->getRowsCount());
-		foreach ($actual->mapping(Mapping_query_mapping::class) as $index => $row) {
+		foreach ($actual->mapping(LocalMappingQuery::class) as $index => $row) {
 			$this->assertSame("text{$index}", $row->text);
 		}
 	}
@@ -292,8 +292,8 @@ class DatabaseContextTest extends TestClass
 	{
 		$database = DB::memory();
 		$result = $database->queryFirst("select 'text' as text, 123 as number");
-		/** @var Mapping_queryFirst_mapping */
-		$actual = $result->mapping(Mapping_queryFirst_mapping::class);
+		/** @var LocalMappingQueryFirst */
+		$actual = $result->mapping(LocalMappingQueryFirst::class);
 		$this->assertSame('text', $actual->text);
 		$this->assertSame(123, $actual->number);
 	}
@@ -302,8 +302,8 @@ class DatabaseContextTest extends TestClass
 	{
 		$database = DB::memory();
 		$result = $database->queryFirst("select 'text' as text, 123 as number");
-		$object = new Mapping_queryFirst_mapping();
-		/** @var Mapping_queryFirst_mapping */
+		$object = new LocalMappingQueryFirst();
+		/** @var LocalMappingQueryFirst */
 		$actual = $result->mapping($object);
 		$this->assertSame($object, $actual);
 		$this->assertSame('text', $actual->text);
@@ -830,8 +830,7 @@ class DatabaseContextTest extends TestClass
 	}
 }
 
-//phpcs:ignore Squiz.Classes.ValidClassName.NotPascalCase
-class Mapping_fetch_mapping
+class LocalMappingFetch
 {
 	#region variable
 
@@ -841,8 +840,7 @@ class Mapping_fetch_mapping
 	#endregion
 }
 
-//phpcs:ignore Squiz.Classes.ValidClassName.NotPascalCase
-class Mapping_query_mapping
+class LocalMappingQuery
 {
 	#region variable
 
@@ -851,8 +849,7 @@ class Mapping_query_mapping
 	#endregion
 }
 
-//phpcs:ignore Squiz.Classes.ValidClassName.NotPascalCase
-class Mapping_queryFirst_mapping
+class LocalMappingQueryFirst
 {
 	#region variable
 

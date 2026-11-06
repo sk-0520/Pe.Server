@@ -418,8 +418,8 @@ class CollectionTest extends TestClass
 			[3, [1, 2, 3]],
 			[3, [3, 2, 1]],
 
-			[3, [new Value(i: 1), new Value(i: 2), new Value(i: 3)], fn ($i) => $i->i],
-			[2.5, [new Value(f: 1.5), new Value(f: 2.5), new Value(f: 0.5)], fn ($i) => $i->f],
+			[3, [new LocalValue(i: 1), new LocalValue(i: 2), new LocalValue(i: 3)], fn ($i) => $i->i],
+			[2.5, [new LocalValue(f: 1.5), new LocalValue(f: 2.5), new LocalValue(f: 0.5)], fn ($i) => $i->f],
 		];
 	}
 
@@ -437,8 +437,8 @@ class CollectionTest extends TestClass
 			[1, [1, 2, 3]],
 			[1, [3, 2, 1]],
 
-			// 1, [new Value(i: 1), new Value(i: 2), new Value(i: 3)], fn ($i) => $i->i],
-			// 0.5, [new Value(f: 1.5), new Value(f: 2.5), new Value(f: 0.5)], fn ($i) => $i->f],
+			// 1, [new LocalValue(i: 1), new LocalValue(i: 2), new LocalValue(i: 3)], fn ($i) => $i->i],
+			// 0.5, [new LocalValue(f: 1.5), new LocalValue(f: 2.5), new LocalValue(f: 0.5)], fn ($i) => $i->f],
 		];
 	}
 
@@ -469,7 +469,7 @@ class CollectionTest extends TestClass
 	}
 }
 
-class Value
+class LocalValue
 {
 	public function __construct(
 		public int $i = 0,

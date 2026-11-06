@@ -21,3 +21,7 @@ description: "PHP の実装、修正、デバッグ、テストを Pe.Server プ
 - `PeServer\Core` は再利用可能な Web アプリ向けライブラリとして扱う。PHP 関数の失敗値 `false` は、既存の設計に合わせて例外に変換するラッパーで扱う。
 - 依存関係は `PeServer\App` から `PeServer\Core` の一方向とし、Core が App に依存する変更を加えない。
 - 空のコードブロックはフォーマッタと PHP_CodeSniffer の競合を避けるため `//NOP` を置く。
+- AutoLoader の仕組み上 1 ファイル 1 クラスの原則とする。
+  - 例外としてそのファイル内でしか使用しないものは `Local` をプレフィックスとしたクラスとする（DisposerBase.php 参照せよ）
+  - メインクラスを冒頭に記述し、その後に Local クラスを記述する。
+  - この規則はテストにも当てはめられる

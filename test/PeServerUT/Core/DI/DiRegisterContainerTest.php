@@ -52,7 +52,7 @@ class DiRegisterContainerTest extends TestClass
 
 	public function test_get_value()
 	{
-		$expected = new A();
+		$expected = new LocalA();
 		$dc = new DiRegisterContainer();
 		$dc->add('ID', new DiItem(DiItem::LIFECYCLE_SINGLETON, DiItem::TYPE_VALUE, $expected));
 		$actual = $dc->get('ID');
@@ -75,13 +75,13 @@ class DiRegisterContainerTest extends TestClass
 	{
 		$dc = new DiRegisterContainer();
 
-		$dc->add(I::class, DiItem::class(A::class));
+		$dc->add(LocalI::class, DiItem::class(LocalA::class));
 
-		$actual1 = $dc->get(I::class);
-		$actual2 = $dc->get(I::class);
+		$actual1 = $dc->get(LocalI::class);
+		$actual2 = $dc->get(LocalI::class);
 
-		$this->assertSame(A::class, $actual1::class);
-		$this->assertSame(A::class, $actual2::class);
+		$this->assertSame(LocalA::class, $actual1::class);
+		$this->assertSame(LocalA::class, $actual2::class);
 		$this->assertNotSame($actual1, $actual2);
 	}
 
@@ -89,13 +89,13 @@ class DiRegisterContainerTest extends TestClass
 	{
 		$dc = new DiRegisterContainer();
 
-		$dc->add(I::class, DiItem::class(A::class, DiItem::LIFECYCLE_SINGLETON));
+		$dc->add(LocalI::class, DiItem::class(LocalA::class, DiItem::LIFECYCLE_SINGLETON));
 
-		$actual1 = $dc->get(I::class);
-		$actual2 = $dc->get(I::class);
+		$actual1 = $dc->get(LocalI::class);
+		$actual2 = $dc->get(LocalI::class);
 
-		$this->assertSame(A::class, $actual1::class);
-		$this->assertSame(A::class, $actual2::class);
+		$this->assertSame(LocalA::class, $actual1::class);
+		$this->assertSame(LocalA::class, $actual2::class);
 		$this->assertSame($actual1, $actual2);
 	}
 
@@ -103,24 +103,24 @@ class DiRegisterContainerTest extends TestClass
 	{
 		$dc = new DiRegisterContainer();
 
-		$dc->add(I::class, DiItem::class(A0::class));
+		$dc->add(LocalI::class, DiItem::class(LocalA0::class));
 
-		$actual = $dc->get(I::class);
+		$actual = $dc->get(LocalI::class);
 
-		$this->assertSame(A0::class, $actual::class);
+		$this->assertSame(LocalA0::class, $actual::class);
 	}
 
 	public function test_get_type_B()
 	{
 		$dc = new DiRegisterContainer();
 
-		$dc->add(I::class, DiItem::class(A::class));
-		$dc->add(B::class, DiItem::class(B::class));
+		$dc->add(LocalI::class, DiItem::class(LocalA::class));
+		$dc->add(LocalB::class, DiItem::class(LocalB::class));
 
-		$actual = $dc->get(B::class);
+		$actual = $dc->get(LocalB::class);
 
-		$this->assertSame(B::class, $actual::class);
-		$this->assertSame(A::class, $actual->i::class);
+		$this->assertSame(LocalB::class, $actual::class);
+		$this->assertSame(LocalA::class, $actual->i::class);
 	}
 
 
@@ -128,82 +128,82 @@ class DiRegisterContainerTest extends TestClass
 	{
 		$dc = new DiRegisterContainer();
 
-		$dc->add(I::class, DiItem::class(A::class));
-		$dc->add(B::class, DiItem::class(B::class));
-		$dc->add(C::class, DiItem::class(C::class));
+		$dc->add(LocalI::class, DiItem::class(LocalA::class));
+		$dc->add(LocalB::class, DiItem::class(LocalB::class));
+		$dc->add(LocalC::class, DiItem::class(LocalC::class));
 
-		$actual = $dc->get(C::class);
+		$actual = $dc->get(LocalC::class);
 
-		$this->assertSame(C::class, $actual::class);
-		$this->assertSame(B::class, $actual->b::class);
-		$this->assertSame(A::class, $actual->a::class);
-		$this->assertSame(A::class, $actual->i::class);
+		$this->assertSame(LocalC::class, $actual::class);
+		$this->assertSame(LocalB::class, $actual->b::class);
+		$this->assertSame(LocalA::class, $actual->a::class);
+		$this->assertSame(LocalA::class, $actual->i::class);
 	}
 
 	public function test_get_type_D_D1()
 	{
 		$dc = new DiRegisterContainer();
 
-		$dc->add(D1::class, DiItem::class(D1::class));
-		$dc->add(D::class, DiItem::class(D::class));
+		$dc->add(LocalD1::class, DiItem::class(LocalD1::class));
+		$dc->add(LocalD::class, DiItem::class(LocalD::class));
 
-		$actual = $dc->get(D::class);
-		$this->assertSame(D1::class, $actual->union::class);
+		$actual = $dc->get(LocalD::class);
+		$this->assertSame(LocalD1::class, $actual->union::class);
 	}
 	public function test_get_type_D_D2()
 	{
 		$dc = new DiRegisterContainer();
-		$dc->add(D2::class, DiItem::class(D2::class));
-		$dc->add(D::class, DiItem::class(D::class));
+		$dc->add(LocalD2::class, DiItem::class(LocalD2::class));
+		$dc->add(LocalD::class, DiItem::class(LocalD::class));
 
-		$actual = $dc->get(D::class);
-		$this->assertSame(D2::class, $actual->union::class);
+		$actual = $dc->get(LocalD::class);
+		$this->assertSame(LocalD2::class, $actual->union::class);
 	}
 	public function test_get_type_D_2to1()
 	{
 		$dc = new DiRegisterContainer();
-		$dc->add(D2::class, DiItem::class(D2::class));
-		$dc->add(D::class, DiItem::class(D::class));
+		$dc->add(LocalD2::class, DiItem::class(LocalD2::class));
+		$dc->add(LocalD::class, DiItem::class(LocalD::class));
 
-		$actualD2 = $dc->get(D::class);
-		$this->assertSame(D2::class, $actualD2->union::class);
+		$actualD2 = $dc->get(LocalD::class);
+		$this->assertSame(LocalD2::class, $actualD2->union::class);
 
-		$dc->add(D1::class, DiItem::class(D1::class));
-		$actualD1 = $dc->get(D::class);
-		$this->assertSame(D1::class, $actualD1->union::class);
+		$dc->add(LocalD1::class, DiItem::class(LocalD1::class));
+		$actualD1 = $dc->get(LocalD::class);
+		$this->assertSame(LocalD1::class, $actualD1->union::class);
 	}
 
 	public function test_get_type_E_I()
 	{
 		$dc = new DiRegisterContainer();
-		$dc->add(I::class, DiItem::class(A::class));
-		$dc->add(E::class, DiItem::class(E::class));
+		$dc->add(LocalI::class, DiItem::class(LocalA::class));
+		$dc->add(LocalE::class, DiItem::class(LocalE::class));
 
-		$actual = $dc->get(E::class);
-		$this->assertSame(A::class, $actual->i::class);
+		$actual = $dc->get(LocalE::class);
+		$this->assertSame(LocalA::class, $actual->i::class);
 	}
 	public function test_get_type_E_EI()
 	{
 		$dc = new DiRegisterContainer();
-		$dc->add(I::class, DiItem::class(A::class));
-		$dc->add(EI::class, DiItem::class(EI::class));
-		$dc->add(E::class, DiItem::class(E::class));
+		$dc->add(LocalI::class, DiItem::class(LocalA::class));
+		$dc->add(LocalEI::class, DiItem::class(LocalEI::class));
+		$dc->add(LocalE::class, DiItem::class(LocalE::class));
 
-		$actual = $dc->get(E::class);
-		$this->assertSame(EI::class, $actual->i::class);
+		$actual = $dc->get(LocalE::class);
+		$this->assertSame(LocalEI::class, $actual->i::class);
 	}
 
 	public function test_get_value_F()
 	{
 		$dc = new DiRegisterContainer();
-		$dc->add(I::class, DiItem::value(new A()));
-		$dc->add(F::class, DiItem::class(F::class));
+		$dc->add(LocalI::class, DiItem::value(new LocalA()));
+		$dc->add(LocalF::class, DiItem::class(LocalF::class));
 
-		$actual1 = $dc->get(F::class);
-		$this->assertSame(A::class, $actual1->i::class);
+		$actual1 = $dc->get(LocalF::class);
+		$this->assertSame(LocalA::class, $actual1->i::class);
 
-		$actual2 = $dc->get(F::class);
-		$this->assertSame(A::class, $actual2->i::class);
+		$actual2 = $dc->get(LocalF::class);
+		$this->assertSame(LocalA::class, $actual2->i::class);
 
 		$this->assertNotSame($actual1, $actual2);
 		$this->assertSame($actual1->i, $actual2->i);
@@ -212,8 +212,8 @@ class DiRegisterContainerTest extends TestClass
 	public function test_get_factory_G()
 	{
 		$dc = new DiRegisterContainer();
-		$dc->add(G::class, DiItem::factory(fn() => new G(10)));
-		$actual = $dc->get(G::class);
+		$dc->add(LocalG::class, DiItem::factory(fn() => new LocalG(10)));
+		$actual = $dc->get(LocalG::class);
 
 		$this->assertSame(10, $actual->num);
 	}
@@ -223,17 +223,17 @@ class DiRegisterContainerTest extends TestClass
 		$counter = 1;
 
 		$dc = new DiRegisterContainer();
-		$dc->add(G::class, DiItem::factory(function (IDiContainer $c, array $stack) use (&$counter) {
-			return new G($counter++);
+		$dc->add(LocalG::class, DiItem::factory(function (IDiContainer $c, array $stack) use (&$counter) {
+			return new LocalG($counter++);
 		}));
 
-		$actual1 = $dc->get(G::class);
+		$actual1 = $dc->get(LocalG::class);
 		$this->assertSame(1, $actual1->num);
 
-		$actual2 = $dc->get(G::class);
+		$actual2 = $dc->get(LocalG::class);
 		$this->assertSame(2, $actual2->num);
 
-		$actual3 = $dc->get(G::class);
+		$actual3 = $dc->get(LocalG::class);
 		$this->assertSame(3, $actual3->num);
 	}
 
@@ -242,17 +242,17 @@ class DiRegisterContainerTest extends TestClass
 		$counter = 10;
 
 		$dc = new DiRegisterContainer();
-		$dc->add(G::class, DiItem::factory(function (IDiContainer $c, array $stack) use (&$counter) {
-			return new G($counter++);
+		$dc->add(LocalG::class, DiItem::factory(function (IDiContainer $c, array $stack) use (&$counter) {
+			return new LocalG($counter++);
 		}, DiItem::LIFECYCLE_SINGLETON));
 
-		$actual1 = $dc->get(G::class);
+		$actual1 = $dc->get(LocalG::class);
 		$this->assertSame(10, $actual1->num);
 
-		$actual2 = $dc->get(G::class);
+		$actual2 = $dc->get(LocalG::class);
 		$this->assertSame(10, $actual2->num);
 
-		$actual3 = $dc->get(G::class);
+		$actual3 = $dc->get(LocalG::class);
 		$this->assertSame(10, $actual3->num);
 	}
 
@@ -260,11 +260,11 @@ class DiRegisterContainerTest extends TestClass
 	{
 		$dc = new DiRegisterContainer();
 
-		$dc->add(I::class, DiItem::class(A::class));
-		$dc->add(H::class, DiItem::class(H::class));
+		$dc->add(LocalI::class, DiItem::class(LocalA::class));
+		$dc->add(LocalH::class, DiItem::class(LocalH::class));
 
 		try {
-			$dc->get(H::class);
+			$dc->get(LocalH::class);
 			$this->fail();
 		} catch (DiContainerUndefinedTypeException $ex) {
 			$this->success();
@@ -272,85 +272,85 @@ class DiRegisterContainerTest extends TestClass
 			$this->fail($ex->getMessage());
 		}
 
-		$dc->add(B::class, DiItem::class(B::class));
+		$dc->add(LocalB::class, DiItem::class(LocalB::class));
 
-		$actual = $dc->get(H::class);
+		$actual = $dc->get(LocalH::class);
 
 
-		$this->assertSame(H::class, $actual::class);
-		$this->assertSame(A::class, $actual->i::class);
-		$this->assertSame(B::class, $actual->b::class);
+		$this->assertSame(LocalH::class, $actual::class);
+		$this->assertSame(LocalA::class, $actual->i::class);
+		$this->assertSame(LocalB::class, $actual->b::class);
 	}
 
 	public function test_get_type_J()
 	{
 		$dc = new DiRegisterContainer();
 
-		$dc->add(I::class, DiItem::class(A::class));
-		$dc->add(J::class, DiItem::class(J::class));
+		$dc->add(LocalI::class, DiItem::class(LocalA::class));
+		$dc->add(LocalJ::class, DiItem::class(LocalJ::class));
 
-		$actual1 = $dc->get(J::class);
-		$this->assertSame(J::class, $actual1::class);
-		$this->assertSame(A::class, $actual1->i::class);
+		$actual1 = $dc->get(LocalJ::class);
+		$this->assertSame(LocalJ::class, $actual1::class);
+		$this->assertSame(LocalA::class, $actual1->i::class);
 		$this->assertNull($actual1->b);
 
-		$dc->add(B::class, DiItem::class(B::class));
+		$dc->add(LocalB::class, DiItem::class(LocalB::class));
 
-		$actual2 = $dc->get(J::class);
+		$actual2 = $dc->get(LocalJ::class);
 
-		$this->assertSame(J::class, $actual2::class);
-		$this->assertSame(A::class, $actual2->i::class);
-		$this->assertSame(B::class, $actual2->b::class);
+		$this->assertSame(LocalJ::class, $actual2::class);
+		$this->assertSame(LocalA::class, $actual2->i::class);
+		$this->assertSame(LocalB::class, $actual2->b::class);
 	}
 
 	public function test_get_type_K()
 	{
 		$dc = new DiRegisterContainer();
 
-		$dc->add(I::class, DiItem::class(A::class));
-		$dc->add(K::class, DiItem::class(K::class));
+		$dc->add(LocalI::class, DiItem::class(LocalA::class));
+		$dc->add(LocalK::class, DiItem::class(LocalK::class));
 
-		$actual1 = $dc->get(K::class);
-		$this->assertSame(K::class, $actual1::class);
-		$this->assertSame(A::class, $actual1->i::class);
+		$actual1 = $dc->get(LocalK::class);
+		$this->assertSame(LocalK::class, $actual1::class);
+		$this->assertSame(LocalA::class, $actual1->i::class);
 		$this->assertSame(123, $actual1->b);
 
-		$dc->add(B::class, DiItem::class(B::class));
+		$dc->add(LocalB::class, DiItem::class(LocalB::class));
 
-		$actual2 = $dc->get(K::class);
+		$actual2 = $dc->get(LocalK::class);
 
-		$this->assertSame(K::class, $actual2::class);
-		$this->assertSame(A::class, $actual2->i::class);
-		$this->assertSame(B::class, $actual2->b::class);
+		$this->assertSame(LocalK::class, $actual2::class);
+		$this->assertSame(LocalA::class, $actual2->i::class);
+		$this->assertSame(LocalB::class, $actual2->b::class);
 	}
 
 	public function test_get_type_L()
 	{
 		$dc = new DiRegisterContainer();
 
-		$dc->add(I::class, DiItem::class(A::class));
-		$dc->add(L::class, DiItem::class(L::class));
+		$dc->add(LocalI::class, DiItem::class(LocalA::class));
+		$dc->add(LocalL::class, DiItem::class(LocalL::class));
 
-		$actual1 = $dc->get(L::class);
-		$this->assertSame(L::class, $actual1::class);
-		$this->assertSame(A::class, $actual1->i::class);
+		$actual1 = $dc->get(LocalL::class);
+		$this->assertSame(LocalL::class, $actual1::class);
+		$this->assertSame(LocalA::class, $actual1->i::class);
 		$this->assertSame(123, $actual1->b);
 
-		$dc->add(B::class, DiItem::class(B::class));
+		$dc->add(LocalB::class, DiItem::class(LocalB::class));
 
-		$actual2 = $dc->get(L::class);
+		$actual2 = $dc->get(LocalL::class);
 
-		$this->assertSame(L::class, $actual2::class);
-		$this->assertSame(A::class, $actual2->i::class);
-		$this->assertSame(B::class, $actual2->b::class);
+		$this->assertSame(LocalL::class, $actual2::class);
+		$this->assertSame(LocalA::class, $actual2->i::class);
+		$this->assertSame(LocalB::class, $actual2->b::class);
 
-		$dc->add(F::class, DiItem::class(F::class));
+		$dc->add(LocalF::class, DiItem::class(LocalF::class));
 
-		$actual3 = $dc->get(L::class);
+		$actual3 = $dc->get(LocalL::class);
 
-		$this->assertSame(L::class, $actual3::class);
-		$this->assertSame(A::class, $actual3->i::class);
-		$this->assertSame(F::class, $actual3->b::class);
+		$this->assertSame(LocalL::class, $actual3::class);
+		$this->assertSame(LocalA::class, $actual3->i::class);
+		$this->assertSame(LocalF::class, $actual3->b::class);
 	}
 
 	public function test_get_type_M()
@@ -358,10 +358,10 @@ class DiRegisterContainerTest extends TestClass
 		$dc = new DiRegisterContainer();
 
 		//$dc->add(I::class, DiItem::class(A::class));
-		$dc->add(M::class, DiItem::class(M::class));
+		$dc->add(LocalM::class, DiItem::class(LocalM::class));
 
-		$actual1 = $dc->get(M::class);
-		$this->assertSame(M::class, $actual1::class);
+		$actual1 = $dc->get(LocalM::class);
+		$this->assertSame(LocalM::class, $actual1::class);
 		try {
 			$actual1->i; // 未初期化アクセスは死ぬ
 			$this->fail();
@@ -369,79 +369,79 @@ class DiRegisterContainerTest extends TestClass
 			$this->success();
 		}
 
-		$dc->add(I::class, DiItem::class(A::class));
+		$dc->add(LocalI::class, DiItem::class(LocalA::class));
 
-		$actual2 = $dc->get(M::class);
-		$this->assertSame(M::class, $actual2::class);
-		$this->assertSame(A::class, $actual2->i::class);
+		$actual2 = $dc->get(LocalM::class);
+		$this->assertSame(LocalM::class, $actual2::class);
+		$this->assertSame(LocalA::class, $actual2->i::class);
 	}
 
 	public function test_new()
 	{
 		$dc = new DiRegisterContainer();
 
-		$dc->registerMapping(I::class, A::class);
-		$dc->registerClass(B::class);
-		$dc->registerClass(EI::class);
-		$dc->registerClass(E::class);
-		$dc->registerClass(H::class);
+		$dc->registerMapping(LocalI::class, LocalA::class);
+		$dc->registerClass(LocalB::class);
+		$dc->registerClass(LocalEI::class);
+		$dc->registerClass(LocalE::class);
+		$dc->registerClass(LocalH::class);
 
 		/** @var N */
-		$actual = $dc->new(N::class);
-		$this->assertSame(N::class, $actual::class);
-		$this->assertSame(H::class, $actual->h::class);
-		$this->assertSame(B::class, $actual->h->b::class);
-		$this->assertSame(A::class, $actual->h->i::class);
-		$this->assertSame(E::class, $actual->e::class);
-		$this->assertSame(EI::class, $actual->e->i::class);
+		$actual = $dc->new(LocalN::class);
+		$this->assertSame(LocalN::class, $actual::class);
+		$this->assertSame(LocalH::class, $actual->h::class);
+		$this->assertSame(LocalB::class, $actual->h->b::class);
+		$this->assertSame(LocalA::class, $actual->h->i::class);
+		$this->assertSame(LocalE::class, $actual->e::class);
+		$this->assertSame(LocalEI::class, $actual->e->i::class);
 	}
 
 	public function test_new_arguments()
 	{
 		$dc = new DiRegisterContainer();
 
-		$dc->registerMapping(I::class, A::class);
-		$dc->registerClass(B::class);
+		$dc->registerMapping(LocalI::class, LocalA::class);
+		$dc->registerClass(LocalB::class);
 
-		$actual1 = $dc->get(B::class);
-		$this->assertSame(B::class, $actual1::class);
-		$this->assertSame(A::class, $actual1->i::class);
+		$actual1 = $dc->get(LocalB::class);
+		$this->assertSame(LocalB::class, $actual1::class);
+		$this->assertSame(LocalA::class, $actual1->i::class);
 
-		$actual2 = $dc->new(B::class);
-		$this->assertSame(B::class, $actual2::class);
-		$this->assertSame(A::class, $actual2->i::class);
+		$actual2 = $dc->new(LocalB::class);
+		$this->assertSame(LocalB::class, $actual2::class);
+		$this->assertSame(LocalA::class, $actual2->i::class);
 
-		$actual3 = $dc->new(B::class, [0 => new A0()]);
-		$this->assertSame(B::class, $actual3::class);
-		$this->assertSame(A0::class, $actual3->i::class);
+		$actual3 = $dc->new(LocalB::class, [0 => new LocalA0()]);
+		$this->assertSame(LocalB::class, $actual3::class);
+		$this->assertSame(LocalA0::class, $actual3->i::class);
 
-		$actual4 = $dc->new(B::class, [1 => new A0()]);
-		$this->assertSame(B::class, $actual4::class);
-		$this->assertSame(A::class, $actual4->i::class);
+		$actual4 = $dc->new(LocalB::class, [1 => new LocalA0()]);
+		$this->assertSame(LocalB::class, $actual4::class);
+		$this->assertSame(LocalA::class, $actual4->i::class);
 
-		$actual5 = $dc->new(B::class, ['$i' => new A0()]);
-		$this->assertSame(B::class, $actual5::class);
-		$this->assertSame(A0::class, $actual5->i::class);
+		$actual5 = $dc->new(LocalB::class, ['$i' => new LocalA0()]);
+		$this->assertSame(LocalB::class, $actual5::class);
+		$this->assertSame(LocalA0::class, $actual5->i::class);
 
-		$actual6 = $dc->new(B::class, ['$I' => new A0()]);
-		$this->assertSame(B::class, $actual6::class);
-		$this->assertSame(A::class, $actual6->i::class);
+		$actual6 = $dc->new(LocalB::class, ['$I' => new LocalA0()]);
+		$this->assertSame(LocalB::class, $actual6::class);
+		$this->assertSame(LocalA::class, $actual6->i::class);
 	}
 
 	public function test_new_arguments_value_throw()
 	{
 		$dc = new DiRegisterContainer();
 
-		$dc->registerMapping(I::class, A::class);
-		$dc->registerValue($dc->new(B::class));
+		$dc->registerMapping(LocalI::class, LocalA::class);
+		$dc->registerValue($dc->new(LocalB::class));
 
-		$actual = $dc->new(B::class);
-		$this->assertSame(B::class, $actual::class);
-		$this->assertSame(A::class, $actual->i::class);
+		$actual = $dc->new(LocalB::class);
+		$this->assertSame(LocalB::class, $actual::class);
+		$this->assertSame(LocalA::class, $actual->i::class);
 
 		$this->expectException(DiContainerArgumentException::class);
-		$this->expectExceptionMessage(B::class . ': DiItem::TYPE_VALUE');
-		$dc->new(B::class, [0 => new A0()]);
+		$this->expectExceptionMessage(LocalB::class . ': DiItem::TYPE_VALUE');
+		$dc->new(LocalB::class, [0 => new LocalA0()]);
 		$this->fail();
 	}
 
@@ -449,16 +449,16 @@ class DiRegisterContainerTest extends TestClass
 	{
 		$dc = new DiRegisterContainer();
 
-		$dc->registerMapping(I::class, A::class);
-		$dc->registerClass(B::class, DiItem::LIFECYCLE_SINGLETON);
+		$dc->registerMapping(LocalI::class, LocalA::class);
+		$dc->registerClass(LocalB::class, DiItem::LIFECYCLE_SINGLETON);
 
-		$actual = $dc->new(B::class);
-		$this->assertSame(B::class, $actual::class);
-		$this->assertSame(A::class, $actual->i::class);
+		$actual = $dc->new(LocalB::class);
+		$this->assertSame(LocalB::class, $actual::class);
+		$this->assertSame(LocalA::class, $actual->i::class);
 
 		$this->expectException(DiContainerArgumentException::class);
-		$this->expectExceptionMessage(B::class . ': DiItem::LIFECYCLE_SINGLETON');
-		$dc->new(B::class, [0 => new A0()]);
+		$this->expectExceptionMessage(LocalB::class . ': DiItem::LIFECYCLE_SINGLETON');
+		$dc->new(LocalB::class, [0 => new LocalA0()]);
 		$this->fail();
 	}
 
@@ -466,110 +466,110 @@ class DiRegisterContainerTest extends TestClass
 	{
 		$dc = new DiRegisterContainer();
 
-		$actual1 = $dc->new(B::class, [I::class => new A()]);
-		$this->assertSame(A::class, $actual1->i::class);
+		$actual1 = $dc->new(LocalB::class, [LocalI::class => new LocalA()]);
+		$this->assertSame(LocalA::class, $actual1->i::class);
 
-		$actual2 = $dc->new(B::class, [I::class => new A0()]);
-		$this->assertSame(A0::class, $actual2->i::class);
+		$actual2 = $dc->new(LocalB::class, [LocalI::class => new LocalA0()]);
+		$this->assertSame(LocalA0::class, $actual2->i::class);
 	}
 
 	public function test_new_arguments_type_2()
 	{
 		$dc = new DiRegisterContainer();
-		$dc->registerMapping(I::class, A::class);
+		$dc->registerMapping(LocalI::class, LocalA::class);
 
-		$actual = $dc->new(P::class, [I::class => new A0()]);
-		$this->assertSame(A0::class, $actual->i1::class);
-		$this->assertSame(A::class, $actual->i2::class);
+		$actual = $dc->new(LocalP::class, [LocalI::class => new LocalA0()]);
+		$this->assertSame(LocalA0::class, $actual->i1::class);
+		$this->assertSame(LocalA::class, $actual->i2::class);
 	}
 
 	public function test_new_arguments_minus()
 	{
 		$dc = new DiRegisterContainer();
 
-		$actual1 = $dc->new(P::class, [-1 => new A(), -2 => new A0()]);
-		$this->assertSame(A::class, $actual1->i1::class);
-		$this->assertSame(A0::class, $actual1->i2::class);
+		$actual1 = $dc->new(LocalP::class, [-1 => new LocalA(), -2 => new LocalA0()]);
+		$this->assertSame(LocalA::class, $actual1->i1::class);
+		$this->assertSame(LocalA0::class, $actual1->i2::class);
 
-		$actual2 = $dc->new(P::class, [-2 => new A(), -1 => new A0()]);
-		$this->assertSame(A0::class, $actual2->i1::class);
-		$this->assertSame(A::class, $actual2->i2::class);
+		$actual2 = $dc->new(LocalP::class, [-2 => new LocalA(), -1 => new LocalA0()]);
+		$this->assertSame(LocalA0::class, $actual2->i1::class);
+		$this->assertSame(LocalA::class, $actual2->i2::class);
 	}
 
 	public function test_new_arguments_union()
 	{
 		$dc = new DiRegisterContainer();
-		$dc->registerMapping(I::class, EI::class);
+		$dc->registerMapping(LocalI::class, LocalEI::class);
 
-		$actual = $dc->new(Q::class, [-1 => new A(), I::class => new A0(), B::class => new B(new A0())]);
-		$this->assertSame(A0::class, $actual->i1::class);
-		$this->assertSame(B::class, $actual->i2::class);
-		$this->assertSame(A0::class, $actual->i2->i::class);
-		$this->assertSame(A::class, $actual->i3::class);
-		$this->assertSame(EI::class, $actual->i4::class);
+		$actual = $dc->new(LocalQ::class, [-1 => new LocalA(), LocalI::class => new LocalA0(), LocalB::class => new LocalB(new LocalA0())]);
+		$this->assertSame(LocalA0::class, $actual->i1::class);
+		$this->assertSame(LocalB::class, $actual->i2::class);
+		$this->assertSame(LocalA0::class, $actual->i2->i::class);
+		$this->assertSame(LocalA::class, $actual->i3::class);
+		$this->assertSame(LocalEI::class, $actual->i4::class);
 	}
 
 	public function test_call_instance()
 	{
 		$dc = new DiRegisterContainer();
 
-		$dc->registerMapping(I::class, A::class);
-		$instance = $dc->new(O_instance::class);
+		$dc->registerMapping(LocalI::class, LocalA::class);
+		$instance = $dc->new(LocalOInstance::class);
 
 		$actual = $dc->call([$instance, 'method']);
-		$this->assertSame(A::class, $actual['i']::class);
+		$this->assertSame(LocalA::class, $actual['i']::class);
 	}
 
 	public function test_call_static()
 	{
 		$dc = new DiRegisterContainer();
 
-		$dc->registerMapping(I::class, A::class);
+		$dc->registerMapping(LocalI::class, LocalA::class);
 
-		$actual = $dc->call(O_static::class . '::method');
-		$this->assertSame(A::class, $actual['i']::class);
+		$actual = $dc->call(LocalOStatic::class . '::method');
+		$this->assertSame(LocalA::class, $actual['i']::class);
 	}
 
 	public function test_call_function()
 	{
 		$dc = new DiRegisterContainer();
 
-		$dc->registerMapping(I::class, A::class);
+		$dc->registerMapping(LocalI::class, LocalA::class);
 
 		/** @disregard P1006 */
 		$actual = $dc->call(O_function::class);
-		$this->assertSame(A::class, $actual['i']::class);
+		$this->assertSame(LocalA::class, $actual['i']::class);
 	}
 
 	public function test_call_callable()
 	{
 		$dc = new DiRegisterContainer();
 
-		$dc->registerMapping(I::class, A::class);
+		$dc->registerMapping(LocalI::class, LocalA::class);
 
-		$actual1 = $dc->call(fn(I $i) => ['i' => $i]);
-		$this->assertSame(A::class, $actual1['i']::class);
+		$actual1 = $dc->call(fn(LocalI $i) => ['i' => $i]);
+		$this->assertSame(LocalA::class, $actual1['i']::class);
 
-		$actual2 = $dc->call(fn(#[Inject(EI::class)] I $i) => ['i' => $i]);
-		$this->assertSame(A::class, $actual2['i']::class);
+		$actual2 = $dc->call(fn(#[Inject(LocalEI::class)] LocalI $i) => ['i' => $i]);
+		$this->assertSame(LocalA::class, $actual2['i']::class);
 
-		$dc->registerMapping(EI::class, EI::class);
-		$actual3 = $dc->call(fn(#[Inject(EI::class)] I $i) => ['i' => $i]);
-		$this->assertSame(EI::class, $actual3['i']::class);
+		$dc->registerMapping(LocalEI::class, LocalEI::class);
+		$actual3 = $dc->call(fn(#[Inject(LocalEI::class)] LocalI $i) => ['i' => $i]);
+		$this->assertSame(LocalEI::class, $actual3['i']::class);
 	}
 }
 
-interface I
+interface LocalI
 {
 	//NOP
 }
 
-class A implements I
+class LocalA implements LocalI
 {
 	//NOP
 }
 
-class A0 extends A
+class LocalA0 extends LocalA
 {
 	public function __construct()
 	{
@@ -577,60 +577,60 @@ class A0 extends A
 	}
 }
 
-class B
+class LocalB
 {
-	public function __construct(public I $i)
+	public function __construct(public LocalI $i)
 	{
 		//NOP
 	}
 }
 
-class C
+class LocalC
 {
-	public function __construct(public B $b, public A $a, public I $i)
+	public function __construct(public LocalB $b, public LocalA $a, public LocalI $i)
 	{
 		//NOP
 	}
 }
 
-class D1
+class LocalD1
 {
 	//NOP
 }
-class D2
+class LocalD2
 {
 	//NOP
 }
-class D
+class LocalD
 {
-	public function __construct(public D1|D2 $union)
+	public function __construct(public LocalD1|LocalD2 $union)
 	{
 		//NOP
 	}
 }
 
-class EI implements I
+class LocalEI implements LocalI
 {
 	//NOP
 }
 
-class E
+class LocalE
 {
-	public function __construct(#[Inject(EI::class)] public I $i)
+	public function __construct(#[Inject(LocalEI::class)] public LocalI $i)
 	{
 		//NOP
 	}
 }
 
-class F
+class LocalF
 {
-	public function __construct(public I $i)
+	public function __construct(public LocalI $i)
 	{
 		//NOP
 	}
 }
 
-class G
+class LocalG
 {
 	public function __construct(public int $num)
 	{
@@ -638,103 +638,101 @@ class G
 	}
 }
 
-class H
+class LocalH
 {
 	public function __construct(
-		public I $i,
-		public B $b
+		public LocalI $i,
+		public LocalB $b
 	) {
 		//NOP
 	}
 }
 
-class J
+class LocalJ
 {
 	public function __construct(
-		public I $i,
-		public ?B $b
+		public LocalI $i,
+		public ?LocalB $b
 	) {
 		//NOP
 	}
 }
 
-class K
+class LocalK
 {
 	public function __construct(
-		public I $i,
-		public int|B $b = 123
+		public LocalI $i,
+		public int|LocalB $b = 123
 	) {
 		//NOP
 	}
 }
 
-class L
+class LocalL
 {
 	public function __construct(
-		public I $i,
-		#[Inject(F::class)]
-		public int|B|F $b = 123
+		public LocalI $i,
+		#[Inject(LocalF::class)]
+		public int|LocalB|LocalF $b = 123
 	) {
 		//NOP
 	}
 }
 
-class M
+class LocalM
 {
 	#[Inject]
-	public I $i;
+	public LocalI $i;
 }
 
-class N
+class LocalN
 {
 	public function __construct(
-		public H $h,
-		public E $e
+		public LocalH $h,
+		public LocalE $e
 	) {
 		//NOP
 	}
 }
 
-//phpcs:ignore Squiz.Classes.ValidClassName.NotPascalCase
-class O_instance
+class LocalOInstance
 {
-	public function method(I $i)
+	public function method(LocalI $i)
 	{
 		return ['i' => $i];
 	}
 }
 
-//phpcs:ignore Squiz.Classes.ValidClassName.NotPascalCase
-class O_static
+class LocalOStatic
 {
-	public static function method(I $i)
+	public static function method(LocalI $i)
 	{
 		return ['i' => $i];
 	}
 }
 
-function O_function(I $i)
+function O_function(LocalI $i)
 {
 	return ['i' => $i];
 }
 
-class P
+class LocalP
 {
 	public function __construct(
-		public I $i1,
-		public I $i2
+		public LocalI $i1,
+		public LocalI $i2
 	) {
 		//NOP
 	}
 }
 
-class Q
+class LocalQ
 {
 	public function __construct(
-		public int|I|B $i1,
-		public int|I|B $i2,
-		public int|I|B $i3,
-		public int|I|B $i4
+		public int|LocalI|LocalB $i1,
+		public int|LocalI|LocalB $i2,
+		public int|LocalI|LocalB $i3,
+		public int|LocalI|LocalB $i4
 	) {
 		//NOP
 	}

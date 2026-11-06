@@ -12,29 +12,6 @@ use PeServerTest\TestClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use TypeError;
 
-interface TestI
-{
-	public function get(): string;
-}
-class TestA implements TestI
-{
-	public function __construct(
-		private string $var
-	) {
-	}
-	public function get(): string
-	{
-		return $this->var;
-	}
-}
-class TestB extends TestA
-{
-	public function __construct(
-		string $var
-	) {
-		parent::__construct($var);
-	}
-}
 class VectorTest extends TestClass
 {
 	public function test_create()
@@ -89,17 +66,17 @@ class VectorTest extends TestClass
 			$this->success();
 		}
 
-		$list2 = Vector::create([new TestA('A')], false);
-		$list2->add(new TestB('B'));
+		$list2 = Vector::create([new LocalTestA('A')], false);
+		$list2->add(new LocalTestB('B'));
 
 		try {
-			$list2->add(new TestB('B'));
+			$list2->add(new LocalTestB('B'));
 		} catch (TypeError $err) {
 			$this->success();
 		}
 
 		try {
-			$list2->add(new class ('I') implements TestI {
+			$list2->add(new class ('I') implements LocalTestI {
 				public function get(): string
 				{
 					return 'I';
@@ -284,5 +261,32 @@ class VectorTest extends TestClass
 		foreach ($list as $key => $actual) {
 			$this->assertSame($expected[$key], $actual);
 		}
+	}
+}
+
+interface LocalTestI
+{
+	public function get(): string;
+}
+
+class LocalTestA implements LocalTestI
+{
+	public function __construct(
+		private string $var
+	) {
+	}
+
+	public function get(): string
+	{
+		return $this->var;
+	}
+}
+
+class LocalTestB extends LocalTestA
+{
+	public function __construct(
+		string $var
+	) {
+		parent::__construct($var);
 	}
 }
