@@ -36,7 +36,7 @@ class OutputBuffer extends DisposerBase
 	/**
 	 * バッファリング中のデータ取得。
 	 *
-	 * データは破棄される。
+	 * 書き込みがない限りバッファの内容は保持される。
 	 *
 	 * @return Binary バッファリング中のデータ。
 	 * @throws OutputBufferException 取得失敗。
