@@ -6,9 +6,9 @@ call env.bat
 echo %DATE:/=-%T%TIME: =0%+09:00
 
 if "%1"=="" (
-	"%BASH%" -e ..\test.sh --ignore-namespace --mode uit --phpunit:exclude-group slow
+	"%BASH%" -e ..\test.sh --ignore-coverage --ignore-namespace --mode uit --phpunit:exclude-group slow
 ) else (
-	"%BASH%" -e ..\test.sh --ignore-namespace %*
+	"%BASH%" -e ..\test.sh %*
 )
 
 echo.

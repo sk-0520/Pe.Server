@@ -18,11 +18,11 @@ readonly class Inject
 {
 	/**
 	 * 生成。
-	 *
-	 * @param string|class-string $id 優先ID。コンストラクタ設定時は必須。
 	 */
 	public function __construct(
+		/** @var string|class-string $id 優先ID。コンストラクタ設定時は必須。 */
 		public string $id = Text::EMPTY
 	) {
+		//NOP
 	}
 }
