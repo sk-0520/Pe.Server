@@ -53,7 +53,6 @@ final class AppTemplate
 			'contact_url' => $families->contactUrl,
 			'app_project_url' => $families->appProjectUrl,
 			'server_project_url' => $families->serverProjectUrl,
-			'forum_url' => $families->forumUrl,
 			'website_url' => $families->websiteUrl,
 		];
 

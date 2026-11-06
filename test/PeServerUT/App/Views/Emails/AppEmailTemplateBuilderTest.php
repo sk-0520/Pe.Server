@@ -75,11 +75,10 @@ class AppEmailTemplateBuilderTest extends TestClass
 		$html = (new AppEmailTemplateBuilder())->build('mail_signup_step1', 'ユーザー登録用URL通知', [
 			'url' => 'http://localhost/account/signup/example-token',
 			'app' => [
-				'server_url' => 'https://peserver.site/',
-				'contact_url' => 'https://peserver.site/contact',
+				'server_url' => 'https://pe.content-type-text.net/',
+				'contact_url' => 'https://pe.content-type-text.net/contact',
 				'app_project_url' => 'https://github.com/sk-0520/Pe',
 				'server_project_url' => 'https://github.com/sk-0520/Pe.Server',
-				'forum_url' => 'https://groups.google.com/g/pe_development',
 				'website_url' => 'https://content-type-text.net/',
 			],
 		]);
@@ -93,7 +92,6 @@ class AppEmailTemplateBuilderTest extends TestClass
 		$this->assertStringContainsString('<DIV class="main" style="text-align:center">', $html);
 		$this->assertStringContainsString('http://localhost/account/signup/example-token', $html);
 		$this->assertStringContainsString('<UL class="footer">', $html);
-		$this->assertStringContainsString('https://groups.google.com/g/pe_development', $html);
 		$this->assertStringNotContainsString('xmlns="http://www.w3.org/1999/xhtml"', $html);
 	}
 

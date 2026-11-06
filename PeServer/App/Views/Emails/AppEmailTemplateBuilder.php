@@ -350,9 +350,8 @@ CSS;
 		$footerLinks = [
 			'Pe.Server' => $this->getNonEmptyString($app, 'server_url'),
 			'問い合わせ' => $this->getNonEmptyString($app, 'contact_url'),
-			'Pe.Server プロジェクト' => $this->getNonEmptyString($app, 'app_project_url'),
-			'Pe プロジェクト' => $this->getNonEmptyString($app, 'server_project_url'),
-			'フォーラム' => $this->getNonEmptyString($app, 'forum_url'),
+			'Pe.Server プロジェクト' => $this->getNonEmptyString($app, 'server_project_url'),
+			'Pe プロジェクト' => $this->getNonEmptyString($app, 'app_project_url'),
 			'Webサイト' => $this->getNonEmptyString($app, 'website_url'),
 		];
 		$footerItems = [];

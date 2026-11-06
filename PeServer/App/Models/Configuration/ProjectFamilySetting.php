@@ -23,8 +23,6 @@ class ProjectFamilySetting
 	public string $appProjectUrl;
 	#[Mapping(name: 'server_project_url')]
 	public string $serverProjectUrl;
-	#[Mapping(name: 'forum_url')]
-	public string $forumUrl;
 	#[Mapping(name: 'website_url')]
 	public string $websiteUrl;
 	#[Mapping(name: 'api_doc_url')]
