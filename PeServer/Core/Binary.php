@@ -287,6 +287,12 @@ readonly final class Binary implements ArrayAccess, IteratorAggregate, Countable
 
 	#region Stringable
 
+	/**
+	 * 文字列変換。
+	 *
+	 * NULLバイトを含むデータは16進数表現に変換する。
+	 * NULLバイトを拒否して明示的に文字列化する場合は `toString` を使う。
+	 */
 	public function __toString(): string
 	{
 		if ($this->hasNull()) {
