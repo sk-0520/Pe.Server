@@ -207,12 +207,13 @@ class Regex
 			throw new ArgumentException();
 		}
 
-		$result = preg_replace_callback($this->normalizePattern($pattern), $replacement, $source, $limit);
-		if ($result === null) {
+		$result = ErrorHandler::trap(fn() => preg_replace_callback($this->normalizePattern($pattern), $replacement, $source, $limit));
+		if ($result->isFailureOrFailValue(null)) {
 			throw new RegexException(preg_last_error_msg(), preg_last_error());
 		}
 
-		return $result;
+		/** @disregard P1006 */
+		return $result->value;
 	}
 
 	/**
@@ -221,15 +222,17 @@ class Regex
 	 * @param string $source 入力文字列。
 	 * @param string $pattern パターン。
 	 * @return string[]
+	 * @throws RegexException 正規表現処理失敗。
 	 */
 	public function split(string $source, string $pattern): array
 	{
-		$result = preg_split($this->normalizePattern($pattern), $source);
-		if ($result === false) {
+		$result = ErrorHandler::trap(fn() => preg_split($this->normalizePattern($pattern), $source));
+		if ($result->isFailureOrFalse()) {
 			throw new RegexException(preg_last_error_msg(), preg_last_error());
 		}
 
-		return $result;
+		/** @disregard P1006 */
+		return $result->value;
 	}
 
 	#endregion

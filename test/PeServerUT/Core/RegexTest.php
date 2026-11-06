@@ -177,6 +177,13 @@ class RegexTest extends TestClass
 		$this->assertSame($expected, $actual);
 	}
 
+	public function test_replaceCallback_throw()
+	{
+		$regex = new Regex();
+		$this->expectException(RegexException::class);
+		$regex->replaceCallback('abcABC', '/(/', fn($matches) => 'X');
+	}
+
 	public static function provider_split()
 	{
 		return [
@@ -191,5 +198,12 @@ class RegexTest extends TestClass
 		$regex = new Regex();
 		$actual = $regex->split($source, $pattern);
 		$this->assertSame($expected, $actual);
+	}
+
+	public function test_split_throw()
+	{
+		$regex = new Regex();
+		$this->expectException(RegexException::class);
+		$regex->split('abcABC', '/(/');
 	}
 }
