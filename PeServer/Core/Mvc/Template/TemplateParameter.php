@@ -23,5 +23,6 @@ class TemplateParameter
 		public array $values,
 		public array $errors
 	) {
+		//NOP
 	}
 }

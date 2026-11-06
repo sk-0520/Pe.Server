@@ -16,6 +16,7 @@ abstract class TemplateBase implements ITemplate
 	protected function __construct(
 		protected TemplateOptions $options
 	) {
+		//NOP
 	}
 
 	#region function

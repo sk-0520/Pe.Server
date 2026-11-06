@@ -33,5 +33,6 @@ class TemplateOptions
 		public WebSecurity $webSecurity,
 		public string $temporaryDirectoryPath
 	) {
+		//NOP
 	}
 }
