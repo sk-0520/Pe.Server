@@ -1,0 +1,12 @@
+
+services:
+  www:
+    build: ./images/www
+    container_name: www-container
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ../:/app
+      - X:/:/app-data
