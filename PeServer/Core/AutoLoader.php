@@ -28,7 +28,7 @@ class AutoLoader
 	 * @var array
 	 * @phpstan-var array<NamespacePrefixAlias,EnabledMappingIncludesAlias>
 	 */
-	private $setting = [];
+	private array $setting = [];
 
 	#endregion
 
@@ -89,7 +89,12 @@ class AutoLoader
 	 */
 	protected function adjustNamespacePrefix(string $namespacePrefix): string
 	{
-		return trim($namespacePrefix, "\\ \t") . '\\';
+		$fixedNamespacePrefix = trim($namespacePrefix, "\\ \t");
+		if ($fixedNamespacePrefix === '') {
+			return '';
+		}
+
+		return $fixedNamespacePrefix . '\\';
 	}
 
 	/**
@@ -285,11 +290,8 @@ class AutoLoader
 	{
 		foreach ($this->setting as $namespacePrefix => $mapping) {
 			if (str_starts_with($fullName, $namespacePrefix)) {
-				foreach ($mapping['includes'] as $aliasClassName => $includeClassName) {
-					if ($aliasClassName === $fullName) {
-						$fullName = $includeClassName;
-						break;
-					}
+				if (isset($mapping['includes'][$fullName])) {
+					$fullName = $mapping['includes'][$fullName];
 				}
 
 				$classBaseName = substr($fullName, strlen($namespacePrefix));

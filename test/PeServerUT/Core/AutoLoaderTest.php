@@ -62,6 +62,52 @@ class AutoLoaderTest extends TestClass
 		$this->success();
 	}
 
+	public function test_findIncludeFile_rootNamespace()
+	{
+		$autoLoader = new LocalAutoLoader();
+		$autoLoader->set('', [
+			'directory' => dirname(__DIR__, 2)
+		]);
+
+		$this->assertSame(
+			__FILE__,
+			$autoLoader->findIncludeFile('PeServerUT\\Core\\AutoLoaderTest')
+		);
+	}
+
+	public function test_findIncludeFile_namespace()
+	{
+		$autoLoader = new LocalAutoLoader();
+		$autoLoader->set('PeServerUT', [
+			'directory' => dirname(__DIR__)
+		]);
+
+		$this->assertSame(
+			__FILE__,
+			$autoLoader->findIncludeFile('PeServerUT\\Core\\AutoLoaderTest')
+		);
+	}
+
+	public function test_findIncludeFile_includes()
+	{
+		$baseDirectory = dirname(__DIR__, 3);
+		$autoLoader = new LocalAutoLoader();
+		$autoLoader->add('Alias', [
+			'directory' => $baseDirectory,
+			'includes' => [
+				'Alias\\MappedAutoLoader' => 'PeServer\\Core\\AutoLoader'
+			]
+		]);
+		$autoLoader->add('PeServer\\Core', [
+			'directory' => $baseDirectory . DIRECTORY_SEPARATOR . 'PeServer' . DIRECTORY_SEPARATOR . 'Core'
+		]);
+
+		$this->assertSame(
+			$baseDirectory . DIRECTORY_SEPARATOR . 'PeServer' . DIRECTORY_SEPARATOR . 'Core' . DIRECTORY_SEPARATOR . 'AutoLoader.php',
+			$autoLoader->findIncludeFile('Alias\\MappedAutoLoader')
+		);
+	}
+
 	public function test_set_empty_dir_throw()
 	{
 		$autoLoader = new AutoLoader();
@@ -177,5 +223,13 @@ class AutoLoaderTest extends TestClass
 		$autoLoader->add($second, [
 			'directory' => __DIR__,
 		]);
+	}
+}
+
+class LocalAutoLoader extends AutoLoader
+{
+	public function findIncludeFile(string $fullName): ?string
+	{
+		return parent::findIncludeFile($fullName);
 	}
 }
