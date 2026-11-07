@@ -267,7 +267,7 @@ abstract class Text
 	 * @param string $needle 検索文字列。
 	 * @param int $offset 開始文字数目。
 	 * @phpstan-param non-negative-int $offset
-	 * @return int 見つかった文字位置。見つかんない場合は `-1`
+	 * @return int 見つかった文字位置。見つからない場合、または offset が文字列長を超える場合は `-1`
 	 * @phpstan-return non-negative-int|-1
 	 * @throws ArgumentException
 	 */
@@ -275,6 +275,10 @@ abstract class Text
 	{
 		if ($offset < 0) { //@phpstan-ignore-line non-negative-int
 			throw new ArgumentException('$offset');
+		}
+
+		if (self::getLength($haystack) < $offset) {
+			return -1;
 		}
 
 		$result = mb_strpos($haystack, $needle, $offset);
@@ -292,7 +296,7 @@ abstract class Text
 	 * @param string $needle 検索文字列。
 	 * @param int $offset 終端文字数目。
 	 * @phpstan-param non-negative-int $offset
-	 * @return int 見つかった文字位置。見つかんない場合は `-1`
+	 * @return int 見つかった文字位置。見つからない場合、または offset が文字列長を超える場合は `-1`
 	 * @phpstan-return non-negative-int|-1
 	 * @throws ArgumentException
 	 */
@@ -300,6 +304,10 @@ abstract class Text
 	{
 		if ($offset < 0) { //@phpstan-ignore-line [DOCTYPE]
 			throw new ArgumentException('$offset');
+		}
+
+		if (self::getLength($haystack) < $offset) {
+			return -1;
 		}
 
 		$result = mb_strrpos($haystack, $needle, $offset);

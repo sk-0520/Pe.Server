@@ -206,6 +206,8 @@ class TextTest extends TestClass
 
 			[3, 'abcあいう☃⛄', 'あ', 3],
 			[-1, 'abcあいう☃⛄', '☃', 7],
+			[-1, 'abc', 'a', 4],
+			[-1, 'abc', 'a', 3],
 		];
 	}
 
@@ -228,6 +230,16 @@ class TextTest extends TestClass
 		$this->expectException(ArgumentException::class);
 		Text::getLastPosition('abc', 'b', -1);
 		$this->fail();
+	}
+
+	public function test_getLastPosition_outOfRangeOffset()
+	{
+		$this->assertSame(-1, Text::getLastPosition('abc', 'a', 4));
+	}
+
+	public function test_getLastPosition_offsetAtLength()
+	{
+		$this->assertSame(-1, Text::getLastPosition('abc', 'a', 3));
 	}
 
 	public static function provider_startsWith()
