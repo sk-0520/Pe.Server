@@ -12,6 +12,7 @@ use PeServer\Core\Text;
  *
  * * コンストラクタ: 割り当ての型を強制。
  * * メンバ変数: 生成後に割り当て処理を実施。
+ *   * readonly プロパティが初期化済みの場合、再代入によりエラーとなる。
  */
 #[Attribute]
 readonly class Inject

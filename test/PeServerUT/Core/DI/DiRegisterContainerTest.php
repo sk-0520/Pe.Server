@@ -376,6 +376,52 @@ class DiRegisterContainerTest extends TestClass
 		$this->assertSame(LocalA::class, $actual2->i::class);
 	}
 
+	public function test_readonly_member_injection()
+	{
+		$dc = new DiRegisterContainer();
+		$count = 0;
+		$dc->add(LocalI::class, DiItem::factory(function () use (&$count) {
+			$count++;
+			return new LocalA();
+		}));
+		$dc->registerClass(LocalReadonlyMember::class);
+		$dc->registerClass(LocalReadonlyMemberWithConstructor::class);
+
+		$unregistered = $dc->new(LocalInheritedReadonlyMember::class);
+		$this->assertInstanceOf(LocalA::class, $unregistered->getProtected());
+		$this->assertInstanceOf(LocalA::class, $unregistered->getPrivate());
+		$this->assertSame(2, $count);
+
+		$registered = $dc->get(LocalReadonlyMember::class);
+		$this->assertInstanceOf(LocalA::class, $registered->i);
+		$this->assertSame(3, $count);
+
+		$withConstructor = $dc->get(LocalReadonlyMemberWithConstructor::class);
+		$this->assertInstanceOf(LocalA::class, $withConstructor->i);
+		$this->assertSame(4, $count);
+
+		$dc->add('factory', DiItem::factory(fn() => new LocalReadonlyMember()));
+		$factory = $dc->get('factory');
+		$this->assertInstanceOf(LocalA::class, $factory->i);
+		$this->assertSame(5, $count);
+
+		$dc->add('singleton', DiItem::factory(fn() => new LocalReadonlyMember(), DiItem::LIFECYCLE_SINGLETON));
+		$singleton = $dc->get('singleton');
+		$this->assertInstanceOf(LocalA::class, $singleton->i);
+		$this->assertSame($singleton, $dc->get('singleton'));
+		$this->assertSame(6, $count);
+	}
+
+	public function test_readonly_member_already_initialized()
+	{
+		$dc = new DiRegisterContainer();
+		$dc->registerMapping(LocalI::class, LocalA::class);
+		$dc->add('initialized', DiItem::factory(fn() => new LocalInitializedReadonlyMember()));
+
+		$this->expectException(Error::class);
+		$dc->get('initialized');
+	}
+
 	public function test_new()
 	{
 		$dc = new DiRegisterContainer();
@@ -683,6 +729,57 @@ class LocalM
 {
 	#[Inject]
 	public LocalI $i;
+}
+
+class LocalReadonlyMember
+{
+	#[Inject]
+	public readonly LocalI $i;
+}
+
+class LocalReadonlyMemberWithConstructor
+{
+	#[Inject]
+	public readonly LocalI $i;
+
+	public function __construct()
+	{
+		//NOP
+	}
+}
+
+class LocalInitializedReadonlyMember
+{
+	#[Inject]
+	public readonly LocalI $i;
+
+	public function __construct()
+	{
+		$this->i = new LocalA();
+	}
+}
+
+class LocalReadonlyMemberBase
+{
+	#[Inject]
+	protected readonly LocalI $protected;
+	#[Inject]
+	private readonly LocalI $private;
+
+	public function getProtected(): LocalI
+	{
+		return $this->protected;
+	}
+
+	public function getPrivate(): LocalI
+	{
+		return $this->private;
+	}
+}
+
+class LocalInheritedReadonlyMember extends LocalReadonlyMemberBase
+{
+	//NOP
 }
 
 class LocalN

@@ -272,8 +272,17 @@ class DiContainer extends DisposerBase implements IDiContainer
 		// 	$properties = array_merge($properties, $parentProperties); //いっつもわからんくなる。何が正しいのか
 		// }
 		$properties = ReflectionUtility::getAllProperties($reflectionClass);
+		$processedProperties = [];
 
 		foreach ($properties as $property) {
+			$propertyKey = $property->isPrivate()
+				? $property->getDeclaringClass()->getName() . '::' . $property->getName()
+				: $property->getName();
+			if (isset($processedProperties[$propertyKey])) {
+				continue;
+			}
+			$processedProperties[$propertyKey] = true;
+
 			// コンストラクタからプロパティになりあがっている場合はそっとしておく
 			if ($property->isPromoted()) {
 				continue;
@@ -337,10 +346,9 @@ class DiContainer extends DisposerBase implements IDiContainer
 		} else {
 			assert($item->type === DiItem::TYPE_FACTORY); //@phpstan-ignore-line
 			$result = call_user_func($item->data, $this, $callStack);
-		}
-
-		if (is_object($result)) {
-			$this->setMembers($result, $level, $mappingKeyOnly, $callStack);
+			if (is_object($result)) {
+				$this->setMembers($result, $level, $mappingKeyOnly, $callStack);
+			}
 		}
 
 		if ($item->lifecycle === DiItem::LIFECYCLE_SINGLETON) {
