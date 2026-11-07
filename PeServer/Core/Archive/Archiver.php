@@ -6,6 +6,7 @@ namespace PeServer\Core\Archive;
 
 use PeServer\Core\Binary;
 use PeServer\Core\Errors\ErrorHandler;
+use PeServer\Core\Throws\ArchiveEntryException;
 use PeServer\Core\Throws\ArchiveException;
 use PeServer\Core\Throws\Throws;
 use ValueError;
@@ -104,7 +105,10 @@ abstract class Archiver
 		}
 
 		foreach ($entryFiles as $entryFile) {
-			$zipArchive->addFile($entryFile->path, $entryFile->entry);
+			$result = ErrorHandler::trap(fn() => $zipArchive->addFile($entryFile->path, $entryFile->entry));
+			if ($result->isFailureOrFalse()) {
+				throw new ArchiveEntryException(ArchiveEntryException::MODE_ADD_FILE);
+			}
 		}
 
 		$zipArchive->close();

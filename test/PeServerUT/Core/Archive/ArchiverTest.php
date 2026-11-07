@@ -9,6 +9,7 @@ use PeServer\Core\Archive\ArchiveEntry;
 use PeServer\Core\Binary;
 use PeServer\Core\IO\Directory;
 use PeServer\Core\IO\Path;
+use PeServer\Core\Throws\ArchiveEntryException;
 use PeServer\Core\Throws\ArchiveException;
 use PeServerTest\TestClass;
 use ZipArchive;
@@ -67,6 +68,25 @@ class ArchiverTest extends TestClass
 		$this->expectExceptionMessage("empty: \$entryFiles");
 		Archiver::compressZip($path, []);
 		$this->fail();
+	}
+
+	public function test_compressZip_throw_addFile()
+	{
+		$dir = $this->testDir();
+		$zipPath = $dir->newPath("missing-" . bin2hex(random_bytes(5)) . ".zip");
+		$missingPath = $dir->newPath("missing-" . bin2hex(random_bytes(5)) . ".txt");
+
+		try {
+			Archiver::compressZip($zipPath, [
+				new ArchiveEntry($missingPath, "missing.txt"),
+			]);
+		} catch (ArchiveEntryException $exception) {
+			$this->assertSame(ArchiveEntryException::MODE_ADD_FILE, $exception->mode);
+			$this->assertFileDoesNotExist($zipPath);
+			return;
+		}
+
+		$this->fail("Expected ArchiveEntryException");
 	}
 
 	public function test_compressZip()
