@@ -51,7 +51,7 @@ interface IDiContainer extends ContainerInterface
 	 *  * 未指定パラメータはDIコンテナ側で生成する
 	 * @return object
 	 * @phpstan-return ($idOrClassName is class-string<T> ? T: object)
-	 * @throws DiContainerArgumentException パラメータ指定さている場合に対象ID($idOrClassName)がシングルトン・値の場合に投げられる。
+	 * @throws DiContainerArgumentException パラメータ指定されている場合に対象ID($idOrClassName)がシングルトン・値の場合に投げられる。
 	 */
 	public function new(string $idOrClassName, array $arguments = []): object;
 

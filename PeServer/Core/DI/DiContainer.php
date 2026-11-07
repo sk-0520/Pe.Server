@@ -241,15 +241,15 @@ class DiContainer extends DisposerBase implements IDiContainer
 		$classReflection = new ReflectionClass($className);
 		$constructor = $classReflection->getConstructor();
 		if ($constructor === null) {
-			return new $className();
+			$instance = new $className();
+		} else {
+			$parameters = $this->generateParameterValues($constructor, $arguments, $level, $mappingKeyOnly, $callStack);
+			$instance = new $className(...$parameters);
 		}
 
-		$parameters = $this->generateParameterValues($constructor, $arguments, $level, $mappingKeyOnly, $callStack);
+		$this->setMembers($instance, $level, $mappingKeyOnly, $callStack);
 
-		$result = new $className(...$parameters);
-		$this->setMembers($result, $level, $mappingKeyOnly, $callStack);
-
-		return $result;
+		return $instance;
 	}
 
 	/**
