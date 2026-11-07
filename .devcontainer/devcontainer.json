@@ -10,11 +10,6 @@
 			"type": "bind",
 			"source": "${localWorkspaceFolder}",
 			"target": "${containerWorkspaceFolder}"
-		},
-		{
-			"type": "bind",
-			"source": "X:/",
-			"target": "/app-data"
 		}
 	],
 	// Features to add to the dev container. More info: https://containers.dev/features.

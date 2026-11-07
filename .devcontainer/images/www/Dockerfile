@@ -5,7 +5,8 @@ ENV APACHE_DOCUMENT_ROOT /app/public_html
 WORKDIR /app
 
 RUN a2enmod rewrite && \
-	mkdir /app-data && chown www-data -R /app-data && \
+	mkdir /app-data && \
+	chown www-data -R /app-data && \
 	apt update && \
 	apt-get install -y \
 		# dev
@@ -14,8 +15,7 @@ RUN a2enmod rewrite && \
 		# nodejs npm \
 		# GD
 		libpq-dev libfreetype6-dev libjpeg62-turbo-dev libpng-dev && \
-	pecl install xdebug \
-	rm --force --recursive /app/PeServer/Core/Libs
+	pecl install xdebug
 
 COPY fs /
 
