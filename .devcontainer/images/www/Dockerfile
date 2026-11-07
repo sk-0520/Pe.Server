@@ -9,12 +9,12 @@ RUN a2enmod rewrite && \
 	chown www-data -R /app-data && \
 	apt update && \
 	apt-get install -y \
-		# dev
-		bash-completion git \
-		# node(setup)
-		# nodejs npm \
-		# GD
-		libpq-dev libfreetype6-dev libjpeg62-turbo-dev libpng-dev && \
+	# dev
+	bash-completion git \
+	# node(setup)
+	# nodejs npm \
+	# GD
+	libpq-dev libfreetype6-dev libjpeg62-turbo-dev libpng-dev && \
 	pecl install xdebug
 
 COPY fs /
