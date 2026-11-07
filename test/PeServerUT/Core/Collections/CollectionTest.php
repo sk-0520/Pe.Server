@@ -437,8 +437,8 @@ class CollectionTest extends TestClass
 			[1, [1, 2, 3]],
 			[1, [3, 2, 1]],
 
-			// 1, [new LocalValue(i: 1), new LocalValue(i: 2), new LocalValue(i: 3)], fn ($i) => $i->i],
-			// 0.5, [new LocalValue(f: 1.5), new LocalValue(f: 2.5), new LocalValue(f: 0.5)], fn ($i) => $i->f],
+			[1, [3, 1, 2], fn ($i) => $i],
+			[0.5, [new LocalValue(f: 1.5), new LocalValue(f: 2.5), new LocalValue(f: 0.5)], fn ($i) => $i->f],
 		];
 	}
 

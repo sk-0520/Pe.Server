@@ -775,7 +775,7 @@ final class Collection implements IteratorAggregate
 		} else {
 			foreach ($this->iterator as $key => $value) {
 				$ret = $callback($value, $key);
-				if ($result < $ret) {
+				if ($ret < $result) {
 					$result = $ret;
 				}
 			}
