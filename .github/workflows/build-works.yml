@@ -130,6 +130,8 @@ jobs:
 
       - name: <Generate> document
         shell: bash
+        env:
+          PHPDOC_PLANTUML_BIN: /usr/bin/plantuml
         run: ./dev/doc.sh --phpdoc:setting-graphs
 
       - name: <Archive> Application

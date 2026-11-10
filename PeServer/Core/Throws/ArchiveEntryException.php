@@ -10,7 +10,7 @@ class ArchiveEntryException extends ArchiveException
 {
 	#region define
 
-	const MODE_ADD_FILE = 1;
+	public const MODE_ADD_FILE = 1;
 
 	#endregion
 
