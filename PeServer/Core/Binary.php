@@ -171,6 +171,7 @@ readonly final class Binary implements ArrayAccess, IteratorAggregate, Countable
 			throw new BinaryException();
 		}
 
+		/** @disregard P1006 */
 		return new self($data->value);
 	}
 
