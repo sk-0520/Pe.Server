@@ -13,7 +13,7 @@ describe("time", () => {
 			expect(TimeSpan.fromSeconds(10).ticks).toBe(10_000);
 		});
 
-		test("fromSeconds", () => {
+		test("fromMinutes", () => {
 			expect(TimeSpan.fromMinutes(0).ticks).toBe(0);
 			expect(TimeSpan.fromMinutes(1).ticks).toBe(60_000);
 			expect(TimeSpan.fromMinutes(10).ticks).toBe(600_000);
@@ -38,7 +38,7 @@ describe("time", () => {
 			);
 		});
 
-		test("totalMilliseconds", () => {
+		test("totalSeconds", () => {
 			expect(TimeSpan.fromSeconds(0).totalSeconds).toBe(0);
 			expect(TimeSpan.fromSeconds(1_000).totalSeconds).toBe(1_000);
 		});
@@ -94,16 +94,19 @@ describe("time", () => {
 			[2000, 1, 2, 3, 4, 0, 0, DateTime.create(2000, 1, 2, 3, 4)],
 			[2000, 1, 2, 3, 4, 5, 0, DateTime.create(2000, 1, 2, 3, 4, 5)],
 			[2000, 1, 2, 3, 4, 5, 6, DateTime.create(2000, 1, 2, 3, 4, 5, 6)],
-		])("create", (year: number, month: number, day: number, hour: number, minute: number, second: number, millisecond: number, expected: DateTime) => {
-			expect(expected.isUtc).toBeFalsy();
-			expect(expected.year).toBe(year);
-			expect(expected.month).toBe(month);
-			expect(expected.day).toBe(day);
-			expect(expected.hour).toBe(hour);
-			expect(expected.minute).toBe(minute);
-			expect(expected.second).toBe(second);
-			expect(expected.millisecond).toBe(millisecond);
-		});
+		])(
+			"create",
+			(year: number, month: number, day: number, hour: number, minute: number, second: number, millisecond: number, expected: DateTime) => {
+				expect(expected.isUtc).toBeFalsy();
+				expect(expected.year).toBe(year);
+				expect(expected.month).toBe(month);
+				expect(expected.day).toBe(day);
+				expect(expected.hour).toBe(hour);
+				expect(expected.minute).toBe(minute);
+				expect(expected.second).toBe(second);
+				expect(expected.millisecond).toBe(millisecond);
+			},
+		);
 
 		test.each([
 			[2000, 1, 2, 0, 0, 0, 0, DateTime.createUtc(2000, 1, 2)],
@@ -120,16 +123,19 @@ describe("time", () => {
 				6,
 				DateTime.createUtc(2000, 1, 2, 3, 4, 5, 6),
 			],
-		])("createUtc", (year: number, month: number, day: number, hour: number, minute: number, second: number, millisecond: number, expected: DateTime) => {
-			expect(expected.isUtc).toBeTruthy();
-			expect(expected.year).toBe(year);
-			expect(expected.month).toBe(month);
-			expect(expected.day).toBe(day);
-			expect(expected.hour).toBe(hour);
-			expect(expected.minute).toBe(minute);
-			expect(expected.second).toBe(second);
-			expect(expected.millisecond).toBe(millisecond);
-		});
+		])(
+			"createUtc",
+			(year: number, month: number, day: number, hour: number, minute: number, second: number, millisecond: number, expected: DateTime) => {
+				expect(expected.isUtc).toBeTruthy();
+				expect(expected.year).toBe(year);
+				expect(expected.month).toBe(month);
+				expect(expected.day).toBe(day);
+				expect(expected.hour).toBe(hour);
+				expect(expected.minute).toBe(minute);
+				expect(expected.second).toBe(second);
+				expect(expected.millisecond).toBe(millisecond);
+			},
+		);
 
 		test("add", () => {
 			expect(

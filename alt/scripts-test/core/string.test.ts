@@ -11,12 +11,12 @@ describe("string", () => {
 		[false, "\r"],
 		[false, "\r\n"],
 		[false, " \r\n \r\n "],
-	])("isNotWhiteSpace", (expected: boolean, input:
-		| string
-		| null
-		| undefined) => {
-		expect(string.isNotWhiteSpace(input)).toBe(expected);
-	});
+	])(
+		"isNotWhiteSpace",
+		(expected: boolean, input: string | null | undefined) => {
+			expect(string.isNotWhiteSpace(input)).toBe(expected);
+		},
+	);
 
 	test.each([
 		["", "", [""]],
@@ -88,13 +88,13 @@ describe("string", () => {
 		[["", ""], "\n"],
 		[["", ""], "\r"],
 		[["a", "b", "c"], "a\rb\nc"],
-	])("splitLines", (expected: Array<string>, input:
-		| string
-		| null
-		| undefined) => {
-		const actual = string.splitLines(input);
-		expect(actual).toEqual(expected);
-	});
+	])(
+		"splitLines",
+		(expected: Array<string>, input: string | null | undefined) => {
+			const actual = string.splitLines(input);
+			expect(actual).toEqual(expected);
+		},
+	);
 
 	test.each([
 		[false, null],
@@ -118,16 +118,19 @@ describe("string", () => {
 		[true, "abc", "A", true],
 		[true, "abc", "abc", false],
 		[false, "abc", "abcd", false],
-	])("match:Partial", (expected: boolean, input: string, pattern: string, ignoreCase: boolean) => {
-		const actual = string.match(
-			input,
-			pattern,
-			ignoreCase,
-			string.MatchMode.Partial,
-		);
-		expect(actual.matched).toBe(expected);
-		expect(actual.isRegex).toBeFalsy();
-	});
+	])(
+		"match:Partial",
+		(expected: boolean, input: string, pattern: string, ignoreCase: boolean) => {
+			const actual = string.match(
+				input,
+				pattern,
+				ignoreCase,
+				string.MatchMode.Partial,
+			);
+			expect(actual.matched).toBe(expected);
+			expect(actual.isRegex).toBeFalsy();
+		},
+	);
 
 	test.each([
 		[true, "abc", "a", false],
@@ -137,16 +140,19 @@ describe("string", () => {
 		[true, "abc", "A", true],
 		[true, "abc", "abc", false],
 		[false, "abc", "abcd", false],
-	])("match:Forward", (expected: boolean, input: string, pattern: string, ignoreCase: boolean) => {
-		const actual = string.match(
-			input,
-			pattern,
-			ignoreCase,
-			string.MatchMode.Forward,
-		);
-		expect(actual.matched).toBe(expected);
-		expect(actual.isRegex).toBeFalsy();
-	});
+	])(
+		"match:Forward",
+		(expected: boolean, input: string, pattern: string, ignoreCase: boolean) => {
+			const actual = string.match(
+				input,
+				pattern,
+				ignoreCase,
+				string.MatchMode.Forward,
+			);
+			expect(actual.matched).toBe(expected);
+			expect(actual.isRegex).toBeFalsy();
+		},
+	);
 
 	test.each([
 		[false, "abc", "a", false],
@@ -156,16 +162,19 @@ describe("string", () => {
 		[false, "abc", "A", true],
 		[true, "abc", "abc", false],
 		[false, "abc", "abcd", false],
-	])("match:Backward", (expected: boolean, input: string, pattern: string, ignoreCase: boolean) => {
-		const actual = string.match(
-			input,
-			pattern,
-			ignoreCase,
-			string.MatchMode.Backward,
-		);
-		expect(actual.matched).toBe(expected);
-		expect(actual.isRegex).toBeFalsy();
-	});
+	])(
+		"match:Backward",
+		(expected: boolean, input: string, pattern: string, ignoreCase: boolean) => {
+			const actual = string.match(
+				input,
+				pattern,
+				ignoreCase,
+				string.MatchMode.Backward,
+			);
+			expect(actual.matched).toBe(expected);
+			expect(actual.isRegex).toBeFalsy();
+		},
+	);
 
 	test.each([
 		[false, "abc", "a", false],
@@ -175,16 +184,19 @@ describe("string", () => {
 		[false, "abc", "A", true],
 		[true, "abc", "abc", false],
 		[false, "abc", "abcd", false],
-	])("match:Perfect", (expected: boolean, input: string, pattern: string, ignoreCase: boolean) => {
-		const actual = string.match(
-			input,
-			pattern,
-			ignoreCase,
-			string.MatchMode.Perfect,
-		);
-		expect(actual.matched).toBe(expected);
-		expect(actual.isRegex).toBeFalsy();
-	});
+	])(
+		"match:Perfect",
+		(expected: boolean, input: string, pattern: string, ignoreCase: boolean) => {
+			const actual = string.match(
+				input,
+				pattern,
+				ignoreCase,
+				string.MatchMode.Perfect,
+			);
+			expect(actual.matched).toBe(expected);
+			expect(actual.isRegex).toBeFalsy();
+		},
+	);
 
 	test.each([
 		[true, "abc", "a", false],
@@ -196,14 +208,17 @@ describe("string", () => {
 		[false, "abc", "abcd", false],
 		[true, "abc", "...", false],
 		[false, "abc", "....", false],
-	])("match:Regex", (expected: boolean, input: string, pattern: string, ignoreCase: boolean) => {
-		const actual = string.match(
-			input,
-			pattern,
-			ignoreCase,
-			string.MatchMode.Regex,
-		);
-		expect(actual.matched).toBe(expected);
-		expect(actual.isRegex).toBe(expected);
-	});
+	])(
+		"match:Regex",
+		(expected: boolean, input: string, pattern: string, ignoreCase: boolean) => {
+			const actual = string.match(
+				input,
+				pattern,
+				ignoreCase,
+				string.MatchMode.Regex,
+			);
+			expect(actual.matched).toBe(expected);
+			expect(actual.isRegex).toBe(expected);
+		},
+	);
 });

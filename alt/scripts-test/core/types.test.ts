@@ -405,11 +405,12 @@ describe("types", () => {
 		[_inputObject.array, inputObject, "array", ["A"]],
 		[_inputObject.object, inputObject, "object", { a: "A" }],
 		[_inputObject.function, inputObject, "function", () => undefined],
-	])("getPropertyOr", <
-		T,
-	>(expected: T, input: unknown, key: string, value: T) => {
-		expect(types.getPropertyOr(input, key, value)).toBe(expected);
-	});
+	])(
+		"getPropertyOr",
+		<T>(expected: T, input: unknown, key: string, value: T) => {
+			expect(types.getPropertyOr(input, key, value)).toBe(expected);
+		},
+	);
 
 	test.each([
 		[false, undefined],
@@ -528,12 +529,15 @@ describe("types", () => {
 		[false, null, TestSuper],
 		[false, {}, TestSuper],
 		[false, 0, TestSuper],
-	])("instanceOf", <
-		T1,
-		T2 extends object,
-	>(expected: boolean, obj: T1, type: types.Constructor<T2>) => {
-		expect(types.instanceOf(obj, type)).toBe(expected);
-	});
+	])(
+		"instanceOf",
+		<
+			T1,
+			T2 extends object,
+		>(expected: boolean, obj: T1, type: types.Constructor<T2>) => {
+			expect(types.instanceOf(obj, type)).toBe(expected);
+		},
+	);
 
 	test.each([
 		[true, new TestSuper(), TestSuper],
@@ -556,12 +560,15 @@ describe("types", () => {
 		[false, null, TestSuper],
 		[false, {}, TestSuper],
 		[false, 0, TestSuper],
-	])("isEqual", <
-		T1,
-		T2 extends object,
-	>(expected: boolean, obj: T1, type: types.Constructor<T2>) => {
-		expect(types.isEqual(obj, type)).toBe(expected);
-	});
+	])(
+		"isEqual",
+		<
+			T1,
+			T2 extends object,
+		>(expected: boolean, obj: T1, type: types.Constructor<T2>) => {
+			expect(types.isEqual(obj, type)).toBe(expected);
+		},
+	);
 
 	test("getProperties", () => {
 		const input = new TestDeep(-1, { b: "A", node: { c: true } });
