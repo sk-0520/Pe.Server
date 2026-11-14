@@ -45,7 +45,23 @@
 				"Orta.vscode-jest",
 				"MehediDracula.php-namespace-resolver",
 				"SanderRonde.phpstan-vscode"
-			]
+			],
+			"settings": {
+				"workbench.colorCustomizations": {
+					"activityBar.foreground": "#ffffff",
+					"activityBar.background": "#777bb3",
+					"activityBar.activeBorder": "#ffffff",
+					"activityBar.inactiveForeground": "#fff",
+					"activityBar.activeFocusBorder": "#f00",
+					"activityBar.activeBackground": "#000",
+					"titleBar.activeForeground": "#ffffff",
+					"titleBar.activeBackground": "#777bb3",
+					"titleBar.inactiveForeground": "#ffffff",
+					"titleBar.inactiveBackground": "#777bb3",
+					"statusBar.foreground": "#ffffff",
+					"statusBar.background": "#777bb3",
+				}
+			}
 		}
 	}
 	// Use 'postCreateCommand' to run commands after the container is created.
