@@ -16,11 +16,9 @@
 	// "features": {},
 	// Configure tool-specific properties.
 	// "customizations": {},
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	"forwardPorts": [
-		80,
-		443
-	],
+	// ポートは compose.yaml 側で publish 済み (80/443)。
+	// forwardPorts で二重に forward するとホスト側ポート占有と衝突し、
+	// TunnelService の再試行ループで renderer が OOM するため使用しない。
 	"overrideCommand": false,
 	"customizations": {
 		"vscode": {
@@ -44,6 +42,8 @@
 				"SanderRonde.phpstan-vscode"
 			],
 			"settings": {
+				// 自動転送も同じ衝突を起こすため無効化 (compose の publish を直接使う)
+				"remote.autoForwardPorts": false,
 				"workbench.colorCustomizations": {
 					"activityBar.foreground": "#ffffff",
 					"activityBar.background": "#777bb3",
