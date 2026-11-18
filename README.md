@@ -13,11 +13,6 @@ https://pe.content-type-text.net
 
 可能な限り GAS でやってたけどもう無理なんや。
 
-* 8.2 (サーバー側は 8.2.3)
-  * https://sourceforge.net/projects/xampp/files/XAMPP%20Windows/8.2.0/
-    * `xampp-portable-windows-x64-8.2.0-0-VS16.7z`
-    * `mklink /J C:\Applications\xampp\xampp-portable-windows-x64-8.2.0-0-VS16\xampp\htdocs D:\sk\programming\Pe\Pe.Server\public_html`
-
 ## PHPStan 抑制メモ
 
 PHPStan 検出を抑制する場合はなるべくコメントを書くように。
@@ -35,11 +30,12 @@ PHPStan 検出を抑制する場合はなるべくコメントを書くように
 | `CODE_READONLY` | 読み取り専用と言いつつあくまでコード上だけの規則 |
 | `DEBUG` | デバッグ目的で定数などを変更する可能性がある |
 
-# Docker (実験中)
+## 開発
 
-* PHP 実行処理
-  * `dev/php.bat`
-  * `dev/php`
+### バックエンド
+
+PHP は devContainer で実行される。
+
 * アプリ起動
   * PeServer/Core/Libs の更新
     * `docker volume rm dev_app-core-libs` (まぁいろいろ消して)
@@ -54,3 +50,7 @@ PHPStan 検出を抑制する場合はなるべくコメントを書くように
   * Email
     * http://localhost:8025
     * smtp:1025
+
+### フロントエンド
+
+フロントはローカル端末で実行される。
