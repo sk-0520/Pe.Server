@@ -14,8 +14,10 @@ RUN a2enmod rewrite && \
 	# node(setup)
 	# nodejs npm \
 	# GD
-	libpq-dev libfreetype6-dev libjpeg62-turbo-dev libpng-dev && \
-	pecl install xdebug && \
+	libpq-dev libfreetype6-dev libjpeg62-turbo-dev libpng-dev \
+	# zip
+	libzip-dev && \
+	pecl install xdebug zip && \
 	docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include && \
 	docker-php-ext-install -j$(nproc) gd && \
 	docker-php-ext-enable xdebug
