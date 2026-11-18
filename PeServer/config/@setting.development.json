@@ -1,0 +1,119 @@
+{
+    "persistence": {
+        "default": {
+            "connection": "sqlite:/app-data\/00_others\/00_others\/data\/data.sqlite3",
+            "user": "",
+            "password": ""
+        }
+    },
+    "logging": {
+        "loggers": {
+            "file": {
+                "logger_class": "PeServer\\Core\\Log\\FileLogger",
+                "level": 1,
+                "format": "{TIMESTAMP} |{LEVEL}| [{CLIENT_IP}:{CLIENT_HOST}] {REQUEST_ID}|{SESSION} <{UA}> {METHOD} {REQUEST} {FILE}({LINE}) {FUNCTION} -> {MESSAGE}",
+                "configuration": {
+                    "directory": "/app-data\/00_others\/00_others\/data\/logs",
+                    "name": "log_{DATE}.log",
+                    "count": 100
+                }
+            },
+            "xdebug": {
+                "logger_class": "PeServer\\Core\\Log\\XdebugLogger",
+                "level": 0,
+                "format": "{TIMESTAMP} |{LEVEL}| [{CLIENT_IP}:{CLIENT_HOST}] {REQUEST_ID}|{SESSION} <{UA}> {METHOD} {REQUEST} {FILE}({LINE}) {FUNCTION} -> {MESSAGE}"
+            }
+        },
+        "archive_size": 5242880
+    },
+    "store": {
+        "cookie": {
+            "httpOnly": true,
+            "sameSite": "strict"
+        },
+        "session": {
+            "name": "pe-sid",
+            "save": "/app-data\/00_others\/00_others\/data\/store\/session",
+            "cookie": []
+        },
+        "temporary": {
+            "name": "pe-temp",
+            "save": "/app-data\/00_others\/00_others\/data\/store\/temporary",
+            "cookie": {
+                "span": "PT3M"
+            }
+        }
+    },
+    "cache": {
+        "temporary": "/app-data\/00_others\/00_others\/data\/temp\/buckets",
+        "database": "/app-data\/00_others\/00_others\/data\/database_cache",
+        "template": "/app-data\/00_others\/00_others\/data\/temp\/template",
+        "backup": "/app-data\/00_others\/00_others\/data\/backups",
+        "deploy": "/app-data\/00_others\/00_others\/data\/temp\/deploy"
+    },
+    "access_log": {
+        "directory": "/app-data\/00_others\/00_others\/data\/access_log"
+    },
+    "crypto": {
+        "algorithm": "aes-256-cbc",
+        "password": "password",
+        "pepper": "pepper",
+        "token": {
+            "algorithm": "aes-128-cbc",
+            "password": "password"
+        }
+    },
+    "config": {
+        "confirm": {
+            "user_change_wait_email_minutes": 10,
+            "sign_up_wait_email_minutes": 60
+        },
+        "address": {
+            "domain": "localhost",
+            "public_url": "http:\/\/{DOMAIN}",
+            "from_email": {
+                "name": "Pe.Server",
+                "address": "from@localhost.localdomain"
+            },
+            "return_email": "return@localhost.localdomain",
+            "families": {
+                "server_url": "https:\/\/peserver.site\/",
+                "contact_url": "https:\/\/peserver.site\/contact",
+                "app_project_url": "https:\/\/github.com\/sk-0520\/Pe",
+                "server_project_url": "https:\/\/github.com\/sk-0520\/Pe.Server",
+                "forum_url": "https:\/\/groups.google.com\/g\/pe_development",
+                "website_url": "https:\/\/content-type-text.net\/",
+                "api_doc_url": "https:\/\/cttn.stoplight.io\/docs\/pe-server",
+                "pe_update_info_url_base": "https:\/\/github.com\/sk-0520\/Pe\/releases\/download\/{VERSION}\/{UPDATE_INFO_NAME}",
+                "plugin_update_info_url_base": "https:\/\/github.com\/sk-0520\/Pe\/releases\/download\/{VERSION}\/{UPDATE_INFO_NAME}"
+            },
+            "notify": {
+                "crash_report": [
+                    "crash_report@localhost.localdomain"
+                ],
+                "feedback": [
+                    "feedback@localhost.localdomain"
+                ]
+            }
+        }
+    },
+    "mail": {
+        "mode": "smtp",
+        "smtp-local": {
+            "host": "localhost",
+            "port": 25,
+            "secure": "none",
+            "authentication": false,
+            "user_name": "mail@localhost.localdomain",
+            "password": ""
+        },
+        "smtp": {
+            "host": "host.docker.internal",
+            "port": 25,
+            "secure": "none",
+            "authentication": false,
+            "user_name": "mail@localhost.localdomain",
+            "password": ""
+        }
+    }
+}
