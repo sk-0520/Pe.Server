@@ -21,7 +21,7 @@ services:
       - mail
 
   mail:
-    image: axllent/mailpit:v1.20
+    image: axllent/mailpit:v1.34
     container_name: mail-container
     ports:
       - 8025:8025
