@@ -15,13 +15,13 @@ RUN a2enmod rewrite && \
 	# nodejs npm \
 	# GD
 	libpq-dev libfreetype6-dev libjpeg62-turbo-dev libpng-dev && \
-	pecl install xdebug
+	pecl install xdebug && \
+	docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include && \
+	docker-php-ext-install -j$(nproc) gd && \
+	docker-php-ext-enable xdebug
 
 COPY fs /
 
-RUN docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include && \
-	docker-php-ext-install -j$(nproc) gd && \
-	docker-php-ext-enable xdebug
 
 
 # # node(version)
